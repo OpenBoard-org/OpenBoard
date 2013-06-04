@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -224,6 +224,19 @@ void UBTGAdaptableText::setInitialText(const QString& text)
     onTextChanged();
 }
 
+void UBTGAdaptableText::resetText()
+{
+    if(mHasPlaceHolder && !mPlaceHolderText.isEmpty()){
+        setTextColor(QColor(Qt::lightGray));
+        setText(mPlaceHolderText);
+    }
+    else{
+        setText("");
+        setTextColor(QColor(Qt::black));
+    }
+    onTextChanged();
+}
+
 void UBTGAdaptableText::showText(const QString & text)
 {
     setText(text);
@@ -252,14 +265,40 @@ void UBTGAdaptableText::focusOutEvent(QFocusEvent* e)
     QTextEdit::focusOutEvent(e);
 }
 
+void UBTGAdaptableText::insertFromMimeData(const QMimeData *source)
+{
+    QMimeData editedMimeData;
+    QTextDocument textDoc;
+    QString plainText;
+
+    if (source->hasHtml())
+    {
+        textDoc.setHtml(source->html());
+        plainText += textDoc.toPlainText();
+    }
+    if (source->hasText())
+        if (textDoc.toPlainText() != source->text())
+            plainText += source->text();
+    if (source->hasUrls())
+    {
+        foreach(QUrl url, source->urls())
+        {
+            plainText += url.toString();
+        }
+    }
+
+    editedMimeData.setText(plainText);
+    QTextEdit::insertFromMimeData(&editedMimeData);
+}
+
 void UBTGAdaptableText::managePlaceholder(bool focus)
 {
     if(focus){
         if(toPlainText() == mPlaceHolderText){
             setTextColor(QColor(Qt::black));
             setPlainText("");
+            setCursorToTheEnd();
         }
-        setCursorToTheEnd();
     }
     else{
         if(toPlainText().isEmpty()){
@@ -537,9 +576,9 @@ void UBTGMediaWidget::createWorkWidget(bool forceFlashMediaType)
             mpMediaLayout = new QHBoxLayout(mpWorkWidget);
             mpWorkWidget->setLayout(mpMediaLayout);
         }
-        
+
         mpMediaLayout->addStretch(1);
-        
+
         if(mpMediaLabelWidget){
             mpMediaLabelWidget->setFixedHeight(mMediaWidgetHeight);
             mpMediaLabelWidget->setParent(mpWorkWidget);

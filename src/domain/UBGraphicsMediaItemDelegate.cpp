@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -60,10 +60,9 @@ UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pD
         connect(mToolBarShowTimer, SIGNAL(timeout()), this, SLOT(hideToolBar()));
         mToolBarShowTimer->setInterval(m_iToolBarShowingInterval);
     }
+
     if (delegated()->isMuted())
-    {
         delegated()->setMute(true);
-    }
 
     //Wrapper function. Use it to set correct data() to QGraphicsItem as well
     setFlippable(false);
@@ -97,13 +96,13 @@ void UBGraphicsMediaItemDelegate::buildButtons()
     mMediaControl = new DelegateMediaControl(delegated(), mToolBarItem);
     mMediaControl->setFlag(QGraphicsItem::ItemIsSelectable, true);
     UBGraphicsItem::assignZValue(mMediaControl, delegated()->zValue());
-    
+
     if (delegated()->isMuted())
         mMuteButton = new DelegateButton(":/images/soundOff.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
     else
         mMuteButton = new DelegateButton(":/images/soundOn.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
 
-    connect(mMuteButton, SIGNAL(clicked(bool)), delegated(), SLOT(toggleMute())); 
+    connect(mMuteButton, SIGNAL(clicked(bool)), delegated(), SLOT(toggleMute()));
     connect(mMuteButton, SIGNAL(clicked(bool)), this, SLOT(toggleMute())); // for changing button image
 
     mToolBarButtons << mPlayPauseButton << mStopButton << mMuteButton;
@@ -145,7 +144,7 @@ void UBGraphicsMediaItemDelegate::positionHandles()
     {
         QRectF toolBarRect = mToolBarItem->rect();
         if (mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Video)
-        {      
+        {
             mToolBarItem->setPos(0, delegated()->boundingRect().height()-mToolBarItem->rect().height());
 
             toolBarRect.setWidth(delegated()->boundingRect().width());
@@ -186,15 +185,10 @@ void UBGraphicsMediaItemDelegate::positionHandles()
     mMediaControl->setRect(mediaItemRect);
 
     mToolBarItem->positionHandles();
-    mMediaControl->positionHandles(); 
+    mMediaControl->positionHandles();
 
-    if (mediaItem)
-    {
-        if (mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Audio)
-        {
-            mToolBarItem->show();
-        }
-    }
+    if (mediaItem && mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Audio)
+        mToolBarItem->show();
 }
 
 void UBGraphicsMediaItemDelegate::remove(bool canUndo)
@@ -255,6 +249,11 @@ void UBGraphicsMediaItemDelegate::mediaStateChanged ( Phonon::State newstate, Ph
 {
     Q_UNUSED(newstate);
     Q_UNUSED(oldstate);
+
+    if (oldstate == Phonon::LoadingState)
+    {
+        mMediaControl->totalTimeChanged(delegated()->mediaObject()->totalTime());
+    }
     updatePlayPauseState();
 }
 

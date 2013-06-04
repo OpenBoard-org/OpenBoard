@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -74,6 +74,9 @@
 
 #include "core/memcheck.h"
 
+
+#define DEFAULT_Z_VALUE 0.0
+
 qreal UBZLayerController::errorNumber = -20000001.0;
 
 UBZLayerController::UBZLayerController(QGraphicsScene *scene) :
@@ -81,17 +84,18 @@ UBZLayerController::UBZLayerController(QGraphicsScene *scene) :
 
 {
     scopeMap.insert(itemLayerType::NoLayer,        ItemLayerTypeData( errorNumber, errorNumber));
-    scopeMap.insert(itemLayerType::BackgroundItem, ItemLayerTypeData(-10000000.0, -10000000.0 ));
-    scopeMap.insert(itemLayerType::ObjectItem,     ItemLayerTypeData(-10000000.0,  0.0        ));
-    scopeMap.insert(itemLayerType::DrawingItem,    ItemLayerTypeData( 0.0,         10000000.0 ));
-    scopeMap.insert(itemLayerType::ToolItem,       ItemLayerTypeData( 10000000.0,  10000100.0 ));
-    scopeMap.insert(itemLayerType::CppTool,        ItemLayerTypeData( 10000100.0,  10000200.0 ));
-    scopeMap.insert(itemLayerType::Curtain,        ItemLayerTypeData( 10000200.0,  10001000.0 ));
-    scopeMap.insert(itemLayerType::Eraiser,        ItemLayerTypeData( 10001000.0,  10001100.0 ));
-    scopeMap.insert(itemLayerType::Pointer,        ItemLayerTypeData( 10001100.0,  10001200.0 ));
-    scopeMap.insert(itemLayerType::Cache,          ItemLayerTypeData( 10001300.0,  10001400.0 ));
+    scopeMap.insert(itemLayerType::BackgroundItem, ItemLayerTypeData(-1000000.0, -1000000.0 ));
+    // DEFAULT_Z_VALUE isn't used because it allows to easily identify new objects
+    scopeMap.insert(itemLayerType::ObjectItem,     ItemLayerTypeData(-1000000.0,  DEFAULT_Z_VALUE - 1.0));
+    scopeMap.insert(itemLayerType::DrawingItem,    ItemLayerTypeData( DEFAULT_Z_VALUE + 1.0, 1000000.0 ));
+    scopeMap.insert(itemLayerType::ToolItem,       ItemLayerTypeData( 1000000.0,  1000100.0 ));
+    scopeMap.insert(itemLayerType::CppTool,        ItemLayerTypeData( 1000100.0,  1000200.0 ));
+    scopeMap.insert(itemLayerType::Curtain,        ItemLayerTypeData( 1000200.0,  1001000.0 ));
+    scopeMap.insert(itemLayerType::Eraiser,        ItemLayerTypeData( 1001000.0,  1001100.0 ));
+    scopeMap.insert(itemLayerType::Pointer,        ItemLayerTypeData( 1001100.0,  1001200.0 ));
+    scopeMap.insert(itemLayerType::Cache,          ItemLayerTypeData( 1001300.0,  1001400.0 ));
 
-    scopeMap.insert(itemLayerType::SelectedItem,   ItemLayerTypeData( 10001000.0,  10001000.0 ));
+    scopeMap.insert(itemLayerType::SelectedItem,   ItemLayerTypeData( 1001000.0,  1001000.0 ));
 }
 
 qreal UBZLayerController::generateZLevel(itemLayerType::Enum key)
@@ -340,8 +344,8 @@ void UBGraphicsScene::updateGroupButtonState()
 {
 
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();
-    if (UBStylusTool::Selector != currentTool)
-        UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+    if (UBStylusTool::Selector != currentTool && UBStylusTool::Play != currentTool)
+        return;
 
     QAction *groupAction = UBApplication::mainWindow->actionGroupItems;
     QList<QGraphicsItem*> selItems = selectedItems();
@@ -369,19 +373,16 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
 {
     bool accepted = false;
 
-    if (mInputDeviceIsPressed)
-    {
+    if (mInputDeviceIsPressed) {
         qWarning() << "scene received input device pressed, without input device release, muting event as input device move";
         accepted = inputDeviceMove(scenePos, pressure);
     }
-    else
-    {
+    else {
         mInputDeviceIsPressed = true;
 
         UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();
 
-        if (UBDrawingController::drawingController()->isDrawingTool())
-        {
+        if (UBDrawingController::drawingController()->isDrawingTool()) {
             // -----------------------------------------------------------------
             // We fall here if we are using the Pen, the Marker or the Line tool
             // -----------------------------------------------------------------
@@ -401,7 +402,8 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             if (currentTool != UBStylusTool::Line){
                 // Handle the pressure
                 width = UBDrawingController::drawingController()->currentToolWidth() * pressure;
-            }else{
+            }
+            else{
                 // Ignore pressure for the line tool
                 width = UBDrawingController::drawingController()->currentToolWidth();
             }
@@ -413,18 +415,14 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             mRemovedItems.clear();
 
             if (UBDrawingController::drawingController()->mActiveRuler)
-            {
                 UBDrawingController::drawingController()->mActiveRuler->StartLine(scenePos, width);
-            }
-            else
-            {
+            else {
                 moveTo(scenePos);
                 drawLineTo(scenePos, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
             }
             accepted = true;
         }
-        else if (currentTool == UBStylusTool::Eraser)
-        {
+        else if (currentTool == UBStylusTool::Eraser) {
             mAddedItems.clear();
             mRemovedItems.clear();
             moveTo(scenePos);
@@ -438,8 +436,7 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
 
             accepted = true;
         }
-        else if (currentTool == UBStylusTool::Pointer)
-        {
+        else if (currentTool == UBStylusTool::Pointer) {
             drawPointer(scenePos, true);
             accepted = true;
         }
@@ -512,13 +509,14 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                     mPreviousPoint.x() + radiusLength * cos((angle * PI) / 180),
                     mPreviousPoint.y() - radiusLength * sin((angle * PI) / 180));
                 QLineF chord(position, newPosition);
-                                    if (chord.length() < qMin((int)16, (int)(radiusLength / 20)))
+                if (chord.length() < qMin((int)16, (int)(radiusLength / 20)))
                     position = newPosition;
             }
 
             if(dc->mActiveRuler){
                 dc->mActiveRuler->DrawLine(position, width);
-            }else{
+            }
+            else{
                 drawLineTo(position, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
             }
         }
@@ -557,46 +555,47 @@ bool UBGraphicsScene::inputDeviceRelease()
     {
         if(mArcPolygonItem){
 
-                UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
+            UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
-                // Add the arc
-                mAddedItems.remove(mArcPolygonItem);
-                removeItem(mArcPolygonItem);
-                UBCoreGraphicsScene::removeItemFromDeletion(mArcPolygonItem);
+            // Add the arc
+            mAddedItems.remove(mArcPolygonItem);
+            removeItem(mArcPolygonItem);
+            UBCoreGraphicsScene::removeItemFromDeletion(mArcPolygonItem);
+            mArcPolygonItem->setStrokesGroup(pStrokes);
+            pStrokes->addToGroup(mArcPolygonItem);
+
+            // Add the center cross
+            foreach(QGraphicsItem* item, mAddedItems){
+                mAddedItems.remove(item);
+                removeItem(item);
+                UBCoreGraphicsScene::removeItemFromDeletion(item);
                 mArcPolygonItem->setStrokesGroup(pStrokes);
-                pStrokes->addToGroup(mArcPolygonItem);
+                pStrokes->addToGroup(item);
+            }
 
-                // Add the center cross
-                foreach(QGraphicsItem* item, mAddedItems){
-                    removeItem(item);
-                    UBCoreGraphicsScene::removeItemFromDeletion(item);
-                    mArcPolygonItem->setStrokesGroup(pStrokes);
-                    pStrokes->addToGroup(item);
-                }
+            mAddedItems.clear();
+            mAddedItems << pStrokes;
+            addItem(pStrokes);
 
-                mAddedItems.clear();
-                mAddedItems << pStrokes;
-                addItem(pStrokes);
-                mDrawWithCompass = false;
-
+            mDrawWithCompass = false;
         }
         else if (mCurrentStroke){
-                UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
+            UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
-                // Remove the strokes that were just drawn here and replace them by a stroke item
-                foreach(UBGraphicsPolygonItem* poly, mCurrentStroke->polygons()){
-                    mPreviousPolygonItems.removeAll(poly);
-                    removeItem(poly);
-                    UBCoreGraphicsScene::removeItemFromDeletion(poly);
-                    poly->setStrokesGroup(pStrokes);
-                    pStrokes->addToGroup(poly);
-                }
+            // Remove the strokes that were just drawn here and replace them by a stroke item
+            foreach(UBGraphicsPolygonItem* poly, mCurrentStroke->polygons()){
+                mPreviousPolygonItems.removeAll(poly);
+                removeItem(poly);
+                UBCoreGraphicsScene::removeItemFromDeletion(poly);
+                poly->setStrokesGroup(pStrokes);
+                pStrokes->addToGroup(poly);
+            }
 
-                // TODO LATER : Generate well pressure-interpolated polygons and create the line group with them
+            // TODO LATER : Generate well pressure-interpolated polygons and create the line group with them
 
-                mAddedItems.clear();
-                mAddedItems << pStrokes;
-                addItem(pStrokes);
+            mAddedItems.clear();
+            mAddedItems << pStrokes;
+            addItem(pStrokes);
 
             if (mCurrentStroke->polygons().empty()){
                 delete mCurrentStroke;
@@ -742,44 +741,17 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
         mAddedItems.clear();
     }
 
+    mpLastPolygon = polygonItem;
+    mAddedItems.insert(polygonItem);
+
+    // Here we add the item to the scene
+    addItem(polygonItem);
     if (!mCurrentStroke)
         mCurrentStroke = new UBGraphicsStroke();
 
+    polygonItem->setStroke(mCurrentStroke);
 
-    QPolygonF newPolygon = UBGeometryUtils::lineToPolygon(QLineF(mPreviousPoint, pEndPoint), pWidth);
-
-    if (!mCurrentPolygon)
-    {
-        mCurrentPolygon = new UBGraphicsPolygonItem();
-        mCurrentPolygon->setPolygon(newPolygon);
-        initPolygonItem(mCurrentPolygon);
-        addItem(mCurrentPolygon);
-        mAddedItems.insert(mCurrentPolygon);
-        mCurrentPolygon->setStroke(mCurrentStroke);
-        mpLastPolygon = mCurrentPolygon;
-    }
-
-
-    //newPolygon = newPolygon.united(mCurrentPolygon->polygon());
-
-    QPainterPath strokePainterPath;
-
-
-    strokePainterPath.addPolygon(mCurrentPolygon->sceneTransform().map(mCurrentPolygon->polygon()));
-
-    //QList<QPolygonF>
-    QPolygonF oldPolygons = strokePainterPath.simplified().toFillPolygon(mCurrentPolygon->sceneTransform().inverted());
-    newPolygon = oldPolygons.united(newPolygon);
-
-    /*  foreach(QPolygonF polygon, oldPolygons)
-            {
-                newPolygon = polygon.united(newPolygon);
-            }
-                */
-
-    mpLastPolygon = mCurrentPolygon;
-
-    mCurrentPolygon->setPolygon(newPolygon);
+    mPreviousPolygonItems.append(polygonItem);
 
 
     if (!bLineStyle)
@@ -861,10 +833,29 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
             }
         }
 
-        //remove full polygon item for replace it by couple of polygons who creates the same stroke without a part which intersects with eraser
-        mRemovedItems << intersectedPolygonItem;
-        intersectedPolygonItem->strokesGroup()->removeFromGroup(intersectedPolygonItem);
+        //remove full polygon item for replace it by couple of polygons which creates the same stroke without a part intersects with eraser
+         mRemovedItems << intersectedPolygonItem;
+
+        QTransform t;
+        bool bApplyTransform = false;
+        if (intersectedPolygonItem->strokesGroup())
+        {
+            if (intersectedPolygonItem->strokesGroup()->parentItem())
+            {
+                bApplyTransform = true;
+                t = intersectedPolygonItem->sceneTransform();
+            }
+            intersectedPolygonItem->strokesGroup()->removeFromGroup(intersectedPolygonItem);
+        }
         removeItem(intersectedPolygonItem);
+        if (bApplyTransform)
+            intersectedPolygonItem->setTransform(t);
+
+
+        removeItem(intersectedPolygonItem);
+
+        if (bApplyTransform)
+            intersectedPolygonItem->setTransform(t);
     }
 
     if (!intersectedItems.empty())
@@ -1572,15 +1563,34 @@ UBGraphicsTextItem* UBGraphicsScene::textForObjectName(const QString& pString, c
     if(!textItem){
         textItem = addTextWithFont(pString,QPointF(0,0) ,72,UBSettings::settings()->fontFamily(),true,false);
         textItem->setObjectName(objectName);
-        QSizeF size = textItem->size();
-        textItem->setPos(QPointF(-size.width()/2.0,-size.height()/2.0));
         textItem->setData(UBGraphicsItemData::ItemEditable,QVariant(false));
+        textItem->adjustSize();
+        textItem->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+        textItem->setPlainText(pString);
+    }
+    else{
+        textItem->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+        if (pString == textItem->toPlainText())
+            return textItem;
+
+        QTextCursor curCursor = textItem->textCursor();
+        QFont font = textItem->font();
+        QColor color = curCursor.charFormat().foreground().color();
+
+        textItem->setPlainText(pString);
+        textItem->clearFocus();
+        textItem->setFont(font);
+
+
+        QTextCharFormat format;
+        format.setForeground(QBrush(color));
+        curCursor.mergeCharFormat(format);
+        textItem->setTextCursor(curCursor);
+        textItem->contentsChanged();
+
     }
 
-    textItem->setPlainText(pString);
-    textItem->adjustSize();
     textItem->clearFocus();
-    textItem->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
     return textItem;
 }
 
@@ -1670,7 +1680,11 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
 {
     UBCoreGraphicsScene::addItem(item);
 
-    UBGraphicsItem::assignZValue(item, mZLayerController->generateZLevel(item));
+    // the default z value is already set. This is the case when a svg file is read
+    if(item->zValue() == DEFAULT_Z_VALUE || item->zValue() == UBZLayerController::errorNum()){
+        qreal zvalue = mZLayerController->generateZLevel(item);
+        UBGraphicsItem::assignZValue(item, zvalue);
+    }
 
     if (!mTools.contains(item))
       ++mItemCount;
@@ -2119,11 +2133,9 @@ void UBGraphicsScene::setNominalSize(const QSize& pSize)
     if (nominalSize() != pSize)
     {
         mNominalSize = pSize;
-        emit pageSizeChanged();
 
         if(mDocument)
             mDocument->setDefaultDocumentSize(pSize);
-
     }
 }
 
@@ -2371,9 +2383,8 @@ void UBGraphicsScene::createPointer()
 void UBGraphicsScene::setToolCursor(int tool)
 {
     if (tool == (int)UBStylusTool::Selector ||
-             tool == (int)UBStylusTool::Text ||
-                tool == (int)UBStylusTool::Play)
-    {
+            tool == (int)UBStylusTool::Text ||
+            tool == (int)UBStylusTool::Play) {
         deselectAllItems();
     }
 

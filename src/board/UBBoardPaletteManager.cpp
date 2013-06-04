@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -175,7 +175,7 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
 void UBBoardPaletteManager::slot_changeMainMode(UBApplicationController::MainMode mainMode)
 {
-//    Board = 0, Internet, Document, Tutorial, ParaschoolEditor, WebDocument
+//    Board = 0, Internet, Document, Tutorial, WebDocument
 
     switch( mainMode )
     {
@@ -821,8 +821,6 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
 
     if( !isInit )
         UBApplication::boardController->notifyPageChanged();
-
-    emit signal_changeMode(newMode);
 }
 
 void UBBoardPaletteManager::addItem(const QPixmap& pPixmap, const QPointF& pos,  qreal scaleFactor, const QUrl& sourceUrl)
@@ -969,11 +967,6 @@ void UBBoardPaletteManager::changeStylusPaletteOrientation(QVariant var)
     mStylusPalette->setVisible(bVisible); // always show stylus palette at startup
 }
 
-
-void UBBoardPaletteManager::connectToDocumentController()
-{
-    emit connectToDocController();
-}
 
 void UBBoardPaletteManager::refreshPalettes()
 {

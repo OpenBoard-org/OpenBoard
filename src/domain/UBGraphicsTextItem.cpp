@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -93,6 +93,7 @@ void UBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
     // It is a cludge...
     if (UBStylusTool::Play == UBDrawingController::drawingController()->stylusTool())
     {
+        QGraphicsTextItem::mousePressEvent(event);
         event->accept();
         clearFocus();
         return;

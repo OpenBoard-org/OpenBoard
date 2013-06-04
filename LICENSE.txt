@@ -1,6 +1,6 @@
-Copyright (C) 2013 Groupement d'Int√©r√™t Public pour l'Education Num√©rique en Afrique (GIP ENA)
+Copyright (C) 2013 Groupement d'Interêt Public pour l'Education Numérique en Afrique (GIP ENA)
 
-Open-Sankor√© is free software: you can redistribute it and/or modify
+Open-Sankoré is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, version 3 of the License,
 with a specific linking exception for the OpenSSL project's

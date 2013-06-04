@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -609,7 +609,9 @@ void UBGraphicsWidgetItem::mainFrameLoadFinished (bool ok)
 {
     mLoadIsErronous = !ok;
     update(boundingRect());
-    takeSnapshot();
+
+    if (mInitialLoadDone && scene() && scene()->renderingContext() == UBGraphicsScene::Screen)
+        takeSnapshot();
 }
 
 void UBGraphicsWidgetItem::wheelEvent(QGraphicsSceneWheelEvent *event)

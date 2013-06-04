@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -98,14 +98,17 @@ QVariant UBGraphicsSvgItem::itemChange(GraphicsItemChange change, const QVariant
 
 void UBGraphicsSvgItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (Delegate()->mousePressEvent(event))
-    {
-        //NOOP
-    }
-    else
-    {
+    QMimeData* pMime = new QMimeData();
+    QPixmap pixmap = toPixmapItem()->pixmap();
+    pMime->setImageData(pixmap.toImage());
+    Delegate()->setMimeData(pMime);
+    qreal k = (qreal)pixmap.width() / 100.0;
+
+    QSize newSize((int)(pixmap.width() / k), (int)(pixmap.height() / k));
+
+    Delegate()->setDragPixmap(pixmap.scaled(newSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    if (!Delegate()->mousePressEvent(event))
         QGraphicsSvgItem::mousePressEvent(event);
-    }
 }
 
 

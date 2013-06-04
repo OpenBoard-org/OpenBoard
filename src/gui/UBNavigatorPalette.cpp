@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -98,13 +98,13 @@ UBNavigatorPalette::~UBNavigatorPalette()
     }
     if(NULL != mLayout)
     {
-    delete mLayout;
-    mLayout = NULL;
+        delete mLayout;
+        mLayout = NULL;
     }
     if(NULL != mNavigator)
     {
-    delete mNavigator;
-    mNavigator = NULL;
+        delete mNavigator;
+        mNavigator = NULL;
     }
 }
 

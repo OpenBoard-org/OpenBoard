@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -317,8 +317,6 @@ int UBApplication::exec(const QString& pFileToImport)
     webController = new UBWebController(mainWindow);
     documentController = new UBDocumentController(mainWindow);
 
-    boardController->paletteManager()->connectToDocumentController();
-
     UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Pen);
 
     applicationController = new UBApplicationController(boardController->controlView(),
@@ -349,7 +347,6 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionPreferences, SIGNAL(triggered()), mPreferencesController, SLOT(show()));
     connect(mainWindow->actionTutorial, SIGNAL(triggered()), applicationController, SLOT(showTutorial()));
     connect(mainWindow->actionTutorial, SIGNAL(triggered()), this, SLOT(stopScript()));
-    connect(mainWindow->actionSankoreEditor, SIGNAL(triggered()), applicationController, SLOT(showSankoreEditor()));
     connect(mainWindow->actionCheckUpdate, SIGNAL(triggered()), applicationController, SLOT(checkUpdateRequest()));
 
 
@@ -543,7 +540,6 @@ void UBApplication::decorateActionMenu(QAction* action)
 
             menu->addSeparator();
             menu->addAction(mainWindow->actionTutorial);
-            menu->addAction(mainWindow->actionSankoreEditor);
 
 #ifndef Q_WS_X11 // No Podcast on Linux yet
             menu->addAction(mainWindow->actionPodcast);
@@ -651,12 +647,10 @@ void UBApplication::cleanup()
     if (webController) delete webController;
     if (documentController) delete documentController;
 
-
     applicationController = NULL;
     boardController = NULL;
     webController = NULL;
     documentController = NULL;
-
 }
 
 void UBStyle::drawItemText(QPainter *painter, const QRect &rect, int alignment, const QPalette &pal,

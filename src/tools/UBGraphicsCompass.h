@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -50,10 +50,6 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         virtual UBItem* deepCopy() const;
 
         virtual void copyItemParameters(UBItem *copy) const;
-
-    signals:
-
-       void hidden();
 
     protected:
         virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *styleOption, QWidget *widget);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -92,7 +92,7 @@ class UBApplicationController : public QObject
 
         enum MainMode
         {
-            Board = 0, Internet, Document, Tutorial, ParaschoolEditor, WebDocument
+            Board = 0, Internet, Document, Tutorial, WebDocument
         };
 
         MainMode displayMode()
@@ -137,7 +137,6 @@ class UBApplicationController : public QObject
         void actionPaste();
 
         void showTutorial();
-        void showSankoreEditor();
 
         void checkUpdateRequest();
         void checkUpdateAtLaunch();

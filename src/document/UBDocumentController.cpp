@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -1412,7 +1412,7 @@ bool UBDocumentController::isOKToOpenDocument(UBDocumentProxy* proxy)
 
     if (docVersion.isEmpty() || docVersion.startsWith("4.1") || docVersion.startsWith("4.2")
             || docVersion.startsWith("4.3") || docVersion.startsWith("4.4") || docVersion.startsWith("4.5")
-            || docVersion.startsWith("4.6")) // TODO UB 4.7 update if necessary
+            || docVersion.startsWith("4.6") || docVersion.startsWith("4.8")) // TODO UB 4.7 update if necessary
     {
         return true;
     }

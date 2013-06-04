@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -58,7 +58,6 @@ void UBGraphicsItemTransformUndoCommand::undo()
     mItem->setPos(mPreviousPosition);
     mItem->setTransform(mPreviousTransform);
     mItem->setZValue(mPreviousZValue);
-//    UBGraphicsItem::assignZValue(mItem, mPreviousZValue);
 
     UBResizableGraphicsItem* resizableItem = dynamic_cast<UBResizableGraphicsItem*>(mItem);
 
@@ -71,8 +70,6 @@ void UBGraphicsItemTransformUndoCommand::redo()
     mItem->setPos(mCurrentPosition);
     mItem->setTransform(mCurrentTransform);
     mItem->setZValue(mCurrentZValue);
-
-//    UBGraphicsItem::assignZValue(mItem, /*mCurrentZValue*/mItem->data(UBGraphicsItemData::ItemOwnZValue).toReal());
 
     UBResizableGraphicsItem* resizableItem = dynamic_cast<UBResizableGraphicsItem*>(mItem);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -149,7 +149,7 @@ class UBBoardController : public UBDocumentContainer
         void setBoxing(QRect displayRect);
         void setToolbarTexts();
         static QUrl expandWidgetToTempDir(const QByteArray& pZipedData, const QString& pExtension = QString("wgt"));
-//        static QRect freeRectInGlobalPos() const {return ;}
+        
         void setPageSize(QSize newSize);
         UBBoardPaletteManager *paletteManager()
         {
@@ -239,12 +239,10 @@ class UBBoardController : public UBDocumentContainer
         void newPageAdded();
         void activeSceneChanged();
         void zoomChanged(qreal pZoomFactor);
-        void systemScaleFactorChanged(qreal pSystemScaleFactor);
         void penColorChanged();
         void controlViewportChanged();
         void backgroundChanged();
         void cacheEnabled();
-        void cacheDisabled();
         void documentReorganized(int index);
         void displayMetadata(QMap<QString, QString> metadata);
         void pageSelectionChanged(int index);

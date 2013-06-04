@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -358,9 +358,7 @@ void UBBoardController::setupToolbar()
 void UBBoardController::setToolCursor(int tool)
 {
     if (mActiveScene)
-    {
         mActiveScene->setToolCursor(tool);
-    }
 
     mControlView->setToolCursor(tool);
 }
@@ -1893,10 +1891,7 @@ void UBBoardController::updateSystemScaleFactor()
     }
 
     if (mSystemScaleFactor != newScaleFactor)
-    {
         mSystemScaleFactor = newScaleFactor;
-        emit systemScaleFactorChanged(newScaleFactor);
-    }
 
     UBGraphicsScene::SceneViewState viewState = mActiveScene->viewState();
 
@@ -1961,13 +1956,8 @@ void UBBoardController::setPageSize(QSize newSize)
 void UBBoardController::notifyCache(bool visible)
 {
     if(visible)
-    {
         emit cacheEnabled();
-    }
-    else
-    {
-        emit cacheDisabled();
-    }
+    
     mCacheWidgetIsEnabled = visible;
 }
 

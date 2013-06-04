@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -768,7 +768,7 @@ void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
             mDelegated->scene()->addItem(mDeleteButton);
     }
 
-    if (showUpdated /*&& mFrame->isResizing()*/)
+    if (showUpdated)
         mDeleteButton->show();
 
     int i = 1, j = 0, k = 0;
@@ -860,24 +860,28 @@ MediaTimer::MediaTimer(QGraphicsItem * parent): QGraphicsRectItem(parent)
 {
     val        = 0;
     smallPoint = false;
-    setNumDigits(4);
+    setNumDigits(6);
 }
 
 MediaTimer::~MediaTimer()
 {}
+void MediaTimer::positionHandles()
+{
+    digitSpace = smallPoint ? 2 : 1;
+    ySegLen    = rect().height()*5/12;
+    xSegLen    = ySegLen*2/3;
+    segLen     = xSegLen;
+    xAdvance   = segLen*(5 + digitSpace)/5;
+    xOffset    = (rect().width() - ndigits*xAdvance + segLen/5)/2;
+    yOffset    = rect().height() - ySegLen*2;
+
+    setRect(rect().x(), rect().y(), xOffset + xAdvance*ndigits, rect().height());
+}
 
 void MediaTimer::drawString(const QString &s, QPainter &p,
                                    QBitArray *newPoints, bool newString)
 {
     QPoint  pos;
-
-    int digitSpace = smallPoint ? 2 : 1;
-    int xSegLen    = (rect().width()/1)*5/(ndigits*(5 + digitSpace) + digitSpace);
-    int ySegLen    = rect().height()*5/12;
-    int segLen     = ySegLen > xSegLen ? xSegLen : ySegLen;
-    int xAdvance   = segLen*(5 + digitSpace)/5;
-    int xOffset    = rect().x() + (rect().width()/1 - ndigits*xAdvance + segLen/5)/2;
-    int yOffset    = (rect().height() - segLen*2)/2;
 
     for (int i=0;  i<ndigits; i++) {
         pos = QPoint(xOffset + xAdvance*i, yOffset);
@@ -1124,10 +1128,6 @@ void MediaTimer::paint(QPainter *p,
     Q_UNUSED(option);
     Q_UNUSED(widget);
 
-    QFont f = p->font();
-    f.setPointSizeF(f.pointSizeF());
-    p->setFont(f);
-
     if (smallPoint)
         drawString(digitStr, *p, &points, false);
     else
@@ -1212,7 +1212,7 @@ void MediaTimer::setNumDigits(int numDigits)
         numDigits = 0;
     }
     if (digitStr.isNull()) {                  // from constructor
-        ndigits = numDigits;
+        ndigits = numDigits + numDigits/2 - 1;
         digitStr.fill(QLatin1Char(' '), ndigits);
         points.fill(0, ndigits);
         digitStr[ndigits - 1] = QLatin1Char('0');            // "0" is the default number
@@ -1242,6 +1242,7 @@ void MediaTimer::setNumDigits(int numDigits)
         ndigits = numDigits;
         update();
     }
+    positionHandles();
 }
 
 DelegateMediaControl::DelegateMediaControl(UBGraphicsMediaItem* pDelegated, QGraphicsItem * parent)
@@ -1272,13 +1273,6 @@ void DelegateMediaControl::paint(QPainter *painter,
 
     QPainterPath path;
 
-    mLCDTimerArea.setHeight(rect().height());
-    mLCDTimerArea.setWidth(rect().height());
-
-    mSeecArea.setWidth(rect().width()-mLCDTimerArea.width()-2);
-    mSeecArea.setHeight(rect().height()-2*mSeecAreaBorderHeight);
-    mSeecArea.setY(mSeecAreaBorderHeight);
-
     path.addRoundedRect(mSeecArea, mSeecArea.height()/2, mSeecArea.height()/2);
     painter->fillPath(path, brush());
 
@@ -1308,28 +1302,55 @@ QPainterPath DelegateMediaControl::shape() const
 
 void DelegateMediaControl::positionHandles()
 {
-    mLCDTimerArea.setWidth(parentItem()->boundingRect().height());
+    QRectF selfRect = rect();
+    selfRect.setHeight(parentItem()->boundingRect().height());
+    setRect(selfRect);
+
+    QTime tTotal;
+    tTotal = tTotal.addMSecs(mTotalTimeInMs);
     mLCDTimerArea.setHeight(parentItem()->boundingRect().height());
+    int digitsCount = 2;
+    int timerWidth = mLCDTimerArea.height();
+
+    mDisplayFormat = "ss";
+
+    if (tTotal.minute() > 0)
+    {
+        mDisplayFormat = "mm:" + mDisplayFormat;
+        digitsCount += 3;
+        timerWidth += mLCDTimerArea.height()*0.5;
+    }
+
+    if (tTotal.hour() > 0)
+    {
+        mDisplayFormat = "hh:" + mDisplayFormat;
+        digitsCount += 3;
+        timerWidth += mLCDTimerArea.height();
+    }
+
+    lcdTimer->setNumDigits(digitsCount);
+
+    mLCDTimerArea.setWidth(timerWidth);
     lcdTimer->setRect(mLCDTimerArea);
-    lcdTimer->setPos(mSeecArea.width()-mLCDTimerArea.width(),0);
+    // not the best solution, but it works.
+    lcdTimer->positionHandles();
+    mLCDTimerArea = lcdTimer->rect();
+    // -------------------------------------
+
+    lcdTimer->setPos(rect().width() - mLCDTimerArea.width(), 0);
 
     mSeecAreaBorderHeight = rect().height()/20;
     mSeecArea.setWidth(rect().width()-mLCDTimerArea.width()-2);
     mSeecArea.setHeight(rect().height()-2*mSeecAreaBorderHeight);
     mSeecArea.setY(mSeecAreaBorderHeight);
-
-    QRectF selfRect = rect();
-    selfRect.setHeight(parentItem()->boundingRect().height());
-    setRect(selfRect);
-
-    lcdTimer->setPos(rect().width() - mLCDTimerArea.width(), 0);
 }
 
 void DelegateMediaControl::update()
 {
-    QTime t;
-    t = t.addMSecs(mCurrentTimeInMs < 0 ? 0 : mCurrentTimeInMs);
-    lcdTimer->display(t.toString("m:ss"));
+    QTime tCurrent;
+    tCurrent = tCurrent.addMSecs(mCurrentTimeInMs < 0 ? 0 : mCurrentTimeInMs);
+
+    lcdTimer->display(tCurrent.toString(mDisplayFormat));
 
     QGraphicsRectItem::update();
 }
@@ -1343,8 +1364,12 @@ void DelegateMediaControl::updateTicker(qint64 time )
 
 void DelegateMediaControl::totalTimeChanged(qint64 newTotalTime)
 {
-    mTotalTimeInMs = newTotalTime;
-    update();
+    if (mTotalTimeInMs != newTotalTime)
+    {
+        mTotalTimeInMs = newTotalTime;
+        positionHandles();
+        update();
+    }
 }
 
 
@@ -1381,7 +1406,7 @@ void DelegateMediaControl::seekToMousePos(QPointF mousePos)
     qreal frameWidth = rect().height() / 2;
 
     minX = frameWidth;
-    length = mSeecArea.width() - lcdTimer->rect().width();
+    length = mSeecArea.width() - mSeecArea.height();
 
     qreal mouseX = mousePos.x();
     if (mouseX >= (mSeecArea.width() - mSeecArea.height()/2))

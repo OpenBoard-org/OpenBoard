@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -159,35 +159,23 @@ bool UBDrawingController::isDrawingTool()
 int UBDrawingController::currentToolWidthIndex()
 {
     if (stylusTool() == UBStylusTool::Pen || stylusTool() == UBStylusTool::Line)
-    {
         return UBSettings::settings()->penWidthIndex();
-    }
     else if (stylusTool() == UBStylusTool::Marker)
-    {
         return UBSettings::settings()->markerWidthIndex();
-    }
     else
-    {
         return -1;
-    }
 }
 
 
 qreal UBDrawingController::currentToolWidth()
 {
     if (stylusTool() == UBStylusTool::Pen || stylusTool() == UBStylusTool::Line)
-    {
         return UBSettings::settings()->currentPenWidth();
-    }
     else if (stylusTool() == UBStylusTool::Marker)
-    {
         return UBSettings::settings()->currentMarkerWidth();
-    }
     else
-    {
         //failsafe
         return UBSettings::settings()->currentPenWidth();
-    }
 }
 
 

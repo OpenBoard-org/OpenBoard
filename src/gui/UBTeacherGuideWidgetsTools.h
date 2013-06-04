@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -103,6 +103,7 @@ class UBTGAdaptableText : public QTextEdit
 public:
     explicit UBTGAdaptableText(QTreeWidgetItem* widget = 0, QWidget *parent = 0, const char* name = "UBTGAdaptableText");
     void showText(const QString & text);
+    void resetText();
     void bottomMargin(int newValue);
     void setPlaceHolderText(QString text);
     QString text();
@@ -118,6 +119,7 @@ protected:
     void showEvent(QShowEvent* e);
     void focusInEvent(QFocusEvent* e);
     void focusOutEvent(QFocusEvent* e);
+    virtual void insertFromMimeData(const QMimeData *source);
 
 private:
     void setCursorToTheEnd();

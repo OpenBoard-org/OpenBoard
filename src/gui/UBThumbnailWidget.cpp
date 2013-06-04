@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -87,6 +87,7 @@ void UBThumbnailWidget::setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsI
         , const QStringList pLabels
         , const QString& pMimeType)
 {
+    Q_ASSERT(pItemsPaths.count() == pLabels.count());
     mGraphicItems = pGraphicsItems;
     mItemsPaths = pItemsPaths;
     mMimeType = pMimeType;
@@ -224,13 +225,6 @@ void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
         event->ignore();
         return;
     }
-    //if(sceneItem){
-    //    int pageIndex = UBDocumentContainer::pageFromSceneIndex(sceneItem->sceneIndex());
-    //    if(pageIndex == 0){
-    //        event->ignore();
-    //        return;
-    //    }
-    //}
 
     mMousePressScenePos = mapToScene(mMousePressPos);
     QGraphicsItem* underlyingItem = itemAt(mMousePressPos);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -273,8 +273,8 @@ void UBTeacherGuideEditionWidget::onActiveSceneChanged()
 
 void UBTeacherGuideEditionWidget::cleanData()
 {
-    mpPageTitle->setText("");
-    mpComment->setText("");
+    mpPageTitle->resetText();
+    mpComment->resetText();
     QList<QTreeWidgetItem*> children = mpAddAnActionItem->takeChildren();
     children << mpAddAMediaItem->takeChildren();
     children << mpAddALinkItem->takeChildren();

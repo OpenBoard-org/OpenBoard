@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -73,7 +73,6 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
     connect(mMainWindow->actionWebTools, SIGNAL(toggled(bool)), this, SLOT(toggleWebToolsPalette(bool)));
 
     mStackedWidget = new QStackedWidget();
-    mStackedWidget->addWidget(new QWidget(mStackedWidget));
     mStackedWidget->addWidget(new QWidget(mStackedWidget));
     mStackedWidget->addWidget(new QWidget(mStackedWidget));
 
@@ -246,62 +245,6 @@ void UBWebController::tutorialWebInstance()
 
 }
 
-void UBWebController::paraschoolWebInstance()
-{
-    QLocale locale = QLocale();
-    QString language = "_" + locale.name().left(2);
-    QString editorPath = "/etc/SankoreEditor/editor" + language + "/index.html";
-    QString editorHtmlIndexFile;
-#if defined(Q_WS_MAC)
-    editorHtmlIndexFile = QApplication::applicationDirPath() + "/../Resources" + editorPath;
-#elif defined(Q_WS_WIN)
-    editorHtmlIndexFile = QApplication::applicationDirPath() + editorPath;
-#else
-    editorHtmlIndexFile = QApplication::applicationDirPath() + editorPath;
-#endif
-
-    QUrl currentUrl = QUrl::fromLocalFile(editorHtmlIndexFile);
-
-    if (UBSettings::settings()->webUseExternalBrowser->get().toBool()){
-        QDesktopServices::openUrl(currentUrl);
-    }
-
-    else {
-        mCurrentWebBrowser = &mWebBrowserList[Paraschool];
-        mToolsCurrentPalette = &mToolsPaletteList[Paraschool];
-        mToolsPalettePositionned = &mToolsPalettePositionnedList[Paraschool];
-        if (!(*mCurrentWebBrowser)){
-            (*mCurrentWebBrowser) = new WBBrowserWindow(mMainWindow->centralWidget(), mMainWindow, true);
-            connect((*mCurrentWebBrowser), SIGNAL(activeViewChange(QWidget*)), this, SLOT(setSourceWidget(QWidget*)));
-
-            mStackedWidget->setCurrentIndex(Paraschool);
-            if (mStackedWidget->currentWidget()) {
-                mStackedWidget->removeWidget(mStackedWidget->currentWidget());
-            }
-            mStackedWidget->insertWidget(Paraschool, (*mCurrentWebBrowser));
-
-            adaptToolBar();
-
-            mTrapFlashController = new UBTrapFlashController((*mCurrentWebBrowser));
-
-            connect((*mCurrentWebBrowser), SIGNAL(activeViewPageChanged()), this, SLOT(activePageChanged()));
-            (*mCurrentWebBrowser)->loadUrl(currentUrl);
-            (*mCurrentWebBrowser)->tabWidget()->tabBar()->hide();
-            (*mCurrentWebBrowser)->tabWidget()->lineEdits()->hide();
-
-        }
-
-        mStackedWidget->setCurrentIndex(Paraschool);
-        UBApplication::applicationController->setMirrorSourceWidget((*mCurrentWebBrowser)->paintWidget());
-        mMainWindow->switchToWebWidget();
-        screenLayoutChanged();
-
-        bool mirroring = UBSettings::settings()->webShowPageImmediatelyOnMirroredScreen->get().toBool();
-        UBApplication::mainWindow->actionWebShowHideOnDisplay->setChecked(mirroring);
-    }
-}
-
-
 void UBWebController::show(WebInstance type)
 {
     switch(type)
@@ -311,9 +254,6 @@ void UBWebController::show(WebInstance type)
         break;
     case Tutorial:
         tutorialWebInstance();
-        break;
-    case Paraschool:
-        paraschoolWebInstance();
         break;
     default:
         qCritical() << __FILE__ << " non supported web instance type " << QString::number(type) ;

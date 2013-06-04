@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -60,7 +60,7 @@ class UBWebController : public QObject
 
         enum WebInstance
         {
-            WebBrowser = 0, Tutorial, Paraschool, TotalNumberOfWebInstances
+            WebBrowser = 0, Tutorial, TotalNumberOfWebInstances
         };
 
         void show(WebInstance type = UBWebController::WebBrowser);
@@ -108,7 +108,6 @@ class UBWebController : public QObject
         void initialiazemOEmbedProviders();
         void tutorialWebInstance();
         void webBrowserInstance();
-        void paraschoolWebInstance();
         void lookForEmbedContent(QString* pHtml, QString tag, QString attribute, QList<QUrl>* pList);
         void checkForOEmbed(QString* pHtml);
 
@@ -123,8 +122,6 @@ class UBWebController : public QObject
         UBTrapFlashController* mTrapFlashController;
         UBWebToolsPalette** mToolsCurrentPalette;
         UBWebToolsPalette* mToolsPaletteList[TotalNumberOfWebInstances];
-//         UBKeyboardPalette** mKeyboardCurrentPalette;
-//         UBKeyboardPalette* mKeyboardPaletteList[TotalNumberOfWebInstances];
 
         bool mToolsPalettePositionned;
         bool mToolsPalettePositionnedList[TotalNumberOfWebInstances];
@@ -144,7 +141,6 @@ class UBWebController : public QObject
         void toggleWebTrap(bool checked);
 
         void onOEmbedParsed(QVector<sOEmbedContent> contents);
-//        void showKeyboard(bool checked);
 
     signals:
         /**

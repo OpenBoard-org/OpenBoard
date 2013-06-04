@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -68,9 +68,9 @@
 
 #include "core/memcheck.h"
 
-UBApplicationController::UBApplicationController(UBBoardView *pControlView, 
+UBApplicationController::UBApplicationController(UBBoardView *pControlView,
                                                  UBBoardView *pDisplayView,
-                                                 UBMainWindow* pMainWindow, 
+                                                 UBMainWindow* pMainWindow,
                                                  QObject* parent,
                                                  UBRightPalette* rightPalette)
     : QObject(parent)
@@ -371,7 +371,7 @@ void UBApplicationController::showBoard()
     UBPlatformUtils::setDesktopMode(false);
 
     mUninoteController->hideWindow();
-    
+
     mMainWindow->show();
 
     emit mainModeChanged(Board);
@@ -513,42 +513,14 @@ void UBApplicationController::showTutorial()
 }
 
 
-void UBApplicationController::showSankoreEditor()
-{
-
-    if (UBApplication::boardController)
-    {
-        UBApplication::boardController->persistCurrentScene();
-        UBApplication::boardController->hide();
-    }
-
-// it's needed not to duplicate webbrowser search in web mode. If I've breaked smbd's code let Ivan know
-        UBApplication::webController->show(UBWebController::Paraschool);
-
-    mMainWindow->webToolBar->hide();
-    mMainWindow->boardToolBar->hide();
-    mMainWindow->documentToolBar->hide();
-    mMainWindow->tutorialToolBar->show();
-
-
-    mMainMode = ParaschoolEditor;
-
-    adaptToolBar();
-
-    mUninoteController->hideWindow();
-
-    mirroringEnabled(false);
-    emit mainModeChanged(mMainMode);
-}
-
 void UBApplicationController::checkUpdate()
 {
-    if(mHttp)
-        delete mHttp;
-    QUrl url("http://ftp.open-sankore.org/update.json");
-    mHttp = new QHttp(url.host());
-    connect(mHttp, SIGNAL(requestFinished(int,bool)), this, SLOT(updateRequestFinished(int,bool)));
-    mHttp->get(url.path());
+//    if(mHttp)
+//        delete mHttp;
+//    QUrl url("http://ftp.open-sankore.org/update.json");
+//    mHttp = new QHttp(url.host());
+//    connect(mHttp, SIGNAL(requestFinished(int,bool)), this, SLOT(updateRequestFinished(int,bool)));
+//    mHttp->get(url.path());
 }
 
 void UBApplicationController::updateRequestFinished(int id, bool error)
@@ -621,10 +593,6 @@ void UBApplicationController::hideDesktop()
     else if (mMainMode == Tutorial)
     {
         showTutorial();
-    }
-    else if (mMainMode == ParaschoolEditor)
-    {
-        showSankoreEditor();
     }
 
     mIsShowingDesktop = false;

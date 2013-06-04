@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -35,7 +35,6 @@
 UBAudioPresentationWidget::UBAudioPresentationWidget(QWidget *parent)
     : QWidget(parent)
     , mBorderSize(10)
-    , mTitleSize(10)
 {
 
 }
@@ -44,23 +43,13 @@ void UBAudioPresentationWidget::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     painter.fillRect(rect(), QBrush(Qt::white));
-    
+
     QPen borderPen;
     borderPen.setWidth(2);
     borderPen.setColor(QColor(Qt::black));
 
     painter.setPen(borderPen);
     painter.drawRect(0,0, width(), height());
-
-    if (QString() != mTitle)
-    {
-        painter.setPen(QPen(Qt::black));
-        QRect titleRect = rect();
-        titleRect.setX(mBorderSize);
-        titleRect.setY(2);
-        titleRect.setHeight(15);
-        painter.drawText(titleRect, mTitle);
-    }
 
     QWidget::paintEvent(event);
 }
@@ -85,7 +74,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     if ("" == mediaPath)
         mediaPath = pMediaFileUrl.toLocalFile();
 
-    if (mediaPath.toLower().contains("videos")) 
+    if (mediaPath.toLower().contains("videos"))
     {
         mMediaType = mediaType_Video;
 
@@ -102,8 +91,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 
         haveLinkedImage = true;
     }
-    else    
-    if (mediaPath.toLower().contains("audios"))
+    else if (mediaPath.toLower().contains("audios"))
     {
         mMediaType = mediaType_Audio;
         mAudioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
@@ -113,24 +101,22 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         int borderSize = 0;
         UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBAudioPresentationWidget*>(mAudioWidget);
         if (pAudioWidget)
-        {
             borderSize = pAudioWidget->borderSize();
-        }
 
-        mAudioWidget->resize(320,26+3*borderSize);
+        mAudioWidget->resize(320,26+2*borderSize); //3*border size with enabled title
         mAudioWidget->setMinimumSize(150,26+borderSize);
 
         haveLinkedImage = false;
     }
 
     Phonon::createPath(mMediaObject, mAudioOutput);
-    
+
     mSource = Phonon::MediaSource(pMediaFileUrl);
     mMediaObject->setCurrentSource(mSource);
 
     // we should create delegate after media objects because delegate uses his properties at creation.
     setDelegate(new UBGraphicsMediaItemDelegate(this, mMediaObject));
-    
+
     // delegate should be created earler because we setWidget calls resize event for graphics proxy widgt.
     // resize uses delegate.
     if (mediaType_Video == mMediaType)
@@ -167,26 +153,19 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
             || (change == QGraphicsItem::ItemVisibleChange))
     {
         if (mMediaObject && (!isEnabled() || !isVisible() || !scene()))
-        {
             mMediaObject->pause();
-        }
     }
     else if (change == QGraphicsItem::ItemSceneHasChanged)
     {
         if (!scene())
-        {
             mMediaObject->stop();
-        }
-        else
-        {
+        else {
             QString absoluteMediaFilename;
 
-            if(mMediaFileUrl.toLocalFile().startsWith("audios/") || mMediaFileUrl.toLocalFile().startsWith("videos/")){
+            if(mMediaFileUrl.toLocalFile().startsWith("audios/") || mMediaFileUrl.toLocalFile().startsWith("videos/"))
                 absoluteMediaFilename = scene()->document()->persistencePath() + "/"  + mMediaFileUrl.toLocalFile();
-            }
-            else{
+            else
                 absoluteMediaFilename = mMediaFileUrl.toLocalFile();
-            }
 
             if (absoluteMediaFilename.length() > 0)
                 mMediaObject->setCurrentSource(Phonon::MediaSource(absoluteMediaFilename));
@@ -200,12 +179,6 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
 
 void UBGraphicsMediaItem::setSourceUrl(const QUrl &pSourceUrl)
 {
-    UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBAudioPresentationWidget*>(mAudioWidget);
-    if (pAudioWidget)
-    {
-        pAudioWidget->setTitle(UBFileSystemUtils::lastPathComponent(pSourceUrl.toString()));
-    }
-
     UBItem::setSourceUrl(pSourceUrl);
 }
 
@@ -320,13 +293,13 @@ void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
             {
                 QGraphicsItem *curItem = group->getCurrentItem();
                 if (curItem && this != curItem)
-                {   
-                    group->deselectCurrentItem();    
-                }   
+                {
+                    group->deselectCurrentItem();
+                }
                 group->setCurrentItem(this);
                 this->setSelected(true);
                 Delegate()->positionHandles();
-            }       
+            }
 
         }
     }
@@ -339,7 +312,7 @@ void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
             event->accept();
         }
     }
-    else 
+    else
     {
         mShouldMove = (event->buttons() & Qt::LeftButton);
         mMousePressPos = event->scenePos();

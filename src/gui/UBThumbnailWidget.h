@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Webdoc SA
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -97,7 +97,7 @@ class UBThumbnailWidget : public QGraphicsView
         QList<QUrl> mItemsPaths;
         QStringList mLabels;
         bool bSelectionInProgress;
-        bool bCanDrag;       
+        bool bCanDrag;
 
     private:
         void selectAll();
@@ -161,7 +161,6 @@ class UBThumbnail
                     {
                         item->scene()->addItem(mSelectionItem);
                         mSelectionItem->setZValue(item->zValue() - 1);
-//                        UBGraphicsItem::assignZValue(mSelectionItem, item->zValue() - 1);
                         mAddedToScene = true;
                     }
 
