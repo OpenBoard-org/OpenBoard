@@ -314,6 +314,7 @@ class UBGraphicsItemDelegate : public QObject
         virtual void freeButtons();
         virtual void decorateMenu(QMenu *menu);
         virtual void updateMenuActionState();
+        QList<DelegateButton*> buttons() {return mButtons;}
 
         QGraphicsItem* mDelegated;
 

@@ -11,11 +11,37 @@
 UBSelectionFrame::UBSelectionFrame()
     : mThickness(UBSettings::settings()->objectFrameWidth)
     , mAntiscaleRatio(1.0)
+    , mDeleteButton(0)
+    , mDuplicateButton(0)
+    , mZOrderUpButton(0)
+    , mZOrderDownButton(0)
 {
     setLocalBrush(QBrush(UBSettings::paletteColor));
     setPen(Qt::NoPen);
     setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
-    setFlags(QGraphicsItem::ItemSendsGeometryChanges /*| QGraphicsItem::ItemIsSelectable*/ | ItemIsMovable);
+    setFlags(QGraphicsItem::ItemSendsGeometryChanges | QGraphicsItem::ItemIsSelectable | ItemIsMovable);
+
+
+    mDeleteButton = new DelegateButton(":/images/close.svg", this, 0, Qt::TopLeftSection);
+    mButtons << mDeleteButton;
+    connect(mDeleteButton, SIGNAL(clicked()), this, SLOT(remove()));
+
+    mDuplicateButton = new DelegateButton(":/images/duplicate.svg", this, 0, Qt::TopLeftSection);
+    //            connect(mDuplicateButton, SIGNAL(clicked(bool)), this, SLOT(duplicate()));
+    mButtons << mDuplicateButton;
+
+    mZOrderUpButton = new DelegateButton(":/images/z_layer_up.svg", this, 0, Qt::BottomLeftSection);
+    mZOrderUpButton->setShowProgressIndicator(true);
+    //        connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZLevelUp()));
+    //        connect(mZOrderUpButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelTop()));
+    mButtons << mZOrderUpButton;
+
+    mZOrderDownButton = new DelegateButton(":/images/z_layer_down.svg", this, 0, Qt::BottomLeftSection);
+    mZOrderDownButton->setShowProgressIndicator(true);
+    //        connect(mZOrderDownButton, SIGNAL(clicked()), this, SLOT(increaseZLevelDown()));
+    //        connect(mZOrderDownButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelBottom()));
+    mButtons << mZOrderDownButton;
+
 
     connect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged(qreal)));
 }
@@ -61,6 +87,9 @@ QPainterPath UBSelectionFrame::shape() const
 
 void UBSelectionFrame::setEnclosedItems(const QList<QGraphicsItem*> pGraphicsItems)
 {
+    mButtons.clear();
+    mButtons.append(mDeleteButton);
+
     QRegion resultRegion;
     mEnclosedtems.clear();
     foreach (QGraphicsItem *nextItem, pGraphicsItems) {
@@ -73,6 +102,9 @@ void UBSelectionFrame::setEnclosedItems(const QList<QGraphicsItem*> pGraphicsIte
 
     QRectF resultRect = resultRegion.boundingRect();
     setRect(resultRect);
+
+    placeButtons();
+
 
     if (resultRect.isEmpty()) {
         hide();
@@ -88,6 +120,8 @@ void UBSelectionFrame::updateRect()
 
     QRectF result = resultRegion.boundingRect();
     setRect(result);
+
+    placeButtons();
 
     if (result.isEmpty()) {
         setVisible(false);
@@ -143,7 +177,7 @@ void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void UBSelectionFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent */*event*/)
 {
-    mPressedPos = mLastMovedPos = QPointF();
+    mPressedPos = mLastMovedPos = mLastTranslateOffset = QPointF();
 //    foreach (UBGraphicsItemDelegate *curDelegate, mEnclosedtems) {
 //        qDebug() << "TransformBefore" << curDelegate->delegated()->transform();
 //    }
@@ -152,12 +186,86 @@ void UBSelectionFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent */*event*/)
 
 void UBSelectionFrame::onZoomChanged(qreal pZoom)
 {
-    mAntiscaleRatio = pZoom;
-    updateScale();
+//    mAntiscaleRatio = pZoom;
+//    updateScale();
+}
+
+void UBSelectionFrame::remove()
+{
+    foreach (UBGraphicsItemDelegate *d, mEnclosedtems) {
+        d->remove(true);
+    }
+
+    updateRect();
 }
 
 void UBSelectionFrame::translateItem(QGraphicsItem */*item*/, const QPointF &/*translatePoint*/)
 {
+}
+
+void UBSelectionFrame::placeButtons()
+{
+    QTransform tr;
+//    tr.scale(mAntiScaleRatio, mAntiScaleRatio);
+
+    mDeleteButton->setParentItem(this);
+//    mDeleteButton->setTransform(tr);
+
+    qreal topX = rect().left() - mDeleteButton->renderer()->viewBox().width() /** mAntiScaleRatio*/ * 1.2;
+    qreal topY = rect().top() - mDeleteButton->renderer()->viewBox().height() /** mAntiScaleRatio*/ * 1.2;
+
+    qreal bottomX = rect().left() - mDeleteButton->renderer()->viewBox().width() /** mAntiScaleRatio*/ / 2;
+    qreal bottomY = rect().bottom() - mDeleteButton->renderer()->viewBox().height() /** mAntiScaleRatio*/ / 2;
+
+    mDeleteButton->setPos(topX, topY);
+//    mDeleteButton->setPos(0, 0);
+
+//    if (!mDeleteButton->scene())
+//    {
+//        if (scene())
+//            scene()->addItem(mDeleteButton);
+//    }
+    mDeleteButton->show();
+
+//    if (showUpdated)
+//        mDeleteButton->show();
+
+//    int i = 1, j = 0, k = 0;
+//    while ((i + j + k) < mButtons.size())  {
+//        DelegateButton* button = mButtons[i + j];
+
+//        if (button->getSection() == Qt::TopLeftSection) {
+//            button->setParentItem(mFrame);
+//            button->setPos(topX + (i++ * 1.6 * mFrameWidth * mAntiScaleRatio), topY);
+//            button->setTransform(tr);
+//        } else if (button->getSection() == Qt::BottomLeftSection) {
+//            button->setParentItem(mFrame);
+//            button->setPos(bottomX + (++j * 1.6 * mFrameWidth * mAntiScaleRatio), bottomY);
+//            button->setTransform(tr);
+//        } else if (button->getSection() == Qt::TitleBarArea || button->getSection() == Qt::NoSection){
+//            ++k;
+//        }
+//        if (!button->scene())
+//        {
+//            if (mDelegated->scene())
+//                mDelegated->scene()->addItem(button);
+//        }
+//        if (showUpdated) {
+//            button->show();
+//            button->setZValue(delegated()->zValue());
+//        }
+//    }
+}
+
+void UBSelectionFrame::clearButtons()
+{
+    foreach (DelegateButton *b, mButtons)
+    {
+        b->setParentItem(0);
+        b->hide();
+    }
+
+    mButtons.clear();
 }
 
 

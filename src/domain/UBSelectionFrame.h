@@ -4,6 +4,7 @@
 #include <QGraphicsRectItem>
 #include <QtGui>
 
+class DelegateButton;
 class UBGraphicsItemDelegate;
 
 class UBSelectionFrame : public QObject, public QGraphicsRectItem
@@ -19,7 +20,7 @@ public:
 
     void setLocalBrush(const QBrush &pBrush) {mLocalBrush = pBrush;}
     QBrush localBrush() const {return mLocalBrush;}
-    void setEnclosedItems(const QList<UBGraphicsItemDelegate*> pEncItems) {mEnclosedtems = pEncItems; updateRect();}
+//    void setEnclosedItems(const QList<UBGraphicsItemDelegate*> pEncItems) {mEnclosedtems = pEncItems; updateRect();}
     void setEnclosedItems(const QList<QGraphicsItem*> pGraphicsItems);
     void updateRect();
     void updateScale();
@@ -33,9 +34,12 @@ protected:
 private slots:
     void setAntiScaleRatio(qreal pAntiscaleRatio) {mAntiscaleRatio = pAntiscaleRatio;}
     void onZoomChanged(qreal pZoom);
+    void remove();
 
 private:
     void translateItem(QGraphicsItem *item, const QPointF &translatePoint);
+    void placeButtons();
+    void clearButtons();
 
 private:
     int mThickness;
@@ -46,6 +50,13 @@ private:
     QPointF mPressedPos;
     QPointF mLastMovedPos;
     QPointF mLastTranslateOffset;
+
+    QList<DelegateButton*> mButtons;
+
+    DelegateButton *mDeleteButton;
+    DelegateButton *mDuplicateButton;
+    DelegateButton *mZOrderUpButton;
+    DelegateButton *mZOrderDownButton;
 };
 
 #endif // UBSELECTIONFRAME_H
