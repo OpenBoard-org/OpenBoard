@@ -95,6 +95,28 @@ class UBItem
 
 };
 
+// Might be fit in int value under most OS
+enum UBGraphicsFlag {
+    GF_NONE                          = 0x0000 //0000 0000 0000 0000
+    ,GF_FLIPPABLE_X_AXIS             = 0x0001 //0000 0000 0000 0001
+    ,GF_FLIPPABLE_Y_AXIS             = 0x0002 //0000 0000 0000 0010
+    ,GF_FLIPPABLE_ALL_AXIS           = 0x0003 //0000 0000 0000 0011 GF_FLIPPABLE_X_AXIS | GF_FLIPPABLE_Y_AXIS
+    ,GF_REVOLVABLE                   = 0x0004 //0000 0000 0000 0100
+    ,GF_SCALABLE_X_AXIS              = 0x0008 //0000 0000 0000 1000
+    ,GF_SCALABLE_Y_AXIS              = 0x0010 //0000 0000 0001 0000
+    ,GF_SCALABLE_ALL_AXIS            = 0x0018 //0000 0000 0001 1000 GF_SCALABLE_X_AXIS | GF_SCALABLE_Y_AXIS
+    ,GF_DUPLICATION_ENABLED          = 0x0020 //0000 0000 0010 0000
+    ,GF_MENU_SPECIFIED               = 0x0040 //0000 0000 0100 0000
+    ,GF_ZORDER_MANIPULATIONS_ALLOWED = 0x0080 //0000 0000 1000 0000
+    ,GF_TOOLBAR_USED                 = 0x0100 //0000 0001 0000 0000
+    ,GF_SHOW_CONTENT_SOURCE          = 0x0200 //0000 0010 0000 0000
+    ,GF_COMMON                       = 0x00F8 /*0000 0000 1111 1000   GF_FLIPPABLE_ALL_AXIS
+                                                                     |GF_DUPLICATION_ENABLED
+                                                                     |GF_MENU_SPECIFIED
+                                                                     |GF_ZORDER_MANIPULATIONS_ALLOWED */
+    ,GF_ALL                          = 0xFFFF //1111 1111 1111 1111
+};
+Q_DECLARE_FLAGS(UBGraphicsFlags, UBGraphicsFlag)
 
 class UBGraphicsItem
 {

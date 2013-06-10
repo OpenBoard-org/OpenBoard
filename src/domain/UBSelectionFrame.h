@@ -40,6 +40,7 @@ private:
     void translateItem(QGraphicsItem *item, const QPointF &translatePoint);
     void placeButtons();
     void clearButtons();
+    inline int adjThickness() const {return mThickness * mAntiscaleRatio;}
 
 private:
     int mThickness;

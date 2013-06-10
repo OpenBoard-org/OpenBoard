@@ -42,8 +42,9 @@ UBSelectionFrame::UBSelectionFrame()
     //        connect(mZOrderDownButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelBottom()));
     mButtons << mZOrderDownButton;
 
-
     connect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged(qreal)));
+
+    onZoomChanged(UBApplication::boardController->currentZoom());
 }
 
 void UBSelectionFrame::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -53,11 +54,11 @@ void UBSelectionFrame::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 
     QPainterPath path;
     QRectF shRect = option->rect;
-    path.addRoundedRect(shRect, mThickness / 2, mThickness / 2);
+    path.addRoundedRect(shRect, adjThickness() / 2, adjThickness() / 2);
 
     if (rect().width() > 1 && rect().height() > 1) {
         QPainterPath extruded;
-        extruded.addRect(shRect.adjusted(mThickness, mThickness, (mThickness * -1), (mThickness * -1)));
+        extruded.addRect(shRect.adjusted(adjThickness(), adjThickness(), (adjThickness() * -1), (adjThickness() * -1)));
         path = path.subtracted(extruded);
     }
 
@@ -66,15 +67,15 @@ void UBSelectionFrame::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 
 QRectF UBSelectionFrame::boundingRect() const
 {
-    return rect().adjusted(-mThickness, -mThickness, mThickness, mThickness);
+    return rect().adjusted(-adjThickness(), -adjThickness(), adjThickness(), adjThickness());
 }
 
 QPainterPath UBSelectionFrame::shape() const
 {
     QPainterPath resShape;
     QRectF ownRect = rect();
-    QRectF shRect = ownRect.adjusted(-mThickness, -mThickness, mThickness, mThickness);
-    resShape.addRoundedRect(shRect, mThickness / 2, mThickness / 2);
+    QRectF shRect = ownRect.adjusted(-adjThickness(), -adjThickness(), adjThickness(), adjThickness());
+    resShape.addRoundedRect(shRect, adjThickness() / 2, adjThickness() / 2);
 
     if (rect().width() > 1 && rect().height() > 1) {
         QPainterPath extruded;
@@ -89,6 +90,8 @@ void UBSelectionFrame::setEnclosedItems(const QList<QGraphicsItem*> pGraphicsIte
 {
     mButtons.clear();
     mButtons.append(mDeleteButton);
+    mButtons.append(mZOrderUpButton);
+    mButtons.append(mZOrderDownButton);
 
     QRegion resultRegion;
     mEnclosedtems.clear();
@@ -186,8 +189,15 @@ void UBSelectionFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent */*event*/)
 
 void UBSelectionFrame::onZoomChanged(qreal pZoom)
 {
-//    mAntiscaleRatio = pZoom;
+    qDebug() << "Pzoom" << pZoom;
+    qDebug() << "Board current zoom" << UBApplication::boardController->currentZoom();
+    qDebug() << "UBApplication::boardController->systemScaleFactor()" << UBApplication::boardController->systemScaleFactor();
+    mAntiscaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * pZoom);
 //    updateScale();
+//    QTransform tr;
+//    tr.scale(mAntiscaleRatio, mAntiscaleRatio);
+
+//    this->setTransform(tr);
 }
 
 void UBSelectionFrame::remove()
@@ -206,55 +216,38 @@ void UBSelectionFrame::translateItem(QGraphicsItem */*item*/, const QPointF &/*t
 void UBSelectionFrame::placeButtons()
 {
     QTransform tr;
-//    tr.scale(mAntiScaleRatio, mAntiScaleRatio);
-
+    tr.scale(mAntiscaleRatio, mAntiscaleRatio);
     mDeleteButton->setParentItem(this);
-//    mDeleteButton->setTransform(tr);
+    mDeleteButton->setTransform(tr);
 
-    qreal topX = rect().left() - mDeleteButton->renderer()->viewBox().width() /** mAntiScaleRatio*/ * 1.2;
-    qreal topY = rect().top() - mDeleteButton->renderer()->viewBox().height() /** mAntiScaleRatio*/ * 1.2;
+    QRectF frRect = boundingRect();
 
-    qreal bottomX = rect().left() - mDeleteButton->renderer()->viewBox().width() /** mAntiScaleRatio*/ / 2;
-    qreal bottomY = rect().bottom() - mDeleteButton->renderer()->viewBox().height() /** mAntiScaleRatio*/ / 2;
+    qreal topX = frRect.left() - mDeleteButton->renderer()->viewBox().width() * mAntiscaleRatio / 2;
+    qreal topY = frRect.top() - mDeleteButton->renderer()->viewBox().height() * mAntiscaleRatio / 2;
+
+    qreal bottomX = topX;
+    qreal bottomY = frRect.bottom() - mDeleteButton->renderer()->viewBox().height() * mAntiscaleRatio / 2;
 
     mDeleteButton->setPos(topX, topY);
-//    mDeleteButton->setPos(0, 0);
-
-//    if (!mDeleteButton->scene())
-//    {
-//        if (scene())
-//            scene()->addItem(mDeleteButton);
-//    }
     mDeleteButton->show();
 
-//    if (showUpdated)
-//        mDeleteButton->show();
+    int i = 1, j = 0, k = 0;
+    while ((i + j + k) < mButtons.size())  {
+        DelegateButton* button = mButtons[i + j];
 
-//    int i = 1, j = 0, k = 0;
-//    while ((i + j + k) < mButtons.size())  {
-//        DelegateButton* button = mButtons[i + j];
-
-//        if (button->getSection() == Qt::TopLeftSection) {
-//            button->setParentItem(mFrame);
-//            button->setPos(topX + (i++ * 1.6 * mFrameWidth * mAntiScaleRatio), topY);
-//            button->setTransform(tr);
-//        } else if (button->getSection() == Qt::BottomLeftSection) {
-//            button->setParentItem(mFrame);
-//            button->setPos(bottomX + (++j * 1.6 * mFrameWidth * mAntiScaleRatio), bottomY);
-//            button->setTransform(tr);
-//        } else if (button->getSection() == Qt::TitleBarArea || button->getSection() == Qt::NoSection){
-//            ++k;
-//        }
-//        if (!button->scene())
-//        {
-//            if (mDelegated->scene())
-//                mDelegated->scene()->addItem(button);
-//        }
-//        if (showUpdated) {
-//            button->show();
-//            button->setZValue(delegated()->zValue());
-//        }
-//    }
+        if (button->getSection() == Qt::TopLeftSection) {
+            button->setParentItem(this);
+            button->setPos(topX + (i++ * 1.6 * adjThickness()), topY);
+            button->setTransform(tr);
+        } else if (button->getSection() == Qt::BottomLeftSection) {
+            button->setParentItem(this);
+            button->setPos(bottomX + (++j * 1.6 * adjThickness()), bottomY);
+            button->setTransform(tr);
+        } else {
+            ++k;
+        }
+            button->show();
+    }
 }
 
 void UBSelectionFrame::clearButtons()
