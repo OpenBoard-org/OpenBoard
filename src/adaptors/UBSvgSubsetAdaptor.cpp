@@ -1043,7 +1043,6 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
         qSort(items.begin(), items.end(), itemZIndexComp);
 
         UBGraphicsStroke *openStroke = 0;
-        int nextStroke = 0;
 
         bool groupHoldsInfo = false;
 
@@ -1056,32 +1055,12 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
 
             if(strokesGroupItem && strokesGroupItem->isVisible()){
                 // Add the polygons
-                //parsing number of polygons into one polygon
-                qDebug() << "parsing stroke number" << nextStroke++;
-                UBGraphicsPolygonItem *resultPoly = 0;
-
-                foreach(QGraphicsItem* item, strokesGroupItem->childItems()) {
+                foreach(QGraphicsItem* item, strokesGroupItem->childItems()){
                     UBGraphicsPolygonItem* poly = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
-                    if (!poly)
-                        continue;
-                    if (!resultPoly) {
-                        resultPoly = poly;
-                        continue;
+                    if(NULL != poly){
+                        polygonItemToSvgPolygon(poly, true);
+                        items.removeOne(poly);
                     }
-
-                    QPolygonF unitedPolygon = resultPoly->polygon().united(poly->polygon());
-                    resultPoly->setPolygon(unitedPolygon);
-                    items.removeOne(poly);
-                }
-                if (resultPoly) {
-                    resultPoly->setZValue(strokesGroupItem->zValue());
-                    //Claudio: the painter path simplification remove all the polygons overlap
-                    QPainterPath painterPath;
-                    painterPath.addPolygon(resultPoly->polygon());
-                    painterPath = painterPath.simplified();
-                    resultPoly->setPolygon(painterPath.toFillPolygon());
-                    polygonItemToSvgPolygon(resultPoly, false);
-                    items.removeOne(resultPoly);
                 }
             }
 
