@@ -146,10 +146,7 @@ WBBrowserWindow::~WBBrowserWindow()
         mTabWidget = NULL;
     }
 
-    if(mSearchToolBar){
-        delete mSearchToolBar;
-        mSearchToolBar = NULL;
-    }
+    //Explanation mSearchToolBar has a parent so it's automatically freed
 }
 
 

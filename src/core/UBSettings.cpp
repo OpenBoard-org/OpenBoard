@@ -199,7 +199,7 @@ void UBSettings::ValidateKeyboardPaletteKeyBtnSize()
 
 void UBSettings::init()
 {
-    productWebUrl =  new UBSetting(this, "App", "ProductWebAddress", "http://www.sankore.org");
+    productWebUrl =  new UBSetting(this, "App", "ProductWebAddress", "http://www.oe-f.org");
 
     softwareHomeUrl = productWebUrl->get().toString();
 
