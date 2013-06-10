@@ -215,9 +215,12 @@ void UBGraphicsTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
     if (widget == UBApplication::boardController->controlView()->viewport() &&
             !isSelected() && toPlainText().isEmpty())
     {
+        QFontMetrics fm(font());
+        setTextWidth(fm.width(mTypeTextHereLabel));
         painter->setFont(font());
         painter->setPen(UBSettings::paletteColor);
         painter->drawText(boundingRect(), Qt::AlignCenter, mTypeTextHereLabel);
+        setTextInteractionFlags(Qt::NoTextInteraction);
     }
 }
 
@@ -246,10 +249,6 @@ void UBGraphicsTextItem::copyItemParameters(UBItem *copy) const
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
         cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
         cp->setData(UBGraphicsItemData::ItemEditable, data(UBGraphicsItemData::ItemEditable).toBool());
-        //    cp->setDefaultTextColor(this->defaultTextColor());
-        //    cp->setFont(this->font());
-        //    cp->setColorOnDarkBackground(this->colorOnDarkBackground());
-        //    cp->setColorOnLightBackground(this->colorOnLightBackground());
         cp->setTextWidth(this->textWidth());
         cp->setTextHeight(this->textHeight());
 
@@ -275,14 +274,8 @@ QPainterPath UBGraphicsTextItem::shape() const
 void UBGraphicsTextItem::setTextWidth(qreal width)
 {
     QFontMetrics fm(font());
-    qreal strictMin = fm.height();
+    qreal strictMin = 155; // the size of the font customization panel
     qreal newWidth = qMax(strictMin, width);
-
-    if (toPlainText().isEmpty())
-    {
-        qreal minWidth = fm.width(mTypeTextHereLabel);
-        newWidth = qMax(minWidth, newWidth);
-    }
 
     QGraphicsTextItem::setTextWidth(newWidth);
 }
@@ -313,7 +306,7 @@ void UBGraphicsTextItem::contentsChanged()
 
     if (toPlainText().isEmpty())
     {
-        setTextWidth(textWidth());
+        resize(textWidth(),textHeight());
     }
 }
 
