@@ -2188,6 +2188,16 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
 
     QList<QGraphicsItem*> si = selectedItems();
 
+    if(keyEvent->matches(QKeySequence::SelectAll)){
+        QListIterator<QGraphicsItem*> itItems(this->mFastAccessItems);
+
+        while (itItems.hasNext())
+            itItems.next()->setSelected(true);
+
+        keyEvent->accept();
+        return;
+    }
+
     if ((si.size() > 0) && (keyEvent->isAccepted()))
     {
 #ifdef Q_OS_MAC

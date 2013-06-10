@@ -356,8 +356,8 @@ public slots:
 
         void recolorAllItems();
 
-       virtual void drawItems (QPainter * painter, int numItems,
-                QGraphicsItem * items[], const QStyleOptionGraphicsItem options[], QWidget * widget = 0);
+        virtual void drawItems (QPainter * painter, int numItems,
+                               QGraphicsItem * items[], const QStyleOptionGraphicsItem options[], QWidget * widget = 0);
 
         QGraphicsItem* rootItem(QGraphicsItem* item) const;
 
