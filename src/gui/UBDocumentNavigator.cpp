@@ -52,6 +52,7 @@ UBDocumentNavigator::UBDocumentNavigator(QWidget *parent, const char *name):QGra
   , mNbColumns(1)
   , mThumbnailWidth(0)
   , mThumbnailMinWidth(100)
+  , mSelectedThumbnail(NULL)
 {
     setObjectName(name);
     mScene = new QGraphicsScene(this);
@@ -123,6 +124,7 @@ void UBDocumentNavigator::onScrollToSelectedPage(int index)
         if (c==index)
         {
             el.getThumbnail()->setSelected(true);
+            mSelectedThumbnail = el.getThumbnail();
         }
         else
         {
@@ -130,6 +132,7 @@ void UBDocumentNavigator::onScrollToSelectedPage(int index)
         }
         c++;
     }
+    centerOn(mSelectedThumbnail);
 }
 
 /**
@@ -227,6 +230,9 @@ void UBDocumentNavigator::resizeEvent(QResizeEvent *event)
 
     // Update the thumbnails width
     mThumbnailWidth = (width() > mThumbnailMinWidth) ? width() - 2*border() : mThumbnailMinWidth;
+
+    if(mSelectedThumbnail)
+        centerOn(mSelectedThumbnail);
 
     // Refresh the scene
     refreshScene();
