@@ -316,6 +316,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
 public slots:
         void updateSelectionFrame();
+        void updateSelectionFrameWrapper(int);
         void initStroke();
         void hideEraser();
 

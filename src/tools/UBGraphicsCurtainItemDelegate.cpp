@@ -32,9 +32,9 @@
 #include "core/memcheck.h"
 
 UBGraphicsCurtainItemDelegate::UBGraphicsCurtainItemDelegate(UBGraphicsCurtainItem* pDelegated, QObject * parent)
-    : UBGraphicsItemDelegate(pDelegated, parent, false, false, false)
+    : UBGraphicsItemDelegate(pDelegated, parent, GF_SCALABLE_ALL_AXIS | GF_MENU_SPECIFIED | GF_ZORDER_MANIPULATIONS_ALLOWED)
 {
-    setCanDuplicate(false);
+    //NOOP
 }
 
 
@@ -45,7 +45,6 @@ UBGraphicsCurtainItemDelegate::~UBGraphicsCurtainItemDelegate()
 
 void UBGraphicsCurtainItemDelegate::init()
 {
-    UBGraphicsItemDelegate::init();
     mFrame->hide();
     mZOrderUpButton->hide();
     mZOrderDownButton->hide();

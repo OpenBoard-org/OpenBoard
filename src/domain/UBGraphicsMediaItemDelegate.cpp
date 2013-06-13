@@ -40,7 +40,10 @@
 #include "core/memcheck.h"
 
 UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, Phonon::MediaObject* pMedia, QObject * parent)
-    : UBGraphicsItemDelegate(pDelegated, parent, true, false, true, true)
+    : UBGraphicsItemDelegate(pDelegated, parent, GF_COMMON
+                             | GF_RESPECT_RATIO
+                             | GF_TOOLBAR_USED
+                             | GF_SHOW_CONTENT_SOURCE)
     , mMedia(pMedia)
     , mToolBarShowTimer(NULL)
     , m_iToolBarShowingInterval(5000)
@@ -64,9 +67,6 @@ UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pD
     if (delegated()->isMuted())
         delegated()->setMute(true);
 
-    //Wrapper function. Use it to set correct data() to QGraphicsItem as well
-    setFlippable(false);
-    setRotatable(false);
 }
 
 bool UBGraphicsMediaItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *event)

@@ -121,6 +121,7 @@ protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     virtual void clearSource();
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     Phonon::MediaObject *mMediaObject;
     Phonon::VideoWidget *mVideoWidget;

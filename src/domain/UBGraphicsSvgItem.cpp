@@ -61,11 +61,12 @@ void UBGraphicsSvgItem::init()
 {
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
 
-    setDelegate(new UBGraphicsItemDelegate(this, 0, true, true, false, true));
-    Delegate()->init();
-    Delegate()->setFlippable(true);
-    Delegate()->setRotatable(true);
-
+    setDelegate(new UBGraphicsItemDelegate(this, 0, GF_COMMON
+                                           | GF_RESPECT_RATIO
+                                           | GF_REVOLVABLE
+                                           | GF_SHOW_CONTENT_SOURCE));
+    UBGraphicsFlags dfl = Delegate()->ubflags();
+    Delegate()->setUBFlags(dfl | GF_FLIPPABLE_ALL_AXIS | GF_REVOLVABLE);
 
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
@@ -76,7 +77,6 @@ void UBGraphicsSvgItem::init()
 
     setUuid(QUuid::createUuid());
 }
-
 
 UBGraphicsSvgItem::~UBGraphicsSvgItem()
 {
@@ -139,6 +139,7 @@ void UBGraphicsSvgItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     styleOption.state &= ~QStyle::State_Selected;
 
     QGraphicsSvgItem::paint(painter, &styleOption, widget);
+    Delegate()->postpaint(painter, option, widget);
 }
 
 

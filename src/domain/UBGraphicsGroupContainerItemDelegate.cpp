@@ -36,13 +36,9 @@
 #include "core/memcheck.h"
 
 UBGraphicsGroupContainerItemDelegate::UBGraphicsGroupContainerItemDelegate(QGraphicsItem *pDelegated, QObject *parent) :
-    UBGraphicsItemDelegate(pDelegated, parent, true, false, false), mDestroyGroupButton(0)
+    UBGraphicsItemDelegate(pDelegated, parent, GF_COMMON | GF_RESPECT_RATIO), mDestroyGroupButton(0)
 
 {
-    //Wrapper function. Use it to set correct data() to QGraphicsItem as well
-    setFlippable(false);
-    setRotatable(false);
-    setCanDuplicate(true);
 }
 
 UBGraphicsGroupContainerItem *UBGraphicsGroupContainerItemDelegate::delegated()

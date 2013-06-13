@@ -174,7 +174,7 @@ class DelegateMediaControl: public QObject, public QGraphicsRectItem
         void positionHandles();
         void updateTicker(qint64 time);
         void totalTimeChanged(qint64 newTotalTime);
-        QSizeF lcdAreaSize(){return mLCDTimerArea.size();}
+        QSizeF lcdAreaSize() {return mLCDTimerArea.size();}
 
     signals:
         void used();
@@ -235,11 +235,10 @@ class UBGraphicsItemDelegate : public QObject
     Q_OBJECT
 
     public:
-        UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent = 0,  bool respectRatio = true, bool canRotate = false, bool useToolBar = true, bool showGoContentButton = false);
+    UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent = 0, UBGraphicsFlags fls = 0);
 
         virtual ~UBGraphicsItemDelegate();
 
-        void init();
         virtual void createControls();
         virtual void freeControls();
         virtual void showControls();
@@ -256,12 +255,12 @@ class UBGraphicsItemDelegate : public QObject
         virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change,
                 const QVariant &value);
         virtual UBGraphicsScene *castUBGraphicsScene();
+        virtual void postpaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
 
         void printMessage(const QString &mess) {qDebug() << mess;}
 
         QGraphicsItem* delegated();
-
-        void setCanDuplicate(bool allow){ mCanDuplicate = allow; }
 
         virtual void positionHandles();
         void setZOrderButtonsVisible(bool visible);
@@ -271,17 +270,11 @@ class UBGraphicsItemDelegate : public QObject
 
         UBGraphicsDelegateFrame* frame() {return mFrame;}
 
-        bool canRotate() const { return mCanRotate; }
         bool isLocked() const;
-        bool canDuplicate() { return mCanDuplicate; }
 
         QMimeData* mimeData(){ return mMimeData; }
         void setMimeData(QMimeData* mimeData);
         void setDragPixmap(const QPixmap &pix) {mDragPixmap = pix;}
-
-        void setFlippable(bool flippable);
-        void setRotatable(bool pCanRotate);
-        bool isFlippable();
 
         void setButtonsVisible(bool visible);
 
@@ -289,6 +282,12 @@ class UBGraphicsItemDelegate : public QObject
 
         qreal antiScaleRatio() const { return mAntiScaleRatio; }
         virtual void update() {positionHandles();}
+
+        UBGraphicsFlags ubflags() const {return mFlags;}
+        bool testUBFlags(UBGraphicsFlags pf) const {return mFlags & pf;}
+        void setUBFlags(UBGraphicsFlags pf);
+//        void addUBFlags(UBGraphicsFlags pf) {setUBFlags(ubflags() | pf);}
+        void setUBFlag(UBGraphicsFlags pf, bool set = true);
 
     signals:
         void showOnDisplayChanged(bool shown);
@@ -314,8 +313,8 @@ class UBGraphicsItemDelegate : public QObject
         virtual void freeButtons();
         virtual void decorateMenu(QMenu *menu);
         virtual void updateMenuActionState();
-        QList<DelegateButton*> buttons() {return mButtons;}
 
+        QList<DelegateButton*> buttons() {return mButtons;}
         QGraphicsItem* mDelegated;
 
         //buttons from the top left section of delegate frame
@@ -355,19 +354,11 @@ private:
         QPointF mDragStartPosition;
         qreal mPreviousZValue;
         QSizeF mPreviousSize;
-        bool mCanRotate;
-        bool mCanDuplicate;
-        bool mRespectRatio;
         QMimeData* mMimeData;
         QPixmap mDragPixmap;
 
-        /** A boolean saying that this object can be flippable (mirror effect) */
-        bool mFlippable;
-        bool mToolBarUsed;
-
-        bool mShowGoContentButton;
-
         bool mMoved;
+        UBGraphicsFlags mFlags;
 };
 
 

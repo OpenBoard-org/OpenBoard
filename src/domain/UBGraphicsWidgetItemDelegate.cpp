@@ -38,7 +38,9 @@
 #include "core/memcheck.h"
 
 UBGraphicsWidgetItemDelegate::UBGraphicsWidgetItemDelegate(UBGraphicsWidgetItem* pDelegated, int widgetType)
-    : UBGraphicsItemDelegate(pDelegated, 0, true, false, false, true)
+    : UBGraphicsItemDelegate(pDelegated, 0, GF_COMMON
+                             | GF_RESPECT_RATIO
+                             | GF_SHOW_CONTENT_SOURCE)
     , freezeAction(0)
     , setAsToolAction(0)
 {

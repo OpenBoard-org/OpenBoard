@@ -125,7 +125,6 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         setWidget(mAudioWidget);
 
     // media widget should be created and placed on proxy widget here.
-    Delegate()->init();
 
     if (mediaType_Audio == mMediaType)
         Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::ResizingHorizontally);
@@ -191,6 +190,11 @@ void UBGraphicsMediaItem::clearSource()
 
     if (!UBFileSystemUtils::deleteFile(path))
         qDebug() << "cannot delete file: " << path;
+}
+
+void UBGraphicsMediaItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    UBGraphicsProxyWidget::paint(painter, option, widget);
 }
 
 void UBGraphicsMediaItem::toggleMute()

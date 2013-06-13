@@ -39,8 +39,7 @@ UBGraphicsGroupContainerItem::UBGraphicsGroupContainerItem(QGraphicsItem *parent
 {
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
 
-       setDelegate(new UBGraphicsGroupContainerItemDelegate(this, 0));
-    Delegate()->init();
+    setDelegate(new UBGraphicsGroupContainerItemDelegate(this, 0));
 
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -71,14 +70,14 @@ void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
     //Check if group is allready rotatable or flippable
     if (childItems().count()) {
         if (UBGraphicsItem::isFlippable(this) && !UBGraphicsItem::isFlippable(item)) {
-            Delegate()->setFlippable(false);
+            Delegate()->setUBFlag(GF_FLIPPABLE_ALL_AXIS, false);
         }
         if (UBGraphicsItem::isRotatable(this) && !UBGraphicsItem::isRotatable(item)) {
-            Delegate()->setRotatable(false);
+            Delegate()->setUBFlag(GF_REVOLVABLE, false);
         }
     } else {
-        Delegate()->setFlippable(UBGraphicsItem::isFlippable(item));
-        Delegate()->setRotatable(UBGraphicsItem::isRotatable(item));
+        Delegate()->setUBFlag(GF_FLIPPABLE_ALL_AXIS, UBGraphicsItem::isFlippable(item));
+        Delegate()->setUBFlag(GF_REVOLVABLE, UBGraphicsItem::isRotatable(item));
     }
 
     // COMBINE
@@ -194,6 +193,7 @@ void UBGraphicsGroupContainerItem::paint(QPainter *painter, const QStyleOptionGr
 //        painter->setPen(tmpPen);
 //        painter->drawRect(itemsBoundingRect.adjusted(tmpPenWidth / 2, tmpPenWidth / 2, -tmpPenWidth / 2, -tmpPenWidth / 2));
 //    }
+    Delegate()->postpaint(painter, option, widget);
 }
 
 UBCoreGraphicsScene *UBGraphicsGroupContainerItem::corescene()
@@ -334,8 +334,8 @@ void UBGraphicsGroupContainerItem::pRemoveFromGroup(QGraphicsItem *item)
                     break;
                 }
             }
-            Delegate()->setFlippable(flippableNow);
-            Delegate()->setRotatable(rotatableNow);
+            Delegate()->setUBFlag(GF_FLIPPABLE_ALL_AXIS, flippableNow);
+            Delegate()->setUBFlag(GF_REVOLVABLE, rotatableNow);
         }
     }
 

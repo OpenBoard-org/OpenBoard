@@ -93,7 +93,6 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     setPalette(viewPalette);
 
     setDelegate(new UBGraphicsWidgetItemDelegate(this));
-    Delegate()->init();
 
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     QGraphicsWebView::setAcceptHoverEvents(true);
@@ -587,6 +586,8 @@ void UBGraphicsWidgetItem::paint( QPainter *painter, const QStyleOptionGraphicsI
         painter->setPen(Qt::white);
         painter->drawText(rect(), Qt::AlignCenter, message);
     }
+
+    Delegate()->postpaint(painter, option, widget);
 }
 
 void UBGraphicsWidgetItem::geometryChangeRequested(const QRect& geom)

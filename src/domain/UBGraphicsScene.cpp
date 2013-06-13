@@ -318,6 +318,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
 //    Just for debug. Do not delete please
 //    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
     connect(this, SIGNAL(selectionChanged()), this, SLOT(updateGroupButtonState()));
+    connect(UBApplication::undoStack.data(), SIGNAL(indexChanged(int)), this, SLOT(updateSelectionFrameWrapper(int)));
 }
 
 UBGraphicsScene::~UBGraphicsScene()
@@ -1078,6 +1079,11 @@ void UBGraphicsScene::updateSelectionFrame()
     }
 }
 
+void UBGraphicsScene::updateSelectionFrameWrapper(int)
+{
+    updateSelectionFrame();
+}
+
 UBGraphicsPolygonItem* UBGraphicsScene::polygonToPolygonItem(const QPolygonF pPolygon)
 {
     UBGraphicsPolygonItem *polygonItem = new UBGraphicsPolygonItem(pPolygon);
@@ -1736,6 +1742,10 @@ void UBGraphicsScene::deselectAllItems()
     foreach(QGraphicsItem *gi, selectedItems ())
     {
         gi->setSelected(false);
+        // Hide selection frame
+        if (mSelectionFrame) {
+            mSelectionFrame->setEnclosedItems(QList<QGraphicsItem*>());
+        }
     }
 }
 

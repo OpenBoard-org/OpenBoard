@@ -67,4 +67,5 @@ void GraphicsPDFItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
         mRenderer->render(painter, mPageNumber, option->exposedRect);
     else
         qWarning("GraphicsPDFItem::paint: option is null, ignoring painting");
+
 }

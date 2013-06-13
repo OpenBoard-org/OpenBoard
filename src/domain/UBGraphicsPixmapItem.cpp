@@ -36,10 +36,12 @@
 UBGraphicsPixmapItem::UBGraphicsPixmapItem(QGraphicsItem* parent)
     : QGraphicsPixmapItem(parent)
 {
-    setDelegate(new UBGraphicsItemDelegate(this, 0, true, false, true, true));
-    Delegate()->init();
-    Delegate()->setFlippable(true);
-    Delegate()->setRotatable(true);
+    setDelegate(new UBGraphicsItemDelegate(this, 0, GF_COMMON
+                                           | GF_FLIPPABLE_ALL_AXIS
+                                           | GF_REVOLVABLE
+                                           | GF_RESPECT_RATIO
+                                           | GF_TOOLBAR_USED
+                                           | GF_SHOW_CONTENT_SOURCE));
 
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
     setTransformationMode(Qt::SmoothTransformation);
@@ -110,9 +112,10 @@ void UBGraphicsPixmapItem::paint(QPainter *painter, const QStyleOptionGraphicsIt
 {
     // Never draw the rubber band, we draw our custom selection with the DelegateFrame
     QStyleOptionGraphicsItem styleOption = QStyleOptionGraphicsItem(*option);
-    styleOption.state &= ~QStyle::State_Selected;
 
+    styleOption.state &= ~QStyle::State_Selected;
     QGraphicsPixmapItem::paint(painter, &styleOption, widget);
+    Delegate()->postpaint(painter, option, widget);
 }
 
 

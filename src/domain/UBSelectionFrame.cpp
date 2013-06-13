@@ -2,45 +2,28 @@
 
 #include <QtGui>
 
-#include "core/UB.h"
 #include "domain/UBItem.h"
 #include "board/UBBoardController.h"
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"
+#include "gui/UBResources.h"
+#include "core/UBApplication.h"
+#include "domain/UBGraphicsScene.h"
 
 UBSelectionFrame::UBSelectionFrame()
     : mThickness(UBSettings::settings()->objectFrameWidth)
     , mAntiscaleRatio(1.0)
+    , mRotationAngle(0)
     , mDeleteButton(0)
     , mDuplicateButton(0)
     , mZOrderUpButton(0)
     , mZOrderDownButton(0)
+    , mRotateButton(0)
 {
     setLocalBrush(QBrush(UBSettings::paletteColor));
     setPen(Qt::NoPen);
     setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
     setFlags(QGraphicsItem::ItemSendsGeometryChanges | QGraphicsItem::ItemIsSelectable | ItemIsMovable);
-
-
-    mDeleteButton = new DelegateButton(":/images/close.svg", this, 0, Qt::TopLeftSection);
-    mButtons << mDeleteButton;
-    connect(mDeleteButton, SIGNAL(clicked()), this, SLOT(remove()));
-
-    mDuplicateButton = new DelegateButton(":/images/duplicate.svg", this, 0, Qt::TopLeftSection);
-    //            connect(mDuplicateButton, SIGNAL(clicked(bool)), this, SLOT(duplicate()));
-    mButtons << mDuplicateButton;
-
-    mZOrderUpButton = new DelegateButton(":/images/z_layer_up.svg", this, 0, Qt::BottomLeftSection);
-    mZOrderUpButton->setShowProgressIndicator(true);
-    //        connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZLevelUp()));
-    //        connect(mZOrderUpButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelTop()));
-    mButtons << mZOrderUpButton;
-
-    mZOrderDownButton = new DelegateButton(":/images/z_layer_down.svg", this, 0, Qt::BottomLeftSection);
-    mZOrderDownButton->setShowProgressIndicator(true);
-    //        connect(mZOrderDownButton, SIGNAL(clicked()), this, SLOT(increaseZLevelDown()));
-    //        connect(mZOrderDownButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelBottom()));
-    mButtons << mZOrderDownButton;
 
     connect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged(qreal)));
 
@@ -90,24 +73,25 @@ void UBSelectionFrame::setEnclosedItems(const QList<QGraphicsItem*> pGraphicsIte
 {
     mButtons.clear();
     mButtons.append(mDeleteButton);
-    mButtons.append(mZOrderUpButton);
-    mButtons.append(mZOrderDownButton);
+    mRotationAngle = 0;
 
     QRegion resultRegion;
+    UBGraphicsFlags resultFlags;
     mEnclosedtems.clear();
     foreach (QGraphicsItem *nextItem, pGraphicsItems) {
         UBGraphicsItemDelegate *nextDelegate = UBGraphicsItem::Delegate(nextItem);
         if (nextDelegate) {
             mEnclosedtems.append(nextDelegate);
             resultRegion |= nextItem->boundingRegion(nextItem->sceneTransform());
+            resultFlags |= nextDelegate->ubflags();
         }
     }
 
     QRectF resultRect = resultRegion.boundingRect();
     setRect(resultRect);
 
+    mButtons = buttonsForFlags(resultFlags);
     placeButtons();
-
 
     if (resultRect.isEmpty()) {
         hide();
@@ -141,6 +125,12 @@ void UBSelectionFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
     mPressedPos = mLastMovedPos = event->pos();
     mLastTranslateOffset = QPointF();
 
+    if (scene()->itemAt(event->scenePos()) == mRotateButton) {
+        mOperationMode = om_rotating;
+    } else {
+        mOperationMode = om_moving;
+    }
+
 //    foreach (UBGraphicsItemDelegate *curDelegate, mEnclosedtems) {
 //        qDebug() << "TransformBefore" << curDelegate->delegated()->transform();
 //     }
@@ -154,23 +144,50 @@ void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     foreach (UBGraphicsItemDelegate *curDelegate, mEnclosedtems) {
 
-        QGraphicsItem *item = curDelegate->delegated();
-        QTransform ownTransform = item->transform();
-        QTransform dTransform(
-                    ownTransform.m11()
-                    , ownTransform.m12()
-                    , ownTransform.m13()
+        switch (static_cast<int>(mOperationMode)) {
+        case om_moving : {
+            QGraphicsItem *item = curDelegate->delegated();
+            QTransform ownTransform = item->transform();
+            QTransform dTransform(
+                        ownTransform.m11()
+                        , ownTransform.m12()
+                        , ownTransform.m13()
 
-                    , ownTransform.m21()
-                    , ownTransform.m22()
-                    , ownTransform.m23()
+                        , ownTransform.m21()
+                        , ownTransform.m22()
+                        , ownTransform.m23()
 
-                    , ownTransform.m31() + (dp - mLastTranslateOffset).x()
-                    , ownTransform.m32() + (dp - mLastTranslateOffset).y()
-                    , ownTransform.m33()
-                    );
+                        , ownTransform.m31() + (dp - mLastTranslateOffset).x()
+                        , ownTransform.m32() + (dp - mLastTranslateOffset).y()
+                        , ownTransform.m33()
+                        );
 
-        item->setTransform(dTransform);
+            item->setTransform(dTransform);
+        } break;
+
+        case om_rotating : {
+            QLineF startLine(sceneBoundingRect().center(), event->lastScenePos());
+            QLineF currentLine(sceneBoundingRect().center(), event->scenePos());
+            qreal dAngle = startLine.angleTo(currentLine);
+
+            QGraphicsItem *item = curDelegate->delegated();
+            QTransform ownTransform = item->transform();
+
+            qreal cntrX = item->boundingRect().center().x();
+            qreal cntrY = item->boundingRect().center().y();
+
+            ownTransform.translate(cntrX, cntrY);
+            mRotationAngle -= dAngle;
+            ownTransform.rotate(mRotationAngle);
+            ownTransform.translate(-cntrX, -cntrY);
+
+            item->setTransform(ownTransform);
+
+            qDebug() << "curAngle" << dAngle;
+        } break;
+
+        }
+
     }
 
     updateRect();
@@ -181,6 +198,17 @@ void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void UBSelectionFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent */*event*/)
 {
     mPressedPos = mLastMovedPos = mLastTranslateOffset = QPointF();
+
+    if (mOperationMode == om_moving || mOperationMode == om_rotating) {
+        UBApplication::undoStack->beginMacro("TransformationMacro");
+        foreach (UBGraphicsItemDelegate *d, mEnclosedtems) {
+            d->commitUndoStep();
+        }
+        UBApplication::undoStack->endMacro();
+    }
+    mOperationMode = om_idle;
+
+
 //    foreach (UBGraphicsItemDelegate *curDelegate, mEnclosedtems) {
 //        qDebug() << "TransformBefore" << curDelegate->delegated()->transform();
 //    }
@@ -202,9 +230,22 @@ void UBSelectionFrame::onZoomChanged(qreal pZoom)
 
 void UBSelectionFrame::remove()
 {
+    UBApplication::undoStack->beginMacro("RemovingSelected");
     foreach (UBGraphicsItemDelegate *d, mEnclosedtems) {
         d->remove(true);
     }
+    UBApplication::undoStack->endMacro();
+
+    updateRect();
+}
+
+void UBSelectionFrame::duplicate()
+{
+    UBApplication::undoStack->beginMacro("RemovingSelected");
+    foreach (UBGraphicsItemDelegate *d, mEnclosedtems) {
+        d->duplicate();
+    }
+    UBApplication::undoStack->endMacro();
 
     updateRect();
 }
@@ -215,6 +256,10 @@ void UBSelectionFrame::translateItem(QGraphicsItem */*item*/, const QPointF &/*t
 
 void UBSelectionFrame::placeButtons()
 {
+    if (!mButtons.count()) {
+        return;
+    }
+
     QTransform tr;
     tr.scale(mAntiscaleRatio, mAntiscaleRatio);
     mDeleteButton->setParentItem(this);
@@ -243,10 +288,26 @@ void UBSelectionFrame::placeButtons()
             button->setParentItem(this);
             button->setPos(bottomX + (++j * 1.6 * adjThickness()), bottomY);
             button->setTransform(tr);
+        } else if (button->getSection() == Qt::NoSection) {
+            button->setParentItem(this);
+            placeExceptionButton(button, tr);
+            k++;
         } else {
             ++k;
         }
             button->show();
+    }
+}
+
+void UBSelectionFrame::placeExceptionButton(DelegateButton *pButton, QTransform pTransform)
+{
+    QRectF frRect = boundingRect();
+
+    if (pButton == mRotateButton) {
+        qreal topX = frRect.right() - (mRotateButton->renderer()->viewBox().width()) * mAntiscaleRatio - 5;
+        qreal topY = frRect.top() + 5;
+        mRotateButton->setPos(topX, topY);
+        mRotateButton->setTransform(pTransform);
     }
 }
 
@@ -259,6 +320,63 @@ void UBSelectionFrame::clearButtons()
     }
 
     mButtons.clear();
+}
+
+inline UBGraphicsScene *UBSelectionFrame::ubscene()
+{
+    return qobject_cast<UBGraphicsScene*>(scene());
+}
+
+QList<DelegateButton*> UBSelectionFrame::buttonsForFlags(UBGraphicsFlags fls) {
+
+    qDebug() << "buttons for flags" << QString::number((int)fls, 2);
+    QList<DelegateButton*> result;
+
+    if (!mDeleteButton) {
+        mDeleteButton = new DelegateButton(":/images/close.svg", this, 0, Qt::TopLeftSection);
+        mButtons << mDeleteButton;
+        connect(mDeleteButton, SIGNAL(clicked()), this, SLOT(remove()));
+    }
+    result << mDeleteButton;
+
+    if (fls | GF_DUPLICATION_ENABLED) {
+        if (!mDuplicateButton) {
+            mDuplicateButton = new DelegateButton(":/images/duplicate.svg", this, 0, Qt::TopLeftSection);
+            connect(mDuplicateButton, SIGNAL(clicked(bool)), this, SLOT(duplicate()));
+        }
+        result <<  mDuplicateButton;
+    }
+
+    if (fls | GF_ZORDER_MANIPULATIONS_ALLOWED) {
+        if (!mZOrderUpButton) {
+            mZOrderUpButton = new DelegateButton(":/images/z_layer_up.svg", this, 0, Qt::BottomLeftSection);
+            mZOrderUpButton->setShowProgressIndicator(true);
+            //        connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZLevelUp()));
+            //        connect(mZOrderUpButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelTop()));
+        }
+
+        if (!mZOrderDownButton) {
+            mZOrderDownButton = new DelegateButton(":/images/z_layer_down.svg", this, 0, Qt::BottomLeftSection);
+            mZOrderDownButton->setShowProgressIndicator(true);
+            //        connect(mZOrderDownButton, SIGNAL(clicked()), this, SLOT(increaseZLevelDown()));
+            //        connect(mZOrderDownButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelBottom()));
+        }
+
+        result << mZOrderUpButton;
+        result << mZOrderDownButton;
+    }
+
+    if (fls | GF_REVOLVABLE) {
+        if (!mRotateButton) {
+            mRotateButton = new DelegateButton(":/images/rotate.svg", this, 0, Qt::NoSection);
+            mRotateButton->setCursor(UBResources::resources()->rotateCursor);
+            mRotateButton->setShowProgressIndicator(false);
+            mRotateButton->setTransparentToMouseEvent(true);
+        }
+        result << mRotateButton;
+    }
+
+    return result;
 }
 
 

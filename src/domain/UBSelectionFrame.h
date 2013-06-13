@@ -3,15 +3,19 @@
 
 #include <QGraphicsRectItem>
 #include <QtGui>
+#include <core/UB.h>
 
 class DelegateButton;
 class UBGraphicsItemDelegate;
+class UBGraphicsScene;
 
 class UBSelectionFrame : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
 
 public:
+    enum {om_idle, om_moving, om_rotating} mOperationMode;
+
     UBSelectionFrame();
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -35,12 +39,18 @@ private slots:
     void setAntiScaleRatio(qreal pAntiscaleRatio) {mAntiscaleRatio = pAntiscaleRatio;}
     void onZoomChanged(qreal pZoom);
     void remove();
+    void duplicate();
 
 private:
     void translateItem(QGraphicsItem *item, const QPointF &translatePoint);
     void placeButtons();
+    void placeExceptionButton(DelegateButton *pButton, QTransform pTransform);
     void clearButtons();
     inline int adjThickness() const {return mThickness * mAntiscaleRatio;}
+    inline UBGraphicsScene* ubscene();
+
+    QList<DelegateButton*> buttonsForFlags(UBGraphicsFlags fls);
+
 
 private:
     int mThickness;
@@ -51,6 +61,7 @@ private:
     QPointF mPressedPos;
     QPointF mLastMovedPos;
     QPointF mLastTranslateOffset;
+    qreal mRotationAngle;
 
     QList<DelegateButton*> mButtons;
 
@@ -58,6 +69,9 @@ private:
     DelegateButton *mDuplicateButton;
     DelegateButton *mZOrderUpButton;
     DelegateButton *mZOrderDownButton;
+
+    DelegateButton *mRotateButton;
+
 };
 
 #endif // UBSELECTIONFRAME_H

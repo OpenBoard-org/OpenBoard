@@ -30,11 +30,10 @@
 UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent)
     :QGraphicsItemGroup(parent), UBGraphicsItem()
 {
-    setDelegate(new UBGraphicsItemDelegate(this, 0, true, true, false));
-    Delegate()->init();
-    Delegate()->setFlippable(true);
-    Delegate()->setRotatable(true);
-
+    setDelegate(new UBGraphicsItemDelegate(this, 0, GF_COMMON
+                                           | GF_RESPECT_RATIO
+                                           | GF_REVOLVABLE
+                                           | GF_FLIPPABLE_ALL_AXIS));
 
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
 
@@ -186,15 +185,13 @@ void UBGraphicsStrokesGroup::paint(QPainter *painter, const QStyleOptionGraphics
     if (styleOption.state & QStyle::State_Selected) {
         selectedState = true;
     }
+    QStyle::State svState = option->state;
     styleOption.state &= ~QStyle::State_Selected;
     QGraphicsItemGroup::paint(painter, &styleOption, widget);
-    if (selectedState && !Delegate()->controlsExist()) {
-        painter->save();
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(QColor(0x88, 0x88, 0x88, 0x77));
-        painter->drawRect(boundingRect());
-        painter->restore();
-    }
+    //Restoring state
+    styleOption.state |= svState;
+
+    Delegate()->postpaint(painter, &styleOption, widget);
 }
 
 QVariant UBGraphicsStrokesGroup::itemChange(GraphicsItemChange change, const QVariant &value)

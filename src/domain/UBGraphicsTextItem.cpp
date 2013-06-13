@@ -45,11 +45,10 @@ UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent) :
     , mLastMousePressTime(QTime::currentTime())
 {
     setDelegate(new UBGraphicsTextItemDelegate(this, 0));
-    Delegate()->init();
 
     Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
-    Delegate()->setFlippable(false);
-    Delegate()->setRotatable(true);
+    Delegate()->setUBFlag(GF_FLIPPABLE_ALL_AXIS, false);
+    Delegate()->setUBFlag(GF_REVOLVABLE, true);
 
     mTypeTextHereLabel = tr("<Type Text Here>");
 
@@ -218,6 +217,8 @@ void UBGraphicsTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
         painter->setPen(UBSettings::paletteColor);
         painter->drawText(boundingRect(), Qt::AlignCenter, mTypeTextHereLabel);
     }
+
+    Delegate()->postpaint(painter, option, widget);
 }
 
 

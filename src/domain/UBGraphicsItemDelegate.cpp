@@ -152,7 +152,7 @@ void DelegateButton::startShowProgress()
     }
 }
 
-UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent, bool respectRatio, bool canRotate, bool useToolBar, bool showGoContentButton)
+UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent, UBGraphicsFlags fls)
     : QObject(parent)
     , mDelegated(pDelegated)
     , mDeleteButton(NULL)
@@ -168,31 +168,19 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
     , mFrameWidth(UBSettings::settings()->objectFrameWidth)
     , mAntiScaleRatio(1.0)
     , mToolBarItem(NULL)
-    , mCanRotate(canRotate)
-    , mCanDuplicate(true)
-    , mRespectRatio(respectRatio)
     , mMimeData(NULL)
-    , mFlippable(false)
-    , mToolBarUsed(useToolBar)
-    , mShowGoContentButton(showGoContentButton)
 {
+    setUBFlags(fls);
     connect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged()));
-}
-
-void UBGraphicsItemDelegate::init()
-{
-    //Wrapper function. Use it to set correct data() to QGraphicsItem as well
-    setFlippable(false);
-    setRotatable(false);
 }
 
 void UBGraphicsItemDelegate::createControls()
 {
-    if (mToolBarUsed && !mToolBarItem)
+    if (testUBFlags(GF_TOOLBAR_USED) && !mToolBarItem)
         mToolBarItem = new UBGraphicsToolBarItem(mDelegated);
 
     if (!mFrame) {
-        mFrame = new UBGraphicsDelegateFrame(this, QRectF(0, 0, 0, 0), mFrameWidth, mRespectRatio);
+        mFrame = new UBGraphicsDelegateFrame(this, QRectF(0, 0, 0, 0), mFrameWidth, testUBFlags(GF_RESPECT_RATIO));
         mFrame->hide();
         mFrame->setFlag(QGraphicsItem::ItemIsSelectable, true);
     }
@@ -201,7 +189,7 @@ void UBGraphicsItemDelegate::createControls()
         mDeleteButton = new DelegateButton(":/images/close.svg", mDelegated, mFrame, Qt::TopLeftSection);
         mButtons << mDeleteButton;
         connect(mDeleteButton, SIGNAL(clicked()), this, SLOT(remove()));
-        if (canDuplicate()){
+        if (testUBFlags(GF_DUPLICATION_ENABLED)){
             mDuplicateButton = new DelegateButton(":/images/duplicate.svg", mDelegated, mFrame, Qt::TopLeftSection);
             connect(mDuplicateButton, SIGNAL(clicked(bool)), this, SLOT(duplicate()));
             mButtons << mDuplicateButton;
@@ -317,6 +305,19 @@ UBGraphicsScene *UBGraphicsItemDelegate::castUBGraphicsScene()
     UBGraphicsScene *castScene = dynamic_cast<UBGraphicsScene*>(delegated()->scene());
 
     return castScene;
+}
+
+/** Used to render custom data after the main "Paint" operation is finished */
+void UBGraphicsItemDelegate::postpaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(widget)
+    if (option->state & QStyle::State_Selected && !controlsExist()) {
+        painter->save();
+        painter->setPen(Qt::NoPen);
+        painter->setBrush(QColor(0x88, 0x88, 0x88, 0x77));
+        painter->drawRect(option->rect);
+        painter->restore();
+    }
 }
 
 bool UBGraphicsItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -667,7 +668,7 @@ void UBGraphicsItemDelegate::decorateMenu(QMenu* menu)
     showIcon.addPixmap(QPixmap(":/images/eyeClosed.svg"), QIcon::Normal, QIcon::Off);
     mShowOnDisplayAction->setIcon(showIcon);
 
-    if (mShowGoContentButton)
+    if (testUBFlags(GF_SHOW_CONTENT_SOURCE))
     {
         mGotoContentSourceAction = menu->addAction(tr("Go to Content Source"), this, SLOT(gotoContentSource()));
 
@@ -709,32 +710,6 @@ void UBGraphicsItemDelegate::showMenu()
     QRect pinPos = cv->mapFromScene(mMenuButton->sceneBoundingRect()).boundingRect();
 
     mMenu->exec(cv->mapToGlobal(pinPos.bottomRight()));
-}
-
-void UBGraphicsItemDelegate::setFlippable(bool flippable)
-{
-    mFlippable = flippable;
-
-    Q_ASSERT (mDelegated);
-    if (mDelegated) {
-        mDelegated->setData(UBGraphicsItemData::ItemFlippable, QVariant(flippable));
-    }
-}
-
-void UBGraphicsItemDelegate::setRotatable(bool pCanRotate)
-{
-    mCanRotate = pCanRotate;
-
-    Q_ASSERT(mDelegated);
-
-    if (mDelegated) {
-        mDelegated->setData(UBGraphicsItemData::ItemRotatable, QVariant(pCanRotate));
-    }
-}
-
-bool UBGraphicsItemDelegate::isFlippable()
-{
-    return mFlippable;
 }
 
 void UBGraphicsItemDelegate::updateFrame()
@@ -805,6 +780,31 @@ void UBGraphicsItemDelegate::setButtonsVisible(bool visible)
     }
 }
 
+void UBGraphicsItemDelegate::setUBFlags(UBGraphicsFlags pf)
+{
+    mFlags = pf;
+
+    Q_ASSERT (mDelegated);
+    if (!mDelegated) {
+        return;
+    }
+
+    if (testUBFlags(GF_FLIPPABLE_ALL_AXIS)) {
+        mDelegated->setData(UBGraphicsItemData::ItemFlippable, QVariant(testUBFlags(GF_FLIPPABLE_ALL_AXIS)));
+    }
+
+    if (testUBFlags(GF_REVOLVABLE)) {
+        mDelegated->setData(UBGraphicsItemData::ItemRotatable, QVariant(testUBFlags(GF_REVOLVABLE)));
+    }
+}
+
+void UBGraphicsItemDelegate::setUBFlag(UBGraphicsFlags pf, bool set)
+{
+    UBGraphicsFlags fls = mFlags;
+    set ? fls |= pf : fls &= ~pf;
+
+    setUBFlags(fls);
+}
 
 UBGraphicsToolBarItem::UBGraphicsToolBarItem(QGraphicsItem * parent) :
     QGraphicsRectItem(parent),

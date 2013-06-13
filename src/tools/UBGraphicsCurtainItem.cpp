@@ -135,6 +135,7 @@ void UBGraphicsCurtainItem::paint(QPainter *painter, const QStyleOptionGraphicsI
     styleOption.state &= ~QStyle::State_Selected;
 
     painter->fillRect(rect(), color);
+    Delegate()->postpaint(painter, option, widget);
 }
 
 

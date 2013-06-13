@@ -37,8 +37,7 @@ UBGraphicsPDFItem::UBGraphicsPDFItem(PDFRenderer *renderer, int pageNumber, QGra
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object); //deprecated
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::BackgroundItem)); //Necessary to set if we want z value to be assigned correctly
 
-    setDelegate(new UBGraphicsItemDelegate(this,0, true, false, false));
-    Delegate()->init();
+    setDelegate(new UBGraphicsItemDelegate(this, 0, GF_COMMON));
 }
 
 
@@ -91,6 +90,11 @@ void UBGraphicsPDFItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     GraphicsPDFItem::mouseReleaseEvent(event);
 }
 
+void UBGraphicsPDFItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    GraphicsPDFItem::paint(painter, option, widget);
+    Delegate()->postpaint(painter, option, widget);
+}
 
 UBItem* UBGraphicsPDFItem::deepCopy() const
 {

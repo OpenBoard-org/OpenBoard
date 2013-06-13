@@ -41,8 +41,8 @@
 const int UBGraphicsTextItemDelegate::sMinPixelSize = 8;
 const int UBGraphicsTextItemDelegate::sMinPointSize = 8;
 
-UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDelegated, QObject * parent)
-    : UBGraphicsItemDelegate(pDelegated,0, parent, true)
+UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDelegated, QObject *)
+    : UBGraphicsItemDelegate(pDelegated,0, GF_COMMON | GF_REVOLVABLE)
     , mLastFontPixelSize(-1)
     , delta(5)
 {

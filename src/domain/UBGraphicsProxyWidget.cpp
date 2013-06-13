@@ -51,6 +51,10 @@ UBGraphicsProxyWidget::~UBGraphicsProxyWidget()
 {
 }
 
+void UBGraphicsProxyWidget::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Delegate()->postpaint(painter, option, widget);
+}
 
 QVariant UBGraphicsProxyWidget::itemChange(GraphicsItemChange change, const QVariant &value)
 {

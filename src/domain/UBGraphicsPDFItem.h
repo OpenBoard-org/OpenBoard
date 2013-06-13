@@ -66,6 +66,7 @@ class UBGraphicsPDFItem: public GraphicsPDFItem, public UBItem, public UBGraphic
         virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
+        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 };

@@ -92,7 +92,7 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
 
     mRotateButton = new QGraphicsSvgItem(":/images/rotate.svg", this);
     mRotateButton->setCursor(UBResources::resources()->rotateCursor);
-    mRotateButton->setVisible(mDelegate->canRotate());
+    mRotateButton->setVisible(mDelegate->testUBFlags(GF_REVOLVABLE));
 
     updateResizeCursors();
 
@@ -452,7 +452,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                     }else if(resizingRight()){
                         scaleX = (width + moveX) / width;
                     }
-                    if(mDelegate->isFlippable() && qAbs(scaleX) != 0){
+                    if(mDelegate->testUBFlags(GF_FLIPPABLE_ALL_AXIS) && qAbs(scaleX) != 0){
                         if((qAbs(width * scaleX)) < 2*mFrameWidth){
                             bool negative = (scaleX < 0)?true:false;
                             if(negative){
@@ -482,7 +482,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                         scaleY = (height + moveY) / height;
                     }
 
-                    if(mDelegate->isFlippable() && qAbs(scaleY) != 0){
+                    if(mDelegate->testUBFlags(GF_FLIPPABLE_ALL_AXIS) && qAbs(scaleY) != 0){
                         if((qAbs(height * scaleY)) < 2*mFrameWidth){
                             bool negative = (scaleY < 0)?true:false;
                             if(negative){
@@ -883,7 +883,7 @@ void UBGraphicsDelegateFrame::positionHandles()
     mLeftResizeGripSvgItem->setVisible(!isLocked && (bShowHorizontalResizers || bShowAllResizers));
     mRightResizeGripSvgItem->setVisible(!isLocked && (bShowHorizontalResizers || bShowAllResizers));
     mTopResizeGripSvgItem->setVisible(!isLocked && (bShowVerticalResizers || bShowAllResizers));
-    mRotateButton->setVisible(mDelegate->canRotate() && !isLocked);
+    mRotateButton->setVisible(mDelegate->testUBFlags(GF_REVOLVABLE) && !isLocked);
 
     mBottomRightResizeGrip->setVisible(!isLocked && bShowAllResizers);
     mBottomResizeGrip->setVisible(!isLocked && (bShowVerticalResizers || bShowAllResizers));
@@ -947,7 +947,7 @@ UBGraphicsDelegateFrame::FrameTool UBGraphicsDelegateFrame::toolFromPos(QPointF 
                 return ResizeTop;
             }
         }
-    else if (rotateButtonBounds().contains(pos) && mDelegate && mDelegate->canRotate())
+    else if (rotateButtonBounds().contains(pos) && mDelegate && mDelegate->testUBFlags(GF_REVOLVABLE))
         return Rotate;
     else
         return Move;

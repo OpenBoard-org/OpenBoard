@@ -58,6 +58,7 @@ class UBGraphicsProxyWidget: public QGraphicsProxyWidget, public UBItem, public 
         virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
 
+        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 };

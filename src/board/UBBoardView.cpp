@@ -67,6 +67,7 @@
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBGraphicsStrokesGroup.h"
+#include "domain/UBGraphicsItemDelegate.h"
 
 #include "document/UBDocumentProxy.h"
 

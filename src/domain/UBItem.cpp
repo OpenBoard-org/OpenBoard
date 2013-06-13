@@ -33,6 +33,7 @@
 #include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
 #include "tools/UBGraphicsCurtainItem.h"
+#include "domain/UBGraphicsItemDelegate.h"
 
 UBItem::UBItem()
     : mUuid(QUuid())
@@ -56,6 +57,11 @@ void UBGraphicsItem::setDelegate(UBGraphicsItemDelegate* delegate)
 {
     Q_ASSERT(mDelegate==NULL);
     mDelegate = delegate;
+}
+
+UBGraphicsItemDelegate *UBGraphicsItem::Delegate() const
+{
+    return mDelegate;
 }
 
 void UBGraphicsItem::assignZValue(QGraphicsItem *item, qreal value)
