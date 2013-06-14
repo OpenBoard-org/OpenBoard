@@ -51,10 +51,10 @@ QString UBExportCFF::exportExtention()
 
 void UBExportCFF::persist(UBDocumentProxy* pDocument)
 {
-    QString src = pDocument->persistencePath();
-
     if (!pDocument)
         return;
+    
+    QString src = pDocument->persistencePath();
 
     QString filename = askForFileName(pDocument, tr("Export as IWB File"));
 

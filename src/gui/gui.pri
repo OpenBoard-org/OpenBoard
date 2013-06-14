@@ -25,7 +25,6 @@ HEADERS += src/gui/UBThumbnailView.h \
     src/gui/UBActionPalette.h \
     src/gui/UBFavoriteToolPalette.h \
     src/gui/UBKeyboardPalette.h \
-    src/gui/UBNavigatorPalette.h \
     src/gui/UBDocumentNavigator.h \
     src/gui/UBDockPalette.h \
     src/gui/UBPropertyPalette.h \
@@ -40,9 +39,6 @@ HEADERS += src/gui/UBThumbnailView.h \
     src/gui/UBDockDownloadWidget.h \
     src/gui/UBFeaturesWidget.h \
     src/gui/UBFeaturesActionBar.h \
-    src/gui/UBDockTeacherGuideWidget.h \
-    src/gui/UBTeacherGuideWidget.h \
-    src/gui/UBTeacherGuideWidgetsTools.h \
     src/gui/UBMessagesDialog.h
 SOURCES += src/gui/UBThumbnailView.cpp \
     src/gui/UBFloatingPalette.cpp \
@@ -71,7 +67,6 @@ SOURCES += src/gui/UBThumbnailView.cpp \
     src/gui/UBActionPalette.cpp \
     src/gui/UBFavoriteToolPalette.cpp \
     src/gui/UBKeyboardPalette.cpp \
-    src/gui/UBNavigatorPalette.cpp \
     src/gui/UBDocumentNavigator.cpp \
     src/gui/UBDockPalette.cpp \
     src/gui/UBPropertyPalette.cpp \
@@ -86,9 +81,6 @@ SOURCES += src/gui/UBThumbnailView.cpp \
     src/gui/UBDockDownloadWidget.cpp \
     src/gui/UBFeaturesWidget.cpp \
     src/gui/UBFeaturesActionBar.cpp \
-    src/gui/UBDockTeacherGuideWidget.cpp \
-    src/gui/UBTeacherGuideWidget.cpp \
-    src/gui/UBTeacherGuideWidgetsTools.cpp \
     src/gui/UBMessagesDialog.cpp
 win32:SOURCES += src/gui/UBKeyboardPalette_win.cpp
 macx:SOURCES += src/gui/UBKeyboardPalette_mac.cpp

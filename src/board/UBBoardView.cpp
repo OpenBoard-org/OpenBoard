@@ -47,7 +47,6 @@
 #include "gui/UBResources.h"
 #include "gui/UBMainWindow.h"
 #include "gui/UBThumbnailWidget.h"
-#include "gui/UBTeacherGuideWidgetsTools.h"
 
 #include "board/UBBoardController.h"
 #include "board/UBBoardPaletteManager.h"
@@ -552,17 +551,13 @@ Here we determines cases when items should to get mouse press event at pressing 
     case UBGraphicsPixmapItem::Type:
     case UBGraphicsTextItem::Type:
         if (currentTool == UBStylusTool::Play)
-            return true;
+            return false;
         if ((currentTool == UBStylusTool::Selector) && item->isSelected())
             return true;
         if ((currentTool == UBStylusTool::Selector) && item->parentItem() && item->parentItem()->isSelected())
             return true;
         if (currentTool != UBStylusTool::Selector)
             return false;
-        break;
-    case UBGraphicsItemType::StrokeItemType:
-        if (currentTool == UBStylusTool::Play)
-            return true;
         break;
     case UBGraphicsGroupContainerItem::Type:
         // Groups shouldn't reacts on any presses and moves for Play tool.
@@ -1330,6 +1325,7 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
             movingItem = NULL;
             bReleaseIsNeed = false;
         }
+
         if (mWidgetMoved)
         {
             mWidgetMoved = false;
@@ -1417,6 +1413,7 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 
             UBDrawingController::drawingController ()->setStylusTool (UBStylusTool::Selector);
 
+            textItem->setTextInteractionFlags(Qt::TextEditorInteraction);
             textItem->setSelected (true);
             textItem->setFocus();
         }
@@ -1565,9 +1562,7 @@ void UBBoardView::dropEvent (QDropEvent *event)
         if (!event->source()
                 || qobject_cast<UBThumbnailWidget *>(event->source())
                 || qobject_cast<QWebView*>(event->source())
-                || qobject_cast<UBTGMediaWidget*>(event->source())
-                || qobject_cast<QListView *>(event->source())
-                || qobject_cast<UBTGDraggableTreeItem*>(event->source())) {
+                || qobject_cast<QListView *>(event->source())) {
             mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
             event->acceptProposedAction();
         }

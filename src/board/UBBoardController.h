@@ -160,6 +160,7 @@ class UBBoardController : public UBDocumentContainer
         void notifyPageChanged();
         void displayMetaData(QMap<QString, QString> metadatas);
 
+        void fitUniqIems(const QUndoCommand *parent, QSet<QGraphicsItem *> &itms);
         void ClearUndoStack();
 
         void setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, int pSceneIndex = 0, bool forceReload = false);

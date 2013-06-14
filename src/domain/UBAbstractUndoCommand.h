@@ -44,7 +44,7 @@ class UBAbstractUndoCommand : public QUndoCommand
             undotype_GRAPHICSGROUPITEM     = 6
         };
 
-        virtual UndoType getType() { return undotype_UNKNOWN; }
+        virtual UndoType getType() const { return undotype_UNKNOWN; }
 
     protected:
         virtual void undo();

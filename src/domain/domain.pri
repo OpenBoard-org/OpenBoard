@@ -3,7 +3,6 @@ HEADERS += src/domain/UBGraphicsScene.h \
     src/domain/UBGraphicsTextItemUndoCommand.h \
     src/domain/UBGraphicsItemTransformUndoCommand.h \
     src/domain/UBGraphicsPixmapItem.h \
-    src/domain/UBDocumentUndoCommand.h \
     src/domain/UBPageSizeUndoCommand.h \
     src/domain/UBGraphicsProxyWidget.h \
     src/domain/UBGraphicsSvgItem.h \
@@ -26,13 +25,12 @@ HEADERS += src/domain/UBGraphicsScene.h \
     src/domain/UBGraphicsWidgetItemDelegate.h \
     src/domain/UBGraphicsMediaItemDelegate.h \
     src/domain/UBSelectionFrame.h
-    
+
 SOURCES += src/domain/UBGraphicsScene.cpp \
     src/domain/UBGraphicsItemUndoCommand.cpp \
     src/domain/UBGraphicsTextItemUndoCommand.cpp \
     src/domain/UBGraphicsItemTransformUndoCommand.cpp \
     src/domain/UBGraphicsPixmapItem.cpp \
-    src/domain/UBDocumentUndoCommand.cpp \
     src/domain/UBPageSizeUndoCommand.cpp \
     src/domain/UBGraphicsProxyWidget.cpp \
     src/domain/UBGraphicsSvgItem.cpp \

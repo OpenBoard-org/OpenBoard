@@ -66,7 +66,6 @@ signals:
     void clickOnBoard();
     void mouseReleased();
 
-
 protected:
 
     bool itemIsLocked(QGraphicsItem *item);

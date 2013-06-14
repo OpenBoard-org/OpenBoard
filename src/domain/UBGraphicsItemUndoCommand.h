@@ -45,8 +45,8 @@ class UBGraphicsItemUndoCommand : public UBAbstractUndoCommand
 
         virtual ~UBGraphicsItemUndoCommand();
 
-        QSet<QGraphicsItem*> GetAddedList() { return mAddedItems; }
-        QSet<QGraphicsItem*> GetRemovedList() { return mRemovedItems; }
+        QSet<QGraphicsItem*> GetAddedList() const { return mAddedItems; }
+        QSet<QGraphicsItem*> GetRemovedList() const { return mRemovedItems; }
 
         virtual UndoType getType() { return undotype_GRAPHICITEM; }
 

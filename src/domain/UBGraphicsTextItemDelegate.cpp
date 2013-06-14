@@ -132,7 +132,7 @@ void UBGraphicsTextItemDelegate::customize(QFontDialog &fontDialog)
         fontDialog.setStyleSheet("background-color: white;");
     }
 
-    QListView *fontNameListView;
+    QListView *fontNameListView = NULL;
     QList<QListView*> listViews = fontDialog.findChildren<QListView*>();
     if (listViews.count() > 0)
     {

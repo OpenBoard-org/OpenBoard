@@ -68,15 +68,21 @@ QString UBCryptoUtils::symetricEncrypt(const QString& clear)
     int paddingLength = 0;
     unsigned char *ciphertext = (unsigned char *)malloc(cipheredLength);
 
-    if(!EVP_EncryptInit_ex(&mAesEncryptContext, NULL, NULL, NULL, NULL))
+    if(!EVP_EncryptInit_ex(&mAesEncryptContext, NULL, NULL, NULL, NULL)){
+        free(ciphertext);
         return QString();
+    }
 
-    if(!EVP_EncryptUpdate(&mAesEncryptContext, ciphertext, &cipheredLength, (unsigned char *)clearData.data(), clearData.length()))
+    if(!EVP_EncryptUpdate(&mAesEncryptContext, ciphertext, &cipheredLength, (unsigned char *)clearData.data(), clearData.length())){
+        free(ciphertext);
         return QString();
+    }
 
     /* update ciphertext with the final remaining bytes */
-    if(!EVP_EncryptFinal_ex(&mAesEncryptContext, ciphertext + cipheredLength, &paddingLength))
+    if(!EVP_EncryptFinal_ex(&mAesEncryptContext, ciphertext + cipheredLength, &paddingLength)){
+        free(ciphertext);
         return QString();
+    }
 
     QByteArray cipheredData((const char *)ciphertext, cipheredLength + paddingLength);
 
@@ -94,14 +100,20 @@ QString UBCryptoUtils::symetricDecrypt(const QString& encrypted)
     int paddingLength = 0;
     unsigned char *plaintext = (unsigned char *)malloc(encryptedLength);
 
-    if(!EVP_DecryptInit_ex(&mAesDecryptContext, NULL, NULL, NULL, NULL))
+    if(!EVP_DecryptInit_ex(&mAesDecryptContext, NULL, NULL, NULL, NULL)){
+        free(plaintext);
         return QString();
+    }
 
-    if(!EVP_DecryptUpdate(&mAesDecryptContext, plaintext, &encryptedLength, (const unsigned char *)encryptedData.data(), encryptedData.length()))
+    if(!EVP_DecryptUpdate(&mAesDecryptContext, plaintext, &encryptedLength, (const unsigned char *)encryptedData.data(), encryptedData.length())){
+        free(plaintext);
         return QString();
+    }
 
-    if(!EVP_DecryptFinal_ex(&mAesDecryptContext, plaintext + encryptedLength, &paddingLength))
+    if(!EVP_DecryptFinal_ex(&mAesDecryptContext, plaintext + encryptedLength, &paddingLength)){
+        free(plaintext);
         return QString();
+    }
 
     int len = encryptedLength + paddingLength;
     QByteArray clearData((const char *)plaintext, len);

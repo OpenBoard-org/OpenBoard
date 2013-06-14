@@ -58,18 +58,9 @@ class UBWebController : public QObject
 
         QUrl currentPageUrl() const;
 
-        enum WebInstance
-        {
-            WebBrowser = 0, Tutorial, TotalNumberOfWebInstances
-        };
+        void show();
 
-        void show(WebInstance type = UBWebController::WebBrowser);
-
-        WBBrowserWindow* GetCurrentWebBrowser() 
-        { 
-            if( mCurrentWebBrowser != NULL ) return *mCurrentWebBrowser; 
-            else return NULL;
-        };
+        WBBrowserWindow* GetCurrentWebBrowser(){return mCurrentWebBrowser;}
 
 
     protected:
@@ -81,7 +72,6 @@ class UBWebController : public QObject
         void screenLayoutChanged();
 
         void setSourceWidget(QWidget* pWidget);
-        void toggleWebToolsPalette(bool checked);
         void captureWindow();
         void customCapture();
         void toogleMirroring(bool checked);
@@ -106,25 +96,19 @@ class UBWebController : public QObject
 
     private:
         void initialiazemOEmbedProviders();
-        void tutorialWebInstance();
         void webBrowserInstance();
         void lookForEmbedContent(QString* pHtml, QString tag, QString attribute, QList<QUrl>* pList);
         void checkForOEmbed(QString* pHtml);
 
-        QStackedWidget *mStackedWidget;
-
         UBMainWindow *mMainWindow;
 
-        WBBrowserWindow* mWebBrowserList[TotalNumberOfWebInstances];
-        WBBrowserWindow** mCurrentWebBrowser;
+        WBBrowserWindow* mCurrentWebBrowser;
 
         QWidget* mBrowserWidget;
         UBTrapFlashController* mTrapFlashController;
-        UBWebToolsPalette** mToolsCurrentPalette;
-        UBWebToolsPalette* mToolsPaletteList[TotalNumberOfWebInstances];
+        UBWebToolsPalette* mToolsCurrentPalette;
 
         bool mToolsPalettePositionned;
-        bool mToolsPalettePositionnedList[TotalNumberOfWebInstances];
 
         bool mDownloadViewIsVisible;
 

@@ -47,7 +47,7 @@ class UBMainWindow;
 
 class UBApplication : public QtSingleApplication
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
 

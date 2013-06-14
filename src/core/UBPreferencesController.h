@@ -57,13 +57,12 @@ protected:
 
 class UBPreferencesController : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBPreferencesController(QWidget *parent);
         virtual ~UBPreferencesController();
 
-        bool inputValuesConsistence();
 
     public slots:
 
@@ -89,9 +88,6 @@ class UBPreferencesController : public QObject
         void toolbarPositionChanged(bool checked);
         void toolbarOrientationVertical(bool checked);
         void toolbarOrientationHorizontal(bool checked);
-        void onCommunityUsernameChanged();
-        void onCommunityPasswordChanged();
-        void onCommunityPersistenceChanged();
 
     private slots:
         void adjustScreens(int screen);
@@ -100,7 +96,6 @@ class UBPreferencesController : public QObject
         static qreal sSliderRatio;
         static qreal sMinPenWidth;
         static qreal sMaxPenWidth;
-        void persistanceCheckboxUpdate();
         QDesktopWidget* mDesktop;
 
 };

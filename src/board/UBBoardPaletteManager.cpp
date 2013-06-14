@@ -40,8 +40,6 @@
 #include "gui/UBWebToolsPalette.h"
 #include "gui/UBActionPalette.h"
 #include "gui/UBFavoriteToolPalette.h"
-#include "gui/UBDockTeacherGuideWidget.h"
-
 
 #include "web/UBWebPage.h"
 #include "web/UBWebController.h"
@@ -92,7 +90,6 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mpPageNavigWidget(NULL)
     , mpCachePropWidget(NULL)
     , mpDownloadWidget(NULL)
-    , mpTeacherGuideWidget(NULL)
     , mDownloadInProgress(false)
 {
     setupPalettes();
@@ -143,12 +140,6 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mLeftPalette->registerWidget(mpPageNavigWidget);
     mLeftPalette->addTab(mpPageNavigWidget);
 
-    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool() || UBSettings::settings()->teacherGuideLessonPagesActivated->get().toBool()){
-        mpTeacherGuideWidget = new UBDockTeacherGuideWidget();
-        mLeftPalette->registerWidget(mpTeacherGuideWidget);
-        mLeftPalette->addTab(mpTeacherGuideWidget);
-    }
-
     mLeftPalette->connectSignals();
     mLeftPalette->showTabWidget(0);
 
@@ -186,14 +177,6 @@ void UBBoardPaletteManager::slot_changeMainMode(UBApplicationController::MainMod
                     changeMode(eUBDockPaletteWidget_BOARD);
             }
             break;
-
-        case UBApplicationController::Tutorial:
-            {
-                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
-                    mKeyboardPalette->hide();
-            }
-            break;
-
         case UBApplicationController::Internet:
             changeMode(eUBDockPaletteWidget_WEB);
             break;
@@ -335,10 +318,7 @@ void UBBoardPaletteManager::pagePaletteButtonReleased()
             mPagePalette = 0;
             QList<QAction*>pageActions;
             pageActions << UBApplication::mainWindow->actionNewPage;
-            UBBoardController* boardController = UBApplication::boardController;
-            if(UBApplication::documentController->pageCanBeDuplicated(UBDocumentContainer::pageFromSceneIndex(boardController->activeSceneIndex()))){
-                pageActions << UBApplication::mainWindow->actionDuplicatePage;
-            }
+            pageActions << UBApplication::mainWindow->actionDuplicatePage;
             pageActions << UBApplication::mainWindow->actionImportPage;
 
             mPagePalette = new UBActionPalette(pageActions, Qt::Horizontal , mContainer);

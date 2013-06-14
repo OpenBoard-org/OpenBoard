@@ -112,6 +112,7 @@ struct itemLayerType
         , Pointer
         , Cache
         , SelectedItem
+        , SelectionFrame
     };
 };
 
@@ -156,7 +157,8 @@ struct UBGraphicsItemType
         groupContainerType,
         ToolWidgetItemType,
         GraphicsWidgetItemType,
-        UserTypesCount // this line must be the last line in this enum because it is types counter.
+        UserTypesCount,
+        SelectionFrameType// this line must be the last line in this enum because it is types counter.
     };
 };
 

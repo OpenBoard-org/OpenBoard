@@ -62,11 +62,6 @@ void UBDocumentContainer::duplicatePages(QList<int>& pageIndexes)
 
 bool UBDocumentContainer::movePageToIndex(int source, int target)
 {
-    if (source==0)
-    {
-        // Title page - cant be moved
-        return false;
-    }
     UBPersistenceManager::persistenceManager()->moveSceneToIndex(mCurrentDocument, source, target);
     deleteThumbPage(source);
     insertThumbPage(target);
@@ -120,22 +115,17 @@ void UBDocumentContainer::reloadThumbnails()
     if (mCurrentDocument)
     {
         UBThumbnailAdaptor::load(mCurrentDocument, mDocumentThumbs);
-        qDebug() << "Reloading Thumbnails. new mDocumentThumbs size: " << mDocumentThumbs.size();
         emit documentThumbnailsUpdated(this);
     }
 }
 
 int UBDocumentContainer::pageFromSceneIndex(int sceneIndex)
 {
-    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
-        return sceneIndex;
     return sceneIndex+1;
 }
 
 int UBDocumentContainer::sceneIndexFromPage(int page)
 {
-    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
-        return page;
     return page-1;
 }
 

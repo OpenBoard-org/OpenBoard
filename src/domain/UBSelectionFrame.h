@@ -15,6 +15,7 @@ class UBSelectionFrame : public QObject, public QGraphicsRectItem
 
 public:
     enum {om_idle, om_moving, om_rotating} mOperationMode;
+    enum { Type = UBGraphicsItemType::PixmapItemType };
 
     UBSelectionFrame();
 
@@ -29,6 +30,7 @@ public:
     void updateRect();
     void updateScale();
     bool isEmpty() const {return this->rect().isEmpty();}
+    virtual int type() const {return Type;}
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -40,6 +42,10 @@ private slots:
     void onZoomChanged(qreal pZoom);
     void remove();
     void duplicate();
+    void increaseZlevelUp();
+    void increaseZlevelTop();
+    void increaseZlevelDown();
+    void increaseZlevelBottom();
 
 private:
     void translateItem(QGraphicsItem *item, const QPointF &translatePoint);
@@ -49,6 +55,7 @@ private:
     inline int adjThickness() const {return mThickness * mAntiscaleRatio;}
     inline UBGraphicsScene* ubscene();
 
+    QList<QGraphicsItem*> sortedByZ(const QList<QGraphicsItem*> &pItems);
     QList<DelegateButton*> buttonsForFlags(UBGraphicsFlags fls);
 
 

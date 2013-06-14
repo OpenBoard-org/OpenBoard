@@ -1082,7 +1082,7 @@ void UBDocumentController::moveSceneToIndex(UBDocumentProxy* proxy, int source, 
     {
         proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         UBMetadataDcSubsetAdaptor::persist(proxy);
-    
+
         mDocumentUI->thumbnailWidget->hightlightItem(target);
     }
 }
@@ -1147,11 +1147,11 @@ void UBDocumentController::selectionChanged()
     else if(pageSelected){
         QList<QGraphicsItem*> selection = mDocumentUI->thumbnailWidget->selectedItems();
         if(pageCount == 1)
-            mMainWindow->actionDuplicate->setEnabled(!trashSelected && pageCanBeDuplicated(UBDocumentContainer::pageFromSceneIndex(0)));
+            mMainWindow->actionDuplicate->setEnabled(!trashSelected);
         else{
             for(int i = 0; i < selection.count() && !firstSceneSelected; i += 1){
                 if(dynamic_cast<UBSceneThumbnailPixmap*>(selection.at(i))->sceneIndex() == 0){
-                    mMainWindow->actionDuplicate->setEnabled(!trashSelected && pageCanBeDuplicated(UBDocumentContainer::pageFromSceneIndex(0)));
+                    mMainWindow->actionDuplicate->setEnabled(!trashSelected);
                     firstSceneSelected = true;
                 }
             }
@@ -1630,32 +1630,6 @@ int UBDocumentController::getSelectedItemIndex()
     else return -1;
 }
 
-bool UBDocumentController::pageCanBeMovedUp(int page)
-{
-    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
-        return page >= 2;
-    else
-        return page >= 1;
-}
-
-bool UBDocumentController::pageCanBeMovedDown(int page)
-{
-    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
-        return page != 0 && page < selectedDocument()->pageCount() - 1;
-    else
-        return page < selectedDocument()->pageCount() - 1;
-}
-
-bool UBDocumentController::pageCanBeDuplicated(int page)
-{
-    return page != 0;
-}
-
-bool UBDocumentController::pageCanBeDeleted(int page)
-{
-    return page != 0;
-}
-
 void UBDocumentController::refreshDocumentThumbnailsView(UBDocumentContainer*)
 {
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -1668,9 +1642,9 @@ void UBDocumentController::refreshDocumentThumbnailsView(UBDocumentContainer*)
 
     QStringList labels;
 
-    if (proxy) 
+    if (proxy)
     {
-        setDocument(proxy); 
+        setDocument(proxy);
 
         for (int i = 0; i < selectedDocument()->pageCount(); i++)
         {
@@ -1684,10 +1658,7 @@ void UBDocumentController::refreshDocumentThumbnailsView(UBDocumentContainer*)
 
             items << pixmapItem;
             int pageIndex = pageFromSceneIndex(i);
-            if(pageIndex)
-                labels << tr("Page %1").arg(pageIndex);
-            else
-                labels << tr("Title page");
+            labels << tr("Page %1").arg(pageIndex);
 
             itemsPath.append(QUrl::fromLocalFile(proxy->persistencePath() + QString("/pages/%1").arg(UBDocumentContainer::pageFromSceneIndex(i))));
         }

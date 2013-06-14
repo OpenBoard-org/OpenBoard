@@ -59,7 +59,7 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent *event);
 
 private:
-    
+
     void refreshScene();
     int border();
 
@@ -76,6 +76,8 @@ private:
     int mThumbnailWidth;
     /** The current thumbnails minimum width */
     int mThumbnailMinWidth;
+    /** The selected thumbnail */
+    UBSceneThumbnailNavigPixmap* mSelectedThumbnail;
 };
- 
+
 #endif // UBDOCUMENTNAVIGATOR_H

@@ -23,6 +23,7 @@ UBSelectionFrame::UBSelectionFrame()
     setLocalBrush(QBrush(UBSettings::paletteColor));
     setPen(Qt::NoPen);
     setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::SelectionFrame)); //Necessary to set if we want z value to be assigned correctly
     setFlags(QGraphicsItem::ItemSendsGeometryChanges | QGraphicsItem::ItemIsSelectable | ItemIsMovable);
 
     connect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged(qreal)));
@@ -200,7 +201,7 @@ void UBSelectionFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent */*event*/)
     mPressedPos = mLastMovedPos = mLastTranslateOffset = QPointF();
 
     if (mOperationMode == om_moving || mOperationMode == om_rotating) {
-        UBApplication::undoStack->beginMacro("TransformationMacro");
+        UBApplication::undoStack->beginMacro(UBSettings::undoCommandTransactionName);
         foreach (UBGraphicsItemDelegate *d, mEnclosedtems) {
             d->commitUndoStep();
         }
@@ -230,7 +231,7 @@ void UBSelectionFrame::onZoomChanged(qreal pZoom)
 
 void UBSelectionFrame::remove()
 {
-    UBApplication::undoStack->beginMacro("RemovingSelected");
+    UBApplication::undoStack->beginMacro(UBSettings::undoCommandTransactionName);
     foreach (UBGraphicsItemDelegate *d, mEnclosedtems) {
         d->remove(true);
     }
@@ -241,13 +242,41 @@ void UBSelectionFrame::remove()
 
 void UBSelectionFrame::duplicate()
 {
-    UBApplication::undoStack->beginMacro("RemovingSelected");
+    UBApplication::undoStack->beginMacro(UBSettings::undoCommandTransactionName);
     foreach (UBGraphicsItemDelegate *d, mEnclosedtems) {
         d->duplicate();
     }
     UBApplication::undoStack->endMacro();
 
     updateRect();
+}
+
+void UBSelectionFrame::increaseZlevelUp()
+{
+    foreach (QGraphicsItem *item, sortedByZ(scene()->selectedItems())) {
+        ubscene()->changeZLevelTo(item, UBZLayerController::up);
+    }
+}
+
+void UBSelectionFrame::increaseZlevelTop()
+{
+    foreach (QGraphicsItem *item, sortedByZ(scene()->selectedItems())) {
+        ubscene()->changeZLevelTo(item, UBZLayerController::top);
+    }
+}
+
+void UBSelectionFrame::increaseZlevelDown()
+{
+    foreach (QGraphicsItem *item, sortedByZ(scene()->selectedItems())) {
+        ubscene()->changeZLevelTo(item, UBZLayerController::down);
+    }
+}
+
+void UBSelectionFrame::increaseZlevelBottom()
+{
+    foreach (QGraphicsItem *item, sortedByZ(scene()->selectedItems())) {
+        ubscene()->changeZLevelTo(item, UBZLayerController::bottom);
+    }
 }
 
 void UBSelectionFrame::translateItem(QGraphicsItem */*item*/, const QPointF &/*translatePoint*/)
@@ -327,6 +356,20 @@ inline UBGraphicsScene *UBSelectionFrame::ubscene()
     return qobject_cast<UBGraphicsScene*>(scene());
 }
 
+QList<QGraphicsItem*> UBSelectionFrame::sortedByZ(const QList<QGraphicsItem *> &pItems)
+{
+    //select only items wiht the same z-level as item's one and push it to sortedItems QMultiMap
+    QMultiMap<qreal, QGraphicsItem*> sortedItems;
+    foreach (QGraphicsItem *tmpItem, pItems) {
+        if (tmpItem->type() == Type) {
+            continue;
+        }
+        sortedItems.insert(tmpItem->data(UBGraphicsItemData::ItemOwnZValue).toReal(), tmpItem);
+    }
+
+    return sortedItems.values();
+}
+
 QList<DelegateButton*> UBSelectionFrame::buttonsForFlags(UBGraphicsFlags fls) {
 
     qDebug() << "buttons for flags" << QString::number((int)fls, 2);
@@ -351,15 +394,15 @@ QList<DelegateButton*> UBSelectionFrame::buttonsForFlags(UBGraphicsFlags fls) {
         if (!mZOrderUpButton) {
             mZOrderUpButton = new DelegateButton(":/images/z_layer_up.svg", this, 0, Qt::BottomLeftSection);
             mZOrderUpButton->setShowProgressIndicator(true);
-            //        connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZLevelUp()));
-            //        connect(mZOrderUpButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelTop()));
+            connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZlrfevelUp()));
+            connect(mZOrderUpButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelTop()));
         }
 
         if (!mZOrderDownButton) {
             mZOrderDownButton = new DelegateButton(":/images/z_layer_down.svg", this, 0, Qt::BottomLeftSection);
             mZOrderDownButton->setShowProgressIndicator(true);
-            //        connect(mZOrderDownButton, SIGNAL(clicked()), this, SLOT(increaseZLevelDown()));
-            //        connect(mZOrderDownButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelBottom()));
+            connect(mZOrderDownButton, SIGNAL(clicked()), this, SLOT(increaseZlevelDown()));
+            connect(mZOrderDownButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelBottom()));
         }
 
         result << mZOrderUpButton;

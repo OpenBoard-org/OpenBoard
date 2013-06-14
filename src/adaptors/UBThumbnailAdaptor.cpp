@@ -31,10 +31,6 @@
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 
-
-#include "gui/UBDockTeacherGuideWidget.h"
-#include "gui/UBTeacherGuideWidget.h"
-
 #include "board/UBBoardController.h"
 #include "board/UBBoardPaletteManager.h"
 
@@ -104,20 +100,8 @@ const QPixmap* UBThumbnailAdaptor::get(UBDocumentProxy* proxy, int pageIndex)
     return pix;
 }
 
-void UBThumbnailAdaptor::updateDocumentToHandleZeroPage(UBDocumentProxy* proxy)
-{
-    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool()){
-        QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", 0);
-        QFile file(fileName);
-        if(!file.exists()){
-            UBPersistenceManager::persistenceManager()->persistDocumentScene(proxy,new UBGraphicsScene(proxy),0);
-        }
-    }
-}
-
 void UBThumbnailAdaptor::load(UBDocumentProxy* proxy, QList<const QPixmap*>& list)
 {
-    updateDocumentToHandleZeroPage(proxy);
     generateMissingThumbnails(proxy);
 
     foreach(const QPixmap* pm, list){
@@ -135,7 +119,7 @@ void UBThumbnailAdaptor::persistScene(UBDocumentProxy* proxy, UBGraphicsScene* p
 
     QFile thumbFile(fileName);
 
-    if (pScene->isModified() || overrideModified || !thumbFile.exists() || UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified())
+    if (pScene->isModified() || overrideModified || !thumbFile.exists())
     {
         qreal nominalWidth = pScene->nominalSize().width();
         qreal nominalHeight = pScene->nominalSize().height();
@@ -166,12 +150,6 @@ void UBThumbnailAdaptor::persistScene(UBDocumentProxy* proxy, UBGraphicsScene* p
         pScene->setRenderingQuality(UBItem::RenderingQualityHigh);
 
         pScene->render(&painter, imageRect, sceneRect, Qt::KeepAspectRatio);
-
-        if(UBApplication::boardController->paletteManager()->teacherGuideDockWidget() && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified()){
-            QPixmap toque(":images/toque.svg");
-            painter.setOpacity(0.6);
-            painter.drawPixmap(QPoint(width - toque.width(),0),toque);
-        }
 
         pScene->setRenderingContext(UBGraphicsScene::Screen);
         pScene->setRenderingQuality(UBItem::RenderingQualityNormal);

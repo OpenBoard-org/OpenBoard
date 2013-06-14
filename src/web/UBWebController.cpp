@@ -70,20 +70,6 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
     , mToolsPalettePositionned(false)
     , mDownloadViewIsVisible(false)
 {
-    connect(mMainWindow->actionWebTools, SIGNAL(toggled(bool)), this, SLOT(toggleWebToolsPalette(bool)));
-
-    mStackedWidget = new QStackedWidget();
-    mStackedWidget->addWidget(new QWidget(mStackedWidget));
-    mStackedWidget->addWidget(new QWidget(mStackedWidget));
-
-    mMainWindow->addWebWidget(mStackedWidget);
-
-    for (int i = 0; i < TotalNumberOfWebInstances; i += 1){
-        mWebBrowserList[i] = 0;
-        mToolsPaletteList[i] = 0;
-        mToolsPalettePositionnedList[i] = false;
-    }
-
     connect(&mOEmbedParser, SIGNAL(oembedParsed(QVector<sOEmbedContent>)), this, SLOT(onOEmbedParsed(QVector<sOEmbedContent>)));
 
     // TODO : Comment the next line to continue the Youtube button bugfix
@@ -94,9 +80,6 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
 UBWebController::~UBWebController()
 {
     // NOOP
-    if (mStackedWidget) {
-        delete mStackedWidget;
-    }
 }
 
 void UBWebController::initialiazemOEmbedProviders()
@@ -130,17 +113,15 @@ void UBWebController::webBrowserInstance()
     }
     else
     {
-        mCurrentWebBrowser = &mWebBrowserList[WebBrowser];
-        mToolsCurrentPalette = &mToolsPaletteList[WebBrowser];
-        mToolsPalettePositionned = mToolsPalettePositionnedList[WebBrowser];
-
-        if (!(*mCurrentWebBrowser))
+        if (!mCurrentWebBrowser)
         {
-            (*mCurrentWebBrowser) = new WBBrowserWindow(mMainWindow->centralWidget(), mMainWindow);
+            mCurrentWebBrowser = new WBBrowserWindow(mMainWindow->centralWidget(), mMainWindow);
 
-            connect((*mCurrentWebBrowser), SIGNAL(activeViewChange(QWidget*)), this, SLOT(setSourceWidget(QWidget*)));
+            mMainWindow->addWebWidget(mCurrentWebBrowser);
 
-            WBBrowserWindow::downloadManager()->setParent((*mCurrentWebBrowser), Qt::Tool);
+            connect(mCurrentWebBrowser, SIGNAL(activeViewChange(QWidget*)), this, SLOT(setSourceWidget(QWidget*)));
+
+            WBBrowserWindow::downloadManager()->setParent(mCurrentWebBrowser, Qt::Tool);
 
             UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->webToolBar, mMainWindow->actionBoard, 32);
             UBApplication::app()->decorateActionMenu(mMainWindow->actionMenu);
@@ -149,28 +130,21 @@ void UBWebController::webBrowserInstance()
             mMainWindow->actionBookmarks->setVisible(showAddBookmarkButtons);
             mMainWindow->actionAddBookmark->setVisible(showAddBookmarkButtons);
 
-            mStackedWidget->setCurrentIndex(WebBrowser);
-            if (mStackedWidget->currentWidget()) {
-                mStackedWidget->removeWidget(mStackedWidget->currentWidget());
-            }
-            mStackedWidget->insertWidget(WebBrowser, (*mCurrentWebBrowser));
-
             showTabAtTop(UBSettings::settings()->appToolBarPositionedAtTop->get().toBool());
 
             adaptToolBar();
 
-            mTrapFlashController = new UBTrapFlashController((*mCurrentWebBrowser));
+            mTrapFlashController = new UBTrapFlashController(mCurrentWebBrowser);
 
-            connect((*mCurrentWebBrowser), SIGNAL(activeViewPageChanged()), this, SLOT(activePageChanged()));
+            connect(mCurrentWebBrowser, SIGNAL(activeViewPageChanged()), this, SLOT(activePageChanged()));
 
-            (*mCurrentWebBrowser)->loadUrl(currentUrl);
+            mCurrentWebBrowser->loadUrl(currentUrl);
 
-            (*mCurrentWebBrowser)->tabWidget()->tabBar()->show();
-            (*mCurrentWebBrowser)->tabWidget()->lineEdits()->show();
+            mCurrentWebBrowser->tabWidget()->tabBar()->show();
+            mCurrentWebBrowser->tabWidget()->lineEdits()->show();
         }
 
-        mStackedWidget->setCurrentIndex(WebBrowser);
-        UBApplication::applicationController->setMirrorSourceWidget((*mCurrentWebBrowser)->paintWidget());
+        UBApplication::applicationController->setMirrorSourceWidget(mCurrentWebBrowser->paintWidget());
         mMainWindow->switchToWebWidget();
 
         setupPalettes();
@@ -178,87 +152,16 @@ void UBWebController::webBrowserInstance()
 
         bool mirroring = UBSettings::settings()->webShowPageImmediatelyOnMirroredScreen->get().toBool();
         UBApplication::mainWindow->actionWebShowHideOnDisplay->setChecked(mirroring);
-        (*mToolsCurrentPalette)->show();
+        mToolsCurrentPalette->show();
     }
 
     if (mDownloadViewIsVisible)
         WBBrowserWindow::downloadManager()->show();
 }
 
-void UBWebController::tutorialWebInstance()
+void UBWebController::show()
 {
-    QLocale locale = QLocale();
-    QString language = "_" + locale.name().left(2);
-
-    QString tutorialHtmlIndexFile = 0;
-    QString tutorialPath = "/etc/Tutorial/tutorial" + language + "/index.html";
-#if defined(Q_WS_MAC)
-    tutorialHtmlIndexFile = QApplication::applicationDirPath()+ "/../Resources" + tutorialPath;
-#else
-    tutorialHtmlIndexFile = QApplication::applicationDirPath() + tutorialPath;
-#endif
-
-    QUrl currentUrl = QUrl::fromLocalFile(tutorialHtmlIndexFile);
-
-    if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
-    {
-        QDesktopServices::openUrl(currentUrl);
-    }
-    else
-    {
-        mCurrentWebBrowser = &mWebBrowserList[Tutorial];
-        mToolsPalettePositionned = &mToolsPalettePositionnedList[Tutorial];
-
-        if (!(*mCurrentWebBrowser))
-        {
-            (*mCurrentWebBrowser) = new WBBrowserWindow(mMainWindow->centralWidget(), mMainWindow, true);
-            connect((*mCurrentWebBrowser), SIGNAL(activeViewChange(QWidget*)), this, SLOT(setSourceWidget(QWidget*)));
-
-            mStackedWidget->setCurrentIndex(Tutorial);
-            if (mStackedWidget->currentWidget()) {
-                mStackedWidget->removeWidget(mStackedWidget->currentWidget());
-            }
-            mStackedWidget->insertWidget(Tutorial, (*mCurrentWebBrowser));
-            adaptToolBar();
-
-            mTrapFlashController = new UBTrapFlashController((*mCurrentWebBrowser));
-
-            connect((*mCurrentWebBrowser), SIGNAL(activeViewPageChanged()), this, SLOT(activePageChanged()));
-            (*mCurrentWebBrowser)->loadUrl(currentUrl);
-
-            (*mCurrentWebBrowser)->tabWidget()->tabBar()->hide();
-            (*mCurrentWebBrowser)->tabWidget()->lineEdits()->hide();
-
-        }
-        else
-            (*mCurrentWebBrowser)->loadUrl(currentUrl);
-
-        mStackedWidget->setCurrentIndex(Tutorial);
-        UBApplication::applicationController->setMirrorSourceWidget((*mCurrentWebBrowser)->paintWidget());
-        mMainWindow->switchToWebWidget();
-        screenLayoutChanged();
-
-        bool mirroring = UBSettings::settings()->webShowPageImmediatelyOnMirroredScreen->get().toBool();
-        UBApplication::mainWindow->actionWebShowHideOnDisplay->setChecked(mirroring);
-
-    }
-
-}
-
-void UBWebController::show(WebInstance type)
-{
-    switch(type)
-    {
-    case WebBrowser:
-        webBrowserInstance();
-        break;
-    case Tutorial:
-        tutorialWebInstance();
-        break;
-    default:
-        qCritical() << __FILE__ << " non supported web instance type " << QString::number(type) ;
-        break;
-    }
+    webBrowserInstance();
 }
 
 void UBWebController::setSourceWidget(QWidget* pWidget)
@@ -277,16 +180,14 @@ void UBWebController::trapFlash()
 
 void UBWebController::activePageChanged()
 {
-    if (mCurrentWebBrowser && (*mCurrentWebBrowser)->currentTabWebView())
+    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView())
     {
-        if (mTrapFlashController && (*mCurrentWebBrowser)->currentTabWebView()->page())
-        {
-            mTrapFlashController->updateTrapFlashFromPage((*mCurrentWebBrowser)->currentTabWebView()->page()->currentFrame());
-        }
+        if (mTrapFlashController && mCurrentWebBrowser->currentTabWebView()->page())
+            mTrapFlashController->updateTrapFlashFromPage(mCurrentWebBrowser->currentTabWebView()->page()->currentFrame());
 
         mMainWindow->actionWebTrap->setChecked(false);
 
-        QUrl latestUrl = (*mCurrentWebBrowser)->currentTabWebView()->url();
+        QUrl latestUrl = mCurrentWebBrowser->currentTabWebView()->url();
 
         // TODO : Uncomment the next line to continue the youtube button bugfix
         //UBApplication::mainWindow->actionWebOEmbed->setEnabled(hasEmbeddedContent());
@@ -294,7 +195,7 @@ void UBWebController::activePageChanged()
         UBApplication::mainWindow->actionWebOEmbed->setEnabled(isOEmbedable(latestUrl));
         UBApplication::mainWindow->actionEduMedia->setEnabled(isEduMedia(latestUrl));
 
-        emit activeWebPageChanged((*mCurrentWebBrowser)->currentTabWebView());
+        emit activeWebPageChanged(mCurrentWebBrowser->currentTabWebView());
     }
 }
 
@@ -302,7 +203,7 @@ bool UBWebController::hasEmbeddedContent()
 {
     bool bHasContent = false;
     if(mCurrentWebBrowser){
-        QString html = (*mCurrentWebBrowser)->currentTabWebView()->webPage()->mainFrame()->toHtml();
+        QString html = mCurrentWebBrowser->currentTabWebView()->webPage()->mainFrame()->toHtml();
 
         // search the presence of "+oembed"
         QString query = "\\+oembed([^>]*)>";
@@ -334,12 +235,11 @@ QPixmap UBWebController::captureCurrentPage()
     QPixmap pix;
 
     if (mCurrentWebBrowser
-            && (*mCurrentWebBrowser)
-            && (*mCurrentWebBrowser)->currentTabWebView()
-            && (*mCurrentWebBrowser)->currentTabWebView()->page()
-            && (*mCurrentWebBrowser)->currentTabWebView()->page()->mainFrame())
+            && mCurrentWebBrowser->currentTabWebView()
+            && mCurrentWebBrowser->currentTabWebView()->page()
+            && mCurrentWebBrowser->currentTabWebView()->page()->mainFrame())
     {
-        QWebFrame* frame = (*mCurrentWebBrowser)->currentTabWebView()->page()->mainFrame();
+        QWebFrame* frame = mCurrentWebBrowser->currentTabWebView()->page()->mainFrame();
         QSize size = frame->contentsSize();
 
         qDebug() << size;
@@ -349,8 +249,8 @@ QPixmap UBWebController::captureCurrentPage()
         QVariant width = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientWidth");
         QVariant height = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientHeight");
 
-        QSize vieportSize = (*mCurrentWebBrowser)->currentTabWebView()->page()->viewportSize();
-        (*mCurrentWebBrowser)->currentTabWebView()->page()->setViewportSize(frame->contentsSize());
+        QSize vieportSize = mCurrentWebBrowser->currentTabWebView()->page()->viewportSize();
+        mCurrentWebBrowser->currentTabWebView()->page()->setViewportSize(frame->contentsSize());
         pix = QPixmap(frame->geometry().width(), frame->geometry().height());
 
         {
@@ -374,7 +274,7 @@ QPixmap UBWebController::captureCurrentPage()
         }
 
 
-        (*mCurrentWebBrowser)->currentTabWebView()->page()->setViewportSize(vieportSize);
+        mCurrentWebBrowser->currentTabWebView()->page()->setViewportSize(vieportSize);
     }
 
     return pix;
@@ -383,10 +283,10 @@ QPixmap UBWebController::captureCurrentPage()
 
 void UBWebController::setupPalettes()
 {
-    if(!(*mToolsCurrentPalette))
+    if(!mToolsCurrentPalette)
     {
-        (*mToolsCurrentPalette) = new UBWebToolsPalette(UBApplication::mainWindow, false);
-        UBApplication::boardController->paletteManager()->setCurrentWebToolsPalette(*mToolsCurrentPalette);
+        mToolsCurrentPalette = new UBWebToolsPalette(UBApplication::mainWindow);
+        UBApplication::boardController->paletteManager()->setCurrentWebToolsPalette(mToolsCurrentPalette);
 #ifndef Q_WS_WIN
         if (UBPlatformUtils::hasVirtualKeyboard() && UBApplication::boardController->paletteManager()->mKeyboardPalette)
             connect(UBApplication::boardController->paletteManager()->mKeyboardPalette, SIGNAL(closed()),
@@ -402,15 +302,14 @@ void UBWebController::setupPalettes()
         connect(mMainWindow->actionWebShowHideOnDisplay, SIGNAL(toggled(bool)), this, SLOT(toogleMirroring(bool)));
         connect(mMainWindow->actionWebTrap, SIGNAL(toggled(bool)), this, SLOT(toggleWebTrap(bool)));
 
-        (*mToolsCurrentPalette)->hide();
-        (*mToolsCurrentPalette)->adjustSizeAndPosition();
+        mToolsCurrentPalette->hide();
+        mToolsCurrentPalette->adjustSizeAndPosition();
 
         if (controlView()){
-            int left = controlView()->width() - 20 - (*mToolsCurrentPalette)->width();
-            int top = (controlView()->height() - (*mToolsCurrentPalette)->height()) / 2;
-            mToolsPalettePositionnedList[mStackedWidget->currentIndex()] = true;
-            (*mToolsCurrentPalette)->setCustomPosition(true);
-            (*mToolsCurrentPalette)->move(left, top);
+            int left = controlView()->width() - 20 - mToolsCurrentPalette->width();
+            int top = (controlView()->height() - mToolsCurrentPalette->height()) / 2;
+            mToolsCurrentPalette->setCustomPosition(true);
+            mToolsCurrentPalette->move(left, top);
         }
         mMainWindow->actionWebTools->trigger();
     }
@@ -419,17 +318,8 @@ void UBWebController::setupPalettes()
 
 void UBWebController::toggleWebTrap(bool checked)
 {
-    if (mCurrentWebBrowser
-            && (*mCurrentWebBrowser)
-            && (*mCurrentWebBrowser)->currentTabWebView())
-    {
-        (*mCurrentWebBrowser)->currentTabWebView()->setIsTrapping(checked);
-    }
-}
-
-void UBWebController::toggleWebToolsPalette(bool checked)
-{
-    (*mToolsCurrentPalette)->setVisible(checked);
+    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView())
+        mCurrentWebBrowser->currentTabWebView()->setIsTrapping(checked);
 }
 
 
@@ -438,28 +328,26 @@ void UBWebController::captureWindow()
     QPixmap webPagePixmap = captureCurrentPage();
 
     if (!webPagePixmap.isNull())
-    {
-        emit imageCaptured(webPagePixmap, true, (*mCurrentWebBrowser)->currentTabWebView()->url());
-    }
+        emit imageCaptured(webPagePixmap, true, mCurrentWebBrowser->currentTabWebView()->url());
 }
 
 
 void UBWebController::customCapture()
 {
-    (*mToolsCurrentPalette)->setVisible(false);
+    mToolsCurrentPalette->setVisible(false);
     qApp->processEvents();
 
-    UBCustomCaptureWindow customCaptureWindow((*mCurrentWebBrowser));
+    UBCustomCaptureWindow customCaptureWindow(mCurrentWebBrowser);
 
     customCaptureWindow.show();
 
     if (customCaptureWindow.execute(getScreenPixmap()) == QDialog::Accepted)
     {
         QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
-        emit imageCaptured(selectedPixmap, false, (*mCurrentWebBrowser)->currentTabWebView()->url());
+        emit imageCaptured(selectedPixmap, false, mCurrentWebBrowser->currentTabWebView()->url());
     }
 
-    (*mToolsCurrentPalette)->setVisible(true);
+    mToolsCurrentPalette->setVisible(true);
 }
 
 
@@ -505,27 +393,27 @@ void UBWebController::adaptToolBar()
     mMainWindow->actionWebReload->setVisible(highResolution);
     mMainWindow->actionStopLoading->setVisible(highResolution);
 
-    if(mCurrentWebBrowser && (*mCurrentWebBrowser) )
-        (*mCurrentWebBrowser)->adaptToolBar(highResolution);
+    if(mCurrentWebBrowser )
+        mCurrentWebBrowser->adaptToolBar(highResolution);
 
 }
 
 
 void UBWebController::showTabAtTop(bool attop)
 {
-    if (mCurrentWebBrowser && (*mCurrentWebBrowser))
-        (*mCurrentWebBrowser)->showTabAtTop(attop);
+    if (mCurrentWebBrowser)
+        mCurrentWebBrowser->showTabAtTop(attop);
 }
 
 void UBWebController::captureoEmbed()
 {
-    if ( mCurrentWebBrowser  && (*mCurrentWebBrowser) && (*mCurrentWebBrowser)->currentTabWebView()){
+    if ( mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView()){
         // TODO : Uncomment the next lines to continue the youtube button bugfix
         //    getEmbeddableContent();
 
         // And comment from here
 
-        QWebView* webView = (*mCurrentWebBrowser)->currentTabWebView();
+        QWebView* webView = mCurrentWebBrowser->currentTabWebView();
         QUrl currentUrl = webView->url();
 
         if (isOEmbedable(currentUrl))
@@ -576,9 +464,9 @@ void UBWebController::getEmbeddableContent()
 {
     // Get the source code of the page
     if(mCurrentWebBrowser){
-        QNetworkAccessManager* pNam = (*mCurrentWebBrowser)->currentTabWebView()->webPage()->networkAccessManager();
+        QNetworkAccessManager* pNam = mCurrentWebBrowser->currentTabWebView()->webPage()->networkAccessManager();
         if(NULL != pNam){
-            QString html = (*mCurrentWebBrowser)->currentTabWebView()->webPage()->mainFrame()->toHtml();
+            QString html = mCurrentWebBrowser->currentTabWebView()->webPage()->mainFrame()->toHtml();
             mOEmbedParser.setNetworkAccessManager(pNam);
 
             // First, we have to check if there is some oembed content
@@ -591,10 +479,9 @@ void UBWebController::getEmbeddableContent()
 
 void UBWebController::captureEduMedia()
 {
-    if (mCurrentWebBrowser && (*mCurrentWebBrowser)
-            && (*mCurrentWebBrowser)->currentTabWebView())
+    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView())
     {
-        QWebView* webView = (*mCurrentWebBrowser)->currentTabWebView();
+        QWebView* webView = mCurrentWebBrowser->currentTabWebView();
         QUrl currentUrl = webView->url();
 
         if (isEduMedia(currentUrl))
@@ -681,40 +568,31 @@ bool UBWebController::isEduMedia(const QUrl& pUrl)
 
 void UBWebController::loadUrl(const QUrl& url)
 {
-    bool webBrowserAlreadyInstanciated = dynamic_cast<WBBrowserWindow*>(mStackedWidget->widget(WebBrowser)) != NULL;
     UBApplication::applicationController->showInternet();
     if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
-    {
+
         QDesktopServices::openUrl(url);
-    }
     else
-    {
-        if (!webBrowserAlreadyInstanciated) {
-            (*mCurrentWebBrowser)->loadUrl(url);
-        }
-        else {
-            (*mCurrentWebBrowser)->loadUrlInNewTab(url);
-        }
-    }
+        mCurrentWebBrowser->loadUrlInNewTab(url);
+
+
 }
 
 
 QWebView* UBWebController::createNewTab()
 {
-    if (mCurrentWebBrowser && !(*mCurrentWebBrowser))
-    {
+    if (mCurrentWebBrowser)
         UBApplication::applicationController->showInternet();
-    }
 
-    return (*mCurrentWebBrowser)->createNewTab();
+    return mCurrentWebBrowser->createNewTab();
 }
 
 
 void UBWebController::copy()
 {
-    if (mCurrentWebBrowser && (*mCurrentWebBrowser) && (*mCurrentWebBrowser)->currentTabWebView())
+    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView())
     {
-        QWebView* webView = (*mCurrentWebBrowser)->currentTabWebView();
+        QWebView* webView = mCurrentWebBrowser->currentTabWebView();
         QAction *act = webView->pageAction(QWebPage::Copy);
         if(act)
             act->trigger();
@@ -724,9 +602,9 @@ void UBWebController::copy()
 
 void UBWebController::paste()
 {
-    if (mCurrentWebBrowser && (*mCurrentWebBrowser) && (*mCurrentWebBrowser)->currentTabWebView())
+    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView())
     {
-        QWebView* webView = (*mCurrentWebBrowser)->currentTabWebView();
+        QWebView* webView = mCurrentWebBrowser->currentTabWebView();
         QAction *act = webView->pageAction(QWebPage::Paste);
         if(act)
             act->trigger();
@@ -736,9 +614,9 @@ void UBWebController::paste()
 
 void UBWebController::cut()
 {
-    if (mCurrentWebBrowser && (*mCurrentWebBrowser) && (*mCurrentWebBrowser)->currentTabWebView())
+    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView())
     {
-        QWebView* webView = (*mCurrentWebBrowser)->currentTabWebView();
+        QWebView* webView = mCurrentWebBrowser->currentTabWebView();
         QAction *act = webView->pageAction(QWebPage::Cut);
         if(act)
             act->trigger();

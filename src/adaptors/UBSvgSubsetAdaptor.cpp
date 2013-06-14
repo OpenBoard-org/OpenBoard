@@ -63,11 +63,6 @@
 #include "core/UBPersistenceManager.h"
 #include "core/UBApplication.h"
 
-#include "gui/UBTeacherGuideWidget.h"
-#include "gui/UBDockTeacherGuideWidget.h"
-
-#include "interfaces/IDataStorage.h"
-
 #include "document/UBDocumentContainer.h"
 
 #include "pdf/PDFRenderer.h"
@@ -91,8 +86,6 @@ const QString tGroup = "group";
 const QString tStrokeGroup = "strokeGroup";
 const QString tGroups = "groups";
 const QString aId = "id";
-
-QMap<QString,IDataStorage*> UBSvgSubsetAdaptor::additionalElementToStore;
 
 QString UBSvgSubsetAdaptor::toSvgTransform(const QMatrix& matrix)
 {
@@ -228,17 +221,6 @@ void UBSvgSubsetAdaptor::setSceneUuid(UBDocumentProxy* proxy, const int pageInde
     }
 }
 
-bool UBSvgSubsetAdaptor::addElementToBeStored(QString domName, IDataStorage *dataStorageClass)
-{
-    if(domName.isEmpty() || additionalElementToStore.contains(domName)){
-        qWarning() << "Error adding the element that should persist";
-        return false;
-    }
-
-    additionalElementToStore.insert(domName,dataStorageClass);
-    return true;
-}
-
 QString UBSvgSubsetAdaptor::uniboardDocumentNamespaceUriFromVersion(int mFileVersion)
 {
     return mFileVersion >= 40200 ? UBSettings::uniboardDocumentNamespaceUri : sFormerUniboardDocumentNamespaceUri;
@@ -322,54 +304,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const QBy
     UBSvgSubsetReader reader(proxy, pArray);
     return reader.loadScene();
 }
-
-
-QString UBSvgSubsetAdaptor::readTeacherGuideNode(int sceneIndex)
-{
-    QString result;
-
-    QString fileName = UBApplication::boardController->selectedDocument()->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", sceneIndex);
-    QFile file(fileName);
-    file.open(QIODevice::ReadOnly);
-    QByteArray fileByteArray=file.readAll();
-    file.close();
-    QXmlStreamReader mXmlReader(fileByteArray);
-
-    while (!mXmlReader.atEnd())
-    {
-        mXmlReader.readNext();
-        if (mXmlReader.isStartElement())
-        {
-            if (mXmlReader.name() == "teacherBar" || mXmlReader.name() == "teacherGuide"){
-                result.clear();
-                result += "<teacherGuide version=\"" + mXmlReader.attributes().value("version").toString() + "\">";
-                result += "\n";
-            }
-            else if (mXmlReader.name() == "media" || mXmlReader.name() == "link" || mXmlReader.name() == "title" || mXmlReader.name() == "comment" || mXmlReader.name() == "action")
-            {
-                result += "<" + mXmlReader.name().toString() + " ";
-                foreach(QXmlStreamAttribute attribute, mXmlReader.attributes())
-                    result += attribute.name().toString() + "=\"" + attribute.value().toString() + "\" ";
-                result += " />\n";
-            }
-            else
-            {
-                // NOOP
-            }
-        }
-        else if (mXmlReader.isEndElement() && (mXmlReader.name() == "teacherBar" || mXmlReader.name() == "teacherGuide")){
-            result += "</teacherGuide>";
-        }
-    }
-
-    if (mXmlReader.hasError())
-    {
-        qWarning() << "error parsing Sankore file " << mXmlReader.errorString();
-    }
-
-    return result;
-}
-
 
 UBSvgSubsetAdaptor::UBSvgSubsetReader::UBSvgSubsetReader(UBDocumentProxy* pProxy, const QByteArray& pXmlData)
     : mXmlReader(pXmlData)
@@ -1070,7 +1004,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
 
 bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
 {
-    if (mScene->isModified() || (UBApplication::boardController->paletteManager()->teacherGuideDockWidget() && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified()))
+    Q_UNUSED(pageIndex);
+    if (mScene->isModified())
     {
 
         //Creating dom structure to store information
@@ -1108,7 +1043,6 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
         qSort(items.begin(), items.end(), itemZIndexComp);
 
         UBGraphicsStroke *openStroke = 0;
-        int nextStroke = 0;
 
         bool groupHoldsInfo = false;
 
@@ -1121,32 +1055,12 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
 
             if(strokesGroupItem && strokesGroupItem->isVisible()){
                 // Add the polygons
-                //parsing number of polygons into one polygon
-                qDebug() << "parsing stroke number" << nextStroke++;
-                UBGraphicsPolygonItem *resultPoly = 0;
-
-                foreach(QGraphicsItem* item, strokesGroupItem->childItems()) {
+                foreach(QGraphicsItem* item, strokesGroupItem->childItems()){
                     UBGraphicsPolygonItem* poly = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
-                    if (!poly)
-                        continue;
-                    if (!resultPoly) {
-                        resultPoly = poly;
-                        continue;
+                    if(NULL != poly){
+                        polygonItemToSvgPolygon(poly, true);
+                        items.removeOne(poly);
                     }
-
-                    QPolygonF unitedPolygon = resultPoly->polygon().united(poly->polygon());
-                    resultPoly->setPolygon(unitedPolygon);
-                    items.removeOne(poly);
-                }
-                if (resultPoly) {
-                    resultPoly->setZValue(strokesGroupItem->zValue());
-                    //Claudio: the painter path simplification remove all the polygons overlap
-                    QPainterPath painterPath;
-                    painterPath.addPolygon(resultPoly->polygon());
-                    painterPath = painterPath.simplified();
-                    resultPoly->setPolygon(painterPath.toFillPolygon());
-                    polygonItemToSvgPolygon(resultPoly, false);
-                    items.removeOne(resultPoly);
                 }
             }
 
@@ -1347,29 +1261,6 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
             openStroke = 0;
         }
 
-        QMap<QString,IDataStorage*> elements = getAdditionalElementToStore();
-        QVector<tIDataStorage*> dataStorageItems;
-
-        if(elements.value("teacherGuide"))
-            dataStorageItems = elements.value("teacherGuide")->save(pageIndex);
-        foreach(tIDataStorage* eachItem, dataStorageItems){
-            if(eachItem->type == eElementType_START){
-                mXmlWriter.writeStartElement(eachItem->name);
-                foreach(QString key,eachItem->attributes.keys())
-                    mXmlWriter.writeAttribute(key,eachItem->attributes.value(key));
-            }
-            else if (eachItem->type == eElementType_END)
-                mXmlWriter.writeEndElement();
-            else if (eachItem->type == eElementType_UNIQUE){
-                mXmlWriter.writeStartElement(eachItem->name);
-                foreach(QString key,eachItem->attributes.keys())
-                    mXmlWriter.writeAttribute(key,eachItem->attributes.value(key));
-                mXmlWriter.writeEndElement();
-            }
-            else
-                qWarning() << "unknown type";
-        }
-
         //writing group data
         if (groupRoot.hasChildNodes()) {
             mXmlWriter.writeStartElement(tGroups);
@@ -1423,18 +1314,16 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
         QDomElement curGroupElement = groupDomDocument->createElement(tGroup);
         curGroupElement.setAttribute(aId, uuid);
         curParent->appendChild(curGroupElement);
-
         foreach (QGraphicsItem *item, groupItem->childItems()) {
             QUuid tmpUuid = UBGraphicsScene::getPersonalUuid(item);
             if (!tmpUuid.isNull()) {
                 if (item->type() == UBGraphicsGroupContainerItem::Type && item->childItems().count())
                     persistGroupToDom(item, curParent, groupDomDocument);
-            }
-            else {
-                QDomElement curSubElement = groupDomDocument->createElement(tElement);
-
-                curSubElement.setAttribute(aId, tmpUuid);
-                curGroupElement.appendChild(curSubElement);
+                else {
+                    QDomElement curSubElement = groupDomDocument->createElement(tElement);
+                    curSubElement.setAttribute(aId, tmpUuid);
+                    curGroupElement.appendChild(curSubElement);
+                }
             }
         }
     }
@@ -1553,7 +1442,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::polygonItemToSvgPolygon(UBGraphicsPo
     QPolygonF polygon = polygonItem->polygon();
     int pointsCount = polygon.size();
 
-    if (polygonItem && pointsCount > 0)
+    if (pointsCount > 0)
     {
         mXmlWriter.writeStartElement("polygon");
 
@@ -2264,8 +2153,14 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
 
     QStringRef ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value");
 
-    if (!ubZValue.isNull())
-        UBGraphicsItem::assignZValue(gItem, ubZValue.toString().toFloat());
+    if (!ubZValue.isNull()){
+        // FIX
+        // In the firsts zvalue implemenations values outside the boudaries have been used.
+        // No boundaries specified on documentation but to small values are not correctly handled.
+        qreal zValue = ubZValue.toString().toFloat();
+        while(zValue < -999999) zValue /= 10.;
+        UBGraphicsItem::assignZValue(gItem, zValue);
+    }
 
     UBItem* ubItem = dynamic_cast<UBItem*>(gItem);
 

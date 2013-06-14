@@ -11,7 +11,7 @@ CONFIG += debug_and_release \
 VERSION_MAJ = 2
 VERSION_MIN = 00
 VERSION_TYPE = b # a = alpha, b = beta, r = release, other => error
-VERSION_PATCH = 06
+VERSION_PATCH = 08
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_TYPE}.$${VERSION_PATCH}"
 VERSION = $$replace(VERSION, "\\.r", "")
@@ -49,8 +49,6 @@ include(src/podcast/podcast.pri)
 include(src/tools/tools.pri)
 include(src/desktop/desktop.pri)
 include(src/web/web.pri)
-include(src/interfaces/interfaces.pri)
-include(src/customWidgets/customWidgets.pri)
 
 DEPENDPATH += src/pdf-merger
 INCLUDEPATH += src/pdf-merger
@@ -76,7 +74,6 @@ FORMS += resources/forms/mainWindow.ui \
    resources/forms/blackoutWidget.ui \
    resources/forms/trapFlash.ui \
    resources/forms/youTubePublishingDialog.ui \
-   resources/forms/webPublishing.ui \
    resources/forms/capturePublishing.ui \
    resources/forms/intranetPodcastPublishingDialog.ui
 

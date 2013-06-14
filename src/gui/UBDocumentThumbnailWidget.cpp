@@ -65,7 +65,7 @@ void UBDocumentThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
         return;
 
     if ((event->pos() - mMousePressPos).manhattanLength() < QApplication::startDragDistance())
-             return;
+        return;
 
     QList<QGraphicsItem*> graphicsItems = items(mMousePressPos);
 
@@ -76,21 +76,18 @@ void UBDocumentThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
 
     if (sceneItem)
     {
-        int pageIndex = UBDocumentContainer::pageFromSceneIndex(sceneItem->sceneIndex());
-        if(pageIndex != 0){
-            QDrag *drag = new QDrag(this);
-            QList<UBMimeDataItem> mimeDataItems;
-            foreach (QGraphicsItem *item, selectedItems())
-                mimeDataItems.append(UBMimeDataItem(sceneItem->proxy(), mGraphicItems.indexOf(item)));
+        QDrag *drag = new QDrag(this);
+        QList<UBMimeDataItem> mimeDataItems;
+        foreach (QGraphicsItem *item, selectedItems())
+            mimeDataItems.append(UBMimeDataItem(sceneItem->proxy(), mGraphicItems.indexOf(item)));
 
-            UBMimeData *mime = new UBMimeData(mimeDataItems);
-            drag->setMimeData(mime);
+        UBMimeData *mime = new UBMimeData(mimeDataItems);
+        drag->setMimeData(mime);
 
-            drag->setPixmap(sceneItem->pixmap().scaledToWidth(100));
-            drag->setHotSpot(QPoint(drag->pixmap().width()/2, drag->pixmap().height() / 2));
+        drag->setPixmap(sceneItem->pixmap().scaledToWidth(100));
+        drag->setHotSpot(QPoint(drag->pixmap().width()/2, drag->pixmap().height() / 2));
 
-            drag->exec(Qt::MoveAction);
-        }
+        drag->exec(Qt::MoveAction);
     }
 
     UBThumbnailWidget::mouseMoveEvent(event);
@@ -159,40 +156,31 @@ void UBDocumentThumbnailWidget::dragMoveEvent(QDragMoveEvent *event)
     QGraphicsItem *underlyingItem = itemAt(event->pos());
     mClosestDropItem = dynamic_cast<UBSceneThumbnailPixmap*>(underlyingItem);
 
-    int pageIndex = -1;
-    if(mClosestDropItem){
-        pageIndex = UBDocumentContainer::pageFromSceneIndex(mClosestDropItem->sceneIndex());
-        if(pageIndex == 0){
-             event->acceptProposedAction();
-             return;
-        }
-    }
     if (!mClosestDropItem)
     {
         foreach (UBSceneThumbnailPixmap *item, pixmapItems)
         {
             qreal scale = item->transform().m11();
             QPointF itemCenter(
-                item->pos().x() + item->boundingRect().width() * scale / 2,
-                item->pos().y() + item->boundingRect().height() * scale / 2);
+                        item->pos().x() + item->boundingRect().width() * scale / 2,
+                        item->pos().y() + item->boundingRect().height() * scale / 2);
 
             int distance = (itemCenter.toPoint() - mapToScene(event->pos()).toPoint()).manhattanLength();
             if (!mClosestDropItem || distance < minDistance)
             {
                 mClosestDropItem = item;
                 minDistance = distance;
-                pageIndex = UBDocumentContainer::pageFromSceneIndex(mClosestDropItem->sceneIndex());
             }
         }
     }
 
-    if (mClosestDropItem && pageIndex != 0)
+    if (mClosestDropItem)
     {
         qreal scale = mClosestDropItem->transform().m11();
 
         QPointF itemCenter(
-            mClosestDropItem->pos().x() + mClosestDropItem->boundingRect().width() * scale / 2,
-            mClosestDropItem->pos().y() + mClosestDropItem->boundingRect().height() * scale / 2);
+                    mClosestDropItem->pos().x() + mClosestDropItem->boundingRect().width() * scale / 2,
+                    mClosestDropItem->pos().y() + mClosestDropItem->boundingRect().height() * scale / 2);
 
         mDropIsRight = mapToScene(event->pos()).x() > itemCenter.x();
 
@@ -204,10 +192,10 @@ void UBDocumentThumbnailWidget::dragMoveEvent(QDragMoveEvent *event)
         }
 
         QRectF dropCaretRect(
-            mDropIsRight ? mClosestDropItem->pos().x() + mClosestDropItem->boundingRect().width() * scale + spacing() / 2 - 1 : mClosestDropItem->pos().x() - spacing() / 2 - 1,
-            mClosestDropItem->pos().y(),
-            3,
-            mClosestDropItem->boundingRect().height() * scale);
+                    mDropIsRight ? mClosestDropItem->pos().x() + mClosestDropItem->boundingRect().width() * scale + spacing() / 2 - 1 : mClosestDropItem->pos().x() - spacing() / 2 - 1,
+                    mClosestDropItem->pos().y(),
+                    3,
+                    mClosestDropItem->boundingRect().height() * scale);
 
         if (mDropCaretRectItem)
             mDropCaretRectItem->setRect(dropCaretRect);
@@ -229,10 +217,6 @@ void UBDocumentThumbnailWidget::dropEvent(QDropEvent *event)
     if (mClosestDropItem)
     {
         int targetIndex = mDropIsRight ? mGraphicItems.indexOf(mClosestDropItem) + 1 : mGraphicItems.indexOf(mClosestDropItem);
-        if(UBDocumentContainer::pageFromSceneIndex(targetIndex) == 0){
-            event->ignore();
-            return;
-        }
 
         QList<UBMimeDataItem> mimeDataItems;
         if (event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardPage))
@@ -243,9 +227,9 @@ void UBDocumentThumbnailWidget::dropEvent(QDropEvent *event)
         }
 
         if (1 == mimeDataItems.count() &&
-            (mimeDataItems.at(0).sceneIndex() == mGraphicItems.indexOf(mClosestDropItem) ||
-             targetIndex == mimeDataItems.at(0).sceneIndex() ||
-             targetIndex == mimeDataItems.at(0).sceneIndex() + 1))
+                (mimeDataItems.at(0).sceneIndex() == mGraphicItems.indexOf(mClosestDropItem) ||
+                 targetIndex == mimeDataItems.at(0).sceneIndex() ||
+                 targetIndex == mimeDataItems.at(0).sceneIndex() + 1))
         {
             return;
         }
@@ -288,8 +272,8 @@ void UBDocumentThumbnailWidget::deleteDropCaret()
 }
 
 void UBDocumentThumbnailWidget::setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsItems,
-    const QList<QUrl>& pItemPaths, const QStringList pLabels,
-    const QString& pMimeType)
+                                                 const QList<QUrl>& pItemPaths, const QStringList pLabels,
+                                                 const QString& pMimeType)
 {
     deleteDropCaret();
 

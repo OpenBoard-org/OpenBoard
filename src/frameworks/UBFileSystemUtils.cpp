@@ -27,8 +27,6 @@
 
 #include "core/UBApplication.h"
 
-#include "document/UBDocumentContainer.h"
-
 #include "globals/UBGlobals.h"
 
 THIRD_PARTY_WARNINGS_DISABLE
@@ -352,8 +350,7 @@ QString UBFileSystemUtils::normalizeFilePath(const QString& pFilePath)
 
 QString UBFileSystemUtils::digitFileFormat(const QString& s, int digit)
 {
-    int pageDigit = UBDocumentContainer::pageFromSceneIndex(digit);
-    return s.arg(pageDigit, 3, 10, QLatin1Char('0'));
+    return s.arg(digit, 3, 10, QLatin1Char('0'));
 }
 
 
@@ -361,8 +358,7 @@ QString UBFileSystemUtils::thumbnailPath(const QString& path)
 {
     QFileInfo pathInfo(path);
 
-    return pathInfo.dir().absolutePath() + "/" + pathInfo.completeBaseName()
-       + ".thumbnail.png";
+    return pathInfo.dir().absolutePath() + "/" + pathInfo.completeBaseName() + ".thumbnail.png";
 }
 
 QString UBFileSystemUtils::extension(const QString& fileName)
@@ -632,8 +628,7 @@ QString UBFileSystemUtils::getFirstExistingFileFromList(const QString& path, con
 }
 
 
-bool UBFileSystemUtils::compressDirInZip(const QDir& pDir, const QString& pDestPath,
-                QuaZipFile *pOutZipFile, bool pRootDocumentFolder, UBProcessingProgressListener* progressListener)
+bool UBFileSystemUtils::compressDirInZip(const QDir& pDir, const QString& pDestPath, QuaZipFile *pOutZipFile, bool pRootDocumentFolder, UBProcessingProgressListener* progressListener)
 {
     QFileInfoList files = pDir.entryInfoList(QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot);
 

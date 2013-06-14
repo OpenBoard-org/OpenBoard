@@ -52,6 +52,7 @@ UBDocumentNavigator::UBDocumentNavigator(QWidget *parent, const char *name):QGra
   , mNbColumns(1)
   , mThumbnailWidth(0)
   , mThumbnailMinWidth(100)
+  , mSelectedThumbnail(NULL)
 {
     setObjectName(name);
     mScene = new QGraphicsScene(this);
@@ -78,9 +79,6 @@ UBDocumentNavigator::~UBDocumentNavigator()
     }
 }
 
-#include "gui/UBDockTeacherGuideWidget.h"
-#include "gui/UBTeacherGuideWidget.h"
-
 /**
  * \brief Generate the thumbnails
  */
@@ -103,7 +101,7 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 
         UBSceneThumbnailNavigPixmap* pixmapItem = new UBSceneThumbnailNavigPixmap(*pix, source->selectedDocument(), i);
 
-        QString label = pageIndex == 0 ? tr("Title page") : tr("Page %0").arg(pageIndex);
+        QString label = tr("Page %0").arg(pageIndex);
         UBThumbnailTextItem *labelItem = new UBThumbnailTextItem(label);
 
         UBImgTextThumbnailElement thumbWithText(pixmapItem, labelItem);
@@ -113,7 +111,7 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
         mScene->addItem(pixmapItem);
         mScene->addItem(labelItem);
     }
-    
+
     // Draw the items
     refreshScene();
 }
@@ -126,6 +124,7 @@ void UBDocumentNavigator::onScrollToSelectedPage(int index)
         if (c==index)
         {
             el.getThumbnail()->setSelected(true);
+            mSelectedThumbnail = el.getThumbnail();
         }
         else
         {
@@ -133,6 +132,7 @@ void UBDocumentNavigator::onScrollToSelectedPage(int index)
         }
         c++;
     }
+    centerOn(mSelectedThumbnail);
 }
 
 /**
@@ -141,9 +141,6 @@ void UBDocumentNavigator::onScrollToSelectedPage(int index)
  */
 void UBDocumentNavigator::updateSpecificThumbnail(int iPage)
 {
-    // Generate the new thumbnail
-    //UBGraphicsScene* pScene = UBApplication::boardController->activeScene();
-
     const QPixmap* pix = UBApplication::boardController->pageAt(iPage);
     UBSceneThumbnailNavigPixmap* newItem = new UBSceneThumbnailNavigPixmap(*pix, UBApplication::boardController->selectedDocument(), iPage);
 
@@ -234,6 +231,9 @@ void UBDocumentNavigator::resizeEvent(QResizeEvent *event)
     // Update the thumbnails width
     mThumbnailWidth = (width() > mThumbnailMinWidth) ? width() - 2*border() : mThumbnailMinWidth;
 
+    if(mSelectedThumbnail)
+        centerOn(mSelectedThumbnail);
+
     // Refresh the scene
     refreshScene();
 }
@@ -255,7 +255,7 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
         {
             // If we fall here we may have clicked on the label instead of the thumbnail
             UBThumbnailTextItem* pTextItem = dynamic_cast<UBThumbnailTextItem*>(pClickedItem);
-            if(NULL != pTextItem) 
+            if(NULL != pTextItem)
             {
                 for(int i = 0; i < mThumbsWithLabels.size(); i++)
                 {

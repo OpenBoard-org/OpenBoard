@@ -29,7 +29,6 @@
 #include "adaptors/UBExportDocument.h"
 #include "adaptors/UBExportWeb.h"
 #include "adaptors/UBExportCFF.h"
-#include "adaptors/UBWebPublisher.h"
 #include "adaptors/UBImportDocument.h"
 #include "adaptors/UBImportPDF.h"
 #include "adaptors/UBImportImage.h"
@@ -46,8 +45,6 @@
 #include "UBApplication.h"
 #include "UBSettings.h"
 #include "UBPersistenceManager.h"
-
-#include "../adaptors/UBExportWeb.h"
 
 #include "core/memcheck.h"
 
@@ -75,13 +72,9 @@ UBDocumentManager::UBDocumentManager(QObject *parent)
     UBExportCFF* cffExporter = new UBExportCFF(this);
     UBExportFullPDF* exportFullPdf = new UBExportFullPDF(this);
     UBExportDocument* exportDocument = new UBExportDocument(this);
-    UBWebPublisher* webPublished = new UBWebPublisher(this);
     mExportAdaptors.append(exportDocument);
-    mExportAdaptors.append(webPublished);
     mExportAdaptors.append(exportFullPdf);
     mExportAdaptors.append(cffExporter);
-//     UBExportWeb* exportWeb = new UBExportWeb(this);
-//     mExportAdaptors.append(exportWeb);
 
     UBImportDocument* documentImport = new UBImportDocument(this);
     mImportAdaptors.append(documentImport);
@@ -149,7 +142,7 @@ UBDocumentProxy* UBDocumentManager::importFile(const QFile& pFile, const QString
                 UBDocumentBasedImportAdaptor* importAdaptor = (UBDocumentBasedImportAdaptor*)adaptor;
 
                 document = importAdaptor->importFile(pFile, pGroup);
-            
+
             }
             else
             {

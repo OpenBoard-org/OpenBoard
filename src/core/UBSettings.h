@@ -179,15 +179,6 @@ class UBSettings : public QObject
         static QString documentVersion;
         static QString documentUpdatedAt;
 
-        static QString sessionTitle;
-        static QString sessionAuthors;
-        static QString sessionObjectives;
-        static QString sessionKeywords;
-        static QString sessionGradeLevel;
-        static QString sessionSubjects;
-        static QString sessionType;
-        static QString sessionLicence;
-
         static QString documentDate;
 
         static QString trashedDocumentGroupNamePrefix;
@@ -196,6 +187,8 @@ class UBSettings : public QObject
 
         static QString uniboardDocumentNamespaceUri;
         static QString uniboardApplicationNamespaceUri;
+
+        static QString undoCommandTransactionName;
 
         static const int maxThumbnailWidth;
         static const int defaultThumbnailWidth;
@@ -367,8 +360,6 @@ class UBSettings : public QObject
 
         UBSetting* angleTolerance;
         UBSetting* historyLimit;
-        UBSetting* teacherGuidePageZeroActivated;
-        UBSetting* teacherGuideLessonPagesActivated;
 
         UBSetting* libIconSize;
 

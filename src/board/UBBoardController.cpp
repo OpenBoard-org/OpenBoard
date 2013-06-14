@@ -48,8 +48,6 @@
 #include "gui/UBKeyboardPalette.h"
 #include "gui/UBMagnifer.h"
 #include "gui/UBDockPaletteWidget.h"
-#include "gui/UBDockTeacherGuideWidget.h"
-#include "gui/UBTeacherGuideWidget.h"
 
 #include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBGraphicsItemUndoCommand.h"
@@ -166,8 +164,6 @@ UBBoardController::~UBBoardController()
 
 int UBBoardController::currentPage()
 {
-    if(UBSettings::settings()->teacherGuidePageZeroActivated->get().toBool())
-        return mActiveSceneIndex;
     return mActiveSceneIndex + 1;
 }
 
@@ -340,7 +336,6 @@ void UBBoardController::setupToolbar()
     //-----------------------------------------------------------//
 
     UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->boardToolBar, mMainWindow->actionBoard);
-    UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->tutorialToolBar, mMainWindow->actionBoard);
 
     UBApplication::app()->decorateActionMenu(mMainWindow->actionMenu);
 
@@ -348,7 +343,6 @@ void UBBoardController::setupToolbar()
 
     mMainWindow->webToolBar->hide();
     mMainWindow->documentToolBar->hide();
-    mMainWindow->tutorialToolBar->hide();
 
     connectToolbar();
     initToolbarTexts();
@@ -1559,66 +1553,74 @@ void UBBoardController::moveSceneToIndex(int source, int target)
     }
 }
 
+void UBBoardController::fitUniqIems(const QUndoCommand *parent, QSet<QGraphicsItem*> &itms)
+{
+    if (parent->childCount()) {
+        for (int i = 0; i < parent->childCount(); i++) {
+            fitUniqIems(parent->child(i), itms);
+        }
+    }
+
+    // Undo command transaction macros. Process separatedly
+    if (parent->text() == UBSettings::undoCommandTransactionName) {
+        return;
+    }
+
+    const UBAbstractUndoCommand *abstractCmd = static_cast<const UBAbstractUndoCommand*>(parent);
+    if(abstractCmd->getType() != UBAbstractUndoCommand::undotype_GRAPHICITEM)
+        return;
+
+    const UBGraphicsItemUndoCommand *cmd = static_cast<const UBGraphicsItemUndoCommand*>(parent);
+
+    // go through all added and removed objects, for create list of unique objects
+    // grouped items will be deleted by groups, so we don't need do delete that items.
+    QSetIterator<QGraphicsItem*> itAdded(cmd->GetAddedList());
+    while (itAdded.hasNext())
+    {
+        QGraphicsItem* item = itAdded.next();
+        if( !itms.contains(item) && !(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()))
+            itms.insert(item);
+    }
+
+    QSetIterator<QGraphicsItem*> itRemoved(cmd->GetRemovedList());
+    while (itRemoved.hasNext())
+    {
+        QGraphicsItem* item = itRemoved.next();
+        if( !itms.contains(item) && !(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()))
+            itms.insert(item);
+    }
+}
+
 void UBBoardController::ClearUndoStack()
 {
-// The code has been removed because it leads to a strange error and because the final goal has never been
-// reached on tests and sound a little bit strange.
-// Strange error: item->scene() crashes the application because item doesn't implement scene() method. I'm
-// not able to give all the steps to reproduce this error sistematically but is quite frequent (~ twice per utilisation hours)
-// strange goal: if item is on the undocommand, the item->scene() is null and the item is not on the deleted scene item list then
-// then it's deleted.
+    QSet<QGraphicsItem*> uniqueItems;
+    // go through all stack command
+    for (int i = 0; i < UBApplication::undoStack->count(); i++) {
+        fitUniqIems(UBApplication::undoStack->command(i), uniqueItems);
+    }
 
-    //    QSet<QGraphicsItem*> uniqueItems;
-//    // go through all stack command
-//    for(int i = 0; i < UBApplication::undoStack->count(); i++)
-//    {
+    // go through all unique items, and check, if they are on scene, or not.
+    // if not on scene, than item can be deleted
+    QSetIterator<QGraphicsItem*> itUniq(uniqueItems);
+    while (itUniq.hasNext())
+    {
+        QGraphicsItem* item = itUniq.next();
+        UBGraphicsScene *scene = NULL;
+        if (item->scene()) {
+            scene = dynamic_cast<UBGraphicsScene*>(item->scene());
+        }
 
-//        UBAbstractUndoCommand *abstractCmd = (UBAbstractUndoCommand*)UBApplication::undoStack->command(i);
-//        if(abstractCmd->getType() != UBAbstractUndoCommand::undotype_GRAPHICITEM)
-//            continue;
-
-//        UBGraphicsItemUndoCommand *cmd = (UBGraphicsItemUndoCommand*)UBApplication::undoStack->command(i);
-
-//        // go through all added and removed objects, for create list of unique objects
-//        // grouped items will be deleted by groups, so we don't need do delete that items.
-//        QSetIterator<QGraphicsItem*> itAdded(cmd->GetAddedList());
-//        while (itAdded.hasNext())
-//        {
-//            QGraphicsItem* item = itAdded.next();
-//            if( !uniqueItems.contains(item) && !(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()))
-//                uniqueItems.insert(item);
-//        }
-
-//        QSetIterator<QGraphicsItem*> itRemoved(cmd->GetRemovedList());
-//        while (itRemoved.hasNext())
-//        {
-//            QGraphicsItem* item = itRemoved.next();
-//            if( !uniqueItems.contains(item) && !(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()))
-//                uniqueItems.insert(item);
-//        }
-//    }
-
-//    // go through all unique items, and check, ot on scene, or not.
-//    // if not on scene, than item can be deleted
-
-//    QSetIterator<QGraphicsItem*> itUniq(uniqueItems);
-//    while (itUniq.hasNext())
-//    {
-//        QGraphicsItem* item = itUniq.next();
-//        UBGraphicsScene *scene = NULL;
-//        if (item->scene()) {
-//            scene = dynamic_cast<UBGraphicsScene*>(item->scene());
-//        }
-//        if(!scene)
-//        {
-//           if (!mActiveScene->deleteItem(item))
-//               delete item;
-//        }
-//    }
+        if(!scene)
+        {
+            if (!mActiveScene->deleteItem(item)){
+                delete item;
+                item = 0;
+            }
+        }
+    }
 
     // clear stack, and command list
     UBApplication::undoStack->clear();
-
 }
 
 void UBBoardController::adjustDisplayViews()
@@ -1765,10 +1767,7 @@ void UBBoardController::lastWindowClosed()
 {
     if (!mCleanupDone)
     {
-        bool teacherGuideModified = false;
-        if(UBApplication::boardController->paletteManager()->teacherGuideDockWidget())
-            teacherGuideModified = UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified();
-        if (selectedDocument()->pageCount() == 1 && (!mActiveScene || mActiveScene->isEmpty()) && !teacherGuideModified)
+        if (selectedDocument()->pageCount() == 1 && (!mActiveScene || mActiveScene->isEmpty()))
         {
             UBPersistenceManager::persistenceManager()->deleteDocument(selectedDocument());
         }
@@ -1863,7 +1862,7 @@ void UBBoardController::persistCurrentScene()
     if(UBPersistenceManager::persistenceManager()
             && selectedDocument() && mActiveScene && mActiveSceneIndex != mDeletingSceneIndex
             && (mActiveSceneIndex >= 0) && mActiveSceneIndex != mMovingSceneIndex
-            && (mActiveScene->isModified() || (UBApplication::boardController->paletteManager()->teacherGuideDockWidget() && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified())))
+            && (mActiveScene->isModified()))
     {
         UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex);
         updatePage(mActiveSceneIndex);
@@ -1957,7 +1956,7 @@ void UBBoardController::notifyCache(bool visible)
 {
     if(visible)
         emit cacheEnabled();
-    
+
     mCacheWidgetIsEnabled = visible;
 }
 

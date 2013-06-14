@@ -27,10 +27,6 @@
 #include <QtGui>
 #include <QtNetwork>
 
-#include "ui_webPublishing.h"
-
-#define DOCPUBLICATION_URL     "http://planete.sankore.org/xwiki/bin/view/CreateResources/UniboardUpload?xpage=plain&outputSyntax=plain"
-
 typedef struct
 {
     QString title;
@@ -84,59 +80,5 @@ private:
     QLabel* mpDescLabel;
     QTextEdit* mpDescription;
     QDialogButtonBox* mpButtons;
-};
-
-
-class UBDocumentPublisher : public QObject
-{
-    Q_OBJECT;
-
-public:
-    explicit UBDocumentPublisher(UBDocumentProxy* sourceDocument, QObject *parent = 0);
-    virtual ~UBDocumentPublisher();
-
-    void publish();
-
-signals:
-
-    void loginDone();
-
-protected:
-
-    virtual void updateGoogleMapApiKey();
-    virtual void rasterizeScenes();
-    virtual void upgradeDocumentForPublishing();
-    virtual void generateWidgetPropertyScript(UBGraphicsW3CWidgetItem *widgetItem, int pageNumber);
-
-private slots:
-
-    void onFinished(QNetworkReply* reply);
-
-private:
-
-    UBDocumentProxy *mSourceDocument;
-
-    //UBDocumentProxy *mPublishingDocument;
-    QString mPublishingPath;
-    int mPublishingSize;
-
-
-    void init();
-    void sendUbw(QString username, QString password);
-    QString getBase64Of(QString stringToEncode);
-
-    QHBoxLayout* mpLayout;
-    QNetworkAccessManager* mpNetworkMgr;
-    QNetworkCookieJar* mpCookieJar;
-    QString mUsername;
-    QString mPassword;
-    QString mCrlf;
-    bool bLoginCookieSet;
-
-    void buildUbwFile();
-    QString mTmpZipFile;
-    QList<QNetworkCookie> mCookies;
-    sDocumentInfos mDocInfos;
-
 };
 #endif // UBDOCUMENTPUBLISHER_H

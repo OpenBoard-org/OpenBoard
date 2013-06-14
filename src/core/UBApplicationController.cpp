@@ -51,8 +51,6 @@
 
 #include "gui/UBScreenMirror.h"
 #include "gui/UBMainWindow.h"
-#include "gui/UBDockTeacherGuideWidget.h"
-#include "gui/UBTeacherGuideWidget.h"
 
 #include "domain/UBGraphicsPixmapItem.h"
 
@@ -344,7 +342,6 @@ void UBApplicationController::showBoard()
 {
     mMainWindow->webToolBar->hide();
     mMainWindow->documentToolBar->hide();
-    mMainWindow->tutorialToolBar->hide();
     mMainWindow->boardToolBar->show();
 
     if (mMainMode == Document)
@@ -393,14 +390,12 @@ void UBApplicationController::showInternet()
     if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
     {
         showDesktop(true);
-        UBApplication::webController->show(UBWebController::WebBrowser);
-        // really no have emit mainModeChanged here ? potential problem with virtual keyboard ?
+        UBApplication::webController->show();
     }
     else
     {
         mMainWindow->boardToolBar->hide();
         mMainWindow->documentToolBar->hide();
-        mMainWindow->tutorialToolBar->hide();
         mMainWindow->webToolBar->show();
 
         mMainMode = Internet;
@@ -410,7 +405,7 @@ void UBApplicationController::showInternet()
         mMainWindow->show();
         mUninoteController->hideWindow();
 
-        UBApplication::webController->show(UBWebController::WebBrowser);
+        UBApplication::webController->show();
 
         emit mainModeChanged(Internet);
     }
@@ -421,7 +416,6 @@ void UBApplicationController::showDocument()
 {
     mMainWindow->webToolBar->hide();
     mMainWindow->boardToolBar->hide();
-    mMainWindow->tutorialToolBar->hide();
     mMainWindow->documentToolBar->show();
 
     mMainMode = Document;
@@ -434,7 +428,7 @@ void UBApplicationController::showDocument()
 
     if (UBApplication::boardController)
     {
-        if (UBApplication::boardController->activeScene()->isModified() || (UBApplication::boardController->paletteManager()->teacherGuideDockWidget() && UBApplication::boardController->paletteManager()->teacherGuideDockWidget()->teacherGuideWidget()->isModified()))
+        if (UBApplication::boardController->activeScene()->isModified())
             UBApplication::boardController->persistCurrentScene();
         UBApplication::boardController->hide();
     }
@@ -474,42 +468,6 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
 
     UBDrawingController::drawingController()->setInDestopMode(true);
     UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-}
-
-
-void UBApplicationController::showTutorial()
-{
-
-    if (UBApplication::boardController)
-    {
-        UBApplication::boardController->persistCurrentScene();
-        UBApplication::boardController->hide();
-    }
-
-    if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
-    {
-        showDesktop(true);
-        UBApplication::webController->show(UBWebController::Tutorial);
-
-    }
-    else{
-        mMainWindow->webToolBar->hide();
-        mMainWindow->boardToolBar->hide();
-        mMainWindow->documentToolBar->hide();
-        mMainWindow->tutorialToolBar->show();
-
-
-        mMainMode = Tutorial;
-
-        adaptToolBar();
-
-        mUninoteController->hideWindow();
-
-        UBApplication::webController->show(UBWebController::Tutorial);
-
-        mirroringEnabled(false);
-        emit mainModeChanged(mMainMode);
-    }
 }
 
 
@@ -589,10 +547,6 @@ void UBApplicationController::hideDesktop()
     else if (mMainMode == Document)
     {
         showDocument();
-    }
-    else if (mMainMode == Tutorial)
-    {
-        showTutorial();
     }
 
     mIsShowingDesktop = false;

@@ -57,10 +57,7 @@ UBPreferencesDialog::~UBPreferencesDialog()
 
 void UBPreferencesDialog::closeEvent(QCloseEvent* e)
 {
-    if(mPreferencesController->inputValuesConsistence())
-        e->accept();
-    else
-        e->ignore();
+    e->accept();
 }
 
 
@@ -132,8 +129,6 @@ void UBPreferencesController::wire()
 
     connect(mPreferencesUI->useExternalBrowserCheckBox, SIGNAL(clicked(bool)), settings->webUseExternalBrowser, SLOT(setBool(bool)));
     connect(mPreferencesUI->displayBrowserPageCheckBox, SIGNAL(clicked(bool)), settings->webShowPageImmediatelyOnMirroredScreen, SLOT(setBool(bool)));
-    connect(mPreferencesUI->swapControlAndDisplayScreensCheckBox, SIGNAL(clicked(bool)), settings->swapControlAndDisplayScreens, SLOT(setBool(bool)));
-    connect(mPreferencesUI->swapControlAndDisplayScreensCheckBox, SIGNAL(clicked(bool)), UBApplication::applicationController->displayManager(), SLOT(reinitScreens(bool)));
 
     connect(mPreferencesUI->toolbarAtTopRadioButton, SIGNAL(clicked(bool)), this, SLOT(toolbarPositionChanged(bool)));
     connect(mPreferencesUI->toolbarAtBottomRadioButton, SIGNAL(clicked(bool)), this, SLOT(toolbarPositionChanged(bool)));
@@ -176,12 +171,6 @@ void UBPreferencesController::wire()
     connect(mMarkerProperties->pressureSensitiveCheckBox, SIGNAL(clicked(bool)), settings, SLOT(setMarkerPressureSensitive(bool)));
     connect(mMarkerProperties->opacitySlider, SIGNAL(valueChanged(int)), this, SLOT(opacitySliderChanged(int)));
 
-
-    //network
-    connect(mPreferencesUI->Username_textBox, SIGNAL(editingFinished()), this, SLOT(onCommunityUsernameChanged()));
-    connect(mPreferencesUI->Password_textEdit, SIGNAL(editingFinished()), this, SLOT(onCommunityPasswordChanged()));
-    connect(mPreferencesUI->PSCredentialsPersistenceCheckBox,SIGNAL(clicked()),this, SLOT(onCommunityPersistenceChanged()));
-
     // about tab
     connect(mPreferencesUI->checkSoftwareUpdateAtLaunchCheckBox, SIGNAL(clicked(bool)), settings->appEnableAutomaticSoftwareUpdates, SLOT(setBool(bool)));
 }
@@ -215,10 +204,6 @@ void UBPreferencesController::init()
     mPreferencesUI->verticalChoice->setChecked(settings->appToolBarOrientationVertical->get().toBool());
     mPreferencesUI->horizontalChoice->setChecked(!settings->appToolBarOrientationVertical->get().toBool());
 
-    mPreferencesUI->Username_textBox->setText(settings->communityUsername());
-    mPreferencesUI->Password_textEdit->setText(settings->communityPassword());
-    mPreferencesUI->swapControlAndDisplayScreensCheckBox->setChecked(settings->swapControlAndDisplayScreens->get().toBool());
-
     // pen tab
     mPenProperties->fineSlider->setValue(settings->boardPenFineWidth->get().toDouble() * sSliderRatio);
     mPenProperties->mediumSlider->setValue(settings->boardPenMediumWidth->get().toDouble() * sSliderRatio);
@@ -233,66 +218,6 @@ void UBPreferencesController::init()
 
     mMarkerProperties->opacitySlider->setValue(settings->boardMarkerAlpha->get().toDouble() * 100);
 
-    //network
-    mPreferencesUI->PSCredentialsPersistenceCheckBox->setChecked(settings->getCommunityDataPersistence());
-    persistanceCheckboxUpdate();
-
-}
-
-void UBPreferencesController::onCommunityUsernameChanged()
-{
-    UBSettings* settings = UBSettings::settings();
-    settings->setCommunityUsername(mPreferencesUI->Username_textBox->text());
-    persistanceCheckboxUpdate();
-}
-
-void UBPreferencesController::onCommunityPasswordChanged()
-{
-    UBSettings* settings = UBSettings::settings();
-    settings->setCommunityPassword(mPreferencesUI->Password_textEdit->text());
-    persistanceCheckboxUpdate();
-}
-
-void UBPreferencesController::onCommunityPersistenceChanged()
-{
-    UBSettings::settings()->setCommunityPersistence(mPreferencesUI->PSCredentialsPersistenceCheckBox->isChecked());
-}
-
-void UBPreferencesController::persistanceCheckboxUpdate()
-{
-    bool checkBoxEnabled = mPreferencesUI->Username_textBox->text().length() || mPreferencesUI->Password_textEdit->text().length();
-    mPreferencesUI->PSCredentialsPersistenceCheckBox->setEnabled(checkBoxEnabled);
-    mPreferencesUI->PSCredentialsPersistenceCheckBox->setStyleSheet(checkBoxEnabled ? "color:black;" : "color:lightgray;");
-}
-
-
-bool UBPreferencesController::inputValuesConsistence()
-{
-    QString backgroundStyle = "QWidget {background-color: white}";
-    mPreferencesUI->Username_textBox->setStyleSheet(backgroundStyle);
-    mPreferencesUI->Password_textEdit->setStyleSheet(backgroundStyle);
-
-    QString username = mPreferencesUI->Username_textBox->text();
-    QString password = mPreferencesUI->Password_textEdit->text();
-    bool isConsistent = true;
-    if (username.length() + password.length()){
-        backgroundStyle = "QWidget {background-color: magenta}";
-        if(username.isEmpty()){
-            isConsistent = false;
-            mPreferencesUI->mainTabWidget->setCurrentWidget(mPreferencesUI->networkTab);
-            mPreferencesUI->Username_textBox->setStyleSheet(backgroundStyle);
-            mPreferencesUI->Username_textBox->setFocus();
-            mPreferencesUI->Username_textBox->setCursorPosition(0);
-        }
-        else if(password.isEmpty()){
-            isConsistent = false;
-            mPreferencesUI->mainTabWidget->setCurrentWidget(mPreferencesUI->networkTab);
-            mPreferencesUI->Password_textEdit->setStyleSheet(backgroundStyle);
-            mPreferencesUI->Password_textEdit->setFocus();
-            mPreferencesUI->Password_textEdit->setCursorPosition(0);
-        }
-    }
-    return isConsistent;
 }
 
 void UBPreferencesController::close()
@@ -303,9 +228,6 @@ void UBPreferencesController::close()
     UBSettings::settings()->webHomePage->set(homePage);
     UBSettings::settings()->setProxyUsername(mPreferencesUI->proxyUsername->text());
     UBSettings::settings()->setProxyPassword(mPreferencesUI->proxyPassword->text());
-
-    if (!inputValuesConsistence())
-        return;
 
     mPreferencesWindow->accept();
 }
