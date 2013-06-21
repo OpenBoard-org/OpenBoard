@@ -189,7 +189,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../sankore.qrc"/>
+  <include location="../OpenBoard.qrc"/>
  </resources>
  <connections/>
 </ui>

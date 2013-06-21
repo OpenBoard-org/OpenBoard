@@ -175,7 +175,7 @@ void WBWebPage::handleUnsupportedContent(QNetworkReply *reply)
     if (isPDF)
     {
         QMessageBox messageBox(mainWindow());
-        messageBox.setText(tr("Download PDF Document: would you prefer to download the PDF file or add it to the current Sankore document?"));
+        messageBox.setText(tr("Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?"));
 
         messageBox.addButton(tr("Download"), QMessageBox::AcceptRole);
         QAbstractButton *addButton = messageBox.addButton(tr("Add to Current Document"), QMessageBox::AcceptRole);
@@ -380,7 +380,7 @@ QUrl WBWebView::url() const
         url = QWebView::url();
     } catch(...)
     {}
-    
+
     if (!url.isEmpty())
        return url;
 

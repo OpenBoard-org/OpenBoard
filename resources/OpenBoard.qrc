@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/uniboard.png</file>
+        <file>images/OpenBoard.png</file>
         <file>images/bigUniboard.png</file>
         <file>images/close.svg</file>
         <file>images/increase.svg</file>
@@ -209,8 +209,8 @@
         <file>webbrowser/object-wrapper.html</file>
         <file alias="PowerPointImport.applescript">macx/PowerPointImport.applescript</file>
         <file>macx/upgrade.sh</file>
-        <file>podcast/uniboard.prx</file>
-        <file>www/uniboard-web-player.html</file>
+        <file>podcast/OpenBoard.prx</file>
+        <file>www/OpenBoard-web-player.html</file>
         <file>images/toolbar/tutorial.png</file>
         <file>images/edit-mode.svg</file>
         <file>images/save.svg</file>

@@ -60,7 +60,7 @@ QStringList UBImportDocument::supportedExtentions()
 
 QString UBImportDocument::importFileFilter()
 {
-    return tr("Open-Sankore (*.ubz)");
+    return tr("OpenBoard (*.ubz)");
 }
 
 
@@ -173,7 +173,7 @@ UBDocumentProxy* UBImportDocument::importFile(const QFile& pFile, const QString&
     QString path = UBSettings::userDocumentDirectory();
 
     QString documentRootFolder;
-    
+
     if(!extractFileToDir(pFile, path, documentRootFolder)){
         UBApplication::showMessage(tr("Import of file %1 failed.").arg(fi.baseName()));
         return NULL;
@@ -197,7 +197,7 @@ bool UBImportDocument::addFileToDocument(UBDocumentProxy* pDocument, const QFile
         UBApplication::showMessage(tr("Import of file %1 failed.").arg(fi.baseName()));
         return false;
     }
-        
+
     if (!UBPersistenceManager::persistenceManager()->addDirectoryContentToDocument(documentRootFolder, pDocument))
     {
         UBApplication::showMessage(tr("Import of file %1 failed.").arg(fi.baseName()));

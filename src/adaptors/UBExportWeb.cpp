@@ -69,7 +69,7 @@ void UBExportWeb::persist(UBDocumentProxy* pDocumentProxy)
         {
             QString htmlPath = dirName + "/index.html";
 
-            QFile html(":www/uniboard-web-player.html");
+            QFile html(":www/OpenBoard-web-player.html");
             html.copy(htmlPath);
 
             UBApplication::showMessage(tr("Export successful."));

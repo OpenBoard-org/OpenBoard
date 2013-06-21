@@ -775,7 +775,7 @@ QString UBSettings::userDataDirectory()
 
         }
         dataDirPath = UBFileSystemUtils::normalizeFilePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
-        dataDirPath.replace("/Open-Sankore", "");
+        dataDirPath.replace(qApp->organizationName() + "/" + qApp->organizationDomain(), "");
     }
     return dataDirPath;
 }
@@ -795,7 +795,7 @@ QString UBSettings::userImageDirectory()
                 qCritical() << "failed to create image directory " << imageDirectory;
         }
 
-        imageDirectory = QDesktopServices::storageLocation(QDesktopServices::PicturesLocation) + "/Sankore";
+        imageDirectory = QDesktopServices::storageLocation(QDesktopServices::PicturesLocation) + "/" + qApp->applicationName();
         checkDirectory(imageDirectory);
     }
     return imageDirectory;
@@ -821,7 +821,7 @@ QString UBSettings::userVideoDirectory()
         if(videoDirectory.isEmpty())
             videoDirectory = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/" + tr("My Movies");
         else
-            videoDirectory = videoDirectory + "/Sankore";
+            videoDirectory = videoDirectory + "/" + qApp->applicationName();
 
         checkDirectory(videoDirectory);
     }
@@ -842,7 +842,7 @@ QString UBSettings::userAudioDirectory()
                 qCritical() << "failed to create image directory " << audioDirectory;
         }
 
-        audioDirectory = QDesktopServices::storageLocation(QDesktopServices::MusicLocation) + "/Sankore";
+        audioDirectory = QDesktopServices::storageLocation(QDesktopServices::MusicLocation) + "/" + qApp->applicationName();
         checkDirectory(audioDirectory);
     }
     return audioDirectory;

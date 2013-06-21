@@ -1419,7 +1419,7 @@ bool UBDocumentController::isOKToOpenDocument(UBDocumentProxy* proxy)
     else
     {
         if (UBApplication::mainWindow->yesNoQuestion(tr("Open Document"),
-                tr("The document '%1' has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?")
+                tr("The document '%1' has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?")
                     .arg(proxy->metaData(UBSettings::documentName).toString())
                     .arg(docVersion)))
         {

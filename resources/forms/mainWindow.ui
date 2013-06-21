@@ -14,8 +14,8 @@
    <string>Open-Sankoré</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../sankore.qrc">
-    <normaloff>:/images/uniboard.png</normaloff>:/images/uniboard.png</iconset>
+   <iconset resource="../OpenBoard.qrc">
+    <normaloff>:/images/OpenBoard.png</normaloff>:/images/OpenBoard.png</iconset>
   </property>
   <property name="iconSize">
    <size>
@@ -178,7 +178,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/stylus.png</normaloff>:/images/toolbar/stylus.png</iconset>
    </property>
    <property name="text">
@@ -196,7 +196,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/background.png</normaloff>:/images/toolbar/background.png</iconset>
    </property>
    <property name="text">
@@ -208,7 +208,7 @@
   </action>
   <action name="actionUndo">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/undoOn.png</normaloff>:/images/toolbar/undoOn.png</iconset>
    </property>
    <property name="text">
@@ -220,7 +220,7 @@
   </action>
   <action name="actionRedo">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/redoOn.png</normaloff>:/images/toolbar/redoOn.png</iconset>
    </property>
    <property name="text">
@@ -232,7 +232,7 @@
   </action>
   <action name="actionBack">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/previousPageOn.png</normaloff>:/images/toolbar/previousPageOn.png</iconset>
    </property>
    <property name="text">
@@ -247,7 +247,7 @@
   </action>
   <action name="actionForward">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/nextPageOn.png</normaloff>:/images/toolbar/nextPageOn.png</iconset>
    </property>
    <property name="text">
@@ -265,7 +265,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/documents.png</normaloff>:/images/toolbar/documents.png</iconset>
    </property>
    <property name="text">
@@ -280,7 +280,7 @@
   </action>
   <action name="actionWeb">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/web.png</normaloff>:/images/toolbar/web.png</iconset>
    </property>
    <property name="text">
@@ -301,7 +301,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/smallPen.png</normaloff>:/images/toolbar/smallPen.png</iconset>
    </property>
    <property name="text">
@@ -316,7 +316,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/mediumPen.png</normaloff>:/images/toolbar/mediumPen.png</iconset>
    </property>
    <property name="text">
@@ -331,7 +331,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/largePen.png</normaloff>:/images/toolbar/largePen.png</iconset>
    </property>
    <property name="text">
@@ -343,7 +343,7 @@
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/quitOn.png</normaloff>:/images/toolbar/quitOn.png</iconset>
    </property>
    <property name="text">
@@ -364,7 +364,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/smallEraser.png</normaloff>:/images/toolbar/smallEraser.png</iconset>
    </property>
    <property name="text">
@@ -382,7 +382,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/mediumEraser.png</normaloff>:/images/toolbar/mediumEraser.png</iconset>
    </property>
    <property name="text">
@@ -397,7 +397,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/largeEraser.png</normaloff>:/images/toolbar/largeEraser.png</iconset>
    </property>
    <property name="text">
@@ -409,7 +409,7 @@
   </action>
   <action name="actionColor0">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
    </property>
    <property name="text">
@@ -421,7 +421,7 @@
   </action>
   <action name="actionColor1">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
    </property>
    <property name="text">
@@ -430,7 +430,7 @@
   </action>
   <action name="actionColor2">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
    </property>
    <property name="text">
@@ -439,7 +439,7 @@
   </action>
   <action name="actionColor3">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
    </property>
    <property name="text">
@@ -448,7 +448,7 @@
   </action>
   <action name="actionWebBack">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/previousPageOn.png</normaloff>:/images/toolbar/previousPageOn.png</iconset>
    </property>
    <property name="text">
@@ -463,7 +463,7 @@
   </action>
   <action name="actionWebForward">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/nextPageOn.png</normaloff>:/images/toolbar/nextPageOn.png</iconset>
    </property>
    <property name="text">
@@ -478,7 +478,7 @@
   </action>
   <action name="actionWebReload">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/reload.png</normaloff>:/images/toolbar/reload.png</iconset>
    </property>
    <property name="text">
@@ -490,7 +490,7 @@
   </action>
   <action name="actionHome">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/home.png</normaloff>:/images/toolbar/home.png</iconset>
    </property>
    <property name="text">
@@ -502,7 +502,7 @@
   </action>
   <action name="actionBookmarks">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/bookmarks.png</normaloff>:/images/toolbar/bookmarks.png</iconset>
    </property>
    <property name="text">
@@ -514,7 +514,7 @@
   </action>
   <action name="actionAddBookmark">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/addBookmark.png</normaloff>:/images/toolbar/addBookmark.png</iconset>
    </property>
    <property name="text">
@@ -526,7 +526,7 @@
   </action>
   <action name="actionBoard">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/board.png</normaloff>:/images/toolbar/board.png</iconset>
    </property>
    <property name="text">
@@ -544,7 +544,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/clearPage.png</normaloff>:/images/toolbar/clearPage.png</iconset>
    </property>
    <property name="text">
@@ -556,7 +556,7 @@
   </action>
   <action name="actionPreferences">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/settings.png</normaloff>:/images/toolbar/settings.png</iconset>
    </property>
    <property name="text">
@@ -571,7 +571,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/library.png</normaloff>:/images/toolbar/library.png</iconset>
    </property>
    <property name="text">
@@ -586,7 +586,7 @@
   </action>
   <action name="actionMenu">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/menu.png</normaloff>:/images/toolbar/menu.png</iconset>
    </property>
    <property name="text">
@@ -598,7 +598,7 @@
   </action>
   <action name="actionDesktop">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/display.png</normaloff>:/images/toolbar/display.png</iconset>
    </property>
    <property name="text">
@@ -613,7 +613,7 @@
   </action>
   <action name="actionWebBigger">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/stylusPalette/zoomIn.png</normaloff>:/images/stylusPalette/zoomIn.png</iconset>
    </property>
    <property name="text">
@@ -628,7 +628,7 @@
   </action>
   <action name="actionWebSmaller">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/stylusPalette/zoomOut.png</normaloff>:/images/stylusPalette/zoomOut.png</iconset>
    </property>
    <property name="text">
@@ -643,7 +643,7 @@
   </action>
   <action name="actionNewFolder">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/newFolder.png</normaloff>:/images/toolbar/newFolder.png</iconset>
    </property>
    <property name="text">
@@ -655,7 +655,7 @@
   </action>
   <action name="actionNewDocument">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/newDocument.png</normaloff>:/images/toolbar/newDocument.png</iconset>
    </property>
    <property name="text">
@@ -667,7 +667,7 @@
   </action>
   <action name="actionImport">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/import.png</normaloff>:/images/toolbar/import.png</iconset>
    </property>
    <property name="text">
@@ -679,7 +679,7 @@
   </action>
   <action name="actionExport">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/export.png</normaloff>:/images/toolbar/export.png</iconset>
    </property>
    <property name="text">
@@ -691,7 +691,7 @@
   </action>
   <action name="actionOpen">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/open.png</normaloff>:/images/toolbar/open.png</iconset>
    </property>
    <property name="text">
@@ -706,7 +706,7 @@
   </action>
   <action name="actionDuplicate">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/duplicate.png</normaloff>:/images/toolbar/duplicate.png</iconset>
    </property>
    <property name="text">
@@ -718,7 +718,7 @@
   </action>
   <action name="actionDelete">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/deleteDocument.png</normaloff>:/images/toolbar/deleteDocument.png</iconset>
    </property>
    <property name="text">
@@ -733,7 +733,7 @@
   </action>
   <action name="actionAddToWorkingDocument">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/addToWorkingDoc.png</normaloff>:/images/toolbar/addToWorkingDoc.png</iconset>
    </property>
    <property name="text">
@@ -745,7 +745,7 @@
   </action>
   <action name="actionDocumentAdd">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/addToPage.png</normaloff>:/images/toolbar/addToPage.png</iconset>
    </property>
    <property name="text">
@@ -757,7 +757,7 @@
   </action>
   <action name="actionRename">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/rename.png</normaloff>:/images/toolbar/rename.png</iconset>
    </property>
    <property name="text">
@@ -772,7 +772,7 @@
   </action>
   <action name="actionDocumentTools">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/tools.png</normaloff>:/images/toolbar/tools.png</iconset>
    </property>
    <property name="text">
@@ -787,7 +787,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/tools.png</normaloff>:/images/toolbar/tools.png</iconset>
    </property>
    <property name="text">
@@ -805,7 +805,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/display.png</normaloff>:/images/toolbar/display.png</iconset>
    </property>
    <property name="text">
@@ -817,7 +817,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/addToPage.png</normaloff>:/images/toolbar/addToPage.png</iconset>
    </property>
    <property name="text">
@@ -838,7 +838,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/addToPage.png</normaloff>:/images/toolbar/addToPage.png</iconset>
    </property>
    <property name="text">
@@ -862,7 +862,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/addToPage.png</normaloff>:/images/toolbar/addToPage.png</iconset>
    </property>
    <property name="text">
@@ -880,7 +880,7 @@
   </action>
   <action name="actionStopLoading">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/deleteDocument.png</normaloff>:/images/toolbar/deleteDocument.png</iconset>
    </property>
    <property name="text">
@@ -892,7 +892,7 @@
   </action>
   <action name="actionCut">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/cut.png</normaloff>:/images/toolbar/cut.png</iconset>
    </property>
    <property name="text">
@@ -904,7 +904,7 @@
   </action>
   <action name="actionCopy">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/copy.png</normaloff>:/images/toolbar/copy.png</iconset>
    </property>
    <property name="text">
@@ -916,7 +916,7 @@
   </action>
   <action name="actionPaste">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/paste.png</normaloff>:/images/toolbar/paste.png</iconset>
    </property>
    <property name="text">
@@ -931,7 +931,7 @@
   </action>
   <action name="actionSleep">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/extraPalette/blackout.png</normaloff>
      <normalon>:/images/extraPalette/blackoutOn.png</normalon>:/images/extraPalette/blackout.png</iconset>
    </property>
@@ -947,7 +947,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/extraPalette/keyboard.png</normaloff>
      <normalon>:/images/extraPalette/keyboardOn.png</normalon>:/images/extraPalette/keyboard.png</iconset>
    </property>
@@ -963,7 +963,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/backgroundPalette/background1.svg</normaloff>
      <normalon>:/images/backgroundPalette/background1On.svg</normalon>:/images/backgroundPalette/background1.svg</iconset>
    </property>
@@ -982,7 +982,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/backgroundPalette/background2.svg</normaloff>
      <normalon>:/images/backgroundPalette/background2On.svg</normalon>:/images/backgroundPalette/background2.svg</iconset>
    </property>
@@ -1001,7 +1001,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/backgroundPalette/background3.svg</normaloff>
      <normalon>:/images/backgroundPalette/background3On.svg</normalon>:/images/backgroundPalette/background3.svg</iconset>
    </property>
@@ -1020,7 +1020,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/backgroundPalette/background4.svg</normaloff>
      <normalon>:/images/backgroundPalette/background4On.svg</normalon>:/images/backgroundPalette/background4.svg</iconset>
    </property>
@@ -1039,7 +1039,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/record.png</normaloff>:/images/toolbar/record.png</iconset>
    </property>
    <property name="text">
@@ -1054,7 +1054,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/record.png</normaloff>
      <normalon>:/images/toolbar/stop.png</normalon>:/images/toolbar/record.png</iconset>
    </property>
@@ -1067,7 +1067,7 @@
   </action>
   <action name="actionEraseItems">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/erasePalette/eraseItem.svg</normaloff>:/images/erasePalette/eraseItem.svg</iconset>
    </property>
    <property name="text">
@@ -1079,7 +1079,7 @@
   </action>
   <action name="actionEraseAnnotations">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/erasePalette/eraseAnnotation.svg</normaloff>:/images/erasePalette/eraseAnnotation.svg</iconset>
    </property>
    <property name="text">
@@ -1091,7 +1091,7 @@
   </action>
   <action name="actionClearPage">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/erasePalette/eraseAll.svg</normaloff>:/images/erasePalette/eraseAll.svg</iconset>
    </property>
    <property name="text">
@@ -1103,7 +1103,7 @@
   </action>
   <action name="actionAdd">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/addToPage.png</normaloff>:/images/toolbar/addToPage.png</iconset>
    </property>
    <property name="text">
@@ -1118,7 +1118,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/stylusPalette/pen.png</normaloff>
      <normalon>:/images/stylusPalette/penOn.png</normalon>:/images/stylusPalette/pen.png</iconset>
    </property>
@@ -1137,7 +1137,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/stylusPalette/eraser.png</normaloff>
      <normalon>:/images/stylusPalette/eraserOn.png</normalon>:/images/stylusPalette/eraser.png</iconset>
    </property>
@@ -1156,7 +1156,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/stylusPalette/marker.png</normaloff>
      <normalon>:/images/stylusPalette/markerOn.png</normalon>:/images/stylusPalette/marker.png</iconset>
    </property>
@@ -1175,7 +1175,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/stylusPalette/arrow.png</normaloff>
      <normalon>:/images/stylusPalette/arrowOn.png</normalon>:/images/stylusPalette/arrow.png</iconset>
    </property>
@@ -1194,7 +1194,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/stylusPalette/hand.png</normaloff>
      <normalon>:/images/stylusPalette/handOn.png</normalon>:/images/stylusPalette/hand.png</iconset>
    </property>
@@ -1210,7 +1210,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/stylusPalette/zoomIn.png</normaloff>
      <normalon>:/images/stylusPalette/zoomInOn.png</normalon>:/images/stylusPalette/zoomIn.png</iconset>
    </property>
@@ -1223,7 +1223,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/stylusPalette/zoomOut.png</normaloff>
      <normalon>:/images/stylusPalette/zoomOutOn.png</normalon>:/images/stylusPalette/zoomOut.png</iconset>
    </property>
@@ -1236,7 +1236,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/stylusPalette/laser.png</normaloff>
      <normalon>:/images/stylusPalette/laserOn.png</normalon>:/images/stylusPalette/laser.png</iconset>
    </property>
@@ -1255,7 +1255,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/stylusPalette/line.png</normaloff>
      <normalon>:/images/stylusPalette/lineOn.png</normalon>:/images/stylusPalette/line.png</iconset>
    </property>
@@ -1274,7 +1274,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/stylusPalette/text.png</normaloff>
      <normalon>:/images/stylusPalette/textOn.png</normalon>:/images/stylusPalette/text.png</iconset>
    </property>
@@ -1293,7 +1293,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/stylusPalette/captureArea.png</normaloff>
      <normalon>:/images/stylusPalette/captureAreaOn.png</normalon>:/images/stylusPalette/captureArea.png</iconset>
    </property>
@@ -1306,7 +1306,7 @@
   </action>
   <action name="actionAddItemToCurrentPage">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/addItemToCurrentPage.svg</normaloff>:/images/addItemToCurrentPage.svg</iconset>
    </property>
    <property name="text">
@@ -1321,7 +1321,7 @@
   </action>
   <action name="actionAddItemToNewPage">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/addItemToNewPage.svg</normaloff>:/images/addItemToNewPage.svg</iconset>
    </property>
    <property name="text">
@@ -1333,7 +1333,7 @@
   </action>
   <action name="actionAddItemToLibrary">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/addItemToLibrary.svg</normaloff>:/images/addItemToLibrary.svg</iconset>
    </property>
    <property name="text">
@@ -1348,7 +1348,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/newDocument.png</normaloff>:/images/toolbar/newDocument.png</iconset>
    </property>
    <property name="text">
@@ -1360,7 +1360,7 @@
   </action>
   <action name="actionNewPage">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/addItemToCurrentPage.svg</normaloff>:/images/addItemToCurrentPage.svg</iconset>
    </property>
    <property name="text">
@@ -1372,7 +1372,7 @@
   </action>
   <action name="actionDuplicatePage">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/addItemToNewPage.svg</normaloff>:/images/addItemToNewPage.svg</iconset>
    </property>
    <property name="text">
@@ -1384,7 +1384,7 @@
   </action>
   <action name="actionImportPage">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/addItemToLibrary.svg</normaloff>:/images/addItemToLibrary.svg</iconset>
    </property>
    <property name="text">
@@ -1402,7 +1402,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/pause.png</normaloff>:/images/toolbar/pause.png</iconset>
    </property>
    <property name="text">
@@ -1414,7 +1414,7 @@
   </action>
   <action name="actionPodcastConfig">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/settings.png</normaloff>:/images/toolbar/settings.png</iconset>
    </property>
    <property name="text">
@@ -1426,7 +1426,7 @@
   </action>
   <action name="actionWebTrapFlash">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/addToolToLibrary.png</normaloff>:/images/toolbar/addToolToLibrary.png</iconset>
    </property>
    <property name="text">
@@ -1441,7 +1441,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/extraPalette/webTrap.png</normaloff>
      <normalon>:/images/extraPalette/webTrapEnabled.png</normalon>:/images/extraPalette/webTrap.png</iconset>
    </property>
@@ -1454,7 +1454,7 @@
   </action>
   <action name="actionWebCustomCapture">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/captureArea.png</normaloff>:/images/toolbar/captureArea.png</iconset>
    </property>
    <property name="text">
@@ -1466,7 +1466,7 @@
   </action>
   <action name="actionWebWindowCapture">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/captureWindow.png</normaloff>:/images/toolbar/captureWindow.png</iconset>
    </property>
    <property name="text">
@@ -1481,7 +1481,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/extraPalette/oEmbed.png</normaloff>:/images/extraPalette/oEmbed.png</iconset>
    </property>
    <property name="text">
@@ -1496,7 +1496,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/eyeClosed.png</normaloff>
      <normalon>:/images/toolbar/eyeOpened.png</normalon>:/images/toolbar/eyeClosed.png</iconset>
    </property>
@@ -1515,7 +1515,7 @@
   </action>
   <action name="actionEraseDesktopAnnotations">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/erasePalette/eraseAnnotation.svg</normaloff>:/images/erasePalette/eraseAnnotation.svg</iconset>
    </property>
    <property name="text">
@@ -1527,7 +1527,7 @@
   </action>
   <action name="actionEduMedia">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/addToolToLibrary.png</normaloff>:/images/toolbar/addToolToLibrary.png</iconset>
    </property>
    <property name="text">
@@ -1539,7 +1539,7 @@
   </action>
   <action name="actionTutorial">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/tutorial.png</normaloff>:/images/toolbar/tutorial.png</iconset>
    </property>
    <property name="text">
@@ -1551,7 +1551,7 @@
   </action>
   <action name="actionCheckUpdate">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/updates.png</normaloff>:/images/toolbar/updates.png</iconset>
    </property>
    <property name="text">
@@ -1560,7 +1560,7 @@
   </action>
   <action name="actionHideApplication">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/hide.png</normaloff>:/images/toolbar/hide.png</iconset>
    </property>
    <property name="text">
@@ -1581,7 +1581,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/group.png</normaloff>
      <normalon>:/images/toolbar/ungroup.png</normalon>:/images/toolbar/group.png</iconset>
    </property>
@@ -1597,7 +1597,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/stylusPalette/handPlay.png</normaloff>
      <normalon>:/images/stylusPalette/handPlayOn.png</normalon>:/images/stylusPalette/handPlay.png</iconset>
    </property>
@@ -1610,7 +1610,7 @@
   </action>
   <action name="actionEraseBackground">
    <property name="icon">
-    <iconset resource="../sankore.qrc">
+    <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/erasePalette/eraseBackground.svg</normaloff>:/images/erasePalette/eraseBackground.svg</iconset>
    </property>
    <property name="text">
@@ -1622,7 +1622,7 @@
   </action>
  </widget>
  <resources>
-  <include location="../sankore.qrc"/>
+  <include location="../OpenBoard.qrc"/>
  </resources>
  <connections/>
 </ui>

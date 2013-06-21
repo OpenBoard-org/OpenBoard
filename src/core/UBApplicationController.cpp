@@ -473,12 +473,12 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
 
 void UBApplicationController::checkUpdate()
 {
-//    if(mHttp)
-//        delete mHttp;
-//    QUrl url("http://ftp.open-sankore.org/update.json");
-//    mHttp = new QHttp(url.host());
-//    connect(mHttp, SIGNAL(requestFinished(int,bool)), this, SLOT(updateRequestFinished(int,bool)));
-//    mHttp->get(url.path());
+    if(mHttp)
+        delete mHttp;
+    QUrl url("http://oe-f.org/update.json");
+    mHttp = new QHttp(url.host());
+    connect(mHttp, SIGNAL(requestFinished(int,bool)), this, SLOT(updateRequestFinished(int,bool)));
+    mHttp->get(url.path());
 }
 
 void UBApplicationController::updateRequestFinished(int id, bool error)

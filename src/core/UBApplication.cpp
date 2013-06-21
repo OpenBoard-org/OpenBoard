@@ -116,9 +116,9 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
 
     staticMemoryCleaner = new QObject(0); // deleted in UBApplication destructor
 
-    setOrganizationName("Sankore");
-    setOrganizationDomain("sankore.org");
-    setApplicationName("Open-Sankore");
+    setOrganizationName("Open Education Foundation");
+    setOrganizationDomain("oe-f.org");
+    setApplicationName("OpenBoard");
 
     setApplicationVersion(UBVERSION);
 
@@ -154,7 +154,7 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
     updateProtoActionsState();
 
 #ifndef Q_WS_MAC
-    setWindowIcon(QIcon(":/images/uniboard.png"));
+    setWindowIcon(QIcon(":/images/OpenBoard.png"));
 #endif
 
     setStyle(new UBStyle()); // Style is owned and deleted by the application
@@ -250,7 +250,7 @@ void UBApplication::setupTranslators(QStringList args)
     else{
         mApplicationTranslator = new QTranslator(this);
         mQtGuiTranslator = new QTranslator(this);
-        mApplicationTranslator->load(UBPlatformUtils::translationPath(QString("sankore_"),language));
+        mApplicationTranslator->load(UBPlatformUtils::translationPath(QString("OpenBoard_"),language));
         installTranslator(mApplicationTranslator);
 
         QString qtGuiTranslationPath = UBPlatformUtils::translationPath("qt_", language);

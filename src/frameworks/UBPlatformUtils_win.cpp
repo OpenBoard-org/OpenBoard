@@ -72,9 +72,9 @@ QStringList UBPlatformUtils::availableTranslations()
 {
     QString translationsPath = applicationResourcesDirectory() + "/" + "i18n" + "/";
     QStringList translationsList = UBFileSystemUtils::allFiles(translationsPath);
-    QRegExp sankoreTranslationFiles(".*sankore_.*.qm");
+    QRegExp sankoreTranslationFiles(".*OpenBoard_.*.qm");
     translationsList=translationsList.filter(sankoreTranslationFiles);
-    return translationsList.replaceInStrings(QRegExp("(.*)sankore_(.*).qm"),"\\2");
+    return translationsList.replaceInStrings(QRegExp("(.*)OpenBoard_(.*).qm"),"\\2");
 }
 
 QString UBPlatformUtils::translationPath(QString pFilePrefix,QString pLanguage)
@@ -147,7 +147,7 @@ void UBPlatformUtils::setWindowNonActivableFlag(QWidget* widget, bool nonAcivabl
 
 #define KEYBTDECL(s1, s2, clSwitch) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(s1), KEYCODE(s2))
 
-KEYBT RUSSIAN_LOCALE [] = 
+KEYBT RUSSIAN_LOCALE [] =
 {
     /* Ј і */ KEYBTDECL(0x451, 0x401, true),
     /* 1 ! */ KEYBTDECL(0x31, 0x21, false),

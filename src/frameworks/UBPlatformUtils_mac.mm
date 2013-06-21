@@ -71,8 +71,8 @@ void UBPlatformUtils::init()
 
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-    NSString *currentPath      = [[NSBundle mainBundle] pathForResource:@"Save PDF to Open-Sankore" ofType:@"workflow"];
-    NSString *installedPath    = [[[@"~/Library/PDF Services" stringByExpandingTildeInPath] stringByAppendingPathComponent:@"Save PDF to Open-Sankore"] stringByAppendingPathExtension:@"workflow"];
+    NSString *currentPath      = [[NSBundle mainBundle] pathForResource:@"Save PDF to OpenBoard" ofType:@"workflow"];
+    NSString *installedPath    = [[[@"~/Library/PDF Services" stringByExpandingTildeInPath] stringByAppendingPathComponent:@"Save PDF to OpenBoard"] stringByAppendingPathExtension:@"workflow"];
     NSString *currentVersion   = bundleShortVersion([NSBundle bundleWithPath:currentPath]);
     NSString *installedVersion = bundleShortVersion([NSBundle bundleWithPath:installedPath]);
 

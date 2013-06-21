@@ -14,6 +14,8 @@ REM You should have received a copy of the GNU General Public License
 REM along with this program.  If not, see <http://www.gnu.org/licenses/>.
 REM ---------------------------------------------------------------------
 
+
+set APPLICATION_NAME=OpenBoard
 set QT_DIR=..\Qt-4.8
 set QT_BIN=%QT_DIR%\bin
 
@@ -42,9 +44,9 @@ IF NOT EXIST "%QT_DIR%\lib\QtCore4.dll" GOTO EXIT_WITH_ERROR
 rmdir /S /Q %BUILD_DIR%
 rmdir /S /Q install
 
-"%QT_BIN%\qmake.exe" Sankore_3.1.pro
+"%QT_BIN%\qmake.exe" %APPLICATION_NAME%.pro
 
-%LRELEASE% Sankore_3.1.pro
+%LRELEASE% %APPLICATION_NAME%.pro
 %LRELEASE% %BASE_QT_TRANSLATIONS_DIRECTORY%\translations.pro
 
 set /p VERSION= < build\win32\release\version
@@ -61,9 +63,9 @@ REM echo %VERSION%
 REM echo %LAST_TAG_VERSION%
 
 nmake release-install
-IF NOT EXIST build\win32\release\product\Open-Sankore.exe GOTO EXIT_WITH_ERROR
+IF NOT EXIST build\win32\release\product\%APPLICATION_NAME%.exe GOTO EXIT_WITH_ERROR
 
-xcopy C:\OpenSankore\lib\*.dll build\win32\release\product\
+xcopy C:\%APPLICATION_NAME%\lib\*.dll build\win32\release\product\
 xcopy %QT_DIR%\lib\QtOpenGL4.dll build\win32\release\product\
 
 set CUSTOMIZATIONS=build\win32\release\product\customizations
@@ -75,18 +77,16 @@ xcopy /s %BASE_QT_TRANSLATIONS_DIRECTORY%\qt_*.qm %I18n%\
 
 del build\win32\release\product\i18n\qt_help*
 
-del "build\win32\release\product\Sankore.pdb"
+del "build\win32\release\product\%APPLICATION_NAME%.pdb"
 
-set INSTALLER_NAME=Open-Sankore
+set INSTALLER_PATH=.\install\win32\%APPLICATION_NAME%.exe
 
-set INSTALLER_PATH=.\install\win32\%INSTALLER_NAME%.exe
-
-call "%INNO_EXE%" "Sankore 3.1.iss" /F"%INSTALLER_NAME%"
+call "%INNO_EXE%" "%APPLICATION_NAME%.iss" /F"%APPLICATION_NAME%"
 
 set INSTALL_DIRECTORY=install\win32\
 xcopy *.pdf %INSTALL_DIRECTORY%
 cd %INSTALL_DIRECTORY%
-call %SEVEN_ZIP_EXE% a Open-Sankor‚_Windows_%VERSION%.zip *.exe *.pdf
+call %SEVEN_ZIP_EXE% a %APPLICATION_NAME%_Windows_%VERSION%.zip *.exe *.pdf
 cd ..\..\
 GOTO END
 
@@ -95,6 +95,6 @@ echo "Error found"
 GOTO :EOF
 
 :END
-echo "Open-Sankore's build finished"
+echo "%APPLICATION_NAME% build finished"
 
 :EOF

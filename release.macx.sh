@@ -15,6 +15,7 @@
 # ---------------------------------------------------------------------
 
 
+APPLICATION_NAME="OpenBoard"
 BASE_TROLLTECH_DIRECTORY=/usr/local/Trolltech/Qt-4.8.0
 # Executables
 QMAKE=$BASE_TROLLTECH_DIRECTORY/bin/qmake
@@ -59,14 +60,14 @@ for eachTranslation in `ls $BASE_QT_TRANSLATIONS_DIRECTORY/qt_??.qm`
 do
     # looking fo the language code for each qt translation file
     languageCode=`echo $eachTranslation | sed 's/.*qt_\(.*\).qm/\1/'`
-    basicDir=$PRODUCT_DIR/Open-Sankore.app/Contents/Resources/
+    basicDir=$PRODUCT_DIR/$APPLICATION_NAME.app/Contents/Resources/
     for eachDirectory in `ls $basicDir`
     do
-        # looping through the Sankore availables languages
+        # looping through the OpenBoard availables languages
         directoryLanguageCode=`echo $eachDirectory | sed 's/\(.*\)\.lproj/\1/'`
         if [ ! -z $directoryLanguageCode ]; then
             if [[ $eachDirectory == *".lproj"* && $eachDirectory != "empty.lproj" && $directoryLanguageCode == *$languageCode* ]]; then
-                # sankore translation found for qt translation file
+                # OpenBoard translation found for qt translation file
                 cp $eachTranslation $basicDir/$eachDirectory
                 if [ $directoryLanguageCode != $languageCode ]; then
                     # handling fr and fr_CH code.
@@ -106,12 +107,12 @@ rm -rf "$BUILD_DIR"
 
 # application translations
 notify "Generating applications translatons"
-$LRELEASE "Sankore_3.1.pro"
+$LRELEASE "$APPLICATION_NAME.pro"
 
 # generate Makefiles
 notify "Generating Makefile ..."
 
-QMAKE_CMD="$QMAKE Sankore_3.1.pro -spec macx-g++"
+QMAKE_CMD="$QMAKE $APPLICATION_NAME.pro -spec macx-g++"
 
 $QMAKE_CMD
 
@@ -123,7 +124,7 @@ notify "Qt Translations ..."
 $LRELEASE $BASE_QT_TRANSLATIONS_DIRECTORY/translations.pro 
 addQtTranslations
 
-cp -R resources/customizations $PRODUCT_DIR/Open-Sankore.app/Contents/Resources
+cp -R resources/customizations $PRODUCT_DIR/$APPLICATION_NAME.app/Contents/Resources
 
 VERSION=`cat "$BUILD_DIR/version"`
 if [ ! -f "$BUILD_DIR/version" ]; then
@@ -144,14 +145,12 @@ if [ $? != 0 ]; then
 fi
 
 
-NAME="Open-Sankore"
-
-DMG="$NAME.dmg"
-VOLUME="/Volumes/$NAME"
-APP="$PRODUCT_DIR/Open-Sankore.app"
-DSYM_NAME="$NAME (r$SVN_REVISION).dSYM"
+DMG="$APPLICATION_NAME.dmg"
+VOLUME="/Volumes/$APPLICATION_NAME"
+APP="$PRODUCT_DIR/$APPLICATION_NAME.app"
+DSYM_NAME="$APPLICATION_NAME (r$SVN_REVISION).dSYM"
 DSYM="$PRODUCT_DIR/$DSYM_NAME"
-GSYM_i386="$PRODUCT_DIR/$NAME i386.sym"
+GSYM_i386="$PRODUCT_DIR/$APPLICATION_NAME i386.sym"
 INFO_PLIST="$APP/Contents/Info.plist"
 
 rm -f "$APP/Contents/Resources/empty.lproj"
@@ -159,22 +158,22 @@ rm -f "$APP/Contents/Resources/empty.lproj"
 # set various version infomration in Info.plist
 $PLISTBUDDY -c "Set :CFBundleVersion $VERSION" "$INFO_PLIST"
 $PLISTBUDDY -c "Set :CFBundleShortVersionString $VERSION" "$INFO_PLIST"
-$PLISTBUDDY -c "Set :CFBundleGetInfoString $NAME" "$INFO_PLIST"
+$PLISTBUDDY -c "Set :CFBundleGetInfoString $APPLICATION_NAME" "$INFO_PLIST"
 
 # bundle Qt Frameworks into the app bundle
 notify "Bulding frameworks ..."
 cd "`pwd`/build/macx/release/product/"
-$MACDEPLOYQT "`pwd`/Open-Sankore.app"
+$MACDEPLOYQT "`pwd`/$APPLICATION_NAME.app"
 cd -
 
 notify "Extracting debug information ..."
-$DSYMUTIL "$APP/Contents/MacOS/Open-Sankore" -o "$DSYM"
-$STRIP -S "$APP/Contents/MacOS/Open-Sankore"
+$DSYMUTIL "$APP/Contents/MacOS/$APPLICATION_NAME" -o "$DSYM"
+$STRIP -S "$APP/Contents/MacOS/$APPLICATION_NAME"
 
 if [ "$1" == "pkg" ]; then
-    BASE_ICEBERG_CONFIG_FILE="Open-Sankore.packproj"
+    BASE_ICEBERG_CONFIG_FILE="$APPLICATION_NAME.packproj"
     #copy the standard file for working with
-    ICEBERG_CONFIG_FILE="Open-Sankore-working.packproj"
+    ICEBERG_CONFIG_FILE="$APPLICATION_NAME-working.packproj"
     cp -r $BASE_ICEBERG_CONFIG_FILE $ICEBERG_CONFIG_FILE
     # set version information
     $PLISTBUDDY -c "Set :Hierarchy:Attributes:Settings:Description:International:IFPkgDescriptionVersion $VERSION" "$ICEBERG_CONFIG_FILE"
@@ -198,7 +197,7 @@ fi
 
 notify "Creating dmg ..."
 umount "$VOLUME" 2> /dev/null
-$DMGUTIL --open --volume="$NAME" "$DMG"
+$DMGUTIL --open --volume="$APPLICATION_NAME" "$DMG"
 
 cp *.pdf "$VOLUME"
 cp -R "$APP" "$VOLUME"
@@ -211,9 +210,9 @@ $DMGUTIL --set --x=400 --y=120 "$VOLUME/Applications"
 $DMGUTIL --set --x=180 --y=280 "$VOLUME/ReleaseNotes.pdf"
 $DMGUTIL --set --x=400 --y=280 "$VOLUME/JournalDesModifications.pdf"
 
-$DMGUTIL --close --volume="$NAME" "$DMG"
+$DMGUTIL --close --volume="$APPLICATION_NAME" "$DMG"
 
-notify "$NAME is built"
+notify "$APPLICATION_NAME is built"
 
 PRODUCT_DIR="install/mac/"
 

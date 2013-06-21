@@ -19,7 +19,7 @@ DefaultGroupName=Open-Sankoré
 
 OutputDir=.\install\win32\
 OutputBaseFilename=Open-Sankore
-SetupIconFile=.\resources\win\uniboard.ico
+SetupIconFile=.\resources\win\OpenBoard.ico
 Compression=lzma
 SolidCompression=yes
 

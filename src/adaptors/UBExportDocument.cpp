@@ -118,5 +118,5 @@ QString UBExportDocument::exportExtention()
 
 QString UBExportDocument::exportName()
 {
-    return tr("Export to Sankore Format");
+    return tr("Export to OpenBoard Format");
 }

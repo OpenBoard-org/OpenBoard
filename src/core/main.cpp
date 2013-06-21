@@ -76,7 +76,7 @@ void ub_message_output(QtMsgType type, const char *msg) {
     qInstallMsgHandler(previousHandler);
 }
 
-int main(int argc, char *argv[]) 
+int main(int argc, char *argv[])
 {
 
     // Uncomment next section to have memory leaks information
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
 #endif
 */
 
-    Q_INIT_RESOURCE(sankore);
+    Q_INIT_RESOURCE(OpenBoard);
 
     qInstallMsgHandler(ub_message_output);
 
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
     QApplication::setGraphicsSystem("raster");
 #endif
 
-    UBApplication app("Sankore", argc, argv);
+    UBApplication app("OpenBoard", argc, argv);
 
     //BUGFIX:
     //when importing a sankore file that contains a non standard character

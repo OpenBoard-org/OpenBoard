@@ -682,7 +682,7 @@ QString UBPersistenceManager::generateUniqueDocumentPath(const QString& baseFold
     QDateTime now = QDateTime::currentDateTime();
     QString dirName = now.toString("yyyy-MM-dd hh-mm-ss.zzz");
 
-    return baseFolder + QString("/Sankore Document %1").arg(dirName);
+    return baseFolder + QString("/OpenBoard Document %1").arg(dirName);
 }
 
 QString UBPersistenceManager::generateUniqueDocumentPath()
@@ -930,7 +930,7 @@ void UBPersistenceManager::checkIfDocumentRepositoryExists()
         QString humanPath = QDir::cleanPath(mDocumentRepositoryPath);
         humanPath = QDir::toNativeSeparators(humanPath);
 
-        UBApplication::mainWindow->warning(tr("Document Repository Loss"),tr("Sankore has lost access to the document repository '%1'. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.").arg(humanPath));
+        UBApplication::mainWindow->warning(tr("Document Repository Loss"),qApp->applicationName() + tr("has lost access to the document repository '%1'. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.").arg(humanPath));
 
         UBApplication::quit();
     }

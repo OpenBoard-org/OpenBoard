@@ -53,7 +53,7 @@ UBWindowsMediaVideoEncoder::~UBWindowsMediaVideoEncoder()
 
 bool UBWindowsMediaVideoEncoder::start()
 {
-    QString profile = UBFileSystemUtils::readTextFile(":/podcast/uniboard.prx");
+    QString profile = UBFileSystemUtils::readTextFile(":/podcast/OpenBoard.prx");
 
     profile.replace("{in.videoWidth}", QString("%1").arg(videoSize().width()));
     profile.replace("{in.videoHeight}", QString("%1").arg(videoSize().height()));

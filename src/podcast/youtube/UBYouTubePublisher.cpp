@@ -64,7 +64,7 @@ void UBYouTubePublisher::uploadVideo(const QString& videoFilePath)
     UBYouTubePublishingDialog pub(videoFilePath, UBApplication::mainWindow);
 
     pub.title->setText(QFileInfo(mVideoFilePath).completeBaseName());
-    pub.keywords->setText(tr("Open-Sankore"));
+    pub.keywords->setText(qApp->applicationName());
 
     QString defaultEMail = UBSettings::settings()->youTubeUserEMail->get().toString();
     pub.email->setText(defaultEMail);
@@ -111,7 +111,7 @@ void UBYouTubePublisher::postClientLoginRequest(const QString& userName, const Q
     QString payload = QString("Email=%1&Passwd=%2&service=youtube&source=%3")
             .arg(userName)
             .arg(password)
-            .arg(tr("OpenSankore"));
+            .arg(qApp->applicationName());
 
     mAuthRequest->post(url, payload.toUtf8());
 
@@ -278,7 +278,7 @@ QString UBYouTubePublisher::youtubeMetadata()
         workingDescription = workingDescription.left(4900) + "...";
     }
 
-    workingDescription += "\n\nhttp://www.open-sankore.org";
+    workingDescription += "\n\nhttp://www.oe-f.org";
 
     if(workingDescription.length() == 0)
     {
