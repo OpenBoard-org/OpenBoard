@@ -15,7 +15,7 @@ class UBSelectionFrame : public QObject, public QGraphicsRectItem
 
 public:
     enum {om_idle, om_moving, om_rotating} mOperationMode;
-    enum { Type = UBGraphicsItemType::PixmapItemType };
+    enum { Type = UBGraphicsItemType::SelectionFrameType };
 
     UBSelectionFrame();
 
@@ -54,6 +54,7 @@ private:
     void clearButtons();
     inline int adjThickness() const {return mThickness * mAntiscaleRatio;}
     inline UBGraphicsScene* ubscene();
+    void setCursorFromAngle(QString angle);
 
     QList<QGraphicsItem*> sortedByZ(const QList<QGraphicsItem*> &pItems);
     QList<DelegateButton*> buttonsForFlags(UBGraphicsFlags fls);

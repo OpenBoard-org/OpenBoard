@@ -9,6 +9,7 @@
 #include "gui/UBResources.h"
 #include "core/UBApplication.h"
 #include "domain/UBGraphicsScene.h"
+#include "board/UBBoardView.h"
 
 UBSelectionFrame::UBSelectionFrame()
     : mThickness(UBSettings::settings()->objectFrameWidth)
@@ -125,6 +126,7 @@ void UBSelectionFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     mPressedPos = mLastMovedPos = event->pos();
     mLastTranslateOffset = QPointF();
+    mRotationAngle = 0;
 
     if (scene()->itemAt(event->scenePos()) == mRotateButton) {
         mOperationMode = om_rotating;
@@ -142,6 +144,7 @@ void UBSelectionFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QPointF dp = event->pos() - mPressedPos;
+    QPointF rotCenter = mapToScene(rect().center());
 
     foreach (UBGraphicsItemDelegate *curDelegate, mEnclosedtems) {
 
@@ -174,17 +177,24 @@ void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             QGraphicsItem *item = curDelegate->delegated();
             QTransform ownTransform = item->transform();
 
-            qreal cntrX = item->boundingRect().center().x();
-            qreal cntrY = item->boundingRect().center().y();
+
+            QPointF nextRotCenter = item->mapFromScene(rotCenter);
+
+            qreal cntrX = nextRotCenter.x();
+            qreal cntrY = nextRotCenter.y();
 
             ownTransform.translate(cntrX, cntrY);
             mRotationAngle -= dAngle;
-            ownTransform.rotate(mRotationAngle);
+            ownTransform.rotate(-dAngle);
             ownTransform.translate(-cntrX, -cntrY);
 
-            item->setTransform(ownTransform);
+            item->update();
+            item->setTransform(ownTransform, false);
 
-            qDebug() << "curAngle" << dAngle;
+            int resultAngle = (int)mRotationAngle % 360;
+//            setCursorFromAngle(QString::number(resultAngle));
+
+            qDebug() << "curAngle" << mRotationAngle;
         } break;
 
         }
@@ -356,6 +366,38 @@ inline UBGraphicsScene *UBSelectionFrame::ubscene()
     return qobject_cast<UBGraphicsScene*>(scene());
 }
 
+void UBSelectionFrame::setCursorFromAngle(QString angle)
+{
+    QWidget *controlViewport = UBApplication::boardController->controlView()->viewport();
+
+    QSize cursorSize(45,30);
+
+
+    QImage mask_img(cursorSize, QImage::Format_Mono);
+    mask_img.fill(0xff);
+    QPainter mask_ptr(&mask_img);
+    mask_ptr.setBrush( QBrush( QColor(0, 0, 0) ) );
+    mask_ptr.drawRoundedRect(0,0, cursorSize.width()-1, cursorSize.height()-1, 6, 6);
+    QBitmap bmpMask = QBitmap::fromImage(mask_img);
+
+
+    QPixmap pixCursor(cursorSize);
+    pixCursor.fill(QColor(Qt::white));
+
+    QPainter painter(&pixCursor);
+
+    painter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    painter.setBrush(QBrush(Qt::white));
+    painter.setPen(QPen(QColor(Qt::black)));
+    painter.drawRoundedRect(1,1,cursorSize.width()-2,cursorSize.height()-2,6,6);
+    painter.setFont(QFont("Arial", 10));
+    painter.drawText(1,1,cursorSize.width(),cursorSize.height(), Qt::AlignCenter, angle.append(QChar(176)));
+    painter.end();
+
+    pixCursor.setMask(bmpMask);
+    controlViewport->setCursor(pixCursor);
+}
+
 QList<QGraphicsItem*> UBSelectionFrame::sortedByZ(const QList<QGraphicsItem *> &pItems)
 {
     //select only items wiht the same z-level as item's one and push it to sortedItems QMultiMap
@@ -394,7 +436,7 @@ QList<DelegateButton*> UBSelectionFrame::buttonsForFlags(UBGraphicsFlags fls) {
         if (!mZOrderUpButton) {
             mZOrderUpButton = new DelegateButton(":/images/z_layer_up.svg", this, 0, Qt::BottomLeftSection);
             mZOrderUpButton->setShowProgressIndicator(true);
-            connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZlrfevelUp()));
+            connect(mZOrderUpButton, SIGNAL(clicked()), this, SLOT(increaseZlevelUp()));
             connect(mZOrderUpButton, SIGNAL(longClicked()), this, SLOT(increaseZlevelTop()));
         }
 

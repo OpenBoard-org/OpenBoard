@@ -249,9 +249,15 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
     item->scene()->clearSelection();
     item->setSelected(true);
 
+    foreach (QGraphicsItem *iitem, sortedItems.values()) {
+        if (iitem)
+            iitem != item
+                    ? qDebug() <<  "current value" << iitem->zValue()
+                                   : qDebug() << "marked value" << QString::number(iitem->zValue(), 'f');
+    }
+
     //Return new z value assigned to item
     return item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
-
 }
 
 itemLayerType::Enum UBZLayerController::typeForData(QGraphicsItem *item) const
@@ -317,7 +323,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     }
 
 //    Just for debug. Do not delete please
-//    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
+    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
     connect(this, SIGNAL(selectionChanged()), this, SLOT(updateGroupButtonState()));
     connect(UBApplication::undoStack.data(), SIGNAL(indexChanged(int)), this, SLOT(updateSelectionFrameWrapper(int)));
 }

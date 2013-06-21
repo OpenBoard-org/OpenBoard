@@ -316,6 +316,7 @@ void UBGraphicsItemDelegate::postpaint(QPainter *painter, const QStyleOptionGrap
         painter->setPen(Qt::NoPen);
         painter->setBrush(QColor(0x88, 0x88, 0x88, 0x77));
         painter->drawRect(option->rect);
+
         painter->restore();
     }
 }
