@@ -96,6 +96,7 @@ public:
     qreal changeZLevelTo(QGraphicsItem *item, moveDestination dest);
     itemLayerType::Enum typeForData(QGraphicsItem *item) const;
     void setLayerType(QGraphicsItem *pItem, itemLayerType::Enum pNewType);
+    void shiftStoredZValue(QGraphicsItem *item, qreal zValue);
 
 private:
     ScopeMap scopeMap;
@@ -311,6 +312,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         UBGraphicsPolygonItem* polygonToPolygonItem(const QPolygonF pPolygon);
         void clearSelectionFrame();
         UBBoardView *controlView();
+        void notifyZChanged(QGraphicsItem *item, qreal zValue);
 
 
 public slots:

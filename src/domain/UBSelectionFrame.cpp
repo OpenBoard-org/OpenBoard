@@ -191,7 +191,7 @@ void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             item->update();
             item->setTransform(ownTransform, false);
 
-            int resultAngle = (int)mRotationAngle % 360;
+//            int resultAngle = (int)mRotationAngle % 360;
 //            setCursorFromAngle(QString::number(resultAngle));
 
             qDebug() << "curAngle" << mRotationAngle;
@@ -284,9 +284,14 @@ void UBSelectionFrame::increaseZlevelDown()
 
 void UBSelectionFrame::increaseZlevelBottom()
 {
-    foreach (QGraphicsItem *item, sortedByZ(scene()->selectedItems())) {
-        ubscene()->changeZLevelTo(item, UBZLayerController::bottom);
+    QListIterator<QGraphicsItem*> iter(sortedByZ(scene()->selectedItems()));
+    iter.toBack();
+    while (iter.hasPrevious()) {
+        ubscene()->changeZLevelTo(iter.previous(), UBZLayerController::bottom);
     }
+//    foreach (QGraphicsItem *item, sortedByZ(scene()->selectedItems())) {
+//        ubscene()->changeZLevelTo(item, UBZLayerController::bottom);
+//    }
 }
 
 void UBSelectionFrame::translateItem(QGraphicsItem */*item*/, const QPointF &/*translatePoint*/)
