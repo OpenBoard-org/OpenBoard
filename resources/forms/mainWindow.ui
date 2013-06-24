@@ -590,10 +590,10 @@
      <normaloff>:/images/toolbar/menu.png</normaloff>:/images/toolbar/menu.png</iconset>
    </property>
    <property name="text">
-    <string>Open-Sankoré</string>
+    <string>OpenBoard</string>
    </property>
    <property name="toolTip">
-    <string>Open-Sankoré</string>
+    <string>OpenBoard</string>
    </property>
   </action>
   <action name="actionDesktop">
@@ -1564,10 +1564,10 @@
      <normaloff>:/images/toolbar/hide.png</normaloff>:/images/toolbar/hide.png</iconset>
    </property>
    <property name="text">
-    <string>Hide Open-Sankoré</string>
+    <string>Hide OpenBoard</string>
    </property>
    <property name="toolTip">
-    <string>Hide Open-Sankoré Application</string>
+    <string>Hide OpenBoard Application</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+H</string>

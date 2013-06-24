@@ -32,13 +32,6 @@
 #import <Carbon/Carbon.h>
 #import <APELite.h>
 
-/*
-// commented because Sankore crashes on Java Script. It seems to backends dependencies.
-#import <WebKit/WebKit.h>
-#import <AppKit/AppKit.h>
-*/
-
-
 NSString* bundleShortVersion(NSBundle *bundle)
 {
     return [bundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
@@ -236,60 +229,6 @@ QString UBPlatformUtils::systemLanguage()
     [pool drain];
     return result;
 }
-
-void UBPlatformUtils::runInstaller(const QString &installerFilePath)
-{
-    UBApplication::setDisabled(true);
-
-    // Save app config file to temp directory (will be restored at launch)
-    QString appSettings = UBPlatformUtils::applicationResourcesDirectory() + "/etc/Uniboard.config";
-    QString tmpSettings = QDir::tempPath() + "/Uniboard.config";
-    QFile::remove(tmpSettings);
-    QFile::copy(appSettings, tmpSettings);
-
-    QString updateFilePath = QDir::tempPath() + "/upgrade.sh";
-
-    QFile file(":/macx/upgrade.sh");
-    QFile updateFile(updateFilePath);
-    if (file.open(QIODevice::ReadOnly) && updateFile.open(QIODevice::WriteOnly))
-    {
-        QByteArray payload = file.readAll();
-
-        updateFile.write(payload);
-        updateFile.close();
-
-        QString uniboardAndVersion = QApplication::applicationName()  + QString(" ") + QApplication::applicationVersion();
-
-        QFileInfo fi(installerFilePath);
-        uniboardAndVersion = fi.fileName().remove(".dmg");
-
-        QString bundlePath;
-        NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-        NSString *nssBundlePath = [[NSBundle mainBundle] bundlePath];
-
-        bundlePath = QString::fromUtf8([nssBundlePath fileSystemRepresentation], strlen([nssBundlePath fileSystemRepresentation]));
-        [pool drain];
-
-        QString escaped = QString("/bin/sh \"%1\" \"%2\" \"%3\" \"%4\"")
-                .arg(updateFilePath)
-                .arg(uniboardAndVersion)
-                .arg(installerFilePath)
-                .arg(bundlePath);
-
-        qDebug() << "Installing New Version" << escaped;
-
-        QProcess process;
-        bool success = process.startDetached(escaped);
-
-        if(success)
-            return;
-    }
-
-    // did not work .. lets load the dmg ...
-    QDesktopServices::openUrl(QUrl::fromLocalFile(installerFilePath));
-
-}
-
 
 void UBPlatformUtils::bringPreviousProcessToFront()
 {
@@ -580,15 +519,7 @@ void UBPlatformUtils::destroyKeyboardLayouts()
 QString UBPlatformUtils::urlFromClipboard()
 {
     QString qsRet;
-/*
-    // commented because Sankore crashes on Java Script. It seems to backends dependencies.
-    NSPasteboard* pPasteboard = [NSPasteboard pasteboardWithName:@"Apple CFPasteboard drag"];
-    WebArchive* pArchive = [[WebArchive alloc] initWithData:[pPasteboard dataForType:@"com.apple.webarchive"]];
 
-    qsRet = [[[[pArchive mainResource] URL] absoluteString] UTF8String];
-
-    [pArchive release];
-*/
     return qsRet;
 }
 

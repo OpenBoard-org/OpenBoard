@@ -22,6 +22,7 @@ macx:OSX_VERSION = "$${VERSION} (r$${SVN_VERSION})"
 VERSION_RC = $$VERSION_MAJ,$$VERSION_MIN,$$VERSION_TYPE,$$VERSION_PATCH
 VERSION_RC = $$replace(VERSION_RC, "a", "160") # 0xA0
 VERSION_RC = $$replace(VERSION_RC, "b", "176") # 0xB0
+VERSION_RC = $$replace(VERSION_RC, "rc", "192" ) # 0xC0
 VERSION_RC = $$replace(VERSION_RC, "r", "240") # 0xF0
 
 QT += webkit

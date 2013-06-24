@@ -86,13 +86,6 @@ QString UBPlatformUtils::systemLanguage()
     return QLocale::system().name();
 }
 
-void UBPlatformUtils::runInstaller(const QString &installerFilePath)
-{
-    // TODO UB 4.x - auto update & installer are deactivated on Linux
-    Q_UNUSED(installerFilePath);
-
-}
-
 void UBPlatformUtils::bringPreviousProcessToFront()
 {
     // Mac only

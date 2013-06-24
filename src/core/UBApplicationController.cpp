@@ -507,7 +507,7 @@ void UBApplicationController::downloadJsonFinished(QString currentJson)
     UBVersion installedVersion (qApp->applicationVersion().left(4));
     UBVersion jsonVersion (scriptValue.property("version").toString().left(4));
 
-    if (installedVersion.isValid() &&  jsonVersion.isValid() && jsonVersion > installedVersion) {
+    if (jsonVersion > installedVersion) {
             if (UBApplication::mainWindow->yesNoQuestion(tr("Update available"), tr ("New update available, would you go to the web page ?"))){
                     QUrl url(scriptValue.property ("url").toString());
                     QDesktopServices::openUrl (url);

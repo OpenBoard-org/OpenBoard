@@ -159,7 +159,7 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
 
     setStyle(new UBStyle()); // Style is owned and deleted by the application
 
-    QString css = UBFileSystemUtils::readTextFile(UBPlatformUtils::applicationResourcesDirectory() + "/etc/Uniboard.css");
+    QString css = UBFileSystemUtils::readTextFile(UBPlatformUtils::applicationResourcesDirectory() + "/etc/"+ qApp->applicationName()+".css");
     if (css.length() > 0)
         setStyleSheet(css);
 

@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>images/OpenBoard.png</file>
-        <file>images/bigUniboard.png</file>
+        <file>images/bigOpenBoard.png</file>
         <file>images/close.svg</file>
         <file>images/increase.svg</file>
         <file>images/decrease.svg</file>

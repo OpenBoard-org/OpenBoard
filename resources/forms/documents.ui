@@ -23,7 +23,7 @@
    <enum>Qt::DefaultContextMenu</enum>
   </property>
   <property name="windowTitle">
-   <string>Uniboard Documents</string>
+   <string>OpenBoard Documents</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>

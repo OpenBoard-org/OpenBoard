@@ -830,7 +830,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
     if (mXmlReader.hasError())
     {
-        qWarning() << "error parsing Sankore file " << mXmlReader.errorString();
+        qWarning() << "error parsing file " << mXmlReader.errorString();
     }
 
     qDebug() << "Number of detected strokes: " << mStrokesList.count();

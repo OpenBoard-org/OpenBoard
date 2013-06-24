@@ -29,21 +29,46 @@
 
 #include "core/memcheck.h"
 
-UBVersion::UBVersion()
-    : mIsValid(false)
-    , mPlatform(-1)
-    , mMajor(-1)
-    , mMinor(-1)
-{
-    // NOOP
-}
+//UBVersion::UBVersion()
+//    : mIsValid(false)
+//    , mPlatform(-1)
+//    , mMajor(-1)
+//    , mMinor(-1)
+//{
+//    // NOOP
+//}
 
 
 UBVersion::UBVersion(const QString &string)
 {
-    setString(string);
+    mString = string;
 }
 
+uint UBVersion::toUInt() const
+{
+    uint result = 0;
+    QStringList list = mString.split(".");
+    switch (list.count()) {
+    case 2:
+        //short version  1.0
+        result = (list.at(0).toUInt() * 1000000) + (list.at(1).toUInt() * 10000);
+        break;
+    case 3:
+        //release version 1.0.0
+        result = (list.at(0).toUInt() * 1000000) + (list.at(1).toUInt() * 10000) + list.at(2).toUInt();
+        break;
+    case 4:{
+        //standard version  1.0.a/b/r.0
+        uint releaseStage = list.at(2).startsWith("a") ? Alpha :(list.at(2).startsWith("b") ? Beta : ReleaseCandidate);
+        result = (list.at(0).toUInt() * 1000000) + (list.at(1).toUInt() * 10000) + (releaseStage * 100) + list.at(3).toUInt();
+        break;
+    }
+    default:
+        qWarning() << "Unknown version format.";
+        break;
+    }
+    return result;
+}
 
 UBVersion::~UBVersion()
 {
@@ -51,137 +76,153 @@ UBVersion::~UBVersion()
 }
 
 
-QString UBVersion::toString() const
-{
-    return isValid() ? mString : "INVALID";
-}
+//QString UBVersion::toString() const
+//{
+//    return isValid() ? mString : "INVALID";
+//}
 
-void UBVersion::setString(const QString &string)
-{
-    mIsValid = true;
-    mString = string;
-    QStringList versionParts = string.split(".");
-    int count = versionParts.count();
+//void UBVersion::setString(const QString &string)
+//{
+//    mIsValid = true;
+//    mString = string;
+//    QStringList versionParts = string.split(".");
+//    int count = versionParts.count();
 
-    if (count <  2)
-    {
-        mIsValid = false;
-        return;
-    }
+//    if (count <  2)
+//    {
+//        mIsValid = false;
+//        return;
+//    }
 
-    mPlatform = versionParts.at(0).toInt(&mIsValid);
-    if (!isValid()) return;
-    mMajor = versionParts.at(1).toInt(&mIsValid);
-    if (!isValid()) return;
+//    mPlatform = versionParts.at(0).toInt(&mIsValid);
+//    if (!isValid()) return;
+//    mMajor = versionParts.at(1).toInt(&mIsValid);
+//    if (!isValid()) return;
 
-    if (count == 2)
-    {
-        mMinor = 0;
-        mReleaseStage = ReleaseCandidate;
-    }
-    else if (count == 3)
-    {
-        // Format 4.1.2 (implicitly release)
-        mMinor = versionParts.at(2).toInt(&mIsValid);
-        if (!isValid()) return;
-        mReleaseStage = ReleaseCandidate;
-    }
-    else if (count >= 4)
-    {
-        // Format 4.1.x.2 (where x = a|b|r|<integer>)
-        if ("a" == versionParts.at(2))
-        {
-            mReleaseStage = Alpha;
-        }
-        else if ("b" == versionParts.at(2))
-        {
-            mReleaseStage = Beta;
-        }
-        else if ("r" == versionParts.at(2))
-        {
-            mReleaseStage = ReleaseCandidate;
-        }
-        else
-        {
-            mMinor = versionParts.at(2).toInt(&mIsValid);
-            if (!isValid()) return;
-            mReleaseStage = ReleaseCandidate;
-            return;
-        }
+//    if (count == 2)
+//    {
+//        mMinor = 0;
+//        mReleaseStage = ReleaseCandidate;
+//    }
+//    else if (count == 3)
+//    {
+//        // Format 4.1.2 (implicitly release)
+//        mMinor = versionParts.at(2).toInt(&mIsValid);
+//        if (!isValid()) return;
+//        mReleaseStage = ReleaseCandidate;
+//    }
+//    else if (count >= 4)
+//    {
+//        // Format 4.1.x.2 (where x = a|b|r|<integer>)
+//        if ("a" == versionParts.at(2))
+//        {
+//            mReleaseStage = Alpha;
+//        }
+//        else if ("b" == versionParts.at(2))
+//        {
+//            mReleaseStage = Beta;
+//        }
+//        else if ("r" == versionParts.at(2))
+//        {
+//            mReleaseStage = ReleaseCandidate;
+//        }
+//        else
+//        {
+//            mMinor = versionParts.at(2).toInt(&mIsValid);
+//            if (!isValid()) return;
+//            mReleaseStage = ReleaseCandidate;
+//            return;
+//        }
 
-        QStringList lastParts = versionParts.at(3).split(" ");
-        mMinor = lastParts.at(0).toInt();
-    }
-}
+//        QStringList lastParts = versionParts.at(3).split(" ");
+//        mMinor = lastParts.at(0).toInt();
+//    }
+//}
 
-bool UBVersion::isValid() const
-{
-    return mIsValid;
-}
+//bool UBVersion::isValid() const
+//{
+//    return mIsValid;
+//}
 
-int UBVersion::platformNumber() const
-{
-    Q_ASSERT(isValid());
-    return mPlatform;
-}
+//int UBVersion::platformNumber() const
+//{
+//    Q_ASSERT(isValid());
+//    return mPlatform;
+//}
 
-int UBVersion::majorNumber() const
-{
-    Q_ASSERT(isValid());
-    return mMajor;
-}
+//int UBVersion::majorNumber() const
+//{
+//    Q_ASSERT(isValid());
+//    return mMajor;
+//}
 
-ReleaseStage UBVersion::releaseStage() const
-{
-    Q_ASSERT(isValid());
-    return mReleaseStage;
-}
+//ReleaseStage UBVersion::releaseStage() const
+//{
+//    Q_ASSERT(isValid());
+//    return mReleaseStage;
+//}
 
-int UBVersion::minorNumber() const
-{
-    Q_ASSERT(isValid());
-    return mMinor;
-}
+//int UBVersion::minorNumber() const
+//{
+//    Q_ASSERT(isValid());
+//    return mMinor;
+//}
+
+//bool UBVersion::operator < (const UBVersion &otherVersion) const
+//{
+//    Q_ASSERT(isValid());
+//    Q_ASSERT(otherVersion.isValid());
+
+//    if (platformNumber() != otherVersion.platformNumber())
+//        return platformNumber() < otherVersion.platformNumber();
+//    if (majorNumber() != otherVersion.majorNumber())
+//        return majorNumber() < otherVersion.majorNumber();
+//    if (releaseStage() != otherVersion.releaseStage())
+//        return releaseStage() < otherVersion.releaseStage();
+//    if (minorNumber() != otherVersion.minorNumber())
+//        return minorNumber() < otherVersion.minorNumber();
+//    return false;
+//}
+
+//bool UBVersion::operator == (const UBVersion &otherVersion) const
+//{
+//    Q_ASSERT(isValid());
+//    Q_ASSERT(otherVersion.isValid());
+
+//    return (platformNumber() == otherVersion.platformNumber() &&
+//            majorNumber() == otherVersion.majorNumber() &&
+//            releaseStage() == otherVersion.releaseStage() &&
+//            minorNumber() == otherVersion.minorNumber());
+//}
+
+//bool UBVersion::operator > (const UBVersion &otherVersion) const
+//{
+//    Q_ASSERT(isValid());
+//    Q_ASSERT(otherVersion.isValid());
+
+//    if (platformNumber() != otherVersion.platformNumber())
+//        return platformNumber() > otherVersion.platformNumber();
+//    if (majorNumber() != otherVersion.majorNumber())
+//        return majorNumber() > otherVersion.majorNumber();
+//    if (releaseStage() != otherVersion.releaseStage())
+//        return releaseStage() > otherVersion.releaseStage();
+//    if (minorNumber() != otherVersion.minorNumber())
+//        return minorNumber() > otherVersion.minorNumber();
+//    return false;
+//}
+
 
 bool UBVersion::operator < (const UBVersion &otherVersion) const
 {
-    Q_ASSERT(isValid());
-    Q_ASSERT(otherVersion.isValid());
-
-    if (platformNumber() != otherVersion.platformNumber())
-        return platformNumber() < otherVersion.platformNumber();
-    if (majorNumber() != otherVersion.majorNumber())
-        return majorNumber() < otherVersion.majorNumber();
-    if (releaseStage() != otherVersion.releaseStage())
-        return releaseStage() < otherVersion.releaseStage();
-    if (minorNumber() != otherVersion.minorNumber())
-        return minorNumber() < otherVersion.minorNumber();
-    return false;
+    return toUInt() < otherVersion.toUInt();
 }
 
 bool UBVersion::operator == (const UBVersion &otherVersion) const
 {
-    Q_ASSERT(isValid());
-    Q_ASSERT(otherVersion.isValid());
-
-    return (platformNumber() == otherVersion.platformNumber() &&
-            majorNumber() == otherVersion.majorNumber() &&
-            releaseStage() == otherVersion.releaseStage() &&
-            minorNumber() == otherVersion.minorNumber());
+    return toUInt() == otherVersion.toUInt();
 }
 
 bool UBVersion::operator > (const UBVersion &otherVersion) const
 {
-    Q_ASSERT(isValid());
-    Q_ASSERT(otherVersion.isValid());
-
-    if (platformNumber() != otherVersion.platformNumber())
-        return platformNumber() > otherVersion.platformNumber();
-    if (majorNumber() != otherVersion.majorNumber())
-        return majorNumber() > otherVersion.majorNumber();
-    if (releaseStage() != otherVersion.releaseStage())
-        return releaseStage() > otherVersion.releaseStage();
-    if (minorNumber() != otherVersion.minorNumber())
-        return minorNumber() > otherVersion.minorNumber();
-    return false;
+    return toUInt() > otherVersion.toUInt();
 }

@@ -88,22 +88,6 @@ QString UBPlatformUtils::systemLanguage()
     return QLocale::system().name();
 }
 
-void UBPlatformUtils::runInstaller(const QString &installerFilePath)
-{
-    QProcess process;
-
-    QString escaped = QString("\"") + installerFilePath + QString("\" /SILENT");
-
-    bool success = process.startDetached(escaped);
-    if (!success)
-    {
-        qWarning() << "Running '" << installerFilePath << "' failed (error=" << process.error() << ")";
-        QString verb = "runas";
-        ::ShellExecute(NULL, verb.utf16(), installerFilePath.utf16(), NULL, NULL, SW_HIDE);
-    }
-}
-
-
 void UBPlatformUtils::bringPreviousProcessToFront()
 {
     // Mac only

@@ -127,8 +127,8 @@ struct KEYBT
     ~KEYBT()
     {}
 };
-    
-    
+
+
 
     class UBKeyboardLocale
     {
@@ -191,8 +191,6 @@ public:
         static QString translationPath(QString pFilePrefix, QString pLanguage);
         static QString systemLanguage();
         static bool hasVirtualKeyboard();
-        //static void showVirtualKeyboard();
-        static void runInstaller(const QString &installerFilePath);
         static void bringPreviousProcessToFront();
         static QString osUserLoginName();
         static void setDesktopMode(bool desktop);

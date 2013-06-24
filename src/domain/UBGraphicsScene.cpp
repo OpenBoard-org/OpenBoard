@@ -694,7 +694,7 @@ void UBGraphicsScene::DisposeMagnifierQWidgets()
         magniferDisplayViewWidget = NULL;
     }
 
-    // some time have crash here on access to app (when call from destructor when close sankore app)
+    // some time have crash here on access to app (when call from destructor when close OpenBoard app)
     // so i just add try/catch section here
     try
     {

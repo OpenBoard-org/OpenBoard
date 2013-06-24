@@ -222,7 +222,7 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
 
             if (xml.hasError())
             {
-                qWarning() << "error parsing sankore metadata.rdf file " << xml.errorString();
+                qWarning() << "error parsing metadata.rdf file " << xml.errorString();
             }
         }
 

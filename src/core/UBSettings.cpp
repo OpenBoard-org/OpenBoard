@@ -131,8 +131,8 @@ QSettings* UBSettings::getAppSettings()
 {
     if (!UBSettings::sAppSettings)
     {
-        QString tmpSettings = QDir::tempPath() + "/Uniboard.config";
-        QString appSettings = UBPlatformUtils::applicationResourcesDirectory() + "/etc/Uniboard.config";
+        QString tmpSettings = QDir::tempPath() + "/" + qApp->applicationName() + ".config";
+        QString appSettings = UBPlatformUtils::applicationResourcesDirectory() + "/etc/" + qApp->applicationName() + ".config";
 
         // tmpSettings exists when upgrading Uniboard on Mac (see UBPlatformUtils_mac.mm updater:willInstallUpdate:)
         if (QFile::exists(tmpSettings))
@@ -154,7 +154,7 @@ UBSettings::UBSettings(QObject *parent)
 
     mAppSettings = UBSettings::getAppSettings();
 
-    QString userSettingsFile = UBSettings::userDataDirectory() + "/UniboardUser.config";
+    QString userSettingsFile = UBSettings::userDataDirectory() + "/"+qApp->applicationName()+"User.config";
 
     mUserSettings = new QSettings(userSettingsFile, QSettings::IniFormat, parent);
 
@@ -761,7 +761,6 @@ void UBSettings::setItalicFont(bool italic)
 
 QString UBSettings::userDataDirectory()
 {
-
     static QString dataDirPath = "";
     if(dataDirPath.isEmpty()){
         if (sAppSettings && getAppSettings()->contains("App/DataDirectory")) {
@@ -775,7 +774,7 @@ QString UBSettings::userDataDirectory()
 
         }
         dataDirPath = UBFileSystemUtils::normalizeFilePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
-        dataDirPath.replace(qApp->organizationName() + "/" + qApp->organizationDomain(), "");
+        dataDirPath.replace(qApp->organizationName() + "/", "");
     }
     return dataDirPath;
 }

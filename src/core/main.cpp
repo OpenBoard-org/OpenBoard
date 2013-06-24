@@ -59,7 +59,7 @@ void ub_message_output(QtMsgType type, const char *msg) {
 #endif
 
     if (UBApplication::app() && UBApplication::app()->isVerbose()) {
-        QString logFileNamePath = UBSettings::userDataDirectory() + "/log/uniboard.log";
+        QString logFileNamePath = UBSettings::userDataDirectory() + "/log/"+ qApp->applicationName() + ".log";
         QFile logFile(logFileNamePath);
 
         if (logFile.exists() && logFile.size() > 10000000)
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
     UBApplication app("OpenBoard", argc, argv);
 
     //BUGFIX:
-    //when importing a sankore file that contains a non standard character
+    //when importing a OpenBoard file that contains a non standard character
     //the codecForLocale or the codecForCString is used to convert the file path
     //into a const char*. This is why in french windows setup the codec name shouldn't be
     //set to UTF-8. For example, setting UTF-8, will convert "Haïti" into "HaÂ-ti.

@@ -69,7 +69,7 @@
      <item row="4" column="1">
       <widget class="QLineEdit" name="keywords">
        <property name="text">
-        <string>Uniboard</string>
+        <string>OpenBoard</string>
        </property>
       </widget>
      </item>

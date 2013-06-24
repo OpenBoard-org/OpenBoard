@@ -82,7 +82,7 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background: url(:/images/bigUniboard.png); border: none;</string>
+      <string notr="true">background: url(:/images/bigOpenBoard.png); border: none;</string>
      </property>
      <property name="text">
       <string notr="true"/>

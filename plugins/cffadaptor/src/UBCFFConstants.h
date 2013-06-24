@@ -118,7 +118,7 @@ const QString aIWBContent = "content";
 
 
 // Attribute values
-const QString avIWBVersionNo = "1.0"; 
+const QString avIWBVersionNo = "1.0";
 const QString avUBZText = "text";
 const QString avFalse = "false";
 const QString avTrue = "true";
@@ -126,7 +126,6 @@ const QString avTrue = "true";
 // Namespaces and prefixes
 const QString svgRequiredExtensionPrefix = "http://www.imsglobal.org/iwb/";
 const QString dcNS = "http://purl.org/dc/elements/1.1/";
-const QString ubNS = "http://uniboard.mnemis.com/document";
 const QString svgUBZNS = "http://www.imsglobal.org/xsd/iwb_v1p0";
 const QString svgIWBNS = "http://www.w3.org/2000/svg";
 const QString xlinkNS = "http://www.w3.org/1999/xlink";
@@ -138,7 +137,6 @@ http://www.imsglobal.org/profile/iwb/iwbv1p0_v1p0.xsd \
 http://www.w3.org/2000/svg http://www.imsglobal.org/profile/iwb/svgsubsetv1p0_v1p0.xsd \
 http://www.w3.org/1999/xlink http://www.imsglobal.org/xsd/w3/1999/xlink.xsd";
 const QString dcNSPrefix = "dc";
-const QString ubNSPrefix = "ub";
 const QString svgIWBNSPrefix = "svg";
 const QString xlinkNSPrefix = "xlink";
 const QString iwbNsPrefix = "iwb";
