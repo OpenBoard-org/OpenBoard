@@ -7,7 +7,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{E63D17F8-D9DA-479D-B9B5-0D101A03703B}
 AppName=OpenBoard
-AppVerName=1.0
+AppVerName=OpenBoard 1.0
 AppPublisher=Open Education Foundation
 
 AppPublisherURL=http://dev.open-sankore.org
@@ -83,13 +83,13 @@ Source: "..\Qt-4.8\plugins\phonon_backend\phonon_ds94.dll"; DestDir: "{app}\phon
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 ;qt multimedia plugins
-Source: "c:\OpenBoard\plugins\mediaservice\dsengine.dll"; DestDir: "c:\OpenBoard\plugins\mediaservice"; Flags: ignoreversion
-Source: "c:\OpenBoard\plugins\mediaservice\dsengined.dll"; DestDir: "c:\OpenBoard\plugins\mediaservice"; Flags: ignoreversion
-Source: "c:\OpenBoard\plugins\mediaservice\qtmedia_audioengine.dll"; DestDir: "c:\OpenBoard\plugins\mediaservice"; Flags: ignoreversion
-Source: "c:\OpenBoard\plugins\mediaservice\qtmedia_audioengined.dll"; DestDir: "c:\OpenBoard\plugins\mediaservice"; Flags: ignoreversion
+Source: "c:\OpenSankore\plugins\mediaservice\dsengine.dll"; DestDir: "c:\OpenBoard\plugins\mediaservice"; Flags: ignoreversion
+Source: "c:\OpenSankore\plugins\mediaservice\dsengined.dll"; DestDir: "c:\OpenBoard\plugins\mediaservice"; Flags: ignoreversion
+Source: "c:\OpenSankore\plugins\mediaservice\qtmedia_audioengine.dll"; DestDir: "c:\OpenBoard\plugins\mediaservice"; Flags: ignoreversion
+Source: "c:\OpenSankore\plugins\mediaservice\qtmedia_audioengined.dll"; DestDir: "c:\OpenBoard\plugins\mediaservice"; Flags: ignoreversion
 
-Source: "c:\OpenBoard\plugins\playlistformats\qtmultimediakit_m3u.dll"; DestDir: "c:\OpenBoard\plugins\playlistformats"; Flags: ignoreversion
-Source: "c:\OpenBoard\plugins\playlistformats\qtmultimediakit_m3ud.dll"; DestDir: "c:\OpenBoard\plugins\playlistformats"; Flags: ignoreversion
+Source: "c:\OpenSankore\plugins\playlistformats\qtmultimediakit_m3u.dll"; DestDir: "c:\OpenBoard\plugins\playlistformats"; Flags: ignoreversion
+Source: "c:\OpenSankore\plugins\playlistformats\qtmultimediakit_m3ud.dll"; DestDir: "c:\OpenBoard\plugins\playlistformats"; Flags: ignoreversion
 
 ;fonts for xpdf
 Source: "resources\windows\xpdfrc"; DestDir: "{app}"; Flags: ignoreversion
