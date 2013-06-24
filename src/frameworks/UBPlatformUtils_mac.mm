@@ -74,12 +74,12 @@ void UBPlatformUtils::init()
         NSFileManager *fileManager = [NSFileManager defaultManager];
         [fileManager removeFileAtPath:installedPath handler:nil];
         // removing the old version of the script named Save PDF to Uniboard
-        [fileManager removeFileAtPath:[[[@"~/Library/PDF Services" stringByExpandingTildeInPath] stringByAppendingPathComponent:@"Save PDF to Uniboard"] stringByAppendingPathExtension:@"workflow"] handler:nil];
+        [fileManager removeFileAtPath:[[[@"~/Library/PDF Services" stringByExpandingTildeInPath] stringByAppendingPathComponent:@"Save PDF to OpenBoard"] stringByAppendingPathExtension:@"workflow"] handler:nil];
         [fileManager createDirectoryAtPath:[installedPath stringByDeletingLastPathComponent] attributes:nil];
         BOOL copyOK = [fileManager copyPath:currentPath toPath:installedPath handler:nil];
         if (!copyOK)
         {
-            qWarning("Could not install the 'Save PDF to Open-Sankoré workflow");
+            qWarning("Could not install the 'Save PDF to OpenBoard workflow");
         }
     }
 

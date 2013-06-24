@@ -75,7 +75,7 @@
 									<key>GID</key>
 									<integer>80</integer>
 									<key>Path</key>
-									<string>build/macx/release/product/Open-Sankore.app</string>
+									<string>build/macx/release/product/OpenBoard.app</string>
 									<key>Path Type</key>
 									<integer>2</integer>
 									<key>Privileges</key>
@@ -479,9 +479,9 @@
 						<key>IFPkgDescriptionDeleteWarning</key>
 						<string></string>
 						<key>IFPkgDescriptionDescription</key>
-						<string>Open-Sankore is an hardware independent interactive whiteboard</string>
+						<string>OpenBoard is an hardware independent interactive whiteboard</string>
 						<key>IFPkgDescriptionTitle</key>
-						<string>Open-Sankoré</string>
+						<string>OpenBoard</string>
 						<key>IFPkgDescriptionVersion</key>
 						<string>1.40.b.00</string>
 					</dict>
@@ -489,15 +489,15 @@
 				<key>Display Information</key>
 				<dict>
 					<key>CFBundleGetInfoString</key>
-					<string>Open-Sankore 1.0 Copyrights © 2011 Open-Sankoré</string>
+					<string>OpenBoard 1.0 Copyrights © 2013 OpenBoard</string>
 					<key>CFBundleIconFile</key>
-					<string>resources/macx/UniboardDmg.icns</string>
+					<string>resources/macx/OpenBoardDmg.icns</string>
 					<key>CFBundleIconFile Path Type</key>
 					<integer>2</integer>
 					<key>CFBundleIdentifier</key>
-					<string>org.open-sankore.pkg.Open-Sankore</string>
+					<string>org.OpenBoard.pkg.OpenBoard</string>
 					<key>CFBundleName</key>
-					<string>Open-Sankoré</string>
+					<string>OpenBoard</string>
 					<key>CFBundleShortVersionString</key>
 					<string>1.40.b.00</string>
 				</dict>
@@ -534,7 +534,7 @@
 		<key>IFPkgFlagPackageSelection</key>
 		<integer>0</integer>
 		<key>Name</key>
-		<string>Open-Sankore</string>
+		<string>OpenBoard</string>
 		<key>Status</key>
 		<integer>1</integer>
 		<key>Type</key>

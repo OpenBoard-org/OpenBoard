@@ -35,7 +35,7 @@ BASE_QT_TRANSLATIONS_DIRECTORY=../Qt4.8/translations
 function notify {
     GROWLNOTIFY=`which growlnotify`
     if [ -x "$GROWLNOTIFY" ]; then
-        $GROWLNOTIFY --name uniboard-build --iconpath /Developer/Applications/Xcode.app --message "$1" "Uniboard"
+        $GROWLNOTIFY --name OpenBoard-build --iconpath /Developer/Applications/Xcode.app --message "$1" "OpenBoard"
     fi
     printf "\033[32m--->\033[0m $1\n"
 }
@@ -80,16 +80,16 @@ done
 
 }
 
-trap "defaults write com.mnemis.Uniboard.release Running -bool NO" EXIT
+trap "defaults write org.oe-f.OpenBoard.release Running -bool NO" EXIT
 
-notify "Running Uniboard release script (`date`)"
+notify "Running OpenBoard release script (`date`)"
 
-script_is_running=`defaults read com.mnemis.Uniboard.release Running 2>/dev/null`
+script_is_running=`defaults read org.oe-f.OpenBoard.release Running 2>/dev/null`
 if [[ $? -eq 0 ]] && [[ "$script_is_running" = "1" ]]; then
     trap EXIT
     abort "another release script already running"
 fi
-defaults write com.mnemis.Uniboard.release Running -bool YES
+defaults write org.oe-f.OpenBoard.release Running -bool YES
 
 # Check for executables
 checkExecutable "$QMAKE"
@@ -135,8 +135,8 @@ else
     LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
     if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
 	echo creating a tag with the version $VERSION
-	git tag -a "v$VERSION" -m "Generated setup for v$VERSION"
-	git push origin --tags
+#	git tag -a "v$VERSION" -m "Generated setup for v$VERSION"
+#	git push origin --tags
     fi
 fi
   
@@ -203,7 +203,7 @@ cp *.pdf "$VOLUME"
 cp -R "$APP" "$VOLUME"
 ln -s /Applications "$VOLUME"
 
-$DMGUTIL --set --iconsize=96 --toolbar=false --icon=resources/macx/UniboardDmg.icns "$VOLUME"
+$DMGUTIL --set --iconsize=96 --toolbar=false --icon=resources/macx/OpenBoard.icns "$VOLUME"
 $DMGUTIL --set --x=20 --y=60 --width=580 --height=440 "$VOLUME"
 $DMGUTIL --set --x=180 --y=120 "$VOLUME/`basename \"$APP\"`"
 $DMGUTIL --set --x=400 --y=120 "$VOLUME/Applications"

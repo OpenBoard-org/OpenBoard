@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleIdentifier</key>
-	<string>com.eduxia.pdfworkflow.savepdftoopensankore</string>
+	<string>org.oe-f.pdfworkflow.savepdftoopensankore</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Save PDF to Open-Sankoré</string>
+	<string>Save PDF to OpenBoard</string>
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>

@@ -208,7 +208,6 @@
         <file>webbrowser/notfound.html</file>
         <file>webbrowser/object-wrapper.html</file>
         <file alias="PowerPointImport.applescript">macx/PowerPointImport.applescript</file>
-        <file>macx/upgrade.sh</file>
         <file>podcast/OpenBoard.prx</file>
         <file>www/OpenBoard-web-player.html</file>
         <file>images/toolbar/tutorial.png</file>

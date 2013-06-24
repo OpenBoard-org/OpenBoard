@@ -8,14 +8,14 @@
 				<key>CFBundleTypeIconFile</key>
 				<string>ubz.icns</string>
 				<key>CFBundleTypeName</key>
-				<string>com.mnemis.uniboard.document</string>
+				<string>org.oe-f.OpenBoard.document</string>
 				<key>CFBundleTypeRole</key>
 				<string>Editor</string>
 				<key>LSHandlerRank</key>
 				<string>Owner</string>
 				<key>LSItemContentTypes</key>
 				<array>
-					<string>com.mnemis.uniboard.document</string>
+					<string>org.oe-f.OpenBoard.document</string>
 				</array>
 			</dict>
 			<dict>
@@ -49,19 +49,19 @@
 			</dict>
 		</array>
 		<key>CFBundleExecutable</key>
-		<string>Open-Sankore</string>
+		<string>OpenBoard</string>
 		<key>CFBundleGetInfoString</key>
-		<string>Open-Sankore @SHORT_VERSION@</string>
+		<string>OpenBoard @SHORT_VERSION@</string>
 		<key>CFBundleIconFile</key>
-		<string>Uniboard.icns</string>
+		<string>OpenBoard.icns</string>
 		<key>CFBundleIdentifier</key>
-		<string>org.eduxia.open-sankore</string>
+		<string>org.oe-f.OpenBoard</string>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
 		<string>5.0.0 (rDEVELOPMENT)</string>
 		<key>CFBundleSignature</key>
-		<string>UniB</string>
+		<string>OpenB</string>
 		<key>CFBundleVersion</key>
 		<string>0</string>
 		<key>SUPublicDSAKeyFile</key>
@@ -70,9 +70,9 @@
 		<array>
 			<dict>
 				<key>UTTypeIdentifier</key>
-				<string>com.mnemis.uniboard.document</string>
+				<string>org.oe-f.OpenBoard.document</string>
 				<key>UTTypeDescription</key>
-				<string>Open-Sankore document</string>
+				<string>OpenBoard document</string>
 				<key>UTTypeConformsTo</key>
 				<array>
 					<string>public.presentation</string>
