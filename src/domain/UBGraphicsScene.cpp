@@ -276,6 +276,18 @@ void UBZLayerController::setLayerType(QGraphicsItem *pItem, itemLayerType::Enum 
    pItem->setData(UBGraphicsItemData::itemLayerType, QVariant(pNewType));
 }
 
+void UBZLayerController::shiftStoredZValue(QGraphicsItem *item, qreal zValue)
+{
+    itemLayerType::Enum type = typeForData(item);
+
+    if (validLayerType(type)) {
+        ItemLayerTypeData typeData = scopeMap.value(type);
+        if (typeData.curValue < zValue) {
+            scopeMap[type].curValue = zValue;
+        }
+    }
+}
+
 UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoStack)
     : UBCoreGraphicsScene(parent)
     , mEraser(0)
@@ -1051,6 +1063,11 @@ UBBoardView *UBGraphicsScene::controlView()
     return result;
 }
 
+void UBGraphicsScene::notifyZChanged(QGraphicsItem *item, qreal zValue)
+{
+    mZLayerController->shiftStoredZValue(item, zValue);
+}
+
 void UBGraphicsScene::updateSelectionFrame()
 {
     qDebug() << "selected item count" << selectedItems().count();
@@ -1647,6 +1664,8 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
     if(item->zValue() == DEFAULT_Z_VALUE || item->zValue() == UBZLayerController::errorNum()){
         qreal zvalue = mZLayerController->generateZLevel(item);
         UBGraphicsItem::assignZValue(item, zvalue);
+    } else {
+        notifyZChanged(item, item->zValue());
     }
 
     if (!mTools.contains(item))
