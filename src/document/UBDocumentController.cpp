@@ -1189,7 +1189,7 @@ void UBDocumentController::selectionChanged()
         deleteEnabled = false;
     }
 
-    if(pageSelected && firstSceneSelected)
+    if(pageSelected && pageCount == 1)
         deleteEnabled = false;
 
     mMainWindow->actionDelete->setEnabled(deleteEnabled);
