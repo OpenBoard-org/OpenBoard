@@ -195,6 +195,7 @@ void UBPreferencesController::init()
 
     mPreferencesUI->useExternalBrowserCheckBox->setChecked(settings->webUseExternalBrowser->get().toBool());
     mPreferencesUI->displayBrowserPageCheckBox->setChecked(settings->webShowPageImmediatelyOnMirroredScreen->get().toBool());
+    mPreferencesUI->swapControlAndDisplayScreensCheckBox->setChecked(settings->swapControlAndDisplayScreens->get().toBool());
     mPreferencesUI->webHomePage->setText(settings->webHomePage->get().toString());
 
     mPreferencesUI->proxyUsername->setText(settings->proxyUsername());
