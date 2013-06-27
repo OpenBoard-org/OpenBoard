@@ -84,13 +84,18 @@ UBDocumentNavigator::~UBDocumentNavigator()
  */
 void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 {
-
     mThumbsWithLabels.clear();
-    foreach(QGraphicsItem* it, mScene->items())
+//    foreach(QGraphicsItem* it, mScene->items())
+    int selectedIndex = -1;
+    QList<QGraphicsItem*> graphicsItemList = mScene->items();
+    for(int i = 0; i < graphicsItemList.size(); i+=1)
     {
-        mScene->removeItem(it);
-        delete it;
-        it = NULL;
+        QGraphicsItem* item = graphicsItemList.at(i);
+        if(item->isSelected())
+            selectedIndex = i;
+        mScene->removeItem(item);
+        delete item;
+        item = NULL;
     }
 
     for(int i = 0; i < source->selectedDocument()->pageCount(); i++)
@@ -111,6 +116,11 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
         mScene->addItem(pixmapItem);
         mScene->addItem(labelItem);
     }
+
+    if (selectedIndex >= 0 && selectedIndex < mThumbsWithLabels.count())
+        mSelectedThumbnail = mThumbsWithLabels.at(selectedIndex).getThumbnail();
+    else
+        mSelectedThumbnail = NULL;
 
     // Draw the items
     refreshScene();
@@ -274,6 +284,7 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
         {
             if (mThumbsWithLabels.at(i).getThumbnail() == pCrntItem)
             {
+                mSelectedThumbnail = pCrntItem;
                 index = i;
                 break;
             }
