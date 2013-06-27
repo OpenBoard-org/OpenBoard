@@ -117,6 +117,11 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     // we should create delegate after media objects because delegate uses his properties at creation.
     setDelegate(new UBGraphicsMediaItemDelegate(this, mMediaObject));
 
+    // TODO claudio remove this because in contrast with the fact the frame should be created on demand.
+    // but without without forcing the control creation we do not have the frame and all the calculation
+    // for the different element of the interface will fail
+    Delegate()->createControls();
+
     // delegate should be created earler because we setWidget calls resize event for graphics proxy widgt.
     // resize uses delegate.
     if (mediaType_Video == mMediaType)
@@ -125,7 +130,6 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         setWidget(mAudioWidget);
 
     // media widget should be created and placed on proxy widget here.
-
     if (mediaType_Audio == mMediaType)
         Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::ResizingHorizontally);
     else
