@@ -133,6 +133,7 @@ buildImporter(){
     checkDir $IMPORTER_DIR
     cd ${IMPORTER_DIR}
     $QMAKE_PATH ${IMPORTER_NAME}.pro
+    make clean
     make -j4
     checkExecutable $IMPORTER_NAME
     cd -
@@ -224,7 +225,7 @@ cp -R resources/customizations $PRODUCT_PATH/
 
 # copying importer
 mkdir -p $PRODUCT_PATH/Importer
-cp -R ${IMPORTER_DIR}/${IMPOTER_NAME} $PRODUCT_PATH/Importer
+cp -R ${IMPORTER_DIR}/${IMPORTER_NAME} $PRODUCT_PATH/Importer
 
 if [ $STANDARD_QT_USED == false ]; then 
 #copying custom qt library
