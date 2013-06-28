@@ -32,6 +32,8 @@
 #include "core/UBSetting.h"
 #include "core/UBDocumentManager.h"
 #include "core/UBDisplayManager.h"
+#include "core/UBOpenSankoreImporter.h"
+
 
 #include "board/UBBoardView.h"
 #include "board/UBBoardController.h"
@@ -113,7 +115,8 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
             , this, SLOT(addCapturedPixmap(const QPixmap &, bool, const QUrl&)));
 
     networkAccessManager = new QNetworkAccessManager (this);
-    QTimer::singleShot (1000, this, SLOT (checkUpdateAtLaunch()));
+    QTimer::singleShot (1000, this, SLOT (checkAtLaunch()));
+
 
 #ifdef Q_WS_X11
     mMainWindow->setStyleSheet("QToolButton { font-size: 11px}");
@@ -520,8 +523,10 @@ void UBApplicationController::downloadJsonFinished(QString currentJson)
     }
 }
 
-void UBApplicationController::checkUpdateAtLaunch()
+void UBApplicationController::checkAtLaunch()
 {
+    UBOpenSankoreImporter();
+
     if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool()){
         isNoUpdateDisplayed = false;
         checkUpdate ();

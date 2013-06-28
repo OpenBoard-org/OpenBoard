@@ -137,7 +137,7 @@ class UBApplicationController : public QObject
         void actionPaste();
 
         void checkUpdateRequest();
-        void checkUpdateAtLaunch();
+        void checkAtLaunch();
 
     private slots:
         void updateRequestFinished(int id, bool error);

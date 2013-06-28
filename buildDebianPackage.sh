@@ -127,6 +127,17 @@ buildWithStandardQt(){
   fi
 }
 
+buildImporter(){
+    IMPORTER_DIR="../OpenSankoreToOpenBoard"
+    IMPORTER_NAME="OpenBoardImporter"
+    checkDir $IMPORTER_DIR
+    cd ${IMPORTER_DIR}
+    $QMAKE_PATH ${IMPORTER_NAME}.pro
+    make -j4
+    checkExecutable $IMPORTER_NAME
+    cd -
+}
+
 #**********************
 #     script
 #**********************
@@ -155,6 +166,10 @@ checkDir $GUI_TRANSLATIONS_DIRECTORY_PATH
 checkExecutable $QMAKE_PATH
 checkExecutable $LRELEASES
 checkExecutable $ZIP_PATH
+
+#build third party application
+buildImporter 
+notifyProgress "OpenBoardImporter" "Built Importer"
 
 # cleaning the build directory
 rm -rf "build/linux/release"
@@ -201,11 +216,15 @@ chmod a+x $PRODUCT_PATH/run.sh
 
 cp -R resources/linux/qtlinux/* $PRODUCT_PATH/
 
-notifyProgress "QT" "Coping plugins and library ..."
+notifyProgress "QT" "Copying plugins and library ..."
 cp -R $PLUGINS_PATH $PRODUCT_PATH/
 
 # copying customization
 cp -R resources/customizations $PRODUCT_PATH/
+
+# copying importer
+mkdir -p $PRODUCT_PATH/Importer
+cp -R ${IMPORTER_DIR}/${IMPOTER_NAME} $PRODUCT_PATH/Importer
 
 if [ $STANDARD_QT_USED == false ]; then 
 #copying custom qt library

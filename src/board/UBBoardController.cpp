@@ -153,6 +153,7 @@ void UBBoardController::init()
     connect(UBApplication::mainWindow->actionGroupItems, SIGNAL(triggered()), this, SLOT(groupButtonClicked()));
 
     undoRedoStateChange(true);
+
 }
 
 
@@ -201,7 +202,6 @@ void UBBoardController::setupViews()
 
     mPaletteManager = new UBBoardPaletteManager(mControlContainer, this);
     connect(this, SIGNAL(activeSceneChanged()), mPaletteManager, SLOT(activeSceneChanged()));
-
 }
 
 

@@ -226,7 +226,8 @@ void UBSettings::init()
     appIsInSoftwareUpdateProcess = new UBSetting(this, "App", "IsInSoftwareUpdateProcess", false);
     appLastSessionDocumentUUID = new UBSetting(this, "App", "LastSessionDocumentUUID", "");
     appLastSessionPageIndex = new UBSetting(this, "App", "LastSessionPageIndex", 0);
-    appUseMultiscreen = new UBSetting(this, "App", "UseMusliscreenMode", true);
+    appUseMultiscreen = new UBSetting(this, "App", "UseMultiscreenMode", true);
+    appLookForOpenSankoreInstall = new UBSetting(this, "App", "LookForOpenSankoreInstall", true);
 
     appStartMode = new UBSetting(this, "App", "StartMode", "");
 

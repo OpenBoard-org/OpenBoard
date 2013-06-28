@@ -181,10 +181,6 @@ void UBGraphicsStrokesGroup::paint(QPainter *painter, const QStyleOptionGraphics
 {
     // Never draw the rubber band, we draw our custom selection with the DelegateFrame
     QStyleOptionGraphicsItem styleOption = QStyleOptionGraphicsItem(*option);
-    bool selectedState = false;
-    if (styleOption.state & QStyle::State_Selected) {
-        selectedState = true;
-    }
     QStyle::State svState = option->state;
     styleOption.state &= ~QStyle::State_Selected;
     QGraphicsItemGroup::paint(painter, &styleOption, widget);

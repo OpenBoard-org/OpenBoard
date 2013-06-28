@@ -235,6 +235,7 @@ class UBSettings : public QObject
         UBSetting* appLastSessionPageIndex;
 
         UBSetting* appUseMultiscreen;
+        UBSetting* appLookForOpenSankoreInstall;
 
         UBSetting* boardPenFineWidth;
         UBSetting* boardPenMediumWidth;
