@@ -37,10 +37,6 @@ UBGraphicsProxyWidget::UBGraphicsProxyWidget(QGraphicsItem* parent)
 {
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
 
-    //UBGraphicsItemDelegate* delegate = new UBGraphicsItemDelegate(this,0, true, false, false);
-    //delegate->init();
-    //setDelegate(delegate);
-
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
     QGraphicsProxyWidget::setAcceptHoverEvents(true);
@@ -53,6 +49,7 @@ UBGraphicsProxyWidget::~UBGraphicsProxyWidget()
 
 void UBGraphicsProxyWidget::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    QGraphicsProxyWidget::paint(painter,option,widget);
     Delegate()->postpaint(painter, option, widget);
 }
 
@@ -158,7 +155,7 @@ void UBGraphicsProxyWidget::resize(const QSizeF & pSize)
 
         if (widget())
         {
-            
+
             QSizeF minimumItemSize(widget()->minimumSize());
             if (minimumItemSize.width() > pSize.width())
                 sizeX = minimumItemSize.width();

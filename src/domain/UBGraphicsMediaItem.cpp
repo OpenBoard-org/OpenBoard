@@ -31,29 +31,6 @@
 #include "board/UBBoardController.h"
 #include "core/memcheck.h"
 
-
-UBAudioPresentationWidget::UBAudioPresentationWidget(QWidget *parent)
-    : QWidget(parent)
-    , mBorderSize(10)
-{
-
-}
-
-void UBAudioPresentationWidget::paintEvent(QPaintEvent *event)
-{
-    QPainter painter(this);
-    painter.fillRect(rect(), QBrush(Qt::white));
-
-    QPen borderPen;
-    borderPen.setWidth(2);
-    borderPen.setColor(QColor(Qt::black));
-
-    painter.setPen(borderPen);
-    painter.drawRect(0,0, width(), height());
-
-    QWidget::paintEvent(event);
-}
-
 bool UBGraphicsMediaItem::sIsMutedByDefault = false;
 
 UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent)
@@ -97,14 +74,9 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         mAudioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
 
         mMediaObject->setTickInterval(1000);
-        mAudioWidget = new UBAudioPresentationWidget();
-        int borderSize = 0;
-        UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBAudioPresentationWidget*>(mAudioWidget);
-        if (pAudioWidget)
-            borderSize = pAudioWidget->borderSize();
-
-        mAudioWidget->resize(320,26+2*borderSize); //3*border size with enabled title
-        mAudioWidget->setMinimumSize(150,26+borderSize);
+        mAudioWidget = new QWidget();
+        mAudioWidget->resize(320,26);
+        mAudioWidget->setMinimumSize(150,26);
 
         haveLinkedImage = false;
     }
@@ -117,10 +89,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     // we should create delegate after media objects because delegate uses his properties at creation.
     setDelegate(new UBGraphicsMediaItemDelegate(this, mMediaObject));
 
-    // TODO claudio remove this because in contrast with the fact the frame should be created on demand.
-    // but without without forcing the control creation we do not have the frame and all the calculation
-    // for the different element of the interface will fail
-    Delegate()->createControls();
+
 
     // delegate should be created earler because we setWidget calls resize event for graphics proxy widgt.
     // resize uses delegate.
@@ -130,6 +99,10 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         setWidget(mAudioWidget);
 
     // media widget should be created and placed on proxy widget here.
+    // TODO claudio remove this because in contrast with the fact the frame should be created on demand.
+    // but without forcing the control creation we do not have the frame and all the calculation
+    // for the different element of the interface will fail
+    Delegate()->createControls();
     if (mediaType_Audio == mMediaType)
         Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::ResizingHorizontally);
     else
@@ -194,11 +167,6 @@ void UBGraphicsMediaItem::clearSource()
 
     if (!UBFileSystemUtils::deleteFile(path))
         qDebug() << "cannot delete file: " << path;
-}
-
-void UBGraphicsMediaItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    UBGraphicsProxyWidget::paint(painter, option, widget);
 }
 
 void UBGraphicsMediaItem::toggleMute()

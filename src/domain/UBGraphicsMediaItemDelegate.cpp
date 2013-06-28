@@ -119,14 +119,14 @@ void UBGraphicsMediaItemDelegate::buildButtons()
         connect(mMuteButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
     }
 
-    UBGraphicsMediaItem *audioItem = dynamic_cast<UBGraphicsMediaItem*>(mDelegated);
-    if (audioItem)
-    {
-        if (audioItem->getMediaType() == UBGraphicsMediaItem::mediaType_Audio)
-        {
+//    UBGraphicsMediaItem *audioItem = dynamic_cast<UBGraphicsMediaItem*>(mDelegated);
+//    if (audioItem)
+//    {
+//        if (audioItem->getMediaType() == UBGraphicsMediaItem::mediaType_Audio)
+//        {
             positionHandles();
-        }
-    }
+//        }
+//    }
 }
 
 UBGraphicsMediaItemDelegate::~UBGraphicsMediaItemDelegate()
@@ -143,23 +143,12 @@ void UBGraphicsMediaItemDelegate::positionHandles()
     if (mediaItem)
     {
         QRectF toolBarRect = mToolBarItem->rect();
-        if (mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Video)
-        {
-            mToolBarItem->setPos(0, delegated()->boundingRect().height()-mToolBarItem->rect().height());
 
-            toolBarRect.setWidth(delegated()->boundingRect().width());
-        }
-        else if (mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Audio)
-        {
-            int borderSize = 0;
-            UBAudioPresentationWidget *audioWidget = dynamic_cast<UBAudioPresentationWidget*>(delegated()->widget());
-            if (audioWidget)
-                borderSize = audioWidget->borderSize();
+        mToolBarItem->setPos(0, delegated()->boundingRect().height()-mToolBarItem->rect().height());
 
-            mToolBarItem->setPos(borderSize,delegated()->boundingRect().height()-(mToolBarItem->rect().height() + borderSize));
-            toolBarRect.setWidth((delegated()->boundingRect().width()-2*borderSize));
-            mToolBarItem->show();
-        }
+        toolBarRect.setWidth(delegated()->boundingRect().width());
+        mToolBarItem->show();
+
 
         mToolBarItem->setRect(toolBarRect);
     }
@@ -173,10 +162,10 @@ void UBGraphicsMediaItemDelegate::positionHandles()
     }
     toolBarMinimumWidth += mToolBarItem->boundingRect().height();
 
-    UBAudioPresentationWidget* pAudioWidget = dynamic_cast<UBAudioPresentationWidget*>(delegated()->widget());
+    QWidget* pAudioWidget = delegated()->widget();
     if (pAudioWidget)
     {
-       pAudioWidget->setMinimumSize(toolBarMinimumWidth + (int)mMediaControl->lcdAreaSize().width() + (int)mMediaControl->rect().height(),26+pAudioWidget->borderSize());
+       pAudioWidget->setMinimumSize(toolBarMinimumWidth + (int)mMediaControl->lcdAreaSize().width() + (int)mMediaControl->rect().height(),26);
     }
 
     QRectF mediaItemRect = mMediaControl->rect();
@@ -187,7 +176,7 @@ void UBGraphicsMediaItemDelegate::positionHandles()
     mToolBarItem->positionHandles();
     mMediaControl->positionHandles();
 
-    if (mediaItem && mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Audio)
+    if (mediaItem)
         mToolBarItem->show();
 }
 

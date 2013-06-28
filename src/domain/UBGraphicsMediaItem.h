@@ -32,22 +32,6 @@
 #include "board/UBBoardController.h"
 #include "frameworks/UBFileSystemUtils.h"
 
-class UBAudioPresentationWidget : public QWidget
-{
-public:
-    UBAudioPresentationWidget(QWidget *parent = NULL);
-
-    int borderSize() {return mBorderSize;}
-    void setTitle(QString title = QString()){mTitle = title;}
-    QString getTitle(){return mTitle;}
-
-private:
-    virtual void paintEvent(QPaintEvent *event);
-
-    int mBorderSize;
-    QString mTitle;
-};
-
 class UBGraphicsMediaItem : public UBGraphicsProxyWidget
 {
     Q_OBJECT
@@ -121,7 +105,6 @@ protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     virtual void clearSource();
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     Phonon::MediaObject *mMediaObject;
     Phonon::VideoWidget *mVideoWidget;
@@ -145,7 +128,7 @@ private:
     QPointF mMouseMovePos;
 
     bool haveLinkedImage;
-    QGraphicsPixmapItem *mLinkedImage;    
+    QGraphicsPixmapItem *mLinkedImage;
 
     qint64 mInitialPos;
 };
