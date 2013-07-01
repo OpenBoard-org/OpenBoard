@@ -33,12 +33,19 @@ UBOpenSankoreImporter::UBOpenSankoreImporter(QObject *parent) :
     QObject(parent)
 {
     if(UBSettings::settings()->appLookForOpenSankoreInstall->get().toBool() &&
-            QDir(UBSettings::userDataDirectory().replace(qApp->applicationName(),"Sankore")).exists())
+            QDir(UBSettings::userDataDirectory().replace(qApp->applicationName(),"Sankore")).exists()){
         if(UBApplication::mainWindow->yesNoQuestion(tr("Open-Sankoré data detected"),tr("Open-Sankoré directory is present on the disk. It's possible to import the Open-Sankoré documents into OpenBoard as the preferences. Pushing Ok will close OpenBoard and run the importer application."))){
             QProcess newProcess;
+#ifdef Q_WS_X11
             newProcess.startDetached(qApp->applicationDirPath()+"/Importer/OpenBoardImporter");
+#elif defined Q_WS_MACX
+            newProcess.startDetached(qApp->applicationDirPath()+"/../Resources/OpenBoardImporter.app/Contents/MacOS/OpenBoardImporter");
+#else
+            newProcess.startDetached(qApp->applicationDirPath()+"/Importer/OpenBoardImporter.exe");
+#endif
             qApp->exit(0);
         }
+    }
 }
 
 

@@ -80,6 +80,22 @@ done
 
 }
 
+
+function addImporter {
+    importerDir="`pwd`/../OpenSankoreToOpenBoard"
+    importerName="OpenBoardImporter"
+
+    if [ ! -e ${importerDir} ]; then
+        abort "${importerDir} not found"
+    fi
+
+    cd ${importerDir}
+    $QMAKE ${importerName}.pro
+    make -j4
+    $MACDEPLOYQT ${importerName}.app 
+    cd -
+}
+
 trap "defaults write org.oe-f.OpenBoard.release Running -bool NO" EXIT
 
 notify "Running OpenBoard release script (`date`)"
@@ -100,6 +116,8 @@ checkExecutable "$STRIP"
 checkExecutable "$PLISTBUDDY"
 checkExecutable "$ICEBERG"
 checkExecutable "$LRELEASE"
+
+addImporter
 
 # delete the build directory
 notify "Cleaning ..."
@@ -125,6 +143,7 @@ $LRELEASE $BASE_QT_TRANSLATIONS_DIRECTORY/translations.pro
 addQtTranslations
 
 cp -R resources/customizations $PRODUCT_DIR/$APPLICATION_NAME.app/Contents/Resources
+cp -R $importerDir/$importerName.app $PRODUCT_DIR/$APPLICATION_NAME.app/Contents/Resources
 
 VERSION=`cat "$BUILD_DIR/version"`
 if [ ! -f "$BUILD_DIR/version" ]; then
