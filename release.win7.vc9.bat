@@ -1,4 +1,4 @@
-echo off
+﻿echo off
 REM --------------------------------------------------------------------
 REM This program is free software: you can redistribute it and/or modify
 REM it under the terms of the GNU General Public License as published by
@@ -35,6 +35,18 @@ set PATH=%QT_BIN%;%PATH%;%WIN_SDK_BIN%;%GIT_BIN%
 call "%VS_BIN%\vcvars32.bat"
 
 echo %PATH%
+
+REM Third party impoter application
+set IMPORTER_NAME="OpenBoardImporter"
+set IMPORTER_PATH="%cd%\..\OpenSankoreToOpenBoard"
+
+IF NOT EXIST "%IMPORTER_PATH%" GOTO EXIT_WITH_ERROR
+set HOME_DIR="%cd%"
+cd %IMPORTER_PATH%
+IF EXIST "release" (del "release\*.*" /Q)
+"%QT_BIN%\qmake.exe" %IMPORTER_NAME%.pro
+nmake release
+cd %HOME_DIR%
 
 REM this checks if the custom qt directory path
 REM is correct. This is important because installer
@@ -92,7 +104,7 @@ GOTO END
 
 :EXIT_WITH_ERROR
 echo "Error found"
-GOTO :EOF
+GOTO EOF
 
 :END
 echo "%APPLICATION_NAME% build finished"

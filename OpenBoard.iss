@@ -91,6 +91,9 @@ Source: "c:\OpenSankore\plugins\mediaservice\qtmedia_audioengined.dll"; DestDir:
 Source: "c:\OpenSankore\plugins\playlistformats\qtmultimediakit_m3u.dll"; DestDir: "c:\OpenBoard\plugins\playlistformats"; Flags: ignoreversion
 Source: "c:\OpenSankore\plugins\playlistformats\qtmultimediakit_m3ud.dll"; DestDir: "c:\OpenBoard\plugins\playlistformats"; Flags: ignoreversion
 
+;OpenBoardImporter
+Source: "..\OpenSankoreToOpenBoard\release\OpenBoardImporter.exe"; DestDir: "c:\OpenBoard\Importer"; Flags: ignoreversion
+
 ;fonts for xpdf
 Source: "resources\windows\xpdfrc"; DestDir: "{app}"; Flags: ignoreversion
 Source: "resources\fonts\*"; DestDir: "{app}\fonts"; Flags: ignoreversion
