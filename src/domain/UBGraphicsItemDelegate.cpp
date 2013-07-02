@@ -641,6 +641,7 @@ void UBGraphicsItemDelegate::onZoomChanged()
 void UBGraphicsItemDelegate::buildButtons()
 {
 }
+
 void UBGraphicsItemDelegate::freeButtons()
 {
    //Previously deleted with the frame
