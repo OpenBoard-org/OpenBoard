@@ -68,8 +68,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 
         haveLinkedImage = true;
     }
-    else if (mediaPath.toLower().contains("audios"))
-    {
+    else if (mediaPath.toLower().contains("audios")){
         mMediaType = mediaType_Audio;
         mAudioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
 
@@ -188,8 +187,7 @@ void UBGraphicsMediaItem::hasMediaChanged(bool hasMedia)
 {
     if(hasMedia && mMediaObject->isSeekable())
     {
-    Q_UNUSED(hasMedia);
-    mMediaObject->seek(mInitialPos);
+        mMediaObject->seek(mInitialPos);
         UBGraphicsMediaItemDelegate *med = dynamic_cast<UBGraphicsMediaItemDelegate *>(Delegate());
         if (med)
             med->updateTicker(initialPos());
@@ -206,9 +204,7 @@ UBGraphicsScene* UBGraphicsMediaItem::scene()
 void UBGraphicsMediaItem::activeSceneChanged()
 {
     if (UBApplication::boardController->activeScene() != scene())
-    {
         mMediaObject->pause();
-    }
 }
 
 
@@ -269,9 +265,7 @@ void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
             {
                 QGraphicsItem *curItem = group->getCurrentItem();
                 if (curItem && this != curItem)
-                {
                     group->deselectCurrentItem();
-                }
                 group->setCurrentItem(this);
                 this->setSelected(true);
                 Delegate()->positionHandles();
@@ -280,16 +274,12 @@ void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
         }
     }
 
-    if (parentItem() && parentItem()->type() == UBGraphicsGroupContainerItem::Type)
-    {
+    if (parentItem() && parentItem()->type() == UBGraphicsGroupContainerItem::Type) {
         mShouldMove = false;
         if (!Delegate()->mousePressEvent(event))
-        {
             event->accept();
-        }
     }
-    else
-    {
+    else {
         mShouldMove = (event->buttons() & Qt::LeftButton);
         mMousePressPos = event->scenePos();
         mMouseMovePos = mMousePressPos;

@@ -363,15 +363,9 @@ bool UBGraphicsItemDelegate::weelEvent(QGraphicsSceneWheelEvent *event)
 {
     Q_UNUSED(event);
     if( delegated()->isSelected() )
-    {
-//        event->accept();
         return true;
-    }
     else
-    {
-//        event->ignore();
         return false;
-    }
 }
 
 bool UBGraphicsItemDelegate::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
