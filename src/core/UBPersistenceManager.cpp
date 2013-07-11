@@ -65,7 +65,7 @@ UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     mDocumentSubDirectories << audioDirectory;
 
     documentProxies = allDocumentProxies();
-    emit proxyListChanged();
+
 }
 
 UBPersistenceManager* UBPersistenceManager::persistenceManager()
@@ -102,6 +102,13 @@ QList<QPointer<UBDocumentProxy> > UBPersistenceManager::allDocumentProxies()
     rootDir.mkpath(rootDir.path());
 
 
+    QStringList dirList = rootDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Time | QDir::Reversed);
+
+    foreach(QString path, dirList)
+    {
+        shiftPagesToStartWithTheZeroOne(rootDir.path() + "/" + path);
+    }
+
     QFileSystemWatcher* watcher = new QFileSystemWatcher(this);
     watcher->addPath(mDocumentRepositoryPath);
 
@@ -109,8 +116,7 @@ QList<QPointer<UBDocumentProxy> > UBPersistenceManager::allDocumentProxies()
 
     QList<QPointer<UBDocumentProxy> > proxies;
 
-    foreach(QString path, rootDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot,
-            QDir::Time | QDir::Reversed))
+    foreach(QString path, dirList)
     {
         QString fullPath = rootDir.path() + "/" + path;
 
@@ -257,8 +263,6 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName,
 
     documentProxies.insert(0, QPointer<UBDocumentProxy>(doc));
 
-    emit proxyListChanged();
-
     emit documentCreated(doc);
 
     mDocumentCreatedDuringSession << doc;
@@ -266,7 +270,7 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName,
     return doc;
 }
 
-UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDocumentDirectory, const QString& pGroupName, const QString& pName, bool withEmptyPage, bool addTitlePage)
+UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDocumentDirectory, const QString& pGroupName, const QString& pName)
 {
     checkIfDocumentRepositoryExists();
 
@@ -281,8 +285,6 @@ UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDoc
     {
         doc->setMetaData(UBSettings::documentName, pName);
     }
-    if(withEmptyPage) createDocumentSceneAt(doc, 0);
-    if(addTitlePage) persistDocumentScene(doc, mSceneCache.createScene(doc, 0, false), 0);
 
     QMap<QString, QVariant> metadatas = UBMetadataDcSubsetAdaptor::load(pDocumentDirectory);
 
@@ -303,7 +305,6 @@ UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDoc
 
     documentProxies << QPointer<UBDocumentProxy>(doc);
 
-    emit proxyListChanged();
 
     emit documentCreated(doc);
 
@@ -325,8 +326,6 @@ void UBPersistenceManager::deleteDocument(UBDocumentProxy* pDocumentProxy)
     mSceneCache.removeAllScenes(pDocumentProxy);
 
     pDocumentProxy->deleteLater();
-
-    emit proxyListChanged();
 
 }
 
@@ -362,8 +361,6 @@ UBDocumentProxy* UBPersistenceManager::duplicateDocument(UBDocumentProxy* pDocum
     copy->setPageCount(sceneCount(copy));
 
     documentProxies << QPointer<UBDocumentProxy>(copy);
-
-    emit proxyListChanged();
 
     emit documentCreated(copy);
 
@@ -652,7 +649,6 @@ void UBPersistenceManager::copyPage(UBDocumentProxy* pDocumentProxy, const int s
 int UBPersistenceManager::sceneCount(const UBDocumentProxy* proxy)
 {
     const QString pPath = proxy->persistencePath();
-
     int pageIndex = 0;
     bool moreToProcess = true;
 
@@ -737,31 +733,6 @@ bool UBPersistenceManager::addDirectoryContentToDocument(const QString& document
 
     return false;
 }
-
-
-void UBPersistenceManager::upgradeDocumentIfNeeded(UBDocumentProxy* pDocumentProxy)
-{
-    int pageCount = pDocumentProxy->pageCount();
-
-    for(int index = 0 ; index < pageCount; index++)
-    {
-        UBSvgSubsetAdaptor::upgradeScene(pDocumentProxy, index);
-    }
-
-    pDocumentProxy->setMetaData(UBSettings::documentVersion, UBSettings::currentFileVersion);
-
-    UBMetadataDcSubsetAdaptor::persist(pDocumentProxy);
-}
-
-
-void UBPersistenceManager::upgradeAllDocumentsIfNeeded()
-{
-    foreach(QPointer<UBDocumentProxy> proxy, documentProxies)
-    {
-        upgradeDocumentIfNeeded(proxy);
-    }
-}
-
 
 
 UBDocumentProxy* UBPersistenceManager::documentByUuid(const QUuid& pUuid)
@@ -933,5 +904,22 @@ void UBPersistenceManager::checkIfDocumentRepositoryExists()
         UBApplication::mainWindow->warning(tr("Document Repository Loss"),qApp->applicationName() + tr("has lost access to the document repository '%1'. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.").arg(humanPath));
 
         UBApplication::quit();
+    }
+}
+
+void UBPersistenceManager::shiftPagesToStartWithTheZeroOne(QString persistencePath)
+{
+    if(!QFile(persistencePath + "/page000.svg").exists() && QFile(persistencePath + "/page001.svg").exists()){
+        int i = 1;
+
+        while(QFile(persistencePath + UBFileSystemUtils::digitFileFormat("/page%1.svg",i)).exists()){
+            QFile svg(persistencePath + UBFileSystemUtils::digitFileFormat("/page%1.svg", i));
+            svg.rename(persistencePath + UBFileSystemUtils::digitFileFormat("/page%1.svg", i-1));
+
+            QFile thumb(persistencePath + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", i));
+            thumb.rename(persistencePath + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", i-1));
+
+            i+=1;
+        }
     }
 }

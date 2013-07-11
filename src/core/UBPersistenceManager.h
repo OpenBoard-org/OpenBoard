@@ -50,12 +50,13 @@ class UBPersistenceManager : public QObject
         static const QString audioDirectory;
         static const QString widgetDirectory;
         static const QString teacherGuideDirectory;
+        static void shiftPagesToStartWithTheZeroOne(QString persistencePath);
 
         static UBPersistenceManager* persistenceManager();
         static void destroy();
 
         virtual UBDocumentProxy* createDocument(const QString& pGroupName = "", const QString& pName = "", bool withEmptyPage = true);
-        virtual UBDocumentProxy* createDocumentFromDir(const QString& pDocumentDirectory, const QString& pGroupName = "", const QString& pName = "", bool withEmptyPage = false, bool addTitlePage = false);
+        virtual UBDocumentProxy* createDocumentFromDir(const QString& pDocumentDirectory, const QString& pGroupName = "", const QString& pName = "");
 
         virtual UBDocumentProxy* persistDocumentMetadata(UBDocumentProxy* pDocumentProxy);
 
@@ -92,10 +93,6 @@ class UBPersistenceManager : public QObject
 
         bool addDirectoryContentToDocument(const QString& documentRootFolder, UBDocumentProxy* pDocument);
 
-        virtual void upgradeDocumentIfNeeded(UBDocumentProxy* pDocumentProxy);
-
-        virtual void upgradeAllDocumentsIfNeeded();
-
         virtual UBDocumentProxy* documentByUuid(const QUuid& pUuid);
 
         QStringList documentSubDirectories()
@@ -110,9 +107,6 @@ class UBPersistenceManager : public QObject
         bool addFileToDocument(UBDocumentProxy* pDocumentProxy, QString path, const QString& subdir,  QUuid objectUuid, QString& destinationPath, QByteArray* data = NULL);
 
     signals:
-
-        void proxyListChanged();
-
         void documentCreated(UBDocumentProxy* pDocumentProxy);
         void documentMetadataChanged(UBDocumentProxy* pDocumentProxy);
         void documentWillBeDeleted(UBDocumentProxy* pDocumentProxy);

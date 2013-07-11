@@ -818,6 +818,7 @@ void UBDocumentController::loadDocumentProxies()
         {
             QString docGroup = proxy->metaData(UBSettings::documentGroupName).toString();
 
+
             bool isEmptyGroupName = false;
             bool isInTrash = false;
 
