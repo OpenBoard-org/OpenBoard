@@ -274,6 +274,8 @@ UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDoc
 {
     checkIfDocumentRepositoryExists();
 
+    UBPersistenceManager::persistenceManager()->shiftPagesToStartWithTheZeroOne(pDocumentDirectory);
+
     UBDocumentProxy* doc = new UBDocumentProxy(pDocumentDirectory); // deleted in UBPersistenceManager::destructor
 
     if (pGroupName.length() > 0)
