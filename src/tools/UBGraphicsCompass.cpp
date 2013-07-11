@@ -203,18 +203,23 @@ void UBGraphicsCompass::mousePressEvent(QGraphicsSceneMouseEvent *event)
         mResizing = true;
         mRotating = false;
         event->accept();
+        qDebug() << "resizing";
     }
     else if (hingeRect().contains(event->pos()))
     {
         mRotating = true;
         mResizing = false;
         event->accept();
+        qDebug() << "hinge";
     }
     else if (!closeButtonRect().contains(event->pos()))
     {
+        qDebug() << "the rest";
+
         mDrawing = event->pos().x() > rect().right() - sPencilLength - sPencilBaseLength;
         if (mDrawing)
         {
+            qDebug() << "drawing";
             mSpanAngleInDegrees = 0;
             mSceneArcStartPoint = mapToScene(pencilPosition());
             scene()->initStroke();
@@ -305,6 +310,8 @@ void UBGraphicsCompass::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     {
         QGraphicsRectItem::mouseReleaseEvent(event);
     }
+
+    mRotating = false;
     mResizing = false;
     mDrawing = false;
 
