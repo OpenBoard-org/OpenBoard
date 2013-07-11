@@ -109,12 +109,6 @@ class UBPersistenceManager : public QObject
         bool addGraphicsWidgteToDocument(UBDocumentProxy *mDocumentProxy, QString path, QUuid objectUuid, QString& destinationPath);
         bool addFileToDocument(UBDocumentProxy* pDocumentProxy, QString path, const QString& subdir,  QUuid objectUuid, QString& destinationPath, QByteArray* data = NULL);
 
-        bool mayHaveVideo(UBDocumentProxy* pDocumentProxy);
-        bool mayHaveAudio(UBDocumentProxy* pDocumentProxy);
-        bool mayHavePDF(UBDocumentProxy* pDocumentProxy);
-        bool mayHaveSVGImages(UBDocumentProxy* pDocumentProxy);
-        bool mayHaveWidget(UBDocumentProxy* pDocumentProxy);
-
     signals:
 
         void proxyListChanged();
