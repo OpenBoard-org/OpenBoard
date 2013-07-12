@@ -359,7 +359,7 @@ bool UBGraphicsItemDelegate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     return false;
 }
 
-bool UBGraphicsItemDelegate::weelEvent(QGraphicsSceneWheelEvent *event)
+bool UBGraphicsItemDelegate::wheelEvent(QGraphicsSceneWheelEvent *event)
 {
     Q_UNUSED(event);
     if( delegated()->isSelected() )

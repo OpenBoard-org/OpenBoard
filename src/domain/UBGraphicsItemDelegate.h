@@ -247,7 +247,7 @@ class UBGraphicsItemDelegate : public QObject
         virtual bool mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual bool mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         virtual bool mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-        virtual bool weelEvent(QGraphicsSceneWheelEvent *event);
+        virtual bool wheelEvent(QGraphicsSceneWheelEvent *event);
 
         virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
         virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);

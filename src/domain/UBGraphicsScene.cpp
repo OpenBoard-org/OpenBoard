@@ -149,7 +149,6 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
     if (mScene->items().count()) {
         foreach (QGraphicsItem *tmpItem, mScene->items()) {
             if (typeForData(tmpItem) == curItemLayerType) {
-
                 sortedItems.insert(tmpItem->data(UBGraphicsItemData::ItemOwnZValue).toReal(), tmpItem);
             }
         }
@@ -335,7 +334,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     }
 
 //    Just for debug. Do not delete please
-    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
+//    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
     connect(this, SIGNAL(selectionChanged()), this, SLOT(updateGroupButtonState()));
     connect(UBApplication::undoStack.data(), SIGNAL(indexChanged(int)), this, SLOT(updateSelectionFrameWrapper(int)));
 }

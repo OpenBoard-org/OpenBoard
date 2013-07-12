@@ -125,7 +125,7 @@ void UBGraphicsProxyWidget::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsProxyWidget::wheelEvent(QGraphicsSceneWheelEvent *event)
 {
-    if( Delegate()->weelEvent(event) )
+    if( Delegate()->wheelEvent(event) )
     {
         QGraphicsProxyWidget::wheelEvent(event);
         event->accept();

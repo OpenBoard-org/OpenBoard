@@ -617,7 +617,7 @@ void UBGraphicsWidgetItem::mainFrameLoadFinished (bool ok)
 
 void UBGraphicsWidgetItem::wheelEvent(QGraphicsSceneWheelEvent *event)
 {
-    if (Delegate()->weelEvent(event))
+    if (Delegate()->wheelEvent(event))
     {
         QGraphicsWebView::wheelEvent(event);
         event->accept();
