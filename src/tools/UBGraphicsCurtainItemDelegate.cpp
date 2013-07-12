@@ -32,7 +32,7 @@
 #include "core/memcheck.h"
 
 UBGraphicsCurtainItemDelegate::UBGraphicsCurtainItemDelegate(UBGraphicsCurtainItem* pDelegated, QObject * parent)
-    : UBGraphicsItemDelegate(pDelegated, parent, GF_SCALABLE_ALL_AXIS | GF_MENU_SPECIFIED | GF_ZORDER_MANIPULATIONS_ALLOWED)
+    : UBGraphicsItemDelegate(pDelegated, parent, GF_SCALABLE_ALL_AXIS | GF_MENU_SPECIFIED)
 {
     //NOOP
 }
@@ -45,9 +45,12 @@ UBGraphicsCurtainItemDelegate::~UBGraphicsCurtainItemDelegate()
 
 void UBGraphicsCurtainItemDelegate::init()
 {
-    mFrame->hide();
-    mZOrderUpButton->hide();
-    mZOrderDownButton->hide();
+    if(!mFrame){
+        createControls();
+        mFrame->hide();
+        mZOrderUpButton->hide();
+        mZOrderDownButton->hide();
+    }
 }
 
 
@@ -74,17 +77,6 @@ bool UBGraphicsCurtainItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *ev
 
 QVariant UBGraphicsCurtainItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
-    if (change == QGraphicsItem::ItemZValueHasChanged)
-    {
-//        mFrame->setZValue(mDelegated->zValue() + 1);
-
-//        foreach(DelegateButton* button, mButtons)
-//        {
-//            button->setZValue(mDelegated->zValue() + 2);
-//            button->setZValue(mDelegated->zValue() + 2);
-//        }
-    }
-
     if (change == QGraphicsItem::ItemVisibleHasChanged)
     {
         UBGraphicsScene* ubScene = qobject_cast<UBGraphicsScene*>(mDelegated->scene());

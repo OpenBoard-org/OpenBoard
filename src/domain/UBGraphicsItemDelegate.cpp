@@ -815,7 +815,6 @@ UBGraphicsToolBarItem::UBGraphicsToolBarItem(QGraphicsItem * parent) :
     rect.setWidth(parent->boundingRect().width());
     this->setRect(rect);
 
-  //  setBrush(QColor(UBSettings::paletteColor));
     setPen(Qt::NoPen);
     hide();
 
