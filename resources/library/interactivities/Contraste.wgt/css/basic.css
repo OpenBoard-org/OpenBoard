@@ -301,18 +301,7 @@ body{
 }
 
 #wgt_add{
-    margin-left: 10px;
-    padding-right: 10px;
-    border: 1px solid #666;
-    border-radius: 15px;
-    padding-left: 30px;
-    background: url(../images/plus.png) -2px -2px no-repeat;
-    display: inline-block;
-}
-
-#wgt_add:hover{
-    border-color: black;
-    cursor: pointer;
+    margin: 0 0 0 10px;
 }
 
 .btl_pad{

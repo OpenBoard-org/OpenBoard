@@ -3,9 +3,9 @@
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://www.njin.fr/sankore/apps/memory" 
         version="1.0"
-        width="820"
-        height="670" 
-        ub:resizable="true">     
+        width="940"
+        height="680" 
+        ub:resizable="false">     
    
 		<name>Memory</name>
 		<author href="http://www.njin.fr" email="contact@njin.fr">njin</author>

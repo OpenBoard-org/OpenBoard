@@ -18,10 +18,8 @@ var parametersTemplate =
 				'</label>'+
 			'</div>'+
 			'<div class="inline">'+
-				'<label>{{fr.njin.i18n.boite.parameters.label.count}}'+
-					'<input class="tiny" type="number" name="count" role="parameter">'
-				'</label>'+
-			'</div>';
+				'<div>{{fr.njin.i18n.boite.parameters.label.count}}</div>'+
+					'<input class="tiny" type="number" name="count" role="parameter"></div>';
 			
 			
 var objectTemplate = 

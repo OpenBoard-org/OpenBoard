@@ -16,9 +16,9 @@ var sankoreLang = {
 
     "<p>Le bouton “Recharger” réinitialise l’exercice.</p>"+
 
-    "<p>Le bouton “Modifier” vous permet :</p>"+
-    "<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut tablette), </li>"+
-    "<li>de déterminer le mot sur lequel travailler.</li></ul>"+
+    "<p>Le bouton “Modifier” vous permet de :</p>"+
+    "<ul><li>choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut tablette), </li>"+
+    "<li>déterminer le mot sur lequel travailler.</li></ul>"+
 
     "<p>Ecrivez simplement dans la zone de texte le mot en insérant entre les syllabes une étoile *.</p>"+
 

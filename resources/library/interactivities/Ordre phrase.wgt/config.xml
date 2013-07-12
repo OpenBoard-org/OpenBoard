@@ -5,8 +5,8 @@
         id="http://www.example.net/widgets/helloworld" 
         version="1.0"
         width="850"
-        height="400" 
-		ub:resizable="true">
+        height="500" 
+		ub:resizable="false">
 		
 		<name>Phrases sortable</name>
 		<description>Sort the phrases to make the right sentence.</description>

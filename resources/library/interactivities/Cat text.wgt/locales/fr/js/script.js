@@ -26,20 +26,16 @@ var sankoreLang = {
 
     "<p>Le bouton “Modifier” vous permet :</p>"+
     "<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun),</li>"+
-    "<li>de modifier un exercice ou d’en créer de nouveaux dans la même activité.</li></ul>"+
+    "<li>de modifier l'exercice.</li></ul>"+
 
-"<p>En mode édition, pour créer un nouvel exercice, cliquez sur “Nouveau bloc” en bas, une zone bleue apparaît, c’est une catégorie, puis :</p>"+
-"<ul><li>insérez le nom de la catégorie (par exemple “fruits”, “légumes”, “mammifères”...) en cliquant dans le champ de texte “Saisir le nom de la catégorie ici …”,</li>"+
+"<p>En mode édition :</p>"+
+"<ul><li>modifier le nom de la catégorie (par exemple “fruits”, “légumes”, “mammifères”...) en cliquant dans le champ de texte,</li>"+
 "<li>cliquez sur le gros “+” situé à gauche de la catégorie ce qui vous permet de rajouter des étiquettes de mots,</li>"+
 "<li>entrez des mots dans ces étiquettes,</li>"+
-"<li>ajoutez ensuite une catégorie (ou plusieurs) en cliquant sur le signe “+” situé à droite de la catégorie, complétez par son nom et ajoutez des étiquettes de mots.</li></ul>"+
-"<p>Pour supprimer une étiquette de mots, cliquez sur la croix située dans le coin supérieur droit de celle-ci.</p>"+
-"<p>Pour supprimer une catégorie, cliquez sur le signe “-” situé à droite de celle-ci.</p>"+
-
-
-    "<p>Pour supprimer un exercice, cliquez sur la croix à gauche du numéro de l’exercice.</p>"+
-
-    "<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>",
+"<li>ajoutez ensuite une catégorie (ou plusieurs) en cliquant sur le signe “+” situé à droite de la catégorie, complétez par son nom et ajoutez des étiquettes de mots,</li>"+
+"<li>supprimez une étiquette de mots, en cliquant sur la croix située dans son coin supérieur droit,</li>"+
+"<li>supprimez une catégorie, en cliquant sur le signe “-” situé à droite de celle-ci,</li>"+
+"<li>le bouton “Afficher” vous permet d’utiliser l’activité.</li></ul>",
     theme: "Thème"
 };
 
@@ -115,14 +111,14 @@ function start(){
                 $(this).addClass("selected");
                 $("#wgt_edit").removeClass("selected");
                 $("#parameters").css("display","none");
-                $(".add_block").remove();
+//                $(".add_block").remove();
                 $(".cont").each(function(){
                     var container = $(this);
                     var tmp_i = 0;
                     var tmp_right = "";
                     var tmp_array = [];
                     
-                    container.find(".close_cont").remove();
+//                    container.find(".close_cont").remove();
                     container.find(".imgs_cont").each(function(){                        
                         $(this).find(".del_category").remove();
                         $(this).find(".add_img").remove();
@@ -191,7 +187,7 @@ function start(){
                 $(".cont").each(function(){
                     var container = $(this);
                     
-                    $("<div class='close_cont'>").appendTo(container);
+//                    $("<div class='close_cont'>").appendTo(container);
                     container.find(".imgs_cont").each(function(){
                         $("<button class='del_category'></button>").appendTo($(this));
                         $("<button class='add_category'></button>").appendTo($(this));
@@ -217,28 +213,28 @@ function start(){
                 });
                 
                 
-                $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("#data");
+//                $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("#data");
                 $(this).css("display", "none");
                 $("#wgt_display").css("display", "block");
             }
         }
     });
     
-    //add new block
-    $(".add_block").live("click", function(){
-        addContainer();
-    });
+//    //add new block
+//    $(".add_block").live("click", function(){
+//        addContainer();
+//    });
     
     //adding new img
     $(".add_img").live("click", function(){
         addText($(this).parent(), $(this));
     });
     
-    //deleting a block
-    $(".close_cont").live("click",function(){
-        $(this).parent().remove();
-        refreshBlockNumbers();
-    });
+//    //deleting a block
+//    $(".close_cont").live("click",function(){
+//        $(this).parent().remove();
+//        refreshBlockNumbers();
+//    });
     
     //deleting the img block
     $(".close_img").live("click", function(){       
@@ -323,14 +319,13 @@ function exportData(){
         cont_obj.tmp = "clear";
         array_to_export.push(cont_obj);
     }
-    
-    sankore.setPreference("categoriser_text", JSON.stringify(array_to_export));
+    if(window.sankore)
+        sankore.setPreference("categoriser_text", JSON.stringify(array_to_export));
 }
 
 //import
 function importData(data){
-    
-    var tmp = 0;    
+      
     for(var i in data){
         if(data[i].tmp){
             changeStyle(data[i].style);
@@ -345,7 +340,7 @@ function importData(data){
                 var tmp_array = [];
                 var container = $("<div class='cont'>").appendTo("#data");
                 var sub_container = $("<div class='sub_cont'>").appendTo(container);                  
-                $("<div class='number_cont'>"+ (++tmp) +"</div>").appendTo(sub_container);
+//                $("<div class='number_cont'>"+ (++tmp) +"</div>").appendTo(sub_container);
         
                 for(var j in data[i].conts){
                     var imgs_container = $("<div class='imgs_cont def_cont'>").appendTo(container);
@@ -404,7 +399,7 @@ function importData(data){
             } else {
                 container = $("<div class='cont'>").appendTo("#data");
                 sub_container = $("<div class='sub_cont'>").appendTo(container);                  
-                $("<div class='number_cont'>" + (++tmp) + "</div>").appendTo(sub_container);
+//                $("<div class='number_cont'>" + (++tmp) + "</div>").appendTo(sub_container);
         
                 for(j in data[i].conts){
                     var tmp_img_array = [];
@@ -441,8 +436,7 @@ function importData(data){
                                 checkCorrectness(tmp_ui);
                             }
                         }
-                    });        
-                    checkCorrectness(imgs_container);
+                    });                    
                 }
             
                 all_imgs = $("<div class='all_imgs'>").appendTo(container); 
@@ -479,7 +473,7 @@ function importData(data){
                             }
                         }
                     }
-                });       
+                });   
                 checkCorrectness(all_imgs);
             }
         }
@@ -498,7 +492,7 @@ function showExample(){
     var imgs_container_two = $("<div class='imgs_cont def_cont'>").appendTo(container);
     var all_imgs = $("<div class='all_imgs'>").appendTo(container);
 
-    var number = $("<div class='number_cont'>1</div>").appendTo(sub_container);
+//    var number = $("<div class='number_cont'>1</div>").appendTo(sub_container);
     
     $("<input type='hidden' name='mask' value='1'/>").appendTo(imgs_container_one);
     $("<input type='hidden' name='count' value='2'/>").appendTo(imgs_container_one);
@@ -597,30 +591,30 @@ function addCategory(obj){
 }
 
 //add new container
-function addContainer(){
-    var container = $("<div class='cont'>");
-    var sub_container = $("<div class='sub_cont'>").appendTo(container);
-    var imgs_container = $("<div class='imgs_cont def_cont'>").appendTo(container);
-    
-    var close = $("<div class='close_cont'>").appendTo(container);
-    var number = $("<div class='number_cont'>"+ ($(".cont").size() + 1) +"</div>").appendTo(sub_container);
-    
-    $("<input type='hidden' name='mask' value='" + returnId() + "'/>").appendTo(imgs_container);
-    $("<input type='hidden' name='count' value=''/>").appendTo(imgs_container); 
-    var tmp_div = $("<div style='width: 100%; overflow: hidden;'>").appendTo(imgs_container);
-    $("<input type='text' class='cat_desc' value='" + sankoreLang.enter + "'/>").appendTo(tmp_div);    
-    $("<button class='del_category'></button>").appendTo(imgs_container);
-    $("<button class='add_category'></button>").appendTo(imgs_container);
-    $("<div class='add_img'>").appendTo(imgs_container);
-    container.insertBefore($(".add_block"));
-}
+//function addContainer(){
+//    var container = $("<div class='cont'>");
+//    var sub_container = $("<div class='sub_cont'>").appendTo(container);
+//    var imgs_container = $("<div class='imgs_cont def_cont'>").appendTo(container);
+//    
+//    var close = $("<div class='close_cont'>").appendTo(container);
+//    var number = $("<div class='number_cont'>"+ ($(".cont").size() + 1) +"</div>").appendTo(sub_container);
+//    
+//    $("<input type='hidden' name='mask' value='" + returnId() + "'/>").appendTo(imgs_container);
+//    $("<input type='hidden' name='count' value=''/>").appendTo(imgs_container); 
+//    var tmp_div = $("<div style='width: 100%; overflow: hidden;'>").appendTo(imgs_container);
+//    $("<input type='text' class='cat_desc' value='" + sankoreLang.enter + "'/>").appendTo(tmp_div);    
+//    $("<button class='del_category'></button>").appendTo(imgs_container);
+//    $("<button class='add_category'></button>").appendTo(imgs_container);
+//    $("<div class='add_img'>").appendTo(imgs_container);
+//    container.insertBefore($(".add_block"));
+//}
 
-function refreshBlockNumbers(){
-    var i = 0;
-    $(".cont").each(function(){
-        $(this).find(".number_cont").text(++i);
-    })
-}
+//function refreshBlockNumbers(){
+//    var i = 0;
+//    $(".cont").each(function(){
+//        $(this).find(".number_cont").text(++i);
+//    })
+//}
 
 //shuffles an array
 function shuffle( arr )

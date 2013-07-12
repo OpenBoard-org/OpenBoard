@@ -22,16 +22,13 @@ var sankoreLang = {
 
     "<p>Le bouton “Modifier” vous permet :</p>"+
     "<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun),</li>"+
-    "<li>de déterminer le mot à reconstituer.</li></ul>"+
+    "<li>de déterminer le mot à reconstituer et modifier l'exercice.</li></ul>"+
  
-    "<p>Pour créer un nouvel exercice, cliquez sur “Nouveau bloc” en bas, puis</p>"+
-    "<ul><li>insérez une consigne en cliquant sur le champ de texte “Saisir la consigne ici ...”,</li>"+
+    "<p>Dans le mode édition :</p>"+
+    "<ul><li>modifiez la consigne en cliquant sur le champ de texte,</li>"+
     "<li>insérez un son dans la zone à gauche de la consigne par glisser-déposer d’un son à partir de votre bibliothèque (facultatif),</li>"+
-    "<li>écrivez le mot souhaité à la place de “exemple”.</li></ul>"+
-
-    "<p>Pour supprimer un exercice, cliquez sur la croix à gauche du numéro de l’exercice.</p>"+
-
-    "<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>",
+    "<li>écrivez le mot souhaité à la place de “exemple”,</li>"+
+    "<li>le bouton “Afficher” vous permet d’utiliser l’activité.</li></ul>",
     theme: "Thème"
 };
 
@@ -115,7 +112,7 @@ function start(){
                 $(this).addClass("selected");
                 $("#wgt_edit").removeClass("selected");
                 $("#parameters").css("display","none");
-                $(".add_block").remove();
+//                $(".add_block").remove();
                 $(".cont").each(function(){
                     var container = $(this);
                     var tmp_array = [];
@@ -126,7 +123,7 @@ function start(){
                     .removeAttr("ondragleave")
                     .removeAttr("ondragover")
                     .removeAttr("ondrop")
-                    container.find(".close_cont").remove();
+//                    container.find(".close_cont").remove();
                     var answer = ans_container.text();
                     ans_container.prev().val(answer)
                     ans_container.remove();
@@ -156,7 +153,7 @@ function start(){
                 $("#parameters").css("display","block");
                 $(".cont").each(function(){
                     var container = $(this);
-                    $("<div class='close_cont'>").appendTo(container);
+//                    $("<div class='close_cont'>").appendTo(container);
                     container.find("#sortable").removeClass("imgs_answers_red")
                     .removeClass("imgs_answers_green")
                     .addClass("imgs_answers_gray")
@@ -169,7 +166,7 @@ function start(){
                     $("<div class='audio_answer' contenteditable>" + container.find("ul").next().val() + "</div>").appendTo(container);
                     container.find("ul").remove();
                 });                
-                $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("#data");
+//                $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("#data");
                 $(this).css("display", "none");
                 $("#wgt_display").css("display", "block");
             }
@@ -183,9 +180,9 @@ function start(){
     });
     
     //add new block
-    $(".add_block").live("click", function(){
-        addContainer();
-    });
+//    $(".add_block").live("click", function(){
+//        addContainer();
+//    });
     
     //adding new img
     $(".add_img").live("click", function(){
@@ -193,10 +190,10 @@ function start(){
     });
     
     //deleting a block
-    $(".close_cont").live("click",function(){
-        $(this).parent().remove();
-        refreshBlockNumbers();
-    });
+//    $(".close_cont").live("click",function(){
+//        $(this).parent().remove();
+//        refreshBlockNumbers();
+//    });
     
     //deleting the img block
     $(".close_img").live("click", function(){
@@ -288,7 +285,6 @@ function exportData(){
         });
     }
     sankore.setPreference("ord_let", JSON.stringify(array_to_export));
-    sankore.setPreference("ord_let_locale", sankore.locale().substr(0,2));
     if($("#wgt_display").hasClass("selected"))
         sankore.setPreference("ord_let_state", "display");
     else
@@ -297,20 +293,19 @@ function exportData(){
 
 //import
 function importData(data){
-    var tmp_loc = sankore.preference("ord_let_locale","")
-    var tmp = 0;    
+   
     for(var i in data){        
         var tmp_array = [];
         var container = $("<div class='cont'>").appendTo("#data");
         var sub_container = $("<div class='sub_cont'>").appendTo(container);
         var imgs_container = $("<ul id='sortable' class='imgs_answers_gray'>").appendTo(container);   
         
-        $("<div class='number_cont'>"+ (++tmp) +"</div>").appendTo(sub_container);
+//        $("<div class='number_cont'>"+ (++tmp) +"</div>").appendTo(sub_container);
         var text = $("<div class='text_cont'>").appendTo(sub_container);
         var audio_block = $("<div class='audio_block'>").appendTo(text);
         $("<div class='play'>").appendTo(audio_block);
         $("<div class='replay'>").appendTo(audio_block);
-        var source = $("<source/>").attr("src",((tmp_loc != "en")?"":"../../") + data[i].audio);
+        var source = $("<source/>").attr("src", data[i].audio);
         var audio = $("<audio>").appendTo(audio_block);
         audio.append(source);
         $("<input type='hidden'/>").appendTo(audio_block);
@@ -355,12 +350,12 @@ function showExample(){
     var sub_container = $("<div class='sub_cont'>").appendTo(container);
     var imgs_container = $("<ul id='sortable' class='imgs_answers_gray'>").appendTo(container);
 
-    var number = $("<div class='number_cont'>1</div>").appendTo(sub_container);
+//    var number = $("<div class='number_cont'>1</div>").appendTo(sub_container);
     var text = $("<div class='text_cont'>").appendTo(sub_container);
     var audio_block = $("<div class='audio_block'>").appendTo(text);
     $("<div class='play'>").appendTo(audio_block);
     $("<div class='replay'>").appendTo(audio_block);
-    var source = $("<source/>").attr("src", "objects/exemple.mp3");
+    var source = $("<source/>").attr("src", "../../objects/example_fr.mp3");
     var audio = $("<audio>").appendTo(audio_block);
     audio.append(source);
     $("<input type='hidden'/>").appendTo(audio_block);
@@ -385,37 +380,37 @@ function showExample(){
 }
 
 //add new container
-function addContainer(){
-    var container = $("<div class='cont'>");
-    var sub_container = $("<div class='sub_cont'>").appendTo(container);
-   
-    $("<div class='number_cont'>"+ ($(".cont").size() + 1) +"</div>").appendTo(sub_container);
-    var text = $("<div class='text_cont'>").appendTo(sub_container);
-    var audio_block = $("<div class='audio_block'>").appendTo(text);
-    audio_block.attr("ondragenter", "return false;")
-    .attr("ondragleave", "$(this).removeClass('audio_gray'); return false;")
-    .attr("ondragover", "$(this).addClass('audio_gray'); return false;")
-    .attr("ondrop", "$(this).removeClass('audio_gray'); return onDropAudio(this,event);");
-    $("<div class='play'>").appendTo(audio_block);
-    $("<div class='replay'>").appendTo(audio_block);
-    var source = $("<source/>").attr("src", "");
-    var audio = $("<audio>").appendTo(audio_block);
-    audio.append(source);
-    $("<input type='hidden'/>").appendTo(audio_block);
-    $("<div class='audio_desc' contenteditable>" + sankoreLang.enter + "</div>").appendTo(text);
-    
-    var tmp_input = $("<input type='hidden' value=''/>").insertAfter(sub_container);
-    var close = $("<div class='close_cont'>").insertAfter(tmp_input);
-    $("<div class='audio_answer' contenteditable>" + sankoreLang.example + "</div>").insertAfter(close);
-    container.insertBefore($(".add_block"));
-}
+//function addContainer(){
+//    var container = $("<div class='cont'>");
+//    var sub_container = $("<div class='sub_cont'>").appendTo(container);
+//   
+//    $("<div class='number_cont'>"+ ($(".cont").size() + 1) +"</div>").appendTo(sub_container);
+//    var text = $("<div class='text_cont'>").appendTo(sub_container);
+//    var audio_block = $("<div class='audio_block'>").appendTo(text);
+//    audio_block.attr("ondragenter", "return false;")
+//    .attr("ondragleave", "$(this).removeClass('audio_gray'); return false;")
+//    .attr("ondragover", "$(this).addClass('audio_gray'); return false;")
+//    .attr("ondrop", "$(this).removeClass('audio_gray'); return onDropAudio(this,event);");
+//    $("<div class='play'>").appendTo(audio_block);
+//    $("<div class='replay'>").appendTo(audio_block);
+//    var source = $("<source/>").attr("src", "");
+//    var audio = $("<audio>").appendTo(audio_block);
+//    audio.append(source);
+//    $("<input type='hidden'/>").appendTo(audio_block);
+//    $("<div class='audio_desc' contenteditable>" + sankoreLang.enter + "</div>").appendTo(text);
+//    
+//    var tmp_input = $("<input type='hidden' value=''/>").insertAfter(sub_container);
+//    var close = $("<div class='close_cont'>").insertAfter(tmp_input);
+//    $("<div class='audio_answer' contenteditable>" + sankoreLang.example + "</div>").insertAfter(close);
+//    container.insertBefore($(".add_block"));
+//}
 
-function refreshBlockNumbers(){
-    var i = 0;
-    $(".cont").each(function(){
-        $(this).find(".number_cont").text(++i);
-    })
-}
+//function refreshBlockNumbers(){
+//    var i = 0;
+//    $(".cont").each(function(){
+//        $(this).find(".number_cont").text(++i);
+//    })
+//}
 
 //shuffles an array
 function shuffle( arr )

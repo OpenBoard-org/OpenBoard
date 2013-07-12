@@ -215,6 +215,7 @@ html, body {
 
 #parameters  label > select, #parameters  label > input{
 	margin-left: 10px;
+        width: 80px;
 }
 
 #parameters > div.inline {

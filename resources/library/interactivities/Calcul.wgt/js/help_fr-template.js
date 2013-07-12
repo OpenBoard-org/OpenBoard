@@ -11,6 +11,6 @@
 <li>l’opération à effectuer (addition, soustraction, multiplication),</li>
 <li>l’ordre de grandeur des nombres proposés,</li>
 <li>le nombre d'éléments de l’opération (2 à 4),</li>
-<li>le nombre d’opérations (1 à 5).</li></ul>
+<li>le nombre d’opérations (2 à 10).</li></ul>
 
 <p>Le résultat des opérations n’est pas à inscrire dans le mode "Edition", il est calculé automatiquement par l‘interactivité.</p>

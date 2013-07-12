@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>D'n'd</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <link rel="stylesheet" type="text/css" href="../../css/basic.css"/>
+        <script type="text/javascript" src="../../js/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="../../js/jquery-ui-1.8.9.custom.min.js"></script>
+        <script type="text/javascript" src="js/script.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){ 
+                if(window.sankore)
+                    sankore.enableDropOnWidget(false);
+                start();
+            });
+        </script>
+    </head>
+    <body>
+        <table class="body_table" cellpadding=0 cellspacing=0>
+            <tr style="height: 54px;">
+                <td class="b_top_left">&nbsp;</td>
+                <td class="b_top_center">
+                    <div id="wgt_name"></div>
+                    <div id="wgt_help"></div> 
+                    <div id="wgt_reload"></div>                    
+                    <div id="wgt_display" class="selected"></div>
+                    <div id="wgt_edit"></div>                    
+                </td>
+                <td class="b_top_right">&nbsp;</td>
+            </tr>
+       
+            <tr>
+                <td class="b_center_left">&nbsp;</td>
+                <td>
+                    <div id="help"></div>
+                    <div id="data">
+                        <div id="parameters">
+                            <div class="inline">
+                                <label>
+                                    <select id="style_select">
+                                        <option value="1"></option>
+                                        <option value="2"></option>
+                                        <option value="3"></option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="b_center_right">&nbsp;</td>
+            </tr>     
+        
+            <tr style="height: 54px;">
+                <td class="b_bottom_left">&nbsp;</td>
+                <td class="b_bottom_center">&nbsp;</td>
+                <td class="b_bottom_right">&nbsp;</td>
+            </tr>
+        </table>
+
+    </body>
+</html>

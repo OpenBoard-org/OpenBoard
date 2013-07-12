@@ -10,7 +10,7 @@
 <p>Le bouton “Modifier” vous permet :</p>
 <ul>
 <li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut tablette), </li>
-<li>de déterminer le nombre de dés que vous voulez utiliser pour votre activité (de 2 à 6). </li>
+<li>de déterminer le nombre de dés que vous voulez utiliser pour votre activité (de 1 à 6). </li>
 </ul>
 
 <p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>

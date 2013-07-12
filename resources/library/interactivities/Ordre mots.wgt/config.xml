@@ -6,7 +6,7 @@
         version="1.1"
         width="850"
         height="420" 
-	ub:resizable="true">
+	ub:resizable="false">
 		
 		<name>Words/Letters sortable</name>
 		<description>Sort the words/letters to make the right phrase/word.</description>

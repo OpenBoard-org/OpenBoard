@@ -31,13 +31,28 @@ function cards(app, index) {
 	
     var beforecontent = parameters.value("#"+index+"before");
     var aftercontent = parameters.value("#"+index+"after");
-	
+
+    /*var sample1 = "", sample2 = "";
+    
+    if(!window.sankore || !window.sankore.preference("trans","")){
+        if(index == 1){
+            sample1 = "<img src='images/coq.png' class='uploadPic' title='coq.png' alt='coq.png'/>";
+            sample2 = "<img src='images/poule.png' class='uploadPic' title='poule.png' alt='poule.png'/>";
+        } else {
+            sample1 = "<img src='images/boeuf.png' class='uploadPic' title='boeuf.png' alt='boeuf.png'/>";
+            sample2 = "<img src='images/vache.png' class='uploadPic' title='vache.png' alt='vache.png'/>";
+        }
+    }*/
+        
     var before = $("<div rel='before'><div class='card'><div class='text'><div>"+( beforecontent !== undefined ? beforecontent : "" )+"</div></div><div class='picture'><div></div></div></div></div>");
     var after = $("<div rel='after'><div class='card'><div class='text'><div>"+( aftercontent !== undefined ? aftercontent : "" )+"</div></div><div class='picture'><div></div></div></div></div>");
 	
     var usePicture = parameters.value("#UsePicture"+index+"before") === "true"
     || parameters.value("#UsePicture"+index+"before") == true;
-	
+    
+    //if(!window.sankore || !window.sankore.preference("trans",""))
+        //usePicture = true;
+    
     if(usePicture) {
         before.addClass("usePicture");	
         var f = $.parseJSON(parameters.value("#Picture"+index+"before"));
@@ -49,6 +64,9 @@ function cards(app, index) {
 	
     usePicture = parameters.value("#UsePicture"+index+"after") === "true"
     || parameters.value("#UsePicture"+index+"after") == true;
+
+    //if(!window.sankore || !window.sankore.preference("trans",""))
+        //usePicture = true;
 	
     if(usePicture) {
         after.addClass("usePicture");
@@ -66,6 +84,7 @@ function cards(app, index) {
 }
 
 function makeEditable(app, row, index) {
+    var tmp_flag = false;
     var parameters = app.parameters;
     var editable = row.find(".text>div").eq(0);
     var key = index+editable.parent().parent().parent().attr('rel');	
@@ -78,7 +97,7 @@ function makeEditable(app, row, index) {
 	
     function setSwicth() {
         var val = parameters.value("#UsePicture"+key) === "true"
-        || parameters.value("#UsePicture"+key) === true;
+        || parameters.value("#UsePicture"+key) === true;        
         if(val) {
             row.addClass("usePicture");
         }else {
@@ -204,4 +223,10 @@ $(document).ready(function(){
         toolbar: toolbarTemplate, 
         parameters: parametersTemplate
     }, callbacks);
+    
+    if (window.widget) {
+        window.widget.onleave = function(){
+            sankore.setPreference("trans", "true");
+        }
+    }
 });

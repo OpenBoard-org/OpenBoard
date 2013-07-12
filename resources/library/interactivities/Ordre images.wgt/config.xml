@@ -5,7 +5,7 @@
         version="1.2"
         width="950"
         height="600" 
-        ub:resizable="true">     
+        ub:resizable="false">     
    
 		<name>Notes</name>
 		<author href="http://www.getuniboard.com"

@@ -48,6 +48,7 @@ body{
     margin: 2px;
     font-family: sans-serif;
     font-size: large;
+    display: none;
 }
 
 .addQstButton{    
@@ -112,6 +113,7 @@ body{
     font-weight: bold;
     cursor: pointer;
     border-radius: 10px;
+    margin-bottom: 8px;
 }
 
 .applyChanges{
@@ -186,6 +188,7 @@ body{
     color: black;
     cursor: pointer;
     border-radius: 10px;
+    margin-top: 5px;
 }
 
 .newAnswer{

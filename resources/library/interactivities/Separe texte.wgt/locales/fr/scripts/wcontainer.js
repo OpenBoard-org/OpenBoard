@@ -19,10 +19,10 @@ var sankoreLang = {
     "<p>Le bouton “Recharger” réinitialise l’exercice.</p>"+
 
 
-    "<p>Le bouton “Modifier” vous permet :</p>"+
+    "<p>Le bouton “Modifier” vous permet de :</p>"+
 
-    "<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun), </li>"+
-    "<li>de déterminer le texte sur lequel travailler.</li></ul>"+
+    "<ul><li>choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun), </li>"+
+    "<li>déterminer le texte sur lequel travailler.</li></ul>"+
 
     "<p>Ecrivez simplement dans la zone de texte les différentes phrases séparées par des points.<b> NB : Les points d’interrogation, les deux points “:”, les points-virgules “;” et les points d’exclamation ne sont pas pris en compte.</b></p>"+
 

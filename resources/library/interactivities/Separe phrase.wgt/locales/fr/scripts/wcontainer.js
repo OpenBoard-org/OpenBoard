@@ -19,10 +19,10 @@ var sankoreLang = {
     "<p>Le bouton “Recharger” réinitialise l’exercice.</p>"+
 
 
-    "<p>Le bouton “Modifier” vous permet :</p>"+
+    "<p>Le bouton “Modifier” vous permet de :</p>"+
 
-    "<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun), </li>"+
-    "<li>de déterminer la phrase sur laquelle travailler.</li></ul>"+
+    "<ul><li>choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun), </li>"+
+    "<li>déterminer la phrase sur laquelle travailler.</li></ul>"+
 
     "<p>Ecrivez simplement une phrase dans la zone de texte.</p>"+
 

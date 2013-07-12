@@ -11,3 +11,4 @@
 <p> To change the number in the center, click and replace it.</p>
 
 <p>"Display" button comes back to the activity.</p>
+

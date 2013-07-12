@@ -7,7 +7,7 @@
 <p>Enter the "Edit" mode to :</p>
 <ul>
 <li>choose the theme of the App : pad, slate, or none (by default : pad),</li>
-<li>determine the number of dices you want to use for your activity (2-6).</li>
+<li>determine the number of dices you want to use for your activity (1-6).</li>
 </ul>
 <p>The calculations and reasoning could be written on the page (outside the App).</p>
 <p>"Display" button comes back to the activity.</p>

@@ -9,18 +9,16 @@ var toolbarTemplate =
 				
 var parametersTemplate = 
 			'<div class="inline">'+
-				'<label>{{fr.njin.i18n.parameters.label.themes}}'+
+				'<div>{{fr.njin.i18n.parameters.label.themes}}</div>'+
 					'<select name="themes" role="parameter">'+
 						'<option value="pad">{{fr.njin.i18n.parameters.label.pad.themes}}</option>'+					
 						'<option value="slate">{{fr.njin.i18n.parameters.label.slate.themes}}</option>'+
 						'<option value="none">{{fr.njin.i18n.parameters.label.none.themes}}</option>'+
 					'</select>'+
-				'</label>'+
 			'</div>'+
 			'<div class="inline">'+
-				'<label>{{fr.njin.i18n.transformation.parameters.label.number}}'+
-					'<input  class="tiny" type="number" name="number" min="2" role="parameter">'+
-				'</label>'+
+				'<div>{{fr.njin.i18n.transformation.parameters.label.number}}</div>'+
+					'<input  class="tiny" type="number" name="number" min="2" role="parameter">'+				
 			'</div>'+
 			'<div id="edit-cards">'+
 			'</div>';

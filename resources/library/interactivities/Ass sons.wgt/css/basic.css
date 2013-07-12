@@ -206,11 +206,10 @@ body{
 }
 
 .audio_desc{
-    width: 73%;
+    width: 70%;
     max-height: 40px;
     overflow-x: hidden;
     float: right;
-    margin-left: 20px;
     word-break: break-all;
 }
 

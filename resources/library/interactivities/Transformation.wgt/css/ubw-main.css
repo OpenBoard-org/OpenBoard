@@ -202,7 +202,7 @@ html, body {
 	display:none;
 	padding: 10px 20px;
 	background: url("images/parameters-bg.png");
-	
+
 	-webkit-border-radius: 4px 4px 0 0;
 	   -moz-border-radius: 4px 4px 0 0;
 		-mz-border-radius: 4px 4px 0 0;
@@ -213,12 +213,23 @@ html, body {
 	font-style: italic;
 }
 
-#parameters  label > select, #parameters  label > input{
+#parameters select, #parameters input{
 	margin-left: 10px;
 }
 
 #parameters > div.inline {
-	display: inline-block;
+     display: inline-table
+}
+
+#parameters > div.inline > div{
+    float: left; 
+    height: 28px; 
+    margin-right: 8px;  
+    padding-top: 5px;
+    font-family: "helvetica neue";
+    font-size: 14px;
+    color: #666666;
+    font-style: italic;
 }
 
 #parameters > div.inline+div.inline {

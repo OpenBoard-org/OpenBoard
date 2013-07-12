@@ -87,15 +87,16 @@ function start(){
                 $(this).addClass("selected");
                 $("#wgt_edit").removeClass("selected");
                 $("#parameters").css("display","none");
-                sankore.enableDropOnWidget(false);
-                $(".add_block").remove();
+                if(window.sankore)
+                    sankore.enableDropOnWidget(false);
+//                $(".add_block").remove();
                 $(".cont").each(function(){
                     var container = $(this);
                     var tmp_i = 0;
                     var tmp_right = "";
                     var tmp_array = [];
                     
-                    container.find(".close_cont").remove();
+//                    container.find(".close_cont").remove();
                     container.find(".imgs_cont").each(function(){                        
                         $(this).find(".del_category").remove();
                         $(this).find(".add_category").remove();                        
@@ -157,11 +158,12 @@ function start(){
                 $(this).addClass("selected");
                 $("#wgt_display").removeClass("selected");
                 $("#parameters").css("display","block");
-                sankore.enableDropOnWidget(true);
+                if(window.sankore)
+                    sankore.enableDropOnWidget(true);
                 $(".cont").each(function(){
                     var container = $(this);
                     
-                    $("<div class='close_cont'>").appendTo(container);
+//                    $("<div class='close_cont'>").appendTo(container);
                     container.find(".imgs_cont").each(function(){
                         $("<button class='del_category'></button>").appendTo($(this));
                         $("<button class='add_category'></button>").appendTo($(this));
@@ -187,7 +189,7 @@ function start(){
                 });
                 
                 
-                $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("#data");
+//                $("<div class='add_block'>" + sankoreLang.add + "</div>").appendTo("#data");
                 $(this).css("display", "none");
                 $("#wgt_display").css("display", "block");
             }
@@ -195,9 +197,9 @@ function start(){
     });
     
     //add new block
-    $(".add_block").live("click", function(){
-        addContainer();
-    });
+//    $(".add_block").live("click", function(){
+//        addContainer();
+//    });
     
     //adding new img
     $(".add_img").live("click", function(){
@@ -205,10 +207,10 @@ function start(){
     });
     
     //deleting a block
-    $(".close_cont").live("click",function(){
-        $(this).parent().remove();
-        refreshBlockNumbers();
-    });
+//    $(".close_cont").live("click",function(){
+//        $(this).parent().remove();
+//        refreshBlockNumbers();
+//    });
     
     //deleting the img block
     $(".close_img").live("click", function(){       
@@ -249,7 +251,7 @@ function exportData(){
                 $(this).find(".img_block").each(function(){
                     var img_obj = new Object();
                     img_obj.value = $(this).find("input").val();
-                    img_obj.link = $(this).find("img").attr("src").replace("../../","");                    
+                    img_obj.link = $(this).find("img").attr("src").replace("../../",""); 
                     img_obj.ht = $(this).find("img").height();
                     img_obj.wd = $(this).find("img").width();
                     img_cont.imgs.push(img_obj);
@@ -273,7 +275,7 @@ function exportData(){
                 $(this).find(".img_block").each(function(){
                     var img_obj = new Object();
                     img_obj.value = $(this).find("input").val();
-                    img_obj.link = $(this).find("img").attr("src").replace("../../","");                    
+                    img_obj.link = $(this).find("img").attr("src").replace("../../",""); 
                     img_obj.ht = $(this).find("img").height();
                     img_obj.wd = $(this).find("img").width();
                     img_cont.imgs.push(img_obj);
@@ -284,7 +286,7 @@ function exportData(){
             $(this).find(".all_imgs .img_block").each(function(){
                 var img = new Object();
                 img.value = $(this).find("input").val();
-                img.link = $(this).find("img").attr("src").replace("../../","");                
+                img.link = $(this).find("img").attr("src").replace("../../",""); 
                 img.ht = $(this).find("img").height();
                 img.wd = $(this).find("img").width();
                 cont_obj.all_imgs.push(img);
@@ -299,14 +301,13 @@ function exportData(){
         cont_obj.tmp = "clear";
         array_to_export.push(cont_obj);
     }
-    
-    sankore.setPreference("categoriser_images", JSON.stringify(array_to_export));
+    if(window.sankore)
+        sankore.setPreference("categoriser_images", JSON.stringify(array_to_export));
 }
 
 //import
 function importData(data){
-    
-    var tmp = 0;    
+      
     for(var i in data){
         if(data[i].tmp){
             changeStyle(data[i].style);
@@ -320,7 +321,7 @@ function importData(data){
                 var tmp_array = [];
                 var container = $("<div class='cont'>");
                 var sub_container = $("<div class='sub_cont'>").appendTo(container);                  
-                $("<div class='number_cont'>"+ (++tmp) +"</div>").appendTo(sub_container);
+//                $("<div class='number_cont'>"+ (++tmp) +"</div>").appendTo(sub_container);
         
                 for(var j in data[i].conts){
                     var imgs_container = $("<div class='imgs_cont def_cont'>").appendTo(container);
@@ -332,7 +333,7 @@ function importData(data){
                     for(var k in data[i].conts[j].imgs){
                         var block_img = $("<div class='img_block' style='text-align: center;'></div>");
                         $("<input type='hidden' value='" + data[i].conts[j].imgs[k].value + "'/>").appendTo(block_img);
-                        var img = $("<img src=\"../../" + data[i].conts[j].imgs[k].link + "\" style=\"display: inline;\"/>").appendTo(block_img);
+                        var img = $("<img src=\"../../" + data[i].conts[j].imgs[k].link + "\" style=\"display: inline;\"/>").appendTo(block_img);                        
                         img.height(data[i].conts[j].imgs[k].ht);
                         if((120 - data[i].conts[j].imgs[k].ht) > 0)
                             img.css("margin",(120 - data[i].conts[j].imgs[k].ht)/2 + "px 0");
@@ -348,7 +349,7 @@ function importData(data){
                                 checkCorrectness(tmp_ui);
                             }
                         }
-                    });                
+                    });                                
                 }
             
                 var all_imgs = $("<div class='all_imgs'>").appendTo(container); 
@@ -382,7 +383,7 @@ function importData(data){
             } else {
                 container = $("<div class='cont'>");
                 sub_container = $("<div class='sub_cont'>").appendTo(container);                  
-                $("<div class='number_cont'>" + (++tmp) + "</div>").appendTo(sub_container);
+//                $("<div class='number_cont'>" + (++tmp) + "</div>").appendTo(sub_container);
         
                 for(j in data[i].conts){
                     var tmp_img_array = [];
@@ -420,8 +421,7 @@ function importData(data){
                                 checkCorrectness(tmp_ui);
                             }
                         }
-                    }); 
-                    checkCorrectness(imgs_container);
+                    });          
                 }
             
                 all_imgs = $("<div class='all_imgs'>").appendTo(container); 
@@ -479,7 +479,7 @@ function showExample(){
     var imgs_container_two = $("<div class='imgs_cont def_cont'>").appendTo(container);
     var all_imgs = $("<div class='all_imgs'>").appendTo(container);
 
-    var number = $("<div class='number_cont'>1</div>").appendTo(sub_container);
+//    var number = $("<div class='number_cont'>1</div>").appendTo(sub_container);
     
     $("<input type='hidden' name='mask' value='1'/>").appendTo(imgs_container_one);
     $("<input type='hidden' name='count' value='2'/>").appendTo(imgs_container_one);
@@ -571,33 +571,33 @@ function addCategory(obj){
 }
 
 //add new container
-function addContainer(){
-    var container = $("<div class='cont'>");
-    var sub_container = $("<div class='sub_cont'>").appendTo(container);
-    var imgs_container = $("<div class='imgs_cont def_cont'>").appendTo(container);
-    
-    var close = $("<div class='close_cont'>").appendTo(container);
-    var number = $("<div class='number_cont'>"+ ($(".cont").size() + 1) +"</div>").appendTo(sub_container);
-    
-    $("<input type='hidden' name='mask' value='" + returnId() + "'/>").appendTo(imgs_container);
-    $("<input type='hidden' name='count' value=''/>").appendTo(imgs_container); 
-    var tmp_div = $("<div style='width: 100%; overflow: hidden;'>").appendTo(imgs_container);
-    $("<input type='text' class='cat_desc' value='" + sankoreLang.enter + "'/>").appendTo(tmp_div);    
-    $("<button class='del_category'></button>").appendTo(imgs_container);
-    $("<button class='add_category'></button>").appendTo(imgs_container);
-    imgs_container.attr("ondragenter", "return false;")
-    .attr("ondragleave", "$(this).css(\"background-color\",\"#e6f6ff\"); return false;")
-    .attr("ondragover", "$(this).css(\"background-color\",\"#c3e9ff\"); return false;")
-    .attr("ondrop", "$(this).css(\"background-color\",\"#e6f6ff\"); return onDropTarget(this,event);");
-    container.insertBefore($(".add_block"));
-}
+//function addContainer(){
+//    var container = $("<div class='cont'>");
+//    var sub_container = $("<div class='sub_cont'>").appendTo(container);
+//    var imgs_container = $("<div class='imgs_cont def_cont'>").appendTo(container);
+//    
+//    var close = $("<div class='close_cont'>").appendTo(container);
+//    var number = $("<div class='number_cont'>"+ ($(".cont").size() + 1) +"</div>").appendTo(sub_container);
+//    
+//    $("<input type='hidden' name='mask' value='" + returnId() + "'/>").appendTo(imgs_container);
+//    $("<input type='hidden' name='count' value=''/>").appendTo(imgs_container); 
+//    var tmp_div = $("<div style='width: 100%; overflow: hidden;'>").appendTo(imgs_container);
+//    $("<input type='text' class='cat_desc' value='" + sankoreLang.enter + "'/>").appendTo(tmp_div);    
+//    $("<button class='del_category'></button>").appendTo(imgs_container);
+//    $("<button class='add_category'></button>").appendTo(imgs_container);
+//    imgs_container.attr("ondragenter", "return false;")
+//    .attr("ondragleave", "$(this).css(\"background-color\",\"#e6f6ff\"); return false;")
+//    .attr("ondragover", "$(this).css(\"background-color\",\"#c3e9ff\"); return false;")
+//    .attr("ondrop", "$(this).css(\"background-color\",\"#e6f6ff\"); return onDropTarget(this,event);");
+//    container.insertBefore($(".add_block"));
+//}
 
-function refreshBlockNumbers(){
-    var i = 0;
-    $(".cont").each(function(){
-        $(this).find(".number_cont").text(++i);
-    })
-}
+//function refreshBlockNumbers(){
+//    var i = 0;
+//    $(".cont").each(function(){
+//        $(this).find(".number_cont").text(++i);
+//    })
+//}
 
 //shuffles an array
 function shuffle( arr )
@@ -613,19 +613,6 @@ function shuffle( arr )
     }
     return arr;
 }
-
-function stringToXML(text){
-    if (window.ActiveXObject){
-        var doc=new ActiveXObject('Microsoft.XMLDOM');
-        doc.async='false';
-        doc.loadXML(text);
-    } else {
-        var parser=new DOMParser();
-        doc=parser.parseFromString(text,'text/xml');
-    }
-    return doc;
-}
-
 
 //changing the style
 function changeStyle(val){
@@ -682,6 +669,18 @@ function changeStyle(val){
             $("body, html").addClass("without_radius").removeClass("radius_ft");
             break;
     }
+}
+
+function stringToXML(text){
+    if (window.ActiveXObject){
+        var doc=new ActiveXObject('Microsoft.XMLDOM');
+        doc.async='false';
+        doc.loadXML(text);
+    } else {
+        var parser=new DOMParser();
+        doc=parser.parseFromString(text,'text/xml');
+    }
+    return doc;
 }
 
 //return id
@@ -779,7 +778,6 @@ function onDropTarget(obj, event) {
                 }
             }  
         }
-        exportData();
     }
     else {
         alert ("Your browser does not support the dataTransfer object.");

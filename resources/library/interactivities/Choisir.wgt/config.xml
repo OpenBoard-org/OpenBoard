@@ -4,8 +4,8 @@
         id="http://uniboard.mnemis.com/widgets/webbrowser" 
         version="1.1"
         width="920"
-        height="500" 
-		ub:resizable="true">   
+        height="450" 
+		ub:resizable="false">   
 		     
   		<name>Choisir</name>
 		<author href="http://www.getuniboard.com"

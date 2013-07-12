@@ -50,18 +50,15 @@ var sankoreLang = {
 
 "<p>Le bouton “Modifier” vous permet :</p>"+
 "<ul><li>de choisir le thème de l’interactivité : tablette, ardoise ou aucun (par défaut aucun),</li>"+
-"<li>de modifier un exercice ou d’en créer de nouveaux dans la même activité.</li></ul>"+
+"<li>de modifier l'exercice.</li></ul>"+
 
-"<p>En mode édition, pour créer un nouvel exercice, cliquez sur “Ajouter une nouvelle question …”, puis :</p>"+
+"<p>En mode édition :</p>"+
 "<ul><li>insérez la question en cliquant sur le champ de texte “Saisir la question ici ...”,</li>"+
 "<li>cliquez sur ”Options” pour choisir l’affichage des propositions (une seule bonne réponse, plusieurs bonnes réponses, liste déroulante). Cliquez sur “Fermer”,</li>"+
 "<li>cliquez sur ”Ajouter une proposition” et saisissez la proposition dans le champ de texte,</li>"+
-"<li>définissez la ou les propositions correctes en cliquant sur la case à cocher à gauche des bonnes réponses.</li>"+
-"<li>Pour supprimer une proposition, cliquez sur la croix située à droite de celle-ci.</li></ul>"+
-
-"<p>Pour supprimer un exercice, cliquez sur la croix à droite du numéro de ”Options”.</p>"+
-
-"<p>Le bouton “Afficher” vous permet d’utiliser l’activité.</p>",
+"<li>définissez la ou les propositions correctes en cliquant sur la case à cocher à gauche des bonnes réponses,</li>"+
+"<li>supprimez une proposition, en cliquant sur la croix située à droite de celle-ci,</li>"+
+"<li>le bouton “Afficher” vous permet d’utiliser l’activité.</li></ul>",
 theme: "Thème"
 };
 
@@ -303,22 +300,22 @@ function init(){
     });
     
     //delete question
-    $(".qstDelete").live('click', function(){
-        popupText.hide();
-        $("#" + currentQstId).remove();
-        for(var i in questionArray)
-            if(questionArray[i].id == currentQstId){
-                if(i == 0)
-                    questionArray.shift();
-                else
-                if((i+1) == questionArray.length)
-                    questionArray.pop();
-                else
-                    questionArray = questionArray.slice(0,i).concat(questionArray.slice(i+1));                
-                break;
-            }
-        refreshQst();
-    });
+//    $(".qstDelete").live('click', function(){
+//        popupText.hide();
+//        $("#" + currentQstId).remove();
+//        for(var i in questionArray)
+//            if(questionArray[i].id == currentQstId){
+//                if(i == 0)
+//                    questionArray.shift();
+//                else
+//                if((i+1) == questionArray.length)
+//                    questionArray.pop();
+//                else
+//                    questionArray = questionArray.slice(0,i).concat(questionArray.slice(i+1));                
+//                break;
+//            }
+//        refreshQst();
+//    });
     
     //change options
     $(".changeOptions").live('click', function(){
@@ -377,19 +374,19 @@ function init(){
     });
     
     //popup messages
-    $(".qstDelete").live('mouseover', function(evt){
-        popupFlag = true;
-        popupText.text(sankoreLang.delete_question)
-        .css("top", evt.pageY + 15)
-        .css("left", evt.pageX - 40)
-        .css({
-            width:"130px"
-        })
-        .show("fast", function(){
-            if(!popupFlag)
-                popupText.hide();
-        });
-    });
+//    $(".qstDelete").live('mouseover', function(evt){
+//        popupFlag = true;
+//        popupText.text(sankoreLang.delete_question)
+//        .css("top", evt.pageY + 15)
+//        .css("left", evt.pageX - 40)
+//        .css({
+//            width:"130px"
+//        })
+//        .show("fast", function(){
+//            if(!popupFlag)
+//                popupText.hide();
+//        });
+//    });
     
     $(".ansDelete").live('mouseover', function(evt){
         popupFlag = true;
@@ -421,14 +418,14 @@ function init(){
         }
     });
     
-    $(".qstDelete, .ansDelete, .newAnswer input").live('mousemove', function(evt){
+    $(".ansDelete, .newAnswer input").live('mousemove', function(evt){
         if(!mode){
             popupText.css("top", evt.pageY + 15)
             .css("left", evt.pageX - 40);
         }
     });
     
-    $(".qstDelete, .ansDelete, .newAnswer input").live('mouseout', function(evt){
+    $(".ansDelete, .newAnswer input").live('mouseout', function(evt){
         if(!mode){
             popupFlag = false;
             popupText.hide();
@@ -460,7 +457,7 @@ function init(){
     //toggleButton.trigger("click");
     //show data in display mode
     function displayData(){
-        $("#addQstDiv").hide();
+//        $("#addQstDiv").hide();
         $(".qstDiv").hide();
         addToPage(questionArray);
     }
@@ -475,7 +472,7 @@ function init(){
                 
         $(".qstDivDisplay").remove();
         
-        $("#addQstDiv").show('fast');
+//        $("#addQstDiv").show('fast');
         $(".qstDiv").show('fast');
     }
     
@@ -486,7 +483,7 @@ function init(){
 
                 var qstDiv = $("<div class='qstDivDisplay' id='" + array[i].id + "qstDivDisplay'>");        
                 var spanOptConn = $("<div class='spanOptConn'>").appendTo(qstDiv);             
-                var qstNumber = $("<span class='qstNumber'>" + sankoreLang.question + " " + counter + "</span>").appendTo(spanOptConn);        
+//                var qstNumber = $("<span class='qstNumber'>" + sankoreLang.question + " " + counter + "</span>").appendTo(spanOptConn);        
                 var qstContent = $("<div class='qstContentDisplay'>" + array[i].text + "</div>").appendTo(qstDiv);        
                 var ansDiv = $("<div class='ansDiv' id='" + array[i].id + "ansDiv'>").appendTo(qstDiv);
 
@@ -554,13 +551,13 @@ function addQstBlock(id, text, type, style){
     var qstDiv = $("<div class='qstDiv' id='" + id + "' " + style + ">");
     var spanOptConn = $("<div class='spanOptConn'>").appendTo(qstDiv);
         
-    var count = $(".qstNumber").size();       
-    var qstNumber = $("<span class='qstNumber'>" + sankoreLang.q + (count + 1) + "</span>").appendTo(spanOptConn);
+//    var count = $(".qstNumber").size();       
+//    var qstNumber = $("<span class='qstNumber'>" + sankoreLang.q + (count + 1) + "</span>").appendTo(spanOptConn);
         
     var qstOptions = $("<div class='qstOptions' id='" + id + "qstOptions'>").appendTo(spanOptConn);
     var changeOptions = $("<button class='changeOptions'>" + sankoreLang.options + "</button>").appendTo(qstOptions);
     var applyChanges = $("<button class='applyChanges' style='display: none;'>" + sankoreLang.close + "</button>").appendTo(qstOptions);
-    var qstDelete = $("<button class='qstDelete'>").appendTo(qstOptions);
+//    var qstDelete = $("<button class='qstDelete'>").appendTo(qstOptions);
         
     var qstOptChoice = $("<div class='qstOptChoice' id='" + id + "qstOptChoice' style='display: none;'>").appendTo(qstDiv);
     var optDesc = $("<div style='height: 65px;'>").appendTo(qstOptChoice);
@@ -610,7 +607,7 @@ function addQstBlock(id, text, type, style){
     var ansDiv = $("<div class='ansDiv' id='" + id + "ansDiv'>").appendTo(qstDiv);
     var ansAdd = $("<button class='ansAdd'>" + sankoreLang.add_answer + "</button>").appendTo(ansDiv);
     qstDiv.insertBefore("#addQstDiv");
-    $("#addQsqSpan1").text(sankoreLang.q + (count + 2));
+//    $("#addQsqSpan1").text(sankoreLang.q + (count + 2));
 }
 
 //add answers

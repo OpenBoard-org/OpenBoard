@@ -11,7 +11,7 @@
 <li> operation (addition, subtraction, multiplication),</li>
 <li> magnitude of proposed numbers,</li>
 <li> number of elements (2-4),</li>
-<li> number of operations (1-5). </li> </ul>
+<li> number of operations (2-10). </li> </ul>
 
 <p> Results are automatically calculated by the interactivity. </p>
 <p>"Display" button comes back to the activity.</p>
