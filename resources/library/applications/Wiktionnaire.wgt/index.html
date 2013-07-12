@@ -181,16 +181,12 @@
 
             $(window).resize(function(){
 
-                if($(window).width() < 370){
-                    window.resizeTo(370, $(window).height());
-                } else if($(window).width() > 755){
+                if($(window).width() > 755){
                     $("#web-browser").height($(window).height() - $("#toolbar").height() - 2);
                     $("#web-browser").width($(window).width() - 2);
                 } else 
                     $("#web-browser").height($(window).height() - $("#toolbar").height() - 2);
                 
-                if($(window).height() < 150)
-                    window.resizeTo($(window).width(), 150);
 
             });
 
@@ -358,15 +354,15 @@
                                 <li class='current'><a id='current-language' class='selected' href='#a'></a> 
                                     <ul> 
                                         <li><a class="sf-sl-first" href="#">Deutsch</a></li> 
-                                        <li><a href="#">English</a></li> 
-                                        <li><a href="#">Español</a></li> 
-                                        <li><a href="#">Français</a></li> 
-                                        <li><a href="#">Italiano</a></li> 
-                                        <li><a href="#">Nederlands</a></li> 
-                                        <li><a href="#">Polski</a></li> 
-                                        <li><a href="#">Português</a></li> 
-                                        <li><a href="#">Русский</a></li> 
-                                        <li><a class="sf-sl-last" href="#">日本語</a></li> 
+                                        <li><a>English</a></li> 
+                                        <li><a>Español</a></li> 
+                                        <li><a>Français</a></li> 
+                                        <li><a>Italiano</a></li> 
+                                        <li><a>Nederlands</a></li> 
+                                        <li><a>Polski</a></li> 
+                                        <li><a>Português</a></li> 
+                                        <li><a>Русский</a></li> 
+                                        <li><a class="sf-sl-last">日本語</a></li> 
                                     </ul> 
                                 </li> 
                             </ul> 

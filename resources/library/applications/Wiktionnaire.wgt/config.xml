@@ -3,6 +3,8 @@
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         identifier="http://uniboard.mnemis.com/widgets/wikipedia" 
         version="1.2"
+		minimum_height="300"
+		minimum_width="360"
         width="755"
         height="450"
         ub:resizable = "true">
