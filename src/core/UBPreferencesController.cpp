@@ -175,6 +175,7 @@ void UBPreferencesController::wire()
 
     // about tab
     connect(mPreferencesUI->checkSoftwareUpdateAtLaunchCheckBox, SIGNAL(clicked(bool)), settings->appEnableAutomaticSoftwareUpdates, SLOT(setBool(bool)));
+    connect(mPreferencesUI->checkOpenSankoreAtStartup, SIGNAL(clicked(bool)), settings->appLookForOpenSankoreInstall, SLOT(setBool(bool)));
 }
 
 void UBPreferencesController::init()
@@ -183,6 +184,7 @@ void UBPreferencesController::init()
 
     // about tab
     mPreferencesUI->checkSoftwareUpdateAtLaunchCheckBox->setChecked(settings->appEnableAutomaticSoftwareUpdates->get().toBool());
+    mPreferencesUI->checkOpenSankoreAtStartup->setChecked(settings->appLookForOpenSankoreInstall->get().toBool());
 
     // display tab
     for(int i=0; i<mPreferencesUI->keyboardPaletteKeyButtonSize->count(); i++)
@@ -297,6 +299,10 @@ void UBPreferencesController::defaultSettings()
     {
         bool defaultValue = settings->appEnableAutomaticSoftwareUpdates->reset().toBool();
         mPreferencesUI->checkSoftwareUpdateAtLaunchCheckBox->setChecked(defaultValue);
+
+        defaultValue = settings->appLookForOpenSankoreInstall->reset().toBool();
+        mPreferencesUI->checkOpenSankoreAtStartup->setChecked(defaultValue);
+
     }
     else if(mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->networkTab){
         bool defaultValue = settings->webUseExternalBrowser->reset().toBool();

@@ -1,5 +1,4 @@
-/*
- * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
+/* Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique    (GIP ENA)
  *
  * This file is part of Open-Sankoré.
  *
@@ -20,27 +19,35 @@
  */
 
 
-#ifndef UBOPENSANKOREIMPORTER_H
-#define UBOPENSANKOREIMPORTER_H
 
-class UBOpenSankoreImporterWidget;
 
-#include <QObject>
+#ifndef UBOPENSANKOREIMPORTERWIDGET_H
+#define UBOPENSANKOREIMPORTERWIDGET_H
 
-class UBOpenSankoreImporter : public QObject
+class QCheckBox;
+class QPushButton;
+
+#include "UBFloatingPalette.h"
+
+class UBOpenSankoreImporterWidget : public UBFloatingPalette
 {
     Q_OBJECT
+
 public:
-    explicit UBOpenSankoreImporter(QWidget *mainWidget, QObject *parent = 0);
+    UBOpenSankoreImporterWidget(QWidget* parent);
+    QPushButton* proceedButton(){return mProceedButton;}
 
-signals:
+protected:
+    void showEvent(QShowEvent *event);
+    int border();
 
-public slots:
-    void onProceedClicked();
+    QCheckBox* mDisplayOnNextRestart;
+    QPushButton* mProceedButton;
 
-private:
-    UBOpenSankoreImporterWidget* mImporterWidget;
+private slots:
+    void onNextRestartCheckBoxClicked(bool clicked);
+
 
 };
 
-#endif // UBOPENSANKOREIMPORTER_H
+#endif // UBOPENSANKOREIMPORTERWIDGET_H

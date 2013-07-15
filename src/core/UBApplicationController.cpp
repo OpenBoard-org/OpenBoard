@@ -135,6 +135,9 @@ UBApplicationController::~UBApplicationController()
     delete mBlackScene;
     delete mMirror;
     if (mHttp) delete mHttp;
+
+    delete(mOpenSankoreImporter);
+    mOpenSankoreImporter = NULL;
 }
 
 
@@ -525,7 +528,7 @@ void UBApplicationController::downloadJsonFinished(QString currentJson)
 
 void UBApplicationController::checkAtLaunch()
 {
-    UBOpenSankoreImporter();
+    mOpenSankoreImporter = new UBOpenSankoreImporter(mMainWindow->centralWidget());
 
     if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool()){
         isNoUpdateDisplayed = false;
@@ -610,6 +613,7 @@ void UBApplicationController::closing()
 
     if (UBApplication::documentController)
         UBApplication::documentController->closing();
+
 }
 
 

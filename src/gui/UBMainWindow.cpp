@@ -27,6 +27,8 @@
 #include "core/UBApplication.h"
 #include "core/UBApplicationController.h"
 #include "board/UBBoardController.h"
+#include "core/UBDisplayManager.h"
+
 // work around for handling tablet events on MAC OS with Qt 4.8.0 and above
 #if defined(Q_WS_MACX)
 #include "board/UBBoardView.h"
@@ -133,14 +135,6 @@ void UBMainWindow::switchToDocumentsWidget()
 void UBMainWindow::keyPressEvent(QKeyEvent *event)
 {
     QMainWindow::keyPressEvent(event);
-
-    /*
-    if (event->key() == Qt::Key_B && !event->isAccepted())
-    {
-        UBApplication::applicationController->blackout();
-        event->accept();
-    }
-    */
 }
 
 void UBMainWindow::closeEvent(QCloseEvent *event)
@@ -190,8 +184,6 @@ void UBMainWindow::onExportDone()
     actionOpen->setEnabled(true);
     actionDocumentAdd->setEnabled(true);
 }
-
-#include "core/UBDisplayManager.h"
 
 bool UBMainWindow::yesNoQuestion(QString windowTitle, QString text)
 {

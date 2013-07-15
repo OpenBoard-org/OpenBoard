@@ -27,29 +27,37 @@
 
 #include "core/UBApplication.h"
 #include "gui/UBMainWindow.h"
+#include "gui/UBOpenSankoreImporterWidget.h"
 
-
-UBOpenSankoreImporter::UBOpenSankoreImporter(QObject *parent) :
+UBOpenSankoreImporter::UBOpenSankoreImporter(QWidget* mainWidget, QObject *parent) :
     QObject(parent)
+  , mImporterWidget(NULL)
 {
     if(UBSettings::settings()->appLookForOpenSankoreInstall->get().toBool() &&
             QDir(UBSettings::userDataDirectory().replace(qApp->applicationName(),"Sankore")).exists()){
-        if(UBApplication::mainWindow->yesNoQuestion(tr("Open-Sankoré data detected"),tr("Open-Sankoré directory is present on the disk. It's possible to import the Open-Sankoré documents into OpenBoard as the preferences. Pushing Ok will close OpenBoard and run the importer application."))){
-            QProcess newProcess;
-#ifdef Q_WS_X11
-            newProcess.startDetached(qApp->applicationDirPath()+"/Importer/OpenBoardImporter");
-#elif defined Q_WS_MACX
-            newProcess.startDetached(qApp->applicationDirPath()+"/../Resources/OpenBoardImporter.app/Contents/MacOS/OpenBoardImporter");
-#else
-			// Windows does not allows to run easily an exe located in a subdirectory when the main
-			// directory is placed into programs files.
-            //newProcess.startDetached(qApp->applicationDirPath()+"\\Importer\\OpenBoardImporter.exe");
-			newProcess.startDetached("C:/OpenBoard/Importer/OpenBoardImporter.exe");
-#endif
-            qApp->exit(0);
-        }
+
+        mImporterWidget = new UBOpenSankoreImporterWidget(mainWidget);
+
+        connect(mImporterWidget->proceedButton(),SIGNAL(clicked()),mImporterWidget,SLOT(close()));
+        connect(mImporterWidget->proceedButton(),SIGNAL(clicked()),this,SLOT(onProceedClicked()));
     }
 }
 
+void UBOpenSankoreImporter::onProceedClicked()
+{
+    QProcess newProcess;
+#ifdef Q_WS_X11
+    newProcess.startDetached(qApp->applicationDirPath()+"/Importer/OpenBoardImporter");
+#elif defined Q_WS_MACX
+    newProcess.startDetached(qApp->applicationDirPath()+"/../Resources/OpenBoardImporter.app/Contents/MacOS/OpenBoardImporter");
+#else
+    // Windows does not allows to run easily an exe located in a subdirectory when the main
+    // directory is placed into programs files.
+    //newProcess.startDetached(qApp->applicationDirPath()+"\\Importer\\OpenBoardImporter.exe");
+    newProcess.startDetached("C:/OpenBoard/Importer/OpenBoardImporter.exe");
+#endif
+    qApp->exit(0);
 
-	
+}
+
+

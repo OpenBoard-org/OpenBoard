@@ -24,7 +24,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="mainTabWidget">
      <property name="currentIndex">
-      <number>5</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="displayTab">
       <attribute name="title">
@@ -2774,6 +2774,44 @@ p, li { white-space: pre-wrap; }
           </property>
           <property name="text">
            <string>Check software update at launch</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="softwareUpdateGroupBox_2">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>70</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>70</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Open-Sankoré Importer</string>
+         </property>
+         <widget class="QCheckBox" name="checkOpenSankoreAtStartup">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>30</y>
+            <width>551</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Check if Open-Sankoré data could be imported at launch</string>
           </property>
           <property name="checked">
            <bool>true</bool>

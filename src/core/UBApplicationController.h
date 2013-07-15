@@ -40,11 +40,11 @@ class QNetworkAccessManager;
 class QNetworkReply;
 class QHttp;
 class UBRightPalette;
-
+class UBOpenSankoreImporter;
 
 class UBApplicationController : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
 
@@ -147,6 +147,8 @@ class UBApplicationController : public QObject
         UBDesktopAnnotationController *mUninoteController;
 
         UBMainWindow *mMainWindow;
+
+        UBOpenSankoreImporter *mOpenSankoreImporter;
 
         UBBoardView *mControlView;
         UBBoardView *mDisplayView;
