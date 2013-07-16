@@ -149,7 +149,7 @@ class UBBoardController : public UBDocumentContainer
         void setBoxing(QRect displayRect);
         void setToolbarTexts();
         static QUrl expandWidgetToTempDir(const QByteArray& pZipedData, const QString& pExtension = QString("wgt"));
-        
+
         void setPageSize(QSize newSize);
         UBBoardPaletteManager *paletteManager()
         {
@@ -168,7 +168,7 @@ class UBBoardController : public UBDocumentContainer
 
         void moveSceneToIndex(int source, int target);
         void duplicateScene(int index);
-        UBGraphicsItem *duplicateItem(UBItem *item, bool bAsync = true);
+        UBGraphicsItem *duplicateItem(UBItem *item);
         void deleteScene(int index);
 
         bool cacheIsVisible() {return mCacheWidgetIsEnabled;}

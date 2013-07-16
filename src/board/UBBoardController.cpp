@@ -543,7 +543,7 @@ void UBBoardController::duplicateScene()
     duplicateScene(mActiveSceneIndex);
 }
 
-UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
+UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
 {
     if (!item)
         return NULL;
@@ -602,11 +602,8 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
             if (mitem)
             {
                 sourceUrl = mitem->mediaFileUrl();
-                if (bAsync)
-                {
-                    downloadURL(sourceUrl, srcFile, itemPos, QSize(itemSize.width(), itemSize.height()), false, false);
-                    return NULL; // async operation
-                }
+                downloadURL(sourceUrl, srcFile, itemPos, QSize(itemSize.width(), itemSize.height()), false, false);
+                return NULL; // async operation
             }
         }break;
 
@@ -643,8 +640,8 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item, bool bAsync)
         mActiveScene->setURStackEnable(false);
         foreach(QGraphicsItem* pIt, children){
             UBItem* pItem = dynamic_cast<UBItem*>(pIt);
-            if(pItem){ // we diong sync duplication of all childs.
-                QGraphicsItem * itemToGroup = dynamic_cast<QGraphicsItem *>(duplicateItem(pItem, false));
+            if(pItem){
+                QGraphicsItem * itemToGroup = dynamic_cast<QGraphicsItem *>(duplicateItem(pItem));
                 if (itemToGroup)
                     duplicatedItems.append(itemToGroup);
             }
