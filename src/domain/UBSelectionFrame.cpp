@@ -133,12 +133,6 @@ void UBSelectionFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
     } else {
         mOperationMode = om_moving;
     }
-
-//    foreach (UBGraphicsItemDelegate *curDelegate, mEnclosedtems) {
-//        qDebug() << "TransformBefore" << curDelegate->delegated()->transform();
-//     }
-
-//    QGraphicsRectItem::mousePressEvent(event);
 }
 
 void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -191,9 +185,6 @@ void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             item->update();
             item->setTransform(ownTransform, false);
 
-//            int resultAngle = (int)mRotationAngle % 360;
-//            setCursorFromAngle(QString::number(resultAngle));
-
             qDebug() << "curAngle" << mRotationAngle;
         } break;
 
@@ -219,11 +210,6 @@ void UBSelectionFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent */*event*/)
     }
     mOperationMode = om_idle;
 
-
-//    foreach (UBGraphicsItemDelegate *curDelegate, mEnclosedtems) {
-//        qDebug() << "TransformBefore" << curDelegate->delegated()->transform();
-//    }
-//    QGraphicsRectItem::mouseReleaseEvent(event);
 }
 
 void UBSelectionFrame::onZoomChanged(qreal pZoom)
@@ -232,11 +218,7 @@ void UBSelectionFrame::onZoomChanged(qreal pZoom)
     qDebug() << "Board current zoom" << UBApplication::boardController->currentZoom();
     qDebug() << "UBApplication::boardController->systemScaleFactor()" << UBApplication::boardController->systemScaleFactor();
     mAntiscaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * pZoom);
-//    updateScale();
-//    QTransform tr;
-//    tr.scale(mAntiscaleRatio, mAntiscaleRatio);
 
-//    this->setTransform(tr);
 }
 
 void UBSelectionFrame::remove()

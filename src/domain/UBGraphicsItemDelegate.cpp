@@ -851,11 +851,6 @@ void UBGraphicsToolBarItem::paint(QPainter *painter, const QStyleOptionGraphicsI
 
     setBrush(QBrush(UBSettings::paletteColor));
 
-//    QPainter newPainter;
-
-//    newPaiter->setBrush(QBrush(Qt::red));
-
-
     painter->fillPath(path, brush());
 }
 
