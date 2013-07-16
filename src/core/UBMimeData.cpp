@@ -61,6 +61,8 @@ UBMimeDataGraphicsItem::UBMimeDataGraphicsItem(QList<UBItem*> pItems)
 
 UBMimeDataGraphicsItem::~UBMimeDataGraphicsItem()
 {
-        foreach(UBItem* item, mItems)
-            delete item;
+    foreach(UBItem* item, mItems){
+        delete item;
+        item = 0;
+    }
 }
