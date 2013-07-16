@@ -49,8 +49,11 @@ UBGraphicsProxyWidget::~UBGraphicsProxyWidget()
 
 void UBGraphicsProxyWidget::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    painter->save();
+    painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
     QGraphicsProxyWidget::paint(painter,option,widget);
     Delegate()->postpaint(painter, option, widget);
+    painter->restore();
 }
 
 QVariant UBGraphicsProxyWidget::itemChange(GraphicsItemChange change, const QVariant &value)
