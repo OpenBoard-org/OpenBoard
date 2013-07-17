@@ -77,6 +77,15 @@ UBGraphicsTextItem::~UBGraphicsTextItem()
 {
 }
 
+void UBGraphicsTextItem::setSelected(bool selected)
+{
+    if(selected){
+        Delegate()->createControls();
+        Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
+    }
+    QGraphicsTextItem::setSelected(selected);
+}
+
 QVariant UBGraphicsTextItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     QVariant newValue = value;

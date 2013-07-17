@@ -92,6 +92,8 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
         virtual void setUuid(const QUuid &pUuid);
         void setHtml(const QString &text);
 
+        void setSelected(bool selected);
+
     signals:
         void textUndoCommandAdded(UBGraphicsTextItem *textItem);
 

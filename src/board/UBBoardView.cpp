@@ -534,12 +534,7 @@ Here we determines cases when items should to get mouse press event at pressing 
     case UBGraphicsTriangle::Type:
     case UBGraphicsCompass::Type:
     case UBGraphicsCache::Type:
-        return true;
-
     case UBGraphicsDelegateFrame::Type:
-    case QGraphicsSvgItem::Type:
-        return true;
-
     case DelegateButton::Type:
         return true;
 
@@ -1233,7 +1228,6 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
                 {
                     if (isUBItem(movingItem) &&
                             DelegateButton::Type != movingItem->type() &&
-                            QGraphicsSvgItem::Type !=  movingItem->type() &&
                             UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
                             UBGraphicsCache::Type != movingItem->type() &&
                             QGraphicsWebView::Type != movingItem->type() && // for W3C widgets as Tools.
@@ -1250,7 +1244,14 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
                                 if (movingItem->isSelected())
                                     bReleaseIsNeed = true;
 
-                                movingItem->setSelected(true);
+                                UBGraphicsTextItem* textItem = dynamic_cast<UBGraphicsTextItem*>(movingItem);
+                                UBGraphicsMediaItem* movieItem = dynamic_cast<UBGraphicsMediaItem*>(movingItem);
+                                if(textItem)
+                                    textItem->setSelected(true);
+                                else if(movieItem)
+                                    movieItem->setSelected(true);
+                                else
+                                    movingItem->setSelected(true);
                             }
 
                     }
