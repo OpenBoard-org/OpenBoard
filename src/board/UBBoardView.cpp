@@ -1084,7 +1084,7 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
     switch (currentTool) {
 
     case UBStylusTool::Hand : {
-        if (!mMouseButtonIsPressed && mTabletStylusIsPressed) {
+        if (!mMouseButtonIsPressed && !mTabletStylusIsPressed) {
             break;
         }
         QPointF eventPosition = event->posF ();
