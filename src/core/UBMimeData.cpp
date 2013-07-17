@@ -61,6 +61,5 @@ UBMimeDataGraphicsItem::UBMimeDataGraphicsItem(QList<UBItem*> pItems)
 
 UBMimeDataGraphicsItem::~UBMimeDataGraphicsItem()
 {
-        foreach(UBItem* item, mItems)
-            delete item;
+// Explanation: selected items are owned by the scene and handled by this class
 }

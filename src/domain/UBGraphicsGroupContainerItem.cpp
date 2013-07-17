@@ -139,7 +139,7 @@ void UBGraphicsGroupContainerItem::removeFromGroup(QGraphicsItem *item)
 
     UBCoreGraphicsScene *groupScene = corescene();
     if (groupScene)
-    {    
+    {
         groupScene->addItemToDeletion(item);
     }
 
@@ -164,7 +164,7 @@ void UBGraphicsGroupContainerItem::deselectCurrentItem()
               {
                   dynamic_cast<UBGraphicsMediaItem*>(mCurrentItem)->Delegate()->getToolBarItem()->hide();
               }
-              break;                   
+              break;
 
         }
         mCurrentItem->setSelected(false);
@@ -183,16 +183,6 @@ void UBGraphicsGroupContainerItem::paint(QPainter *painter, const QStyleOptionGr
     Q_UNUSED(painter);
     Q_UNUSED(option);
 
-//    we would not use paint smth for the moment
-//    if (option->state & QStyle::State_Selected) {
-//        painter->setBrush(Qt::NoBrush);
-//        QPen tmpPen;
-//        qreal tmpPenWidth = 1.0;
-//        tmpPen.setWidth(tmpPenWidth);
-//        tmpPen.setColor(Qt::lightGray);
-//        painter->setPen(tmpPen);
-//        painter->drawRect(itemsBoundingRect.adjusted(tmpPenWidth / 2, tmpPenWidth / 2, -tmpPenWidth / 2, -tmpPenWidth / 2));
-//    }
     Delegate()->postpaint(painter, option, widget);
 }
 
@@ -210,8 +200,6 @@ UBGraphicsGroupContainerItem *UBGraphicsGroupContainerItem::deepCopy() const
     copy->setUuid(this->uuid()); // this is OK for now as long as Widgets are imutable
 
     copyItemParameters(copy);
-
-//    copy->resize(this->size());
 
     return copy;
 }
@@ -353,7 +341,7 @@ void UBGraphicsGroupContainerItem::pRemoveFromGroup(QGraphicsItem *item)
 
     UBGraphicsScene *Scene = dynamic_cast<UBGraphicsScene *>(item->scene());
     if (Scene)
-    {    
+    {
         Scene->addItem(item);
     }
 

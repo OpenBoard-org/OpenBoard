@@ -319,8 +319,6 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     mShouldUseOMP = QSysInfo::MacintoshVersion >= QSysInfo::MV_10_5;
 #endif
 
-//    setItemIndexMethod(QGraphicsScene::BspTreeIndex);
-
     setUuid(QUuid::createUuid());
     setDocument(parent);
     createEraiser();
@@ -1070,9 +1068,6 @@ void UBGraphicsScene::notifyZChanged(QGraphicsItem *item, qreal zValue)
 void UBGraphicsScene::updateSelectionFrame()
 {
     qDebug() << "selected item count" << selectedItems().count();
-//    if (!mMultipleSelectionProcess) {
-//        return;
-//    }
 
     if (!mSelectionFrame) {
         mSelectionFrame = new UBSelectionFrame();

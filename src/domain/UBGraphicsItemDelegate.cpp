@@ -120,14 +120,17 @@ void DelegateButton::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void DelegateButton::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    painter->save();
+    painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
     QGraphicsSvgItem::paint(painter, option, widget);
+    painter->restore();
 
     if (mIsPressed && mShowProgressIndicator) {
         QPen pen;
         pen.setBrush(Qt::white);
         pen.setWidth(3);
         painter->save();
-
+        painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
         painter->setPen(pen);
 
         int spanAngle = qMin(mPressProgres, UBSettings::longClickInterval) * 360 / UBSettings::longClickInterval;
