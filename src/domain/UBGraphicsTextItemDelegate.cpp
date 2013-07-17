@@ -354,14 +354,19 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
 
     if (0 == anchorPos-cursorPos)
     {
+        // If nothing is selected, then we select all the text
         cursor.setPosition (0, QTextCursor::MoveAnchor);
         cursor.setPosition (cursor.document()->characterCount()-1, QTextCursor::KeepAnchor);
     }
 
+    // Now we got the real start and stop positions
     int startPos = qMin(cursor.anchor(), cursor.position());
     int endPos = qMax(cursor.anchor(), cursor.position());
 
+    qDebug() << "start: " << startPos << ", stop: " << endPos;
+
     QFont curFont;
+    QFont nextCharFont;
     bool bEndofTheSameBlock;
     int iBlockLen;
     int iPointSize;
@@ -375,35 +380,43 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
         bEndofTheSameBlock = false;
         iBlockLen = 0;
 
+        // Here we get the point size of the first character
         cursor.setPosition (iCursorPos+1, QTextCursor::KeepAnchor);
-        iPointSize = cursor.charFormat().font().pointSize();
-
-        cursor.setPosition (iCursorPos, QTextCursor::KeepAnchor);
-
         curFont = cursor.charFormat().font();
+        iPointSize = curFont.pointSize();
+
+        // Then we position the end cursor to the start cursor position
+        cursor.setPosition (iCursorPos, QTextCursor::KeepAnchor);
 
         do
         {
-            iBlockLen++;
-
+            // Get the next character font size
             cursor.setPosition (iCursorPos+iBlockLen+1, QTextCursor::KeepAnchor);
-            iNextPointSize = cursor.charFormat().font().pointSize();
+            nextCharFont = cursor.charFormat().font();
+            iNextPointSize = nextCharFont.pointSize();
 
-            cursor.setPosition (iCursorPos+iBlockLen, QTextCursor::KeepAnchor);
-            if ((iPointSize != iNextPointSize)||(iCursorPos+iBlockLen >= endPos))
+            if ((iPointSize != iNextPointSize)||(iCursorPos+iBlockLen >= endPos)||(0 != curFont.family().compare(nextCharFont.family()))){
                 bEndofTheSameBlock = true;
+                break;
+            }
+
+            iBlockLen++;
 
         }while(!bEndofTheSameBlock);
 
 
         //setting new parameners
+        QFont tmpFont = curFont;
         int iNewPointSize = (changeSize == changeMode) ? (iPointSize + factor) : (iPointSize * factor);
-        curFont.setPointSize( (iNewPointSize > 0)?iNewPointSize:1);
-        textFormat.setFont(curFont);
-        cursor.mergeCharFormat(textFormat);
+        tmpFont.setPointSize( (iNewPointSize > 0)?iNewPointSize:1);
+        textFormat.setFont(tmpFont);
+        cursor.setPosition (iCursorPos+iBlockLen, QTextCursor::KeepAnchor);
+        cursor.setCharFormat(textFormat);
 
         iCursorPos += iBlockLen;
         cursor.setPosition (iCursorPos, QTextCursor::MoveAnchor);
+
+        curFont = nextCharFont;
     }
 
     delegated()->setFont(curFont);
