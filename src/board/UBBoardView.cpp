@@ -91,7 +91,6 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool
     , mMultipleSelectionIsEnabled(false)
     , bIsControl(isControl)
     , bIsDesktop(isDesktop)
-    , mRubberBandInPlayMode(false) //enables rubberband with play tool
 {
     init ();
 
@@ -535,12 +534,7 @@ Here we determines cases when items should to get mouse press event at pressing 
     case UBGraphicsTriangle::Type:
     case UBGraphicsCompass::Type:
     case UBGraphicsCache::Type:
-        return true;
-
     case UBGraphicsDelegateFrame::Type:
-    case QGraphicsSvgItem::Type:
-        return true;
-
     case DelegateButton::Type:
         return true;
 
@@ -989,10 +983,6 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
             if (!movingItem && !mController->cacheIsVisible())
                 mLongPressTimer.start();
 
-            if(mUBRubberBand) {
-                mUBRubberBand->hide();
-            }
-
             handleItemMousePress(event);
             event->accept();
             break;
@@ -1006,9 +996,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
             QListIterator<QGraphicsItem *> it (scene ()->items (fuzzyRect));
 
             while (it.hasNext () && !foundTextItem)
-            {
                 foundTextItem = qgraphicsitem_cast<UBGraphicsTextItem*>(it.next ());
-            }
 
             if (foundTextItem)
             {
@@ -1091,7 +1079,7 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
     switch (currentTool) {
 
     case UBStylusTool::Hand : {
-        if (!mMouseButtonIsPressed && mTabletStylusIsPressed) {
+        if (!mMouseButtonIsPressed && !mTabletStylusIsPressed) {
             break;
         }
         QPointF eventPosition = event->posF ();
@@ -1109,7 +1097,7 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
             return;
         }
 
-        bool rubberMove = currentTool != (UBStylusTool::Play || mRubberBandInPlayMode)
+        bool rubberMove = (currentTool != (UBStylusTool::Play))
                 && (mMouseButtonIsPressed || mTabletStylusIsPressed)
                 && !movingItem;
 
@@ -1172,13 +1160,13 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
 
     case UBStylusTool::Text :
     case UBStylusTool::Capture : {
-        if (mRubberBand
-                && (mIsCreatingTextZone || mIsCreatingSceneGrabZone)) {
+        if (mRubberBand && (mIsCreatingTextZone || mIsCreatingSceneGrabZone)) {
             mRubberBand->setGeometry(QRect(mMouseDownPos, event->pos()).normalized());
             event->accept();
-        } else {
-            QGraphicsView::mouseMoveEvent (event);
         }
+        else
+            QGraphicsView::mouseMoveEvent (event);
+
     } break;
 
     default:
@@ -1240,7 +1228,6 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
                 {
                     if (isUBItem(movingItem) &&
                             DelegateButton::Type != movingItem->type() &&
-                            QGraphicsSvgItem::Type !=  movingItem->type() &&
                             UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
                             UBGraphicsCache::Type != movingItem->type() &&
                             QGraphicsWebView::Type != movingItem->type() && // for W3C widgets as Tools.
@@ -1257,7 +1244,14 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
                                 if (movingItem->isSelected())
                                     bReleaseIsNeed = true;
 
-                                movingItem->setSelected(true);
+                                UBGraphicsTextItem* textItem = dynamic_cast<UBGraphicsTextItem*>(movingItem);
+                                UBGraphicsMediaItem* movieItem = dynamic_cast<UBGraphicsMediaItem*>(movingItem);
+                                if(textItem)
+                                    textItem->setSelected(true);
+                                else if(movieItem)
+                                    movieItem->setSelected(true);
+                                else
+                                    movingItem->setSelected(true);
                             }
 
                     }
@@ -1265,10 +1259,6 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
             }
             else
                 bReleaseIsNeed = true;
-
-        if (mUBRubberBand && mUBRubberBand->isVisible()) {
-            mUBRubberBand->hide();
-        }
 
         if (bReleaseIsNeed)
         {
@@ -1297,6 +1287,7 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
                 suspendedMousePressEvent = NULL;
             }
         }
+
         QGraphicsView::mouseReleaseEvent (event);
     }
     else if (currentTool == UBStylusTool::Text)
@@ -1368,10 +1359,6 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
         else
             bReleaseIsNeed = true;
 
-        if (mUBRubberBand && mUBRubberBand->isVisible()) {
-            mUBRubberBand->hide();
-        }
-
         if (bReleaseIsNeed)
         {
             QGraphicsView::mouseReleaseEvent (event);
@@ -1399,8 +1386,6 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
     }
     else if (currentTool == UBStylusTool::Capture)
     {
-        if (mRubberBand)
-            mRubberBand->hide ();
 
         if (scene () && mRubberBand && mIsCreatingSceneGrabZone && mRubberBand->geometry ().width () > 16)
         {
@@ -1426,6 +1411,19 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
         {
             event->accept ();
         }
+    }
+
+
+    if (mUBRubberBand) {
+        mUBRubberBand->hide();
+        delete mUBRubberBand;
+        mUBRubberBand = NULL;
+    }
+
+    if (mRubberBand) {
+        mRubberBand->hide();
+        delete mRubberBand;
+        mRubberBand = NULL;
     }
 
     mMouseButtonIsPressed = false;

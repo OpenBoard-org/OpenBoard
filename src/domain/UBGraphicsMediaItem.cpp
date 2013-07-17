@@ -121,6 +121,18 @@ UBGraphicsMediaItem::~UBGraphicsMediaItem()
 }
 
 
+void UBGraphicsMediaItem::setSelected(bool selected)
+{
+    if(selected){
+        Delegate()->createControls();
+        if (mediaType_Audio == mMediaType)
+            Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::ResizingHorizontally);
+        else
+            Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
+    }
+    UBGraphicsProxyWidget::setSelected(selected);
+}
+
 QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if ((change == QGraphicsItem::ItemEnabledChange)

@@ -91,6 +91,9 @@ public:
 
     virtual void setSourceUrl(const QUrl &pSourceUrl);
 
+    void setSelected(bool selected);
+
+
 public slots:
 
     void toggleMute();
