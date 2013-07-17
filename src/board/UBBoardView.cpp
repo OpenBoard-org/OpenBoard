@@ -91,7 +91,6 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool
     , mMultipleSelectionIsEnabled(false)
     , bIsControl(isControl)
     , bIsDesktop(isDesktop)
-    , mRubberBandInPlayMode(false) //enables rubberband with play tool
 {
     init ();
 
@@ -989,10 +988,6 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
             if (!movingItem && !mController->cacheIsVisible())
                 mLongPressTimer.start();
 
-            if(mUBRubberBand) {
-                mUBRubberBand->hide();
-            }
-
             handleItemMousePress(event);
             event->accept();
             break;
@@ -1006,9 +1001,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
             QListIterator<QGraphicsItem *> it (scene ()->items (fuzzyRect));
 
             while (it.hasNext () && !foundTextItem)
-            {
                 foundTextItem = qgraphicsitem_cast<UBGraphicsTextItem*>(it.next ());
-            }
 
             if (foundTextItem)
             {
@@ -1109,7 +1102,7 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
             return;
         }
 
-        bool rubberMove = currentTool != (UBStylusTool::Play || mRubberBandInPlayMode)
+        bool rubberMove = (currentTool != (UBStylusTool::Play))
                 && (mMouseButtonIsPressed || mTabletStylusIsPressed)
                 && !movingItem;
 
@@ -1172,13 +1165,13 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
 
     case UBStylusTool::Text :
     case UBStylusTool::Capture : {
-        if (mRubberBand
-                && (mIsCreatingTextZone || mIsCreatingSceneGrabZone)) {
+        if (mRubberBand && (mIsCreatingTextZone || mIsCreatingSceneGrabZone)) {
             mRubberBand->setGeometry(QRect(mMouseDownPos, event->pos()).normalized());
             event->accept();
-        } else {
-            QGraphicsView::mouseMoveEvent (event);
         }
+        else
+            QGraphicsView::mouseMoveEvent (event);
+
     } break;
 
     default:
@@ -1266,10 +1259,6 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
             else
                 bReleaseIsNeed = true;
 
-        if (mUBRubberBand && mUBRubberBand->isVisible()) {
-            mUBRubberBand->hide();
-        }
-
         if (bReleaseIsNeed)
         {
             QGraphicsView::mouseReleaseEvent (event);
@@ -1297,6 +1286,7 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
                 suspendedMousePressEvent = NULL;
             }
         }
+
         QGraphicsView::mouseReleaseEvent (event);
     }
     else if (currentTool == UBStylusTool::Text)
@@ -1368,10 +1358,6 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
         else
             bReleaseIsNeed = true;
 
-        if (mUBRubberBand && mUBRubberBand->isVisible()) {
-            mUBRubberBand->hide();
-        }
-
         if (bReleaseIsNeed)
         {
             QGraphicsView::mouseReleaseEvent (event);
@@ -1399,8 +1385,6 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
     }
     else if (currentTool == UBStylusTool::Capture)
     {
-        if (mRubberBand)
-            mRubberBand->hide ();
 
         if (scene () && mRubberBand && mIsCreatingSceneGrabZone && mRubberBand->geometry ().width () > 16)
         {
@@ -1426,6 +1410,19 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
         {
             event->accept ();
         }
+    }
+
+
+    if (mUBRubberBand) {
+        mUBRubberBand->hide();
+        delete mUBRubberBand;
+        mUBRubberBand = NULL;
+    }
+
+    if (mRubberBand) {
+        mRubberBand->hide();
+        delete mRubberBand;
+        mRubberBand = NULL;
     }
 
     mMouseButtonIsPressed = false;
