@@ -237,9 +237,6 @@ void UBGraphicsDelegateFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
     mCurrentTool = toolFromPos(event->pos());
     setCursorFromAngle(QString::number((int)mAngle % 360));
     event->accept();
-
-//    if (moving())
-//        prepareFramesToMove(getLinkedFrames());
 }
 
 void UBGraphicsDelegateFrame::setCursorFromAngle(QString angle)
