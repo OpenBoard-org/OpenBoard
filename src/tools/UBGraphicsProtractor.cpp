@@ -488,7 +488,6 @@ void UBGraphicsProtractor::paintButtons(QPainter *painter)
 void UBGraphicsProtractor::paintAngleMarker(QPainter *painter)
 {
     painter->save();
-
     painter->translate(rect().center());
     painter->rotate(-mStartAngle);
     painter->translate(-rect().center().x(), -rect().center().y());
