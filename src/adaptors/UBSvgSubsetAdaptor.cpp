@@ -62,6 +62,7 @@
 #include "core/UBSetting.h"
 #include "core/UBPersistenceManager.h"
 #include "core/UBApplication.h"
+#include "core/UBTextTools.h"
 
 #include "document/UBDocumentContainer.h"
 
@@ -301,7 +302,7 @@ QUuid UBSvgSubsetAdaptor::sceneUuid(UBDocumentProxy* proxy, const int pageIndex)
 
 UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const QByteArray& pArray)
 {
-    UBSvgSubsetReader reader(proxy, pArray);
+    UBSvgSubsetReader reader(proxy, UBTextTools::cleanHtmlCData(QString(pArray)).toAscii());
     return reader.loadScene();
 }
 
@@ -2457,7 +2458,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::textItemToSvg(UBGraphicsTextItem* it
 
     // Note: don't use mXmlWriter.writeCDATA(htmlString); because it doesn't escape characters sequences correctly.
     // Texts copied from other programs like Open-Office can truncate the svg file.
-    mXmlWriter.writeCharacters(item->toHtml());
+    //mXmlWriter.writeCharacters(item->toHtml());
+    mXmlWriter.writeCharacters(UBTextTools::cleanHtmlCData(item->toHtml()));
     mXmlWriter.writeEndElement(); //itemTextContent
 
     mXmlWriter.writeEndElement(); //foreignObject
