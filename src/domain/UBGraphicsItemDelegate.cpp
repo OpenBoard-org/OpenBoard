@@ -1120,8 +1120,7 @@ void MediaTimer::addPoint(QPolygon &a, const QPoint &p)
     a.setPoint(n, p);
 }
 
-void MediaTimer::paint(QPainter *p,
-        const QStyleOptionGraphicsItem *option, QWidget *widget)
+void MediaTimer::paint(QPainter *p, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
@@ -1300,10 +1299,6 @@ QPainterPath DelegateMediaControl::shape() const
 
 void DelegateMediaControl::positionHandles()
 {
-    QRectF selfRect = rect();
-    selfRect.setHeight(parentItem()->boundingRect().height());
-    setRect(selfRect);
-
     QTime tTotal;
     tTotal = tTotal.addMSecs(mTotalTimeInMs);
     mLCDTimerArea.setHeight(parentItem()->boundingRect().height());
@@ -1329,10 +1324,6 @@ void DelegateMediaControl::positionHandles()
 
     mLCDTimerArea.setWidth(timerWidth);
     lcdTimer->setRect(mLCDTimerArea);
-    // not the best solution, but it works.
-    lcdTimer->positionHandles();
-    mLCDTimerArea = lcdTimer->rect();
-    // -------------------------------------
 
     lcdTimer->setPos(rect().width() - mLCDTimerArea.width(), 0);
 
