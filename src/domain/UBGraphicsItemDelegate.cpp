@@ -1312,12 +1312,11 @@ void DelegateMediaControl::positionHandles()
 
     mDisplayFormat = "ss";
 
-    if (tTotal.minute() > 0)
-    {
-        mDisplayFormat = "mm:" + mDisplayFormat;
-        digitsCount += 3;
-        timerWidth += mLCDTimerArea.height()*0.5;
-    }
+
+    //Explanation at least the second and minutes are diplayed
+    mDisplayFormat = "mm:" + mDisplayFormat;
+    digitsCount += 3;
+    timerWidth += mLCDTimerArea.height();
 
     if (tTotal.hour() > 0)
     {
@@ -1347,6 +1346,7 @@ void DelegateMediaControl::update()
 {
     QTime tCurrent;
     tCurrent = tCurrent.addMSecs(mCurrentTimeInMs < 0 ? 0 : mCurrentTimeInMs);
+
 
     lcdTimer->display(tCurrent.toString(mDisplayFormat));
 

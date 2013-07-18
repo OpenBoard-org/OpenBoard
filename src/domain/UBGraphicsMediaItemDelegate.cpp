@@ -73,6 +73,7 @@ bool UBGraphicsMediaItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *even
 {
     Q_UNUSED(event);
     mToolBarItem->show();
+    positionHandles();
 
     if (mToolBarShowTimer)
         mToolBarShowTimer->start();
@@ -119,20 +120,16 @@ void UBGraphicsMediaItemDelegate::buildButtons()
         connect(mMuteButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
     }
 
-//    UBGraphicsMediaItem *audioItem = dynamic_cast<UBGraphicsMediaItem*>(mDelegated);
-//    if (audioItem)
-//    {
-//        if (audioItem->getMediaType() == UBGraphicsMediaItem::mediaType_Audio)
-//        {
-            positionHandles();
-//        }
-//    }
+
+    positionHandles();
 }
 
 UBGraphicsMediaItemDelegate::~UBGraphicsMediaItemDelegate()
 {
-    if (mToolBarShowTimer)
+    if (mToolBarShowTimer){
         delete mToolBarShowTimer;
+        mToolBarShowTimer = NULL;
+    }
 }
 
 void UBGraphicsMediaItemDelegate::positionHandles()
@@ -144,32 +141,20 @@ void UBGraphicsMediaItemDelegate::positionHandles()
     {
         QRectF toolBarRect = mToolBarItem->rect();
 
-        mToolBarItem->setPos(0, delegated()->boundingRect().height()-mToolBarItem->rect().height());
+        mToolBarItem->setPos(0, mediaItem->boundingRect().height()-mToolBarItem->rect().height());
 
-        toolBarRect.setWidth(delegated()->boundingRect().width());
+        toolBarRect.setWidth(mediaItem->boundingRect().width());
         mToolBarItem->show();
-
 
         mToolBarItem->setRect(toolBarRect);
     }
 
-    int toolBarMinimumWidth = 0;
-    int mediaItemWidth = mToolBarItem->boundingRect().width();
+    int toolBarButtons= 0;
     foreach (DelegateButton* button, mToolBarButtons)
-    {
-        mediaItemWidth -= button->boundingRect().width() + mToolBarItem->getElementsPadding();
-        toolBarMinimumWidth += button->boundingRect().width() + mToolBarItem->getElementsPadding();
-    }
-    toolBarMinimumWidth += mToolBarItem->boundingRect().height();
-
-    QWidget* pAudioWidget = delegated()->widget();
-    if (pAudioWidget)
-    {
-       pAudioWidget->setMinimumSize(toolBarMinimumWidth + (int)mMediaControl->lcdAreaSize().width() + (int)mMediaControl->rect().height(),26);
-    }
+        toolBarButtons += button->boundingRect().width() + mToolBarItem->getElementsPadding();
 
     QRectF mediaItemRect = mMediaControl->rect();
-    mediaItemRect.setWidth(mediaItemWidth);
+    mediaItemRect.setWidth(mediaItem->boundingRect().width() - toolBarButtons);
     mediaItemRect.setHeight(mToolBarItem->boundingRect().height());
     mMediaControl->setRect(mediaItemRect);
 
