@@ -349,18 +349,17 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
         }
     }
 
-    // if event are not Pen events, we drop the tablet stuff and route everything through mouse event
-    if (currentTool != UBStylusTool::Pen && currentTool != UBStylusTool::Line && currentTool != UBStylusTool::Marker && !mMarkerPressureSensitive){
-        event->setAccepted (false);
-        return;
-    }
-
     QPointF scenePos = viewportTransform ().inverted ().map (tabletPos);
 
     qreal pressure = 1.0;
-    if (((currentTool == UBStylusTool::Pen || currentTool == UBStylusTool::Line) && mPenPressureSensitive) || (currentTool == UBStylusTool::Marker && mMarkerPressureSensitive))
+    if (((currentTool == UBStylusTool::Pen || currentTool == UBStylusTool::Line) && mPenPressureSensitive) ||
+            (currentTool == UBStylusTool::Marker && mMarkerPressureSensitive))
         pressure = event->pressure ();
-
+    else{
+        //Explanation: rerouting to mouse event
+        event->setAccepted (false);
+        return;
+    }
 
     bool acceptEvent = true;
 #ifdef Q_WS_MAC
@@ -534,18 +533,28 @@ Here we determines cases when items should to get mouse press event at pressing 
     case UBGraphicsTriangle::Type:
     case UBGraphicsCompass::Type:
     case UBGraphicsCache::Type:
+        return true;
     case UBGraphicsDelegateFrame::Type:
+        if (currentTool == UBStylusTool::Play)
+            return false;
+        return true;
+    case UBGraphicsPixmapItem::Type:
+    case UBGraphicsSvgItem::Type:
+        if (currentTool == UBStylusTool::Play)
+            return true;
+        if (item->isSelected())
+            return true;
+        else
+            return false;
     case DelegateButton::Type:
         return true;
 
     case UBGraphicsMediaItem::Type:
         return false;
 
-    case UBGraphicsSvgItem::Type:
-    case UBGraphicsPixmapItem::Type:
     case UBGraphicsTextItem::Type:
         if (currentTool == UBStylusTool::Play)
-            return false;
+            return true;
         if ((currentTool == UBStylusTool::Selector) && item->isSelected())
             return true;
         if ((currentTool == UBStylusTool::Selector) && item->parentItem() && item->parentItem()->isSelected())
@@ -553,8 +562,13 @@ Here we determines cases when items should to get mouse press event at pressing 
         if (currentTool != UBStylusTool::Selector)
             return false;
         break;
+
+    case UBGraphicsItemType::StrokeItemType:
+        if (currentTool == UBStylusTool::Play)
+            return true;
+        break;
+    // Groups shouldn't reacts on any presses and moves for Play tool.
     case UBGraphicsGroupContainerItem::Type:
-        // Groups shouldn't reacts on any presses and moves for Play tool.
         if(currentTool == UBStylusTool::Play)
         {
             movingItem = NULL;
@@ -594,6 +608,7 @@ bool UBBoardView::itemShouldReceiveSuspendedMousePressEvent(QGraphicsItem *item)
     case QGraphicsWebView::Type:
         return false;
     case UBGraphicsPixmapItem::Type:
+    case UBGraphicsSvgItem::Type:
     case UBGraphicsTextItem::Type:
     case UBGraphicsWidgetItem::Type:
         if (currentTool == UBStylusTool::Selector && !item->isSelected() && item->parentItem())
@@ -644,6 +659,8 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
 
     case UBGraphicsSvgItem::Type:
     case UBGraphicsPixmapItem::Type:
+        if (currentTool == UBStylusTool::Play || !item->isSelected())
+            return true;
         if (item->isSelected())
             return false;
     case UBGraphicsMediaItem::Type:
@@ -942,9 +959,6 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
 
     mMouseDownPos = event->pos ();
     movingItem = scene()->itemAt(this->mapToScene(event->posF().toPoint()));
-
-    if (!movingItem)
-        emit clickOnBoard();
 
     if (event->button () == Qt::LeftButton && isInteractive())
     {
