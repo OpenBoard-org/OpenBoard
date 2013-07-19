@@ -224,7 +224,7 @@ notify "Creating dmg ..."
 umount "$VOLUME" 2> /dev/null
 $DMGUTIL --open --volume="$APPLICATION_NAME" "$DMG"
 
-cp *.pdf "$VOLUME"
+#cp *.pdf "$VOLUME"
 cp -R "$APP" "$VOLUME"
 ln -s /Applications "$VOLUME"
 
@@ -232,7 +232,7 @@ $DMGUTIL --set --iconsize=96 --toolbar=false --icon=resources/macx/OpenBoard.icn
 $DMGUTIL --set --x=20 --y=60 --width=580 --height=440 "$VOLUME"
 $DMGUTIL --set --x=180 --y=120 "$VOLUME/`basename \"$APP\"`"
 $DMGUTIL --set --x=400 --y=120 "$VOLUME/Applications"
-$DMGUTIL --set --x=180 --y=280 "$VOLUME/ReleaseNotes.pdf"
+#$DMGUTIL --set --x=180 --y=280 "$VOLUME/ReleaseNotes.pdf"
 
 $DMGUTIL --close --volume="$APPLICATION_NAME" "$DMG"
 
