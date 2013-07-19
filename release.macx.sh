@@ -90,6 +90,12 @@ function addImporter {
     fi
 
     cd ${importerDir}
+    git reset --hard
+    git pull
+    rm -rf ${importerName}.app
+    rm moc_*  
+    rm MakeFile*
+    rm *.o 
     $QMAKE ${importerName}.pro
     make -j4
     $MACDEPLOYQT ${importerName}.app 
@@ -227,7 +233,6 @@ $DMGUTIL --set --x=20 --y=60 --width=580 --height=440 "$VOLUME"
 $DMGUTIL --set --x=180 --y=120 "$VOLUME/`basename \"$APP\"`"
 $DMGUTIL --set --x=400 --y=120 "$VOLUME/Applications"
 $DMGUTIL --set --x=180 --y=280 "$VOLUME/ReleaseNotes.pdf"
-$DMGUTIL --set --x=400 --y=280 "$VOLUME/JournalDesModifications.pdf"
 
 $DMGUTIL --close --volume="$APPLICATION_NAME" "$DMG"
 
