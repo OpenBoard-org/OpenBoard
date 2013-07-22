@@ -174,7 +174,6 @@ class DelegateMediaControl: public QObject, public QGraphicsRectItem
         void positionHandles();
         void updateTicker(qint64 time);
         void totalTimeChanged(qint64 newTotalTime);
-        QSizeF lcdAreaSize() {return mLCDTimerArea.size();}
 
     signals:
         void used();
@@ -286,7 +285,6 @@ class UBGraphicsItemDelegate : public QObject
         UBGraphicsFlags ubflags() const {return mFlags;}
         bool testUBFlags(UBGraphicsFlags pf) const {return mFlags & pf;}
         void setUBFlags(UBGraphicsFlags pf);
-//        void addUBFlags(UBGraphicsFlags pf) {setUBFlags(ubflags() | pf);}
         void setUBFlag(UBGraphicsFlags pf, bool set = true);
 
     signals:

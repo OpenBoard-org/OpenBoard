@@ -63,7 +63,6 @@ public:
 signals:
     void resized(QResizeEvent* event);
     void shown();
-    void clickOnBoard();
     void mouseReleased();
 
 protected:

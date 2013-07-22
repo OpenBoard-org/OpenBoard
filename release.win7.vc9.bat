@@ -44,6 +44,10 @@ IF NOT EXIST "%IMPORTER_PATH%" GOTO EXIT_WITH_ERROR
 set HOME_DIR="%cd%"
 cd %IMPORTER_PATH%
 IF EXIST "release" (del "release\*.*" /Q)
+IF EXIST "debug" (del "debug\*.*" /Q)
+IF EXIST "MakeFile" (del "MakeFile*" /Q)
+IF EXIST "MakeFile" (del "MakeFile*" /Q)
+IF EXIST "%IMPORTER_NAME%.exe" (del "%IMPORTER_NAME%.exe" /Q)
 "%QT_BIN%\qmake.exe" %IMPORTER_NAME%.pro
 nmake release
 cd %HOME_DIR%

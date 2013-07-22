@@ -29,6 +29,7 @@
 #include "core/UBSettings.h"
 
 #include "board/UBBoardView.h"
+#include "board/UBBoardController.h"
 
 #include "gui/UBBlackoutWidget.h"
 
@@ -277,7 +278,6 @@ void UBDisplayManager::blackout()
     }
 }
 
-
 void UBDisplayManager::unBlackout()
 {
     while (!mBlackoutWidgets.isEmpty())
@@ -287,6 +287,9 @@ void UBDisplayManager::unBlackout()
     }
 
     UBPlatformUtils::fadeDisplayIn();
+
+    UBApplication::boardController->freezeW3CWidgets(false);
+
 }
 
 

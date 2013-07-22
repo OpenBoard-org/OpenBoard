@@ -121,6 +121,7 @@ void UBGraphicsRuler::paint(QPainter *painter, const QStyleOptionGraphicsItem *s
 
 
     painter->setPen(drawColor());
+    painter->setBrush(edgeFillColor());
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->drawRoundedRect(rect(), sRoundingRadius, sRoundingRadius);
     fillBackground(painter);

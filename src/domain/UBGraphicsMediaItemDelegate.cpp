@@ -44,6 +44,7 @@ UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pD
                              | GF_RESPECT_RATIO
                              | GF_TOOLBAR_USED
                              | GF_SHOW_CONTENT_SOURCE)
+    , mPlayPauseButton(NULL)
     , mMedia(pMedia)
     , mToolBarShowTimer(NULL)
     , m_iToolBarShowingInterval(5000)
@@ -73,6 +74,7 @@ bool UBGraphicsMediaItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *even
 {
     Q_UNUSED(event);
     mToolBarItem->show();
+    positionHandles();
 
     if (mToolBarShowTimer)
         mToolBarShowTimer->start();
@@ -87,52 +89,50 @@ void UBGraphicsMediaItemDelegate::hideToolBar()
 
 void UBGraphicsMediaItemDelegate::buildButtons()
 {
-    mPlayPauseButton = new DelegateButton(":/images/play.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
-    connect(mPlayPauseButton, SIGNAL(clicked(bool)), this, SLOT(togglePlayPause()));
+    if(!mPlayPauseButton){
+        mPlayPauseButton = new DelegateButton(":/images/play.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+        connect(mPlayPauseButton, SIGNAL(clicked(bool)), this, SLOT(togglePlayPause()));
 
-    mStopButton = new DelegateButton(":/images/stop.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
-    connect(mStopButton, SIGNAL(clicked(bool)), mMedia, SLOT(stop()));
+        mStopButton = new DelegateButton(":/images/stop.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+        connect(mStopButton, SIGNAL(clicked(bool)), mMedia, SLOT(stop()));
 
-    mMediaControl = new DelegateMediaControl(delegated(), mToolBarItem);
-    mMediaControl->setFlag(QGraphicsItem::ItemIsSelectable, true);
-    UBGraphicsItem::assignZValue(mMediaControl, delegated()->zValue());
+        mMediaControl = new DelegateMediaControl(delegated(), mToolBarItem);
+        mMediaControl->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        UBGraphicsItem::assignZValue(mMediaControl, delegated()->zValue());
 
-    if (delegated()->isMuted())
-        mMuteButton = new DelegateButton(":/images/soundOff.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
-    else
-        mMuteButton = new DelegateButton(":/images/soundOn.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+        if (delegated()->isMuted())
+            mMuteButton = new DelegateButton(":/images/soundOff.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+        else
+            mMuteButton = new DelegateButton(":/images/soundOn.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
 
-    connect(mMuteButton, SIGNAL(clicked(bool)), delegated(), SLOT(toggleMute()));
-    connect(mMuteButton, SIGNAL(clicked(bool)), this, SLOT(toggleMute())); // for changing button image
+        connect(mMuteButton, SIGNAL(clicked(bool)), delegated(), SLOT(toggleMute()));
+        connect(mMuteButton, SIGNAL(clicked(bool)), this, SLOT(toggleMute())); // for changing button image
 
-    mToolBarButtons << mPlayPauseButton << mStopButton << mMuteButton;
+        mToolBarButtons << mPlayPauseButton << mStopButton << mMuteButton;
 
-    mToolBarItem->setItemsOnToolBar(QList<QGraphicsItem*>() << mPlayPauseButton << mStopButton << mMediaControl << mMuteButton);
-    mToolBarItem->setVisibleOnBoard(true);
-    mToolBarItem->setShifting(false);
+        mToolBarItem->setItemsOnToolBar(QList<QGraphicsItem*>() << mPlayPauseButton << mStopButton << mMediaControl  << mMuteButton );
+        mToolBarItem->setVisibleOnBoard(true);
+        mToolBarItem->setShifting(false);
 
-    if (mToolBarShowTimer)
-    {
-        connect(mPlayPauseButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
-        connect(mStopButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
-        connect(mMediaControl, SIGNAL(used()), mToolBarShowTimer, SLOT(start()));
-        connect(mMuteButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
+        if (mToolBarShowTimer)
+        {
+            connect(mPlayPauseButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
+            connect(mStopButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
+            connect(mMediaControl, SIGNAL(used()), mToolBarShowTimer, SLOT(start()));
+            connect(mMuteButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
+        }
+
+
+        positionHandles();
     }
-
-//    UBGraphicsMediaItem *audioItem = dynamic_cast<UBGraphicsMediaItem*>(mDelegated);
-//    if (audioItem)
-//    {
-//        if (audioItem->getMediaType() == UBGraphicsMediaItem::mediaType_Audio)
-//        {
-            positionHandles();
-//        }
-//    }
 }
 
 UBGraphicsMediaItemDelegate::~UBGraphicsMediaItemDelegate()
 {
-    if (mToolBarShowTimer)
+    if (mToolBarShowTimer){
         delete mToolBarShowTimer;
+        mToolBarShowTimer = NULL;
+    }
 }
 
 void UBGraphicsMediaItemDelegate::positionHandles()
@@ -144,32 +144,20 @@ void UBGraphicsMediaItemDelegate::positionHandles()
     {
         QRectF toolBarRect = mToolBarItem->rect();
 
-        mToolBarItem->setPos(0, delegated()->boundingRect().height()-mToolBarItem->rect().height());
+        mToolBarItem->setPos(0, mediaItem->boundingRect().height()-mToolBarItem->rect().height());
 
-        toolBarRect.setWidth(delegated()->boundingRect().width());
+        toolBarRect.setWidth(mediaItem->boundingRect().width());
         mToolBarItem->show();
-
 
         mToolBarItem->setRect(toolBarRect);
     }
 
-    int toolBarMinimumWidth = 0;
-    int mediaItemWidth = mToolBarItem->boundingRect().width();
+    int toolBarButtonsWidth = 0;
     foreach (DelegateButton* button, mToolBarButtons)
-    {
-        mediaItemWidth -= button->boundingRect().width() + mToolBarItem->getElementsPadding();
-        toolBarMinimumWidth += button->boundingRect().width() + mToolBarItem->getElementsPadding();
-    }
-    toolBarMinimumWidth += mToolBarItem->boundingRect().height();
-
-    QWidget* pAudioWidget = delegated()->widget();
-    if (pAudioWidget)
-    {
-       pAudioWidget->setMinimumSize(toolBarMinimumWidth + (int)mMediaControl->lcdAreaSize().width() + (int)mMediaControl->rect().height(),26);
-    }
+        toolBarButtonsWidth += button->boundingRect().width() + mToolBarItem->getElementsPadding();
 
     QRectF mediaItemRect = mMediaControl->rect();
-    mediaItemRect.setWidth(mediaItemWidth);
+    mediaItemRect.setWidth(mediaItem->boundingRect().width() - toolBarButtonsWidth);
     mediaItemRect.setHeight(mToolBarItem->boundingRect().height());
     mMediaControl->setRect(mediaItemRect);
 

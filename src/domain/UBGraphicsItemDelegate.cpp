@@ -1120,8 +1120,7 @@ void MediaTimer::addPoint(QPolygon &a, const QPoint &p)
     a.setPoint(n, p);
 }
 
-void MediaTimer::paint(QPainter *p,
-        const QStyleOptionGraphicsItem *option, QWidget *widget)
+void MediaTimer::paint(QPainter *p, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
@@ -1300,10 +1299,6 @@ QPainterPath DelegateMediaControl::shape() const
 
 void DelegateMediaControl::positionHandles()
 {
-    QRectF selfRect = rect();
-    selfRect.setHeight(parentItem()->boundingRect().height());
-    setRect(selfRect);
-
     QTime tTotal;
     tTotal = tTotal.addMSecs(mTotalTimeInMs);
     mLCDTimerArea.setHeight(parentItem()->boundingRect().height());
@@ -1312,12 +1307,11 @@ void DelegateMediaControl::positionHandles()
 
     mDisplayFormat = "ss";
 
-    if (tTotal.minute() > 0)
-    {
-        mDisplayFormat = "mm:" + mDisplayFormat;
-        digitsCount += 3;
-        timerWidth += mLCDTimerArea.height()*0.5;
-    }
+
+    //Explanation at least the second and minutes are diplayed
+    mDisplayFormat = "mm:" + mDisplayFormat;
+    digitsCount += 3;
+    timerWidth += mLCDTimerArea.height();
 
     if (tTotal.hour() > 0)
     {
@@ -1330,10 +1324,6 @@ void DelegateMediaControl::positionHandles()
 
     mLCDTimerArea.setWidth(timerWidth);
     lcdTimer->setRect(mLCDTimerArea);
-    // not the best solution, but it works.
-    lcdTimer->positionHandles();
-    mLCDTimerArea = lcdTimer->rect();
-    // -------------------------------------
 
     lcdTimer->setPos(rect().width() - mLCDTimerArea.width(), 0);
 
@@ -1347,6 +1337,7 @@ void DelegateMediaControl::update()
 {
     QTime tCurrent;
     tCurrent = tCurrent.addMSecs(mCurrentTimeInMs < 0 ? 0 : mCurrentTimeInMs);
+
 
     lcdTimer->display(tCurrent.toString(mDisplayFormat));
 
