@@ -91,6 +91,8 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     mTransparentDrawingView->setStyleSheet(backgroundStyle);
 
     mTransparentDrawingScene = new UBGraphicsScene(0, false);
+    updateColors();
+
     mTransparentDrawingView->setScene(mTransparentDrawingScene);
     mTransparentDrawingScene->setDrawingMode(true);
 
@@ -150,7 +152,8 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     mDesktopEraserPalette->setVisible(false);
 
     connect(UBApplication::mainWindow->actionEraseDesktopAnnotations, SIGNAL(triggered()), this, SLOT(eraseDesktopAnnotations()));
-
+    connect(UBApplication::boardController, SIGNAL(backgroundChanged()), this, SLOT(updateColors()));
+    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(updateColors()));
     connect(&mHoldTimerPen, SIGNAL(timeout()), this, SLOT(penActionReleased()));
     connect(&mHoldTimerMarker, SIGNAL(timeout()), this, SLOT(markerActionReleased()));
     connect(&mHoldTimerEraser, SIGNAL(timeout()), this, SLOT(eraserActionReleased()));
@@ -174,6 +177,13 @@ UBDesktopAnnotationController::~UBDesktopAnnotationController()
     delete mTransparentDrawingView;
 }
 
+void UBDesktopAnnotationController::updateColors(){
+    if(UBApplication::boardController->activeScene()->isDarkBackground()){
+        mTransparentDrawingScene->setBackground(true, false);
+    }else{
+        mTransparentDrawingScene->setBackground(false, false);
+    }
+}
 
 UBDesktopPalette* UBDesktopAnnotationController::desktopPalette()
 {
