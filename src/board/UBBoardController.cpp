@@ -1317,6 +1317,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         Q_UNUSED(internalData)
 
         QString widgetUrl = UBGraphicsW3CWidgetItem::createNPAPIWrapper(sUrl, mimeType, size);
+        UBFileSystemUtils::deleteFile(sourceUrl.toLocalFile());
         emit npapiWidgetCreated(widgetUrl);
 
         if (widgetUrl.length() > 0)
