@@ -29,7 +29,7 @@
 
 UBGraphicsItemTransformUndoCommand::UBGraphicsItemTransformUndoCommand(QGraphicsItem* pItem,
      const QPointF& prevPos, const QTransform& prevTransform, const qreal& prevZValue,
-     const QSizeF& prevSize)
+                                                                       const QSizeF& prevSize):UBUndoCommand()
 {
     mItem = pItem;
     mPreviousTransform = prevTransform;

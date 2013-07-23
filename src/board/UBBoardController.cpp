@@ -1550,11 +1550,11 @@ void UBBoardController::moveSceneToIndex(int source, int target)
     }
 }
 
-void UBBoardController::fitUniqIems(const QUndoCommand *parent, QSet<QGraphicsItem*> &itms)
+void UBBoardController::findUniquesItems(const QUndoCommand *parent, QSet<QGraphicsItem*> &itms)
 {
     if (parent->childCount()) {
         for (int i = 0; i < parent->childCount(); i++) {
-            fitUniqIems(parent->child(i), itms);
+            findUniquesItems(parent->child(i), itms);
         }
     }
 
@@ -1563,11 +1563,11 @@ void UBBoardController::fitUniqIems(const QUndoCommand *parent, QSet<QGraphicsIt
         return;
     }
 
-    const UBAbstractUndoCommand *abstractCmd = static_cast<const UBAbstractUndoCommand*>(parent);
-    if(abstractCmd->getType() != UBAbstractUndoCommand::undotype_GRAPHICITEM)
+    const UBUndoCommand *undoCmd = static_cast<const UBUndoCommand*>(parent);
+    if(undoCmd->getType() != UBUndoType::undotype_GRAPHICITEM)
         return;
 
-    const UBGraphicsItemUndoCommand *cmd = static_cast<const UBGraphicsItemUndoCommand*>(parent);
+    const UBGraphicsItemUndoCommand *cmd = dynamic_cast<const UBGraphicsItemUndoCommand*>(parent);
 
     // go through all added and removed objects, for create list of unique objects
     // grouped items will be deleted by groups, so we don't need do delete that items.
@@ -1593,7 +1593,7 @@ void UBBoardController::ClearUndoStack()
     QSet<QGraphicsItem*> uniqueItems;
     // go through all stack command
     for (int i = 0; i < UBApplication::undoStack->count(); i++) {
-        fitUniqIems(UBApplication::undoStack->command(i), uniqueItems);
+        findUniquesItems(UBApplication::undoStack->command(i), uniqueItems);
     }
 
     // go through all unique items, and check, if they are on scene, or not.

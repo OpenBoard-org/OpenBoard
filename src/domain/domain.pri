@@ -14,7 +14,6 @@ HEADERS += src/domain/UBGraphicsScene.h \
     src/domain/UBResizableGraphicsItem.h \
     src/domain/UBGraphicsStroke.h \
     src/domain/UBGraphicsMediaItem.h \
-    src/domain/UBAbstractUndoCommand.h \
     src/domain/UBGraphicsGroupContainerItem.h \
     src/domain/UBGraphicsGroupContainerItemDelegate.h \
     src/domain/UBGraphicsStrokesGroup.h \
@@ -24,7 +23,8 @@ HEADERS += src/domain/UBGraphicsScene.h \
     src/domain/UBGraphicsDelegateFrame.h \
     src/domain/UBGraphicsWidgetItemDelegate.h \
     src/domain/UBGraphicsMediaItemDelegate.h \
-    src/domain/UBSelectionFrame.h
+    src/domain/UBSelectionFrame.h \
+    src/domain/UBUndoCommand.h
 
 SOURCES += src/domain/UBGraphicsScene.cpp \
     src/domain/UBGraphicsItemUndoCommand.cpp \
@@ -42,7 +42,6 @@ SOURCES += src/domain/UBGraphicsScene.cpp \
     src/domain/UBResizableGraphicsItem.cpp \
     src/domain/UBGraphicsStroke.cpp \
     src/domain/UBGraphicsMediaItem.cpp \
-    src/domain/UBAbstractUndoCommand.cpp \
     src/domain/UBGraphicsGroupContainerItem.cpp \
     src/domain/UBGraphicsGroupContainerItemDelegate.cpp \
     src/domain/UBGraphicsStrokesGroup.cpp \
@@ -52,4 +51,5 @@ SOURCES += src/domain/UBGraphicsScene.cpp \
     src/domain/UBGraphicsMediaItemDelegate.cpp \
     src/domain/UBGraphicsDelegateFrame.cpp \
     src/domain/UBGraphicsWidgetItemDelegate.cpp \
-    src/domain/UBSelectionFrame.cpp
+    src/domain/UBSelectionFrame.cpp \
+    src/domain/UBUndoCommand.cpp

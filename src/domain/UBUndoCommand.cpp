@@ -21,35 +21,17 @@
 
 
 
-#ifndef UBABSTRACTUNDOCOMMAND_H_
-#define UBABSTRACTUNDOCOMMAND_H_
+#include "UBUndoCommand.h"
 
-#include <QtGui>
+#include "core/memcheck.h"
 
-class UBAbstractUndoCommand : public QUndoCommand
+UBUndoCommand::UBUndoCommand(QUndoCommand* parent):QUndoCommand(parent)
 {
-    public:
+    // NOOP
+}
 
-        UBAbstractUndoCommand();
-        ~UBAbstractUndoCommand();
+UBUndoCommand::~UBUndoCommand()
+{
+    // NOOP
+}
 
-        enum UndoType
-        {
-            undotype_UNKNOWN               = 0,
-            undotype_DOCUMENT              = 1,
-            undotype_GRAPHICITEMTRANSFORM  = 2,
-            undotype_GRAPHICITEM           = 3,
-            undotype_GRAPHICTEXTITEM       = 4,
-            undotype_PAGESIZE              = 5,
-            undotype_GRAPHICSGROUPITEM     = 6
-        };
-
-        virtual UndoType getType() const { return undotype_UNKNOWN; }
-
-    protected:
-        virtual void undo();
-        virtual void redo();
-
-};
-
-#endif /* UBABSTRACTUNDOCOMMAND_H_ */

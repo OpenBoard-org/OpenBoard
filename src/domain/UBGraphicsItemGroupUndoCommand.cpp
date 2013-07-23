@@ -28,9 +28,10 @@
 #include "core/memcheck.h"
 
 
-UBGraphicsItemGroupUndoCommand::UBGraphicsItemGroupUndoCommand(UBGraphicsScene *pScene, UBGraphicsGroupContainerItem *pGroupCreated) :
-    mScene (pScene), mGroup(pGroupCreated), mFirstRedo(true)
-
+UBGraphicsItemGroupUndoCommand::UBGraphicsItemGroupUndoCommand(UBGraphicsScene *pScene, UBGraphicsGroupContainerItem *pGroupCreated) : UBUndoCommand()
+  , mScene (pScene)
+  , mGroup(pGroupCreated)
+  , mFirstRedo(true)
 {
     if (pGroupCreated->childItems().count()) {
         foreach (QGraphicsItem *item, pGroupCreated->childItems()) {
