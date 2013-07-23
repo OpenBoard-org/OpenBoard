@@ -103,7 +103,7 @@ class UBPersistenceManager : public QObject
         virtual bool isEmpty(UBDocumentProxy* pDocumentProxy);
         virtual void purgeEmptyDocuments();
 
-        bool addGraphicsWidgteToDocument(UBDocumentProxy *mDocumentProxy, QString path, QUuid objectUuid, QString& destinationPath);
+        bool addGraphicsWidgetToDocument(UBDocumentProxy *mDocumentProxy, QString path, QUuid objectUuid, QString& destinationPath);
         bool addFileToDocument(UBDocumentProxy* pDocumentProxy, QString path, const QString& subdir,  QUuid objectUuid, QString& destinationPath, QByteArray* data = NULL);
 
     signals:

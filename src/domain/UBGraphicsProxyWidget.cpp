@@ -30,6 +30,13 @@
 
 #include "UBGraphicsDelegateFrame.h"
 
+#include "core/UBApplication.h"
+#include "core/UBPersistenceManager.h"
+
+#include "board/UBBoardController.h"
+
+#include "frameworks/UBFileSystemUtils.h"
+
 #include "core/memcheck.h"
 
 UBGraphicsProxyWidget::UBGraphicsProxyWidget(QGraphicsItem* parent)
@@ -198,5 +205,3 @@ UBGraphicsScene* UBGraphicsProxyWidget::scene()
 {
     return static_cast<UBGraphicsScene*>(QGraphicsItem::scene());
 }
-
-

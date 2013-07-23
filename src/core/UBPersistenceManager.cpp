@@ -859,7 +859,7 @@ bool UBPersistenceManager::addFileToDocument(UBDocumentProxy* pDocumentProxy,
     }
 }
 
-bool UBPersistenceManager::addGraphicsWidgteToDocument(UBDocumentProxy *pDocumentProxy,
+bool UBPersistenceManager::addGraphicsWidgetToDocument(UBDocumentProxy *pDocumentProxy,
                                                        QString path,
                                                        QUuid objectUuid,
                                                        QString& destinationPath)

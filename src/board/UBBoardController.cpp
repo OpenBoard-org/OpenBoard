@@ -51,7 +51,6 @@
 
 #include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBGraphicsItemUndoCommand.h"
-#include "domain/UBGraphicsProxyWidget.h"
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBGraphicsMediaItem.h"
@@ -1325,6 +1324,13 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
             UBGraphicsWidgetItem *widgetItem = mActiveScene->addW3CWidget(QUrl::fromLocalFile(widgetUrl), pPos);
             widgetItem->setUuid(QUuid::createUuid());
             widgetItem->setSourceUrl(QUrl::fromLocalFile(widgetUrl));
+            qDebug() << widgetItem->getOwnFolder();
+            qDebug() << widgetItem->getSnapshotPath();
+            QString ownFolder = selectedDocument()->persistencePath() + "/" + UBPersistenceManager::widgetDirectory + "/" + widgetItem->uuid().toString() + ".wgt";
+            widgetItem->setOwnFolder(ownFolder);
+            QString adaptedUUid = widgetItem->uuid().toString().replace("{","").replace("}","");
+            ownFolder = ownFolder.replace(widgetItem->uuid().toString() + ".wgt", adaptedUUid + ".png");
+            widgetItem->setSnapshotPath(ownFolder);
 
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 
@@ -2143,7 +2149,7 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
     QUuid uuid = QUuid::createUuid();
 
     QString destPath;
-    if (!UBPersistenceManager::persistenceManager()->addGraphicsWidgteToDocument(selectedDocument(), pUrl.toLocalFile(), uuid, destPath))
+    if (!UBPersistenceManager::persistenceManager()->addGraphicsWidgetToDocument(selectedDocument(), pUrl.toLocalFile(), uuid, destPath))
         return NULL;
     QUrl newUrl = QUrl::fromLocalFile(destPath);
 

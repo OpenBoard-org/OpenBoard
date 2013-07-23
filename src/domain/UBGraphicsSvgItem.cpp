@@ -29,6 +29,13 @@
 #include "UBGraphicsItemDelegate.h"
 #include "UBGraphicsPixmapItem.h"
 
+#include "core/UBApplication.h"
+#include "core/UBPersistenceManager.h"
+
+#include "board/UBBoardController.h"
+
+#include "frameworks/UBFileSystemUtils.h"
+
 #include "core/memcheck.h"
 
 UBGraphicsSvgItem::UBGraphicsSvgItem(const QString& pFilePath, QGraphicsItem* parent)
@@ -216,4 +223,12 @@ void UBGraphicsSvgItem::setUuid(const QUuid &pUuid)
 {
     UBItem::setUuid(pUuid);
     setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
+}
+
+
+void UBGraphicsSvgItem::clearSource()
+{
+    QString fileName = UBPersistenceManager::imageDirectory + "/" + uuid().toString() + ".svg";
+    QString diskPath =  UBApplication::boardController->selectedDocument()->persistencePath() + "/" + fileName;
+    UBFileSystemUtils::deleteFile(diskPath);
 }

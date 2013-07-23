@@ -57,7 +57,7 @@ class UBGraphicsPixmapItem : public QObject, public QGraphicsPixmapItem, public 
         void setOpacity(qreal op);
         qreal opacity() const;
 
-        virtual void clearSource(){;}
+        virtual void clearSource();
 
         virtual void setUuid(const QUuid &pUuid);
 

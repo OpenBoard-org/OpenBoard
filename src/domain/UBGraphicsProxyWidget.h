@@ -44,7 +44,6 @@ class UBGraphicsProxyWidget: public QGraphicsProxyWidget, public UBItem, public 
 
         virtual UBGraphicsScene* scene();
 
-        virtual void clearSource(){;}
         virtual void setUuid(const QUuid &pUuid);
 
     protected:

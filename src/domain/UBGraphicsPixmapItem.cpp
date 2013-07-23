@@ -31,6 +31,13 @@
 
 #include "UBGraphicsItemDelegate.h"
 
+#include "frameworks/UBFileSystemUtils.h"
+
+#include "core/UBApplication.h"
+#include "core/UBPersistenceManager.h"
+
+#include "board/UBBoardController.h"
+
 #include "core/memcheck.h"
 
 UBGraphicsPixmapItem::UBGraphicsPixmapItem(QGraphicsItem* parent)
@@ -163,4 +170,12 @@ void UBGraphicsPixmapItem::setOpacity(qreal op)
 qreal UBGraphicsPixmapItem::opacity() const
 {
     return QGraphicsPixmapItem::opacity();
+}
+
+
+void UBGraphicsPixmapItem::clearSource()
+{
+    QString fileName = UBPersistenceManager::imageDirectory + "/" + uuid().toString() + ".png";
+    QString diskPath =  UBApplication::boardController->selectedDocument()->persistencePath() + "/" + fileName;
+    UBFileSystemUtils::deleteFile(diskPath);
 }
