@@ -299,7 +299,6 @@ class UBBoardController : public UBDocumentContainer
         void boardViewResized(QResizeEvent* event);
         void documentWillBeDeleted(UBDocumentProxy* pProxy);
         void updateBackgroundActionsState(bool isDark, bool isCrossed);
-        void updateBackgroundState();
         void colorPaletteChanged();
         void libraryDialogClosed(int ret);
         void lastWindowClosed();

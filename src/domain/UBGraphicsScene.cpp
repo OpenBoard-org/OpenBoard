@@ -1712,6 +1712,7 @@ void UBGraphicsScene::deselectAllItems()
 {
     foreach(QGraphicsItem *gi, selectedItems ())
     {
+        gi->clearFocus();
         gi->setSelected(false);
         // Hide selection frame
         if (mSelectionFrame) {

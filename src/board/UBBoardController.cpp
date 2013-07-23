@@ -1522,7 +1522,6 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
     selectionChanged();
 
     updateBackgroundActionsState(mActiveScene->isDarkBackground(), mActiveScene->isCrossedBackground());
-    updateBackgroundState();
 
     if(documentChange)
         UBGraphicsTextItem::lastUsedTextColor = QColor();
@@ -1641,8 +1640,6 @@ void UBBoardController::changeBackground(bool isDark, bool isCrossed)
         UBSettings::settings()->setCrossedBackground(isCrossed);
 
         mActiveScene->setBackground(isDark, isCrossed);
-
-        updateBackgroundState();
 
         emit backgroundChanged();
     }
@@ -1984,22 +1981,6 @@ void UBBoardController::saveViewState()
     }
 }
 
-
-void UBBoardController::updateBackgroundState()
-{
-    //adjust background style
-    QString newBackgroundStyle;
-
-    if (mActiveScene && mActiveScene->isDarkBackground())
-    {
-        newBackgroundStyle ="QWidget {background-color: #0E0E0E}";
-    }
-    else
-    {
-        newBackgroundStyle ="QWidget {background-color: #F1F1F1}";
-    }
-}
-
 void UBBoardController::stylusToolChanged(int tool)
 {
     if (UBPlatformUtils::hasVirtualKeyboard() && mPaletteManager->mKeyboardPalette)
@@ -2012,7 +1993,6 @@ void UBBoardController::stylusToolChanged(int tool)
         }
     }
 
-    updateBackgroundState();
 }
 
 
