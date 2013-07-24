@@ -66,17 +66,17 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
 
     if(!UBPlatformUtils::hasVirtualKeyboard())
     {
-            groupActions();
+        groupActions();
     }
     else
     {
-            // VirtualKeyboard action is not in group
-            // So, groupping all buttons, except last
-            mButtonGroup = new QButtonGroup(this);
-            for(int i=0; i < mButtons.size()-1; i++)
-            {
-                    mButtonGroup->addButton(mButtons[i], i);
-            }
+        // VirtualKeyboard action is not in group
+        // So, groupping all buttons, except last
+        mButtonGroup = new QButtonGroup(this);
+        for(int i=0; i < mButtons.size()-1; i++)
+        {
+            mButtonGroup->addButton(mButtons[i], i);
+        }
         connect(mButtonGroup, SIGNAL(buttonClicked(int)), this, SIGNAL(buttonGroupClicked(int)));
     }
 
@@ -93,23 +93,28 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
 
 void UBStylusPalette::initPosition()
 {
-    if(!UBSettings::settings()->appToolBarOrientationVertical->get().toBool())
-    {
-        QWidget* pParentW = parentWidget();
-        if(NULL != pParentW)
-        {
-            mCustomPosition = true;
-            QPoint pos;
-            int parentWidth = pParentW->width();
-            int parentHeight = pParentW->height();
-            int posX = (parentWidth / 2) - (width() / 2);
-            int posY = parentHeight - border() - height();
+    QWidget* pParentW = parentWidget();
+    if(!pParentW) return ;
 
-            pos.setX(posX);
-            pos.setY(posY);
-            moveInsideParent(pos);
-        }
+    mCustomPosition = true;
+
+    QPoint pos;
+    int parentWidth = pParentW->width();
+    int parentHeight = pParentW->height();
+
+    if(UBSettings::settings()->appToolBarOrientationVertical->get().toBool()){
+        int posX = border();
+        int posY = (parentHeight / 2) - (height() / 2);
+        pos.setX(posX);
+        pos.setY(posY);
     }
+    else {
+        int posX = (parentWidth / 2) - (width() / 2);
+        int posY = parentHeight - border() - height();
+        pos.setX(posX);
+        pos.setY(posY);
+    }
+    moveInsideParent(pos);
 }
 
 UBStylusPalette::~UBStylusPalette()
