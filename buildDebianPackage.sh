@@ -132,6 +132,14 @@ buildImporter(){
     IMPORTER_NAME="OpenBoardImporter"
     checkDir $IMPORTER_DIR
     cd ${IMPORTER_DIR}
+    
+    rm moc_*
+    rm -rf debug release
+    rm *.o
+
+    git reset --hard
+    git pull
+
     $QMAKE_PATH ${IMPORTER_NAME}.pro
     make clean
     make -j4

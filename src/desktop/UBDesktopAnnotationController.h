@@ -100,6 +100,7 @@ class UBDesktopAnnotationController : public QObject
         UBGraphicsScene* mTransparentDrawingScene;
 
     private slots:
+        void updateColors();
         void desktopPenActionToggled(bool checked);
         void desktopMarkerActionToggled(bool checked);
         void desktopEraserActionToggled(bool checked);

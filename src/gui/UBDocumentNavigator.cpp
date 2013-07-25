@@ -142,7 +142,8 @@ void UBDocumentNavigator::onScrollToSelectedPage(int index)
         }
         c++;
     }
-    centerOn(mSelectedThumbnail);
+    if(NULL != mSelectedThumbnail)
+        centerOn(mSelectedThumbnail);
 }
 
 /**
