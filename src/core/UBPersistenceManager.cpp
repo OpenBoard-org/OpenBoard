@@ -255,7 +255,7 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName,
     }
 
     doc->setMetaData(UBSettings::documentVersion, UBSettings::currentFileVersion);
-    QString currentDate =  UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime());
+    QString currentDate = UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime());
     doc->setMetaData(UBSettings::documentUpdatedAt,currentDate);
     doc->setMetaData(UBSettings::documentDate,currentDate);
 
@@ -396,12 +396,14 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
 
     foreach(int index, compactedIndexes)
     {
+        // trig the reload of the thumbnails
         emit documentSceneWillBeDeleted(proxy, index);
     }
 
     QString sourceGroupName = proxy->metaData(UBSettings::documentGroupName).toString();
     QString sourceName = proxy->metaData(UBSettings::documentName).toString();
     UBDocumentProxy *trashDocProxy = createDocument(UBSettings::trashedDocumentGroupNamePrefix + sourceGroupName, sourceName, false);
+    generatePathIfNeeded(trashDocProxy);
 
     foreach(int index, compactedIndexes)
     {
@@ -418,7 +420,7 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
                 QDir d = fi.dir();
 
                 d.mkpath(d.absolutePath());
-                QFile::copy(source, target);
+                Q_ASSERT(QFile::rename(source, target));
             }
 
             insertDocumentSceneAt(trashDocProxy, scene, trashDocProxy->pageCount());
