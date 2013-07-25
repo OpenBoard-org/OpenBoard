@@ -149,6 +149,7 @@ QUrl UBGraphicsWidgetItem::widgetUrl()
 {
     return mWidgetUrl;
 }
+
 QString UBGraphicsWidgetItem::mainHtmlFileName()
 {
     return mMainHtmlFileName;

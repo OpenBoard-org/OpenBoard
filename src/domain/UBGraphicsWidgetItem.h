@@ -69,6 +69,7 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
         QUrl mainHtml();
         void loadMainHtml();
         QUrl widgetUrl();
+        void widgetUrl(QUrl url) { mWidgetUrl = url; }
         QString mainHtmlFileName();
 
         bool canBeContent();
