@@ -159,7 +159,7 @@ void UBGraphicsItemUndoCommand::undo()
 
 }
 
-void UBGraphicsItemUndoCommand::redo()
+/*void UBGraphicsItemUndoCommand::redo()
 {
     // the Undo framework calls a redo while appending the undo command.
     // as we have already plotted the elements, we do not want to do it twice
@@ -238,3 +238,4 @@ void UBGraphicsItemUndoCommand::redo()
         mFirstRedo = false;
     }
 }
+*/
