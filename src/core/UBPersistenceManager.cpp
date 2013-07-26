@@ -516,7 +516,6 @@ void UBPersistenceManager::duplicateDocumentScene(UBDocumentProxy* proxy, int in
             QUuid newUUid = QUuid::createUuid();
             QString newUUidString = newUUid.toString().remove("{").remove("}");
             QString actualUuidString = widget->uuid().toString().remove("{").remove("}");
-            qDebug() << actualUuidString;
 
             QString widgetSourcePath = proxy->persistencePath() + "/" + UBPersistenceManager::widgetDirectory + "/{" + actualUuidString + "}.wgt";
             QString screenshotSourcePath = proxy->persistencePath() + "/" +  UBPersistenceManager::widgetDirectory + "/" + actualUuidString + ".png";
@@ -525,12 +524,6 @@ void UBPersistenceManager::duplicateDocumentScene(UBDocumentProxy* proxy, int in
             widgetDestinationPath = widgetDestinationPath.replace(actualUuidString,newUUidString);
             QString screenshotDestinationPath = screenshotSourcePath;
             screenshotDestinationPath = screenshotDestinationPath.replace(actualUuidString,newUUidString);
-
-
-            qDebug() << "widgetSourcePath " << widgetSourcePath;
-            qDebug() << "widgetDestinationPath " << widgetDestinationPath;
-            qDebug() << "screenshotSourcePath " << screenshotSourcePath;
-            qDebug() << "screenshotDestinationPath " << screenshotDestinationPath;
 
             Q_ASSERT(UBFileSystemUtils::copyDir(widgetSourcePath,widgetDestinationPath));
             Q_ASSERT(QFile::copy(screenshotSourcePath,screenshotDestinationPath));
