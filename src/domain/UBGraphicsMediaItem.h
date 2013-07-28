@@ -57,6 +57,8 @@ public:
         return mMediaFileUrl;
     }
 
+    virtual void mediaFileUrl(QUrl url){mMediaFileUrl=url;}
+
     Phonon::MediaObject* mediaObject() const
     {
         return mMediaObject;

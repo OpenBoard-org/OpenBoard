@@ -21,30 +21,21 @@
 
 
 
-#include "UBAbstractUndoCommand.h"
+#ifndef UBABSTRACTUNDOCOMMAND_H_
+#define UBABSTRACTUNDOCOMMAND_H_
 
-#include "core/memcheck.h"
+#include <QtGui>
+#include <core/UB.h>
 
-UBAbstractUndoCommand::UBAbstractUndoCommand()
+class UBUndoCommand : public QUndoCommand
 {
-    // NOOP
-}
+    public:
 
-UBAbstractUndoCommand::~UBAbstractUndoCommand()
-{
-    // NOOP
-}
+        UBUndoCommand(QUndoCommand *parent = 0);
+        ~UBUndoCommand();
 
+        virtual int getType() const { return UBUndoType::undotype_UNKNOWN; }
 
-void UBAbstractUndoCommand::undo()
-{
-    // NOOP
-}
+};
 
-void UBAbstractUndoCommand::redo()
-{
-    // NOOP
-}
-
-//void UBAbstractUndoCommand::UndoType getType(UndoType type);
-
+#endif /* UBABSTRACTUNDOCOMMAND_H_ */

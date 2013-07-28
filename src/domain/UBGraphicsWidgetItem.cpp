@@ -149,6 +149,7 @@ QUrl UBGraphicsWidgetItem::widgetUrl()
 {
     return mWidgetUrl;
 }
+
 QString UBGraphicsWidgetItem::mainHtmlFileName()
 {
     return mMainHtmlFileName;
@@ -272,7 +273,8 @@ bool UBGraphicsWidgetItem::isDropableData(const QMimeData *data) const
     return mUniboardAPI->isDropableData(data);
 }
 
-QUrl UBGraphicsWidgetItem::getOwnFolder() const {
+QUrl UBGraphicsWidgetItem::getOwnFolder() const
+{
     return ownFolder;
 }
 

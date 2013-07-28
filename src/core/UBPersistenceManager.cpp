@@ -40,6 +40,11 @@
 #include "adaptors/UBThumbnailAdaptor.h"
 #include "adaptors/UBMetadataDcSubsetAdaptor.h"
 
+#include "domain/UBGraphicsMediaItem.h"
+#include "domain/UBGraphicsWidgetItem.h"
+#include "domain/UBGraphicsPixmapItem.h"
+#include "domain/UBGraphicsSvgItem.h"
+
 #include "board/UBBoardController.h"
 #include "board/UBBoardPaletteManager.h"
 
@@ -255,7 +260,7 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName,
     }
 
     doc->setMetaData(UBSettings::documentVersion, UBSettings::currentFileVersion);
-    QString currentDate =  UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime());
+    QString currentDate = UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime());
     doc->setMetaData(UBSettings::documentUpdatedAt,currentDate);
     doc->setMetaData(UBSettings::documentDate,currentDate);
 
@@ -396,12 +401,14 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
 
     foreach(int index, compactedIndexes)
     {
+        // trig the reload of the thumbnails
         emit documentSceneWillBeDeleted(proxy, index);
     }
 
     QString sourceGroupName = proxy->metaData(UBSettings::documentGroupName).toString();
     QString sourceName = proxy->metaData(UBSettings::documentName).toString();
     UBDocumentProxy *trashDocProxy = createDocument(UBSettings::trashedDocumentGroupNamePrefix + sourceGroupName, sourceName, false);
+    generatePathIfNeeded(trashDocProxy);
 
     foreach(int index, compactedIndexes)
     {
@@ -418,7 +425,7 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
                 QDir d = fi.dir();
 
                 d.mkpath(d.absolutePath());
-                QFile::copy(source, target);
+                Q_ASSERT(QFile::rename(source, target));
             }
 
             insertDocumentSceneAt(trashDocProxy, scene, trashDocProxy->pageCount());
@@ -467,6 +474,8 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
 }
 
 
+
+
 void UBPersistenceManager::duplicateDocumentScene(UBDocumentProxy* proxy, int index)
 {
     checkIfDocumentRepositoryExists();
@@ -482,6 +491,66 @@ void UBPersistenceManager::duplicateDocumentScene(UBDocumentProxy* proxy, int in
     }
 
     copyPage(proxy, index , index + 1);
+
+
+    //TODO: write a proper way to handle object on disk
+    UBGraphicsScene *scene = loadDocumentScene(proxy, index + 1);
+
+    foreach(QGraphicsItem* item, scene->items())
+    {
+        UBGraphicsMediaItem *mediaItem = qgraphicsitem_cast<UBGraphicsMediaItem*> (item);
+
+        if (mediaItem){
+            QString source = mediaItem->mediaFileUrl().toLocalFile();
+            QString destination = source;
+            QUuid newUuid = QUuid::createUuid();
+            QString fileName = QFileInfo(source).completeBaseName();
+            destination = destination.replace(fileName,newUuid.toString());
+            Q_ASSERT(QFile::copy(source,destination));
+            mediaItem->mediaFileUrl(QUrl::fromLocalFile(destination));
+            continue;
+        }
+
+        UBGraphicsWidgetItem* widget = qgraphicsitem_cast<UBGraphicsWidgetItem*>(item);
+        if(widget){
+            QUuid newUUid = QUuid::createUuid();
+            QString newUUidString = newUUid.toString().remove("{").remove("}");
+            QString actualUuidString = widget->uuid().toString().remove("{").remove("}");
+
+            QString widgetSourcePath = proxy->persistencePath() + "/" + UBPersistenceManager::widgetDirectory + "/{" + actualUuidString + "}.wgt";
+            QString screenshotSourcePath = proxy->persistencePath() + "/" +  UBPersistenceManager::widgetDirectory + "/" + actualUuidString + ".png";
+
+            QString widgetDestinationPath = widgetSourcePath;
+            widgetDestinationPath = widgetDestinationPath.replace(actualUuidString,newUUidString);
+            QString screenshotDestinationPath = screenshotSourcePath;
+            screenshotDestinationPath = screenshotDestinationPath.replace(actualUuidString,newUUidString);
+
+            Q_ASSERT(UBFileSystemUtils::copyDir(widgetSourcePath,widgetDestinationPath));
+            Q_ASSERT(QFile::copy(screenshotSourcePath,screenshotDestinationPath));
+
+            widget->setUuid(newUUid);
+
+            widget->widgetUrl(QUrl::fromLocalFile(widgetDestinationPath));
+
+            continue;
+        }
+
+        UBGraphicsPixmapItem* pixmapItem = qgraphicsitem_cast<UBGraphicsPixmapItem*>(item);
+        if(pixmapItem){
+            pixmapItem->setUuid(QUuid::createUuid());
+            continue;
+        }
+
+        UBGraphicsSvgItem* svgItem = qgraphicsitem_cast<UBGraphicsSvgItem*>(item);
+        if(svgItem){
+            svgItem->setUuid(QUuid::createUuid());
+            continue;
+        }
+
+    }
+    scene->setModified(true);
+
+    persistDocumentScene(proxy,scene, index + 1);
 
     proxy->incPageCount();
 
@@ -859,7 +928,7 @@ bool UBPersistenceManager::addFileToDocument(UBDocumentProxy* pDocumentProxy,
     }
 }
 
-bool UBPersistenceManager::addGraphicsWidgteToDocument(UBDocumentProxy *pDocumentProxy,
+bool UBPersistenceManager::addGraphicsWidgetToDocument(UBDocumentProxy *pDocumentProxy,
                                                        QString path,
                                                        QUuid objectUuid,
                                                        QString& destinationPath)

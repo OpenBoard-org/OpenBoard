@@ -53,27 +53,3 @@ UBDocumentBasedImportAdaptor::UBDocumentBasedImportAdaptor(QObject *parent)
 {
     // NOOP
 }
-
-
-/*
-UBDocumentProxy* UBImportAdaptor::importFile(const QFile& pFile, const QString& pGroup)
-{
-    QString documentName = QFileInfo(pFile.fileName()).completeBaseName();
-
-    UBDocumentProxy* newDocument = UBPersistenceManager::persistenceManager()->createDocument(pGroup, documentName);
-
-    bool result = addFileToDocument(newDocument, pFile);
-
-    if (result)
-    {
-        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(newDocument);
-    }
-    else
-    {
-        UBPersistenceManager::persistenceManager()->deleteDocument(newDocument);
-        newDocument = 0;
-    }
-
-    return newDocument;
-}
-*/

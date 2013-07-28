@@ -51,7 +51,6 @@
 
 #include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBGraphicsItemUndoCommand.h"
-#include "domain/UBGraphicsProxyWidget.h"
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBGraphicsMediaItem.h"
@@ -1319,6 +1318,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         Q_UNUSED(internalData)
 
         QString widgetUrl = UBGraphicsW3CWidgetItem::createNPAPIWrapper(sUrl, mimeType, size);
+        UBFileSystemUtils::deleteFile(sourceUrl.toLocalFile());
         emit npapiWidgetCreated(widgetUrl);
 
         if (widgetUrl.length() > 0)
@@ -1326,6 +1326,13 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
             UBGraphicsWidgetItem *widgetItem = mActiveScene->addW3CWidget(QUrl::fromLocalFile(widgetUrl), pPos);
             widgetItem->setUuid(QUuid::createUuid());
             widgetItem->setSourceUrl(QUrl::fromLocalFile(widgetUrl));
+            qDebug() << widgetItem->getOwnFolder();
+            qDebug() << widgetItem->getSnapshotPath();
+            QString ownFolder = selectedDocument()->persistencePath() + "/" + UBPersistenceManager::widgetDirectory + "/" + widgetItem->uuid().toString() + ".wgt";
+            widgetItem->setOwnFolder(ownFolder);
+            QString adaptedUUid = widgetItem->uuid().toString().replace("{","").replace("}","");
+            ownFolder = ownFolder.replace(widgetItem->uuid().toString() + ".wgt", adaptedUUid + ".png");
+            widgetItem->setSnapshotPath(ownFolder);
 
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 
@@ -1551,11 +1558,11 @@ void UBBoardController::moveSceneToIndex(int source, int target)
     }
 }
 
-void UBBoardController::fitUniqIems(const QUndoCommand *parent, QSet<QGraphicsItem*> &itms)
+void UBBoardController::findUniquesItems(const QUndoCommand *parent, QSet<QGraphicsItem*> &itms)
 {
     if (parent->childCount()) {
         for (int i = 0; i < parent->childCount(); i++) {
-            fitUniqIems(parent->child(i), itms);
+            findUniquesItems(parent->child(i), itms);
         }
     }
 
@@ -1564,11 +1571,11 @@ void UBBoardController::fitUniqIems(const QUndoCommand *parent, QSet<QGraphicsIt
         return;
     }
 
-    const UBAbstractUndoCommand *abstractCmd = static_cast<const UBAbstractUndoCommand*>(parent);
-    if(abstractCmd->getType() != UBAbstractUndoCommand::undotype_GRAPHICITEM)
+    const UBUndoCommand *undoCmd = static_cast<const UBUndoCommand*>(parent);
+    if(undoCmd->getType() != UBUndoType::undotype_GRAPHICITEM)
         return;
 
-    const UBGraphicsItemUndoCommand *cmd = static_cast<const UBGraphicsItemUndoCommand*>(parent);
+    const UBGraphicsItemUndoCommand *cmd = dynamic_cast<const UBGraphicsItemUndoCommand*>(parent);
 
     // go through all added and removed objects, for create list of unique objects
     // grouped items will be deleted by groups, so we don't need do delete that items.
@@ -1594,7 +1601,7 @@ void UBBoardController::ClearUndoStack()
     QSet<QGraphicsItem*> uniqueItems;
     // go through all stack command
     for (int i = 0; i < UBApplication::undoStack->count(); i++) {
-        fitUniqIems(UBApplication::undoStack->command(i), uniqueItems);
+        findUniquesItems(UBApplication::undoStack->command(i), uniqueItems);
     }
 
     // go through all unique items, and check, if they are on scene, or not.
@@ -2124,7 +2131,7 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
     QUuid uuid = QUuid::createUuid();
 
     QString destPath;
-    if (!UBPersistenceManager::persistenceManager()->addGraphicsWidgteToDocument(selectedDocument(), pUrl.toLocalFile(), uuid, destPath))
+    if (!UBPersistenceManager::persistenceManager()->addGraphicsWidgetToDocument(selectedDocument(), pUrl.toLocalFile(), uuid, destPath))
         return NULL;
     QUrl newUrl = QUrl::fromLocalFile(destPath);
 

@@ -2089,11 +2089,39 @@ QList<QUrl> UBGraphicsScene::relativeDependencies() const
 
     while (itItems.hasNext())
     {
-        UBGraphicsMediaItem *videoItem = qgraphicsitem_cast<UBGraphicsMediaItem*> (itItems.next());
+        QGraphicsItem* item = itItems.next();
+        UBGraphicsMediaItem *mediaItem = qgraphicsitem_cast<UBGraphicsMediaItem*> (item);
 
-        if (videoItem && videoItem->mediaFileUrl().isRelative())
-        {
-            relativePathes << videoItem->mediaFileUrl();
+        if (mediaItem){
+            QString completeFileName = QFileInfo(mediaItem->mediaFileUrl().toLocalFile()).fileName();
+            QString path;
+            if(mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Video)
+                path = UBPersistenceManager::videoDirectory + "/";
+            else
+                path = UBPersistenceManager::audioDirectory + "/";
+            relativePathes << QUrl(path + completeFileName);
+            continue;
+        }
+
+        UBGraphicsWidgetItem* widget = qgraphicsitem_cast<UBGraphicsWidgetItem*>(item);
+        if(widget){
+            QString widgetPath = UBPersistenceManager::widgetDirectory + "/" + widget->uuid().toString() + ".wgt";
+            QString screenshotPath = UBPersistenceManager::widgetDirectory + "/" + widget->uuid().toString().remove("{").remove("}") + ".png";
+            relativePathes << QUrl(widgetPath);
+            relativePathes << QUrl(screenshotPath);
+            continue;
+        }
+
+        UBGraphicsPixmapItem* pixmapItem = qgraphicsitem_cast<UBGraphicsPixmapItem*>(item);
+        if(pixmapItem){
+            relativePathes << QUrl(UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png");
+            continue;
+        }
+
+        UBGraphicsSvgItem* svgItem = qgraphicsitem_cast<UBGraphicsSvgItem*>(item);
+        if(svgItem){
+            relativePathes << QUrl(UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg");
+            continue;
         }
     }
 

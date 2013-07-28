@@ -35,9 +35,8 @@
 #include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBGraphicsPolygonItem.h"
 
-UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, const QSet<QGraphicsItem*>& pRemovedItems,
-                                                     const QSet<QGraphicsItem*>& pAddedItems, const GroupDataTable &groupsMap)
-    : mScene(pScene)
+UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, const QSet<QGraphicsItem*>& pRemovedItems, const QSet<QGraphicsItem*>& pAddedItems, const GroupDataTable &groupsMap): UBUndoCommand()
+    , mScene(pScene)
     , mRemovedItems(pRemovedItems - pAddedItems)
     , mAddedItems(pAddedItems - pRemovedItems)
     , mExcludedFromGroup(groupsMap)
@@ -57,9 +56,8 @@ UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, co
     }
 }
 
-UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, QGraphicsItem* pRemovedItem,
-               QGraphicsItem* pAddedItem) :
-    mScene(pScene)
+UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, QGraphicsItem* pRemovedItem, QGraphicsItem* pAddedItem) : UBUndoCommand()
+    , mScene(pScene)
 {
 
     if (pRemovedItem)

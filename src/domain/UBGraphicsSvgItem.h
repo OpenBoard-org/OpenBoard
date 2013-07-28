@@ -70,6 +70,8 @@ class UBGraphicsSvgItem: public QGraphicsSvgItem, public UBItem, public UBGraphi
 
         virtual void setUuid(const QUuid &pUuid);
 
+        virtual void clearSource();
+
     protected:
 
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -79,8 +81,6 @@ class UBGraphicsSvgItem: public QGraphicsSvgItem, public UBItem, public UBGraphi
         virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-
-//        UBGraphicsItemDelegate* mDelegate;
 
         QByteArray mFileData;
 };

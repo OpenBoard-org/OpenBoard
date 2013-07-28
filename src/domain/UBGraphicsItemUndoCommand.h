@@ -25,14 +25,14 @@
 #define UBGRAPHICSITEMUNDOCOMMAND_H_
 
 #include <QtGui>
-#include "UBAbstractUndoCommand.h"
+#include "UBUndoCommand.h"
 #include "UBGraphicsGroupContainerItem.h"
 
 
 class UBGraphicsScene;
 
 
-class UBGraphicsItemUndoCommand : public UBAbstractUndoCommand
+class UBGraphicsItemUndoCommand : public UBUndoCommand
 {
     public:
         typedef QMultiMap<UBGraphicsGroupContainerItem*, QUuid> GroupDataTable;
@@ -48,7 +48,7 @@ class UBGraphicsItemUndoCommand : public UBAbstractUndoCommand
         QSet<QGraphicsItem*> GetAddedList() const { return mAddedItems; }
         QSet<QGraphicsItem*> GetRemovedList() const { return mRemovedItems; }
 
-        virtual UndoType getType() { return undotype_GRAPHICITEM; }
+        virtual int getType() const { return UBUndoType::undotype_GRAPHICITEM; }
 
     protected:
         virtual void undo();

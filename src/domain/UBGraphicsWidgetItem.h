@@ -69,6 +69,7 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
         QUrl mainHtml();
         void loadMainHtml();
         QUrl widgetUrl();
+        void widgetUrl(QUrl url) { mWidgetUrl = url; }
         QString mainHtmlFileName();
 
         bool canBeContent();
@@ -130,7 +131,7 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
             type_WIN  = 1, // 0001
             type_MAC  = 2, // 0010
             type_UNIX = 4, // 0100
-            type_ALL  = 7, // 0111
+            type_ALL  = 7 // 0111
         };
 
         bool mFirstReleaseAfterMove;

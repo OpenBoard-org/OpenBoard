@@ -25,18 +25,18 @@
 #define UBGRAPHICSITEMGROUPUNDOCOMMAND_H
 
 #include <QList>
-#include "UBAbstractUndoCommand.h"
+#include "UBUndoCommand.h"
 
 class UBGraphicsScene;
 class UBGraphicsGroupContainerItem;
 
-class UBGraphicsItemGroupUndoCommand : public UBAbstractUndoCommand
+class UBGraphicsItemGroupUndoCommand : public UBUndoCommand
 {
 public:
     UBGraphicsItemGroupUndoCommand(UBGraphicsScene *pScene, UBGraphicsGroupContainerItem *pGroupCreated);
     virtual ~UBGraphicsItemGroupUndoCommand();
 
-    virtual UndoType getType() { return undotype_GRAPHICSGROUPITEM; }
+    virtual int getType() const { return UBUndoType::undotype_GRAPHICSGROUPITEM; }
 
 protected:
     virtual void undo();
