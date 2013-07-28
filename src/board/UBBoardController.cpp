@@ -496,7 +496,9 @@ void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmp
 
         if (replaceActiveIfEmpty && mActiveScene->isEmpty())
         {
+            UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(selectedDocument(), clone, mActiveSceneIndex);
             setActiveDocumentScene(mActiveSceneIndex);
+            deleteScene(mActiveSceneIndex + 1);
         }
         else
         {
