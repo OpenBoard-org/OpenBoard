@@ -37,7 +37,7 @@ call "%VS_BIN%\vcvars32.bat"
 echo %PATH%
 
 REM Third party impoter application
-set IMPORTER_NAME="OpenBoardImporter"
+set IMPORTER_NAME=OpenBoardImporter
 set IMPORTER_PATH="%cd%\..\OpenSankoreToOpenBoard"
 
 IF NOT EXIST "%IMPORTER_PATH%" GOTO EXIT_WITH_ERROR
@@ -48,8 +48,9 @@ IF EXIST "debug" (del "debug\*.*" /Q)
 IF EXIST "MakeFile" (del "MakeFile*" /Q)
 IF EXIST "MakeFile" (del "MakeFile*" /Q)
 IF EXIST "%IMPORTER_NAME%.exe" (del "%IMPORTER_NAME%.exe" /Q)
-"%QT_BIN%\qmake.exe" %IMPORTER_NAME%.pro
+"%QT_BIN%\qmake.exe" %IMPORTER_NAME%.pro"
 nmake release
+IF NOT EXIST release\"%IMPORTER_NAME%.exe" GOTO EXIT_WITH_ERROR
 cd %HOME_DIR%
 
 REM this checks if the custom qt directory path
