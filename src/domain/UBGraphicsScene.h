@@ -374,6 +374,7 @@ public slots:
         void setDocumentUpdated();
         void createEraiser();
         void createPointer();
+        bool hasTextItemWithFocus(UBGraphicsGroupContainerItem* item);
 
         QGraphicsEllipseItem* mEraser;
         QGraphicsEllipseItem* mPointer;
