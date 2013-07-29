@@ -93,11 +93,11 @@ function addImporter {
     git reset --hard
     git pull
     rm -rf ${importerName}.app
-    rm moc_*  
     rm MakeFile*
-    rm *.o 
+    rm -rf release
+    rm -rf debug
     $QMAKE ${importerName}.pro
-    make -j4
+    make -j4 release
     $MACDEPLOYQT ${importerName}.app 
     cd -
 }
