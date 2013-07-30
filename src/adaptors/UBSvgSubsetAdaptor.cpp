@@ -64,8 +64,6 @@
 #include "core/UBApplication.h"
 #include "core/UBTextTools.h"
 
-#include "document/UBDocumentContainer.h"
-
 #include "pdf/PDFRenderer.h"
 
 #include "core/memcheck.h"

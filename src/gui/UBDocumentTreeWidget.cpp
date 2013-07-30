@@ -24,6 +24,7 @@
 #include "UBDocumentTreeWidget.h"
 
 #include "document/UBDocumentProxy.h"
+//#include "document/UBDocumentContainer.h"
 
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"
