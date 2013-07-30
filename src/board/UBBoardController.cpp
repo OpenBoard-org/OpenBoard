@@ -485,11 +485,14 @@ void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmp
                 QString source = scene->document()->persistencePath() + "/" + relativeFile.toString();
                 QString target = selectedDocument()->persistencePath() + "/" + relativeFile.toString();
 
-                QFileInfo fi(target);
-                QDir d = fi.dir();
-
-                d.mkpath(d.absolutePath());
-                QFile::copy(source, target);
+                if(QFileInfo(source).isDir())
+                    Q_ASSERT(UBFileSystemUtils::copyDir(source,target));
+                else{
+                    QFileInfo fi(target);
+                    QDir d = fi.dir();
+                    d.mkpath(d.absolutePath());
+                    Q_ASSERT(QFile::copy(source, target));
+                }
             }
         }
 
