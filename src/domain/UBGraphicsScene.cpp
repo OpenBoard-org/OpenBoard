@@ -68,6 +68,7 @@
 #include "UBGraphicsTextItem.h"
 #include "UBGraphicsStrokesGroup.h"
 #include "UBSelectionFrame.h"
+#include "UBGraphicsItemZLevelUndoCommand.h"
 
 #include "domain/UBGraphicsGroupContainerItem.h"
 
@@ -164,6 +165,7 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
     QMapIterator<qreal, QGraphicsItem*>iCurElement(sortedItems);
 
     if (dest == up) {
+        qDebug() << "item data zvalue= " << item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
         if (iCurElement.findNext(item)) {
             if (iCurElement.hasNext()) {
                 qreal nextZ = iCurElement.peekNext().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal();
@@ -1068,8 +1070,6 @@ void UBGraphicsScene::notifyZChanged(QGraphicsItem *item, qreal zValue)
 
 void UBGraphicsScene::updateSelectionFrame()
 {
-    qDebug() << "selected item count" << selectedItems().count();
-
     if (!mSelectionFrame) {
         mSelectionFrame = new UBSelectionFrame();
         addItem(mSelectionFrame);
@@ -2170,9 +2170,17 @@ QUuid UBGraphicsScene::getPersonalUuid(QGraphicsItem *item)
     return idCandidate == QUuid().toString() ? QUuid() : QUuid(idCandidate);
 }
 
-qreal UBGraphicsScene::changeZLevelTo(QGraphicsItem *item, UBZLayerController::moveDestination dest)
+qreal UBGraphicsScene::changeZLevelTo(QGraphicsItem *item, UBZLayerController::moveDestination dest, bool addUndo)
 {
-    return mZLayerController->changeZLevelTo(item, dest);
+    qreal previousZVal = item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+    qreal res = mZLayerController->changeZLevelTo(item, dest);
+
+    if(addUndo){
+        UBGraphicsItemZLevelUndoCommand* uc = new UBGraphicsItemZLevelUndoCommand(this, item, previousZVal, dest);
+        UBApplication::undoStack->push(uc);
+    }
+
+    return res;
 }
 
 QGraphicsItem* UBGraphicsScene::rootItem(QGraphicsItem* item) const

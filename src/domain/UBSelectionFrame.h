@@ -5,9 +5,10 @@
 #include <QtGui>
 #include <core/UB.h>
 
+#include "domain/UBGraphicsScene.h"
+
 class DelegateButton;
 class UBGraphicsItemDelegate;
-class UBGraphicsScene;
 
 class UBSelectionFrame : public QObject, public QGraphicsRectItem
 {
@@ -48,6 +49,7 @@ private slots:
     void increaseZlevelBottom();
 
 private:
+    void addSelectionUndo(QList<QGraphicsItem*> items, UBZLayerController::moveDestination dest);
     void translateItem(QGraphicsItem *item, const QPointF &translatePoint);
     void placeButtons();
     void placeExceptionButton(DelegateButton *pButton, QTransform pTransform);

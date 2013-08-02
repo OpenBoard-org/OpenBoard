@@ -524,28 +524,28 @@ void UBGraphicsItemDelegate::increaseZLevelUp()
 {
     UBGraphicsScene *curScene = castUBGraphicsScene();
     if (curScene) {
-        curScene->changeZLevelTo(delegated(), UBZLayerController::up);
+        curScene->changeZLevelTo(delegated(), UBZLayerController::up, true);
     }
 }
 void UBGraphicsItemDelegate::increaseZlevelTop()
 {
     UBGraphicsScene *curScene = castUBGraphicsScene();
     if (curScene) {
-        curScene->changeZLevelTo(delegated(), UBZLayerController::top);
+        curScene->changeZLevelTo(delegated(), UBZLayerController::top, true);
     }
 }
 void UBGraphicsItemDelegate::increaseZLevelDown()
 {
     UBGraphicsScene *curScene = castUBGraphicsScene();
     if (curScene) {
-        curScene->changeZLevelTo(delegated(), UBZLayerController::down);
+        curScene->changeZLevelTo(delegated(), UBZLayerController::down, true);
     }
 }
 void UBGraphicsItemDelegate::increaseZlevelBottom()
 {
     UBGraphicsScene *curScene = castUBGraphicsScene();
     if (curScene) {
-        curScene->changeZLevelTo(delegated(), UBZLayerController::bottom);
+        curScene->changeZLevelTo(delegated(), UBZLayerController::bottom, true);
     }
 }
 

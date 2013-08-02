@@ -275,7 +275,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         void setNominalSize(int pWidth, int pHeight);
 
-        qreal changeZLevelTo(QGraphicsItem *item, UBZLayerController::moveDestination dest);
+        qreal changeZLevelTo(QGraphicsItem *item, UBZLayerController::moveDestination dest, bool addUndo=false);
 
         enum RenderingContext
         {
@@ -313,7 +313,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void clearSelectionFrame();
         UBBoardView *controlView();
         void notifyZChanged(QGraphicsItem *item, qreal zValue);
-
 
 public slots:
         void updateSelectionFrame();

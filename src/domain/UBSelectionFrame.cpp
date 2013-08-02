@@ -3,12 +3,12 @@
 #include <QtGui>
 
 #include "domain/UBItem.h"
+#include "domain/UBGraphicsItemZLevelUndoCommand.h"
 #include "board/UBBoardController.h"
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"
 #include "gui/UBResources.h"
 #include "core/UBApplication.h"
-#include "domain/UBGraphicsScene.h"
 #include "board/UBBoardView.h"
 
 UBSelectionFrame::UBSelectionFrame()
@@ -245,35 +245,56 @@ void UBSelectionFrame::duplicate()
 
 void UBSelectionFrame::increaseZlevelUp()
 {
-    foreach (QGraphicsItem *item, sortedByZ(scene()->selectedItems())) {
+    QList<QGraphicsItem*> selItems = sortedByZ(scene()->selectedItems());
+
+    QList<QGraphicsItem*>::iterator itemIt = selItems.end();
+    while(itemIt != selItems.begin()){
+        itemIt--;
+        QGraphicsItem* item = *itemIt;
         ubscene()->changeZLevelTo(item, UBZLayerController::up);
     }
+
+    addSelectionUndo(selItems, UBZLayerController::up);
 }
 
 void UBSelectionFrame::increaseZlevelTop()
 {
-    foreach (QGraphicsItem *item, sortedByZ(scene()->selectedItems())) {
+    QList<QGraphicsItem*> selItems = sortedByZ(scene()->selectedItems());
+    foreach (QGraphicsItem *item, selItems) {
         ubscene()->changeZLevelTo(item, UBZLayerController::top);
     }
+    addSelectionUndo(selItems, UBZLayerController::top);
 }
 
 void UBSelectionFrame::increaseZlevelDown()
 {
-    foreach (QGraphicsItem *item, sortedByZ(scene()->selectedItems())) {
+    QList<QGraphicsItem*> selItems = sortedByZ(scene()->selectedItems());
+    foreach (QGraphicsItem *item, selItems) {
         ubscene()->changeZLevelTo(item, UBZLayerController::down);
     }
+    addSelectionUndo(selItems, UBZLayerController::down);
 }
 
 void UBSelectionFrame::increaseZlevelBottom()
 {
-    QListIterator<QGraphicsItem*> iter(sortedByZ(scene()->selectedItems()));
+    QList<QGraphicsItem*> selItems = sortedByZ(scene()->selectedItems());
+    QListIterator<QGraphicsItem*> iter(selItems);
     iter.toBack();
     while (iter.hasPrevious()) {
         ubscene()->changeZLevelTo(iter.previous(), UBZLayerController::bottom);
     }
+    addSelectionUndo(selItems, UBZLayerController::bottom);
 //    foreach (QGraphicsItem *item, sortedByZ(scene()->selectedItems())) {
 //        ubscene()->changeZLevelTo(item, UBZLayerController::bottom);
 //    }
+}
+
+void UBSelectionFrame::addSelectionUndo(QList<QGraphicsItem*> items, UBZLayerController::moveDestination dest){
+    if(!items.empty()){
+        qreal topItemLevel = items.at(0)->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+        UBGraphicsItemZLevelUndoCommand* cmd = new UBGraphicsItemZLevelUndoCommand(ubscene(), items, topItemLevel, dest);
+        UBApplication::undoStack->push(cmd);
+    }
 }
 
 void UBSelectionFrame::translateItem(QGraphicsItem */*item*/, const QPointF &/*translatePoint*/)
@@ -388,6 +409,7 @@ void UBSelectionFrame::setCursorFromAngle(QString angle)
 QList<QGraphicsItem*> UBSelectionFrame::sortedByZ(const QList<QGraphicsItem *> &pItems)
 {
     //select only items wiht the same z-level as item's one and push it to sortedItems QMultiMap
+    // It means: keep only the selected items and remove the selection frame from the list
     QMultiMap<qreal, QGraphicsItem*> sortedItems;
     foreach (QGraphicsItem *tmpItem, pItems) {
         if (tmpItem->type() == Type) {

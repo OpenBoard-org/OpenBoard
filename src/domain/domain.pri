@@ -24,7 +24,8 @@ HEADERS += src/domain/UBGraphicsScene.h \
     src/domain/UBGraphicsWidgetItemDelegate.h \
     src/domain/UBGraphicsMediaItemDelegate.h \
     src/domain/UBSelectionFrame.h \
-    src/domain/UBUndoCommand.h
+    src/domain/UBUndoCommand.h \
+    src/domain/UBGraphicsItemZLevelUndoCommand.h
 
 SOURCES += src/domain/UBGraphicsScene.cpp \
     src/domain/UBGraphicsItemUndoCommand.cpp \
@@ -52,4 +53,5 @@ SOURCES += src/domain/UBGraphicsScene.cpp \
     src/domain/UBGraphicsDelegateFrame.cpp \
     src/domain/UBGraphicsWidgetItemDelegate.cpp \
     src/domain/UBSelectionFrame.cpp \
-    src/domain/UBUndoCommand.cpp
+    src/domain/UBUndoCommand.cpp \
+    src/domain/UBGraphicsItemZLevelUndoCommand.cpp
