@@ -25,9 +25,6 @@
 #include "core/UBApplication.h"
 
 #include "board/UBBoardController.h"
-
-#include "document/UBDocumentContainer.h"
-
 #include "globals/UBGlobals.h"
 
 #include "core/memcheck.h"

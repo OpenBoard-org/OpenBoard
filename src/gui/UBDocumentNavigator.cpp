@@ -85,7 +85,6 @@ UBDocumentNavigator::~UBDocumentNavigator()
 void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 {
     mThumbsWithLabels.clear();
-//    foreach(QGraphicsItem* it, mScene->items())
     int selectedIndex = -1;
     QList<QGraphicsItem*> graphicsItemList = mScene->items();
     for(int i = 0; i < graphicsItemList.size(); i+=1)
@@ -100,6 +99,11 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 
     for(int i = 0; i < source->selectedDocument()->pageCount(); i++)
     {
+        //claudio This is a very bad hack and shows a architectural problem
+        // source->selectedDocument()->pageCount()  !=   source->pageCount()
+        if(i>=source->pageCount())
+            source->insertThumbPage(i);
+
         const QPixmap* pix = source->pageAt(i);
         Q_ASSERT(!pix->isNull());
         int pageIndex = UBDocumentContainer::pageFromSceneIndex(i);
