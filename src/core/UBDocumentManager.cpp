@@ -150,7 +150,7 @@ UBDocumentProxy* UBDocumentManager::importFile(const QFile& pFile, const QString
 
                 // Document import procedure.....
                 QString documentName = QFileInfo(pFile.fileName()).completeBaseName();
-                document = UBPersistenceManager::persistenceManager()->createDocument(pGroup, documentName);
+                document = UBPersistenceManager::persistenceManager()->createDocument(pGroup, documentName,false);
 
                 QUuid uuid = QUuid::createUuid();
                 QString filepath = pFile.fileName();

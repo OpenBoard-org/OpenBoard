@@ -1052,7 +1052,6 @@ bool UBDocumentController::addFileToDocument(UBDocumentProxy* document)
     if (filePath.length() > 0)
     {
         QApplication::processEvents(); // NOTE: We performed this just a few lines before. Is it really necessary to do it again here??
-        QFile selectedFile(filePath);
 
         showMessage(tr("Importing file %1...").arg(fileInfo.baseName()), true);
 

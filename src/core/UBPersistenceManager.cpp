@@ -264,7 +264,10 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName,
     doc->setMetaData(UBSettings::documentUpdatedAt,currentDate);
     doc->setMetaData(UBSettings::documentDate,currentDate);
 
-    if (withEmptyPage) createDocumentSceneAt(doc, 0);
+    if (withEmptyPage)
+        createDocumentSceneAt(doc, 0);
+    else
+        generatePathIfNeeded(doc);
 
     documentProxies.insert(0, QPointer<UBDocumentProxy>(doc));
 
@@ -887,16 +890,13 @@ bool UBPersistenceManager::addFileToDocument(UBDocumentProxy* pDocumentProxy,
     if (data == NULL && !fi.exists())
         return false;
 
-    qDebug() << fi.suffix();
-
     QString fileName = subdir + "/" + objectUuid.toString() + "." + fi.suffix();
-
     destinationPath = pDocumentProxy->persistencePath() + "/" + fileName;
 
     if (!QFile::exists(destinationPath))
     {
         QDir dir;
-        dir.mkdir(pDocumentProxy->persistencePath() + "/" + subdir);
+        dir.mkpath(pDocumentProxy->persistencePath() + "/" + subdir);
         if (!QFile::exists(pDocumentProxy->persistencePath() + "/" + subdir))
             return false;
 
