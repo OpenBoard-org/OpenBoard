@@ -101,7 +101,7 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
     {
         //claudio This is a very bad hack and shows a architectural problem
         // source->selectedDocument()->pageCount()  !=   source->pageCount()
-        if(i>=source->pageCount())
+        if(i>=source->pageCount() || source->pageAt(i)->isNull())
             source->insertThumbPage(i);
 
         const QPixmap* pix = source->pageAt(i);
