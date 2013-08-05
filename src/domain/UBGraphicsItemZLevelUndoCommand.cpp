@@ -25,17 +25,28 @@ UBGraphicsItemZLevelUndoCommand::~UBGraphicsItemZLevelUndoCommand(){
 }
 
 void UBGraphicsItemZLevelUndoCommand::undo(){
-    if(!mpScene)
+    if(!mpScene || mItems.empty())
         return;
 
-    foreach(QGraphicsItem* item, mItems){
-        if(mDest == UBZLayerController::down){
-            mpScene->changeZLevelTo(item, UBZLayerController::up);
-        }else if(mDest == UBZLayerController::up){
-            mpScene->changeZLevelTo(item, UBZLayerController::down);
+    // Getting the difference between the initial z-value and the actual one
+    qreal zDiff = qAbs(mItems.at(mItems.size()-1)->data(UBGraphicsItemData::ItemOwnZValue).toReal() - mPreviousZLevel);
+
+    if(mDest == UBZLayerController::down || mDest == UBZLayerController::bottom){
+        // Move up
+        QList<QGraphicsItem*>::iterator downIt = mItems.end();
+        for(downIt; downIt >= mItems.begin(); downIt--){
+            for(int i=0; i<zDiff; i++)
+                mpScene->changeZLevelTo(*downIt, UBZLayerController::up);
         }
-        updateLazyScene();
+
+    }else if(mDest == UBZLayerController::up || mDest == UBZLayerController::top){
+        // Move down
+        foreach(QGraphicsItem* item, mItems){
+            for(int i=0; i<zDiff; i++)
+                mpScene->changeZLevelTo(item, UBZLayerController::down);
+        }
     }
+
 }
 
 void UBGraphicsItemZLevelUndoCommand::redo(){
