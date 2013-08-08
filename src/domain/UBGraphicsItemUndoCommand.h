@@ -52,7 +52,7 @@ class UBGraphicsItemUndoCommand : public UBUndoCommand
 
     protected:
         virtual void undo();
-        //virtual void redo();
+        virtual void redo();
 
     private:
         UBGraphicsScene* mScene;
