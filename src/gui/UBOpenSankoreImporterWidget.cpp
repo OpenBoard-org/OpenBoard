@@ -36,17 +36,19 @@ UBOpenSankoreImporterWidget::UBOpenSankoreImporterWidget(QWidget *parent):
 {
     setObjectName("UBOpenSankoreImporterWidget");
     setFixedSize(700,450);
+    setStyleSheet("QWidget#UBOpenSankoreImporterWidget { background-color : red; }");
 
     QVBoxLayout* mLayout = new QVBoxLayout(this);
     mLayout->setContentsMargins(20,38,20,20);
     setLayout(mLayout);
 
     QLabel* title = new QLabel(this);
-    title->setText(tr("Open-Sankoré data detected"));
+    title->setStyleSheet("font-size : 18px; font-weight : bold;");
+    title->setText(tr("Open-Sankore Documents Detected"));
     mLayout->addWidget(title);
 
     QTextEdit* helpText = new QTextEdit(this);
-    helpText->setText(tr("Open-Sankoré directory is present on the disk. It's possible to import the Open-Sankoré documents into OpenBoard as the preferences. Pushing \"Proceed\" will close OpenBoard and run the importer application."));
+    helpText->setText(tr("Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application."));
     helpText->setAcceptDrops(false);
     helpText->setReadOnly(true);
     mLayout->addWidget(helpText);
@@ -57,6 +59,11 @@ UBOpenSankoreImporterWidget::UBOpenSankoreImporterWidget(QWidget *parent):
     connect(mDisplayOnNextRestart,SIGNAL(clicked(bool)),this,SLOT(onNextRestartCheckBoxClicked(bool)));
     mLayout->addStretch();
     mLayout->addWidget(mDisplayOnNextRestart);
+
+    QTextEdit* warningText = new QTextEdit(this);
+    warningText->setText(tr("You can always access the OpenBoard Document Importer through the Preferences panel in the About tab. Warning, if you have already imported your Open-Sankore datas, you might loose your current OpenBoard documents."));
+    warningText->setReadOnly(true);
+    mLayout->addWidget(warningText);
     mLayout->addStretch();
 
     QHBoxLayout* buttonLayout = new QHBoxLayout();
