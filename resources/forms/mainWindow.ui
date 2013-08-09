@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Open-Sankoré</string>
+   <string>OpenBoard</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../OpenBoard.qrc">
@@ -350,7 +350,7 @@
     <string>Quit</string>
    </property>
    <property name="toolTip">
-    <string>Quit Open-Sankoré</string>
+    <string>Quit OpenBoard</string>
    </property>
    <property name="shortcutContext">
     <enum>Qt::WindowShortcut</enum>
