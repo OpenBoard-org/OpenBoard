@@ -35,7 +35,7 @@
  */
 class UBDesktopPalette : public UBActionPalette
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBDesktopPalette(QWidget *parent, UBRightPalette* rightPalette);
@@ -71,7 +71,7 @@ protected:
 
         virtual int getParentRightOffset();
 
-    private:
+private:
         QAction *mShowHideAction;
         QAction *mDisplaySelectAction;
         QAction *mMaximizeAction;
@@ -81,8 +81,10 @@ protected:
 
 
         UBRightPalette* rightPalette;
+        void adjustPosition();
 
-    signals:
+
+signals:
         void stylusToolChanged(int tool);
 
 };

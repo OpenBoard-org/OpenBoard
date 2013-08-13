@@ -101,6 +101,15 @@ UBDesktopPalette::~UBDesktopPalette()
 }
 
 
+void UBDesktopPalette::adjustPosition()
+{
+    QPoint pos = this->pos();
+    if(this->pos().y() < 30){
+        pos.setY(30);
+        moveInsideParent(pos);
+    }
+}
+
 void UBDesktopPalette::disappearForCapture()
 {
     setWindowOpacity(0.0);
@@ -209,6 +218,7 @@ void UBDesktopPalette::showEvent(QShowEvent *event)
     eraserIcon.addPixmap(QPixmap(":images/stylusPalette/eraserOnArrow.png"), QIcon::Normal, QIcon::On);
     UBApplication::mainWindow->actionEraser->setIcon(eraserIcon);
 
+    adjustPosition();
 }
 
 void UBDesktopPalette::hideEvent(QHideEvent *event)
