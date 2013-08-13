@@ -74,12 +74,19 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
 
     // TODO : Comment the next line to continue the Youtube button bugfix
     initialiazemOEmbedProviders();
+
+    connect(mMainWindow->actionOpenTutorial,SIGNAL(triggered()),this, SLOT(onOpenTutorial()));
 }
 
 
 UBWebController::~UBWebController()
 {
     // NOOP
+}
+
+void UBWebController::onOpenTutorial()
+{
+    loadUrl(QUrl("http://tutorial.openboard.org"));
 }
 
 void UBWebController::initialiazemOEmbedProviders()

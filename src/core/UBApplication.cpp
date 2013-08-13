@@ -524,6 +524,8 @@ void UBApplication::decorateActionMenu(QAction* action)
             menu->addAction(mainWindow->actionSleep);
 
             menu->addSeparator();
+            menu->addAction(mainWindow->actionOpenTutorial);
+            menu->addSeparator();
             menu->addAction(mainWindow->actionPreferences);
             menu->addAction(mainWindow->actionMultiScreen);
             // SANKORE-48: Hide the check update action if the setting

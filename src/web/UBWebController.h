@@ -40,7 +40,7 @@ class UBServerXMLHttpRequest;
 
 class UBWebController : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBWebController(UBMainWindow* mainWindow);
@@ -125,6 +125,8 @@ class UBWebController : public QObject
         void toggleWebTrap(bool checked);
 
         void onOEmbedParsed(QVector<sOEmbedContent> contents);
+        void onOpenTutorial();
+
 
     signals:
         /**
