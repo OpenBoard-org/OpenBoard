@@ -10,9 +10,9 @@ AppName=OpenBoard
 AppVerName=OpenBoard 1.0
 AppPublisher=Open Education Foundation
 
-AppPublisherURL=http://dev.open-sankore.org
-AppSupportURL=http://dev.open-sankore.org
-AppUpdatesURL=http://dev.open-sankore.org
+AppPublisherURL=http://get.openboard.org
+AppSupportURL=http://www.openboard.org
+AppUpdatesURL=http://get.openboard.org
 
 DefaultDirName={pf}\OpenBoard
 DefaultGroupName=OpenBoard

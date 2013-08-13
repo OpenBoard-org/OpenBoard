@@ -278,7 +278,7 @@ QString UBYouTubePublisher::youtubeMetadata()
         workingDescription = workingDescription.left(4900) + "...";
     }
 
-    workingDescription += "\n\nhttp://www.oe-f.org";
+    workingDescription += "\n\nhttp://www.openboard.org";
 
     if(workingDescription.length() == 0)
     {

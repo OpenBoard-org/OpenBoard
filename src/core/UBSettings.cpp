@@ -200,7 +200,7 @@ void UBSettings::ValidateKeyboardPaletteKeyBtnSize()
 
 void UBSettings::init()
 {
-    productWebUrl =  new UBSetting(this, "App", "ProductWebAddress", "http://www.oe-f.org");
+    productWebUrl =  new UBSetting(this, "App", "ProductWebAddress", "http://www.openboard.org");
 
     softwareHomeUrl = productWebUrl->get().toString();
 
