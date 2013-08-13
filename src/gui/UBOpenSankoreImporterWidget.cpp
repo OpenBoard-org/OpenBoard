@@ -34,6 +34,8 @@
 UBOpenSankoreImporterWidget::UBOpenSankoreImporterWidget(QWidget *parent):
     UBFloatingPalette(Qt::TopRightCorner,parent)
 {
+    setBackgroundBrush(QBrush(Qt::white));
+
     setObjectName("UBOpenSankoreImporterWidget");
     setFixedSize(700,450);
     setStyleSheet("QWidget#UBOpenSankoreImporterWidget { background-color : red; }");
@@ -46,25 +48,27 @@ UBOpenSankoreImporterWidget::UBOpenSankoreImporterWidget(QWidget *parent):
     title->setStyleSheet("font-size : 18px; font-weight : bold;");
     title->setText(tr("Open-Sankore Documents Detected"));
     mLayout->addWidget(title);
+    mLayout->addSpacing(20);
 
     QTextEdit* helpText = new QTextEdit(this);
     helpText->setText(tr("Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application."));
     helpText->setAcceptDrops(false);
     helpText->setReadOnly(true);
+    helpText->setStyleSheet("border : none;");
     mLayout->addWidget(helpText);
 
     mDisplayOnNextRestart = new QCheckBox(this);
     mDisplayOnNextRestart->setText(tr("Show this panel next time"));
     mDisplayOnNextRestart->setChecked(true);
     connect(mDisplayOnNextRestart,SIGNAL(clicked(bool)),this,SLOT(onNextRestartCheckBoxClicked(bool)));
-    mLayout->addStretch();
     mLayout->addWidget(mDisplayOnNextRestart);
+    mLayout->addSpacing(100);
 
     QTextEdit* warningText = new QTextEdit(this);
     warningText->setText(tr("You can always access the OpenBoard Document Importer through the Preferences panel in the About tab. Warning, if you have already imported your Open-Sankore datas, you might loose your current OpenBoard documents."));
     warningText->setReadOnly(true);
+    warningText->setStyleSheet("border : none;");
     mLayout->addWidget(warningText);
-    mLayout->addStretch();
 
     QHBoxLayout* buttonLayout = new QHBoxLayout();
     QPushButton* mCancelButton = new QPushButton(this);
@@ -78,6 +82,7 @@ UBOpenSankoreImporterWidget::UBOpenSankoreImporterWidget(QWidget *parent):
     buttonLayout->addWidget(mProceedButton);
 
     mLayout->addLayout(buttonLayout);
+
 
     show();
 }
