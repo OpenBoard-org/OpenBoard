@@ -93,6 +93,8 @@ Source: "c:\OpenSankore\plugins\playlistformats\qtmultimediakit_m3ud.dll"; DestD
 
 ;OpenBoardImporter
 Source: "..\OpenSankoreToOpenBoard\release\OpenBoardImporter.exe"; DestDir: "c:\OpenBoard\Importer"; Flags: ignoreversion
+Source: "..\Qt-4.8\lib\QtGui4.dll"; DestDir: "c:\OpenBoard\Importer"; Flags: ignoreversion
+Source: "..\Qt-4.8\lib\QtCore4.dll"; DestDir: "c:\OpenBoard\Importer"; Flags: ignoreversion
 
 ;fonts for xpdf
 Source: "resources\windows\xpdfrc"; DestDir: "{app}"; Flags: ignoreversion
