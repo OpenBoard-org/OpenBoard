@@ -1,15 +1,3 @@
-Copyright (C) 2013 Groupement d'Interêt Public pour l'Education Numérique en Afrique (GIP ENA)
-
-Open-Sankoré is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 3 of the License,
-with a specific linking exception for the OpenSSL project's
-"OpenSSL" library (or with modified versions of it that use the
-same license as the "OpenSSL" library).
-
-Here is the full text of the GNU General Public License version 3.
-
---8<---------------cut here---------------start------------->8---
                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
@@ -684,4 +672,3 @@ may consider it more useful to permit linking proprietary applications with
 the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
 <http://www.gnu.org/philosophy/why-not-lgpl.html>.
---8<---------------cut here---------------end--------------->8---
