@@ -24,7 +24,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="mainTabWidget">
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="displayTab">
       <attribute name="title">
@@ -1930,13 +1930,7 @@ Public License instead of this License.
               <string notr="true"/>
              </property>
              <property name="plainText">
-              <string notr="true">This product was created by Open Education Foundation based on Open-Sankoré.
-
-Copyright (C) 2013 Open Education Foundation. 
-
-Copyright (C) 2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
-
-Open-Sankoré is free software: you can redistribute it and/or modify
+              <string notr="true">OpenBoard is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, version 3 of the License,
 with a specific linking exception for the OpenSSL project's
