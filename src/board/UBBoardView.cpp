@@ -1299,31 +1299,6 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
             QGraphicsView::mouseReleaseEvent (event);
         }
     }
-    else if (currentTool == UBStylusTool::Play)
-    {
-        if (bIsDesktop) {
-            event->ignore();
-            return;
-        }
-
-        if (mWidgetMoved)
-        {
-            movingItem = NULL;
-            mWidgetMoved = false;
-        }
-        else
-        {
-            if (suspendedMousePressEvent)
-            {
-                QGraphicsView::mousePressEvent(suspendedMousePressEvent);     // suspendedMousePressEvent is deleted by old Qt event loop
-                movingItem = NULL;
-                delete suspendedMousePressEvent;
-                suspendedMousePressEvent = NULL;
-            }
-        }
-
-        QGraphicsView::mouseReleaseEvent (event);
-    }
     else if (currentTool == UBStylusTool::Text)
     {
         UBGraphicsItem *graphicsItem = dynamic_cast<UBGraphicsItem*>(movingItem);
@@ -1405,6 +1380,7 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
         }
 
         if (mWidgetMoved) {
+            movingItem->setSelected(false);
             movingItem = NULL;
             mWidgetMoved = false;
         }
