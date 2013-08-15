@@ -1,22 +1,25 @@
 /*
- * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
+ * Copyright (C) 2013 Open Education Foundation
  *
- * This file is part of Open-Sankoré.
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
+ * l'Education Numérique en Afrique (GIP ENA)
  *
- * Open-Sankoré is free software: you can redistribute it and/or modify
+ * This file is part of OpenBoard.
+ *
+ * OpenBoard is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3 of the License,
  * with a specific linking exception for the OpenSSL project's
  * "OpenSSL" library (or with modified versions of it that use the
  * same license as the "OpenSSL" library).
  *
- * Open-Sankoré is distributed in the hope that it will be useful,
+ * OpenBoard is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Open-Sankoré.  If not, see <http://www.gnu.org/licenses/>.
+ * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
  */
 
 
@@ -477,14 +480,25 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
 }
 
 
-void UBApplicationController::checkUpdate()
+void UBApplicationController::checkUpdate(QString urlString)
 {
     if(mHttp)
         delete mHttp;
-    QUrl url("http://oe-f.org/update.json");
+    QUrl url(urlString);
     mHttp = new QHttp(url.host());
     connect(mHttp, SIGNAL(requestFinished(int,bool)), this, SLOT(updateRequestFinished(int,bool)));
+    connect(mHttp, SIGNAL(responseHeaderReceived(QHttpResponseHeader)), this, SLOT(updateHeaderReceived(QHttpResponseHeader)));
+
     mHttp->get(url.path());
+}
+
+void UBApplicationController::updateHeaderReceived(QHttpResponseHeader header)
+{
+    if(header.statusCode() == 302 && header.hasKey("Location")){
+        mHttp->close();
+        checkUpdate(header.value("Location"));
+    }
+
 }
 
 void UBApplicationController::updateRequestFinished(int id, bool error)
@@ -495,6 +509,7 @@ void UBApplicationController::updateRequestFinished(int id, bool error)
    }
    else{
        QString responseString =  QString(mHttp->readAll());
+       qDebug() << responseString;
        if (!responseString.isEmpty() && responseString.contains("version") && responseString.contains("url")){
            mHttp->close();
            downloadJsonFinished(responseString);

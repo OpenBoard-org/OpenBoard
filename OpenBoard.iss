@@ -10,9 +10,9 @@ AppName=OpenBoard
 AppVerName=OpenBoard 1.0
 AppPublisher=Open Education Foundation
 
-AppPublisherURL=http://dev.open-sankore.org
-AppSupportURL=http://dev.open-sankore.org
-AppUpdatesURL=http://dev.open-sankore.org
+AppPublisherURL=http://get.openboard.org
+AppSupportURL=http://www.openboard.org
+AppUpdatesURL=http://get.openboard.org
 
 DefaultDirName={pf}\OpenBoard
 DefaultGroupName=OpenBoard
@@ -93,6 +93,8 @@ Source: "c:\OpenSankore\plugins\playlistformats\qtmultimediakit_m3ud.dll"; DestD
 
 ;OpenBoardImporter
 Source: "..\OpenSankoreToOpenBoard\release\OpenBoardImporter.exe"; DestDir: "c:\OpenBoard\Importer"; Flags: ignoreversion
+Source: "..\Qt-4.8\lib\QtGui4.dll"; DestDir: "c:\OpenBoard\Importer"; Flags: ignoreversion
+Source: "..\Qt-4.8\lib\QtCore4.dll"; DestDir: "c:\OpenBoard\Importer"; Flags: ignoreversion
 
 ;fonts for xpdf
 Source: "resources\windows\xpdfrc"; DestDir: "{app}"; Flags: ignoreversion

@@ -1,23 +1,27 @@
 /*
- * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
+ * Copyright (C) 2013 Open Education Foundation
  *
- * This file is part of Open-Sankoré.
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
+ * l'Education Numérique en Afrique (GIP ENA)
  *
- * Open-Sankoré is free software: you can redistribute it and/or modify
+ * This file is part of OpenBoard.
+ *
+ * OpenBoard is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3 of the License,
  * with a specific linking exception for the OpenSSL project's
  * "OpenSSL" library (or with modified versions of it that use the
  * same license as the "OpenSSL" library).
  *
- * Open-Sankoré is distributed in the hope that it will be useful,
+ * OpenBoard is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Open-Sankoré.  If not, see <http://www.gnu.org/licenses/>.
+ * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
  */
+
 
 
 
@@ -35,7 +39,7 @@
  */
 class UBDesktopPalette : public UBActionPalette
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBDesktopPalette(QWidget *parent, UBRightPalette* rightPalette);
@@ -71,7 +75,7 @@ protected:
 
         virtual int getParentRightOffset();
 
-    private:
+private:
         QAction *mShowHideAction;
         QAction *mDisplaySelectAction;
         QAction *mMaximizeAction;
@@ -81,8 +85,10 @@ protected:
 
 
         UBRightPalette* rightPalette;
+        void adjustPosition();
 
-    signals:
+
+signals:
         void stylusToolChanged(int tool);
 
 };

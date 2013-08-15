@@ -1537,18 +1537,6 @@
     <string>Import eduMedia simulation</string>
    </property>
   </action>
-  <action name="actionTutorial">
-   <property name="icon">
-    <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/tutorial.png</normaloff>:/images/toolbar/tutorial.png</iconset>
-   </property>
-   <property name="text">
-    <string>Tutorial</string>
-   </property>
-   <property name="toolTip">
-    <string>Open the tutorial</string>
-   </property>
-  </action>
   <action name="actionCheckUpdate">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
@@ -1618,6 +1606,18 @@
    </property>
    <property name="toolTip">
     <string>Remove the backgound</string>
+   </property>
+  </action>
+  <action name="actionOpenTutorial">
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/toolbar/tutorial.png</normaloff>:/images/toolbar/tutorial.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open Tutorial</string>
+   </property>
+   <property name="toolTip">
+    <string>Open the tutorial web page</string>
    </property>
   </action>
  </widget>

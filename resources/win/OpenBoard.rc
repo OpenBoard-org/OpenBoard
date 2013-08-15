@@ -33,17 +33,17 @@ BEGIN
 
         BEGIN
 
-            VALUE "CompanyName",      "Open-Sankoré\000"
+            VALUE "CompanyName",      "Open Education Foudation\000"
 
-            VALUE "FileDescription",  "Sankore 3.1\000"
+            VALUE "FileDescription",  "OpenBoard\000"
 
             VALUE "FileVersion",      UBVERSION
 
-            VALUE "LegalCopyright",   "(c) Webdoc SA, 2009-2012. All rights reserved\000"
+            VALUE "LegalCopyright",   "(c) Open Education Foundation 2013. All rights reserved\000"
 
-            VALUE "OriginalFilename", "Sankore 3.1.exe\000"
+            VALUE "OriginalFilename", "OpenBoard.exe\000"
 
-            VALUE "ProductName",      "Sankore 3.1\000"
+            VALUE "ProductName",      "OpenBoard\000"
 
             VALUE "ProductVersion",   UBVERSION
 

@@ -366,7 +366,7 @@ echo "Architecture: $ARCHITECTURE" >> "$CONTROL_FILE"
 echo "Essential: no" >> "$CONTROL_FILE"
 echo "Installed-Size: `du -s $PACKAGE_DIRECTORY | awk '{ print $1 }'`" >> "$CONTROL_FILE"
 echo "Maintainer: ${APPLICATION_NAME} Developers team <dev@oe-f.org>" >> "$CONTROL_FILE"
-echo "Homepage: http://oe-f.org" >> "$CONTROL_FILE"
+echo "Homepage: http://www.openboard.org" >> "$CONTROL_FILE"
 echo -n "Depends: " >> "$CONTROL_FILE"
 unset tab
 declare -a tab
