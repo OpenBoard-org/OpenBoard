@@ -407,6 +407,8 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                 if (!pageDpi.isNull())
                     UBSettings::settings()->pageDpi->set(pageDpi.toString());
+                else
+                    UBSettings::settings()->pageDpi->set(UBApplication::desktop()->physicalDpiX());
 
                 bool darkBackground = false;
                 bool crossedBackground = false;
@@ -719,7 +721,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     {
                         QDesktopWidget* desktop = UBApplication::desktop();
                         qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+                        qDebug() << "currentDpi " << currentDpi;
                         qreal pdfScale = UBSettings::settings()->pageDpi->get().toReal()/currentDpi;
+                        qDebug() << "pdfScale " << pdfScale;
                         pdfItem->setScale(pdfScale);
                         pdfItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                         pdfItem->setFlag(QGraphicsItem::ItemIsSelectable, true);

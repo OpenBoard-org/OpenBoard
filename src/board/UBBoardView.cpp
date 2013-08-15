@@ -1522,6 +1522,8 @@ void UBBoardView::leaveEvent (QEvent * event)
     if (scene ())
         scene ()->leaveEvent (event);
 
+    mJustSelectedItems.clear();
+
     QGraphicsView::leaveEvent (event);
 }
 
