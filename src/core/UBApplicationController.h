@@ -30,6 +30,8 @@
 
 #include <QtGui>
 #include <QFtp>
+#include <QHttpResponseHeader>
+
 
 class UBBoardView;
 class UBDocumentProxy;
@@ -145,6 +147,8 @@ class UBApplicationController : public QObject
 
     private slots:
         void updateRequestFinished(int id, bool error);
+        void updateHeaderReceived(QHttpResponseHeader header);
+
 
     protected:
 
@@ -178,7 +182,7 @@ class UBApplicationController : public QObject
         bool mIsShowingDesktop;
 
         bool isNoUpdateDisplayed;
-        void checkUpdate ();
+        void checkUpdate (QString urlString = "http://get.openboard.org/update.json");
         QNetworkAccessManager *networkAccessManager;
 
         void downloadJsonFinished(QString updateString);

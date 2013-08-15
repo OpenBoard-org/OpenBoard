@@ -24,7 +24,6 @@
 
 
 
-
 #include "UBApplicationController.h"
 
 #include "frameworks/UBPlatformUtils.h"
@@ -481,14 +480,25 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
 }
 
 
-void UBApplicationController::checkUpdate()
+void UBApplicationController::checkUpdate(QString urlString)
 {
     if(mHttp)
         delete mHttp;
-    QUrl url("http://get.openboard.org/update.json");
+    QUrl url(urlString);
     mHttp = new QHttp(url.host());
     connect(mHttp, SIGNAL(requestFinished(int,bool)), this, SLOT(updateRequestFinished(int,bool)));
+    connect(mHttp, SIGNAL(responseHeaderReceived(QHttpResponseHeader)), this, SLOT(updateHeaderReceived(QHttpResponseHeader)));
+
     mHttp->get(url.path());
+}
+
+void UBApplicationController::updateHeaderReceived(QHttpResponseHeader header)
+{
+    if(header.statusCode() == 302 && header.hasKey("Location")){
+        mHttp->close();
+        checkUpdate(header.value("Location"));
+    }
+
 }
 
 void UBApplicationController::updateRequestFinished(int id, bool error)
@@ -499,6 +509,7 @@ void UBApplicationController::updateRequestFinished(int id, bool error)
    }
    else{
        QString responseString =  QString(mHttp->readAll());
+       qDebug() << responseString;
        if (!responseString.isEmpty() && responseString.contains("version") && responseString.contains("url")){
            mHttp->close();
            downloadJsonFinished(responseString);
