@@ -769,7 +769,7 @@
     </message>
     <message>
         <source>Hide OpenBoard</source>
-        <translation>Masquer OpenBoard</translation>
+        <translation>Cacher OpenBoard</translation>
     </message>
     <message>
         <source>Hide OpenBoard Application</source>
@@ -802,11 +802,11 @@
     </message>
     <message>
         <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>Tutoriels</translation>
     </message>
     <message>
         <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir la page Web des tutoriels</translation>
     </message>
 </context>
 <context>
@@ -1005,7 +1005,7 @@
     </message>
     <message>
         <source>Show OpenBoard</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -1139,7 +1139,7 @@
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation type="unfinished"></translation>
+        <translation>Le document &apos;%1&apos; a été créé avec une nouvelle version d&apos;OpenBoard (%2). En l&apos;ouvrant vous pourriez perdre des informations. Voulez-vous continuer ?</translation>
     </message>
 </context>
 <context>
@@ -1276,7 +1276,7 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter au format OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -1582,7 +1582,7 @@
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard (*.ubz)</translation>
     </message>
 </context>
 <context>
@@ -1693,27 +1693,27 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
         <source>Open-Sankore Documents Detected</source>
-        <translation type="unfinished"></translation>
+        <translation>Données d’Open-Sankoré détectées</translation>
     </message>
     <message>
         <source>Open-SankorÃ© documents are present on your computer. It is possible to import them to OpenBoard by pressing the âProceedâ button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
+        <translation>Des documents Open-Sankoré sont présents sur votre ordinateur. Il est possible de les importer dans OpenBoard en appuyant sur le bouton “Procéder” pour lancer le processus d’importation.</translation>
     </message>
     <message>
         <source>Show this panel next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher ce panneau à la prochaine ouverture du logiciel</translation>
     </message>
     <message>
         <source>You can always access the OpenBoard Document Importer through the Preferences panel in the About tab. Warning, if you have already imported your Open-Sankore datas, you might loose your current OpenBoard documents.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous pouvez accéder à nouveau à ce panneau au travers des Préférences dans l’onglet A propos. Attention, si vous avez déjà importé les données d’Open-Sankoré vous risquez de perdre les documents courants dans OpenBoard.</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
+        <translation>Procéder</translation>
     </message>
 </context>
 <context>
@@ -1728,7 +1728,7 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     </message>
     <message>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
+        <translation>a perdu l&apos;accès au répertoire des documents &apos;%1&apos;. Malheureusement, l&apos;application sera fermée afin d&apos;éviter la corruption des données. Les dernières modifications pourraient être également perdues.</translation>
     </message>
 </context>
 <context>
@@ -1814,7 +1814,7 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     </message>
     <message>
         <source>OpenBoard Cast</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard Cast</translation>
     </message>
 </context>
 <context>
@@ -2267,7 +2267,7 @@ Veuillez redémarrer l&apos;application pour accéder aux documents mis à jour.
     </message>
     <message>
         <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
-        <translation type="unfinished"></translation>
+        <translation>Téléchargement du PDF : préférez-vous télécharger le fichier PDF ou l&apos;ajouter à votre document courant ?</translation>
     </message>
 </context>
 <context>
@@ -2321,11 +2321,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Restore credentials on reboot</source>
-        <translation>Sauvegarder les paramètres de connexion. </translation>
+        <translation>Sauvegarder les paramètres de connexion</translation>
     </message>
     <message>
         <source>OpenBoard</source>
-        <translation type="unfinished">OpenBoard</translation>
+        <translation>OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -2390,7 +2390,7 @@ p, li { white-space: pre-wrap; }
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Documents OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -2533,11 +2533,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message utf8="true">
         <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
+        <translation>Importateur de documents Open-Sankoré</translation>
     </message>
     <message utf8="true">
         <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
+        <translation>Vérifier si des données Open-Sankoré peuvent être importées au redémarrage. Attention, si vous avez déjà importé des données d’Open-Sankoré vous risquez de perdre vos documents courants dans OpenBoard.</translation>
     </message>
 </context>
 <context>
