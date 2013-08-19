@@ -2537,7 +2537,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message utf8="true">
         <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation>Vérifier si des données Open-Sankoré peuvent être importées au redémarrage. Attention, si vous avez déjà importé des données d’Open-Sankoré vous risquez de perdre vos documents courants dans OpenBoard.</translation>
+        <translation>Vérifier si des données Open-Sankoré peuvent être importées au redémarrage.</translation>
     </message>
 </context>
 <context>
