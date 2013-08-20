@@ -145,6 +145,7 @@ QSettings* UBSettings::getAppSettings()
         }
 
         UBSettings::sAppSettings = new QSettings(appSettings, QSettings::IniFormat, 0);
+        UBSettings::sAppSettings->setIniCodec("utf-8");
     }
 
     return UBSettings::sAppSettings;
