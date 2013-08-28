@@ -128,11 +128,11 @@ buildWithStandardQt(){
 }
 
 buildImporter(){
-    IMPORTER_DIR="../OpenSankoreToOpenBoard"
+    IMPORTER_DIR="../OpenBoard-Importer/"
     IMPORTER_NAME="OpenBoardImporter"
     checkDir $IMPORTER_DIR
     cd ${IMPORTER_DIR}
-    
+
     rm moc_*
     rm -rf debug release
     rm *.o
@@ -177,7 +177,7 @@ checkExecutable $LRELEASES
 checkExecutable $ZIP_PATH
 
 #build third party application
-buildImporter 
+buildImporter
 notifyProgress "OpenBoardImporter" "Built Importer"
 
 # cleaning the build directory
@@ -216,7 +216,7 @@ else
         if [ $MAKE_TAG == true ]; then
             git tag -a "OBv$VERSION" -m "OpenBoard setup for v$VERSION"
             git push origin --tags
-        fi 
+        fi
     fi
 fi
 
@@ -235,7 +235,7 @@ cp -R resources/customizations $PRODUCT_PATH/
 mkdir -p $PRODUCT_PATH/Importer
 cp -R ${IMPORTER_DIR}/${IMPORTER_NAME} $PRODUCT_PATH/Importer
 
-if [ $STANDARD_QT_USED == false ]; then 
+if [ $STANDARD_QT_USED == false ]; then
 #copying custom qt library
   mkdir -p $QT_LIBRARY_DEST_PATH
   copyQtLibrary libQtDBus
@@ -254,7 +254,7 @@ notifyProgress "QT" "Internalization"
 if [ ! -e $PRODUCT_PATH/i18n ]; then
     mkdir $PRODUCT_PATH/i18n
 fi
-#copying qt gui translation    
+#copying qt gui translation
 cp $GUI_TRANSLATIONS_DIRECTORY_PATH/qt_??.qm $PRODUCT_PATH/i18n/
 
 rm -rf install/linux
@@ -324,7 +324,7 @@ EOF
 APPLICATION_DIRECTORY_NAME="${APPLICATION_NAME}-$VERSION"
 PACKAGE_DIRECTORY="$BASE_WORKING_DIR/usr/local/$APPLICATION_DIRECTORY_NAME"
 #move build directory to packages directory
-cp -R $PRODUCT_PATH $PACKAGE_DIRECTORY 
+cp -R $PRODUCT_PATH $PACKAGE_DIRECTORY
 
 
 cat > $BASE_WORKING_DIR/usr/local/$APPLICATION_DIRECTORY_NAME/run.sh << EOF
