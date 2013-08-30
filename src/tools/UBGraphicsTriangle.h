@@ -168,6 +168,7 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
         static const int sArrowLength = 30;
         static const int sMinWidth = 380;
         static const int sMinHeight = 200;
+        qreal mStrokeWidth;
 };
 
 #endif /* UBGRAPHICSTRIANGLE_H_ */

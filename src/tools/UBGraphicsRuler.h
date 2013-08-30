@@ -60,7 +60,7 @@ class UBGraphicsRuler : public UBAbstractDrawRuler, public QGraphicsRectItem, pu
         virtual void EndLine();
 
     protected:
-        
+
         virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *styleOption, QWidget *widget);
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
@@ -105,6 +105,8 @@ class UBGraphicsRuler : public UBAbstractDrawRuler, public QGraphicsRectItem, pu
 
         static const int    sMinLength = 150;   // 3sm
         static const int    sMaxLength = 35000; // 700sm
+
+        qreal mStrokeWidth;
 };
 
 #endif /* UBGRAPHICSRULER_H_ */
