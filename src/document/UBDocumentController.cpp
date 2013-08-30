@@ -1618,6 +1618,7 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
                  minIndex = qMin(i, minIndex);
 
             mDocumentUI->thumbnailWidget->selectItemAt(minIndex);
+            UBApplication::boardController->setActiveDocumentScene(minIndex);
         }
     }
 }
