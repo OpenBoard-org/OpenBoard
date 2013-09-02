@@ -970,7 +970,7 @@ void UBDocumentController::importFile()
 
             QString groupName = group->groupName();
 
-            if (groupName == mDefaultDocumentGroupName || fileInfo.suffix() != "ubz")
+            if (groupName == mDefaultDocumentGroupName || fileInfo.suffix() == "ubz")
                 groupName = "";
 
             showMessage(tr("Importing file %1...").arg(fileInfo.baseName()), true);
