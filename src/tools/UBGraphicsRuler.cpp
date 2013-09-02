@@ -447,9 +447,11 @@ UBGraphicsScene* UBGraphicsRuler::scene() const
 
 void UBGraphicsRuler::StartLine(const QPointF& scenePos, qreal width)
 {
+    Q_UNUSED(width);
+
     QPointF itemPos = mapFromScene(scenePos);
 
-    mStrokeWidth = width;
+    mStrokeWidth = UBDrawingController::drawingController()->currentToolWidth();
 
     qreal y;
 
@@ -461,7 +463,7 @@ void UBGraphicsRuler::StartLine(const QPointF& scenePos, qreal width)
     else
     {
         drawLineDirection = 1;
-        y = rect().y() - width /2;
+        y = rect().y() - mStrokeWidth /2;
     }
 
     if (itemPos.x() < rect().x() + sLeftEdgeMargin)

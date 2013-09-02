@@ -854,8 +854,9 @@ void UBGraphicsTriangle::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 }
 void UBGraphicsTriangle::StartLine(const QPointF &scenePos, qreal width)
 {
+    Q_UNUSED(width);
     QPointF itemPos = mapFromScene(scenePos);
-    mStrokeWidth = width;
+    mStrokeWidth = UBDrawingController::drawingController()->currentToolWidth();
 
     qreal y;
 
