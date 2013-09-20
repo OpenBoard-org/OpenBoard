@@ -61,7 +61,6 @@ UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent) :
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 
-
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 

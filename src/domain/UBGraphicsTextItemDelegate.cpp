@@ -367,8 +367,6 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
     int startPos = qMin(cursor.anchor(), cursor.position());
     int endPos = qMax(cursor.anchor(), cursor.position());
 
-    qDebug() << "start: " << startPos << ", stop: " << endPos;
-
     QFont curFont;
     QFont nextCharFont;
     bool bEndofTheSameBlock;
@@ -376,6 +374,8 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
     int iPointSize;
     int iNextPointSize;
     int iCursorPos = startPos;
+    QBrush curBrush;
+    QBrush nextCharBrush;
 
    // we search continuous blocks of the text with the same PointSize and allpy new settings for them.
     cursor.setPosition (startPos, QTextCursor::MoveAnchor);
@@ -387,6 +387,7 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
         // Here we get the point size of the first character
         cursor.setPosition (iCursorPos+1, QTextCursor::KeepAnchor);
         curFont = cursor.charFormat().font();
+        curBrush = cursor.charFormat().foreground();
         iPointSize = curFont.pointSize();
 
         // Then we position the end cursor to the start cursor position
@@ -397,9 +398,10 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
             // Get the next character font size
             cursor.setPosition (iCursorPos+iBlockLen+1, QTextCursor::KeepAnchor);
             nextCharFont = cursor.charFormat().font();
+            nextCharBrush = cursor.charFormat().foreground();
             iNextPointSize = nextCharFont.pointSize();
 
-            if ((iPointSize != iNextPointSize)||(iCursorPos+iBlockLen >= endPos)||(0 != curFont.family().compare(nextCharFont.family()))){
+            if ((iPointSize != iNextPointSize)||(iCursorPos+iBlockLen >= endPos)||(0 != curFont.family().compare(nextCharFont.family()))||(curBrush != nextCharBrush)){
                 bEndofTheSameBlock = true;
                 break;
             }
@@ -409,11 +411,12 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
         }while(!bEndofTheSameBlock);
 
 
-        //setting new parameners
+        //setting new parameters
         QFont tmpFont = curFont;
         int iNewPointSize = (changeSize == changeMode) ? (iPointSize + factor) : (iPointSize * factor);
         tmpFont.setPointSize( (iNewPointSize > 0)?iNewPointSize:1);
         textFormat.setFont(tmpFont);
+        textFormat.setForeground(curBrush);
         cursor.setPosition (iCursorPos+iBlockLen, QTextCursor::KeepAnchor);
         cursor.setCharFormat(textFormat);
 
