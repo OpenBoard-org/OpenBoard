@@ -22,9 +22,6 @@
  * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
-
 #include "UBDocumentTreeWidget.h"
 
 #include "document/UBDocumentProxy.h"
@@ -323,6 +320,7 @@ void UBDocumentTreeWidget::dropEvent(QDropEvent *event)
                         if (scene)
                         {
                             UBGraphicsScene* sceneClone = scene->sceneDeepCopy();
+//                            UBGraphicsScene* sceneClone = scene;
 
                             UBDocumentProxy *targetDocProxy = targetProxyTreeItem->proxy();
 
