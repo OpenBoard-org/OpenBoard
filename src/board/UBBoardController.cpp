@@ -349,6 +349,8 @@ void UBBoardController::setupToolbar()
 
     connectToolbar();
     initToolbarTexts();
+
+    UBApplication::app()->toolBarDisplayTextChanged(QVariant(settings->appToolBarDisplayText->get().toBool()));
 }
 
 

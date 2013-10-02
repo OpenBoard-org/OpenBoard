@@ -124,7 +124,7 @@ void UBGraphicsCurtainItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void UBGraphicsCurtainItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QColor color = drawColor();
-
+    painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
     if(widget == UBApplication::boardController->controlView()->viewport())
     {
         color = UBSettings::paletteColor;

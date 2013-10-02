@@ -92,7 +92,7 @@ Source: "c:\OpenSankore\plugins\playlistformats\qtmultimediakit_m3u.dll"; DestDi
 Source: "c:\OpenSankore\plugins\playlistformats\qtmultimediakit_m3ud.dll"; DestDir: "c:\OpenBoard\plugins\playlistformats"; Flags: ignoreversion
 
 ;OpenBoardImporter
-Source: "..\OpenSankoreToOpenBoard\release\OpenBoardImporter.exe"; DestDir: "c:\OpenBoard\Importer"; Flags: ignoreversion
+Source: "..\OpenBoard-Importer\release\OpenBoardImporter.exe"; DestDir: "c:\OpenBoard\Importer"; Flags: ignoreversion
 Source: "..\Qt-4.8\lib\QtGui4.dll"; DestDir: "c:\OpenBoard\Importer"; Flags: ignoreversion
 Source: "..\Qt-4.8\lib\QtCore4.dll"; DestDir: "c:\OpenBoard\Importer"; Flags: ignoreversion
 

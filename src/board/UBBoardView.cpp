@@ -1067,19 +1067,19 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
         default:
             if(UBDrawingController::drawingController()->mActiveRuler==NULL) {
                 viewport()->setCursor (QCursor (Qt::BlankCursor));
-
-                if (scene () && !mTabletStylusIsPressed) {
-                    if (currentTool == UBStylusTool::Eraser) {
-                        connect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressEvent()));
-                        mLongPressTimer.start();
-                    }
-                    scene()->inputDevicePress(mapToScene(UBGeometryUtils::pointConstrainedInRect(event->pos(), rect())));
-                }
-                event->accept ();
             }
+            if (scene () && !mTabletStylusIsPressed) {
+                if (currentTool == UBStylusTool::Eraser) {
+                    connect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressEvent()));
+                    mLongPressTimer.start();
+                }
+                scene()->inputDevicePress(mapToScene(UBGeometryUtils::pointConstrainedInRect(event->pos(), rect())));
+            }
+            event->accept ();
         }
     }
 }
+
 
 void UBBoardView::mouseMoveEvent (QMouseEvent *event)
 {

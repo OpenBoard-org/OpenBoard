@@ -854,14 +854,16 @@ void UBGraphicsTriangle::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 }
 void UBGraphicsTriangle::StartLine(const QPointF &scenePos, qreal width)
 {
+    Q_UNUSED(width);
     QPointF itemPos = mapFromScene(scenePos);
+    mStrokeWidth = UBDrawingController::drawingController()->currentToolWidth();
 
     qreal y;
 
     if (mOrientation == 0 || mOrientation == 1) {
-        y = rect().y() + rect().height() + width / 2;
+        y = rect().y() + rect().height() + mStrokeWidth / 2;
     } else if (mOrientation == 2 || mOrientation == 3) {
-        y = rect().y() - width / 2;
+        y = rect().y() - mStrokeWidth / 2;
     }
 
     if (itemPos.x() < rect().x() + sLeftEdgeMargin)
@@ -873,19 +875,20 @@ void UBGraphicsTriangle::StartLine(const QPointF &scenePos, qreal width)
     itemPos = mapToScene(itemPos);
 
     scene()->moveTo(itemPos);
-    scene()->drawLineTo(itemPos, width, true);
+    scene()->drawLineTo(itemPos, mStrokeWidth, true);
 }
 
 void UBGraphicsTriangle::DrawLine(const QPointF &scenePos, qreal width)
 {
+    Q_UNUSED(width);
     QPointF itemPos = mapFromScene(scenePos);
 
     qreal y;
 
     if (mOrientation == 0 || mOrientation == 1) {
-        y = rect().y() + rect().height() + width / 2;
+        y = rect().y() + rect().height() + mStrokeWidth / 2;
     } else if (mOrientation == 2 || mOrientation == 3) {
-        y = rect().y() - width / 2;
+        y = rect().y() - mStrokeWidth / 2;
     }
 
     if (itemPos.x() < rect().x() + sLeftEdgeMargin)
@@ -897,7 +900,7 @@ void UBGraphicsTriangle::DrawLine(const QPointF &scenePos, qreal width)
     itemPos = mapToScene(itemPos);
 
     // We have to use "pointed" line for marker tool
-    scene()->drawLineTo(itemPos, width,
+    scene()->drawLineTo(itemPos, mStrokeWidth,
             UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker);
 }
 

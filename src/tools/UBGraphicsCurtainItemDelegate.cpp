@@ -94,8 +94,10 @@ QVariant UBGraphicsCurtainItemDelegate::itemChange(QGraphicsItem::GraphicsItemCh
 void UBGraphicsCurtainItemDelegate::positionHandles()
 {
     UBGraphicsItemDelegate::positionHandles();
-    mZOrderUpButton->hide();
-    mZOrderDownButton->hide();
+    if(mZOrderUpButton)
+        mZOrderUpButton->hide();
+    if(mZOrderDownButton)
+        mZOrderDownButton->hide();
 }
 
 void UBGraphicsCurtainItemDelegate::remove(bool checked, bool canUndo)

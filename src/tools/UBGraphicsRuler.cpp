@@ -447,19 +447,23 @@ UBGraphicsScene* UBGraphicsRuler::scene() const
 
 void UBGraphicsRuler::StartLine(const QPointF& scenePos, qreal width)
 {
+    Q_UNUSED(width);
+
     QPointF itemPos = mapFromScene(scenePos);
+
+    mStrokeWidth = UBDrawingController::drawingController()->currentToolWidth();
 
     qreal y;
 
     if (itemPos.y() > rect().y() + rect().height() / 2)
     {
         drawLineDirection = 0;
-        y = rect().y() + rect().height() + width / 2;
+        y = rect().y() + rect().height() + mStrokeWidth / 2;
     }
     else
     {
         drawLineDirection = 1;
-        y = rect().y() - width /2;
+        y = rect().y() - mStrokeWidth /2;
     }
 
     if (itemPos.x() < rect().x() + sLeftEdgeMargin)
@@ -471,21 +475,22 @@ void UBGraphicsRuler::StartLine(const QPointF& scenePos, qreal width)
     itemPos = mapToScene(itemPos);
 
     scene()->moveTo(itemPos);
-    scene()->drawLineTo(itemPos, width, true);
+    scene()->drawLineTo(itemPos, mStrokeWidth, true);
 }
 
 void UBGraphicsRuler::DrawLine(const QPointF& scenePos, qreal width)
 {
+    Q_UNUSED(width);
     QPointF itemPos = mapFromScene(scenePos);
 
     qreal y;
     if (drawLineDirection == 0)
     {
-        y = rect().y() + rect().height() + width / 2;
+        y = rect().y() + rect().height() + mStrokeWidth / 2;
     }
     else
     {
-        y = rect().y() - width /2;
+        y = rect().y() - mStrokeWidth /2;
     }
     if (itemPos.x() < rect().x() + sLeftEdgeMargin)
         itemPos.setX(rect().x() + sLeftEdgeMargin);
@@ -496,7 +501,7 @@ void UBGraphicsRuler::DrawLine(const QPointF& scenePos, qreal width)
     itemPos = mapToScene(itemPos);
 
     // We have to use "pointed" line for marker tool
-    scene()->drawLineTo(itemPos, width, UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker);
+    scene()->drawLineTo(itemPos, mStrokeWidth, UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker);
 }
 
 void UBGraphicsRuler::EndLine()
