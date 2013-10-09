@@ -525,8 +525,8 @@ void UBApplicationController::downloadJsonFinished(QString currentJson)
     QScriptEngine scriptEngine;
     scriptValue = scriptEngine.evaluate ("(" + currentJson + ")");
 
-    UBVersion installedVersion (qApp->applicationVersion().left(4));
-    UBVersion jsonVersion (scriptValue.property("version").toString().left(4));
+    UBVersion installedVersion (qApp->applicationVersion());
+    UBVersion jsonVersion (scriptValue.property("version").toString());
 
     if (jsonVersion > installedVersion) {
             if (UBApplication::mainWindow->yesNoQuestion(tr("Update available"), tr ("New update available, would you go to the web page ?"))){

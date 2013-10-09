@@ -30,25 +30,15 @@
 
 #include <QString>
 
-enum ReleaseStage { Alpha = 10, Beta = 11, ReleaseCandidate = 15 };
+enum ReleaseStage { Alpha = 10, Beta = 11, ReleaseCandidate = 15, Release = 17 };
 
 class UBVersion
 {
     public:
-//        UBVersion();
         UBVersion(const QString &string);
         virtual ~UBVersion();
 
         uint toUInt() const;
-
-//        void setString(const QString &string);
-//        QString toString() const;
-
-//        bool              isValid() const;
-//        int        platformNumber() const;
-//        int           majorNumber() const;
-//        ReleaseStage releaseStage() const;
-//        int           minorNumber() const;
 
         bool operator < (const UBVersion &otherVersion) const;
         bool operator == (const UBVersion &otherVersion) const;
@@ -57,11 +47,6 @@ class UBVersion
     private:
 
         QString mString;
-//        bool mIsValid;
-//        int mPlatform;
-//        int mMajor;
-//        int mMinor;
-//        ReleaseStage mReleaseStage;
 };
 
 #endif // UBVERSION_H_
