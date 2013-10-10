@@ -205,6 +205,14 @@ UBGraphicsGroupContainerItem *UBGraphicsGroupContainerItem::deepCopy() const
 
     copyItemParameters(copy);
 
+    foreach (QGraphicsItem *it, childItems()) {
+        UBItem *childAsUBItem = dynamic_cast<UBItem*>(it);
+        if (childAsUBItem) {
+            QGraphicsItem *cloneItem = dynamic_cast<QGraphicsItem*>(childAsUBItem->deepCopy());
+            copy->addToGroup(cloneItem);
+        }
+    }
+
     return copy;
 }
 

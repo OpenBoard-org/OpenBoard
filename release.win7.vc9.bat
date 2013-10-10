@@ -38,7 +38,7 @@ echo %PATH%
 
 REM Third party impoter application
 set IMPORTER_NAME=OpenBoardImporter
-set IMPORTER_PATH="%cd%\..\OpenSankoreToOpenBoard"
+set IMPORTER_PATH="%cd%\..\OpenBoard-Importer"
 
 IF NOT EXIST "%IMPORTER_PATH%" GOTO EXIT_WITH_ERROR
 set HOME_DIR="%cd%"
