@@ -124,7 +124,10 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
     setOrganizationDomain("oe-f.org");
     setApplicationName("OpenBoard");
 
-    setApplicationVersion(UBVERSION);
+    QString version = UBVERSION;
+    if(version.endsWith("."))
+        version = version.left(version.length()-1);
+    setApplicationVersion(version);
 
 #if defined(Q_WS_MAC) && !defined(QT_NO_DEBUG)
     CFStringRef shortVersion = (CFStringRef)CFBundleGetValueForInfoDictionaryKey(CFBundleGetMainBundle(), CFSTR("CFBundleShortVersionString"));
