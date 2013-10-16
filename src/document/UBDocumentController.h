@@ -50,7 +50,7 @@ class UBDocumentToolsPalette;
 
 class UBDocumentController : public UBDocumentContainer
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBDocumentController(UBMainWindow* mainWindow);

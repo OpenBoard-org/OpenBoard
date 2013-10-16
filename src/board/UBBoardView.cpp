@@ -599,6 +599,9 @@ Here we determines cases when items should to get mouse press event at pressing 
     case QGraphicsWebView::Type:
         return true;
 
+    case QGraphicsProxyWidget::Type:
+        return false;
+
     case UBGraphicsWidgetItem::Type:
         if (currentTool == UBStylusTool::Selector && item->parentItem() && item->parentItem()->isSelected())
             return true;
