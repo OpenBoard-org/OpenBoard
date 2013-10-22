@@ -598,7 +598,6 @@ Here we determines cases when items should to get mouse press event at pressing 
         break;
     case QGraphicsWebView::Type:
         return true;
-
     case QGraphicsProxyWidget::Type:
         return false;
 
@@ -771,9 +770,24 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
     if (isMultipleSelectionEnabled())
         return;
 
-    if (itemShouldReceiveMousePressEvent(movingItem))
+    if (itemShouldReceiveMousePressEvent(movingItem)){
         QGraphicsView::mousePressEvent (event);
-    else {
+
+        QGraphicsItem* item = determineItemToPress(scene()->itemAt(this->mapToScene(event->posF().toPoint()), transform()));
+        //use QGraphicsView::transform() to use not deprecated QGraphicsScene::itemAt() method
+
+        if (item && (item->type() == QGraphicsProxyWidget::Type) && item->parentObject() && item->parentObject()->type() != QGraphicsProxyWidget::Type)
+        {
+            //Clean up children
+            QList<QGraphicsItem*> children = item->children();
+
+            for( QList<QGraphicsItem*>::iterator it = children.begin(); it != children.end(); ++it )
+                if ((*it)->pos().x() < 0 || (*it)->pos().y() < 0)
+                    (*it)->setPos(0,item->boundingRect().size().height());
+        }
+    }
+    else
+    {
         if (movingItem)
         {
             UBGraphicsItem *graphicsItem = dynamic_cast<UBGraphicsItem*>(movingItem);
