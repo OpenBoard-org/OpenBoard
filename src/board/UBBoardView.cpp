@@ -497,30 +497,7 @@ void UBBoardView::handleItemsSelection(QGraphicsItem *item)
             // only with UB items.
             if ((UBGraphicsItemType::UserTypesCount > item->type()) && (item->type() > QGraphicsItem::UserType))
             {
-                // if Item can be selected at mouse press - then we need to deselect all other items.
-                foreach(QGraphicsItem *iter_item, scene()->selectedItems())
-                {
-                    if (iter_item != item)
-                    {
-                        iter_item->setSelected(false);
-                    }
-                }
-            }
-        }
-    }else{
-        // Deselect the other items
-        foreach(QGraphicsItem* it, scene()->selectedItems()){
-            UBGraphicsGroupContainerItem* pGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(it);
-            if(NULL != pGroup){
-                foreach(QGraphicsItem* pGIt, pGroup->childItems()){
-                    UBGraphicsTextItem* pTxt = dynamic_cast<UBGraphicsTextItem*>(pGIt);
-                    if(NULL != pTxt){
-                        // We must clear the text selection
-                        QTextCursor t = pTxt->textCursor();
-                        t.clearSelection();
-                        pTxt->setTextCursor(t);
-                    }
-                }
+                scene()->deselectAllItemsExcept(item);
             }
         }
     }

@@ -317,6 +317,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void clearSelectionFrame();
         UBBoardView *controlView();
         void notifyZChanged(QGraphicsItem *item, qreal zValue);
+        void deselectAllItemsExcept(QGraphicsItem* graphicsItem);
 
 public slots:
         void updateSelectionFrame();

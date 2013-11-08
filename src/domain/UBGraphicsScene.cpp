@@ -1685,6 +1685,22 @@ void UBGraphicsScene::deselectAllItems()
         if (mSelectionFrame) {
             mSelectionFrame->setEnclosedItems(QList<QGraphicsItem*>());
         }
+        UBGraphicsTextItem* textItem = dynamic_cast<UBGraphicsTextItem*>(gi);
+        if(textItem)
+            textItem->activateTextEditor(false);
+    }
+}
+
+void UBGraphicsScene::deselectAllItemsExcept(QGraphicsItem* item)
+{
+    foreach(QGraphicsItem* eachItem,selectedItems()){
+        if(eachItem != item){
+            eachItem->setSelected(false);
+
+            UBGraphicsTextItem* textItem = dynamic_cast<UBGraphicsTextItem*>(eachItem);
+            if(textItem)
+                textItem->activateTextEditor(false);
+        }
     }
 }
 

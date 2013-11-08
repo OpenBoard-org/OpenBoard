@@ -94,8 +94,7 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
 
         virtual void clearSource(){;}
         virtual void setUuid(const QUuid &pUuid);
-        void setHtml(const QString &text);
-
+        void activateTextEditor(bool activate);
         void setSelected(bool selected);
 
         QString mTypeTextHereLabel;
@@ -126,6 +125,7 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
 
         QColor mColorOnDarkBackground;
         QColor mColorOnLightBackground;
+        bool isActivatedTextEditor;
 };
 
 #endif /* UBGRAPHICSTEXTITEM_H_ */

@@ -29,6 +29,7 @@
 
 #include <QtCore>
 #include <QtXml>
+#include <QGraphicsTextItem>
 
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"

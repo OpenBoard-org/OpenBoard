@@ -47,6 +47,7 @@ UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent)
     , mMultiClickState(0)
     , mLastMousePressTime(QTime::currentTime())
     , mTypeTextHereLabel(tr("<Type Text Here>"))
+    , isActivatedTextEditor(true)
 {
     setDelegate(new UBGraphicsTextItemDelegate(this, 0));
 
@@ -152,6 +153,7 @@ void UBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     if (mMultiClickState == 1)
     {
+        activateTextEditor(true);
         QGraphicsTextItem::mousePressEvent(event);
         setFocus();
     }
@@ -373,8 +375,17 @@ void UBGraphicsTextItem::documentSizeChanged(const QSizeF & newSize)
     resize(newSize.width(), newSize.height());
 }
 
-void UBGraphicsTextItem::setHtml(const QString &text)
+void UBGraphicsTextItem::activateTextEditor(bool activate)
 {
-    QGraphicsTextItem::setHtml(text);
-    setTextInteractionFlags(Qt::NoTextInteraction);
+    qDebug() << textInteractionFlags();
+
+    this->isActivatedTextEditor = activate;
+
+    if(!activate){
+        setTextInteractionFlags(Qt::TextSelectableByMouse);
+    }else{
+        setTextInteractionFlags(Qt::TextEditorInteraction);
+    }
+
+    qDebug() <<  textInteractionFlags();
 }
