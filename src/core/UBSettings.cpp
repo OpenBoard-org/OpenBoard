@@ -232,6 +232,9 @@ void UBSettings::init()
     appLastSessionDocumentUUID = new UBSetting(this, "App", "LastSessionDocumentUUID", "");
     appLastSessionPageIndex = new UBSetting(this, "App", "LastSessionPageIndex", 0);
     appUseMultiscreen = new UBSetting(this, "App", "UseMultiscreenMode", true);
+
+    appStartupHintsEnabled = new UBSetting(this,"App","EnableStartupHints",true);
+
     appLookForOpenSankoreInstall = new UBSetting(this, "App", "LookForOpenSankoreInstall", true);
 
     appStartMode = new UBSetting(this, "App", "StartMode", "");
@@ -1067,6 +1070,19 @@ QString UBSettings::applicationAnimationsLibraryDirectory()
     else {
         return configPath;
     }
+}
+
+QString UBSettings::applicationStartupHintsDirectory()
+{
+    QString defaultRelativePath = QString("./startupHints");
+
+    QString configPath = value("StartupHintsDirectory", QVariant(defaultRelativePath)).toString();
+
+    if (configPath.startsWith(".")) {
+        return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
+    }
+    else
+        return configPath;
 }
 
 QString UBSettings::userInteractiveFavoritesDirectory()

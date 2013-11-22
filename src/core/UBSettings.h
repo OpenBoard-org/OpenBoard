@@ -150,6 +150,7 @@ class UBSettings : public QObject
         QString applicationAudiosLibraryDirectory();
         QString applicationVideosLibraryDirectory();
         QString applicationAnimationsLibraryDirectory();
+        QString applicationStartupHintsDirectory();
 
         QNetworkProxy* httpProxy();
 
@@ -239,6 +240,9 @@ class UBSettings : public QObject
         UBSetting* appLastSessionPageIndex;
 
         UBSetting* appUseMultiscreen;
+
+        UBSetting* appStartupHintsEnabled;
+
         UBSetting* appLookForOpenSankoreInstall;
 
         UBSetting* boardPenFineWidth;

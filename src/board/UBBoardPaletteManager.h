@@ -51,6 +51,7 @@ class UBServerXMLHttpRequest;
 class UBKeyboardPalette;
 class UBMainWindow;
 class UBApplicationController;
+class UBStartupHintsPalette;
 
 class UBBoardPaletteManager : public QObject
 {
@@ -104,7 +105,7 @@ class UBBoardPaletteManager : public QObject
         UBStylusPalette *mStylusPalette;
 
         UBZoomPalette *mZoomPalette;
-
+	UBStartupHintsPalette* mTipPalette;
         /** The left dock palette */
         UBLeftPalette* mLeftPalette;
         /** The right dock palette */
