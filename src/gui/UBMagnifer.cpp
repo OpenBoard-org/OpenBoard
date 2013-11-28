@@ -24,7 +24,6 @@
 
 
 
-
 #include <QtGui>
 #include "UBMagnifer.h"
 
@@ -36,7 +35,7 @@
 #include "core/memcheck.h"
 
 
-UBMagnifier::UBMagnifier(QWidget *parent, bool isInteractive) 
+UBMagnifier::UBMagnifier(QWidget *parent, bool isInteractive)
     : QWidget(parent, parent ? Qt::Widget : Qt::Tool | (Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint))
     , mShouldMoveWidget(false)
     , mShouldResizeWidget(false)
@@ -62,6 +61,15 @@ UBMagnifier::UBMagnifier(QWidget *parent, bool isInteractive)
     sIncreasePixmap = new QPixmap(":/images/increase.svg");
     sDecreasePixmap = new QPixmap(":/images/decrease.svg");
     mResizeItem = new QPixmap(":/images/resize.svg");
+    sChangeModePixmap = new QPixmap();
+
+    qDebug() << "sClosePixmap" << sClosePixmap->size() << endl
+             << "sIncreasePixmap" << sIncreasePixmap->size() << endl
+             << "sDecreasePixmap" << sDecreasePixmap->size() << endl
+             << "mResizeItem" << mResizeItem->size() << endl;
+
+
+    setDrawingMode(UBSettings::settings()->magnifierDrawingMode->get().toInt());
 
     if (parent)
     {
@@ -104,9 +112,15 @@ UBMagnifier::~UBMagnifier()
         delete sDecreasePixmap;
         sDecreasePixmap = NULL;
     }
+
+    if (sChangeModePixmap)
+    {
+        delete sChangeModePixmap;
+        sChangeModePixmap = NULL;
+    }
 }
 
-void UBMagnifier::setSize(qreal percentFromScene) 
+void UBMagnifier::setSize(qreal percentFromScene)
 {
     if(gView == NULL || mView == NULL) return;
 
@@ -116,31 +130,74 @@ void UBMagnifier::setSize(qreal percentFromScene)
     qreal size = params.sizePercentFromScene * sceneSize.width() / 100;
 
     QRect currGeom = geometry();
-    if(currGeom.width() == currGeom.height())
+    if (circular == mDrawingMode)
+    {
+        if(currGeom.width() == currGeom.height())
+        {
+            QPoint newPos = mView->mapFromGlobal(updPointMove);
+            setGeometry(newPos.x() - size / 2, newPos.y() - size / 2, size, size);
+        }
+        else
+            setGeometry(0, 0, size, size);
+    }
+    else if (rectangular == mDrawingMode)
     {
         QPoint newPos = mView->mapFromGlobal(updPointMove);
-        setGeometry(newPos.x() - size / 2, newPos.y() - size / 2, size, size);
+        setGeometry(newPos.x() - size / 2, newPos.y() - size / 2 / 3, size, size/3);
     }
-    else
-        setGeometry(0, 0, size, size);
 
-    // prepare transparent bit mask
+    calculateButtonsPositions();
+    createMask();
+
+}
+
+void UBMagnifier::createMask()
+{
+    if(gView == NULL || mView == NULL) return;
+
+    // calculate object size
+    QSize sceneSize = mView->size();
+    qreal isize = params.sizePercentFromScene * sceneSize.width() / 100;
+
     QImage mask_img(width(), height(), QImage::Format_Mono);
     mask_img.fill(0xff);
     QPainter mask_ptr(&mask_img);
     mask_ptr.setBrush( QBrush( QColor(0, 0, 0) ) );
-    mask_ptr.drawEllipse(QPointF(size/2, size/2), size / 2 - sClosePixmap->width(), size / 2 - sClosePixmap->width());
+
+    if (circular == mDrawingMode)
+        mask_ptr.drawEllipse(QPointF(isize/2, isize/2), isize / 2 - sClosePixmap->width(), isize / 2 - sClosePixmap->width());
+    else if (rectangular == mDrawingMode)
+        mask_ptr.drawRoundedRect(QRect(sClosePixmap->width(), sClosePixmap->width(), size().width() - 2*sClosePixmap->width(), size().height() - 2*sClosePixmap->width()), sClosePixmap->width()/2, sClosePixmap->width()/2);
+
     bmpMask = QBitmap::fromImage(mask_img);
 
-    // prepare general image
     pMap = QPixmap(width(), height());
     pMap.fill(Qt::transparent);
     pMap.setMask(bmpMask);
 }
 
-void UBMagnifier::setZoom(qreal zoom) 
+void UBMagnifier::setZoom(qreal zoom)
 {
     params.zoom = zoom;
+}
+
+
+void UBMagnifier::calculateButtonsPositions()
+{
+    qDebug() << "current widget size is " << size();
+
+    m_iButtonInterval = 5;
+    mResizeItemButtonRect = QRect(size().width() - 1.5*mResizeItem->width() - m_iButtonInterval, size().height() - 1.5*mResizeItem->height() - m_iButtonInterval, mResizeItem->width(), mResizeItem->height());
+    sClosePixmapButtonRect = QRect(mResizeItemButtonRect.x() - sChangeModePixmap->width() - 3*m_iButtonInterval, size().height() - sChangeModePixmap->height(), sChangeModePixmap->width(), sChangeModePixmap->height());
+    sChangeModePixmapButtonRect = QRect(sClosePixmapButtonRect.x() - sChangeModePixmap->width() - m_iButtonInterval, size().height() - sChangeModePixmap->height(), sChangeModePixmap->width(), sChangeModePixmap->height());
+    sDecreasePixmapButtonRect = QRect(sChangeModePixmapButtonRect.x() - sChangeModePixmap->width() - m_iButtonInterval, size().height() - sDecreasePixmap->height(), sDecreasePixmap->width(), sDecreasePixmap->height());
+    sIncreasePixmapButtonRect = QRect(sDecreasePixmapButtonRect.x() - sChangeModePixmap->width() - m_iButtonInterval, size().height() - sIncreasePixmap->height(), sIncreasePixmap->width(), sIncreasePixmap->height());
+
+    qDebug() << "mResizeItemButtonRect" << mResizeItemButtonRect << endl
+             << "sClosePixmapButtonRect" << sClosePixmapButtonRect << endl
+             << "sChangeModePixmapButtonRect" << sChangeModePixmapButtonRect << endl
+             << "sDecreasePixmapButtonRect" << sDecreasePixmapButtonRect << endl
+             << "sIncreasePixmapButtonRect" << sIncreasePixmapButtonRect << endl;
 }
 
 void UBMagnifier::paintEvent(QPaintEvent * event)
@@ -155,23 +212,30 @@ void UBMagnifier::paintEvent(QPaintEvent * event)
     {
         painter.setBrush(QColor(127, 127, 127, 127));
         painter.drawRoundedRect(QRectF(size().width() / 2, size().height() / 2, ( size().width() - sClosePixmap->width() ) / 2, ( size().height() - sClosePixmap->width() ) / 2), 15, 15);
-
-        painter.setBrush(QColor(190, 190, 190, 255));
-        painter.drawEllipse(QPoint( size().width() / 2, size().height() / 2), ( size().width() - sClosePixmap->width() ) / 2, ( size().height() -  sClosePixmap->height() ) / 2);
-
-        painter.drawPixmap(size().width() - sClosePixmap->width(), size().height() / 2 + sClosePixmap->height() * 1, *sClosePixmap);
-        painter.drawPixmap(size().width() - sIncreasePixmap->width(), size().height() / 2 + sIncreasePixmap->height() * 2.5, *sIncreasePixmap);
-        painter.drawPixmap(size().width() - sDecreasePixmap->width(), size().height() / 2 + sDecreasePixmap->height() * 3.6, *sDecreasePixmap);
-
-        painter.drawPixmap(size().width() - mResizeItem->width() - 20, size().height() - mResizeItem->height() - 20, *mResizeItem);
     }
-    else
+
+    painter.setBrush(QColor(190, 190, 190, 255));
+    if (circular == mDrawingMode)
     {
-        painter.setBrush(QColor(127, 127, 127, 127));
-        painter.drawEllipse(QPoint( size().width() / 2, size().height() / 2), ( size().width() - sClosePixmap->width() ) / 2, ( size().height() -  sClosePixmap->height() ) / 2);
+        painter.drawEllipse(QPoint(size().width() / 2, size().height() / 2), ( size().width() - sClosePixmap->width() ) / 2, ( size().height() -  sClosePixmap->height() ) / 2);
+    }
+    else if (rectangular == mDrawingMode)
+    {
+        QRect r = QRect(sClosePixmap->width()/2, sClosePixmap->width()/2, size().width()- sClosePixmap->width(), size().height() - sClosePixmap->width());
+        painter.drawRoundedRect(r, sClosePixmap->width()/2, sClosePixmap->width()/2);
     }
 
     painter.drawPixmap(0, 0, pMap);
+
+    if (m_isInteractive)
+    {
+        painter.setBrush(QColor(190, 190, 190, 255));
+        painter.drawPixmap(sClosePixmapButtonRect.topLeft(), *sClosePixmap);
+        painter.drawPixmap(sIncreasePixmapButtonRect.topLeft(), *sIncreasePixmap);
+        painter.drawPixmap(sDecreasePixmapButtonRect.topLeft(), *sDecreasePixmap);
+        painter.drawPixmap(sChangeModePixmapButtonRect.topLeft(), *sChangeModePixmap);
+        painter.drawPixmap(mResizeItemButtonRect.topLeft(), *mResizeItem);
+    }
 }
 
 void UBMagnifier::mousePressEvent ( QMouseEvent * event )
@@ -181,10 +245,10 @@ void UBMagnifier::mousePressEvent ( QMouseEvent * event )
 
         QWidget::mousePressEvent(event);
 
-        if (event->pos().x() >= size().width() - mResizeItem->width() - 20 && 
-            event->pos().x() < size().width() - 20 && 
-            event->pos().y() >= size().height() - mResizeItem->height() - 20 && 
-            event->pos().y() < size().height() - - 20)
+        if (event->pos().x() >= size().width() - mResizeItem->width() - 14 &&
+            event->pos().x() < size().width() - 14 &&
+            event->pos().y() >= size().height() - mResizeItem->height() - 14 &&
+            event->pos().y() < size().height() - - 14)
         {
             mShouldResizeWidget = true;
         }
@@ -217,7 +281,7 @@ void UBMagnifier::mouseMoveEvent ( QMouseEvent * event )
             emit magnifierMoved_Signal(QPoint(this->pos().x() + size().width() / 2, this->pos().y() + size().height() / 2 ));
             return;
         }
-    
+
         if(mShouldResizeWidget && (event->buttons() & Qt::LeftButton))
         {
 
@@ -233,10 +297,7 @@ void UBMagnifier::mouseMoveEvent ( QMouseEvent * event )
             return;
         }
 
-        if (event->pos().x() >= size().width() - mResizeItem->width() - 20 && 
-            event->pos().x() < size().width() - 20 && 
-            event->pos().y() >= size().height() - mResizeItem->height() - 20 && 
-            event->pos().y() < size().height() - - 20 &&
+        if (mResizeItemButtonRect.contains(event->pos())&&
             isCusrsorAlreadyStored == false
            )
         {
@@ -258,31 +319,28 @@ void UBMagnifier::mouseReleaseEvent(QMouseEvent * event)
         mShouldMoveWidget = false;
         mShouldResizeWidget = false;
 
-        if (event->pos().x() >= size().width() - sClosePixmap->width() && 
-            event->pos().x() < size().width()&& 
-            event->pos().y() >= size().height() / 2 + sClosePixmap->height() * 1 && 
-            event->pos().y() < size().height() / 2 + sClosePixmap->height() * 2)
+        if (sClosePixmapButtonRect.contains(event->pos()))
         {
             event->accept();
             emit magnifierClose_Signal();
         }
         else
-        if (event->pos().x() >= size().width() - sIncreasePixmap->width() && 
-            event->pos().x() < size().width()&& 
-            event->pos().y() >= size().height() / 2 + sIncreasePixmap->height() * 2.5 && 
-            event->pos().y() < size().height() / 2 + sIncreasePixmap->height() * 3.5)
+        if (sIncreasePixmapButtonRect.contains(event->pos()))
         {
             event->accept();
             emit magnifierZoomIn_Signal();
         }
         else
-        if (event->pos().x() >= size().width() - sDecreasePixmap->width() && 
-            event->pos().x() < size().width()&& 
-            event->pos().y() >= size().height() / 2 + sDecreasePixmap->height() * 3.6 && 
-            event->pos().y() < size().height() / 2 + sDecreasePixmap->height() * 4.6)
+        if (sDecreasePixmapButtonRect.contains(event->pos()))
         {
             event->accept();
             emit magnifierZoomOut_Signal();
+        }
+        else
+        if (sChangeModePixmapButtonRect.contains(event->pos()))
+        {
+            event->accept();
+            emit magnifierDrawingModeChange_Signal(static_cast<int>(mDrawingMode+1)%modesCount);
         }
         else
             QWidget::mouseReleaseEvent(event); // don't propgate to parent, the widget is deleted in UBApplication::boardController->removeTool
@@ -294,17 +352,17 @@ void UBMagnifier::mouseReleaseEvent(QMouseEvent * event)
 
 void UBMagnifier::slot_refresh()
 {
-    if(!(updPointGrab.isNull())) 
+    if(!(updPointGrab.isNull()))
         grabPoint(updPointGrab);
 
     if(isCusrsorAlreadyStored)
     {
         QPoint globalCursorPos = QCursor::pos();
         QPoint cursorPos = mapFromGlobal(globalCursorPos);
-        if (cursorPos.x() < size().width() - mResizeItem->width() - 20 || 
-            cursorPos.x() > size().width() - 20 ||
-            cursorPos.y() < size().height() - mResizeItem->height() - 20 ||
-            cursorPos.y() > size().height() - - 20
+        if (cursorPos.x() < size().width() - mResizeItem->width() - 14 ||
+            cursorPos.x() > size().width() - 14 ||
+            cursorPos.y() < size().height() - mResizeItem->height() - 14 ||
+            cursorPos.y() > size().height() - - 14
             )
         {
             isCusrsorAlreadyStored = false;
@@ -322,15 +380,15 @@ void UBMagnifier::grabPoint()
     qreal zWidthHalf = zWidth / 2;
     qreal zHeight = height() / (params.zoom * transM.m22());
     qreal zHeightHalf = zHeight / 2;
-    
+
 
     QPointF pfScLtF(UBApplication::boardController->controlView()->mapToScene(QPoint(itemPos.x(), itemPos.y())));
-   
+
     float x = pfScLtF.x() - zWidthHalf;
     float y = pfScLtF.y() - zHeightHalf;
 
     QPointF leftTop(x,y);
-    QPointF rightBottom(x + zWidth, y + zHeight);  
+    QPointF rightBottom(x + zWidth, y + zHeight);
     QRectF srcRect(leftTop, rightBottom);
 
     QPixmap newPixMap(QSize(width(), height()));
@@ -338,7 +396,7 @@ void UBMagnifier::grabPoint()
 
     UBApplication::boardController->activeScene()->render(&painter, QRectF(0,0,width(),height()), srcRect);
     painter.end();
-    
+
     pMap.fill(Qt::transparent);
     pMap = newPixMap.scaled(QSize(width(), height()));
     pMap.setMask(bmpMask);
@@ -356,23 +414,23 @@ void UBMagnifier::grabPoint(const QPoint &pGrab)
     qreal zWidthHalf = zWidth / 2;
     qreal zHeight = height() / (params.zoom * transM.m22());
     qreal zHeightHalf = zHeight / 2;
-    
+
 
     QPointF pfScLtF(UBApplication::boardController->controlView()->mapToScene(QPoint(itemPos.x(), itemPos.y())));
-   
+
     float x = pfScLtF.x() - zWidthHalf;
     float y = pfScLtF.y() - zHeightHalf;
 
     QPointF leftTop(x,y);
-    QPointF rightBottom(x + zWidth, y + zHeight);  
+    QPointF rightBottom(x + zWidth, y + zHeight);
     QRectF srcRect(leftTop, rightBottom);
 
     QPixmap newPixMap(QSize(width(), height()));
     QPainter painter(&newPixMap);
 
-    UBApplication::boardController->activeScene()->render(&painter, QRectF(0,0,width(),height()), srcRect);   
+    UBApplication::boardController->activeScene()->render(&painter, QRectF(0,0,width(),height()), srcRect);
     painter.end();
-    
+
    // pMap.fill(Qt::transparent);
     pMap = newPixMap;
     pMap.setMask(bmpMask);
@@ -385,11 +443,12 @@ void UBMagnifier::grabPoint(const QPoint &pGrab)
 // from global
 void UBMagnifier::grabNMove(const QPoint &pGrab, const QPoint &pMove, bool needGrab, bool needMove)
 {
-    updPointGrab = pGrab;
+    QPoint pointToGrab = pGrab;
+    updPointGrab = pointToGrab;
     updPointMove = pMove;
 
     if(needGrab)
-        grabPoint(pGrab);
+        grabPoint(pointToGrab);
 
     if(needMove)
     {
@@ -400,9 +459,43 @@ void UBMagnifier::grabNMove(const QPoint &pGrab, const QPoint &pMove, bool needG
 }
 
 void UBMagnifier::setGrabView(QWidget *view)
-{   
+{
     gView = view;
     mRefreshTimer.setInterval(40);
     mRefreshTimer.start();
 }
 
+void UBMagnifier::setDrawingMode(int mode)
+{
+    mDrawingMode = static_cast<DrawingMode>(mode);
+
+    QString sMode;
+
+    if (circular == mDrawingMode)
+    {
+        sMode = "roundeRrectangle";
+        resize(width(), width());
+    }
+
+    if (rectangular == mDrawingMode)
+    {
+        sMode = "circle";
+        resize(width(), height()/3);
+
+        if (mView)
+        {
+            qreal newPercentSize = size().width()/3 * 100 / mView->width();
+            emit magnifierResized_Signal(newPercentSize);
+        }
+    }
+
+    sChangeModePixmap->load(":/images/"+sMode+".svg");
+
+    calculateButtonsPositions();
+    if (mView && gView)
+        UBApplication::boardController->controlView()->scene()->moveMagnifier();
+
+    createMask();
+
+    UBSettings::settings()->magnifierDrawingMode->set(mode);
+}

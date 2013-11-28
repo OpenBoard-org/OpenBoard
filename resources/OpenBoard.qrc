@@ -344,5 +344,7 @@
         <file>images/download_open.png</file>
         <file>images/tab_mask.png</file>
         <file>images/duplicateDisabled.svg</file>
+        <file>images/roundeRrectangle.svg</file>
+        <file>images/circle.svg</file>
     </qresource>
 </RCC>

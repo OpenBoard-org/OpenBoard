@@ -351,6 +351,7 @@ void UBSettings::init()
     appOnlineUserName = new UBSetting(this, "App", "OnlineUserName", "");
 
     boardShowToolsPalette = new UBSetting(this, "Board", "ShowToolsPalette", "false");
+    magnifierDrawingMode = new UBSetting(this, "Board", "MagnifierDrawingMode", "0");
 
     svgViewBoxMargin = new UBSetting(this, "SVG", "ViewBoxMargin", "50");
 

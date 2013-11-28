@@ -372,6 +372,7 @@ class UBSettings : public QObject
 
         UBSetting* libIconSize;
 
+        UBSetting* magnifierDrawingMode;
     public slots:
 
         void setPenWidthIndex(int index);
