@@ -352,6 +352,7 @@ void UBSettings::init()
 
     boardShowToolsPalette = new UBSetting(this, "Board", "ShowToolsPalette", "false");
     magnifierDrawingMode = new UBSetting(this, "Board", "MagnifierDrawingMode", "0");
+    timerInterval = new UBSetting(this, "Board", "Timer interval", "5");
 
     svgViewBoxMargin = new UBSetting(this, "SVG", "ViewBoxMargin", "50");
 

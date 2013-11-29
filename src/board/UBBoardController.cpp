@@ -108,6 +108,7 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     , mMovingSceneIndex(-1)
     , mActionGroupText(tr("Group"))
     , mActionUngroupText(tr("Ungroup"))
+    , mAutosaveTimer(0)
 {
     mZoomFactor = UBSettings::settings()->boardZoomFactor->get().toDouble();
 
@@ -393,6 +394,21 @@ void UBBoardController::startScript()
 void UBBoardController::stopScript()
 {
     freezeW3CWidgets(true);
+}
+
+void UBBoardController::saveData(SaveFlags fls)
+{
+    bool verbose = fls | sf_showProgress;
+
+    if (verbose) {
+        UBApplication::showMessage("Saving document...");
+    }
+    if (mActiveScene && mActiveScene->isModified()) {
+        persistCurrentScene();
+    }
+    if (verbose) {
+        UBApplication::showMessage("Document has just been saved...");
+    }
 }
 
 void UBBoardController::initToolbarTexts()
@@ -1647,6 +1663,14 @@ void UBBoardController::adjustDisplayViews()
 }
 
 
+int UBBoardController::autosaveTimeoutFromSettings()
+{
+    int value = UBSettings::settings()->timerInterval->get().toInt();
+    int minute = 60 * 1000;
+
+    return value * minute;
+}
+
 void UBBoardController::changeBackground(bool isDark, bool isCrossed)
 {
     bool currentIsDark = mActiveScene->isDarkBackground();
@@ -1765,6 +1789,36 @@ void UBBoardController::documentSceneChanged(UBDocumentProxy* pDocumentProxy, in
     if(selectedDocument() == pDocumentProxy)
     {
         setActiveDocumentScene(mActiveSceneIndex);
+    }
+}
+
+void UBBoardController::autosaveTimeout()
+{
+    if (UBApplication::applicationController->displayMode() != UBApplicationController::Board) {
+        //perform autosave only in board mode
+        return;
+    }
+
+    saveData(sf_showProgress);
+}
+
+void UBBoardController::appMainModeChanged(UBApplicationController::MainMode md)
+{
+//    int timerInterval = autosaveTimeoutFromSettings();
+    int timerInterval = 50000;
+    if (!timerInterval) {
+        return;
+    }
+
+    if (!mAutosaveTimer) {
+        mAutosaveTimer = new QTimer(this);
+        connect(mAutosaveTimer, SIGNAL(timeout()), this, SLOT(autosaveTimeout()));
+    }
+
+    if (md == UBApplicationController::Board) {
+        mAutosaveTimer->start(timerInterval);
+    } else if (mAutosaveTimer->isActive()) {
+        mAutosaveTimer->stop();
     }
 }
 

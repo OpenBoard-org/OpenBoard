@@ -339,7 +339,8 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(applicationController, SIGNAL(desktopMode(bool)),
             boardController->paletteManager(), SLOT(slot_changeDesktopMode(bool)));
 
-
+    connect(applicationController, SIGNAL(mainModeChanged(UBApplicationController::MainMode))
+          , boardController,       SLOT(appMainModeChanged(UBApplicationController::MainMode)));
 
     connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), applicationController, SLOT(showDesktop(bool)));
     connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), this, SLOT(stopScript()));

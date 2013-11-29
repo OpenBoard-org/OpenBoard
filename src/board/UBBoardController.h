@@ -32,6 +32,7 @@
 
 #include <QObject>
 #include "document/UBDocumentContainer.h"
+#include "core/UBApplicationController.h"
 
 class UBMainWindow;
 class UBApplication;
@@ -58,6 +59,13 @@ class UBGraphicsItem;
 class UBBoardController : public UBDocumentContainer
 {
     Q_OBJECT
+
+    public:
+        enum SaveFlag {
+            sf_none = 0x0,
+            sf_showProgress = 0x1
+        };
+    Q_DECLARE_FLAGS(SaveFlags, SaveFlag)
 
     public:
         UBBoardController(UBMainWindow *mainWindow);
@@ -240,6 +248,8 @@ class UBBoardController : public UBDocumentContainer
         void startScript();
         void stopScript();
 
+        void saveData(SaveFlags fls = sf_none);
+
     signals:
         void newPageAdded();
         void activeSceneChanged();
@@ -267,10 +277,15 @@ class UBBoardController : public UBDocumentContainer
         void undoRedoStateChange(bool canUndo);
         void documentSceneChanged(UBDocumentProxy* proxy, int pIndex);
 
+    private slots:
+        void autosaveTimeout();
+        void appMainModeChanged(UBApplicationController::MainMode);
+
     private:
         void updatePageSizeState();
         void saveViewState();
         void adjustDisplayViews();
+        int autosaveTimeoutFromSettings();
 
         UBMainWindow *mMainWindow;
         UBGraphicsScene* mActiveScene;
@@ -297,6 +312,8 @@ class UBBoardController : public UBDocumentContainer
         int mMovingSceneIndex;
         QString mActionGroupText;
         QString mActionUngroupText;
+
+        QTimer *mAutosaveTimer;
 
     private slots:
         void stylusToolDoubleClicked(int tool);

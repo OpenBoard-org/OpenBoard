@@ -22,9 +22,6 @@
  * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
-
 #include <QDebug>
 #include <QNetworkProxy>
 #include <QNetworkDiskCache>
