@@ -120,7 +120,9 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
 
     staticMemoryCleaner = new QObject(0); // deleted in UBApplication destructor
 
-    setOrganizationName("Open Education Foundation");
+    setOrganizationName(UBSettings::organizationName());
+    qDebug() << "organization name" << organizationName();
+    qDebug() << "application" << this;
     setOrganizationDomain("oe-f.org");
     setApplicationName("OpenBoard");
 

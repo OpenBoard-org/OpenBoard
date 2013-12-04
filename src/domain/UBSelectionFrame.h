@@ -72,6 +72,7 @@ private slots:
     void increaseZlevelTop();
     void increaseZlevelDown();
     void increaseZlevelBottom();
+    void groupItems();
 
 private:
     void addSelectionUndo(QList<QGraphicsItem*> items, UBZLayerController::moveDestination dest);
@@ -85,6 +86,8 @@ private:
 
     QList<QGraphicsItem*> sortedByZ(const QList<QGraphicsItem*> &pItems);
     QList<DelegateButton*> buttonsForFlags(UBGraphicsFlags fls);
+
+    QList<QGraphicsItem*> enclosedGraphicsItems();
 
 
 private:
@@ -104,6 +107,7 @@ private:
     DelegateButton *mDuplicateButton;
     DelegateButton *mZOrderUpButton;
     DelegateButton *mZOrderDownButton;
+    DelegateButton *mGroupButton;
 
     DelegateButton *mRotateButton;
 

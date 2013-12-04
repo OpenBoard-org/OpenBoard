@@ -148,6 +148,7 @@ QSettings* UBSettings::getAppSettings()
         UBSettings::sAppSettings->setIniCodec("utf-8");
     }
 
+    qDebug() << "sAppSettings" << sAppSettings;
     return UBSettings::sAppSettings;
 }
 
@@ -774,7 +775,8 @@ QString UBSettings::userDataDirectory()
 {
     static QString dataDirPath = "";
     if(dataDirPath.isEmpty()){
-        if (sAppSettings && getAppSettings()->contains("App/DataDirectory")) {
+        if (getAppSettings() && getAppSettings()->contains("App/DataDirectory")) {
+            qDebug() << "getAppSettings()->contains(App/DataDirectory):" << getAppSettings()->contains("App/DataDirectory");
             dataDirPath = getAppSettings()->value("App/DataDirectory").toString();
             dataDirPath = replaceWildcard(dataDirPath);
 
@@ -785,7 +787,9 @@ QString UBSettings::userDataDirectory()
 
         }
         dataDirPath = UBFileSystemUtils::normalizeFilePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
-        dataDirPath.replace(qApp->organizationName() + "/", "");
+        qDebug() << "organization name" << UBSettings::organizationName();
+        qDebug() << "application" << qApp;
+        dataDirPath.replace(UBSettings::organizationName() + "/", "");
     }
     return dataDirPath;
 }
@@ -879,6 +883,11 @@ QString UBSettings::userPodcastRecordingDirectory()
     return dirPath;
 }
 
+QString UBSettings::organizationName()
+{
+    return "Open Education Foundation";
+}
+
 
 QString UBSettings::userDocumentDirectory()
 {
@@ -887,6 +896,7 @@ QString UBSettings::userDocumentDirectory()
         documentDirectory = userDataDirectory() + "/document";
         checkDirectory(documentDirectory);
     }
+    qDebug() << "userDocumentDirectory()" << documentDirectory;
     return documentDirectory;
 }
 

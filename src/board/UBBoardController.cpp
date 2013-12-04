@@ -1804,8 +1804,7 @@ void UBBoardController::autosaveTimeout()
 
 void UBBoardController::appMainModeChanged(UBApplicationController::MainMode md)
 {
-//    int timerInterval = autosaveTimeoutFromSettings();
-    int timerInterval = 50000;
+    int timerInterval = autosaveTimeoutFromSettings();
     if (!timerInterval) {
         return;
     }

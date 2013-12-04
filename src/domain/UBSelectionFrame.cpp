@@ -29,12 +29,15 @@
 
 #include "domain/UBItem.h"
 #include "domain/UBGraphicsItemZLevelUndoCommand.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
 #include "board/UBBoardController.h"
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"
 #include "gui/UBResources.h"
+#include "gui/UBMainWindow.h"
 #include "core/UBApplication.h"
 #include "board/UBBoardView.h"
+#include "board/UBDrawingController.h"
 
 UBSelectionFrame::UBSelectionFrame()
     : mThickness(UBSettings::settings()->objectFrameWidth)
@@ -44,6 +47,7 @@ UBSelectionFrame::UBSelectionFrame()
     , mDuplicateButton(0)
     , mZOrderUpButton(0)
     , mZOrderDownButton(0)
+    , mGroupButton(0)
     , mRotateButton(0)
 {
     setLocalBrush(QBrush(UBSettings::paletteColor));
@@ -314,6 +318,15 @@ void UBSelectionFrame::increaseZlevelBottom()
 //    }
 }
 
+void UBSelectionFrame::groupItems()
+{
+    UBGraphicsGroupContainerItem *groupItem = ubscene()->createGroup(enclosedGraphicsItems());
+
+    groupItem->setSelected(true);
+    UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+    qDebug() << "Grouping items";
+}
+
 void UBSelectionFrame::addSelectionUndo(QList<QGraphicsItem*> items, UBZLayerController::moveDestination dest){
     if(!items.empty()){
         qreal topItemLevel = items.at(0)->data(UBGraphicsItemData::ItemOwnZValue).toReal();
@@ -453,7 +466,6 @@ QList<DelegateButton*> UBSelectionFrame::buttonsForFlags(UBGraphicsFlags fls) {
 
     if (!mDeleteButton) {
         mDeleteButton = new DelegateButton(":/images/close.svg", this, 0, Qt::TopLeftSection);
-        mButtons << mDeleteButton;
         connect(mDeleteButton, SIGNAL(clicked()), this, SLOT(remove()));
     }
     result << mDeleteButton;
@@ -464,6 +476,15 @@ QList<DelegateButton*> UBSelectionFrame::buttonsForFlags(UBGraphicsFlags fls) {
             connect(mDuplicateButton, SIGNAL(clicked(bool)), this, SLOT(duplicate()));
         }
         result <<  mDuplicateButton;
+    }
+
+    if (mEnclosedtems.count() >= 1) {
+        if (!mGroupButton) {
+            mGroupButton = new DelegateButton(":/images/plus.svg", this, 0, Qt::TopLeftSection);
+            mGroupButton->setShowProgressIndicator(false);
+            connect(mGroupButton, SIGNAL(clicked()), this, SLOT(groupItems()));
+        }
+        result << mGroupButton;
     }
 
     if (fls | GF_ZORDER_MANIPULATIONS_ALLOWED) {
@@ -493,6 +514,16 @@ QList<DelegateButton*> UBSelectionFrame::buttonsForFlags(UBGraphicsFlags fls) {
             mRotateButton->setTransparentToMouseEvent(true);
         }
         result << mRotateButton;
+    }
+
+    return result;
+}
+
+QList<QGraphicsItem*> UBSelectionFrame::enclosedGraphicsItems()
+{
+    QList<QGraphicsItem*> result;
+    foreach (UBGraphicsItemDelegate *d, mEnclosedtems) {
+        result << d->delegated();
     }
 
     return result;
