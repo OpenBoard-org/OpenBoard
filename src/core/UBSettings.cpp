@@ -787,7 +787,7 @@ QString UBSettings::userDataDirectory()
 
         }
         dataDirPath = UBFileSystemUtils::normalizeFilePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
-        dataDirPath.replace(UBSettings::organizationName() + "/", "OpenBoard");
+        dataDirPath.replace(qApp->organizationName() + "/", "");
     }
     return dataDirPath;
 }
@@ -880,12 +880,6 @@ QString UBSettings::userPodcastRecordingDirectory()
     }
     return dirPath;
 }
-
-QString UBSettings::organizationName()
-{
-    return "Open Education Foundation";
-}
-
 
 QString UBSettings::userDocumentDirectory()
 {

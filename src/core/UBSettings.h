@@ -137,7 +137,6 @@ class UBSettings : public QObject
         static QString userInteractiveDirectory();
         static QString userInteractiveFavoritesDirectory();
         static QString userPodcastRecordingDirectory();
-        static QString organizationName();
 
         QString userGipLibraryDirectory();
 
