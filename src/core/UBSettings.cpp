@@ -787,11 +787,7 @@ QString UBSettings::userDataDirectory()
 
         }
         dataDirPath = UBFileSystemUtils::normalizeFilePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
-        qDebug() << "organization name" << UBSettings::organizationName();
-        qDebug() << "application" << qApp;
-        dataDirPath.replace(UBSettings::organizationName() + "/", "");
-        dataDirPath.truncate(dataDirPath.count() - 1);
-        dataDirPath.append("OpenBoard");
+        dataDirPath.replace(UBSettings::organizationName() + "/", "OpenBoard");
     }
     return dataDirPath;
 }
