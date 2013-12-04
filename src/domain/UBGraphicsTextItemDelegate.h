@@ -76,6 +76,11 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
         DelegateButton* mDecreaseSizeButton;
         DelegateButton* mIncreaseSizeButton;
 
+        DelegateButton* mAlignLeftButton;
+        DelegateButton* mAlignCenterButton;
+        DelegateButton* mAlignRightButton;
+        DelegateButton* mAlighMixed;
+
         int mLastFontPixelSize;
 
         static const int sMinPixelSize;

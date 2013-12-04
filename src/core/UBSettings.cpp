@@ -790,6 +790,8 @@ QString UBSettings::userDataDirectory()
         qDebug() << "organization name" << UBSettings::organizationName();
         qDebug() << "application" << qApp;
         dataDirPath.replace(UBSettings::organizationName() + "/", "");
+        dataDirPath.truncate(dataDirPath.count() - 1);
+        dataDirPath.append("OpenBoard");
     }
     return dataDirPath;
 }

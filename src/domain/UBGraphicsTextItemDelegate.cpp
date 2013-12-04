@@ -48,6 +48,10 @@ const int UBGraphicsTextItemDelegate::sMinPointSize = 8;
 UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDelegated, QObject *)
     : UBGraphicsItemDelegate(pDelegated,0, GF_COMMON | GF_REVOLVABLE | GF_TOOLBAR_USED)
     , mLastFontPixelSize(-1)
+    , mAlignLeftButton(0)
+    , mAlignCenterButton(0)
+    , mAlignRightButton(0)
+    , mAlighMixed(0)
     , delta(5)
 {
     delegated()->setData(UBGraphicsItemData::ItemEditable, QVariant(true));
@@ -108,13 +112,19 @@ void UBGraphicsTextItemDelegate::buildButtons()
     mDecreaseSizeButton = new DelegateButton(":/images/minus.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
     mIncreaseSizeButton = new DelegateButton(":/images/plus.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
 
+    //Alignment buttons family
+    mAlignLeftButton = new DelegateButton(":/images/plus.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+    mAlignCenterButton = new DelegateButton(":/images/pause.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+    mAlignRightButton  = new DelegateButton(":/images/minus.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+    mAlighMixed = new DelegateButton(":/images/reload.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+
     connect(mFontButton, SIGNAL(clicked(bool)), this, SLOT(pickFont()));
     connect(mColorButton, SIGNAL(clicked(bool)), this, SLOT(pickColor()));
     connect(mDecreaseSizeButton, SIGNAL(clicked(bool)), this, SLOT(decreaseSize()));
     connect(mIncreaseSizeButton, SIGNAL(clicked(bool)), this, SLOT(increaseSize()));
 
     QList<QGraphicsItem*> itemsOnToolBar;
-    itemsOnToolBar << mFontButton << mColorButton << mDecreaseSizeButton << mIncreaseSizeButton;
+    itemsOnToolBar << mFontButton << mColorButton << mDecreaseSizeButton << mIncreaseSizeButton << mFontButton;
     mToolBarItem->setItemsOnToolBar(itemsOnToolBar);
     mToolBarItem->setShifting(true);
     mToolBarItem->setVisibleOnBoard(true);
