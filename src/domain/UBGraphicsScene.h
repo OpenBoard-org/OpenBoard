@@ -340,7 +340,6 @@ public slots:
         void setToolCursor(int tool);
 
         void selectionChangedProcessing();
-        void updateGroupButtonState();
         void moveMagnifier();
         void moveMagnifier(QPoint newPos, bool forceGrab = false);
         void closeMagnifier();

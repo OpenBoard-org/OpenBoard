@@ -69,7 +69,6 @@
    <addaction name="actionForward"/>
    <addaction name="separator"/>
    <addaction name="actionErase"/>
-   <addaction name="actionGroupItems"/>
    <addaction name="actionBoard"/>
    <addaction name="actionWeb"/>
    <addaction name="actionDocument"/>
@@ -1559,25 +1558,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+H</string>
-   </property>
-  </action>
-  <action name="actionGroupItems">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/group.png</normaloff>
-     <normalon>:/images/toolbar/ungroup.png</normalon>:/images/toolbar/group.png</iconset>
-   </property>
-   <property name="text">
-    <string>Group</string>
-   </property>
-   <property name="toolTip">
-    <string>Group items</string>
    </property>
   </action>
   <action name="actionPlay">

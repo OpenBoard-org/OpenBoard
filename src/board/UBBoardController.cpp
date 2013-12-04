@@ -154,8 +154,6 @@ void UBBoardController::init()
 
     setActiveDocumentScene(doc);
 
-    connect(UBApplication::mainWindow->actionGroupItems, SIGNAL(triggered()), this, SLOT(groupButtonClicked()));
-
     undoRedoStateChange(true);
 
 }
@@ -976,35 +974,6 @@ void UBBoardController::lastScene()
     }
 
     updateActionStates();
-}
-
-void UBBoardController::groupButtonClicked()
-{
-    QAction *groupAction = UBApplication::mainWindow->actionGroupItems;
-    QList<QGraphicsItem*> selItems = activeScene()->selectedItems();
-    if (!selItems.count()) {
-        qDebug() << "Got grouping request when there is no any selected item on the scene";
-        return;
-    }
-
-    if (groupAction->text() == mActionGroupText) { //The only way to get information from item, considering using smth else
-        UBGraphicsGroupContainerItem *groupItem = activeScene()->createGroup(selItems);
-        groupItem->setSelected(true);
-        UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-
-    }
-    else if (groupAction->text() == mActionUngroupText) {
-        //Considering one selected item and it's a group
-        if (selItems.count() > 1)
-        {
-            qDebug() << "can't make sense of ungrouping more then one item. Grouping action should be performed for that purpose";
-            return;
-        }
-        UBGraphicsGroupContainerItem *currentGroup = dynamic_cast<UBGraphicsGroupContainerItem*>(selItems.first());
-        if (currentGroup) {
-            currentGroup->destroy();
-        }
-    }
 }
 
 void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, const QPointF& pPos, const QSize& pSize, bool isBackground, bool internalData)

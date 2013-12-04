@@ -340,7 +340,6 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
 
 //    Just for debug. Do not delete please
 //    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
-    connect(this, SIGNAL(selectionChanged()), this, SLOT(updateGroupButtonState()));
     connect(UBApplication::undoStack.data(), SIGNAL(indexChanged(int)), this, SLOT(updateSelectionFrameWrapper(int)));
 }
 
@@ -361,35 +360,6 @@ void UBGraphicsScene::selectionChangedProcessing()
         UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f') + "own z value is "
                                    + QString::number(selectedItems().first()->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f'));
 
-    }
-}
-
-void UBGraphicsScene::updateGroupButtonState()
-{
-
-    UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();
-    if (UBStylusTool::Selector != currentTool && UBStylusTool::Play != currentTool)
-        return;
-
-    QAction *groupAction = UBApplication::mainWindow->actionGroupItems;
-    QList<QGraphicsItem*> selItems = selectedItems();
-    int selCount = selItems.count();
-
-    if (selCount < 1) {
-        groupAction->setEnabled(false);
-        groupAction->setText(UBApplication::app()->boardController->actionGroupText());
-
-    } else if (selCount == 1) {
-        if (selItems.first()->type() == UBGraphicsGroupContainerItem::Type) {
-            groupAction->setEnabled(true);
-            groupAction->setText(UBApplication::app()->boardController->actionUngroupText());
-        } else {
-            groupAction->setEnabled(false);
-        }
-
-    } else if (selCount > 1) {
-        groupAction->setEnabled(true);
-        groupAction->setText(UBApplication::app()->boardController->actionGroupText());
     }
 }
 
