@@ -79,9 +79,14 @@ void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
         if (UBGraphicsItem::isRotatable(this) && !UBGraphicsItem::isRotatable(item)) {
             Delegate()->setUBFlag(GF_REVOLVABLE, false);
         }
-    } else {
+        if (!UBGraphicsItem::isLocked(this) && UBGraphicsItem::isLocked(item)) {
+            Delegate()->setLocked(true);
+        }
+    } 
+    else {
         Delegate()->setUBFlag(GF_FLIPPABLE_ALL_AXIS, UBGraphicsItem::isFlippable(item));
         Delegate()->setUBFlag(GF_REVOLVABLE, UBGraphicsItem::isRotatable(item));
+        Delegate()->setLocked(UBGraphicsItem::isLocked(item));
     }
 
     // COMBINE
@@ -322,6 +327,7 @@ void UBGraphicsGroupContainerItem::pRemoveFromGroup(QGraphicsItem *item)
         if (!UBGraphicsItem::isFlippable(item) || !UBGraphicsItem::isRotatable(item)) {
             bool flippableNow = true;
             bool rotatableNow = true;
+            bool lockedNow = false;
 
             foreach (QGraphicsItem *item, childItems()) {
                 if (!UBGraphicsItem::isFlippable(item)) {
@@ -330,12 +336,17 @@ void UBGraphicsGroupContainerItem::pRemoveFromGroup(QGraphicsItem *item)
                 if (!UBGraphicsItem::isRotatable(item)) {
                     rotatableNow = false;
                 }
-                if (!rotatableNow && !flippableNow) {
+                if(UBGraphicsItem::isLocked(item))
+                    lockedNow = true;
+
+                if (!rotatableNow && !flippableNow && lockedNow) {
                     break;
                 }
+
             }
             Delegate()->setUBFlag(GF_FLIPPABLE_ALL_AXIS, flippableNow);
             Delegate()->setUBFlag(GF_REVOLVABLE, rotatableNow);
+            Delegate()->setLocked(lockedNow);
         }
     }
 

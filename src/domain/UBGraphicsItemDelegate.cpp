@@ -715,6 +715,15 @@ void UBGraphicsItemDelegate::showMenu()
     mMenu->exec(cv->mapToGlobal(pinPos.bottomRight()));
 }
 
+void UBGraphicsItemDelegate::setLocked(bool pLocked)
+{
+    Q_ASSERT(mDelegated);
+
+    if (mDelegated) {
+        mDelegated->setData(UBGraphicsItemData::ItemLocked, QVariant(pLocked));
+    }
+}
+
 void UBGraphicsItemDelegate::updateFrame()
 {
     if (mFrame && !mFrame->scene() && mDelegated->scene())
