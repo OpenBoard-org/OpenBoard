@@ -565,12 +565,9 @@ void UBGraphicsWidgetItem::injectInlineJavaScript()
 void UBGraphicsWidgetItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 
-    if (scene() && scene()->renderingContext() != UBGraphicsScene::Screen) {
-        painter->drawPixmap(0, 0, snapshot());
-    }
-    else {
-        QGraphicsWebView::paint(painter, option, widget);
-    }
+
+    QGraphicsWebView::paint(painter, option, widget);
+
 
     if (!mInitialLoadDone) {
         QString message;
