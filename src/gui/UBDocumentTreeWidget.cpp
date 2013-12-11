@@ -261,7 +261,7 @@ void UBDocumentTreeWidget::dropEvent(QDropEvent *event)
                 UBDocumentProxyTreeItem* pi = dynamic_cast<UBDocumentProxyTreeItem*>(ti);
                 if (pi)
                 {
-                    if (mSelectedProxyTi->proxy()->metaData(UBSettings::documentUpdatedAt).toString() >= pi->proxy()->metaData(UBSettings::documentUpdatedAt).toString())
+                    if (mSelectedProxyTi->proxy()->metaData(UBSettings::documentDate).toString() >= pi->proxy()->metaData(UBSettings::documentDate).toString())
                     {
                         break;
                     }
@@ -380,7 +380,7 @@ void UBDocumentTreeWidget::documentUpdated(UBDocumentProxy *pDocument)
                 UBDocumentProxyTreeItem* pi = dynamic_cast<UBDocumentProxyTreeItem*>(ti);
                 if (pi)
                 {
-                    if (pDocument->metaData(UBSettings::documentUpdatedAt).toString() >= pi->proxy()->metaData(UBSettings::documentUpdatedAt).toString())
+                    if (pDocument->metaData(UBSettings::documentDate).toString() >= pi->proxy()->metaData(UBSettings::documentDate).toString())
                     {
                         bool selected = treeItem->isSelected();
                         parent->removeChild(treeItem);
@@ -416,7 +416,7 @@ UBDocumentProxyTreeItem::UBDocumentProxyTreeItem(QTreeWidgetItem * parent, UBDoc
         UBDocumentProxyTreeItem* pi = dynamic_cast<UBDocumentProxyTreeItem*>(ti);
         if (pi)
         {
-            if (proxy->metaData(UBSettings::documentUpdatedAt).toString() >= pi->proxy()->metaData(UBSettings::documentUpdatedAt).toString())
+            if (proxy->metaData(UBSettings::documentDate).toString() >= pi->proxy()->metaData(UBSettings::documentDate).toString())
             {
                 break;
             }
