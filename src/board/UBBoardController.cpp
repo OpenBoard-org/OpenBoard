@@ -1634,7 +1634,7 @@ void UBBoardController::adjustDisplayViews()
 
 int UBBoardController::autosaveTimeoutFromSettings()
 {
-    int value = UBSettings::settings()->timerInterval->get().toInt();
+    int value = UBSettings::settings()->autoSaveInterval->get().toInt();
     int minute = 60 * 1000;
 
     return value * minute;
@@ -1773,8 +1773,8 @@ void UBBoardController::autosaveTimeout()
 
 void UBBoardController::appMainModeChanged(UBApplicationController::MainMode md)
 {
-    int timerInterval = autosaveTimeoutFromSettings();
-    if (!timerInterval) {
+    int autoSaveInterval = autosaveTimeoutFromSettings();
+    if (!autoSaveInterval) {
         return;
     }
 
@@ -1784,7 +1784,7 @@ void UBBoardController::appMainModeChanged(UBApplicationController::MainMode md)
     }
 
     if (md == UBApplicationController::Board) {
-        mAutosaveTimer->start(timerInterval);
+        mAutosaveTimer->start(autoSaveInterval);
     } else if (mAutosaveTimer->isActive()) {
         mAutosaveTimer->stop();
     }

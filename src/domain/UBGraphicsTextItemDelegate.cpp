@@ -45,13 +45,64 @@
 const int UBGraphicsTextItemDelegate::sMinPixelSize = 8;
 const int UBGraphicsTextItemDelegate::sMinPointSize = 8;
 
+
+AlignTextButton::AlignTextButton(const QString &fileName, QGraphicsItem *pDelegated, QGraphicsItem *parent, Qt::WindowFrameSection section)
+    : DelegateButton(fileName, pDelegated, parent, section)
+    , lft(new QSvgRenderer(QString(":/images/plus.svg")))
+    , cntr(new QSvgRenderer(QString(":/images/pause.svg")))
+    , rght(new QSvgRenderer(QString(":/images/minus.svg")))
+    , mxd(new QSvgRenderer(QString(":/images/reload.svg")))
+{
+    setKind(k_left);
+}
+
+AlignTextButton::~AlignTextButton()
+{
+    if (lft) delete lft;
+    if (cntr) delete cntr;
+    if (rght) delete rght;
+    if (mxd) delete mxd;
+}
+
+void AlignTextButton::setKind(int pKind)
+{
+    if (mHideMixed && pKind == k_mixed) {
+        qDebug() << "Mixed button is hidden, can't process it";
+        return;
+    }
+    mKind = pKind;
+    QSvgRenderer *rndrer = rndFromKind(pKind);
+    Q_ASSERT(rndrer);
+    setSharedRenderer(rndrer);
+}
+
+void AlignTextButton::setNextKind()
+{
+    int mxKind = MAX_KIND;
+    if (mHideMixed) {
+        mxKind--;
+    }
+    setKind(mKind == mxKind ? 0 : ++mKind);
+}
+
+int AlignTextButton::nextKind() const
+{
+    int mxKind = MAX_KIND;
+    if (mHideMixed) {
+        mxKind--;
+    }
+    int result = mKind;
+    return mKind == mxKind ? 0 : ++result;
+}
+
 UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDelegated, QObject *)
     : UBGraphicsItemDelegate(pDelegated,0, GF_COMMON | GF_REVOLVABLE | GF_TOOLBAR_USED)
+    , mFontButton(0)
+    , mColorButton(0)
+    , mDecreaseSizeButton(0)
+    , mIncreaseSizeButton(0)
+    , mAlignButton(0)
     , mLastFontPixelSize(-1)
-    , mAlignLeftButton(0)
-    , mAlignCenterButton(0)
-    , mAlignRightButton(0)
-    , mAlighMixed(0)
     , delta(5)
 {
     delegated()->setData(UBGraphicsItemData::ItemEditable, QVariant(true));
@@ -69,6 +120,9 @@ UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDele
 
     delegated()->adjustSize();
     delegated()->contentsChanged();
+
+    connect(delegated()->document(), SIGNAL(cursorPositionChanged(QTextCursor)), this, SLOT(onCursorPositionChanged(QTextCursor)));
+    connect(delegated()->document(), SIGNAL(modificationChanged(bool)), this, SLOT(onModificationChanged(bool)));
 
     // NOOP
 }
@@ -107,24 +161,35 @@ void UBGraphicsTextItemDelegate::buildButtons()
 {
     UBGraphicsItemDelegate::buildButtons();
 
-    mFontButton = new DelegateButton(":/images/font.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
-    mColorButton = new DelegateButton(":/images/color.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
-    mDecreaseSizeButton = new DelegateButton(":/images/minus.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
-    mIncreaseSizeButton = new DelegateButton(":/images/plus.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+    if (!mFontButton) {
+        mFontButton = new DelegateButton(":/images/font.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+        connect(mFontButton, SIGNAL(clicked(bool)), this, SLOT(pickFont()));
+    }
+    if (!mColorButton) {
+        mColorButton = new DelegateButton(":/images/color.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+        connect(mColorButton, SIGNAL(clicked(bool)), this, SLOT(pickColor()));
+    }
 
-    //Alignment buttons family
-    mAlignLeftButton = new DelegateButton(":/images/plus.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
-    mAlignCenterButton = new DelegateButton(":/images/pause.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
-    mAlignRightButton  = new DelegateButton(":/images/minus.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
-    mAlighMixed = new DelegateButton(":/images/reload.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+    if (!mDecreaseSizeButton) {
+        mDecreaseSizeButton = new DelegateButton(":/images/minus.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+        connect(mDecreaseSizeButton, SIGNAL(clicked(bool)), this, SLOT(decreaseSize()));
+    }
 
-    connect(mFontButton, SIGNAL(clicked(bool)), this, SLOT(pickFont()));
-    connect(mColorButton, SIGNAL(clicked(bool)), this, SLOT(pickColor()));
-    connect(mDecreaseSizeButton, SIGNAL(clicked(bool)), this, SLOT(decreaseSize()));
-    connect(mIncreaseSizeButton, SIGNAL(clicked(bool)), this, SLOT(increaseSize()));
+    if (!mIncreaseSizeButton) {
+        mIncreaseSizeButton = new DelegateButton(":/images/plus.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+        connect(mIncreaseSizeButton, SIGNAL(clicked(bool)), this, SLOT(increaseSize()));
+    }
+
+    //    Alignment button
+    if (!mAlignButton) {
+        mAlignButton = new AlignTextButton(":/images/plus.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+        connect(mAlignButton, SIGNAL(clicked()), this, SLOT(alignButtonProcess()));
+    }
+
 
     QList<QGraphicsItem*> itemsOnToolBar;
-    itemsOnToolBar << mFontButton << mColorButton << mDecreaseSizeButton << mIncreaseSizeButton << mFontButton;
+    itemsOnToolBar << mFontButton << mColorButton << mDecreaseSizeButton << mIncreaseSizeButton;
+    itemsOnToolBar << mAlignButton;
     mToolBarItem->setItemsOnToolBar(itemsOnToolBar);
     mToolBarItem->setShifting(true);
     mToolBarItem->setVisibleOnBoard(true);
@@ -259,6 +324,58 @@ void UBGraphicsTextItemDelegate::increaseSize()
    ChangeTextSize(delta, changeSize);
 }
 
+void UBGraphicsTextItemDelegate::alignButtonProcess()
+{
+    qDebug() << "alignButtonProcess() clicked";
+    QObject *sndr = sender();
+
+    if (sndr == mAlignButton) {
+        qDebug() << "Align button";
+        AlignTextButton *asAlText = static_cast<AlignTextButton*>(mAlignButton);
+        if (asAlText->nextKind() == AlignTextButton::k_mixed) {
+            restoreTextCursorFormats();
+        }
+        asAlText->setNextKind();
+
+        QTextCursor cur = delegated()->textCursor();
+        QTextBlockFormat fmt = cur.blockFormat();
+        switch (asAlText->kind()) {
+        case AlignTextButton::k_left:
+            fmt.setAlignment(Qt::AlignLeft);
+            break;
+        case AlignTextButton::k_center:
+            fmt.setAlignment(Qt::AlignCenter);
+            break;
+        case AlignTextButton::k_right:
+            fmt.setAlignment(Qt::AlignRight);
+            break;
+        case AlignTextButton::k_mixed:
+            break;
+        }
+
+        delegated()->setTextCursor(cur);
+        cur.setBlockFormat(fmt);
+    }
+
+    qDebug() << "sender process" << sndr;
+}
+
+void UBGraphicsTextItemDelegate::onCursorPositionChanged(const QTextCursor &cursor)
+{
+    qDebug() << "cursor position changed";
+    qDebug() << "-----------------------";
+    qDebug() << "we have a selection!" << cursor.selectionStart();
+    qDebug() << "-----------------------";
+    updateAlighButtonState();
+}
+
+void UBGraphicsTextItemDelegate::onModificationChanged(bool ch)
+{
+    Q_UNUSED(ch);
+    qDebug() << "modification changed";
+    updateAlighButtonState();
+}
+
 UBGraphicsTextItem* UBGraphicsTextItemDelegate::delegated()
 {
     return static_cast<UBGraphicsTextItem*>(mDelegated);
@@ -344,6 +461,47 @@ void UBGraphicsTextItemDelegate::positionHandles()
     }
 }
 
+bool UBGraphicsTextItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    mSelectionData.mButtonIsPressed = true;
+    qDebug() << "Reporting selection  of the cursor (mouse press)" << delegated()->textCursor().selection().isEmpty();
+    qDebug() << QString("Anchor: %1\nposition: %2 (mouse press)").arg(delegated()->textCursor().anchor()).arg(delegated()->textCursor().position());
+
+    if (!UBGraphicsItemDelegate::mousePressEvent(event)) {
+        return false;
+    }
+
+    return true;
+}
+
+bool UBGraphicsTextItemDelegate::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (mSelectionData.mButtonIsPressed) {
+        qDebug() << "Reporting selection of the cursor (mouse move)" << delegated()->textCursor().selection().isEmpty();
+        qDebug() << QString("Anchor: %1\nposition: %2 (mouse mouse move)").arg(delegated()->textCursor().anchor()).arg(delegated()->textCursor().position());
+    }
+
+    if (!UBGraphicsItemDelegate::mouseMoveEvent(event)) {
+        return false;
+    }
+
+    return true;
+}
+
+bool UBGraphicsTextItemDelegate::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    mSelectionData.mButtonIsPressed = false;
+    qDebug() << "Reporting selection of the cursor (mouse release)" << delegated()->textCursor().selection().isEmpty();
+    qDebug() << QString("Anchor: %1\nposition: %2 (mouse mouse release)").arg(delegated()->textCursor().anchor()).arg(delegated()->textCursor().position());
+    updateAlighButtonState();
+
+    if (!UBGraphicsItemDelegate::mouseReleaseEvent(event)) {
+        return false;
+    }
+
+    return true;
+}
+
 void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode changeMode)
 {
     if (scaleSize == changeMode)
@@ -352,8 +510,8 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
             return;
     }
     else
-    if (0 == factor)
-        return;
+        if (0 == factor)
+            return;
 
     UBGraphicsTextItem *item = dynamic_cast<UBGraphicsTextItem*>(delegated());
 
@@ -443,6 +601,77 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
     cursor.setPosition (cursorPos, QTextCursor::KeepAnchor);
 
     delegated()->setTextCursor(cursor);
+}
+
+void UBGraphicsTextItemDelegate::updateAlighButtonState()
+{
+    if (!mAlignButton) {
+        return;
+    }
+
+    AlignTextButton *asAlBtn = static_cast<AlignTextButton*>(mAlignButton);
+
+    if (!oneBlockSelection()) {
+        asAlBtn->setMixedButtonVisible(true);
+        asAlBtn->setKind(AlignTextButton::k_mixed);
+        saveTextCursorFormats();
+        return;
+    }
+
+    asAlBtn->setMixedButtonVisible(false);
+    switch (static_cast<int>(delegated()->textCursor().blockFormat().alignment())) {
+    case Qt::AlignCenter :
+        asAlBtn->setKind(AlignTextButton::k_center);
+        break;
+    case Qt::AlignRight :
+        asAlBtn->setKind(AlignTextButton::k_right);
+        break;
+    default:
+        asAlBtn->setKind(AlignTextButton::k_left);
+        break;
+    }
+}
+
+bool UBGraphicsTextItemDelegate::oneBlockSelection()
+{
+    const QTextCursor cursor = delegated()->textCursor();
+    int pos = cursor.position();
+    int anchor = cursor.anchor();
+
+    // no selection
+    if (pos == anchor) {
+        return true;
+    }
+
+    //selecton within one text block
+    QTextBlock blck = cursor.block();
+    if (blck.contains(pos) && blck.contains(anchor)) {
+        return true;
+    }
+
+    //otherwise
+    return false;
+}
+
+void UBGraphicsTextItemDelegate::saveTextCursorFormats()
+{
+    mSelectionData.anchor = delegated()->textCursor().anchor();
+    mSelectionData.position = delegated()->textCursor().position();
+    mSelectionData.html = delegated()->document()->toHtml();
+}
+
+void UBGraphicsTextItemDelegate::restoreTextCursorFormats()
+{
+    delegated()->document()->setHtml(mSelectionData.html);
+
+    int min = qMin(mSelectionData.position, mSelectionData.anchor);
+    int max = qMax(mSelectionData.position, mSelectionData.anchor);
+    int steps = max - min;
+
+    QTextCursor tcrsr = delegated()->textCursor();
+    tcrsr.setPosition(mSelectionData.position);
+    tcrsr.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor, steps);
+    delegated()->setTextCursor(tcrsr);
 }
 
 void UBGraphicsTextItemDelegate::scaleTextSize(qreal multiplyer)

@@ -279,6 +279,7 @@ class UBGraphicsItemDelegate : public QObject
         void setMimeData(QMimeData* mimeData);
         void setDragPixmap(const QPixmap &pix) {mDragPixmap = pix;}
 
+        void setLocked(bool pLocked);
         void setButtonsVisible(bool visible);
 
         UBGraphicsToolBarItem* getToolBarItem() const { return mToolBarItem; }

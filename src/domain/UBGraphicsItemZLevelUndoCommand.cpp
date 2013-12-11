@@ -59,7 +59,7 @@ void UBGraphicsItemZLevelUndoCommand::undo(){
     if(mDest == UBZLayerController::down || mDest == UBZLayerController::bottom){
         // Move up
         QList<QGraphicsItem*>::iterator downIt = mItems.end();
-        for(downIt; downIt >= mItems.begin(); downIt--){
+        for(; downIt >= mItems.begin(); downIt--){
             for(int i=0; i<zDiff; i++)
                 mpScene->changeZLevelTo(*downIt, UBZLayerController::up);
         }

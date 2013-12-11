@@ -373,7 +373,7 @@ class UBSettings : public QObject
         UBSetting* libIconSize;
 
         UBSetting* magnifierDrawingMode;
-        UBSetting* timerInterval;
+        UBSetting* autoSaveInterval;
 
     public slots:
 
