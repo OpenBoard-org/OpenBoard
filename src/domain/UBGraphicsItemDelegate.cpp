@@ -407,6 +407,18 @@ void UBGraphicsItemDelegate::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 }
 
+bool UBGraphicsItemDelegate::keyPressEvent(QKeyEvent *event)
+{
+    Q_UNUSED(event);
+    return true;
+}
+
+bool UBGraphicsItemDelegate::keyReleaseEvent(QKeyEvent *event)
+{
+    Q_UNUSED(event);
+    return true;
+}
+
 QGraphicsItem *UBGraphicsItemDelegate::delegated()
 {
     QGraphicsItem *curDelegate = 0;

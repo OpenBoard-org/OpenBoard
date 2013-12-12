@@ -334,6 +334,8 @@ void UBGraphicsTextItemDelegate::alignButtonProcess()
         AlignTextButton *asAlText = static_cast<AlignTextButton*>(mAlignButton);
         if (asAlText->nextKind() == AlignTextButton::k_mixed) {
             restoreTextCursorFormats();
+            asAlText->setNextKind();
+            return;
         }
         asAlText->setNextKind();
 
@@ -366,14 +368,19 @@ void UBGraphicsTextItemDelegate::onCursorPositionChanged(const QTextCursor &curs
     qDebug() << "-----------------------";
     qDebug() << "we have a selection!" << cursor.selectionStart();
     qDebug() << "-----------------------";
-    updateAlighButtonState();
+//    updateAlighButtonState();
 }
 
 void UBGraphicsTextItemDelegate::onModificationChanged(bool ch)
 {
     Q_UNUSED(ch);
     qDebug() << "modification changed";
-    updateAlighButtonState();
+//    updateAlighButtonState();
+}
+
+void UBGraphicsTextItemDelegate::onContentChanged()
+{
+    qDebug() << "onContentChanged";
 }
 
 UBGraphicsTextItem* UBGraphicsTextItemDelegate::delegated()
@@ -502,6 +509,31 @@ bool UBGraphicsTextItemDelegate::mouseReleaseEvent(QGraphicsSceneMouseEvent *eve
     return true;
 }
 
+bool UBGraphicsTextItemDelegate::keyPressEvent(QKeyEvent *event)
+{
+    Q_UNUSED(event);
+    return true;
+}
+
+bool UBGraphicsTextItemDelegate::keyReleaseEvent(QKeyEvent *event)
+{
+    if (!delegated()->hasFocus()) {
+        return true;
+    }
+
+    switch (event->key()) {
+    case Qt::Key_Left:
+    case Qt::Key_Right:
+    case Qt::Key_Up:
+    case Qt::Key_Down:
+        updateAlighButtonState();
+        break;
+    }
+
+    qDebug() << "Key has been released" << QString::number(event->key(), 16);
+    return true;
+}
+
 void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode changeMode)
 {
     if (scaleSize == changeMode)
@@ -609,6 +641,7 @@ void UBGraphicsTextItemDelegate::updateAlighButtonState()
         return;
     }
 
+    qDebug() << "new cursor position" << delegated()->textCursor().position();
     AlignTextButton *asAlBtn = static_cast<AlignTextButton*>(mAlignButton);
 
     if (!oneBlockSelection()) {

@@ -212,6 +212,26 @@ void UBGraphicsTextItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
+void UBGraphicsTextItem::keyPressEvent(QKeyEvent *event)
+{
+    if (Delegate() && !Delegate()->keyPressEvent(event)) {
+        qDebug() << "UBGraphicsTextItem::keyPressEvent(QKeyEvent *event) has been rejected by delegate. Don't call base class method";
+        return;
+    }
+
+    QGraphicsTextItem::keyPressEvent(event);
+}
+
+void UBGraphicsTextItem::keyReleaseEvent(QKeyEvent *event)
+{
+    if (Delegate() && !Delegate()->keyReleaseEvent(event)) {
+        qDebug() << "UBGraphicsTextItem::keyPressEvent(QKeyEvent *event) has been rejected by delegate. Don't call base class method";
+        return;
+    }
+
+    QGraphicsTextItem::keyReleaseEvent(event);
+}
+
 void UBGraphicsTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QColor color = UBSettings::settings()->isDarkBackground() ? mColorOnDarkBackground : mColorOnLightBackground;

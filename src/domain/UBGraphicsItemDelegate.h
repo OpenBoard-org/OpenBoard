@@ -255,6 +255,9 @@ class UBGraphicsItemDelegate : public QObject
         virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
         virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
+        virtual bool keyPressEvent(QKeyEvent *event);
+        virtual bool keyReleaseEvent(QKeyEvent *event);
+
         virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change,
                 const QVariant &value);
         virtual UBGraphicsScene *castUBGraphicsScene();
