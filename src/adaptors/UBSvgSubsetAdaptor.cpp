@@ -42,6 +42,7 @@
 #include "domain/UBGraphicsStroke.h"
 #include "domain/UBGraphicsStrokesGroup.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
+#include "domain/UBGraphicsGroupContainerItemDelegate.h"
 #include "domain/UBItem.h"
 
 #include "tools/UBGraphicsRuler.h"
@@ -924,7 +925,13 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroupRoot()
         }
         else if (mXmlReader.isStartElement()) {
             if (mXmlReader.name() == tGroup) {
+                QString ubLocked = mXmlReader.attributes().value(UBSettings::uniboardDocumentNamespaceUri, "locked").toString();
                 UBGraphicsGroupContainerItem *curGroup = readGroup();
+                if (!ubLocked.isEmpty())
+                {
+                    bool isLocked = ubLocked.contains(xmlTrue);
+                    curGroup->Delegate()->setLocked(isLocked);
+                }
                 if (curGroup) {
                     mScene->addGroup(curGroup);
                 }
@@ -1276,6 +1283,9 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                 if (curElement.hasAttribute(aId)) {
                     mXmlWriter.writeStartElement(curElement.tagName());
                     mXmlWriter.writeAttribute(aId, curElement.attribute(aId));
+                    if(curElement.hasAttribute("locked")){
+                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri,"locked",curElement.attribute("locked"));
+                    }
                     QDomElement curSubElement = curElement.firstChildElement();
                     while (!curSubElement.isNull()) {
                         if (curSubElement.hasAttribute(aId)) {
@@ -1320,6 +1330,13 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
     if (!uuid.isNull()) {
         QDomElement curGroupElement = groupDomDocument->createElement(tGroup);
         curGroupElement.setAttribute(aId, uuid);
+        UBGraphicsGroupContainerItem* group = dynamic_cast<UBGraphicsGroupContainerItem*>(groupItem);
+        if(group && group->Delegate()){
+            if(group->Delegate()->isLocked())
+                curGroupElement.setAttribute("locked", xmlTrue);
+            else
+                curGroupElement.setAttribute("locked", xmlFalse);
+        }
         curParent->appendChild(curGroupElement);
         foreach (QGraphicsItem *item, groupItem->childItems()) {
             QUuid tmpUuid = UBGraphicsScene::getPersonalUuid(item);
