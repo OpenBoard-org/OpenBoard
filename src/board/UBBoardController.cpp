@@ -397,12 +397,11 @@ void UBBoardController::stopScript()
 void UBBoardController::saveData(SaveFlags fls)
 {
     bool verbose = fls | sf_showProgress;
-
     if (verbose) {
         UBApplication::showMessage("Saving document...");
     }
     if (mActiveScene && mActiveScene->isModified()) {
-        persistCurrentScene();
+        persistCurrentScene(true);
     }
     if (verbose) {
         UBApplication::showMessage("Document has just been saved...");
@@ -1891,14 +1890,14 @@ void UBBoardController::show()
     UBApplication::mainWindow->actionLibrary->setChecked(false);
 }
 
-void UBBoardController::persistCurrentScene()
+void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup)
 {
     if(UBPersistenceManager::persistenceManager()
             && selectedDocument() && mActiveScene && mActiveSceneIndex != mDeletingSceneIndex
             && (mActiveSceneIndex >= 0) && mActiveSceneIndex != mMovingSceneIndex
             && (mActiveScene->isModified()))
     {
-        UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex);
+        UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, isAnAutomaticBackup);
         updatePage(mActiveSceneIndex);
     }
 }
