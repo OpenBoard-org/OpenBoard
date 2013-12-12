@@ -201,10 +201,10 @@ void UBGraphicsTextItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     if (mMultiClickState == 1)
     {
+        QGraphicsTextItem::mouseReleaseEvent(event);
+
         if (Delegate())
             Delegate()->mouseReleaseEvent(event);
-
-        QGraphicsTextItem::mouseReleaseEvent(event);
     }
     else
     {
