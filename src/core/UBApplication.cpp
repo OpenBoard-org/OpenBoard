@@ -129,13 +129,6 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
         version = version.left(version.length()-1);
     setApplicationVersion(version);
 
-#if defined(Q_WS_MAC) && !defined(QT_NO_DEBUG)
-    CFStringRef shortVersion = (CFStringRef)CFBundleGetValueForInfoDictionaryKey(CFBundleGetMainBundle(), CFSTR("CFBundleShortVersionString"));
-    const char *version = CFStringGetCStringPtr(shortVersion, kCFStringEncodingMacRoman);
-    Q_ASSERT(version);
-    setApplicationVersion(version);
-#endif
-
     QStringList args = arguments();
 
     mIsVerbose = args.contains("-v")
