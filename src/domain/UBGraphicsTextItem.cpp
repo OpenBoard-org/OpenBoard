@@ -39,7 +39,6 @@
 #include "core/UBSettings.h"
 
 #include "core/memcheck.h"
-
 QColor UBGraphicsTextItem::lastUsedTextColor;
 
 UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent) :
@@ -47,7 +46,9 @@ UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent) :
     , UBGraphicsItem()
     , mMultiClickState(0)
     , mLastMousePressTime(QTime::currentTime())
+    , mTypeTextHereLabel(tr("<Type Text Here>"))
 {
+    mEmptyTextWidth = QFontMetrics(font()).width(mTypeTextHereLabel);
     setDelegate(new UBGraphicsTextItemDelegate(this, 0));
 
     // TODO claudio remove this because in contrast with the fact the frame should be created on demand.
@@ -55,8 +56,6 @@ UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent) :
     Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
     Delegate()->setUBFlag(GF_FLIPPABLE_ALL_AXIS, false);
     Delegate()->setUBFlag(GF_REVOLVABLE, true);
-
-    mTypeTextHereLabel = tr("<Type Text Here>");
 
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
@@ -247,8 +246,9 @@ void UBGraphicsTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
     if (widget == UBApplication::boardController->controlView()->viewport() &&
             !isSelected() && toPlainText().isEmpty())
     {
-        QFontMetrics fm(font());
-        setTextWidth(fm.width(mTypeTextHereLabel));
+//        QFontMetrics fm(font());
+//        setTextWidth(fm.width(mTypeTextHereLabel));
+
         painter->setFont(font());
         painter->setPen(UBSettings::paletteColor);
         painter->drawText(boundingRect(), Qt::AlignCenter, mTypeTextHereLabel);
@@ -307,7 +307,6 @@ QPainterPath UBGraphicsTextItem::shape() const
 
 void UBGraphicsTextItem::setTextWidth(qreal width)
 {
-    QFontMetrics fm(font());
     qreal strictMin = 155; // the size of the font customization panel
     qreal newWidth = qMax(strictMin, width);
 
