@@ -201,15 +201,35 @@ void UBGraphicsTextItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     if (mMultiClickState == 1)
     {
+        QGraphicsTextItem::mouseReleaseEvent(event);
+
         if (Delegate())
             Delegate()->mouseReleaseEvent(event);
-
-        QGraphicsTextItem::mouseReleaseEvent(event);
     }
     else
     {
         event->accept();
     }
+}
+
+void UBGraphicsTextItem::keyPressEvent(QKeyEvent *event)
+{
+    if (Delegate() && !Delegate()->keyPressEvent(event)) {
+        qDebug() << "UBGraphicsTextItem::keyPressEvent(QKeyEvent *event) has been rejected by delegate. Don't call base class method";
+        return;
+    }
+
+    QGraphicsTextItem::keyPressEvent(event);
+}
+
+void UBGraphicsTextItem::keyReleaseEvent(QKeyEvent *event)
+{
+    if (Delegate() && !Delegate()->keyReleaseEvent(event)) {
+        qDebug() << "UBGraphicsTextItem::keyPressEvent(QKeyEvent *event) has been rejected by delegate. Don't call base class method";
+        return;
+    }
+
+    QGraphicsTextItem::keyReleaseEvent(event);
 }
 
 void UBGraphicsTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

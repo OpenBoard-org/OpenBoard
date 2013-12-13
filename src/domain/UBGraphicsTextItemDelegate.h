@@ -129,6 +129,9 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
         virtual bool mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         virtual bool mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
+        virtual bool keyPressEvent(QKeyEvent *event);
+        virtual bool keyReleaseEvent(QKeyEvent *event);
+
     private:
         UBGraphicsTextItem* delegated();
 
@@ -179,6 +182,7 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
         void alignButtonProcess();
         void onCursorPositionChanged(const QTextCursor& cursor);
         void onModificationChanged(bool ch);
+        void onContentChanged();
 
 private:
       const int delta;
