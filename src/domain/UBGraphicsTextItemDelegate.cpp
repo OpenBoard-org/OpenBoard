@@ -652,16 +652,16 @@ void UBGraphicsTextItemDelegate::updateAlighButtonState()
     }
 
     asAlBtn->setMixedButtonVisible(false);
-    switch (static_cast<int>(delegated()->textCursor().blockFormat().alignment())) {
-    case Qt::AlignCenter :
+
+    Qt::Alignment cf = delegated()->textCursor().blockFormat().alignment();
+    qDebug() << "getting alignment" << cf;
+
+    if (cf & Qt::AlignCenter) {
         asAlBtn->setKind(AlignTextButton::k_center);
-        break;
-    case Qt::AlignRight :
+    } else if (cf & Qt::AlignRight) {
         asAlBtn->setKind(AlignTextButton::k_right);
-        break;
-    default:
+    } else {
         asAlBtn->setKind(AlignTextButton::k_left);
-        break;
     }
 }
 
@@ -726,5 +726,11 @@ QVariant UBGraphicsTextItemDelegate::itemChange(QGraphicsItem::GraphicsItemChang
             }
         }
     }
+
+    if (value.toBool() == false && delegated()->document()->toPlainText().isEmpty()) {
+        int wdth = QFontMetrics(delegated()->font()).width(delegated()->mTypeTextHereLabel);
+        delegated()->setTextWidth(qMax(wdth, (int)(delegated()->textWidth())));
+    }
+
     return UBGraphicsItemDelegate::itemChange(change, value);
 }

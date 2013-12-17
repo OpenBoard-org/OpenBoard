@@ -98,6 +98,9 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
 
         void setSelected(bool selected);
 
+        QString mTypeTextHereLabel;
+        int mEmptyTextWidth;
+
     signals:
         void textUndoCommandAdded(UBGraphicsTextItem *textItem);
 
@@ -121,7 +124,6 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
 
         int mMultiClickState;
         QTime mLastMousePressTime;
-        QString mTypeTextHereLabel;
 
         QColor mColorOnDarkBackground;
         QColor mColorOnLightBackground;
