@@ -59,9 +59,8 @@ initializeVariables()
 notifyError(){
     if [ -e "$NOTIFY_CMD" ]; then
         $NOTIFY_CMD -t 0 -i "/usr/share/icons/oxygen/64x64/status/dialog-error.png" "$1"
-    else
-        printf "\033[31merror:\033[0m $1\n"
     fi
+    printf "\033[31merror:\033[0m $1\n"
     exit 1
 }
 
