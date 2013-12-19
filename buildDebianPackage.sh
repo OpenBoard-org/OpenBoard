@@ -32,7 +32,6 @@ initializeVariables()
 {
   APPLICATION_NAME="OpenBoard"
   MAKE_TAG=true
-  CREATE_DIENA_DISTRIBUTION_ZIP=false
   STANDARD_QT_USED=false
 
   PRODUCT_PATH="build/linux/release/product"
@@ -157,10 +156,7 @@ buildWithStandardQt
 for var in "$@"
 do
    if [ $var == "notag" ]; then
-      MAKE_TAG=false;
-   fi
-   if [ $var == "diena" ]; then
-       CREATE_DIENA_DISTRIBUTION_ZIP=true;
+     MAKE_TAG=false;
    fi
 done
 
@@ -371,16 +367,16 @@ echo -n "Depends: " >> "$CONTROL_FILE"
 unset tab
 declare -a tab
 let count=0
-for l in `objdump -p $PACKAGE_DIRECTORY/${APPLICATION_NAME} | grep NEEDED | awk '{ print $2 }'`; do 
+for l in `objdump -p $PACKAGE_DIRECTORY/${APPLICATION_NAME} | grep NEEDED | awk '{ print $2 }'`; do
     for lib in `dpkg -S  $l | awk -F":" '{ print $1 }'`; do
         #echo $lib
-        presence=`echo ${tab[*]} | grep -c "$lib"`; 
-        if [ "$presence" == "0" ]; then   
+        presence=`echo ${tab[*]} | grep -c "$lib"`;
+        if [ "$presence" == "0" ]; then
             tab[$count]=$lib;
             ((count++));
-        fi; 
-    done; 
-done; 
+        fi;
+    done;
+done;
 
 for ((i=0;i<${#tab[@]};i++)); do
     if [ $i -ne "0" ]; then
@@ -391,14 +387,14 @@ done
 echo "" >> "$CONTROL_FILE"
 echo "Description: This a interactive white board that uses a free standard format." >> "$CONTROL_FILE"
 
-find $BASE_WORKING_DIR/usr/ -exec md5sum {} > $BASE_WORKING_DIR/DEBIAN/md5sums 2>/dev/null \; 
+find $BASE_WORKING_DIR/usr/ -exec md5sum {} > $BASE_WORKING_DIR/DEBIAN/md5sums 2>/dev/null \;
 APPLICATION_SHORTCUT="$BASE_WORKING_DIR/usr/share/applications/${APPLICATION_NAME}.desktop"
 echo "[Desktop Entry]" > $APPLICATION_SHORTCUT
 echo "Version=$VERSION" >> $APPLICATION_SHORTCUT
 echo "Encoding=UTF-8" >> $APPLICATION_SHORTCUT
 echo "Name=${APPLICATION_NAME} ($VERSION)" >> $APPLICATION_SHORTCUT
 echo "GenericName=${APPLICATION_NAME}" >> $APPLICATION_SHORTCUT
-echo "Comment=Logiciel de création de présentations pour tableau numérique interactif (TNI)" >> $APPLICATION_SHORTCUT 
+echo "Comment=Logiciel de création de présentations pour tableau numérique interactif (TNI)" >> $APPLICATION_SHORTCUT
 echo "Exec=/usr/local/$APPLICATION_DIRECTORY_NAME/run.sh" >> $APPLICATION_SHORTCUT
 echo "Icon=/usr/local/$APPLICATION_DIRECTORY_NAME/${APPLICATION_NAME}.png" >> $APPLICATION_SHORTCUT
 echo "StartupNotify=true" >> $APPLICATION_SHORTCUT
@@ -413,7 +409,7 @@ chmod 755 "$BASE_WORKING_DIR/DEBIAN/postint"
 mkdir -p "install/linux"
 DEBIAN_PACKAGE_NAME="${APPLICATION_NAME}_${VERSION}_$ARCHITECTURE.deb"
 
-chown -R root:root $BASE_WORKING_DIR 
+chown -R root:root $BASE_WORKING_DIR
 dpkg -b "$BASE_WORKING_DIR" "install/linux/$DEBIAN_PACKAGE_NAME"
 
 #clean up mess
@@ -421,14 +417,5 @@ rm -rf $BASE_WORKING_DIR
 
 notifyProgress "${APPLICATION_NAME}" "Package built"
 
-
-if [ $CREATE_DIENA_DISTRIBUTION_ZIP == true ]; then
-
-    ZIP_NAME="${APPLICATION_NAME}_`lsb_release -is`_`lsb_release -rs`_${VERSION}_${ARCHITECTURE}.zip"
-    cd install/linux
-    $ZIP_PATH -1 --junk-paths ${ZIP_NAME} ${DEBIAN_PACKAGE_NAME} ../../ReleaseNotes.pdf ../../JournalDesModifications.pdf
-    cd -
-    notifyProgress "${APPLICATION_NAME}" "Build Diena zip file for distribution"
-fi
 
 exit 0
