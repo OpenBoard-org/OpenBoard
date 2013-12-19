@@ -67,9 +67,8 @@ notifyError(){
 notifyProgress(){
     if [ -e "$NOTIFY_CMD" ]; then
         $NOTIFY_CMD "$1" "$2"
-    else
-        printf "\033[32m--> Achieved task:\033[0m $1:\n\t$2\n"
     fi
+    printf "\033[32m--> Achieved task:\033[0m $1:\n\t$2\n"
 }
 
 alertIfPreviousVersionInstalled(){
@@ -155,14 +154,21 @@ buildWithStandardQt
 for var in "$@"
 do
    if [ $var == "notag" ]; then
-     MAKE_TAG=false;
+     MAKE_TAG=false
+   fi
+# forcing a architecture because of cross compiling
+   if [ $var == "i386" ]; then
+      ARCHITECTURE="i386"
+   fi
+   if [ $var == "amd64" ]; then
+      ARCHITECTURE="amd64"
    fi
 done
 
 
 alertIfPreviousVersionInstalled
 
-#check of directories and executables
+# check of directories and executables
 checkDir $QT_PATH
 checkDir $PLUGINS_PATH
 checkDir $GUI_TRANSLATIONS_DIRECTORY_PATH
@@ -406,7 +412,7 @@ chmod 755 "$BASE_WORKING_DIR/DEBIAN/prerm"
 chmod 755 "$BASE_WORKING_DIR/DEBIAN/postint"
 
 mkdir -p "install/linux"
-DEBIAN_PACKAGE_NAME="${APPLICATION_NAME}_${VERSION}_$ARCHITECTURE.deb"
+DEBIAN_PACKAGE_NAME="${APPLICATION_NAME}_`lsb_release -is`_`lsb_release -rs`_${VERSION}_$ARCHITECTURE.deb"
 
 chown -R root:root $BASE_WORKING_DIR
 dpkg -b "$BASE_WORKING_DIR" "install/linux/$DEBIAN_PACKAGE_NAME"
