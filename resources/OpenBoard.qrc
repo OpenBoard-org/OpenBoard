@@ -346,5 +346,9 @@
         <file>images/duplicateDisabled.svg</file>
         <file>images/roundeRrectangle.svg</file>
         <file>images/circle.svg</file>
+        <file>images/rightAligned.svg</file>
+        <file>images/centerAligned.svg</file>
+        <file>images/leftAligned.svg</file>
+        <file>images/notAligned.svg</file>
     </qresource>
 </RCC>

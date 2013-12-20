@@ -48,10 +48,10 @@ const int UBGraphicsTextItemDelegate::sMinPointSize = 8;
 
 AlignTextButton::AlignTextButton(const QString &fileName, QGraphicsItem *pDelegated, QGraphicsItem *parent, Qt::WindowFrameSection section)
     : DelegateButton(fileName, pDelegated, parent, section)
-    , lft(new QSvgRenderer(QString(":/images/plus.svg")))
-    , cntr(new QSvgRenderer(QString(":/images/pause.svg")))
-    , rght(new QSvgRenderer(QString(":/images/minus.svg")))
-    , mxd(new QSvgRenderer(QString(":/images/reload.svg")))
+    , lft(new QSvgRenderer(QString(":/images/leftAligned.svg")))
+    , cntr(new QSvgRenderer(QString(":/images/centerAligned.svg")))
+    , rght(new QSvgRenderer(QString(":/images/rightAligned.svg")))
+    , mxd(new QSvgRenderer(QString(":/images/notAligned.svg")))
 {
     setKind(k_left);
 }

@@ -313,9 +313,6 @@ void UBSelectionFrame::increaseZlevelBottom()
         ubscene()->changeZLevelTo(iter.previous(), UBZLayerController::bottom);
     }
     addSelectionUndo(selItems, UBZLayerController::bottom);
-//    foreach (QGraphicsItem *item, sortedByZ(scene()->selectedItems())) {
-//        ubscene()->changeZLevelTo(item, UBZLayerController::bottom);
-//    }
 }
 
 void UBSelectionFrame::groupItems()
