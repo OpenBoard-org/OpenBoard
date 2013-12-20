@@ -350,5 +350,7 @@
         <file>images/centerAligned.svg</file>
         <file>images/leftAligned.svg</file>
         <file>images/notAligned.svg</file>
+        <file>images/groupItems.svg</file>
+        <file>images/ungroupItems.svg</file>
     </qresource>
 </RCC>

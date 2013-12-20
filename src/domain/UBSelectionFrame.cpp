@@ -477,7 +477,7 @@ QList<DelegateButton*> UBSelectionFrame::buttonsForFlags(UBGraphicsFlags fls) {
 
     if (mEnclosedtems.count() >= 1) {
         if (!mGroupButton) {
-            mGroupButton = new DelegateButton(":/images/plus.svg", this, 0, Qt::TopLeftSection);
+            mGroupButton = new DelegateButton(":/images/groupItems.svg", this, 0, Qt::TopLeftSection);
             mGroupButton->setShowProgressIndicator(false);
             connect(mGroupButton, SIGNAL(clicked()), this, SLOT(groupItems()));
         }

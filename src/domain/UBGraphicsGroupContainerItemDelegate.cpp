@@ -71,7 +71,7 @@ void UBGraphicsGroupContainerItemDelegate::decorateMenu(QMenu *menu)
 void UBGraphicsGroupContainerItemDelegate::buildButtons()
 {
     if (!mDestroyGroupButton) {
-        mDestroyGroupButton = new DelegateButton(":/images/minus.svg", mDelegated, mFrame, Qt::TopLeftSection);
+        mDestroyGroupButton = new DelegateButton(":/images/ungroupItems.svg", mDelegated, mFrame, Qt::TopLeftSection);
         mDestroyGroupButton->setShowProgressIndicator(false);
         connect(mDestroyGroupButton, SIGNAL(clicked()), this, SLOT(destroyGroup()));
         mButtons << mDestroyGroupButton;
