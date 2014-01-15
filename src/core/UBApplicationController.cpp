@@ -482,7 +482,7 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
 void UBApplicationController::checkUpdate(QString urlString)
 {
     if(mHttp)
-        delete mHttp;
+        mHttp->deleteLater();
     QUrl url(urlString);
     mHttp = new QHttp(url.host());
     connect(mHttp, SIGNAL(requestFinished(int,bool)), this, SLOT(updateRequestFinished(int,bool)));
@@ -503,14 +503,15 @@ void UBApplicationController::updateHeaderReceived(QHttpResponseHeader header)
 void UBApplicationController::updateRequestFinished(int id, bool error)
 {
    if (error){
-       qWarning() << "http command id" << id << "return the error: " << mHttp->errorString();
-       mHttp->close();
+       qWarning() << "http command id" << id << "return an error";
    }
    else{
        QString responseString =  QString(mHttp->readAll());
        qDebug() << responseString;
        if (!responseString.isEmpty() && responseString.contains("version") && responseString.contains("url")){
            mHttp->close();
+           mHttp->deleteLater();
+           mHttp = 0;
            downloadJsonFinished(responseString);
        }
    }
