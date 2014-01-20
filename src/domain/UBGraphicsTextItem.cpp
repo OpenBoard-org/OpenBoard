@@ -131,11 +131,6 @@ void UBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
             }
 
         }
-        else
-        {
-            Delegate()->getToolBarItem()->show();
-        }
-
     }
 
     if (!data(UBGraphicsItemData::ItemEditable).toBool())
@@ -246,9 +241,6 @@ void UBGraphicsTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
     if (widget == UBApplication::boardController->controlView()->viewport() &&
             !isSelected() && toPlainText().isEmpty())
     {
-//        QFontMetrics fm(font());
-//        setTextWidth(fm.width(mTypeTextHereLabel));
-
         painter->setFont(font());
         painter->setPen(UBSettings::paletteColor);
         painter->drawText(boundingRect(), Qt::AlignCenter, mTypeTextHereLabel);

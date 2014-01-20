@@ -111,7 +111,7 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
         bool isEditable();
         void scaleTextSize(qreal multiplyer);
         virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value);
-
+        virtual void createControls();
 
     public slots:
         void contentsChanged();
@@ -119,11 +119,10 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
         virtual void remove(bool canUndo);
 
     protected:
-        virtual void buildButtons();
         virtual void decorateMenu(QMenu *menu);
         virtual void updateMenuActionState();
 
-        virtual void positionHandles();
+        virtual void freeButtons();
 
         virtual bool mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual bool mouseMoveEvent(QGraphicsSceneMouseEvent *event);

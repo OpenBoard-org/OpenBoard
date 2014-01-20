@@ -96,7 +96,7 @@ int AlignTextButton::nextKind() const
 }
 
 UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDelegated, QObject *)
-    : UBGraphicsItemDelegate(pDelegated,0, GF_COMMON | GF_REVOLVABLE | GF_TOOLBAR_USED)
+    : UBGraphicsItemDelegate(pDelegated,0, GF_COMMON | GF_REVOLVABLE | GF_TITLE_BAR_USED)
     , mFontButton(0)
     , mColorButton(0)
     , mDecreaseSizeButton(0)
@@ -123,8 +123,6 @@ UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDele
 
     connect(delegated()->document(), SIGNAL(cursorPositionChanged(QTextCursor)), this, SLOT(onCursorPositionChanged(QTextCursor)));
     connect(delegated()->document(), SIGNAL(modificationChanged(bool)), this, SLOT(onModificationChanged(bool)));
-
-    // NOOP
 }
 
 UBGraphicsTextItemDelegate::~UBGraphicsTextItemDelegate()
@@ -157,47 +155,78 @@ QFont UBGraphicsTextItemDelegate::createDefaultFont()
     return font;
 }
 
-void UBGraphicsTextItemDelegate::buildButtons()
+void UBGraphicsTextItemDelegate::createControls()
 {
-    UBGraphicsItemDelegate::buildButtons();
+    UBGraphicsItemDelegate::createControls();
 
     if (!mFontButton) {
-        mFontButton = new DelegateButton(":/images/font.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+        mFontButton = new DelegateButton(":/images/font.svg", mDelegated, mFrame, Qt::TitleBarArea);
         connect(mFontButton, SIGNAL(clicked(bool)), this, SLOT(pickFont()));
+        mButtons << mFontButton;
     }
     if (!mColorButton) {
-        mColorButton = new DelegateButton(":/images/color.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+        mColorButton = new DelegateButton(":/images/color.svg", mDelegated, mFrame, Qt::TitleBarArea);
         connect(mColorButton, SIGNAL(clicked(bool)), this, SLOT(pickColor()));
+        mButtons << mColorButton;
     }
 
     if (!mDecreaseSizeButton) {
-        mDecreaseSizeButton = new DelegateButton(":/images/minus.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+        mDecreaseSizeButton = new DelegateButton(":/images/minus.svg", mDelegated, mFrame, Qt::TitleBarArea);
         connect(mDecreaseSizeButton, SIGNAL(clicked(bool)), this, SLOT(decreaseSize()));
+        mButtons << mDecreaseSizeButton;
     }
 
     if (!mIncreaseSizeButton) {
-        mIncreaseSizeButton = new DelegateButton(":/images/plus.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+        mIncreaseSizeButton = new DelegateButton(":/images/plus.svg", mDelegated, mFrame, Qt::TitleBarArea);
         connect(mIncreaseSizeButton, SIGNAL(clicked(bool)), this, SLOT(increaseSize()));
+        mButtons << mIncreaseSizeButton;
     }
 
-    //    Alignment button
     if (!mAlignButton) {
-        mAlignButton = new AlignTextButton(":/images/plus.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
+        mAlignButton = new AlignTextButton(":/images/plus.svg", mDelegated, mFrame, Qt::TitleBarArea);
         connect(mAlignButton, SIGNAL(clicked()), this, SLOT(alignButtonProcess()));
+        mButtons << mAlignButton;
     }
 
+    foreach(DelegateButton* button, mButtons)
+    {
+        button->hide();
+        button->setFlag(QGraphicsItem::ItemIsSelectable, true);
+    }
 
-    QList<QGraphicsItem*> itemsOnToolBar;
-    itemsOnToolBar << mFontButton << mColorButton << mDecreaseSizeButton << mIncreaseSizeButton;
-    itemsOnToolBar << mAlignButton;
-    mToolBarItem->setItemsOnToolBar(itemsOnToolBar);
-    mToolBarItem->setShifting(true);
-    mToolBarItem->setVisibleOnBoard(true);
 }
+
+
+void UBGraphicsTextItemDelegate::freeButtons()
+{
+    mButtons.removeOne(mFontButton);
+    delete mFontButton;
+    mFontButton = 0;
+
+    mButtons.removeOne(mColorButton);
+    delete mColorButton;
+    mColorButton = 0;
+
+    mButtons.removeOne(mDecreaseSizeButton);
+    delete mDecreaseSizeButton;
+    mDecreaseSizeButton = 0;
+
+    mButtons.removeOne(mIncreaseSizeButton);
+    delete mIncreaseSizeButton;
+    mIncreaseSizeButton = 0;
+
+    mButtons.removeOne(mIncreaseSizeButton);
+    delete mIncreaseSizeButton;
+    mIncreaseSizeButton = 0;
+
+    UBGraphicsItemDelegate::freeButtons();
+}
+
+
+
 
 void UBGraphicsTextItemDelegate::contentsChanged()
 {
-    positionHandles();
     delegated()->contentsChanged();
 }
 
@@ -368,14 +397,12 @@ void UBGraphicsTextItemDelegate::onCursorPositionChanged(const QTextCursor &curs
     qDebug() << "-----------------------";
     qDebug() << "we have a selection!" << cursor.selectionStart();
     qDebug() << "-----------------------";
-//    updateAlighButtonState();
 }
 
 void UBGraphicsTextItemDelegate::onModificationChanged(bool ch)
 {
     Q_UNUSED(ch);
     qDebug() << "modification changed";
-//    updateAlighButtonState();
 }
 
 void UBGraphicsTextItemDelegate::onContentChanged()
@@ -426,46 +453,6 @@ void UBGraphicsTextItemDelegate::decorateMenu(QMenu *menu)
 void UBGraphicsTextItemDelegate::updateMenuActionState()
 {
     UBGraphicsItemDelegate::updateMenuActionState();
-}
-
-void UBGraphicsTextItemDelegate::positionHandles()
-{
-    UBGraphicsItemDelegate::positionHandles();
-
-    if (mDelegated->isSelected() || (mDelegated->parentItem() && UBGraphicsGroupContainerItem::Type == mDelegated->parentItem()->type()))
-    {
-        if (mToolBarItem->isVisibleOnBoard())
-        {
-            qreal AntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
-            mToolBarItem->setScale(AntiScaleRatio);
-            QRectF toolBarRect = mToolBarItem->rect();
-            toolBarRect.setWidth(delegated()->boundingRect().width()/AntiScaleRatio);
-            mToolBarItem->setRect(toolBarRect);
-            mToolBarItem->positionHandles();
-            mToolBarItem->update();
-            if (mToolBarItem->isShifting())
-                mToolBarItem->setPos(0,-mToolBarItem->boundingRect().height()*AntiScaleRatio);
-            else
-                mToolBarItem->setPos(0, 0);
-
-            UBGraphicsGroupContainerItem *group = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(mDelegated->parentItem());
-
-            mToolBarItem->hide();
-            if (mToolBarItem->parentItem())
-            {
-                if (group && group->getCurrentItem() == mDelegated && group->isSelected())
-                    mToolBarItem->show();
-
-                if (!group)
-                     mToolBarItem->show();
-            }
-
-        }
-    }
-    else
-    {
-        mToolBarItem->hide();
-    }
 }
 
 bool UBGraphicsTextItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *event)

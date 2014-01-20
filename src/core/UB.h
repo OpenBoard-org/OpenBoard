@@ -182,6 +182,7 @@ enum UBGraphicsFlag {
     ,GF_TOOLBAR_USED                 = 0x0100 //0000 0001 0000 0000
     ,GF_SHOW_CONTENT_SOURCE          = 0x0200 //0000 0010 0000 0000
     ,GF_RESPECT_RATIO                = 0x0418 //0000 0100 0001 1000
+    ,GF_TITLE_BAR_USED               = 0x0800 //0000 1000 0000 0000
     ,GF_COMMON                       = 0x00F8 /*0000 0000 1111 1000   GF_SCALABLE_ALL_AXIS
                                                                      |GF_DUPLICATION_ENABLED
                                                                      |GF_MENU_SPECIFIED

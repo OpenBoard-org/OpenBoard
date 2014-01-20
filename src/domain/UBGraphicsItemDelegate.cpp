@@ -60,8 +60,6 @@
 
 #include "core/memcheck.h"
 
-class UBGraphicsParaschoolEditorWidgetItem;
-
 DelegateButton::DelegateButton(const QString & fileName, QGraphicsItem* pDelegated, QGraphicsItem * parent, Qt::WindowFrameSection section)
     : QGraphicsSvgItem(fileName, parent)
     , mDelegated(pDelegated)
@@ -187,7 +185,7 @@ void UBGraphicsItemDelegate::createControls()
         mToolBarItem = new UBGraphicsToolBarItem(mDelegated);
 
     if (!mFrame) {
-        mFrame = new UBGraphicsDelegateFrame(this, QRectF(0, 0, 0, 0), mFrameWidth, testUBFlags(GF_RESPECT_RATIO));
+        mFrame = new UBGraphicsDelegateFrame(this, QRectF(0, 0, 0, 0), mFrameWidth, testUBFlags(GF_RESPECT_RATIO), testUBFlags(GF_TITLE_BAR_USED));
         mFrame->hide();
         mFrame->setFlag(QGraphicsItem::ItemIsSelectable, true);
     }
@@ -225,15 +223,14 @@ void UBGraphicsItemDelegate::createControls()
         mButtons << mZOrderDownButton;
     }
 
+
+
     buildButtons();
 
     foreach(DelegateButton* button, mButtons)
     {
-        if (button->getSection() != Qt::TitleBarArea)
-        {
-            button->hide();
-            button->setFlag(QGraphicsItem::ItemIsSelectable, true);
-        }
+        button->hide();
+        button->setFlag(QGraphicsItem::ItemIsSelectable, true);
     }
 }
 
@@ -241,7 +238,6 @@ void UBGraphicsItemDelegate::freeControls()
 {
     QGraphicsScene *controlsScene = delegated()->scene();
     Q_ASSERT(controlsScene);
-
 
     UB_FREE_CONTROL(mFrame, controlsScene);
     freeButtons();
@@ -770,9 +766,13 @@ void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
     if (showUpdated)
         mDeleteButton->show();
 
-    int i = 1, j = 0, k = 0;
-    while ((i + j + k) < mButtons.size())  {
-        DelegateButton* button = mButtons[i + j];
+    int i = 1, j = 0, k = 0, l = 0;
+    int frameButtonHeight = mDeleteButton->boundingRect().size().height();
+    qreal topXTitleBar = topX + (1.6 * mFrameWidth * mAntiScaleRatio);
+    qreal topYTitleBar = topY + frameButtonHeight + 10;
+
+    while ((i + j + k + l) < mButtons.size())  {
+        DelegateButton* button = mButtons[i + j + k + l];
 
         if (button->getSection() == Qt::TopLeftSection) {
             button->setParentItem(mFrame);
@@ -782,8 +782,14 @@ void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
             button->setParentItem(mFrame);
             button->setPos(bottomX + (++j * 1.6 * mFrameWidth * mAntiScaleRatio), bottomY);
             button->setTransform(tr);
-        } else if (button->getSection() == Qt::TitleBarArea || button->getSection() == Qt::NoSection){
-            ++k;
+        } else if (button->getSection() == Qt::TitleBarArea){
+            button->setParentItem(mFrame);
+            button->setPos(topXTitleBar + (k++ * (frameButtonHeight + 5)), topYTitleBar);
+            button->setTransform(tr);
+            button->scale(0.8,0.8);
+        }
+        else if(button->getSection() == Qt::NoSection){
+            ++l;
         }
         if (!button->scene())
         {

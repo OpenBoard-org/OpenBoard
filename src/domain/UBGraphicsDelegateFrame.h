@@ -40,7 +40,7 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
 {
     public:
 
-        UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelegate, QRectF pRect, qreal pFrameWidth, bool respectRatio = true);
+        UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelegate, QRectF pRect, qreal pFrameWidth, bool respectRatio = true, bool hasTitleBar = false);
         virtual ~UBGraphicsDelegateFrame();
 
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -68,6 +68,7 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         QList<UBGraphicsDelegateFrame *> getLinkedFrames();
 
     private:
+        qreal mTitleBarHeight;
         QRectF bottomRightResizeGripRect() const;
         QRectF bottomResizeGripRect() const;
         QRectF leftResizeGripRect() const;

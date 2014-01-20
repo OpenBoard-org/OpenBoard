@@ -44,7 +44,7 @@
 
 #include "core/memcheck.h"
 
-UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelegate, QRectF pRect, qreal pFrameWidth, bool respectRatio)
+UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelegate, QRectF pRect, qreal pFrameWidth, bool respectRatio, bool hasTitleBar)
     : QGraphicsRectItem(), QObject(pDelegate)
     , mCurrentTool(None)
     , mDelegate(pDelegate)
@@ -65,13 +65,14 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     , mFlippedY(false)
     , mMirrorX(false)
     , mMirrorY(false)
+    , mTitleBarHeight(hasTitleBar ? 20 :0)
 {
     mAngleTolerance = UBSettings::settings()->angleTolerance->get().toReal();
 
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
     setAcceptedMouseButtons(Qt::LeftButton);
-    setRect(pRect.adjusted(mFrameWidth, mFrameWidth, mFrameWidth * -1, mFrameWidth * -1));
+    setRect(pRect.adjusted(mFrameWidth, mFrameWidth + mTitleBarHeight, mFrameWidth * -1, mFrameWidth * -1));
 
     setBrush(QBrush(UBSettings::paletteColor));
     setPen(Qt::NoPen);
@@ -134,19 +135,19 @@ void UBGraphicsDelegateFrame::paint(QPainter *painter, const QStyleOptionGraphic
     Q_UNUSED(option);
     Q_UNUSED(widget);
 
+
     QPainterPath path;
     path.addRoundedRect(rect(), mFrameWidth / 2, mFrameWidth / 2);
 
     if (rect().width() > 1 && rect().height() > 1)
     {
         QPainterPath extruded;
-        extruded.addRect(rect().adjusted(mFrameWidth, mFrameWidth, (mFrameWidth * -1), (mFrameWidth * -1)));
+        extruded.addRect(rect().adjusted(mFrameWidth, mFrameWidth + mTitleBarHeight, (mFrameWidth * -1), (mFrameWidth * -1)));
         path = path.subtracted(extruded);
     }
 
     painter->fillPath(path, brush());
 }
-
 
 QPainterPath UBGraphicsDelegateFrame::shape() const
 {
@@ -159,7 +160,7 @@ QPainterPath UBGraphicsDelegateFrame::shape() const
     if (rect().width() > 0 && rect().height() > 0)
     {
         QPainterPath extruded;
-        extruded.addRect(rect().adjusted(mFrameWidth, mFrameWidth, mFrameWidth * -1, mFrameWidth * -1));
+        extruded.addRect(rect().adjusted(mFrameWidth, mFrameWidth + mTitleBarHeight, mFrameWidth * -1, mFrameWidth * -1));
         path = path.subtracted(extruded);
     }
 
@@ -395,8 +396,6 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         return;
 
     QLineF move = QLineF(mStartingPoint, event->scenePos());
-//    qreal moveX = move.length() * cos((move.angle() - mAngle) * PI / 180);
-//    qreal moveY = -move.length() * sin((move.angle() - mAngle) * PI / 180);
     qreal moveX = (event->pos() - mStartingPoint).x();
     qreal moveY = (event->pos() - mStartingPoint).y();
     qreal width = delegated()->boundingRect().width() * mTotalScaleX;
@@ -554,8 +553,6 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
         if (resizingRight() || resizingBottom() || resizingBottomRight())
         {
-            QPointF ref;
-
             // we just detects coordinates of corner before and after scaling and then moves object at diff between them.
             if (resizingBottomRight() && (mMirrorX || mMirrorY))
             {
@@ -827,7 +824,7 @@ void UBGraphicsDelegateFrame::positionHandles()
 
     if (mVisible)
     {
-        setRect(center.x() - mFrameWidth - width / 2, center.y() - mFrameWidth - h / 2, width + 2 * mFrameWidth, h + 2 * mFrameWidth);
+        setRect(center.x() - mFrameWidth - width / 2, center.y() - mFrameWidth - mTitleBarHeight - h / 2, width + 2 * mFrameWidth, h + 2 * (mFrameWidth + mTitleBarHeight));
     }
     else
     {
