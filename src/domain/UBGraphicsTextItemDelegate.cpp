@@ -52,6 +52,7 @@ AlignTextButton::AlignTextButton(const QString &fileName, QGraphicsItem *pDelega
     , cntr(new QSvgRenderer(QString(":/images/centerAligned.svg")))
     , rght(new QSvgRenderer(QString(":/images/rightAligned.svg")))
     , mxd(new QSvgRenderer(QString(":/images/notAligned.svg")))
+    , mHideMixed(true)
 {
     setKind(k_left);
 }
