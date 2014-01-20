@@ -215,9 +215,9 @@ void UBGraphicsTextItemDelegate::freeButtons()
     delete mIncreaseSizeButton;
     mIncreaseSizeButton = 0;
 
-    mButtons.removeOne(mIncreaseSizeButton);
-    delete mIncreaseSizeButton;
-    mIncreaseSizeButton = 0;
+    mButtons.removeOne(mAlignButton);
+    delete mAlignButton;
+    mAlignButton = 0;
 
     UBGraphicsItemDelegate::freeButtons();
 }
