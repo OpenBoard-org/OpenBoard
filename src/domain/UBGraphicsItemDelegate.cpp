@@ -769,7 +769,11 @@ void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
     int i = 1, j = 0, k = 0, l = 0;
     int frameButtonHeight = mDeleteButton->boundingRect().size().height();
     qreal topXTitleBar = topX + (1.6 * mFrameWidth * mAntiScaleRatio);
-    qreal topYTitleBar = topY + frameButtonHeight + 10;
+    qreal topYTitleBar = topY + frameButtonHeight *mAntiScaleRatio;
+
+#ifndef Q_WS_X11
+    topYTitleBar += 5;
+#endif
 
     while ((i + j + k + l) < mButtons.size())  {
         DelegateButton* button = mButtons[i + j + k + l];
