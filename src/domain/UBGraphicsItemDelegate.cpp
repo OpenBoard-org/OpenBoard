@@ -782,11 +782,13 @@ void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
             button->setParentItem(mFrame);
             button->setPos(topX + (i++ * 1.6 * mFrameWidth * mAntiScaleRatio), topY);
             button->setTransform(tr);
-        } else if (button->getSection() == Qt::BottomLeftSection) {
+        }
+        else if (button->getSection() == Qt::BottomLeftSection) {
             button->setParentItem(mFrame);
             button->setPos(bottomX + (++j * 1.6 * mFrameWidth * mAntiScaleRatio), bottomY);
             button->setTransform(tr);
-        } else if (button->getSection() == Qt::TitleBarArea){
+        }
+        else if (button->getSection() == Qt::TitleBarArea){
             button->setParentItem(mFrame);
             button->setPos(topXTitleBar + (k++ * (frameButtonHeight + 5)), topYTitleBar);
             button->setTransform(tr);

@@ -2255,12 +2255,21 @@ void UBBoardController::copy()
 void UBBoardController::paste()
 {
     QClipboard *clipboard = QApplication::clipboard();
-    QPointF pos(0, 0);
+    qreal xPosition = ((qreal)qrand()/(qreal)RAND_MAX) * 400;
+    qreal yPosition = ((qreal)qrand()/(qreal)RAND_MAX) * 200;
+    QPointF pos(xPosition -200 , yPosition - 100);
     processMimeData(clipboard->mimeData(), pos);
 
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 }
 
+
+bool zLevelLessThan( UBItem* s1, UBItem* s2)
+{
+    qreal s1Zvalue = dynamic_cast<QGraphicsItem*>(s1)->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+    qreal s2Zvalue = dynamic_cast<QGraphicsItem*>(s2)->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+    return s1Zvalue < s2Zvalue;
+}
 
 void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPointF& pPos)
 {
@@ -2291,7 +2300,9 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
 
         if (mimeData)
         {
-            foreach(UBItem* item, mimeData->items())
+            QList<UBItem*> items = mimeData->items();
+            qStableSort(items.begin(),items.end(),zLevelLessThan);
+            foreach(UBItem* item, items)
             {
                 QGraphicsItem* pItem = dynamic_cast<QGraphicsItem*>(item);
                 if(NULL != pItem){
