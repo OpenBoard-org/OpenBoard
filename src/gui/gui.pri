@@ -21,7 +21,6 @@ HEADERS += src/gui/UBThumbnailView.h \
     src/gui/UBRubberBand.h \
     src/gui/UBDocumentToolsPalette.h \
     src/gui/UBWebToolsPalette.h \
-    src/gui/UBVideoPlayer.h \
     src/gui/UBActionPalette.h \
     src/gui/UBFavoriteToolPalette.h \
     src/gui/UBKeyboardPalette.h \
@@ -65,7 +64,6 @@ SOURCES += src/gui/UBThumbnailView.cpp \
     src/gui/UBRubberBand.cpp \
     src/gui/UBDocumentToolsPalette.cpp \
     src/gui/UBWebToolsPalette.cpp \
-    src/gui/UBVideoPlayer.cpp \
     src/gui/UBActionPalette.cpp \
     src/gui/UBFavoriteToolPalette.cpp \
     src/gui/UBKeyboardPalette.cpp \

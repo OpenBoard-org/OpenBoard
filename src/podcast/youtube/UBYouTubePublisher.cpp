@@ -36,7 +36,6 @@
 #include "core/UBSetting.h"
 
 #include "gui/UBMainWindow.h"
-//#include "gui/UBVideoPlayer.h"
 
 #include "network/UBNetworkAccessManager.h"
 #include "network/UBServerXMLHttpRequest.h"

@@ -914,8 +914,6 @@ QList<QAction*> UBPodcastController::videoSizeActions()
 {
     if (mVideoSizesActions.length() == 0)
     {
-        QList<QAction*> videoSizeActions;
-
         mSmallVideoSizeAction = new QAction(tr("Small"), this);
         mMediumVideoSizeAction = new QAction(tr("Medium"), this);
         mFullVideoSizeAction = new QAction(tr("Full"), this);
