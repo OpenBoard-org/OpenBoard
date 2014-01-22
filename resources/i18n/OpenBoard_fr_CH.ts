@@ -1865,7 +1865,7 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     <name>UBStartupHintsPalette</name>
     <message>
         <source>Visible next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Réouvrir la prochaine fois</translation>
     </message>
 </context>
 <context>
