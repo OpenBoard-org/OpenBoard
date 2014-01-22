@@ -777,10 +777,6 @@
         <translation>Vymazat anotaci</translation>
     </message>
     <message>
-        <source>Group items</source>
-        <translation>Seskupit položky</translation>
-    </message>
-    <message>
         <source>Play</source>
         <translation>Přehrát</translation>
     </message>
@@ -795,10 +791,6 @@
     <message>
         <source>Remove the backgound</source>
         <translation>Odstranit pozadí</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation>Seskupit</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
@@ -1868,6 +1860,13 @@ Chcete ignorovat tyto chyby na tomto serveru?</translation>
     </message>
 </context>
 <context>
+    <name>UBStartupHintsPalette</name>
+    <message>
+        <source>Visible next time</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBTeacherBarWidget</name>
     <message>
         <source></source>
@@ -2322,7 +2321,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>OpenBoard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">OpenBoard</translation>
     </message>
 </context>
 <context>

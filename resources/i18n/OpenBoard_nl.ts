@@ -776,10 +776,6 @@
         <translation>Verberg OpenBoard Toepassing</translation>
     </message>
     <message>
-        <source>Group items</source>
-        <translation>groep onderdelen</translation>
-    </message>
-    <message>
         <source>Play</source>
         <translation>Speel</translation>
     </message>
@@ -794,10 +790,6 @@
     <message>
         <source>Remove the backgound</source>
         <translation>Achtyergrond verwijderen</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Open Tutorial</source>
@@ -1859,6 +1851,13 @@ Do you want to ignore these errors for this host?</source>
     </message>
 </context>
 <context>
+    <name>UBStartupHintsPalette</name>
+    <message>
+        <source>Visible next time</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBTeacherBarWidget</name>
     <message>
         <source></source>
@@ -2308,7 +2307,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>OpenBoard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sankoré openen</translation>
     </message>
     <message>
         <source>Restore credentials on reboot</source>

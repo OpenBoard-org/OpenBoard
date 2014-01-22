@@ -776,10 +776,6 @@
         <translation>הסתר את היישום של הגרסה הפתוחה של Sankoré</translation>
     </message>
     <message>
-        <source>Group items</source>
-        <translation>פריטי קבוצה</translation>
-    </message>
-    <message>
         <source>Play</source>
         <translation>נגן</translation>
     </message>
@@ -795,10 +791,6 @@
     <message>
         <source>Remove the backgound</source>
         <translation>הסר רקע</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation>קבוצה</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
@@ -1862,6 +1854,13 @@ Do you want to ignore these errors for this host?</source>
     </message>
 </context>
 <context>
+    <name>UBStartupHintsPalette</name>
+    <message>
+        <source>Visible next time</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBTeacherBarWidget</name>
     <message>
         <source></source>
@@ -2308,7 +2307,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>OpenBoard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">הגרסה הפתוחה של Sankoré</translation>
     </message>
     <message>
         <source>Restore credentials on reboot</source>

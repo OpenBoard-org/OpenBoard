@@ -776,10 +776,6 @@
         <translation>Afeno ny rindran&apos;asan&apos;i OpenBoard</translation>
     </message>
     <message>
-        <source>Group items</source>
-        <translation>Atokony ny zavatra</translation>
-    </message>
-    <message>
         <source>Play</source>
         <translation>Alefaso</translation>
     </message>
@@ -794,10 +790,6 @@
     <message>
         <source>Remove the backgound</source>
         <translation>Esorina ny ao ambadika</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation>Atokony</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
@@ -1862,6 +1854,13 @@ Tena tsy te hiraharaha an&apos;ireo tsy mety ho an&apos;ilay milina ve ianao?</t
     <message>
         <source>My Movies</source>
         <translation>Ny sarimietsiko</translation>
+    </message>
+</context>
+<context>
+    <name>UBStartupHintsPalette</name>
+    <message>
+        <source>Visible next time</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -776,10 +776,6 @@
         <translation>Ascundere aplicaţie OpenBoard</translation>
     </message>
     <message>
-        <source>Group items</source>
-        <translation>Grupare articole</translation>
-    </message>
-    <message>
         <source>Play</source>
         <translation>Redare</translation>
     </message>
@@ -794,10 +790,6 @@
     <message>
         <source>Remove the backgound</source>
         <translation>Eliminare fundal</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation>Grupare</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
@@ -1862,6 +1854,13 @@ Doriţi să ignoraţi aceste erori pentru acest host?</translation>
     <message>
         <source>My Movies</source>
         <translation>Filmele mele</translation>
+    </message>
+</context>
+<context>
+    <name>UBStartupHintsPalette</name>
+    <message>
+        <source>Visible next time</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
