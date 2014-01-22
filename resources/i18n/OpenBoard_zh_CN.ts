@@ -776,10 +776,6 @@
         <translation>隐藏OpenBoard应用程序</translation>
     </message>
     <message>
-        <source>Group items</source>
-        <translation>组合项目</translation>
-    </message>
-    <message>
         <source>Play</source>
         <translation>播放</translation>
     </message>
@@ -794,10 +790,6 @@
     <message>
         <source>Remove the backgound</source>
         <translation>移除背景</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation>组合</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
@@ -1863,6 +1855,13 @@ Do you want to ignore these errors for this host?</source>
     </message>
 </context>
 <context>
+    <name>UBStartupHintsPalette</name>
+    <message>
+        <source>Visible next time</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBTeacherBarWidget</name>
     <message>
         <source></source>
@@ -2313,7 +2312,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>OpenBoard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">OpenBoard</translation>
     </message>
     <message>
         <source>Restore credentials on reboot</source>

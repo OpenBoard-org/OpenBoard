@@ -776,10 +776,6 @@
         <translation type="unfinished">OpenBoard 응용 프로그램 숨기기</translation>
     </message>
     <message>
-        <source>Group items</source>
-        <translation type="unfinished">항목 그룹화</translation>
-    </message>
-    <message>
         <source>Play</source>
         <translation type="unfinished">재생</translation>
     </message>
@@ -794,10 +790,6 @@
     <message>
         <source>Remove the backgound</source>
         <translation type="unfinished">배경 제거</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished">그룹화</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
@@ -1863,6 +1855,13 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>My Movies</source>
         <translation>내 동영상</translation>
+    </message>
+</context>
+<context>
+    <name>UBStartupHintsPalette</name>
+    <message>
+        <source>Visible next time</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

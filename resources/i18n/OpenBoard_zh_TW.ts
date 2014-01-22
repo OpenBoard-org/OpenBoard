@@ -776,10 +776,6 @@
         <translation>隱藏OpenBoard應用程式</translation>
     </message>
     <message>
-        <source>Group items</source>
-        <translation>群組</translation>
-    </message>
-    <message>
         <source>Play</source>
         <translation>播放</translation>
     </message>
@@ -794,10 +790,6 @@
     <message>
         <source>Remove the backgound</source>
         <translation>移除背景</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation>群組</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
@@ -1854,6 +1846,13 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>My Movies</source>
         <translation>我的影片</translation>
+    </message>
+</context>
+<context>
+    <name>UBStartupHintsPalette</name>
+    <message>
+        <source>Visible next time</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -776,10 +776,6 @@
         <translation>Ctrl+H</translation>
     </message>
     <message>
-        <source>Group items</source>
-        <translation>Agrupa elements</translation>
-    </message>
-    <message>
         <source>Play</source>
         <translation>Inicia</translation>
     </message>
@@ -794,10 +790,6 @@
     <message>
         <source>Remove the backgound</source>
         <translation>Elimina el fons</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation>Agrupa</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
@@ -1864,6 +1856,13 @@ Voleu ignorar aquests errors per a aquest amfitrió?</translation>
     <message>
         <source>My Movies</source>
         <translation>Les meves pel·lícules</translation>
+    </message>
+</context>
+<context>
+    <name>UBStartupHintsPalette</name>
+    <message>
+        <source>Visible next time</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

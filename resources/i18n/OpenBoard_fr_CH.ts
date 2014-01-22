@@ -776,10 +776,6 @@
         <translation>Masquer OpenBoard</translation>
     </message>
     <message>
-        <source>Group items</source>
-        <translation>Grouper les objets</translation>
-    </message>
-    <message>
         <source>Play</source>
         <translatorcomment>j&apos;hésite avec Lancer (dépend du contexte d&apos;usage)</translatorcomment>
         <translation>Jouer</translation>
@@ -795,10 +791,6 @@
     <message>
         <source>Remove the backgound</source>
         <translation>Supprimer le fond</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation>Grouper</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
@@ -1867,6 +1859,13 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     <message>
         <source>My Movies</source>
         <translation>Mes films</translation>
+    </message>
+</context>
+<context>
+    <name>UBStartupHintsPalette</name>
+    <message>
+        <source>Visible next time</source>
+        <translation>Réouvrir la prochaine fois</translation>
     </message>
 </context>
 <context>

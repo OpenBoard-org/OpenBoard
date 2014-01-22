@@ -780,10 +780,6 @@
         <translation>Ukryj aplikację OpenBoard</translation>
     </message>
     <message>
-        <source>Group items</source>
-        <translation>Grupuj elementy</translation>
-    </message>
-    <message>
         <source>Play</source>
         <translation>Odtwarzaj</translation>
     </message>
@@ -798,10 +794,6 @@
     <message>
         <source>Remove the backgound</source>
         <translation>Usuń tło</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation>Grupuj</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
@@ -1872,6 +1864,13 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
     </message>
 </context>
 <context>
+    <name>UBStartupHintsPalette</name>
+    <message>
+        <source>Visible next time</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBTeacherBarWidget</name>
     <message>
         <source></source>
@@ -2323,7 +2322,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>OpenBoard</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished" variants="yes">
+            <lengthvariant>OpenBoard</lengthvariant>
+            <lengthvariant></lengthvariant>
+        </translation>
     </message>
     <message>
         <source>Restore credentials on reboot</source>

@@ -776,10 +776,6 @@
         <translation>Απόκρυψη της εφαρμογής OpenBoard</translation>
     </message>
     <message>
-        <source>Group items</source>
-        <translation>Ομαδοποίηση αντικειμένων</translation>
-    </message>
-    <message>
         <source>Play</source>
         <translation>Αναπαραγωγή</translation>
     </message>
@@ -794,10 +790,6 @@
     <message>
         <source>Remove the backgound</source>
         <translation>Αφαίρεση παρασκηνίου</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation>Ομάδα</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
@@ -1862,6 +1854,13 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>My Movies</source>
         <translation>Οι ταινίες μου</translation>
+    </message>
+</context>
+<context>
+    <name>UBStartupHintsPalette</name>
+    <message>
+        <source>Visible next time</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

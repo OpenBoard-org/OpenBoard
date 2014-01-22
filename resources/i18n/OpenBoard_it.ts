@@ -776,10 +776,6 @@
         <translation>Nascondi l&apos;applicazione OpenBoard</translation>
     </message>
     <message>
-        <source>Group items</source>
-        <translation>Raggruppa oggetti</translation>
-    </message>
-    <message>
         <source>Play</source>
         <translation>Riproduci</translation>
     </message>
@@ -794,10 +790,6 @@
     <message>
         <source>Remove the backgound</source>
         <translation>Rimuove lo sfondo</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation>Raggruppa</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
@@ -1862,6 +1854,13 @@ Vuoi ignorare gli errori per questo host?</translation>
     <message>
         <source>My Movies</source>
         <translation>I miei film</translation>
+    </message>
+</context>
+<context>
+    <name>UBStartupHintsPalette</name>
+    <message>
+        <source>Visible next time</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

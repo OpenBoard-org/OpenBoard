@@ -776,10 +776,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Group items</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
@@ -793,10 +789,6 @@
     </message>
     <message>
         <source>Remove the backgound</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1853,6 +1845,13 @@ Do you want to ignore these errors for this host?</source>
     <name>UBSettings</name>
     <message>
         <source>My Movies</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBStartupHintsPalette</name>
+    <message>
+        <source>Visible next time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

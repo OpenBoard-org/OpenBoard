@@ -777,10 +777,6 @@
         <translation>Ocultar a Aplicação OpenBoard</translation>
     </message>
     <message>
-        <source>Group items</source>
-        <translation>Agrupar itens</translation>
-    </message>
-    <message>
         <source>Play</source>
         <translatorcomment>Começar(?)</translatorcomment>
         <translation>Iniciar</translation>
@@ -796,10 +792,6 @@
     <message>
         <source>Remove the backgound</source>
         <translation>Remover o fundo</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation>Grupo</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
@@ -1865,6 +1857,13 @@ Quer ignorar estes erros, deste servidor?</translation>
     <message>
         <source>My Movies</source>
         <translation>Os meus filmes</translation>
+    </message>
+</context>
+<context>
+    <name>UBStartupHintsPalette</name>
+    <message>
+        <source>Visible next time</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
