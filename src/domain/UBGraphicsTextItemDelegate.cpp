@@ -195,6 +195,11 @@ void UBGraphicsTextItemDelegate::createControls()
         button->setFlag(QGraphicsItem::ItemIsSelectable, true);
     }
 
+    // Claudio: on changing the zvlaue the frame is updated updateSelectionFrame and
+    // the default value for the operation mode is set (scaling). This isn't the right
+    // mode for text so we call that here.
+    frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
+
 }
 
 

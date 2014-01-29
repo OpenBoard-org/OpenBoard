@@ -401,7 +401,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     qreal width = delegated()->boundingRect().width() * mTotalScaleX;
     qreal height = delegated()->boundingRect().height() * mTotalScaleY;
 
-    if (mOperationMode == Scaling)
+    if (mOperationMode ==  Scaling)
     {
         if(!rotating())
         {
@@ -443,8 +443,8 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                         mScaleY = scaleY;
                     }
                 }
-            }else if (resizingLeft() || resizingRight())
-            {
+            }
+            else if (resizingLeft() || resizingRight()){
                 if(width != 0){
                     qreal scaleX = 0.0;
                     if(resizingLeft()){

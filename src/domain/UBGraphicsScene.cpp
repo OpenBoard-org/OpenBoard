@@ -257,9 +257,7 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
 
     foreach (QGraphicsItem *iitem, sortedItems.values()) {
         if (iitem)
-            iitem != item
-                    ? qDebug() <<  "current value" << iitem->zValue()
-                                   : qDebug() << "marked value" << QString::number(iitem->zValue(), 'f');
+            iitem != item ? qDebug() <<  "current value" << iitem->zValue() : qDebug() << "marked value" << QString::number(iitem->zValue(), 'f');
     }
 
     //Return new z value assigned to item

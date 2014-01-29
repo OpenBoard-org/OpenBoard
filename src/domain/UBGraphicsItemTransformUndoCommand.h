@@ -30,7 +30,6 @@
 
 #include <QtGui>
 
-#include "UBResizableGraphicsItem.h"
 #include "UBUndoCommand.h"
 
 
