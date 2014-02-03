@@ -398,13 +398,13 @@ void UBBoardController::saveData(SaveFlags fls)
 {
     bool verbose = fls | sf_showProgress;
     if (verbose) {
-        UBApplication::showMessage("Saving document...");
+        UBApplication::showMessage(tr("Saving document..."));
     }
     if (mActiveScene && mActiveScene->isModified()) {
         persistCurrentScene(true);
     }
     if (verbose) {
-        UBApplication::showMessage("Document has just been saved...");
+        UBApplication::showMessage(tr("Document has just been saved..."));
     }
 }
 
