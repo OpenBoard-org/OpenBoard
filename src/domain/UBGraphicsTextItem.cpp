@@ -41,8 +41,8 @@
 #include "core/memcheck.h"
 QColor UBGraphicsTextItem::lastUsedTextColor;
 
-UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent) :
-    QGraphicsTextItem(parent)
+UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent)
+    : QGraphicsTextItem(parent)
     , UBGraphicsItem()
     , mMultiClickState(0)
     , mLastMousePressTime(QTime::currentTime())
@@ -344,9 +344,15 @@ UBGraphicsScene* UBGraphicsTextItem::scene()
 
 void UBGraphicsTextItem::resize(qreal w, qreal h)
 {
+#ifdef Q_WS_MACX
+    // Claudio Mac os x >= 10.8.
+    // on text widget creation sometimes the computed height is completely wrong (more than 10^10)
+    setTextWidth(w > 10000 ? 250 : w);
+    setTextHeight(h > 10000 ? 80 : h);
+#else
     setTextWidth(w);
     setTextHeight(h);
-
+#endif
     if (Delegate())
         Delegate()->positionHandles();
 }
