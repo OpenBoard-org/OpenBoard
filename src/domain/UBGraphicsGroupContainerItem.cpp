@@ -82,7 +82,7 @@ void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
         if (!UBGraphicsItem::isLocked(this) && UBGraphicsItem::isLocked(item)) {
             Delegate()->setLocked(true);
         }
-    } 
+    }
     else {
         Delegate()->setUBFlag(GF_FLIPPABLE_ALL_AXIS, UBGraphicsItem::isFlippable(item));
         Delegate()->setUBFlag(GF_REVOLVABLE, UBGraphicsItem::isRotatable(item));
@@ -160,22 +160,9 @@ void UBGraphicsGroupContainerItem::removeFromGroup(QGraphicsItem *item)
 
 void UBGraphicsGroupContainerItem::deselectCurrentItem()
 {
-    if (mCurrentItem)
-    {
-        switch(mCurrentItem->type())
-        {
-        case UBGraphicsTextItem::Type:
-              {
-                  dynamic_cast<UBGraphicsTextItem*>(mCurrentItem)->Delegate()->getToolBarItem()->hide();
-              }
-              break;
-        case UBGraphicsMediaItem::Type:
-              {
-                  dynamic_cast<UBGraphicsMediaItem*>(mCurrentItem)->Delegate()->getToolBarItem()->hide();
-              }
-              break;
+    if (mCurrentItem && mCurrentItem->type() == UBGraphicsMediaItem::Type){
+        dynamic_cast<UBGraphicsMediaItem*>(mCurrentItem)->Delegate()->getToolBarItem()->hide();
 
-        }
         mCurrentItem->setSelected(false);
         mCurrentItem = NULL;
     }
@@ -185,8 +172,8 @@ QRectF UBGraphicsGroupContainerItem::boundingRect() const
 {
     return itemsBoundingRect;
 }
-void UBGraphicsGroupContainerItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-                               QWidget *widget)
+
+void UBGraphicsGroupContainerItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(widget);
     Q_UNUSED(painter);
