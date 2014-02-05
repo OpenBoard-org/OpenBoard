@@ -99,7 +99,6 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
         void setSelected(bool selected);
 
         QString mTypeTextHereLabel;
-        int mEmptyTextWidth;
 
     signals:
         void textUndoCommandAdded(UBGraphicsTextItem *textItem);

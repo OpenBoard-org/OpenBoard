@@ -48,7 +48,6 @@ UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent)
     , mLastMousePressTime(QTime::currentTime())
     , mTypeTextHereLabel(tr("<Type Text Here>"))
 {
-    mEmptyTextWidth = QFontMetrics(font()).width(mTypeTextHereLabel);
     setDelegate(new UBGraphicsTextItemDelegate(this, 0));
 
     // TODO claudio remove this because in contrast with the fact the frame should be created on demand.
@@ -331,7 +330,7 @@ void UBGraphicsTextItem::contentsChanged()
 
     if (toPlainText().isEmpty())
     {
-        resize(textWidth(),textHeight());
+        resize(QFontMetrics(font()).width(mTypeTextHereLabel),QFontMetrics(font()).height());
     }
 }
 
@@ -344,15 +343,8 @@ UBGraphicsScene* UBGraphicsTextItem::scene()
 
 void UBGraphicsTextItem::resize(qreal w, qreal h)
 {
-#ifdef Q_WS_MACX
-    // Claudio Mac os x >= 10.8.
-    // on text widget creation sometimes the computed height is completely wrong (more than 10^10)
-    setTextWidth(w > 10000 ? 250 : w);
-    setTextHeight(h > 10000 ? 80 : h);
-#else
     setTextWidth(w);
     setTextHeight(h);
-#endif
     if (Delegate())
         Delegate()->positionHandles();
 }
