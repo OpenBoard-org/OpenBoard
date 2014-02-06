@@ -829,7 +829,7 @@ void UBBoardView::handleItemMouseMove(QMouseEvent *event)
         // a cludge for terminate moving of w3c widgets.
         // in some cases w3c widgets catches mouse move and doesn't sends that events to web page,
         // at simple - in google map widget - mouse move events doesn't comes to web page from rectangle of wearch bar on bottom right corner of widget.
-        if (mWidgetMoved && UBGraphicsW3CWidgetItem::Type == movingItem->type())
+        if (movingItem && mWidgetMoved && UBGraphicsW3CWidgetItem::Type == movingItem->type())
             movingItem->setPos(posBeforeMove);
     }
 }
