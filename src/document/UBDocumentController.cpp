@@ -541,7 +541,7 @@ void UBDocumentController::duplicateSelectedItem()
     }
 }
 
-void UBDocumentController::moveDocumentToTrash(UBDocumentGroupTreeItem* groupTi, UBDocumentProxyTreeItem *proxyTi)
+void UBDocumentController::selectADocumentOnTrashingSelectedOne(UBDocumentGroupTreeItem* groupTi,UBDocumentProxyTreeItem *proxyTi)
 {
     int index = proxyTi->parent()->indexOfChild(proxyTi);
     index --;
@@ -597,6 +597,12 @@ void UBDocumentController::moveDocumentToTrash(UBDocumentGroupTreeItem* groupTi,
         else
             proxyTi->parent()->setSelected(true);
     }
+}
+
+void UBDocumentController::moveDocumentToTrash(UBDocumentGroupTreeItem* groupTi, UBDocumentProxyTreeItem *proxyTi)
+{
+
+    selectADocumentOnTrashingSelectedOne(groupTi,proxyTi);
 
     QString oldGroupName = proxyTi->proxy()->metaData(UBSettings::documentGroupName).toString();
     proxyTi->proxy()->setMetaData(UBSettings::documentGroupName, UBSettings::trashedDocumentGroupNamePrefix + oldGroupName);
@@ -738,8 +744,12 @@ void UBDocumentController::deleteSelectedItem()
                     for (int i = 0; i < groupTi->childCount(); i++)
                     {
                         UBDocumentProxyTreeItem* proxyTi = dynamic_cast<UBDocumentProxyTreeItem*>(groupTi->child(i));
-                        if (proxyTi && proxyTi->proxy())
+                        if (proxyTi && proxyTi->proxy()){
+                            if(proxyTi->proxy() == mBoardController->selectedDocument()){
+                                selectADocumentOnTrashingSelectedOne(dynamic_cast<UBDocumentGroupTreeItem*>(mDocumentUI->documentTreeWidget),proxyTi);
+                            }
                             toBeDeleted << proxyTi;
+                        }
                     }
 
                     showMessage(tr("Emptying trash"));

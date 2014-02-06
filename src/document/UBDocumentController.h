@@ -121,6 +121,8 @@ class UBDocumentController : public UBDocumentContainer
         bool mToolsPalettePositionned;
         UBDocumentGroupTreeItem* mTrashTi;
 
+        void selectADocumentOnTrashingSelectedOne(UBDocumentGroupTreeItem* groupTi,UBDocumentProxyTreeItem *proxyTi);
+
         void moveDocumentToTrash(UBDocumentGroupTreeItem* groupTi, UBDocumentProxyTreeItem *proxyTi);
         void moveFolderToTrash(UBDocumentGroupTreeItem* groupTi);
         QString mDocumentTrashGroupName;
