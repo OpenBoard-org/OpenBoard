@@ -40,14 +40,15 @@ initializeVariables()
   GUI_TRANSLATIONS_DIRECTORY_PATH="../Qt-4.8/translations"
   QT_LIBRARY_DEST_PATH="$PRODUCT_PATH/qtlib"
   QT_LIBRARY_SOURCE_PATH="$QT_PATH/lib"
-  ARCHITECTURE=`uname -m`
-  if [ "$ARCHITECTURE" == "x86_64" ]; then
+  if [ -z $ARCHITECTURE ]; then
+    ARCHITECTURE=`uname -m`
+    if [ "$ARCHITECTURE" == "x86_64" ]; then
       ARCHITECTURE="amd64"
-  fi
-  if [ "$ARCHITECTURE" == "i686" ]; then
+    fi
+    if [ "$ARCHITECTURE" == "i686" ]; then
       ARCHITECTURE="i386"
+    fi
   fi
-
   NOTIFY_CMD=`which notify-send`
   QMAKE_PATH="$QT_PATH/bin/qmake"
   LRELEASES="$QT_PATH/bin/lrelease"
@@ -114,7 +115,7 @@ buildWithStandardQt(){
         STANDARD_QT_USED=true
         QMAKE_PATH=$STANDARD_QT
         LRELEASES=`which lrelease`
-        if [ "`arch`" == "i686" ]; then
+        if [ "`arch`" == "i686" ] || [ "$ARCHITECTURE" == "i386" ]; then
             QT_PATH="/usr/lib/i386-linux-gnu"
         else
             QT_PATH="/usr/lib/`arch`-linux-gnu"
@@ -148,8 +149,6 @@ buildImporter(){
 #     script
 #**********************
 checkUser
-initializeVariables
-buildWithStandardQt
 
 for var in "$@"
 do
@@ -165,6 +164,8 @@ do
    fi
 done
 
+initializeVariables
+buildWithStandardQt
 
 alertIfPreviousVersionInstalled
 
