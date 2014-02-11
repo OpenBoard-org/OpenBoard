@@ -52,7 +52,6 @@
 
 
 #include "gui/UBThumbnailView.h"
-//#include "gui/UBDocumentTreeWidget.h"
 #include "gui/UBMousePressFilter.h"
 #include "gui/UBMessageWindow.h"
 #include "gui/UBMainWindow.h"
