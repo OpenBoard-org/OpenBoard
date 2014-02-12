@@ -413,13 +413,10 @@ public slots:
 
         UBGraphicsStroke* mCurrentStroke;
 
-        bool mShouldUseOMP;
-
         int mItemCount;
 
         QList<QGraphicsItem*> mFastAccessItems; // a local copy as QGraphicsScene::items() is very slow in Qt 4.6
 
-        //int mMesure1Ms, mMesure2Ms;
 
         bool mHasCache;
         //        tmp stub for divide addings scene objects from undo mechanism implementation

@@ -307,7 +307,6 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     , mArcPolygonItem(0)
     , mRenderingContext(Screen)
     , mCurrentStroke(0)
-    , mShouldUseOMP(true)
     , mItemCount(0)
     , mUndoRedoStackEnabled(enableUndoRedoStack)
     , magniferControlViewWidget(0)
@@ -318,11 +317,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     , mSelectionFrame(0)
 {
     UBCoreGraphicsScene::setObjectName("BoardScene");
-#ifdef __ppc__
-    mShouldUseOMP = false;
-#elif defined(Q_WS_MAC)
-    mShouldUseOMP = QSysInfo::MacintoshVersion >= QSysInfo::MV_10_5;
-#endif
+    setItemIndexMethod(NoIndex);
 
     setUuid(QUuid::createUuid());
     setDocument(parent);

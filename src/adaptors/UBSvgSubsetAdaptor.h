@@ -86,7 +86,6 @@ class UBSvgSubsetAdaptor
         static const QString sFontWeightPrefix;
         static const QString sFontStylePrefix;
 
-        static QString readTeacherGuideNode(int sceneIndex);
     private:
 
         static UBGraphicsScene* loadScene(UBDocumentProxy* proxy, const QByteArray& pArray);
