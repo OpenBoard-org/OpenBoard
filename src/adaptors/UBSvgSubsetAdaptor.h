@@ -65,6 +65,9 @@ class UBSvgSubsetAdaptor
     public:
 
         static UBGraphicsScene* loadScene(UBDocumentProxy* proxy, const int pageIndex);
+        static QByteArray loadSceneAsText(UBDocumentProxy* proxy, const int pageIndex);
+        static UBGraphicsScene* loadScene(UBDocumentProxy* proxy, const QByteArray& pArray);
+
         static void persistScene(UBDocumentProxy* proxy, UBGraphicsScene* pScene, const int pageIndex);
         static void upgradeScene(UBDocumentProxy* proxy, const int pageIndex);
 
@@ -87,8 +90,6 @@ class UBSvgSubsetAdaptor
         static const QString sFontStylePrefix;
 
     private:
-
-        static UBGraphicsScene* loadScene(UBDocumentProxy* proxy, const QByteArray& pArray);
 
         static QDomDocument loadSceneDocument(UBDocumentProxy* proxy, const int pPageIndex);
 

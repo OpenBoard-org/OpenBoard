@@ -32,6 +32,8 @@
 
 #include "UBSceneCache.h"
 
+#include "UBPersistenceWorker.h"
+
 class UBDocument;
 class UBDocumentProxy;
 class UBGraphicsScene;
@@ -148,11 +150,14 @@ class UBPersistenceManager : public QObject
 
         QString mDocumentRepositoryPath;
 
-        QHash<int,QString>teacherBarNodeString;
+        UBPersistenceWorker* mWorker;
+
+        QThread* mThread;
 
     private slots:
         void documentRepositoryChanged(const QString& path);
-
+        void errorString(QString error);
+        void onSceneLoaded(QByteArray,UBDocumentProxy*,int);
 };
 
 

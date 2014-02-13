@@ -256,6 +256,29 @@ UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const int
 }
 
 
+QByteArray UBSvgSubsetAdaptor::loadSceneAsText(UBDocumentProxy* proxy, const int pageIndex)
+{
+    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
+    qDebug() << fileName;
+    QFile file(fileName);
+
+    if (file.exists())
+    {
+        if (!file.open(QIODevice::ReadOnly))
+        {
+            qWarning() << "Cannot open file " << fileName << " for reading ...";
+            return "";
+        }
+
+        return file.readAll();
+
+        file.close();
+
+    }
+    return "";
+}
+
+
 QUuid UBSvgSubsetAdaptor::sceneUuid(UBDocumentProxy* proxy, const int pageIndex)
 {
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
@@ -1019,307 +1042,299 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
 bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
 {
     Q_UNUSED(pageIndex);
-    if (mScene->isModified())
+
+    //Creating dom structure to store information
+    QDomDocument groupDomDocument;
+    QDomElement groupRoot = groupDomDocument.createElement(tGroups);
+    groupDomDocument.appendChild(groupRoot);
+
+    QBuffer buffer;
+    buffer.open(QBuffer::WriteOnly);
+    mXmlWriter.setDevice(&buffer);
+
+    mXmlWriter.setAutoFormatting(true);
+
+    mXmlWriter.writeStartDocument();
+    mXmlWriter.writeDefaultNamespace(nsSvg);
+    mXmlWriter.writeNamespace(nsXLink, "xlink");
+    mXmlWriter.writeNamespace(UBSettings::uniboardDocumentNamespaceUri, "ub");
+    mXmlWriter.writeNamespace(nsXHtml, "xhtml");
+
+    writeSvgElement();
+
+    // Get the items from the scene
+    QList<QGraphicsItem*> items = mScene->items();
+
+    int strokes = 0; int polygons = 0;
+    foreach(QGraphicsItem *item, items) {
+        if (item->type() == UBGraphicsPolygonItem::Type) {
+            polygons++;
+        } else if (item->type() == UBGraphicsStrokesGroup::Type) {
+            strokes++;
+        }
+    }
+    qDebug() << "---Strokes count" << strokes << "Polygons count" << polygons;
+
+    qSort(items.begin(), items.end(), itemZIndexComp);
+
+    UBGraphicsStroke *openStroke = 0;
+
+    bool groupHoldsInfo = false;
+
+    while (!items.empty())
     {
+        QGraphicsItem *item = items.takeFirst();
 
-        //Creating dom structure to store information
-        QDomDocument groupDomDocument;
-        QDomElement groupRoot = groupDomDocument.createElement(tGroups);
-        groupDomDocument.appendChild(groupRoot);
+        // Is the item a strokes group?
+        UBGraphicsStrokesGroup* strokesGroupItem = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item);
 
-        QBuffer buffer;
-        buffer.open(QBuffer::WriteOnly);
-        mXmlWriter.setDevice(&buffer);
-
-        mXmlWriter.setAutoFormatting(true);
-
-        mXmlWriter.writeStartDocument();
-        mXmlWriter.writeDefaultNamespace(nsSvg);
-        mXmlWriter.writeNamespace(nsXLink, "xlink");
-        mXmlWriter.writeNamespace(UBSettings::uniboardDocumentNamespaceUri, "ub");
-        mXmlWriter.writeNamespace(nsXHtml, "xhtml");
-
-        writeSvgElement();
-
-        // Get the items from the scene
-        QList<QGraphicsItem*> items = mScene->items();
-
-        int strokes = 0; int polygons = 0;
-        foreach(QGraphicsItem *item, items) {
-            if (item->type() == UBGraphicsPolygonItem::Type) {
-                polygons++;
-            } else if (item->type() == UBGraphicsStrokesGroup::Type) {
-                strokes++;
+        if(strokesGroupItem && strokesGroupItem->isVisible()){
+            // Add the polygons
+            foreach(QGraphicsItem* item, strokesGroupItem->childItems()){
+                UBGraphicsPolygonItem* poly = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
+                if(NULL != poly){
+                    polygonItemToSvgPolygon(poly, true);
+                    items.removeOne(poly);
+                }
             }
         }
-        qDebug() << "---Strokes count" << strokes << "Polygons count" << polygons;
 
-        qSort(items.begin(), items.end(), itemZIndexComp);
-
-        UBGraphicsStroke *openStroke = 0;
-
-        bool groupHoldsInfo = false;
-
-        while (!items.empty())
+        // Is the item a polygon?
+        UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*> (item);
+        if (polygonItem && polygonItem->isVisible())
         {
-            QGraphicsItem *item = items.takeFirst();
-
-            // Is the item a strokes group?
-            UBGraphicsStrokesGroup* strokesGroupItem = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item);
-
-            if(strokesGroupItem && strokesGroupItem->isVisible()){
-                // Add the polygons
-                foreach(QGraphicsItem* item, strokesGroupItem->childItems()){
-                    UBGraphicsPolygonItem* poly = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
-                    if(NULL != poly){
-                        polygonItemToSvgPolygon(poly, true);
-                        items.removeOne(poly);
-                    }
-                }
-            }
-
-            // Is the item a polygon?
-            UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*> (item);
-            if (polygonItem && polygonItem->isVisible())
-            {
-                UBGraphicsStroke* currentStroke = polygonItem->stroke();
-                if (openStroke && (currentStroke != openStroke))
-                {
-                    mXmlWriter.writeEndElement(); //g
-                    openStroke = 0;
-                    groupHoldsInfo = false;
-                }
-
-                bool firstPolygonInStroke = currentStroke  && !openStroke;
-
-                if (firstPolygonInStroke)
-                {
-                    mXmlWriter.writeStartElement("g");
-                    openStroke = currentStroke;
-
-                    QMatrix matrix = item->sceneMatrix();
-
-                    if (!matrix.isIdentity())
-                        mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
-
-                    UBGraphicsStroke* stroke = dynamic_cast<UBGraphicsStroke* >(currentStroke);
-
-                    if (stroke)
-                    {
-                        QColor colorOnDarkBackground = polygonItem->colorOnDarkBackground();
-                        QColor colorOnLightBackground = polygonItem->colorOnLightBackground();
-
-                        if (colorOnDarkBackground.isValid() && colorOnLightBackground.isValid())
-                        {
-                            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "z-value"
-                                                      , QString("%1").arg(polygonItem->zValue()));
-
-                            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
-                                                      , "fill-on-dark-background", colorOnDarkBackground.name());
-                            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
-                                                      , "fill-on-light-background", colorOnLightBackground.name());
-
-                            groupHoldsInfo = true;
-                        }
-                    }
-
-                    if (stroke && !stroke->hasPressure())
-                    {
-
-                        strokeToSvgPolyline(stroke, groupHoldsInfo);
-
-                        //we can dequeue all polygons belonging to that stroke
-                        foreach(UBGraphicsPolygonItem* gi, stroke->polygons())
-                        {
-                            items.removeOne(gi);
-                        }
-                        continue;
-                    }
-                }
-
-                if (polygonItem->isNominalLine())
-                    polygonItemToSvgLine(polygonItem, groupHoldsInfo);
-                else
-                    polygonItemToSvgPolygon(polygonItem, groupHoldsInfo);
-
-                continue;
-            }
-
-            if (openStroke)
+            UBGraphicsStroke* currentStroke = polygonItem->stroke();
+            if (openStroke && (currentStroke != openStroke))
             {
                 mXmlWriter.writeEndElement(); //g
-                groupHoldsInfo = false;
                 openStroke = 0;
+                groupHoldsInfo = false;
             }
 
-            // Is the item a picture?
-            UBGraphicsPixmapItem *pixmapItem = qgraphicsitem_cast<UBGraphicsPixmapItem*> (item);
-            if (pixmapItem && pixmapItem->isVisible())
+            bool firstPolygonInStroke = currentStroke  && !openStroke;
+
+            if (firstPolygonInStroke)
             {
-                pixmapItemToLinkedImage(pixmapItem);
-                continue;
+                mXmlWriter.writeStartElement("g");
+                openStroke = currentStroke;
+
+                QMatrix matrix = item->sceneMatrix();
+
+                if (!matrix.isIdentity())
+                    mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
+
+                UBGraphicsStroke* stroke = dynamic_cast<UBGraphicsStroke* >(currentStroke);
+
+                if (stroke)
+                {
+                    QColor colorOnDarkBackground = polygonItem->colorOnDarkBackground();
+                    QColor colorOnLightBackground = polygonItem->colorOnLightBackground();
+
+                    if (colorOnDarkBackground.isValid() && colorOnLightBackground.isValid())
+                    {
+                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "z-value"
+                                                  , QString("%1").arg(polygonItem->zValue()));
+
+                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
+                                                  , "fill-on-dark-background", colorOnDarkBackground.name());
+                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
+                                                  , "fill-on-light-background", colorOnLightBackground.name());
+
+                        groupHoldsInfo = true;
+                    }
+                }
+
+                if (stroke && !stroke->hasPressure())
+                {
+
+                    strokeToSvgPolyline(stroke, groupHoldsInfo);
+
+                    //we can dequeue all polygons belonging to that stroke
+                    foreach(UBGraphicsPolygonItem* gi, stroke->polygons())
+                    {
+                        items.removeOne(gi);
+                    }
+                    continue;
+                }
             }
 
-            // Is the item a shape?
-            UBGraphicsSvgItem *svgItem = qgraphicsitem_cast<UBGraphicsSvgItem*> (item);
-            if (svgItem && svgItem->isVisible())
-            {
-                svgItemToLinkedSvg(svgItem);
-                continue;
-            }
+            if (polygonItem->isNominalLine())
+                polygonItemToSvgLine(polygonItem, groupHoldsInfo);
+            else
+                polygonItemToSvgPolygon(polygonItem, groupHoldsInfo);
 
-            UBGraphicsMediaItem *mediaItem = qgraphicsitem_cast<UBGraphicsMediaItem*> (item);
-
-            if (mediaItem && mediaItem->isVisible())
-            {
-                if (UBGraphicsMediaItem::mediaType_Video == mediaItem->getMediaType())
-                    videoItemToLinkedVideo(mediaItem);
-                else
-                    audioItemToLinkedAudio(mediaItem);
-                continue;
-            }
-
-            // Is the item an app?
-            UBGraphicsAppleWidgetItem *appleWidgetItem = qgraphicsitem_cast<UBGraphicsAppleWidgetItem*> (item);
-            if (appleWidgetItem && appleWidgetItem->isVisible())
-            {
-                graphicsAppleWidgetToSvg(appleWidgetItem);
-                continue;
-            }
-
-            // Is the item a W3C?
-            UBGraphicsW3CWidgetItem *w3cWidgetItem = qgraphicsitem_cast<UBGraphicsW3CWidgetItem*> (item);
-            if (w3cWidgetItem && w3cWidgetItem->isVisible())
-            {
-                graphicsW3CWidgetToSvg(w3cWidgetItem);
-                continue;
-            }
-
-            // Is the item a PDF?
-            UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*> (item);
-            if (pdfItem && pdfItem->isVisible())
-            {
-                pdfItemToLinkedPDF(pdfItem);
-                continue;
-            }
-
-            // Is the item a text?
-            UBGraphicsTextItem *textItem = qgraphicsitem_cast<UBGraphicsTextItem*> (item);
-            if (textItem && textItem->isVisible())
-            {
-                textItemToSvg(textItem);
-                continue;
-            }
-
-            // Is the item a curtain?
-            UBGraphicsCurtainItem *curtainItem = qgraphicsitem_cast<UBGraphicsCurtainItem*> (item);
-            if (curtainItem && curtainItem->isVisible())
-            {
-                curtainItemToSvg(curtainItem);
-                continue;
-            }
-
-            // Is the item a ruler?
-            UBGraphicsRuler *ruler = qgraphicsitem_cast<UBGraphicsRuler*> (item);
-            if (ruler && ruler->isVisible())
-            {
-                rulerToSvg(ruler);
-                continue;
-            }
-
-            // Is the item a cache?
-            UBGraphicsCache* cache = qgraphicsitem_cast<UBGraphicsCache*>(item);
-            if(cache && cache->isVisible())
-            {
-                cacheToSvg(cache);
-                continue;
-            }
-
-            // Is the item a compass
-            UBGraphicsCompass *compass = qgraphicsitem_cast<UBGraphicsCompass*> (item);
-            if (compass && compass->isVisible())
-            {
-                compassToSvg(compass);
-                continue;
-            }
-
-            // Is the item a protractor?
-            UBGraphicsProtractor *protractor = qgraphicsitem_cast<UBGraphicsProtractor*> (item);
-            if (protractor && protractor->isVisible())
-            {
-                protractorToSvg(protractor);
-                continue;
-            }
-
-            // Is the item a triangle?
-            UBGraphicsTriangle *triangle = qgraphicsitem_cast<UBGraphicsTriangle*> (item);
-            if (triangle && triangle->isVisible())
-            {
-                triangleToSvg(triangle);
-                continue;
-            }
-
-            // Is the item a group?
-            UBGraphicsGroupContainerItem *groupItem = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(item);
-            if (groupItem && groupItem->isVisible())
-            {
-                persistGroupToDom(groupItem, &groupRoot, &groupDomDocument);
-                continue;
-            }
+            continue;
         }
 
         if (openStroke)
         {
-            mXmlWriter.writeEndElement();
+            mXmlWriter.writeEndElement(); //g
             groupHoldsInfo = false;
             openStroke = 0;
         }
 
-        //writing group data
-        if (groupRoot.hasChildNodes()) {
-            mXmlWriter.writeStartElement(tGroups);
-            QDomElement curElement = groupRoot.firstChildElement();
-            while (!curElement.isNull()) {
-                if (curElement.hasAttribute(aId)) {
-                    mXmlWriter.writeStartElement(curElement.tagName());
-                    mXmlWriter.writeAttribute(aId, curElement.attribute(aId));
-                    if(curElement.hasAttribute("locked")){
-                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri,"locked",curElement.attribute("locked"));
-                    }
-                    QDomElement curSubElement = curElement.firstChildElement();
-                    while (!curSubElement.isNull()) {
-                        if (curSubElement.hasAttribute(aId)) {
-                            mXmlWriter.writeStartElement(curSubElement.tagName());
-                            mXmlWriter.writeAttribute(aId, curSubElement.attribute(aId));
-                            mXmlWriter.writeEndElement();
-                            curSubElement = curSubElement.nextSiblingElement();
-                        }
-                    }
-                    mXmlWriter.writeEndElement();
-                }
-                curElement = curElement.nextSiblingElement();
-            }
-            mXmlWriter.writeEndElement();
-        }
-
-        mXmlWriter.writeEndDocument();
-        QString fileName = mDocumentPath + UBFileSystemUtils::digitFileFormat("/page%1.svg", mPageIndex);
-        QFile file(fileName);
-
-        if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+        // Is the item a picture?
+        UBGraphicsPixmapItem *pixmapItem = qgraphicsitem_cast<UBGraphicsPixmapItem*> (item);
+        if (pixmapItem && pixmapItem->isVisible())
         {
-            qCritical() << "cannot open " << fileName << " for writing ...";
-            return false;
+            pixmapItemToLinkedImage(pixmapItem);
+            continue;
         }
-        file.write(buffer.data());
-        file.flush();
-        file.close();
 
+        // Is the item a shape?
+        UBGraphicsSvgItem *svgItem = qgraphicsitem_cast<UBGraphicsSvgItem*> (item);
+        if (svgItem && svgItem->isVisible())
+        {
+            svgItemToLinkedSvg(svgItem);
+            continue;
+        }
+
+        UBGraphicsMediaItem *mediaItem = qgraphicsitem_cast<UBGraphicsMediaItem*> (item);
+
+        if (mediaItem && mediaItem->isVisible())
+        {
+            if (UBGraphicsMediaItem::mediaType_Video == mediaItem->getMediaType())
+                videoItemToLinkedVideo(mediaItem);
+            else
+                audioItemToLinkedAudio(mediaItem);
+            continue;
+        }
+
+        // Is the item an app?
+        UBGraphicsAppleWidgetItem *appleWidgetItem = qgraphicsitem_cast<UBGraphicsAppleWidgetItem*> (item);
+        if (appleWidgetItem && appleWidgetItem->isVisible())
+        {
+            graphicsAppleWidgetToSvg(appleWidgetItem);
+            continue;
+        }
+
+        // Is the item a W3C?
+        UBGraphicsW3CWidgetItem *w3cWidgetItem = qgraphicsitem_cast<UBGraphicsW3CWidgetItem*> (item);
+        if (w3cWidgetItem && w3cWidgetItem->isVisible())
+        {
+            graphicsW3CWidgetToSvg(w3cWidgetItem);
+            continue;
+        }
+
+        // Is the item a PDF?
+        UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*> (item);
+        if (pdfItem && pdfItem->isVisible())
+        {
+            pdfItemToLinkedPDF(pdfItem);
+            continue;
+        }
+
+        // Is the item a text?
+        UBGraphicsTextItem *textItem = qgraphicsitem_cast<UBGraphicsTextItem*> (item);
+        if (textItem && textItem->isVisible())
+        {
+            textItemToSvg(textItem);
+            continue;
+        }
+
+        // Is the item a curtain?
+        UBGraphicsCurtainItem *curtainItem = qgraphicsitem_cast<UBGraphicsCurtainItem*> (item);
+        if (curtainItem && curtainItem->isVisible())
+        {
+            curtainItemToSvg(curtainItem);
+            continue;
+        }
+
+        // Is the item a ruler?
+        UBGraphicsRuler *ruler = qgraphicsitem_cast<UBGraphicsRuler*> (item);
+        if (ruler && ruler->isVisible())
+        {
+            rulerToSvg(ruler);
+            continue;
+        }
+
+        // Is the item a cache?
+        UBGraphicsCache* cache = qgraphicsitem_cast<UBGraphicsCache*>(item);
+        if(cache && cache->isVisible())
+        {
+            cacheToSvg(cache);
+            continue;
+        }
+
+        // Is the item a compass
+        UBGraphicsCompass *compass = qgraphicsitem_cast<UBGraphicsCompass*> (item);
+        if (compass && compass->isVisible())
+        {
+            compassToSvg(compass);
+            continue;
+        }
+
+        // Is the item a protractor?
+        UBGraphicsProtractor *protractor = qgraphicsitem_cast<UBGraphicsProtractor*> (item);
+        if (protractor && protractor->isVisible())
+        {
+            protractorToSvg(protractor);
+            continue;
+        }
+
+        // Is the item a triangle?
+        UBGraphicsTriangle *triangle = qgraphicsitem_cast<UBGraphicsTriangle*> (item);
+        if (triangle && triangle->isVisible())
+        {
+            triangleToSvg(triangle);
+            continue;
+        }
+
+        // Is the item a group?
+        UBGraphicsGroupContainerItem *groupItem = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(item);
+        if (groupItem && groupItem->isVisible())
+        {
+            persistGroupToDom(groupItem, &groupRoot, &groupDomDocument);
+            continue;
+        }
     }
-    else
+
+    if (openStroke)
     {
-        qDebug() << "ignoring unmodified page" << UBApplication::boardController->pageFromSceneIndex(mPageIndex);
+        mXmlWriter.writeEndElement();
+        groupHoldsInfo = false;
+        openStroke = 0;
     }
+
+    //writing group data
+    if (groupRoot.hasChildNodes()) {
+        mXmlWriter.writeStartElement(tGroups);
+        QDomElement curElement = groupRoot.firstChildElement();
+        while (!curElement.isNull()) {
+            if (curElement.hasAttribute(aId)) {
+                mXmlWriter.writeStartElement(curElement.tagName());
+                mXmlWriter.writeAttribute(aId, curElement.attribute(aId));
+                if(curElement.hasAttribute("locked")){
+                    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri,"locked",curElement.attribute("locked"));
+                }
+                QDomElement curSubElement = curElement.firstChildElement();
+                while (!curSubElement.isNull()) {
+                    if (curSubElement.hasAttribute(aId)) {
+                        mXmlWriter.writeStartElement(curSubElement.tagName());
+                        mXmlWriter.writeAttribute(aId, curSubElement.attribute(aId));
+                        mXmlWriter.writeEndElement();
+                        curSubElement = curSubElement.nextSiblingElement();
+                    }
+                }
+                mXmlWriter.writeEndElement();
+            }
+            curElement = curElement.nextSiblingElement();
+        }
+        mXmlWriter.writeEndElement();
+    }
+
+    mXmlWriter.writeEndDocument();
+    QString fileName = mDocumentPath + UBFileSystemUtils::digitFileFormat("/page%1.svg", mPageIndex);
+    QFile file(fileName);
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+    {
+        qCritical() << "cannot open " << fileName << " for writing ...";
+        return false;
+    }
+    file.write(buffer.data());
+    file.flush();
+    file.close();
 
     return true;
 }

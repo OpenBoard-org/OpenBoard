@@ -75,6 +75,17 @@ UBPersistenceManager::UBPersistenceManager(QObject *pParent)
 
     documentProxies = allDocumentProxies();
 
+    mThread = new QThread;
+    mWorker = new UBPersistenceWorker();
+    mWorker->moveToThread(mThread);
+    connect(mWorker, SIGNAL(error(QString)), this, SLOT(errorString(QString)));
+    connect(mThread, SIGNAL(started()), mWorker, SLOT(process()));
+    connect(mWorker, SIGNAL(finished()), mThread, SLOT(quit()));
+    connect(mWorker, SIGNAL(finished()), mWorker, SLOT(deleteLater()));
+    connect(mThread, SIGNAL(finished()), mThread, SLOT(deleteLater()));
+    connect(mWorker,SIGNAL(sceneLoaded(QByteArray,UBDocumentProxy*,int)),this,SLOT(onSceneLoaded(QByteArray,UBDocumentProxy*,int)));
+    mThread->start();
+
 }
 
 UBPersistenceManager* UBPersistenceManager::persistenceManager()
@@ -96,11 +107,31 @@ void UBPersistenceManager::destroy()
 
 UBPersistenceManager::~UBPersistenceManager()
 {
+    if(mWorker)
+        mWorker->applicationWillClose();
+
     foreach(QPointer<UBDocumentProxy> proxyGuard, documentProxies)
     {
         if (!proxyGuard.isNull())
             delete proxyGuard.data();
     }
+
+    // to be sure that all the scenes are stored on disk
+    mThread->wait(10*1000);
+}
+
+void UBPersistenceManager::errorString(QString error)
+{
+    qDebug() << "peristence thread return the error " << error;
+}
+
+void UBPersistenceManager::onSceneLoaded(QByteArray scene, UBDocumentProxy* proxy, int sceneIndex)
+{
+    qDebug() << "scene loaded " << sceneIndex;
+    QTime time;
+    time.start();
+    mSceneCache.insert(proxy,sceneIndex,UBSvgSubsetAdaptor::loadScene(proxy,scene));
+    qDebug() << "millisecond for sceneCache " << time.elapsed();
 }
 
 QList<QPointer<UBDocumentProxy> > UBPersistenceManager::allDocumentProxies()
@@ -653,16 +684,24 @@ void UBPersistenceManager::moveSceneToIndex(UBDocumentProxy* proxy, int source, 
 
 UBGraphicsScene* UBPersistenceManager::loadDocumentScene(UBDocumentProxy* proxy, int sceneIndex)
 {
+    UBGraphicsScene* scene = NULL;
+
     if (mSceneCache.contains(proxy, sceneIndex))
-        return mSceneCache.value(proxy, sceneIndex);
+        scene = mSceneCache.value(proxy, sceneIndex);
     else {
-        UBGraphicsScene* scene = UBSvgSubsetAdaptor::loadScene(proxy, sceneIndex);
+        scene = UBSvgSubsetAdaptor::loadScene(proxy, sceneIndex);
 
         if (scene)
             mSceneCache.insert(proxy, sceneIndex, scene);
-
-        return scene;
     }
+
+    if(sceneIndex + 1 < proxy->pageCount() &&  !mSceneCache.contains(proxy, sceneIndex + 1))
+        mWorker->readScene(proxy,sceneIndex+1);
+
+    if(sceneIndex - 1 >= 0 &&  !mSceneCache.contains(proxy, sceneIndex - 1))
+        mWorker->readScene(proxy,sceneIndex-1);
+
+    return scene;
 }
 
 void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex, bool isAnAutomaticBackup)
@@ -682,10 +721,8 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
 
     if (pScene->isModified())
     {
-        UBSvgSubsetAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
-
         UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
-
+        mWorker->saveScene(pDocumentProxy, pScene, pSceneIndex);
         pScene->setModified(false);
     }
 
