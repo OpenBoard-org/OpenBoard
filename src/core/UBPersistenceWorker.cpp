@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Open Education Foundation
+ * Copyright (C) 2013-2014 Open Education Foundation
  *
  *
  * This file is part of OpenBoard.
