@@ -116,15 +116,12 @@ class UBFeature
 {
 public:
     UBFeature() {;}
-//    UBFeature(const UBFeature &f);
     UBFeature(const QString &url, const QImage &icon, const QString &name, const QUrl &realPath, UBFeatureElementType type = FEATURE_CATEGORY);
-//    UBFeature();
     virtual ~UBFeature();
     QString getName() const { return mName; }
     QString getDisplayName() const {return mDisplayName;}
     QImage getThumbnail() const {return mThumbnail;}
     QString getVirtualPath() const { return virtualDir; }
-    //QString getPath() const { return mPath; };
     QUrl getFullPath() const { return mPath; }
     QString getFullVirtualPath() const { return  virtualDir + "/" + mName; }
     QString getUrl() const;
@@ -169,7 +166,7 @@ public:
     virtual ~UBFeaturesController();
 
     QList <UBFeature>* getFeatures() const {return featuresList;}
-    
+
     const QString& getRootPath()const {return rootPath;}
     void scanFS();
 
