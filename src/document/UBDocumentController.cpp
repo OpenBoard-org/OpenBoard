@@ -963,8 +963,9 @@ void UBDocumentController::importFile()
     if (group)
     {
         QString defaultPath = UBSettings::settings()->lastImportFilePath->get().toString();
-        QString filePath = QFileDialog::getOpenFileName(mParentWidget, tr("Open Supported File"),
-                defaultPath, docManager->importFileFilter());
+        if(defaultPath.isDetached())
+            defaultPath = UBSettings::settings()->userDocumentDirectory();
+        QString filePath = QFileDialog::getOpenFileName(mParentWidget, tr("Open Supported File"), defaultPath, docManager->importFileFilter());
 
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         QApplication::processEvents();
