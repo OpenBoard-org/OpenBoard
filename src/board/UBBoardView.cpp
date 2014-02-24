@@ -1083,8 +1083,7 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
     //    }
 
     //  QTime mouseMoveTime = QTime::currentTime();
-    if(!mIsDragInProgress
-            && ((mapToScene(event->pos()) - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance())) {
+    if(!mIsDragInProgress && ((mapToScene(event->pos()) - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance())) {
         qDebug() << "mouse move event canceled";
         return;
     }
@@ -1098,10 +1097,8 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
         return;
     }
 
-    if ((UBDrawingController::drawingController()->isDrawingTool())
-            && !mMouseButtonIsPressed) {
+    if ((UBDrawingController::drawingController()->isDrawingTool()) && !mMouseButtonIsPressed)
         QGraphicsView::mouseMoveEvent(event);
-    }
 
     int currentTool = static_cast<int>(UBDrawingController::drawingController()->stylusTool());
     switch (currentTool) {
@@ -1159,6 +1156,9 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
             if (currentTool == UBStylusTool::Selector) {
                 foreach (QGraphicsItem *item, items(bandRect)) {
 
+                    if(item->type() == UBGraphicsItemType::PolygonItemType && item->parentItem())
+                        item = item->parentItem();
+
                     if (item->type() == UBGraphicsW3CWidgetItem::Type
                             || item->type() == UBGraphicsPixmapItem::Type
                             || item->type() == UBGraphicsMediaItem::Type
@@ -1199,8 +1199,7 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
 
     default:
         if (!mTabletStylusIsPressed && scene()) {
-            scene()->inputDeviceMove(mapToScene(UBGeometryUtils::pointConstrainedInRect(event->pos(), rect()))
-                                     , mMouseButtonIsPressed);
+            scene()->inputDeviceMove(mapToScene(UBGeometryUtils::pointConstrainedInRect(event->pos(), rect())) , mMouseButtonIsPressed);
         }
         event->accept ();
     }
