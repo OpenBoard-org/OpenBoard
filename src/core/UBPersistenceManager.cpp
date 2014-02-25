@@ -65,6 +65,7 @@ UBPersistenceManager * UBPersistenceManager::sSingleton = 0;
 UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     : QObject(pParent)
     , mHasPurgedDocuments(false)
+    , mIsWorkerFinished(false)
 {
 
     mDocumentSubDirectories << imageDirectory;
@@ -81,6 +82,7 @@ UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     connect(mWorker, SIGNAL(error(QString)), this, SLOT(errorString(QString)));
     connect(mThread, SIGNAL(started()), mWorker, SLOT(process()));
     connect(mWorker, SIGNAL(finished()), mThread, SLOT(quit()));
+    connect(mWorker, SIGNAL(finished()), this, SLOT(onWorkerFinished()));
     connect(mWorker, SIGNAL(finished()), mWorker, SLOT(deleteLater()));
     connect(mThread, SIGNAL(finished()), mThread, SLOT(deleteLater()));
     connect(mWorker,SIGNAL(sceneLoaded(QByteArray,UBDocumentProxy*,int)),this,SLOT(onSceneLoaded(QByteArray,UBDocumentProxy*,int)));
@@ -105,10 +107,23 @@ void UBPersistenceManager::destroy()
     sSingleton = NULL;
 }
 
+void UBPersistenceManager::onWorkerFinished()
+{
+    mIsWorkerFinished = true;
+}
+
 UBPersistenceManager::~UBPersistenceManager()
 {
     if(mWorker)
         mWorker->applicationWillClose();
+
+    QTime time;
+    time.start();
+    qDebug() << "start waiting";
+
+    while(!mIsWorkerFinished)
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    qDebug() << "stop waiting after " << time.elapsed() << " ms";
 
     foreach(QPointer<UBDocumentProxy> proxyGuard, documentProxies)
     {
@@ -117,7 +132,6 @@ UBPersistenceManager::~UBPersistenceManager()
     }
 
     // to be sure that all the scenes are stored on disk
-    mThread->wait(10*1000);
 }
 
 void UBPersistenceManager::errorString(QString error)

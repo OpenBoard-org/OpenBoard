@@ -153,11 +153,13 @@ class UBPersistenceManager : public QObject
         UBPersistenceWorker* mWorker;
 
         QThread* mThread;
+        bool mIsWorkerFinished;
 
     private slots:
         void documentRepositoryChanged(const QString& path);
         void errorString(QString error);
         void onSceneLoaded(QByteArray,UBDocumentProxy*,int);
+        void onWorkerFinished();
 };
 
 
