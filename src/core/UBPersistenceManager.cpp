@@ -730,6 +730,8 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
     QDir dir(pDocumentProxy->persistencePath());
     dir.mkpath(pDocumentProxy->persistencePath());
 
+    mSceneCache.insert(pDocumentProxy, pSceneIndex, pScene);
+
     if (pDocumentProxy->isModified())
         UBMetadataDcSubsetAdaptor::persist(pDocumentProxy);
 
@@ -740,7 +742,6 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
         pScene->setModified(false);
     }
 
-    mSceneCache.insert(pDocumentProxy, pSceneIndex, pScene);
 }
 
 
@@ -890,14 +891,15 @@ bool UBPersistenceManager::isEmpty(UBDocumentProxy* pDocumentProxy)
     if (pDocumentProxy->pageCount() > 1)
         return false;
 
-    UBGraphicsScene *theSoleScene = UBSvgSubsetAdaptor::loadScene(pDocumentProxy, 0);
+    UBGraphicsScene *theSoleScene = mSceneCache.value(pDocumentProxy, 0) ? mSceneCache.value(pDocumentProxy, 0) : UBSvgSubsetAdaptor::loadScene(pDocumentProxy, 0);
 
     bool empty = false;
 
     if (theSoleScene)
     {
         empty = theSoleScene->isEmpty();
-        delete theSoleScene;
+        if(empty)
+            delete theSoleScene;
     }
     else
     {
