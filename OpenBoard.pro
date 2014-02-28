@@ -55,11 +55,6 @@ DEPENDPATH += src/pdf-merger
 INCLUDEPATH += src/pdf-merger
 include(src/pdf-merger/pdfMerger.pri)
 
-#plugins
-include(plugins/plugins.pri)
-INCLUDEPATH += plugins/cffadaptor/src
-
-
 #ThirdParty
 DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
 INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
@@ -385,7 +380,6 @@ linux-g++* {
 }
 
 RESOURCES += resources/OpenBoard.qrc
-RESOURCES += plugins/cffadaptor/resources/resources.qrc
 
 # When adding a translation here, also add it in the macx part
 TRANSLATIONS = resources/i18n/OpenBoard_en.ts \

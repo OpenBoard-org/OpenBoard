@@ -32,11 +32,9 @@
 #include "adaptors/UBExportFullPDF.h"
 #include "adaptors/UBExportDocument.h"
 #include "adaptors/UBExportWeb.h"
-#include "adaptors/UBExportCFF.h"
 #include "adaptors/UBImportDocument.h"
 #include "adaptors/UBImportPDF.h"
 #include "adaptors/UBImportImage.h"
-#include "adaptors/UBImportCFF.h"
 
 #include "domain/UBGraphicsScene.h"
 #include "domain/UBGraphicsSvgItem.h"
@@ -73,12 +71,10 @@ UBDocumentManager::UBDocumentManager(QObject *parent)
     QString dummyObjects = tr("objects");
     QString dummyWidgets = tr("widgets");
 
-    UBExportCFF* cffExporter = new UBExportCFF(this);
     UBExportFullPDF* exportFullPdf = new UBExportFullPDF(this);
     UBExportDocument* exportDocument = new UBExportDocument(this);
     mExportAdaptors.append(exportDocument);
     mExportAdaptors.append(exportFullPdf);
-    mExportAdaptors.append(cffExporter);
 
     UBImportDocument* documentImport = new UBImportDocument(this);
     mImportAdaptors.append(documentImport);
@@ -86,8 +82,6 @@ UBDocumentManager::UBDocumentManager(QObject *parent)
     mImportAdaptors.append(pdfImport);
     UBImportImage* imageImport = new UBImportImage(this);
     mImportAdaptors.append(imageImport);
-    UBImportCFF* cffImport = new UBImportCFF(this);
-    mImportAdaptors.append(cffImport);
 }
 
 

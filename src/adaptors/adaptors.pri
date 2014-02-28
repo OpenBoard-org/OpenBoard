@@ -11,13 +11,8 @@ HEADERS      += src/adaptors/UBExportAdaptor.h\
                 src/adaptors/UBImportPDF.h \
                 src/adaptors/UBImportImage.h \
                 src/adaptors/UBExportWeb.h \
-                src/adaptors/UBImportCFF.h \
-                src/adaptors/UBExportCFF.h \
-                src/adaptors/UBCFFSubsetAdaptor.h
-
-HEADERS      += src/adaptors/publishing/UBDocumentPublisher.h \
+                src/adaptors/publishing/UBDocumentPublisher.h \
                 src/adaptors/publishing/UBSvgSubsetRasterizer.h
-               
 
 
 SOURCES      += src/adaptors/UBExportAdaptor.cpp\
@@ -32,10 +27,5 @@ SOURCES      += src/adaptors/UBExportAdaptor.cpp\
                 src/adaptors/UBImportPDF.cpp \
                 src/adaptors/UBImportImage.cpp \
                 src/adaptors/UBExportWeb.cpp \
-                src/adaptors/UBImportCFF.cpp \
-                src/adaptors/UBExportCFF.cpp \
-                src/adaptors/UBCFFSubsetAdaptor.cpp \
-    src/adaptors/publishing/UBDocumentPublisher.cpp
-
-SOURCES      += \
+                src/adaptors/publishing/UBDocumentPublisher.cpp\
                 src/adaptors/publishing/UBSvgSubsetRasterizer.cpp
