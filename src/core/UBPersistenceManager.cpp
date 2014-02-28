@@ -738,7 +738,11 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
     if (pScene->isModified())
     {
         UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
-        mWorker->saveScene(pDocumentProxy, pScene, pSceneIndex);
+        QTime time;
+        time.start();
+        UBGraphicsScene* copiedScene = pScene->sceneDeepCopy();
+        qDebug() << "time to duplicate scene " << time.elapsed() << " ms";
+        mWorker->saveScene(pDocumentProxy, copiedScene, pSceneIndex);
         pScene->setModified(false);
     }
 

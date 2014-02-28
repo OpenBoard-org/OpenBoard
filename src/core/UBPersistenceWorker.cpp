@@ -57,8 +57,11 @@ void UBPersistenceWorker::process()
     mSemaphore.acquire();
     do{
         PersistenceInformation info = saves.takeFirst();
-        if(info.action == WriteScene)
+        if(info.action == WriteScene){
             UBSvgSubsetAdaptor::persistScene(info.proxy, info.scene, info.sceneIndex);
+            delete info.scene;
+            info.scene = NULL;
+        }
         else{
             emit sceneLoaded(UBSvgSubsetAdaptor::loadSceneAsText(info.proxy,info.sceneIndex), info.proxy, info.sceneIndex);
         }

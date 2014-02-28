@@ -665,14 +665,6 @@ void UBGraphicsScene::DisposeMagnifierQWidgets()
         magniferControlViewWidget = NULL;
     }
 
-    if(magniferDisplayViewWidget)
-    {
-        magniferDisplayViewWidget->hide();
-        magniferDisplayViewWidget->setParent(0);
-        delete magniferDisplayViewWidget;
-        magniferDisplayViewWidget = NULL;
-    }
-
     // some time have crash here on access to app (when call from destructor when close OpenBoard app)
     // so i just add try/catch section here
     try
