@@ -47,12 +47,12 @@ Type: filesandordirs ; Name: "{app}\i18n"
 Type: files ; Name: "{app}\*.dll"
 
 [Files]
-Source: "..\Sankore-ThirdParty\microsoft\vcredist_x86.exe"; DestDir:"{tmp}"
+Source: "..\OpenBoard-ThirdParty\microsoft\vcredist_x86.exe"; DestDir:"{tmp}"
 Source: "build\win32\release\product\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ;OpenSSL
-Source: "..\Sankore-ThirdParty\openssl\win32\libeay32.dll"; DestDir:"{app}"; Flags: ignoreversion
-Source: "..\Sankore-ThirdParty\openssl\win32\ssleay32.dll"; DestDir:"{app}"; Flags: ignoreversion
+Source: "..\OpenBoard-ThirdParty\openssl\openssl-1.0.0d\out32dll\libeay32.dll"; DestDir:"{app}"; Flags: ignoreversion
+Source: "..\OpenBoard-ThirdParty\openssl\openssl-1.0.0d\out32dll\ssleay32.dll"; DestDir:"{app}"; Flags: ignoreversion
 
 ;Qt base dll
 Source: "..\Qt-4.8\lib\QtScript4.dll"; DestDir: "{app}"; Flags: ignoreversion
