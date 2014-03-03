@@ -68,7 +68,6 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         QList<UBGraphicsDelegateFrame *> getLinkedFrames();
 
     private:
-        qreal mTitleBarHeight;
         QRectF bottomRightResizeGripRect() const;
         QRectF bottomResizeGripRect() const;
         QRectF leftResizeGripRect() const;
@@ -143,6 +142,7 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         bool mResizing;
         bool mMirroredXAtStart;
         bool mMirroredYAtStart;
+        qreal mTitleBarHeight;
 
         QList<UBGraphicsDelegateFrame *> mLinkedFrames;
 };

@@ -44,9 +44,9 @@ QColor UBGraphicsTextItem::lastUsedTextColor;
 UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent)
     : QGraphicsTextItem(parent)
     , UBGraphicsItem()
+    , mTypeTextHereLabel(tr("<Type Text Here>"))
     , mMultiClickState(0)
     , mLastMousePressTime(QTime::currentTime())
-    , mTypeTextHereLabel(tr("<Type Text Here>"))
     , isActivatedTextEditor(true)
 {
     setDelegate(new UBGraphicsTextItemDelegate(this, 0));
