@@ -102,8 +102,6 @@ MOC_DIR = $$BUILD_DIR/moc
 RCC_DIR = $$BUILD_DIR/rcc
 UI_DIR = $$BUILD_DIR/ui
 
-QMAKE_CXXFLAGS += -std=c++11
-
 win32 {
    RC_FILE = resources/win/OpenBoard.rc
    CONFIG += qaxcontainer
