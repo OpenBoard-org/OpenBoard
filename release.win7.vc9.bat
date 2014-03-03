@@ -21,7 +21,6 @@ set QT_BIN=%QT_DIR%\bin
 
 set PROGRAMS_FILE_PATH=C:\Program Files
 
-set SEVEN_ZIP_EXE="%PROGRAMS_FILE_PATH%\7-Zip\7z.exe"
 set GIT_BIN=%PROGRAMS_FILE_PATH%\Git\bin
 set VS_BIN=%PROGRAMS_FILE_PATH%\Microsoft Visual Studio 9.0\VC\bin
 set WIN_SDK_BIN=%PROGRAMS_FILE_PATH%\Microsoft SDKs\Windows\v6.0A\Bin
@@ -96,15 +95,9 @@ del build\win32\release\product\i18n\qt_help*
 
 del "build\win32\release\product\%APPLICATION_NAME%.pdb"
 
-set INSTALLER_PATH=.\install\win32\%APPLICATION_NAME%.exe
 
-call "%INNO_EXE%" "%APPLICATION_NAME%.iss" /F"%APPLICATION_NAME%"
+call "%INNO_EXE%" "%APPLICATION_NAME%.iss" /F"%APPLICATION_NAME%_Installer_%VERSION%"
 
-set INSTALL_DIRECTORY=install\win32\
-xcopy *.pdf %INSTALL_DIRECTORY%
-cd %INSTALL_DIRECTORY%
-call %SEVEN_ZIP_EXE% a %APPLICATION_NAME%_Windows_%VERSION%.zip *.exe *.pdf
-cd ..\..\
 GOTO END
 
 :EXIT_WITH_ERROR
