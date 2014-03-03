@@ -824,7 +824,7 @@ void UBGraphicsDelegateFrame::positionHandles()
 
     if (mVisible)
     {
-        setRect(center.x() - mFrameWidth - width / 2, center.y() - mFrameWidth - mTitleBarHeight - h / 2, width + 2 * mFrameWidth, h + 2 * (mFrameWidth + mTitleBarHeight));
+        setRect(center.x() - mFrameWidth - width / 2, center.y() - mFrameWidth - mTitleBarHeight - h / 2, width + 2 * mFrameWidth, h + (2 * mFrameWidth) + mTitleBarHeight);
     }
     else
     {

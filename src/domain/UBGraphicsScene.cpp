@@ -1599,8 +1599,7 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString, const Q
         UBApplication::undoStack->push(uc);
     }
 
-    connect(textItem, SIGNAL(textUndoCommandAdded(UBGraphicsTextItem *)),
-            this,     SLOT(textUndoCommandAdded(UBGraphicsTextItem *)));
+    connect(textItem, SIGNAL(textUndoCommandAdded(UBGraphicsTextItem *)), this, SLOT(textUndoCommandAdded(UBGraphicsTextItem *)));
 
     textItem->setFocus();
 
