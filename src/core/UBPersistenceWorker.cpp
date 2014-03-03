@@ -34,13 +34,17 @@ UBPersistenceWorker::UBPersistenceWorker(QObject *parent) :
 
 void UBPersistenceWorker::saveScene(UBDocumentProxy* proxy, UBGraphicsScene* scene, const int pageIndex)
 {
-    saves.append({WriteScene,proxy,scene,pageIndex});
+    PersistenceInformation entry = {WriteScene, proxy, scene, pageIndex};
+
+    saves.append(entry);
     mSemaphore.release();
 }
 
 void UBPersistenceWorker::readScene(UBDocumentProxy* proxy, const int pageIndex)
 {
-    saves.append({ReadScene,proxy,0,pageIndex});
+    PersistenceInformation entry = {ReadScene, proxy, 0, pageIndex};
+
+    saves.append(entry);
     mSemaphore.release();
 }
 
