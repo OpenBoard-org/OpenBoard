@@ -84,8 +84,8 @@ void UBDocumentTreeWidget::onItemPressed(QTreeWidgetItem* item, int column)
 void UBDocumentTreeWidget::itemChangedValidation(QTreeWidgetItem * item, int column)
 {
 
-//    QString emptyNameWarningTitle = tr("Empty name");
-//    QString emptyNameWarningText = tr("The name should not be empty. Please enter a valid name.");
+    QString emptyNameWarningTitle = tr("Empty name");
+    QString emptyNameWarningText = tr("The name should not be empty. Please enter a valid name.");
     QString alreadyExistsNameWarningTitle = tr("Name already used");
     QString alreadyExistsNameWarningText = tr("The actual name is in conflict with and existing. Please choose another one.");
 
@@ -94,23 +94,12 @@ void UBDocumentTreeWidget::itemChangedValidation(QTreeWidgetItem * item, int col
     if (treeItem)
     {
         QString name = treeItem->text(column);
-//        if(name.isEmpty())
-//            UBApplication::mainWindow->warning(emptyNameWarningTitle,emptyNameWarningText);
-
-
-        for(int i = 0; i < treeItem->parent()->childCount(); i++)
-        {
-            QTreeWidgetItem* childAtPosition = treeItem->parent()->child(i);
-
-            if (childAtPosition != item && childAtPosition->text(column) == name){
-                UBApplication::mainWindow->warning(alreadyExistsNameWarningTitle,alreadyExistsNameWarningText);
-                // This is not really a good way but at this time we are not yet out of the editing time
-                // this is not what is told by the name of the function itemChanged...
-                mFailedValidationForTreeItem = item;
-                mFailedValidationItemColumn = column;
-                QTimer::singleShot(100,this,SLOT(validationFailed()));
-                return;
-            }
+        if(name.isEmpty()){
+            mFailedValidationForTreeItem = item;
+            mFailedValidationItemColumn = column;
+            UBApplication::mainWindow->warning(emptyNameWarningTitle,emptyNameWarningText);
+            QTimer::singleShot(100,this,SLOT(validationFailed()));
+            return;
         }
     }
 
@@ -119,8 +108,13 @@ void UBDocumentTreeWidget::itemChangedValidation(QTreeWidgetItem * item, int col
     if(group)
     {
         QString name = group->text(column);
-//        if(name.isEmpty())
-//            UBApplication::mainWindow->warning(emptyNameWarningTitle,emptyNameWarningText);
+        if(name.isEmpty()){
+            mFailedValidationForTreeItem = item;
+            mFailedValidationItemColumn = column;
+            UBApplication::mainWindow->warning(emptyNameWarningTitle,emptyNameWarningText);
+            QTimer::singleShot(100,this,SLOT(validationFailed()));
+            return;
+        }
 
         if(group->parent()){
             for(int i = 0; i < group->parent()->childCount(); i++)
