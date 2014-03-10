@@ -88,8 +88,8 @@ Source: "..\Qt-4.8\plugins\phonon_backend\phonon_ds94.dll"; DestDir: "{app}\phon
 ;qt multimedia plugins
 Source: "c:\OpenBoard\plugins\mediaservice\qtmedia_audioengine.dll"; DestDir: "c:\OpenBoard\plugins\mediaservice"; Flags: ignoreversion
 Source: "c:\OpenBoard\plugins\mediaservice\qtmedia_audioengined.dll"; DestDir: "c:\OpenBoard\plugins\mediaservice"; Flags: ignoreversion
-Source: "c:\OpenBoard\plugins\mediaservice\wmfengine.dll"; DestDir: "c:\OpenBoard\plugins\mediaservice"; Flags: ignoreversion
-Source: "c:\OpenBoard\plugins\mediaservice\wmfengined.dll"; DestDir: "c:\OpenBoard\plugins\mediaservice"; Flags: ignoreversion
+Source: "c:\OpenBoard\plugins\mediaservice\dsengine.dll"; DestDir: "c:\OpenBoard\plugins\mediaservice"; Flags: ignoreversion
+Source: "c:\OpenBoard\plugins\mediaservice\dsengined.dll"; DestDir: "c:\OpenBoard\plugins\mediaservice"; Flags: ignoreversion
 
 Source: "c:\OpenBoard\plugins\playlistformats\qtmultimediakit_m3u.dll"; DestDir: "c:\OpenBoard\plugins\playlistformats"; Flags: ignoreversion
 Source: "c:\OpenBoard\plugins\playlistformats\qtmultimediakit_m3ud.dll"; DestDir: "c:\OpenBoard\plugins\playlistformats"; Flags: ignoreversion
