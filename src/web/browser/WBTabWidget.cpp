@@ -844,7 +844,7 @@ QRect WBTabWidget::addTabButtonRect()
 {
     QRect lastTabRect = tabBar()->tabRect(tabBar()->count() -1);
     int x = lastTabRect.topRight().x();
-    int y;
+    int y = 0;
 
     if (tabPosition() == QTabWidget::North)
         y = lastTabRect.topRight().y();
