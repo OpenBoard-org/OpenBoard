@@ -148,7 +148,7 @@
    <attribute name="toolBarBreak">
     <bool>true</bool>
    </attribute>
-   <addaction name="actionDocumentTools"/>
+   <addaction name="actionVirtualKeyboard"/>
    <addaction name="separator"/>
    <addaction name="actionNewDocument"/>
    <addaction name="actionNewFolder"/>

@@ -66,6 +66,8 @@ class UBDocumentController : public UBDocumentContainer
         QString documentTrashGroupName(){ return mDocumentTrashGroupName;}
         QString defaultDocumentGroupName(){ return mDefaultDocumentGroupName;}
 
+        void treeGroupItemRenamed(QString& oldPath,QString& newPath);
+
     signals:
         void exportDone();
 
@@ -127,6 +129,14 @@ class UBDocumentController : public UBDocumentContainer
         void moveFolderToTrash(UBDocumentGroupTreeItem* groupTi);
         QString mDocumentTrashGroupName;
         QString mDefaultDocumentGroupName;
+
+        UBDocumentGroupTreeItem *getCommonGroupItem(QString& path);
+        QMap<QString, UBDocumentGroupTreeItem*> mMapOfPaths;
+        UBDocumentGroupTreeItem* getParentTreeItem(QString& documentGroup);
+        QList<UBDocumentProxyTreeItem*> getProxies(QTreeWidgetItem *groupItem);
+        QList<UBDocumentGroupTreeItem*> getGroupTreeItem(QTreeWidgetItem* groupItem);
+
+
 
     private slots:
         void documentZoomSliderValueChanged (int value);
