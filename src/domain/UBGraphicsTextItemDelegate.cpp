@@ -392,6 +392,7 @@ void UBGraphicsTextItemDelegate::alignButtonProcess()
 
         delegated()->setTextCursor(cur);
         cur.setBlockFormat(fmt);
+        delegated()->setFocus();
     }
 
     qDebug() << "sender process" << sndr;
