@@ -2344,8 +2344,10 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "frozen", xmlTrue);
     }
 
-    QString snapshotPath = mDocumentPath + "/" + UBPersistenceManager::widgetDirectory + "/" + uuid + ".png";
-    item->takeSnapshot().save(snapshotPath, "PNG");
+
+//    QString snapshotPath = mDocumentPath + "/" + UBPersistenceManager::widgetDirectory + "/" + uuid + ".png";
+//    item->takeSnapshot().save(snapshotPath, "PNG");
+
 
     mXmlWriter.writeStartElement(nsXHtml, "iframe");
 
