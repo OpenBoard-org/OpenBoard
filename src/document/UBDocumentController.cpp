@@ -190,15 +190,21 @@ void UBDocumentController::selectDocument(UBDocumentProxy* proxy, bool setAsCurr
 }
 
 
+bool bullshitcode = true;
+
 void UBDocumentController::createNewDocumentGroup()
 {
+    if(bullshitcode){
+        mDocumentUI->documentTreeWidget->selectedItems().at(0)->setSelected(false);
+        mDocumentUI->documentTreeWidget->topLevelItem(0)->setSelected(true);
+    }
+
     UBDocumentGroupTreeItem* docGroupItem = new UBDocumentGroupTreeItem(0); // deleted by the tree widget
     int i = 1;
     QString newFolderName = tr("New Folder");
     while (allGroupNames().contains(newFolderName))
-    {
         newFolderName = tr("New Folder") + " " + QVariant(i++).toString();
-    }
+
     docGroupItem->setGroupName(newFolderName);
 
     int trashIndex =  mDocumentUI->documentTreeWidget->indexOfTopLevelItem(mTrashTi);
@@ -210,7 +216,6 @@ void UBDocumentController::createNewDocumentGroup()
         mDocumentUI->documentTreeWidget->insertTopLevelItem(trashIndex, docGroupItem);
     else
         selected->addChild(docGroupItem);
-
     parentGroupName = docGroupItem->buildEntirePath();
 
     mMapOfPaths.insert(parentGroupName,docGroupItem);

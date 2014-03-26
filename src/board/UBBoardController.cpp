@@ -2369,10 +2369,10 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
             if(qsTmp.startsWith("http"))
                 downloadURL(QUrl(qsTmp), QString(), pPos);
             else{
-                if(mActiveScene->selectedItems().at(0)->type() == UBGraphicsItemType::TextItemType)
+                if(mActiveScene->selectedItems().count() && mActiveScene->selectedItems().at(0)->type() == UBGraphicsItemType::TextItemType)
                     dynamic_cast<UBGraphicsTextItem*>(mActiveScene->selectedItems().at(0))->setHtml(pMimeData->text());
                 else
-                    mActiveScene->addTextHtml(pMimeData->text(), pPos);
+                    mActiveScene->addTextHtml("", pPos)->setHtml(pMimeData->text());
             }
         }
         else{
