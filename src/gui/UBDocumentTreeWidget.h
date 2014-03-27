@@ -54,9 +54,7 @@ class UBDocumentTreeWidget : public QTreeWidget
         void documentUpdated(UBDocumentProxy *pDocument);
 
         void itemChangedValidation(QTreeWidgetItem * item, int column);
-        void onItemPressed(QTreeWidgetItem* item, int column);
         void autoScroll();
-        void validationFailed();
 
     private:
         UBDocumentProxyTreeItem *mSelectedProxyTi;
@@ -64,10 +62,6 @@ class UBDocumentTreeWidget : public QTreeWidget
         QBrush mBackground;
         QTimer* mScrollTimer;
         int mScrollMagnitude;
-        QTreeWidgetItem* mFailedValidationForTreeItem;
-        int mFailedValidationItemColumn;
-        QString mLastItemCompletePath;
-        QString mLastItemName;
 };
 
 
@@ -98,11 +92,6 @@ class UBDocumentGroupTreeItem : public QTreeWidgetItem
 
         bool isTrashFolder() const;
         bool isDefaultFolder() const;
-
-        QString buildEntirePath();
-
-
-        void updateChildrenPath(int column, QString& previousText, const QString &text);
 };
 
 #endif /* UBDOCUMENTTREEWIDGET_H_ */

@@ -380,9 +380,3 @@ QLineEdit#ubWebBrowserLineEdit
     padding: 2 2px;
     background: white;
 }
-
-QSplitter
-{
-    background-color: #b3b3b3;
-    width : 15px;
-

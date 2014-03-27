@@ -40,15 +40,8 @@
      <property name="lineWidth">
       <number>0</number>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_4">
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QSplitter" name="splitter">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="childrenCollapsible">
-         <bool>false</bool>
-        </property>
         <widget class="QFrame" name="topLeftFrame">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -72,16 +65,10 @@
           <item>
            <widget class="UBDocumentTreeWidget" name="documentTreeWidget">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>250</width>
-              <height>0</height>
-             </size>
             </property>
             <property name="styleSheet">
              <string notr="true"/>
@@ -116,6 +103,8 @@
           </item>
          </layout>
         </widget>
+      </item>
+      <item>
         <widget class="QWidget" name="topRightFrame" native="true">
          <property name="styleSheet">
           <string notr="true"/>
@@ -126,12 +115,6 @@
           </property>
           <item>
            <widget class="UBDocumentThumbnailWidget" name="thumbnailWidget">
-            <property name="minimumSize">
-             <size>
-              <width>250</width>
-              <height>0</height>
-             </size>
-            </property>
             <property name="contextMenuPolicy">
              <enum>Qt::NoContextMenu</enum>
             </property>
@@ -241,7 +224,6 @@
           </item>
          </layout>
         </widget>
-       </widget>
       </item>
      </layout>
     </widget>
@@ -261,6 +243,8 @@
    <header>gui/UBDocumentTreeWidget.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../OpenBoard.qrc"/>
+ </resources>
  <connections/>
 </ui>
