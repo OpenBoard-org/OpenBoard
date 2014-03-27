@@ -160,6 +160,7 @@ class UBPersistenceManager : public QObject
         void errorString(QString error);
         void onSceneLoaded(QByteArray,UBDocumentProxy*,int);
         void onWorkerFinished();
+        void onScenePersisted(UBGraphicsScene* scene);
 };
 
 

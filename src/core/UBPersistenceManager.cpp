@@ -86,6 +86,7 @@ UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     connect(mWorker, SIGNAL(finished()), mWorker, SLOT(deleteLater()));
     connect(mThread, SIGNAL(finished()), mThread, SLOT(deleteLater()));
     connect(mWorker,SIGNAL(sceneLoaded(QByteArray,UBDocumentProxy*,int)),this,SLOT(onSceneLoaded(QByteArray,UBDocumentProxy*,int)));
+    connect(mWorker,SIGNAL(scenePersisted(UBGraphicsScene*)),this,SLOT(onScenePersisted(UBGraphicsScene*)));
     mThread->start();
 
 }
@@ -105,6 +106,12 @@ void UBPersistenceManager::destroy()
     if (sSingleton)
         delete sSingleton;
     sSingleton = NULL;
+}
+
+void UBPersistenceManager::onScenePersisted(UBGraphicsScene* scene)
+{
+    delete scene;
+    scene = NULL;
 }
 
 void UBPersistenceManager::onWorkerFinished()

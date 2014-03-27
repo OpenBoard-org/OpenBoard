@@ -55,6 +55,7 @@ signals:
    void finished();
    void error(QString string);
    void sceneLoaded(QByteArray text,UBDocumentProxy* proxy, const int pageIndex);
+   void scenePersisted(UBGraphicsScene* scene);
 
 public slots:
    void process();
