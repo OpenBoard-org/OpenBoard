@@ -195,7 +195,6 @@ UBGraphicsGroupContainerItem *UBGraphicsGroupContainerItem::deepCopy() const
 
     copy->setUuid(this->uuid()); // this is OK for now as long as Widgets are imutable
 
-    copyItemParameters(copy);
 
     foreach (QGraphicsItem *it, childItems()) {
         UBItem *childAsUBItem = dynamic_cast<UBItem*>(it);
@@ -204,6 +203,7 @@ UBGraphicsGroupContainerItem *UBGraphicsGroupContainerItem::deepCopy() const
             copy->addToGroup(cloneItem);
         }
     }
+    copyItemParameters(copy);
 
     return copy;
 }
