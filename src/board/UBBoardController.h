@@ -156,7 +156,7 @@ class UBBoardController : public UBDocumentContainer
             return mSystemScaleFactor;
         }
         qreal currentZoom();
-        void persistCurrentScene(bool isAnAutomaticBackup = false);
+        void persistCurrentScene(bool isAnAutomaticBackup = false, bool forceImmediateSave = false);
         void showNewVersionAvailable(bool automatic, const UBVersion &installedVersion, const UBSoftwareUpdate &softwareUpdate);
         void setBoxing(QRect displayRect);
         void setToolbarTexts();

@@ -725,7 +725,7 @@ UBGraphicsScene* UBPersistenceManager::loadDocumentScene(UBDocumentProxy* proxy,
     return scene;
 }
 
-void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex, bool isAnAutomaticBackup)
+void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex, bool isAnAutomaticBackup, bool forceImmediateSaving)
 {
     checkIfDocumentRepositoryExists();
 
@@ -745,12 +745,13 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
     if (pScene->isModified())
     {
         UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
-        QTime time;
-        time.start();
-        UBGraphicsScene* copiedScene = pScene->sceneDeepCopy();
-        qDebug() << "time to duplicate scene " << time.elapsed() << " ms";
-        mWorker->saveScene(pDocumentProxy, copiedScene, pSceneIndex);
-        pScene->setModified(false);
+        if(forceImmediateSaving)
+            UBSvgSubsetAdaptor::persistScene(pDocumentProxy,pScene,pSceneIndex);
+        else{
+            UBGraphicsScene* copiedScene = pScene->sceneDeepCopy();
+            mWorker->saveScene(pDocumentProxy, copiedScene, pSceneIndex);
+            pScene->setModified(false);
+        }
     }
 
 }
@@ -909,8 +910,10 @@ bool UBPersistenceManager::isEmpty(UBDocumentProxy* pDocumentProxy)
     if (theSoleScene)
     {
         empty = theSoleScene->isEmpty();
-        if(empty)
+        if(empty){
+            mSceneCache.removeScene(pDocumentProxy,0);
             delete theSoleScene;
+        }
     }
     else
     {

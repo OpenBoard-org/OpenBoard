@@ -481,7 +481,7 @@ void UBBoardController::stylusToolDoubleClicked(int tool)
 void UBBoardController::addScene()
 {
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    persistCurrentScene();
+    persistCurrentScene(false,true);
 
     UBDocumentContainer::addPage(mActiveSceneIndex + 1);
 
@@ -523,7 +523,7 @@ void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmp
         }
         else
         {
-            persistCurrentScene();
+            persistCurrentScene(false,true);
             UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(selectedDocument(), clone, mActiveSceneIndex + 1);
             setActiveDocumentScene(mActiveSceneIndex + 1);
         }
@@ -546,7 +546,7 @@ void UBBoardController::addScene(UBDocumentProxy* proxy, int sceneIndex, bool re
 void UBBoardController::duplicateScene(int nIndex)
 {
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    persistCurrentScene();
+    persistCurrentScene(false,true);
 
     QList<int> scIndexes;
     scIndexes << nIndex;
@@ -1538,7 +1538,7 @@ void UBBoardController::moveSceneToIndex(int source, int target)
     if (selectedDocument())
     {
 
-        persistCurrentScene();
+        persistCurrentScene(false,true);
 
         UBDocumentContainer::movePageToIndex(source, target);
 
@@ -1890,14 +1890,14 @@ void UBBoardController::show()
     UBApplication::mainWindow->actionLibrary->setChecked(false);
 }
 
-void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup)
+void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool forceImmediateSave)
 {
     if(UBPersistenceManager::persistenceManager()
             && selectedDocument() && mActiveScene && mActiveSceneIndex != mDeletingSceneIndex
             && (mActiveSceneIndex >= 0) && mActiveSceneIndex != mMovingSceneIndex
             && (mActiveScene->isModified()))
     {
-        UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, isAnAutomaticBackup);
+        UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, isAnAutomaticBackup,forceImmediateSave);
         updatePage(mActiveSceneIndex);
     }
 }
