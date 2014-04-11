@@ -1863,14 +1863,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::pixmapItemToLinkedImage(UBGraphicsPi
 
     QString path = mDocumentPath + "/" + fileName;
 
-    if (!QFile::exists(path))
-    {
-        QDir dir;
-        dir.mkdir(mDocumentPath + "/" + UBPersistenceManager::imageDirectory);
-
-        pixmapItem->pixmap().toImage().save(path, "PNG");
-    }
-
     mXmlWriter.writeAttribute(nsXLink, "href", fileName);
 
     graphicsItemToSvg(pixmapItem);
@@ -1909,25 +1901,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::svgItemToLinkedSvg(UBGraphicsSvgItem
 {
 
     mXmlWriter.writeStartElement("image");
-
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg";
-
-    QString path = mDocumentPath + "/" + fileName;
-
-    if (!QFile::exists(path))
-    {
-        QDir dir;
-        dir.mkdir(mDocumentPath + "/" + UBPersistenceManager::imageDirectory);
-
-        QFile file(path);
-        if (!file.open(QIODevice::WriteOnly))
-        {
-            qWarning() << "cannot open file for writing embeded svg content " << path;
-            return;
-        }
-
-        file.write(svgItem->fileData());
-    }
 
     mXmlWriter.writeAttribute(nsXLink, "href", fileName);
 
@@ -1984,6 +1957,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::pdfItemToLinkedPDF(UBGraphicsPDFItem
         }
 
         file.write(pdfItem->fileData());
+        file.close();
     }
 
     mXmlWriter.writeAttribute(nsXLink, "href", fileName + "#page=" + QString::number(pdfItem->pageNumber()));
@@ -2343,11 +2317,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
     {
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "frozen", xmlTrue);
     }
-
-
-//    QString snapshotPath = mDocumentPath + "/" + UBPersistenceManager::widgetDirectory + "/" + uuid + ".png";
-//    item->takeSnapshot().save(snapshotPath, "PNG");
-
 
     mXmlWriter.writeStartElement(nsXHtml, "iframe");
 

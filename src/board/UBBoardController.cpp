@@ -1105,6 +1105,21 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         UBGraphicsPixmapItem* pixItem = mActiveScene->addPixmap(pix, NULL, pPos, 1.);
         pixItem->setSourceUrl(sourceUrl);
 
+        QString documentPath = UBApplication::boardController->selectedDocument()->persistencePath();
+
+        QString fileName = UBPersistenceManager::imageDirectory + "/" + pixItem->uuid().toString() + ".png";
+
+        QString path = documentPath + "/" + fileName;
+
+        if (!QFile::exists(path))
+        {
+            QDir dir;
+            dir.mkdir(documentPath + "/" + UBPersistenceManager::imageDirectory);
+
+            pixItem->pixmap().toImage().save(path, "PNG");
+        }
+
+
         if (isBackground)
         {
             mActiveScene->setAsBackgroundObject(pixItem, true);
@@ -1123,6 +1138,29 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         qDebug() << "accepting mime type" << mimeType << "as vecto image";
 
         UBGraphicsSvgItem* svgItem = mActiveScene->addSvg(sourceUrl, pPos, pData);
+
+        QString documentPath = UBApplication::boardController->selectedDocument()->persistencePath();
+
+        QString fileName = UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg";
+
+        QString path = documentPath + "/" + fileName;
+
+        if (!QFile::exists(path))
+        {
+            QDir dir;
+            dir.mkdir(documentPath + "/" + UBPersistenceManager::imageDirectory);
+
+            QFile file(path);
+            if (!file.open(QIODevice::WriteOnly))
+            {
+                qWarning() << "cannot open file for writing embeded svg content " << path;
+                return;
+            }
+
+            file.write(svgItem->fileData());
+            file.close();
+        }
+
         svgItem->setSourceUrl(sourceUrl);
 
         if (isBackground)
