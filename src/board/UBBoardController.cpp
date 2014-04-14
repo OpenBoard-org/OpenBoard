@@ -1154,7 +1154,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
             if (!file.open(QIODevice::WriteOnly))
             {
                 qWarning() << "cannot open file for writing embeded svg content " << path;
-                return;
+                return NULL;
             }
 
             file.write(svgItem->fileData());

@@ -1902,6 +1902,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::svgItemToLinkedSvg(UBGraphicsSvgItem
 
     mXmlWriter.writeStartElement("image");
 
+    QString fileName = UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg";
+
+
     mXmlWriter.writeAttribute(nsXLink, "href", fileName);
 
     graphicsItemToSvg(svgItem);
