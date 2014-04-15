@@ -174,13 +174,9 @@ QColor UBGraphicsPolygonItem::color() const
 
 UBItem* UBGraphicsPolygonItem::deepCopy() const
 {
-    UBGraphicsPolygonItem* copy = new UBGraphicsPolygonItem(polygon(), 0);
-
-    UBGraphicsStroke *stroke = new UBGraphicsStroke();
-
+//    UBGraphicsPolygonItem* copy = new UBGraphicsPolygonItem(polygon(), 0);
+    UBGraphicsPolygonItem* copy = new UBGraphicsPolygonItem();
     copyItemParameters(copy);
-
-    copy->setStroke(stroke);
 
     return copy;
 }
@@ -204,6 +200,7 @@ void UBGraphicsPolygonItem::copyItemParameters(UBItem *copy) const
         cp->setColorOnLightBackground(this->colorOnLightBackground());
 
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
+        cp->setPolygon(polygon());
     }
 }
 
