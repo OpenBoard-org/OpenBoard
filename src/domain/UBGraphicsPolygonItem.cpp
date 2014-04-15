@@ -174,10 +174,8 @@ QColor UBGraphicsPolygonItem::color() const
 
 UBItem* UBGraphicsPolygonItem::deepCopy() const
 {
-//    UBGraphicsPolygonItem* copy = new UBGraphicsPolygonItem(polygon(), 0);
     UBGraphicsPolygonItem* copy = new UBGraphicsPolygonItem();
     copyItemParameters(copy);
-
     return copy;
 }
 
