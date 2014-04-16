@@ -596,13 +596,25 @@ void UBPersistenceManager::duplicateDocumentScene(UBDocumentProxy* proxy, int in
 
         UBGraphicsPixmapItem* pixmapItem = qgraphicsitem_cast<UBGraphicsPixmapItem*>(item);
         if(pixmapItem){
-            pixmapItem->setUuid(QUuid::createUuid());
+            QString source = proxy->persistencePath() + "/" +  UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid() + ".png";
+            QString destination = source;
+            QUuid newUuid = QUuid::createUuid();
+            QString fileName = QFileInfo(source).completeBaseName();
+            destination = destination.replace(fileName,newUuid.toString());
+            Q_ASSERT(QFile::copy(source,destination));
+            pixmapItem->setUuid(newUuid);
             continue;
         }
 
         UBGraphicsSvgItem* svgItem = qgraphicsitem_cast<UBGraphicsSvgItem*>(item);
         if(svgItem){
-            svgItem->setUuid(QUuid::createUuid());
+            QString source = proxy->persistencePath() + "/" +  UBPersistenceManager::imageDirectory + "/" + svgItem->uuid() + ".svg";
+            QString destination = source;
+            QUuid newUuid = QUuid::createUuid();
+            QString fileName = QFileInfo(source).completeBaseName();
+            destination = destination.replace(fileName,newUuid.toString());
+            Q_ASSERT(QFile::copy(source,destination));
+            svgItem->setUuid(newUuid);
             continue;
         }
 
