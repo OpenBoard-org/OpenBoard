@@ -1066,15 +1066,15 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
     // Get the items from the scene
     QList<QGraphicsItem*> items = mScene->items();
 
-    int strokes = 0; int polygons = 0;
-    foreach(QGraphicsItem *item, items) {
-        if (item->type() == UBGraphicsPolygonItem::Type) {
-            polygons++;
-        } else if (item->type() == UBGraphicsStrokesGroup::Type) {
-            strokes++;
-        }
-    }
-    qDebug() << "---Strokes count" << strokes << "Polygons count" << polygons;
+//    int strokes = 0; int polygons = 0;
+//    foreach(QGraphicsItem *item, items) {
+//        if (item->type() == UBGraphicsPolygonItem::Type) {
+//            polygons++;
+//        } else if (item->type() == UBGraphicsStrokesGroup::Type) {
+//            strokes++;
+//        }
+//    }
+//    qDebug() << "---Strokes count" << strokes << "Polygons count" << polygons;
 
     qSort(items.begin(), items.end(), itemZIndexComp);
 
