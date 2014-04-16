@@ -1104,6 +1104,8 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
 
     QMap<UBGraphicsStroke*, UBGraphicsStroke*> groupClone;
 
+    QList<QUuid> groupAlreadyCloned;
+
     while (itItems.hasNext())
     {
         QGraphicsItem* item = itItems.next();
@@ -1111,10 +1113,18 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
 
         UBItem* ubItem = dynamic_cast<UBItem*>(item);
         UBGraphicsStroke* stroke = dynamic_cast<UBGraphicsStroke*>(item);
+        UBGraphicsGroupContainerItem* group = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
+
 
         if (ubItem && !stroke)
         {
-            cloneItem = dynamic_cast<QGraphicsItem*>(ubItem->deepCopy());
+            //horrible hack
+            if(group && !groupAlreadyCloned.contains(group->uuid())){
+                cloneItem = dynamic_cast<QGraphicsItem*>(ubItem->deepCopy());
+                groupAlreadyCloned.append(group->uuid());
+            }
+            if(!group)
+                cloneItem = dynamic_cast<QGraphicsItem*>(ubItem->deepCopy());
         }
 
         if (cloneItem)

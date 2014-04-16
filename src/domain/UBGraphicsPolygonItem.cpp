@@ -185,6 +185,7 @@ void UBGraphicsPolygonItem::copyItemParameters(UBItem *copy) const
     UBGraphicsPolygonItem *cp = dynamic_cast<UBGraphicsPolygonItem*>(copy);
     if (cp)
     {
+        cp->setPolygon(polygon());
         cp->mOriginalLine = this->mOriginalLine;
         cp->mOriginalWidth = this->mOriginalWidth;
         cp->mIsNominalLine = this->mIsNominalLine;
@@ -198,7 +199,6 @@ void UBGraphicsPolygonItem::copyItemParameters(UBItem *copy) const
         cp->setColorOnLightBackground(this->colorOnLightBackground());
 
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
-        cp->setPolygon(polygon());
     }
 }
 

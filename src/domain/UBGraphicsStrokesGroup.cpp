@@ -26,6 +26,7 @@
 
 
 #include "UBGraphicsStrokesGroup.h"
+#include "UBGraphicsStroke.h"
 
 #include "domain/UBGraphicsPolygonItem.h"
 
@@ -140,11 +141,14 @@ void UBGraphicsStrokesGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 UBItem* UBGraphicsStrokesGroup::deepCopy() const
 {
     UBGraphicsStrokesGroup* copy = new UBGraphicsStrokesGroup();
+    copyItemParameters(copy);
 
     QTransform groupTransform = transform();
     const_cast<UBGraphicsStrokesGroup*>(this)->resetTransform();
 
     QList<QGraphicsItem*> chl = childItems();
+
+    UBGraphicsStroke* newStroke = new UBGraphicsStroke;
 
     foreach(QGraphicsItem *child, chl)
     {
@@ -155,14 +159,14 @@ UBItem* UBGraphicsStrokesGroup::deepCopy() const
             if (polygonCopy)
             {
                 QGraphicsItem* pItem = dynamic_cast<QGraphicsItem*>(polygonCopy);
+                polygonCopy->setTransform(groupTransform);
                 copy->addToGroup(pItem);
                 polygonCopy->setStrokesGroup(copy);
+                polygonCopy->setStroke(newStroke);
             }
         }
-
     }
     const_cast<UBGraphicsStrokesGroup*>(this)->setTransform(groupTransform);
-    copyItemParameters(copy);
 
     return copy;
 }
