@@ -59,6 +59,7 @@ void UBGraphicsStrokesGroup::setUuid(const QUuid &pUuid)
     UBItem::setUuid(pUuid);
     setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
 }
+
 void UBGraphicsStrokesGroup::setColor(const QColor &color, colorType pColorType)
 {
     //TODO Implement common mechanism of managing groups, drop UBGraphicsStroke if it's obsolete
@@ -140,10 +141,16 @@ void UBGraphicsStrokesGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 UBItem* UBGraphicsStrokesGroup::deepCopy() const
 {
+    QTransform groupTransform = transform();
+
+    qDebug() << "Initial original transform " << groupTransform;
+
     UBGraphicsStrokesGroup* copy = new UBGraphicsStrokesGroup();
     copyItemParameters(copy);
+    copy->resetTransform();
 
-    QTransform groupTransform = transform();
+    qDebug() << "Initial copy transform " << copy->transform();
+
     const_cast<UBGraphicsStrokesGroup*>(this)->resetTransform();
 
     QList<QGraphicsItem*> chl = childItems();
@@ -159,7 +166,6 @@ UBItem* UBGraphicsStrokesGroup::deepCopy() const
             if (polygonCopy)
             {
                 QGraphicsItem* pItem = dynamic_cast<QGraphicsItem*>(polygonCopy);
-                polygonCopy->setTransform(groupTransform);
                 copy->addToGroup(pItem);
                 polygonCopy->setStrokesGroup(copy);
                 polygonCopy->setStroke(newStroke);
@@ -167,7 +173,16 @@ UBItem* UBGraphicsStrokesGroup::deepCopy() const
         }
     }
     const_cast<UBGraphicsStrokesGroup*>(this)->setTransform(groupTransform);
+    copy->setTransform(groupTransform);
 
+    for(int i = 0 ; i < childItems().count(); i += 1){
+        Q_ASSERT(childItems().at(i)->transform().m11() == copy->childItems().at(i)->transform().m11());
+        Q_ASSERT(childItems().at(i)->transform().m12() == copy->childItems().at(i)->transform().m12());
+        Q_ASSERT(childItems().at(i)->transform().m21() == copy->childItems().at(i)->transform().m21());
+        Q_ASSERT(childItems().at(i)->transform().m22() == copy->childItems().at(i)->transform().m22());
+        Q_ASSERT(childItems().at(i)->transform().m31() == copy->childItems().at(i)->transform().m31());
+        Q_ASSERT(childItems().at(i)->transform().m32() == copy->childItems().at(i)->transform().m32());
+    }
     return copy;
 }
 
