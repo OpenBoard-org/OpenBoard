@@ -143,25 +143,25 @@ struct UBGraphicsItemType
 {
     enum Enum
     {
-        PolygonItemType = QGraphicsItem::UserType + 1,
+        PolygonItemType = QGraphicsItem::UserType + 1, //65537
         PixmapItemType,
         SvgItemType,
-        DelegateButtonType,
+        DelegateButtonType, //65540
         MediaItemType,
         PDFItemType,
         TextItemType,
         CurtainItemType,
-        RulerItemType,
+        RulerItemType,   //65545
         CompassItemType,
         ProtractorItemType,
         StrokeItemType,
         TriangleItemType,
-        MagnifierItemType,
+        MagnifierItemType,  //65550
         cacheItemType,
         groupContainerType,
         ToolWidgetItemType,
         GraphicsWidgetItemType,
-        UserTypesCount,
+        UserTypesCount, //65555
         SelectionFrameType// this line must be the last line in this enum because it is types counter.
     };
 };
