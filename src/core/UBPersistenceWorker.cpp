@@ -63,8 +63,6 @@ void UBPersistenceWorker::process()
         PersistenceInformation info = saves.takeFirst();
         if(info.action == WriteScene){
             UBSvgSubsetAdaptor::persistScene(info.proxy, info.scene, info.sceneIndex);
-//            delete info.scene;
-//            info.scene = NULL;
             emit scenePersisted(info.scene);
         }
         else{
