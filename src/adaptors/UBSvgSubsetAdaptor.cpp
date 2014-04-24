@@ -929,7 +929,7 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
 
     if (group->childItems().count())
     {
-        mScene->addItem(group);
+//        mScene->addItem(group);
 
         if (1 == group->childItems().count())
         {
@@ -1075,7 +1075,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
 //        }
 //    }
 //    qDebug() << "---Strokes count" << strokes << "Polygons count" << polygons;
-
+//    qDebug() << "---Number of scene items " << items.count();
     qSort(items.begin(), items.end(), itemZIndexComp);
 
     UBGraphicsStroke *openStroke = 0;
