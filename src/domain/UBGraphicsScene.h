@@ -348,6 +348,7 @@ public slots:
         void zoomOutMagnifier();
         void changeMagnifierMode(int mode);
         void resizedMagnifier(qreal newPercent);
+        bool hasGroups() { return mNumberOfGroups != 0; }
 
     protected:
 
@@ -373,6 +374,7 @@ public slots:
         QGraphicsItem* rootItem(QGraphicsItem* item) const;
 
         virtual void drawBackground(QPainter *painter, const QRectF &rect);
+
 
     private:
         void setDocumentUpdated();
@@ -432,6 +434,7 @@ public slots:
         bool mDrawWithCompass;
         UBGraphicsPolygonItem *mCurrentPolygon;
         UBSelectionFrame *mSelectionFrame;
+        int mNumberOfGroups;
 };
 
 

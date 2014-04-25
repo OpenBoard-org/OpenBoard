@@ -188,10 +188,11 @@ UBCoreGraphicsScene *UBGraphicsGroupContainerItem::corescene()
 
     return castScene;
 }
+
 UBGraphicsGroupContainerItem *UBGraphicsGroupContainerItem::deepCopy() const
 {
 
-    UBGraphicsGroupContainerItem *copy = new UBGraphicsGroupContainerItem(parentItem());
+    UBGraphicsGroupContainerItem *copy = new UBGraphicsGroupContainerItem();
 
     copy->setUuid(this->uuid()); // this is OK for now as long as Widgets are imutable
 

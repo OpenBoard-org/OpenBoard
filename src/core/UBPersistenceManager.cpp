@@ -757,15 +757,15 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
     if (pScene->isModified())
     {
         UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
-        if(forceImmediateSaving)
+        if(forceImmediateSaving || pScene->hasGroups())
             UBSvgSubsetAdaptor::persistScene(pDocumentProxy,pScene,pSceneIndex);
         else{
             UBGraphicsScene* copiedScene = pScene->sceneDeepCopy();
             mWorker->saveScene(pDocumentProxy, copiedScene, pSceneIndex);
             pScene->setModified(false);
+
         }
     }
-
 }
 
 
