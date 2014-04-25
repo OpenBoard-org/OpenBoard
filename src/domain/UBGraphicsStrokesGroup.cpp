@@ -143,13 +143,9 @@ UBItem* UBGraphicsStrokesGroup::deepCopy() const
 {
     QTransform groupTransform = transform();
 
-    qDebug() << "Initial original transform " << groupTransform;
-
     UBGraphicsStrokesGroup* copy = new UBGraphicsStrokesGroup();
     copyItemParameters(copy);
     copy->resetTransform();
-
-    qDebug() << "Initial copy transform " << copy->transform();
 
     const_cast<UBGraphicsStrokesGroup*>(this)->resetTransform();
 
@@ -175,14 +171,6 @@ UBItem* UBGraphicsStrokesGroup::deepCopy() const
     const_cast<UBGraphicsStrokesGroup*>(this)->setTransform(groupTransform);
     copy->setTransform(groupTransform);
 
-    for(int i = 0 ; i < childItems().count(); i += 1){
-        Q_ASSERT(childItems().at(i)->transform().m11() == copy->childItems().at(i)->transform().m11());
-        Q_ASSERT(childItems().at(i)->transform().m12() == copy->childItems().at(i)->transform().m12());
-        Q_ASSERT(childItems().at(i)->transform().m21() == copy->childItems().at(i)->transform().m21());
-        Q_ASSERT(childItems().at(i)->transform().m22() == copy->childItems().at(i)->transform().m22());
-        Q_ASSERT(childItems().at(i)->transform().m31() == copy->childItems().at(i)->transform().m31());
-        Q_ASSERT(childItems().at(i)->transform().m32() == copy->childItems().at(i)->transform().m32());
-    }
     return copy;
 }
 
