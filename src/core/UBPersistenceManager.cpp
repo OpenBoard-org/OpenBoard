@@ -926,6 +926,24 @@ bool UBPersistenceManager::isEmpty(UBDocumentProxy* pDocumentProxy)
             mSceneCache.removeScene(pDocumentProxy,0);
             delete theSoleScene;
         }
+        else{
+            //the scene can contain Delegate buttons and the selection frame
+            // but this doesn't means that there is something useful on the frame
+            bool usefulItemFound = false;
+            foreach(QGraphicsItem* eachItem, theSoleScene->getFastAccessItems()){
+                if(eachItem->type() > QGraphicsItem::UserType
+                        && eachItem->type() != UBGraphicsItemType::DelegateButtonType
+                        && eachItem->type() != UBGraphicsItemType::SelectionFrameType){
+                    usefulItemFound = true;
+                    break;
+                }
+            }
+            if(!usefulItemFound){
+                mSceneCache.removeScene(pDocumentProxy,0);
+                delete theSoleScene;
+                empty = true;
+            }
+        }
     }
     else
     {
