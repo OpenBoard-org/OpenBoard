@@ -189,13 +189,23 @@ UBCoreGraphicsScene *UBGraphicsGroupContainerItem::corescene()
     return castScene;
 }
 
-UBGraphicsGroupContainerItem *UBGraphicsGroupContainerItem::deepCopy() const
+UBGraphicsGroupContainerItem *UBGraphicsGroupContainerItem::deepCopyNoChildDuplication() const
 {
-
     UBGraphicsGroupContainerItem *copy = new UBGraphicsGroupContainerItem();
 
     copy->setUuid(this->uuid()); // this is OK for now as long as Widgets are imutable
 
+    copyItemParameters(copy);
+
+    return copy;
+}
+
+
+UBGraphicsGroupContainerItem *UBGraphicsGroupContainerItem::deepCopy() const
+{
+    UBGraphicsGroupContainerItem *copy = new UBGraphicsGroupContainerItem();
+
+    copy->setUuid(this->uuid()); // this is OK for now as long as Widgets are imutable
 
     foreach (QGraphicsItem *it, childItems()) {
         UBItem *childAsUBItem = dynamic_cast<UBItem*>(it);
@@ -208,6 +218,8 @@ UBGraphicsGroupContainerItem *UBGraphicsGroupContainerItem::deepCopy() const
 
     return copy;
 }
+
+
 
 void UBGraphicsGroupContainerItem::copyItemParameters(UBItem *copy) const
 {

@@ -50,6 +50,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     virtual UBCoreGraphicsScene *corescene();
+    UBGraphicsGroupContainerItem *deepCopyNoChildDuplication() const;
     virtual UBGraphicsGroupContainerItem *deepCopy() const;
     virtual void copyItemParameters(UBItem *copy) const;
 

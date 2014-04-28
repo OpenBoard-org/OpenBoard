@@ -315,7 +315,6 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     , mpLastPolygon(NULL)
     , mCurrentPolygon(0)
     , mSelectionFrame(0)
-    , mNumberOfGroups(0)
 {
     UBCoreGraphicsScene::setObjectName("BoardScene");
     setItemIndexMethod(NoIndex);
@@ -1110,12 +1109,25 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
         QGraphicsItem* cloneItem = 0;
         UBItem* ubItem = dynamic_cast<UBItem*>(item);
         UBGraphicsStroke* stroke = dynamic_cast<UBGraphicsStroke*>(item);
+        UBGraphicsGroupContainerItem* group = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
 
-
-        if (ubItem && !stroke)
-        {
-            cloneItem = dynamic_cast<QGraphicsItem*>(ubItem->deepCopy());
+        if(group){
+            UBGraphicsGroupContainerItem* groupCloned = group->deepCopyNoChildDuplication();
+            groupCloned->resetMatrix();
+            groupCloned->resetTransform();
+            foreach(QGraphicsItem* eachItem ,group->childItems()){
+                QGraphicsItem* copiedChild = dynamic_cast<QGraphicsItem*>(dynamic_cast<UBItem*>(eachItem)->deepCopy());
+                copiedChild->resetTransform();
+                copiedChild->resetMatrix();
+                copiedChild->setMatrix(eachItem->sceneMatrix());
+                copy->addItem(copiedChild);
+                groupCloned->addToGroup(copiedChild);
+            }
+            copy->addItem(groupCloned);
         }
+
+        if (ubItem && !stroke && !group)
+            cloneItem = dynamic_cast<QGraphicsItem*>(ubItem->deepCopy());
 
         if (cloneItem)
         {
@@ -1619,8 +1631,6 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString, const Q
 void UBGraphicsScene::addItem(QGraphicsItem* item)
 {
     UBCoreGraphicsScene::addItem(item);
-    if(item->type() == UBGraphicsItemType::groupContainerType)
-        mNumberOfGroups += 1;
 
     // the default z value is already set. This is the case when a svg file is read
     if(item->zValue() == DEFAULT_Z_VALUE || item->zValue() == UBZLayerController::errorNum()){
@@ -1650,9 +1660,6 @@ void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
 
 void UBGraphicsScene::removeItem(QGraphicsItem* item)
 {
-    if(item->type() == UBGraphicsItemType::groupContainerType)
-        mNumberOfGroups -= 1;
-
     item->setSelected(false);
     UBCoreGraphicsScene::removeItem(item);
     UBApplication::boardController->freezeW3CWidget(item, true);
@@ -1668,11 +1675,8 @@ void UBGraphicsScene::removeItem(QGraphicsItem* item)
 
 void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)
 {
-    foreach(QGraphicsItem* item, items) {
-        if(item->type() == UBGraphicsItemType::groupContainerType)
-            mNumberOfGroups -= 1;
+    foreach(QGraphicsItem* item, items)
         UBCoreGraphicsScene::removeItem(item);
-    }
 
     mItemCount -= items.size();
 

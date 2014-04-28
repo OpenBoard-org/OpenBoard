@@ -348,7 +348,6 @@ public slots:
         void zoomOutMagnifier();
         void changeMagnifierMode(int mode);
         void resizedMagnifier(qreal newPercent);
-        bool hasGroups() { return mNumberOfGroups != 0; }
 
     protected:
 
@@ -434,7 +433,6 @@ public slots:
         bool mDrawWithCompass;
         UBGraphicsPolygonItem *mCurrentPolygon;
         UBSelectionFrame *mSelectionFrame;
-        int mNumberOfGroups;
 };
 
 
