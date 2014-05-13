@@ -836,12 +836,6 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
         removeItem(intersectedPolygonItem);
         if (bApplyTransform)
             intersectedPolygonItem->setTransform(t);
-
-
-        removeItem(intersectedPolygonItem);
-
-        if (bApplyTransform)
-            intersectedPolygonItem->setTransform(t);
     }
 
     if (!intersectedItems.empty())

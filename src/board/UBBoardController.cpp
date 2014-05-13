@@ -1122,7 +1122,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         qDebug() << "accepting mime type" << mimeType << "as vecto image";
 
         UBGraphicsSvgItem* svgItem = mActiveScene->addSvg(sourceUrl, pPos, pData);
-
         svgItem->setSourceUrl(sourceUrl);
 
         if (isBackground)
