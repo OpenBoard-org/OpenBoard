@@ -1120,7 +1120,7 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
             copy->addItem(groupCloned);
         }
 
-        if (ubItem && !stroke && !group)
+        if (ubItem && !stroke && !group && item->isVisible())
             cloneItem = dynamic_cast<QGraphicsItem*>(ubItem->deepCopy());
 
         if (cloneItem)
@@ -1128,14 +1128,10 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
             copy->addItem(cloneItem);
 
             if (isBackgroundObject(item))
-            {
                 copy->setAsBackgroundObject(cloneItem);
-            }
 
             if (this->mTools.contains(item))
-            {
                 copy->mTools << cloneItem;
-            }
 
             UBGraphicsPolygonItem* polygon = dynamic_cast<UBGraphicsPolygonItem*>(item);
 
