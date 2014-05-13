@@ -174,7 +174,7 @@ QColor UBGraphicsPolygonItem::color() const
 
 UBItem* UBGraphicsPolygonItem::deepCopy() const
 {
-    UBGraphicsPolygonItem* copy = new UBGraphicsPolygonItem();
+    UBGraphicsPolygonItem* copy = new UBGraphicsPolygonItem(polygon(), 0);
     copyItemParameters(copy);
     return copy;
 }
@@ -185,7 +185,6 @@ void UBGraphicsPolygonItem::copyItemParameters(UBItem *copy) const
     UBGraphicsPolygonItem *cp = dynamic_cast<UBGraphicsPolygonItem*>(copy);
     if (cp)
     {
-        cp->setPolygon(polygon());
         cp->mOriginalLine = this->mOriginalLine;
         cp->mOriginalWidth = this->mOriginalWidth;
         cp->mIsNominalLine = this->mIsNominalLine;
