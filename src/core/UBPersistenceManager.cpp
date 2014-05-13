@@ -925,6 +925,7 @@ bool UBPersistenceManager::isEmpty(UBDocumentProxy* pDocumentProxy)
         if(empty){
             mSceneCache.removeScene(pDocumentProxy,0);
             delete theSoleScene;
+            theSoleScene = NULL;
         }
         else{
             //the scene can contain Delegate buttons and the selection frame
@@ -941,6 +942,7 @@ bool UBPersistenceManager::isEmpty(UBDocumentProxy* pDocumentProxy)
             if(!usefulItemFound){
                 mSceneCache.removeScene(pDocumentProxy,0);
                 delete theSoleScene;
+                theSoleScene = NULL;
                 empty = true;
             }
         }

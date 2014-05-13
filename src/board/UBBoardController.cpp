@@ -64,7 +64,6 @@
 #include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBItem.h"
 #include "board/UBFeaturesController.h"
-#include "domain/UBGraphicsStrokesGroup.h"
 
 #include "gui/UBFeaturesWidget.h"
 
