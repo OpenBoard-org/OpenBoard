@@ -1291,6 +1291,20 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, QGraphi
     pixmapItem->show();
     setDocumentUpdated();
 
+    QString documentPath = UBApplication::boardController->selectedDocument()->persistencePath();
+
+    QString fileName = UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png";
+
+    QString path = documentPath + "/" + fileName;
+
+    if (!QFile::exists(path))
+    {
+        QDir dir;
+        dir.mkdir(documentPath + "/" + UBPersistenceManager::imageDirectory);
+
+        pixmapItem->pixmap().toImage().save(path, "PNG");
+    }
+
     return pixmapItem;
 }
 
@@ -1536,6 +1550,28 @@ UBGraphicsSvgItem* UBGraphicsScene::addSvg(const QUrl& pSvgFileUrl, const QPoint
     }
 
     setDocumentUpdated();
+
+    QString documentPath = UBApplication::boardController->selectedDocument()->persistencePath();
+
+    QString fileName = UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg";
+
+    QString completePath = documentPath + "/" + fileName;
+
+    if (!QFile::exists(completePath))
+    {
+        QDir dir;
+        dir.mkdir(documentPath + "/" + UBPersistenceManager::imageDirectory);
+
+        QFile file(completePath);
+        if (!file.open(QIODevice::WriteOnly))
+        {
+            qWarning() << "cannot open file for writing embeded svg content " << completePath;
+            return NULL;
+        }
+
+        file.write(svgItem->fileData());
+        file.close();
+    }
 
     return svgItem;
 }
