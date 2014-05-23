@@ -127,11 +127,7 @@ UBGraphicsScene* UBSceneCache::value(UBDocumentProxy* proxy, int pageIndex)
 void UBSceneCache::removeScene(UBDocumentProxy* proxy, int pageIndex)
 {
     UBGraphicsScene* scene = value(proxy, pageIndex);
-#ifdef Q_WS_MAC 
-    if (scene && scene->views().size() == 0)
-#else
     if (scene && !scene->isActive())
-#endif
     {
         UBSceneCacheID key(proxy, pageIndex);
         int count = QHash<UBSceneCacheID, UBGraphicsScene*>::remove(key);
