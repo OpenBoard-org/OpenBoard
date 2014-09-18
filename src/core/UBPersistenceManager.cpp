@@ -170,10 +170,10 @@ QList<QPointer<UBDocumentProxy> > UBPersistenceManager::allDocumentProxies()
         shiftPagesToStartWithTheZeroOne(rootDir.path() + "/" + path);
     }
 
-    QFileSystemWatcher* watcher = new QFileSystemWatcher(this);
-    watcher->addPath(mDocumentRepositoryPath);
+//    QFileSystemWatcher* watcher = new QFileSystemWatcher(this);
+//    watcher->addPath(mDocumentRepositoryPath);
 
-    connect(watcher, SIGNAL(directoryChanged(const QString&)), this, SLOT(documentRepositoryChanged(const QString&)));
+//    connect(watcher, SIGNAL(directoryChanged(const QString&)), this, SLOT(documentRepositoryChanged(const QString&)));
 
     QList<QPointer<UBDocumentProxy> > proxies;
 
