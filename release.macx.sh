@@ -82,7 +82,7 @@ done
 
 
 function addImporter {
-    importerDir="`pwd`/../OpenSankoreToOpenBoard"
+    importerDir="`pwd`/../OpenBoard-Importer"
     importerName="OpenBoardImporter"
 
     if [ ! -e ${importerDir} ]; then
