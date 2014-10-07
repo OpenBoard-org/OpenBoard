@@ -227,6 +227,8 @@ class UBSettings : public QObject
 
         QString softwareHomeUrl;
 
+        UBSetting* tutorialUrl;
+
         UBSetting* appToolBarPositionedAtTop;
         UBSetting* appToolBarDisplayText;
         UBSetting* appEnableAutomaticSoftwareUpdates;

@@ -210,6 +210,8 @@ void UBSettings::init()
 
     softwareHomeUrl = productWebUrl->get().toString();
 
+    tutorialUrl = new UBSetting(this,"App","TutorialUrl","http://www.youtube.com/channel/UCM_moFB68dqpSLPZ-jV40Ow");
+
     documentSizes.insert(DocumentSizeRatio::Ratio4_3, QSize(1280, 960)); // 1.33
     documentSizes.insert(DocumentSizeRatio::Ratio16_9, QSize((960 / 9 * 16), 960)); // 1.77
 

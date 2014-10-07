@@ -90,7 +90,7 @@ UBWebController::~UBWebController()
 
 void UBWebController::onOpenTutorial()
 {
-    loadUrl(QUrl("http://tutorial.openboard.org"));
+    loadUrl(QUrl(UBSettings::settings()->tutorialUrl->get().toString()));
 }
 
 void UBWebController::initialiazemOEmbedProviders()
