@@ -29,6 +29,8 @@
 
 #include "document/UBDocumentProxy.h"
 
+#include "board/UBBoardController.h"
+
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
 #include "core/UBDocumentManager.h"
@@ -98,6 +100,18 @@ QList<UBGraphicsItem*> UBImportImage::import(const QUuid& uuid, const QString& f
     UBGraphicsPixmapItem* pixmapItem = new UBGraphicsPixmapItem();
     pixmapItem->setPixmap(pix);
     result << pixmapItem;
+
+    QString documentPath = UBApplication::boardController->selectedDocument()->persistencePath();
+    QString fileName = UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png";
+    QString path = documentPath + "/" + fileName;
+    if (!QFile::exists(path))
+    {
+        QDir dir;
+        dir.mkdir(documentPath + "/" + UBPersistenceManager::imageDirectory);
+
+        pixmapItem->pixmap().toImage().save(path, "PNG");
+    }
+
     return result;
 }
 
