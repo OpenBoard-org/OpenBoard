@@ -1245,7 +1245,7 @@ void UBGraphicsScene::clearContent(clearCase pCase)
     setDocumentUpdated();
 }
 
-UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, QGraphicsItem* replaceFor, const QPointF& pPos, qreal pScaleFactor, bool pUseAnimation)
+UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, QGraphicsItem* replaceFor, const QPointF& pPos, qreal pScaleFactor, bool pUseAnimation, bool useProxyForDocumentPath)
 {
     UBGraphicsPixmapItem* pixmapItem = new UBGraphicsPixmapItem();
 
@@ -1281,7 +1281,11 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, QGraphi
     pixmapItem->show();
     setDocumentUpdated();
 
-    QString documentPath = UBApplication::boardController->selectedDocument()->persistencePath();
+    QString documentPath;
+    if(useProxyForDocumentPath)
+        documentPath = this->document()->persistencePath();
+    else
+        documentPath = UBApplication::boardController->selectedDocument()->persistencePath();
 
     QString fileName = UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png";
 

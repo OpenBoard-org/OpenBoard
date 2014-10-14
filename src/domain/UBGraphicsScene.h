@@ -334,7 +334,8 @@ public slots:
             QGraphicsItem* replaceFor,
             const QPointF& pPos = QPointF(0,0),
             qreal scaleFactor = 1.0,
-            bool pUseAnimation = false);
+            bool pUseAnimation = false,
+            bool useProxyForDocumentPath = false);
 
         void textUndoCommandAdded(UBGraphicsTextItem *textItem);
 
