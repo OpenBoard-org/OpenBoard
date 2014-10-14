@@ -101,24 +101,13 @@ QList<UBGraphicsItem*> UBImportImage::import(const QUuid& uuid, const QString& f
     pixmapItem->setPixmap(pix);
     result << pixmapItem;
 
-    QString documentPath = UBApplication::boardController->selectedDocument()->persistencePath();
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png";
-    QString path = documentPath + "/" + fileName;
-    if (!QFile::exists(path))
-    {
-        QDir dir;
-        dir.mkdir(documentPath + "/" + UBPersistenceManager::imageDirectory);
-
-        pixmapItem->pixmap().toImage().save(path, "PNG");
-    }
-
     return result;
 }
 
 void UBImportImage::placeImportedItemToScene(UBGraphicsScene* scene, UBGraphicsItem* item)
 {
     UBGraphicsPixmapItem* pixmapItem = (UBGraphicsPixmapItem*)item;
-    
+
      UBGraphicsPixmapItem* sceneItem = scene->addPixmap(pixmapItem->pixmap(), NULL, QPointF(0, 0));
      scene->setAsBackgroundObject(sceneItem, true);
 
