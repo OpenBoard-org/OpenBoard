@@ -324,12 +324,12 @@ void UBDocumentTreeWidget::dropEvent(QDropEvent *event)
                                 QString target = targetDocProxy->persistencePath() + "/" + relativeFile.toString();
 
                                 if(QFileInfo(source).isDir())
-                                    Q_ASSERT(UBFileSystemUtils::copyDir(source,target));
+                                    UBFileSystemUtils::copyDir(source,target);
                                 else{
                                     QFileInfo fi(target);
                                     QDir d = fi.dir();
                                     d.mkpath(d.absolutePath());
-                                    Q_ASSERT(QFile::copy(source, target));
+                                    QFile::copy(source, target);
                                 }
                             }
 
