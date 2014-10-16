@@ -565,7 +565,7 @@ void UBPersistenceManager::duplicateDocumentScene(UBDocumentProxy* proxy, int in
             QUuid newUuid = QUuid::createUuid();
             QString fileName = QFileInfo(source).completeBaseName();
             destination = destination.replace(fileName,newUuid.toString());
-            Q_ASSERT(QFile::copy(source,destination));
+            QFile::copy(source,destination);
             mediaItem->mediaFileUrl(QUrl::fromLocalFile(destination));
             continue;
         }
@@ -584,8 +584,8 @@ void UBPersistenceManager::duplicateDocumentScene(UBDocumentProxy* proxy, int in
             QString screenshotDestinationPath = screenshotSourcePath;
             screenshotDestinationPath = screenshotDestinationPath.replace(actualUuidString,newUUidString);
 
-            Q_ASSERT(UBFileSystemUtils::copyDir(widgetSourcePath,widgetDestinationPath));
-            Q_ASSERT(QFile::copy(screenshotSourcePath,screenshotDestinationPath));
+            UBFileSystemUtils::copyDir(widgetSourcePath,widgetDestinationPath);
+            QFile::copy(screenshotSourcePath,screenshotDestinationPath);
 
             widget->setUuid(newUUid);
 
@@ -601,7 +601,7 @@ void UBPersistenceManager::duplicateDocumentScene(UBDocumentProxy* proxy, int in
             QUuid newUuid = QUuid::createUuid();
             QString fileName = QFileInfo(source).completeBaseName();
             destination = destination.replace(fileName,newUuid.toString());
-            Q_ASSERT(QFile::copy(source,destination));
+            QFile::copy(source,destination);
             pixmapItem->setUuid(newUuid);
             continue;
         }
@@ -613,7 +613,7 @@ void UBPersistenceManager::duplicateDocumentScene(UBDocumentProxy* proxy, int in
             QUuid newUuid = QUuid::createUuid();
             QString fileName = QFileInfo(source).completeBaseName();
             destination = destination.replace(fileName,newUuid.toString());
-            Q_ASSERT(QFile::copy(source,destination));
+            QFile::copy(source,destination);
             svgItem->setUuid(newUuid);
             continue;
         }
