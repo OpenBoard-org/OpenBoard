@@ -484,7 +484,7 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
                 QDir d = fi.dir();
 
                 d.mkpath(d.absolutePath());
-                Q_ASSERT(QFile::rename(source, target));
+                QFile::rename(source, target);
             }
 
             insertDocumentSceneAt(trashDocProxy, scene, trashDocProxy->pageCount());
