@@ -86,6 +86,10 @@
 
 #include "core/memcheck.h"
 
+#ifdef Q_WS_X11
+#include <QProcess>
+#endif
+
 UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     : UBDocumentContainer(mainWindow->centralWidget())
     , mMainWindow(mainWindow)
@@ -160,6 +164,10 @@ void UBBoardController::init()
 
 UBBoardController::~UBBoardController()
 {
+#ifdef Q_WS_X11
+    QProcess newProcess;
+    newProcess.startDetached("killall onboard");
+#endif
     delete mDisplayView;
 }
 
@@ -816,7 +824,14 @@ void UBBoardController::showKeyboard(bool show)
 {
     if(show)
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+
+#ifdef Q_WS_X11
+    QProcess newProcess;
+    newProcess.startDetached("/usr/bin/onboard");
+#else
     mPaletteManager->showVirtualKeyboard(show);
+#endif
+
 }
 
 
