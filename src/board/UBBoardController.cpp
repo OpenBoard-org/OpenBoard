@@ -88,6 +88,7 @@
 
 #ifdef Q_WS_X11
 #include <QProcess>
+bool onboardIsAlreadyRunning = true;
 #endif
 
 UBBoardController::UBBoardController(UBMainWindow* mainWindow)
@@ -165,8 +166,10 @@ void UBBoardController::init()
 UBBoardController::~UBBoardController()
 {
 #ifdef Q_WS_X11
-    QProcess newProcess;
-    newProcess.startDetached("killall onboard");
+    if(!onboardIsAlreadyRunning){
+        QProcess newProcess;
+        newProcess.startDetached("killall onboard");
+    }
 #endif
     delete mDisplayView;
 }
@@ -826,8 +829,26 @@ void UBBoardController::showKeyboard(bool show)
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 
 #ifdef Q_WS_X11
-    QProcess newProcess;
-    newProcess.startDetached("/usr/bin/onboard");
+    static bool isFirstTime = true;
+    if(isFirstTime){
+        QProcess isAlreadyRunningProcess;
+        QString psAuxGrepC = "ps aux";
+        isAlreadyRunningProcess.start(psAuxGrepC);
+        isAlreadyRunningProcess.waitForFinished();
+        QString output(isAlreadyRunningProcess.readAll());
+        if(output.count("onboard") != 0)
+            onboardIsAlreadyRunning = true;
+        else
+            onboardIsAlreadyRunning = false;
+
+        isFirstTime = false;
+    }
+    if(UBSettings::settings()->useSystemOnScreenKeybard->get().toBool()){
+        QProcess newProcess;
+        newProcess.startDetached("/usr/bin/onboard");
+    }
+    else
+        mPaletteManager->showVirtualKeyboard(show);
 #else
     mPaletteManager->showVirtualKeyboard(show);
 #endif

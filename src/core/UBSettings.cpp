@@ -415,6 +415,8 @@ void UBSettings::init()
 
     libIconSize = new UBSetting(this, "Library", "LibIconSize", defaultLibraryIconSize);
 
+    useSystemOnScreenKeybard = new UBSetting(this, "App", "UseSystemOnScreenKeybard", false);
+
     cleanNonPersistentSettings();
 }
 
