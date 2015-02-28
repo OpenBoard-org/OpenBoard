@@ -93,6 +93,7 @@ void UBPlatformUtils::init()
 
 void UBPlatformUtils::setDesktopMode(bool desktop)
 {
+#ifndef OS_NEWER_THAN_OR_EQUAL_TO_1010
     OSStatus (*functor)(SystemUIMode, SystemUIOptions) = (OSStatus (*)(SystemUIMode, SystemUIOptions))originalSetSystemUIMode;
 
     if (desktop)
@@ -103,7 +104,7 @@ void UBPlatformUtils::setDesktopMode(bool desktop)
     {
         functor(kUIModeAllHidden, 0);
     }
-
+#endif
 }
 
 

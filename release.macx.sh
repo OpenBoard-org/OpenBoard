@@ -136,8 +136,12 @@ $LRELEASE "$APPLICATION_NAME.pro"
 # generate Makefiles
 notify "Generating Makefile ..."
 
-QMAKE_CMD="$QMAKE $APPLICATION_NAME.pro -spec macx-g++"
 
+if [ "$1" == "1010" ]; then
+   QMAKE_CMD="$QMAKE \"DEFINES+=OS_NEWER_THAN_OR_EQUAL_TO_1010\" $APPLICATION_NAME.pro -spec macx-g++"
+else
+   QMAKE_CMD="$QMAKE $APPLICATION_NAME.pro -spec macx-g++"
+fi
 $QMAKE_CMD
 
 # build
@@ -169,8 +173,8 @@ if [ $? != 0 ]; then
     abort "compilation failed"
 fi
 
-
 DMG="$APPLICATION_NAME.dmg"
+
 VOLUME="/Volumes/$APPLICATION_NAME"
 APP="$PRODUCT_DIR/$APPLICATION_NAME.app"
 DSYM_NAME="$APPLICATION_NAME (r$SVN_REVISION).dSYM"
@@ -232,7 +236,6 @@ $DMGUTIL --set --iconsize=96 --toolbar=false --icon=resources/macx/OpenBoard.icn
 $DMGUTIL --set --x=20 --y=60 --width=580 --height=440 "$VOLUME"
 $DMGUTIL --set --x=180 --y=120 "$VOLUME/`basename \"$APP\"`"
 $DMGUTIL --set --x=400 --y=120 "$VOLUME/Applications"
-#$DMGUTIL --set --x=180 --y=280 "$VOLUME/ReleaseNotes.pdf"
 
 $DMGUTIL --close --volume="$APPLICATION_NAME" "$DMG"
 
@@ -244,7 +247,13 @@ if [ ! -d "${PRODUCT_DIR}" ]; then
     mkdir -p "${PRODUCT_DIR}"
 fi
 
-mv "$DMG" "${PRODUCT_DIR}"
+
+if [ "$1" == "1010" ]; then
+   mv "$DMG" "${PRODUCT_DIR}/OpenBoard_for_1010.dmg"
+else
+   mv "$DMG" "${PRODUCT_DIR}"
+fi
+
 
 exit 0
 
