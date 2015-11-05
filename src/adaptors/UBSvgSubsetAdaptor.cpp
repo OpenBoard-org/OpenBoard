@@ -30,6 +30,7 @@
 #include <QtCore>
 #include <QtXml>
 #include <QGraphicsTextItem>
+#include <QDomElement>
 
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
@@ -329,7 +330,7 @@ QUuid UBSvgSubsetAdaptor::sceneUuid(UBDocumentProxy* proxy, const int pageIndex)
 
 UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const QByteArray& pArray)
 {
-    UBSvgSubsetReader reader(proxy, UBTextTools::cleanHtmlCData(QString(pArray)).toAscii());
+    UBSvgSubsetReader reader(proxy, UBTextTools::cleanHtmlCData(QString(pArray)).toLatin1());
     return reader.loadScene();
 }
 
@@ -1335,7 +1336,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
     QUuid uuid = UBGraphicsScene::getPersonalUuid(groupItem);
     if (!uuid.isNull()) {
         QDomElement curGroupElement = groupDomDocument->createElement(tGroup);
-        curGroupElement.setAttribute(aId, uuid);
+        curGroupElement.setAttribute(aId, uuid.toString());
         UBGraphicsGroupContainerItem* group = dynamic_cast<UBGraphicsGroupContainerItem*>(groupItem);
         if(group && group->Delegate()){
             if(group->Delegate()->isLocked())
@@ -1351,7 +1352,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
                     persistGroupToDom(item, curParent, groupDomDocument);
                 else {
                     QDomElement curSubElement = groupDomDocument->createElement(tElement);
-                    curSubElement.setAttribute(aId, tmpUuid);
+                    curSubElement.setAttribute(aId, tmpUuid.toString());
                     curGroupElement.appendChild(curSubElement);
                 }
             }

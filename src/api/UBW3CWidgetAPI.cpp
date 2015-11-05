@@ -59,7 +59,7 @@ UBW3CWidgetAPI::~UBW3CWidgetAPI()
 QString UBW3CWidgetAPI::uuid()
 {
     if (mGraphicsW3CWidget)
-        return mGraphicsW3CWidget->uuid();
+        return mGraphicsW3CWidget->uuid().toString();
     else
         return "";
 }

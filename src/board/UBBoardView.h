@@ -30,6 +30,9 @@
 #define CONTROLVIEW_OBJ_NAME "ControlView"
 
 #include <QtGui>
+#include <QGraphicsView>
+#include <QRubberBand>
+
 #include "core/UB.h"
 #include "domain/UBGraphicsDelegateFrame.h"
 
