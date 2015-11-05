@@ -31,6 +31,7 @@
 #include <QtWebKit>
 #include <QtXml>
 #include <QFontDatabase>
+#include <QStyleFactory>
 
 #if defined(Q_WS_MACX)
 #include <Carbon/Carbon.h>
@@ -157,7 +158,7 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
     setWindowIcon(QIcon(":/images/OpenBoard.png"));
 #endif
 
-    setStyle(new UBStyle()); // Style is owned and deleted by the application
+    setStyle("fusion");
 
     QString css = UBFileSystemUtils::readTextFile(UBPlatformUtils::applicationResourcesDirectory() + "/etc/"+ qApp->applicationName()+".css");
     if (css.length() > 0)
@@ -648,39 +649,6 @@ void UBApplication::cleanup()
     boardController = NULL;
     webController = NULL;
     documentController = NULL;
-}
-
-void UBStyle::drawItemText(QPainter *painter, const QRect &rect, int alignment, const QPalette &pal,
-                          bool enabled, const QString& text, QPalette::ColorRole textRole) const
-{
-    if (text.isEmpty())
-        return;
-
-    QPen savedPen;
-    if (textRole != QPalette::NoRole)
-    {
-        savedPen = painter->pen();
-        painter->setPen(QPen(pal.brush(textRole), savedPen.widthF()));
-    }
-
-    if (!enabled)
-    {
-        QPen pen = painter->pen();
-        QColor half = pen.color();
-
-        half.setRed(half.red() / 2);
-        half.setGreen(half.green() / 2);
-        half.setBlue(half.blue() / 2);
-
-        painter->setPen(half);
-        painter->drawText(rect, alignment, text);
-        painter->setPen(pen);
-    }
-
-    painter->drawText(rect, alignment, text);
-
-    if (textRole != QPalette::NoRole)
-        painter->setPen(savedPen);
 }
 
 QString UBApplication::urlFromHtml(QString html)
