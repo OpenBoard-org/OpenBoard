@@ -41,6 +41,8 @@
 
 #include "core/memcheck.h"
 
+#include "qdesktopwidget.h"
+
 UBDisplayManager::UBDisplayManager(QObject *parent)
     : QObject(parent)
     , mControlScreenIndex(-1)
@@ -55,8 +57,8 @@ UBDisplayManager::UBDisplayManager(QObject *parent)
 
     initScreenIndexes();
 
-    connect(mDesktop, SIGNAL(resized(int)), this, SLOT(adjustScreens(int)));
-    connect(mDesktop, SIGNAL(workAreaResized(int)), this, SLOT(adjustScreens(int)));
+    connect(mDesktop, &QDesktopWidget::resized, this, &UBDisplayManager::adjustScreens);
+    connect(mDesktop, &QDesktopWidget::workAreaResized, this, &UBDisplayManager::adjustScreens);
 }
 
 
