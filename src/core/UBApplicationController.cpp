@@ -22,7 +22,8 @@
  * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
+#include <QScriptValue>
+#include <QScriptEngine>
 
 #include "UBApplicationController.h"
 
