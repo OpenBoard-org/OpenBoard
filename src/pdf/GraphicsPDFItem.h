@@ -28,7 +28,7 @@
 #ifndef GRAPHICSPDFITEM_H
 #define GRAPHICSPDFITEM_H
 
-#include <QtGui/QGraphicsItem>
+#include <QtWidgets>
 #include <QtCore/QObject>
 
 #include "PDFRenderer.h"
