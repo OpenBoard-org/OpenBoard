@@ -43,6 +43,7 @@
 #include <QThread>
 #include <QMutex>
 #include <QWaitCondition>
+#include <QListView>
 
 class UBFeaturesModel;
 class UBFeaturesItemDelegate;

@@ -31,6 +31,9 @@
 #include <QtGui>
 
 #include <QObject>
+#include <QHBoxLayout>
+#include <QUndoCommand>
+
 #include "document/UBDocumentContainer.h"
 #include "core/UBApplicationController.h"
 

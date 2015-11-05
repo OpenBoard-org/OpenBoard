@@ -31,6 +31,7 @@
 #include <QtGui>
 #include <QtWebKit>
 #include <QDomElement>
+#include <QGraphicsWebView>
 
 #include "core/UB.h"
 

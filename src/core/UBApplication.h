@@ -31,6 +31,7 @@
 #include <QtGui>
 #include <QUndoStack>
 #include <QToolBar>
+#include <QMenu>
 
 #include "qtsingleapplication.h"
 
