@@ -26,6 +26,7 @@
 
 #include <QString>
 #include <QCursor>
+#include <QGraphicsRectItem>
 
 #include "UBThumbnailWidget.h"
 #include "UBRubberBand.h"
@@ -242,7 +243,8 @@ void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
         option.initFrom(&rubberBand);
 
         mPrevLassoRect = QRect();
-        mLassoRectItem = new QGraphicsRectItem(0, scene());
+        mLassoRectItem = new QGraphicsRectItem(0);
+        scene()->addItem(mLassoRectItem);
 
 #ifdef Q_WS_MAC
         // The following code must stay in synch with <Qt installation folder>\src\gui\styles\qmacstyle_mac.mm
@@ -772,7 +774,7 @@ UBSceneThumbnailNavigPixmap::UBSceneThumbnailNavigPixmap(const QPixmap& pix, UBD
     , bCanMoveDown(false)
 {
     if(0 <= UBDocumentContainer::pageFromSceneIndex(pSceneIndex)){
-        setAcceptsHoverEvents(true);
+        setAcceptHoverEvents(true);
         setFlag(QGraphicsItem::ItemIsSelectable, true);
     }
 }
