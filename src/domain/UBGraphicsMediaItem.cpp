@@ -318,7 +318,7 @@ void UBGraphicsMediaItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             QPointF eventPos = mapFromScene( event->scenePos());
 
             QPointF translation = eventPos - mouseMovePos;
-            translate(translation.x(), translation.y());
+            setTransform(QTransform::fromTranslate(translation.x(), translation.y()), true);
         }
 
         mMouseMovePos = event->scenePos();

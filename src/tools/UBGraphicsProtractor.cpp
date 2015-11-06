@@ -78,7 +78,7 @@ UBGraphicsProtractor::UBGraphicsProtractor()
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::CppTool)); //Necessary to set if we want z value to be assigned correctly
     setFlag(QGraphicsItem::ItemIsSelectable, false);
 
-    scale(1.5, 1.5);
+    setTransform(QTransform::fromScale(1.5, 1.5), true);
 }
 
 
@@ -201,9 +201,9 @@ void UBGraphicsProtractor::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     case Resize :
         prepareGeometryChange();
-        translate(rect().center().x(), rect().center().y());
-        scale(scaleFactor, scaleFactor);
-        translate(-rect().center().x(), -rect().center().y());
+        setTransform(QTransform::fromTranslate(rect().center().x(), rect().center().y()), true);
+        setTransform(QTransform::fromScale(scaleFactor, scaleFactor), true);
+        setTransform(QTransform::fromTranslate(-rect().center().x(), -rect().center().y()), true);
         mScaleFactor *= scaleFactor;
         break;
 
@@ -445,40 +445,40 @@ void UBGraphicsProtractor::paintButtons(QPainter *painter)
         qreal scale = buttonSizeReference().width() / mCloseSvgItem->boundingRect().width();
         mCloseSvgItem->setPos(closeButtonRect().topLeft() + rect().center());
         mCloseSvgItem->resetTransform();
-        mCloseSvgItem->translate(-closeButtonRect().left(),-closeButtonRect().top());
-        mCloseSvgItem->rotate(-mStartAngle);
-        mCloseSvgItem->translate(closeButtonRect().left(), closeButtonRect().top());
-        mCloseSvgItem->scale(scale * antiSc, scale * antiSc);//this do not impact the bounding box of thr svg item...
+        mCloseSvgItem->setTransform(QTransform::fromTranslate(-closeButtonRect().left(),-closeButtonRect().top()), true);
+        mCloseSvgItem->setRotation(rotation() -mStartAngle);
+        mCloseSvgItem->setTransform(QTransform::fromTranslate(closeButtonRect().left(), closeButtonRect().top()), true);
+        mCloseSvgItem->setTransform(QTransform::fromScale(scale * antiSc, scale * antiSc), true);//this do not impact the bounding box of thr svg item...
 
         mResetSvgItem->setPos(resetButtonRect().topLeft() + rect().center());
         mResetSvgItem->resetTransform();
-        mResetSvgItem->translate(-resetButtonRect().left(), -resetButtonRect().top());
-        mResetSvgItem->rotate(-mStartAngle);
-        mResetSvgItem->translate(resetButtonRect().left(), resetButtonRect().top());
-        mResetSvgItem->scale(scale * antiSc, scale * antiSc);//this do not impact the bounding box of thr svg item...
+        mResetSvgItem->setTransform(QTransform::fromTranslate(-resetButtonRect().left(), -resetButtonRect().top()), true);
+        mResetSvgItem->setRotation(rotation() -mStartAngle);
+        mResetSvgItem->setTransform(QTransform::fromTranslate(resetButtonRect().left(), resetButtonRect().top()), true);
+        mResetSvgItem->setTransform(QTransform::fromScale(scale * antiSc, scale * antiSc), true);//this do not impact the bounding box of thr svg item...
 
         mResizeSvgItem->setPos(resizeButtonRect().topLeft() + rect().center());
         mResizeSvgItem->resetTransform();
-        mResizeSvgItem->translate(-resizeButtonRect().left(), -resizeButtonRect().top());
-        mResizeSvgItem->rotate(-mStartAngle);
-        mResizeSvgItem->translate(resizeButtonRect().left(), resizeButtonRect().top());
-        mResizeSvgItem->scale(scale * antiSc, scale * antiSc);//this do not impact the bounding box of thr svg item...
+        mResizeSvgItem->setTransform(QTransform::fromTranslate(-resizeButtonRect().left(), -resizeButtonRect().top()), true);
+        mResizeSvgItem->setRotation(rotation() -mStartAngle);
+        mResizeSvgItem->setTransform(QTransform::fromTranslate(resizeButtonRect().left(), resizeButtonRect().top()), true);
+        mResizeSvgItem->setTransform(QTransform::fromScale(scale * antiSc, scale * antiSc), true);//this do not impact the bounding box of thr svg item...
 
         mRotateSvgItem->setPos(rotateButtonRect().topLeft() + rect().center());
         mRotateSvgItem->resetTransform();
-        mRotateSvgItem->translate(-rotateButtonRect().left(), -rotateButtonRect().top());
-        mRotateSvgItem->rotate(-mStartAngle);
-        mRotateSvgItem->translate(rotateButtonRect().left(), rotateButtonRect().top());
-        mRotateSvgItem->scale(scale, scale);//this do not impact the bounding box of thr svg item...
+        mRotateSvgItem->setTransform(QTransform::fromTranslate(-rotateButtonRect().left(), -rotateButtonRect().top()), true);
+        mRotateSvgItem->setRotation(rotation() -mStartAngle);
+        mRotateSvgItem->setTransform(QTransform::fromTranslate(rotateButtonRect().left(), rotateButtonRect().top()), true);
+        mRotateSvgItem->setTransform(QTransform::fromScale(scale, scale), true);//this do not impact the bounding box of thr svg item...
     }
 
     qreal scale = markerSizeReference().width()/mMarkerSvgItem->boundingRect().width();
     mMarkerSvgItem->setPos(markerButtonRect().topLeft() + rect().center());
     mMarkerSvgItem->resetTransform();
-    mMarkerSvgItem->translate(-markerButtonRect().left(), -markerButtonRect().top());
-    mMarkerSvgItem->rotate(- mStartAngle - mCurrentAngle);
-    mMarkerSvgItem->translate(markerButtonRect().left(), markerButtonRect().top());
-    mMarkerSvgItem->scale(scale, scale);//this do not impact the bounding box of thr svg item...
+    mMarkerSvgItem->setTransform(QTransform::fromTranslate(-markerButtonRect().left(), -markerButtonRect().top()), true);
+    mMarkerSvgItem->setRotation(rotation() - mStartAngle - mCurrentAngle);
+    mMarkerSvgItem->setTransform(QTransform::fromTranslate(markerButtonRect().left(), markerButtonRect().top()), true);
+    mMarkerSvgItem->setTransform(QTransform::fromScale(scale, scale), true);//this do not impact the bounding box of thr svg item...
 
     mCloseSvgItem->setVisible(mShowButtons);
     mResetSvgItem->setVisible(mShowButtons);

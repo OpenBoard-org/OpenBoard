@@ -792,7 +792,7 @@ void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
             button->setParentItem(mFrame);
             button->setPos(topXTitleBar + (k++ * (frameButtonHeight + 5)), topYTitleBar);
             button->setTransform(tr);
-            button->scale(0.8,0.8);
+            button->setTransform(QTransform::fromScale(0.8, 0.8), true);
         }
         else if(button->getSection() == Qt::NoSection){
             ++l;
