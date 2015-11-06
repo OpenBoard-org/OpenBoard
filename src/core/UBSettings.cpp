@@ -306,7 +306,7 @@ void UBSettings::init()
 
     bool defaultShowPageImmediatelyOnMirroredScreen = true;
 
-#if defined(Q_WS_X11)
+#if defined(Q_OS_LINUX)
     // screen duplication is very slow on X11
     defaultShowPageImmediatelyOnMirroredScreen = false;
 #endif
@@ -334,7 +334,7 @@ void UBSettings::init()
 
     int defaultRefreshRateInFramePerSecond = 8;
 
-#if defined(Q_WS_X11)
+#if defined(Q_OS_LINUX)
     // screen duplication is very slow on X11
     defaultRefreshRateInFramePerSecond = 2;
 #endif

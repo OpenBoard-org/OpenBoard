@@ -355,7 +355,7 @@ void UBDocumentController::setupViews()
             }
         }
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_OSX
         mMainWindow->actionDelete->setShortcut(QKeySequence(Qt::Key_Backspace));
 #endif
 
@@ -394,7 +394,7 @@ void UBDocumentController::setupViews()
 
         mDocumentUI->thumbnailWidget->setBackgroundBrush(UBSettings::documentViewLightColor);
 
-        #ifdef Q_WS_MACX
+        #ifdef Q_OS_OSX
             mMessageWindow = new UBMessageWindow(NULL);
         #else
             mMessageWindow = new UBMessageWindow(mDocumentUI->thumbnailWidget);
@@ -1452,7 +1452,7 @@ void UBDocumentController::showMessage(const QString& message, bool showSpinning
 
         QRect newSize = mDocumentUI->thumbnailWidget->geometry();
 
-        #ifdef Q_WS_MACX
+        #ifdef Q_OS_OSX 
             QPoint point(newSize.left() + margin, newSize.bottom() - mMessageWindow->height() - margin);
             mMessageWindow->move(mDocumentUI->thumbnailWidget->mapToGlobal(point));
         #else

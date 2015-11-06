@@ -225,7 +225,7 @@ void UBBoardPaletteManager::setupPalettes()
     if (UBPlatformUtils::hasVirtualKeyboard())
     {
         mKeyboardPalette = new UBKeyboardPalette(0);
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
         connect(mKeyboardPalette, SIGNAL(closed()), mKeyboardPalette, SLOT(onDeactivated()));
 #endif
     }
@@ -677,7 +677,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
 
                 mLeftPalette->setVisible(leftPaletteVisible);
                 mRightPalette->setVisible(rightPaletteVisible);
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
                 if (rightPaletteVisible)
                     mRightPalette->setAdditionalVOffset(0);
 #endif
@@ -702,24 +702,24 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                     if(mKeyboardPalette->m_isVisible)
                     {
                         mKeyboardPalette->hide();
-#ifndef Q_WS_X11
+#ifndef Q_OS_LINUX
                         mKeyboardPalette->setParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
 #else
                         mKeyboardPalette->setParent(0);
 #endif
-#ifdef Q_WS_MAC
+#ifdef Q_OS_OSX
                         mKeyboardPalette->setWindowFlags(Qt::Dialog | Qt::Popup | Qt::FramelessWindowHint);
 #endif
                         mKeyboardPalette->show();
                     }
                     else
 // In linux keyboard in desktop mode have to allways be with null parent
-#ifdef Q_WS_X11
+#ifdef Q_OS_LINUX
                         mKeyboardPalette->setParent(0);
 #else
                         mKeyboardPalette->setParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
-#endif //Q_WS_X11
-#ifdef Q_WS_MAC
+#endif //Q_OS_LINUX
+#ifdef Q_OS_OSX
                         mKeyboardPalette->setWindowFlags(Qt::Dialog | Qt::Popup | Qt::FramelessWindowHint);
 #endif
 
@@ -727,7 +727,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
 
                 mLeftPalette->setVisible(leftPaletteVisible);
                 mRightPalette->setVisible(rightPaletteVisible);
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
                 if (rightPaletteVisible && UBSettings::settings()->appToolBarPositionedAtTop->get().toBool())
                     mRightPalette->setAdditionalVOffset(30);
 #endif

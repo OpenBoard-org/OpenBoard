@@ -2140,7 +2140,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
     {
         if (!svgX.isNull() && !svgY.isNull())
         {
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
             gItem->setPos(svgX.toString().toFloat(), svgY.toString().toFloat());
 #endif
         }

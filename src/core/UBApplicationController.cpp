@@ -67,7 +67,7 @@
 
 #include "ui_mainWindow.h"
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_OSX
 #include <Carbon/Carbon.h>
 #endif
 
@@ -122,7 +122,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
     QTimer::singleShot (1000, this, SLOT (checkAtLaunch()));
 
 
-#ifdef Q_WS_X11
+#ifdef Q_OS_LINUX
     mMainWindow->setStyleSheet("QToolButton { font-size: 11px}");
 #endif
 

@@ -378,7 +378,7 @@ void UBGraphicsProtractor::paintGraduations(QPainter *painter)
     const int  oneDegreeGraduationLength = 5;
 
     QFont font1 = painter->font();
-#ifdef Q_WS_MAC
+#ifdef Q_OS_OSX
     font1.setPointSizeF(font1.pointSizeF() - 3);
 #endif
     QFontMetricsF fm1(font1);

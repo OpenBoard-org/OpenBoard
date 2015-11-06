@@ -57,7 +57,7 @@ UBFileSystemUtils::~UBFileSystemUtils()
 
 QString UBFileSystemUtils::removeLocalFilePrefix(QString input)
 {
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     if(input.startsWith("file:///"))
         return input.mid(8);
     else

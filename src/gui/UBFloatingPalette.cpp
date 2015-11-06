@@ -54,11 +54,11 @@ UBFloatingPalette::UBFloatingPalette(Qt::Corner position, QWidget *parent)
     {
         // standalone window
         // !!!! Should be included into Windows after QT recompilation
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
         setAttribute(Qt::WA_TranslucentBackground);
         setAttribute(Qt::WA_MacAlwaysShowToolWindow);
 #endif
-#ifdef Q_WS_MAC
+#ifdef Q_OS_OSX
         setAttribute(Qt::WA_MacAlwaysShowToolWindow);
         setAttribute(Qt::WA_MacNonActivatingToolWindow);
         setAttribute(Qt::WA_MacNoShadow);

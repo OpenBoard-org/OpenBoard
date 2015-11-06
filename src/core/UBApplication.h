@@ -124,7 +124,7 @@ class UBApplication : public QtSingleApplication
     private slots:
 
         void closing();
-#ifdef Q_WS_MAC
+#ifdef Q_OS_OSX
         void showMinimized();
 #endif
         void onScreenCountChanged(int newCount);
@@ -137,7 +137,7 @@ class UBApplication : public QtSingleApplication
         QString checkLanguageAvailabilityForSankore(QString& language);
     protected:
 
-#if defined(Q_WS_MACX) && !defined(QT_MAC_USE_COCOA)
+#if defined(Q_OS_OSX) && !defined(QT_MAC_USE_COCOA)
         bool macEventFilter(EventHandlerCallRef caller, EventRef event);
 #endif
 

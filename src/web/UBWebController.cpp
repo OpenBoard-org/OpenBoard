@@ -299,7 +299,7 @@ void UBWebController::setupPalettes()
     {
         mToolsCurrentPalette = new UBWebToolsPalette(UBApplication::mainWindow);
         UBApplication::boardController->paletteManager()->setCurrentWebToolsPalette(mToolsCurrentPalette);
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
         if (UBPlatformUtils::hasVirtualKeyboard() && UBApplication::boardController->paletteManager()->mKeyboardPalette)
             connect(UBApplication::boardController->paletteManager()->mKeyboardPalette, SIGNAL(closed()),
                     UBApplication::boardController->paletteManager()->mKeyboardPalette, SLOT(onDeactivated()));

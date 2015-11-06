@@ -771,7 +771,7 @@ void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
     qreal topXTitleBar = topX + (1.6 * mFrameWidth * mAntiScaleRatio);
     qreal topYTitleBar = topY + frameButtonHeight *mAntiScaleRatio;
 
-#ifndef Q_WS_X11
+#ifndef Q_OS_LINUX
     topYTitleBar += 5;
 #endif
 

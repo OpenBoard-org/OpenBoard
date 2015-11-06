@@ -55,7 +55,7 @@ class UBDesktopPalette : public UBActionPalette
         void windowClick();
         void screenClick();
 
-#ifdef Q_WS_X11
+#ifdef Q_OS_LINUX
         void refreshMask();
 #endif
 
