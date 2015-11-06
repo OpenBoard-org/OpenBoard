@@ -28,7 +28,6 @@
 #include "UBRubberBand.h"
 
 #include <QtGui>
-#include <QtGui/QPlastiqueStyle>
 #include <QStyleFactory>
 
 #ifdef Q_WS_MAC

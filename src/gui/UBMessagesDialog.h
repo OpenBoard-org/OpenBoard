@@ -29,6 +29,7 @@
 #define UB_MESSAGES_DIALOG_H_
 
 #include <QtGui>
+#include <QWidget>
 
 class UBMessagesDialog : public QWidget
 {

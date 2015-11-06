@@ -82,6 +82,8 @@
 #include <QtGui>
 #include <QtWebKit>
 #include <QtUiTools/QUiLoader>
+#include <QMessageBox>
+#include <QWebFrame>
 
 #include "core/memcheck.h"
 

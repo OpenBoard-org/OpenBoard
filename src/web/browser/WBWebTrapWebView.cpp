@@ -29,6 +29,8 @@
 
 #include <QtGui>
 #include <QtWebKit>
+#include <QWebHitTestResult>
+#include <QWebFrame>
 
 #include "web/UBWebKitUtils.h"
 

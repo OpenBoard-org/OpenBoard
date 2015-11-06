@@ -41,6 +41,10 @@
 #include <QGraphicsLinearLayout>
 #include <QStackedWidget>
 #include <QDropEvent>
+#include <QPushButton>
+#include <QProgressBar>
+#include <QLabel>
+#include <QTreeWidget>
 
 #include "UBDockPaletteWidget.h"
 #include "core/UBSettings.h"

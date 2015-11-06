@@ -70,6 +70,7 @@
 #define WBEDITTABLEVIEW_H
 
 #include <QtGui>
+#include <QTableView>
 
 class WBEditTableView : public QTableView
 {

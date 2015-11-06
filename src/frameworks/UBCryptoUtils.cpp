@@ -92,13 +92,13 @@ QString UBCryptoUtils::symetricEncrypt(const QString& clear)
 
     free(ciphertext);
 
-    return QString::fromAscii(cipheredData.toBase64());
+    return QString::fromLatin1(cipheredData.toBase64());
 }
 
 
 QString UBCryptoUtils::symetricDecrypt(const QString& encrypted)
 {
-    QByteArray encryptedData = QByteArray::fromBase64(encrypted.toAscii());
+    QByteArray encryptedData = QByteArray::fromBase64(encrypted.toLatin1());
 
     int encryptedLength = encryptedData.length();
     int paddingLength = 0;
@@ -132,10 +132,10 @@ void UBCryptoUtils::aesInit()
 {
     int i, nrounds = 5;
     unsigned char key[32], iv[32];
-    unsigned char *key_data = (unsigned char *)sAESKey.toAscii().data();
+    unsigned char *key_data = (unsigned char *)sAESKey.toLatin1().data();
     int key_data_len = sAESKey.length();
 
-    i = EVP_BytesToKey(EVP_aes_256_cbc(), EVP_sha1(), (unsigned char *)sAESSalt.toAscii().data(), key_data,
+    i = EVP_BytesToKey(EVP_aes_256_cbc(), EVP_sha1(), (unsigned char *)sAESSalt.toLatin1().data(), key_data,
             key_data_len, nrounds, key, iv);
 
     if (i != 32)

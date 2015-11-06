@@ -28,6 +28,7 @@
 #include <QtGui>
 #include <QDomDocument>
 #include <QXmlQuery>
+#include <QWebFrame>
 
 #include "frameworks/UBPlatformUtils.h"
 

@@ -24,6 +24,7 @@
 
 
 
+#include <QDesktopWidget>
 
 #include "UBScreenMirror.h"
 

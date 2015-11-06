@@ -31,6 +31,9 @@
 #include <QWidget>
 #include <QToolButton>
 #include <QDropEvent>
+#include <QLineEdit>
+#include <QLayout>
+
 #include "board/UBFeaturesController.h"
 
 #define BUTTON_SIZE 24

@@ -29,6 +29,7 @@
 #define UBABSTRACTUNDOCOMMAND_H_
 
 #include <QtGui>
+#include <QUndoCommand>
 #include <core/UB.h>
 
 class UBUndoCommand : public QUndoCommand

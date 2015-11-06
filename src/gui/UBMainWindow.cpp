@@ -26,6 +26,8 @@
 
 
 #include <QtGui>
+#include <QToolTip>
+#include <QStackedLayout>
 
 #include "UBMainWindow.h"
 #include "core/UBApplication.h"

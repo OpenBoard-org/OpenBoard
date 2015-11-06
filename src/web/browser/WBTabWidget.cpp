@@ -78,6 +78,8 @@
 
 #include <QtGui>
 #include <QSvgWidget>
+#include <QListView>
+#include <QLabel>
 
 #include "core/memcheck.h"
 

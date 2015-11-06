@@ -29,6 +29,7 @@
 #define UBSCREENMIRROR_H_
 
 #include <QtGui>
+#include <QWidget>
 
 class UBScreenMirror : public QWidget
 {

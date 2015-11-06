@@ -29,6 +29,7 @@
 #define UBDOCUMENTTREEWIDGET_H_
 
 #include <QtGui>
+#include <QTreeWidget>
 
 class UBDocumentProxy;
 class UBDocumentProxyTreeItem;

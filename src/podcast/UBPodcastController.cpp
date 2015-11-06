@@ -487,7 +487,7 @@ void UBPodcastController::processWidgetPaintEvent()
     {
         while(mWidgetRepaintRectQueue.size() > 0)
         {
-            repaintRect = repaintRect.unite(mWidgetRepaintRectQueue.dequeue());
+            repaintRect = repaintRect.united(mWidgetRepaintRectQueue.dequeue());
         }
     }
 
@@ -582,7 +582,7 @@ void UBPodcastController::sceneChanged(const QList<QRectF> & region)
         QRectF viewportRect = bv->mapToScene(QRect(0, 0, bv->width(), bv->height())).boundingRect();
         foreach(const QRectF rect, region)
         {
-            QRectF maxRect = rect.intersect(viewportRect);
+            QRectF maxRect = rect.intersected(viewportRect);
             mSceneRepaintRectQueue.enqueue(maxRect);
         }
 
@@ -623,7 +623,7 @@ void UBPodcastController::processScenePaintEvent()
     {
         while(mSceneRepaintRectQueue.size() > 0)
         {
-            repaintRect = repaintRect.unite(mSceneRepaintRectQueue.dequeue());
+            repaintRect = repaintRect.united(mSceneRepaintRectQueue.dequeue());
         }
     }
 
@@ -712,7 +712,7 @@ void UBPodcastController::encodingFinished(bool ok)
             {
                 QString location;
 
-                if (mPodcastRecordingPath == QDesktopServices::storageLocation(QDesktopServices::DesktopLocation))
+                if (mPodcastRecordingPath == QStandardPaths::writableLocation(QStandardPaths::DesktopLocation))
                     location = tr("on your desktop ...");
                 else
                 {
