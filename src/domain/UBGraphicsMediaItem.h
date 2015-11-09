@@ -28,10 +28,12 @@
 #ifndef UBGRAPHICSMEDIAITEM_H
 #define UBGRAPHICSMEDIAITEM_H
 
+#include <QAudioOutput>
+#include <QMediaPlayer>
+#include <QVideoWidget>
+
 #include "UBGraphicsProxyWidget.h"
-#include <phonon/AudioOutput>
-#include <phonon/MediaObject>
-#include <phonon/VideoWidget>
+
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
 #include "frameworks/UBFileSystemUtils.h"
@@ -63,9 +65,9 @@ public:
 
     virtual void mediaFileUrl(QUrl url){mMediaFileUrl=url;}
 
-    Phonon::MediaObject* mediaObject() const
+    QMediaPlayer* mediaObject() const
     {
-        return mMediaObject;
+        return mMediaPlayer;
     }
 
     void setInitialPos(qint64 p) {
@@ -80,7 +82,7 @@ public:
         return mMuted;
     }
 
-    Phonon::VideoWidget* videoWidget() const
+    QVideoWidget* videoWidget() const
     {
         return mVideoWidget;
     }
@@ -115,10 +117,10 @@ protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     virtual void clearSource();
 
-    Phonon::MediaObject *mMediaObject;
-    Phonon::VideoWidget *mVideoWidget;
-    Phonon::AudioOutput *mAudioOutput;
-    Phonon::MediaSource mSource;
+    QMediaPlayer* mMediaPlayer;
+    QVideoWidget* mVideoWidget;
+    QAudioOutput* mAudioOutput;
+
     QWidget *mAudioWidget;
 
 private:
@@ -126,6 +128,7 @@ private:
     bool mMuted;
     bool mMutedByUserAction;
     static bool sIsMutedByDefault;
+    qreal mVolume;
 
     QUrl mMediaFileUrl;
     QString mMediaSource;

@@ -1340,7 +1340,7 @@ UBGraphicsMediaItem* UBGraphicsScene::addMedia(const QUrl& pMediaFileUrl, bool s
     if (!shouldPlayAsap)
     {
         mediaItem->mediaObject()->pause();
-        mediaItem->mediaObject()->seek(0);
+        mediaItem->mediaObject()->setPosition(0);
     }
 
     setDocumentUpdated();

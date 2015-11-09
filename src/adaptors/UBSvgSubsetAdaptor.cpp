@@ -1991,9 +1991,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::audioItemToLinkedAudio(UBGraphicsMed
 
     graphicsItemToSvg(audioItem);
 
-    if (audioItem->mediaObject()->state() == Phonon::PausedState && audioItem->mediaObject()->remainingTime() > 0)
+    if (audioItem->mediaObject()->state() == QMediaPlayer::PausedState && (audioItem->mediaObject()->duration() - audioItem->mediaObject()->position()) > 0)
     {
-        qint64 pos = audioItem->mediaObject()->currentTime();
+        qint64 pos = audioItem->mediaObject()->position();
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
     }
 
@@ -2020,9 +2020,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsMed
 
     graphicsItemToSvg(videoItem);
 
-    if (videoItem->mediaObject()->state() == Phonon::PausedState && videoItem->mediaObject()->remainingTime() > 0)
+    if (videoItem->mediaObject()->state() == QMediaPlayer::PausedState && (videoItem->mediaObject()->duration() - videoItem->mediaObject()->position()) > 0)
     {
-        qint64 pos = videoItem->mediaObject()->currentTime();
+        qint64 pos = videoItem->mediaObject()->position();
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
     }
 

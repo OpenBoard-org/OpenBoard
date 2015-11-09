@@ -29,8 +29,8 @@
 #define UBGRAPHICSMEDIAITEMDELEGATE_H_
 
 #include <QtGui>
-#include <phonon/MediaObject>
 #include <QTimer>
+#include <QtMultimedia>
 
 #include "core/UB.h"
 #include "UBGraphicsItemDelegate.h"
@@ -43,12 +43,12 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
     Q_OBJECT
 
     public:
-        UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, Phonon::MediaObject* pMedia, QObject * parent = 0);
+        UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, QMediaPlayer* pMedia, QObject * parent = 0);
         virtual ~UBGraphicsMediaItemDelegate();
 
         virtual void positionHandles();
 
-        bool mousePressEvent(QGraphicsSceneMouseEvent *event);
+        bool mousePressEvent(QGraphicsSceneMouseEvent* event);
 
     public slots:
 
@@ -61,13 +61,17 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
 
         void togglePlayPause();
 
-        void mediaStateChanged ( Phonon::State newstate, Phonon::State oldstate );
-
         void updatePlayPauseState();
 
         void totalTimeChanged(qint64 newTotalTime);
 
         void hideToolBar();
+
+        void mediaStatusChanged(QMediaPlayer::MediaStatus status);
+
+        void mediaStateChanged(QMediaPlayer::State state);
+
+        void mediaError(QMediaPlayer::Error error);
 
     protected:
         virtual void buildButtons();
@@ -77,11 +81,11 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
         DelegateButton* mPlayPauseButton;
         DelegateButton* mStopButton;
         DelegateButton* mMuteButton;
-        DelegateMediaControl *mMediaControl;
+        DelegateMediaControl* mMediaControl;
 
-        Phonon::MediaObject* mMedia;
+        QMediaPlayer* mMedia; // mMedia belongs to the associated UBGraphicsMediaItem (mDelegated)
 
-        QTimer *mToolBarShowTimer;
+        QTimer* mToolBarShowTimer;
         int m_iToolBarShowingInterval;
 };
 
