@@ -95,11 +95,15 @@ int main(int argc, char *argv[])
 
     qInstallMessageHandler(ub_message_output);
 
+
+    /*
+     * setGraphicsSystem is obsolete in Qt5, made redundant by the QPA framework.
+     * TODO: check if this works ok, if not, explore how to use QPA framework
 #if defined(Q_OS_LINUX)
     qDebug() << "Setting GraphicsSystem to raster";
     QApplication::setGraphicsSystem("raster");
 #endif
-
+    */
     UBApplication app("OpenBoard", argc, argv);
 
     QStringList args = app.arguments();
