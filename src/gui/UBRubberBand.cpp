@@ -29,6 +29,7 @@
 
 #include <QtGui>
 #include <QStyleFactory>
+#include <QStyle>
 
 #ifdef Q_OS_OSX
 #include <QtGui/QMacStyle>
