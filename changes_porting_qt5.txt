@@ -629,18 +629,61 @@ UBWindowCaptureDelegate_win.h
 qtsingleapplication.cpp
 ------------------------
 
-- replace the old verison by the sources files repository
+- replace the content by the source file repository (CW)
 
 qtsingleapplication.h
 ------------------------
 
-- add the snippet code:
- // Obsolete:
-       void initialize(bool dummy = true)
-           { isRunning(); Q_UNUSED(dummy) }
+- replace the content by the source file repository (CW)
 
 
 
+UBWindowCaptureDelegate_win.cpp
+--------------------------------
+
+
+************************************************
+			TODO
+************************************************
+
+- solve the // mCapturedPixmap = QPixmap::grabWindow(mCurrentWindow); => pb of conversion between HWND and WId.
+
+
+qtlockedfile_win.cpp
+---------------------
+
+- add #if QT_VERSION >= 0x050000
+#define QT_WA(unicode, ansi) unicode
+#endif
+
+qtsingleapplication.cpp
+-------------------------
+
+-  remove the contentfrom source repository(CW).
+
+qtsingleapplication.h
+-------------------------
+
+-  remove the contentfrom source repository(CW).
+
+qtlocalpeer.h
+-------------
+
+- replace the content by the old basis source repository (OpenBoard-Third-party)
+
+qtlocalpeer.cpp
+---------------
+- replace the content by the old basis source repository (OpenBoard-Third-party)
+
+
+UBNetworkAccessManager.cpp
+--------------------------
+- replace //#include <QtGui> by #include <QtWidgets>
+
+
+- replace // introMessage = introMessage.arg(Qt::escape(reply->url().toString())).arg(Qt::escape(reply->url().toString())); by :
+
+    introMessage = introMessage.arg(QString(reply->url().toString())).toHtmlEscaped().arg(QString(reply->url().toString())).toHtmlEscaped();
 
 
 
