@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
 
     //app.initialize(false); // should not be needed anymore
 
-    QObject::connect(&app, SIGNAL(messageReceived(const QString&)), &app, SLOT(handleOpenMessage(const QString&)));
+    QObject::connect(&app, SIGNAL(messageReceived(const QString&, QObject*)), &app, SLOT(handleOpenMessage(const QString&)));
 
     qDebug() << "file name argument" << fileToOpen;
     int result = app.exec(fileToOpen);
