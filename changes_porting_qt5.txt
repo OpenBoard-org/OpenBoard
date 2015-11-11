@@ -686,5 +686,53 @@ UBNetworkAccessManager.cpp
     introMessage = introMessage.arg(QString(reply->url().toString())).toHtmlEscaped().arg(QString(reply->url().toString())).toHtmlEscaped();
 
 
+WBHistory.cpp
+--------------
+- replace //#include <QtGui> by #include <QtWidgets>
+
+- replace reset() by  beginResetModel();
+    m_sourceRowCache.clear();
+    endResetModel();  (Line 1213,1268,)
+
+
+-replace  //reset(); by 
+    beginResetModel();
+    endResetModel();   (Line 999,1006..)
+}
+
+- replace createIndex(row, column, 0); by   (Line 969,1131,1140)
+      createIndex(row, column);
+
+WBHistory.h
+------------
+
+- replace class WBHistoryFilterModel : public QAbstractProxyModel, by 
+class WBHistoryFilterModel : public QAbstractProxyModel, public QAbstractItemModel
+
+
+
+- ?? pb at the level of compiler error: 
+
+
+UBBoardView.cpp
+----------------
+
+************************************************
+			TODO
+************************************************
+
+SOLVE THE ItemAt
+- comment the mouseReleaseEvent method 
+- comment mousePressEvent method
+
+
+
+WBHistory.cpp
+--------------
+
+- comment and remove  //beginResetModel(); and   //endResetModel();  (Line 247)
+- comment and remove  //beginResetModel(); and   //endResetModel();  (Line 837-843)
+
+
 
 
