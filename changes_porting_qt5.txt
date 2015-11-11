@@ -734,5 +734,38 @@ WBHistory.cpp
 - comment and remove  //beginResetModel(); and   //endResetModel();  (Line 837-843)
 
 
+UBApplication.cpp
+------------------
+
+-remove and comment //QApplication::setStyle(new UBStyle()); // Style is owned and deleted by the application.
+
+
+UBTrapFlashController.h
+-----------------------
+
+- replace //#include <QtGui> by #include <QtWidgets>.
+
+UBTrapFlashController.cpp
+-------------------------
+- replace //#ifdef Q_WS_WIN // Defined on Windows. by#ifdef Q_OS_WIN // Defined on Windows.
+
+
+UBPodcastController.cpp
+-------------------------
+
+-replace  QDesktopServices::storageLocation.  (Line 715)
+
+-replace   by QStandardPaths::writableLocation.
+ 
+-replace  repaintRect = repaintRect.unite(mSceneRepaintRectQueue.dequeue()); by   repaintRect = repaintRect.united(mSceneRepaintRectQueue.dequeue());
+
+- replace   QRectF maxRect = rect.intersect(viewportRect); by RectF maxRect = rect.intersected(viewportRect);
+
+- replace  repaintRect = repaintRect.unite(mWidgetRepaintRectQueue.dequeue()); by repaintRect = repaintRect.united(mWidgetRepaintRectQueue.dequeue());
+
+
+
+
+
 
 
