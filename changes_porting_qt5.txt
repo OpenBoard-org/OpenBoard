@@ -837,3 +837,8 @@ UBGraphicsTextItem.cpp
 
 - replace //#include <QtGui> by #include <QtWidgets>.
 
+
+
+
+
+
