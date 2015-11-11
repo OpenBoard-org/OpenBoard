@@ -719,12 +719,14 @@ UBBoardView.cpp
 ----------------
 
 ************************************************
-			TODO
+	TODO  done cf below
 ************************************************
 
 SOLVE THE ItemAt
+
 - comment the mouseReleaseEvent method 
-- comment mousePressEvent method
+- comment the mousePressEvent method
+
 
 
 
@@ -821,4 +823,17 @@ OpenBoard.pro
 - pb:  fatal error LNK1123: échec lors de la conversion en fichier COFF vs 2010 qt 5.2 => add    QMAKE_LFLAGS += /INCREMENTAL:NO
 
 
+
+
+UBBoardView.cpp
+----------------
+
+the ItemAt issue was solved by the last update methods from the repository.
+
+
+UBGraphicsTextItem.cpp
+----------------------
+
+
+- replace //#include <QtGui> by #include <QtWidgets>.
 
