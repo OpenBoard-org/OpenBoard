@@ -211,16 +211,6 @@ void UBGraphicsPolygonItem::paint ( QPainter * painter, const QStyleOptionGraphi
     QGraphicsPolygonItem::paint(painter, option, widget);
 }
 
-QPainterPath UBGraphicsPolygonItem::shape() const
-{
-
-    QPainterPath path;
-    path.addRect(boundingRect());
-
-    return path;
-}
-
-
 UBGraphicsScene* UBGraphicsPolygonItem::scene()
 {
     return qobject_cast<UBGraphicsScene*>(QGraphicsPolygonItem::scene());
