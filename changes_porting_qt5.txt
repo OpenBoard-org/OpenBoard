@@ -374,8 +374,6 @@ UBOEmbedParser.cpp
 
 -replace  toAscii--> toLatin1 qurl.setEncodedUrl(url.toLatin1());  (line 230)
 
--replace 
-
 
 WBSqueezeLabel.h
 -----------------
@@ -393,7 +391,6 @@ UBOEmbedParser.cpp
 -----------------
 
 - replace  //qurl.setEncodedUrl(url.toAscii()); by qurl.setUrl(url.toLatin1(),QUrl::TolerantMode);
-
 
 
 WBChaseWidget.cpp
@@ -778,15 +775,19 @@ main.cpp
 - replace // qt_message_output(type, msg); by   qt_message_output(type,context_m, msg);
 
 
-************************************
-COMPILATION STATUS IN DEBUG STATUS :
-************************************
+***************************
+COMPILATION IN DEBUG MODE :
+***************************
 
 - compile all libraries (freetype.lib quazip.lib,xpdf.lib) with success
 - issue:  error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0'
 
-=> solution: complation in RELEASE MODE
+=> 1st solution: compilation in RELEASE MODE
 
+
+*****************************
+COMPILATION IN RELEASE MODE :
+*****************************
 
 - problem : LINK : fatal error LNK1123: échec lors de la conversion en fichier COFF msvc 2010 qt 5.2
 => solution :
@@ -817,13 +818,16 @@ cf http://stackoverflow.com/questions/10888391/error-link-fatal-error-lnk1123-fa
 into C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\cvtres.exe
 
 
+The compilation works with success except warning message as following :
+
+- UBExportCFF.obj : warning LNK4217: locally defined symbol ??1UBCFFAdaptor@@QAE@XZ (public: __thiscall UBCFFAdaptor::~UBCFFAdaptor(void)) 
+imported in function "public: virtual void __thiscall UBExportCFF::persist(class UBDocumentProxy *)" 
+(?persist@UBExportCFF@@UAEXPAVUBDocumentProxy@@@Z).
+
 
 OpenBoard.pro
 --------------
 - pb:  fatal error LNK1123: échec lors de la conversion en fichier COFF vs 2010 qt 5.2 => add    QMAKE_LFLAGS += /INCREMENTAL:NO
-
-
-
 
 UBBoardView.cpp
 ----------------
@@ -834,8 +838,30 @@ the ItemAt issue was solved by the last update methods from the repository.
 UBGraphicsTextItem.cpp
 ----------------------
 
-
 - replace //#include <QtGui> by #include <QtWidgets>.
+
+***************************
+COMPILATION IN DEBUG MODE :
+***************************
+
+issue:  error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0'
+
+solution : replace the following config libraries by debug_release flag  (quazip.pro,xpdf.pro)
+
+
+freetype.pro
+--------
+- replace CONFIG  += staticlib release  by  CONFIG  += staticlib debug_and_release.
+
+quazip.pro
+----------
+
+- replace CONFIG  += staticlib release  by  CONFIG  += staticlib debug_and_release.
+
+
+xpdf.pro
+--------
+- replace CONFIG  += staticlib release  by  CONFIG  += staticlib debug_and_release.
 
 
 
