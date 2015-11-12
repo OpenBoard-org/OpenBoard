@@ -778,7 +778,7 @@ main.cpp
 - replace // qt_message_output(type, msg); by   qt_message_output(type,context_m, msg);
 
 
-
+************************************
 COMPILATION STATUS IN DEBUG STATUS :
 ************************************
 
