@@ -1,6 +1,7 @@
 			*******************************
 			*	PORTING QT4->QT5      *
-			*	CHANGES               *
+			*	CHANGES   	      *
+            		*    win32 compilaton &exec   *
 			*******************************
 
 
@@ -373,8 +374,6 @@ UBOEmbedParser.cpp
 
 -replace  toAscii--> toLatin1 qurl.setEncodedUrl(url.toLatin1());  (line 230)
 
--replace 
-
 
 WBSqueezeLabel.h
 -----------------
@@ -392,7 +391,6 @@ UBOEmbedParser.cpp
 -----------------
 
 - replace  //qurl.setEncodedUrl(url.toAscii()); by qurl.setUrl(url.toLatin1(),QUrl::TolerantMode);
-
 
 
 WBChaseWidget.cpp
@@ -629,16 +627,241 @@ UBWindowCaptureDelegate_win.h
 qtsingleapplication.cpp
 ------------------------
 
-- replace the old verison by the sources files repository
+- replace the content by the source file repository (CW)
 
 qtsingleapplication.h
 ------------------------
 
-- add the snippet code:
- // Obsolete:
-       void initialize(bool dummy = true)
-           { isRunning(); Q_UNUSED(dummy) }
+- replace the content by the source file repository (CW)
 
+
+
+UBWindowCaptureDelegate_win.cpp
+--------------------------------
+
+
+************************************************
+			TODO
+************************************************
+
+- solve the // mCapturedPixmap = QPixmap::grabWindow(mCurrentWindow); => pb of conversion between HWND and WId.
+
+
+qtlockedfile_win.cpp
+---------------------
+
+- add #if QT_VERSION >= 0x050000
+#define QT_WA(unicode, ansi) unicode
+#endif
+
+qtsingleapplication.cpp
+-------------------------
+
+-  remove the contentfrom source repository(CW).
+
+qtsingleapplication.h
+-------------------------
+
+-  remove the contentfrom source repository(CW).
+
+qtlocalpeer.h
+-------------
+
+- replace the content by the old basis source repository (OpenBoard-Third-party)
+
+qtlocalpeer.cpp
+---------------
+- replace the content by the old basis source repository (OpenBoard-Third-party)
+
+
+UBNetworkAccessManager.cpp
+--------------------------
+- replace //#include <QtGui> by #include <QtWidgets>
+
+
+- replace // introMessage = introMessage.arg(Qt::escape(reply->url().toString())).arg(Qt::escape(reply->url().toString())); by :
+
+    introMessage = introMessage.arg(QString(reply->url().toString())).toHtmlEscaped().arg(QString(reply->url().toString())).toHtmlEscaped();
+
+
+WBHistory.cpp
+--------------
+- replace //#include <QtGui> by #include <QtWidgets>
+
+- replace reset() by  beginResetModel();
+    m_sourceRowCache.clear();
+    endResetModel();  (Line 1213,1268,)
+
+
+-replace  //reset(); by 
+    beginResetModel();
+    endResetModel();   (Line 999,1006..)
+}
+
+- replace createIndex(row, column, 0); by   (Line 969,1131,1140)
+      createIndex(row, column);
+
+WBHistory.h
+------------
+
+- replace class WBHistoryFilterModel : public QAbstractProxyModel, by 
+class WBHistoryFilterModel : public QAbstractProxyModel, public QAbstractItemModel
+
+
+
+- ?? pb at the level of compiler error: 
+
+
+UBBoardView.cpp
+----------------
+
+************************************************
+	TODO  done cf below
+************************************************
+
+SOLVE THE ItemAt
+
+- comment the mouseReleaseEvent method 
+- comment the mousePressEvent method
+
+
+
+
+WBHistory.cpp
+--------------
+
+- comment and remove  //beginResetModel(); and   //endResetModel();  (Line 247)
+- comment and remove  //beginResetModel(); and   //endResetModel();  (Line 837-843)
+
+
+UBApplication.cpp
+------------------
+
+-remove and comment //QApplication::setStyle(new UBStyle()); // Style is owned and deleted by the application.
+
+
+UBTrapFlashController.h
+-----------------------
+
+- replace //#include <QtGui> by #include <QtWidgets>.
+
+UBTrapFlashController.cpp
+-------------------------
+- replace //#ifdef Q_WS_WIN // Defined on Windows. by#ifdef Q_OS_WIN // Defined on Windows.
+
+
+UBPodcastController.cpp
+-------------------------
+
+-replace  QDesktopServices::storageLocation.  (Line 715)
+
+-replace   by QStandardPaths::writableLocation.
+ 
+- replace  repaintRect = repaintRect.unite(mSceneRepaintRectQueue.dequeue()); by   repaintRect = repaintRect.united(mSceneRepaintRectQueue.dequeue());
+
+- replace   QRectF maxRect = rect.intersect(viewportRect); by RectF maxRect = rect.intersected(viewportRect);
+
+- replace  repaintRect = repaintRect.unite(mWidgetRepaintRectQueue.dequeue()); by repaintRect = repaintRect.united(mWidgetRepaintRectQueue.dequeue());
+
+
+
+
+main.cpp
+----------
+
+
+- move   QMessageLogContext context_m; on line 58
+
+- replace // qt_message_output(type, msg); by   qt_message_output(type,context_m, msg);
+
+
+***************************
+COMPILATION IN DEBUG MODE :
+***************************
+
+- compile all libraries (freetype.lib quazip.lib,xpdf.lib) with success
+- issue:  error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0'
+
+=> 1st solution: compilation in RELEASE MODE
+
+
+*****************************
+COMPILATION IN RELEASE MODE :
+*****************************
+
+- problem : LINK : fatal error LNK1123: échec lors de la conversion en fichier COFF msvc 2010 qt 5.2
+=> solution :
+Visual C++ 2010 SP1 Compiler Update for the Windows SDK 7.1
+
+- install the followin tools in your computer quth the msvc 2010 config:
+ cf https://support.microsoft.com/fr-fr/kb/2934068 : 
+
+ 
+ support microsoft : " Erreur se produit lorsque vous installez le Kit de développement logiciel Windows pour Windows 7 et.NET Framework 4 " 
+
+steps :
+------
+1) remove and reinstall Microsoft Visual C++ 2010 SP1 Redistributable Package (x32) : vcredist_x32.exe
+
+2) remove and reinstall Microsoft Visual C++ 2010 SP1 Redistributable Package (x64) : vcredist_x64.exe 
+
+3) install  Microsoft Windows SDK for Windows 7 and .NET Framework 4 (ISO).  
+
+4) reinstall Microsoft Visual Studio 2010 Service Pack 1 (Installer) download the iso from the link https://www.microsoft.com/en-us/download/confirmation.aspx?id=23691
+
+cf link : https://msdn.microsoft.com/fr-fr/library/7dz62kfh.aspx
+
+cf http://stackoverflow.com/questions/10888391/error-link-fatal-error-lnk1123-failure-during-conversion-to-coff-file-inval
+
+=> solution : the tools cvtres.exe was broken  so copy C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\cvtres.exe
+
+into C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\cvtres.exe
+
+
+The compilation works with success except warning message as following :
+
+- UBExportCFF.obj : warning LNK4217: locally defined symbol ??1UBCFFAdaptor@@QAE@XZ (public: __thiscall UBCFFAdaptor::~UBCFFAdaptor(void)) 
+imported in function "public: virtual void __thiscall UBExportCFF::persist(class UBDocumentProxy *)" 
+(?persist@UBExportCFF@@UAEXPAVUBDocumentProxy@@@Z).
+
+
+OpenBoard.pro
+--------------
+- pb:  fatal error LNK1123: échec lors de la conversion en fichier COFF vs 2010 qt 5.2 => add    QMAKE_LFLAGS += /INCREMENTAL:NO
+
+UBBoardView.cpp
+----------------
+
+the ItemAt issue was solved by the last update methods from the repository.
+
+
+UBGraphicsTextItem.cpp
+----------------------
+
+- replace //#include <QtGui> by #include <QtWidgets>.
+
+***************************
+COMPILATION IN DEBUG MODE :
+***************************
+
+issue:  error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0'
+
+solution : replace the following config libraries by debug_release flag  (quazip.pro,xpdf.pro)
+
+
+freetype.pro
+--------
+- replace CONFIG  += staticlib release  by  CONFIG  += staticlib debug_and_release.
+
+quazip.pro
+----------
+
+- replace CONFIG  += staticlib release  by  CONFIG  += staticlib debug_and_release.
+
+
+xpdf.pro
+--------
+- replace CONFIG  += staticlib release  by  CONFIG  += staticlib debug_and_release.
 
 
 
