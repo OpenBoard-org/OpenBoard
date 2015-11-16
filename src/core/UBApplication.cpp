@@ -34,7 +34,7 @@
 #include <QStyleFactory>
 
 #if defined(Q_OS_OSX)
-#include <Carbon/Carbon.h>
+    #include "OBCocoa.h"
 #endif
 
 #include "frameworks/UBPlatformUtils.h"
@@ -90,27 +90,6 @@ bool bIsMinimized = false;
 #endif
 
 QObject* UBApplication::staticMemoryCleaner = 0;
-
-#if defined(Q_OS_OSX)
-static OSStatus ub_appleEventProcessor(const AppleEvent *ae, AppleEvent *event, long handlerRefCon)
-{
-    Q_UNUSED(event);
-    OSType aeID = typeWildCard;
-    OSType aeClass = typeWildCard;
-
-    AEGetAttributePtr(ae, keyEventClassAttr, typeType, 0, &aeClass, sizeof(aeClass), 0);
-    AEGetAttributePtr(ae, keyEventIDAttr, typeType, 0, &aeID, sizeof(aeID), 0);
-
-    if (aeClass == kCoreEventClass && aeID == kAEReopenApplication)
-    {
-        // User clicked on Uniboard in the Dock
-        ((UBApplicationController*)handlerRefCon)->hideDesktop();
-        return noErr;
-    }
-
-    return eventNotHandledErr;
-}
-#endif
 
 
 UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSingleApplication(id, argc, argv)
@@ -368,11 +347,6 @@ int UBApplication::exec(const QString& pFileToImport)
     if (pFileToImport.length() > 0)
         UBApplication::applicationController->importFile(pFileToImport);
 
-#if defined(Q_OS_OSX)
-    static AEEventHandlerUPP ub_proc_ae_handlerUPP = AEEventHandlerUPP(ub_appleEventProcessor);
-    AEInstallEventHandler(kCoreEventClass, kAEReopenApplication, ub_proc_ae_handlerUPP, SRefCon(UBApplication::applicationController), true);
-#endif
-
     if (UBSettings::settings()->appStartMode->get().toInt())
         applicationController->showDesktop();
     else
@@ -390,14 +364,14 @@ void UBApplication::onScreenCountChanged(int newCount)
     mainWindow->actionMultiScreen->setEnabled(displayManager.numScreens() > 1);
 }
 
-#ifdef Q_OS_OSX
 void UBApplication::showMinimized()
 {
+#ifdef Q_OS_OSX
     mainWindow->hide();
     bIsMinimized = true;
+#endif
 }
 
-#endif
 
 void UBApplication::startScript()
 {
@@ -590,11 +564,7 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
     {
         QFileOpenEvent *fileToOpenEvent = static_cast<QFileOpenEvent *>(event);
 
-#if defined(Q_OS_OSX)
-        ProcessSerialNumber psn;
-        GetCurrentProcess(&psn);
-        SetFrontProcess(&psn);
-#endif
+        OBCocoa::setFrontProcess();
 
         applicationController->importFile(fileToOpenEvent->file());
     }

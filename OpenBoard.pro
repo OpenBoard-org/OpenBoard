@@ -128,32 +128,34 @@ win32 {
 
 macx {
    LIBS += -framework Foundation
+   LIBS += -framework Cocoa
+   LIBS += -framework Carbon
    LIBS += -lcrypto
 
-   CONFIG(release, debug|release):CONFIG += x86
+   CONFIG(release, debug|release):CONFIG += x86_64
+   CONFIG(debug, debug|release):CONFIG += x86_64
 
-   # [03-02-2011] We must use the 32bit version for the moment
-   # because the Quicktime components used by this application
-   # are not yet available in 64bits.
-   CONFIG(debug, debug|release):CONFIG += x86
+   # TODO Craig: switch to 64bit
 
-   QMAKE_MAC_SDK = "/Developer/SDKs/MacOSX10.6.sdk"
-   QMAKE_MACOSX_DEPLOYMENT_TARGET = "10.5"
+   QMAKE_MAC_SDK = macosx
+   QMAKE_MACOSX_DEPLOYMENT_TARGET = "10.10"
 
-   VERSION_RC_PATH = "$$BUILD_DIR/version_rc"
+   QMAKE_CXXFLAGS += -Wno-overloaded-virtual
+   #VERSION_RC_PATH = "$$BUILD_DIR/version_rc"
 
+   # No references to breakpad in the code =>is this still used?
    # Embed version into executable for breakpad
-   QMAKE_LFLAGS += -sectcreate \
-       __DATA \
-       __version \
-       $$VERSION_RC_PATH
+   #QMAKE_LFLAGS += -sectcreate \
+   #    __DATA \
+   #    __version \
+   #    $$VERSION_RC_PATH
 
    QMAKE_CXXFLAGS_RELEASE += -gdwarf-2 \
        -mdynamic-no-pic
 
-   QMAKE_CFLAGS += -fopenmp
-   QMAKE_CXXFLAGS += -fopenmp
-   QMAKE_LFLAGS += -fopenmp
+#    QMAKE_CFLAGS += -fopenmp
+ #   QMAKE_CXXFLAGS += -fopenmp
+  #  QMAKE_LFLAGS += -fopenmp
 
    CONTENTS_DIR = "Contents"
    RESOURCES_DIR = "Contents/Resources"
@@ -364,7 +366,7 @@ macx {
    system(mkdir -p $$BUILD_DIR)
    system(printf \""$$OSX_VERSION"\" > $$BUILD_DIR/osx_version)
    system(printf \""$$VERSION"\" > $$BUILD_DIR/version)
-   system(printf "%02x%02x%02x%02x" `printf $$VERSION_RC | cut -d ',' -f 1` `printf $$VERSION_RC | cut -d ',' -f 2` `printf $$VERSION_RC | cut -d ',' -f 3` `printf $$VERSION_RC | cut -d ',' -f 4` | xxd -r -p > "$$VERSION_RC_PATH")
+  # system(printf "%02x%02x%02x%02x" `printf $$VERSION_RC | cut -d ',' -f 1` `printf $$VERSION_RC | cut -d ',' -f 2` `printf $$VERSION_RC | cut -d ',' -f 3` `printf $$VERSION_RC | cut -d ',' -f 4` | xxd -r -p > "$$VERSION_RC_PATH")
 }
 
 linux-g++* {

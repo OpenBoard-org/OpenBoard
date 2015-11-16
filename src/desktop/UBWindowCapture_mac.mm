@@ -26,9 +26,10 @@
 
 #include "UBWindowCapture.h"
 #include "UBDesktopAnnotationController.h"
+#include <QDialog>
 
 #import <Foundation/NSAutoreleasePool.h>
-#import <Carbon/Carbon.h>
+#import <Cocoa/Cocoa.h>
 
 
 UBWindowCapture::UBWindowCapture(UBDesktopAnnotationController *parent) 

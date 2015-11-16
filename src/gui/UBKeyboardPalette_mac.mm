@@ -30,7 +30,8 @@
 #include <stdio.h>
 #include <CoreServices/CoreServices.h>
 #include <ApplicationServices/ApplicationServices.h>
-#include <Carbon/Carbon.h>
+
+#import <Cocoa/Cocoa.h>
 
 #include <QMap>
 #include <QString>
@@ -74,6 +75,8 @@ void UBKeyboardPalette::createCtrlButtons()
 
 void UBKeyboardPalette::checkLayout()
 {
+    /*
+     * REMOVED FOR NOW -- check if is still needed in 10.9/10.10
     TISInputSourceRef selectedLocale = TISCopyCurrentKeyboardInputSource();
 
     CFStringRef sr = (CFStringRef) TISGetInputSourceProperty(selectedLocale,
@@ -96,6 +99,7 @@ void UBKeyboardPalette::checkLayout()
             }
         }
     }
+    */
 }
 
 void UBKeyboardPalette::onActivated(bool)

@@ -36,3 +36,7 @@ SOURCES      += src/core/main.cpp \
     src/core/UBPersistenceWorker.cpp
 
 
+macx {
+    HEADERS += src/core/OBCocoa.h
+    OBJECTIVE_SOURCES += src/core/OBCocoa.mm
+}
