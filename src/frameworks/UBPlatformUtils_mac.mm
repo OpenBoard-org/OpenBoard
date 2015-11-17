@@ -537,11 +537,14 @@ void UBPlatformUtils::SetMacLocaleByIdentifier(const QString& id)
 
     const char * strName = id.toLatin1().data();
 
-    CFStringRef iName = CFStringCreateWithCString(NULL, strName, kCFStringEncodingMacRoman );
+    CFStringRef iName = CFStringCreateWithCString(NULL, strName, kCFStringEncodingISOLatin1 );
+
 
     CFStringRef keys[] = { kTISPropertyInputSourceCategory, kTISPropertyInputSourceID };
     CFStringRef values[] = { kTISCategoryKeyboardInputSource, iName };
     CFDictionaryRef dict = CFDictionaryCreate(NULL, (const void **)keys, (const void **)values, 2, NULL, NULL);
+
+    // get list of current enabled keyboard layouts. dict filters the list
     CFArrayRef kbds = TISCreateInputSourceList(dict, true);
     if (kbds!=NULL)
     {
