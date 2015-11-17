@@ -864,7 +864,45 @@ xpdf.pro
 - replace CONFIG  += staticlib release  by  CONFIG  += staticlib debug_and_release.
 
 
+OpenBoard.pro
+--------------
+
+- insert the qtlockedfile config include($$THIRD_PARTY_PATH/trolltech/singleapplication/qtlockedfile.pri)
+
+freetype.pro
+------------
+
+- replace the old version 2.4.6  by the last release 2.6 => FREETYPE_DIR_WITH_VERSION = freetype-2.6.1
 
 
+Openssl 1.0.2 library
+----------------------
 
+
+- configure & build & install the static version of the library Openssl 1.0.2. with msvc 2010 compiler.
+
+libeay32MT.lib  is compiled with  default /MT run-time option [Multithreaded static]
+
+
+quazip 0.7.1 library
+--------------------
+
+- update the last update release quazip 0.7.1
+=> quazip.pro et quazip.pri
+
+xpdf 3.04 library
+----------------
+
+- Update the last release xpdf 3.04 lib.
+
+
+zlib 1.2.8 library
+------------------
+
+- Build the last static version of the library zlib 1.2.8 with msvc 2010 compiler.
+
+=> Launch cl(command line msvc 2010).
+=> Go the main folder path/zlib 1.2.8.
+=> Enter nmake -f win32/Makefile.msc.
+=> Retrieve the include headers files (zconf.h,zlib.h) and the static library zlib.lib.
 
