@@ -9,6 +9,9 @@
 
 
 
+
+
+
  QtSingleApplication replacement for Qt5 
 ----------------------------------------
 
@@ -872,6 +875,7 @@ freetype.pro
 - replace the old version 2.4.6  by the last release 2.6 => FREETYPE_DIR_WITH_VERSION = freetype-2.6.1
 
 
+
 Openssl 1.0.2 library
 ----------------------
 
@@ -901,5 +905,5 @@ zlib 1.2.8 library
 => Launch cl(command line msvc 2010).
 => Go the main folder path/zlib 1.2.8.
 => Enter nmake -f win32/Makefile.msc.
-=> Retrieve the include headers files (zconf.h,zlib.h) and the static library zlib.lib.
+=> Retrieve and move the include headers files (zconf.h,zlib.h) and the static library zlib.lib.
 
