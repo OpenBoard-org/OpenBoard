@@ -33,6 +33,7 @@
 #include <QWidget>
 
 #import <Foundation/NSAutoreleasePool.h>
+#import <Cocoa/Cocoa.h>
 #import <Carbon/Carbon.h>
 #import <APELite.h>
 
@@ -51,7 +52,7 @@ OSStatus emptySetSystemUIMode (
     return noErr;
 }
 
-void *originalSetSystemUIMode = 0;
+//void *originalSetSystemUIMode = 0;
 
 void UBPlatformUtils::init()
 {
@@ -62,7 +63,7 @@ void UBPlatformUtils::init()
     // http://developer.apple.com/mac/library/documentation/Carbon/Reference/Dock_Manager/Reference/reference.html#//apple_ref/c/func/SetSystemUIMode
     //
 
-    originalSetSystemUIMode = APEPatchCreate((const void *)SetSystemUIMode, (const void *)emptySetSystemUIMode);
+    //originalSetSystemUIMode = APEPatchCreate((const void *)SetSystemUIMode, (const void *)emptySetSystemUIMode);
 
     setDesktopMode(false);
 
@@ -92,9 +93,9 @@ void UBPlatformUtils::init()
 
 
 void UBPlatformUtils::setDesktopMode(bool desktop)
-{
+{ /*
 #ifndef OS_NEWER_THAN_OR_EQUAL_TO_1010
-    OSStatus (*functor)(SystemUIMode, SystemUIOptions) = (OSStatus (*)(SystemUIMode, SystemUIOptions))originalSetSystemUIMode;
+    //OSStatus (*functor)(SystemUIMode, SystemUIOptions) = (OSStatus (*)(SystemUIMode, SystemUIOptions))originalSetSystemUIMode;
 
     if (desktop)
     {
@@ -105,6 +106,7 @@ void UBPlatformUtils::setDesktopMode(bool desktop)
         functor(kUIModeAllHidden, 0);
     }
 #endif
+*/
 }
 
 
@@ -533,13 +535,16 @@ void UBPlatformUtils::SetMacLocaleByIdentifier(const QString& id)
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-    const char * strName = id.toAscii().data();
+    const char * strName = id.toLatin1().data();
 
-    CFStringRef iName = CFStringCreateWithCString(NULL, strName, kCFStringEncodingMacRoman );
+    CFStringRef iName = CFStringCreateWithCString(NULL, strName, kCFStringEncodingISOLatin1 );
+
 
     CFStringRef keys[] = { kTISPropertyInputSourceCategory, kTISPropertyInputSourceID };
     CFStringRef values[] = { kTISCategoryKeyboardInputSource, iName };
     CFDictionaryRef dict = CFDictionaryCreate(NULL, (const void **)keys, (const void **)values, 2, NULL, NULL);
+
+    // get list of current enabled keyboard layouts. dict filters the list
     CFArrayRef kbds = TISCreateInputSourceList(dict, true);
     if (kbds!=NULL)
     {
@@ -551,4 +556,18 @@ void UBPlatformUtils::SetMacLocaleByIdentifier(const QString& id)
         }
     }
     [pool drain];
+}
+
+/**
+ * @brief Activate the current application
+ */
+void UBPlatformUtils::setFrontProcess()
+{
+    NSRunningApplication* app = [NSRunningApplication currentApplication];
+
+    // activate the application, forcing focus on it
+    [app activateWithOptions: NSApplicationActivateIgnoringOtherApps];
+
+    // other option:NSApplicationActivateAllWindows. This won't steal focus from another app, e.g
+    // if the user is doing something else while waiting for OpenBoard to load
 }

@@ -872,7 +872,6 @@ bool UBBoardView::directTabletEvent(QEvent *event)
     tEvent = new QTabletEvent(tEvent->type()
                               , mapFromGlobal(tEvent->pos())
                               , tEvent->globalPos()
-                              , tEvent->hiResGlobalPos()
                               , tEvent->device()
                               , tEvent->pointerType()
                               , tEvent->pressure()
@@ -905,7 +904,7 @@ QWidget *UBBoardView::widgetForTabletEvent(QWidget *w, const QPoint &pos)
 
     QWidget *childAtPos = NULL;
 
-    QList<QObject *> childs = w->childItems();
+    QList<QObject *> childs = w->children();
     foreach(QObject *child, childs)
     {
         QWidget *childWidget = qobject_cast<QWidget *>(child);

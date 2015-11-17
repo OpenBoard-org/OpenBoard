@@ -98,7 +98,7 @@ const QPixmap* UBThumbnailAdaptor::get(UBDocumentProxy* proxy, int pageIndex)
 #ifdef Q_OS_LINUX
         pix->load(fileName, 0, Qt::AutoColor);
 #else
-        pix->load(fileName, 0, Qt::AutoColor, false);
+        pix->load(fileName, 0, Qt::AutoColor);
 #endif
     }
     return pix;

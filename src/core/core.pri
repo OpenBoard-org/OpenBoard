@@ -34,5 +34,3 @@ SOURCES      += src/core/main.cpp \
                 src/core/UBOpenSankoreImporter.cpp \
                 src/core/UBTextTools.cpp \
     src/core/UBPersistenceWorker.cpp
-
-
