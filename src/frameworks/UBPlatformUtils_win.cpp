@@ -424,3 +424,7 @@ QString UBPlatformUtils::urlFromClipboard()
     //  Not implemented yet
     return qsRet;
 }
+
+void UBPlatformUtils::setFrontProcess()
+{
+}

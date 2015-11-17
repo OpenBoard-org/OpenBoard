@@ -557,3 +557,17 @@ void UBPlatformUtils::SetMacLocaleByIdentifier(const QString& id)
     }
     [pool drain];
 }
+
+/**
+ * @brief Activate the current application
+ */
+void UBPlatformUtils::setFrontProcess()
+{
+    NSRunningApplication* app = [NSRunningApplication currentApplication];
+
+    // activate the application, forcing focus on it
+    [app activateWithOptions: NSApplicationActivateIgnoringOtherApps];
+
+    // other option:NSApplicationActivateAllWindows. This won't steal focus from another app, e.g
+    // if the user is doing something else while waiting for OpenBoard to load
+}

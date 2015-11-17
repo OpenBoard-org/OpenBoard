@@ -203,6 +203,7 @@ public:
         static UBKeyboardLocale** getKeyboardLayouts(int& nCount);
         static QString urlFromClipboard();
         static QStringList availableTranslations();
+        static void setFrontProcess();
 
 #ifdef Q_OS_OSX
         static void SetMacLocaleByIdentifier(const QString& id);

@@ -33,10 +33,6 @@
 #include <QFontDatabase>
 #include <QStyleFactory>
 
-#if defined(Q_OS_OSX)
-    #include "OBCocoa.h"
-#endif
-
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBStringUtils.h"
@@ -564,7 +560,7 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
     {
         QFileOpenEvent *fileToOpenEvent = static_cast<QFileOpenEvent *>(event);
 
-        OBCocoa::setFrontProcess();
+        UBPlatformUtils::setFrontProcess();
 
         applicationController->importFile(fileToOpenEvent->file());
     }
