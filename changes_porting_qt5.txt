@@ -9,9 +9,6 @@
 
 
 
-
-
-
  QtSingleApplication replacement for Qt5 
 ----------------------------------------
 
