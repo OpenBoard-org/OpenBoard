@@ -76,7 +76,6 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         //mMediaObject->setTickInterval(50);
         mMediaObject->setPosition(50);
 
-
         //mVideoWidget = new Phonon::VideoWidget(); // owned and destructed by the scene ...
         mVideoWidget = new QVideoWidget(); // owned and destructed by the scene ...
 
@@ -87,9 +86,15 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
             mVideoWidget->resize(320,240);
         }
 
-        mVideoWidget->setMinimumSize(140,26);
+       //mVideoWidget->setMinimumSize(140,26);
+        mVideoWidget->setMinimumSize(320,240);
 
         haveLinkedImage = true;
+
+
+        // DEBUGGING VIDEO
+        //*****************
+        qDebug() << "UBGraphicsMediaItem.cpp:" << mVideoWidget << "setMinimumSize(140,26)" ;
     }
     else if (mediaPath.toLower().contains("audios"))
     {
