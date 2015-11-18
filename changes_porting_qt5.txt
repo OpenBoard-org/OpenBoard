@@ -874,11 +874,8 @@ freetype.pro
 
 - replace the old version 2.4.6  by the last release 2.6 => FREETYPE_DIR_WITH_VERSION = freetype-2.6.1
 
-
-
 Openssl 1.0.2 library
 ----------------------
-
 
 - configure & build & install the static version of the library Openssl 1.0.2. with msvc 2010 compiler.
 
@@ -907,3 +904,63 @@ zlib 1.2.8 library
 => Enter nmake -f win32/Makefile.msc.
 => Retrieve and move the include headers files (zconf.h,zlib.h) and the static library zlib.lib.
 
+
+UBWindowCaptureDelegate_win.cpp
+-------------------------------
+- replace mCapturedPixmap = QPixmap::grabWindow(mCurrentWindow); by mCapturedPixmap = QPixmap::grabWindow((WId)mCurrentWindow);
+
+
+UBGraphicsCurtainItemDelegate.cpp
+------------------------------------
+
+- replace //#include <QtGui> by #include <QtWidgets>.
+
+UBToolsManager.h
+------------------
+
+- replace //#include <QtGui> by #include <QtWidgets>.
+
+UBGraphicsCompass.h
+-------------------
+
+- replace //#include <QtGui> by #include <QtWidgets>.
+
+UBGraphicsCurtainItem.h
+------------------------
+
+- replace //#include <QtGui> by #include <QtWidgets>.
+
+UBGraphicsCurtainItemDelegate.h
+-------------------------------
+
+- replace //#include <QtGui> by #include <QtWidgets>.
+
+
+UBGraphicsRuler.h
+----------------
+
+- replace //#include <QtGui> by #include <QtWidgets>.
+
+
+UBGraphicsTriangle.h
+--------------------
+- replace //#include <QtGui> by #include <QtWidgets>.
+
+
+UBGraphicsCurtainItem.cpp
+--------------------------
+
+- Replace //#include <QtGui> by #include <QtWidgets>.
+
+
+
+***************************
+COMPILATION IN DEBUG MODE :
+***************************
+
+The Openboard application crashes after a checkUpdate ("http://get.openboard.org/update.json")
+=> the url do not exists.
+
+
+UBGraphicsDelegateFrame.cpp
+------------------------------
