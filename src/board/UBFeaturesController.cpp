@@ -346,6 +346,8 @@ UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
     scanFS();
 
     featuresModel = new UBFeaturesModel(featuresList, this);
+    //featuresModel->setSupportedDragActions(Qt::CopyAction | Qt::MoveAction);
+    //featuresModel->setSupportedDragActions(Qt::CopyAction | Qt::MoveAction);
 
     featuresProxyModel = new UBFeaturesProxyModel(this);
     featuresProxyModel->setFilterFixedString(rootPath);
@@ -448,7 +450,7 @@ void UBFeaturesController::fileSystemScan(const QUrl & currentPath, const QStrin
 
         if ( fullFileName.contains(".thumbnail."))
             continue;
-
+ 
         UBFeature testFeature(currVirtualPath + "/" + fileName, icon, fileName, QUrl::fromLocalFile(fullFileName), featureType);
 
         featuresList->append(testFeature);
@@ -620,7 +622,8 @@ void UBFeaturesController::removeFromFavorite( const QUrl &path, bool deleteManu
 QString UBFeaturesController::fileNameFromUrl( const QUrl &url )
 {
     QString fileName = url.toString();
-    if ( fileName.contains( "uniboardTool://" ) )
+    //if ( fileName.contains( "uniboardTool://"))
+    if ( fileName.contains( "OpenboardTool://"))
         return fileName;
     return url.toLocalFile();
 }
@@ -630,7 +633,8 @@ UBFeatureElementType UBFeaturesController::fileTypeFromUrl(const QString &path)
 {
     QFileInfo fileInfo(path);
 
-    if ( path.contains("uniboardTool://"))
+    //if ( path.contains("uniboardTool://"))
+    if ( path.contains("OpenboardTool://"))
         return FEATURE_INTERNAL;
 
     if (!fileInfo.exists()) {
@@ -749,17 +753,17 @@ void UBFeaturesController::importImage( const QImage &image, const UBFeature &de
         QDateTime now = QDateTime::currentDateTime();
         static int imageCounter = 0;
         mFileName  = tr("ImportedImage") + "-" + now.toString("dd-MM-yyyy hh-mm-ss");
-
+        
         filePath = dest.getFullPath().toLocalFile() + "/" + mFileName;
 
         if (QFile::exists(filePath+".png"))
             mFileName += QString("-[%1]").arg(++imageCounter);
         else
             imageCounter = 0;
-
+        
         mFileName += ".png";
     }
-
+    
 
     if ( !destination.getFullVirtualPath().startsWith( picturesElement.getFullVirtualPath(), Qt::CaseInsensitive ) )
     {
@@ -860,7 +864,7 @@ void UBFeaturesController::addDownloadedFile(const QUrl &sourceUrl, const QByteA
 
     QString fileName;
     QString filePath;
-
+    
     //Audio item
     if(dest == picturesElement) {
 
@@ -912,7 +916,7 @@ UBFeature UBFeaturesController::moveItemToFolder( const QUrl &url, const UBFeatu
 
     UBFeature dest = destination;
 
-    if ( destination != trashElement &&
+    if ( destination != trashElement && 
         !destination.getFullVirtualPath().startsWith( possibleDest.getFullVirtualPath(), Qt::CaseInsensitive ) )
     {
         dest = possibleDest;
@@ -929,9 +933,9 @@ UBFeature UBFeaturesController::moveItemToFolder( const QUrl &url, const UBFeatu
     }
 
     QImage thumb = getIcon( newFullPath );
-
+    
     UBFeatureElementType type = FEATURE_ITEM;
-    if ( UBFileSystemUtils::mimeTypeFromFileName( newFullPath ).contains("application") )
+    if ( UBFileSystemUtils::mimeTypeFromFileName( newFullPath ).contains("application") ) 
         type = FEATURE_INTERACTIVE;
     UBFeature newElement( destVirtualPath + "/" + name, thumb, name, QUrl::fromLocalFile( newFullPath ), type );
     return newElement;
@@ -1041,8 +1045,11 @@ void UBFeaturesController::moveExternalData(const QUrl &url, const UBFeature &de
 
     UBFeature dest = destination;
 
-    if ( destination != trashElement && destination != UBFeature())
+    if ( destination != trashElement && destination != UBFeature()
+       /*&& !destination.getFullVirtualPath().startsWith( possibleDest.getFullVirtualPath(), Qt::CaseInsensitive )*/ )
+    {
         dest = possibleDest;
+    }
 
     UBFeatureElementType type = fileTypeFromUrl(sourcePath);
 
