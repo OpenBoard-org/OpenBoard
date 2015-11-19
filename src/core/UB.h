@@ -28,8 +28,9 @@
 #ifndef UB_H_
 #define UB_H_
 
-#include <QtGui>
-#include <QGraphicsItem>
+//#include <QtGui>
+#include <QtWidgets>
+
 
 #define UB_MAX_ZOOM 9
 
@@ -45,7 +46,8 @@ struct UBMimeType
         Audio,
         Flash,
         PDF,
-        UniboardTool,
+        //UniboardTool,
+        OpenboardTool,
         Group,
         UNKNOWN
     };
@@ -144,25 +146,25 @@ struct UBGraphicsItemType
 {
     enum Enum
     {
-        PolygonItemType = QGraphicsItem::UserType + 1, //65537
+        PolygonItemType = QGraphicsItem::UserType + 1,
         PixmapItemType,
         SvgItemType,
-        DelegateButtonType, //65540
+        DelegateButtonType,
         MediaItemType,
         PDFItemType,
         TextItemType,
         CurtainItemType,
-        RulerItemType,   //65545
+        RulerItemType,
         CompassItemType,
         ProtractorItemType,
         StrokeItemType,
         TriangleItemType,
-        MagnifierItemType,  //65550
+        MagnifierItemType,
         cacheItemType,
         groupContainerType,
         ToolWidgetItemType,
         GraphicsWidgetItemType,
-        UserTypesCount, //65555
+        UserTypesCount,
         SelectionFrameType// this line must be the last line in this enum because it is types counter.
     };
 };
