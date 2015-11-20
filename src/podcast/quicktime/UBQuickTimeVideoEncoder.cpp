@@ -130,6 +130,14 @@ void UBQuickTimeVideoEncoder::newPixmap(const QImage& pImage, long timestamp)
     }
 }
 
+/**
+ * \brief Encode QImage into a video frame and add it to the UBQuickTimeFile's queue.
+ *
+ * This method retrieves the raw image from the supplied QImage, and uses memcpy to
+ * dump it into a CVPixelBuffer, obtained through the UBQuickTimeFile member. The
+ * pixel buffer, along with the timestamp, constitute a video frame which is added
+ * to the member UBQuickTimeFile's queue.
+ */
 void UBQuickTimeVideoEncoder::encodeFrame(const QImage& pImage, long timestamp)
 {
     Q_ASSERT(pImage.format() == QImage::QImage::Format_RGB32);  // <=> CVPixelBuffers / k32BGRAPixelFormat
@@ -157,7 +165,7 @@ void UBQuickTimeVideoEncoder::encodeFrame(const QImage& pImage, long timestamp)
 
     const uchar* imageBuffer = pImage.bits();
 
-    memcpy((void*) pixelBufferAddress, imageBuffer, pImage.numBytes());
+    memcpy((void*) pixelBufferAddress, imageBuffer, pImage.byteCount());
 
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
 

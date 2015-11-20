@@ -30,11 +30,28 @@
 
 #include <QtCore>
 
-#include <ApplicationServices/ApplicationServices.h>
-#include <QuickTime/QuickTime.h>
-#include <AudioToolbox/AudioToolbox.h>
+#include <CoreVideo/CoreVideo.h>
 
 #include "UBAudioQueueRecorder.h"
+
+
+
+// Trick to get around the fact that the C++ compiler doesn't
+// like Objective C code.
+
+#ifdef __OBJC__ // defined by the Objective C compiler
+    @class AVAssetWriter;
+    @class AVAssetWriterInput;
+    @class AVAssetWriterInputPixelBufferAdaptor;
+
+    typedef AVAssetWriter* AssetWriterPTR;
+    typedef AVAssetWriterInput* AssetWriterInputPTR;
+    typedef AVAssetWriterInputPixelBufferAdaptor* AssetWriterInputAdaptorPTR;
+#else
+    typedef void* AssetWriterPTR;
+    typedef void* AssetWriterInputPTR;
+    typedef void* AssetWriterInputAdaptorPTR;
+#endif
 
 class UBQuickTimeFile : public QThread
 {
@@ -52,15 +69,11 @@ class UBQuickTimeFile : public QThread
 
         CVPixelBufferRef newPixelBuffer();
 
-        bool isCompressionSessionRunning()
-        {
-            return mCompressionSessionRunning;
-        }
+        bool isCompressionSessionRunning() { return mCompressionSessionRunning; }
 
-        QString lastErrorMessage() const
-        {
-            return mLastErrorMessage;
-        }
+        QString lastErrorMessage() const { return mLastErrorMessage; }
+
+        void endSession();
 
         struct VideoFrame
         {
@@ -79,47 +92,19 @@ class UBQuickTimeFile : public QThread
     protected:
         void run();
 
-    private slots:
-
-        void appendAudioBuffer(void* pBuffer, long pLength, int inNumberPacketDescriptions
-                        , const AudioStreamPacketDescription* inPacketDescs);
 
     private:
 
-        static OSStatus addEncodedFrameToMovie(void *encodedFrameOutputRefCon,
-                                                 ICMCompressionSessionRef session,
-                                                 OSStatus err,
-                                                 ICMEncodedFrameRef encodedFrame,
-                                                 void *reserved);
+        bool beginSession();
 
         void appendVideoFrame(CVPixelBufferRef pixelBuffer, long msTimeStamp);
-
-        void addEncodedFrame(ICMEncodedFrameRef encodedFrame, OSStatus err);
-
-        bool createCompressionSession();
-        bool closeCompressionSession();
-        bool createMovie();
-
-        bool createVideoMedia();
-        bool createAudioMedia();
 
         void setLastErrorMessage(const QString& error);
 
         bool flushPendingFrames();
 
-        ICMCompressionSessionRef mVideoCompressionSession;
-
-        Media mVideoMedia;
-        Media mSoundMedia;
-        Track mVideoOutputTrack;
-        Track mSoundOutputTrack;
-
         volatile CVPixelBufferPoolRef mCVPixelBufferPool;
 
-        SoundDescriptionHandle mSoundDescription;
-
-        Movie mOutputMovie;
-        DataHandler mOutputMovieDataHandler;
 
         int mFramesPerSecond;
         QSize mFrameSize;
@@ -130,17 +115,17 @@ class UBQuickTimeFile : public QThread
 
         QString mLastErrorMessage;
 
-        AudioStreamBasicDescription mAudioDataFormat;
+        QString mSpatialQuality;
 
-        QPointer<UBAudioQueueRecorder> mWaveRecorder;
-
-        CodecQ mSpatialQuality;
-
-        volatile bool mSouldStopCompression;
+        volatile bool mShouldStopCompression;
         volatile bool mCompressionSessionRunning;
 
         QString mAudioRecordingDeviceName;
         volatile int mPendingFrames;
+
+        AssetWriterPTR mVideoWriter;
+        AssetWriterInputPTR mVideoWriterInput;
+        AssetWriterInputAdaptorPTR mAdaptor;
 };
 
 #endif /* UBQUICKTIMEFILE_H_ */
