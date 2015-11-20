@@ -533,29 +533,35 @@ QString UBPlatformUtils::urlFromClipboard()
 
 void UBPlatformUtils::SetMacLocaleByIdentifier(const QString& id)
 {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    @autoreleasepool {
+        // convert id from QString to CFString
+        // TODO: clean this up
+        const QByteArray utf8 = id.toUtf8();
+        const char* cString = utf8.constData();
+        NSString * ns = [[NSString alloc] initWithUTF8String:cString];
 
-    const char * strName = id.toLatin1().data();
-
-    CFStringRef iName = CFStringCreateWithCString(NULL, strName, kCFStringEncodingISOLatin1 );
+        CFStringRef iName = (__bridge CFStringRef)ns;
 
 
-    CFStringRef keys[] = { kTISPropertyInputSourceCategory, kTISPropertyInputSourceID };
-    CFStringRef values[] = { kTISCategoryKeyboardInputSource, iName };
-    CFDictionaryRef dict = CFDictionaryCreate(NULL, (const void **)keys, (const void **)values, 2, NULL, NULL);
 
-    // get list of current enabled keyboard layouts. dict filters the list
-    CFArrayRef kbds = TISCreateInputSourceList(dict, true);
-    if (kbds!=NULL)
-    {
-        if (CFArrayGetCount(kbds)!=0)
-        {
+        CFStringRef keys[] = { kTISPropertyInputSourceID };
+        CFStringRef values[] = { iName };
+        CFDictionaryRef dict = CFDictionaryCreate(NULL, (const void **)keys, (const void **)values, 1, NULL, NULL);
+
+        // get list of current enabled keyboard layouts. dict filters the list
+        // false specifies that we search only through the active input sources
+        CFArrayRef kbds = TISCreateInputSourceList(dict, false);
+
+        if (kbds && CFArrayGetCount(kbds) == 0)
+            // if not found in the active sources, we search again through all sources installed
+            kbds = TISCreateInputSourceList(dict, true);
+
+        if (kbds && CFArrayGetCount(kbds)!=0) {
             TISInputSourceRef klRef =  (TISInputSourceRef)CFArrayGetValueAtIndex(kbds, 0);
             if (klRef!=NULL)
                 TISSelectInputSource(klRef);
         }
     }
-    [pool drain];
 }
 
 /**
