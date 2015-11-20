@@ -28,8 +28,8 @@
 #ifndef UBAPPLICATIONCONTROLLER_H_
 #define UBAPPLICATIONCONTROLLER_H_
 
-#include <QtGui>
-
+//#include <QtGui>
+#include <QtWidgets>
 
 class UBBoardView;
 class UBDocumentProxy;
