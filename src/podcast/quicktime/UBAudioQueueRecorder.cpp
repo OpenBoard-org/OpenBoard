@@ -151,10 +151,10 @@ QString UBAudioQueueRecorder::deviceUIDFromDeviceID(AudioDeviceID id)
     {
         char *cname = new char[1024];
 
-        CFStringGetCString (name, cname, 1024, kCFStringEncodingASCII);
+        CFStringGetCString (name, cname, 1024, kCFStringEncodingISOLatin1);
         int length = CFStringGetLength (name);
 
-        uid = QString::fromAscii(cname, length);
+        uid = QString::fromLatin1(cname, length);
 
         delete cname;
 

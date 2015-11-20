@@ -130,12 +130,12 @@ macx {
    LIBS += -framework Foundation
    LIBS += -framework Cocoa
    LIBS += -framework Carbon
+   LIBS += -framework AVFoundation
+   LIBS += -framework CoreMedia
    LIBS += -lcrypto
 
    CONFIG(release, debug|release):CONFIG += x86_64
    CONFIG(debug, debug|release):CONFIG += x86_64
-
-   # TODO Craig: switch to 64bit
 
    QMAKE_MAC_SDK = macosx
    QMAKE_MACOSX_DEPLOYMENT_TARGET = "10.10"
