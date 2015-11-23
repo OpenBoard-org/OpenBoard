@@ -252,7 +252,7 @@ void UBGraphicsMediaItemDelegate::togglePlayPause()
             media->play();
         }
 
-        else if (media->error())
+        if (media->error())
             qDebug() << "Error appeared." << media->errorString();
 
     }
