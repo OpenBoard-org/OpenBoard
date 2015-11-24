@@ -204,6 +204,7 @@ public:
         static QString urlFromClipboard();
         static QStringList availableTranslations();
         static void setFrontProcess();
+        static void showFullScreen(QWidget * pWidget);
 
 #ifdef Q_OS_OSX
         static void SetMacLocaleByIdentifier(const QString& id);

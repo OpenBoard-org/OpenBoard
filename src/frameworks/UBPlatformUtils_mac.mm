@@ -65,7 +65,7 @@ void UBPlatformUtils::init()
 
     //originalSetSystemUIMode = APEPatchCreate((const void *)SetSystemUIMode, (const void *)emptySetSystemUIMode);
 
-    setDesktopMode(false);
+    //setDesktopMode(false);
 
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
@@ -93,20 +93,24 @@ void UBPlatformUtils::init()
 
 
 void UBPlatformUtils::setDesktopMode(bool desktop)
-{ /*
-#ifndef OS_NEWER_THAN_OR_EQUAL_TO_1010
-    //OSStatus (*functor)(SystemUIMode, SystemUIOptions) = (OSStatus (*)(SystemUIMode, SystemUIOptions))originalSetSystemUIMode;
+{
 
-    if (desktop)
-    {
-        functor(kUIModeNormal, 0);
+    //qDebug() << "setDesktopMode called. desktop = " << desktop;
+
+    @try {
+        // temporarily disabled due to bug: when switching to desktop mode (and calling this),
+        // openboard switches right back to the board mode. clicking again on desktop mode works.
+        /*if (desktop) {
+            [NSApp setPresentationOptions:NSApplicationPresentationAutoHideMenuBar | NSApplicationPresentationAutoHideDock];
+        }
+        else*/
+            [NSApp setPresentationOptions:NSApplicationPresentationHideMenuBar | NSApplicationPresentationHideDock];
     }
-    else
-    {
-        functor(kUIModeAllHidden, 0);
+
+    @catch(NSException * exception) {
+        qDebug() << "Error setting presentation options";
     }
-#endif
-*/
+
 }
 
 
@@ -574,6 +578,23 @@ void UBPlatformUtils::setFrontProcess()
     // activate the application, forcing focus on it
     [app activateWithOptions: NSApplicationActivateIgnoringOtherApps];
 
-    // other option:NSApplicationActivateAllWindows. This won't steal focus from another app, e.g
+    // other option: NSApplicationActivateAllWindows. This won't steal focus from another app, e.g
     // if the user is doing something else while waiting for OpenBoard to load
 }
+
+
+/**
+ * @brief Full-screen a QWidget. Specific behaviour is platform-dependent.
+ * @param pWidget the QWidget to maximize
+ */
+void UBPlatformUtils::showFullScreen(QWidget *pWidget)
+{
+    pWidget->showMaximized();
+
+    /* On OS X, we want to hide the Dock and menu bar (aka "kiosk mode"). Qt's default behaviour
+     * when full-screening a QWidget is to set the dock and menu bar to auto-hide.
+     * Since it is impossible to later set different presentation options (i.e Hide dock & menu bar)
+     * to NSApplication, we have to avoid calling QWidget::showFullScreen on OSX.
+    */
+}
+

@@ -332,7 +332,7 @@ void UBDesktopAnnotationController::showWindow()
     UBDrawingController::drawingController()->setStylusTool(mDesktopStylusTool);
 
 #ifndef Q_OS_LINUX
-    mTransparentDrawingView->showFullScreen();
+    UBPlatformUtils::showFullScreen(mTransparentDrawingView);
 #else
     // this is necessary to avoid unity to hide the panels
     mTransparentDrawingView->show();

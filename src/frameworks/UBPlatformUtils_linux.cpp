@@ -429,7 +429,14 @@ QString UBPlatformUtils::urlFromClipboard()
     return qsRet;
 }
 
-
 void UBPlatformUtils::setFrontProcess()
 {
+    // not used in Linux
 }
+
+
+void UBPlatformUtils::showFullScreen(QWidget *pWidget)
+{
+    pWidget->showFullScreen();
+}
+
