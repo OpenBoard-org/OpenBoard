@@ -28,12 +28,19 @@
 #ifndef UBGRAPHICSPROTRACTOR_H_
 #define UBGRAPHICSPROTRACTOR_H_
 
-#include <QtGui>
+//#include <QtGui>
+#include <QtWidgets>
+#include <QtWidgets/QGraphicsItem>
+#include <QtWidgets/QGraphicsView>
+
 #include <QtSvg>
 
 #include "core/UB.h"
 #include "tools/UBAbstractDrawRuler.h"
 #include "domain/UBItem.h"
+
+#include "frameworks/UBGeometryUtils.h"
+
 
 class UBGraphicsScene;
 
@@ -74,7 +81,8 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
         virtual void    hoverMoveEvent (QGraphicsSceneHoverEvent *event);
         virtual QPainterPath shape() const;
         QRectF boundingRect() const;
-        void paintGraduations(QPainter *painter);
+        void paintGraduations(QPainter *painter);        
+
 
     private:
         // Helpers
@@ -88,6 +96,7 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
         QSizeF buttonSizeReference () const{return QSizeF(radius() / 10, mCloseSvgItem->boundingRect().height() * radius()/(10 * mCloseSvgItem->boundingRect().width()));}
         QSizeF markerSizeReference () const{return QSizeF(radius() / 10, mMarkerSvgItem->boundingRect().height() * radius()/(10 * mMarkerSvgItem->boundingRect().width()));}
         QRectF    resetButtonRect () const;
+
         QRectF    closeButtonRect () const;
         QRectF    resizeButtonRect () const;
         QRectF    rotateButtonRect () const{return QRectF(buttonSizeReference().width() * 5.5, -buttonSizeReference().width() * 5, buttonSizeReference().width(), buttonSizeReference().width());}
