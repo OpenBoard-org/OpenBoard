@@ -50,12 +50,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     update();
 
 
-    //mMediaObject = new Phonon::MediaObject(this);
     mMediaObject = new QMediaPlayer(this);
-
-    //playlist = new QMediaPlaylist;
-    //mMediaObject->setPlaylist(playlist);
-
 
     QString mediaPath = pMediaFileUrl.toString();
     if ("" == mediaPath)
@@ -65,50 +60,27 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     {
         mMediaType = mediaType_Video;
 
-        //mAudioOutput = new Phonon::AudioOutput(Phonon::VideoCategory, this);
-        QAudioFormat format;  // to define
-        format.setByteOrder(QAudioFormat::LittleEndian);
-        format.setSampleType(QAudioFormat::UnSignedInt);
+        mMediaObject->setNotifyInterval(50);
 
-        //mAudioOutput = new QAudioOutput(format, this);
-        mAudioOutput = new QMediaPlayer;
-
-        //mMediaObject->setTickInterval(50);
-        mMediaObject->setPosition(50);
-
-        //mVideoWidget = new Phonon::VideoWidget(); // owned and destructed by the scene ...
         mVideoWidget = new QVideoWidget(); // owned and destructed by the scene ...
 
-        //Phonon::createPath(mMediaObject, mVideoWidget);
         mMediaObject->setVideoOutput(mVideoWidget);
 
         if(mVideoWidget->sizeHint() == QSize(1,1)){
             mVideoWidget->resize(320,240);
         }
 
-       //mVideoWidget->setMinimumSize(140,26);
         mVideoWidget->setMinimumSize(320,240);
 
         haveLinkedImage = true;
 
 
-        // DEBUGGING VIDEO
-        //*****************
-        qDebug() << "UBGraphicsMediaItem.cpp:" << mVideoWidget << "setMinimumSize(140,26)" ;
     }
     else if (mediaPath.toLower().contains("audios"))
     {
         mMediaType = mediaType_Audio;
 
-        QAudioFormat format;
-        format.setByteOrder(QAudioFormat::LittleEndian);
-        format.setSampleType(QAudioFormat::UnSignedInt);
-
-       // mAudioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
-        //mAudioOutput = new QMediaPlayer(format, this);
-        mAudioOutput = new QMediaPlayer;
-
-        //mMediaObject->setTickInterval(1000);
+        mMediaObject->setNotifyInterval(1000);
         mAudioWidget = new QWidget();
         mAudioWidget->resize(320,26);
         mAudioWidget->setMinimumSize(150,26);
@@ -116,10 +88,6 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         haveLinkedImage = false;
     }
 
-    //Phonon::createPath(mMediaObject, mAudioOutput);
-    //mSource = Phonon::MediaSource(pMediaFileUrl);
-
-    //mMediaObject->setCurrentSource(mSource);
      mMediaObject->setMedia(pMediaFileUrl);
 
 
@@ -147,7 +115,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 
     connect(Delegate(), SIGNAL(showOnDisplayChanged(bool)), this, SLOT(showOnDisplayChanged(bool)));
-    connect(mMediaObject, SIGNAL(hasVideoChanged(bool)), this, SLOT(hasMediaChanged(bool)));
+    connect(mMediaObject, SIGNAL(videoAvailableChanged(bool)), this, SLOT(hasMediaChanged(bool)));
 }
 
 
@@ -192,11 +160,7 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
                 absoluteMediaFilename = mMediaFileUrl.toLocalFile();
 
             if (absoluteMediaFilename.length() > 0)
-                //mMediaObject->setCurrentSource(QMediaSource(absoluteMediaFilename));
                   mMediaObject->setMedia(QUrl::fromLocalFile(absoluteMediaFilename));
-
-
-
 
         }
     }
@@ -230,7 +194,7 @@ void UBGraphicsMediaItem::toggleMute()
 void UBGraphicsMediaItem::setMute(bool bMute)
 {
     mMuted = bMute;
-    mAudioOutput->setMuted(mMuted);
+    mMediaObject->setMuted(mMuted);
     mMutedByUserAction = mMuted;
     sIsMutedByDefault = mMuted;
 }
@@ -240,7 +204,6 @@ void UBGraphicsMediaItem::hasMediaChanged(bool hasMedia)
 {
     if(hasMedia && mMediaObject->isSeekable())
     {
-        //mMediaObject->seek(mInitialPos);
         mMediaObject->setPosition(mInitialPos);
 
         UBGraphicsMediaItemDelegate *med = dynamic_cast<UBGraphicsMediaItemDelegate *>(Delegate());
@@ -268,12 +231,12 @@ void UBGraphicsMediaItem::showOnDisplayChanged(bool shown)
     if (!shown)
     {
         mMuted = true;
-        mAudioOutput->setMuted(mMuted);
+        mMediaObject->setMuted(mMuted);
     }
     else if (!mMutedByUserAction)
     {
         mMuted = false;
-        mAudioOutput->setMuted(mMuted);
+        mMediaObject->setMuted(mMuted);
     }
 }
 
@@ -357,7 +320,6 @@ void UBGraphicsMediaItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             QPointF eventPos = mapFromScene( event->scenePos());
 
             QPointF translation = eventPos - mouseMovePos;
-            //translate(translation.x(), translation.y());
             setPos(translation.x(), translation.y());
         }
 

@@ -158,7 +158,7 @@ void UBDisplayManager::setDisplayWidget(QWidget* pDisplayWidget)
         mDisplayWidget = pDisplayWidget;
         mDisplayWidget->setGeometry(mDesktop->screenGeometry(mDisplayScreenIndex));
         if (UBSettings::settings()->appUseMultiscreen->get().toBool())
-            mDisplayWidget->showFullScreen();
+            UBPlatformUtils::showFullScreen(mDisplayWidget);
     }
 }
 
@@ -209,14 +209,14 @@ void UBDisplayManager::positionScreens()
     {
         mControlWidget->hide();
         mControlWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
-        mControlWidget->showFullScreen();
+        UBPlatformUtils::showFullScreen(mControlWidget);
     }
 
     if (mDisplayWidget && mDisplayScreenIndex > -1)
     {
         mDisplayWidget->hide();
         mDisplayWidget->setGeometry(mDesktop->screenGeometry(mDisplayScreenIndex));
-        mDisplayWidget->showFullScreen();
+        UBPlatformUtils::showFullScreen(mDisplayWidget);
     }
     else if(mDisplayWidget)
     {
@@ -234,7 +234,7 @@ void UBDisplayManager::positionScreens()
         {
             QWidget* previous = mPreviousDisplayWidgets.at(psi);
             previous->setGeometry(mDesktop->screenGeometry(mPreviousScreenIndexes.at(psi)));
-            previous->showFullScreen();
+            UBPlatformUtils::showFullScreen(previous);
         }
     }
 
@@ -280,7 +280,7 @@ void UBDisplayManager::blackout()
 
     foreach(UBBlackoutWidget *blackoutWidget, mBlackoutWidgets)
     {
-        blackoutWidget->showFullScreen();
+        UBPlatformUtils::showFullScreen(blackoutWidget);
     }
 }
 

@@ -30,9 +30,6 @@
 
 #include <QtWidgets/QGraphicsView>
 #include "UBGraphicsProxyWidget.h"
-//#include <phonon/AudioOutput>
-//#include <phonon/MediaObject>
-//#include <phonon/VideoWidget>
 
 #include <QAudioOutput>
 #include <QMediaObject>
@@ -73,9 +70,7 @@ public:
 
     virtual void mediaFileUrl(QUrl url){mMediaFileUrl=url;}
 
-    //Phonon::MediaObject* mediaObject() const
     QMediaPlayer* mediaObject() const
-
     {
         return mMediaObject;
     }
@@ -92,9 +87,7 @@ public:
         return mMuted;
     }
 
-   // Phonon::VideoWidget* videoWidget() const
     QVideoWidget* videoWidget() const
-
     {
         return mVideoWidget;
     }
@@ -129,17 +122,8 @@ protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     virtual void clearSource();
 
-    //Phonon::MediaObject *mMediaObject;
-    //Phonon::VideoWidget *mVideoWidget;
-    //Phonon::AudioOutput *mAudioOutput;
-    //Phonon::MediaSource mSource;
-
     QMediaPlayer *mMediaObject;
-    QMediaPlaylist *playlist;
     QVideoWidget *mVideoWidget;
-//    QAudioOutput *mAudioOutput;
-    QMediaPlayer *mAudioOutput;
-    QMediaService *mSource;
 
     QWidget *mAudioWidget;
 

@@ -65,7 +65,7 @@ void UBPlatformUtils::init()
 
     //originalSetSystemUIMode = APEPatchCreate((const void *)SetSystemUIMode, (const void *)emptySetSystemUIMode);
 
-    setDesktopMode(false);
+    //setDesktopMode(false);
 
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
@@ -93,20 +93,24 @@ void UBPlatformUtils::init()
 
 
 void UBPlatformUtils::setDesktopMode(bool desktop)
-{ /*
-#ifndef OS_NEWER_THAN_OR_EQUAL_TO_1010
-    //OSStatus (*functor)(SystemUIMode, SystemUIOptions) = (OSStatus (*)(SystemUIMode, SystemUIOptions))originalSetSystemUIMode;
+{
 
-    if (desktop)
-    {
-        functor(kUIModeNormal, 0);
+    //qDebug() << "setDesktopMode called. desktop = " << desktop;
+
+    @try {
+        // temporarily disabled due to bug: when switching to desktop mode (and calling this),
+        // openboard switches right back to the board mode. clicking again on desktop mode works.
+        /*if (desktop) {
+            [NSApp setPresentationOptions:NSApplicationPresentationAutoHideMenuBar | NSApplicationPresentationAutoHideDock];
+        }
+        else*/
+            [NSApp setPresentationOptions:NSApplicationPresentationHideMenuBar | NSApplicationPresentationHideDock];
     }
-    else
-    {
-        functor(kUIModeAllHidden, 0);
+
+    @catch(NSException * exception) {
+        qDebug() << "Error setting presentation options";
     }
-#endif
-*/
+
 }
 
 
@@ -533,29 +537,35 @@ QString UBPlatformUtils::urlFromClipboard()
 
 void UBPlatformUtils::SetMacLocaleByIdentifier(const QString& id)
 {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    @autoreleasepool {
+        // convert id from QString to CFString
+        // TODO: clean this up
+        const QByteArray utf8 = id.toUtf8();
+        const char* cString = utf8.constData();
+        NSString * ns = [[NSString alloc] initWithUTF8String:cString];
 
-    const char * strName = id.toLatin1().data();
-
-    CFStringRef iName = CFStringCreateWithCString(NULL, strName, kCFStringEncodingISOLatin1 );
+        CFStringRef iName = (__bridge CFStringRef)ns;
 
 
-    CFStringRef keys[] = { kTISPropertyInputSourceCategory, kTISPropertyInputSourceID };
-    CFStringRef values[] = { kTISCategoryKeyboardInputSource, iName };
-    CFDictionaryRef dict = CFDictionaryCreate(NULL, (const void **)keys, (const void **)values, 2, NULL, NULL);
 
-    // get list of current enabled keyboard layouts. dict filters the list
-    CFArrayRef kbds = TISCreateInputSourceList(dict, true);
-    if (kbds!=NULL)
-    {
-        if (CFArrayGetCount(kbds)!=0)
-        {
+        CFStringRef keys[] = { kTISPropertyInputSourceID };
+        CFStringRef values[] = { iName };
+        CFDictionaryRef dict = CFDictionaryCreate(NULL, (const void **)keys, (const void **)values, 1, NULL, NULL);
+
+        // get list of current enabled keyboard layouts. dict filters the list
+        // false specifies that we search only through the active input sources
+        CFArrayRef kbds = TISCreateInputSourceList(dict, false);
+
+        if (kbds && CFArrayGetCount(kbds) == 0)
+            // if not found in the active sources, we search again through all sources installed
+            kbds = TISCreateInputSourceList(dict, true);
+
+        if (kbds && CFArrayGetCount(kbds)!=0) {
             TISInputSourceRef klRef =  (TISInputSourceRef)CFArrayGetValueAtIndex(kbds, 0);
             if (klRef!=NULL)
                 TISSelectInputSource(klRef);
         }
     }
-    [pool drain];
 }
 
 /**
@@ -568,6 +578,23 @@ void UBPlatformUtils::setFrontProcess()
     // activate the application, forcing focus on it
     [app activateWithOptions: NSApplicationActivateIgnoringOtherApps];
 
-    // other option:NSApplicationActivateAllWindows. This won't steal focus from another app, e.g
+    // other option: NSApplicationActivateAllWindows. This won't steal focus from another app, e.g
     // if the user is doing something else while waiting for OpenBoard to load
 }
+
+
+/**
+ * @brief Full-screen a QWidget. Specific behaviour is platform-dependent.
+ * @param pWidget the QWidget to maximize
+ */
+void UBPlatformUtils::showFullScreen(QWidget *pWidget)
+{
+    pWidget->showMaximized();
+
+    /* On OS X, we want to hide the Dock and menu bar (aka "kiosk mode"). Qt's default behaviour
+     * when full-screening a QWidget is to set the dock and menu bar to auto-hide.
+     * Since it is impossible to later set different presentation options (i.e Hide dock & menu bar)
+     * to NSApplication, we have to avoid calling QWidget::showFullScreen on OSX.
+    */
+}
+

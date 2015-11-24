@@ -427,4 +427,11 @@ QString UBPlatformUtils::urlFromClipboard()
 
 void UBPlatformUtils::setFrontProcess()
 {
+    // not used in Windows
+}
+
+
+void UBPlatformUtils::showFullScreen(QWidget *pWidget)
+{
+    pWidget->showFullScreen();
 }
