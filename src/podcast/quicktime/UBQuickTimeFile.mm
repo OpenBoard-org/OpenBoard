@@ -210,7 +210,6 @@ bool UBQuickTimeFile::beginSession()
             setLastErrorMessage(mWaveRecorder->lastErrorMessage());
             mWaveRecorder->deleteLater();
             mRecordAudio = false;
-            break;
         }
 
         // Audio is mono, and compressed to AAC at 128kbps
@@ -379,7 +378,7 @@ void UBQuickTimeFile::appendAudioBuffer(void* pBuffer,
     // Add the audio sample to the asset writer input
     if ([mAudioWriterInput isReadyForMoreMediaData])
         if(![mAudioWriterInput appendSampleBuffer:sampleBuffer])
-            setLastErrorMessage(QString("Failed to append sample buffer to audio input: %1").arg(err));
+            setLastErrorMessage(QString("Failed to append sample buffer to audio input"));
     
     else 
         setLastErrorMessage(QString("Audio Writer not ready; sample dropped"));
