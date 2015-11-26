@@ -25,8 +25,10 @@
 
 
 
-#include <QGraphicsPolygonItem>
+//#include <QGraphicsPolygonItem>
+
 #include <QPolygonF>
+#include <QtWidgets/QGraphicsPolygonItem>
 
 #include "tools/UBGraphicsTriangle.h"
 #include "core/UBApplication.h"
@@ -131,17 +133,36 @@ void UBGraphicsTriangle::setRect(qreal x, qreal y, qreal w, qreal h, UBGraphicsT
     polygon << QPointF(x, y) << QPoint(x, y + h) << QPoint(x+w, y + h);
     setPolygon(polygon);
 
+    //  Save the bounds rect
+    bounds_rect.setX(x);  bounds_rect.setY(y);  bounds_rect.setWidth(w); bounds_rect.setHeight(h);
+
     setOrientation(orientation);
 }
 
 void UBGraphicsTriangle::setOrientation(UBGraphicsTriangleOrientation orientation)
 {
     mOrientation = orientation;
-    calculatePoints(boundingRect());
+
+    //calculatePoints(boundingRect());
+    calculatePoints(bounds_rect);
 
     QPolygonF polygon;
     polygon << A1 << B1 << C1;
     setPolygon(polygon);
+}
+
+
+QRectF UBGraphicsTriangle::bounding_Rect() const
+{
+
+    QRectF bounds = QRectF(0,0,0,0);
+    bounds.setX(bounds_rect.x());
+    bounds.setY(bounds_rect.y());
+    bounds.setWidth(bounds_rect.width());
+    bounds.setHeight(bounds_rect.height());
+
+
+    return bounds;
 }
 
 UBGraphicsScene* UBGraphicsTriangle::scene() const
@@ -151,6 +172,8 @@ UBGraphicsScene* UBGraphicsTriangle::scene() const
 
 void UBGraphicsTriangle::calculatePoints(const QRectF& r)
 {
+    //qDebug() << "UBGraphicsTriangle calculatePoints()"<<"r ="<<r<<"mOrientation ="<<mOrientation;
+
     switch(mOrientation)
     {
 
@@ -277,6 +300,10 @@ void UBGraphicsTriangle::paint(QPainter *painter, const QStyleOptionGraphicsItem
     mRotateSvgItem->setTransform(antiScaleTransform);
 
     mCloseSvgItem->setPos(closeButtonRect().topLeft());
+
+    qDebug() << "UBGraphicsTriangle Paint"<<"closeButtonRect().topLeft()="
+    <<closeButtonRect().topLeft();
+
     mHFlipSvgItem->setPos(hFlipRect().topLeft());
     mVFlipSvgItem->setPos(vFlipRect().topLeft());
     mRotateSvgItem->setPos(rotateRect().topLeft());
@@ -289,12 +316,16 @@ void UBGraphicsTriangle::paint(QPainter *painter, const QStyleOptionGraphicsItem
         if (mShowButtons || mResizing2)
             painter->drawPolygon(resize2Polygon());
     }
+
+
 }
 
 QPainterPath UBGraphicsTriangle::shape() const
 {
     QPainterPath tShape;
     QPolygonF tPolygon;
+
+    qDebug() << "UBGraphicsTriangle shape()"<<"A1 ="<<A1<<"B1 ="<<B1<<"C1 ="<<C1;
 
     tPolygon << A1 << B1 << C1;
     tShape.addPolygon(tPolygon);
@@ -303,6 +334,9 @@ QPainterPath UBGraphicsTriangle::shape() const
     tPolygon << A2 << B2 << C2;
     tShape.addPolygon(tPolygon);
     tPolygon.clear();
+
+    qDebug() << "UBGraphicsTriangle shape()"<<"A1 ="<<A1<<"B1 ="<<B1<<"C1 ="<<C1;
+    qDebug() << "UBGraphicsTriangle shape()"<<"A2 ="<<A2<<"B2 ="<<B2<<"C2 ="<<C2;
 
     return tShape;
 }
@@ -800,6 +834,10 @@ void UBGraphicsTriangle::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
             UBDrawingController::drawingController()->mActiveRuler = this;
             event->accept();
     }
+
+    //
+    //event->accept(); //**
+    //update(); //**
 }
 
 void UBGraphicsTriangle::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
