@@ -31,6 +31,18 @@
 //#include <QtGui>
 #include <QtWidgets>
 
+
+#include <QtNetwork>
+//#include <QFtp>
+//#include <QHttpResponseHeader>
+#include <QNetworkAccessManager>
+
+
+#include <QtNetwork/QHttpPart>
+#include <QScriptValue>
+#include <QScriptEngine>
+
+
 class UBBoardView;
 class UBDocumentProxy;
 class UBGraphicsScene;
@@ -42,9 +54,13 @@ class UBVersion;
 class UBSoftwareUpdate;
 class QNetworkAccessManager;
 class QNetworkReply;
-class QHttp;
+class QHttpPart;
+//class QHttp;
 class UBRightPalette;
 class UBOpenSankoreImporter;
+class QScriptValue;
+class QScriptEngine;
+class QNetworkReply;
 
 class UBApplicationController : public QObject
 {
@@ -144,8 +160,9 @@ class UBApplicationController : public QObject
         void checkAtLaunch();
 
     private slots:
-        void updateRequestFinished(QNetworkReply * reply);
-
+        void updateRequestFinished(int id, bool error);
+        //void updateHeaderReceived(QHttpResponseHeader header);
+        void updateHeaderReceived(QNetworkRequest header );
 
     protected:
 
@@ -183,6 +200,9 @@ class UBApplicationController : public QObject
         QNetworkAccessManager *networkAccessManager;
 
         void downloadJsonFinished(QString updateString);
+        QHttpPart* mHttp;
+        QNetworkAccessManager qnam;
+        QNetworkReply *mHttpreply;
 };
 
 #endif /* UBAPPLICATIONCONTROLLER_H_ */
