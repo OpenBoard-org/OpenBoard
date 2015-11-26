@@ -57,23 +57,29 @@ class UBAudioQueueRecorder : public QObject
             return mLastErrorMessage;
         }
 
-        static AudioStreamBasicDescription audioFormat()
+        AudioStreamBasicDescription * audioFormat()
         {
-            return sAudioFormat;
+            return &sAudioFormat;
         }
 
     signals:
 
-        void newWaveBuffer(void* pBuffer, long pLength, int inNumberPacketDescriptions, const AudioStreamPacketDescription *inPacketDescs);
+        void newWaveBuffer(void* pBuffer, 
+                           long pLength);
 
         void audioLevelChanged(quint8 level);
 
     private:
-        static void audioQueueInputCallback (void *inUserData, AudioQueueRef inAQ,
-            AudioQueueBufferRef inBuffer, const AudioTimeStamp *inStartTime,
-            UInt32 inNumberPacketDescriptions, const AudioStreamPacketDescription *inPacketDescs);
+        static void audioQueueInputCallback (void *inUserData, 
+                                             AudioQueueRef inAQ,
+                                             AudioQueueBufferRef inBuffer,
+                                             const AudioTimeStamp *inStartTime,
+                                             UInt32 inNumberPacketDescriptions, 
+                                             const AudioStreamPacketDescription *inPacketDescs);
 
-        void emitNewWaveBuffer(AudioQueueBufferRef pBuffer, int inNumberPacketDescriptions, const AudioStreamPacketDescription *inPacketDescs);
+        void emitNewWaveBuffer(AudioQueueBufferRef pBuffer, 
+                               int inNumberPacketDescriptions,
+                               const AudioStreamPacketDescription *inPacketDescs);
 
         void emitAudioLevelChanged(quint8 level);
 

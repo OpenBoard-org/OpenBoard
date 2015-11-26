@@ -31,6 +31,7 @@
 #include <QtCore>
 
 #include <CoreVideo/CoreVideo.h>
+#include <CoreMedia/CoreMedia.h>
 
 #include "UBAudioQueueRecorder.h"
 
@@ -92,40 +93,50 @@ class UBQuickTimeFile : public QThread
     protected:
         void run();
 
+    private slots:
+        void appendAudioBuffer(void* pBuffer, long pLength);
 
     private:
 
         bool beginSession();
-
-        void appendVideoFrame(CVPixelBufferRef pixelBuffer, long msTimeStamp);
-
         void setLastErrorMessage(const QString& error);
 
+
+        void appendVideoFrame(CVPixelBufferRef pixelBuffer, long msTimeStamp);
         bool flushPendingFrames();
 
-        volatile CVPixelBufferPoolRef mCVPixelBufferPool;
+        
+        volatile bool mShouldStopCompression;
+        volatile bool mCompressionSessionRunning;
+        volatile int mPendingFrames;
 
-
+        QString mSpatialQuality;
+        
         int mFramesPerSecond;
         QSize mFrameSize;
         QString mVideoFileName;
-        long mTimeScale;
 
         bool mRecordAudio;
+        
+        
+        AssetWriterPTR mVideoWriter;
+
+        AssetWriterInputPTR mVideoWriterInput;
+        AssetWriterInputAdaptorPTR mAdaptor;
+
+        AssetWriterInputPTR mAudioWriterInput;
+
+        QPointer<UBAudioQueueRecorder> mWaveRecorder;
+        CFAbsoluteTime mStartTime;
+
+        CMAudioFormatDescriptionRef mAudioFormatDescription;
+        
+        long mTimeScale;
 
         QString mLastErrorMessage;
 
-        QString mSpatialQuality;
-
-        volatile bool mShouldStopCompression;
-        volatile bool mCompressionSessionRunning;
-
         QString mAudioRecordingDeviceName;
-        volatile int mPendingFrames;
 
-        AssetWriterPTR mVideoWriter;
-        AssetWriterInputPTR mVideoWriterInput;
-        AssetWriterInputAdaptorPTR mAdaptor;
 };
 
 #endif /* UBQUICKTIMEFILE_H_ */
