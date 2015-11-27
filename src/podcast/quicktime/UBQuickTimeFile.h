@@ -101,24 +101,12 @@ class UBQuickTimeFile : public QThread
         bool beginSession();
         void setLastErrorMessage(const QString& error);
 
-
         void appendVideoFrame(CVPixelBufferRef pixelBuffer, long msTimeStamp);
-        bool flushPendingFrames();
 
         
-        volatile bool mShouldStopCompression;
-        volatile bool mCompressionSessionRunning;
-        volatile int mPendingFrames;
-
-        QString mSpatialQuality;
-        
-        int mFramesPerSecond;
         QSize mFrameSize;
         QString mVideoFileName;
 
-        bool mRecordAudio;
-        
-        
         AssetWriterPTR mVideoWriter;
 
         AssetWriterInputPTR mVideoWriterInput;
@@ -132,6 +120,12 @@ class UBQuickTimeFile : public QThread
         CMAudioFormatDescriptionRef mAudioFormatDescription;
         
         long mTimeScale;
+        bool mRecordAudio;
+        
+        volatile bool mShouldStopCompression;
+        volatile bool mCompressionSessionRunning;
+
+        
 
         QString mLastErrorMessage;
 
