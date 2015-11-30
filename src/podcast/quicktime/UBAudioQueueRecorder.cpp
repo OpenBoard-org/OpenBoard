@@ -257,7 +257,8 @@ bool UBAudioQueueRecorder::init(const QString& waveInDeviceName)
 
     int nbBuffers = 6;
     mSampleBufferSize = sAudioFormat.mSampleRate *  sAudioFormat.mChannelsPerFrame
-                * sAudioFormat.mChannelsPerFrame * mBufferLengthInMs / 1000; // 44.1 Khz * stereo * 16bit * buffer length
+                * sAudioFormat.mBitsPerChannel / 8 * mBufferLengthInMs / 1000; 
+        // BufferSize [bytes] = Length [s] * 44100 frames per second [Fr./s] * channels per frame [Ch./Fr.] * bytes per channel [bytes/Ch.]
 
     for (int i = 0; i < nbBuffers; i++)
     {

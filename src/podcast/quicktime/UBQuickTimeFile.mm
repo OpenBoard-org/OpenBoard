@@ -41,16 +41,25 @@ QQueue<UBQuickTimeFile::VideoFrame> UBQuickTimeFile::frameQueue;
 QMutex UBQuickTimeFile::frameQueueMutex;
 QWaitCondition UBQuickTimeFile::frameBufferNotEmpty;
 
+
+QQueue<CMSampleBufferRef> UBQuickTimeFile::audioQueue;
+QMutex UBQuickTimeFile::audioQueueMutex;
+QMutex UBQuickTimeFile::audioWriterMutex;
+
 UBQuickTimeFile::UBQuickTimeFile(QObject * pParent)
     : QThread(pParent)
     , mVideoWriter(0)
     , mVideoWriterInput(0)
     , mAdaptor(0)
+    , mAudioWriterInput(0)
+    , mWaveRecorder(0)
     , mTimeScale(1000)
     , mRecordAudio(true)
     , mShouldStopCompression(false)
     , mCompressionSessionRunning(false)
 {
+    mVideoDispatchQueue = dispatch_queue_create("org.oef.VideoDispatchQueue", NULL);
+    mAudioDispatchQueue = dispatch_queue_create("org.oef.AudioDispatchQueue", NULL);
 }
 
 
@@ -66,6 +75,7 @@ bool UBQuickTimeFile::init(const QString& pVideoFileName, const QString& pProfil
     mFrameSize = pFrameSize;
     mVideoFileName = pVideoFileName;
     mRecordAudio = pRecordAudio;
+    //mRecordAudio = false;
 
     if (mRecordAudio)
         mAudioRecordingDeviceName = audioRecordingDevice;
@@ -90,33 +100,36 @@ void UBQuickTimeFile::run()
     mCompressionSessionRunning = true;
     emit compressionSessionStarted();
 
-    do {
-        // Video
-        frameQueueMutex.lock();
+    [mVideoWriterInput requestMediaDataWhenReadyOnQueue:mVideoDispatchQueue
+        usingBlock:^{
+            frameQueueMutex.lock();
+            //frameBufferNotEmpty.wait(&UBQuickTimeFile::frameQueueMutex); // TODO: monitor performance with and without this
 
-        frameBufferNotEmpty.wait(&UBQuickTimeFile::frameQueueMutex);
-
-        if (!frameQueue.isEmpty()) {
-            QQueue<VideoFrame> localQueue = frameQueue;
-            frameQueue.clear();
-
-            frameQueueMutex.unlock();
-
-            while (!localQueue.isEmpty()) {
-                if ([mVideoWriterInput isReadyForMoreMediaData]) {
-                    VideoFrame frame = localQueue.dequeue();
+            if (!mShouldStopCompression && 
+                !frameQueue.isEmpty() &&
+                [mVideoWriterInput isReadyForMoreMediaData]) 
+            {
+                    VideoFrame frame = frameQueue.dequeue();
                     appendVideoFrame(frame.buffer, frame.timestamp);
-                }
-                else
-                    usleep(10000);
             }
-        }
-        else
+
             frameQueueMutex.unlock();
+            
+    }];
+    
+    if (mRecordAudio) {
+        [mAudioWriterInput requestMediaDataWhenReadyOnQueue:mAudioDispatchQueue
+            usingBlock:^{
+                audioQueueMutex.lock();
+                if (!audioQueue.isEmpty() && 
+                    [mAudioWriterInput isReadyForMoreMediaData]) 
+                {
+                        appendSampleBuffer(audioQueue.dequeue());
+                }
+                audioQueueMutex.unlock();
 
-    } while(!mShouldStopCompression);
-
-    endSession();
+            }];
+    }
 
 }
 
@@ -197,7 +210,7 @@ bool UBQuickTimeFile::beginSession()
 
         if(mWaveRecorder->init(mAudioRecordingDeviceName)) {
             connect(mWaveRecorder, &UBAudioQueueRecorder::newWaveBuffer,
-                    this, &UBQuickTimeFile::appendAudioBuffer);
+                    this, &UBQuickTimeFile::enqueueAudioBuffer);
 
             connect(mWaveRecorder, SIGNAL(audioLevelChanged(quint8)),
                     this, SIGNAL(audioLevelChanged(quint8)));
@@ -223,7 +236,7 @@ bool UBQuickTimeFile::beginSession()
             AVFormatIDKey         : [NSNumber numberWithUnsignedInt:kAudioFormatMPEG4AAC],
             AVEncoderBitRateKey   : [NSNumber numberWithInteger:128000],
             AVSampleRateKey       : [NSNumber numberWithInteger:44100],
-            AVChannelLayoutKey    : channelLayoutAsData,
+            //AVChannelLayoutKey    : channelLayoutAsData,
             AVNumberOfChannelsKey : [NSNumber numberWithUnsignedInteger:1]
         };
 
@@ -232,8 +245,6 @@ bool UBQuickTimeFile::beginSession()
 
         NSCParameterAssert([mVideoWriter canAddInput:mAudioWriterInput]);
         [mVideoWriter addInput:mAudioWriterInput];
-
-        qDebug() << "audio writer input created and added";
     }
 
 
@@ -252,23 +263,33 @@ bool UBQuickTimeFile::beginSession()
  */
 void UBQuickTimeFile::endSession()
 {
+    //qDebug() << "Ending session";
+
+
     [mVideoWriterInput markAsFinished];
-    [mVideoWriter finishWritingWithCompletionHandler:^{}];
 
-    [mAdaptor release];
-    [mVideoWriterInput release];
-    [mVideoWriter release];
-    [mAudioWriterInput release];
+    [mVideoWriter finishWritingWithCompletionHandler:^{
+        [mAdaptor release];
+        [mVideoWriterInput release];
 
-    mAdaptor = nil;
-    mVideoWriterInput = nil;
-    mVideoWriter = nil;
-    mAudioWriterInput = nil;
+        if (mAudioWriterInput != 0)
+            [mAudioWriterInput release];
+        
+        [mVideoWriter release];
 
-    if (mWaveRecorder) {
-        mWaveRecorder->close();
-        mWaveRecorder->deleteLater();
-    }
+        mAdaptor = nil;
+        mVideoWriterInput = nil;
+        mVideoWriter = nil;
+        mAudioWriterInput = nil;
+
+        if (mWaveRecorder) {
+            mWaveRecorder->close();
+            mWaveRecorder->deleteLater();
+        }
+
+
+        emit compressionFinished();
+    }];
 
 }
 
@@ -277,12 +298,22 @@ void UBQuickTimeFile::endSession()
  */
 void UBQuickTimeFile::stop()
 {
+    //qDebug() << "requested end of recording";
     mShouldStopCompression = true;
+
+
+    frameQueueMutex.lock();
+    audioQueueMutex.lock();
+    endSession();
+    frameQueueMutex.unlock();
+    audioQueueMutex.unlock();
 }
 
 
 /**
- * \brief Create a CVPixelBufferRef from the input adaptor's CVPixelBufferPool
+ * \brief Create and return a CVPixelBufferRef 
+ *
+ * The CVPixelBuffer is created from the input adaptor's CVPixelBufferPool
  */
 CVPixelBufferRef UBQuickTimeFile::newPixelBuffer()
 {
@@ -305,6 +336,7 @@ CVPixelBufferRef UBQuickTimeFile::newPixelBuffer()
  */
 void UBQuickTimeFile::appendVideoFrame(CVPixelBufferRef pixelBuffer, long msTimeStamp)
 {
+    //qDebug() << "appending video frame";
     CMTime t = CMTimeMake((msTimeStamp * mTimeScale / 1000.0), mTimeScale);
 
     bool added = [mAdaptor appendPixelBuffer: pixelBuffer
@@ -329,10 +361,11 @@ void UBQuickTimeFile::appendVideoFrame(CVPixelBufferRef pixelBuffer, long msTime
  * (implemented in the UBAudioQueueRecorder class) and the recording, handled
  * by the AVAssetWriterInput instance mAudioWriterInput.
  */
-void UBQuickTimeFile::appendAudioBuffer(void* pBuffer,
+void UBQuickTimeFile::enqueueAudioBuffer(void* pBuffer,
                                         long pLength)
 {
-    if(!mRecordAudio)
+    
+    if(!mRecordAudio || mShouldStopCompression)
         return;
 
 
@@ -370,30 +403,36 @@ void UBQuickTimeFile::appendAudioBuffer(void* pBuffer,
                                                     NULL,
                                                     &sampleBuffer);
 
+    //qDebug() << "enqueueAudioBuffer, timeStamp = " << timeStamp.value << " / " << timeStamp.timescale;
 
-    // Wait until the AssetWriterInput is ready, but no more than 100ms
-    // (bit of a duct tape solution; cleaner solution would be to use a QQueue,
-    // similar to the VideoWriter)
-    int waitTime = 0;
-    while(![mAudioWriterInput isReadyForMoreMediaData] && waitTime < 100) {
-        waitTime += 10;
-        usleep(10000);
-    }
-
-    if ([mAudioWriterInput isReadyForMoreMediaData]) {
-        if(![mAudioWriterInput appendSampleBuffer:sampleBuffer])
-            setLastErrorMessage(QString("Failed to append sample buffer to audio input"));
-    }
-    else
-        setLastErrorMessage(QString("AudioWriterInput not ready. Buffer dropped."));
+    
+    audioQueueMutex.lock();
+    audioQueue.enqueue(sampleBuffer);
+    audioQueueMutex.unlock();
+    
+    //qDebug() << "buffer enqueued";
+    
 
 
+}
+
+
+bool UBQuickTimeFile::appendSampleBuffer(CMSampleBufferRef sampleBuffer)
+{
+    bool success = [mAudioWriterInput appendSampleBuffer:sampleBuffer];
+    
+    if (!success)
+        setLastErrorMessage(QString("Failed to append sample buffer to audio input"));
+    
+
+    CMBlockBufferRef blockBuffer = CMSampleBufferGetDataBuffer(sampleBuffer);
 
     CFRelease(sampleBuffer);
     CFRelease(blockBuffer);
 
-    // The audioQueueBuffers are all freed when UBAudioQueueRecorder::close() is called
+    return success;
 }
+
 
 /**
  * \brief Print an error message to the terminal, and store it

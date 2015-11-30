@@ -89,12 +89,13 @@ class UBQuickTimeFile : public QThread
     signals:
         void audioLevelChanged(quint8 level);
         void compressionSessionStarted();
+        void compressionFinished();
 
     protected:
         void run();
 
     private slots:
-        void appendAudioBuffer(void* pBuffer, long pLength);
+        void enqueueAudioBuffer(void* pBuffer, long pLength);
 
     private:
 
@@ -102,7 +103,7 @@ class UBQuickTimeFile : public QThread
         void setLastErrorMessage(const QString& error);
 
         void appendVideoFrame(CVPixelBufferRef pixelBuffer, long msTimeStamp);
-
+        bool appendSampleBuffer(CMSampleBufferRef sampleBuffer);
         
         QSize mFrameSize;
         QString mVideoFileName;
@@ -125,12 +126,16 @@ class UBQuickTimeFile : public QThread
         volatile bool mShouldStopCompression;
         volatile bool mCompressionSessionRunning;
 
-        
-
         QString mLastErrorMessage;
-
         QString mAudioRecordingDeviceName;
 
+        dispatch_queue_t mVideoDispatchQueue;
+        dispatch_queue_t mAudioDispatchQueue;
+
+        static QQueue<CMSampleBufferRef> audioQueue;
+        static QMutex audioQueueMutex;
+
+        static QMutex audioWriterMutex;
 };
 
 #endif /* UBQUICKTIMEFILE_H_ */

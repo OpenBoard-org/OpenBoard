@@ -68,7 +68,7 @@ bool UBQuickTimeVideoEncoder::start()
         return false;
     }
 
-    connect(&mQuickTimeCompressionSession, SIGNAL(finished()), this, SLOT(compressionFinished()));
+    connect(&mQuickTimeCompressionSession, SIGNAL(compressionFinished()), this, SLOT(compressionFinished()));
     connect(&mQuickTimeCompressionSession, SIGNAL(audioLevelChanged(quint8)), this, SIGNAL(audioLevelChanged(quint8)));
 
     mQuickTimeCompressionSession.start();
@@ -79,10 +79,7 @@ bool UBQuickTimeVideoEncoder::start()
 
 bool UBQuickTimeVideoEncoder::stop()
 {
-    if (mQuickTimeCompressionSession.isRunning())
-    {
-        mQuickTimeCompressionSession.stop();
-    }
+    mQuickTimeCompressionSession.stop();
 
     UBQuickTimeFile::frameBufferNotEmpty.wakeAll();
 
