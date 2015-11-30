@@ -65,6 +65,8 @@
 
 #include "ui_mainWindow.h"
 
+
+
 #ifdef Q_WS_MAC
 #include <Carbon/Carbon.h>
 #endif
@@ -496,6 +498,8 @@ void UBApplicationController::checkUpdate(QString urlString)
     mHttp->get(url.path());
 
    */
+
+#else
     if(mHttpreply)
         mHttpreply->deleteLater();
     QUrl url(urlString);
@@ -504,8 +508,6 @@ void UBApplicationController::checkUpdate(QString urlString)
     connect(mHttpreply, SIGNAL(responseHeaderReceived(QHttpResponseHeader)), this, SLOT(updateHeaderReceived(QHttpResponseHeader)));
     // mHttpreply->setUrl(url.path());
     //mHttp->get(url.path());
-#else
-
 
 #endif
 }
@@ -585,14 +587,14 @@ void UBApplicationController::checkAtLaunch()
 
     if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool()){
         isNoUpdateDisplayed = false;
-        checkUpdate ();
+        //checkUpdate ();
     }
 }
 
 void UBApplicationController::checkUpdateRequest()
 {
     isNoUpdateDisplayed = true;
-    checkUpdate ();
+    //checkUpdate ();
 }
 
 void UBApplicationController::hideDesktop()
