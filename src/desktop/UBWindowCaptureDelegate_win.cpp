@@ -27,6 +27,7 @@
 
 #include "UBWindowCaptureDelegate_win.h"
 #include <windows.h>
+#include <QDialog>
 
 #include "core/memcheck.h"
 
@@ -79,7 +80,7 @@ int UBWindowCaptureDelegate::execute()
         mutex.lock();
         sleep.wait(&mutex, 200);
         mutex.unlock();
-        mCapturedPixmap = QPixmap::grabWindow(mCurrentWindow);
+        mCapturedPixmap = QPixmap::grabWindow((WId)mCurrentWindow);
         return QDialog::Accepted;
     }
     else

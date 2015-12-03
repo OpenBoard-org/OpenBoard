@@ -13,14 +13,14 @@ SOURCES      += src/podcast/UBPodcastController.cpp \
 
 win32 {
 
-    SOURCES  += src/podcast/windowsmedia/UBWindowsMediaVideoEncoder.cpp \
-                src/podcast/windowsmedia/UBWindowsMediaFile.cpp \
-                src/podcast/windowsmedia/UBWaveRecorder.cpp
-      
-    HEADERS  += src/podcast/windowsmedia/UBWindowsMediaVideoEncoder.h \
-                src/podcast/windowsmedia/UBWindowsMediaFile.h \
-                src/podcast/windowsmedia/UBWaveRecorder.h
-}            
+#    SOURCES  += src/podcast/windowsmedia/UBWindowsMediaVideoEncoder.cpp \
+#                src/podcast/windowsmedia/UBWindowsMediaFile.cpp \
+#                src/podcast/windowsmedia/UBWaveRecorder.cpp
+#
+#    HEADERS  += src/podcast/windowsmedia/UBWindowsMediaVideoEncoder.h \
+#                src/podcast/windowsmedia/UBWindowsMediaFile.h \
+#                src/podcast/windowsmedia/UBWaveRecorder.h
+}
 
 macx {
 

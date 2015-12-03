@@ -646,7 +646,7 @@ bool UBApplication::isFromWeb(QString url)
 {
     bool res = true;
 
-    if( url.startsWith("uniboardTool://") ||
+    if( url.startsWith("OpenboardTool://") ||
         url.startsWith("file://") ||
         url.startsWith("/")){
         res = false;

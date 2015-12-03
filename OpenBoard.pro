@@ -124,6 +124,8 @@ win32 {
    system(echo "$$LONG_VERSION" > $$BUILD_DIR/longversion)
    system(echo "$$SVN_VERSION" > $$BUILD_DIR/svnversion)
 
+   DEFINES += NOMINMAX # avoids compilation error in qdatetime.h
+
 }
 
 macx {

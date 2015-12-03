@@ -126,11 +126,12 @@ void UBPlatformUtils::setDesktopMode(bool desktop)
 }
 
 void UBPlatformUtils::setWindowNonActivableFlag(QWidget* widget, bool nonAcivable)
-{
+{/*
     long exStyle = (nonAcivable) ? GetWindowLong(widget->winId(), GWL_EXSTYLE) | WS_EX_NOACTIVATE
         : GetWindowLong(widget->winId(), GWL_EXSTYLE) & ~WS_EX_NOACTIVATE;
 
     SetWindowLong(widget->winId(), GWL_EXSTYLE, exStyle);
+    */
 }
 
 #define KEYBTDECL(s1, s2, clSwitch) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(s1), KEYCODE(s2))
