@@ -35,11 +35,14 @@
 #include "board/UBBoardController.h"
 #include "core/memcheck.h"
 
+#include <QGraphicsVideoItem>
+
 bool UBGraphicsMediaItem::sIsMutedByDefault = false;
 
 UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent)
         : UBGraphicsProxyWidget(parent)
-        , mVideoWidget(NULL)
+        , mDummyVideoWidget(NULL)
+        , mVideoItem(NULL)
         , mAudioWidget(NULL)
         , mMuted(sIsMutedByDefault)
         , mMutedByUserAction(sIsMutedByDefault)
@@ -62,19 +65,18 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 
         mMediaObject->setNotifyInterval(50);
 
-        mVideoWidget = new QVideoWidget(); // owned and destructed by the scene ...
+        mDummyVideoWidget = new QWidget(); // owned and destructed by the scene ...
+        mDummyVideoWidget->resize(320,240);
+        mDummyVideoWidget->setMinimumSize(320, 240);
+        mDummyVideoWidget->setWindowOpacity(0.0);
+        
+        mVideoItem = new QGraphicsVideoItem();
 
-        mMediaObject->setVideoOutput(mVideoWidget);
+        mMediaObject->setVideoOutput(mVideoItem);
 
-        if(mVideoWidget->sizeHint() == QSize(1,1)){
-            mVideoWidget->resize(320,240);
-        }
-
-        mVideoWidget->setMinimumSize(320,240);
+        mVideoItem->setSize(QSize(320,240));
 
         haveLinkedImage = true;
-
-
     }
     else if (mediaPath.toLower().contains("audios"))
     {
@@ -98,7 +100,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     // delegate should be created earler because we setWidget calls resize event for graphics proxy widgt.
     // resize uses delegate.
     if (mediaType_Video == mMediaType)
-        setWidget(mVideoWidget);
+        setWidget(mDummyVideoWidget);
     else
         setWidget(mAudioWidget);
 
@@ -164,6 +166,13 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
 
         }
     }
+
+    // Pass on geometry and position changes to the videoItem
+    else if (mVideoItem && change == QGraphicsItem::ItemTransformChange)
+        mVideoItem->setTransform(qvariant_cast<QTransform>(value));
+
+    else if (mVideoItem && change == QGraphicsItem::ItemPositionChange)
+        mVideoItem->setPos(qvariant_cast<QPointF>(value));
 
     return UBGraphicsProxyWidget::itemChange(change, value);
 }
@@ -329,4 +338,56 @@ void UBGraphicsMediaItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     event->accept();
 
 }
+
+void UBGraphicsMediaItem::setPos(const QPointF &pos)
+{
+   QGraphicsItem::setPos(pos);
+   if (mVideoItem)
+       mVideoItem->setPos(pos);
+}
+
+void UBGraphicsMediaItem::setPos(qreal x, qreal y)
+{
+    setPos(QPointF(x, y));
+}
+
+
+void UBGraphicsMediaItem::setTransform(const QTransform &matrix, bool combine)
+{
+    QGraphicsItem::setTransform(matrix, combine);
+
+    if (mVideoItem)
+        mVideoItem->setTransform(matrix, combine);
+}
+
+void UBGraphicsMediaItem::resize(const QSizeF & pSize)
+{
+    // Resize the video, then the rest of the Item
+
+    if (mVideoItem) {
+        qreal sizeX = 0;
+        qreal sizeY = 0;
+
+        QSizeF minimumItemSize(mDummyVideoWidget->minimumSize());
+        if (minimumItemSize.width() > pSize.width())
+            sizeX = minimumItemSize.width();
+        else
+            sizeX = pSize.width();
+
+        if (minimumItemSize.height() > pSize.height())
+            sizeY = minimumItemSize.height();
+        else
+            sizeY = pSize.height();
+
+        mVideoItem->setSize(QSizeF (sizeX, sizeY));
+    }
+
+    UBGraphicsProxyWidget::resize(pSize);
+}
+
+void UBGraphicsMediaItem::resize(qreal w, qreal h)
+{
+    UBGraphicsMediaItem::resize(QSizeF(w, h));
+}
+
 

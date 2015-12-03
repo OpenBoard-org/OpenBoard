@@ -9,9 +9,9 @@ CONFIG += debug_and_release \
 
 
 VERSION_MAJ = 1
-VERSION_MIN = 02
-VERSION_TYPE = r # a = alpha, b = beta, rc = release candidate, r = release, other => error
-VERSION_PATCH = 10
+VERSION_MIN = 1
+VERSION_TYPE = a # a = alpha, b = beta, rc = release candidate, r = release, other => error
+VERSION_PATCH = 0
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_TYPE}.$${VERSION_PATCH}"
 VERSION = $$replace(VERSION, "\\.r", "")
@@ -138,7 +138,7 @@ macx {
    CONFIG(debug, debug|release):CONFIG += x86_64
 
    QMAKE_MAC_SDK = macosx
-   QMAKE_MACOSX_DEPLOYMENT_TARGET = "10.10"
+   QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.10
 
    QMAKE_CXXFLAGS += -Wno-overloaded-virtual
    #VERSION_RC_PATH = "$$BUILD_DIR/version_rc"

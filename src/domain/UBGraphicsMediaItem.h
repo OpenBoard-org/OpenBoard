@@ -43,6 +43,8 @@
 #include "board/UBBoardController.h"
 #include "frameworks/UBFileSystemUtils.h"
 
+class QGraphicsVideoItem;
+
 class UBGraphicsMediaItem : public UBGraphicsProxyWidget
 {
     Q_OBJECT
@@ -87,9 +89,9 @@ public:
         return mMuted;
     }
 
-    QVideoWidget* videoWidget() const
+    QGraphicsVideoItem * videoItem() const
     {
-        return mVideoWidget;
+        return mVideoItem;
     }
 
     bool hasLinkedImage(){return haveLinkedImage;}
@@ -105,6 +107,12 @@ public:
     virtual void setSourceUrl(const QUrl &pSourceUrl);
 
     void setSelected(bool selected);
+
+    virtual void setPos(const QPointF &pos);
+    virtual void setPos(qreal x, qreal y);
+    virtual void setTransform(const QTransform &matrix, bool combine = false);
+    virtual void resize(qreal w, qreal h);
+    virtual void resize(const QSizeF & pSize);
 
 
 public slots:
@@ -123,7 +131,8 @@ protected:
     virtual void clearSource();
 
     QMediaPlayer *mMediaObject;
-    QVideoWidget *mVideoWidget;
+    QWidget *mDummyVideoWidget;
+    QGraphicsVideoItem *mVideoItem;
 
     QWidget *mAudioWidget;
 

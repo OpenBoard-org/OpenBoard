@@ -31,6 +31,7 @@
 #include <QtWebKit>
 #include <QtSvg>
 #include <QGraphicsView>
+#include <QGraphicsVideoItem>
 
 #include "frameworks/UBGeometryUtils.h"
 #include "frameworks/UBPlatformUtils.h"
@@ -1327,6 +1328,11 @@ UBGraphicsMediaItem* UBGraphicsScene::addMedia(const QUrl& pMediaFileUrl, bool s
     mediaItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
     addItem(mediaItem);
+
+    if (mediaItem->videoItem()) {
+        addItem(mediaItem->videoItem());
+        mediaItem->videoItem()->show();
+    }
 
     mediaItem->show();
 
