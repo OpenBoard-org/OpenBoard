@@ -50,6 +50,9 @@ Thumbs.db
 .settings
 Makefile.Sankore*
 
+*.swp
+*.vim
+
 # Build files #
 ###############
 build
