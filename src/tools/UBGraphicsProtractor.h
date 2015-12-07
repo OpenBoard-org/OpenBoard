@@ -28,11 +28,9 @@
 #ifndef UBGRAPHICSPROTRACTOR_H_
 #define UBGRAPHICSPROTRACTOR_H_
 
-//#include <QtGui>
 #include <QtWidgets>
 #include <QtWidgets/QGraphicsItem>
 #include <QtWidgets/QGraphicsView>
-
 #include <QtSvg>
 
 #include "core/UB.h"
@@ -99,9 +97,10 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
 
         QRectF    closeButtonRect () const;
         QRectF    resizeButtonRect () const;
-        QRectF    rotateButtonRect () const{return QRectF(buttonSizeReference().width() * 5.5, -buttonSizeReference().width() * 5, buttonSizeReference().width(), buttonSizeReference().width());}
-        QRectF    markerButtonRect () const{return QRectF(radius() + 3, -markerSizeReference().height() / 2 , markerSizeReference().width(), markerSizeReference().height());}
-                inline qreal               radius () const{return rect().height() / 2 - 20;}
+        QRectF    rotateButtonRect () const;
+        QRectF    markerButtonRect () const;
+
+        inline qreal radius () const{return rect().height() / 2 - 20;}
 
         // Members
         QPointF mPreviousMousePos;
