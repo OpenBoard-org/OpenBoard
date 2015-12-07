@@ -99,7 +99,7 @@ void UBGraphicsProtractor::paint(QPainter *painter, const QStyleOptionGraphicsIt
     pen_.setWidth(0); // Line width = 1 pixel regardless of scale / zoom
     painter->setPen(pen_);
     
-    painter->setFont(QFont("Arial"));
+    painter->setFont(QFont("Arial", 11));
     painter->setBrush(fillBrush());
     painter->drawPie(QRectF(rect().center().x() - radius(), rect().center().y() - radius(), 2 * radius(), 2 * radius()), mStartAngle * 16, mSpan * 16);
     paintGraduations(painter);
@@ -402,8 +402,7 @@ void UBGraphicsProtractor::paintGraduations(QPainter *painter)
     QFont font1 = painter->font();
 
 #ifdef Q_OS_OSX
-    // TODO: remove this (?)
-    font1.setPointSizeF(font1.pointSizeF());
+    font1.setPointSizeF(font1.pointSizeF() + 3);
     font1.setWeight(QFont::Thin);
 #endif
     QFontMetricsF fm1(font1);
