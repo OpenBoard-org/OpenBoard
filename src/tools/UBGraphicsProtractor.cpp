@@ -326,6 +326,8 @@ void UBGraphicsProtractor::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 
     if (currentTool == Move)
         setCursor(Qt::SizeAllCursor);
+    else if (currentTool == Rotate)
+        setCursor(rotateCursor());
     else
         setCursor(Qt::ArrowCursor);
 
