@@ -197,6 +197,7 @@ void UBGraphicsPolygonItem::copyItemParameters(UBItem *copy) const
         cp->setColorOnDarkBackground(this->colorOnDarkBackground());
         cp->setColorOnLightBackground(this->colorOnLightBackground());
 
+        cp->setZValue(this->zValue());
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
     }
 }
