@@ -262,6 +262,10 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
     }
 
     //Return new z value assigned to item
+    
+    // experimental
+    item->setZValue(item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
+
     return item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
 }
 

@@ -1111,7 +1111,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                     if (colorOnDarkBackground.isValid() && colorOnLightBackground.isValid())
                     {
                         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "z-value"
-                                                  , QString("%1").arg(polygonItem->zValue()));
+                                                  , QString("%1").arg(polygonItem->strokesGroup()->zValue()));
 
                         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
                                                   , "fill-on-dark-background", colorOnDarkBackground.name());
