@@ -280,6 +280,7 @@ void UBGraphicsTextItem::copyItemParameters(UBItem *copy) const
         cp->setTextHeight(this->textHeight());
 
         cp->setSourceUrl(this->sourceUrl());
+        cp->setZValue(this->zValue());
     }
 }
 

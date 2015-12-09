@@ -122,6 +122,7 @@ void UBGraphicsPDFItem::copyItemParameters(UBItem *copy) const
         cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
         cp->setSourceUrl(this->sourceUrl());
+        cp->setZValue(this->zValue());
     }
 }
 

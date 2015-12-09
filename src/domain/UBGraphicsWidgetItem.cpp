@@ -744,6 +744,7 @@ void UBGraphicsAppleWidgetItem::copyItemParameters(UBItem *copy) const
         }
 
         cp->setSourceUrl(this->sourceUrl());
+        cp->setZValue(this->zValue());
     }
 
 }
@@ -1228,6 +1229,8 @@ void UBGraphicsW3CWidgetItem::copyItemParameters(UBItem *copy) const
         {
             cp->setDatastoreEntry(key, mDatastore.value(key));
         }
+
+        cp->setZValue(this->zValue());
     }
 }
 

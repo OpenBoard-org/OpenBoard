@@ -1077,20 +1077,6 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
     {
         QGraphicsItem *item = items.takeFirst();
 
-        // Is the item a strokes group?
-        UBGraphicsStrokesGroup* strokesGroupItem = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item);
-
-        if(strokesGroupItem && strokesGroupItem->isVisible()){
-            // Add the polygons
-            foreach(QGraphicsItem* item, strokesGroupItem->childItems()){
-                UBGraphicsPolygonItem* poly = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
-                if(NULL != poly){
-                    polygonItemToSvgPolygon(poly, true);
-                    items.removeOne(poly);
-                }
-            }
-        }
-
         // Is the item a polygon?
         UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*> (item);
         if (polygonItem && polygonItem->isVisible())
@@ -1125,7 +1111,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                     if (colorOnDarkBackground.isValid() && colorOnLightBackground.isValid())
                     {
                         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "z-value"
-                                                  , QString("%1").arg(polygonItem->zValue()));
+                                                  , QString("%1").arg(polygonItem->strokesGroup()->zValue()));
 
                         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
                                                   , "fill-on-dark-background", colorOnDarkBackground.name());
@@ -2112,6 +2098,7 @@ UBGraphicsMediaItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::videoItemFromSvg()
 void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* gItem)
 {
 
+    // TODO: check position
     QStringRef svgTransform = mXmlReader.attributes().value("transform");
 
     QMatrix itemMatrix;
