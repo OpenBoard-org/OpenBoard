@@ -183,13 +183,20 @@ UBApplication::~UBApplication()
 QString UBApplication::checkLanguageAvailabilityForSankore(QString &language)
 {
     QStringList availableTranslations = UBPlatformUtils::availableTranslations();
+    //QStringList availableTranslations ;availableTranslations<< "OpenBoard_fr";
     if(availableTranslations.contains(language,Qt::CaseInsensitive))
         return language;
     else{
         if(language.length() > 2){
             QString shortLanguageCode = language.left(2);
-            if(availableTranslations.contains(shortLanguageCode,Qt::CaseInsensitive))
-                return shortLanguageCode;
+            //if(availableTranslations.contains(shortLanguageCode,Qt::CaseInsensitive))
+            foreach (const QString &str, availableTranslations) {
+                       if (str.contains(shortLanguageCode))
+                           return shortLanguageCode;
+                   }
+
+            //if(availableTranslations.contains(shortLanguageCode))
+            //return shortLanguageCode;
         }
     }
     return QString("");
