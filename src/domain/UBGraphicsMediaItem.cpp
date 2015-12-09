@@ -275,6 +275,8 @@ void UBGraphicsMediaItem::copyItemParameters(UBItem *copy) const
         cp->setSourceUrl(this->sourceUrl());
         cp->resize(this->size());
 
+        cp->setZValue(this->zValue());
+
         connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), cp, SLOT(activeSceneChanged()));
         // TODO UB 4.7 complete all members
     }
