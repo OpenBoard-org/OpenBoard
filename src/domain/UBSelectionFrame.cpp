@@ -243,9 +243,6 @@ void UBSelectionFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent */*event*/)
 
 void UBSelectionFrame::onZoomChanged(qreal pZoom)
 {
-    qDebug() << "Pzoom" << pZoom;
-    qDebug() << "Board current zoom" << UBApplication::boardController->currentZoom();
-    qDebug() << "UBApplication::boardController->systemScaleFactor()" << UBApplication::boardController->systemScaleFactor();
     mAntiscaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * pZoom);
 
 }
@@ -458,7 +455,6 @@ QList<QGraphicsItem*> UBSelectionFrame::sortedByZ(const QList<QGraphicsItem *> &
 
 QList<DelegateButton*> UBSelectionFrame::buttonsForFlags(UBGraphicsFlags fls) {
 
-    qDebug() << "buttons for flags" << QString::number((int)fls, 2);
     QList<DelegateButton*> result;
 
     if (!mDeleteButton) {

@@ -1083,7 +1083,6 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
 
     //  QTime mouseMoveTime = QTime::currentTime();
     if(!mIsDragInProgress && ((mapToScene(event->pos()) - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance())) {
-        qDebug() << "mouse move event canceled";
         return;
     }
 
