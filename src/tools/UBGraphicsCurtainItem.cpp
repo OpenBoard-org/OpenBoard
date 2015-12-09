@@ -167,6 +167,7 @@ void UBGraphicsCurtainItem::copyItemParameters(UBItem *copy) const
         cp->setFlag(QGraphicsItem::ItemIsMovable, true);
         cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
+        cp->setZValue(this->zValue());
     }
 }
 
