@@ -27,11 +27,15 @@
 
 #include "UBApplication.h"
 
-#include <QtGui>
+#include <QtWidgets>
+
 #include <QtWebKit>
 #include <QtXml>
 #include <QFontDatabase>
-#include <QStyleFactory>
+
+#if defined(Q_WS_MACX)
+#include <Carbon/Carbon.h>
+#endif
 
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
@@ -81,11 +85,32 @@ const QString UBApplication::mimeTypeUniboardPage = QString("application/vnd.mne
 const QString UBApplication::mimeTypeUniboardPageItem =  QString("application/vnd.mnemis-uniboard-page-item");
 const QString UBApplication::mimeTypeUniboardPageThumbnail = QString("application/vnd.mnemis-uniboard-thumbnail");
 
-#ifdef Q_OS_OSX
+#ifdef Q_WS_MAC
 bool bIsMinimized = false;
 #endif
 
 QObject* UBApplication::staticMemoryCleaner = 0;
+
+#if defined(Q_WS_MAC)
+static OSStatus ub_appleEventProcessor(const AppleEvent *ae, AppleEvent *event, long handlerRefCon)
+{
+    Q_UNUSED(event);
+    OSType aeID = typeWildCard;
+    OSType aeClass = typeWildCard;
+
+    AEGetAttributePtr(ae, keyEventClassAttr, typeType, 0, &aeClass, sizeof(aeClass), 0);
+    AEGetAttributePtr(ae, keyEventIDAttr, typeType, 0, &aeID, sizeof(aeID), 0);
+
+    if (aeClass == kCoreEventClass && aeID == kAEReopenApplication)
+    {
+        // User clicked on Uniboard in the Dock
+        ((UBApplicationController*)handlerRefCon)->hideDesktop();
+        return noErr;
+    }
+
+    return eventNotHandledErr;
+}
+#endif
 
 
 UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSingleApplication(id, argc, argv)
@@ -129,11 +154,17 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
     connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), this, SLOT(toolBarDisplayTextChanged(QVariant)));
     updateProtoActionsState();
 
-#ifndef Q_OS_OSX
+#ifndef Q_WS_MAC
     setWindowIcon(QIcon(":/images/OpenBoard.png"));
 #endif
 
-    setStyle("fusion");
+
+    //QApplication::setStyle(new UBStyle()); // Style is owned and deleted by the application
+
+    //QApplication::setStyle(QStyleFactory::create("Fusion"));
+
+    //UBStyle *style_appli   new UBStyle();
+    //QApplication::setStyle(style_appli); // Style is owned and deleted by the application
 
     QString css = UBFileSystemUtils::readTextFile(UBPlatformUtils::applicationResourcesDirectory() + "/etc/"+ qApp->applicationName()+".css");
     if (css.length() > 0)
@@ -183,13 +214,21 @@ UBApplication::~UBApplication()
 QString UBApplication::checkLanguageAvailabilityForSankore(QString &language)
 {
     QStringList availableTranslations = UBPlatformUtils::availableTranslations();
+    //QStringList availableTranslations ;availableTranslations<< "OpenBoard_fr";
     if(availableTranslations.contains(language,Qt::CaseInsensitive))
         return language;
     else{
         if(language.length() > 2){
             QString shortLanguageCode = language.left(2);
-            if(availableTranslations.contains(shortLanguageCode,Qt::CaseInsensitive))
-                return shortLanguageCode;
+            //if(availableTranslations.contains(shortLanguageCode,Qt::CaseInsensitive))
+            bool find_lang = false;
+            foreach (const QString &str, availableTranslations) {
+                       if (str.contains(shortLanguageCode))
+                           return shortLanguageCode;
+                   }
+
+            //if(availableTranslations.contains(shortLanguageCode))
+            //return shortLanguageCode;
         }
     }
     return QString("");
@@ -209,6 +248,12 @@ void UBApplication::setupTranslators(QStringList args)
 //            forcedLanguage = setLanguage;
 //    }
 
+    else{
+            QString setLanguage = UBSettings::settings()->appPreferredLanguage->get().toString();
+            if(!setLanguage.isEmpty())
+                forcedLanguage = setLanguage;
+        }
+
     QString language("");
 
     if(!forcedLanguage.isEmpty())
@@ -216,6 +261,7 @@ void UBApplication::setupTranslators(QStringList args)
 
     if(language.isEmpty()){
         QString systemLanguage = UBPlatformUtils::systemLanguage();
+        //QString systemLanguage = "fr_CH";
         language = checkLanguageAvailabilityForSankore(systemLanguage);
     }
 
@@ -313,7 +359,7 @@ int UBApplication::exec(const QString& pFileToImport)
 
     connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), applicationController, SLOT(showDesktop(bool)));
     connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), this, SLOT(stopScript()));
-#ifndef Q_OS_OSX
+#ifndef Q_WS_MAC
     connect(mainWindow->actionHideApplication, SIGNAL(triggered()), mainWindow, SLOT(showMinimized()));
 #else
     connect(mainWindow->actionHideApplication, SIGNAL(triggered()), this, SLOT(showMinimized()));
@@ -343,6 +389,11 @@ int UBApplication::exec(const QString& pFileToImport)
     if (pFileToImport.length() > 0)
         UBApplication::applicationController->importFile(pFileToImport);
 
+#if defined(Q_OS_OSX)
+    static AEEventHandlerUPP ub_proc_ae_handlerUPP = AEEventHandlerUPP(ub_appleEventProcessor);
+    AEInstallEventHandler(kCoreEventClass, kAEReopenApplication, ub_proc_ae_handlerUPP, SRefCon(UBApplication::applicationController), true);
+#endif
+
     if (UBSettings::settings()->appStartMode->get().toInt())
         applicationController->showDesktop();
     else
@@ -360,14 +411,14 @@ void UBApplication::onScreenCountChanged(int newCount)
     mainWindow->actionMultiScreen->setEnabled(displayManager.numScreens() > 1);
 }
 
+#ifdef Q_WS_MAC
 void UBApplication::showMinimized()
 {
-#ifdef Q_OS_OSX
     mainWindow->hide();
     bIsMinimized = true;
-#endif
 }
 
+#endif
 
 void UBApplication::startScript()
 {
@@ -509,7 +560,7 @@ void UBApplication::decorateActionMenu(QAction* action)
 
             menu->addSeparator();
 
-#ifndef Q_OS_LINUX // No Podcast on Linux yet
+#ifndef Q_WS_X11 // No Podcast on Linux yet
             menu->addAction(mainWindow->actionPodcast);
             mainWindow->actionPodcast->setText(tr("Podcast"));
 #endif
@@ -560,7 +611,11 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
     {
         QFileOpenEvent *fileToOpenEvent = static_cast<QFileOpenEvent *>(event);
 
-        UBPlatformUtils::setFrontProcess();
+#if defined(Q_WS_MACX)
+        ProcessSerialNumber psn;
+        GetCurrentProcess(&psn);
+        SetFrontProcess(&psn);
+#endif
 
         applicationController->importFile(fileToOpenEvent->file());
     }
@@ -577,7 +632,7 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
         boardController->controlView()->setMultiselection(false);
     }
 
-#ifdef Q_OS_OSX
+#ifdef Q_WS_MAC
     if (bIsMinimized && event->type() == QEvent::ApplicationActivate){
         if (mainWindow->isHidden()) mainWindow->show();
         bIsMinimized = false;
@@ -617,6 +672,39 @@ void UBApplication::cleanup()
     documentController = NULL;
 }
 
+void UBStyle::drawItemText(QPainter *painter, const QRect &rect, int alignment, const QPalette &pal,
+                          bool enabled, const QString& text, QPalette::ColorRole textRole) const
+{
+    if (text.isEmpty())
+        return;
+
+    QPen savedPen;
+    if (textRole != QPalette::NoRole)
+    {
+        savedPen = painter->pen();
+        painter->setPen(QPen(pal.brush(textRole), savedPen.widthF()));
+    }
+
+    if (!enabled)
+    {
+        QPen pen = painter->pen();
+        QColor half = pen.color();
+
+        half.setRed(half.red() / 2);
+        half.setGreen(half.green() / 2);
+        half.setBlue(half.blue() / 2);
+
+        painter->setPen(half);
+        painter->drawText(rect, alignment, text);
+        painter->setPen(pen);
+    }
+
+    painter->drawText(rect, alignment, text);
+
+    if (textRole != QPalette::NoRole)
+        painter->setPen(savedPen);
+}
+
 QString UBApplication::urlFromHtml(QString html)
 {
     QString _html;
@@ -646,7 +734,8 @@ bool UBApplication::isFromWeb(QString url)
 {
     bool res = true;
 
-    if( url.startsWith("openboardtool://") ||
+    if( //url.startsWith("uniboardTool://") ||
+        url.startsWith("OpenboardTool://") ||
         url.startsWith("file://") ||
         url.startsWith("/")){
         res = false;
