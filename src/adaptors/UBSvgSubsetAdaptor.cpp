@@ -1983,10 +1983,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::audioItemToLinkedAudio(UBGraphicsMed
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
     }
 
-    QString audioFileHref = audioItem->mediaFileUrl().toString();
-    audioFileHref = UBFileSystemUtils::removeLocalFilePrefix(audioFileHref);
-    if(audioFileHref.startsWith(mDocumentPath))
-        audioFileHref = audioFileHref.replace(mDocumentPath + "/","");
+    QString audioFileHref = "audios/" + audioItem->mediaFileUrl().fileName();
 
     mXmlWriter.writeAttribute(nsXLink, "href", audioFileHref);
     mXmlWriter.writeEndElement();
@@ -2225,7 +2222,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsItemToSvg(QGraphicsItem* ite
         QUrl sourceUrl = ubItem->sourceUrl();
 
         if (!sourceUrl.isEmpty())
-            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "source", sourceUrl.toString());
+            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "source", sourceUrl.path());
 
     }
 
@@ -2285,8 +2282,10 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
         widgetRootUrl = widgetTargetDir;
     }
 
+    QString widgetPath = "widgets/" + widgetRootUrl.fileName();
+
     mXmlWriter.writeStartElement("foreignObject");
-    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "src", widgetRootUrl.toString());
+    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "src", widgetPath);
 
     graphicsItemToSvg(item);
 
@@ -2306,6 +2305,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
         startFileUrl = item->mainHtmlFileName();
     else
         startFileUrl = widgetRootUrl.toString() + "/" + item->mainHtmlFileName();
+
+    startFileUrl = QUrl::fromPercentEncoding(startFileUrl.toUtf8());
 
     mXmlWriter.writeAttribute("src", startFileUrl);
     mXmlWriter.writeEndElement(); //iFrame
