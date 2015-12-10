@@ -2012,11 +2012,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsMed
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
     }
 
-    QString videoFileHref = videoItem->mediaFileUrl().toString();
-
-    videoFileHref = UBFileSystemUtils::removeLocalFilePrefix(videoFileHref);
-    if(videoFileHref.startsWith(mDocumentPath))
-        videoFileHref = videoFileHref.replace(mDocumentPath + "/","");
+    QString videoFileHref = "videos/" + videoItem->mediaFileUrl().fileName();
 
     mXmlWriter.writeAttribute(nsXLink, "href", videoFileHref);
     mXmlWriter.writeEndElement();
