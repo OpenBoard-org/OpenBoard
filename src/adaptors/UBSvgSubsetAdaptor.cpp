@@ -31,6 +31,7 @@
 #include <QtXml>
 #include <QGraphicsTextItem>
 #include <QDomElement>
+#include <QGraphicsVideoItem>
 
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
@@ -652,6 +653,10 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     videoItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
                     mScene->addItem(videoItem);
+                    mScene->addItem(videoItem->videoItem());
+
+                    // Update the child QGraphicsVideoItem's transformation matrix
+                    videoItem->setMatrix(videoItem->matrix());
 
                     videoItem->show();
 

@@ -353,6 +353,13 @@ void UBGraphicsMediaItem::setPos(qreal x, qreal y)
     setPos(QPointF(x, y));
 }
 
+void UBGraphicsMediaItem::setMatrix(const QMatrix &matrix, bool combine)
+{
+    QGraphicsItem::setMatrix(matrix, combine);
+
+    if (mVideoItem)
+        mVideoItem->setMatrix(matrix, combine);
+}
 
 void UBGraphicsMediaItem::setTransform(const QTransform &matrix, bool combine)
 {
