@@ -1114,11 +1114,11 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
             UBGraphicsGroupContainerItem* groupCloned = group->deepCopyNoChildDuplication();
             groupCloned->resetMatrix();
             groupCloned->resetTransform();
+            groupCloned->setMatrix(group->matrix());
+            groupCloned->setTransform(group->transform());
+
             foreach(QGraphicsItem* eachItem ,group->childItems()){
                 QGraphicsItem* copiedChild = dynamic_cast<QGraphicsItem*>(dynamic_cast<UBItem*>(eachItem)->deepCopy());
-                copiedChild->resetTransform();
-                copiedChild->resetMatrix();
-                copiedChild->setMatrix(eachItem->sceneMatrix());
                 copy->addItem(copiedChild);
                 groupCloned->addToGroup(copiedChild);
             }
