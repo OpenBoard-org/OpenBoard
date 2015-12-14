@@ -16,21 +16,21 @@
 
 
 APPLICATION_NAME="OpenBoard"
-BASE_TROLLTECH_DIRECTORY=/usr/local/Trolltech/Qt-4.8.0
+BASE_QT_DIR=~/Qt/5.5/clang_64
 # Executables
-QMAKE=$BASE_TROLLTECH_DIRECTORY/bin/qmake
-MACDEPLOYQT=$BASE_TROLLTECH_DIRECTORY/bin/macdeployqt
-DMGUTIL="`pwd`/../Sankore-ThirdParty/refnum/dmgutil/dmgutil.pl"
+QMAKE=$BASE_QT_DIR/bin/qmake
+MACDEPLOYQT=$BASE_QT_DIR/bin/macdeployqt
+DMGUTIL="`pwd`/../OpenBoard-ThirdParty/refnum/dmgutil/dmgutil.pl"
 DSYMUTIL=/usr/bin/dsymutil
 STRIP=/usr/bin/strip
 PLISTBUDDY=/usr/libexec/PlistBuddy
 ICEBERG=/usr/local/bin/freeze
-LRELEASE=$BASE_TROLLTECH_DIRECTORY/bin/lrelease
+LRELEASE=$BASE_QT_DIR/bin/lrelease
 
 # Directories
 BUILD_DIR="build/macx/release"
 PRODUCT_DIR="$BUILD_DIR/product"
-BASE_QT_TRANSLATIONS_DIRECTORY=../Qt4.8/translations
+BASE_QT_TRANSLATIONS_DIRECTORY=$BASE_QT_DIR/translations
 
 function notify {
     GROWLNOTIFY=`which growlnotify`
@@ -90,8 +90,8 @@ function addImporter {
     fi
 
     cd ${importerDir}
-    git reset --hard
-    git pull
+#    git reset --hard
+#    git pull
     rm -rf ${importerName}.app
     rm MakeFile*
     rm -rf release
@@ -149,7 +149,7 @@ notify "Compiling ..."
 make -j4 release
 
 notify "Qt Translations ..."
-$LRELEASE $BASE_QT_TRANSLATIONS_DIRECTORY/translations.pro 
+#$LRELEASE $BASE_QT_TRANSLATIONS_DIRECTORY/translations.pro 
 addQtTranslations
 
 cp -R resources/customizations $PRODUCT_DIR/$APPLICATION_NAME.app/Contents/Resources
@@ -159,19 +159,19 @@ VERSION=`cat "$BUILD_DIR/version"`
 if [ ! -f "$BUILD_DIR/version" ]; then
     echo "version not found"
     exit 1
-else
-    notify "Tagging ..."
-    LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
-    if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
-	echo creating a tag with the version $VERSION
+#else
+#    notify "Tagging ..."
+#    LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
+#    if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
+#	echo creating a tag with the version $VERSION
 #	git tag -a "v$VERSION" -m "Generated setup for v$VERSION"
 #	git push origin --tags
-    fi
+#    fi
 fi
   
-if [ $? != 0 ]; then
-    abort "compilation failed"
-fi
+#if [ $? != 0 ]; then
+#    abort "compilation failed"
+#fi
 
 DMG="$APPLICATION_NAME.dmg"
 
