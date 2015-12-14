@@ -1220,7 +1220,7 @@ void UBGraphicsW3CWidgetItem::copyItemParameters(UBItem *copy) const
 
         cp->resize(this->size());
 
-        foreach(QString key, UBGraphicsWidgetItem::preferences().keys())
+        foreach(QString key, this->UBGraphicsWidgetItem::preferences().keys())
         {
             cp->setPreference(key, UBGraphicsWidgetItem::preferences().value(key));
         }
