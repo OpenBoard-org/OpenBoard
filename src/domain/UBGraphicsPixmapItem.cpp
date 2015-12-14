@@ -51,8 +51,7 @@ UBGraphicsPixmapItem::UBGraphicsPixmapItem(QGraphicsItem* parent)
                                            | GF_FLIPPABLE_ALL_AXIS
                                            | GF_REVOLVABLE
                                            | GF_RESPECT_RATIO
-                                           | GF_TOOLBAR_USED
-                                           | GF_SHOW_CONTENT_SOURCE));
+                                           | GF_TOOLBAR_USED));
 
     setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
     setTransformationMode(Qt::SmoothTransformation);

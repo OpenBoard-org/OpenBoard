@@ -46,8 +46,7 @@
 UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, QMediaPlayer* pMedia, QObject * parent)
     : UBGraphicsItemDelegate(pDelegated, parent, GF_COMMON
                              | GF_RESPECT_RATIO
-                             | GF_TOOLBAR_USED
-                             | GF_SHOW_CONTENT_SOURCE)
+                             | GF_TOOLBAR_USED)
     , mPlayPauseButton(NULL)
     , mMedia(pMedia)
     , mToolBarShowTimer(NULL)
