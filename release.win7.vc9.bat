@@ -16,13 +16,13 @@ REM ---------------------------------------------------------------------
 
 
 set APPLICATION_NAME=OpenBoard
-set QT_DIR=..\Qt-4.8
+set QT_DIR=C:\Qt\5.5\msvc2010
 set QT_BIN=%QT_DIR%\bin
 
-set PROGRAMS_FILE_PATH=C:\Program Files
+set PROGRAMS_FILE_PATH=C:\Program Files (x86)
 
 set GIT_BIN=%PROGRAMS_FILE_PATH%\Git\bin
-set VS_BIN=%PROGRAMS_FILE_PATH%\Microsoft Visual Studio 9.0\VC\bin
+set VS_BIN=%PROGRAMS_FILE_PATH%\Microsoft Visual Studio 10.0\VC\bin
 set WIN_SDK_BIN=%PROGRAMS_FILE_PATH%\Microsoft SDKs\Windows\v6.0A\Bin
 set INNO_EXE=%PROGRAMS_FILE_PATH%\Inno Setup 5\iscc.exe 
 set BUILD_DIR=build\win32\release
@@ -37,7 +37,7 @@ echo %PATH%
 
 REM Third party impoter application
 set IMPORTER_NAME=OpenBoardImporter
-set IMPORTER_PATH="%cd%\..\OpenBoard-Importer"
+set IMPORTER_PATH="..\OpenBoard-Importer"
 
 IF NOT EXIST "%IMPORTER_PATH%" GOTO EXIT_WITH_ERROR
 set HOME_DIR="%cd%"
@@ -47,7 +47,7 @@ IF EXIST "debug" (del "debug\*.*" /Q)
 IF EXIST "MakeFile" (del "MakeFile*" /Q)
 IF EXIST "MakeFile" (del "MakeFile*" /Q)
 IF EXIST "%IMPORTER_NAME%.exe" (del "%IMPORTER_NAME%.exe" /Q)
-"%QT_BIN%\qmake.exe" %IMPORTER_NAME%.pro"
+"%QT_BIN%\qmake.exe" %IMPORTER_NAME%.pro
 nmake release
 IF NOT EXIST release\"%IMPORTER_NAME%.exe" GOTO EXIT_WITH_ERROR
 cd %HOME_DIR%
@@ -55,7 +55,7 @@ cd %HOME_DIR%
 REM this checks if the custom qt directory path
 REM is correct. This is important because installer
 REM pick up dll from this directory
-IF NOT EXIST "%QT_DIR%\lib\QtCore4.dll" GOTO EXIT_WITH_ERROR
+REM IF NOT EXIST "%QT_DIR%\bin\Qt5Core.dll" GOTO EXIT_WITH_ERROR
 
 rmdir /S /Q %BUILD_DIR%
 rmdir /S /Q install
@@ -81,8 +81,8 @@ REM echo %LAST_TAG_VERSION%
 nmake release-install
 IF NOT EXIST build\win32\release\product\%APPLICATION_NAME%.exe GOTO EXIT_WITH_ERROR
 
-xcopy C:\%APPLICATION_NAME%\lib\*.dll build\win32\release\product\
-xcopy %QT_DIR%\lib\QtOpenGL4.dll build\win32\release\product\
+xcopy C:\%APPLICATION_NAME%\bin\*.dll build\win32\release\product\
+xcopy %QT_DIR%\bin\Qt5OpenGL.dll build\win32\release\product\
 
 set CUSTOMIZATIONS=build\win32\release\product\customizations
 mkdir %CUSTOMIZATIONS%

@@ -8,7 +8,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{F6E79ADE-83AE-4A2E-92D7-145BDC014271}
+AppId={{8CCA6AC7-BBF9-4DD2-8E70-A907E0FCA38F}}
 AppName=OpenBoard
 AppVerName=OpenBoard {#ApplicationVersion}
 AppPublisher=Open Education Foundation
@@ -46,58 +46,80 @@ Type: filesandordirs ; Name: "{app}\plugins"
 Type: filesandordirs ; Name: "{app}\i18n"
 Type: files ; Name: "{app}\*.dll"
 
+
+#define QtLibs GetEnv('QT_BIN')
+#define QtDir GetEnv('QT_DIR')
+
 [Files]
 Source: "..\OpenBoard-ThirdParty\microsoft\vcredist_x86.exe"; DestDir:"{tmp}"
 Source: "build\win32\release\product\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ;OpenSSL
-Source: "..\OpenBoard-ThirdParty\openssl\openssl-1.0.0d\out32dll\libeay32.dll"; DestDir:"{app}"; Flags: ignoreversion
-Source: "..\OpenBoard-ThirdParty\openssl\openssl-1.0.0d\out32dll\ssleay32.dll"; DestDir:"{app}"; Flags: ignoreversion
+Source: "..\OpenBoard-ThirdParty\openssl\openssl-1.0.2-win32\lib\libeay32.lib"; DestDir:"{app}"; Flags: ignoreversion
+Source: "..\OpenBoard-ThirdParty\openssl\openssl-1.0.2-win32\lib\ssleay32.lib"; DestDir:"{app}"; Flags: ignoreversion
 
 ;Qt base dll
-Source: "..\Qt-4.8\lib\QtScript4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Qt-4.8\lib\QtGui4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Qt-4.8\lib\QtXml4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Qt-4.8\lib\QtCore4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Qt-4.8\lib\QtWebKit4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Qt-4.8\lib\phonon4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Qt-4.8\lib\QtNetwork4.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Qt-4.8\lib\QtSvg4.dll"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "OpenBoard.exe"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5Core.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5Gui.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5Multimedia.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5MultimediaWidgets.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5Network.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5Opengl.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5PrintSupport.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5Qml.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5Script.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5Sql.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5Svg.dll"; DestDir: "{app}"   
+;Source: "Qt5V8.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5WebKit.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5WebKitWidgets.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5Widgets.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5Xml.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\libGLESv2.dll"; DestDir: "{app}"  
+Source: "{#QtLibs}\Qt5Quick.dll"; DestDir: "{app}"  
+Source: "{#QtLibs}\Qt5Positioning.dll"; DestDir: "{app}"  
+Source: "{#QtLibs}\Qt5Sensors.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5WebChannel.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\libEGL.dll"; DestDir: "{app}"  
+;Source: "/etc/freezedWidgetWrapper.html"; DestDir: "{app}"  
+;Source: "*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
-;Qt plugins
-Source: "..\Qt-4.8\plugins\accessible\qtaccessiblecompatwidgets4.dll"; DestDir: "{app}\accessible"; Flags: ignoreversion
-Source: "..\Qt-4.8\plugins\accessible\qtaccessiblewidgets4.dll"; DestDir: "{app}\accessible"; Flags: ignoreversion
-Source: "..\Qt-4.8\plugins\bearer\qgenericbearer4.dll"; DestDir: "{app}\bearer"; Flags: ignoreversion
-Source: "..\Qt-4.8\plugins\bearer\qnativewifibearer4.dll"; DestDir: "{app}\bearer"; Flags: ignoreversion
-Source: "..\Qt-4.8\plugins\codecs\qcncodecs4.dll"; DestDir: "{app}\codecs"; Flags: ignoreversion
-Source: "..\Qt-4.8\plugins\codecs\qjpcodecs4.dll"; DestDir: "{app}\codecs"; Flags: ignoreversion
-Source: "..\Qt-4.8\plugins\codecs\qkrcodecs4.dll"; DestDir: "{app}\codecs"; Flags: ignoreversion
-Source: "..\Qt-4.8\plugins\codecs\qtwcodecs4.dll"; DestDir: "{app}\codecs"; Flags: ignoreversion
-Source: "..\Qt-4.8\plugins\graphicssystems\qglgraphicssystem4.dll"; DestDir: "{app}\graphicssystems"; Flags: ignoreversion
-Source: "..\Qt-4.8\plugins\graphicssystems\qtracegraphicssystem4.dll"; DestDir: "{app}\graphicssystems"; Flags: ignoreversion
-Source: "..\Qt-4.8\plugins\iconengines\qsvgicon4.dll"; DestDir: "{app}\iconengines"; Flags: ignoreversion
-Source: "..\Qt-4.8\plugins\imageformats\qgif4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\Qt-4.8\plugins\imageformats\qico4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\Qt-4.8\plugins\imageformats\qjpeg4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\Qt-4.8\plugins\imageformats\qmng4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\Qt-4.8\plugins\imageformats\qsvg4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\Qt-4.8\plugins\imageformats\qtiff4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "..\Qt-4.8\plugins\phonon_backend\phonon_ds94.dll"; DestDir: "{app}\phonon_backend"; Flags: ignoreversion
+Source: "{#QtLibs}\icudt54.dll"; DestDir: "{app}"  
+Source: "{#QtLibs}\icuin54.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\icuuc54.dll"; DestDir: "{app}"  
+
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
-;qt multimedia plugins
-Source: "c:\OpenBoard\plugins\mediaservice\qtmedia_audioengine.dll"; DestDir: "c:\OpenBoard\plugins\mediaservice"; Flags: ignoreversion
-Source: "c:\OpenBoard\plugins\mediaservice\qtmedia_audioengined.dll"; DestDir: "c:\OpenBoard\plugins\mediaservice"; Flags: ignoreversion
-Source: "c:\OpenBoard\plugins\mediaservice\dsengine.dll"; DestDir: "c:\OpenBoard\plugins\mediaservice"; Flags: ignoreversion
-Source: "c:\OpenBoard\plugins\mediaservice\dsengined.dll"; DestDir: "c:\OpenBoard\plugins\mediaservice"; Flags: ignoreversion
+;Qt windows plugins
+Source: "{#QtDir}\plugins\platforms\qminimal.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\platforms\qoffscreen.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\platforms\qwindows.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
 
-Source: "c:\OpenBoard\plugins\playlistformats\qtmultimediakit_m3u.dll"; DestDir: "c:\OpenBoard\plugins\playlistformats"; Flags: ignoreversion
-Source: "c:\OpenBoard\plugins\playlistformats\qtmultimediakit_m3ud.dll"; DestDir: "c:\OpenBoard\plugins\playlistformats"; Flags: ignoreversion
+
+;Qt images formats plugins
+Source: "{#QtDir}\plugins\imageformats\qgif.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\imageformats\qico.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\imageformats\qjpeg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\imageformats\qmng.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\imageformats\qsvg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\imageformats\qtiff.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion   
+
+;qt icon engine plugins
+Source: "{#QtDir}\plugins\iconengines\qsvgicon.dll"; DestDir: "{app}\iconengines"; Flags: ignoreversion
+
+;qt multimedia plugins
+Source: "{#QtDir}\plugins\mediaservice\dsengine.dll"; DestDir: "\plugins\mediaservice"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\mediaservice\dsengined.dll"; DestDir: "\plugins\mediaservice"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\mediaservice\qtmedia_audioengine.dll"; DestDir: "\plugins\mediaservice"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\mediaservice\qtmedia_audioengined.dll"; DestDir: "\plugins\mediaservice"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\mediaservice\wmfengine.dll"; DestDir: "\plugins\mediaservice"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\mediaservice\wmfengined.dll"; DestDir: "\plugins\mediaservice"; Flags: ignoreversion   
 
 ;OpenBoardImporter
 Source: "..\OpenBoard-Importer\release\OpenBoardImporter.exe"; DestDir: "c:\OpenBoard\Importer"; Flags: ignoreversion
-Source: "..\Qt-4.8\lib\QtGui4.dll"; DestDir: "c:\OpenBoard\Importer"; Flags: ignoreversion
-Source: "..\Qt-4.8\lib\QtCore4.dll"; DestDir: "c:\OpenBoard\Importer"; Flags: ignoreversion
+Source: "{#QtLibs}\Qt5Core.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5Gui.dll"; DestDir: "{app}"
 
 ;fonts for xpdf
 Source: "resources\windows\xpdfrc"; DestDir: "{app}"; Flags: ignoreversion
