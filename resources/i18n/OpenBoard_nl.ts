@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="nl_BE">
+<TS version="2.1" language="nl_BE">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -841,14 +841,6 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Element ID = </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Content is not supported in destination format.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Remove Page</source>
         <translation type="unfinished">Pagina verwijderen</translation>
     </message>
@@ -935,6 +927,14 @@
     </message>
     <message>
         <source>Ungroup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saving document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document has just been saved...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1223,23 +1223,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation>Exporteer naar IWB</translation>
+        <translation type="vanished">Exporteer naar IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation>Exporteer als IWB bestand</translation>
+        <translation type="vanished">Exporteer als IWB bestand</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Document wordt geëxporteerd...</translation>
+        <translation type="vanished">Document wordt geëxporteerd...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export gelukt.</translation>
+        <translation type="vanished">Export gelukt.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>Export mislukt.</translation>
+        <translation type="vanished">Export mislukt.</translation>
     </message>
 </context>
 <context>
@@ -1534,23 +1534,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation>Standaard bestandformaat (</translation>
+        <translation type="vanished">Standaard bestandformaat (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation>Importering van bestand %1...</translation>
+        <translation type="vanished">Importering van bestand %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>Importering van bestand %1 is mislukt.</translation>
+        <translation type="vanished">Importering van bestand %1 is mislukt.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Import gelukt.</translation>
+        <translation type="vanished">Import gelukt.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation>Import mislukt.</translation>
+        <translation type="vanished">Import mislukt.</translation>
     </message>
 </context>
 <context>
@@ -1677,10 +1677,6 @@ Do you want to ignore these errors for this host?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open-SankorÃ© documents are present on your computer. It is possible to import them to OpenBoard by pressing the âProceedâ button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show this panel next time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1694,6 +1690,10 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Proceed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2385,7 +2385,7 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation>Voorkeuren</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>version : …</source>
         <translation>versie : ....</translation>
     </message>
@@ -2517,11 +2517,11 @@ p, li { white-space: pre-wrap; }
         <source>Credits</source>
         <translation>Credits</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Open-Sankoré Importer</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_CH">
+<TS version="2.1" language="fr_CH">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -842,11 +842,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation>Isa famantaranaan&apos;ilay zavatra =</translation>
+        <translation type="vanished">Isa famantaranaan&apos;ilay zavatra =</translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation>Tsy zakan&apos;ny andrefy tanjona ilay mpiatiny.</translation>
+        <translation type="vanished">Tsy zakan&apos;ny andrefy tanjona ilay mpiatiny.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -936,6 +936,14 @@
     <message>
         <source>Ungroup</source>
         <translation>Avaho</translation>
+    </message>
+    <message>
+        <source>Saving document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document has just been saved...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1223,23 +1231,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation>Alefa ho IWB</translation>
+        <translation type="vanished">Alefa ho IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation>Alefa ho rakitra IWB</translation>
+        <translation type="vanished">Alefa ho rakitra IWB</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Mandefa ny rakitra ...</translation>
+        <translation type="vanished">Mandefa ny rakitra ...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Fandefasana nety.</translation>
+        <translation type="vanished">Fandefasana nety.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>Fandefasana tsy nety.</translation>
+        <translation type="vanished">Fandefasana tsy nety.</translation>
     </message>
 </context>
 <context>
@@ -1534,23 +1542,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation>Andrefin&apos;ny rakitra mahazatra (</translation>
+        <translation type="vanished">Andrefin&apos;ny rakitra mahazatra (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation>Manafatra rakitra %1 ...</translation>
+        <translation type="vanished">Manafatra rakitra %1 ...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>Fanafarana ny rakitra %1 tsy nety.</translation>
+        <translation type="vanished">Fanafarana ny rakitra %1 tsy nety.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Fanafarana nety.</translation>
+        <translation type="vanished">Fanafarana nety.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation>Fanafarana tsy nety.</translation>
+        <translation type="vanished">Fanafarana tsy nety.</translation>
     </message>
 </context>
 <context>
@@ -1683,10 +1691,6 @@ Tena tsy te hiraharaha an&apos;ireo tsy mety ho an&apos;ilay milina ve ianao?</t
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open-SankorÃ© documents are present on your computer. It is possible to import them to OpenBoard by pressing the âProceedâ button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show this panel next time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1700,6 +1704,10 @@ Tena tsy te hiraharaha an&apos;ireo tsy mety ho an&apos;ilay milina ve ianao?</t
     </message>
     <message>
         <source>Proceed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2472,7 +2480,7 @@ p, li { white-space: pre-wrap; }
         <source>Marker</source>
         <translation>Penina lehibe</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>version : …</source>
         <translation>kinova: ...</translation>
     </message>
@@ -2524,11 +2532,11 @@ p, li { white-space: pre-wrap; }
         <source>Credits</source>
         <translation>Voaka</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Open-Sankoré Importer</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>

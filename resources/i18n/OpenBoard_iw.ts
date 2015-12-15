@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="he_IL">
+<TS version="2.1" language="he_IL">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -843,11 +843,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation>זהות הרכיב:</translation>
+        <translation type="vanished">זהות הרכיב:</translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation>התוכן אינו נתמך בפורמט היעד</translation>
+        <translation type="vanished">התוכן אינו נתמך בפורמט היעד</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -937,6 +937,14 @@
     <message>
         <source>Ungroup</source>
         <translation>בטל קיבוץ</translation>
+    </message>
+    <message>
+        <source>Saving document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document has just been saved...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1225,23 +1233,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation>ייצא ל-IWB</translation>
+        <translation type="vanished">ייצא ל-IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation>ייצא כקובץ IWB</translation>
+        <translation type="vanished">ייצא כקובץ IWB</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>מייצא מסמך...</translation>
+        <translation type="vanished">מייצא מסמך...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>הייצוא בוצע בהצלחה.</translation>
+        <translation type="vanished">הייצוא בוצע בהצלחה.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>פעולת הייצוא נכשלה</translation>
+        <translation type="vanished">פעולת הייצוא נכשלה</translation>
     </message>
 </context>
 <context>
@@ -1536,23 +1544,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation>פורמט קובץ רגיל )</translation>
+        <translation type="vanished">פורמט קובץ רגיל )</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation>מייבא קובץ %1...</translation>
+        <translation type="vanished">מייבא קובץ %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>ייבוא קובץ %1 נכשל.</translation>
+        <translation type="vanished">ייבוא קובץ %1 נכשל.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>הייבוא בוצע בהצלחה.</translation>
+        <translation type="vanished">הייבוא בוצע בהצלחה.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation>הייבוא נכשל.</translation>
+        <translation type="vanished">הייבוא נכשל.</translation>
     </message>
 </context>
 <context>
@@ -1680,10 +1688,6 @@ Do you want to ignore these errors for this host?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open-SankorÃ© documents are present on your computer. It is possible to import them to OpenBoard by pressing the âProceedâ button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show this panel next time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1697,6 +1701,10 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Proceed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2385,7 +2393,7 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation>העדפות</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>version : …</source>
         <translation>גרסא:...</translation>
     </message>
@@ -2517,11 +2525,11 @@ p, li { white-space: pre-wrap; }
         <source>Credits</source>
         <translation>אשראי</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Open-Sankoré Importer</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sk_SK" sourcelanguage="en">
+<TS version="2.1" language="sk_SK" sourcelanguage="en">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -844,11 +844,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation>ID prvku =</translation>
+        <translation type="vanished">ID prvku =</translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation>Obsah nie je podporovaný v cieľovom formáte.</translation>
+        <translation type="vanished">Obsah nie je podporovaný v cieľovom formáte.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -938,6 +938,14 @@
     <message>
         <source>Ungroup</source>
         <translation>Oddeliť</translation>
+    </message>
+    <message>
+        <source>Saving document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document has just been saved...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1227,23 +1235,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation>Exportovať do IWB</translation>
+        <translation type="vanished">Exportovať do IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation>Exportovať ako súbor IWB</translation>
+        <translation type="vanished">Exportovať ako súbor IWB</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Exportuje sa dokument...</translation>
+        <translation type="vanished">Exportuje sa dokument...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export bol úspešný.</translation>
+        <translation type="vanished">Export bol úspešný.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>Export sa nepodaril.</translation>
+        <translation type="vanished">Export sa nepodaril.</translation>
     </message>
 </context>
 <context>
@@ -1538,23 +1546,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Importing file %1...</source>
-        <translation>Nahráva sa súbor %1...</translation>
+        <translation type="vanished">Nahráva sa súbor %1...</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation>Nahrávanie sa nepodarilo.</translation>
+        <translation type="vanished">Nahrávanie sa nepodarilo.</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>Nahrávanie súboru %1 sa nepodarilo.</translation>
+        <translation type="vanished">Nahrávanie súboru %1 sa nepodarilo.</translation>
     </message>
     <message>
         <source>Common File Format (</source>
-        <translation>Spoločný formát súboru (</translation>
+        <translation type="vanished">Spoločný formát súboru (</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Nahrávanie bolo úspešne dokončené.</translation>
+        <translation type="vanished">Nahrávanie bolo úspešne dokončené.</translation>
     </message>
 </context>
 <context>
@@ -1687,10 +1695,6 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open-SankorÃ© documents are present on your computer. It is possible to import them to OpenBoard by pressing the âProceedâ button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show this panel next time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1704,6 +1708,10 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     </message>
     <message>
         <source>Proceed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2480,7 +2488,7 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation>Predvoľby</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>version : …</source>
         <translation>Verzia:...</translation>
     </message>
@@ -2528,11 +2536,11 @@ p, li { white-space: pre-wrap; }
         <source>Credits</source>
         <translation>Poďakovanie</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Open-Sankoré Importer</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>

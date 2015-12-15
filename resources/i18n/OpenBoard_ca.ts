@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ca" sourcelanguage="en">
+<TS version="2.1" language="ca" sourcelanguage="en">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -842,11 +842,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation>ID de l&apos;element = </translation>
+        <translation type="vanished">ID de l&apos;element = </translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation>Aquest contingut no està suportat pel format escollit.</translation>
+        <translation type="vanished">Aquest contingut no està suportat pel format escollit.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -936,6 +936,14 @@
     <message>
         <source>Ungroup</source>
         <translation>Desagrupa</translation>
+    </message>
+    <message>
+        <source>Saving document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document has just been saved...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1118,7 +1126,6 @@
         <translation>
             <numerusform>Esteu segur que voleu eliminar %n pàgina del document seleccionat &apos;%1&apos;?</numerusform>
             <numerusform>Esteu segur que voleu eliminar %n pàgines del document seleccionat &apos;%1&apos;?</numerusform>
-            <numerusform>Esteu segur que voleu eliminar %n pàgines del document seleccionat &apos;%1&apos;?</numerusform>
         </translation>
     </message>
     <message>
@@ -1199,7 +1206,6 @@
         <translation>
             <numerusform>%1 pàgina copiada</numerusform>
             <numerusform>%1 pàgines copiades</numerusform>
-            <numerusform>%1 pàgines copiades</numerusform>
         </translation>
     </message>
 </context>
@@ -1225,23 +1231,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation>Exporta a IWB</translation>
+        <translation type="vanished">Exporta a IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation>Exporta com a fitxer IWB</translation>
+        <translation type="vanished">Exporta com a fitxer IWB</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>S&apos;està exportant el document...</translation>
+        <translation type="vanished">S&apos;està exportant el document...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>L&apos;exportació ha estat correcta.</translation>
+        <translation type="vanished">L&apos;exportació ha estat correcta.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>L&apos;exportació ha fallat.</translation>
+        <translation type="vanished">L&apos;exportació ha fallat.</translation>
     </message>
 </context>
 <context>
@@ -1536,23 +1542,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation>Format de fitxer comú (</translation>
+        <translation type="vanished">Format de fitxer comú (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation>S&apos;està important el fitxer %1...</translation>
+        <translation type="vanished">S&apos;està important el fitxer %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>Ha fallat la importació del fitxer %1.</translation>
+        <translation type="vanished">Ha fallat la importació del fitxer %1.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>La importació ha estat correcta.</translation>
+        <translation type="vanished">La importació ha estat correcta.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation>Ha fallat la importació.</translation>
+        <translation type="vanished">Ha fallat la importació.</translation>
     </message>
 </context>
 <context>
@@ -1685,10 +1691,6 @@ Voleu ignorar aquests errors per a aquest amfitrió?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open-SankorÃ© documents are present on your computer. It is possible to import them to OpenBoard by pressing the âProceedâ button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show this panel next time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1702,6 +1704,10 @@ Voleu ignorar aquests errors per a aquest amfitrió?</translation>
     </message>
     <message>
         <source>Proceed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2387,7 +2393,7 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation>Preferències</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>version : …</source>
         <translation>versió: …</translation>
     </message>
@@ -2519,11 +2525,11 @@ p, li { white-space: pre-wrap; }
         <source>Credits</source>
         <translation>Crèdits</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Open-Sankoré Importer</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>

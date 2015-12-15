@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.1">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -841,14 +841,6 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Element ID = </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Content is not supported in destination format.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Remove Page</source>
         <translation type="unfinished"></translation>
     </message>
@@ -935,6 +927,14 @@
     </message>
     <message>
         <source>Ungroup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saving document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document has just been saved...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1214,29 +1214,6 @@
     <name>UBExportAdaptor</name>
     <message>
         <source>Warnings during export was appeared</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>UBExportCFF</name>
-    <message>
-        <source>Export to IWB</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export as IWB File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1529,29 +1506,6 @@
     </message>
 </context>
 <context>
-    <name>UBImportCFF</name>
-    <message>
-        <source>Common File Format (</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Importing file %1...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import of file %1 failed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import successful.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import failed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>UBImportDocument</name>
     <message>
         <source>Importing file %1...</source>
@@ -1675,10 +1629,6 @@ Do you want to ignore these errors for this host?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open-SankorÃ© documents are present on your computer. It is possible to import them to OpenBoard by pressing the âProceedâ button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show this panel next time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1692,6 +1642,10 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Proceed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2459,7 +2413,7 @@ p, li { white-space: pre-wrap; }
         <source>Marker</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>version : …</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2511,11 +2465,11 @@ p, li { white-space: pre-wrap; }
         <source>Credits</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Open-Sankoré Importer</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>

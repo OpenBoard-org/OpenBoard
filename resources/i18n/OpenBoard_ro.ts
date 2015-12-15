@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="en_GB">
+<TS version="2.1" language="en_GB">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -842,11 +842,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation>ID element =</translation>
+        <translation type="vanished">ID element =</translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation>Conținutul nu este suportat în formatul de destinație.</translation>
+        <translation type="vanished">Conținutul nu este suportat în formatul de destinație.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -936,6 +936,14 @@
     <message>
         <source>Ungroup</source>
         <translation>Degrupare</translation>
+    </message>
+    <message>
+        <source>Saving document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document has just been saved...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1223,23 +1231,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation>Exportare în IWB</translation>
+        <translation type="vanished">Exportare în IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation>Exportare ca fișier IWB</translation>
+        <translation type="vanished">Exportare ca fișier IWB</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Exportare document...</translation>
+        <translation type="vanished">Exportare document...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Exportare reuşită.</translation>
+        <translation type="vanished">Exportare reuşită.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>Exportare nereuşită.</translation>
+        <translation type="vanished">Exportare nereuşită.</translation>
     </message>
 </context>
 <context>
@@ -1534,23 +1542,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation>Format de fişier comun (</translation>
+        <translation type="vanished">Format de fişier comun (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation>Importare fişier %1...</translation>
+        <translation type="vanished">Importare fişier %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>Importare fişier %1 nereuşită.</translation>
+        <translation type="vanished">Importare fişier %1 nereuşită.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Importare reuşită.</translation>
+        <translation type="vanished">Importare reuşită.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation>Importare nereuşită.</translation>
+        <translation type="vanished">Importare nereuşită.</translation>
     </message>
 </context>
 <context>
@@ -1683,10 +1691,6 @@ Doriţi să ignoraţi aceste erori pentru acest host?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open-SankorÃ© documents are present on your computer. It is possible to import them to OpenBoard by pressing the âProceedâ button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show this panel next time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1700,6 +1704,10 @@ Doriţi să ignoraţi aceste erori pentru acest host?</translation>
     </message>
     <message>
         <source>Proceed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2392,7 +2400,7 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation>Preferinţe</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>version : …</source>
         <translation>versiune : ...</translation>
     </message>
@@ -2524,11 +2532,11 @@ p, li { white-space: pre-wrap; }
         <source>Credits</source>
         <translation>Credite</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Open-Sankoré Importer</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>

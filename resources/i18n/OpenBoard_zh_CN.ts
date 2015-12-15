@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="zh_CN">
+<TS version="2.1" language="zh_CN">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -842,11 +842,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation>Element ID = </translation>
+        <translation type="vanished">Element ID = </translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation>目标格式不支持该内容。</translation>
+        <translation type="vanished">目标格式不支持该内容。</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -936,6 +936,14 @@
     <message>
         <source>Ungroup</source>
         <translation>取消组合</translation>
+    </message>
+    <message>
+        <source>Saving document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document has just been saved...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1221,23 +1229,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation>导出至IWB</translation>
+        <translation type="vanished">导出至IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation>以 IWB文件格式导出</translation>
+        <translation type="vanished">以 IWB文件格式导出</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>文档导出中……</translation>
+        <translation type="vanished">文档导出中……</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>导出成功。</translation>
+        <translation type="vanished">导出成功。</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>导出失败。</translation>
+        <translation type="vanished">导出失败。</translation>
     </message>
 </context>
 <context>
@@ -1532,23 +1540,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation>常见文件格式 (</translation>
+        <translation type="vanished">常见文件格式 (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation>正在导入文件 %1……</translation>
+        <translation type="vanished">正在导入文件 %1……</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>文件%1导入失败</translation>
+        <translation type="vanished">文件%1导入失败</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>导入成功</translation>
+        <translation type="vanished">导入成功</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation>导入失败</translation>
+        <translation type="vanished">导入失败</translation>
     </message>
 </context>
 <context>
@@ -1681,10 +1689,6 @@ Do you want to ignore these errors for this host?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open-SankorÃ© documents are present on your computer. It is possible to import them to OpenBoard by pressing the âProceedâ button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show this panel next time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1698,6 +1702,10 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Proceed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2390,7 +2398,7 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation>自定义</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>version : …</source>
         <translation>版本：……</translation>
     </message>
@@ -2522,11 +2530,11 @@ p, li { white-space: pre-wrap; }
         <source>Credits</source>
         <translation>版权</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Open-Sankoré Importer</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>

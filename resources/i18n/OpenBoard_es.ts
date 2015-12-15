@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="es_ES">
+<TS version="2.1" language="es_ES">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -842,11 +842,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation>Elemento ID = </translation>
+        <translation type="vanished">Elemento ID = </translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation>El formato de destino no permite este contenido</translation>
+        <translation type="vanished">El formato de destino no permite este contenido</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -936,6 +936,14 @@
     <message>
         <source>Ungroup</source>
         <translation>Desagrupar</translation>
+    </message>
+    <message>
+        <source>Saving document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document has just been saved...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1223,23 +1231,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation>Exportar a IWB</translation>
+        <translation type="vanished">Exportar a IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation>Exportar como fichero IWB</translation>
+        <translation type="vanished">Exportar como fichero IWB</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Exportando documento...</translation>
+        <translation type="vanished">Exportando documento...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Exportación satisfactoria.</translation>
+        <translation type="vanished">Exportación satisfactoria.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>Fallo en la exportación</translation>
+        <translation type="vanished">Fallo en la exportación</translation>
     </message>
 </context>
 <context>
@@ -1534,23 +1542,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation>Formato de archivo común (</translation>
+        <translation type="vanished">Formato de archivo común (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation>Importando archivo %1...</translation>
+        <translation type="vanished">Importando archivo %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>Fallo en la importanción del archivo %1.</translation>
+        <translation type="vanished">Fallo en la importanción del archivo %1.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Importación satisfactoria.</translation>
+        <translation type="vanished">Importación satisfactoria.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation>Fallo de la importación.</translation>
+        <translation type="vanished">Fallo de la importación.</translation>
     </message>
 </context>
 <context>
@@ -1677,10 +1685,6 @@ Do you want to ignore these errors for this host?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open-SankorÃ© documents are present on your computer. It is possible to import them to OpenBoard by pressing the âProceedâ button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show this panel next time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1694,6 +1698,10 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Proceed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2386,7 +2394,7 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation>Preferencias</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>version : …</source>
         <translation>versión : …</translation>
     </message>
@@ -2518,11 +2526,11 @@ p, li { white-space: pre-wrap; }
         <source>Credits</source>
         <translation>Créditos</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Open-Sankoré Importer</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>
