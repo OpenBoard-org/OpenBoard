@@ -35,9 +35,9 @@ initializeVariables()
   STANDARD_QT_USED=false
 
   PRODUCT_PATH="build/linux/release/product"
-  QT_PATH="/usr/local/Trolltech/Qt-4.8.0"
+  QT_PATH="/opt/qt55"
   PLUGINS_PATH="$QT_PATH/plugins"
-  GUI_TRANSLATIONS_DIRECTORY_PATH="../Qt-4.8/translations"
+  GUI_TRANSLATIONS_DIRECTORY_PATH="$QT_PATH/translations"
   QT_LIBRARY_DEST_PATH="$PRODUCT_PATH/qtlib"
   QT_LIBRARY_SOURCE_PATH="$QT_PATH/lib"
   if [ -z $ARCHITECTURE ]; then
@@ -107,7 +107,9 @@ copyQtLibrary(){
 
 
 buildWithStandardQt(){
-  STANDARD_QT=`which qmake-qt4`
+  # if both Qt4 and Qt5 are installed, choose Qt5
+  export QT_SELECT=5
+  STANDARD_QT=`which qmake`
   if [ $? == "0" ]; then
     QT_VERSION=`$STANDARD_QT --version | grep -i "Using Qt version" | sed -e "s/Using Qt version \(.*\) in.*/\1/"`
     if [ `echo $QT_VERSION | sed -e "s/\.//g"` -gt 480 ]; then
@@ -115,12 +117,7 @@ buildWithStandardQt(){
         STANDARD_QT_USED=true
         QMAKE_PATH=$STANDARD_QT
         LRELEASES=`which lrelease`
-        if [ "`arch`" == "i686" ] || [ "$ARCHITECTURE" == "i386" ]; then
-            QT_PATH="/usr/lib/i386-linux-gnu"
-        else
-            QT_PATH="/usr/lib/`arch`-linux-gnu"
-        fi
-        PLUGINS_PATH="$QT_PATH/qt4/plugins"
+        PLUGINS_PATH="$STANDARD_QT/../plugins"
     fi
   fi
 }
@@ -135,8 +132,8 @@ buildImporter(){
     rm -rf debug release
     rm *.o
 
-    git reset --hard
-    git pull
+    #git reset --hard
+    #git pull
 
     $QMAKE_PATH ${IMPORTER_NAME}.pro
     make clean
@@ -165,7 +162,7 @@ do
 done
 
 initializeVariables
-buildWithStandardQt
+#buildWithStandardQt
 
 alertIfPreviousVersionInstalled
 
@@ -212,14 +209,14 @@ VERSION=`cat build/linux/release/version`
 
 if [ ! -f build/linux/release/version ]; then
     notifyError "version not found"
-else
-    LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
-    if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
-        if [ $MAKE_TAG == true ]; then
-            git tag -a "OBv$VERSION" -m "OpenBoard setup for v$VERSION"
-            git push origin --tags
-        fi
-    fi
+#else
+#    LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
+#    if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
+#        if [ $MAKE_TAG == true ]; then
+#            git tag -a "OBv$VERSION" -m "OpenBoard setup for v$VERSION"
+#            git push origin --tags
+#        fi
+#    fi
 fi
 
 cp resources/linux/run.sh $PRODUCT_PATH
@@ -240,19 +237,22 @@ cp -R ${IMPORTER_DIR}/${IMPORTER_NAME} $PRODUCT_PATH/Importer
 if [ $STANDARD_QT_USED == false ]; then
 #copying custom qt library
   mkdir -p $QT_LIBRARY_DEST_PATH
-  copyQtLibrary libQtDBus
-  copyQtLibrary libQtScript
-  copyQtLibrary libQtSvg
-  copyQtLibrary libQtXmlPatterns
-  copyQtLibrary libQtNetwork
-  copyQtLibrary libQtXml
-  copyQtLibrary libQtGui
-  copyQtLibrary libQtCore
-  copyQtLibrary libphonon
-  copyQtLibrary libQtWebKit
+  copyQtLibrary libQt5Core
+  copyQtLibrary libQt5Gui
+  copyQtLibrary libQt5Multimedia
+  copyQtLibrary libQt5MultimediaWidgets
+  copyQtLibrary libQt5Network
+  copyQtLibrary libQt5OpenGL
+  copyQtLibrary libQt5PrintSupport
+  copyQtLibrary libQt5Script
+  copyQtLibrary libQt5Svg
+  copyQtLibrary libQt5WebKit
+  copyQtLibrary libQt5WebKitWidgets
+  copyQtLibrary libQt5Xml
+  copyQtLibrary libQt5XmlPatterns
 fi
 
-notifyProgress "QT" "Internalization"
+notifyProgress "QT" "Internationalization"
 if [ ! -e $PRODUCT_PATH/i18n ]; then
     mkdir $PRODUCT_PATH/i18n
 fi
