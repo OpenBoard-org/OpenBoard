@@ -35,7 +35,6 @@
 #import <Foundation/NSAutoreleasePool.h>
 #import <Cocoa/Cocoa.h>
 #import <Carbon/Carbon.h>
-#import <APELite.h>
 
 NSString* bundleShortVersion(NSBundle *bundle)
 {
