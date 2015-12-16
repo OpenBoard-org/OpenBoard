@@ -445,6 +445,15 @@
     <string>Color</string>
    </property>
   </action>
+  <action name="actionColor4">
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
+   </property>
+   <property name="text">
+    <string>Color</string>
+   </property>
+  </action>
   <action name="actionWebBack">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
