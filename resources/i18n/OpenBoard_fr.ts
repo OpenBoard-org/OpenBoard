@@ -944,7 +944,7 @@
     </message>
     <message>
         <source>Document has just been saved...</source>
-        <translation>Le document vient d&apos;être enregistré...</translation>
+        <translation>Le document vient d&apos;être sauvegardé...</translation>
     </message>
 </context>
 <context>
