@@ -57,8 +57,8 @@
 
 
 #ifdef Q_OS_WIN
-   // #include "windowsmedia/UBWindowsMediaVideoEncoder.h"
-   // #include "windowsmedia/UBWaveRecorder.h"
+    #include "windowsmedia/UBWindowsMediaVideoEncoder.h"
+    #include "windowsmedia/UBWaveRecorder.h"
 #elif defined(Q_OS_OSX)
     #include "quicktime/UBQuickTimeVideoEncoder.h"
     #include "quicktime/UBAudioQueueRecorder.h"
@@ -304,7 +304,7 @@ void UBPodcastController::start()
         applicationMainModeChanged(UBApplication::applicationController->displayMode());
 
 #ifdef Q_OS_WIN
-        //mVideoEncoder = new UBWindowsMediaVideoEncoder(this);  //deleted on stop
+        mVideoEncoder = new UBWindowsMediaVideoEncoder(this);  //deleted on stop
 #elif defined(Q_OS_OSX)
         mVideoEncoder = new UBQuickTimeVideoEncoder(this);  //deleted on stop
 #endif

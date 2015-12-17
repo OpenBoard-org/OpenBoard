@@ -109,12 +109,20 @@ RCC_DIR = $$BUILD_DIR/rcc
 UI_DIR = $$BUILD_DIR/ui
 
 win32 {
+
+
+   LIBS += -lUser32
+   LIBS += -lGdi32
+   LIBS += -lAdvApi32
+   LIBS += -lOle32
+
    RC_FILE = resources/win/OpenBoard.rc
-   CONFIG += qaxcontainer
+   CONFIG += axcontainer
    exists(console):CONFIG += console
    QMAKE_CXXFLAGS += /MP
+   QMAKE_CXXFLAGS += /MD
    QMAKE_CXXFLAGS_RELEASE += /Od /Zi
-   QMAKE_LFLAGS_RELEASE += /DEBUG
+   QMAKE_LFLAGS += /VERBOSE:LIB
    UB_LIBRARY.path = $$DESTDIR
    UB_I18N.path = $$DESTDIR/i18n
    UB_ETC.path = $$DESTDIR
@@ -125,6 +133,7 @@ win32 {
    system(echo "$$SVN_VERSION" > $$BUILD_DIR/svnversion)
 
    DEFINES += NOMINMAX # avoids compilation error in qdatetime.h
+
 
 }
 
