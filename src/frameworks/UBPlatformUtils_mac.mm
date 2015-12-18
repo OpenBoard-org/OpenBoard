@@ -588,12 +588,24 @@ void UBPlatformUtils::setFrontProcess()
  */
 void UBPlatformUtils::showFullScreen(QWidget *pWidget)
 {
-    pWidget->showMaximized();
-
-    /* On OS X, we want to hide the Dock and menu bar (aka "kiosk mode"). Qt's default behaviour
-     * when full-screening a QWidget is to set the dock and menu bar to auto-hide.
+    /* OpenBoard is designed to be run in "kiosk mode", i.e full screen. 
+     * On OS X, we want to maximize the application while hiding the dock and menu bar, 
+     * rather than use OS X's native full screen mode (which places the window on a new desktop). 
+     * However, Qt's default behaviour when full-screening a QWidget is to set the dock and menu bar to auto-hide.
      * Since it is impossible to later set different presentation options (i.e Hide dock & menu bar)
      * to NSApplication, we have to avoid calling QWidget::showFullScreen on OSX.
     */
+    
+    pWidget->showMaximized();
+
+    /* Hack. On OS X 10.10, showMaximize() resizes the widget to full screen;
+    but on 10.9, it is placed in the "available" screen area (i.e the screen area minus
+    the menu bar and dock area). So we have to manually resize it to the total screen height,
+    and move it up to the top of the screen (0,0 position) */
+
+    QDesktopWidget * desktop = QApplication::desktop();
+    pWidget->resize(pWidget->width(), desktop->screenGeometry().height());
+    pWidget->move(0, 0);
+
 }
 
