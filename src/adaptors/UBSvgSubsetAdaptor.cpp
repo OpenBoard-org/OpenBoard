@@ -1145,10 +1145,14 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                 }
             }
 
-            if (polygonItem->isNominalLine())
-                polygonItemToSvgLine(polygonItem, groupHoldsInfo);
-            else
+            UBGraphicsStroke* stroke = dynamic_cast<UBGraphicsStroke* >(currentStroke);
+
+            if (stroke && stroke->hasPressure())
                 polygonItemToSvgPolygon(polygonItem, groupHoldsInfo);
+
+            else if (polygonItem->isNominalLine())
+                polygonItemToSvgLine(polygonItem, groupHoldsInfo);
+
 
             continue;
         }
@@ -2100,7 +2104,6 @@ UBGraphicsMediaItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::videoItemFromSvg()
 void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* gItem)
 {
 
-    // TODO: check position
     QStringRef svgTransform = mXmlReader.attributes().value("transform");
 
     QMatrix itemMatrix;
