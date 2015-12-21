@@ -598,14 +598,14 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
     
     pWidget->showMaximized();
 
-    /* Hack. On OS X 10.10, showMaximize() resizes the widget to full screen;
-    but on 10.9, it is placed in the "available" screen area (i.e the screen area minus
-    the menu bar and dock area). So we have to manually resize it to the total screen height,
-    and move it up to the top of the screen (0,0 position) */
+    /* Bit of a hack. On OS X 10.10, showMaximized() resizes the widget to full screen (if the dock and
+     * menu bar are hidden); but on 10.9, it is placed in the "available" screen area (i.e the
+     * screen area minus the menu bar and dock area). So we have to manually resize it to the
+     * total screen height, and move it up to the top of the screen (y=0 position). */
 
     QDesktopWidget * desktop = QApplication::desktop();
     pWidget->resize(pWidget->width(), desktop->screenGeometry().height());
-    pWidget->move(0, 0);
+    pWidget->move(pWidget->pos().x(), 0);
 
 }
 
