@@ -761,7 +761,12 @@ void UBPodcastController::timerEvent(QTimerEvent *event)
             && event->timerId() == mScreenGrabingTimerEventID
             && mSourceWidget == qApp->desktop())
     {
-        QPixmap desktop = QPixmap::grabWindow(qApp->desktop()->screen(UBApplication::applicationController->displayManager()->controleScreenIndex())->winId());
+        QDesktopWidget * dtop = QApplication::desktop();
+        QRect dtopRect = dtop->screenGeometry();
+        QScreen * screen = QApplication::primaryScreen();
+
+        QPixmap desktop = screen->grabWindow(dtop->effectiveWinId(),
+                                             dtopRect.x(), dtopRect.y(), dtopRect.width(), dtopRect.height());
 
         {
             QPainter p(&mLatestCapture);
