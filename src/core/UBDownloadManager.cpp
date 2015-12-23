@@ -77,7 +77,7 @@ void UBAsyncLocalFileDownloader::run()
     if (mDesc.originalSrcUrl.isEmpty())
         mDesc.originalSrcUrl = mDesc.srcUrl;
 
-    QString uuid = QUuid::createUuid().toString();
+    QString uuid = QUuid::createUuid();
     UBPersistenceManager::persistenceManager()->addFileToDocument(UBApplication::boardController->selectedDocument(), 
         mDesc.srcUrl,
         destDirectory,
@@ -399,7 +399,8 @@ void UBDownloadManager::startFileDownload(sDownloadFileDesc desc)
         connect(http, SIGNAL(downloadFinished(int, bool, QUrl, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(onDownloadFinished(int, bool, QUrl, QUrl, QString, QByteArray, QPointF, QSize, bool)));
     
         //the desc.srcUrl is encoded. So we have to decode it before.
-        QUrl url = QUrl::fromEncoded(desc.srcUrl.toUtf8());
+        QUrl url;
+        url.setEncodedUrl(desc.srcUrl.toUtf8());
         // We send here the request and store its reply in order to be able to cancel it if needed
         mDownloads[desc.id] = dynamic_cast<QObject *>(http->get(url, desc.pos, desc.size, desc.isBackground));
     } 

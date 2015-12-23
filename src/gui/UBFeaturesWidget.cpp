@@ -27,8 +27,6 @@
 
 #include <QDomDocument>
 #include <QWebView>
-#include <QWebFrame>
-#include <QWidget>
 
 #include "UBFeaturesWidget.h"
 #include "gui/UBThumbnailWidget.h"
@@ -269,8 +267,8 @@ void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
 {
     QString previewImageUrl = ":images/libpalette/notFound.png";
 
-    QString widgetsUrl = QUrl::fromEncoded(metadata["Url"].toLatin1()).toString()/*metadata.value("Url", QString())*/;
-    QString widgetsThumbsUrl = QUrl::fromEncoded(metadata["thumbnailUrl"].toLatin1()).toString();
+    QString widgetsUrl = QUrl::fromEncoded(metadata["Url"].toAscii()).toString()/*metadata.value("Url", QString())*/;
+    QString widgetsThumbsUrl = QUrl::fromEncoded(metadata["thumbnailUrl"].toAscii()).toString();
 
     QString strType = UBFileSystemUtils::mimeTypeFromFileName(widgetsUrl);
     UBMimeType::Enum thumbType = UBFileSystemUtils::mimeTypeFromString(strType);
@@ -442,7 +440,7 @@ void UBFeaturesListView::dragMoveEvent( QDragMoveEvent *event )
 
 void UBFeaturesListView::dropEvent( QDropEvent *event )
 {
-    QObject *eventSource = event->source();
+    QWidget *eventSource = event->source();
     if (eventSource && eventSource->objectName() == UBFeaturesWidget::objNameFeatureList) {
         event->setDropAction( Qt::MoveAction );
     }
@@ -1174,7 +1172,7 @@ QMimeData* UBFeaturesModel::mimeData(const QModelIndexList &indexes) const
             if (!typeData.isNull()) {
                 typeData += UBFeaturesController::featureTypeSplitter();
             }
-            typeData += QString::number(element.getType()).toLatin1();
+            typeData += QString::number(element.getType()).toAscii();
         }
     }
 

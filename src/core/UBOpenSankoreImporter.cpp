@@ -50,9 +50,9 @@ UBOpenSankoreImporter::UBOpenSankoreImporter(QWidget* mainWidget, QObject *paren
 void UBOpenSankoreImporter::onProceedClicked()
 {
     QProcess newProcess;
-#ifdef Q_OS_LINUX
+#ifdef Q_WS_X11
     newProcess.startDetached(qApp->applicationDirPath()+"/Importer/OpenBoardImporter");
-#elif defined Q_OS_OSX
+#elif defined Q_WS_MACX
     newProcess.startDetached(qApp->applicationDirPath()+"/../Resources/OpenBoardImporter.app/Contents/MacOS/OpenBoardImporter");
 #else
     // Windows does not allows to run easily an exe located in a subdirectory when the main

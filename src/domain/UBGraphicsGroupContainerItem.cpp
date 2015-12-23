@@ -297,7 +297,7 @@ QVariant UBGraphicsGroupContainerItem::itemChange(GraphicsItemChange change, con
 {
     QVariant newValue = Delegate()->itemChange(change, value);
 
-    foreach(QGraphicsItem *child, childItems())
+    foreach(QGraphicsItem *child, children())
     {
         UBGraphicsItem *item = dynamic_cast<UBGraphicsItem*>(child);
         if (item)

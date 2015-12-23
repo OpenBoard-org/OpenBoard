@@ -1264,7 +1264,7 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, QGraphi
         UBApplication::undoStack->push(uc);
     }
 
-    pixmapItem->setTransform(QTransform::fromScale(pScaleFactor, pScaleFactor), true);
+    pixmapItem->scale(pScaleFactor, pScaleFactor);
 
     if (pUseAnimation)
     {
@@ -1340,7 +1340,7 @@ UBGraphicsMediaItem* UBGraphicsScene::addMedia(const QUrl& pMediaFileUrl, bool s
     if (!shouldPlayAsap)
     {
         mediaItem->mediaObject()->pause();
-        mediaItem->mediaObject()->setPosition(0);
+        mediaItem->mediaObject()->seek(0);
     }
 
     setDocumentUpdated();
@@ -1403,7 +1403,7 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
 
     qreal ssf = 1 / UBApplication::boardController->systemScaleFactor();
 
-    graphicsWidget->setTransform(QTransform::fromScale(ssf, ssf), true);
+    graphicsWidget->scale(ssf, ssf);
 
     graphicsWidget->setPos(QPointF(pPos.x() - graphicsWidget->boundingRect().width() / 2,
         pPos.y() - graphicsWidget->boundingRect().height() / 2));
@@ -1530,7 +1530,7 @@ UBGraphicsSvgItem* UBGraphicsScene::addSvg(const QUrl& pSvgFileUrl, const QPoint
     svgItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
     qreal sscale = 1 / UBApplication::boardController->systemScaleFactor();
-    svgItem->setTransform(QTransform::fromScale(sscale, sscale), true);
+    svgItem->scale(sscale, sscale);
 
     QPointF half(svgItem->boundingRect().width() / 2, svgItem->boundingRect().height() / 2);
     svgItem->setPos(pPos - half);
@@ -1860,7 +1860,7 @@ QGraphicsItem* UBGraphicsScene::scaleToFitDocumentSize(QGraphicsItem* item, bool
     {
         qreal ratio = qMin(maxWidth / size.width(), maxHeight / size.height());
 
-        item->setTransform(QTransform::fromScale(ratio, ratio), true);
+        item->scale(ratio, ratio);
 
         if(center)
         {

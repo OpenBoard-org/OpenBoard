@@ -55,7 +55,7 @@
 #include "board/UBBoardController.h"
 #include "board/UBBoardPaletteManager.h"
 
-#ifdef Q_OS_OSX
+#ifdef Q_WS_MAC
 #include "core/UBApplicationController.h"
 #include "desktop/UBDesktopAnnotationController.h"
 #endif
@@ -366,7 +366,7 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
     }
 
     bool acceptEvent = true;
-#ifdef Q_OS_OSX
+#ifdef Q_WS_MAC
     //Work around #1388. After selecting annotation tool in desktop mode, annotation view appears on top when
     //using Mac OS X. In this case tablet event should send mouse event so as to let user interact with
     //stylus palette.
@@ -750,13 +750,13 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
     if (itemShouldReceiveMousePressEvent(movingItem)){
         QGraphicsView::mousePressEvent (event);
 
-        QGraphicsItem* item = determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos().toPoint()), transform()));
+        QGraphicsItem* item = determineItemToPress(scene()->itemAt(this->mapToScene(event->posF().toPoint()), transform()));
         //use QGraphicsView::transform() to use not deprecated QGraphicsScene::itemAt() method
 
         if (item && (item->type() == QGraphicsProxyWidget::Type) && item->parentObject() && item->parentObject()->type() != QGraphicsProxyWidget::Type)
         {
             //Clean up children
-            QList<QGraphicsItem*> children = item->childItems();
+            QList<QGraphicsItem*> children = item->children();
 
             for( QList<QGraphicsItem*>::iterator it = children.begin(); it != children.end(); ++it )
                 if ((*it)->pos().x() < 0 || (*it)->pos().y() < 0)
@@ -865,7 +865,7 @@ void UBBoardView::setMultiselection(bool enable)
 }
 
 // work around for handling tablet events on MAC OS with Qt 4.8.0 and above
-#if defined(Q_OS_OSX)
+#if defined(Q_WS_MACX)
 bool UBBoardView::directTabletEvent(QEvent *event)
 {
     QTabletEvent *tEvent = static_cast<QTabletEvent *>(event);
@@ -905,7 +905,7 @@ QWidget *UBBoardView::widgetForTabletEvent(QWidget *w, const QPoint &pos)
 
     QWidget *childAtPos = NULL;
 
-    QList<QObject *> childs = w->childItems();
+    QList<QObject *> childs = w->children();
     foreach(QObject *child, childs)
     {
         QWidget *childWidget = qobject_cast<QWidget *>(child);
@@ -972,7 +972,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
     }
 
     mMouseDownPos = event->pos ();
-    movingItem = scene()->itemAt(this->mapToScene(event->localPos().toPoint()), QTransform());
+    movingItem = scene()->itemAt(this->mapToScene(event->posF().toPoint()));
 
     if (event->button () == Qt::LeftButton && isInteractive())
     {
@@ -993,7 +993,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
 
         case UBStylusTool::Hand :
             viewport()->setCursor(QCursor (Qt::ClosedHandCursor));
-            mPreviousPoint = event->localPos();
+            mPreviousPoint = event->posF();
             event->accept();
             break;
 
@@ -1107,7 +1107,7 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
         if (!mMouseButtonIsPressed && !mTabletStylusIsPressed) {
             break;
         }
-        QPointF eventPosition = event->localPos();
+        QPointF eventPosition = event->posF ();
         qreal dx = eventPosition.x () - mPreviousPoint.x ();
         qreal dy = eventPosition.y () - mPreviousPoint.y ();
         mController->handScroll (dx, dy);
@@ -1230,7 +1230,7 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
             graphicsItem->Delegate()->commitUndoStep();
 
         bool bReleaseIsNeed = true;
-        if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos().toPoint()), QTransform())))
+        if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->posF().toPoint()))))
         {
             movingItem = NULL;
             bReleaseIsNeed = false;
@@ -1299,7 +1299,7 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
             graphicsItem->Delegate()->commitUndoStep();
 
         bool bReleaseIsNeed = true;
-        if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos().toPoint()), QTransform())))
+        if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->posF().toPoint()))))
         {
             movingItem = NULL;
             bReleaseIsNeed = false;
@@ -1475,7 +1475,7 @@ void UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
         QPointF scenePos = mapToScene(wheelEvent->pos());
         QList<QGraphicsItem *> itemsList = scene()->items(scenePos);
 
-        bool isSelectedAndMouseHower = itemsList.contains(selItem);
+        QBool isSelectedAndMouseHower = itemsList.contains(selItem);
         if(isSelectedAndMouseHower)
         {
             QGraphicsView::wheelEvent(wheelEvent);

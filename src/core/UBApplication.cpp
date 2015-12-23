@@ -31,9 +31,8 @@
 #include <QtWebKit>
 #include <QtXml>
 #include <QFontDatabase>
-#include <QStyleFactory>
 
-#if defined(Q_OS_OSX)
+#if defined(Q_WS_MACX)
 #include <Carbon/Carbon.h>
 #endif
 
@@ -85,13 +84,13 @@ const QString UBApplication::mimeTypeUniboardPage = QString("application/vnd.mne
 const QString UBApplication::mimeTypeUniboardPageItem =  QString("application/vnd.mnemis-uniboard-page-item");
 const QString UBApplication::mimeTypeUniboardPageThumbnail = QString("application/vnd.mnemis-uniboard-thumbnail");
 
-#ifdef Q_OS_OSX
+#ifdef Q_WS_MAC
 bool bIsMinimized = false;
 #endif
 
 QObject* UBApplication::staticMemoryCleaner = 0;
 
-#if defined(Q_OS_OSX)
+#if defined(Q_WS_MAC)
 static OSStatus ub_appleEventProcessor(const AppleEvent *ae, AppleEvent *event, long handlerRefCon)
 {
     Q_UNUSED(event);
@@ -154,11 +153,11 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSing
     connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), this, SLOT(toolBarDisplayTextChanged(QVariant)));
     updateProtoActionsState();
 
-#ifndef Q_OS_OSX
+#ifndef Q_WS_MAC
     setWindowIcon(QIcon(":/images/OpenBoard.png"));
 #endif
 
-    setStyle("fusion");
+    setStyle(new UBStyle()); // Style is owned and deleted by the application
 
     QString css = UBFileSystemUtils::readTextFile(UBPlatformUtils::applicationResourcesDirectory() + "/etc/"+ qApp->applicationName()+".css");
     if (css.length() > 0)
@@ -338,7 +337,7 @@ int UBApplication::exec(const QString& pFileToImport)
 
     connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), applicationController, SLOT(showDesktop(bool)));
     connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), this, SLOT(stopScript()));
-#ifndef Q_OS_OSX
+#ifndef Q_WS_MAC
     connect(mainWindow->actionHideApplication, SIGNAL(triggered()), mainWindow, SLOT(showMinimized()));
 #else
     connect(mainWindow->actionHideApplication, SIGNAL(triggered()), this, SLOT(showMinimized()));
@@ -368,7 +367,7 @@ int UBApplication::exec(const QString& pFileToImport)
     if (pFileToImport.length() > 0)
         UBApplication::applicationController->importFile(pFileToImport);
 
-#if defined(Q_OS_OSX)
+#if defined(Q_WS_MAC)
     static AEEventHandlerUPP ub_proc_ae_handlerUPP = AEEventHandlerUPP(ub_appleEventProcessor);
     AEInstallEventHandler(kCoreEventClass, kAEReopenApplication, ub_proc_ae_handlerUPP, SRefCon(UBApplication::applicationController), true);
 #endif
@@ -390,7 +389,7 @@ void UBApplication::onScreenCountChanged(int newCount)
     mainWindow->actionMultiScreen->setEnabled(displayManager.numScreens() > 1);
 }
 
-#ifdef Q_OS_OSX
+#ifdef Q_WS_MAC
 void UBApplication::showMinimized()
 {
     mainWindow->hide();
@@ -539,7 +538,7 @@ void UBApplication::decorateActionMenu(QAction* action)
 
             menu->addSeparator();
 
-#ifndef Q_OS_LINUX // No Podcast on Linux yet
+#ifndef Q_WS_X11 // No Podcast on Linux yet
             menu->addAction(mainWindow->actionPodcast);
             mainWindow->actionPodcast->setText(tr("Podcast"));
 #endif
@@ -590,7 +589,7 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
     {
         QFileOpenEvent *fileToOpenEvent = static_cast<QFileOpenEvent *>(event);
 
-#if defined(Q_OS_OSX)
+#if defined(Q_WS_MACX)
         ProcessSerialNumber psn;
         GetCurrentProcess(&psn);
         SetFrontProcess(&psn);
@@ -611,7 +610,7 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
         boardController->controlView()->setMultiselection(false);
     }
 
-#ifdef Q_OS_OSX
+#ifdef Q_WS_MAC
     if (bIsMinimized && event->type() == QEvent::ApplicationActivate){
         if (mainWindow->isHidden()) mainWindow->show();
         bIsMinimized = false;
@@ -649,6 +648,39 @@ void UBApplication::cleanup()
     boardController = NULL;
     webController = NULL;
     documentController = NULL;
+}
+
+void UBStyle::drawItemText(QPainter *painter, const QRect &rect, int alignment, const QPalette &pal,
+                          bool enabled, const QString& text, QPalette::ColorRole textRole) const
+{
+    if (text.isEmpty())
+        return;
+
+    QPen savedPen;
+    if (textRole != QPalette::NoRole)
+    {
+        savedPen = painter->pen();
+        painter->setPen(QPen(pal.brush(textRole), savedPen.widthF()));
+    }
+
+    if (!enabled)
+    {
+        QPen pen = painter->pen();
+        QColor half = pen.color();
+
+        half.setRed(half.red() / 2);
+        half.setGreen(half.green() / 2);
+        half.setBlue(half.blue() / 2);
+
+        painter->setPen(half);
+        painter->drawText(rect, alignment, text);
+        painter->setPen(pen);
+    }
+
+    painter->drawText(rect, alignment, text);
+
+    if (textRole != QPalette::NoRole)
+        painter->setPen(savedPen);
 }
 
 QString UBApplication::urlFromHtml(QString html)

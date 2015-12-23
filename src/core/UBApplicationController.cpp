@@ -22,9 +22,7 @@
  * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QScriptValue>
-#include <QScriptEngine>
-#include <QUrl>
+
 
 #include "UBApplicationController.h"
 
@@ -67,7 +65,7 @@
 
 #include "ui_mainWindow.h"
 
-#ifdef Q_OS_OSX
+#ifdef Q_WS_MAC
 #include <Carbon/Carbon.h>
 #endif
 
@@ -88,6 +86,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
     , mAutomaticCheckForUpdates(false)
     , mCheckingForUpdates(false)
     , mIsShowingDesktop(false)
+    , mHttp(0)
 {
     mDisplayManager = new UBDisplayManager(this);
 
@@ -122,7 +121,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
     QTimer::singleShot (1000, this, SLOT (checkAtLaunch()));
 
 
-#ifdef Q_OS_LINUX
+#ifdef Q_WS_X11
     mMainWindow->setStyleSheet("QToolButton { font-size: 11px}");
 #endif
 
@@ -138,6 +137,7 @@ UBApplicationController::~UBApplicationController()
 
     delete mBlackScene;
     delete mMirror;
+    if (mHttp) delete mHttp;
 
     delete(mOpenSankoreImporter);
     mOpenSankoreImporter = NULL;
@@ -478,53 +478,45 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
     UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 }
 
+
 void UBApplicationController::checkUpdate(QString urlString)
 {
-    //connect(networkAccessManager, &QNetworkAccessManager::finished,
-    //        this, &UBApplicationController::updateRequestFinished);
+    if(mHttp)
+        mHttp->deleteLater();
+    QUrl url(urlString);
+    mHttp = new QHttp(url.host());
+    connect(mHttp, SIGNAL(requestFinished(int,bool)), this, SLOT(updateRequestFinished(int,bool)));
+    connect(mHttp, SIGNAL(responseHeaderReceived(QHttpResponseHeader)), this, SLOT(updateHeaderReceived(QHttpResponseHeader)));
 
-    connect(networkAccessManager, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(updateRequestFinished(QNetworkReply*)));
-
-    networkAccessManager->get(QNetworkRequest(QUrl(urlString)));
-
+    mHttp->get(url.path());
 }
 
-
-
-void UBApplicationController::updateRequestFinished(QNetworkReply * reply)
+void UBApplicationController::updateHeaderReceived(QHttpResponseHeader header)
 {
-    if (reply->error()) {
-        qWarning() << "HTTP Error";
-        return;
-    }
-    // Check if we are being redirected. If so, call checkUpdate again
-    QVariant redirect_target = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
-
-    if (!redirect_target.isNull()) {
-        // The returned URL might be relative. resolved() creates an absolute url from it
-        QUrl redirect_url(reply->url().resolved(redirect_target.toUrl()));
-
-        checkUpdate(redirect_url.toString());
-        return;
+    if(header.statusCode() == 302 && header.hasKey("Location")){
+        mHttp->close();
+        checkUpdate(header.value("Location"));
     }
 
-
-    // No error and no redirect => we read the whole response
-
-    QString responseString = QString(reply->readAll());
-    qDebug() << responseString;
-
-    if (!responseString.isEmpty() &&
-            responseString.contains("version") &&
-            responseString.contains("url")) {
-
-        reply->close();
-        reply->deleteLater();
-
-        downloadJsonFinished(responseString);
-    }
 }
+
+void UBApplicationController::updateRequestFinished(int id, bool error)
+{
+   if (error){
+       qWarning() << "http command id" << id << "return an error";
+   }
+   else{
+       QString responseString =  QString(mHttp->readAll());
+       qDebug() << responseString;
+       if (!responseString.isEmpty() && responseString.contains("version") && responseString.contains("url")){
+           mHttp->close();
+           mHttp->deleteLater();
+           mHttp = 0;
+           downloadJsonFinished(responseString);
+       }
+   }
+}
+
 
 
 void UBApplicationController::downloadJsonFinished(QString currentJson)

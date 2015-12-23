@@ -43,7 +43,7 @@
 
 #include "core/memcheck.h"
 
-UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, QMediaPlayer* pMedia, QObject * parent)
+UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, Phonon::MediaObject* pMedia, QObject * parent)
     : UBGraphicsItemDelegate(pDelegated, parent, GF_COMMON
                              | GF_RESPECT_RATIO
                              | GF_TOOLBAR_USED
@@ -56,22 +56,11 @@ UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pD
     QPalette palette;
     palette.setBrush ( QPalette::Light, Qt::darkGray );
 
-    mMedia->setNotifyInterval(50);
-
-    connect(mMedia, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)),
-            this, SLOT(mediaStatusChanged(QMediaPlayer::MediaStatus)));
-
-    connect(mMedia, SIGNAL(stateChanged(QMediaPlayer::State)),
-            this, SLOT(mediaStateChanged(QMediaPlayer::State)));
-
-    connect(mMedia, static_cast<void(QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error),
-        this, &UBGraphicsMediaItemDelegate::mediaError);
-
-    connect(mMedia, SIGNAL(positionChanged(qint64)),
-            this, SLOT(updateTicker(qint64)));
-
-    connect(mMedia, SIGNAL(durationChanged(qint64)),
-            this, SLOT(totalTimeChanged(qint64)));
+    mMedia->setTickInterval(50);
+    connect(mMedia, SIGNAL(stateChanged (Phonon::State, Phonon::State)), this, SLOT(mediaStateChanged (Phonon::State, Phonon::State)));
+    connect(mMedia, SIGNAL(finished()), this, SLOT(updatePlayPauseState()));
+    connect(mMedia, SIGNAL(tick(qint64)), this, SLOT(updateTicker(qint64)));
+    connect(mMedia, SIGNAL(totalTimeChanged(qint64)), this, SLOT(totalTimeChanged(qint64)));
 
     if (delegated()->hasLinkedImage())
     {
@@ -106,12 +95,10 @@ void UBGraphicsMediaItemDelegate::buildButtons()
 {
     if(!mPlayPauseButton){
         mPlayPauseButton = new DelegateButton(":/images/play.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
-        connect(mPlayPauseButton, SIGNAL(clicked(bool)),
-                this, SLOT(togglePlayPause()));
+        connect(mPlayPauseButton, SIGNAL(clicked(bool)), this, SLOT(togglePlayPause()));
 
         mStopButton = new DelegateButton(":/images/stop.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
-        connect(mStopButton, SIGNAL(clicked(bool)),
-                mMedia, SLOT(stop()));
+        connect(mStopButton, SIGNAL(clicked(bool)), mMedia, SLOT(stop()));
 
         mMediaControl = new DelegateMediaControl(delegated(), mToolBarItem);
         mMediaControl->setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -122,10 +109,8 @@ void UBGraphicsMediaItemDelegate::buildButtons()
         else
             mMuteButton = new DelegateButton(":/images/soundOn.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
 
-        connect(mMuteButton, SIGNAL(clicked(bool)),
-                delegated(), SLOT(toggleMute()));
-        connect(mMuteButton, SIGNAL(clicked(bool)),
-                this, SLOT(toggleMute())); // for changing button image
+        connect(mMuteButton, SIGNAL(clicked(bool)), delegated(), SLOT(toggleMute()));
+        connect(mMuteButton, SIGNAL(clicked(bool)), this, SLOT(toggleMute())); // for changing button image
 
         mToolBarButtons << mPlayPauseButton << mStopButton << mMuteButton;
 
@@ -135,17 +120,10 @@ void UBGraphicsMediaItemDelegate::buildButtons()
 
         if (mToolBarShowTimer)
         {
-            connect(mPlayPauseButton, SIGNAL(clicked(bool)),
-                    mToolBarShowTimer, SLOT(start()));
-
-            connect(mStopButton, SIGNAL(clicked(bool)),
-                    mToolBarShowTimer, SLOT(start()));
-
-            connect(mMediaControl, SIGNAL(used()),
-                    mToolBarShowTimer, SLOT(start()));
-
-            connect(mMuteButton, SIGNAL(clicked(bool)),
-                    mToolBarShowTimer, SLOT(start()));
+            connect(mPlayPauseButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
+            connect(mStopButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
+            connect(mMediaControl, SIGNAL(used()), mToolBarShowTimer, SLOT(start()));
+            connect(mMuteButton, SIGNAL(clicked(bool)), mToolBarShowTimer, SLOT(start()));
         }
 
 
@@ -217,82 +195,55 @@ UBGraphicsMediaItem* UBGraphicsMediaItemDelegate::delegated()
     return dynamic_cast<UBGraphicsMediaItem*>(mDelegated);
 }
 
+
 void UBGraphicsMediaItemDelegate::togglePlayPause()
 {
     if (delegated() && delegated()->mediaObject()) {
 
-        QMediaPlayer * media = delegated()->mediaObject();
-
-        if (media->state() == QMediaPlayer::StoppedState)
+        Phonon::MediaObject* media = delegated()->mediaObject();
+        if (media->state() == Phonon::StoppedState) {
             media->play();
-
-        else if (media->state() == QMediaPlayer::PlayingState) {
-
-            if ((media->duration() - media->position()) <= 0) {
+        } else if (media->state() == Phonon::PlayingState) {
+            if (media->remainingTime() <= 0) {
                 media->stop();
                 media->play();
-            }
-
-            else {
+            } else {
                 media->pause();
                 if(delegated()->scene())
                         delegated()->scene()->setModified(true);
             }
-        }
-
-        else if (media->state() == QMediaPlayer::PausedState) {
-            if ((media->duration() - media->position()) <= 0)
+        } else if (media->state() == Phonon::PausedState) {
+            if (media->remainingTime() <= 0) {
                 media->stop();
-
+            }
             media->play();
-        }
-
-        else  if ( media->mediaStatus() == QMediaPlayer::LoadingMedia) {
-            delegated()->mediaObject()->setMedia(delegated()->mediaFileUrl());
+        } else  if ( media->state() == Phonon::LoadingState ) {
+            delegated()->mediaObject()->setCurrentSource(delegated()->mediaFileUrl());
             media->play();
-        }
-
-        else if (media->error())
+        } else if (media->state() == Phonon::ErrorState){
             qDebug() << "Error appeared." << media->errorString();
-
+        }
     }
 }
 
-void UBGraphicsMediaItemDelegate::mediaStatusChanged(QMediaPlayer::MediaStatus status)
+void UBGraphicsMediaItemDelegate::mediaStateChanged ( Phonon::State newstate, Phonon::State oldstate )
 {
-    // Possible statuses are: UnknownMediaStatus, NoMedia, LoadingMedia, LoadedMedia,
-    // StalledMedia, BufferingMedia, BufferedMedia, EndOfMedia, InvalidMedia
+    Q_UNUSED(newstate);
+    Q_UNUSED(oldstate);
 
-    if (status == QMediaPlayer::LoadedMedia)
-        mMediaControl->totalTimeChanged(delegated()->mediaObject()->duration());
-
-    // in most cases, the only necessary action is to update the play/pause state
+    if (oldstate == Phonon::LoadingState)
+    {
+        mMediaControl->totalTimeChanged(delegated()->mediaObject()->totalTime());
+    }
     updatePlayPauseState();
-}
-
-void UBGraphicsMediaItemDelegate::mediaStateChanged(QMediaPlayer::State state)
-{
-    // Possible states are StoppedState, PlayingState and PausedState
-
-    // updatePlayPauseState handles this functionality
-    updatePlayPauseState();
-}
-
-void UBGraphicsMediaItemDelegate::mediaError(QMediaPlayer::Error error)
-{
-    // Possible errors are NoError, ResourceError, FormatError, NetworkError, AccessDeniedError,
-    // ServiceMissingError
-    Q_UNUSED(error);
-
-    qDebug() << "Error appeared." << mMedia->errorString();
 }
 
 
 void UBGraphicsMediaItemDelegate::updatePlayPauseState()
 {
-    QMediaPlayer * media = delegated()->mediaObject();
+    Phonon::MediaObject* media = delegated()->mediaObject();
 
-    if (media->state() == QMediaPlayer::PlayingState)
+    if (media->state() == Phonon::PlayingState)
         mPlayPauseButton->setFileName(":/images/pause.svg");
     else
         mPlayPauseButton->setFileName(":/images/play.svg");
@@ -301,8 +252,8 @@ void UBGraphicsMediaItemDelegate::updatePlayPauseState()
 
 void UBGraphicsMediaItemDelegate::updateTicker(qint64 time)
 {
-    QMediaPlayer* media = delegated()->mediaObject();
-    mMediaControl->totalTimeChanged(media->duration());
+    Phonon::MediaObject* media = delegated()->mediaObject();
+    mMediaControl->totalTimeChanged(media->totalTime());
     mMediaControl->updateTicker(time);
 }
 

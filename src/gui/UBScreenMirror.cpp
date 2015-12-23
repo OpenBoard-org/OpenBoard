@@ -24,7 +24,6 @@
 
 
 
-#include <QDesktopWidget>
 
 #include "UBScreenMirror.h"
 
@@ -33,7 +32,7 @@
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
 
-#if defined(Q_OS_OSX)
+#if defined(Q_WS_MAC)
 #include <ApplicationServices/ApplicationServices.h>
 #endif
 

@@ -23,7 +23,7 @@
  */
 
 
-#include <QApplication>
+
 
 #include "UBMousePressFilter.h"
 

@@ -29,7 +29,6 @@
 #define UBTOOLWIDGET_H_
 
 #include <QtGui>
-#include <QWidget>
 
 class UBGraphicsWidgetItem;
 class QWidget;

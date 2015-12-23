@@ -23,8 +23,7 @@
  */
 
 
-#include <QLayout>
-#include <QAction>
+
 
 #include "UBActionPalette.h"
 
@@ -104,10 +103,8 @@ UBActionPaletteButton* UBActionPalette::createPaletteButton(QAction* action, QWi
 
     mMapActionToButton[action] = button;
 
-    connect(button, &UBActionPaletteButton::clicked,
-            this, &UBActionPalette::buttonClicked);
-    connect(action, &QAction::changed,
-            this, &UBActionPalette::actionChanged);
+    connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
+    connect(action, SIGNAL(changed()), this, SLOT(actionChanged()));
 
     return button;
 }

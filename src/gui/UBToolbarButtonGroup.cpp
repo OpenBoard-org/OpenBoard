@@ -28,8 +28,6 @@
 #include "UBToolbarButtonGroup.h"
 
 #include <QtGui>
-#include <QLayout>
-#include <QStyleOption>
 
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"

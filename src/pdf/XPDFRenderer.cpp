@@ -66,7 +66,7 @@ XPDFRenderer::~XPDFRenderer()
         sInstancesCount.deref();
     }
 
-    if (sInstancesCount.loadAcquire() == 0 && globalParams)
+    if (sInstancesCount == 0 && globalParams)
     {
         delete globalParams;
         globalParams = 0;

@@ -70,7 +70,6 @@
 
 #include <QtGui>
 #include <QtWebKit>
-#include <QDesktopWidget>
 
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"

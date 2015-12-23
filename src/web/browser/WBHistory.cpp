@@ -411,8 +411,7 @@ WBHistoryModel::WBHistoryModel(WBHistoryManager *history, QObject *parent)
 
 void WBHistoryModel::historyReset()
 {
-    beginResetModel();
-    endResetModel();
+    reset();
 }
 
 void WBHistoryModel::entryAdded()
@@ -752,8 +751,7 @@ QVariant WBHistoryFilterModel::headerData(int section, Qt::Orientation orientati
 void WBHistoryFilterModel::sourceReset()
 {
     m_loaded = false;
-    beginResetModel();
-    endResetModel();
+    reset();
 }
 
 int WBHistoryFilterModel::rowCount(const QModelIndex &parent) const
@@ -890,8 +888,7 @@ bool WBHistoryFilterModel::removeRows(int row, int count, const QModelIndex &par
                 this, SLOT(sourceRowsRemoved(const QModelIndex &, int, int)));
     m_loaded = false;
     if (oldCount - count != rowCount())
-        beginResetModel();
-        endResetModel();
+        reset();
     return true;
 }
 
@@ -951,7 +948,7 @@ QModelIndex WBHistoryCompletionModel::index(int row, int column, const QModelInd
     if (row < 0 || row >= rowCount(parent)
         || column < 0 || column >= columnCount(parent))
         return QModelIndex();
-    return createIndex(row, column);
+    return createIndex(row, column, 0);
 }
 
 QModelIndex WBHistoryCompletionModel::parent(const QModelIndex &) const
@@ -981,14 +978,12 @@ void WBHistoryCompletionModel::setSourceModel(QAbstractItemModel *newSourceModel
                 this, SLOT(sourceReset()));
     }
 
-    beginResetModel();
-    endResetModel();
+    reset();
 }
 
 void WBHistoryCompletionModel::sourceReset()
 {
-    beginResetModel();
-    endResetModel();
+    reset();
 }
 
 WBHistoryTreeModel::WBHistoryTreeModel(QAbstractItemModel *sourceModel, QObject *parent)
@@ -1112,7 +1107,7 @@ QModelIndex WBHistoryTreeModel::index(int row, int column, const QModelIndex &pa
         return QModelIndex();
 
     if (!parent.isValid())
-        return createIndex(row, column);
+        return createIndex(row, column, 0);
     return createIndex(row, column, parent.row() + 1);
 }
 
@@ -1121,7 +1116,7 @@ QModelIndex WBHistoryTreeModel::parent(const QModelIndex &index) const
     int offset = index.internalId();
     if (offset == 0 || !index.isValid())
         return QModelIndex();
-    return createIndex(offset - 1, 0);
+    return createIndex(offset - 1, 0, 0);
 }
 
 bool WBHistoryTreeModel::hasChildren(const QModelIndex &parent) const
@@ -1188,15 +1183,13 @@ void WBHistoryTreeModel::setSourceModel(QAbstractItemModel *newSourceModel)
                 this, SLOT(sourceRowsRemoved(const QModelIndex &, int, int)));
     }
 
-    beginResetModel();
-    endResetModel();
+    reset();
 }
 
 void WBHistoryTreeModel::sourceReset()
 {
     m_sourceRowCache.clear();
-    beginResetModel();
-    endResetModel();
+    reset();
 }
 
 void WBHistoryTreeModel::sourceRowsInserted(const QModelIndex &parent, int start, int end)
@@ -1206,8 +1199,7 @@ void WBHistoryTreeModel::sourceRowsInserted(const QModelIndex &parent, int start
     if (start != 0 || start != end)
     {
         m_sourceRowCache.clear();
-        beginResetModel();
-        endResetModel();
+        reset();
         return;
     }
 
@@ -1257,8 +1249,7 @@ void WBHistoryTreeModel::sourceRowsRemoved(const QModelIndex &parent, int start,
         if (it == m_sourceRowCache.end())
         {
             m_sourceRowCache.clear();
-            beginResetModel();
-            endResetModel();
+            reset();
             return;
         }
 

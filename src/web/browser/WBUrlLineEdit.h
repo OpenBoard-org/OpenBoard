@@ -70,9 +70,6 @@
 #define WBURLLINEEDIT_H
 
 #include <QtGui>
-#include <QWidget>
-#include <QLineEdit>
-#include <QStyleOption>
 
 #include "WBWebView.h"
 

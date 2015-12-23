@@ -168,7 +168,7 @@ UBDocumentProxy* UBDocumentManager::importFile(const QFile& pFile, const QString
                 foreach(UBGraphicsItem* page, pages)
                 {
                     UBApplication::showMessage(tr("Inserting page %1 of %2").arg(++nPage).arg(pages.size()), true);
-#ifdef Q_OS_OSX
+#ifdef Q_WS_MACX
                     //Workaround for issue 912
                     QApplication::processEvents();
 #endif

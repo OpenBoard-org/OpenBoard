@@ -53,7 +53,7 @@ QByteArray UBBase32::decode(const QString& base32String)
     for (i = 0, index = 0, offset = 0; i < base32String.length(); i++)
     {
         QChar ch = base32String.at(i);
-        char lookup = ch.toLatin1() - '0';
+        char lookup = ch.toAscii() - '0';
 
         /* Skip chars outside the lookup table */
         if (lookup < 0 || lookup >= 80)

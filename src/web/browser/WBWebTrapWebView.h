@@ -30,7 +30,6 @@
 
 #include <QtGui>
 #include <QtWebKit>
-#include <QWebView>
 
 
 class WBWebTrapWebView : public QWebView

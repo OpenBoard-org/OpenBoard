@@ -23,7 +23,7 @@
  */
 
 
-#include <QWebFrame>
+
 
 #include "UBWidgetMessageAPI.h"
 

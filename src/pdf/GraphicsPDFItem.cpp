@@ -29,7 +29,7 @@
 
 #include <qglobal.h>
 
-#include <QStyleOptionGraphicsItem>
+#include <QtGui/QStyleOptionGraphicsItem>
 
 #include "core/memcheck.h"
 

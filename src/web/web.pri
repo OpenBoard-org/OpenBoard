@@ -1,5 +1,5 @@
 
-QT           += uitools
+CONFIG       += uitools
 
 FORMS        += src/web/browser/downloaditem.ui \
                 src/web/browser/downloads.ui \

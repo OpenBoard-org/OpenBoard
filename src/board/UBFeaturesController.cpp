@@ -346,6 +346,7 @@ UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
     scanFS();
 
     featuresModel = new UBFeaturesModel(featuresList, this);
+    featuresModel->setSupportedDragActions(Qt::CopyAction | Qt::MoveAction);
 
     featuresProxyModel = new UBFeaturesProxyModel(this);
     featuresProxyModel->setFilterFixedString(rootPath);

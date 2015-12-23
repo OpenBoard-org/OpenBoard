@@ -28,7 +28,6 @@
 #include "UBZoomPalette.h"
 
 #include <QtGui>
-#include <QPushButton>
 #include <math.h>
 
 #include "core/UBApplication.h"

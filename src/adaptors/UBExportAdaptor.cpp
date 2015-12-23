@@ -23,7 +23,7 @@
  */
 
 
-#include <QFileDialog>
+
 
 #include "UBExportAdaptor.h"
 

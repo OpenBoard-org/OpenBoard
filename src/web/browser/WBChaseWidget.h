@@ -70,7 +70,6 @@
 #define WBCHASEWIDGET_H
 
 #include <QtGui>
-#include <QWidget>
 
 
 class WBChaseWidget : public QWidget

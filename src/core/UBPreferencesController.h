@@ -29,7 +29,6 @@
 #define UBPREFERENCESCONTROLLER_H_
 
 #include <QtGui>
-#include <QDialog>
 
 class UBColorPicker;
 class UBApplication;

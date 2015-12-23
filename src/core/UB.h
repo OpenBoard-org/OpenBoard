@@ -29,7 +29,6 @@
 #define UB_H_
 
 #include <QtGui>
-#include <QGraphicsItem>
 
 #define UB_MAX_ZOOM 9
 

@@ -78,8 +78,6 @@
 
 #include <QtGui>
 #include <QSvgWidget>
-#include <QListView>
-#include <QLabel>
 
 #include "core/memcheck.h"
 
@@ -109,7 +107,7 @@ WBTabBar::WBTabBar(QWidget *parent)
     setMovable(true);
     setDocumentMode(false);
 
-#ifdef Q_OS_OSX
+#ifdef Q_WS_MACX
     QFont baseFont = font();
     baseFont.setPointSize(baseFont.pointSize() - 2);
     setFont(baseFont);

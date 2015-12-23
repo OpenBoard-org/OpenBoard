@@ -69,7 +69,7 @@
 #ifndef WBSQUEEZELABEL_H
 #define WBSQUEEZELABEL_H
 
-#include <QLabel>
+#include <QtGui/QLabel>
 
 class WBSqueezeLabel : public QLabel
 {

@@ -30,7 +30,6 @@
 
 #include <QtGui>
 #include <QtXml>
-#include <QGraphicsItem>
 
 #include "frameworks/UBGeometryUtils.h"
 

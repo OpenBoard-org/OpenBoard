@@ -29,7 +29,6 @@
 
 #include <QtCore>
 #include <QtSvg>
-#include <QPrinter>
 
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"

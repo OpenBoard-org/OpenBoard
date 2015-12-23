@@ -26,7 +26,6 @@
 
 
 #include <QFile>
-#include <QDesktopWidget>
 
 #include "PDFRenderer.h"
 
@@ -98,7 +97,7 @@ void PDFRenderer::attach()
 void PDFRenderer::detach()
 {
     mRefCount.deref();
-    if (mRefCount.loadAcquire() == 0)
+    if (mRefCount == 0)
     {
         sRenderers.remove(mFileUuid);
         delete this;

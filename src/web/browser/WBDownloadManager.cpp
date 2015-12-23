@@ -70,7 +70,6 @@
 
 #include <QtGui>
 #include <QtWebKit>
-#include <QFileDialog>
 
 #include "network/UBAutoSaver.h"
 #include "network/UBNetworkAccessManager.h"
@@ -146,7 +145,7 @@ void WBDownloadItem::getFileName()
 {
     QSettings settings;
     settings.beginGroup(QLatin1String("downloadmanager"));
-    QString defaultLocation = !mCustomDownloadPath.isEmpty() ? mCustomDownloadPath :  QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    QString defaultLocation = !mCustomDownloadPath.isEmpty() ? mCustomDownloadPath :  QDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
     QString downloadDirectory = settings.value(QLatin1String("downloadDirectory"), defaultLocation).toString();
     if (!downloadDirectory.isEmpty())
         downloadDirectory += QLatin1Char('/');

@@ -74,7 +74,6 @@
 
 #include <QtNetwork>
 #include <QtCore>
-#include <QFileIconProvider>
 
 class WBDownloadItem : public QWidget, public Ui_DownloadItem
 {

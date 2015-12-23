@@ -204,7 +204,7 @@ public:
         static QString urlFromClipboard();
         static QStringList availableTranslations();
 
-#ifdef Q_OS_OSX
+#ifdef Q_WS_MAC
         static void SetMacLocaleByIdentifier(const QString& id);
 #endif
 };

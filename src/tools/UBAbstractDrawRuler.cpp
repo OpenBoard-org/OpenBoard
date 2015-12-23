@@ -69,7 +69,7 @@ void UBAbstractDrawRuler::create(QGraphicsItem& item)
     item.setFlag(QGraphicsItem::ItemIsSelectable, true);
     item.setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
-    item.setAcceptHoverEvents(true);
+    item.setAcceptsHoverEvents(true);
 
     mCloseSvgItem = new QGraphicsSvgItem(":/images/closeTool.svg", &item);
     mCloseSvgItem->setVisible(false);

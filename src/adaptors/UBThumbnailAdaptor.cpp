@@ -95,7 +95,7 @@ const QPixmap* UBThumbnailAdaptor::get(UBDocumentProxy* proxy, int pageIndex)
     if (file.exists())
     {
         //Warning. Works only with modified Qt
-#ifdef Q_OS_LINUX
+#ifdef Q_WS_X11
         pix->load(fileName, 0, Qt::AutoColor);
 #else
         pix->load(fileName, 0, Qt::AutoColor, false);

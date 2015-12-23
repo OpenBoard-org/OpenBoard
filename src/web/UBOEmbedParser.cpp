@@ -226,7 +226,8 @@ sOEmbedContent UBOEmbedParser::getXMLInfos(const QString &xml)
 
 void UBOEmbedParser::onParseContent(QString url)
 {
-    QUrl qurl = QUrl::fromEncoded(url.toLatin1());
+    QUrl qurl;
+    qurl.setEncodedUrl(url.toAscii());
 
     QNetworkRequest req;
     req.setUrl(qurl);

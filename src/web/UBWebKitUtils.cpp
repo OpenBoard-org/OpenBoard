@@ -24,7 +24,6 @@
 
 
 #include <QDebug>
-#include <QWebFrame>
 
 #include "UBWebKitUtils.h"
 

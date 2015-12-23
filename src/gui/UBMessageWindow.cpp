@@ -44,7 +44,7 @@ UBMessageWindow::UBMessageWindow(QWidget *parent)
 
     mLayout->setContentsMargins(radius() + 15, 4, radius() + 15, 4);
 
-#ifdef Q_OS_OSX
+#ifdef Q_WS_MAC
     mLayout->setContentsMargins(radius() + 15, 8, radius() + 15, 10);
 #endif
 

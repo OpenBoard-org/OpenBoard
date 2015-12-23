@@ -86,7 +86,7 @@
 
 #include "core/memcheck.h"
 
-#ifdef Q_OS_LINUX
+#ifdef Q_WS_X11
 #include <QProcess>
 bool onboardIsAlreadyRunning = true;
 #endif
@@ -165,7 +165,7 @@ void UBBoardController::init()
 
 UBBoardController::~UBBoardController()
 {
-#ifdef Q_OS_LINUX
+#ifdef Q_WS_X11
     if(!onboardIsAlreadyRunning){
         QProcess newProcess;
         newProcess.startDetached("killall onboard");
@@ -828,7 +828,7 @@ void UBBoardController::showKeyboard(bool show)
     if(show)
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 
-#ifdef Q_OS_LINUX
+#ifdef Q_WS_X11
     static bool isFirstTime = true;
     if(isFirstTime){
         QProcess isAlreadyRunningProcess;
@@ -2411,7 +2411,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
             }
         }
         else{
-#ifdef Q_OS_OSX
+#ifdef Q_WS_MACX
                 //  With Safari, in 95% of the drops, the mime datas are hidden in Apple Web Archive pasteboard type.
                 //  This is due to the way Safari is working so we have to dig into the pasteboard in order to retrieve
                 //  the data.

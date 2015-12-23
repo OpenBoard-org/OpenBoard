@@ -28,7 +28,6 @@
 #include <QtGui>
 #include <QDomDocument>
 #include <QXmlQuery>
-#include <QWebFrame>
 
 #include "frameworks/UBPlatformUtils.h"
 
@@ -299,7 +298,7 @@ void UBWebController::setupPalettes()
     {
         mToolsCurrentPalette = new UBWebToolsPalette(UBApplication::mainWindow);
         UBApplication::boardController->paletteManager()->setCurrentWebToolsPalette(mToolsCurrentPalette);
-#ifndef Q_OS_WIN
+#ifndef Q_WS_WIN
         if (UBPlatformUtils::hasVirtualKeyboard() && UBApplication::boardController->paletteManager()->mKeyboardPalette)
             connect(UBApplication::boardController->paletteManager()->mKeyboardPalette, SIGNAL(closed()),
                     UBApplication::boardController->paletteManager()->mKeyboardPalette, SLOT(onDeactivated()));

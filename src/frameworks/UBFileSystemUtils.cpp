@@ -57,7 +57,7 @@ UBFileSystemUtils::~UBFileSystemUtils()
 
 QString UBFileSystemUtils::removeLocalFilePrefix(QString input)
 {
-#ifdef Q_OS_WIN
+#ifdef Q_WS_WIN
     if(input.startsWith("file:///"))
         return input.mid(8);
     else
@@ -130,12 +130,12 @@ bool UBFileSystemUtils::deleteFile(const QString &path)
 
 QString UBFileSystemUtils::defaultTempDirPath()
 {
-    return QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/" + defaultTempDirName();
+    return QDesktopServices::storageLocation(QDesktopServices::TempLocation) + "/" + defaultTempDirName();
 }
 
 QString UBFileSystemUtils::createTempDir(const QString& templateString, bool autoDeleteOnExit)
 {
-    QString appTempDir =  QStandardPaths::writableLocation(QStandardPaths::TempLocation)
+    QString appTempDir =  QDesktopServices::storageLocation(QDesktopServices::TempLocation)
                                   + "/" + templateString;
 
     int index = 0;
@@ -200,7 +200,7 @@ void UBFileSystemUtils::deleteAllTempDirCreatedDuringSession()
 
 void UBFileSystemUtils::cleanupGhostTempFolders(const QString& templateString)
 {
-    QDir dir(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
+    QDir dir(QDesktopServices::storageLocation(QDesktopServices::TempLocation));
     foreach (QFileInfo dirContent, dir.entryInfoList(QDir::Dirs
           | QDir::NoDotAndDotDot | QDir::Hidden , QDir::Name))
     {

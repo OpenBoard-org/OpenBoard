@@ -29,8 +29,6 @@
 
 #include <QtGui>
 #include <QtNetwork>
-#include <QMessageBox>
-#include <QPushButton>
 
 #include "core/UBApplication.h"
 #include "core/UBApplicationController.h"
@@ -117,7 +115,7 @@ void UBNetworkAccessManager::authenticationRequired(QNetworkReply *reply, QAuthe
     passwordDialog.iconLabel->setPixmap(mainWindow->style()->standardIcon(QStyle::SP_MessageBoxQuestion, 0, mainWindow).pixmap(32, 32));
 
     QString introMessage = tr("<qt>Enter username and password for \"%1\" at %2</qt>");
-    introMessage = introMessage.arg((reply->url().toString()).toHtmlEscaped()).arg((reply->url().toString()).toHtmlEscaped());
+    introMessage = introMessage.arg(Qt::escape(reply->url().toString())).arg(Qt::escape(reply->url().toString()));
     passwordDialog.introLabel->setText(introMessage);
     passwordDialog.introLabel->setWordWrap(true);
 

@@ -30,9 +30,6 @@
 #define CONTROLVIEW_OBJ_NAME "ControlView"
 
 #include <QtGui>
-#include <QGraphicsView>
-#include <QRubberBand>
-
 #include "core/UB.h"
 #include "domain/UBGraphicsDelegateFrame.h"
 
@@ -63,7 +60,7 @@ public:
     void setMultiselection(bool enable);
     bool isMultipleSelectionEnabled() { return mMultipleSelectionIsEnabled; }
     // work around for handling tablet events on MAC OS with Qt 4.8.0 and above
-#if defined(Q_OS_OSX)
+#if defined(Q_WS_MACX)
     bool directTabletEvent(QEvent *event);
     QWidget *widgetForTabletEvent(QWidget *w, const QPoint &pos);
 #endif

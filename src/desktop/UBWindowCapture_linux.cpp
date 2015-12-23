@@ -24,7 +24,6 @@
 
 
 
-#include <QDialog>
 
 #include "UBWindowCapture.h"
 #include "UBDesktopAnnotationController.h"

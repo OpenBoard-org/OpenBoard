@@ -70,14 +70,6 @@
 #define WBTABWIDGET_H
 
 #include <QtGui>
-#include <QShortcut>
-#include <QStackedWidget>
-#include <QCompleter>
-#include <QTabBar>
-#include <QWebPage>
-#include <QTabWidget>
-#include <QLineEdit>
-
 /*
     Tab bar with a few more features such as a context menu and shortcuts
  */

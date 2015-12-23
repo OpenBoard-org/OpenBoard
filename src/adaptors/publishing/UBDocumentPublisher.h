@@ -30,13 +30,6 @@
 
 #include <QtGui>
 #include <QtNetwork>
-#include <QDialog>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QDialogButtonBox>
-#include <QLabel>
-#include <QLineEdit>
-#include <QTextEdit>
 
 typedef struct
 {

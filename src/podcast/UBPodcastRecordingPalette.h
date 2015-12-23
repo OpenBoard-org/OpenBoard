@@ -32,7 +32,6 @@
 #include "UBPodcastController.h"
 
 #include <QtGui>
-#include <QLabel>
 
 class UBVuMeter;
 

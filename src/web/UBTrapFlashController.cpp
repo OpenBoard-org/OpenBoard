@@ -28,7 +28,6 @@
 #include "UBTrapFlashController.h"
 
 #include <QtXml>
-#include <QWebFrame>
 
 
 #include "frameworks/UBFileSystemUtils.h"
@@ -100,17 +99,22 @@ void UBTrapFlashController::text_Changed(const QString &newText)
 {
     QString new_text = newText;
 
-#ifdef Q_OS_WIN // Defined on Windows.
+#ifdef Q_WS_WIN // Defined on Windows.
     QString illegalCharList("      < > : \" / \\ | ? * ");
     QRegExp regExp("[<>:\"/\\\\|?*]");
 #endif
 
-#ifdef Q_OS_OSX // Defined on Mac OS X.
+#ifdef Q_WS_QWS // Defined on Qt for Embedded Linux.
     QString illegalCharList("      < > : \" / \\ | ? * ");
     QRegExp regExp("[<>:\"/\\\\|?*]");
 #endif
 
-#ifdef Q_OS_LINUX // Defined on X11.
+#ifdef Q_WS_MAC // Defined on Mac OS X.
+    QString illegalCharList("      < > : \" / \\ | ? * ");
+    QRegExp regExp("[<>:\"/\\\\|?*]");
+#endif
+
+#ifdef Q_WS_X11 // Defined on X11.
     QString illegalCharList("      < > : \" / \\ | ? * ");
     QRegExp regExp("[<>:\"/\\\\|?*]");
 #endif

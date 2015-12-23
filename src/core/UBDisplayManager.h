@@ -32,7 +32,6 @@
 
 class UBBlackoutWidget;
 class UBBoardView;
-class QDesktopWidget;
 
 class UBDisplayManager : public QObject
 {

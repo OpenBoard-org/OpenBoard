@@ -29,8 +29,6 @@
 #define UBCOREGRAPHICSSCENE_H_
 
 #include <QtGui>
-#include <QGraphicsScene>
-#include <QGraphicsItem>
 
 class UBCoreGraphicsScene : public QGraphicsScene
 {

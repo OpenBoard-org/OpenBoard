@@ -771,7 +771,7 @@ void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
     qreal topXTitleBar = topX + (1.6 * mFrameWidth * mAntiScaleRatio);
     qreal topYTitleBar = topY + frameButtonHeight *mAntiScaleRatio;
 
-#ifndef Q_OS_LINUX
+#ifndef Q_WS_X11
     topYTitleBar += 5;
 #endif
 
@@ -792,7 +792,7 @@ void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
             button->setParentItem(mFrame);
             button->setPos(topXTitleBar + (k++ * (frameButtonHeight + 5)), topYTitleBar);
             button->setTransform(tr);
-            button->setTransform(QTransform::fromScale(0.8, 0.8), true);
+            button->scale(0.8,0.8);
         }
         else if(button->getSection() == Qt::NoSection){
             ++l;
@@ -1442,7 +1442,7 @@ void DelegateMediaControl::seekToMousePos(QPointF mousePos)
         && mDelegate->mediaObject() && mDelegate->mediaObject()->isSeekable())
     {
         qint64 tickPos = (mTotalTimeInMs/length)* (mouseX - minX);
-        mDelegate->mediaObject()->setPosition(tickPos);
+        mDelegate->mediaObject()->seek(tickPos);
 
         //OSX is a bit lazy
         updateTicker(tickPos);

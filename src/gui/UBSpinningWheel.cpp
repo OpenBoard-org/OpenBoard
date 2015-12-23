@@ -64,7 +64,7 @@ void UBSpinningWheel::paintEvent(QPaintEvent *event)
     pen.setCapStyle(Qt::RoundCap);
 
     painter.setPen(pen);
-    painter.rotate(30 * (mPosition.loadAcquire() % 12));
+    painter.rotate(30 * (mPosition % 12));
 
     for(int i = 0; i < 12; i++)
     {
