@@ -72,6 +72,9 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         
         mVideoItem = new QGraphicsVideoItem();
 
+        // Necessary to allow the video to be displayed on secondary screen
+        mVideoItem->setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
+
         mMediaObject->setVideoOutput(mVideoItem);
 
         mVideoItem->setSize(QSize(320,240));
