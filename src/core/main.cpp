@@ -91,6 +91,10 @@ int main(int argc, char *argv[])
 #endif
 */
 
+    // QT_NO_GLIB=1 is set by default on Linux, and prevents media playback
+    if (qEnvironmentVariableIsSet("QT_NO_GLIB"))
+        qunsetenv("QT_NO_GLIB");
+
     Q_INIT_RESOURCE(OpenBoard);
 
     qInstallMessageHandler(ub_message_output);
