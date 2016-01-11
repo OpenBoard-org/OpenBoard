@@ -300,7 +300,7 @@ exit 0
 #DEBHELPER#
 EOF
 
-cat > "$BASE_WORKING_DIR/DEBIAN/postint" << EOF
+cat > "$BASE_WORKING_DIR/DEBIAN/postinst" << EOF
 #!/bin/bash
 # --------------------------------------------------------------------
 # This program is free software: you can redistribute it and/or modify
@@ -318,6 +318,7 @@ cat > "$BASE_WORKING_DIR/DEBIAN/postint" << EOF
 # ---------------------------------------------------------------------
 
 xdg-desktop-menu install --novendor /usr/share/applications/${APPLICATION_NAME}.desktop
+rm -f "\$HOME/.local/share/OpenBoard/OpenBoardUser.config"
 exit 0
 #DEBHELPER#
 EOF
@@ -410,7 +411,7 @@ echo "Categories=Education" >> $APPLICATION_SHORTCUT
 cp "resources/images/${APPLICATION_NAME}.png" "$PACKAGE_DIRECTORY/${APPLICATION_NAME}.png"
 chmod 755 "$BASE_WORKING_DIR/DEBIAN"
 chmod 755 "$BASE_WORKING_DIR/DEBIAN/prerm"
-chmod 755 "$BASE_WORKING_DIR/DEBIAN/postint"
+chmod 755 "$BASE_WORKING_DIR/DEBIAN/postinst"
 
 mkdir -p "install/linux"
 DEBIAN_PACKAGE_NAME="${APPLICATION_NAME}_`lsb_release -is`_`lsb_release -rs`_${VERSION}_$ARCHITECTURE.deb"
@@ -419,7 +420,7 @@ chown -R root:root $BASE_WORKING_DIR
 dpkg -b "$BASE_WORKING_DIR" "install/linux/$DEBIAN_PACKAGE_NAME"
 
 #clean up mess
-rm -rf $BASE_WORKING_DIR
+#rm -rf $BASE_WORKING_DIR
 
 notifyProgress "${APPLICATION_NAME}" "Package built"
 
