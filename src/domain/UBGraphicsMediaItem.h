@@ -112,8 +112,6 @@ public:
     virtual void setPos(qreal x, qreal y);
     virtual void setMatrix(const QMatrix &matrix, bool combine = false);
     virtual void setTransform(const QTransform &matrix, bool combine = false);
-    virtual void resize(qreal w, qreal h);
-    virtual void resize(const QSizeF & pSize);
 
 
 public slots:
@@ -123,6 +121,8 @@ public slots:
     void activeSceneChanged();
     void hasMediaChanged(bool hasMedia);
     void showOnDisplayChanged(bool shown);
+    virtual void resize(qreal w, qreal h);
+    virtual void resize(const QSizeF & pSize);
 
 protected:
 

@@ -121,6 +121,9 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 
     connect(Delegate(), SIGNAL(showOnDisplayChanged(bool)), this, SLOT(showOnDisplayChanged(bool)));
     connect(mMediaObject, SIGNAL(videoAvailableChanged(bool)), this, SLOT(hasMediaChanged(bool)));
+
+    // Resize the widget as soon as the video's native size is known (it isn't at this stage)
+    connect(mVideoItem, SIGNAL(nativeSizeChanged(QSizeF)), this, SLOT(resize(QSizeF)));
 }
 
 
