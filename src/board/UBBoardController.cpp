@@ -94,6 +94,10 @@
 bool onboardIsAlreadyRunning = true;
 #endif
 
+#ifdef Q_OS_OSX
+#include <QProcess>
+#endif
+
 UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     : UBDocumentContainer(mainWindow->centralWidget())
     , mMainWindow(mainWindow)
@@ -853,6 +857,11 @@ void UBBoardController::showKeyboard(bool show)
     }
     else
         mPaletteManager->showVirtualKeyboard(show);
+
+#elif defined(Q_OS_OSX)
+    if(UBSettings::settings()->useSystemOnScreenKeybard->get().toBool())
+        UBPlatformUtils::showOSK();
+
 #else
     mPaletteManager->showVirtualKeyboard(show);
 #endif

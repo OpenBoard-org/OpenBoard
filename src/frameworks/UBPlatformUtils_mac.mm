@@ -609,3 +609,16 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
 
 }
 
+
+void UBPlatformUtils::showOSK()
+{
+    [[NSAutoreleasePool alloc] init];
+
+    CFDictionaryRef properties =
+    (CFDictionaryRef)[NSDictionary
+              dictionaryWithObject: @"com.apple.KeyboardViewer"
+              forKey: (NSString *)kTISPropertyInputSourceID];
+    NSArray *sources = (NSArray *)TISCreateInputSourceList(properties, false);
+
+    TISSelectInputSource((TISInputSourceRef)[sources objectAtIndex: 0]);
+}

@@ -208,6 +208,7 @@ public:
 
 #ifdef Q_OS_OSX
         static void SetMacLocaleByIdentifier(const QString& id);
+        static void showOSK();
 #endif
 };
 
