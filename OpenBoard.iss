@@ -109,15 +109,15 @@ Source: "{#QtDir}\plugins\imageformats\qtiff.dll"; DestDir: "{app}\imageformats"
 Source: "{#QtDir}\plugins\iconengines\qsvgicon.dll"; DestDir: "{app}\iconengines"; Flags: ignoreversion
 
 ;qt multimedia plugins
-Source: "{#QtDir}\plugins\mediaservice\dsengine.dll"; DestDir: "\plugins\mediaservice"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\mediaservice\dsengined.dll"; DestDir: "\plugins\mediaservice"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\mediaservice\qtmedia_audioengine.dll"; DestDir: "\plugins\mediaservice"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\mediaservice\qtmedia_audioengined.dll"; DestDir: "\plugins\mediaservice"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\mediaservice\wmfengine.dll"; DestDir: "\plugins\mediaservice"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\mediaservice\wmfengined.dll"; DestDir: "\plugins\mediaservice"; Flags: ignoreversion   
+Source: "{#QtDir}\plugins\mediaservice\dsengine.dll"; DestDir: "{app}\mediaservice"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\mediaservice\dsengined.dll"; DestDir: "{app}\mediaservice"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\mediaservice\qtmedia_audioengine.dll"; DestDir: "{app}\mediaservice"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\mediaservice\qtmedia_audioengined.dll"; DestDir: "{app}\mediaservice"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\mediaservice\wmfengine.dll"; DestDir: "{app}\mediaservice"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\mediaservice\wmfengined.dll"; DestDir: "{app}\mediaservice"; Flags: ignoreversion   
 
 ;OpenBoardImporter
-Source: "..\OpenBoard-Importer\release\OpenBoardImporter.exe"; DestDir: "c:\OpenBoard\Importer"; Flags: ignoreversion
+Source: "..\OpenBoard-Importer\release\OpenBoardImporter.exe"; DestDir: "{app}\Importer"; Flags: ignoreversion
 Source: "{#QtLibs}\Qt5Core.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Gui.dll"; DestDir: "{app}"
 
