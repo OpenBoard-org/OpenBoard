@@ -206,11 +206,11 @@ void UBSettings::ValidateKeyboardPaletteKeyBtnSize()
 
 void UBSettings::init()
 {
-    productWebUrl =  new UBSetting(this, "App", "ProductWebAddress", "http://www.openboard.org");
+    productWebUrl =  new UBSetting(this, "App", "ProductWebAddress", "http://www.openboard.ch");
 
     softwareHomeUrl = productWebUrl->get().toString();
 
-    tutorialUrl = new UBSetting(this,"App","TutorialUrl","http://www.youtube.com/channel/UCM_moFB68dqpSLPZ-jV40Ow");
+    tutorialUrl = new UBSetting(this,"App","TutorialUrl","http://www.openboard.ch");
 
     documentSizes.insert(DocumentSizeRatio::Ratio4_3, QSize(1280, 960)); // 1.33
     documentSizes.insert(DocumentSizeRatio::Ratio16_9, QSize((960 / 9 * 16), 960)); // 1.77
