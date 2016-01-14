@@ -89,15 +89,6 @@
 
 #include "core/memcheck.h"
 
-#ifdef Q_OS_LINUX
-#include <QProcess>
-bool onboardIsAlreadyRunning = true;
-#endif
-
-#ifdef Q_OS_OSX
-#include <QProcess>
-#endif
-
 UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     : UBDocumentContainer(mainWindow->centralWidget())
     , mMainWindow(mainWindow)
@@ -172,12 +163,6 @@ void UBBoardController::init()
 
 UBBoardController::~UBBoardController()
 {
-#ifdef Q_OS_LINUX
-    if(!onboardIsAlreadyRunning){
-        QProcess newProcess;
-        newProcess.startDetached("killall onboard");
-    }
-#endif
     delete mDisplayView;
 }
 
@@ -836,35 +821,10 @@ void UBBoardController::showKeyboard(bool show)
     if(show)
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 
-#ifdef Q_OS_LINUX
-    static bool isFirstTime = true;
-    if(isFirstTime){
-        QProcess isAlreadyRunningProcess;
-        QString psAuxGrepC = "ps aux";
-        isAlreadyRunningProcess.start(psAuxGrepC);
-        isAlreadyRunningProcess.waitForFinished();
-        QString output(isAlreadyRunningProcess.readAll());
-        if(output.count("onboard") != 0)
-            onboardIsAlreadyRunning = true;
-        else
-            onboardIsAlreadyRunning = false;
-
-        isFirstTime = false;
-    }
-    if(UBSettings::settings()->useSystemOnScreenKeybard->get().toBool()){
-        QProcess newProcess;
-        newProcess.startDetached("/usr/bin/onboard");
-    }
+    if(UBSettings::settings()->useSystemOnScreenKeybard->get().toBool())
+        UBPlatformUtils::showOSK(show);
     else
         mPaletteManager->showVirtualKeyboard(show);
-
-#elif defined(Q_OS_OSX)
-    if(UBSettings::settings()->useSystemOnScreenKeybard->get().toBool())
-        UBPlatformUtils::showOSK();
-
-#else
-    mPaletteManager->showVirtualKeyboard(show);
-#endif
 
 }
 

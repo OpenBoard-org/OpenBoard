@@ -436,3 +436,9 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
 {
     pWidget->showFullScreen();
 }
+
+void UBPlatformUtils::showOSK(bool show)
+{
+    Q_UNUSED(show);
+    // No system OSK support yet
+}

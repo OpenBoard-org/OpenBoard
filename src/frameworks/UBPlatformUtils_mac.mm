@@ -610,15 +610,19 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
 }
 
 
-void UBPlatformUtils::showOSK()
+void UBPlatformUtils::showOSK(bool show)
 {
-    [[NSAutoreleasePool alloc] init];
+    // TODO: enable hiding OSK
 
-    CFDictionaryRef properties =
-    (CFDictionaryRef)[NSDictionary
-              dictionaryWithObject: @"com.apple.KeyboardViewer"
-              forKey: (NSString *)kTISPropertyInputSourceID];
-    NSArray *sources = (NSArray *)TISCreateInputSourceList(properties, false);
+    if (show) {
+        [[NSAutoreleasePool alloc] init];
 
-    TISSelectInputSource((TISInputSourceRef)[sources objectAtIndex: 0]);
+        CFDictionaryRef properties =
+        (CFDictionaryRef)[NSDictionary
+                  dictionaryWithObject: @"com.apple.KeyboardViewer"
+                  forKey: (NSString *)kTISPropertyInputSourceID];
+        NSArray *sources = (NSArray *)TISCreateInputSourceList(properties, false);
+
+        TISSelectInputSource((TISInputSourceRef)[sources objectAtIndex: 0]);
+    }
 }

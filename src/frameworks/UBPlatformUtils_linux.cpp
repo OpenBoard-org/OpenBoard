@@ -440,3 +440,10 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
     pWidget->showFullScreen();
 }
 
+void UBPlatformUtils::showOSK(bool show)
+{
+    if (show) {
+        QProcess newProcess;
+        newProcess.startDetached("/usr/bin/env onboard");
+    }
+}
