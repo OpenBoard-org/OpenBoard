@@ -440,5 +440,10 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
 void UBPlatformUtils::showOSK(bool show)
 {
     Q_UNUSED(show);
-    // No system OSK support yet
+
+    QString windir = qgetenv("WINDIR");
+    QString osk_path = windir+"\\System32\\osk.exe";
+
+    QProcess newProcess;
+    newProcess.startDetached("explorer.exe", QStringList() << osk_path);
 }
