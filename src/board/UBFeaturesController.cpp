@@ -347,7 +347,6 @@ UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
 
     featuresModel = new UBFeaturesModel(featuresList, this);
     //featuresModel->setSupportedDragActions(Qt::CopyAction | Qt::MoveAction);
-    //featuresModel->setSupportedDragActions(Qt::CopyAction | Qt::MoveAction);
 
     featuresProxyModel = new UBFeaturesProxyModel(this);
     featuresProxyModel->setFilterFixedString(rootPath);
@@ -607,7 +606,6 @@ void UBFeaturesController::addToFavorite( const QUrl &path )
 
 void UBFeaturesController::removeFromFavorite( const QUrl &path, bool deleteManualy)
 {
-//    QString filePath = fileNameFromUrl( path );
     if ( favoriteSet->find( path ) != favoriteSet->end() )
     {
         favoriteSet->erase( favoriteSet->find( path ) );
@@ -622,7 +620,6 @@ void UBFeaturesController::removeFromFavorite( const QUrl &path, bool deleteManu
 QString UBFeaturesController::fileNameFromUrl( const QUrl &url )
 {
     QString fileName = url.toString();
-    //if ( fileName.contains( "uniboardTool://"))
     if ( fileName.contains( "OpenboardTool://"))
         return fileName;
     return url.toLocalFile();
@@ -633,7 +630,6 @@ UBFeatureElementType UBFeaturesController::fileTypeFromUrl(const QString &path)
 {
     QFileInfo fileInfo(path);
 
-    //if ( path.contains("uniboardTool://"))
     if ( path.contains("OpenboardTool://"))
         return FEATURE_INTERNAL;
 

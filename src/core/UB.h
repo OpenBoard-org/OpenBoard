@@ -28,7 +28,6 @@
 #ifndef UB_H_
 #define UB_H_
 
-//#include <QtGui>
 #include <QtWidgets>
 
 
@@ -46,7 +45,6 @@ struct UBMimeType
         Audio,
         Flash,
         PDF,
-        //UniboardTool,
         OpenboardTool,
         Group,
         UNKNOWN

@@ -57,15 +57,6 @@ void UBPlatformUtils::init()
 {
     initializeKeyboardLayouts();
 
-    // qwidget_mac.mm qt_mac_set_fullscreen_mode uses kUIModeAllSuppressed which is unfortunate in our case
-    //
-    // http://developer.apple.com/mac/library/documentation/Carbon/Reference/Dock_Manager/Reference/reference.html#//apple_ref/c/func/SetSystemUIMode
-    //
-
-    //originalSetSystemUIMode = APEPatchCreate((const void *)SetSystemUIMode, (const void *)emptySetSystemUIMode);
-
-    //setDesktopMode(false);
-
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
     NSString *currentPath      = [[NSBundle mainBundle] pathForResource:@"Save PDF to OpenBoard" ofType:@"workflow"];
@@ -93,8 +84,6 @@ void UBPlatformUtils::init()
 
 void UBPlatformUtils::setDesktopMode(bool desktop)
 {
-
-    //qDebug() << "setDesktopMode called. desktop = " << desktop;
 
     @try {
         // temporarily disabled due to bug: when switching to desktop mode (and calling this),

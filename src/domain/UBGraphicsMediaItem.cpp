@@ -114,16 +114,16 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     Delegate()->createControls();
     if (mediaType_Audio == mMediaType)
         Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::ResizingHorizontally);
-    else
+    else {
         Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
+        // Resize the widget as soon as the video's native size is known (it isn't at this stage)
+        connect(mVideoItem, SIGNAL(nativeSizeChanged(QSizeF)), this, SLOT(resize(QSizeF)));
+    }
 
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 
     connect(Delegate(), SIGNAL(showOnDisplayChanged(bool)), this, SLOT(showOnDisplayChanged(bool)));
     connect(mMediaObject, SIGNAL(videoAvailableChanged(bool)), this, SLOT(hasMediaChanged(bool)));
-
-    // Resize the widget as soon as the video's native size is known (it isn't at this stage)
-    connect(mVideoItem, SIGNAL(nativeSizeChanged(QSizeF)), this, SLOT(resize(QSizeF)));
 }
 
 

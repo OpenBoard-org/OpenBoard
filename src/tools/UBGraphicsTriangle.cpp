@@ -25,8 +25,6 @@
 
 
 
-//#include <QGraphicsPolygonItem>
-
 #include <QPolygonF>
 #include <QtWidgets/QGraphicsPolygonItem>
 
@@ -143,7 +141,6 @@ void UBGraphicsTriangle::setOrientation(UBGraphicsTriangleOrientation orientatio
 {
     mOrientation = orientation;
 
-    //calculatePoints(boundingRect());
     calculatePoints(bounds_rect);
 
     QPolygonF polygon;
@@ -172,7 +169,6 @@ UBGraphicsScene* UBGraphicsTriangle::scene() const
 
 void UBGraphicsTriangle::calculatePoints(const QRectF& r)
 {
-    //qDebug() << "UBGraphicsTriangle calculatePoints()"<<"r ="<<r<<"mOrientation ="<<mOrientation;
 
     switch(mOrientation)
     {

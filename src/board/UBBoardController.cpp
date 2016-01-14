@@ -27,10 +27,7 @@
 
 #include "UBBoardController.h"
 
-//#include <QtGui>
 #include <QtWidgets>
-
-//#include <QtWebKit>
 #include <QtWebKitWidgets>
 
 #include "frameworks/UBFileSystemUtils.h"
@@ -992,8 +989,6 @@ void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, c
     if (isBackground)
         oldBackgroundObject = mActiveScene->backgroundObject();
 
-    //if(sUrl.startsWith("uniboardTool://"))
-    //if(sUrl.startsWith("openboardTool://",Qt::CaseInsensitive))
     if(sUrl.startsWith("openboardtool://"))
 
     {
@@ -1094,7 +1089,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
     mActiveScene->deselectAllItems();
 
-    //if (!sourceUrl.toString().startsWith("file://") && !sourceUrl.toString().startsWith("uniboardTool://"))
     if (!sourceUrl.toString().startsWith("file://") && !sourceUrl.toString().startsWith("openboardtool://"))
         showMessage(tr("Download finished"));
 
@@ -1375,7 +1369,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         }
     }
-  //else if (UBMimeType::UniboardTool == itemMimeType)
     else if (UBMimeType::OpenboardTool == itemMimeType)
     {
         qDebug() << "accepting mime type" << mimeType << "OpenBoard Tool";
