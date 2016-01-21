@@ -129,6 +129,7 @@ void UBPreferencesController::wire()
         mPreferencesUI->keyboardPaletteKeyButtonSize->addItem(settings->supportedKeyboardSizes->at(i));
 
 
+    connect(mPreferencesUI->useSystemOSKCheckBox, SIGNAL(clicked(bool)), settings->useSystemOnScreenKeyboard, SLOT(setBool(bool)));
     connect(mPreferencesUI->keyboardPaletteKeyButtonSize, SIGNAL(currentIndexChanged(const QString &)), settings->boardKeyboardPaletteKeyBtnSize, SLOT(setString(const QString &)));
     connect(mPreferencesUI->startModeComboBox, SIGNAL(currentIndexChanged(int)), settings->appStartMode, SLOT(setInt(int)));
 
@@ -199,6 +200,8 @@ void UBPreferencesController::init()
             break;
         }
 
+    mPreferencesUI->useSystemOSKCheckBox->setChecked(settings->useSystemOnScreenKeyboard->get().toBool());
+
     mPreferencesUI->startModeComboBox->setCurrentIndex(settings->appStartMode->get().toInt());
 
     mPreferencesUI->useExternalBrowserCheckBox->setChecked(settings->webUseExternalBrowser->get().toBool());
@@ -259,6 +262,8 @@ void UBPreferencesController::defaultSettings()
         mPreferencesUI->verticalChoice->setChecked(settings->appToolBarOrientationVertical->reset().toBool());
         mPreferencesUI->horizontalChoice->setChecked(!settings->appToolBarOrientationVertical->reset().toBool());
         mPreferencesUI->startModeComboBox->setCurrentIndex(0);
+
+        mPreferencesUI->useSystemOSKCheckBox->setChecked(settings->useSystemOnScreenKeyboard->reset().toBool());
     }
     else if (mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->penTab)
     {

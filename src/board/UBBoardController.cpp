@@ -818,7 +818,7 @@ void UBBoardController::showKeyboard(bool show)
     if(show)
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 
-    if(UBSettings::settings()->useSystemOnScreenKeybard->get().toBool())
+    if(UBSettings::settings()->useSystemOnScreenKeyboard->get().toBool())
         UBPlatformUtils::showOSK(show);
     else
         mPaletteManager->showVirtualKeyboard(show);

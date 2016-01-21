@@ -374,7 +374,7 @@ class UBSettings : public QObject
 
         UBSetting* libIconSize;
 
-        UBSetting* useSystemOnScreenKeybard;
+        UBSetting* useSystemOnScreenKeyboard;
 
         UBSetting* magnifierDrawingMode;
         UBSetting* autoSaveInterval;
