@@ -391,6 +391,7 @@ for ((i=0;i<${#tab[@]};i++)); do
     fi
     echo -n "${tab[$i]} (>= "`dpkg -p ${tab[$i]} | grep "Version: " | awk '{      print $2 }' | sed -e 's/\([:. 0-9?]*\).*/\1/g' | sed -e 's/\.$//'`") " >> "$CONTROL_FILE"
 done
+echo -n ",  onboard" >> "$CONTROL_FILE"
 echo "" >> "$CONTROL_FILE"
 echo "Description: This a interactive white board that uses a free standard format." >> "$CONTROL_FILE"
 
@@ -420,7 +421,7 @@ chown -R root:root $BASE_WORKING_DIR
 dpkg -b "$BASE_WORKING_DIR" "install/linux/$DEBIAN_PACKAGE_NAME"
 
 #clean up mess
-#rm -rf $BASE_WORKING_DIR
+rm -rf $BASE_WORKING_DIR
 
 notifyProgress "${APPLICATION_NAME}" "Package built"
 
