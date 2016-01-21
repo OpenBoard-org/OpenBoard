@@ -65,7 +65,13 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 
         mMediaObject->setNotifyInterval(50);
 
-        mDummyVideoWidget = new QWidget(); // owned and destructed by the scene ...
+        /* A dummy widget is used to keep the old functionality (when a Phonon video widget
+         * was used) with the current implementation, such as maintaining a clickable area
+         * above the video to move it around, etc.
+         * The whole class could be cleaned up, and the inheritance of QGraphicsProxyWidget
+         * abandoned, to make for a cleaner solution; for now, this works ok.
+        */
+        mDummyVideoWidget = new QWidget();
         mDummyVideoWidget->resize(320,240);
         mDummyVideoWidget->setMinimumSize(320, 240);
         mDummyVideoWidget->setWindowOpacity(0.0);

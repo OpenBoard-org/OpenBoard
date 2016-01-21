@@ -297,8 +297,8 @@ void UBGraphicsTriangle::paint(QPainter *painter, const QStyleOptionGraphicsItem
 
     mCloseSvgItem->setPos(closeButtonRect().topLeft());
 
-    qDebug() << "UBGraphicsTriangle Paint"<<"closeButtonRect().topLeft()="
-    <<closeButtonRect().topLeft();
+    //qDebug() << "UBGraphicsTriangle Paint"<<"closeButtonRect().topLeft()="
+    //<<closeButtonRect().topLeft();
 
     mHFlipSvgItem->setPos(hFlipRect().topLeft());
     mVFlipSvgItem->setPos(vFlipRect().topLeft());
@@ -321,7 +321,7 @@ QPainterPath UBGraphicsTriangle::shape() const
     QPainterPath tShape;
     QPolygonF tPolygon;
 
-    qDebug() << "UBGraphicsTriangle shape()"<<"A1 ="<<A1<<"B1 ="<<B1<<"C1 ="<<C1;
+    //qDebug() << "UBGraphicsTriangle shape()"<<"A1 ="<<A1<<"B1 ="<<B1<<"C1 ="<<C1;
 
     tPolygon << A1 << B1 << C1;
     tShape.addPolygon(tPolygon);
@@ -331,8 +331,8 @@ QPainterPath UBGraphicsTriangle::shape() const
     tShape.addPolygon(tPolygon);
     tPolygon.clear();
 
-    qDebug() << "UBGraphicsTriangle shape()"<<"A1 ="<<A1<<"B1 ="<<B1<<"C1 ="<<C1;
-    qDebug() << "UBGraphicsTriangle shape()"<<"A2 ="<<A2<<"B2 ="<<B2<<"C2 ="<<C2;
+    //qDebug() << "UBGraphicsTriangle shape()"<<"A1 ="<<A1<<"B1 ="<<B1<<"C1 ="<<C1;
+    //qDebug() << "UBGraphicsTriangle shape()"<<"A2 ="<<A2<<"B2 ="<<B2<<"C2 ="<<C2;
 
     return tShape;
 }

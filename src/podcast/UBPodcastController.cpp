@@ -799,7 +799,7 @@ QStringList UBPodcastController::audioRecordingDevices()
     QStringList devices;
 
 #ifdef Q_OS_WIN
-    //devices = UBWaveRecorder::waveInDevices();
+    devices = UBWaveRecorder::waveInDevices();
 #elif defined(Q_OS_OSX)
     devices = UBAudioQueueRecorder::waveInDevices();
 #endif
