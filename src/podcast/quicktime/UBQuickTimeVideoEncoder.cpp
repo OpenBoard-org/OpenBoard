@@ -91,7 +91,7 @@ void UBQuickTimeVideoEncoder::compressionFinished()
 {
         mLastErrorMessage = mQuickTimeCompressionSession.lastErrorMessage();
 
-        emit encodingFinished(mLastErrorMessage.length() > 0);
+        emit encodingFinished(mLastErrorMessage.length() == 0);
 }
 
 
