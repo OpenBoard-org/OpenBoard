@@ -1116,8 +1116,9 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                 {
                     QColor colorOnDarkBackground = polygonItem->colorOnDarkBackground();
                     QColor colorOnLightBackground = polygonItem->colorOnLightBackground();
+                    UBGraphicsStrokesGroup * sg = polygonItem->strokesGroup();
 
-                    if (colorOnDarkBackground.isValid() && colorOnLightBackground.isValid())
+                    if (colorOnDarkBackground.isValid() && colorOnLightBackground.isValid() && sg)
                     {
                         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "z-value"
                                                   , QString("%1").arg(polygonItem->strokesGroup()->zValue()));
@@ -1126,6 +1127,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                                                   , "fill-on-dark-background", colorOnDarkBackground.name());
                         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
                                                   , "fill-on-light-background", colorOnLightBackground.name());
+                        qDebug() << "Attributes written";
 
                         groupHoldsInfo = true;
                     }
