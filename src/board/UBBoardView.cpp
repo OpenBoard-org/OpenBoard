@@ -1691,9 +1691,14 @@ void UBBoardView::setToolCursor (int tool)
         controlViewport->setCursor (UBResources::resources ()->penCursor);
         break;
     case UBStylusTool::Eraser:
+        {
         controlViewport->setCursor (UBResources::resources ()->eraserCursor);
-        scene()->hideEraser();
+        UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();
+        if (currentTool != UBStylusTool::Eraser)
+            // Avoid hiding the eraser after a click with the eraser
+            scene()->hideEraser();
         break;
+        }
     case UBStylusTool::Marker:
         controlViewport->setCursor (UBResources::resources ()->markerCursor);
         break;

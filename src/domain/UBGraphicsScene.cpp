@@ -424,7 +424,7 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             eraserWidth /= UBApplication::boardController->currentZoom();
 
             eraseLineTo(scenePos, eraserWidth);
-            drawEraser(scenePos, true);
+            drawEraser(scenePos, mInputDeviceIsPressed);
 
             accepted = true;
         }
@@ -453,7 +453,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
 
     if (currentTool == UBStylusTool::Eraser)
     {
-        drawEraser(position);
+        drawEraser(position, mInputDeviceIsPressed);
         accepted = true;
     }
 
@@ -541,6 +541,12 @@ bool UBGraphicsScene::inputDeviceRelease()
         accepted = true;
     }
 
+    UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();
+
+    if (currentTool == UBStylusTool::Eraser)
+        redrawEraser(false);
+
+
     UBDrawingController *dc = UBDrawingController::drawingController();
 
     if (dc->isDrawingTool() || mDrawWithCompass)
@@ -624,7 +630,7 @@ bool UBGraphicsScene::inputDeviceRelease()
     return accepted;
 }
 
-void UBGraphicsScene::drawEraser(const QPointF &pPoint, bool isFirstDraw)
+void UBGraphicsScene::drawEraser(const QPointF &pPoint, bool pressed)
 {
     qreal eraserWidth = UBSettings::settings()->currentEraserWidth();
     eraserWidth /= UBApplication::boardController->systemScaleFactor();
@@ -635,10 +641,19 @@ void UBGraphicsScene::drawEraser(const QPointF &pPoint, bool isFirstDraw)
     // TODO UB 4.x optimize - no need to do that every time we move it
     if (mEraser) {
         mEraser->setRect(QRectF(pPoint.x() - eraserRadius, pPoint.y() - eraserRadius, eraserWidth, eraserWidth));
+        redrawEraser(pressed);
+    }
+}
 
-        if(isFirstDraw) {
-          mEraser->show();
-        }
+void UBGraphicsScene::redrawEraser(bool pressed)
+{
+    if (mEraser) {
+        if(pressed)
+            mEraser->setPen(QPen(Qt::SolidLine));
+        else
+            mEraser->setPen(QPen(Qt::DotLine));
+
+        mEraser->show();
     }
 }
 

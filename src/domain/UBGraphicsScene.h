@@ -359,7 +359,8 @@ public slots:
 
         void initPolygonItem(UBGraphicsPolygonItem*);
 
-        void drawEraser(const QPointF& pEndPoint, bool isFirstDraw = false);
+        void drawEraser(const QPointF& pEndPoint, bool pressed = true);
+        void redrawEraser(bool pressed);
         void drawPointer(const QPointF& pEndPoint, bool isFirstDraw = false);
         void DisposeMagnifierQWidgets();
 
