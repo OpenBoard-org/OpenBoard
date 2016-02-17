@@ -561,7 +561,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 QList<UBGraphicsPolygonItem*> polygonItems = polygonItemsFromPolylineSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
 
                 QString parentId = mXmlReader.attributes().value(mNamespaceUri, "parent").toString();
-                qDebug() << "parentID = " << parentId;
 
                 if(parentId.isEmpty() && strokesGroup)
                     parentId = strokesGroup->uuid().toString();
