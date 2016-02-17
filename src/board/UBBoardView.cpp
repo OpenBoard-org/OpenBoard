@@ -561,7 +561,7 @@ Here we determines cases when items should to get mouse press event at pressing 
         break;
 
     case UBGraphicsItemType::StrokeItemType:
-        if (currentTool == UBStylusTool::Play)
+        if (currentTool == UBStylusTool::Play || currentTool == UBStylusTool::Selector)
             return true;
         break;
     // Groups shouldn't reacts on any presses and moves for Play tool.
@@ -664,7 +664,7 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
             return false;
     case UBGraphicsMediaItem::Type:
     case UBGraphicsStrokesGroup::Type:
-        return true;
+        return false;
     case UBGraphicsTextItem::Type:
         return !item->isSelected();
     }
@@ -1254,6 +1254,7 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
                     if (isUBItem(movingItem) &&
                             DelegateButton::Type != movingItem->type() &&
                             UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
+                            UBGraphicsStrokesGroup::Type !=  movingItem->type() &&
                             UBGraphicsCache::Type != movingItem->type() &&
                             QGraphicsWebView::Type != movingItem->type() && // for W3C widgets as Tools.
                             !(!isMultipleSelectionEnabled() && movingItem->parentItem() && UBGraphicsWidgetItem::Type == movingItem->type() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type()))

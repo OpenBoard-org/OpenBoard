@@ -498,6 +498,18 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 {
                     mGroupLightBackgroundColor.setNamedColor(ubFillOnLightBackground.toString());
                 }
+
+                QStringRef ubUuid = mXmlReader.attributes().value(mNamespaceUri, "uuid");
+
+                if (!ubUuid.isNull())
+                    strokesGroup->setUuid(ubUuid.toString());
+                else
+                    strokesGroup->setUuid(QUuid::createUuid());
+
+                QString uuid_stripped = strokesGroup->uuid().toString().replace("}","").replace("{","");
+
+                if (!mStrokesList.contains(uuid_stripped))
+                    mStrokesList.insert(uuid_stripped, strokesGroup);
             }
             else if (mXmlReader.name() == "polygon" || mXmlReader.name() == "line")
             {
@@ -524,12 +536,14 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     if(!mStrokesList.contains(parentId)){
                         group = new UBGraphicsStrokesGroup();
                         mStrokesList.insert(parentId,group);
-                        currentStroke = new UBGraphicsStroke();
                         group->setTransform(polygonItem->transform());
                         UBGraphicsItem::assignZValue(group, polygonItem->zValue());
                     }
                     else
                         group = mStrokesList.value(parentId);
+
+                    if (!currentStroke)
+                        currentStroke = new UBGraphicsStroke();
 
                     if(polygonItem->transform().isIdentity())
                         polygonItem->setTransform(group->transform());
@@ -546,22 +560,32 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
             {
                 QList<UBGraphicsPolygonItem*> polygonItems = polygonItemsFromPolylineSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
 
-                QString parentId = QUuid::createUuid().toString();
+                QString parentId = mXmlReader.attributes().value(mNamespaceUri, "parent").toString();
+                qDebug() << "parentID = " << parentId;
+
+                if(parentId.isEmpty() && strokesGroup)
+                    parentId = strokesGroup->uuid().toString();
+
+                if(parentId.isEmpty())
+                    parentId = QUuid::createUuid().toString();
 
                 foreach(UBGraphicsPolygonItem* polygonItem, polygonItems)
                 {
                     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
 
                     UBGraphicsStrokesGroup* group;
+
                     if(!mStrokesList.contains(parentId)){
                         group = new UBGraphicsStrokesGroup();
                         mStrokesList.insert(parentId,group);
-                        currentStroke = new UBGraphicsStroke();
                         group->setTransform(polygonItem->transform());
                         UBGraphicsItem::assignZValue(group, polygonItem->zValue());
                     }
                     else
                         group = mStrokesList.value(parentId);
+
+                    if (!currentStroke)
+                        currentStroke = new UBGraphicsStroke();
 
                     if(polygonItem->transform().isIdentity())
                         polygonItem->setTransform(group->transform());
@@ -861,6 +885,8 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 mGroupHasInfo = false;
                 mGroupDarkBackgroundColor = QColor();
                 mGroupLightBackgroundColor = QColor();
+                strokesGroup = NULL;
+                currentStroke = NULL;
             }
         }
     }
@@ -1127,6 +1153,9 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                                                   , "fill-on-dark-background", colorOnDarkBackground.name());
                         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
                                                   , "fill-on-light-background", colorOnLightBackground.name());
+
+                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(sg->uuid()));
+
                         qDebug() << "Attributes written";
 
                         groupHoldsInfo = true;
@@ -1440,6 +1469,11 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::strokeToSvgPolyline(UBGraphicsStroke
                                       , "fill-on-dark-background", firstPolygonItem->colorOnDarkBackground().name());
             mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
                                       , "fill-on-light-background", firstPolygonItem->colorOnLightBackground().name());
+        }
+
+        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(firstPolygonItem->uuid()));
+        if (firstPolygonItem->parentItem()) {
+            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "parent", UBStringUtils::toCanonicalUuid(UBGraphicsItem::getOwnUuid(firstPolygonItem->strokesGroup())));
         }
 
         mXmlWriter.writeEndElement();
