@@ -37,7 +37,7 @@
 
 #include "core/memcheck.h"
 
-const QRect UBGraphicsCompass::sDefaultRect = QRect(0, -20, 300, 48);
+const QRect UBGraphicsCompass::sDefaultRect = QRect(0, -20, 300, 36);
 const QColor UBGraphicsCompass::sLightBackgroundMiddleFillColor = QColor(0x72, 0x72, 0x72, sFillTransparency);
 const QColor UBGraphicsCompass::sLightBackgroundEdgeFillColor = QColor(0xc3, 0xc3, 0xc3, sFillTransparency);
 const QColor UBGraphicsCompass::sLightBackgroundDrawColor = QColor(0x33, 0x33, 0x33, sDrawTransparency);
@@ -46,7 +46,7 @@ const QColor UBGraphicsCompass::sDarkBackgroundEdgeFillColor = QColor(0xdd, 0xdd
 const QColor UBGraphicsCompass::sDarkBackgroundDrawColor = QColor(0xff, 0xff, 0xff, sDrawTransparency);
 
 const int UBGraphicsCompass::sMinRadius = UBGraphicsCompass::sNeedleLength + UBGraphicsCompass::sNeedleBaseLength
-        + 32 + UBGraphicsCompass::sDefaultRect.height() + 32 + UBGraphicsCompass::sPencilBaseLength
+        + 24 + UBGraphicsCompass::sDefaultRect.height() + 24 + UBGraphicsCompass::sPencilBaseLength
         + UBGraphicsCompass::sPencilLength;
 
 UBGraphicsCompass::UBGraphicsCompass()
