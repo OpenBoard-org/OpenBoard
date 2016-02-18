@@ -98,8 +98,9 @@ checkExecutable(){
 
 copyQtLibrary(){
     if ls "$QT_LIBRARY_SOURCE_PATH/$1.so" &> /dev/null; then
-        cp $QT_LIBRARY_SOURCE_PATH/$1.so.? "$QT_LIBRARY_DEST_PATH/"
-        cp $QT_LIBRARY_SOURCE_PATH/$1.so.?.?.? "$QT_LIBRARY_DEST_PATH/"
+        cp -P $QT_LIBRARY_SOURCE_PATH/$1.so.? "$QT_LIBRARY_DEST_PATH/"
+        cp -P $QT_LIBRARY_SOURCE_PATH/$1.so.?.? "$QT_LIBRARY_DEST_PATH/"
+        cp -P $QT_LIBRARY_SOURCE_PATH/$1.so.?.?.? "$QT_LIBRARY_DEST_PATH/"
     else
         notifyError "$1 library not found in path: $QT_LIBRARY_SOURCE_PATH"
     fi
