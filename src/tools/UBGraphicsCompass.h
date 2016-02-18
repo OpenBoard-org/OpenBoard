@@ -124,11 +124,27 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         int mPixelsPerMillimeter;
 
         // Constants
-        static const QRect                     sDefaultRect;
         static const int                      sNeedleLength = 24;
+        static const int                       sNeedleWidth = 4;
+
         static const int                  sNeedleBaseLength = 16;
+        static const int                   sNeedleBaseWidth = 16;
+
+        static const int                sNeedleArmLeftWidth = 24;
+        static const int               sNeedleArmRigthWidth = 32;
+
         static const int                      sPencilLength = 16;
+        static const int                       sPencilWidth = 4;
+
         static const int                  sPencilBaseLength = 24;
+        static const int                   sPencilBaseWidth = 16;
+
+        static const int                sPencilArmLeftWidth = 32;
+        static const int               sPencilArmRightWidth = 24;
+
+        static const int                      sCornerRadius = 4;
+
+        static const QRect                     sDefaultRect;
         static const int                         sMinRadius;
         static const int               sDegreeToQtAngleUnit = 16;
         static const int                  sFillTransparency = 127;
