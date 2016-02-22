@@ -379,7 +379,6 @@ void UBDocumentController::setupViews()
 
         connect(mDocumentUI->documentTreeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(itemSelectionChanged()));
         connect(mDocumentUI->documentTreeWidget, SIGNAL(itemChanged(QTreeWidgetItem *, int)), this, SLOT(itemChanged(QTreeWidgetItem *, int)));
-        connect(mDocumentUI->documentTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, SLOT(itemClicked(QTreeWidgetItem *, int)));
 
         connect(mDocumentUI->thumbnailWidget, SIGNAL(sceneDropped(UBDocumentProxy*, int, int)), this, SLOT(moveSceneToIndex ( UBDocumentProxy*, int, int)));
         connect(mDocumentUI->thumbnailWidget, SIGNAL(resized()), this, SLOT(thumbnailViewResized()));
@@ -932,17 +931,6 @@ void UBDocumentController::loadDocumentProxies()
         mDocumentUI->documentTreeWidget->addTopLevelItem(emptyGroupNameTi);
 
     mDocumentUI->documentTreeWidget->addTopLevelItem(mTrashTi);
-}
-
-void UBDocumentController::itemClicked(QTreeWidgetItem * item, int column )
-{
-    Q_UNUSED(item);
-    Q_UNUSED(column);
-
-    /*
-    selectDocument(selectedDocumentProxy(), false);
-    itemSelectionChanged();
-    */
 }
 
 void UBDocumentController::itemChanged(QTreeWidgetItem * item, int column)

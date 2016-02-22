@@ -148,7 +148,6 @@ class UBDocumentController : public UBDocumentContainer
         void documentSceneChanged(UBDocumentProxy* proxy, int pSceneIndex);
         void pageDoubleClicked(QGraphicsItem* item, int index);
         void pageClicked(QGraphicsItem* item, int index);
-        void itemClicked(QTreeWidgetItem * item, int column );
         void addToDocument();
         void addDocumentInTree(UBDocumentProxy* pDocument);
         void updateDocumentInTree(UBDocumentProxy* pDocument);
