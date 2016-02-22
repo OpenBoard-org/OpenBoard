@@ -409,7 +409,7 @@ echo "Icon=/usr/local/$APPLICATION_DIRECTORY_NAME/${APPLICATION_NAME}.png" >> $A
 echo "StartupNotify=true" >> $APPLICATION_SHORTCUT
 echo "Terminal=false" >> $APPLICATION_SHORTCUT
 echo "Type=Application" >> $APPLICATION_SHORTCUT
-echo "Categories=Education" >> $APPLICATION_SHORTCUT
+echo "Categories=Education;" >> $APPLICATION_SHORTCUT
 cp "resources/images/${APPLICATION_NAME}.png" "$PACKAGE_DIRECTORY/${APPLICATION_NAME}.png"
 chmod 755 "$BASE_WORKING_DIR/DEBIAN"
 chmod 755 "$BASE_WORKING_DIR/DEBIAN/prerm"
