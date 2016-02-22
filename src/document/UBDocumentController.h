@@ -102,7 +102,7 @@ class UBDocumentController : public UBDocumentContainer
 
         enum LastSelectedElementType
         {
-            None = 0, Folder, Document, Page
+            None = 0, Folder, Document, Page, Multiple
         };
 
         LastSelectedElementType mSelectionType;
@@ -121,13 +121,20 @@ class UBDocumentController : public UBDocumentContainer
         UBDocumentToolsPalette *mToolsPalette;
         bool mToolsPalettePositionned;
         UBDocumentGroupTreeItem* mTrashTi;
-
-        void selectADocumentOnTrashingSelectedOne(UBDocumentGroupTreeItem* groupTi,UBDocumentProxyTreeItem *proxyTi);
-
-        void moveDocumentToTrash(UBDocumentGroupTreeItem* groupTi, UBDocumentProxyTreeItem *proxyTi);
-        void moveFolderToTrash(UBDocumentGroupTreeItem* groupTi);
+        QList<QTreeWidgetItem*> mCurrentSelection;
         QString mDocumentTrashGroupName;
         QString mDefaultDocumentGroupName;
+
+        void selectADocumentOnTrashingSelectedOne(UBDocumentGroupTreeItem* groupTi,UBDocumentProxyTreeItem *proxyTi);
+        void moveDocumentToTrash(UBDocumentGroupTreeItem* groupTi, UBDocumentProxyTreeItem *proxyTi);
+        void moveFolderToTrash(UBDocumentGroupTreeItem* groupTi);
+        void emptyTrash(bool showConfirmationDialog);
+        void deleteTreeItem(QTreeWidgetItem * item, bool showConfirmationDialog);
+
+        void updateCurrentSelection();
+        bool multipleSelection();
+        bool isDocumentInTrash(UBDocumentProxyTreeItem * document);
+        bool isCurrentSelectionInTrash();
 
     private slots:
         void documentZoomSliderValueChanged (int value);

@@ -263,9 +263,13 @@ UBDocumentGroupTreeItem* UBDocumentController::selectedDocumentGroupTreeItem()
 
 void UBDocumentController::itemSelectionChanged()
 {
+    updateCurrentSelection();
+
     reloadThumbnails();
 
-    if (selectedDocumentProxy())
+    if (multipleSelection())
+        mSelectionType = Multiple;
+    else if (selectedDocumentProxy())
         mSelectionType = Document;
     else if (selectedDocumentGroupTreeItem())
         mSelectionType = Folder;
@@ -366,7 +370,7 @@ void UBDocumentController::setupViews()
 
         loadDocumentProxies();
 
-        mDocumentUI->documentTreeWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+        mDocumentUI->documentTreeWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
         mDocumentUI->documentTreeWidget->setDragEnabled(true);
         mDocumentUI->documentTreeWidget->viewport()->setAcceptDrops(true);
         mDocumentUI->documentTreeWidget->setDropIndicatorShown(true);
@@ -695,89 +699,120 @@ void UBDocumentController::moveFolderToTrash(UBDocumentGroupTreeItem* groupTi)
     reloadThumbnails();
 }
 
+/**
+ * @brief Empty the trash folder, deleting all contents permanently.
+ * @param showConfirmationDialog If set to true, prompts confirmation from the user
+ */
+void UBDocumentController::emptyTrash(bool showConfirmationDialog)
+{
+    if (showConfirmationDialog &&
+        !UBApplication::mainWindow->yesNoQuestion(tr("Empty Trash"), tr("Are you sure you want to empty trash?")))
+        return;
+
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    QList<UBDocumentProxyTreeItem*> toBeDeleted;
+
+    for (int i(0); i < mTrashTi->childCount(); ++i) {
+        UBDocumentProxyTreeItem* proxyTi = dynamic_cast<UBDocumentProxyTreeItem*>(mTrashTi->child(i));
+        if (proxyTi && proxyTi->proxy()){
+            if(proxyTi->proxy() == mBoardController->selectedDocument()){
+                selectADocumentOnTrashingSelectedOne(dynamic_cast<UBDocumentGroupTreeItem*>(mDocumentUI->documentTreeWidget),proxyTi);
+            }
+            toBeDeleted << proxyTi;
+        }
+    }
+
+    showMessage(tr("Emptying trash"));
+
+    for (int i(0); i < toBeDeleted.count(); ++i) {
+        UBDocumentProxyTreeItem* proxyTi = toBeDeleted.at(i);
+
+        proxyTi->parent()->removeChild(proxyTi);
+        UBPersistenceManager::persistenceManager()->deleteDocument(proxyTi->proxy());
+    }
+
+    showMessage(tr("Emptied trash"));
+
+    QApplication::restoreOverrideCursor();
+    mMainWindow->actionDelete->setEnabled(false);
+}
+
+/**
+ * @brief Delete an item (document or folder) from the document list
+ * @param item The document or folder to delete
+ * @param showConfirmationDialog If set to true, the user will be asked for confirmation
+ *
+ * If the item passed as parameter is a document that is in the trash, then it is deleted
+ * permanently. If the trash folder is passed, then all its contents are deleted.
+ * Finally, if a folder is passed, all its contents are moved to trash.
+ */
+void UBDocumentController::deleteTreeItem(QTreeWidgetItem * item, bool showConfirmationDialog)
+{
+    UBDocumentProxyTreeItem * document = dynamic_cast<UBDocumentProxyTreeItem*>(item);
+    UBDocumentGroupTreeItem * folder = dynamic_cast<UBDocumentGroupTreeItem*>(item);
+
+    if (document) {
+        if (showConfirmationDialog &&
+            !UBApplication::mainWindow->yesNoQuestion(tr("Remove Document"),
+                                                      tr("Are you sure you want to remove the document '%1'?").arg(document->proxy()->metaData(UBSettings::documentName).toString())))
+            return;
+
+        if (!isDocumentInTrash(document))
+            moveDocumentToTrash(dynamic_cast<UBDocumentGroupTreeItem*>(document->parent()), document);
+
+        else {
+            document->parent()->removeChild(document);
+            UBPersistenceManager::persistenceManager()->deleteDocument(document->proxy());
+
+            if (mTrashTi->childCount()==0)
+                selectDocument(NULL);
+            else
+                selectDocument(((UBDocumentProxyTreeItem*)mTrashTi->child(0))->proxy());
+
+            reloadThumbnails();
+        }
+    }
+
+    else if (folder) {
+        if (folder == mTrashTi)
+            emptyTrash(showConfirmationDialog);
+
+        else {
+            if (showConfirmationDialog &&
+                !UBApplication::mainWindow->yesNoQuestion(tr("Remove Folder"),
+                                                          tr("Are you sure you want to remove the folder '%1' and all its content?").arg(folder->groupName())))
+                return;
+
+            QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+            moveFolderToTrash(folder);
+            QApplication::restoreOverrideCursor();
+        }
+    }
+}
+
+
+
 void UBDocumentController::deleteSelectedItem()
 {
-    if (mSelectionType == Page)
-    {
+    if (mSelectionType == Page) {
         QList<QGraphicsItem*> selectedItems = mDocumentUI->thumbnailWidget->selectedItems();
-
         deletePages(selectedItems);
     }
-    else
-    {
 
-        UBDocumentProxyTreeItem *proxyTi = selectedDocumentProxyTreeItem();
+    else if (mSelectionType == Multiple) {
+        if (!UBApplication::mainWindow->yesNoQuestion(tr("Remove mutliple documents"),
+                                                      tr("Are you sure you want to remove all selected documents?")))
+            return;
 
-        UBDocumentGroupTreeItem* groupTi = selectedDocumentGroupTreeItem();
-
-        if (proxyTi && proxyTi->proxy() && proxyTi->parent())
-        {
-            if(UBApplication::mainWindow->yesNoQuestion(tr("Remove Document"), tr("Are you sure you want to remove the document '%1'?").arg(proxyTi->proxy()->metaData(UBSettings::documentName).toString())))
-            {
-                if (proxyTi->parent() != mTrashTi)
-                {
-                    moveDocumentToTrash(groupTi, proxyTi);
-                }
-                else
-                {
-                    // We have to physically delete document
-                    proxyTi->parent()->removeChild(proxyTi);
-                    UBPersistenceManager::persistenceManager()->deleteDocument(proxyTi->proxy());
-
-                    if (mTrashTi->childCount()==0)
-                        selectDocument(NULL);
-                    else
-                        selectDocument(((UBDocumentProxyTreeItem*)mTrashTi->child(0))->proxy());
-                    reloadThumbnails();
-                }
-            }
+        foreach (QTreeWidgetItem * item, mCurrentSelection) {
+            deleteTreeItem(item, false);
         }
-        else if (groupTi)
-        {
-            if (groupTi == mTrashTi)
-            {
-                if(UBApplication::mainWindow->yesNoQuestion(tr("Empty Trash"), tr("Are you sure you want to empty trash?")))
-                {
-                    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-                    QList<UBDocumentProxyTreeItem*> toBeDeleted;
+    }
 
-                    for (int i = 0; i < groupTi->childCount(); i++)
-                    {
-                        UBDocumentProxyTreeItem* proxyTi = dynamic_cast<UBDocumentProxyTreeItem*>(groupTi->child(i));
-                        if (proxyTi && proxyTi->proxy()){
-                            if(proxyTi->proxy() == mBoardController->selectedDocument()){
-                                selectADocumentOnTrashingSelectedOne(dynamic_cast<UBDocumentGroupTreeItem*>(mDocumentUI->documentTreeWidget),proxyTi);
-                            }
-                            toBeDeleted << proxyTi;
-                        }
-                    }
-
-                    showMessage(tr("Emptying trash"));
-
-                    for (int i = 0; i < toBeDeleted.count(); i++)
-                    {
-                        UBDocumentProxyTreeItem* proxyTi = toBeDeleted.at(i);
-
-                        proxyTi->parent()->removeChild(proxyTi);
-                        UBPersistenceManager::persistenceManager()->deleteDocument(proxyTi->proxy());
-                    }
-
-                    showMessage(tr("Emptied trash"));
-
-                    QApplication::restoreOverrideCursor();
-                    mMainWindow->actionDelete->setEnabled(false);
-                }
-            }
-            else
-            {
-                if(UBApplication::mainWindow->yesNoQuestion(tr("Remove Folder"), tr("Are you sure you want to remove the folder '%1' and all its content?").arg(groupTi->groupName())))
-                {
-                    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-                    moveFolderToTrash(groupTi);
-                    QApplication::restoreOverrideCursor();
-                }
-            }
-        }
+    else if (mSelectionType == Document || mSelectionType == Folder) {
+        QTreeWidgetItem * item = mCurrentSelection.first();
+        if (item)
+            deleteTreeItem(item, true);
     }
 }
 
@@ -897,14 +932,17 @@ void UBDocumentController::loadDocumentProxies()
         mDocumentUI->documentTreeWidget->addTopLevelItem(emptyGroupNameTi);
 
     mDocumentUI->documentTreeWidget->addTopLevelItem(mTrashTi);
-    }
+}
+
 void UBDocumentController::itemClicked(QTreeWidgetItem * item, int column )
 {
     Q_UNUSED(item);
     Q_UNUSED(column);
 
+    /*
     selectDocument(selectedDocumentProxy(), false);
     itemSelectionChanged();
+    */
 }
 
 void UBDocumentController::itemChanged(QTreeWidgetItem * item, int column)
@@ -1119,6 +1157,90 @@ void UBDocumentController::pageSelectionChanged()
     selectionChanged();
 }
 
+bool UBDocumentController::isDocumentInTrash(UBDocumentProxyTreeItem * document)
+{
+    return dynamic_cast<UBDocumentGroupTreeItem*>(document->parent())->isTrashFolder();
+}
+
+bool UBDocumentController::isCurrentSelectionInTrash()
+{
+    bool selectionIsInTrash = false;
+    foreach (QTreeWidgetItem* item, mCurrentSelection) {
+        // Find the first valid element; no need to check all of them
+        UBDocumentProxyTreeItem * document = dynamic_cast<UBDocumentProxyTreeItem*>(item);
+        if (document) {
+            selectionIsInTrash = isDocumentInTrash(document);
+            break;
+        }
+    }
+
+    return selectionIsInTrash;
+}
+
+/**
+ * @brief Set the currently selected items, after checking the selection is valid
+ *
+ * This method compares the current selection with the previous one, and deselects
+ * the "incorrectly" selected items if necessary. For example, it shouldn't be possible
+ * to select items both in the trash and out; and the Trash folder shouldn't be
+ * included in multiple selections.
+ */
+void UBDocumentController::updateCurrentSelection()
+{
+    QList<QTreeWidgetItem*> newSelection = mDocumentUI->documentTreeWidget->selectedItems();
+
+    // If the selection is of size 1 or 0, we don't need to do any checking, we just accept it.
+    if (newSelection.size() <= 1) {
+        mCurrentSelection = newSelection;
+        return;
+    }
+
+    // We don't allow the Trash folder in multiple selections
+    // If it is currently selected, we deselect all the newly selected items
+    if (mCurrentSelection.size() == 1) {
+        UBDocumentGroupTreeItem* folder = dynamic_cast<UBDocumentGroupTreeItem*>(mCurrentSelection.first());
+
+        if (folder && folder->isTrashFolder()) {
+            foreach (QTreeWidgetItem* item, newSelection) {
+                if (item != folder)
+                    item->setSelected(false);
+            }
+
+            return;
+        }
+    }
+
+    // Find the elements of the new selection that aren't in the old one
+    QSet<QTreeWidgetItem*> newItems = newSelection.toSet().subtract(mCurrentSelection.toSet());
+
+    bool selectionIsInTrash = isCurrentSelectionInTrash();
+
+    foreach (QTreeWidgetItem* item, newItems) {
+        bool addToSelection = true;
+        UBDocumentProxyTreeItem * document = dynamic_cast<UBDocumentProxyTreeItem*>(item);
+        if (document) {
+            // No mix between trashed and non-trashed items
+            if (isDocumentInTrash(document) != selectionIsInTrash)
+                addToSelection = false;
+        }
+
+        UBDocumentGroupTreeItem * folder = dynamic_cast<UBDocumentGroupTreeItem*>(item);
+        if (folder) {
+            // Trash folder is not allowed in multiple selections
+            if (folder->isTrashFolder())
+                addToSelection = false;
+
+            // Don't add a folder when trash items are selected
+            if (selectionIsInTrash)
+                addToSelection = false;
+        }
+
+        if (addToSelection)
+            mCurrentSelection.append(item);
+        else
+            item->setSelected(false);
+    }
+}
 
 void UBDocumentController::selectionChanged()
 {
@@ -1135,13 +1257,19 @@ void UBDocumentController::selectionChanged()
     bool pageSelected = (mSelectionType == Page);
     bool groupSelected = (mSelectionType == Folder);
     bool docSelected = (mSelectionType == Document);
+    bool multipleSelected = (mSelectionType == Multiple);
+    bool selectedItemsAreInTrash = isCurrentSelectionInTrash();
 
-    bool trashSelected = false;
+
+    bool trashSelected = false; // set to true if selected items are in trash or if trash folder is selected
     if (groupSelected && selectedDocumentGroupTreeItem())
         trashSelected = selectedDocumentGroupTreeItem()->isTrashFolder();
 
     if ((docSelected || pageSelected) && proxyTi)
         trashSelected = dynamic_cast<UBDocumentGroupTreeItem*>(proxyTi->parent())->isTrashFolder();
+
+    if (multipleSelected)
+        trashSelected = selectedItemsAreInTrash;
 
     bool defaultGroupSelected = false;
     if (groupSelected && selectedDocumentGroupTreeItem())
@@ -1179,7 +1307,7 @@ void UBDocumentController::selectionChanged()
     bool deleteEnabled = false;
     if (trashSelected)
     {
-        if (docSelected)
+        if (docSelected || multipleSelected)
             deleteEnabled = true;
         else if (groupSelected && selectedDocumentGroupTreeItem())
         {
@@ -1189,7 +1317,7 @@ void UBDocumentController::selectionChanged()
     }
     else
     {
-        deleteEnabled = groupSelected || docSelected || pageSelected;
+        deleteEnabled = groupSelected || docSelected || pageSelected || multipleSelected; // TODO: clean up. this is weirdly done
     }
 
     if (pageSelected && (pageCount == mDocumentUI->thumbnailWidget->selectedItems().count()))
@@ -1204,7 +1332,7 @@ void UBDocumentController::selectionChanged()
 
     if (trashSelected)
     {
-        if (docSelected)
+        if (docSelected || multipleSelected) // TODO: clean this up. have only "selectedItemsAreInTrash"
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/toolbar/deleteDocument.png"));
             mMainWindow->actionDelete->setText(tr("Delete"));
@@ -1221,8 +1349,8 @@ void UBDocumentController::selectionChanged()
         mMainWindow->actionDelete->setText(tr("Trash"));
     }
 
-    mMainWindow->actionDocumentAdd->setEnabled((docSelected || pageSelected) && !trashSelected);
-    mMainWindow->actionImport->setEnabled(!trashSelected);
+    mMainWindow->actionDocumentAdd->setEnabled((docSelected || pageSelected) && !trashSelected && !multipleSelected);
+    mMainWindow->actionImport->setEnabled(!trashSelected && !multipleSelected);
 
 }
 
@@ -1565,7 +1693,9 @@ void UBDocumentController::focusChanged(QWidget *old, QWidget *current)
     }
     else if (current == mDocumentUI->documentTreeWidget)
     {
-        if (selectedDocumentProxy())
+        if (multipleSelection())
+            mSelectionType = Multiple;
+        else if (selectedDocumentProxy())
             mSelectionType = Document;
         else if (selectedDocumentGroupTreeItem())
             mSelectionType = Folder;
@@ -1652,6 +1782,10 @@ void UBDocumentController::refreshDocumentThumbnailsView(UBDocumentContainer*)
     UBDocumentProxy *proxy = selectedDocumentProxy();
     QGraphicsPixmapItem *selection = 0;
 
+    // Don't display thumbnails if multiple documents are selected
+    if (multipleSelection())
+        proxy = 0;
+
     QStringList labels;
 
     if (proxy)
@@ -1695,4 +1829,10 @@ void UBDocumentController::refreshDocumentThumbnailsView(UBDocumentContainer*)
     }
 
     QApplication::restoreOverrideCursor();
+}
+
+bool UBDocumentController::multipleSelection()
+{
+   QList<QTreeWidgetItem*> items = mDocumentUI->documentTreeWidget->selectedItems();
+   return (items.size() > 1);
 }
