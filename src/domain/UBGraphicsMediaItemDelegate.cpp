@@ -198,6 +198,11 @@ void UBGraphicsMediaItemDelegate::remove(bool canUndo)
     if (delegated() && delegated()->mediaObject())
         delegated()->mediaObject()->stop();
 
+    if (delegated()->videoItem()) {
+        UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
+        scene->removeItem(delegated()->videoItem());
+    }
+
     UBGraphicsItemDelegate::remove(canUndo);
 }
 
