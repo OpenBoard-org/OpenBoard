@@ -756,7 +756,7 @@ void UBDocumentController::deleteTreeItem(QTreeWidgetItem * item, bool showConfi
                                                       tr("Are you sure you want to remove the document '%1'?").arg(document->proxy()->metaData(UBSettings::documentName).toString())))
             return;
 
-        if (!isDocumentInTrash(document))
+        if (!document->isInTrash())
             moveDocumentToTrash(dynamic_cast<UBDocumentGroupTreeItem*>(document->parent()), document);
 
         else {
@@ -1157,11 +1157,6 @@ void UBDocumentController::pageSelectionChanged()
     selectionChanged();
 }
 
-bool UBDocumentController::isDocumentInTrash(UBDocumentProxyTreeItem * document)
-{
-    return dynamic_cast<UBDocumentGroupTreeItem*>(document->parent())->isTrashFolder();
-}
-
 bool UBDocumentController::isCurrentSelectionInTrash()
 {
     bool selectionIsInTrash = false;
@@ -1169,7 +1164,7 @@ bool UBDocumentController::isCurrentSelectionInTrash()
         // Find the first valid element; no need to check all of them
         UBDocumentProxyTreeItem * document = dynamic_cast<UBDocumentProxyTreeItem*>(item);
         if (document) {
-            selectionIsInTrash = isDocumentInTrash(document);
+            selectionIsInTrash = document->isInTrash();
             break;
         }
     }
@@ -1220,7 +1215,7 @@ void UBDocumentController::updateCurrentSelection()
         UBDocumentProxyTreeItem * document = dynamic_cast<UBDocumentProxyTreeItem*>(item);
         if (document) {
             // No mix between trashed and non-trashed items
-            if (isDocumentInTrash(document) != selectionIsInTrash)
+            if (document->isInTrash() != selectionIsInTrash)
                 addToSelection = false;
         }
 
@@ -1234,9 +1229,15 @@ void UBDocumentController::updateCurrentSelection()
             if (selectionIsInTrash)
                 addToSelection = false;
         }
+        if (!folder && !document)
+            addToSelection = false;
 
-        if (addToSelection)
-            mCurrentSelection.append(item);
+        if (addToSelection) {
+            if (!mCurrentSelection.contains(item)) {
+                // the .subtract() above doesn't seem to work all the time...
+                mCurrentSelection.append(item);
+            }
+        }
         else
             item->setSelected(false);
     }

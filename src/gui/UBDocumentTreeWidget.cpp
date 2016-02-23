@@ -419,6 +419,17 @@ UBDocumentProxyTreeItem::UBDocumentProxyTreeItem(QTreeWidgetItem * parent, UBDoc
     parent->insertChild(i, this);
 }
 
+bool UBDocumentProxyTreeItem::isInTrash()
+{
+    UBDocumentGroupTreeItem * parentFolder = dynamic_cast<UBDocumentGroupTreeItem*>(this->parent());
+    if (parentFolder)
+        return parentFolder->isTrashFolder();
+    else {
+        qWarning() << "UBDocumentProxyTreeItem::isInTrash: document has no parent folder. Assuming it is in trash.";
+        return true;
+    }
+}
+
 
 UBDocumentGroupTreeItem::UBDocumentGroupTreeItem(QTreeWidgetItem *parent, bool isEditable)
     : QTreeWidgetItem(parent)
