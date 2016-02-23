@@ -310,3 +310,13 @@ void UBGraphicsMediaItemDelegate::totalTimeChanged(qint64 newTotalTime)
 {
     mMediaControl->totalTimeChanged(newTotalTime);
 }
+
+void UBGraphicsMediaItemDelegate::showHide(bool show)
+{
+    QVariant showFlag = QVariant(show ? UBItemLayerType::Object : UBItemLayerType::Control);
+    showHideRecurs(showFlag, mDelegated);
+    showHideRecurs(showFlag, delegated()->videoItem());
+    mDelegated->update();
+
+    emit showOnDisplayChanged(show);
+}

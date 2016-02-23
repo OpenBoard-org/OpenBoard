@@ -40,6 +40,7 @@
 #include <QtGui>
 #include <QtSvg>
 #include <QMimeData>
+#include <QGraphicsVideoItem>
 
 #include "core/UB.h"
 #include "core/UBSettings.h"
@@ -320,6 +321,8 @@ class UBGraphicsItemDelegate : public QObject
         virtual void decorateMenu(QMenu *menu);
         virtual void updateMenuActionState();
 
+        void showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem);
+
         QList<DelegateButton*> buttons() {return mButtons;}
         QGraphicsItem* mDelegated;
 
@@ -352,7 +355,6 @@ protected slots:
 private:
         void updateFrame();
         void updateButtons(bool showUpdated = false);
-        inline void showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem);
 
         QPointF mOffset;
         QTransform mPreviousTransform;

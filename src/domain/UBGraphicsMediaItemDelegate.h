@@ -54,6 +54,7 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
 
         void toggleMute();
         void updateTicker(qint64 time);
+        virtual void showHide(bool show);
 
     protected slots:
 
