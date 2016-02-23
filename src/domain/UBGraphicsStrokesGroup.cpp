@@ -113,40 +113,23 @@ void UBGraphicsStrokesGroup::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Delegate()->startUndoStep();
 
-    mStartingPoint = event->scenePos();
-
-    initializeTransform();
-
-    mTranslateX = 0;
-    mTranslateY = 0;
-    mAngleOffset = 0;
-
-    mInitialTransform = buildTransform();
-
+    QGraphicsItemGroup::mousePressEvent(event);
     event->accept();
+
+    setSelected(false);
 }
 
 void UBGraphicsStrokesGroup::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    QLineF move = QLineF(mStartingPoint, event->scenePos());
+    QGraphicsItemGroup::mouseMoveEvent(event);
 
-    mTranslateX = move.dx();
-    mTranslateY = move.dy();
-    //Delegate()->frame()->moveLinkedItems(move);
-
-    setTransform(buildTransform());
-    
     event->accept();
-     
+    setSelected(false);
 }
 
 void UBGraphicsStrokesGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     Delegate()->commitUndoStep();
-
-    mTotalTranslateX += mTranslateX;
-    mTotalTranslateY += mTranslateY;
-
     event->accept();
 
     Delegate()->mouseReleaseEvent(event);
@@ -183,7 +166,7 @@ UBItem* UBGraphicsStrokesGroup::deepCopy() const
         }
     }
     const_cast<UBGraphicsStrokesGroup*>(this)->setTransform(groupTransform);
-    copy->setTransform(groupTransform);
+    copy->setTransform(sceneTransform());
 
     return copy;
 }
@@ -239,81 +222,4 @@ QPainterPath UBGraphicsStrokesGroup::shape() const
     }
 
     return path;
-}
-
-void UBGraphicsStrokesGroup::initializeTransform()
-{
-    
-    QTransform itemTransform = sceneTransform();
-    QRectF itemRect = boundingRect();
-    QPointF topLeft = itemTransform.map(itemRect.topLeft());
-    QPointF topRight = itemTransform.map(itemRect.topRight());
-    QPointF bottomLeft = itemTransform.map(itemRect.bottomLeft());
-
-    qreal horizontalFlip = (topLeft.x() > topRight.x()) ? -1 : 1;
-    mMirrorX = horizontalFlip < 0 ;
-    if(horizontalFlip < 0){
-        // why this is because of the way of calculating the translations that checks which side is the most is the
-        // nearest instead of checking which one is the left side.
-        QPointF tmp = topLeft;
-        topLeft = topRight;
-        topRight = tmp;
-
-        // because of the calculation of the height is done by lenght and not deltaY
-        bottomLeft = itemTransform.map(itemRect.bottomRight());
-    }
-
-    qreal verticalFlip = (bottomLeft.y() < topLeft.y()) ? -1 : 1;
-    // not sure that is usefull
-    mMirrorY = verticalFlip < 0;
-    if(verticalFlip < 0 && !mMirrorX){
-        topLeft = itemTransform.map(itemRect.bottomLeft());
-        topRight = itemTransform.map(itemRect.bottomRight());
-        bottomLeft = itemTransform.map(itemRect.topLeft());
-    }
-
-    QLineF topLine(topLeft, topRight);
-    QLineF leftLine(topLeft, bottomLeft);
-    qreal width = topLine.length();
-    qreal height = leftLine.length();
-
-    mAngle = topLine.angle();
-
-    // the fact the the length is used we loose the horizontalFlip information
-    // a better way to do this is using DeltaX that preserve the direction information.
-    mTotalScaleX = (width / itemRect.width()) * horizontalFlip;
-    mTotalScaleY = height / itemRect.height() * verticalFlip;
-    
-    
-
-    QTransform tr;
-    QPointF center = boundingRect().center();
-    tr.translate(center.x() * mTotalScaleX, center.y() * mTotalScaleY);
-    tr.rotate(-mAngle);
-    tr.translate(-center.x() * mTotalScaleX, -center.y() * mTotalScaleY);
-    tr.scale(mTotalScaleX, mTotalScaleY);
-
-    mTotalTranslateX = transform().dx() - tr.dx();
-    mTotalTranslateY = transform().dy() - tr.dy();
-    
-    
-}
-
-QTransform UBGraphicsStrokesGroup::buildTransform()
-{
-    QTransform tr;
-    QPointF center = boundingRect().center();
-
-    // Translate
-    tr.translate(mTotalTranslateX + mTranslateX, mTotalTranslateY + mTranslateY);
-
-    // Set angle
-    tr.translate(center.x() * mTotalScaleX, center.y() * mTotalScaleY);
-    tr.rotate(-mAngle);
-    tr.translate(-center.x() * mTotalScaleX, -center.y() * mTotalScaleY);
-
-    // Scale
-    tr.scale(mTotalScaleX, mTotalScaleY );
-
-    return tr;
 }

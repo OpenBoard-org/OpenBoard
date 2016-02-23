@@ -663,6 +663,7 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
         if (item->isSelected())
             return false;
     case UBGraphicsMediaItem::Type:
+        return true;
     case UBGraphicsStrokesGroup::Type:
         return false;
     case UBGraphicsTextItem::Type:

@@ -66,34 +66,6 @@ protected:
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-
- private:
-    qreal mTranslateX;
-    qreal mTranslateY;
-    qreal mTotalTranslateX;
-    qreal mTotalTranslateY;
-
-    qreal mAngle;
-    qreal mAngleOffset;
-
-    qreal mTotalScaleX;
-    qreal mTotalScaleY;
-    qreal mScaleX;
-    qreal mScaleY;
-
-    bool mFlippedX;
-    bool mFlippedY;
-    bool mMirrorX;
-    bool mMirrorY;
-    bool mResizing;
-    bool mMirroredXAtStart;
-    bool mMirroredYAtStart;
-
-    QPointF mStartingPoint;
-    QTransform mInitialTransform;
-
-    QTransform buildTransform ();
-    void  initializeTransform ();
 };
 
 #endif // UBGRAPHICSSTROKESGROUP_H
