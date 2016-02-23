@@ -1140,6 +1140,14 @@
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Remove mutliple documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove all selected documents?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -2532,6 +2540,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use system keyboard (recommended)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -1141,6 +1141,14 @@
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation>Le document &apos;%1&apos; a été créé avec une nouvelle version d&apos;OpenBoard (%2). En l&apos;ouvrant vous pourriez perdre des informations. Voulez-vous continuer ?</translation>
     </message>
+    <message>
+        <source>Remove mutliple documents</source>
+        <translation>Supprimer plusieurs documents</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove all selected documents?</source>
+        <translation>Voulez-vous vraiment supprimer tous les documents sélectionnés?</translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -2545,6 +2553,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation>Vérifier si des données Open-Sankoré peuvent être importées au redémarrage</translation>
+    </message>
+    <message>
+        <source>Use system keyboard (recommended)</source>
+        <translation>Utiliser le clavier virtuel système (recommandé)</translation>
     </message>
 </context>
 <context>
