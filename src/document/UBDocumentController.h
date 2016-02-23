@@ -135,6 +135,7 @@ class UBDocumentController : public UBDocumentContainer
         bool multipleSelection();
         bool isDocumentInTrash(UBDocumentProxyTreeItem * document);
         bool isCurrentSelectionInTrash();
+        LastSelectedElementType itemType(QTreeWidgetItem * item);
 
     private slots:
         void documentZoomSliderValueChanged (int value);

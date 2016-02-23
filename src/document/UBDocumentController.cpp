@@ -803,7 +803,19 @@ void UBDocumentController::deleteSelectedItem()
                                                       tr("Are you sure you want to remove all selected documents?")))
             return;
 
+        QList<QTreeWidgetItem*> foldersToDelete;
+
         foreach (QTreeWidgetItem * item, mCurrentSelection) {
+            LastSelectedElementType type = itemType(item);
+            if (type == Document)
+                deleteTreeItem(item, false);
+
+            else if (type == Folder)
+                // Delete folders later, to avoid deleting a document twice
+                foldersToDelete << item;
+        }
+
+        foreach (QTreeWidgetItem * item, foldersToDelete) {
             deleteTreeItem(item, false);
         }
     }
@@ -1823,4 +1835,17 @@ bool UBDocumentController::multipleSelection()
 {
    QList<QTreeWidgetItem*> items = mDocumentUI->documentTreeWidget->selectedItems();
    return (items.size() > 1);
+}
+
+UBDocumentController::LastSelectedElementType UBDocumentController::itemType(QTreeWidgetItem * item)
+{
+    UBDocumentProxyTreeItem * document = dynamic_cast<UBDocumentProxyTreeItem*>(item);
+    if (document)
+        return Document;
+
+    UBDocumentGroupTreeItem * folder = dynamic_cast<UBDocumentGroupTreeItem*>(item);
+    if (folder)
+        return Folder;
+
+    return None;
 }
