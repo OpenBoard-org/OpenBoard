@@ -1349,10 +1349,10 @@ UBGraphicsMediaItem* UBGraphicsScene::addMedia(const QUrl& pMediaFileUrl, bool s
     if (!QFile::exists(pMediaFileUrl.toString()))
         return NULL;
 
-    UBGraphicsMediaItem* mediaItem = new UBGraphicsMediaItem(pMediaFileUrl);
-    if(mediaItem){
+    UBGraphicsMediaItem * mediaItem = UBGraphicsMediaItem::createMediaItem(pMediaFileUrl);
+
+    if(mediaItem)
         connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), mediaItem, SLOT(activeSceneChanged()));
-    }
 
     mediaItem->setPos(pPos);
 
@@ -1361,11 +1361,6 @@ UBGraphicsMediaItem* UBGraphicsScene::addMedia(const QUrl& pMediaFileUrl, bool s
 
     addItem(mediaItem);
 
-    if (mediaItem->videoItem()) {
-        addItem(mediaItem->videoItem());
-        mediaItem->videoItem()->show();
-    }
-
     mediaItem->show();
 
     if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
@@ -1373,12 +1368,11 @@ UBGraphicsMediaItem* UBGraphicsScene::addMedia(const QUrl& pMediaFileUrl, bool s
         UBApplication::undoStack->push(uc);
     }
 
-    mediaItem->mediaObject()->play();
+    mediaItem->play();
 
-    if (!shouldPlayAsap)
-    {
-        mediaItem->mediaObject()->pause();
-        mediaItem->mediaObject()->setPosition(0);
+    if (!shouldPlayAsap) {
+        mediaItem->pause();
+        mediaItem->setMediaPos(0);
     }
 
     setDocumentUpdated();

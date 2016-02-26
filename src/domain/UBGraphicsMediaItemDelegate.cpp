@@ -43,41 +43,16 @@
 
 #include "core/memcheck.h"
 
-UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, QMediaPlayer* pMedia, QObject * parent)
+UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, QObject * parent)
     : UBGraphicsItemDelegate(pDelegated, parent, GF_COMMON
                              | GF_RESPECT_RATIO
                              | GF_TOOLBAR_USED)
     , mPlayPauseButton(NULL)
-    , mMedia(pMedia)
     , mToolBarShowTimer(NULL)
     , m_iToolBarShowingInterval(5000)
 {
     QPalette palette;
     palette.setBrush ( QPalette::Light, Qt::darkGray );
-
-    mMedia->setNotifyInterval(50);
-
-    connect(mMedia, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)),
-            this, SLOT(mediaStatusChanged(QMediaPlayer::MediaStatus)));
-
-    connect(mMedia, SIGNAL(stateChanged(QMediaPlayer::State)),
-            this, SLOT(mediaStateChanged(QMediaPlayer::State)));
-
-    connect(mMedia, static_cast<void(QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error),
-        this, &UBGraphicsMediaItemDelegate::mediaError);
-
-    connect(mMedia, SIGNAL(positionChanged(qint64)),
-            this, SLOT(updateTicker(qint64)));
-
-    connect(mMedia, SIGNAL(durationChanged(qint64)),
-            this, SLOT(totalTimeChanged(qint64)));
-
-    if (delegated()->hasLinkedImage())
-    {
-        mToolBarShowTimer = new QTimer();
-        connect(mToolBarShowTimer, SIGNAL(timeout()), this, SLOT(hideToolBar()));
-        mToolBarShowTimer->setInterval(m_iToolBarShowingInterval);
-    }
 
     if (delegated()->isMuted())
         delegated()->setMute(true);
@@ -110,7 +85,7 @@ void UBGraphicsMediaItemDelegate::buildButtons()
 
         mStopButton = new DelegateButton(":/images/stop.svg", mDelegated, mToolBarItem, Qt::TitleBarArea);
         connect(mStopButton, SIGNAL(clicked(bool)),
-                mMedia, SLOT(stop()));
+                delegated(), SLOT(stop()));
 
         mMediaControl = new DelegateMediaControl(delegated(), mToolBarItem);
         mMediaControl->setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -132,8 +107,16 @@ void UBGraphicsMediaItemDelegate::buildButtons()
         mToolBarItem->setVisibleOnBoard(true);
         mToolBarItem->setShifting(false);
 
-        if (mToolBarShowTimer)
-        {
+        if (!mToolBarShowTimer) {
+
+            if (delegated()->hasLinkedImage()) {
+                mToolBarShowTimer = new QTimer();
+                connect(mToolBarShowTimer, SIGNAL(timeout()), this, SLOT(hideToolBar()));
+                mToolBarShowTimer->setInterval(m_iToolBarShowingInterval);
+            }
+        }
+
+        else {
             connect(mPlayPauseButton, SIGNAL(clicked(bool)),
                     mToolBarShowTimer, SLOT(start()));
 
@@ -195,13 +178,15 @@ void UBGraphicsMediaItemDelegate::positionHandles()
 
 void UBGraphicsMediaItemDelegate::remove(bool canUndo)
 {
-    if (delegated() && delegated()->mediaObject())
-        delegated()->mediaObject()->stop();
+    if (delegated())
+        delegated()->stop();
 
+    /*
     if (delegated()->videoItem()) {
         UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
         scene->removeItem(delegated()->videoItem());
     }
+    */
 
     UBGraphicsItemDelegate::remove(canUndo);
 }
@@ -223,43 +208,8 @@ UBGraphicsMediaItem* UBGraphicsMediaItemDelegate::delegated()
 
 void UBGraphicsMediaItemDelegate::togglePlayPause()
 {
-    if (delegated() && delegated()->mediaObject()) {
-
-        QMediaPlayer * media = delegated()->mediaObject();
-
-        if (media->state() == QMediaPlayer::StoppedState)
-            media->play();
-
-        else if (media->state() == QMediaPlayer::PlayingState) {
-
-            if ((media->duration() - media->position()) <= 0) {
-                media->stop();
-                media->play();
-            }
-
-            else {
-                media->pause();
-                if(delegated()->scene())
-                        delegated()->scene()->setModified(true);
-            }
-        }
-
-        else if (media->state() == QMediaPlayer::PausedState) {
-            if ((media->duration() - media->position()) <= 0)
-                media->stop();
-
-            media->play();
-        }
-
-        else  if ( media->mediaStatus() == QMediaPlayer::LoadingMedia) {
-            delegated()->mediaObject()->setMedia(delegated()->mediaFileUrl());
-            media->play();
-        }
-
-        if (media->error())
-            qDebug() << "Error appeared." << media->errorString();
-
-    }
+    if (delegated())
+        delegated()->togglePlayPause();
 }
 
 void UBGraphicsMediaItemDelegate::mediaStatusChanged(QMediaPlayer::MediaStatus status)
@@ -268,7 +218,7 @@ void UBGraphicsMediaItemDelegate::mediaStatusChanged(QMediaPlayer::MediaStatus s
     // StalledMedia, BufferingMedia, BufferedMedia, EndOfMedia, InvalidMedia
 
     if (status == QMediaPlayer::LoadedMedia)
-        mMediaControl->totalTimeChanged(delegated()->mediaObject()->duration());
+        mMediaControl->totalTimeChanged(delegated()->mediaDuration());
 
     // in most cases, the only necessary action is to update the play/pause state
     updatePlayPauseState();
@@ -288,15 +238,13 @@ void UBGraphicsMediaItemDelegate::mediaError(QMediaPlayer::Error error)
     // ServiceMissingError
     Q_UNUSED(error);
 
-    qDebug() << "Error appeared." << mMedia->errorString();
+    qDebug() << "Error appeared.";// << mMedia->errorString();
 }
 
 
 void UBGraphicsMediaItemDelegate::updatePlayPauseState()
 {
-    QMediaPlayer * media = delegated()->mediaObject();
-
-    if (media->state() == QMediaPlayer::PlayingState)
+    if (delegated()->playerState() == QMediaPlayer::PlayingState)
         mPlayPauseButton->setFileName(":/images/pause.svg");
     else
         mPlayPauseButton->setFileName(":/images/play.svg");
@@ -305,8 +253,10 @@ void UBGraphicsMediaItemDelegate::updatePlayPauseState()
 
 void UBGraphicsMediaItemDelegate::updateTicker(qint64 time)
 {
-    QMediaPlayer* media = delegated()->mediaObject();
-    mMediaControl->totalTimeChanged(media->duration());
+    // TODO: duration() getter for UBGMediaItem
+    // make sure that all delegate()->mediaObject() calls are removed. 'tis dirty.
+
+    mMediaControl->totalTimeChanged(delegated()->mediaDuration());
     mMediaControl->updateTicker(time);
 }
 
@@ -320,7 +270,7 @@ void UBGraphicsMediaItemDelegate::showHide(bool show)
 {
     QVariant showFlag = QVariant(show ? UBItemLayerType::Object : UBItemLayerType::Control);
     showHideRecurs(showFlag, mDelegated);
-    showHideRecurs(showFlag, delegated()->videoItem());
+    // TODO: call showHideRecurs on the videoItem too (from UBGMI?)
     mDelegated->update();
 
     emit showOnDisplayChanged(show);

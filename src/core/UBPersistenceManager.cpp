@@ -566,7 +566,7 @@ void UBPersistenceManager::duplicateDocumentScene(UBDocumentProxy* proxy, int in
             QString fileName = QFileInfo(source).completeBaseName();
             destination = destination.replace(fileName,newUuid.toString());
             QFile::copy(source,destination);
-            mediaItem->mediaFileUrl(QUrl::fromLocalFile(destination));
+            mediaItem->setMediaFileUrl(QUrl::fromLocalFile(destination));
             continue;
         }
 

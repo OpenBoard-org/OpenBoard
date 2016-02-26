@@ -1439,10 +1439,10 @@ void DelegateMediaControl::seekToMousePos(QPointF mousePos)
         mouseX = mSeecArea.width() - mSeecArea.height()/2;
 
     if (mTotalTimeInMs > 0 && length > 0 && mDelegate
-        && mDelegate->mediaObject() && mDelegate->mediaObject()->isSeekable())
+        && mDelegate->isMediaSeekable())
     {
         qint64 tickPos = (mTotalTimeInMs/length)* (mouseX - minX);
-        mDelegate->mediaObject()->setPosition(tickPos);
+        mDelegate->setMediaPos(tickPos);
 
         //OSX is a bit lazy
         updateTicker(tickPos);

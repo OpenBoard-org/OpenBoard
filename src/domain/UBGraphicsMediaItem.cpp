@@ -39,118 +39,112 @@
 
 bool UBGraphicsMediaItem::sIsMutedByDefault = false;
 
-UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent)
-        : UBGraphicsProxyWidget(parent)
-        , mDummyVideoWidget(NULL)
-        , mVideoItem(NULL)
-        , mAudioWidget(NULL)
-        , mMuted(sIsMutedByDefault)
-        , mMutedByUserAction(sIsMutedByDefault)
-        , mMediaFileUrl(pMediaFileUrl)
-        , mLinkedImage(NULL)
-        , mInitialPos(0)
+/**
+ * @brief Create and return a UBGraphicsMediaItem instance. The type (audio or video) is determined from the URL.
+ * @param pMediaFileUrl The URL of the audio or video file
+ * @param parent (Optional) the parent item
+ * @return A pointer to the newly created instance.
+ */
+UBGraphicsMediaItem* UBGraphicsMediaItem::createMediaItem(const QUrl &pMediaFileUrl, QGraphicsItem* parent)
 {
-    update();
-
-
-    mMediaObject = new QMediaPlayer(this);
+    UBGraphicsMediaItem * mediaItem;
 
     QString mediaPath = pMediaFileUrl.toString();
     if ("" == mediaPath)
         mediaPath = pMediaFileUrl.toLocalFile();
 
     if (mediaPath.toLower().contains("videos"))
-    {
-        mMediaType = mediaType_Video;
-
-        mMediaObject->setNotifyInterval(50);
-
-        /* A dummy widget is used to keep the old functionality (when a Phonon video widget
-         * was used) with the current implementation, such as maintaining a clickable area
-         * above the video to move it around, etc.
-         * The whole class could be cleaned up, and the inheritance of QGraphicsProxyWidget
-         * abandoned, to make for a cleaner solution; for now, this works ok.
-        */
-        mDummyVideoWidget = new QWidget();
-        mDummyVideoWidget->resize(320,240);
-        mDummyVideoWidget->setMinimumSize(320, 240);
-        mDummyVideoWidget->setWindowOpacity(0.0);
-        
-        mVideoItem = new QGraphicsVideoItem(this);
-
-        // Necessary to allow the video to be displayed on secondary screen
-        mVideoItem->setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
-        mVideoItem->setFlag(ItemStacksBehindParent, true);
-
-        mMediaObject->setVideoOutput(mVideoItem);
-
-        mVideoItem->setSize(QSize(320,240));
-
-        haveLinkedImage = true;
-    }
+        mediaItem = new UBGraphicsVideoItem(pMediaFileUrl, parent);
     else if (mediaPath.toLower().contains("audios"))
-    {
-        mMediaType = mediaType_Audio;
+        mediaItem = new UBGraphicsAudioItem(pMediaFileUrl, parent);
 
-        mMediaObject->setNotifyInterval(1000);
-        mAudioWidget = new QWidget();
-        mAudioWidget->resize(320,26);
-        mAudioWidget->setMinimumSize(150,26);
-
-        haveLinkedImage = false;
-    }
-
-     mMediaObject->setMedia(pMediaFileUrl);
-
-
-    // we should create delegate after media objects because delegate uses his properties at creation.
-    setDelegate(new UBGraphicsMediaItemDelegate(this, mMediaObject));
-
-
-    // delegate should be created earler because we setWidget calls resize event for graphics proxy widgt.
-    // resize uses delegate.
-    if (mediaType_Video == mMediaType)
-        setWidget(mDummyVideoWidget);
-    else
-        setWidget(mAudioWidget);
-
-    // media widget should be created and placed on proxy widget here.
-    // TODO claudio remove this because in contrast with the fact the frame should be created on demand.
-    // but without forcing the control creation we do not have the frame and all the calculation
-    // for the different element of the interface will fail
-    Delegate()->createControls();
-    if (mediaType_Audio == mMediaType)
-        Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::ResizingHorizontally);
-    else {
-        Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
-        // Resize the widget as soon as the video's native size is known (it isn't at this stage)
-        connect(mVideoItem, SIGNAL(nativeSizeChanged(QSizeF)), this, SLOT(resize(QSizeF)));
-    }
-
-    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
-
-    connect(Delegate(), SIGNAL(showOnDisplayChanged(bool)), this, SLOT(showOnDisplayChanged(bool)));
-    connect(mMediaObject, SIGNAL(videoAvailableChanged(bool)), this, SLOT(hasMediaChanged(bool)));
+    return mediaItem;
 }
 
+UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent)
+        : QGraphicsRectItem(parent)
+        , mMuted(sIsMutedByDefault)
+        , mMutedByUserAction(sIsMutedByDefault)
+        , mMediaFileUrl(pMediaFileUrl)
+        , mLinkedImage(NULL)
+        , mInitialPos(0)
+{
+
+    mMediaObject = new QMediaPlayer(this);
+    mMediaObject->setMedia(pMediaFileUrl);
+
+    setDelegate(new UBGraphicsMediaItemDelegate(this));
+    Delegate()->createControls();
+
+    setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem));
+    setFlag(ItemIsMovable, true);
+    setFlag(ItemSendsGeometryChanges, true);
+
+    setAcceptHoverEvents(true);
+
+    connect(mMediaObject, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)),
+            Delegate(), SLOT(mediaStatusChanged(QMediaPlayer::MediaStatus)));
+
+    connect(mMediaObject, SIGNAL(stateChanged(QMediaPlayer::State)),
+            Delegate(), SLOT(mediaStateChanged(QMediaPlayer::State)));
+
+    /*
+    connect(mMediaObject, static_cast<void(QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error),
+            Delegate(), &UBGraphicsMediaItemDelegate::mediaError);
+            */
+
+    connect(mMediaObject, SIGNAL(positionChanged(qint64)),
+            Delegate(), SLOT(updateTicker(qint64)));
+
+    connect(mMediaObject, SIGNAL(durationChanged(qint64)),
+            Delegate(), SLOT(totalTimeChanged(qint64)));
+
+    connect(Delegate(), SIGNAL(showOnDisplayChanged(bool)),
+            this, SLOT(showOnDisplayChanged(bool)));
+
+    connect(mMediaObject, SIGNAL(videoAvailableChanged(bool)),
+            this, SLOT(hasMediaChanged(bool)));
+}
+
+UBGraphicsAudioItem::UBGraphicsAudioItem(const QUrl &pMediaFileUrl, QGraphicsItem *parent)
+    :UBGraphicsMediaItem(pMediaFileUrl, parent)
+{
+    this->setSize(320, 26);
+    this->setMinimumSize(QSize(150, 26));
+
+    Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::ResizingHorizontally);
+
+    mMediaObject->setNotifyInterval(1000);
+    haveLinkedImage = false;
+
+}
+
+UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsItem *parent)
+    :UBGraphicsMediaItem(pMediaFileUrl, parent)
+{
+    mVideoItem = new QGraphicsVideoItem(this);
+
+    mVideoItem->setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
+    mVideoItem->setFlag(ItemStacksBehindParent, true);
+
+    mMediaObject->setVideoOutput(mVideoItem);
+    mMediaObject->setNotifyInterval(50);
+
+    setMinimumSize(QSize(320, 240));
+    setSize(320, 240);
+
+
+    connect(mVideoItem, SIGNAL(nativeSizeChanged(QSizeF)),
+            this, SLOT(videoSizeChanged(QSizeF)));
+
+    haveLinkedImage = true;
+    update();
+}
 
 UBGraphicsMediaItem::~UBGraphicsMediaItem()
 {
     if (mMediaObject)
         mMediaObject->stop();
-}
-
-
-void UBGraphicsMediaItem::setSelected(bool selected)
-{
-    if(selected){
-        Delegate()->createControls();
-        if (mediaType_Audio == mMediaType)
-            Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::ResizingHorizontally);
-        else
-            Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
-    }
-    UBGraphicsProxyWidget::setSelected(selected);
 }
 
 QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -180,9 +174,91 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
         }
     }
 
-    return UBGraphicsProxyWidget::itemChange(change, value);
+    if (Delegate()) {
+        QVariant newValue = Delegate()->itemChange(change, value);
+        return QGraphicsRectItem::itemChange(change, newValue);
+    }
+
+    else
+        return QGraphicsRectItem::itemChange(change, value);
 }
 
+void UBGraphicsMediaItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    painter->save();
+    painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
+    Delegate()->postpaint(painter, option, widget);
+    painter->restore();
+}
+
+
+QMediaPlayer::State UBGraphicsMediaItem::playerState() const
+{
+    return mMediaObject->state();
+}
+
+qint64 UBGraphicsMediaItem::mediaDuration() const
+{
+    return mMediaObject->duration();
+}
+
+qint64 UBGraphicsMediaItem::mediaPosition() const
+{
+    return mMediaObject->position();
+}
+
+bool UBGraphicsMediaItem::isMediaSeekable() const
+{
+    return mMediaObject->isSeekable();
+}
+
+/**
+ * @brief Set the item's minimum size. If the current size is smaller, it will be resized.
+ * @param size The new minimum size
+ */
+void UBGraphicsMediaItem::setMinimumSize(const QSize& size)
+{
+    mMinimumSize = size;
+
+    QSizeF newSize = rect().size();
+    int width = newSize.width();
+    int height = newSize.height();
+
+    if (rect().width() < mMinimumSize.width())
+        width = mMinimumSize.width();
+
+    if (rect().height() < mMinimumSize.height())
+        height = mMinimumSize.height();
+
+    this->setSize(width, height);
+}
+
+void UBGraphicsMediaItem::setMediaFileUrl(QUrl url)
+{
+    mMediaFileUrl = url;
+}
+
+void UBGraphicsMediaItem::setInitialPos(qint64 p)
+{
+    mInitialPos = p;
+}
+
+void UBGraphicsMediaItem::setMediaPos(qint64 p)
+{
+    mMediaObject->setPosition(p);
+}
+
+void UBGraphicsMediaItem::setSelected(bool selected)
+{
+    if(selected){
+        Delegate()->createControls();
+        if (this->getMediaType() == mediaType_Audio)
+            Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::ResizingHorizontally);
+        else
+            Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
+    }
+    QGraphicsRectItem::setSelected(selected);
+}
 
 void UBGraphicsMediaItem::setSourceUrl(const QUrl &pSourceUrl)
 {
@@ -243,28 +319,65 @@ void UBGraphicsMediaItem::activeSceneChanged()
 
 void UBGraphicsMediaItem::showOnDisplayChanged(bool shown)
 {
-    if (!shown)
-    {
+    if (!shown) {
         mMuted = true;
         mMediaObject->setMuted(mMuted);
     }
-    else if (!mMutedByUserAction)
-    {
+    else if (!mMutedByUserAction) {
         mMuted = false;
         mMediaObject->setMuted(mMuted);
     }
 }
-
-UBItem* UBGraphicsMediaItem::deepCopy() const
+void UBGraphicsMediaItem::play()
 {
-    QUrl url = this->mediaFileUrl();
-    UBGraphicsMediaItem *copy = new UBGraphicsMediaItem(url, parentItem());
+    mMediaObject->play();
+}
 
-    copy->setUuid(this->uuid()); // this is OK for now as long as Widgets are imutable
+void UBGraphicsMediaItem::pause()
+{
+    mMediaObject->pause();
+}
 
-    copyItemParameters(copy);
+void UBGraphicsMediaItem::stop()
+{
+    mMediaObject->stop();
+}
 
-    return copy;
+void UBGraphicsMediaItem::togglePlayPause()
+{
+
+    if (mMediaObject->state() == QMediaPlayer::StoppedState)
+        mMediaObject->play();
+
+    else if (mMediaObject->state() == QMediaPlayer::PlayingState) {
+
+        if ((mMediaObject->duration() - mMediaObject->position()) <= 0) {
+            mMediaObject->stop();
+            mMediaObject->play();
+        }
+
+        else {
+            mMediaObject->pause();
+            if(scene())
+                scene()->setModified(true);
+        }
+    }
+
+    else if (mMediaObject->state() == QMediaPlayer::PausedState) {
+        if ((mMediaObject->duration() - mMediaObject->position()) <= 0)
+            mMediaObject->stop();
+
+        mMediaObject->play();
+    }
+
+    else  if ( mMediaObject->mediaStatus() == QMediaPlayer::LoadingMedia) {
+        mMediaObject->setMedia(mediaFileUrl());
+        mMediaObject->play();
+    }
+
+    if (mMediaObject->error())
+        qDebug() << "Error appeared." << mMediaObject->errorString();
+
 }
 
 void UBGraphicsMediaItem::copyItemParameters(UBItem *copy) const
@@ -279,7 +392,7 @@ void UBGraphicsMediaItem::copyItemParameters(UBItem *copy) const
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
         cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
         cp->setSourceUrl(this->sourceUrl());
-        cp->resize(this->size());
+        cp->setSize(rect().width(), rect().height());
 
         cp->setZValue(this->zValue());
 
@@ -322,59 +435,76 @@ void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
         event->accept();
         setSelected(true);
     }
-
+    QGraphicsRectItem::mousePressEvent(event);
 }
 
-void UBGraphicsMediaItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+QRectF UBGraphicsMediaItem::boundingRect() const
 {
-    if(mShouldMove && (event->buttons() & Qt::LeftButton))
-    {
-        QPointF offset = event->scenePos() - mMousePressPos;
-
-        if (offset.toPoint().manhattanLength() > QApplication::startDragDistance())
-        {
-            QPointF mouseMovePos = mapFromScene(mMouseMovePos);
-            QPointF eventPos = mapFromScene( event->scenePos());
-
-            QPointF translation = eventPos - mouseMovePos;
-            setPos(translation.x(), translation.y());
-        }
-
-        mMouseMovePos = event->scenePos();
-    }
-
-    event->accept();
-
+    return rect();
 }
 
-void UBGraphicsMediaItem::resize(const QSizeF & pSize)
+void UBGraphicsMediaItem::setSize(int width, int height)
+{
+    QRectF r = rect();
+    r.setWidth(width);
+    r.setHeight(height);
+    setRect(r);
+
+    if (Delegate())
+        Delegate()->positionHandles();
+    if (scene())
+        scene()->setModified(true);
+}
+
+UBItem* UBGraphicsAudioItem::deepCopy() const
+{
+    QUrl url = this->mediaFileUrl();
+    UBGraphicsMediaItem *copy = new UBGraphicsAudioItem(url, parentItem());
+
+    copy->setUuid(this->uuid()); // this is OK for now as long as Widgets are imutable
+
+    copyItemParameters(copy);
+
+    return copy;
+}
+
+UBItem* UBGraphicsVideoItem::deepCopy() const
+{
+    QUrl url = this->mediaFileUrl();
+    UBGraphicsMediaItem *copy = new UBGraphicsVideoItem(url, parentItem());
+
+    copy->setUuid(this->uuid());
+    copyItemParameters(copy);
+
+    return copy;
+}
+
+void UBGraphicsVideoItem::setSize(int width, int height)
 {
     // Resize the video, then the rest of the Item
 
-    if (mVideoItem) {
-        qreal sizeX = 0;
-        qreal sizeY = 0;
+    int sizeX = 0;
+    int sizeY = 0;
 
-        QSizeF minimumItemSize(mDummyVideoWidget->minimumSize());
-        if (minimumItemSize.width() > pSize.width())
-            sizeX = minimumItemSize.width();
-        else
-            sizeX = pSize.width();
+    if (mMinimumSize.width() > width)
+        sizeX = mMinimumSize.width();
+    else
+        sizeX = width;
 
-        if (minimumItemSize.height() > pSize.height())
-            sizeY = minimumItemSize.height();
-        else
-            sizeY = pSize.height();
+    if (mMinimumSize.height() > height)
+        sizeY = mMinimumSize.height();
+    else
+        sizeY = height;
 
-        mVideoItem->setSize(QSizeF (sizeX, sizeY));
-    }
+    mVideoItem->setSize(QSize(sizeX, sizeY));
 
-    UBGraphicsProxyWidget::resize(pSize);
+
+    UBGraphicsMediaItem::setSize(sizeX, sizeY);
 }
 
-void UBGraphicsMediaItem::resize(qreal w, qreal h)
+void UBGraphicsVideoItem::videoSizeChanged(QSizeF newSize)
 {
-    UBGraphicsMediaItem::resize(QSizeF(w, h));
+    this->setSize(newSize.width(), newSize.height());
 }
 
 

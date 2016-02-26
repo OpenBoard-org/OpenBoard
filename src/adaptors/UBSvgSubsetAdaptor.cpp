@@ -661,9 +661,8 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                     audioItem->show();
 
-                    //force start to load the video and display the first frame
-                    audioItem->mediaObject()->play();
-                    audioItem->mediaObject()->pause();
+                    audioItem->play();
+                    audioItem->pause();
                 }
             }
             else if (mXmlReader.name() == "video")
@@ -676,16 +675,12 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     videoItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
                     mScene->addItem(videoItem);
-                    mScene->addItem(videoItem->videoItem());
-
-                    // Update the child QGraphicsVideoItem's transformation matrix
-                    videoItem->setMatrix(videoItem->matrix());
 
                     videoItem->show();
 
                     //force start to load the video and display the first frame
-                    videoItem->mediaObject()->play();
-                    videoItem->mediaObject()->pause();
+                    videoItem->play();
+                    videoItem->pause();
                 }
             }
             else if (mXmlReader.name() == "text")//This is for backward compatibility with proto text field prior to version 4.3
@@ -1210,14 +1205,17 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
             continue;
         }
 
-        UBGraphicsMediaItem *mediaItem = qgraphicsitem_cast<UBGraphicsMediaItem*> (item);
+        UBGraphicsVideoItem * videoItem = qgraphicsitem_cast<UBGraphicsVideoItem*> (item);
 
-        if (mediaItem && mediaItem->isVisible())
-        {
-            if (UBGraphicsMediaItem::mediaType_Video == mediaItem->getMediaType())
-                videoItemToLinkedVideo(mediaItem);
-            else
-                audioItemToLinkedAudio(mediaItem);
+        if (videoItem && videoItem->isVisible()) {
+            videoItemToLinkedVideo(videoItem);
+            continue;
+        }
+
+        UBGraphicsAudioItem * audioItem = qgraphicsitem_cast<UBGraphicsAudioItem*> (item);
+
+        if (audioItem && audioItem->isVisible()) {
+            audioItemToLinkedAudio(audioItem);
             continue;
         }
 
@@ -2019,15 +2017,16 @@ UBGraphicsPDFItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::pdfItemFromPDF()
     return pdfItem;
 }
 
-void UBSvgSubsetAdaptor::UBSvgSubsetWriter::audioItemToLinkedAudio(UBGraphicsMediaItem* audioItem)
+void UBSvgSubsetAdaptor::UBSvgSubsetWriter::audioItemToLinkedAudio(UBGraphicsAudioItem *audioItem)
 {
     mXmlWriter.writeStartElement("audio");
 
     graphicsItemToSvg(audioItem);
 
-    if (audioItem->mediaObject()->state() == QMediaPlayer::PausedState && (audioItem->mediaObject()->duration() - audioItem->mediaObject()->position()) > 0)
+    if (audioItem->playerState() == QMediaPlayer::PausedState &&
+       (audioItem->mediaDuration() - audioItem->mediaPosition()) > 0)
     {
-        qint64 pos = audioItem->mediaObject()->position();
+        qint64 pos = audioItem->mediaPosition();
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
     }
 
@@ -2038,7 +2037,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::audioItemToLinkedAudio(UBGraphicsMed
 }
 
 
-void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsMediaItem* videoItem)
+void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsVideoItem* videoItem)
 {
     /* w3c sample
      *
@@ -2051,9 +2050,10 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsMed
 
     graphicsItemToSvg(videoItem);
 
-    if (videoItem->mediaObject()->state() == QMediaPlayer::PausedState && (videoItem->mediaObject()->duration() - videoItem->mediaObject()->position()) > 0)
+    if (videoItem->playerState() == QMediaPlayer::PausedState &&
+       (videoItem->mediaDuration() - videoItem->mediaPosition()) > 0)
     {
-        qint64 pos = videoItem->mediaObject()->position();
+        qint64 pos = videoItem->mediaPosition();
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
     }
 
@@ -2083,7 +2083,7 @@ UBGraphicsMediaItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::audioItemFromSvg()
         href = mDocumentPath + "/" + href.right(href.length() - indexOfAudioDirectory);
     }
 
-    UBGraphicsMediaItem* audioItem = new UBGraphicsMediaItem(QUrl::fromLocalFile(href));
+    UBGraphicsMediaItem* audioItem = UBGraphicsMediaItem::createMediaItem(QUrl::fromLocalFile(href));
     if(audioItem)
         audioItem->connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), audioItem, SLOT(activeSceneChanged()));
 
@@ -2118,7 +2118,7 @@ UBGraphicsMediaItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::videoItemFromSvg()
         href = mDocumentPath + "/" + href.right(href.length() - indexOfAudioDirectory);
     }
 
-    UBGraphicsMediaItem* videoItem = new UBGraphicsMediaItem(QUrl::fromLocalFile(href));
+    UBGraphicsMediaItem* videoItem = UBGraphicsMediaItem::createMediaItem(QUrl::fromLocalFile(href));
     if(videoItem){
         videoItem->connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), videoItem, SLOT(activeSceneChanged()));
     }

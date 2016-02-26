@@ -40,8 +40,6 @@ class UBGraphicsProxyWidget;
 class UBGraphicsSvgItem;
 class UBGraphicsPolygonItem;
 class UBGraphicsMediaItem;
-class UBGraphicsVideoItem;
-class UBGraphicsAudioItem;
 class UBGraphicsWidgetItem;
 class UBGraphicsW3CWidgetItem;
 class UBGraphicsAppleWidgetItem;

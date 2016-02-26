@@ -45,7 +45,7 @@
 
 class QGraphicsVideoItem;
 
-class UBGraphicsMediaItem : public UBGraphicsProxyWidget
+class UBGraphicsMediaItem : public QObject, public UBItem, public UBGraphicsItem, public QGraphicsRectItem, public UBResizableGraphicsItem
 {
     Q_OBJECT
 
@@ -55,9 +55,6 @@ public:
         mediaType_Audio
     } mediaType;
 
-    UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent = 0);
-    ~UBGraphicsMediaItem();
-
     enum { Type = UBGraphicsItemType::MediaItemType };
 
     virtual int type() const
@@ -65,48 +62,46 @@ public:
         return Type;
     }
 
-    virtual QUrl mediaFileUrl() const
-    {
-        return mMediaFileUrl;
-    }
+    static UBGraphicsMediaItem* createMediaItem(const QUrl& pMediaFileUrl, QGraphicsItem* parent = 0);
 
-    virtual void mediaFileUrl(QUrl url){mMediaFileUrl=url;}
+    UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsItem* parent = 0);
+    ~UBGraphicsMediaItem();
 
-    QMediaPlayer* mediaObject() const
-    {
-        return mMediaObject;
-    }
 
-    void setInitialPos(qint64 p) {
-        mInitialPos = p;
-    }
-    qint64 initialPos() {
-        return mInitialPos;
-    }
+    // Getters
 
-    bool isMuted() const
-    {
-        return mMuted;
-    }
-
-    QGraphicsVideoItem * videoItem() const
-    {
-        return mVideoItem;
-    }
-
-    bool hasLinkedImage(){return haveLinkedImage;}
-
-    mediaType getMediaType() { return mMediaType; }
+    virtual mediaType getMediaType() const = 0;
 
     virtual UBGraphicsScene* scene();
+    bool hasLinkedImage() const             { return haveLinkedImage; }
+    virtual QUrl mediaFileUrl() const       { return mMediaFileUrl; }
+    bool isMuted() const                    { return mMuted; }
+    qint64 initialPos() const               { return mInitialPos; }
 
-    virtual UBItem* deepCopy() const;
+    bool isMediaSeekable() const;
+    qint64 mediaDuration() const;
+    qint64 mediaPosition() const;
+
+    QMediaPlayer::State playerState() const;
+
+    QRectF boundingRect() const;
+
+    QSizeF size() const { return rect().size(); } 
+
+    // Setters
+    virtual void setMediaFileUrl(QUrl url);
+    void setInitialPos(qint64 p);
+    void setMediaPos(qint64 p);
+    virtual void setSourceUrl(const QUrl &pSourceUrl);
+    void setSelected(bool selected);
+    void setMinimumSize(const QSize& size);
 
     virtual void copyItemParameters(UBItem *copy) const;
 
-    virtual void setSourceUrl(const QUrl &pSourceUrl);
+    virtual void setSize(int width, int height);
+    void resize(qreal w, qreal h) { setSize(w, h); }
 
-    void setSelected(bool selected);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 
 public slots:
@@ -116,23 +111,22 @@ public slots:
     void activeSceneChanged();
     void hasMediaChanged(bool hasMedia);
     void showOnDisplayChanged(bool shown);
-    virtual void resize(qreal w, qreal h);
-    virtual void resize(const QSizeF & pSize);
+
+    virtual void play();
+    virtual void pause();
+    virtual void stop();
+    virtual void togglePlayPause();
 
 protected:
 
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+
     virtual void clearSource();
 
     QMediaPlayer *mMediaObject;
-    QWidget *mDummyVideoWidget;
-    QGraphicsVideoItem *mVideoItem;
 
-    QWidget *mAudioWidget;
-
-private:
+    QSize mMinimumSize;
 
     bool mMuted;
     bool mMutedByUserAction;
@@ -140,8 +134,6 @@ private:
 
     QUrl mMediaFileUrl;
     QString mMediaSource;
-
-    mediaType mMediaType;
 
     bool mShouldMove;
     QPointF mMousePressPos;
@@ -152,4 +144,40 @@ private:
 
     qint64 mInitialPos;
 };
+
+class UBGraphicsAudioItem: public UBGraphicsMediaItem
+{
+    Q_OBJECT
+
+public:
+
+    UBGraphicsAudioItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent = 0);
+    mediaType getMediaType() const { return mediaType_Audio; }
+
+    virtual UBItem* deepCopy() const;
+};
+
+class UBGraphicsVideoItem: public UBGraphicsMediaItem
+{
+    Q_OBJECT
+
+public:
+
+    UBGraphicsVideoItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent = 0);
+
+    mediaType getMediaType() const { return mediaType_Video; }
+
+    void setSize(int width, int height);
+
+    virtual UBItem* deepCopy() const;
+
+public slots:
+    void videoSizeChanged(QSizeF newSize);
+
+protected:
+
+    QGraphicsVideoItem *mVideoItem;
+};
+
+
 #endif // UBGRAPHICSMEDIAITEM_H
