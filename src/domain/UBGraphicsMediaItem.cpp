@@ -76,10 +76,11 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         mDummyVideoWidget->setMinimumSize(320, 240);
         mDummyVideoWidget->setWindowOpacity(0.0);
         
-        mVideoItem = new QGraphicsVideoItem();
+        mVideoItem = new QGraphicsVideoItem(this);
 
         // Necessary to allow the video to be displayed on secondary screen
         mVideoItem->setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
+        mVideoItem->setFlag(ItemStacksBehindParent, true);
 
         mMediaObject->setVideoOutput(mVideoItem);
 
@@ -178,13 +179,6 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
 
         }
     }
-
-    // Pass on geometry and position changes to the videoItem
-    else if (mVideoItem && change == QGraphicsItem::ItemTransformChange)
-        mVideoItem->setTransform(qvariant_cast<QTransform>(value));
-
-    else if (mVideoItem && change == QGraphicsItem::ItemPositionChange)
-        mVideoItem->setPos(qvariant_cast<QPointF>(value));
 
     return UBGraphicsProxyWidget::itemChange(change, value);
 }
@@ -351,34 +345,6 @@ void UBGraphicsMediaItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     event->accept();
 
-}
-
-void UBGraphicsMediaItem::setPos(const QPointF &pos)
-{
-   QGraphicsItem::setPos(pos);
-   if (mVideoItem)
-       mVideoItem->setPos(pos);
-}
-
-void UBGraphicsMediaItem::setPos(qreal x, qreal y)
-{
-    setPos(QPointF(x, y));
-}
-
-void UBGraphicsMediaItem::setMatrix(const QMatrix &matrix, bool combine)
-{
-    QGraphicsItem::setMatrix(matrix, combine);
-
-    if (mVideoItem)
-        mVideoItem->setMatrix(matrix, combine);
-}
-
-void UBGraphicsMediaItem::setTransform(const QTransform &matrix, bool combine)
-{
-    QGraphicsItem::setTransform(matrix, combine);
-
-    if (mVideoItem)
-        mVideoItem->setTransform(matrix, combine);
 }
 
 void UBGraphicsMediaItem::resize(const QSizeF & pSize)

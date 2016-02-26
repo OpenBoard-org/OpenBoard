@@ -108,11 +108,6 @@ public:
 
     void setSelected(bool selected);
 
-    virtual void setPos(const QPointF &pos);
-    virtual void setPos(qreal x, qreal y);
-    virtual void setMatrix(const QMatrix &matrix, bool combine = false);
-    virtual void setTransform(const QTransform &matrix, bool combine = false);
-
 
 public slots:
 
