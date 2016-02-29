@@ -48,6 +48,9 @@ UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent)
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
 
+    mDebugText = NULL;
+
+
 }
 
 UBGraphicsStrokesGroup::~UBGraphicsStrokesGroup()
@@ -81,6 +84,8 @@ void UBGraphicsStrokesGroup::setColor(const QColor &color, colorType pColorType)
             }
         }
     }
+
+    mDebugText->setBrush(QBrush(color));
 }
 
 QColor UBGraphicsStrokesGroup::color(colorType pColorType) const
@@ -201,6 +206,24 @@ void UBGraphicsStrokesGroup::paint(QPainter *painter, const QStyleOptionGraphics
 
 QVariant UBGraphicsStrokesGroup::itemChange(GraphicsItemChange change, const QVariant &value)
 {
+    if (change == ItemZValueChange) {
+        double newZ = qvariant_cast<double>(value);
+
+        UBGraphicsPolygonItem * poly = NULL;
+        if (childItems().size() > 2)
+            poly = dynamic_cast<UBGraphicsPolygonItem*>(childItems()[1]);
+
+        if (poly) {
+            if (!mDebugText) {
+                mDebugText = new QGraphicsSimpleTextItem("None", this);
+                //mDebugText->setPos(poly->scenePos());
+                mDebugText->setPos(poly->boundingRect().topLeft() + QPointF(10, 10));
+                mDebugText->setBrush(QBrush(poly->color()));
+            }
+            mDebugText->setText(QString("Z: %1").arg(newZ));
+        }
+
+    }
     QVariant newValue = Delegate()->itemChange(change, value);
     return QGraphicsItemGroup::itemChange(change, newValue);
 }

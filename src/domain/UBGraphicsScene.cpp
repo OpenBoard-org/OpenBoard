@@ -322,7 +322,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     , mSelectionFrame(0)
 {
     UBCoreGraphicsScene::setObjectName("BoardScene");
-    setItemIndexMethod(NoIndex);
+    //setItemIndexMethod(NoIndex);
 
     setUuid(QUuid::createUuid());
     setDocument(parent);

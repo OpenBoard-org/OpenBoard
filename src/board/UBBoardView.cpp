@@ -99,6 +99,12 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool
     init ();
 
     mFilterZIndex = false;
+    /*
+    mFilterZIndex = true;
+    mStartLayer = UBItemLayerType::FixedBackground;
+    mEndLayer = UBItemLayerType::Control;
+    */
+
 
     mLongPressTimer.setInterval(mLongPressInterval);
     mLongPressTimer.setSingleShot(true);
