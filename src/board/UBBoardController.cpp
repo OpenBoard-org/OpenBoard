@@ -690,7 +690,10 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
             if (gitem)
             {
                 mActiveScene->addItem(gitem);
-                gitem->setPos(itemPos);
+
+                // Translate the new object a bit
+                gitem->setPos(20, 20);
+
                 mLastCreatedItem = gitem;
                 gitem->setSelected(true);
             }

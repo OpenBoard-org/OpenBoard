@@ -102,6 +102,8 @@ public:
     void setLayerType(QGraphicsItem *pItem, itemLayerType::Enum pNewType);
     void shiftStoredZValue(QGraphicsItem *item, qreal zValue);
 
+    bool zLevelAvailable(qreal z);
+
 private:
     ScopeMap scopeMap;
     static qreal errorNumber;

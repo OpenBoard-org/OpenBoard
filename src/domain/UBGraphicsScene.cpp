@@ -297,6 +297,19 @@ void UBZLayerController::shiftStoredZValue(QGraphicsItem *item, qreal zValue)
     }
 }
 
+/**
+ * @brief Returns true if the zLevel is not used by any item on the scene, or false if so.
+ */
+bool UBZLayerController::zLevelAvailable(qreal z)
+{
+    foreach(QGraphicsItem* it, mScene->items()) {
+        if (it->zValue() == z)
+            return false;
+    }
+
+    return true;
+}
+
 UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoStack)
     : UBCoreGraphicsScene(parent)
     , mEraser(0)
@@ -322,7 +335,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     , mSelectionFrame(0)
 {
     UBCoreGraphicsScene::setObjectName("BoardScene");
-    //setItemIndexMethod(NoIndex);
+    setItemIndexMethod(BspTreeIndex);
 
     setUuid(QUuid::createUuid());
     setDocument(parent);
@@ -1688,12 +1701,16 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
     UBCoreGraphicsScene::addItem(item);
 
     // the default z value is already set. This is the case when a svg file is read
-    if(item->zValue() == DEFAULT_Z_VALUE || item->zValue() == UBZLayerController::errorNum()){
+    if(item->zValue() == DEFAULT_Z_VALUE
+            || item->zValue() == UBZLayerController::errorNum()
+            || !mZLayerController->zLevelAvailable(item->zValue()))
+    {
         qreal zvalue = mZLayerController->generateZLevel(item);
         UBGraphicsItem::assignZValue(item, zvalue);
-    } else {
-        notifyZChanged(item, item->zValue());
     }
+
+    else
+        notifyZChanged(item, item->zValue());
 
     if (!mTools.contains(item))
       ++mItemCount;
