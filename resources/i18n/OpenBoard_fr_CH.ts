@@ -1143,11 +1143,11 @@
     </message>
     <message>
         <source>Remove mutliple documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer plusieurs documents</translation>
     </message>
     <message>
         <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="unfinished"></translation>
+        <translation>Voulez-vous vraiment supprimer tous les documents sélectionnés?</translation>
     </message>
 </context>
 <context>
@@ -2556,7 +2556,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
+        <translation>Utiliser le clavier virtuel système (recommandé)</translation>
     </message>
 </context>
 <context>
