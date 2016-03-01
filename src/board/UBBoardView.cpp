@@ -1261,7 +1261,6 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
                     if (isUBItem(movingItem) &&
                             DelegateButton::Type != movingItem->type() &&
                             UBGraphicsDelegateFrame::Type !=  movingItem->type() &&
-                            UBGraphicsStrokesGroup::Type !=  movingItem->type() &&
                             UBGraphicsCache::Type != movingItem->type() &&
                             QGraphicsWebView::Type != movingItem->type() && // for W3C widgets as Tools.
                             !(!isMultipleSelectionEnabled() && movingItem->parentItem() && UBGraphicsWidgetItem::Type == movingItem->type() && UBGraphicsGroupContainerItem::Type == movingItem->parentItem()->type()))
