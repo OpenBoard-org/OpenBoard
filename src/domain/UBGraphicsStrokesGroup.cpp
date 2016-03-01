@@ -49,8 +49,7 @@ UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent)
     setFlag(QGraphicsItem::ItemIsMovable, true);
 
     mDebugText = NULL;
-
-
+    debugTextEnabled = false; // set to true to get a graphical display of strokes' Z-levels
 }
 
 UBGraphicsStrokesGroup::~UBGraphicsStrokesGroup()
@@ -206,7 +205,7 @@ void UBGraphicsStrokesGroup::paint(QPainter *painter, const QStyleOptionGraphics
 
 QVariant UBGraphicsStrokesGroup::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-    if (change == ItemZValueChange) {
+    if (debugTextEnabled && change == ItemZValueChange) {
         double newZ = qvariant_cast<double>(value);
 
         UBGraphicsPolygonItem * poly = NULL;
@@ -216,14 +215,13 @@ QVariant UBGraphicsStrokesGroup::itemChange(GraphicsItemChange change, const QVa
         if (poly) {
             if (!mDebugText) {
                 mDebugText = new QGraphicsSimpleTextItem("None", this);
-                //mDebugText->setPos(poly->scenePos());
                 mDebugText->setPos(poly->boundingRect().topLeft() + QPointF(10, 10));
                 mDebugText->setBrush(QBrush(poly->color()));
             }
             mDebugText->setText(QString("Z: %1").arg(newZ));
         }
-
     }
+
     QVariant newValue = Delegate()->itemChange(change, value);
     return QGraphicsItemGroup::itemChange(change, newValue);
 }
