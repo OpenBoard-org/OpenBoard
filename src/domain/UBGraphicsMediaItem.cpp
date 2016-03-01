@@ -74,7 +74,6 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     mMediaObject->setMedia(pMediaFileUrl);
 
     setDelegate(new UBGraphicsMediaItemDelegate(this));
-    Delegate()->createControls();
 
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem));
     setFlag(ItemIsMovable, true);
@@ -105,19 +104,24 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 UBGraphicsAudioItem::UBGraphicsAudioItem(const QUrl &pMediaFileUrl, QGraphicsItem *parent)
     :UBGraphicsMediaItem(pMediaFileUrl, parent)
 {
+    haveLinkedImage = false;
+
     this->setSize(320, 26);
     this->setMinimumSize(QSize(150, 26));
 
+    Delegate()->createControls();
     Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::ResizingHorizontally);
 
     mMediaObject->setNotifyInterval(1000);
-    haveLinkedImage = false;
 
 }
 
 UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsItem *parent)
     :UBGraphicsMediaItem(pMediaFileUrl, parent)
 {
+    haveLinkedImage = true;
+    Delegate()->createControls();
+
     mVideoItem = new QGraphicsVideoItem(this);
 
     mVideoItem->setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
@@ -132,7 +136,6 @@ UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
     connect(mVideoItem, SIGNAL(nativeSizeChanged(QSizeF)),
             this, SLOT(videoSizeChanged(QSizeF)));
 
-    haveLinkedImage = true;
 
     setAcceptHoverEvents(true);
 
