@@ -71,6 +71,18 @@ bool UBGraphicsMediaItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *even
     return UBGraphicsItemDelegate::mousePressEvent(event);
 }
 
+/**
+ * @brief Show the toolbar (play/pause, seek, mute).
+ *
+ * The toolbar then auto-hides after a set amount of time.
+ */
+void UBGraphicsMediaItemDelegate::showToolBar()
+{
+    mToolBarItem->show();
+    if (mToolBarShowTimer)
+        mToolBarShowTimer->start();
+}
+
 void UBGraphicsMediaItemDelegate::hideToolBar()
 {
     mToolBarItem->hide();
@@ -108,11 +120,10 @@ void UBGraphicsMediaItemDelegate::buildButtons()
         mToolBarItem->setShifting(false);
 
         if (!mToolBarShowTimer) {
-
             if (delegated()->hasLinkedImage()) {
                 mToolBarShowTimer = new QTimer();
-                connect(mToolBarShowTimer, SIGNAL(timeout()), this, SLOT(hideToolBar()));
                 mToolBarShowTimer->setInterval(m_iToolBarShowingInterval);
+                connect(mToolBarShowTimer, SIGNAL(timeout()), this, SLOT(hideToolBar()));
             }
         }
 
@@ -181,13 +192,6 @@ void UBGraphicsMediaItemDelegate::remove(bool canUndo)
     if (delegated())
         delegated()->stop();
 
-    /*
-    if (delegated()->videoItem()) {
-        UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
-        scene->removeItem(delegated()->videoItem());
-    }
-    */
-
     UBGraphicsItemDelegate::remove(canUndo);
 }
 
@@ -232,15 +236,6 @@ void UBGraphicsMediaItemDelegate::mediaStateChanged(QMediaPlayer::State state)
     updatePlayPauseState();
 }
 
-void UBGraphicsMediaItemDelegate::mediaError(QMediaPlayer::Error error)
-{
-    // Possible errors are NoError, ResourceError, FormatError, NetworkError, AccessDeniedError,
-    // ServiceMissingError
-    Q_UNUSED(error);
-
-    qDebug() << "Error appeared.";// << mMedia->errorString();
-}
-
 
 void UBGraphicsMediaItemDelegate::updatePlayPauseState()
 {
@@ -253,9 +248,6 @@ void UBGraphicsMediaItemDelegate::updatePlayPauseState()
 
 void UBGraphicsMediaItemDelegate::updateTicker(qint64 time)
 {
-    // TODO: duration() getter for UBGMediaItem
-    // make sure that all delegate()->mediaObject() calls are removed. 'tis dirty.
-
     mMediaControl->totalTimeChanged(delegated()->mediaDuration());
     mMediaControl->updateTicker(time);
 }
@@ -270,7 +262,6 @@ void UBGraphicsMediaItemDelegate::showHide(bool show)
 {
     QVariant showFlag = QVariant(show ? UBItemLayerType::Object : UBItemLayerType::Control);
     showHideRecurs(showFlag, mDelegated);
-    // TODO: call showHideRecurs on the videoItem too (from UBGMI?)
     mDelegated->update();
 
     emit showOnDisplayChanged(show);

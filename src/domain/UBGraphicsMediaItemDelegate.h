@@ -50,6 +50,8 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
 
         bool mousePressEvent(QGraphicsSceneMouseEvent* event);
 
+        void showToolBar();
+
     public slots:
 
         void toggleMute();
@@ -58,7 +60,6 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
 
         void mediaStatusChanged(QMediaPlayer::MediaStatus status);
         void mediaStateChanged(QMediaPlayer::State state);
-        void mediaError(QMediaPlayer::Error error);
 
     protected slots:
 

@@ -117,6 +117,9 @@ public slots:
     virtual void stop();
     virtual void togglePlayPause();
 
+protected slots:
+    void mediaError(QMediaPlayer::Error errorCode);
+
 protected:
 
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
@@ -177,6 +180,10 @@ public slots:
 protected:
 
     QGraphicsVideoItem *mVideoItem;
+
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 };
 
 

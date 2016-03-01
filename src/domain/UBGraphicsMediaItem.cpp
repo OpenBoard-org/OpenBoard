@@ -80,18 +80,11 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     setFlag(ItemIsMovable, true);
     setFlag(ItemSendsGeometryChanges, true);
 
-    setAcceptHoverEvents(true);
-
     connect(mMediaObject, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)),
             Delegate(), SLOT(mediaStatusChanged(QMediaPlayer::MediaStatus)));
 
     connect(mMediaObject, SIGNAL(stateChanged(QMediaPlayer::State)),
             Delegate(), SLOT(mediaStateChanged(QMediaPlayer::State)));
-
-    /*
-    connect(mMediaObject, static_cast<void(QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error),
-            Delegate(), &UBGraphicsMediaItemDelegate::mediaError);
-            */
 
     connect(mMediaObject, SIGNAL(positionChanged(qint64)),
             Delegate(), SLOT(updateTicker(qint64)));
@@ -104,6 +97,9 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
 
     connect(mMediaObject, SIGNAL(videoAvailableChanged(bool)),
             this, SLOT(hasMediaChanged(bool)));
+
+    connect(mMediaObject, static_cast<void(QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error),
+            this, &UBGraphicsMediaItem::mediaError);
 }
 
 UBGraphicsAudioItem::UBGraphicsAudioItem(const QUrl &pMediaFileUrl, QGraphicsItem *parent)
@@ -133,11 +129,13 @@ UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
     setMinimumSize(QSize(320, 240));
     setSize(320, 240);
 
-
     connect(mVideoItem, SIGNAL(nativeSizeChanged(QSizeF)),
             this, SLOT(videoSizeChanged(QSizeF)));
 
     haveLinkedImage = true;
+
+    setAcceptHoverEvents(true);
+
     update();
 }
 
@@ -179,8 +177,7 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
         return QGraphicsRectItem::itemChange(change, newValue);
     }
 
-    else
-        return QGraphicsRectItem::itemChange(change, value);
+    return QGraphicsRectItem::itemChange(change, value);
 }
 
 void UBGraphicsMediaItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -293,8 +290,7 @@ void UBGraphicsMediaItem::setMute(bool bMute)
 
 void UBGraphicsMediaItem::hasMediaChanged(bool hasMedia)
 {
-    if(hasMedia && mMediaObject->isSeekable())
-    {
+    if(hasMedia && mMediaObject->isSeekable()) {
         mMediaObject->setPosition(mInitialPos);
 
         UBGraphicsMediaItemDelegate *med = dynamic_cast<UBGraphicsMediaItemDelegate *>(Delegate());
@@ -345,7 +341,6 @@ void UBGraphicsMediaItem::stop()
 
 void UBGraphicsMediaItem::togglePlayPause()
 {
-
     if (mMediaObject->state() == QMediaPlayer::StoppedState)
         mMediaObject->play();
 
@@ -374,10 +369,12 @@ void UBGraphicsMediaItem::togglePlayPause()
         mMediaObject->setMedia(mediaFileUrl());
         mMediaObject->play();
     }
+}
 
-    if (mMediaObject->error())
-        qDebug() << "Error appeared." << mMediaObject->errorString();
-
+void UBGraphicsMediaItem::mediaError(QMediaPlayer::Error errorCode)
+{
+    if (errorCode != QMediaPlayer::NoError)
+        UBApplication::showMessage(mMediaObject->errorString());
 }
 
 void UBGraphicsMediaItem::copyItemParameters(UBItem *copy) const
@@ -403,14 +400,11 @@ void UBGraphicsMediaItem::copyItemParameters(UBItem *copy) const
 
 void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (Delegate())
-    {
+    if (Delegate()) {
         Delegate()->mousePressEvent(event);
-        if (parentItem() && UBGraphicsGroupContainerItem::Type == parentItem()->type())
-        {
+        if (parentItem() && UBGraphicsGroupContainerItem::Type == parentItem()->type()) {
             UBGraphicsGroupContainerItem *group = qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(parentItem());
-            if (group)
-            {
+            if (group) {
                 QGraphicsItem *curItem = group->getCurrentItem();
                 if (curItem && this != curItem)
                     group->deselectCurrentItem();
@@ -418,7 +412,6 @@ void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 this->setSelected(true);
                 Delegate()->positionHandles();
             }
-
         }
     }
 
@@ -504,7 +497,34 @@ void UBGraphicsVideoItem::setSize(int width, int height)
 
 void UBGraphicsVideoItem::videoSizeChanged(QSizeF newSize)
 {
-    this->setSize(newSize.width(), newSize.height());
+    /* Depending on the platform, video size information becomes available
+     * at different times (either when the file is loaded, or when playback
+     * begins), so this slot is needed to resize the video item as soon as
+     * the information is available.
+     */
+
+
+    // Don't resize the video item when playback has finished
+    if (mMediaObject->mediaStatus() != QMediaPlayer::EndOfMedia)
+        this->setSize(newSize.width(), newSize.height());
 }
 
 
+
+void UBGraphicsVideoItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    // Display the seek bar
+    Delegate()->showToolBar();
+    QGraphicsRectItem::hoverEnterEvent(event);
+}
+
+void UBGraphicsVideoItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
+{
+    Delegate()->showToolBar();
+    QGraphicsRectItem::hoverMoveEvent(event);
+}
+
+void UBGraphicsVideoItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    QGraphicsRectItem::hoverLeaveEvent(event);
+}
