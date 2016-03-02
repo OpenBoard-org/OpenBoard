@@ -543,11 +543,46 @@ void UBDocumentController::duplicateSelectedItem()
     }
 }
 
+/**
+ * @brief When deleting multiple documents, find a new document and select it
+ *
+ * This method simply selects the first un-selected document
+ */
+void UBDocumentController::selectADocumentOnMultipleTrashing()
+{
+    // Loop through all folders, and each document in those folders, until we find
+    // a document that is not in the current selection (which is being deleted)
+
+    for (int i(0); i < mDocumentUI->documentTreeWidget->topLevelItemCount(); ++i) {
+        QTreeWidgetItem* item = mDocumentUI->documentTreeWidget->topLevelItem(i);
+        UBDocumentGroupTreeItem* groupItem = dynamic_cast<UBDocumentGroupTreeItem*>(item);
+
+        if (!groupItem->isTrashFolder()) {
+            for (int j(0); j < groupItem->childCount(); ++j) {
+                if (!mCurrentSelection.contains( groupItem->child(j) )) {
+                    selectDocument(((UBDocumentProxyTreeItem*)groupItem->child(j))->proxy(), true);
+                    return;
+                }
+            }
+        }
+    }
+
+
+
+    // No document found => create a new one
+    UBDocumentGroupTreeItem* topFolder = dynamic_cast<UBDocumentGroupTreeItem*>(mDocumentUI->documentTreeWidget->topLevelItem(0));
+
+    UBDocumentProxy* document = UBPersistenceManager::persistenceManager()->createDocument(topFolder->groupName());
+    selectDocument(document, true);
+
+}
+
 void UBDocumentController::selectADocumentOnTrashingSelectedOne(UBDocumentGroupTreeItem* groupTi,UBDocumentProxyTreeItem *proxyTi)
 {
     int index = proxyTi->parent()->indexOfChild(proxyTi);
     index --;
 
+    // Select the previous document in the current folder, if there is one
     if (index >= 0)
     {
         if (proxyTi->proxy() == mBoardController->selectedDocument())
@@ -557,6 +592,7 @@ void UBDocumentController::selectADocumentOnTrashingSelectedOne(UBDocumentGroupT
         else
             proxyTi->parent()->child(index)->setSelected(true);
     }
+    // If the deleted document is at the top of its folder, try to select the second top-most one
     else if (proxyTi->parent()->childCount() > 1)
     {
         if (proxyTi->proxy() == mBoardController->selectedDocument())
@@ -566,6 +602,7 @@ void UBDocumentController::selectADocumentOnTrashingSelectedOne(UBDocumentGroupT
         else
             proxyTi->parent()->child(1)->setSelected(true);
     }
+    // Otherwise, go through the other folders
     else
     {
         if (proxyTi->proxy() == mBoardController->selectedDocument())
@@ -601,10 +638,12 @@ void UBDocumentController::selectADocumentOnTrashingSelectedOne(UBDocumentGroupT
     }
 }
 
-void UBDocumentController::moveDocumentToTrash(UBDocumentGroupTreeItem* groupTi, UBDocumentProxyTreeItem *proxyTi)
+void UBDocumentController::moveDocumentToTrash(UBDocumentGroupTreeItem* groupTi, UBDocumentProxyTreeItem *proxyTi, bool selectNewDocument)
 {
+    qDebug() << "moving doc to trash. selection type: " << mSelectionType;
 
-    selectADocumentOnTrashingSelectedOne(groupTi,proxyTi);
+    if (selectNewDocument)
+        selectADocumentOnTrashingSelectedOne(groupTi,proxyTi);
 
     QString oldGroupName = proxyTi->proxy()->metaData(UBSettings::documentGroupName).toString();
     proxyTi->proxy()->setMetaData(UBSettings::documentGroupName, UBSettings::trashedDocumentGroupNamePrefix + oldGroupName);
@@ -740,12 +779,13 @@ void UBDocumentController::emptyTrash(bool showConfirmationDialog)
  * @brief Delete an item (document or folder) from the document list
  * @param item The document or folder to delete
  * @param showConfirmationDialog If set to true, the user will be asked for confirmation
+ * @param selectNewDocument If set to true, a new document will be selected immediately
  *
  * If the item passed as parameter is a document that is in the trash, then it is deleted
  * permanently. If the trash folder is passed, then all its contents are deleted.
  * Finally, if a folder is passed, all its contents are moved to trash.
  */
-void UBDocumentController::deleteTreeItem(QTreeWidgetItem * item, bool showConfirmationDialog)
+void UBDocumentController::deleteTreeItem(QTreeWidgetItem * item, bool showConfirmationDialog, bool selectNewDocument)
 {
     UBDocumentProxyTreeItem * document = dynamic_cast<UBDocumentProxyTreeItem*>(item);
     UBDocumentGroupTreeItem * folder = dynamic_cast<UBDocumentGroupTreeItem*>(item);
@@ -757,7 +797,7 @@ void UBDocumentController::deleteTreeItem(QTreeWidgetItem * item, bool showConfi
             return;
 
         if (!document->isInTrash())
-            moveDocumentToTrash(dynamic_cast<UBDocumentGroupTreeItem*>(document->parent()), document);
+            moveDocumentToTrash(dynamic_cast<UBDocumentGroupTreeItem*>(document->parent()), document, selectNewDocument);
 
         else {
             document->parent()->removeChild(document);
@@ -799,7 +839,7 @@ void UBDocumentController::deleteSelectedItem()
     }
 
     else if (mSelectionType == Multiple) {
-        if (!UBApplication::mainWindow->yesNoQuestion(tr("Remove mutliple documents"),
+        if (!UBApplication::mainWindow->yesNoQuestion(tr("Remove multiple documents"),
                                                       tr("Are you sure you want to remove all selected documents?")))
             return;
 
@@ -808,7 +848,7 @@ void UBDocumentController::deleteSelectedItem()
         foreach (QTreeWidgetItem * item, mCurrentSelection) {
             LastSelectedElementType type = itemType(item);
             if (type == Document)
-                deleteTreeItem(item, false);
+                deleteTreeItem(item, false, false);
 
             else if (type == Folder)
                 // Delete folders later, to avoid deleting a document twice
@@ -816,14 +856,16 @@ void UBDocumentController::deleteSelectedItem()
         }
 
         foreach (QTreeWidgetItem * item, foldersToDelete) {
-            deleteTreeItem(item, false);
+            deleteTreeItem(item, false, false);
         }
+
+        //selectADocumentOnMultipleTrashing();
     }
 
     else if (mSelectionType == Document || mSelectionType == Folder) {
         QTreeWidgetItem * item = mCurrentSelection.first();
         if (item)
-            deleteTreeItem(item, true);
+            deleteTreeItem(item, true, true);
     }
 }
 

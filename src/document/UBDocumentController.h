@@ -126,10 +126,11 @@ class UBDocumentController : public UBDocumentContainer
         QString mDefaultDocumentGroupName;
 
         void selectADocumentOnTrashingSelectedOne(UBDocumentGroupTreeItem* groupTi,UBDocumentProxyTreeItem *proxyTi);
-        void moveDocumentToTrash(UBDocumentGroupTreeItem* groupTi, UBDocumentProxyTreeItem *proxyTi);
+        void selectADocumentOnMultipleTrashing();
+        void moveDocumentToTrash(UBDocumentGroupTreeItem* groupTi, UBDocumentProxyTreeItem *proxyTi, bool selectNewDocument);
         void moveFolderToTrash(UBDocumentGroupTreeItem* groupTi);
         void emptyTrash(bool showConfirmationDialog);
-        void deleteTreeItem(QTreeWidgetItem * item, bool showConfirmationDialog);
+        void deleteTreeItem(QTreeWidgetItem * item, bool showConfirmationDialog, bool selectNewDocument);
 
         void updateCurrentSelection();
         bool multipleSelection();
