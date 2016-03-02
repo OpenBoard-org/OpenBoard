@@ -506,9 +506,15 @@ void UBGraphicsVideoItem::videoSizeChanged(QSizeF newSize)
      * the information is available.
      */
 
-
     // Don't resize the video item when playback has finished
-    if (mMediaObject->mediaStatus() != QMediaPlayer::EndOfMedia)
+    bool shouldResize = (mMediaObject->mediaStatus() != QMediaPlayer::EndOfMedia);
+
+    #ifdef Q_OS_WIN
+    // Windows is a little confused about when a video ends
+    shouldResize = (mMediaObject->mediaStatus() != QMediaPlayer::BufferedMedia);
+    #endif
+
+    if (shouldResize)
         this->setSize(newSize.width(), newSize.height());
 }
 
