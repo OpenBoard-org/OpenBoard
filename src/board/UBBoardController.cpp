@@ -1777,6 +1777,7 @@ void UBBoardController::autosaveTimeout()
     }
 
     saveData(sf_showProgress);
+    UBSettings::settings()->save();
 }
 
 void UBBoardController::appMainModeChanged(UBApplicationController::MainMode md)

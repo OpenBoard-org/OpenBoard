@@ -57,6 +57,8 @@ class UBSettings : public QObject
         void InitKeyboardPaletteKeyBtnSizes();
         void ValidateKeyboardPaletteKeyBtnSize();
         void closing();
+        void save();
+        void load();
 
         int penWidthIndex();
 
@@ -409,6 +411,8 @@ class UBSettings : public QObject
 
         QSettings* mAppSettings;
         QSettings* mUserSettings;
+
+        QHash<QString, QVariant> mSettingsQueue;
 
         static const int sDefaultFontPixelSize;
         static const char *sDefaultFontFamily;

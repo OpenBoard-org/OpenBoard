@@ -118,8 +118,10 @@ QString UBSettings::appPingMessage = "__uniboard_ping";
 
 UBSettings* UBSettings::settings()
 {
-    if (!sSingleton)
+    if (!sSingleton) {
         sSingleton = new UBSettings(qApp);
+        sSingleton->load();
+    }
     return sSingleton;
 }
 
@@ -146,9 +148,10 @@ QSettings* UBSettings::getAppSettings()
 
         UBSettings::sAppSettings = new QSettings(appSettings, QSettings::IniFormat, 0);
         UBSettings::sAppSettings->setIniCodec("utf-8");
+
+        qDebug() << "sAppSettings location: " << appSettings;
     }
 
-    qDebug() << "sAppSettings" << sAppSettings;
     return UBSettings::sAppSettings;
 }
 
@@ -421,12 +424,19 @@ void UBSettings::init()
 }
 
 
+/**
+ * @brief Returns the value for the *key* setting, or *defaultValue* if the key doesn't exist
+ */
 QVariant UBSettings::value ( const QString & key, const QVariant & defaultValue) const
 {
+    // Check first the settings queue, then the app settings, then the user settings.
+    // If the key exists in neither of these, then defaultValue is returned.
+
+    if (mSettingsQueue.contains(key))
+        return mSettingsQueue.value(key);
+
     if (!sAppSettings->contains(key) && !(defaultValue == QVariant()))
-    {
         sAppSettings->setValue(key, defaultValue);
-    }
 
     return mUserSettings->value(key, sAppSettings->value(key, defaultValue));
 }
@@ -434,9 +444,47 @@ QVariant UBSettings::value ( const QString & key, const QVariant & defaultValue)
 
 void UBSettings::setValue (const QString & key, const QVariant & value)
 {
-    mUserSettings->setValue(key, value);
+    // Save the setting to the queue only; a call to save() is necessary to persist the settings
+    mSettingsQueue[key] = value;
 }
 
+/**
+ * @brief Save all the queued settings to disk
+ */
+void UBSettings::save()
+{
+    // TODO: move this to a thread if it is too slow
+
+    QHash<QString, QVariant>::const_iterator it = mSettingsQueue.constBegin();
+
+    while (it != mSettingsQueue.constEnd()) {
+        mUserSettings->setValue(it.key(), it.value());
+        ++it;
+    }
+
+    // Force save to file
+    mUserSettings->sync();
+
+    qDebug() << "User settings saved";
+}
+
+/**
+ * @brief Force load all settings, to cut down on subsequent file access
+ */
+void UBSettings::load()
+{
+    qDebug() << "Loading all settings";
+
+    QStringList keyList = mUserSettings->allKeys() + sAppSettings->allKeys();
+
+    keyList.removeDuplicates();
+
+    foreach(const QString& key, keyList) {
+        QVariant val = mUserSettings->value(key);
+        if (val != QVariant())
+            setValue(key, val);
+    }
+}
 
 int UBSettings::penWidthIndex()
 {
@@ -1264,6 +1312,7 @@ QString UBSettings::replaceWildcard(QString& path)
 
 void UBSettings::closing()
 {
+    save();
     cleanNonPersistentSettings();
 }
 
