@@ -106,11 +106,11 @@ UBGraphicsAudioItem::UBGraphicsAudioItem(const QUrl &pMediaFileUrl, QGraphicsIte
 {
     haveLinkedImage = false;
 
-    this->setSize(320, 26);
-    this->setMinimumSize(QSize(150, 26));
-
     Delegate()->createControls();
     Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::ResizingHorizontally);
+
+    this->setSize(320, 26);
+    this->setMinimumSize(QSize(150, 26));
 
     mMediaObject->setNotifyInterval(1000);
 
