@@ -152,12 +152,12 @@ void UBPlatformUtils::setFileType(const QString &filePath, unsigned long fileTyp
     CFStringRef path = CFStringCreateWithCharacters(0, reinterpret_cast<const UniChar *>(filePath.unicode()), filePath.length());
     const CFIndex maxSize = CFStringGetMaximumSizeOfFileSystemRepresentation(path);
     UInt8 fileSystemRepresentation[maxSize];
-    CFRelease(path);
     if (!CFStringGetFileSystemRepresentation(path, (char*)fileSystemRepresentation, maxSize))
     {
         return;
     }
 
+    CFRelease(path);
     OSStatus status = FSPathMakeRefWithOptions(fileSystemRepresentation, kFSPathMakeRefDefaultOptions, &ref, NULL);
     if (status != noErr)
     {
