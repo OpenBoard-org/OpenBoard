@@ -425,6 +425,9 @@ class UBSettings : public QObject
         static bool checkDirectory(QString& dirPath);
         static QString replaceWildcard(QString& path);
 
+        void removeSetting(const QString& setting);
+        void checkNewSettings();
+
 };
 
 

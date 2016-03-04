@@ -226,13 +226,13 @@ void UBSettings::init()
     appPreferredLanguage = new UBSetting(this,"App","PreferredLanguage", "");
 
     rightLibPaletteBoardModeWidth = new UBSetting(this, "Board", "RightLibPaletteBoardModeWidth", 270);
-    rightLibPaletteBoardModeIsCollapsed = new UBSetting(this,"Board", "RightLibPaletteBoardModeIsCollapsed",false);
+    rightLibPaletteBoardModeIsCollapsed = new UBSetting(this,"Board", "RightLibPaletteBoardModeIsCollapsed",true);
     rightLibPaletteDesktopModeWidth = new UBSetting(this, "Board", "RightLibPaletteDesktopModeWidth", 270);
-    rightLibPaletteDesktopModeIsCollapsed = new UBSetting(this,"Board", "RightLibPaletteDesktopModeIsCollapsed",false);
+    rightLibPaletteDesktopModeIsCollapsed = new UBSetting(this,"Board", "RightLibPaletteDesktopModeIsCollapsed",true);
     leftLibPaletteBoardModeWidth = new UBSetting(this, "Board", "LeftLibPaletteBoardModeWidth",270);
-    leftLibPaletteBoardModeIsCollapsed = new UBSetting(this,"Board","LeftLibPaletteBoardModeIsCollapsed",false);
+    leftLibPaletteBoardModeIsCollapsed = new UBSetting(this,"Board","LeftLibPaletteBoardModeIsCollapsed",true);
     leftLibPaletteDesktopModeWidth = new UBSetting(this, "Board", "LeftLibPaletteDesktopModeWidth",270);
-    leftLibPaletteDesktopModeIsCollapsed = new UBSetting(this,"Board","LeftLibPaletteDesktopModeIsCollapsed",false);
+    leftLibPaletteDesktopModeIsCollapsed = new UBSetting(this,"Board","LeftLibPaletteDesktopModeIsCollapsed",true);
 
     appIsInSoftwareUpdateProcess = new UBSetting(this, "App", "IsInSoftwareUpdateProcess", false);
     appLastSessionDocumentUUID = new UBSetting(this, "App", "LastSessionDocumentUUID", "");
@@ -268,11 +268,11 @@ void UBSettings::init()
     pageDpi = new UBSetting(this, "Board", "pageDpi", 0);
 
     QStringList penLightBackgroundColors;
-    penLightBackgroundColors << "#000000" << "#FF0000" <<"#004080" << "#008000" << "#FFDD00" << "#C87400" << "#800040" << "#008080"  << "#5F2D0A";
+    penLightBackgroundColors << "#000000" << "#FF0000" <<"#004080" << "#008000" << "#FFDD00" << "#C87400" << "#800040" << "#008080"  << "#5F2D0A" << "#FFFFFF";
     boardPenLightBackgroundColors = new UBColorListSetting(this, "Board", "PenLightBackgroundColors", penLightBackgroundColors, 1.0);
 
     QStringList penDarkBackgroundColors;
-    penDarkBackgroundColors << "#FFFFFF" << "#FF3400" <<"#66C0FF" << "#81FF5C" << "#FFFF00" << "#B68360" << "#FF497E" << "#8D69FF";
+    penDarkBackgroundColors << "#FFFFFF" << "#FF3400" <<"#66C0FF" << "#81FF5C" << "#FFFF00" << "#B68360" << "#FF497E" << "#8D69FF" << "#000000";
     boardPenDarkBackgroundColors = new UBColorListSetting(this, "Board", "PenDarkBackgroundColors", penDarkBackgroundColors, 1.0);
 
     boardMarkerAlpha = new UBSetting(this, "Board", "MarkerAlpha", 0.5);
@@ -421,6 +421,7 @@ void UBSettings::init()
     useSystemOnScreenKeyboard = new UBSetting(this, "App", "UseSystemOnScreenKeyboard", true);
 
     cleanNonPersistentSettings();
+    checkNewSettings();
 }
 
 
@@ -1338,4 +1339,77 @@ void UBSettings::cleanNonPersistentSettings()
         removePassword(youTubeUserEMail->get().toString());
         youTubeUserEMail->set(QVariant(""));
     }
+}
+
+/**
+ * @brief Permanently remove a setting, from local memory and config files
+ * @param setting The setting to remove
+ */
+void UBSettings::removeSetting(const QString &setting)
+{
+    if (sAppSettings->contains(setting))
+        sAppSettings->remove(setting);
+
+    if (mUserSettings->contains(setting))
+        mUserSettings->remove(setting);
+
+    if (mSettingsQueue.contains(setting))
+        mSettingsQueue.remove(setting);
+}
+
+void UBSettings::checkNewSettings()
+{
+    /*
+     * Some settings were modified in new versions and OpenBoard can crash
+     * if an old settings file is used. This function checks these settings and
+     * if necessary, resets them to the values initialized in UBSettings::init().
+     *
+     * Thus this method can be removed when it is no longer deemed useful.
+     */
+
+    // OB 1.10 introduced an extra pen color;  for simplicity, if the old settings
+    // are still present (i.e only 4 selected pen colors), we just reset all color settings.
+    // Having too few colors actually causes OpenBoard to crash, hence these measures.
+
+    QList<UBColorListSetting*> colorSettings;
+    colorSettings << boardPenDarkBackgroundSelectedColors
+                  << boardPenLightBackgroundSelectedColors
+                  << boardMarkerDarkBackgroundSelectedColors
+                  << boardMarkerLightBackgroundSelectedColors;
+
+    foreach (UBColorListSetting* setting, colorSettings) {
+        if (setting->colors().size() < 5)
+            setting->reset(); // Make sure that there are 5 selected colors
+    }
+
+    colorSettings.clear();
+
+    // Next we check whether all the new colors were added; i.e if some default
+    // colors are not also in the config file, we add them to it.
+
+    // This is not nearly as critical as the above issue, but the users (or admins) seemingly
+    // can't be trusted to delete or modify their own config file when upgrading, so they might
+    // wonder why they don't have the new colors in their app.
+
+    colorSettings << boardPenDarkBackgroundColors
+                  << boardPenLightBackgroundColors
+                  << boardMarkerDarkBackgroundColors
+                  << boardMarkerLightBackgroundColors;
+
+    foreach (UBColorListSetting* setting, colorSettings) {
+        QStringList defaultColors = qvariant_cast<QStringList>(setting->defaultValue());
+        QStringList currentColors(qvariant_cast<QStringList>(setting->get())); // copy
+
+        foreach (QString c, defaultColors) {
+            if (!currentColors.contains(c))
+                currentColors.append(QString(c));
+        }
+
+        setting->set(currentColors);
+    }
+
+
+    // A typo was corrected in version 1.10
+    removeSetting("Board/useSystemOnScreenKeybard");
+
 }

@@ -62,6 +62,11 @@ class UBSetting : public QObject
             return mPath;
         }
 
+        virtual QVariant defaultValue() const
+        {
+            return mDefaultValue;
+        }
+
     public slots:
 
         void setBool(bool pValue);
