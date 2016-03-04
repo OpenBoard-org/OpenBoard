@@ -84,7 +84,8 @@ void UBGraphicsStrokesGroup::setColor(const QColor &color, colorType pColorType)
         }
     }
 
-    mDebugText->setBrush(QBrush(color));
+    if (mDebugText)
+        mDebugText->setBrush(QBrush(color));
 }
 
 QColor UBGraphicsStrokesGroup::color(colorType pColorType) const
