@@ -74,13 +74,23 @@ bool UBGraphicsMediaItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *even
 /**
  * @brief Show the toolbar (play/pause, seek, mute).
  *
- * The toolbar then auto-hides after a set amount of time.
+ * The toolbar then auto-hides after a set amount of time, if the video is currently
+ * playing or is paused.
  */
 void UBGraphicsMediaItemDelegate::showToolBar()
 {
     mToolBarItem->show();
-    if (mToolBarShowTimer)
-        mToolBarShowTimer->start();
+    if (mToolBarShowTimer) {
+
+        if (delegated()->isPlaying() || delegated()->isPaused())
+            mToolBarShowTimer->start();
+        else
+            mToolBarShowTimer->stop();
+
+        // Don't hide the toolbar if we're at the beginning of the video
+        if (delegated()->mediaPosition() == delegated()->initialPos())
+            mToolBarShowTimer->stop();
+    }
 }
 
 void UBGraphicsMediaItemDelegate::hideToolBar()

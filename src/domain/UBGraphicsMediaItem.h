@@ -83,6 +83,8 @@ public:
     qint64 mediaPosition() const;
 
     QMediaPlayer::State playerState() const;
+    bool isPlaying() const { return (mMediaObject->state() == QMediaPlayer::PlayingState); }
+    bool isPaused() const { return (mMediaObject->state() == QMediaPlayer::PausedState); }
 
     QRectF boundingRect() const;
 
