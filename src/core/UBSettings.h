@@ -399,7 +399,7 @@ class UBSettings : public QObject
         void setPenPressureSensitive(bool sensitive);
         void setMarkerPressureSensitive(bool sensitive);
 
-        QVariant value ( const QString & key, const QVariant & defaultValue = QVariant() ) const;
+        QVariant value ( const QString & key, const QVariant & defaultValue = QVariant() );
         void setValue (const QString & key,const QVariant & value);
 
         void colorChanged() { emit colorContextChanged(); }

@@ -426,8 +426,14 @@ void UBSettings::init()
 
 /**
  * @brief Returns the value for the *key* setting, or *defaultValue* if the key doesn't exist
+ *
+ * The value is also added to the local settings queue, to prevent future disk I/O when accessing
+ * that same setting.
+ *
+ * If the value doesn't exist in the application settings (i.e it was not present in the config file),
+ * it is also added there.
  */
-QVariant UBSettings::value ( const QString & key, const QVariant & defaultValue) const
+QVariant UBSettings::value ( const QString & key, const QVariant & defaultValue)
 {
     // Check first the settings queue, then the app settings, then the user settings.
     // If the key exists in neither of these, then defaultValue is returned.
@@ -435,10 +441,17 @@ QVariant UBSettings::value ( const QString & key, const QVariant & defaultValue)
     if (mSettingsQueue.contains(key))
         return mSettingsQueue.value(key);
 
+    // If the setting doesn't exist in the App settings, add it there
     if (!sAppSettings->contains(key) && !(defaultValue == QVariant()))
         sAppSettings->setValue(key, defaultValue);
 
-    return mUserSettings->value(key, sAppSettings->value(key, defaultValue));
+    QVariant val = mUserSettings->value(key, sAppSettings->value(key, defaultValue));
+
+    // If we got here, then the settings queue doesn't contain the value; add it
+    mSettingsQueue[key] = val;
+
+
+    return val;
 }
 
 
@@ -453,8 +466,6 @@ void UBSettings::setValue (const QString & key, const QVariant & value)
  */
 void UBSettings::save()
 {
-    // TODO: move this to a thread if it is too slow
-
     QHash<QString, QVariant>::const_iterator it = mSettingsQueue.constBegin();
 
     while (it != mSettingsQueue.constEnd()) {
@@ -480,9 +491,9 @@ void UBSettings::load()
     keyList.removeDuplicates();
 
     foreach(const QString& key, keyList) {
-        QVariant val = mUserSettings->value(key);
-        if (val != QVariant())
-            setValue(key, val);
+        value(key);
+        // value() actually handles saving the value to the queue, so
+        // we don't need to do it here
     }
 }
 
