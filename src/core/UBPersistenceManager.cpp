@@ -79,14 +79,33 @@ UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     mThread = new QThread;
     mWorker = new UBPersistenceWorker();
     mWorker->moveToThread(mThread);
-    connect(mWorker, SIGNAL(error(QString)), this, SLOT(errorString(QString)));
-    connect(mThread, SIGNAL(started()), mWorker, SLOT(process()));
-    connect(mWorker, SIGNAL(finished()), mThread, SLOT(quit()));
-    connect(mWorker, SIGNAL(finished()), this, SLOT(onWorkerFinished()));
-    connect(mWorker, SIGNAL(finished()), mWorker, SLOT(deleteLater()));
-    connect(mThread, SIGNAL(finished()), mThread, SLOT(deleteLater()));
-    connect(mWorker,SIGNAL(sceneLoaded(QByteArray,UBDocumentProxy*,int)),this,SLOT(onSceneLoaded(QByteArray,UBDocumentProxy*,int)));
-    connect(mWorker,SIGNAL(scenePersisted(UBGraphicsScene*)),this,SLOT(onScenePersisted(UBGraphicsScene*)));
+    connect(mWorker, SIGNAL(error(QString)),
+            this, SLOT(errorString(QString)));
+
+    connect(mThread, SIGNAL(started()),
+            mWorker, SLOT(process()));
+
+    connect(mWorker, SIGNAL(finished()),
+            mThread, SLOT(quit()));
+
+    connect(mWorker, SIGNAL(finished()),
+            this, SLOT(onWorkerFinished()));
+
+    connect(mWorker, SIGNAL(finished()),
+            mWorker, SLOT(deleteLater()));
+
+    connect(mThread, SIGNAL(finished()),
+            mThread, SLOT(deleteLater()));
+
+    connect(mWorker, SIGNAL(sceneLoaded(QByteArray,UBDocumentProxy*,int)),
+            this, SLOT(onSceneLoaded(QByteArray,UBDocumentProxy*,int)));
+
+    connect(mWorker, SIGNAL(scenePersisted(UBGraphicsScene*)),
+            this, SLOT(onScenePersisted(UBGraphicsScene*)));
+
+    connect(mWorker, SIGNAL(metadataPersisted(UBDocumentProxy*)),
+            this, SLOT(onMetadataPersisted(UBDocumentProxy*)));
+
     mThread->start();
 
 }
@@ -112,6 +131,11 @@ void UBPersistenceManager::onScenePersisted(UBGraphicsScene* scene)
 {
     delete scene;
     scene = NULL;
+}
+
+void UBPersistenceManager::onMetadataPersisted(UBDocumentProxy* proxy)
+{
+    delete proxy;
 }
 
 void UBPersistenceManager::onWorkerFinished()
@@ -752,14 +776,14 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
     mSceneCache.insert(pDocumentProxy, pSceneIndex, pScene);
 
     if (pDocumentProxy->isModified())
-        UBMetadataDcSubsetAdaptor::persist(pDocumentProxy);
+        persistDocumentMetadata(pDocumentProxy, forceImmediateSaving);
 
     if (pScene->isModified())
     {
         UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
         if(forceImmediateSaving)
             UBSvgSubsetAdaptor::persistScene(pDocumentProxy,pScene,pSceneIndex);
-        else{
+        else {
             UBGraphicsScene* copiedScene = pScene->sceneDeepCopy();
             mWorker->saveScene(pDocumentProxy, copiedScene, pSceneIndex);
             pScene->setModified(false);
@@ -769,13 +793,17 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
 }
 
 
-UBDocumentProxy* UBPersistenceManager::persistDocumentMetadata(UBDocumentProxy* pDocumentProxy)
+void UBPersistenceManager::persistDocumentMetadata(UBDocumentProxy* pDocumentProxy, bool forceImmediateSaving)
 {
-    UBMetadataDcSubsetAdaptor::persist(pDocumentProxy);
+    if (forceImmediateSaving) {
+        UBMetadataDcSubsetAdaptor::persist(pDocumentProxy);
+        emit documentMetadataChanged(pDocumentProxy);
+    }
 
-    emit documentMetadataChanged(pDocumentProxy);
-
-    return pDocumentProxy;
+    else {
+        UBDocumentProxy* copy = pDocumentProxy->deepCopy();
+        mWorker->saveMetadata(copy);
+    }
 }
 
 

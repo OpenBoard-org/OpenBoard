@@ -49,6 +49,8 @@ class UBDocumentProxy : public QObject
 
         virtual ~UBDocumentProxy();
 
+        UBDocumentProxy * deepCopy() const;
+
         QString persistencePath() const;
 
         void setPersistencePath(const QString& pPersistencePath);

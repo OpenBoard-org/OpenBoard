@@ -32,7 +32,8 @@
 
 typedef enum{
     WriteScene = 0,
-    ReadScene
+    ReadScene,
+    WriteMetadata
 }ActionType;
 
 typedef struct{
@@ -50,12 +51,14 @@ public:
 
     void saveScene(UBDocumentProxy* proxy, UBGraphicsScene* scene, const int pageIndex);
     void readScene(UBDocumentProxy* proxy, const int pageIndex);
+    void saveMetadata(UBDocumentProxy* proxy);
 
 signals:
    void finished();
    void error(QString string);
    void sceneLoaded(QByteArray text,UBDocumentProxy* proxy, const int pageIndex);
    void scenePersisted(UBGraphicsScene* scene);
+   void metadataPersisted(UBDocumentProxy* proxy);
 
 public slots:
    void process();

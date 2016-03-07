@@ -517,7 +517,7 @@ void UBDocumentController::duplicateSelectedItem()
             duplicatePages(selectedSceneIndexes);
             emit documentThumbnailsUpdated(this);
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-            UBMetadataDcSubsetAdaptor::persist(selectedDocument());
+            UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
             mDocumentUI->thumbnailWidget->selectItemAt(selectedSceneIndexes.last() + selectedSceneIndexes.size());
         }
     }
@@ -534,7 +534,7 @@ void UBDocumentController::duplicateSelectedItem()
 
             UBDocumentProxy* duplicatedDoc = UBPersistenceManager::persistenceManager()->duplicateDocument(source);
             duplicatedDoc->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-            UBMetadataDcSubsetAdaptor::persist(duplicatedDoc);
+            UBPersistenceManager::persistenceManager()->persistDocumentMetadata(duplicatedDoc);
 
             selectDocument(duplicatedDoc, false);
 
@@ -1104,7 +1104,7 @@ void UBDocumentController::addFolderOfImages()
             else
             {
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-                UBMetadataDcSubsetAdaptor::persist(document);
+                UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
                 reloadThumbnails();
             }
         }
@@ -1150,7 +1150,7 @@ bool UBDocumentController::addFileToDocument(UBDocumentProxy* document)
         if (success)
         {
             document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-            UBMetadataDcSubsetAdaptor::persist(document);
+            UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
         }
         else
         {
@@ -1169,7 +1169,7 @@ void UBDocumentController::moveSceneToIndex(UBDocumentProxy* proxy, int source, 
     if (UBDocumentContainer::movePageToIndex(source, target))
     {
         proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-        UBMetadataDcSubsetAdaptor::persist(proxy);
+        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(proxy);
 
         mDocumentUI->thumbnailWidget->hightlightItem(target);
     }
@@ -1497,7 +1497,7 @@ void UBDocumentController::addToDocument()
         mDocumentUI->thumbnailWidget->selectItemAt(newActiveSceneIndex, false);
         selectDocument(mBoardController->selectedDocument());
         mBoardController->selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-        UBMetadataDcSubsetAdaptor::persist(mBoardController->selectedDocument());
+        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(mBoardController->selectedDocument());
 
         UBApplication::applicationController->showBoard();
     }
@@ -1678,7 +1678,7 @@ void UBDocumentController::addImages()
             else
             {
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-                UBMetadataDcSubsetAdaptor::persist(document);
+                UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
                 reloadThumbnails();
             }
         }
@@ -1791,7 +1791,7 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
             UBDocumentContainer::deletePages(sceneIndexes);
 
             proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-            UBMetadataDcSubsetAdaptor::persist(proxy);
+            UBPersistenceManager::persistenceManager()->persistDocumentMetadata(proxy);
 
             int minIndex = proxy->pageCount() - 1;
             foreach (int i, sceneIndexes)

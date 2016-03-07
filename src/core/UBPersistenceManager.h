@@ -64,7 +64,7 @@ class UBPersistenceManager : public QObject
         virtual UBDocumentProxy* createDocument(const QString& pGroupName = "", const QString& pName = "", bool withEmptyPage = true);
         virtual UBDocumentProxy* createDocumentFromDir(const QString& pDocumentDirectory, const QString& pGroupName = "", const QString& pName = "");
 
-        virtual UBDocumentProxy* persistDocumentMetadata(UBDocumentProxy* pDocumentProxy);
+        virtual void persistDocumentMetadata(UBDocumentProxy* pDocumentProxy, bool forceImmediateSaving = false);
 
         virtual UBDocumentProxy* duplicateDocument(UBDocumentProxy* pDocumentProxy);
 
@@ -161,6 +161,7 @@ class UBPersistenceManager : public QObject
         void onSceneLoaded(QByteArray,UBDocumentProxy*,int);
         void onWorkerFinished();
         void onScenePersisted(UBGraphicsScene* scene);
+        void onMetadataPersisted(UBDocumentProxy* proxy);
 };
 
 

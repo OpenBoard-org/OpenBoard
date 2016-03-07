@@ -69,6 +69,16 @@ UBDocumentProxy::~UBDocumentProxy()
     // NOOP
 }
 
+UBDocumentProxy* UBDocumentProxy::deepCopy() const
+{
+    UBDocumentProxy* copy = new UBDocumentProxy();
+
+    copy->mPersistencePath = QString(mPersistencePath);
+    copy->mMetaDatas = QHash<QString, QVariant>(mMetaDatas);
+    copy->mIsModified = mIsModified;
+    copy->mPageCount = mPageCount;
+}
+
 
 int UBDocumentProxy::pageCount()
 {
