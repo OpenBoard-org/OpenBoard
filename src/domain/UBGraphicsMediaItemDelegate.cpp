@@ -243,6 +243,10 @@ void UBGraphicsMediaItemDelegate::mediaStatusChanged(QMediaPlayer::MediaStatus s
         delegated()->pause();
     }
 
+    // At the end of the video, make sure the progress bar doesn't autohide
+    if (status == QMediaPlayer::EndOfMedia)
+        showToolBar();
+
 
     // in most cases, the only necessary action is to update the play/pause state
     updatePlayPauseState();
