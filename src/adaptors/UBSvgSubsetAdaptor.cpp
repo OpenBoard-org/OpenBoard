@@ -677,10 +677,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     mScene->addItem(videoItem);
 
                     videoItem->show();
-
-                    //force start to load the video and display the first frame
-                    videoItem->play();
-                    videoItem->pause();
                 }
             }
             else if (mXmlReader.name() == "text")//This is for backward compatibility with proto text field prior to version 4.3

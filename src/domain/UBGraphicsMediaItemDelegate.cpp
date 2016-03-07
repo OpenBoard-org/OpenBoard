@@ -231,8 +231,18 @@ void UBGraphicsMediaItemDelegate::mediaStatusChanged(QMediaPlayer::MediaStatus s
     // Possible statuses are: UnknownMediaStatus, NoMedia, LoadingMedia, LoadedMedia,
     // StalledMedia, BufferingMedia, BufferedMedia, EndOfMedia, InvalidMedia
 
+    //qDebug() << "Media status changed to " << status << "; state: " << delegated()->playerState();
+
     if (status == QMediaPlayer::LoadedMedia)
         mMediaControl->totalTimeChanged(delegated()->mediaDuration());
+
+    // At the beginning of the video, play/pause to load and display the first frame
+    if ((status == QMediaPlayer::LoadedMedia || status == QMediaPlayer::BufferedMedia)
+            && delegated()->mediaPosition() == delegated()->initialPos()) {
+        delegated()->play();
+        delegated()->pause();
+    }
+
 
     // in most cases, the only necessary action is to update the play/pause state
     updatePlayPauseState();

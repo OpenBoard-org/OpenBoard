@@ -1368,12 +1368,8 @@ UBGraphicsMediaItem* UBGraphicsScene::addMedia(const QUrl& pMediaFileUrl, bool s
         UBApplication::undoStack->push(uc);
     }
 
-    mediaItem->play();
-
-    if (!shouldPlayAsap) {
-        mediaItem->pause();
-        mediaItem->setMediaPos(0);
-    }
+    if (shouldPlayAsap)
+        mediaItem->play();
 
     setDocumentUpdated();
 

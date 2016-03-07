@@ -500,22 +500,21 @@ void UBGraphicsVideoItem::setSize(int width, int height)
 
 void UBGraphicsVideoItem::videoSizeChanged(QSizeF newSize)
 {
-    /* Depending on the platform, video size information becomes available
-     * at different times (either when the file is loaded, or when playback
-     * begins), so this slot is needed to resize the video item as soon as
-     * the information is available.
+    /* Depending on the platform/video backend, video size information becomes
+     * available at different times (either when the file is loaded, or when
+     * playback begins), so this slot is needed to resize the video item as
+     * soon as the information is available.
      */
 
-    // Don't resize the video item when playback has finished
-    bool shouldResize = (mMediaObject->mediaStatus() != QMediaPlayer::EndOfMedia);
 
-    #ifdef Q_OS_WIN
-    // Windows is a little confused about when a video ends
-    shouldResize = (mMediaObject->mediaStatus() != QMediaPlayer::BufferedMedia);
-    #endif
+    // We don't want the video item to resize when the video is stopped or finished;
+    // and in those cases, the new size is reported as (0, 0).
 
-    if (shouldResize)
+    if (newSize != QSizeF(0,0))
         this->setSize(newSize.width(), newSize.height());
+
+    else // Make sure the toolbar doesn't disappear
+        Delegate()->showToolBar();
 }
 
 
