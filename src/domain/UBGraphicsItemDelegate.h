@@ -296,7 +296,7 @@ class UBGraphicsItemDelegate : public QObject
         void setUBFlags(UBGraphicsFlags pf);
         void setUBFlag(UBGraphicsFlags pf, bool set = true);
 
-        virtual void showToolBar() {}
+        virtual void showToolBar(bool autohide = true) {}
 
     signals:
         void showOnDisplayChanged(bool shown);

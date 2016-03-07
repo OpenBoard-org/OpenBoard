@@ -50,7 +50,7 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
 
         bool mousePressEvent(QGraphicsSceneMouseEvent* event);
 
-        void showToolBar();
+        void showToolBar(bool autohide = true);
 
     public slots:
 

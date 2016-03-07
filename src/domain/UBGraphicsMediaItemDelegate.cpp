@@ -77,7 +77,7 @@ bool UBGraphicsMediaItemDelegate::mousePressEvent(QGraphicsSceneMouseEvent *even
  * The toolbar then auto-hides after a set amount of time, if the video is currently
  * playing or is paused.
  */
-void UBGraphicsMediaItemDelegate::showToolBar()
+void UBGraphicsMediaItemDelegate::showToolBar(bool autohide)
 {
     mToolBarItem->show();
     if (mToolBarShowTimer) {
@@ -89,6 +89,10 @@ void UBGraphicsMediaItemDelegate::showToolBar()
 
         // Don't hide the toolbar if we're at the beginning of the video
         if (delegated()->mediaPosition() == delegated()->initialPos())
+            mToolBarShowTimer->stop();
+
+        // Don't hide the toolbar if it was explicitly requested
+        if (!autohide)
             mToolBarShowTimer->stop();
     }
 }
@@ -245,7 +249,7 @@ void UBGraphicsMediaItemDelegate::mediaStatusChanged(QMediaPlayer::MediaStatus s
 
     // At the end of the video, make sure the progress bar doesn't autohide
     if (status == QMediaPlayer::EndOfMedia)
-        showToolBar();
+        showToolBar(false);
 
 
     // in most cases, the only necessary action is to update the play/pause state

@@ -514,7 +514,7 @@ void UBGraphicsVideoItem::videoSizeChanged(QSizeF newSize)
         this->setSize(newSize.width(), newSize.height());
 
     else // Make sure the toolbar doesn't disappear
-        Delegate()->showToolBar();
+        Delegate()->showToolBar(false);
 }
 
 
