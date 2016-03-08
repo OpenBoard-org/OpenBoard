@@ -111,7 +111,6 @@ public slots:
     void toggleMute();
     void setMute(bool bMute);
     void activeSceneChanged();
-    void hasMediaChanged(bool hasMedia);
     void showOnDisplayChanged(bool shown);
 
     virtual void play();
@@ -176,8 +175,11 @@ public:
 
     virtual UBItem* deepCopy() const;
 
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
 public slots:
     void videoSizeChanged(QSizeF newSize);
+    void hasVideoChanged(bool hasVideo);
 
 protected:
 

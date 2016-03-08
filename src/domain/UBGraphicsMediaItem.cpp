@@ -94,9 +94,6 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
     connect(Delegate(), SIGNAL(showOnDisplayChanged(bool)),
             this, SLOT(showOnDisplayChanged(bool)));
 
-    connect(mMediaObject, SIGNAL(videoAvailableChanged(bool)),
-            this, SLOT(hasMediaChanged(bool)));
-
     connect(mMediaObject, static_cast<void(QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error),
             this, &UBGraphicsMediaItem::mediaError);
 }
@@ -136,6 +133,8 @@ UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
     connect(mVideoItem, SIGNAL(nativeSizeChanged(QSizeF)),
             this, SLOT(videoSizeChanged(QSizeF)));
 
+    connect(mMediaObject, SIGNAL(videoAvailableChanged(bool)),
+            this, SLOT(hasVideoChanged(bool)));
 
     setAcceptHoverEvents(true);
 
@@ -186,7 +185,7 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
 void UBGraphicsMediaItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     painter->save();
-    painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
+    //painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
     Delegate()->postpaint(painter, option, widget);
     painter->restore();
 }
@@ -289,19 +288,6 @@ void UBGraphicsMediaItem::setMute(bool bMute)
     mMutedByUserAction = mMuted;
     sIsMutedByDefault = mMuted;
 }
-
-
-void UBGraphicsMediaItem::hasMediaChanged(bool hasMedia)
-{
-    if(hasMedia && mMediaObject->isSeekable()) {
-        mMediaObject->setPosition(mInitialPos);
-
-        UBGraphicsMediaItemDelegate *med = dynamic_cast<UBGraphicsMediaItemDelegate *>(Delegate());
-        if (med)
-            med->updateTicker(initialPos());
-    }
-}
-
 
 UBGraphicsScene* UBGraphicsMediaItem::scene()
 {
@@ -517,7 +503,12 @@ void UBGraphicsVideoItem::videoSizeChanged(QSizeF newSize)
         Delegate()->showToolBar(false);
 }
 
+void UBGraphicsVideoItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    QGraphicsRectItem::paint(painter, option, widget);
+    UBGraphicsMediaItem::paint(painter, option, widget);
 
+}
 
 void UBGraphicsVideoItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
@@ -535,4 +526,16 @@ void UBGraphicsVideoItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 void UBGraphicsVideoItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     QGraphicsRectItem::hoverLeaveEvent(event);
+}
+
+void UBGraphicsVideoItem::hasVideoChanged(bool hasVideo)
+{
+    if (hasVideo) {
+        setBrush(QColor(Qt::transparent));
+        setPen(QColor(Qt::transparent));
+    }
+    else {
+        setBrush(QColor(Qt::black));
+        setPen(QColor(Qt::white));
+    }
 }
