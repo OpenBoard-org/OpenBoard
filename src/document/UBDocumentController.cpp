@@ -517,7 +517,6 @@ void UBDocumentController::duplicateSelectedItem()
             duplicatePages(selectedSceneIndexes);
             emit documentThumbnailsUpdated(this);
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-            UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
             mDocumentUI->thumbnailWidget->selectItemAt(selectedSceneIndexes.last() + selectedSceneIndexes.size());
         }
     }
@@ -534,7 +533,6 @@ void UBDocumentController::duplicateSelectedItem()
 
             UBDocumentProxy* duplicatedDoc = UBPersistenceManager::persistenceManager()->duplicateDocument(source);
             duplicatedDoc->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-            UBPersistenceManager::persistenceManager()->persistDocumentMetadata(duplicatedDoc);
 
             selectDocument(duplicatedDoc, false);
 
@@ -995,13 +993,7 @@ void UBDocumentController::itemChanged(QTreeWidgetItem * item, int column)
             , this, SLOT(updateDocumentInTree(UBDocumentProxy*)));
 
     if (proxyItem)
-    {
-        if (proxyItem->proxy()->metaData(UBSettings::documentName).toString() != item->text(column))
-        {
-            proxyItem->proxy()->setMetaData(UBSettings::documentName, item->text(column));
-            UBPersistenceManager::persistenceManager()->persistDocumentMetadata(proxyItem->proxy());
-        }
-    }
+        proxyItem->proxy()->setMetaData(UBSettings::documentName, item->text(column));
     else
     {
         // it is a group
@@ -1017,7 +1009,6 @@ void UBDocumentController::itemChanged(QTreeWidgetItem * item, int column)
                     if (0 != (item->flags() & Qt::ItemIsEditable))
                     {
                         childItem->proxy()->setMetaData(UBSettings::documentGroupName, item->text(column));
-                        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(childItem->proxy());
                     }
                 }
             }
@@ -1104,7 +1095,6 @@ void UBDocumentController::addFolderOfImages()
             else
             {
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-                UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
                 reloadThumbnails();
             }
         }
@@ -1150,7 +1140,6 @@ bool UBDocumentController::addFileToDocument(UBDocumentProxy* document)
         if (success)
         {
             document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-            UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
         }
         else
         {
@@ -1169,7 +1158,6 @@ void UBDocumentController::moveSceneToIndex(UBDocumentProxy* proxy, int source, 
     if (UBDocumentContainer::movePageToIndex(source, target))
     {
         proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(proxy);
 
         mDocumentUI->thumbnailWidget->hightlightItem(target);
     }
@@ -1497,7 +1485,6 @@ void UBDocumentController::addToDocument()
         mDocumentUI->thumbnailWidget->selectItemAt(newActiveSceneIndex, false);
         selectDocument(mBoardController->selectedDocument());
         mBoardController->selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(mBoardController->selectedDocument());
 
         UBApplication::applicationController->showBoard();
     }
@@ -1678,7 +1665,6 @@ void UBDocumentController::addImages()
             else
             {
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-                UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
                 reloadThumbnails();
             }
         }
@@ -1791,7 +1777,6 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
             UBDocumentContainer::deletePages(sceneIndexes);
 
             proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-            UBPersistenceManager::persistenceManager()->persistDocumentMetadata(proxy);
 
             int minIndex = proxy->pageCount() - 1;
             foreach (int i, sceneIndexes)

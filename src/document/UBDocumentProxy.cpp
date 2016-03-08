@@ -33,8 +33,9 @@
 #include "core/UBPersistenceManager.h"
 #include "core/UBSettings.h"
 #include "core/UBDocumentManager.h"
-
 #include "core/memcheck.h"
+
+#include "adaptors/UBMetadataDcSubsetAdaptor.h"
 
 UBDocumentProxy::UBDocumentProxy()
     : mPageCount(0)
@@ -48,6 +49,8 @@ UBDocumentProxy::UBDocumentProxy(const QString& pPersistancePath)
 {
     init();
     setPersistencePath(pPersistancePath);
+
+    mMetaDatas = UBMetadataDcSubsetAdaptor::load(pPersistancePath);
 }
 
 
@@ -74,9 +77,11 @@ UBDocumentProxy* UBDocumentProxy::deepCopy() const
     UBDocumentProxy* copy = new UBDocumentProxy();
 
     copy->mPersistencePath = QString(mPersistencePath);
-    copy->mMetaDatas = QHash<QString, QVariant>(mMetaDatas);
+    copy->mMetaDatas = QMap<QString, QVariant>(mMetaDatas);
     copy->mIsModified = mIsModified;
     copy->mPageCount = mPageCount;
+
+    return copy;
 }
 
 
@@ -164,7 +169,7 @@ QVariant UBDocumentProxy::metaData(const QString& pKey) const
     }
 }
 
-QHash<QString, QVariant> UBDocumentProxy::metaDatas() const
+QMap<QString, QVariant> UBDocumentProxy::metaDatas() const
 {
     return mMetaDatas;
 }

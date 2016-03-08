@@ -211,13 +211,6 @@ QList<QPointer<UBDocumentProxy> > UBPersistenceManager::allDocumentProxies()
         {
             UBDocumentProxy* proxy = new UBDocumentProxy(fullPath); // deleted in UBPersistenceManager::destructor
 
-            QMap<QString, QVariant> metadatas = UBMetadataDcSubsetAdaptor::load(fullPath);
-
-            foreach(QString key, metadatas.keys())
-            {
-                proxy->setMetaData(key, metadatas.value(key));
-            }
-
             proxy->setPageCount(sceneCount(proxy));
 
             proxies << QPointer<UBDocumentProxy>(proxy);
@@ -374,13 +367,6 @@ UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDoc
     if (pName.length() > 0)
     {
         doc->setMetaData(UBSettings::documentName, pName);
-    }
-
-    QMap<QString, QVariant> metadatas = UBMetadataDcSubsetAdaptor::load(pDocumentDirectory);
-
-    foreach(QString key, metadatas.keys())
-    {
-        doc->setMetaData(key, metadatas.value(key));
     }
 
     doc->setUuid(QUuid::createUuid());
@@ -775,11 +761,12 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
 
     mSceneCache.insert(pDocumentProxy, pSceneIndex, pScene);
 
-    if (pDocumentProxy->isModified())
-        persistDocumentMetadata(pDocumentProxy, forceImmediateSaving);
-
     if (pScene->isModified())
     {
+        //qDebug() << "Persisting scene";
+        if (pDocumentProxy->isModified())
+            persistDocumentMetadata(pDocumentProxy, forceImmediateSaving);
+
         UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
         if(forceImmediateSaving)
             UBSvgSubsetAdaptor::persistScene(pDocumentProxy,pScene,pSceneIndex);
