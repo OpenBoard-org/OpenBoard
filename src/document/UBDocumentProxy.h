@@ -49,13 +49,15 @@ class UBDocumentProxy : public QObject
 
         virtual ~UBDocumentProxy();
 
+        UBDocumentProxy * deepCopy() const;
+
         QString persistencePath() const;
 
         void setPersistencePath(const QString& pPersistencePath);
 
         void setMetaData(const QString& pKey , const QVariant& pValue);
         QVariant metaData(const QString& pKey) const;
-        QHash<QString, QVariant> metaDatas() const;
+        QMap<QString, QVariant> metaDatas() const;
 
         QString name() const;
         QString groupName() const;
@@ -86,7 +88,7 @@ class UBDocumentProxy : public QObject
 
         QString mPersistencePath;
 
-        QHash<QString, QVariant> mMetaDatas;
+        QMap<QString, QVariant> mMetaDatas;
 
         bool mIsModified;
 

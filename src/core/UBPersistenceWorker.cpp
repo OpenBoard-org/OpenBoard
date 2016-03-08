@@ -25,6 +25,7 @@
 #include "UBPersistenceWorker.h"
 #include "adaptors/UBSvgSubsetAdaptor.h"
 #include "adaptors/UBThumbnailAdaptor.h"
+#include "adaptors/UBMetadataDcSubsetAdaptor.h"
 
 UBPersistenceWorker::UBPersistenceWorker(QObject *parent) :
     QObject(parent)
@@ -48,6 +49,13 @@ void UBPersistenceWorker::readScene(UBDocumentProxy* proxy, const int pageIndex)
     mSemaphore.release();
 }
 
+void UBPersistenceWorker::saveMetadata(UBDocumentProxy *proxy)
+{
+    PersistenceInformation entry = {WriteMetadata, proxy, NULL, 0};
+    saves.append(entry);
+    mSemaphore.release();
+}
+
 void UBPersistenceWorker::applicationWillClose()
 {
     qDebug() << "applicaiton Will close signal received";
@@ -65,8 +73,14 @@ void UBPersistenceWorker::process()
             UBSvgSubsetAdaptor::persistScene(info.proxy, info.scene, info.sceneIndex);
             emit scenePersisted(info.scene);
         }
-        else{
+        else if (info.action == ReadScene){
             emit sceneLoaded(UBSvgSubsetAdaptor::loadSceneAsText(info.proxy,info.sceneIndex), info.proxy, info.sceneIndex);
+        }
+        else if (info.action == WriteMetadata) {
+            if (info.proxy->isModified()) {
+                UBMetadataDcSubsetAdaptor::persist(info.proxy);
+                emit metadataPersisted(info.proxy);
+            }
         }
         mSemaphore.acquire();
     }while(!mReceivedApplicationClosing);

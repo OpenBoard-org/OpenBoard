@@ -57,6 +57,8 @@ class UBSettings : public QObject
         void InitKeyboardPaletteKeyBtnSizes();
         void ValidateKeyboardPaletteKeyBtnSize();
         void closing();
+        void save();
+        void load();
 
         int penWidthIndex();
 
@@ -397,7 +399,7 @@ class UBSettings : public QObject
         void setPenPressureSensitive(bool sensitive);
         void setMarkerPressureSensitive(bool sensitive);
 
-        QVariant value ( const QString & key, const QVariant & defaultValue = QVariant() ) const;
+        QVariant value ( const QString & key, const QVariant & defaultValue = QVariant() );
         void setValue (const QString & key,const QVariant & value);
 
         void colorChanged() { emit colorContextChanged(); }
@@ -410,6 +412,8 @@ class UBSettings : public QObject
         QSettings* mAppSettings;
         QSettings* mUserSettings;
 
+        QHash<QString, QVariant> mSettingsQueue;
+
         static const int sDefaultFontPixelSize;
         static const char *sDefaultFontFamily;
 
@@ -420,6 +424,9 @@ class UBSettings : public QObject
 
         static bool checkDirectory(QString& dirPath);
         static QString replaceWildcard(QString& path);
+
+        void removeSetting(const QString& setting);
+        void checkNewSettings();
 
 };
 

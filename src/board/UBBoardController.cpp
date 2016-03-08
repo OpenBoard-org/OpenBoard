@@ -1552,7 +1552,7 @@ void UBBoardController::moveSceneToIndex(int source, int target)
         UBDocumentContainer::movePageToIndex(source, target);
 
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-        UBMetadataDcSubsetAdaptor::persist(selectedDocument());
+        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
         mMovingSceneIndex = source;
         setActiveDocumentScene(target);
         mMovingSceneIndex = -1;
@@ -1777,6 +1777,7 @@ void UBBoardController::autosaveTimeout()
     }
 
     saveData(sf_showProgress);
+    UBSettings::settings()->save();
 }
 
 void UBBoardController::appMainModeChanged(UBApplicationController::MainMode md)
