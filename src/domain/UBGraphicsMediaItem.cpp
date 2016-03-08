@@ -117,6 +117,7 @@ UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
     :UBGraphicsMediaItem(pMediaFileUrl, parent)
 {
     haveLinkedImage = true;
+    setPlaceholderVisible(true);
     Delegate()->createControls();
 
     mVideoItem = new QGraphicsVideoItem(this);
@@ -135,6 +136,9 @@ UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
 
     connect(mMediaObject, SIGNAL(videoAvailableChanged(bool)),
             this, SLOT(hasVideoChanged(bool)));
+
+    connect(mMediaObject, SIGNAL(stateChanged(QMediaPlayer::State)),
+            this, SLOT(mediaStateChanged(QMediaPlayer::State)));
 
     setAcceptHoverEvents(true);
 
@@ -530,12 +534,42 @@ void UBGraphicsVideoItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void UBGraphicsVideoItem::hasVideoChanged(bool hasVideo)
 {
-    if (hasVideo) {
-        setBrush(QColor(Qt::transparent));
-        setPen(QColor(Qt::transparent));
-    }
-    else {
+    // On Linux, this is called (with hasVideo == true) when the video is first played
+    // and when it finishes (hasVideo == false). But on Windows and OS X, it isn't called when
+    // the video finishes, so those platforms require another solution to showing/hiding the
+    // placeholder black rectangle.
+
+    setPlaceholderVisible(!hasVideo);
+}
+
+void UBGraphicsVideoItem::mediaStateChanged(QMediaPlayer::State state)
+{
+
+#if defined(Q_OS_OSX) || defined(Q_OS_WIN)
+    setPlaceholderVisible((state == QMediaPlayer::StoppedState));
+#else
+    Q_UNUSED(state);
+#endif
+
+}
+
+/**
+ * @brief Set the brush and fill to display a black rectangle
+ * @param visible If true, a black rectangle is displayed in place of the video
+ *
+ * Depending on platforms, when a video is finished or stopped, the video might be
+ * removed altogether. To avoid just having the controls bar visible at that point,
+ * we can display a "fake" black video frame in its place using this method.
+ */
+void UBGraphicsVideoItem::setPlaceholderVisible(bool visible)
+{
+    if (visible) {
         setBrush(QColor(Qt::black));
         setPen(QColor(Qt::white));
     }
+    else {
+        setBrush(QColor(Qt::transparent));
+        setPen(QColor(Qt::transparent));
+    }
+
 }

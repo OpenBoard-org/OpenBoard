@@ -180,6 +180,7 @@ public:
 public slots:
     void videoSizeChanged(QSizeF newSize);
     void hasVideoChanged(bool hasVideo);
+    void mediaStateChanged(QMediaPlayer::State state);
 
 protected:
 
@@ -188,6 +189,8 @@ protected:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+
+    void setPlaceholderVisible(bool visible);
 };
 
 
