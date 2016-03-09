@@ -302,7 +302,7 @@ void UBZLayerController::shiftStoredZValue(QGraphicsItem *item, qreal zValue)
  */
 bool UBZLayerController::zLevelAvailable(qreal z)
 {
-    foreach(QGraphicsItem* it, mScene->items()) {
+    foreach(QGraphicsItem* it, dynamic_cast<UBGraphicsScene*>(mScene)->getFastAccessItems()) {
         if (it->zValue() == z)
             return false;
     }
