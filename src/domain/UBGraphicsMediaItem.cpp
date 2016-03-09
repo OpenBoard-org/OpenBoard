@@ -340,7 +340,6 @@ void UBGraphicsMediaItem::pause()
 
 void UBGraphicsMediaItem::stop()
 {
-    qDebug() << "stop requested";
     mMediaObject->stop();
     mStopped = true;
 }
@@ -522,7 +521,11 @@ void UBGraphicsVideoItem::videoSizeChanged(QSizeF newSize)
 
 void UBGraphicsVideoItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    QGraphicsRectItem::paint(painter, option, widget);
+    // When selected, a QGraphicsRectItem is drawn with a dashed line border. We don't want this
+    QStyleOptionGraphicsItem styleOption = QStyleOptionGraphicsItem(*option);
+    styleOption.state &= ~QStyle::State_Selected;
+
+    QGraphicsRectItem::paint(painter, &styleOption, widget);
     UBGraphicsMediaItem::paint(painter, option, widget);
 
 }
