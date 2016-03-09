@@ -950,8 +950,8 @@ void UBGraphicsScene::setBackground(bool pIsDark, bool pIsCrossed)
     {
         mDarkBackground = pIsDark;
 
-        updateEraserColor(mDarkBackground);
-        updateMarkerCircleColor(mDarkBackground);
+        updateEraserColor();
+        updateMarkerCircleColor();
         recolorAllItems();
 
         needRepaint = true;
@@ -2525,7 +2525,7 @@ void UBGraphicsScene::createEraiser()
         mEraser->setRect(QRect(0, 0, 0, 0));
         mEraser->setVisible(false);
 
-        updateEraserColor(mDarkBackground);
+        updateEraserColor();
 
         mEraser->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
         mEraser->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Eraiser)); //Necessary to set if we want z value to be assigned correctly
@@ -2560,7 +2560,7 @@ void UBGraphicsScene::createMarkerCircle()
         mMarkerCircle->setVisible(false);
 
         mMarkerCircle->setPen(Qt::DotLine);
-        updateMarkerCircleColor(mDarkBackground);
+        updateMarkerCircleColor();
 
         mMarkerCircle->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
         mMarkerCircle->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Eraiser));
@@ -2570,12 +2570,12 @@ void UBGraphicsScene::createMarkerCircle()
     }
 }
 
-void UBGraphicsScene::updateEraserColor(bool darkBackground)
+void UBGraphicsScene::updateEraserColor()
 {
     if (!mEraser)
         return;
 
-    if (darkBackground) {
+    if (mDarkBackground) {
         mEraser->setBrush(UBSettings::eraserBrushDarkBackground);
         mEraser->setPen(UBSettings::eraserPenDarkBackground);
     }
@@ -2586,7 +2586,7 @@ void UBGraphicsScene::updateEraserColor(bool darkBackground)
     }
 }
 
-void UBGraphicsScene::updateMarkerCircleColor(bool darkBackground)
+void UBGraphicsScene::updateMarkerCircleColor()
 {
     if (!mMarkerCircle)
         return;
@@ -2594,7 +2594,7 @@ void UBGraphicsScene::updateMarkerCircleColor(bool darkBackground)
     QBrush mcBrush = mMarkerCircle->brush();
     QPen mcPen = mMarkerCircle->pen();
 
-    if (darkBackground) {
+    if (mDarkBackground) {
         mcBrush.setColor(UBSettings::markerCircleBrushColorDarkBackground);
         mcPen.setColor(UBSettings::markerCirclePenColorDarkBackground);
     }
