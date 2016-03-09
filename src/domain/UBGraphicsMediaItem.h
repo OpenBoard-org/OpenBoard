@@ -85,6 +85,7 @@ public:
     QMediaPlayer::State playerState() const;
     bool isPlaying() const { return (mMediaObject->state() == QMediaPlayer::PlayingState); }
     bool isPaused() const { return (mMediaObject->state() == QMediaPlayer::PausedState); }
+    bool isStopped() const;
 
     QRectF boundingRect() const;
 
@@ -135,6 +136,7 @@ protected:
     bool mMuted;
     bool mMutedByUserAction;
     static bool sIsMutedByDefault;
+    bool mStopped;
 
     QUrl mMediaFileUrl;
     QString mMediaSource;

@@ -65,6 +65,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         : QGraphicsRectItem(parent)
         , mMuted(sIsMutedByDefault)
         , mMutedByUserAction(sIsMutedByDefault)
+        , mStopped(false)
         , mMediaFileUrl(pMediaFileUrl)
         , mLinkedImage(NULL)
         , mInitialPos(0)
@@ -200,6 +201,14 @@ QMediaPlayer::State UBGraphicsMediaItem::playerState() const
     return mMediaObject->state();
 }
 
+/**
+ * @brief Returns true if the video was manually stopped, false otherwise.
+ */
+bool UBGraphicsMediaItem::isStopped() const
+{
+    return mStopped;
+}
+
 qint64 UBGraphicsMediaItem::mediaDuration() const
 {
     return mMediaObject->duration();
@@ -320,16 +329,20 @@ void UBGraphicsMediaItem::showOnDisplayChanged(bool shown)
 void UBGraphicsMediaItem::play()
 {
     mMediaObject->play();
+    mStopped = false;
 }
 
 void UBGraphicsMediaItem::pause()
 {
     mMediaObject->pause();
+    mStopped = false;
 }
 
 void UBGraphicsMediaItem::stop()
 {
+    qDebug() << "stop requested";
     mMediaObject->stop();
+    mStopped = true;
 }
 
 void UBGraphicsMediaItem::togglePlayPause()
