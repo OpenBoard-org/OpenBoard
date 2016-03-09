@@ -305,6 +305,9 @@ void UBSettings::init()
     boardMarkerLightBackgroundSelectedColors = new UBColorListSetting(this, "Board", "MarkerLightBackgroundSelectedColors", markerLightBackgroundSelectedColors, boardMarkerAlpha->get().toDouble());
     boardMarkerDarkBackgroundSelectedColors = new UBColorListSetting(this, "Board", "MarkerDarkBackgroundSelectedColors", markerDarkBackgroundSelectedColors, boardMarkerAlpha->get().toDouble());
 
+    showEraserPreviewCircle = new UBSetting(this, "Board", "ShowEraserPreviewCircle", true);
+    showMarkerPreviewCircle = new UBSetting(this, "Board", "ShowMarkerPreviewCircle", true);
+
     webUseExternalBrowser = new UBSetting(this, "Web", "UseExternalBrowser", false);
 
     bool defaultShowPageImmediatelyOnMirroredScreen = true;

@@ -282,6 +282,9 @@ class UBSettings : public QObject
         UBColorListSetting* boardMarkerDarkBackgroundColors;
         UBColorListSetting* boardMarkerDarkBackgroundSelectedColors;
 
+        UBSetting* showEraserPreviewCircle;
+        UBSetting* showMarkerPreviewCircle;
+
         UBSetting* webUseExternalBrowser;
         UBSetting* webShowPageImmediatelyOnMirroredScreen;
 

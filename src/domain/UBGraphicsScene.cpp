@@ -2529,16 +2529,17 @@ void UBGraphicsScene::setDocumentUpdated()
 
 void UBGraphicsScene::createEraiser()
 {
-    mEraser = new QGraphicsEllipseItem(); // mem : owned and destroyed by the scene
-    mEraser->setRect(QRect(0, 0, 0, 0));
-    mEraser->setVisible(false);
+    if (UBSettings::settings()->showEraserPreviewCircle->get().toBool()) {
+        mEraser = new QGraphicsEllipseItem(); // mem : owned and destroyed by the scene
+        mEraser->setRect(QRect(0, 0, 0, 0));
+        mEraser->setVisible(false);
 
-    mEraser->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
-    mEraser->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Eraiser)); //Necessary to set if we want z value to be assigned correctly
+        mEraser->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+        mEraser->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Eraiser)); //Necessary to set if we want z value to be assigned correctly
 
-    mTools << mEraser;
-    addItem(mEraser);
-
+        mTools << mEraser;
+        addItem(mEraser);
+    }
 }
 
 void UBGraphicsScene::createPointer()
@@ -2559,18 +2560,20 @@ void UBGraphicsScene::createPointer()
 
 void UBGraphicsScene::createMarkerCircle()
 {
-    mMarkerCircle = new QGraphicsEllipseItem();
+    if (UBSettings::settings()->showMarkerPreviewCircle->get().toBool()) {
+        mMarkerCircle = new QGraphicsEllipseItem();
 
-    mMarkerCircle->setRect(QRect(0, 0, 0, 0));
-    mMarkerCircle->setVisible(false);
+        mMarkerCircle->setRect(QRect(0, 0, 0, 0));
+        mMarkerCircle->setVisible(false);
 
-    mMarkerCircle->setPen(Qt::DotLine); // TODO: set line color to black on white, or white on black
+        mMarkerCircle->setPen(Qt::DotLine); // TODO: set line color to black on white, or white on black
 
-    mMarkerCircle->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
-    mMarkerCircle->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Eraiser));
+        mMarkerCircle->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+        mMarkerCircle->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Eraiser));
 
-    mTools << mMarkerCircle;
-    addItem(mMarkerCircle);
+        mTools << mMarkerCircle;
+        addItem(mMarkerCircle);
+    }
 }
 
 void UBGraphicsScene::setToolCursor(int tool)
