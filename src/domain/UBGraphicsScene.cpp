@@ -314,6 +314,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     : UBCoreGraphicsScene(parent)
     , mEraser(0)
     , mPointer(0)
+    , mMarkerCircle(0)
     , mDocument(parent)
     , mDarkBackground(false)
     , mCrossedBackground(false)
@@ -341,6 +342,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     setDocument(parent);
     createEraiser();
     createPointer();
+    createMarkerCircle();
 
     if (UBApplication::applicationController)
     {
@@ -398,6 +400,10 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
                 delete mCurrentStroke;
                 mCurrentStroke = NULL;
             }
+
+            // hide the marker preview circle
+            if (currentTool == UBStylusTool::Marker)
+                hideMarkerCircle();
 
             // ---------------------------------------------------------------
             // Create a new Stroke. A Stroke is a collection of QGraphicsLines
@@ -468,6 +474,15 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
     {
         drawEraser(position, mInputDeviceIsPressed);
         accepted = true;
+    }
+
+    else if (currentTool == UBStylusTool::Marker) {
+        if (mInputDeviceIsPressed)
+            hideMarkerCircle();
+        else {
+            drawMarkerCircle(position);
+            accepted = true;
+        }
     }
 
     if (mInputDeviceIsPressed)
@@ -670,6 +685,12 @@ void UBGraphicsScene::redrawEraser(bool pressed)
     }
 }
 
+void UBGraphicsScene::hideEraser()
+{
+    if (mEraser)
+        mEraser->hide();
+}
+
 void UBGraphicsScene::drawPointer(const QPointF &pPoint, bool isFirstDraw)
 {
     qreal pointerDiameter = UBSettings::pointerDiameter / UBApplication::boardController->currentZoom();
@@ -684,6 +705,28 @@ void UBGraphicsScene::drawPointer(const QPointF &pPoint, bool isFirstDraw)
         if(isFirstDraw) {
             mPointer->show();
         }
+    }
+}
+
+void UBGraphicsScene::drawMarkerCircle(const QPointF &pPoint)
+{
+    if (mMarkerCircle) {
+        qreal markerDiameter = UBSettings::settings()->currentMarkerWidth();
+        markerDiameter /= UBApplication::boardController->systemScaleFactor();
+        markerDiameter /= UBApplication::boardController->currentZoom();
+        qreal markerRadius = markerDiameter/2;
+
+        mMarkerCircle->setRect(QRectF(pPoint.x() - markerRadius, pPoint.y() - markerRadius,
+                                      markerDiameter, markerDiameter));
+        mMarkerCircle->show();
+    }
+
+}
+
+void UBGraphicsScene::hideMarkerCircle()
+{
+    if (mMarkerCircle) {
+        mMarkerCircle->hide();
     }
 }
 
@@ -1105,16 +1148,16 @@ UBGraphicsPolygonItem* UBGraphicsScene::polygonToPolygonItem(const QPolygonF pPo
     return polygonItem;
 }
 
-void UBGraphicsScene::hideEraser()
+void UBGraphicsScene::hideTool()
 {
-    if (mEraser)
-        mEraser->hide();
+    hideEraser();
+    hideMarkerCircle();
 }
 
 void UBGraphicsScene::leaveEvent(QEvent * event)
 {
     Q_UNUSED(event);
-    hideEraser();
+    hideTool();
 }
 
 UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
@@ -2512,6 +2555,22 @@ void UBGraphicsScene::createPointer()
 
     mTools << mPointer;
     addItem(mPointer);
+}
+
+void UBGraphicsScene::createMarkerCircle()
+{
+    mMarkerCircle = new QGraphicsEllipseItem();
+
+    mMarkerCircle->setRect(QRect(0, 0, 0, 0));
+    mMarkerCircle->setVisible(false);
+
+    mMarkerCircle->setPen(Qt::DotLine); // TODO: set line color to black on white, or white on black
+
+    mMarkerCircle->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+    mMarkerCircle->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Eraiser));
+
+    mTools << mMarkerCircle;
+    addItem(mMarkerCircle);
 }
 
 void UBGraphicsScene::setToolCursor(int tool)

@@ -323,7 +323,7 @@ public slots:
         void updateSelectionFrame();
         void updateSelectionFrameWrapper(int);
         void initStroke();
-        void hideEraser();
+        void hideTool();
 
         void setBackground(bool pIsDark, bool pIsCrossed);
         void setBackgroundZoomFactor(qreal zoom);
@@ -361,7 +361,10 @@ public slots:
 
         void drawEraser(const QPointF& pEndPoint, bool pressed = true);
         void redrawEraser(bool pressed);
+        void hideEraser();
         void drawPointer(const QPointF& pEndPoint, bool isFirstDraw = false);
+        void drawMarkerCircle(const QPointF& pEndPoint);
+        void hideMarkerCircle();
         void DisposeMagnifierQWidgets();
 
 
@@ -381,10 +384,12 @@ public slots:
         void setDocumentUpdated();
         void createEraiser();
         void createPointer();
+        void createMarkerCircle();
         bool hasTextItemWithFocus(UBGraphicsGroupContainerItem* item);
 
         QGraphicsEllipseItem* mEraser;
-        QGraphicsEllipseItem* mPointer;
+        QGraphicsEllipseItem* mPointer; // "laser" pointer
+        QGraphicsEllipseItem* mMarkerCircle; // dotted circle around marker
 
         QSet<QGraphicsItem*> mAddedItems;
         QSet<QGraphicsItem*> mRemovedItems;
