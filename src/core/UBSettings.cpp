@@ -851,7 +851,8 @@ QString UBSettings::userDataDirectory()
 
         }
         dataDirPath = UBFileSystemUtils::normalizeFilePath(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
-        dataDirPath.replace(qApp->organizationName() + "/", "");
+        if (qApp->organizationName().size() > 0)
+            dataDirPath.replace(qApp->organizationName() + "/", "");
     }
     return dataDirPath;
 }
