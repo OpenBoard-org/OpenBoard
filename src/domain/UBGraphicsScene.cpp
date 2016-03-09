@@ -660,14 +660,14 @@ bool UBGraphicsScene::inputDeviceRelease()
 
 void UBGraphicsScene::drawEraser(const QPointF &pPoint, bool pressed)
 {
-    qreal eraserWidth = UBSettings::settings()->currentEraserWidth();
-    eraserWidth /= UBApplication::boardController->systemScaleFactor();
-    eraserWidth /= UBApplication::boardController->currentZoom();
+    if (mEraser) {
+        qreal eraserWidth = UBSettings::settings()->currentEraserWidth();
+        eraserWidth /= UBApplication::boardController->systemScaleFactor();
+        eraserWidth /= UBApplication::boardController->currentZoom();
 
-    qreal eraserRadius = eraserWidth / 2;
+        qreal eraserRadius = eraserWidth / 2;
 
     // TODO UB 4.x optimize - no need to do that every time we move it
-    if (mEraser) {
         mEraser->setRect(QRectF(pPoint.x() - eraserRadius, pPoint.y() - eraserRadius, eraserWidth, eraserWidth));
         redrawEraser(pressed);
     }
@@ -676,11 +676,14 @@ void UBGraphicsScene::drawEraser(const QPointF &pPoint, bool pressed)
 void UBGraphicsScene::redrawEraser(bool pressed)
 {
     if (mEraser) {
-        if(pressed)
-            mEraser->setPen(QPen(Qt::SolidLine));
-        else
-            mEraser->setPen(QPen(Qt::DotLine));
+        QPen pen = mEraser->pen();
 
+        if(pressed)
+            pen.setStyle(Qt::SolidLine);
+        else
+            pen.setStyle(Qt::DotLine);
+
+        mEraser->setPen(pen);
         mEraser->show();
     }
 }
@@ -947,20 +950,8 @@ void UBGraphicsScene::setBackground(bool pIsDark, bool pIsCrossed)
     {
         mDarkBackground = pIsDark;
 
-        if (mEraser)
-        {
-            if (mDarkBackground)
-            {
-                mEraser->setBrush(UBSettings::eraserBrushDarkBackground);
-                mEraser->setPen(UBSettings::eraserPenDarkBackground);
-            }
-            else
-            {
-                mEraser->setBrush(UBSettings::eraserBrushLightBackground);
-                mEraser->setPen(UBSettings::eraserPenLightBackground);
-            }
-        }
-
+        updateEraserColor(mDarkBackground);
+        updateMarkerCircleColor(mDarkBackground);
         recolorAllItems();
 
         needRepaint = true;
@@ -2534,6 +2525,8 @@ void UBGraphicsScene::createEraiser()
         mEraser->setRect(QRect(0, 0, 0, 0));
         mEraser->setVisible(false);
 
+        updateEraserColor(mDarkBackground);
+
         mEraser->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
         mEraser->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Eraiser)); //Necessary to set if we want z value to be assigned correctly
 
@@ -2566,7 +2559,8 @@ void UBGraphicsScene::createMarkerCircle()
         mMarkerCircle->setRect(QRect(0, 0, 0, 0));
         mMarkerCircle->setVisible(false);
 
-        mMarkerCircle->setPen(Qt::DotLine); // TODO: set line color to black on white, or white on black
+        mMarkerCircle->setPen(Qt::DotLine);
+        updateMarkerCircleColor(mDarkBackground);
 
         mMarkerCircle->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
         mMarkerCircle->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Eraiser));
@@ -2574,6 +2568,44 @@ void UBGraphicsScene::createMarkerCircle()
         mTools << mMarkerCircle;
         addItem(mMarkerCircle);
     }
+}
+
+void UBGraphicsScene::updateEraserColor(bool darkBackground)
+{
+    if (!mEraser)
+        return;
+
+    if (darkBackground) {
+        mEraser->setBrush(UBSettings::eraserBrushDarkBackground);
+        mEraser->setPen(UBSettings::eraserPenDarkBackground);
+    }
+
+    else {
+        mEraser->setBrush(UBSettings::eraserBrushLightBackground);
+        mEraser->setPen(UBSettings::eraserPenLightBackground);
+    }
+}
+
+void UBGraphicsScene::updateMarkerCircleColor(bool darkBackground)
+{
+    if (!mMarkerCircle)
+        return;
+
+    QBrush mcBrush = mMarkerCircle->brush();
+    QPen mcPen = mMarkerCircle->pen();
+
+    if (darkBackground) {
+        mcBrush.setColor(UBSettings::markerCircleBrushColorDarkBackground);
+        mcPen.setColor(UBSettings::markerCirclePenColorDarkBackground);
+    }
+
+    else {
+        mcBrush.setColor(UBSettings::markerCircleBrushColorLightBackground);
+        mcPen.setColor(UBSettings::markerCirclePenColorLightBackground);
+    }
+
+    mMarkerCircle->setBrush(mcBrush);
+    mMarkerCircle->setPen(mcPen);
 }
 
 void UBGraphicsScene::setToolCursor(int tool)

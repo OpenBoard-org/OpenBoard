@@ -385,6 +385,8 @@ public slots:
         void createEraiser();
         void createPointer();
         void createMarkerCircle();
+        void updateEraserColor(bool darkBackground);
+        void updateMarkerCircleColor(bool darkBackground);
         bool hasTextItemWithFocus(UBGraphicsGroupContainerItem* item);
 
         QGraphicsEllipseItem* mEraser;

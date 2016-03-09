@@ -78,6 +78,12 @@ QBrush UBSettings::eraserBrushDarkBackground = QBrush(QColor(127, 127, 127, 30))
 QPen UBSettings::eraserPenDarkBackground = QPen(QColor(255, 255, 255, 63));
 QPen UBSettings::eraserPenLightBackground = QPen(QColor(0, 0, 0, 63));
 
+QColor UBSettings::markerCircleBrushColorDarkBackground = QColor(127, 127, 127, 30);
+QColor UBSettings::markerCircleBrushColorLightBackground = QColor(255, 255, 255, 30);
+
+QColor UBSettings::markerCirclePenColorDarkBackground = QColor(255, 255, 255, 63);
+QColor UBSettings::markerCirclePenColorLightBackground = QColor(0, 0, 0, 63);
+
 QColor UBSettings::documentSizeMarkColorDarkBackground = QColor(44, 44, 44, 200);
 QColor UBSettings::documentSizeMarkColorLightBackground = QColor(241, 241, 241);
 

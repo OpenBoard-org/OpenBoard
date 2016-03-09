@@ -172,6 +172,12 @@ class UBSettings : public QObject
         static QPen eraserPenDarkBackground;
         static QPen eraserPenLightBackground;
 
+        static QColor markerCircleBrushColorDarkBackground;
+        static QColor markerCircleBrushColorLightBackground;
+
+        static QColor markerCirclePenColorDarkBackground;
+        static QColor markerCirclePenColorLightBackground;
+
         static QColor documentSizeMarkColorDarkBackground;
         static QColor documentSizeMarkColorLightBackground;
 
