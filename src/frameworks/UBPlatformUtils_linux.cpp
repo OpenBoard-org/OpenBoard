@@ -442,8 +442,13 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
 
 void UBPlatformUtils::showOSK(bool show)
 {
-    if (show) {
-        QProcess newProcess;
-        newProcess.startDetached("/usr/bin/env onboard");
-    }
+    QProcess oskProcess;
+
+    if (show)
+        oskProcess.startDetached("/usr/bin/env onboard");
+
+    else
+        /* Not exactly a great solution, but it isn't possible to just
+         * close onboard through wmctrl or xdotool */
+        oskProcess.startDetached("pkill -3 onboard");
 }
