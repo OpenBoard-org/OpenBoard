@@ -1803,6 +1803,7 @@ void UBBoardController::closing()
 {
     mIsClosing = true;
     ClearUndoStack();
+    showKeyboard(false);
     lastWindowClosed();
 }
 
