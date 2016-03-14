@@ -479,7 +479,10 @@ void UBSettings::save()
     QHash<QString, QVariant>::const_iterator it = mSettingsQueue.constBegin();
 
     while (it != mSettingsQueue.constEnd()) {
-        mUserSettings->setValue(it.key(), it.value());
+        // We only save user settings that are different from the app settings
+        if (sAppSettings->value(it.key()) != it.value())
+            mUserSettings->setValue(it.key(), it.value());
+
         ++it;
     }
 
