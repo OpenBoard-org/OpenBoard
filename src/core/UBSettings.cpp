@@ -126,7 +126,6 @@ UBSettings* UBSettings::settings()
 {
     if (!sSingleton) {
         sSingleton = new UBSettings(qApp);
-        sSingleton->load();
     }
     return sSingleton;
 }
@@ -490,24 +489,6 @@ void UBSettings::save()
     mUserSettings->sync();
 
     qDebug() << "User settings saved";
-}
-
-/**
- * @brief Force load all settings, to cut down on subsequent file access
- */
-void UBSettings::load()
-{
-    qDebug() << "Loading all settings";
-
-    QStringList keyList = mUserSettings->allKeys() + sAppSettings->allKeys();
-
-    keyList.removeDuplicates();
-
-    foreach(const QString& key, keyList) {
-        value(key);
-        // value() actually handles saving the value to the queue, so
-        // we don't need to do it here
-    }
 }
 
 int UBSettings::penWidthIndex()

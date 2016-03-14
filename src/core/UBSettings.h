@@ -58,7 +58,6 @@ class UBSettings : public QObject
         void ValidateKeyboardPaletteKeyBtnSize();
         void closing();
         void save();
-        void load();
 
         int penWidthIndex();
 
