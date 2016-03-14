@@ -454,11 +454,11 @@ QVariant UBSettings::value ( const QString & key, const QVariant & defaultValue)
     if (!sAppSettings->contains(key) && !(defaultValue == QVariant()))
         sAppSettings->setValue(key, defaultValue);
 
+    // Get the value from the user settings (or if it doesn't exist there, from the app settings)
     QVariant val = mUserSettings->value(key, sAppSettings->value(key, defaultValue));
 
-    // If we got here, then the settings queue doesn't contain the value; add it
+    // Add the value to the settings queue for faster access next time it is requested
     mSettingsQueue[key] = val;
-
 
     return val;
 }
@@ -1361,7 +1361,7 @@ void UBSettings::checkNewSettings()
      * Thus this method can be removed when it is no longer deemed useful.
      */
 
-    // OB 1.10 introduced an extra pen color;  for simplicity, if the old settings
+    // OB 1.3 introduced an extra pen color;  for simplicity, if the old settings
     // are still present (i.e only 4 selected pen colors), we just reset all color settings.
     // Having too few colors actually causes OpenBoard to crash, hence these measures.
 
@@ -1373,7 +1373,7 @@ void UBSettings::checkNewSettings()
 
     foreach (UBColorListSetting* setting, colorSettings) {
         if (setting->colors().size() < 5)
-            setting->reset(); // Make sure that there are 5 selected colors
+            setting->reset();
     }
 
     colorSettings.clear();
@@ -1403,7 +1403,7 @@ void UBSettings::checkNewSettings()
     }
 
 
-    // A typo was corrected in version 1.10
+    // A typo was corrected in version 1.3
     removeSetting("Board/useSystemOnScreenKeybard");
 
 }
