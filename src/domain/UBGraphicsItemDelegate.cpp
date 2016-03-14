@@ -1331,7 +1331,7 @@ void DelegateMediaControl::paint(QPainter *painter,
 QPainterPath DelegateMediaControl::shape() const
 {
     QPainterPath path;
-    path.addRoundedRect(rect(), rect().height()/ 2, rect().height()/2);
+    path.addRoundedRect(mSeecArea, mSeecArea.height()/2, mSeecArea.height()/2);
     return path;
 }
 
