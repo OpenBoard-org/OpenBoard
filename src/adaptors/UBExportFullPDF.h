@@ -45,7 +45,7 @@ class UBExportFullPDF : public UBExportAdaptor
         virtual QString exportExtention();
         virtual void persist(UBDocumentProxy* pDocument);
 
-        virtual void persistsDocument(UBDocumentProxy* pDocument, const QString& filename);
+        virtual bool persistsDocument(UBDocumentProxy* pDocument, const QString& filename);
 
     protected:
         void saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QString& filename);

@@ -142,8 +142,8 @@ void UBExportFullPDF::persist(UBDocumentProxy* pDocumentProxy)
         if (mIsVerbose)
             UBApplication::showMessage(tr("Exporting document..."));
 
-        persistsDocument(pDocumentProxy, filename);
-        if (mIsVerbose)
+        bool success = persistsDocument(pDocumentProxy, filename);
+        if (mIsVerbose && success)
             UBApplication::showMessage(tr("Export successful."));
 
         QApplication::restoreOverrideCursor();
@@ -151,8 +151,24 @@ void UBExportFullPDF::persist(UBDocumentProxy* pDocumentProxy)
 }
 
 
-void UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QString& filename)
+bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QString& filename)
 {
+    QFileInfo info(filename);
+    info.setFile(info.absolutePath());
+
+    if (!info.isWritable()) {
+        UBApplication::showMessage(tr("Export failed: location not writable"));
+
+        // The message is a bit discreet: also show a pop-up
+        QMessageBox errorBox;
+        errorBox.setWindowTitle(tr("Export failed"));
+        errorBox.setText(tr("Unable to export to the selected location. You do not have the permissions necessary to save the file."));
+        errorBox.setIcon(QMessageBox::Critical);
+        errorBox.exec();
+
+        return false;
+    }
+
     QFile file(filename);
     if (file.exists()) file.remove();
 
@@ -269,6 +285,8 @@ void UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
             QFile::remove(overlayName);
         }
     }
+
+    return true;
 }
 
 
