@@ -68,9 +68,9 @@ void UBExportDocument::persist(UBDocumentProxy* pDocumentProxy)
         if (mIsVerbose)
             UBApplication::showMessage(tr("Exporting document..."));
 
-        persistsDocument(pDocumentProxy, filename);
+        bool success = persistsDocument(pDocumentProxy, filename);
 
-        if (mIsVerbose)
+        if (mIsVerbose && success)
             UBApplication::showMessage(tr("Export successful."));
 
         QApplication::restoreOverrideCursor();
@@ -78,14 +78,30 @@ void UBExportDocument::persist(UBDocumentProxy* pDocumentProxy)
 }
 
 
-void UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, QString filename)
+bool UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, QString filename)
 {
+    QFileInfo info(filename);
+    info.setFile(info.absolutePath());
+
+    if (!info.isWritable()) {
+        UBApplication::showMessage(tr("Export failed: location not writable"));
+
+        // The message is a bit discreet: also show a pop-up
+        QMessageBox errorBox;
+        errorBox.setWindowTitle(tr("Export failed"));
+        errorBox.setText(tr("Unable to export to the selected location. You do not have the permissions necessary to save the file."));
+        errorBox.setIcon(QMessageBox::Critical);
+        errorBox.exec();
+
+        return false;
+    }
+
     QuaZip zip(filename);
     zip.setFileNameCodec("UTF-8");
     if(!zip.open(QuaZip::mdCreate))
     {
         qWarning("Export failed. Cause: zip.open(): %d", zip.getZipError());
-        return;
+        return false;
     }
 
     QDir documentDir = QDir(pDocumentProxy->persistencePath());
@@ -93,15 +109,18 @@ void UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, QString
     QuaZipFile outFile(&zip);
     UBFileSystemUtils::compressDirInZip(documentDir, "", &outFile, true, this);
 
+    zip.close();
+
     if(zip.getZipError() != 0)
     {
         qWarning("Export failed. Cause: zip.close(): %d", zip.getZipError());
+        return false;
     }
 
-    zip.close();
 
     UBPlatformUtils::setFileType(filename, 0x5542647A /* UBdz */);
 
+    return true;
 }
 
 

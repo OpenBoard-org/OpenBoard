@@ -49,7 +49,7 @@ class UBExportDocument : public UBExportAdaptor, public UBProcessingProgressList
         virtual QString exportExtention();
         virtual void persist(UBDocumentProxy* pDocument);
 
-        virtual void persistsDocument(UBDocumentProxy* pDocument, QString filename);
+        virtual bool persistsDocument(UBDocumentProxy* pDocument, QString filename);
 
         virtual void processing(const QString& pObjectName, int pCurrent, int pTotal);
 };
