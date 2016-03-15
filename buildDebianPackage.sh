@@ -319,7 +319,6 @@ cat > "$BASE_WORKING_DIR/DEBIAN/postinst" << EOF
 # ---------------------------------------------------------------------
 
 xdg-desktop-menu install --novendor /usr/share/applications/${APPLICATION_NAME}.desktop
-rm -f "\$HOME/.local/share/OpenBoard/OpenBoardUser.config"
 exit 0
 #DEBHELPER#
 EOF
