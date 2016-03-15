@@ -393,4 +393,6 @@ void UBGraphicsGroupContainerItem::pRemoveFromGroup(QGraphicsItem *item)
     // ### Quite expensive. But removeFromGroup() isn't called very often.
     prepareGeometryChange();
     itemsBoundingRect = childrenBoundingRect();
+
+    item->setFlag(ItemIsMovable, true);
 }
