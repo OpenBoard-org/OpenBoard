@@ -71,6 +71,8 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         , mInitialPos(0)
 {
 
+    mErrorString = "";
+
     mMediaObject = new QMediaPlayer(this);
     mMediaObject->setMedia(pMediaFileUrl);
 
@@ -140,6 +142,9 @@ UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
 
     connect(mMediaObject, SIGNAL(stateChanged(QMediaPlayer::State)),
             this, SLOT(mediaStateChanged(QMediaPlayer::State)));
+
+    connect(mMediaObject, static_cast<void(QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error),
+            this, &UBGraphicsVideoItem::mediaError);
 
     setAcceptHoverEvents(true);
 
@@ -346,6 +351,11 @@ void UBGraphicsMediaItem::stop()
 
 void UBGraphicsMediaItem::togglePlayPause()
 {
+    if (!mErrorString.isEmpty()) {
+        UBApplication::showMessage("Can't play media: " + mErrorString);
+        return;
+    }
+
     if (mMediaObject->state() == QMediaPlayer::StoppedState)
         mMediaObject->play();
 
@@ -378,8 +388,29 @@ void UBGraphicsMediaItem::togglePlayPause()
 
 void UBGraphicsMediaItem::mediaError(QMediaPlayer::Error errorCode)
 {
-    if (errorCode != QMediaPlayer::NoError)
-        UBApplication::showMessage(mMediaObject->errorString());
+    // QMediaPlayer::errorString() isn't very descriptive, so we generate our own message
+
+    switch (errorCode) {
+        case QMediaPlayer::NoError:
+            mErrorString = "";
+            break;
+        case QMediaPlayer::ResourceError:
+            mErrorString = tr("Media resource couldn't be resolved");
+            break;
+        case QMediaPlayer::FormatError:
+            mErrorString = tr("Unsupported media format");
+            break;
+        case QMediaPlayer::ServiceMissingError:
+            mErrorString = tr("Media playback service not found");
+            break;
+        default:
+            mErrorString = tr("Media error: ") + QString(errorCode) + " (" + mMediaObject->errorString() + ")";
+    }
+
+    if (!mErrorString.isEmpty() ) {
+        UBApplication::showMessage(mErrorString);
+        qDebug() << mErrorString;
+    }
 }
 
 void UBGraphicsMediaItem::copyItemParameters(UBItem *copy) const
@@ -567,6 +598,19 @@ void UBGraphicsVideoItem::mediaStateChanged(QMediaPlayer::State state)
     Q_UNUSED(state);
 #endif
 
+}
+
+void UBGraphicsVideoItem::activeSceneChanged()
+{
+    // Update the visibility of the placeholder, to prevent it being hidden when switching pages
+    setPlaceholderVisible(!mErrorString.isEmpty());
+
+    UBGraphicsMediaItem::activeSceneChanged();
+}
+
+void UBGraphicsVideoItem::mediaError(QMediaPlayer::Error errorCode)
+{
+    setPlaceholderVisible(errorCode != QMediaPlayer::NoError);
 }
 
 /**

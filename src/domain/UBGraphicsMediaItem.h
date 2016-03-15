@@ -149,6 +149,8 @@ protected:
     QGraphicsPixmapItem *mLinkedImage;
 
     qint64 mInitialPos;
+
+    QString mErrorString;
 };
 
 class UBGraphicsAudioItem: public UBGraphicsMediaItem
@@ -183,6 +185,10 @@ public slots:
     void videoSizeChanged(QSizeF newSize);
     void hasVideoChanged(bool hasVideo);
     void mediaStateChanged(QMediaPlayer::State state);
+    void activeSceneChanged();
+
+protected slots:
+    void mediaError(QMediaPlayer::Error errorCode);
 
 protected:
 
