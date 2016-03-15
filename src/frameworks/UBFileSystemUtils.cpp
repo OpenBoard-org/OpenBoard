@@ -711,11 +711,9 @@ bool UBFileSystemUtils::compressDirInZip(const QDir& pDir, const QString& pDestP
                 qWarning() << "Compression of file" << inFile.fileName() << " failed. Cause: outFile.close(): " << pOutZipFile->getZipError();
 
                 inFile.close();
-                pOutZipFile->close();
                 return false;
             }
 
-            pOutZipFile->close();
             inFile.close();
         }
     }
