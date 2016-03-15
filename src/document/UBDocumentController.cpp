@@ -857,7 +857,7 @@ void UBDocumentController::deleteSelectedItem()
             deleteTreeItem(item, false, false);
         }
 
-        //selectADocumentOnMultipleTrashing();
+        selectADocumentOnMultipleTrashing();
     }
 
     else if (mSelectionType == Document || mSelectionType == Folder) {
