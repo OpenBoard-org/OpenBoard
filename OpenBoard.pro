@@ -9,17 +9,22 @@ CONFIG += debug_and_release \
 
 
 VERSION_MAJ = 1
-VERSION_MIN = 10
-VERSION_TYPE = a # a = alpha, b = beta, rc = release candidate, r = release, other => error
-VERSION_PATCH = 12
+VERSION_MIN = 3
+VERSION_PATCH = 0
+VERSION_TYPE = rc # a = alpha, b = beta, rc = release candidate, r = release, other => error
+VERSION_BUILD = 1
 
-VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_TYPE}.$${VERSION_PATCH}"
-VERSION = $$replace(VERSION, "\\.r", "")
+VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$${VERSION_BUILD}"
+
+equals(VERSION_TYPE, r) {
+    VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}"
+}
+
 
 LONG_VERSION = "$${VERSION}.$${SVN_VERSION}"
 macx:OSX_VERSION = "$${VERSION} (r$${SVN_VERSION})"
 
-VERSION_RC = $$VERSION_MAJ,$$VERSION_MIN,$$VERSION_TYPE,$$VERSION_PATCH
+VERSION_RC = $$VERSION_MAJ,$$VERSION_MIN,$$VERSION_PATCH,$$VERSION_TYPE,$$VERSION_BUILD
 VERSION_RC = $$replace(VERSION_RC, "a", "160") # 0xA0
 VERSION_RC = $$replace(VERSION_RC, "b", "176") # 0xB0
 VERSION_RC = $$replace(VERSION_RC, "rc", "192" ) # 0xC0
