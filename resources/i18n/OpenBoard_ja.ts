@@ -1132,11 +1132,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Remove mutliple documents</source>
+        <source>Are you sure you want to remove all selected documents?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to remove all selected documents?</source>
+        <source>Remove multiple documents</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1274,6 +1274,18 @@
         <source>Export to OpenBoard Format</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBExportFullPDF</name>
@@ -1292,6 +1304,18 @@
     <message>
         <source>Export to PDF</source>
         <translation>PDFへエクスポート</translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1491,6 +1515,25 @@
     <message>
         <source>Go to Content Source</source>
         <translation>コンテンツのソースへ移動 </translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsMediaItem</name>
+    <message>
+        <source>Media resource couldn&apos;t be resolved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsupported media format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Media playback service not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Media error: </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

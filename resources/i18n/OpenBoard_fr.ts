@@ -1143,11 +1143,15 @@
     </message>
     <message>
         <source>Remove mutliple documents</source>
-        <translation>Supprimer plusieurs documents</translation>
+        <translation type="vanished">Supprimer plusieurs documents</translation>
     </message>
     <message>
         <source>Are you sure you want to remove all selected documents?</source>
         <translation>Voulez-vous vraiment supprimer tous les documents sélectionnés?</translation>
+    </message>
+    <message>
+        <source>Remove multiple documents</source>
+        <translation>Supprimer plusieurs documents</translation>
     </message>
 </context>
 <context>
@@ -1286,6 +1290,18 @@
         <source>Export to OpenBoard Format</source>
         <translation>Exporter au format OpenBoard</translation>
     </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation>Impossible d&apos;exporter: pas de droits d&apos;écriture dans le répertoire</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation>Echec de l&apos;export</translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation>Impossible d&apos;exporter dans le dossier sélectionné. Vous n&apos;avez pas les permissions nécessaires pour sauvegarder le fichier.</translation>
+    </message>
 </context>
 <context>
     <name>UBExportFullPDF</name>
@@ -1304,6 +1320,18 @@
     <message>
         <source>Export successful.</source>
         <translation>Export terminé.</translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation>Impossible d&apos;exporter: pas de droits d&apos;écriture dans le répertoire</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation>Echec de l&apos;export</translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation>Impossible d&apos;exporter dans le dossier sélectionné. Vous n&apos;avez pas les permissions nécessaires pour sauvegarder le fichier.</translation>
     </message>
 </context>
 <context>
@@ -1506,6 +1534,25 @@
     <message>
         <source>Go to Content Source</source>
         <translation>Aller à la source du contenu</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsMediaItem</name>
+    <message>
+        <source>Media resource couldn&apos;t be resolved</source>
+        <translation>Ressource introuvable</translation>
+    </message>
+    <message>
+        <source>Unsupported media format</source>
+        <translation>Format multimédia non supporté</translation>
+    </message>
+    <message>
+        <source>Media playback service not found</source>
+        <translation>Service multimédia indisponible</translation>
+    </message>
+    <message>
+        <source>Media error: </source>
+        <translation>Erreur multimédia :</translation>
     </message>
 </context>
 <context>
