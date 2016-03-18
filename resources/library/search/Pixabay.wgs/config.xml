@@ -7,7 +7,7 @@
         height="500" 
 		ub:resizable="true">   
 		     
-  		<name>Choisir</name>
+  		<name>Pixabay search</name>
 		<author>Craig Watson</author>
 		<description>Pixabay image search</description> 
 

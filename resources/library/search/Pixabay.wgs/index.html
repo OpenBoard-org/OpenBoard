@@ -5,263 +5,260 @@
         <title>Pixabay Image Search</title>
         <link rel="stylesheet" type="text/css" href="css/basic.css"/>
         <script type="text/javascript" src="scripts/jquery-1.6.2.min.js"></script>
-        <script type="text/javascript">
-            var API_KEY = '2217022-41b455b44dccd972675602446';
+    </head>
+
+    <body>
+    </body>
+
+    <script type="text/javascript">
+        /* 
+           This script makes use of the Pixabay image search API, documented here:
+           https://pixabay.com/api/docs/
+        */
+
+        var API_KEY = '2217022-41b455b44dccd972675602446'; // TODO: move this to C++
+
+
+        // Number of results per page
+        var limit = 10; 
+
+        // Maximum number of pages to display
+        var maxPages = 10;
+
+        // Minimum size of pictures to search for
+        var minHeight = 150;
+        var minWidth = 150;
+
+        // Image type to retrieve. Can be "photo", "illustration", "vector" or "all".
+        var imageType = "all"
+
+        // Language code to search in
+        var searchLanguage = "en"
+        
 
 
 
-            var category = "image";
-            var thumbnails = true;
-            var minHeight = 150;
-            var minWidth = 150;
+        // ---------------------
+        // Globals
+        var currentIndex = 0;
+        var currentTerm = "";
+        // ---------------------
+
+        $(document).ready(loadPage)
+
+        function loadPage() {
+            //variables
+            var mode = false; //search or view mode
+            var hide = false; //hide or no main panel
+
+            //basic containers and elements    
             
-            var currentIndex = 0;
-            var currentTerm = "";
-            var limit = 10;
-            var filtersDisplayed = false; //display or hide filters
+            var search = $("<div id='search' class='search'>").appendTo("body");
 
-            function runSearch(term, index) {
-                currentTerm = term;
-                currentIndex = index;
-                var start = index * limit;
-                var url = "https://pixabay.com/api/?key="+API_KEY+"&q="+escape(term)+"&per_page="+limit+"&page="+start+"&safesearch=true";
-                $.ajax({
-                    url: url,
-                    success: searchComplete,
-                    error: searchFail,
-                    dataType: "json"
-                });
-            }
+            var subSearchInput = $("<div id='subSearchInput' class='subSearch'>").appendTo(search);
+            var subSearchFilter = $("<div id='subSearchFilter' class='subSearch'>").appendTo(search);
 
-            function searchComplete(json) {
-                // Grab our content div, clear it.
-                var totalResults = json.totalResults;
-                var contentDiv = $('#searchResult').empty();
-                // Loop through our results, printing them to the page.
-                var results = json.hits;
-                for (var i = 0; i < results.length; i++) {
-                    // For each result write it's title and image to the screen
-                    var result = results[i];
-                    var imgContainer = $("<div class='imgContainer' draggable='true'>");
-                    //var title = document.createElement('div');
-                    var iUrl = $("<input type='hidden'/>");
-                    var iContent = $("<input type='hidden'/>");
-                    var iHeight = $("<input type='hidden'/>");
-                    var iWidth = $("<input type='hidden'/>");
-                    var iThumbnailUrl = $("<input type='hidden'/>");
+            var searchInput = $("<input id='searchInput' class='searchInput' type='text'/>").appendTo(subSearchInput);
+            var searchButton = $("<div id='searchButton' class='searchButton'>").appendTo(subSearchInput);
 
-                    var newImg = document.createElement('img');
+            var searchResult = $("<div id='searchResult'>").appendTo("body");
 
-                    if (thumbnails) {
-                        newImg.src = result.previewURL;
-                    } else {
-                        newImg.src = "./images/thumbnail_icon.png";
-                    }
-                    var imgWidth = (result.tbWidth > minWidth)?result.tbWidth:minWidth;
-                    var imgHeight = (result.tbHeight > minHeight)?result.tbHeight:minHeight;
-                    imgContainer.width(imgWidth).height(imgHeight);
-                    imgContainer.append($(newImg));
-                    iUrl.attr("value", result.webformatURL);
-                    iContent.attr("value", result.type);
-                    iHeight.attr("value", result.webformatHeight);
-                    iWidth.attr("value", result.webformatWidth);
-                    //iTitle.attr("value",result.title);
+            var disc_nav_cont = $("<div id='disc_nav_cont' class='disc_nav_cont'>").appendTo("body");    
+            var disclaimer = $("<div id='disclaimer' class='disclaimer'>Pixabay.com image search<div>").appendTo(disc_nav_cont);
 
-                    console.log(result.previewURL);
-
-                    iThumbnailUrl.attr("value", result.previewURL);
-                    //imgContainer.append($(title));  
-                    imgContainer.append(iUrl);
-                    imgContainer.append(iContent);
-                    imgContainer.append(iHeight);
-                    imgContainer.append(iWidth);
-                    imgContainer.append(iThumbnailUrl);
-
-                    // Put our title + image in the content
-                    imgContainer.appendTo(contentDiv);
-
+                        
+            searchButton.click(function(){
+                if(!hide){
+                    runSearch(searchInput.val(), 0);
                 }
-                // Now add links to additional pages of search results.
-                addPaginationLinks(totalResults);
-            }
-
-
-
-            function addPaginationLinks(totalResults) {
-                var curPage = currentIndex; // check what page the app is on
-                var pagesDiv = $("<div id='resultFooter' class='resultFooter'>");
-                for (var i = 0; i < 8; i++) {
-                    if (i * limit < totalResults) {
-                   
-                        var link = $("<a class='pager_button'></a>").attr('href', 'javascript:gotoPage('+i+');').html(i+1).appendTo(pagesDiv);
-                        if (curPage == i) {
-                            link.addClass('active');
-                        }
-                    }
-                }
-
-                $("#disc_nav_cont #resultFooter").remove();
-                pagesDiv.insertBefore($('#disclaimer'));
-                
-                $(".imgContainer").each(function(){
-                    this.addEventListener("dragstart", imageDragging, false);
-                })
-                
-                $(".imgContainer").each(function(){
-                    this.addEventListener("dragenter", imageDragenter, false);
-                })
-                
-                $(".imgContainer").each(function(){
-                    this.addEventListener("dragleave", imageDragleave, false);
-                })
-                
-                $(".imgContainer").each(function(){
-                    this.addEventListener("dragover", imageDragover, false);
-                })
-            }
-
-            function searchFail(jqXHR, textStatus, errorThrown) {
-                alert('Couldn\'t connect to Pixabay: ' + textStatus + ' ' + errorThrown);
-            }
-
-             function imageDragging(e){
-                e.dataTransfer.setData("text/plain",$(this).find("input:hidden").eq(0).val());
-                // alert($(this).find("input:hidden").eq(0).val());
-            }
-            
-            function imageDragleave(e){
-                return false;
-            }
-            
-            function imageDragover(e){
-                return false;
-            }
-            
-            function imageDragenter(e){
-                return false;
-            }
-            
-            $(document).ready(function(){
-
-                //variables
-                var mode = false; //search or view mode
-                var hide = false; //hide or no main panel
-    
-                //basic containers and elements    
-                
-                var search = $("<div id='search' class='search'>").appendTo("body");
-                var disc_nav_cont = $("<div id='disc_nav_cont' class='disc_nav_cont'>").appendTo("body");    
-                var disclaimer = $("<div id='disclaimer' class='disclaimer'>Recherche d'images sur Pixabay<div>").appendTo(disc_nav_cont);
-				    
-                var togglePages = $("<div id='togglePages' class='togglePages'>").appendTo(search);
-                var toggleIcon = $("<div id='toggleIcon' class='toggleIcon'>").appendTo(togglePages);
-    
-                var subSearchInput = $("<div id='subSearchInput' class='subSearch'>").appendTo(search);
-                var subSearchFilter = $("<div id='subSearchFilter' class='subSearch'>").appendTo(search);
-    
-                var searchInput = $("<input id='searchInput' class='searchInput' type='text'/>").appendTo(subSearchInput);
-                var searchButton = $("<div id='searchButton' class='searchButton'>").appendTo(subSearchInput);
-                // var toggleFilters = $("<div id='toggleFilters' class='toggleFilters'>").appendTo(subSearchInput);
-    
-                //adding filters to the wgt
-                /*
-                var selectFilter = $("<select id='sizeFilter' class='filterSelect'>")
-                .append($("<option value='0'>Any</option>"))
-                .append($("<option value='1'>Small</option>"))
-                .append($("<option value='2'>Medium</option>"))
-                .append($("<option value='3'>Large</option>"))
-                .append($("<option value='4'>Extra large</option>"));
-                $("<div class='filterContainer'>").append("<span>Size:</span>").append(selectFilter).appendTo(subSearchFilter);
-                */
-                
-                //mouse click actions 
-                /*
-                toggleFilters.click(function(){
-                    if(filtersDisplayed){
-                        subSearchFilter.hide();
-                        toggleFilters.css("background-image","url(images/down.png)");
-                        filtersDisplayed = false;
-                    } else {
-                        subSearchFilter.show();
-                        toggleFilters.css("background-image","url(images/up.png)");
-                        filtersDisplayed = true;
-                    }
-                });
-                 */
-
-                /*togglePages.click(function(event){
-                    if(mode){
-                        hide = false;
-                        $("#search, #disclaimer").slideDown('slow', function(){
-                            toggleIcon.css("background-image","url(images/trgUp.png)");
-                            togglePages.appendTo("#search").css("top","").css("bottom","-14px");                            
-                        });
-                        mode = false;
-                    } else {
-                        hide = true;
-                        $("#search, #disclaimer").slideUp('slow', function(){
-                            toggleIcon.css("background-image","url(images/trgDown.png)");
-                            togglePages.appendTo("body").css("top","0");                            
-                        });
-                        mode = true;
-                    }
-                });*/
-                
-                searchButton.click(function(){
-                    if(!hide){
-                        runSearch(searchInput.val(), 0);
-                        //togglePages.trigger("click");
-                    }
-                });
-                
-                searchInput.keydown(function(event){
-                    if(!hide){
-                        if((event.keyCode == 0xA)||(event.keyCode == 0xD)){
-                            runSearch(searchInput.val(), 0);
-                            //togglePages.trigger("click");
-                        }
-                              
-                    }
-                });
-                (
-                $(".imgContainer").live("click",function(){
-                    sankore.sendFileMetadata(createMetaData($(this)));
-                }));
-                
-                /*$(window).resize(function(){
-                    disclaimer.width($("body").width()-20);
-                    search.width($("body").width()-20);
-                    toggleIcon.css("margin-left",(togglePages.width()/2 - 7));
-                })*/
-				
             });
             
-            function gotoPage(i) { 
-                runSearch(currentTerm, i);             
-            } 
+            searchInput.keydown(function(event){
+                if(!hide){
+                    if((event.keyCode == 0xA)||(event.keyCode == 0xD)){
+                        runSearch(searchInput.val(), 0);
+                    }
+                          
+                }
+            });
+            (
+            $(".imgContainer").live("click",function(){
+                sankore.sendFileMetadata(createMetaData($(this)));
+            }));
+            
+        }
 
+        function runSearch(term, index) {
+            currentTerm = term;
+            currentIndex = index;
+            var page = index+1; // Page numbers start at 1 on Pixabay
+            var url = "https://pixabay.com/api/?key="+API_KEY
+                        +"&q="+escape(term)
+                        +"&per_page="+limit
+                        +"&page="+page
+                        +"&min_width="+minWidth
+                        +"&minHeight="+minHeight
+                        +"&image_type="+imageType
+                        +"&lang="+searchLanguage
+                        +"&safesearch=true";
 
- 
-            function createMetaData(parent){
-                var meta = "";
-                //alert($(this).find("input:hidden").eq(0).val());
-                meta = "<metadata><data><key>Type</key><value>Image</value></data><data><key>Url</key><value>" + 
-                    parent.find("input:hidden").eq(0).val() + 
-                    "</value></data><data><key>Content</key><value>" + 
-                    parent.find("input:hidden").eq(1).val() +
-                    "</value></data><data><key>Height</key><value>" + 
-                    parent.find("input:hidden").eq(2).val() +
-                    "</value></data><data><key>Width</key><value>" +
-                    parent.find("input:hidden").eq(3).val() +
-                    "</value></data><data><key>thumbnailUrl</key><value>" +
-                    parent.find("input:hidden").eq(4).val() +
-                    "</value></data></metadata>";
-                return meta;
+            //console.log(url);
+
+            $.ajax({
+                url: url,
+                success: searchComplete,
+                error: searchFail,
+                dataType: "json"
+            });
+        }
+
+        function searchComplete(json) {
+            // Grab our content div, clear it.
+            var totalResults = json.totalHits;
+            var contentDiv = $('#searchResult').empty();
+            // Loop through our results, printing them to the page.
+            var results = json.hits;
+
+            //TODO: display a message on page when there are zero results. Would require locales, ideally
+
+            for (var i = 0; i < results.length; i++) {
+                var result = results[i];
+
+                /* 
+                   Images are displayed in an `imgContainer` element. It contains
+                   the image itself (`newImg`) but also some hidden fields containing
+                   metadata that is sent to OpenBoard if the user clicks the image
+                */
+
+                // Image element
+                var imgContainer = $("<div class='imgContainer' draggable='true'>");
+                var newImg = document.createElement('img');
+
+                newImg.src = result.previewURL;
+
+                var imgWidth = (result.tbWidth > minWidth)?result.tbWidth:minWidth;
+                var imgHeight = (result.tbHeight > minHeight)?result.tbHeight:minHeight;
+                imgContainer.width(imgWidth).height(imgHeight);
+                imgContainer.append($(newImg));
+
+                // Metadata to send to OpenBoard
+                var iUrl = $("<input type='hidden'/>");
+                var iContent = $("<input type='hidden'/>");
+                var iHeight = $("<input type='hidden'/>");
+                var iWidth = $("<input type='hidden'/>");
+                var iThumbnailUrl = $("<input type='hidden'/>");
+                var iTitle = $("<input type='hidden'/>");
+
+                iUrl.attr("value", result.webformatURL);
+                iContent.attr("value", result.type);
+                iHeight.attr("value", result.webformatHeight);
+                iWidth.attr("value", result.webformatWidth);
+                iThumbnailUrl.attr("value", result.previewURL);
+                iTitle.attr("value", getImageTitle(result));
+
+                imgContainer.append(iUrl);
+                imgContainer.append(iContent);
+                imgContainer.append(iHeight);
+                imgContainer.append(iWidth);
+                imgContainer.append(iThumbnailUrl);
+                imgContainer.append(iTitle);
+
+                // Add the image to the page
+                imgContainer.appendTo(contentDiv);
+
             }
-        </script>
+            // Now add links to additional pages of search results.
+            addPaginationLinks(totalResults);
+        }
 
-    </head>
-    <body style="font-family: Arial;border: 0 none;">
-        <div id="searchResult"></div>
-    </body>
+
+
+        function addPaginationLinks(totalResults) {
+            var curPage = currentIndex; 
+            var pagesDiv = $("<div id='resultFooter' class='resultFooter'>");
+
+            var highestPageNumber = maxPages;
+            if (totalResults/limit < maxPages)
+                highestPageNumber = totalResults/limit;
+
+            for (var i = 0; i < highestPageNumber; i++) {
+                var link = $("<a class='pager_button'></a>").attr('href', 'javascript:gotoPage('+i+');').html(i+1).appendTo(pagesDiv);
+                if (curPage == i) 
+                    link.addClass('active');
+            }
+
+            $("#disc_nav_cont #resultFooter").remove();
+            pagesDiv.insertBefore($('#disclaimer'));
+            
+            $(".imgContainer").each(function(){
+                this.addEventListener("dragstart", imageDragging, false);
+            })
+            
+            $(".imgContainer").each(function(){
+                this.addEventListener("dragenter", imageDragenter, false);
+            })
+            
+            $(".imgContainer").each(function(){
+                this.addEventListener("dragleave", imageDragleave, false);
+            })
+            
+            $(".imgContainer").each(function(){
+                this.addEventListener("dragover", imageDragover, false);
+            })
+        }
+
+        function searchFail(jqXHR, textStatus, errorThrown) {
+            alert('Couldn\'t connect to Pixabay: ' + textStatus + ' ' + errorThrown);
+        }
+
+         function imageDragging(e){
+            e.dataTransfer.setData("text/plain",$(this).find("input:hidden").eq(0).val());
+        }
+        
+        function imageDragleave(e){
+            return false;
+        }
+        
+        function imageDragover(e){
+            return false;
+        }
+        
+        function imageDragenter(e){
+            return false;
+        }
+       
+        function gotoPage(i) { 
+            runSearch(currentTerm, i);             
+        } 
+
+        function createMetaData(parent){
+            var meta = "";
+            //alert($(this).find("input:hidden").eq(0).val());
+            meta = "<metadata><data><key>Type</key><value>Image</value></data><data><key>Url</key><value>" + 
+                parent.find("input:hidden").eq(0).val() + 
+                "</value></data><data><key>Content</key><value>" + 
+                parent.find("input:hidden").eq(1).val() +
+                "</value></data><data><key>Height</key><value>" + 
+                parent.find("input:hidden").eq(2).val() +
+                "</value></data><data><key>Width</key><value>" +
+                parent.find("input:hidden").eq(3).val() +
+                "</value></data><data><key>thumbnailUrl</key><value>" +
+                parent.find("input:hidden").eq(4).val() +
+                "</value></data><data><key>Title</key><value>" +
+                parent.find("input:hidden").eq(5).val() +
+                "</value></data></metadata>";
+            return meta;
+        }
+        
+        function getImageTitle(image) {
+            // Pixabay images don't have a title, but we can fetch the first tag and use that as a title.
+
+            var firstTag = image.tags.split(",")[0]
+            //console.log(firstTag);
+            return firstTag;
+        }
+
+
+    </script>
+
 </html>
