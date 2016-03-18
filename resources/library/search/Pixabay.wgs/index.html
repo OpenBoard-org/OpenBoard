@@ -30,12 +30,14 @@
         var minWidth = 150;
 
         // Image type to retrieve. Can be "photo", "illustration", "vector" or "all".
-        var imageType = "all"
+        var imageType = "all";
 
         // Language code to search in
-        var searchLanguage = "en"
+        var searchLanguage = "en";
         
-
+        // Fetch 960px images instead of the default 640px. However the API doesn't
+        // provide size information in this case, so it is disabled by default.
+        var fetchMediumResImages = false;
 
 
         // ---------------------
@@ -46,8 +48,9 @@
 
         $(document).ready(loadPage)
 
+        /* Initialize the page layout */
         function loadPage() {
-            //variables
+
             var mode = false; //search or view mode
             var hide = false; //hide or no main panel
 
@@ -136,8 +139,8 @@
 
                 newImg.src = result.previewURL;
 
-                var imgWidth = (result.tbWidth > minWidth)?result.tbWidth:minWidth;
-                var imgHeight = (result.tbHeight > minHeight)?result.tbHeight:minHeight;
+                var imgWidth = (result.previewWidth > minWidth)?result.previewWidth:minWidth;
+                var imgHeight = (result.previewHeight > minHeight)?result.previewHeight:minHeight;
                 imgContainer.width(imgWidth).height(imgHeight);
                 imgContainer.append($(newImg));
 
@@ -149,12 +152,17 @@
                 var iThumbnailUrl = $("<input type='hidden'/>");
                 var iTitle = $("<input type='hidden'/>");
 
-                iUrl.attr("value", result.webformatURL);
+                var imageURL = result.webformatURL;
+                if (fetchMediumResImages)
+                    imageURL = getMediumResURL(result);
+
+                iUrl.attr("value", imageURL);
                 iContent.attr("value", result.type);
                 iHeight.attr("value", result.webformatHeight);
                 iWidth.attr("value", result.webformatWidth);
                 iThumbnailUrl.attr("value", result.previewURL);
                 iTitle.attr("value", getImageTitle(result));
+                
 
                 imgContainer.append(iUrl);
                 imgContainer.append(iContent);
@@ -258,6 +266,16 @@
             return firstTag;
         }
 
+        function getMediumResURL(image) {
+            // Pixabay automatically returns a 640px "webformat" picture; we can't request a larger one
+            // in the search request, but we can manually fetch one (up to 960px)
+
+            var url = image.webformatURL;
+
+            medResURL = url.replace("_640.", "_960.");
+
+            return medResURL;
+        }
 
     </script>
 
