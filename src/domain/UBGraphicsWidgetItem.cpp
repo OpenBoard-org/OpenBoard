@@ -855,7 +855,7 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
 
         QDomNodeList propertiesDomList = widgetElement.elementsByTagName("preference");
 
-        for (uint i = 0; i < propertiesDomList.length(); i++) {
+        for (int i = 0; i < propertiesDomList.length(); i++) {
             QDomElement preferenceElement = propertiesDomList.at(i).toElement();
             QString prefName = preferenceElement.attribute("name", "");
 

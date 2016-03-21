@@ -92,7 +92,7 @@ void UBScreenMirror::grabPixmap()
 
         mRect.setTopLeft(topLeft);
         mRect.setBottomRight(bottomRight);
-        mLastPixmap = QPixmap::grabWidget(mSourceWidget);
+        mLastPixmap = mSourceWidget->grab();
     }
     else{
         // WHY HERE?
@@ -103,7 +103,8 @@ void UBScreenMirror::grabPixmap()
         mLastPixmap = screen->grabWindow(desktop->effectiveWinId(), mRect.x(), mRect.y(), mRect.width(), mRect.height());
     }
 
-    mLastPixmap = mLastPixmap.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    if (!mLastPixmap.isNull())
+        mLastPixmap = mLastPixmap.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
 
