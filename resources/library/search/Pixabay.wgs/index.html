@@ -8,6 +8,7 @@
     </head>
 
     <body>
+    <!--<p id="lang"></p>-->
     </body>
 
     <script type="text/javascript">
@@ -32,24 +33,35 @@
         // Image type to retrieve. Can be "photo", "illustration", "vector" or "all".
         var imageType = "all";
 
-        // Language code to search in
+        // Default language to search in, if the application can't return a suitable one
         var searchLanguage = "en";
         
         // Fetch 960px images instead of the default 640px. However the API doesn't
         // provide size information in this case, so it is disabled by default.
         var fetchMediumResImages = false;
 
-
         // ---------------------
         // Globals
+        // ---------------------
         var currentIndex = 0;
         var currentTerm = "";
+        
+        // Pixabay's supported search languages
+        var availableLanguages = ['cs', 'da', 'de', 'en', 'es', 'fr', 'id', 'it', 'hu', 'nl', 'no', 
+            'pl', 'pt', 'ro', 'sk', 'fi', 'sv', 'tr', 'vi', 'th', 'bg', 'ru', 'el', 'ja', 'ko', 'zh'];
+
         // ---------------------
 
         $(document).ready(loadPage)
 
         /* Initialize the page layout */
         function loadPage() {
+
+            // Get OpenBoard's current language
+            var appLanguage = window.sankore ? sankore.locale().substr(0,2) : searchLanguage;
+            
+            if (availableLanguages.indexOf(appLanguage) > -1)
+                searchLanguage = appLanguage
 
             var mode = false; //search or view mode
             var hide = false; //hide or no main panel
@@ -106,6 +118,7 @@
                         +"&safesearch=true";
 
             //console.log(url);
+            //document.getElementById("lang").innerHTML = "Language: " + searchLanguage;
 
             $.ajax({
                 url: url,
