@@ -2486,7 +2486,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation>키보드 버튼 크기:</translation>
+        <translation type="vanished">키보드 버튼 크기:</translation>
     </message>
     <message>
         <source>Toolbar</source>
@@ -2594,6 +2594,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

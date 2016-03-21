@@ -130,6 +130,8 @@ void UBPreferencesController::wire()
 
 
     connect(mPreferencesUI->useSystemOSKCheckBox, SIGNAL(clicked(bool)), settings->useSystemOnScreenKeyboard, SLOT(setBool(bool)));
+    connect(mPreferencesUI->useSystemOSKCheckBox, SIGNAL(clicked(bool)), this, SLOT(systemOSKCheckBoxToggled(bool)));
+
     connect(mPreferencesUI->keyboardPaletteKeyButtonSize, SIGNAL(currentIndexChanged(const QString &)), settings->boardKeyboardPaletteKeyBtnSize, SLOT(setString(const QString &)));
     connect(mPreferencesUI->startModeComboBox, SIGNAL(currentIndexChanged(int)), settings->appStartMode, SLOT(setInt(int)));
 
@@ -201,6 +203,7 @@ void UBPreferencesController::init()
         }
 
     mPreferencesUI->useSystemOSKCheckBox->setChecked(settings->useSystemOnScreenKeyboard->get().toBool());
+    this->systemOSKCheckBoxToggled(mPreferencesUI->useSystemOSKCheckBox->isChecked());
 
     mPreferencesUI->startModeComboBox->setCurrentIndex(settings->appStartMode->get().toInt());
 
@@ -449,6 +452,12 @@ void UBPreferencesController::toolbarOrientationHorizontal(bool checked)
 {
     UBSettings* settings = UBSettings::settings();
     settings->appToolBarOrientationVertical->set(!checked);
+}
+
+void UBPreferencesController::systemOSKCheckBoxToggled(bool checked)
+{
+    mPreferencesUI->keyboardPaletteKeyButtonSize->setVisible(!checked);
+    mPreferencesUI->keyboardPaletteKeyButtonSize_Label->setVisible(!checked);
 }
 
 UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor>& lightBackgroundColors,

@@ -2405,10 +2405,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Keyboard button size:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Positioned at the Top (recommended for tablets)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2526,6 +2522,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

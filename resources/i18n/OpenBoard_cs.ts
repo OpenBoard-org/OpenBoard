@@ -2516,7 +2516,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation>Velikost tlačítka klávesnice:</translation>
+        <translation type="vanished">Velikost tlačítka klávesnice:</translation>
     </message>
     <message>
         <source>Stylus Palette</source>
@@ -2596,6 +2596,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

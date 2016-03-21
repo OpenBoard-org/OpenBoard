@@ -2483,7 +2483,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation>Taille des touches du clavier virtuel:</translation>
+        <translation type="vanished">Taille des touches du clavier virtuel:</translation>
     </message>
     <message>
         <source>Positioned at the Top (recommended for tablets)</source>
@@ -2604,6 +2604,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Use system keyboard (recommended)</source>
         <translation>Utiliser le clavier virtuel système (recommandé)</translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
+        <translation>Taille des touches du clavier virtuel integré :</translation>
     </message>
 </context>
 <context>
