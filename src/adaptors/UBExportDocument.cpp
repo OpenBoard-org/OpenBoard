@@ -56,46 +56,12 @@ UBExportDocument::~UBExportDocument()
 
 void UBExportDocument::persist(UBDocumentProxy* pDocumentProxy)
 {
-    if (!pDocumentProxy)
-        return;
-
-    QString filename = askForFileName(pDocumentProxy, tr("Export as UBZ File"));
-
-    if (filename.length() > 0)
-    {
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-        if (mIsVerbose)
-            UBApplication::showMessage(tr("Exporting document..."));
-
-        bool success = persistsDocument(pDocumentProxy, filename);
-
-        if (mIsVerbose && success)
-            UBApplication::showMessage(tr("Export successful."));
-
-        QApplication::restoreOverrideCursor();
-    }
+    persistLocally(pDocumentProxy, tr("Export as UBZ File"));
 }
 
 
-bool UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, QString filename)
+bool UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, const QString &filename)
 {
-    QFileInfo info(filename);
-    info.setFile(info.absolutePath());
-
-    if (!info.isWritable()) {
-        UBApplication::showMessage(tr("Export failed: location not writable"));
-
-        // The message is a bit discreet: also show a pop-up
-        QMessageBox errorBox;
-        errorBox.setWindowTitle(tr("Export failed"));
-        errorBox.setText(tr("Unable to export to the selected location. You do not have the permissions necessary to save the file."));
-        errorBox.setIcon(QMessageBox::Critical);
-        errorBox.exec();
-
-        return false;
-    }
-
     QuaZip zip(filename);
     zip.setFileNameCodec("UTF-8");
     if(!zip.open(QuaZip::mdCreate))

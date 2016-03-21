@@ -63,6 +63,8 @@ UBExportFullPDF::UBExportFullPDF(QObject *parent)
     QDesktopWidget* desktop = UBApplication::desktop();
     int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
     mScaleFactor = 72.0f / dpiCommon;
+
+    mSimpleExporter = new UBExportPDF();
 }
 
 
@@ -131,44 +133,12 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
 
 void UBExportFullPDF::persist(UBDocumentProxy* pDocumentProxy)
 {
-    if (!pDocumentProxy)
-        return;
-
-    QString filename = askForFileName(pDocumentProxy, tr("Export as PDF File"));
-
-    if (filename.length() > 0)
-    {
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        if (mIsVerbose)
-            UBApplication::showMessage(tr("Exporting document..."));
-
-        bool success = persistsDocument(pDocumentProxy, filename);
-        if (mIsVerbose && success)
-            UBApplication::showMessage(tr("Export successful."));
-
-        QApplication::restoreOverrideCursor();
-    }
+    persistLocally(pDocumentProxy, tr("Export as PDF File"));
 }
 
 
 bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QString& filename)
 {
-    QFileInfo info(filename);
-    info.setFile(info.absolutePath());
-
-    if (!info.isWritable()) {
-        UBApplication::showMessage(tr("Export failed: location not writable"));
-
-        // The message is a bit discreet: also show a pop-up
-        QMessageBox errorBox;
-        errorBox.setWindowTitle(tr("Export failed"));
-        errorBox.setText(tr("Unable to export to the selected location. You do not have the permissions necessary to save the file."));
-        errorBox.setIcon(QMessageBox::Critical);
-        errorBox.exec();
-
-        return false;
-    }
-
     QFile file(filename);
     if (file.exists()) file.remove();
 
@@ -277,7 +247,7 @@ bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
             qDebug() << "PdfMerger failed to merge documents to " << filename << " - Exception : " << e.what();
 
             // default to raster export
-            UBExportPDF::persistsDocument(pDocumentProxy, filename);
+            mSimpleExporter->persistsDocument(pDocumentProxy, filename);
         }
 
         if (!UBApplication::app()->isVerbose())

@@ -30,6 +30,7 @@
 
 #include <QtCore>
 #include "UBExportAdaptor.h"
+#include "UBExportPDF.h"
 
 class UBDocumentProxy;
 
@@ -53,6 +54,8 @@ class UBExportFullPDF : public UBExportAdaptor
     private:
         float mScaleFactor;
         bool mHasPDFBackgrounds;
+
+        UBExportPDF * mSimpleExporter;
 };
 
 #endif /* UBExportFullPDF_H_ */

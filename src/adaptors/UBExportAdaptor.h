@@ -43,8 +43,9 @@ class UBExportAdaptor : public QObject
         virtual QString exportName() = 0;
         virtual QString exportExtention() { return "";}
         virtual void persist(UBDocumentProxy* pDocument) = 0;
+        virtual bool persistsDocument(UBDocumentProxy* pDocument, const QString& filename);
 
-        virtual void setVerbode(bool verbose)
+        virtual void setVerbose(bool verbose)
         {
             mIsVerbose = verbose;
         }
@@ -57,6 +58,8 @@ class UBExportAdaptor : public QObject
     protected:
         QString askForFileName(UBDocumentProxy* pDocument, const QString& pDialogTitle);
         QString askForDirName(UBDocumentProxy* pDocument, const QString& pDialogTitle);
+
+        virtual void persistLocally(UBDocumentProxy* pDocumentProxy, const QString &pDialogTitle);
 
         void showErrorsList(QList<QString> errorsList);
 
