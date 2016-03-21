@@ -24,7 +24,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="mainTabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="displayTab">
       <attribute name="title">
@@ -2818,7 +2818,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="softwareUpdateGroupBox_2">
+        <widget class="QGroupBox" name="sankoreImporterGroupBox">
          <property name="minimumSize">
           <size>
            <width>0</width>
