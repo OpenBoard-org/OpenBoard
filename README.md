@@ -5,7 +5,7 @@ Supported platforms are Windows (7+), OS X (10.9+) and Linux (tested on Ubuntu 1
 
 # Dependencies
 
-The latest version (1.10) requires Qt 5.5. See below for Linux-specific instructions.
+The latest version (1.3) requires Qt 5.5. See below for Linux-specific instructions.
 
 OpenBoard makes use of several third-party libraries, which are available in the OpenBoard-ThirdParty repository. These should be built first; instructions are provided for each library.
 
