@@ -994,8 +994,13 @@ void UBDocumentController::itemChanged(QTreeWidgetItem * item, int column)
     disconnect(UBPersistenceManager::persistenceManager(), SIGNAL(documentMetadataChanged(UBDocumentProxy*))
             , this, SLOT(updateDocumentInTree(UBDocumentProxy*)));
 
-    if (proxyItem)
-        proxyItem->proxy()->setMetaData(UBSettings::documentName, item->text(column));
+    if (proxyItem) {
+        if (proxyItem->proxy()->metaData(UBSettings::documentName).toString() != item->text(column)) {
+            // The item was renamed, we should persist it immediately
+            proxyItem->proxy()->setMetaData(UBSettings::documentName, item->text(column));
+            UBPersistenceManager::persistenceManager()->persistDocumentMetadata(proxyItem->proxy());
+        }
+    }
     else
     {
         // it is a group
