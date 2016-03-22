@@ -29,6 +29,8 @@ var locales = {
 		'image_type_title': 'Image type',
 		'image_type_faces': 'Faces',
 		'image_type_photo': 'Photo',
+		'image_type_illustration': 'Illustration',
+		'image_type_vector': 'Vector',
 		'image_type_clipart': 'Clipart',
 		'image_type_lineart': 'Lineart',
 		'image_license_title': 'Licence',
@@ -36,7 +38,7 @@ var locales = {
 		'image_license_comm_reuse': 'Commercial reuse',
 		'image_license_modif': 'Modification',
 		'image_license_comm_modif': 'Commercial modification',
-		'disclaimer_title': 'This API is based on Google Image. Please refer to terms of use of this service.'
+		'disclaimer_title': 'Pixabay image search'
 	},
 	'fr': {
 		'def_opts_val_size': 'Toutes',
@@ -68,6 +70,8 @@ var locales = {
 		'image_type_title': 'Types d\'image',
 		'image_type_faces': 'Visages',
 		'image_type_photo': 'Photo',
+		'image_type_illustration': 'Illustration',
+		'image_type_vector': 'Vectoriel',
 		'image_type_clipart': 'Images clipart',
 		'image_type_lineart': 'Dessins au trait',
 		'image_license_title': 'Droits d\'usage',
@@ -75,6 +79,6 @@ var locales = {
 		'image_license_comm_reuse': 'Usage, distribution, commercial',
 		'image_license_modif': 'Usage, distribution, modification',
 		'image_license_comm_modif': 'Usage, distribution, modification, commercial',
-		'disclaimer_title': 'Cette recherche utilise les services de Google Images. Veuillez vous référer aux conditions d\'utilisation de ce service.'
+		'disclaimer_title': 'Recherche d\'images sur Pixabay'
 	}
 };

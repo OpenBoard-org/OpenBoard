@@ -5,6 +5,7 @@
         <title>Pixabay Image Search</title>
         <link rel="stylesheet" type="text/css" href="css/basic.css"/>
         <script type="text/javascript" src="scripts/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="locales/locales.js"></script>
     </head>
 
     <body>
@@ -35,6 +36,9 @@
 
         // Default language to search in, if the application can't return a suitable one
         var searchLanguage = "en";
+
+        // Language for the widget
+        var locale = "en";
         
         // Fetch 960px images instead of the default 640px. However the API doesn't
         // provide size information in this case, so it is disabled by default.
@@ -45,6 +49,7 @@
         // ---------------------
         var currentIndex = 0;
         var currentTerm = "";
+        var filtersDisplayed = false; 
         
         // Pixabay's supported search languages
         var availableLanguages = ['cs', 'da', 'de', 'en', 'es', 'fr', 'id', 'it', 'hu', 'nl', 'no', 
@@ -60,13 +65,18 @@
             // Get OpenBoard's current language
             var appLanguage = window.sankore ? sankore.locale().substr(0,2) : searchLanguage;
             
+            // Set it as search language, if possible
             if (availableLanguages.indexOf(appLanguage) > -1)
-                searchLanguage = appLanguage
+                searchLanguage = appLanguage;
+
+            // And as the widget's language
+            if (locales[searchLanguage] != undefined)
+                locale = locales[searchLanguage];
 
             var mode = false; //search or view mode
             var hide = false; //hide or no main panel
 
-            //basic containers and elements    
+            // basic containers and elements    
             
             var search = $("<div id='search' class='search'>").appendTo("body");
 
@@ -76,11 +86,23 @@
             var searchInput = $("<input id='searchInput' class='searchInput' type='text'/>").appendTo(subSearchInput);
             var searchButton = $("<div id='searchButton' class='searchButton'>").appendTo(subSearchInput);
 
+            var toggleFilters = $("<div id='toggleFilters' class='toggleFilters'>").appendTo(subSearchInput);
+
+            var selectFilter = $("<select id='typeFilter' class='filterSelect'>")
+            .append($("<option value='all'>"+locale.def_opts_val_image+"</option>"))
+            .append($("<option value='photo'>"+locale.image_type_photo+"</option>"))
+            .append($("<option value='illustration'>"+locale.image_type_illustration+"</option>"))
+            .append($("<option value='vector'>"+locale.image_type_vector+"</option>"))
+            $("<div class='filterContainer'>").append("<span>"+locale.image_type_title+":</span><br/>").append(selectFilter).appendTo(subSearchFilter);
+
             var searchResult = $("<div id='searchResult'>").appendTo("body");
 
             var disc_nav_cont = $("<div id='disc_nav_cont' class='disc_nav_cont'>").appendTo("body");    
-            var disclaimer = $("<div id='disclaimer' class='disclaimer'>Pixabay.com image search<div>").appendTo(disc_nav_cont);
+            var disclaimer = $("<div id='disclaimer' class='disclaimer'>"+locale.disclaimer_title+"<div>").appendTo(disc_nav_cont);
 
+            
+
+            // Functions
                         
             searchButton.click(function(){
                 if(!hide){
@@ -93,17 +115,36 @@
                     if((event.keyCode == 0xA)||(event.keyCode == 0xD)){
                         runSearch(searchInput.val(), 0);
                     }
-                          
                 }
             });
-            (
-            $(".imgContainer").live("click",function(){
+            
+            ($(".imgContainer").live("click",function(){
                 sankore.sendFileMetadata(createMetaData($(this)));
             }));
+
+
+            toggleFilters.click(function(){
+                if(filtersDisplayed){
+                    subSearchFilter.hide();
+                    toggleFilters.css("background-image","url(images/down.png)");
+                    filtersDisplayed = false;
+                } else {
+                    subSearchFilter.css("display","inline-block");
+                    toggleFilters.css("background-image","url(images/up.png)");
+                    filtersDisplayed = true;
+                }
+            });
             
         }
 
+        function updateFilters() {
+            var value = $("#typeFilter option:selected").val();
+            imageType = value;
+        }
+
         function runSearch(term, index) {
+            updateFilters();
+
             currentTerm = term;
             currentIndex = index;
             var page = index+1; // Page numbers start at 1 on Pixabay
