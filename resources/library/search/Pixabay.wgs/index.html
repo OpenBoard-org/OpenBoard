@@ -38,7 +38,7 @@
         var searchLanguage = "en";
 
         // Language for the widget
-        var locale = "en";
+        var locale = locales["en"];
         
         // Fetch 960px images instead of the default 640px. However the API doesn't
         // provide size information in this case, so it is disabled by default.
@@ -176,7 +176,8 @@
             // Loop through our results, printing them to the page.
             var results = json.hits;
 
-            //TODO: display a message on page when there are zero results. Would require locales, ideally
+            if (results.length == 0)
+                $("<p>"+locale.no_result+"</p>").appendTo(contentDiv);
 
             for (var i = 0; i < results.length; i++) {
                 var result = results[i];

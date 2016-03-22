@@ -38,7 +38,8 @@ var locales = {
 		'image_license_comm_reuse': 'Commercial reuse',
 		'image_license_modif': 'Modification',
 		'image_license_comm_modif': 'Commercial modification',
-		'disclaimer_title': 'Pixabay image search'
+		'disclaimer_title': 'Pixabay image search',
+        'no_result': 'No result'
 	},
 	'fr': {
 		'def_opts_val_size': 'Toutes',
@@ -79,6 +80,7 @@ var locales = {
 		'image_license_comm_reuse': 'Usage, distribution, commercial',
 		'image_license_modif': 'Usage, distribution, modification',
 		'image_license_comm_modif': 'Usage, distribution, modification, commercial',
-		'disclaimer_title': 'Recherche d\'images sur Pixabay'
+		'disclaimer_title': 'Recherche d\'images sur Pixabay',
+        'no_result': 'Aucun résultat'
 	}
 };
