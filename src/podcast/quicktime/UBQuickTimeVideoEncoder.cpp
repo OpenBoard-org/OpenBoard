@@ -97,15 +97,12 @@ void UBQuickTimeVideoEncoder::compressionFinished()
 
 void UBQuickTimeVideoEncoder::newPixmap(const QImage& pImage, long timestamp)
 {
-        //qDebug() << "New Frame at ms" << timestamp;
+    //qDebug() << "New Frame at ms" << timestamp;
 
-    if(mQuickTimeCompressionSession.isCompressionSessionRunning())
-    {
-        if(mPendingImageFrames.length() > 0)
-        {
-            foreach(ImageFrame frame, mPendingImageFrames)
-            {
-                    encodeFrame(frame.image, frame.timestamp);
+    if(mQuickTimeCompressionSession.isCompressionSessionRunning()) {
+        if(mPendingImageFrames.length() > 0) {
+            foreach(ImageFrame frame, mPendingImageFrames) {
+                encodeFrame(frame.image, frame.timestamp);
             }
 
             mPendingImageFrames.clear();
@@ -115,8 +112,7 @@ void UBQuickTimeVideoEncoder::newPixmap(const QImage& pImage, long timestamp)
 
         UBQuickTimeFile::frameBufferNotEmpty.wakeAll();
     }
-    else
-    {
+    else {
         qDebug() << "queuing frame, compressor not ready";
 
         ImageFrame frame;
@@ -172,9 +168,7 @@ void UBQuickTimeVideoEncoder::encodeFrame(const QImage& pImage, long timestamp)
     videoFrame.buffer = pixelBuffer;
     videoFrame.timestamp = timestamp;
 
-    UBQuickTimeFile::frameQueueMutex.lock();
-    UBQuickTimeFile::frameQueue.enqueue(videoFrame);
-    UBQuickTimeFile::frameQueueMutex.unlock();
+    mQuickTimeCompressionSession.enqueueVideoFrame(videoFrame);
 }
 
 

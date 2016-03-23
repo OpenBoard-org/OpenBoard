@@ -37,14 +37,7 @@
 
 #include "core/memcheck.h"
 
-QQueue<UBQuickTimeFile::VideoFrame> UBQuickTimeFile::frameQueue;
-QMutex UBQuickTimeFile::frameQueueMutex;
 QWaitCondition UBQuickTimeFile::frameBufferNotEmpty;
-
-
-QQueue<CMSampleBufferRef> UBQuickTimeFile::audioQueue;
-QMutex UBQuickTimeFile::audioQueueMutex;
-QMutex UBQuickTimeFile::audioWriterMutex;
 
 UBQuickTimeFile::UBQuickTimeFile(QObject * pParent)
     : QThread(pParent)
@@ -65,13 +58,14 @@ UBQuickTimeFile::UBQuickTimeFile(QObject * pParent)
 
 UBQuickTimeFile::~UBQuickTimeFile()
 {
-    // destruction of mWaveRecorder is handled by endSession()
-
 }
 
 bool UBQuickTimeFile::init(const QString& pVideoFileName, const QString& pProfileData, int pFramesPerSecond
                 , const QSize& pFrameSize, bool pRecordAudio, const QString& audioRecordingDevice)
 {
+    Q_UNUSED(pProfileData);
+    Q_UNUSED(pFramesPerSecond);
+
     mFrameSize = pFrameSize;
     mVideoFileName = pVideoFileName;
     mRecordAudio = pRecordAudio;
@@ -109,8 +103,9 @@ void UBQuickTimeFile::run()
                 !frameQueue.isEmpty() &&
                 [mVideoWriterInput isReadyForMoreMediaData]) 
             {
+                // in this case the last few frames may be dropped if the queue isn't empty...
                     VideoFrame frame = frameQueue.dequeue();
-                    appendVideoFrame(frame.buffer, frame.timestamp);
+                    appendFrameToVideo(frame.buffer, frame.timestamp);
             }
 
             frameQueueMutex.unlock();
@@ -173,7 +168,6 @@ bool UBQuickTimeFile::beginSession()
                                                 [NSNumber numberWithInt:frameWidth], AVVideoWidthKey,
                                                 [NSNumber numberWithInt:frameHeight], AVVideoHeightKey,
                                                 nil];
-
 
     mVideoWriterInput = [[AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo
                                             outputSettings:videoSettings] retain];
@@ -253,7 +247,7 @@ bool UBQuickTimeFile::beginSession()
     [mVideoWriter startSessionAtSourceTime:CMTimeMake(0, mTimeScale)];
 
     mStartTime = CFAbsoluteTimeGetCurrent(); // used for audio timestamp calculation
-
+    mLastFrameTimestamp = CMTimeMake(0, mTimeScale);
 
     return (mVideoWriter != nil) && (mVideoWriterInput != nil) && canStartWriting;
 }
@@ -267,6 +261,8 @@ void UBQuickTimeFile::endSession()
 
 
     [mVideoWriterInput markAsFinished];
+    if (mAudioWriterInput != 0)
+        [mAudioWriterInput markAsFinished];
 
     [mVideoWriter finishWritingWithCompletionHandler:^{
         [mAdaptor release];
@@ -319,32 +315,48 @@ CVPixelBufferRef UBQuickTimeFile::newPixelBuffer()
 {
     CVPixelBufferRef pixelBuffer = 0;
 
-    if(CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, mAdaptor.pixelBufferPool, &pixelBuffer) != kCVReturnSuccess)
-    {
-        setLastErrorMessage("Could not retrieve CV buffer from pool");
+    CVReturn result = CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, mAdaptor.pixelBufferPool, &pixelBuffer);
+
+    if (result != kCVReturnSuccess) {
+        setLastErrorMessage("Could not retrieve CV buffer from pool (error " + QString::number(result) + ")");
         return 0;
     }
 
     return pixelBuffer;
 }
 
+void UBQuickTimeFile::enqueueVideoFrame(VideoFrame frame)
+{
+    frameQueueMutex.lock();
+    frameQueue.enqueue(frame);
+    frameQueueMutex.unlock();
+}
 
 /**
  * \brief Add a frame to the pixel buffer adaptor
  * \param pixelBuffer The CVPixelBufferRef (video frame) to add to the movie
  * \param msTimeStamp Timestamp, in milliseconds, of the frame
  */
-void UBQuickTimeFile::appendVideoFrame(CVPixelBufferRef pixelBuffer, long msTimeStamp)
+void UBQuickTimeFile::appendFrameToVideo(CVPixelBufferRef pixelBuffer, long msTimeStamp)
 {
     //qDebug() << "appending video frame";
     CMTime t = CMTimeMake((msTimeStamp * mTimeScale / 1000.0), mTimeScale);
 
-    bool added = [mAdaptor appendPixelBuffer: pixelBuffer
-                        withPresentationTime: t];
+    // The timestamp must be both valid and larger than the previous frame's timestamp
+    if (CMTIME_IS_VALID(t) && CMTimeCompare(t, mLastFrameTimestamp) == 1) {
 
-    if (!added)
-        setLastErrorMessage(QString("Could not encode frame at time %1").arg(msTimeStamp));
+        bool added = [mAdaptor appendPixelBuffer: pixelBuffer
+                            withPresentationTime: t];
+        if (!added)
+            setLastErrorMessage(QString("Could not encode frame at time %1").arg(msTimeStamp));
 
+        mLastFrameTimestamp = t;
+    }
+
+    else {
+        qDebug() << "Frame dropped; timestamp was smaller or equal to previous frame's timestamp of: "
+                 << mLastFrameTimestamp.value << "/" << mLastFrameTimestamp.timescale;
+    }
 
     CVPixelBufferRelease(pixelBuffer);
 }

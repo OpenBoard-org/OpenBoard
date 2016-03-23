@@ -59,6 +59,14 @@ class UBQuickTimeFile : public QThread
     Q_OBJECT;
 
     public:
+        struct VideoFrame
+        {
+            CVPixelBufferRef buffer;
+            long timestamp;
+        };
+
+        static QWaitCondition frameBufferNotEmpty;
+
         UBQuickTimeFile(QObject * pParent = 0);
         virtual ~UBQuickTimeFile();
 
@@ -69,22 +77,10 @@ class UBQuickTimeFile : public QThread
         void stop();
 
         CVPixelBufferRef newPixelBuffer();
+        void enqueueVideoFrame(VideoFrame frame);
 
         bool isCompressionSessionRunning() { return mCompressionSessionRunning; }
-
         QString lastErrorMessage() const { return mLastErrorMessage; }
-
-        void endSession();
-
-        struct VideoFrame
-        {
-            CVPixelBufferRef buffer;
-            long timestamp;
-        };
-
-        static QQueue<VideoFrame> frameQueue;
-        static QMutex frameQueueMutex;
-        static QWaitCondition frameBufferNotEmpty;
 
     signals:
         void audioLevelChanged(quint8 level);
@@ -98,44 +94,55 @@ class UBQuickTimeFile : public QThread
         void enqueueAudioBuffer(void* pBuffer, long pLength);
 
     private:
+        QString mLastErrorMessage;
 
-        bool beginSession();
-        void setLastErrorMessage(const QString& error);
-
-        void appendVideoFrame(CVPixelBufferRef pixelBuffer, long msTimeStamp);
-        bool appendSampleBuffer(CMSampleBufferRef sampleBuffer);
-        
-        QSize mFrameSize;
+        // Format information
         QString mVideoFileName;
-
-        AssetWriterPTR mVideoWriter;
-
-        AssetWriterInputPTR mVideoWriterInput;
-        AssetWriterInputAdaptorPTR mAdaptor;
-
-        AssetWriterInputPTR mAudioWriterInput;
-
-        QPointer<UBAudioQueueRecorder> mWaveRecorder;
-        CFAbsoluteTime mStartTime;
-
-        CMAudioFormatDescriptionRef mAudioFormatDescription;
-        
+        QSize mFrameSize;
         long mTimeScale;
         bool mRecordAudio;
-        
+        QString mAudioRecordingDeviceName;
+
+        // Video/audio encoders and associated objects
+        AssetWriterPTR mVideoWriter;
+        AssetWriterInputPTR mVideoWriterInput;
+        AssetWriterInputAdaptorPTR mAdaptor;
+        AssetWriterInputPTR mAudioWriterInput;
+
+        // Audio recorder
+        QPointer<UBAudioQueueRecorder> mWaveRecorder;
+        CMAudioFormatDescriptionRef mAudioFormatDescription;
+
+        // Variables used during encoding
+        CFAbsoluteTime mStartTime;
+        CMTime mLastFrameTimestamp;
+
         volatile bool mShouldStopCompression;
         volatile bool mCompressionSessionRunning;
 
-        QString mLastErrorMessage;
-        QString mAudioRecordingDeviceName;
-
+        // Dispatch queues to handle passing data to the A/V encoders
         dispatch_queue_t mVideoDispatchQueue;
         dispatch_queue_t mAudioDispatchQueue;
 
-        static QQueue<CMSampleBufferRef> audioQueue;
-        static QMutex audioQueueMutex;
+        // Queues for frames and audio buffers to be encoded
+        QQueue<VideoFrame> frameQueue;
+        QQueue<CMSampleBufferRef> audioQueue;
 
-        static QMutex audioWriterMutex;
+        QMutex frameQueueMutex;
+        QMutex audioQueueMutex;
+        QMutex audioWriterMutex;
+
+
+        // Private functions
+
+        void setLastErrorMessage(const QString& error);
+
+        bool beginSession();
+        void endSession();
+
+        void appendFrameToVideo(CVPixelBufferRef pixelBuffer, long msTimeStamp);
+        bool appendSampleBuffer(CMSampleBufferRef sampleBuffer);
+
 };
 
 #endif /* UBQUICKTIMEFILE_H_ */
