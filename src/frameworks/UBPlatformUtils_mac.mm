@@ -592,10 +592,9 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
      * screen area minus the menu bar and dock area). So we have to manually resize it to the
      * total screen height, and move it up to the top of the screen (y=0 position). */
 
-    QDesktopWidget * desktop = QApplication::desktop();
-    pWidget->resize(pWidget->width(), desktop->screenGeometry().height());
-    pWidget->move(pWidget->pos().x(), 0);
-
+    QRect currentScreenRect = QApplication::desktop()->screenGeometry(pWidget);
+    pWidget->resize(currentScreenRect.width(), currentScreenRect.height());
+    pWidget->move(currentScreenRect.left(), currentScreenRect.top());
 }
 
 
