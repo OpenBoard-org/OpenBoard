@@ -456,7 +456,8 @@
   </action>
   <action name="actionWebBack">
    <property name="icon">
-    <iconset theme=":images/toolbar/previous"/>
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/toolbar/previous.png</normaloff>:/images/toolbar/previous.png</iconset>
    </property>
    <property name="text">
     <string>Back</string>
@@ -470,7 +471,8 @@
   </action>
   <action name="actionWebForward">
    <property name="icon">
-    <iconset theme=":images/toolbar/next"/>
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/toolbar/next.png</normaloff>:/images/toolbar/next.png</iconset>
    </property>
    <property name="text">
     <string>Forward</string>
