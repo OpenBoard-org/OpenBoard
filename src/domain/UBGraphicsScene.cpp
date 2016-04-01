@@ -23,6 +23,7 @@
  */
 
 
+#include <unistd.h>
 
 
 #include "UBGraphicsScene.h"
@@ -35,6 +36,7 @@
 
 #include "frameworks/UBGeometryUtils.h"
 #include "frameworks/UBPlatformUtils.h"
+#include "frameworks/UBInterpolator.h"
 
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
@@ -430,6 +432,8 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             else {
                 moveTo(scenePos);
                 drawLineTo(scenePos, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
+
+                mCurrentStroke->addPoint(scenePos);
             }
             accepted = true;
         }
@@ -537,7 +541,48 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                 dc->mActiveRuler->DrawLine(position, width);
             }
             else{
-                drawLineTo(position, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
+                bool showDots = false;
+
+                if (showDots) {
+                    UBGraphicsPolygonItem * p = lineToPolygonItem(QLineF(scenePos, scenePos), width, width);
+                    p->setColor(Qt::red);
+                    this->addItem(p);
+                }
+
+                UBInterpolator::InterpolationMethod interpolator = UBInterpolator::NoInterpolation;
+
+                if (currentTool == UBStylusTool::Marker) {
+                    // The marker is already super slow due to the transparency, we can't also do interpolation
+                    interpolator = UBInterpolator::NoInterpolation;
+                }
+
+                else if (UBSettings::settings()->boardInterpolatePenStrokes->get().toBool()) {
+                    interpolator = UBInterpolator::Bezier;
+                }
+
+                QList<QPointF> newPoints = mCurrentStroke->addPoint(scenePos, interpolator);
+                int n = newPoints.length();
+                int i = 1;
+                qreal startWidth = mPreviousWidth;
+                foreach(QPointF point, newPoints) {
+
+                    if (showDots) {
+                        if (point != scenePos) {
+                            UBGraphicsPolygonItem * p = lineToPolygonItem(QLineF(point, point), width, width);
+                            p->setColor(Qt::yellow);
+                            this->addItem(p);
+                        }
+                    }
+
+
+                    // linear interpolation of the end width
+                    qreal endWidth = mPreviousWidth + qreal(i)*(width - mPreviousWidth)/qreal(n);
+                    i++;
+
+                    drawLineTo(point, startWidth, endWidth, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
+                    startWidth = endWidth;
+                }
+                //drawLineTo(scenePos, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
             }
         }
         else if (currentTool == UBStylusTool::Eraser)
@@ -606,6 +651,30 @@ bool UBGraphicsScene::inputDeviceRelease()
             mDrawWithCompass = false;
         }
         else if (mCurrentStroke){
+            /*
+            // -------------------------------------------------------------------------
+            // Replace the stroke by a smoother one
+            // -------------------------------------------------------------------------
+            UBGraphicsStroke* smoothStroke = mCurrentStroke->smoothe();
+
+            foreach(UBGraphicsPolygonItem* poly, mCurrentStroke->polygons()){
+                mPreviousPolygonItems.removeAll(poly);
+                removeItem(poly);
+            }
+            delete mCurrentStroke;
+            mCurrentStroke = smoothStroke;
+
+            moveTo(smoothStroke->points()[0]);
+            for (int i(1); i < smoothStroke->points().size(); ++i) {
+                QPointF currentPoint = smoothStroke->points()[i];
+
+                drawLineTo(currentPoint, dc->currentToolWidth(), dc->currentToolWidth(), false);
+                moveTo(currentPoint);
+            }
+
+            // -------------------------------------------------------------------------
+            */
+
             UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
             // Remove the strokes that were just drawn here and replace them by a stroke item
@@ -771,15 +840,24 @@ void UBGraphicsScene::moveTo(const QPointF &pPoint)
     mArcPolygonItem = 0;
     mDrawWithCompass = false;
 }
-
 void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, bool bLineStyle)
 {
+    drawLineTo(pEndPoint, pWidth, pWidth, bLineStyle);
+
+}
+
+void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &startWidth, const qreal &endWidth, bool bLineStyle)
+{
     if (mPreviousWidth == -1.0)
-        mPreviousWidth = pWidth;
+        mPreviousWidth = startWidth;
+
+    qreal initialWidth = startWidth;
+    if (initialWidth == endWidth)
+        initialWidth = mPreviousWidth;
 
     //    UBGraphicsPolygonItem *polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), pWidth);
 
-    UBGraphicsPolygonItem *polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), mPreviousWidth,pWidth);
+    UBGraphicsPolygonItem *polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), initialWidth, endWidth);
 
     if (!polygonItem->brush().isOpaque())
     {
@@ -822,7 +900,7 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
     if (!bLineStyle)
     {
         mPreviousPoint = pEndPoint;
-        mPreviousWidth = pWidth;
+        mPreviousWidth = endWidth;
     }
 }
 

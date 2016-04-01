@@ -31,6 +31,8 @@
 #include <QtGui>
 
 #include "core/UB.h"
+#include "frameworks/UBInterpolator.h"
+
 
 
 class UBGraphicsPolygonItem;
@@ -55,12 +57,21 @@ class UBGraphicsStroke
 
         void clear();
 
+        QList<QPointF> addPoint(const QPointF& point, UBInterpolator::InterpolationMethod interpolationMethod = UBInterpolator::NoInterpolation);
+
+        UBGraphicsStroke* smoothe();
+
+        const QList<QPointF>& points() { return mAllPoints; }
+
     protected:
         void addPolygon(UBGraphicsPolygonItem* pol);
 
     private:
 
         QList<UBGraphicsPolygonItem*> mPolygons;
+
+        QList<QPointF> mDrawnPoints;
+        QList<QPointF> mAllPoints;
 
 };
 

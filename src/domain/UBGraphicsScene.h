@@ -191,6 +191,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         void moveTo(const QPointF& pPoint);
         void drawLineTo(const QPointF& pEndPoint, const qreal& pWidth, bool bLineStyle);
+        void drawLineTo(const QPointF& pEndPoint, const qreal& pStartWidth, const qreal& endWidth, bool bLineStyle);
         void eraseLineTo(const QPointF& pEndPoint, const qreal& pWidth);
         void drawArcTo(const QPointF& pCenterPoint, qreal pSpanAngle);
 
