@@ -1122,7 +1122,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         {
             mActiveScene->scaleToFitDocumentSize(pixItem, true, UBSettings::objectInControlViewMargin);
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-            pixItem->setSelected(true);
         }
 
         return pixItem;
@@ -1142,7 +1141,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         {
             mActiveScene->scaleToFitDocumentSize(svgItem, true, UBSettings::objectInControlViewMargin);
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-            svgItem->setSelected(true);
         }
 
         return svgItem;
