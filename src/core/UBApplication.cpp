@@ -81,7 +81,7 @@ const QString UBApplication::mimeTypeUniboardPage = QString("application/vnd.mne
 const QString UBApplication::mimeTypeUniboardPageItem =  QString("application/vnd.mnemis-uniboard-page-item");
 const QString UBApplication::mimeTypeUniboardPageThumbnail = QString("application/vnd.mnemis-uniboard-thumbnail");
 
-#ifdef Q_OS_OSX
+#if defined(Q_OS_OSX) || defined(Q_OS_LINUX)
 bool bIsMinimized = false;
 #endif
 
@@ -318,10 +318,10 @@ int UBApplication::exec(const QString& pFileToImport)
 
     connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), applicationController, SLOT(showDesktop(bool)));
     connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), this, SLOT(stopScript()));
-#ifndef Q_OS_OSX
-    connect(mainWindow->actionHideApplication, SIGNAL(triggered()), mainWindow, SLOT(showMinimized()));
-#else
+#if defined(Q_OS_OSX) || defined(Q_OS_LINUX)
     connect(mainWindow->actionHideApplication, SIGNAL(triggered()), this, SLOT(showMinimized()));
+#else
+    connect(mainWindow->actionHideApplication, SIGNAL(triggered()), mainWindow, SLOT(showMinimized()));
 #endif
 
     mPreferencesController = new UBPreferencesController(mainWindow);
@@ -369,8 +369,11 @@ void UBApplication::showMinimized()
 {
 #ifdef Q_OS_OSX
     mainWindow->hide();
-    bIsMinimized = true;
+#elif defined(Q_OS_LINUX)
+    mainWindow->showMinimized();
 #endif
+
+    bIsMinimized = true;
 }
 
 
@@ -580,14 +583,19 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
     if (event->type() == QEvent::ApplicationActivate)
     {
         boardController->controlView()->setMultiselection(false);
+
+        if (bIsMinimized) {
+#if defined(Q_OS_OSX)
+            if (mainWindow->isHidden())
+                mainWindow->show();
+            bIsMinimized = false;
+#elif defined(Q_OS_LINUX)
+            bIsMinimized = false;
+            UBPlatformUtils::showFullScreen(mainWindow);
+#endif
+        }
     }
 
-#ifdef Q_OS_OSX
-    if (bIsMinimized && event->type() == QEvent::ApplicationActivate){
-        if (mainWindow->isHidden()) mainWindow->show();
-        bIsMinimized = false;
-    }
-#endif
     return result;
 }
 
