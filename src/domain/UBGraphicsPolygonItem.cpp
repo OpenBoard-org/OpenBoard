@@ -114,9 +114,6 @@ UBGraphicsPolygonItem::~UBGraphicsPolygonItem()
 
 void UBGraphicsPolygonItem::setStrokesGroup(UBGraphicsStrokesGroup *group)
 {
-    if (mStroke)
-        mStroke->remove(this);
-
     mpGroup = group;
 }
 
