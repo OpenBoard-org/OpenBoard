@@ -76,6 +76,8 @@ class UBGraphicsStroke
         /// All the points (including interpolated) that are used to draw the stroke
         QList<QPointF> mAllPoints;
 
+        QPointF mLastReceivedPoint;
+
 };
 
 #endif /* UBGRAPHICSSTROKE_H_ */

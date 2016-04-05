@@ -71,6 +71,7 @@ QList<QPointF> UBGraphicsStroke::addPoint(const QPointF& point, UBInterpolator::
     int n = mDrawnPoints.size();
 
     if (interpolationMethod == UBInterpolator::NoInterpolation || n == 0) {
+        mLastReceivedPoint = point;
         mDrawnPoints << point;
         mAllPoints << point;
         return QList<QPointF>() << point;
@@ -80,8 +81,7 @@ QList<QPointF> UBGraphicsStroke::addPoint(const QPointF& point, UBInterpolator::
         // This is a bit special, as the curve we are interpolating is not between two drawn points;
         // it is between the midway points of the second-to-last and last point, and last and current point.
         qreal MIN_DISTANCE = 3; // TODO: make this dependant on zoom
-        QPointF lastPoint = mDrawnPoints.last();
-        qreal distance = QLineF(lastPoint, point).length();
+        qreal distance = QLineF(mLastReceivedPoint, point).length();
 
         //qDebug() << "distance: " << distance;
 
@@ -89,7 +89,7 @@ QList<QPointF> UBGraphicsStroke::addPoint(const QPointF& point, UBInterpolator::
         // look smoother (e.g shaking slightly won't affect the curve).
         if (distance < MIN_DISTANCE) {
             // we still keep track of that point to calculate the distance correctly next time around
-            mDrawnPoints << point;
+            mLastReceivedPoint = point;
             return QList<QPointF>();
         }
 
@@ -100,6 +100,7 @@ QList<QPointF> UBGraphicsStroke::addPoint(const QPointF& point, UBInterpolator::
 
             return QList<QPointF>() << ((lastPoint + point)/2.0);
         }
+
 
         QPointF p0 = mDrawnPoints[mDrawnPoints.size() - 2];
         QPointF p1 = mDrawnPoints[mDrawnPoints.size() - 1];
