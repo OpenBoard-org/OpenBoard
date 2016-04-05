@@ -70,19 +70,6 @@ QList<QPointF> UBGraphicsStroke::addPoint(const QPointF& point, UBInterpolator::
 {
     int n = mDrawnPoints.size();
 
-    /*
-    if (n > 0) {
-        qreal MIN_DISTANCE = 3;
-        QPointF lastPoint = mDrawnPoints.last();
-        qreal distance = QLineF(lastPoint, point).length();
-
-        //qDebug() << "distance: " << distance;
-
-        if (distance < MIN_DISTANCE)
-            return QList<QPointF>();
-    }
-    */
-
     if (interpolationMethod == UBInterpolator::NoInterpolation || n == 0) {
         mDrawnPoints << point;
         mAllPoints << point;
@@ -92,14 +79,20 @@ QList<QPointF> UBGraphicsStroke::addPoint(const QPointF& point, UBInterpolator::
     else if (interpolationMethod == UBInterpolator::Bezier) {
         // This is a bit special, as the curve we are interpolating is not between two drawn points;
         // it is between the midway points of the second-to-last and last point, and last and current point.
-        qreal MIN_DISTANCE = 3;
+        qreal MIN_DISTANCE = 3; // TODO: make this dependant on zoom
         QPointF lastPoint = mDrawnPoints.last();
         qreal distance = QLineF(lastPoint, point).length();
 
         //qDebug() << "distance: " << distance;
 
-        if (distance < MIN_DISTANCE)
+        // We don't draw anything below the minimum distance. For performance reasons but also to make the curve
+        // look smoother (e.g shaking slightly won't affect the curve).
+        if (distance < MIN_DISTANCE) {
+            // we still keep track of that point to calculate the distance correctly next time around
+            mDrawnPoints << point;
             return QList<QPointF>();
+        }
+
         if (n == 1) {
             // We start with a straight line to the first midway point
             QPointF lastPoint = mDrawnPoints[0];
@@ -119,7 +112,7 @@ QList<QPointF> UBGraphicsStroke::addPoint(const QPointF& point, UBInterpolator::
 
         bz.setPoints(startPoint, p1, endPoint);
 
-        QList<QPointF> newPoints = bz.getPoints(7);
+        QList<QPointF> newPoints = bz.getPoints(10);
 
         foreach(QPointF p, newPoints) {
             mAllPoints << p;
@@ -127,8 +120,6 @@ QList<QPointF> UBGraphicsStroke::addPoint(const QPointF& point, UBInterpolator::
 
         mDrawnPoints << point;
         return newPoints;
-
-
     }
 
     else {
@@ -149,7 +140,7 @@ QList<QPointF> UBGraphicsStroke::addPoint(const QPointF& point, UBInterpolator::
             sp.setPoints(mDrawnPoints[n-2], mDrawnPoints[n-1], point);
             */
 
-            // todo: better way of avoiding problems with constant x's. in the meantime this'll do.
+            // todo: better way of avoiding problems with equal x's (such as PCA). in the meantime this'll do.
             qreal x0 = mDrawnPoints[n-3].x();
             qreal x1 = mDrawnPoints[n-2].x();
             qreal x2 = mDrawnPoints[n-1].x();

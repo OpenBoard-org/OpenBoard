@@ -45,6 +45,7 @@ class UBGeometryUtils
 
         static QPolygonF lineToPolygon(const QPointF& pStart, const QPointF& pEnd,
                 const qreal& pStartWidth, const qreal& pEndWidth);
+        static QPolygonF curveToPolygon(const QList<QPointF>& points, qreal startWidth, qreal endWidth);
 
         static QPointF pointConstrainedInRect(QPointF point, QRectF rect);
         static QPoint pointConstrainedInRect(QPoint point, QRect rect);

@@ -194,6 +194,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void drawLineTo(const QPointF& pEndPoint, const qreal& pStartWidth, const qreal& endWidth, bool bLineStyle);
         void eraseLineTo(const QPointF& pEndPoint, const qreal& pWidth);
         void drawArcTo(const QPointF& pCenterPoint, qreal pSpanAngle);
+        void drawCurve(const QList<QPointF>& points, qreal startWidth, qreal endWidth);
 
         bool isEmpty() const;
 
@@ -357,6 +358,8 @@ public slots:
         UBGraphicsPolygonItem* lineToPolygonItem(const QLineF &pLine, const qreal &pStartWidth, const qreal &pEndWidth);
 
         UBGraphicsPolygonItem* arcToPolygonItem(const QLineF& pStartRadius, qreal pSpanAngle, qreal pWidth);
+        UBGraphicsPolygonItem* curveToPolygonItem(const QList<QPointF>& points, qreal startWidth, qreal endWidth);
+        void addPolygonItemToCurrentStroke(UBGraphicsPolygonItem* polygonItem);
 
         void initPolygonItem(UBGraphicsPolygonItem*);
 

@@ -537,52 +537,31 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                     position = newPosition;
             }
 
+            if (!mCurrentStroke)
+                mCurrentStroke = new UBGraphicsStroke();
+
             if(dc->mActiveRuler){
                 dc->mActiveRuler->DrawLine(position, width);
             }
             else{
-                bool showDots = false;
-
-                if (showDots) {
-                    UBGraphicsPolygonItem * p = lineToPolygonItem(QLineF(scenePos, scenePos), width, width);
-                    p->setColor(Qt::red);
-                    this->addItem(p);
-                }
-
                 UBInterpolator::InterpolationMethod interpolator = UBInterpolator::NoInterpolation;
 
+                /*
                 if (currentTool == UBStylusTool::Marker) {
                     // The marker is already super slow due to the transparency, we can't also do interpolation
                     interpolator = UBInterpolator::NoInterpolation;
                 }
+                */
 
-                else if (UBSettings::settings()->boardInterpolatePenStrokes->get().toBool()) {
+                if (UBSettings::settings()->boardInterpolatePenStrokes->get().toBool()) {
                     interpolator = UBInterpolator::Bezier;
                 }
 
                 QList<QPointF> newPoints = mCurrentStroke->addPoint(scenePos, interpolator);
-                int n = newPoints.length();
-                int i = 1;
-                qreal startWidth = mPreviousWidth;
-                foreach(QPointF point, newPoints) {
-
-                    if (showDots) {
-                        if (point != scenePos) {
-                            UBGraphicsPolygonItem * p = lineToPolygonItem(QLineF(point, point), width, width);
-                            p->setColor(Qt::yellow);
-                            this->addItem(p);
-                        }
-                    }
-
-
-                    // linear interpolation of the end width
-                    qreal endWidth = mPreviousWidth + qreal(i)*(width - mPreviousWidth)/qreal(n);
-                    i++;
-
-                    drawLineTo(point, startWidth, endWidth, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
-                    startWidth = endWidth;
-                }
-                //drawLineTo(scenePos, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
+                if (newPoints.length() > 1)
+                    drawCurve(newPoints, mPreviousWidth, width);
+                else
+                    drawLineTo(scenePos, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
             }
         }
         else if (currentTool == UBStylusTool::Eraser)
@@ -855,10 +834,36 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &startWid
     if (initialWidth == endWidth)
         initialWidth = mPreviousWidth;
 
-    //    UBGraphicsPolygonItem *polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), pWidth);
+    if (bLineStyle) {
+        QSetIterator<QGraphicsItem*> itItems(mAddedItems);
+
+        while (itItems.hasNext()) {
+            QGraphicsItem* item = itItems.next();
+            removeItem(item);
+        }
+        mAddedItems.clear();
+    }
 
     UBGraphicsPolygonItem *polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), initialWidth, endWidth);
+    addPolygonItemToCurrentStroke(polygonItem);
 
+    if (!bLineStyle) {
+        mPreviousPoint = pEndPoint;
+        mPreviousWidth = endWidth;
+    }
+}
+
+void UBGraphicsScene::drawCurve(const QList<QPointF>& points, qreal startWidth, qreal endWidth)
+{
+    UBGraphicsPolygonItem* polygonItem = curveToPolygonItem(points, startWidth, endWidth);
+    addPolygonItemToCurrentStroke(polygonItem);
+
+    mPreviousWidth = endWidth;
+    mPreviousPoint = points.last();
+}
+
+void UBGraphicsScene::addPolygonItemToCurrentStroke(UBGraphicsPolygonItem* polygonItem)
+{
     if (!polygonItem->brush().isOpaque())
     {
         // -------------------------------------------------------------------------------------
@@ -869,19 +874,6 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &startWid
             UBGraphicsPolygonItem* previous = mPreviousPolygonItems.value(i);
             polygonItem->subtract(previous);
         }
-    }
-
-
-    if (bLineStyle)
-    {
-        QSetIterator<QGraphicsItem*> itItems(mAddedItems);
-
-        while (itItems.hasNext())
-        {
-            QGraphicsItem* item = itItems.next();
-            removeItem(item);
-        }
-        mAddedItems.clear();
     }
 
     mpLastPolygon = polygonItem;
@@ -896,12 +888,6 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &startWid
 
     mPreviousPolygonItems.append(polygonItem);
 
-
-    if (!bLineStyle)
-    {
-        mPreviousPoint = pEndPoint;
-        mPreviousWidth = endWidth;
-    }
 }
 
 void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
@@ -1147,6 +1133,14 @@ UBGraphicsPolygonItem* UBGraphicsScene::arcToPolygonItem(const QLineF& pStartRad
     QPolygonF polygon = UBGeometryUtils::arcToPolygon(pStartRadius, pSpanAngle, pWidth);
 
     return polygonToPolygonItem(polygon);
+}
+
+UBGraphicsPolygonItem* UBGraphicsScene::curveToPolygonItem(const QList<QPointF>& points, qreal startWidth, qreal endWidth)
+{
+    QPolygonF polygon = UBGeometryUtils::curveToPolygon(points, startWidth, endWidth);
+
+    return polygonToPolygonItem(polygon);
+
 }
 
 void UBGraphicsScene::clearSelectionFrame()

@@ -70,7 +70,10 @@ class UBGraphicsStroke
 
         QList<UBGraphicsPolygonItem*> mPolygons;
 
+        /// Points that were drawn (actually received through input device)
         QList<QPointF> mDrawnPoints;
+
+        /// All the points (including interpolated) that are used to draw the stroke
         QList<QPointF> mAllPoints;
 
 };
