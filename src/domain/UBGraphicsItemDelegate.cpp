@@ -790,7 +790,7 @@ void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
         }
         else if (button->getSection() == Qt::TitleBarArea){
             button->setParentItem(mFrame);
-            button->setPos(topXTitleBar + (k++ * (frameButtonHeight + 5)), topYTitleBar);
+            button->setPos(topXTitleBar + (k++ * (frameButtonHeight + 5) * mAntiScaleRatio), topYTitleBar);
             button->setTransform(tr);
             button->setTransform(QTransform::fromScale(0.8, 0.8), true);
         }

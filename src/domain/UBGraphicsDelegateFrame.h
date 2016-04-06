@@ -143,6 +143,7 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         bool mMirroredXAtStart;
         bool mMirroredYAtStart;
         qreal mTitleBarHeight;
+        qreal mNominalTitleBarHeight;
 
         QList<UBGraphicsDelegateFrame *> mLinkedFrames;
 };
