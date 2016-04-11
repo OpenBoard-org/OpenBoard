@@ -620,7 +620,7 @@ void UBFeaturesController::removeFromFavorite( const QUrl &path, bool deleteManu
 QString UBFeaturesController::fileNameFromUrl( const QUrl &url )
 {
     QString fileName = url.toString();
-    if ( fileName.contains( "OpenboardTool://"))
+    if ( fileName.contains( "openboardtool://"))
         return fileName;
     return url.toLocalFile();
 }
@@ -630,7 +630,7 @@ UBFeatureElementType UBFeaturesController::fileTypeFromUrl(const QString &path)
 {
     QFileInfo fileInfo(path);
 
-    if ( path.contains("OpenboardTool://"))
+    if ( path.contains("openboardtool://"))
         return FEATURE_INTERNAL;
 
     if (!fileInfo.exists()) {
