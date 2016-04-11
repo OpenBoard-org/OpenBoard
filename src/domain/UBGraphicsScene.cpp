@@ -558,10 +558,9 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                 }
 
                 QList<QPointF> newPoints = mCurrentStroke->addPoint(scenePos, interpolator);
-                if (newPoints.length() > 1)
+                if (newPoints.length() > 1) {
                     drawCurve(newPoints, mPreviousWidth, width);
-                else
-                    drawLineTo(scenePos, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
+                }
             }
         }
         else if (currentTool == UBStylusTool::Eraser)

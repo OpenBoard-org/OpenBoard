@@ -29,12 +29,14 @@
 
 #include "UBGraphicsPolygonItem.h"
 
+#include "board/UBBoardController.h"
+#include "core/UBApplication.h"
 #include "core/memcheck.h"
 
 
 UBGraphicsStroke::UBGraphicsStroke()
 {
-    // NOOP
+    mAntiScaleRatio = 1./(UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
 }
 
 
@@ -71,7 +73,6 @@ QList<QPointF> UBGraphicsStroke::addPoint(const QPointF& point, UBInterpolator::
     int n = mDrawnPoints.size();
 
     if (interpolationMethod == UBInterpolator::NoInterpolation || n == 0) {
-        mLastReceivedPoint = point;
         mDrawnPoints << point;
         mAllPoints << point;
         return QList<QPointF>() << point;
@@ -80,27 +81,23 @@ QList<QPointF> UBGraphicsStroke::addPoint(const QPointF& point, UBInterpolator::
     else if (interpolationMethod == UBInterpolator::Bezier) {
         // This is a bit special, as the curve we are interpolating is not between two drawn points;
         // it is between the midway points of the second-to-last and last point, and last and current point.
-        qreal MIN_DISTANCE = 3; // TODO: make this dependant on zoom
-        qreal distance = QLineF(mLastReceivedPoint, point).length();
 
-        //qDebug() << "distance: " << distance;
+        // Don't draw segments smaller than a certain length. This can help with performance
+        // (less polygons in a stroke) but mostly with keeping the curve smooth.
+        qreal MIN_DISTANCE = 3*mAntiScaleRatio;
+        qreal distance = QLineF(mDrawnPoints.last(), point).length();
 
-        // We don't draw anything below the minimum distance. For performance reasons but also to make the curve
-        // look smoother (e.g shaking slightly won't affect the curve).
         if (distance < MIN_DISTANCE) {
-            // but we still keep track of that point to calculate the distance correctly next time around
-            mLastReceivedPoint = point;
             return QList<QPointF>();
         }
 
+        // The first segment is just a straight line to the first midway point
         if (n == 1) {
-            // We start with a straight line to the first midway point
             QPointF lastPoint = mDrawnPoints[0];
             mDrawnPoints << point;
 
-            return QList<QPointF>() << ((lastPoint + point)/2.0);
+            return QList<QPointF>() << lastPoint << ((lastPoint + point)/2.0);
         }
-
 
         QPointF p0 = mDrawnPoints[mDrawnPoints.size() - 2];
         QPointF p1 = mDrawnPoints[mDrawnPoints.size() - 1];
