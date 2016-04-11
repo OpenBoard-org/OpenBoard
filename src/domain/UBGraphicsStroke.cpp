@@ -72,10 +72,17 @@ QList<QPointF> UBGraphicsStroke::addPoint(const QPointF& point, UBInterpolator::
 {
     int n = mDrawnPoints.size();
 
-    if (interpolationMethod == UBInterpolator::NoInterpolation || n == 0) {
+    if (n == 0) {
         mDrawnPoints << point;
         mAllPoints << point;
-        return QList<QPointF>() << point;
+        return QList<QPointF>();
+    }
+
+    if (interpolationMethod == UBInterpolator::NoInterpolation) {
+        QPointF lastPoint = mDrawnPoints.last();
+        mDrawnPoints << point;
+        mAllPoints << point;
+        return QList<QPointF>() << lastPoint << point;
     }
 
     else if (interpolationMethod == UBInterpolator::Bezier) {
