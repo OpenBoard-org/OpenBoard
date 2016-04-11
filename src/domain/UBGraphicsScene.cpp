@@ -630,30 +630,6 @@ bool UBGraphicsScene::inputDeviceRelease()
             mDrawWithCompass = false;
         }
         else if (mCurrentStroke){
-            /*
-            // -------------------------------------------------------------------------
-            // Replace the stroke by a smoother one
-            // -------------------------------------------------------------------------
-            UBGraphicsStroke* smoothStroke = mCurrentStroke->smoothe();
-
-            foreach(UBGraphicsPolygonItem* poly, mCurrentStroke->polygons()){
-                mPreviousPolygonItems.removeAll(poly);
-                removeItem(poly);
-            }
-            delete mCurrentStroke;
-            mCurrentStroke = smoothStroke;
-
-            moveTo(smoothStroke->points()[0]);
-            for (int i(1); i < smoothStroke->points().size(); ++i) {
-                QPointF currentPoint = smoothStroke->points()[i];
-
-                drawLineTo(currentPoint, dc->currentToolWidth(), dc->currentToolWidth(), false);
-                moveTo(currentPoint);
-            }
-
-            // -------------------------------------------------------------------------
-            */
-
             UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
             // Remove the strokes that were just drawn here and replace them by a stroke item

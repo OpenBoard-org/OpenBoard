@@ -66,9 +66,6 @@ INCLUDEPATH += src/pdf-merger
 include(src/pdf-merger/pdfMerger.pri)
 
 #ThirdParty
-INCLUDEPATH += $$THIRD_PARTY_PATH/spline/
-INCLUDEPATH += $$THIRD_PARTY_PATH/alglib/
-include($$THIRD_PARTY_PATH/alglib/alglib.pri)
 DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
 INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
 include($$THIRD_PARTY_PATH/quazip/quazip.pri)

@@ -88,7 +88,7 @@ QList<QPointF> UBGraphicsStroke::addPoint(const QPointF& point, UBInterpolator::
         // We don't draw anything below the minimum distance. For performance reasons but also to make the curve
         // look smoother (e.g shaking slightly won't affect the curve).
         if (distance < MIN_DISTANCE) {
-            // we still keep track of that point to calculate the distance correctly next time around
+            // but we still keep track of that point to calculate the distance correctly next time around
             mLastReceivedPoint = point;
             return QList<QPointF>();
         }
@@ -123,59 +123,7 @@ QList<QPointF> UBGraphicsStroke::addPoint(const QPointF& point, UBInterpolator::
         return newPoints;
     }
 
-    else {
-
-        qreal MIN_INTERPOLATION_DISTANCE = 0;
-
-        QPointF lastPoint;
-        if (!mDrawnPoints.isEmpty())
-            lastPoint = mDrawnPoints.last();
-
-        QList<QPointF> newPoints;
-
-        // Interpolation
-        if (n > 3 && QLineF(lastPoint, point).length() > MIN_INTERPOLATION_DISTANCE) {
-
-            /*
-            UBSimpleSpline sp;
-            sp.setPoints(mDrawnPoints[n-2], mDrawnPoints[n-1], point);
-            */
-
-            // todo: better way of avoiding problems with equal x's (such as PCA). in the meantime this'll do.
-            qreal x0 = mDrawnPoints[n-3].x();
-            qreal x1 = mDrawnPoints[n-2].x();
-            qreal x2 = mDrawnPoints[n-1].x();
-            qreal x3 = point.x();
-            if (!(x0 == x1 || x0 == x2 || x0 == x3 || x1 == x2 || x1 == x3 || x2 == x3)) {
-
-                UBCatmullRomSpline sp;
-                sp.setPoints(QList<QPointF>() << mDrawnPoints[n-3] << mDrawnPoints[n-2] << mDrawnPoints[n-1] << point);
-
-                // get an extra 3 values in between the current point and last one
-                int n_points = 3; // number of points to interpolate
-                double interval = (point.x() - lastPoint.x())/double(n_points+1);
-
-                qDebug() << "Interpolating between: " << lastPoint << " and " << point;
-
-                for (int i(1); i <= n_points; ++i) {
-                    double x = lastPoint.x() + i*interval;
-                    QPointF newPoint(x, sp.y(x));
-                    qDebug() << newPoint;
-
-                    newPoints << newPoint;
-                    mAllPoints << newPoint;
-                    //qDebug() << "Got new point: " << newPoint;
-                }
-            }
-
-        }
-
-        newPoints << point;
-        mAllPoints << point;
-        mDrawnPoints << point;
-
-        return newPoints;
-    }
+    return QList<QPointF>();
 }
 
 bool UBGraphicsStroke::hasPressure()
@@ -219,52 +167,4 @@ void UBGraphicsStroke::clear()
     if(!mPolygons.empty()){
         mPolygons.clear();
     }
-}
-
-
-/**
- * @brief Smoothe the curve, by interpolating extra points where needed.
- *
- * @return A new stroke based on the current one.
- */
-UBGraphicsStroke* UBGraphicsStroke::smoothe()
-{
-    // Catmull-Rom spline interpolation
-    UBCatmullRomSpline sp;
-
-    UBGraphicsStroke * smoothStroke = new UBGraphicsStroke();
-
-    smoothStroke->mAllPoints << mAllPoints[0];
-
-    for (int i(0); i < mAllPoints.size() - 3; ++i) {
-        QPointF p1, p2;
-
-        p1 = mAllPoints[i+1];
-        p2 = mAllPoints[i+2];
-
-        qreal x0 = mAllPoints[i].x();
-        qreal x1 = p1.x();
-        qreal x2 = p2.x();
-        qreal x3 = mAllPoints[i+3].x();
-
-        if (!(x0 == x1 || x0 == x2 || x0 == x3 || x1 == x2 || x1 == x3 || x2 == x3)) {
-            sp.setPoints(QList<QPointF>() << mAllPoints[i] << mAllPoints[i+1] << mAllPoints[i+2] << mAllPoints[i+3]);
-
-            smoothStroke->mAllPoints << mAllPoints[i+1];
-            int n_points = 3; // number of points to interpolate
-            double interval = (p2.x() - p1.x())/double(n_points+1);
-
-            for (int i(1); i <= n_points; ++i) {
-                double x = p1.x() + i*interval;
-                QPointF newPoint(x, sp.y(x));
-
-                smoothStroke->mAllPoints << newPoint;
-            }
-        }
-
-    }
-    smoothStroke->mAllPoints << mAllPoints[mAllPoints.size() - 2] << mAllPoints[mAllPoints.size() - 1];
-
-
-    return smoothStroke;
 }

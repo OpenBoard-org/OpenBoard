@@ -59,8 +59,6 @@ class UBGraphicsStroke
 
         QList<QPointF> addPoint(const QPointF& point, UBInterpolator::InterpolationMethod interpolationMethod = UBInterpolator::NoInterpolation);
 
-        UBGraphicsStroke* smoothe();
-
         const QList<QPointF>& points() { return mAllPoints; }
 
     protected:
