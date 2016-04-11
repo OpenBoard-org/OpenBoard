@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleIdentifier</key>
-	<string>org.oe-f.pdfworkflow.savepdftoopensankore</string>
+	<string>org.oe-f.pdfworkflow.savepdftoopenboard</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
