@@ -628,13 +628,17 @@ UBFeaturesNewFolderDialog::UBFeaturesNewFolderDialog(QWidget *parent) : QWidget(
   , cancelText(tr("Cancel"))
   , labelText(tr("Enter a new folder name"))
 {
-    this->setStyleSheet("background:white;");
+    this->setStyleSheet("QPushButton { background:white; }");
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
     QVBoxLayout *labelLayout = new QVBoxLayout();
+    labelLayout->setSizeConstraint(QLayout::SetMinimumSize);
 
     QLabel *mLabel = new QLabel(labelText, this);
+    mLabel->setWordWrap(true);
+    mLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+
     mLineEdit = new QLineEdit(this);
 
     mValidator = new QRegExpValidator(QRegExp("[^\\/\\:\\?\\*\\|\\<\\>\\\"]{2,}"), this);
