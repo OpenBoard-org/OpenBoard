@@ -1,6 +1,6 @@
-var sankoreLang = {
+﻿var sankoreLang = {
     "en":{
-        "enter_title": "Enter yuor title here...",
+        "enter_title": "Enter your title here...",
         "welcome":"Welcome to HTML Editor",
         "source":"Source",
         "link":"Link",
@@ -18,12 +18,22 @@ var sankoreLang = {
         "alt_text":"Альтернативный текст"
     },
     "fr":{
-        "enter_title": "Entrer le titre yuor ici ...",
+        "enter_title": "Entrer un titre ici ...",
         "welcome":"Bienvenue sur HTML Editor",
-        "source":"Ajouter un lien vers une image",
-        "link":"Ajouter une URL",
+        "source":"Source",
+        "link":"Lien",
         "preview":"Aperçu",
         "text_to_link":"Votre texte à lier",
         "alt_text":"Texte alternatif"
+    },
+    "sk":{
+        "enter_title": "Sem napíšte názov...",
+        "welcome":"Vitajte v HTML editore",
+        "source":"Zdroj",
+        "link":"Odkaz",
+        "preview":"Ukážka",
+        "text_to_link":"Text odkazu",
+        "alt_text":"Alternatívny text"
     }
+
 };

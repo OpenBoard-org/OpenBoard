@@ -1,4 +1,4 @@
-var sankoreLang = {
+﻿var sankoreLang = {
     "en":{
         "show": "Show"
     },
@@ -7,6 +7,10 @@ var sankoreLang = {
     },
     "fr":{
         "show": "Voir"
+    },
+    "sk":{
+        "show": "Zobraziť"
     }
+
 };
 

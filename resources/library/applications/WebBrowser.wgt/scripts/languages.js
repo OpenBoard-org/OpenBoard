@@ -1,4 +1,4 @@
-var sankoreLang = {
+﻿var sankoreLang = {
     "en":{
         "previous":"Previous",
         "next":"Next",
@@ -25,7 +25,15 @@ var sankoreLang = {
         "next_page":"Page suivante",
         "open":"Ouvrez le site",
         "alert":"Impossible d'ouvrir une page! Peut-être c'est à cause d'une politique de sécurité ou une URL erronée. Vérifiez aussi votre connexion internet."
+    },
+    "sk":{
+        "previous":"Predošlá",
+        "next":"Ďalšia",
+        "show":"Zobraziť",
+        "prev_page":"Predošlá stránka",
+        "next_page":"Ďalšia stránka",
+        "open":"Otvoriť stránku",
+        "alert":"Stránka sa nedá otvoriť! Možno je to kvôli spôsobu zabezpečenia alebo nesprávnej internetovej adrese. Skontrolujte aj svoje internetové pripojenie."
     }
+
 };
-
-
