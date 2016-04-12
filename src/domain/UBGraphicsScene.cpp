@@ -335,6 +335,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     , mZLayerController(new UBZLayerController(this))
     , mpLastPolygon(NULL)
     , mCurrentPolygon(0)
+    , mTempPolygon(NULL)
     , mSelectionFrame(0)
 {
     UBCoreGraphicsScene::setObjectName("BoardScene");
@@ -561,6 +562,23 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                 if (newPoints.length() > 1) {
                     drawCurve(newPoints, mPreviousWidth, width);
                 }
+
+                if (interpolator == UBInterpolator::Bezier) {
+                    // Bezier curves aren't drawn all the way to the scenePos (they stop halfway between the previous and
+                    // current scenePos), so we add a line from the last drawn position in the stroke and the
+                    // scenePos, to make the drawing feel more responsive. This line is then deleted if a new segment is
+                    // added to the stroke. (Or it is added to the stroke when we stop drawing)
+
+                    if (mTempPolygon) {
+                        removeItem(mTempPolygon);
+                        mTempPolygon = NULL;
+                    }
+
+                    QPointF lastDrawnPoint = newPoints.last();
+
+                    mTempPolygon = lineToPolygonItem(QLineF(lastDrawnPoint, scenePos), mPreviousWidth, width);
+                    addItem(mTempPolygon);
+                }
             }
         }
         else if (currentTool == UBStylusTool::Eraser)
@@ -629,6 +647,13 @@ bool UBGraphicsScene::inputDeviceRelease()
             mDrawWithCompass = false;
         }
         else if (mCurrentStroke){
+            if (mTempPolygon) {
+                UBGraphicsPolygonItem * poly = dynamic_cast<UBGraphicsPolygonItem*>(mTempPolygon->deepCopy());
+                removeItem(mTempPolygon);
+                mTempPolygon = NULL;
+                addPolygonItemToCurrentStroke(poly);
+            }
+
             UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
             // Remove the strokes that were just drawn here and replace them by a stroke item

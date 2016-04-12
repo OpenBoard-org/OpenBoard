@@ -70,18 +70,18 @@ QList<UBGraphicsPolygonItem*> UBGraphicsStroke::polygons() const
  */
 QList<QPointF> UBGraphicsStroke::addPoint(const QPointF& point, UBInterpolator::InterpolationMethod interpolationMethod)
 {
-    int n = mDrawnPoints.size();
+    int n = mReceivedPoints.size();
 
     if (n == 0) {
+        mReceivedPoints << point;
         mDrawnPoints << point;
-        mAllPoints << point;
         return QList<QPointF>();
     }
 
     if (interpolationMethod == UBInterpolator::NoInterpolation) {
-        QPointF lastPoint = mDrawnPoints.last();
+        QPointF lastPoint = mReceivedPoints.last();
+        mReceivedPoints << point;
         mDrawnPoints << point;
-        mAllPoints << point;
         return QList<QPointF>() << lastPoint << point;
     }
 
@@ -91,23 +91,24 @@ QList<QPointF> UBGraphicsStroke::addPoint(const QPointF& point, UBInterpolator::
 
         // Don't draw segments smaller than a certain length. This can help with performance
         // (less polygons in a stroke) but mostly with keeping the curve smooth.
-        qreal MIN_DISTANCE = 3*mAntiScaleRatio;
-        qreal distance = QLineF(mDrawnPoints.last(), point).length();
+        qreal MIN_DISTANCE = 5*mAntiScaleRatio;
+        qreal distance = QLineF(mReceivedPoints.last(), point).length();
 
         if (distance < MIN_DISTANCE) {
-            return QList<QPointF>();
+            return QList<QPointF>() << mDrawnPoints.last();
         }
 
         // The first segment is just a straight line to the first midway point
         if (n == 1) {
-            QPointF lastPoint = mDrawnPoints[0];
-            mDrawnPoints << point;
+            QPointF lastPoint = mReceivedPoints[0];
+            mReceivedPoints << point;
+            mDrawnPoints << QPointF((lastPoint + point)/2.0);
 
             return QList<QPointF>() << lastPoint << ((lastPoint + point)/2.0);
         }
 
-        QPointF p0 = mDrawnPoints[mDrawnPoints.size() - 2];
-        QPointF p1 = mDrawnPoints[mDrawnPoints.size() - 1];
+        QPointF p0 = mReceivedPoints[mReceivedPoints.size() - 2];
+        QPointF p1 = mReceivedPoints[mReceivedPoints.size() - 1];
         QPointF p2 = point;
 
         UBQuadraticBezier bz;
@@ -119,11 +120,15 @@ QList<QPointF> UBGraphicsStroke::addPoint(const QPointF& point, UBInterpolator::
 
         QList<QPointF> newPoints = bz.getPoints(10);
 
+        // avoid adding duplicates
+        if (newPoints.first() == mDrawnPoints.last())
+            mDrawnPoints.removeLast();
+
         foreach(QPointF p, newPoints) {
-            mAllPoints << p;
+            mDrawnPoints << p;
         }
 
-        mDrawnPoints << point;
+        mReceivedPoints << point;
         return newPoints;
     }
 

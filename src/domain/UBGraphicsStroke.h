@@ -59,7 +59,7 @@ class UBGraphicsStroke
 
         QList<QPointF> addPoint(const QPointF& point, UBInterpolator::InterpolationMethod interpolationMethod = UBInterpolator::NoInterpolation);
 
-        const QList<QPointF>& points() { return mAllPoints; }
+        const QList<QPointF>& points() { return mDrawnPoints; }
 
     protected:
         void addPolygon(UBGraphicsPolygonItem* pol);
@@ -68,11 +68,11 @@ class UBGraphicsStroke
 
         QList<UBGraphicsPolygonItem*> mPolygons;
 
-        /// Points that were drawn by the user (actually received through input device)
-        QList<QPointF> mDrawnPoints;
+        /// Points that were drawn by the user (i.e, actually received through input device)
+        QList<QPointF> mReceivedPoints;
 
         /// All the points (including interpolated) that are used to draw the stroke
-        QList<QPointF> mAllPoints;
+        QList<QPointF> mDrawnPoints;
 
         qreal mAntiScaleRatio;
 };
