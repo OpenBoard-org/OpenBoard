@@ -369,11 +369,12 @@ void UBApplication::showMinimized()
 {
 #ifdef Q_OS_OSX
     mainWindow->hide();
+    bIsMinimized = true;
 #elif defined(Q_OS_LINUX)
     mainWindow->showMinimized();
+    bIsMinimized = true;
 #endif
 
-    bIsMinimized = true;
 }
 
 
@@ -584,16 +585,18 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
     {
         boardController->controlView()->setMultiselection(false);
 
-        if (bIsMinimized) {
 #if defined(Q_OS_OSX)
+        if (bIsMinimized) {
             if (mainWindow->isHidden())
                 mainWindow->show();
             bIsMinimized = false;
+        }
 #elif defined(Q_OS_LINUX)
+        if (bIsMinimized) {
             bIsMinimized = false;
             UBPlatformUtils::showFullScreen(mainWindow);
-#endif
         }
+#endif
     }
 
     return result;
