@@ -385,10 +385,6 @@ void UBSettings::init()
     youTubeUserEMail = new UBSetting(this, "YouTube", "UserEMail", "");
     youTubeCredentialsPersistence = new UBSetting(this,"YouTube", "CredentialsPersistence",false);
 
-    uniboardWebEMail = new UBSetting(this, "UniboardWeb", "EMail", "");
-    uniboardWebAuthor = new UBSetting(this, "UniboardWeb", "Author", "");
-    uniboardWebGoogleMapApiKey = new UBSetting(this, "UniboardWeb", "GoogleMapAPIKey", "ABQIAAAAsWU4bIbaeCLinpZ30N_erRQEk562OPinwQkG9J-ZXUNAqYhJ5RT_z2EmpfVXiUg8c41BcsD_XM6P5g");
-
     communityUser = new UBSetting(this, "Community", "Username", "");
     communityPsw = new UBSetting(this, "Community", "Password", "");
     communityCredentialsPersistence = new UBSetting(this,"Community", "CredentialsPersistence",false);
@@ -399,12 +395,6 @@ void UBSettings::init()
 
     // removed in version 4.4.b.2
     mUserSettings->remove("Podcast/RecordMicrophone");
-
-    replyWWSerialPort = new UBSetting(this, "Voting", "ReplyWWSerialPort", 3);
-
-    replyPlusConnectionURL = new UBSetting(this, "Voting", "ReplyPlusConnectionURL", "USB");
-    replyPlusAddressingMode = new UBSetting(this, "Voting", "ReplyPlusAddressingMode", "static");
-    replyPlusMaxKeypads = new UBSetting(this, "Voting", "ReplyPlusMaxKeypads", "100");
 
     documentThumbnailWidth = new UBSetting(this, "Document", "ThumbnailWidth", UBSettings::defaultThumbnailWidth);
 

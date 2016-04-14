@@ -337,21 +337,11 @@ class UBSettings : public QObject
         UBSetting* youTubeUserEMail;
         UBSetting* youTubeCredentialsPersistence;
 
-        UBSetting* uniboardWebEMail;
-        UBSetting* uniboardWebAuthor;
-        UBSetting* uniboardWebGoogleMapApiKey;
-
         UBSetting* podcastPublishToIntranet;
         UBSetting* intranetPodcastPublishingUrl;
         UBSetting* intranetPodcastAuthor;
 
         UBSetting* favoritesNativeToolUris;
-
-        UBSetting* replyWWSerialPort;
-        UBSetting* replyPlusConnectionURL;
-        UBSetting* replyPlusAddressingMode;
-
-        UBSetting* replyPlusMaxKeypads;
 
         UBSetting* documentThumbnailWidth;
         UBSetting* imageThumbnailWidth;
