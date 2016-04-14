@@ -605,16 +605,30 @@ void UBPlatformUtils::showOSK(bool show)
                       dictionaryWithObject: @"com.apple.KeyboardViewer"
                       forKey: (NSString *)kTISPropertyInputSourceID];
 
-        NSArray *sources = (NSArray *)TISCreateInputSourceList(properties, false);
+        NSArray *sources = (NSArray *)TISCreateInputSourceList(properties, true);
 
         if ([sources count] > 0) {
-            if (show)
-                TISSelectInputSource((TISInputSourceRef)[sources objectAtIndex: 0]);
-            else
-                TISDeselectInputSource((TISInputSourceRef)[sources objectAtIndex: 0]);
+            TISInputSourceRef osk = (TISInputSourceRef)[sources objectAtIndex: 0];
+
+            OSStatus result;
+            if (show) {
+                TISEnableInputSource(osk);
+                result = TISSelectInputSource(osk);
+            }
+            else {
+                TISDisableInputSource(osk);
+                result = TISDeselectInputSource(osk);
+            }
+
+            if (result == paramErr) {
+                qWarning() << "Unable to select input source";
+                UBApplication::showMessage(tr("Unable to activate system on-screen keyboard"));
+            }
         }
 
-        else
+        else {
             qWarning() << "System OSK not found";
+            UBApplication::showMessage(tr("System on-screen keyboard not found"));
+        }
     }
 }
