@@ -61,6 +61,8 @@ Makefile
 Makefile.Debug
 Makefile.Release
 
+buildContext
+
 # plugins #
 ###########
 
