@@ -267,9 +267,10 @@ cp "resources/images/${APPLICATION_NAME}.png" "$PACKAGE_DIRECTORY/${APPLICATION_
 # ----------------------------------------------------------------------------
 notifyProgress "Building package"
 mkdir -p "$PACKAGE_BUILD_DIR/linux"
-DEBIAN_PACKAGE_NAME="${APPLICATION_NAME}_`lsb_release -is`_`lsb_release -rs`_${VERSION}_$ARCHITECTURE.deb"
+PACKAGE_NAME="${APPLICATION_NAME}_`lsb_release -is`_`lsb_release -rs`_${VERSION}_$ARCHITECTURE.deb"
+PACKAGE_NAME=`echo "$PACKAGE_NAME" | awk '{print tolower($0)}'`
 
-dpkg -b "$BASE_WORKING_DIR" "$PACKAGE_BUILD_DIR/linux/$DEBIAN_PACKAGE_NAME"
+dpkg -b "$BASE_WORKING_DIR" "$PACKAGE_BUILD_DIR/linux/$PACKAGE_NAME"
 
 #clean up mess
 #rm -rf $BASE_WORKING_DIR
