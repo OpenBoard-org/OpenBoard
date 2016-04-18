@@ -41,20 +41,24 @@ notifyProgress(){
 }
 
 copyQtLibrary(){
+    echo -e "\t $1"
     if ls "$QT_LIBRARY_SOURCE_PATH/$1.so" &> /dev/null; then
         cp -P $QT_LIBRARY_SOURCE_PATH/$1.so.? "$QT_LIBRARY_DEST_PATH/"
         cp -P $QT_LIBRARY_SOURCE_PATH/$1.so.?.? "$QT_LIBRARY_DEST_PATH/"
         cp -P $QT_LIBRARY_SOURCE_PATH/$1.so.?.?.? "$QT_LIBRARY_DEST_PATH/"
         strip $QT_LIBRARY_DEST_PATH/$1.so.?.?.?
+        chmod 644 $QT_LIBRARY_DEST_PATH/$1.so.?.?.? # 644 = rw-r-r
     else
         notifyError "$1 library not found in path: $QT_LIBRARY_SOURCE_PATH"
     fi
 }
 
 copyQtPlugin(){
+    echo -e "\t $1"
     if ls "$QT_PLUGINS_SOURCE_PATH/$1" &> /dev/null; then
         cp -r $QT_PLUGINS_SOURCE_PATH/$1 $QT_PLUGINS_DEST_PATH/
         strip $QT_PLUGINS_DEST_PATH/$1/*
+        chmod 644 $QT_PLUGINS_DEST_PATH/$1/* # 644 = rw-r-r
 
     else
         notifyError "$1 plugin not found in path: $QT_PLUGINS_SOURCE_PATH"
@@ -83,7 +87,7 @@ initializeVariables()
 
   APPLICATION_NAME="OpenBoard"
   APPLICATION_CODE="openboard"
-  APPLICATION_PATH="/opt"
+  APPLICATION_PATH="opt"
 
   # Where most of the files end up in the package
   PACKAGE_DIRECTORY=$BASE_WORKING_DIR/$APPLICATION_PATH/$APPLICATION_CODE
@@ -98,10 +102,10 @@ initializeVariables()
   ARCHITECTURE=`cat buildContext`
 
   # Qt installation path. This may vary across machines
-  QT_PATH="/home/craig/dev/qt5/qtbase"
+  QT_PATH="/opt/qt55"
   QT_PLUGINS_SOURCE_PATH="$QT_PATH/plugins"
   GUI_TRANSLATIONS_DIRECTORY_PATH="$QT_PATH/translations"
-  QT_LIBRARY_SOURCE_PATH="$QT_PATH/lib"
+  QT_LIBRARY_SOURCE_PATH="/home/craig/openboard/qtlib"
 
   NOTIFY_CMD=`which notify-send`
   ZIP_PATH=`which zip`
@@ -144,11 +148,18 @@ strip $PACKAGE_DIRECTORY/Importer/$IMPORTER_NAME
 
 notifyProgress "Copying and stripping Qt plugins"
 mkdir -p $QT_PLUGINS_DEST_PATH
-copyQtPlugin mediaservice
 copyQtPlugin audio
 copyQtPlugin generic
+copyQtPlugin iconengines
+copyQtPlugin imageformats
+copyQtPlugin mediaservice
+copyQtPlugin platforminputcontexts
 copyQtPlugin platforms
+copyQtPlugin platformthemes
+copyQtPlugin position
 copyQtPlugin printsupport
+copyQtPlugin qtwebengine
+copyQtPlugin sceneparsers
 copyQtPlugin xcbglintegrations
 
 notifyProgress "Copying and stripping Qt libraries"
@@ -205,29 +216,28 @@ echo "Homepage: https://github.com/DIP-SEM/OpenBoard" >> "$CONTROL_FILE"
 
 # Generate dependency list
 echo -n "Depends: " >> "$CONTROL_FILE"
-echo -n "libpaper1, zlib1g (>= 1.2.8), libssl1.0.0 (>= 1.0.1), libx11-6, libgl1-mesa-glx, libc6 (>= 2.19), libstdc++6 (>= 4.9.2), libgomp1, libgcc1 (>= 4.9.2), onboard" >> "$CONTROL_FILE"
+#echo -n "libpaper1, zlib1g (>= 1.2.8), libssl1.0.0 (>= 1.0.1), libx11-6, libgl1-mesa-glx, libc6 (>= 2.19), libstdc++6 (>= 4.8.4), libgomp1, onboard" >> "$CONTROL_FILE"
 
-#unset tab
-#declare -a tab
-#let count=0
-#for l in `objdump -p $PACKAGE_DIRECTORY/${APPLICATION_NAME} | grep NEEDED | awk '{ print $2 }'`; do
-#    for lib in `dpkg -S  $l | awk -F":" '{ print $1 }'`; do
-#        echo $lib
-#        presence=`echo ${tab[*]} | grep -c "$lib"`;
-#        if [ "$presence" == "0" ]; then
-#            tab[$count]=$lib;
-#            ((count++));
-#        fi;
-#    done;
-#done;
+unset tab
+declare -a tab
+let count=0
+for l in `objdump -p $PACKAGE_DIRECTORY/${APPLICATION_NAME} | grep NEEDED | awk '{ print $2 }'`; do
+    for lib in `dpkg -S  $l | grep -v "libqt5" | grep -v "qt55" | awk -F":" '{ print $1 }'`; do
+        presence=`echo ${tab[*]} | grep -c "$lib"`;
+        if [ "$presence" == "0" ]; then
+            tab[$count]=$lib;
+            ((count++));
+        fi;
+    done;
+done;
 
-#for ((i=0;i<${#tab[@]};i++)); do
-#    if [ $i -ne "0" ]; then
-#        echo -n ",    " >> "$CONTROL_FILE"
-#    fi
-#    echo -n "${tab[$i]} (>= "`dpkg -p ${tab[$i]} | grep "Version: " | awk '{      print $2 }' | sed -e 's/\([:. 0-9?]*\).*/\1/g' | sed -e 's/\.$//'`") " >> "$CONTROL_FILE"
-#done
-#echo -n ",  onboard" >> "$CONTROL_FILE"
+for ((i=0;i<${#tab[@]};i++)); do
+    if [ $i -ne "0" ]; then
+        echo -n ",    " >> "$CONTROL_FILE"
+    fi
+    echo -n "${tab[$i]} (>= "`dpkg -p ${tab[$i]} | grep "Version: " | awk '{      print $2 }' | sed -e 's/\([:. 0-9?]*\).*/\1/g' | sed -e 's/\.$//'`") " >> "$CONTROL_FILE"
+done
+echo -n ",  onboard" >> "$CONTROL_FILE"
 
 echo "" >> "$CONTROL_FILE"
 echo "Description: $DESCRIPTION" >> "$CONTROL_FILE"

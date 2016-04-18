@@ -25,7 +25,7 @@ initializeVariables()
   PRODUCT_PATH="$BUILD_DIR/product"
 
   # Qt installation path. This may vary across machines
-  QT_PATH="/home/craig/dev/qt5/qtbase"
+  QT_PATH="/opt/qt55"
   PLUGINS_PATH="$QT_PATH/plugins"
   GUI_TRANSLATIONS_DIRECTORY_PATH="$QT_PATH/translations"
   QT_LIBRARY_DEST_PATH="$PRODUCT_PATH/qtlib"
