@@ -135,7 +135,7 @@ initializeVariables()
   DESKTOP_FILE_PATH="$BASE_WORKING_DIR/usr/share/applications"
   APPLICATION_SHORTCUT="$DESKTOP_FILE_PATH/${APPLICATION_CODE}.desktop"
 
-  DESCRIPTION="Interactive white board software"
+  DESCRIPTION="OpenBoard, an interactive white board application"
   VERSION=`cat $BUILD_DIR/version`
   ARCHITECTURE=`cat buildContext`
 
@@ -227,6 +227,8 @@ cp $GUI_TRANSLATIONS_DIRECTORY_PATH/qt_??.qm $PACKAGE_DIRECTORY/i18n/
 # ----------------------------------------------------------------------------
 # DEBIAN directory of package (control, md5sums, postinst etc)
 # ----------------------------------------------------------------------------
+notifyProgress "Generating control files for package"
+
 mkdir -p "$BASE_WORKING_DIR/DEBIAN"
 
 # Copy prerm, postinst scripts
@@ -242,7 +244,7 @@ find $DESKTOP_FILE_PATH/ -exec md5sum {} > $BASE_WORKING_DIR/DEBIAN/md5sums 2>/d
 # Generate control file
 CONTROL_FILE="$BASE_WORKING_DIR/DEBIAN/control"
 
-echo "Package: ${APPLICATION_NAME}" > "$CONTROL_FILE"
+echo "Package: ${APPLICATION_CODE}" > "$CONTROL_FILE"
 echo "Version: $VERSION" >> "$CONTROL_FILE"
 echo "Section: education" >> "$CONTROL_FILE"
 echo "Priority: optional" >> "$CONTROL_FILE"
@@ -287,11 +289,11 @@ mkdir -p $DESKTOP_FILE_PATH
 echo "[Desktop Entry]" > $APPLICATION_SHORTCUT
 echo "Version=$VERSION" >> $APPLICATION_SHORTCUT
 echo "Encoding=UTF-8" >> $APPLICATION_SHORTCUT
-echo "Name=${APPLICATION_NAME} ($VERSION)" >> $APPLICATION_SHORTCUT
+echo "Name=${APPLICATION_NAME}" >> $APPLICATION_SHORTCUT
 echo "Comment=$DESCRIPTION" >> $APPLICATION_SHORTCUT
 #echo "Exec=$APPLICATION_PATH/$APPLICATION_CODE/run.sh" >> $APPLICATION_SHORTCUT
 echo "Exec=$APPLICATION_CODE %f" >> $APPLICATION_SHORTCUT
-echo "Icon=$APPLICATION_PATH/$APPLICATION_CODE/${APPLICATION_NAME}.png" >> $APPLICATION_SHORTCUT
+echo "Icon=/$APPLICATION_PATH/$APPLICATION_CODE/${APPLICATION_NAME}.png" >> $APPLICATION_SHORTCUT
 echo "StartupNotify=true" >> $APPLICATION_SHORTCUT
 echo "Terminal=false" >> $APPLICATION_SHORTCUT
 echo "Type=Application" >> $APPLICATION_SHORTCUT
@@ -311,7 +313,7 @@ PACKAGE_NAME=`echo "$PACKAGE_NAME" | awk '{print tolower($0)}'`
 dpkg -b "$BASE_WORKING_DIR" "$PACKAGE_BUILD_DIR/linux/$PACKAGE_NAME"
 
 #clean up mess
-#rm -rf $BASE_WORKING_DIR
+rm -rf $BASE_WORKING_DIR
 
 notifyProgress "${APPLICATION_NAME}" "Package built"
 
