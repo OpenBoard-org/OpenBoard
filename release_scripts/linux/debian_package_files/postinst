@@ -14,8 +14,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------
 
+xdg-mime install --mode system /opt/openboard/etc/openboard-ubz.xml
 xdg-desktop-menu install --novendor /usr/share/applications/openboard.desktop
-xdg-mime install /opt/openboard/etc/openboard-ubz.xml
 xdg-mime default /usr/share/applications/openboard.desktop application/ubz
 
 ln -s /opt/openboard/run.sh /usr/bin/openboard
