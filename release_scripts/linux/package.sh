@@ -1,14 +1,51 @@
 #!/bin/bash
+# --------------------------------------------------------------------
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# ---------------------------------------------------------------------
+
 # ----------------------------------------------------------------------------
-# Packaging script for OpenBoard, for debian-compatible distributions. 
+# Packaging script for OpenBoard, for Debian-compatible distributions. 
 #
 # This should be run after `build.sh`.
+#
+# The generated package structure is as follows : 
+#
+#    DEBIAN/
+#    | control
+#    | md5sums
+#    | prerm
+#    | postinst
+#    usr/
+#    | bin/
+#    | | openboard <-- actually a symlink to run.sh
+#    | share/
+#    | | applications/
+#    | | | OpenBoard.desktop
+#    opt/
+#    | openboard/
+#    | | importer/
+#    | | library/
+#    | | etc/
+#    | | qtlib/
+#    | | plugins/
+#    | | OpenBoard
+#    | | OpenBoard.png
+#    | | qt.conf
+#    | | run.sh
+#
 # ----------------------------------------------------------------------------
 
-
-# ----------------------------------------------------------------------------
-# Function definitions
-# ----------------------------------------------------------------------------
 checkUser()
 {
   if [ `id -u` -ne 0 ]; then
@@ -46,6 +83,7 @@ copyQtLibrary(){
         cp -P $QT_LIBRARY_SOURCE_PATH/$1.so.? "$QT_LIBRARY_DEST_PATH/"
         cp -P $QT_LIBRARY_SOURCE_PATH/$1.so.?.? "$QT_LIBRARY_DEST_PATH/"
         cp -P $QT_LIBRARY_SOURCE_PATH/$1.so.?.?.? "$QT_LIBRARY_DEST_PATH/"
+
         strip $QT_LIBRARY_DEST_PATH/$1.so.?.?.?
         chmod 644 $QT_LIBRARY_DEST_PATH/$1.so.?.?.? # 644 = rw-r-r
     else
@@ -57,6 +95,7 @@ copyQtPlugin(){
     echo -e "\t $1"
     if ls "$QT_PLUGINS_SOURCE_PATH/$1" &> /dev/null; then
         cp -r $QT_PLUGINS_SOURCE_PATH/$1 $QT_PLUGINS_DEST_PATH/
+
         strip $QT_PLUGINS_DEST_PATH/$1/*
         chmod 644 $QT_PLUGINS_DEST_PATH/$1/* # 644 = rw-r-r
 
@@ -89,7 +128,6 @@ initializeVariables()
   APPLICATION_CODE="openboard"
   APPLICATION_PATH="opt"
 
-  # Where most of the files end up in the package
   PACKAGE_DIRECTORY=$BASE_WORKING_DIR/$APPLICATION_PATH/$APPLICATION_CODE
   QT_PLUGINS_DEST_PATH="$PACKAGE_DIRECTORY/plugins"
   QT_LIBRARY_DEST_PATH="$PACKAGE_DIRECTORY/qtlib"
@@ -112,7 +150,7 @@ initializeVariables()
 }
 
 # ----------------------------------------------------------------------------
-# Script
+# Copying the application, libs etc. to the temporary working directory
 # ----------------------------------------------------------------------------
 
 initializeVariables
@@ -139,12 +177,12 @@ cp -R resources/customizations $PACKAGE_DIRECTORY/
 cp -R resources/linux/qtlinux/* $PACKAGE_DIRECTORY/
 
 notifyProgress "Copying importer"
-mkdir -p $PACKAGE_DIRECTORY/Importer
-cp -R "$IMPORTER_DIR/$IMPORTER_NAME" "$PACKAGE_DIRECTORY/Importer"
+mkdir -p $PACKAGE_DIRECTORY/importer
+cp -R "$IMPORTER_DIR/$IMPORTER_NAME" "$PACKAGE_DIRECTORY/importer"
 
 notifyProgress "Stripping importer and main executable"
 strip $PACKAGE_DIRECTORY/$APPLICATION_NAME
-strip $PACKAGE_DIRECTORY/Importer/$IMPORTER_NAME
+strip $PACKAGE_DIRECTORY/importer/$IMPORTER_NAME
 
 notifyProgress "Copying and stripping Qt plugins"
 mkdir -p $QT_PLUGINS_DEST_PATH

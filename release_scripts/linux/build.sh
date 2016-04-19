@@ -103,6 +103,10 @@ buildImporter(){
     cd -
 }
 
+createBuildContext() {
+    BUILD_CONTEXT="buildContext"
+    echo $ARCHITECTURE > $BUILD_CONTEXT
+}
 
 
 
@@ -110,10 +114,10 @@ buildImporter(){
 
 for var in "$@"
 do
-   if [ $var == "i686" ]; then
+   if [ $var == "i386" ]; then
       ARCHITECTURE="i386"
    fi
-   if [ $var == "x86_64" ]; then
+   if [ $var == "amd64" ]; then
       ARCHITECTURE="amd64"
    fi
 done
@@ -121,6 +125,7 @@ done
 
 initializeVariables
 #buildWithStandardQt
+createBuildContext
 
 cd $PROJECT_ROOT
 
@@ -150,7 +155,7 @@ cd -
 
 notifyProgress "${APPLICATION_NAME}" "Building ${APPLICATION_NAME}"
 
-if [ "$ARCHITECTURE" == "amd64" ]; then
+if [ "$ARCHITECTURE" == "amd64" ] || [ "$ARCHITECTURE" == "x86_64" ]; then
     $QMAKE_PATH ${APPLICATION_NAME}.pro -spec linux-g++-64
 else
     $QMAKE_PATH ${APPLICATION_NAME}.pro -spec linux-g++
