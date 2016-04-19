@@ -15,5 +15,9 @@
 # ---------------------------------------------------------------------
 
 xdg-desktop-menu install --novendor /usr/share/applications/openboard.desktop
+xdg-mime install /opt/openboard/etc/openboard-ubz.xml
+xdg-mime default /usr/share/applications/openboard.desktop application/ubz
+
 ln -s /opt/openboard/run.sh /usr/bin/openboard
+
 exit 0
