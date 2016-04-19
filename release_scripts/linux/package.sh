@@ -298,7 +298,7 @@ echo "Icon=/$APPLICATION_PATH/$APPLICATION_CODE/${APPLICATION_NAME}.png" >> $APP
 echo "StartupNotify=true" >> $APPLICATION_SHORTCUT
 echo "Terminal=false" >> $APPLICATION_SHORTCUT
 echo "Type=Application" >> $APPLICATION_SHORTCUT
-echo "MimeType=application/ubz;" >> $APPLICATION_SHORTCUT
+echo "MimeType=application/ubz" >> $APPLICATION_SHORTCUT
 echo "Categories=Education;" >> $APPLICATION_SHORTCUT
 cp "resources/images/${APPLICATION_NAME}.png" "$PACKAGE_DIRECTORY/${APPLICATION_NAME}.png"
 
