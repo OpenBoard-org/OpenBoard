@@ -14,15 +14,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------
 
-# Directory of the script
-SOURCE="${BASH_SOURCE[0]}"
-while [ -h "$SOURCE" ]; do
-  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-  SOURCE="$(readlink "$SOURCE")"
-  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
-done
-DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-
-# Add custom libraries to LD_LIBRARY_PATH
-# TODO: Remomve the need for this
-env LD_LIBRARY_PATH=$DIR/qtlib:$LD_LIBRARY_PATH $DIR/OpenBoard
+xdg-desktop-menu uninstall /usr/share/applications/openboard.desktop
+rm -f /usr/bin/openboard
+exit 0

@@ -51,7 +51,7 @@ void UBOpenSankoreImporter::onProceedClicked()
 {
     QProcess newProcess;
 #ifdef Q_OS_LINUX
-    newProcess.startDetached(qApp->applicationDirPath()+"/Importer/OpenBoardImporter");
+    newProcess.startDetached(qApp->applicationDirPath()+"/importer/OpenBoardImporter");
 #elif defined Q_OS_OSX
     newProcess.startDetached(qApp->applicationDirPath()+"/../Resources/OpenBoardImporter.app/Contents/MacOS/OpenBoardImporter");
 #else

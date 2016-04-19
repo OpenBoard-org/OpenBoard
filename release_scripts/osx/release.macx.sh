@@ -14,13 +14,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------
 
+SCRIPT_PATH="`pwd`"
+PROJECT_ROOT="$SCRIPT_PATH/../.."
+
 
 APPLICATION_NAME="OpenBoard"
 BASE_QT_DIR=~/Qt/5.5/clang_64
 # Executables
 QMAKE=$BASE_QT_DIR/bin/qmake
 MACDEPLOYQT=$BASE_QT_DIR/bin/macdeployqt
-DMGUTIL="`pwd`/../OpenBoard-ThirdParty/refnum/dmgutil/dmgutil.pl"
+DMGUTIL="$PROJECT_ROOT/../OpenBoard-ThirdParty/refnum/dmgutil/dmgutil.pl"
 DSYMUTIL=/usr/bin/dsymutil
 STRIP=/usr/bin/strip
 PLISTBUDDY=/usr/libexec/PlistBuddy
@@ -28,7 +31,7 @@ ICEBERG=/usr/local/bin/freeze
 LRELEASE=$BASE_QT_DIR/bin/lrelease
 
 # Directories
-BUILD_DIR="build/macx/release"
+BUILD_DIR="$PROJECT_ROOT/build/macx/release"
 PRODUCT_DIR="$BUILD_DIR/product"
 BASE_QT_TRANSLATIONS_DIRECTORY=$BASE_QT_DIR/translations
 
@@ -105,6 +108,8 @@ function addImporter {
 trap "defaults write org.oe-f.OpenBoard.release Running -bool NO" EXIT
 
 notify "Running OpenBoard release script (`date`)"
+
+cd $PROJECT_ROOT
 
 script_is_running=`defaults read org.oe-f.OpenBoard.release Running 2>/dev/null`
 if [[ $? -eq 0 ]] && [[ "$script_is_running" = "1" ]]; then
@@ -200,7 +205,7 @@ $DSYMUTIL "$APP/Contents/MacOS/$APPLICATION_NAME" -o "$DSYM"
 $STRIP -S "$APP/Contents/MacOS/$APPLICATION_NAME"
 
 if [ "$1" == "pkg" ]; then
-    BASE_ICEBERG_CONFIG_FILE="$APPLICATION_NAME.packproj"
+    BASE_ICEBERG_CONFIG_FILE="$SCRIPT_PATH/$APPLICATION_NAME.packproj"
     #copy the standard file for working with
     ICEBERG_CONFIG_FILE="$APPLICATION_NAME-working.packproj"
     cp -r $BASE_ICEBERG_CONFIG_FILE $ICEBERG_CONFIG_FILE

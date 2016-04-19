@@ -14,15 +14,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------
 
-# Directory of the script
-SOURCE="${BASH_SOURCE[0]}"
-while [ -h "$SOURCE" ]; do
-  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-  SOURCE="$(readlink "$SOURCE")"
-  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
-done
-DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+xdg-mime install --mode system /opt/openboard/etc/openboard-ubz.xml
+xdg-desktop-menu install --novendor /usr/share/applications/openboard.desktop
+xdg-mime default /usr/share/applications/openboard.desktop application/ubz
 
-# Add custom libraries to LD_LIBRARY_PATH
-# TODO: Remomve the need for this
-env LD_LIBRARY_PATH=$DIR/qtlib:$LD_LIBRARY_PATH $DIR/OpenBoard
+ln -s /opt/openboard/run.sh /usr/bin/openboard
+
+exit 0
