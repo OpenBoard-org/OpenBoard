@@ -433,9 +433,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 QStringRef pageDpi = mXmlReader.attributes().value("pageDpi");
 
                 if (!pageDpi.isNull())
-                    UBSettings::settings()->pageDpi->set(pageDpi.toString());
+                    UBSettings::pageDpi = pageDpi.toInt();
                 else
-                    UBSettings::settings()->pageDpi->set(UBApplication::desktop()->physicalDpiX());
+                    UBSettings::pageDpi = (UBApplication::desktop()->physicalDpiX() + UBApplication::desktop()->physicalDpiY())/2;
 
                 bool darkBackground = false;
                 bool crossedBackground = false;
@@ -766,8 +766,8 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     {
                         QDesktopWidget* desktop = UBApplication::desktop();
                         qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
-                        qDebug() << "currentDpi " << currentDpi;
-                        qreal pdfScale = UBSettings::settings()->pageDpi->get().toReal()/currentDpi;
+                        qDebug() << "currentDpi (" << desktop->physicalDpiX() << " + " << desktop->physicalDpiY() << ")/2 = " << currentDpi;
+                        qreal pdfScale = qreal(UBSettings::pageDpi)/currentDpi;
                         qDebug() << "pdfScale " << pdfScale;
                         pdfItem->setScale(pdfScale);
                         pdfItem->setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -827,7 +827,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     {
                         QDesktopWidget* desktop = UBApplication::desktop();
                         qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
-                        qreal textSizeMultiplier = UBSettings::settings()->pageDpi->get().toReal()/currentDpi;
+                        qreal textSizeMultiplier = qreal(UBSettings::pageDpi)/currentDpi;
                         textDelegate->scaleTextSize(textSizeMultiplier);
                     }
 
@@ -1051,10 +1051,10 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
 
     QDesktopWidget* desktop = UBApplication::desktop();
 
-    if (UBSettings::settings()->pageDpi->get() != 0)
-        mXmlWriter.writeAttribute("pageDpi", (UBSettings::settings()->pageDpi->get()).toString());
-    else
-        mXmlWriter.writeAttribute("pageDpi", QString("%1").arg((desktop->physicalDpiX() + desktop->physicalDpiY()) / 2));
+    if (UBSettings::pageDpi == 0)
+        UBSettings::pageDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+
+    mXmlWriter.writeAttribute("pageDpi", QString::number(UBSettings::pageDpi));
 
     mXmlWriter.writeStartElement("rect");
     mXmlWriter.writeAttribute("fill", mScene->isDarkBackground() ? "black" : "white");

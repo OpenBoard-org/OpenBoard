@@ -230,6 +230,8 @@ class UBSettings : public QObject
 
         static QString appPingMessage;
 
+        static int pageDpi;
+
         UBSetting* productWebUrl;
 
         QString softwareHomeUrl;
@@ -364,7 +366,6 @@ class UBSettings : public QObject
         UBSetting* communityCredentialsPersistence;
 
         UBSetting* pageSize;
-        UBSetting* pageDpi;
 
         UBSetting* KeyboardLocale;
         UBSetting* swapControlAndDisplayScreens;
