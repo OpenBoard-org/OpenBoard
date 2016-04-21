@@ -209,8 +209,13 @@ copyQtLibrary libQt5Multimedia
 copyQtLibrary libQt5MultimediaWidgets
 copyQtLibrary libQt5Network
 copyQtLibrary libQt5OpenGL
+copyQtLibrary libQt5Positioning
 copyQtLibrary libQt5PrintSupport
+copyQtLibrary libQt5Qml
+copyQtLibrary libQt5Quick
 copyQtLibrary libQt5Script
+copyQtLibrary libQt5Sensors
+copyQtLibrary libQt5Sql
 copyQtLibrary libQt5Svg
 copyQtLibrary libQt5WebChannel
 copyQtLibrary libQt5WebKit
