@@ -62,7 +62,7 @@ UBExportFullPDF::UBExportFullPDF(QObject *parent)
     //need to calculate screen resolution
     QDesktopWidget* desktop = UBApplication::desktop();
     int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
-    mScaleFactor = 72.0f / dpiCommon;
+    mScaleFactor = 72.0f / dpiCommon; // 1pt = 1/72 inch
 
     mSimpleExporter = new UBExportPDF();
 }
@@ -206,7 +206,12 @@ bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
                     xPdfOffset += (xPdf - xAnnotation) * scaleFactor * mScaleFactor;
                     yPdfOffset -= (yPdf - yAnnotation) * scaleFactor * mScaleFactor;
 
-                    TransformationDescription pdfTransform(xPdfOffset, yPdfOffset, scaleFactor, 0);
+                    // If the PDF was scaled when added to the scene (e.g if it was loaded from a document with a different DPI
+                    // than the current one), it should also be scaled here.
+                    qreal currentDpi = (UBApplication::desktop()->physicalDpiX() + UBApplication::desktop()->physicalDpiY()) / 2;
+                    qreal pdfScale = qreal(UBSettings::pageDpi)/currentDpi;
+
+                    TransformationDescription pdfTransform(xPdfOffset, yPdfOffset, scaleFactor * pdfScale, 0);
                     TransformationDescription annotationTransform(xAnnotationsOffset, yAnnotationsOffset, 1, 0);
 
                     MergePageDescription pageDescription(pageSize.width() * mScaleFactor,
