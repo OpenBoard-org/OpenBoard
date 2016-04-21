@@ -20,9 +20,11 @@ AppUpdatesURL=http://get.openboard.org
 DefaultDirName={pf}\OpenBoard
 DefaultGroupName=OpenBoard
 
-OutputDir=.\install\win32\
+#define ProjectRoot GetEnv('PROJECT_ROOT')
+
+OutputDir={#ProjectRoot}\install\win32\
 OutputBaseFilename=OpenBoard
-SetupIconFile=.\resources\win\OpenBoard.ico
+SetupIconFile={#ProjectRoot}\resources\win\OpenBoard.ico
 Compression=lzma
 SolidCompression=yes
 
@@ -51,12 +53,12 @@ Type: files ; Name: "{app}\*.dll"
 #define QtDir GetEnv('QT_DIR')
 
 [Files]
-Source: "..\OpenBoard-ThirdParty\microsoft\vcredist_x86.exe"; DestDir:"{tmp}"
-Source: "build\win32\release\product\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\vcredist_x86.exe"; DestDir:"{tmp}"
+Source: "{#ProjectRoot}\build\win32\release\product\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ;OpenSSL
-Source: "..\OpenBoard-ThirdParty\openssl\openssl-1.0.2-win32\lib\libeay32.lib"; DestDir:"{app}"; Flags: ignoreversion
-Source: "..\OpenBoard-ThirdParty\openssl\openssl-1.0.2-win32\lib\ssleay32.lib"; DestDir:"{app}"; Flags: ignoreversion
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.0.2-win32\lib\libeay32.lib"; DestDir:"{app}"; Flags: ignoreversion
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.0.2-win32\lib\ssleay32.lib"; DestDir:"{app}"; Flags: ignoreversion
 
 ;Qt base dll
 ;Source: "OpenBoard.exe"; DestDir: "{app}"
@@ -117,13 +119,13 @@ Source: "{#QtDir}\plugins\mediaservice\wmfengine.dll"; DestDir: "{app}\mediaserv
 Source: "{#QtDir}\plugins\mediaservice\wmfengined.dll"; DestDir: "{app}\mediaservice"; Flags: ignoreversion   
 
 ;OpenBoardImporter
-Source: "..\OpenBoard-Importer\release\OpenBoardImporter.exe"; DestDir: "{app}\Importer"; Flags: ignoreversion
+Source: "{#ProjectRoot}\..\OpenBoard-Importer\release\OpenBoardImporter.exe"; DestDir: "{app}\Importer"; Flags: ignoreversion
 Source: "{#QtLibs}\Qt5Core.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Gui.dll"; DestDir: "{app}"
 
 ;fonts for xpdf
-Source: "resources\windows\xpdfrc"; DestDir: "{app}"; Flags: ignoreversion
-Source: "resources\fonts\*"; DestDir: "{app}\fonts"; Flags: ignoreversion
+Source: "{#ProjectRoot}\resources\windows\xpdfrc"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#ProjectRoot}\resources\fonts\*"; DestDir: "{app}\fonts"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\OpenBoard"; Filename: "{app}\OpenBoard.exe"
