@@ -20,7 +20,8 @@ initializeVariables()
   STANDARD_QT_USED=false
 
   # Root directory
-  PROJECT_ROOT="`pwd`/../.."
+  SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+  PROJECT_ROOT="$SCRIPT_PATH/../.."
   BUILD_DIR="$PROJECT_ROOT/build/linux/release"
   PRODUCT_PATH="$BUILD_DIR/product"
 
