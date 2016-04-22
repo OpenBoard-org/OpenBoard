@@ -828,7 +828,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                         QDesktopWidget* desktop = UBApplication::desktop();
                         qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
                         qreal textSizeMultiplier = qreal(UBSettings::pageDpi)/currentDpi;
-                        textDelegate->scaleTextSize(textSizeMultiplier);
+                        //textDelegate->scaleTextSize(textSizeMultiplier);
                     }
 
                     if (textItem)
