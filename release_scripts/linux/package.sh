@@ -28,7 +28,7 @@
 #    | postinst
 #    usr/
 #    | bin/
-#    | | openboard <-- actually a symlink to run.sh
+#    | | openboard <-- actually a symlink to run.sh or OpenBoard
 #    | share/
 #    | | applications/
 #    | | | openboard.desktop
@@ -37,14 +37,65 @@
 #    | | importer/
 #    | | library/
 #    | | etc/
-#    | | qtlib/
-#    | | plugins/
+#    | | qtlib/ (*)
+#    | | plugins/ (*)
 #    | | OpenBoard
 #    | | OpenBoard.png
-#    | | qt.conf
-#    | | run.sh
+#    | | run.sh (*)
 #
+# (*) Only included if Qt libs and plugins are bundled. It is necessary to
+# bundle these if the target system doesn't provide Qt 5.5.1, for example.
 # ----------------------------------------------------------------------------
+
+initializeVariables()
+{
+  # This script's path
+  SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+  PROJECT_ROOT="$SCRIPT_PATH/../.."
+
+  # Where the application was built (see build.sh)
+  BUILD_DIR="$PROJECT_ROOT/build/linux/release"
+  PRODUCT_PATH="$BUILD_DIR/product"
+  IMPORTER_DIR="$PROJECT_ROOT/../OpenBoard-Importer/"
+  IMPORTER_NAME="OpenBoardImporter"
+
+  # Where the package is built to
+  PACKAGE_BUILD_DIR="$PROJECT_ROOT/install"
+
+  # Temporary folder, where we put all the files that will be built into the
+  # package
+  BASE_WORKING_DIR="debianPackage"
+
+  APPLICATION_NAME="OpenBoard"
+  APPLICATION_CODE="openboard"
+  APPLICATION_PATH="opt"
+
+  PACKAGE_DIRECTORY=$BASE_WORKING_DIR/$APPLICATION_PATH/$APPLICATION_CODE
+  QT_PLUGINS_DEST_PATH="$PACKAGE_DIRECTORY/plugins"
+  QT_LIBRARY_DEST_PATH="$PACKAGE_DIRECTORY/qtlib"
+
+  DESKTOP_FILE_PATH="$BASE_WORKING_DIR/usr/share/applications"
+  APPLICATION_SHORTCUT="$DESKTOP_FILE_PATH/${APPLICATION_CODE}.desktop"
+
+  DESCRIPTION="OpenBoard, an interactive white board application"
+  VERSION=`cat $BUILD_DIR/version`
+  ARCHITECTURE=`cat buildContext`
+
+
+  # Include Qt libraries and plugins in the package, or not
+  # (this is necessary if the target system doesn't provide Qt 5.5.1)
+  BUNDLE_QT=false
+
+  # Qt installation path. This may vary across machines
+  QT_PATH="/usr/lib/x86_64-linux-gnu/qt5"
+  QT_PLUGINS_SOURCE_PATH="$QT_PATH/plugins"
+  GUI_TRANSLATIONS_DIRECTORY_PATH="/usr/share/qt5/translations"
+  QT_LIBRARY_SOURCE_PATH="$QT_PATH/.."
+
+  NOTIFY_CMD=`which notify-send`
+  ZIP_PATH=`which zip`
+}
 
 checkUser()
 {
@@ -98,60 +149,18 @@ copyQtPlugin(){
 
         strip $QT_PLUGINS_DEST_PATH/$1/*
         chmod 644 $QT_PLUGINS_DEST_PATH/$1/* # 644 = rw-r-r
+        chmod +rx $QT_PLUGINS_DEST_PATH/$1
 
     else
         notifyError "$1 plugin not found in path: $QT_PLUGINS_SOURCE_PATH"
     fi
 }
 
-initializeVariables()
-{
-  # This script's path
-  SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-  PROJECT_ROOT="$SCRIPT_PATH/../.."
-
-  # Where the application was built (see build.sh)
-  BUILD_DIR="$PROJECT_ROOT/build/linux/release"
-  PRODUCT_PATH="$BUILD_DIR/product"
-  IMPORTER_DIR="$PROJECT_ROOT/../OpenBoard-Importer/"
-  IMPORTER_NAME="OpenBoardImporter"
-
-  # Where the package is built to
-  PACKAGE_BUILD_DIR="$PROJECT_ROOT/install"
-
-  # Temporary folder, where we put all the files that will be built into the
-  # package
-  BASE_WORKING_DIR="debianPackage"
-
-  APPLICATION_NAME="OpenBoard"
-  APPLICATION_CODE="openboard"
-  APPLICATION_PATH="opt"
-
-  PACKAGE_DIRECTORY=$BASE_WORKING_DIR/$APPLICATION_PATH/$APPLICATION_CODE
-  QT_PLUGINS_DEST_PATH="$PACKAGE_DIRECTORY/plugins"
-  QT_LIBRARY_DEST_PATH="$PACKAGE_DIRECTORY/qtlib"
-
-  DESKTOP_FILE_PATH="$BASE_WORKING_DIR/usr/share/applications"
-  APPLICATION_SHORTCUT="$DESKTOP_FILE_PATH/${APPLICATION_CODE}.desktop"
-
-  DESCRIPTION="OpenBoard, an interactive white board application"
-  VERSION=`cat $BUILD_DIR/version`
-  ARCHITECTURE=`cat buildContext`
-
-  # Qt installation path. This may vary across machines
-  QT_PATH="/opt/qt55"
-  QT_PLUGINS_SOURCE_PATH="$QT_PATH/plugins"
-  GUI_TRANSLATIONS_DIRECTORY_PATH="$QT_PATH/translations"
-  QT_LIBRARY_SOURCE_PATH="/home/craig/openboard/qtlib"
-
-  NOTIFY_CMD=`which notify-send`
-  ZIP_PATH=`which zip`
-}
 
 # ----------------------------------------------------------------------------
 # Copying the application, libs etc. to the temporary working directory
 # ----------------------------------------------------------------------------
+
 
 initializeVariables
 
@@ -170,12 +179,13 @@ notifyProgress "Copying product directory and resources"
 cp -R $PRODUCT_PATH/* $PACKAGE_DIRECTORY
 chown -R root:root $PACKAGE_DIRECTORY
 
-cp resources/linux/run.sh $PACKAGE_DIRECTORY
-chmod a+x $PACKAGE_DIRECTORY/run.sh
-
 cp -R resources/customizations $PACKAGE_DIRECTORY/
-cp -R resources/linux/qtlinux/* $PACKAGE_DIRECTORY/
 cp resources/linux/openboard-ubz.xml $PACKAGE_DIRECTORY/etc/
+
+if $BUNDLE_QT; then
+    cp -R resources/linux/run.sh $PACKAGE_DIRECTORY/
+    chmod a+x $PACKAGE_DIRECTORY/run.sh
+fi
 
 notifyProgress "Copying importer"
 mkdir -p $PACKAGE_DIRECTORY/importer
@@ -185,45 +195,49 @@ notifyProgress "Stripping importer and main executable"
 strip $PACKAGE_DIRECTORY/$APPLICATION_NAME
 strip $PACKAGE_DIRECTORY/importer/$IMPORTER_NAME
 
-notifyProgress "Copying and stripping Qt plugins"
-mkdir -p $QT_PLUGINS_DEST_PATH
-copyQtPlugin audio
-copyQtPlugin generic
-copyQtPlugin iconengines
-copyQtPlugin imageformats
-copyQtPlugin mediaservice
-copyQtPlugin platforminputcontexts
-copyQtPlugin platforms
-copyQtPlugin platformthemes
-copyQtPlugin position
-copyQtPlugin printsupport
-copyQtPlugin qtwebengine
-copyQtPlugin sceneparsers
-copyQtPlugin xcbglintegrations
+if $BUNDLE_QT; then
+    notifyProgress "Copying and stripping Qt plugins"
+    mkdir -p $QT_PLUGINS_DEST_PATH
+    copyQtPlugin audio
+    copyQtPlugin generic
+    copyQtPlugin iconengines
+    copyQtPlugin imageformats
+    copyQtPlugin mediaservice
+    copyQtPlugin platforminputcontexts
+    copyQtPlugin platforms
+    copyQtPlugin platformthemes
+    copyQtPlugin position
+    copyQtPlugin printsupport
+    copyQtPlugin qtwebengine
+    copyQtPlugin sceneparsers
+    copyQtPlugin xcbglintegrations
 
-notifyProgress "Copying and stripping Qt libraries"
-mkdir -p $QT_LIBRARY_DEST_PATH
-copyQtLibrary libQt5Core
-copyQtLibrary libQt5Gui
-copyQtLibrary libQt5Multimedia
-copyQtLibrary libQt5MultimediaWidgets
-copyQtLibrary libQt5Network
-copyQtLibrary libQt5OpenGL
-copyQtLibrary libQt5Positioning
-copyQtLibrary libQt5PrintSupport
-copyQtLibrary libQt5Qml
-copyQtLibrary libQt5Quick
-copyQtLibrary libQt5Script
-copyQtLibrary libQt5Sensors
-copyQtLibrary libQt5Sql
-copyQtLibrary libQt5Svg
-copyQtLibrary libQt5WebChannel
-copyQtLibrary libQt5WebKit
-copyQtLibrary libQt5WebKitWidgets
-copyQtLibrary libQt5Widgets
-copyQtLibrary libQt5XcbQpa
-copyQtLibrary libQt5Xml
-copyQtLibrary libQt5XmlPatterns
+    notifyProgress "Copying and stripping Qt libraries"
+    mkdir -p $QT_LIBRARY_DEST_PATH
+    copyQtLibrary libQt5Core
+    copyQtLibrary libQt5DBus
+    copyQtLibrary libQt5Gui
+    copyQtLibrary libQt5Multimedia
+    copyQtLibrary libQt5MultimediaWidgets
+    copyQtLibrary libQt5Network
+    copyQtLibrary libQt5OpenGL
+    copyQtLibrary libQt5Positioning
+    copyQtLibrary libQt5PrintSupport
+    copyQtLibrary libQt5Qml
+    copyQtLibrary libQt5Quick
+    copyQtLibrary libQt5Script
+    copyQtLibrary libQt5Sensors
+    copyQtLibrary libQt5Sql
+    copyQtLibrary libQt5Svg
+    copyQtLibrary libQt5WebChannel
+    copyQtLibrary libQt5WebKit
+    copyQtLibrary libQt5WebKitWidgets
+    copyQtLibrary libQt5Widgets
+    copyQtLibrary libQt5XcbQpa
+    copyQtLibrary libQt5Xml
+    copyQtLibrary libQt5XmlPatterns
+    copyQtLibrary libqgsttools_p
+fi
 
 notifyProgress "Copying Qt translations"
 mkdir -p $PACKAGE_DIRECTORY/i18n
@@ -237,15 +251,52 @@ notifyProgress "Generating control files for package"
 
 mkdir -p "$BASE_WORKING_DIR/DEBIAN"
 
-# Copy prerm, postinst scripts
+# Copy prerm script
 cp -r "$SCRIPT_PATH/debian_package_files/prerm" "$BASE_WORKING_DIR/DEBIAN/"
-cp -r "$SCRIPT_PATH/debian_package_files/postinst" "$BASE_WORKING_DIR/DEBIAN/"
 chmod 755 "$BASE_WORKING_DIR/DEBIAN/prerm"
+
+# Generate postinst script (can't copy it like prerm because some paths vary depending on
+# the values of the variables in this script)
+
+SYMLINK_TARGET="/$APPLICATION_PATH/$APPLICATION_CODE/$APPLICATION_NAME"
+if $BUNDLE_QT ; then
+    SYMLINK_TARGET="/$APPLICATION_PATH/$APPLICATION_CODE/run.sh"
+fi
+
+cat > "$BASE_WORKING_DIR/DEBIAN/postinst" << EOF
+#!/bin/bash
+# --------------------------------------------------------------------
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# ---------------------------------------------------------------------
+
+xdg-desktop-menu install --novendor /usr/share/applications/${APPLICATION_CODE}.desktop
+xdg-mime install --mode system /$APPLICATION_PATH/$APPLICATION_CODE/etc/openboard-ubz.xml
+xdg-mime default /usr/share/applications/${APPLICATION_CODE}.desktop application/ubz
+
+ln -s $SYMLINK_TARGET /usr/bin/$APPLICATION_CODE
+
+exit 0
+EOF
+
 chmod 755 "$BASE_WORKING_DIR/DEBIAN/postinst"
 
+
 # Generate md5 sums of everything in the application path (e.g /opt) and the desktop entry
-find $BASE_WORKING_DIR/$APPLICATION_PATH/ -exec md5sum {} > $BASE_WORKING_DIR/DEBIAN/md5sums 2>/dev/null \;
-find $DESKTOP_FILE_PATH/ -exec md5sum {} > $BASE_WORKING_DIR/DEBIAN/md5sums 2>/dev/null \;
+cd $BASE_WORKING_DIR
+find $APPLICATION_PATH/ -exec md5sum {} > DEBIAN/md5sums 2>/dev/null \;
+find $DESKTOP_FILE_PATH/ -exec md5sum {} >> DEBIAN/md5sums 2>/dev/null \;
+cd $PROJECT_ROOT
 
 # Generate control file
 CONTROL_FILE="$BASE_WORKING_DIR/DEBIAN/control"
@@ -262,28 +313,52 @@ echo "Homepage: https://github.com/DIP-SEM/OpenBoard" >> "$CONTROL_FILE"
 
 # Generate dependency list
 echo -n "Depends: " >> "$CONTROL_FILE"
-#echo -n "libpaper1, zlib1g (>= 1.2.8), libssl1.0.0 (>= 1.0.1), libx11-6, libgl1-mesa-glx, libc6 (>= 2.19), libstdc++6 (>= 4.8.4), libgomp1, onboard" >> "$CONTROL_FILE"
 
 unset tab
 declare -a tab
 let count=0
-for l in `objdump -p $PACKAGE_DIRECTORY/${APPLICATION_NAME} | grep NEEDED | awk '{ print $2 }'`; do
-    for lib in `dpkg -S  $l | grep -v "libqt5" | grep -v "qt55" | awk -F":" '{ print $1 }'`; do
-        presence=`echo ${tab[*]} | grep -c "$lib"`;
-        if [ "$presence" == "0" ]; then
-            tab[$count]=$lib;
-            ((count++));
-        fi;
+
+if $BUNDLE_QT; then
+    for l in `objdump -p $PACKAGE_DIRECTORY/${APPLICATION_NAME} | grep NEEDED | awk '{ print $2 }'`; do
+        for lib in `dpkg -S  $l | grep -v "libqt5" | grep -v "qt55" | awk -F":" '{ print $1 }'`; do
+            presence=`echo ${tab[*]} | grep -c "$lib"`;
+            if [ "$presence" == "0" ]; then
+                tab[$count]=$lib;
+                ((count++));
+            fi;
+        done;
     done;
-done;
+else
+    for l in `objdump -p $PACKAGE_DIRECTORY/${APPLICATION_NAME} | grep NEEDED | awk '{ print $2 }'`; do
+        for lib in `dpkg -S  $l | awk -F":" '{ print $1 }'`; do
+            presence=`echo ${tab[*]} | grep -c "$lib"`;
+            if [ "$presence" == "0" ]; then
+                tab[$count]=$lib;
+                ((count++));
+            fi;
+        done;
+    done;
+fi
+
 
 for ((i=0;i<${#tab[@]};i++)); do
     if [ $i -ne "0" ]; then
         echo -n ",    " >> "$CONTROL_FILE"
     fi
+    
     echo -n "${tab[$i]} (>= "`dpkg -p ${tab[$i]} | grep "Version: " | awk '{      print $2 }' | sed -e 's/\([:. 0-9?]*\).*/\1/g' | sed -e 's/\.$//'`") " >> "$CONTROL_FILE"
 done
 echo -n ",  onboard" >> "$CONTROL_FILE"
+
+if $BUNDLE_QT; then
+    # Listing some dependencies manually; ideally we should use dpkg -p recursively 
+    # to get the dependencies of the bundled shared libs & plugins. Or use static libs.
+    echo -n ",  libxcb-render-util0" >> "$CONTROL_FILE"
+    echo -n ",  libxcb-icccm4" >> "$CONTROL_FILE"
+    echo -n ",  libxcb-xkb1" >> "$CONTROL_FILE"
+else
+    echo -n ",  libqt5multimedia5-plugins" >> "$CONTROL_FILE"
+fi
 
 echo "" >> "$CONTROL_FILE"
 echo "Description: $DESCRIPTION" >> "$CONTROL_FILE"
@@ -297,7 +372,6 @@ echo "Version=$VERSION" >> $APPLICATION_SHORTCUT
 echo "Encoding=UTF-8" >> $APPLICATION_SHORTCUT
 echo "Name=${APPLICATION_NAME}" >> $APPLICATION_SHORTCUT
 echo "Comment=$DESCRIPTION" >> $APPLICATION_SHORTCUT
-#echo "Exec=$APPLICATION_PATH/$APPLICATION_CODE/run.sh" >> $APPLICATION_SHORTCUT
 echo "Exec=$APPLICATION_CODE %f" >> $APPLICATION_SHORTCUT
 echo "Icon=/$APPLICATION_PATH/$APPLICATION_CODE/${APPLICATION_NAME}.png" >> $APPLICATION_SHORTCUT
 echo "StartupNotify=true" >> $APPLICATION_SHORTCUT
