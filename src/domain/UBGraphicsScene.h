@@ -40,8 +40,6 @@ class UBGraphicsProxyWidget;
 class UBGraphicsSvgItem;
 class UBGraphicsPolygonItem;
 class UBGraphicsMediaItem;
-class UBGraphicsVideoItem;
-class UBGraphicsAudioItem;
 class UBGraphicsWidgetItem;
 class UBGraphicsW3CWidgetItem;
 class UBGraphicsAppleWidgetItem;
@@ -101,6 +99,8 @@ public:
     itemLayerType::Enum typeForData(QGraphicsItem *item) const;
     void setLayerType(QGraphicsItem *pItem, itemLayerType::Enum pNewType);
     void shiftStoredZValue(QGraphicsItem *item, qreal zValue);
+
+    bool zLevelAvailable(qreal z);
 
 private:
     ScopeMap scopeMap;
@@ -323,7 +323,7 @@ public slots:
         void updateSelectionFrame();
         void updateSelectionFrameWrapper(int);
         void initStroke();
-        void hideEraser();
+        void hideTool();
 
         void setBackground(bool pIsDark, bool pIsCrossed);
         void setBackgroundZoomFactor(qreal zoom);
@@ -359,8 +359,12 @@ public slots:
 
         void initPolygonItem(UBGraphicsPolygonItem*);
 
-        void drawEraser(const QPointF& pEndPoint, bool isFirstDraw = false);
+        void drawEraser(const QPointF& pEndPoint, bool pressed = true);
+        void redrawEraser(bool pressed);
+        void hideEraser();
         void drawPointer(const QPointF& pEndPoint, bool isFirstDraw = false);
+        void drawMarkerCircle(const QPointF& pEndPoint);
+        void hideMarkerCircle();
         void DisposeMagnifierQWidgets();
 
 
@@ -380,10 +384,14 @@ public slots:
         void setDocumentUpdated();
         void createEraiser();
         void createPointer();
+        void createMarkerCircle();
+        void updateEraserColor();
+        void updateMarkerCircleColor();
         bool hasTextItemWithFocus(UBGraphicsGroupContainerItem* item);
 
         QGraphicsEllipseItem* mEraser;
-        QGraphicsEllipseItem* mPointer;
+        QGraphicsEllipseItem* mPointer; // "laser" pointer
+        QGraphicsEllipseItem* mMarkerCircle; // dotted circle around marker
 
         QSet<QGraphicsItem*> mAddedItems;
         QSet<QGraphicsItem*> mRemovedItems;

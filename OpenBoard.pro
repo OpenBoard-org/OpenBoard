@@ -9,17 +9,22 @@ CONFIG += debug_and_release \
 
 
 VERSION_MAJ = 1
-VERSION_MIN = 02
+VERSION_MIN = 3
+VERSION_PATCH = 0
 VERSION_TYPE = r # a = alpha, b = beta, rc = release candidate, r = release, other => error
-VERSION_PATCH = 10
+VERSION_BUILD = 0
 
-VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_TYPE}.$${VERSION_PATCH}"
-VERSION = $$replace(VERSION, "\\.r", "")
+VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$${VERSION_BUILD}"
+
+equals(VERSION_TYPE, r) {
+    VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}"
+}
+
 
 LONG_VERSION = "$${VERSION}.$${SVN_VERSION}"
 macx:OSX_VERSION = "$${VERSION} (r$${SVN_VERSION})"
 
-VERSION_RC = $$VERSION_MAJ,$$VERSION_MIN,$$VERSION_TYPE,$$VERSION_PATCH
+VERSION_RC = $$VERSION_MAJ,$$VERSION_MIN,$$VERSION_PATCH,$$VERSION_TYPE,$$VERSION_BUILD
 VERSION_RC = $$replace(VERSION_RC, "a", "160") # 0xA0
 VERSION_RC = $$replace(VERSION_RC, "b", "176") # 0xB0
 VERSION_RC = $$replace(VERSION_RC, "rc", "192" ) # 0xC0
@@ -109,12 +114,20 @@ RCC_DIR = $$BUILD_DIR/rcc
 UI_DIR = $$BUILD_DIR/ui
 
 win32 {
+
+
+   LIBS += -lUser32
+   LIBS += -lGdi32
+   LIBS += -lAdvApi32
+   LIBS += -lOle32
+
    RC_FILE = resources/win/OpenBoard.rc
-   CONFIG += qaxcontainer
+   CONFIG += axcontainer
    exists(console):CONFIG += console
    QMAKE_CXXFLAGS += /MP
+   QMAKE_CXXFLAGS += /MD
    QMAKE_CXXFLAGS_RELEASE += /Od /Zi
-   QMAKE_LFLAGS_RELEASE += /DEBUG
+   QMAKE_LFLAGS += /VERBOSE:LIB
    UB_LIBRARY.path = $$DESTDIR
    UB_I18N.path = $$DESTDIR/i18n
    UB_ETC.path = $$DESTDIR
@@ -124,36 +137,41 @@ win32 {
    system(echo "$$LONG_VERSION" > $$BUILD_DIR/longversion)
    system(echo "$$SVN_VERSION" > $$BUILD_DIR/svnversion)
 
+   DEFINES += NOMINMAX # avoids compilation error in qdatetime.h
+
+
 }
 
 macx {
    LIBS += -framework Foundation
+   LIBS += -framework Cocoa
+   LIBS += -framework Carbon
+   LIBS += -framework AVFoundation
+   LIBS += -framework CoreMedia
    LIBS += -lcrypto
 
-   CONFIG(release, debug|release):CONFIG += x86
+   CONFIG(release, debug|release):CONFIG += x86_64
+   CONFIG(debug, debug|release):CONFIG += x86_64
 
-   # [03-02-2011] We must use the 32bit version for the moment
-   # because the Quicktime components used by this application
-   # are not yet available in 64bits.
-   CONFIG(debug, debug|release):CONFIG += x86
+   QMAKE_MAC_SDK = macosx
+   QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.10
 
-   QMAKE_MAC_SDK = "/Developer/SDKs/MacOSX10.6.sdk"
-   QMAKE_MACOSX_DEPLOYMENT_TARGET = "10.5"
+   QMAKE_CXXFLAGS += -Wno-overloaded-virtual
+   #VERSION_RC_PATH = "$$BUILD_DIR/version_rc"
 
-   VERSION_RC_PATH = "$$BUILD_DIR/version_rc"
-
+   # No references to breakpad in the code =>is this still used?
    # Embed version into executable for breakpad
-   QMAKE_LFLAGS += -sectcreate \
-       __DATA \
-       __version \
-       $$VERSION_RC_PATH
+   #QMAKE_LFLAGS += -sectcreate \
+   #    __DATA \
+   #    __version \
+   #    $$VERSION_RC_PATH
 
    QMAKE_CXXFLAGS_RELEASE += -gdwarf-2 \
        -mdynamic-no-pic
 
-   QMAKE_CFLAGS += -fopenmp
-   QMAKE_CXXFLAGS += -fopenmp
-   QMAKE_LFLAGS += -fopenmp
+#    QMAKE_CFLAGS += -fopenmp
+ #   QMAKE_CXXFLAGS += -fopenmp
+  #  QMAKE_LFLAGS += -fopenmp
 
    CONTENTS_DIR = "Contents"
    RESOURCES_DIR = "Contents/Resources"
@@ -364,7 +382,7 @@ macx {
    system(mkdir -p $$BUILD_DIR)
    system(printf \""$$OSX_VERSION"\" > $$BUILD_DIR/osx_version)
    system(printf \""$$VERSION"\" > $$BUILD_DIR/version)
-   system(printf "%02x%02x%02x%02x" `printf $$VERSION_RC | cut -d ',' -f 1` `printf $$VERSION_RC | cut -d ',' -f 2` `printf $$VERSION_RC | cut -d ',' -f 3` `printf $$VERSION_RC | cut -d ',' -f 4` | xxd -r -p > "$$VERSION_RC_PATH")
+  # system(printf "%02x%02x%02x%02x" `printf $$VERSION_RC | cut -d ',' -f 1` `printf $$VERSION_RC | cut -d ',' -f 2` `printf $$VERSION_RC | cut -d ',' -f 3` `printf $$VERSION_RC | cut -d ',' -f 4` | xxd -r -p > "$$VERSION_RC_PATH")
 }
 
 linux-g++* {

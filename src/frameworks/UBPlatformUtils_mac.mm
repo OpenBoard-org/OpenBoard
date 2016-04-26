@@ -33,8 +33,8 @@
 #include <QWidget>
 
 #import <Foundation/NSAutoreleasePool.h>
+#import <Cocoa/Cocoa.h>
 #import <Carbon/Carbon.h>
-#import <APELite.h>
 
 NSString* bundleShortVersion(NSBundle *bundle)
 {
@@ -51,20 +51,11 @@ OSStatus emptySetSystemUIMode (
     return noErr;
 }
 
-void *originalSetSystemUIMode = 0;
+//void *originalSetSystemUIMode = 0;
 
 void UBPlatformUtils::init()
 {
     initializeKeyboardLayouts();
-
-    // qwidget_mac.mm qt_mac_set_fullscreen_mode uses kUIModeAllSuppressed which is unfortunate in our case
-    //
-    // http://developer.apple.com/mac/library/documentation/Carbon/Reference/Dock_Manager/Reference/reference.html#//apple_ref/c/func/SetSystemUIMode
-    //
-
-    originalSetSystemUIMode = APEPatchCreate((const void *)SetSystemUIMode, (const void *)emptySetSystemUIMode);
-
-    setDesktopMode(false);
 
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
@@ -93,18 +84,21 @@ void UBPlatformUtils::init()
 
 void UBPlatformUtils::setDesktopMode(bool desktop)
 {
-#ifndef OS_NEWER_THAN_OR_EQUAL_TO_1010
-    OSStatus (*functor)(SystemUIMode, SystemUIOptions) = (OSStatus (*)(SystemUIMode, SystemUIOptions))originalSetSystemUIMode;
 
-    if (desktop)
-    {
-        functor(kUIModeNormal, 0);
+    @try {
+        // temporarily disabled due to bug: when switching to desktop mode (and calling this),
+        // openboard switches right back to the board mode. clicking again on desktop mode works.
+        /*if (desktop) {
+            [NSApp setPresentationOptions:NSApplicationPresentationAutoHideMenuBar | NSApplicationPresentationAutoHideDock];
+        }
+        else*/
+            [NSApp setPresentationOptions:NSApplicationPresentationHideMenuBar | NSApplicationPresentationHideDock];
     }
-    else
-    {
-        functor(kUIModeAllHidden, 0);
+
+    @catch(NSException * exception) {
+        qDebug() << "Error setting presentation options";
     }
-#endif
+
 }
 
 
@@ -158,12 +152,12 @@ void UBPlatformUtils::setFileType(const QString &filePath, unsigned long fileTyp
     CFStringRef path = CFStringCreateWithCharacters(0, reinterpret_cast<const UniChar *>(filePath.unicode()), filePath.length());
     const CFIndex maxSize = CFStringGetMaximumSizeOfFileSystemRepresentation(path);
     UInt8 fileSystemRepresentation[maxSize];
-    CFRelease(path);
     if (!CFStringGetFileSystemRepresentation(path, (char*)fileSystemRepresentation, maxSize))
     {
         return;
     }
 
+    CFRelease(path);
     OSStatus status = FSPathMakeRefWithOptions(fileSystemRepresentation, kFSPathMakeRefDefaultOptions, &ref, NULL);
     if (status != noErr)
     {
@@ -531,24 +525,110 @@ QString UBPlatformUtils::urlFromClipboard()
 
 void UBPlatformUtils::SetMacLocaleByIdentifier(const QString& id)
 {
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    @autoreleasepool {
+        // convert id from QString to CFString
+        // TODO: clean this up
+        const QByteArray utf8 = id.toUtf8();
+        const char* cString = utf8.constData();
+        NSString * ns = [[NSString alloc] initWithUTF8String:cString];
 
-    const char * strName = id.toAscii().data();
+        CFStringRef iName = (__bridge CFStringRef)ns;
 
-    CFStringRef iName = CFStringCreateWithCString(NULL, strName, kCFStringEncodingMacRoman );
 
-    CFStringRef keys[] = { kTISPropertyInputSourceCategory, kTISPropertyInputSourceID };
-    CFStringRef values[] = { kTISCategoryKeyboardInputSource, iName };
-    CFDictionaryRef dict = CFDictionaryCreate(NULL, (const void **)keys, (const void **)values, 2, NULL, NULL);
-    CFArrayRef kbds = TISCreateInputSourceList(dict, true);
-    if (kbds!=NULL)
-    {
-        if (CFArrayGetCount(kbds)!=0)
-        {
+
+        CFStringRef keys[] = { kTISPropertyInputSourceID };
+        CFStringRef values[] = { iName };
+        CFDictionaryRef dict = CFDictionaryCreate(NULL, (const void **)keys, (const void **)values, 1, NULL, NULL);
+
+        // get list of current enabled keyboard layouts. dict filters the list
+        // false specifies that we search only through the active input sources
+        CFArrayRef kbds = TISCreateInputSourceList(dict, false);
+
+        if (kbds && CFArrayGetCount(kbds) == 0)
+            // if not found in the active sources, we search again through all sources installed
+            kbds = TISCreateInputSourceList(dict, true);
+
+        if (kbds && CFArrayGetCount(kbds)!=0) {
             TISInputSourceRef klRef =  (TISInputSourceRef)CFArrayGetValueAtIndex(kbds, 0);
             if (klRef!=NULL)
                 TISSelectInputSource(klRef);
         }
     }
-    [pool drain];
+}
+
+/**
+ * @brief Activate the current application
+ */
+void UBPlatformUtils::setFrontProcess()
+{
+    NSRunningApplication* app = [NSRunningApplication currentApplication];
+
+    // activate the application, forcing focus on it
+    [app activateWithOptions: NSApplicationActivateIgnoringOtherApps];
+
+    // other option: NSApplicationActivateAllWindows. This won't steal focus from another app, e.g
+    // if the user is doing something else while waiting for OpenBoard to load
+}
+
+
+/**
+ * @brief Full-screen a QWidget. Specific behaviour is platform-dependent.
+ * @param pWidget the QWidget to maximize
+ */
+void UBPlatformUtils::showFullScreen(QWidget *pWidget)
+{
+    /* OpenBoard is designed to be run in "kiosk mode", i.e full screen. 
+     * On OS X, we want to maximize the application while hiding the dock and menu bar, 
+     * rather than use OS X's native full screen mode (which places the window on a new desktop). 
+     * However, Qt's default behaviour when full-screening a QWidget is to set the dock and menu bar to auto-hide.
+     * Since it is impossible to later set different presentation options (i.e Hide dock & menu bar)
+     * to NSApplication, we have to avoid calling QWidget::showFullScreen on OSX.
+    */
+    
+    pWidget->showMaximized();
+
+    /* Bit of a hack. On OS X 10.10, showMaximized() resizes the widget to full screen (if the dock and
+     * menu bar are hidden); but on 10.9, it is placed in the "available" screen area (i.e the
+     * screen area minus the menu bar and dock area). So we have to manually resize it to the
+     * total screen height, and move it up to the top of the screen (y=0 position). */
+
+    QRect currentScreenRect = QApplication::desktop()->screenGeometry(pWidget);
+    pWidget->resize(currentScreenRect.width(), currentScreenRect.height());
+    pWidget->move(currentScreenRect.left(), currentScreenRect.top());
+}
+
+
+void UBPlatformUtils::showOSK(bool show)
+{
+    @autoreleasepool {
+        CFDictionaryRef properties = (CFDictionaryRef)[NSDictionary
+                      dictionaryWithObject: @"com.apple.KeyboardViewer"
+                      forKey: (NSString *)kTISPropertyInputSourceID];
+
+        NSArray *sources = (NSArray *)TISCreateInputSourceList(properties, true);
+
+        if ([sources count] > 0) {
+            TISInputSourceRef osk = (TISInputSourceRef)[sources objectAtIndex: 0];
+
+            OSStatus result;
+            if (show) {
+                TISEnableInputSource(osk);
+                result = TISSelectInputSource(osk);
+            }
+            else {
+                TISDisableInputSource(osk);
+                result = TISDeselectInputSource(osk);
+            }
+
+            if (result == paramErr) {
+                qWarning() << "Unable to select input source";
+                UBApplication::showMessage(tr("Unable to activate system on-screen keyboard"));
+            }
+        }
+
+        else {
+            qWarning() << "System OSK not found";
+            UBApplication::showMessage(tr("System on-screen keyboard not found"));
+        }
+    }
 }

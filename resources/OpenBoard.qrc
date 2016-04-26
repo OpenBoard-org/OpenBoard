@@ -60,9 +60,9 @@
         <file>images/toolbar/background.png</file>
         <file>images/toolbar/documents.png</file>
         <file>images/toolbar/newPage.png</file>
-        <file>images/toolbar/nextPage.png</file>
+        <file>images/toolbar/next.png</file>
         <file>images/toolbar/nextPageOn.png</file>
-        <file>images/toolbar/previousPage.png</file>
+        <file>images/toolbar/previous.png</file>
         <file>images/toolbar/previousPageOn.png</file>
         <file>images/toolbar/redo.png</file>
         <file>images/toolbar/redoOn.png</file>

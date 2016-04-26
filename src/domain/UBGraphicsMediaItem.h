@@ -30,9 +30,6 @@
 
 #include <QtWidgets/QGraphicsView>
 #include "UBGraphicsProxyWidget.h"
-//#include <phonon/AudioOutput>
-//#include <phonon/MediaObject>
-//#include <phonon/VideoWidget>
 
 #include <QAudioOutput>
 #include <QMediaObject>
@@ -46,7 +43,9 @@
 #include "board/UBBoardController.h"
 #include "frameworks/UBFileSystemUtils.h"
 
-class UBGraphicsMediaItem : public UBGraphicsProxyWidget
+class QGraphicsVideoItem;
+
+class UBGraphicsMediaItem : public QObject, public UBItem, public UBGraphicsItem, public QGraphicsRectItem, public UBResizableGraphicsItem
 {
     Q_OBJECT
 
@@ -56,9 +55,6 @@ public:
         mediaType_Audio
     } mediaType;
 
-    UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent = 0);
-    ~UBGraphicsMediaItem();
-
     enum { Type = UBGraphicsItemType::MediaItemType };
 
     virtual int type() const
@@ -66,52 +62,49 @@ public:
         return Type;
     }
 
-    virtual QUrl mediaFileUrl() const
-    {
-        return mMediaFileUrl;
-    }
+    static UBGraphicsMediaItem* createMediaItem(const QUrl& pMediaFileUrl, QGraphicsItem* parent = 0);
 
-    virtual void mediaFileUrl(QUrl url){mMediaFileUrl=url;}
+    UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsItem* parent = 0);
+    ~UBGraphicsMediaItem();
 
-    //Phonon::MediaObject* mediaObject() const
-    QMediaPlayer* mediaObject() const
 
-    {
-        return mMediaObject;
-    }
+    // Getters
 
-    void setInitialPos(qint64 p) {
-        mInitialPos = p;
-    }
-    qint64 initialPos() {
-        return mInitialPos;
-    }
-
-    bool isMuted() const
-    {
-        return mMuted;
-    }
-
-   // Phonon::VideoWidget* videoWidget() const
-    QVideoWidget* videoWidget() const
-
-    {
-        return mVideoWidget;
-    }
-
-    bool hasLinkedImage(){return haveLinkedImage;}
-
-    mediaType getMediaType() { return mMediaType; }
+    virtual mediaType getMediaType() const = 0;
 
     virtual UBGraphicsScene* scene();
+    bool hasLinkedImage() const             { return haveLinkedImage; }
+    virtual QUrl mediaFileUrl() const       { return mMediaFileUrl; }
+    bool isMuted() const                    { return mMuted; }
+    qint64 initialPos() const               { return mInitialPos; }
 
-    virtual UBItem* deepCopy() const;
+    bool isMediaSeekable() const;
+    qint64 mediaDuration() const;
+    qint64 mediaPosition() const;
+
+    QMediaPlayer::State playerState() const;
+    bool isPlaying() const { return (mMediaObject->state() == QMediaPlayer::PlayingState); }
+    bool isPaused() const { return (mMediaObject->state() == QMediaPlayer::PausedState); }
+    bool isStopped() const;
+
+    QRectF boundingRect() const;
+
+    QSizeF size() const { return rect().size(); } 
+
+    // Setters
+    virtual void setMediaFileUrl(QUrl url);
+    void setInitialPos(qint64 p);
+    void setMediaPos(qint64 p);
+    virtual void setSourceUrl(const QUrl &pSourceUrl);
+    void setSelected(bool selected);
+    void setMinimumSize(const QSize& size);
 
     virtual void copyItemParameters(UBItem *copy) const;
 
-    virtual void setSourceUrl(const QUrl &pSourceUrl);
+    virtual void setSize(int width, int height);
+    void resize(qreal w, qreal h) { setSize(w, h); }
 
-    void setSelected(bool selected);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 
 public slots:
@@ -119,40 +112,34 @@ public slots:
     void toggleMute();
     void setMute(bool bMute);
     void activeSceneChanged();
-    void hasMediaChanged(bool hasMedia);
     void showOnDisplayChanged(bool shown);
+
+    virtual void play();
+    virtual void pause();
+    virtual void stop();
+    virtual void togglePlayPause();
+
+protected slots:
+    void mediaError(QMediaPlayer::Error errorCode);
 
 protected:
 
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+
     virtual void clearSource();
 
-    //Phonon::MediaObject *mMediaObject;
-    //Phonon::VideoWidget *mVideoWidget;
-    //Phonon::AudioOutput *mAudioOutput;
-    //Phonon::MediaSource mSource;
-
     QMediaPlayer *mMediaObject;
-    QMediaPlaylist *playlist;
-    QVideoWidget *mVideoWidget;
-//    QAudioOutput *mAudioOutput;
-    QMediaPlayer *mAudioOutput;
-    QMediaService *mSource;
 
-    QWidget *mAudioWidget;
-
-private:
+    QSize mMinimumSize;
 
     bool mMuted;
     bool mMutedByUserAction;
     static bool sIsMutedByDefault;
+    bool mStopped;
 
     QUrl mMediaFileUrl;
     QString mMediaSource;
-
-    mediaType mMediaType;
 
     bool mShouldMove;
     QPointF mMousePressPos;
@@ -162,5 +149,57 @@ private:
     QGraphicsPixmapItem *mLinkedImage;
 
     qint64 mInitialPos;
+
+    QString mErrorString;
 };
+
+class UBGraphicsAudioItem: public UBGraphicsMediaItem
+{
+    Q_OBJECT
+
+public:
+
+    UBGraphicsAudioItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent = 0);
+    mediaType getMediaType() const { return mediaType_Audio; }
+
+    virtual UBItem* deepCopy() const;
+};
+
+class UBGraphicsVideoItem: public UBGraphicsMediaItem
+{
+    Q_OBJECT
+
+public:
+
+    UBGraphicsVideoItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent = 0);
+
+    mediaType getMediaType() const { return mediaType_Video; }
+
+    void setSize(int width, int height);
+
+    virtual UBItem* deepCopy() const;
+
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+public slots:
+    void videoSizeChanged(QSizeF newSize);
+    void hasVideoChanged(bool hasVideo);
+    void mediaStateChanged(QMediaPlayer::State state);
+    void activeSceneChanged();
+
+protected slots:
+    void mediaError(QMediaPlayer::Error errorCode);
+
+protected:
+
+    QGraphicsVideoItem *mVideoItem;
+
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+
+    void setPlaceholderVisible(bool visible);
+};
+
+
 #endif // UBGRAPHICSMEDIAITEM_H

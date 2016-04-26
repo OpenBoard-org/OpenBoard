@@ -66,6 +66,10 @@ protected:
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
+    // Graphical display of stroke Z-level
+    bool debugTextEnabled;
+    QGraphicsSimpleTextItem * mDebugText;
 };
 
 #endif // UBGRAPHICSSTROKESGROUP_H

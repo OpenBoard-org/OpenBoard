@@ -48,6 +48,8 @@ UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent)
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
 
+    mDebugText = NULL;
+    debugTextEnabled = false; // set to true to get a graphical display of strokes' Z-levels
 }
 
 UBGraphicsStrokesGroup::~UBGraphicsStrokesGroup()
@@ -81,6 +83,9 @@ void UBGraphicsStrokesGroup::setColor(const QColor &color, colorType pColorType)
             }
         }
     }
+
+    if (mDebugText)
+        mDebugText->setBrush(QBrush(color));
 }
 
 QColor UBGraphicsStrokesGroup::color(colorType pColorType) const
@@ -111,30 +116,27 @@ QColor UBGraphicsStrokesGroup::color(colorType pColorType) const
 
 void UBGraphicsStrokesGroup::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (Delegate()->mousePressEvent(event))
-    {
-        //NOOP
-    }
-    else
-    {
-//        QGraphicsItemGroup::mousePressEvent(event);
-    }
+    Delegate()->startUndoStep();
+
+    QGraphicsItemGroup::mousePressEvent(event);
+    event->accept();
+
+    setSelected(false);
 }
 
 void UBGraphicsStrokesGroup::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (Delegate()->mouseMoveEvent(event))
-    {
-        // NOOP;
-    }
-    else
-    {
-        QGraphicsItemGroup::mouseMoveEvent(event);
-    }
+    QGraphicsItemGroup::mouseMoveEvent(event);
+
+    event->accept();
+    setSelected(false);
 }
 
 void UBGraphicsStrokesGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    Delegate()->commitUndoStep();
+    event->accept();
+
     Delegate()->mouseReleaseEvent(event);
     QGraphicsItemGroup::mouseReleaseEvent(event);
 }
@@ -169,7 +171,7 @@ UBItem* UBGraphicsStrokesGroup::deepCopy() const
         }
     }
     const_cast<UBGraphicsStrokesGroup*>(this)->setTransform(groupTransform);
-    copy->setTransform(groupTransform);
+    copy->setTransform(sceneTransform());
 
     return copy;
 }
@@ -185,6 +187,7 @@ void UBGraphicsStrokesGroup::copyItemParameters(UBItem *copy) const
         cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
         cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
+        cp->setZValue(this->zValue());
     }
 }
 
@@ -203,6 +206,23 @@ void UBGraphicsStrokesGroup::paint(QPainter *painter, const QStyleOptionGraphics
 
 QVariant UBGraphicsStrokesGroup::itemChange(GraphicsItemChange change, const QVariant &value)
 {
+    if (debugTextEnabled && change == ItemZValueChange) {
+        double newZ = qvariant_cast<double>(value);
+
+        UBGraphicsPolygonItem * poly = NULL;
+        if (childItems().size() > 2)
+            poly = dynamic_cast<UBGraphicsPolygonItem*>(childItems()[1]);
+
+        if (poly) {
+            if (!mDebugText) {
+                mDebugText = new QGraphicsSimpleTextItem("None", this);
+                mDebugText->setPos(poly->boundingRect().topLeft() + QPointF(10, 10));
+                mDebugText->setBrush(QBrush(poly->color()));
+            }
+            mDebugText->setText(QString("Z: %1").arg(newZ));
+        }
+    }
+
     QVariant newValue = Delegate()->itemChange(change, value);
     return QGraphicsItemGroup::itemChange(change, newValue);
 }

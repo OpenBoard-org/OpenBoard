@@ -332,7 +332,7 @@ void UBDesktopAnnotationController::showWindow()
     UBDrawingController::drawingController()->setStylusTool(mDesktopStylusTool);
 
 #ifndef Q_OS_LINUX
-    mTransparentDrawingView->showFullScreen();
+    UBPlatformUtils::showFullScreen(mTransparentDrawingView);
 #else
     // this is necessary to avoid unity to hide the panels
     mTransparentDrawingView->show();
@@ -500,13 +500,12 @@ void UBDesktopAnnotationController::screenCapture()
 QPixmap UBDesktopAnnotationController::getScreenPixmap()
 {
     QDesktopWidget *desktop = QApplication::desktop();
+    QScreen * screen = QApplication::primaryScreen();
 
-    // we capture the screen in which the mouse is.
-    const QRect primaryScreenRect = desktop->screenGeometry(QCursor::pos());
-    QCoreApplication::flush();
+    QRect rect = desktop->screenGeometry(QCursor::pos());
 
-    return QPixmap::grabWindow(desktop->winId(), primaryScreenRect.x()
-                               , primaryScreenRect.y(), primaryScreenRect.width(), primaryScreenRect.height());
+    return screen->grabWindow(desktop->effectiveWinId(),
+                              rect.x(), rect.y(), rect.width(), rect.height());
 }
 
 

@@ -91,19 +91,14 @@ int main(int argc, char *argv[])
 #endif
 */
 
+    // QT_NO_GLIB=1 is set by default on Linux, and prevents media playback
+    if (qEnvironmentVariableIsSet("QT_NO_GLIB"))
+        qunsetenv("QT_NO_GLIB");
+
     Q_INIT_RESOURCE(OpenBoard);
 
     qInstallMessageHandler(ub_message_output);
 
-
-    /*
-     * setGraphicsSystem is obsolete in Qt5, made redundant by the QPA framework.
-     * TODO: check if this works ok, if not, explore how to use QPA framework
-#if defined(Q_OS_LINUX)
-    qDebug() << "Setting GraphicsSystem to raster";
-    QApplication::setGraphicsSystem("raster");
-#endif
-    */
     UBApplication app("OpenBoard", argc, argv);
 
     QStringList args = app.arguments();
@@ -132,9 +127,8 @@ int main(int argc, char *argv[])
         }
     }
 
-    //app.initialize(false); // should not be needed anymore
 
-    QObject::connect(&app, SIGNAL(messageReceived(const QString&)), &app, SLOT(handleOpenMessage(const QString&)));
+    QObject::connect(&app, SIGNAL(messageReceived(const QString&, QObject*)), &app, SLOT(handleOpenMessage(const QString&)));
 
     qDebug() << "file name argument" << fileToOpen;
     int result = app.exec(fileToOpen);

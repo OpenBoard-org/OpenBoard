@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="tr_TR">
+<TS version="2.1" language="tr_TR">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -842,11 +842,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation>Element ID = </translation>
+        <translation type="vanished">Element ID = </translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation>İçerik hedef içerik için uygun geğil.</translation>
+        <translation type="vanished">İçerik hedef içerik için uygun geğil.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -936,6 +936,14 @@
     <message>
         <source>Ungroup</source>
         <translation>Gurubu Ayır</translation>
+    </message>
+    <message>
+        <source>Saving document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document has just been saved...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1131,6 +1139,14 @@
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Are you sure you want to remove all selected documents?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove multiple documents</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1222,23 +1238,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation>IWB&apos;e Aktar</translation>
+        <translation type="vanished">IWB&apos;e Aktar</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation>IWB Dosyası Olarak Aktar</translation>
+        <translation type="vanished">IWB Dosyası Olarak Aktar</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Döküman dışa aktarılıyor...</translation>
+        <translation type="vanished">Döküman dışa aktarılıyor...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Dışa aktarma tamamlandı.</translation>
+        <translation type="vanished">Dışa aktarma tamamlandı.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>Dışa aktarma başarısız oldu.</translation>
+        <translation type="vanished">Dışa aktarma başarısız oldu.</translation>
     </message>
 </context>
 <context>
@@ -1267,6 +1283,18 @@
         <source>Export to OpenBoard Format</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBExportFullPDF</name>
@@ -1285,6 +1313,18 @@
     <message>
         <source>Export to PDF</source>
         <translation>PDF Olarak Aktar</translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1487,6 +1527,25 @@
     </message>
 </context>
 <context>
+    <name>UBGraphicsMediaItem</name>
+    <message>
+        <source>Media resource couldn&apos;t be resolved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsupported media format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Media playback service not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Media error: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBGraphicsTextItem</name>
     <message>
         <source>&lt;Type Text Here&gt;</source>
@@ -1533,23 +1592,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation>Genel Dosya Biçimi (</translation>
+        <translation type="vanished">Genel Dosya Biçimi (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation>İçe aktarılan dosya: %1...</translation>
+        <translation type="vanished">İçe aktarılan dosya: %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>%1 adlı dosya içe aktarılamadı.</translation>
+        <translation type="vanished">%1 adlı dosya içe aktarılamadı.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>İçe aktarım tamamlandı.</translation>
+        <translation type="vanished">İçe aktarım tamamlandı.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation>İçe aktarım tamamlanmadı.</translation>
+        <translation type="vanished">İçe aktarım tamamlanmadı.</translation>
     </message>
 </context>
 <context>
@@ -1681,10 +1740,6 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open-SankorÃ© documents are present on your computer. It is possible to import them to OpenBoard by pressing the âProceedâ button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show this panel next time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1698,6 +1753,10 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
     </message>
     <message>
         <source>Proceed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2412,7 +2471,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation>Klavye tuş boyutu:</translation>
+        <translation type="vanished">Klavye tuş boyutu:</translation>
     </message>
     <message>
         <source>Positioned at the Top (recommended for tablets)</source>
@@ -2470,7 +2529,7 @@ p, li { white-space: pre-wrap; }
         <source>Marker</source>
         <translation>Fosforlu Kalem</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>version : …</source>
         <translation>Versiyon: ...</translation>
     </message>
@@ -2522,12 +2581,20 @@ p, li { white-space: pre-wrap; }
         <source>Credits</source>
         <translation>Künye</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Open-Sankoré Importer</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

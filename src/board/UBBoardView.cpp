@@ -99,6 +99,12 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool
     init ();
 
     mFilterZIndex = false;
+    /*
+    mFilterZIndex = true;
+    mStartLayer = UBItemLayerType::FixedBackground;
+    mEndLayer = UBItemLayerType::Control;
+    */
+
 
     mLongPressTimer.setInterval(mLongPressInterval);
     mLongPressTimer.setSingleShot(true);
@@ -561,7 +567,7 @@ Here we determines cases when items should to get mouse press event at pressing 
         break;
 
     case UBGraphicsItemType::StrokeItemType:
-        if (currentTool == UBStylusTool::Play)
+        if (currentTool == UBStylusTool::Play || currentTool == UBStylusTool::Selector)
             return true;
         break;
     // Groups shouldn't reacts on any presses and moves for Play tool.
@@ -663,8 +669,9 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
         if (item->isSelected())
             return false;
     case UBGraphicsMediaItem::Type:
-    case UBGraphicsStrokesGroup::Type:
         return true;
+    case UBGraphicsStrokesGroup::Type:
+        return false;
     case UBGraphicsTextItem::Type:
         return !item->isSelected();
     }
@@ -872,7 +879,6 @@ bool UBBoardView::directTabletEvent(QEvent *event)
     tEvent = new QTabletEvent(tEvent->type()
                               , mapFromGlobal(tEvent->pos())
                               , tEvent->globalPos()
-                              , tEvent->hiResGlobalPos()
                               , tEvent->device()
                               , tEvent->pointerType()
                               , tEvent->pressure()
@@ -905,7 +911,7 @@ QWidget *UBBoardView::widgetForTabletEvent(QWidget *w, const QPoint &pos)
 
     QWidget *childAtPos = NULL;
 
-    QList<QObject *> childs = w->childItems();
+    QList<QObject *> childs = w->children();
     foreach(QObject *child, childs)
     {
         QWidget *childWidget = qobject_cast<QWidget *>(child);
@@ -1084,7 +1090,6 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
 
     //  QTime mouseMoveTime = QTime::currentTime();
     if(!mIsDragInProgress && ((mapToScene(event->pos()) - mLastPressedMousePos).manhattanLength() < QApplication::startDragDistance())) {
-        qDebug() << "mouse move event canceled";
         return;
     }
 
@@ -1694,7 +1699,6 @@ void UBBoardView::setToolCursor (int tool)
         break;
     case UBStylusTool::Eraser:
         controlViewport->setCursor (UBResources::resources ()->eraserCursor);
-        scene()->hideEraser();
         break;
     case UBStylusTool::Marker:
         controlViewport->setCursor (UBResources::resources ()->markerCursor);

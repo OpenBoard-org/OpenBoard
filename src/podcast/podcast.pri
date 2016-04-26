@@ -16,19 +16,20 @@ win32 {
     SOURCES  += src/podcast/windowsmedia/UBWindowsMediaVideoEncoder.cpp \
                 src/podcast/windowsmedia/UBWindowsMediaFile.cpp \
                 src/podcast/windowsmedia/UBWaveRecorder.cpp
-      
+
     HEADERS  += src/podcast/windowsmedia/UBWindowsMediaVideoEncoder.h \
                 src/podcast/windowsmedia/UBWindowsMediaFile.h \
                 src/podcast/windowsmedia/UBWaveRecorder.h
-}            
+}
 
-macx {                
+macx {
 
-    SOURCES  += src/podcast/quicktime/UBQuickTimeVideoEncoder.cpp \              
-                src/podcast/quicktime/UBQuickTimeFile.cpp \              
+    SOURCES  += src/podcast/quicktime/UBQuickTimeVideoEncoder.cpp \
                 src/podcast/quicktime/UBAudioQueueRecorder.cpp
 
-    HEADERS  += src/podcast/quicktime/UBQuickTimeVideoEncoder.h \              
-                src/podcast/quicktime/UBQuickTimeFile.h \              
-                src/podcast/quicktime/UBAudioQueueRecorder.h          
+    HEADERS  += src/podcast/quicktime/UBQuickTimeVideoEncoder.h \
+                src/podcast/quicktime/UBQuickTimeFile.h \
+                src/podcast/quicktime/UBAudioQueueRecorder.h
+                
+    OBJECTIVE_SOURCES += src/podcast/quicktime/UBQuickTimeFile.mm
 }

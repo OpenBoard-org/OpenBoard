@@ -58,25 +58,11 @@ UBExportPDF::~UBExportPDF()
 
 void UBExportPDF::persist(UBDocumentProxy* pDocumentProxy)
 {
-    if (!pDocumentProxy)
-        return;
-
-    QString filename = askForFileName(pDocumentProxy, tr("Export as PDF File"));
-
-    if (filename.length() > 0)
-    {
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        UBApplication::showMessage(tr("Exporting document..."));
-
-        persistsDocument(pDocumentProxy, filename);
-
-        UBApplication::showMessage(tr("Export successful."));
-        QApplication::restoreOverrideCursor();
-    }
+    persistLocally(pDocumentProxy, tr("Export as PDF File"));
 }
 
 
-void UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QString& filename)
+bool UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QString& filename)
 {
     QPrinter pdfPrinter;
 
@@ -128,6 +114,8 @@ void UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QStrin
         scene->setBackground(isDark, isCrossed);
     }
     if(!painterNeedsBegin) pdfPainter.end();
+
+    return true;
 }
 
 QString UBExportPDF::exportExtention()

@@ -31,6 +31,7 @@
 #include <QtXml>
 #include <QGraphicsTextItem>
 #include <QDomElement>
+#include <QGraphicsVideoItem>
 
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
@@ -330,7 +331,7 @@ QUuid UBSvgSubsetAdaptor::sceneUuid(UBDocumentProxy* proxy, const int pageIndex)
 
 UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const QByteArray& pArray)
 {
-    UBSvgSubsetReader reader(proxy, UBTextTools::cleanHtmlCData(QString(pArray)).toLatin1());
+    UBSvgSubsetReader reader(proxy, UBTextTools::cleanHtmlCData(QString(pArray)).toUtf8());
     return reader.loadScene();
 }
 
@@ -432,9 +433,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 QStringRef pageDpi = mXmlReader.attributes().value("pageDpi");
 
                 if (!pageDpi.isNull())
-                    UBSettings::settings()->pageDpi->set(pageDpi.toString());
+                    UBSettings::pageDpi = pageDpi.toInt();
                 else
-                    UBSettings::settings()->pageDpi->set(UBApplication::desktop()->physicalDpiX());
+                    UBSettings::pageDpi = (UBApplication::desktop()->physicalDpiX() + UBApplication::desktop()->physicalDpiY())/2;
 
                 bool darkBackground = false;
                 bool crossedBackground = false;
@@ -497,6 +498,18 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 {
                     mGroupLightBackgroundColor.setNamedColor(ubFillOnLightBackground.toString());
                 }
+
+                QStringRef ubUuid = mXmlReader.attributes().value(mNamespaceUri, "uuid");
+
+                if (!ubUuid.isNull())
+                    strokesGroup->setUuid(ubUuid.toString());
+                else
+                    strokesGroup->setUuid(QUuid::createUuid());
+
+                QString uuid_stripped = strokesGroup->uuid().toString().replace("}","").replace("{","");
+
+                if (!mStrokesList.contains(uuid_stripped))
+                    mStrokesList.insert(uuid_stripped, strokesGroup);
             }
             else if (mXmlReader.name() == "polygon" || mXmlReader.name() == "line")
             {
@@ -523,12 +536,14 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     if(!mStrokesList.contains(parentId)){
                         group = new UBGraphicsStrokesGroup();
                         mStrokesList.insert(parentId,group);
-                        currentStroke = new UBGraphicsStroke();
                         group->setTransform(polygonItem->transform());
                         UBGraphicsItem::assignZValue(group, polygonItem->zValue());
                     }
                     else
                         group = mStrokesList.value(parentId);
+
+                    if (!currentStroke)
+                        currentStroke = new UBGraphicsStroke();
 
                     if(polygonItem->transform().isIdentity())
                         polygonItem->setTransform(group->transform());
@@ -545,22 +560,31 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
             {
                 QList<UBGraphicsPolygonItem*> polygonItems = polygonItemsFromPolylineSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
 
-                QString parentId = QUuid::createUuid().toString();
+                QString parentId = mXmlReader.attributes().value(mNamespaceUri, "parent").toString();
+
+                if(parentId.isEmpty() && strokesGroup)
+                    parentId = strokesGroup->uuid().toString();
+
+                if(parentId.isEmpty())
+                    parentId = QUuid::createUuid().toString();
 
                 foreach(UBGraphicsPolygonItem* polygonItem, polygonItems)
                 {
                     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
 
                     UBGraphicsStrokesGroup* group;
+
                     if(!mStrokesList.contains(parentId)){
                         group = new UBGraphicsStrokesGroup();
                         mStrokesList.insert(parentId,group);
-                        currentStroke = new UBGraphicsStroke();
                         group->setTransform(polygonItem->transform());
                         UBGraphicsItem::assignZValue(group, polygonItem->zValue());
                     }
                     else
                         group = mStrokesList.value(parentId);
+
+                    if (!currentStroke)
+                        currentStroke = new UBGraphicsStroke();
 
                     if(polygonItem->transform().isIdentity())
                         polygonItem->setTransform(group->transform());
@@ -637,9 +661,8 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
 
                     audioItem->show();
 
-                    //force start to load the video and display the first frame
-                    audioItem->mediaObject()->play();
-                    audioItem->mediaObject()->pause();
+                    audioItem->play();
+                    audioItem->pause();
                 }
             }
             else if (mXmlReader.name() == "video")
@@ -654,10 +677,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     mScene->addItem(videoItem);
 
                     videoItem->show();
-
-                    //force start to load the video and display the first frame
-                    videoItem->mediaObject()->play();
-                    videoItem->mediaObject()->pause();
                 }
             }
             else if (mXmlReader.name() == "text")//This is for backward compatibility with proto text field prior to version 4.3
@@ -747,8 +766,8 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     {
                         QDesktopWidget* desktop = UBApplication::desktop();
                         qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
-                        qDebug() << "currentDpi " << currentDpi;
-                        qreal pdfScale = UBSettings::settings()->pageDpi->get().toReal()/currentDpi;
+                        qDebug() << "currentDpi (" << desktop->physicalDpiX() << " + " << desktop->physicalDpiY() << ")/2 = " << currentDpi;
+                        qreal pdfScale = qreal(UBSettings::pageDpi)/currentDpi;
                         qDebug() << "pdfScale " << pdfScale;
                         pdfItem->setScale(pdfScale);
                         pdfItem->setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -808,8 +827,8 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     {
                         QDesktopWidget* desktop = UBApplication::desktop();
                         qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
-                        qreal textSizeMultiplier = UBSettings::settings()->pageDpi->get().toReal()/currentDpi;
-                        textDelegate->scaleTextSize(textSizeMultiplier);
+                        qreal textSizeMultiplier = qreal(UBSettings::pageDpi)/currentDpi;
+                        //textDelegate->scaleTextSize(textSizeMultiplier);
                     }
 
                     if (textItem)
@@ -856,6 +875,8 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 mGroupHasInfo = false;
                 mGroupDarkBackgroundColor = QColor();
                 mGroupLightBackgroundColor = QColor();
+                strokesGroup = NULL;
+                currentStroke = NULL;
             }
         }
     }
@@ -1029,7 +1050,11 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "crossed-background", mScene->isCrossedBackground() ? xmlTrue : xmlFalse);
 
     QDesktopWidget* desktop = UBApplication::desktop();
-    mXmlWriter.writeAttribute("pageDpi", QString("%1").arg((desktop->physicalDpiX() + desktop->physicalDpiY()) / 2));
+
+    if (UBSettings::pageDpi == 0)
+        UBSettings::pageDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+
+    mXmlWriter.writeAttribute("pageDpi", QString::number(UBSettings::pageDpi));
 
     mXmlWriter.writeStartElement("rect");
     mXmlWriter.writeAttribute("fill", mScene->isDarkBackground() ? "black" : "white");
@@ -1077,20 +1102,6 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
     {
         QGraphicsItem *item = items.takeFirst();
 
-        // Is the item a strokes group?
-        UBGraphicsStrokesGroup* strokesGroupItem = qgraphicsitem_cast<UBGraphicsStrokesGroup*>(item);
-
-        if(strokesGroupItem && strokesGroupItem->isVisible()){
-            // Add the polygons
-            foreach(QGraphicsItem* item, strokesGroupItem->childItems()){
-                UBGraphicsPolygonItem* poly = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
-                if(NULL != poly){
-                    polygonItemToSvgPolygon(poly, true);
-                    items.removeOne(poly);
-                }
-            }
-        }
-
         // Is the item a polygon?
         UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*> (item);
         if (polygonItem && polygonItem->isVisible())
@@ -1121,16 +1132,21 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                 {
                     QColor colorOnDarkBackground = polygonItem->colorOnDarkBackground();
                     QColor colorOnLightBackground = polygonItem->colorOnLightBackground();
+                    UBGraphicsStrokesGroup * sg = polygonItem->strokesGroup();
 
-                    if (colorOnDarkBackground.isValid() && colorOnLightBackground.isValid())
+                    if (colorOnDarkBackground.isValid() && colorOnLightBackground.isValid() && sg)
                     {
                         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "z-value"
-                                                  , QString("%1").arg(polygonItem->zValue()));
+                                                  , QString("%1").arg(polygonItem->strokesGroup()->zValue()));
 
                         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
                                                   , "fill-on-dark-background", colorOnDarkBackground.name());
                         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
                                                   , "fill-on-light-background", colorOnLightBackground.name());
+
+                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(sg->uuid()));
+
+                        qDebug() << "Attributes written";
 
                         groupHoldsInfo = true;
                     }
@@ -1150,10 +1166,14 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
                 }
             }
 
-            if (polygonItem->isNominalLine())
-                polygonItemToSvgLine(polygonItem, groupHoldsInfo);
-            else
+            UBGraphicsStroke* stroke = dynamic_cast<UBGraphicsStroke* >(currentStroke);
+
+            if (stroke && stroke->hasPressure())
                 polygonItemToSvgPolygon(polygonItem, groupHoldsInfo);
+
+            else if (polygonItem->isNominalLine())
+                polygonItemToSvgLine(polygonItem, groupHoldsInfo);
+
 
             continue;
         }
@@ -1181,14 +1201,17 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
             continue;
         }
 
-        UBGraphicsMediaItem *mediaItem = qgraphicsitem_cast<UBGraphicsMediaItem*> (item);
+        UBGraphicsVideoItem * videoItem = qgraphicsitem_cast<UBGraphicsVideoItem*> (item);
 
-        if (mediaItem && mediaItem->isVisible())
-        {
-            if (UBGraphicsMediaItem::mediaType_Video == mediaItem->getMediaType())
-                videoItemToLinkedVideo(mediaItem);
-            else
-                audioItemToLinkedAudio(mediaItem);
+        if (videoItem && videoItem->isVisible()) {
+            videoItemToLinkedVideo(videoItem);
+            continue;
+        }
+
+        UBGraphicsAudioItem * audioItem = qgraphicsitem_cast<UBGraphicsAudioItem*> (item);
+
+        if (audioItem && audioItem->isVisible()) {
+            audioItemToLinkedAudio(audioItem);
             continue;
         }
 
@@ -1439,6 +1462,11 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::strokeToSvgPolyline(UBGraphicsStroke
                                       , "fill-on-dark-background", firstPolygonItem->colorOnDarkBackground().name());
             mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
                                       , "fill-on-light-background", firstPolygonItem->colorOnLightBackground().name());
+        }
+
+        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(firstPolygonItem->uuid()));
+        if (firstPolygonItem->parentItem()) {
+            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "parent", UBStringUtils::toCanonicalUuid(UBGraphicsItem::getOwnUuid(firstPolygonItem->strokesGroup())));
         }
 
         mXmlWriter.writeEndElement();
@@ -1985,29 +2013,27 @@ UBGraphicsPDFItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::pdfItemFromPDF()
     return pdfItem;
 }
 
-void UBSvgSubsetAdaptor::UBSvgSubsetWriter::audioItemToLinkedAudio(UBGraphicsMediaItem* audioItem)
+void UBSvgSubsetAdaptor::UBSvgSubsetWriter::audioItemToLinkedAudio(UBGraphicsAudioItem *audioItem)
 {
     mXmlWriter.writeStartElement("audio");
 
     graphicsItemToSvg(audioItem);
 
-    if (audioItem->mediaObject()->state() == QMediaPlayer::PausedState && (audioItem->mediaObject()->duration() - audioItem->mediaObject()->position()) > 0)
+    if (audioItem->playerState() == QMediaPlayer::PausedState &&
+       (audioItem->mediaDuration() - audioItem->mediaPosition()) > 0)
     {
-        qint64 pos = audioItem->mediaObject()->position();
+        qint64 pos = audioItem->mediaPosition();
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
     }
 
-    QString audioFileHref = audioItem->mediaFileUrl().toString();
-    audioFileHref = UBFileSystemUtils::removeLocalFilePrefix(audioFileHref);
-    if(audioFileHref.startsWith(mDocumentPath))
-        audioFileHref = audioFileHref.replace(mDocumentPath + "/","");
+    QString audioFileHref = "audios/" + audioItem->mediaFileUrl().fileName();
 
     mXmlWriter.writeAttribute(nsXLink, "href", audioFileHref);
     mXmlWriter.writeEndElement();
 }
 
 
-void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsMediaItem* videoItem)
+void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsVideoItem* videoItem)
 {
     /* w3c sample
      *
@@ -2020,17 +2046,14 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsMed
 
     graphicsItemToSvg(videoItem);
 
-    if (videoItem->mediaObject()->state() == QMediaPlayer::PausedState && (videoItem->mediaObject()->duration() - videoItem->mediaObject()->position()) > 0)
+    if (videoItem->playerState() == QMediaPlayer::PausedState &&
+       (videoItem->mediaDuration() - videoItem->mediaPosition()) > 0)
     {
-        qint64 pos = videoItem->mediaObject()->position();
+        qint64 pos = videoItem->mediaPosition();
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
     }
 
-    QString videoFileHref = videoItem->mediaFileUrl().toString();
-
-    videoFileHref = UBFileSystemUtils::removeLocalFilePrefix(videoFileHref);
-    if(videoFileHref.startsWith(mDocumentPath))
-        videoFileHref = videoFileHref.replace(mDocumentPath + "/","");
+    QString videoFileHref = "videos/" + videoItem->mediaFileUrl().fileName();
 
     mXmlWriter.writeAttribute(nsXLink, "href", videoFileHref);
     mXmlWriter.writeEndElement();
@@ -2056,7 +2079,7 @@ UBGraphicsMediaItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::audioItemFromSvg()
         href = mDocumentPath + "/" + href.right(href.length() - indexOfAudioDirectory);
     }
 
-    UBGraphicsMediaItem* audioItem = new UBGraphicsMediaItem(QUrl::fromLocalFile(href));
+    UBGraphicsMediaItem* audioItem = UBGraphicsMediaItem::createMediaItem(QUrl::fromLocalFile(href));
     if(audioItem)
         audioItem->connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), audioItem, SLOT(activeSceneChanged()));
 
@@ -2091,7 +2114,7 @@ UBGraphicsMediaItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::videoItemFromSvg()
         href = mDocumentPath + "/" + href.right(href.length() - indexOfAudioDirectory);
     }
 
-    UBGraphicsMediaItem* videoItem = new UBGraphicsMediaItem(QUrl::fromLocalFile(href));
+    UBGraphicsMediaItem* videoItem = UBGraphicsMediaItem::createMediaItem(QUrl::fromLocalFile(href));
     if(videoItem){
         videoItem->connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), videoItem, SLOT(activeSceneChanged()));
     }
@@ -2242,7 +2265,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsItemToSvg(QGraphicsItem* ite
         QUrl sourceUrl = ubItem->sourceUrl();
 
         if (!sourceUrl.isEmpty())
-            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "source", sourceUrl.toString());
+            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "source", sourceUrl.path());
 
     }
 
@@ -2302,8 +2325,10 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
         widgetRootUrl = widgetTargetDir;
     }
 
+    QString widgetPath = "widgets/" + widgetRootUrl.fileName();
+
     mXmlWriter.writeStartElement("foreignObject");
-    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "src", widgetRootUrl.toString());
+    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "src", widgetPath);
 
     graphicsItemToSvg(item);
 
@@ -2323,6 +2348,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
         startFileUrl = item->mainHtmlFileName();
     else
         startFileUrl = widgetRootUrl.toString() + "/" + item->mainHtmlFileName();
+
+    startFileUrl = QUrl::fromPercentEncoding(startFileUrl.toUtf8());
 
     mXmlWriter.writeAttribute("src", startFileUrl);
     mXmlWriter.writeEndElement(); //iFrame

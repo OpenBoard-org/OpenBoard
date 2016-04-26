@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.0" language="sk_SK" sourcelanguage="en">
 <context>
@@ -16,11 +16,11 @@
     </message>
     <message>
         <source>Clean Up</source>
-        <translation>Vymazať</translation>
+        <translation>Vymazať všetko</translation>
     </message>
     <message>
         <source>Downloads</source>
-        <translation>Na stiahnutie</translation>
+        <translation>Stiahnuté súbory</translation>
     </message>
 </context>
 <context>
@@ -155,7 +155,7 @@
     </message>
     <message>
         <source>Erase</source>
-        <translation>Guma</translation>
+        <translation>Vygumovať</translation>
     </message>
     <message>
         <source>Display Tools</source>
@@ -167,7 +167,7 @@
     </message>
     <message>
         <source>Embed Web Content</source>
-        <translation>Vložiť obsah z internetu</translation>
+        <translation>Vložiť obsah z webu</translation>
     </message>
     <message>
         <source>Pages</source>
@@ -195,7 +195,7 @@
     </message>
     <message>
         <source>Multi Screen</source>
-        <translation>Rozšírená obrazovka</translation>
+        <translation>Viac obrazoviek</translation>
     </message>
     <message>
         <source>Put Presentation to Sleep</source>
@@ -215,7 +215,7 @@
     </message>
     <message>
         <source>Check Update</source>
-        <translation>Vyhľadať aktualizácie</translation>
+        <translation>Vyhľadať aktualizáciu</translation>
     </message>
     <message>
         <source>Use Custom Document Size</source>
@@ -227,7 +227,7 @@
     </message>
     <message>
         <source>Record Presentation to Video</source>
-        <translation>Zaznamenať prezentáciu na video</translation>
+        <translation>Nahrať prezentáciu na video</translation>
     </message>
     <message>
         <source>Grid Dark Background</source>
@@ -243,7 +243,7 @@
     </message>
     <message>
         <source>Hide OpenBoard Application</source>
-        <translation>Schovať program OpenBoard</translation>
+        <translation>Schovať aplikáciu OpenBoard</translation>
     </message>
     <message>
         <source>Import an External Page</source>
@@ -259,7 +259,7 @@
     </message>
     <message>
         <source>Clear All Elements</source>
-        <translation>Vymazať všetky objekty</translation>
+        <translation>Vyčistiť všetky objekty</translation>
     </message>
     <message>
         <source>Scroll Page</source>
@@ -275,7 +275,7 @@
     </message>
     <message>
         <source>Configure Podcast Recording</source>
-        <translation>Nastaviť záznam podastu</translation>
+        <translation>Nastaviť nahrávanie podcastu</translation>
     </message>
     <message>
         <source>Open Page in Board</source>
@@ -283,7 +283,7 @@
     </message>
     <message>
         <source>Bigger</source>
-        <translation>Väčšie</translation>
+        <translation>Zväčšiť</translation>
     </message>
     <message>
         <source>Ctrl++</source>
@@ -363,7 +363,7 @@
     </message>
     <message>
         <source>Eraser</source>
-        <translation>Vygumovať</translation>
+        <translation>Guma</translation>
     </message>
     <message>
         <source>Export</source>
@@ -475,15 +475,15 @@
     </message>
     <message>
         <source>Erase All Items</source>
-        <translation>Vymazať všetky položky</translation>
+        <translation>Vygumovať všetky položky</translation>
     </message>
     <message>
         <source>Erase Content</source>
-        <translation>Vymazať obsah</translation>
+        <translation>Vygumovať obsah</translation>
     </message>
     <message>
         <source>Erase Items</source>
-        <translation>Vymazať položky</translation>
+        <translation>Vygumovať položky</translation>
     </message>
     <message>
         <source>Duplicate</source>
@@ -511,7 +511,7 @@
     </message>
     <message>
         <source>Stop Loading Web Page</source>
-        <translation>Zastaviť nahrávanie stránky</translation>
+        <translation>Zastaviť nahrávanie webovej stránky</translation>
     </message>
     <message>
         <source>Duplicate the Current Page</source>
@@ -527,7 +527,7 @@
     </message>
     <message>
         <source>Clear Page</source>
-        <translation>Vymazať stránku</translation>
+        <translation>Vyčistiť stránku</translation>
     </message>
     <message>
         <source>Add To Library</source>
@@ -551,7 +551,7 @@
     </message>
     <message>
         <source>Draw Lines</source>
-        <translation>Nakresliť čiary</translation>
+        <translation>Kresliť čiary</translation>
     </message>
     <message>
         <source>Capture</source>
@@ -583,7 +583,7 @@
     </message>
     <message>
         <source>Smaller</source>
-        <translation>Menšie</translation>
+        <translation>Zmenšiť</translation>
     </message>
     <message>
         <source>Capture Embeddable Web Content</source>
@@ -591,7 +591,7 @@
     </message>
     <message>
         <source>Write Text</source>
-        <translation>Napísať text</translation>
+        <translation>Písať text</translation>
     </message>
     <message>
         <source>Documents</source>
@@ -623,7 +623,7 @@
     </message>
     <message>
         <source>Show Computer Desktop</source>
-        <translation>Zobraziť plochu nástroja na zachytenie</translation>
+        <translation>Zobraziť pracovnú plochu</translation>
     </message>
     <message>
         <source>eduMedia</source>
@@ -647,11 +647,11 @@
     </message>
     <message>
         <source>Erase all Annotations</source>
-        <translation>Vymazať všetky anotácie</translation>
+        <translation>Vygumovať všetky poznámky</translation>
     </message>
     <message>
         <source>Erase All Annotations</source>
-        <translation>Vymazať všetky anotácie</translation>
+        <translation>Vygumovať všetky poznámky</translation>
     </message>
     <message>
         <source>Export a Document</source>
@@ -703,7 +703,7 @@
     </message>
     <message>
         <source>Manage Documents</source>
-        <translation>Manipulovať s dokumentami</translation>
+        <translation>Riadiť dokumenty</translation>
     </message>
     <message>
         <source>Large Line</source>
@@ -711,7 +711,7 @@
     </message>
     <message>
         <source>Erase Annotations</source>
-        <translation>Vymazať anotácie</translation>
+        <translation>Vygumovať poznámky</translation>
     </message>
     <message>
         <source>Show on Display</source>
@@ -747,6 +747,7 @@
     </message>
     <message>
         <source>Smalle Eraser</source>
+<translatorcomment>spelling mistake in source: should be small</translatorcomment>
         <translation>Malá guma</translation>
     </message>
     <message>
@@ -771,11 +772,11 @@
     </message>
     <message>
         <source>Annotate Document</source>
-        <translation>Pridať anotáciu dokumentu</translation>
+        <translation>Pridať poznámku do dokumentu</translation>
     </message>
     <message>
         <source>Erase Annotation</source>
-        <translation>Vymazať anotáciu</translation>
+        <translation>Vygumovať poznámku</translation>
     </message>
     <message>
         <source>Play</source>
@@ -783,7 +784,7 @@
     </message>
     <message>
         <source>Interact with items</source>
-        <translation>Manikulovať s položkami</translation>
+        <translation>Manipulovať s položkami</translation>
     </message>
     <message>
         <source>Erase Background</source>
@@ -791,15 +792,16 @@
     </message>
     <message>
         <source>Remove the backgound</source>
+        <translatorcomment>spelling mistake: should be background</translatorcomment>
         <translation>Odstrániť pozadie</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>Otvoriť príručku</translation>
     </message>
     <message>
         <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
+        <translation>Otvoriť webovú stránku príručky</translation>
     </message>
 </context>
 <context>
@@ -856,7 +858,7 @@
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation>Ste si istý, že chcete odstrániť 1 stránku z vybraného dokumentu &apos;%0&apos;?</translation>
+        <translation>Určite chcete odstrániť 1 stránku z vybraného dokumentu &apos;%0&apos;?</translation>
     </message>
 </context>
 <context>
@@ -878,7 +880,7 @@
     </message>
     <message>
         <source>Update</source>
-        <translation>Akutalizovať</translation>
+        <translation>Aktualizovať</translation>
     </message>
     <message>
         <source>No update available</source>
@@ -886,7 +888,7 @@
     </message>
     <message>
         <source>New update available, would you go to the web page ?</source>
-        <translation>K dispozícii je nová aktualizácia, chcete prejsť na internetovú stránku?</translation>
+        <translation>K dispozícii je nová aktualizácia. Chcete prejsť na webovú stránku?</translation>
     </message>
     <message>
         <source>Update available</source>
@@ -925,11 +927,11 @@
     </message>
     <message>
         <source>Page %1 deleted</source>
-        <translation>Stránka %1 zmazaná</translation>
+        <translation>Stránka %1 bola vymazaná</translation>
     </message>
     <message>
         <source>Add file operation failed: file copying error</source>
-        <translation>Operácia pridať súbor  sa nepodarila: chyba kopírovania súboru</translation>
+        <translation>Nepodarilo sa pridať súbor: chyba pri kopírovaní súboru</translation>
     </message>
     <message>
         <source>Group</source>
@@ -938,6 +940,14 @@
     <message>
         <source>Ungroup</source>
         <translation>Oddeliť</translation>
+    </message>
+    <message>
+        <source>Saving document...</source>
+        <translation>Dokument sa ukladá...</translation>
+    </message>
+    <message>
+        <source>Document has just been saved...</source>
+        <translation>Dokument bol uložený.</translation>
     </message>
 </context>
 <context>
@@ -998,7 +1008,7 @@
     </message>
     <message>
         <source>Show OpenBoard</source>
-        <translation type="unfinished"></translation>
+        <translation>Zobraziť OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -1045,7 +1055,7 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>Odstrániť</translation>
+        <translation>Vymazať</translation>
     </message>
     <message>
         <source>New Folder</source>
@@ -1125,7 +1135,7 @@
     </message>
     <message>
         <source>Folder does not contain any image files</source>
-        <translation>Priečinok neobsahuje žiadne obrázkové súbory</translation>
+        <translation>V priečinku nie sú žiadne súbory obrázkov</translation>
     </message>
     <message>
         <source>Untitled Documents</source>
@@ -1133,7 +1143,15 @@
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokument &apos;%1&apos; bol vytvorený v novšej verzii OpenBoardu (%2). Ak ho otvoríte v tejto, aktuálnej verzii, môže dôjsť k strate údajov. Chcete napriek tomu pokračovať?</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove all selected documents?</source>
+        <translation>Určite chcete odstrániť všetky vybrané dokumenty?</translation>
+    </message>
+    <message>
+        <source>Remove multiple documents</source>
+        <translation>Odstránenie viacerých dokumentov</translation>
     </message>
 </context>
 <context>
@@ -1164,19 +1182,19 @@
     </message>
     <message>
         <source>Inserting page %1 of %2</source>
-        <translation>Vloženie stránky %1 z %2</translation>
+        <translation>Vkladá sa stránka %1 z(o) %2</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Import bol úspešný.</translation>
+        <translation>Nahrávanie bolo úspešné.</translation>
     </message>
     <message>
         <source>Import of file %1 successful.</source>
-        <translation>Import súboru %1 bol úspešný.</translation>
+        <translation>Nahrávanie súboru %1 bolo úspešné.</translation>
     </message>
     <message>
         <source>Importing file %1</source>
-        <translation>Import súboru %1</translation>
+        <translation>Nahráva sa súbor %1</translation>
     </message>
 </context>
 <context>
@@ -1220,7 +1238,7 @@
     <name>UBExportAdaptor</name>
     <message>
         <source>Warnings during export was appeared</source>
-        <translation>Počas exportu sa vyskytli varovania</translation>
+        <translation>Počas exportu sa objavili varovania</translation>
     </message>
 </context>
 <context>
@@ -1266,11 +1284,23 @@
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export bol úspešne dokončený.</translation>
+        <translation>Export bol úspešný.</translation>
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportovať do formátu OpenBoard</translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation>Export sa nepodaril: do umiestnenia sa nedá zapisovať</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation>Export zlyhal</translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation>Do vybraného umiestnenia sa nedá exportovať. Na uloženie súboru nemáte dostatočné oprávnenia.</translation>
     </message>
 </context>
 <context>
@@ -1289,7 +1319,19 @@
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export bol úspešne dokončený.</translation>
+        <translation>Export bol úspešný.</translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation>Export sa nepodaril: do umiestnenia sa nedá zapisovať</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation>Export zlyhal</translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation>Do vybraného umiestnenia sa nedá exportovať. Na uloženie súboru nemáte dostatočné oprávnenia.</translation>
     </message>
 </context>
 <context>
@@ -1312,7 +1354,7 @@
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export bol úspešne dokončený.</translation>
+        <translation>Export bol úspešný.</translation>
     </message>
 </context>
 <context>
@@ -1323,7 +1365,7 @@
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>Export sa nepodaril.</translation>
+        <translation>Export zlyhal.</translation>
     </message>
     <message>
         <source>Export as Web data</source>
@@ -1335,7 +1377,7 @@
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export bol úspešne dokončený.</translation>
+        <translation>Export bol úspešný.</translation>
     </message>
     <message>
         <source>Export to Web Browser</source>
@@ -1369,7 +1411,7 @@
     </message>
     <message>
         <source>Share</source>
-        <translation>Podeliť sa</translation>
+        <translation>Zdieľať*</translation>
     </message>
     <message>
         <source>Search</source>
@@ -1404,7 +1446,7 @@
     </message>
     <message>
         <source>Audios</source>
-        <translation>Audionahrávky</translation>
+        <translation>Zvukové nahrávky</translation>
     </message>
     <message>
         <source>Movies</source>
@@ -1420,7 +1462,7 @@
     </message>
     <message>
         <source>Interactivities</source>
-        <translation>Interaktívne objekty</translation>
+        <translation>Interaktívne aktivity</translation>
     </message>
     <message>
         <source>Applications</source>
@@ -1473,7 +1515,7 @@
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation>Vidieť to na rozšírenej obrazovke</translation>
+        <translation>Zobraziť na rozšírenej obrazovke</translation>
     </message>
 </context>
 <context>
@@ -1488,14 +1530,33 @@
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation>Vidieť to na rozšírenej obrazovke</translation>
+        <translation>Zobraziť na rozšírenej obrazovke</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsMediaItem</name>
+    <message>
+        <source>Media resource couldn&apos;t be resolved</source>
+        <translation>Nepodarilo sa identifikovať nástroj na prácu s médiom</translation>
+    </message>
+    <message>
+        <source>Unsupported media format</source>
+        <translation>Nepodporovaný typ média</translation>
+    </message>
+    <message>
+        <source>Media playback service not found</source>
+        <translation>Služba na prehratie média sa nenašla</translation>
+    </message>
+    <message>
+        <source>Media error: </source>
+        <translation>Chyba média: </translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsTextItem</name>
     <message>
         <source>&lt;Type Text Here&gt;</source>
-        <translation>&lt;Sem napíšte text&gt;</translation>
+        <translation>&lt;Text napíšte sem&gt;</translation>
     </message>
 </context>
 <context>
@@ -1506,7 +1567,7 @@
     </message>
     <message>
         <source>Editable</source>
-        <translation>Dá sa upraviť</translation>
+        <translation>Dá sa upravovať</translation>
     </message>
 </context>
 <context>
@@ -1531,7 +1592,7 @@
     </message>
     <message>
         <source>Transform as Tool </source>
-        <translation>Zmeniť na nástroj</translation>
+        <translation>Zmeniť ako nástroj</translation>
     </message>
 </context>
 <context>
@@ -1542,19 +1603,19 @@
     </message>
     <message>
         <source>Import failed.</source>
-        <translation>Nahrávanie sa nepodarilo.</translation>
+        <translation>Nahrávanie zlyhalo.</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>Nahrávanie súboru %1 sa nepodarilo.</translation>
+        <translation>Nepodarilo sa nahrať súbor %1.</translation>
     </message>
     <message>
         <source>Common File Format (</source>
-        <translation>Spoločný formát súboru (</translation>
+        <translation>Bežný formát súboru (</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Nahrávanie bolo úspešne dokončené.</translation>
+        <translation>Nahrávanie bolo úspešné.</translation>
     </message>
 </context>
 <context>
@@ -1569,11 +1630,11 @@
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Nahrávanie bolo úspešne dokončené.</translation>
+        <translation>Nahrávanie bolo úspešné.</translation>
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard (*.ubz)</translation>
     </message>
 </context>
 <context>
@@ -1684,27 +1745,27 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
         <source>Open-Sankore Documents Detected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open-SankorÃ© documents are present on your computer. It is possible to import them to OpenBoard by pressing the âProceedâ button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
+        <translation>Našli sa dokumenty Open-Sankoré</translation>
     </message>
     <message>
         <source>Show this panel next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Tento panel zobraziť aj nabudúce</translation>
     </message>
     <message>
         <source>You can always access the OpenBoard Document Importer through the Preferences panel in the About tab. Warning, if you have already imported your Open-Sankore datas, you might loose your current OpenBoard documents.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nahrávanie dokumentov môžete kedykoľvek spustiť z karty O programe na paneli Predvoľby. Pozor, ak ste už nahrali dáta z Open-Sankoré, môžete ich spúšťať ako dokumenty vytvorené v OpenBoarde.</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Zrušiť</translation>
+        <translation>Zrušiť</translation>
     </message>
     <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokračovať</translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
+        <translation>Vo vašom počítači sa nachádzajú dokumenty Open-Sankoré. Do OpenBoardu ich môžete nahrať stlačením tlačidla Pokračovať, ktorým sa spustí aplikácia na nahrávanie.</translation>
     </message>
 </context>
 <context>
@@ -1715,11 +1776,11 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     </message>
     <message>
         <source>Document Repository Loss</source>
-        <translation>Strata depozitára s dokumentami</translation>
+        <translation>Strata úložiska dokumentov</translation>
     </message>
     <message>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
+        <translation>stratil prístup k úložisku dokumentov &apos;%1&apos;. Aplikácia sa musí zatvoriť, aby sa predišlo poškodeniu dát. Možno nebudú uložené ani najnovšie zmeny.</translation>
     </message>
 </context>
 <context>
@@ -1742,18 +1803,18 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     </message>
     <message>
         <source>Swiss French</source>
-        <translation>Švajčiarská francúzština</translation>
+        <translation>Švajčiarska francúzština</translation>
     </message>
 </context>
 <context>
     <name>UBPodcastController</name>
     <message>
         <source>Full</source>
-        <translation>Plná veľkosť</translation>
+        <translation>Vysoké rozlíšenie</translation>
     </message>
     <message>
         <source>Small</source>
-        <translation>Malá veľkosť</translation>
+        <translation>Nízke rozlíšenie</translation>
     </message>
     <message>
         <source>Podcast recording error (%1)</source>
@@ -1761,15 +1822,16 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     </message>
     <message>
         <source>No Podcast encoder available ...</source>
-        <translation>Žiaden kódovač podcastu nie je dostupný...</translation>
+        <translation>Žiaden kódovač podcastu nie je k dispozícii.</translation>
     </message>
     <message>
         <source>Publish to Youtube</source>
+        <translatorcomment>inconsistent: elswhere written as YouTube</translatorcomment>
         <translation>Publikovať na Youtube</translation>
     </message>
     <message>
         <source>Medium</source>
-        <translation>Stredná veľkosť</translation>
+        <translation>Stredne vysoké rozlíšenie</translation>
     </message>
     <message>
         <source>in folder %1</source>
@@ -1785,7 +1847,7 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     </message>
     <message>
         <source>No Audio Recording</source>
-        <translation>Žiadny zvukový záznam</translation>
+        <translation>Žiadna zvuková nahrávka</translation>
     </message>
     <message>
         <source>Publish to Intranet</source>
@@ -1797,15 +1859,16 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     </message>
     <message>
         <source>Default Audio Input</source>
-        <translation>Predvolené vstupné zariadenie pre zvuk</translation>
+        <translation>Predvolený vstup pre zvuk</translation>
     </message>
     <message>
         <source>Failed to start encoder ...</source>
         <translation>Nepodarilo sa spustiť kódovač...</translation>
     </message>
     <message>
-        <source>OpenBoard Cast</source>
-        <translation type="unfinished"></translation>
+<source>OpenBoard Cast</source>
+<translatorcomment>Názov súboru podcastu</translatorcomment>
+<translation>Film OpenBoardu</translation>
     </message>
 </context>
 <context>
@@ -1864,7 +1927,7 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     <name>UBStartupHintsPalette</name>
     <message>
         <source>Visible next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Zobraziť aj nabudúce</translation>
     </message>
 </context>
 <context>
@@ -1941,7 +2004,7 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
         <source>Files update successful!
 Please reboot the application to access the updated documents.</source>
         <translation>Aktualizácia bola úspešne dokončená!
-Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi.</translation>
+Reštartujte aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi.</translation>
     </message>
     <message>
         <source>Browse</source>
@@ -1949,7 +2012,7 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     </message>
     <message>
         <source>Select a backup folder</source>
-        <translation>Vyberte priečinok na zálohu</translation>
+        <translation>Vyberte priečinok zálohy</translation>
     </message>
     <message>
         <source> files require an update.</source>
@@ -1973,7 +2036,7 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     </message>
     <message>
         <source>Updating file </source>
-        <translation>Aktualizuje sa súbor</translation>
+        <translation>Prebieha aktualizácia súboru</translation>
     </message>
     <message>
         <source>Remind me later</source>
@@ -2029,7 +2092,7 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     </message>
     <message>
         <source>Gaming</source>
-        <translation>Gambling</translation>
+        <translation>Hry</translation>
     </message>
     <message>
         <source>Sports</source>
@@ -2065,11 +2128,11 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     </message>
     <message>
         <source>Pets &amp; Animals</source>
-        <translation>Domáce a iné zvieratá</translation>
+        <translation>Zvieratá</translation>
     </message>
     <message>
         <source>Autos &amp; Vehicles</source>
-        <translation>Nákladné a osobné autá</translation>
+        <translation>Autá a dopravné prostriedky</translation>
     </message>
 </context>
 <context>
@@ -2083,7 +2146,7 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     <name>WBClearButton</name>
     <message>
         <source>Clear</source>
-        <translation>Vymazať</translation>
+        <translation>Vyčistiť</translation>
     </message>
 </context>
 <context>
@@ -2122,7 +2185,7 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     </message>
     <message>
         <source>Download canceled: %1</source>
-        <translation>Zrušené sťahovanie súboru: %1</translation>
+        <translation>Sťahovanie súboru bolo zrušené: %1</translation>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
@@ -2150,12 +2213,12 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     <name>WBDownloadManager</name>
     <message>
         <source>1 Download</source>
-        <translation>1 stiahnutie</translation>
+        <translation>1 stiahnutý súbor</translation>
     </message>
     <message>
         <source>%1 Downloads</source>
         <comment>always &gt;= 2</comment>
-        <translation>%1 stiahnutí (-ia)</translation>
+        <translation>%1 stiahnuté súbory</translation>
     </message>
 </context>
 <context>
@@ -2173,11 +2236,12 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     <name>WBHistoryTreeModel</name>
     <message>
         <source>%1 items</source>
+        <translatorcomment>2,3,4 položky, 0, >=5 položiek</translatorcomment>
         <translation>%1 položiek</translation>
     </message>
     <message>
         <source>Earlier Today</source>
-        <translation>dnes skoro ráno</translation>
+        <translation>Dnes</translation>
     </message>
 </context>
 <context>
@@ -2229,7 +2293,7 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     <name>WBToolbarSearch</name>
     <message>
         <source>Recent Searches</source>
-        <translation>História vyhľadávania</translation>
+        <translation>Nedávne vyhľadávania</translation>
     </message>
     <message>
         <source>Search</source>
@@ -2237,11 +2301,11 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     </message>
     <message>
         <source>No Recent Searches</source>
-        <translation>Žiadna história vyhľadávania</translation>
+        <translation>Žiadne nedávne vyhľadávania</translation>
     </message>
     <message>
         <source>Clear Recent Searches</source>
-        <translation>Odstrániť históriu vyhľadávania</translation>
+        <translation>Vymazať nedávne vyhľadávania</translation>
     </message>
 </context>
 <context>
@@ -2264,7 +2328,7 @@ Znova spustite aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi
     </message>
     <message>
         <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sťahovanie dokumentu PDF: chcete súbor PDF radšej stiahnuť alebo pridať do aktuálneho dokumentu?</translation>
     </message>
 </context>
 <context>
@@ -2318,11 +2382,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>OpenBoard</source>
-        <translation type="unfinished">OpenBoard</translation>
+        <translation>OpenBoard</translation>
     </message>
     <message>
         <source>Restore credentials on reboot</source>
-        <translation type="unfinished"></translation>
+        <translation>Po reštarte obnoviť prihlasovacie údaje</translation>
     </message>
 </context>
 <context>
@@ -2333,7 +2397,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Medium</source>
-        <translation>Stredná</translation>
+        <translation>Stredne  hrubá</translation>
     </message>
     <message>
         <source>Strong</source>
@@ -2349,7 +2413,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>On Light Background</source>
-        <translation>Na svetlej čiare</translation>
+        <translation>Na svetlom pozadí</translation>
     </message>
     <message>
         <source>Pen is Pressure Sensitive</source>
@@ -2357,7 +2421,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>On Dark Background</source>
-        <translation>Na tmavej čiare</translation>
+        <translation>Na tmavom pozadí</translation>
     </message>
 </context>
 <context>
@@ -2387,7 +2451,7 @@ p, li { white-space: pre-wrap; }
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokumenty OpenBoardu</translation>
     </message>
 </context>
 <context>
@@ -2410,7 +2474,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Display Text Under Button</source>
-        <translation>Zobraziť text pod tlačidlom</translation>
+        <translation>Pod tlačidlom zobraziť text</translation>
     </message>
     <message>
         <source>Show Page with External Browser</source>
@@ -2426,7 +2490,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Positioned at the Bottom (recommended for white boards)</source>
-        <translation>Je umiestnený dole (odporúča sa pre interaktívne tabule)</translation>
+        <translation>Je umiestnený dole (odporúča sa pre tabule)</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -2438,7 +2502,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Positioned at the Top (recommended for tablets)</source>
-        <translation>Je umiestnený na vrchu (odporúča sa pre tablety)</translation>
+        <translation>Je umiestnený navrchu (odporúča sa pre tablety)</translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
@@ -2450,7 +2514,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Check software update at launch</source>
-        <translation>Pri spustení programu vyhľadať aktualizácie</translation>
+        <translation>Pri spustení programu vyhľadať aktualizáciu</translation>
     </message>
     <message>
         <source>Software Update</source>
@@ -2470,7 +2534,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Toolbar</source>
-        <translation>Panel s nástojmi</translation>
+        <translation>Panel s nástrojmi</translation>
     </message>
     <message>
         <source>Vertical</source>
@@ -2480,7 +2544,7 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation>Predvoľby</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>version : …</source>
         <translation>Verzia:...</translation>
     </message>
@@ -2506,7 +2570,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Mode to start in:</source>
-        <translation>Počiatočný režim:</translation>
+        <translation>Režim pri štarte:</translation>
     </message>
     <message>
         <source>Board</source>
@@ -2528,24 +2592,32 @@ p, li { white-space: pre-wrap; }
         <source>Credits</source>
         <translation>Poďakovanie</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
+        <translation>Nahrávanie z Open-Sankoré</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
+        <translation>Zistiť, či sa pri spustení majú nahrať dáta z Open-Sankoré</translation>
+    </message>
+    <message>
+        <source>Use system keyboard (recommended)</source>
+        <translation>Používať systémovú klávesnicu (odporúča sa)</translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
+        <translation>Veľkosť tlačidla zabudovanej virtuálnej klávesnice:</translation>
     </message>
 </context>
 <context>
     <name>trapFlashDialog</name>
     <message>
         <source>Trap flash</source>
-        <translation>Skopírovať obsah vo flashi</translation>
+        <translation>Označiť flash</translation>
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation>Vyberte flash, ktorý chcete skopírovať</translation>
+        <translation>Vyberte flash, ktorý chcete označiť</translation>
     </message>
     <message>
         <source>about:blank</source>

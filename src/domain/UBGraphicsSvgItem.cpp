@@ -74,8 +74,7 @@ void UBGraphicsSvgItem::init()
 
     setDelegate(new UBGraphicsItemDelegate(this, 0, GF_COMMON
                                            | GF_RESPECT_RATIO
-                                           | GF_REVOLVABLE
-                                           | GF_SHOW_CONTENT_SOURCE));
+                                           | GF_REVOLVABLE));
     UBGraphicsFlags dfl = Delegate()->ubflags();
     Delegate()->setUBFlags(dfl | GF_FLIPPABLE_ALL_AXIS | GF_REVOLVABLE);
 
@@ -180,6 +179,7 @@ void UBGraphicsSvgItem::copyItemParameters(UBItem *copy) const
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
         cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
         cp->setSourceUrl(this->sourceUrl());
+        cp->setZValue(this->zValue());
     }
 }
 

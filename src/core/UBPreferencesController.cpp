@@ -129,6 +129,9 @@ void UBPreferencesController::wire()
         mPreferencesUI->keyboardPaletteKeyButtonSize->addItem(settings->supportedKeyboardSizes->at(i));
 
 
+    connect(mPreferencesUI->useSystemOSKCheckBox, SIGNAL(clicked(bool)), settings->useSystemOnScreenKeyboard, SLOT(setBool(bool)));
+    connect(mPreferencesUI->useSystemOSKCheckBox, SIGNAL(clicked(bool)), this, SLOT(systemOSKCheckBoxToggled(bool)));
+
     connect(mPreferencesUI->keyboardPaletteKeyButtonSize, SIGNAL(currentIndexChanged(const QString &)), settings->boardKeyboardPaletteKeyBtnSize, SLOT(setString(const QString &)));
     connect(mPreferencesUI->startModeComboBox, SIGNAL(currentIndexChanged(int)), settings->appStartMode, SLOT(setInt(int)));
 
@@ -181,6 +184,9 @@ void UBPreferencesController::wire()
 
     // about tab
     connect(mPreferencesUI->checkSoftwareUpdateAtLaunchCheckBox, SIGNAL(clicked(bool)), settings->appEnableAutomaticSoftwareUpdates, SLOT(setBool(bool)));
+    // As we (hopefully temporarily) don't have a website to check updates at, this setting is hidden for now
+    mPreferencesUI->softwareUpdateGroupBox->setVisible(false);
+
     connect(mPreferencesUI->checkOpenSankoreAtStartup, SIGNAL(clicked(bool)), settings->appLookForOpenSankoreInstall, SLOT(setBool(bool)));
 }
 
@@ -198,6 +204,9 @@ void UBPreferencesController::init()
             mPreferencesUI->keyboardPaletteKeyButtonSize->setCurrentIndex(i);
             break;
         }
+
+    mPreferencesUI->useSystemOSKCheckBox->setChecked(settings->useSystemOnScreenKeyboard->get().toBool());
+    this->systemOSKCheckBoxToggled(mPreferencesUI->useSystemOSKCheckBox->isChecked());
 
     mPreferencesUI->startModeComboBox->setCurrentIndex(settings->appStartMode->get().toInt());
 
@@ -259,6 +268,8 @@ void UBPreferencesController::defaultSettings()
         mPreferencesUI->verticalChoice->setChecked(settings->appToolBarOrientationVertical->reset().toBool());
         mPreferencesUI->horizontalChoice->setChecked(!settings->appToolBarOrientationVertical->reset().toBool());
         mPreferencesUI->startModeComboBox->setCurrentIndex(0);
+
+        mPreferencesUI->useSystemOSKCheckBox->setChecked(settings->useSystemOnScreenKeyboard->reset().toBool());
     }
     else if (mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->penTab)
     {
@@ -444,6 +455,12 @@ void UBPreferencesController::toolbarOrientationHorizontal(bool checked)
 {
     UBSettings* settings = UBSettings::settings();
     settings->appToolBarOrientationVertical->set(!checked);
+}
+
+void UBPreferencesController::systemOSKCheckBoxToggled(bool checked)
+{
+    mPreferencesUI->keyboardPaletteKeyButtonSize->setVisible(!checked);
+    mPreferencesUI->keyboardPaletteKeyButtonSize_Label->setVisible(!checked);
 }
 
 UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor>& lightBackgroundColors,

@@ -37,7 +37,7 @@
 
 #include "core/memcheck.h"
 
-const QRect UBGraphicsCompass::sDefaultRect = QRect(0, -20, 300, 48);
+const QRect UBGraphicsCompass::sDefaultRect = QRect(0, -20, 300, 36);
 const QColor UBGraphicsCompass::sLightBackgroundMiddleFillColor = QColor(0x72, 0x72, 0x72, sFillTransparency);
 const QColor UBGraphicsCompass::sLightBackgroundEdgeFillColor = QColor(0xc3, 0xc3, 0xc3, sFillTransparency);
 const QColor UBGraphicsCompass::sLightBackgroundDrawColor = QColor(0x33, 0x33, 0x33, sDrawTransparency);
@@ -46,7 +46,7 @@ const QColor UBGraphicsCompass::sDarkBackgroundEdgeFillColor = QColor(0xdd, 0xdd
 const QColor UBGraphicsCompass::sDarkBackgroundDrawColor = QColor(0xff, 0xff, 0xff, sDrawTransparency);
 
 const int UBGraphicsCompass::sMinRadius = UBGraphicsCompass::sNeedleLength + UBGraphicsCompass::sNeedleBaseLength
-        + 32 + UBGraphicsCompass::sDefaultRect.height() + 32 + UBGraphicsCompass::sPencilBaseLength
+        + 24 + UBGraphicsCompass::sDefaultRect.height() + 24 + UBGraphicsCompass::sPencilBaseLength
         + UBGraphicsCompass::sPencilLength;
 
 UBGraphicsCompass::UBGraphicsCompass()
@@ -144,7 +144,7 @@ void UBGraphicsCompass::paint(QPainter *painter, const QStyleOptionGraphicsItem 
         resizeButtonRect().center().y() - mResizeSvgItem->boundingRect().height() * mAntiScaleRatio / 2);
 
     painter->setPen(drawColor());
-    painter->drawRoundedRect(hingeRect(), 4, 4);
+    painter->drawRoundedRect(hingeRect(), sCornerRadius, sCornerRadius);
     painter->fillPath(hingeShape(), middleFillColor());
 
     painter->fillPath(needleShape(), middleFillColor());
@@ -615,28 +615,30 @@ QPainterPath UBGraphicsCompass::needleShape() const
 {
     QPainterPath path;
     path.moveTo(rect().left(), rect().center().y());
-    path.lineTo(rect().left() + sNeedleLength, rect().center().y() - 2);
-    path.lineTo(rect().left() + sNeedleLength, rect().center().y() + 2);
+    path.lineTo(rect().left() + sNeedleLength, rect().center().y() - sNeedleWidth/2);
+    path.lineTo(rect().left() + sNeedleLength, rect().center().y() + sNeedleWidth/2);
     path.closeSubpath();
     return path;
 }
 
 QPainterPath UBGraphicsCompass::needleBaseShape() const
 {
+    int smallHalfSide = sNeedleBaseWidth/2 - sCornerRadius;
+
     QPainterPath path;
-    path.moveTo(rect().left() + sNeedleLength, rect().center().y() - 4);
+    path.moveTo(rect().left() + sNeedleLength, rect().center().y() - smallHalfSide);
     path.arcTo(
         rect().left() + sNeedleLength,
-        rect().center().y() - 8,
-        8, 8,
+        rect().center().y() - smallHalfSide - sCornerRadius,
+        sCornerRadius*2, sCornerRadius*2,
         180, -90);
-    path.lineTo(rect().left() + sNeedleLength + sNeedleBaseLength, rect().center().y() - 8);
-    path.lineTo(rect().left() + sNeedleLength + sNeedleBaseLength, rect().center().y() + 8);
-    path.lineTo(rect().left() + sNeedleLength + 4, rect().center().y() + 8);
+    path.lineTo(rect().left() + sNeedleLength + sNeedleBaseLength, rect().center().y() - sNeedleBaseWidth/2);
+    path.lineTo(rect().left() + sNeedleLength + sNeedleBaseLength, rect().center().y() + sNeedleBaseWidth/2);
+    path.lineTo(rect().left() + sNeedleLength + sCornerRadius, rect().center().y() + smallHalfSide + sCornerRadius);
     path.arcTo(
         rect().left() + sNeedleLength,
-        rect().center().y(),
-        8, 8,
+        rect().center().y() + smallHalfSide - sCornerRadius,
+        sCornerRadius*2, sCornerRadius*2,
         -90, -90);
     path.closeSubpath();
 
@@ -645,20 +647,22 @@ QPainterPath UBGraphicsCompass::needleBaseShape() const
 
 QPainterPath UBGraphicsCompass::needleArmShape() const
 {
+    int smallHalfSide = sNeedleArmLeftWidth/2 - sCornerRadius;
+
     QPainterPath path;
-    path.moveTo(rect().left() + sNeedleLength + sNeedleBaseLength, rect().center().y() - 8);
+    path.moveTo(rect().left() + sNeedleLength + sNeedleBaseLength, rect().center().y() - smallHalfSide);
     path.arcTo(
         rect().left() + sNeedleLength + sNeedleBaseLength,
-        rect().center().y() - 12,
-        8, 8,
+        rect().center().y() - sNeedleArmLeftWidth/2,
+        sCornerRadius*2, sCornerRadius*2,
         180, -90);
-    path.lineTo(hingeRect().left(), rect().center().y() - 16);
-    path.lineTo(hingeRect().left(), rect().center().y() + 16);
-    path.lineTo(rect().left() + sNeedleLength + sNeedleBaseLength + 4, rect().center().y() + 12);
+    path.lineTo(hingeRect().left(), rect().center().y() - sNeedleArmRigthWidth/2);
+    path.lineTo(hingeRect().left(), rect().center().y() + sNeedleArmRigthWidth/2);
+    path.lineTo(rect().left() + sNeedleLength + sNeedleBaseLength + sCornerRadius, rect().center().y() + sNeedleArmLeftWidth/2);
     path.arcTo(
         rect().left() + sNeedleLength + sNeedleBaseLength,
-        rect().center().y() + 4,
-        8, 8,
+        rect().center().y() + smallHalfSide - sCornerRadius,
+        sCornerRadius*2, sCornerRadius*2,
         -90, -90);
     path.closeSubpath();
     return path;
@@ -667,30 +671,30 @@ QPainterPath UBGraphicsCompass::needleArmShape() const
 QPainterPath UBGraphicsCompass::hingeShape() const
 {
     QPainterPath path;
-    path.moveTo(hingeRect().left() + 4, hingeRect().top());
-    path.lineTo(hingeRect().right() - 4, hingeRect().top());
+    path.moveTo(hingeRect().left() + sCornerRadius, hingeRect().top());
+    path.lineTo(hingeRect().right() - sCornerRadius, hingeRect().top());
     path.arcTo(
-        hingeRect().right() - 8,
+        hingeRect().right() - sCornerRadius*2,
         hingeRect().top(),
-        8, 8,
+        sCornerRadius*2, sCornerRadius*2,
         90, -90);
-    path.lineTo(hingeRect().right(), hingeRect().bottom() - 4);
+    path.lineTo(hingeRect().right(), hingeRect().bottom() - sCornerRadius);
     path.arcTo(
-        hingeRect().right() - 8,
-        hingeRect().bottom() - 8,
-        8, 8,
+        hingeRect().right() - sCornerRadius*2,
+        hingeRect().bottom() - sCornerRadius*2,
+        sCornerRadius*2, sCornerRadius*2,
         0, -90);
-    path.lineTo(hingeRect().left() + 4, hingeRect().bottom());
+    path.lineTo(hingeRect().left() + sCornerRadius, hingeRect().bottom());
     path.arcTo(
         hingeRect().left(),
-        hingeRect().bottom() - 8,
-        8, 8,
+        hingeRect().bottom() - sCornerRadius*2,
+        sCornerRadius*2, sCornerRadius*2,
         -90, -90);
-    path.lineTo(hingeRect().left(), hingeRect().top() + 4);
+    path.lineTo(hingeRect().left(), hingeRect().top() + sCornerRadius);
     path.arcTo(
         hingeRect().left(),
         hingeRect().top(),
-        8, 8,
+        sCornerRadius*2, sCornerRadius*2,
         -180, -90);
     path.closeSubpath();
     return path;
@@ -713,18 +717,18 @@ QPainterPath UBGraphicsCompass::pencilShape() const
 QPainterPath UBGraphicsCompass::pencilBaseShape() const
 {
     QPainterPath path;
-    path.moveTo(rect().right() - sPencilLength - sPencilBaseLength, rect().center().y() - 8);
-    path.lineTo(rect().right() - sPencilLength - 4, rect().center().y() - 8);
+    path.moveTo(rect().right() - sPencilLength - sPencilBaseLength, rect().center().y() - sPencilBaseWidth/2);
+    path.lineTo(rect().right() - sPencilLength - sCornerRadius, rect().center().y() - sPencilBaseWidth/2);
     path.arcTo(
-        rect().right() - sPencilLength - 8, rect().center().y() - 8,
-        8, 8,
+        rect().right() - sPencilLength - sCornerRadius*2, rect().center().y() - sPencilBaseWidth/2,
+        sCornerRadius*2, sCornerRadius*2,
         90, -90);
-    path.lineTo(rect().right() - sPencilLength, rect().center().y() + 4);
+    path.lineTo(rect().right() - sPencilLength, rect().center().y() + sPencilBaseWidth/2 - sCornerRadius);
     path.arcTo(
-        rect().right() - sPencilLength - 8, rect().center().y(),
-        8, 8,
+        rect().right() - sPencilLength - sCornerRadius*2, rect().center().y() + sPencilBaseWidth/2 - sCornerRadius*2,
+        sCornerRadius*2, sCornerRadius*2,
         0, -90);
-    path.lineTo(rect().right() - sPencilLength - sPencilBaseLength, rect().center().y() + 8);
+    path.lineTo(rect().right() - sPencilLength - sPencilBaseLength, rect().center().y() + sPencilBaseWidth/2);
     path.closeSubpath();
 
     return path;
@@ -733,18 +737,18 @@ QPainterPath UBGraphicsCompass::pencilBaseShape() const
 QPainterPath UBGraphicsCompass::pencilArmShape() const
 {
     QPainterPath path;
-    path.moveTo(hingeRect().right(), rect().center().y() - 16);
-    path.lineTo(rect().right() - sPencilLength - sPencilBaseLength - 4, rect().center().y() - 12);
+    path.moveTo(hingeRect().right(), rect().center().y() - sPencilArmLeftWidth/2);
+    path.lineTo(rect().right() - sPencilLength - sPencilBaseLength - sCornerRadius, rect().center().y() - sPencilArmRightWidth/2);
     path.arcTo(
-        rect().right() - sPencilLength - sPencilBaseLength - 8, rect().center().y() - 12,
-        8, 8,
+        rect().right() - sPencilLength - sPencilBaseLength - sCornerRadius*2, rect().center().y() - sPencilArmRightWidth/2,
+        sCornerRadius*2, sCornerRadius*2,
         90, -90);
-    path.lineTo(rect().right() - sPencilLength - sPencilBaseLength, rect().center().y() + 8);
+    path.lineTo(rect().right() - sPencilLength - sPencilBaseLength, rect().center().y() + sPencilArmRightWidth/2 - sCornerRadius);
     path.arcTo(
-        rect().right() - sPencilLength - sPencilBaseLength - 8, rect().center().y() + 4,
-        8, 8,
+        rect().right() - sPencilLength - sPencilBaseLength - sCornerRadius*2, rect().center().y() + sPencilArmRightWidth/2 - sCornerRadius*2,
+        sCornerRadius*2, sCornerRadius*2,
         0, -90);
-    path.lineTo(hingeRect().right(), rect().center().y() + 16);
+    path.lineTo(hingeRect().right(), rect().center().y() + sPencilArmLeftWidth/2);
     path.closeSubpath();
     return path;
 }

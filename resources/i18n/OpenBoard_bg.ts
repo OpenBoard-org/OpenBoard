@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="bg_BG">
+<TS version="2.1" language="bg_BG">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -842,11 +842,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation>Номер на елемента =</translation>
+        <translation type="vanished">Номер на елемента =</translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation>Това съдържание не се поддържа вкрайния формат.</translation>
+        <translation type="vanished">Това съдържание не се поддържа вкрайния формат.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -936,6 +936,14 @@
     <message>
         <source>Ungroup</source>
         <translation>Премахни групирането</translation>
+    </message>
+    <message>
+        <source>Saving document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document has just been saved...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1133,6 +1141,14 @@
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Are you sure you want to remove all selected documents?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove multiple documents</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1224,23 +1240,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation>Експортирай към интерактивната дъска</translation>
+        <translation type="vanished">Експортирай към интерактивната дъска</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation>Експортирай като файл за интерактивна дъска</translation>
+        <translation type="vanished">Експортирай като файл за интерактивна дъска</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Експортиране на документ...</translation>
+        <translation type="vanished">Експортиране на документ...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Експортирането успешно.</translation>
+        <translation type="vanished">Експортирането успешно.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>Експортирането се провали.</translation>
+        <translation type="vanished">Експортирането се провали.</translation>
     </message>
 </context>
 <context>
@@ -1269,6 +1285,18 @@
         <source>Export to OpenBoard Format</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBExportFullPDF</name>
@@ -1287,6 +1315,18 @@
     <message>
         <source>Export to PDF</source>
         <translation>Експортиране към PDF</translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1489,6 +1529,25 @@
     </message>
 </context>
 <context>
+    <name>UBGraphicsMediaItem</name>
+    <message>
+        <source>Media resource couldn&apos;t be resolved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsupported media format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Media playback service not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Media error: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBGraphicsTextItem</name>
     <message>
         <source>&lt;Type Text Here&gt;</source>
@@ -1535,23 +1594,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation>Общ формат на файла (</translation>
+        <translation type="vanished">Общ формат на файла (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation>Импортиране на файл %1...</translation>
+        <translation type="vanished">Импортиране на файл %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>Импортирането на файл %1 се провали.</translation>
+        <translation type="vanished">Импортирането на файл %1 се провали.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Импортирането успешно.</translation>
+        <translation type="vanished">Импортирането успешно.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation>Грешка при импортирането.</translation>
+        <translation type="vanished">Грешка при импортирането.</translation>
     </message>
 </context>
 <context>
@@ -1684,10 +1743,6 @@ Do you want to ignore these errors for this host?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open-SankorÃ© documents are present on your computer. It is possible to import them to OpenBoard by pressing the âProceedâ button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show this panel next time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1701,6 +1756,10 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Proceed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2414,7 +2473,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation>Големина на бутоните на клавиатурата:</translation>
+        <translation type="vanished">Големина на бутоните на клавиатурата:</translation>
     </message>
     <message>
         <source>Positioned at the Top (recommended for tablets)</source>
@@ -2472,7 +2531,7 @@ p, li { white-space: pre-wrap; }
         <source>Marker</source>
         <translation>Маркер</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>version : …</source>
         <translation>версия: ...</translation>
     </message>
@@ -2524,12 +2583,20 @@ p, li { white-space: pre-wrap; }
         <source>Credits</source>
         <translation>Изготвили</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Open-Sankoré Importer</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

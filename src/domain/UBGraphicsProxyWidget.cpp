@@ -89,8 +89,12 @@ QVariant UBGraphicsProxyWidget::itemChange(GraphicsItemChange change, const QVar
         }
     }
 
-    QVariant newValue = Delegate()->itemChange(change, value);
-    return QGraphicsProxyWidget::itemChange(change, newValue);
+    if (Delegate()) {
+        QVariant newValue = Delegate()->itemChange(change, value);
+        return QGraphicsProxyWidget::itemChange(change, newValue);
+    }
+    else
+        return QGraphicsProxyWidget::itemChange(change, value);
 }
 
 void UBGraphicsProxyWidget::setUuid(const QUuid &pUuid)

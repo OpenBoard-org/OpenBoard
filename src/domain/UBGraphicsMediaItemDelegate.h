@@ -43,17 +43,23 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
     Q_OBJECT
 
     public:
-        UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, QMediaPlayer* pMedia, QObject * parent = 0);
+        UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, QObject * parent = 0);
         virtual ~UBGraphicsMediaItemDelegate();
 
         virtual void positionHandles();
 
         bool mousePressEvent(QGraphicsSceneMouseEvent* event);
 
+        void showToolBar(bool autohide = true);
+
     public slots:
 
         void toggleMute();
         void updateTicker(qint64 time);
+        virtual void showHide(bool show);
+
+        void mediaStatusChanged(QMediaPlayer::MediaStatus status);
+        void mediaStateChanged(QMediaPlayer::State state);
 
     protected slots:
 
@@ -67,11 +73,6 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
 
         void hideToolBar();
 
-        void mediaStatusChanged(QMediaPlayer::MediaStatus status);
-
-        void mediaStateChanged(QMediaPlayer::State state);
-
-        void mediaError(QMediaPlayer::Error error);
 
     protected:
         virtual void buildButtons();
@@ -82,8 +83,6 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
         DelegateButton* mStopButton;
         DelegateButton* mMuteButton;
         DelegateMediaControl* mMediaControl;
-
-        QMediaPlayer* mMedia; // mMedia belongs to the associated UBGraphicsMediaItem (mDelegated)
 
         QTimer* mToolBarShowTimer;
         int m_iToolBarShowingInterval;

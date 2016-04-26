@@ -30,8 +30,10 @@
 
 #include <QtCore>
 
+#ifndef inteface
+#define interface struct
+#endif
 #include <wmsdk.h>
-
 
 class UBWindowsMediaFile : public QObject
 {

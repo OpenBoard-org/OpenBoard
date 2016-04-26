@@ -27,8 +27,8 @@
 
 #include "UBBoardController.h"
 
-#include <QtGui>
-#include <QtWebKit>
+#include <QtWidgets>
+#include <QtWebKitWidgets>
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBPlatformUtils.h"
@@ -85,11 +85,6 @@
 #include "core/UBSettings.h"
 
 #include "core/memcheck.h"
-
-#ifdef Q_OS_LINUX
-#include <QProcess>
-bool onboardIsAlreadyRunning = true;
-#endif
 
 UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     : UBDocumentContainer(mainWindow->centralWidget())
@@ -165,12 +160,6 @@ void UBBoardController::init()
 
 UBBoardController::~UBBoardController()
 {
-#ifdef Q_OS_LINUX
-    if(!onboardIsAlreadyRunning){
-        QProcess newProcess;
-        newProcess.startDetached("killall onboard");
-    }
-#endif
     delete mDisplayView;
 }
 
@@ -288,6 +277,7 @@ void UBBoardController::setupToolbar()
     colorActions.append(mMainWindow->actionColor1);
     colorActions.append(mMainWindow->actionColor2);
     colorActions.append(mMainWindow->actionColor3);
+    colorActions.append(mMainWindow->actionColor4);
 
     UBToolbarButtonGroup *colorChoice =
             new UBToolbarButtonGroup(mMainWindow->boardToolBar, colorActions);
@@ -700,7 +690,10 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
             if (gitem)
             {
                 mActiveScene->addItem(gitem);
-                gitem->setPos(itemPos);
+
+                // Translate the new object a bit
+                gitem->setPos(20, 20);
+
                 mLastCreatedItem = gitem;
                 gitem->setSelected(true);
             }
@@ -828,30 +821,10 @@ void UBBoardController::showKeyboard(bool show)
     if(show)
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 
-#ifdef Q_OS_LINUX
-    static bool isFirstTime = true;
-    if(isFirstTime){
-        QProcess isAlreadyRunningProcess;
-        QString psAuxGrepC = "ps aux";
-        isAlreadyRunningProcess.start(psAuxGrepC);
-        isAlreadyRunningProcess.waitForFinished();
-        QString output(isAlreadyRunningProcess.readAll());
-        if(output.count("onboard") != 0)
-            onboardIsAlreadyRunning = true;
-        else
-            onboardIsAlreadyRunning = false;
-
-        isFirstTime = false;
-    }
-    if(UBSettings::settings()->useSystemOnScreenKeybard->get().toBool()){
-        QProcess newProcess;
-        newProcess.startDetached("/usr/bin/onboard");
-    }
+    if(UBSettings::settings()->useSystemOnScreenKeyboard->get().toBool())
+        UBPlatformUtils::showOSK(show);
     else
         mPaletteManager->showVirtualKeyboard(show);
-#else
-    mPaletteManager->showVirtualKeyboard(show);
-#endif
 
 }
 
@@ -947,7 +920,8 @@ void UBBoardController::zoom(const qreal ratio, QPointF scenePoint)
 
 void UBBoardController::handScroll(qreal dx, qreal dy)
 {
-    mControlView->translate(dx, dy);
+    qreal antiScaleRatio = 1/(mSystemScaleFactor * currentZoom());
+    mControlView->translate(dx*antiScaleRatio, dy*antiScaleRatio);
 
     UBApplication::applicationController->adjustDisplayView();
 
@@ -1019,9 +993,10 @@ void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, c
     if (isBackground)
         oldBackgroundObject = mActiveScene->backgroundObject();
 
-    if(sUrl.startsWith("uniboardTool://"))
+    if(sUrl.startsWith("openboardtool://"))
+
     {
-        downloadFinished(true, url, QUrl(), "application/vnd.mnemis-uniboard-tool", QByteArray(), pPos, pSize, isBackground);
+        downloadFinished(true, url, QUrl(), "application/openboard-tool", QByteArray(), pPos, pSize, isBackground);
     }
     else if (sUrl.startsWith("file://") || sUrl.startsWith("/"))
     {
@@ -1118,7 +1093,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
     mActiveScene->deselectAllItems();
 
-    if (!sourceUrl.toString().startsWith("file://") && !sourceUrl.toString().startsWith("uniboardTool://"))
+    if (!sourceUrl.toString().startsWith("file://") && !sourceUrl.toString().startsWith("openboardtool://"))
         showMessage(tr("Download finished"));
 
     if (UBMimeType::RasterImage == itemMimeType)
@@ -1148,7 +1123,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         {
             mActiveScene->scaleToFitDocumentSize(pixItem, true, UBSettings::objectInControlViewMargin);
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-            pixItem->setSelected(true);
         }
 
         return pixItem;
@@ -1168,7 +1142,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         {
             mActiveScene->scaleToFitDocumentSize(svgItem, true, UBSettings::objectInControlViewMargin);
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-            svgItem->setSelected(true);
         }
 
         return svgItem;
@@ -1396,11 +1369,12 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
         if (result){
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+            reloadThumbnails();
         }
     }
-    else if (UBMimeType::UniboardTool == itemMimeType)
+    else if (UBMimeType::OpenboardTool == itemMimeType)
     {
-        qDebug() << "accepting mime type" << mimeType << "as Uniboard Tool";
+        qDebug() << "accepting mime type" << mimeType << "OpenBoard Tool";
 
         if (sourceUrl.toString() == UBToolsManager::manager()->compass.id)
         {
@@ -1578,7 +1552,7 @@ void UBBoardController::moveSceneToIndex(int source, int target)
         UBDocumentContainer::movePageToIndex(source, target);
 
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-        UBMetadataDcSubsetAdaptor::persist(selectedDocument());
+        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
         mMovingSceneIndex = source;
         setActiveDocumentScene(target);
         mMovingSceneIndex = -1;
@@ -1803,6 +1777,7 @@ void UBBoardController::autosaveTimeout()
     }
 
     saveData(sf_showProgress);
+    UBSettings::settings()->save();
 }
 
 void UBBoardController::appMainModeChanged(UBApplicationController::MainMode md)
@@ -1828,6 +1803,7 @@ void UBBoardController::closing()
 {
     mIsClosing = true;
     ClearUndoStack();
+    showKeyboard(false);
     lastWindowClosed();
 }
 

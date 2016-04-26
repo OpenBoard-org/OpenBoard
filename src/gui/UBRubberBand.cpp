@@ -31,15 +31,11 @@
 #include <QStyleFactory>
 #include <QStyle>
 
-#ifdef Q_OS_OSX
-#include <QtGui/QMacStyle>
-#endif
-
-#include "core/UBApplication.h"
-#include "board/UBBoardController.h"
 #include "board/UBBoardView.h"
 
 #include "core/memcheck.h"
+#include "core/UBApplication.h"
+#include "board/UBBoardController.h"
 
 UBRubberBand::UBRubberBand(Shape s, QWidget * p)
     : QRubberBand(s, p)
@@ -51,9 +47,9 @@ UBRubberBand::UBRubberBand(Shape s, QWidget * p)
     customStyle = NULL;
 
 #ifdef Q_OS_WIN
-    customStyle = new QWindowsXPStyle();
+    customStyle = QStyleFactory::create("windows");
 #elif defined(Q_OS_OSX)
-    customStyle = new QMacStyle();
+    customStyle = QStyleFactory::create("macintosh");
 #elif defined(Q_OS_LINUX)
     customStyle = QStyleFactory::create("oxygen");
 #endif

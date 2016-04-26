@@ -68,7 +68,7 @@ bool UBQuickTimeVideoEncoder::start()
         return false;
     }
 
-    connect(&mQuickTimeCompressionSession, SIGNAL(finished()), this, SLOT(compressionFinished()));
+    connect(&mQuickTimeCompressionSession, SIGNAL(compressionFinished()), this, SLOT(compressionFinished()));
     connect(&mQuickTimeCompressionSession, SIGNAL(audioLevelChanged(quint8)), this, SIGNAL(audioLevelChanged(quint8)));
 
     mQuickTimeCompressionSession.start();
@@ -79,10 +79,7 @@ bool UBQuickTimeVideoEncoder::start()
 
 bool UBQuickTimeVideoEncoder::stop()
 {
-    if (mQuickTimeCompressionSession.isRunning())
-    {
-        mQuickTimeCompressionSession.stop();
-    }
+    mQuickTimeCompressionSession.stop();
 
     UBQuickTimeFile::frameBufferNotEmpty.wakeAll();
 
@@ -94,21 +91,18 @@ void UBQuickTimeVideoEncoder::compressionFinished()
 {
         mLastErrorMessage = mQuickTimeCompressionSession.lastErrorMessage();
 
-        emit encodingFinished(mLastErrorMessage.length() > 0);
+        emit encodingFinished(mLastErrorMessage.length() == 0);
 }
 
 
 void UBQuickTimeVideoEncoder::newPixmap(const QImage& pImage, long timestamp)
 {
-        //qDebug() << "New Frame at ms" << timestamp;
+    //qDebug() << "New Frame at ms" << timestamp;
 
-    if(mQuickTimeCompressionSession.isCompressionSessionRunning())
-    {
-        if(mPendingImageFrames.length() > 0)
-        {
-            foreach(ImageFrame frame, mPendingImageFrames)
-            {
-                    encodeFrame(frame.image, frame.timestamp);
+    if(mQuickTimeCompressionSession.isCompressionSessionRunning()) {
+        if(mPendingImageFrames.length() > 0) {
+            foreach(ImageFrame frame, mPendingImageFrames) {
+                encodeFrame(frame.image, frame.timestamp);
             }
 
             mPendingImageFrames.clear();
@@ -118,8 +112,7 @@ void UBQuickTimeVideoEncoder::newPixmap(const QImage& pImage, long timestamp)
 
         UBQuickTimeFile::frameBufferNotEmpty.wakeAll();
     }
-    else
-    {
+    else {
         qDebug() << "queuing frame, compressor not ready";
 
         ImageFrame frame;
@@ -130,6 +123,14 @@ void UBQuickTimeVideoEncoder::newPixmap(const QImage& pImage, long timestamp)
     }
 }
 
+/**
+ * \brief Encode QImage into a video frame and add it to the UBQuickTimeFile's queue.
+ *
+ * This method retrieves the raw image from the supplied QImage, and uses memcpy to
+ * dump it into a CVPixelBuffer, obtained through the UBQuickTimeFile member. The
+ * pixel buffer, along with the timestamp, constitute a video frame which is added
+ * to the member UBQuickTimeFile's queue.
+ */
 void UBQuickTimeVideoEncoder::encodeFrame(const QImage& pImage, long timestamp)
 {
     Q_ASSERT(pImage.format() == QImage::QImage::Format_RGB32);  // <=> CVPixelBuffers / k32BGRAPixelFormat
@@ -157,7 +158,7 @@ void UBQuickTimeVideoEncoder::encodeFrame(const QImage& pImage, long timestamp)
 
     const uchar* imageBuffer = pImage.bits();
 
-    memcpy((void*) pixelBufferAddress, imageBuffer, pImage.numBytes());
+    memcpy((void*) pixelBufferAddress, imageBuffer, pImage.byteCount());
 
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
 
@@ -167,9 +168,7 @@ void UBQuickTimeVideoEncoder::encodeFrame(const QImage& pImage, long timestamp)
     videoFrame.buffer = pixelBuffer;
     videoFrame.timestamp = timestamp;
 
-    UBQuickTimeFile::frameQueueMutex.lock();
-    UBQuickTimeFile::frameQueue.enqueue(videoFrame);
-    UBQuickTimeFile::frameQueueMutex.unlock();
+    mQuickTimeCompressionSession.enqueueVideoFrame(videoFrame);
 }
 
 

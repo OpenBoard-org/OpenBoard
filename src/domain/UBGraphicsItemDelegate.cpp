@@ -790,7 +790,7 @@ void UBGraphicsItemDelegate::updateButtons(bool showUpdated)
         }
         else if (button->getSection() == Qt::TitleBarArea){
             button->setParentItem(mFrame);
-            button->setPos(topXTitleBar + (k++ * (frameButtonHeight + 5)), topYTitleBar);
+            button->setPos(topXTitleBar + (k++ * (frameButtonHeight + 5) * mAntiScaleRatio), topYTitleBar);
             button->setTransform(tr);
             button->setTransform(QTransform::fromScale(0.8, 0.8), true);
         }
@@ -1323,6 +1323,7 @@ void DelegateMediaControl::paint(QPainter *painter,
     QRectF r(position - radius, clearance+mSeecAreaBorderHeight, radius * 2, radius * 2);
 
     painter->setBrush(UBSettings::documentViewLightColor);
+    painter->setPen(Qt::black);
     painter->drawEllipse(r);
 }
 
@@ -1330,7 +1331,7 @@ void DelegateMediaControl::paint(QPainter *painter,
 QPainterPath DelegateMediaControl::shape() const
 {
     QPainterPath path;
-    path.addRoundedRect(rect(), rect().height()/ 2, rect().height()/2);
+    path.addRoundedRect(mSeecArea, mSeecArea.height()/2, mSeecArea.height()/2);
     return path;
 }
 
@@ -1439,10 +1440,10 @@ void DelegateMediaControl::seekToMousePos(QPointF mousePos)
         mouseX = mSeecArea.width() - mSeecArea.height()/2;
 
     if (mTotalTimeInMs > 0 && length > 0 && mDelegate
-        && mDelegate->mediaObject() && mDelegate->mediaObject()->isSeekable())
+        && mDelegate->isMediaSeekable())
     {
         qint64 tickPos = (mTotalTimeInMs/length)* (mouseX - minX);
-        mDelegate->mediaObject()->setPosition(tickPos);
+        mDelegate->setMediaPos(tickPos);
 
         //OSX is a bit lazy
         updateTicker(tickPos);

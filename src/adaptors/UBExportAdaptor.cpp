@@ -117,6 +117,56 @@ QString UBExportAdaptor::askForDirName(UBDocumentProxy* pDocument, const QString
     return dirname;
 }
 
+void UBExportAdaptor::persistLocally(UBDocumentProxy* pDocumentProxy, const QString& pDialogTitle)
+{
+    if (!pDocumentProxy)
+        return;
+
+    QString filename = askForFileName(pDocumentProxy, pDialogTitle);
+
+    if (filename.length() > 0) {
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+        if (mIsVerbose)
+            UBApplication::showMessage(tr("Exporting document..."));
+
+        // Check that the location is writeable
+        QFileInfo info(filename);
+        info.setFile(info.absolutePath());
+
+        if (!info.isWritable()) {
+            QMessageBox errorBox;
+            errorBox.setWindowTitle(tr("Export failed"));
+            errorBox.setText(tr("Unable to export to the selected location. You do not have the permissions necessary to save the file."));
+            errorBox.setIcon(QMessageBox::Critical);
+            errorBox.exec();
+
+            if (mIsVerbose)
+                UBApplication::showMessage(tr("Export failed: location not writable"));
+
+            QApplication::restoreOverrideCursor();
+
+            return;
+        }
+
+        bool persisted = this->persistsDocument(pDocumentProxy, filename);
+
+        if (mIsVerbose && persisted)
+            UBApplication::showMessage(tr("Export successful."));
+
+        QApplication::restoreOverrideCursor();
+    }
+}
+
+bool UBExportAdaptor::persistsDocument(UBDocumentProxy* pDocument, const QString& filename)
+{
+    // Implemented in child classes
+
+    Q_UNUSED(pDocument);
+    Q_UNUSED(filename);
+    return false;
+}
+
 void UBExportAdaptor::showErrorsList(QList<QString> errorsList)
 {
     if (errorsList.count())

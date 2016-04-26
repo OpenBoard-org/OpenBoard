@@ -14,4 +14,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------
 
-env LD_LIBRARY_PATH=$PWD/qtlib:$PWD/plugins/cffadaptor:$LD_LIBRARY_PATH ./Open-Sankore 
+# Directory of the script
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+# Add custom libraries to LD_LIBRARY_PATH
+# TODO: Remomve the need for this
+env LD_LIBRARY_PATH=$DIR/qtlib:$LD_LIBRARY_PATH QT_PLUGIN_PATH=$DIR/plugins $DIR/OpenBoard

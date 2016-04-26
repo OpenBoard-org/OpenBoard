@@ -33,7 +33,6 @@
 
 #include "core/UBApplication.h"
 
-#include "UBWindowsMediaFile.h"
 
 #include "core/memcheck.h"
 

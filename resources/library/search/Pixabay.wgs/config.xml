@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" 
+		xmlns:ub="http://uniboard.mnemis.com/widgets"
+        id="http://uniboard.mnemis.com/widgets/webbrowser" 
+        version="1.1"
+        width="900"
+        height="500" 
+		ub:resizable="true">   
+		     
+  		<name>Pixabay search</name>
+		<author>Craig Watson</author>
+		<description>Pixabay image search</description> 
+
+ 		<content src="index.html"/> 
+</widget>

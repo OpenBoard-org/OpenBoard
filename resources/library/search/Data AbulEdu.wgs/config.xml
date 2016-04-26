@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" 
+		xmlns:ub="http://uniboard.mnemis.com/widgets"
+        id="http://uniboard.mnemis.com/widgets/webbrowser" 
+        version="1.1"
+        width="900"
+        height="500" 
+		ub:resizable="true">   
+		     
+  		<name>Choisir</name>
+		<author href="http://www.ryxeo.com"
+	            email="contact@ryxeo.com">RyXéo SARL</author>
+		<description>Choisir widget</description> 
+
+ 		<content src="index.html"/> 
+</widget>

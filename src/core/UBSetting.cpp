@@ -48,7 +48,7 @@ UBSetting::UBSetting(UBSettings* owner, const QString& pDomain, const QString& p
         mPath(pDomain + "/" + pKey), 
         mDefaultValue(pDefaultValue)
 {
-    //NOOP
+    get(); // force caching of the setting
 }
 
 UBSetting::~UBSetting()

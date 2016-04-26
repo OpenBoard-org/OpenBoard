@@ -30,6 +30,7 @@
 
 #include <QtCore>
 #include "UBExportAdaptor.h"
+#include "UBExportPDF.h"
 
 class UBDocumentProxy;
 
@@ -45,7 +46,7 @@ class UBExportFullPDF : public UBExportAdaptor
         virtual QString exportExtention();
         virtual void persist(UBDocumentProxy* pDocument);
 
-        virtual void persistsDocument(UBDocumentProxy* pDocument, const QString& filename);
+        virtual bool persistsDocument(UBDocumentProxy* pDocument, const QString& filename);
 
     protected:
         void saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QString& filename);
@@ -53,6 +54,8 @@ class UBExportFullPDF : public UBExportAdaptor
     private:
         float mScaleFactor;
         bool mHasPDFBackgrounds;
+
+        UBExportPDF * mSimpleExporter;
 };
 
 #endif /* UBExportFullPDF_H_ */

@@ -126,11 +126,12 @@ void UBPlatformUtils::setDesktopMode(bool desktop)
 }
 
 void UBPlatformUtils::setWindowNonActivableFlag(QWidget* widget, bool nonAcivable)
-{
+{/*
     long exStyle = (nonAcivable) ? GetWindowLong(widget->winId(), GWL_EXSTYLE) | WS_EX_NOACTIVATE
         : GetWindowLong(widget->winId(), GWL_EXSTYLE) & ~WS_EX_NOACTIVATE;
 
     SetWindowLong(widget->winId(), GWL_EXSTYLE, exStyle);
+    */
 }
 
 #define KEYBTDECL(s1, s2, clSwitch) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(s1), KEYCODE(s2))
@@ -423,4 +424,34 @@ QString UBPlatformUtils::urlFromClipboard()
     QString qsRet;
     //  Not implemented yet
     return qsRet;
+}
+
+void UBPlatformUtils::setFrontProcess()
+{
+    // not used in Windows
+}
+
+
+void UBPlatformUtils::showFullScreen(QWidget *pWidget)
+{
+    pWidget->showFullScreen();
+}
+
+void UBPlatformUtils::showOSK(bool show)
+{
+    if (show) {
+        QString windir = qgetenv("WINDIR");
+        QString osk_path = windir+"\\System32\\osk.exe";
+
+        QProcess oskProcess;
+        // We have to pass by explorer.exe because osk.exe can only be launched
+        // directly with administrator rights
+        oskProcess.startDetached("explorer.exe", QStringList() << osk_path);
+    }
+
+    else {
+        HWND oskWindow = ::FindWindow(TEXT("OSKMainClass"), NULL);
+        if (oskWindow)
+            PostMessage(oskWindow, WM_SYSCOMMAND, SC_CLOSE, 0);
+    }
 }

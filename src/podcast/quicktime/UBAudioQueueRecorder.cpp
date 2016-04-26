@@ -37,15 +37,22 @@ UBAudioQueueRecorder::UBAudioQueueRecorder(QObject* pParent)
     , mIsRecording(false)
     , mBufferLengthInMs(500)
 {
-    sAudioFormat.mSampleRate = 44100.0;
-    sAudioFormat.mFormatID = kAudioFormatMPEG4AAC;
-    sAudioFormat.mChannelsPerFrame = 2;
 
-    sAudioFormat.mBytesPerFrame = 0;
-    sAudioFormat.mBitsPerChannel = 0;
-    sAudioFormat.mBytesPerPacket = 0;
-    sAudioFormat.mFramesPerPacket = 0;
-    sAudioFormat.mFormatFlags = 0;
+    int sampleSize = sizeof(float); // TODO: check if this is system/ microphone-dependant
+    
+    sAudioFormat.mSampleRate = 44100.0;
+    sAudioFormat.mFormatID = kAudioFormatLinearPCM;
+    sAudioFormat.mChannelsPerFrame = 1;
+
+    sAudioFormat.mBytesPerFrame = sampleSize;
+    sAudioFormat.mBitsPerChannel = 8 * sampleSize;
+    sAudioFormat.mBytesPerPacket = sampleSize;
+    sAudioFormat.mFramesPerPacket = 1;
+    sAudioFormat.mFormatFlags = kAudioFormatFlagIsFloat | 
+                                kAudioFormatFlagsNativeEndian | 
+                                kAudioFormatFlagIsPacked;
+    
+    
 }
 
 
@@ -151,10 +158,10 @@ QString UBAudioQueueRecorder::deviceUIDFromDeviceID(AudioDeviceID id)
     {
         char *cname = new char[1024];
 
-        CFStringGetCString (name, cname, 1024, kCFStringEncodingASCII);
+        CFStringGetCString (name, cname, 1024, kCFStringEncodingISOLatin1);
         int length = CFStringGetLength (name);
 
-        uid = QString::fromAscii(cname, length);
+        uid = QString::fromLatin1(cname, length);
 
         delete cname;
 
@@ -250,7 +257,8 @@ bool UBAudioQueueRecorder::init(const QString& waveInDeviceName)
 
     int nbBuffers = 6;
     mSampleBufferSize = sAudioFormat.mSampleRate *  sAudioFormat.mChannelsPerFrame
-                * 2 * mBufferLengthInMs / 1000; // 44.1 Khz * stereo * 16bit * buffer length
+                * sAudioFormat.mBitsPerChannel / 8 * mBufferLengthInMs / 1000; 
+        // BufferSize [bytes] = Length [s] * 44100 frames per second [Fr./s] * channels per frame [Ch./Fr.] * bytes per channel [bytes/Ch.]
 
     for (int i = 0; i < nbBuffers; i++)
     {
@@ -333,9 +341,12 @@ bool UBAudioQueueRecorder::close()
 }
 
 
-void UBAudioQueueRecorder::audioQueueInputCallback (void *inUserData, AudioQueueRef inAQ,
-                                                            AudioQueueBufferRef inBuffer, const AudioTimeStamp *inStartTime,
-                                                            UInt32 inNumberPacketDescriptions, const AudioStreamPacketDescription *inPacketDescs)
+void UBAudioQueueRecorder::audioQueueInputCallback (void *inUserData, 
+                                                    AudioQueueRef inAQ,
+                                                    AudioQueueBufferRef inBuffer, 
+                                                    const AudioTimeStamp *inStartTime,
+                                                    UInt32 inNumberPacketDescriptions, 
+                                                    const AudioStreamPacketDescription *inPacketDescs)
 {
     Q_UNUSED(inAQ);
     Q_UNUSED(inStartTime)
@@ -356,12 +367,11 @@ void UBAudioQueueRecorder::audioQueueInputCallback (void *inUserData, AudioQueue
 
 
 void UBAudioQueueRecorder::emitNewWaveBuffer(AudioQueueBufferRef pBuffer,
-                int inNumberPacketDescriptions, const AudioStreamPacketDescription *inPacketDescs)
+                                             int inNumberPacketDescriptions, 
+                                             const AudioStreamPacketDescription *inPacketDescs)
 {
-    AudioStreamPacketDescription* tmpPackages = (AudioStreamPacketDescription*)malloc(inNumberPacketDescriptions *sizeof(AudioStreamPacketDescription));
-    memcpy(tmpPackages,inPacketDescs,inNumberPacketDescriptions * sizeof(AudioStreamPacketDescription));
 
-    emit newWaveBuffer(pBuffer->mAudioData, pBuffer->mAudioDataByteSize, inNumberPacketDescriptions, tmpPackages);
+    emit newWaveBuffer(pBuffer->mAudioData, pBuffer->mAudioDataByteSize);
 
     qreal level = 0;
     UInt32 size;

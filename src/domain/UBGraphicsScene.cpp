@@ -31,6 +31,7 @@
 #include <QtWebKit>
 #include <QtSvg>
 #include <QGraphicsView>
+#include <QGraphicsVideoItem>
 
 #include "frameworks/UBGeometryUtils.h"
 #include "frameworks/UBPlatformUtils.h"
@@ -261,6 +262,10 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
     }
 
     //Return new z value assigned to item
+    
+    // experimental
+    item->setZValue(item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
+
     return item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
 }
 
@@ -292,10 +297,24 @@ void UBZLayerController::shiftStoredZValue(QGraphicsItem *item, qreal zValue)
     }
 }
 
+/**
+ * @brief Returns true if the zLevel is not used by any item on the scene, or false if so.
+ */
+bool UBZLayerController::zLevelAvailable(qreal z)
+{
+    foreach(QGraphicsItem* it, dynamic_cast<UBGraphicsScene*>(mScene)->getFastAccessItems()) {
+        if (it->zValue() == z)
+            return false;
+    }
+
+    return true;
+}
+
 UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoStack)
     : UBCoreGraphicsScene(parent)
     , mEraser(0)
     , mPointer(0)
+    , mMarkerCircle(0)
     , mDocument(parent)
     , mDarkBackground(false)
     , mCrossedBackground(false)
@@ -317,12 +336,13 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     , mSelectionFrame(0)
 {
     UBCoreGraphicsScene::setObjectName("BoardScene");
-    setItemIndexMethod(NoIndex);
+    setItemIndexMethod(BspTreeIndex);
 
     setUuid(QUuid::createUuid());
     setDocument(parent);
     createEraiser();
     createPointer();
+    createMarkerCircle();
 
     if (UBApplication::applicationController)
     {
@@ -381,6 +401,10 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
                 mCurrentStroke = NULL;
             }
 
+            // hide the marker preview circle
+            if (currentTool == UBStylusTool::Marker)
+                hideMarkerCircle();
+
             // ---------------------------------------------------------------
             // Create a new Stroke. A Stroke is a collection of QGraphicsLines
             // ---------------------------------------------------------------
@@ -419,7 +443,7 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             eraserWidth /= UBApplication::boardController->currentZoom();
 
             eraseLineTo(scenePos, eraserWidth);
-            drawEraser(scenePos, true);
+            drawEraser(scenePos, mInputDeviceIsPressed);
 
             accepted = true;
         }
@@ -448,8 +472,17 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
 
     if (currentTool == UBStylusTool::Eraser)
     {
-        drawEraser(position);
+        drawEraser(position, mInputDeviceIsPressed);
         accepted = true;
+    }
+
+    else if (currentTool == UBStylusTool::Marker) {
+        if (mInputDeviceIsPressed)
+            hideMarkerCircle();
+        else {
+            drawMarkerCircle(position);
+            accepted = true;
+        }
     }
 
     if (mInputDeviceIsPressed)
@@ -536,6 +569,12 @@ bool UBGraphicsScene::inputDeviceRelease()
         accepted = true;
     }
 
+    UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();
+
+    if (currentTool == UBStylusTool::Eraser)
+        redrawEraser(false);
+
+
     UBDrawingController *dc = UBDrawingController::drawingController();
 
     if (dc->isDrawingTool() || mDrawWithCompass)
@@ -619,22 +658,40 @@ bool UBGraphicsScene::inputDeviceRelease()
     return accepted;
 }
 
-void UBGraphicsScene::drawEraser(const QPointF &pPoint, bool isFirstDraw)
+void UBGraphicsScene::drawEraser(const QPointF &pPoint, bool pressed)
 {
-    qreal eraserWidth = UBSettings::settings()->currentEraserWidth();
-    eraserWidth /= UBApplication::boardController->systemScaleFactor();
-    eraserWidth /= UBApplication::boardController->currentZoom();
+    if (mEraser) {
+        qreal eraserWidth = UBSettings::settings()->currentEraserWidth();
+        eraserWidth /= UBApplication::boardController->systemScaleFactor();
+        eraserWidth /= UBApplication::boardController->currentZoom();
 
-    qreal eraserRadius = eraserWidth / 2;
+        qreal eraserRadius = eraserWidth / 2;
 
     // TODO UB 4.x optimize - no need to do that every time we move it
-    if (mEraser) {
         mEraser->setRect(QRectF(pPoint.x() - eraserRadius, pPoint.y() - eraserRadius, eraserWidth, eraserWidth));
-
-        if(isFirstDraw) {
-          mEraser->show();
-        }
+        redrawEraser(pressed);
     }
+}
+
+void UBGraphicsScene::redrawEraser(bool pressed)
+{
+    if (mEraser) {
+        QPen pen = mEraser->pen();
+
+        if(pressed)
+            pen.setStyle(Qt::SolidLine);
+        else
+            pen.setStyle(Qt::DotLine);
+
+        mEraser->setPen(pen);
+        mEraser->show();
+    }
+}
+
+void UBGraphicsScene::hideEraser()
+{
+    if (mEraser)
+        mEraser->hide();
 }
 
 void UBGraphicsScene::drawPointer(const QPointF &pPoint, bool isFirstDraw)
@@ -651,6 +708,28 @@ void UBGraphicsScene::drawPointer(const QPointF &pPoint, bool isFirstDraw)
         if(isFirstDraw) {
             mPointer->show();
         }
+    }
+}
+
+void UBGraphicsScene::drawMarkerCircle(const QPointF &pPoint)
+{
+    if (mMarkerCircle) {
+        qreal markerDiameter = UBSettings::settings()->currentMarkerWidth();
+        markerDiameter /= UBApplication::boardController->systemScaleFactor();
+        markerDiameter /= UBApplication::boardController->currentZoom();
+        qreal markerRadius = markerDiameter/2;
+
+        mMarkerCircle->setRect(QRectF(pPoint.x() - markerRadius, pPoint.y() - markerRadius,
+                                      markerDiameter, markerDiameter));
+        mMarkerCircle->show();
+    }
+
+}
+
+void UBGraphicsScene::hideMarkerCircle()
+{
+    if (mMarkerCircle) {
+        mMarkerCircle->hide();
     }
 }
 
@@ -871,20 +950,8 @@ void UBGraphicsScene::setBackground(bool pIsDark, bool pIsCrossed)
     {
         mDarkBackground = pIsDark;
 
-        if (mEraser)
-        {
-            if (mDarkBackground)
-            {
-                mEraser->setBrush(UBSettings::eraserBrushDarkBackground);
-                mEraser->setPen(UBSettings::eraserPenDarkBackground);
-            }
-            else
-            {
-                mEraser->setBrush(UBSettings::eraserBrushLightBackground);
-                mEraser->setPen(UBSettings::eraserPenLightBackground);
-            }
-        }
-
+        updateEraserColor();
+        updateMarkerCircleColor();
         recolorAllItems();
 
         needRepaint = true;
@@ -1072,16 +1139,16 @@ UBGraphicsPolygonItem* UBGraphicsScene::polygonToPolygonItem(const QPolygonF pPo
     return polygonItem;
 }
 
-void UBGraphicsScene::hideEraser()
+void UBGraphicsScene::hideTool()
 {
-    if (mEraser)
-        mEraser->hide();
+    hideEraser();
+    hideMarkerCircle();
 }
 
 void UBGraphicsScene::leaveEvent(QEvent * event)
 {
     Q_UNUSED(event);
-    hideEraser();
+    hideTool();
 }
 
 UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
@@ -1109,11 +1176,11 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
             UBGraphicsGroupContainerItem* groupCloned = group->deepCopyNoChildDuplication();
             groupCloned->resetMatrix();
             groupCloned->resetTransform();
+            groupCloned->setMatrix(group->matrix());
+            groupCloned->setTransform(group->transform());
+
             foreach(QGraphicsItem* eachItem ,group->childItems()){
                 QGraphicsItem* copiedChild = dynamic_cast<QGraphicsItem*>(dynamic_cast<UBItem*>(eachItem)->deepCopy());
-                copiedChild->resetTransform();
-                copiedChild->resetMatrix();
-                copiedChild->setMatrix(eachItem->sceneMatrix());
                 copy->addItem(copiedChild);
                 groupCloned->addToGroup(copiedChild);
             }
@@ -1316,10 +1383,10 @@ UBGraphicsMediaItem* UBGraphicsScene::addMedia(const QUrl& pMediaFileUrl, bool s
     if (!QFile::exists(pMediaFileUrl.toString()))
         return NULL;
 
-    UBGraphicsMediaItem* mediaItem = new UBGraphicsMediaItem(pMediaFileUrl);
-    if(mediaItem){
+    UBGraphicsMediaItem * mediaItem = UBGraphicsMediaItem::createMediaItem(pMediaFileUrl);
+
+    if(mediaItem)
         connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), mediaItem, SLOT(activeSceneChanged()));
-    }
 
     mediaItem->setPos(pPos);
 
@@ -1335,13 +1402,8 @@ UBGraphicsMediaItem* UBGraphicsScene::addMedia(const QUrl& pMediaFileUrl, bool s
         UBApplication::undoStack->push(uc);
     }
 
-    mediaItem->mediaObject()->play();
-
-    if (!shouldPlayAsap)
-    {
-        mediaItem->mediaObject()->pause();
-        mediaItem->mediaObject()->setPosition(0);
-    }
+    if (shouldPlayAsap)
+        mediaItem->play();
 
     setDocumentUpdated();
 
@@ -1663,12 +1725,16 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
     UBCoreGraphicsScene::addItem(item);
 
     // the default z value is already set. This is the case when a svg file is read
-    if(item->zValue() == DEFAULT_Z_VALUE || item->zValue() == UBZLayerController::errorNum()){
+    if(item->zValue() == DEFAULT_Z_VALUE
+            || item->zValue() == UBZLayerController::errorNum()
+            || !mZLayerController->zLevelAvailable(item->zValue()))
+    {
         qreal zvalue = mZLayerController->generateZLevel(item);
         UBGraphicsItem::assignZValue(item, zvalue);
-    } else {
-        notifyZChanged(item, item->zValue());
     }
+
+    else
+        notifyZChanged(item, item->zValue());
 
     if (!mTools.contains(item))
       ++mItemCount;
@@ -2454,16 +2520,19 @@ void UBGraphicsScene::setDocumentUpdated()
 
 void UBGraphicsScene::createEraiser()
 {
-    mEraser = new QGraphicsEllipseItem(); // mem : owned and destroyed by the scene
-    mEraser->setRect(QRect(0, 0, 0, 0));
-    mEraser->setVisible(false);
+    if (UBSettings::settings()->showEraserPreviewCircle->get().toBool()) {
+        mEraser = new QGraphicsEllipseItem(); // mem : owned and destroyed by the scene
+        mEraser->setRect(QRect(0, 0, 0, 0));
+        mEraser->setVisible(false);
 
-    mEraser->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
-    mEraser->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Eraiser)); //Necessary to set if we want z value to be assigned correctly
+        updateEraserColor();
 
-    mTools << mEraser;
-    addItem(mEraser);
+        mEraser->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+        mEraser->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Eraiser)); //Necessary to set if we want z value to be assigned correctly
 
+        mTools << mEraser;
+        addItem(mEraser);
+    }
 }
 
 void UBGraphicsScene::createPointer()
@@ -2480,6 +2549,63 @@ void UBGraphicsScene::createPointer()
 
     mTools << mPointer;
     addItem(mPointer);
+}
+
+void UBGraphicsScene::createMarkerCircle()
+{
+    if (UBSettings::settings()->showMarkerPreviewCircle->get().toBool()) {
+        mMarkerCircle = new QGraphicsEllipseItem();
+
+        mMarkerCircle->setRect(QRect(0, 0, 0, 0));
+        mMarkerCircle->setVisible(false);
+
+        mMarkerCircle->setPen(Qt::DotLine);
+        updateMarkerCircleColor();
+
+        mMarkerCircle->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+        mMarkerCircle->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Eraiser));
+
+        mTools << mMarkerCircle;
+        addItem(mMarkerCircle);
+    }
+}
+
+void UBGraphicsScene::updateEraserColor()
+{
+    if (!mEraser)
+        return;
+
+    if (mDarkBackground) {
+        mEraser->setBrush(UBSettings::eraserBrushDarkBackground);
+        mEraser->setPen(UBSettings::eraserPenDarkBackground);
+    }
+
+    else {
+        mEraser->setBrush(UBSettings::eraserBrushLightBackground);
+        mEraser->setPen(UBSettings::eraserPenLightBackground);
+    }
+}
+
+void UBGraphicsScene::updateMarkerCircleColor()
+{
+    if (!mMarkerCircle)
+        return;
+
+    QBrush mcBrush = mMarkerCircle->brush();
+    QPen mcPen = mMarkerCircle->pen();
+
+    if (mDarkBackground) {
+        mcBrush.setColor(UBSettings::markerCircleBrushColorDarkBackground);
+        mcPen.setColor(UBSettings::markerCirclePenColorDarkBackground);
+    }
+
+    else {
+        mcBrush.setColor(UBSettings::markerCircleBrushColorLightBackground);
+        mcPen.setColor(UBSettings::markerCirclePenColorLightBackground);
+    }
+
+    mMarkerCircle->setBrush(mcBrush);
+    mMarkerCircle->setPen(mcPen);
 }
 
 void UBGraphicsScene::setToolCursor(int tool)

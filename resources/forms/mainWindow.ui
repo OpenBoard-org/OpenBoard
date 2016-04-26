@@ -445,10 +445,19 @@
     <string>Color</string>
    </property>
   </action>
+  <action name="actionColor4">
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
+   </property>
+   <property name="text">
+    <string>Color</string>
+   </property>
+  </action>
   <action name="actionWebBack">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/previousPageOn.png</normaloff>:/images/toolbar/previousPageOn.png</iconset>
+     <normaloff>:/images/toolbar/previous.png</normaloff>:/images/toolbar/previous.png</iconset>
    </property>
    <property name="text">
     <string>Back</string>
@@ -463,7 +472,7 @@
   <action name="actionWebForward">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/nextPageOn.png</normaloff>:/images/toolbar/nextPageOn.png</iconset>
+     <normaloff>:/images/toolbar/next.png</normaloff>:/images/toolbar/next.png</iconset>
    </property>
    <property name="text">
     <string>Forward</string>

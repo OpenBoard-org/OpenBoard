@@ -1,4 +1,4 @@
-var sankoreLang = {
+﻿var sankoreLang = {
     "en":{
         "embed": "Embed"
     },
@@ -7,5 +7,8 @@ var sankoreLang = {
     },
     "fr":{
         "embed": "Intégrer"
+    },
+    "sk":{
+        "embed": "Vložiť"
     }
 };

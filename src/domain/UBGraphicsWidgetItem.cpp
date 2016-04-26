@@ -81,6 +81,7 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     QGraphicsWebView::settings()->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
     QGraphicsWebView::settings()->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
     QGraphicsWebView::settings()->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
+    QGraphicsWebView::settings()->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
 
     page()->setNetworkAccessManager(UBNetworkAccessManager::defaultAccessManager());
 
@@ -744,6 +745,7 @@ void UBGraphicsAppleWidgetItem::copyItemParameters(UBItem *copy) const
         }
 
         cp->setSourceUrl(this->sourceUrl());
+        cp->setZValue(this->zValue());
     }
 
 }
@@ -853,7 +855,7 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
 
         QDomNodeList propertiesDomList = widgetElement.elementsByTagName("preference");
 
-        for (uint i = 0; i < propertiesDomList.length(); i++) {
+        for (int i = 0; i < propertiesDomList.length(); i++) {
             QDomElement preferenceElement = propertiesDomList.at(i).toElement();
             QString prefName = preferenceElement.attribute("name", "");
 
@@ -1219,7 +1221,7 @@ void UBGraphicsW3CWidgetItem::copyItemParameters(UBItem *copy) const
 
         cp->resize(this->size());
 
-        foreach(QString key, UBGraphicsWidgetItem::preferences().keys())
+        foreach(QString key, this->UBGraphicsWidgetItem::preferences().keys())
         {
             cp->setPreference(key, UBGraphicsWidgetItem::preferences().value(key));
         }
@@ -1228,6 +1230,8 @@ void UBGraphicsW3CWidgetItem::copyItemParameters(UBItem *copy) const
         {
             cp->setDatastoreEntry(key, mDatastore.value(key));
         }
+
+        cp->setZValue(this->zValue());
     }
 }
 

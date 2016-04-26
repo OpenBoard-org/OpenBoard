@@ -243,9 +243,6 @@ void UBSelectionFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent */*event*/)
 
 void UBSelectionFrame::onZoomChanged(qreal pZoom)
 {
-    qDebug() << "Pzoom" << pZoom;
-    qDebug() << "Board current zoom" << UBApplication::boardController->currentZoom();
-    qDebug() << "UBApplication::boardController->systemScaleFactor()" << UBApplication::boardController->systemScaleFactor();
     mAntiscaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * pZoom);
 
 }
@@ -261,9 +258,20 @@ void UBSelectionFrame::remove()
     updateRect();
 }
 
+static bool sortByZ(UBGraphicsItemDelegate* A, UBGraphicsItemDelegate* B)
+{
+    return (A->delegated()->data(UBGraphicsItemData::ItemOwnZValue).toReal()
+            < B->delegated()->data(UBGraphicsItemData::ItemOwnZValue).toReal() );
+}
+
 void UBSelectionFrame::duplicate()
 {
     UBApplication::undoStack->beginMacro(UBSettings::undoCommandTransactionName);
+
+    // The mEnclosedtems list items are in order of selection. To avoid losing their
+    // relative zValues when duplicating, we re-order the list.
+    std::sort(mEnclosedtems.begin(), mEnclosedtems.end(), sortByZ);
+
     foreach (UBGraphicsItemDelegate *d, mEnclosedtems) {
         d->duplicate();
     }
@@ -458,7 +466,6 @@ QList<QGraphicsItem*> UBSelectionFrame::sortedByZ(const QList<QGraphicsItem *> &
 
 QList<DelegateButton*> UBSelectionFrame::buttonsForFlags(UBGraphicsFlags fls) {
 
-    qDebug() << "buttons for flags" << QString::number((int)fls, 2);
     QList<DelegateButton*> result;
 
     if (!mDeleteButton) {

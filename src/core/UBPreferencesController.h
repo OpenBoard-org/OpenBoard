@@ -93,6 +93,7 @@ class UBPreferencesController : public QObject
         void toolbarPositionChanged(bool checked);
         void toolbarOrientationVertical(bool checked);
         void toolbarOrientationHorizontal(bool checked);
+        void systemOSKCheckBoxToggled(bool checked);
 
     private slots:
         void adjustScreens(int screen);

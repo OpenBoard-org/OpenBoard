@@ -66,6 +66,7 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     , mMirrorX(false)
     , mMirrorY(false)
     , mTitleBarHeight(hasTitleBar ? 20 :0)
+    , mNominalTitleBarHeight(hasTitleBar ? 20:0)
 {
     mAngleTolerance = UBSettings::settings()->angleTolerance->get().toReal();
 
@@ -117,6 +118,7 @@ UBGraphicsDelegateFrame::~UBGraphicsDelegateFrame()
 void UBGraphicsDelegateFrame::setAntiScale(qreal pAntiScale)
 {
     mFrameWidth = mNominalFrameWidth * pAntiScale;
+    mTitleBarHeight = mNominalTitleBarHeight * pAntiScale;
 
     QTransform tr;
     tr.scale(pAntiScale, pAntiScale);

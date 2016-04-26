@@ -3,7 +3,7 @@
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://uniboard.mnemis.com/widgets/videopicker" 
         version="1.1"
-        width="426"
+        width="440"
         height="630" 
 		ub:resizable="false">
 		    

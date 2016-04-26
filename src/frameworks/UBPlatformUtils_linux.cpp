@@ -31,7 +31,6 @@
 #include <QApplication>
 
 #include <unistd.h>
-#include <X11/Xlib.h>
 #include <X11/keysym.h>
 
 #include "frameworks/UBFileSystemUtils.h"
@@ -428,4 +427,28 @@ QString UBPlatformUtils::urlFromClipboard()
     // Not used on Linux
 
     return qsRet;
+}
+
+void UBPlatformUtils::setFrontProcess()
+{
+    // not used in Linux
+}
+
+
+void UBPlatformUtils::showFullScreen(QWidget *pWidget)
+{
+    pWidget->showFullScreen();
+}
+
+void UBPlatformUtils::showOSK(bool show)
+{
+    QProcess oskProcess;
+
+    if (show)
+        oskProcess.startDetached("/usr/bin/env onboard");
+
+    else
+        /* Not exactly a great solution, but it isn't possible to just
+         * close onboard through wmctrl or xdotool */
+        oskProcess.startDetached("pkill -3 onboard");
 }

@@ -77,6 +77,8 @@ class UBDocumentProxyTreeItem : public QTreeWidgetItem
             return mProxy;
         }
 
+        bool isInTrash();
+
         QPointer<UBDocumentProxy> mProxy;
 };
 

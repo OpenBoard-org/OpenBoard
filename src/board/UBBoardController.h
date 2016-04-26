@@ -51,8 +51,6 @@ class UBVersion;
 class UBSoftwareUpdate;
 class UBSoftwareUpdateDialog;
 class UBGraphicsMediaItem;
-class UBGraphicsVideoItem;
-class UBGraphicsAudioItem;
 class UBGraphicsWidgetItem;
 class UBBoardPaletteManager;
 class UBItem;

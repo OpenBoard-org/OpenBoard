@@ -28,9 +28,13 @@
 #ifndef UBGRAPHICSTRIANGLE_H_
 #define UBGRAPHICSTRIANGLE_H_
 
-#include <QtGui>
+#include <QtWidgets>
+
 #include <QtSvg>
-#include <QGraphicsPolygonItem>
+
+#include <QtWidgets/QGraphicsItem>
+#include <QtWidgets/QGraphicsPolygonItem>
+
 
 #include "core/UB.h"
 #include "domain/UBItem.h"
@@ -92,7 +96,9 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
 
         void setRect(const QRectF &rect, UBGraphicsTriangleOrientation orientation)
         {
-            setRect(rect.x(), rect.y(), rect.width(), rect.height(), orientation);
+           qDebug() << "setRect"<<"rect = "<<rect<<"orientation :"<<orientation;
+
+           setRect(rect.x(), rect.y(), rect.width(), rect.height(), orientation);
         }
         void setRect(qreal x, qreal y, qreal w, qreal h, UBGraphicsTriangleOrientation orientation);
         void setOrientation(UBGraphicsTriangleOrientation orientation);
@@ -118,6 +124,8 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
         QRectF    hFlipRect() const;
         QRectF    vFlipRect() const;
         QRectF    rotateRect() const;
+
+        QRectF bounding_Rect() const;
 
         QCursor    resizeCursor1() const;
         QCursor    resizeCursor2() const;
@@ -148,6 +156,10 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
 
         // Coordinates are transformed....
         QPoint lastPos;
+
+        // Save the last bounds rect
+        QRectF bounds_rect;
+
 
         QGraphicsSvgItem* mHFlipSvgItem;
         QGraphicsSvgItem* mVFlipSvgItem;

@@ -124,9 +124,9 @@ class UBApplication : public QtSingleApplication
     private slots:
 
         void closing();
-#ifdef Q_OS_OSX
+//#ifdef Q_OS_OSX // for some reason this is not compiled if the ifdef is uncommented
         void showMinimized();
-#endif
+//#endif
         void onScreenCountChanged(int newCount);
 
     private:
@@ -136,10 +136,11 @@ class UBApplication : public QtSingleApplication
         bool mIsVerbose;
         QString checkLanguageAvailabilityForSankore(QString& language);
     protected:
-
-#if defined(Q_OS_OSX) && !defined(QT_MAC_USE_COCOA)
+/*
+#if defined(Q_OS_MAC) && !defined(QT_MAC_USE_COCOA)
         bool macEventFilter(EventHandlerCallRef caller, EventRef event);
 #endif
+        */
 
         UBPreferencesController* mPreferencesController;
         QTranslator* mApplicationTranslator;

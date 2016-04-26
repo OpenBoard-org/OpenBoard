@@ -57,6 +57,7 @@ class UBSettings : public QObject
         void InitKeyboardPaletteKeyBtnSizes();
         void ValidateKeyboardPaletteKeyBtnSize();
         void closing();
+        void save();
 
         int penWidthIndex();
 
@@ -170,6 +171,12 @@ class UBSettings : public QObject
         static QPen eraserPenDarkBackground;
         static QPen eraserPenLightBackground;
 
+        static QColor markerCircleBrushColorDarkBackground;
+        static QColor markerCircleBrushColorLightBackground;
+
+        static QColor markerCirclePenColorDarkBackground;
+        static QColor markerCirclePenColorLightBackground;
+
         static QColor documentSizeMarkColorDarkBackground;
         static QColor documentSizeMarkColorLightBackground;
 
@@ -222,6 +229,8 @@ class UBSettings : public QObject
         static int objectInControlViewMargin;
 
         static QString appPingMessage;
+
+        static int pageDpi;
 
         UBSetting* productWebUrl;
 
@@ -280,6 +289,9 @@ class UBSettings : public QObject
         UBColorListSetting* boardMarkerDarkBackgroundColors;
         UBColorListSetting* boardMarkerDarkBackgroundSelectedColors;
 
+        UBSetting* showEraserPreviewCircle;
+        UBSetting* showMarkerPreviewCircle;
+
         UBSetting* webUseExternalBrowser;
         UBSetting* webShowPageImmediatelyOnMirroredScreen;
 
@@ -327,21 +339,11 @@ class UBSettings : public QObject
         UBSetting* youTubeUserEMail;
         UBSetting* youTubeCredentialsPersistence;
 
-        UBSetting* uniboardWebEMail;
-        UBSetting* uniboardWebAuthor;
-        UBSetting* uniboardWebGoogleMapApiKey;
-
         UBSetting* podcastPublishToIntranet;
         UBSetting* intranetPodcastPublishingUrl;
         UBSetting* intranetPodcastAuthor;
 
         UBSetting* favoritesNativeToolUris;
-
-        UBSetting* replyWWSerialPort;
-        UBSetting* replyPlusConnectionURL;
-        UBSetting* replyPlusAddressingMode;
-
-        UBSetting* replyPlusMaxKeypads;
 
         UBSetting* documentThumbnailWidth;
         UBSetting* imageThumbnailWidth;
@@ -364,7 +366,6 @@ class UBSettings : public QObject
         UBSetting* communityCredentialsPersistence;
 
         UBSetting* pageSize;
-        UBSetting* pageDpi;
 
         UBSetting* KeyboardLocale;
         UBSetting* swapControlAndDisplayScreens;
@@ -374,7 +375,7 @@ class UBSettings : public QObject
 
         UBSetting* libIconSize;
 
-        UBSetting* useSystemOnScreenKeybard;
+        UBSetting* useSystemOnScreenKeyboard;
 
         UBSetting* magnifierDrawingMode;
         UBSetting* autoSaveInterval;
@@ -397,7 +398,7 @@ class UBSettings : public QObject
         void setPenPressureSensitive(bool sensitive);
         void setMarkerPressureSensitive(bool sensitive);
 
-        QVariant value ( const QString & key, const QVariant & defaultValue = QVariant() ) const;
+        QVariant value ( const QString & key, const QVariant & defaultValue = QVariant() );
         void setValue (const QString & key,const QVariant & value);
 
         void colorChanged() { emit colorContextChanged(); }
@@ -410,6 +411,8 @@ class UBSettings : public QObject
         QSettings* mAppSettings;
         QSettings* mUserSettings;
 
+        QHash<QString, QVariant> mSettingsQueue;
+
         static const int sDefaultFontPixelSize;
         static const char *sDefaultFontFamily;
 
@@ -420,6 +423,9 @@ class UBSettings : public QObject
 
         static bool checkDirectory(QString& dirPath);
         static QString replaceWildcard(QString& path);
+
+        void removeSetting(const QString& setting);
+        void checkNewSettings();
 
 };
 

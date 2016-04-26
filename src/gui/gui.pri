@@ -85,7 +85,8 @@ SOURCES += src/gui/UBThumbnailView.cpp \
     src/gui/UBOpenSankoreImporterWidget.cpp \
     src/gui/UBStartupHintsPalette.cpp
 win32:SOURCES += src/gui/UBKeyboardPalette_win.cpp
-macx:SOURCES += src/gui/UBKeyboardPalette_mac.cpp
+macx:OBJECTIVE_SOURCES += src/gui/UBKeyboardPalette_mac.mm
 linux-g++:SOURCES += src/gui/UBKeyboardPalette_linux.cpp
 linux-g++-32:SOURCES += src/gui/UBKeyboardPalette_linux.cpp
 linux-g++-64:SOURCES += src/gui/UBKeyboardPalette_linux.cpp
+

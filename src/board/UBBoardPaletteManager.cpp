@@ -540,7 +540,7 @@ void UBBoardPaletteManager::activeSceneChanged()
     int pageIndex = UBApplication::boardController->activeSceneIndex();
 
     if (mStylusPalette)
-        connect(mStylusPalette, SIGNAL(mouseEntered()), activeScene, SLOT(hideEraser()));
+        connect(mStylusPalette, SIGNAL(mouseEntered()), activeScene, SLOT(hideTool()));
 
     if (mpPageNavigWidget)
     {
@@ -548,10 +548,10 @@ void UBBoardPaletteManager::activeSceneChanged()
     }
 
     if (mZoomPalette)
-        connect(mZoomPalette, SIGNAL(mouseEntered()), activeScene, SLOT(hideEraser()));
+        connect(mZoomPalette, SIGNAL(mouseEntered()), activeScene, SLOT(hideTool()));
 
     if (mBackgroundsPalette)
-        connect(mBackgroundsPalette, SIGNAL(mouseEntered()), activeScene, SLOT(hideEraser()));
+        connect(mBackgroundsPalette, SIGNAL(mouseEntered()), activeScene, SLOT(hideTool()));
 }
 
 

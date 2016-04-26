@@ -57,7 +57,7 @@ UBFileSystemUtils::~UBFileSystemUtils()
 
 QString UBFileSystemUtils::removeLocalFilePrefix(QString input)
 {
-#ifdef Q_OS_WIN
+#ifdef Q_WS_WIN
     if(input.startsWith("file:///"))
         return input.mid(8);
     else
@@ -592,12 +592,17 @@ UBMimeType::Enum UBFileSystemUtils::mimeTypeFromString(const QString& typeString
     {
         type = UBMimeType::PDF;
     }
-    else if (typeString.startsWith("application/vnd.mnemis-uniboard-tool"))
+   /* else if (typeString.startsWith("application/vnd.mnemis-uniboard-tool"))
     {
         type = UBMimeType::UniboardTool;
-    }
+    } */
 
+    else if (typeString.startsWith("application/openboard-tool"))
+    {
+        type = UBMimeType::OpenboardTool;
+    }
     return type;
+
 }
 
 UBMimeType::Enum UBFileSystemUtils::mimeTypeFromUrl(const QUrl& url)
@@ -706,11 +711,9 @@ bool UBFileSystemUtils::compressDirInZip(const QDir& pDir, const QString& pDestP
                 qWarning() << "Compression of file" << inFile.fileName() << " failed. Cause: outFile.close(): " << pOutZipFile->getZipError();
 
                 inFile.close();
-                pOutZipFile->close();
                 return false;
             }
 
-            pOutZipFile->close();
             inFile.close();
         }
     }

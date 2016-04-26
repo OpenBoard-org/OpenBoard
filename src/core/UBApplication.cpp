@@ -33,10 +33,6 @@
 #include <QFontDatabase>
 #include <QStyleFactory>
 
-#if defined(Q_OS_OSX)
-#include <Carbon/Carbon.h>
-#endif
-
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBStringUtils.h"
@@ -85,32 +81,11 @@ const QString UBApplication::mimeTypeUniboardPage = QString("application/vnd.mne
 const QString UBApplication::mimeTypeUniboardPageItem =  QString("application/vnd.mnemis-uniboard-page-item");
 const QString UBApplication::mimeTypeUniboardPageThumbnail = QString("application/vnd.mnemis-uniboard-thumbnail");
 
-#ifdef Q_OS_OSX
+#if defined(Q_OS_OSX) || defined(Q_OS_LINUX)
 bool bIsMinimized = false;
 #endif
 
 QObject* UBApplication::staticMemoryCleaner = 0;
-
-#if defined(Q_OS_OSX)
-static OSStatus ub_appleEventProcessor(const AppleEvent *ae, AppleEvent *event, long handlerRefCon)
-{
-    Q_UNUSED(event);
-    OSType aeID = typeWildCard;
-    OSType aeClass = typeWildCard;
-
-    AEGetAttributePtr(ae, keyEventClassAttr, typeType, 0, &aeClass, sizeof(aeClass), 0);
-    AEGetAttributePtr(ae, keyEventIDAttr, typeType, 0, &aeID, sizeof(aeID), 0);
-
-    if (aeClass == kCoreEventClass && aeID == kAEReopenApplication)
-    {
-        // User clicked on Uniboard in the Dock
-        ((UBApplicationController*)handlerRefCon)->hideDesktop();
-        return noErr;
-    }
-
-    return eventNotHandledErr;
-}
-#endif
 
 
 UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSingleApplication(id, argc, argv)
@@ -208,13 +183,18 @@ UBApplication::~UBApplication()
 QString UBApplication::checkLanguageAvailabilityForSankore(QString &language)
 {
     QStringList availableTranslations = UBPlatformUtils::availableTranslations();
+
     if(availableTranslations.contains(language,Qt::CaseInsensitive))
         return language;
     else{
         if(language.length() > 2){
             QString shortLanguageCode = language.left(2);
-            if(availableTranslations.contains(shortLanguageCode,Qt::CaseInsensitive))
-                return shortLanguageCode;
+
+            foreach (const QString &str, availableTranslations) {
+                       if (str.contains(shortLanguageCode))
+                           return shortLanguageCode;
+                   }
+
         }
     }
     return QString("");
@@ -338,10 +318,10 @@ int UBApplication::exec(const QString& pFileToImport)
 
     connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), applicationController, SLOT(showDesktop(bool)));
     connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), this, SLOT(stopScript()));
-#ifndef Q_OS_OSX
-    connect(mainWindow->actionHideApplication, SIGNAL(triggered()), mainWindow, SLOT(showMinimized()));
-#else
+#if defined(Q_OS_OSX) || defined(Q_OS_LINUX)
     connect(mainWindow->actionHideApplication, SIGNAL(triggered()), this, SLOT(showMinimized()));
+#else
+    connect(mainWindow->actionHideApplication, SIGNAL(triggered()), mainWindow, SLOT(showMinimized()));
 #endif
 
     mPreferencesController = new UBPreferencesController(mainWindow);
@@ -368,11 +348,6 @@ int UBApplication::exec(const QString& pFileToImport)
     if (pFileToImport.length() > 0)
         UBApplication::applicationController->importFile(pFileToImport);
 
-#if defined(Q_OS_OSX)
-    static AEEventHandlerUPP ub_proc_ae_handlerUPP = AEEventHandlerUPP(ub_appleEventProcessor);
-    AEInstallEventHandler(kCoreEventClass, kAEReopenApplication, ub_proc_ae_handlerUPP, SRefCon(UBApplication::applicationController), true);
-#endif
-
     if (UBSettings::settings()->appStartMode->get().toInt())
         applicationController->showDesktop();
     else
@@ -390,14 +365,18 @@ void UBApplication::onScreenCountChanged(int newCount)
     mainWindow->actionMultiScreen->setEnabled(displayManager.numScreens() > 1);
 }
 
-#ifdef Q_OS_OSX
 void UBApplication::showMinimized()
 {
+#ifdef Q_OS_OSX
     mainWindow->hide();
     bIsMinimized = true;
+#elif defined(Q_OS_LINUX)
+    mainWindow->showMinimized();
+    bIsMinimized = true;
+#endif
+
 }
 
-#endif
 
 void UBApplication::startScript()
 {
@@ -590,11 +569,7 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
     {
         QFileOpenEvent *fileToOpenEvent = static_cast<QFileOpenEvent *>(event);
 
-#if defined(Q_OS_OSX)
-        ProcessSerialNumber psn;
-        GetCurrentProcess(&psn);
-        SetFrontProcess(&psn);
-#endif
+        UBPlatformUtils::setFrontProcess();
 
         applicationController->importFile(fileToOpenEvent->file());
     }
@@ -609,14 +584,21 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
     if (event->type() == QEvent::ApplicationActivate)
     {
         boardController->controlView()->setMultiselection(false);
+
+#if defined(Q_OS_OSX)
+        if (bIsMinimized) {
+            if (mainWindow->isHidden())
+                mainWindow->show();
+            bIsMinimized = false;
+        }
+#elif defined(Q_OS_LINUX)
+        if (bIsMinimized) {
+            bIsMinimized = false;
+            UBPlatformUtils::showFullScreen(mainWindow);
+        }
+#endif
     }
 
-#ifdef Q_OS_OSX
-    if (bIsMinimized && event->type() == QEvent::ApplicationActivate){
-        if (mainWindow->isHidden()) mainWindow->show();
-        bIsMinimized = false;
-    }
-#endif
     return result;
 }
 
@@ -680,7 +662,7 @@ bool UBApplication::isFromWeb(QString url)
 {
     bool res = true;
 
-    if( url.startsWith("uniboardTool://") ||
+    if( url.startsWith("openboardtool://") ||
         url.startsWith("file://") ||
         url.startsWith("/")){
         res = false;

@@ -147,7 +147,8 @@ void UBDrawingController::setStylusTool(int tool)
             UBApplication::mainWindow->actionCapture->setChecked(true);
 
         emit stylusToolChanged(tool);
-        emit colorPaletteChanged();
+        if (mStylusTool != UBStylusTool::Selector)
+            emit colorPaletteChanged();
     }
 }
 

@@ -102,7 +102,7 @@ class UBDocumentController : public UBDocumentContainer
 
         enum LastSelectedElementType
         {
-            None = 0, Folder, Document, Page
+            None = 0, Folder, Document, Page, Multiple
         };
 
         LastSelectedElementType mSelectionType;
@@ -121,13 +121,22 @@ class UBDocumentController : public UBDocumentContainer
         UBDocumentToolsPalette *mToolsPalette;
         bool mToolsPalettePositionned;
         UBDocumentGroupTreeItem* mTrashTi;
-
-        void selectADocumentOnTrashingSelectedOne(UBDocumentGroupTreeItem* groupTi,UBDocumentProxyTreeItem *proxyTi);
-
-        void moveDocumentToTrash(UBDocumentGroupTreeItem* groupTi, UBDocumentProxyTreeItem *proxyTi);
-        void moveFolderToTrash(UBDocumentGroupTreeItem* groupTi);
+        QList<QTreeWidgetItem*> mCurrentSelection;
         QString mDocumentTrashGroupName;
         QString mDefaultDocumentGroupName;
+
+        void selectADocumentOnTrashingSelectedOne(UBDocumentGroupTreeItem* groupTi,UBDocumentProxyTreeItem *proxyTi);
+        void selectADocumentOnMultipleTrashing();
+        void moveDocumentToTrash(UBDocumentGroupTreeItem* groupTi, UBDocumentProxyTreeItem *proxyTi, bool selectNewDocument);
+        void moveFolderToTrash(UBDocumentGroupTreeItem* groupTi);
+        void emptyTrash(bool showConfirmationDialog);
+        void deleteTreeItem(QTreeWidgetItem * item, bool showConfirmationDialog, bool selectNewDocument);
+
+        void updateCurrentSelection();
+        bool multipleSelection();
+        bool isDocumentInTrash(UBDocumentProxyTreeItem * document);
+        bool isCurrentSelectionInTrash();
+        LastSelectedElementType itemType(QTreeWidgetItem * item);
 
     private slots:
         void documentZoomSliderValueChanged (int value);
@@ -141,7 +150,6 @@ class UBDocumentController : public UBDocumentContainer
         void documentSceneChanged(UBDocumentProxy* proxy, int pSceneIndex);
         void pageDoubleClicked(QGraphicsItem* item, int index);
         void pageClicked(QGraphicsItem* item, int index);
-        void itemClicked(QTreeWidgetItem * item, int column );
         void addToDocument();
         void addDocumentInTree(UBDocumentProxy* pDocument);
         void updateDocumentInTree(UBDocumentProxy* pDocument);

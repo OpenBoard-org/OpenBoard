@@ -56,36 +56,18 @@ UBExportDocument::~UBExportDocument()
 
 void UBExportDocument::persist(UBDocumentProxy* pDocumentProxy)
 {
-    if (!pDocumentProxy)
-        return;
-
-    QString filename = askForFileName(pDocumentProxy, tr("Export as UBZ File"));
-
-    if (filename.length() > 0)
-    {
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-        if (mIsVerbose)
-            UBApplication::showMessage(tr("Exporting document..."));
-
-        persistsDocument(pDocumentProxy, filename);
-
-        if (mIsVerbose)
-            UBApplication::showMessage(tr("Export successful."));
-
-        QApplication::restoreOverrideCursor();
-    }
+    persistLocally(pDocumentProxy, tr("Export as UBZ File"));
 }
 
 
-void UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, QString filename)
+bool UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, const QString &filename)
 {
     QuaZip zip(filename);
     zip.setFileNameCodec("UTF-8");
     if(!zip.open(QuaZip::mdCreate))
     {
         qWarning("Export failed. Cause: zip.open(): %d", zip.getZipError());
-        return;
+        return false;
     }
 
     QDir documentDir = QDir(pDocumentProxy->persistencePath());
@@ -93,15 +75,18 @@ void UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, QString
     QuaZipFile outFile(&zip);
     UBFileSystemUtils::compressDirInZip(documentDir, "", &outFile, true, this);
 
+    zip.close();
+
     if(zip.getZipError() != 0)
     {
         qWarning("Export failed. Cause: zip.close(): %d", zip.getZipError());
+        return false;
     }
 
-    zip.close();
 
     UBPlatformUtils::setFileType(filename, 0x5542647A /* UBdz */);
 
+    return true;
 }
 
 

@@ -28,7 +28,16 @@
 #ifndef UBAPPLICATIONCONTROLLER_H_
 #define UBAPPLICATIONCONTROLLER_H_
 
-#include <QtGui>
+#include <QtWidgets>
+
+
+#include <QtNetwork>
+#include <QNetworkAccessManager>
+
+
+#include <QtNetwork/QHttpPart>
+#include <QScriptValue>
+#include <QScriptEngine>
 
 
 class UBBoardView;
@@ -42,9 +51,12 @@ class UBVersion;
 class UBSoftwareUpdate;
 class QNetworkAccessManager;
 class QNetworkReply;
-class QHttp;
+class QHttpPart;
 class UBRightPalette;
 class UBOpenSankoreImporter;
+class QScriptValue;
+class QScriptEngine;
+class QNetworkReply;
 
 class UBApplicationController : public QObject
 {
@@ -144,8 +156,8 @@ class UBApplicationController : public QObject
         void checkAtLaunch();
 
     private slots:
-        void updateRequestFinished(QNetworkReply * reply);
-
+        void updateRequestFinished(int id, bool error);
+        void updateHeaderReceived(QNetworkRequest header );
 
     protected:
 
@@ -183,6 +195,9 @@ class UBApplicationController : public QObject
         QNetworkAccessManager *networkAccessManager;
 
         void downloadJsonFinished(QString updateString);
+        QHttpPart* mHttp;
+        QNetworkAccessManager qnam;
+        QNetworkReply *mHttpreply;
 };
 
 #endif /* UBAPPLICATIONCONTROLLER_H_ */

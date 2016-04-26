@@ -50,49 +50,55 @@ UBToolsManager::UBToolsManager(QObject *parent)
     : QObject(parent)
 {
 
-    mask.id = "uniboardTool://uniboard.mnemis.com/mask";
+    mask.id = "openboardtool://openboard/mask";
     mask.icon = QPixmap(":/images/toolPalette/maskTool.png");
     mask.label = tr("Mask");
     mask.version = "1.0";
     mToolsIcon.insert(mask.id, ":/images/toolPalette/maskTool.png");
     mDescriptors << mask;
 
-    ruler.id = "uniboardTool://uniboard.mnemis.com/ruler";
+
+    ruler.id = "openboardtool://ruler";
     ruler.icon = QPixmap(":/images/toolPalette/rulerTool.png");
     ruler.label = tr("Ruler");
     ruler.version = "1.0";
     mToolsIcon.insert(ruler.id, ":/images/toolPalette/rulerTool.png");
     mDescriptors << ruler;
 
-    compass.id = "uniboardTool://uniboard.mnemis.com/compass";
+
+    compass.id = "openboardtool://compass";
     compass.icon = QPixmap(":/images/toolPalette/compassTool.png");
     compass.label = tr("Compass");
     compass.version = "1.0";
     mToolsIcon.insert(compass.id, ":/images/toolPalette/compassTool.png");
     mDescriptors << compass;
 
-    protractor.id = "uniboardTool://uniboard.mnemis.com/protractor";
+
+    protractor.id = "openboardtool://protractor";
     protractor.icon = QPixmap(":/images/toolPalette/protractorTool.png");
     protractor.label = tr("Protractor");
     protractor.version = "1.0";
     mToolsIcon.insert(protractor.id,":/images/toolPalette/protractorTool.png");
     mDescriptors << protractor;
 
-    triangle.id = "uniboardTool://uniboard.mnemis.com/triangle";
+
+    triangle.id = "openboardtool://triangle";
     triangle.icon = QPixmap(":/images/toolPalette/triangleTool.png");
     triangle.label = tr("Triangle");
     triangle.version = "1.0";
     mToolsIcon.insert(triangle.id,":/images/toolPalette/triangleTool.png");
     mDescriptors << triangle;
 
-    magnifier.id = "uniboardTool://uniboard.mnemis.com/magnifier";
+
+    magnifier.id = "openboardtool://magnifier";
     magnifier.icon = QPixmap(":/images/toolPalette/magnifierTool.png");
     magnifier.label = tr("Magnifier");
     magnifier.version = "1.0";
     mToolsIcon.insert(magnifier.id,":/images/toolPalette/magnifierTool.png");
     mDescriptors << magnifier;
 
-    cache.id = "uniboardTool://uniboard.mnemis.com/cache";
+
+    cache.id = "openboardtool://cache";
     cache.icon = QPixmap(":/images/toolPalette/cacheTool.png");
     cache.label = tr("Cache");
     cache.version = "1.0";

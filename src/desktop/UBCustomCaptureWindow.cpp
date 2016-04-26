@@ -30,6 +30,7 @@
 
 #include "UBCustomCaptureWindow.h"
 
+#include "frameworks/UBPlatformUtils.h"
 #include "gui/UBRubberBand.h"
 
 #include "core/memcheck.h"
@@ -73,8 +74,7 @@ int UBCustomCaptureWindow::execute(const QPixmap &pScreenPixmap)
     QDesktopWidget *desktop = QApplication::desktop();
     int currentScreen = desktop->screenNumber(QCursor::pos());
     setGeometry(desktop->screenGeometry(currentScreen));
-
-    showFullScreen();
+    this->show();
     setWindowOpacity(1.0);
 
     return exec();

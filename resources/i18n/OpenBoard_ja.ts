@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ja_JP" sourcelanguage="en_US">
+<TS version="2.1" language="ja_JP" sourcelanguage="en_US">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -841,14 +841,6 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Element ID = </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Content is not supported in destination format.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Remove Page</source>
         <translation type="unfinished">ページ削除</translation>
     </message>
@@ -935,6 +927,14 @@
     </message>
     <message>
         <source>Add file operation failed: file copying error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saving document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document has just been saved...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1131,6 +1131,14 @@
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Are you sure you want to remove all selected documents?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove multiple documents</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1221,23 +1229,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation>IWBへエクスポート</translation>
+        <translation type="vanished">IWBへエクスポート</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation>IWB ファイルとしてエクスポート</translation>
+        <translation type="vanished">IWB ファイルとしてエクスポート</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>ドキュメントのエクスポート中... </translation>
+        <translation type="vanished">ドキュメントのエクスポート中... </translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>エクスポートに成功 </translation>
+        <translation type="vanished">エクスポートに成功 </translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>エクスポートに失敗 </translation>
+        <translation type="vanished">エクスポートに失敗 </translation>
     </message>
 </context>
 <context>
@@ -1266,6 +1274,18 @@
         <source>Export to OpenBoard Format</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBExportFullPDF</name>
@@ -1284,6 +1304,18 @@
     <message>
         <source>Export to PDF</source>
         <translation>PDFへエクスポート</translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1486,6 +1518,25 @@
     </message>
 </context>
 <context>
+    <name>UBGraphicsMediaItem</name>
+    <message>
+        <source>Media resource couldn&apos;t be resolved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsupported media format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Media playback service not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Media error: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBGraphicsTextItem</name>
     <message>
         <source>&lt;Type Text Here&gt;</source>
@@ -1532,23 +1583,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation>共通ファイルフォーマット ( </translation>
+        <translation type="vanished">共通ファイルフォーマット ( </translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation>ファイル%1のインポート中... </translation>
+        <translation type="vanished">ファイル%1のインポート中... </translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>ファイル%1のインポート失敗。</translation>
+        <translation type="vanished">ファイル%1のインポート失敗。</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>インポートに成功。</translation>
+        <translation type="vanished">インポートに成功。</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation>インポート失敗。</translation>
+        <translation type="vanished">インポート失敗。</translation>
     </message>
 </context>
 <context>
@@ -1682,10 +1733,6 @@ Do you want to ignore these errors for this host?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open-SankorÃ© documents are present on your computer. It is possible to import them to OpenBoard by pressing the âProceedâ button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show this panel next time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1699,6 +1746,10 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Proceed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2387,7 +2438,7 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation>設定</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>version : …</source>
         <translation>バージョン: …</translation>
     </message>
@@ -2421,7 +2472,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation>キーボードボタンサイズ: </translation>
+        <translation type="vanished">キーボードボタンサイズ: </translation>
     </message>
     <message>
         <source>Toolbar</source>
@@ -2519,12 +2570,20 @@ p, li { white-space: pre-wrap; }
         <source>Credits</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Open-Sankoré Importer</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

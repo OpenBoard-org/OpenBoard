@@ -62,7 +62,9 @@ UBExportFullPDF::UBExportFullPDF(QObject *parent)
     //need to calculate screen resolution
     QDesktopWidget* desktop = UBApplication::desktop();
     int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
-    mScaleFactor = 72.0f / dpiCommon;
+    mScaleFactor = 72.0f / dpiCommon; // 1pt = 1/72 inch
+
+    mSimpleExporter = new UBExportPDF();
 }
 
 
@@ -131,27 +133,11 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
 
 void UBExportFullPDF::persist(UBDocumentProxy* pDocumentProxy)
 {
-    if (!pDocumentProxy)
-        return;
-
-    QString filename = askForFileName(pDocumentProxy, tr("Export as PDF File"));
-
-    if (filename.length() > 0)
-    {
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        if (mIsVerbose)
-            UBApplication::showMessage(tr("Exporting document..."));
-
-        persistsDocument(pDocumentProxy, filename);
-        if (mIsVerbose)
-            UBApplication::showMessage(tr("Export successful."));
-
-        QApplication::restoreOverrideCursor();
-    }
+    persistLocally(pDocumentProxy, tr("Export as PDF File"));
 }
 
 
-void UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QString& filename)
+bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QString& filename)
 {
     QFile file(filename);
     if (file.exists()) file.remove();
@@ -220,7 +206,12 @@ void UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
                     xPdfOffset += (xPdf - xAnnotation) * scaleFactor * mScaleFactor;
                     yPdfOffset -= (yPdf - yAnnotation) * scaleFactor * mScaleFactor;
 
-                    TransformationDescription pdfTransform(xPdfOffset, yPdfOffset, scaleFactor, 0);
+                    // If the PDF was scaled when added to the scene (e.g if it was loaded from a document with a different DPI
+                    // than the current one), it should also be scaled here.
+                    qreal currentDpi = (UBApplication::desktop()->physicalDpiX() + UBApplication::desktop()->physicalDpiY()) / 2;
+                    qreal pdfScale = qreal(UBSettings::pageDpi)/currentDpi;
+
+                    TransformationDescription pdfTransform(xPdfOffset, yPdfOffset, scaleFactor * pdfScale, 0);
                     TransformationDescription annotationTransform(xAnnotationsOffset, yAnnotationsOffset, 1, 0);
 
                     MergePageDescription pageDescription(pageSize.width() * mScaleFactor,
@@ -261,7 +252,7 @@ void UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
             qDebug() << "PdfMerger failed to merge documents to " << filename << " - Exception : " << e.what();
 
             // default to raster export
-            UBExportPDF::persistsDocument(pDocumentProxy, filename);
+            mSimpleExporter->persistsDocument(pDocumentProxy, filename);
         }
 
         if (!UBApplication::app()->isVerbose())
@@ -269,6 +260,8 @@ void UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
             QFile::remove(overlayName);
         }
     }
+
+    return true;
 }
 
 

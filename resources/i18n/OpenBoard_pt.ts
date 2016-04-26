@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="pt_PT" sourcelanguage="en_GB">
+<TS version="2.1" language="pt_PT" sourcelanguage="en_GB">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -844,11 +844,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation>ID do Elemento</translation>
+        <translation type="vanished">ID do Elemento</translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation>O conteúdo não é suportado no formato de destino.</translation>
+        <translation type="vanished">O conteúdo não é suportado no formato de destino.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -938,6 +938,14 @@
     <message>
         <source>Ungroup</source>
         <translation>Desagrupar</translation>
+    </message>
+    <message>
+        <source>Saving document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document has just been saved...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1134,6 +1142,14 @@
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Are you sure you want to remove all selected documents?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove multiple documents</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1225,23 +1241,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation>Exportar para IWB</translation>
+        <translation type="vanished">Exportar para IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation>Exportar como ficheiro IWB</translation>
+        <translation type="vanished">Exportar como ficheiro IWB</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>A exportar documento...</translation>
+        <translation type="vanished">A exportar documento...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Exportação bem sucedida.</translation>
+        <translation type="vanished">Exportação bem sucedida.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>Falha na Exportação.</translation>
+        <translation type="vanished">Falha na Exportação.</translation>
     </message>
 </context>
 <context>
@@ -1270,6 +1286,18 @@
         <source>Export to OpenBoard Format</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBExportFullPDF</name>
@@ -1288,6 +1316,18 @@
     <message>
         <source>Export to PDF</source>
         <translation>Exportar para PDF</translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1491,6 +1531,25 @@
     </message>
 </context>
 <context>
+    <name>UBGraphicsMediaItem</name>
+    <message>
+        <source>Media resource couldn&apos;t be resolved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsupported media format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Media playback service not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Media error: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBGraphicsTextItem</name>
     <message>
         <source>&lt;Type Text Here&gt;</source>
@@ -1537,23 +1596,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation>Formato de Ficheiro Frequente (</translation>
+        <translation type="vanished">Formato de Ficheiro Frequente (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation>A importar ficheiro %1...</translation>
+        <translation type="vanished">A importar ficheiro %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>Falha a importar ficheiro %1.</translation>
+        <translation type="vanished">Falha a importar ficheiro %1.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Importação bem sucedida.</translation>
+        <translation type="vanished">Importação bem sucedida.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation>Falha na importação.</translation>
+        <translation type="vanished">Falha na importação.</translation>
     </message>
 </context>
 <context>
@@ -1686,10 +1745,6 @@ Quer ignorar estes erros, deste servidor?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open-SankorÃ© documents are present on your computer. It is possible to import them to OpenBoard by pressing the âProceedâ button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show this panel next time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1703,6 +1758,10 @@ Quer ignorar estes erros, deste servidor?</translation>
     </message>
     <message>
         <source>Proceed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2390,7 +2449,7 @@ p, li { white-space: pre-wrap; }
         <source>Preferences</source>
         <translation>Preferências</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>version : …</source>
         <translation>versão : ...</translation>
     </message>
@@ -2424,7 +2483,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation>Tamanho dos botões do teclado:</translation>
+        <translation type="vanished">Tamanho dos botões do teclado:</translation>
     </message>
     <message>
         <source>Toolbar</source>
@@ -2524,12 +2583,20 @@ p, li { white-space: pre-wrap; }
         <source>Credits</source>
         <translation>Créditos</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Open-Sankoré Importer</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

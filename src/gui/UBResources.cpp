@@ -65,7 +65,7 @@ void UBResources::init()
 {
     // Cursors
     penCursor       = QCursor(Qt::CrossCursor);
-    eraserCursor    = QCursor(QPixmap(":/images/cursors/eraser.png"), 21, 21);
+    eraserCursor    = QCursor(QPixmap(":/images/cursors/eraser.png"), 5, 25);
     markerCursor    = QCursor(QPixmap(":/images/cursors/marker.png"), 3, 30);
     pointerCursor   = QCursor(QPixmap(":/images/cursors/laser.png"), 2, 1);
     handCursor      = QCursor(Qt::OpenHandCursor);

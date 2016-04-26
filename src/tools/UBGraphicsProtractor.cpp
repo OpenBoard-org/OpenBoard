@@ -35,8 +35,10 @@
 
 #include "core/memcheck.h"
 
+#include <QtWidgets/QGraphicsView>
 
-const QRectF UBGraphicsProtractor::sDefaultRect = QRectF(-175, -175, 350, 350);
+
+const QRectF UBGraphicsProtractor::sDefaultRect = QRectF(-250, -250, 500, 500);
 
 UBGraphicsProtractor::UBGraphicsProtractor()
         : QGraphicsEllipseItem(sDefaultRect)
@@ -78,7 +80,11 @@ UBGraphicsProtractor::UBGraphicsProtractor()
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::CppTool)); //Necessary to set if we want z value to be assigned correctly
     setFlag(QGraphicsItem::ItemIsSelectable, false);
 
-    setTransform(QTransform::fromScale(1.5, 1.5), true);
+    mCloseSvgItem->setPos(closeButtonRect().topLeft());
+    mResetSvgItem->setPos(resetButtonRect().topLeft());
+    mResizeSvgItem->setPos(resizeButtonRect().topLeft());
+    mMarkerSvgItem->setPos(markerButtonRect().topLeft());
+    mRotateSvgItem->setPos(rotateButtonRect().topLeft());
 }
 
 
@@ -89,8 +95,11 @@ void UBGraphicsProtractor::paint(QPainter *painter, const QStyleOptionGraphicsIt
     Q_UNUSED(styleOption);
     Q_UNUSED(widget);
 
-    painter->setFont(QFont("Arial"));
-    painter->setPen(drawColor());
+    QPen pen_(drawColor());
+    pen_.setWidth(0); // Line width = 1 pixel regardless of scale / zoom
+    painter->setPen(pen_);
+    
+    painter->setFont(QFont("Arial", 11));
     painter->setBrush(fillBrush());
     painter->drawPie(QRectF(rect().center().x() - radius(), rect().center().y() - radius(), 2 * radius(), 2 * radius()), mStartAngle * 16, mSpan * 16);
     paintGraduations(painter);
@@ -181,7 +190,6 @@ void UBGraphicsProtractor::mousePressEvent(QGraphicsSceneMouseEvent *event)
         event->accept();
 }
 
-
 void UBGraphicsProtractor::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QPointF currentPoint = event->pos();
@@ -190,6 +198,7 @@ void UBGraphicsProtractor::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     qreal angle = startLine.angleTo(currentLine);
     qreal scaleFactor = currentLine.length()/startLine.length();
 
+
     switch (mCurrentTool)
     {
     case Rotate :
@@ -197,7 +206,9 @@ void UBGraphicsProtractor::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         mStartAngle = mStartAngle + angle;
         setStartAngle(mStartAngle * 16);
         mPreviousMousePos = currentPoint;
+
         break;
+
 
     case Resize :
         prepareGeometryChange();
@@ -247,6 +258,10 @@ void UBGraphicsProtractor::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         break;
 
     case MoveMarker :
+        update();
+        break;
+
+    case Resize:
         update();
         break;
 
@@ -311,6 +326,8 @@ void UBGraphicsProtractor::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 
     if (currentTool == Move)
         setCursor(Qt::SizeAllCursor);
+    else if (currentTool == Rotate)
+        setCursor(rotateCursor());
     else
         setCursor(Qt::ArrowCursor);
 
@@ -326,60 +343,69 @@ qreal UBGraphicsProtractor::antiScale() const
 
 QRectF UBGraphicsProtractor::resetButtonRect () const
 {
-    qreal antiSc = antiScale();
+    qreal refWidth = buttonSizeReference().width();
+    qreal width = mResetSvgItem->boundingRect().width();
+    qreal height = mResetSvgItem->boundingRect().height();
 
-    if (buttonSizeReference().width() * antiSc <=  buttonSizeReference().width() * 15)
-        return QRectF(-buttonSizeReference().width() * 7, -buttonSizeReference().height() * antiSc / 2,
-                      buttonSizeReference().width() * antiSc, buttonSizeReference().height() * antiSc);
-    else
-        return QRectF(-buttonSizeReference().width() * antiSc / 2, -buttonSizeReference().height() * antiSc / 2,
-                      buttonSizeReference().width() * antiSc, buttonSizeReference().height() * antiSc);
+    return QRectF(-refWidth * 7, -height/2.0, width, height);
+
+    // Note: these hardcoded position values make it impossible
+    // to use setScale() on the buttons without affecting their
+    // relative position on the tool.
 }
 
 
 QRectF UBGraphicsProtractor::closeButtonRect () const
 {
-    qreal antiSc = antiScale();
+    qreal refWidth = buttonSizeReference().width();
+    qreal width = mCloseSvgItem->boundingRect().width();
+    qreal height = mCloseSvgItem->boundingRect().height();
 
-    if (buttonSizeReference().width() * antiSc <=  buttonSizeReference().width() * 2)
-        return QRectF(-buttonSizeReference().width() * 9, -buttonSizeReference().height() * antiSc / 2,
-                      buttonSizeReference().width() * antiSc, buttonSizeReference().height() * antiSc);
-    else if (buttonSizeReference().width() * antiSc <=  buttonSizeReference().width() * 15)
-        return QRectF(-buttonSizeReference().width() * 7 -buttonSizeReference().width() * antiSc, -buttonSizeReference().height() * antiSc / 2,
-                      buttonSizeReference().width() * antiSc, buttonSizeReference().height() * antiSc);
-    else
-        return QRectF(-buttonSizeReference().width() * antiSc / 2, -buttonSizeReference().height() * antiSc / 2,
-                      buttonSizeReference().width() * antiSc, buttonSizeReference().height() * antiSc);
+    return QRectF(-refWidth * 9, -height/2.0, width, height);
 }
 
 
 QRectF UBGraphicsProtractor::resizeButtonRect () const
 {
-    qreal antiSc = antiScale();
+    qreal refWidth = buttonSizeReference().width();
+    qreal width = mResizeSvgItem->boundingRect().width();
+    qreal height = mResizeSvgItem->boundingRect().height();
 
-    if (buttonSizeReference().width() * antiSc <=  buttonSizeReference().width() * 15)
-        return QRectF(buttonSizeReference().width() * 8, -buttonSizeReference().height() * antiSc / 2,
-                      buttonSizeReference().width() * antiSc, buttonSizeReference().height() * antiSc);
-    else
-    {
-        mResizeSvgItem->setZValue(zValue()+10);
-        return QRectF(-buttonSizeReference().width() * antiSc / 2, -buttonSizeReference().height() * antiSc / 2,
-                      buttonSizeReference().width() * antiSc, buttonSizeReference().height() * antiSc);
-    }
+    return QRectF(refWidth * 8, -height/2.0, width, height);
 }
 
+
+QRectF UBGraphicsProtractor::rotateButtonRect () const
+{
+    qreal refWidth = buttonSizeReference().width();
+    qreal width = mRotateSvgItem->boundingRect().width();
+    qreal height = mRotateSvgItem->boundingRect().height();
+
+    return QRectF(refWidth * 5.5, -refWidth * 5, width, height);
+
+
+}
+QRectF UBGraphicsProtractor::markerButtonRect () const
+{
+    qreal width = mMarkerSvgItem->boundingRect().width();
+    qreal height = mMarkerSvgItem->boundingRect().height();
+
+    return QRectF(radius() + 3, -height/2, width, height);
+}
 
 void UBGraphicsProtractor::paintGraduations(QPainter *painter)
 {
     painter->save();
 
-    const int  tenDegreeGraduationLength = 15;
-    const int fiveDegreeGraduationLength = 10;
-    const int  oneDegreeGraduationLength = 5;
+    const int  tenDegreeGraduationLength = 22;
+    const int fiveDegreeGraduationLength = 15;
+    const int  oneDegreeGraduationLength = 7;
 
     QFont font1 = painter->font();
+
 #ifdef Q_OS_OSX
-    font1.setPointSizeF(font1.pointSizeF() - 3);
+    font1.setPointSizeF(font1.pointSizeF() + 3);
+    font1.setWeight(QFont::Thin);
 #endif
     QFontMetricsF fm1(font1);
 
@@ -399,7 +425,8 @@ void UBGraphicsProtractor::paintGraduations(QPainter *painter)
         qreal co = cos(((qreal)angle + mStartAngle) * PI/180);
         qreal si = sin(((qreal)angle + mStartAngle) * PI/180);
         if (0 == angle % 90)
-            painter->drawLine(QLineF(QPointF(center.x(), center.y()), QPointF(center.x() + co*tenDegreeGraduationLength, center.y() - si*tenDegreeGraduationLength)));
+            painter->drawLine(QLineF(QPointF(center.x(), center.y()), 
+                        QPointF(center.x() + co*tenDegreeGraduationLength, center.y() - si*tenDegreeGraduationLength)));
 
         //external arc
         painter->drawLine(QLineF(QPointF(center.x()+ rad*co, center.y() - rad*si),
@@ -439,53 +466,33 @@ void UBGraphicsProtractor::paintButtons(QPainter *painter)
     Q_UNUSED(painter);
 
     if (mShowButtons)
-    {
-        qreal antiSc = antiScale();
+    {        
+        // The buttons (close, reset, resize & rotate) are rotated around the center
+        // of the protractor, to follow it as it is rotated.
+        // As coordinates are local to each QGraphicsItem, the position of the rotation 
+        // center relative to each button is the inverse of that button's position.
 
-        qreal scale = buttonSizeReference().width() / mCloseSvgItem->boundingRect().width();
-        mCloseSvgItem->setPos(closeButtonRect().topLeft() + rect().center());
-        mCloseSvgItem->resetTransform();
-        mCloseSvgItem->setTransform(QTransform::fromTranslate(-closeButtonRect().left(),-closeButtonRect().top()), true);
-        mCloseSvgItem->setRotation(rotation() -mStartAngle);
-        mCloseSvgItem->setTransform(QTransform::fromTranslate(closeButtonRect().left(), closeButtonRect().top()), true);
-        mCloseSvgItem->setTransform(QTransform::fromScale(scale * antiSc, scale * antiSc), true);//this do not impact the bounding box of thr svg item...
+        mCloseSvgItem->setTransformOriginPoint(closeButtonRect().topLeft() * -1); 
+        mCloseSvgItem->setRotation(rotation() - mStartAngle);
 
-        mResetSvgItem->setPos(resetButtonRect().topLeft() + rect().center());
-        mResetSvgItem->resetTransform();
-        mResetSvgItem->setTransform(QTransform::fromTranslate(-resetButtonRect().left(), -resetButtonRect().top()), true);
-        mResetSvgItem->setRotation(rotation() -mStartAngle);
-        mResetSvgItem->setTransform(QTransform::fromTranslate(resetButtonRect().left(), resetButtonRect().top()), true);
-        mResetSvgItem->setTransform(QTransform::fromScale(scale * antiSc, scale * antiSc), true);//this do not impact the bounding box of thr svg item...
+        mResetSvgItem->setTransformOriginPoint(resetButtonRect().topLeft() * -1);
+        mResetSvgItem->setRotation(rotation() - mStartAngle);
 
-        mResizeSvgItem->setPos(resizeButtonRect().topLeft() + rect().center());
-        mResizeSvgItem->resetTransform();
-        mResizeSvgItem->setTransform(QTransform::fromTranslate(-resizeButtonRect().left(), -resizeButtonRect().top()), true);
-        mResizeSvgItem->setRotation(rotation() -mStartAngle);
-        mResizeSvgItem->setTransform(QTransform::fromTranslate(resizeButtonRect().left(), resizeButtonRect().top()), true);
-        mResizeSvgItem->setTransform(QTransform::fromScale(scale * antiSc, scale * antiSc), true);//this do not impact the bounding box of thr svg item...
+        mResizeSvgItem->setTransformOriginPoint(resizeButtonRect().topLeft() * -1);
+        mResizeSvgItem->setRotation(rotation() - mStartAngle);
 
-        mRotateSvgItem->setPos(rotateButtonRect().topLeft() + rect().center());
-        mRotateSvgItem->resetTransform();
-        mRotateSvgItem->setTransform(QTransform::fromTranslate(-rotateButtonRect().left(), -rotateButtonRect().top()), true);
-        mRotateSvgItem->setRotation(rotation() -mStartAngle);
-        mRotateSvgItem->setTransform(QTransform::fromTranslate(rotateButtonRect().left(), rotateButtonRect().top()), true);
-        mRotateSvgItem->setTransform(QTransform::fromScale(scale, scale), true);//this do not impact the bounding box of thr svg item...
+        mRotateSvgItem->setTransformOriginPoint(rotateButtonRect().topLeft() * -1);
+        mRotateSvgItem->setRotation(rotation() - mStartAngle);
     }
 
-    qreal scale = markerSizeReference().width()/mMarkerSvgItem->boundingRect().width();
-    mMarkerSvgItem->setPos(markerButtonRect().topLeft() + rect().center());
-    mMarkerSvgItem->resetTransform();
-    mMarkerSvgItem->setTransform(QTransform::fromTranslate(-markerButtonRect().left(), -markerButtonRect().top()), true);
+    mMarkerSvgItem->setTransformOriginPoint(markerButtonRect().topLeft() * -1);
     mMarkerSvgItem->setRotation(rotation() - mStartAngle - mCurrentAngle);
-    mMarkerSvgItem->setTransform(QTransform::fromTranslate(markerButtonRect().left(), markerButtonRect().top()), true);
-    mMarkerSvgItem->setTransform(QTransform::fromScale(scale, scale), true);//this do not impact the bounding box of thr svg item...
 
     mCloseSvgItem->setVisible(mShowButtons);
     mResetSvgItem->setVisible(mShowButtons);
     mResizeSvgItem->setVisible(mShowButtons);
     mRotateSvgItem->setVisible(mShowButtons);
     mMarkerSvgItem->setVisible(true);
-
 }
 
 
@@ -539,7 +546,6 @@ void UBGraphicsProtractor::paintAngleMarker(QPainter *painter)
     painter->restore();
 }
 
-
 UBGraphicsProtractor::Tool UBGraphicsProtractor::toolFromPos(QPointF pos)
 {
     pos = pos - rect().center();
@@ -550,18 +556,25 @@ UBGraphicsProtractor::Tool UBGraphicsProtractor::toolFromPos(QPointF pos)
     t.rotate(mCurrentAngle);
     QPointF p2 = t.map(pos);
 
-    if (resizeButtonRect().contains(p1))
+
+    if (resizeButtonRect().contains(p1.x(),p1.y()))
         return Resize;
+
     else if (closeButtonRect().contains(p1))
         return Close;
+
     else if (resetButtonRect().contains(p1))
         return Reset;
+
     else if (rotateButtonRect().contains(p1))
         return Rotate;
+
     else if (markerButtonRect().contains(p2))
         return MoveMarker;
+
     else if (line.length() <= radius())
         return Move;
+
     else
         return None;
 }
@@ -613,10 +626,19 @@ void UBGraphicsProtractor::copyItemParameters(UBItem *copy) const
 
 void UBGraphicsProtractor::rotateAroundCenter(qreal angle)
 {
-    Q_UNUSED(angle);
+    // Q_UNUSED(angle);
+
+    // Align the implementation with the others apps objects.
+    QTransform transform;
+    transform.translate(rotationCenter().x(), rotationCenter().y());
+    transform.rotate(angle);
+    transform.translate(- rotationCenter().x(), - rotationCenter().y());
+    setTransform(transform, true);
+
 }
 
 QPointF UBGraphicsProtractor::rotationCenter() const
 {
     return QPointF(rect().x(), rect().y());
+
 }

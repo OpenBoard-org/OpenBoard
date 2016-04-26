@@ -40,6 +40,7 @@ UBGraphicsPolygonItem::UBGraphicsPolygonItem (QGraphicsItem * parent)
     , mOriginalWidth(-1)
     , mIsNominalLine(false)
     , mStroke(0)
+    , mpGroup(NULL)
 {
     // NOOP
     initialize();
@@ -64,6 +65,7 @@ UBGraphicsPolygonItem::UBGraphicsPolygonItem (const QLineF& pLine, qreal pWidth)
     , mOriginalWidth(pWidth)
     , mIsNominalLine(true)
     , mStroke(0)
+    , mpGroup(NULL)
 {
     // NOOP
     initialize();
@@ -75,6 +77,7 @@ UBGraphicsPolygonItem::UBGraphicsPolygonItem (const QLineF& pLine, qreal pStartW
     , mOriginalWidth(pEndWidth)
     , mIsNominalLine(true)
     , mStroke(0)
+    , mpGroup(NULL)
 {
     // NOOP
     initialize();
@@ -197,6 +200,7 @@ void UBGraphicsPolygonItem::copyItemParameters(UBItem *copy) const
         cp->setColorOnDarkBackground(this->colorOnDarkBackground());
         cp->setColorOnLightBackground(this->colorOnLightBackground());
 
+        cp->setZValue(this->zValue());
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
     }
 }
@@ -204,22 +208,12 @@ void UBGraphicsPolygonItem::copyItemParameters(UBItem *copy) const
 void UBGraphicsPolygonItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
     if(mHasAlpha && scene() && scene()->isLightBackground())
-        painter->setCompositionMode(QPainter::CompositionMode_Darken);
+        painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
 
     painter->setRenderHints(QPainter::Antialiasing);
 
     QGraphicsPolygonItem::paint(painter, option, widget);
 }
-
-QPainterPath UBGraphicsPolygonItem::shape() const
-{
-
-    QPainterPath path;
-    path.addRect(boundingRect());
-
-    return path;
-}
-
 
 UBGraphicsScene* UBGraphicsPolygonItem::scene()
 {
