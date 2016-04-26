@@ -1,33 +1,38 @@
 # OpenBoard
-OpenBoard is an open source cross-platform interactive white board application designed for use in schools. It is a fork of Open-Sankoré, which was itself based on Uniboard.
+OpenBoard is an open source cross-platform interactive white board application designed primarily for use in schools. It was originally forked from Open-Sankoré, which was itself based on Uniboard.
 
-Supported platforms are Windows (7+), OS X (10.9+) and Linux (tested on Ubuntu 14.04, but should work with other distributions too).
+Supported platforms are Windows (7+), OS X (10.9+) and Linux (tested on Ubuntu 14.04 and 16.04).
 
-# Dependencies
 
-The latest version (1.3) requires Qt 5.5. See below for Linux-specific instructions.
+## Installing
 
-OpenBoard makes use of several third-party libraries, which are available in the OpenBoard-ThirdParty repository. These should be built first; instructions are provided for each library.
+Installers are available for Windows, OS X and Ubuntu on the [wiki](https://github.com/DIP-SEM/OpenBoard/wiki/Downloads). 
 
-## Linux
+## Building from source
+First, obtain the third party libraries from the OpenBoard-ThirdParty repository, and build them (instructions are provided for each library).
 
-### Qt
-Due to a shared library conflict within Qt5 on Linux (the Qt Multimedia and Qt Webkit modules are built against different versions of gstreamer by default), a specific installation of Qt5.5 is needed for all of OpenBoard's features to work correctly.
+Then, you may use the build (and packaging) scripts which are provided for all three platforms. These take care of compiling OpenBoard, including the translations (for OpenBoard and for Qt), stripping the debug symbols, creating the installers etc.
+Minor modification to those scripts may be necessary depending on your configuration, to set the correct Qt path for example.
+
+Alternatively, you can easily build OpenBoard with qmake and make:
+
+    qmake OpenBoard.pro -spec linux-g++-64 # replace linux-g++-64 by macx or win32 for other platforms
+    make
+
+Compilers used are gcc (Linux), clang (OS X) and MSVC 2010 (Windows). Make sure that your version of Qt matches this, as it is not possible e.g to build OpenBoard with clang if Qt was built with gcc.
+
+## Dependencies
+The latest version (1.3) requires Qt 5.5. (While it has been shown to mostly work with Qt 5.2, we cannot guarantee compatibility with Qt versions other than 5.5.)
+
+### Qt 5.5 on Linux
+
+Due to a shared library conflict within Qt 5 on Linux (the Multimedia and Webkit modules were built against different versions of gstreamer by default), a specific installation of Qt5.5 may be needed for all of OpenBoard's features to work correctly.
 
 It can either be built from source, with the configure flag `-gstreamer 1.0` (see [here](http://doc.qt.io/qt-5/linux-building.html)), or installed from Stephan Binner's PPAs on Ubuntu.
-In the latter case, simply add the repositories and install Qt 5.5.1 like so:
+In the latter case, simply add the repositories and install Qt 5.5.1 like so (example provided for Ubuntu 14.04, aka "Trusty"):
 
     sudo add-apt-repository ppa:beineri/opt-qt551-trusty
     sudo apt-get update
     sudo apt-get install qt-latest
 
-### Onboard
-OpenBoard has a built-in virtual keyboard, but also allows the use of an external OSK (which is now the default, as the built-in keyboard will likely be removed in a future release). 
-On Linux, Onboard is currently used as the external OSK. In case you can't or won't install it, you can simply use the built-in OSK instead. 
-
-# Installation & Deployment
-
-Deployment scripts are provided for all three platforms. These take care of compiling OpenBoard, including the translations (for OpenBoard and for Qt), stripping the debug symbols, creating the installers etc.
-Minor modification to those scripts may be necessary depending on your configuration, to set the correct Qt path for example.
-
-
+Some distributions, such as Ubuntu 16.04, provide Qt 5.5.1 packages that work perfectly with OpenBoard, so you can simply install Qt from the official repository.
