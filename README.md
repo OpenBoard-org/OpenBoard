@@ -16,7 +16,7 @@ Minor modification to those scripts may be necessary depending on your configura
 
 Alternatively, you can easily build OpenBoard with qmake and make:
 
-    qmake OpenBoard.pro -spec linux-g++-64 # replace linux-g++-64 by macx or win32 for other platforms
+    qmake OpenBoard.pro -spec linux-g++-64      # replace linux-g++-64 by macx or win32 for other platforms
     make
 
 Compilers used are gcc (Linux), clang (OS X) and MSVC 2010 (Windows). Make sure that your version of Qt matches this, as it is not possible e.g to build OpenBoard with clang if Qt was built with gcc.
@@ -26,7 +26,7 @@ The latest version (1.3) requires Qt 5.5. (While it has been shown to mostly wor
 
 ### Qt 5.5 on Linux
 
-Due to a shared library conflict within Qt 5 on Linux (the Multimedia and Webkit modules were built against different versions of gstreamer by default), a specific installation of Qt5.5 may be needed for all of OpenBoard's features to work correctly.
+Due to a shared library conflict within Qt 5 in some distributions / some Qt versions (the Multimedia and Webkit modules were built against different versions of gstreamer by default), a specific installation of Qt5.5 may be needed for all of OpenBoard's features to work correctly.
 
 It can either be built from source, with the configure flag `-gstreamer 1.0` (see [here](http://doc.qt.io/qt-5/linux-building.html)), or installed from Stephan Binner's PPAs on Ubuntu.
 In the latter case, simply add the repositories and install Qt 5.5.1 like so (example provided for Ubuntu 14.04, aka "Trusty"):
