@@ -157,7 +157,7 @@ void UBSelectionFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
     mLastTranslateOffset = QPointF();
     mRotationAngle = 0;
 
-    if (scene()->itemAt(event->scenePos()) == mRotateButton) {
+    if (scene()->itemAt(event->scenePos(), transform()) == mRotateButton) {
         mOperationMode = om_rotating;
     } else {
         mOperationMode = om_moving;

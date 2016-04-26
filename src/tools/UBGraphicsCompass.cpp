@@ -72,7 +72,7 @@ UBGraphicsCompass::UBGraphicsCompass()
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
-    setAcceptsHoverEvents(true);
+    setAcceptHoverEvents(true);
 
     mCloseSvgItem = new QGraphicsSvgItem(":/images/closeTool.svg", this);
     mCloseSvgItem->setVisible(false);

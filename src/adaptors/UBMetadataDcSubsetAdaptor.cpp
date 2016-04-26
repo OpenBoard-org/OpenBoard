@@ -29,6 +29,7 @@
 
 #include <QtGui>
 #include <QtXml>
+#include <QDesktopWidget>
 
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"

@@ -24,7 +24,7 @@
 
 
 
-
+#include <QPushButton>
 #include "UBDocumentPublisher.h"
 
 

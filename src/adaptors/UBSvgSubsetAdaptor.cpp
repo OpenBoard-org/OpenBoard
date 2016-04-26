@@ -30,6 +30,7 @@
 #include <QtCore>
 #include <QtXml>
 #include <QGraphicsTextItem>
+#include <QDomElement>
 
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
@@ -329,7 +330,7 @@ QUuid UBSvgSubsetAdaptor::sceneUuid(UBDocumentProxy* proxy, const int pageIndex)
 
 UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const QByteArray& pArray)
 {
-    UBSvgSubsetReader reader(proxy, UBTextTools::cleanHtmlCData(QString(pArray)).toAscii());
+    UBSvgSubsetReader reader(proxy, UBTextTools::cleanHtmlCData(QString(pArray)).toLatin1());
     return reader.loadScene();
 }
 
@@ -1335,7 +1336,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
     QUuid uuid = UBGraphicsScene::getPersonalUuid(groupItem);
     if (!uuid.isNull()) {
         QDomElement curGroupElement = groupDomDocument->createElement(tGroup);
-        curGroupElement.setAttribute(aId, uuid);
+        curGroupElement.setAttribute(aId, uuid.toString());
         UBGraphicsGroupContainerItem* group = dynamic_cast<UBGraphicsGroupContainerItem*>(groupItem);
         if(group && group->Delegate()){
             if(group->Delegate()->isLocked())
@@ -1351,7 +1352,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
                     persistGroupToDom(item, curParent, groupDomDocument);
                 else {
                     QDomElement curSubElement = groupDomDocument->createElement(tElement);
-                    curSubElement.setAttribute(aId, tmpUuid);
+                    curSubElement.setAttribute(aId, tmpUuid.toString());
                     curGroupElement.appendChild(curSubElement);
                 }
             }
@@ -1990,9 +1991,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::audioItemToLinkedAudio(UBGraphicsMed
 
     graphicsItemToSvg(audioItem);
 
-    if (audioItem->mediaObject()->state() == Phonon::PausedState && audioItem->mediaObject()->remainingTime() > 0)
+    if (audioItem->mediaObject()->state() == QMediaPlayer::PausedState && (audioItem->mediaObject()->duration() - audioItem->mediaObject()->position()) > 0)
     {
-        qint64 pos = audioItem->mediaObject()->currentTime();
+        qint64 pos = audioItem->mediaObject()->position();
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
     }
 
@@ -2019,9 +2020,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::videoItemToLinkedVideo(UBGraphicsMed
 
     graphicsItemToSvg(videoItem);
 
-    if (videoItem->mediaObject()->state() == Phonon::PausedState && videoItem->mediaObject()->remainingTime() > 0)
+    if (videoItem->mediaObject()->state() == QMediaPlayer::PausedState && (videoItem->mediaObject()->duration() - videoItem->mediaObject()->position()) > 0)
     {
-        qint64 pos = videoItem->mediaObject()->currentTime();
+        qint64 pos = videoItem->mediaObject()->position();
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "position", QString("%1").arg(pos));
     }
 
@@ -2139,7 +2140,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
     {
         if (!svgX.isNull() && !svgY.isNull())
         {
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
             gItem->setPos(svgX.toString().toFloat(), svgY.toString().toFloat());
 #endif
         }

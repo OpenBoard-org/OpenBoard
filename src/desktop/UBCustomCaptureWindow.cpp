@@ -24,6 +24,9 @@
 
 
 
+#include <QApplication>
+#include <QDesktopWidget>
+#include <QStyle>
 
 #include "UBCustomCaptureWindow.h"
 

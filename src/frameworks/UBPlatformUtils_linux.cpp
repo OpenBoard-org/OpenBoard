@@ -28,6 +28,7 @@
 #include "UBPlatformUtils.h"
 
 #include <QtGui>
+#include <QApplication>
 
 #include <unistd.h>
 #include <X11/Xlib.h>
@@ -98,7 +99,7 @@ void UBPlatformUtils::bringPreviousProcessToFront()
 QString UBPlatformUtils::osUserLoginName()
 {
     char *user = getenv("USER");
-    return QString::fromAscii(user);
+    return QString::fromLatin1(user);
 }
 
 QString UBPlatformUtils::computerName()
@@ -108,7 +109,7 @@ QString UBPlatformUtils::computerName()
     // if the name is longer than 255 the name is truncated but os doesn't ensure
     // that the last character returned is a null character
     if(!gethostname(hostname,255))
-        return QString::fromAscii(hostname);
+        return QString::fromLatin1(hostname);
     else
         return "NOT FOUND";
 }

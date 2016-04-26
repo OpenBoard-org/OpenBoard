@@ -190,7 +190,8 @@ void UBDocumentThumbnailWidget::dragMoveEvent(QDragMoveEvent *event)
 
         if (!mDropCaretRectItem && selectedItems().count() < mGraphicItems.count())
         {
-            mDropCaretRectItem = new QGraphicsRectItem(0, scene());
+            mDropCaretRectItem = new QGraphicsRectItem(0);
+            scene()->addItem(mDropCaretRectItem);
             mDropCaretRectItem->setPen(QPen(Qt::darkGray));
             mDropCaretRectItem->setBrush(QBrush(Qt::lightGray));
         }

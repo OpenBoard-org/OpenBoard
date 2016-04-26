@@ -23,7 +23,8 @@
  */
 
 
-
+#include <QButtonGroup>
+#include <QAction>
 
 #include "UBFeaturesActionBar.h"
 #include "core/memcheck.h"

@@ -29,6 +29,9 @@
 #define UBAPPLICATION_H_
 
 #include <QtGui>
+#include <QUndoStack>
+#include <QToolBar>
+#include <QMenu>
 
 #include "qtsingleapplication.h"
 
@@ -121,7 +124,7 @@ class UBApplication : public QtSingleApplication
     private slots:
 
         void closing();
-#ifdef Q_WS_MAC
+#ifdef Q_OS_OSX
         void showMinimized();
 #endif
         void onScreenCountChanged(int newCount);
@@ -134,38 +137,13 @@ class UBApplication : public QtSingleApplication
         QString checkLanguageAvailabilityForSankore(QString& language);
     protected:
 
-#if defined(Q_WS_MACX) && !defined(QT_MAC_USE_COCOA)
+#if defined(Q_OS_OSX) && !defined(QT_MAC_USE_COCOA)
         bool macEventFilter(EventHandlerCallRef caller, EventRef event);
 #endif
 
         UBPreferencesController* mPreferencesController;
         QTranslator* mApplicationTranslator;
         QTranslator* mQtGuiTranslator;
-
-};
-
-
-class UBStyle : public QPlastiqueStyle
-{
-    public:
-
-        UBStyle()
-            : QPlastiqueStyle()
-        {
-            // NOOP
-        }
-
-        virtual ~UBStyle()
-        {
-           // NOOP
-        }
-
-        /*
-         * redefined to be more cocoa like on texts
-         */
-        virtual void drawItemText(QPainter *painter, const QRect &rect, int alignment, const QPalette &pal,
-                                  bool enabled, const QString& text, QPalette::ColorRole textRole) const;
-
 
 };
 

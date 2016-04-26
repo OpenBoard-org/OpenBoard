@@ -26,6 +26,8 @@
 
 
 #include <QtGui>
+#include <QToolTip>
+#include <QStackedLayout>
 
 #include "UBMainWindow.h"
 #include "core/UBApplication.h"
@@ -34,7 +36,7 @@
 #include "core/UBDisplayManager.h"
 
 // work around for handling tablet events on MAC OS with Qt 4.8.0 and above
-#if defined(Q_WS_MACX)
+#if defined(Q_OS_OSX)
 #include "board/UBBoardView.h"
 #endif
 
@@ -62,10 +64,10 @@ UBMainWindow::UBMainWindow(QWidget *parent, Qt::WindowFlags flags)
     mStackedLayout = new QStackedLayout(centralWidget);
     setCentralWidget(centralWidget);
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_OSX
     actionPreferences->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Comma));
     actionQuit->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
-#elif defined(Q_WS_WIN)
+#elif defined(Q_OS_WIN)
     actionPreferences->setShortcut(QKeySequence(Qt::ALT + Qt::Key_Return));
     // this code, because it unusable, system key combination can`t be triggered, even we add it manually
     actionQuit->setShortcut(QKeySequence(Qt::ALT + Qt::Key_F4));
@@ -148,7 +150,7 @@ void UBMainWindow::closeEvent(QCloseEvent *event)
 }
 
 // work around for handling tablet events on MAC OS with Qt 4.8.0 and above
-#if defined(Q_WS_MACX)
+#if defined(Q_OS_OSX)
 bool UBMainWindow::event(QEvent *event)
 {
     bool bRes = QMainWindow::event(event);
@@ -199,7 +201,7 @@ bool UBMainWindow::yesNoQuestion(QString windowTitle, QString text)
     messageBox.addButton(tr("No"),QMessageBox::NoRole);
     messageBox.setIcon(QMessageBox::Question);
 
-#ifdef Q_WS_X11
+#ifdef Q_OS_LINUX
     // to avoid to be handled by x11. This allows us to keep to the back all the windows manager stuff like palette, toolbar ...
     messageBox.setWindowFlags(Qt::Dialog | Qt::X11BypassWindowManagerHint);
 #else

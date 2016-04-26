@@ -69,6 +69,7 @@
 #include "WBChaseWidget.h"
 
 #include <QtGui>
+#include <QApplication>
 
 #include "core/memcheck.h"
 

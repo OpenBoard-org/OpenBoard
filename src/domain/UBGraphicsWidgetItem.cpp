@@ -27,6 +27,7 @@
 
 #include <QtNetwork>
 #include <QtXml>
+#include <QWebFrame>
 
 #include "UBGraphicsWidgetItem.h"
 #include "UBGraphicsScene.h"
@@ -121,7 +122,8 @@ void UBGraphicsWidgetItem::initialize()
     page()->setPalette(palette);
     page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 
-    connect(page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
+    connect(page()->mainFrame(), &QWebFrame::javaScriptWindowObjectCleared,
+            this, &UBGraphicsWidgetItem::javaScriptWindowObjectCleared);
     connect(page(), SIGNAL(geometryChangeRequested(const QRect&)), this, SLOT(geometryChangeRequested(const QRect&)));
     connect(this, SIGNAL(loadFinished(bool)), this, SLOT(mainFrameLoadFinished (bool)));
     connect(page()->mainFrame(), SIGNAL(initialLayoutCompleted()), this, SLOT(initialLayoutCompleted()));

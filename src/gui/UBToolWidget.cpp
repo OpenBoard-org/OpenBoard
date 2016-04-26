@@ -26,6 +26,9 @@
 
 
 #include <QtGui>
+#include <QWebView>
+#include <QWebFrame>
+
 #include "UBToolWidget.h"
 #include "api/UBWidgetUniboardAPI.h"
 #include "api/UBW3CWidgetAPI.h"
@@ -115,7 +118,8 @@ void UBToolWidget::initialize()
 
     setFixedSize(mToolWidget->boundingRect().width() + mContentMargin * 2, mToolWidget->boundingRect().height() + mContentMargin * 2);
 
-    connect(mWebView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
+    connect(mWebView->page()->mainFrame(), &QWebFrame::javaScriptWindowObjectCleared,
+            this, &UBToolWidget::javaScriptWindowObjectCleared);
     mWebView->load(mToolWidget->mainHtml());
 
 

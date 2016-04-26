@@ -41,6 +41,10 @@
 #include <QGraphicsLinearLayout>
 #include <QStackedWidget>
 #include <QDropEvent>
+#include <QPushButton>
+#include <QProgressBar>
+#include <QLabel>
+#include <QTreeWidget>
 
 #include "UBDockPaletteWidget.h"
 #include "core/UBSettings.h"
@@ -393,6 +397,8 @@ public:
 
     void moveData(const UBFeature &source, const UBFeature &destination, Qt::DropAction action, bool deleteManualy = false);
     Qt::DropActions supportedDropActions() const { return Qt::MoveAction | Qt::CopyAction; }
+    Qt::DropActions supportedDragActions() const { return Qt::MoveAction | Qt::CopyAction; }
+
 //    void setFeaturesList(QList <UBFeature> *flist ) { featuresList = flist; }
 
 public slots:

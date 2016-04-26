@@ -78,12 +78,12 @@ double Utils::stringToDouble(const std::string & s )
 
 std::string Utils::uIntToStr(unsigned int integer)
 {
-    return std::string(QString::number(integer).toAscii());
+    return std::string(QString::number(integer).toLatin1());
 }
 
 std::string Utils::doubleToStr(double doubleValue)
 {
-    return std::string(QString::number(doubleValue).toAscii());
+    return std::string(QString::number(doubleValue).toLatin1());
 }
 
 int Utils::_stringToInt(const std::string & str) //throw ConvertException

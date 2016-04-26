@@ -61,8 +61,8 @@ UBDownloadWidget::UBDownloadWidget(QWidget *parent, const char *name):QWidget(pa
     mpTree->setRootIsDecorated(false);
     mpTree->setColumnCount(2);
     mpTree->header()->setStretchLastSection(false);
-    mpTree->header()->setResizeMode(eItemColumn_Desc, QHeaderView::Stretch);
-    mpTree->header()->setResizeMode(eItemColumn_Close, QHeaderView::Custom);
+    mpTree->header()->setSectionResizeMode(eItemColumn_Desc, QHeaderView::Stretch);
+    mpTree->header()->setSectionResizeMode(eItemColumn_Close, QHeaderView::Custom);
     mpTree->resizeColumnToContents(eItemColumn_Close);
     mpTree->header()->close();
     mpLayout->addWidget(mpTree, 1);

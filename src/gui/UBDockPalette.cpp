@@ -654,9 +654,9 @@ void UBTabDockPalette::paintEvent(QPaintEvent *)
         }
 
         painter.save();
-        QPixmap transparencyPix(":/images/tab_mask.png");
+        //QPixmap transparencyPix(":/images/tab_mask.png");
         if (dock->mCurrentTab != i) {
-            iconPixmap.setAlphaChannel(transparencyPix);
+            //iconPixmap.setAlphaChannel(transparencyPix); // deprecated; removed for now, to be re-implemented
             QColor color(0x7F, 0x7F, 0x7F, 0x3F);
             painter.setBrush(QBrush(color));
         }

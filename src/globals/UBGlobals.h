@@ -45,7 +45,7 @@
      setStyleSheet(style);\
 }
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 
 #define WARNINGS_DISABLE __pragma(warning(push, 0));
 #define WARNINGS_ENABLE __pragma(warning(pop));
@@ -58,7 +58,7 @@
 #define THIRD_PARTY_WARNINGS_DISABLE __pragma(warning(push));
 #endif //#ifdef NO_THIRD_PARTY_WARNINGS
 
-#else //#ifdef Q_WS_WIN
+#else //#ifdef Q_OS_WIN
 
 #define WARNINGS_DISABLE _Pragma("GCC diagnostic push"); \
 _Pragma("GCC diagnostic ignored \"-Wunused-parameter\""); \
@@ -76,7 +76,7 @@ _Pragma("GCC diagnostic ignored \"-Wsign-compare\"");
 
 #endif //#ifdef NO_THIRD_PARTY_WARNINGS
 
-#endif //#ifdef Q_WS_WIN
+#endif //#ifdef Q_OS_WIN
 
 // anyway on any OS
 #define THIRD_PARTY_WARNINGS_ENABLE WARNINGS_ENABLE

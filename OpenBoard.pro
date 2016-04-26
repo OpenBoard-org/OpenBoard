@@ -28,10 +28,15 @@ VERSION_RC = $$replace(VERSION_RC, "r", "240") # 0xF0
 QT += webkit
 QT += svg
 QT += network
-QT += phonon
 QT += xml
 QT += script
 QT += xmlpatterns
+QT += uitools
+QT += multimedia
+QT += webkitwidgets
+QT += multimediawidgets
+QT += printsupport
+QT += core
 
 INCLUDEPATH += src
 
@@ -59,9 +64,10 @@ include(src/pdf-merger/pdfMerger.pri)
 DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
 INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
 include($$THIRD_PARTY_PATH/quazip/quazip.pri)
-DEPENDPATH += $$THIRD_PARTY_PATH/trolltech/singleapplication
-INCLUDEPATH += $$THIRD_PARTY_PATH/trolltech/singleapplication
-include($$THIRD_PARTY_PATH/trolltech/singleapplication/qtsingleapplication.pri)
+DEPENDPATH += $$THIRD_PARTY_PATH/qt/singleapplication
+INCLUDEPATH += $$THIRD_PARTY_PATH/qt/singleapplication
+include($$THIRD_PARTY_PATH/qt/singleapplication/qtsingleapplication.pri)
+include($$THIRD_PARTY_PATH/qt/lockedfile/qtlockedfile.pri)
 
 FORMS += resources/forms/mainWindow.ui \
    resources/forms/preferences.ui \

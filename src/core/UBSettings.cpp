@@ -306,7 +306,7 @@ void UBSettings::init()
 
     bool defaultShowPageImmediatelyOnMirroredScreen = true;
 
-#if defined(Q_WS_X11)
+#if defined(Q_OS_LINUX)
     // screen duplication is very slow on X11
     defaultShowPageImmediatelyOnMirroredScreen = false;
 #endif
@@ -334,22 +334,22 @@ void UBSettings::init()
 
     int defaultRefreshRateInFramePerSecond = 8;
 
-#if defined(Q_WS_X11)
+#if defined(Q_OS_LINUX)
     // screen duplication is very slow on X11
     defaultRefreshRateInFramePerSecond = 2;
 #endif
 
     mirroringRefreshRateInFps = new UBSetting(this, "Mirroring", "RefreshRateInFramePerSecond", QVariant(defaultRefreshRateInFramePerSecond));
 
-    lastImportFilePath = new UBSetting(this, "Import", "LastImportFilePath", QVariant(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)));
-    lastImportFolderPath = new UBSetting(this, "Import", "LastImportFolderPath", QVariant(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)));
-    lastExportFilePath = new UBSetting(this, "Export", "LastExportFilePath", QVariant(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)));
-    lastExportDirPath = new UBSetting(this, "Export", "LastExportDirPath", QVariant(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)));
-    lastImportToLibraryPath = new UBSetting(this, "Library", "LastImportToLibraryPath", QVariant(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)));
+    lastImportFilePath = new UBSetting(this, "Import", "LastImportFilePath", QVariant(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)));
+    lastImportFolderPath = new UBSetting(this, "Import", "LastImportFolderPath", QVariant(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)));
+    lastExportFilePath = new UBSetting(this, "Export", "LastExportFilePath", QVariant(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)));
+    lastExportDirPath = new UBSetting(this, "Export", "LastExportDirPath", QVariant(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)));
+    lastImportToLibraryPath = new UBSetting(this, "Library", "LastImportToLibraryPath", QVariant(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)));
 
-    lastPicturePath = new UBSetting(this, "Library", "LastPicturePath", QVariant(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation)));
-    lastWidgetPath = new UBSetting(this, "Library", "LastWidgetPath", QVariant(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)));
-    lastVideoPath = new UBSetting(this, "Library", "LastVideoPath", QVariant(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation)));
+    lastPicturePath = new UBSetting(this, "Library", "LastPicturePath", QVariant(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)));
+    lastWidgetPath = new UBSetting(this, "Library", "LastWidgetPath", QVariant(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)));
+    lastVideoPath = new UBSetting(this, "Library", "LastVideoPath", QVariant(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation)));
 
     appOnlineUserName = new UBSetting(this, "App", "OnlineUserName", "");
 
@@ -790,7 +790,7 @@ QString UBSettings::userDataDirectory()
                 qCritical() << "Impossible to create datadirpath " << dataDirPath;
 
         }
-        dataDirPath = UBFileSystemUtils::normalizeFilePath(QDesktopServices::storageLocation(QDesktopServices::DataLocation));
+        dataDirPath = UBFileSystemUtils::normalizeFilePath(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
         dataDirPath.replace(qApp->organizationName() + "/", "");
     }
     return dataDirPath;
@@ -811,7 +811,7 @@ QString UBSettings::userImageDirectory()
                 qCritical() << "failed to create image directory " << imageDirectory;
         }
 
-        imageDirectory = QDesktopServices::storageLocation(QDesktopServices::PicturesLocation) + "/" + qApp->applicationName();
+        imageDirectory = QStandardPaths::writableLocation(QStandardPaths::PicturesLocation) + "/" + qApp->applicationName();
         checkDirectory(imageDirectory);
     }
     return imageDirectory;
@@ -832,10 +832,10 @@ QString UBSettings::userVideoDirectory()
         }
 
 
-        videoDirectory = QDesktopServices::storageLocation(QDesktopServices::MoviesLocation);
+        videoDirectory = QStandardPaths::writableLocation(QStandardPaths::MoviesLocation);
 
         if(videoDirectory.isEmpty())
-            videoDirectory = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation) + "/" + tr("My Movies");
+            videoDirectory = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/" + tr("My Movies");
         else
             videoDirectory = videoDirectory + "/" + qApp->applicationName();
 
@@ -858,7 +858,7 @@ QString UBSettings::userAudioDirectory()
                 qCritical() << "failed to create image directory " << audioDirectory;
         }
 
-        audioDirectory = QDesktopServices::storageLocation(QDesktopServices::MusicLocation) + "/" + qApp->applicationName();
+        audioDirectory = QStandardPaths::writableLocation(QStandardPaths::MusicLocation) + "/" + qApp->applicationName();
         checkDirectory(audioDirectory);
     }
     return audioDirectory;
@@ -879,7 +879,7 @@ QString UBSettings::userPodcastRecordingDirectory()
                 qCritical() << "failed to create dir " << dirPath;
 
         }
-        dirPath = QDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
+        dirPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
         checkDirectory(dirPath);
     }
     return dirPath;
@@ -1246,13 +1246,13 @@ QString UBSettings::replaceWildcard(QString& path)
     QString result(path);
 
     if (result.startsWith("{Documents}")) {
-        result = result.replace("{Documents}", QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
+        result = result.replace("{Documents}", QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
     }
     else if(result.startsWith("{Home}")) {
-        result = result.replace("{Home}", QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+        result = result.replace("{Home}", QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
     }
     else if(result.startsWith("{Desktop}")) {
-        result = result.replace("{Desktop}", QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+        result = result.replace("{Desktop}", QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
     }
 
     if(result.contains("{UserLoginName}") && UBPlatformUtils::osUserLoginName().length() > 0) {

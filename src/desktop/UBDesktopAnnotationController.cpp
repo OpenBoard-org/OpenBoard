@@ -80,7 +80,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
 
     mTransparentDrawingView = new UBBoardView(UBApplication::boardController, static_cast<QWidget*>(0), false, true); // deleted in UBDesktopAnnotationController::destructor
     mTransparentDrawingView->setAttribute(Qt::WA_TranslucentBackground, true);
-#ifdef Q_WS_MAC
+#ifdef Q_OS_OSX
     mTransparentDrawingView->setAttribute(Qt::WA_MacNoShadow, true);
 #endif
     mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window);
@@ -109,7 +109,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
         connect( UBApplication::boardController->paletteManager()->mKeyboardPalette, SIGNAL(keyboardActivated(bool)), 
                  mTransparentDrawingView, SLOT(virtualKeyboardActivated(bool)));
 
-#ifdef Q_WS_X11
+#ifdef Q_OS_LINUX
         connect(UBApplication::boardController->paletteManager()->mKeyboardPalette, SIGNAL(moved(QPoint)), this, SLOT(refreshMask()));
         connect(UBApplication::mainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(refreshMask()));
         connect(mDesktopPalette,SIGNAL(refreshMask()), this, SLOT(refreshMask()));
@@ -162,7 +162,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     connect(&mHoldTimerMarker, SIGNAL(timeout()), this, SLOT(markerActionReleased()));
     connect(&mHoldTimerEraser, SIGNAL(timeout()), this, SLOT(eraserActionReleased()));
 
-#ifdef Q_WS_X11
+#ifdef Q_OS_LINUX
     connect(mDesktopPalette, SIGNAL(moving()), this, SLOT(refreshMask()));
     connect(UBApplication::boardController->paletteManager()->rightPalette(), SIGNAL(resized()), this, SLOT(refreshMask()));
     connect(UBApplication::boardController->paletteManager()->addItemPalette(), SIGNAL(closed()), this, SLOT(refreshMask()));
@@ -331,7 +331,7 @@ void UBDesktopAnnotationController::showWindow()
 
     UBDrawingController::drawingController()->setStylusTool(mDesktopStylusTool);
 
-#ifndef Q_WS_X11
+#ifndef Q_OS_LINUX
     mTransparentDrawingView->showFullScreen();
 #else
     // this is necessary to avoid unity to hide the panels
@@ -341,7 +341,7 @@ void UBDesktopAnnotationController::showWindow()
 
     mDesktopPalette->appear();
 
-#ifdef Q_WS_X11
+#ifdef Q_OS_LINUX
     updateMask(true);
 #endif
 }
@@ -375,18 +375,18 @@ void UBDesktopAnnotationController::updateBackground()
             || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector)
     {
         newBrush = QBrush(Qt::transparent);
-#ifdef Q_WS_X11
+#ifdef Q_OS_LINUX
         updateMask(true);
 #endif
     }
     else
     {
-#if defined(Q_WS_MAC)
+#if defined(Q_OS_OSX)
         newBrush = QBrush(QColor(127, 127, 127, 15));
 #else
         newBrush = QBrush(QColor(127, 127, 127, 1));
 #endif
-#ifdef Q_WS_X11
+#ifdef Q_OS_LINUX
         updateMask(false);
 #endif
     }
@@ -430,7 +430,7 @@ void UBDesktopAnnotationController::customCapture()
     UBCustomCaptureWindow customCaptureWindow(mDesktopPalette);
     // need to show the window before execute it to avoid some glitch on windows.
 
-#ifndef Q_WS_WIN // Working only without this call on win32 desktop mode
+#ifndef Q_OS_WIN // Working only without this call on win32 desktop mode
     customCaptureWindow.show();
 #endif
 
@@ -901,7 +901,7 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
             p.drawRect(tabsPalette);
         }
 
-#ifdef Q_WS_X11
+#ifdef Q_OS_LINUX
         //Rquiered only for compiz wm
         //TODO. Window manager detection screen
 

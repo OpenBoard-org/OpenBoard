@@ -70,6 +70,8 @@
 
 #include <QtGui>
 #include <QtWebKit>
+#include <QMenu>
+#include <QCompleter>
 
 #include "network/UBAutoSaver.h"
 
@@ -142,10 +144,13 @@ void WBToolbarSearch::searchNow()
     }
 
     QUrl url(QLatin1String("http://www.google.com/search"));
-    url.addQueryItem(QLatin1String("q"), searchText);
-    url.addQueryItem(QLatin1String("ie"), QLatin1String("UTF-8"));
-    url.addQueryItem(QLatin1String("oe"), QLatin1String("UTF-8"));
-    url.addQueryItem(QLatin1String("client"), QLatin1String("uniboard-browser"));
+    QUrlQuery urlQuery;
+
+    urlQuery.addQueryItem(QLatin1String("q"), searchText);
+    urlQuery.addQueryItem(QLatin1String("ie"), QLatin1String("UTF-8"));
+    urlQuery.addQueryItem(QLatin1String("oe"), QLatin1String("UTF-8"));
+    urlQuery.addQueryItem(QLatin1String("client"), QLatin1String("uniboard-browser"));
+    url.setQuery(urlQuery);
     emit search(url);
 }
 

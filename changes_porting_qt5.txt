@@ -1,0 +1,844 @@
+			*******************************
+			*	PORTING QT4->QT5      *
+			*	CHANGES   	      *
+            		*    win32 compilaton &exec   *
+			*******************************
+
+
+
+
+
+
+
+
+
+ QtSingleApplication replacement for Qt5 
+----------------------------------------
+
+http://blog.kadu.im/2015/01/qtsingleapplication-replacement-for-qt5.html
+
+
+
+
+UBWidgetMessageAPI.cpp
+------------------------
+
+-replace      mGraphicsWidgetItem->page()->mainFrame()->evaluateJavaScript(js); by (Line 67)
+
+QtWebKitWidgets
+
+
+UBGraphicsWidgetItem.h
+---------------------
+
+- add #include <QtWebKitWidgets/QWebFrame>
+
+
+UBGraphicsMediaItem.cpp
+*-----------------------
+
+- comment     //Phonon::createPath(mMediaObject, mAudioOutput); (line 109)
+- replace  //mMediaObject->setCurrentSource(QMediaSource(absoluteMediaFilename)); by   mMediaObject->setMedia(QUrl::fromLocalFile(absoluteMediaFilename)); (Line 191)
+- replace  //mAudioOutput = new QMediaPlayer(format, this); by    mAudioOutput = new QMediaPlayer;
+- replace  //mMediaObject->seek(mInitialPos); by mMediaObject->setPosition(mInitialPos);
+
+
+UBGraphicsMediaItem.h
+-----------------------
+
+- replace   QAudioOutput *mAudioOutput; by     QMediaPlayer *mAudioOutput;
+
+- replace //mMediaObject->setTickInterval(50); by  mMediaObject->setPosition(50);
+
+UBGraphicsMediaItemDelegate.h
+-------------------------------
+
+- add  #include <QtMultimedia/QMediaPlayer> header file
+
+
+UBGraphicsMediaItemDelegate.cpp
+-------------------------------
+
+- replace UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, QMediaObject* pMedia, QObject * parent)
+
+by UBGraphicsMediaItemDelegate::UBGraphicsMediaItemDelegate(UBGraphicsMediaItem* pDelegated, QMediaPlayer* pMedia, QObject * parent)
+
+
+-  replace //mMediaObject->setCurrentSource(mSource); by mMediaObject->setMedia(QUrl::fromLocalFile(pMediaFileUrl));
+
+- replace  //QMediaObject* media = delegated()->mediaObject(); by  QMediaPlayer* media = delegated()->mediaObject();
+
+- replace //remainingTime()  by ((media->duration()-media->position()) <= 0) {
+
+
+- replace    totalTime()); by duration() (L246)
+
+- replace //QMediaObject* media = delegated()->mediaObject();
+    QMediaPlayer* media = delegated()->mediaObject();
+    //mMediaControl->totalTimeChanged(media->totalTime());
+    mMediaControl->totalTimeChanged(media->duration());        (line 267)
+     
+- replace    QMediaPlayer* media = delegated()->mediaObject();if (media->state() == QMediaPlayer::PlayingState)
+  
+- replace    // delegated()->mediaObject()->setCurrentSource(delegated()->mediaFileUrl());
+            delegated()->mediaObject()->setCurrentSource(delegated()->mediaFileUrl());
+
+- replace   // delegated()->mediaObject()->setCurrentSource(delegated()->mediaFileUrl());
+            delegated()->mediaObject()->setMedia(delegated()->mediaFileUrl());  line 230
+
+UBGraphicsItemDelegate.cpp
+----------------------------
+
+-replace  //mDelegate->mediaObject()->seek(tickPos); by   mDelegate->mediaObject()->setPosition(tickPos); (line 1445)
+- replace    //button->scale(0.8,0.8); by  button->setScale(0.8);
+
+
+
+UBGraphicsGroupContainerItem.cpp
+----------------------------------
+
+replace  //foreach(QGraphicsItem *child, children()) by     foreach(QGraphicsItem *child, childItems()) Line 287
+
+
+
+UBGraphicsScene.cpp
+-------------------
+
+- replace   //graphicsWidget->scale(ssf, ssf); by graphicsWidget->setScale(ssf);   (1394)
+- replace   //svgItem->scale(sscale, sscale); by  svgItem->setscale(sscale);  (1521)
+
+- replace  //item->scale(ratio, ratio); by item->setscale(ratio);  (1817)
+- replace  //pixmapItem->scale(pScaleFactor, pScaleFactor); by  pixmapItem->setScale(pScaleFactor); (1273)
+
+
+UBFileSystemUtils.cpp
+--------------------
+
+
+- replace  QDesktopServices by QStandardPaths ; (line 138,139,
+
+
+UBGraphicsMediaItem
+-------------------
+
+- replace  //translate(translation.x(), translation.y()); by     setPos(translation.x(), translation.y()); line 355
+
+UBGraphicsDelegateFrame.cpp
+----------------------------
+
+ - replace  //translate(center.x(), center.y()); by  setPos(center.x(), center.y());          line 840
+ - replace   //translate(-center.x(), -center.y()); by   setPos(-center.x(), -center.y());    line 840
+ - replace  rotate(-angle); by setRotation(rotation() - angle);  line 840
+   
+
+GraphicsPDFItem.cpp
+----------------------
+- replace //#include <QtGui/QStyleOptionGraphicsItem> by #include <QtWidgets/QGraphicsItem>
+
+
+UBThumbnailWidget.cpp
+---------------------
+
+- replace  //setAcceptsHoverEvents(true); by    setAcceptHoverEvents(enabled); (line775)  (accept without "s")
+       
+
+UBFeaturesWidget.cpp
+--------------------
+
+- add #include <QtWebKitWidgets/QWebview>
+- add #include <Qt
+
+
+OpenBoard.pro
+-------------
+
+- add QT += gui
+
+
+UBDownloadWidget.cpp
+--------------------
+
+- replace  //mpTree->header()->setResizeMode(eItemColumn_Desc, QHeaderView::Stretch);
+    mpTree->header()->setSectionResizeMode(eItemColumn_Desc, QHeaderView::Stretch);
+
+    //mpTree->header()->setResizeMode(eItemColumn_Close, QHeaderView::Custom);
+    mpTree->header()->setSectionResizeMode(eItemColumn_Close, QHeaderView::Custom); (Line 64)
+
+UBWebPluginPDFWidget.cpp
+--------------------------
+
+- add //#include <QtGui> by  #include <QtWidgets>
+
+
+UBSpinningWheel.h
+------------------
+
+- add #include <QAtomicInt>
+
+
+UBFeaturesWidget.cpp
+---------------------
+
+- add replace  QWidget *eventSource = (QWidget*)event->source(); by  QWidget *eventSource = event->source();
+
+
+UBSpinningWheel.cpp
+-------------------
+
+- replace  //painter.rotate(30 * (mPosition % 12)); by     int val = mPosition.load(); and    painter.rotate(30 * (val % 12));
+
+PDFRenderer.cpp
+---------------
+
+- replace //if (mRefCount == 0) by  if (mRefCount.load() == 0)
+
+
+UBThumbnailWidget.cpp
+---------------------
+
+- replace  //mLassoRectItem = new QGraphicsRectItem(0, scene()); by     QRectF rect_init(0,0,0,0); and  mLassoRectItem = new QGraphicsRectItem(rect_init, (QGraphicsItem *)scene());
+
+
+UBDocumentThumbnailWidget.cpp
+-----------------------------
+
+-replace  //mDropCaretRectItem = new QGraphicsRectItem(0, scene()); by    QRectF rectInit(0,0,0,0); and mDropCaretRectItem = new QGraphicsRectItem(rectInit, (QGraphicsItem*)scene());
+
+
+UBPlatformUtils_win.cpp
+------------------------
+
+- replace //#include <QtGui> by #include <QtWidgets> 
+
+
+XPDFRenderer.cpp
+----------------
+
+- replace    //if (sInstancesCount == 0 && globalParams) by   if (sInstancesCount.load() == 0 && globalParams)
+
+
+C:\Qt_ide\5.2.1\msvc2010\include\QtCore\qdatetime.h 
+---------------------------------------------------
+qdatetime.h.patch
+------------------
+
+
+- error C2589: '('ÿ: jeton non conforme … droite de '::'
+- error C2059: erreur de syntaxeÿ: '::'
+
+--- qtbase/src/corelib/tools/qdatetime.h	  9 03:11:14 2013
++++ qtbase/src/corelib/tools/qdatetime.h	 30 18:15:30 2013
+@@ -120,7 +120,7 @@
+     inline qint64 toJulianDay() const { return jd; }
+ 
+ private:
+-    static inline qint64 nullJd() { return std::numeric_limits<qint64>::min(); }
++    static inline qint64 nullJd() { return (std::numeric_limits<qint64>::min)(); }
+     static inline qint64 minJd() { return Q_INT64_C(-784350574879); }
+     static inline qint64 maxJd() { return Q_INT64_C( 784354017364); }
+
+
+UBDisplayManager.h
+--------------------
+
+- replace //#include <QtGui> by #include <QtWidgets>
+
+
+UBDockPalette.cpp
+----------------
+
+- replace //iconPixmap.setAlphaChannel(transparencyPix); by the block codes as following :
+
+            //----------------------------------------------
+             QImage image = iconPixmap.toImage() ;
+            image.setAlphaChannel(transparencyPix.toImage());
+             iconPixmap = iconPixmap.fromImage(image);
+            //-----------------------------------------------
+
+
+UBWindowsMediaFile.cpp
+---------------------
+
+- replace //#include <QtGui> by  #include <QtWidgets>
+- replace    //if (FAILED(mWMWriter->AllocateSample(pImage.numBytes(), &sampleBuffer)))  by   if (FAILED(mWMWriter->AllocateSample(pImage. byteCount()(), &sampleBuffer)))
+
+- replace  //memcpy((void*) rawBuffer, imageBuffer, pImage.numBytes()); by    memcpy((void*) rawBuffer, imageBuffer, pImage.byteCount());
+
+UBWaveRecorder.cpp
+-------------------
+
+
+UBGraphicsProtractor.h
+----------------------
+- replace //#include <QtGui> by #include <QtWidgets>
+
+
+UBGraphicsCompass.cpp
+----------------------
+
+- replace  //setAcceptsHoverEvents(true); by  setAcceptHoverEvents(true);
+
+
+UBGraphicsProtractor.h
+----------------------
+
+- replace //#include <QtGui> by 
+#include <QtWidgets>
+#include <QtWidgets/QGraphicsItem>
+#include <QtWidgets/QGraphicsView>
+
+
+UBGraphicsProtractor.cpp
+-------------------------
+
+-replace   //translate(rect().center().x(), rect().center().y()); by setPos(rect().center().x(), rect().center().y()); line 205
+
+-replace  //translate(-rect().center().x(), -rect().center().y()); by  setPos(-rect().center().x(), -rect().center().y());  line 210
+-replace  //mResetSvgItem->translate(-resetButtonRect().left(), -resetButtonRect().top()); by  mResetSvgItem->setpos(-resetButtonRect().left(), -resetButtonRect().top());
+ all translate->setPos  (Lines 464,468,473,475,477,480,482,484,
+
+- replace  //mMarkerSvgItem->rotate(- mStartAngle - mCurrentAngle); by     mMarkerSvgItem->setRotation(- mStartAngle - mCurrentAngle);
+- replace //mRotateSvgItem->rotate(-mStartAngle); by  mRotateSvgItem->setRotation( -mStartAngle);  (Line 482)
+
+- replace  //mResetSvgItem->rotate(-mStartAngle); by  mResetSvgItem->setRotation(-mStartAngle); (Line 467)
+- replace  //mResizeSvgItem->rotate(-mStartAngle); by  mResizeSvgItem->setRotation(-mStartAngle); Line 478)
+
+
+
+- replace //mMarkerSvgItem->scale(scale, scale);//this do not impact the bounding box of thr svg item... by mMarkerSvgItem->setScale( scale);//this do not impact the bounding box of thr svg item...
+
+	(line 503)
+
+- replace  //mRotateSvgItem->scale(scale, scale);//this do not impact the bounding box of thr svg item... (Line 492)
+        mRotateSvgItem->setScale(scale);//this do not impact the bounding box of thr svg item...
+
+- replace   //mResetSvgItem->scale(scale * antiSc, scale * antiSc);//this do not impact the bounding box of thr svg item...
+        mResetSvgItem->setScale(scale * antiSc);//this do not impact the bounding box of thr svg item... (Line 473)
+
+
+
+- replace //scale(1.5, 1.5); by  setScale(1.5);  (Line 82)
+
+- replace  //mCloseSvgItem->rotate(-mStartAngle);  by  mCloseSvgItem->setRotation(-mStartAngle);  (Line 458)
+
+- replace  //scale(scaleFactor);  by  setScale(scaleFactor);
+
+- replace  //mCloseSvgItem->scale(scale * antiSc, scale * antiSc);//this do not impact the bounding box of thr svg item...  by 
+        mCloseSvgItem->setSale(scale * antiSc);//this do not impact the bounding box of thr svg item...   (Line 467)
+
+- replace  // mResizeSvgItem->scale(scale * antiSc, scale * antiSc);//this do not impact the bounding box of thr svg item...
+        mResizeSvgItem->setScale(scale * antiSc);//this do not impact the bounding box of thr svg item...   (Line 490)
+
+
+
+UBAbstractDrawRuler.h
+----------------------
+
+ - replace //#include <QtGui> by 
+#include <QtWidgets>
+
+
+UBWaveRecorder.cpp
+-------------------
+
+-replace  // QString deviceName  = QString:: fromUtf16(caps.szPname); by   QString deviceName  = QString::fromWCharArray(caps.szPname) ;  (Line 67)
+
+-replace  //devices  << QString::fromUtf16(caps.szPname); by devices  << QString::fromWCharArray(caps.szPname); (Line 242)
+
+
+
+UBAbstractDrawRuler.cpp
+------------------------
+
+- replace  //item.setAcceptsHoverEvents(true); by item.setAcceptHoverEvents(true);
+
+UBCustomCaptureWindow.h
+------------------------
+
+- replace //#include <QtGui> by include <QtWidgets>
+
+
+
+UBWebKitUtils.h
+---------------
+
+-replace //#include <QtWebKit> by #include <QtWebKitWidgets>
+
+
+UBWindowCaptureDelegate_win.h
+------------------------------
+ - replace //#include <QtGui> by  #include <QtWidgets>
+
+UBOEmbedParser.cpp
+------------------
+
+-replace  toAscii--> toLatin1 qurl.setEncodedUrl(url.toLatin1());  (line 230)
+
+-replace 
+
+
+WBSqueezeLabel.h
+-----------------
+
+- replace //#include <QtGui/QLabel> by  #include <QtWidgets>
+
+
+UBWindowCaptureDelegate_win.cpp
+--------------------------------
+
+- replace   //mCapturedPixmap = QPixmap::grabWindow(mCurrentWindow);
+        mCapturedPixmap = QScreen::grabWindow(mCurrentWindow);
+
+UBOEmbedParser.cpp
+-----------------
+
+- replace  //qurl.setEncodedUrl(url.toAscii()); by qurl.setUrl(url.toLatin1(),QUrl::TolerantMode);
+
+
+
+WBChaseWidget.cpp
+------------------
+
+- replace //#include <QtGui> by #include <QtWidgets>
+
+
+WBChaseWidget.h
+-----------------
+
+-replace //#include <QtGui> by #include <QtWidgets>
+
+
+
+WBModelMenu.h
+--------------
+
+-replace //#include <QtGui> by #include <QtWidgets>
+
+
+
+WBUrlLineEdit.cpp
+-----------------
+ -replace //#include <QtGui> by #include <QtWidgets>
+
+
+WBEditTableView.cpp
+--------------------
+
+- replace //#include <QtGui/QKeyEvent> by #include <QtWidgets>
+
+WBEditTableView.h
+------------------
+ -replace //#include <QtGui> by #include <QtWidgets>
+
+
+WBSearchLineEdit.cpp
+---------------------
+
+-replace //#include <QtGui> by
+#include <QtWidgets>
+
+WBToolBarSearch.cpp
+-------------------
+
+//#include <QtGui>
+#include <QtWidgets>
+
+//#include <QtWebKit>
+#include <QtWebKitWidgets>
+
+
+WBToolBarSearch.h
+------------------
+
+
+-replace //#include <QtGui>
+#include <QtWidgets>
+
+WBSearchLineEdit.h
+------------------
+
+//#include <QtGui>
+#include <QtWidgets>
+
+WBWebTrapWebView.cpp
+---------------------
+
+
+- replace 
+//#include <QtGui>
+//#include <QtWebKit>
+by
+#include <QtWidgets>
+#include <QtWebKitWidgets>
+
+
+
+WBWebTrapWebView.h
+-------------------
+
+- replace 
+//#include <QtGui>
+//#include <QtWebKit>
+by
+#include <QtWidgets>
+#include <QtWebKitWidgets>
+
+
+WBToolBarSearch.cpp
+-------------------
+
+
+-add on the top of the file
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+#   include <QUrlQuery>
+#endif
+
+
+WBUrlLineEdit.h
+---------------
+- replace //#include <QtGui> by //#include <QtWebKit>
+
+
+WBWebView.h
+-----------
+
+
+- replace //#include <QtGui>
+//#include <QtWebKit>
+
+#include <QtWidgets>
+#include <QtWebKitWidgets>
+
+WBDownloadManager.cpp
+----------------------
+
+- replace storageLocation by QStandardPaths => QStandardPaths::writableLocation( QStandardPaths::DesktopLocation
+
+
+
+WBToolBarSearch.cpp
+--------------------
+
+  urlQuery1.addQueryItem(QLatin1String("q"), searchText);
+    url.setQuery(urlQuery1);
+
+    urlQuery2.addQueryItem(QLatin1String("ie"), QLatin1String("UTF-8"));
+    url.setQuery(urlQuery2);
+
+    urlQuery3.addQueryItem(QLatin1String("oe"), QLatin1String("UTF-8"));
+    url.setQuery(urlQuery3);
+
+    urlQuery4.addQueryItem(QLatin1String("client"), QLatin1String("uniboard-browser"));
+    url.setQuery(urlQuery4);
+
+
+    /*url.addQueryItem(QLatin1String("q"), searchText);
+    url.addQueryItem(QLatin1String("ie"), QLatin1String("UTF-8"));
+    url.addQueryItem(QLatin1String("oe"), QLatin1String("UTF-8"));
+    url.addQueryItem(QLatin1String("client"), QLatin1String("uniboard-browser"));
+    */
+
+
+WBTabWidget.cpp
+----------------
+
+-replace //#include <QtGui> by #include <QtWidgets>
+
+
+WBTabWidget.h
+-------------
+- replace //#include <QtGui> by #include <QtWidgets>
+
+Utils.cpp
+---------
+
+- replace  toascii() by toLatin1()
+
+****
+TODO
+****
+- solve //mCapturedPixmap = QPixmap::grabWindow(mCurrentWindow);
+        mCapturedPixmap = QScreen::grabWindow((HWND)mCurrentWindow);
+
+UBGlobals.h
+-----------
+
+replace  //#ifdef Q_WS_WIN by  #ifdef Q_OS_WIN
+
+
+UBCFFAdaptor.cpp
+----------------
+
+************************************************
+			TODO
+************************************************
+
+- to solve dstList.setInsertInOrder(true); (Line 1954)
+
+qtsingleapplication.h
+---------------------
+
+- replace //#include <QtGui/QApplication>  by #include <QGuiApplication>
+
+- comment     //QtSingleApplication(int &argc, char **argv, Type type);
+
+
+WBTabWidget.h
+--------------
+
+- replace //#include <QtWebKit> by #include <QtWebKitWidgets>
+
+
+WBBrowserWindow.h
+------------------
+
+- replace //#include <QtGui> ;//#include <QtWebKit> by 
+
+#include <QtWidgets>
+#include <QtWebKitWidgets>
+
+
+WBHistory.h
+-----------
+ - replace  //#include <QtGui> ;//#include <QtWebKit> by 
+
+#include <QtWidgets>
+#include <QtWebKitWidgets>
+
+
+
+UBGlobals.h
+------------
+ 
+- replace //#ifdef Q_WS_WIN by  #ifdef Q_OS_WIN
+
+UBWindowCaptureDelegate_win.cpp
+-------------------------------
+
+- solve the HWND -->WId window conversion from  //mCapturedPixmap = QPixmap::grabWindow(mCurrentWindow);
+=> solution : add into the UBWindowCaptureDelegate_win.h header : the inclusion header #include <qwindowdefs_win.h>
+
+UBWindowCaptureDelegate_win.h
+-------------------------------
+#ifdef Q_OS_WIN
+#include <qwindowdefs_win.h>
+#endif
+
+
+
+
+qtsingleapplication.cpp
+------------------------
+
+- replace the content by the source file repository (CW)
+
+qtsingleapplication.h
+------------------------
+
+- replace the content by the source file repository (CW)
+
+
+
+UBWindowCaptureDelegate_win.cpp
+--------------------------------
+
+
+************************************************
+			TODO
+************************************************
+
+- solve the // mCapturedPixmap = QPixmap::grabWindow(mCurrentWindow); => pb of conversion between HWND and WId.
+
+
+qtlockedfile_win.cpp
+---------------------
+
+- add #if QT_VERSION >= 0x050000
+#define QT_WA(unicode, ansi) unicode
+#endif
+
+qtsingleapplication.cpp
+-------------------------
+
+-  remove the contentfrom source repository(CW).
+
+qtsingleapplication.h
+-------------------------
+
+-  remove the contentfrom source repository(CW).
+
+qtlocalpeer.h
+-------------
+
+- replace the content by the old basis source repository (OpenBoard-Third-party)
+
+qtlocalpeer.cpp
+---------------
+- replace the content by the old basis source repository (OpenBoard-Third-party)
+
+
+UBNetworkAccessManager.cpp
+--------------------------
+- replace //#include <QtGui> by #include <QtWidgets>
+
+
+- replace // introMessage = introMessage.arg(Qt::escape(reply->url().toString())).arg(Qt::escape(reply->url().toString())); by :
+
+    introMessage = introMessage.arg(QString(reply->url().toString())).toHtmlEscaped().arg(QString(reply->url().toString())).toHtmlEscaped();
+
+
+WBHistory.cpp
+--------------
+- replace //#include <QtGui> by #include <QtWidgets>
+
+- replace reset() by  beginResetModel();
+    m_sourceRowCache.clear();
+    endResetModel();  (Line 1213,1268,)
+
+
+-replace  //reset(); by 
+    beginResetModel();
+    endResetModel();   (Line 999,1006..)
+}
+
+- replace createIndex(row, column, 0); by   (Line 969,1131,1140)
+      createIndex(row, column);
+
+WBHistory.h
+------------
+
+- replace class WBHistoryFilterModel : public QAbstractProxyModel, by 
+class WBHistoryFilterModel : public QAbstractProxyModel, public QAbstractItemModel
+
+
+
+- ?? pb at the level of compiler error: 
+
+
+UBBoardView.cpp
+----------------
+
+************************************************
+	TODO  done cf below
+************************************************
+
+SOLVE THE ItemAt
+
+- comment the mouseReleaseEvent method 
+- comment the mousePressEvent method
+
+
+
+
+WBHistory.cpp
+--------------
+
+- comment and remove  //beginResetModel(); and   //endResetModel();  (Line 247)
+- comment and remove  //beginResetModel(); and   //endResetModel();  (Line 837-843)
+
+
+UBApplication.cpp
+------------------
+
+-remove and comment //QApplication::setStyle(new UBStyle()); // Style is owned and deleted by the application.
+
+
+UBTrapFlashController.h
+-----------------------
+
+- replace //#include <QtGui> by #include <QtWidgets>.
+
+UBTrapFlashController.cpp
+-------------------------
+- replace //#ifdef Q_WS_WIN // Defined on Windows. by#ifdef Q_OS_WIN // Defined on Windows.
+
+
+UBPodcastController.cpp
+-------------------------
+
+-replace  QDesktopServices::storageLocation.  (Line 715)
+
+-replace   by QStandardPaths::writableLocation.
+ 
+- replace  repaintRect = repaintRect.unite(mSceneRepaintRectQueue.dequeue()); by   repaintRect = repaintRect.united(mSceneRepaintRectQueue.dequeue());
+
+- replace   QRectF maxRect = rect.intersect(viewportRect); by RectF maxRect = rect.intersected(viewportRect);
+
+- replace  repaintRect = repaintRect.unite(mWidgetRepaintRectQueue.dequeue()); by repaintRect = repaintRect.united(mWidgetRepaintRectQueue.dequeue());
+
+
+
+
+main.cpp
+----------
+
+
+- move   QMessageLogContext context_m; on line 58
+
+- replace // qt_message_output(type, msg); by   qt_message_output(type,context_m, msg);
+
+
+
+COMPILATION STATUS IN DEBUG STATUS :
+************************************
+
+- compile all libraries (freetype.lib quazip.lib,xpdf.lib) with success
+- issue:  error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0'
+
+=> solution: complation in RELEASE MODE
+
+
+- problem : LINK : fatal error LNK1123: échec lors de la conversion en fichier COFF msvc 2010 qt 5.2
+=> solution :
+Visual C++ 2010 SP1 Compiler Update for the Windows SDK 7.1
+
+- install the followin tools in your computer quth the msvc 2010 config:
+ cf https://support.microsoft.com/fr-fr/kb/2934068 : 
+
+ 
+ support microsoft : " Erreur se produit lorsque vous installez le Kit de développement logiciel Windows pour Windows 7 et.NET Framework 4 " 
+
+steps :
+------
+1) remove and reinstall Microsoft Visual C++ 2010 SP1 Redistributable Package (x32) : vcredist_x32.exe
+
+2) remove and reinstall Microsoft Visual C++ 2010 SP1 Redistributable Package (x64) : vcredist_x64.exe 
+
+3) install  Microsoft Windows SDK for Windows 7 and .NET Framework 4 (ISO).  
+
+4) reinstall Microsoft Visual Studio 2010 Service Pack 1 (Installer) download the iso from the link https://www.microsoft.com/en-us/download/confirmation.aspx?id=23691
+
+cf link : https://msdn.microsoft.com/fr-fr/library/7dz62kfh.aspx
+
+cf http://stackoverflow.com/questions/10888391/error-link-fatal-error-lnk1123-failure-during-conversion-to-coff-file-inval
+
+=> solution : the tools cvtres.exe was broken  so copy C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\cvtres.exe
+
+into C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\cvtres.exe
+
+
+
+OpenBoard.pro
+--------------
+- pb:  fatal error LNK1123: échec lors de la conversion en fichier COFF vs 2010 qt 5.2 => add    QMAKE_LFLAGS += /INCREMENTAL:NO
+
+
+
+
+UBBoardView.cpp
+----------------
+
+the ItemAt issue was solved by the last update methods from the repository.
+
+
+UBGraphicsTextItem.cpp
+----------------------
+
+
+- replace //#include <QtGui> by #include <QtWidgets>.
+
+
+
+
+
+

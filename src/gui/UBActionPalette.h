@@ -31,6 +31,8 @@
 #include <QtGui>
 #include <QPoint>
 #include <QButtonGroup>
+#include <QToolButton>
+
 #include "UBFloatingPalette.h"
 
 class UBActionPaletteButton;

@@ -56,10 +56,10 @@
 
 
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     #include "windowsmedia/UBWindowsMediaVideoEncoder.h"
     #include "windowsmedia/UBWaveRecorder.h"
-#elif defined(Q_WS_MAC)
+#elif defined(Q_OS_OSX)
     #include "quicktime/UBQuickTimeVideoEncoder.h"
     #include "quicktime/UBAudioQueueRecorder.h"
 #endif
@@ -303,9 +303,9 @@ void UBPodcastController::start()
 
         applicationMainModeChanged(UBApplication::applicationController->displayMode());
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
         mVideoEncoder = new UBWindowsMediaVideoEncoder(this);  //deleted on stop
-#elif defined(Q_WS_MAC)
+#elif defined(Q_OS_OSX)
         mVideoEncoder = new UBQuickTimeVideoEncoder(this);  //deleted on stop
 #endif
 
@@ -487,7 +487,7 @@ void UBPodcastController::processWidgetPaintEvent()
     {
         while(mWidgetRepaintRectQueue.size() > 0)
         {
-            repaintRect = repaintRect.unite(mWidgetRepaintRectQueue.dequeue());
+            repaintRect = repaintRect.united(mWidgetRepaintRectQueue.dequeue());
         }
     }
 
@@ -582,7 +582,7 @@ void UBPodcastController::sceneChanged(const QList<QRectF> & region)
         QRectF viewportRect = bv->mapToScene(QRect(0, 0, bv->width(), bv->height())).boundingRect();
         foreach(const QRectF rect, region)
         {
-            QRectF maxRect = rect.intersect(viewportRect);
+            QRectF maxRect = rect.intersected(viewportRect);
             mSceneRepaintRectQueue.enqueue(maxRect);
         }
 
@@ -623,7 +623,7 @@ void UBPodcastController::processScenePaintEvent()
     {
         while(mSceneRepaintRectQueue.size() > 0)
         {
-            repaintRect = repaintRect.unite(mSceneRepaintRectQueue.dequeue());
+            repaintRect = repaintRect.united(mSceneRepaintRectQueue.dequeue());
         }
     }
 
@@ -712,7 +712,7 @@ void UBPodcastController::encodingFinished(bool ok)
             {
                 QString location;
 
-                if (mPodcastRecordingPath == QDesktopServices::storageLocation(QDesktopServices::DesktopLocation))
+                if (mPodcastRecordingPath == QStandardPaths::writableLocation(QStandardPaths::DesktopLocation))
                     location = tr("on your desktop ...");
                 else
                 {
@@ -793,9 +793,9 @@ QStringList UBPodcastController::audioRecordingDevices()
 {
     QStringList devices;
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     devices = UBWaveRecorder::waveInDevices();
-#elif defined(Q_WS_MAC)
+#elif defined(Q_OS_OSX)
     devices = UBAudioQueueRecorder::waveInDevices();
 #endif
 

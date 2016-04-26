@@ -23,7 +23,9 @@
  */
 
 
-
+#include <QLayout>
+#include <QTextEdit>
+#include <QPushButton>
 
 #include "UBMessagesDialog.h"
 

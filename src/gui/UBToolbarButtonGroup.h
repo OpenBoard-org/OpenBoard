@@ -30,6 +30,10 @@
 
 
 #include <QtGui>
+#include <QWidget>
+#include <QToolBar>
+#include <QToolButton>
+#include <QActionGroup>
 
 class UBToolbarButtonGroup : public QWidget
 {

@@ -29,8 +29,6 @@
 #define UBAPPLICATIONCONTROLLER_H_
 
 #include <QtGui>
-#include <QFtp>
-#include <QHttpResponseHeader>
 
 
 class UBBoardView;
@@ -146,8 +144,7 @@ class UBApplicationController : public QObject
         void checkAtLaunch();
 
     private slots:
-        void updateRequestFinished(int id, bool error);
-        void updateHeaderReceived(QHttpResponseHeader header);
+        void updateRequestFinished(QNetworkReply * reply);
 
 
     protected:
@@ -186,7 +183,6 @@ class UBApplicationController : public QObject
         QNetworkAccessManager *networkAccessManager;
 
         void downloadJsonFinished(QString updateString);
-        QHttp* mHttp;
 };
 
 #endif /* UBAPPLICATIONCONTROLLER_H_ */

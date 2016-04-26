@@ -832,9 +832,10 @@ void UBGraphicsDelegateFrame::positionHandles()
     }
 
     resetTransform();
-    translate(center.x(), center.y());
-    rotate(-angle);
-    translate(-center.x(), -center.y());
+    setTransform(QTransform::fromTranslate(center.x(), center.y()), true);
+    setTransform(QTransform().rotate(-angle), true);
+    setTransform(QTransform::fromTranslate(-center.x(), -center.y()), true);
+    //TODO: combine these transforms into one
 
     mBottomRightResizeGripSvgItem->setParentItem(this);
     mBottomResizeGripSvgItem->setParentItem(this);

@@ -26,6 +26,7 @@
 
 
 #include <QtGui>
+#include <QAction>
 
 #include "UBWebPluginPDFWidget.h"
 #include "XPDFRenderer.h"

@@ -74,6 +74,10 @@
 #include "globals/UBGlobals.h"
 
 #include <QtGui>
+#include <QCompleter>
+#include <QLineEdit>
+#include <QLabel>
+#include <QApplication>
 
 #include "core/memcheck.h"
 

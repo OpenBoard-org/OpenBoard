@@ -29,6 +29,7 @@
 #define UBDOCUMENTCONTROLLER_H_
 
 #include <QtGui>
+#include <QTreeWidgetItem>
 #include "document/UBDocumentContainer.h"
 
 namespace Ui
