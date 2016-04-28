@@ -520,10 +520,8 @@ void UBApplication::decorateActionMenu(QAction* action)
 
             menu->addSeparator();
 
-#ifndef Q_OS_LINUX // No Podcast on Linux yet
             menu->addAction(mainWindow->actionPodcast);
             mainWindow->actionPodcast->setText(tr("Podcast"));
-#endif
 
             menu->addSeparator();
             menu->addAction(mainWindow->actionQuit);
