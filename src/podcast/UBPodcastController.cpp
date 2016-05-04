@@ -66,6 +66,7 @@
     #include "quicktime/UBAudioQueueRecorder.h"
 #elif defined(Q_OS_LINUX)
     #include "ffmpeg/UBFFmpegVideoEncoder.h"
+    #include "ffmpeg/UBMicrophoneInput.h"
 #endif
 
 #include "core/memcheck.h"
@@ -808,6 +809,8 @@ QStringList UBPodcastController::audioRecordingDevices()
     devices = UBWaveRecorder::waveInDevices();
 #elif defined(Q_OS_OSX)
     devices = UBAudioQueueRecorder::waveInDevices();
+#elif defined(Q_OS_LINUX)
+    devices = UBMicrophoneInput::availableDevicesNames();
 #endif
 
     return devices;

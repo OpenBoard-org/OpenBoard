@@ -5,20 +5,23 @@ extern "C" {
     #include <libavcodec/avcodec.h>
     #include <libavformat/avformat.h>
     #include <libavformat/avio.h>
+    #include <libavutil/audio_fifo.h>
     #include <libavutil/avutil.h>
     #include <libavutil/imgutils.h>
     #include <libavutil/opt.h>
     #include <libavutil/mathematics.h>
+    #include <libavutil/time.h>
     #include <libswscale/swscale.h>
+    #include <libswresample/swresample.h>
 }
 
 #include <atomic>
-#include <stdio.h>
 
 #include <QtCore>
 #include <QImage>
 
 #include "podcast/UBAbstractVideoEncoder.h"
+#include "podcast/ffmpeg/UBMicrophoneInput.h"
 
 class UBFFmpegVideoEncoderWorker;
 class UBPodcastController;
@@ -45,7 +48,6 @@ public:
 
     void setRecordAudio(bool pRecordAudio) { mShouldRecordAudio = pRecordAudio; }
 
-
 signals:
 
     void encodingFinished(bool ok);
@@ -53,6 +55,7 @@ signals:
 private slots:
 
     void setLastErrorMessage(const QString& pMessage);
+    void onAudioAvailable(QByteArray data);
     void finishEncoding();
 
 private:
@@ -63,32 +66,42 @@ private:
         long timestamp; // unit: ms
     };
 
-    AVFrame* convertFrame(ImageFrame frame);
+    AVFrame* convertImageFrame(ImageFrame frame);
+    AVFrame* convertAudio(QByteArray data);
+    void processAudio(QByteArray& data);
     bool init();
 
-    // Queue for any pixmap that might be sent before the encoder is ready
-    QQueue<ImageFrame> mPendingFrames;
-
     QString mLastErrorMessage;
-    bool mShouldRecordAudio;
 
     QThread* mVideoEncoderThread;
     UBFFmpegVideoEncoderWorker* mVideoWorker;
 
     // Muxer
+    // ------------------------------------------
     AVFormatContext* mOutputFormatContext;
-    int mTimebase;
-
-    // Video
     AVStream* mVideoStream;
-    struct SwsContext * mSwsContext;
-
-    // Audio
     AVStream* mAudioStream;
 
+    // Video
+    // ------------------------------------------
+    QQueue<ImageFrame> mPendingFrames;
+    struct SwsContext * mSwsContext;
 
-    FILE * mFile;
+    int mVideoTimebase;
 
+    // Audio
+    // ------------------------------------------
+    bool mShouldRecordAudio;
+
+    UBMicrophoneInput * mAudioInput;
+    struct SwrContext * mSwrContext;
+    /// Queue for audio that has been rescaled/converted but not encoded yet
+    AVAudioFifo *mAudioOutBuffer;
+
+    /// Sample rate for encoded audio
+    int mAudioSampleRate;
+    /// Total audio frames sent to encoder
+    int mAudioFrameCount;
 };
 
 
@@ -105,6 +118,7 @@ public:
     bool isRunning() { return mIsRunning; }
 
     void queueFrame(AVFrame* frame);
+    void queueAudio(AVFrame *frame);
 
 public slots:
     void runEncoding();
@@ -117,19 +131,23 @@ signals:
 
 private:
     void writeLatestVideoFrame();
+    void writeLatestAudioFrame();
 
     UBFFmpegVideoEncoder* mController;
 
     // std::atomic is C++11. This won't work with msvc2010, so a
-    // newer compiler must be used if this is to be used on Windows
+    // newer compiler must be used if this class is to be used on Windows
     std::atomic<bool> mStopRequested;
     std::atomic<bool> mIsRunning;
 
-    QQueue<AVFrame*> mFrameQueue;
+    QQueue<AVFrame*> mImageQueue;
+    QQueue<AVFrame*> mAudioQueue;
+
     QMutex mFrameQueueMutex;
     QWaitCondition mWaitCondition;
 
-    AVPacket* mPacket;
+    AVPacket* mVideoPacket;
+    AVPacket* mAudioPacket;
 };
 
 #endif // UBFFMPEGVIDEOENCODER_H

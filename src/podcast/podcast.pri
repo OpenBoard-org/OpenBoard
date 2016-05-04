@@ -3,13 +3,15 @@ HEADERS      += src/podcast/UBPodcastController.h \
                 src/podcast/UBAbstractVideoEncoder.h \
                 src/podcast/UBPodcastRecordingPalette.h \
                 src/podcast/youtube/UBYouTubePublisher.h \
-                src/podcast/intranet/UBIntranetPodcastPublisher.h
+                src/podcast/intranet/UBIntranetPodcastPublisher.h \
+    $$PWD/ffmpeg/UBMicrophoneInput.h
                 
 SOURCES      += src/podcast/UBPodcastController.cpp \
                 src/podcast/UBAbstractVideoEncoder.cpp \
                 src/podcast/UBPodcastRecordingPalette.cpp \
                 src/podcast/youtube/UBYouTubePublisher.cpp \
-                src/podcast/intranet/UBIntranetPodcastPublisher.cpp
+                src/podcast/intranet/UBIntranetPodcastPublisher.cpp \
+    $$PWD/ffmpeg/UBMicrophoneInput.cpp
 
 win32 {
 
