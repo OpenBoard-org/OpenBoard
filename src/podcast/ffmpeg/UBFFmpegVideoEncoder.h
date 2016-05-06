@@ -26,6 +26,16 @@ extern "C" {
 class UBFFmpegVideoEncoderWorker;
 class UBPodcastController;
 
+/**
+ * This class provides an interface between the podcast controller and the ffmpeg
+ * back-end.
+ * It includes all the necessary objects and methods to record video (muxer, audio and
+ * video streams and encoders, etc) from inputs consisting of raw PCM audio and raw RGBA
+ * images.
+ *
+ * A worker thread is used to encode and write the audio and video on-the-fly.
+ */
+
 class UBFFmpegVideoEncoder : public UBAbstractVideoEncoder
 {
     Q_OBJECT
@@ -117,8 +127,8 @@ public:
 
     bool isRunning() { return mIsRunning; }
 
-    void queueFrame(AVFrame* frame);
-    void queueAudio(AVFrame *frame);
+    void queueVideoFrame(AVFrame* frame);
+    void queueAudioFrame(AVFrame* frame);
 
 public slots:
     void runEncoding();
@@ -127,7 +137,6 @@ public slots:
 signals:
     void encodingFinished();
     void error(QString message);
-
 
 private:
     void writeLatestVideoFrame();

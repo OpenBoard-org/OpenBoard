@@ -1,10 +1,8 @@
 #include "UBFFmpegVideoEncoder.h"
 
-// Future proofing
-#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(55,28,1)
-#define av_frame_alloc  avcodec_alloc_frame
-#define av_frame_free avcodec_free_frame
-#endif
+//-------------------------------------------------------------------------
+// Utility functions
+//-------------------------------------------------------------------------
 
 QString avErrorToQString(int errnum)
 {
@@ -15,14 +13,51 @@ QString avErrorToQString(int errnum)
 }
 
 /**
- * @brief Constructor for the ffmpeg video encoder
+ * @brief Write a given frame to the audio stream or, if a null frame is passed, flush the stream.
  *
- *
- * This class provides an interface between the screencast controller and the ffmpeg
- * back-end. It initializes the audio and video encoders and frees them when done;
- * a worker thread handles the actual encoding and writing of frames.
- *
+ * @param frame An AVFrame to be written to the stream, or NULL to flush the stream
+ * @param packet A (reusable) packet, used to temporarily store frame data
+ * @param stream The stream to write to
+ * @param outputFormatContext The output format context
  */
+void writeFrame(AVFrame *frame, AVPacket *packet, AVStream *stream, AVFormatContext *outputFormatContext)
+{
+    int gotOutput, ret;
+
+    av_init_packet(packet);
+
+    do {
+        if (stream->codec->codec_type == AVMEDIA_TYPE_AUDIO)
+            ret = avcodec_encode_audio2(stream->codec, packet, frame, &gotOutput);
+        else
+            ret = avcodec_encode_video2(stream->codec, packet, frame, &gotOutput);
+
+        if (ret < 0)
+            qWarning() << "Couldn't encode audio frame: " << avErrorToQString(ret);
+
+        else if (gotOutput) {
+            AVRational codecTimebase = stream->codec->time_base;
+            AVRational streamVideoTimebase = stream->time_base;
+
+            av_packet_rescale_ts(packet, codecTimebase, streamVideoTimebase);
+            packet->stream_index = stream->index;
+
+            av_interleaved_write_frame(outputFormatContext, packet);
+            av_packet_unref(packet);
+        }
+
+    } while (gotOutput && !frame);
+}
+
+void flushStream(AVPacket *packet, AVStream *stream, AVFormatContext *outputFormatContext)
+{
+    writeFrame(NULL, packet, stream, outputFormatContext);
+}
+
+//-------------------------------------------------------------------------
+// UBFFmpegVideoEncoder
+//-------------------------------------------------------------------------
+
 UBFFmpegVideoEncoder::UBFFmpegVideoEncoder(QObject* parent)
     : UBAbstractVideoEncoder(parent)
     , mOutputFormatContext(NULL)
@@ -34,18 +69,8 @@ UBFFmpegVideoEncoder::UBFFmpegVideoEncoder(QObject* parent)
     , mAudioSampleRate(44100)
     , mAudioFrameCount(0)
 {
-    if (mShouldRecordAudio) {
-        mAudioInput = new UBMicrophoneInput();
-
-        connect(mAudioInput, SIGNAL(audioLevelChanged(quint8)),
-                this, SIGNAL(audioLevelChanged(quint8)));
-
-        connect(mAudioInput, SIGNAL(dataAvailable(QByteArray)),
-                this, SLOT(onAudioAvailable(QByteArray)));
-    }
 
     mVideoTimebase = 100 * framesPerSecond();
-    qDebug() <<  "timebase: " << mVideoTimebase;
 
     mVideoEncoderThread = new QThread;
     mVideoWorker = new UBFFmpegVideoEncoderWorker(this);
@@ -78,7 +103,7 @@ UBFFmpegVideoEncoder::~UBFFmpegVideoEncoder()
 
 void UBFFmpegVideoEncoder::setLastErrorMessage(const QString& pMessage)
 {
-    qDebug() << "FFmpeg video encoder:" << pMessage;
+    qWarning() << "FFmpeg video encoder:" << pMessage;
     mLastErrorMessage = pMessage;
 }
 
@@ -182,11 +207,19 @@ bool UBFFmpegVideoEncoder::init()
     if (mShouldRecordAudio) {
 
         // Microphone input
+
+        mAudioInput = new UBMicrophoneInput();
+
+        connect(mAudioInput, SIGNAL(audioLevelChanged(quint8)),
+                this, SIGNAL(audioLevelChanged(quint8)));
+
+        connect(mAudioInput, SIGNAL(dataAvailable(QByteArray)),
+                this, SLOT(onAudioAvailable(QByteArray)));
+
         if (!mAudioInput->init()) {
             setLastErrorMessage("Couldn't initialize audio input");
             return false;
         }
-
 
         int inChannelCount = mAudioInput->channelCount();
         int inSampleRate = mAudioInput->sampleRate();
@@ -197,6 +230,7 @@ bool UBFFmpegVideoEncoder::init()
         qDebug() << "inSampleSize = " << inSampleSize;
 
         // Codec
+
         AVCodec * audioCodec = avcodec_find_encoder(mOutputFormatContext->oformat->audio_codec);
 
         if (!audioCodec) {
@@ -227,7 +261,8 @@ bool UBFFmpegVideoEncoder::init()
             return false;
         }
 
-        // Resampling / format converting context
+        // The input (raw sound from the microphone) may not match the codec's sampling rate,
+        // sample format or number of channels; we use libswresample to convert and resample it
         mSwrContext = swr_alloc();
         if (!mSwrContext) {
             setLastErrorMessage("Could not allocate resampler context");
@@ -277,13 +312,6 @@ bool UBFFmpegVideoEncoder::init()
  */
 void UBFFmpegVideoEncoder::newPixmap(const QImage &pImage, long timestamp)
 {
-    // really necessary?
-    static bool isFirstFrame = true;
-    if (isFirstFrame) {
-        timestamp = 0;
-        isFirstFrame = false;
-    }
-
     if (!mVideoWorker->isRunning()) {
         qDebug() << "Encoder worker thread not running. Queuing frame.";
         mPendingFrames.enqueue({pImage, timestamp});
@@ -294,7 +322,7 @@ void UBFFmpegVideoEncoder::newPixmap(const QImage &pImage, long timestamp)
         while (!mPendingFrames.isEmpty()) {
             AVFrame* avFrame = convertImageFrame(mPendingFrames.dequeue());
             if (avFrame)
-                mVideoWorker->queueFrame(avFrame);
+                mVideoWorker->queueVideoFrame(avFrame);
         }
 
         // note: if converting the frame turns out to be too slow to do here, it
@@ -303,7 +331,7 @@ void UBFFmpegVideoEncoder::newPixmap(const QImage &pImage, long timestamp)
 
         AVFrame* avFrame = convertImageFrame({pImage, timestamp});
         if (avFrame)
-            mVideoWorker->queueFrame(avFrame);
+            mVideoWorker->queueVideoFrame(avFrame);
 
         // signal the worker that frames are available
         mVideoWorker->mWaitCondition.wakeAll();
@@ -331,7 +359,7 @@ AVFrame* UBFFmpegVideoEncoder::convertImageFrame(ImageFrame frame)
     if (av_image_alloc(avFrame->data, avFrame->linesize, mVideoStream->codec->width,
                        mVideoStream->codec->height, mVideoStream->codec->pix_fmt, 32) < 0)
     {
-        setLastErrorMessage("Couldn't allocate image");
+        qWarning() << "Couldn't allocate image";
         return NULL;
     }
 
@@ -378,7 +406,7 @@ void UBFFmpegVideoEncoder::processAudio(QByteArray &data)
                                              codecContext->channels, outSamplesCount,
                                              codecContext->sample_fmt, 0);
     if (ret < 0) {
-        qDebug() << "Could not allocate audio samples" << avErrorToQString(ret);
+        qWarning() << "Could not allocate audio samples" << avErrorToQString(ret);
         return;
     }
 
@@ -387,14 +415,14 @@ void UBFFmpegVideoEncoder::processAudio(QByteArray &data)
                       outSamples, outSamplesCount,
                       (const uint8_t **)&inSamples, inSamplesCount);
     if (ret < 0) {
-        qDebug() << "Error converting audio samples: " << avErrorToQString(ret);
+        qWarning() << "Error converting audio samples: " << avErrorToQString(ret);
         return;
     }
 
     // Append the converted samples to the out buffer.
     ret = av_audio_fifo_write(mAudioOutBuffer, (void**)outSamples, outSamplesCount);
     if (ret < 0) {
-        qDebug() << "Could not write to FIFO queue: " << avErrorToQString(ret);
+        qWarning() << "Could not write to FIFO queue: " << avErrorToQString(ret);
         return;
     }
 
@@ -413,18 +441,18 @@ void UBFFmpegVideoEncoder::processAudio(QByteArray &data)
 
         ret = av_frame_get_buffer(avFrame, 0);
         if (ret < 0) {
-            qDebug() << "Couldn't allocate frame: " << avErrorToQString(ret);
+            qWarning() << "Couldn't allocate frame: " << avErrorToQString(ret);
             break;
         }
 
         ret = av_audio_fifo_read(mAudioOutBuffer, (void**)avFrame->data, codecContext->frame_size);
         if (ret < 0)
-            qDebug() << "Could not read from FIFO queue: " << avErrorToQString(ret);
+            qWarning() << "Could not read from FIFO queue: " << avErrorToQString(ret);
 
         else {
             mAudioFrameCount += codecContext->frame_size;
 
-            mVideoWorker->queueAudio(avFrame);
+            mVideoWorker->queueAudioFrame(avFrame);
             framesAdded = true;
         }
     }
@@ -437,58 +465,14 @@ void UBFFmpegVideoEncoder::finishEncoding()
 {
     qDebug() << "VideoEncoder::finishEncoding called";
 
-    // Some frames may not be encoded, so we call avcodec_encode_video2 until they're all done
+    flushStream(mVideoWorker->mVideoPacket, mVideoStream, mOutputFormatContext);
 
-    int gotOutput;
-    do {
-        // TODO: get rid of duplicated code (videoWorker does almost exactly this during encoding)
-
-        AVPacket* packet = mVideoWorker->mVideoPacket;
-
-        if (avcodec_encode_video2(mVideoStream->codec, packet, NULL, &gotOutput) < 0) {
-            setLastErrorMessage("Couldn't encode frame to video");
-            continue;
-        }
-        if (gotOutput) {
-            AVRational codecTimebase = mVideoStream->codec->time_base;
-            AVRational streamVideoTimebase = mVideoStream->time_base;
-
-            av_packet_rescale_ts(packet, codecTimebase, streamVideoTimebase);
-            packet->stream_index = mVideoStream->index;
-
-            av_interleaved_write_frame(mOutputFormatContext, packet);
-            av_packet_unref(packet);
-        }
-    } while (gotOutput);
-
-    if (mShouldRecordAudio) {
-
-        int gotOutput, ret;
-        do {
-
-            AVPacket* packet = mVideoWorker->mAudioPacket;
-
-            ret = avcodec_encode_audio2(mAudioStream->codec, packet, NULL, &gotOutput);
-            if (ret < 0)
-                setLastErrorMessage("Couldn't encode frame to audio");
-
-            else if (gotOutput) {
-                AVRational codecTimebase = mAudioStream->codec->time_base;
-                AVRational streamVideoTimebase = mAudioStream->time_base;
-
-                av_packet_rescale_ts(packet, codecTimebase, streamVideoTimebase);
-                packet->stream_index = mAudioStream->index;
-
-                av_interleaved_write_frame(mOutputFormatContext, packet);
-                av_packet_unref(packet);
-            }
-        } while (gotOutput);
-
-    }
+    if (mShouldRecordAudio)
+        flushStream(mVideoWorker->mAudioPacket, mAudioStream, mOutputFormatContext);
 
     av_write_trailer(mOutputFormatContext);
-
     avio_close(mOutputFormatContext->pb);
+
     avcodec_close(mVideoStream->codec);
     sws_freeContext(mSwsContext);
 
@@ -517,7 +501,13 @@ UBFFmpegVideoEncoderWorker::UBFFmpegVideoEncoderWorker(UBFFmpegVideoEncoder* con
 }
 
 UBFFmpegVideoEncoderWorker::~UBFFmpegVideoEncoderWorker()
-{}
+{
+    if (mVideoPacket)
+        delete mVideoPacket;
+
+    if (mAudioPacket)
+        delete mAudioPacket;
+}
 
 void UBFFmpegVideoEncoderWorker::stopEncoding()
 {
@@ -526,7 +516,7 @@ void UBFFmpegVideoEncoderWorker::stopEncoding()
     mWaitCondition.wakeAll();
 }
 
-void UBFFmpegVideoEncoderWorker::queueFrame(AVFrame* frame)
+void UBFFmpegVideoEncoderWorker::queueVideoFrame(AVFrame* frame)
 {
     if (frame) {
         mFrameQueueMutex.lock();
@@ -535,7 +525,7 @@ void UBFFmpegVideoEncoderWorker::queueFrame(AVFrame* frame)
     }
 }
 
-void UBFFmpegVideoEncoderWorker::queueAudio(AVFrame* frame)
+void UBFFmpegVideoEncoderWorker::queueAudioFrame(AVFrame* frame)
 {
     if (frame) {
         mFrameQueueMutex.lock();
@@ -543,7 +533,6 @@ void UBFFmpegVideoEncoderWorker::queueAudio(AVFrame* frame)
         mFrameQueueMutex.unlock();
     }
 }
-
 
 /**
  * The main encoding function. Takes the queued image frames and
@@ -574,77 +563,13 @@ void UBFFmpegVideoEncoderWorker::runEncoding()
 void UBFFmpegVideoEncoderWorker::writeLatestVideoFrame()
 {
     AVFrame* frame = mImageQueue.dequeue();
-
-    int gotOutput;
-    av_init_packet(mVideoPacket);
-    mVideoPacket->data = NULL;
-    mVideoPacket->size = 0;
-
-    // qDebug() << "Encoding frame to video. Pts: " << frame->pts << "/" << mController->mVideoTimebase;
-
-    if (avcodec_encode_video2(mController->mVideoStream->codec, mVideoPacket, frame, &gotOutput) < 0)
-        emit error("Error encoding video frame");
-
-    if (gotOutput) {
-        AVRational codecTimebase = mController->mVideoStream->codec->time_base;
-        AVRational streamVideoTimebase = mController->mVideoStream->time_base;
-
-
-        // recalculate the timestamp to match the stream's timebase
-        av_packet_rescale_ts(mVideoPacket, codecTimebase, streamVideoTimebase);
-        mVideoPacket->stream_index = mController->mVideoStream->index;
-
-        // qDebug() << "Writing encoded packet to file; pts: " << mVideoPacket->pts << "/" << streamVideoTimebase.den;
-
-        av_interleaved_write_frame(mController->mOutputFormatContext, mVideoPacket);
-        av_packet_unref(mVideoPacket);
-    }
-
-    // Duct-tape solution. I assume there's a better way of doing this, but:
-    // some players like VLC show a black screen until the second frame (which
-    // can be several seconds after the first one). Simply duplicating the first frame
-    // seems to solve this problem, and also allows the thumbnail to be generated.
-
-    static bool firstRun = true;
-    if (firstRun) {
-        firstRun = false;
-        frame->pts += 1;
-        mImageQueue.enqueue(frame); // only works when the queue is empty at this point. todo: clean this up!
-    }
-    else
-        // free the frame
-        av_frame_free(&frame);
+    writeFrame(frame, mVideoPacket, mController->mVideoStream, mController->mOutputFormatContext);
+    av_frame_free(&frame);
 }
 
 void UBFFmpegVideoEncoderWorker::writeLatestAudioFrame()
 {
     AVFrame *frame = mAudioQueue.dequeue();
-
-    int gotOutput, ret;
-
-    av_init_packet(mAudioPacket);
-    mAudioPacket->data = NULL;
-    mAudioPacket->size = 0;
-
-    //qDebug() << "Encoding audio frame";
-
-    ret = avcodec_encode_audio2(mController->mAudioStream->codec, mAudioPacket, frame, &gotOutput);
-    if (ret < 0)
-        emit error(QString("Error encoding audio frame: ") + avErrorToQString(ret));
-
-    else if (gotOutput) {
-        //qDebug() << "Writing audio frame to stream";
-
-        AVRational codecTimebase = mController->mAudioStream->codec->time_base;
-        AVRational streamVideoTimebase = mController->mAudioStream->time_base;
-
-        av_packet_rescale_ts(mAudioPacket, codecTimebase, streamVideoTimebase);
-        mAudioPacket->stream_index = mController->mAudioStream->index;
-
-        av_interleaved_write_frame(mController->mOutputFormatContext, mAudioPacket);
-        av_packet_unref(mAudioPacket);
-    }
-
+    writeFrame(frame, mAudioPacket, mController->mAudioStream, mController->mOutputFormatContext);
     av_frame_free(&frame);
 }
-
