@@ -500,7 +500,7 @@ void UBDesktopAnnotationController::screenCapture()
 QPixmap UBDesktopAnnotationController::getScreenPixmap()
 {
     QDesktopWidget *desktop = QApplication::desktop();
-    QScreen * screen = QApplication::primaryScreen();
+    QScreen * screen = UBApplication::controlScreen();
 
     QRect rect = desktop->screenGeometry(QCursor::pos());
 
