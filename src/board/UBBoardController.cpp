@@ -62,6 +62,7 @@
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBPageSizeUndoCommand.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
+#include "domain/UBGraphicsStrokesGroup.h"
 #include "domain/UBItem.h"
 #include "board/UBFeaturesController.h"
 
@@ -589,6 +590,10 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
         itemPos = commonItem->pos() + QPointF(shifting,shifting);
         itemSize = commonItem->boundingRect().size();
         commonItem->setSelected(false);
+
+        UBGraphicsStrokesGroup *stroke = dynamic_cast<UBGraphicsStrokesGroup*>(commonItem);
+        if (stroke)
+            itemPos = QPointF(shifting, shifting);
     }
 
     UBMimeType::Enum itemMimeType;
@@ -691,8 +696,7 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
             {
                 mActiveScene->addItem(gitem);
 
-                // Translate the new object a bit
-                gitem->setPos(20, 20);
+                gitem->setPos(itemPos);
 
                 mLastCreatedItem = gitem;
                 gitem->setSelected(true);
