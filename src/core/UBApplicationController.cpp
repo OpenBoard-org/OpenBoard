@@ -67,7 +67,7 @@
 
 
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 #include <Carbon/Carbon.h>
 #endif
 
@@ -121,12 +121,6 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
 
     networkAccessManager = new QNetworkAccessManager (this);
     QTimer::singleShot (1000, this, SLOT (checkAtLaunch()));
-
-
-#ifdef Q_WS_X11
-    mMainWindow->setStyleSheet("QToolButton { font-size: 11px}");
-#endif
-
 }
 
 
