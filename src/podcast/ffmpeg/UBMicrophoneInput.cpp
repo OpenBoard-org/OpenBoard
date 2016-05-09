@@ -50,7 +50,6 @@ int UBMicrophoneInput::sampleFormat()
     int sampleSize = mAudioFormat.sampleSize();
     QAudioFormat::SampleType sampleType = mAudioFormat.sampleType();
 
-    // qDebug() << "Input sample format: " << sampleSize << "bits " << sampleType;
 
     switch (sampleType) {
         case QAudioFormat::Unknown:
@@ -61,10 +60,12 @@ int UBMicrophoneInput::sampleFormat()
                 return AV_SAMPLE_FMT_S16;
             if (sampleSize == 32)
                 return AV_SAMPLE_FMT_S32;
+            break;
 
         case QAudioFormat::UnSignedInt:
             if (sampleSize == 8)
                 return AV_SAMPLE_FMT_U8;
+            break;
 
         case QAudioFormat::Float:
             return AV_SAMPLE_FMT_FLT;
@@ -72,6 +73,8 @@ int UBMicrophoneInput::sampleFormat()
         default:
             return AV_SAMPLE_FMT_NONE;
     }
+
+    return AV_SAMPLE_FMT_NONE;
 }
 
 QString UBMicrophoneInput::codec()
@@ -96,10 +99,13 @@ bool UBMicrophoneInput::init()
     mAudioFormat = mAudioDeviceInfo.preferredFormat();
 
     mAudioInput = new QAudioInput(mAudioDeviceInfo, mAudioFormat, NULL);
-    //mAudioInput->setNotifyInterval(100);
 
     connect(mAudioInput, SIGNAL(stateChanged(QAudio::State)),
             this, SLOT(onAudioInputStateChanged(QAudio::State)));
+
+    qDebug() << "Input sample format: " << mAudioFormat.sampleSize() << "bit"
+             << mAudioFormat.sampleType() << "at" << mAudioFormat.sampleRate() << "Hz"
+             << "; codec: " << mAudioFormat.codec();
 
     return true;
 }
@@ -159,12 +165,26 @@ void UBMicrophoneInput::setInputDevice(QString name)
 
 }
 
+static qint64 uSecsElapsed = 0;
 void UBMicrophoneInput::onDataReady()
 {
     int numBytes = mAudioInput->bytesReady();
 
-    if (numBytes > 0)
-        emit dataAvailable(mIODevice->read(numBytes));
+    uSecsElapsed += mAudioFormat.durationForBytes(numBytes);
+
+    // Only emit data every 100ms
+    if (uSecsElapsed > 100000) {
+        uSecsElapsed = 0;
+        QByteArray data = mIODevice->read(numBytes);
+
+        quint8 level = audioLevel(data);
+        if (level != mLastAudioLevel) {
+            mLastAudioLevel = level;
+            emit audioLevelChanged(level);
+        }
+
+        emit dataAvailable(data);
+    }
 }
 
 void UBMicrophoneInput::onAudioInputStateChanged(QAudio::State state)
@@ -184,6 +204,63 @@ void UBMicrophoneInput::onAudioInputStateChanged(QAudio::State state)
     }
 }
 
+/**
+ * @brief Calculate the current audio level of an array of samples and return it
+ * @param data An array of audio samples
+ * @return A value between 0 and 255
+ *
+ * Audio level is calculated as the RMS (root mean square) of the samples
+ * in the supplied array.
+ */
+quint8 UBMicrophoneInput::audioLevel(const QByteArray &data)
+{
+    int bytesPerSample = mAudioFormat.bytesPerFrame() / mAudioFormat.channelCount();
+
+    const char * ptr = data.constData();
+    double sum = 0;
+    int n_samples = data.size() / bytesPerSample;
+
+    for (int i(0); i < (data.size() - bytesPerSample); i += bytesPerSample) {
+        sum += pow(sampleRelativeLevel(ptr + i), 2);
+    }
+
+    double rms = sqrt(sum/n_samples);
+
+    // The vu meter looks a bit better when the RMS isn't displayed linearly, as perceived sound
+    // level increases logarithmically. So here RMS can be substituted by something like
+    // rms^(1/e)
+    rms = pow(rms, 1./exp(1));
+
+    return UINT8_MAX * rms;
+}
+
+/**
+ * @brief Calculate one sample's level relative to its maximum value
+ * @param sample One sample, in the format specified by mAudioFormat
+ * @return A double between 0 and 1.0, where 1.0 is the maximum value the sample can take.
+ */
+double UBMicrophoneInput::sampleRelativeLevel(const char* sample)
+{
+    QAudioFormat::SampleType type =  mAudioFormat.sampleType();
+    int sampleSize = mAudioFormat.sampleSize();
+
+    if (sampleSize == 16 && type == QAudioFormat::SignedInt)
+        return double(*reinterpret_cast<const int16_t*>(sample))/INT16_MAX;
+
+    if (sampleSize == 8 && type == QAudioFormat::SignedInt)
+        return double(*reinterpret_cast<const int8_t*>(sample))/INT8_MAX;
+
+    if (sampleSize == 16 && type == QAudioFormat::UnSignedInt)
+        return double(*reinterpret_cast<const uint16_t*>(sample))/UINT16_MAX;
+
+    if (sampleSize == 8 && type == QAudioFormat::UnSignedInt)
+        return double(*reinterpret_cast<const uint8_t*>(sample))/UINT8_MAX;
+
+    if (type == QAudioFormat::Float)
+        return (*reinterpret_cast<const float*>(sample) + 1.0)/2.;
+
+    return -1;
+}
 
 /**
  * @brief Return a meaningful error string based on QAudio error codes

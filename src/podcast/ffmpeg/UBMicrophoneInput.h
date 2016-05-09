@@ -44,6 +44,8 @@ private slots:
     void onDataReady();
 
 private:
+    double sampleRelativeLevel(const char* sample);
+    quint8 audioLevel(const QByteArray& data);
     QString getErrorString(QAudio::Error errorCode);
 
     QAudioInput* mAudioInput;
@@ -52,6 +54,7 @@ private:
     QAudioFormat mAudioFormat;
 
     qint64 mSeekPos;
+    quint8 mLastAudioLevel;
 };
 
 #endif // UBMICROPHONEINPUT_H
