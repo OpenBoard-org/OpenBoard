@@ -50,7 +50,7 @@
     <name>IntranetPodcastPublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation>Publicar o Podcast no YouTube</translation>
+        <translation>Publicar Podcast no YouTube</translation>
     </message>
     <message>
         <source>Title</source>
@@ -795,11 +795,11 @@
     </message>
     <message>
         <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir Tutorial</translation>
     </message>
     <message>
         <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir a página web de tutorial</translation>
     </message>
 </context>
 <context>
@@ -810,7 +810,7 @@
     </message>
     <message>
         <source>Username:</source>
-        <translation>Nome de Utilizador:</translation>
+        <translation>Usuário:</translation>
     </message>
     <message>
         <source>Password:</source>
@@ -941,11 +941,11 @@
     </message>
     <message>
         <source>Saving document...</source>
-        <translation type="unfinished"></translation>
+        <translation>Gravando documento...</translation>
     </message>
     <message>
         <source>Document has just been saved...</source>
-        <translation type="unfinished"></translation>
+        <translation>Documento acaba de ser gravado...</translation>
     </message>
 </context>
 <context>
@@ -1006,7 +1006,7 @@
     </message>
     <message>
         <source>Show OpenBoard</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -1126,8 +1126,8 @@
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
         <translation>
-            <numerusform>Tem a certeza que quer apagar %n página(s) do documento selecionado &apos;%1&apos;?</numerusform>
-            <numerusform></numerusform>
+            <numerusform>Tem certeza que quer apagar %n página do documento selecionado &apos;%1&apos;?</numerusform>
+            <numerusform>Tem certeza que quer apagar %n páginas do documento selecionado &apos;%1&apos;?</numerusform>
         </translation>
     </message>
     <message>
@@ -1140,15 +1140,15 @@
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation type="unfinished"></translation>
+        <translation>O documento &apos;%1&apos; foi produzido com uma versão mais nova do OpenBoard (%2). Ao abri-lo, você poderá perder alguma informação. Gostaria de continuar?</translation>
     </message>
     <message>
         <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="unfinished"></translation>
+        <translation>Você tem certeza que deseja remover todos os documentos selecionados?</translation>
     </message>
     <message>
         <source>Remove multiple documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Remover múltiplos documentos</translation>
     </message>
 </context>
 <context>
@@ -1214,8 +1214,8 @@
     <message numerus="yes">
         <source>%1 pages copied</source>
         <translation>
-            <numerusform>%1 de páginas copiadas</numerusform>
-            <numerusform></numerusform>
+            <numerusform>%1 página copiada</numerusform>
+            <numerusform>%1 páginas copiadas</numerusform>
         </translation>
     </message>
 </context>
@@ -1284,19 +1284,19 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar para o formato OpenBoard</translation>
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportação falhou: localização não gravável</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportação falhou</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossível exportar para a localização selcionada. Você não possui as permissões necessárias para gravar o arquivo.</translation>
     </message>
 </context>
 <context>
@@ -1319,15 +1319,15 @@
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportação falhou: localização não gravável</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportação falhou</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossível exportar para a localização selecionada. Você não possui as permissões necessárias para gravar o arquivo.</translation>
     </message>
 </context>
 <context>
@@ -1534,19 +1534,19 @@
     <name>UBGraphicsMediaItem</name>
     <message>
         <source>Media resource couldn&apos;t be resolved</source>
-        <translation type="unfinished"></translation>
+        <translation>Recurso de mídia não pode ser resolvido</translation>
     </message>
     <message>
         <source>Unsupported media format</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato de mídia não suportado</translation>
     </message>
     <message>
         <source>Media playback service not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Serviço de reprodução de mídia não encontrado</translation>
     </message>
     <message>
         <source>Media error: </source>
-        <translation type="unfinished"></translation>
+        <translation>Erro de mídia: </translation>
     </message>
 </context>
 <context>
@@ -1631,7 +1631,7 @@
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard (*.ubz)</translation>
     </message>
 </context>
 <context>
@@ -1742,27 +1742,27 @@ Quer ignorar estes erros, deste servidor?</translation>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
         <source>Open-Sankore Documents Detected</source>
-        <translation type="unfinished"></translation>
+        <translation>Documentos do Open-Sankore Detectado</translation>
     </message>
     <message>
         <source>Show this panel next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar este painel da próxima vez</translation>
     </message>
     <message>
         <source>You can always access the OpenBoard Document Importer through the Preferences panel in the About tab. Warning, if you have already imported your Open-Sankore datas, you might loose your current OpenBoard documents.</source>
-        <translation type="unfinished"></translation>
+        <translation>Você sempre poderá acessar o Importador de Documentos OpenBoard através do painel de Preferências na aba Sobre. Aviso, se você já importou seus dados do Open-Sankoré, você poderá perder seus atuais documentos do OpenBoard.</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
+        <translation>Prosseguir</translation>
     </message>
     <message>
         <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
+        <translation>Documentos do Open-Sankoré estão presentes em seu computador. É possível importá-los para o OpenBoard pressionando o botão &quot;Prosseguir&quot; para lançar a aplicação de importação.</translation>
     </message>
 </context>
 <context>
@@ -1777,7 +1777,7 @@ Quer ignorar estes erros, deste servidor?</translation>
     </message>
     <message>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
+        <translation>Acesso ao repositório &apos;%1&apos; foi perdido. Infelizmente a aplicação deverá desligar para avitar a corrupção de dados. As últimas alterações também serão perdidas.</translation>
     </message>
 </context>
 <context>
@@ -1863,7 +1863,7 @@ Quer ignorar estes erros, deste servidor?</translation>
     </message>
     <message>
         <source>OpenBoard Cast</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard Cast</translation>
     </message>
 </context>
 <context>
@@ -1922,7 +1922,7 @@ Quer ignorar estes erros, deste servidor?</translation>
     <name>UBStartupHintsPalette</name>
     <message>
         <source>Visible next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Visível na próxima vez</translation>
     </message>
 </context>
 <context>
@@ -2317,7 +2317,7 @@ Por favor, reinicie o aplicativo para aceder aos documentos atualizados.</transl
     </message>
     <message>
         <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
-        <translation type="unfinished"></translation>
+        <translation>Download de Documento PDF: você prefere baixar o arquivo PDF ou adicioná-lo ao atual documento OpenBoard?</translation>
     </message>
 </context>
 <context>
@@ -2371,11 +2371,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Restore credentials on reboot</source>
-        <translation type="unfinished"></translation>
+        <translation>Reestabelecer credenciais ao reiniciar</translation>
     </message>
     <message>
         <source>OpenBoard</source>
-        <translation type="unfinished">OpenBoard</translation>
+        <translation>OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -2440,7 +2440,7 @@ p, li { white-space: pre-wrap; }
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Documentos OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -2585,19 +2585,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
+        <translation>Importador Open-Sankoré</translation>
     </message>
     <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifique se os dados do Open-Sankoré poderão ser importados na inicialização</translation>
     </message>
     <message>
         <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
+        <translation>Usar teclado do sistema (recomendado)</translation>
     </message>
     <message>
         <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamanho da tecla do teclado virtual embarcado:</translation>
     </message>
 </context>
 <context>
