@@ -375,7 +375,7 @@ void UBApplicationController::showBoard()
 
     mUninoteController->hideWindow();
 
-    mMainWindow->show();
+    UBPlatformUtils::showFullScreen(mMainWindow);
 
     emit mainModeChanged(Board);
 

@@ -411,13 +411,7 @@ void UBDesktopAnnotationController::hideWindow()
 
 void UBDesktopAnnotationController::goToUniboard()
 {
-    onToolClicked();
-    hideWindow();
-
-    UBPlatformUtils::setDesktopMode(false);
-    UBDrawingController::drawingController()->setInDestopMode(false);
-
-    emit restoreUniboard();
+    UBApplication::applicationController->showBoard();
 }
 
 
