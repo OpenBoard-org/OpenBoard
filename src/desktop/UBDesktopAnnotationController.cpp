@@ -334,7 +334,8 @@ void UBDesktopAnnotationController::showWindow()
 #ifndef Q_OS_LINUX
     UBPlatformUtils::showFullScreen(mTransparentDrawingView);
 #else
-    // this is necessary to avoid unity to hide the panels
+    // this is necessary to avoid hiding the panels on Unity and Cinnamon
+    // if finer control is necessary, use qgetenv("XDG_CURRENT_DESKTOP")
     mTransparentDrawingView->show();
 #endif
     UBPlatformUtils::setDesktopMode(true);
@@ -410,13 +411,7 @@ void UBDesktopAnnotationController::hideWindow()
 
 void UBDesktopAnnotationController::goToUniboard()
 {
-    onToolClicked();
-    hideWindow();
-
-    UBPlatformUtils::setDesktopMode(false);
-    UBDrawingController::drawingController()->setInDestopMode(false);
-
-    emit restoreUniboard();
+    UBApplication::applicationController->showBoard();
 }
 
 
@@ -431,7 +426,7 @@ void UBDesktopAnnotationController::customCapture()
     // need to show the window before execute it to avoid some glitch on windows.
 
 #ifndef Q_OS_WIN // Working only without this call on win32 desktop mode
-    customCaptureWindow.show();
+    UBPlatformUtils::showFullScreen(&customCaptureWindow);
 #endif
 
     if (customCaptureWindow.execute(getScreenPixmap()) == QDialog::Accepted)
@@ -500,7 +495,7 @@ void UBDesktopAnnotationController::screenCapture()
 QPixmap UBDesktopAnnotationController::getScreenPixmap()
 {
     QDesktopWidget *desktop = QApplication::desktop();
-    QScreen * screen = QApplication::primaryScreen();
+    QScreen * screen = UBApplication::controlScreen();
 
     QRect rect = desktop->screenGeometry(QCursor::pos());
 

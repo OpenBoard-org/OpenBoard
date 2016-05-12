@@ -100,6 +100,9 @@ class UBApplication : public QtSingleApplication
         static QString urlFromHtml(QString html);
         static bool isFromWeb(QString url);
 
+        static QScreen* controlScreen();
+        static int controlScreenIndex();
+
     signals:
 
     public slots:

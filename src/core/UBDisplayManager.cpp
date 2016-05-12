@@ -71,7 +71,7 @@ void UBDisplayManager::initScreenIndexes()
     if (screenCount > 0)
     {
         mControlScreenIndex = mDesktop->primaryScreen();
-        if (UBSettings::settings()->swapControlAndDisplayScreens->get().toBool())
+        if (mDesktop->screenCount() > 1 && UBSettings::settings()->swapControlAndDisplayScreens->get().toBool())
         {
             mControlScreenIndex = mControlScreenIndex^1;
         }
@@ -118,7 +118,7 @@ int UBDisplayManager::numScreens()
 {
     if (mUseMultiScreen)
     {
-        return mDesktop->numScreens();
+        return mDesktop->screenCount();
     }
     else
     {

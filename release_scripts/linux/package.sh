@@ -199,6 +199,7 @@ if $BUNDLE_QT; then
     notifyProgress "Copying and stripping Qt plugins"
     mkdir -p $QT_PLUGINS_DEST_PATH
     copyQtPlugin audio
+    copyQtPlugin bearer
     copyQtPlugin generic
     copyQtPlugin iconengines
     copyQtPlugin imageformats
@@ -232,6 +233,7 @@ if $BUNDLE_QT; then
     copyQtLibrary libQt5WebChannel
     copyQtLibrary libQt5WebKit
     copyQtLibrary libQt5WebKitWidgets
+    copyQtLibrary libQt5WebSockets
     copyQtLibrary libQt5Widgets
     copyQtLibrary libQt5XcbQpa
     copyQtLibrary libQt5Xml
@@ -353,9 +355,11 @@ echo -n ",  onboard" >> "$CONTROL_FILE"
 if $BUNDLE_QT; then
     # Listing some dependencies manually; ideally we should use dpkg -p recursively 
     # to get the dependencies of the bundled shared libs & plugins. Or use static libs.
-    echo -n ",  libxcb-render-util0" >> "$CONTROL_FILE"
+    echo -n ",  libxcb1" >> "$CONTROL_FILE"
     echo -n ",  libxcb-icccm4" >> "$CONTROL_FILE"
     echo -n ",  libxcb-xkb1" >> "$CONTROL_FILE"
+    echo -n ",  libxcb-image0" >> "$CONTROL_FILE"
+    echo -n ",  libxcb-render-util0" >> "$CONTROL_FILE"
 else
     echo -n ",  libqt5multimedia5-plugins" >> "$CONTROL_FILE"
 fi

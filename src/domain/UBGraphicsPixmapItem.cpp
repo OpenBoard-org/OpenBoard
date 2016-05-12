@@ -120,12 +120,16 @@ void UBGraphicsPixmapItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsPixmapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    painter->setRenderHint(QPainter::Antialiasing, false);
+
     // Never draw the rubber band, we draw our custom selection with the DelegateFrame
     QStyleOptionGraphicsItem styleOption = QStyleOptionGraphicsItem(*option);
 
     styleOption.state &= ~QStyle::State_Selected;
     QGraphicsPixmapItem::paint(painter, &styleOption, widget);
     Delegate()->postpaint(painter, option, widget);
+
+    painter->setRenderHint(QPainter::Antialiasing, true);
 }
 
 

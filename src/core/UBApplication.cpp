@@ -670,3 +670,18 @@ bool UBApplication::isFromWeb(QString url)
 
     return res;
 }
+
+QScreen* UBApplication::controlScreen()
+{
+    QList<QScreen*> screenList = screens();
+    if (screenList.size() == 1)
+        return screenList.first();
+
+    return screenList[controlScreenIndex()];
+}
+
+
+int UBApplication::controlScreenIndex()
+{
+    return applicationController->displayManager()->controleScreenIndex();
+}
