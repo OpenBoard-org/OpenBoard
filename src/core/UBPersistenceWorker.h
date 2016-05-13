@@ -1,6 +1,10 @@
 /*
- * Copyright (C) 2013-2014 Open Education Foundation
+ * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
  *
+ * Copyright (C) 2013 Open Education Foundation
+ *
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
+ * l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of OpenBoard.
  *
