@@ -1,3 +1,24 @@
+/*
+ * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ *
+ * This file is part of OpenBoard.
+ *
+ * OpenBoard is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3 of the License,
+ * with a specific linking exception for the OpenSSL project's
+ * "OpenSSL" library (or with modified versions of it that use the
+ * same license as the "OpenSSL" library).
+ *
+ * OpenBoard is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "UBMicrophoneInput.h"
 
 UBMicrophoneInput::UBMicrophoneInput()
@@ -13,80 +34,6 @@ UBMicrophoneInput::~UBMicrophoneInput()
         delete mAudioInput;
 }
 
-int UBMicrophoneInput::channelCount()
-{
-    return mAudioFormat.channelCount();
-}
-
-int UBMicrophoneInput::sampleRate()
-{
-    return mAudioFormat.sampleRate();
-}
-
-/* Return the sample size in bits */
-int UBMicrophoneInput::sampleSize()
-{
-    return mAudioFormat.sampleSize();
-}
-
-/** Return the sample format in FFMpeg style (AVSampleFormat enum) */
-int UBMicrophoneInput::sampleFormat()
-{
-    enum AVSampleFormat {
-        AV_SAMPLE_FMT_NONE = -1,
-        AV_SAMPLE_FMT_U8,
-        AV_SAMPLE_FMT_S16,
-        AV_SAMPLE_FMT_S32,
-        AV_SAMPLE_FMT_FLT,
-        AV_SAMPLE_FMT_DBL,
-        AV_SAMPLE_FMT_U8P,
-        AV_SAMPLE_FMT_S16P,
-        AV_SAMPLE_FMT_S32P,
-        AV_SAMPLE_FMT_FLTP,
-        AV_SAMPLE_FMT_DBLP,
-        AV_SAMPLE_FMT_NB
-    };
-
-    int sampleSize = mAudioFormat.sampleSize();
-    QAudioFormat::SampleType sampleType = mAudioFormat.sampleType();
-
-
-    switch (sampleType) {
-        case QAudioFormat::Unknown:
-            return AV_SAMPLE_FMT_NONE;
-
-        case QAudioFormat::SignedInt:
-            if (sampleSize == 16)
-                return AV_SAMPLE_FMT_S16;
-            if (sampleSize == 32)
-                return AV_SAMPLE_FMT_S32;
-            break;
-
-        case QAudioFormat::UnSignedInt:
-            if (sampleSize == 8)
-                return AV_SAMPLE_FMT_U8;
-            break;
-
-        case QAudioFormat::Float:
-            return AV_SAMPLE_FMT_FLT;
-
-        default:
-            return AV_SAMPLE_FMT_NONE;
-    }
-
-    return AV_SAMPLE_FMT_NONE;
-}
-
-QString UBMicrophoneInput::codec()
-{
-    return mAudioFormat.codec();
-}
-
-qint64 UBMicrophoneInput::processUSecs() const
-{
-    return mAudioInput->processedUSecs();
-}
-
 bool UBMicrophoneInput::init()
 {
     if (mAudioDeviceInfo.isNull()) {
@@ -94,15 +41,14 @@ bool UBMicrophoneInput::init()
         mAudioDeviceInfo = QAudioDeviceInfo::defaultInputDevice();
     }
 
-    qDebug() << "Input device name: " << mAudioDeviceInfo.deviceName();
-
     mAudioFormat = mAudioDeviceInfo.preferredFormat();
-
     mAudioInput = new QAudioInput(mAudioDeviceInfo, mAudioFormat, NULL);
 
     connect(mAudioInput, SIGNAL(stateChanged(QAudio::State)),
             this, SLOT(onAudioInputStateChanged(QAudio::State)));
 
+
+    qDebug() << "Input device name: " << mAudioDeviceInfo.deviceName();
     qDebug() << "Input sample format: " << mAudioFormat.sampleSize() << "bit"
              << mAudioFormat.sampleType() << "at" << mAudioFormat.sampleRate() << "Hz"
              << "; codec: " << mAudioFormat.codec();
@@ -112,8 +58,6 @@ bool UBMicrophoneInput::init()
 
 void UBMicrophoneInput::start()
 {
-    qDebug() << "starting audio input";
-
     mIODevice = mAudioInput->start();
 
     connect(mIODevice, SIGNAL(readyRead()),
@@ -165,6 +109,74 @@ void UBMicrophoneInput::setInputDevice(QString name)
 
 }
 
+int UBMicrophoneInput::channelCount()
+{
+    return mAudioFormat.channelCount();
+}
+
+int UBMicrophoneInput::sampleRate()
+{
+    return mAudioFormat.sampleRate();
+}
+
+/* Return the sample size in bits */
+int UBMicrophoneInput::sampleSize()
+{
+    return mAudioFormat.sampleSize();
+}
+
+/** Return the sample format in FFMpeg style (AVSampleFormat enum) */
+int UBMicrophoneInput::sampleFormat()
+{
+    enum AVSampleFormat {
+        AV_SAMPLE_FMT_NONE = -1,
+        AV_SAMPLE_FMT_U8,
+        AV_SAMPLE_FMT_S16,
+        AV_SAMPLE_FMT_S32,
+        AV_SAMPLE_FMT_FLT,
+        AV_SAMPLE_FMT_DBL,
+        AV_SAMPLE_FMT_U8P,
+        AV_SAMPLE_FMT_S16P,
+        AV_SAMPLE_FMT_S32P,
+        AV_SAMPLE_FMT_FLTP,
+        AV_SAMPLE_FMT_DBLP,
+        AV_SAMPLE_FMT_NB
+    };
+
+    int sampleSize = mAudioFormat.sampleSize();
+    QAudioFormat::SampleType sampleType = mAudioFormat.sampleType();
+
+    switch (sampleType) {
+        case QAudioFormat::Unknown:
+            return AV_SAMPLE_FMT_NONE;
+
+        case QAudioFormat::SignedInt:
+            if (sampleSize == 16)
+                return AV_SAMPLE_FMT_S16;
+            if (sampleSize == 32)
+                return AV_SAMPLE_FMT_S32;
+            break;
+
+        case QAudioFormat::UnSignedInt:
+            if (sampleSize == 8)
+                return AV_SAMPLE_FMT_U8;
+            break;
+
+        case QAudioFormat::Float:
+            return AV_SAMPLE_FMT_FLT;
+
+        default:
+            return AV_SAMPLE_FMT_NONE;
+    }
+
+    return AV_SAMPLE_FMT_NONE;
+}
+
+QString UBMicrophoneInput::codec()
+{
+    return mAudioFormat.codec();
+}
+
 static qint64 uSecsElapsed = 0;
 void UBMicrophoneInput::onDataReady()
 {
@@ -189,7 +201,6 @@ void UBMicrophoneInput::onDataReady()
 
 void UBMicrophoneInput::onAudioInputStateChanged(QAudio::State state)
 {
-    qDebug() << "Audio input state changed to " << state;
     switch (state) {
         case QAudio::StoppedState:
             if (mAudioInput->error() != QAudio::NoError) {
@@ -227,8 +238,7 @@ quint8 UBMicrophoneInput::audioLevel(const QByteArray &data)
     double rms = sqrt(sum/n_samples);
 
     // The vu meter looks a bit better when the RMS isn't displayed linearly, as perceived sound
-    // level increases logarithmically. So here RMS can be substituted by something like
-    // rms^(1/e)
+    // level increases logarithmically. So here RMS is substituted by rms^(1/e)
     rms = pow(rms, 1./exp(1));
 
     return UINT8_MAX * rms;
@@ -237,7 +247,8 @@ quint8 UBMicrophoneInput::audioLevel(const QByteArray &data)
 /**
  * @brief Calculate one sample's level relative to its maximum value
  * @param sample One sample, in the format specified by mAudioFormat
- * @return A double between 0 and 1.0, where 1.0 is the maximum value the sample can take.
+ * @return A double between 0 and 1.0, where 1.0 is the maximum value the sample can take,
+ *         or -1 if the value couldn't be calculated.
  */
 double UBMicrophoneInput::sampleRelativeLevel(const char* sample)
 {
