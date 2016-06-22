@@ -211,7 +211,8 @@ bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
                     // If the PDF was scaled when added to the scene (e.g if it was loaded from a document with a different DPI
                     // than the current one), it should also be scaled here.
                     qreal currentDpi = (UBApplication::desktop()->physicalDpiX() + UBApplication::desktop()->physicalDpiY()) / 2;
-                    qreal pdfScale = qreal(UBSettings::pageDpi)/currentDpi;
+                    qreal documentDpi = pDocumentProxy->pageDpi();
+                    qreal pdfScale = documentDpi != 0 ? documentDpi/currentDpi : 1;
 
                     TransformationDescription pdfTransform(xPdfOffset, yPdfOffset, scaleFactor * pdfScale, 0);
                     TransformationDescription annotationTransform(xAnnotationsOffset, yAnnotationsOffset, 1, 0);
