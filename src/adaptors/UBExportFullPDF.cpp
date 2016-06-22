@@ -182,7 +182,7 @@ bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
                 {
                     QString pdfName = UBPersistenceManager::objectDirectory + "/" + pdfItem->fileUuid().toString() + ".pdf";
                     QString backgroundPath = pDocumentProxy->persistencePath() + "/" + pdfName;
-                    QRectF annotationsRect = scene->itemsBoundingRect();
+                    QRectF annotationsRect = scene->annotationsBoundingRect();
 
                     // Original datas
                     double xAnnotation = qRound(annotationsRect.x());
@@ -192,8 +192,8 @@ bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
                     double hPdf = qRound(pdfItem->sceneBoundingRect().height());
 
                     // Exportation-transformed datas
-                    double hScaleFactor = pageSize.width()/scene->itemsBoundingRect().width();
-                    double vScaleFactor = pageSize.height()/scene->itemsBoundingRect().height();
+                    double hScaleFactor = pageSize.width()/annotationsRect.width();
+                    double vScaleFactor = pageSize.height()/annotationsRect.height();
                     double scaleFactor = qMin(hScaleFactor, vScaleFactor);
 
                     double xAnnotationsOffset = 0;

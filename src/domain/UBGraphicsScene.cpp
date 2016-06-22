@@ -1811,6 +1811,21 @@ void UBGraphicsScene::deselectAllItemsExcept(QGraphicsItem* item)
     }
 }
 
+/**
+ * Return the bounding rectangle of all items on the page except for tools (ruler, compass,...)
+ */
+QRectF UBGraphicsScene::annotationsBoundingRect() const
+{
+    QRectF boundingRect;
+
+    foreach (QGraphicsItem *item, items()) {
+        if (!mTools.contains(rootItem(item)))
+            boundingRect |= item->sceneBoundingRect();
+    }
+
+    return boundingRect;
+}
+
 bool UBGraphicsScene::isEmpty() const
 {
     return mItemCount == 0;

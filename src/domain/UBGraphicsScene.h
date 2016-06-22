@@ -321,6 +321,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void notifyZChanged(QGraphicsItem *item, qreal zValue);
         void deselectAllItemsExcept(QGraphicsItem* graphicsItem);
 
+        QRectF annotationsBoundingRect() const;
+
 public slots:
         void updateSelectionFrame();
         void updateSelectionFrameWrapper(int);
