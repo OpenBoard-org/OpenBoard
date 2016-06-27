@@ -10,7 +10,7 @@ CONFIG += debug_and_release \
 
 VERSION_MAJ = 1
 VERSION_MIN = 3
-VERSION_PATCH = 2
+VERSION_PATCH = 3
 VERSION_TYPE = r # a = alpha, b = beta, rc = release candidate, r = release, other => error
 VERSION_BUILD = 0
 
