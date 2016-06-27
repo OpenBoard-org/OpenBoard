@@ -354,6 +354,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
     time.start();
     mScene = 0;
     UBGraphicsWidgetItem *currentWidget = 0;
+    bool pageDpiSpecified = true;
 
     mFileVersion = 40100; // default to 4.1.0
 
@@ -436,8 +437,11 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
 
                 if (!pageDpi.isNull())
                     proxy->setPageDpi(pageDpi.toInt());
-                else
+
+                else if (proxy->pageDpi() == 0) {
                     proxy->setPageDpi((UBApplication::desktop()->physicalDpiX() + UBApplication::desktop()->physicalDpiY())/2);
+                    pageDpiSpecified = false;
+                }
 
                 bool darkBackground = false;
                 bool crossedBackground = false;
@@ -768,9 +772,22 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                     {
                         QDesktopWidget* desktop = UBApplication::desktop();
                         qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
-                        qDebug() << "currentDpi (" << desktop->physicalDpiX() << " + " << desktop->physicalDpiY() << ")/2 = " << currentDpi;
+                        // qDebug() << "currentDpi (" << desktop->physicalDpiX() << " + " << desktop->physicalDpiY() << ")/2 = " << currentDpi;
                         qreal pdfScale = qreal(proxy->pageDpi())/currentDpi;
-                        qDebug() << "pdfScale " << pdfScale;
+                        // qDebug() << "pdfScale " << pdfScale;
+
+                        // If the PDF is in the background, it occupies the whole page; so we can simply
+                        // use that information to calculate its scale.
+                        if (isBackground) {
+                            qreal pageWidth = mScene->nominalSize().width();
+                            qreal pageHeight = mScene->nominalSize().height();
+
+                            qreal scaleX = pageWidth / pdfItem->sceneBoundingRect().width();
+                            qreal scaleY = pageHeight / pdfItem->sceneBoundingRect().height();
+
+                            pdfScale = (scaleX+scaleY)/2.;
+                        }
+
                         pdfItem->setScale(pdfScale);
                         pdfItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                         pdfItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
