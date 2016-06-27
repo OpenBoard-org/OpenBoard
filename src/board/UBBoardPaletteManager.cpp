@@ -1,4 +1,6 @@
 /*
+ * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ *
  * Copyright (C) 2013 Open Education Foundation
  *
  * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
@@ -662,11 +664,11 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                 mRightPalette->assignParent(mContainer);
                 mRightPalette->stackUnder(mStylusPalette);
                 mLeftPalette->stackUnder(mStylusPalette);
-                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
+                if (UBPlatformUtils::hasVirtualKeyboard()
+                    && mKeyboardPalette != NULL
+                    && UBSettings::settings()->useSystemOnScreenKeyboard->get().toBool() == false)
                 {
-
-                    if(mKeyboardPalette->m_isVisible)
-                    {
+                    if(mKeyboardPalette->m_isVisible) {
                         mKeyboardPalette->hide();
                         mKeyboardPalette->setParent(UBApplication::boardController->controlContainer());
                         mKeyboardPalette->show();
@@ -696,7 +698,9 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                 mRightPalette->assignParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
                 mStylusPalette->raise();
 
-                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
+                if (UBPlatformUtils::hasVirtualKeyboard()
+                    && mKeyboardPalette != NULL
+                    && UBSettings::settings()->useSystemOnScreenKeyboard->get().toBool() == false)
                 {
 
                     if(mKeyboardPalette->m_isVisible)
@@ -743,7 +747,9 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
         case eUBDockPaletteWidget_WEB:
             {
                 mAddItemPalette->setParent(UBApplication::mainWindow);
-                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
+                if (UBPlatformUtils::hasVirtualKeyboard()
+                    && mKeyboardPalette != NULL
+                    && UBSettings::settings()->useSystemOnScreenKeyboard->get().toBool() == false)
                 {
 //                    tmp variable?
 //                    WBBrowserWindow* brWnd = UBApplication::webController->GetCurrentWebBrowser();
@@ -767,7 +773,9 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                 mRightPalette->setVisible(rightPaletteVisible);
                 mLeftPalette->assignParent(UBApplication::documentController->controlView());
                 mRightPalette->assignParent(UBApplication::documentController->controlView());
-                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
+                if (UBPlatformUtils::hasVirtualKeyboard()
+                    && mKeyboardPalette != NULL
+                    && UBSettings::settings()->useSystemOnScreenKeyboard->get().toBool() == false)
                 {
 
                     if(mKeyboardPalette->m_isVisible)
@@ -790,7 +798,9 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                 mRightPalette->setVisible(rightPaletteVisible);
                 mLeftPalette->assignParent(0);
                 mRightPalette->assignParent(0);
-                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
+                if (UBPlatformUtils::hasVirtualKeyboard()
+                    && mKeyboardPalette != NULL
+                    && UBSettings::settings()->useSystemOnScreenKeyboard->get().toBool() == false)
                 {
 
                     if(mKeyboardPalette->m_isVisible)

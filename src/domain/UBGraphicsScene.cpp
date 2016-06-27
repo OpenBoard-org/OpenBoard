@@ -1,4 +1,6 @@
 /*
+ * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ *
  * Copyright (C) 2013 Open Education Foundation
  *
  * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
@@ -1807,6 +1809,21 @@ void UBGraphicsScene::deselectAllItemsExcept(QGraphicsItem* item)
                 textItem->activateTextEditor(false);
         }
     }
+}
+
+/**
+ * Return the bounding rectangle of all items on the page except for tools (ruler, compass,...)
+ */
+QRectF UBGraphicsScene::annotationsBoundingRect() const
+{
+    QRectF boundingRect;
+
+    foreach (QGraphicsItem *item, items()) {
+        if (!mTools.contains(rootItem(item)))
+            boundingRect |= item->sceneBoundingRect();
+    }
+
+    return boundingRect;
 }
 
 bool UBGraphicsScene::isEmpty() const

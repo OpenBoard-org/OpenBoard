@@ -1,4 +1,6 @@
 /*
+ * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ *
  * Copyright (C) 2013 Open Education Foundation
  *
  * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
@@ -112,7 +114,7 @@ class UBSvgSubsetAdaptor
 
                 virtual ~UBSvgSubsetReader(){}
 
-                UBGraphicsScene* loadScene();
+                UBGraphicsScene* loadScene(UBDocumentProxy *proxy);
 
             private:
 
@@ -178,7 +180,7 @@ class UBSvgSubsetAdaptor
 
                 UBSvgSubsetWriter(UBDocumentProxy* proxy, UBGraphicsScene* pScene, const int pageIndex);
 
-                bool persistScene(int pageIndex);
+                bool persistScene(UBDocumentProxy *proxy, int pageIndex);
 
                 virtual ~UBSvgSubsetWriter(){}
 
@@ -247,7 +249,7 @@ class UBSvgSubsetAdaptor
                 void protractorToSvg(UBGraphicsProtractor *item);
                 void cacheToSvg(UBGraphicsCache* item);
                 void triangleToSvg(UBGraphicsTriangle *item);
-                void writeSvgElement();
+                void writeSvgElement(UBDocumentProxy *proxy);
 
         private:
 

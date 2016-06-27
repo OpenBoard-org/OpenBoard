@@ -1,4 +1,6 @@
 /*
+ * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ *
  * Copyright (C) 2013 Open Education Foundation
  *
  * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
@@ -77,6 +79,9 @@ class UBDocumentProxy : public QObject
 
         int pageCount();
 
+        int pageDpi();
+        void setPageDpi(int dpi);
+
     protected:
         void setPageCount(int pPageCount);
         int incPageCount();
@@ -93,6 +98,8 @@ class UBDocumentProxy : public QObject
         bool mIsModified;
 
         int mPageCount;
+
+        int mPageDpi;
 
 };
 

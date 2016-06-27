@@ -1,4 +1,6 @@
 /*
+ * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ *
  * Copyright (C) 2013 Open Education Foundation
  *
  * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
@@ -39,6 +41,7 @@
 
 UBDocumentProxy::UBDocumentProxy()
     : mPageCount(0)
+    , mPageDpi(0)
 {
     init();
 }
@@ -46,6 +49,7 @@ UBDocumentProxy::UBDocumentProxy()
 
 UBDocumentProxy::UBDocumentProxy(const QString& pPersistancePath)
     : mPageCount(0)
+    , mPageDpi(0)
 {
     init();
     setPersistencePath(pPersistancePath);
@@ -96,6 +100,15 @@ void UBDocumentProxy::setPageCount(int pPageCount)
     mPageCount = pPageCount;
 }
 
+int UBDocumentProxy::pageDpi()
+{
+    return mPageDpi;
+}
+
+void UBDocumentProxy::setPageDpi(int dpi)
+{
+    mPageDpi = dpi;
+}
 
 int UBDocumentProxy::incPageCount()
 {

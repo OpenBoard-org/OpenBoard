@@ -31,7 +31,7 @@
     </message>
     <message>
         <source>Filename</source>
-        <translation>Nome do ficheiro</translation>
+        <translation>Nome do arquivo</translation>
     </message>
     <message>
         <source>Try Again</source>
@@ -277,8 +277,7 @@
     </message>
     <message>
         <source>Show Desktop</source>
-        <translatorcomment>&quot;Mostrar Ambiente de Trabalho&quot; (muito longo) - Mostrar a mesa</translatorcomment>
-        <translation>Ver mesa</translation>
+        <translation>Ver desktop</translation>
     </message>
     <message>
         <source>Show Computer Desktop</source>
@@ -410,7 +409,7 @@
     </message>
     <message>
         <source>Multi Screen</source>
-        <translation>Écrans Múltiplos</translation>
+        <translation>Múltiplos Monitores</translation>
     </message>
     <message>
         <source>Wide Size (16/9)</source>
@@ -510,7 +509,7 @@
     </message>
     <message>
         <source>Start Screen Recording</source>
-        <translation>Iniciar a Gravação do Ecrã</translation>
+        <translation>Iniciar a Gravação do Vídeo</translation>
     </message>
     <message>
         <source>Erase Items</source>
@@ -626,7 +625,7 @@
     </message>
     <message>
         <source>Capture Part of the Screen</source>
-        <translation>Capturar uma Parte do Ecrã</translation>
+        <translation>Capturar uma Parte da Tela</translation>
     </message>
     <message>
         <source>Add To Current Page</source>
@@ -734,11 +733,11 @@
     </message>
     <message>
         <source>Show on Display</source>
-        <translation>Mostrar no Ecrã</translation>
+        <translation>Mostrar no Vídeo</translation>
     </message>
     <message>
         <source>Show Main Screen on Display Screen</source>
-        <translation>Mostrar a Tela Principal no Ecrã</translation>
+        <translation>Mostrar a Tela Principal no Vídeo</translation>
     </message>
     <message>
         <source>Erase all Annotations</source>
@@ -837,7 +836,7 @@
     </message>
     <message>
         <source>Save username and password for future use</source>
-        <translation>Gravar &quot;Nome de Utilizador&quot; e &quot;Senha&quot; para futuras utilizações</translation>
+        <translation>Gravar &quot;Nome de Usuário&quot; e &quot;Senha&quot; para futuras utilizações</translation>
     </message>
 </context>
 <context>
@@ -929,7 +928,7 @@
     </message>
     <message>
         <source>Add file operation failed: file copying error</source>
-        <translation>Falha na operação de adição de ficheiro: erro na cópia do ficheiro</translation>
+        <translation>Falha na operação de adição de arquivo: erro na cópia do arquivo</translation>
     </message>
     <message>
         <source>Group</source>
@@ -986,11 +985,11 @@
     <name>UBDesktopPalette</name>
     <message>
         <source>Capture Part of the Screen</source>
-        <translation>Capturar Parte do Ecrã</translation>
+        <translation>Capturar Parte da Tela</translation>
     </message>
     <message>
         <source>Capture the Screen</source>
-        <translation>Capturar Ecrã</translation>
+        <translation>Capturar Tela</translation>
     </message>
     <message>
         <source>Show the stylus palette</source>
@@ -998,11 +997,11 @@
     </message>
     <message>
         <source>Show Board on Secondary Screen</source>
-        <translation>Mostrar o Quadro num Ecrã Secundário</translation>
+        <translation>Mostrar o Quadro num Vídeo Secundário</translation>
     </message>
     <message>
         <source>Show Desktop on Secondary Screen</source>
-        <translation>Mostrar Ambiente de Trabalho num Ecrã Secundário</translation>
+        <translation>Mostrar Ambiente de Trabalho num Vídeo Secundário</translation>
     </message>
     <message>
         <source>Show OpenBoard</source>
@@ -1029,7 +1028,7 @@
     </message>
     <message>
         <source>Add Pages from File</source>
-        <translation>Adicionar Páginas de um Ficheiro</translation>
+        <translation>Adicionar Páginas de um Arquivo</translation>
     </message>
     <message>
         <source>Duplicating Document %1</source>
@@ -1081,15 +1080,15 @@
     </message>
     <message>
         <source>Open Supported File</source>
-        <translation>Abrir Ficheiro Suportado</translation>
+        <translation>Abrir Arquivo Suportado</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation>A importar ficheiro %1...</translation>
+        <translation>Importando arquivo %1...</translation>
     </message>
     <message>
         <source>Failed to import file ... </source>
-        <translation>Falha ao importar ficheiro ...</translation>
+        <translation>Falha ao importar arquivo ...</translation>
     </message>
     <message>
         <source>Import all Images from Folder</source>
@@ -1121,7 +1120,7 @@
     </message>
     <message>
         <source>Selection does not contain any image files!</source>
-        <translation>A seleção não contém ficheiros de Imagem!</translation>
+        <translation>A seleção não contém arquivos de Imagem!</translation>
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
@@ -1171,11 +1170,11 @@
     </message>
     <message>
         <source>All supported files (*.%1)</source>
-        <translation>Todos os ficheiros suportados (*.%1)</translation>
+        <translation>Todos os arquivos suportados (*.%1)</translation>
     </message>
     <message>
         <source>File %1 saved</source>
-        <translation>Ficheiro %1 gravado</translation>
+        <translation>Arquivo %1 gravado</translation>
     </message>
     <message>
         <source>Inserting page %1 of %2</source>
@@ -1187,11 +1186,11 @@
     </message>
     <message>
         <source>Import of file %1 successful.</source>
-        <translation>Importação do ficheiro %1 bem sucedida.</translation>
+        <translation>Importação do arquivo %1 bem sucedida.</translation>
     </message>
     <message>
         <source>Importing file %1</source>
-        <translation>A importar o ficheiro %1</translation>
+        <translation>Importando o arquivo %1</translation>
     </message>
 </context>
 <context>
@@ -1209,7 +1208,7 @@
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation>A copiar página %1/%2</translation>
+        <translation>Copiando página %1/%2</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
@@ -1223,7 +1222,7 @@
     <name>UBDownloadWidget</name>
     <message>
         <source>Downloading files</source>
-        <translation>A descarregar ficheiro</translation>
+        <translation>Baixando arquivos</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1245,7 +1244,7 @@
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="vanished">Exportar como ficheiro IWB</translation>
+        <translation type="vanished">Exportar como arquivo IWB</translation>
     </message>
     <message>
         <source>Exporting document...</source>
@@ -1268,7 +1267,7 @@
     </message>
     <message>
         <source>Export as UBZ File</source>
-        <translation>Exportar como Ficheiro UBZ</translation>
+        <translation>Exportar como Arquivo UBZ</translation>
     </message>
     <message>
         <source>Exporting document...</source>
@@ -1303,7 +1302,7 @@
     <name>UBExportFullPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation>Exportar como Ficheiro PDF</translation>
+        <translation>Exportar como Arquivo PDF</translation>
     </message>
     <message>
         <source>Exporting document...</source>
@@ -1334,11 +1333,11 @@
     <name>UBExportPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation>Exportar como Ficheiro PDF</translation>
+        <translation>Exportar como Arquivo PDF</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>A exportar documento...</translation>
+        <translation>Exportando documento...</translation>
     </message>
     <message>
         <source>Export successful.</source>
@@ -1346,7 +1345,7 @@
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
-        <translation>A exportar página %1 de %2</translation>
+        <translation>Exportando página %1 de %2</translation>
     </message>
     <message>
         <source>Export to PDF</source>
@@ -1365,7 +1364,7 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>A exportar documento...</translation>
+        <translation>Exportando documento...</translation>
     </message>
     <message>
         <source>Export successful.</source>
@@ -1431,8 +1430,8 @@
     </message>
     <message>
         <source>Rescan file system</source>
-        <translatorcomment>&quot;Procurar ficheiro de Sistema&quot;(?)</translatorcomment>
-        <translation>Voltar a procurar ficheiro de Sistema</translation>
+        <translatorcomment>&quot;Procurar arquivo de Sistema&quot;(?)</translatorcomment>
+        <translation>Voltar a procurar arquivo de Sistema</translation>
     </message>
 </context>
 <context>
@@ -1512,7 +1511,7 @@
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation>Visível em Ecrã Expandido</translation>
+        <translation>Visível em Vídeo Expandido</translation>
     </message>
 </context>
 <context>
@@ -1523,7 +1522,7 @@
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation>Visível em Ecrã Expandido</translation>
+        <translation>Visível em Vídeo Expandido</translation>
     </message>
     <message>
         <source>Go to Content Source</source>
@@ -1578,7 +1577,7 @@
     <name>UBGraphicsWidgetItem</name>
     <message>
         <source>Loading ...</source>
-        <translation>A carregar ...</translation>
+        <translation>Carregando ...</translation>
     </message>
 </context>
 <context>
@@ -1596,15 +1595,15 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="vanished">Formato de Ficheiro Frequente (</translation>
+        <translation type="vanished">Formato de Arquivo Frequente (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="vanished">A importar ficheiro %1...</translation>
+        <translation type="vanished">Importando arquivos %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="vanished">Falha a importar ficheiro %1.</translation>
+        <translation type="vanished">Falha a importar arquivo %1.</translation>
     </message>
     <message>
         <source>Import successful.</source>
@@ -1619,11 +1618,11 @@
     <name>UBImportDocument</name>
     <message>
         <source>Importing file %1...</source>
-        <translation>A importar ficheiro %1...</translation>
+        <translation>Importando arquivo %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>Falha a importar ficheiro %1.</translation>
+        <translation>Falha a importar arquivo %1.</translation>
     </message>
     <message>
         <source>Import successful.</source>
@@ -1653,7 +1652,7 @@
     </message>
     <message>
         <source>Importing page %1 of %2</source>
-        <translation>A importar a página %1 de %2</translation>
+        <translation>Importando página %1 de %2</translation>
     </message>
 </context>
 <context>
@@ -1707,7 +1706,7 @@
     <name>UBNetworkAccessManager</name>
     <message>
         <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
-        <translation>&lt;qt&gt;Introduzir o Nome de Utilizador e Senha &quot;%1&quot; em %2&lt;/qt&gt;</translation>
+        <translation>&lt;qt&gt;Introduzir o Nome de Usuário e Senha &quot;%1&quot; em %2&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>Failed to log to Proxy</source>
@@ -2011,20 +2010,20 @@ Quer ignorar estes erros, deste servidor?</translation>
     <message>
         <source>Files update successful!
 Please reboot the application to access the updated documents.</source>
-        <translation>Atualização de ficheiros bem sucedida!
-Por favor, reinicie o aplicativo para aceder aos documentos atualizados.</translation>
+        <translation>Atualização de arquivos bem sucedida!
+Por favor, reinicie o aplicativo para ir aos documentos atualizados.</translation>
     </message>
     <message>
         <source>An error occured during the update. The files have not been affected.</source>
-        <translation>Ocorreu um erro durante a atualização. Os ficheiros não foram afetados.</translation>
+        <translation>Ocorreu um erro durante a atualização. Os arquivos não foram afetados.</translation>
     </message>
     <message>
         <source>Files update results</source>
-        <translation>Resultados da actualização de ficheiros</translation>
+        <translation>Resultados da atualização de arquivos</translation>
     </message>
     <message>
         <source>Updating file </source>
-        <translation>A actualizar o ficheiro </translation>
+        <translation>Atualizando o arquivo </translation>
     </message>
     <message>
         <source>Remind me later</source>
@@ -2080,7 +2079,7 @@ Por favor, reinicie o aplicativo para aceder aos documentos atualizados.</transl
     </message>
     <message>
         <source>Sports</source>
-        <translation>Desporto</translation>
+        <translation>Esportes</translation>
     </message>
     <message>
         <source>Travel &amp; Events</source>
@@ -2141,7 +2140,7 @@ Por favor, reinicie o aplicativo para aceder aos documentos atualizados.</transl
     <name>WBDownloadItem</name>
     <message>
         <source>Save File</source>
-        <translation>Gravar ficheiro</translation>
+        <translation>Gravar arquivo</translation>
     </message>
     <message>
         <source>Download canceled: %1</source>
@@ -2149,7 +2148,7 @@ Por favor, reinicie o aplicativo para aceder aos documentos atualizados.</transl
     </message>
     <message>
         <source>Error opening saved file: %1</source>
-        <translation>Erro a abrir o ficheiro gravado: %1</translation>
+        <translation>Erro a abrir o arquivo gravado: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
@@ -2178,7 +2177,7 @@ Por favor, reinicie o aplicativo para aceder aos documentos atualizados.</transl
     <message>
         <source>?</source>
         <comment>unknown file size</comment>
-        <translatorcomment>Tamanho do ficheiro desconhecido</translatorcomment>
+        <translatorcomment>Tamanho do arquivo desconhecido</translatorcomment>
         <translation>?</translation>
     </message>
     <message>
@@ -2202,13 +2201,13 @@ Por favor, reinicie o aplicativo para aceder aos documentos atualizados.</transl
     <name>WBDownloadManager</name>
     <message>
         <source>1 Download</source>
-        <translation>1 ficheiro descarregado</translation>
+        <translation>1 arquivo baixado</translation>
     </message>
     <message>
         <source>%1 Downloads</source>
         <comment>always &gt;= 2</comment>
         <translatorcomment>Sempre &gt;= 2</translatorcomment>
-        <translation>%1 ficheiros descarregados</translation>
+        <translation>%1 arquivos baixados</translation>
     </message>
 </context>
 <context>
@@ -2301,7 +2300,7 @@ Por favor, reinicie o aplicativo para aceder aos documentos atualizados.</transl
     <name>WBWebPage</name>
     <message>
         <source>Download</source>
-        <translation>Descarregar</translation>
+        <translation>Baixar</translation>
     </message>
     <message>
         <source>Add to Current Document</source>
@@ -2543,16 +2542,16 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Multi display</source>
-        <translation>Écrans Múltiplos</translation>
+        <translation>Múltiplos Monitores</translation>
     </message>
     <message>
         <source>Show internal web page content on secondary screen or projector</source>
-        <translation>Mostrar o conteúdo interno da página web num ecrã ou projetor secundário</translation>
+        <translation>Mostrar o conteúdo interno da página web num monitor ou projetor secundário</translation>
     </message>
     <message>
         <source>Swap control display and view display</source>
-        <translatorcomment>Trocar entre o ecrã de controlo e apresentação?</translatorcomment>
-        <translation>Trocar entre o ecrã de controlo e visualização</translation>
+        <translatorcomment>Trocar entre o monitor de controle e apresentação?</translatorcomment>
+        <translation>Trocar entre o monitor de controle e visualização</translation>
     </message>
     <message>
         <source>Mode</source>

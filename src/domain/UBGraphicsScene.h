@@ -1,4 +1,6 @@
 /*
+ * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ *
  * Copyright (C) 2013 Open Education Foundation
  *
  * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
@@ -318,6 +320,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         UBBoardView *controlView();
         void notifyZChanged(QGraphicsItem *item, qreal zValue);
         void deselectAllItemsExcept(QGraphicsItem* graphicsItem);
+
+        QRectF annotationsBoundingRect() const;
 
 public slots:
         void updateSelectionFrame();

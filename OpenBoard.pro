@@ -10,7 +10,7 @@ CONFIG += debug_and_release \
 
 VERSION_MAJ = 1
 VERSION_MIN = 3
-VERSION_PATCH = 1
+VERSION_PATCH = 3
 VERSION_TYPE = r # a = alpha, b = beta, rc = release candidate, r = release, other => error
 VERSION_BUILD = 0
 
@@ -140,6 +140,19 @@ win32 {
    DEFINES += NOMINMAX # avoids compilation error in qdatetime.h
 
 
+   # Windows doesn't support file versions with more than 4 fields, so
+   # we omit the build number (which is only used for pre-release versions
+   # anyway)
+
+   VERSION_RC = $$VERSION_MAJ,$$VERSION_MIN,$$VERSION_PATCH,$$VERSION_TYPE
+   VERSION_RC = $$replace(VERSION_RC, "a", "160") # 0xA0
+   VERSION_RC = $$replace(VERSION_RC, "b", "176") # 0xB0
+   VERSION_RC = $$replace(VERSION_RC, "rc", "192" ) # 0xC0
+   VERSION_RC = $$replace(VERSION_RC, "r", "240") # 0xF0
+
+
+   DEFINES += UBVERSION=\"\\\"$${VERSION}\"\\\" \
+        UBVERSION_RC=$$VERSION_RC
 }
 
 macx {

@@ -1,4 +1,6 @@
 /*
+ * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ *
  * Copyright (C) 2013 Open Education Foundation
  *
  * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
@@ -109,8 +111,6 @@ const int UBSettings::thumbnailSpacing = 20;
 const int UBSettings::longClickInterval = 1200;
 
 const qreal UBSettings::minScreenRatio = 1.33; // 800/600 or 1024/768
-
-int UBSettings::pageDpi = 0;
 
 QStringList UBSettings::bitmapFileExtensions;
 QStringList UBSettings::vectoFileExtensions;
@@ -271,8 +271,6 @@ void UBSettings::init()
     ValidateKeyboardPaletteKeyBtnSize();
 
     pageSize = new UBSetting(this, "Board", "DefaultPageSize", documentSizes.value(DocumentSizeRatio::Ratio4_3));
-
-    pageDpi = (UBApplication::desktop()->physicalDpiX() + UBApplication::desktop()->physicalDpiY())/ 2;
 
     QStringList penLightBackgroundColors;
     penLightBackgroundColors << "#000000" << "#FF0000" <<"#004080" << "#008000" << "#FFDD00" << "#C87400" << "#800040" << "#008080"  << "#5F2D0A" << "#FFFFFF";
