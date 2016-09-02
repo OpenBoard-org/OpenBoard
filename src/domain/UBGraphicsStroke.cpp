@@ -31,11 +31,14 @@
 
 #include "UBGraphicsPolygonItem.h"
 
+#include "board/UBBoardController.h"
+#include "core/UBApplication.h"
 #include "core/memcheck.h"
+
 
 UBGraphicsStroke::UBGraphicsStroke()
 {
-    // NOOP
+    mAntiScaleRatio = 1./(UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
 }
 
 
@@ -63,6 +66,76 @@ QList<UBGraphicsPolygonItem*> UBGraphicsStroke::polygons() const
     return mPolygons;
 }
 
+/**
+ * @brief Add a point to the curve, interpolating extra points if required
+ * @return The points (or point, if none were interpolated) that were added
+ */
+QList<QPointF> UBGraphicsStroke::addPoint(const QPointF& point, UBInterpolator::InterpolationMethod interpolationMethod)
+{
+    int n = mReceivedPoints.size();
+
+    if (n == 0) {
+        mReceivedPoints << point;
+        mDrawnPoints << point;
+        return QList<QPointF>();
+    }
+
+    if (interpolationMethod == UBInterpolator::NoInterpolation) {
+        QPointF lastPoint = mReceivedPoints.last();
+        mReceivedPoints << point;
+        mDrawnPoints << point;
+        return QList<QPointF>() << lastPoint << point;
+    }
+
+    else if (interpolationMethod == UBInterpolator::Bezier) {
+        // This is a bit special, as the curve we are interpolating is not between two drawn points;
+        // it is between the midway points of the second-to-last and last point, and last and current point.
+
+        // Don't draw segments smaller than a certain length. This can help with performance
+        // (less polygons in a stroke) but mostly with keeping the curve smooth.
+        qreal MIN_DISTANCE = 5*mAntiScaleRatio;
+        qreal distance = QLineF(mReceivedPoints.last(), point).length();
+
+        if (distance < MIN_DISTANCE) {
+            return QList<QPointF>() << mDrawnPoints.last();
+        }
+
+        // The first segment is just a straight line to the first midway point
+        if (n == 1) {
+            QPointF lastPoint = mReceivedPoints[0];
+            mReceivedPoints << point;
+            mDrawnPoints << QPointF((lastPoint + point)/2.0);
+
+            return QList<QPointF>() << lastPoint << ((lastPoint + point)/2.0);
+        }
+
+        QPointF p0 = mReceivedPoints[mReceivedPoints.size() - 2];
+        QPointF p1 = mReceivedPoints[mReceivedPoints.size() - 1];
+        QPointF p2 = point;
+
+        UBQuadraticBezier bz;
+
+        QPointF startPoint = (p1+p0)/2.0;
+        QPointF endPoint = (p2+p1)/2.0;
+
+        bz.setPoints(startPoint, p1, endPoint);
+
+        QList<QPointF> newPoints = bz.getPoints(10);
+
+        // avoid adding duplicates
+        if (newPoints.first() == mDrawnPoints.last())
+            mDrawnPoints.removeLast();
+
+        foreach(QPointF p, newPoints) {
+            mDrawnPoints << p;
+        }
+
+        mReceivedPoints << point;
+        return newPoints;
+    }
+
+    return QList<QPointF>();
+}
 
 bool UBGraphicsStroke::hasPressure()
 {
@@ -106,4 +179,3 @@ void UBGraphicsStroke::clear()
         mPolygons.clear();
     }
 }
-
