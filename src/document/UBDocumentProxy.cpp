@@ -41,6 +41,7 @@
 
 UBDocumentProxy::UBDocumentProxy()
     : mPageCount(0)
+    , mPageDpi(0)
 {
     init();
 }
@@ -48,6 +49,7 @@ UBDocumentProxy::UBDocumentProxy()
 
 UBDocumentProxy::UBDocumentProxy(const QString& pPersistancePath)
     : mPageCount(0)
+    , mPageDpi(0)
 {
     init();
     setPersistencePath(pPersistancePath);
@@ -98,6 +100,15 @@ void UBDocumentProxy::setPageCount(int pPageCount)
     mPageCount = pPageCount;
 }
 
+int UBDocumentProxy::pageDpi()
+{
+    return mPageDpi;
+}
+
+void UBDocumentProxy::setPageDpi(int dpi)
+{
+    mPageDpi = dpi;
+}
 
 int UBDocumentProxy::incPageCount()
 {

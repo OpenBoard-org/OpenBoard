@@ -334,7 +334,7 @@ QUuid UBSvgSubsetAdaptor::sceneUuid(UBDocumentProxy* proxy, const int pageIndex)
 UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const QByteArray& pArray)
 {
     UBSvgSubsetReader reader(proxy, UBTextTools::cleanHtmlCData(QString(pArray)).toUtf8());
-    return reader.loadScene();
+    return reader.loadScene(proxy);
 }
 
 UBSvgSubsetAdaptor::UBSvgSubsetReader::UBSvgSubsetReader(UBDocumentProxy* pProxy, const QByteArray& pXmlData)
@@ -347,13 +347,14 @@ UBSvgSubsetAdaptor::UBSvgSubsetReader::UBSvgSubsetReader(UBDocumentProxy* pProxy
 }
 
 
-UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
+UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProxy* proxy)
 {
     qDebug() << "loadScene() : starting reading...";
     QTime time;
     time.start();
     mScene = 0;
     UBGraphicsWidgetItem *currentWidget = 0;
+    bool pageDpiSpecified = true;
 
     mFileVersion = 40100; // default to 4.1.0
 
@@ -435,9 +436,12 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                 QStringRef pageDpi = mXmlReader.attributes().value("pageDpi");
 
                 if (!pageDpi.isNull())
-                    UBSettings::pageDpi = pageDpi.toInt();
-                else
-                    UBSettings::pageDpi = (UBApplication::desktop()->physicalDpiX() + UBApplication::desktop()->physicalDpiY())/2;
+                    proxy->setPageDpi(pageDpi.toInt());
+
+                else if (proxy->pageDpi() == 0) {
+                    proxy->setPageDpi((UBApplication::desktop()->physicalDpiX() + UBApplication::desktop()->physicalDpiY())/2);
+                    pageDpiSpecified = false;
+                }
 
                 bool darkBackground = false;
                 bool crossedBackground = false;
@@ -768,9 +772,22 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     {
                         QDesktopWidget* desktop = UBApplication::desktop();
                         qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
-                        qDebug() << "currentDpi (" << desktop->physicalDpiX() << " + " << desktop->physicalDpiY() << ")/2 = " << currentDpi;
-                        qreal pdfScale = qreal(UBSettings::pageDpi)/currentDpi;
-                        qDebug() << "pdfScale " << pdfScale;
+                        // qDebug() << "currentDpi (" << desktop->physicalDpiX() << " + " << desktop->physicalDpiY() << ")/2 = " << currentDpi;
+                        qreal pdfScale = qreal(proxy->pageDpi())/currentDpi;
+                        // qDebug() << "pdfScale " << pdfScale;
+
+                        // If the PDF is in the background, it occupies the whole page; so we can simply
+                        // use that information to calculate its scale.
+                        if (isBackground) {
+                            qreal pageWidth = mScene->nominalSize().width();
+                            qreal pageHeight = mScene->nominalSize().height();
+
+                            qreal scaleX = pageWidth / pdfItem->sceneBoundingRect().width();
+                            qreal scaleY = pageHeight / pdfItem->sceneBoundingRect().height();
+
+                            pdfScale = (scaleX+scaleY)/2.;
+                        }
+
                         pdfItem->setScale(pdfScale);
                         pdfItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                         pdfItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -829,7 +846,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene()
                     {
                         QDesktopWidget* desktop = UBApplication::desktop();
                         qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
-                        qreal textSizeMultiplier = qreal(UBSettings::pageDpi)/currentDpi;
+                        qreal textSizeMultiplier = qreal(proxy->pageDpi())/currentDpi;
                         //textDelegate->scaleTextSize(textSizeMultiplier);
                     }
 
@@ -1013,7 +1030,7 @@ QGraphicsItem *UBSvgSubsetAdaptor::UBSvgSubsetReader::readElementFromGroup()
 void UBSvgSubsetAdaptor::persistScene(UBDocumentProxy* proxy, UBGraphicsScene* pScene, const int pageIndex)
 {
     UBSvgSubsetWriter writer(proxy, pScene, pageIndex);
-    writer.persistScene(pageIndex);
+    writer.persistScene(proxy, pageIndex);
 }
 
 
@@ -1027,7 +1044,7 @@ UBSvgSubsetAdaptor::UBSvgSubsetWriter::UBSvgSubsetWriter(UBDocumentProxy* proxy,
 }
 
 
-void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
+void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement(UBDocumentProxy* proxy)
 {
     mXmlWriter.writeStartElement("svg");
 
@@ -1053,10 +1070,11 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
 
     QDesktopWidget* desktop = UBApplication::desktop();
 
-    if (UBSettings::pageDpi == 0)
-        UBSettings::pageDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+    if (proxy->pageDpi() == 0)
+        proxy->setPageDpi((desktop->physicalDpiX() + desktop->physicalDpiY()) / 2);
 
-    mXmlWriter.writeAttribute("pageDpi", QString::number(UBSettings::pageDpi));
+    mXmlWriter.writeAttribute("pageDpi", QString::number(proxy->pageDpi()));
+
 
     mXmlWriter.writeStartElement("rect");
     mXmlWriter.writeAttribute("fill", mScene->isDarkBackground() ? "black" : "white");
@@ -1068,7 +1086,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement()
     mXmlWriter.writeEndElement();
 }
 
-bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
+bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy, int pageIndex)
 {
     Q_UNUSED(pageIndex);
 
@@ -1089,7 +1107,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(int pageIndex)
     mXmlWriter.writeNamespace(UBSettings::uniboardDocumentNamespaceUri, "ub");
     mXmlWriter.writeNamespace(nsXHtml, "xhtml");
 
-    writeSvgElement();
+    writeSvgElement(proxy);
 
     // Get the items from the scene
     QList<QGraphicsItem*> items = mScene->items();

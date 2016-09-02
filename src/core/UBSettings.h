@@ -232,8 +232,6 @@ class UBSettings : public QObject
 
         static QString appPingMessage;
 
-        static int pageDpi;
-
         UBSetting* productWebUrl;
 
         QString softwareHomeUrl;

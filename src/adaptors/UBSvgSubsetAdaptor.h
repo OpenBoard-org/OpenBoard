@@ -114,7 +114,7 @@ class UBSvgSubsetAdaptor
 
                 virtual ~UBSvgSubsetReader(){}
 
-                UBGraphicsScene* loadScene();
+                UBGraphicsScene* loadScene(UBDocumentProxy *proxy);
 
             private:
 
@@ -180,7 +180,7 @@ class UBSvgSubsetAdaptor
 
                 UBSvgSubsetWriter(UBDocumentProxy* proxy, UBGraphicsScene* pScene, const int pageIndex);
 
-                bool persistScene(int pageIndex);
+                bool persistScene(UBDocumentProxy *proxy, int pageIndex);
 
                 virtual ~UBSvgSubsetWriter(){}
 
@@ -249,7 +249,7 @@ class UBSvgSubsetAdaptor
                 void protractorToSvg(UBGraphicsProtractor *item);
                 void cacheToSvg(UBGraphicsCache* item);
                 void triangleToSvg(UBGraphicsTriangle *item);
-                void writeSvgElement();
+                void writeSvgElement(UBDocumentProxy *proxy);
 
         private:
 

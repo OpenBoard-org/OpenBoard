@@ -79,6 +79,9 @@ class UBDocumentProxy : public QObject
 
         int pageCount();
 
+        int pageDpi();
+        void setPageDpi(int dpi);
+
     protected:
         void setPageCount(int pPageCount);
         int incPageCount();
@@ -95,6 +98,8 @@ class UBDocumentProxy : public QObject
         bool mIsModified;
 
         int mPageCount;
+
+        int mPageDpi;
 
 };
 
