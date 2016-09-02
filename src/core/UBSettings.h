@@ -182,7 +182,11 @@ class UBSettings : public QObject
         static QColor documentSizeMarkColorDarkBackground;
         static QColor documentSizeMarkColorLightBackground;
 
+        // Background grid
         static int crossSize;
+        static int minCrossSize;
+        static int maxCrossSize;
+
         static int colorPaletteSize;
         static int objectFrameWidth;
 

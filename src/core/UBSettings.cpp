@@ -46,7 +46,9 @@
 QPointer<UBSettings> UBSettings::sSingleton = 0;
 
 int UBSettings::pointerDiameter = 40;
-int UBSettings::crossSize = 32;
+int UBSettings::crossSize = 24;
+int UBSettings::minCrossSize = 12;
+int UBSettings::maxCrossSize = 64;
 int UBSettings::colorPaletteSize = 5;
 int UBSettings::objectFrameWidth = 20;
 int UBSettings::boardMargin = 10;

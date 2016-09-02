@@ -220,6 +220,11 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
             return mCrossedBackground;
         }
 
+        int backgroundGridSize() const
+        {
+            return mBackgroundGridSize;
+        }
+
         bool hasBackground()
         {
             return (mBackgroundObject != 0);
@@ -331,6 +336,7 @@ public slots:
 
         void setBackground(bool pIsDark, bool pIsCrossed);
         void setBackgroundZoomFactor(qreal zoom);
+        void setBackgroundGridSize(int pSize);
         void setDrawingMode(bool bModeDesktop);
         void deselectAllItems();
 
@@ -404,6 +410,8 @@ public slots:
 
         bool mDarkBackground;
         bool mCrossedBackground;
+        int mBackgroundGridSize;
+
         bool mIsDesktopMode;
         qreal mZoomFactor;
 

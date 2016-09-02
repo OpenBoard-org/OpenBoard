@@ -45,6 +45,7 @@
 #include "gui/UBZoomPalette.h"
 #include "gui/UBWebToolsPalette.h"
 #include "gui/UBActionPalette.h"
+#include "gui/UBBackgroundPalette.h"
 #include "gui/UBFavoriteToolPalette.h"
 #include "gui/UBStartupHintsPalette.h"
 
@@ -253,11 +254,11 @@ void UBBoardPaletteManager::setupPalettes()
     backgroundsActions << UBApplication::mainWindow->actionPlainDarkBackground;
     backgroundsActions << UBApplication::mainWindow->actionCrossedDarkBackground;
 
-    mBackgroundsPalette = new UBActionPalette(backgroundsActions, Qt::Horizontal , mContainer);
+    mBackgroundsPalette = new UBBackgroundPalette(backgroundsActions, mContainer);
     mBackgroundsPalette->setButtonIconSize(QSize(128, 128));
     mBackgroundsPalette->groupActions();
     mBackgroundsPalette->setClosable(true);
-    mBackgroundsPalette->setAutoClose(true);
+    mBackgroundsPalette->setAutoClose(false);
     mBackgroundsPalette->adjustSizeAndPosition();
     mBackgroundsPalette->hide();
 
@@ -532,7 +533,7 @@ void UBBoardPaletteManager::changeBackground()
     else
         UBApplication::boardController->changeBackground(false, false);
 
-    UBApplication::mainWindow->actionBackgrounds->setChecked(false);
+    mBackgroundsPalette->backgroundChanged();
 }
 
 
@@ -552,8 +553,10 @@ void UBBoardPaletteManager::activeSceneChanged()
     if (mZoomPalette)
         connect(mZoomPalette, SIGNAL(mouseEntered()), activeScene, SLOT(hideTool()));
 
-    if (mBackgroundsPalette)
+    if (mBackgroundsPalette) {
         connect(mBackgroundsPalette, SIGNAL(mouseEntered()), activeScene, SLOT(hideTool()));
+        mBackgroundsPalette->refresh();
+    }
 }
 
 

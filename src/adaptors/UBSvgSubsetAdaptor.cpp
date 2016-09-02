@@ -453,10 +453,21 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
 
                 QStringRef ubCrossedBackground = mXmlReader.attributes().value(mNamespaceUri, "crossed-background");
 
-                if (!ubDarkBackground.isNull())
+                if (!ubCrossedBackground.isNull())
                     crossedBackground = (ubCrossedBackground.toString() == xmlTrue);
 
                 mScene->setBackground(darkBackground, crossedBackground);
+
+                if (crossedBackground) {
+                    QStringRef ubGridSize = mXmlReader.attributes().value(mNamespaceUri, "grid-size");
+
+                    if (!ubGridSize.isNull()) {
+                        int gridSize = ubGridSize.toInt();
+
+                        UBSettings::settings()->crossSize = gridSize;
+                        mScene->setBackgroundGridSize(gridSize);
+                    }
+                }
 
                 QStringRef pageNominalSize = mXmlReader.attributes().value(mNamespaceUri, "nominal-size");
                 if (!pageNominalSize.isNull())
@@ -1067,6 +1078,12 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement(UBDocumentProxy* pro
 
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "dark-background", mScene->isDarkBackground() ? xmlTrue : xmlFalse);
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "crossed-background", mScene->isCrossedBackground() ? xmlTrue : xmlFalse);
+
+    if (mScene->isCrossedBackground()) {
+        int gridSize = mScene->backgroundGridSize();
+
+        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "grid-size", QString::number(gridSize));
+    }
 
     QDesktopWidget* desktop = UBApplication::desktop();
 

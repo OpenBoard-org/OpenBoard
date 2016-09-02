@@ -123,7 +123,6 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         QGraphicsSvgItem* mResizeSvgItem;
         qreal mAntiScaleRatio;
         bool mDrewCenterCross;
-        int mPixelsPerMillimeter;
 
         // Constants
         static const int                      sNeedleLength = 18;

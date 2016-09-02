@@ -353,6 +353,8 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
             UBApplication::applicationController->initialVScroll()));
     }
 
+    mBackgroundGridSize = UBSettings::settings()->crossSize;
+
 //    Just for debug. Do not delete please
 //    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
     connect(UBApplication::undoStack.data(), SIGNAL(indexChanged(int)), this, SLOT(updateSelectionFrameWrapper(int)));
@@ -981,6 +983,18 @@ void UBGraphicsScene::setBackgroundZoomFactor(qreal zoom)
     mZoomFactor = zoom;
 }
 
+
+void UBGraphicsScene::setBackgroundGridSize(int pSize)
+{
+    if (pSize > 0) {
+        mBackgroundGridSize = pSize;
+        setModified(true);
+
+        foreach(QGraphicsView* view, views())
+            view->resetCachedContent();
+    }
+}
+
 void UBGraphicsScene::setDrawingMode(bool bModeDesktop)
 {
     mIsDesktopMode = bModeDesktop;
@@ -1158,6 +1172,7 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
     UBGraphicsScene* copy = new UBGraphicsScene(this->document(), this->mUndoRedoStackEnabled);
 
     copy->setBackground(this->isDarkBackground(), this->isCrossedBackground());
+    copy->setBackgroundGridSize(mBackgroundGridSize);
     copy->setSceneRect(this->sceneRect());
 
     if (this->mNominalSize.isValid())
@@ -2404,16 +2419,16 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
 
         if (isCrossedBackground())
         {
-            qreal firstY = ((int) (rect.y () / UBSettings::crossSize)) * UBSettings::crossSize;
+            qreal firstY = ((int) (rect.y () / backgroundGridSize())) * backgroundGridSize();
 
-            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += UBSettings::crossSize)
+            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += backgroundGridSize())
             {
                 painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
             }
 
-            qreal firstX = ((int) (rect.x () / UBSettings::crossSize)) * UBSettings::crossSize;
+            qreal firstX = ((int) (rect.x () / backgroundGridSize())) * backgroundGridSize();
 
-            for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += UBSettings::crossSize)
+            for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += backgroundGridSize())
             {
                 painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
             }
