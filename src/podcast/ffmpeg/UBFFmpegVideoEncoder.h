@@ -79,10 +79,6 @@ public:
 
     void setRecordAudio(bool pRecordAudio) { mShouldRecordAudio = pRecordAudio; }
 
-signals:
-
-    void encodingFinished(bool ok);
-
 private slots:
 
     void setLastErrorMessage(const QString& pMessage);

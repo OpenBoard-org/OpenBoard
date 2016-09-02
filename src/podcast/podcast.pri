@@ -42,15 +42,9 @@ linux-g++* {
     SOURCES  += src/podcast/ffmpeg/UBFFmpegVideoEncoder.cpp
 
 
-    FFMPEG = /opt/ffmpeg
-
-    INCLUDEPATH += $${FFMPEG}/include
     DEPENDPATH += /usr/lib/x86_64-linux-gnu
 
-    LIBS += -L $${FFMPEG}/lib -lavformat \
-            -L $${FFMPEG}/lib -lavcodec \
-            -L $${FFMPEG}/lib -lswscale \
-            -L $${FFMPEG}/lib -lavutil \
+    LIBS += -lavformat -lavcodec -lswscale -lavutil \
             -lva-x11 \
             -lva \
             -lxcb-shm \
