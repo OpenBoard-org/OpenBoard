@@ -1527,14 +1527,14 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
         adjustDisplayViews();
 
         UBSettings::settings()->setDarkBackground(mActiveScene->isDarkBackground());
-        UBSettings::settings()->setCrossedBackground(mActiveScene->isCrossedBackground());
+        UBSettings::settings()->setPageBackground(mActiveScene->pageBackground());
 
         freezeW3CWidgets(false);
     }
 
     selectionChanged();
 
-    updateBackgroundActionsState(mActiveScene->isDarkBackground(), mActiveScene->isCrossedBackground());
+    updateBackgroundActionsState(mActiveScene->isDarkBackground(), mActiveScene->pageBackground());
 
     if(documentChange)
         UBGraphicsTextItem::lastUsedTextColor = QColor();
@@ -1650,17 +1650,17 @@ int UBBoardController::autosaveTimeoutFromSettings()
     return value * minute;
 }
 
-void UBBoardController::changeBackground(bool isDark, bool isCrossed)
+void UBBoardController::changeBackground(bool isDark, UBPageBackground pageBackground)
 {
     bool currentIsDark = mActiveScene->isDarkBackground();
-    bool currentIsCrossed = mActiveScene->isCrossedBackground();
+    UBPageBackground currentBackgroundType = mActiveScene->pageBackground();
 
-    if ((isDark != currentIsDark) || (currentIsCrossed != isCrossed))
+    if ((isDark != currentIsDark) || (currentBackgroundType != pageBackground))
     {
         UBSettings::settings()->setDarkBackground(isDark);
-        UBSettings::settings()->setCrossedBackground(isCrossed);
+        UBSettings::settings()->setPageBackground(pageBackground);
 
-        mActiveScene->setBackground(isDark, isCrossed);
+        mActiveScene->setBackground(isDark, pageBackground);
 
         emit backgroundChanged();
     }
@@ -2449,16 +2449,31 @@ void UBBoardController::moveToolWidgetToScene(UBToolWidget* toolWidget)
 }
 
 
-void UBBoardController::updateBackgroundActionsState(bool isDark, bool isCrossed)
+void UBBoardController::updateBackgroundActionsState(bool isDark, UBPageBackground pageBackground)
 {
-    if (isDark && !isCrossed)
-        mMainWindow->actionPlainDarkBackground->setChecked(true);
-    else if (isDark && isCrossed)
-        mMainWindow->actionCrossedDarkBackground->setChecked(true);
-    else if (!isDark && isCrossed)
-        mMainWindow->actionCrossedLightBackground->setChecked(true);
-    else
-        mMainWindow->actionPlainLightBackground->setChecked(true);
+    switch (pageBackground) {
+
+        case UBPageBackground::crossed:
+            if (isDark)
+                mMainWindow->actionCrossedDarkBackground->setChecked(true);
+            else
+                mMainWindow->actionCrossedLightBackground->setChecked(true);
+        break;
+
+        case UBPageBackground::ruled :
+            if (isDark)
+                mMainWindow->actionRuledDarkBackground->setChecked(true);
+            else
+                mMainWindow->actionRuledLightBackground->setChecked(true);
+        break;
+
+        default:
+            if (isDark)
+                mMainWindow->actionPlainDarkBackground->setChecked(true);
+            else
+                mMainWindow->actionPlainLightBackground->setChecked(true);
+        break;
+    }
 }
 
 

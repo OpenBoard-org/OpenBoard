@@ -653,7 +653,7 @@ UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* pr
     UBGraphicsScene *newScene = mSceneCache.createScene(proxy, index, useUndoRedoStack);
 
     newScene->setBackground(UBSettings::settings()->isDarkBackground(),
-            UBSettings::settings()->UBSettings::isCrossedBackground());
+            UBSettings::settings()->UBSettings::pageBackground());
 
     persistDocumentScene(proxy, newScene, index);
 

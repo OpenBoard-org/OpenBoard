@@ -735,9 +735,16 @@ bool UBSettings::isDarkBackground()
 }
 
 
-bool UBSettings::isCrossedBackground()
+UBPageBackground UBSettings::pageBackground()
 {
-    return value("Board/CrossedBackground", 0).toBool();
+    QString val = value("Board/PageBackground", 0).toString();
+
+    if (val == "crossed")
+        return UBPageBackground::crossed;
+    else if (val == "ruled")
+        return UBPageBackground::ruled;
+    else
+        return UBPageBackground::plain;
 }
 
 
@@ -748,9 +755,18 @@ void UBSettings::setDarkBackground(bool isDarkBackground)
 }
 
 
-void UBSettings::setCrossedBackground(bool isCrossedBackground)
+void UBSettings::setPageBackground(UBPageBackground background)
 {
-    setValue("Board/CrossedBackground", isCrossedBackground);
+    QString val;
+
+    if (background == UBPageBackground::crossed)
+        val = "crossed";
+    else if (background == UBPageBackground::ruled)
+        val = "ruled";
+    else
+        val = "plain";
+
+    setValue("Board/PageBackground", val);
 }
 
 
@@ -1412,5 +1428,9 @@ void UBSettings::checkNewSettings()
 
     // A typo was corrected in version 1.3
     removeSetting("Board/useSystemOnScreenKeybard");
+
+
+    // CrossedBackground changed in 1.4 (no longer a bool but an enum; can be crossed or ruled)
+    removeSetting("Board/CrossedBackground");
 
 }

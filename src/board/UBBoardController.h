@@ -220,7 +220,7 @@ class UBBoardController : public UBDocumentContainer
         UBItem *downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl contentUrl, QString pHeader,
                                  QByteArray pData, QPointF pPos, QSize pSize,
                                  bool isBackground = false, bool internalData = false);
-        void changeBackground(bool isDark, bool isCrossed);
+        void changeBackground(bool isDark, UBPageBackground pageBackground);
         void setToolCursor(int tool);
         void showMessage(const QString& message, bool showSpinningWheel = false);
         void hideMessage();
@@ -321,7 +321,7 @@ class UBBoardController : public UBDocumentContainer
         void stylusToolDoubleClicked(int tool);
         void boardViewResized(QResizeEvent* event);
         void documentWillBeDeleted(UBDocumentProxy* pProxy);
-        void updateBackgroundActionsState(bool isDark, bool isCrossed);
+        void updateBackgroundActionsState(bool isDark, UBPageBackground pageBackground);
         void colorPaletteChanged();
         void libraryDialogClosed(int ret);
         void lastWindowClosed();

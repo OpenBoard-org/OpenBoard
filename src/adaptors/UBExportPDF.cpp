@@ -91,8 +91,8 @@ bool UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QStrin
         UBApplication::showMessage(tr("Exporting page %1 of %2").arg(pageIndex + 1).arg(existingPageCount));
         // set background to white, no crossing for PDF output
         bool isDark = scene->isDarkBackground();
-        bool isCrossed = scene->isCrossedBackground();
-        scene->setBackground(false, false);
+        UBPageBackground pageBackground = scene->pageBackground();
+        scene->setBackground(false, UBPageBackground::plain);
 
         QSize pageSize = scene->nominalSize();
 
@@ -113,7 +113,7 @@ bool UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QStrin
         scene->setRenderingQuality(UBItem::RenderingQualityNormal);
 
         //restore background state
-        scene->setBackground(isDark, isCrossed);
+        scene->setBackground(isDark, pageBackground);
     }
     if(!painterNeedsBegin) pdfPainter.end();
 

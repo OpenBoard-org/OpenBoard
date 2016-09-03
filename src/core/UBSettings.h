@@ -87,9 +87,9 @@ class UBSettings : public QObject
 
         // Background related
         bool isDarkBackground();
-        bool isCrossedBackground();
+        UBPageBackground pageBackground();
         void setDarkBackground(bool isDarkBackground);
-        void setCrossedBackground(bool isCrossedBackground);
+        void setPageBackground(UBPageBackground background);
 
         // Stylus palette related
         bool isStylusPaletteVisible();

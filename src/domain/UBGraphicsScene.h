@@ -217,9 +217,9 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
             return !mDarkBackground;
         }
 
-        bool isCrossedBackground() const
+        UBPageBackground pageBackground() const
         {
-            return mCrossedBackground;
+            return mPageBackground;
         }
 
         int backgroundGridSize() const
@@ -336,7 +336,7 @@ public slots:
         void initStroke();
         void hideTool();
 
-        void setBackground(bool pIsDark, bool pIsCrossed);
+        void setBackground(bool pIsDark, UBPageBackground pBackground);
         void setBackgroundZoomFactor(qreal zoom);
         void setBackgroundGridSize(int pSize);
         void setDrawingMode(bool bModeDesktop);
@@ -413,7 +413,7 @@ public slots:
         UBDocumentProxy* mDocument;
 
         bool mDarkBackground;
-        bool mCrossedBackground;
+        UBPageBackground mPageBackground;
         int mBackgroundGridSize;
 
         bool mIsDesktopMode;

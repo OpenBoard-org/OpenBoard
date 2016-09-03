@@ -212,4 +212,11 @@ struct UBUndoType
     };
 };
 
+enum UBPageBackground
+{
+    plain = 0,
+    crossed,
+    ruled
+};
+
 #endif /* UB_H_ */

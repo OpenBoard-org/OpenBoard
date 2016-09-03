@@ -111,7 +111,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
     }
 
     mBlackScene = new UBGraphicsScene(0); // deleted by UBApplicationController::destructor
-    mBlackScene->setBackground(true, false);
+    mBlackScene->setBackground(true, UBPageBackground::plain);
 
     if (mDisplayManager->numScreens() >= 2)
     {

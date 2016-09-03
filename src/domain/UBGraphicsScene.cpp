@@ -321,7 +321,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     , mMarkerCircle(0)
     , mDocument(parent)
     , mDarkBackground(false)
-    , mCrossedBackground(false)
+    , mPageBackground(UBPageBackground::plain)
     , mIsDesktopMode(false)
     , mZoomFactor(1)
     , mBackgroundObject(0)
@@ -1010,7 +1010,7 @@ void UBGraphicsScene::drawArcTo(const QPointF& pCenterPoint, qreal pSpanAngle)
     setDocumentUpdated();
 }
 
-void UBGraphicsScene::setBackground(bool pIsDark, bool pIsCrossed)
+void UBGraphicsScene::setBackground(bool pIsDark, UBPageBackground pBackground)
 {
     bool needRepaint = false;
 
@@ -1026,9 +1026,9 @@ void UBGraphicsScene::setBackground(bool pIsDark, bool pIsCrossed)
         setModified(true);
     }
 
-    if (mCrossedBackground != pIsCrossed)
+    if (mPageBackground != pBackground)
     {
-        mCrossedBackground = pIsCrossed;
+        mPageBackground = pBackground;
         needRepaint = true;
         setModified(true);
     }
@@ -1243,7 +1243,7 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
 {
     UBGraphicsScene* copy = new UBGraphicsScene(this->document(), this->mUndoRedoStackEnabled);
 
-    copy->setBackground(this->isDarkBackground(), this->isCrossedBackground());
+    copy->setBackground(this->isDarkBackground(), mPageBackground);
     copy->setBackgroundGridSize(mBackgroundGridSize);
     copy->setSceneRect(this->sceneRect());
 
@@ -2489,7 +2489,7 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
 
         painter->setPen (bgCrossColor);
 
-        if (isCrossedBackground())
+        if (mPageBackground == UBPageBackground::crossed)
         {
             qreal firstY = ((int) (rect.y () / backgroundGridSize())) * backgroundGridSize();
 
@@ -2503,6 +2503,16 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
             for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += backgroundGridSize())
             {
                 painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
+            }
+        }
+
+        else if (mPageBackground == UBPageBackground::ruled)
+        {
+            qreal firstY = ((int) (rect.y () / backgroundGridSize())) * backgroundGridSize();
+
+            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += backgroundGridSize())
+            {
+                painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
             }
         }
     }

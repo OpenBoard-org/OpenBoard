@@ -1607,7 +1607,7 @@ void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
 
         painter->setPen (bgCrossColor);
 
-        if (scene () && scene ()->isCrossedBackground ())
+        if (scene () && scene ()->pageBackground() == UBPageBackground::crossed)
         {
             qreal firstY = ((int) (rect.y () / scene()->backgroundGridSize())) * scene()->backgroundGridSize();
 
@@ -1621,6 +1621,16 @@ void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
             for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += scene()->backgroundGridSize())
             {
                 painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
+            }
+        }
+
+        if (scene() && scene()->pageBackground() == UBPageBackground::ruled)
+        {
+            qreal firstY = ((int) (rect.y () / scene()->backgroundGridSize())) * scene()->backgroundGridSize();
+
+            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += scene()->backgroundGridSize())
+            {
+                painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
             }
         }
     }
