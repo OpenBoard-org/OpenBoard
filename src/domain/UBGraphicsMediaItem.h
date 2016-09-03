@@ -160,6 +160,11 @@ class UBGraphicsAudioItem: public UBGraphicsMediaItem
     Q_OBJECT
 
 public:
+    enum { Type = UBGraphicsItemType::AudioItemType};
+    virtual int type() const
+    {
+        return Type;
+    }
 
     UBGraphicsAudioItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent = 0);
     mediaType getMediaType() const { return mediaType_Audio; }
@@ -172,6 +177,11 @@ class UBGraphicsVideoItem: public UBGraphicsMediaItem
     Q_OBJECT
 
 public:
+    enum { Type = UBGraphicsItemType::VideoItemType};
+    virtual int type() const
+    {
+        return Type;
+    }
 
     UBGraphicsVideoItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent = 0);
 
