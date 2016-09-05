@@ -120,7 +120,16 @@ int UBDisplayManager::numScreens()
 {
     if (mUseMultiScreen)
     {
-        return mDesktop->screenCount();
+        int screenCount = mDesktop->screenCount();
+        // Some window managers report two screens when the two monitors are in "cloned" mode; this hack ensures
+        // that we consider this as just one screen.
+#ifdef Q_OS_LINUX
+        if (screenCount > 1
+            && (mDesktop->screenNumber(mDesktop->screen(0)) == mDesktop->screenNumber(mDesktop->screen(1))))
+            return 1;
+        else
+#endif
+            return screenCount;
     }
     else
     {
