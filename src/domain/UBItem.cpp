@@ -119,6 +119,8 @@ UBGraphicsItemDelegate *UBGraphicsItem::Delegate(QGraphicsItem *pItem)
         result = (static_cast<UBGraphicsSvgItem*>(pItem))->Delegate();
         break;
     case UBGraphicsMediaItem::Type:
+    case UBGraphicsVideoItem::Type:
+    case UBGraphicsAudioItem::Type:
         result = (static_cast<UBGraphicsMediaItem*>(pItem))->Delegate();
         break;
     case UBGraphicsStrokesGroup::Type :
