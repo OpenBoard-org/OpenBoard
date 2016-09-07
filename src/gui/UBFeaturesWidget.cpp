@@ -1464,8 +1464,11 @@ bool UBFeaturesPathProxyModel::filterAcceptsRow( int sourceRow, const QModelInde
 {
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
     UBFeature feature = sourceModel()->data(index, Qt::UserRole + 1).value<UBFeature>();
-    
-    return feature.isFolder() && path.startsWith( feature.getFullVirtualPath()) ;
+
+    // We want to display parent folders up to and including the current one
+    return (feature.isFolder()
+            && ( path.startsWith(feature.getFullVirtualPath() + "/")
+                 || path == feature.getFullVirtualPath()));
 
 }
 
