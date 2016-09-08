@@ -102,7 +102,6 @@ QVariant UBGraphicsTextItem::itemChange(GraphicsItemChange change, const QVarian
 
 void UBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    setTextInteractionFlags(Qt::TextEditorInteraction);
 
     // scene()->itemAt(pos) returns 0 if pos is not over text, but over text item, but mouse press comes.
     // It is a cludge...
@@ -137,6 +136,8 @@ void UBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     if (!data(UBGraphicsItemData::ItemEditable).toBool())
         return;
+
+    setTextInteractionFlags(Qt::TextEditorInteraction);
 
     int elapsed = mLastMousePressTime.msecsTo(QTime::currentTime());
 
