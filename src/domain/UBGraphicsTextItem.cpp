@@ -134,8 +134,10 @@ void UBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
         }
     }
 
-    if (!data(UBGraphicsItemData::ItemEditable).toBool())
+    if (!data(UBGraphicsItemData::ItemEditable).toBool()) {
+        setTextInteractionFlags(Qt::NoTextInteraction);
         return;
+    }
 
     setTextInteractionFlags(Qt::TextEditorInteraction);
 
