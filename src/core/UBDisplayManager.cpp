@@ -73,7 +73,7 @@ void UBDisplayManager::initScreenIndexes()
     if (screenCount > 0)
     {
         mControlScreenIndex = mDesktop->primaryScreen();
-        if (mDesktop->screenCount() > 1 && UBSettings::settings()->swapControlAndDisplayScreens->get().toBool())
+        if (screenCount > 1 && UBSettings::settings()->swapControlAndDisplayScreens->get().toBool())
         {
             mControlScreenIndex = mControlScreenIndex^1;
         }
@@ -85,7 +85,7 @@ void UBDisplayManager::initScreenIndexes()
         mControlScreenIndex = -1;
     }
 
-    if (screenCount > 1)
+    if (screenCount > 1 && mUseMultiScreen)
     {
         mDisplayScreenIndex = mControlScreenIndex != 0 ? 0 : 1;
         mScreenIndexesRoles << Display;
@@ -118,21 +118,17 @@ UBDisplayManager::~UBDisplayManager()
 
 int UBDisplayManager::numScreens()
 {
-    if (mUseMultiScreen) {
-        int screenCount = mDesktop->screenCount();
-        // Some window managers report two screens when the two monitors are in "cloned" mode; this hack ensures
-        // that we consider this as just one screen. On most desktops, at least one of the following conditions is
-        // a good indicator of the displays being in cloned or extended mode.
+    int screenCount = mDesktop->screenCount();
+    // Some window managers report two screens when the two monitors are in "cloned" mode; this hack ensures
+    // that we consider this as just one screen. On most desktops, at least one of the following conditions is
+    // a good indicator of the displays being in cloned or extended mode.
 #ifdef Q_OS_LINUX
-        if (screenCount > 1
-            && (mDesktop->screenNumber(mDesktop->screen(0)) == mDesktop->screenNumber(mDesktop->screen(1))
-                || mDesktop->screenGeometry(0) == mDesktop->screenGeometry(1)))
-            return 1;
-#endif
-        return screenCount;
-    }
-    else
+    if (screenCount > 1
+        && (mDesktop->screenNumber(mDesktop->screen(0)) == mDesktop->screenNumber(mDesktop->screen(1))
+            || mDesktop->screenGeometry(0) == mDesktop->screenGeometry(1)))
         return 1;
+#endif
+    return screenCount;
 }
 
 

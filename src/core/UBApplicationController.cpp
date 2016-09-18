@@ -113,7 +113,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
     mBlackScene = new UBGraphicsScene(0); // deleted by UBApplicationController::destructor
     mBlackScene->setBackground(true, false);
 
-    if (mDisplayManager->numScreens() >= 2)
+    if (mDisplayManager->numScreens() >= 2 && mDisplayManager->useMultiScreen())
     {
         mMirror = new UBScreenMirror();
     }
