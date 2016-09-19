@@ -45,6 +45,7 @@ class UBZoomPalette : public UBFloatingPalette
 
     public slots:
         void hide();
+        void refreshPalette();
 
     private:
         UBBoardController* mBoardController;
@@ -55,7 +56,6 @@ class UBZoomPalette : public UBFloatingPalette
         bool mIsExpanded;
 
     private slots:
-        void refreshPalette();
         void showHideExtraButton();
         void goHundred();
 

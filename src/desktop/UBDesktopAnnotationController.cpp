@@ -85,7 +85,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
 #ifdef Q_OS_OSX
     mTransparentDrawingView->setAttribute(Qt::WA_MacNoShadow, true);
 #endif
-    mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window);
+    mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window | Qt::NoDropShadowWindowHint);
     mTransparentDrawingView->setCacheMode(QGraphicsView::CacheNone);
     mTransparentDrawingView->resize(UBApplication::desktop()->width(), UBApplication::desktop()->height());
 
@@ -126,6 +126,8 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     connect(UBApplication::mainWindow->actionSelector, SIGNAL(triggered()), this, SLOT(onToolClicked()));
     connect(mDesktopPalette, SIGNAL(maximized()), this, SLOT(onDesktopPaletteMaximized()));
     connect(mDesktopPalette, SIGNAL(minimizeStart(eMinimizedLocation)), this, SLOT(onDesktopPaletteMinimize()));
+    connect(mDesktopPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene, SLOT(hideTool()));
+    connect(mRightPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene, SLOT(hideTool()));
 
     connect(mTransparentDrawingView, SIGNAL(resized(QResizeEvent*)), this, SLOT(onTransparentWidgetResized()));
 

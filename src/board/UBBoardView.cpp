@@ -671,6 +671,8 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
         if (item->isSelected())
             return false;
     case UBGraphicsMediaItem::Type:
+    case UBGraphicsVideoItem::Type:
+    case UBGraphicsAudioItem::Type:
         return true;
     case UBGraphicsStrokesGroup::Type:
         return false;

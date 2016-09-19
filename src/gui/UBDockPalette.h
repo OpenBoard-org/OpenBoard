@@ -150,6 +150,9 @@ public slots:
     void onAllDownloadsFinished();
     virtual void onDocumentSet(UBDocumentProxy* documentProxy);
 
+signals:
+    void mouseEntered();
+
 protected:
     virtual int border();
     virtual int radius();

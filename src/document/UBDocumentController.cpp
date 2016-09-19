@@ -1018,6 +1018,7 @@ void UBDocumentController::itemChanged(QTreeWidgetItem * item, int column)
                     if (0 != (item->flags() & Qt::ItemIsEditable))
                     {
                         childItem->proxy()->setMetaData(UBSettings::documentGroupName, item->text(column));
+                        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(childItem->proxy());
                     }
                 }
             }
