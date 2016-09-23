@@ -55,7 +55,7 @@ UBDisplayManager::UBDisplayManager(QObject *parent)
 {
     mDesktop = qApp->desktop();
 
-    mUseMultiScreen = true;
+    mUseMultiScreen = UBSettings::settings()->appUseMultiscreen->get().toBool();
 
     initScreenIndexes();
 
