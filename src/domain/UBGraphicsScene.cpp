@@ -2608,20 +2608,19 @@ void UBGraphicsScene::updateMarkerCircleColor()
     if (!mMarkerCircle)
         return;
 
-    QBrush mcBrush = mMarkerCircle->brush();
     QPen mcPen = mMarkerCircle->pen();
 
     if (mDarkBackground) {
-        mcBrush.setColor(UBSettings::markerCircleBrushColorDarkBackground);
         mcPen.setColor(UBSettings::markerCirclePenColorDarkBackground);
+        mMarkerCircle->setBrush(UBSettings::markerCircleBrushColorDarkBackground);
     }
 
     else {
-        mcBrush.setColor(UBSettings::markerCircleBrushColorLightBackground);
         mcPen.setColor(UBSettings::markerCirclePenColorLightBackground);
+        mMarkerCircle->setBrush(UBSettings::markerCircleBrushColorLightBackground);
     }
 
-    mMarkerCircle->setBrush(mcBrush);
+    mcPen.setStyle(Qt::DotLine);
     mMarkerCircle->setPen(mcPen);
 }
 
