@@ -19,17 +19,17 @@ set SCRIPT_PATH=%~dp0
 set PROJECT_ROOT=%SCRIPT_PATH%\..\..
 
 set APPLICATION_NAME=OpenBoard
-set QT_DIR=C:\Qt\5.5\msvc2010
+set QT_DIR=C:\Program Files\Qt\5.5\msvc2010
 set QT_BIN=%QT_DIR%\bin
 
 set PROGRAMS_FILE_PATH=C:\Program Files (x86)
 
-set GIT_BIN=%PROGRAMS_FILE_PATH%\Git\bin
+set GIT_BIN=C:\Program Files\Git\bin
 set VS_BIN=%PROGRAMS_FILE_PATH%\Microsoft Visual Studio 10.0\VC\bin
 set WIN_SDK_BIN=%PROGRAMS_FILE_PATH%\Microsoft SDKs\Windows\v6.0A\Bin
 set INNO_EXE=%PROGRAMS_FILE_PATH%\Inno Setup 5\iscc.exe 
 set BUILD_DIR=%PROJECT_ROOT%\build\win32\release
-set LRELEASE=%QT_DIR%\bin\lrelease
+set LRELEASE=%QT_DIR%\bin\lrelease.exe
 set BASE_QT_TRANSLATIONS_DIRECTORY=%QT_DIR%\translations
 
 set PATH=%QT_BIN%;%PATH%;%WIN_SDK_BIN%;%GIT_BIN%
@@ -68,34 +68,25 @@ rmdir /S /Q install
 
 "%QT_BIN%\qmake.exe" %APPLICATION_NAME%.pro
 
-%LRELEASE% %APPLICATION_NAME%.pro
-%LRELEASE% %BASE_QT_TRANSLATIONS_DIRECTORY%\translations.pro
+call "%LRELEASE%" "%APPLICATION_NAME%.pro"
 
 set /p VERSION= < build\win32\release\version
 REM remove the last character that is a space
 set VERSION=%VERSION: =%
-REM git rev-list --tags --max-count=1 > tmp
-REM set /p LAST_TAG= < tmp
-REM erase tmp
-REM git describe %LAST_TAG% > tmp
-REM set /p LAST_TAG_VERSION=< tmp
-REM erase tmp
 
-REM echo %VERSION%
-REM echo %LAST_TAG_VERSION%
 
 nmake release-install
 IF NOT EXIST build\win32\release\product\%APPLICATION_NAME%.exe GOTO EXIT_WITH_ERROR
 
 xcopy C:\%APPLICATION_NAME%\bin\*.dll build\win32\release\product\
-xcopy %QT_DIR%\bin\Qt5OpenGL.dll build\win32\release\product\
+xcopy "%QT_DIR%\bin\Qt5OpenGL.dll" build\win32\release\product\
 
 set CUSTOMIZATIONS=build\win32\release\product\customizations
 mkdir %CUSTOMIZATIONS%
 xcopy /s resources\customizations %CUSTOMIZATIONS%
 
 set I18n=build\win32\release\product\i18n
-xcopy /s %BASE_QT_TRANSLATIONS_DIRECTORY%\qt_*.qm %I18n%\
+xcopy /s "%BASE_QT_TRANSLATIONS_DIRECTORY%\qt_*.qm" %I18n%\
 
 del build\win32\release\product\i18n\qt_help*
 

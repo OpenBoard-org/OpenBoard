@@ -197,6 +197,7 @@ void UBDockPalette::enterEvent(QEvent *event)
     Q_UNUSED(event);
     // We want to set the cursor as an arrow everytime it enters the palette
     setCursor(Qt::ArrowCursor);
+    emit mouseEntered();
 }
 
 /**

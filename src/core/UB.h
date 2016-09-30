@@ -151,6 +151,8 @@ struct UBGraphicsItemType
         SvgItemType,
         DelegateButtonType,
         MediaItemType,
+        VideoItemType,
+        AudioItemType,
         PDFItemType,
         TextItemType,
         CurtainItemType,

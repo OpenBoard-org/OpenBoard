@@ -1684,8 +1684,10 @@ void UBBoardController::boardViewResized(QResizeEvent* event)
 
     mControlView->centerOn(0,0);
 
-    if (mDisplayView)
+    if (mDisplayView) {
+        UBApplication::applicationController->adjustDisplayView();
         mDisplayView->centerOn(0,0);
+    }
 
     mPaletteManager->containerResized();
 

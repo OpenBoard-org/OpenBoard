@@ -1224,7 +1224,7 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
             UBFeature sourceElement;
             if (dataFromSameModel) {
                 sourceElement = featList.at(i);
-                moveData(sourceElement, parentFeature, Qt::MoveAction);
+                moveData(sourceElement, parentFeature, Qt::MoveAction, true);
             }
         }
     } else if (mimeData->hasUrls()) {
@@ -1322,6 +1322,11 @@ void UBFeaturesModel::moveData(const UBFeature &source, const UBFeature &destina
 
     UBFeatureElementType sourceType = source.getType();
     QImage sourceIcon = source.getThumbnail();
+
+    if (sourceType == FEATURE_INTERNAL) {
+        qWarning() << "Built-in tools cannot be moved";
+        return;
+    }
 
     Q_ASSERT( QFileInfo( sourcePath ).exists() );
 
@@ -1459,8 +1464,11 @@ bool UBFeaturesPathProxyModel::filterAcceptsRow( int sourceRow, const QModelInde
 {
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
     UBFeature feature = sourceModel()->data(index, Qt::UserRole + 1).value<UBFeature>();
-    
-    return feature.isFolder() && path.startsWith( feature.getFullVirtualPath()) ;
+
+    // We want to display parent folders up to and including the current one
+    return (feature.isFolder()
+            && ( path.startsWith(feature.getFullVirtualPath() + "/")
+                 || path == feature.getFullVirtualPath()));
 
 }
 

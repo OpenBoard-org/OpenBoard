@@ -76,6 +76,8 @@ class UBDisplayManager : public QObject
             None = 0, Control, Display, Previous1, Previous2, Previous3, Previous4, Previous5
         };
 
+        bool useMultiScreen() { return mUseMultiScreen; }
+
         void setUseMultiScreen(bool pUse);
 
         int controleScreenIndex()
