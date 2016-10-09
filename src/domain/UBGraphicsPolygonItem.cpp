@@ -136,38 +136,9 @@ UBGraphicsStroke* UBGraphicsPolygonItem::stroke() const
 void UBGraphicsPolygonItem::setColor(const QColor& pColor)
 {
     QGraphicsPolygonItem::setBrush(QBrush(pColor));
+    setPen(Qt::NoPen);
 
-    if (pColor.alphaF() >= 1.0)
-    {
-        mHasAlpha = false;
-        setPen(Qt::NoPen);
-    }
-    else
-    {
-        mHasAlpha = true;
-
-        QColor penColor = pColor;
-
-        // trick QT antialiasing
-        // TODO UB 4.x see if we can do better ... it does not behave well with 16 bit color depth
-        qreal trickAlpha = pColor.alphaF();
-
-        if (trickAlpha >= 0.2 && trickAlpha < 0.6)
-        {
-            trickAlpha /= 12;
-        }
-        else if (trickAlpha < 0.8)
-        {
-            trickAlpha /= 5;
-        }
-        else if (trickAlpha < 1.0)
-        {
-            trickAlpha /= 2;
-        }
-
-        penColor.setAlphaF(trickAlpha);
-        QGraphicsPolygonItem::setPen(QPen(penColor));
-    }
+    mHasAlpha = (pColor.alphaF() < 1.0);
 }
 
 
