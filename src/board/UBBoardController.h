@@ -284,6 +284,7 @@ class UBBoardController : public UBDocumentContainer
         void appMainModeChanged(UBApplicationController::MainMode);
 
     private:
+        void initBackgroundGridSize();
         void updatePageSizeState();
         void saveViewState();
         void adjustDisplayViews();

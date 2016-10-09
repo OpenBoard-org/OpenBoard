@@ -1607,20 +1607,22 @@ void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
             bgCrossColor.setAlpha (alpha); // fade the crossing on small zooms
         }
 
+        qreal gridSize = scene()->backgroundGridSize();
+
         painter->setPen (bgCrossColor);
 
         if (scene () && scene ()->pageBackground() == UBPageBackground::crossed)
         {
-            qreal firstY = ((int) (rect.y () / scene()->backgroundGridSize())) * scene()->backgroundGridSize();
+            qreal firstY = ((int) (rect.y () / gridSize)) * gridSize;
 
-            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += scene()->backgroundGridSize())
+            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += gridSize)
             {
                 painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
             }
 
-            qreal firstX = ((int) (rect.x () / scene()->backgroundGridSize())) * scene()->backgroundGridSize();
+            qreal firstX = ((int) (rect.x () / gridSize)) * gridSize;
 
-            for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += scene()->backgroundGridSize())
+            for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += gridSize)
             {
                 painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
             }
@@ -1628,9 +1630,9 @@ void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
 
         if (scene() && scene()->pageBackground() == UBPageBackground::ruled)
         {
-            qreal firstY = ((int) (rect.y () / scene()->backgroundGridSize())) * scene()->backgroundGridSize();
+            qreal firstY = ((int) (rect.y () / gridSize)) * gridSize;
 
-            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += scene()->backgroundGridSize())
+            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += gridSize)
             {
                 painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
             }

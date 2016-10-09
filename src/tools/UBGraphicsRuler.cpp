@@ -180,7 +180,7 @@ void UBGraphicsRuler::paintGraduations(QPainter *painter)
     // Update the width of one "centimeter" to correspond to the width of the background grid (whether it is displayed or not)
     sPixelsPerCentimeter = UBApplication::boardController->activeScene()->backgroundGridSize();
 
-    double pixelsPerMillimeter = double(sPixelsPerCentimeter)/10.0;
+    qreal pixelsPerMillimeter = sPixelsPerCentimeter/10.0;
     int rulerLengthInMillimeters = (rect().width() - sLeftEdgeMargin - sRoundingRadius)/pixelsPerMillimeter;
 
     // When a "centimeter" is too narrow, we only display every 5th number, and every 5th millimeter mark

@@ -152,6 +152,8 @@ void UBBoardController::init()
 
     setActiveDocumentScene(doc);
 
+    initBackgroundGridSize();
+
     undoRedoStateChange(true);
 
 }
@@ -162,6 +164,35 @@ UBBoardController::~UBBoardController()
     delete mDisplayView;
 }
 
+/**
+ * @brief Set the default background grid size to appear as roughly 1cm on screen
+ */
+void UBBoardController::initBackgroundGridSize()
+{
+    // Besides adjusting for DPI, we also need to scale the grid size by the ratio of the control view size
+    // to document size. However the control view isn't available as soon as the boardController is created,
+    // so we approximate this ratio as (document resolution) / (screen resolution).
+    // Later on, this is calculated by `updateSystemScaleFactor` and stored in `mSystemScaleFactor`.
+
+    QDesktopWidget* desktop = UBApplication::desktop();
+    qreal dpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2.;
+
+    //qDebug() << "dpi: " << dpi;
+
+    // The display manager isn't initialized yet so we have to just assume the control view is on the main display
+    qreal screenY = desktop->screenGeometry(mControlView).height();
+    qreal documentY = mActiveScene->nominalSize().height();
+    qreal resolutionRatio = documentY / screenY;
+
+    //qDebug() << "resolution ratio: " << resolutionRatio;
+
+    int gridSize = (resolutionRatio * 10. * dpi) / UBGeometryUtils::inchSize;
+
+    UBSettings::settings()->crossSize = gridSize;
+    mActiveScene->setBackgroundGridSize(gridSize);
+
+    //qDebug() << "grid size: " << gridSize;
+}
 
 int UBBoardController::currentPage()
 {
