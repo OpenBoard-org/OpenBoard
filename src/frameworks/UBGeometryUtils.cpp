@@ -265,6 +265,36 @@ QPolygonF UBGeometryUtils::curveToPolygon(const QList<QPointF>& points, qreal st
     if (n_points == 2)
         return lineToPolygon(points[0], points[1], startWidth, endWidth);
 
+    QList<QPair<QPointF, qreal> > pointsAndWidths;
+    for (int i(0); i < n_points; ++i) {
+        qreal width = startWidth + (qreal(i)/qreal(n_points-1)) * (endWidth - startWidth);
+
+        pointsAndWidths << QPair<QPointF, qreal>(points[i], width);
+    }
+
+    return curveToPolygon(pointsAndWidths, true, true);
+}
+
+/**
+ * @brief Build and return a polygon from a list of points and thicknesses (at least 2)
+ *
+ * The resulting polygon will pass by all points in the curve; the segments are joined by
+ * (approximately) curved joints. The ends of the polygon can be terminated by arcs by passing
+ * `true` as the `roundStart` and/or `roundEnd` parameters.
+ *
+ */
+QPolygonF UBGeometryUtils::curveToPolygon(const QList<QPair<QPointF, qreal> >& points, bool roundStart, bool roundEnd)
+{
+    int n_points = points.size();
+
+    if (n_points == 0)
+        return QPolygonF();
+    if (n_points == 1)
+        return lineToPolygon(points.first().first, points.first().first, points.first().second, points.first().second);
+
+    qreal startWidth = points.first().second;
+    qreal endWidth = points.last().second;
+
     /* The vertices (x's) are calculated based on the stroke's width and angle, and the position of the
        supplied points (o's):
 
@@ -276,15 +306,16 @@ QPolygonF UBGeometryUtils::curveToPolygon(const QList<QPointF>& points, qreal st
 
        The vertices above and below each 'o' point are temporarily stored together, 
        as a pair of points.
-
      */
+
+    typedef QPair<QPointF, QPointF> pointPair;
     QList<pointPair> newPoints;
 
 
-    QLineF firstSegment = QLineF(points[0], points[1]);
+    QLineF firstSegment = QLineF(points[0].first, points[1].first);
     QLineF normal = firstSegment.normalVector();
     normal.setLength(startWidth/2.0);
-    newPoints << pointPair(normal.p2(), points[0] - QPointF(normal.dx(), normal.dy()));
+    newPoints << pointPair(normal.p2(), points[0].first - QPointF(normal.dx(), normal.dy()));
 
     /*
     Calculating the vertices (d1 and d2, below) is a little less trivial for the
@@ -306,45 +337,50 @@ QPolygonF UBGeometryUtils::curveToPolygon(const QList<QPointF>& points, qreal st
     */
 
     for (int i(1); i < n_points-1; ++i) {
-        qreal width = startWidth + (qreal(i)/qreal(n_points-1)) * (endWidth - startWidth);
+        //qreal width = startWidth + (qreal(i)/qreal(n_points-1)) * (endWidth - startWidth);
 
-        QLineF normal = (QLineF(points[i-1], points[i+1])).normalVector();
-        normal.setLength(width/2.0);
-        QPointF d1 = points[i] + QPointF(normal.dx(), normal.dy());
-        QPointF d2 = points[i] - QPointF(normal.dx(), normal.dy());
+        QLineF normal = (QLineF(points[i-1].first, points[i+1].first)).normalVector();
+        normal.setLength(points[i].second/2.0);
+        QPointF d1 = points[i].first + QPointF(normal.dx(), normal.dy());
+        QPointF d2 = points[i].first - QPointF(normal.dx(), normal.dy());
 
         newPoints << pointPair(d1, d2);
     }
 
     // The last point is similar to the first
-    QLineF lastSegment = QLineF(points[n_points-2], points[n_points-1]);
+    QLineF lastSegment = QLineF(points[n_points-2].first, points[n_points-1].first);
     normal = lastSegment.normalVector();
     normal.setLength(endWidth/2.0);
 
-    QPointF d1 = points.last() + QPointF(normal.dx(), normal.dy());
-    QPointF d2 = points.last() - QPointF(normal.dx(), normal.dy());
+    QPointF d1 = points.last().first + QPointF(normal.dx(), normal.dy());
+    QPointF d2 = points.last().first - QPointF(normal.dx(), normal.dy());
 
     newPoints << pointPair(d1, d2);
 
     QPainterPath path;
+    path.setFillRule(Qt::WindingFill);
     path.moveTo(newPoints[0].first);
 
     for (int i(1); i < n_points; ++i) {
         path.lineTo(newPoints[i].first);
     }
 
-    path.arcTo(points.last().x() - endWidth/2.0, points.last().y() - endWidth/2.0, endWidth, endWidth, (90.0 + lastSegment.angle()), -180.0);
-    //path.lineTo(newPoints.last().second);
+    if (roundEnd)
+        path.arcTo(points.last().first.x() - endWidth/2.0, points.last().first.y() - endWidth/2.0, endWidth, endWidth, (90.0 + lastSegment.angle()), -180.0);
+    else
+        path.lineTo(newPoints.last().second);
 
     for (int i(n_points-1); i >= 0; --i) {
         path.lineTo(newPoints[i].second);
     }
 
-    path.arcTo(points[0].x() - startWidth/2.0, points[0].y() - startWidth/2.0, startWidth, startWidth, (firstSegment.angle() - 90.0), -180.0);
-    //path.lineTo(newPoints[0].second);
+    if (roundStart)
+        path.arcTo(points[0].first.x() - startWidth/2.0, points[0].first.y() - startWidth/2.0, startWidth, startWidth, (firstSegment.angle() - 90.0), -180.0);
+    else
+        path.lineTo(newPoints[0].first);
 
 
-    path.closeSubpath();
+    //path.closeSubpath();
 
     return path.toFillPolygon();
 }
@@ -390,4 +426,12 @@ void UBGeometryUtils::crashPointList(QVector<QPointF> &points)
             ++position;
         }
     }
+}
+
+/**
+ * @brief Return the angle between three points
+ */
+qreal UBGeometryUtils::angle(const QPointF& a, const QPointF& b, const QPointF& c)
+{
+    return (QLineF(a, b).angle() - QLineF(b, c).angle());
 }

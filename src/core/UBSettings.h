@@ -274,6 +274,10 @@ class UBSettings : public QObject
         UBSetting* boardUseHighResTabletEvent;
 
         UBSetting* boardInterpolatePenStrokes;
+        UBSetting* boardSimplifyPenStrokes;
+        UBSetting* boardSimplifyPenStrokesThresholdAngle;
+        UBSetting* boardInterpolateMarkerStrokes;
+        UBSetting* boardSimplifyMarkerStrokes;
 
         UBSetting* boardKeyboardPaletteKeyBtnSize;
 

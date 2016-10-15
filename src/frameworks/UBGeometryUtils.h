@@ -48,11 +48,14 @@ class UBGeometryUtils
         static QPolygonF lineToPolygon(const QPointF& pStart, const QPointF& pEnd,
                 const qreal& pStartWidth, const qreal& pEndWidth);
         static QPolygonF curveToPolygon(const QList<QPointF>& points, qreal startWidth, qreal endWidth);
+        static QPolygonF curveToPolygon(const QList<QPair<QPointF, qreal> >& points, bool roundStart, bool roundEnd);
 
         static QPointF pointConstrainedInRect(QPointF point, QRectF rect);
         static QPoint pointConstrainedInRect(QPoint point, QRect rect);
 
         static void crashPointList(QVector<QPointF> &points);
+
+        static qreal angle(const QPointF& a, const QPointF& b, const QPointF& c);
 
         const static int centimeterGraduationHeight;
         const static int halfCentimeterGraduationHeight;

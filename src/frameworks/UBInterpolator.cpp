@@ -34,7 +34,7 @@ void UBQuadraticBezier::setPoints(QPointF start, QPointF control, QPointF end)
 /**
  * @brief Return n points along the curve, including start and end points (thus n should be larger than or equal to 2).
  *
- * The higher n, the more accurate the result
+ * The higher n, the more accurate the resulting curve will be.
  */
 QList<QPointF> UBQuadraticBezier::getPoints(int n)
 {

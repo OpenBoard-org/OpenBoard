@@ -121,10 +121,12 @@ void UBGraphicsPolygonItem::setStrokesGroup(UBGraphicsStrokesGroup *group)
 
 void UBGraphicsPolygonItem::setStroke(UBGraphicsStroke* stroke)
 {
-    clearStroke();
+    if (stroke) {
+        clearStroke();
 
-    mStroke = stroke;
-    mStroke->addPolygon(this);
+        mStroke = stroke;
+        mStroke->addPolygon(this);
+    }
 }
 
 UBGraphicsStroke* UBGraphicsPolygonItem::stroke() const

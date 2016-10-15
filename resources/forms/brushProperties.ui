@@ -521,6 +521,30 @@
      </item>
     </layout>
    </item>
+   <item row="8" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="strokeSimplificationFrame">
+     <item>
+      <widget class="QCheckBox" name="simplifyStrokesCheckBox">
+       <property name="text">
+        <string>Simplify strokes after drawing (experimental)</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
   </layout>
  </widget>
  <customwidgets>

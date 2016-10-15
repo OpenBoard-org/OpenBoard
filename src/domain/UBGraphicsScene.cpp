@@ -415,7 +415,7 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             // ---------------------------------------------------------------
             // Create a new Stroke. A Stroke is a collection of QGraphicsLines
             // ---------------------------------------------------------------
-            mCurrentStroke = new UBGraphicsStroke();
+            mCurrentStroke = new UBGraphicsStroke(this);
 
             if (currentTool != UBStylusTool::Line){
                 // Handle the pressure
@@ -438,7 +438,7 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
                 moveTo(scenePos);
                 drawLineTo(scenePos, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
 
-                mCurrentStroke->addPoint(scenePos);
+                mCurrentStroke->addPoint(scenePos, width);
             }
             accepted = true;
         }
@@ -543,7 +543,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
             }
 
             if (!mCurrentStroke)
-                mCurrentStroke = new UBGraphicsStroke();
+                mCurrentStroke = new UBGraphicsStroke(this);
 
             if(dc->mActiveRuler){
                 dc->mActiveRuler->DrawLine(position, width);
@@ -551,20 +551,15 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
             else{
                 UBInterpolator::InterpolationMethod interpolator = UBInterpolator::NoInterpolation;
 
-                /*
-                if (currentTool == UBStylusTool::Marker) {
-                    // The marker is already super slow due to the transparency, we can't also do interpolation
-                    interpolator = UBInterpolator::NoInterpolation;
-                }
-                */
-
-                if (UBSettings::settings()->boardInterpolatePenStrokes->get().toBool()) {
+                if ((currentTool == UBStylusTool::Pen && UBSettings::settings()->boardInterpolatePenStrokes->get().toBool())
+                    || (currentTool == UBStylusTool::Marker && UBSettings::settings()->boardInterpolateMarkerStrokes->get().toBool()))
+                {
                     interpolator = UBInterpolator::Bezier;
                 }
 
-                QList<QPointF> newPoints = mCurrentStroke->addPoint(scenePos, interpolator);
+                QList<QPair<QPointF, qreal> > newPoints = mCurrentStroke->addPoint(scenePos, width, interpolator);
                 if (newPoints.length() > 1) {
-                    drawCurve(newPoints, mPreviousWidth, width);
+                    drawCurve(newPoints);
                 }
 
                 if (interpolator == UBInterpolator::Bezier) {
@@ -578,7 +573,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                         mTempPolygon = NULL;
                     }
 
-                    QPointF lastDrawnPoint = newPoints.last();
+                    QPointF lastDrawnPoint = newPoints.last().first;
 
                     mTempPolygon = lineToPolygonItem(QLineF(lastDrawnPoint, scenePos), mPreviousWidth, width);
                     addItem(mTempPolygon);
@@ -657,6 +652,14 @@ bool UBGraphicsScene::inputDeviceRelease()
                 mTempPolygon = NULL;
                 addPolygonItemToCurrentStroke(poly);
             }
+
+            // replace the stroke by a simplified version of it
+            if ((currentTool == UBStylusTool::Pen && UBSettings::settings()->boardSimplifyPenStrokes->get().toBool())
+                || (currentTool == UBStylusTool::Marker && UBSettings::settings()->boardSimplifyMarkerStrokes->get().toBool()))
+            {
+                simplifyCurrentStroke();
+            }
+
 
             UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
@@ -857,6 +860,15 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &startWid
     }
 }
 
+void UBGraphicsScene::drawCurve(const QList<QPair<QPointF, qreal> >& points)
+{
+    UBGraphicsPolygonItem* polygonItem = curveToPolygonItem(points);
+    addPolygonItemToCurrentStroke(polygonItem);
+
+    mPreviousPoint = points.last().first;
+    mPreviousWidth = points.last().second;
+}
+
 void UBGraphicsScene::drawCurve(const QList<QPointF>& points, qreal startWidth, qreal endWidth)
 {
     UBGraphicsPolygonItem* polygonItem = curveToPolygonItem(points, startWidth, endWidth);
@@ -886,7 +898,7 @@ void UBGraphicsScene::addPolygonItemToCurrentStroke(UBGraphicsPolygonItem* polyg
     // Here we add the item to the scene
     addItem(polygonItem);
     if (!mCurrentStroke)
-        mCurrentStroke = new UBGraphicsStroke();
+        mCurrentStroke = new UBGraphicsStroke(this);
 
     polygonItem->setStroke(mCurrentStroke);
 
@@ -1151,12 +1163,19 @@ UBGraphicsPolygonItem* UBGraphicsScene::arcToPolygonItem(const QLineF& pStartRad
     return polygonToPolygonItem(polygon);
 }
 
+UBGraphicsPolygonItem* UBGraphicsScene::curveToPolygonItem(const QList<QPair<QPointF, qreal> >& points)
+{
+    QPolygonF polygon = UBGeometryUtils::curveToPolygon(points, false, true);
+
+    return polygonToPolygonItem(polygon);
+
+}
+
 UBGraphicsPolygonItem* UBGraphicsScene::curveToPolygonItem(const QList<QPointF>& points, qreal startWidth, qreal endWidth)
 {
     QPolygonF polygon = UBGeometryUtils::curveToPolygon(points, startWidth, endWidth);
 
     return polygonToPolygonItem(polygon);
-
 }
 
 void UBGraphicsScene::clearSelectionFrame()
@@ -2625,6 +2644,30 @@ bool UBGraphicsScene::hasTextItemWithFocus(UBGraphicsGroupContainerItem *item){
     return bHasFocus;
 }
 
+
+void UBGraphicsScene::simplifyCurrentStroke()
+{
+    if (!mCurrentStroke)
+        return;
+
+    UBGraphicsStroke* simplerStroke = mCurrentStroke->simplify();
+    if (!simplerStroke)
+        return;
+
+    foreach(UBGraphicsPolygonItem* poly, mCurrentStroke->polygons()){
+        mPreviousPolygonItems.removeAll(poly);
+        removeItem(poly);
+    }
+
+    mCurrentStroke = simplerStroke;
+
+    foreach(UBGraphicsPolygonItem* poly, mCurrentStroke->polygons()) {
+        addItem(poly);
+        mPreviousPolygonItems.append(poly);
+    }
+
+}
+
 void UBGraphicsScene::setDocumentUpdated()
 {
     if (document())
@@ -2738,5 +2781,5 @@ void UBGraphicsScene::setToolCursor(int tool)
 
 void UBGraphicsScene::initStroke()
 {
-    mCurrentStroke = new UBGraphicsStroke();
+    mCurrentStroke = new UBGraphicsStroke(this);
 }
