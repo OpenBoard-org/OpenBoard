@@ -800,6 +800,14 @@
         <source>Open the tutorial web page</source>
         <translation>Ouvrir la page Web des tutoriels</translation>
     </message>
+    <message>
+        <source>Ruled Light Background</source>
+        <translation>Fond ligné clair</translation>
+    </message>
+    <message>
+        <source>Ruled Dark Background</source>
+        <translation>Fond ligné foncé</translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -890,6 +898,13 @@
     <message>
         <source>Update</source>
         <translation>Mettre à jour</translation>
+    </message>
+</context>
+<context>
+    <name>UBBackgroundPalette</name>
+    <message>
+        <source>Grid size</source>
+        <translation>Taille du quadrillage</translation>
     </message>
 </context>
 <context>
@@ -1240,6 +1255,26 @@
         <source>Warnings during export was appeared</source>
         <translation>Avertissements lors de l&apos;exportation</translation>
     </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation>Export du document...</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation>Echec de l&apos;export</translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation>Impossible d&apos;exporter dans le dossier sélectionné. Vous n&apos;avez pas les permissions nécessaires pour sauvegarder le fichier.</translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation>Impossible d&apos;exporter: pas de droits d&apos;écriture dans le répertoire</translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation>Export réussi.</translation>
+    </message>
 </context>
 <context>
     <name>UBExportCFF</name>
@@ -1272,7 +1307,7 @@
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export réussi.</translation>
+        <translation type="vanished">Export réussi.</translation>
     </message>
     <message>
         <source>Page</source>
@@ -1280,7 +1315,7 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Exportation du document...</translation>
+        <translation type="vanished">Exportation du document...</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
@@ -1292,15 +1327,15 @@
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation>Impossible d&apos;exporter: pas de droits d&apos;écriture dans le répertoire</translation>
+        <translation type="vanished">Impossible d&apos;exporter: pas de droits d&apos;écriture dans le répertoire</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation>Echec de l&apos;export</translation>
+        <translation type="vanished">Echec de l&apos;export</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation>Impossible d&apos;exporter dans le dossier sélectionné. Vous n&apos;avez pas les permissions nécessaires pour sauvegarder le fichier.</translation>
+        <translation type="vanished">Impossible d&apos;exporter dans le dossier sélectionné. Vous n&apos;avez pas les permissions nécessaires pour sauvegarder le fichier.</translation>
     </message>
 </context>
 <context>
@@ -1311,7 +1346,7 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Exportation du document...</translation>
+        <translation type="vanished">Exportation du document...</translation>
     </message>
     <message>
         <source>Export to PDF</source>
@@ -1319,19 +1354,19 @@
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export terminé.</translation>
+        <translation type="vanished">Export terminé.</translation>
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation>Impossible d&apos;exporter: pas de droits d&apos;écriture dans le répertoire</translation>
+        <translation type="vanished">Impossible d&apos;exporter: pas de droits d&apos;écriture dans le répertoire</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation>Echec de l&apos;export</translation>
+        <translation type="vanished">Echec de l&apos;export</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation>Impossible d&apos;exporter dans le dossier sélectionné. Vous n&apos;avez pas les permissions nécessaires pour sauvegarder le fichier.</translation>
+        <translation type="vanished">Impossible d&apos;exporter dans le dossier sélectionné. Vous n&apos;avez pas les permissions nécessaires pour sauvegarder le fichier.</translation>
     </message>
 </context>
 <context>
@@ -1346,11 +1381,11 @@
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export terminé.</translation>
+        <translation type="vanished">Export terminé.</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Exportation du document...</translation>
+        <translation type="vanished">Exportation du document...</translation>
     </message>
     <message>
         <source>Export to PDF</source>
@@ -2423,6 +2458,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Pen is Pressure Sensitive</source>
         <translation>Stylet sensible à la pression</translation>
+    </message>
+    <message>
+        <source>Smooth strokes (experimental)</source>
+        <translation>Lissage des traits (expérimental)</translation>
+    </message>
+    <message>
+        <source>Simplify strokes after drawing (experimental)</source>
+        <translation>Simplification des traits post-dessin (expérimental)</translation>
     </message>
 </context>
 <context>

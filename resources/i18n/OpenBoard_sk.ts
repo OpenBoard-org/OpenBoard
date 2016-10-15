@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sk_SK" sourcelanguage="en">
+<TS version="2.1" language="sk_SK" sourcelanguage="en">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -747,7 +747,7 @@
     </message>
     <message>
         <source>Smalle Eraser</source>
-<translatorcomment>spelling mistake in source: should be small</translatorcomment>
+        <translatorcomment>spelling mistake in source: should be small</translatorcomment>
         <translation>Malá guma</translation>
     </message>
     <message>
@@ -803,6 +803,14 @@
         <source>Open the tutorial web page</source>
         <translation>Otvoriť webovú stránku príručky</translation>
     </message>
+    <message>
+        <source>Ruled Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -846,11 +854,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation>ID prvku =</translation>
+        <translation type="vanished">ID prvku =</translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation>Obsah nie je podporovaný v cieľovom formáte.</translation>
+        <translation type="vanished">Obsah nie je podporovaný v cieľovom formáte.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -893,6 +901,13 @@
     <message>
         <source>Update available</source>
         <translation>K dispozícii je aktualizácia</translation>
+    </message>
+</context>
+<context>
+    <name>UBBackgroundPalette</name>
+    <message>
+        <source>Grid size</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1240,28 +1255,48 @@
         <source>Warnings during export was appeared</source>
         <translation>Počas exportu sa objavili varovania</translation>
     </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">Exportuje sa dokument...</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished">Export zlyhal</translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished">Do vybraného umiestnenia sa nedá exportovať. Na uloženie súboru nemáte dostatočné oprávnenia.</translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished">Export sa nepodaril: do umiestnenia sa nedá zapisovať</translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Export bol úspešný.</translation>
+    </message>
 </context>
 <context>
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation>Exportovať do IWB</translation>
+        <translation type="vanished">Exportovať do IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation>Exportovať ako súbor IWB</translation>
+        <translation type="vanished">Exportovať ako súbor IWB</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Exportuje sa dokument...</translation>
+        <translation type="vanished">Exportuje sa dokument...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export bol úspešný.</translation>
+        <translation type="vanished">Export bol úspešný.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>Export sa nepodaril.</translation>
+        <translation type="vanished">Export sa nepodaril.</translation>
     </message>
 </context>
 <context>
@@ -1280,11 +1315,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Exportuje sa dokument...</translation>
+        <translation type="vanished">Exportuje sa dokument...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export bol úspešný.</translation>
+        <translation type="vanished">Export bol úspešný.</translation>
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
@@ -1292,15 +1327,15 @@
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation>Export sa nepodaril: do umiestnenia sa nedá zapisovať</translation>
+        <translation type="vanished">Export sa nepodaril: do umiestnenia sa nedá zapisovať</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation>Export zlyhal</translation>
+        <translation type="vanished">Export zlyhal</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation>Do vybraného umiestnenia sa nedá exportovať. Na uloženie súboru nemáte dostatočné oprávnenia.</translation>
+        <translation type="vanished">Do vybraného umiestnenia sa nedá exportovať. Na uloženie súboru nemáte dostatočné oprávnenia.</translation>
     </message>
 </context>
 <context>
@@ -1315,23 +1350,23 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Exportuje sa dokument...</translation>
+        <translation type="vanished">Exportuje sa dokument...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export bol úspešný.</translation>
+        <translation type="vanished">Export bol úspešný.</translation>
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation>Export sa nepodaril: do umiestnenia sa nedá zapisovať</translation>
+        <translation type="vanished">Export sa nepodaril: do umiestnenia sa nedá zapisovať</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation>Export zlyhal</translation>
+        <translation type="vanished">Export zlyhal</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation>Do vybraného umiestnenia sa nedá exportovať. Na uloženie súboru nemáte dostatočné oprávnenia.</translation>
+        <translation type="vanished">Do vybraného umiestnenia sa nedá exportovať. Na uloženie súboru nemáte dostatočné oprávnenia.</translation>
     </message>
 </context>
 <context>
@@ -1350,11 +1385,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Exportuje sa dokument...</translation>
+        <translation type="vanished">Exportuje sa dokument...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export bol úspešný.</translation>
+        <translation type="vanished">Export bol úspešný.</translation>
     </message>
 </context>
 <context>
@@ -1599,23 +1634,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Importing file %1...</source>
-        <translation>Nahráva sa súbor %1...</translation>
+        <translation type="vanished">Nahráva sa súbor %1...</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation>Nahrávanie zlyhalo.</translation>
+        <translation type="vanished">Nahrávanie zlyhalo.</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>Nepodarilo sa nahrať súbor %1.</translation>
+        <translation type="vanished">Nepodarilo sa nahrať súbor %1.</translation>
     </message>
     <message>
         <source>Common File Format (</source>
-        <translation>Bežný formát súboru (</translation>
+        <translation type="vanished">Bežný formát súboru (</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Nahrávanie bolo úspešné.</translation>
+        <translation type="vanished">Nahrávanie bolo úspešné.</translation>
     </message>
 </context>
 <context>
@@ -1866,9 +1901,9 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
         <translation>Nepodarilo sa spustiť kódovač...</translation>
     </message>
     <message>
-<source>OpenBoard Cast</source>
-<translatorcomment>Názov súboru podcastu</translatorcomment>
-<translation>Film OpenBoardu</translation>
+        <source>OpenBoard Cast</source>
+        <translatorcomment>Názov súboru podcastu</translatorcomment>
+        <translation>Film OpenBoardu</translation>
     </message>
 </context>
 <context>
@@ -2236,7 +2271,7 @@ Reštartujte aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi.<
     <name>WBHistoryTreeModel</name>
     <message>
         <source>%1 items</source>
-        <translatorcomment>2,3,4 položky, 0, >=5 položiek</translatorcomment>
+        <translatorcomment>2,3,4 položky, 0, &gt;=5 položiek</translatorcomment>
         <translation>%1 položiek</translation>
     </message>
     <message>
@@ -2423,6 +2458,14 @@ p, li { white-space: pre-wrap; }
         <source>On Dark Background</source>
         <translation>Na tmavom pozadí</translation>
     </message>
+    <message>
+        <source>Smooth strokes (experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Simplify strokes after drawing (experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>capturePublishingDialog</name>
@@ -2522,7 +2565,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation>Veľkosť tlačidla klávesnice:</translation>
+        <translation type="vanished">Veľkosť tlačidla klávesnice:</translation>
     </message>
     <message>
         <source>Stylus Palette</source>

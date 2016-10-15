@@ -803,6 +803,14 @@
         <source>Open the tutorial web page</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Ruled Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -893,6 +901,13 @@
     <message>
         <source>Update</source>
         <translation>Aktualizacja</translation>
+    </message>
+</context>
+<context>
+    <name>UBBackgroundPalette</name>
+    <message>
+        <source>Grid size</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1241,6 +1256,26 @@
         <source>Warnings during export was appeared</source>
         <translation>Podczas eksportowania pojawiły się ostrzeżenia</translation>
     </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">Eksportowanie dokumentu...</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Eksportowanie zakończone powodzeniem.</translation>
+    </message>
 </context>
 <context>
     <name>UBExportCFF</name>
@@ -1277,11 +1312,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Eksportowanie dokumentu...</translation>
+        <translation type="vanished">Eksportowanie dokumentu...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Eksportowanie zakończone powodzeniem.</translation>
+        <translation type="vanished">Eksportowanie zakończone powodzeniem.</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
@@ -1289,18 +1324,6 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1312,27 +1335,15 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Eksportowanie dokumentu...</translation>
+        <translation type="vanished">Eksportowanie dokumentu...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Eksportowanie zakończone powodzeniem.</translation>
+        <translation type="vanished">Eksportowanie zakończone powodzeniem.</translation>
     </message>
     <message>
         <source>Export to PDF</source>
         <translation>Eksportowanie do PDF</translation>
-    </message>
-    <message>
-        <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1343,11 +1354,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Eksportowanie dokumentu...</translation>
+        <translation type="vanished">Eksportowanie dokumentu...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Eksportowanie zakończone powodzeniem.</translation>
+        <translation type="vanished">Eksportowanie zakończone powodzeniem.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -2424,6 +2435,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Pen is Pressure Sensitive</source>
         <translation>Pióro jest czułe na nacisk</translation>
+    </message>
+    <message>
+        <source>Smooth strokes (experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Simplify strokes after drawing (experimental)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -799,6 +799,14 @@
         <source>Open the tutorial web page</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Ruled Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -881,6 +889,13 @@
     <message>
         <source>Update</source>
         <translation>Update</translation>
+    </message>
+</context>
+<context>
+    <name>UBBackgroundPalette</name>
+    <message>
+        <source>Grid size</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1226,6 +1241,26 @@
         <source>Warnings during export was appeared</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">Document wordt geëxporteerd...</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Export gelukt.</translation>
+    </message>
 </context>
 <context>
     <name>UBExportCFF</name>
@@ -1262,11 +1297,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Document wordt geëxporteerd...</translation>
+        <translation type="vanished">Document wordt geëxporteerd...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export gelukt.</translation>
+        <translation type="vanished">Export gelukt.</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
@@ -1274,18 +1309,6 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1297,27 +1320,15 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Document wordt geëxporteerd...</translation>
+        <translation type="vanished">Document wordt geëxporteerd...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export gelukt.</translation>
+        <translation type="vanished">Export gelukt.</translation>
     </message>
     <message>
         <source>Export to PDF</source>
         <translation>Exporteren naar PDF bestand</translation>
-    </message>
-    <message>
-        <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1328,11 +1339,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Document wordt geëxporteerd...</translation>
+        <translation type="vanished">Document wordt geëxporteerd...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export gelukt.</translation>
+        <translation type="vanished">Export gelukt.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -2398,6 +2409,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Pen is Pressure Sensitive</source>
         <translation>Pen is drukgevoelig</translation>
+    </message>
+    <message>
+        <source>Smooth strokes (experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Simplify strokes after drawing (experimental)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -801,6 +801,14 @@
         <source>Open the tutorial web page</source>
         <translation>Abrir a página web de tutorial</translation>
     </message>
+    <message>
+        <source>Ruled Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -891,6 +899,13 @@
     <message>
         <source>Update</source>
         <translation>Atualizar</translation>
+    </message>
+</context>
+<context>
+    <name>UBBackgroundPalette</name>
+    <message>
+        <source>Grid size</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1236,6 +1251,26 @@
         <source>Warnings during export was appeared</source>
         <translation>Surgiram alertas durante a exportação</translation>
     </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">A exportar documento...</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished">Exportação falhou</translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished">Exportação falhou: localização não gravável</translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Exportação bem sucedida.</translation>
+    </message>
 </context>
 <context>
     <name>UBExportCFF</name>
@@ -1272,11 +1307,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>A exportar documento...</translation>
+        <translation type="vanished">A exportar documento...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Exportação bem sucedida.</translation>
+        <translation type="vanished">Exportação bem sucedida.</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
@@ -1288,15 +1323,15 @@
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation>Exportação falhou: localização não gravável</translation>
+        <translation type="vanished">Exportação falhou: localização não gravável</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation>Exportação falhou</translation>
+        <translation type="vanished">Exportação falhou</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation>Impossível exportar para a localização selcionada. Você não possui as permissões necessárias para gravar o arquivo.</translation>
+        <translation type="vanished">Impossível exportar para a localização selcionada. Você não possui as permissões necessárias para gravar o arquivo.</translation>
     </message>
 </context>
 <context>
@@ -1307,11 +1342,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>A exportar documento...</translation>
+        <translation type="vanished">A exportar documento...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Exportação bem sucedida.</translation>
+        <translation type="vanished">Exportação bem sucedida.</translation>
     </message>
     <message>
         <source>Export to PDF</source>
@@ -1319,15 +1354,15 @@
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation>Exportação falhou: localização não gravável</translation>
+        <translation type="vanished">Exportação falhou: localização não gravável</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation>Exportação falhou</translation>
+        <translation type="vanished">Exportação falhou</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation>Impossível exportar para a localização selecionada. Você não possui as permissões necessárias para gravar o arquivo.</translation>
+        <translation type="vanished">Impossível exportar para a localização selecionada. Você não possui as permissões necessárias para gravar o arquivo.</translation>
     </message>
 </context>
 <context>
@@ -1338,11 +1373,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>A exportar documento...</translation>
+        <translation type="vanished">A exportar documento...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Exportação bem sucedida.</translation>
+        <translation type="vanished">Exportação bem sucedida.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -2411,6 +2446,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Pen is Pressure Sensitive</source>
         <translation>Caneta sensível à pressão</translation>
+    </message>
+    <message>
+        <source>Smooth strokes (experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Simplify strokes after drawing (experimental)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

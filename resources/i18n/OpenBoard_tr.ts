@@ -799,6 +799,14 @@
         <source>Open the tutorial web page</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Ruled Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -889,6 +897,13 @@
     <message>
         <source>Update</source>
         <translation>Güncelle</translation>
+    </message>
+</context>
+<context>
+    <name>UBBackgroundPalette</name>
+    <message>
+        <source>Grid size</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1233,6 +1248,26 @@
         <source>Warnings during export was appeared</source>
         <translation>Dışa aktarma sırasında bir uyarı mesajı göründü</translation>
     </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">Döküman dışa aktarılıyor...</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBExportCFF</name>
@@ -1269,11 +1304,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Döküman dışa aktarılıyor...</translation>
+        <translation type="vanished">Döküman dışa aktarılıyor...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Dışa aktarım tamamlandı.</translation>
+        <translation type="vanished">Dışa aktarım tamamlandı.</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
@@ -1281,18 +1316,6 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1304,27 +1327,15 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Döküman dışa aktarılıyor...</translation>
+        <translation type="vanished">Döküman dışa aktarılıyor...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Dışa aktarım tamamlandı.</translation>
+        <translation type="vanished">Dışa aktarım tamamlandı.</translation>
     </message>
     <message>
         <source>Export to PDF</source>
         <translation>PDF Olarak Aktar</translation>
-    </message>
-    <message>
-        <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1335,11 +1346,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Döküman dışa aktarılıyor...</translation>
+        <translation type="vanished">Döküman dışa aktarılıyor...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Dışa aktarım tamamlandı.</translation>
+        <translation type="vanished">Dışa aktarım tamamlandı.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -2411,6 +2422,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Pen is Pressure Sensitive</source>
         <translation>Kalem Basınca Duyarlıdır</translation>
+    </message>
+    <message>
+        <source>Smooth strokes (experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Simplify strokes after drawing (experimental)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

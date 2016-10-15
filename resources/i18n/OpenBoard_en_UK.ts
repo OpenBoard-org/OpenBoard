@@ -799,6 +799,14 @@
         <source>Open the tutorial web page</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Ruled Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -880,6 +888,13 @@
     </message>
     <message>
         <source>Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBBackgroundPalette</name>
+    <message>
+        <source>Grid size</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1224,6 +1239,26 @@
         <source>Warnings during export was appeared</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBExportDocument</name>
@@ -1236,31 +1271,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Exporting %1 %2 of %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1271,27 +1286,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Export to PDF</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1299,14 +1294,6 @@
     <name>UBExportPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2345,6 +2332,14 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Pen is Pressure Sensitive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smooth strokes (experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Simplify strokes after drawing (experimental)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
