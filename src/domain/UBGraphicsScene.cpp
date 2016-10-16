@@ -548,6 +548,11 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
             if(dc->mActiveRuler){
                 dc->mActiveRuler->DrawLine(position, width);
             }
+
+            else if (currentTool == UBStylusTool::Line) {
+                drawLineTo(position, width, true);
+            }
+
             else{
                 UBInterpolator::InterpolationMethod interpolator = UBInterpolator::NoInterpolation;
 
@@ -1149,6 +1154,8 @@ void UBGraphicsScene::initPolygonItem(UBGraphicsPolygonItem* polygonItem)
     {
         polygonItem->setColor(colorOnLightBG);
     }
+
+    //polygonItem->setColor(QColor(rand()%256, rand()%256, rand()%256, polygonItem->brush().color().alpha()));
 
     polygonItem->setColorOnDarkBackground(colorOnDarkBG);
     polygonItem->setColorOnLightBackground(colorOnLightBG);
