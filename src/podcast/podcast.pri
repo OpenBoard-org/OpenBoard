@@ -51,6 +51,12 @@ linux-g++* {
             -lxcb-xfixes \
             -lxcb-render -lxcb-shape -lxcb -lX11 -lasound -lSDL -lx264 -lpthread -lvpx -lvorbisenc -lvorbis -ltheoraenc -ltheoradec -logg -lopus -lmp3lame -lfreetype -lfdk-aac -lass -llzma -lbz2 -lz -ldl -lswresample -lswscale -lavutil -lm
 
+    UBUNTU_VERSION = $$system(lsb_release -irs)
+    equals(UBUNTU_VERSION, Ubuntu 14.04) {
+        LIBS -= -lswresample
+        LIBS += -lavresample
+    }
+
 
     QMAKE_CXXFLAGS += -std=c++11 # move this to OpenBoard.pro when we can use C++11 on all platforms
 }

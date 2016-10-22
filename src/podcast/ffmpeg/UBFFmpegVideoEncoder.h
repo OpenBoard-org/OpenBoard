@@ -32,8 +32,17 @@ extern "C" {
     #include <libavutil/opt.h>
     #include <libavutil/mathematics.h>
     #include <libavutil/time.h>
+    #include <libavutil/avstring.h>
     #include <libswscale/swscale.h>
+
+// Due to the whole ffmpeg / libAV silliness, we have to support libavresample on some platforms
+#if LIBAVFORMAT_VERSION_MICRO > 100
     #include <libswresample/swresample.h>
+#else
+    #include <libavresample/avresample.h>
+    #define SwrContext AVAudioResampleContext 
+#endif
+
 }
 
 #include <atomic>

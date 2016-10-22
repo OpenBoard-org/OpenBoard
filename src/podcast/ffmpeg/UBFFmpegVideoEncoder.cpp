@@ -21,6 +21,138 @@
 
 #include "UBFFmpegVideoEncoder.h"
 
+// Due to the whole FFmpeg / libAV silliness, we have to support libavresample instead
+// of libswresapmle on some platforms, as well as now-obsolete function names
+#if LIBAVFORMAT_VERSION_MICRO < 100
+    #define swr_alloc               avresample_alloc_context
+    #define swr_init                avresample_open
+    #define swr_get_out_samples     avresample_get_out_samples
+    #define swr_free                avresample_free
+    #define av_opt_set_sample_fmt   av_opt_set_int
+
+    #define av_frame_alloc          avcodec_alloc_frame
+    #define av_frame_free           avcodec_free_frame
+    #define av_packet_unref         av_free_packet
+
+    #define AV_ERROR_MAX_STRING_SIZE    64
+    #define AV_CODEC_FLAG_GLOBAL_HEADER (1 << 22)
+
+    uint8_t* audio_samples_buffer; // used by processAudio because av_frame_get_buffer doesn't exist in this version
+
+    int avformat_alloc_output_context2(AVFormatContext **avctx, AVOutputFormat *oformat,
+                                       const char *format, const char *filename)
+    {
+        AVFormatContext *s = avformat_alloc_context();
+        int ret = 0;
+         
+        *avctx = NULL;
+        if (!s)
+            goto nomem;
+
+        if (!oformat) {
+            if (format) {
+                oformat = av_guess_format(format, NULL, NULL);
+                if (!oformat) {
+                    av_log(s, AV_LOG_ERROR, "Requested output format '%s' is not a suitable output format\n", format);
+                    ret = AVERROR(EINVAL);
+                    goto error;
+                }
+            } else {
+                oformat = av_guess_format(NULL, filename, NULL);
+                if (!oformat) {
+                    ret = AVERROR(EINVAL);
+                    av_log(s, AV_LOG_ERROR, "Unable to find a suitable output format for '%s'\n",
+                    filename);
+                    goto error;
+                }
+            }
+        }
+
+        s->oformat = oformat;
+        if (s->oformat->priv_data_size > 0) {
+            s->priv_data = av_mallocz(s->oformat->priv_data_size);
+            if (!s->priv_data)
+                goto nomem;
+            if (s->oformat->priv_class) {
+                *(const AVClass**)s->priv_data= s->oformat->priv_class;
+                av_opt_set_defaults(s->priv_data);
+            }
+        } else
+            s->priv_data = NULL;
+
+        if (filename)
+            av_strlcpy(s->filename, filename, sizeof(s->filename));
+
+        *avctx = s;
+        return 0;
+
+    nomem:
+        av_log(s, AV_LOG_ERROR, "Out of memory\n");
+        ret = AVERROR(ENOMEM);
+    error:
+        avformat_free_context(s);
+        return ret;
+    }
+
+
+    int av_samples_alloc_array_and_samples(uint8_t ***audio_data, int *linesize, int nb_channels,
+                                           int nb_samples, enum AVSampleFormat sample_fmt, int align)
+    {
+        int ret, nb_planes = av_sample_fmt_is_planar(sample_fmt) ? nb_channels : 1;
+         
+        *audio_data = (uint8_t**) av_malloc(sizeof(*audio_data) * nb_planes);
+        if (!*audio_data)
+            return AVERROR(ENOMEM);
+        ret = av_samples_alloc(*audio_data, linesize, nb_channels,
+        nb_samples, sample_fmt, align);
+        if (ret < 0)
+            av_freep(audio_data);
+        return ret;
+    }
+
+    int swr_convert(struct SwrContext *s, uint8_t **out, int out_count, const uint8_t **in, int in_count)
+    {
+        return avresample_convert(s, out, 0, out_count, const_cast<uint8_t **>(in), 0, in_count);
+    }
+
+
+#endif
+
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(55,55,0)
+     void av_packet_rescale_ts(AVPacket *pkt, AVRational src_tb, AVRational dst_tb)
+     {
+         if (pkt->pts != AV_NOPTS_VALUE)
+             pkt->pts = av_rescale_q(pkt->pts, src_tb, dst_tb);
+         if (pkt->dts != AV_NOPTS_VALUE)
+             pkt->dts = av_rescale_q(pkt->dts, src_tb, dst_tb);
+         if (pkt->duration > 0)
+             pkt->duration = av_rescale_q(pkt->duration, src_tb, dst_tb);
+         if (pkt->convergence_duration > 0)
+             pkt->convergence_duration = av_rescale_q(pkt->convergence_duration, src_tb, dst_tb);
+     }
+#endif
+
+#if defined(LIBAVRESAMPLE_VERSION_INT) && LIBAVRESAMPLE_VERSION_INT < AV_VERSION_INT(1,3,0)
+    //#include <libavresample/internal.h>
+    int avresample_get_out_samples(AVAudioResampleContext *avr, int in_nb_samples)
+    {
+        int64_t samples = avresample_get_delay(avr) + (int64_t)in_nb_samples;
+        /*
+        if (avr->resample_needed) {
+            samples = av_rescale_rnd(samples,
+                                     avr->out_sample_rate,
+                                     avr->in_sample_rate,
+                                     AV_ROUND_UP);
+        }
+        */
+        samples += avresample_available(avr);
+        if (samples > INT_MAX)
+            return AVERROR(EINVAL);
+        return samples;
+    }
+
+#endif
+
 //-------------------------------------------------------------------------
 // Utility functions
 //-------------------------------------------------------------------------
@@ -28,7 +160,7 @@
 QString avErrorToQString(int errnum)
 {
     char error[AV_ERROR_MAX_STRING_SIZE];
-    av_make_error_string(error, AV_ERROR_MAX_STRING_SIZE, errnum);
+    av_strerror(errnum, error, AV_ERROR_MAX_STRING_SIZE);
 
     return QString(error);
 }
@@ -287,9 +419,11 @@ bool UBFFmpegVideoEncoder::init()
         }
 
         av_opt_set_int(mSwrContext, "in_channel_count", inChannelCount, 0);
+        av_opt_set_int(mSwrContext, "in_channel_layout", av_get_default_channel_layout(inChannelCount), 0);
         av_opt_set_int(mSwrContext, "in_sample_rate", inSampleRate, 0);
         av_opt_set_sample_fmt(mSwrContext, "in_sample_fmt", (AVSampleFormat)mAudioInput->sampleFormat(), 0);
         av_opt_set_int(mSwrContext, "out_channel_count", c->channels, 0);
+        av_opt_set_int(mSwrContext, "out_channel_layout", c->channel_layout, 0);
         av_opt_set_int(mSwrContext, "out_sample_rate", c->sample_rate, 0);
         av_opt_set_sample_fmt(mSwrContext, "out_sample_fmt", c->sample_fmt, 0);
 
@@ -449,6 +583,7 @@ void UBFFmpegVideoEncoder::processAudio(QByteArray &data)
 
     bool framesAdded = false;
     while (av_audio_fifo_size(mAudioOutBuffer) > codecContext->frame_size) {
+
         AVFrame * avFrame = av_frame_alloc();
         avFrame->nb_samples = codecContext->frame_size;
         avFrame->channel_layout = codecContext->channel_layout;
@@ -456,7 +591,24 @@ void UBFFmpegVideoEncoder::processAudio(QByteArray &data)
         avFrame->sample_rate = codecContext->sample_rate;
         avFrame->pts = mAudioFrameCount;
 
+#if LIBAVFORMAT_VERSION_MICRO < 100
+        int buffer_size = av_samples_get_buffer_size(NULL, codecContext->channels, codecContext->frame_size, codecContext->sample_fmt, 0);
+        audio_samples_buffer = (uint8_t*)av_malloc(buffer_size);
+        if (!audio_samples_buffer) {
+            qWarning() << "Couldn't allocate samples for audio frame: " << avErrorToQString(ret);
+            break;
+        }
+
+        ret = avcodec_fill_audio_frame(avFrame,
+                                       codecContext->channels,
+                                       codecContext->sample_fmt,
+                                       (const uint8_t*)audio_samples_buffer,
+                                       buffer_size,
+                                       0);
+
+#else
         ret = av_frame_get_buffer(avFrame, 0);
+#endif
         if (ret < 0) {
             qWarning() << "Couldn't allocate frame: " << avErrorToQString(ret);
             break;
@@ -589,4 +741,11 @@ void UBFFmpegVideoEncoderWorker::writeLatestAudioFrame()
     AVFrame *frame = mAudioQueue.dequeue();
     writeFrame(frame, mAudioPacket, mController->mAudioStream, mController->mOutputFormatContext);
     av_frame_free(&frame);
+
+#if LIBAVFORMAT_VERSION_MICRO < 100
+    if (audio_samples_buffer) {
+        av_free(audio_samples_buffer);
+        audio_samples_buffer = NULL;
+    }
+#endif
 }
