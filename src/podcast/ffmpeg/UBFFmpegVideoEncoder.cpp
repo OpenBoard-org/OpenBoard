@@ -266,6 +266,7 @@ bool UBFFmpegVideoEncoder::init()
         c->channel_layout = av_get_default_channel_layout(c->channels);
         c->profile = FF_PROFILE_AAC_MAIN;
         c->time_base = {1, mAudioSampleRate};
+        c->strict_std_compliance = -2; // Enable use of experimental codec
 
         if (mOutputFormatContext->oformat->flags & AVFMT_GLOBALHEADER)
             c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
