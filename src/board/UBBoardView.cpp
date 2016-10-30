@@ -1170,7 +1170,8 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
 
                     if (item->type() == UBGraphicsW3CWidgetItem::Type
                             || item->type() == UBGraphicsPixmapItem::Type
-                            || item->type() == UBGraphicsMediaItem::Type
+                            || item->type() == UBGraphicsVideoItem::Type
+                            || item->type() == UBGraphicsAudioItem::Type
                             || item->type() == UBGraphicsSvgItem::Type
                             || item->type() == UBGraphicsTextItem::Type
                             || item->type() == UBGraphicsStrokesGroup::Type
