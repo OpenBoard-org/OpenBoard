@@ -223,23 +223,32 @@ UBGraphicsStroke* UBGraphicsStroke::simplify()
      * test these three points. As long as they are aligned, B is erased and we start over.
      * If not, the current B becomes the new A, and so on.
      *
+     * In case the stroke thickness varies a lot between A and B, then B is not removed even if it
+     * should be according to the previous criteria.
      *
      * TODO: more advanced algorithm that could also simplify curved sections of the stroke
      */
 
     // angle difference in degrees between AB and BC below which the segments are considered colinear
-    qreal threshold = UBSettings::settings()->boardSimplifyPenStrokesThresholdAngle->get().toReal();
+    qreal thresholdAngle = UBSettings::settings()->boardSimplifyPenStrokesThresholdAngle->get().toReal();
+
+    // Relative difference in thickness between two consecutive points (A and B) below which they are considered equal
+    qreal thresholdWidthDifference = UBSettings::settings()->boardSimplifyPenStrokesThresholdWidthDifference->get().toReal();
 
     QList<strokePoint>::iterator it = points.begin();
     QList<QList<strokePoint>::iterator> toDelete;
 
     while (it+2 != points.end()) {
+        // it, b_it and (b_it+1) correspond to A, B and C respectively
         QList<strokePoint>::iterator b_it(it+1);
 
         while (b_it+1 != points.end()) {
             qreal angle = qFabs(QLineF(it->first, b_it->first).angle() - QLineF(b_it->first, (b_it+1)->first).angle());
+            qreal widthRatio = qMax(it->second, b_it->second)/qMin(it->second, b_it->second);
+            if (widthRatio > thresholdWidthDifference)
+                qDebug() << "Width ratio: " << widthRatio;
 
-            if (angle < threshold)
+            if (angle < thresholdAngle && widthRatio < thresholdWidthDifference)
                 b_it = points.erase(b_it);
             else
                 break;
@@ -267,15 +276,17 @@ UBGraphicsStroke* UBGraphicsStroke::simplify()
         // certain threshold helps mitigate this issue.
         // TODO: fix fill issue
 
-        if (newStrokePoints.size() > 1 && i < points.size() - 1) {
-            qreal angle = qFabs(UBGeometryUtils::angle(points[i-1].first, points[i].first, points[i+1].first));
-            qDebug() << "Angle: " << angle;
-            if (angle > 40 && angle < 320)
+        if (hasAlpha()) {
+            if (newStrokePoints.size() > 1 && i < points.size() - 1) {
+                qreal angle = qFabs(UBGeometryUtils::angle(points[i-1].first, points[i].first, points[i+1].first));
+                qDebug() << "Angle: " << angle;
+                if (angle > 40 && angle < 320)
+                    drawCurve = true;
+            }
+
+            if (newStrokePoints.size() % 20 == 0)
                 drawCurve = true;
         }
-
-        if (newStrokePoints.size() % 20 == 0)
-            drawCurve = true;
 
 
         if (drawCurve) {

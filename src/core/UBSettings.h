@@ -276,6 +276,7 @@ class UBSettings : public QObject
         UBSetting* boardInterpolatePenStrokes;
         UBSetting* boardSimplifyPenStrokes;
         UBSetting* boardSimplifyPenStrokesThresholdAngle;
+        UBSetting* boardSimplifyPenStrokesThresholdWidthDifference;
         UBSetting* boardInterpolateMarkerStrokes;
         UBSetting* boardSimplifyMarkerStrokes;
 
