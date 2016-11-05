@@ -171,6 +171,7 @@ void UBGraphicsPolygonItem::copyItemParameters(UBItem *copy) const
         cp->setBrush(this->brush());
         cp->setPen(this->pen());
         cp->mHasAlpha = this->mHasAlpha;
+        cp->setFillRule(this->fillRule());
 
         cp->setColorOnDarkBackground(this->colorOnDarkBackground());
         cp->setColorOnLightBackground(this->colorOnLightBackground());

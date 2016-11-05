@@ -1599,6 +1599,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::polygonItemToSvgPolygon(UBGraphicsPo
 
         if (polygonItem->fillRule() == Qt::OddEvenFill)
             mXmlWriter.writeAttribute("fill-rule", "evenodd");
+        else
+            mXmlWriter.writeAttribute("fill-rule", "winding");
 
         if (!groupHoldsInfo)
         {
@@ -1720,6 +1722,27 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
         color.setAlphaF(opacity);
         polygonItem->setColorOnLightBackground(color);
     }
+
+    /*
+
+    Unfortunately the fill rule was never saved correctly until OpenBoard v1.4,
+    before then, it was always saved as even-odd. So we can't load it safely here.
+    Saving is now fixed, but any old documents would be loaded incorrectly if the code
+    below is used. It should be activated at some point in the future though.
+
+    QStringRef fillRule = mXmlReader.attributes().value("fill-rule");
+
+    if (!fillRule.isNull()) {
+        QString value = fillRule.toString();
+
+        if (value == "evenodd")
+            polygonItem->setFillRule(Qt::OddEvenFill);
+        else
+            polygonItem->setFillRule(Qt::WindingFill);
+    }
+    */
+    polygonItem->setFillRule(Qt::WindingFill);
+
     return polygonItem;
 
 }
