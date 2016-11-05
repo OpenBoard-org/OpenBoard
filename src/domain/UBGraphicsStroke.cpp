@@ -170,6 +170,9 @@ bool UBGraphicsStroke::hasPressure()
         }
     }
 
+    else
+        return true;
+
     return false;
 }
 
