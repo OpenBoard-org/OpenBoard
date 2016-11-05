@@ -501,7 +501,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
 
             if (currentTool != UBStylusTool::Line){
                 // Handle the pressure
-                width = dc->currentToolWidth() * pressure;
+                width = dc->currentToolWidth() * qMax(pressure, 0.2);
             }else{
                 // Ignore pressure for line tool
                 width = dc->currentToolWidth();
