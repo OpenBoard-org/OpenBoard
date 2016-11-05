@@ -2104,29 +2104,28 @@ QUrl UBBoardController::expandWidgetToTempDir(const QByteArray& pZipedData, cons
 }
 
 
+/**
+ * @brief Take a screenshot of part of the scene
+ * @param pSceneRect The area to capture, in the active scene's coordinates
+ */
 void UBBoardController::grabScene(const QRectF& pSceneRect)
 {
     if (mActiveScene)
     {
-        QImage image(pSceneRect.width(), pSceneRect.height(), QImage::Format_ARGB32);
-        image.fill(Qt::transparent);
+        // Ideally we should render the scene directly to a QImage rather than use grabWindow;
+        // this was the previous solution but it couldn't grab videos (QGraphicsVideoItem), so it
+        // was changed to this admittedly more sketchy way of doing it.
 
-        QRectF targetRect(0, 0, pSceneRect.width(), pSceneRect.height());
-        QPainter painter(&image);
-        painter.setRenderHint(QPainter::SmoothPixmapTransform);
-        painter.setRenderHint(QPainter::Antialiasing);
+        UBBoardView* view = mActiveScene->controlView();
+        QPoint pos = view->viewport()->mapFromGlobal(view->mapToGlobal(view->mapFromScene(pSceneRect.topLeft()))) + QPoint(1,1);
 
-        mActiveScene->setRenderingContext(UBGraphicsScene::NonScreen);
-        mActiveScene->setRenderingQuality(UBItem::RenderingQualityHigh);
+        qreal scale = systemScaleFactor();
+        QScreen * screen = UBApplication::controlScreen();
 
-        mActiveScene->render(&painter, targetRect, pSceneRect);
+        QPixmap image = screen->grabWindow(view->viewport()->winId(),
+                                           pos.x(), pos.y(), pSceneRect.width()*scale - 1, pSceneRect.height()*scale - 1);
 
-        mActiveScene->setRenderingContext(UBGraphicsScene::Screen);
-//        mActiveScene->setRenderingQuality(UBItem::RenderingQualityNormal);
-        mActiveScene->setRenderingQuality(UBItem::RenderingQualityHigh);
-
-
-        mPaletteManager->addItem(QPixmap::fromImage(image));
+        mPaletteManager->addItem(image, QPointF(0,0), 1/scale);
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
     }
 }
