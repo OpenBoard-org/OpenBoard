@@ -945,7 +945,7 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
     }
     else
     {
-	mMask = QPixmap(mTransparentDrawingView->width(), mTransparentDrawingView->height());
+        mMask = QPixmap(mTransparentDrawingView->width(), mTransparentDrawingView->height());
         mMask.fill(Qt::transparent);
 
         QPainter p;
