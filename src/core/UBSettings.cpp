@@ -271,7 +271,7 @@ void UBSettings::init()
 
 
     boardCrossColorDarkBackground = new UBSetting(this, "Board", "CrossColorDarkBackground", "#C82C2C2C");
-    boardCrossColorLightBackground = new UBSetting(this, "Board", "CrossColorLightBackground", "#A5FFFF");
+    boardCrossColorLightBackground = new UBSetting(this, "Board", "CrossColorLightBackground", "#A5E1FF");
 
     QStringList penLightBackgroundColors;
     penLightBackgroundColors << "#000000" << "#FF0000" <<"#004080" << "#008000" << "#FFDD00" << "#C87400" << "#800040" << "#008080"  << "#5F2D0A" << "#FFFFFF";
