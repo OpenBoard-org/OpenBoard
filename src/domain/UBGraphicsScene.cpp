@@ -2391,9 +2391,9 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
         QColor bgCrossColor;
 
         if (darkBackground)
-            bgCrossColor = UBSettings::crossDarkBackground;
+            bgCrossColor = QColor(UBSettings::settings()->boardCrossColorDarkBackground->get().toString());
         else
-            bgCrossColor = UBSettings::crossLightBackground;
+            bgCrossColor = QColor(UBSettings::settings()->boardCrossColorLightBackground->get().toString());
         if (mZoomFactor < 1.0)
         {
             int alpha = 255 * mZoomFactor / 2;

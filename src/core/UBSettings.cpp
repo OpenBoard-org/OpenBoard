@@ -71,9 +71,6 @@ const char *UBSettings::sDefaultFontFamily = "Arial";
 
 QString UBSettings::currentFileVersion = "4.8.0";
 
-QColor UBSettings::crossDarkBackground = QColor(44, 44, 44, 200);
-QColor UBSettings::crossLightBackground = QColor(165, 225, 255);
-
 QBrush UBSettings::eraserBrushDarkBackground = QBrush(QColor(127, 127, 127, 80));
 QBrush UBSettings::eraserBrushLightBackground = QBrush(QColor(255, 255, 255, 30));
 
@@ -271,6 +268,10 @@ void UBSettings::init()
     ValidateKeyboardPaletteKeyBtnSize();
 
     pageSize = new UBSetting(this, "Board", "DefaultPageSize", documentSizes.value(DocumentSizeRatio::Ratio4_3));
+
+
+    boardCrossColorDarkBackground = new UBSetting(this, "Board", "CrossColorDarkBackground", "#C82C2C2C");
+    boardCrossColorLightBackground = new UBSetting(this, "Board", "CrossColorLightBackground", "#A5FFFF");
 
     QStringList penLightBackgroundColors;
     penLightBackgroundColors << "#000000" << "#FF0000" <<"#004080" << "#008000" << "#FFDD00" << "#C87400" << "#800040" << "#008080"  << "#5F2D0A" << "#FFFFFF";

@@ -1597,9 +1597,9 @@ void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
         QColor bgCrossColor;
 
         if (darkBackground)
-            bgCrossColor = UBSettings::crossDarkBackground;
+            bgCrossColor = QColor(UBSettings::settings()->boardCrossColorDarkBackground->get().toString());
         else
-            bgCrossColor = UBSettings::crossLightBackground;
+            bgCrossColor = QColor(UBSettings::settings()->boardCrossColorLightBackground->get().toString());
 
         if (transform ().m11 () < 1.0)
         {
