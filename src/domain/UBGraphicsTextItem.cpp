@@ -328,6 +328,39 @@ qreal UBGraphicsTextItem::textHeight() const
     return mTextHeight;
 }
 
+/**
+ * @brief Get the ratio between font size in pixels and points.
+ * @return The ratio of pixel size to point size of the first character, or 0 if the text item is empty.
+ *
+ * Qt may display fonts differently on different platforms -- on the same display,
+ * the same point size may be displayed at different pixel sizes. This function returns the
+ * ratio of pixel size to point size, based on the first character in the text item.
+ */
+qreal UBGraphicsTextItem::pixelsPerPoint() const
+{
+    QTextCursor cursor = textCursor();
+    if (cursor.isNull())
+        return 0;
+
+    cursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor);
+    cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor);
+
+    QFont f = cursor.charFormat().font();
+    qDebug() << "ppp. Font: " << f;
+    QFontInfo fi(cursor.charFormat().font());
+
+    qreal pixelSize = fi.pixelSize();
+    qreal pointSize = fi.pointSizeF();
+
+    //qDebug() << "Pixel size: " << pixelSize;
+    //qDebug() << "Point size: " << pointSize;
+
+    if (pointSize == 0)
+        return 0;
+
+    return pixelSize/pointSize;
+}
+
 
 void UBGraphicsTextItem::contentsChanged()
 {
