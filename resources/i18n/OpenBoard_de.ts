@@ -169,7 +169,7 @@
     </message>
     <message>
         <source>Quit</source>
-        <translation>Verlassen</translation>
+        <translation>Beenden</translation>
     </message>
     <message>
         <source>Eraser</source>
@@ -409,7 +409,7 @@
     </message>
     <message>
         <source>Multi Screen</source>
-        <translation>Geteilter Bildschirm</translation>
+        <translatioh>Mehrere Bildschirme</translation>
     </message>
     <message>
         <source>Wide Size (16/9)</source>
@@ -477,7 +477,7 @@
     </message>
     <message>
         <source>Light</source>
-        <translation>Licht</translation>
+        <translation>Hell</translation>
     </message>
     <message>
         <source>Grid Light Background</source>
@@ -561,7 +561,7 @@
     </message>
     <message>
         <source>Highlight </source>
-        <translation>Highlight </translation>
+        <translation>Hervorheben </translation>
     </message>
     <message>
         <source>Ctrl+M</source>
@@ -569,7 +569,7 @@
     </message>
     <message>
         <source>Selector</source>
-        <translation>Selector</translation>
+        <translation>Auswahl</translation>
     </message>
     <message>
         <source>Select And Modify Objects</source>
@@ -697,7 +697,7 @@
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation>Falle einblenden</translation>
+        <translation>Einblendung einfangen</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
@@ -705,7 +705,7 @@
     </message>
     <message>
         <source>Web Trap</source>
-        <translation>Webfalle</translation>
+        <translation>Internet einfangen</translation>
     </message>
     <message>
         <source>Trap Web Content</source>
@@ -793,11 +793,11 @@
     </message>
     <message>
         <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>Anleitung öffnen</translation>
     </message>
     <message>
         <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Öffnen der Anleitung im Internet</translation>
     </message>
 </context>
 <context>
@@ -850,11 +850,11 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation type="unfinished">Seite entfernen</translation>
+        <translation>Seite entfernen</translation>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation type="unfinished">Wollen Sie wirklich 1 Seite des gewählten Dokuments &apos;%0&apos; entfernen?</translation>
+        <translation type="unfinished">Wollen Sie wirklich die ausgewählte Seite des Dokuments &apos;%0&apos; entfernen?</translation>
     </message>
 </context>
 <context>
@@ -876,30 +876,30 @@
     </message>
     <message>
         <source>New update available, would you go to the web page ?</source>
-        <translation>Neues Update verfügbar, möchten Sie auf die Webseite gehen?</translation>
+        <translation>Neue Aktualisierung verfügbar, möchten Sie auf die Internetseite gehen?</translation>
     </message>
     <message>
         <source>No update available</source>
-        <translation>Kein Update verfügbar</translation>
+        <translation>Keine Aktualisierung verfügbar</translation>
     </message>
     <message>
         <source>Update available</source>
-        <translation>Update verfügbar</translation>
+        <translation>Aktualisierung verfügbar</translation>
     </message>
     <message>
         <source>Update</source>
-        <translation>Update</translation>
+        <translation>Aktualisierung</translation>
     </message>
 </context>
 <context>
     <name>UBBoardController</name>
     <message>
         <source>Downloading content %1 failed</source>
-        <translation>Fehler beim Download von %1</translation>
+        <translation>Fehler beim Herunterladen von %1</translation>
     </message>
     <message>
         <source>Download finished</source>
-        <translation>Download beendet</translation>
+        <translation>Herunterladen beendet</translation>
     </message>
     <message>
         <source>Unknown tool type %1</source>
@@ -919,31 +919,31 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation type="unfinished">Seite %1 des Dokuments löschen</translation>
+        <translation>Seite %1 des Dokuments löschen</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
-        <translation type="unfinished">Seite %1 gelöscht</translation>
+        <translation>Seite %1 gelöscht</translation>
     </message>
     <message>
         <source>Add file operation failed: file copying error</source>
-        <translation type="unfinished">Dokument hinzufügen fehlgeschlagen: Fehler beim Kopieren</translation>
+        <translation>Dokument hinzufügen fehlgeschlagen: Fehler beim Kopieren</translation>
     </message>
     <message>
         <source>Group</source>
-        <translation type="unfinished">Gruppieren</translation>
+        <translation>Gruppieren</translation>
     </message>
     <message>
         <source>Ungroup</source>
-        <translation type="unfinished">Gruppierung auflösen</translation>
+        <translation>Gruppierung auflösen</translation>
     </message>
     <message>
         <source>Saving document...</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokument wird gespeichert...</translation>
     </message>
     <message>
         <source>Document has just been saved...</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokument wurde gespeichert...</translation>
     </message>
 </context>
 <context>
@@ -1004,7 +1004,7 @@
     </message>
     <message>
         <source>Show OpenBoard</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -1031,7 +1031,7 @@
     </message>
     <message>
         <source>Duplicating Document %1</source>
-        <translation>Dokument %1 wird kopiert</translation>
+        <translation>Dokument %1 wird dupliziert</translation>
     </message>
     <message>
         <source>Document %1 copied</source>
@@ -1051,7 +1051,7 @@
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Leerer Papierkorb</translation>
+        <translation>Papierkorb leeren</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
@@ -1063,7 +1063,7 @@
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation>Papierkorb geleert</translation>
+        <translation>Papierkorb wurde geleert</translation>
     </message>
     <message>
         <source>Remove Folder</source>
@@ -1071,7 +1071,7 @@
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation>Möchten Sie den Ordner &apos;%1 mit dem gesamten Inhalt wirklich entfernen?</translation>
+        <translation>Möchten Sie den Ordner &apos;%1 und seinen gesamten Inhalt wirklich entfernen?</translation>
     </message>
     <message>
         <source>No document selected!</source>
@@ -1099,7 +1099,7 @@
     </message>
     <message>
         <source>Empty</source>
-        <translation>Leer</translation>
+        <translation>Leeren</translation>
     </message>
     <message>
         <source>Trash</source>
@@ -1130,23 +1130,23 @@
     </message>
     <message>
         <source>Folder does not contain any image files</source>
-        <translation type="unfinished">Das Verzeichnis enthält keine Bilder</translation>
+        <translation>Das Verzeichnis enthält keine Bilder</translation>
     </message>
     <message>
         <source>Untitled Documents</source>
-        <translation type="unfinished">Unbenanntes Dokument</translation>
+        <translation>Unbenanntes Dokument</translation>
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Dokument &apos;%1&apos; wurde mit einer neueren Version von OpenBoard erstellt (%2). Beim Öffnen können einige Informationen verloren gehen. Möchten Sie fortfahren?</translation>
     </message>
     <message>
         <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="unfinished"></translation>
+        <translation>Möchten sie wirklich alle ausgewählten Dokumente entfernen?</translation>
     </message>
     <message>
         <source>Remove multiple documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Mehrere Dokumente entfernen</translation>
     </message>
 </context>
 <context>
@@ -1177,19 +1177,19 @@
     </message>
     <message>
         <source>Inserting page %1 of %2</source>
-        <translation type="unfinished">Hinzufügen der Seite %1 von %2</translation>
+        <translation>Hinzufügen der Seite %1 von %2</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished">Import erfolgreich.</translation>
+        <translation>Import erfolgreich.</translation>
     </message>
     <message>
         <source>Import of file %1 successful.</source>
-        <translation type="unfinished">Import des Dokuments %1 erfolgreich.</translation>
+        <translation>Import der Datei %1 erfolgreich.</translation>
     </message>
     <message>
         <source>Importing file %1</source>
-        <translation type="unfinished">Importieren von %1</translation>
+        <translation>Datei %1 wird importiert</translation>
     </message>
 </context>
 <context>
@@ -1212,8 +1212,8 @@
     <message numerus="yes">
         <source>%1 pages copied</source>
         <translation>
-            <numerusform>%1 Seite kopiert</numerusform>
-            <numerusform>%1 Seiten kopiert</numerusform>
+            <numerusform>%1 Seite wurde kopiert</numerusform>
+            <numerusform>%1 Seiten wurden kopiert</numerusform>
         </translation>
     </message>
 </context>
@@ -1232,7 +1232,7 @@
     <name>UBExportAdaptor</name>
     <message>
         <source>Warnings during export was appeared</source>
-        <translation type="unfinished">Warnungen beim Exportieren aufgetreten</translation>
+        <translation>Warnungen beim Exportieren aufgetreten</translation>
     </message>
 </context>
 <context>
@@ -1282,19 +1282,19 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation type="unfinished"></translation>
+        <translation>In das OpenBoard Format exportieren</translation>
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
+        <translation>Export fehlgeschlagen: Zielpfad nicht beschreibbar</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Export fehlgeschlagen</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Export im ausgewählten Zielpfad nicht möglich. Sie haben nicht die erforderliche Berechtigung um die Datei zu speichern.</translation>
     </message>
 </context>
 <context>
@@ -1317,15 +1317,15 @@
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
+        <translation>Export fehlgeschlagen: Zielpfad nicht beschreibbar.</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Export fehlgeschlagen</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Export im ausgewählten Zielpfad nicht möglich. Sie haben nicht die erforderliche Berechtigung um die Datei zu speichern.</translation>
     </message>
 </context>
 <context>
@@ -1440,76 +1440,76 @@
     </message>
     <message>
         <source>Audios</source>
-        <translation type="unfinished">Audiodateien</translation>
+        <translation>Audiodateien</translation>
     </message>
     <message>
         <source>Movies</source>
-        <translation type="unfinished">Filme</translation>
+        <translation>Filme</translation>
     </message>
     <message>
         <source>Pictures</source>
-        <translation type="unfinished">Bilder</translation>
+        <translation>Bilder</translation>
     </message>
     <message>
         <source>Animations</source>
-        <translation type="unfinished">Animationen</translation>
+        <translation>Animationen</translation>
     </message>
     <message>
         <source>Interactivities</source>
-        <translation type="unfinished">Interaktivitäten</translation>
+        <translation>Interaktivitäten</translation>
     </message>
     <message>
         <source>Applications</source>
-        <translation type="unfinished">Anwendungen</translation>
+        <translation>Anwendungen</translation>
     </message>
     <message>
         <source>Shapes</source>
-        <translation type="unfinished">Formen</translation>
+        <translation>Formen</translation>
     </message>
     <message>
         <source>Favorites</source>
-        <translation type="unfinished">Favoriten</translation>
+        <translation>Favoriten</translation>
     </message>
     <message>
         <source>Web search</source>
-        <translation type="unfinished">Websuche</translation>
+        <translation>Websuche</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation type="unfinished">Papierkorb</translation>
+        <translation>Papierkorb</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesNewFolderDialog</name>
     <message>
         <source>Accept</source>
-        <translation type="unfinished">Akzeptieren</translation>
+        <translation>Akzeptieren</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <source>Enter a new folder name</source>
-        <translation type="unfinished">Geben Sie den Namen des Verzeichnisses ein</translation>
+        <translation>Geben Sie den Namen des Verzeichnisses ein</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesProgressInfo</name>
     <message>
         <source>Loading </source>
-        <translation type="unfinished">Laden </translation>
+        <translation>Laden </translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsGroupContainerItemDelegate</name>
     <message>
         <source>Locked</source>
-        <translation type="unfinished">Gesperrt</translation>
+        <translation>Gesperrt</translation>
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation type="unfinished">Auf erweitertem Bildschirm sichtbar</translation>
+        <translation>Auf erweitertem Bildschirm sichtbar</translation>
     </message>
 </context>
 <context>
@@ -1531,19 +1531,19 @@
     <name>UBGraphicsMediaItem</name>
     <message>
         <source>Media resource couldn&apos;t be resolved</source>
-        <translation type="unfinished"></translation>
+        <translation>Medienquelle konnte nicht aufgelöst werden</translation>
     </message>
     <message>
         <source>Unsupported media format</source>
-        <translation type="unfinished"></translation>
+        <translation>Medienformat wird nicht unterstützt</translation>
     </message>
     <message>
         <source>Media playback service not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Dienst zum Abspielen von Mediainhalten nicht gefunden</translation>
     </message>
     <message>
         <source>Media error: </source>
-        <translation type="unfinished"></translation>
+        <translation>Medienfehler: </translation>
     </message>
 </context>
 <context>
@@ -1568,25 +1568,25 @@
     <name>UBGraphicsW3CWidgetItem</name>
     <message>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>Web</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsWidgetItem</name>
     <message>
         <source>Loading ...</source>
-        <translation type="unfinished">Lädt...</translation>
+        <translation>Lädt...</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsWidgetItemDelegate</name>
     <message>
         <source>Frozen</source>
-        <translation>Erstarrt</translation>
+        <translation>Fixiert</translation>
     </message>
     <message>
         <source>Transform as Tool </source>
-        <translation>In Extra umwandeln</translation>
+        <translation>In Werkzeug umwandeln</translation>
     </message>
 </context>
 <context>
@@ -1601,7 +1601,7 @@
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="vanished">Import  der Datei %1 fehlgeschlagen.</translation>
+        <translation type="vanished">Import der Datei %1 fehlgeschlagen.</translation>
     </message>
     <message>
         <source>Import successful.</source>
@@ -1628,7 +1628,7 @@
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard (*.ubz)</translation>
     </message>
 </context>
 <context>
@@ -1697,7 +1697,7 @@
     <name>UBMessagesDialog</name>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Schließen</translation>
+        <translation>Schließen</translation>
     </message>
 </context>
 <context>
@@ -1724,7 +1724,7 @@ Do you want to ignore these errors for this host?</source>
 
 %2
 
-Möchten Sie diese Fehler auf diesem Computer ignorieren?</translation>
+Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -1739,27 +1739,27 @@ Möchten Sie diese Fehler auf diesem Computer ignorieren?</translation>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
         <source>Open-Sankore Documents Detected</source>
-        <translation type="unfinished"></translation>
+        <translation>Geöffnete Open-Sankore Dokumente festgestellt</translation>
     </message>
     <message>
         <source>Show this panel next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Diesen Dialog erneut anzeigen</translation>
     </message>
     <message>
         <source>You can always access the OpenBoard Document Importer through the Preferences panel in the About tab. Warning, if you have already imported your Open-Sankore datas, you might loose your current OpenBoard documents.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie können jederzeit im Einstellungsdialog im Menü "Über" auf den OpenBoard Document Importer zugreifen. Warnung, falls sie bereits Ihre Open-Sankore Daten importiert haben, können Sie Ihre aktuellen OpenBoard Dokumente verlieren.</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
+        <translation>Fortfahren</translation>
     </message>
     <message>
         <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf Ihrem Computer befinden sich Open-Sankoré Dokumente. Um diese in OpenBoard zu importieren drücken Sie den "Fortfahren" Knopf um die Importanwendung zu starten.</translation>
     </message>
 </context>
 <context>
@@ -1774,7 +1774,7 @@ Möchten Sie diese Fehler auf diesem Computer ignorieren?</translation>
     </message>
     <message>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
+        <translation type="refurbish">Verbindung zum Dokumentenarchiv verloren. Um fehlerhafte Daten zu vermeiden muss die Anwendung leider geschlossen werden. Letzte Änderungen können auch verloren gehen.</translation>
     </message>
 </context>
 <context>
@@ -1828,7 +1828,7 @@ Möchten Sie diese Fehler auf diesem Computer ignorieren?</translation>
     </message>
     <message>
         <source>Podcast recording error (%1)</source>
-        <translation>Podcast registriert einen Fehler (%1)</translation>
+        <translation>Fehler bei der Podcast Aufnahme (%1)</translation>
     </message>
     <message>
         <source>Default Audio Input</source>
@@ -2002,7 +2002,7 @@ Möchten Sie diese Fehler auf diesem Computer ignorieren?</translation>
     </message>
     <message>
         <source>Update</source>
-        <translation>Update</translation>
+        <translation>Aktualisierung</translation>
     </message>
     <message>
         <source>Select a backup folder</source>
@@ -2020,7 +2020,7 @@ Bitte starten Sie die Anwendung erneut, um auf die aktualisierten Dokumente zugr
     </message>
     <message>
         <source>Files update results</source>
-        <translation>Ergebnis des Daten-Updates</translation>
+        <translation>Ergebnis der Dateien-Aktualisierung</translation>
     </message>
     <message>
         <source>Updating file </source>
@@ -2046,7 +2046,7 @@ Bitte starten Sie die Anwendung erneut, um auf die aktualisierten Dokumente zugr
     <name>UBWidgetUniboardAPI</name>
     <message>
         <source>%0 called (method=%1, status=%2)</source>
-        <translation>%0 abgerufen (Methode=%1, Status=%2)</translation>
+        <translation>%0 aufgerufen (Methode=%1, Status=%2)</translation>
     </message>
 </context>
 <context>
@@ -2149,7 +2149,7 @@ Bitte starten Sie die Anwendung erneut, um auf die aktualisierten Dokumente zugr
     </message>
     <message>
         <source>Download canceled: %1</source>
-        <translation>Download abgebrochen %1</translation>
+        <translation>Herunterladen abgebrochen %1</translation>
     </message>
     <message>
         <source>Error opening saved file: %1</source>
@@ -2246,19 +2246,19 @@ Bitte starten Sie die Anwendung erneut, um auf die aktualisierten Dokumente zugr
     <name>WBTabBar</name>
     <message>
         <source>New &amp;Tab</source>
-        <translation>Tab Neu &amp; </translation>
+        <translation>&amp;Tab Neu</translation>
     </message>
     <message>
         <source>Clone Tab</source>
-        <translation>Tab Klon</translation>
+        <translation>Tab duplizieren</translation>
     </message>
     <message>
         <source>&amp;Close Tab</source>
-        <translation>Tab &amp; Schließen</translation>
+        <translation>Tab &amp;Schließen</translation>
     </message>
     <message>
         <source>Close &amp;Other Tabs</source>
-        <translation>Tabs Schließen &amp; Andere</translation>
+        <translation>&amp;Andere Tabs schließen</translation>
     </message>
     <message>
         <source>Reload Tab</source>
@@ -2319,7 +2319,7 @@ Bitte starten Sie die Anwendung erneut, um auf die aktualisierten Dokumente zugr
     </message>
     <message>
         <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF Dokument herunterladen: Möchten Sie die PDF-Datei herunterladen oder sie zum aktuellen OpenBoard Dokument hinzufügen?</translation>
     </message>
 </context>
 <context>
@@ -2373,11 +2373,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Restore credentials on reboot</source>
-        <translation type="unfinished"></translation>
+        <translation>Zugangsdaten beim Neustarten wiederherstellen</translation>
     </message>
     <message>
         <source>OpenBoard</source>
-        <translation type="unfinished">OpenBoard</translation>
+        <translation>OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -2392,7 +2392,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Opacity</source>
-        <translation>Lichtundurchlässigkeit</translation>
+        <translation>Deckkraft</translation>
     </message>
     <message>
         <source>Line Width</source>
@@ -2404,7 +2404,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Strong</source>
-        <translation>Stark</translation>
+        <translation>Dick</translation>
     </message>
     <message>
         <source>Fine</source>
@@ -2442,7 +2442,7 @@ p, li { white-space: pre-wrap; }
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard DOkumente</translation>
     </message>
 </context>
 <context>
@@ -2529,11 +2529,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Software Update</source>
-        <translation>Software-Update</translation>
+        <translation>Software-Aktualisierung</translation>
     </message>
     <message>
         <source>Check software update at launch</source>
-        <translation>Software-Update beim Start prüfen</translation>
+        <translation>Software-Aktualisierung beim Start prüfen</translation>
     </message>
     <message>
         <source>Licences</source>
@@ -2586,19 +2586,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoré Importer</translation>
     </message>
     <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
+        <translation>Prüfen, ob Open-Sankoré Daten beim Start importiert werden können</translation>
     </message>
     <message>
         <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutze System-Tastatur (empfohlen)</translation>
     </message>
     <message>
         <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tastengröße der integrierten virtuellen Tastatur</translation>
     </message>
 </context>
 <context>
