@@ -850,7 +850,7 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation>Seite entfernen</translation>
+        <translation type="unfinished">Seite entfernen</translation>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
