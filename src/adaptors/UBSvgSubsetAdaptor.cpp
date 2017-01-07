@@ -1562,9 +1562,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::polygonItemToSvgPolygon(UBGraphicsPo
         }
 
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(polygonItem->uuid()));
-        if (polygonItem->parentItem()) {
-            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "parent", UBStringUtils::toCanonicalUuid(UBGraphicsItem::getOwnUuid(polygonItem->parentItem())));
-        }
+        UBGraphicsStrokesGroup* sg = polygonItem->strokesGroup();
+        if (sg)
+            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "parent", UBStringUtils::toCanonicalUuid(sg->uuid()));
 
         mXmlWriter.writeEndElement();
     }
