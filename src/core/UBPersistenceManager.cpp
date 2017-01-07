@@ -483,7 +483,7 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
 
     foreach(int index, compactedIndexes)
     {
-        UBGraphicsScene *scene = loadDocumentScene(proxy, index);
+        UBGraphicsScene *scene = loadDocumentScene(proxy, index, false);
         if (scene)
         {
             //scene is about to move into new document
@@ -727,7 +727,7 @@ void UBPersistenceManager::moveSceneToIndex(UBDocumentProxy* proxy, int source, 
 }
 
 
-UBGraphicsScene* UBPersistenceManager::loadDocumentScene(UBDocumentProxy* proxy, int sceneIndex)
+UBGraphicsScene* UBPersistenceManager::loadDocumentScene(UBDocumentProxy* proxy, int sceneIndex, bool cacheNeighboringScenes)
 {
     UBGraphicsScene* scene = NULL;
 
@@ -740,11 +740,13 @@ UBGraphicsScene* UBPersistenceManager::loadDocumentScene(UBDocumentProxy* proxy,
             mSceneCache.insert(proxy, sceneIndex, scene);
     }
 
-    if(sceneIndex + 1 < proxy->pageCount() &&  !mSceneCache.contains(proxy, sceneIndex + 1))
-        mWorker->readScene(proxy,sceneIndex+1);
+    if (cacheNeighboringScenes) {
+        if(sceneIndex + 1 < proxy->pageCount() &&  !mSceneCache.contains(proxy, sceneIndex + 1))
+            mWorker->readScene(proxy,sceneIndex+1);
 
-    if(sceneIndex - 1 >= 0 &&  !mSceneCache.contains(proxy, sceneIndex - 1))
-        mWorker->readScene(proxy,sceneIndex-1);
+        if(sceneIndex - 1 >= 0 &&  !mSceneCache.contains(proxy, sceneIndex - 1))
+            mWorker->readScene(proxy,sceneIndex-1);
+    }
 
     return scene;
 }
