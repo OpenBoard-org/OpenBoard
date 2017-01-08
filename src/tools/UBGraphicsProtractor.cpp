@@ -41,6 +41,7 @@
 
 
 const QRectF UBGraphicsProtractor::sDefaultRect = QRectF(-250, -250, 500, 500);
+const qreal UBGraphicsProtractor::minRadius = 70;
 
 UBGraphicsProtractor::UBGraphicsProtractor()
         : QGraphicsEllipseItem(sDefaultRect)
@@ -213,11 +214,13 @@ void UBGraphicsProtractor::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 
     case Resize :
-        prepareGeometryChange();
-        setTransform(QTransform::fromTranslate(rect().center().x(), rect().center().y()), true);
-        setTransform(QTransform::fromScale(scaleFactor, scaleFactor), true);
-        setTransform(QTransform::fromTranslate(-rect().center().x(), -rect().center().y()), true);
-        mScaleFactor *= scaleFactor;
+        if (radius() * mScaleFactor * scaleFactor > minRadius) {
+            prepareGeometryChange();
+            setTransform(QTransform::fromTranslate(rect().center().x(), rect().center().y()), true);
+            setTransform(QTransform::fromScale(scaleFactor, scaleFactor), true);
+            setTransform(QTransform::fromTranslate(-rect().center().x(), -rect().center().y()), true);
+            mScaleFactor *= scaleFactor;
+        }
         break;
 
     case MoveMarker :

@@ -119,6 +119,7 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
         QGraphicsSvgItem* mRotateSvgItem;
 
         static const QRectF sDefaultRect;
+        static const qreal minRadius;
 
         virtual void rotateAroundCenter(qreal angle);
         virtual QPointF    rotationCenter() const;
