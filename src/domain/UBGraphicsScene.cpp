@@ -1180,12 +1180,17 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
             groupCloned->resetTransform();
             groupCloned->setMatrix(group->matrix());
             groupCloned->setTransform(group->transform());
+            bool locked = groupCloned->Delegate()->isLocked();
 
             foreach(QGraphicsItem* eachItem ,group->childItems()){
                 QGraphicsItem* copiedChild = dynamic_cast<QGraphicsItem*>(dynamic_cast<UBItem*>(eachItem)->deepCopy());
                 copy->addItem(copiedChild);
                 groupCloned->addToGroup(copiedChild);
             }
+
+            if (locked)
+                groupCloned->setData(UBGraphicsItemData::ItemLocked, QVariant(true));
+
             copy->addItem(groupCloned);
         }
 
