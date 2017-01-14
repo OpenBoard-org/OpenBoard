@@ -555,6 +555,8 @@ Here we determines cases when items should to get mouse press event at pressing 
         return true;
 
     case UBGraphicsMediaItem::Type:
+    case UBGraphicsVideoItem::Type:
+    case UBGraphicsAudioItem::Type:
         return false;
 
     case UBGraphicsTextItem::Type:
@@ -626,6 +628,8 @@ bool UBBoardView::itemShouldReceiveSuspendedMousePressEvent(QGraphicsItem *item)
 
     case DelegateButton::Type:
     case UBGraphicsMediaItem::Type:
+    case UBGraphicsVideoItem::Type:
+    case UBGraphicsAudioItem::Type:
         return true;
     }
 
@@ -858,6 +862,8 @@ void UBBoardView::moveRubberedItems(QPointF movingVector)
         if (item->type() == UBGraphicsW3CWidgetItem::Type
                 || item->type() == UBGraphicsPixmapItem::Type
                 || item->type() == UBGraphicsMediaItem::Type
+                || item->type() == UBGraphicsVideoItem::Type
+                || item->type() == UBGraphicsAudioItem::Type
                 || item->type() == UBGraphicsSvgItem::Type
                 || item->type() == UBGraphicsTextItem::Type
                 || item->type() == UBGraphicsStrokesGroup::Type

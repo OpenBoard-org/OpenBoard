@@ -162,7 +162,10 @@ void UBGraphicsGroupContainerItem::removeFromGroup(QGraphicsItem *item)
 
 void UBGraphicsGroupContainerItem::deselectCurrentItem()
 {
-    if (mCurrentItem && mCurrentItem->type() == UBGraphicsMediaItem::Type){
+    if (mCurrentItem && (mCurrentItem->type() == UBGraphicsMediaItem::Type
+                         || mCurrentItem->type() == UBGraphicsVideoItem::Type
+                         || mCurrentItem->type() == UBGraphicsAudioItem::Type))
+    {
         dynamic_cast<UBGraphicsMediaItem*>(mCurrentItem)->Delegate()->getToolBarItem()->hide();
 
         mCurrentItem->setSelected(false);
