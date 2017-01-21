@@ -938,8 +938,6 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
     if(mStrokesList.contains(id))
         shouldSkipSubElements = true;
 
-    QStringRef svgTransform = mXmlReader.attributes().value("transform");
-
     mXmlReader.readNext();
     while (!mXmlReader.atEnd())
     {
@@ -983,12 +981,6 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
             group->destroy(false);
         }
     }
-
-    if (!svgTransform.isNull()) {
-        QMatrix itemMatrix = fromSvgTransform(svgTransform.toString());
-        group->setMatrix(itemMatrix);
-    }
-
     return group;
 }
 
@@ -1354,10 +1346,6 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
                 if(curElement.hasAttribute("locked")){
                     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri,"locked",curElement.attribute("locked"));
                 }
-
-                if (curElement.hasAttribute("transform"))
-                    mXmlWriter.writeAttribute("transform", curElement.attribute("transform"));
-
                 QDomElement curSubElement = curElement.firstChildElement();
                 while (!curSubElement.isNull()) {
                     if (curSubElement.hasAttribute(aId)) {
@@ -1403,8 +1391,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
             else
                 curGroupElement.setAttribute("locked", xmlFalse);
         }
-
-        curGroupElement.setAttribute("transform", toSvgTransform(groupItem->sceneMatrix()));
         curParent->appendChild(curGroupElement);
         foreach (QGraphicsItem *item, groupItem->childItems()) {
             QUuid tmpUuid = UBGraphicsScene::getPersonalUuid(item);
