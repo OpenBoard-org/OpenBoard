@@ -173,7 +173,7 @@ UBItem* UBGraphicsStrokesGroup::deepCopy() const
         }
     }
     const_cast<UBGraphicsStrokesGroup*>(this)->setTransform(groupTransform);
-    copy->setTransform(sceneTransform());
+    copy->setTransform(groupTransform);
 
     return copy;
 }
@@ -184,6 +184,7 @@ void UBGraphicsStrokesGroup::copyItemParameters(UBItem *copy) const
     if(NULL != cp)
     {
         cp->setTransform(transform());
+        cp->setPos(pos());
 
         cp->setFlag(QGraphicsItem::ItemIsMovable, true);
         cp->setFlag(QGraphicsItem::ItemIsSelectable, true);

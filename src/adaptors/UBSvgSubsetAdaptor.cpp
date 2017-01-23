@@ -1145,11 +1145,6 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
                 mXmlWriter.writeStartElement("g");
                 openStroke = currentStroke;
 
-                QMatrix matrix = item->sceneMatrix();
-
-                if (!matrix.isIdentity())
-                    mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
-
                 UBGraphicsStroke* stroke = dynamic_cast<UBGraphicsStroke* >(currentStroke);
 
                 if (stroke)
@@ -1169,6 +1164,10 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
                                                   , "fill-on-light-background", colorOnLightBackground.name());
 
                         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(sg->uuid()));
+
+                        QMatrix matrix = sg->sceneMatrix();
+                        if (!matrix.isIdentity())
+                            mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
 
                         qDebug() << "Attributes written";
 
