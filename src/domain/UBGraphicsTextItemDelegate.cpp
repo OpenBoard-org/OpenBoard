@@ -532,6 +532,9 @@ bool UBGraphicsTextItemDelegate::keyReleaseEvent(QKeyEvent *event)
 
 void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode changeMode)
 {
+    // round it to the nearest hundredth
+    factor = floor(factor*100+0.5)/100.;
+
     if (scaleSize == changeMode)
     {
         if (1 == factor)
