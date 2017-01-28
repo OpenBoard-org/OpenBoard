@@ -114,6 +114,7 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
         void scaleTextSize(qreal multiplyer);
         virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value);
         virtual void createControls();
+        qreal titleBarWidth();
 
     public slots:
         void contentsChanged();

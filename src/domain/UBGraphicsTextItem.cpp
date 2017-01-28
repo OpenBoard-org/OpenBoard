@@ -306,8 +306,12 @@ QPainterPath UBGraphicsTextItem::shape() const
 
 void UBGraphicsTextItem::setTextWidth(qreal width)
 {
-    qreal strictMin = 155; // the size of the font customization panel
-    qreal newWidth = qMax(strictMin, width);
+    qreal titleBarWidth = 0;
+    UBGraphicsTextItemDelegate * del = dynamic_cast<UBGraphicsTextItemDelegate*>(Delegate());
+    if (del)
+        titleBarWidth = del->titleBarWidth();
+
+    qreal newWidth = qMax(titleBarWidth, width);
 
     QGraphicsTextItem::setTextWidth(newWidth);
 }

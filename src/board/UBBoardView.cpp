@@ -1335,6 +1335,7 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 
                 textItem->setTextInteractionFlags(Qt::TextEditorInteraction);
                 textItem->setSelected (true);
+                textItem->setTextWidth(0);
                 textItem->setFocus();
             }
         }
