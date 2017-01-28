@@ -128,10 +128,12 @@ void UBGraphicsStrokesGroup::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsStrokesGroup::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    QGraphicsItemGroup::mouseMoveEvent(event);
+    if (!isLocked(this)) {
+        QGraphicsItemGroup::mouseMoveEvent(event);
 
-    event->accept();
-    setSelected(false);
+        event->accept();
+        setSelected(false);
+    }
 }
 
 void UBGraphicsStrokesGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
