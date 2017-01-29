@@ -87,6 +87,8 @@ void UBGraphicsSvgItem::init()
 
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 
+    setData(UBGraphicsItemData::ItemCanBeSetAsBackground, true);
+
     setUuid(QUuid::createUuid());
 }
 

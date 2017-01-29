@@ -61,6 +61,8 @@ UBGraphicsPixmapItem::UBGraphicsPixmapItem(QGraphicsItem* parent)
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
+    setData(UBGraphicsItemData::ItemCanBeSetAsBackground, true);
+
     setUuid(QUuid::createUuid()); //more logical solution is in creating uuid for element in element's constructor
 }
 

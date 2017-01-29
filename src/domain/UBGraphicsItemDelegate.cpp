@@ -596,6 +596,18 @@ void UBGraphicsItemDelegate::showHide(bool show)
     emit showOnDisplayChanged(show);
 }
 
+void UBGraphicsItemDelegate::setAsBackground()
+{
+    UBGraphicsScene* scene = castUBGraphicsScene();
+    QGraphicsItem* item = delegated();
+
+    if (scene && item) {
+        item->resetTransform();
+        item->setPos(item->sceneBoundingRect().width()/-2., item->sceneBoundingRect().height()/-2.);
+
+        scene->setAsBackgroundObject(item);
+    }
+}
 
 void UBGraphicsItemDelegate::gotoContentSource()
 {
@@ -680,6 +692,11 @@ void UBGraphicsItemDelegate::decorateMenu(QMenu* menu)
     showIcon.addPixmap(QPixmap(":/images/eyeOpened.svg"), QIcon::Normal, QIcon::On);
     showIcon.addPixmap(QPixmap(":/images/eyeClosed.svg"), QIcon::Normal, QIcon::Off);
     mShowOnDisplayAction->setIcon(showIcon);
+
+    if (delegated()->data(UBGraphicsItemData::ItemCanBeSetAsBackground).toBool()) {
+        mSetAsBackgroundAction = mMenu->addAction(tr("Set as background"), this, SLOT(setAsBackground()));
+        mSetAsBackgroundAction->setCheckable(false);
+    }
 
     if (testUBFlags(GF_SHOW_CONTENT_SOURCE))
     {
