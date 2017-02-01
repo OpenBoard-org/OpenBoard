@@ -188,7 +188,7 @@ QPolygonF UBGeometryUtils::arcToPolygon(const QLineF& startRadius, qreal spanAng
 
     qreal radiusLength = startRadius.length();
     qreal angle = 2 * asin(width / (2 * radiusLength)) * 180 / PI;
-    bool overlap = abs(spanAngleInDegrees) > 360 - angle;
+    bool overlap = qAbs(spanAngleInDegrees) > 360 - angle;
     if (overlap)
         spanAngleInDegrees = spanAngleInDegrees < 0 ? -360 : 360;
 
