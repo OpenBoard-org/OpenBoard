@@ -658,7 +658,6 @@ void UBApplicationController::closing()
 
     if (mUninoteController)
     {
-        mUninoteController->hideWindow();
         mUninoteController->close();
     }
 

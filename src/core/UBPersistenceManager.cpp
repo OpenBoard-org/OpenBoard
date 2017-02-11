@@ -67,6 +67,7 @@ UBPersistenceManager * UBPersistenceManager::sSingleton = 0;
 UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     : QObject(pParent)
     , mHasPurgedDocuments(false)
+    , mIsApplicationClosing(false)
     , mIsWorkerFinished(false)
 {
 
@@ -131,8 +132,10 @@ void UBPersistenceManager::destroy()
 
 void UBPersistenceManager::onScenePersisted(UBGraphicsScene* scene)
 {
-    delete scene;
-    scene = NULL;
+    if (!mIsApplicationClosing) {
+        delete scene;
+        scene = NULL;
+    }
 }
 
 void UBPersistenceManager::onMetadataPersisted(UBDocumentProxy* proxy)
@@ -147,6 +150,8 @@ void UBPersistenceManager::onWorkerFinished()
 
 UBPersistenceManager::~UBPersistenceManager()
 {
+    mIsApplicationClosing = true;
+
     if(mWorker)
         mWorker->applicationWillClose();
 
@@ -943,7 +948,6 @@ bool UBPersistenceManager::isEmpty(UBDocumentProxy* pDocumentProxy)
         empty = theSoleScene->isEmpty();
         if(empty){
             mSceneCache.removeScene(pDocumentProxy,0);
-            delete theSoleScene;
             theSoleScene = NULL;
         }
         else{
@@ -960,7 +964,6 @@ bool UBPersistenceManager::isEmpty(UBDocumentProxy* pDocumentProxy)
             }
             if(!usefulItemFound){
                 mSceneCache.removeScene(pDocumentProxy,0);
-                delete theSoleScene;
                 theSoleScene = NULL;
                 empty = true;
             }

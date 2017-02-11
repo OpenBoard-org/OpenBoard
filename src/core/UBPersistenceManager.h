@@ -157,6 +157,8 @@ class UBPersistenceManager : public QObject
         QThread* mThread;
         bool mIsWorkerFinished;
 
+        bool mIsApplicationClosing;
+
     private slots:
         void documentRepositoryChanged(const QString& path);
         void errorString(QString error);
