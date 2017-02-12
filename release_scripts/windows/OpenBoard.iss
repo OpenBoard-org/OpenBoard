@@ -119,7 +119,7 @@ Source: "{#QtDir}\plugins\mediaservice\wmfengine.dll"; DestDir: "{app}\mediaserv
 Source: "{#QtDir}\plugins\mediaservice\wmfengined.dll"; DestDir: "{app}\mediaservice"; Flags: ignoreversion   
 
 ;OpenBoardImporter
-Source: "{#ProjectRoot}\..\OpenBoard-Importer\release\OpenBoardImporter.exe"; DestDir: "{app}\Importer"; Flags: ignoreversion
+Source: "{#ProjectRoot}\..\OpenBoard-Importer\release\OpenBoardImporter.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtLibs}\Qt5Core.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Gui.dll"; DestDir: "{app}"
 

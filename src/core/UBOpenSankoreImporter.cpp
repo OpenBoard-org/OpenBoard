@@ -56,11 +56,9 @@ void UBOpenSankoreImporter::onProceedClicked()
     newProcess.startDetached(qApp->applicationDirPath()+"/importer/OpenBoardImporter");
 #elif defined Q_OS_OSX
     newProcess.startDetached(qApp->applicationDirPath()+"/../Resources/OpenBoardImporter.app/Contents/MacOS/OpenBoardImporter");
-#else
-    // Windows does not allows to run easily an exe located in a subdirectory when the main
-    // directory is placed into programs files.
-    //newProcess.startDetached(qApp->applicationDirPath()+"\\Importer\\OpenBoardImporter.exe");
-    newProcess.startDetached("C:/OpenBoard/Importer/OpenBoardImporter.exe");
+#elif defined Q_OS_WIN
+    QString importerPath = QDir::toNativeSeparators(qApp->applicationDirPath())+"\\OpenBoardImporter.exe";
+    newProcess.startDetached("explorer.exe", QStringList() << importerPath);
 #endif
     qApp->exit(0);
 
