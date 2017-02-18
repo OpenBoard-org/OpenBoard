@@ -98,7 +98,7 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
 
         void setRect(const QRectF &rect, UBGraphicsTriangleOrientation orientation)
         {
-           qDebug() << "setRect"<<"rect = "<<rect<<"orientation :"<<orientation;
+           //qDebug() << "setRect"<<"rect = "<<rect<<"orientation :"<<orientation;
 
            setRect(rect.x(), rect.y(), rect.width(), rect.height(), orientation);
         }
@@ -178,11 +178,15 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
         QPointF CC; // Hyp. fillining gradient - top point
         void calculatePoints(const QRectF& rect);
 
+        bool mShouldPaintInnerTriangle;
+
         static const int d = 70; // width of triangle border
         static const int sArrowLength = 30;
-        static const int sMinWidth = 380;
-        static const int sMinHeight = 200;
+        static const int sMinWidth = 240;
+        static const int sMinHeight = 120;
         qreal mStrokeWidth;
+
+        bool contains(const QRectF &rect, bool strict = true);
 };
 
 #endif /* UBGRAPHICSTRIANGLE_H_ */
