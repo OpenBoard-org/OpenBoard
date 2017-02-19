@@ -55,7 +55,7 @@ class UBGeometryUtils
 
         static void crashPointList(QVector<QPointF> &points);
 
-        static qreal angle(const QPointF& a, const QPointF& b, const QPointF& c);
+        static qreal angle(const QPointF& p1, const QPointF& p2, const QPointF& p3);
 
         const static int centimeterGraduationHeight;
         const static int halfCentimeterGraduationHeight;
