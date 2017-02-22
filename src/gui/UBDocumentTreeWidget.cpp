@@ -375,8 +375,10 @@ bool UBDocumentTreeWidget::moveDocument(UBDocumentProxyTreeItem* document, UBDoc
 
     QString destinationFolderName;
 
-    if (destinationFolder->isTrashFolder())
+    if (destinationFolder->isTrashFolder()) {
         UBApplication::app()->documentController->moveDocumentToTrash(sourceFolder, document, true);
+        destinationFolderName = document->proxy()->metaData(UBSettings::documentGroupName).toString();
+    }
 
     else {
         if (destinationFolder->groupName() == UBApplication::app()->documentController->defaultDocumentGroupName())
