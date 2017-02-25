@@ -805,10 +805,12 @@ void UBDocumentController::deleteTreeItem(QTreeWidgetItem * item, bool showConfi
             document->parent()->removeChild(document);
             UBPersistenceManager::persistenceManager()->deleteDocument(document->proxy());
 
-            if (mTrashTi->childCount()==0)
-                selectDocument(NULL);
-            else
-                selectDocument(((UBDocumentProxyTreeItem*)mTrashTi->child(0))->proxy());
+            if (selectNewDocument) {
+                if (mTrashTi->childCount()==0)
+                    selectDocument(NULL);
+                else
+                    selectDocument(((UBDocumentProxyTreeItem*)mTrashTi->child(0))->proxy());
+            }
 
             reloadThumbnails();
         }

@@ -168,6 +168,8 @@ class UBSvgSubsetAdaptor
                 qreal mGroupZIndex;
                 bool mGroupHasInfo;
 
+                bool saveSceneAfterLoading;
+
                 QString mNamespaceUri;
                 UBGraphicsScene *mScene;
 

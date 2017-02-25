@@ -71,17 +71,14 @@ const char *UBSettings::sDefaultFontFamily = "Arial";
 
 QString UBSettings::currentFileVersion = "4.8.0";
 
-QColor UBSettings::crossDarkBackground = QColor(44, 44, 44, 200);
-QColor UBSettings::crossLightBackground = QColor(165, 225, 255);
-
 QBrush UBSettings::eraserBrushDarkBackground = QBrush(QColor(127, 127, 127, 80));
 QBrush UBSettings::eraserBrushLightBackground = QBrush(QColor(255, 255, 255, 30));
 
 QPen UBSettings::eraserPenDarkBackground = QPen(QColor(255, 255, 255, 127));
 QPen UBSettings::eraserPenLightBackground = QPen(QColor(0, 0, 0, 127));
 
-QColor UBSettings::markerCircleBrushColorDarkBackground = QColor(127, 127, 127, 0);
-QColor UBSettings::markerCircleBrushColorLightBackground = QColor(255, 255, 255, 0);
+QColor UBSettings::markerCircleBrushColorDarkBackground = QColor(127, 127, 127, 80);
+QColor UBSettings::markerCircleBrushColorLightBackground = QColor(255, 255, 255, 30);
 
 QColor UBSettings::markerCirclePenColorDarkBackground = QColor(255, 255, 255, 127);
 QColor UBSettings::markerCirclePenColorLightBackground = QColor(0, 0, 0, 127);
@@ -271,6 +268,10 @@ void UBSettings::init()
     ValidateKeyboardPaletteKeyBtnSize();
 
     pageSize = new UBSetting(this, "Board", "DefaultPageSize", documentSizes.value(DocumentSizeRatio::Ratio4_3));
+
+
+    boardCrossColorDarkBackground = new UBSetting(this, "Board", "CrossColorDarkBackground", "#C82C2C2C");
+    boardCrossColorLightBackground = new UBSetting(this, "Board", "CrossColorLightBackground", "#A5E1FF");
 
     QStringList penLightBackgroundColors;
     penLightBackgroundColors << "#000000" << "#FF0000" <<"#004080" << "#008000" << "#FFDD00" << "#C87400" << "#800040" << "#008080"  << "#5F2D0A" << "#FFFFFF";

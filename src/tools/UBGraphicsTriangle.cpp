@@ -49,6 +49,7 @@ UBGraphicsTriangle::UBGraphicsTriangle()
     , mResizing1(false)
     , mResizing2(false)
     , mRotating(false)
+    , mShouldPaintInnerTriangle(true)
 
 {
     setRect(sDefaultRect, sDefaultOrientation);
@@ -224,6 +225,29 @@ void UBGraphicsTriangle::calculatePoints(const QRectF& r)
             C2.setX(r.left() + L); C2.setY(r.bottom() - d);
             break;
     }
+
+    bool paintInnerTriangle = true;
+    switch(mOrientation)
+    {
+        case BottomLeft:
+            if (B2.x() > C2.x() || B2.y() < A2.y())
+                paintInnerTriangle = false;
+            break;
+        case TopLeft:
+            if (B2.x() > C2.x() || B2.y() > A2.y())
+                paintInnerTriangle = false;
+            break;
+        case TopRight:
+            if (B2.x() < C2.x() || B2.y() > A2.y())
+                paintInnerTriangle = false;
+            break;
+        case BottomRight:
+            if (B2.x() < C2.x() || B2.y() < A2.y())
+                paintInnerTriangle = false;
+            break;
+    }
+    mShouldPaintInnerTriangle = paintInnerTriangle;
+
     W1 = rect().height() * d / C;
     H1 = rect().width() * d / C;
 
@@ -251,40 +275,54 @@ void UBGraphicsTriangle::paint(QPainter *painter, const QStyleOptionGraphicsItem
 
     QPolygonF polygon;
 
-    QLinearGradient gradient1(QPointF(A1.x(), 0), QPointF(A2.x(), 0));
-    gradient1.setColorAt(0, edgeFillColor());
-    gradient1.setColorAt(1, middleFillColor());
-    painter->setBrush(gradient1);
-    polygon << A1 << A2 << B2 << B1;
-    painter->drawPolygon(polygon);
-    polygon.clear();
+    if (mShouldPaintInnerTriangle) {
+        QLinearGradient gradient1(QPointF(A1.x(), 0), QPointF(A2.x(), 0));
+        gradient1.setColorAt(0, edgeFillColor());
+        gradient1.setColorAt(1, middleFillColor());
+        painter->setBrush(gradient1);
+        polygon << A1 << A2 << B2 << B1;
+        painter->drawPolygon(polygon);
+        polygon.clear();
 
-    QLinearGradient gradient2(QPointF(0, B1.y()), QPointF(0, B2.y()));
-    gradient2.setColorAt(0, edgeFillColor());
-    gradient2.setColorAt(1, middleFillColor());
-    painter->setBrush(gradient2);
-    polygon << B1 << B2 << C2 << C1;
-    painter->drawPolygon(polygon);
-    polygon.clear();
+        QLinearGradient gradient2(QPointF(0, B1.y()), QPointF(0, B2.y()));
+        gradient2.setColorAt(0, edgeFillColor());
+        gradient2.setColorAt(1, middleFillColor());
+        painter->setBrush(gradient2);
+        polygon << B1 << B2 << C2 << C1;
+        painter->drawPolygon(polygon);
+        polygon.clear();
 
-    QLinearGradient gradient3(CC, C2);
-    gradient3.setColorAt(0, edgeFillColor());
-    gradient3.setColorAt(1, middleFillColor());
-    painter->setBrush(gradient3);
-    polygon << C1 << C2 << A2 << A1;
-    painter->drawPolygon(polygon);
-    polygon.clear();
+        QLinearGradient gradient3(CC, C2);
+        gradient3.setColorAt(0, edgeFillColor());
+        gradient3.setColorAt(1, middleFillColor());
+        painter->setBrush(gradient3);
+        polygon << C1 << C2 << A2 << A1;
+        painter->drawPolygon(polygon);
+        polygon.clear();
 
 
-    painter->setBrush(Qt::NoBrush);
-    painter->setPen(drawColor());
+        painter->setBrush(Qt::NoBrush);
+        painter->setPen(drawColor());
 
-    polygon << A1 << B1 << C1;
-    painter->drawPolygon(polygon);
-    polygon.clear();
+        polygon << A1 << B1 << C1;
+        painter->drawPolygon(polygon);
+        polygon.clear();
 
-    polygon << A2 << B2 << C2;
-    painter->drawPolygon(polygon);
+        polygon << A2 << B2 << C2;
+        painter->drawPolygon(polygon);
+    }
+
+    else {
+        QLinearGradient gradient(QPointF(A1.x(), 0), QPointF(C1.x(), 0));
+        gradient.setColorAt(0, edgeFillColor());
+        gradient.setColorAt(1, middleFillColor());
+        painter->setBrush(gradient);
+        painter->setPen(drawColor());
+        polygon << A1 << B1 << C1;
+        painter->drawPolygon(polygon);
+        polygon.clear();
+    }
+
 
     paintGraduations(painter);
 
@@ -329,9 +367,11 @@ QPainterPath UBGraphicsTriangle::shape() const
     tShape.addPolygon(tPolygon);
     tPolygon.clear();
 
-    tPolygon << A2 << B2 << C2;
-    tShape.addPolygon(tPolygon);
-    tPolygon.clear();
+    if (mShouldPaintInnerTriangle) {
+        tPolygon << A2 << B2 << C2;
+        tShape.addPolygon(tPolygon);
+        tPolygon.clear();
+    }
 
     //qDebug() << "UBGraphicsTriangle shape()"<<"A1 ="<<A1<<"B1 ="<<B1<<"C1 ="<<C1;
     //qDebug() << "UBGraphicsTriangle shape()"<<"A2 ="<<A2<<"B2 ="<<B2<<"C2 ="<<C2;
@@ -592,19 +632,21 @@ QRectF    UBGraphicsTriangle::vFlipRect() const
 QRectF    UBGraphicsTriangle::rotateRect() const
 {
     QPointF p(C2);
+    qreal buttonsX = vFlipRect().left();
+
     switch(mOrientation)
     {
         case BottomLeft:
-            p += QPointF(20, 5);
+            p = QPointF(qMax(p.x() + 20, buttonsX), p.y() + 5);
             break;
         case TopLeft:
-            p += QPointF(20, -5 - mRotateSvgItem->boundingRect().height());
+            p = QPointF(qMax(p.x() + 20, buttonsX), p.y() -5 - mRotateSvgItem->boundingRect().height());
             break;
         case TopRight:
-            p += QPointF(-20 - mRotateSvgItem->boundingRect().width(), -5 - mRotateSvgItem->boundingRect().height());
+            p = QPointF(qMin(p.x() -20 - mRotateSvgItem->boundingRect().width(), buttonsX), p.y() - 5 - mRotateSvgItem->boundingRect().height());
             break;
         case BottomRight:
-            p += QPointF(-20 - mRotateSvgItem->boundingRect().width(), 5);
+            p = QPointF(qMin(p.x() -20 - mRotateSvgItem->boundingRect().width(), buttonsX), p.y() + 5);
             break;
     }
     return QRectF(p, QSizeF(mRotateSvgItem->boundingRect().size()));
@@ -806,9 +848,9 @@ void UBGraphicsTriangle::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
         mShowButtons = true;
         mCloseSvgItem->setVisible(true);
-        mHFlipSvgItem->setVisible(true);
-        mVFlipSvgItem->setVisible(true);
-        mRotateSvgItem->setVisible(true);
+        mHFlipSvgItem->setVisible(contains(hFlipRect()));
+        mVFlipSvgItem->setVisible(contains(vFlipRect()));
+        mRotateSvgItem->setVisible(contains(rotateRect()));
 
         if (resize1Polygon().containsPoint(event->pos().toPoint(), Qt::OddEvenFill))
             setCursor(resizeCursor1());
@@ -860,9 +902,9 @@ void UBGraphicsTriangle::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
         currentTool == UBStylusTool::Play)
     {
         mCloseSvgItem->setVisible(mShowButtons);
-        mVFlipSvgItem->setVisible(mShowButtons);
-        mHFlipSvgItem->setVisible(mShowButtons);
-        mRotateSvgItem->setVisible(mShowButtons);
+        mVFlipSvgItem->setVisible(mShowButtons && contains(vFlipRect()));
+        mHFlipSvgItem->setVisible(mShowButtons && contains(hFlipRect()));
+        mRotateSvgItem->setVisible(mShowButtons && contains(rotateRect()));
 
         if (resize1Polygon().containsPoint(event->pos().toPoint(), Qt::OddEvenFill))
             setCursor(resizeCursor1());
@@ -933,6 +975,35 @@ void UBGraphicsTriangle::DrawLine(const QPointF &scenePos, qreal width)
     // We have to use "pointed" line for marker tool
     scene()->drawLineTo(itemPos, mStrokeWidth,
             UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker);
+}
+
+/**
+ * @brief Check whether a given QRectF is inside the triangle (A1, B1, C1).
+ *
+ * Returns true if any corner of the rectangle is within the triangle or, if strict is set to true,
+ * if all corners of the rectangle are within the triangle.
+ */
+bool UBGraphicsTriangle::contains(const QRectF &rect, bool strict)
+{
+    QPolygonF poly;
+    poly << A1 << B1 << C1 << A1;
+
+    QPainterPath path;
+    path.addPolygon(poly);
+
+    QList<QPointF> points;
+    points << rect.bottomRight() << rect.topLeft() << rect.topRight();
+
+    bool inside = path.contains(rect.bottomLeft());
+
+    foreach(QPointF p, points) {
+        if (strict)
+            inside = inside && path.contains(p);
+        else
+            inside = inside || path.contains(p);
+    }
+
+    return inside;
 }
 
 void UBGraphicsTriangle::EndLine()

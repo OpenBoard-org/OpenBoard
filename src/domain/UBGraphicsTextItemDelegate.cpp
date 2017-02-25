@@ -204,6 +204,31 @@ void UBGraphicsTextItemDelegate::createControls()
 
 }
 
+/**
+ * @brief Calculate the width of the toolbar containing the text item-related buttons
+ * @return The space between the left-most and right-most buttons in pixels
+ */
+qreal UBGraphicsTextItemDelegate::titleBarWidth()
+{
+    if (!mFontButton)
+        return 0;
+
+    // refresh the frame and buttons' positions
+    positionHandles();
+
+    qreal titleBarWidth(0);
+    qreal frameLeftCoordinate = mFontButton->pos().x();
+    qreal frameRightCoordinate = frameLeftCoordinate;
+
+    foreach(DelegateButton* button, mButtons) {
+        if (button->getSection() == Qt::TitleBarArea) {
+            frameLeftCoordinate = qMin(button->pos().x(), frameLeftCoordinate);
+            frameRightCoordinate = qMax(button->pos().x() + button->boundingRect().width(), frameRightCoordinate);
+        }
+    }
+
+    return frameRightCoordinate - frameLeftCoordinate;
+}
 
 void UBGraphicsTextItemDelegate::freeButtons()
 {
@@ -532,6 +557,9 @@ bool UBGraphicsTextItemDelegate::keyReleaseEvent(QKeyEvent *event)
 
 void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode changeMode)
 {
+    // round it to the nearest hundredth
+    factor = floor(factor*100+0.5)/100.;
+
     if (scaleSize == changeMode)
     {
         if (1 == factor)

@@ -658,7 +658,6 @@ void UBApplicationController::closing()
 
     if (mUninoteController)
     {
-        mUninoteController->hideWindow();
         mUninoteController->close();
     }
 
@@ -721,6 +720,13 @@ void UBApplicationController::importFile(const QString& pFilePath)
 
 void UBApplicationController::useMultiScreen(bool use)
 {
+    if (use && !mMirror)
+        mMirror = new UBScreenMirror();
+    if (!use && mMirror) {
+        delete mMirror;
+        mMirror = NULL;
+    }
+
     mDisplayManager->setUseMultiScreen(use);
     mDisplayManager->adjustScreens(0);
     UBSettings::settings()->appUseMultiscreen->set(use);

@@ -214,79 +214,39 @@ void UBDocumentTreeWidget::focusInEvent(QFocusEvent *event)
     QTreeWidget::focusInEvent(event);
 }
 
-
 void UBDocumentTreeWidget::dropEvent(QDropEvent *event)
 {
-    if (mDropTargetProxyTi)
-    {
+    if (mDropTargetProxyTi) {
         mDropTargetProxyTi->setBackground(0, mBackground);
         mDropTargetProxyTi = 0;
     }
 
-    QTreeWidgetItem* underlyingItem = this->itemAt(event->pos());
+    QTreeWidgetItem * underlyingItem = this->itemAt(event->pos());
 
-    UBDocumentGroupTreeItem *groupItem = dynamic_cast<UBDocumentGroupTreeItem*>(underlyingItem);
+    // If the destination is a folder, move the selected document(s) there
+    UBDocumentGroupTreeItem * destinationFolder = dynamic_cast<UBDocumentGroupTreeItem*>(underlyingItem);
 
-    if (groupItem && mSelectedProxyTi && mSelectedProxyTi->proxy())
-    {
-        UBDocumentGroupTreeItem *sourceGroupItem = dynamic_cast<UBDocumentGroupTreeItem*>(mSelectedProxyTi->parent());
-        bool isTrashItem = sourceGroupItem && sourceGroupItem->isTrashFolder();
-        if ((isTrashItem && !groupItem->isTrashFolder()) ||
-            (!isTrashItem && mSelectedProxyTi->proxy()->groupName() != groupItem->groupName()))
-        {
-            QString groupName;
-            if (groupItem->isTrashFolder())
-            {
-                QString oldGroupName = mSelectedProxyTi->proxy()->metaData(UBSettings::documentGroupName).toString();
-                groupName = UBSettings::trashedDocumentGroupNamePrefix + oldGroupName;
-            }
-            else
-            {
-                if (groupItem->groupName() == UBApplication::app()->documentController->defaultDocumentGroupName())
-                    groupName = "";
-                else
-                    groupName = groupItem->groupName();
-            }
-            mSelectedProxyTi->proxy()->setMetaData(UBSettings::documentGroupName, groupName);
-            UBPersistenceManager::persistenceManager()->persistDocumentMetadata(mSelectedProxyTi->proxy());
+    if (destinationFolder) {
+        UBDocumentProxyTreeItem * lastMovedDocument;
+        foreach(QTreeWidgetItem * item, this->selectedItems()) {
+            UBDocumentProxyTreeItem * document = dynamic_cast<UBDocumentProxyTreeItem*>(item);
+            if (document && moveDocument(document, destinationFolder))
+                lastMovedDocument = document;
+        }
 
-            mSelectedProxyTi->parent()->removeChild(mSelectedProxyTi);
-
-            int i = 0;
-            for (i = 0; i < groupItem->childCount(); i++)
-            {
-                QTreeWidgetItem *ti = groupItem->child(i);
-                UBDocumentProxyTreeItem* pi = dynamic_cast<UBDocumentProxyTreeItem*>(ti);
-                if (pi)
-                {
-                    if (mSelectedProxyTi->proxy()->metaData(UBSettings::documentDate).toString() >= pi->proxy()->metaData(UBSettings::documentDate).toString())
-                    {
-                        break;
-                    }
-                }
-            }
-            groupItem->insertChild(i, mSelectedProxyTi);
-
-            if (isTrashItem)
-                mSelectedProxyTi->setFlags(mSelectedProxyTi->flags() | Qt::ItemIsEditable);
-
-            if (groupItem->isTrashFolder())
-                mSelectedProxyTi->setFlags(mSelectedProxyTi->flags() ^ Qt::ItemIsEditable);
-
-            expandItem(groupItem);
-            scrollToItem(mSelectedProxyTi);
-
-            // disabled, as those 2 calls are buggy on windows, the item disappears if we selected them
-            //
-            setCurrentItem(mSelectedProxyTi);
-            mSelectedProxyTi->setSelected(true);
+        if (lastMovedDocument) {
+            expandItem(destinationFolder);
+            scrollToItem(lastMovedDocument);
+            setCurrentItem(lastMovedDocument);
+            lastMovedDocument->setSelected(true);
 
             event->setDropAction(Qt::IgnoreAction);
             event->accept();
         }
     }
-    else
-    {
+
+    // If the destination is a document and the dropped item is a page, copy the page to that document
+    else {
         QTreeWidgetItem* underlyingTreeItem = this->itemAt(event->pos());
 
         UBDocumentProxyTreeItem *targetProxyTreeItem = dynamic_cast<UBDocumentProxyTreeItem*>(underlyingTreeItem);
@@ -393,6 +353,67 @@ void UBDocumentTreeWidget::documentUpdated(UBDocumentProxy *pDocument)
     }
 }
 
+/**
+ * @brief Move a document to the specified destination folder
+ * @param document Pointer to the document to move
+ * @param destinationFolder Pointer to the folder to move the document to
+ * @return true if document was moved successfully, false otherwise
+ */
+bool UBDocumentTreeWidget::moveDocument(UBDocumentProxyTreeItem* document, UBDocumentGroupTreeItem* destinationFolder)
+{
+    if (!document || !(document->proxy()) || !destinationFolder)
+        return false;
+
+    UBDocumentGroupTreeItem * sourceFolder = dynamic_cast<UBDocumentGroupTreeItem*>(document->parent());
+    bool documentIsInTrash = (sourceFolder && sourceFolder->isTrashFolder());
+
+    if (documentIsInTrash && destinationFolder->isTrashFolder())
+        return false;
+
+    if (!documentIsInTrash && document->proxy()->groupName() == destinationFolder->groupName())
+        return false;
+
+    QString destinationFolderName;
+
+    if (destinationFolder->isTrashFolder()) {
+        UBApplication::app()->documentController->moveDocumentToTrash(sourceFolder, document, true);
+        destinationFolderName = document->proxy()->metaData(UBSettings::documentGroupName).toString();
+    }
+
+    else {
+        if (destinationFolder->groupName() == UBApplication::app()->documentController->defaultDocumentGroupName())
+            destinationFolderName = "";
+        else
+            destinationFolderName = destinationFolder->groupName();
+    }
+
+    // Update the folder name in the document
+    document->proxy()->setMetaData(UBSettings::documentGroupName, destinationFolderName);
+    UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document->proxy());
+
+    // Remove document from its old folder
+    document->parent()->removeChild(document);
+
+    // Insert document at the right spot in the destination folder (ordered by document date)
+    int i = 0;
+    for (i = 0; i < destinationFolder->childCount(); i++) {
+        QTreeWidgetItem *ti = destinationFolder->child(i);
+        UBDocumentProxyTreeItem* pi = dynamic_cast<UBDocumentProxyTreeItem*>(ti);
+        if (pi && document->proxy()->metaData(UBSettings::documentDate).toString() >= pi->proxy()->metaData(UBSettings::documentDate).toString())
+            break;
+    }
+
+    destinationFolder->insertChild(i, document);
+
+    // Update editable status of the document if it was moved to or from the trash
+    if (documentIsInTrash)
+        document->setFlags(document->flags() | Qt::ItemIsEditable);
+
+    if (destinationFolder->isTrashFolder())
+        document->setFlags(document->flags() ^ Qt::ItemIsEditable);
+
+    return true;
+}
 
 UBDocumentProxyTreeItem::UBDocumentProxyTreeItem(QTreeWidgetItem * parent, UBDocumentProxy* proxy, bool isEditable)
     : QTreeWidgetItem()

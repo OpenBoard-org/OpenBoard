@@ -1178,15 +1178,22 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
             UBGraphicsGroupContainerItem* groupCloned = group->deepCopyNoChildDuplication();
             groupCloned->resetMatrix();
             groupCloned->resetTransform();
-            groupCloned->setMatrix(group->matrix());
-            groupCloned->setTransform(group->transform());
+            groupCloned->setPos(0, 0);
+            bool locked = groupCloned->Delegate()->isLocked();
 
             foreach(QGraphicsItem* eachItem ,group->childItems()){
                 QGraphicsItem* copiedChild = dynamic_cast<QGraphicsItem*>(dynamic_cast<UBItem*>(eachItem)->deepCopy());
                 copy->addItem(copiedChild);
                 groupCloned->addToGroup(copiedChild);
             }
+
+            if (locked)
+                groupCloned->setData(UBGraphicsItemData::ItemLocked, QVariant(true));
+
             copy->addItem(groupCloned);
+            groupCloned->setMatrix(group->matrix());
+            groupCloned->setTransform(QTransform::fromTranslate(group->pos().x(), group->pos().y()));
+            groupCloned->setTransform(group->transform(), true);
         }
 
         if (ubItem && !stroke && !group && item->isVisible())
@@ -2391,9 +2398,9 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
         QColor bgCrossColor;
 
         if (darkBackground)
-            bgCrossColor = UBSettings::crossDarkBackground;
+            bgCrossColor = QColor(UBSettings::settings()->boardCrossColorDarkBackground->get().toString());
         else
-            bgCrossColor = UBSettings::crossLightBackground;
+            bgCrossColor = QColor(UBSettings::settings()->boardCrossColorLightBackground->get().toString());
         if (mZoomFactor < 1.0)
         {
             int alpha = 255 * mZoomFactor / 2;
@@ -2608,20 +2615,19 @@ void UBGraphicsScene::updateMarkerCircleColor()
     if (!mMarkerCircle)
         return;
 
-    QBrush mcBrush = mMarkerCircle->brush();
     QPen mcPen = mMarkerCircle->pen();
 
     if (mDarkBackground) {
-        mcBrush.setColor(UBSettings::markerCircleBrushColorDarkBackground);
         mcPen.setColor(UBSettings::markerCirclePenColorDarkBackground);
+        mMarkerCircle->setBrush(UBSettings::markerCircleBrushColorDarkBackground);
     }
 
     else {
-        mcBrush.setColor(UBSettings::markerCircleBrushColorLightBackground);
         mcPen.setColor(UBSettings::markerCirclePenColorLightBackground);
+        mMarkerCircle->setBrush(UBSettings::markerCircleBrushColorLightBackground);
     }
 
-    mMarkerCircle->setBrush(mcBrush);
+    mcPen.setStyle(Qt::DotLine);
     mMarkerCircle->setPen(mcPen);
 }
 
