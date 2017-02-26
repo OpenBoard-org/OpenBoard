@@ -103,6 +103,8 @@ private:
     QPointF mLastTranslateOffset;
     qreal mRotationAngle;
 
+    bool mIsLocked;
+
     QList<DelegateButton*> mButtons;
 
     DelegateButton *mDeleteButton;
