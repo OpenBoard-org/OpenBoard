@@ -42,21 +42,32 @@ UBVersion::UBVersion(const QString &string)
 
 uint UBVersion::toUInt() const
 {
+    /* Based on semantic versioning, version numbers look like:
+     * Major.Minor.Patch-Type.Build
+     *
+     * To compare version numbers, the string is split into each part, and they are multiplied
+     * to give a number where the first two digits are the Major version, the next two are the
+     * Minor version, and so on.
+     *
+     * i.e if Major, Minor etc. are named A, B, C, D, E, the number will look like:
+     * AABBCCDDEE
+    */
+
     uint result = 0;
-    QStringList list = mString.split(".");
+    QStringList list = mString.split(QRegExp("[-\\.]"));
     switch (list.count()) {
     case 2:
         //short version  1.0
-        result = (list.at(0).toUInt() * 1000000) + (list.at(1).toUInt() * 10000) + (Release * 100);
+        result = (list.at(0).toUInt() * 100000000) + (list.at(1).toUInt() * 1000000) + (Release * 100);
         break;
     case 3:
         //release version 1.0.0
-        result = (list.at(0).toUInt() * 1000000) + (list.at(1).toUInt() * 10000) + (Release * 100) + list.at(2).toUInt();
+        result = (list.at(0).toUInt() * 100000000) + (list.at(1).toUInt() * 1000000) + list.at(2).toUInt()*10000 + (Release * 100);
         break;
-    case 4:{
-        //standard version  1.0.a/b/r.0
-        uint releaseStage = list.at(2).startsWith("a") ? Alpha :(list.at(2).startsWith("b") ? Beta : ReleaseCandidate);
-        result = (list.at(0).toUInt() * 1000000) + (list.at(1).toUInt() * 10000) + (releaseStage * 100) + list.at(3).toUInt();
+    case 5:{
+        //standard version  1.0.0.a/b/rc.0
+        uint releaseStage = list.at(3).startsWith("a") ? Alpha :(list.at(3).startsWith("b") ? Beta : ReleaseCandidate);
+        result = (list.at(0).toUInt() * 100000000) + (list.at(1).toUInt() * 1000000) + (list.at(2).toUInt() * 10000) + (releaseStage * 100) + list.at(4).toUInt();
         break;
     }
     default:
