@@ -65,6 +65,7 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
         void setTextWidth(qreal width);
         void setTextHeight(qreal height);
         qreal textHeight() const;
+        qreal pixelsPerPoint() const;
 
         void contentsChanged();
 
@@ -100,6 +101,7 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
         void setSelected(bool selected);
 
         QString mTypeTextHereLabel;
+
 
     signals:
         void textUndoCommandAdded(UBGraphicsTextItem *textItem);

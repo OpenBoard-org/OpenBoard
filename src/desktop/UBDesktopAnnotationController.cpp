@@ -354,7 +354,10 @@ void UBDesktopAnnotationController::showWindow()
 
 void UBDesktopAnnotationController::close()
 {
-    // NOOP
+    if (mTransparentDrawingView)
+        mTransparentDrawingView->hide();
+
+    mDesktopPalette->hide();
 }
 
 

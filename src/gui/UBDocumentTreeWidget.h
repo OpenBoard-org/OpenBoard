@@ -35,6 +35,7 @@
 
 class UBDocumentProxy;
 class UBDocumentProxyTreeItem;
+class UBDocumentGroupTreeItem;
 
 class UBDocumentTreeWidget : public QTreeWidget
 {
@@ -60,6 +61,7 @@ class UBDocumentTreeWidget : public QTreeWidget
         void autoScroll();
 
     private:
+        bool moveDocument(UBDocumentProxyTreeItem* document, UBDocumentGroupTreeItem* destinationFolder);
         UBDocumentProxyTreeItem *mSelectedProxyTi;
         QTreeWidgetItem *mDropTargetProxyTi;
         QBrush mBackground;

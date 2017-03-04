@@ -111,9 +111,15 @@ void UBSelectionFrame::setEnclosedItems(const QList<QGraphicsItem*> pGraphicsIte
     QRegion resultRegion;
     UBGraphicsFlags resultFlags;
     mEnclosedtems.clear();
+
+    // If at least one of the enclosed items is locked, the entire selection is
+    // considered to be locked.
+    mIsLocked = false;
+
     foreach (QGraphicsItem *nextItem, pGraphicsItems) {
         UBGraphicsItemDelegate *nextDelegate = UBGraphicsItem::Delegate(nextItem);
         if (nextDelegate) {
+            mIsLocked = (mIsLocked || nextDelegate->isLocked());
             mEnclosedtems.append(nextDelegate);
             resultRegion |= nextItem->boundingRegion(nextItem->sceneTransform());
             resultFlags |= nextDelegate->ubflags();
@@ -129,6 +135,14 @@ void UBSelectionFrame::setEnclosedItems(const QList<QGraphicsItem*> pGraphicsIte
     if (resultRect.isEmpty()) {
         hide();
     }
+
+    if (mIsLocked) {
+        QColor baseColor = UBSettings::paletteColor;
+        baseColor.setAlphaF(baseColor.alphaF() / 3);
+        setLocalBrush(QBrush(baseColor));
+    }
+    else
+        setLocalBrush(QBrush(UBSettings::paletteColor));
 }
 
 void UBSelectionFrame::updateRect()
@@ -168,6 +182,9 @@ void UBSelectionFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+    if (mIsLocked)
+        return;
+
     QPointF dp = event->pos() - mPressedPos;
     QPointF rotCenter = mapToScene(rect().center());
 

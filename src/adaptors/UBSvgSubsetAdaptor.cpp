@@ -355,6 +355,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
     mScene = 0;
     UBGraphicsWidgetItem *currentWidget = 0;
     bool pageDpiSpecified = true;
+    saveSceneAfterLoading = false;
 
     mFileVersion = 40100; // default to 4.1.0
 
@@ -371,6 +372,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                 if (!mScene)
                 {
                     mScene = new UBGraphicsScene(mProxy, false);
+                    mScene->setModified(false);
                 }
 
                 // introduced in UB 4.2
@@ -951,10 +953,11 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
         mScene->addItem(iterator.value());
     }
 
-    if (mScene)
-        mScene->setModified(false);
+    if (mScene) {
+        mScene->setModified(saveSceneAfterLoading);
+        mScene->enableUndoRedoStack();
+    }
 
-    mScene->enableUndoRedoStack();
     qDebug() << "loadScene() : created scene and read file";
     qDebug() << "spent milliseconds: " << time.elapsed();
     return mScene;
@@ -1190,11 +1193,6 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
                 mXmlWriter.writeStartElement("g");
                 openStroke = currentStroke;
 
-                QMatrix matrix = item->sceneMatrix();
-
-                if (!matrix.isIdentity())
-                    mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
-
                 UBGraphicsStroke* stroke = dynamic_cast<UBGraphicsStroke* >(currentStroke);
 
                 if (stroke)
@@ -1214,6 +1212,14 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
                                                   , "fill-on-light-background", colorOnLightBackground.name());
 
                         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(sg->uuid()));
+
+                        QVariant locked = sg->data(UBGraphicsItemData::ItemLocked);
+                        if (!locked.isNull() && locked.toBool())
+                            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "locked", xmlTrue);
+
+                        QMatrix matrix = sg->sceneMatrix();
+                        if (!matrix.isIdentity())
+                            mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
 
                         qDebug() << "Attributes written";
 
@@ -1576,7 +1582,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::polygonItemToSvgPolygon(UBGraphicsPo
 
         QString points = pointsToSvgPointsAttribute(polygon);
         mXmlWriter.writeAttribute("points", points);
-        mXmlWriter.writeAttribute("transform",toSvgTransform(polygonItem->sceneMatrix()));
+        mXmlWriter.writeAttribute("transform",toSvgTransform(polygonItem->matrix()));
         mXmlWriter.writeAttribute("fill", polygonItem->brush().color().name());
 
         qreal alpha = polygonItem->brush().color().alphaF();
@@ -1612,9 +1618,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::polygonItemToSvgPolygon(UBGraphicsPo
         }
 
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(polygonItem->uuid()));
-        if (polygonItem->parentItem()) {
-            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "parent", UBStringUtils::toCanonicalUuid(UBGraphicsItem::getOwnUuid(polygonItem->parentItem())));
-        }
+        UBGraphicsStrokesGroup* sg = polygonItem->strokesGroup();
+        if (sg)
+            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "parent", UBStringUtils::toCanonicalUuid(sg->uuid()));
 
         mXmlWriter.writeEndElement();
     }
@@ -2567,6 +2573,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::textItemToSvg(UBGraphicsTextItem* it
 
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "width", QString("%1").arg(item->textWidth()));
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "height", QString("%1").arg(item->textHeight()));
+    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "pixels-per-point", QString("%1").arg(item->pixelsPerPoint()));
 
     QColor colorDarkBg = item->colorOnDarkBackground();
     QColor colorLightBg = item->colorOnLightBackground();
@@ -2592,6 +2599,8 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
 {
     qreal width = mXmlReader.attributes().value("width").toString().toFloat();
     qreal height = mXmlReader.attributes().value("height").toString().toFloat();
+
+    qreal originalPixelsPerPoint = mXmlReader.attributes().value(mNamespaceUri, "pixels-per-point").toString().toDouble();
 
     UBGraphicsTextItem* textItem = new UBGraphicsTextItem();
 
@@ -2635,6 +2644,31 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
                 if (mXmlReader.name() == "itemTextContent") {
                     text = mXmlReader.readElementText();
                     textItem->setHtml(text);
+
+                    // Fonts sizes are not displayed the same across platforms: e.g a text item with the same
+                    // font size (in Pts) is displayed smaller on Linux than Windows. This messes up layouts
+                    // when importing documents created on another computer, so if a font is being displayed
+                    // at a different size (relative to the rest of the document) than it was when created,
+                    // we adjust its size.
+                    if (originalPixelsPerPoint != 0) {
+                        qreal pixelsPerPoint = textItem->pixelsPerPoint();
+
+                        qDebug() << "Pixels per point: original/current" << originalPixelsPerPoint
+                                 << "/" << pixelsPerPoint;
+                        qreal ratio = originalPixelsPerPoint/pixelsPerPoint;
+
+                        if (ratio != 1) {
+                            qDebug() << "Scaling text by " << ratio;
+                            UBGraphicsTextItemDelegate* textDelegate = dynamic_cast<UBGraphicsTextItemDelegate*>(textItem->Delegate());
+                            if (textDelegate)
+                                textDelegate->scaleTextSize(ratio);
+                        }
+                    }
+                    else
+                        // mark scene as modified so the text item will be saved with a pixelsPerPoint value
+                        saveSceneAfterLoading = true;
+
+
                     textItem->resize(width, height);
                     if (textItem->toPlainText().isEmpty()) {
                         delete textItem;

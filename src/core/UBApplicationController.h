@@ -53,12 +53,8 @@ class UBVersion;
 class UBSoftwareUpdate;
 class QNetworkAccessManager;
 class QNetworkReply;
-class QHttpPart;
 class UBRightPalette;
 class UBOpenSankoreImporter;
-class QScriptValue;
-class QScriptEngine;
-class QNetworkReply;
 
 class UBApplicationController : public QObject
 {
@@ -158,8 +154,8 @@ class UBApplicationController : public QObject
         void checkAtLaunch();
 
     private slots:
-        void updateRequestFinished(int id, bool error);
-        void updateHeaderReceived(QNetworkRequest header );
+        void updateRequestFinished(QNetworkReply * reply);
+
 
     protected:
 
@@ -193,13 +189,10 @@ class UBApplicationController : public QObject
         bool mIsShowingDesktop;
 
         bool isNoUpdateDisplayed;
-        void checkUpdate (QString urlString = "http://get.openboard.org/update.json");
-        QNetworkAccessManager *networkAccessManager;
+        void checkUpdate(const QUrl &url = QUrl());
+        QNetworkAccessManager * mNetworkAccessManager;
 
         void downloadJsonFinished(QString updateString);
-        QHttpPart* mHttp;
-        QNetworkAccessManager qnam;
-        QNetworkReply *mHttpreply;
 };
 
 #endif /* UBAPPLICATIONCONTROLLER_H_ */

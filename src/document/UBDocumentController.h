@@ -55,6 +55,8 @@ class UBDocumentController : public UBDocumentContainer
 {
     Q_OBJECT
 
+    friend class UBDocumentTreeWidget;
+
     public:
         UBDocumentController(UBMainWindow* mainWindow);
         virtual ~UBDocumentController();
@@ -161,7 +163,6 @@ class UBDocumentController : public UBDocumentContainer
 
         void refreshDocumentThumbnailsView(UBDocumentContainer* source);
 };
-
 
 
 #endif /* UBDOCUMENTCONTROLLER_H_ */

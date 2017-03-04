@@ -90,7 +90,6 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
     , mAutomaticCheckForUpdates(false)
     , mCheckingForUpdates(false)
     , mIsShowingDesktop(false)
-    , mHttp(0)
 {
     mDisplayManager = new UBDisplayManager(this);
 
@@ -121,7 +120,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
     connect(UBApplication::webController, SIGNAL(imageCaptured(const QPixmap &, bool, const QUrl&))
             , this, SLOT(addCapturedPixmap(const QPixmap &, bool, const QUrl&)));
 
-    networkAccessManager = new QNetworkAccessManager (this);
+    mNetworkAccessManager = new QNetworkAccessManager (this);
     QTimer::singleShot (1000, this, SLOT (checkAtLaunch()));
 }
 
@@ -135,8 +134,6 @@ UBApplicationController::~UBApplicationController()
 
     delete mBlackScene;
     delete mMirror;
-
-    if (mHttp) delete mHttp;
 
     delete(mOpenSankoreImporter);
     mOpenSankoreImporter = NULL;
@@ -478,85 +475,71 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
 }
 
 
-void UBApplicationController::checkUpdate(QString urlString)
+void UBApplicationController::checkUpdate(const QUrl& url)
 {
+    QUrl jsonUrl = url;
+    if (url.isEmpty())
+        jsonUrl = UBSettings::settings()->appSoftwareUpdateURI->get().toUrl();
 
+    qDebug() << "Checking for update at url: " << jsonUrl.toString();
 
-    #if  defined(QT_NO_DEBUG)
-    /*
-    if(mHttp)
-        mHttp->deleteLater();
-    QUrl url(urlString);
-    mHttp = new QHttpPart(url.host());
-    connect(mHttp, SIGNAL(requestFinished(int,bool)), this, SLOT(updateRequestFinished(int,bool)));
-    connect(mHttp, SIGNAL(responseHeaderReceived(QHttpResponseHeader)), this, SLOT(updateHeaderReceived(QHttpResponseHeader)));
+    connect(mNetworkAccessManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(updateRequestFinished(QNetworkReply*)));
 
-    mHttp->get(url.path());
+    mNetworkAccessManager->get(QNetworkRequest(jsonUrl));
 
-   */
-
-#else
-    if(mHttpreply)
-        mHttpreply->deleteLater();
-    QUrl url(urlString);
-    mHttpreply = qnam.get(QNetworkRequest(url));
-    connect(mHttpreply, SIGNAL(requestFinished(int,bool)), this, SLOT(updateRequestFinished(int,bool)));
-    connect(mHttpreply, SIGNAL(responseHeaderReceived(QHttpResponseHeader)), this, SLOT(updateHeaderReceived(QHttpResponseHeader)));
-    // mHttpreply->setUrl(url.path());
-    //mHttp->get(url.path());
-
-#endif
 }
 
-/*
-void UBApplicationController::updateHeaderReceived(QHttpResponseHeader header)
+
+
+void UBApplicationController::updateRequestFinished(QNetworkReply * reply)
 {
-    if(header.statusCode() == 302 && header.hasKey("Location")){
-        mHttp->close();
-        checkUpdate(header.value("Location"));
+    if (reply->error()) {
+        qWarning() << "Error downloading update file: " << reply->errorString();
+        return;
     }
 
-}
-*/
-void UBApplicationController::updateHeaderReceived(QNetworkRequest header )
-{
-       //if(header.attribute(QNetworkRequest::HttpStatusCodeAttribute) == 302 && header.header(QNetworkRequest::LocationHeader)){
-       // mHttp->close();
-        mHttpreply->close();
-        //checkUpdate(header.value("Location"));
-   // }
-}
+    // Check if we are being redirected. If so, call checkUpdate again
 
-void UBApplicationController::updateRequestFinished(int id, bool error)
-{
-   if (error){
-       qWarning() << "http command id" << id << "return an error";
-   }
-   else{
-      /* QString responseString =  QString(mHttp->readAll());
-       qDebug() << responseString;
-       if (!responseString.isEmpty() && responseString.contains("version") && responseString.contains("url")){
-           mHttp->close();
-           mHttp->deleteLater();
-           mHttp = 0;
-           downloadJsonFinished(responseString);
-       }
-      */
-        QString responseString =  QString(mHttpreply->readAll());
-        qDebug() << responseString;
-        if (!responseString.isEmpty() && responseString.contains("version") && responseString.contains("url")){
-            mHttpreply->close();
-            mHttpreply->deleteLater();
-            mHttpreply = 0;
-            downloadJsonFinished(responseString);
-        }
-   }
-}
+    QVariant redirect_target = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
+    if (!redirect_target.isNull()) {
+        // The returned URL might be relative. resolved() creates an absolute url from it
+        QUrl redirect_url(reply->url().resolved(redirect_target.toUrl()));
 
+        checkUpdate(redirect_url);
+        return;
+    }
+
+    // No error and no redirect => we read the whole response
+
+    QString responseString = QString(reply->readAll());
+
+    if (!responseString.isEmpty() &&
+            responseString.contains("version") &&
+            responseString.contains("url")) {
+
+        reply->close();
+        reply->deleteLater();
+
+        downloadJsonFinished(responseString);
+    }
+}
 
 
 void UBApplicationController::downloadJsonFinished(QString currentJson)
 {
+    /*
+      The .json files simply specify the latest version number available, and
+      the URL to send the user to, so they can download it.
+
+      They look like:
+
+          {
+            "version": "1.3.5",
+            "url": "http://openboard.ch"
+          }
+    */
+
     QScriptValue scriptValue;
     QScriptEngine scriptEngine;
     scriptValue = scriptEngine.evaluate ("(" + currentJson + ")");
@@ -564,16 +547,17 @@ void UBApplicationController::downloadJsonFinished(QString currentJson)
     UBVersion installedVersion (qApp->applicationVersion());
     UBVersion jsonVersion (scriptValue.property("version").toString());
 
+    qDebug() << "json version: " << jsonVersion.toUInt();
+    qDebug() << "installed version: " << installedVersion.toUInt();
+
     if (jsonVersion > installedVersion) {
-            if (UBApplication::mainWindow->yesNoQuestion(tr("Update available"), tr ("New update available, would you go to the web page ?"))){
-                    QUrl url(scriptValue.property ("url").toString());
-                    QDesktopServices::openUrl (url);
-            }
-    }
-    else {
-        if (isNoUpdateDisplayed) {
-            mMainWindow->information(tr("Update"), tr("No update available"));
+        if (UBApplication::mainWindow->yesNoQuestion(tr("Update available"), tr ("New update available, would you go to the web page ?"))){
+            QUrl url(scriptValue.property("url").toString());
+            QDesktopServices::openUrl(url);
         }
+    }
+    else if (isNoUpdateDisplayed) {
+        mMainWindow->information(tr("Update"), tr("No update available"));
     }
 }
 
@@ -583,14 +567,14 @@ void UBApplicationController::checkAtLaunch()
 
     if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool()){
         isNoUpdateDisplayed = false;
-        //checkUpdate ();
+        checkUpdate();
     }
 }
 
 void UBApplicationController::checkUpdateRequest()
 {
     isNoUpdateDisplayed = true;
-    //checkUpdate ();
+    checkUpdate();
 }
 
 void UBApplicationController::hideDesktop()
@@ -658,7 +642,6 @@ void UBApplicationController::closing()
 
     if (mUninoteController)
     {
-        mUninoteController->hideWindow();
         mUninoteController->close();
     }
 

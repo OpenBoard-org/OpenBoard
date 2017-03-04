@@ -85,7 +85,7 @@ class UBPersistenceManager : public QObject
 
         virtual void moveSceneToIndex(UBDocumentProxy* pDocumentProxy, int source, int target);
 
-        virtual UBGraphicsScene* loadDocumentScene(UBDocumentProxy* pDocumentProxy, int sceneIndex);
+        virtual UBGraphicsScene* loadDocumentScene(UBDocumentProxy* pDocumentProxy, int sceneIndex, bool cacheNeighboringScenes = true);
         UBGraphicsScene *getDocumentScene(UBDocumentProxy* pDocumentProxy, int sceneIndex) {return mSceneCache.value(pDocumentProxy, sceneIndex);}
 
         QList<QPointer<UBDocumentProxy> > documentProxies;
@@ -156,6 +156,8 @@ class UBPersistenceManager : public QObject
 
         QThread* mThread;
         bool mIsWorkerFinished;
+
+        bool mIsApplicationClosing;
 
     private slots:
         void documentRepositoryChanged(const QString& path);

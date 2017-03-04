@@ -555,6 +555,8 @@ Here we determines cases when items should to get mouse press event at pressing 
         return true;
 
     case UBGraphicsMediaItem::Type:
+    case UBGraphicsVideoItem::Type:
+    case UBGraphicsAudioItem::Type:
         return false;
 
     case UBGraphicsTextItem::Type:
@@ -626,6 +628,8 @@ bool UBBoardView::itemShouldReceiveSuspendedMousePressEvent(QGraphicsItem *item)
 
     case DelegateButton::Type:
     case UBGraphicsMediaItem::Type:
+    case UBGraphicsVideoItem::Type:
+    case UBGraphicsAudioItem::Type:
         return true;
     }
 
@@ -858,6 +862,8 @@ void UBBoardView::moveRubberedItems(QPointF movingVector)
         if (item->type() == UBGraphicsW3CWidgetItem::Type
                 || item->type() == UBGraphicsPixmapItem::Type
                 || item->type() == UBGraphicsMediaItem::Type
+                || item->type() == UBGraphicsVideoItem::Type
+                || item->type() == UBGraphicsAudioItem::Type
                 || item->type() == UBGraphicsSvgItem::Type
                 || item->type() == UBGraphicsTextItem::Type
                 || item->type() == UBGraphicsStrokesGroup::Type
@@ -1170,7 +1176,8 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
 
                     if (item->type() == UBGraphicsW3CWidgetItem::Type
                             || item->type() == UBGraphicsPixmapItem::Type
-                            || item->type() == UBGraphicsMediaItem::Type
+                            || item->type() == UBGraphicsVideoItem::Type
+                            || item->type() == UBGraphicsAudioItem::Type
                             || item->type() == UBGraphicsSvgItem::Type
                             || item->type() == UBGraphicsTextItem::Type
                             || item->type() == UBGraphicsStrokesGroup::Type
@@ -1328,6 +1335,7 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 
                 textItem->setTextInteractionFlags(Qt::TextEditorInteraction);
                 textItem->setSelected (true);
+                textItem->setTextWidth(0);
                 textItem->setFocus();
             }
         }
@@ -1597,9 +1605,9 @@ void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
         QColor bgCrossColor;
 
         if (darkBackground)
-            bgCrossColor = UBSettings::crossDarkBackground;
+            bgCrossColor = QColor(UBSettings::settings()->boardCrossColorDarkBackground->get().toString());
         else
-            bgCrossColor = UBSettings::crossLightBackground;
+            bgCrossColor = QColor(UBSettings::settings()->boardCrossColorLightBackground->get().toString());
 
         if (transform ().m11 () < 1.0)
         {

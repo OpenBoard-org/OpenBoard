@@ -252,6 +252,12 @@ void UBGraphicsMediaItem::setMinimumSize(const QSize& size)
     this->setSize(width, height);
 }
 
+void UBGraphicsMediaItem::setUuid(const QUuid &pUuid)
+{
+    UBItem::setUuid(pUuid);
+    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid));
+}
+
 void UBGraphicsMediaItem::setMediaFileUrl(QUrl url)
 {
     mMediaFileUrl = url;
