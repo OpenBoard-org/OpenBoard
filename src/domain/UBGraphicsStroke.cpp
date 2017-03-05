@@ -246,7 +246,7 @@ UBGraphicsStroke* UBGraphicsStroke::simplify()
         QList<strokePoint>::iterator b_it(it+1);
 
         while (b_it+1 != points.end()) {
-            qreal angle = qFabs(QLineF(it->first, b_it->first).angle() - QLineF(b_it->first, (b_it+1)->first).angle());
+            qreal angle = qFabs(180-(UBGeometryUtils::angle(it->first, b_it->first, (b_it+1)->first)));
             qreal widthRatio = qMax(it->second, b_it->second)/qMin(it->second, b_it->second);
             if (widthRatio > thresholdWidthDifference)
                 qDebug() << "Width ratio: " << widthRatio;
@@ -282,7 +282,6 @@ UBGraphicsStroke* UBGraphicsStroke::simplify()
         if (hasAlpha()) {
             if (newStrokePoints.size() > 1 && i < points.size() - 1) {
                 qreal angle = qFabs(UBGeometryUtils::angle(points[i-1].first, points[i].first, points[i+1].first));
-                qDebug() << "Angle: " << angle;
                 if (angle > 40 && angle < 320)
                     drawCurve = true;
             }
