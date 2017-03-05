@@ -427,12 +427,12 @@ void UBGeometryUtils::crashPointList(QVector<QPointF> &points)
 }
 
 /**
- * @brief Return the angle between three points
+ * @brief Return the angle in degrees between three points
  */
 qreal UBGeometryUtils::angle(const QPointF& p1, const QPointF& p2, const QPointF& p3)
 {
     // Angle between three points, using the law of cosines:
-    // The angle at B equals arccos((a^2-b^2-c^2)/(2*a*c)), where a, b and c are the sides of the triangle
+    // The angle at B equals arccos((a^2-b^2+c^2)/(2*a*c)), where a, b and c are the sides of the triangle
     // opposite A, B and C, respectively
 
     qreal a, b, c, beta;
@@ -440,7 +440,10 @@ qreal UBGeometryUtils::angle(const QPointF& p1, const QPointF& p2, const QPointF
     b = qSqrt(qPow(p1.x() - p3.x(), 2) + qPow(p1.y() - p3.y(), 2));
     c = qSqrt(qPow(p1.x() - p2.x(), 2) + qPow(p1.y() - p2.y(), 2));
 
-    beta = qAcos((a*a - b*b - c*c)/(2*a*c));
+    if (a == 0 || c == 0)
+        beta = 3.14159;
+    else
+        beta = qAcos((a*a - b*b + c*c)/(2*a*c));
 
-    return 2*3.14159*beta;
+    return 180.* beta/3.14159;
 }
