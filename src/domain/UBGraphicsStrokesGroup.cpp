@@ -148,12 +148,15 @@ void UBGraphicsStrokesGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 UBItem* UBGraphicsStrokesGroup::deepCopy() const
 {
     QTransform groupTransform = transform();
+    QPointF groupPos = pos();
 
     UBGraphicsStrokesGroup* copy = new UBGraphicsStrokesGroup();
     copyItemParameters(copy);
     copy->resetTransform();
+    copy->setPos(0,0);
 
     const_cast<UBGraphicsStrokesGroup*>(this)->resetTransform();
+    const_cast<UBGraphicsStrokesGroup*>(this)->setPos(0,0);
 
     QList<QGraphicsItem*> chl = childItems();
 
@@ -175,7 +178,9 @@ UBItem* UBGraphicsStrokesGroup::deepCopy() const
         }
     }
     const_cast<UBGraphicsStrokesGroup*>(this)->setTransform(groupTransform);
+    const_cast<UBGraphicsStrokesGroup*>(this)->setPos(groupPos);
     copy->setTransform(groupTransform);
+    copy->setPos(groupPos);
 
     return copy;
 }

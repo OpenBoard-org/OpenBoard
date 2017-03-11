@@ -593,9 +593,6 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
         itemSize = commonItem->boundingRect().size();
         commonItem->setSelected(false);
 
-        UBGraphicsStrokesGroup *stroke = dynamic_cast<UBGraphicsStrokesGroup*>(commonItem);
-        if (stroke)
-            itemPos = QPointF(shifting, shifting);
     }
 
     UBMimeType::Enum itemMimeType;
