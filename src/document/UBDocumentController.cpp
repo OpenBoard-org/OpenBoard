@@ -809,7 +809,7 @@ void UBDocumentController::deleteTreeItem(QTreeWidgetItem * item, bool showConfi
                 if (mTrashTi->childCount()==0)
                     selectDocument(NULL);
                 else
-                    selectDocument(((UBDocumentProxyTreeItem*)mTrashTi->child(0))->proxy());
+                    selectDocument(((UBDocumentProxyTreeItem*)mTrashTi->child(0))->proxy(), false);
             }
 
             reloadThumbnails();
