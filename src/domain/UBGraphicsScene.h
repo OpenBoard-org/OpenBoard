@@ -277,6 +277,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         QSize nominalSize();
 
+        QSize sceneSize();
+
         void setNominalSize(const QSize& pSize);
 
         void setNominalSize(int pWidth, int pHeight);

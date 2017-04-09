@@ -2257,6 +2257,24 @@ QSize UBGraphicsScene::nominalSize()
     return mNominalSize;
 }
 
+/**
+ * @brief Return the scene's boundary size, including any background item
+ *
+ * If no background item is present, this returns nominalSize()
+ */
+QSize UBGraphicsScene::sceneSize()
+{
+    UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(backgroundObject());
+
+    if (pdfItem) {
+        QRectF targetRect = pdfItem->sceneBoundingRect();
+        return targetRect.size().toSize();
+    }
+
+    else
+        return nominalSize();
+}
+
 void UBGraphicsScene::setNominalSize(const QSize& pSize)
 {
     if (nominalSize() != pSize)
