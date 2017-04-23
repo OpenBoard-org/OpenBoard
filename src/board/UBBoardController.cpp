@@ -651,7 +651,7 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
             {
                  QBuffer buffer(&pData);
                  buffer.open(QIODevice::WriteOnly);
-                 QString format = UBFileSystemUtils::extension(item->sourceUrl().toLocalFile());
+                 QString format = UBFileSystemUtils::extension(item->sourceUrl().toString(QUrl::DecodeReserved));
                  pixitem->pixmap().save(&buffer, format.toLatin1());
             }
         }break;

@@ -2209,15 +2209,19 @@ QList<QUrl> UBGraphicsScene::relativeDependencies() const
     while (itItems.hasNext())
     {
         QGraphicsItem* item = itItems.next();
-        UBGraphicsMediaItem *mediaItem = qgraphicsitem_cast<UBGraphicsMediaItem*> (item);
 
-        if (mediaItem){
-            QString completeFileName = QFileInfo(mediaItem->mediaFileUrl().toLocalFile()).fileName();
-            QString path;
-            if(mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Video)
-                path = UBPersistenceManager::videoDirectory + "/";
-            else
-                path = UBPersistenceManager::audioDirectory + "/";
+        UBGraphicsVideoItem *videoItem = qgraphicsitem_cast<UBGraphicsVideoItem*> (item);
+        if (videoItem){
+            QString completeFileName = QFileInfo(videoItem->mediaFileUrl().toLocalFile()).fileName();
+            QString path = UBPersistenceManager::videoDirectory + "/";
+            relativePathes << QUrl(path + completeFileName);
+            continue;
+        }
+
+        UBGraphicsAudioItem *audioItem = qgraphicsitem_cast<UBGraphicsAudioItem*> (item);
+        if (audioItem){
+            QString completeFileName = QFileInfo(audioItem->mediaFileUrl().toLocalFile()).fileName();
+            QString path = UBPersistenceManager::audioDirectory + "/";
             relativePathes << QUrl(path + completeFileName);
             continue;
         }
