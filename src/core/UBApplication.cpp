@@ -511,13 +511,7 @@ void UBApplication::decorateActionMenu(QAction* action)
             menu->addSeparator();
             menu->addAction(mainWindow->actionPreferences);
             menu->addAction(mainWindow->actionMultiScreen);
-            // SANKORE-48: Hide the check update action if the setting
-            // EnableAutomaticSoftwareUpdates is false in Uniboard.config
-            if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool())
-                menu->addAction(mainWindow->actionCheckUpdate);
-            else
-                mainWindow->actionCheckUpdate->setEnabled(false);
-
+            menu->addAction(mainWindow->actionCheckUpdate);
             menu->addSeparator();
 
 #ifndef Q_OS_LINUX // No Podcast on Linux yet

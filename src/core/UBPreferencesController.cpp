@@ -186,8 +186,6 @@ void UBPreferencesController::wire()
 
     // about tab
     connect(mPreferencesUI->checkSoftwareUpdateAtLaunchCheckBox, SIGNAL(clicked(bool)), settings->appEnableAutomaticSoftwareUpdates, SLOT(setBool(bool)));
-    // As we (hopefully temporarily) don't have a website to check updates at, this setting is hidden for now
-    mPreferencesUI->softwareUpdateGroupBox->setVisible(false);
 
     connect(mPreferencesUI->checkOpenSankoreAtStartup, SIGNAL(clicked(bool)), settings->appLookForOpenSankoreInstall, SLOT(setBool(bool)));
 }
