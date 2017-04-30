@@ -596,16 +596,30 @@ void UBGraphicsItemDelegate::showHide(bool show)
     emit showOnDisplayChanged(show);
 }
 
+/**
+ * @brief Set delegate as background for the scene, replacing any existing background.
+ */
 void UBGraphicsItemDelegate::setAsBackground()
 {
     UBGraphicsScene* scene = castUBGraphicsScene();
     QGraphicsItem* item = delegated();
 
     if (scene && item) {
+        startUndoStep();
+
         item->resetTransform();
         item->setPos(item->sceneBoundingRect().width()/-2., item->sceneBoundingRect().height()/-2.);
 
         scene->setAsBackgroundObject(item);
+
+        UBGraphicsItemTransformUndoCommand *uc =
+                new UBGraphicsItemTransformUndoCommand(mDelegated,
+                                                       mPreviousPosition,
+                                                       mPreviousTransform,
+                                                       mPreviousZValue,
+                                                       mPreviousSize,
+                                                       true);
+        UBApplication::undoStack->push(uc);
     }
 }
 

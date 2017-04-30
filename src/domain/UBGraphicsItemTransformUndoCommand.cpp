@@ -30,12 +30,14 @@
 #include "UBGraphicsItemTransformUndoCommand.h"
 #include "UBResizableGraphicsItem.h"
 #include "domain/UBItem.h"
+#include "domain/UBGraphicsScene.h"
 
 #include "core/memcheck.h"
 
 UBGraphicsItemTransformUndoCommand::UBGraphicsItemTransformUndoCommand(QGraphicsItem* pItem,
      const QPointF& prevPos, const QTransform& prevTransform, const qreal& prevZValue,
-                                                                       const QSizeF& prevSize):UBUndoCommand()
+     const QSizeF& prevSize, bool setToBackground)
+    : UBUndoCommand()
 {
     mItem = pItem;
     mPreviousTransform = prevTransform;
@@ -52,6 +54,8 @@ UBGraphicsItemTransformUndoCommand::UBGraphicsItemTransformUndoCommand(QGraphics
 
     if (resizableItem)
         mCurrentSize = resizableItem->size();
+
+    mSetToBackground = setToBackground;
 }
 
 UBGraphicsItemTransformUndoCommand::~UBGraphicsItemTransformUndoCommand()
@@ -61,6 +65,13 @@ UBGraphicsItemTransformUndoCommand::~UBGraphicsItemTransformUndoCommand()
 
 void UBGraphicsItemTransformUndoCommand::undo()
 {
+    if (mSetToBackground) {
+        UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mItem->scene());
+        if (scene && scene->isBackgroundObject(mItem)) {
+            scene->unsetBackgroundObject();
+        }
+    }
+
     mItem->setPos(mPreviousPosition);
     mItem->setTransform(mPreviousTransform);
     mItem->setZValue(mPreviousZValue);
@@ -73,6 +84,12 @@ void UBGraphicsItemTransformUndoCommand::undo()
 
 void UBGraphicsItemTransformUndoCommand::redo()
 {
+    if (mSetToBackground) {
+        UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mItem->scene());
+        if (scene)
+            scene->setAsBackgroundObject(mItem);
+    }
+
     mItem->setPos(mCurrentPosition);
     mItem->setTransform(mCurrentTransform);
     mItem->setZValue(mCurrentZValue);

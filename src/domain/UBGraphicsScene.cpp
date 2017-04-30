@@ -1983,6 +1983,21 @@ QGraphicsItem* UBGraphicsScene::setAsBackgroundObject(QGraphicsItem* item, bool 
     return item;
 }
 
+void UBGraphicsScene::unsetBackgroundObject()
+{
+    if (!mBackgroundObject)
+        return;
+
+    mBackgroundObject->setFlag(QGraphicsItem::ItemIsSelectable, true);
+    mBackgroundObject->setFlag(QGraphicsItem::ItemIsMovable, true);
+    mBackgroundObject->setAcceptedMouseButtons(Qt::LeftButton);
+
+    // Item zLayer and Layer Type should be set by the caller of this function, as
+    // it may depend on the object type, where it was before, etc.
+
+    mBackgroundObject = 0;
+}
+
 QRectF UBGraphicsScene::normalizedSceneRect(qreal ratio)
 {
 

@@ -174,6 +174,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void addGroup(UBGraphicsGroupContainerItem *groupItem);
 
         QGraphicsItem* setAsBackgroundObject(QGraphicsItem* item, bool pAdaptTransformation = false, bool expand = false);
+        void unsetBackgroundObject();
 
         QGraphicsItem* backgroundObject() const
         {
