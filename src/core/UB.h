@@ -137,6 +137,7 @@ struct UBGraphicsItemData
         //Duplicating delegate's functions to make possible working with pure QGraphicsItem
         , ItemFlippable // (bool)
         , ItemRotatable // (bool)
+        , ItemCanBeSetAsBackground
     };
 };
 

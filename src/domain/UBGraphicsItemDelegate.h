@@ -343,6 +343,7 @@ class UBGraphicsItemDelegate : public QObject
 
         QAction* mLockAction;
         QAction* mShowOnDisplayAction;
+        QAction* mSetAsBackgroundAction;
         QAction* mGotoContentSourceAction;
 
         UBGraphicsDelegateFrame* mFrame;
@@ -354,6 +355,7 @@ class UBGraphicsItemDelegate : public QObject
         UBGraphicsToolBarItem* mToolBarItem;
 
 protected slots:
+        virtual void setAsBackground();
         virtual void gotoContentSource();
 
 private:

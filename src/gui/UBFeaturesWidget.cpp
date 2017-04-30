@@ -174,7 +174,12 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
 //    } else if (feature.getType() == FEATURE_SEARCH) {
 //        centralWidget->showElement(feature, UBFeaturesCentralWidget::FeaturesWebView);
 
-    } else {
+    }
+    // Don't show the properties page for interactivities, applications and animations
+    else if (feature.getType() != FEATURE_INTERACTIVE
+             && feature.getType() != FEATURE_INTERNAL
+             && feature.getType() != FEATURE_FLASH)
+    {
         centralWidget->showElement(feature, UBFeaturesCentralWidget::FeaturePropertiesList);
         mActionBar->setCurrentState( IN_PROPERTIES );
     }

@@ -42,7 +42,8 @@ class UBGraphicsItemTransformUndoCommand : public UBUndoCommand
                                                 const QPointF& prevPos,
                                                 const QTransform& prevTransform,
                                                 const qreal& prevZValue,
-                                                const QSizeF& prevSize = QSizeF());
+                                                const QSizeF& prevSize = QSizeF(),
+                                                bool setToBackground = false);
         virtual ~UBGraphicsItemTransformUndoCommand();
 
         virtual int getType() const { return UBUndoType::undotype_GRAPHICITEMTRANSFORM; }
@@ -62,6 +63,8 @@ class UBGraphicsItemTransformUndoCommand : public UBUndoCommand
 
         qreal mPreviousZValue;
         qreal mCurrentZValue;
+
+        bool mSetToBackground;
 
 };
 
