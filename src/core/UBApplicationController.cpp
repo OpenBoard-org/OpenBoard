@@ -479,7 +479,7 @@ void UBApplicationController::checkUpdate(const QUrl& url)
 {
     QUrl jsonUrl = url;
     if (url.isEmpty())
-        jsonUrl = UBSettings::settings()->appSoftwareUpdateURI->get().toUrl();
+        jsonUrl = UBSettings::settings()->appSoftwareUpdateURL->get().toUrl();
 
     qDebug() << "Checking for update at url: " << jsonUrl.toString();
 

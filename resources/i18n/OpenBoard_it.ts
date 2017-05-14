@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.0" language="it_IT" sourcelanguage="it_IT">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -793,11 +793,11 @@
     </message>
     <message>
         <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri tutorial</translation>
     </message>
     <message>
         <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri la pagina web del tutorial</translation>
     </message>
     <message>
         <source>Ruled Light Background</source>
@@ -850,11 +850,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="vanished">Elemento ID =</translation>
+        <translation>Elemento ID =</translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="vanished">Il contenuto non è supportato nel formato di destinazione.</translation>
+        <translation>Il contenuto non è supportato nel formato di destinazione.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -954,11 +954,11 @@
     </message>
     <message>
         <source>Saving document...</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvataggio documento...</translation>
     </message>
     <message>
         <source>Document has just been saved...</source>
-        <translation type="unfinished"></translation>
+        <translation>Il documento è stato appena salvato...</translation>
     </message>
 </context>
 <context>
@@ -1019,7 +1019,7 @@
     </message>
     <message>
         <source>Show OpenBoard</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -1138,9 +1138,9 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="unfinished">
-            <numerusform>Sei sicuro di voler rimuovere %n pagine dal documento &apos;%1&apos; selezionato?
-        </numerusform>
+        <translation>
+            <numerusform>Sei sicuro di voler rimuovere %n pagina dal documento &apos;%1&apos; selezionato?</numerusform>
+            <numerusform>Sei sicuro di voler rimuovere %n pagine dal documento &apos;%1&apos; selezionato?</numerusform>
         </translation>
     </message>
     <message>
@@ -1153,15 +1153,15 @@
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation type="unfinished"></translation>
+        <translation>Il documento &quot;%1&quot; è stato generato con una più recente versione di OpenBoard (%2). Aprendolo, si possono perdere alcune informazioni. Procedere ugualmente?</translation>
     </message>
     <message>
         <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sicuri di voler rimuovere tutti i documenti selezionati?</translation>
     </message>
     <message>
         <source>Remove multiple documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Rimuovi documenti multipli</translation>
     </message>
 </context>
 <context>
@@ -1227,8 +1227,8 @@
     <message numerus="yes">
         <source>%1 pages copied</source>
         <translation type="unfinished">
-            <numerusform>%1 pagine copiate
-        </numerusform>
+            <numerusform>%1 pagina copiata</numerusform>
+            <numerusform>%1 pagine copiate</numerusform>
         </translation>
     </message>
 </context>
@@ -1274,23 +1274,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="vanished">Esporta in IWB</translation>
+        <translation>Esporta in IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="vanished">Esporta come file IWB</translation>
+        <translation>Esporta come file IWB</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="vanished">Esportazione documento in corso...</translation>
+        <translation>Esportazione documento in corso...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">Esportazione conclusa con successo.</translation>
+        <translation>Esportazione conclusa con successo.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="vanished">Esportazione fallita.</translation>
+        <translation>Esportazione fallita.</translation>
     </message>
 </context>
 <context>
@@ -1317,8 +1317,23 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Esporta nel formato OpenBoard</translation>
     </message>
+<<<<<<< HEAD
+=======
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation>Exportazione fallita: posizione non scrivibile</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation>Esportazione fallita</translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation>Impossibile esportare nella posizione selezionata. Non possiedi i permessi necessari a salvare il file.</translation>
+    </message>
+>>>>>>> dev
 </context>
 <context>
     <name>UBExportFullPDF</name>
@@ -1338,6 +1353,21 @@
         <source>Export to PDF</source>
         <translation>Esporta in PDF</translation>
     </message>
+<<<<<<< HEAD
+=======
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation>Esportazione fallita: posizione non scrivibile</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation>Esportazione fallita</translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation>Impossibile esportare alla posizione selezionata. Non possiedi i permessi necessari a salvare il file.</translation>
+    </message>
+>>>>>>> dev
 </context>
 <context>
     <name>UBExportPDF</name>
@@ -1542,19 +1572,19 @@
     <name>UBGraphicsMediaItem</name>
     <message>
         <source>Media resource couldn&apos;t be resolved</source>
-        <translation type="unfinished"></translation>
+        <translation>La risorsa multimediale non può essere gestita</translation>
     </message>
     <message>
         <source>Unsupported media format</source>
-        <translation type="unfinished"></translation>
+        <translation>Formato multimediale non supportato</translation>
     </message>
     <message>
         <source>Media playback service not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Servizio di esecuzione multimediale non trovato</translation>
     </message>
     <message>
         <source>Media error: </source>
-        <translation type="unfinished"></translation>
+        <translation>Errore multimediale: </translation>
     </message>
 </context>
 <context>
@@ -1604,23 +1634,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="vanished">Common File Format (</translation>
+        <translation>Common File Format (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="vanished">Importazione del file %1 in corso...</translation>
+        <translation>Importazione del file %1 in corso...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="vanished">L&apos;importazione del file %1 è fallita.</translation>
+        <translation>L&apos;importazione del file %1 è fallita.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="vanished">Importazione completata con successo.</translation>
+        <translation>Importazione completata con successo.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="vanished">Importazione fallita.</translation>
+        <translation>Importazione fallita.</translation>
     </message>
 </context>
 <context>
@@ -1639,7 +1669,7 @@
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard (*.ubz)</translation>
     </message>
 </context>
 <context>
@@ -1750,27 +1780,27 @@ Vuoi ignorare gli errori per questo host?</translation>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
         <source>Open-Sankore Documents Detected</source>
-        <translation type="unfinished"></translation>
+        <translation>Rilevati documenti Open-Sankore</translation>
     </message>
     <message>
         <source>Show this panel next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra questo pannello la prossima volta</translation>
     </message>
     <message>
         <source>You can always access the OpenBoard Document Importer through the Preferences panel in the About tab. Warning, if you have already imported your Open-Sankore datas, you might loose your current OpenBoard documents.</source>
-        <translation type="unfinished"></translation>
+        <translation>È sempre possibile accedere all&apos;importatore di documenti OpenBoard tramite il pannello delle preferenze nella scheda delle informazioni su OpenBoard. Attenzione, se si è già importato dati Open-Sankore, è possibile perdere i documenti OpenBoard correnti.</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annulla</translation>
+        <translation>Annulla</translation>
     </message>
     <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
+        <translation>Procedi</translation>
     </message>
     <message>
         <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
+        <translation>Documenti Open-Sankoré sono presenti nel computer. È possibile importarli in OpenBoard premendo il pulsante “Procedi” per avviare l&apos;applicazione di importazione.</translation>
     </message>
 </context>
 <context>
@@ -1785,7 +1815,7 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
     <message>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
+        <translation>ha perso l&apos;accesso al repository documenti &quot;%1&quot;. Sfortunatamente l&apos;applicazione deve essere chiusa per evitare di rivinare i dati. Gli ultimi cambiamenti potrebbero andare persi.</translation>
     </message>
 </context>
 <context>
@@ -1871,7 +1901,7 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
     <message>
         <source>OpenBoard Cast</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard Cast</translation>
     </message>
 </context>
 <context>
@@ -1930,7 +1960,7 @@ Vuoi ignorare gli errori per questo host?</translation>
     <name>UBStartupHintsPalette</name>
     <message>
         <source>Visible next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Visibile la prossima volta</translation>
     </message>
 </context>
 <context>
@@ -2330,7 +2360,7 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     </message>
     <message>
         <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
-        <translation type="unfinished"></translation>
+        <translation>Scarica il documento PDF: preferisci scaricare il file PDF o aggiungerlo al documento OpenBoard corrente?</translation>
     </message>
 </context>
 <context>
@@ -2384,11 +2414,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Restore credentials on reboot</source>
-        <translation type="unfinished"></translation>
+        <translation>Ripristina le credenziali al riavvio</translation>
     </message>
     <message>
         <source>OpenBoard</source>
-        <translation type="unfinished">OpenBoard</translation>
+        <translation>OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -2461,7 +2491,7 @@ p, li { white-space: pre-wrap; }
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Documenti OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -2504,7 +2534,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation type="vanished">Dimensione pulsanti tastiera:</translation>
+        <translation>Dimensione pulsanti tastiera:</translation>
     </message>
     <message>
         <source>Toolbar</source>
@@ -2604,19 +2634,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri l&apos;importatore Open-Sankoré</translation>
     </message>
     <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
+        <translation>Controlla se i dati Open-Sankoré possono venir importati all&apos;avvio</translation>
     </message>
     <message>
         <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
+        <translation>Usa la tastiera di sistema (raccomandato)</translation>
     </message>
     <message>
         <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensione pulsanti tastiera virtuale incorporata:</translation>
     </message>
 </context>
 <context>

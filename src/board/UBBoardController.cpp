@@ -620,9 +620,6 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
         itemSize = commonItem->boundingRect().size();
         commonItem->setSelected(false);
 
-        UBGraphicsStrokesGroup *stroke = dynamic_cast<UBGraphicsStrokesGroup*>(commonItem);
-        if (stroke)
-            itemPos = QPointF(shifting, shifting);
     }
 
     UBMimeType::Enum itemMimeType;
@@ -681,7 +678,7 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
             {
                  QBuffer buffer(&pData);
                  buffer.open(QIODevice::WriteOnly);
-                 QString format = UBFileSystemUtils::extension(item->sourceUrl().toLocalFile());
+                 QString format = UBFileSystemUtils::extension(item->sourceUrl().toString(QUrl::DecodeReserved));
                  pixitem->pixmap().save(&buffer, format.toLatin1());
             }
         }break;

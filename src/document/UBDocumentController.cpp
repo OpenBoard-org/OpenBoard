@@ -546,37 +546,66 @@ void UBDocumentController::duplicateSelectedItem()
 }
 
 /**
- * @brief When deleting multiple documents, find a new document and select it
+ * @brief Set the first document in the list as current document
  *
- * This method simply selects the first un-selected document
+ * If there are no documents, a new one is created.
  */
-void UBDocumentController::selectADocumentOnMultipleTrashing()
+void UBDocumentController::selectFirstDocumentInList()
 {
-    // Loop through all folders, and each document in those folders, until we find
-    // a document that is not in the current selection (which is being deleted)
+    // Loop through all folders until we find one that is not the trash and not empty,
+    // and select the first document in that folder
 
     for (int i(0); i < mDocumentUI->documentTreeWidget->topLevelItemCount(); ++i) {
         QTreeWidgetItem* item = mDocumentUI->documentTreeWidget->topLevelItem(i);
         UBDocumentGroupTreeItem* groupItem = dynamic_cast<UBDocumentGroupTreeItem*>(item);
 
-        if (!groupItem->isTrashFolder()) {
-            for (int j(0); j < groupItem->childCount(); ++j) {
-                if (!mCurrentSelection.contains( groupItem->child(j) )) {
-                    selectDocument(((UBDocumentProxyTreeItem*)groupItem->child(j))->proxy(), true);
-                    return;
-                }
-            }
+        if (!groupItem->isTrashFolder() && groupItem->childCount() > 0) {
+            selectDocument(((UBDocumentProxyTreeItem*)groupItem->child(0))->proxy(), true);
+            groupItem->child(0)->setSelected(true);
+            return;
         }
     }
-
-
 
     // No document found => create a new one
     UBDocumentGroupTreeItem* topFolder = dynamic_cast<UBDocumentGroupTreeItem*>(mDocumentUI->documentTreeWidget->topLevelItem(0));
 
     UBDocumentProxy* document = UBPersistenceManager::persistenceManager()->createDocument(topFolder->groupName());
     selectDocument(document, true);
+}
 
+/**
+ * @brief Find the current document, and select it in the list
+ *
+ * If selectNewCurrentDocument is true, the first document in the list is selected and set as
+ * current document.
+ */
+void UBDocumentController::selectATreeItemOnMultipleTrashing(bool selectNewCurrentDocument)
+{
+    mCurrentSelection.clear();
+
+    if (selectNewCurrentDocument) {
+        selectFirstDocumentInList();
+        return;
+    }
+
+    // Find the currently selected document, and select its corresponding tree item
+    // If it isn't found, then the first document in the list is selected and set as current document
+
+    for (int i(0); i < mDocumentUI->documentTreeWidget->topLevelItemCount(); i++) {
+        QTreeWidgetItem* item = mDocumentUI->documentTreeWidget->topLevelItem(i);
+        UBDocumentGroupTreeItem* groupItem = dynamic_cast<UBDocumentGroupTreeItem*>(item);
+
+        if (!groupItem->isTrashFolder()) {
+            for (int j(0); j < groupItem->childCount(); j++) {
+                if (((UBDocumentProxyTreeItem*)groupItem->child(j))->proxy() == mBoardController->selectedDocument()) {
+                    ((UBDocumentProxyTreeItem*)groupItem->child(j))->setSelected(true);
+                    return;
+                }
+            }
+        }
+    }
+
+    selectFirstDocumentInList();
 }
 
 void UBDocumentController::selectADocumentOnTrashingSelectedOne(UBDocumentGroupTreeItem* groupTi,UBDocumentProxyTreeItem *proxyTi)
@@ -807,9 +836,9 @@ void UBDocumentController::deleteTreeItem(QTreeWidgetItem * item, bool showConfi
 
             if (selectNewDocument) {
                 if (mTrashTi->childCount()==0)
-                    selectDocument(NULL);
+                    selectATreeItemOnMultipleTrashing(false);
                 else
-                    selectDocument(((UBDocumentProxyTreeItem*)mTrashTi->child(0))->proxy());
+                    selectDocument(((UBDocumentProxyTreeItem*)mTrashTi->child(0))->proxy(), false);
             }
 
             reloadThumbnails();
@@ -849,10 +878,17 @@ void UBDocumentController::deleteSelectedItem()
 
         QList<QTreeWidgetItem*> foldersToDelete;
 
+        bool currentDocumentDeleted = false;
+
         foreach (QTreeWidgetItem * item, mCurrentSelection) {
             LastSelectedElementType type = itemType(item);
-            if (type == Document)
+            if (type == Document) {
                 deleteTreeItem(item, false, false);
+
+                UBDocumentProxyTreeItem* proxyItem = dynamic_cast<UBDocumentProxyTreeItem*>(item);
+                if (proxyItem && proxyItem->proxy() && (proxyItem->proxy() == mBoardController->selectedDocument()))
+                    currentDocumentDeleted = true;
+            }
 
             else if (type == Folder)
                 // Delete folders later, to avoid deleting a document twice
@@ -863,7 +899,7 @@ void UBDocumentController::deleteSelectedItem()
             deleteTreeItem(item, false, false);
         }
 
-        selectADocumentOnMultipleTrashing();
+        selectATreeItemOnMultipleTrashing(currentDocumentDeleted);
     }
 
     else if (mSelectionType == Document || mSelectionType == Folder) {

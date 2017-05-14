@@ -130,7 +130,14 @@ UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
     mVideoItem->setData(UBGraphicsItemData::ItemLayerType, UBItemLayerType::Object);
     mVideoItem->setFlag(ItemStacksBehindParent, true);
 
-    mMediaObject->setVideoOutput(mVideoItem);
+    /* setVideoOutput has to be called only when the video item is visible on the screen,
+     * due to a Qt bug (QTBUG-32522). So instead of calling it here, it is called when the
+     * active scene has changed, or when the item is first created.
+     * If and when Qt fix this issue, this should be changed back.
+     * */
+    //mMediaObject->setVideoOutput(mVideoItem);
+    mHasVideoOutput = false;
+
     mMediaObject->setNotifyInterval(50);
 
     setMinimumSize(QSize(320, 240));
@@ -155,8 +162,10 @@ UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
 
 UBGraphicsMediaItem::~UBGraphicsMediaItem()
 {
-    if (mMediaObject)
+    if (mMediaObject) {
         mMediaObject->stop();
+        delete mMediaObject;
+    }
 }
 
 QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -569,6 +578,22 @@ void UBGraphicsVideoItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 
 }
 
+QVariant UBGraphicsVideoItem::itemChange(GraphicsItemChange change, const QVariant &value) {
+    if (change == QGraphicsItem::ItemVisibleChange
+            && value.toBool()
+            && !mHasVideoOutput
+            && UBApplication::app()->boardController
+            && UBApplication::app()->boardController->activeScene() == scene())
+    {
+        //qDebug() << "Item change, setting video output";
+
+        mMediaObject->setVideoOutput(mVideoItem);
+        mHasVideoOutput = true;
+    }
+
+    return UBGraphicsMediaItem::itemChange(change, value);
+}
+
 void UBGraphicsVideoItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     // Display the seek bar
@@ -610,8 +635,18 @@ void UBGraphicsVideoItem::mediaStateChanged(QMediaPlayer::State state)
 
 void UBGraphicsVideoItem::activeSceneChanged()
 {
+    //qDebug() << "Active scene changed";
+
     // Update the visibility of the placeholder, to prevent it being hidden when switching pages
     setPlaceholderVisible(!mErrorString.isEmpty());
+
+    // Call setVideoOutput, if the video is visible and if it hasn't been called already
+    if (!mHasVideoOutput && UBApplication::boardController->activeScene() == scene()) {
+        //qDebug() << "setting video output";
+        mMediaObject->setMedia(mMediaFileUrl);
+        mMediaObject->setVideoOutput(mVideoItem);
+        mHasVideoOutput = true;
+    }
 
     UBGraphicsMediaItem::activeSceneChanged();
 }

@@ -74,6 +74,7 @@
 
 #include "document/UBDocumentController.h"
 
+#include "core/UBPersistenceManager.h"
 #include "core/memcheck.h"
 
 UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardController* pBoardController)
@@ -862,7 +863,11 @@ void UBBoardPaletteManager::addItemToCurrentPage()
     {
         UBGraphicsPixmapItem* item = UBApplication::boardController->activeScene()->addPixmap(mPixmap, NULL, mPos, mScaleFactor);
 
-        item->setSourceUrl(mItemUrl);
+        QString documentPath = UBApplication::boardController->selectedDocument()->persistencePath();
+        QString fileName = UBPersistenceManager::imageDirectory + "/" + item->uuid().toString() + ".png";
+        QString path = documentPath + "/" + fileName;
+
+        item->setSourceUrl(QUrl(path));
         item->setSelected(true);
 
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
