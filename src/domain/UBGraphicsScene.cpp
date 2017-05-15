@@ -893,6 +893,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
                 UBGraphicsPolygonItem* polygonItem = new UBGraphicsPolygonItem(intersectedPolygons[i][j], intersectedPolygonItem->parentItem());
 
                 intersectedPolygonItem->copyItemParameters(polygonItem);
+                polygonItem->setNominalLine(false);
                 polygonItem->setStroke(intersectedPolygonItem->stroke());
                 polygonItem->setStrokesGroup(intersectedPolygonItem->strokesGroup());
                 intersectedPolygonItem->strokesGroup()->addToGroup(polygonItem);
