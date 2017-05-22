@@ -1609,6 +1609,23 @@ void UBBoardController::ClearUndoStack()
         findUniquesItems(UBApplication::undoStack->command(i), uniqueItems);
     }
 
+    // Get items from clipboard in order not to delete an item that was cut
+    // (using source URL of graphics items as a surrogate for equality testing)
+    // This ensures that we can cut and paste a media item, widget, etc. from one page to the next.
+    QClipboard *clipboard = QApplication::clipboard();
+    const QMimeData* data = clipboard->mimeData();
+    QList<QUrl> sourceURLs;
+
+    if (data && data->hasFormat(UBApplication::mimeTypeUniboardPageItem)) {
+        const UBMimeDataGraphicsItem* mimeDataGI = qobject_cast <const UBMimeDataGraphicsItem*>(data);
+
+        if (mimeDataGI) {
+            foreach (UBItem* sourceItem, mimeDataGI->items()) {
+                sourceURLs << sourceItem->sourceUrl();
+            }
+        }
+    }
+
     // go through all unique items, and check, if they are on scene, or not.
     // if not on scene, than item can be deleted
     QSetIterator<QGraphicsItem*> itUniq(uniqueItems);
@@ -1620,7 +1637,12 @@ void UBBoardController::ClearUndoStack()
             scene = dynamic_cast<UBGraphicsScene*>(item->scene());
         }
 
-        if(!scene)
+        bool inClipboard = false;
+        UBItem* ubi = dynamic_cast<UBItem*>(item);
+        if (ubi && sourceURLs.contains(ubi->sourceUrl()))
+            inClipboard = true;
+
+        if(!scene && !inClipboard)
         {
             if (!mActiveScene->deleteItem(item)){
                 delete item;
