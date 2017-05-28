@@ -339,7 +339,10 @@ void UBGraphicsTextItemDelegate::pickFont()
             curCursor.mergeCharFormat(format);
 
             delegated()->setTextCursor(curCursor);
-            delegated()->setFont(selectedFont);
+
+            if (curCursor.selectedText().length() == 0)
+                delegated()->setFont(selectedFont);
+
             delegated()->setSelected(true);
             delegated()->document()->adjustSize();
             delegated()->contentsChanged();
