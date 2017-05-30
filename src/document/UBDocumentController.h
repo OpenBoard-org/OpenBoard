@@ -130,7 +130,8 @@ class UBDocumentController : public UBDocumentContainer
         QString mDefaultDocumentGroupName;
 
         void selectADocumentOnTrashingSelectedOne(UBDocumentGroupTreeItem* groupTi,UBDocumentProxyTreeItem *proxyTi);
-        void selectADocumentOnMultipleTrashing();
+        void selectFirstDocumentInList();
+        void selectATreeItemOnMultipleTrashing(bool selectNewCurrentDocument = false);
         void moveDocumentToTrash(UBDocumentGroupTreeItem* groupTi, UBDocumentProxyTreeItem *proxyTi, bool selectNewDocument);
         void moveFolderToTrash(UBDocumentGroupTreeItem* groupTi);
         void emptyTrash(bool showConfirmationDialog);

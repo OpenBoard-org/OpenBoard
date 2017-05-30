@@ -98,7 +98,28 @@ void UBGraphicsItemUndoCommand::undo()
 
         UBApplication::boardController->freezeW3CWidget(item, true);
         item->setSelected(false);
+
+        QTransform t;
+        bool bApplyTransform = false;
+        UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
+        if (polygonItem){
+            if (polygonItem->strokesGroup()
+                    && polygonItem->strokesGroup()->parentItem()
+                    && UBGraphicsGroupContainerItem::Type == polygonItem->strokesGroup()->parentItem()->type())
+            {
+                bApplyTransform = true;
+                t = polygonItem->sceneTransform();
+            }
+            else if (polygonItem->strokesGroup())
+                polygonItem->resetTransform();
+
+            polygonItem->strokesGroup()->removeFromGroup(polygonItem);
+        }
         mScene->removeItem(item);
+
+        if (bApplyTransform)
+            polygonItem->setTransform(t);
+
     }
 
     QSetIterator<QGraphicsItem*> itRemoved(mRemovedItems);
@@ -207,7 +228,29 @@ void UBGraphicsItemUndoCommand::redo()
         {
             QGraphicsItem* item = itRemoved.next();
             item->setSelected(false);
+
+            QTransform t;
+            bool bApplyTransform = false;
+            UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
+
+            if (polygonItem){
+                if(polygonItem->strokesGroup()
+                        && polygonItem->strokesGroup()->parentItem()
+                        && UBGraphicsGroupContainerItem::Type == polygonItem->strokesGroup()->parentItem()->type())
+                {
+                    bApplyTransform = true;
+                    t = polygonItem->sceneTransform();
+                }
+                else if (polygonItem->strokesGroup())
+                    polygonItem->resetTransform();
+
+                polygonItem->strokesGroup()->removeFromGroup(polygonItem);
+            }
             mScene->removeItem(item);
+
+            if (bApplyTransform)
+                item->setTransform(t);
+
             UBApplication::boardController->freezeW3CWidget(item, true);
         }
 

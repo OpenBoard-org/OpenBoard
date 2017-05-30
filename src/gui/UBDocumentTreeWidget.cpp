@@ -285,13 +285,16 @@ void UBDocumentTreeWidget::dropEvent(QDropEvent *event)
                                 QString source = scene->document()->persistencePath() + "/" + relativeFile.toString();
                                 QString target = targetDocProxy->persistencePath() + "/" + relativeFile.toString();
 
+                                QString sourceDecoded = scene->document()->persistencePath() + "/" + relativeFile.toString(QUrl::DecodeReserved);
+                                QString targetDecoded = targetDocProxy->persistencePath() + "/" + relativeFile.toString(QUrl::DecodeReserved);
+
                                 if(QFileInfo(source).isDir())
                                     UBFileSystemUtils::copyDir(source,target);
                                 else{
-                                    QFileInfo fi(target);
+                                    QFileInfo fi(targetDecoded);
                                     QDir d = fi.dir();
                                     d.mkpath(d.absolutePath());
-                                    QFile::copy(source, target);
+                                    QFile::copy(sourceDecoded, targetDecoded);
                                 }
                             }
 

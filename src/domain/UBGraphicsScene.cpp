@@ -893,6 +893,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
                 UBGraphicsPolygonItem* polygonItem = new UBGraphicsPolygonItem(intersectedPolygons[i][j], intersectedPolygonItem->parentItem());
 
                 intersectedPolygonItem->copyItemParameters(polygonItem);
+                polygonItem->setNominalLine(false);
                 polygonItem->setStroke(intersectedPolygonItem->stroke());
                 polygonItem->setStrokesGroup(intersectedPolygonItem->strokesGroup());
                 intersectedPolygonItem->strokesGroup()->addToGroup(polygonItem);
@@ -2209,15 +2210,19 @@ QList<QUrl> UBGraphicsScene::relativeDependencies() const
     while (itItems.hasNext())
     {
         QGraphicsItem* item = itItems.next();
-        UBGraphicsMediaItem *mediaItem = qgraphicsitem_cast<UBGraphicsMediaItem*> (item);
 
-        if (mediaItem){
-            QString completeFileName = QFileInfo(mediaItem->mediaFileUrl().toLocalFile()).fileName();
-            QString path;
-            if(mediaItem->getMediaType() == UBGraphicsMediaItem::mediaType_Video)
-                path = UBPersistenceManager::videoDirectory + "/";
-            else
-                path = UBPersistenceManager::audioDirectory + "/";
+        UBGraphicsVideoItem *videoItem = qgraphicsitem_cast<UBGraphicsVideoItem*> (item);
+        if (videoItem){
+            QString completeFileName = QFileInfo(videoItem->mediaFileUrl().toLocalFile()).fileName();
+            QString path = UBPersistenceManager::videoDirectory + "/";
+            relativePathes << QUrl(path + completeFileName);
+            continue;
+        }
+
+        UBGraphicsAudioItem *audioItem = qgraphicsitem_cast<UBGraphicsAudioItem*> (item);
+        if (audioItem){
+            QString completeFileName = QFileInfo(audioItem->mediaFileUrl().toLocalFile()).fileName();
+            QString path = UBPersistenceManager::audioDirectory + "/";
             relativePathes << QUrl(path + completeFileName);
             continue;
         }
@@ -2255,6 +2260,24 @@ QSize UBGraphicsScene::nominalSize()
     }
 
     return mNominalSize;
+}
+
+/**
+ * @brief Return the scene's boundary size, including any background item
+ *
+ * If no background item is present, this returns nominalSize()
+ */
+QSize UBGraphicsScene::sceneSize()
+{
+    UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(backgroundObject());
+
+    if (pdfItem) {
+        QRectF targetRect = pdfItem->sceneBoundingRect();
+        return targetRect.size().toSize();
+    }
+
+    else
+        return nominalSize();
 }
 
 void UBGraphicsScene::setNominalSize(const QSize& pSize)
