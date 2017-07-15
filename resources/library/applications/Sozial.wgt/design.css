@@ -1,0 +1,27 @@
+
+*{
+	margin: 0; 
+	padding: 0 ;
+}
+
+
+/* body{ */
+/*	font-family: cursive ;  */
+/*	font-size: 45px ;
+
+	text-align: center ;
+}
+*/
+/*-------------------------------------*/
+
+img{
+  width:200px;
+}
+
+.hidden{
+  display:none;
+}
+
+.center{
+  margin:auto;
+}

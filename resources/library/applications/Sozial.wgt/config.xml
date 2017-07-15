@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+ 		id="http://www.amxa.ch/widgets/Sozial"
+ 		version="1.0"
+        width="210"
+        height="210"
+        >
+  <name>Sozialform</name>
+  <description>Soziale Arbeitsformen</description>
+  <content src="index.html"/>
+  <icon src="icon.png"/>
+  <author>Basil Stotz</author>
+  <licence>
+  	Creative Commons ShareAlike 3.0
+      http://creativecommons.org/licenses/by-sa/3.0/
+  </licence>
+</widget>
+
+
+
