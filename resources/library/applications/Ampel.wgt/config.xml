@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+ 		id="http://www.amxa.ch/widgets/Ampel"
+ 		version="1.0"
+        width="145"
+        height="320"
+        >
+  <name>Ampel</name>
+  <description>Eine Ampel</description>
+  <content src="index.html"/>230
+  <icon src="icon.png"/>
+  <author>Basil Stotz</author>
+  <licence>
+  	Creative Commons ShareAlike 3.0
+      http://creativecommons.org/licenses/by-sa/3.0/
+  </licence>
+</widget>
+
+
+
