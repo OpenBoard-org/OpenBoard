@@ -57,6 +57,8 @@ class UBGeometryUtils
 
         static qreal angle(const QPointF& p1, const QPointF& p2, const QPointF& p3);
 
+        static QList<QPointF> quadraticBezier(const QPointF& p0, const QPointF& p1, const QPointF& p2, unsigned int nPoints);
+
         const static int centimeterGraduationHeight;
         const static int halfCentimeterGraduationHeight;
         const static int millimeterGraduationHeight;

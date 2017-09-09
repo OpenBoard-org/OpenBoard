@@ -77,9 +77,17 @@ QList<UBGraphicsPolygonItem*> UBGraphicsStroke::polygons() const
 
 /**
  * @brief Add a point to the curve, interpolating extra points if required
- * @return The points (or point, if none were interpolated) that were added
+ * @param point The position of the point to add
+ * @param width The width of the stroke at that point.
+ * @param interpolate If true, a Bézier curve will be drawn rather than a straight line
+ * @return A list containing the last point drawn plus the point(s) that were added
+ *
+ * This method should be called when a new point is given by the input method (mouse, pen or other), and the points that are returned
+ * should be used to draw the actual stroke on-screen. This is because if interpolation (bézier curves) are to be used, the points to draw
+ * do not correspond to the points that were given by the input method.
+ *
  */
-QList<QPair<QPointF, qreal> > UBGraphicsStroke::addPoint(const QPointF& point, qreal width, UBInterpolator::InterpolationMethod interpolationMethod)
+QList<QPair<QPointF, qreal> > UBGraphicsStroke::addPoint(const QPointF& point, qreal width, bool interpolate)
 {
     strokePoint newPoint(point, width);
 
@@ -88,17 +96,17 @@ QList<QPair<QPointF, qreal> > UBGraphicsStroke::addPoint(const QPointF& point, q
     if (n == 0) {
         mReceivedPoints << newPoint;
         mDrawnPoints << newPoint;
-        return QList<strokePoint>();
+        return QList<strokePoint>() << newPoint;
     }
 
-    if (interpolationMethod == UBInterpolator::NoInterpolation) {
+    if (!interpolate) {
         strokePoint lastPoint = mReceivedPoints.last();
         mReceivedPoints << newPoint;
         mDrawnPoints << newPoint;
         return QList<strokePoint>() << lastPoint << newPoint;
     }
 
-    else if (interpolationMethod == UBInterpolator::Bezier) {
+    else {
         // The curve we are interpolating is not between two drawn points;
         // it is between the midway points of the second-to-last and last point, and last and current point.
 
@@ -118,14 +126,10 @@ QList<QPair<QPointF, qreal> > UBGraphicsStroke::addPoint(const QPointF& point, q
         QPointF p1 = mReceivedPoints[mReceivedPoints.size() - 1].first;
         QPointF p2 = point;
 
-        UBQuadraticBezier bz;
-
         QPointF startPoint = (p1+p0)/2.0;
         QPointF endPoint = (p2+p1)/2.0;
 
-        bz.setPoints(startPoint, p1, endPoint);
-
-        QList<QPointF> calculated = bz.getPoints(10);
+        QList<QPointF> calculated = UBGeometryUtils::quadraticBezier(startPoint, p1, endPoint, 10);
         QList<strokePoint> newPoints;
 
         qreal startWidth = mDrawnPoints.last().second;

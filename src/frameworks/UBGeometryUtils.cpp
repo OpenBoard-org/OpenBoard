@@ -447,3 +447,31 @@ qreal UBGeometryUtils::angle(const QPointF& p1, const QPointF& p2, const QPointF
 
     return 180.* beta/3.14159;
 }
+
+
+
+/**
+ * @brief Calculate a quadratic Bézier curve and return it in the form of a list of points
+ * @param p0 The start point of the curve
+ * @param p1 The control point of the curve
+ * @param p2 The end point of the curve
+ * @param nPoints The number of points by which to approximate the curve, i.e. the length of the returned list
+ * @return A list of points that can be used to draw the curve.
+ */
+QList<QPointF> UBGeometryUtils::quadraticBezier(const QPointF& p0, const QPointF& p1, const QPointF& p2, unsigned int nPoints)
+{
+    QPainterPath path(p0);
+    path.quadTo(p1, p2);
+
+    QList<QPointF> points;
+
+    if (nPoints <= 1)
+        return points;
+
+    for (unsigned int i(0); i <= nPoints; ++i) {
+        qreal percent = qreal(i)/qreal(nPoints);
+        points << path.pointAtPercent(percent);
+    }
+
+    return points;
+}

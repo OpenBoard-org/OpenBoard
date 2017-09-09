@@ -37,7 +37,6 @@
 
 #include "frameworks/UBGeometryUtils.h"
 #include "frameworks/UBPlatformUtils.h"
-#include "frameworks/UBInterpolator.h"
 
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
@@ -552,13 +551,13 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                 drawLineTo(position, width, true);
             }
 
-            else{
-                UBInterpolator::InterpolationMethod interpolator = UBInterpolator::NoInterpolation;
+            else {
+                bool interpolate = false;
 
                 if ((currentTool == UBStylusTool::Pen && UBSettings::settings()->boardInterpolatePenStrokes->get().toBool())
                     || (currentTool == UBStylusTool::Marker && UBSettings::settings()->boardInterpolateMarkerStrokes->get().toBool()))
                 {
-                    interpolator = UBInterpolator::Bezier;
+                    interpolate = true;
                 }
 
 
@@ -572,14 +571,14 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                 mDistanceFromLastStrokePoint += distance;
 
                 if (mDistanceFromLastStrokePoint > MIN_DISTANCE) {
-                    QList<QPair<QPointF, qreal> > newPoints = mCurrentStroke->addPoint(scenePos, width, interpolator);
+                    QList<QPair<QPointF, qreal> > newPoints = mCurrentStroke->addPoint(scenePos, width, interpolate);
                     if (newPoints.length() > 1)
                         drawCurve(newPoints);
 
                     mDistanceFromLastStrokePoint = 0;
                 }
 
-                if (interpolator == UBInterpolator::Bezier) {
+                if (interpolate) {
                     // Bezier curves aren't drawn all the way to the scenePos (they stop halfway between the previous and
                     // current scenePos), so we add a line from the last drawn position in the stroke and the
                     // scenePos, to make the drawing feel more responsive. This line is then deleted if a new segment is

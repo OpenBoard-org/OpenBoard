@@ -33,7 +33,6 @@
 #include <QtGui>
 
 #include "core/UB.h"
-#include "frameworks/UBInterpolator.h"
 
 
 
@@ -60,7 +59,7 @@ class UBGraphicsStroke
 
         void clear();
 
-        QList<QPair<QPointF, qreal> > addPoint(const QPointF& point, qreal width, UBInterpolator::InterpolationMethod interpolationMethod = UBInterpolator::NoInterpolation);
+        QList<QPair<QPointF, qreal> > addPoint(const QPointF& point, qreal width, bool interpolate = false);
 
         const QList<QPair<QPointF, qreal> >& points() { return mDrawnPoints; }
 
