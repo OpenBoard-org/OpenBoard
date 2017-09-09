@@ -429,6 +429,7 @@ public slots:
 
         QPointF mPreviousPoint;
         qreal mPreviousWidth;
+        qreal mDistanceFromLastStrokePoint;
 
         QList<UBGraphicsPolygonItem*> mPreviousPolygonItems;
 

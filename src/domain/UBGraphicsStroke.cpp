@@ -102,14 +102,6 @@ QList<QPair<QPointF, qreal> > UBGraphicsStroke::addPoint(const QPointF& point, q
         // The curve we are interpolating is not between two drawn points;
         // it is between the midway points of the second-to-last and last point, and last and current point.
 
-        // Don't draw segments smaller than a certain length. This can help with performance
-        // (less polygons to draw) but mostly with keeping the curve smooth.
-        qreal MIN_DISTANCE = 3*mAntiScaleRatio;
-        qreal distance = QLineF(mReceivedPoints.last().first, newPoint.first).length();
-
-        if (distance < MIN_DISTANCE) {
-            return QList<strokePoint>() << mDrawnPoints.last();
-        }
 
         // The first segment is just a straight line to the first midway point
         if (n == 1) {

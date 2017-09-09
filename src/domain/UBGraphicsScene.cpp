@@ -561,9 +561,22 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                     interpolator = UBInterpolator::Bezier;
                 }
 
-                QList<QPair<QPointF, qreal> > newPoints = mCurrentStroke->addPoint(scenePos, width, interpolator);
-                if (newPoints.length() > 1) {
-                    drawCurve(newPoints);
+
+                // Don't draw segments smaller than a certain length. This can help with performance
+                // (less polygons to draw) but mostly with making the curve look smooth.
+
+                qreal antiScaleRatio = 1./(UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
+                qreal MIN_DISTANCE = 10*antiScaleRatio; // arbitrary. Move to settings if relevant.
+                qreal distance = QLineF(mPreviousPoint, scenePos).length();
+
+                mDistanceFromLastStrokePoint += distance;
+
+                if (mDistanceFromLastStrokePoint > MIN_DISTANCE) {
+                    QList<QPair<QPointF, qreal> > newPoints = mCurrentStroke->addPoint(scenePos, width, interpolator);
+                    if (newPoints.length() > 1)
+                        drawCurve(newPoints);
+
+                    mDistanceFromLastStrokePoint = 0;
                 }
 
                 if (interpolator == UBInterpolator::Bezier) {
@@ -577,7 +590,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                         mTempPolygon = NULL;
                     }
 
-                    QPointF lastDrawnPoint = newPoints.last().first;
+                    QPointF lastDrawnPoint = mCurrentStroke->points().last().first;
 
                     mTempPolygon = lineToPolygonItem(QLineF(lastDrawnPoint, scenePos), mPreviousWidth, width);
                     addItem(mTempPolygon);
