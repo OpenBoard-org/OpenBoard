@@ -244,8 +244,6 @@ UBGraphicsStroke* UBGraphicsStroke::simplify()
         while (b_it+1 != points.end()) {
             qreal angle = qFabs(180-(UBGeometryUtils::angle(it->first, b_it->first, (b_it+1)->first)));
             qreal widthRatio = qMax(it->second, b_it->second)/qMin(it->second, b_it->second);
-            if (widthRatio > thresholdWidthDifference)
-                qDebug() << "Width ratio: " << widthRatio;
 
             if (angle < thresholdAngle && widthRatio < thresholdWidthDifference)
                 b_it = points.erase(b_it);
@@ -259,7 +257,8 @@ UBGraphicsStroke* UBGraphicsStroke::simplify()
             it = b_it;
     }
 
-    // Next, we iterate over the new points to build the polygons that make up the stroke
+    // Next, we iterate over the new points to build the polygons that make up the stroke.
+    // A new polygon is created every time drawCurve is true.
 
     QList<UBGraphicsPolygonItem*> newPolygons;
     QList<strokePoint> newStrokePoints;
@@ -270,29 +269,26 @@ UBGraphicsStroke* UBGraphicsStroke::simplify()
 
         newStrokePoints << points[i];
 
-        // When a polygon is transparent and it overlaps with itself, it is *sometimes* filled incorrectly.
-        // Limiting the size of the polygons, and creating new ones when the angle between consecutive points is above a
-        // certain threshold helps mitigate this issue.
-        // TODO: fix fill issue
+        // Limiting the size of the polygons, and creating new ones when there is a sharp angle between
+        // consecutive point helps with two issues:
+        // 1. When a polygon is transparent and it overlaps with itself, it is *sometimes* filled incorrectly.
+        // 2. This way of simplifying strokes resuls in sharp, rather than rounded, corners when there is a sharp angle
+        //    in the stroke
 
-        if (hasAlpha()) {
-            if (newStrokePoints.size() > 1 && i < points.size() - 1) {
-                qreal angle = qFabs(UBGeometryUtils::angle(points[i-1].first, points[i].first, points[i+1].first));
-                if (angle > 40 && angle < 320)
-                    drawCurve = true;
-            }
-
-            if (newStrokePoints.size() % 20 == 0)
+        if (newStrokePoints.size() > 1 && i < points.size() - 1) {
+            qreal angle = qFabs(UBGeometryUtils::angle(points[i-1].first, points[i].first, points[i+1].first));
+            if (angle < 150) // arbitrary threshold, change if necessary
                 drawCurve = true;
         }
 
+        if (hasAlpha() && newStrokePoints.size() % 20 == 0)
+            drawCurve = true;
 
         if (drawCurve) {
             UBGraphicsPolygonItem* poly = mScene->polygonToPolygonItem(UBGeometryUtils::curveToPolygon(newStrokePoints, true, true));
-            //poly->setColor(QColor(rand()%256, rand()%256, rand()%256, poly->brush().color().alpha()));
+            //poly->setColor(QColor(rand()%256, rand()%256, rand()%256, poly->brush().color().alpha())); // useful for debugging
 
             // Subtract overlapping polygons if the stroke is translucent
-
             if (!poly->brush().isOpaque()) {
                 foreach(UBGraphicsPolygonItem* prev, newPolygons)
                     poly->subtract(prev);
