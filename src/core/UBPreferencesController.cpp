@@ -165,8 +165,6 @@ void UBPreferencesController::wire()
     connect(mPenProperties->mediumSlider, SIGNAL(valueChanged(int)), this, SLOT(widthSliderChanged(int)));
     connect(mPenProperties->strongSlider, SIGNAL(valueChanged(int)), this, SLOT(widthSliderChanged(int)));
     connect(mPenProperties->pressureSensitiveCheckBox, SIGNAL(clicked(bool)), settings, SLOT(setPenPressureSensitive(bool)));
-    connect(mPenProperties->interpolateStrokesCheckBox, SIGNAL(clicked(bool)), settings->boardInterpolatePenStrokes, SLOT(setBool(bool)));
-    connect(mPenProperties->simplifyStrokesCheckBox, SIGNAL(clicked(bool)), settings->boardSimplifyPenStrokes, SLOT(setBool(bool)));
 
     // marker
     QList<QColor> markerLightBackgroundColors = settings->boardMarkerLightBackgroundColors->colors();
@@ -184,8 +182,6 @@ void UBPreferencesController::wire()
     connect(mMarkerProperties->mediumSlider, SIGNAL(valueChanged(int)), this, SLOT(widthSliderChanged(int)));
     connect(mMarkerProperties->strongSlider, SIGNAL(valueChanged(int)), this, SLOT(widthSliderChanged(int)));
     connect(mMarkerProperties->pressureSensitiveCheckBox, SIGNAL(clicked(bool)), settings, SLOT(setMarkerPressureSensitive(bool)));
-    connect(mMarkerProperties->interpolateStrokesCheckBox, SIGNAL(clicked(bool)), settings->boardInterpolateMarkerStrokes, SLOT(setBool(bool)));
-    connect(mMarkerProperties->simplifyStrokesCheckBox, SIGNAL(clicked(bool)), settings->boardSimplifyMarkerStrokes, SLOT(setBool(bool)));
     connect(mMarkerProperties->opacitySlider, SIGNAL(valueChanged(int)), this, SLOT(opacitySliderChanged(int)));
 
     // about tab
@@ -233,16 +229,12 @@ void UBPreferencesController::init()
     mPenProperties->mediumSlider->setValue(settings->boardPenMediumWidth->get().toDouble() * sSliderRatio);
     mPenProperties->strongSlider->setValue(settings->boardPenStrongWidth->get().toDouble() * sSliderRatio);
     mPenProperties->pressureSensitiveCheckBox->setChecked(settings->boardPenPressureSensitive->get().toBool());
-    mPenProperties->interpolateStrokesCheckBox->setChecked(settings->boardInterpolatePenStrokes->get().toBool());
-    mPenProperties->simplifyStrokesCheckBox->setChecked(settings->boardSimplifyPenStrokes->get().toBool());
 
     // marker tab
     mMarkerProperties->fineSlider->setValue(settings->boardMarkerFineWidth->get().toDouble() * sSliderRatio);
     mMarkerProperties->mediumSlider->setValue(settings->boardMarkerMediumWidth->get().toDouble() * sSliderRatio);
     mMarkerProperties->strongSlider->setValue(settings->boardMarkerStrongWidth->get().toDouble() * sSliderRatio);
     mMarkerProperties->pressureSensitiveCheckBox->setChecked(settings->boardMarkerPressureSensitive->get().toBool());
-    mMarkerProperties->interpolateStrokesCheckBox->setChecked(settings->boardInterpolateMarkerStrokes->get().toBool());
-    mMarkerProperties->simplifyStrokesCheckBox->setChecked(settings->boardSimplifyMarkerStrokes->get().toBool());
 
     mMarkerProperties->opacitySlider->setValue(settings->boardMarkerAlpha->get().toDouble() * 100);
 
