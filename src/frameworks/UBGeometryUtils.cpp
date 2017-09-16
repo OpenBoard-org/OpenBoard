@@ -443,7 +443,8 @@ qreal UBGeometryUtils::angle(const QPointF& p1, const QPointF& p2, const QPointF
     if (a == 0 || c == 0)
         beta = 3.14159;
     else
-        beta = qAcos((a*a - b*b + c*c)/(2*a*c));
+        beta = qAcos(std::max(-1.0, std::min(1.0, (a*a - b*b + c*c)/(2*a*c))));
+
 
     return 180.* beta/3.14159;
 }
