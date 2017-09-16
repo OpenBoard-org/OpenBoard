@@ -212,7 +212,7 @@ UBGraphicsStroke* UBGraphicsStroke::simplify()
     newStroke->mDrawnPoints = QList<strokePoint>(mDrawnPoints);
 
     QList<strokePoint>& points = newStroke->mDrawnPoints;
-    qDebug() << "Simplifying. Before: " << points.size() << " points and " << polygons().size() << " polygons";
+    //qDebug() << "Simplifying. Before: " << points.size() << " points and " << polygons().size() << " polygons";
 
     /* Basic simplifying algorithm: consider A, B and C the current point and the two following ones.
      * If the angle between (AB) and (BC) is lower than a certain threshold,
@@ -321,7 +321,7 @@ UBGraphicsStroke* UBGraphicsStroke::simplify()
         poly->setStroke(newStroke);
     }
 
-    qDebug() << "After: " << points.size() << " points and " << newStroke->polygons().size() << " polygons";
+    //qDebug() << "After: " << points.size() << " points and " << newStroke->polygons().size() << " polygons";
 
     return newStroke;
 }
