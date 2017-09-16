@@ -364,6 +364,8 @@ class UBSettings : public QObject
         UBSetting* gipThumbnailWidth;
         UBSetting* soundThumbnailWidth;
 
+        UBSetting* libraryShowDetailsForLocalItems;
+
         UBSetting* rightLibPaletteBoardModeWidth;
         UBSetting* rightLibPaletteBoardModeIsCollapsed;
         UBSetting* rightLibPaletteDesktopModeWidth;

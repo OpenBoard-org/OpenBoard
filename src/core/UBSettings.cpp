@@ -409,6 +409,8 @@ void UBSettings::init()
 
     documentThumbnailWidth = new UBSetting(this, "Document", "ThumbnailWidth", UBSettings::defaultThumbnailWidth);
 
+    libraryShowDetailsForLocalItems = new UBSetting(this, "Library", "ShowDetailsForLocalItems", false);
+
     imageThumbnailWidth = new UBSetting(this, "Library", "ImageThumbnailWidth", UBSettings::defaultImageWidth);
     videoThumbnailWidth = new UBSetting(this, "Library", "VideoThumbnailWidth", UBSettings::defaultVideoWidth);
     shapeThumbnailWidth = new UBSetting(this, "Library", "ShapeThumbnailWidth", UBSettings::defaultShapeWidth);

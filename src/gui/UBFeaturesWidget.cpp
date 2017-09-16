@@ -175,10 +175,8 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
 //        centralWidget->showElement(feature, UBFeaturesCentralWidget::FeaturesWebView);
 
     }
-    // Don't show the properties page for interactivities, applications and animations
-    else if (feature.getType() != FEATURE_INTERACTIVE
-             && feature.getType() != FEATURE_INTERNAL
-             && feature.getType() != FEATURE_FLASH)
+
+    if (UBSettings::settings()->libraryShowDetailsForLocalItems->get().toBool() == true)
     {
         centralWidget->showElement(feature, UBFeaturesCentralWidget::FeaturePropertiesList);
         mActionBar->setCurrentState( IN_PROPERTIES );
