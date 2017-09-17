@@ -176,8 +176,7 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
 
     }
 
-    if (UBSettings::settings()->libraryShowDetailsForLocalItems->get().toBool() == true)
-    {
+    else if (UBSettings::settings()->libraryShowDetailsForLocalItems->get().toBool() == true) {
         centralWidget->showElement(feature, UBFeaturesCentralWidget::FeaturePropertiesList);
         mActionBar->setCurrentState( IN_PROPERTIES );
     }
