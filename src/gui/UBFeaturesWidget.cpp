@@ -867,7 +867,6 @@ UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : 
     , mpButtonLayout(NULL)
     , mpAddPageButton(NULL)
     , mpAddToLibButton(NULL)
-    , mpSetAsBackgroundButton(NULL)
     , mpObjInfoLabel(NULL)
     , mpObjInfos(NULL)
     , mpThumbnail(NULL)
@@ -899,10 +898,6 @@ UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : 
     mpAddPageButton->setText(tr("Add to page"));
     mpButtonLayout->addWidget(mpAddPageButton);
 
-    mpSetAsBackgroundButton = new UBFeatureItemButton();
-    mpSetAsBackgroundButton->setText(tr("Set as background"));
-    mpButtonLayout->addWidget(mpSetAsBackgroundButton);
-
     mpAddToLibButton = new UBFeatureItemButton();
     mpAddToLibButton->setText(tr("Add to library"));
     mpButtonLayout->addWidget(mpAddToLibButton);
@@ -924,7 +919,6 @@ UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : 
     mpLayout->setMargin(0);
 
     connect( mpAddPageButton, SIGNAL(clicked()), this, SLOT(onAddToPage()) );
-    connect( mpSetAsBackgroundButton, SIGNAL( clicked() ), this, SLOT( onSetAsBackground() ) );
     connect( mpAddToLibButton, SIGNAL( clicked() ), this, SLOT(onAddToLib() ) );
 }
 
@@ -954,11 +948,6 @@ UBFeatureProperties::~UBFeatureProperties()
     {
         delete mpAddPageButton;
         mpAddPageButton = NULL;
-    }
-    if ( mpSetAsBackgroundButton )
-    {
-        delete mpSetAsBackgroundButton;
-        mpSetAsBackgroundButton = NULL;
     }
     if ( mpAddToLibButton )
     {
@@ -1047,26 +1036,10 @@ void UBFeatureProperties::showElement(const UBFeature &elem)
     if ( UBApplication::isFromWeb( elem.getFullPath().toString() ) )
     {
         mpAddToLibButton->show();
-        if( elem.getMetadata()["Type"].toLower().contains("image") )
-        {
-            mpSetAsBackgroundButton->show();
-        }
-        else
-        {
-            mpSetAsBackgroundButton->hide();
-        }
     }
     else
     {
         mpAddToLibButton->hide();
-        if (UBFileSystemUtils::mimeTypeFromFileName( elem.getFullPath().toLocalFile() ).contains("image"))
-        {
-            mpSetAsBackgroundButton->show();
-        }
-        else
-        {
-            mpSetAsBackgroundButton->hide();
-        }
     }
 }
 
