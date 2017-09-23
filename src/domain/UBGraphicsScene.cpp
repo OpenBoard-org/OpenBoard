@@ -651,7 +651,9 @@ bool UBGraphicsScene::inputDeviceRelease()
                 mAddedItems.remove(item);
                 removeItem(item);
                 UBCoreGraphicsScene::removeItemFromDeletion(item);
-                mArcPolygonItem->setStrokesGroup(pStrokes);
+                UBGraphicsPolygonItem* pi = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
+                if (pi)
+                    pi->setStrokesGroup(pStrokes);
                 pStrokes->addToGroup(item);
             }
 
