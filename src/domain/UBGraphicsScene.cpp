@@ -326,6 +326,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     , mZoomFactor(1)
     , mBackgroundObject(0)
     , mPreviousWidth(0)
+    , mDistanceFromLastStrokePoint(0)
     , mInputDeviceIsPressed(false)
     , mArcPolygonItem(0)
     , mRenderingContext(Screen)
