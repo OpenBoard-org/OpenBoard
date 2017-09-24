@@ -383,7 +383,9 @@ public slots:
         void hideEraser();
         void drawPointer(const QPointF& pEndPoint, bool isFirstDraw = false);
         void drawMarkerCircle(const QPointF& pEndPoint);
+        void drawPenCircle(const QPointF& pEndPoint);
         void hideMarkerCircle();
+        void hidePenCircle();
         void DisposeMagnifierQWidgets();
 
 
@@ -404,14 +406,17 @@ public slots:
         void createEraiser();
         void createPointer();
         void createMarkerCircle();
+        void createPenCircle();
         void updateEraserColor();
         void updateMarkerCircleColor();
+        void updatePenCircleColor();
         bool hasTextItemWithFocus(UBGraphicsGroupContainerItem* item);
         void simplifyCurrentStroke();
 
         QGraphicsEllipseItem* mEraser;
         QGraphicsEllipseItem* mPointer; // "laser" pointer
         QGraphicsEllipseItem* mMarkerCircle; // dotted circle around marker
+        QGraphicsEllipseItem* mPenCircle; // dotted circle around pen
 
         QSet<QGraphicsItem*> mAddedItems;
         QSet<QGraphicsItem*> mRemovedItems;

@@ -11,8 +11,9 @@ CONFIG += debug_and_release \
 VERSION_MAJ = 1
 VERSION_MIN = 4
 VERSION_PATCH = 0
-VERSION_TYPE = a # a = alpha, b = beta, rc = release candidate, r = release, other => error
+VERSION_TYPE = b # a = alpha, b = beta, rc = release candidate, r = release, other => error
 VERSION_BUILD = 1
+
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$${VERSION_BUILD}"
 
@@ -453,4 +454,8 @@ INSTALLS = UB_ETC \
    UB_I18N \
    UB_LIBRARY \
    UB_THIRDPARTY_INTERACTIVE
+
+DISTFILES += \
+    resources/images/moveDown.svg \
+    resources/images/moveDownDisabled.svg
 

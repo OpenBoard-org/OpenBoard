@@ -75,17 +75,17 @@ void UBDocumentThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
 
     QList<QGraphicsItem*> graphicsItems = items(mMousePressPos);
 
-    UBSceneThumbnailPixmap* sceneItem = 0;
+    UBThumbnailPixmap* sceneItem = 0;
 
     while (!graphicsItems.isEmpty() && !sceneItem)
-        sceneItem = dynamic_cast<UBSceneThumbnailPixmap*>(graphicsItems.takeFirst());
+        sceneItem = dynamic_cast<UBThumbnailPixmap*>(graphicsItems.takeFirst());
 
     if (sceneItem)
     {
         QDrag *drag = new QDrag(this);
         QList<UBMimeDataItem> mimeDataItems;
         foreach (QGraphicsItem *item, selectedItems())
-            mimeDataItems.append(UBMimeDataItem(sceneItem->proxy(), mGraphicItems.indexOf(item)));
+            mimeDataItems.append(UBMimeDataItem(sceneItem->documentProxy(), mGraphicItems.indexOf(item)));
 
         UBMimeData *mime = new UBMimeData(mimeDataItems);
         drag->setMimeData(mime);
@@ -150,21 +150,21 @@ void UBDocumentThumbnailWidget::dragMoveEvent(QDragMoveEvent *event)
         mScrollTimer->stop();
     }
 
-    QList<UBSceneThumbnailPixmap*> pixmapItems;
+    QList<UBThumbnailPixmap*> pixmapItems;
     foreach (QGraphicsItem *item, scene()->items(mapToScene(boundingFrame)))
     {
-        UBSceneThumbnailPixmap* sceneItem = dynamic_cast<UBSceneThumbnailPixmap*>(item);
+        UBThumbnailPixmap* sceneItem = dynamic_cast<UBThumbnailPixmap*>(item);
         if (sceneItem)
             pixmapItems.append(sceneItem);
     }
 
     int minDistance = 0;
     QGraphicsItem *underlyingItem = itemAt(event->pos());
-    mClosestDropItem = dynamic_cast<UBSceneThumbnailPixmap*>(underlyingItem);
+    mClosestDropItem = dynamic_cast<UBThumbnailPixmap*>(underlyingItem);
 
     if (!mClosestDropItem)
     {
-        foreach (UBSceneThumbnailPixmap *item, pixmapItems)
+        foreach (UBThumbnailPixmap *item, pixmapItems)
         {
             qreal scale = item->transform().m11();
             QPointF itemCenter(
@@ -305,7 +305,7 @@ void UBDocumentThumbnailWidget::hightlightItem(int index)
     }
     if (0 <= index && index < mGraphicItems.length())
     {
-        UBSceneThumbnailPixmap *thumbnail = dynamic_cast<UBSceneThumbnailPixmap*>(mGraphicItems.at(index));
+        UBThumbnailPixmap *thumbnail = dynamic_cast<UBThumbnailPixmap*>(mGraphicItems.at(index));
         if (thumbnail)
             thumbnail->highlight();
     }

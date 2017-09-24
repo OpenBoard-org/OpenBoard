@@ -164,12 +164,10 @@ bool UBGraphicsStroke::hasPressure()
             if (!pol->isNominalLine() || pol->originalWidth() != nominalWidth)
                 return true;
         }
+        return false;
     }
-
     else
         return true;
-
-    return false;
 }
 
 

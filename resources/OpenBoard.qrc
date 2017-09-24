@@ -339,6 +339,8 @@
         <file>images/left_arrow.png</file>
         <file>images/right_arrow.png</file>
         <file>images/moveUp.svg</file>
+        <file>images/moveDown.svg</file>
+        <file>images/moveDownDisabled.svg</file>
         <file>images/closeDisabled.svg</file>
         <file>images/menuDisabled.svg</file>
         <file>images/moveUpDisabled.svg</file>

@@ -165,6 +165,8 @@ void UBPreferencesController::wire()
     connect(mPenProperties->mediumSlider, SIGNAL(valueChanged(int)), this, SLOT(widthSliderChanged(int)));
     connect(mPenProperties->strongSlider, SIGNAL(valueChanged(int)), this, SLOT(widthSliderChanged(int)));
     connect(mPenProperties->pressureSensitiveCheckBox, SIGNAL(clicked(bool)), settings, SLOT(setPenPressureSensitive(bool)));
+    connect(mPenProperties->circleCheckBox, SIGNAL(clicked(bool)), settings, SLOT(setPenPreviewCircle(bool)));
+    connect(mPenProperties->circleSpinBox, SIGNAL(valueChanged(int)), this, SLOT(penPreviewFromSizeChanged(int)));
 
     // marker
     QList<QColor> markerLightBackgroundColors = settings->boardMarkerLightBackgroundColors->colors();
@@ -177,6 +179,8 @@ void UBPreferencesController::wire()
                                                    markerDarkBackgroundSelectedColors, this);
 
     mMarkerProperties->pressureSensitiveCheckBox->setText(tr("Marker is pressure sensitive"));
+
+    mMarkerProperties->circleFrame->hide();
 
     connect(mMarkerProperties->fineSlider, SIGNAL(valueChanged(int)), this, SLOT(widthSliderChanged(int)));
     connect(mMarkerProperties->mediumSlider, SIGNAL(valueChanged(int)), this, SLOT(widthSliderChanged(int)));
@@ -229,6 +233,8 @@ void UBPreferencesController::init()
     mPenProperties->mediumSlider->setValue(settings->boardPenMediumWidth->get().toDouble() * sSliderRatio);
     mPenProperties->strongSlider->setValue(settings->boardPenStrongWidth->get().toDouble() * sSliderRatio);
     mPenProperties->pressureSensitiveCheckBox->setChecked(settings->boardPenPressureSensitive->get().toBool());
+    mPenProperties->circleCheckBox->setChecked(settings->showPenPreviewCircle->get().toBool());
+    mPenProperties->circleSpinBox->setValue(settings->penPreviewFromSize->get().toInt());
 
     // marker tab
     mMarkerProperties->fineSlider->setValue(settings->boardMarkerFineWidth->get().toDouble() * sSliderRatio);
@@ -278,6 +284,8 @@ void UBPreferencesController::defaultSettings()
         mPenProperties->mediumSlider->setValue(settings->boardPenMediumWidth->reset().toDouble() * sSliderRatio);
         mPenProperties->strongSlider->setValue(settings->boardPenStrongWidth->reset().toDouble() * sSliderRatio);
         mPenProperties->pressureSensitiveCheckBox->setChecked(settings->boardPenPressureSensitive->reset().toBool());
+        mPenProperties->circleCheckBox->setChecked(settings->showPenPreviewCircle->reset().toBool());
+        mPenProperties->circleSpinBox->setValue(settings->penPreviewFromSize->reset().toInt());
 
         settings->boardPenLightBackgroundSelectedColors->reset();
         QList<QColor> lightBackgroundSelectedColors = settings->boardPenLightBackgroundSelectedColors->colors();
@@ -332,6 +340,10 @@ void UBPreferencesController::defaultSettings()
 
 }
 
+void UBPreferencesController::penPreviewFromSizeChanged(int value)
+{
+    UBSettings::settings()->setPenPreviewFromSize(value);
+}
 
 void UBPreferencesController::widthSliderChanged(int value)
 {

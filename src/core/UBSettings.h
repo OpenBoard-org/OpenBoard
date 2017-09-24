@@ -177,6 +177,12 @@ class UBSettings : public QObject
         static QColor markerCirclePenColorDarkBackground;
         static QColor markerCirclePenColorLightBackground;
 
+        static QColor penCircleBrushColorDarkBackground;
+        static QColor penCircleBrushColorLightBackground;
+
+        static QColor penCirclePenColorDarkBackground;
+        static QColor penCirclePenColorLightBackground;
+
         static QColor documentSizeMarkColorDarkBackground;
         static QColor documentSizeMarkColorLightBackground;
 
@@ -303,6 +309,8 @@ class UBSettings : public QObject
 
         UBSetting* showEraserPreviewCircle;
         UBSetting* showMarkerPreviewCircle;
+        UBSetting* showPenPreviewCircle;
+        UBSetting* penPreviewFromSize;
 
         UBSetting* webUseExternalBrowser;
         UBSetting* webShowPageImmediatelyOnMirroredScreen;
@@ -410,6 +418,8 @@ class UBSettings : public QObject
          void setStylusPaletteVisible(bool visible);
 
         void setPenPressureSensitive(bool sensitive);
+        void setPenPreviewCircle(bool sensitive);
+        void setPenPreviewFromSize(int size);
         void setMarkerPressureSensitive(bool sensitive);
 
         QVariant value ( const QString & key, const QVariant & defaultValue = QVariant() );

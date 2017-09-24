@@ -744,7 +744,6 @@ UBGraphicsScene* UBPersistenceManager::loadDocumentScene(UBDocumentProxy* proxy,
         if (scene)
             mSceneCache.insert(proxy, sceneIndex, scene);
     }
-
     if (cacheNeighboringScenes) {
         if(sceneIndex + 1 < proxy->pageCount() &&  !mSceneCache.contains(proxy, sceneIndex + 1))
             mWorker->readScene(proxy,sceneIndex+1);

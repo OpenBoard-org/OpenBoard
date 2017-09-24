@@ -53,6 +53,7 @@ class UBDocumentContainer : public QObject
         void duplicatePages(QList<int>& pageIndexes);
         bool movePageToIndex(int source, int target);
         void deletePages(QList<int>& pageIndexes);
+        void initThumbPage();
         void addPage(int index);
         void updatePage(int index);
         void addEmptyThumbPage();
@@ -73,6 +74,12 @@ class UBDocumentContainer : public QObject
     signals:
         void documentSet(UBDocumentProxy* document);
         void documentPageUpdated(int index);
+
+        void initThumbnailsRequired(UBDocumentContainer* source);
+        void addThumbnailRequired(UBDocumentContainer* source, int index);
+        void removeThumbnailRequired(int index);
+        void moveThumbnailRequired(int from, int to);
+
         void documentThumbnailsUpdated(UBDocumentContainer* source);
 };
 

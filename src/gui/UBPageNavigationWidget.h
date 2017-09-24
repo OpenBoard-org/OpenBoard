@@ -38,7 +38,7 @@
 #include <QLabel>
 #include <QString>
 
-#include "UBDocumentNavigator.h"
+#include "UBBoardThumbnailsView.h"
 #include "UBDockPaletteWidget.h"
 #include "document/UBDocumentProxy.h"
 
@@ -70,7 +70,7 @@ private:
     int border();
 
     /** The thumbnails navigator widget */
-    UBDocumentNavigator* mNavigator;
+    UBBoardThumbnailsView* mNavigator;
     /** The layout */
     QVBoxLayout* mLayout;
     QHBoxLayout* mHLayout;

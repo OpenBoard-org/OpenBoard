@@ -339,7 +339,10 @@ void UBGraphicsTextItemDelegate::pickFont()
             curCursor.mergeCharFormat(format);
 
             delegated()->setTextCursor(curCursor);
-            delegated()->setFont(selectedFont);
+
+            if (curCursor.selectedText().length() == 0)
+                delegated()->setFont(selectedFont);
+
             delegated()->setSelected(true);
             delegated()->document()->adjustSize();
             delegated()->contentsChanged();
@@ -749,11 +752,6 @@ QVariant UBGraphicsTextItemDelegate::itemChange(QGraphicsItem::GraphicsItemChang
                 delegated()->setTextCursor(c);
             }
         }
-    }
-
-    if (value.toBool() == false && delegated()->document()->toPlainText().isEmpty()) {
-        int wdth = QFontMetrics(delegated()->font()).width(delegated()->mTypeTextHereLabel);
-        delegated()->setTextWidth(qMax(wdth, (int)(delegated()->textWidth())));
     }
 
     return UBGraphicsItemDelegate::itemChange(change, value);

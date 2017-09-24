@@ -109,6 +109,8 @@ class UBGraphicsPolygonItem : public QGraphicsPolygonItem, public UBItem
         qreal originalWidth() { return mOriginalWidth;}
         bool isNominalLine() {return mIsNominalLine;}
 
+        void setNominalLine(bool isNominalLine) { mIsNominalLine = isNominalLine; }
+
         QColor colorOnDarkBackground() const
         {
             return mColorOnDarkBackground;

@@ -38,10 +38,14 @@
 #include "frameworks/UBCoreGraphicsScene.h"
 #include "core/UBSettings.h"
 #include "domain/UBItem.h"
+#include "gui/UBThumbnailView.h"
+#include "document/UBDocumentProxy.h"
+
+#include <QLabel>
+#include <QHBoxLayout>
+
 
 #define STARTDRAGTIME   1000000
-#define BUTTONSIZE      48
-#define BUTTONSPACING   5
 
 class UBDocumentProxy;
 class UBThumbnailTextItem;
@@ -135,7 +139,6 @@ class UBThumbnailWidget : public QGraphicsView
         QTime mClickTime;
 };
 
-
 class UBThumbnail
 {
     public:
@@ -190,6 +193,8 @@ class UBThumbnail
         void setColumn(int column) { mColumn = column; }
         int row() { return mRow; }
         void setRow(int row) { mRow = row; }
+        UBThumbnailTextItem *label(){return mLabel;}
+        void setLabel(UBThumbnailTextItem *label){mLabel = label;}
 
     protected:
         QGraphicsRectItem *mSelectionItem;
@@ -198,166 +203,24 @@ class UBThumbnail
 
         int mColumn;
         int mRow;
-};
-
-
-class UBThumbnailSvg : public QGraphicsSvgItem, public UBThumbnail
-{
-    public:
-        UBThumbnailSvg(const QString& path)
-            : QGraphicsSvgItem(path)
-        {
-            setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
-        }
-
-        virtual ~UBThumbnailSvg()
-        {
-            // NOOP
-        }
-
-        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-        {
-            QStyleOptionGraphicsItem styleOption = UBThumbnail::muteStyleOption(option);
-            QGraphicsSvgItem::paint(painter, &styleOption, widget);
-        }
-
-        virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value)
-        {
-            UBThumbnail::itemChange(this, change, value);
-            return QGraphicsSvgItem::itemChange(change, value);
-        }
-
-};
-
-
-class UBThumbnailPixmap : public QGraphicsPixmapItem, public UBThumbnail
-{
-    public:
-        UBThumbnailPixmap(const QPixmap& pix)
-            : QGraphicsPixmapItem(pix)
-        {
-            setTransformationMode(Qt::SmoothTransformation); // UB 4.3 may be expensive -- make configurable
-            setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
-            setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
-        }
-
-        virtual ~UBThumbnailPixmap()
-        {
-            // NOOP
-        }
-
-        virtual QPainterPath shape () const
-        {
-            QPainterPath path;
-            path.addRect(boundingRect());
-            return path;
-        }
-
-
-        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-        {
-            QStyleOptionGraphicsItem styleOption = UBThumbnail::muteStyleOption(option);
-            QGraphicsPixmapItem::paint(painter, &styleOption, widget);
-        }
-
-        virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value)
-        {
-            UBThumbnail::itemChange(this, change, value);
-            return QGraphicsPixmapItem::itemChange(change, value);
-        }
-};
-
-
-class UBSceneThumbnailPixmap : public UBThumbnailPixmap
-{
-    public:
-        UBSceneThumbnailPixmap(const QPixmap& pix, UBDocumentProxy* proxy, int pSceneIndex)
-            : UBThumbnailPixmap(pix)
-            , mProxy(proxy)
-            , mSceneIndex(pSceneIndex)
-        {
-            // NOOP
-        }
-
-        virtual ~UBSceneThumbnailPixmap()
-        {
-            // NOOP
-        }
-
-        UBDocumentProxy* proxy()
-        {
-            return mProxy;
-        }
-
-        int sceneIndex()
-        {
-            return mSceneIndex;
-        }
-
-        void highlight()
-        {
-            //NOOP
-        }
-
-    private:
-        UBDocumentProxy* mProxy;
-        int mSceneIndex;
-};
-
-class UBSceneThumbnailNavigPixmap : public UBSceneThumbnailPixmap
-{
-    public:
-        UBSceneThumbnailNavigPixmap(const QPixmap& pix, UBDocumentProxy* proxy, int pSceneIndex);
-        ~UBSceneThumbnailNavigPixmap();
-
-    protected:
-        void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-        void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-        void mousePressEvent(QGraphicsSceneMouseEvent *event);
-
-    private:
-        void deletePage();
-        void duplicatePage();
-        void moveUpPage();
-        void moveDownPage();
-
-        bool bButtonsVisible;
-        bool bCanDelete;
-        bool bCanMoveUp;
-        bool bCanMoveDown;
-};
-
-class UBThumbnailVideo : public UBThumbnailPixmap
-{
-    public:
-        UBThumbnailVideo(const QUrl &path)
-            : UBThumbnailPixmap(QPixmap(":/images/movie.svg"))
-            , mPath(path)
-        {
-            // NOOP
-        }
-
-        virtual ~UBThumbnailVideo()
-        {
-            // NOOP
-        }
-
-        QUrl path()
-        {
-            return mPath;
-        }
-
-    private:
-
-        QUrl mPath;
+        UBThumbnailTextItem *mLabel;
 };
 
 class UBThumbnailTextItem : public QGraphicsTextItem
 {
     public:
+        UBThumbnailTextItem(int index)
+            : QGraphicsTextItem(tr("Page %0").arg(index+1))
+            , mWidth(0)
+            , mUnelidedText(toPlainText())
+            , mIsHighlighted(false)
+        {
+
+        }
+
         UBThumbnailTextItem(const QString& text)
             : QGraphicsTextItem(text)
+            , mWidth(0)
             , mUnelidedText(text)
             , mIsHighlighted(false)
         {
@@ -374,7 +237,7 @@ class UBThumbnailTextItem : public QGraphicsTextItem
                         mWidth = pWidth;
                         computeText();
                 }
-        };
+        }
 
         qreal width() {return mWidth;}
 
@@ -408,22 +271,23 @@ class UBThumbnailTextItem : public QGraphicsTextItem
         bool mIsHighlighted;
 };
 
-class UBImgTextThumbnailElement
+class UBWidgetTextThumbnailElement
 {
-private:
-    UBSceneThumbnailNavigPixmap* thumbnail;
+protected:
+    QGraphicsItem* thumbnail;
     UBThumbnailTextItem* caption;
     int border;
 
 public:
-    UBImgTextThumbnailElement(UBSceneThumbnailNavigPixmap* thumb, UBThumbnailTextItem* text): border(0)
+    UBWidgetTextThumbnailElement(QGraphicsProxyWidget* proxyWidget, UBThumbnailTextItem* text)
+        : thumbnail(proxyWidget)
+        , caption(text)
+        , border(0)
     {
-        this->thumbnail = thumb;
-        this->caption = text;
     }
 
-    UBSceneThumbnailNavigPixmap* getThumbnail() const { return this->thumbnail; }
-    void setThumbnail(UBSceneThumbnailNavigPixmap* newGItem) { this->thumbnail = newGItem; }
+    QGraphicsItem* getThumbnail() const { return this->thumbnail; }
+    void setThumbnail(QGraphicsItem* newGItem) { this->thumbnail = newGItem; }
 
     UBThumbnailTextItem* getCaption() const { return this->caption; }
     void setCaption(UBThumbnailTextItem* newcaption) { this->caption = newcaption; }
@@ -434,5 +298,249 @@ public:
     void setBorder(int newBorder) { this->border = newBorder; }
 };
 
+class UBThumbnailPixmap : public QGraphicsPixmapItem, public UBThumbnail
+{
+    public:
+        UBThumbnailPixmap(const QPixmap& pix, UBDocumentProxy* proxy, int pSceneIndex)
+            : QGraphicsPixmapItem(pix)
+            , mDocumentProxy(proxy)
+            , mSceneIndex(pSceneIndex)
+        {
+
+        }
+
+        UBThumbnailPixmap(const QPixmap& pix)
+            : QGraphicsPixmapItem(pix)
+        {
+            setTransformationMode(Qt::SmoothTransformation); // UB 4.3 may be expensive -- make configurable
+            setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
+            setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
+        }
+
+        virtual QPainterPath shape () const
+        {
+            QPainterPath path;
+            path.addRect(boundingRect());
+            return path;
+        }
+
+        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+        {
+            QStyleOptionGraphicsItem styleOption = UBThumbnail::muteStyleOption(option);
+            QGraphicsPixmapItem::paint(painter, &styleOption, widget);
+        }
+
+        virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value)
+        {
+            UBThumbnail::itemChange(this, change, value);
+            return QGraphicsPixmapItem::itemChange(change, value);
+        }
+
+        void highlight()
+        {
+
+        }
+
+        UBDocumentProxy* documentProxy()
+        {
+            return mDocumentProxy;
+        }
+
+        int sceneIndex()
+        {
+            return mSceneIndex;
+        }
+    protected:
+        UBDocumentProxy* mDocumentProxy;
+        int mSceneIndex;
+};
+
+class UBThumbnailProxyWidget : public QGraphicsProxyWidget
+{
+    public:
+        UBThumbnailProxyWidget(UBDocumentProxy* proxy, int index)
+            : mDocumentProxy(proxy)
+            , mSceneIndex(index)
+        {
+
+        }
+
+        UBDocumentProxy* documentProxy()
+        {
+            return mDocumentProxy;
+        }
+
+        void setSceneIndex(int i)
+        {
+            mSceneIndex = i;
+        }
+
+        int sceneIndex()
+        {
+            return mSceneIndex;
+        }
+
+private:
+        UBDocumentProxy* mDocumentProxy;
+        int mSceneIndex;
+};
+
+class UBDraggableThumbnail : public UBThumbnailProxyWidget
+{
+    public:
+        UBDraggableThumbnail(UBDocumentProxy* documentProxy, int index)
+        : UBThumbnailProxyWidget(documentProxy, index)
+        , mEditable(false)
+        {
+
+        }
+
+        bool editable()
+        {
+            return mEditable;
+        }
+
+        bool deletable()
+        {
+            return documentProxy()->pageCount() > 1;
+        }
+
+        bool movableUp()
+        {
+            return sceneIndex() > 0;
+        }
+
+        bool movableDown()
+        {
+            return sceneIndex() < (documentProxy()->pageCount() -1);
+        }
+
+        void showUI()
+        {
+            setEditable(true);
+        }
+
+        void hideUI()
+        {
+            setEditable(false);
+        }
+
+        void setEditable(bool editable)
+        {
+            mEditable = editable;
+        }
+
+    protected:
+        void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+        void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+        void mousePressEvent(QGraphicsSceneMouseEvent *event);
+        void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+
+    private:
+        void deletePage();
+        void duplicatePage();
+        void moveUpPage();
+        void moveDownPage();
+
+        bool mEditable;
+};
+
+class UBDraggableThumbnailPixmap : public UBDraggableThumbnail
+{
+    public:
+        UBDraggableThumbnailPixmap(const QPixmap& pix, UBDocumentProxy* proxy, int pSceneIndex);
+        ~UBDraggableThumbnailPixmap();
+};
+
+class UBDraggableThumbnailView : public UBDraggableThumbnail
+{
+    public:
+        UBDraggableThumbnailView(UBThumbnailView* thumbnailView, UBDocumentProxy* documentProxy, int index)
+            : UBDraggableThumbnail(documentProxy, index)
+            , mThumbnailView(thumbnailView)
+            , mPageNumber(new UBThumbnailTextItem(index))
+        {
+            setFlag(QGraphicsItem::ItemIsSelectable, true);
+            setWidget(mThumbnailView);
+            setAcceptDrops(true);            
+        }
+
+        ~UBDraggableThumbnailView()
+        {
+            delete mPageNumber; // not a child of "this" QObject so it has to be deleted manually
+        }
+
+        void updatePos(qreal w, qreal h);
+
+        UBThumbnailView* thumbnailView()
+        {
+            return mThumbnailView;
+        }
+
+        UBThumbnailTextItem* pageNumber()
+        {
+            return mPageNumber;
+        }
+
+        void setPageNumber(int i)
+        {
+            mPageNumber->setPlainText(tr("Page %0").arg(i+1));
+        }
+
+    private:        
+        UBThumbnailView* mThumbnailView;        
+        UBThumbnailTextItem* mPageNumber;
+
+};
+
+namespace UBThumbnailUI
+{
+    const int ICONSIZE      = 96;
+    const int ICONSPACING   = 10;
+
+    class UBThumbnailUIIcon : public QPixmap
+    {
+        public:
+
+            UBThumbnailUIIcon(const QString& filename, int pos)
+                : QPixmap(QSize(ICONSIZE, ICONSIZE))
+                , mPos(pos)
+            {
+                QSvgRenderer svgRenderer(filename);
+                QPainter painter;
+                fill(Qt::transparent);
+                painter.begin(this);
+                svgRenderer.render(&painter);
+                painter.end();
+            }
+
+            int pos() const
+            {
+                return mPos;
+            }
+
+            bool triggered(qreal x) const
+            {
+                using namespace UBThumbnailUI;
+                return (x >= pos()*(ICONSIZE + ICONSPACING) && x <= (pos()+1)*ICONSIZE + pos()*ICONSPACING);
+            }
+
+        private:
+            int mPos;
+    };
+
+    namespace _private
+    {
+        //do not use this directly
+        static QMap<QString, UBThumbnailUIIcon*> catalog;
+        void initCatalog();
+    }
+
+    UBThumbnailUIIcon* addIcon(const QString& thumbnailIcon, int pos);
+    UBThumbnailUIIcon* getIcon(const QString& thumbnailIcon);
+    void draw(QPainter* painter, const UBThumbnailUIIcon& thumbnailIcon);
+    bool triggered(qreal y);
+}
 
 #endif /* UBTHUMBNAILWIDGET_H_ */

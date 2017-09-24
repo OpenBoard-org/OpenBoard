@@ -27,63 +27,67 @@
 
 
 
-#ifndef UBDOCUMENTNAVIGATOR_H
-#define UBDOCUMENTNAVIGATOR_H
+#ifndef UBBOARDTHUMBNAILSVIEW_H
+#define UBBOARDTHUMBNAILSVIEW_H
 
 #include <QResizeEvent>
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QMouseEvent>
-#include <QThread>
 
-#include "document/UBDocumentProxy.h"
 #include "document/UBDocumentContainer.h"
 #include "UBThumbnailWidget.h"
 
-#define NO_PAGESELECTED            -1
-
-class UBDocumentNavigator : public QGraphicsView
+class UBBoardThumbnailsView : public QGraphicsView
 {
     Q_OBJECT
 public:
-    UBDocumentNavigator(QWidget* parent=0, const char* name="documentNavigator");
-    ~UBDocumentNavigator();
-
-    void setNbColumns(int nbColumns);
-    int nbColumns();
-    void setThumbnailMinWidth(int width);
-    int thumbnailMinWidth();
+    UBBoardThumbnailsView(QWidget* parent=0, const char* name="UBBoardThumbnailsView");
 
 public slots:
-    void onScrollToSelectedPage(int index);// { if (mCrntItem) centerOn(mCrntItem); }
-    void generateThumbnails(UBDocumentContainer* source);
-    void updateSpecificThumbnail(int iPage);
+    void scrollToSelectedPage(int index);
+
+    void clearThumbnails();
+    void initThumbnails(UBDocumentContainer* source);
+    void addThumbnail(UBDocumentContainer* source, int i);
+    void moveThumbnail(int from, int to);
+    void removeThumbnail(int i);
+
+    void longPressTimeout();
+    void mousePressAndHoldEvent(QPoint pos);
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);
+
+    virtual void dragEnterEvent(QDragEnterEvent* event);
+    virtual void dragMoveEvent(QDragMoveEvent* event);
+    virtual void dropEvent(QDropEvent* event);
+
     virtual void mousePressEvent(QMouseEvent *event);
+    virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
 
+signals:
+    void mousePressAndHoldEventRequired(QPoint pos);
+    void moveThumbnailRequired(int from, int to);
+
 private:
+    UBDraggableThumbnailView* createThumbnail(UBDocumentContainer* source, int i);
+    void updateThumbnailsPos();
 
-    void refreshScene();
-    int border();
+    QList<UBDraggableThumbnailView*> mThumbnails;
 
-
-    /** The scene */
-    QGraphicsScene* mScene;
-    /** The current selected item */
-    //UBSceneThumbnailNavigPixmap* mCrntItem;
-    /** The list of current thumbnails with labels*/
-    QList<UBImgTextThumbnailElement> mThumbsWithLabels;
-    /** The current number of columns */
-    int mNbColumns;
-    /** The current thumbnails width */
     int mThumbnailWidth;
-    /** The current thumbnails minimum width */
-    int mThumbnailMinWidth;
-    /** The selected thumbnail */
-    UBSceneThumbnailNavigPixmap* mSelectedThumbnail;
+    const int mThumbnailMinWidth;
+    const int mMargin;
+
+    UBDraggableThumbnailView* mDropSource;
+    UBDraggableThumbnailView* mDropTarget;
+    QGraphicsRectItem *mDropBar;
+
+    int mLongPressInterval;
+    QTimer mLongPressTimer;
+    QPoint mLastPressedMousePos;
 };
 
-#endif // UBDOCUMENTNAVIGATOR_H
+#endif // UBBOARDTHUMBNAILSVIEW_H

@@ -135,7 +135,6 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     //------------------------------------------------//
     // Create the widgets for the dock palettes
-
     mpPageNavigWidget = new UBPageNavigationWidget();
 
     mpCachePropWidget = new UBCachePropertiesWidget();
@@ -146,7 +145,6 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mLeftPalette = new UBLeftPalette(mContainer);
 
     // LEFT palette widgets
-    mpPageNavigWidget = new UBPageNavigationWidget();
     mLeftPalette->registerWidget(mpPageNavigWidget);
     mLeftPalette->addTab(mpPageNavigWidget);
 

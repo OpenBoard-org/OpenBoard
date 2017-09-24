@@ -51,8 +51,9 @@ void UBDocumentContainer::setDocument(UBDocumentProxy* document, bool forceReloa
     if (mCurrentDocument != document || forceReload)
     {
         mCurrentDocument = document;
-        reloadThumbnails();
+
         emit documentSet(mCurrentDocument);
+        reloadThumbnails();
     }
 }
 
@@ -68,10 +69,14 @@ void UBDocumentContainer::duplicatePages(QList<int>& pageIndexes)
 
 bool UBDocumentContainer::movePageToIndex(int source, int target)
 {
+    //on document view
     UBPersistenceManager::persistenceManager()->moveSceneToIndex(mCurrentDocument, source, target);
     deleteThumbPage(source);
     insertThumbPage(target);
     emit documentThumbnailsUpdated(this);
+
+    //on board thumbnails view
+    emit moveThumbnailRequired(source, target);
     return true;
 }
 
@@ -82,16 +87,26 @@ void UBDocumentContainer::deletePages(QList<int>& pageIndexes)
     foreach(int index, pageIndexes)
     {
         deleteThumbPage(index - offset);
+        emit removeThumbnailRequired(index - offset);
         offset++;
+
     }
-    emit documentThumbnailsUpdated(this);
+
 }
 
 void UBDocumentContainer::addPage(int index)
 {
     UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mCurrentDocument, index);
     insertThumbPage(index);
+
     emit documentThumbnailsUpdated(this);
+    emit addThumbnailRequired(this, index);
+}
+
+void UBDocumentContainer::initThumbPage()
+{
+    for (int i=0; i < selectedDocument()->pageCount(); i++)
+        insertThumbPage(i);
 }
 
 void UBDocumentContainer::updatePage(int index)
@@ -108,7 +123,6 @@ void UBDocumentContainer::deleteThumbPage(int index)
 void UBDocumentContainer::updateThumbPage(int index)
 {
     mDocumentThumbs[index] = UBThumbnailAdaptor::get(mCurrentDocument, index);
-    emit documentPageUpdated(index);
 }
 
 void UBDocumentContainer::insertThumbPage(int index)

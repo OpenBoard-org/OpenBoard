@@ -89,6 +89,7 @@ class UBPreferencesController : public QObject
 
         void close();
         void defaultSettings();
+        void penPreviewFromSizeChanged(int value);
         void widthSliderChanged(int value);
         void opacitySliderChanged(int value);
         void colorSelected(const QColor&);

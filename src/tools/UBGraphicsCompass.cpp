@@ -304,6 +304,7 @@ void UBGraphicsCompass::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     {
         updateResizeCursor();
         updateDrawCursor();
+        mDrewCenterCross = false;
         event->accept();
     }
     else if (closeButtonRect().contains(event->pos()))

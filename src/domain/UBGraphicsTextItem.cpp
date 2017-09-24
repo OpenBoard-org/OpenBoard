@@ -188,6 +188,11 @@ void UBGraphicsTextItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
+void UBGraphicsTextItem::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
+{
+
+}
+
 void UBGraphicsTextItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     // scene()->itemAt(pos) returns 0 if pos is not over text, but over text item, but mouse press comes.

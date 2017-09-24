@@ -58,6 +58,7 @@
 
 #include "gui/UBMainWindow.h"
 #include "gui/UBResources.h"
+#include "gui/UBThumbnailWidget.h"
 
 #include "adaptors/publishing/UBSvgSubsetRasterizer.h"
 
@@ -285,6 +286,8 @@ int UBApplication::exec(const QString& pFileToImport)
     mainWindow->actionCopy->setShortcuts(QKeySequence::Copy);
     mainWindow->actionPaste->setShortcuts(QKeySequence::Paste);
     mainWindow->actionCut->setShortcuts(QKeySequence::Cut);
+
+    UBThumbnailUI::_private::initCatalog();
 
     connect(mainWindow->actionBoard, SIGNAL(triggered()), this, SLOT(showBoard()));
     connect(mainWindow->actionWeb, SIGNAL(triggered()), this, SLOT(showInternet()));

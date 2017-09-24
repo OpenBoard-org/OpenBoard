@@ -583,6 +583,7 @@ void UBBoardController::duplicateScene(int nIndex)
     duplicatePages(scIndexes);
     insertThumbPage(nIndex);
     emit documentThumbnailsUpdated(this);
+    emit addThumbnailRequired(this, nIndex + 1);
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
     setActiveDocumentScene(nIndex + 1);
@@ -1399,7 +1400,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
         if (result){
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-            reloadThumbnails();
         }
     }
     else if (UBMimeType::OpenboardTool == itemMimeType)
@@ -1542,11 +1542,11 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
         mActiveSceneIndex = index;
         setDocument(pDocumentProxy, forceReload);
 
+        emit initThumbnailsRequired(this);
         updateSystemScaleFactor();
 
         mControlView->setScene(mActiveScene);
-        disconnect(mControlView, SIGNAL(mouseReleased()), mActiveScene, SLOT(updateSelectionFrame()));
-        connect(mControlView, SIGNAL(mouseReleased()), mActiveScene, SLOT(updateSelectionFrame()));
+
         mDisplayView->setScene(mActiveScene);
         mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
         pDocumentProxy->setDefaultDocumentSize(mActiveScene->nominalSize());
@@ -1584,9 +1584,11 @@ void UBBoardController::moveSceneToIndex(int source, int target)
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
         mMovingSceneIndex = source;
+        mActiveSceneIndex = target;
         setActiveDocumentScene(target);
         mMovingSceneIndex = -1;
 
+        emit activeSceneChanged();
     }
 }
 
@@ -1636,6 +1638,23 @@ void UBBoardController::ClearUndoStack()
         findUniquesItems(UBApplication::undoStack->command(i), uniqueItems);
     }
 
+    // Get items from clipboard in order not to delete an item that was cut
+    // (using source URL of graphics items as a surrogate for equality testing)
+    // This ensures that we can cut and paste a media item, widget, etc. from one page to the next.
+    QClipboard *clipboard = QApplication::clipboard();
+    const QMimeData* data = clipboard->mimeData();
+    QList<QUrl> sourceURLs;
+
+    if (data && data->hasFormat(UBApplication::mimeTypeUniboardPageItem)) {
+        const UBMimeDataGraphicsItem* mimeDataGI = qobject_cast <const UBMimeDataGraphicsItem*>(data);
+
+        if (mimeDataGI) {
+            foreach (UBItem* sourceItem, mimeDataGI->items()) {
+                sourceURLs << sourceItem->sourceUrl();
+            }
+        }
+    }
+
     // go through all unique items, and check, if they are on scene, or not.
     // if not on scene, than item can be deleted
     QSetIterator<QGraphicsItem*> itUniq(uniqueItems);
@@ -1647,7 +1666,12 @@ void UBBoardController::ClearUndoStack()
             scene = dynamic_cast<UBGraphicsScene*>(item->scene());
         }
 
-        if(!scene)
+        bool inClipboard = false;
+        UBItem* ubi = dynamic_cast<UBItem*>(item);
+        if (ubi && sourceURLs.contains(ubi->sourceUrl()))
+            inClipboard = true;
+
+        if(!scene && !inClipboard)
         {
             if (!mActiveScene->deleteItem(item)){
                 delete item;
@@ -1798,6 +1822,7 @@ void UBBoardController::documentSceneChanged(UBDocumentProxy* pDocumentProxy, in
     if(selectedDocument() == pDocumentProxy)
     {
         setActiveDocumentScene(mActiveSceneIndex);
+        updatePage(pIndex);
     }
 }
 
@@ -1941,7 +1966,6 @@ void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool force
             && (mActiveScene->isModified()))
     {
         UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, isAnAutomaticBackup,forceImmediateSave);
-        updatePage(mActiveSceneIndex);
     }
 }
 

@@ -1719,7 +1719,12 @@ void UBBoardView::setToolCursor (int tool)
     switch (tool)
     {
     case UBStylusTool::Pen:
-        controlViewport->setCursor (UBResources::resources ()->penCursor);
+        if (UBSettings::settings()->showPenPreviewCircle->get().toBool() &&
+            UBSettings::settings()->currentPenWidth() >= UBSettings::settings()->penPreviewFromSize->get().toInt()) {
+            controlViewport->setCursor (QCursor (Qt::BlankCursor));
+        } else {
+            controlViewport->setCursor (UBResources::resources ()->penCursor);
+        }
         break;
     case UBStylusTool::Eraser:
         controlViewport->setCursor (UBResources::resources ()->eraserCursor);
