@@ -53,6 +53,7 @@ class UBDocumentContainer : public QObject
         void duplicatePages(QList<int>& pageIndexes);
         bool movePageToIndex(int source, int target);
         void deletePages(QList<int>& pageIndexes);
+        void clearThumbPage();
         void initThumbPage();
         void addPage(int index);
         void updatePage(int index);

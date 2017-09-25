@@ -52,6 +52,7 @@ void UBDocumentContainer::setDocument(UBDocumentProxy* document, bool forceReloa
     {
         mCurrentDocument = document;
 
+        emit initThumbnailsRequired(this);
         emit documentSet(mCurrentDocument);
         reloadThumbnails();
     }
@@ -103,8 +104,16 @@ void UBDocumentContainer::addPage(int index)
     emit addThumbnailRequired(this, index);
 }
 
+void UBDocumentContainer::clearThumbPage()
+{
+    qDeleteAll(mDocumentThumbs);
+    mDocumentThumbs.clear();
+}
+
 void UBDocumentContainer::initThumbPage()
 {
+    clearThumbPage();
+
     for (int i=0; i < selectedDocument()->pageCount(); i++)
         insertThumbPage(i);
 }

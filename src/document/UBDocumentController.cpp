@@ -476,7 +476,6 @@ void UBDocumentController::openSelectedItem()
             if (proxy && isOKToOpenDocument(proxy))
             {
                 UBApplication::applicationController->showBoard();
-                UBApplication::applicationController->showBoard();
             }
         }
     }

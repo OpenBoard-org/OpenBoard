@@ -1542,7 +1542,6 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
         mActiveSceneIndex = index;
         setDocument(pDocumentProxy, forceReload);
 
-        emit initThumbnailsRequired(this);
         updateSystemScaleFactor();
 
         mControlView->setScene(mActiveScene);
