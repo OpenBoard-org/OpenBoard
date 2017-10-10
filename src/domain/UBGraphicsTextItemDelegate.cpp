@@ -354,7 +354,7 @@ void UBGraphicsTextItemDelegate::pickColor()
 {
     if (mDelegated && mDelegated->scene() && mDelegated->scene()->views().size() > 0)
     {
-        QColorDialog colorDialog(delegated()->defaultTextColor(), mDelegated->scene()->views().at(0));
+        QColorDialog colorDialog(delegated()->defaultTextColor(), static_cast<QGraphicsView*>(UBApplication::boardController->controlView()));
         colorDialog.setWindowTitle(tr("Text Color"));
         if (UBSettings::settings()->isDarkBackground())
         {
