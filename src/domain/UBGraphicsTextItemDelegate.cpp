@@ -322,7 +322,7 @@ void UBGraphicsTextItemDelegate::pickFont()
 {
     if (mDelegated && mDelegated->scene() && mDelegated->scene()->views().size() > 0)
     {
-        QFontDialog fontDialog(delegated()->textCursor().charFormat().font(), mDelegated->scene()->views().at(0));
+        QFontDialog fontDialog(delegated()->textCursor().charFormat().font(), static_cast<QGraphicsView*>(UBApplication::boardController->controlView()));
         customize(fontDialog);
 
         if (fontDialog.exec())
@@ -357,6 +357,7 @@ void UBGraphicsTextItemDelegate::pickColor()
     {
         QColorDialog colorDialog(delegated()->defaultTextColor(), static_cast<QGraphicsView*>(UBApplication::boardController->controlView()));
         colorDialog.setWindowTitle(tr("Text Color"));
+        colorDialog.setOption(QColorDialog::DontUseNativeDialog);
         if (UBSettings::settings()->isDarkBackground())
         {
             colorDialog.setStyleSheet("background-color: white;");
