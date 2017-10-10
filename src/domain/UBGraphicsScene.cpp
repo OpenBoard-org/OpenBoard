@@ -828,12 +828,17 @@ void UBGraphicsScene::drawPenCircle(const QPointF &pPoint)
         mPenCircle->setRect(QRectF(pPoint.x() - penRadius, pPoint.y() - penRadius,
                                       penDiameter, penDiameter));
 
-        controlView()->viewport()->setCursor(QCursor (Qt::BlankCursor));
+        if (controlView())
+            if (controlView()->viewport())
+                controlView()->viewport()->setCursor(QCursor (Qt::BlankCursor));
+
         mPenCircle->show();
     }
     else
     {
-        controlView()->viewport()->setCursor(UBResources::resources()->penCursor);
+        if (controlView())
+            if (controlView()->viewport())
+                controlView()->viewport()->setCursor(UBResources::resources()->penCursor);
     }
 
 }
