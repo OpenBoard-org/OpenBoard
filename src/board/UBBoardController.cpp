@@ -1534,12 +1534,13 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
     {
         freezeW3CWidgets(true);
 
-        persistCurrentScene();
-
         ClearUndoStack();
 
         mActiveScene = targetScene;
         mActiveSceneIndex = index;
+
+        persistCurrentScene();
+
         setDocument(pDocumentProxy, forceReload);
 
         updateSystemScaleFactor();
