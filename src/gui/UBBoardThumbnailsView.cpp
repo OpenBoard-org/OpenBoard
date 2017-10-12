@@ -127,7 +127,13 @@ void UBBoardThumbnailsView::addThumbnail(UBDocumentContainer* source, int i)
 
 void UBBoardThumbnailsView::clearThumbnails()
 {
-    qDeleteAll(mThumbnails);
+    for(int i = 0; i < mThumbnails.size(); i++)
+    {
+        scene()->removeItem(mThumbnails.at(i)->pageNumber());
+        scene()->removeItem(mThumbnails.at(i));
+        mThumbnails.at(i)->deleteLater();
+    }
+
     mThumbnails.clear();
 }
 
