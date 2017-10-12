@@ -1571,7 +1571,7 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
     if(documentChange)
     {
         UBGraphicsTextItem::lastUsedTextColor = QColor();
-        emit initThumbnailRequired(this);
+        emit initThumbnailsRequired(this);
     }
 
     if (sceneChange)

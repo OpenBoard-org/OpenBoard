@@ -56,7 +56,7 @@ UBBoardThumbnailsView::UBBoardThumbnailsView(QWidget *parent, const char *name)
     , mDropSource(NULL)
     , mDropTarget(NULL)
     , mDropBar(new QGraphicsRectItem(0))
-    , mLongPressInterval(150)
+    , mLongPressInterval(350)
 {
     setScene(new QGraphicsScene(this));    
 
