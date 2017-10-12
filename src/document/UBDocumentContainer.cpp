@@ -92,7 +92,7 @@ void UBDocumentContainer::deletePages(QList<int>& pageIndexes)
         offset++;
 
     }
-    emit documentThumbnailsUpdated(this);
+
 }
 
 void UBDocumentContainer::addPage(int index)
