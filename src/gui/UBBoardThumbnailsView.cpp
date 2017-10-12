@@ -78,6 +78,7 @@ UBBoardThumbnailsView::UBBoardThumbnailsView(QWidget *parent, const char *name)
     connect(UBApplication::boardController, SIGNAL(addThumbnailRequired(UBDocumentContainer*, int)), this, SLOT(addThumbnail(UBDocumentContainer*, int)), Qt::UniqueConnection);
     connect(UBApplication::boardController, SIGNAL(moveThumbnailRequired(int, int)), this, SLOT(moveThumbnail(int, int)), Qt::UniqueConnection);
     connect(this, SIGNAL(moveThumbnailRequired(int, int)), this, SLOT(moveThumbnail(int, int)), Qt::UniqueConnection);
+    connect(UBApplication::boardController, SIGNAL(reloadThumbnailRequired(UBDocumentContainer*, int)), this, SLOT(reloadThumbnail(UBDocumentContainer*, int)), Qt::UniqueConnection);
     connect(UBApplication::boardController, SIGNAL(removeThumbnailRequired(int)), this, SLOT(removeThumbnail(int)), Qt::UniqueConnection);
 
     connect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressTimeout()), Qt::UniqueConnection);
@@ -92,6 +93,13 @@ void UBBoardThumbnailsView::moveThumbnail(int from, int to)
     mThumbnails.move(from, to);
 
     updateThumbnailsPos();
+}
+
+void UBBoardThumbnailsView::reloadThumbnail(UBDocumentContainer* source, int index)
+{
+    removeThumbnail(index);
+
+    addThumbnail(source, index);
 }
 
 void UBBoardThumbnailsView::removeThumbnail(int i)
@@ -127,7 +135,12 @@ void UBBoardThumbnailsView::addThumbnail(UBDocumentContainer* source, int i)
 
 void UBBoardThumbnailsView::clearThumbnails()
 {
-    qDeleteAll(mThumbnails);
+    for(int i = 0; i < mThumbnails.size(); i++)
+    {
+        scene()->removeItem(mThumbnails.at(i)->pageNumber());
+        scene()->removeItem(mThumbnails.at(i));
+        mThumbnails.at(i)->deleteLater();
+    }
     mThumbnails.clear();
 }
 
@@ -211,7 +224,7 @@ void UBBoardThumbnailsView::mousePressAndHoldEvent(QPoint pos)
         drag->setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2));
 
         drag->exec();
-    }   
+    }
 }
 
 void UBBoardThumbnailsView::mouseReleaseEvent(QMouseEvent *event)

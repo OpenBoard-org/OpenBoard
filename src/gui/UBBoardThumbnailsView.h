@@ -50,6 +50,7 @@ public slots:
     void clearThumbnails();
     void initThumbnails(UBDocumentContainer* source);
     void addThumbnail(UBDocumentContainer* source, int i);
+    void reloadThumbnail(UBDocumentContainer* source, int i);
     void moveThumbnail(int from, int to);
     void removeThumbnail(int i);
 

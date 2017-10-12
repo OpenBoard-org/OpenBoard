@@ -1536,10 +1536,10 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
 
         ClearUndoStack();
 
+        persistCurrentScene(); //previous scene
+
         mActiveScene = targetScene;
         mActiveSceneIndex = index;
-
-        persistCurrentScene();
 
         setDocument(pDocumentProxy, forceReload);
 
@@ -1556,6 +1556,8 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
 
         adjustDisplayViews();
 
+        persistCurrentScene(); //new scene
+
         UBSettings::settings()->setDarkBackground(mActiveScene->isDarkBackground());
         UBSettings::settings()->setPageBackground(mActiveScene->pageBackground());
 
@@ -1567,10 +1569,18 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
     updateBackgroundActionsState(mActiveScene->isDarkBackground(), mActiveScene->pageBackground());
 
     if(documentChange)
+    {
         UBGraphicsTextItem::lastUsedTextColor = QColor();
+        emit initThumbnailRequired(this);
+    }
 
     if (sceneChange)
+    {
         emit activeSceneChanged();
+        //should not be necessary, but if not called, sometimes, some views are not "connected" the first time the document is loaded
+        //this is a workaround to adress unexpectedly badly attached thumbnail views (no more time to investigate on it...)
+        emit reloadThumbnailRequired(this, mActiveSceneIndex);
+    }
 }
 
 
