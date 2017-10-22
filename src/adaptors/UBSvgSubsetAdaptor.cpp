@@ -1752,25 +1752,15 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
         polygonItem->setColorOnLightBackground(color);
     }
 
-    /*
-
-    Unfortunately the fill rule was never saved correctly until OpenBoard v1.4,
-    before then, it was always saved as even-odd. So we can't load it safely here.
-    Saving is now fixed, but any old documents would be loaded incorrectly if the code
-    below is used. It should be activated at some point in the future though.
+    // Before OpenBoard v1.4, fill rule was only saved if it was "Even-odd". Therefore if no fill rule
+    // is specified, we assume that it should be Winding fill.
 
     QStringRef fillRule = mXmlReader.attributes().value("fill-rule");
 
-    if (!fillRule.isNull()) {
-        QString value = fillRule.toString();
-
-        if (value == "evenodd")
-            polygonItem->setFillRule(Qt::OddEvenFill);
-        else
-            polygonItem->setFillRule(Qt::WindingFill);
-    }
-    */
-    polygonItem->setFillRule(Qt::WindingFill);
+    if (!fillRule.isNull() && fillRule.toString() == "evenodd")
+        polygonItem->setFillRule(Qt::OddEvenFill);
+    else
+        polygonItem->setFillRule(Qt::WindingFill);
 
     return polygonItem;
 
