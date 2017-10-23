@@ -836,6 +836,7 @@ void UBDraggableThumbnail::paint(QPainter *painter, const QStyleOptionGraphicsIt
 
         draw(painter, *getIcon("duplicate"));
 
+        /*
         if(movableUp())
             draw(painter, *getIcon("moveUp"));
         else
@@ -845,6 +846,7 @@ void UBDraggableThumbnail::paint(QPainter *painter, const QStyleOptionGraphicsIt
             draw(painter, *getIcon("moveDown"));
         else
             draw(painter, *getIcon("moveDownDisabled"));
+        */
 
     }
 }
@@ -889,11 +891,6 @@ void UBDraggableThumbnail::moveDownPage()
 
 void UBDraggableThumbnail::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    event->accept();
-}
-
-void UBDraggableThumbnail::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
     QPointF p = event->pos();
 
     using namespace UBThumbnailUI;
@@ -910,6 +907,11 @@ void UBDraggableThumbnail::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             moveDownPage();
     }
 
+    event->accept();
+}
+
+void UBDraggableThumbnail::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
     event->accept();
 }
 
