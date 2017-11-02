@@ -183,14 +183,17 @@ void UBBoardThumbnailsView::resizeEvent(QResizeEvent *event)
 }
 
 void UBBoardThumbnailsView::mousePressEvent(QMouseEvent *event)
-{    
+{
     mLongPressTimer.start();
     mLastPressedMousePos = event->pos();
 
     UBDraggableThumbnailView* item = dynamic_cast<UBDraggableThumbnailView*>(itemAt(event->pos()));
 
     if (item)
+    {
+        UBApplication::boardController->persistCurrentScene();
         UBApplication::boardController->setActiveDocumentScene(item->sceneIndex());
+    }
 
     QGraphicsView::mousePressEvent(event);
 }
@@ -202,7 +205,9 @@ void UBBoardThumbnailsView::mouseMoveEvent(QMouseEvent *event)
 
 void UBBoardThumbnailsView::longPressTimeout()
 {
-    emit mousePressAndHoldEventRequired(mLastPressedMousePos);
+    if (QApplication::mouseButtons() != Qt::NoButton)
+        emit mousePressAndHoldEventRequired(mLastPressedMousePos);
+
     mLongPressTimer.stop();
 }
 

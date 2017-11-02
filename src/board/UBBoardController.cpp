@@ -1539,9 +1539,9 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
         mActiveScene = targetScene;
         mActiveSceneIndex = index;
 
-        persistCurrentScene();
-
         setDocument(pDocumentProxy, forceReload);
+
+        persistCurrentScene();
 
         updateSystemScaleFactor();
 
