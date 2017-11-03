@@ -234,11 +234,6 @@ void UBBoardThumbnailsView::mouseReleaseEvent(QMouseEvent *event)
 {
     mLongPressTimer.stop();
 
-    UBDraggableThumbnailView* item = dynamic_cast<UBDraggableThumbnailView*>(itemAt(event->pos()));
-
-    if (item)
-        UBApplication::boardController->setActiveDocumentScene(item->sceneIndex());
-
     QGraphicsView::mouseReleaseEvent(event);
 }
 
