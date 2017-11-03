@@ -100,6 +100,7 @@ UBDockPalette::UBDockPalette(eUBDockPaletteType paletteType, QWidget *parent, co
     connect(UBDownloadManager::downloadManager(), SIGNAL(allDownloadsFinished()), this, SLOT(onAllDownloadsFinished()));
 
     connect(UBApplication::boardController,SIGNAL(documentSet(UBDocumentProxy*)),this,SLOT(onDocumentSet(UBDocumentProxy*)));
+    connect(this,SIGNAL(pageSelectionChangedRequired()),UBApplication::boardController,SLOT(selectionChanged()));
 }
 
 /**
@@ -315,6 +316,7 @@ void UBDockPalette::tabClicked(int tabIndex)
         toggleCollapseExpand();
     }
     mTabPalette->update();
+    emit pageSelectionChangedRequired();
 }
 
 /**
