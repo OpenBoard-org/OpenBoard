@@ -52,6 +52,7 @@ public slots:
     void addThumbnail(UBDocumentContainer* source, int i);
     void moveThumbnail(int from, int to);
     void removeThumbnail(int i);
+    void updateThumbnails();
 
     void longPressTimeout();
     void mousePressAndHoldEvent(QPoint pos);

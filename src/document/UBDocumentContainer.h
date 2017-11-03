@@ -80,6 +80,7 @@ class UBDocumentContainer : public QObject
         void addThumbnailRequired(UBDocumentContainer* source, int index);
         void removeThumbnailRequired(int index);
         void moveThumbnailRequired(int from, int to);
+        void updateThumbnailsRequired();
 
         void documentThumbnailsUpdated(UBDocumentContainer* source);
 };

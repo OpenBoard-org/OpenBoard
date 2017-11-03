@@ -75,7 +75,8 @@ bool UBDocumentContainer::movePageToIndex(int source, int target)
     deleteThumbPage(source);
     insertThumbPage(target);
     emit documentThumbnailsUpdated(this);
-
+    //on board thumbnails view
+    emit moveThumbnailRequired(source, target);
     return true;
 }
 

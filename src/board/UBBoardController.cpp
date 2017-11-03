@@ -1586,7 +1586,6 @@ void UBBoardController::moveSceneToIndex(int source, int target)
 {
     if (selectedDocument())
     {
-
         persistCurrentScene(false,true);
 
         UBDocumentContainer::movePageToIndex(source, target);
@@ -1598,10 +1597,8 @@ void UBBoardController::moveSceneToIndex(int source, int target)
         setActiveDocumentScene(target);
         mMovingSceneIndex = -1;
 
-        //on board thumbnails view
-        emit moveThumbnailRequired(source, target);
-
         emit activeSceneChanged();
+        emit updateThumbnailsRequired();
     }
 }
 
