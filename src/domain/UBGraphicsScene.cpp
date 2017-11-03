@@ -2927,6 +2927,8 @@ void UBGraphicsScene::setToolCursor(int tool)
             tool == (int)UBStylusTool::Text ||
             tool == (int)UBStylusTool::Play) {
         deselectAllItems();
+        hideMarkerCircle();
+        hidePenCircle();
     }
 
     if (mCurrentStroke && mCurrentStroke->polygons().empty()){
