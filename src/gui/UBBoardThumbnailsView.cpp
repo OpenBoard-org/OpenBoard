@@ -219,7 +219,7 @@ void UBBoardThumbnailsView::mousePressAndHoldEvent(QPoint pos)
         mDropSource = item;
         mDropTarget = item;
 
-        QPixmap pixmap = item->widget()->grab().scaledToWidth(UBSettings::defaultThumbnailWidth);
+        QPixmap pixmap = item->widget()->grab().scaledToWidth(mThumbnailWidth/2);
 
         QDrag *drag = new QDrag(this);
         drag->setMimeData(new QMimeData());

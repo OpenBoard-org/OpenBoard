@@ -901,10 +901,11 @@ void UBDraggableThumbnail::mousePressEvent(QGraphicsSceneMouseEvent *event)
             deletePage();
         else if(getIcon("duplicate")->triggered(p.x()))
             duplicatePage();
+        /*
         else if(movableUp() && getIcon("moveUp")->triggered(p.x()))
             moveUpPage();
         else if (movableDown() && getIcon("moveDown")->triggered(p.x()))
-            moveDownPage();
+            moveDownPage();*/
     }
 
     event->accept();
