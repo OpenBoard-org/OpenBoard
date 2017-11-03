@@ -1598,6 +1598,9 @@ void UBBoardController::moveSceneToIndex(int source, int target)
         setActiveDocumentScene(target);
         mMovingSceneIndex = -1;
 
+        //on board thumbnails view
+        emit moveThumbnailRequired(source, target);
+
         emit activeSceneChanged();
     }
 }

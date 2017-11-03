@@ -35,6 +35,8 @@
 #include <QTime>
 #include <QGraphicsSceneHoverEvent>
 
+#include "core/UBApplication.h"
+#include "board/UBBoardController.h"
 #include "frameworks/UBCoreGraphicsScene.h"
 #include "core/UBSettings.h"
 #include "domain/UBItem.h"
@@ -486,12 +488,15 @@ class UBDraggableThumbnailView : public UBDraggableThumbnail
         void setPageNumber(int i)
         {
             mPageNumber->setPlainText(tr("Page %0").arg(i+1));
+            if (UBApplication::boardController->activeSceneIndex() == i)
+                mPageNumber->setDefaultTextColor(QColor("#6682b5"));
+            else
+                mPageNumber->setDefaultTextColor(QColor("#000000"));
         }
 
     private:        
         UBThumbnailView* mThumbnailView;        
         UBThumbnailTextItem* mPageNumber;
-
 };
 
 namespace UBThumbnailUI
