@@ -1310,16 +1310,16 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
     }
     else if (currentTool == UBStylusTool::Text)
     {
-        UBGraphicsItem *graphicsItem = dynamic_cast<UBGraphicsItem*>(movingItem);
-        if (graphicsItem)
-            graphicsItem->Delegate()->commitUndoStep();
-
         bool bReleaseIsNeed = true;
         if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos().toPoint()), QTransform())))
         {
             movingItem = NULL;
             bReleaseIsNeed = false;
         }
+
+        UBGraphicsItem *graphicsItem = dynamic_cast<UBGraphicsItem*>(movingItem);
+        if (graphicsItem)
+            graphicsItem->Delegate()->commitUndoStep();
 
         if (mWidgetMoved)
         {
