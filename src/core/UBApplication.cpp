@@ -514,7 +514,8 @@ void UBApplication::decorateActionMenu(QAction* action)
             menu->addSeparator();
             menu->addAction(mainWindow->actionPreferences);
             menu->addAction(mainWindow->actionMultiScreen);
-            menu->addAction(mainWindow->actionCheckUpdate);
+            if (!UBSettings::settings()->appHideCheckForSoftwareUpdate->get().toBool())
+                menu->addAction(mainWindow->actionCheckUpdate);
             menu->addSeparator();
 
             menu->addAction(mainWindow->actionPodcast);
