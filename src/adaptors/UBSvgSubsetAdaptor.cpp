@@ -1217,6 +1217,9 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
                         if (!locked.isNull() && locked.toBool())
                             mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "locked", xmlTrue);
 
+                        QVariant layer = sg->data(UBGraphicsItemData::ItemLayerType);
+                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "layer", QString("%1").arg(layer.toInt()));
+
                         QMatrix matrix = sg->sceneMatrix();
                         if (!matrix.isIdentity())
                             mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
