@@ -503,6 +503,7 @@ void UBBoardController::stylusToolDoubleClicked(int tool)
     else if (tool == UBStylusTool::Hand)
     {
         centerRestore();
+        mActiveScene->setLastCenter(QPointF(0,0));
     }
 }
 
@@ -511,6 +512,7 @@ void UBBoardController::stylusToolDoubleClicked(int tool)
 void UBBoardController::addScene()
 {
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    persistViewPositionOnCurrentScene();
     persistCurrentScene(false,true);
 
     UBDocumentContainer::addPage(mActiveSceneIndex + 1);
@@ -790,6 +792,8 @@ void UBBoardController::clearScene()
     {
         freezeW3CWidgets(true);
         mActiveScene->clearContent(UBGraphicsScene::clearItemsAndAnnotations);
+        mActiveScene->setLastCenter(QPointF(0,0));
+        mControlView->centerOn(mActiveScene->lastCenter());
         updateActionStates();
     }
 }
@@ -959,14 +963,23 @@ void UBBoardController::handScroll(qreal dx, qreal dy)
     emit controlViewportChanged();
 }
 
+void UBBoardController::persistViewPositionOnCurrentScene()
+{
+    QRect rect = mControlView->rect();
+    QPoint center(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
+    QPointF viewRelativeCenter = mControlView->mapToScene(center);
+    mActiveScene->setLastCenter(viewRelativeCenter);
+}
 
 void UBBoardController::previousScene()
 {
     if (mActiveSceneIndex > 0)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+        persistViewPositionOnCurrentScene();
         persistCurrentScene();
         setActiveDocumentScene(mActiveSceneIndex - 1);
+        mControlView->centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -979,8 +992,10 @@ void UBBoardController::nextScene()
     if (mActiveSceneIndex < selectedDocument()->pageCount() - 1)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+        persistViewPositionOnCurrentScene();
         persistCurrentScene();
         setActiveDocumentScene(mActiveSceneIndex + 1);
+        mControlView->centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -993,8 +1008,10 @@ void UBBoardController::firstScene()
     if (mActiveSceneIndex > 0)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+        persistViewPositionOnCurrentScene();
         persistCurrentScene();
         setActiveDocumentScene(0);
+        mControlView->centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -1007,8 +1024,10 @@ void UBBoardController::lastScene()
     if (mActiveSceneIndex < selectedDocument()->pageCount() - 1)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+        persistViewPositionOnCurrentScene();
         persistCurrentScene();
         setActiveDocumentScene(selectedDocument()->pageCount() - 1);
+        mControlView->centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -2093,7 +2112,8 @@ void UBBoardController::saveViewState()
     {
         mActiveScene->setViewState(UBGraphicsScene::SceneViewState(currentZoom(),
                                                                    mControlView->horizontalScrollBar()->value(),
-                                                                   mControlView->verticalScrollBar()->value()));
+                                                                   mControlView->verticalScrollBar()->value(),
+                                                                   mActiveScene->lastCenter()));
     }
 }
 

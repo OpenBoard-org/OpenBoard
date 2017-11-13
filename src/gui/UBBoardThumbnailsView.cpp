@@ -197,8 +197,10 @@ void UBBoardThumbnailsView::mousePressEvent(QMouseEvent *event)
 
     if (item)
     {
+        UBApplication::boardController->persistViewPositionOnCurrentScene();
         UBApplication::boardController->persistCurrentScene();
         UBApplication::boardController->setActiveDocumentScene(item->sceneIndex());
+        UBApplication::boardController->centerOn(UBApplication::boardController->activeScene()->lastCenter());
     }
 
     QGraphicsView::mousePressEvent(event);
