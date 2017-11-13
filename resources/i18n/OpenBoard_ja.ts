@@ -1202,7 +1202,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>%0ページ</translation>
+        <translation type="vanished">%0ページ</translation>
     </message>
 </context>
 <context>
@@ -1231,6 +1231,13 @@
     <message>
         <source>Cancel</source>
         <translation>キャンセル</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">%0ページ</translation>
     </message>
 </context>
 <context>
@@ -1387,7 +1394,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation>背景として設定</translation>
+        <translation type="vanished">背景として設定</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1526,6 +1533,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>コンテンツのソースへ移動 </translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">背景として設定</translation>
     </message>
 </context>
 <context>
@@ -1940,6 +1951,13 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 サムネイル作成済み ... </translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">%0ページ</translation>
     </message>
 </context>
 <context>
@@ -2413,11 +2431,11 @@ p, li { white-space: pre-wrap; }
         <translation>ペンは感圧性です。</translation>
     </message>
     <message>
-        <source>Smooth strokes (experimental)</source>
+        <source>Show preview circle from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Simplify strokes after drawing (experimental)</source>
+        <source>px</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

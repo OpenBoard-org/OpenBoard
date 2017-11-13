@@ -1212,7 +1212,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>עמוד %0</translation>
+        <translation type="vanished">עמוד %0</translation>
     </message>
 </context>
 <context>
@@ -1242,6 +1242,13 @@
     <message>
         <source>Cancel</source>
         <translation>בטל</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">עמוד %0</translation>
     </message>
 </context>
 <context>
@@ -1399,7 +1406,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation>קבע כרקע</translation>
+        <translation type="vanished">קבע כרקע</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1538,6 +1545,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>עבור למקור התוכן</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">קבע כרקע</translation>
     </message>
 </context>
 <context>
@@ -1946,6 +1957,13 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>נוצרה תמונה מוקטנת של %1...</translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">עמוד %0</translation>
     </message>
 </context>
 <context>
@@ -2419,11 +2437,11 @@ p, li { white-space: pre-wrap; }
         <translation>העט רגיש ללחץ</translation>
     </message>
     <message>
-        <source>Smooth strokes (experimental)</source>
+        <source>Show preview circle from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Simplify strokes after drawing (experimental)</source>
+        <source>px</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

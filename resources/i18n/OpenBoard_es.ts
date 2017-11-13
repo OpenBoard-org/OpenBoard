@@ -1211,7 +1211,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Página %0</translation>
+        <translation type="vanished">Página %0</translation>
     </message>
 </context>
 <context>
@@ -1241,6 +1241,13 @@
     <message>
         <source>Cancel</source>
         <translation>Cancelar</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Página %0</translation>
     </message>
 </context>
 <context>
@@ -1397,7 +1404,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation>Definir como fondo</translation>
+        <translation type="vanished">Definir como fondo</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1536,6 +1543,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>Ir a fuente de contenido</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">Definir como fondo</translation>
     </message>
 </context>
 <context>
@@ -1943,6 +1954,13 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 miniaturas generadas...</translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Página %0</translation>
     </message>
 </context>
 <context>
@@ -2420,11 +2438,11 @@ p, li { white-space: pre-wrap; }
         <translation>El bolígrafo es sensible a la presión</translation>
     </message>
     <message>
-        <source>Smooth strokes (experimental)</source>
+        <source>Show preview circle from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Simplify strokes after drawing (experimental)</source>
+        <source>px</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -1213,7 +1213,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Página %0</translation>
+        <translation type="vanished">Página %0</translation>
     </message>
 </context>
 <context>
@@ -1243,6 +1243,13 @@
     <message>
         <source>Cancel</source>
         <translation>Cancelar</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Página %0</translation>
     </message>
 </context>
 <context>
@@ -1423,7 +1430,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation>Definir como fundo</translation>
+        <translation type="vanished">Definir como fundo</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1563,6 +1570,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>Ir para a Fonte do Conteúdo</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">Definir como fundo</translation>
     </message>
 </context>
 <context>
@@ -1969,6 +1980,13 @@ Quer ignorar estes erros, deste servidor?</translation>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 de miniaturas geradas ...</translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Página %0</translation>
     </message>
 </context>
 <context>
@@ -2448,11 +2466,11 @@ p, li { white-space: pre-wrap; }
         <translation>Caneta sensível à pressão</translation>
     </message>
     <message>
-        <source>Smooth strokes (experimental)</source>
+        <source>Show preview circle from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Simplify strokes after drawing (experimental)</source>
+        <source>px</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

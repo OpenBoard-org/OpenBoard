@@ -1210,7 +1210,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Sayfa %0</translation>
+        <translation type="vanished">Sayfa %0</translation>
     </message>
 </context>
 <context>
@@ -1240,6 +1240,13 @@
     <message>
         <source>Cancel</source>
         <translation>İptal</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Sayfa %0</translation>
     </message>
 </context>
 <context>
@@ -1396,7 +1403,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation>Arkaplan olarak tanımla</translation>
+        <translation type="vanished">Arkaplan olarak tanımla</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1535,6 +1542,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>İçerik Kaynağına Git</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">Arkaplan olarak tanımla</translation>
     </message>
 </context>
 <context>
@@ -1947,6 +1958,13 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 adet önizleme resmi oluşturuldu ...</translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Sayfa %0</translation>
     </message>
 </context>
 <context>
@@ -2424,11 +2442,11 @@ p, li { white-space: pre-wrap; }
         <translation>Kalem Basınca Duyarlıdır</translation>
     </message>
     <message>
-        <source>Smooth strokes (experimental)</source>
+        <source>Show preview circle from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Simplify strokes after drawing (experimental)</source>
+        <source>px</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

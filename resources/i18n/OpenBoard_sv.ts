@@ -1212,7 +1212,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Sida %0</translation>
+        <translation type="vanished">Sida %0</translation>
     </message>
 </context>
 <context>
@@ -1242,6 +1242,13 @@
     <message>
         <source>Cancel</source>
         <translation>Avsluta</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Sida %0</translation>
     </message>
 </context>
 <context>
@@ -1398,7 +1405,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation>Infoga som bakgrund</translation>
+        <translation type="vanished">Infoga som bakgrund</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1537,6 +1544,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>Gå till innehållskällan</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">Infoga som bakgrund</translation>
     </message>
 </context>
 <context>
@@ -1950,6 +1961,13 @@ Vill du ignorera felen för den här värden?</translation>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 miniatybil genererad ...</translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Sida %0</translation>
     </message>
 </context>
 <context>
@@ -2427,11 +2445,11 @@ p, li { white-space: pre-wrap; }
         <translation>Pennan är tryckkänslig</translation>
     </message>
     <message>
-        <source>Smooth strokes (experimental)</source>
+        <source>Show preview circle from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Simplify strokes after drawing (experimental)</source>
+        <source>px</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

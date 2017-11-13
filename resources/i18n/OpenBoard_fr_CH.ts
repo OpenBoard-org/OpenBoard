@@ -1217,7 +1217,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Page %0</translation>
+        <translation type="vanished">Page %0</translation>
     </message>
 </context>
 <context>
@@ -1247,6 +1247,13 @@
     <message>
         <source>Cancel</source>
         <translation>Annuler</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation>Page %0</translation>
     </message>
 </context>
 <context>
@@ -1429,7 +1436,7 @@
     <message>
         <source>Set as background</source>
         <translatorcomment>j&apos;ai choisi de rendre le bouton plus compact (mais info moins complète)</translatorcomment>
-        <translation>Ajout en fond</translation>
+        <translation type="vanished">mettre en fond de page</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1569,6 +1576,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>Aller à la source du contenu</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation>mettre en fond de page</translation>
     </message>
 </context>
 <context>
@@ -1982,6 +1993,13 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 vignettes créées ...</translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation>Page %0</translation>
     </message>
 </context>
 <context>
@@ -2456,16 +2474,24 @@ p, li { white-space: pre-wrap; }
         <translation>Fine</translation>
     </message>
     <message>
+        <source>Show preview circle from</source>
+        <translation>Visualiser la taille depuis</translation>
+    </message>
+    <message>
         <source>Pen is Pressure Sensitive</source>
         <translation>Stylet sensible à la pression</translation>
     </message>
     <message>
         <source>Smooth strokes (experimental)</source>
-        <translation>Lissage des traits (expérimental)</translation>
+        <translation type="vanished">Lissage des traits (expérimental)</translation>
     </message>
     <message>
         <source>Simplify strokes after drawing (experimental)</source>
-        <translation>Simplification des traits post-dessin (expérimental)</translation>
+        <translation type="vanished">Simplification des traits post-dessin (expérimental)</translation>
+    </message>
+    <message>
+        <source>px</source>
+        <translation>px</translation>
     </message>
 </context>
 <context>

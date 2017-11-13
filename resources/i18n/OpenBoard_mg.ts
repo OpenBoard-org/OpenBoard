@@ -1211,7 +1211,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Pejy %0</translation>
+        <translation type="vanished">Pejy %0</translation>
     </message>
 </context>
 <context>
@@ -1241,6 +1241,13 @@
     <message>
         <source>Cancel</source>
         <translation>Ajanony</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Pejy %0</translation>
     </message>
 </context>
 <context>
@@ -1397,7 +1404,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation>Apetraka ambadika</translation>
+        <translation type="vanished">Apetraka ambadika</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1536,6 +1543,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>Hande any amin&apos;ny fototr&apos;ilay mpiatiny</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">Apetraka ambadika</translation>
     </message>
 </context>
 <context>
@@ -1949,6 +1960,13 @@ Tena tsy te hiraharaha an&apos;ireo tsy mety ho an&apos;ilay milina ve ianao?</t
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 ny  kisarisary no voaforona ...</translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Pejy %0</translation>
     </message>
 </context>
 <context>
@@ -2426,11 +2444,11 @@ p, li { white-space: pre-wrap; }
         <translation>Ny penina dia sarotiny amin&apos;ny fitsindrina</translation>
     </message>
     <message>
-        <source>Smooth strokes (experimental)</source>
+        <source>Show preview circle from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Simplify strokes after drawing (experimental)</source>
+        <source>px</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

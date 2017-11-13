@@ -1210,7 +1210,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>%0 페이지</translation>
+        <translation type="vanished">%0 페이지</translation>
     </message>
 </context>
 <context>
@@ -1242,6 +1242,13 @@
     <message>
         <source>Cancel</source>
         <translation type="unfinished">취소</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">%0 페이지</translation>
     </message>
 </context>
 <context>
@@ -1398,7 +1405,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="unfinished">배경으로 지정</translation>
+        <translation type="obsolete">배경으로 지정</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1537,6 +1544,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>콘텐츠 소스로 이동</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">배경으로 지정</translation>
     </message>
 </context>
 <context>
@@ -1950,6 +1961,13 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 썸네일 생성됨 ...</translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">%0 페이지</translation>
     </message>
 </context>
 <context>
@@ -2427,11 +2445,11 @@ p, li { white-space: pre-wrap; }
         <translation>펜은 압력 감지식입니다</translation>
     </message>
     <message>
-        <source>Smooth strokes (experimental)</source>
+        <source>Show preview circle from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Simplify strokes after drawing (experimental)</source>
+        <source>px</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

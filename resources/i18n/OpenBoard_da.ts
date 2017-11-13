@@ -1211,7 +1211,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Side %0</translation>
+        <translation type="vanished">Side %0</translation>
     </message>
 </context>
 <context>
@@ -1241,6 +1241,13 @@
     <message>
         <source>Cancel</source>
         <translation>Annuller</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Side %0</translation>
     </message>
 </context>
 <context>
@@ -1397,7 +1404,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation>Brug som baggrund</translation>
+        <translation type="vanished">Brug som baggrund</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1536,6 +1543,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>Gå til indholdskilde</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">Brug som baggrund</translation>
     </message>
 </context>
 <context>
@@ -1949,6 +1960,13 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 miniaturebilleder genereret...</translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Side %0</translation>
     </message>
 </context>
 <context>
@@ -2422,11 +2440,11 @@ p, li { white-space: pre-wrap; }
         <translation>Pen er tryksensitiv</translation>
     </message>
     <message>
-        <source>Smooth strokes (experimental)</source>
+        <source>Show preview circle from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Simplify strokes after drawing (experimental)</source>
+        <source>px</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

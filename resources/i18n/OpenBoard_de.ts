@@ -1211,7 +1211,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Seite %0</translation>
+        <translation type="vanished">Seite %0</translation>
     </message>
 </context>
 <context>
@@ -1244,10 +1244,37 @@
     </message>
 </context>
 <context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Seite %0</translation>
+    </message>
+</context>
+<context>
     <name>UBExportAdaptor</name>
     <message>
         <source>Warnings during export was appeared</source>
         <translation type="unfinished">Warnungen beim Exportieren aufgetreten</translation>
+    </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">Dokument wird exportiert...</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished">Export fehlgeschlagen</translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished">Export im ausgewählten Zielpfad nicht möglich. Sie haben nicht die erforderliche Berechtigung um die Datei zu speichern.</translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Export erfolgreich.</translation>
     </message>
 </context>
 <context>
@@ -1285,11 +1312,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Dokument wird exportiert...</translation>
+        <translation type="vanished">Dokument wird exportiert...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export erfolgreich.</translation>
+        <translation type="vanished">Export erfolgreich.</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
@@ -1301,15 +1328,15 @@
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation>Export fehlgeschlagen: Zielpfad nicht beschreibbar</translation>
+        <translation type="vanished">Export fehlgeschlagen: Zielpfad nicht beschreibbar</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation>Export fehlgeschlagen</translation>
+        <translation type="vanished">Export fehlgeschlagen</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation>Export im ausgewählten Zielpfad nicht möglich. Sie haben nicht die erforderliche Berechtigung um die Datei zu speichern.</translation>
+        <translation type="vanished">Export im ausgewählten Zielpfad nicht möglich. Sie haben nicht die erforderliche Berechtigung um die Datei zu speichern.</translation>
     </message>
 </context>
 <context>
@@ -1320,11 +1347,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Dokument wird exportiert...</translation>
+        <translation type="vanished">Dokument wird exportiert...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export erfolgreich.</translation>
+        <translation type="vanished">Export erfolgreich.</translation>
     </message>
     <message>
         <source>Export to PDF</source>
@@ -1332,15 +1359,15 @@
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation>Export fehlgeschlagen: Zielpfad nicht beschreibbar.</translation>
+        <translation type="vanished">Export fehlgeschlagen: Zielpfad nicht beschreibbar.</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation>Export fehlgeschlagen</translation>
+        <translation type="vanished">Export fehlgeschlagen</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation>Export im ausgewählten Zielpfad nicht möglich. Sie haben nicht die erforderliche Berechtigung um die Datei zu speichern.</translation>
+        <translation type="vanished">Export im ausgewählten Zielpfad nicht möglich. Sie haben nicht die erforderliche Berechtigung um die Datei zu speichern.</translation>
     </message>
 </context>
 <context>
@@ -1351,11 +1378,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Dokument wird exportiert...</translation>
+        <translation type="vanished">Dokument wird exportiert...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export erfolgreich.</translation>
+        <translation type="vanished">Export erfolgreich.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1401,7 +1428,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation>Als Hintergrund festlegen</translation>
+        <translation type="vanished">Als Hintergrund festlegen</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1540,6 +1567,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>Gehen Sie zum ursprünglichen Inhalt</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">Als Hintergrund festlegen</translation>
     </message>
 </context>
 <context>
@@ -1762,7 +1793,7 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     </message>
     <message>
         <source>You can always access the OpenBoard Document Importer through the Preferences panel in the About tab. Warning, if you have already imported your Open-Sankore datas, you might loose your current OpenBoard documents.</source>
-        <translation>Sie können jederzeit im Einstellungsdialog im Menü "Über" auf den OpenBoard Document Importer zugreifen. Warnung, falls sie bereits Ihre Open-Sankore Daten importiert haben, können Sie Ihre aktuellen OpenBoard Dokumente verlieren.</translation>
+        <translation>Sie können jederzeit im Einstellungsdialog im Menü &quot;Über&quot; auf den OpenBoard Document Importer zugreifen. Warnung, falls sie bereits Ihre Open-Sankore Daten importiert haben, können Sie Ihre aktuellen OpenBoard Dokumente verlieren.</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1774,7 +1805,7 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     </message>
     <message>
         <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
-        <translation>Auf Ihrem Computer befinden sich Open-Sankoré Dokumente. Um diese in OpenBoard zu importieren drücken Sie den "Fortfahren" Knopf um die Importanwendung zu starten.</translation>
+        <translation>Auf Ihrem Computer befinden sich Open-Sankoré Dokumente. Um diese in OpenBoard zu importieren drücken Sie den &quot;Fortfahren&quot; Knopf um die Importanwendung zu starten.</translation>
     </message>
 </context>
 <context>
@@ -1953,6 +1984,13 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>Miniaturansicht %1 wird erstellt...</translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Seite %0</translation>
     </message>
 </context>
 <context>
@@ -2430,11 +2468,11 @@ p, li { white-space: pre-wrap; }
         <translation>Der Stift ist druckempfindlich</translation>
     </message>
     <message>
-        <source>Smooth strokes (experimental)</source>
+        <source>Show preview circle from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Simplify strokes after drawing (experimental)</source>
+        <source>px</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

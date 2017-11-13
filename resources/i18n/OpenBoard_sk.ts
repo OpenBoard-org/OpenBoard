@@ -1216,7 +1216,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Stránka %0</translation>
+        <translation type="vanished">Stránka %0</translation>
     </message>
 </context>
 <context>
@@ -1247,6 +1247,13 @@
     <message>
         <source>Cancel</source>
         <translation>Zrušiť</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Stránka %0</translation>
     </message>
 </context>
 <context>
@@ -1427,7 +1434,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation>Nastaviť ako pozadie</translation>
+        <translation type="vanished">Nastaviť ako pozadie</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1566,6 +1573,10 @@
     <message>
         <source>Visible on Extended Screen</source>
         <translation>Zobraziť na rozšírenej obrazovke</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">Nastaviť ako pozadie</translation>
     </message>
 </context>
 <context>
@@ -1981,6 +1992,13 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     <message>
         <source>Generating preview thumbnails ...</source>
         <translation>Vytvárajú sa ukážky miniatúr...</translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Stránka %0</translation>
     </message>
 </context>
 <context>
@@ -2459,11 +2477,11 @@ p, li { white-space: pre-wrap; }
         <translation>Na tmavom pozadí</translation>
     </message>
     <message>
-        <source>Smooth strokes (experimental)</source>
+        <source>Show preview circle from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Simplify strokes after drawing (experimental)</source>
+        <source>px</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

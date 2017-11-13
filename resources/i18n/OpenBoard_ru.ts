@@ -1211,7 +1211,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Страница %0</translation>
+        <translation type="vanished">Страница %0</translation>
     </message>
 </context>
 <context>
@@ -1241,6 +1241,13 @@
     <message>
         <source>Cancel</source>
         <translation>Отмена</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Страница %0</translation>
     </message>
 </context>
 <context>
@@ -1397,7 +1404,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation>Сделать фоновым изображением</translation>
+        <translation type="vanished">Сделать фоновым изображением</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1536,6 +1543,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>Перейти к источнику содержимого</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">Сделать фоновым изображением</translation>
     </message>
 </context>
 <context>
@@ -1949,6 +1960,13 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>сгенерированы эскизы %1...</translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Страница %0</translation>
     </message>
 </context>
 <context>
@@ -2426,11 +2444,11 @@ p, li { white-space: pre-wrap; }
         <translation>Перо чувствительно к нажиму</translation>
     </message>
     <message>
-        <source>Smooth strokes (experimental)</source>
+        <source>Show preview circle from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Simplify strokes after drawing (experimental)</source>
+        <source>px</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

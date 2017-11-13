@@ -1212,7 +1212,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Side %0</translation>
+        <translation type="vanished">Side %0</translation>
     </message>
 </context>
 <context>
@@ -1242,6 +1242,13 @@
     <message>
         <source>Cancel</source>
         <translation>Avbryt</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Side %0</translation>
     </message>
 </context>
 <context>
@@ -1398,7 +1405,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation>Bruk som bakgrunn</translation>
+        <translation type="vanished">Bruk som bakgrunn</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1537,6 +1544,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>Gå til kildeinnhold</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">Bruk som bakgrunn</translation>
     </message>
 </context>
 <context>
@@ -1945,6 +1956,13 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 miniatyrbilder generert ...</translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Side %0</translation>
     </message>
 </context>
 <context>
@@ -2421,11 +2439,11 @@ p, li { white-space: pre-wrap; }
         <translation>Pennen er trykksensitiv</translation>
     </message>
     <message>
-        <source>Smooth strokes (experimental)</source>
+        <source>Show preview circle from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Simplify strokes after drawing (experimental)</source>
+        <source>px</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

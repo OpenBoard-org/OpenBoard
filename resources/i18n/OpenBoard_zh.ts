@@ -1210,7 +1210,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>页面 %0</translation>
+        <translation type="vanished">页面 %0</translation>
     </message>
 </context>
 <context>
@@ -1239,6 +1239,13 @@
     <message>
         <source>Cancel</source>
         <translation>取消</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">页面 %0</translation>
     </message>
 </context>
 <context>
@@ -1395,7 +1402,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation>设置为背景</translation>
+        <translation type="vanished">设置为背景</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1534,6 +1541,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>访问内容来源</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">设置为背景</translation>
     </message>
 </context>
 <context>
@@ -1947,6 +1958,13 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>已为%1生成缩略图……</translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">页面 %0</translation>
     </message>
 </context>
 <context>
@@ -2424,11 +2442,11 @@ p, li { white-space: pre-wrap; }
         <translation>使用压感笔</translation>
     </message>
     <message>
-        <source>Smooth strokes (experimental)</source>
+        <source>Show preview circle from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Simplify strokes after drawing (experimental)</source>
+        <source>px</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
