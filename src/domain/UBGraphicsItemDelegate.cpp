@@ -710,6 +710,10 @@ void UBGraphicsItemDelegate::decorateMenu(QMenu* menu)
     if (delegated()->data(UBGraphicsItemData::ItemCanBeSetAsBackground).toBool()) {
         mSetAsBackgroundAction = mMenu->addAction(tr("Set as background"), this, SLOT(setAsBackground()));
         mSetAsBackgroundAction->setCheckable(false);
+
+        QIcon backgroundIcon;
+        backgroundIcon.addPixmap(QPixmap(":/images/setAsBackground.svg"), QIcon::Normal, QIcon::On);
+        mSetAsBackgroundAction->setIcon(backgroundIcon);
     }
 
     if (testUBFlags(GF_SHOW_CONTENT_SOURCE))
