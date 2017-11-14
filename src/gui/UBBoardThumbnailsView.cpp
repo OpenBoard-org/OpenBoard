@@ -317,4 +317,6 @@ void UBBoardThumbnailsView::dropEvent(QDropEvent *event)
     mDropSource = NULL;
     mDropTarget = NULL;
     mDropBar->hide();
+
+    update();
 }

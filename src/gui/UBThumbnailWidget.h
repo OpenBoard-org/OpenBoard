@@ -488,10 +488,11 @@ class UBDraggableThumbnailView : public UBDraggableThumbnail
         void setPageNumber(int i)
         {
             mPageNumber->setPlainText(tr("Page %0").arg(i+1));
+
             if (UBApplication::boardController->activeSceneIndex() == i)
-                mPageNumber->setDefaultTextColor(QColor("#6682b5"));
+                mPageNumber->setHtml("<span style=\";font-weight:bold;color: red\">" + tr("Page %0").arg(i+1) + "</span>");
             else
-                mPageNumber->setDefaultTextColor(QColor("#000000"));
+                mPageNumber->setHtml("<span style=\";color: #000000\">" + tr("Page %0").arg(i+1) + "</span>");
         }
 
     private:        
