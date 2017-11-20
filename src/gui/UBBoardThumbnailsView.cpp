@@ -175,6 +175,7 @@ void UBBoardThumbnailsView::updateThumbnailsPos()
     }
 
     scene()->setSceneRect(scene()->itemsBoundingRect());
+    update();
 }
 
 void UBBoardThumbnailsView::resizeEvent(QResizeEvent *event)
@@ -312,11 +313,12 @@ void UBBoardThumbnailsView::dropEvent(QDropEvent *event)
 {
     Q_UNUSED(event);
 
-    UBApplication::boardController->moveSceneToIndex(mDropSource->sceneIndex(), mDropTarget->sceneIndex());
+    if (mDropSource->sceneIndex() != mDropTarget->sceneIndex())
+        UBApplication::boardController->moveSceneToIndex(mDropSource->sceneIndex(), mDropTarget->sceneIndex());
 
     mDropSource = NULL;
     mDropTarget = NULL;
     mDropBar->hide();
 
-    update();
+    updateThumbnailsPos();
 }

@@ -1592,10 +1592,6 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
 
     if (sceneChange)
     {
-        //should not be necessary, but no more time to investigate on it for the moment :
-        //for some reason, certain thumbnail views are not updating except if we load the document twice....
-        //the only workaroud I found for the moment..
-        emit initThumbnailsRequired(this);
         emit activeSceneChanged();
     }
 }
@@ -1810,6 +1806,7 @@ void UBBoardController::selectionChanged()
 {
     updateActionStates();
     emit pageSelectionChanged(activeSceneIndex());
+    emit updateThumbnailsRequired();
 }
 
 

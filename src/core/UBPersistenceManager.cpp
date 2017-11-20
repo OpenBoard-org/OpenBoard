@@ -179,10 +179,11 @@ void UBPersistenceManager::errorString(QString error)
 
 void UBPersistenceManager::onSceneLoaded(QByteArray scene, UBDocumentProxy* proxy, int sceneIndex)
 {
+    Q_UNUSED(scene);
     qDebug() << "scene loaded " << sceneIndex;
     QTime time;
     time.start();
-    mSceneCache.insert(proxy,sceneIndex,UBSvgSubsetAdaptor::loadScene(proxy,scene));
+    mSceneCache.insert(proxy, sceneIndex, loadDocumentScene(proxy, sceneIndex));
     qDebug() << "millisecond for sceneCache " << time.elapsed();
 }
 
