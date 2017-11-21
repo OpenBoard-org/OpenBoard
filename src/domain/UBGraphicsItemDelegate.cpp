@@ -287,7 +287,12 @@ QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange ch
         }
 
     } break;
-
+    case QGraphicsItem::ItemVisibleHasChanged :
+    {
+        bool shownOnDisplay = mDelegated->data(UBGraphicsItemData::ItemLayerType).toInt() != UBItemLayerType::Control;
+        showHide(shownOnDisplay);
+        break;
+    }
     case QGraphicsItem::ItemPositionHasChanged :
     case QGraphicsItem::ItemTransformHasChanged :
     case QGraphicsItem::ItemZValueHasChanged :

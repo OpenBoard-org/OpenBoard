@@ -84,23 +84,15 @@ void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
         if (!UBGraphicsItem::isLocked(this) && UBGraphicsItem::isLocked(item)) {
             Delegate()->setLocked(true);
         }
-        /*
-        if (data(UBGraphicsItemData::itemLayerType).toInt() != UBItemLayerType::Control
-            && item->data(UBGraphicsItemData::itemLayerType).toInt() == UBItemLayerType::Control)
-            setData(UBGraphicsItemData::itemLayerType, UBItemLayerType::Control);
-        */
-        //setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
     }
     else {
         Delegate()->setUBFlag(GF_FLIPPABLE_ALL_AXIS, UBGraphicsItem::isFlippable(item));
         Delegate()->setUBFlag(GF_REVOLVABLE, UBGraphicsItem::isRotatable(item));
         Delegate()->setLocked(UBGraphicsItem::isLocked(item));
-
-        setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
-        //setData(UBGraphicsItemData::itemLayerType, item->data(UBGraphicsItemData::itemLayerType));
     }        
 
-    qDebug() << item->data(UBGraphicsItemData::itemLayerType);
+    if (item->data(UBGraphicsItemData::ItemLayerType) == UBItemLayerType::Control)
+        setData(UBGraphicsItemData::ItemLayerType, item->data(UBGraphicsItemData::ItemLayerType));
 
     // COMBINE
     bool ok;
