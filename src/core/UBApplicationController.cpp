@@ -233,12 +233,15 @@ void UBApplicationController::adjustDisplayView()
 
         tr.scale(scaleFactor, scaleFactor);
 
+        QRect rect = mControlView->rect();
+        QPoint center(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
+
         QTransform recentTransform = mDisplayView->transform();
 
         if (recentTransform != tr)
             mDisplayView->setTransform(tr);
 
-        mDisplayView->centerOn(UBApplication::boardController->activeScene()->lastCenter());
+        mDisplayView->centerOn(mControlView->mapToScene(center));
     }
 }
 
