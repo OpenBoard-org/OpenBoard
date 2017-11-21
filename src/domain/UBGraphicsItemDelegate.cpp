@@ -565,25 +565,20 @@ void UBGraphicsItemDelegate::increaseZlevelBottom()
 
 void UBGraphicsItemDelegate::lock(bool locked)
 {
-    if (locked)
-    {
-        mDelegated->setData(UBGraphicsItemData::ItemLocked, QVariant(true));
-    }
-    else
-    {
-        mDelegated->setData(UBGraphicsItemData::ItemLocked, QVariant(false));
-    }
-
+    setLockedRecurs(locked, mDelegated);
     mDelegated->update();
+
     positionHandles();
     mFrame->positionHandles();
 }
 
-void UBGraphicsItemDelegate::showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem)
+
+void UBGraphicsItemDelegate::setLockedRecurs(const QVariant &pLock, QGraphicsItem *pItem)
 {
-    pItem->setData(UBGraphicsItemData::ItemLayerType, pShow);
-    foreach (QGraphicsItem *insideItem, pItem->childItems()) {
-        showHideRecurs(pShow, insideItem);
+    pItem->setData(UBGraphicsItemData::ItemLocked, pLock);
+    foreach (QGraphicsItem *insideItem, pItem->childItems())
+    {
+        setLockedRecurs(pLock, insideItem);
     }
 }
 
@@ -594,6 +589,14 @@ void UBGraphicsItemDelegate::showHide(bool show)
     mDelegated->update();
 
     emit showOnDisplayChanged(show);
+}
+
+void UBGraphicsItemDelegate::showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem)
+{
+    pItem->setData(UBGraphicsItemData::ItemLayerType, pShow);
+    foreach (QGraphicsItem *insideItem, pItem->childItems()) {
+        showHideRecurs(pShow, insideItem);
+    }
 }
 
 /**

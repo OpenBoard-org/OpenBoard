@@ -326,6 +326,7 @@ class UBGraphicsItemDelegate : public QObject
         virtual void updateMenuActionState();
 
         void showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem);
+        void setLockedRecurs(const QVariant &pLock, QGraphicsItem *pItem);
 
         QList<DelegateButton*> buttons() {return mButtons;}
         QGraphicsItem* mDelegated;
