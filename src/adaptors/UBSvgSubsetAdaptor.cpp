@@ -975,6 +975,24 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
     if(mStrokesList.contains(id))
         shouldSkipSubElements = true;
 
+    QString ubLocked = mXmlReader.attributes().value(mNamespaceUri, "locked").toString();
+    if (!ubLocked.isEmpty())
+    {
+        bool isLocked = ubLocked.contains(xmlTrue);
+        group->setData(UBGraphicsItemData::ItemLocked, QVariant(isLocked));
+    }
+
+    QStringRef ubLayer = mXmlReader.attributes().value(mNamespaceUri, "layer");
+    if (!ubLayer.isNull())
+    {
+        bool ok;
+        int layerAsInt = ubLayer.toString().toInt(&ok);
+
+        if (ok)
+            group->setData(UBGraphicsItemData::ItemLayerType, QVariant(layerAsInt));
+    }
+
+
     mXmlReader.readNext();
     while (!mXmlReader.atEnd())
     {
@@ -1031,13 +1049,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroupRoot()
         }
         else if (mXmlReader.isStartElement()) {
             if (mXmlReader.name() == tGroup) {
-                QString ubLocked = mXmlReader.attributes().value(UBSettings::uniboardDocumentNamespaceUri, "locked").toString();
+
                 UBGraphicsGroupContainerItem *curGroup = readGroup();
-                if (!ubLocked.isEmpty())
-                {
-                    bool isLocked = ubLocked.contains(xmlTrue);
-                    curGroup->Delegate()->setLocked(isLocked);
-                }
+
                 if (curGroup) {
                     mScene->addGroup(curGroup);
                 }
@@ -1400,6 +1414,10 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
                 if(curElement.hasAttribute("locked")){
                     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri,"locked",curElement.attribute("locked"));
                 }
+                if(curElement.hasAttribute("layer")){
+                    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri,"layer",curElement.attribute("layer"));
+                }
+
                 QDomElement curSubElement = curElement.firstChildElement();
                 while (!curSubElement.isNull()) {
                     if (curSubElement.hasAttribute(aId)) {
@@ -1444,6 +1462,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
                 curGroupElement.setAttribute("locked", xmlTrue);
             else
                 curGroupElement.setAttribute("locked", xmlFalse);
+
+            curGroupElement.setAttribute("layer", group->data(UBGraphicsItemData::ItemLayerType).toString());
         }
         curParent->appendChild(curGroupElement);
         foreach (QGraphicsItem *item, groupItem->childItems()) {
