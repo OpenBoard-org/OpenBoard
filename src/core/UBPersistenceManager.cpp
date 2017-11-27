@@ -661,6 +661,7 @@ UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* pr
     newScene->setBackground(UBSettings::settings()->isDarkBackground(),
             UBSettings::settings()->UBSettings::pageBackground());
 
+    newScene->setBackgroundGridSize(UBSettings::settings()->crossSize);
     persistDocumentScene(proxy, newScene, index);
 
     proxy->incPageCount();

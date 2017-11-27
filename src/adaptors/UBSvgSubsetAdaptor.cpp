@@ -466,7 +466,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                     if (!ubGridSize.isNull()) {
                         int gridSize = ubGridSize.toInt();
 
-                        UBSettings::settings()->crossSize = gridSize;
                         mScene->setBackgroundGridSize(gridSize);
                     }
                 }
@@ -482,7 +481,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                     if (!ubGridSize.isNull()) {
                         int gridSize = ubGridSize.toInt();
 
-                        UBSettings::settings()->crossSize = gridSize;
                         mScene->setBackgroundGridSize(gridSize);
                     }
                 }
