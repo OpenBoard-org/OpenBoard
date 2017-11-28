@@ -107,8 +107,6 @@ class UBSceneCache : public QHash<UBSceneCacheID, UBGraphicsScene*>
 
         void dumpCacheContent();
 
-        void compactCache();
-
         int mCachedSceneCount;
 
         QQueue<UBSceneCacheID> mCachedKeyFIFO;
