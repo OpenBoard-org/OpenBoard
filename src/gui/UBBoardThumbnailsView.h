@@ -45,7 +45,8 @@ public:
     UBBoardThumbnailsView(QWidget* parent=0, const char* name="UBBoardThumbnailsView");
 
 public slots:
-    void scrollToSelectedPage(int index);
+    void ensureVisibleThumbnail(int index);
+    void centerOnThumbnail(int index);
 
     void clearThumbnails();
     void initThumbnails(UBDocumentContainer* source);

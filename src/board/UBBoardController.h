@@ -264,6 +264,7 @@ class UBBoardController : public UBDocumentContainer
         void documentReorganized(int index);
         void displayMetadata(QMap<QString, QString> metadata);
         void pageSelectionChanged(int index);
+        void centerOnThumbnailRequired(int index);
         void npapiWidgetCreated(const QString &Url);
 
     protected:
