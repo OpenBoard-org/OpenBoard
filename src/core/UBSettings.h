@@ -294,6 +294,9 @@ class UBSettings : public QObject
         UBSetting* boardCrossColorDarkBackground;
         UBSetting* boardCrossColorLightBackground;
 
+        UBColorListSetting* boardGridLightBackgroundColors;
+        UBColorListSetting* boardGridDarkBackgroundColors;
+
         UBColorListSetting* boardPenLightBackgroundColors;
         UBColorListSetting* boardPenLightBackgroundSelectedColors;
 

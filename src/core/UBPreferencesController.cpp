@@ -39,6 +39,7 @@
 #include "core/UBDisplayManager.h"
 
 #include "board/UBBoardController.h"
+#include "domain/UBGraphicsScene.h"
 #include "board/UBDrawingController.h"
 #include "podcast/UBPodcastController.h"
 
@@ -76,6 +77,8 @@ UBPreferencesController::UBPreferencesController(QWidget *parent)
     , mPreferencesUI(0)
     , mPenProperties(0)
     , mMarkerProperties(0)
+    , mDarkBackgroundGridColorPicker(0)
+    , mLightBackgroundGridColorPicker(0)
 {
     mDesktop = qApp->desktop();
     mPreferencesWindow = new UBPreferencesDialog(this,parent, Qt::Dialog);
@@ -97,6 +100,10 @@ UBPreferencesController::~UBPreferencesController()
     delete mPenProperties;
 
     delete mMarkerProperties;
+
+    delete mDarkBackgroundGridColorPicker;
+
+    delete mLightBackgroundGridColorPicker;
 }
 
 void UBPreferencesController::adjustScreens(int screen)
@@ -148,6 +155,43 @@ void UBPreferencesController::wire()
     connect(mPreferencesUI->horizontalChoice, SIGNAL(clicked(bool)), this, SLOT(toolbarOrientationHorizontal(bool)));
     connect(mPreferencesUI->verticalChoice, SIGNAL(clicked(bool)), this, SLOT(toolbarOrientationVertical(bool)));
     connect(mPreferencesUI->toolbarDisplayTextCheckBox, SIGNAL(clicked(bool)), settings->appToolBarDisplayText, SLOT(setBool(bool)));
+
+    //grid tab
+    //On light background
+    QList<QColor> gridLightBackgroundColors = settings->boardGridLightBackgroundColors->colors();
+    QColor selectedCrossColorLightBackground(settings->boardCrossColorLightBackground->get().toString());
+
+    mLightBackgroundGridColorPicker = new UBColorPicker(mPreferencesUI->crossColorLightBackgroundFrame);
+    mLightBackgroundGridColorPicker->setObjectName(QString::fromUtf8("crossColorLightBackgroundFrame"));
+    mLightBackgroundGridColorPicker->setMinimumSize(QSize(32, 32));
+    mLightBackgroundGridColorPicker->setFrameShape(QFrame::StyledPanel);
+    mLightBackgroundGridColorPicker->setFrameShadow(QFrame::Raised);
+
+    mPreferencesUI->crossColorLightBackgroundLayout->addWidget(mLightBackgroundGridColorPicker);
+    mLightBackgroundGridColorPicker->setColors(gridLightBackgroundColors);
+    mLightBackgroundGridColorPicker->setSelectedColorIndex(gridLightBackgroundColors.indexOf(selectedCrossColorLightBackground));
+    mPreferencesUI->lightBackgroundOpacitySlider->setValue(selectedCrossColorLightBackground.alpha()*100 / 255);
+
+    QObject::connect(mLightBackgroundGridColorPicker, SIGNAL(colorSelected(const QColor&)), this, SLOT(setCrossColorOnLightBackground(const QColor&)));
+    connect(mPreferencesUI->lightBackgroundOpacitySlider, SIGNAL(valueChanged(int)), this, SLOT(lightBackgroundCrossOpacityValueChanged(int)));
+
+    //On dark background
+    QList<QColor> gridDarkBackgroundColors = settings->boardGridDarkBackgroundColors->colors();
+    QColor selectedCrossColorDarkBackground(settings->boardCrossColorDarkBackground->get().toString());
+
+    mDarkBackgroundGridColorPicker = new UBColorPicker(mPreferencesUI->crossColorDarkBackgroundFrame);
+    mDarkBackgroundGridColorPicker->setObjectName(QString::fromUtf8("crossColorDarkBackgroundFrame"));
+    mDarkBackgroundGridColorPicker->setMinimumSize(QSize(32, 32));
+    mDarkBackgroundGridColorPicker->setFrameShape(QFrame::StyledPanel);
+    mDarkBackgroundGridColorPicker->setFrameShadow(QFrame::Raised);
+
+    mPreferencesUI->crossColorDarkBackgroundLayout->addWidget(mDarkBackgroundGridColorPicker);
+    mDarkBackgroundGridColorPicker->setColors(gridDarkBackgroundColors);
+    mDarkBackgroundGridColorPicker->setSelectedColorIndex(gridDarkBackgroundColors.indexOf(selectedCrossColorDarkBackground));
+    mPreferencesUI->darkBackgroundOpacitySlider->setValue(selectedCrossColorDarkBackground.alpha()*100 / 255);
+
+    QObject::connect(mDarkBackgroundGridColorPicker, SIGNAL(colorSelected(const QColor&)), this, SLOT(setCrossColorOnDarkBackground(const QColor&)));
+    connect(mPreferencesUI->darkBackgroundOpacitySlider, SIGNAL(valueChanged(int)), this, SLOT(darkBackgroundCrossOpacityValueChanged(int)));
 
     // pen
     QList<QColor> penLightBackgroundColors = settings->boardPenLightBackgroundColors->colors();
@@ -340,6 +384,54 @@ void UBPreferencesController::defaultSettings()
 
 }
 
+void UBPreferencesController::darkBackgroundCrossOpacityValueChanged(int value)
+{
+    UBSettings* settings = UBSettings::settings();
+    int opacity = value * 255 / 100;
+
+    QList<QColor> gridDarkBackgroundColors = settings->boardGridDarkBackgroundColors->colors();
+
+    int index = mDarkBackgroundGridColorPicker->selectedColorIndex();
+    QColor currentColor = gridDarkBackgroundColors.at(index);
+    currentColor.setAlpha(opacity);
+    gridDarkBackgroundColors.replace(index, currentColor);
+    mDarkBackgroundGridColorPicker->setColors(gridDarkBackgroundColors);
+
+    settings->boardGridDarkBackgroundColors->setColor(index, currentColor);
+
+    UBSettings::settings()->boardCrossColorDarkBackground->set(currentColor.name(QColor::HexArgb));
+
+    if (UBApplication::boardController && UBApplication::boardController->activeScene())
+    {
+        foreach(QGraphicsView* view, UBApplication::boardController->activeScene()->views())
+            view->resetCachedContent();
+    }
+}
+
+void UBPreferencesController::lightBackgroundCrossOpacityValueChanged(int value)
+{
+    UBSettings* settings = UBSettings::settings();
+    int opacity = value * 255 / 100;
+
+    QList<QColor> gridLightBackgroundColors = settings->boardGridLightBackgroundColors->colors();
+
+    int index = mLightBackgroundGridColorPicker->selectedColorIndex();
+    QColor currentColor = gridLightBackgroundColors.at(index);
+    currentColor.setAlpha(opacity);
+    gridLightBackgroundColors.replace(index, currentColor);
+    mLightBackgroundGridColorPicker->setColors(gridLightBackgroundColors);
+
+    settings->boardGridLightBackgroundColors->setColor(index, currentColor);
+
+    UBSettings::settings()->boardCrossColorLightBackground->set(currentColor.name(QColor::HexArgb));
+
+    if (UBApplication::boardController && UBApplication::boardController->activeScene())
+    {
+        foreach(QGraphicsView* view, UBApplication::boardController->activeScene()->views())
+            view->resetCachedContent();
+    }
+}
+
 void UBPreferencesController::penPreviewFromSizeChanged(int value)
 {
     UBSettings::settings()->setPenPreviewFromSize(value);
@@ -446,6 +538,31 @@ void UBPreferencesController::colorSelected(const QColor& color)
 
 }
 
+void UBPreferencesController::setCrossColorOnDarkBackground(const QColor& color)
+{
+    UBSettings::settings()->boardCrossColorDarkBackground->set(color.name(QColor::HexArgb));
+
+    mPreferencesUI->darkBackgroundOpacitySlider->setValue(color.alpha() * 100 / 255);
+
+    if (UBApplication::boardController && UBApplication::boardController->activeScene())
+    {
+        foreach(QGraphicsView* view, UBApplication::boardController->activeScene()->views())
+            view->resetCachedContent();
+    }
+}
+
+void UBPreferencesController::setCrossColorOnLightBackground(const QColor& color)
+{
+    UBSettings::settings()->boardCrossColorLightBackground->set(color.name(QColor::HexArgb));
+
+    mPreferencesUI->lightBackgroundOpacitySlider->setValue(color.alpha() * 100 / 255);
+
+    if (UBApplication::boardController && UBApplication::boardController->activeScene())
+    {
+        foreach(QGraphicsView* view, UBApplication::boardController->activeScene()->views())
+            view->resetCachedContent();
+    }
+}
 
 void UBPreferencesController::toolbarPositionChanged(bool checked)
 {
