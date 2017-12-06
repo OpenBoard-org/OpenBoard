@@ -618,7 +618,7 @@ void UBGraphicsItemDelegate::setAsBackground()
         item->resetTransform();
         item->setPos(item->sceneBoundingRect().width()/-2., item->sceneBoundingRect().height()/-2.);
 
-        scene->setAsBackgroundObject(item);
+        scene->setAsBackgroundObject(item, true);
 
         UBGraphicsItemTransformUndoCommand *uc =
                 new UBGraphicsItemTransformUndoCommand(mDelegated,
