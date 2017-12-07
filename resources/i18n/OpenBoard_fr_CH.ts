@@ -2475,7 +2475,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Show preview circle from</source>
-        <translation>Visualiser la taille depuis</translation>
+        <translation>Visualiser la taille dès</translation>
     </message>
     <message>
         <source>Pen is Pressure Sensitive</source>
@@ -2677,6 +2677,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Built-in virtual keyboard button size:</source>
         <translation>Taille des touches du clavier virtuel integré :</translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation>Quadrillage</translation>
+    </message>
+    <message>
+        <source>On Dark Background</source>
+        <translation>Sur fond foncé</translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation>Opacité</translation>
+    </message>
+    <message>
+        <source>On Light Background</source>
+        <translation>Sur fond clair</translation>
     </message>
 </context>
 <context>

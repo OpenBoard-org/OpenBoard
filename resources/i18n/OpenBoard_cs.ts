@@ -2639,6 +2639,22 @@ p, li { white-space: pre-wrap; }
         <source>Built-in virtual keyboard button size:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On Dark Background</source>
+        <translation type="unfinished">Na tmavém pozadí</translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation type="unfinished">Průhlednost</translation>
+    </message>
+    <message>
+        <source>On Light Background</source>
+        <translation type="unfinished">Na světlém pozadí</translation>
+    </message>
 </context>
 <context>
     <name>trapFlashDialog</name>

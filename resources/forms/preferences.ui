@@ -575,9 +575,9 @@
         <widget class="QFrame" name="crossColorDarkBackgroundFrame">
          <property name="geometry">
           <rect>
-           <x>260</x>
+           <x>250</x>
            <y>30</y>
-           <width>221</width>
+           <width>241</width>
            <height>50</height>
           </rect>
          </property>
@@ -702,9 +702,9 @@
         <widget class="QFrame" name="crossColorLightBackgroundFrame">
          <property name="geometry">
           <rect>
-           <x>260</x>
+           <x>250</x>
            <y>150</y>
-           <width>221</width>
+           <width>241</width>
            <height>51</height>
           </rect>
          </property>
@@ -1008,7 +1008,7 @@
           </sizepolicy>
          </property>
          <property name="currentIndex">
-          <number>4</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="OpenSSLTab">
           <attribute name="title">
@@ -3107,13 +3107,13 @@ p, li { white-space: pre-wrap; }
 &lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
 &lt;tr&gt;
 &lt;td style=&quot;border: none;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:10pt;&quot;&gt;OpenBoard 1.3.0&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:10pt;&quot;&gt;OpenBoard 1.4.0&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Cantarell'; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:10pt;&quot;&gt;OpenBoard is copyright © 2015. All rights reserved.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Cantarell'; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:10pt;&quot;&gt;OpenBoard is derived from Open-Sankoré. Open-Sankoré is copyright © 2010-2015 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA). All right reserved.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Cantarell'; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:10pt;&quot;&gt;OpenBoard is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 3 of the License, with a specific linking exception for the OpenSSL project's &amp;quot;OpenSSL&amp;quot; library (or with modified versions of it that use the same license as the &amp;quot;OpenSSL&amp;quot; library). You can find the source code of this software at  &lt;/span&gt;&lt;a href=&quot;https://github.com/DIP-SEM/OpenBoard&quot;&gt;&lt;span style=&quot; font-family:'.Helvetica Neue DeskInterface'; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;github.com/DIP-SEM/OpenBoard&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:10pt;&quot;&gt;, &lt;/span&gt;&lt;a href=&quot;https://github.com/DIP-SEM/OpenBoard-ThirdParty&quot;&gt;&lt;span style=&quot; font-family:'.Helvetica Neue DeskInterface'; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;github.com/DIP-SEM/OpenBoard-ThirdParty&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:10pt;&quot;&gt;, and &lt;/span&gt;&lt;a href=&quot;https://github.com/DIP-SEM/OpenBoard-Importer&quot;&gt;&lt;span style=&quot; font-family:'.Helvetica Neue DeskInterface'; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;github.com/DIP-SEM/OpenBoard-Importer.&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:10pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:10pt;&quot;&gt;OpenBoard is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 3 of the License, with a specific linking exception for the OpenSSL project's &amp;quot;OpenSSL&amp;quot; library (or with modified versions of it that use the same license as the &amp;quot;OpenSSL&amp;quot; library). You can find the source code of this software at  &lt;/span&gt;&lt;a href=&quot;https://github.com/DIP-SEM/OpenBoard&quot;&gt;&lt;span style=&quot; font-family:'.Helvetica Neue DeskInterface'; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;github.com/OpenBoard-org&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:10pt;&quot;&gt;. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:10pt;&quot;&gt;OpenBoard is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License below for more details.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Cantarell'; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:10pt;&quot;&gt;Contact :&lt;/span&gt;&lt;/p&gt;
@@ -3124,7 +3124,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:10pt;&quot;&gt;Switzerland&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://www.openboard.ch&quot;&gt;&lt;span style=&quot; font-family:'.Helvetica Neue DeskInterface'; text-decoration: underline; color:#0000ff;&quot;&gt;openboard.ch&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'.Helvetica Neue DeskInterface'; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:10pt;&quot;&gt;email: &lt;/span&gt;&lt;a href=&quot;mailto:sem.logistique@edu.ge.ch&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;sem.logistique@edu.ge.ch&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:10pt;&quot;&gt;emails: &lt;/span&gt;&lt;a href=&quot;mailto:sem.logistique@edu.ge.ch&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;sem.logistique@edu.ge.ch&lt;/span&gt;&lt;/a&gt;, &lt;a href=&quot;mailto:sem.logistique@edu.ge.ch&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;support@openboard.ch&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="openExternalLinks">
           <bool>true</bool>

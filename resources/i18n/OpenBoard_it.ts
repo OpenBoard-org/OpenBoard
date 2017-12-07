@@ -1319,8 +1319,6 @@
         <source>Export to OpenBoard Format</source>
         <translation>Esporta nel formato OpenBoard</translation>
     </message>
-<<<<<<< HEAD
-=======
     <message>
         <source>Export failed: location not writable</source>
         <translation>Exportazione fallita: posizione non scrivibile</translation>
@@ -1333,7 +1331,6 @@
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
         <translation>Impossibile esportare nella posizione selezionata. Non possiedi i permessi necessari a salvare il file.</translation>
     </message>
->>>>>>> dev
 </context>
 <context>
     <name>UBExportFullPDF</name>
@@ -1353,8 +1350,6 @@
         <source>Export to PDF</source>
         <translation>Esporta in PDF</translation>
     </message>
-<<<<<<< HEAD
-=======
     <message>
         <source>Export failed: location not writable</source>
         <translation>Esportazione fallita: posizione non scrivibile</translation>
@@ -1367,7 +1362,6 @@
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
         <translation>Impossibile esportare alla posizione selezionata. Non possiedi i permessi necessari a salvare il file.</translation>
     </message>
->>>>>>> dev
 </context>
 <context>
     <name>UBExportPDF</name>

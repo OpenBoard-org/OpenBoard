@@ -2623,6 +2623,22 @@ p, li { white-space: pre-wrap; }
         <source>Built-in virtual keyboard button size:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On Dark Background</source>
+        <translation type="unfinished">暗い背景で</translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation type="unfinished">不透明性 </translation>
+    </message>
+    <message>
+        <source>On Light Background</source>
+        <translation type="unfinished">明るい背景で</translation>
+    </message>
 </context>
 <context>
     <name>trapFlashDialog</name>

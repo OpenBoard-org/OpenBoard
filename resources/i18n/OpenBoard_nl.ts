@@ -761,7 +761,7 @@
     </message>
     <message>
         <source>OpenBoard</source>
-        <translation>Sankoré openen</translation>
+        <translation type="unfinished">OpenBoard</translation>
     </message>
     <message>
         <source>Quit OpenBoard</source>
@@ -2620,6 +2620,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Built-in virtual keyboard button size:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On Dark Background</source>
+        <translation type="unfinished">Op een Donkere Achtergrond</translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation type="unfinished">lichtondoorlatendheid</translation>
+    </message>
+    <message>
+        <source>On Light Background</source>
+        <translation type="unfinished">Op een Lichte Achtergrond</translation>
     </message>
 </context>
 <context>

@@ -2678,6 +2678,22 @@ p, li { white-space: pre-wrap; }
         <source>Built-in virtual keyboard button size:</source>
         <translation>Taille des touches du clavier virtuel integré :</translation>
     </message>
+    <message>
+        <source>Grid</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>On Dark Background</source>
+        <translation>Sur fond foncé</translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation>Opacité</translation>
+    </message>
+    <message>
+        <source>On Light Background</source>
+        <translation>Sur fond clair</translation>
+    </message>
 </context>
 <context>
     <name>trapFlashDialog</name>
