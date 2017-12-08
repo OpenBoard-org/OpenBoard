@@ -100,10 +100,6 @@ UBPreferencesController::~UBPreferencesController()
     delete mPenProperties;
 
     delete mMarkerProperties;
-
-    delete mDarkBackgroundGridColorPicker;
-
-    delete mLightBackgroundGridColorPicker;
 }
 
 void UBPreferencesController::adjustScreens(int screen)
@@ -158,6 +154,21 @@ void UBPreferencesController::wire()
 
     //grid tab
     //On light background
+    QPalette lightBackgroundPalette = QApplication::palette();
+    lightBackgroundPalette.setColor(QPalette::Window, Qt::white);
+
+    mPreferencesUI->crossColorLightBackgroundFrame->setAutoFillBackground(true);
+    mPreferencesUI->crossColorLightBackgroundFrame->setPalette(lightBackgroundPalette);
+
+    QPalette darkBackgroundPalette = QApplication::palette();
+    darkBackgroundPalette.setColor(QPalette::Window, Qt::black);
+    darkBackgroundPalette.setColor(QPalette::ButtonText, Qt::white);
+    darkBackgroundPalette.setColor(QPalette::WindowText, Qt::white);
+
+    mPreferencesUI->crossColorDarkBackgroundFrame->setAutoFillBackground(true);
+    mPreferencesUI->crossColorDarkBackgroundFrame->setPalette(darkBackgroundPalette);
+    mPreferencesUI->crossColorDarkBackgroundLabel->setPalette(darkBackgroundPalette);
+
     QList<QColor> gridLightBackgroundColors = settings->boardGridLightBackgroundColors->colors();
     QColor selectedCrossColorLightBackground(settings->boardCrossColorLightBackground->get().toString());
 
@@ -381,7 +392,6 @@ void UBPreferencesController::defaultSettings()
 
         mPreferencesUI->webHomePage->setText(settings->webHomePage->reset().toString());
     }
-
 }
 
 void UBPreferencesController::darkBackgroundCrossOpacityValueChanged(int value)
