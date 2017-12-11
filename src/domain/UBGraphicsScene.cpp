@@ -1024,7 +1024,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
         }
         else if (eraserPath.intersects(itemPainterPath))
         {
-
+            itemPainterPath.setFillRule(Qt::WindingFill);
             QPainterPath newPath = itemPainterPath.subtracted(eraserPath);
             #pragma omp critical
             {
