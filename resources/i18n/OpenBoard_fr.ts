@@ -2475,7 +2475,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Show preview circle from</source>
-        <translation>Visualiser la taille depuis</translation>
+        <translation>Visualiser la taille dès</translation>
     </message>
     <message>
         <source>Pen is Pressure Sensitive</source>
@@ -2680,7 +2680,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Grid</source>
-        <translation></translation>
+        <translation>Quadrillage</translation>
     </message>
     <message>
         <source>On Dark Background</source>
