@@ -392,6 +392,33 @@ void UBPreferencesController::defaultSettings()
 
         mPreferencesUI->webHomePage->setText(settings->webHomePage->reset().toString());
     }
+    else if(mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->gridTab)
+    {
+        settings->boardCrossColorDarkBackground->reset();
+        settings->boardGridDarkBackgroundColors->reset();
+
+        QList<QColor> gridDarkBackgroundColors = settings->boardGridDarkBackgroundColors->colors();
+        QColor selectedCrossColorDarkBackground(settings->boardCrossColorDarkBackground->get().toString());
+
+        mDarkBackgroundGridColorPicker->setColors(gridDarkBackgroundColors);
+        mDarkBackgroundGridColorPicker->setSelectedColorIndex(gridDarkBackgroundColors.indexOf(selectedCrossColorDarkBackground));
+        int darkBackgroundOpacity = selectedCrossColorDarkBackground.alpha()*100 / 255;
+        mPreferencesUI->darkBackgroundOpacitySlider->setValue(darkBackgroundOpacity);
+        darkBackgroundCrossOpacityValueChanged(darkBackgroundOpacity);
+
+        settings->boardCrossColorLightBackground->reset();
+        settings->boardGridLightBackgroundColors->reset();
+
+        QList<QColor> gridLightBackgroundColors = settings->boardGridLightBackgroundColors->colors();
+        QColor selectedCrossColorLightBackground(settings->boardCrossColorLightBackground->get().toString());
+
+        mLightBackgroundGridColorPicker->setColors(gridLightBackgroundColors);
+        mLightBackgroundGridColorPicker->setSelectedColorIndex(gridLightBackgroundColors.indexOf(selectedCrossColorLightBackground));
+        int lightBackgroundOpacity = selectedCrossColorLightBackground.alpha()*100 / 255;
+        mPreferencesUI->lightBackgroundOpacitySlider->setValue(lightBackgroundOpacity);
+        lightBackgroundCrossOpacityValueChanged(lightBackgroundOpacity);
+
+    }
 }
 
 void UBPreferencesController::darkBackgroundCrossOpacityValueChanged(int value)
