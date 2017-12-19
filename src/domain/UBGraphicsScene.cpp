@@ -2628,7 +2628,7 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
             bgCrossColor = QColor(UBSettings::settings()->boardCrossColorDarkBackground->get().toString());
         else
             bgCrossColor = QColor(UBSettings::settings()->boardCrossColorLightBackground->get().toString());
-        if (mZoomFactor < 1.0)
+        if (mZoomFactor < 0.7)
         {
             int alpha = 255 * mZoomFactor / 2;
             bgCrossColor.setAlpha (alpha); // fade the crossing on small zooms
