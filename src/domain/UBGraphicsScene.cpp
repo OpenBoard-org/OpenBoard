@@ -1094,6 +1094,7 @@ void UBGraphicsScene::drawArcTo(const QPointF& pCenterPoint, qreal pSpanAngle)
     penWidth /= UBApplication::boardController->currentZoom();
 
     mArcPolygonItem = arcToPolygonItem(QLineF(pCenterPoint, mPreviousPoint), pSpanAngle, penWidth);
+    mArcPolygonItem->setFillRule(Qt::WindingFill);
     mArcPolygonItem->setStroke(mCurrentStroke);
     mAddedItems.insert(mArcPolygonItem);
     addItem(mArcPolygonItem);

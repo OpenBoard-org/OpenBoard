@@ -225,21 +225,12 @@ QPolygonF UBGeometryUtils::arcToPolygon(const QLineF& startRadius, qreal spanAng
     endAngleInDegrees = - endAngleInDegrees;
     spanAngleInDegrees = - spanAngleInDegrees;
 
-    if (overlap)
-    {
-        painterPath.addEllipse(outerSquare);
-        QPainterPath innerPainterPath;
-        innerPainterPath.addEllipse(innerSquare);
-        painterPath = painterPath.subtracted(innerPainterPath);
-    }
-    else
-    {
-        painterPath.arcTo(innerSquare, startAngleInDegrees, spanAngleInDegrees);
-        painterPath.arcTo(endSquare, 180.0 + endAngleInDegrees, spanAngleInDegrees > 0 ? -180.0 : 180.0);
-        painterPath.arcTo(outerSquare, endAngleInDegrees, - spanAngleInDegrees);
-        painterPath.arcTo(startSquare, startAngleInDegrees, spanAngleInDegrees > 0 ? -180.0 : 180.0);
-        painterPath.closeSubpath();
-    }
+    painterPath.setFillRule(Qt::WindingFill);
+    painterPath.arcTo(innerSquare, startAngleInDegrees, spanAngleInDegrees);
+    painterPath.arcTo(endSquare, 180.0 + endAngleInDegrees, spanAngleInDegrees > 0 ? -180.0 : 180.0);
+    painterPath.arcTo(outerSquare, endAngleInDegrees, - spanAngleInDegrees);
+    painterPath.arcTo(startSquare, startAngleInDegrees, spanAngleInDegrees > 0 ? -180.0 : 180.0);
+    painterPath.closeSubpath();
 
     return painterPath.toFillPolygon();
 }
