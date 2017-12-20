@@ -2025,7 +2025,7 @@ QRectF UBGraphicsScene::annotationsBoundingRect() const
 
 bool UBGraphicsScene::isEmpty() const
 {
-    return mItemCount == 0;
+    return mItemCount <= 0; // mItemCount can currently be negative when playing with eraser
 }
 
 QGraphicsItem* UBGraphicsScene::setAsBackgroundObject(QGraphicsItem* item, bool pAdaptTransformation, bool pExpand)
