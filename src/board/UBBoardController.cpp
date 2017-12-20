@@ -1885,9 +1885,9 @@ void UBBoardController::appMainModeChanged(UBApplicationController::MainMode md)
 void UBBoardController::closing()
 {
     mIsClosing = true;
+    lastWindowClosed();
     ClearUndoStack();
     showKeyboard(false);
-    lastWindowClosed();
 }
 
 void UBBoardController::lastWindowClosed()
