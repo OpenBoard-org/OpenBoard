@@ -160,7 +160,7 @@ class UBBoardController : public UBDocumentContainer
         }
         qreal currentZoom();
         void persistViewPositionOnCurrentScene();
-        void persistCurrentScene(bool isAnAutomaticBackup = false, bool forceImmediateSave = false);
+        void persistCurrentScene(bool isAnAutomaticBackup = false, bool forceImmediateSave = true);
         void showNewVersionAvailable(bool automatic, const UBVersion &installedVersion, const UBSoftwareUpdate &softwareUpdate);
         void setBoxing(QRect displayRect);
         void setToolbarTexts();
