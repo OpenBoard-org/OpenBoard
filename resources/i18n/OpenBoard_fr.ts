@@ -117,11 +117,11 @@
     </message>
     <message>
         <source>Grid Light Background</source>
-        <translation>Fonds quadrillé clair</translation>
+        <translation>Fond quadrillé clair</translation>
     </message>
     <message>
         <source>Grid Dark Background</source>
-        <translation>Fonds quadrillé foncé</translation>
+        <translation>Fond quadrillé foncé</translation>
     </message>
     <message>
         <source>Start Screen Recording</source>
