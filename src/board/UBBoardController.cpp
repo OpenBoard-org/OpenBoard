@@ -550,6 +550,7 @@ void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmp
         if (replaceActiveIfEmpty && mActiveScene->isEmpty())
         {
             UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(selectedDocument(), clone, mActiveSceneIndex);
+            emit addThumbnailRequired(this, mActiveSceneIndex);
             setActiveDocumentScene(mActiveSceneIndex);
             deleteScene(mActiveSceneIndex + 1);
         }
@@ -557,6 +558,7 @@ void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmp
         {
             persistCurrentScene(false,true);
             UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(selectedDocument(), clone, mActiveSceneIndex + 1);
+            emit addThumbnailRequired(this, mActiveSceneIndex + 1);
             setActiveDocumentScene(mActiveSceneIndex + 1);
         }
 
