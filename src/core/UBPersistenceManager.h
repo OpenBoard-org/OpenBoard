@@ -77,7 +77,7 @@ class UBPersistenceManager : public QObject
         virtual void duplicateDocumentScene(UBDocumentProxy* pDocumentProxy, int index);
 
         virtual void persistDocumentScene(UBDocumentProxy* pDocumentProxy,
-                UBGraphicsScene* pScene, const int pSceneIndex, bool isAnAutomaticBackup = false, bool forceImmediateSaving = false);
+                UBGraphicsScene* pScene, const int pSceneIndex, bool isAnAutomaticBackup = false, bool forceImmediateSaving = true);
 
         virtual UBGraphicsScene* createDocumentSceneAt(UBDocumentProxy* pDocumentProxy, int index, bool useUndoRedoStack = true);
 
