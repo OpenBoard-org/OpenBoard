@@ -117,11 +117,11 @@
     </message>
     <message>
         <source>Grid Light Background</source>
-        <translation>Grille sur fond clair</translation>
+        <translation>Fonds quadrillé clair</translation>
     </message>
     <message>
         <source>Grid Dark Background</source>
-        <translation>Grille sur fond foncé</translation>
+        <translation>Fonds quadrillé foncé</translation>
     </message>
     <message>
         <source>Start Screen Recording</source>
@@ -169,7 +169,7 @@
     </message>
     <message>
         <source>Pages</source>
-        <translation>Pages</translation>
+        <translation type="unfinished">Page %0</translation>
     </message>
     <message>
         <source>New Page</source>

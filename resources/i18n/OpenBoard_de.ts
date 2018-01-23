@@ -481,7 +481,7 @@
     </message>
     <message>
         <source>Grid Light Background</source>
-        <translation>Heller Hintergrund, kariert</translation>
+        <translation>Hell karierten Hintergrund</translation>
     </message>
     <message>
         <source>Plain Dark Background</source>
@@ -493,7 +493,7 @@
     </message>
     <message>
         <source>Grid Dark Background</source>
-        <translation>Dunkler Hintergrund, kariert</translation>
+        <translation>Dunkel karierten Hintergrund</translation>
     </message>
     <message>
         <source>Podcast</source>
@@ -801,11 +801,11 @@
     </message>
     <message>
         <source>Ruled Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Hell linierter Hintergrund</translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Dunkel linierter Hintergrund</translation>
     </message>
 </context>
 <context>
@@ -903,7 +903,7 @@
     <name>UBBackgroundPalette</name>
     <message>
         <source>Grid size</source>
-        <translation type="unfinished"></translation>
+        <translation>Gittergrösse</translation>
     </message>
 </context>
 <context>
@@ -1247,7 +1247,7 @@
     <name>UBDraggableThumbnailView</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">Seite %0</translation>
+        <translation>Seite %0</translation>
     </message>
 </context>
 <context>
@@ -1570,7 +1570,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="unfinished">Als Hintergrund festlegen</translation>
+        <translation>Als Hintergrund einfügen</translation>
     </message>
 </context>
 <context>
@@ -2469,11 +2469,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Show preview circle from</source>
-        <translation type="unfinished"></translation>
+        <translation>Ansichtsgrösse von</translation>
     </message>
     <message>
         <source>px</source>
-        <translation type="unfinished"></translation>
+        <translation>px</translation>
     </message>
 </context>
 <context>
@@ -2663,19 +2663,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Gitter</translation>
     </message>
     <message>
         <source>On Dark Background</source>
-        <translation type="unfinished">Auf dunklem Hintergrund</translation>
+        <translation>Auf dunklem Hintergrund</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="unfinished">Deckkraft</translation>
+        <translation>Deckkraft</translation>
     </message>
     <message>
         <source>On Light Background</source>
-        <translation type="unfinished">Auf hellem Hintergrund</translation>
+        <translation>Auf hellem Hintergrund</translation>
     </message>
 </context>
 <context>
