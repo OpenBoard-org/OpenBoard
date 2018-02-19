@@ -1647,6 +1647,18 @@
     <string>Open the tutorial web page</string>
    </property>
   </action>
+  <action name="actionDefaultGridSize">
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/backgroundPalette/resetDefaultGridSize.svg</normaloff>:/images/backgroundPalette/resetDefaultGridSize.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Default Grid Size</string>
+   </property>
+   <property name="toolTip">
+    <string>return to Default Grid Size</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="../OpenBoard.qrc"/>

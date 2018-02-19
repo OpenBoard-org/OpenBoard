@@ -47,6 +47,7 @@ QPointer<UBSettings> UBSettings::sSingleton = 0;
 
 int UBSettings::pointerDiameter = 40;
 int UBSettings::crossSize = 24;
+int UBSettings::defaultCrossSize = 24;
 int UBSettings::minCrossSize = 12;
 int UBSettings::maxCrossSize = 96; //TODO: user-settable?
 int UBSettings::colorPaletteSize = 5;

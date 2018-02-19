@@ -359,5 +359,6 @@
         <file>images/groupItems.svg</file>
         <file>images/ungroupItems.svg</file>
         <file>images/setAsBackground.svg</file>
+        <file>images/backgroundPalette/resetDefaultGridSize.svg</file>
     </qresource>
 </RCC>

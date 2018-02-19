@@ -1,5 +1,7 @@
 #include "UBBackgroundPalette.h"
 
+#include "gui/UBMainWindow.h"
+
 UBBackgroundPalette::UBBackgroundPalette(QList<QAction*> actions, QWidget * parent)
     : UBActionPalette(parent)
 {
@@ -47,9 +49,16 @@ void UBBackgroundPalette::init()
 
     mSliderLabel = new QLabel(tr("Grid size"));
 
+    mResetDefaultGridSizeButton = createPaletteButton(UBApplication::mainWindow->actionDefaultGridSize, this);
+    mResetDefaultGridSizeButton->setFixedSize(24,24);
+    mActions << UBApplication::mainWindow->actionDefaultGridSize;
+
+    connect(UBApplication::mainWindow->actionDefaultGridSize, SIGNAL(triggered()), this, SLOT(defaultBackgroundGridSize()));
+
     mBottomLayout->addSpacing(16);
     mBottomLayout->addWidget(mSliderLabel);
     mBottomLayout->addWidget(mSlider);
+    mBottomLayout->addWidget(mResetDefaultGridSizeButton);
     mBottomLayout->addSpacing(16);
 
     updateLayout();
@@ -135,6 +144,12 @@ void UBBackgroundPalette::sliderValueChanged(int value)
 {
     UBApplication::boardController->activeScene()->setBackgroundGridSize(value);
     UBSettings::settings()->crossSize = value; // since this function is called (indirectly, by refresh) when we switch scenes, the settings will always have the current scene's cross size.
+}
+
+void UBBackgroundPalette::defaultBackgroundGridSize()
+{
+    mSlider->setValue(UBSettings::settings()->defaultCrossSize);
+    sliderValueChanged(UBSettings::settings()->defaultCrossSize);
 }
 
 void UBBackgroundPalette::backgroundChanged()

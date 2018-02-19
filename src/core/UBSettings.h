@@ -188,6 +188,7 @@ class UBSettings : public QObject
 
         // Background grid
         static int crossSize;
+        static int defaultCrossSize;
         static int minCrossSize;
         static int maxCrossSize;
 

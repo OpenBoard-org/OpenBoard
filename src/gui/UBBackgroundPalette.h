@@ -27,6 +27,7 @@ class UBBackgroundPalette : public UBActionPalette
 
     protected slots:
         void sliderValueChanged(int value);
+        void defaultBackgroundGridSize();
 
     protected:
         virtual void updateLayout();
@@ -39,6 +40,7 @@ class UBBackgroundPalette : public UBActionPalette
 
         QSlider* mSlider;
         QLabel* mSliderLabel;
+        UBActionPaletteButton* mResetDefaultGridSizeButton;
 
 
 };
