@@ -942,7 +942,7 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation>Elimina la pàgina %1 del document</translation>
+        <translation type="vanished">Elimina la pàgina %1 del document</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -966,6 +966,10 @@
     </message>
     <message>
         <source>Document has just been saved...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting page %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1814,7 +1818,7 @@ Voleu ignorar aquests errors per a aquest amfitrió?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Saving thumbnail of page %1</source>
+        <source>Moving page to trash folder...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

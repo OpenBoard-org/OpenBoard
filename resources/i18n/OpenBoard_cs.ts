@@ -943,7 +943,7 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation>Odstranit stránku %1 z dokumentu</translation>
+        <translation type="vanished">Odstranit stránku %1 z dokumentu</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -967,6 +967,10 @@
     </message>
     <message>
         <source>Document has just been saved...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting page %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1817,7 +1821,7 @@ Chcete ignorovat tyto chyby na tomto serveru?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Saving thumbnail of page %1</source>
+        <source>Moving page to trash folder...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

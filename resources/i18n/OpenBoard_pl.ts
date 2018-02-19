@@ -946,7 +946,7 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation>Usuń stronę %1 z dokumentu</translation>
+        <translation type="vanished">Usuń stronę %1 z dokumentu</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -970,6 +970,10 @@
     </message>
     <message>
         <source>Document has just been saved...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting page %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1821,7 +1825,7 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Saving thumbnail of page %1</source>
+        <source>Moving page to trash folder...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

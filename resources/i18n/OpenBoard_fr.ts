@@ -947,7 +947,7 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation>Supprimer la page %1 du document</translation>
+        <translation type="vanished">Supprimer la page %1 du document</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -972,6 +972,10 @@
     <message>
         <source>Document has just been saved...</source>
         <translation>Le document vient d&apos;être sauvegardé...</translation>
+    </message>
+    <message>
+        <source>Deleting page %1</source>
+        <translation>Supression de la page %1</translation>
     </message>
 </context>
 <context>
@@ -1856,7 +1860,11 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     </message>
     <message>
         <source>Saving thumbnail of page %1</source>
-        <translation>Sauvegarde aperçu page %1</translation>
+        <translation type="vanished">Sauvegarde aperçu page %1</translation>
+    </message>
+    <message>
+        <source>Moving page to trash folder...</source>
+        <translation>Déplacement de la page dans la corbeille...</translation>
     </message>
 </context>
 <context>

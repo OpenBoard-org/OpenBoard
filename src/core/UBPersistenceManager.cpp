@@ -505,7 +505,7 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
                 QFile::rename(source, target);
             }
 
-            UBApplication::showMessage("Moving page to trash folder...");
+            UBApplication::showMessage(tr("Moving page to trash folder..."));
             insertDocumentSceneAt(trashDocProxy, scene, trashDocProxy->pageCount());
         }
     }

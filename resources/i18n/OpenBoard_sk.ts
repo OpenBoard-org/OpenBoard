@@ -946,7 +946,7 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation>Vymazať stránku %1 z dokumentu</translation>
+        <translation type="vanished">Vymazať stránku %1 z dokumentu</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -971,6 +971,10 @@
     <message>
         <source>Document has just been saved...</source>
         <translation>Dokument bol uložený.</translation>
+    </message>
+    <message>
+        <source>Deleting page %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1844,7 +1848,7 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
         <translation>stratil prístup k úložisku dokumentov &apos;%1&apos;. Aplikácia sa musí zatvoriť, aby sa predišlo poškodeniu dát. Možno nebudú uložené ani najnovšie zmeny.</translation>
     </message>
     <message>
-        <source>Saving thumbnail of page %1</source>
+        <source>Moving page to trash folder...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

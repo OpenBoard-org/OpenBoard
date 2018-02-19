@@ -942,7 +942,7 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation>Rimuovi pagina %1 dal documento</translation>
+        <translation type="vanished">Rimuovi pagina %1 dal documento</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -967,6 +967,10 @@
     <message>
         <source>Document has just been saved...</source>
         <translation>Il documento è stato appena salvato...</translation>
+    </message>
+    <message>
+        <source>Deleting page %1</source>
+        <translation>eliminazione della pagina %1</translation>
     </message>
 </context>
 <context>
@@ -1273,11 +1277,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished">Esportazione documento in corso...</translation>
+        <translation>Esportazione documento in corso...</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation type="unfinished">Esportazione fallita</translation>
+        <translation>Esportazione fallita</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
@@ -1839,7 +1843,11 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
     <message>
         <source>Saving thumbnail of page %1</source>
-        <translation>Salvataggio della miniatura della pagina %1</translation>
+        <translation type="vanished">Salvataggio della miniatura della pagina %1</translation>
+    </message>
+    <message>
+        <source>Moving page to trash folder...</source>
+        <translation>Spostamento della pagina nella cartella del cestino...</translation>
     </message>
 </context>
 <context>

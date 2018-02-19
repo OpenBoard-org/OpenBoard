@@ -942,7 +942,7 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation>%1 Sayfayı dökümandan sil</translation>
+        <translation type="vanished">%1 Sayfayı dökümandan sil</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -966,6 +966,10 @@
     </message>
     <message>
         <source>Document has just been saved...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting page %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1812,7 +1816,7 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Saving thumbnail of page %1</source>
+        <source>Moving page to trash folder...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

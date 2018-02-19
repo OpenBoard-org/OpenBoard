@@ -944,7 +944,7 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation>Apagar a página %1 do documento</translation>
+        <translation type="vanished">Apagar a página %1 do documento</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -969,6 +969,10 @@
     <message>
         <source>Document has just been saved...</source>
         <translation>Documento acaba de ser gravado...</translation>
+    </message>
+    <message>
+        <source>Deleting page %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1841,7 +1845,7 @@ Quer ignorar estes erros, deste servidor?</translation>
         <translation>Acesso ao repositório &apos;%1&apos; foi perdido. Infelizmente a aplicação deverá desligar para avitar a corrupção de dados. As últimas alterações também serão perdidas.</translation>
     </message>
     <message>
-        <source>Saving thumbnail of page %1</source>
+        <source>Moving page to trash folder...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -942,7 +942,7 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation>Radera sida %1 från dokument</translation>
+        <translation type="vanished">Radera sida %1 från dokument</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -967,6 +967,10 @@
     </message>
     <message>
         <source>Document has just been saved...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting page %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1815,7 +1819,7 @@ Vill du ignorera felen för den här värden?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Saving thumbnail of page %1</source>
+        <source>Moving page to trash folder...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

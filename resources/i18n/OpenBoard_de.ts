@@ -942,7 +942,7 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation>Seite %1 des Dokuments löschen</translation>
+        <translation type="vanished">Seite %1 des Dokuments löschen</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -967,6 +967,10 @@
     <message>
         <source>Document has just been saved...</source>
         <translation>Dokument wurde gespeichert...</translation>
+    </message>
+    <message>
+        <source>Deleting page %1</source>
+        <translation>Seite %1 löschen</translation>
     </message>
 </context>
 <context>
@@ -1269,19 +1273,19 @@
     <name>UBExportAdaptor</name>
     <message>
         <source>Warnings during export was appeared</source>
-        <translation type="unfinished">Warnungen beim Exportieren aufgetreten</translation>
+        <translation>Warnungen beim Exportieren aufgetreten</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished">Dokument wird exportiert...</translation>
+        <translation>Dokument wird exportiert...</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation type="unfinished">Export fehlgeschlagen</translation>
+        <translation>Export fehlgeschlagen</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="unfinished">Export im ausgewählten Zielpfad nicht möglich. Sie haben nicht die erforderliche Berechtigung um die Datei zu speichern.</translation>
+        <translation>Export im ausgewählten Zielpfad nicht möglich. Sie haben nicht die erforderliche Berechtigung um die Datei zu speichern.</translation>
     </message>
     <message>
         <source>Export failed: location not writable</source>
@@ -1289,7 +1293,7 @@
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished">Export erfolgreich.</translation>
+        <translation>Export erfolgreich.</translation>
     </message>
 </context>
 <context>
@@ -1812,7 +1816,7 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <source>Proceed</source>
@@ -1843,7 +1847,11 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     </message>
     <message>
         <source>Saving thumbnail of page %1</source>
-        <translation>Miniaturansicht der Seite %1 speichern</translation>
+        <translation type="vanished">Miniaturansicht der Seite %1 speichern</translation>
+    </message>
+    <message>
+        <source>Moving page to trash folder...</source>
+        <translation>Die Seite in den Papierkorb verschieben...</translation>
     </message>
 </context>
 <context>
@@ -1929,7 +1937,7 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     </message>
     <message>
         <source>OpenBoard Cast</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard Cast</translation>
     </message>
 </context>
 <context>
@@ -1988,7 +1996,7 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     <name>UBStartupHintsPalette</name>
     <message>
         <source>Visible next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Sichtbar beim nächsten Mal</translation>
     </message>
 </context>
 <context>
@@ -2458,7 +2466,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>OpenBoard</source>
-        <translation type="unfinished">OpenBoard</translation>
+        <translation>OpenBoard</translation>
     </message>
 </context>
 <context>
