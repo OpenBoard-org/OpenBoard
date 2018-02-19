@@ -115,7 +115,7 @@ void UBBoardThumbnailsView::removeThumbnail(int i)
 
 UBDraggableThumbnailView* UBBoardThumbnailsView::createThumbnail(UBDocumentContainer* source, int i)
 {
-    UBApplication::showMessage(tr("Loading document scene (%1/%2)").arg(i+1).arg(source->selectedDocument()->pageCount()));
+    UBApplication::showMessage(tr("Loading page (%1/%2)").arg(i+1).arg(source->selectedDocument()->pageCount()));
 
     UBGraphicsScene* pageScene = UBPersistenceManager::persistenceManager()->loadDocumentScene(source->selectedDocument(), i);
     UBThumbnailView* pageView = new UBThumbnailView(pageScene);

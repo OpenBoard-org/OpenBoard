@@ -1653,10 +1653,10 @@
      <normaloff>:/images/backgroundPalette/resetDefaultGridSize.svg</normaloff>:/images/backgroundPalette/resetDefaultGridSize.svg</iconset>
    </property>
    <property name="text">
-    <string>Default Grid Size</string>
+    <string>Reset grid size</string>
    </property>
    <property name="toolTip">
-    <string>return to Default Grid Size</string>
+    <string>Reset grid size</string>
    </property>
   </action>
  </widget>

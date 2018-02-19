@@ -210,6 +210,7 @@ class UBThumbnail
 
 class UBThumbnailTextItem : public QGraphicsTextItem
 {
+    Q_OBJECT
     public:
         UBThumbnailTextItem(int index)
             : QGraphicsTextItem(tr("Page %0").arg(index+1))
@@ -457,6 +458,7 @@ class UBDraggableThumbnailPixmap : public UBDraggableThumbnail
 
 class UBDraggableThumbnailView : public UBDraggableThumbnail
 {
+    Q_OBJECT
     public:
         UBDraggableThumbnailView(UBThumbnailView* thumbnailView, UBDocumentProxy* documentProxy, int index)
             : UBDraggableThumbnail(documentProxy, index)

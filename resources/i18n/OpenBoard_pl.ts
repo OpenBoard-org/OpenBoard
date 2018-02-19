@@ -811,6 +811,10 @@
         <source>Ruled Dark Background</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Reset grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -902,6 +906,10 @@
         <source>Update</source>
         <translation>Aktualizacja</translation>
     </message>
+    <message>
+        <source>Board drawing...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBackgroundPalette</name>
@@ -974,6 +982,13 @@
     <message>
         <source>CapturedImage</source>
         <translation>PrzechwyconyObraz</translation>
+    </message>
+</context>
+<context>
+    <name>UBBoardThumbnailsView</name>
+    <message>
+        <source>Loading page (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1805,6 +1820,10 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Saving thumbnail of page %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -1967,6 +1986,10 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>Wygenerowano %1 miniatur...</translation>
+    </message>
+    <message>
+        <source>loading thumbnail of page %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

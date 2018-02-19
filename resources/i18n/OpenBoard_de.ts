@@ -807,6 +807,10 @@
         <source>Ruled Dark Background</source>
         <translation>Dunkel linierter Hintergrund</translation>
     </message>
+    <message>
+        <source>Reset grid size</source>
+        <translation>Rastergröße zurücksetzen</translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -858,7 +862,7 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation type="unfinished">Seite entfernen</translation>
+        <translation>Seite entfernen</translation>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
@@ -897,6 +901,10 @@
     <message>
         <source>Update</source>
         <translation>Aktualisierung</translation>
+    </message>
+    <message>
+        <source>Board drawing...</source>
+        <translation>Brettzeichnung...</translation>
     </message>
 </context>
 <context>
@@ -942,15 +950,15 @@
     </message>
     <message>
         <source>Add file operation failed: file copying error</source>
-        <translation type="unfinished">Dokument hinzufügen fehlgeschlagen: Fehler beim Kopieren</translation>
+        <translation>Dokument hinzufügen fehlgeschlagen: Fehler beim Kopieren</translation>
     </message>
     <message>
         <source>Group</source>
-        <translation type="unfinished">Gruppieren</translation>
+        <translation>Gruppieren</translation>
     </message>
     <message>
         <source>Ungroup</source>
-        <translation type="unfinished">Gruppierung auflösen</translation>
+        <translation>Gruppierung auflösen</translation>
     </message>
     <message>
         <source>Saving document...</source>
@@ -970,6 +978,13 @@
     <message>
         <source>CapturedImage</source>
         <translation>erfasstes Bild</translation>
+    </message>
+</context>
+<context>
+    <name>UBBoardThumbnailsView</name>
+    <message>
+        <source>Loading page (%1/%2)</source>
+        <translation>Ladeseite (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1145,11 +1160,11 @@
     </message>
     <message>
         <source>Folder does not contain any image files</source>
-        <translation type="unfinished">Das Verzeichnis enthält keine Bilder</translation>
+        <translation>Das Verzeichnis enthält keine Bilder</translation>
     </message>
     <message>
         <source>Untitled Documents</source>
-        <translation type="unfinished">Unbenanntes Dokument</translation>
+        <translation>Unbenanntes Dokument</translation>
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
@@ -1192,11 +1207,11 @@
     </message>
     <message>
         <source>Inserting page %1 of %2</source>
-        <translation type="unfinished">Hinzufügen der Seite %1 von %2</translation>
+        <translation>Hinzufügen der Seite %1 von %2</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished">Import erfolgreich.</translation>
+        <translation>Import erfolgreich.</translation>
     </message>
     <message>
         <source>Import of file %1 successful.</source>
@@ -1547,11 +1562,11 @@
     <name>UBGraphicsGroupContainerItemDelegate</name>
     <message>
         <source>Locked</source>
-        <translation type="unfinished">Gesperrt</translation>
+        <translation>Gesperrt</translation>
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation type="unfinished">Auf erweitertem Bildschirm sichtbar</translation>
+        <translation>Auf erweitertem Bildschirm sichtbar</translation>
     </message>
 </context>
 <context>
@@ -1614,14 +1629,14 @@
     <name>UBGraphicsW3CWidgetItem</name>
     <message>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>Web</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsWidgetItem</name>
     <message>
         <source>Loading ...</source>
-        <translation type="unfinished">Lädt...</translation>
+        <translation>Lädt...</translation>
     </message>
 </context>
 <context>
@@ -1743,7 +1758,7 @@
     <name>UBMessagesDialog</name>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Schließen</translation>
+        <translation>Schließen</translation>
     </message>
 </context>
 <context>
@@ -1821,6 +1836,14 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     <message>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>Verbindung zum Dokumentenarchiv verloren. Um fehlerhafte Daten zu vermeiden muss die Anwendung leider geschlossen werden. Letzte Änderungen können auch verloren gehen.</translation>
+    </message>
+    <message>
+        <source>saving document thumbnail for the page %1</source>
+        <translation type="obsolete">Backup Übersichtsseite %1</translation>
+    </message>
+    <message>
+        <source>Saving thumbnail of page %1</source>
+        <translation>Miniaturansicht der Seite %1 speichern</translation>
     </message>
 </context>
 <context>
@@ -1985,12 +2008,17 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
         <source>%1 thumbnails generated ...</source>
         <translation>Miniaturansicht %1 wird erstellt...</translation>
     </message>
+    <message>
+        <source>loading thumbnail of page %1</source>
+        <translation>
+Miniaturansicht der Seite %1 wird geladen</translation>
+    </message>
 </context>
 <context>
     <name>UBThumbnailTextItem</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">Seite %0</translation>
+        <translation>Seite %0</translation>
     </message>
 </context>
 <context>

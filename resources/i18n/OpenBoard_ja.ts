@@ -807,6 +807,10 @@
         <source>Ruled Dark Background</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Reset grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -890,6 +894,10 @@
         <source>Update</source>
         <translation>更新</translation>
     </message>
+    <message>
+        <source>Board drawing...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBackgroundPalette</name>
@@ -962,6 +970,13 @@
     <message>
         <source>CapturedImage</source>
         <translation>キャプチャされた画像</translation>
+    </message>
+</context>
+<context>
+    <name>UBBoardThumbnailsView</name>
+    <message>
+        <source>Loading page (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1789,6 +1804,10 @@ Do you want to ignore these errors for this host?</source>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Saving thumbnail of page %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -1951,6 +1970,10 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 サムネイル作成済み ... </translation>
+    </message>
+    <message>
+        <source>loading thumbnail of page %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

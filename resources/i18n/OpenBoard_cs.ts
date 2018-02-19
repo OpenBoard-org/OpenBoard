@@ -808,6 +808,10 @@
         <source>Ruled Dark Background</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Reset grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -899,6 +903,10 @@
         <source>Update available</source>
         <translation>K dispozici je aktualizace</translation>
     </message>
+    <message>
+        <source>Board drawing...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBackgroundPalette</name>
@@ -971,6 +979,13 @@
     <message>
         <source>CapturedImage</source>
         <translation>Zachycenýobrázek</translation>
+    </message>
+</context>
+<context>
+    <name>UBBoardThumbnailsView</name>
+    <message>
+        <source>Loading page (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1801,6 +1816,10 @@ Chcete ignorovat tyto chyby na tomto serveru?</translation>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Saving thumbnail of page %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -1963,6 +1982,10 @@ Chcete ignorovat tyto chyby na tomto serveru?</translation>
     <message>
         <source>Generating preview thumbnails ...</source>
         <translation>Vytváří se miniatury obrázků ...</translation>
+    </message>
+    <message>
+        <source>loading thumbnail of page %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

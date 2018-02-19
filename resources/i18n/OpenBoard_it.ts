@@ -807,6 +807,10 @@
         <source>Ruled Dark Background</source>
         <translation>Sfundo scuro lineato</translation>
     </message>
+    <message>
+        <source>Reset grid size</source>
+        <translation>Ripristina la dimensione della griglia</translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -898,6 +902,10 @@
         <source>Update</source>
         <translation>Aggiornamento</translation>
     </message>
+    <message>
+        <source>Board drawing...</source>
+        <translation>Disegno della lavagna...</translation>
+    </message>
 </context>
 <context>
     <name>UBBackgroundPalette</name>
@@ -970,6 +978,13 @@
     <message>
         <source>CapturedImage</source>
         <translation>ImmagineCatturata</translation>
+    </message>
+</context>
+<context>
+    <name>UBBoardThumbnailsView</name>
+    <message>
+        <source>Loading page (%1/%2)</source>
+        <translation>Caricamento pagina (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1226,7 +1241,7 @@
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%1 pagina copiata</numerusform>
             <numerusform>%1 pagine copiate</numerusform>
         </translation>
@@ -1822,6 +1837,10 @@ Vuoi ignorare gli errori per questo host?</translation>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>ha perso l&apos;accesso al repository documenti &quot;%1&quot;. Sfortunatamente l&apos;applicazione deve essere chiusa per evitare di rivinare i dati. Gli ultimi cambiamenti potrebbero andare persi.</translation>
     </message>
+    <message>
+        <source>Saving thumbnail of page %1</source>
+        <translation>Salvataggio della miniatura della pagina %1</translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -1985,12 +2004,16 @@ Vuoi ignorare gli errori per questo host?</translation>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 miniature generate...</translation>
     </message>
+    <message>
+        <source>loading thumbnail of page %1</source>
+        <translation>Caricamento miniatura della pagina %1</translation>
+    </message>
 </context>
 <context>
     <name>UBThumbnailTextItem</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">Pagina %0</translation>
+        <translation>Pagina %0</translation>
     </message>
 </context>
 <context>

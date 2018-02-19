@@ -808,6 +808,10 @@
         <source>Ruled Dark Background</source>
         <translation>Fond ligné foncé</translation>
     </message>
+    <message>
+        <source>Reset grid size</source>
+        <translation>Réinitialiser la taille du quadrillage</translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -899,6 +903,14 @@
         <source>Update</source>
         <translation>Mettre à jour</translation>
     </message>
+    <message>
+        <source>Drawing active scene and thumbnail previews</source>
+        <translation type="vanished">Dessin de la page active et des aperçus</translation>
+    </message>
+    <message>
+        <source>Board drawing...</source>
+        <translation>Dessin du tableau...</translation>
+    </message>
 </context>
 <context>
     <name>UBBackgroundPalette</name>
@@ -971,6 +983,13 @@
     <message>
         <source>CapturedImage</source>
         <translation>Image capturée</translation>
+    </message>
+</context>
+<context>
+    <name>UBBoardThumbnailsView</name>
+    <message>
+        <source>Loading page (%1/%2)</source>
+        <translation>Chargement page (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1831,6 +1850,14 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>a perdu l&apos;accès au répertoire des documents &apos;%1&apos;. Malheureusement, l&apos;application sera fermée afin d&apos;éviter la corruption des données. Les dernières modifications pourraient être également perdues.</translation>
     </message>
+    <message>
+        <source>saving document thumbnail for the page %1</source>
+        <translation type="vanished">Sauvegarde aperçu page %1</translation>
+    </message>
+    <message>
+        <source>Saving thumbnail of page %1</source>
+        <translation>Sauvegarde aperçu page %1</translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -1993,6 +2020,10 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 vignettes créées ...</translation>
+    </message>
+    <message>
+        <source>loading thumbnail of page %1</source>
+        <translation>Chargement aperçu page %1</translation>
     </message>
 </context>
 <context>
