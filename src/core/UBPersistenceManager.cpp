@@ -505,6 +505,7 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
                 QFile::rename(source, target);
             }
 
+            UBApplication::showMessage("Moving page to trash folder...");
             insertDocumentSceneAt(trashDocProxy, scene, trashDocProxy->pageCount());
         }
     }
@@ -777,7 +778,6 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
         if (pDocumentProxy->isModified())
             persistDocumentMetadata(pDocumentProxy, forceImmediateSaving);
 
-        UBApplication::showMessage(tr("Saving thumbnail of page %1").arg(pSceneIndex+1));
         UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
         if(forceImmediateSaving)
             UBSvgSubsetAdaptor::persistScene(pDocumentProxy,pScene,pSceneIndex);

@@ -168,7 +168,7 @@ void UBDocumentController::selectDocument(UBDocumentProxy* proxy, bool setAsCurr
     if (selected)
     {
         setDocument(proxy);
-        reloadThumbnails();
+        emit documentThumbnailsUpdated(this);
 
         selected->setSelected(true);
 
@@ -1441,7 +1441,7 @@ void UBDocumentController::documentSceneChanged(UBDocumentProxy* proxy, int pSce
 
     if (proxy == selectedDocumentProxy())
     {
-        reloadThumbnails();
+        emit documentThumbnailsUpdated(this);
     }
 }
 

@@ -44,7 +44,7 @@ class UBDocumentContainer : public QObject
         void setDocument(UBDocumentProxy* document, bool forceReload = false);
 
         UBDocumentProxy* selectedDocument(){return mCurrentDocument;}
-        int pageCount(){return mDocumentThumbs.size();}
+        int pageCount(){return mCurrentDocument->pageCount();}
         const QPixmap* pageAt(int index){return mDocumentThumbs[index];}
 
         static int pageFromSceneIndex(int sceneIndex);

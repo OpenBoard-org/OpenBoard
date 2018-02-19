@@ -907,13 +907,15 @@ void UBDraggableThumbnail::mousePressEvent(QGraphicsSceneMouseEvent *event)
             event->accept();
             duplicatePage();
         }
+        else
+        {
+            event->ignore();
+        }
         /*
         else if(movableUp() && getIcon("moveUp")->triggered(p.x()))
             moveUpPage();
         else if (movableDown() && getIcon("moveDown")->triggered(p.x()))
             moveDownPage();*/
-
-         event->ignore();
     }
     else
     {
