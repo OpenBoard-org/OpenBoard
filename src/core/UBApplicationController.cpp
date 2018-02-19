@@ -358,6 +358,7 @@ void UBApplicationController::showBoard()
         }
     }
 
+    UBApplication::showMessage(tr("Drawing active scene and thumbnail previews"));
     mMainMode = Board;
 
     adaptToolBar();

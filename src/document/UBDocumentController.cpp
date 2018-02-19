@@ -168,6 +168,7 @@ void UBDocumentController::selectDocument(UBDocumentProxy* proxy, bool setAsCurr
     if (selected)
     {
         setDocument(proxy);
+        reloadThumbnails();
 
         selected->setSelected(true);
 
@@ -267,7 +268,7 @@ void UBDocumentController::itemSelectionChanged()
 {
     updateCurrentSelection();
 
-    reloadThumbnails();
+    emit documentThumbnailsUpdated(this);
 
     if (multipleSelection())
         mSelectionType = Multiple;

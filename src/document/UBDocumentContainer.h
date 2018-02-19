@@ -61,7 +61,6 @@ class UBDocumentContainer : public QObject
 
         void insertThumbPage(int index);
 
-
     private:
         UBDocumentProxy* mCurrentDocument;
         QList<const QPixmap*>  mDocumentThumbs;

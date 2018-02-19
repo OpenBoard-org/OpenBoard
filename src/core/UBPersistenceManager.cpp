@@ -777,6 +777,7 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
         if (pDocumentProxy->isModified())
             persistDocumentMetadata(pDocumentProxy, forceImmediateSaving);
 
+        UBApplication::showMessage(tr("saving document thumbnail for the page %1").arg(pSceneIndex+1));
         UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
         if(forceImmediateSaving)
             UBSvgSubsetAdaptor::persistScene(pDocumentProxy,pScene,pSceneIndex);

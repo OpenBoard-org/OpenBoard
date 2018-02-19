@@ -54,7 +54,6 @@ void UBDocumentContainer::setDocument(UBDocumentProxy* document, bool forceReloa
 
         emit initThumbnailsRequired(this);
         emit documentSet(mCurrentDocument);
-        reloadThumbnails();
     }
 }
 

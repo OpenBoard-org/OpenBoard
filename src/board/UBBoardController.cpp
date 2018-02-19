@@ -189,6 +189,7 @@ void UBBoardController::initBackgroundGridSize()
     int gridSize = (resolutionRatio * 10. * dpi) / UBGeometryUtils::inchSize;
 
     UBSettings::settings()->crossSize = gridSize;
+    UBSettings::settings()->defaultCrossSize = gridSize;
     mActiveScene->setBackgroundGridSize(gridSize);
 
     //qDebug() << "grid size: " << gridSize;
@@ -228,10 +229,11 @@ void UBBoardController::setupViews()
     mDisplayView->setInteractive(false);
     mDisplayView->setTransformationAnchor(QGraphicsView::NoAnchor);
 
-    mMessageWindow = new UBMessageWindow(mControlView);
+    mPaletteManager = new UBBoardPaletteManager(mControlContainer, this);
+
+    mMessageWindow = new UBMessageWindow(mControlContainer);
     mMessageWindow->hide();
 
-    mPaletteManager = new UBBoardPaletteManager(mControlContainer, this);
     connect(this, SIGNAL(activeSceneChanged()), mPaletteManager, SLOT(activeSceneChanged()));
 }
 

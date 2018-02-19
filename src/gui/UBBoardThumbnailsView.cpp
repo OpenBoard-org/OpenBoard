@@ -115,6 +115,8 @@ void UBBoardThumbnailsView::removeThumbnail(int i)
 
 UBDraggableThumbnailView* UBBoardThumbnailsView::createThumbnail(UBDocumentContainer* source, int i)
 {
+    UBApplication::showMessage(tr("Loading document scene (%1/%2)").arg(i+1).arg(source->selectedDocument()->pageCount()));
+
     UBGraphicsScene* pageScene = UBPersistenceManager::persistenceManager()->loadDocumentScene(source->selectedDocument(), i);
     UBThumbnailView* pageView = new UBThumbnailView(pageScene);
 
@@ -200,20 +202,23 @@ void UBBoardThumbnailsView::resizeEvent(QResizeEvent *event)
 
 void UBBoardThumbnailsView::mousePressEvent(QMouseEvent *event)
 {
-    mLongPressTimer.start();
-    mLastPressedMousePos = event->pos();
-
-    UBDraggableThumbnailView* item = dynamic_cast<UBDraggableThumbnailView*>(itemAt(event->pos()));
-
-    if (item)
-    {
-        UBApplication::boardController->persistViewPositionOnCurrentScene();
-        UBApplication::boardController->persistCurrentScene();
-        UBApplication::boardController->setActiveDocumentScene(item->sceneIndex());
-        UBApplication::boardController->centerOn(UBApplication::boardController->activeScene()->lastCenter());
-    }
-
     QGraphicsView::mousePressEvent(event);
+
+    if (!event->isAccepted())
+    {
+        mLongPressTimer.start();
+        mLastPressedMousePos = event->pos();
+
+        UBDraggableThumbnailView* item = dynamic_cast<UBDraggableThumbnailView*>(itemAt(event->pos()));
+
+        if (item)
+        {
+            UBApplication::boardController->persistViewPositionOnCurrentScene();
+            UBApplication::boardController->persistCurrentScene();
+            UBApplication::boardController->setActiveDocumentScene(item->sceneIndex());
+            UBApplication::boardController->centerOn(UBApplication::boardController->activeScene()->lastCenter());
+        }
+    }
 }
 
 void UBBoardThumbnailsView::mouseMoveEvent(QMouseEvent *event)

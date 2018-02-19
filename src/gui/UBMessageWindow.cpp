@@ -42,7 +42,7 @@ UBMessageWindow::UBMessageWindow(QWidget *parent)
     mLabel = new QLabel(parent);
     mLabel->setStyleSheet(QString("QLabel { color: white; background-color: transparent; border: none; font-family: Arial; font-size: 14px }"));
 
-    mOriginalAlpha = mBackgroundBrush.color().alpha();
+    mOriginalAlpha = 255;
 
     mLayout->setContentsMargins(radius() + 15, 4, radius() + 15, 4);
 
@@ -79,7 +79,7 @@ void UBMessageWindow::showMessage(const QString& message, bool showSpinningWheel
     {
         mSpinningWheel->hide();
         mSpinningWheel->stopAnimation();
-        mTimer.start(200, this);
+        mTimer.start(50, this);
     }
     adjustSizeAndPosition();
 

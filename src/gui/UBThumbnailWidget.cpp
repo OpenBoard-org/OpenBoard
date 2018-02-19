@@ -898,17 +898,27 @@ void UBDraggableThumbnail::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if (triggered(p.y()))
     {
         if(deletable() && getIcon("close")->triggered(p.x()))
+        {
+            event->accept();
             deletePage();
+        }
         else if(getIcon("duplicate")->triggered(p.x()))
+        {
+            event->accept();
             duplicatePage();
+        }
         /*
         else if(movableUp() && getIcon("moveUp")->triggered(p.x()))
             moveUpPage();
         else if (movableDown() && getIcon("moveDown")->triggered(p.x()))
             moveDownPage();*/
-    }
 
-    event->accept();
+         event->ignore();
+    }
+    else
+    {
+        event->ignore();
+    }
 }
 
 void UBDraggableThumbnail::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

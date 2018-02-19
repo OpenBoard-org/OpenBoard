@@ -85,6 +85,7 @@ void UBThumbnailAdaptor::generateMissingThumbnails(UBDocumentProxy* proxy)
 
 const QPixmap* UBThumbnailAdaptor::get(UBDocumentProxy* proxy, int pageIndex)
 {
+    UBApplication::showMessage(tr("loading thumbnail of page %1").arg(pageIndex + 1));
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
 
     QFile file(fileName);
