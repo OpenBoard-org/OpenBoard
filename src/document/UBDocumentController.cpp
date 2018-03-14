@@ -468,11 +468,11 @@ void UBDocumentController::openSelectedItem()
 
     if (selectedItems.count() > 0)
     {
-        UBThumbnailPixmap* thumb = dynamic_cast<UBThumbnailPixmap*> (selectedItems.last());
+        UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (selectedItems.last());
 
         if (thumb)
         {
-            UBDocumentProxy* proxy = thumb->documentProxy();
+            UBDocumentProxy* proxy = thumb->proxy();
 
             if (proxy && isOKToOpenDocument(proxy))
             {
@@ -505,10 +505,10 @@ void UBDocumentController::duplicateSelectedItem()
         QList<int> selectedSceneIndexes;
         foreach (QGraphicsItem *item, selectedItems)
         {
-            UBThumbnailPixmap *thumb = dynamic_cast<UBThumbnailPixmap*>(item);
+            UBSceneThumbnailPixmap *thumb = dynamic_cast<UBSceneThumbnailPixmap*>(item);
             if (thumb)
             {
-                UBDocumentProxy *proxy = thumb->documentProxy();
+                UBDocumentProxy *proxy = thumb->proxy();
 
                 if (proxy)
                 {
@@ -1366,7 +1366,7 @@ void UBDocumentController::selectionChanged()
             mMainWindow->actionDuplicate->setEnabled(!trashSelected);
         else{
             for(int i = 0; i < selection.count() && !firstSceneSelected; i += 1){
-                if(dynamic_cast<UBThumbnailPixmap*>(selection.at(i))->sceneIndex() == 0){
+                if(dynamic_cast<UBSceneThumbnailPixmap*>(selection.at(i))->sceneIndex() == 0){
                     mMainWindow->actionDuplicate->setEnabled(!trashSelected);
                     firstSceneSelected = true;
                 }
@@ -1516,11 +1516,11 @@ void UBDocumentController::addToDocument()
 
         foreach (QGraphicsItem* item, selectedItems)
         {
-            UBThumbnailPixmap* thumb = dynamic_cast<UBThumbnailPixmap*> (item);
+            UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (item);
 
-            if (thumb &&  thumb->documentProxy())
+            if (thumb &&  thumb->proxy())
             {
-                QPair<UBDocumentProxy*, int> pageInfo(thumb->documentProxy(), thumb->sceneIndex());
+                QPair<UBDocumentProxy*, int> pageInfo(thumb->proxy(), thumb->sceneIndex());
                 pageInfoList << pageInfo;
             }
         }
@@ -1809,11 +1809,11 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
 
         foreach (QGraphicsItem* item, itemsToDelete)
         {
-            UBThumbnailPixmap* thumb = dynamic_cast<UBThumbnailPixmap*> (item);
+            UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (item);
 
             if (thumb)
             {
-                proxy = thumb->documentProxy();
+                proxy = thumb->proxy();
                 if (proxy)
                 {
                     sceneIndexes.append(thumb->sceneIndex());
@@ -1843,7 +1843,7 @@ int UBDocumentController::getSelectedItemIndex()
 
     if (selectedItems.count() > 0)
     {
-        UBThumbnailPixmap* thumb = dynamic_cast<UBThumbnailPixmap*> (selectedItems.last());
+        UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (selectedItems.last());
         return thumb->sceneIndex();
     }
     else return -1;
@@ -1872,7 +1872,7 @@ void UBDocumentController::refreshDocumentThumbnailsView(UBDocumentContainer*)
         for (int i = 0; i < selectedDocument()->pageCount(); i++)
         {
             const QPixmap* pix = pageAt(i);
-            QGraphicsPixmapItem *pixmapItem = new UBThumbnailPixmap(*pix, proxy, i); // deleted by the tree widget
+            QGraphicsPixmapItem *pixmapItem = new UBSceneThumbnailPixmap(*pix, proxy, i); // deleted by the tree widget
 
             if (proxy == mBoardController->selectedDocument() && mBoardController->activeSceneIndex() == i)
             {
@@ -1899,7 +1899,7 @@ void UBDocumentController::refreshDocumentThumbnailsView(UBDocumentContainer*)
 
     if (selection) {
         disconnect(mDocumentUI->thumbnailWidget->scene(), SIGNAL(selectionChanged()), this, SLOT(pageSelectionChanged()));
-        UBThumbnailPixmap *currentScene = dynamic_cast<UBThumbnailPixmap*>(selection);
+        UBSceneThumbnailPixmap *currentScene = dynamic_cast<UBSceneThumbnailPixmap*>(selection);
         if (currentScene)
             mDocumentUI->thumbnailWidget->hightlightItem(currentScene->sceneIndex());
         connect(mDocumentUI->thumbnailWidget->scene(), SIGNAL(selectionChanged()), this, SLOT(pageSelectionChanged()));

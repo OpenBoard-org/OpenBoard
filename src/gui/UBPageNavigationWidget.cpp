@@ -60,7 +60,7 @@ UBPageNavigationWidget::UBPageNavigationWidget(QWidget *parent, const char *name
     mLayout = new QVBoxLayout(this);
     setLayout(mLayout);
 
-    mNavigator = new UBBoardThumbnailsView(this);
+    mNavigator = new UBDocumentNavigator(this);
     mLayout->addWidget(mNavigator, 1);
 
     mHLayout = new QHBoxLayout();

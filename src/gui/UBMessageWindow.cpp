@@ -88,6 +88,7 @@ void UBMessageWindow::showMessage(const QString& message, bool showSpinningWheel
     repaint();
     // I mean it, *right now*, also on Mac
     qApp->flush();
+    //qApp->sendPostedEvents();
 }
 
 void UBMessageWindow::timerEvent(QTimerEvent *event)

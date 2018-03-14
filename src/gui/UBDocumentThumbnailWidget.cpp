@@ -75,17 +75,17 @@ void UBDocumentThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
 
     QList<QGraphicsItem*> graphicsItems = items(mMousePressPos);
 
-    UBThumbnailPixmap* sceneItem = 0;
+    UBSceneThumbnailPixmap* sceneItem = 0;
 
     while (!graphicsItems.isEmpty() && !sceneItem)
-        sceneItem = dynamic_cast<UBThumbnailPixmap*>(graphicsItems.takeFirst());
+        sceneItem = dynamic_cast<UBSceneThumbnailPixmap*>(graphicsItems.takeFirst());
 
     if (sceneItem)
     {
         QDrag *drag = new QDrag(this);
         QList<UBMimeDataItem> mimeDataItems;
         foreach (QGraphicsItem *item, selectedItems())
-            mimeDataItems.append(UBMimeDataItem(sceneItem->documentProxy(), mGraphicItems.indexOf(item)));
+            mimeDataItems.append(UBMimeDataItem(sceneItem->proxy(), mGraphicItems.indexOf(item)));
 
         UBMimeData *mime = new UBMimeData(mimeDataItems);
         drag->setMimeData(mime);
@@ -305,7 +305,7 @@ void UBDocumentThumbnailWidget::hightlightItem(int index)
     }
     if (0 <= index && index < mGraphicItems.length())
     {
-        UBThumbnailPixmap *thumbnail = dynamic_cast<UBThumbnailPixmap*>(mGraphicItems.at(index));
+        UBSceneThumbnailPixmap *thumbnail = dynamic_cast<UBSceneThumbnailPixmap*>(mGraphicItems.at(index));
         if (thumbnail)
             thumbnail->highlight();
     }

@@ -183,7 +183,7 @@ void UBPersistenceManager::onSceneLoaded(QByteArray scene, UBDocumentProxy* prox
     qDebug() << "scene loaded " << sceneIndex;
     QTime time;
     time.start();
-    mSceneCache.insert(proxy, sceneIndex, loadDocumentScene(proxy, sceneIndex));
+    mSceneCache.insert(proxy, sceneIndex, loadDocumentScene(proxy, sceneIndex, false));
     qDebug() << "millisecond for sceneCache " << time.elapsed();
 }
 

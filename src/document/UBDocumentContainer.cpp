@@ -52,7 +52,7 @@ void UBDocumentContainer::setDocument(UBDocumentProxy* document, bool forceReloa
     {
         mCurrentDocument = document;
 
-        emit initThumbnailsRequired(this);
+        reloadThumbnails();
         emit documentSet(mCurrentDocument);
     }
 }
@@ -130,6 +130,7 @@ void UBDocumentContainer::deleteThumbPage(int index)
 void UBDocumentContainer::updateThumbPage(int index)
 {
     mDocumentThumbs[index] = UBThumbnailAdaptor::get(mCurrentDocument, index);
+    emit documentPageUpdated(index);
 }
 
 void UBDocumentContainer::insertThumbPage(int index)
