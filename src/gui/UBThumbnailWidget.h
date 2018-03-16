@@ -48,8 +48,8 @@
 
 
 #define STARTDRAGTIME   1000000
-#define BUTTONSIZE      48
-#define BUTTONSPACING 5
+#define BUTTONSIZE      96
+#define BUTTONSPACING 10
 
 class UBDocumentProxy;
 class UBThumbnailTextItem;
