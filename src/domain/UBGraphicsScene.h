@@ -156,7 +156,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         UBGraphicsW3CWidgetItem* addW3CWidget(const QUrl& pWidgetUrl, const QPointF& pPos = QPointF(0, 0));
         void addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, const QPointF& pPos = QPointF(0, 0));
 
-
+        QPointF lastCenter();
+        void setLastCenter(QPointF center);
 
         UBGraphicsMediaItem* addMedia(const QUrl& pMediaFileUrl, bool shouldPlayAsap, const QPointF& pPos = QPointF(0, 0));
         UBGraphicsMediaItem* addVideo(const QUrl& pVideoFileUrl, bool shouldPlayAsap, const QPointF& pPos = QPointF(0, 0));
@@ -174,6 +175,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void addGroup(UBGraphicsGroupContainerItem *groupItem);
 
         QGraphicsItem* setAsBackgroundObject(QGraphicsItem* item, bool pAdaptTransformation = false, bool expand = false);
+        void unsetBackgroundObject();
 
         QGraphicsItem* backgroundObject() const
         {
@@ -193,8 +195,11 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         void moveTo(const QPointF& pPoint);
         void drawLineTo(const QPointF& pEndPoint, const qreal& pWidth, bool bLineStyle);
+        void drawLineTo(const QPointF& pEndPoint, const qreal& pStartWidth, const qreal& endWidth, bool bLineStyle);
         void eraseLineTo(const QPointF& pEndPoint, const qreal& pWidth);
         void drawArcTo(const QPointF& pCenterPoint, qreal pSpanAngle);
+        void drawCurve(const QList<QPair<QPointF, qreal> > &points);
+        void drawCurve(const QList<QPointF>& points, qreal startWidth, qreal endWidth);
 
         bool isEmpty() const;
 
@@ -215,9 +220,14 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
             return !mDarkBackground;
         }
 
-        bool isCrossedBackground() const
+        UBPageBackground pageBackground() const
         {
-            return mCrossedBackground;
+            return mPageBackground;
+        }
+
+        int backgroundGridSize() const
+        {
+            return mBackgroundGridSize;
         }
 
         bool hasBackground()
@@ -247,14 +257,28 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
                     zoomFactor = 1;
                     horizontalPosition = 0;
                     verticalPostition = 0;
+                    mLastSceneCenter = QPointF();
                 }
 
-                SceneViewState(qreal pZoomFactor, int pHorizontalPosition, int pVerticalPostition)
+                SceneViewState(qreal pZoomFactor, int pHorizontalPosition, int pVerticalPostition, QPointF sceneCenter = QPointF())// 1595/1605
                 {
                     zoomFactor = pZoomFactor;
                     horizontalPosition = pHorizontalPosition;
                     verticalPostition = pVerticalPostition;
+                    mLastSceneCenter = sceneCenter;
                 }
+
+                QPointF lastSceneCenter() // Save Scene Center to replace the view when the scene becomes active
+                {
+                    return mLastSceneCenter;
+                }
+
+                void setLastSceneCenter(QPointF center)
+                {
+                    mLastSceneCenter = center;
+                }
+
+                QPointF mLastSceneCenter;
 
                 qreal zoomFactor;
                 int horizontalPosition;
@@ -331,8 +355,9 @@ public slots:
         void initStroke();
         void hideTool();
 
-        void setBackground(bool pIsDark, bool pIsCrossed);
+        void setBackground(bool pIsDark, UBPageBackground pBackground);
         void setBackgroundZoomFactor(qreal zoom);
+        void setBackgroundGridSize(int pSize);
         void setDrawingMode(bool bModeDesktop);
         void deselectAllItems();
 
@@ -362,6 +387,9 @@ public slots:
         UBGraphicsPolygonItem* lineToPolygonItem(const QLineF &pLine, const qreal &pStartWidth, const qreal &pEndWidth);
 
         UBGraphicsPolygonItem* arcToPolygonItem(const QLineF& pStartRadius, qreal pSpanAngle, qreal pWidth);
+        UBGraphicsPolygonItem* curveToPolygonItem(const QList<QPair<QPointF, qreal> > &points);
+        UBGraphicsPolygonItem* curveToPolygonItem(const QList<QPointF> &points, qreal startWidth, qreal endWidth);
+        void addPolygonItemToCurrentStroke(UBGraphicsPolygonItem* polygonItem);
 
         void initPolygonItem(UBGraphicsPolygonItem*);
 
@@ -370,7 +398,9 @@ public slots:
         void hideEraser();
         void drawPointer(const QPointF& pEndPoint, bool isFirstDraw = false);
         void drawMarkerCircle(const QPointF& pEndPoint);
+        void drawPenCircle(const QPointF& pEndPoint);
         void hideMarkerCircle();
+        void hidePenCircle();
         void DisposeMagnifierQWidgets();
 
 
@@ -391,13 +421,17 @@ public slots:
         void createEraiser();
         void createPointer();
         void createMarkerCircle();
+        void createPenCircle();
         void updateEraserColor();
         void updateMarkerCircleColor();
+        void updatePenCircleColor();
         bool hasTextItemWithFocus(UBGraphicsGroupContainerItem* item);
+        void simplifyCurrentStroke();
 
         QGraphicsEllipseItem* mEraser;
         QGraphicsEllipseItem* mPointer; // "laser" pointer
         QGraphicsEllipseItem* mMarkerCircle; // dotted circle around marker
+        QGraphicsEllipseItem* mPenCircle; // dotted circle around pen
 
         QSet<QGraphicsItem*> mAddedItems;
         QSet<QGraphicsItem*> mRemovedItems;
@@ -405,7 +439,9 @@ public slots:
         UBDocumentProxy* mDocument;
 
         bool mDarkBackground;
-        bool mCrossedBackground;
+        UBPageBackground mPageBackground;
+        int mBackgroundGridSize;
+
         bool mIsDesktopMode;
         qreal mZoomFactor;
 
@@ -413,6 +449,7 @@ public slots:
 
         QPointF mPreviousPoint;
         qreal mPreviousWidth;
+        qreal mDistanceFromLastStrokePoint;
 
         QList<UBGraphicsPolygonItem*> mPreviousPolygonItems;
 
@@ -444,6 +481,7 @@ public slots:
 
         UBZLayerController *mZLayerController;
         UBGraphicsPolygonItem* mpLastPolygon;
+        UBGraphicsPolygonItem* mTempPolygon;
 
         bool mDrawWithCompass;
         UBGraphicsPolygonItem *mCurrentPolygon;

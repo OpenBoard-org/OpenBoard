@@ -58,6 +58,7 @@
 
 #include "gui/UBMainWindow.h"
 #include "gui/UBResources.h"
+#include "gui/UBThumbnailWidget.h"
 
 #include "adaptors/publishing/UBSvgSubsetRasterizer.h"
 
@@ -286,6 +287,8 @@ int UBApplication::exec(const QString& pFileToImport)
     mainWindow->actionPaste->setShortcuts(QKeySequence::Paste);
     mainWindow->actionCut->setShortcuts(QKeySequence::Cut);
 
+    UBThumbnailUI::_private::initCatalog();
+
     connect(mainWindow->actionBoard, SIGNAL(triggered()), this, SLOT(showBoard()));
     connect(mainWindow->actionWeb, SIGNAL(triggered()), this, SLOT(showInternet()));
     connect(mainWindow->actionWeb, SIGNAL(triggered()), this, SLOT(stopScript()));
@@ -511,13 +514,12 @@ void UBApplication::decorateActionMenu(QAction* action)
             menu->addSeparator();
             menu->addAction(mainWindow->actionPreferences);
             menu->addAction(mainWindow->actionMultiScreen);
-            menu->addAction(mainWindow->actionCheckUpdate);
+            if (!UBSettings::settings()->appHideCheckForSoftwareUpdate->get().toBool())
+                menu->addAction(mainWindow->actionCheckUpdate);
             menu->addSeparator();
 
-#ifndef Q_OS_LINUX // No Podcast on Linux yet
             menu->addAction(mainWindow->actionPodcast);
             mainWindow->actionPodcast->setText(tr("Podcast"));
-#endif
 
             menu->addSeparator();
             menu->addAction(mainWindow->actionQuit);

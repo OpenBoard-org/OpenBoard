@@ -348,7 +348,7 @@ for ((i=0;i<${#tab[@]};i++)); do
         echo -n ",    " >> "$CONTROL_FILE"
     fi
     
-    echo -n "${tab[$i]} (>= "`dpkg -p ${tab[$i]} | grep "Version: " | awk '{      print $2 }' | sed -e 's/\([:. 0-9?]*\).*/\1/g' | sed -e 's/\.$//'`") " >> "$CONTROL_FILE"
+    echo -n "${tab[$i]} (>= "`apt-cache show ${tab[$i]} | grep "Version: " | head -1 | awk '{      print $2 }' | sed -e 's/\([:. 0-9?]*\).*/\1/g' | sed -e 's/\.$//'`") " >> "$CONTROL_FILE"
 done
 echo -n ",  onboard" >> "$CONTROL_FILE"
 

@@ -48,6 +48,7 @@
 #include "gui/UBMagnifer.h"
 #include "gui/UBMainWindow.h"
 #include "gui/UBToolWidget.h"
+#include "gui/UBResources.h"
 
 #include "tools/UBGraphicsRuler.h"
 #include "tools/UBGraphicsProtractor.h"
@@ -317,13 +318,15 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     , mEraser(0)
     , mPointer(0)
     , mMarkerCircle(0)
+    , mPenCircle(0)
     , mDocument(parent)
     , mDarkBackground(false)
-    , mCrossedBackground(false)
+    , mPageBackground(UBPageBackground::plain)
     , mIsDesktopMode(false)
     , mZoomFactor(1)
     , mBackgroundObject(0)
     , mPreviousWidth(0)
+    , mDistanceFromLastStrokePoint(0)
     , mInputDeviceIsPressed(false)
     , mArcPolygonItem(0)
     , mRenderingContext(Screen)
@@ -335,6 +338,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     , mZLayerController(new UBZLayerController(this))
     , mpLastPolygon(NULL)
     , mCurrentPolygon(0)
+    , mTempPolygon(NULL)
     , mSelectionFrame(0)
 {
     UBCoreGraphicsScene::setObjectName("BoardScene");
@@ -345,6 +349,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     createEraiser();
     createPointer();
     createMarkerCircle();
+    createPenCircle();
 
     if (UBApplication::applicationController)
     {
@@ -352,6 +357,8 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
             UBApplication::applicationController->initialHScroll(),
             UBApplication::applicationController->initialVScroll()));
     }
+
+    mBackgroundGridSize = UBSettings::settings()->crossSize;
 
 //    Just for debug. Do not delete please
 //    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
@@ -376,6 +383,16 @@ void UBGraphicsScene::selectionChangedProcessing()
                                    + QString::number(selectedItems().first()->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f'));
 
     }
+}
+
+void UBGraphicsScene::setLastCenter(QPointF center)
+{
+    mViewState.setLastSceneCenter(center);
+}
+
+QPointF UBGraphicsScene::lastCenter()
+{
+    return mViewState.lastSceneCenter();
 }
 
 bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pressure)
@@ -407,10 +424,14 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             if (currentTool == UBStylusTool::Marker)
                 hideMarkerCircle();
 
+            // hide the pen preview circle
+            if (currentTool == UBStylusTool::Pen)
+                hidePenCircle();
+
             // ---------------------------------------------------------------
             // Create a new Stroke. A Stroke is a collection of QGraphicsLines
             // ---------------------------------------------------------------
-            mCurrentStroke = new UBGraphicsStroke();
+            mCurrentStroke = new UBGraphicsStroke(this);
 
             if (currentTool != UBStylusTool::Line){
                 // Handle the pressure
@@ -432,6 +453,8 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             else {
                 moveTo(scenePos);
                 drawLineTo(scenePos, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
+
+                mCurrentStroke->addPoint(scenePos, width);
             }
             accepted = true;
         }
@@ -487,6 +510,15 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
         }
     }
 
+    else if (currentTool == UBStylusTool::Pen) {
+        if (mInputDeviceIsPressed)
+            hidePenCircle();
+        else {
+            drawPenCircle(position);
+            accepted = true;
+        }
+    }
+
     if (mInputDeviceIsPressed)
     {
         if (dc->isDrawingTool())
@@ -495,7 +527,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
 
             if (currentTool != UBStylusTool::Line){
                 // Handle the pressure
-                width = dc->currentToolWidth() * pressure;
+                width = dc->currentToolWidth() * qMax(pressure, 0.2);
             }else{
                 // Ignore pressure for line tool
                 width = dc->currentToolWidth();
@@ -535,11 +567,60 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                     position = newPosition;
             }
 
+            if (!mCurrentStroke)
+                mCurrentStroke = new UBGraphicsStroke(this);
+
             if(dc->mActiveRuler){
                 dc->mActiveRuler->DrawLine(position, width);
             }
-            else{
-                drawLineTo(position, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
+
+            else if (currentTool == UBStylusTool::Line) {
+                drawLineTo(position, width, true);
+            }
+
+            else {
+                bool interpolate = false;
+
+                if ((currentTool == UBStylusTool::Pen && UBSettings::settings()->boardInterpolatePenStrokes->get().toBool())
+                    || (currentTool == UBStylusTool::Marker && UBSettings::settings()->boardInterpolateMarkerStrokes->get().toBool()))
+                {
+                    interpolate = true;
+                }
+
+
+                // Don't draw segments smaller than a certain length. This can help with performance
+                // (less polygons to draw) but mostly with making the curve look smooth.
+
+                qreal antiScaleRatio = 1./(UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
+                qreal MIN_DISTANCE = 10*antiScaleRatio; // arbitrary. Move to settings if relevant.
+                qreal distance = QLineF(mPreviousPoint, scenePos).length();
+
+                mDistanceFromLastStrokePoint += distance;
+
+                if (mDistanceFromLastStrokePoint > MIN_DISTANCE) {
+                    QList<QPair<QPointF, qreal> > newPoints = mCurrentStroke->addPoint(scenePos, width, interpolate);
+                    if (newPoints.length() > 1)
+                        drawCurve(newPoints);
+
+                    mDistanceFromLastStrokePoint = 0;
+                }
+
+                if (interpolate) {
+                    // Bezier curves aren't drawn all the way to the scenePos (they stop halfway between the previous and
+                    // current scenePos), so we add a line from the last drawn position in the stroke and the
+                    // scenePos, to make the drawing feel more responsive. This line is then deleted if a new segment is
+                    // added to the stroke. (Or it is added to the stroke when we stop drawing)
+
+                    if (mTempPolygon) {
+                        removeItem(mTempPolygon);
+                        mTempPolygon = NULL;
+                    }
+
+                    QPointF lastDrawnPoint = mCurrentStroke->points().last().first;
+
+                    mTempPolygon = lineToPolygonItem(QLineF(lastDrawnPoint, scenePos), mPreviousWidth, width);
+                    addItem(mTempPolygon);
+                }
             }
         }
         else if (currentTool == UBStylusTool::Eraser)
@@ -597,7 +678,9 @@ bool UBGraphicsScene::inputDeviceRelease()
                 mAddedItems.remove(item);
                 removeItem(item);
                 UBCoreGraphicsScene::removeItemFromDeletion(item);
-                mArcPolygonItem->setStrokesGroup(pStrokes);
+                UBGraphicsPolygonItem* pi = qgraphicsitem_cast<UBGraphicsPolygonItem*>(item);
+                if (pi)
+                    pi->setStrokesGroup(pStrokes);
                 pStrokes->addToGroup(item);
             }
 
@@ -608,6 +691,21 @@ bool UBGraphicsScene::inputDeviceRelease()
             mDrawWithCompass = false;
         }
         else if (mCurrentStroke){
+            if (mTempPolygon) {
+                UBGraphicsPolygonItem * poly = dynamic_cast<UBGraphicsPolygonItem*>(mTempPolygon->deepCopy());
+                removeItem(mTempPolygon);
+                mTempPolygon = NULL;
+                addPolygonItemToCurrentStroke(poly);
+            }
+
+            // replace the stroke by a simplified version of it
+            if ((currentTool == UBStylusTool::Pen && UBSettings::settings()->boardSimplifyPenStrokes->get().toBool())
+                || (currentTool == UBStylusTool::Marker && UBSettings::settings()->boardSimplifyMarkerStrokes->get().toBool()))
+            {
+                simplifyCurrentStroke();
+            }
+
+
             UBGraphicsStrokesGroup* pStrokes = new UBGraphicsStrokesGroup();
 
             // Remove the strokes that were just drawn here and replace them by a stroke item
@@ -728,11 +826,44 @@ void UBGraphicsScene::drawMarkerCircle(const QPointF &pPoint)
 
 }
 
+void UBGraphicsScene::drawPenCircle(const QPointF &pPoint)
+{
+    if (mPenCircle && UBSettings::settings()->showPenPreviewCircle->get().toBool() &&
+        UBSettings::settings()->currentPenWidth() >= UBSettings::settings()->penPreviewFromSize->get().toInt()) {
+        qreal penDiameter = UBSettings::settings()->currentPenWidth();
+        penDiameter /= UBApplication::boardController->systemScaleFactor();
+        penDiameter /= UBApplication::boardController->currentZoom();
+        qreal penRadius = penDiameter/2;
+
+        mPenCircle->setRect(QRectF(pPoint.x() - penRadius, pPoint.y() - penRadius,
+                                      penDiameter, penDiameter));
+
+        if (controlView())
+            if (controlView()->viewport())
+                controlView()->viewport()->setCursor(QCursor (Qt::BlankCursor));
+
+        mPenCircle->show();
+    }
+    else
+    {
+        if (controlView())
+            if (controlView()->viewport())
+                controlView()->viewport()->setCursor(UBResources::resources()->penCursor);
+    }
+
+}
+
 void UBGraphicsScene::hideMarkerCircle()
 {
     if (mMarkerCircle) {
         mMarkerCircle->hide();
     }
+}
+
+void UBGraphicsScene::hidePenCircle()
+{
+    if (mPenCircle)
+        mPenCircle->hide();
 }
 
 // call this function when user release mouse button in Magnifier mode
@@ -773,16 +904,60 @@ void UBGraphicsScene::moveTo(const QPointF &pPoint)
     mArcPolygonItem = 0;
     mDrawWithCompass = false;
 }
-
 void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, bool bLineStyle)
 {
+    drawLineTo(pEndPoint, pWidth, pWidth, bLineStyle);
+
+}
+
+void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &startWidth, const qreal &endWidth, bool bLineStyle)
+{
     if (mPreviousWidth == -1.0)
-        mPreviousWidth = pWidth;
+        mPreviousWidth = startWidth;
 
-    //    UBGraphicsPolygonItem *polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), pWidth);
+    qreal initialWidth = startWidth;
+    if (initialWidth == endWidth)
+        initialWidth = mPreviousWidth;
 
-    UBGraphicsPolygonItem *polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), mPreviousWidth,pWidth);
+    if (bLineStyle) {
+        QSetIterator<QGraphicsItem*> itItems(mAddedItems);
 
+        while (itItems.hasNext()) {
+            QGraphicsItem* item = itItems.next();
+            removeItem(item);
+        }
+        mAddedItems.clear();
+    }
+
+    UBGraphicsPolygonItem *polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), initialWidth, endWidth);
+    addPolygonItemToCurrentStroke(polygonItem);
+
+    if (!bLineStyle) {
+        mPreviousPoint = pEndPoint;
+        mPreviousWidth = endWidth;
+    }
+}
+
+void UBGraphicsScene::drawCurve(const QList<QPair<QPointF, qreal> >& points)
+{
+    UBGraphicsPolygonItem* polygonItem = curveToPolygonItem(points);
+    addPolygonItemToCurrentStroke(polygonItem);
+
+    mPreviousPoint = points.last().first;
+    mPreviousWidth = points.last().second;
+}
+
+void UBGraphicsScene::drawCurve(const QList<QPointF>& points, qreal startWidth, qreal endWidth)
+{
+    UBGraphicsPolygonItem* polygonItem = curveToPolygonItem(points, startWidth, endWidth);
+    addPolygonItemToCurrentStroke(polygonItem);
+
+    mPreviousWidth = endWidth;
+    mPreviousPoint = points.last();
+}
+
+void UBGraphicsScene::addPolygonItemToCurrentStroke(UBGraphicsPolygonItem* polygonItem)
+{
     if (!polygonItem->brush().isOpaque())
     {
         // -------------------------------------------------------------------------------------
@@ -795,37 +970,18 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &pWidth, 
         }
     }
 
-
-    if (bLineStyle)
-    {
-        QSetIterator<QGraphicsItem*> itItems(mAddedItems);
-
-        while (itItems.hasNext())
-        {
-            QGraphicsItem* item = itItems.next();
-            removeItem(item);
-        }
-        mAddedItems.clear();
-    }
-
     mpLastPolygon = polygonItem;
     mAddedItems.insert(polygonItem);
 
     // Here we add the item to the scene
     addItem(polygonItem);
     if (!mCurrentStroke)
-        mCurrentStroke = new UBGraphicsStroke();
+        mCurrentStroke = new UBGraphicsStroke(this);
 
     polygonItem->setStroke(mCurrentStroke);
 
     mPreviousPolygonItems.append(polygonItem);
 
-
-    if (!bLineStyle)
-    {
-        mPreviousPoint = pEndPoint;
-        mPreviousWidth = pWidth;
-    }
 }
 
 void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
@@ -868,7 +1024,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
         }
         else if (eraserPath.intersects(itemPainterPath))
         {
-
+            itemPainterPath.setFillRule(Qt::WindingFill);
             QPainterPath newPath = itemPainterPath.subtracted(eraserPath);
             #pragma omp critical
             {
@@ -938,6 +1094,7 @@ void UBGraphicsScene::drawArcTo(const QPointF& pCenterPoint, qreal pSpanAngle)
     penWidth /= UBApplication::boardController->currentZoom();
 
     mArcPolygonItem = arcToPolygonItem(QLineF(pCenterPoint, mPreviousPoint), pSpanAngle, penWidth);
+    mArcPolygonItem->setFillRule(Qt::WindingFill);
     mArcPolygonItem->setStroke(mCurrentStroke);
     mAddedItems.insert(mArcPolygonItem);
     addItem(mArcPolygonItem);
@@ -945,7 +1102,7 @@ void UBGraphicsScene::drawArcTo(const QPointF& pCenterPoint, qreal pSpanAngle)
     setDocumentUpdated();
 }
 
-void UBGraphicsScene::setBackground(bool pIsDark, bool pIsCrossed)
+void UBGraphicsScene::setBackground(bool pIsDark, UBPageBackground pBackground)
 {
     bool needRepaint = false;
 
@@ -955,15 +1112,16 @@ void UBGraphicsScene::setBackground(bool pIsDark, bool pIsCrossed)
 
         updateEraserColor();
         updateMarkerCircleColor();
+        updatePenCircleColor();
         recolorAllItems();
 
         needRepaint = true;
         setModified(true);
     }
 
-    if (mCrossedBackground != pIsCrossed)
+    if (mPageBackground != pBackground)
     {
-        mCrossedBackground = pIsCrossed;
+        mPageBackground = pBackground;
         needRepaint = true;
         setModified(true);
     }
@@ -980,6 +1138,18 @@ void UBGraphicsScene::setBackground(bool pIsDark, bool pIsCrossed)
 void UBGraphicsScene::setBackgroundZoomFactor(qreal zoom)
 {
     mZoomFactor = zoom;
+}
+
+
+void UBGraphicsScene::setBackgroundGridSize(int pSize)
+{
+    if (pSize > 0) {
+        mBackgroundGridSize = pSize;
+        setModified(true);
+
+        foreach(QGraphicsView* view, views())
+            view->resetCachedContent();
+    }
 }
 
 void UBGraphicsScene::setDrawingMode(bool bModeDesktop)
@@ -1061,6 +1231,8 @@ void UBGraphicsScene::initPolygonItem(UBGraphicsPolygonItem* polygonItem)
         polygonItem->setColor(colorOnLightBG);
     }
 
+    //polygonItem->setColor(QColor(rand()%256, rand()%256, rand()%256, polygonItem->brush().color().alpha()));
+
     polygonItem->setColorOnDarkBackground(colorOnDarkBG);
     polygonItem->setColorOnLightBackground(colorOnLightBG);
 
@@ -1070,6 +1242,21 @@ void UBGraphicsScene::initPolygonItem(UBGraphicsPolygonItem* polygonItem)
 UBGraphicsPolygonItem* UBGraphicsScene::arcToPolygonItem(const QLineF& pStartRadius, qreal pSpanAngle, qreal pWidth)
 {
     QPolygonF polygon = UBGeometryUtils::arcToPolygon(pStartRadius, pSpanAngle, pWidth);
+
+    return polygonToPolygonItem(polygon);
+}
+
+UBGraphicsPolygonItem* UBGraphicsScene::curveToPolygonItem(const QList<QPair<QPointF, qreal> >& points)
+{
+    QPolygonF polygon = UBGeometryUtils::curveToPolygon(points, false, true);
+
+    return polygonToPolygonItem(polygon);
+
+}
+
+UBGraphicsPolygonItem* UBGraphicsScene::curveToPolygonItem(const QList<QPointF>& points, qreal startWidth, qreal endWidth)
+{
+    QPolygonF polygon = UBGeometryUtils::curveToPolygon(points, startWidth, endWidth);
 
     return polygonToPolygonItem(polygon);
 }
@@ -1146,6 +1333,7 @@ void UBGraphicsScene::hideTool()
 {
     hideEraser();
     hideMarkerCircle();
+    hidePenCircle();
 }
 
 void UBGraphicsScene::leaveEvent(QEvent * event)
@@ -1158,7 +1346,8 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
 {
     UBGraphicsScene* copy = new UBGraphicsScene(this->document(), this->mUndoRedoStackEnabled);
 
-    copy->setBackground(this->isDarkBackground(), this->isCrossedBackground());
+    copy->setBackground(this->isDarkBackground(), mPageBackground);
+    copy->setBackgroundGridSize(mBackgroundGridSize);
     copy->setSceneRect(this->sceneRect());
 
     if (this->mNominalSize.isValid())
@@ -1872,6 +2061,21 @@ QGraphicsItem* UBGraphicsScene::setAsBackgroundObject(QGraphicsItem* item, bool 
     return item;
 }
 
+void UBGraphicsScene::unsetBackgroundObject()
+{
+    if (!mBackgroundObject)
+        return;
+
+    mBackgroundObject->setFlag(QGraphicsItem::ItemIsSelectable, true);
+    mBackgroundObject->setFlag(QGraphicsItem::ItemIsMovable, true);
+    mBackgroundObject->setAcceptedMouseButtons(Qt::LeftButton);
+
+    // Item zLayer and Layer Type should be set by the caller of this function, as
+    // it may depend on the object type, where it was before, etc.
+
+    mBackgroundObject = 0;
+}
+
 QRectF UBGraphicsScene::normalizedSceneRect(qreal ratio)
 {
 
@@ -2424,7 +2628,7 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
             bgCrossColor = QColor(UBSettings::settings()->boardCrossColorDarkBackground->get().toString());
         else
             bgCrossColor = QColor(UBSettings::settings()->boardCrossColorLightBackground->get().toString());
-        if (mZoomFactor < 1.0)
+        if (mZoomFactor < 0.7)
         {
             int alpha = 255 * mZoomFactor / 2;
             bgCrossColor.setAlpha (alpha); // fade the crossing on small zooms
@@ -2432,20 +2636,30 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
 
         painter->setPen (bgCrossColor);
 
-        if (isCrossedBackground())
+        if (mPageBackground == UBPageBackground::crossed)
         {
-            qreal firstY = ((int) (rect.y () / UBSettings::crossSize)) * UBSettings::crossSize;
+            qreal firstY = ((int) (rect.y () / backgroundGridSize())) * backgroundGridSize();
 
-            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += UBSettings::crossSize)
+            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += backgroundGridSize())
             {
                 painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
             }
 
-            qreal firstX = ((int) (rect.x () / UBSettings::crossSize)) * UBSettings::crossSize;
+            qreal firstX = ((int) (rect.x () / backgroundGridSize())) * backgroundGridSize();
 
-            for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += UBSettings::crossSize)
+            for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += backgroundGridSize())
             {
                 painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
+            }
+        }
+
+        else if (mPageBackground == UBPageBackground::ruled)
+        {
+            qreal firstY = ((int) (rect.y () / backgroundGridSize())) * backgroundGridSize();
+
+            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += backgroundGridSize())
+            {
+                painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
             }
         }
     }
@@ -2558,6 +2772,30 @@ bool UBGraphicsScene::hasTextItemWithFocus(UBGraphicsGroupContainerItem *item){
     return bHasFocus;
 }
 
+
+void UBGraphicsScene::simplifyCurrentStroke()
+{
+    if (!mCurrentStroke)
+        return;
+
+    UBGraphicsStroke* simplerStroke = mCurrentStroke->simplify();
+    if (!simplerStroke)
+        return;
+
+    foreach(UBGraphicsPolygonItem* poly, mCurrentStroke->polygons()){
+        mPreviousPolygonItems.removeAll(poly);
+        removeItem(poly);
+    }
+
+    mCurrentStroke = simplerStroke;
+
+    foreach(UBGraphicsPolygonItem* poly, mCurrentStroke->polygons()) {
+        addItem(poly);
+        mPreviousPolygonItems.append(poly);
+    }
+
+}
+
 void UBGraphicsScene::setDocumentUpdated()
 {
     if (document())
@@ -2617,6 +2855,25 @@ void UBGraphicsScene::createMarkerCircle()
     }
 }
 
+void UBGraphicsScene::createPenCircle()
+{
+    if (UBSettings::settings()->showPenPreviewCircle->get().toBool()) {
+        mPenCircle = new QGraphicsEllipseItem();
+
+        mPenCircle->setRect(QRect(0, 0, 0, 0));
+        mPenCircle->setVisible(false);
+
+        mPenCircle->setPen(Qt::DotLine);
+        updatePenCircleColor();
+
+        mPenCircle->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+        mPenCircle->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Eraiser));
+
+        mTools << mPenCircle;
+        addItem(mPenCircle);
+    }
+}
+
 void UBGraphicsScene::updateEraserColor()
 {
     if (!mEraser)
@@ -2654,12 +2911,35 @@ void UBGraphicsScene::updateMarkerCircleColor()
     mMarkerCircle->setPen(mcPen);
 }
 
+void UBGraphicsScene::updatePenCircleColor()
+{
+    if (!mPenCircle)
+        return;
+
+    QPen mcPen = mPenCircle->pen();
+
+    if (mDarkBackground) {
+        mcPen.setColor(UBSettings::penCirclePenColorDarkBackground);
+        mPenCircle->setBrush(UBSettings::penCircleBrushColorDarkBackground);
+    }
+
+    else {
+        mcPen.setColor(UBSettings::penCirclePenColorLightBackground);
+        mPenCircle->setBrush(UBSettings::penCircleBrushColorLightBackground);
+    }
+
+    mcPen.setStyle(Qt::DotLine);
+    mPenCircle->setPen(mcPen);
+}
+
 void UBGraphicsScene::setToolCursor(int tool)
 {
     if (tool == (int)UBStylusTool::Selector ||
             tool == (int)UBStylusTool::Text ||
             tool == (int)UBStylusTool::Play) {
         deselectAllItems();
+        hideMarkerCircle();
+        hidePenCircle();
     }
 
     if (mCurrentStroke && mCurrentStroke->polygons().empty()){
@@ -2671,5 +2951,5 @@ void UBGraphicsScene::setToolCursor(int tool)
 
 void UBGraphicsScene::initStroke()
 {
-    mCurrentStroke = new UBGraphicsStroke();
+    mCurrentStroke = new UBGraphicsStroke(this);
 }

@@ -326,6 +326,7 @@ class UBGraphicsItemDelegate : public QObject
         virtual void updateMenuActionState();
 
         void showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem);
+        void setLockedRecurs(const QVariant &pLock, QGraphicsItem *pItem);
 
         QList<DelegateButton*> buttons() {return mButtons;}
         QGraphicsItem* mDelegated;
@@ -343,6 +344,7 @@ class UBGraphicsItemDelegate : public QObject
 
         QAction* mLockAction;
         QAction* mShowOnDisplayAction;
+        QAction* mSetAsBackgroundAction;
         QAction* mGotoContentSourceAction;
 
         UBGraphicsDelegateFrame* mFrame;
@@ -354,6 +356,7 @@ class UBGraphicsItemDelegate : public QObject
         UBGraphicsToolBarItem* mToolBarItem;
 
 protected slots:
+        virtual void setAsBackground();
         virtual void gotoContentSource();
 
 private:

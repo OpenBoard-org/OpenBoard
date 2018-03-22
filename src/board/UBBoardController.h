@@ -159,6 +159,7 @@ class UBBoardController : public UBDocumentContainer
             return mSystemScaleFactor;
         }
         qreal currentZoom();
+        void persistViewPositionOnCurrentScene();
         void persistCurrentScene(bool isAnAutomaticBackup = false, bool forceImmediateSave = false);
         void showNewVersionAvailable(bool automatic, const UBVersion &installedVersion, const UBSoftwareUpdate &softwareUpdate);
         void setBoxing(QRect displayRect);
@@ -220,7 +221,7 @@ class UBBoardController : public UBDocumentContainer
         UBItem *downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl contentUrl, QString pHeader,
                                  QByteArray pData, QPointF pPos, QSize pSize,
                                  bool isBackground = false, bool internalData = false);
-        void changeBackground(bool isDark, bool isCrossed);
+        void changeBackground(bool isDark, UBPageBackground pageBackground);
         void setToolCursor(int tool);
         void showMessage(const QString& message, bool showSpinningWheel = false);
         void hideMessage();
@@ -263,6 +264,7 @@ class UBBoardController : public UBDocumentContainer
         void documentReorganized(int index);
         void displayMetadata(QMap<QString, QString> metadata);
         void pageSelectionChanged(int index);
+        void centerOnThumbnailRequired(int index);
         void npapiWidgetCreated(const QString &Url);
 
     protected:
@@ -284,6 +286,7 @@ class UBBoardController : public UBDocumentContainer
         void appMainModeChanged(UBApplicationController::MainMode);
 
     private:
+        void initBackgroundGridSize();
         void updatePageSizeState();
         void saveViewState();
         void adjustDisplayViews();
@@ -321,7 +324,7 @@ class UBBoardController : public UBDocumentContainer
         void stylusToolDoubleClicked(int tool);
         void boardViewResized(QResizeEvent* event);
         void documentWillBeDeleted(UBDocumentProxy* pProxy);
-        void updateBackgroundActionsState(bool isDark, bool isCrossed);
+        void updateBackgroundActionsState(bool isDark, UBPageBackground pageBackground);
         void colorPaletteChanged();
         void libraryDialogClosed(int ret);
         void lastWindowClosed();

@@ -1310,16 +1310,16 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
     }
     else if (currentTool == UBStylusTool::Text)
     {
-        UBGraphicsItem *graphicsItem = dynamic_cast<UBGraphicsItem*>(movingItem);
-        if (graphicsItem)
-            graphicsItem->Delegate()->commitUndoStep();
-
         bool bReleaseIsNeed = true;
         if (movingItem != determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos().toPoint()), QTransform())))
         {
             movingItem = NULL;
             bReleaseIsNeed = false;
         }
+
+        UBGraphicsItem *graphicsItem = dynamic_cast<UBGraphicsItem*>(movingItem);
+        if (graphicsItem)
+            graphicsItem->Delegate()->commitUndoStep();
 
         if (mWidgetMoved)
         {
@@ -1609,28 +1609,40 @@ void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
         else
             bgCrossColor = QColor(UBSettings::settings()->boardCrossColorLightBackground->get().toString());
 
-        if (transform ().m11 () < 1.0)
+        if (transform ().m11 () < 0.7)
         {
             int alpha = 255 * transform ().m11 () / 2;
             bgCrossColor.setAlpha (alpha); // fade the crossing on small zooms
         }
 
+        qreal gridSize = scene()->backgroundGridSize();
+
         painter->setPen (bgCrossColor);
 
-        if (scene () && scene ()->isCrossedBackground ())
+        if (scene () && scene ()->pageBackground() == UBPageBackground::crossed)
         {
-            qreal firstY = ((int) (rect.y () / UBSettings::crossSize)) * UBSettings::crossSize;
+            qreal firstY = ((int) (rect.y () / gridSize)) * gridSize;
 
-            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += UBSettings::crossSize)
+            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += gridSize)
             {
                 painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
             }
 
-            qreal firstX = ((int) (rect.x () / UBSettings::crossSize)) * UBSettings::crossSize;
+            qreal firstX = ((int) (rect.x () / gridSize)) * gridSize;
 
-            for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += UBSettings::crossSize)
+            for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += gridSize)
             {
                 painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
+            }
+        }
+
+        if (scene() && scene()->pageBackground() == UBPageBackground::ruled)
+        {
+            qreal firstY = ((int) (rect.y () / gridSize)) * gridSize;
+
+            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += gridSize)
+            {
+                painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
             }
         }
     }

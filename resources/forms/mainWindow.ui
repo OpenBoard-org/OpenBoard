@@ -1004,6 +1004,25 @@
     <string>Grid Light Background</string>
    </property>
   </action>
+  <action name="actionRuledLightBackground">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/backgroundPalette/background5.svg</normaloff>
+     <normalon>:/images/backgroundPalette/background5On.svg</normalon>:/images/backgroundPalette/background5.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Ruled Light Background</string>
+   </property>
+   <property name="iconText">
+    <string>Light</string>
+   </property>
+   <property name="toolTip">
+    <string>Ruled Light Background</string>
+   </property>
+  </action>
   <action name="actionPlainDarkBackground">
    <property name="checkable">
     <bool>true</bool>
@@ -1040,6 +1059,25 @@
    </property>
    <property name="toolTip">
     <string>Grid Dark Background</string>
+   </property>
+  </action>
+  <action name="actionRuledDarkBackground">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/backgroundPalette/background6.svg</normaloff>
+     <normalon>:/images/backgroundPalette/background6On.svg</normalon>:/images/backgroundPalette/background6.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Ruled Dark Background</string>
+   </property>
+   <property name="iconText">
+    <string>Dark</string>
+   </property>
+   <property name="toolTip">
+    <string>Ruled Dark Background</string>
    </property>
   </action>
   <action name="actionPodcast">
@@ -1607,6 +1645,18 @@
    </property>
    <property name="toolTip">
     <string>Open the tutorial web page</string>
+   </property>
+  </action>
+  <action name="actionDefaultGridSize">
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/backgroundPalette/resetDefaultGridSize.svg</normaloff>:/images/backgroundPalette/resetDefaultGridSize.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Reset grid size</string>
+   </property>
+   <property name="toolTip">
+    <string>Reset grid size</string>
    </property>
   </action>
  </widget>

@@ -447,6 +447,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
 
                 bool darkBackground = false;
                 bool crossedBackground = false;
+                bool ruledBackground = false;
 
                 QStringRef ubDarkBackground = mXmlReader.attributes().value(mNamespaceUri, "dark-background");
 
@@ -455,10 +456,44 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
 
                 QStringRef ubCrossedBackground = mXmlReader.attributes().value(mNamespaceUri, "crossed-background");
 
-                if (!ubDarkBackground.isNull())
+                if (!ubCrossedBackground.isNull())
                     crossedBackground = (ubCrossedBackground.toString() == xmlTrue);
 
-                mScene->setBackground(darkBackground, crossedBackground);
+
+                if (crossedBackground) {
+                    QStringRef ubGridSize = mXmlReader.attributes().value(mNamespaceUri, "grid-size");
+
+                    if (!ubGridSize.isNull()) {
+                        int gridSize = ubGridSize.toInt();
+
+                        mScene->setBackgroundGridSize(gridSize);
+                    }
+                }
+
+                QStringRef ubRuledBackground = mXmlReader.attributes().value(mNamespaceUri, "ruled-background");
+
+                if (!ubRuledBackground.isNull())
+                    ruledBackground = (ubRuledBackground.toString() == xmlTrue);
+
+                if (ruledBackground && !crossedBackground) { // if for some reason both are true, the background will be a grid
+                    QStringRef ubGridSize = mXmlReader.attributes().value(mNamespaceUri, "grid-size");
+
+                    if (!ubGridSize.isNull()) {
+                        int gridSize = ubGridSize.toInt();
+
+                        mScene->setBackgroundGridSize(gridSize);
+                    }
+                }
+
+                UBPageBackground bg;
+                if (crossedBackground)
+                    bg = UBPageBackground::crossed;
+                else if (ruledBackground)
+                    bg = UBPageBackground::ruled;
+                else
+                    bg = UBPageBackground::plain;
+
+                mScene->setBackground(darkBackground, bg);
 
                 QStringRef pageNominalSize = mXmlReader.attributes().value(mNamespaceUri, "nominal-size");
                 if (!pageNominalSize.isNull())
@@ -938,6 +973,24 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
     if(mStrokesList.contains(id))
         shouldSkipSubElements = true;
 
+    QString ubLocked = mXmlReader.attributes().value(mNamespaceUri, "locked").toString();
+    if (!ubLocked.isEmpty())
+    {
+        bool isLocked = ubLocked.contains(xmlTrue);
+        group->setData(UBGraphicsItemData::ItemLocked, QVariant(isLocked));
+    }
+
+    QStringRef ubLayer = mXmlReader.attributes().value(mNamespaceUri, "layer");
+    if (!ubLayer.isNull())
+    {
+        bool ok;
+        int layerAsInt = ubLayer.toString().toInt(&ok);
+
+        if (ok)
+            group->setData(UBGraphicsItemData::ItemLayerType, QVariant(layerAsInt));
+    }
+
+
     mXmlReader.readNext();
     while (!mXmlReader.atEnd())
     {
@@ -994,13 +1047,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroupRoot()
         }
         else if (mXmlReader.isStartElement()) {
             if (mXmlReader.name() == tGroup) {
-                QString ubLocked = mXmlReader.attributes().value(UBSettings::uniboardDocumentNamespaceUri, "locked").toString();
+
                 UBGraphicsGroupContainerItem *curGroup = readGroup();
-                if (!ubLocked.isEmpty())
-                {
-                    bool isLocked = ubLocked.contains(xmlTrue);
-                    curGroup->Delegate()->setLocked(isLocked);
-                }
+
                 if (curGroup) {
                     mScene->addGroup(curGroup);
                 }
@@ -1070,7 +1119,18 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement(UBDocumentProxy* pro
     }
 
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "dark-background", mScene->isDarkBackground() ? xmlTrue : xmlFalse);
-    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "crossed-background", mScene->isCrossedBackground() ? xmlTrue : xmlFalse);
+
+    bool crossedBackground = mScene->pageBackground() == UBPageBackground::crossed;
+    bool ruledBackground = mScene->pageBackground() == UBPageBackground::ruled;
+
+    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "crossed-background", crossedBackground ? xmlTrue : xmlFalse);
+    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "ruled-background", ruledBackground ? xmlTrue : xmlFalse);
+
+    if (crossedBackground || ruledBackground) {
+        int gridSize = mScene->backgroundGridSize();
+
+        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "grid-size", QString::number(gridSize));
+    }
 
     QDesktopWidget* desktop = UBApplication::desktop();
 
@@ -1168,6 +1228,9 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
                         QVariant locked = sg->data(UBGraphicsItemData::ItemLocked);
                         if (!locked.isNull() && locked.toBool())
                             mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "locked", xmlTrue);
+
+                        QVariant layer = sg->data(UBGraphicsItemData::ItemLayerType);
+                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "layer", QString("%1").arg(layer.toInt()));
 
                         QMatrix matrix = sg->sceneMatrix();
                         if (!matrix.isIdentity())
@@ -1349,6 +1412,10 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
                 if(curElement.hasAttribute("locked")){
                     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri,"locked",curElement.attribute("locked"));
                 }
+                if(curElement.hasAttribute("layer")){
+                    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri,"layer",curElement.attribute("layer"));
+                }
+
                 QDomElement curSubElement = curElement.firstChildElement();
                 while (!curSubElement.isNull()) {
                     if (curSubElement.hasAttribute(aId)) {
@@ -1393,6 +1460,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
                 curGroupElement.setAttribute("locked", xmlTrue);
             else
                 curGroupElement.setAttribute("locked", xmlFalse);
+
+            curGroupElement.setAttribute("layer", group->data(UBGraphicsItemData::ItemLayerType).toString());
         }
         curParent->appendChild(curGroupElement);
         foreach (QGraphicsItem *item, groupItem->childItems()) {
@@ -1557,6 +1626,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::polygonItemToSvgPolygon(UBGraphicsPo
 
         if (polygonItem->fillRule() == Qt::OddEvenFill)
             mXmlWriter.writeAttribute("fill-rule", "evenodd");
+        else
+            mXmlWriter.writeAttribute("fill-rule", "winding");
 
         if (!groupHoldsInfo)
         {
@@ -1678,6 +1749,17 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
         color.setAlphaF(opacity);
         polygonItem->setColorOnLightBackground(color);
     }
+
+    // Before OpenBoard v1.4, fill rule was only saved if it was "Even-odd". Therefore if no fill rule
+    // is specified, we assume that it should be Winding fill.
+
+    QStringRef fillRule = mXmlReader.attributes().value("fill-rule");
+
+    if (!fillRule.isNull() && fillRule.toString() == "evenodd")
+        polygonItem->setFillRule(Qt::OddEvenFill);
+    else
+        polygonItem->setFillRule(Qt::WindingFill);
+
     return polygonItem;
 
 }

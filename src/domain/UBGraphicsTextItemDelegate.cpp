@@ -41,6 +41,7 @@
 #include "core/UBSettings.h"
 
 #include "board/UBBoardController.h"
+#include "board/UBBoardView.h"
 
 #include "core/memcheck.h"
 
@@ -321,7 +322,7 @@ void UBGraphicsTextItemDelegate::pickFont()
 {
     if (mDelegated && mDelegated->scene() && mDelegated->scene()->views().size() > 0)
     {
-        QFontDialog fontDialog(delegated()->textCursor().charFormat().font(), mDelegated->scene()->views().at(0));
+        QFontDialog fontDialog(delegated()->textCursor().charFormat().font(), static_cast<QGraphicsView*>(UBApplication::boardController->controlView()));
         customize(fontDialog);
 
         if (fontDialog.exec())
@@ -354,8 +355,9 @@ void UBGraphicsTextItemDelegate::pickColor()
 {
     if (mDelegated && mDelegated->scene() && mDelegated->scene()->views().size() > 0)
     {
-        QColorDialog colorDialog(delegated()->defaultTextColor(), mDelegated->scene()->views().at(0));
+        QColorDialog colorDialog(delegated()->defaultTextColor(), static_cast<QGraphicsView*>(UBApplication::boardController->controlView()));
         colorDialog.setWindowTitle(tr("Text Color"));
+        colorDialog.setOption(QColorDialog::DontUseNativeDialog);
         if (UBSettings::settings()->isDarkBackground())
         {
             colorDialog.setStyleSheet("background-color: white;");
@@ -752,11 +754,6 @@ QVariant UBGraphicsTextItemDelegate::itemChange(QGraphicsItem::GraphicsItemChang
                 delegated()->setTextCursor(c);
             }
         }
-    }
-
-    if (value.toBool() == false && delegated()->document()->toPlainText().isEmpty()) {
-        int wdth = QFontMetrics(delegated()->font()).width(delegated()->mTypeTextHereLabel);
-        delegated()->setTextWidth(qMax(wdth, (int)(delegated()->textWidth())));
     }
 
     return UBGraphicsItemDelegate::itemChange(change, value);

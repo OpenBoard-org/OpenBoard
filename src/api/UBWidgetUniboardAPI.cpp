@@ -223,8 +223,12 @@ void UBWidgetUniboardAPI::addObject(QString pUrl, int width, int height, int x, 
 
 void UBWidgetUniboardAPI::setBackground(bool pIsDark, bool pIsCrossed)
 {
-    if (mScene)
-    mScene->setBackground(pIsDark, pIsCrossed);
+    if (mScene) {
+        if (pIsCrossed)
+            mScene->setBackground(pIsDark, UBPageBackground::crossed);
+        else
+            mScene->setBackground(pIsDark, UBPageBackground::plain);
+    }
 }
 
 

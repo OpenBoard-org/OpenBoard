@@ -225,23 +225,153 @@ QPolygonF UBGeometryUtils::arcToPolygon(const QLineF& startRadius, qreal spanAng
     endAngleInDegrees = - endAngleInDegrees;
     spanAngleInDegrees = - spanAngleInDegrees;
 
-    if (overlap)
-    {
-        painterPath.addEllipse(outerSquare);
-        QPainterPath innerPainterPath;
-        innerPainterPath.addEllipse(innerSquare);
-        painterPath = painterPath.subtracted(innerPainterPath);
-    }
-    else
-    {
-        painterPath.arcTo(innerSquare, startAngleInDegrees, spanAngleInDegrees);
-        painterPath.arcTo(endSquare, 180.0 + endAngleInDegrees, spanAngleInDegrees > 0 ? -180.0 : 180.0);
-        painterPath.arcTo(outerSquare, endAngleInDegrees, - spanAngleInDegrees);
-        painterPath.arcTo(startSquare, startAngleInDegrees, spanAngleInDegrees > 0 ? -180.0 : 180.0);
-        painterPath.closeSubpath();
-    }
+    painterPath.setFillRule(Qt::WindingFill);
+    painterPath.arcTo(innerSquare, startAngleInDegrees, spanAngleInDegrees);
+    painterPath.arcTo(endSquare, 180.0 + endAngleInDegrees, spanAngleInDegrees > 0 ? -180.0 : 180.0);
+    painterPath.arcTo(outerSquare, endAngleInDegrees, - spanAngleInDegrees);
+    painterPath.arcTo(startSquare, startAngleInDegrees, spanAngleInDegrees > 0 ? -180.0 : 180.0);
+    painterPath.closeSubpath();
 
     return painterPath.toFillPolygon();
+}
+
+/**
+ * @brief Build and return a polygon from a list of points (at least 2), and start and end widths.
+ *
+ * The resulting polygon will pass by all points in the curve; its thickness is calculated at each point
+ * of the curve (linearly interpolated between start and end widths) and the segments are joined by
+ * (approximately) curved joints.
+ *
+ * Like with lineToPolygon, the ends are semi-circular.
+ */
+QPolygonF UBGeometryUtils::curveToPolygon(const QList<QPointF>& points, qreal startWidth, qreal endWidth)
+{
+    int n_points = points.size();
+
+    if (n_points < 2)
+        return QPolygonF();
+
+    if (n_points == 2)
+        return lineToPolygon(points[0], points[1], startWidth, endWidth);
+
+    QList<QPair<QPointF, qreal> > pointsAndWidths;
+    for (int i(0); i < n_points; ++i) {
+        qreal width = startWidth + (qreal(i)/qreal(n_points-1)) * (endWidth - startWidth);
+
+        pointsAndWidths << QPair<QPointF, qreal>(points[i], width);
+    }
+
+    return curveToPolygon(pointsAndWidths, true, true);
+}
+
+/**
+ * @brief Build and return a polygon from a list of points and thicknesses (at least 2)
+ *
+ * The resulting polygon will pass by all points in the curve; the segments are joined by
+ * (approximately) curved joints. The ends of the polygon can be terminated by arcs by passing
+ * `true` as the `roundStart` and/or `roundEnd` parameters.
+ *
+ */
+QPolygonF UBGeometryUtils::curveToPolygon(const QList<QPair<QPointF, qreal> >& points, bool roundStart, bool roundEnd)
+{
+    int n_points = points.size();
+
+    if (n_points == 0)
+        return QPolygonF();
+    if (n_points == 1)
+        return lineToPolygon(points.first().first, points.first().first, points.first().second, points.first().second);
+
+    qreal startWidth = points.first().second;
+    qreal endWidth = points.last().second;
+
+    /* The vertices (x's) are calculated based on the stroke's width and angle, and the position of the
+       supplied points (o's):
+
+          x----------x--------x
+
+          o          o        o
+
+          x----------x -------x
+
+       The vertices above and below each 'o' point are temporarily stored together, 
+       as a pair of points.
+     */
+
+    typedef QPair<QPointF, QPointF> pointPair;
+    QList<pointPair> newPoints;
+
+
+    QLineF firstSegment = QLineF(points[0].first, points[1].first);
+    QLineF normal = firstSegment.normalVector();
+    normal.setLength(startWidth/2.0);
+    newPoints << pointPair(normal.p2(), points[0].first - QPointF(normal.dx(), normal.dy()));
+
+    /*
+    Calculating the vertices (d1 and d2, below) is a little less trivial for the
+    next points: their positions depend on the angle between one segment and the next.
+
+                      d1
+         ------------x
+                      \
+         .a      b .   \
+                        \
+         --------x       \
+               d2 \       \
+                   \   .c  \
+
+    Here, points a, b and c are supplied in the `points` list.
+
+    N.B: The drawing isn't quite accurate; we don't do a miter joint but a kind
+    of rounded-off joint (the distance between b and d1 is half the width of the stroke)
+    */
+
+    for (int i(1); i < n_points-1; ++i) {
+        //qreal width = startWidth + (qreal(i)/qreal(n_points-1)) * (endWidth - startWidth);
+
+        QLineF normal = (QLineF(points[i-1].first, points[i+1].first)).normalVector();
+        normal.setLength(points[i].second/2.0);
+        QPointF d1 = points[i].first + QPointF(normal.dx(), normal.dy());
+        QPointF d2 = points[i].first - QPointF(normal.dx(), normal.dy());
+
+        newPoints << pointPair(d1, d2);
+    }
+
+    // The last point is similar to the first
+    QLineF lastSegment = QLineF(points[n_points-2].first, points[n_points-1].first);
+    normal = lastSegment.normalVector();
+    normal.setLength(endWidth/2.0);
+
+    QPointF d1 = points.last().first + QPointF(normal.dx(), normal.dy());
+    QPointF d2 = points.last().first - QPointF(normal.dx(), normal.dy());
+
+    newPoints << pointPair(d1, d2);
+
+    QPainterPath path;
+    path.setFillRule(Qt::WindingFill);
+    path.moveTo(newPoints[0].first);
+
+    for (int i(1); i < n_points; ++i) {
+        path.lineTo(newPoints[i].first);
+    }
+
+    if (roundEnd)
+        path.arcTo(points.last().first.x() - endWidth/2.0, points.last().first.y() - endWidth/2.0, endWidth, endWidth, (90.0 + lastSegment.angle()), -180.0);
+    else
+        path.lineTo(newPoints.last().second);
+
+    for (int i(n_points-1); i >= 0; --i) {
+        path.lineTo(newPoints[i].second);
+    }
+
+    if (roundStart)
+        path.arcTo(points[0].first.x() - startWidth/2.0, points[0].first.y() - startWidth/2.0, startWidth, startWidth, (firstSegment.angle() - 90.0), -180.0);
+    else
+        path.lineTo(newPoints[0].first);
+
+
+    //path.closeSubpath();
+
+    return path.toFillPolygon();
 }
 
 QPointF UBGeometryUtils::pointConstrainedInRect(QPointF point, QRectF rect)
@@ -285,4 +415,55 @@ void UBGeometryUtils::crashPointList(QVector<QPointF> &points)
             ++position;
         }
     }
+}
+
+/**
+ * @brief Return the angle in degrees between three points
+ */
+qreal UBGeometryUtils::angle(const QPointF& p1, const QPointF& p2, const QPointF& p3)
+{
+    // Angle between three points, using the law of cosines:
+    // The angle at B equals arccos((a^2-b^2+c^2)/(2*a*c)), where a, b and c are the sides of the triangle
+    // opposite A, B and C, respectively
+
+    qreal a, b, c, beta;
+    a = qSqrt(qPow(p2.x() - p3.x(), 2) + qPow(p2.y() - p3.y(), 2));
+    b = qSqrt(qPow(p1.x() - p3.x(), 2) + qPow(p1.y() - p3.y(), 2));
+    c = qSqrt(qPow(p1.x() - p2.x(), 2) + qPow(p1.y() - p2.y(), 2));
+
+    if (a == 0 || c == 0)
+        beta = 3.14159;
+    else
+        beta = qAcos(std::max(-1.0, std::min(1.0, (a*a - b*b + c*c)/(2*a*c))));
+
+
+    return 180.* beta/3.14159;
+}
+
+
+
+/**
+ * @brief Calculate a quadratic Bézier curve and return it in the form of a list of points
+ * @param p0 The start point of the curve
+ * @param p1 The control point of the curve
+ * @param p2 The end point of the curve
+ * @param nPoints The number of points by which to approximate the curve, i.e. the length of the returned list
+ * @return A list of points that can be used to draw the curve.
+ */
+QList<QPointF> UBGeometryUtils::quadraticBezier(const QPointF& p0, const QPointF& p1, const QPointF& p2, unsigned int nPoints)
+{
+    QPainterPath path(p0);
+    path.quadTo(p1, p2);
+
+    QList<QPointF> points;
+
+    if (nPoints <= 1)
+        return points;
+
+    for (unsigned int i(0); i <= nPoints; ++i) {
+        qreal percent = qreal(i)/qreal(nPoints);
+        points << path.pointAtPercent(percent);
+    }
+
+    return points;
 }

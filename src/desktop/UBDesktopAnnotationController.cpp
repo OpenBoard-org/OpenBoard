@@ -187,9 +187,9 @@ UBDesktopAnnotationController::~UBDesktopAnnotationController()
 
 void UBDesktopAnnotationController::updateColors(){
     if(UBApplication::boardController->activeScene()->isDarkBackground()){
-        mTransparentDrawingScene->setBackground(true, false);
+        mTransparentDrawingScene->setBackground(true, UBPageBackground::plain);
     }else{
-        mTransparentDrawingScene->setBackground(false, false);
+        mTransparentDrawingScene->setBackground(false, UBPageBackground::plain);
     }
 }
 

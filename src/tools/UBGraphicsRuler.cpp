@@ -176,20 +176,44 @@ void UBGraphicsRuler::paintGraduations(QPainter *painter)
     painter->save();
     painter->setFont(font());
     QFontMetricsF fontMetrics(painter->font());
-    for (int millimeters = 0; millimeters < (rect().width() - sLeftEdgeMargin - sRoundingRadius) / sPixelsPerMillimeter; millimeters++)
-    {
-        int graduationX = rotationCenter().x() + sPixelsPerMillimeter * millimeters;
-        int graduationHeight = (0 == millimeters % UBGeometryUtils::millimetersPerCentimeter) ?
-            UBGeometryUtils::centimeterGraduationHeight :
-            ((0 == millimeters % UBGeometryUtils::millimetersPerHalfCentimeter) ?
-                UBGeometryUtils::halfCentimeterGraduationHeight : UBGeometryUtils::millimeterGraduationHeight);
-        painter->drawLine(QLine(graduationX, rotationCenter().y(), graduationX, rotationCenter().y() + graduationHeight));
-        painter->drawLine(QLine(graduationX, rotationCenter().y() + rect().height(), graduationX, rotationCenter().y() + rect().height() - graduationHeight));
-        if (0 == millimeters % UBGeometryUtils::millimetersPerCentimeter)
+
+    // Update the width of one "centimeter" to correspond to the width of the background grid (whether it is displayed or not)
+    sPixelsPerCentimeter = UBApplication::boardController->activeScene()->backgroundGridSize();
+
+    qreal pixelsPerMillimeter = sPixelsPerCentimeter/10.0;
+    int rulerLengthInMillimeters = (rect().width() - sLeftEdgeMargin - sRoundingRadius)/pixelsPerMillimeter;
+
+    // When a "centimeter" is too narrow, we only display every 5th number, and every 5th millimeter mark
+    double numbersWidth = fontMetrics.width("00");
+    bool shouldDisplayAllNumbers = (numbersWidth <= (sPixelsPerCentimeter - 5));
+
+    for (int millimeters(0); millimeters < rulerLengthInMillimeters; millimeters++) {
+
+        double graduationX = rotationCenter().x() + pixelsPerMillimeter * millimeters;
+        double graduationHeight = 0;
+
+        if (millimeters % UBGeometryUtils::millimetersPerCentimeter == 0)
+            graduationHeight = UBGeometryUtils::centimeterGraduationHeight;
+
+        else if (millimeters % UBGeometryUtils::millimetersPerHalfCentimeter == 0)
+            graduationHeight = UBGeometryUtils::halfCentimeterGraduationHeight;
+
+        else
+            graduationHeight = UBGeometryUtils::millimeterGraduationHeight;
+
+
+        if (shouldDisplayAllNumbers || millimeters % UBGeometryUtils::millimetersPerHalfCentimeter == 0) {
+            painter->drawLine(QLineF(graduationX, rotationCenter().y(), graduationX, rotationCenter().y() + graduationHeight));
+            painter->drawLine(QLineF(graduationX, rotationCenter().y() + rect().height(), graduationX, rotationCenter().y() + rect().height() - graduationHeight));
+        }
+
+
+        if ((shouldDisplayAllNumbers && millimeters % UBGeometryUtils::millimetersPerCentimeter == 0)
+            || millimeters % (UBGeometryUtils::millimetersPerCentimeter*5) == 0)
         {
             QString text = QString("%1").arg((int)(millimeters / UBGeometryUtils::millimetersPerCentimeter));
-            if (graduationX + fontMetrics.width(text) / 2 < rect().right())
-            {
+
+            if (graduationX + fontMetrics.width(text) / 2 < rect().right()) {
                 qreal textWidth = fontMetrics.width(text);
                 qreal textHeight = fontMetrics.tightBoundingRect(text).height() + 5;
                 painter->drawText(
@@ -201,7 +225,10 @@ void UBGraphicsRuler::paintGraduations(QPainter *painter)
             }
         }
     }
+
+
     painter->restore();
+
 }
 
 void UBGraphicsRuler::paintRotationCenter(QPainter *painter)
@@ -252,7 +279,7 @@ QRectF UBGraphicsRuler::closeButtonRect() const
         closePixmap.height() * mAntiScaleRatio);
 
     QPointF closeRectCenter(
-        rect().left() + sLeftEdgeMargin + sPixelsPerMillimeter * 5,
+        rect().left() + sLeftEdgeMargin + sPixelsPerCentimeter/2,
         rect().center().y());
 
     QPointF closeRectTopLeft(
@@ -270,9 +297,9 @@ QRectF UBGraphicsRuler::rotateButtonRect() const
         rotatePixmap.width() * mAntiScaleRatio,
         rotatePixmap.height() * mAntiScaleRatio);
 
-    int centimeters = (int)(rect().width() - sLeftEdgeMargin - resizeButtonRect().width()) / (int)(10 * sPixelsPerMillimeter);
+    int centimeters = (int)(rect().width() - sLeftEdgeMargin - resizeButtonRect().width()) / (sPixelsPerCentimeter);
     QPointF rotateRectCenter(
-        rect().left() + sLeftEdgeMargin + (centimeters - 0.5) * 10 * sPixelsPerMillimeter,
+        rect().left() + sLeftEdgeMargin + (centimeters - 0.5) * sPixelsPerCentimeter,
         rect().center().y());
 
     QPointF rotateRectTopLeft(

@@ -1,5 +1,6 @@
 QWidget#DockPaletteWidgetBox,
 QWidget#documentNavigator,
+QWidget#UBBoardThumbnailsView,
 QWidget#UBLibPathViewer,
 QWidget#UBLibNavigatorWidget,
 QWidget#UBLibItemProperties,

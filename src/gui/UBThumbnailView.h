@@ -31,6 +31,9 @@
 #define UBTHUMBNAILVIEW_H_
 
 #include <QGraphicsView>
+#include <QLabel>
+#include <QHBoxLayout>
+#include <QDebug>
 
 class UBGraphicsScene;
 
@@ -39,15 +42,15 @@ class UBThumbnailView : public QGraphicsView
     Q_OBJECT
 
     public:
-        UBThumbnailView();
-        virtual ~UBThumbnailView();
 
-    signals:
-        void doubleClicked();
+        UBThumbnailView(UBGraphicsScene *scene, QWidget* parent =0);
+        virtual ~UBThumbnailView()
+        {
 
-    protected:
-        virtual void drawBackground(QPainter *painter, const QRectF &rect);
-        virtual void mouseDoubleClickEvent ( QMouseEvent * event );
+        }
+
+    private:
+        QHBoxLayout* mHBoxLayout;
 
 };
 

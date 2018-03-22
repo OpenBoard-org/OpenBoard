@@ -45,6 +45,7 @@
 #include "gui/UBZoomPalette.h"
 #include "gui/UBWebToolsPalette.h"
 #include "gui/UBActionPalette.h"
+#include "gui/UBBackgroundPalette.h"
 #include "gui/UBFavoriteToolPalette.h"
 #include "gui/UBStartupHintsPalette.h"
 
@@ -134,7 +135,6 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     //------------------------------------------------//
     // Create the widgets for the dock palettes
-
     mpPageNavigWidget = new UBPageNavigationWidget();
 
     mpCachePropWidget = new UBCachePropertiesWidget();
@@ -145,7 +145,6 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mLeftPalette = new UBLeftPalette(mContainer);
 
     // LEFT palette widgets
-    mpPageNavigWidget = new UBPageNavigationWidget();
     mLeftPalette->registerWidget(mpPageNavigWidget);
     mLeftPalette->addTab(mpPageNavigWidget);
 
@@ -251,14 +250,16 @@ void UBBoardPaletteManager::setupPalettes()
 
     backgroundsActions << UBApplication::mainWindow->actionPlainLightBackground;
     backgroundsActions << UBApplication::mainWindow->actionCrossedLightBackground;
+    backgroundsActions << UBApplication::mainWindow->actionRuledLightBackground;
     backgroundsActions << UBApplication::mainWindow->actionPlainDarkBackground;
     backgroundsActions << UBApplication::mainWindow->actionCrossedDarkBackground;
+    backgroundsActions << UBApplication::mainWindow->actionRuledDarkBackground;
 
-    mBackgroundsPalette = new UBActionPalette(backgroundsActions, Qt::Horizontal , mContainer);
+    mBackgroundsPalette = new UBBackgroundPalette(backgroundsActions, mContainer);
     mBackgroundsPalette->setButtonIconSize(QSize(128, 128));
     mBackgroundsPalette->groupActions();
     mBackgroundsPalette->setClosable(true);
-    mBackgroundsPalette->setAutoClose(true);
+    mBackgroundsPalette->setAutoClose(false);
     mBackgroundsPalette->adjustSizeAndPosition();
     mBackgroundsPalette->hide();
 
@@ -434,8 +435,10 @@ void UBBoardPaletteManager::connectPalettes()
 
     connect(UBApplication::mainWindow->actionPlainLightBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
     connect(UBApplication::mainWindow->actionCrossedLightBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
+    connect(UBApplication::mainWindow->actionRuledLightBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
     connect(UBApplication::mainWindow->actionPlainDarkBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
     connect(UBApplication::mainWindow->actionCrossedDarkBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
+    connect(UBApplication::mainWindow->actionRuledDarkBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
     connect(UBApplication::mainWindow->actionPodcast, SIGNAL(triggered(bool)), this, SLOT(tooglePodcastPalette(bool)));
 
     connect(UBApplication::mainWindow->actionAddItemToCurrentPage, SIGNAL(triggered()), this, SLOT(addItemToCurrentPage()));
@@ -526,15 +529,24 @@ void UBBoardPaletteManager::containerResized()
 void UBBoardPaletteManager::changeBackground()
 {
     if (UBApplication::mainWindow->actionCrossedLightBackground->isChecked())
-        UBApplication::boardController->changeBackground(false, true);
-    else if (UBApplication::mainWindow->actionPlainDarkBackground->isChecked())
-        UBApplication::boardController->changeBackground(true, false);
-    else if (UBApplication::mainWindow->actionCrossedDarkBackground->isChecked())
-        UBApplication::boardController->changeBackground(true, true);
-    else
-        UBApplication::boardController->changeBackground(false, false);
+        UBApplication::boardController->changeBackground(false, UBPageBackground::crossed);
 
-    UBApplication::mainWindow->actionBackgrounds->setChecked(false);
+    else if (UBApplication::mainWindow->actionRuledLightBackground->isChecked())
+        UBApplication::boardController->changeBackground(false, UBPageBackground::ruled);
+
+    else if (UBApplication::mainWindow->actionPlainDarkBackground->isChecked())
+        UBApplication::boardController->changeBackground(true, UBPageBackground::plain);
+
+    else if (UBApplication::mainWindow->actionCrossedDarkBackground->isChecked())
+        UBApplication::boardController->changeBackground(true, UBPageBackground::crossed);
+
+    else if (UBApplication::mainWindow->actionRuledDarkBackground->isChecked())
+        UBApplication::boardController->changeBackground(true, UBPageBackground::ruled);
+
+    else
+        UBApplication::boardController->changeBackground(false, UBPageBackground::plain);
+
+    mBackgroundsPalette->backgroundChanged();
 }
 
 
@@ -554,8 +566,10 @@ void UBBoardPaletteManager::activeSceneChanged()
     if (mZoomPalette)
         connect(mZoomPalette, SIGNAL(mouseEntered()), activeScene, SLOT(hideTool()));
 
-    if (mBackgroundsPalette)
+    if (mBackgroundsPalette) {
         connect(mBackgroundsPalette, SIGNAL(mouseEntered()), activeScene, SLOT(hideTool()));
+        mBackgroundsPalette->refresh();
+    }
 }
 
 

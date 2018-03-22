@@ -152,6 +152,7 @@ public slots:
 
 signals:
     void mouseEntered();
+    void pageSelectionChangedRequired();
 
 protected:
     virtual int border();

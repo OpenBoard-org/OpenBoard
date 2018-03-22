@@ -287,7 +287,12 @@ QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange ch
         }
 
     } break;
-
+    case QGraphicsItem::ItemVisibleHasChanged :
+    {
+        bool shownOnDisplay = mDelegated->data(UBGraphicsItemData::ItemLayerType).toInt() != UBItemLayerType::Control;
+        showHide(shownOnDisplay);
+        break;
+    }
     case QGraphicsItem::ItemPositionHasChanged :
     case QGraphicsItem::ItemTransformHasChanged :
     case QGraphicsItem::ItemZValueHasChanged :
@@ -565,25 +570,20 @@ void UBGraphicsItemDelegate::increaseZlevelBottom()
 
 void UBGraphicsItemDelegate::lock(bool locked)
 {
-    if (locked)
-    {
-        mDelegated->setData(UBGraphicsItemData::ItemLocked, QVariant(true));
-    }
-    else
-    {
-        mDelegated->setData(UBGraphicsItemData::ItemLocked, QVariant(false));
-    }
-
+    setLockedRecurs(locked, mDelegated);
     mDelegated->update();
+
     positionHandles();
     mFrame->positionHandles();
 }
 
-void UBGraphicsItemDelegate::showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem)
+
+void UBGraphicsItemDelegate::setLockedRecurs(const QVariant &pLock, QGraphicsItem *pItem)
 {
-    pItem->setData(UBGraphicsItemData::ItemLayerType, pShow);
-    foreach (QGraphicsItem *insideItem, pItem->childItems()) {
-        showHideRecurs(pShow, insideItem);
+    pItem->setData(UBGraphicsItemData::ItemLocked, pLock);
+    foreach (QGraphicsItem *insideItem, pItem->childItems())
+    {
+        setLockedRecurs(pLock, insideItem);
     }
 }
 
@@ -596,6 +596,40 @@ void UBGraphicsItemDelegate::showHide(bool show)
     emit showOnDisplayChanged(show);
 }
 
+void UBGraphicsItemDelegate::showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem)
+{
+    pItem->setData(UBGraphicsItemData::ItemLayerType, pShow);
+    foreach (QGraphicsItem *insideItem, pItem->childItems()) {
+        showHideRecurs(pShow, insideItem);
+    }
+}
+
+/**
+ * @brief Set delegate as background for the scene, replacing any existing background.
+ */
+void UBGraphicsItemDelegate::setAsBackground()
+{
+    UBGraphicsScene* scene = castUBGraphicsScene();
+    QGraphicsItem* item = delegated();
+
+    if (scene && item) {
+        startUndoStep();
+
+        item->resetTransform();
+        item->setPos(item->sceneBoundingRect().width()/-2., item->sceneBoundingRect().height()/-2.);
+
+        scene->setAsBackgroundObject(item, true);
+
+        UBGraphicsItemTransformUndoCommand *uc =
+                new UBGraphicsItemTransformUndoCommand(mDelegated,
+                                                       mPreviousPosition,
+                                                       mPreviousTransform,
+                                                       mPreviousZValue,
+                                                       mPreviousSize,
+                                                       true);
+        UBApplication::undoStack->push(uc);
+    }
+}
 
 void UBGraphicsItemDelegate::gotoContentSource()
 {
@@ -680,6 +714,15 @@ void UBGraphicsItemDelegate::decorateMenu(QMenu* menu)
     showIcon.addPixmap(QPixmap(":/images/eyeOpened.svg"), QIcon::Normal, QIcon::On);
     showIcon.addPixmap(QPixmap(":/images/eyeClosed.svg"), QIcon::Normal, QIcon::Off);
     mShowOnDisplayAction->setIcon(showIcon);
+
+    if (delegated()->data(UBGraphicsItemData::ItemCanBeSetAsBackground).toBool()) {
+        mSetAsBackgroundAction = mMenu->addAction(tr("Set as background"), this, SLOT(setAsBackground()));
+        mSetAsBackgroundAction->setCheckable(false);
+
+        QIcon backgroundIcon;
+        backgroundIcon.addPixmap(QPixmap(":/images/setAsBackground.svg"), QIcon::Normal, QIcon::On);
+        mSetAsBackgroundAction->setIcon(backgroundIcon);
+    }
 
     if (testUBFlags(GF_SHOW_CONTENT_SOURCE))
     {

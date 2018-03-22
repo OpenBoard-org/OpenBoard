@@ -89,7 +89,10 @@ void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
         Delegate()->setUBFlag(GF_FLIPPABLE_ALL_AXIS, UBGraphicsItem::isFlippable(item));
         Delegate()->setUBFlag(GF_REVOLVABLE, UBGraphicsItem::isRotatable(item));
         Delegate()->setLocked(UBGraphicsItem::isLocked(item));
-    }
+    }        
+
+    if (item->data(UBGraphicsItemData::ItemLayerType) == UBItemLayerType::Control)
+        setData(UBGraphicsItemData::ItemLayerType, item->data(UBGraphicsItemData::ItemLayerType));
 
     // COMBINE
     bool ok;
