@@ -36,7 +36,7 @@ extern "C" {
     #include <libswscale/swscale.h>
 
 // Due to the whole ffmpeg / libAV silliness, we have to support libavresample on some platforms
-#if LIBAVFORMAT_VERSION_MICRO > 100
+#if LIBAVFORMAT_VERSION_MICRO >= 100
     #include <libswresample/swresample.h>
 #else
     #include <libavresample/avresample.h>
