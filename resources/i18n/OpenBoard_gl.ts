@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="es_ES">
+<TS version="2.1" language="gl_GL">
 <context>
     <name>BlackoutWidget</name>
     <message>
         <source>Click to Return to Application</source>
-        <translation type="unfinished">Haga clic para regresar a la aplicación</translation>
+        <translation type="unfinished">Faga clic para voltar á aplicación</translation>
     </message>
 </context>
 <context>
@@ -16,7 +16,7 @@
     </message>
     <message>
         <source>Clean Up</source>
-        <translation>Limpiar</translation>
+        <translation>Limpar</translation>
     </message>
     <message>
         <source>0 Items</source>
@@ -31,15 +31,15 @@
     </message>
     <message>
         <source>Filename</source>
-        <translation>Nombre de archivo</translation>
+        <translation>Nome de arquivo</translation>
     </message>
     <message>
         <source>Try Again</source>
-        <translation>Vuelva a intentarlo</translation>
+        <translation>Volva a intentalo</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Detener</translation>
+        <translation>Deter</translation>
     </message>
     <message>
         <source>Open</source>
@@ -69,7 +69,7 @@
     <name>MainWindow</name>
     <message>
         <source>Board</source>
-        <translation>Pizarra</translation>
+        <translation>Encerado</translation>
     </message>
     <message>
         <source>Web</source>
@@ -81,7 +81,7 @@
     </message>
     <message>
         <source>Stylus</source>
-        <translation>Lápiz</translation>
+        <translation>Lapis</translation>
     </message>
     <message>
         <source>Ctrl+T</source>
@@ -97,7 +97,7 @@
     </message>
     <message>
         <source>Undo</source>
-        <translation>Deshacer</translation>
+        <translation>Desfacer</translation>
     </message>
     <message>
         <source>Ctrl+Z</source>
@@ -117,27 +117,27 @@
     </message>
     <message>
         <source>Previous Page</source>
-        <translation>Página anterior</translation>
+        <translation>Páxina anterior</translation>
     </message>
     <message>
         <source>PgUp</source>
-        <translation>PgArriba</translation>
+        <translation>PxArriba</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation>Siguiente</translation>
+        <translation>Seguinte</translation>
     </message>
     <message>
         <source>Next Page</source>
-        <translation>Página siguiente</translation>
+        <translation>Páxina siguiente</translation>
     </message>
     <message>
         <source>PgDown</source>
-        <translation>PgAbajo</translation>
+        <translation>PxAbaixo</translation>
     </message>
     <message>
         <source>Manage Documents</source>
-        <translation>Gestionar documentos</translation>
+        <translation>Xestionar documentos</translation>
     </message>
     <message>
         <source>Ctrl+D</source>
@@ -153,23 +153,23 @@
     </message>
     <message>
         <source>Line</source>
-        <translation>Línea</translation>
+        <translation>Liña</translation>
     </message>
     <message>
         <source>Small Line</source>
-        <translation>Línea pequeña</translation>
+        <translation>Liña pequena</translation>
     </message>
     <message>
         <source>Medium Line</source>
-        <translation>Línea media</translation>
+        <translation>Liña media</translation>
     </message>
     <message>
         <source>Large Line</source>
-        <translation>Línea grande</translation>
+        <translation>Liña grande</translation>
     </message>
     <message>
         <source>Quit</source>
-        <translation>Salir</translation>
+        <translation>Saír</translation>
     </message>
     <message>
         <source>Eraser</source>
@@ -177,7 +177,7 @@
     </message>
     <message>
         <source>Smalle Eraser</source>
-        <translation>Borrador pequeño</translation>
+        <translation>Borrador pequeno</translation>
     </message>
     <message>
         <source>Medium Eraser</source>
@@ -189,7 +189,7 @@
     </message>
     <message>
         <source>Color</source>
-        <translation>Color</translation>
+        <translation>Cor</translation>
     </message>
     <message>
         <source>Back</source>
@@ -197,15 +197,15 @@
     </message>
     <message>
         <source>Left</source>
-        <translation>Izquierda</translation>
+        <translation>Esquerda</translation>
     </message>
     <message>
         <source>Forward</source>
-        <translation>Hacia delante</translation>
+        <translation>Cara a diante</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation>Derecha</translation>
+        <translation>Dereita</translation>
     </message>
     <message>
         <source>Reload</source>
@@ -213,7 +213,7 @@
     </message>
     <message>
         <source>Reload Current Page</source>
-        <translation>Volver a cargar página actual</translation>
+        <translation>Volver a cargar páxina actual</translation>
     </message>
     <message>
         <source>Home</source>
@@ -221,7 +221,7 @@
     </message>
     <message>
         <source>Load Home Page</source>
-        <translation>Cargar página de inicio</translation>
+        <translation>Cargar páxina de inicio</translation>
     </message>
     <message>
         <source>Bookmarks</source>
@@ -237,11 +237,11 @@
     </message>
     <message>
         <source>Add Bookmark</source>
-        <translation>Añadir a favoritos</translation>
+        <translation>Engadir a favoritos</translation>
     </message>
     <message>
         <source>Display Board</source>
-        <translation>Mostrar pizarra</translation>
+        <translation>Mostrar encerado</translation>
     </message>
     <message>
         <source>Ctrl+B</source>
@@ -253,7 +253,7 @@
     </message>
     <message>
         <source>Erase Content</source>
-        <translation>Borrar contenido</translation>
+        <translation>Borrar contido</translation>
     </message>
     <message>
         <source>Preferences</source>
@@ -281,7 +281,7 @@
     </message>
     <message>
         <source>Show Computer Desktop</source>
-        <translation>Mostrar escritorio del ordenador</translation>
+        <translation>Mostrar escritorio do ordenador</translation>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
@@ -289,11 +289,11 @@
     </message>
     <message>
         <source>Bigger</source>
-        <translation>Más grande</translation>
+        <translation>Máis grande</translation>
     </message>
     <message>
         <source>Zoom In</source>
-        <translation>Acercar</translation>
+        <translation>Achegar</translation>
     </message>
     <message>
         <source>Ctrl++</source>
@@ -301,11 +301,11 @@
     </message>
     <message>
         <source>Smaller</source>
-        <translation>Más pequeño</translation>
+        <translation>Máis pequeno</translation>
     </message>
     <message>
         <source>Zoom Out</source>
-        <translation>Alejar</translation>
+        <translation>Afastar</translation>
     </message>
     <message>
         <source>Ctrl+-</source>
@@ -313,19 +313,19 @@
     </message>
     <message>
         <source>New Folder</source>
-        <translation>Nueva carpeta</translation>
+        <translation>Novo cartafol</translation>
     </message>
     <message>
         <source>Create a New Folder</source>
-        <translation>Crear una nueva carpeta</translation>
+        <translation>Crear un novo cartafol</translation>
     </message>
     <message>
         <source>New Document</source>
-        <translation>Nuevo documento</translation>
+        <translation>Novo documento</translation>
     </message>
     <message>
         <source>Create a New Document</source>
-        <translation>Crear un nuevo documento</translation>
+        <translation>Crear un novo documento</translation>
     </message>
     <message>
         <source>Import</source>
@@ -345,11 +345,11 @@
     </message>
     <message>
         <source>Open in Board</source>
-        <translation>Abrir en la pizarra</translation>
+        <translation>Abrir no encerado</translation>
     </message>
     <message>
         <source>Open Page in Board</source>
-        <translation>Abrir la página en la pizarra</translation>
+        <translation>Abrir a páxina no encerado</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
@@ -361,7 +361,7 @@
     </message>
     <message>
         <source>Duplicate Selected Content</source>
-        <translation>Duplicar el contenido seleccionado</translation>
+        <translation>Duplicar o contido seleccionado</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -369,7 +369,7 @@
     </message>
     <message>
         <source>Delete Selected Content</source>
-        <translation>Eliminar el contenido seleccionado</translation>
+        <translation>Eliminar o contido seleccionado</translation>
     </message>
     <message>
         <source>Del</source>
@@ -377,35 +377,35 @@
     </message>
     <message>
         <source>Add to Working Document</source>
-        <translation>Añadir al documento de trabajo</translation>
+        <translation>Engadir ao documento de traballo</translation>
     </message>
     <message>
         <source>Add Selected Content to Open Document</source>
-        <translation>Añadir el contenido seleccionado al documento abierto</translation>
+        <translation>Engadir o contido seleccionado ao documento aberto</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Añadir</translation>
+        <translation>Engadir</translation>
     </message>
     <message>
         <source>Add Content to Document</source>
-        <translation>Añadir contenido al documento</translation>
+        <translation>Engadir contido ao documento</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation>Cambiar nombre</translation>
+        <translation>Cambiar nome</translation>
     </message>
     <message>
         <source>Rename Content</source>
-        <translation>Cambiar nombre al documento</translation>
+        <translation>Cambiar nome ao documento</translation>
     </message>
     <message>
         <source>Tools</source>
-        <translation>Herramientas</translation>
+        <translation>Ferramentas</translation>
     </message>
     <message>
         <source>Display Tools</source>
-        <translation>Mostrar Herramientas</translation>
+        <translation>Mostrar Ferramentas</translation>
     </message>
     <message>
         <source>Multi Screen</source>
@@ -437,11 +437,11 @@
     </message>
     <message>
         <source>Stop Loading</source>
-        <translation>Detener carga</translation>
+        <translation>Deter carga</translation>
     </message>
     <message>
         <source>Stop Loading Web Page</source>
-        <translation>Detener carga de la página web</translation>
+        <translation>Deter carga da páxina web</translation>
     </message>
     <message>
         <source>Cut</source>
@@ -457,11 +457,11 @@
     </message>
     <message>
         <source>Sleep</source>
-        <translation>Dormir</translation>
+        <translation>Durmir</translation>
     </message>
     <message>
         <source>Put Presentation to Sleep</source>
-        <translation>Poner la presentación en modo dormir</translation>
+        <translation>Poñer a presentación en modo durmir</translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
@@ -485,15 +485,15 @@
     </message>
     <message>
         <source>Plain Dark Background</source>
-        <translation>Fondo oscuro liso</translation>
+        <translation>Fondo escuro liso</translation>
     </message>
     <message>
         <source>Dark</source>
-        <translation>Oscuro</translation>
+        <translation>Escuro</translation>
     </message>
     <message>
         <source>Grid Dark Background</source>
-        <translation>Fondo oscuro cuadriculado</translation>
+        <translation>Fondo escuro cuadriculado</translation>
     </message>
     <message>
         <source>Podcast</source>
@@ -517,23 +517,23 @@
     </message>
     <message>
         <source>Erase All Items</source>
-        <translation>Borrar todos los elementos</translation>
+        <translation>Borrar tódolos elementos</translation>
     </message>
     <message>
         <source>Erase Annotations</source>
-        <translation>Borrar anotaciones</translation>
+        <translation>Borrar anotacións</translation>
     </message>
     <message>
         <source>Erase All Annotations</source>
-        <translation>Borrar todas las anotaciones</translation>
+        <translation>Borrar tódalas anotacións</translation>
     </message>
     <message>
         <source>Clear Page</source>
-        <translation>Borrar página</translation>
+        <translation>Borrar páxina</translation>
     </message>
     <message>
         <source>Clear All Elements</source>
-        <translation>Borrar todos los elementos</translation>
+        <translation>Borrar tódolos elementos</translation>
     </message>
     <message>
         <source>Pen</source>
@@ -573,7 +573,7 @@
     </message>
     <message>
         <source>Select And Modify Objects</source>
-        <translation>Seleccionar y modificar objetos</translation>
+        <translation>Seleccionar e modificar obxectos</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
@@ -581,19 +581,19 @@
     </message>
     <message>
         <source>Hand</source>
-        <translation>Mano</translation>
+        <translation>Man</translation>
     </message>
     <message>
         <source>Scroll Page</source>
-        <translation>Desplazar página</translation>
+        <translation>Desplazar páxina</translation>
     </message>
     <message>
         <source>Laser Pointer</source>
-        <translation>Puntero láser</translation>
+        <translation>Punteiro láser</translation>
     </message>
     <message>
         <source>Virtual Laser Pointer</source>
-        <translation>Puntero láser virtual</translation>
+        <translation>Punteiro láser virtual</translation>
     </message>
     <message>
         <source>Ctrl+G</source>
@@ -601,7 +601,7 @@
     </message>
     <message>
         <source>Draw Lines</source>
-        <translation>Dibujar líneas</translation>
+        <translation>Debuxar líneas</translation>
     </message>
     <message>
         <source>Ctrl+J</source>
@@ -625,59 +625,59 @@
     </message>
     <message>
         <source>Capture Part of the Screen</source>
-        <translation>Capturar parte de la pantalla</translation>
+        <translation>Capturar parte da pantalla</translation>
     </message>
     <message>
         <source>Add To Current Page</source>
-        <translation>Añadir a la página actual</translation>
+        <translation>Engadir á páxina actual</translation>
     </message>
     <message>
         <source>Add Item To Current Page</source>
-        <translation>Añadir elemento a la página actual</translation>
+        <translation>Engadir elemento á páxina actual</translation>
     </message>
     <message>
         <source>Add To New Page</source>
-        <translation>Añadir a la nueva página</translation>
+        <translation>Engadir á nova páxina</translation>
     </message>
     <message>
         <source>Add Item To New Page</source>
-        <translation>Añadir elemento a la nueva página</translation>
+        <translation>Engadir elemento á nova páxina</translation>
     </message>
     <message>
         <source>Add To Library</source>
-        <translation>Añadir a la biblioteca</translation>
+        <translation>Engadir á biblioteca</translation>
     </message>
     <message>
         <source>Add Item To Library</source>
-        <translation>Añadir elemento a la biblioteca</translation>
+        <translation>Engadir elemento á biblioteca</translation>
     </message>
     <message>
         <source>Pages</source>
-        <translation>Páginas</translation>
+        <translation>Páxinas</translation>
     </message>
     <message>
         <source>Create a New Page</source>
-        <translation>Crear una nueva página</translation>
+        <translation>Crear unha nova páxina</translation>
     </message>
     <message>
         <source>New Page</source>
-        <translation>Nueva página</translation>
+        <translation>Nova páxina</translation>
     </message>
     <message>
         <source>Duplicate Page</source>
-        <translation>Duplicar página</translation>
+        <translation>Duplicar páxina</translation>
     </message>
     <message>
         <source>Duplicate the Current Page</source>
-        <translation>Duplicar la página actual</translation>
+        <translation>Duplicar a páxina actual</translation>
     </message>
     <message>
         <source>Import Page</source>
-        <translation>Importar página</translation>
+        <translation>Importar páxina</translation>
     </message>
     <message>
         <source>Import an External Page</source>
-        <translation>Importar una página externa</translation>
+        <translation>Importar unha páxina externa</translation>
     </message>
     <message>
         <source>Pause</source>
@@ -685,7 +685,7 @@
     </message>
     <message>
         <source>Pause Podcast Recording</source>
-        <translation>Pausar la grabación de Podcast</translation>
+        <translation>Pausar a grabación de Podcast</translation>
     </message>
     <message>
         <source>Podcast Config</source>
@@ -701,15 +701,15 @@
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>Capturar contenido Flash</translation>
+        <translation>Capturar contido Flash</translation>
     </message>
     <message>
         <source>Web Trap</source>
-        <translation>Captura de contenido web</translation>
+        <translation>Captura de contido web</translation>
     </message>
     <message>
         <source>Trap Web Content</source>
-        <translation>Capturar contenido web</translation>
+        <translation>Capturar contido web</translation>
     </message>
     <message>
         <source>Custom Capture</source>
@@ -721,15 +721,15 @@
     </message>
     <message>
         <source>Capture a Window</source>
-        <translation>Capturar una ventana</translation>
+        <translation>Capturar unha ventana</translation>
     </message>
     <message>
         <source>Embed Web Content</source>
-        <translation>Integrar contenido web</translation>
+        <translation>Integrar contido web</translation>
     </message>
     <message>
         <source>Capture Embeddable Web Content</source>
-        <translation>Capturar contenido web integrable</translation>
+        <translation>Capturar contido web integrable</translation>
     </message>
     <message>
         <source>Show on Display</source>
@@ -737,11 +737,11 @@
     </message>
     <message>
         <source>Show Main Screen on Display Screen</source>
-        <translation>Mostrar pantalla principal en la pantalla del monitor</translation>
+        <translation>Mostrar pantalla principal na pantalla do monitor</translation>
     </message>
     <message>
         <source>Erase all Annotations</source>
-        <translation>Borrar todas las anotaciones</translation>
+        <translation>Borrar tódalas anotacións</translation>
     </message>
     <message>
         <source>eduMedia</source>
@@ -753,7 +753,7 @@
     </message>
     <message>
         <source>Check Update</source>
-        <translation>Comprobar actualizaciones</translation>
+        <translation>Comprobar actualizacións</translation>
     </message>
     <message>
         <source>Ctrl+H</source>
@@ -781,23 +781,23 @@
     </message>
     <message>
         <source>Interact with items</source>
-        <translation>Interactuar con los elementos</translation>
+        <translation>Interactuar cos elementos</translation>
     </message>
     <message>
         <source>Erase Background</source>
-        <translation>Borrar el Fondo</translation>
+        <translation>Borrar o fondo</translation>
     </message>
     <message>
         <source>Remove the backgound</source>
-        <translation>Eliminar el fondo</translation>
+        <translation>Eliminar o fondo</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
-        <translation>Abrir Tutorial</translation>
+        <translation>Abrir Titorial</translation>
     </message>
     <message>
         <source>Open the tutorial web page</source>
-        <translation>Abrir el tutorial en página web</translation>
+        <translation>Abrir o titorial en páxina web</translation>
     </message>
     <message>
         <source>Ruled Light Background</source>
@@ -805,26 +805,26 @@
     </message>
     <message>
         <source>Ruled Dark Background</source>
-        <translation>Fondo oscuro con cuadrícula</translation>
+        <translation>Fondo escuro con cuadrícula</translation>
     </message>
     <message>
         <source>Reset grid size</source>
-        <translation>Restablecer el tamaño de lacuadrícula</translation>
+        <translation>Restablecer o tamaño da cuadrícula</translation>
     </message>
 </context>
 <context>
     <name>PasswordDialog</name>
     <message>
         <source>Authentication Required</source>
-        <translation>Se requiere autentificación</translation>
+        <translation>Requirese autentificación</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Nombre de usuario:</translation>
+        <translation>Nome de usuario:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>Contraseña:</translation>
+        <translation>Contrasinal:</translation>
     </message>
 </context>
 <context>
@@ -835,19 +835,19 @@
     </message>
     <message>
         <source>Connect to Proxy</source>
-        <translation>Conectar al Proxy</translation>
+        <translation>Conectar ao Proxy</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Nombre de usuario:</translation>
+        <translation>Nome de usuario:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>Contraseña:</translation>
+        <translation>Contrasinal:</translation>
     </message>
     <message>
         <source>Save username and password for future use</source>
-        <translation>Guardar nombre de usuario y contraseña para uso futuro</translation>
+        <translation>Gardar nome de usuario e contrasinal para uso futuro</translation>
     </message>
 </context>
 <context>
@@ -858,22 +858,22 @@
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="vanished">El formato de destino no permite este contenido</translation>
+        <translation type="vanished">O formato de destino non permite este contido</translation>
     </message>
     <message>
         <source>Remove Page</source>
-        <translation>Eliminar página</translation>
+        <translation>Eliminar páxina</translation>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation>¿Está seguro de que quiere eliminar 1 página del documento seleccionado.&apos;%0?</translation>
+        <translation>¿Está seguro de que quere eliminar 1 páxina do documento seleccionado.&apos;%0?</translation>
     </message>
 </context>
 <context>
     <name>UBApplication</name>
     <message>
         <source>Page Size</source>
-        <translation>Tamaño de página</translation>
+        <translation>Tamaño de páxina</translation>
     </message>
     <message>
         <source>Podcast</source>
@@ -888,15 +888,15 @@
     </message>
     <message>
         <source>New update available, would you go to the web page ?</source>
-        <translation>Nueva actualización disponible, ¿desea visitar la página web?</translation>
+        <translation>Nova actualización dispoñible, ¿desexa visitar a páxina web?</translation>
     </message>
     <message>
         <source>No update available</source>
-        <translation>Ninguna actualización disponible</translation>
+        <translation>Ningunha actualización disponible</translation>
     </message>
     <message>
         <source>Update available</source>
-        <translation>Actualización disponible</translation>
+        <translation>Actualización dispoñible</translation>
     </message>
     <message>
         <source>Update</source>
@@ -904,21 +904,21 @@
     </message>
     <message>
         <source>Board drawing...</source>
-        <translation>Dibujo de pizarra</translation>
+        <translation>Debuxo de encerado..</translation>
     </message>
 </context>
 <context>
     <name>UBBackgroundPalette</name>
     <message>
         <source>Grid size</source>
-        <translation>Tamaño de la cuadrícula</translation>
+        <translation>Tamaño da cuadrícula</translation>
     </message>
 </context>
 <context>
     <name>UBBoardController</name>
     <message>
         <source>Downloading content %1 failed</source>
-        <translation>Fallo al descargar contenido %1</translation>
+        <translation>Fallo ao descargar contido %1</translation>
     </message>
     <message>
         <source>Download finished</source>
@@ -926,15 +926,15 @@
     </message>
     <message>
         <source>Unknown tool type %1</source>
-        <translation>Tipo de herramienta desconocida %1</translation>
+        <translation>Tipo de ferramenta descoñecida %1</translation>
     </message>
     <message>
         <source>Unknown content type %1</source>
-        <translation>Tipo de contenido desconocido %1</translation>
+        <translation>Tipo de contido descoñecido %1</translation>
     </message>
     <message>
         <source>Add Item</source>
-        <translation>Añadir elemento</translation>
+        <translation>Engadir elemento</translation>
     </message>
     <message>
         <source>All Supported (%1)</source>
@@ -942,15 +942,15 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation type="vanished">Borrar la página %1 del documento</translation>
+        <translation type="vanished">Borrar a páxina %1 do documento</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
-        <translation>Página %1 eliminada</translation>
+        <translation>Páxina %1 eliminada</translation>
     </message>
     <message>
         <source>Add file operation failed: file copying error</source>
-        <translation>Todas las operaciones con ficheros han fallado. Error al copiar los ficheros</translation>
+        <translation>Tódalas operacións con ficheiros fallaron. Erro ao copiar os ficheiros</translation>
     </message>
     <message>
         <source>Group</source>
@@ -962,33 +962,33 @@
     </message>
     <message>
         <source>Saving document...</source>
-        <translation>Guardando documento</translation>
+        <translation>Gardando documento...</translation>
     </message>
     <message>
         <source>Document has just been saved...</source>
-        <translation>Acaba de guardarse el documento...</translation>
+        <translation>Acaba de gardarse o documento...</translation>
     </message>
     <message>
         <source>Deleting page %1</source>
-        <translation>Borrando página %1</translation>
+        <translation>Borrando páxina %1</translation>
     </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
     <message>
         <source>Error Adding Image to Library</source>
-        <translation>Error al añadir la imagen a la biblioteca</translation>
+        <translation>Error ao engadir a imaxe á biblioteca</translation>
     </message>
     <message>
         <source>CapturedImage</source>
-        <translation>Imagen capturada</translation>
+        <translation>Imaxe capturada</translation>
     </message>
 </context>
 <context>
     <name>UBBoardThumbnailsView</name>
     <message>
         <source>Loading page (%1/%2)</source>
-        <translation>Cargando página (%1/%2)</translation>
+        <translation>Cargando páxina (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -999,7 +999,7 @@
     </message>
     <message>
         <source>Color:</source>
-        <translation>Color:</translation>
+        <translation>Cor:</translation>
     </message>
     <message>
         <source>Shape:</source>
@@ -1011,30 +1011,30 @@
     </message>
     <message>
         <source>Close</source>
-        <translation>Cerrar</translation>
+        <translation>Pechar</translation>
     </message>
 </context>
 <context>
     <name>UBDesktopPalette</name>
     <message>
         <source>Capture Part of the Screen</source>
-        <translation>Capturar parte de la pantalla</translation>
+        <translation>Capturar parte da pantalla</translation>
     </message>
     <message>
         <source>Capture the Screen</source>
-        <translation>Capturar la pantalla</translation>
+        <translation>Capturar a pantalla</translation>
     </message>
     <message>
         <source>Show the stylus palette</source>
-        <translation>Mostrar la paleta del lápiz</translation>
+        <translation>Mostrar a paleta do lapis</translation>
     </message>
     <message>
         <source>Show Board on Secondary Screen</source>
-        <translation>Mostrar la pizarra en la pantalla secundaria</translation>
+        <translation>Mostrar o encerado na pantalla secundaria</translation>
     </message>
     <message>
         <source>Show Desktop on Secondary Screen</source>
-        <translation>Mostrar escritorio en la pantalla secundaria</translation>
+        <translation>Mostrar escritorio na pantalla secundaria</translation>
     </message>
     <message>
         <source>Show OpenBoard</source>
@@ -1045,23 +1045,23 @@
     <name>UBDocumentController</name>
     <message>
         <source>New Folder</source>
-        <translation>Nueva carpeta</translation>
+        <translation>Novo cartafol</translation>
     </message>
     <message>
         <source>Page %1</source>
-        <translation>Página %1</translation>
+        <translation>Páxina %1</translation>
     </message>
     <message>
         <source>Add Folder of Images</source>
-        <translation>Añadir carpeta de imágenes</translation>
+        <translation>Engadir cartafol de imaxes</translation>
     </message>
     <message>
         <source>Add Images</source>
-        <translation>Añadir imágenes</translation>
+        <translation>Engadir imaxes</translation>
     </message>
     <message>
         <source>Add Pages from File</source>
-        <translation>Añadir página desde archivo</translation>
+        <translation>Engadir páxina dende arquivo</translation>
     </message>
     <message>
         <source>Duplicating Document %1</source>
@@ -1073,7 +1073,7 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation>Eliminar página</translation>
+        <translation>Eliminar páxina</translation>
     </message>
     <message>
         <source>Remove Document</source>
@@ -1081,31 +1081,31 @@
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation>¿Está seguro de que desea eliminar el documento &apos;%1&apos;?</translation>
+        <translation>¿Está seguro de que desexa eliminar o documento &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Vaciar papelera</translation>
+        <translation>Baleirar papeleira</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation>¿Está seguro de que desea vaciar la papelera?</translation>
+        <translation>¿Está seguro de que desexa baleirar a papeleira?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation>Vaciando papelera</translation>
+        <translation>Baleirando papeleira</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation>Papelera vaciada</translation>
+        <translation>Papelera baleirada</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation>Eliminar carpeta</translation>
+        <translation>Eliminar cartafol</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation>¿Está seturo de que desea eliminar la carpeta &apos;%1&apos; y todo su contenido?</translation>
+        <translation>¿Está seturo de que desexa eliminar o cartafol &apos;%1&apos; e todo o seu contido?</translation>
     </message>
     <message>
         <source>No document selected!</source>
@@ -1113,19 +1113,19 @@
     </message>
     <message>
         <source>Open Supported File</source>
-        <translation>Abrir archivo compatible</translation>
+        <translation>Abrir arquivo compatible</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation>Importando archivo %1...</translation>
+        <translation>Importando arquivo %1...</translation>
     </message>
     <message>
         <source>Failed to import file ... </source>
-        <translation>Fallo al importar archivo ...</translation>
+        <translation>Fallo ao importar arquivo ...</translation>
     </message>
     <message>
         <source>Import all Images from Folder</source>
-        <translation>Importar todas las imágenes desde la carpeta</translation>
+        <translation>Importar tódalas imaxes dende o cartafol</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -1133,11 +1133,11 @@
     </message>
     <message>
         <source>Empty</source>
-        <translation>Vaciar</translation>
+        <translation>Baleirar</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation>Papelera</translation>
+        <translation>Papeleira</translation>
     </message>
     <message>
         <source>Open Document</source>
@@ -1145,38 +1145,38 @@
     </message>
     <message>
         <source>Add all Images to Document</source>
-        <translation>Añadir todas las imágenes al documento</translation>
+        <translation>Engadir tódalas imaxes ao documento</translation>
     </message>
     <message>
         <source>All Images (%1)</source>
-        <translation>Todas las imágenes (%1)</translation>
+        <translation>Tódalas imaxes (%1)</translation>
     </message>
     <message>
         <source>Selection does not contain any image files!</source>
-        <translation>¡La selección no contiene ningún archivo de imágenes!</translation>
+        <translation>¡A selección non contén ningún arquivo de imaxes!</translation>
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
         <translation>
-            <numerusform>¿Está seguro de que desea eliminar %n página(s) del documento seleccionado &apos;%1&apos;?</numerusform>
+            <numerusform>¿Está seguro de que desexa eliminar %n páxina(s) do documento seleccionado &apos;%1&apos;?</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
     <message>
         <source>Folder does not contain any image files</source>
-        <translation>La carpeta no contiene ningún fichero con imágenes</translation>
+        <translation>O cartafol non contén ningún ficheiro con imaxes</translation>
     </message>
     <message>
         <source>Untitled Documents</source>
-        <translation>Documentos sin título</translation>
+        <translation>Documentos sen título</translation>
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation>El documento &apos;%1&apos; fue generado con una nueva versión de OpenBoard (%2). Al abrirlo, puede perder información. Desea continuar?</translation>
+        <translation>O documento &apos;%1&apos; foi xerado cunha nova versión de OpenBoard (%2). Ao abrilo, pode perder información. Desexa continuar?</translation>
     </message>
     <message>
         <source>Are you sure you want to remove all selected documents?</source>
-        <translation>Está seguro de querer eliminar todos los documentos seleccionados?</translation>
+        <translation>Está seguro de querer eliminar tódolos documentos seleccionados? </translation>
     </message>
     <message>
         <source>Remove multiple documents</source>
@@ -1187,7 +1187,7 @@
     <name>UBDocumentManager</name>
     <message>
         <source>images</source>
-        <translation>Imágenes</translation>
+        <translation>Imaxes</translation>
     </message>
     <message>
         <source>videos</source>
@@ -1195,7 +1195,7 @@
     </message>
     <message>
         <source>objects</source>
-        <translation>Objetos</translation>
+        <translation>Obxectos</translation>
     </message>
     <message>
         <source>widgets</source>
@@ -1203,15 +1203,15 @@
     </message>
     <message>
         <source>All supported files (*.%1)</source>
-        <translation>Todos los archivos compatibles (*.%1)</translation>
+        <translation>Tódolos arquivos compatibles (*.%1)</translation>
     </message>
     <message>
         <source>File %1 saved</source>
-        <translation>Archivo %1 guardado</translation>
+        <translation>Arquivo %1 gardado</translation>
     </message>
     <message>
         <source>Inserting page %1 of %2</source>
-        <translation>Insertando página %1 de %2</translation>
+        <translation>Inserindo páxina %1 de %2</translation>
     </message>
     <message>
         <source>Import successful.</source>
@@ -1219,18 +1219,18 @@
     </message>
     <message>
         <source>Import of file %1 successful.</source>
-        <translation>El archivo %1 se ha importado correctamente</translation>
+        <translation>O arquivo %1 importouse correctamente</translation>
     </message>
     <message>
         <source>Importing file %1</source>
-        <translation>Importando el fichero %1</translation>
+        <translation>Importando o ficheiro %1</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation type="vanished">Página %0</translation>
+        <translation type="vanished">Páxina %0</translation>
     </message>
 </context>
 <context>
@@ -1241,12 +1241,12 @@
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation>Copiando página %1/%2</translation>
+        <translation>Copiando páxina %1/%2</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
         <translation>
-            <numerusform>%1 páginas copiadas</numerusform>
+            <numerusform>%1 páxinas copiadas</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -1255,7 +1255,7 @@
     <name>UBDownloadWidget</name>
     <message>
         <source>Downloading files</source>
-        <translation>Descargando archivos</translation>
+        <translation>Descargando arquivos</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1266,14 +1266,14 @@
     <name>UBDraggableThumbnailView</name>
     <message>
         <source>Page %0</source>
-        <translation>Página %0</translation>
+        <translation>Páxina %0</translation>
     </message>
 </context>
 <context>
     <name>UBExportAdaptor</name>
     <message>
         <source>Warnings during export was appeared</source>
-        <translation>Han aparecido advertencias durante la exportación</translation>
+        <translation>Apareceron advertencias durante a exportación</translation>
     </message>
     <message>
         <source>Exporting document...</source>
@@ -1281,15 +1281,15 @@
     </message>
     <message>
         <source>Export failed</source>
-        <translation>Falló la exportación</translation>
+        <translation>Fallou a exportación</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation>No fue posible exportar al lugar seleccionado. No tiene los permisos necesarios para guardar el fichero</translation>
+        <translation>Non foi posible exportar ao lugar seleccionado. Non ten os permisos necesarios para gardar o ficheiro</translation>
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation>Falló la exportación: no se puede escribir en el lugar seleccionado</translation>
+        <translation>Fallou a exportación: non se pode escribir no lugar seleccionado</translation>
     </message>
     <message>
         <source>Export successful.</source>
@@ -1304,7 +1304,7 @@
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="vanished">Exportar como fichero IWB</translation>
+        <translation type="vanished">Exportar como ficheiro IWB</translation>
     </message>
     <message>
         <source>Exporting document...</source>
@@ -1316,18 +1316,18 @@
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="vanished">Fallo en la exportación</translation>
+        <translation type="vanished">Fallo na exportación</translation>
     </message>
 </context>
 <context>
     <name>UBExportDocument</name>
     <message>
         <source>Page</source>
-        <translation>Página</translation>
+        <translation>Páxina</translation>
     </message>
     <message>
         <source>Export as UBZ File</source>
-        <translation>Exportar como archivo UBZ</translation>
+        <translation>Exportar como arquivo UBZ</translation>
     </message>
     <message>
         <source>Exporting document...</source>
@@ -1343,14 +1343,14 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation>Exportar al formato OpenBoard</translation>
+        <translation>Exportar ao formato OpenBoard</translation>
     </message>
 </context>
 <context>
     <name>UBExportFullPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation>Exportar como archivo PDF</translation>
+        <translation>Exportar como arquivo PDF</translation>
     </message>
     <message>
         <source>Exporting document...</source>
@@ -1369,7 +1369,7 @@
     <name>UBExportPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation>Exportar como archivo PDF</translation>
+        <translation>Exportar como arquivo PDF</translation>
     </message>
     <message>
         <source>Exporting document...</source>
@@ -1381,7 +1381,7 @@
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
-        <translation>Exportando página %1 de %2</translation>
+        <translation>Exportando páxina %1 de %2</translation>
     </message>
     <message>
         <source>Export to PDF</source>
@@ -1392,7 +1392,7 @@
     <name>UBExportWeb</name>
     <message>
         <source>Page</source>
-        <translation>Página</translation>
+        <translation>Páxina</translation>
     </message>
     <message>
         <source>Export as Web data</source>
@@ -1408,18 +1408,18 @@
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>Fallo de la exportación.</translation>
+        <translation>Fallo da exportación.</translation>
     </message>
     <message>
         <source>Export to Web Browser</source>
-        <translation>Exportar al explorador web</translation>
+        <translation>Exportar ao explorador web</translation>
     </message>
 </context>
 <context>
     <name>UBFeatureProperties</name>
     <message>
         <source>Add to page</source>
-        <translation>Añadir a la página</translation>
+        <translation>Engadir á páxina</translation>
     </message>
     <message>
         <source>Set as background</source>
@@ -1427,18 +1427,18 @@
     </message>
     <message>
         <source>Add to library</source>
-        <translation>Añadir a biblioteca</translation>
+        <translation>Engadir á biblioteca</translation>
     </message>
     <message>
         <source>Object informations</source>
-        <translation>Información del objeto</translation>
+        <translation>Información do obxecto</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesActionBar</name>
     <message>
         <source>Add to favorites</source>
-        <translation>Añadir a favoritos</translation>
+        <translation>Engadir a favoritos</translation>
     </message>
     <message>
         <source>Share</source>
@@ -1454,7 +1454,7 @@
     </message>
     <message>
         <source>Back to folder</source>
-        <translation>Regresar a la carpeta</translation>
+        <translation>Regresar ao cartafol</translation>
     </message>
     <message>
         <source>Remove from favorites</source>
@@ -1462,22 +1462,22 @@
     </message>
     <message>
         <source>Create new folder</source>
-        <translation>Crear nueva carpeta</translation>
+        <translation>Crear novo cartafol</translation>
     </message>
     <message>
         <source>Rescan file system</source>
-        <translation>Comprobar los ficheros del sistema</translation>
+        <translation>Comprobar os ficheiros do sistema</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesController</name>
     <message>
         <source>ImportedImage</source>
-        <translation>Imagen importada</translation>
+        <translation>Imaxe importada</translation>
     </message>
     <message>
         <source>Audios</source>
-        <translation>Ficheros de Audio</translation>
+        <translation>Ficheiros de Audio</translation>
     </message>
     <message>
         <source>Movies</source>
@@ -1485,11 +1485,11 @@
     </message>
     <message>
         <source>Pictures</source>
-        <translation>Imágenes</translation>
+        <translation>Imaxes</translation>
     </message>
     <message>
         <source>Animations</source>
-        <translation>Animaciones</translation>
+        <translation>Animacións</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -1497,7 +1497,7 @@
     </message>
     <message>
         <source>Applications</source>
-        <translation>Aplicaciones</translation>
+        <translation>Aplicacións</translation>
     </message>
     <message>
         <source>Shapes</source>
@@ -1513,7 +1513,7 @@
     </message>
     <message>
         <source>Trash</source>
-        <translation>Papelera</translation>
+        <translation>Papeleira</translation>
     </message>
 </context>
 <context>
@@ -1528,7 +1528,7 @@
     </message>
     <message>
         <source>Enter a new folder name</source>
-        <translation>Introduzca en nuevo nombre para la carpeta</translation>
+        <translation>Introduza un novo nome para o cartafol</translation>
     </message>
 </context>
 <context>
@@ -1561,7 +1561,7 @@
     </message>
     <message>
         <source>Go to Content Source</source>
-        <translation>Ir a fuente de contenido</translation>
+        <translation>Ir á fonte de contido</translation>
     </message>
     <message>
         <source>Set as background</source>
@@ -1572,19 +1572,19 @@
     <name>UBGraphicsMediaItem</name>
     <message>
         <source>Media resource couldn&apos;t be resolved</source>
-        <translation>No se pudo resolver el recurso multimedia</translation>
+        <translation>Non se puido resolver o recurso multimedia</translation>
     </message>
     <message>
         <source>Unsupported media format</source>
-        <translation>Formato multimedia no soportado</translation>
+        <translation type="unfinished">Formato multimedia non soportado</translation>
     </message>
     <message>
         <source>Media playback service not found</source>
-        <translation>Servicio de reprodución multimedia no encontrado</translation>
+        <translation type="unfinished">Servizo de reprodución multimedia non atopado</translation>
     </message>
     <message>
         <source>Media error: </source>
-        <translation>Error multimedia</translation>
+        <translation type="unfinished">Erro multimedia</translation>
     </message>
 </context>
 <context>
@@ -1598,7 +1598,7 @@
     <name>UBGraphicsTextItemDelegate</name>
     <message>
         <source>Text Color</source>
-        <translation>Color de texto</translation>
+        <translation>Cor de texto</translation>
     </message>
     <message>
         <source>Editable</source>
@@ -1623,26 +1623,26 @@
     <name>UBGraphicsWidgetItemDelegate</name>
     <message>
         <source>Frozen</source>
-        <translation>Congelado</translation>
+        <translation>Conxelado</translation>
     </message>
     <message>
         <source>Transform as Tool </source>
-        <translation>Transformar como herramienta</translation>
+        <translation>Transformar como ferramenta</translation>
     </message>
 </context>
 <context>
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="vanished">Formato de archivo común (</translation>
+        <translation type="vanished">Formato de arquivo común (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="vanished">Importando archivo %1...</translation>
+        <translation type="vanished">Importando arquivo %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="vanished">Fallo en la importanción del archivo %1.</translation>
+        <translation type="vanished">Fallo na importanción do arquivo %1.</translation>
     </message>
     <message>
         <source>Import successful.</source>
@@ -1650,14 +1650,14 @@
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="vanished">Fallo de la importación.</translation>
+        <translation type="vanished">Fallo da importación.</translation>
     </message>
 </context>
 <context>
     <name>UBImportDocument</name>
     <message>
         <source>Importing file %1...</source>
-        <translation>Importando archivo %1...</translation>
+        <translation>Importando arquivo %1...</translation>
     </message>
     <message>
         <source>Import successful.</source>
@@ -1665,7 +1665,7 @@
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>Fallo de la importación del archivo %1.</translation>
+        <translation>Fallo da importación do arquivo %1.</translation>
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
@@ -1676,7 +1676,7 @@
     <name>UBImportImage</name>
     <message>
         <source>Image Format (</source>
-        <translation>Formato de imagen (</translation>
+        <translation>Formato de imaxe (</translation>
     </message>
 </context>
 <context>
@@ -1687,22 +1687,22 @@
     </message>
     <message>
         <source>PDF import failed.</source>
-        <translation>Fallo de la importación de PDF.</translation>
+        <translation>Fallo da importación de PDF.</translation>
     </message>
     <message>
         <source>Importing page %1 of %2</source>
-        <translation>Importando página %1 de %2</translation>
+        <translation>Importando páxina %1 de %2</translation>
     </message>
 </context>
 <context>
     <name>UBIntranetPodcastPublisher</name>
     <message>
         <source>Error while publishing video to intranet (%1)</source>
-        <translation>Error el publicar vídeo en intranet (%1)</translation>
+        <translation>Produciuse un erro ao publicar vídeo na intranet (%1)</translation>
     </message>
     <message>
         <source>Publishing to Intranet in progress %1 %</source>
-        <translation>Publicación en Intranet en progreso %1 %</translation>
+        <translation>Publicación na Intranet en progreso %1 %</translation>
     </message>
 </context>
 <context>
@@ -1727,7 +1727,7 @@
     </message>
     <message>
         <source>No</source>
-        <translation>No</translation>
+        <translation>Non</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -1738,18 +1738,18 @@
     <name>UBMessagesDialog</name>
     <message>
         <source>Close</source>
-        <translation>Cerrar</translation>
+        <translation>Pechar</translation>
     </message>
 </context>
 <context>
     <name>UBNetworkAccessManager</name>
     <message>
         <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
-        <translation>&lt;qt&gt;Introduzca el nombre de usuario y la contraseña para &quot;%1&quot; en %2&lt;/qt&gt;</translation>
+        <translation>&lt;qt&gt;Introduza o nome de usuario e o contrasinal para &quot;%1&quot; en %2&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>Failed to log to Proxy</source>
-        <translation>Fallo al iniciar sesión en proxy</translation>
+        <translation>Fallo ao iniciar sesión en proxy</translation>
     </message>
     <message>
         <source>SSL Errors:
@@ -1759,7 +1759,7 @@
 %2
 
 Do you want to ignore these errors for this host?</source>
-        <translation>Errores SSL: %1 %2 ¿Desea ignorar estos errores para este servidor?</translation>
+        <translation>Errores SSL: %1 %2 ¿Desexa ignorar estos erros para este servidor?</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -1767,7 +1767,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>No</source>
-        <translation>No</translation>
+        <translation>Non</translation>
     </message>
 </context>
 <context>
@@ -1778,11 +1778,11 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Show this panel next time</source>
-        <translation>Mostrar este panel la próxima vez</translation>
+        <translation>Mostrar este panel a próxima vez</translation>
     </message>
     <message>
         <source>You can always access the OpenBoard Document Importer through the Preferences panel in the About tab. Warning, if you have already imported your Open-Sankore datas, you might loose your current OpenBoard documents.</source>
-        <translation>Siempre puede acceder al importador de documentos OpenBoard a través del panel Preferencias en la pestaña Sobre. Aviso, ya se han importado sus datos Open-Sankore, puede perder documentos OpenBoard actuales</translation>
+        <translation>Sempre pode acceder ao importador de documentos OpenBoard a través do panel Preferencias na lapela Sobre. Aviso, se xa importou os seus datos Open-Sankore, pode perder documentos OpenBoard actuais</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1794,7 +1794,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
-        <translation>Los documentos de Open-Sankoré de su computador.Es posible importarlos a OpenBoard pulsando en el botón &quot;Continuar&quot; de la aplicación importadora.</translation>
+        <translation>Os documentos de Open-Sankoré do seu computador. É posible importalos a OpenBoard premendo no botón &quot;Continuar&quot; da aplicación importadora.</translation>
     </message>
 </context>
 <context>
@@ -1805,15 +1805,15 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Document Repository Loss</source>
-        <translation>Pérdida de depósito de documentos</translation>
+        <translation>Pérdida de documentos do Repositorio</translation>
     </message>
     <message>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation>perdió el acceso al repositorio de documentos &apos;%1&apos;. Desafortunadamente, la aplicación debe cerrarse para evitar la corrrupción de datos. También se pueden perder los últimos cambios. </translation>
+        <translation>perdeu o acceso ao repositorio de documentos &apos;%1&apos;. Desafortunadamente, a aplicación debe pecharse para evitar a corrrupción de datos. Tamén se poden perder os últimos cambios. </translation>
     </message>
     <message>
         <source>Moving page to trash folder...</source>
-        <translation>Mover la página a la papelera</translation>
+        <translation>Mover a páxina ao lixo</translation>
     </message>
 </context>
 <context>
@@ -1843,11 +1843,11 @@ Do you want to ignore these errors for this host?</source>
     <name>UBPodcastController</name>
     <message>
         <source>Failed to start encoder ...</source>
-        <translation>Fallo al iniciar el codificador...</translation>
+        <translation>Fallo ao iniciar o codificador...</translation>
     </message>
     <message>
         <source>No Podcast encoder available ...</source>
-        <translation>Ningún condificador de Podcast disponible...</translation>
+        <translation>Ningún condificador de Podcast dispoñible...</translation>
     </message>
     <message>
         <source>Part %1</source>
@@ -1855,11 +1855,11 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>on your desktop ...</source>
-        <translation>en su escritorio...</translation>
+        <translation>no seu escritorio...</translation>
     </message>
     <message>
         <source>in folder %1</source>
-        <translation>en carpeta %1</translation>
+        <translation>en cartafol %1</translation>
     </message>
     <message>
         <source>Podcast created %1</source>
@@ -1867,7 +1867,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Podcast recording error (%1)</source>
-        <translation>Error en la grabación de podcast (%1)</translation>
+        <translation>Erro na grabación de podcast (%1)</translation>
     </message>
     <message>
         <source>Default Audio Input</source>
@@ -1875,11 +1875,11 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>No Audio Recording</source>
-        <translation>Ninguna grabación de audio</translation>
+        <translation>Ningunha grabación de audio</translation>
     </message>
     <message>
         <source>Small</source>
-        <translation>Pequeño</translation>
+        <translation>Pequeno</translation>
     </message>
     <message>
         <source>Medium</source>
@@ -1891,7 +1891,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Publish to Intranet</source>
-        <translation>Publicar en Intranet</translation>
+        <translation>Publicar na Intranet</translation>
     </message>
     <message>
         <source>Publish to Youtube</source>
@@ -1910,7 +1910,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Marker is pressure sensitive</source>
-        <translation>El marcador es sensible a la presión</translation>
+        <translation>O marcador é sensible á presión</translation>
     </message>
 </context>
 <context>
@@ -1921,18 +1921,18 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Nombre de usuario:</translation>
+        <translation>Nome de usuario:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>Contraseña:</translation>
+        <translation>Contrasinal:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation>Publicar documento en la web</translation>
+        <translation>Publicar documento na web</translation>
     </message>
     <message>
         <source>Title:</source>
@@ -1951,14 +1951,14 @@ Do you want to ignore these errors for this host?</source>
     <name>UBSettings</name>
     <message>
         <source>My Movies</source>
-        <translation>Mis películas</translation>
+        <translation>As miñas películas</translation>
     </message>
 </context>
 <context>
     <name>UBStartupHintsPalette</name>
     <message>
         <source>Visible next time</source>
-        <translation>Visible la próxima vez</translation>
+        <translation>Visible a próxima vez</translation>
     </message>
 </context>
 <context>
@@ -1972,22 +1972,22 @@ Do you want to ignore these errors for this host?</source>
     <name>UBThumbnailAdaptor</name>
     <message>
         <source>Generating preview thumbnails ...</source>
-        <translation>Generando miniaturas de previsualización...</translation>
+        <translation>Xerando miniaturas de previsualización...</translation>
     </message>
     <message>
         <source>%1 thumbnails generated ...</source>
-        <translation>%1 miniaturas generadas...</translation>
+        <translation>%1 miniaturas xeradas...</translation>
     </message>
     <message>
         <source>loading thumbnail of page %1</source>
-        <translation>cargando miniaturas de la página %1</translation>
+        <translation>cargando miniaturas da páxina %1</translation>
     </message>
 </context>
 <context>
     <name>UBThumbnailTextItem</name>
     <message>
         <source>Page %0</source>
-        <translation>Página %0</translation>
+        <translation>Páxina %0</translation>
     </message>
 </context>
 <context>
@@ -2002,7 +2002,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Compass</source>
-        <translation>Brújula</translation>
+        <translation>Compás</translation>
     </message>
     <message>
         <source>Protractor</source>
@@ -2025,7 +2025,7 @@ Do you want to ignore these errors for this host?</source>
     <name>UBTrapFlashController</name>
     <message>
         <source>Whole page</source>
-        <translation>Página completa</translation>
+        <translation>Páxina completa</translation>
     </message>
     <message>
         <source>Web</source>
@@ -2040,11 +2040,11 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source> files require an update.</source>
-        <translation> los archivos requieren una actualización.</translation>
+        <translation> los arquivos requiren unha actualización.</translation>
     </message>
     <message>
         <source>Backup path: </source>
-        <translation>Ruta de la copia de seguridad:</translation>
+        <translation>Ruta da copia de seguridade:</translation>
     </message>
     <message>
         <source>Browse</source>
@@ -2056,33 +2056,33 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Select a backup folder</source>
-        <translation>Seleccione una carpeta para la copia de seguridad</translation>
+        <translation>Seleccione un cartafol para a copia de seguridade</translation>
     </message>
     <message>
         <source>Files update successful!
 Please reboot the application to access the updated documents.</source>
-        <translation>¡Actualización de archivos satisfactoria!
-Por favor, reinicie la aplicación para acceder a los documentos actualizados.</translation>
+        <translation>¡Actualización de arquivos satisfactoria!
+Por favor, reinicie a aplicación para acceder aos documentos actualizados.</translation>
     </message>
     <message>
         <source>An error occured during the update. The files have not been affected.</source>
-        <translation>Ha ocurrido un error durante la actualización. Los archivos no han sido afectados.</translation>
+        <translation>Ocurriu un erro durante a actualización. Os archivos no foron afectados.</translation>
     </message>
     <message>
         <source>Files update results</source>
-        <translation>Resultados de la actualización de archivos</translation>
+        <translation>Resultados de la actualización de arquivos</translation>
     </message>
     <message>
         <source>Updating file </source>
-        <translation>Actualizando archivo</translation>
+        <translation>Actualizando arquivo</translation>
     </message>
     <message>
         <source>Please wait the import process will start soon...</source>
-        <translation>Por favor espere, el proceso de importación comenzará pronto...</translation>
+        <translation>Por favor espere, o proceso de importación comenzará pronto...</translation>
     </message>
     <message>
         <source>Remind me later</source>
-        <translation>Recordármelo más tarde</translation>
+        <translation>Recordamo máis tarde</translation>
     </message>
 </context>
 <context>
@@ -2096,22 +2096,22 @@ Por favor, reinicie la aplicación para acceder a los documentos actualizados.</
     <name>UBWidgetUniboardAPI</name>
     <message>
         <source>%0 called (method=%1, status=%2)</source>
-        <translation>%0 llamado (método=%1, estado=%2)</translation>
+        <translation>%0 chamado (método=%1, estado=%2)</translation>
     </message>
 </context>
 <context>
     <name>UBYouTubePublisher</name>
     <message>
         <source>YouTube authentication failed.</source>
-        <translation>Fallo en la autentificación de YouTube.</translation>
+        <translation>Fallo na autentificación de YouTube.</translation>
     </message>
     <message>
         <source>Error while uploading video to YouTube (%1)</source>
-        <translation>Error al cargar el vídeo a YouTube (%1)</translation>
+        <translation>Error ao cargar o vídeo a YouTube (%1)</translation>
     </message>
     <message>
         <source>Upload to YouTube in progress %1 %</source>
-        <translation>Carga a YoutTube en progreso %1 %</translation>
+        <translation>Carga de YoutTube en progreso %1 %</translation>
     </message>
 </context>
 <context>
@@ -2130,7 +2130,7 @@ Por favor, reinicie la aplicación para acceder a los documentos actualizados.</
     </message>
     <message>
         <source>Pets &amp; Animals</source>
-        <translation>Mascotas &amp; Animales</translation>
+        <translation>Mascotas &amp; Animais</translation>
     </message>
     <message>
         <source>Sports</source>
@@ -2138,11 +2138,11 @@ Por favor, reinicie la aplicación para acceder a los documentos actualizados.</
     </message>
     <message>
         <source>Travel &amp; Events</source>
-        <translation>Viajes &amp; Eventos</translation>
+        <translation>Viaxes &amp; Eventos</translation>
     </message>
     <message>
         <source>Gaming</source>
-        <translation>Juego</translation>
+        <translation>Xogo</translation>
     </message>
     <message>
         <source>Comedy</source>
@@ -2150,15 +2150,15 @@ Por favor, reinicie la aplicación para acceder a los documentos actualizados.</
     </message>
     <message>
         <source>People &amp; Blogs</source>
-        <translation>Personas &amp; Blogs</translation>
+        <translation>Persoas &amp; Blogs</translation>
     </message>
     <message>
         <source>News &amp; Politics</source>
-        <translation>Noticias &amp; Política</translation>
+        <translation>Novas &amp; Política</translation>
     </message>
     <message>
         <source>Entertainment</source>
-        <translation>Entretenimiento</translation>
+        <translation>Entretemento</translation>
     </message>
     <message>
         <source>Education</source>
@@ -2170,11 +2170,11 @@ Por favor, reinicie la aplicación para acceder a los documentos actualizados.</
     </message>
     <message>
         <source>Nonprofits &amp; Activism</source>
-        <translation>Sin fines de lucro &amp; Activismo</translation>
+        <translation>Sen ánimo de lucro &amp; Activismo</translation>
     </message>
     <message>
         <source>Science &amp; Technology</source>
-        <translation>Ciencia &amp; Tecnología</translation>
+        <translation>Ciencia &amp; Tecnoloxía</translation>
     </message>
 </context>
 <context>
@@ -2195,7 +2195,7 @@ Por favor, reinicie la aplicación para acceder a los documentos actualizados.</
     <name>WBDownloadItem</name>
     <message>
         <source>Save File</source>
-        <translation>Guardar archivo</translation>
+        <translation>Gardar arquivo</translation>
     </message>
     <message>
         <source>Download canceled: %1</source>
@@ -2203,15 +2203,15 @@ Por favor, reinicie la aplicación para acceder a los documentos actualizados.</
     </message>
     <message>
         <source>Error opening saved file: %1</source>
-        <translation>Error al abrir el archivo guardado: %1</translation>
+        <translation>Erro ao abrir o arquivo gardado: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation>Error al guardar: %1</translation>
+        <translation>Erro ao gardar: %1</translation>
     </message>
     <message>
         <source>Network Error: %1</source>
-        <translation>Error de red: %1</translation>
+        <translation>Erro de rede: %1</translation>
     </message>
     <message>
         <source>seconds</source>
@@ -2232,11 +2232,11 @@ Por favor, reinicie la aplicación para acceder a los documentos actualizados.</
     <message>
         <source>?</source>
         <comment>unknown file size</comment>
-        <translation>¿?</translation>
+        <translation>?</translation>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation>%1 de %2 - Detenido</translation>
+        <translation>%1 de %2 - Detido</translation>
     </message>
     <message>
         <source>bytes</source>
@@ -2278,7 +2278,7 @@ Por favor, reinicie la aplicación para acceder a los documentos actualizados.</
     <name>WBHistoryTreeModel</name>
     <message>
         <source>Earlier Today</source>
-        <translation>Anteriormente hoy</translation>
+        <translation>Anteriormente hoxe</translation>
     </message>
     <message>
         <source>%1 items</source>
@@ -2296,38 +2296,38 @@ Por favor, reinicie la aplicación para acceder a los documentos actualizados.</
     <name>WBTabBar</name>
     <message>
         <source>New &amp;Tab</source>
-        <translation>Nueva &amp;Pestaña</translation>
+        <translation>Nova &amp;Lapela</translation>
     </message>
     <message>
         <source>Clone Tab</source>
-        <translation>Duplicar pestaña</translation>
+        <translation>Duplicar Lapela</translation>
     </message>
     <message>
         <source>&amp;Close Tab</source>
-        <translation>&amp;Cerrar pestaña</translation>
+        <translation>&amp;Pechar Lapela</translation>
     </message>
     <message>
         <source>Close &amp;Other Tabs</source>
-        <translation>Cerrar &amp; Otras pestañas</translation>
+        <translation>Pechar &amp; Outras Lapelas</translation>
     </message>
     <message>
         <source>Reload Tab</source>
-        <translation>Recargar pestaña</translation>
+        <translation>Recargar Lapela</translation>
     </message>
     <message>
         <source>Reload All Tabs</source>
-        <translation>Volver a cargar todas las pestañas</translation>
+        <translation>Volver a cargar tódalas lapelas</translation>
     </message>
 </context>
 <context>
     <name>WBTabWidget</name>
     <message>
         <source>Recently Closed Tabs</source>
-        <translation>Pestañas cerradas recientemente</translation>
+        <translation>Lapelas pechadas recentemente</translation>
     </message>
     <message>
         <source>(Untitled)</source>
-        <translation>(Sin título)</translation>
+        <translation>(Sen título)</translation>
     </message>
 </context>
 <context>
@@ -2338,15 +2338,15 @@ Por favor, reinicie la aplicación para acceder a los documentos actualizados.</
     </message>
     <message>
         <source>No Recent Searches</source>
-        <translation>Ninguna búsqueda reciente</translation>
+        <translation>Ningunha búsqueda recente</translation>
     </message>
     <message>
         <source>Recent Searches</source>
-        <translation>Búsquedas recientes</translation>
+        <translation>Búsquedas recentes</translation>
     </message>
     <message>
         <source>Clear Recent Searches</source>
-        <translation>Borrar búsquedas recientes</translation>
+        <translation>Borrar búsquedas recentes</translation>
     </message>
 </context>
 <context>
@@ -2357,7 +2357,7 @@ Por favor, reinicie la aplicación para acceder a los documentos actualizados.</
     </message>
     <message>
         <source>Add to Current Document</source>
-        <translation>Añadir al documento actual</translation>
+        <translation>Engadir ao documento actual</translation>
     </message>
     <message>
         <source>PDF</source>
@@ -2365,18 +2365,18 @@ Por favor, reinicie la aplicación para acceder a los documentos actualizados.</
     </message>
     <message>
         <source>Error loading page: %1</source>
-        <translation>Error al cargar la página: %1</translation>
+        <translation>Erro ao cargar páxina: %1</translation>
     </message>
     <message>
         <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
-        <translation>Descargar documento PDF: prefererías descargar el archivo PDF ou añadirlo al documento actual de OpenBoard?</translation>
+        <translation>Descargar documento PDF: prefererías descargar o arquivo PDF ou engadilo ao documento actual de OpenBoard? </translation>
     </message>
 </context>
 <context>
     <name>WBWebView</name>
     <message>
         <source>Open in New Tab</source>
-        <translation>Abrir en nueva pestaña</translation>
+        <translation>Abrir en nova lapela</translation>
     </message>
 </context>
 <context>
@@ -2391,7 +2391,7 @@ Por favor, reinicie la aplicación para acceder a los documentos actualizados.</
     </message>
     <message>
         <source>Description</source>
-        <translation>Descripción</translation>
+        <translation>Descrición</translation>
     </message>
     <message>
         <source>Keywords</source>
@@ -2403,11 +2403,11 @@ Por favor, reinicie la aplicación para acceder a los documentos actualizados.</
     </message>
     <message>
         <source>YouTube Username</source>
-        <translation>Nombre de usuario de YouTube</translation>
+        <translation>Nome de usuario de YouTube</translation>
     </message>
     <message>
         <source>YouTube Password</source>
-        <translation>Contraseña de Youtube</translation>
+        <translation>Contrasinal de Youtube</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2419,11 +2419,11 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;Al hacer clic en &apos;Descargar&apos; usted certifica que posee todos los derechos sobre el contenido o que está autorizado por el propietario a publicar el contenido en YouTube, y que éste cumple con los términos de servicio de YouTube que aparecen en&lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;Ao facer clic en &apos;Descargar&apos; vostede certifica que posue tódolos dereitos sobre o contido ou que está autorizado por o propietario a publicar o contido en YouTube, e que éste cumple cos termos de servicio de YouTube que aparecen en&lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Restore credentials on reboot</source>
-        <translation>Restablece las credenciais al reiniciar</translation>
+        <translation>Restablece as credenciais ao reiniciar</translation>
     </message>
     <message>
         <source>OpenBoard</source>
@@ -2438,15 +2438,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>On Dark Background</source>
-        <translation>Sobre fondo oscuro</translation>
+        <translation>Sobre fondo escuro</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation>Opacidad</translation>
+        <translation>Opacidade</translation>
     </message>
     <message>
         <source>Line Width</source>
-        <translation>Ancho de línea</translation>
+        <translation>Ancho de liña</translation>
     </message>
     <message>
         <source>Medium</source>
@@ -2454,7 +2454,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Strong</source>
-        <translation>Fuerte</translation>
+        <translation>Forte</translation>
     </message>
     <message>
         <source>Fine</source>
@@ -2462,11 +2462,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Pen is Pressure Sensitive</source>
-        <translation>El bolígrafo es sensible a la presión</translation>
+        <translation>O bolígrafo é sensible á presión</translation>
     </message>
     <message>
         <source>Show preview circle from</source>
-        <translation>Mostrar vista previa del círculo de</translation>
+        <translation>Mostrar vista previa do círculo de</translation>
     </message>
     <message>
         <source>px</source>
@@ -2493,7 +2493,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Description</source>
-        <translation>Descripción</translation>
+        <translation>Descrición</translation>
     </message>
 </context>
 <context>
@@ -2519,7 +2519,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Close</source>
-        <translation>Cerrar</translation>
+        <translation>Pechar</translation>
     </message>
     <message>
         <source>Display</source>
@@ -2531,11 +2531,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Show Page with External Browser</source>
-        <translation>Mostrar página con explorador externo</translation>
+        <translation>Mostrar páxina con explorador externo</translation>
     </message>
     <message>
         <source>Home Page:</source>
-        <translation>Página de inicio:</translation>
+        <translation>Páxina de inicio:</translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
@@ -2543,27 +2543,27 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation type="vanished">Tamaño de los botones del teclado:</translation>
+        <translation type="vanished">Tamaño das teclas do teclado:</translation>
     </message>
     <message>
         <source>Toolbar</source>
-        <translation>Barra de herramientas</translation>
+        <translation>Barra de ferramentas</translation>
     </message>
     <message>
         <source>Positioned at the Top (recommended for tablets)</source>
-        <translation>Colocar en la parte superior (recomendado para computadores tipo tablet)</translation>
+        <translation>Colocar na parte superior (recomendado para computadores tipo tablet)</translation>
     </message>
     <message>
         <source>Positioned at the Bottom (recommended for white boards)</source>
-        <translation>Colocar en la parte inferior (recomendado para pizarras blancas)</translation>
+        <translation>Colocar na parte inferior (recomendado para encerados blancos)</translation>
     </message>
     <message>
         <source>Display Text Under Button</source>
-        <translation>Mostrar texto debajo del botón</translation>
+        <translation>Mostrar texto debaixo do botón</translation>
     </message>
     <message>
         <source>Stylus Palette</source>
-        <translation>Paleta del lápiz</translation>
+        <translation>Paleta do lápiz</translation>
     </message>
     <message>
         <source>Horizontal</source>
@@ -2587,23 +2587,23 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Software Update</source>
-        <translation>Actualización del software</translation>
+        <translation>Actualización do software</translation>
     </message>
     <message>
         <source>Check software update at launch</source>
-        <translation>Comprobar si hay actualizaciones del software al iniciarse</translation>
+        <translation>Comprobar se hai actualizacións do software ao iniciarse</translation>
     </message>
     <message>
         <source>Licences</source>
-        <translation>Licencias</translation>
+        <translation>Licenzas</translation>
     </message>
     <message>
         <source>Network</source>
-        <translation>Red</translation>
+        <translation>Rede</translation>
     </message>
     <message>
         <source>Show internal web page content on secondary screen or projector</source>
-        <translation>Mostrar el contenido de la página web en un monitor secundario o proyector</translation>
+        <translation>Mostrar o contido da páxina web nun monitor secundario ou proxector</translation>
     </message>
     <message>
         <source>Multi display</source>
@@ -2611,19 +2611,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap control display and view display</source>
-        <translation>Intercambiar control de pantalla y vista de pantalla</translation>
+        <translation>Intercambiar control de pantalla e vista de pantalla</translation>
     </message>
     <message>
         <source>Mode</source>
-        <translation>Modalidad</translation>
+        <translation>Modalidade</translation>
     </message>
     <message>
         <source>Mode to start in:</source>
-        <translation>Comenzar en modalidad :</translation>
+        <translation>Comenzar en modalidade :</translation>
     </message>
     <message>
         <source>Board</source>
-        <translation>Pizarra</translation>
+        <translation>Encerado</translation>
     </message>
     <message>
         <source>Desktop</source>
@@ -2631,11 +2631,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Proxy User:</source>
-        <translation>Nombre de usuario Proxy:</translation>
+        <translation>Nome de usuario Proxy:</translation>
     </message>
     <message>
         <source>Pass:</source>
-        <translation>Contraseña:</translation>
+        <translation>Contrasinal:</translation>
     </message>
     <message>
         <source>Credits</source>
@@ -2647,15 +2647,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation>Compruebe si los datos de Open-Sankoré se pueden importar al iniciar</translation>
+        <translation>Comprobe se os datos de Open-Sankoré se poden importar al iniciar</translation>
     </message>
     <message>
         <source>Use system keyboard (recommended)</source>
-        <translation>Usar el teclado del sistema (recomendado)</translation>
+        <translation>Usar o teclado do sistema (recomendado)</translation>
     </message>
     <message>
         <source>Built-in virtual keyboard button size:</source>
-        <translation>Tamaño del botón del teclado virtual integrado</translation>
+        <translation>Tamaño do botón do teclado virtual integrado</translation>
     </message>
     <message>
         <source>Grid</source>
@@ -2663,11 +2663,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>On Dark Background</source>
-        <translation>Sobre fondo oscuro</translation>
+        <translation>Sobre fondo escuro</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation>Opacidad</translation>
+        <translation>Opacidade</translation>
     </message>
     <message>
         <source>On Light Background</source>
@@ -2690,7 +2690,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Application name</source>
-        <translation>Nombre de la aplicación</translation>
+        <translation>Nome da aplicación</translation>
     </message>
     <message>
         <source>Create Application</source>
