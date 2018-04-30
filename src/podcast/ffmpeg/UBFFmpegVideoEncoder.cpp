@@ -562,9 +562,16 @@ void UBFFmpegVideoEncoder::processAudio(QByteArray &data)
     }
 
     // Convert to destination format
+    qDebug() << mSwrContext;
+    qDebug() << outSamples;
+    qDebug() << outSamplesCount;
+    qDebug() << inSamples;
+    qDebug() << inSamplesCount;
+
     ret = swr_convert(mSwrContext,
                       outSamples, outSamplesCount,
                       (const uint8_t **)&inSamples, inSamplesCount);
+
     if (ret < 0) {
         qWarning() << "Error converting audio samples: " << avErrorToQString(ret);
         return;
