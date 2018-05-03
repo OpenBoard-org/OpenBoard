@@ -1593,7 +1593,9 @@ void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
 
     if (darkBackground)
     {
-        painter->fillRect (rect, QBrush (QColor (Qt::black)));
+        QColor bg=QColor(0x0e, 0x63, 0x4e);
+        //painter->fillRect (rect, QBrush (QColor (Qt::green)));
+        painter->fillRect (rect, QBrush (bg));
     }
     else
     {
