@@ -45,11 +45,11 @@ linux-g++* {
     DEPENDPATH += /usr/lib/x86_64-linux-gnu
 
     LIBS += -lavformat -lavcodec -lswscale -lavutil \
-            -lva-x11 \
-            -lva \
-            -lxcb-shm \
+            -l:libva-x11.so.1 \
+            -l:libva.so.1 \
+            -l:libxcb-shm.so.0 \
             -lxcb-xfixes \
-            -lxcb-render -lxcb-shape -lxcb -lX11 -lasound -lSDL -lx264 -lpthread -lvpx -lvorbisenc -lvorbis -ltheoraenc -ltheoradec -logg -lopus -lmp3lame -lfreetype -lfdk-aac -lass -llzma -lbz2 -lz -ldl -lswresample -lswscale -lavutil -lm
+            -lxcb-render -lxcb-shape -lxcb -lX11 -l:libasound.so.2 -l:libSDL-1.2.so.0 -l:libx264.so.148 -lpthread -l:libvpx.so.3 -l:libvorbisenc.so.2 -l:libvorbis.so.0 -l:libtheoraenc.so.1 -l:libtheoradec.so.1 -l:libogg.so.0 -l:libopus.so.0 -l:libmp3lame.so.0 -lfreetype -l:libfdk-aac.so.0 -l:libass.so.5 -l:liblzma.so.5 -l:libbz2.so.1 -lz -ldl -lswresample -lswscale -lavutil -lm
 
     UBUNTU_VERSION = $$system(lsb_release -irs)
     equals(UBUNTU_VERSION, Ubuntu 14.04) {
