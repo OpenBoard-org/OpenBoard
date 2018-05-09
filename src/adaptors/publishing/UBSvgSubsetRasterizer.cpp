@@ -77,7 +77,7 @@ bool UBSvgSubsetRasterizer::rasterizeToFile(const QString& filename)
 
     if (scene->isDarkBackground())
     {
-        painter.fillRect(imageRect, Qt::black);
+        painter.fillRect(imageRect, QColor(UBSettings::settings()->boardDarkBackgroundColor->get().toString()));
     }
     else
     {
