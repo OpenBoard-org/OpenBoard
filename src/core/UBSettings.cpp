@@ -287,6 +287,11 @@ void UBSettings::init()
 
     pageSize = new UBSetting(this, "Board", "DefaultPageSize", documentSizes.value(DocumentSizeRatio::Ratio4_3));
 
+    QStringList darkBackgroundColors;
+    darkBackgroundColors << "#000000" << "#0E634E" << "#008080";
+    boardDarkBackgroundColors= new UBColorListSetting(this, "Board", "DarkBackgroundColors", darkBackgroundColors, -1.0);
+    boardDarkBackgroundColor = new UBSetting(this, "Board", "DarkBackgroundColor", "#0E634E");
+
     boardCrossColorDarkBackground = new UBSetting(this, "Board", "CrossColorDarkBackground", "#C8C0C0C0");
     boardCrossColorLightBackground = new UBSetting(this, "Board", "CrossColorLightBackground", "#A5E1FF");
 
