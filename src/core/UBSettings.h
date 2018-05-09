@@ -298,9 +298,11 @@ class UBSettings : public QObject
 
         UBSetting* featureSliderPosition;
 
+        UBSetting* boardDarkBackgroundColor;
         UBSetting* boardCrossColorDarkBackground;
         UBSetting* boardCrossColorLightBackground;
 
+        UBColorListSetting* boardDarkBackgroundColors;
         UBColorListSetting* boardGridLightBackgroundColors;
         UBColorListSetting* boardGridDarkBackgroundColors;
 
