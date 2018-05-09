@@ -85,6 +85,7 @@
 
 #include "core/memcheck.h"
 
+
 UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool isControl, bool isDesktop)
     : QGraphicsView (pParent)
     , mController (pController)
@@ -1593,8 +1594,7 @@ void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
 
     if (darkBackground)
     {
-        QColor bg=QColor(0x0e, 0x63, 0x4e);
-        //painter->fillRect (rect, QBrush (QColor (Qt::green)));
+        QColor bg=QColor(UBSettings::settings()->boardDarkBackgroundColor->get().toString());
         painter->fillRect (rect, QBrush (bg));
     }
     else

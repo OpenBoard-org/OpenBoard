@@ -561,9 +561,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                 QString parentId = mXmlReader.attributes().value(mNamespaceUri, "parent").toString();
 
                 if (mXmlReader.name() == "polygon")
-                    polygonItem = polygonItemFromPolygonSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
+                    polygonItem = polygonItemFromPolygonSvg(mScene->isDarkBackground() ? Qt::white : QColor(UBSettings::settings()->boardDarkBackgroundColor->get().toString()));
                 else if (mXmlReader.name() == "line")
-                    polygonItem = polygonItemFromLineSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
+                    polygonItem = polygonItemFromLineSvg(mScene->isDarkBackground() ? Qt::white : QColor(UBSettings::settings()->boardDarkBackgroundColor->get().toString()));
 
                 if(parentId.isEmpty() && strokesGroup)
                     parentId = strokesGroup->uuid().toString();
@@ -601,7 +601,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
             }
             else if (mXmlReader.name() == "polyline")
             {
-                QList<UBGraphicsPolygonItem*> polygonItems = polygonItemsFromPolylineSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
+                QList<UBGraphicsPolygonItem*> polygonItems = polygonItemsFromPolylineSvg(mScene->isDarkBackground() ? Qt::white : QColor(UBSettings::settings()->boardDarkBackgroundColor->get().toString()));
 
                 QString parentId = mXmlReader.attributes().value(mNamespaceUri, "parent").toString();
 

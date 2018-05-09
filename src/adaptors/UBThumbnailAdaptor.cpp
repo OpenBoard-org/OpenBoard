@@ -145,7 +145,7 @@ void UBThumbnailAdaptor::persistScene(UBDocumentProxy* proxy, UBGraphicsScene* p
 
         if (pScene->isDarkBackground())
         {
-            painter.fillRect(imageRect, Qt::black);
+            painter.fillRect(imageRect, QColor(UBSettings::settings()->boardDarkBackgroundColor->get().toString()));
         }
         else
         {

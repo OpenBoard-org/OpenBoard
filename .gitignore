@@ -80,3 +80,4 @@ plugins/cffadaptor/objects
 ##########
 .directory
 .DS_Store
+.qmake.stash
