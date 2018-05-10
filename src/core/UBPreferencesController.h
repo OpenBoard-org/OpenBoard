@@ -85,6 +85,7 @@ class UBPreferencesController : public QObject
         UBBrushPropertiesFrame* mMarkerProperties;
         UBColorPicker* mDarkBackgroundGridColorPicker;
         UBColorPicker* mLightBackgroundGridColorPicker;
+        UBColorPicker* mDarkBackgroundColorPicker;
 
     protected slots:
 
@@ -96,6 +97,7 @@ class UBPreferencesController : public QObject
         void widthSliderChanged(int value);
         void opacitySliderChanged(int value);
         void colorSelected(const QColor&);
+        void setDarkBackgroundColor(const QColor& color);
         void setCrossColorOnDarkBackground(const QColor& color);
         void setCrossColorOnLightBackground(const QColor& color);
         void toolbarPositionChanged(bool checked);
