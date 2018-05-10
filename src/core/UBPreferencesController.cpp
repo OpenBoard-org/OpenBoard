@@ -80,6 +80,7 @@ UBPreferencesController::UBPreferencesController(QWidget *parent)
     , mMarkerProperties(0)
     , mDarkBackgroundGridColorPicker(0)
     , mLightBackgroundGridColorPicker(0)
+    , mDarkBackgroundColorPicker(0)
 {
     mDesktop = qApp->desktop();
     mPreferencesWindow = new UBPreferencesDialog(this,parent, Qt::Dialog);
@@ -115,6 +116,19 @@ void UBPreferencesController::show()
     init();
 
     mPreferencesWindow->exec();
+}
+
+/*QDebug&
+operator<<(QDebug& os, const QColor& c) {
+    os << c.name().toStdString().c_str();
+    return os;
+}*/
+QDebug&
+operator<<(QDebug& os, const QList<QColor>& l) {
+    for(auto c: l) {
+        os << c << ", ";
+    }
+    return os;
 }
 
 void UBPreferencesController::wire()
@@ -168,6 +182,26 @@ void UBPreferencesController::wire()
     connect(mPreferencesUI->toolbarDisplayTextCheckBox, SIGNAL(clicked(bool)), settings->appToolBarDisplayText, SLOT(setBool(bool)));
 
     //grid tab
+    // Dark Background Color
+    QPalette darkBackgroundColorPalette = QApplication::palette();
+    darkBackgroundColorPalette.setColor(QPalette::Window, Qt::white);
+    QList<QColor> darkBackgroundColors = settings->boardDarkBackgroundColors->colors();
+    QColor selectedDarkBackgroundColor(settings->boardDarkBackgroundColor->get().toString());
+
+    mPreferencesUI->darkBackgroundColorFrame->setAutoFillBackground(true);
+    mPreferencesUI->darkBackgroundColorFrame->setPalette(darkBackgroundColorPalette);
+    mDarkBackgroundColorPicker = new UBColorPicker(mPreferencesUI->darkBackgroundColorFrame);
+    mDarkBackgroundColorPicker->setObjectName(QString::fromUtf8("darkBackgroundColorFrame")); // TODO ...Picker?!
+    mDarkBackgroundColorPicker->setMinimumSize(QSize(32, 32));
+    mDarkBackgroundColorPicker->setFrameShape(QFrame::StyledPanel);
+    mDarkBackgroundColorPicker->setFrameShadow(QFrame::Raised);
+    mDarkBackgroundColorPicker->setColors(darkBackgroundColors);
+    int idx=darkBackgroundColors.indexOf(selectedDarkBackgroundColor);
+    qDebug() << "colors: " << darkBackgroundColors << ", sel-col" << selectedDarkBackgroundColor << ",idx: " << idx;
+    mDarkBackgroundColorPicker->setSelectedColorIndex(idx);
+    mPreferencesUI->darkBackgroundColorLayout->addWidget(mDarkBackgroundColorPicker);
+    QObject::connect(mDarkBackgroundColorPicker, SIGNAL(colorSelected(const QColor&)), this, SLOT(setDarkBackgroundColor(const QColor&)));
+
     //On light background
     QPalette lightBackgroundPalette = QApplication::palette();
     lightBackgroundPalette.setColor(QPalette::Window, Qt::white);
@@ -176,7 +210,7 @@ void UBPreferencesController::wire()
     mPreferencesUI->crossColorLightBackgroundFrame->setPalette(lightBackgroundPalette);
 
     QPalette darkBackgroundPalette = QApplication::palette();
-    darkBackgroundPalette.setColor(QPalette::Window, Qt::black);
+    darkBackgroundPalette.setColor(QPalette::Window, selectedDarkBackgroundColor);
     darkBackgroundPalette.setColor(QPalette::ButtonText, Qt::white);
     darkBackgroundPalette.setColor(QPalette::WindowText, Qt::white);
 
@@ -432,6 +466,7 @@ void UBPreferencesController::defaultSettings()
         mPreferencesUI->darkBackgroundOpacitySlider->setValue(darkBackgroundOpacity);
         darkBackgroundCrossOpacityValueChanged(darkBackgroundOpacity);
 
+        settings->boardDarkBackgroundColor->reset();
         settings->boardCrossColorLightBackground->reset();
         settings->boardGridLightBackgroundColors->reset();
 
@@ -606,6 +641,24 @@ void UBPreferencesController::setCrossColorOnDarkBackground(const QColor& color)
     UBSettings::settings()->boardCrossColorDarkBackground->set(color.name(QColor::HexArgb));
 
     mPreferencesUI->darkBackgroundOpacitySlider->setValue(color.alpha() * 100 / 255);
+
+    if (UBApplication::boardController && UBApplication::boardController->activeScene())
+    {
+        foreach(QGraphicsView* view, UBApplication::boardController->activeScene()->views())
+            view->resetCachedContent();
+    }
+}
+
+void UBPreferencesController::setDarkBackgroundColor(const QColor& color)
+{
+    qDebug() << "neue Farbe";
+    UBSettings::settings()->boardDarkBackgroundColor->set(color.name(QColor::HexArgb));
+
+    auto p=mPreferencesUI->crossColorDarkBackgroundFrame->palette();
+    p.setColor(QPalette::Window, color);
+
+    mPreferencesUI->crossColorDarkBackgroundFrame->setPalette(p);
+    mPreferencesUI->crossColorDarkBackgroundLabel->setPalette(p);
 
     if (UBApplication::boardController && UBApplication::boardController->activeScene())
     {
