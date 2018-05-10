@@ -61,13 +61,15 @@ void UBColorPicker::paintEvent ( QPaintEvent * event )
 
     QPainter painter(this);
 
-    if (mSelectedColorIndex < mColors.size())
+    if (mSelectedColorIndex!=-1 && mSelectedColorIndex < mColors.size())
     {
         painter.setRenderHint(QPainter::Antialiasing);
 
         painter.setBrush(mColors.at(mSelectedColorIndex));
 
         painter.drawRect(0, 0, width(), height());
+    } else {
+        qWarning() << objectName() << ": SelectedColorIndex " << mSelectedColorIndex << " out of bounds!";
     }
 
 }
