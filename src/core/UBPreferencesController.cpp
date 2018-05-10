@@ -118,16 +118,21 @@ void UBPreferencesController::show()
     mPreferencesWindow->exec();
 }
 
-/*QDebug&
-operator<<(QDebug& os, const QColor& c) {
-    os << c.name().toStdString().c_str();
-    return os;
-}*/
 QDebug&
 operator<<(QDebug& os, const QList<QColor>& l) {
-    for(auto c: l) {
-        os << c << ", ";
+    auto e=l.end();
+
+    os << "[";
+    auto i=l.begin();
+    while(i!=e) {
+        os << *i;
+        ++i;
+        if(i!=e) {
+            os << ", ";
+        }
     }
+    os << "]";
+
     return os;
 }
 
@@ -651,12 +656,11 @@ void UBPreferencesController::setCrossColorOnDarkBackground(const QColor& color)
 
 void UBPreferencesController::setDarkBackgroundColor(const QColor& color)
 {
-    qDebug() << "neue Farbe";
+    qDebug() << "new darkBackgroundColor" << color;
     UBSettings::settings()->boardDarkBackgroundColor->set(color.name(QColor::HexArgb));
 
     auto p=mPreferencesUI->crossColorDarkBackgroundFrame->palette();
     p.setColor(QPalette::Window, color);
-
     mPreferencesUI->crossColorDarkBackgroundFrame->setPalette(p);
     mPreferencesUI->crossColorDarkBackgroundLabel->setPalette(p);
 
