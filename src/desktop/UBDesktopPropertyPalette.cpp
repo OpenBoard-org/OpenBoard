@@ -58,6 +58,9 @@ UBDesktopPenPalette::UBDesktopPenPalette(QWidget *parent, UBRightPalette* rightP
     colorActions.append(UBApplication::mainWindow->actionColor2);
     colorActions.append(UBApplication::mainWindow->actionColor3);
     colorActions.append(UBApplication::mainWindow->actionColor4);
+    colorActions.append(UBApplication::mainWindow->actionColor5);
+    colorActions.append(UBApplication::mainWindow->actionColor6);
+    colorActions.append(UBApplication::mainWindow->actionColor7);
 
     UBToolbarButtonGroup *colorChoice =
             new UBToolbarButtonGroup(UBApplication::mainWindow->boardToolBar, colorActions);
@@ -155,6 +158,9 @@ UBDesktopMarkerPalette::UBDesktopMarkerPalette(QWidget *parent, UBRightPalette* 
     colorActions.append(UBApplication::mainWindow->actionColor2);
     colorActions.append(UBApplication::mainWindow->actionColor3);
     colorActions.append(UBApplication::mainWindow->actionColor4);
+    colorActions.append(UBApplication::mainWindow->actionColor5);
+    colorActions.append(UBApplication::mainWindow->actionColor6);
+    colorActions.append(UBApplication::mainWindow->actionColor7);
 
     UBToolbarButtonGroup *colorChoice = new UBToolbarButtonGroup(UBApplication::mainWindow->boardToolBar, colorActions);
     colorChoice->displayText(false);

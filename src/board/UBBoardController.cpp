@@ -310,6 +310,9 @@ void UBBoardController::setupToolbar()
     colorActions.append(mMainWindow->actionColor2);
     colorActions.append(mMainWindow->actionColor3);
     colorActions.append(mMainWindow->actionColor4);
+    colorActions.append(mMainWindow->actionColor5);
+    colorActions.append(mMainWindow->actionColor6);
+    colorActions.append(mMainWindow->actionColor7);
 
     UBToolbarButtonGroup *colorChoice =
             new UBToolbarButtonGroup(mMainWindow->boardToolBar, colorActions);
