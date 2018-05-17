@@ -50,7 +50,7 @@ int UBSettings::crossSize = 24;
 int UBSettings::defaultCrossSize = 24;
 int UBSettings::minCrossSize = 12;
 int UBSettings::maxCrossSize = 96; //TODO: user-settable?
-int UBSettings::colorPaletteSize = 5;
+int UBSettings::colorPaletteSize = 8;
 int UBSettings::objectFrameWidth = 20;
 int UBSettings::boardMargin = 10;
 

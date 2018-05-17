@@ -751,9 +751,11 @@ UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor
         lightBackgroundLayout->addWidget(picker);
 
         picker->setColors(lightBackgroundColors);
-
-        picker->setSelectedColorIndex(lightBackgroundColors.indexOf(lightBackgroundSelectedColors.at(i)));
-
+        if(i<lightBackgroundSelectedColors.length()) {
+            picker->setSelectedColorIndex(lightBackgroundColors.indexOf(lightBackgroundSelectedColors.at(i)));
+        } else {
+            picker->setSelectedColorIndex(0);
+        }
         lightBackgroundColorPickers.append(picker);
 
         QObject::connect(picker, SIGNAL(colorSelected(const QColor&)), controller, SLOT(colorSelected(const QColor&)));
@@ -778,8 +780,11 @@ UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor
         darkBackgroundLayout->addWidget(picker);
 
         picker->setColors(darkBackgroundColors);
-        picker->setSelectedColorIndex(darkBackgroundColors.indexOf(darkBackgroundSelectedColors.at(i)));
-
+        if(i<darkBackgroundSelectedColors.length()) {
+            picker->setSelectedColorIndex(darkBackgroundColors.indexOf(darkBackgroundSelectedColors.at(i)));
+        } else {
+            picker->setSelectedColorIndex(0);
+        }
         darkBackgroundColorPickers.append(picker);
 
         QObject::connect(picker, SIGNAL(colorSelected(const QColor&)), controller, SLOT(colorSelected(const QColor&)));
