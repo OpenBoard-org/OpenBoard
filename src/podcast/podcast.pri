@@ -31,8 +31,8 @@ macx {
     HEADERS  += src/podcast/ffmpeg/UBFFmpegVideoEncoder.h \
                 src/podcast/ffmpeg/UBMicrophoneInput.h
 
-    LIBS += -lavformat -lavcodec -lswscale -lavutil \
-    -lpthread -lvpx -lvorbisenc -lfreetype -llzma -lbz2 -lz -ldl -lswresample -lswscale -lavutil -lm
+    LIBS += -lavformat -lavcodec -lswscale  -lswresample -lavutil \
+        -lpthread -lvpx -lvorbisenc -lfreetype -llzma -lbz2 -lz -ldl -lavutil -lm
 
     # (ffmpeg-4.0 with all options (to clean))
     # brew install ffmpeg --with-chromaprint --with-fdk-aac --with-libass --with-librsvg --with-libsoxr --with-libssh --with-tesseract
