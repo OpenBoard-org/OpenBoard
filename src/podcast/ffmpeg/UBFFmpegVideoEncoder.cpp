@@ -369,6 +369,8 @@ bool UBFFmpegVideoEncoder::init()
         connect(mAudioInput, SIGNAL(dataAvailable(QByteArray)),
                 this, SLOT(onAudioAvailable(QByteArray)));
 
+        mAudioInput->setInputDevice(audioRecordingDevice());
+
         if (!mAudioInput->init()) {
             setLastErrorMessage("Couldn't initialize audio input");
             return false;
@@ -396,6 +398,9 @@ bool UBFFmpegVideoEncoder::init()
         c->sample_rate = mAudioSampleRate;
         c->channel_layout = AV_CH_LAYOUT_STEREO;
         c->channels  = av_get_channel_layout_nb_channels(c->channel_layout);
+
+        //deprecated on ffmpeg 4
+        c->strict_std_compliance = -2;// Enable use of experimental codec
 
         //https://trac.ffmpeg.org/wiki/Encode/H.264#Profile
         //Omit this unless your target device only supports a certain profile
