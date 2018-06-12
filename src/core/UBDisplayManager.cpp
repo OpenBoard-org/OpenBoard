@@ -24,8 +24,6 @@
  * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
 #include "UBDisplayManager.h"
 
 #include "frameworks/UBPlatformUtils.h"
@@ -107,6 +105,65 @@ void UBDisplayManager::initScreenIndexes()
                 mPreviousScreenIndexes.append(i);
         }
     }
+}
+
+void UBDisplayManager::swapDisplayScreens(bool swap)
+{
+    int screenCount = numScreens();
+
+    mScreenIndexesRoles.clear();
+
+    if (screenCount > 0)
+    {
+        mControlScreenIndex = mDesktop->primaryScreen();
+        if (screenCount > 1 && UBSettings::settings()->swapControlAndDisplayScreens->get().toBool())
+        {
+            mControlScreenIndex = mControlScreenIndex^1;
+        }
+        mScreenIndexesRoles << Control;
+    }
+    else
+    {
+        mControlScreenIndex = -1;
+    }
+
+    if (screenCount > 1 && mUseMultiScreen)
+    {
+        mDisplayScreenIndex = mControlScreenIndex != 0 ? 0 : 1;
+        mScreenIndexesRoles << Display;
+    }
+    else
+    {
+        mDisplayScreenIndex = -1;
+    }
+
+    mPreviousScreenIndexes.clear();
+
+    if (screenCount > 2)
+    {
+        for(int i = 2; i < screenCount; i++)
+        {
+            if(mControlScreenIndex == i)
+                mPreviousScreenIndexes.append(1);
+            else
+                mPreviousScreenIndexes.append(i);
+        }
+    }
+
+    if (swap)
+    {
+        // As it s a really specific ask and we don't have much time to handle it correctly
+        // this code handles only the swap between the main display screen and the first previous one
+        int displayScreenIndex = mDisplayScreenIndex;
+        mDisplayScreenIndex = mPreviousScreenIndexes.at(0);
+        mPreviousScreenIndexes.clear();
+        mPreviousScreenIndexes.append(displayScreenIndex);
+    }
+
+    positionScreens();
+
+    emit screenLayoutChanged();
+    emit adjustDisplayViewsRequired();
 }
 
 
