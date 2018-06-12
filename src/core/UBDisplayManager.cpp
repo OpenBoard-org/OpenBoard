@@ -109,46 +109,7 @@ void UBDisplayManager::initScreenIndexes()
 
 void UBDisplayManager::swapDisplayScreens(bool swap)
 {
-    int screenCount = numScreens();
-
-    mScreenIndexesRoles.clear();
-
-    if (screenCount > 0)
-    {
-        mControlScreenIndex = mDesktop->primaryScreen();
-        if (screenCount > 1 && UBSettings::settings()->swapControlAndDisplayScreens->get().toBool())
-        {
-            mControlScreenIndex = mControlScreenIndex^1;
-        }
-        mScreenIndexesRoles << Control;
-    }
-    else
-    {
-        mControlScreenIndex = -1;
-    }
-
-    if (screenCount > 1 && mUseMultiScreen)
-    {
-        mDisplayScreenIndex = mControlScreenIndex != 0 ? 0 : 1;
-        mScreenIndexesRoles << Display;
-    }
-    else
-    {
-        mDisplayScreenIndex = -1;
-    }
-
-    mPreviousScreenIndexes.clear();
-
-    if (screenCount > 2)
-    {
-        for(int i = 2; i < screenCount; i++)
-        {
-            if(mControlScreenIndex == i)
-                mPreviousScreenIndexes.append(1);
-            else
-                mPreviousScreenIndexes.append(i);
-        }
-    }
+    initScreenIndexes();
 
     if (swap)
     {

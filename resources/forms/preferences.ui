@@ -134,7 +134,7 @@
           <item row="2" column="3">
            <widget class="QCheckBox" name="swapDisplayScreensCheckBox">
             <property name="text">
-             <string>Swap first and second displays</string>
+             <string>Swap first and second view displays</string>
             </property>
            </widget>
           </item>
