@@ -23,15 +23,33 @@ win32 {
 }
 
 macx {
+    CONFIG += c++11
 
-    SOURCES  += src/podcast/quicktime/UBQuickTimeVideoEncoder.cpp \
-                src/podcast/quicktime/UBAudioQueueRecorder.cpp
+    SOURCES  += src/podcast/ffmpeg/UBFFmpegVideoEncoder.cpp \
+                src/podcast/ffmpeg/UBMicrophoneInput.cpp
 
-    HEADERS  += src/podcast/quicktime/UBQuickTimeVideoEncoder.h \
-                src/podcast/quicktime/UBQuickTimeFile.h \
-                src/podcast/quicktime/UBAudioQueueRecorder.h
-                
-    OBJECTIVE_SOURCES += src/podcast/quicktime/UBQuickTimeFile.mm
+    HEADERS  += src/podcast/ffmpeg/UBFFmpegVideoEncoder.h \
+                src/podcast/ffmpeg/UBMicrophoneInput.h
+
+    LIBS += -lavformat -lavcodec -lswscale  -lswresample -lavutil \
+        -lpthread -lvpx -lvorbisenc -lfreetype -llzma -lbz2 -lz -ldl -lavutil -lm
+
+    # (ffmpeg-4.0 with all options (to clean))
+    # brew install ffmpeg --with-chromaprint --with-fdk-aac --with-libass --with-librsvg --with-libsoxr --with-libssh --with-tesseract
+    #--with-libvidstab --with-opencore-amr --with-openh264 --with-openjpeg --with-openssl --with-rtmpdump --with-rubberband --with-sdl2
+    #--with-snappy --with-tools --with-webp --with-x265 --with-xz --with-zeromq --with-zimg
+    # brew install opus
+
+    LIBS += -L/usr/local/opt/x264/lib
+    LIBS += -L/usr/local/opt/sdl/lib
+    LIBS += -L/usr/local/opt/libvorbis/lib
+    LIBS += -L/usr/local/opt/libvpx/lib
+    LIBS += -L/usr/local/opt/theora/lib
+    LIBS += -L/usr/local/opt/libogg/lib
+    LIBS += -L/usr/local/opt/opus/lib
+    LIBS += -L/usr/local/opt/lame/lib
+    LIBS += -L/usr/local/opt/fdk-aac/lib
+    LIBS += -L/usr/local/opt/libass/lib
 }
 
 linux-g++* {
