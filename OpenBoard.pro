@@ -44,8 +44,6 @@ QT += printsupport
 QT += core
 
 INCLUDEPATH += src
-INCLUDEPATH += /usr/local/opt/openssl/include
-INCLUDEPATH += /usr/local/opt/ffmpeg/include
 
 include($$THIRD_PARTY_PATH/libs.pri)
 include(src/adaptors/adaptors.pri)
@@ -164,8 +162,6 @@ macx {
    LIBS += -framework AVFoundation
    LIBS += -framework CoreMedia
    LIBS += -lcrypto
-   LIBS += -L/usr/local/opt/openssl/lib
-   LIBS += -L/usr/local/opt/ffmpeg/lib
 
    CONFIG(release, debug|release):CONFIG += x86_64
    CONFIG(debug, debug|release):CONFIG += x86_64
