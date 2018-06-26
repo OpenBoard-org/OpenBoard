@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+ 		id="http://www.amxa.ch/widgets/QR-Code"
+ 		version="1.0"
+        width="300"
+        height="340"
+        >
+  <name>QR-Code</name>
+  <description>QR-Code erzeugen</description>
+  <content src="index.html"/>
+  <icon src="icon.png"/>
+  <author>Basil Stotz</author>
+  <licence>
+  	Creative Commons ShareAlike 3.0
+      http://creativecommons.org/licenses/by-sa/3.0/
+  </licence>
+</widget>
+
+
+

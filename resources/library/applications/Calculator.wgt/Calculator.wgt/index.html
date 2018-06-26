@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Unpredictable Calculator</title>
+
+    <script src="js/sankore.js" type="text/javascript"></script>
+    <script src="dist/calculator.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="css/calculator.css" />
+</head>
+
+<body>
+    <div id="ubwidget"></div>
+
+    <script type="text/javascript">
+        var unpredictable = false;
+        
+        var c = Sankore.Calculator.create('ubwidget', {
+            locale: window.sankore ? window.sankore.locale() : 'fr_FR', 
+            unpredictableMode: unpredictable,
+            ready: function () {
+                var self = this, state = {}, timer = null;
+
+                if (window.sankore) {
+                    try {
+                        state = JSON.parse(window.sankore.preference('state'));
+                    } catch (e) {}
+
+                    this.eventDispatcher.addEventSubscriber({
+                        events: [
+                            'calculator.output_changed', 'calculator.memory_changed', 'calculator.layout_changed',
+                            'editor.layout_created', 'editor.layout_removed', 'editor.layout_changed', 'editor.button_selected',
+                            'keystroke_line.changed'
+                        ],
+                        listener: function () {
+                            if (null !== timer) {
+                                clearTimeout(timer);
+                            }
+
+                            timer = setTimeout(function() {
+                                window.sankore.setPreference('state', JSON.stringify(self.getState()));
+                                timer = null;
+                            }, 350);
+                        }
+                    });
+                }
+
+                this.init(state);
+            }
+        });
+    </script>
+</body>
+
+</html>

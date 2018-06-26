@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>GraphMe - Guide utilisateur</title>
+		<link rel="stylesheet" type="text/css" href="Style/Guide_Utilisateur.css"/>
+	</head>
+	<body>
+		<h1>GraphMe</h1>
+		<img src="Images/GraphMe.png"/>
+		<h1>Guide d'utilisation</h1>
+		<ol id="Sommaire">
+			<li><a href="#Introduction">Introduction</a></li>
+			<li><a href="#Installation">Installation</a></li>
+			<li><a href="#AfficherLeWidget">Afficher le widget</a></li>
+			<li><a href="#PresentationAffichage">Présentation de l'affichage</a></li>
+			<li><a href="#DessinerFonction">Dessiner une fonction</a></li>
+			<li><a href="#DeplacerAffichage">Se déplacer à travers la fonction</a></li>
+			<li><a href="#MenuOptions">Le menu des options</a></li>
+			<li><a href="#MenuOutils">Le menu des outils</a></li>
+			<li><a href="#PlusieursFonctions">Dessiner plusieurs fonctions</a></li>
+			<li><a href="#MaJ">Mettre à jour GraphMe</a></li>
+			<li><a href="#Contact">Contact</a></li>
+		</ol>
+		<h2 id="Introduction">1. Introduction</h2>
+		<p>
+			GraphMe est un traceur de fonctions mathématiques que j'ai programmé dans le cadre du travail de maturité gymnasiale. Il est codé en HTML, CSS et JavaScript. Ce grapheur est disponible sur un cd-rom accompagnant mon travail de maturité ainsi que sur internet à la page <a href="http://gyb.educanet2.ch/tm-widgets/.ws_gen/?15">http://gyb.educanet2.ch/tm-widgets/.ws_gen/?15</a>. Ce document a pour but d'expliquer comment utiliser GraphMe. Il présente ses différentes fonctions ainsi que quelques astuces utiles à l'utilisateur.
+		</p>
+
+		<h2 id="Installation">2. Installation</h2>
+		<p>
+			Le widget que vous pouvez télécharger sur internet est compressé au format zip. Avant de l'utiliser, il est nécessaire de le décompresser. Si vous n'avez aucuns programmes permettant d'ouvrir les fichiers zip, vous pouvez télécharger 7zip sur <a href="http://www.7-zip.org/">http://www.7-zip.org/</a>. GraphMe a été conçu pour s'utiliser dans un navigateur internet ou s'intégrer à Uniboard. Pour l'ajouter aux widgets d'Uniboard, il faut copier le dossier « GraphMe.wgt » dans « library/interactive/ ». Par exemple, sous Windows, le widget doit être dans : « C:/Program Files/Uniboard 4/library/interactive/GraphMe.wgt ». Si vous n'avez pas Uniboard, vous pouvez l'obtenir sur <a href="http://getuniboard.com">http://getuniboard.com/</a>.
+		</p>
+
+		<h2 id="AfficherLeWidget">3. Afficher le widget</h2>
+		<div class="droite"><img src="Images/Guide_Navigateur.png"/>Image de GraphMe dans un navigateur internet</div>
+		<p>
+			A) Pour afficher le widget dans un navigateur, il faut simplement ouvrir le fichier « Grapheur.xhtml » qui se trouve dans le dossier « GraphMe.wgt » avec votre navigateur internet. Toutefois, certains navigateurs n'arrivent pas à afficher le widget. La liste suivante contient les navigateurs sur lesquels le widget a été testé :
+		</p>
+		<ul>
+			<li>Mozilla Firefox (3.5) : tout fonctionne très bien.</li>
+			<li>Internet Explorer (8.0) : impossible d'ouvrir le widget, le format .xhtml n'est pas reconnu.</li>
+			<li>Internet Explorer (pré-version 9.0) : le widget est ouvrable mais seul l'affichage utilisant SVG fonctionne, « canvas » n'est toujours pas supporté.</li>
+			<li>Konqueror (4.3.4) : le widget s'ouvre mais il y a quelques problèmes d'affichage. Il est quand même utilisable en sélectionnant la méthode d'affichage « canvas » dans les options.</li>
+			<li>Rekonq (0.5) : le widget fonctionne très bien avec « canvas » mais est un peut lent en utilisant SVG.</li>
+			<li>Opera (10.51) : le widget est parfaitement utilisable</li>
+			<li>Google Chrome (4.1) : tout fonctionne également. L'affichage 3D est même très rapide comparé à d'autres navigateurs.</li>
+		</ul>
+		<p>
+			B) Pour ouvrir le widget dans Uniboard, il faut tout d'abord cliquer sur le bouton « Bibliothèque » en haut de la fenêtre. Ensuite, allez dans l'onglet « Interactif » ou autrement, selon les version d'Uniboard, dans l'onglet « Applications ». Cliquez sur l'icône correspondant à « Traceur de fonctions mathématiques » et finalement sur « Ajouter à la page ».
+		</p>
+		<div class="gauche"><img src="Images/Guide_Uniboard.png"/>Image de GraphMe dans Uniboard</div>
+		<img src="Images/Guide_AjouterWidget.png"/>
+
+		<h2 id="PresentationAffichage">4. Présentation de l'affichage</h2>
+		<ol>
+			<li>Champ permettant de définir la fonction à afficher.</li>
+			<li>Bouton affichant la fonction.</li>
+			<li>Bouton servant à ajouter une nouvelle fonction ou à accéder à l'historique des fonctions.</li>
+			<li>Zone d'affichage.</li>
+			<li>Options d'affichage permettant de définir la partie de la fonction à afficher.</li>
+			<li>Boutons de zoom.</li>
+			<li>Bouton servant à changer la couleur.</li>
+			<li>Boutons accédant aux différents menus.</li>
+			<li>Onglet choisissant entre les fonctions 2D et 3D.</li>
+			<li>Bouton de maximisation du widget.</li>
+		</ol>
+		<img src="Images/Guide_Presentation.png"/>
+
+		<h2 id="DessinerFonction">5. Dessiner une fonction</h2>
+		<p>
+			Pour dessiner une fonction mathématique, il suffit d'entrer celle-ci dans le champ en haut du widget et de cliquer sur le bouton « Afficher ». On peut utiliser différentes fonctions et constantes prédéfinies:
+		</p>
+		<h4>Les opérations de base</h4>
+		<ul>
+			<li>l'addition → +</li>
+			<li>la soustraction → -</li>
+			<li>la multiplication → *</li>
+			<li>la division → /</li>
+			<li>le modulo → %</li>
+		</ul>
+		<h4>Les fonctions trigonométriques</h4>
+		<ul>
+			<li>sin(x), cos(x), tan(x), cot(x)</li>
+			<li>asin(x), acos(x), atan(x), acot(x) ( ou arcsin(x), arccos(x), arctan(x), arccot(x) )</li>
+		</ul>
+		<h4>Les racines et les puissances</h4>
+		<ul>
+			<li>sqrt(x) fait la racine carrée de x</li>
+			<li>pow(x, y) élève un nombre x à une puissance y, par exemple :<br/>x² → pow(x, 2)<br/>(x+3)⁵ → pow((x+3), 5)</li>
+			<li>root(x, y) fait la racine yème d'un nombre x</li>
+		</ul>
+		<h4>Les exponentielles et logarithmes</h4>
+		<ul>
+			<li>exp(x)</li>
+			<li>ln(x) est le logarithme naturel</li>
+			<li>log(x) est le logarithme de base 10</li>
+		</ul>
+		<h4>Les arrondis</h4>
+		<ul>
+			<li>round(x) → arrondit à l'entier le plus proche</li>
+			<li>ceil(x) → arrondit à l'entier supérieur</li>
+			<li>floor(x) → arrondit à l'entier inférieur</li>
+		</ul>
+		<h4>Autres fonctions prédéfinies</h4>
+		<ul>
+			<li>abs(x) → la valeur absolue d'un nombre</li>
+			<li>random() → retourne un nombre aléatoire entre 0 et 1</li>
+		</ul>
+		<h4>Les constantes</h4>
+		<ul>
+			<li>pi = 4 * atan(1) ≈  3.141592653589793</li>
+			<li>e = exp(1) ≈ 2.718281828459045 </li>
+		</ul>
+		<p>
+			Il n'est pas toujours facile de comprendre comment écrire la fonction désirée. En effet, une petite faute et elle ne s'affichera pas. De plus, il ne faut pas oublier de mettre un « * » entre les thermes à multiplier et d'utiliser le point « . » pour écrire des nombres à virgule.
+		</p>
+		<p>
+			Les fonctions en deux dimensions s'écrivent sous la forme : y=[...] et les fonctions en trois dimensions sous la forme : z=[...]. D'autres exemples sont disponibles dans le menu « aide » du widget si vous avez de la peine à entrer une fonction.
+		</p>
+
+		<h2 id="DeplacerAffichage">6. Se déplacer à travers la fonction</h2>
+		<p>
+			Parfois, lorsqu'on dessine une fonction, la zone visible n'est pas très intéressante. Pour cela, il est utile de déplacer l'affichage ou de définir soi-même la zone à afficher.
+		</p>
+		<img src="Images/Guide_Deplacement.png"/>
+		<p>
+			Pour déplacer la fonction, il suffit d'utiliser les flèches de navigation situées dans les quatre bords de l'affichage ou l'outil de déplacement à la souris (dans le menu « Outils »).
+		</p>
+		<p>
+			Pour définir la zone à afficher, il faut entrer des valeurs personnalisées dans les champs à gauche du widget. La valeur de gauche doit obligatoirement être plus petite que la valeur de droite. Dans le cas contraire, la fonction ne se dessinera pas.
+		</p>
+		<p>
+			Il est possible de zoomer ou dé-zoomer l'affichage en utilisant les boutons du menu de gauche pour voir une plus grande partie de la fonction. Le zoom peut être réinitialisé dans les options. On peut également cliquer deux fois sur le graphique pour zoomer ainsi que dé-zoomer en maintenant la touche « ctrl » appuyée et en cliquant deux fois.
+		</p>
+		<h2 id="MenuOptions">7. Le menu des options</h2>
+		<p>
+			Cliquez sur le bouton « Options » à gauche du widget pour ouvrir ce menu. En cliquant à nouveau sur le bouton, cela ferme le menu. Plusieurs onglets permettent de naviguer entre les différentes options. Description des options :
+		</p>
+		<ul>
+			<li>Le thème du widget change l'image de fond ainsi que différentes couleurs. Dans Uniboard, changer le thème permet de rendre le widget plus visible selon qu'il se trouve sur un fond noir ou un fond blanc.</li>
+			<li>La méthode d'affichage permet de définir la façon dont le graphique de la fonction sera dessiné. Il y a le choix entre six possibilités : <br/>
+				<ol>
+					<li>SVG est un format d'image vectoriel qui peut être intégré dans une page HTML. Il est compatible dans la plupart des navigateurs Internet et est très bien supporté par Uniboard, c'est pourquoi il est choisi par défaut.</li>
+					<li>« SVG (une image) » ne présente que peu de différence avec la méthode d'affichage « SVG ». A moins d'un problème de compatibilité, il n'est pas très utile de la choisir.</li>
+					<li>Canvas est une nouvelle balise présente depuis HTML 5.0. Elle permet de définir une zone dans laquelle on peut faire des dessins. Cette méthode d'affichage est plus rapide que d'utiliser du SVG, cependant, elle n'est pas complètement compatible dans Uniboard. Il est conseillé de choisir cette option si vous utilisez le widget ailleurs que dans Uniboard.</li>
+					<li>Canvas (point) utilise aussi canvas, mais dessine des points à la place de lignes.</li>
+					<li>XPM est un format d'image très peu connu. De ce fait, il est compatible qu'avec une minorité de navigateur.</li>
+					<li>La méthode d'affichage « Uniboard » permet de dessiner directement sur la page d'Uniboard avec les outils de dessins.</li>
+				</ol>
+				<img src="Images/Guide_Options.png"/>
+			</li>
+			<li>Le zoom par défaut ainsi que le bouton « réinitialiser le zoom » permettent de remettre l'affichage à l'état qu'il était à l'ouverture du widget. Cela permet aussi de centrer l'affichage sur l'origine.</li>
+			<li>Les options d'affichage permettent d'afficher ou non la grille, les axes ainsi que l'échelle. Elles sont utiles pour rendre l'affichage plus lisible. Il est également possible de modifier l'épaisseur du trait de la fonction.</li>
+			<li>Le décalage du graphique n'a en principe pas besoin d'être utilisé. Il permet de déplacer tout l'affichage dans un sens ou dans l'autre, s'il n'est pas centré à la bonne place. Cela peut arriver avec certains navigateurs Internet.</li>
+			<li>La précision des calculs du graphique permet d'augmenter ou de diminuer le nombre de points calculés. Plus le nombre est petit, plus la précision est grande. Il est utile de mettre cette valeur à « 0.01 » si vous dessinez des fonctions ressemblant à 0.5*sin(10*x*x).</li>
+			<li>Dans les options 3D, le style d'affichage permet de choisir comment la fonction est dessinée : avec des petits points ou avec des polygones (surfaces). La plupart des fonctions sont plus jolies en dessinant la surface entre les points calculés. Toutefois, c'est mieux de dessiner des points pour des fonctions comme la demi-sphère : sqrt(12-x*x-y*y).</li>
+			<li>Dans le dernier onglet, vous pouvez modifier d'autres options 3D, comme la précision des calculs ainsi que la couleur de la fonction.</li>
+		</ul>
+		<h2 id="MenuOutils">8. Le menu des outils</h2>
+		<p>
+			Ce menu permet tout d'abord de choisir l'action de la souris sur le graphique. Il y a le choix entre trois possibilités :
+		</p>
+		<ul>
+			<li>L'outil sélectionné par défaut est le point. En bougeant la souris, un point se déplace sur la fonction et les coordonnées de ce point sont indiquées en haut à gauche de l'affichage.</li>
+			<li>Le deuxième outil est le déplacement. Il permet de déplacer le graphique avec la souris. Il suffit de tenir cliqué sur l'affichage et de bouger la souris. Malheureusement, cet outil peut être lent sur certains navigateurs.</li>
+			<li>Le troisième outil est la tangente. Cet outil dessine la tangente à la fonction au point où se trouve la souris.</li>
+		</ul>
+		<p>
+			Ensuite, ce menu permet  aussi de calculer un point de la fonction. Il faut simplement entrer la coordonnée « x » du point dont on veut trouver la coordonnée « y », et appuyer sur le bouton « Évaluer ». Par exemple, si la fonction est « x*x » et qu'on défini « x=2 », alors le point dont la coordonnée sur l'axe des X est « 2 » aura comme coordonnée sur l'axe des Y « 4 ».
+		</p>
+		<p>
+			Un autre outil très utile est l'étude de fonction. Pour étudier la fonction entrée dans le champ en haut du widget, cliquez sur « démarrer l'étude ». Les études de fonction de ce widget ne sont pas fiables à 100% mais servent de complément à une étude de fonction que l'on fait soi-même. Il se peut que cet outil soit amélioré dans une prochaine version du widget.
+		</p>
+		<p>
+			Dans ce menu, on trouve également des tests d'affichage. Ils permettent d'essayer les différentes méthodes d'affichage et de voir si elles fonctionnent sur le navigateur internet utilisé.
+		</p>
+		<h2 id="PlusieursFonctions">9. Dessiner plusieurs fonctions</h2>
+		<p>
+			Pour dessiner plusieurs fonctions simultanément, cliquez sur le petit bouton « + » qui se situe à droite du bouton « Afficher » (point 1). Ensuite, un menu apparaît.
+		</p>
+		<img src="Images/Guide_Plus.png"/>
+		<p>
+			Dans ce menu, des onglets permettent d'aller à l'historique ou aux fonctions supplémentaires (point 2). Pour ajouter une fonction, cliquez sur le bouton à droite de la fonction actuelle (point 3). En dessous, une liste contient toutes les fonctions affichées (point 4). Pour supprimer une fonction, il faut simplement cliquer sur le bouton « - » à coté de celle-ci. Il est également possible de modifier la couleur de chaque fonction séparément.
+		</p>
+		<p>
+			L'historique permet de revoir toutes les fonctions qui ont déjà été dessinées. Lorsque l'on clique sur une fonction de l'historique, celle qui est dessinée actuellement est remplacée par la fonction de l'historique.
+		</p>
+		<p>
+			Dessiner plusieurs fonctions simultanément est uniquement possible avec la méthode d'affichage « canvas » en deux dimensions. Par contre, l'historique est utilisable avec toutes les méthodes d'affichage. 
+		</p>
+		<h2 id="MaJ">10. Mettre à jour GraphMe</h2>
+		<p>
+			La dernière version du widget est téléchargeable sur la page suivante : <a href="http://gyb.educanet2.ch/tm-widgets/.ws_gen/?15">http://gyb.educanet2.ch/tm-widgets/.ws_gen/?15</a>. Pour mettre à jour GraphMe, vous pouvez aussi cliquer sur le bouton "Mise à jour" dans le menu des options.
+		</p>
+		<h2 id="Contact">11. Contact</h2>
+		<p>
+			Si vous voulez rapporter un bug, avez une suggestion par rapport au widget ou voulez simplement poser une question, merci de me contacter par e-mail à l'adresse : <a href="mailto:yannick.vessaz@gmail.com">yannick.vessaz@gmail.com</a>.
+		</p>
+	</body>
+</html>

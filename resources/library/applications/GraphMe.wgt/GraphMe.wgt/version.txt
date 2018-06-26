@@ -1,0 +1,294 @@
+
+  ██████                                       ███    ███          
+ ██        ██████    █████   ██████   ██   ██  ████  ████  ███████ 
+ ██        ██   ██  ██   ██  ██   ██  ██   ██  ██ ████ ██  ██      
+ ██   ███  ███████  ███████  ██████   ███████  ██  ██  ██  █████   
+ ██    ██  ██  ██   ██   ██  ██       ██   ██  ██      ██  ██      
+  ██████   ██   ██  ██   ██  ██       ██   ██  ██      ██  ███████ 
+
+
+---- 2.1 ----
+
+Général:
+ - Résolution de bugs avec l'historique des fonctions
+ - Reprogrammation de la liste des fonctions
+ - Gestion des erreurs lors de la restauration de l'état sauvegardé
+ - Sauvegarde du mode d'affichage en cours, 3D ou 2D
+ - Sauvegarde de l'état de la liste des fonctions
+ - Sauvegarde de l'outil sélectionné
+ - Icône du widget amélioré pour OpenBoard
+
+Interface:
+ - Amélioration de l'interface pour le changelog et l'aide
+ - Masquage des boutons de l'affichage en plein à écran avec OpenBoard
+ - Amélioration de l'affichage des fonctions dans l'historique
+ - Message d'info au chargement du widget en cas de fonctions restaurées
+ - Thème bleu foncé avec les coins carrés
+ 
+Outils:
+ - Correction des outils décalés par rapport à la souris
+
+ 
+---- 2.0.x ----
+
+ - (2.0.2) Amélioration de la sauvegarde du graphique en image:
+           affichage de l'image générée dans un menu
+ - (2.0.1) Cacher les nouveaux boutons de zoom en mode affichage 3D
+ -         Bug: Impossible de changer de thème avec OpenBoard
+ -         Bug: Les fonctions d'exemple ne fonctionnent pas si un autre type 
+           que cartésien est sélectionné dans l'interface des fonctions
+
+
+---- 2.0 ----
+
+Général:
+ - Nouvelle interface adaptive selon la taille de la fenêtre
+ - Bug: Passer de 3D à 2D essaie de dessiner la fonction 3D en 2D
+ - Mettre en évidence l'outil sélectionné
+ - Boutons de zoom
+ - Historique des dernières fonctions pour tous les types de fonction
+ - Réinitialisation des inputs quand la page est actualisée
+ - Sauvegarde de l'état des inputs et de l'historique
+
+
+---- 1.6 ----
+
+Fonctions:
+ - Fonctions implicites (Par exemple un cercle: y^2 + x^2 = 9)
+ - Fonctions polaires (Par exemple une spirale: r(t) = t)
+ - Fonctions paramétriques (Par exemple un cercle: x(t) = cos(t) et y(t) = sin(t))
+
+Interface:
+ - Traduction anglais/français selon la langue du navigateur
+ - Police d'écriture sans-serif
+ - Aperçu des fonctions implicites, polaires et paramétriques
+ - Dans la liste des fonctions, afficher la fonction ouverte dans l'éditeur
+ - Bug: L'éditeur permet d'éditer une fonction alors que la liste est vide
+ - Bug: Le choix du style de ligne par défaut ne fonctionne pas
+ - Bug: Bouton non cliquable près d'un message d'aide
+
+Outils:
+ - Outil point et tangente pour les fonctions polaires et paramétriques.
+
+
+---- 1.5.x ----
+
+ - (1.5.1) Sauvegarde du graphique 3D
+ -         Amélioration du menu des mises à jour, prise en compte de tous les serveur
+ -         Menu pour afficher les options sauvegardées dans les cookies
+ -         Correction des problèmes de l'échelle et de la grille du graphique
+ -         Bug: L'outil déplacement est stoppé quand on passe sur une flèche de déplacement
+
+
+---- 1.5 ----
+
+Fonction:
+ - Pouvoir changer le style de chaque fonction (ligne, points, traits)
+ - Bug: l'outil déplacement est toujours actif quand on sort du graphique
+ - Bug: le bouton dupliquer dans l'éditeur fonctionne mal
+ - Condition initiale de la primitive à coté de F(x) dans l'éditeur 
+   (utilisation de disabled="disabled" lorsque F(x) n'est pas coché)
+ - Bug: impossible de modifier la fonction principale avec l'éditeur de fonctions
+ - Nouveau menu pour modifier les valeurs par défaut des fonctions
+
+Affichage 3D:
+ - La partie de la fonction éloignée est maintenant dessinée après la partie proche
+ - La grille est plus visible
+
+Outils:
+ - Suppression du menu des outils
+ - Outils pour chaque fonction dans le menu "fonctions"
+
+Interface:
+ - Nouvelle interface. Onglets en haut du widget. Boutons "animés"
+ - Modifier l'aide pour qu'elle corresponde à la nouvelle interface
+ - Suppression de la sélection du texte sur les boutons et les onglets
+ - Joystick de déplacement en haut à gauche de l'affichage
+ - Choix des outils à la souris plus facile (ajout de boutons à gauche de l'affichage)
+ - Zone de texte au millieu de l'écran pour écrire facilement la première fonction
+   Focus automatique sur la zone
+ - Bulles d'aide
+
+
+---- 1.4.x ----
+
+ - (1.4.3) ColorPicker: Récupérer la bonne couleur lors de l'ouverture
+ -         ColorPicker: Pouvoir changer la couleur à partir des inputs
+ -         ColorPicker: Choisir la couleur avec la roulette de la souris
+ - (1.4.2) Amélioration de la qualité et de la rapidité des études de fonction
+ -         Pouvoir choisir la fonction à étudier
+ -         Bug: impossible de modifier les fonctions depuis l'éditeur
+ - (1.4.1) Choisir la taille et la couleur de fond du graphique sauvegardé 
+ -         L'utilisation de ^ dans les fonctions n'est possible qu'avec un chiffre.
+           Il faudrait pouvoir écrire 2^x ou 4^(x+2)
+ -         Bug: fermer le menu clique droit ajoute un point sur le graphique
+
+
+---- 1.4 ----
+
+Fonctions:
+ - Affichages canvas, svg et uniboard complétement refaits
+ - Grande amélioration des perfomances d'affichage 2D et 3D en définissant
+   les fonctions avec "new Function()"
+ - Amélioration des fonctions supplémentaires
+ - Suppression de la méthode d'affichage xpm
+ - Style de la fonction (continu, points, traits)
+ - Bug: la fonction 3D "sin(x)+cos(y)" afficher l'erreur "y is not defined";
+ - Couleur aléatoire pour les nouvelles fonctions supplémentaires
+
+Interface:
+ - Menu clique droite sur le graphique
+ - Fenêtre d'édition des fonctions supplémentaires
+ - Désactiver le bouton de mise à jour automatique lorsqu'on utilise la version online du widget
+   (utiliser disabled="disabled")
+
+Outils:
+ - Outils pour le nouvel affichage
+ - Outil point refait avec canvas
+ - Déplacer les informations des outils (point et tangente) à coté de la souris
+ - Bug: le déplacement de l'affichage 3D à la souris va dans le mauvais sens
+ - Cliquer permet de conserver le point ou la tangente actuelle
+ - Tous les outils fonctionnent en plein écran
+ - Outils sur plusieurs fonctions
+
+ColorPicker:
+ - Bug: mauvaise couleur lorsque la teinte est à 240 ou 120
+
+Général:
+ - Abandon du format xhtml pour passer à l'html5
+ - Sauvegardes pour les nouvelles options
+ - Amélioration des messages d'erreur
+ - Amélioration du système de mise à jour
+
+
+---- 1.3.x ----
+
+ - (1.3.4) ColorPicker: Slide barre permettant de changer la transparence
+ -         ColorPicker: Reprogrammer en canvas
+ - (1.3.3) Sauvegarde du graphique
+ -         Remplacer les ^ par pow() pour pouvoir écrire des fonctions plus facilement,
+           comme x^2 ou (4-x)^5
+ -         La couleur des fonctions supplémentaires n'est pas toujours juste
+ - (1.3.2) Modification de la taille des boutons
+ - (1.3.1) Mise à jour automatique
+
+
+---- 1.3 ----
+
+Fonctions:
+ - Amélioration des études de fonctions
+ - Pouvoir dessiner la dérivée seconde
+ - Corriger la tangente lorsque la zone d'affichage est modifiée
+ - Corriger l'échelle lors du déplacement de la fonction
+ - Ajout des fonctions sec, csc, arcsec, arccsc, sinh, cosh, tanh, coth, sech, csch
+   ainsi que arcsinh, arccosh, arctanh et arccoth
+ - Supprimer les traits où la fonction n'est pas définie
+ - Corriger l'outil point sur certaines fonctions (root(x,4))
+   (problème lié à la fonction non-définie)
+ - Aire sous la fonction
+ - Corrigé bug canvas lors de l'agrandissement
+ - Les outils de la souris ne fonctionnent pas au survol des flèches de déplacement
+
+Interface:
+ - Sauvegarder les options
+ - Explication de la sauvegarde du graphique dans l'aide
+ - Guide d'utilisation
+ - Corrections dans l'aide
+
+ColorPicker:
+ - Aperçu de la couleur
+
+Autres:
+ - Modification de la précision par défaut
+
+
+---- 1.2 ----
+
+Fonctions:
+ - Dessiner plusieurs fonctions
+ - Historique
+ - Bug: certaines fonctions ne s'affichent pas correctement
+   exemples: pow(1-x*x*x, 1/3)  ,  pow(x*x*x-3*x, 1/3)  ,  pow(x*x*x-3*x+2, 1/3)
+ - Corriger l'affichage de la dérivée lorsqu'on change la précision d'affichage
+ - Corriger l'affichage des coordonnées
+ - Gestion des erreurs avec try and catch
+ - Outil tangente
+
+Interface:
+ - Défilement des menus
+ - Tests d'affichage
+ - Bouton de maximisation du widget
+ - Mise à Jour
+
+
+Affichage 3D:
+ - Zoom
+
+
+
+-------------------------------
+ Idées d'améliorations futures
+-------------------------------
+
+Fonctions:
+ - Ajouter les fonctions arcsech et arccsch
+ - Détecter et mettre en évidence les AV
+ - Progression pendant le calcul des fonctions 3D
+ - Progression pendant l'étude de fonction
+ - Écrire le nom de la fonction sur le graphique
+ - Récupérer la fonction à partir de l'URL, pour pouvoir
+   envoyer le lien d'une fonction à qqn
+ - Bug: la puissance de la fonction sin(x)*cos(x)^2 n'est pas remplacée juste
+ - Sauvegarder l'historique
+ - Afficher le type de fonction dans l'éditeur
+ - Ne pas choisir aléatoirement la même couleur qu'une couleur déjà utilisée
+ - Amélioration du dessin des fonctions implicites
+ - Aperçu des fonctions d'exemple avant de les ajouter au graphique
+
+Fonction 3D:
+ - Amélioration du choix de la couleur (interpolation entre 2 couleurs)
+ - Affichage 3D avec WebGL
+
+Outils:
+ - Outils point et tangente pour les fonctions implicites
+ - Personnalisation de la sauvegarde du graphique
+ - Magnétisme de l'outil point
+ - Calculer le volume du corps de rotation de la fonction
+ - Outil affichant le cercle tangent à la courbe (selon la seconde dérivée)
+ - Utiliser le point de la fonction le plus proche de la position de la souris
+
+Affichage:
+ - Style de grille: quadrillée, polaire, aucune
+ - Mode "trigonomètrique" pour que l'échelle soit affichée sur des multiples de PI
+ - Mode d'affichage ASCII
+
+Affichage uniboard:
+ - Finir de coder
+ - Choisir où placer le graphique
+ - Uniboard 3D
+
+Interface:
+ - Option pour redimensionner le widget dans OpenBoard / Sankoré
+ - Bulles d'aide
+ - Scroll dans uniboard
+ - Menu clique droit dans uniboard
+ - Le bouton actualiser dans le menu étude n'actualise pas forcément la bonne fonction
+ - Icone du bouton sauvegarder
+ - Cacher le joystick et les boutons des outils en mode plein écran après 5s
+
+ColorPicker:
+ - Dessiner avec svg lorsqu'on choisit svg dans les options
+ - Vérifier les valeurs entrées dans les inputs
+ - Annuler le choix de la couleur ne revient pas au menu précédent
+
+Général:
+ - Récupérer le numéro de la version en ligne pour comparer les versions
+ - Multithreading
+!- Rendu des dessins progressivement de plus en plus précis
+ - Sauvegarder les options automatiquement, bouton reset dans le menu GraphMe
+
+Script portable:
+ - Créer un script pour intégrer le widget à n'importe quelle page web
+ - Personnalisation de la taille du widget portable
+ - Déplacement du widget comme une fenêtre
+
