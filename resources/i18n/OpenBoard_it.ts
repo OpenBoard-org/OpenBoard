@@ -904,7 +904,7 @@
     </message>
     <message>
         <source>Board drawing...</source>
-        <translation>Disegno della lavagna...</translation>
+        <translation type="vanished">Disegno della lavagna...</translation>
     </message>
 </context>
 <context>
@@ -1230,7 +1230,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation type="vanished">Pagina %0</translation>
+        <translation>Pagina %0</translation>
     </message>
 </context>
 <context>
@@ -1260,6 +1260,13 @@
     <message>
         <source>Cancel</source>
         <translation>Annulla</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnail</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Pagina %0</translation>
     </message>
 </context>
 <context>
@@ -2014,7 +2021,7 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
     <message>
         <source>loading thumbnail of page %1</source>
-        <translation>Caricamento miniatura della pagina %1</translation>
+        <translation type="vanished">Caricamento miniatura della pagina %1</translation>
     </message>
 </context>
 <context>
@@ -2706,6 +2713,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>On Dark Background</source>
         <translation>Su sfondo scuro</translation>
+    </message>
+    <message>
+        <source>Swap first and second view displays</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

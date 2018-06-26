@@ -909,7 +909,7 @@
     </message>
     <message>
         <source>Board drawing...</source>
-        <translation>Dessin du tableau...</translation>
+        <translation type="vanished">Dessin du tableau...</translation>
     </message>
 </context>
 <context>
@@ -1240,7 +1240,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation type="vanished">Page %0</translation>
+        <translation>Page %0</translation>
     </message>
 </context>
 <context>
@@ -1270,6 +1270,13 @@
     <message>
         <source>Cancel</source>
         <translation>Annuler</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnail</name>
+    <message>
+        <source>Page %0</source>
+        <translation>Page %0</translation>
     </message>
 </context>
 <context>
@@ -2031,7 +2038,7 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     </message>
     <message>
         <source>loading thumbnail of page %1</source>
-        <translation>Chargement aperçu page %1</translation>
+        <translation type="vanished">Chargement aperçu page %1</translation>
     </message>
 </context>
 <context>
@@ -2732,6 +2739,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>On Light Background</source>
         <translation>Sur fond clair</translation>
+    </message>
+    <message>
+        <source>Swap first and second view displays</source>
+        <translation>Inverser les écrans élèves</translation>
     </message>
 </context>
 <context>

@@ -902,10 +902,6 @@
         <source>Update</source>
         <translation>업데이트</translation>
     </message>
-    <message>
-        <source>Board drawing...</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>UBBackgroundPalette</name>
@@ -1229,7 +1225,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation type="vanished">%0 페이지</translation>
+        <translation>%0 페이지</translation>
     </message>
 </context>
 <context>
@@ -1261,6 +1257,13 @@
     <message>
         <source>Cancel</source>
         <translation type="unfinished">취소</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnail</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">%0 페이지</translation>
     </message>
 </context>
 <context>
@@ -1985,10 +1988,6 @@ Do you want to ignore these errors for this host?</source>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 썸네일 생성됨 ...</translation>
     </message>
-    <message>
-        <source>loading thumbnail of page %1</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>UBThumbnailTextItem</name>
@@ -2679,6 +2678,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>On Light Background</source>
         <translation type="unfinished">밝은 배경</translation>
+    </message>
+    <message>
+        <source>Swap first and second view displays</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
