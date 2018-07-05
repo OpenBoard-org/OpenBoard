@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget xmlns="http://www.w3.org/ns/widgets" 
-		identifier="http://getuniboard.com/" 
-		version="1.6.0"
-		width="800"
-		height="600"
-		ub:resizable="true">
-	<name>Mathematical function plotter</name>
-	<content src="Grapheur.html"/>
+        identifier="http://getuniboard.com/" 
+        version="1.3"
+        width="675"
+        height="490"
+		ub:resizable="false">
+  <name>Traceur de fonctions mathématiques</name>
+  <content src="Grapheur.xhtml"/>
 </widget>

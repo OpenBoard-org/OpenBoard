@@ -1,6 +1,4 @@
-// Fonctions permettant de sauvegarder les options
-
-var optionsLoaded = false;
+var listeOptions = ["theme","precision","decalageX","decalageY","epaisseur","grille","axes","echelle","zoom","methode","methode3D","precision3D","maj"];
 
 function setCookie(nom,valeur){
 	var jours = 545; // Durée de validité des cookies
@@ -33,74 +31,89 @@ function delCookie(nom){
 }
 
 function saveOptions(){
-	if(!optionsLoaded){
-		return;
-	}
-	var state = JSON.stringify(widget.getState());
-	if(window.sankore){
-		sankore.setPreference("state", state);
-	}
-	else if(navigator.cookieEnabled){
-		setCookie("state", state);
-	}
+	setCookie("theme",document.getElementById("selectTheme").value);
+	setCookie("precision",document.getElementById("inputPrecision").value);
+	setCookie("decalageX",document.getElementById("inputDecalageX").value);
+	setCookie("decalageY",document.getElementById("inputDecalageY").value);
+	setCookie("epaisseur",document.getElementById("inputTaille").value);
+	setCookie("grille",document.getElementById("checkGrille").checked);
+	setCookie("axes",document.getElementById("checkAxes").checked);
+	setCookie("echelle",document.getElementById("checkEchelle").checked);
+	setCookie("zoom",document.getElementById("zoomDefaut").value);
+	setCookie("methode",document.getElementById("selectMethodeAffichage").value);
+	setCookie("methode3D",document.getElementById("selectAffichage3D").value);
+	setCookie("precision3D",document.getElementById("inputPrecision3D").value);
+	setCookie("maj",document.getElementById("checkMaJ").checked);
+	document.getElementById("infoSauvegarde").style.display = "block"
 }
 
 function loadOptions(){
-	var state;
-	if(window.sankore){
-		state = sankore.preference("state", null);
-	}
-	else if(navigator.cookieEnabled){
-		state = getCookie("state");
-	}
-	if(!state){
-		optionsLoaded = true;
-		return;
-	}
-	var stateObject = JSON.parse(state);
-	var goodState = widget.getState();
-	if(!checkState(stateObject, goodState)){
-		loadOptionsFailed();
-	}
-	try{
-		widget.setState(stateObject);
-		optionsLoaded = true;
-	}
-	catch(e){
-		loadOptionsFailed();
-	}
-}
-
-function loadOptionsFailed(){
-	var text = "Unable to load the saved parameters...";
-	try{
-		text = languages.getText("unableLoadParameters");
-	}
-	catch(e){}
-	alert(text);
-	delOptions();
-}
-
-function checkState(state, goodState){
-	for(var i in goodState){
-		if(! i in state){
-			return false;
+	if(navigator.cookieEnabled){
+		if(checkOptions()){
+			document.getElementById("selectTheme").value = getCookie("theme");
+			changerTheme(document.getElementById("selectTheme").value);
+			document.getElementById("inputPrecision").value = getCookie("precision");
+			document.getElementById("inputDecalageX").value = getCookie("decalageX");
+			document.getElementById("inputDecalageY").value = getCookie("decalageY");
+			document.getElementById("inputTaille").value = getCookie("epaisseur");
+			if(getCookie("grille")=="true"){
+				document.getElementById("checkGrille").checked = true;
+			}
+			else{
+				document.getElementById("checkGrille").checked = false;
+			}
+			if(getCookie("axes")=="true"){
+				document.getElementById("checkAxes").checked = true;
+			}
+			else{
+				document.getElementById("checkAxes").checked = false;
+			}
+			if(getCookie("echelle")=="true"){
+				document.getElementById("checkEchelle").checked = true;
+			}
+			else{
+				document.getElementById("checkEchelle").checked = false;
+			}
+			document.getElementById("zoomDefaut").value = getCookie("zoom");
+			document.getElementById("selectMethodeAffichage").value = getCookie("methode");
+			document.getElementById("selectAffichage3D").value = getCookie("methode3D");
+			document.getElementById("inputPrecision3D").value = getCookie("precision3D");
+			if(getCookie("maj")=="true"){
+				document.getElementById("checkMaJ").checked = true;
+			}
+			else{
+				document.getElementById("checkMaJ").checked = false;
+			}
+			actualiserGraph();
+		}
+		else{
+			if(document.cookie!=""){
+				alert("It's can't be downloaded ...");
+			}
 		}
 	}
-	return true;
+	else{
+		document.getElementById("cacheCookies").style.display = "block";
+	}
 }
 
 function delOptions(){
-	if(window.sankore){
-		sankore.setPreference("state", "");
-	}
-	else if(navigator.cookieEnabled){
-		delCookie("state");
+	var i;
+	for(i=0; i<listeOptions.length; i++){
+		delCookie(listeOptions[i]);
 	}
 }
 
+function checkOptions(){
+	var test = true;
+	for(i=0; i<listeOptions.length; i++){
+		if(getCookie(listeOptions[i])==""){
+			test = false;
+		}
+	}
+	return test;
+}
+
 function alertOptions(){
-// 	alert("Options actuellement sauvegardées\n------------------------------------------------------------\n"+document.cookie);
-	document.getElementById("divAlertCookies").innerHTML = document.cookie;
-	afficherMenu("menuAlertCookies");
+	alert(sankoreLang[lang].show_saved + "\n------------------------------------------------------------\n"+document.cookie);
 }
