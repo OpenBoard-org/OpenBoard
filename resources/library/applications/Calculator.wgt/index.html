@@ -1,33 +1,55 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>ubwidget</title>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Unpredictable Calculator</title>
 
-        <script src="js/jquery-1.3.2.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui-1.7.2.custom.min.js" type="text/javascript"></script>
-        <script src="js/jquery.disable.text.select.js" type="text/javascript"></script>
-        <script src="js/jquery.center.js" type="text/javascript"></script>
-        <script src="js/jquery.ubwidget.js" type="text/javascript"></script>
-        <script src="js/DD_roundies_0.0.2a.js" type="text/javascript"></script>
-        <script src="js/ubw-main.js" type="text/javascript"></script>
-        <script src="js/calculate.js" type="text/javascript"></script>
+    <script src="js/sankore.js" type="text/javascript"></script>
+    <script src="dist/calculator.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="css/calculator.css" />
+</head>
 
-        <link rel="stylesheet" type="text/css" href="css/ubwidget.css" />
+<body>
+    <div id="ubwidget"></div>
 
-    </head>
+    <script type="text/javascript">
+        var unpredictable = false;
+        
+        var c = Sankore.Calculator.create('ubwidget', {
+            locale: window.sankore ? window.sankore.locale() : 'fr_FR', 
+            unpredictableMode: unpredictable,
+            ready: function () {
+                var self = this, state = {}, timer = null;
 
-    <body>
+                if (window.sankore) {
+                    try {
+                        state = JSON.parse(window.sankore.preference('state'));
+                    } catch (e) {}
 
-        <script type="text/javascript">
-            $(document).ready(function(){
-                init();
-            });
-        </script>
+                    this.eventDispatcher.addEventSubscriber({
+                        events: [
+                            'calculator.output_changed', 'calculator.memory_changed', 'calculator.layout_changed',
+                            'editor.layout_created', 'editor.layout_removed', 'editor.layout_changed', 'editor.button_selected',
+                            'keystroke_line.changed'
+                        ],
+                        listener: function () {
+                            if (null !== timer) {
+                                clearTimeout(timer);
+                            }
 
-        <div id="ubwidget"></div>
+                            timer = setTimeout(function() {
+                                window.sankore.setPreference('state', JSON.stringify(self.getState()));
+                                timer = null;
+                            }, 350);
+                        }
+                    });
+                }
 
-    </body>
+                this.init(state);
+            }
+        });
+    </script>
+</body>
 
 </html>
