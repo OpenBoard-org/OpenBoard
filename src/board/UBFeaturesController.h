@@ -96,6 +96,14 @@ private:
     bool abort;
 };
 
+enum UBFeatureBackgroundDisposition
+{
+    Center,
+    Adjust,
+    Mosaic,
+    Fill,
+    Extend
+};
 
 enum UBFeatureElementType
 {
@@ -141,6 +149,9 @@ public:
     const QMap<QString,QString> & getMetadata() const { return metadata; }
     void setMetadata( const QMap<QString,QString> &data ) { metadata = data; }
 
+    // Issue 1684 - CFA - 20131125
+    const UBFeatureBackgroundDisposition& backgroundDisposition() const;
+    void setBackgroundDisposition(UBFeatureBackgroundDisposition disposition);
 
 private:
     QString getNameFromVirtualPath(const QString &pVirtPath);
@@ -155,6 +166,7 @@ private:
     QUrl mPath;
     UBFeatureElementType elementType;
     QMap<QString,QString> metadata;
+    UBFeatureBackgroundDisposition mDisposition;
 };
 Q_DECLARE_METATYPE( UBFeature )
 
@@ -174,7 +186,7 @@ public:
     void scanFS();
 
     void addItemToPage(const UBFeature &item);
-    void addItemAsBackground(const UBFeature &item);
+    void addItemAsBackground(UBFeature &item, bool isFromPalette);
     const UBFeature& getCurrentElement()const {return currentElement;}
     void setCurrentElement( const UBFeature &elem ) {currentElement = elem;}
     const UBFeature & getTrashElement () const { return trashElement; }

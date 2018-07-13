@@ -31,7 +31,7 @@
 #define UBGRAPHICSMEDIAITEM_H
 
 #include <QtWidgets/QGraphicsView>
-#include "UBGraphicsProxyWidget.h"
+#include "UBAbstractGraphicsProxyWidget.h"
 
 #include <QAudioOutput>
 #include <QMediaObject>

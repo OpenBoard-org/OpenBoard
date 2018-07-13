@@ -1,29 +1,23 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
- * Copyright (C) 2013 Open Education Foundation
+ * This file is part of Open-Sankoré.
  *
- * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
- * l'Education Numérique en Afrique (GIP ENA)
- *
- * This file is part of OpenBoard.
- *
- * OpenBoard is free software: you can redistribute it and/or modify
+ * Open-Sankoré is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3 of the License,
  * with a specific linking exception for the OpenSSL project's
  * "OpenSSL" library (or with modified versions of it that use the
  * same license as the "OpenSSL" library).
  *
- * OpenBoard is distributed in the hope that it will be useful,
+ * Open-Sankoré is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
+ * along with Open-Sankoré.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 
 
 
@@ -36,66 +30,13 @@
 
 #include "core/UB.h"
 #include "UBGraphicsItemDelegate.h"
+#include "gui/UBMainWindow.h"
+#include "gui/UBCreateTablePalette.h"
+#include "gui/UBCreateHyperLinkPalette.h"
+#include "gui/UBCellPropertiesPalette.h"
 
 class UBGraphicsTextItem;
-
-class AlignTextButton : public DelegateButton
-{
-    Q_OBJECT
-
-public:
-    static const int MAX_KIND = 3;
-    enum kind_t{
-        k_left = 0
-        , k_center
-        , k_right
-        , k_mixed
-    };
-
-    AlignTextButton(const QString & fileName, QGraphicsItem* pDelegated, QGraphicsItem * parent = 0, Qt::WindowFrameSection section = Qt::TopLeftSection);
-    virtual ~AlignTextButton();
-
-    void setKind(int pKind);
-    int kind() {return mKind;}
-
-    void setNextKind();
-    int nextKind() const;
-
-    void setMixedButtonVisible(bool v = true) {mHideMixed = !v;}
-    bool isMixedButtonVisible() {return !mHideMixed;}
-
-private:
-
-    QSvgRenderer *rndFromKind(int pknd)
-    {
-        switch (pknd) {
-        case k_left:
-            return lft;
-            break;
-        case k_center:
-            return cntr;
-            break;
-        case k_right:
-            return rght;
-            break;
-        case k_mixed:
-            return mxd;
-            break;
-        }
-
-        return 0;
-    }
-
-    QSvgRenderer *curRnd() {return rndFromKind(mKind);}
-
-    QPointer<QSvgRenderer> lft;
-    QPointer<QSvgRenderer> cntr;
-    QPointer<QSvgRenderer> rght;
-    QPointer<QSvgRenderer> mxd;
-
-    int mKind;
-    bool mHideMixed;
-};
+class UBGraphicsProxyWidget;
 
 class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
 {
@@ -113,35 +54,65 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
         bool isEditable();
         void scaleTextSize(qreal multiplyer);
         virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value);
-        virtual void createControls();
-        qreal titleBarWidth();
+
+        UBCreateTablePalette* tablePalette();
+        UBCreateHyperLinkPalette* linkPalette();
+        UBCellPropertiesPalette* cellPropertiesPalette();
+
+        // Issue 16/03/2018 - OpenBoard - Two text-editor toolboards.
+        void buildButtonsExtended();
+        void buildButtonsReduced();
+        // END Issue
+
+
+
+        void changeDelegateButtonsMode(bool htmlMode);
 
     public slots:
         void contentsChanged();
         virtual void setEditable(bool);
         virtual void remove(bool canUndo);
+        void alternHtmlMode();
+        void duplicate();
 
     protected:
+        virtual void buildButtons();
         virtual void decorateMenu(QMenu *menu);
         virtual void updateMenuActionState();
 
-        virtual void freeButtons();
-
-        virtual bool mousePressEvent(QGraphicsSceneMouseEvent *event);
-        virtual bool mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-        virtual bool mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-
-        virtual bool keyPressEvent(QKeyEvent *event);
-        virtual bool keyReleaseEvent(QKeyEvent *event);
+        virtual void positionHandles();
 
     private:
+
         UBGraphicsTextItem* delegated();
 
+        DelegateButton* mSwtichTextEditorToolBar;
         DelegateButton* mFontButton;
+        DelegateButton* mFontBoldButton;        
+        DelegateButton* mFontItalicButton;
+        DelegateButton* mFontUnderlineButton;
         DelegateButton* mColorButton;
         DelegateButton* mDecreaseSizeButton;
         DelegateButton* mIncreaseSizeButton;
-        DelegateButton* mAlignButton;
+        DelegateButton* mBackgroundColorButton;
+        DelegateButton* mLeftAlignmentButton;
+        DelegateButton* mCenterAlignmentButton;
+        DelegateButton* mRightAlignmentButton;
+        DelegateButton* mJustifyAlignmentButton;
+        DelegateButton* mCodeButton;
+        DelegateButton* mUnorderedListButton;
+        DelegateButton* mOrderedListButton;
+        DelegateButton* mAddIndentButton;
+        DelegateButton* mRemoveIndentButton;
+        DelegateButton* mHyperLinkButton;
+        DelegateButton* mTableButton;
+
+        UBCreateTablePalette* mTablePalette;
+        UBCreateHyperLinkPalette* mLinkPalette;
+        UBCellPropertiesPalette* mCellPropertiesPalette;
+
+        // Issue 16/03/2018 - OpenBoard - Two text-editor toolboards.
+        bool toolbarExtended;
 
         int mLastFontPixelSize;
 
@@ -151,42 +122,58 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
     private:
         void customize(QFontDialog &fontDialog);
         void ChangeTextSize(qreal factor, textChangeMode changeMode);
-        void updateAlighButtonState();
-        bool oneBlockSelection();
-        void saveTextCursorFormats();
-        void restoreTextCursorFormats();
-
 
         QFont createDefaultFont();
         QAction *mEditableAction;
-        struct selectionData_t {
-            selectionData_t()
-                : mButtonIsPressed(false)
-            {}
-            bool mButtonIsPressed;
-            int position;
-            int anchor;
-            QString html;
-            QTextDocumentFragment selection;
-            QList<QTextBlockFormat> fmts;
 
-        } mSelectionData;
+        QMenu * mTableMenu;
 
     private slots:
 
+        // Issue 16/03/2018 - OpenBoard - Two text-editor toolboards.
+        void swtichTextEditorToolBar();
+
         void pickFont();
+        void setFontBold();
+        void setFontItalic();
+        void setFontUnderline();
         void pickColor();
 
         void decreaseSize();
         void increaseSize();
 
-        void alignButtonProcess();
-        void onCursorPositionChanged(const QTextCursor& cursor);
-        void onModificationChanged(bool ch);
-        void onContentChanged();
+        void pickBackgroundColor();
+        void setTableSize();
+        void setCellProperties();
+        void insertTable();
+        void addIndent();
+        void removeIndent();
+        void insertOrderedList();
+        void insertUnorderedList();
+
+        void setAlignmentToLeft();
+        void setAlignmentToCenter();
+        void setAlignmentToJustify();
+        void setAlignmentToRight();
+        void addLink();
+        void insertLink();
+        void insertColumnOnRight();
+        void insertColumnOnLeft();
+        void insertRowOnBottom();
+        void insertRowOnTop();
+        void deleteColumn();
+        void deleteRow();
+        void applyCellProperties();
+        void distributeColumn();
+        void showMenuTable();
 
 private:
       const int delta;
+      void insertList(QTextListFormat::Style format);
+      QTextListFormat::Style nextStyle(QTextListFormat::Style format);
+      QTextListFormat::Style previousStyle(QTextListFormat::Style format);
+
+
 };
 
 #endif /* UBGRAPHICSTEXTITEMDELEGATE_H_ */

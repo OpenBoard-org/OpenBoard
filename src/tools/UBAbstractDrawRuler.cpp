@@ -58,11 +58,8 @@ UBAbstractDrawRuler::UBAbstractDrawRuler()
     : mShowButtons(false)
     , mAntiScaleRatio(1.0)
 {
-    //we actually need to evaluate pixels per millimeter
-    QDesktopWidget* desktop = UBApplication::desktop();
-    int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
-    sPixelsPerMillimeter = qRound(dpiCommon / UBGeometryUtils::inchSize);
 
+    sPixelsPerCentimeter = UBApplication::boardController->activeScene()->backgroundGridSize();
 }
 
 void UBAbstractDrawRuler::create(QGraphicsItem& item)

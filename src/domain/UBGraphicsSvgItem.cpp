@@ -43,6 +43,7 @@
 #include "frameworks/UBFileSystemUtils.h"
 
 #include "core/memcheck.h"
+#include "customWidgets/UBGraphicsItemAction.h"
 
 UBGraphicsSvgItem::UBGraphicsSvgItem(const QString& pFilePath, QGraphicsItem* parent)
     : QGraphicsSvgItem(pFilePath, parent)
@@ -87,7 +88,10 @@ void UBGraphicsSvgItem::init()
 
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 
+    setData(UBGraphicsItemData::ItemCanBeSetAsBackground, true);
+
     setUuid(QUuid::createUuid());
+    Delegate()->setCanTrigAnAction(true); // Issue 12/03/2018 - OpenBoard - Custom Widgets
 }
 
 UBGraphicsSvgItem::~UBGraphicsSvgItem()
@@ -182,6 +186,17 @@ void UBGraphicsSvgItem::copyItemParameters(UBItem *copy) const
         cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
         cp->setSourceUrl(this->sourceUrl());
         cp->setZValue(this->zValue());
+        // Issue 13/03/2018 - OpenBoard - Custom Widget.
+        if(Delegate()->action()){
+            if(Delegate()->action()->linkType() == eLinkToAudio){
+                UBGraphicsItemPlayAudioAction* audioAction = dynamic_cast<UBGraphicsItemPlayAudioAction*>(Delegate()->action());
+                UBGraphicsItemPlayAudioAction* action = new UBGraphicsItemPlayAudioAction(audioAction->fullPath());
+                cp->Delegate()->setAction(action);
+            }
+            else
+                cp->Delegate()->setAction(Delegate()->action());
+        }
+        // END Issue 13/03/2018 - OpenBoard - Custom Widget.
     }
 }
 

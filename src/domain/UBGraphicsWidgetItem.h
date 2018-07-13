@@ -167,7 +167,7 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
         virtual void sendJSLeaveEvent();
         virtual void injectInlineJavaScript();
         virtual void wheelEvent(QGraphicsSceneWheelEvent *event);
-        virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+        virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value);
         virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
     protected slots:

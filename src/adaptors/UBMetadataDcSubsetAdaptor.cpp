@@ -125,6 +125,11 @@ void UBMetadataDcSubsetAdaptor::persist(UBDocumentProxy* proxy)
     // introduced in UB 4.4
     xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri, "updated-at", UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTimeUtc()));
 
+    // Issue 1684 - ALTI/AOU - 20131210
+    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::documentDefaultBackgroundImage, proxy->metaData(UBSettings::documentDefaultBackgroundImage).toString());
+    xmlWriter.writeTextElement(UBSettings::uniboardDocumentNamespaceUri,UBSettings::documentDefaultBackgroundImageDisposition, proxy->metaData(UBSettings::documentDefaultBackgroundImageDisposition).toString());
+    // Fin Issue 1684 - ALTI/AOU - 20131210
+
     xmlWriter.writeEndElement(); //dc:Description
     xmlWriter.writeEndElement(); //RDF
 
@@ -224,6 +229,18 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
                     metadata.insert(UBSettings::documentUpdatedAt, xml.readElementText());
                     updatedAtFound = true;
                 }
+                // Issue 1684 - ALTI/AOU - 20131210
+                else if (xml.name() == UBSettings::documentDefaultBackgroundImage
+                         && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
+                {
+                    metadata.insert(UBSettings::documentDefaultBackgroundImage, xml.readElementText());
+                }
+                else if (xml.name() == UBSettings::documentDefaultBackgroundImageDisposition
+                         && xml.namespaceUri() == UBSettings::uniboardDocumentNamespaceUri)
+                {
+                    metadata.insert(UBSettings::documentDefaultBackgroundImageDisposition, xml.readElementText());
+                }
+                // Fin Issue 1684 - ALTI/AOU - 20131210
                 metadata.insert(UBSettings::documentVersion, docVersion);
             }
 

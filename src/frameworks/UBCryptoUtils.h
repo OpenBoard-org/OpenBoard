@@ -60,8 +60,15 @@ class UBCryptoUtils : public QObject
 
         void aesInit();
 
-        EVP_CIPHER_CTX mAesEncryptContext;
-        EVP_CIPHER_CTX mAesDecryptContext;
+        // Issue 02/04/2018 -- OpenBoard -- OpenSSL Update
+
+        // Ubuntu 16.04 (OpenSSL < 1.0)
+        // EVP_CIPHER_CTX mAesEncryptContext;
+        // EVP_CIPHER_CTX mAesDecryptContext;
+
+        // Ubuntu 18.04 (OpenSSL > 1.0)
+        EVP_CIPHER_CTX *mAesEncryptContext;
+        EVP_CIPHER_CTX *mAesDecryptContext;
 
 };
 

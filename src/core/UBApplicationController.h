@@ -86,6 +86,9 @@ class UBApplicationController : public QObject
 
         void showBoard();
 
+        // Issue 12/04/2018 - OpenBoard - CANVAS MODE
+        void showCanvas();
+
         void showInternet();
 
         void showDocument();
@@ -106,7 +109,7 @@ class UBApplicationController : public QObject
 
         enum MainMode
         {
-            Board = 0, Internet, Document, WebDocument
+            Board = 0, Internet, Document, WebDocument, Canvas
         };
 
         MainMode displayMode()

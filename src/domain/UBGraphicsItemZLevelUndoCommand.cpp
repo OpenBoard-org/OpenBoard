@@ -93,5 +93,6 @@ void UBGraphicsItemZLevelUndoCommand::redo(){
 
 void UBGraphicsItemZLevelUndoCommand::updateLazyScene(){
     mpScene->update(mpScene->sceneRect());
+    //qWarning() << "UBGraphicsItemZLevelUndoCommand.cpp";
     mpScene->updateSelectionFrame();
 }

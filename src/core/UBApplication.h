@@ -34,6 +34,7 @@
 #include <QUndoStack>
 #include <QToolBar>
 #include <QMenu>
+#include "canvas/UBCanvasController.h"
 
 #include "qtsingleapplication.h"
 
@@ -53,6 +54,7 @@ class UBPersistenceManager;
 class UBApplicationController;
 class UBDocumentController;
 class UBMainWindow;
+class UBCanvasController;
 
 class UBApplication : public QtSingleApplication
 {
@@ -69,6 +71,8 @@ class UBApplication : public QtSingleApplication
 
         static QPointer<QUndoStack> undoStack;
 
+        // Issue 12/04/2018 - OpenBoard - CANVAS MODE
+        static UBCanvasController * canvasController;
         static UBApplicationController *applicationController;
         static UBBoardController* boardController;
         static UBWebController* webController;
@@ -94,11 +98,14 @@ class UBApplication : public QtSingleApplication
         void decorateActionMenu(QAction* action);
         void insertSpaceToToolbarBeforeAction(QToolBar* toolbar, QAction* action, int width = -1);
 
+        void resetAppOptionsToDefault(); // Issue 12/03/2018 - OpenBoard - NEED to RESET ALL PARAMETERS TO DEFAULT.
+
         int toolBarHeight();
         bool eventFilter(QObject *obj, QEvent *event);
 
         bool isVerbose() { return mIsVerbose;}
         void setVerbose(bool verbose){mIsVerbose = verbose;}
+        static void loadUrl(const QString& url); // Issue 13/03/2018 - OpenBoard - Text Editor URL management.
         static QString urlFromHtml(QString html);
         static bool isFromWeb(QString url);
 
@@ -110,6 +117,10 @@ class UBApplication : public QtSingleApplication
     public slots:
 
         void showBoard();
+
+        // Issue 12/04/2018 - OpenBoard - CANVAS MODE
+        void showCanvas();
+
         void showInternet();
         void showDocument();
         void startScript();

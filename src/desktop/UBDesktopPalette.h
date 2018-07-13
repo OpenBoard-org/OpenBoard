@@ -53,6 +53,7 @@ class UBDesktopPalette : public UBActionPalette
 
     signals:
         void uniboardClick();
+        void ocrClick();
         void customClick();
         void windowClick();
         void screenClick();
@@ -84,6 +85,7 @@ private:
         QAction *mActionUniboard;
         QAction *mActionCustomSelect;
         QAction* mActionTest;
+        QAction* mActionDesktopOCR;
 
 
         UBRightPalette* rightPalette;

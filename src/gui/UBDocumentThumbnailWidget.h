@@ -71,7 +71,7 @@ class UBDocumentThumbnailWidget: public UBThumbnailWidget
         void deleteDropCaret();
 
         QGraphicsRectItem *mDropCaretRectItem;
-        UBSceneThumbnailPixmap *mClosestDropItem;
+        UBThumbnailPixmap *mClosestDropItem;
         bool mDropIsRight;
         bool mDragEnabled;
         QTimer* mScrollTimer;

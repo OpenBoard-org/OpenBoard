@@ -97,8 +97,8 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
         UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
         // set background to white, no grid for PDF output
         bool isDark = scene->isDarkBackground();
-        bool isCrossed = scene->isCrossedBackground();
-        scene->setBackground(false, false);
+        UBPageBackground pageBackground = scene->pageBackground();
+        scene->setBackground(false, UBPageBackground::plain);
 
         // set high res rendering
         scene->setRenderingQuality(UBItem::RenderingQualityHigh);
@@ -126,7 +126,7 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
 
         //restore background state
         scene->setDrawingMode(false);
-        scene->setBackground(isDark, isCrossed);
+        scene->setBackground(isDark, pageBackground);
     }
 
     if (pdfPainter) delete pdfPainter;

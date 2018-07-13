@@ -105,13 +105,16 @@ UBColorListSetting::UBColorListSetting(UBSettings* owner, const QString& pDomain
     : UBSetting(owner, pDomain, pKey, pDefaultValue)
     , mAlpha(pAlpha)
 {
+
     foreach(QString s, get().toStringList())
     {
         QColor color;
         color.setNamedColor(s);
-        color.setAlphaF(mAlpha);
+        if (mAlpha>=0)
+            color.setAlphaF(mAlpha);
         mColors.append(color);
     }
+
 }
 
 UBColorListSetting::~UBColorListSetting()
@@ -129,7 +132,9 @@ QVariant UBColorListSetting::reset()
     {
         QColor color;
         color.setNamedColor(s);
-        color.setAlphaF(mAlpha);
+        if (mAlpha>=0)
+            color.setAlphaF(mAlpha);
+
         mColors.append(color);
     }
 
@@ -146,10 +151,15 @@ QList<QColor> UBColorListSetting::colors() const
 void UBColorListSetting::setColor(int pIndex, const QColor& color)
 {
     QStringList list = get().toStringList();
-    list.replace(pIndex, color.name());
-    QColor c = color;
-    c.setAlphaF(mAlpha);
-    mColors.replace(pIndex, c);
+    list.replace(pIndex, color.name(QColor::HexArgb));
+    if (mAlpha>=0)
+    {
+        QColor c = color;
+        c.setAlphaF(mAlpha);
+        mColors.replace(pIndex, c);
+    }
+    else
+        mColors.replace(pIndex, color);
     set(list);
 }
 

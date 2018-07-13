@@ -81,11 +81,6 @@ void UBSceneCache::insert (UBDocumentProxy* proxy, int pageIndex, UBGraphicsScen
     }
     else
     {
-        if (mCachedSceneCount >= UBSettings::settings()->pageCacheSize->get().toInt())
-        {
-            compactCache();
-        }
-
         QHash<UBSceneCacheID, UBGraphicsScene*>::insert(key, scene);
         mCachedKeyFIFO.enqueue(key);
 
@@ -230,41 +225,6 @@ void UBSceneCache::internalMoveScene(UBDocumentProxy* proxy, int sourceIndex, in
         }
     }
 }
-
-
-void UBSceneCache::compactCache()
-{
-    bool foundUnusedScene = false;
-    int count = 0;
-
-    do
-    {
-        if (!mCachedKeyFIFO.isEmpty())
-        {
-            const UBSceneCacheID nextKey = mCachedKeyFIFO.dequeue();
-
-            if (QHash<UBSceneCacheID, UBGraphicsScene*>::contains(nextKey))
-            {
-                UBGraphicsScene* scene = QHash<UBSceneCacheID, UBGraphicsScene*>::value(nextKey);
-
-                if (scene && scene->views().size() == 0)
-                {
-                    removeScene(nextKey.documentProxy, nextKey.pageIndex);
-                    foundUnusedScene = true;
-                }
-                else
-                {
-                    mCachedKeyFIFO.enqueue(nextKey);
-                }
-            }
-        }
-
-        count++;
-    }
-    while (!foundUnusedScene && count < mCachedKeyFIFO.size());
-
-}
-
 
 void UBSceneCache::dumpCacheContent()
 {

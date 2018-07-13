@@ -474,7 +474,7 @@ void UBWindowsMediaFile::startNewChapter(const QString& pLabel, long timestamp)
 void UBWindowsMediaFile::setLastErrorMessage(const QString& error)
 {
     mLastErrorMessage = error;
-    qWarning() << error;
+    //qWarning() << error;
 }
 
 

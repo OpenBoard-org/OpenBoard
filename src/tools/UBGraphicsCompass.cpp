@@ -65,10 +65,6 @@ UBGraphicsCompass::UBGraphicsCompass()
     , mDrewCenterCross(false)
 {
     setRect(sDefaultRect);
-    //TODO claudio: remove code duplication
-    QDesktopWidget* desktop = UBApplication::desktop();
-    int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
-    mPixelsPerMillimeter = qRound(dpiCommon / 25.4f);
 
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -428,7 +424,9 @@ void UBGraphicsCompass::paintAngleDisplay(QPainter *painter)
 
 void UBGraphicsCompass::paintRadiusDisplay(QPainter *painter)
 {
-    qreal radiusInCentimeters = rect().width() / (mPixelsPerMillimeter * 10);
+    double pixelsPerCentimeter = UBApplication::boardController->activeScene()->backgroundGridSize();
+
+    qreal radiusInCentimeters = rect().width() / pixelsPerCentimeter;
     QString format = rect().width() >= sDisplayRadiusUnitMinLength ? "%1 cm" : "%1";
     QString radiusText = QString(format).arg(radiusInCentimeters, 0, 'f', 1);
 

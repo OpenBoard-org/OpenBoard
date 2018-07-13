@@ -57,18 +57,28 @@ public:
 public slots:
     void onScrollToSelectedPage(int index);// { if (mCrntItem) centerOn(mCrntItem); }
     void generateThumbnails(UBDocumentContainer* source);
-    void updateSpecificThumbnail(int iPage);
+    void updateSpecificThumbnail(int iPage);    
+
+    void longPressTimeout();
+    void mousePressAndHoldEvent(QPoint pos);
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
 
+    virtual void dragEnterEvent(QDragEnterEvent* event);
+    virtual void dragMoveEvent(QDragMoveEvent* event);
+    virtual void dropEvent(QDropEvent* event);
+
+signals:
+    void mousePressAndHoldEventRequired(QPoint pos);
+    void moveThumbnailRequired(int from, int to);
+
 private:
 
     void refreshScene();
     int border();
-
 
     /** The scene */
     QGraphicsScene* mScene;
@@ -84,6 +94,15 @@ private:
     int mThumbnailMinWidth;
     /** The selected thumbnail */
     UBSceneThumbnailNavigPixmap* mSelectedThumbnail;
+
+    UBSceneThumbnailNavigPixmap* mDropSource;
+    UBSceneThumbnailNavigPixmap* mDropTarget;
+    QGraphicsRectItem *mDropBar;
+
+    int mLongPressInterval;
+    QTimer mLongPressTimer;
+    QPoint mLastPressedMousePos;
 };
 
 #endif // UBDOCUMENTNAVIGATOR_H
+

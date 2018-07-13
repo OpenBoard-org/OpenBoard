@@ -71,7 +71,9 @@
 #include "WBBrowserWindow.h"
 
 #include <QtGui>
-#include <QtWebKit>
+// Issue 02/04/2018 -- OpenBoard with QT 5.10
+//#include <QtWebKitWidgets>
+#include <QtWebKitWidgets>
 #include <QDesktopWidget>
 
 #include "core/UBSettings.h"

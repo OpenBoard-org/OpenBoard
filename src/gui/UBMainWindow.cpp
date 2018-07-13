@@ -49,6 +49,7 @@ UBMainWindow::UBMainWindow(QWidget *parent, Qt::WindowFlags flags)
     , mBoardWidget(0)
     , mWebWidget(0)
     , mDocumentsWidget(0)
+    , mCanvasWidget(0)
     , mpDownloadWidget(NULL)
 {
     Ui::MainWindow::setupUi(this);
@@ -122,6 +123,25 @@ void UBMainWindow::switchToWebWidget()
     }
 }
 
+// Issue 12/04/2018 - OpenBoard - CANVAS MODE
+void UBMainWindow::addCanvasWidget(QWidget *pWidget)
+{
+    if (!mCanvasWidget)
+    {
+        mCanvasWidget = pWidget;
+        mStackedLayout->addWidget(mCanvasWidget);
+    }
+}
+
+// Issue 12/04/2018 - OpenBoard - CANVAS MODE
+void UBMainWindow::switchToCanvasWidget()
+{
+    //qDebug() << "popped out from StackedLayout size height: " << mCanvasWidget->height() << " width: " << mCanvasWidget->width();
+    if (mCanvasWidget)
+    {
+        mStackedLayout->setCurrentWidget(mCanvasWidget);
+    }
+}
 
 void UBMainWindow::addDocumentsWidget(QWidget *pWidget)
 {

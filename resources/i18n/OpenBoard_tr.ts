@@ -799,6 +799,18 @@
         <source>Open the tutorial web page</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Ruled Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -890,6 +902,17 @@
         <source>Update</source>
         <translation>Güncelle</translation>
     </message>
+    <message>
+        <source>Board drawing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBBackgroundPalette</name>
+    <message>
+        <source>Grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardController</name>
@@ -919,7 +942,7 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation>%1 Sayfayı dökümandan sil</translation>
+        <translation type="vanished">%1 Sayfayı dökümandan sil</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -945,6 +968,10 @@
         <source>Document has just been saved...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Deleting page %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -955,6 +982,13 @@
     <message>
         <source>CapturedImage</source>
         <translation>YakalananResim</translation>
+    </message>
+</context>
+<context>
+    <name>UBBoardThumbnailsView</name>
+    <message>
+        <source>Loading page (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1195,7 +1229,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Sayfa %0</translation>
+        <translation type="vanished">Sayfa %0</translation>
     </message>
 </context>
 <context>
@@ -1228,10 +1262,37 @@
     </message>
 </context>
 <context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Sayfa %0</translation>
+    </message>
+</context>
+<context>
     <name>UBExportAdaptor</name>
     <message>
         <source>Warnings during export was appeared</source>
         <translation>Dışa aktarma sırasında bir uyarı mesajı göründü</translation>
+    </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">Döküman dışa aktarılıyor...</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1269,11 +1330,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Döküman dışa aktarılıyor...</translation>
+        <translation type="vanished">Döküman dışa aktarılıyor...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Dışa aktarım tamamlandı.</translation>
+        <translation type="vanished">Dışa aktarım tamamlandı.</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
@@ -1281,18 +1342,6 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1304,27 +1353,15 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Döküman dışa aktarılıyor...</translation>
+        <translation type="vanished">Döküman dışa aktarılıyor...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Dışa aktarım tamamlandı.</translation>
+        <translation type="vanished">Dışa aktarım tamamlandı.</translation>
     </message>
     <message>
         <source>Export to PDF</source>
         <translation>PDF Olarak Aktar</translation>
-    </message>
-    <message>
-        <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1335,11 +1372,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Döküman dışa aktarılıyor...</translation>
+        <translation type="vanished">Döküman dışa aktarılıyor...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Dışa aktarım tamamlandı.</translation>
+        <translation type="vanished">Dışa aktarım tamamlandı.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1385,7 +1422,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation>Arkaplan olarak tanımla</translation>
+        <translation type="vanished">Arkaplan olarak tanımla</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1524,6 +1561,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>İçerik Kaynağına Git</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">Arkaplan olarak tanımla</translation>
     </message>
 </context>
 <context>
@@ -1774,6 +1815,10 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Moving page to trash folder...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -1936,6 +1981,17 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 adet önizleme resmi oluşturuldu ...</translation>
+    </message>
+    <message>
+        <source>loading thumbnail of page %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Sayfa %0</translation>
     </message>
 </context>
 <context>
@@ -2412,6 +2468,14 @@ p, li { white-space: pre-wrap; }
         <source>Pen is Pressure Sensitive</source>
         <translation>Kalem Basınca Duyarlıdır</translation>
     </message>
+    <message>
+        <source>Show preview circle from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>px</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>capturePublishingDialog</name>
@@ -2596,6 +2660,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Built-in virtual keyboard button size:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On Dark Background</source>
+        <translation type="unfinished">Kapalı Arkaplan Üzerine</translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation type="unfinished">Saydamlık</translation>
+    </message>
+    <message>
+        <source>On Light Background</source>
+        <translation type="unfinished">Açık Arkaplan Üzerine</translation>
     </message>
 </context>
 <context>

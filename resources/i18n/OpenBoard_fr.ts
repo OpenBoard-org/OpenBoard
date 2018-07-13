@@ -117,11 +117,11 @@
     </message>
     <message>
         <source>Grid Light Background</source>
-        <translation>Grille sur fond clair</translation>
+        <translation>Fond quadrillé clair</translation>
     </message>
     <message>
         <source>Grid Dark Background</source>
-        <translation>Grille sur fond foncé</translation>
+        <translation>Fond quadrillé foncé</translation>
     </message>
     <message>
         <source>Start Screen Recording</source>
@@ -800,6 +800,18 @@
         <source>Open the tutorial web page</source>
         <translation>Ouvrir la page Web des tutoriels</translation>
     </message>
+    <message>
+        <source>Ruled Light Background</source>
+        <translation>Fond ligné clair</translation>
+    </message>
+    <message>
+        <source>Ruled Dark Background</source>
+        <translation>Fond ligné foncé</translation>
+    </message>
+    <message>
+        <source>Reset grid size</source>
+        <translation>Réinitialiser la taille du quadrillage</translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -891,6 +903,21 @@
         <source>Update</source>
         <translation>Mettre à jour</translation>
     </message>
+    <message>
+        <source>Drawing active scene and thumbnail previews</source>
+        <translation type="vanished">Dessin de la page active et des aperçus</translation>
+    </message>
+    <message>
+        <source>Board drawing...</source>
+        <translation>Dessin du tableau...</translation>
+    </message>
+</context>
+<context>
+    <name>UBBackgroundPalette</name>
+    <message>
+        <source>Grid size</source>
+        <translation>Taille du quadrillage</translation>
+    </message>
 </context>
 <context>
     <name>UBBoardController</name>
@@ -920,7 +947,7 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation>Supprimer la page %1 du document</translation>
+        <translation type="vanished">Supprimer la page %1 du document</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -946,6 +973,10 @@
         <source>Document has just been saved...</source>
         <translation>Le document vient d&apos;être sauvegardé...</translation>
     </message>
+    <message>
+        <source>Deleting page %1</source>
+        <translation>Supression de la page %1</translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -956,6 +987,13 @@
     <message>
         <source>CapturedImage</source>
         <translation>Image capturée</translation>
+    </message>
+</context>
+<context>
+    <name>UBBoardThumbnailsView</name>
+    <message>
+        <source>Loading page (%1/%2)</source>
+        <translation>Chargement page (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1202,7 +1240,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Page %0</translation>
+        <translation type="vanished">Page %0</translation>
     </message>
 </context>
 <context>
@@ -1235,10 +1273,37 @@
     </message>
 </context>
 <context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation>Page %0</translation>
+    </message>
+</context>
+<context>
     <name>UBExportAdaptor</name>
     <message>
         <source>Warnings during export was appeared</source>
         <translation>Avertissements lors de l&apos;exportation</translation>
+    </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation>Export du document...</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation>Echec de l&apos;export</translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation>Impossible d&apos;exporter dans le dossier sélectionné. Vous n&apos;avez pas les permissions nécessaires pour sauvegarder le fichier.</translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation>Impossible d&apos;exporter: pas de droits d&apos;écriture dans le répertoire</translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation>Export réussi.</translation>
     </message>
 </context>
 <context>
@@ -1272,7 +1337,7 @@
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export réussi.</translation>
+        <translation type="vanished">Export réussi.</translation>
     </message>
     <message>
         <source>Page</source>
@@ -1280,7 +1345,7 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Exportation du document...</translation>
+        <translation type="vanished">Exportation du document...</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
@@ -1292,15 +1357,15 @@
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation>Impossible d&apos;exporter: pas de droits d&apos;écriture dans le répertoire</translation>
+        <translation type="vanished">Impossible d&apos;exporter: pas de droits d&apos;écriture dans le répertoire</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation>Echec de l&apos;export</translation>
+        <translation type="vanished">Echec de l&apos;export</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation>Impossible d&apos;exporter dans le dossier sélectionné. Vous n&apos;avez pas les permissions nécessaires pour sauvegarder le fichier.</translation>
+        <translation type="vanished">Impossible d&apos;exporter dans le dossier sélectionné. Vous n&apos;avez pas les permissions nécessaires pour sauvegarder le fichier.</translation>
     </message>
 </context>
 <context>
@@ -1311,7 +1376,7 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Exportation du document...</translation>
+        <translation type="vanished">Exportation du document...</translation>
     </message>
     <message>
         <source>Export to PDF</source>
@@ -1319,19 +1384,19 @@
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export terminé.</translation>
+        <translation type="vanished">Export terminé.</translation>
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation>Impossible d&apos;exporter: pas de droits d&apos;écriture dans le répertoire</translation>
+        <translation type="vanished">Impossible d&apos;exporter: pas de droits d&apos;écriture dans le répertoire</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation>Echec de l&apos;export</translation>
+        <translation type="vanished">Echec de l&apos;export</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation>Impossible d&apos;exporter dans le dossier sélectionné. Vous n&apos;avez pas les permissions nécessaires pour sauvegarder le fichier.</translation>
+        <translation type="vanished">Impossible d&apos;exporter dans le dossier sélectionné. Vous n&apos;avez pas les permissions nécessaires pour sauvegarder le fichier.</translation>
     </message>
 </context>
 <context>
@@ -1346,11 +1411,11 @@
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export terminé.</translation>
+        <translation type="vanished">Export terminé.</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Exportation du document...</translation>
+        <translation type="vanished">Exportation du document...</translation>
     </message>
     <message>
         <source>Export to PDF</source>
@@ -1394,7 +1459,7 @@
     <message>
         <source>Set as background</source>
         <translatorcomment>j&apos;ai choisi de rendre le bouton plus compact (mais info moins complète)</translatorcomment>
-        <translation>Ajout en fond</translation>
+        <translation type="vanished">Ajout en fond</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1534,6 +1599,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>Aller à la source du contenu</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation>Mettre en fond de page</translation>
     </message>
 </context>
 <context>
@@ -1785,6 +1854,18 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>a perdu l&apos;accès au répertoire des documents &apos;%1&apos;. Malheureusement, l&apos;application sera fermée afin d&apos;éviter la corruption des données. Les dernières modifications pourraient être également perdues.</translation>
     </message>
+    <message>
+        <source>saving document thumbnail for the page %1</source>
+        <translation type="vanished">Sauvegarde aperçu page %1</translation>
+    </message>
+    <message>
+        <source>Saving thumbnail of page %1</source>
+        <translation type="vanished">Sauvegarde aperçu page %1</translation>
+    </message>
+    <message>
+        <source>Moving page to trash folder...</source>
+        <translation>Déplacement de la page dans la corbeille...</translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -1947,6 +2028,17 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 vignettes créées ...</translation>
+    </message>
+    <message>
+        <source>loading thumbnail of page %1</source>
+        <translation>Chargement aperçu page %1</translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation>Page %0</translation>
     </message>
 </context>
 <context>
@@ -2421,8 +2513,24 @@ p, li { white-space: pre-wrap; }
         <translation>Fine</translation>
     </message>
     <message>
+        <source>Show preview circle from</source>
+        <translation>Visualiser la taille dès</translation>
+    </message>
+    <message>
         <source>Pen is Pressure Sensitive</source>
         <translation>Stylet sensible à la pression</translation>
+    </message>
+    <message>
+        <source>Smooth strokes (experimental)</source>
+        <translation type="vanished">Lissage des traits (expérimental)</translation>
+    </message>
+    <message>
+        <source>Simplify strokes after drawing (experimental)</source>
+        <translation type="vanished">Simplification des traits post-dessin (expérimental)</translation>
+    </message>
+    <message>
+        <source>px</source>
+        <translation>px</translation>
     </message>
 </context>
 <context>
@@ -2608,6 +2716,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Built-in virtual keyboard button size:</source>
         <translation>Taille des touches du clavier virtuel integré :</translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation>Quadrillage</translation>
+    </message>
+    <message>
+        <source>On Dark Background</source>
+        <translation>Sur fond foncé</translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation>Opacité</translation>
+    </message>
+    <message>
+        <source>On Light Background</source>
+        <translation>Sur fond clair</translation>
     </message>
 </context>
 <context>

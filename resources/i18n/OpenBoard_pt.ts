@@ -801,6 +801,18 @@
         <source>Open the tutorial web page</source>
         <translation>Abrir a página web de tutorial</translation>
     </message>
+    <message>
+        <source>Ruled Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -892,6 +904,17 @@
         <source>Update</source>
         <translation>Atualizar</translation>
     </message>
+    <message>
+        <source>Board drawing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBBackgroundPalette</name>
+    <message>
+        <source>Grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardController</name>
@@ -921,7 +944,7 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation>Apagar a página %1 do documento</translation>
+        <translation type="vanished">Apagar a página %1 do documento</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -947,6 +970,10 @@
         <source>Document has just been saved...</source>
         <translation>Documento acaba de ser gravado...</translation>
     </message>
+    <message>
+        <source>Deleting page %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -957,6 +984,13 @@
     <message>
         <source>CapturedImage</source>
         <translation>Imagem capturada</translation>
+    </message>
+</context>
+<context>
+    <name>UBBoardThumbnailsView</name>
+    <message>
+        <source>Loading page (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1198,7 +1232,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Página %0</translation>
+        <translation type="vanished">Página %0</translation>
     </message>
 </context>
 <context>
@@ -1231,10 +1265,37 @@
     </message>
 </context>
 <context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Página %0</translation>
+    </message>
+</context>
+<context>
     <name>UBExportAdaptor</name>
     <message>
         <source>Warnings during export was appeared</source>
         <translation>Surgiram alertas durante a exportação</translation>
+    </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">A exportar documento...</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished">Exportação falhou</translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished">Exportação falhou: localização não gravável</translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Exportação bem sucedida.</translation>
     </message>
 </context>
 <context>
@@ -1272,11 +1333,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>A exportar documento...</translation>
+        <translation type="vanished">A exportar documento...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Exportação bem sucedida.</translation>
+        <translation type="vanished">Exportação bem sucedida.</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
@@ -1288,15 +1349,15 @@
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation>Exportação falhou: localização não gravável</translation>
+        <translation type="vanished">Exportação falhou: localização não gravável</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation>Exportação falhou</translation>
+        <translation type="vanished">Exportação falhou</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation>Impossível exportar para a localização selcionada. Você não possui as permissões necessárias para gravar o arquivo.</translation>
+        <translation type="vanished">Impossível exportar para a localização selcionada. Você não possui as permissões necessárias para gravar o arquivo.</translation>
     </message>
 </context>
 <context>
@@ -1307,11 +1368,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>A exportar documento...</translation>
+        <translation type="vanished">A exportar documento...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Exportação bem sucedida.</translation>
+        <translation type="vanished">Exportação bem sucedida.</translation>
     </message>
     <message>
         <source>Export to PDF</source>
@@ -1319,15 +1380,15 @@
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation>Exportação falhou: localização não gravável</translation>
+        <translation type="vanished">Exportação falhou: localização não gravável</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation>Exportação falhou</translation>
+        <translation type="vanished">Exportação falhou</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation>Impossível exportar para a localização selecionada. Você não possui as permissões necessárias para gravar o arquivo.</translation>
+        <translation type="vanished">Impossível exportar para a localização selecionada. Você não possui as permissões necessárias para gravar o arquivo.</translation>
     </message>
 </context>
 <context>
@@ -1338,11 +1399,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>A exportar documento...</translation>
+        <translation type="vanished">A exportar documento...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Exportação bem sucedida.</translation>
+        <translation type="vanished">Exportação bem sucedida.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1388,7 +1449,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation>Definir como fundo</translation>
+        <translation type="vanished">Definir como fundo</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1528,6 +1589,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>Ir para a Fonte do Conteúdo</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">Definir como fundo</translation>
     </message>
 </context>
 <context>
@@ -1779,6 +1844,10 @@ Quer ignorar estes erros, deste servidor?</translation>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>Acesso ao repositório &apos;%1&apos; foi perdido. Infelizmente a aplicação deverá desligar para avitar a corrupção de dados. As últimas alterações também serão perdidas.</translation>
     </message>
+    <message>
+        <source>Moving page to trash folder...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -1934,6 +2003,17 @@ Quer ignorar estes erros, deste servidor?</translation>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 de miniaturas geradas ...</translation>
+    </message>
+    <message>
+        <source>loading thumbnail of page %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Página %0</translation>
     </message>
 </context>
 <context>
@@ -2412,6 +2492,14 @@ p, li { white-space: pre-wrap; }
         <source>Pen is Pressure Sensitive</source>
         <translation>Caneta sensível à pressão</translation>
     </message>
+    <message>
+        <source>Show preview circle from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>px</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>capturePublishingDialog</name>
@@ -2598,6 +2686,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Built-in virtual keyboard button size:</source>
         <translation>Tamanho da tecla do teclado virtual embarcado:</translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On Dark Background</source>
+        <translation type="unfinished">Num fundo preto</translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation type="unfinished">Opacidade</translation>
+    </message>
+    <message>
+        <source>On Light Background</source>
+        <translation type="unfinished">Num fundo branco</translation>
     </message>
 </context>
 <context>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="it_IT" sourcelanguage="it_IT">
+<TS version="2.1" language="it_IT" sourcelanguage="it_IT">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -799,6 +799,18 @@
         <source>Open the tutorial web page</source>
         <translation>Apri la pagina web del tutorial</translation>
     </message>
+    <message>
+        <source>Ruled Light Background</source>
+        <translation>Sfondo chiaro lineato</translation>
+    </message>
+    <message>
+        <source>Ruled Dark Background</source>
+        <translation>Sfundo scuro lineato</translation>
+    </message>
+    <message>
+        <source>Reset grid size</source>
+        <translation>Ripristina la dimensione della griglia</translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -842,11 +854,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation>Elemento ID =</translation>
+        <translation type="vanished">Elemento ID =</translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation>Il contenuto non è supportato nel formato di destinazione.</translation>
+        <translation type="vanished">Il contenuto non è supportato nel formato di destinazione.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -890,6 +902,17 @@
         <source>Update</source>
         <translation>Aggiornamento</translation>
     </message>
+    <message>
+        <source>Board drawing...</source>
+        <translation>Disegno della lavagna...</translation>
+    </message>
+</context>
+<context>
+    <name>UBBackgroundPalette</name>
+    <message>
+        <source>Grid size</source>
+        <translation>Dimensione della griglia</translation>
+    </message>
 </context>
 <context>
     <name>UBBoardController</name>
@@ -919,7 +942,7 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation>Rimuovi pagina %1 dal documento</translation>
+        <translation type="vanished">Rimuovi pagina %1 dal documento</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -945,6 +968,10 @@
         <source>Document has just been saved...</source>
         <translation>Il documento è stato appena salvato...</translation>
     </message>
+    <message>
+        <source>Deleting page %1</source>
+        <translation>eliminazione della pagina %1</translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -955,6 +982,13 @@
     <message>
         <source>CapturedImage</source>
         <translation>ImmagineCatturata</translation>
+    </message>
+</context>
+<context>
+    <name>UBBoardThumbnailsView</name>
+    <message>
+        <source>Loading page (%1/%2)</source>
+        <translation>Caricamento pagina (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1196,7 +1230,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Pagina %0</translation>
+        <translation type="vanished">Pagina %0</translation>
     </message>
 </context>
 <context>
@@ -1211,7 +1245,7 @@
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%1 pagina copiata</numerusform>
             <numerusform>%1 pagine copiate</numerusform>
         </translation>
@@ -1229,33 +1263,60 @@
     </message>
 </context>
 <context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation>Pagina %0</translation>
+    </message>
+</context>
+<context>
     <name>UBExportAdaptor</name>
     <message>
         <source>Warnings during export was appeared</source>
         <translation>È apparso un avviso durante l&apos;esportazione</translation>
-    </message>
-</context>
-<context>
-    <name>UBExportCFF</name>
-    <message>
-        <source>Export to IWB</source>
-        <translation>Esporta in IWB</translation>
-    </message>
-    <message>
-        <source>Export as IWB File</source>
-        <translation>Esporta come file IWB</translation>
     </message>
     <message>
         <source>Exporting document...</source>
         <translation>Esportazione documento in corso...</translation>
     </message>
     <message>
+        <source>Export failed</source>
+        <translation>Esportazione fallita</translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Export successful.</source>
-        <translation>Esportazione conclusa con successo.</translation>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBExportCFF</name>
+    <message>
+        <source>Export to IWB</source>
+        <translation type="vanished">Esporta in IWB</translation>
+    </message>
+    <message>
+        <source>Export as IWB File</source>
+        <translation type="vanished">Esporta come file IWB</translation>
+    </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="vanished">Esportazione documento in corso...</translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="vanished">Esportazione conclusa con successo.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>Esportazione fallita.</translation>
+        <translation type="vanished">Esportazione fallita.</translation>
     </message>
 </context>
 <context>
@@ -1270,11 +1331,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Esportazione documento in corso...</translation>
+        <translation type="vanished">Esportazione documento in corso...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Esportazione completata con successo.</translation>
+        <translation type="vanished">Esportazione completata con successo.</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
@@ -1286,15 +1347,15 @@
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation>Exportazione fallita: posizione non scrivibile</translation>
+        <translation type="vanished">Exportazione fallita: posizione non scrivibile</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation>Esportazione fallita</translation>
+        <translation type="vanished">Esportazione fallita</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation>Impossibile esportare nella posizione selezionata. Non possiedi i permessi necessari a salvare il file.</translation>
+        <translation type="vanished">Impossibile esportare nella posizione selezionata. Non possiedi i permessi necessari a salvare il file.</translation>
     </message>
 </context>
 <context>
@@ -1305,11 +1366,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Esportazione documento in corso...</translation>
+        <translation type="vanished">Esportazione documento in corso...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Esportazione completata con successo.</translation>
+        <translation type="vanished">Esportazione completata con successo.</translation>
     </message>
     <message>
         <source>Export to PDF</source>
@@ -1317,15 +1378,15 @@
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation>Esportazione fallita: posizione non scrivibile</translation>
+        <translation type="vanished">Esportazione fallita: posizione non scrivibile</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation>Esportazione fallita</translation>
+        <translation type="vanished">Esportazione fallita</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation>Impossibile esportare alla posizione selezionata. Non possiedi i permessi necessari a salvare il file.</translation>
+        <translation type="vanished">Impossibile esportare alla posizione selezionata. Non possiedi i permessi necessari a salvare il file.</translation>
     </message>
 </context>
 <context>
@@ -1336,11 +1397,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Esportazione documento in corso...</translation>
+        <translation type="vanished">Esportazione documento in corso...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Esportazione riuscita.</translation>
+        <translation type="vanished">Esportazione riuscita.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1386,7 +1447,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation>Imposta come sfondo</translation>
+        <translation type="vanished">Imposta come sfondo</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1526,6 +1587,10 @@
         <source>Go to Content Source</source>
         <translation>Vai alla sorgente del contenuto</translation>
     </message>
+    <message>
+        <source>Set as background</source>
+        <translation>Imposta come sfondo</translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsMediaItem</name>
@@ -1593,23 +1658,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation>Common File Format (</translation>
+        <translation type="vanished">Common File Format (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation>Importazione del file %1 in corso...</translation>
+        <translation type="vanished">Importazione del file %1 in corso...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>L&apos;importazione del file %1 è fallita.</translation>
+        <translation type="vanished">L&apos;importazione del file %1 è fallita.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Importazione completata con successo.</translation>
+        <translation type="vanished">Importazione completata con successo.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation>Importazione fallita.</translation>
+        <translation type="vanished">Importazione fallita.</translation>
     </message>
 </context>
 <context>
@@ -1776,6 +1841,14 @@ Vuoi ignorare gli errori per questo host?</translation>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>ha perso l&apos;accesso al repository documenti &quot;%1&quot;. Sfortunatamente l&apos;applicazione deve essere chiusa per evitare di rivinare i dati. Gli ultimi cambiamenti potrebbero andare persi.</translation>
     </message>
+    <message>
+        <source>Saving thumbnail of page %1</source>
+        <translation type="vanished">Salvataggio della miniatura della pagina %1</translation>
+    </message>
+    <message>
+        <source>Moving page to trash folder...</source>
+        <translation>Spostamento della pagina nella cartella del cestino...</translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -1938,6 +2011,17 @@ Vuoi ignorare gli errori per questo host?</translation>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 miniature generate...</translation>
+    </message>
+    <message>
+        <source>loading thumbnail of page %1</source>
+        <translation>Caricamento miniatura della pagina %1</translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation>Pagina %0</translation>
     </message>
 </context>
 <context>
@@ -2414,6 +2498,14 @@ p, li { white-space: pre-wrap; }
         <source>Pen is Pressure Sensitive</source>
         <translation>La penna è sensibile alla pressione</translation>
     </message>
+    <message>
+        <source>Show preview circle from</source>
+        <translation>Mostra l&apos;anteprima del cerchio a partire da</translation>
+    </message>
+    <message>
+        <source>px</source>
+        <translation>px</translation>
+    </message>
 </context>
 <context>
     <name>capturePublishingDialog</name>
@@ -2485,7 +2577,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation>Dimensione pulsanti tastiera:</translation>
+        <translation type="vanished">Dimensione pulsanti tastiera:</translation>
     </message>
     <message>
         <source>Toolbar</source>
@@ -2598,6 +2690,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Built-in virtual keyboard button size:</source>
         <translation>Dimensione pulsanti tastiera virtuale incorporata:</translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation>Griglia</translation>
+    </message>
+    <message>
+        <source>On Light Background</source>
+        <translation>Su sfondo chiaro</translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation>Opacità</translation>
+    </message>
+    <message>
+        <source>On Dark Background</source>
+        <translation>Su sfondo scuro</translation>
     </message>
 </context>
 <context>

@@ -171,7 +171,7 @@ void UBGraphicsItemUndoCommand::undo()
 
         QGraphicsItem *groupedItem = mScene->itemForUuid(curMapElement.value());
         if (groupedItem) {
-            nextGroup->addToGroup(groupedItem);
+            nextGroup->addToGroup(groupedItem, false);
         }
 
         previousGroupItem = curMapElement.key();
@@ -180,6 +180,7 @@ void UBGraphicsItemUndoCommand::undo()
 
     // force refresh, QT is a bit lazy and take a lot of time (nb item ^2 ?) to trigger repaint
     mScene->update(mScene->sceneRect());
+    //qWarning() << "UBGraphicsItemUndoCommand.cpp";
     mScene->updateSelectionFrame();
 
 }

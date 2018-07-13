@@ -36,13 +36,15 @@
 #include <QToolBar>
 #include <QToolButton>
 #include <QActionGroup>
+#include <qcolordialog.h>
+#include <QSpinBox>
 
 class UBToolbarButtonGroup : public QWidget
 {
     Q_OBJECT;
 
     public:
-        UBToolbarButtonGroup(QToolBar *toolbar, const QList<QAction*> &actions = QList<QAction*>());
+        UBToolbarButtonGroup(QToolBar *toolbar, const QList<QAction*> &actions = QList<QAction*>(), bool isColorToolBar=false, bool isLineWidthToolBar = false);
         virtual ~UBToolbarButtonGroup();
 
         void setIcon(const QIcon &icon, int index);
@@ -60,18 +62,33 @@ class UBToolbarButtonGroup : public QWidget
         int                  mCurrentIndex;
         bool                 mDisplayLabel;
         QActionGroup*        mActionGroup;
+        QColorDialog        *mColorDialog; // Issue 27/02/2018 - OpenBoard - CUSTOM COLOR.
+        bool                 isColorTool;  // Issue 27/02/2018 - OpenBoard - CUSTOM COLOR.
+        bool                 isLineWidthTool; // Issue 05/03/2018 - OpenBoard - CUSTOM WIDTH
+        QDoubleSpinBox      *lineWidthSpinBox; // Issue 05/03/2018 - OpenBoard - CUSTOM WIDTH
+        qreal                customPenLineWidth; // Issue 05/03/2018 - OpenBoard - CUSTOM WIDTH
+        qreal                customMarkerLineWidth; // Issue 05/03/2018 - OpenBoard - CUSTOM WIDTH
+        bool launched;
 
     public slots:
         void setCurrentIndex(int index);
         void colorPaletteChanged();
         void displayText(QVariant display);
+        void updateCustomColor(QColor selectedColor); // Issue 27/02/2018 - OpenBoard - CUSTOM COLOR.
+        void updateLineWidthSpinBox(); // Issue 05/03/2018 - OpenBoard - CUSTOM WIDTH
+        void updatePenMarkerWidth(double value); // Issue 05/03/2018 - OpenBoard - CUSTOM WIDTH
 
     private slots:
         void selected(QAction *action);
+        void customColorHandle(); // Issue 27/02/2018 - OpenBoard - CUSTOM COLOR.
+        void lineWidthHandlePredefined(); // Issue 05/03/2018 - OpenBoard - CUSTOM WIDTH
+        void lineWidthHandleCustom(); // Issue 05/03/2018 - OpenBoard - CUSTOM WIDTH
 
     signals:
         void activated(int index);
         void currentIndexChanged(int index);
+        void customColorUpdated();
+        void clickOnLineWidthButton(); // Issue 05/03/2018 - OpenBoard - CUSTOM WIDTH
 };
 
 #endif /* UBTOOLBARBUTTONGROUP_H_ */

@@ -799,6 +799,18 @@
         <source>Open the tutorial web page</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Ruled Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -890,6 +902,17 @@
         <source>Update</source>
         <translation>업데이트</translation>
     </message>
+    <message>
+        <source>Board drawing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBBackgroundPalette</name>
+    <message>
+        <source>Grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardController</name>
@@ -919,7 +942,7 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation type="unfinished">문서에서 %1페이지 삭제</translation>
+        <translation type="obsolete">문서에서 %1페이지 삭제</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -945,6 +968,10 @@
         <source>Document has just been saved...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Deleting page %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -955,6 +982,13 @@
     <message>
         <source>CapturedImage</source>
         <translation type="unfinished">캡처한 이미지</translation>
+    </message>
+</context>
+<context>
+    <name>UBBoardThumbnailsView</name>
+    <message>
+        <source>Loading page (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1195,7 +1229,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>%0 페이지</translation>
+        <translation type="vanished">%0 페이지</translation>
     </message>
 </context>
 <context>
@@ -1230,10 +1264,37 @@
     </message>
 </context>
 <context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">%0 페이지</translation>
+    </message>
+</context>
+<context>
     <name>UBExportAdaptor</name>
     <message>
         <source>Warnings during export was appeared</source>
         <translation type="unfinished">내보내는 도중 경고가 나타났습니다</translation>
+    </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">문서를 내보내는 중...</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">내보내기 완료.</translation>
     </message>
 </context>
 <context>
@@ -1271,11 +1332,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>문서를 내보내는 중...</translation>
+        <translation type="vanished">문서를 내보내는 중...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>내보내기 완료.</translation>
+        <translation type="vanished">내보내기 완료.</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
@@ -1283,18 +1344,6 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1306,27 +1355,15 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>문서를 내보내는 중...</translation>
+        <translation type="vanished">문서를 내보내는 중...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>내보내기 완료.</translation>
+        <translation type="vanished">내보내기 완료.</translation>
     </message>
     <message>
         <source>Export to PDF</source>
         <translation>PDF로 내보내기</translation>
-    </message>
-    <message>
-        <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1337,11 +1374,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>문서를 내보내는 중...</translation>
+        <translation type="vanished">문서를 내보내는 중...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>내보내기 완료.</translation>
+        <translation type="vanished">내보내기 완료.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1387,7 +1424,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="unfinished">배경으로 지정</translation>
+        <translation type="obsolete">배경으로 지정</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1526,6 +1563,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>콘텐츠 소스로 이동</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">배경으로 지정</translation>
     </message>
 </context>
 <context>
@@ -1777,6 +1818,10 @@ Do you want to ignore these errors for this host?</source>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Moving page to trash folder...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -1939,6 +1984,17 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 썸네일 생성됨 ...</translation>
+    </message>
+    <message>
+        <source>loading thumbnail of page %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">%0 페이지</translation>
     </message>
 </context>
 <context>
@@ -2415,6 +2471,14 @@ p, li { white-space: pre-wrap; }
         <source>Pen is Pressure Sensitive</source>
         <translation>펜은 압력 감지식입니다</translation>
     </message>
+    <message>
+        <source>Show preview circle from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>px</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>capturePublishingDialog</name>
@@ -2599,6 +2663,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Built-in virtual keyboard button size:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On Dark Background</source>
+        <translation type="unfinished">어두운 배경</translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation type="unfinished">불투명도</translation>
+    </message>
+    <message>
+        <source>On Light Background</source>
+        <translation type="unfinished">밝은 배경</translation>
     </message>
 </context>
 <context>

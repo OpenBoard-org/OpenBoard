@@ -36,8 +36,16 @@
 #include <QHBoxLayout>
 #include <QUndoCommand>
 
+#include "UBFeaturesController.h"
 #include "document/UBDocumentContainer.h"
 #include "core/UBApplicationController.h"
+#include "domain/UBShapeFactory.h"
+
+// Issue 22/03/2018 - OpenBoard - OCR recognition
+// Required to perform the OCR
+#include <tesseract/baseapi.h>
+#include <leptonica/allheaders.h>
+// ---
 
 class UBMainWindow;
 class UBApplication;
@@ -58,6 +66,11 @@ class UBBoardPaletteManager;
 class UBItem;
 class UBGraphicsItem;
 
+typedef enum{
+    eItemActionType_Default,
+    eItemActionType_Duplicate,
+    eItemActionType_Paste
+}eItemActionType;
 
 class UBBoardController : public UBDocumentContainer
 {
@@ -158,7 +171,17 @@ class UBBoardController : public UBDocumentContainer
         {
             return mSystemScaleFactor;
         }
+
+        //EV-7 - NNE - 20140106
+        UBShapeFactory& shapeFactory()
+        {
+            return mShapeFactory;
+        }
+
         qreal currentZoom();
+
+        void persistViewPositionOnCurrentScene();// Issue 1598/1605 - CFA - 20131028
+
         void persistCurrentScene(bool isAnAutomaticBackup = false, bool forceImmediateSave = false);
         void showNewVersionAvailable(bool automatic, const UBVersion &installedVersion, const UBSoftwareUpdate &softwareUpdate);
         void setBoxing(QRect displayRect);
@@ -191,6 +214,9 @@ class UBBoardController : public UBDocumentContainer
         QString actionGroupText(){ return mActionGroupText;}
         QString actionUngroupText(){ return mActionUngroupText;}
 
+        // Issue 22/03/2018 - OpenBoard - OCR recognition
+        PIX* qImage2PIX(const QImage &qImage);// Custom function to transform a QImage into a PIX: Qimage->Pix
+
     public slots:
         void showDocumentsDialog();
         void showKeyboard(bool show);
@@ -201,6 +227,7 @@ class UBBoardController : public UBDocumentContainer
         void addScene(UBGraphicsScene* scene, bool replaceActiveIfEmpty = false);
         void duplicateScene();
         void importPage();
+        void saveDocument();
         void clearScene();
         void clearSceneItems();
         void clearSceneAnnotation();
@@ -216,22 +243,29 @@ class UBBoardController : public UBDocumentContainer
         void nextScene();
         void firstScene();
         void lastScene();
-        void downloadURL(const QUrl& url, QString contentSourceUrl = QString(), const QPointF& pPos = QPointF(0.0, 0.0), const QSize& pSize = QSize(), bool isBackground = false, bool internalData = false);
+        void groupButtonClicked();
+        void downloadURL(const QUrl& url, QString contentSourceUrl = QString(), const QPointF& pPos = QPointF(0.0, 0.0), const QSize& pSize = QSize(), bool isBackground = false, bool internalData = false, UBFeatureBackgroundDisposition disposition = Center);
         UBItem *downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl contentUrl, QString pHeader,
                                  QByteArray pData, QPointF pPos, QSize pSize,
                                  bool isBackground = false, bool internalData = false);
-        void changeBackground(bool isDark, bool isCrossed);
+        void changeBackground(bool isDark, UBPageBackground pageBackground);
         void setToolCursor(int tool);
         void showMessage(const QString& message, bool showSpinningWheel = false);
         void hideMessage();
         void setDisabled(bool disable);
         void setColorIndex(int pColorIndex);
+        void updateCustomColor(); // Issue 27/02/2018 - OpenBoard - CUSTOM COLOR
+
         void removeTool(UBToolWidget* toolWidget);
         void hide();
         void show();
         void setWidePageSize(bool checked);
         void setRegularPageSize(bool checked);
         void stylusToolChanged(int tool);
+
+        // Issue 22/03/2018 - OpenBoard - OCR recognition
+        void ocrRecognition(const QRectF& pSceneRect); // Method to pick a snapshot and apply an OCR procedure to save the TEXT returned in the clipboard
+
         void grabScene(const QRectF& pSceneRect);
         UBGraphicsMediaItem* addVideo(const QUrl& pUrl, bool startPlay, const QPointF& pos, bool bUseSource = false);
         UBGraphicsMediaItem* addAudio(const QUrl& pUrl, bool startPlay, const QPointF& pos, bool bUseSource = false);
@@ -263,7 +297,11 @@ class UBBoardController : public UBDocumentContainer
         void documentReorganized(int index);
         void displayMetadata(QMap<QString, QString> metadata);
         void pageSelectionChanged(int index);
+        void centerOnThumbnailRequired(int index);
         void npapiWidgetCreated(const QString &Url);
+        void customColorUpdated();
+        void ocrRecognized(QString text);
+
 
     protected:
         void setupViews();
@@ -284,6 +322,7 @@ class UBBoardController : public UBDocumentContainer
         void appMainModeChanged(UBApplicationController::MainMode);
 
     private:
+        void initBackgroundGridSize();
         void updatePageSizeState();
         void saveViewState();
         void adjustDisplayViews();
@@ -317,16 +356,19 @@ class UBBoardController : public UBDocumentContainer
 
         QTimer *mAutosaveTimer;
 
+        //EV-7 - NNE - 20131230
+        UBShapeFactory mShapeFactory;
+
     private slots:
         void stylusToolDoubleClicked(int tool);
         void boardViewResized(QResizeEvent* event);
         void documentWillBeDeleted(UBDocumentProxy* pProxy);
-        void updateBackgroundActionsState(bool isDark, bool isCrossed);
+        void updateBackgroundState();
+        void updateBackgroundActionsState(bool isDark, UBPageBackground pageBackground);
         void colorPaletteChanged();
         void libraryDialogClosed(int ret);
         void lastWindowClosed();
         void onDownloadModalFinished();
-
 };
 
 

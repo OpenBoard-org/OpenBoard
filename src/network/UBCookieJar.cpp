@@ -75,7 +75,7 @@
 #include "core/UBSettings.h"
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QtWebKitWidgets>
 
 #include "core/memcheck.h"
 
