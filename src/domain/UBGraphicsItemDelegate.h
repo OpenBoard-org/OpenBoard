@@ -54,12 +54,14 @@ class UBGraphicsProxyWidget;
 class UBGraphicsDelegateFrame;
 class UBGraphicsWidgetItem;
 class UBGraphicsMediaItem;
+class UBGraphicsItemAction;
 
 class DelegateButton: public QGraphicsSvgItem
 {
     Q_OBJECT
 
     public:
+        static DelegateButton *Spacer;
         DelegateButton(const QString & fileName, QGraphicsItem* pDelegated, QGraphicsItem * parent = 0, Qt::WindowFrameSection section = Qt::TopLeftSection);
 
         virtual ~DelegateButton();
@@ -109,6 +111,16 @@ private slots:
         void longClicked();
 
 };
+
+//N/C - NNE - 20140529
+class DelegateSpacer : public DelegateButton
+{
+    Q_OBJECT
+
+public:
+    DelegateSpacer(QGraphicsItem * parent = 0, Qt::WindowFrameSection section = Qt::TopLeftSection);
+};
+//N/C - NNE - 20140529 : END
 
 /*
     Code of this class is copied from QT QLCDNumber class sources
@@ -293,12 +305,21 @@ class UBGraphicsItemDelegate : public QObject
         qreal antiScaleRatio() const { return mAntiScaleRatio; }
         virtual void update() {positionHandles();}
 
+        UBGraphicsItemAction* action() { return mAction; }
+        void setAction(UBGraphicsItemAction* action);
+
         UBGraphicsFlags ubflags() const {return mFlags;}
         bool testUBFlags(UBGraphicsFlags pf) const {return mFlags & pf;}
         void setUBFlags(UBGraphicsFlags pf);
         void setUBFlag(UBGraphicsFlags pf, bool set = true);
 
         virtual void showToolBar(bool autohide = true) {Q_UNUSED(autohide);}
+
+        void setCanTrigAnAction(bool canTrig); // Issue 12/03/2018 - OpenBoard - Custom Widgets
+
+        //N/C - NNE - 20140505 : add vertical and horizontal flip
+        void setVerticalMirror(bool isMirror){ mVerticalMirror = isMirror; } // Issue 12/03/2018 - OpenBoard - Custom Widgets
+        void setHorizontalMirror(bool isMirror){ mHorizontalMirror = isMirror; } // Issue 12/03/2018 - OpenBoard - Custom Widgets
 
     signals:
         void showOnDisplayChanged(bool shown);
@@ -319,6 +340,16 @@ class UBGraphicsItemDelegate : public QObject
 
         void onZoomChanged();
 
+        //N/C - NNE - 20140505 : add vertical and horizontal flip
+        void flipHorizontally(); // Issue 12/03/2018 - OpenBoard - Custom Widgets
+        void flipVertically();   // Issue 12/03/2018 - OpenBoard - Custom Widgets
+
+    private slots:
+        void onAddActionClicked();
+        void onReturnToCreationModeClicked();
+        void onRemoveActionClicked();
+        void saveAction(UBGraphicsItemAction *action);
+
     protected:
         virtual void buildButtons();
         virtual void freeButtons();
@@ -326,6 +357,7 @@ class UBGraphicsItemDelegate : public QObject
         virtual void updateMenuActionState();
 
         void showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem);
+        void setLockedRecurs(const QVariant &pLock, QGraphicsItem *pItem);
 
         QList<DelegateButton*> buttons() {return mButtons;}
         QGraphicsItem* mDelegated;
@@ -343,7 +375,10 @@ class UBGraphicsItemDelegate : public QObject
 
         QAction* mLockAction;
         QAction* mShowOnDisplayAction;
+        QAction* mSetAsBackgroundAction;
         QAction* mGotoContentSourceAction;
+        QAction* mShowPanelToAddAnAction; // Issue 12/03/2018 - OpenBoard - Custom Widgets
+        QAction* mRemoveAnAction;  // Issue 12/03/2018 - OpenBoard - Custom Widgets
 
         UBGraphicsDelegateFrame* mFrame;
         qreal mFrameWidth;
@@ -353,7 +388,10 @@ class UBGraphicsItemDelegate : public QObject
         QList<DelegateButton*> mToolBarButtons;
         UBGraphicsToolBarItem* mToolBarItem;
 
+        UBGraphicsItemAction* mAction;        
+
 protected slots:
+        virtual void setAsBackground();
         virtual void gotoContentSource();
 
 private:
@@ -371,6 +409,11 @@ private:
 
         bool mMoved;
         UBGraphicsFlags mFlags;
+        bool mCanTrigAnAction; // Issue 12/03/2018 - OpenBoard - Custom Widgets
+        bool mCanReturnInCreationMode; // Issue 12/03/2018 - OpenBoard - Custom Widgets
+
+        bool mVerticalMirror; // Issue 12/03/2018 - OpenBoard - Custom Widgets
+        bool mHorizontalMirror; // Issue 12/03/2018 - OpenBoard - Custom Widgets
 };
 
 

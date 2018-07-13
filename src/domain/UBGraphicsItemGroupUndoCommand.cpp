@@ -74,10 +74,10 @@ void UBGraphicsItemGroupUndoCommand::redo()
                 currentGroup->destroy(false);
             }
             foreach (QGraphicsItem *chItem, childItems) {
-                mGroup->addToGroup(chItem);
+                mGroup->addToGroup(chItem,false);
             }
         } else {
-            mGroup->addToGroup(item);
+            mGroup->addToGroup(item,false);
         }
     }
 

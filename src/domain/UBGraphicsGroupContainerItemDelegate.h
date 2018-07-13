@@ -41,6 +41,7 @@ Q_OBJECT
 public:
     UBGraphicsGroupContainerItemDelegate(QGraphicsItem* pDelegated, QObject * parent = 0);
     UBGraphicsGroupContainerItem *delegated();
+    void setAction(UBGraphicsItemAction* action); // Issue 13/03/2018 - OpenBoard - Custom Widget.
 
 protected:
     virtual void decorateMenu(QMenu *menu);
@@ -54,6 +55,9 @@ protected:
 
 private slots:
     void destroyGroup();
+    void onAddActionClicked();
+    void onRemoveActionClicked();
+    void saveAction(UBGraphicsItemAction *action);  // Issue 13/03/2018 - OpenBoard - Custom Widget.
 
 private:
     DelegateButton *mDestroyGroupButton;

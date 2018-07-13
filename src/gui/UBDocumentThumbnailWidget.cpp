@@ -150,21 +150,21 @@ void UBDocumentThumbnailWidget::dragMoveEvent(QDragMoveEvent *event)
         mScrollTimer->stop();
     }
 
-    QList<UBSceneThumbnailPixmap*> pixmapItems;
+    QList<UBThumbnailPixmap*> pixmapItems;
     foreach (QGraphicsItem *item, scene()->items(mapToScene(boundingFrame)))
     {
-        UBSceneThumbnailPixmap* sceneItem = dynamic_cast<UBSceneThumbnailPixmap*>(item);
+        UBThumbnailPixmap* sceneItem = dynamic_cast<UBThumbnailPixmap*>(item);
         if (sceneItem)
             pixmapItems.append(sceneItem);
     }
 
     int minDistance = 0;
     QGraphicsItem *underlyingItem = itemAt(event->pos());
-    mClosestDropItem = dynamic_cast<UBSceneThumbnailPixmap*>(underlyingItem);
+    mClosestDropItem = dynamic_cast<UBThumbnailPixmap*>(underlyingItem);
 
     if (!mClosestDropItem)
     {
-        foreach (UBSceneThumbnailPixmap *item, pixmapItems)
+        foreach (UBThumbnailPixmap *item, pixmapItems)
         {
             qreal scale = item->transform().m11();
             QPointF itemCenter(

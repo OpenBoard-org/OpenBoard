@@ -632,7 +632,7 @@ void UBGraphicsWidgetItem::wheelEvent(QGraphicsSceneWheelEvent *event)
     }
 }
 
-QVariant UBGraphicsWidgetItem::itemChange(GraphicsItemChange change, const QVariant &value)
+QVariant UBGraphicsWidgetItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
     if ((change == QGraphicsItem::ItemSelectedHasChanged) &&  scene()) {
         if (isSelected())

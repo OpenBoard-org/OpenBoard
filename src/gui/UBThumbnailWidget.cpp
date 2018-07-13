@@ -34,6 +34,8 @@
 #include "UBRubberBand.h"
 #include "UBMainWindow.h"
 
+#include <QWidget>
+
 #include "board/UBBoardController.h"
 
 #include "core/UBSettings.h"
@@ -41,6 +43,8 @@
 
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
+
+#include "board/UBBoardPaletteManager.h"
 
 #include "core/memcheck.h"
 
@@ -225,7 +229,7 @@ void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
     mClickTime = QTime::currentTime();
     mMousePressPos = event->pos();
 
-    UBSceneThumbnailPixmap* sceneItem = dynamic_cast<UBSceneThumbnailPixmap*>(itemAt(mMousePressPos));
+    UBThumbnailPixmap* sceneItem = dynamic_cast<UBThumbnailPixmap*>(itemAt(mMousePressPos));
     if(sceneItem==NULL)
     {
         event->ignore();
@@ -359,7 +363,7 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
         {
             if (lassoSelectedItem)
             {
-                UBSceneThumbnailPixmap *thumbnailItem = dynamic_cast<UBSceneThumbnailPixmap*>(lassoSelectedItem);
+                UBThumbnailPixmap *thumbnailItem = dynamic_cast<UBThumbnailPixmap*>(lassoSelectedItem);
                 if (thumbnailItem)
                      lassoSelectedThumbnailItems += lassoSelectedItem;
             }
@@ -385,7 +389,7 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
         {
             if (lassoSelectedItem)
             {
-                UBSceneThumbnailPixmap *thumbnailItem = dynamic_cast<UBSceneThumbnailPixmap*>(lassoSelectedItem);
+                UBThumbnailPixmap *thumbnailItem = dynamic_cast<UBThumbnailPixmap*>(lassoSelectedItem);
 
                 if (thumbnailItem)
                     lassoSelectedThumbnailItems += lassoSelectedItem;
@@ -767,7 +771,6 @@ UBThumbnail::~UBThumbnail()
         delete mSelectionItem;
 }
 
-
 UBSceneThumbnailNavigPixmap::UBSceneThumbnailNavigPixmap(const QPixmap& pix, UBDocumentProxy* proxy, int pSceneIndex)
     : UBSceneThumbnailPixmap(pix, proxy, pSceneIndex)
     , bButtonsVisible(false)
@@ -824,14 +827,14 @@ void UBSceneThumbnailNavigPixmap::paint(QPainter *painter, const QStyleOptionGra
 
         painter->drawPixmap(BUTTONSIZE + BUTTONSPACING, 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/duplicate.svg"));
 
-        if(bCanMoveUp)
-            painter->drawPixmap(2*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/moveUp.svg"));
-        else
-            painter->drawPixmap(2*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/moveUpDisabled.svg"));
-        if(bCanMoveDown)
-            painter->drawPixmap(3*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/menu.svg"));
-        else
-            painter->drawPixmap(3*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/menuDisabled.svg"));
+//        if(bCanMoveUp)
+//            painter->drawPixmap(2*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/moveUp.svg"));
+//        else
+//            painter->drawPixmap(2*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/moveUpDisabled.svg"));
+//        if(bCanMoveDown)
+//            painter->drawPixmap(3*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/menu.svg"));
+//        else
+//            painter->drawPixmap(3*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/menuDisabled.svg"));
     }
 }
 
@@ -845,10 +848,10 @@ void UBSceneThumbnailNavigPixmap::mousePressEvent(QGraphicsSceneMouseEvent *even
     if(p.x() >= BUTTONSIZE + BUTTONSPACING && p.x() <= 2*BUTTONSIZE + BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE)
         duplicatePage();
 
-    if(bCanMoveUp && p.x() >= 2*(BUTTONSIZE + BUTTONSPACING) && p.x() <= 3*BUTTONSIZE + 2*BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE)
-        moveUpPage();
-    if(bCanMoveDown && p.x() >= 3*(BUTTONSIZE + BUTTONSPACING) && p.x() <= 4*BUTTONSIZE + 3*BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE)
-        moveDownPage();
+//    if(bCanMoveUp && p.x() >= 2*(BUTTONSIZE + BUTTONSPACING) && p.x() <= 3*BUTTONSIZE + 2*BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE)
+//        moveUpPage();
+//    if(bCanMoveDown && p.x() >= 3*(BUTTONSIZE + BUTTONSPACING) && p.x() <= 4*BUTTONSIZE + 3*BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE)
+//        moveDownPage();
 
     event->accept();
 }
@@ -876,6 +879,7 @@ void UBSceneThumbnailNavigPixmap::moveDownPage()
     if (sceneIndex() < UBApplication::boardController->selectedDocument()->pageCount()-1)
         UBApplication::boardController->moveSceneToIndex(sceneIndex(), sceneIndex() + 1);
 }
+
 
 void UBImgTextThumbnailElement::Place(int row, int col, qreal width, qreal height)
 {
@@ -908,8 +912,11 @@ void UBImgTextThumbnailElement::Place(int row, int col, qreal width, qreal heigh
             pix->setRow(row);
         }
 
-        QPointF pos(border + (width - w * scaleFactor) / 2 + col * (width + border),
-                    border + row * (height + border + labelSpacing) + (height - h * scaleFactor) / 2);
+        QPointF pos((width - w * scaleFactor) / 2,
+                    row * (height + labelSpacing) + (height - h * scaleFactor) / 2);
+
+        /*QPointF pos(border + (width - w * scaleFactor) / 2 + col * (width + border),
+                    border + row * (height + border + labelSpacing) + (height - h * scaleFactor) / 2);*/
 
         this->thumbnail->setPos(pos);
 
@@ -922,8 +929,227 @@ void UBImgTextThumbnailElement::Place(int row, int col, qreal width, qreal heigh
             this->caption->setWidth(fm.width(elidedText) + 2 * this->caption->document()->documentMargin());
             pos.setY(pos.y() + (height + h * scaleFactor) / 2 + 5); // What is this 5 ??
             qreal labelWidth = fm.width(elidedText);
-            pos.setX(border + (width - labelWidth) / 2 + col * (width + border));
+            pos.setX((width - labelWidth) / 2 + col * (width + border));
             this->caption->setPos(pos);
         }
     }
+}
+
+void UBDraggableThumbnail::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    QGraphicsProxyWidget::paint(painter, option, widget);
+    using namespace UBThumbnailUI;
+
+    if (editable())
+    {        
+        if(deletable())
+            draw(painter, *getIcon("close"));
+        else
+            draw(painter, *getIcon("closeDisabled"));
+
+        draw(painter, *getIcon("duplicate"));
+
+        /*
+        if(movableUp())
+            draw(painter, *getIcon("moveUp"));
+        else
+            draw(painter, *getIcon("moveUpDisabled"));
+
+        if(movableDown())
+            draw(painter, *getIcon("moveDown"));
+        else
+            draw(painter, *getIcon("moveDownDisabled"));
+        */
+
+    }
+}
+
+void UBDraggableThumbnail::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    event->accept();
+    showUI();
+    update();
+}
+
+void UBDraggableThumbnail::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    event->accept();
+    hideUI();
+    update();
+}
+
+void UBDraggableThumbnail::deletePage()
+{
+    if(UBApplication::mainWindow->yesNoQuestion(QObject::tr("Remove Page"), QObject::tr("Are you sure you want to remove 1 page from the selected document '%0'?").arg(UBApplication::documentController->selectedDocument()->metaData(UBSettings::documentName).toString()))){
+        UBApplication::boardController->deleteScene(sceneIndex());
+    }
+}
+
+void UBDraggableThumbnail::duplicatePage()
+{
+    UBApplication::boardController->duplicateScene(sceneIndex());
+}
+
+void UBDraggableThumbnail::moveUpPage()
+{
+    if (sceneIndex()!=0)
+        UBApplication::boardController->moveSceneToIndex(sceneIndex(), sceneIndex() - 1);
+}
+
+void UBDraggableThumbnail::moveDownPage()
+{
+    if (sceneIndex() < UBApplication::boardController->selectedDocument()->pageCount()-1)
+        UBApplication::boardController->moveSceneToIndex(sceneIndex(), sceneIndex() + 1);
+}
+
+void UBDraggableThumbnail::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    QPointF p = event->pos();
+
+    using namespace UBThumbnailUI;
+
+    if (triggered(p.y()))
+    {
+        if(deletable() && getIcon("close")->triggered(p.x()))
+        {
+            event->accept();
+            deletePage();
+        }
+        else if(getIcon("duplicate")->triggered(p.x()))
+        {
+            event->accept();
+            duplicatePage();
+        }
+        else
+        {
+            event->ignore();
+        }
+        /*
+        else if(movableUp() && getIcon("moveUp")->triggered(p.x()))
+            moveUpPage();
+        else if (movableDown() && getIcon("moveDown")->triggered(p.x()))
+            moveDownPage();*/
+    }
+    else
+    {
+        event->ignore();
+    }
+}
+
+void UBDraggableThumbnail::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    event->accept();
+}
+
+
+void UBDraggableThumbnail::updatePos(qreal width, qreal height)
+{
+    QFontMetrics fm(mPageNumber->font());
+    int labelSpacing = UBSettings::thumbnailSpacing + fm.height();
+
+    int w = boundingRect().width();
+    int h = boundingRect().height();
+
+    qreal scaledWidth = width / w;
+    qreal scaledHeight = height / h;
+    qreal scaledFactor = qMin(scaledWidth, scaledHeight);
+
+    QTransform transform;
+    transform.scale(scaledFactor, scaledFactor);
+
+    // Apply the scaling
+    setTransform(transform);
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+    QPointF position((width - w * scaledFactor) / 2,
+                sceneIndex() * (height + labelSpacing) + (height - h * scaledFactor) / 2);
+
+    setPos(position);
+
+    position.setY(position.y() + (height + h * scaledFactor) / 2);
+    position.setX(position.x() + (w * scaledFactor - fm.width(mPageNumber->toPlainText())) / 2);
+
+    mPageNumber->setPos(position);
+}
+
+void UBDraggableThumbnailPixmap::updatePos(qreal width, qreal height)
+{
+    QFontMetrics fm(mPageNumber->font());
+    int labelSpacing = UBSettings::thumbnailSpacing + fm.height();
+
+    int w = thumbnailPixmap()->boundingRect().width();
+    int h = thumbnailPixmap()->boundingRect().height();
+
+    qreal scaledWidth = width / w;
+    qreal scaledHeight = height / h;
+    qreal scaledFactor = qMin(scaledWidth, scaledHeight);
+
+    QTransform transform;
+    transform.scale(scaledFactor, scaledFactor);
+
+    // Apply the scaling
+    thumbnailPixmap()->setTransform(transform);
+    thumbnailPixmap()->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+    QPointF position((width - w * scaledFactor) / 2,
+                sceneIndex() * (height + labelSpacing) + (height - h * scaledFactor) / 2);
+
+    thumbnailPixmap()->setPos(position);
+
+    position.setY(position.y() + (height + h * scaledFactor) / 2);
+    position.setX(position.x() + (w * scaledFactor - fm.width(mPageNumber->toPlainText())) / 2);
+
+    mPageNumber->setPos(position);
+}
+
+
+UBThumbnailUI::UBThumbnailUIIcon* UBThumbnailUI::addIcon(const QString& thumbnailIcon, int pos)
+{
+    QString thumbnailIconPath = ":images/" + thumbnailIcon + ".svg";
+    UBThumbnailUIIcon* newIcon = new UBThumbnailUIIcon(thumbnailIconPath, pos);
+
+    using namespace UBThumbnailUI::_private;
+    if (!newIcon)
+        qDebug() << "cannot add Icon : check path : " + thumbnailIconPath;
+    else
+        catalog.insert(thumbnailIcon, newIcon);
+
+    return newIcon;
+}
+
+UBThumbnailUI::UBThumbnailUIIcon* UBThumbnailUI::getIcon(const QString& thumbnailIcon)
+{
+    using namespace UBThumbnailUI::_private;
+    if (!catalog.contains(thumbnailIcon))
+        qDebug() << "cannot get Icon: check path ':images/" + thumbnailIcon + ".svg'";
+
+    return catalog.value(thumbnailIcon, NULL);
+}
+
+void UBThumbnailUI::draw(QPainter *painter, const UBThumbnailUIIcon &thumbnailIcon)
+{
+    using namespace UBThumbnailUI;
+    painter->drawPixmap(thumbnailIcon.pos() * (ICONSIZE + ICONSPACING), 0, ICONSIZE, ICONSIZE, thumbnailIcon);
+}
+
+void UBThumbnailUI::_private::initCatalog()
+{
+    using namespace UBThumbnailUI;
+    using namespace UBThumbnailUI::_private;
+
+    addIcon("close", 0);
+    addIcon("closeDisabled", 0);
+
+    addIcon("duplicate", 1);
+
+    addIcon("moveUp", 2);
+    addIcon("moveUpDisabled", 2);
+
+    addIcon("moveDown", 3);
+    addIcon("moveDownDisabled", 3);
+}
+
+bool UBThumbnailUI::triggered(qreal y)
+{
+    return (y >= 0 && y <= UBThumbnailUI::ICONSIZE);
 }

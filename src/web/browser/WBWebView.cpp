@@ -82,7 +82,7 @@
 #include "network/UBCookieJar.h"
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QtWebKitWidgets>
 #include <QtUiTools/QUiLoader>
 #include <QMessageBox>
 #include <QWebFrame>

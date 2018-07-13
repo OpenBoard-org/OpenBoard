@@ -159,6 +159,10 @@
         <file>images/backgroundPalette/background3On.svg</file>
         <file>images/backgroundPalette/background4.svg</file>
         <file>images/backgroundPalette/background4On.svg</file>
+        <file>images/backgroundPalette/background5.svg</file>
+        <file>images/backgroundPalette/background5On.svg</file>
+        <file>images/backgroundPalette/background6.svg</file>
+        <file>images/backgroundPalette/background6On.svg</file>
         <file>images/toolPalette/podcast.svg</file>
         <file>images/toolPalette/podcastOn.svg</file>
         <file>images/toolPalette/rulerTool.png</file>
@@ -335,6 +339,8 @@
         <file>images/left_arrow.png</file>
         <file>images/right_arrow.png</file>
         <file>images/moveUp.svg</file>
+        <file>images/moveDown.svg</file>
+        <file>images/moveDownDisabled.svg</file>
         <file>images/closeDisabled.svg</file>
         <file>images/menuDisabled.svg</file>
         <file>images/moveUpDisabled.svg</file>
@@ -352,5 +358,180 @@
         <file>images/notAligned.svg</file>
         <file>images/groupItems.svg</file>
         <file>images/ungroupItems.svg</file>
+        <file>images/createLinkPalette/LinkPage.svg</file>
+        <file>images/createLinkPalette/LinkWeb.svg</file>
+        <file>images/createLinkPalette/PlayAudio.svg</file>
+        <file>images/drawingPalette/align-bottom.png</file>
+        <file>images/drawingPalette/align-center.png</file>
+        <file>images/drawingPalette/align-left.png</file>
+        <file>images/drawingPalette/align-middle.png</file>
+        <file>images/drawingPalette/align-right.png</file>
+        <file>images/drawingPalette/align-top.png</file>
+        <file>images/drawingPalette/arrowsProperties.png</file>
+        <file>images/drawingPalette/cercle.png</file>
+        <file>images/drawingPalette/cercleON.png</file>
+        <file>images/drawingPalette/ellipse.png</file>
+        <file>images/drawingPalette/ellipseON.png</file>
+        <file>images/drawingPalette/endArrowStyleArrow.png</file>
+        <file>images/drawingPalette/endArrowStyleNone.png</file>
+        <file>images/drawingPalette/endArrowStyleRound.png</file>
+        <file>images/drawingPalette/fill-dotted.png</file>
+        <file>images/drawingPalette/fill-gradient.png</file>
+        <file>images/drawingPalette/fill-modes.png</file>
+        <file>images/drawingPalette/fill-plain.png</file>
+        <file>images/drawingPalette/fill-stripes.png</file>
+        <file>images/drawingPalette/fill-transparent.png</file>
+        <file>images/drawingPalette/free-shape.png</file>
+        <file>images/drawingPalette/free-shapeOn.png</file>
+        <file>images/drawingPalette/freeHand.png</file>
+        <file>images/drawingPalette/freeHandOn.png</file>
+        <file>images/drawingPalette/hepta.png</file>
+        <file>images/drawingPalette/heptaON.png</file>
+        <file>images/drawingPalette/hexa.png</file>
+        <file>images/drawingPalette/hexaON.png</file>
+        <file>images/drawingPalette/line-thickness.png</file>
+        <file>images/drawingPalette/octo.png</file>
+        <file>images/drawingPalette/octoON.png</file>
+        <file>images/drawingPalette/paint-bucket.png</file>
+        <file>images/drawingPalette/paint-bucketOn.png</file>
+        <file>images/drawingPalette/paint-palette.png</file>
+        <file>images/drawingPalette/paint-paletteOn.png</file>
+        <file>images/drawingPalette/Penta.png</file>
+        <file>images/drawingPalette/PentaON.png</file>
+        <file>images/drawingPalette/rectangle.png</file>
+        <file>images/drawingPalette/rectangleON.png</file>
+        <file>images/drawingPalette/square.png</file>
+        <file>images/drawingPalette/squareON.png</file>
+        <file>images/drawingPalette/startArrowStyleArrow.png</file>
+        <file>images/drawingPalette/startArrowStyleNone.png</file>
+        <file>images/drawingPalette/startArrowStyleRound.png</file>
+        <file>images/drawingPalette/strokeStyleCustomDash.png</file>
+        <file>images/drawingPalette/strokeStyleDotLine .png</file>
+        <file>images/drawingPalette/strokeStyleSolidLine.png</file>
+        <file>images/drawingPalette/triangle.png</file>
+        <file>images/drawingPalette/triangleON.png</file>
+        <file>images/extraPalette/blackoutOn.png</file>
+        <file>images/extraPalette/compass.png</file>
+        <file>images/extraPalette/compassOn.png</file>
+        <file>images/extraPalette/keyboardOn.png</file>
+        <file>images/extraPalette/mask.png</file>
+        <file>images/extraPalette/maskOn.png</file>
+        <file>images/extraPalette/podcast.png</file>
+        <file>images/extraPalette/podcastOn.png</file>
+        <file>images/extraPalette/protractor.png</file>
+        <file>images/extraPalette/protractorOn.png</file>
+        <file>images/extraPalette/ruler.png</file>
+        <file>images/extraPalette/rulerOn.png</file>
+        <file>images/imageBackgroundPalette/adjustBackground.png</file>
+        <file>images/imageBackgroundPalette/centerBackground.png</file>
+        <file>images/imageBackgroundPalette/extendBackground.png</file>
+        <file>images/imageBackgroundPalette/fillBackground.png</file>
+        <file>images/imageBackgroundPalette/mosaicBackground.png</file>
+        <file>images/libpalette/BookmarkCategory.svg</file>
+        <file>images/libpalette/bookmarkIcon.svg</file>
+        <file>images/licenses/ccby.png</file>
+        <file>images/licenses/ccbync.png</file>
+        <file>images/licenses/ccbyncnd.png</file>
+        <file>images/licenses/ccbyncsa.png</file>
+        <file>images/licenses/ccbynd.png</file>
+        <file>images/licenses/ccbysa.png</file>
+        <file>images/stylusPalette/drawing.png</file>
+        <file>images/stylusPalette/richTextEditor.png</file>
+        <file>images/stylusPalette/richTextEditorOn.png</file>
+        <file>images/teacherGuide/audio_24x24.svg</file>
+        <file>images/teacherGuide/document_large.gif</file>
+        <file>images/teacherGuide/document_large_warning.gif</file>
+        <file>images/teacherGuide/flash_24x24.svg</file>
+        <file>images/teacherGuide/image_24x24.svg</file>
+        <file>images/teacherGuide/link_24x24.svg</file>
+        <file>images/teacherGuide/movie_24x24.svg</file>
+        <file>images/teacherGuide/pencil.svg</file>
+        <file>images/teacherGuide/w3c_24x24.svg</file>
+        <file>images/textEditor/add-table.png</file>
+        <file>images/textEditor/align-center.svg</file>
+        <file>images/textEditor/align-left.svg</file>
+        <file>images/textEditor/align-right.svg</file>
+        <file>images/textEditor/bold.svg</file>
+        <file>images/textEditor/bucket.svg</file>
+        <file>images/textEditor/cell-properties.png</file>
+        <file>images/textEditor/code.svg</file>
+        <file>images/textEditor/decrease-font-size.svg</file>
+        <file>images/textEditor/delete-column.png</file>
+        <file>images/textEditor/delete-row.png</file>
+        <file>images/textEditor/font.svg</file>
+        <file>images/textEditor/increase-font-size.svg</file>
+        <file>images/textEditor/indent.svg</file>
+        <file>images/textEditor/insert-column-left.png</file>
+        <file>images/textEditor/insert-column-right.png</file>
+        <file>images/textEditor/insert-row-bottom.png</file>
+        <file>images/textEditor/insert-row-top.png</file>
+        <file>images/textEditor/italic.svg</file>
+        <file>images/textEditor/link.svg</file>
+        <file>images/textEditor/ordered-list.svg</file>
+        <file>images/textEditor/table.svg</file>
+        <file>images/textEditor/underline.svg</file>
+        <file>images/textEditor/unindent.svg</file>
+        <file>images/textEditor/unordered-list.svg</file>
+        <file>images/toolbar/bookmark.png</file>
+        <file>images/toolbar/bookmark.svg</file>
+        <file>images/toolbar/nextPage.png</file>
+        <file>images/toolbar/paraschool.png</file>
+        <file>images/toolbar/previousPage.png</file>
+        <file>images/toolbar/smallerText.png</file>
+        <file>images/toolbar/softwareUpdate.png</file>
+        <file>images/toolbar/webTrap.png</file>
+        <file>images/toolbar/webTrapEnabled.png</file>
+        <file>images/toolPalette/compassTool.svg</file>
+        <file>images/trapFlashPalette/downloadToBoard.svg</file>
+        <file>images/trapFlashPalette/downloadToLibrary.svg</file>
+        <file>images/trapFlashPalette/linkToBoard.svg</file>
+        <file>images/trapFlashPalette/linkToLibrary.svg</file>
+        <file>images/trapFlashPalette/trappedFlashIcon.svg</file>
+        <file>images/trapFlashPalette/trappedIcon.svg</file>
+        <file>images/trapFlashPalette/trappedSoundIcon.svg</file>
+        <file>images/trapFlashPalette/trappedVideoIcon.svg</file>
+        <file>images/banner.png</file>
+        <file>images/banner.svg</file>
+        <file>images/banner_linear.png</file>
+        <file>images/banner_linear.svg</file>
+        <file>images/bigUniboard.png</file>
+        <file>images/bold.svg</file>
+        <file>images/code.svg</file>
+        <file>images/collapse-all.png</file>
+        <file>images/duration1.png</file>
+        <file>images/duration2.png</file>
+        <file>images/duration3.png</file>
+        <file>images/edit-mode.png</file>
+        <file>images/expand-all.png</file>
+        <file>images/italic.svg</file>
+        <file>images/save.png</file>
+        <file>images/teacher_close.png</file>
+        <file>images/teacher_open.png</file>
+        <file>images/teacherGuideResources_close.png</file>
+        <file>images/teacherGuideResources_open.png</file>
+        <file>images/toque.svg</file>
+        <file>images/underline.svg</file>
+        <file>images/uniboard.png</file>
+        <file>images/toolbar/icon-moreON.png</file>
+        <file>images/textEditor/align-justify.svg</file>
+        <file>images/textEditor/collapse.svg</file>
+        <file>images/textEditor/expand.svg</file>
+        <file>images/toolbar/floppy.png</file>
+        <file>images/stylusPalette/ocr.png</file>
+        <file>images/stylusPalette/ocrON.png</file>
+        <file>images/setAsBackground.svg</file>
+        <file>images/backgroundPalette/resetDefaultGridSize.svg</file>
+        <file>images/toolbar/canvas.png</file>
+        <file>images/canvas/users1.png</file>
+        <file>images/canvas/users2.png</file>
+        <file>images/canvas/users3.png</file>
+        <file>images/canvas/users4.png</file>
+        <file>images/canvas/pbADD.png</file>
+        <file>images/canvas/pbREM.png</file>
+        <file>images/toolbar/saveCanvas.png</file>
+        <file>images/stylusPalette/saveRegion.png</file>
+        <file>images/stylusPalette/saveRegionOn.png</file>
+        <file>images/stylusPalette/clearRegion.png</file>
+        <file>images/stylusPalette/clearRegionOn.png</file>
     </qresource>
 </RCC>

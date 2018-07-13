@@ -37,7 +37,7 @@
 
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
-#include "domain/UBGraphicsProxyWidget.h"
+#include "domain/UBAbstractGraphicsProxyWidget.h"
 #include "domain/UBGraphicsPolygonItem.h"
 #include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
@@ -56,6 +56,8 @@
 #include "tools/UBGraphicsCurtainItem.h"
 #include "tools/UBGraphicsTriangle.h"
 #include "tools/UBGraphicsCache.h"
+
+#include "customWidgets/UBGraphicsItemAction.h"
 
 #include "document/UBDocumentProxy.h"
 
@@ -447,6 +449,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
 
                 bool darkBackground = false;
                 bool crossedBackground = false;
+                bool ruledBackground = false;
 
                 QStringRef ubDarkBackground = mXmlReader.attributes().value(mNamespaceUri, "dark-background");
 
@@ -455,10 +458,44 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
 
                 QStringRef ubCrossedBackground = mXmlReader.attributes().value(mNamespaceUri, "crossed-background");
 
-                if (!ubDarkBackground.isNull())
+                if (!ubCrossedBackground.isNull())
                     crossedBackground = (ubCrossedBackground.toString() == xmlTrue);
 
-                mScene->setBackground(darkBackground, crossedBackground);
+
+                if (crossedBackground) {
+                    QStringRef ubGridSize = mXmlReader.attributes().value(mNamespaceUri, "grid-size");
+
+                    if (!ubGridSize.isNull()) {
+                        int gridSize = ubGridSize.toInt();
+
+                        mScene->setBackgroundGridSize(gridSize);
+                    }
+                }
+
+                QStringRef ubRuledBackground = mXmlReader.attributes().value(mNamespaceUri, "ruled-background");
+
+                if (!ubRuledBackground.isNull())
+                    ruledBackground = (ubRuledBackground.toString() == xmlTrue);
+
+                if (ruledBackground && !crossedBackground) { // if for some reason both are true, the background will be a grid
+                    QStringRef ubGridSize = mXmlReader.attributes().value(mNamespaceUri, "grid-size");
+
+                    if (!ubGridSize.isNull()) {
+                        int gridSize = ubGridSize.toInt();
+
+                        mScene->setBackgroundGridSize(gridSize);
+                    }
+                }
+
+                UBPageBackground bg;
+                if (crossedBackground)
+                    bg = UBPageBackground::crossed;
+                else if (ruledBackground)
+                    bg = UBPageBackground::ruled;
+                else
+                    bg = UBPageBackground::plain;
+
+                mScene->setBackground(darkBackground, bg);
 
                 QStringRef pageNominalSize = mXmlReader.attributes().value(mNamespaceUri, "nominal-size");
                 if (!pageNominalSize.isNull())
@@ -927,8 +964,10 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
 }
 
 
-UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
+// Issue 13/03/2018 - OpenBoard - Custom Widgets.
+UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup(UBGraphicsItemAction* action, QString uuid)
 {
+    bool isAnActionForStroke = false;
     UBGraphicsGroupContainerItem *group = new UBGraphicsGroupContainerItem();
     QList<QGraphicsItem *> groupContainer;
 
@@ -938,6 +977,24 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
     if(mStrokesList.contains(id))
         shouldSkipSubElements = true;
 
+    QString ubLocked = mXmlReader.attributes().value(mNamespaceUri, "locked").toString();
+    if (!ubLocked.isEmpty())
+    {
+        bool isLocked = ubLocked.contains(xmlTrue);
+        group->setData(UBGraphicsItemData::ItemLocked, QVariant(isLocked));
+    }
+
+    QStringRef ubLayer = mXmlReader.attributes().value(mNamespaceUri, "layer");
+    if (!ubLayer.isNull())
+    {
+        bool ok;
+        int layerAsInt = ubLayer.toString().toInt(&ok);
+
+        if (ok)
+            group->setData(UBGraphicsItemData::ItemLayerType, QVariant(layerAsInt));
+    }
+
+
     mXmlReader.readNext();
     while (!mXmlReader.atEnd())
     {
@@ -945,36 +1002,49 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
             mXmlReader.readNext();
             break;
         }
-        else if (mXmlReader.isStartElement()) {
-            if (mXmlReader.name() == tGroup) {
+        else if (mXmlReader.isStartElement()){
+            if (mXmlReader.name() == tGroup)
+            {
                 UBGraphicsGroupContainerItem *curGroup = readGroup();
+
                 if (curGroup)
                     groupContainer.append(curGroup);
+                else
+                    qDebug() << "this is an error if readGroup(UBGraphicsItemAction* action, QString uuid)";
             }
-            else if (mXmlReader.name() == tElement && !shouldSkipSubElements) {
+            else if (mXmlReader.name() == tElement){
                 QString id = mXmlReader.attributes().value(aId).toString();
+
+                if(id == uuid)
+                    isAnActionForStroke = true;
+
                 QGraphicsItem *curItem = readElementFromGroup();
 
-                // Explanation: the second condition discriminate the old storage version that should
-                // not be interpreted anymore
-                if(curItem && id.count("{") < 2)
+                if(curItem  && id.count("{") < 2)
                     groupContainer.append(curItem);
+                else
+                    qDebug() << "this is an error if readGroup(UBGraphicsItemAction* action, QString uuid)";
+
             }
-            else {
+            else
                 mXmlReader.skipCurrentElement();
-            }
         }
-        else {
+        else
             mXmlReader.readNext();
-        }
     }
 
     foreach(QGraphicsItem* item, groupContainer)
-        group->addToGroup(item);
+        group->addToGroup(item,false);
+
+    if(action && !isAnActionForStroke){
+        UBGraphicsGroupContainerItemDelegate* delegate = dynamic_cast<UBGraphicsGroupContainerItemDelegate*>(group->Delegate());
+        delegate->setAction(action);
+    }
+
 
     if (group->childItems().count())
     {
-//        mScene->addItem(group);
+        mScene->addItem(group);
 
         if (1 == group->childItems().count())
         {
@@ -992,18 +1062,18 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroupRoot()
             mXmlReader.readNext();
             break;
         }
-        else if (mXmlReader.isStartElement()) {
-            if (mXmlReader.name() == tGroup) {
+        else if (mXmlReader.isStartElement()){
+            if (mXmlReader.name() == tGroup){
+                UBGraphicsItemAction* action = readAction();
                 QString ubLocked = mXmlReader.attributes().value(UBSettings::uniboardDocumentNamespaceUri, "locked").toString();
-                UBGraphicsGroupContainerItem *curGroup = readGroup();
+                UBGraphicsGroupContainerItem *curGroup = readGroup(action, mXmlReader.attributes().value("id").toString());
                 if (!ubLocked.isEmpty())
                 {
                     bool isLocked = ubLocked.contains(xmlTrue);
                     curGroup->Delegate()->setLocked(isLocked);
                 }
-                if (curGroup) {
+                if (curGroup)
                     mScene->addGroup(curGroup);
-                }
             }
             else {
                 mXmlReader.skipCurrentElement();
@@ -1070,7 +1140,18 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement(UBDocumentProxy* pro
     }
 
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "dark-background", mScene->isDarkBackground() ? xmlTrue : xmlFalse);
-    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "crossed-background", mScene->isCrossedBackground() ? xmlTrue : xmlFalse);
+
+    bool crossedBackground = mScene->pageBackground() == UBPageBackground::crossed;
+    bool ruledBackground = mScene->pageBackground() == UBPageBackground::ruled;
+
+    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "crossed-background", crossedBackground ? xmlTrue : xmlFalse);
+    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "ruled-background", ruledBackground ? xmlTrue : xmlFalse);
+
+    if (crossedBackground || ruledBackground) {
+        int gridSize = mScene->backgroundGridSize();
+
+        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "grid-size", QString::number(gridSize));
+    }
 
     QDesktopWidget* desktop = UBApplication::desktop();
 
@@ -1168,6 +1249,9 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
                         QVariant locked = sg->data(UBGraphicsItemData::ItemLocked);
                         if (!locked.isNull() && locked.toBool())
                             mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "locked", xmlTrue);
+
+                        QVariant layer = sg->data(UBGraphicsItemData::ItemLayerType);
+                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "layer", QString("%1").arg(layer.toInt()));
 
                         QMatrix matrix = sg->sceneMatrix();
                         if (!matrix.isIdentity())
@@ -1349,6 +1433,10 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
                 if(curElement.hasAttribute("locked")){
                     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri,"locked",curElement.attribute("locked"));
                 }
+                if(curElement.hasAttribute("layer")){
+                    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri,"layer",curElement.attribute("layer"));
+                }
+
                 QDomElement curSubElement = curElement.firstChildElement();
                 while (!curSubElement.isNull()) {
                     if (curSubElement.hasAttribute(aId)) {
@@ -1393,6 +1481,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
                 curGroupElement.setAttribute("locked", xmlTrue);
             else
                 curGroupElement.setAttribute("locked", xmlFalse);
+
+            curGroupElement.setAttribute("layer", group->data(UBGraphicsItemData::ItemLayerType).toString());
         }
         curParent->appendChild(curGroupElement);
         foreach (QGraphicsItem *item, groupItem->childItems()) {
@@ -1557,6 +1647,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::polygonItemToSvgPolygon(UBGraphicsPo
 
         if (polygonItem->fillRule() == Qt::OddEvenFill)
             mXmlWriter.writeAttribute("fill-rule", "evenodd");
+        else
+            mXmlWriter.writeAttribute("fill-rule", "winding");
 
         if (!groupHoldsInfo)
         {
@@ -1678,6 +1770,17 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
         color.setAlphaF(opacity);
         polygonItem->setColorOnLightBackground(color);
     }
+
+    // Before OpenBoard v1.4, fill rule was only saved if it was "Even-odd". Therefore if no fill rule
+    // is specified, we assume that it should be Winding fill.
+
+    QStringRef fillRule = mXmlReader.attributes().value("fill-rule");
+
+    if (!fillRule.isNull() && fillRule.toString() == "evenodd")
+        polygonItem->setFillRule(Qt::OddEvenFill);
+    else
+        polygonItem->setFillRule(Qt::WindingFill);
+
     return polygonItem;
 
 }
@@ -1901,21 +2004,85 @@ QList<UBGraphicsPolygonItem*> UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItem
 
 
 
-void UBSvgSubsetAdaptor::UBSvgSubsetWriter::pixmapItemToLinkedImage(UBGraphicsPixmapItem* pixmapItem)
+void UBSvgSubsetAdaptor::UBSvgSubsetWriter::pixmapItemToLinkedImage(UBGraphicsPixmapItem* pixmapItem, bool isBackground)
 {
     mXmlWriter.writeStartElement("image");
-
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png";
+    QString fileName;
+    if (isBackground // Issue 1684 - CFA - 20131128 : specify isBackground
+        && ( ! mScene->document()->metaData(UBSettings::documentDefaultBackgroundImage).toString().isEmpty())) // Issue 1684 - ALTI/AOU - 20131210 : Si il y a une image par défaut définie, on utilise son uuid :
+    {
+        fileName = UBPersistenceManager::imageDirectory + "/" + mScene->document()->metaData(UBSettings::documentDefaultBackgroundImage).toString();
+    }
+    else
+        fileName = UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png";
 
     QString path = mDocumentPath + "/" + fileName;
 
+    if (!QFile::exists(path))
+    {
+        QDir dir;
+        dir.mkdir(mDocumentPath + "/" + UBPersistenceManager::imageDirectory);
+
+        pixmapItem->pixmap().toImage().save(path, "PNG");
+    }
+
     mXmlWriter.writeAttribute(nsXLink, "href", fileName);
 
+    writeAction(pixmapItem->Delegate()->action());
     graphicsItemToSvg(pixmapItem);
 
     mXmlWriter.writeEndElement();
 }
 
+// Issue 13/03/2018 - OpenBoard - Custom Widget.
+void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeAction(UBGraphicsItemAction* action)
+{
+    if(action){
+        QStringList actionParameters = action->save();
+        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri,"actionType",actionParameters.at(0));
+        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri,"actionFirstParameter",actionParameters.at(1));
+        if(actionParameters.count()>2)
+            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri,"actionSecondParameter",actionParameters.at(2));
+    }
+}
+
+// Issue 13/03/2018 - OpenBoard - Custom Widget.
+UBGraphicsItemAction* UBSvgSubsetAdaptor::UBSvgSubsetReader::readAction()
+{
+    UBGraphicsItemAction* result = 0;
+    QXmlStreamAttributes attributes = mXmlReader.attributes();
+    QStringRef actionParameters = attributes.value(UBSettings::uniboardDocumentNamespaceUri, "actionType");
+    if(actionParameters.isEmpty())
+        return result;
+    switch (actionParameters.toString().toInt()) {
+    case eLinkToAudio:{
+        //NNE - 20141106 : Correction du bug lorsque l'on charge un ubz en cliquant dessus
+        qDebug() << mProxy->persistencePath();
+
+        QString audioPath = mProxy->persistencePath() + "/" + attributes.value(UBSettings::uniboardDocumentNamespaceUri, "actionFirstParameter").toString();
+
+        UBGraphicsItemPlayAudioAction *item = new UBGraphicsItemPlayAudioAction(audioPath, false);
+
+        result = item;
+        break;
+        //NNE - 20141106 : END
+    }case eLinkToPage:{
+        QString pageParameter = attributes.value(UBSettings::uniboardDocumentNamespaceUri, "actionSecondParameter").toString();
+        if(pageParameter.isEmpty())
+            result = new UBGraphicsItemMoveToPageAction((eUBGraphicsItemMovePageAction)attributes.value(UBSettings::uniboardDocumentNamespaceUri, "actionFirstParameter").toString().toInt());
+        else
+            result = new UBGraphicsItemMoveToPageAction((eUBGraphicsItemMovePageAction)attributes.value(UBSettings::uniboardDocumentNamespaceUri, "actionFirstParameter").toString().toInt(),pageParameter.toInt());
+        break;
+    }
+    case eLinkToWebUrl:
+        result = new UBGraphicsItemLinkToWebPageAction(mXmlReader.attributes().value(UBSettings::uniboardDocumentNamespaceUri, "actionFirstParameter").toString());
+        break;
+    default:
+        break;
+    }
+
+    return result;
+}
 
 UBGraphicsPixmapItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::pixmapItemFromSvg()
 {
@@ -1938,20 +2105,47 @@ UBGraphicsPixmapItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::pixmapItemFromSvg()
 
     graphicsItemFromSvg(pixmapItem);
 
+    pixmapItem->Delegate()->setAction(readAction()); // Issue 13/03/2018 - OpenBoard - Custom Widget.
+
     return pixmapItem;
 
 }
 
 
-void UBSvgSubsetAdaptor::UBSvgSubsetWriter::svgItemToLinkedSvg(UBGraphicsSvgItem* svgItem)
+void UBSvgSubsetAdaptor::UBSvgSubsetWriter::svgItemToLinkedSvg(UBGraphicsSvgItem* svgItem, bool isBackground)
 {
 
     mXmlWriter.writeStartElement("image");
 
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg";
+    QString fileName;
+    if (isBackground
+            && ( ! mScene->document()->metaData(UBSettings::documentDefaultBackgroundImage).toString().isEmpty())) // Issue 1684 - ALTI/AOU - 20131210 : Si il y a une image par défaut définie, on utilise son uuid :
+    {
+        fileName = UBPersistenceManager::imageDirectory + "/" + mScene->document()->metaData(UBSettings::documentDefaultBackgroundImage).toString();
+    }
+    else
+        fileName = UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg";
 
+    QString path = mDocumentPath + "/" + fileName;
+
+    if (!QFile::exists(path))
+    {
+        QDir dir;
+        dir.mkdir(mDocumentPath + "/" + UBPersistenceManager::imageDirectory);
+
+        QFile file(path);
+        if (!file.open(QIODevice::WriteOnly))
+        {
+            qWarning() << "cannot open file for writing embeded svg content " << path;
+            return;
+        }
+
+        file.write(svgItem->fileData());
+    }
 
     mXmlWriter.writeAttribute(nsXLink, "href", fileName);
+
+    writeAction(svgItem->Delegate()->action());
 
     graphicsItemToSvg(svgItem);
 
@@ -1978,6 +2172,8 @@ UBGraphicsSvgItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::svgItemFromSvg()
     }
 
     graphicsItemFromSvg(svgItem);
+
+    svgItem->Delegate()->setAction(readAction()); // Issue 13/03/2018 - OpenBoard - Custom Widget.
 
     return svgItem;
 
@@ -2500,6 +2696,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::textItemToSvg(UBGraphicsTextItem* it
 
     graphicsItemToSvg(item);
 
+    writeAction(item->Delegate()->action()); // Issue 13/03/2018 - OpenBoard - Custom Widget.
+
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "width", QString("%1").arg(item->textWidth()));
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "height", QString("%1").arg(item->textHeight()));
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "pixels-per-point", QString("%1").arg(item->pixelsPerPoint()));
@@ -2534,6 +2732,11 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
     UBGraphicsTextItem* textItem = new UBGraphicsTextItem();
 
     graphicsItemFromSvg(textItem);
+    //N/C - NNE - 20141211 : when importing a textItem, disable the text editor
+    textItem->activateTextEditor(false);
+
+    textItem->Delegate()->setAction(readAction()); // Issue 13/03/2018 - OpenBoard - Custom Widget.
+
 
     QStringRef ubFillOnDarkBackground = mXmlReader.attributes().value(mNamespaceUri, "fill-on-dark-background");
     QStringRef ubFillOnLightBackground = mXmlReader.attributes().value(mNamespaceUri, "fill-on-light-background");

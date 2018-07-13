@@ -31,7 +31,7 @@
 #define UBBOARDPALETTEMANAGER_H_
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QtWebKitWidgets>
 
 #include "gui/UBLeftPalette.h"
 #include "gui/UBRightPalette.h"
@@ -40,20 +40,26 @@
 #include "gui/UBDockDownloadWidget.h"
 #include "core/UBApplicationController.h"
 #include "gui/UBFeaturesWidget.h"
+#include "gui/UBStylusPalette.h"
+#include "gui/UBDrawingPalette.h"
 
 
 class UBWebToolsPalette;
 class UBStylusPalette;
+class UBDrawingPalette;
 class UBClockPalette;
 class UBPageNumberPalette;
 class UBZoomPalette;
 class UBActionPalette;
+class UBBackgroundPalette;
 class UBBoardController;
 class UBServerXMLHttpRequest;
 class UBKeyboardPalette;
 class UBMainWindow;
 class UBApplicationController;
 class UBStartupHintsPalette;
+class UBCreateLinkPalette;
+
 
 class UBBoardPaletteManager : public QObject
 {
@@ -67,12 +73,15 @@ class UBBoardPaletteManager : public QObject
         UBLeftPalette* leftPalette(){return mLeftPalette;}
         UBRightPalette* rightPalette(){return mRightPalette;}
         UBStylusPalette* stylusPalette(){return mStylusPalette;}
-        UBActionPalette *addItemPalette() {return mAddItemPalette;}
+        UBDrawingPalette* drawingPalette() { return mDrawingPalette; }
+        UBActionPalette *addItemPalette() {return mAddItemPalette;}        
         void showVirtualKeyboard(bool show = true);
         void initPalettesPosAtStartup();
         void refreshPalettes();
 
         UBKeyboardPalette *mKeyboardPalette;
+
+        UBCreateLinkPalette* linkPalette(); // Issue 12/03/2018 - OpenBoard - Custo Widget
 
         void setCurrentWebToolsPalette(UBWebToolsPalette *palette) {mWebToolsCurrentPalette = palette;}
         UBWebToolsPalette* mWebToolsCurrentPalette;
@@ -105,15 +114,18 @@ class UBBoardPaletteManager : public QObject
         UBBoardController *mBoardControler;
 
         UBStylusPalette *mStylusPalette;
+        UBDrawingPalette *mDrawingPalette;
 
         UBZoomPalette *mZoomPalette;
-	UBStartupHintsPalette* mTipPalette;
+        UBStartupHintsPalette* mTipPalette;
+        UBCreateLinkPalette* mLinkPalette; // Issue 12/03/2018 - OpenBoard - Custo Widget
+
         /** The left dock palette */
         UBLeftPalette* mLeftPalette;
         /** The right dock palette */
         UBRightPalette* mRightPalette;
 
-        UBActionPalette *mBackgroundsPalette;
+        UBBackgroundPalette *mBackgroundsPalette;
         UBActionPalette *mToolsPalette;
         UBActionPalette* mAddItemPalette;
         UBActionPalette* mErasePalette;
@@ -158,6 +170,7 @@ class UBBoardPaletteManager : public QObject
 
         void toggleStylusPalette(bool checked);
         void tooglePodcastPalette(bool checked);
+        void toggleDrawingPalette(bool checked);
 
         void erasePaletteButtonPressed();
         void erasePaletteButtonReleased();

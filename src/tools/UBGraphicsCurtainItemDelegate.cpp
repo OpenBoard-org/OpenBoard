@@ -95,6 +95,7 @@ QVariant UBGraphicsCurtainItemDelegate::itemChange(QGraphicsItem::GraphicsItemCh
 
 void UBGraphicsCurtainItemDelegate::positionHandles()
 {
+    qWarning()<<"UBGraphicsCurtainItemDelegate::positionHandles()";
     UBGraphicsItemDelegate::positionHandles();
     if(mZOrderUpButton)
         mZOrderUpButton->hide();

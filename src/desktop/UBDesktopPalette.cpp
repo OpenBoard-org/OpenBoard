@@ -57,11 +57,18 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
     actions << mActionUniboard;
 
 
+    //actions << UBApplication::mainWindow->actionDrawing;
     actions << UBApplication::mainWindow->actionPen;
     actions << UBApplication::mainWindow->actionEraser;
     actions << UBApplication::mainWindow->actionMarker;
     actions << UBApplication::mainWindow->actionSelector;
-    actions << UBApplication::mainWindow->actionPointer;
+    actions << UBApplication::mainWindow->actionPointer;    
+
+    // Issue 28/03/2018 - OpenBoard - OCR in Desktop mode
+    //mActionDesktopOCR = new QAction(QIcon(":/images/stylusPalette/ocr.png"), tr("Recognize text from image"), this);
+    mActionDesktopOCR = new QAction(QIcon(":/images/toolbar/eyeOpened.png"), tr("Recognize text from image"), this);
+    connect(mActionDesktopOCR, SIGNAL(triggered()), this, SIGNAL(ocrClick()));
+    actions << mActionDesktopOCR;
 
     if (UBPlatformUtils::hasVirtualKeyboard())
         actions << UBApplication::mainWindow->actionVirtualKeyboard;
@@ -185,11 +192,15 @@ void UBDesktopPalette::maximizeMe()
     clearLayout();
 
     actions << mActionUniboard;
+    //actions << UBApplication::mainWindow->actionDrawing;
     actions << UBApplication::mainWindow->actionPen;
     actions << UBApplication::mainWindow->actionEraser;
     actions << UBApplication::mainWindow->actionMarker;
     actions << UBApplication::mainWindow->actionSelector;
     actions << UBApplication::mainWindow->actionPointer;
+    actions <<mActionDesktopOCR;
+    //actions << UBApplication::mainWindow->actionOCR; // Issue 28/03/2018 - OpenBoard - OCR in Desktop mode
+
     if (UBPlatformUtils::hasVirtualKeyboard())
         actions << UBApplication::mainWindow->actionVirtualKeyboard;
 
@@ -211,9 +222,15 @@ void UBDesktopPalette::maximizeMe()
 void UBDesktopPalette::showEvent(QShowEvent *event)
 {
     Q_UNUSED(event);
+    //QIcon drawingIcon;
     QIcon penIcon;
     QIcon markerIcon;
     QIcon eraserIcon;
+    QIcon ocrIcon; // Issue 28/03/2018 - OpenBoard - OCR in Desktop mode
+
+    //drawingIcon.addPixmap(QPixmap(":images/drawingPalette/paint-palette.png"), QIcon::Normal, QIcon::Off);
+    //drawingIcon.addPixmap(QPixmap(":images/drawingPalette/paint-paletteOn.png"), QIcon::Normal, QIcon::On);
+    //UBApplication::mainWindow->actionDrawing->setIcon(drawingIcon);
     penIcon.addPixmap(QPixmap(":images/stylusPalette/penArrow.png"), QIcon::Normal, QIcon::Off);
     penIcon.addPixmap(QPixmap(":images/stylusPalette/penOnArrow.png"), QIcon::Normal, QIcon::On);
     UBApplication::mainWindow->actionPen->setIcon(penIcon);
@@ -224,15 +241,26 @@ void UBDesktopPalette::showEvent(QShowEvent *event)
     eraserIcon.addPixmap(QPixmap(":images/stylusPalette/eraserOnArrow.png"), QIcon::Normal, QIcon::On);
     UBApplication::mainWindow->actionEraser->setIcon(eraserIcon);
 
+    // Issue 28/03/2018 - OpenBoard - OCR in Desktop mode
+    ocrIcon.addPixmap(QPixmap(":images/stylusPalette/ocr.png"), QIcon::Normal, QIcon::Off);
+    ocrIcon.addPixmap(QPixmap(":images/stylusPalette/ocrON.png"), QIcon::Normal, QIcon::On);
+    mActionDesktopOCR->setIcon(ocrIcon);
+
     adjustPosition();
 }
 
 void UBDesktopPalette::hideEvent(QHideEvent *event)
 {
     Q_UNUSED(event);
+    //QIcon drawingIcon;
     QIcon penIcon;
     QIcon markerIcon;
     QIcon eraserIcon;
+    QIcon ocrIcon; // Issue 28/03/2018 - OpenBoard - OCR in Desktop mode
+
+    //drawingIcon.addPixmap(QPixmap(":images/drawingPalette/paint-palette.png"), QIcon::Normal, QIcon::Off);
+    //drawingIcon.addPixmap(QPixmap(":images/drawingPalette/paint-paletteOn.png"), QIcon::Normal, QIcon::On);
+    //UBApplication::mainWindow->actionDrawing->setIcon(drawingIcon);
     penIcon.addPixmap(QPixmap(":images/stylusPalette/pen.png"), QIcon::Normal, QIcon::Off);
     penIcon.addPixmap(QPixmap(":images/stylusPalette/penOn.png"), QIcon::Normal, QIcon::On);
     UBApplication::mainWindow->actionPen->setIcon(penIcon);
@@ -242,6 +270,11 @@ void UBDesktopPalette::hideEvent(QHideEvent *event)
     eraserIcon.addPixmap(QPixmap(":images/stylusPalette/eraser.png"), QIcon::Normal, QIcon::Off);
     eraserIcon.addPixmap(QPixmap(":images/stylusPalette/eraserOn.png"), QIcon::Normal, QIcon::On);
     UBApplication::mainWindow->actionEraser->setIcon(eraserIcon);
+
+    // Issue 28/03/2018 - OpenBoard - OCR in Desktop mode
+    ocrIcon.addPixmap(QPixmap(":images/stylusPalette/ocr.png"), QIcon::Normal, QIcon::Off);
+    ocrIcon.addPixmap(QPixmap(":images/stylusPalette/ocrON.png"), QIcon::Normal, QIcon::On);
+    mActionDesktopOCR->setIcon(ocrIcon);
 }
 
 QPoint UBDesktopPalette::buttonPos(QAction *action)

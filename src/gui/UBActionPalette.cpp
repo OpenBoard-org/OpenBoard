@@ -34,6 +34,7 @@
 
 UBActionPalette::UBActionPalette(QList<QAction*> actions, Qt::Orientation orientation, QWidget * parent)
     : UBFloatingPalette(Qt::TopRightCorner, parent)
+    , mOrientation(orientation)
 {
     init(orientation);
     setActions(actions);
@@ -42,6 +43,7 @@ UBActionPalette::UBActionPalette(QList<QAction*> actions, Qt::Orientation orient
 
 UBActionPalette::UBActionPalette(Qt::Orientation orientation, QWidget * parent)
      : UBFloatingPalette(Qt::TopRightCorner, parent)
+     , mOrientation(orientation)
 {
     init(orientation);
 }
@@ -49,6 +51,7 @@ UBActionPalette::UBActionPalette(Qt::Orientation orientation, QWidget * parent)
 
 UBActionPalette::UBActionPalette(QWidget * parent)
      : UBFloatingPalette(Qt::TopRightCorner, parent)
+     , mOrientation(Qt::Vertical)
 {
     init(Qt::Vertical);
 }
@@ -56,6 +59,7 @@ UBActionPalette::UBActionPalette(QWidget * parent)
 
 UBActionPalette::UBActionPalette(Qt::Corner corner, QWidget * parent, Qt::Orientation orient)
      : UBFloatingPalette(corner, parent)
+     , mOrientation(orient)
 {
     init(orient);
 }

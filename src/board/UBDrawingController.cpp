@@ -1,29 +1,23 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
- * Copyright (C) 2013 Open Education Foundation
+ * This file is part of Open-Sankoré.
  *
- * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
- * l'Education Numérique en Afrique (GIP ENA)
- *
- * This file is part of OpenBoard.
- *
- * OpenBoard is free software: you can redistribute it and/or modify
+ * Open-Sankoré is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3 of the License,
  * with a specific linking exception for the OpenSSL project's
  * "OpenSSL" library (or with modified versions of it that use the
  * same license as the "OpenSSL" library).
  *
- * OpenBoard is distributed in the hope that it will be useful,
+ * Open-Sankoré is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
+ * along with Open-Sankoré.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 
 
 
@@ -34,6 +28,10 @@
 
 #include "domain/UBGraphicsScene.h"
 #include "board/UBBoardController.h"
+#include "board/UBBoardPaletteManager.h"
+#include "domain/UBEditableGraphicsPolygonItem.h"
+
+#include "board/UBBoardView.h"
 
 #include "gui/UBMainWindow.h"
 #include "core/memcheck.h"
@@ -76,9 +74,15 @@ UBDrawingController::UBDrawingController(QObject * parent)
     connect(UBApplication::mainWindow->actionPointer, SIGNAL(triggered(bool)), this, SLOT(pointerToolSelected(bool)));
     connect(UBApplication::mainWindow->actionLine, SIGNAL(triggered(bool)), this, SLOT(lineToolSelected(bool)));
     connect(UBApplication::mainWindow->actionText, SIGNAL(triggered(bool)), this, SLOT(textToolSelected(bool)));
+    //connect(UBApplication::mainWindow->actionRichTextEditor, SIGNAL(triggered(bool)), this, SLOT(richTextToolSelected(bool))); ALTI/AOU - 20140606 : RichTextEditor tool isn't available anymore.
     connect(UBApplication::mainWindow->actionCapture, SIGNAL(triggered(bool)), this, SLOT(captureToolSelected(bool)));
-}
 
+    // Issue 22/03/2018 - OpenBoard - OCR recognition
+    connect(UBApplication::mainWindow->actionOCR, SIGNAL(triggered(bool)), this, SLOT(ocrToolSelected(bool)));
+
+    //EV-7 - NNE - 20140210 : Maybe is no the right place to do this...
+    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(onActiveSceneChanged()));
+}
 
 UBDrawingController::~UBDrawingController()
 {
@@ -102,7 +106,22 @@ void UBDrawingController::setStylusTool(int tool)
 {
     if (tool != mStylusTool)
     {
-        UBApplication::boardController->activeScene()->deselectAllItems();
+        //Ev-7 - NNE - 20140106
+        if(tool != UBStylusTool::Drawing)
+        {
+            UBApplication::boardController->activeScene()->deselectAllItems();
+
+            //Issue retours 2.4RC1 - CFA - 20140217 : hide drawing Palette children on setting stylus tool
+            UBApplication::boardController->paletteManager()->drawingPalette()->hideSubPalettes();
+        }
+        else
+        {
+            foreach(QGraphicsItem *gi, UBApplication::boardController->activeScene()->selectedItems())
+            {
+                UBShapeFactory::desactivateEditionMode(gi);
+            }
+        }
+
         if (mStylusTool == UBStylusTool::Pen || mStylusTool == UBStylusTool::Marker
                 || mStylusTool == UBStylusTool::Line)
         {
@@ -145,15 +164,64 @@ void UBDrawingController::setStylusTool(int tool)
             UBApplication::mainWindow->actionLine->setChecked(true);
         else if (mStylusTool == UBStylusTool::Text)
             UBApplication::mainWindow->actionText->setChecked(true);
+        /* ALTI/AOU - 20140606 : RichTextEditor tool isn't available anymore.
+        else if (mStylusTool == UBStylusTool::RichText)
+            UBApplication::mainWindow->actionRichTextEditor->setChecked(true);
+        */
         else if (mStylusTool == UBStylusTool::Capture)
             UBApplication::mainWindow->actionCapture->setChecked(true);
 
+        // Issue 22/03/2018 - OpenBoard - OCR recognition
+        else if (mStylusTool == UBStylusTool::OCR)
+            UBApplication::mainWindow->actionOCR->setChecked(true);
+
+        if(mStylusTool != UBStylusTool::Drawing){            
+            UBApplication::boardController->shapeFactory().desactivate();
+        }
+
         emit stylusToolChanged(tool);
-        if (mStylusTool != UBStylusTool::Selector)
-            emit colorPaletteChanged();
+        emit colorPaletteChanged();
     }
+
+    //EV-7 : ce n'est pas de la responsabilité de cette méthode de le faire ... mais plus beaucoup de temps..
+    deactivateCreationModeForGraphicsPathItems();
+
 }
 
+
+void UBDrawingController::onActiveSceneChanged()
+{
+    foreach (QGraphicsItem* gi, UBApplication::boardController->activeScene()->items())
+    {
+        if (gi->type() == UBGraphicsItemType::GraphicsPathItemType)
+        {
+            UBEditableGraphicsPolygonItem* path = dynamic_cast<UBEditableGraphicsPolygonItem*>(gi);
+            if (path){
+                path->setIsInCreationMode(false);
+            }
+        }
+    }
+
+    UBApplication::boardController->shapeFactory().terminateShape();
+}
+
+void UBDrawingController::deactivateCreationModeForGraphicsPathItems()
+{
+    foreach (QGraphicsItem* gi, UBApplication::boardController->activeScene()->items())
+    {
+        if (gi->type() == UBGraphicsItemType::GraphicsPathItemType)
+        {
+            UBEditableGraphicsPolygonItem* path = dynamic_cast<UBEditableGraphicsPolygonItem*>(gi);
+            if (path){
+                path->setIsInCreationMode(false);
+                UBApplication::boardController->shapeFactory().desactivate();
+                if (path->path().elementCount() < 2)
+                    UBApplication::boardController->controlView()->scene()->removeItem(gi);
+            }
+        }
+    }
+    UBApplication::boardController->controlView()->resetCachedContent();
+}
 
 bool UBDrawingController::isDrawingTool()
 {
@@ -166,23 +234,35 @@ bool UBDrawingController::isDrawingTool()
 int UBDrawingController::currentToolWidthIndex()
 {
     if (stylusTool() == UBStylusTool::Pen || stylusTool() == UBStylusTool::Line)
+    {
         return UBSettings::settings()->penWidthIndex();
+    }
     else if (stylusTool() == UBStylusTool::Marker)
+    {
         return UBSettings::settings()->markerWidthIndex();
+    }
     else
+    {
         return -1;
+    }
 }
 
 
 qreal UBDrawingController::currentToolWidth()
 {
     if (stylusTool() == UBStylusTool::Pen || stylusTool() == UBStylusTool::Line)
+    {
         return UBSettings::settings()->currentPenWidth();
+    }
     else if (stylusTool() == UBStylusTool::Marker)
+    {
         return UBSettings::settings()->currentMarkerWidth();
+    }
     else
+    {
         //failsafe
         return UBSettings::settings()->currentPenWidth();
+    }
 }
 
 
@@ -223,7 +303,6 @@ int UBDrawingController::currentToolColorIndex()
     }
 }
 
-
 QColor UBDrawingController::currentToolColor()
 {
     return toolColor(UBSettings::settings()->isDarkBackground());
@@ -257,18 +336,21 @@ QColor UBDrawingController::toolColor(bool onDarkBackground)
 
 void UBDrawingController::setColorIndex(int index)
 {
-    Q_ASSERT(index >= 0 && index < UBSettings::settings()->colorPaletteSize);
+    //qWarning()<<"INDEX:";
+    //qWarning()<<index;
 
-    if (stylusTool() == UBStylusTool::Marker)
-    {
-        UBSettings::settings()->setMarkerColorIndex(index);
-    }
-    else
-    {
-        UBSettings::settings()->setPenColorIndex(index);
-    }
+        Q_ASSERT(index >= 0 && index < UBSettings::settings()->colorPaletteSize);
 
-    emit colorIndexChanged(index);
+        if (stylusTool() == UBStylusTool::Marker)
+        {
+            UBSettings::settings()->setMarkerColorIndex(index);
+        }
+        else
+        {
+            UBSettings::settings()->setPenColorIndex(index);
+        }
+
+        emit colorIndexChanged(index);
 }
 
 
@@ -327,6 +409,7 @@ void UBDrawingController::penToolSelected(bool checked)
     if (checked)
     {
         setStylusTool(UBStylusTool::Pen);
+        emit clickOnPenMarkerButton();
 
     }
 }
@@ -339,8 +422,10 @@ void UBDrawingController::eraserToolSelected(bool checked)
 
 void UBDrawingController::markerToolSelected(bool checked)
 {
-    if (checked)
+    if (checked){
         setStylusTool(UBStylusTool::Marker);
+        emit clickOnPenMarkerButton();
+    }
 }
 
 void UBDrawingController::selectorToolSelected(bool checked)
@@ -396,6 +481,12 @@ void UBDrawingController::textToolSelected(bool checked)
         setStylusTool(UBStylusTool::Text);
 }
 
+void UBDrawingController::richTextToolSelected(bool checked)
+{
+    if (checked)
+        setStylusTool(UBStylusTool::RichText);
+}
+
 
 void UBDrawingController::captureToolSelected(bool checked)
 {
@@ -403,3 +494,9 @@ void UBDrawingController::captureToolSelected(bool checked)
         setStylusTool(UBStylusTool::Capture);
 }
 
+// Issue 22/03/2018 - OpenBoard - OCR recognition
+void UBDrawingController::ocrToolSelected(bool checked)
+{
+    if (checked)
+        setStylusTool(UBStylusTool::OCR);
+}

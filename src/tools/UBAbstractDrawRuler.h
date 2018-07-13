@@ -92,7 +92,7 @@ protected:
     static const int sFillTransparency;
     static const int sDrawTransparency;
     static const int sRoundingRadius;
-    int sPixelsPerMillimeter;
+    qreal sPixelsPerCentimeter;
 };
 
 #endif

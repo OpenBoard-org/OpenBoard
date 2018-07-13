@@ -32,7 +32,7 @@
 
 #include <QMainWindow>
 #include <QWidget>
-#include <QtWebKitWidgets/QWebView>
+#include <QWebView>
 #include <QMessageBox>
 #include "UBDownloadWidget.h"
 
@@ -53,6 +53,10 @@ class UBMainWindow : public QMainWindow, public Ui::MainWindow
 
         void addWebWidget(QWidget *pWidget);
         void switchToWebWidget();
+
+        // Issue 12/04/2018 - OpenBoard - CANVAS MODE
+        void addCanvasWidget(QWidget *pWidget);
+        void switchToCanvasWidget();
 
         void addDocumentsWidget(QWidget *pWidget);
         void switchToDocumentsWidget();
@@ -87,6 +91,7 @@ class UBMainWindow : public QMainWindow, public Ui::MainWindow
         QWidget *mBoardWidget;
         QWidget *mWebWidget;
         QWidget *mDocumentsWidget;
+        QWidget *mCanvasWidget;
 
 private:
 // work around for handling tablet events on MAC OS with Qt 4.8.0 and above

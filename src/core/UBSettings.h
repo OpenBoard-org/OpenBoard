@@ -24,7 +24,10 @@
  * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
+/*Modified by rafael.garciap@juntaex.es
+ * 07-Marzo-2018
+ * UBSettings::init() : Added option "activateTempDoc" to use only one temporal document directory, that is deleted on quit.
+*/
 
 
 #ifndef UBSETTINGS_H_
@@ -87,9 +90,9 @@ class UBSettings : public QObject
 
         // Background related
         bool isDarkBackground();
-        bool isCrossedBackground();
+        UBPageBackground pageBackground();
         void setDarkBackground(bool isDarkBackground);
-        void setCrossedBackground(bool isCrossedBackground);
+        void setPageBackground(UBPageBackground background);
 
         // Stylus palette related
         bool isStylusPaletteVisible();
@@ -177,10 +180,21 @@ class UBSettings : public QObject
         static QColor markerCirclePenColorDarkBackground;
         static QColor markerCirclePenColorLightBackground;
 
+        static QColor penCircleBrushColorDarkBackground;
+        static QColor penCircleBrushColorLightBackground;
+
+        static QColor penCirclePenColorDarkBackground;
+        static QColor penCirclePenColorLightBackground;
+
         static QColor documentSizeMarkColorDarkBackground;
         static QColor documentSizeMarkColorLightBackground;
 
+        // Background grid
         static int crossSize;
+        static int defaultCrossSize;
+        static int minCrossSize;
+        static int maxCrossSize;
+
         static int colorPaletteSize;
         static int objectFrameWidth;
 
@@ -190,6 +204,11 @@ class UBSettings : public QObject
         static QString documentIdentifer;
         static QString documentVersion;
         static QString documentUpdatedAt;
+
+        // Issue 1684 - ALTI/AOU - 20131210
+        static QString documentDefaultBackgroundImage;
+        static QString documentDefaultBackgroundImageDisposition;
+        // Fin Issue 1684 - ALTI/AOU - 20131210
 
         static QString documentDate;
 
@@ -240,8 +259,11 @@ class UBSettings : public QObject
         UBSetting* appToolBarDisplayText;
         UBSetting* appEnableAutomaticSoftwareUpdates;
         UBSetting* appSoftwareUpdateURL;
+        UBSetting* appHideCheckForSoftwareUpdate;
         UBSetting* appToolBarOrientationVertical;
         UBSetting* appPreferredLanguage;
+
+        UBSetting* appDrawingPaletteOrientationHorizontal;
 
         UBSetting* appIsInSoftwareUpdateProcess;
 
@@ -257,15 +279,24 @@ class UBSettings : public QObject
         UBSetting* boardPenFineWidth;
         UBSetting* boardPenMediumWidth;
         UBSetting* boardPenStrongWidth;
+        UBSetting* boardPenCustomWidth; // Issue 05/03/2018 -- Open-Board - Custom Line Width
 
         UBSetting* boardMarkerFineWidth;
         UBSetting* boardMarkerMediumWidth;
         UBSetting* boardMarkerStrongWidth;
+        UBSetting* boardMarkerCustomWidth;  // Issue 05/03/2018 -- Open-Board - Custom Line Width
 
         UBSetting* boardPenPressureSensitive;
         UBSetting* boardMarkerPressureSensitive;
 
         UBSetting* boardUseHighResTabletEvent;
+
+        UBSetting* boardInterpolatePenStrokes;
+        UBSetting* boardSimplifyPenStrokes;
+        UBSetting* boardSimplifyPenStrokesThresholdAngle;
+        UBSetting* boardSimplifyPenStrokesThresholdWidthDifference;
+        UBSetting* boardInterpolateMarkerStrokes;
+        UBSetting* boardSimplifyMarkerStrokes;
 
         UBSetting* boardKeyboardPaletteKeyBtnSize;
 
@@ -275,6 +306,9 @@ class UBSettings : public QObject
 
         UBSetting* boardCrossColorDarkBackground;
         UBSetting* boardCrossColorLightBackground;
+
+        UBColorListSetting* boardGridLightBackgroundColors;
+        UBColorListSetting* boardGridDarkBackgroundColors;
 
         UBColorListSetting* boardPenLightBackgroundColors;
         UBColorListSetting* boardPenLightBackgroundSelectedColors;
@@ -292,6 +326,8 @@ class UBSettings : public QObject
 
         UBSetting* showEraserPreviewCircle;
         UBSetting* showMarkerPreviewCircle;
+        UBSetting* showPenPreviewCircle;
+        UBSetting* penPreviewFromSize;
 
         UBSetting* webUseExternalBrowser;
         UBSetting* webShowPageImmediatelyOnMirroredScreen;
@@ -353,6 +389,8 @@ class UBSettings : public QObject
         UBSetting* gipThumbnailWidth;
         UBSetting* soundThumbnailWidth;
 
+        UBSetting* libraryShowDetailsForLocalItems;
+
         UBSetting* rightLibPaletteBoardModeWidth;
         UBSetting* rightLibPaletteBoardModeIsCollapsed;
         UBSetting* rightLibPaletteDesktopModeWidth;
@@ -372,6 +410,7 @@ class UBSettings : public QObject
         UBSetting* swapControlAndDisplayScreens;
 
         UBSetting* angleTolerance;
+        UBSetting* activateTempDoc;
         UBSetting* historyLimit;
 
         UBSetting* libIconSize;
@@ -397,6 +436,8 @@ class UBSettings : public QObject
          void setStylusPaletteVisible(bool visible);
 
         void setPenPressureSensitive(bool sensitive);
+        void setPenPreviewCircle(bool sensitive);
+        void setPenPreviewFromSize(int size);
         void setMarkerPressureSensitive(bool sensitive);
 
         QVariant value ( const QString & key, const QVariant & defaultValue = QVariant() );

@@ -240,6 +240,7 @@ class UBWidgetUniboardAPI : public QObject
         void returnStatus(const QString& method, const QString& status);
         void usedMethods(QStringList methods);
         void response(bool correct);
+        bool currentToolIsSelector();
 
         /**
           * Give the file metadata to Sankore. The format must be

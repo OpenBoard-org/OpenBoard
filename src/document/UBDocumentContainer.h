@@ -44,7 +44,7 @@ class UBDocumentContainer : public QObject
         void setDocument(UBDocumentProxy* document, bool forceReload = false);
 
         UBDocumentProxy* selectedDocument(){return mCurrentDocument;}
-        int pageCount(){return mDocumentThumbs.size();}
+        int pageCount(){return mCurrentDocument->pageCount();}
         const QPixmap* pageAt(int index){return mDocumentThumbs[index];}
 
         static int pageFromSceneIndex(int sceneIndex);
@@ -53,12 +53,13 @@ class UBDocumentContainer : public QObject
         void duplicatePages(QList<int>& pageIndexes);
         bool movePageToIndex(int source, int target);
         void deletePages(QList<int>& pageIndexes);
+        void clearThumbPage();
+        void initThumbPage();
         void addPage(int index);
         void updatePage(int index);
         void addEmptyThumbPage();
 
         void insertThumbPage(int index);
-
 
     private:
         UBDocumentProxy* mCurrentDocument;
@@ -73,6 +74,13 @@ class UBDocumentContainer : public QObject
     signals:
         void documentSet(UBDocumentProxy* document);
         void documentPageUpdated(int index);
+
+        void initThumbnailsRequired(UBDocumentContainer* source);
+        void addThumbnailRequired(UBDocumentContainer* source, int index);
+        void removeThumbnailRequired(int index);
+        void moveThumbnailRequired(int from, int to);
+        void updateThumbnailsRequired();
+
         void documentThumbnailsUpdated(UBDocumentContainer* source);
 };
 

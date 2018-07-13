@@ -34,6 +34,7 @@
 
 #include "frameworks/UBStringUtils.h"
 
+#include "board/UBFeaturesController.h"
 #include "core/UBSettings.h"
 
 class UBGraphicsScene;
@@ -67,6 +68,12 @@ class UBDocumentProxy : public QObject
 
         QDateTime lastUpdate();
 
+        // Issue 1684 - CFA - 20131120
+        void setHasDefaultImageBackground(const bool hasDefault);
+        const bool hasDefaultImageBackground() const;
+        void setDefaultImageBackground(const UBFeature& item);
+        UBFeature& defaultImageBackground();
+        const UBFeature& defaultImageBackground() const;
 
         QSize defaultDocumentSize() const;
         void setDefaultDocumentSize(QSize pSize);
@@ -100,6 +107,10 @@ class UBDocumentProxy : public QObject
         int mPageCount;
 
         int mPageDpi;
+
+        // Issue 1684 - CFA - 20131120
+        bool mHasDefaultImageBackground;
+        UBFeature mDefaultImageBackground;
 
 };
 

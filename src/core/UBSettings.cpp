@@ -25,6 +25,10 @@
  */
 
 
+/*Modified by rafael.garciap@juntaex.es
+ * 07-Marzo-2018
+ * UBSettings::init() : Added option "activateTempDoc" to use only one temporal document directory, that is deleted on quit.
+*/
 
 
 #include "UBSettings.h"
@@ -46,8 +50,11 @@
 QPointer<UBSettings> UBSettings::sSingleton = 0;
 
 int UBSettings::pointerDiameter = 40;
-int UBSettings::crossSize = 32;
-int UBSettings::colorPaletteSize = 5;
+int UBSettings::crossSize = 24;
+int UBSettings::defaultCrossSize = 24;
+int UBSettings::minCrossSize = 12;
+int UBSettings::maxCrossSize = 96; //TODO: user-settable?
+int UBSettings::colorPaletteSize = 6;
 int UBSettings::objectFrameWidth = 20;
 int UBSettings::boardMargin = 10;
 
@@ -58,6 +65,10 @@ QString UBSettings::documentIdentifer = QString("ID");
 QString UBSettings::documentVersion = QString("Version");
 QString UBSettings::documentUpdatedAt = QString("UpdatedAt");
 QString UBSettings::documentDate = QString("date");
+// Issue 1684 - ALTI/AOU - 20131210
+QString UBSettings::documentDefaultBackgroundImage = QString("defaultBackgroundImage");
+QString UBSettings::documentDefaultBackgroundImageDisposition = QString("defaultBackgroundImageDisposition");
+// Fin Issue 1684 - ALTI/AOU - 20131210
 
 QString UBSettings::trashedDocumentGroupNamePrefix = QString("_Trash:");
 
@@ -82,6 +93,12 @@ QColor UBSettings::markerCircleBrushColorLightBackground = QColor(255, 255, 255,
 
 QColor UBSettings::markerCirclePenColorDarkBackground = QColor(255, 255, 255, 127);
 QColor UBSettings::markerCirclePenColorLightBackground = QColor(0, 0, 0, 127);
+
+QColor UBSettings::penCircleBrushColorDarkBackground = QColor(127, 127, 127, 80);
+QColor UBSettings::penCircleBrushColorLightBackground = QColor(255, 255, 255, 30);
+
+QColor UBSettings::penCirclePenColorDarkBackground = QColor(255, 255, 255, 127);
+QColor UBSettings::penCirclePenColorLightBackground = QColor(0, 0, 0, 127);
 
 QColor UBSettings::documentSizeMarkColorDarkBackground = QColor(44, 44, 44, 200);
 QColor UBSettings::documentSizeMarkColorLightBackground = QColor(241, 241, 241);
@@ -211,6 +228,11 @@ void UBSettings::ValidateKeyboardPaletteKeyBtnSize()
     boardKeyboardPaletteKeyBtnSize->set(supportedKeyboardSizes->at(0));
 }
 
+/*Added by rafael.garciap@juntaex.es
+ * 07-Marzo-2018
+ * Added option "activateTempDoc" to use only one temporal document directory, that is deleted on quit.
+*/
+
 void UBSettings::init()
 {
     productWebUrl =  new UBSetting(this, "App", "ProductWebAddress", "http://www.openboard.ch");
@@ -226,8 +248,11 @@ void UBSettings::init()
     appToolBarDisplayText = new UBSetting(this, "App", "ToolBarDisplayText", true);
     appEnableAutomaticSoftwareUpdates = new UBSetting(this, "App", "EnableAutomaticSoftwareUpdates", false);
     appSoftwareUpdateURL = new UBSetting(this, "App", "SoftwareUpdateURL", "http://www.openboard.ch/update.json");
+    appHideCheckForSoftwareUpdate = new UBSetting(this, "App", "HideCheckForSoftwareUpdate", false);
     appToolBarOrientationVertical = new UBSetting(this, "App", "ToolBarOrientationVertical", false);
     appPreferredLanguage = new UBSetting(this,"App","PreferredLanguage", "");
+
+    appDrawingPaletteOrientationHorizontal = new UBSetting(this, "App", "DrawingPaletteOrientationHorizontal", false);
 
     rightLibPaletteBoardModeWidth = new UBSetting(this, "Board", "RightLibPaletteBoardModeWidth", 270);
     rightLibPaletteBoardModeIsCollapsed = new UBSetting(this,"Board", "RightLibPaletteBoardModeIsCollapsed",true);
@@ -247,48 +272,67 @@ void UBSettings::init()
 
     appLookForOpenSankoreInstall = new UBSetting(this, "App", "LookForOpenSankoreInstall", true);
 
-    appStartMode = new UBSetting(this, "App", "StartMode", "");
+
+    appStartMode = new UBSetting(this, "App", "StartMode", "1"); // Issue 15/03/2018 - OpenBoard - Desktop mode by DEFAULT.
+
 
     featureSliderPosition = new UBSetting(this, "Board", "FeatureSliderPosition", 40);
 
     boardPenFineWidth = new UBSetting(this, "Board", "PenFineWidth", 1.5);
     boardPenMediumWidth = new UBSetting(this, "Board", "PenMediumWidth", 3.0);
     boardPenStrongWidth = new UBSetting(this, "Board", "PenStrongWidth", 8.0);
+    boardPenCustomWidth = new UBSetting(this, "Board", "PenCustomWidth", 4.0); // Issue 05/03/2018 -- Open-Board - Custom Line Width
 
     boardMarkerFineWidth = new UBSetting(this, "Board", "MarkerFineWidth", 12.0);
     boardMarkerMediumWidth = new UBSetting(this, "Board", "MarkerMediumWidth", 24.0);
     boardMarkerStrongWidth = new UBSetting(this, "Board", "MarkerStrongWidth", 48.0);
+    boardMarkerCustomWidth = new UBSetting(this, "Board", "MarkerCustomWidth", 30.0); // Issue 05/03/2018 -- Open-Board - Custom Line Width
 
     boardPenPressureSensitive = new UBSetting(this, "Board", "PenPressureSensitive", true);
     boardMarkerPressureSensitive = new UBSetting(this, "Board", "MarkerPressureSensitive", false);
 
     boardUseHighResTabletEvent = new UBSetting(this, "Board", "UseHighResTabletEvent", true);
 
+    boardInterpolatePenStrokes = new UBSetting(this, "Board", "InterpolatePenStrokes", true);
+    boardSimplifyPenStrokes = new UBSetting(this, "Board", "SimplifyPenStrokes", true);
+    boardSimplifyPenStrokesThresholdAngle = new UBSetting(this, "Board", "SimplifyPenStrokesThresholdAngle", 2);
+    boardSimplifyPenStrokesThresholdWidthDifference = new UBSetting(this, "Board", "SimplifyPenStrokesThresholdWidthDifference", 2.0);
+
+    boardInterpolateMarkerStrokes = new UBSetting(this, "Board", "InterpolateMarkerStrokes", true);
+    boardSimplifyMarkerStrokes = new UBSetting(this, "Board", "SimplifyMarkerStrokes", true);
+
     boardKeyboardPaletteKeyBtnSize = new UBSetting(this, "Board", "KeyboardPaletteKeyBtnSize", "16x16");
     ValidateKeyboardPaletteKeyBtnSize();
 
     pageSize = new UBSetting(this, "Board", "DefaultPageSize", documentSizes.value(DocumentSizeRatio::Ratio4_3));
 
-
     boardCrossColorDarkBackground = new UBSetting(this, "Board", "CrossColorDarkBackground", "#C8C0C0C0");
     boardCrossColorLightBackground = new UBSetting(this, "Board", "CrossColorLightBackground", "#A5E1FF");
 
+    QStringList gridLightBackgroundColors;
+    gridLightBackgroundColors << "#000000" << "#FF0000" << "#004080" << "#008000" << "#FFDD00" << "#C87400" << "#800040" << "#008080" << "#A5E1FF";
+    boardGridLightBackgroundColors = new UBColorListSetting(this, "Board", "GridLightBackgroundColors", gridLightBackgroundColors, -1.0);
+
+    QStringList gridDarkBackgroundColors;
+    gridDarkBackgroundColors << "#FFFFFF" << "#FF3400" << "#66C0FF" << "#81FF5C" << "#FFFF00" << "#B68360" << "#FF497E" << "#8D69FF" << "#C8C0C0C0";
+    boardGridDarkBackgroundColors = new UBColorListSetting(this, "Board", "GridDarkBackgroundColors", gridDarkBackgroundColors, -1.0);
+
     QStringList penLightBackgroundColors;
-    penLightBackgroundColors << "#000000" << "#FF0000" <<"#004080" << "#008000" << "#FFDD00" << "#C87400" << "#800040" << "#008080"  << "#5F2D0A" << "#FFFFFF";
+    penLightBackgroundColors << "#000000" << "#FF0000" <<"#004080" << "#008000" << "#FFDD00" << "#C87400" << "#800040" << "#008080"  << "#5F2D0A" << "#FFFFFF" << "#5F2D0A" << "#FFFFFF";
     boardPenLightBackgroundColors = new UBColorListSetting(this, "Board", "PenLightBackgroundColors", penLightBackgroundColors, 1.0);
 
     QStringList penDarkBackgroundColors;
-    penDarkBackgroundColors << "#FFFFFF" << "#FF3400" <<"#66C0FF" << "#81FF5C" << "#FFFF00" << "#B68360" << "#FF497E" << "#8D69FF" << "#000000";
+    penDarkBackgroundColors << "#FFFFFF" << "#FF3400" <<"#66C0FF" << "#81FF5C" << "#FFFF00" << "#B68360" << "#FF497E" << "#8D69FF" << "#000000" << "#8D69FF" << "#000000" ;
     boardPenDarkBackgroundColors = new UBColorListSetting(this, "Board", "PenDarkBackgroundColors", penDarkBackgroundColors, 1.0);
 
     boardMarkerAlpha = new UBSetting(this, "Board", "MarkerAlpha", 0.5);
 
     QStringList markerLightBackgroundColors;
-    markerLightBackgroundColors << "#E3FF00" << "#FF0000" <<"#004080" << "#008000" << "#C87400" << "#800040" << "#008080"  << "#000000";
+    markerLightBackgroundColors << "#E3FF00" << "#FF0000" <<"#004080" << "#008000" << "#C87400" << "#800040" << "#008080"  << "#000000" << "#008080"  << "#000000";
     boardMarkerLightBackgroundColors = new UBColorListSetting(this, "Board", "MarkerLightBackgroundColors", markerLightBackgroundColors, boardMarkerAlpha->get().toDouble());
 
     QStringList markerDarkBackgroundColors;
-    markerDarkBackgroundColors << "#FFFF00" << "#FF4400" <<"#66C0FF" << "#81FF5C" << "#B68360" << "#FF497E" << "#8D69FF" << "#FFFFFF";
+    markerDarkBackgroundColors << "#FFFF00" << "#FF4400" <<"#66C0FF" << "#81FF5C" << "#B68360" << "#FF497E" << "#8D69FF" << "#FFFFFF" << "#8D69FF" << "#FFFFFF";
     boardMarkerDarkBackgroundColors = new UBColorListSetting(this, "Board", "MarkerDarkBackgroundColors", markerDarkBackgroundColors, boardMarkerAlpha->get().toDouble());
 
     QStringList penLightBackgroundSelectedColors;
@@ -313,6 +357,8 @@ void UBSettings::init()
 
     showEraserPreviewCircle = new UBSetting(this, "Board", "ShowEraserPreviewCircle", true);
     showMarkerPreviewCircle = new UBSetting(this, "Board", "ShowMarkerPreviewCircle", true);
+    showPenPreviewCircle = new UBSetting(this, "Board", "ShowPenPreviewCircle", true);
+    penPreviewFromSize = new UBSetting(this, "Board", "PenPreviewFromSize", 5);
 
     webUseExternalBrowser = new UBSetting(this, "Web", "UseExternalBrowser", false);
 
@@ -399,6 +445,8 @@ void UBSettings::init()
 
     documentThumbnailWidth = new UBSetting(this, "Document", "ThumbnailWidth", UBSettings::defaultThumbnailWidth);
 
+    libraryShowDetailsForLocalItems = new UBSetting(this, "Library", "ShowDetailsForLocalItems", false);
+
     imageThumbnailWidth = new UBSetting(this, "Library", "ImageThumbnailWidth", UBSettings::defaultImageWidth);
     videoThumbnailWidth = new UBSetting(this, "Library", "VideoThumbnailWidth", UBSettings::defaultVideoWidth);
     shapeThumbnailWidth = new UBSetting(this, "Library", "ShapeThumbnailWidth", UBSettings::defaultShapeWidth);
@@ -413,6 +461,8 @@ void UBSettings::init()
     swapControlAndDisplayScreens = new UBSetting(this, "App", "SwapControlAndDisplayScreens", false);
 
     angleTolerance = new UBSetting(this, "App", "AngleTolerance", 4);
+    activateTempDoc = new UBSetting(this, "App", "ActivateTempDoc", 1);
+
     historyLimit = new UBSetting(this, "Web", "HistoryLimit", 15);
 
     libIconSize = new UBSetting(this, "Library", "LibIconSize", defaultLibraryIconSize);
@@ -525,6 +575,9 @@ qreal UBSettings::currentPenWidth()
         case UBWidth::Strong:
             width = boardPenStrongWidth->get().toDouble();
             break;
+        case UBWidth::Custom: // Issue 05/03/2018 -- Open-Board - Custom Line Width
+            width = boardPenCustomWidth->get().toDouble();
+            break;
         default:
             Q_ASSERT(false);
             //failsafe
@@ -549,7 +602,6 @@ void UBSettings::setPenColorIndex(int index)
         setValue("Board/PenColorIndex", index);
     }
 }
-
 
 QColor UBSettings::currentPenColor()
 {
@@ -607,6 +659,9 @@ qreal UBSettings::currentMarkerWidth()
         case UBWidth::Strong:
             width = boardMarkerStrongWidth->get().toDouble();
             break;
+        case UBWidth::Custom: // Issue 05/03/2018 -- Open-Board - Custom Line Width
+            width = boardMarkerCustomWidth->get().toDouble();
+            break;
         default:
             Q_ASSERT(false);
             //failsafe
@@ -629,9 +684,8 @@ void UBSettings::setMarkerColorIndex(int index)
     if (index != markerColorIndex())
     {
         setValue("Board/MarkerColorIndex", index);
-    }
+    }    
 }
-
 
 QColor UBSettings::currentMarkerColor()
 {
@@ -732,9 +786,16 @@ bool UBSettings::isDarkBackground()
 }
 
 
-bool UBSettings::isCrossedBackground()
+UBPageBackground UBSettings::pageBackground()
 {
-    return value("Board/CrossedBackground", 0).toBool();
+    QString val = value("Board/PageBackground", 0).toString();
+
+    if (val == "crossed")
+        return UBPageBackground::crossed;
+    else if (val == "ruled")
+        return UBPageBackground::ruled;
+    else
+        return UBPageBackground::plain;
 }
 
 
@@ -745,9 +806,18 @@ void UBSettings::setDarkBackground(bool isDarkBackground)
 }
 
 
-void UBSettings::setCrossedBackground(bool isCrossedBackground)
+void UBSettings::setPageBackground(UBPageBackground background)
 {
-    setValue("Board/CrossedBackground", isCrossedBackground);
+    QString val;
+
+    if (background == UBPageBackground::crossed)
+        val = "crossed";
+    else if (background == UBPageBackground::ruled)
+        val = "ruled";
+    else
+        val = "plain";
+
+    setValue("Board/PageBackground", val);
 }
 
 
@@ -756,6 +826,15 @@ void UBSettings::setPenPressureSensitive(bool sensitive)
     boardPenPressureSensitive->set(sensitive);
 }
 
+void UBSettings::setPenPreviewCircle(bool circle)
+{
+    showPenPreviewCircle->set(circle);
+}
+
+void UBSettings::setPenPreviewFromSize(int size)
+{
+    penPreviewFromSize->set(size);
+}
 
 void UBSettings::setMarkerPressureSensitive(bool sensitive)
 {
@@ -858,6 +937,7 @@ QString UBSettings::userDataDirectory()
 QString UBSettings::userImageDirectory()
 {
     static QString imageDirectory = "";
+    //qWarning()<<imageDirectory;
     if(imageDirectory.isEmpty()){
         if (sAppSettings && getAppSettings()->contains("App/UserImageDirectory")) {
             imageDirectory = getAppSettings()->value("App/UserImageDirectory").toString();
@@ -1356,7 +1436,7 @@ void UBSettings::removeSetting(const QString &setting)
 }
 
 void UBSettings::checkNewSettings()
-{
+{    
     /*
      * Some settings were modified in new versions and OpenBoard can crash
      * if an old settings file is used. This function checks these settings and
@@ -1376,7 +1456,7 @@ void UBSettings::checkNewSettings()
                   << boardMarkerLightBackgroundSelectedColors;
 
     foreach (UBColorListSetting* setting, colorSettings) {
-        if (setting->colors().size() < 5)
+        if (setting->colors().size() < 6) // We introduce a new color [ CUSTOM COLOR ] 27/02/2018
             setting->reset();
     }
 
@@ -1409,5 +1489,9 @@ void UBSettings::checkNewSettings()
 
     // A typo was corrected in version 1.3
     removeSetting("Board/useSystemOnScreenKeybard");
+
+
+    // CrossedBackground changed in 1.4 (no longer a bool but an enum; can be crossed or ruled)
+    removeSetting("Board/CrossedBackground");
 
 }

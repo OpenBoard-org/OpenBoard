@@ -59,6 +59,10 @@ UBDocumentNavigator::UBDocumentNavigator(QWidget *parent, const char *name):QGra
   , mThumbnailWidth(0)
   , mThumbnailMinWidth(100)
   , mSelectedThumbnail(NULL)
+  , mDropSource(NULL)
+  , mDropTarget(NULL)
+  , mDropBar(new QGraphicsRectItem())
+  , mLongPressInterval(350)
 {
     setObjectName(name);
     mScene = new QGraphicsScene(this);
@@ -66,11 +70,23 @@ UBDocumentNavigator::UBDocumentNavigator(QWidget *parent, const char *name):QGra
     setScene(mScene);
     mThumbnailWidth = width() - 2*border();
 
+    mDropBar->setPen(QPen(Qt::darkGray));
+    mDropBar->setBrush(QBrush(Qt::lightGray));
+    scene()->addItem(mDropBar);
+    mDropBar->hide();
+
+    mLongPressTimer.setInterval(mLongPressInterval);
+    mLongPressTimer.setSingleShot(true);
+
     setFrameShadow(QFrame::Plain);
 
     connect(UBApplication::boardController, SIGNAL(documentThumbnailsUpdated(UBDocumentContainer*)), this, SLOT(generateThumbnails(UBDocumentContainer*)));
     connect(UBApplication::boardController, SIGNAL(documentPageUpdated(int)), this, SLOT(updateSpecificThumbnail(int)));
     connect(UBApplication::boardController, SIGNAL(pageSelectionChanged(int)), this, SLOT(onScrollToSelectedPage(int)));
+
+    connect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressTimeout()), Qt::UniqueConnection);
+
+    connect(this, SIGNAL(mousePressAndHoldEventRequired(QPoint)), this, SLOT(mousePressAndHoldEvent(QPoint)), Qt::UniqueConnection);
 }
 
 /**
@@ -98,9 +114,13 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
         QGraphicsItem* item = graphicsItemList.at(i);
         if(item->isSelected())
             selectedIndex = i;
-        mScene->removeItem(item);
-        delete item;
-        item = NULL;
+
+        if (item != mDropBar)
+        {
+            mScene->removeItem(item);
+            delete item;
+            item = NULL;
+        }
     }
 
     for(int i = 0; i < source->selectedDocument()->pageCount(); i++)
@@ -265,6 +285,9 @@ void UBDocumentNavigator::resizeEvent(QResizeEvent *event)
  */
 void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
 {
+    mLongPressTimer.start();
+    mLastPressedMousePos = event->pos();
+
     QGraphicsItem* pClickedItem = itemAt(event->pos());
     if(NULL != pClickedItem)
     {
@@ -300,7 +323,10 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
                 break;
             }
         }
+        UBApplication::boardController->persistViewPositionOnCurrentScene();
+        UBApplication::boardController->persistCurrentScene();
         UBApplication::boardController->setActiveDocumentScene(index);
+        UBApplication::boardController->centerOn(UBApplication::boardController->activeScene()->lastCenter());
     }
     QGraphicsView::mousePressEvent(event);
 }
@@ -308,4 +334,109 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
 void UBDocumentNavigator::mouseReleaseEvent(QMouseEvent *event)
 {
     event->accept();
+}
+
+void UBDocumentNavigator::longPressTimeout()
+{
+    if (QApplication::mouseButtons() != Qt::NoButton)
+        emit mousePressAndHoldEventRequired(mLastPressedMousePos);
+
+    mLongPressTimer.stop();
+}
+
+void UBDocumentNavigator::mousePressAndHoldEvent(QPoint pos)
+{
+    UBSceneThumbnailNavigPixmap* item = dynamic_cast<UBSceneThumbnailNavigPixmap*>(itemAt(pos));
+    if (item)
+    {
+        mDropSource = item;
+        mDropTarget = item;
+
+        QPixmap pixmap = item->pixmap().scaledToWidth(mThumbnailWidth/2);
+
+        QDrag *drag = new QDrag(this);
+        drag->setMimeData(new QMimeData());
+        drag->setPixmap(pixmap);
+        drag->setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2));
+
+        drag->exec();
+    }
+}
+
+void UBDocumentNavigator::dragEnterEvent(QDragEnterEvent *event)
+{
+    mDropBar->show();
+
+    if (event->source() == this)
+    {
+        event->setDropAction(Qt::MoveAction);
+        event->accept();
+    }
+    else
+    {
+        event->acceptProposedAction();
+    }
+}
+
+void UBDocumentNavigator::dragMoveEvent(QDragMoveEvent *event)
+{
+    QPointF position = event->pos();
+
+    //autoscroll during drag'n'drop
+    QPointF scenePos = mapToScene(position.toPoint());
+    int thumbnailHeight = mThumbnailWidth / UBSettings::minScreenRatio;
+    QRectF thumbnailArea(0, scenePos.y() - thumbnailHeight/2, mThumbnailWidth, thumbnailHeight);
+
+    ensureVisible(thumbnailArea);
+
+    UBSceneThumbnailNavigPixmap* item = dynamic_cast<UBSceneThumbnailNavigPixmap*>(itemAt(position.toPoint()));
+    if (item)
+    {
+        if (item != mDropTarget)
+            mDropTarget = item;
+
+        qreal scale = item->transform().m11();
+
+        QPointF itemCenter(item->pos().x() + (item->boundingRect().width()-verticalScrollBar()->width()) * scale,
+                           item->pos().y() + item->boundingRect().height() * scale / 2);
+
+        bool dropAbove = mapToScene(position.toPoint()).y() < itemCenter.y();
+        bool movingUp = mDropSource->sceneIndex() > item->sceneIndex();
+        qreal y = 0;
+
+        if (movingUp)
+        {
+            if (dropAbove)
+            {
+                y = item->pos().y() - UBSettings::thumbnailSpacing / 2;
+                if (mDropBar->y() != y)
+                    mDropBar->setRect(QRectF(item->pos().x(), y, mThumbnailWidth-verticalScrollBar()->width(), 3));
+            }
+        }
+        else
+        {
+            if (!dropAbove)
+            {
+                y = item->pos().y() + item->boundingRect().height() * scale + UBSettings::thumbnailSpacing / 2;
+                if (mDropBar->y() != y)
+                    mDropBar->setRect(QRectF(item->pos().x(), y, mThumbnailWidth-verticalScrollBar()->width(), 3));
+            }
+        }
+    }
+
+    event->acceptProposedAction();
+}
+
+void UBDocumentNavigator::dropEvent(QDropEvent *event)
+{
+    Q_UNUSED(event);
+
+    if (mDropSource->sceneIndex() != mDropTarget->sceneIndex())
+        UBApplication::boardController->moveSceneToIndex(mDropSource->sceneIndex(), mDropTarget->sceneIndex());
+
+    mDropSource = NULL;
+    mDropTarget = NULL;
+
+    mDropBar->setRect(QRectF());
+    mDropBar->hide();
 }

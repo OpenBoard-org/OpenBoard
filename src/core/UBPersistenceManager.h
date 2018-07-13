@@ -27,6 +27,13 @@
 
 
 
+/*Modified by rafael.garciap@juntaex.es
+ * 06-Marzo-2018
+ * Added generateTmpDocumentPath: Override always de default document, loosing autosave option.
+ * Added purgeTmpDocuments: Delete Temp document directory.
+*/
+
+
 #ifndef UBPERSISTENCEMANAGER_H_
 #define UBPERSISTENCEMANAGER_H_
 
@@ -97,6 +104,7 @@ class UBPersistenceManager : public QObject
         virtual QStringList allWidgets(const QDir& dir);
 
         QString generateUniqueDocumentPath();
+        QString generateTmpDocumentPath(const QString& baseFolder);
         QString generateUniqueDocumentPath(const QString& baseFolder);
 
         bool addDirectoryContentToDocument(const QString& documentRootFolder, UBDocumentProxy* pDocument);
@@ -110,9 +118,11 @@ class UBPersistenceManager : public QObject
 
         virtual bool isEmpty(UBDocumentProxy* pDocumentProxy);
         virtual void purgeEmptyDocuments();
+        virtual void purgeTmpDocuments();
 
         bool addGraphicsWidgetToDocument(UBDocumentProxy *mDocumentProxy, QString path, QUuid objectUuid, QString& destinationPath);
         bool addFileToDocument(UBDocumentProxy* pDocumentProxy, QString path, const QString& subdir,  QUuid objectUuid, QString& destinationPath, QByteArray* data = NULL);
+        short saveDocument(UBDocumentProxy* pDocumentProxy);
 
     signals:
         void documentCreated(UBDocumentProxy* pDocumentProxy);

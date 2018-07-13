@@ -800,6 +800,18 @@
         <source>Open the tutorial web page</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Ruled Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -891,6 +903,17 @@
         <source>Update available</source>
         <translation>K dispozici je aktualizace</translation>
     </message>
+    <message>
+        <source>Board drawing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBBackgroundPalette</name>
+    <message>
+        <source>Grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardController</name>
@@ -920,7 +943,7 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation>Odstranit stránku %1 z dokumentu</translation>
+        <translation type="vanished">Odstranit stránku %1 z dokumentu</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -946,6 +969,10 @@
         <source>Document has just been saved...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Deleting page %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -956,6 +983,13 @@
     <message>
         <source>CapturedImage</source>
         <translation>Zachycenýobrázek</translation>
+    </message>
+</context>
+<context>
+    <name>UBBoardThumbnailsView</name>
+    <message>
+        <source>Loading page (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1198,7 +1232,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Stránka %0</translation>
+        <translation type="vanished">Stránka %0</translation>
     </message>
 </context>
 <context>
@@ -1232,10 +1266,37 @@
     </message>
 </context>
 <context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Stránka %0</translation>
+    </message>
+</context>
+<context>
     <name>UBExportAdaptor</name>
     <message>
         <source>Warnings during export was appeared</source>
         <translation>Během exportu se objevila varování</translation>
+    </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">Exportuje se dokument...</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Export byl úspěšně dokončen.</translation>
     </message>
 </context>
 <context>
@@ -1277,26 +1338,14 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Exportuje se dokument...</translation>
+        <translation type="vanished">Exportuje se dokument...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export byl úspěšně dokončen.</translation>
+        <translation type="vanished">Export byl úspěšně dokončen.</translation>
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1312,23 +1361,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Exportuje se dokument...</translation>
+        <translation type="vanished">Exportuje se dokument...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export byl úspěšně dokončen.</translation>
-    </message>
-    <message>
-        <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">Export byl úspěšně dokončen.</translation>
     </message>
 </context>
 <context>
@@ -1347,11 +1384,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Exportuje se dokument...</translation>
+        <translation type="vanished">Exportuje se dokument...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export byl úspěšně dokončen.</translation>
+        <translation type="vanished">Export byl úspěšně dokončen.</translation>
     </message>
 </context>
 <context>
@@ -1389,7 +1426,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation>Nastavit jako pozadí</translation>
+        <translation type="vanished">Nastavit jako pozadí</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1528,6 +1565,10 @@
     <message>
         <source>Visible on Extended Screen</source>
         <translation>Viditelné na rozšířené obrazovce</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">Nastavit jako pozadí</translation>
     </message>
 </context>
 <context>
@@ -1779,6 +1820,10 @@ Chcete ignorovat tyto chyby na tomto serveru?</translation>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Moving page to trash folder...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -1941,6 +1986,17 @@ Chcete ignorovat tyto chyby na tomto serveru?</translation>
     <message>
         <source>Generating preview thumbnails ...</source>
         <translation>Vytváří se miniatury obrázků ...</translation>
+    </message>
+    <message>
+        <source>loading thumbnail of page %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Stránka %0</translation>
     </message>
 </context>
 <context>
@@ -2417,6 +2473,14 @@ p, li { white-space: pre-wrap; }
         <source>On Dark Background</source>
         <translation>Na tmavém pozadí</translation>
     </message>
+    <message>
+        <source>Show preview circle from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>px</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>capturePublishingDialog</name>
@@ -2601,6 +2665,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Built-in virtual keyboard button size:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On Dark Background</source>
+        <translation type="unfinished">Na tmavém pozadí</translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation type="unfinished">Průhlednost</translation>
+    </message>
+    <message>
+        <source>On Light Background</source>
+        <translation type="unfinished">Na světlém pozadí</translation>
     </message>
 </context>
 <context>

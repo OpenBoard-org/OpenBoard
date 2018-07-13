@@ -70,6 +70,8 @@ class UBFileSystemUtils : public QObject
 
         static bool copy(const QString &source, const QString &Destination, bool overwrite = false);
 
+        static QString checkFileName(const QString& name);
+
         static QString cleanName(const QString& name);
 
         static QString digitFileFormat(const QString& s, int digit);

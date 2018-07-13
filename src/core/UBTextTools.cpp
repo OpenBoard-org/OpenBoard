@@ -54,3 +54,20 @@ QString UBTextTools::cleanHtml(const QString& _html){
 
     return cleanSource;
 }
+
+void UBTextTools::cleanHtmlClipboard()
+{
+    QClipboard *clipboard = QApplication::clipboard();
+    const QMimeData *mimeData = clipboard->mimeData();
+
+    if(mimeData->hasHtml()){
+        QMimeData *myMime = new QMimeData();
+        QTextDocument doc;
+        doc.setHtml(mimeData->html());
+
+        QString cleanHtml = doc.toPlainText();
+
+        myMime->setHtml(cleanHtml);
+        clipboard->setMimeData(myMime);
+    }
+}

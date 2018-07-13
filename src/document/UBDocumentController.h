@@ -51,6 +51,10 @@ class UBDocumentProxyTreeItem;
 class UBMainWindow;
 class UBDocumentToolsPalette;
 
+/*Added saveDocument by rafael.garciap@juntaex.es
+ * 13-Marzo-2018
+ * Save Temp document to user document directory.
+*/
 class UBDocumentController : public UBDocumentContainer
 {
     Q_OBJECT
@@ -64,6 +68,7 @@ class UBDocumentController : public UBDocumentContainer
         void closing();
         QWidget* controlView();
         UBDocumentProxyTreeItem* findDocument(UBDocumentProxy* proxy);
+        bool saveDocument(UBDocumentProxy* document);
         bool addFileToDocument(UBDocumentProxy* document);
         void deletePages(QList<QGraphicsItem*> itemsToDelete);
         int getSelectedItemIndex();

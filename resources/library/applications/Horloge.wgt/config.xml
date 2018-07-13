@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" 
+        xmlns:ub="http://uniboard.mnemis.com/widgets" 
+        id="Horloge" 
+        version="1.0"
+        width="400"
+        height="420" 
+        ub:resizable="false" >   
+  <name>Horloge</name>
+  <author> fbocquet@laposte.net </author>
+  <descrition> </descrition>
+  <content src="index.html"/> 
+</widget>

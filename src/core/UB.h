@@ -68,7 +68,11 @@ struct UBStylusTool
         Pointer,
         Line,
         Text,
-        Capture
+        Capture,
+        RichText,
+        ChangeFill,//EV-7 - CFA - 20140122 : pot de peinture
+        Drawing, //EV-7 - NNE - 20140103
+        OCR // Issue 22/03/2018 - OpenBoard - OCR recognition
     };
 };
 
@@ -76,7 +80,7 @@ struct UBWidth
 {
     enum Enum
     {
-        Fine = 0, Medium, Strong
+        Fine = 0, Medium, Strong, Custom
     };
 };
 
@@ -137,6 +141,7 @@ struct UBGraphicsItemData
         //Duplicating delegate's functions to make possible working with pure QGraphicsItem
         , ItemFlippable // (bool)
         , ItemRotatable // (bool)
+        , ItemCanBeSetAsBackground
     };
 };
 
@@ -151,8 +156,6 @@ struct UBGraphicsItemType
         SvgItemType,
         DelegateButtonType,
         MediaItemType,
-        VideoItemType,
-        AudioItemType,
         PDFItemType,
         TextItemType,
         CurtainItemType,
@@ -163,11 +166,20 @@ struct UBGraphicsItemType
         TriangleItemType,
         MagnifierItemType,
         cacheItemType,
+        AristoItemType,
         groupContainerType,
+        AudioItemType,
+        VideoItemType,
         ToolWidgetItemType,
         GraphicsWidgetItemType,
-        UserTypesCount,
-        SelectionFrameType// this line must be the last line in this enum because it is types counter.
+        GraphicsShapeItemType,
+        GraphicsPathItemType,
+        GraphicsRegularPathItemType,
+        GraphicsFreehandItemType,
+        GraphicsHandle,
+        GraphicsProxyWidget,        
+        SelectionFrameType,
+        UserTypesCount // this line must be the last line in this enum because it is types counter.
     };
 };
 
@@ -212,6 +224,13 @@ struct UBUndoType
     {
         undotype_UNKNOWN  = 0, undotype_DOCUMENT, undotype_GRAPHICITEMTRANSFORM, undotype_GRAPHICITEM, undotype_GRAPHICTEXTITEM, undotype_PAGESIZE, undotype_GRAPHICSGROUPITEM, undotype_GRAPHICITEMZVALUE
     };
+};
+
+enum UBPageBackground
+{
+    plain = 0,
+    crossed,
+    ruled
 };
 
 #endif /* UB_H_ */

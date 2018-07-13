@@ -57,6 +57,7 @@
 
 #include "gui/UBKeyboardPalette.h"
 #include "gui/UBResources.h"
+#include "gui/UBPopUp.h"
 
 #include "core/memcheck.h"
 
@@ -85,7 +86,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
 #ifdef Q_OS_OSX
     mTransparentDrawingView->setAttribute(Qt::WA_MacNoShadow, true);
 #endif
-    mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window | Qt::NoDropShadowWindowHint);
+    mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window | Qt::NoDropShadowWindowHint | Qt::X11BypassWindowManagerHint);
     mTransparentDrawingView->setCacheMode(QGraphicsView::CacheNone);
     mTransparentDrawingView->resize(UBApplication::desktop()->width(), UBApplication::desktop()->height());
 
@@ -119,6 +120,8 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     }
 
     connect(mDesktopPalette, SIGNAL(uniboardClick()), this, SLOT(goToUniboard()));
+    // Issue 02/04/2018 -- OpenBoard -- OCR recognition in Desktop mode.
+    connect(mDesktopPalette, SIGNAL(ocrClick()), this, SLOT(OCRrecognition()));
     connect(mDesktopPalette, SIGNAL(customClick()), this, SLOT(customCapture()));
     connect(mDesktopPalette, SIGNAL(windowClick()), this, SLOT(windowCapture()));
     connect(mDesktopPalette, SIGNAL(screenClick()), this, SLOT(screenCapture()));
@@ -187,9 +190,9 @@ UBDesktopAnnotationController::~UBDesktopAnnotationController()
 
 void UBDesktopAnnotationController::updateColors(){
     if(UBApplication::boardController->activeScene()->isDarkBackground()){
-        mTransparentDrawingScene->setBackground(true, false);
+        mTransparentDrawingScene->setBackground(true, UBPageBackground::plain);
     }else{
-        mTransparentDrawingScene->setBackground(false, false);
+        mTransparentDrawingScene->setBackground(false, UBPageBackground::plain);
     }
 }
 
@@ -440,6 +443,83 @@ void UBDesktopAnnotationController::customCapture()
     {
         QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
         emit imageCaptured(selectedPixmap, false);
+    }
+
+    mDesktopPalette->appear();
+
+    mIsFullyTransparent = false;
+    updateBackground();
+}
+
+// Issue 22/03/2018 - OpenBoard - OCR recognition
+// Custom function to transform a QImage into a PIX: Qimage->Pix (taken from
+PIX* UBDesktopAnnotationController::qImage2PIX(const QImage& qImage) {
+     QByteArray ba;
+     QBuffer buffer(&ba);
+     buffer.open(QIODevice::WriteOnly);
+     qImage.save(&buffer, "PNG"); // writes image into ba in PNG format
+     return pixReadMem((uchar*)ba.constData(),ba.size());
+}
+
+// Issue 02/04/2018 -- OpenBoard -- OCR recognition in Desktop mode.
+void UBDesktopAnnotationController::OCRrecognition()
+{
+    //qWarning()<<"OCR recognition in Desktop mode";
+    onToolClicked();
+    mIsFullyTransparent = true;
+    updateBackground();
+
+    mDesktopPalette->disappearForCapture();
+    UBCustomCaptureWindow customCaptureWindow(mDesktopPalette);
+    // need to show the window before execute it to avoid some glitch on windows.
+
+#ifndef Q_OS_WIN // Working only without this call on win32 desktop mode
+    UBPlatformUtils::showFullScreen(&customCaptureWindow);
+#endif
+
+    if (customCaptureWindow.execute(getScreenPixmap()) == QDialog::Accepted)
+    {
+        QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
+        //qWarning()<<"Captured";
+        // ----------------------------------------------------------------------- TEST
+        //qWarning()<<"OCR recognition: ";
+        tesseract::TessBaseAPI *api = new tesseract::TessBaseAPI();
+
+        // UBUNTU 14.04 LTS: It fixes the Issue 910 in
+        // tesseract-ocr: Error: Illegal min or max
+        // specification! Maybe in latter version
+        // this will be no longer required.
+        setlocale(LC_NUMERIC, "C");
+
+        // Initialize tesseract-ocr with Spanish, without specifying tessdata path
+        if (api->Init(NULL, "eng")) {
+            qWarning()<<"Could not initialize tesseract.";
+        }
+        QImage image = selectedPixmap.toImage();
+        // Open input image with leptonica library
+        PIX *PixImage = qImage2PIX(image);
+        api->SetImage(PixImage);
+        // Get OCR result
+        QString outText (api->GetUTF8Text());
+        //qWarning()<<"OCR output: "<<outText;
+        if(!outText.isEmpty()){
+            UBPopUp* popup = new UBPopUp(0, QString("(%1 chars were copied to the clipboard)").arg(outText.length()), "OCR Recognition", ":images/stylusPalette/ocr.png");
+            if(outText.length() > 200)
+                popup->setPopupText(outText.left(200)+QString("\n\n...\n...\n(%1 chars were not shown)").arg(outText.length()-200));
+            else
+                popup->setPopupText(outText);
+            popup->show();
+            QApplication::clipboard()->setText(outText);
+        }
+        else{
+            UBPopUp* popup = new UBPopUp(0, QString("(%1 chars were copied to the clipboard)").arg(outText.length()), "OCR Recognition", ":images/stylusPalette/ocr.png");
+            popup->setPopupText("NOTHING SAVED!");
+            popup->show();
+        }
+        // Destroy used object and release memory
+        api->End();
+        pixDestroy(&PixImage);
+        // -------------------------------------------------------------------
     }
 
     mDesktopPalette->appear();

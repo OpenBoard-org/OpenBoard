@@ -39,6 +39,7 @@
 #include "core/UBDisplayManager.h"
 
 #include "board/UBBoardController.h"
+#include "domain/UBGraphicsScene.h"
 #include "board/UBDrawingController.h"
 #include "podcast/UBPodcastController.h"
 
@@ -76,6 +77,8 @@ UBPreferencesController::UBPreferencesController(QWidget *parent)
     , mPreferencesUI(0)
     , mPenProperties(0)
     , mMarkerProperties(0)
+    , mDarkBackgroundGridColorPicker(0)
+    , mLightBackgroundGridColorPicker(0)
 {
     mDesktop = qApp->desktop();
     mPreferencesWindow = new UBPreferencesDialog(this,parent, Qt::Dialog);
@@ -149,6 +152,58 @@ void UBPreferencesController::wire()
     connect(mPreferencesUI->verticalChoice, SIGNAL(clicked(bool)), this, SLOT(toolbarOrientationVertical(bool)));
     connect(mPreferencesUI->toolbarDisplayTextCheckBox, SIGNAL(clicked(bool)), settings->appToolBarDisplayText, SLOT(setBool(bool)));
 
+    //grid tab
+    //On light background
+    QPalette lightBackgroundPalette = QApplication::palette();
+    lightBackgroundPalette.setColor(QPalette::Window, Qt::white);
+
+    mPreferencesUI->crossColorLightBackgroundFrame->setAutoFillBackground(true);
+    mPreferencesUI->crossColorLightBackgroundFrame->setPalette(lightBackgroundPalette);
+
+    QPalette darkBackgroundPalette = QApplication::palette();
+    darkBackgroundPalette.setColor(QPalette::Window, Qt::black);
+    darkBackgroundPalette.setColor(QPalette::ButtonText, Qt::white);
+    darkBackgroundPalette.setColor(QPalette::WindowText, Qt::white);
+
+    mPreferencesUI->crossColorDarkBackgroundFrame->setAutoFillBackground(true);
+    mPreferencesUI->crossColorDarkBackgroundFrame->setPalette(darkBackgroundPalette);
+    mPreferencesUI->crossColorDarkBackgroundLabel->setPalette(darkBackgroundPalette);
+
+    QList<QColor> gridLightBackgroundColors = settings->boardGridLightBackgroundColors->colors();
+    QColor selectedCrossColorLightBackground(settings->boardCrossColorLightBackground->get().toString());
+
+    mLightBackgroundGridColorPicker = new UBColorPicker(mPreferencesUI->crossColorLightBackgroundFrame);
+    mLightBackgroundGridColorPicker->setObjectName(QString::fromUtf8("crossColorLightBackgroundFrame"));
+    mLightBackgroundGridColorPicker->setMinimumSize(QSize(32, 32));
+    mLightBackgroundGridColorPicker->setFrameShape(QFrame::StyledPanel);
+    mLightBackgroundGridColorPicker->setFrameShadow(QFrame::Raised);
+
+    mPreferencesUI->crossColorLightBackgroundLayout->addWidget(mLightBackgroundGridColorPicker);
+    mLightBackgroundGridColorPicker->setColors(gridLightBackgroundColors);
+    mLightBackgroundGridColorPicker->setSelectedColorIndex(gridLightBackgroundColors.indexOf(selectedCrossColorLightBackground));
+    mPreferencesUI->lightBackgroundOpacitySlider->setValue(selectedCrossColorLightBackground.alpha()*100 / 255);
+
+    QObject::connect(mLightBackgroundGridColorPicker, SIGNAL(colorSelected(const QColor&)), this, SLOT(setCrossColorOnLightBackground(const QColor&)));
+    connect(mPreferencesUI->lightBackgroundOpacitySlider, SIGNAL(valueChanged(int)), this, SLOT(lightBackgroundCrossOpacityValueChanged(int)));
+
+    //On dark background
+    QList<QColor> gridDarkBackgroundColors = settings->boardGridDarkBackgroundColors->colors();
+    QColor selectedCrossColorDarkBackground(settings->boardCrossColorDarkBackground->get().toString());
+
+    mDarkBackgroundGridColorPicker = new UBColorPicker(mPreferencesUI->crossColorDarkBackgroundFrame);
+    mDarkBackgroundGridColorPicker->setObjectName(QString::fromUtf8("crossColorDarkBackgroundFrame"));
+    mDarkBackgroundGridColorPicker->setMinimumSize(QSize(32, 32));
+    mDarkBackgroundGridColorPicker->setFrameShape(QFrame::StyledPanel);
+    mDarkBackgroundGridColorPicker->setFrameShadow(QFrame::Raised);
+
+    mPreferencesUI->crossColorDarkBackgroundLayout->addWidget(mDarkBackgroundGridColorPicker);
+    mDarkBackgroundGridColorPicker->setColors(gridDarkBackgroundColors);
+    mDarkBackgroundGridColorPicker->setSelectedColorIndex(gridDarkBackgroundColors.indexOf(selectedCrossColorDarkBackground));
+    mPreferencesUI->darkBackgroundOpacitySlider->setValue(selectedCrossColorDarkBackground.alpha()*100 / 255);
+
+    QObject::connect(mDarkBackgroundGridColorPicker, SIGNAL(colorSelected(const QColor&)), this, SLOT(setCrossColorOnDarkBackground(const QColor&)));
+    connect(mPreferencesUI->darkBackgroundOpacitySlider, SIGNAL(valueChanged(int)), this, SLOT(darkBackgroundCrossOpacityValueChanged(int)));
+
     // pen
     QList<QColor> penLightBackgroundColors = settings->boardPenLightBackgroundColors->colors();
     QList<QColor> penDarkBackgroundColors = settings->boardPenDarkBackgroundColors->colors();
@@ -165,6 +220,8 @@ void UBPreferencesController::wire()
     connect(mPenProperties->mediumSlider, SIGNAL(valueChanged(int)), this, SLOT(widthSliderChanged(int)));
     connect(mPenProperties->strongSlider, SIGNAL(valueChanged(int)), this, SLOT(widthSliderChanged(int)));
     connect(mPenProperties->pressureSensitiveCheckBox, SIGNAL(clicked(bool)), settings, SLOT(setPenPressureSensitive(bool)));
+    connect(mPenProperties->circleCheckBox, SIGNAL(clicked(bool)), settings, SLOT(setPenPreviewCircle(bool)));
+    connect(mPenProperties->circleSpinBox, SIGNAL(valueChanged(int)), this, SLOT(penPreviewFromSizeChanged(int)));
 
     // marker
     QList<QColor> markerLightBackgroundColors = settings->boardMarkerLightBackgroundColors->colors();
@@ -177,6 +234,8 @@ void UBPreferencesController::wire()
                                                    markerDarkBackgroundSelectedColors, this);
 
     mMarkerProperties->pressureSensitiveCheckBox->setText(tr("Marker is pressure sensitive"));
+
+    mMarkerProperties->circleFrame->hide();
 
     connect(mMarkerProperties->fineSlider, SIGNAL(valueChanged(int)), this, SLOT(widthSliderChanged(int)));
     connect(mMarkerProperties->mediumSlider, SIGNAL(valueChanged(int)), this, SLOT(widthSliderChanged(int)));
@@ -229,6 +288,8 @@ void UBPreferencesController::init()
     mPenProperties->mediumSlider->setValue(settings->boardPenMediumWidth->get().toDouble() * sSliderRatio);
     mPenProperties->strongSlider->setValue(settings->boardPenStrongWidth->get().toDouble() * sSliderRatio);
     mPenProperties->pressureSensitiveCheckBox->setChecked(settings->boardPenPressureSensitive->get().toBool());
+    mPenProperties->circleCheckBox->setChecked(settings->showPenPreviewCircle->get().toBool());
+    mPenProperties->circleSpinBox->setValue(settings->penPreviewFromSize->get().toInt());
 
     // marker tab
     mMarkerProperties->fineSlider->setValue(settings->boardMarkerFineWidth->get().toDouble() * sSliderRatio);
@@ -278,6 +339,8 @@ void UBPreferencesController::defaultSettings()
         mPenProperties->mediumSlider->setValue(settings->boardPenMediumWidth->reset().toDouble() * sSliderRatio);
         mPenProperties->strongSlider->setValue(settings->boardPenStrongWidth->reset().toDouble() * sSliderRatio);
         mPenProperties->pressureSensitiveCheckBox->setChecked(settings->boardPenPressureSensitive->reset().toBool());
+        mPenProperties->circleCheckBox->setChecked(settings->showPenPreviewCircle->reset().toBool());
+        mPenProperties->circleSpinBox->setValue(settings->penPreviewFromSize->reset().toInt());
 
         settings->boardPenLightBackgroundSelectedColors->reset();
         QList<QColor> lightBackgroundSelectedColors = settings->boardPenLightBackgroundSelectedColors->colors();
@@ -285,7 +348,7 @@ void UBPreferencesController::defaultSettings()
         settings->boardPenDarkBackgroundSelectedColors->reset();
         QList<QColor> darkBackgroundSelectedColors = settings->boardPenDarkBackgroundSelectedColors->colors();
 
-        for (int i = 0 ; i < settings->colorPaletteSize ; i++)
+        for (int i = 0 ; i < (settings->colorPaletteSize - 1) ; i++) // Issue 09/03/2018 -- OpenBoard - Discard CUSTOM COLOR in PREFERENCES.
         {
             mPenProperties->lightBackgroundColorPickers[i]->setSelectedColorIndex(lightBackgroundSelectedColors.indexOf(settings->penColors(false).at(i)));
             mPenProperties->darkBackgroundColorPickers[i]->setSelectedColorIndex(darkBackgroundSelectedColors.indexOf(settings->penColors(true).at(i)));
@@ -306,7 +369,7 @@ void UBPreferencesController::defaultSettings()
         settings->boardMarkerDarkBackgroundSelectedColors->reset();
         QList<QColor> darkBackgroundSelectedColors = settings->boardMarkerDarkBackgroundSelectedColors->colors();
 
-        for (int i = 0 ; i < settings->colorPaletteSize ; i++)
+        for (int i = 0 ; i < settings->colorPaletteSize - 1 ; i++) // Issue 09/03/2018 -- OpenBoard - Discard CUSTOM COLOR in PREFERENCES.
         {
             mMarkerProperties->lightBackgroundColorPickers[i]->setSelectedColorIndex(lightBackgroundSelectedColors.indexOf(settings->markerColors(false).at(i)));
             mMarkerProperties->darkBackgroundColorPickers[i]->setSelectedColorIndex(darkBackgroundSelectedColors.indexOf(settings->markerColors(true).at(i)));
@@ -329,9 +392,87 @@ void UBPreferencesController::defaultSettings()
 
         mPreferencesUI->webHomePage->setText(settings->webHomePage->reset().toString());
     }
+    else if(mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->gridTab)
+    {
+        settings->boardCrossColorDarkBackground->reset();
+        settings->boardGridDarkBackgroundColors->reset();
 
+        QList<QColor> gridDarkBackgroundColors = settings->boardGridDarkBackgroundColors->colors();
+        QColor selectedCrossColorDarkBackground(settings->boardCrossColorDarkBackground->get().toString());
+
+        mDarkBackgroundGridColorPicker->setColors(gridDarkBackgroundColors);
+        mDarkBackgroundGridColorPicker->setSelectedColorIndex(gridDarkBackgroundColors.indexOf(selectedCrossColorDarkBackground));
+        int darkBackgroundOpacity = selectedCrossColorDarkBackground.alpha()*100 / 255;
+        mPreferencesUI->darkBackgroundOpacitySlider->setValue(darkBackgroundOpacity);
+        darkBackgroundCrossOpacityValueChanged(darkBackgroundOpacity);
+
+        settings->boardCrossColorLightBackground->reset();
+        settings->boardGridLightBackgroundColors->reset();
+
+        QList<QColor> gridLightBackgroundColors = settings->boardGridLightBackgroundColors->colors();
+        QColor selectedCrossColorLightBackground(settings->boardCrossColorLightBackground->get().toString());
+
+        mLightBackgroundGridColorPicker->setColors(gridLightBackgroundColors);
+        mLightBackgroundGridColorPicker->setSelectedColorIndex(gridLightBackgroundColors.indexOf(selectedCrossColorLightBackground));
+        int lightBackgroundOpacity = selectedCrossColorLightBackground.alpha()*100 / 255;
+        mPreferencesUI->lightBackgroundOpacitySlider->setValue(lightBackgroundOpacity);
+        lightBackgroundCrossOpacityValueChanged(lightBackgroundOpacity);
+
+    }
 }
 
+void UBPreferencesController::darkBackgroundCrossOpacityValueChanged(int value)
+{
+    UBSettings* settings = UBSettings::settings();
+    int opacity = value * 255 / 100;
+
+    QList<QColor> gridDarkBackgroundColors = settings->boardGridDarkBackgroundColors->colors();
+
+    int index = mDarkBackgroundGridColorPicker->selectedColorIndex();
+    QColor currentColor = gridDarkBackgroundColors.at(index);
+    currentColor.setAlpha(opacity);
+    gridDarkBackgroundColors.replace(index, currentColor);
+    mDarkBackgroundGridColorPicker->setColors(gridDarkBackgroundColors);
+
+    settings->boardGridDarkBackgroundColors->setColor(index, currentColor);
+
+    UBSettings::settings()->boardCrossColorDarkBackground->set(currentColor.name(QColor::HexArgb));
+
+    if (UBApplication::boardController && UBApplication::boardController->activeScene())
+    {
+        foreach(QGraphicsView* view, UBApplication::boardController->activeScene()->views())
+            view->resetCachedContent();
+    }
+}
+
+void UBPreferencesController::lightBackgroundCrossOpacityValueChanged(int value)
+{
+    UBSettings* settings = UBSettings::settings();
+    int opacity = value * 255 / 100;
+
+    QList<QColor> gridLightBackgroundColors = settings->boardGridLightBackgroundColors->colors();
+
+    int index = mLightBackgroundGridColorPicker->selectedColorIndex();
+    QColor currentColor = gridLightBackgroundColors.at(index);
+    currentColor.setAlpha(opacity);
+    gridLightBackgroundColors.replace(index, currentColor);
+    mLightBackgroundGridColorPicker->setColors(gridLightBackgroundColors);
+
+    settings->boardGridLightBackgroundColors->setColor(index, currentColor);
+
+    UBSettings::settings()->boardCrossColorLightBackground->set(currentColor.name(QColor::HexArgb));
+
+    if (UBApplication::boardController && UBApplication::boardController->activeScene())
+    {
+        foreach(QGraphicsView* view, UBApplication::boardController->activeScene()->views())
+            view->resetCachedContent();
+    }
+}
+
+void UBPreferencesController::penPreviewFromSizeChanged(int value)
+{
+    UBSettings::settings()->setPenPreviewFromSize(value);
+}
 
 void UBPreferencesController::widthSliderChanged(int value)
 {
@@ -434,6 +575,31 @@ void UBPreferencesController::colorSelected(const QColor& color)
 
 }
 
+void UBPreferencesController::setCrossColorOnDarkBackground(const QColor& color)
+{
+    UBSettings::settings()->boardCrossColorDarkBackground->set(color.name(QColor::HexArgb));
+
+    mPreferencesUI->darkBackgroundOpacitySlider->setValue(color.alpha() * 100 / 255);
+
+    if (UBApplication::boardController && UBApplication::boardController->activeScene())
+    {
+        foreach(QGraphicsView* view, UBApplication::boardController->activeScene()->views())
+            view->resetCachedContent();
+    }
+}
+
+void UBPreferencesController::setCrossColorOnLightBackground(const QColor& color)
+{
+    UBSettings::settings()->boardCrossColorLightBackground->set(color.name(QColor::HexArgb));
+
+    mPreferencesUI->lightBackgroundOpacitySlider->setValue(color.alpha() * 100 / 255);
+
+    if (UBApplication::boardController && UBApplication::boardController->activeScene())
+    {
+        foreach(QGraphicsView* view, UBApplication::boardController->activeScene()->views())
+            view->resetCachedContent();
+    }
+}
 
 void UBPreferencesController::toolbarPositionChanged(bool checked)
 {
@@ -463,6 +629,9 @@ void UBPreferencesController::systemOSKCheckBoxToggled(bool checked)
     mPreferencesUI->keyboardPaletteKeyButtonSize_Label->setVisible(!checked);
 }
 
+
+
+
 UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor>& lightBackgroundColors,
                                                const QList<QColor>& darkBackgroundColors, const QList<QColor>& lightBackgroundSelectedColors,
                                                const QList<QColor>& darkBackgroundSelectedColors, UBPreferencesController* controller)
@@ -491,7 +660,7 @@ UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor
     lightBackgroundColorPicker0->setSelectedColorIndex(0);
     lightBackgroundColorPickers.append(lightBackgroundColorPicker0);
 
-    for (int i = 1 ; i < UBSettings::settings()->colorPaletteSize ; i++)
+    for (int i = 1 ; i < UBSettings::settings()->colorPaletteSize - 1 ; i++) // Issue 09/03/2018 -- OpenBoard - Discard CUSTOM COLOR in PREFERENCES.
     {
         UBColorPicker *picker = new UBColorPicker(lightBackgroundFrame);
         picker->setObjectName(QString::fromUtf8("penLightBackgroundColor") + i);
@@ -518,7 +687,7 @@ UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor
     darkBackgroundColorPicker0->setSelectedColorIndex(0);
     darkBackgroundColorPickers.append(darkBackgroundColorPicker0);
 
-    for (int i = 1 ; i < UBSettings::settings()->colorPaletteSize ; i++)
+    for (int i = 1 ; i < UBSettings::settings()->colorPaletteSize - 1 ; i++) // Issue 09/03/2018 -- OpenBoard - Discard CUSTOM COLOR in PREFERENCES.
     {
         UBColorPicker *picker = new UBColorPicker(darkBackgroundFrame);
         picker->setObjectName(QString::fromUtf8("penDarkBackgroundColor") + i);

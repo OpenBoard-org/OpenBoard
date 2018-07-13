@@ -58,17 +58,19 @@ UBDesktopPenPalette::UBDesktopPenPalette(QWidget *parent, UBRightPalette* rightP
     colorActions.append(UBApplication::mainWindow->actionColor2);
     colorActions.append(UBApplication::mainWindow->actionColor3);
     colorActions.append(UBApplication::mainWindow->actionColor4);
+    // Issue Open-Board 27/02/2018 - Custom color
+    colorActions.append(UBApplication::mainWindow->actionColorCustom);
 
     UBToolbarButtonGroup *colorChoice =
-            new UBToolbarButtonGroup(UBApplication::mainWindow->boardToolBar, colorActions);
+            new UBToolbarButtonGroup(UBApplication::mainWindow->boardToolBar, colorActions,true, false);
 
     colorChoice->displayText(false);
 
-    //connect(colorChoice, SIGNAL(activated(int)), this, SLOT(UBApplication::boardController->setColorIndex(int)));
-    connect(UBDrawingController::drawingController(), SIGNAL(colorIndexChanged(int)), colorChoice, SLOT(setCurrentIndex(int)));
-    connect(UBDrawingController::drawingController(), SIGNAL(colorIndexChanged(int)), this, SLOT(close()));
-    connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), colorChoice, SLOT(colorPaletteChanged()));
+    //qWarning()<<"fin";
     connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), this, SLOT(close()));
+    connect(UBDrawingController::drawingController(), SIGNAL(colorIndexChanged(int)), this, SLOT(close()));
+    connect(UBDrawingController::drawingController(), SIGNAL(colorIndexChanged(int)), colorChoice, SLOT(setCurrentIndex(int)));
+    connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), colorChoice, SLOT(colorPaletteChanged()));
 
     layout()->addWidget(colorChoice);
 
@@ -78,14 +80,18 @@ UBDesktopPenPalette::UBDesktopPenPalette(QWidget *parent, UBRightPalette* rightP
     lineWidthActions.append(UBApplication::mainWindow->actionLineMedium);
     lineWidthActions.append(UBApplication::mainWindow->actionLineLarge);
 
+    // Issue 05/03/2018 -- Open-Board - Custom Line Width
+    lineWidthActions.append(UBApplication::mainWindow->actionLineCustom);
+    lineWidthActions.append(UBApplication::mainWindow->actionLineWidthSpinBox);
+
     UBToolbarButtonGroup *lineWidthChoice =
-            new UBToolbarButtonGroup(UBApplication::mainWindow->boardToolBar, lineWidthActions);
+            new UBToolbarButtonGroup(UBApplication::mainWindow->boardToolBar, lineWidthActions,false, true);
     lineWidthChoice->displayText(false);
 
     connect(lineWidthChoice, SIGNAL(activated(int)), UBDrawingController::drawingController(), SLOT(setLineWidthIndex(int)));
     connect(lineWidthChoice, SIGNAL(activated(int)), this, SLOT(close()));
     connect(UBDrawingController::drawingController(), SIGNAL(lineWidthIndexChanged(int)), lineWidthChoice, SLOT(setCurrentIndex(int)));
-    connect(UBDrawingController::drawingController(), SIGNAL(lineWidthIndexChanged(int)), this, SLOT(close()));
+    connect(UBDrawingController::drawingController(), SIGNAL(lineWidthIndexChanged(int)), this, SLOT(close()));    
 
     onParentMaximized();
 
@@ -94,9 +100,10 @@ UBDesktopPenPalette::UBDesktopPenPalette(QWidget *parent, UBRightPalette* rightP
 
 
 void UBDesktopPenPalette::onButtonReleased()
-{
+{    
     close();
 }
+
 
 /**
  * \brief Disconnect the released event of the buttons
@@ -130,7 +137,7 @@ UBDesktopEraserPalette::UBDesktopEraserPalette(QWidget *parent, UBRightPalette* 
     eraserWidthActions.append(UBApplication::mainWindow->actionEraserMedium);
     eraserWidthActions.append(UBApplication::mainWindow->actionEraserLarge);
 
-    UBToolbarButtonGroup *eraserWidthChoice = new UBToolbarButtonGroup(UBApplication::mainWindow->boardToolBar, eraserWidthActions);
+    UBToolbarButtonGroup *eraserWidthChoice = new UBToolbarButtonGroup(UBApplication::mainWindow->boardToolBar, eraserWidthActions, false, false);
 
     connect(eraserWidthChoice, SIGNAL(activated(int)), UBDrawingController::drawingController(), SLOT(setEraserWidthIndex(int)));
     connect(eraserWidthChoice, SIGNAL(activated(int)), this, SLOT(close()));
@@ -155,8 +162,11 @@ UBDesktopMarkerPalette::UBDesktopMarkerPalette(QWidget *parent, UBRightPalette* 
     colorActions.append(UBApplication::mainWindow->actionColor2);
     colorActions.append(UBApplication::mainWindow->actionColor3);
     colorActions.append(UBApplication::mainWindow->actionColor4);
+    // Issue Open-Board 27/02/2018 - Custom color
+    colorActions.append(UBApplication::mainWindow->actionColorCustom);
 
-    UBToolbarButtonGroup *colorChoice = new UBToolbarButtonGroup(UBApplication::mainWindow->boardToolBar, colorActions);
+
+    UBToolbarButtonGroup *colorChoice = new UBToolbarButtonGroup(UBApplication::mainWindow->boardToolBar, colorActions, true, false);
     colorChoice->displayText(false);
 
     //connect(colorChoice, SIGNAL(activated(int)), this, SLOT(UBApplication::boardController->setColorIndex(int)));
@@ -173,7 +183,11 @@ UBDesktopMarkerPalette::UBDesktopMarkerPalette(QWidget *parent, UBRightPalette* 
     lineWidthActions.append(UBApplication::mainWindow->actionLineMedium);
     lineWidthActions.append(UBApplication::mainWindow->actionLineLarge);
 
-    UBToolbarButtonGroup *lineWidthChoice = new UBToolbarButtonGroup(UBApplication::mainWindow->boardToolBar, lineWidthActions);
+    // Issue 05/03/2018 -- Open-Board - Custom Line Width
+    lineWidthActions.append(UBApplication::mainWindow->actionLineCustom);
+    lineWidthActions.append(UBApplication::mainWindow->actionLineWidthSpinBox);
+
+    UBToolbarButtonGroup *lineWidthChoice = new UBToolbarButtonGroup(UBApplication::mainWindow->boardToolBar, lineWidthActions, false, true);
     lineWidthChoice->displayText(false);
 
     connect(lineWidthChoice, SIGNAL(activated(int)), UBDrawingController::drawingController(), SLOT(setLineWidthIndex(int)));

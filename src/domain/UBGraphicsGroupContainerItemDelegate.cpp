@@ -38,6 +38,21 @@
 #include "domain/UBGraphicsGroupContainerItem.h"
 
 #include "board/UBBoardController.h"
+#include "gui/UBCreateLinkPalette.h"
+
+#include "core/memcheck.h"
+#include "UBGraphicsScene.h"
+
+#include "core/UBApplication.h"
+
+#include "board/UBBoardPaletteManager.h"
+
+
+#include "gui/UBResources.h"
+#include "board/UBDrawingController.h"
+
+
+#include "customWidgets/UBGraphicsItemAction.h"
 
 #include "core/memcheck.h"
 
@@ -68,6 +83,60 @@ void UBGraphicsGroupContainerItemDelegate::decorateMenu(QMenu *menu)
     showIcon.addPixmap(QPixmap(":/images/eyeOpened.svg"), QIcon::Normal, QIcon::On);
     showIcon.addPixmap(QPixmap(":/images/eyeClosed.svg"), QIcon::Normal, QIcon::Off);
     mShowOnDisplayAction->setIcon(showIcon);
+
+    mShowPanelToAddAnAction = menu->addAction(tr("Add an action"),this,SLOT(onAddActionClicked()));
+}
+
+//TODO claudio
+// duplicated code UBGraphicsDelegateItem
+void UBGraphicsGroupContainerItemDelegate::onAddActionClicked()
+{
+    UBCreateLinkPalette* linkPalette = UBApplication::boardController->paletteManager()->linkPalette();
+    linkPalette->show();
+    connect(linkPalette,SIGNAL(definedAction(UBGraphicsItemAction*)),this,SLOT(saveAction(UBGraphicsItemAction*)));
+}
+
+//TODO claudio
+// duplicated code UBGraphicsDelegateItem
+void UBGraphicsGroupContainerItemDelegate::saveAction(UBGraphicsItemAction* action)
+{
+    mAction = action;
+    mMenu->removeAction(mShowPanelToAddAnAction);
+    QString actionLabel;
+    switch (mAction->linkType()) {
+    case eLinkToAudio:
+        actionLabel= tr("Remove link to audio");
+        break;
+    case eLinkToPage:
+        actionLabel = tr("Remove link to page");
+        break;
+    case eLinkToWebUrl:
+        actionLabel = tr("Remove link to web url");
+    default:
+        break;
+    }
+
+    mRemoveAnAction = mMenu->addAction(actionLabel,this,SLOT(onRemoveActionClicked()));
+    mMenu->addAction(mRemoveAnAction);
+}
+
+void UBGraphicsGroupContainerItemDelegate::setAction(UBGraphicsItemAction* action)
+{
+    //qWarning()<<"setAction.................................................. @@";
+    UBGraphicsItemDelegate::setAction(action);
+}
+
+//TODO claudio
+// duplicated code UBGraphicsDelegateItem
+void UBGraphicsGroupContainerItemDelegate::onRemoveActionClicked()
+{
+    if(mAction){
+        mAction->actionRemoved();
+        delete mAction;
+        mAction = NULL;
+    }
+    mMenu->removeAction(mRemoveAnAction);
+    mMenu->addAction(mShowPanelToAddAnAction);
 }
 
 void UBGraphicsGroupContainerItemDelegate::buildButtons()
