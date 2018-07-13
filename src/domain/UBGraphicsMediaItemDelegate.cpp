@@ -172,6 +172,7 @@ UBGraphicsMediaItemDelegate::~UBGraphicsMediaItemDelegate()
 
 void UBGraphicsMediaItemDelegate::positionHandles()
 {
+    //qWarning()<<"UBGraphicsMediaItemDelegate::positionHandles()";
     UBGraphicsItemDelegate::positionHandles();
 
     UBGraphicsMediaItem *mediaItem = dynamic_cast<UBGraphicsMediaItem*>(mDelegated);

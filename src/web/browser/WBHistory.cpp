@@ -73,7 +73,7 @@
 #include "WBBrowserWindow.h"
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QtWebKitWidgets>
 
 #include "core/UBSettings.h"
 #include "network/UBAutoSaver.h"

@@ -36,6 +36,12 @@
 
 #include "gui/UBRightPalette.h"
 
+// Issue 22/03/2018 - OpenBoard - OCR recognition
+// Required to perform the OCR
+#include <tesseract/baseapi.h>
+#include <leptonica/allheaders.h>
+// ---
+
 class UBDesktopPalette;
 class UBBoardView;
 class UBGraphicsScene;
@@ -72,12 +78,17 @@ class UBDesktopAnnotationController : public QObject
 
         void TransparentWidgetResized();
 
+        // Issue 22/03/2018 - OpenBoard - OCR recognition
+        PIX* qImage2PIX(const QImage &qImage);// Custom function to transform a QImage into a PIX: Qimage->Pix
+
 
     public slots:
 
         void screenLayoutChanged();
         void goToUniboard();
         void customCapture();
+        // Issue 02/04/2018 -- OpenBoard -- OCR recognition in Desktop mode.
+        void OCRrecognition();
         void windowCapture();
         void screenCapture();
         void updateShowHideState(bool pEnabled);

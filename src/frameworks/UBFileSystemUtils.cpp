@@ -328,7 +328,23 @@ bool UBFileSystemUtils::moveDir(const QString& pSourceDirPath, const QString& pT
     }
 }
 
+/*Added by rafael.garciap@gobex.es
+ * Check if a file name is valid.
 
+bool UBFileSystemUtils::checkFileName(const QString& name)
+{
+    if (name.contains("/") return false;
+    if (name.contains(":") return false;
+    if (name.contains(".") return false;
+    if (name.contains("?") return false;
+    if (name.contains("*") return false;
+    if (name.contains("\\") return false;
+    //if (name.contains("\") return false;
+    if (name.contains("<") return false;
+    if (name.contains(">") return false;
+    if (name.contains("|") return false;
+    return true;
+}*/
 
 QString UBFileSystemUtils::cleanName(const QString& name)
 {

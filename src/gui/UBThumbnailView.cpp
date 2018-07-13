@@ -34,34 +34,29 @@
 
 #include "core/memcheck.h"
 
-UBThumbnailView::UBThumbnailView()
+UBThumbnailView::UBThumbnailView(UBGraphicsScene *scene, QWidget* parent)
+    : QGraphicsView(scene, parent)
+    , mHBoxLayout(new QHBoxLayout(this))
 {
+    setAcceptDrops(true);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform | QPainter::TextAntialiasing);
-}
 
-UBThumbnailView::~UBThumbnailView()
-{
-    // NOOP
-}
+    int nominalWidth = scene->nominalSize().width();
+    int nominalHeight = scene->nominalSize().height();
+    QRectF nominalSceneRect(-nominalWidth/2, -nominalHeight/2, nominalWidth, nominalHeight);
+    fitInView(nominalSceneRect, Qt::KeepAspectRatio);
+    setSceneRect(nominalSceneRect);
 
-void UBThumbnailView::drawBackground(QPainter *painter, const QRectF &rect)
-{
-    // Do not draw crossed background in thumbnails
-    if (qobject_cast<UBGraphicsScene*>(scene())->isDarkBackground())
-    {
-        painter->fillRect(rect, QBrush(QColor(Qt::black)));
-    }
-    else
-    {
-        painter->fillRect(rect, QBrush(QColor(Qt::white)));
-    }
-}
+    setStyleSheet( "QGraphicsView { border-style: none; }" );
 
-void UBThumbnailView::mouseDoubleClickEvent ( QMouseEvent * event )
-{
-    Q_UNUSED(event);
-    emit doubleClicked();
-}
+    setFrameStyle(QFrame::Sunken | QFrame::StyledPanel);
 
+    //set stylesheet
+    setObjectName("DockPaletteWidgetBox");
+    setStyleSheet("background:white");
+
+    mHBoxLayout->setAlignment(Qt::AlignHCenter);
+    setLayout(mHBoxLayout);
+}

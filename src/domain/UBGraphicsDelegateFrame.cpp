@@ -40,7 +40,7 @@
 
 #include "domain/UBGraphicsItemDelegate.h"
 #include "domain/UBGraphicsScene.h"
-#include "domain/UBGraphicsProxyWidget.h"
+#include "domain/UBAbstractGraphicsProxyWidget.h"
 
 #include "gui/UBResources.h"
 
@@ -781,6 +781,7 @@ void UBGraphicsDelegateFrame::setVisible(bool visible)
 
 void UBGraphicsDelegateFrame::positionHandles()
 {
+    //qWarning()<<"UBGraphicsDelegateFrame::positionHandles()";
     QRectF itemRect = delegated()->boundingRect();
 
     if (mDelegate->getToolBarItem() && mDelegate->getToolBarItem()->isVisibleOnBoard()

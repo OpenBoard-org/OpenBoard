@@ -47,7 +47,6 @@ namespace Ui
 
 class UBBrushPropertiesFrame;
 
-
 class UBPreferencesDialog : public QDialog
 {
     Q_OBJECT;
@@ -84,14 +83,21 @@ class UBPreferencesController : public QObject
         Ui::preferencesDialog* mPreferencesUI;
         UBBrushPropertiesFrame* mPenProperties;
         UBBrushPropertiesFrame* mMarkerProperties;
+        UBColorPicker* mDarkBackgroundGridColorPicker;
+        UBColorPicker* mLightBackgroundGridColorPicker;
 
     protected slots:
 
         void close();
         void defaultSettings();
+        void penPreviewFromSizeChanged(int value);
+        void darkBackgroundCrossOpacityValueChanged(int value);
+        void lightBackgroundCrossOpacityValueChanged(int value);
         void widthSliderChanged(int value);
         void opacitySliderChanged(int value);
         void colorSelected(const QColor&);
+        void setCrossColorOnDarkBackground(const QColor& color);
+        void setCrossColorOnLightBackground(const QColor& color);
         void toolbarPositionChanged(bool checked);
         void toolbarOrientationVertical(bool checked);
         void toolbarOrientationHorizontal(bool checked);
@@ -120,6 +126,5 @@ class UBBrushPropertiesFrame : public Ui::brushProperties
         QList<UBColorPicker*> darkBackgroundColorPickers;
 
 };
-
 
 #endif /* UBPREFERENCESCONTROLLER_H_ */

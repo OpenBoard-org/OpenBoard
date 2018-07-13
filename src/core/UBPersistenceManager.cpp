@@ -26,6 +26,13 @@
 
 
 
+/*Modified by rafael.garciap@juntaex.es
+ * 06-Marzo-2018
+ * Added generateTmpDocumentPath: Override always de default document, loosing autosave option.
+ * Added purgeTmpDocuments: Delete Temp document directory.
+ * Added SaveDocument: Save tmpDocument to user document directory.
+*/
+
 
 #include "UBPersistenceManager.h"
 #include "gui/UBMainWindow.h"
@@ -179,12 +186,17 @@ void UBPersistenceManager::errorString(QString error)
 
 void UBPersistenceManager::onSceneLoaded(QByteArray scene, UBDocumentProxy* proxy, int sceneIndex)
 {
+    Q_UNUSED(scene);
     qDebug() << "scene loaded " << sceneIndex;
     QTime time;
     time.start();
-    mSceneCache.insert(proxy,sceneIndex,UBSvgSubsetAdaptor::loadScene(proxy,scene));
+    mSceneCache.insert(proxy, sceneIndex, loadDocumentScene(proxy, sceneIndex, false));
     qDebug() << "millisecond for sceneCache " << time.elapsed();
 }
+
+/* Rafa: Comment UBPersistenceManager::allDocumentProxies()
+ * Charge every document content in user Document Directory.
+ */
 
 QList<QPointer<UBDocumentProxy> > UBPersistenceManager::allDocumentProxies()
 {
@@ -194,12 +206,18 @@ QList<QPointer<UBDocumentProxy> > UBPersistenceManager::allDocumentProxies()
     rootDir.mkpath(rootDir.path());
 
 
+
     QStringList dirList = rootDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Time | QDir::Reversed);
+
 
     foreach(QString path, dirList)
     {
         shiftPagesToStartWithTheZeroOne(rootDir.path() + "/" + path);
+
     }
+
+
+
 
 //    QFileSystemWatcher* watcher = new QFileSystemWatcher(this);
 //    watcher->addPath(mDocumentRepositoryPath);
@@ -213,6 +231,8 @@ QList<QPointer<UBDocumentProxy> > UBPersistenceManager::allDocumentProxies()
         QString fullPath = rootDir.path() + "/" + path;
 
         QDir dir(fullPath);
+        qDebug() << "Full Path: " + fullPath;
+
 
         if (dir.entryList(QDir::Files | QDir::NoDotAndDotDot).size() > 0)
         {
@@ -504,6 +524,7 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
                 QFile::rename(source, target);
             }
 
+            UBApplication::showMessage(tr("Moving page to trash folder..."));
             insertDocumentSceneAt(trashDocProxy, scene, trashDocProxy->pageCount());
         }
     }
@@ -658,8 +679,9 @@ UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* pr
     UBGraphicsScene *newScene = mSceneCache.createScene(proxy, index, useUndoRedoStack);
 
     newScene->setBackground(UBSettings::settings()->isDarkBackground(),
-            UBSettings::settings()->UBSettings::isCrossedBackground());
+            UBSettings::settings()->UBSettings::pageBackground());
 
+    newScene->setBackgroundGridSize(UBSettings::settings()->crossSize);
     persistDocumentScene(proxy, newScene, index);
 
     proxy->incPageCount();
@@ -744,7 +766,6 @@ UBGraphicsScene* UBPersistenceManager::loadDocumentScene(UBDocumentProxy* proxy,
         if (scene)
             mSceneCache.insert(proxy, sceneIndex, scene);
     }
-
     if (cacheNeighboringScenes) {
         if(sceneIndex + 1 < proxy->pageCount() &&  !mSceneCache.contains(proxy, sceneIndex + 1))
             mWorker->readScene(proxy,sceneIndex+1);
@@ -852,17 +873,42 @@ QStringList UBPersistenceManager::getSceneFileNames(const QString& folder)
     return dir.entryList();
 }
 
+/*Modified by rafagarp@juntaex.es
+ * 06-Marzo-2018
+ * Override always de default document, loosing autosave option.
+*/
+
+QString UBPersistenceManager::generateTmpDocumentPath(const QString& baseFolder)
+{
+    QDateTime now = QDateTime::currentDateTime();
+    //QString dirName = now.toString("yyyy-MM-dd hh-mm-ss.zzz");
+    QString dirName = now.toString("yyyy.MM.dd_hh.mm.ss.zzz");
+
+    return baseFolder + "/tmpDocument" + QString("/OpenBoard_Document_%1").arg(dirName);
+}
+
+
 QString UBPersistenceManager::generateUniqueDocumentPath(const QString& baseFolder)
 {
     QDateTime now = QDateTime::currentDateTime();
     QString dirName = now.toString("yyyy-MM-dd hh-mm-ss.zzz");
+
 
     return baseFolder + QString("/OpenBoard Document %1").arg(dirName);
 }
 
 QString UBPersistenceManager::generateUniqueDocumentPath()
 {
-    return generateUniqueDocumentPath(UBSettings::userDocumentDirectory());
+    qDebug()  << "Activate temp Document folder  : " + UBSettings::settings()->activateTempDoc->get().toString();
+
+    if (UBSettings::settings()->activateTempDoc->get().toBool())
+    {
+        return generateTmpDocumentPath(UBSettings::userDocumentDirectory());
+    }
+    else
+     {
+        return generateUniqueDocumentPath(UBSettings::userDocumentDirectory());
+     }
 }
 
 
@@ -977,6 +1023,34 @@ bool UBPersistenceManager::isEmpty(UBDocumentProxy* pDocumentProxy)
     return empty;
 }
 
+/*Added by rafael.garciap@juntaex.es
+ * 07-Marzo-2018
+ * Delete Temp document directory
+*/
+
+void UBPersistenceManager::purgeTmpDocuments()
+{
+    if(!mHasPurgedDocuments) // hack to workaround the fact that app closing is called twice :-(
+    {
+        QList<UBDocumentProxy*> toBeDeleted;
+
+        foreach(UBDocumentProxy* docProxy, mDocumentCreatedDuringSession)
+        {
+                    QString direct = docProxy->mPersistencePath;
+                    if (direct.contains("tmpDocument")){
+                        toBeDeleted << docProxy;
+                    }
+        }
+
+        foreach(UBDocumentProxy* docProxy, toBeDeleted)
+        {
+                deleteDocument(docProxy);
+        }
+
+        mHasPurgedDocuments = true;
+    }
+}
+
 
 void UBPersistenceManager::purgeEmptyDocuments()
 {
@@ -1000,6 +1074,48 @@ void UBPersistenceManager::purgeEmptyDocuments()
         mHasPurgedDocuments = true;
     }
 }
+
+
+/*Added saveDocument by rafael.garciap@juntaex.es
+ * 13-Marzo-2018
+ * Save Temp document to user document directory.
+*/
+
+short UBPersistenceManager::saveDocument(UBDocumentProxy* pDocumentProxy)
+{
+
+    if (!pDocumentProxy )
+        return false;
+
+
+    //QString dir = pDocumentProxy->metaData(UBSettings::documentName).toString();
+
+    QString nameFile = pDocumentProxy->metaData(UBSettings::documentName).toString().replace("/",".");
+
+    //nameFile = UBFileSystemUtils::cleanName(nameFile);
+
+    //dest contains default user path + the name of document.
+    QString destinationPath = UBSettings::userDocumentDirectory() + "/" + nameFile;
+
+    if (!QFile::exists(destinationPath))
+    {
+        //Move de Directory to destination.
+        UBFileSystemUtils::moveDir(QString(pDocumentProxy->mPersistencePath),destinationPath);
+
+        //Change new path on  metadata proxy->setMetaData
+        pDocumentProxy->mPersistencePath = destinationPath;
+        emit documentMetadataChanged(pDocumentProxy);
+        return 0; //EveryThing ok
+    }
+    else
+    {
+        return 1; //Path already exists.
+    }
+
+
+}
+
+
 
 bool UBPersistenceManager::addFileToDocument(UBDocumentProxy* pDocumentProxy,
                                                      QString path,

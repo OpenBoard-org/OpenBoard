@@ -31,6 +31,7 @@
 
 #include <QtCore>
 #include <QtGui>
+#include <QInputDialog>
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBStringUtils.h"
@@ -69,6 +70,8 @@
 #include "ui_mainWindow.h"
 
 #include "core/memcheck.h"
+
+
 
 UBDocumentController::UBDocumentController(UBMainWindow* mainWindow)
    : UBDocumentContainer(mainWindow->centralWidget())
@@ -168,6 +171,7 @@ void UBDocumentController::selectDocument(UBDocumentProxy* proxy, bool setAsCurr
     if (selected)
     {
         setDocument(proxy);
+        emit documentThumbnailsUpdated(this);
 
         selected->setSelected(true);
 
@@ -267,7 +271,7 @@ void UBDocumentController::itemSelectionChanged()
 {
     updateCurrentSelection();
 
-    reloadThumbnails();
+    emit documentThumbnailsUpdated(this);
 
     if (multipleSelection())
         mSelectionType = Multiple;
@@ -668,6 +672,7 @@ void UBDocumentController::selectADocumentOnTrashingSelectedOne(UBDocumentGroupT
             proxyTi->parent()->setSelected(true);
     }
 }
+
 
 void UBDocumentController::moveDocumentToTrash(UBDocumentGroupTreeItem* groupTi, UBDocumentProxyTreeItem *proxyTi, bool selectNewDocument)
 {
@@ -1149,6 +1154,58 @@ void UBDocumentController::addFolderOfImages()
     }
 }
 
+/*Added saveDocument by rafael.garciap@juntaex.es
+ * 13-Marzo-2018
+ * Save Temp document to user document directory.
+*/
+
+bool UBDocumentController::saveDocument(UBDocumentProxy* document)
+{
+    qDebug()<< "EN Documentcontroller saveDocument";
+    short out = 1;
+    bool exit = 0;
+    bool ok;
+
+    QString origName = document->metaData(UBSettings::documentName).toString();
+
+    do
+    {
+        //do
+        //{
+            QString savedName = QInputDialog::getText(mParentWidget, tr("Save"),
+                                                             tr("Name of document:"), QLineEdit::Normal,
+                                                             origName, &ok);
+        //} while !(UBFileSystemUtils::checkFileName(savedName));
+
+
+        if (ok && !savedName.isEmpty())
+        {
+           // if ()
+            showMessage(savedName);
+            document->setMetaData(UBSettings::documentName,savedName );
+
+            out = UBPersistenceManager::persistenceManager()->saveDocument(document);
+
+            if (out == 0){
+                UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
+                showMessage(tr("Saved done!"));
+                exit = 1;
+            }
+            else
+            {
+                document->setMetaData(UBSettings::documentName,origName );
+                showMessage(tr("Document name %1 allready exists!").arg(savedName));
+                exit = 0;
+            }
+
+        }
+       else if (!ok) { exit = 1;}
+
+
+    }while (exit==0);
+    return out;
+}
+
 
 void UBDocumentController::addFileToDocument()
 {
@@ -1440,7 +1497,7 @@ void UBDocumentController::documentSceneChanged(UBDocumentProxy* proxy, int pSce
 
     if (proxy == selectedDocumentProxy())
     {
-        reloadThumbnails();
+        emit documentThumbnailsUpdated(this);
     }
 }
 
@@ -1867,7 +1924,7 @@ void UBDocumentController::refreshDocumentThumbnailsView(UBDocumentContainer*)
     if (proxy)
     {
         setDocument(proxy);
-
+        initThumbPage();
         for (int i = 0; i < selectedDocument()->pageCount(); i++)
         {
             const QPixmap* pix = pageAt(i);

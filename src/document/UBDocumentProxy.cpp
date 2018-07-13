@@ -68,6 +68,11 @@ void UBDocumentProxy::init()
     setUuid(QUuid::createUuid());
 
     setDefaultDocumentSize(UBSettings::settings()->pageSize->get().toSize());
+
+    // Issue 1684 - ALTI/AOU - 20131210
+    setMetaData(UBSettings::documentDefaultBackgroundImage,"");
+    setMetaData(UBSettings::documentDefaultBackgroundImageDisposition, "");
+    // Fin Issue 1684 - ALTI/AOU - 20131210
 }
 
 
@@ -254,6 +259,36 @@ bool UBDocumentProxy::isModified() const
     return mIsModified;
 }
 
+void UBDocumentProxy::setHasDefaultImageBackground(const bool hasDefault)
+{
+   mHasDefaultImageBackground = hasDefault;
+   // Issue 1684 - ALTI/AOU - 20131210
+   if (hasDefault == false){
+        setMetaData(UBSettings::documentDefaultBackgroundImage, "");
+        setMetaData(UBSettings::documentDefaultBackgroundImageDisposition, "");
+   // Fin Issue 1684 - ALTI/AOU - 20131210
+   }
+}
+
+const bool UBDocumentProxy::hasDefaultImageBackground() const
+{
+    return mHasDefaultImageBackground;
+}
+
+void UBDocumentProxy::setDefaultImageBackground(const UBFeature& item)
+{
+   mDefaultImageBackground = item;
+}
+
+UBFeature& UBDocumentProxy::defaultImageBackground()
+{
+    return mDefaultImageBackground;
+}
+
+const UBFeature& UBDocumentProxy::defaultImageBackground() const
+{
+    return mDefaultImageBackground;
+}
 
 
 

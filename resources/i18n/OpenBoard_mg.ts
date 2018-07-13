@@ -799,6 +799,18 @@
         <source>Open the tutorial web page</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Ruled Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -890,6 +902,17 @@
         <source>Update</source>
         <translation>Avaozy</translation>
     </message>
+    <message>
+        <source>Board drawing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBBackgroundPalette</name>
+    <message>
+        <source>Grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardController</name>
@@ -919,7 +942,7 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation>Fafao ny pejy %1 amin&apos;ilay rakitra</translation>
+        <translation type="vanished">Fafao ny pejy %1 amin&apos;ilay rakitra</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -945,6 +968,10 @@
         <source>Document has just been saved...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Deleting page %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -955,6 +982,13 @@
     <message>
         <source>CapturedImage</source>
         <translation>Sary nalaina</translation>
+    </message>
+</context>
+<context>
+    <name>UBBoardThumbnailsView</name>
+    <message>
+        <source>Loading page (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1196,7 +1230,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Pejy %0</translation>
+        <translation type="vanished">Pejy %0</translation>
     </message>
 </context>
 <context>
@@ -1229,10 +1263,37 @@
     </message>
 </context>
 <context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Pejy %0</translation>
+    </message>
+</context>
+<context>
     <name>UBExportAdaptor</name>
     <message>
         <source>Warnings during export was appeared</source>
         <translation>Nisy fitandremana niseho tamin&apos;ny fandefasana ny rakitra</translation>
+    </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Fandefasana nety.</translation>
     </message>
 </context>
 <context>
@@ -1270,11 +1331,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Mandefa rakitra ...</translation>
+        <translation type="vanished">Mandefa rakitra ...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Fandefasana nety.</translation>
+        <translation type="vanished">Fandefasana nety.</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
@@ -1282,18 +1343,6 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1305,7 +1354,7 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Mandefa ny rakitra ...</translation>
+        <translation type="vanished">Mandefa ny rakitra ...</translation>
     </message>
     <message>
         <source>Export to PDF</source>
@@ -1313,19 +1362,7 @@
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Fandefasana nety.</translation>
-    </message>
-    <message>
-        <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">Fandefasana nety.</translation>
     </message>
 </context>
 <context>
@@ -1340,11 +1377,11 @@
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Fandefasana nety.</translation>
+        <translation type="vanished">Fandefasana nety.</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Mandefa rakitra ...</translation>
+        <translation type="vanished">Mandefa rakitra ...</translation>
     </message>
     <message>
         <source>Export to PDF</source>
@@ -1386,7 +1423,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation>Apetraka ambadika</translation>
+        <translation type="vanished">Apetraka ambadika</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1525,6 +1562,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>Hande any amin&apos;ny fototr&apos;ilay mpiatiny</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation type="unfinished">Apetraka ambadika</translation>
     </message>
 </context>
 <context>
@@ -1776,6 +1817,10 @@ Tena tsy te hiraharaha an&apos;ireo tsy mety ho an&apos;ilay milina ve ianao?</t
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Moving page to trash folder...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -1938,6 +1983,17 @@ Tena tsy te hiraharaha an&apos;ireo tsy mety ho an&apos;ilay milina ve ianao?</t
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 ny  kisarisary no voaforona ...</translation>
+    </message>
+    <message>
+        <source>loading thumbnail of page %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Pejy %0</translation>
     </message>
 </context>
 <context>
@@ -2414,6 +2470,14 @@ p, li { white-space: pre-wrap; }
         <source>Pen is Pressure Sensitive</source>
         <translation>Ny penina dia sarotiny amin&apos;ny fitsindrina</translation>
     </message>
+    <message>
+        <source>Show preview circle from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>px</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>capturePublishingDialog</name>
@@ -2598,6 +2662,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Built-in virtual keyboard button size:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On Dark Background</source>
+        <translation type="unfinished">Amin&apos;ny ambadika maizina</translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation type="unfinished">Hateviny</translation>
+    </message>
+    <message>
+        <source>On Light Background</source>
+        <translation type="unfinished">Amin&apos;ny ambadika mazava</translation>
     </message>
 </context>
 <context>

@@ -1,29 +1,23 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
- * Copyright (C) 2013 Open Education Foundation
+ * This file is part of Open-Sankoré.
  *
- * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
- * l'Education Numérique en Afrique (GIP ENA)
- *
- * This file is part of OpenBoard.
- *
- * OpenBoard is free software: you can redistribute it and/or modify
+ * Open-Sankoré is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3 of the License,
  * with a specific linking exception for the OpenSSL project's
  * "OpenSSL" library (or with modified versions of it that use the
  * same license as the "OpenSSL" library).
  *
- * OpenBoard is distributed in the hope that it will be useful,
+ * Open-Sankoré is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
+ * along with Open-Sankoré.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 
 
 
@@ -38,7 +32,7 @@ class UBAbstractDrawRuler;
 
 class UBDrawingController : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     private:
         UBDrawingController(QObject * parent = 0);
@@ -76,10 +70,13 @@ class UBDrawingController : public QObject
 
     public slots:
 
+        void deactivateCreationModeForGraphicsPathItems();
+
         void setStylusTool(int tool);
         void setLineWidthIndex(int index);
         void setColorIndex(int index);
         void setEraserWidthIndex(int index);
+        void onActiveSceneChanged();
 
     signals:
         void stylusToolChanged(int tool);
@@ -87,6 +84,7 @@ class UBDrawingController : public QObject
 
         void lineWidthIndexChanged(int index);
         void colorIndexChanged(int index);
+        void clickOnPenMarkerButton();
 
     private:
         UBStylusTool::Enum mStylusTool;
@@ -108,7 +106,10 @@ class UBDrawingController : public QObject
         void pointerToolSelected(bool checked);
         void lineToolSelected(bool checked);
         void textToolSelected(bool checked);
+        void richTextToolSelected(bool checked);
         void captureToolSelected(bool checked);
+        // Issue 22/03/2018 - OpenBoard - OCR recognition
+        void ocrToolSelected(bool checked);
 };
 
 #endif /* UBDRAWINGCONTROLLER_H_ */

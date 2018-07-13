@@ -224,7 +224,7 @@ UBFeaturesComputingThread::~UBFeaturesComputingThread()
 }
 
 UBFeature::UBFeature(const QString &url, const QImage &icon, const QString &name, const QUrl &realPath, UBFeatureElementType type)
-    : mThumbnail(icon), mDisplayName(name), mPath(realPath), elementType(type)
+    : mThumbnail(icon), mDisplayName(name), mPath(realPath), elementType(type), mDisposition(Center)
 {
     mName = getNameFromVirtualPath(url);
     virtualDir = getVirtualDirFromVirtualPath(url);
@@ -451,7 +451,7 @@ void UBFeaturesController::fileSystemScan(const QUrl & currentPath, const QStrin
 
         if ( fullFileName.contains(".thumbnail."))
             continue;
- 
+
         UBFeature testFeature(currVirtualPath + "/" + fileName, icon, fileName, QUrl::fromLocalFile(fullFileName), featureType);
 
         featuresList->append(testFeature);
@@ -751,17 +751,17 @@ void UBFeaturesController::importImage( const QImage &image, const UBFeature &de
         QDateTime now = QDateTime::currentDateTime();
         static int imageCounter = 0;
         mFileName  = tr("ImportedImage") + "-" + now.toString("dd-MM-yyyy hh-mm-ss");
-        
+
         filePath = dest.getFullPath().toLocalFile() + "/" + mFileName;
 
         if (QFile::exists(filePath+".png"))
             mFileName += QString("-[%1]").arg(++imageCounter);
         else
             imageCounter = 0;
-        
+
         mFileName += ".png";
     }
-    
+
 
     if ( !destination.getFullVirtualPath().startsWith( picturesElement.getFullVirtualPath(), Qt::CaseInsensitive ) )
     {
@@ -824,9 +824,36 @@ void UBFeaturesController::addItemToPage(const UBFeature &item)
     UBApplication::boardController->downloadURL( item.getFullPath() );
 }
 
-void UBFeaturesController::addItemAsBackground(const UBFeature &item)
+void UBFeaturesController::addItemAsBackground(UBFeature &item, bool isFromPalette)
 {
-    UBApplication::boardController->downloadURL( item.getFullPath(), QString(), QPointF(), QSize(), true );
+    // Issue 1684 - CFA - 20131127 : handle default background
+    if (!isFromPalette) // centrer == centrer voire ajuster si dépasse du cadre gris
+    {
+        QImage img(item.getFullPath().toLocalFile());
+        qDebug() << img.rect();
+        QSize nominaleSize = UBApplication::boardController->activeScene()->nominalSize();
+        if (item.backgroundDisposition() == Center && (img.width() > nominaleSize.width() || img.height() > nominaleSize.height()))
+            item.setBackgroundDisposition(Adjust);
+    }
+
+    if ( UBApplication::boardController->selectedDocument()->hasDefaultImageBackground()
+        && (item.getFullPath() !=  UBApplication::boardController->selectedDocument()->defaultImageBackground().getFullPath()
+        || item.backgroundDisposition() != UBApplication::boardController->selectedDocument()->defaultImageBackground().backgroundDisposition())) // Issue 1684 - ALTI/AOU - 20131210 : il fallait ici un "OU logique", et des parentheses.
+        UBApplication::boardController->selectedDocument()->setHasDefaultImageBackground(false);
+
+    UBApplication::boardController->downloadURL( item.getFullPath(), QString(), QPointF(), QSize(), true, false, item.backgroundDisposition());
+    UBApplication::boardController->persistCurrentScene();
+}
+
+// Issue 1684 - CFA - 20131120
+const UBFeatureBackgroundDisposition& UBFeature::backgroundDisposition() const
+{
+    return mDisposition;
+}
+
+void UBFeature::setBackgroundDisposition(UBFeatureBackgroundDisposition disposition)
+{
+    mDisposition = disposition;
 }
 
 UBFeature UBFeaturesController::getDestinationFeatureForUrl( const QUrl &url )
@@ -862,7 +889,7 @@ void UBFeaturesController::addDownloadedFile(const QUrl &sourceUrl, const QByteA
 
     QString fileName;
     QString filePath;
-    
+
     //Audio item
     if(dest == picturesElement) {
 
@@ -914,7 +941,7 @@ UBFeature UBFeaturesController::moveItemToFolder( const QUrl &url, const UBFeatu
 
     UBFeature dest = destination;
 
-    if ( destination != trashElement && 
+    if ( destination != trashElement &&
         !destination.getFullVirtualPath().startsWith( possibleDest.getFullVirtualPath(), Qt::CaseInsensitive ) )
     {
         dest = possibleDest;
@@ -931,9 +958,9 @@ UBFeature UBFeaturesController::moveItemToFolder( const QUrl &url, const UBFeatu
     }
 
     QImage thumb = getIcon( newFullPath );
-    
+
     UBFeatureElementType type = FEATURE_ITEM;
-    if ( UBFileSystemUtils::mimeTypeFromFileName( newFullPath ).contains("application") ) 
+    if ( UBFileSystemUtils::mimeTypeFromFileName( newFullPath ).contains("application") )
         type = FEATURE_INTERACTIVE;
     UBFeature newElement( destVirtualPath + "/" + name, thumb, name, QUrl::fromLocalFile( newFullPath ), type );
     return newElement;

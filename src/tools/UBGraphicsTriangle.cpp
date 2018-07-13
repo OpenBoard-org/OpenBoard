@@ -389,14 +389,27 @@ void UBGraphicsTriangle::paintGraduations(QPainter *painter)
     painter->setFont(font());
     QFontMetricsF fontMetrics(painter->font());
 
-    for (int millimeters = 0; millimeters < (rect().width() - sLeftEdgeMargin - sRoundingRadius) / sPixelsPerMillimeter; millimeters++)
-    {
-        int graduationX = rotationCenter().x() + kx * sPixelsPerMillimeter * millimeters;
+    // Update the width of one "centimeter" to correspond to the width of the background grid (whether it is displayed or not)
+    sPixelsPerCentimeter = UBApplication::boardController->activeScene()->backgroundGridSize();
+    double pixelsPerMillimeter = sPixelsPerCentimeter/10.0;
 
-        int graduationHeight = (0 == millimeters % UBGeometryUtils::millimetersPerCentimeter) ?
-            UBGeometryUtils::centimeterGraduationHeight :
-            ((0 == millimeters % UBGeometryUtils::millimetersPerHalfCentimeter) ?
-                UBGeometryUtils::halfCentimeterGraduationHeight : UBGeometryUtils::millimeterGraduationHeight);
+    // When a "centimeter" is too narrow, we only display every 5th number, and every 5th millimeter mark
+    double numbersWidth = fontMetrics.width("00");
+    bool shouldDisplayAllNumbers = (numbersWidth <= (sPixelsPerCentimeter - 5));
+
+    for (int millimeters = 0; millimeters < (rect().width() - sLeftEdgeMargin - sRoundingRadius) / pixelsPerMillimeter; millimeters++)
+    {
+        double graduationX = rotationCenter().x() + kx * pixelsPerMillimeter * millimeters;
+        double graduationHeight = 0;
+
+        if (millimeters % UBGeometryUtils::millimetersPerCentimeter == 0)
+            graduationHeight = UBGeometryUtils::centimeterGraduationHeight;
+
+        else if (millimeters % UBGeometryUtils::millimetersPerHalfCentimeter == 0)
+            graduationHeight = UBGeometryUtils::halfCentimeterGraduationHeight;
+
+        else
+            graduationHeight = UBGeometryUtils::millimeterGraduationHeight;
 
         qreal requiredSpace = graduationHeight + SEPARATOR ;
         /*     B____C
@@ -427,12 +440,14 @@ void UBGraphicsTriangle::paintGraduations(QPainter *painter)
         qreal BC = rect().height();
         qreal DE =  AD * BC / AB, availableSpace = DE;
 
-        if (requiredSpace <= availableSpace)
-            painter->drawLine(QLine(graduationX, rotationCenter().y(), graduationX, rotationCenter().y() - ky * graduationHeight));
-        else
+        if (availableSpace < requiredSpace)
             break;
 
-        if (0 == millimeters % UBGeometryUtils::millimetersPerCentimeter)
+        if (shouldDisplayAllNumbers || millimeters % UBGeometryUtils::millimetersPerHalfCentimeter == 0)
+            painter->drawLine(QLineF(graduationX, rotationCenter().y(), graduationX, rotationCenter().y() - ky * graduationHeight));
+
+        if ((shouldDisplayAllNumbers && millimeters % UBGeometryUtils::millimetersPerCentimeter == 0)
+            || millimeters % (UBGeometryUtils::millimetersPerCentimeter*5) == 0)
         {
             QString text = QString("%1").arg((int)(millimeters / UBGeometryUtils::millimetersPerCentimeter));
             qreal textWidth = fontMetrics.width(text);

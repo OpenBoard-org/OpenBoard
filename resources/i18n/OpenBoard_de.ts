@@ -481,7 +481,7 @@
     </message>
     <message>
         <source>Grid Light Background</source>
-        <translation>Heller Hintergrund, kariert</translation>
+        <translation>Hell karierten Hintergrund</translation>
     </message>
     <message>
         <source>Plain Dark Background</source>
@@ -493,7 +493,7 @@
     </message>
     <message>
         <source>Grid Dark Background</source>
-        <translation>Dunkler Hintergrund, kariert</translation>
+        <translation>Dunkel karierten Hintergrund</translation>
     </message>
     <message>
         <source>Podcast</source>
@@ -799,6 +799,18 @@
         <source>Open the tutorial web page</source>
         <translation>Öffnen der Anleitung im Internet</translation>
     </message>
+    <message>
+        <source>Ruled Light Background</source>
+        <translation>Hell linierter Hintergrund</translation>
+    </message>
+    <message>
+        <source>Ruled Dark Background</source>
+        <translation>Dunkel linierter Hintergrund</translation>
+    </message>
+    <message>
+        <source>Reset grid size</source>
+        <translation>Rastergröße zurücksetzen</translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -850,7 +862,7 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation type="unfinished">Seite entfernen</translation>
+        <translation>Seite entfernen</translation>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
@@ -890,6 +902,17 @@
         <source>Update</source>
         <translation>Aktualisierung</translation>
     </message>
+    <message>
+        <source>Board drawing...</source>
+        <translation>Brettzeichnung...</translation>
+    </message>
+</context>
+<context>
+    <name>UBBackgroundPalette</name>
+    <message>
+        <source>Grid size</source>
+        <translation>Gittergrösse</translation>
+    </message>
 </context>
 <context>
     <name>UBBoardController</name>
@@ -919,7 +942,7 @@
     </message>
     <message>
         <source>Delete page %1 from document</source>
-        <translation>Seite %1 des Dokuments löschen</translation>
+        <translation type="vanished">Seite %1 des Dokuments löschen</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -927,15 +950,15 @@
     </message>
     <message>
         <source>Add file operation failed: file copying error</source>
-        <translation type="unfinished">Dokument hinzufügen fehlgeschlagen: Fehler beim Kopieren</translation>
+        <translation>Dokument hinzufügen fehlgeschlagen: Fehler beim Kopieren</translation>
     </message>
     <message>
         <source>Group</source>
-        <translation type="unfinished">Gruppieren</translation>
+        <translation>Gruppieren</translation>
     </message>
     <message>
         <source>Ungroup</source>
-        <translation type="unfinished">Gruppierung auflösen</translation>
+        <translation>Gruppierung auflösen</translation>
     </message>
     <message>
         <source>Saving document...</source>
@@ -944,6 +967,10 @@
     <message>
         <source>Document has just been saved...</source>
         <translation>Dokument wurde gespeichert...</translation>
+    </message>
+    <message>
+        <source>Deleting page %1</source>
+        <translation>Seite %1 löschen</translation>
     </message>
 </context>
 <context>
@@ -955,6 +982,13 @@
     <message>
         <source>CapturedImage</source>
         <translation>erfasstes Bild</translation>
+    </message>
+</context>
+<context>
+    <name>UBBoardThumbnailsView</name>
+    <message>
+        <source>Loading page (%1/%2)</source>
+        <translation>Ladeseite (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1130,11 +1164,11 @@
     </message>
     <message>
         <source>Folder does not contain any image files</source>
-        <translation type="unfinished">Das Verzeichnis enthält keine Bilder</translation>
+        <translation>Das Verzeichnis enthält keine Bilder</translation>
     </message>
     <message>
         <source>Untitled Documents</source>
-        <translation type="unfinished">Unbenanntes Dokument</translation>
+        <translation>Unbenanntes Dokument</translation>
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
@@ -1177,11 +1211,11 @@
     </message>
     <message>
         <source>Inserting page %1 of %2</source>
-        <translation type="unfinished">Hinzufügen der Seite %1 von %2</translation>
+        <translation>Hinzufügen der Seite %1 von %2</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished">Import erfolgreich.</translation>
+        <translation>Import erfolgreich.</translation>
     </message>
     <message>
         <source>Import of file %1 successful.</source>
@@ -1196,7 +1230,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Seite %0</translation>
+        <translation type="vanished">Seite %0</translation>
     </message>
 </context>
 <context>
@@ -1229,10 +1263,37 @@
     </message>
 </context>
 <context>
+    <name>UBDraggableThumbnailView</name>
+    <message>
+        <source>Page %0</source>
+        <translation>Seite %0</translation>
+    </message>
+</context>
+<context>
     <name>UBExportAdaptor</name>
     <message>
         <source>Warnings during export was appeared</source>
-        <translation type="unfinished">Warnungen beim Exportieren aufgetreten</translation>
+        <translation>Warnungen beim Exportieren aufgetreten</translation>
+    </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation>Dokument wird exportiert...</translation>
+    </message>
+    <message>
+        <source>Export failed</source>
+        <translation>Export fehlgeschlagen</translation>
+    </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation>Export im ausgewählten Zielpfad nicht möglich. Sie haben nicht die erforderliche Berechtigung um die Datei zu speichern.</translation>
+    </message>
+    <message>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation>Export erfolgreich.</translation>
     </message>
 </context>
 <context>
@@ -1270,11 +1331,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Dokument wird exportiert...</translation>
+        <translation type="vanished">Dokument wird exportiert...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export erfolgreich.</translation>
+        <translation type="vanished">Export erfolgreich.</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
@@ -1286,15 +1347,15 @@
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation>Export fehlgeschlagen: Zielpfad nicht beschreibbar</translation>
+        <translation type="vanished">Export fehlgeschlagen: Zielpfad nicht beschreibbar</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation>Export fehlgeschlagen</translation>
+        <translation type="vanished">Export fehlgeschlagen</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation>Export im ausgewählten Zielpfad nicht möglich. Sie haben nicht die erforderliche Berechtigung um die Datei zu speichern.</translation>
+        <translation type="vanished">Export im ausgewählten Zielpfad nicht möglich. Sie haben nicht die erforderliche Berechtigung um die Datei zu speichern.</translation>
     </message>
 </context>
 <context>
@@ -1305,11 +1366,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Dokument wird exportiert...</translation>
+        <translation type="vanished">Dokument wird exportiert...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export erfolgreich.</translation>
+        <translation type="vanished">Export erfolgreich.</translation>
     </message>
     <message>
         <source>Export to PDF</source>
@@ -1317,15 +1378,15 @@
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation>Export fehlgeschlagen: Zielpfad nicht beschreibbar.</translation>
+        <translation type="vanished">Export fehlgeschlagen: Zielpfad nicht beschreibbar.</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation>Export fehlgeschlagen</translation>
+        <translation type="vanished">Export fehlgeschlagen</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation>Export im ausgewählten Zielpfad nicht möglich. Sie haben nicht die erforderliche Berechtigung um die Datei zu speichern.</translation>
+        <translation type="vanished">Export im ausgewählten Zielpfad nicht möglich. Sie haben nicht die erforderliche Berechtigung um die Datei zu speichern.</translation>
     </message>
 </context>
 <context>
@@ -1336,11 +1397,11 @@
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Dokument wird exportiert...</translation>
+        <translation type="vanished">Dokument wird exportiert...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Export erfolgreich.</translation>
+        <translation type="vanished">Export erfolgreich.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1386,7 +1447,7 @@
     </message>
     <message>
         <source>Set as background</source>
-        <translation>Als Hintergrund festlegen</translation>
+        <translation type="vanished">Als Hintergrund festlegen</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1505,11 +1566,11 @@
     <name>UBGraphicsGroupContainerItemDelegate</name>
     <message>
         <source>Locked</source>
-        <translation type="unfinished">Gesperrt</translation>
+        <translation>Gesperrt</translation>
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation type="unfinished">Auf erweitertem Bildschirm sichtbar</translation>
+        <translation>Auf erweitertem Bildschirm sichtbar</translation>
     </message>
 </context>
 <context>
@@ -1525,6 +1586,10 @@
     <message>
         <source>Go to Content Source</source>
         <translation>Gehen Sie zum ursprünglichen Inhalt</translation>
+    </message>
+    <message>
+        <source>Set as background</source>
+        <translation>Als Hintergrund einfügen</translation>
     </message>
 </context>
 <context>
@@ -1568,14 +1633,14 @@
     <name>UBGraphicsW3CWidgetItem</name>
     <message>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>Web</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsWidgetItem</name>
     <message>
         <source>Loading ...</source>
-        <translation type="unfinished">Lädt...</translation>
+        <translation>Lädt...</translation>
     </message>
 </context>
 <context>
@@ -1697,7 +1762,7 @@
     <name>UBMessagesDialog</name>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Schließen</translation>
+        <translation>Schließen</translation>
     </message>
 </context>
 <context>
@@ -1747,11 +1812,11 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     </message>
     <message>
         <source>You can always access the OpenBoard Document Importer through the Preferences panel in the About tab. Warning, if you have already imported your Open-Sankore datas, you might loose your current OpenBoard documents.</source>
-        <translation>Sie können jederzeit im Einstellungsdialog im Menü "Über" auf den OpenBoard Document Importer zugreifen. Warnung, falls sie bereits Ihre Open-Sankore Daten importiert haben, können Sie Ihre aktuellen OpenBoard Dokumente verlieren.</translation>
+        <translation>Sie können jederzeit im Einstellungsdialog im Menü &quot;Über&quot; auf den OpenBoard Document Importer zugreifen. Warnung, falls sie bereits Ihre Open-Sankore Daten importiert haben, können Sie Ihre aktuellen OpenBoard Dokumente verlieren.</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <source>Proceed</source>
@@ -1759,7 +1824,7 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     </message>
     <message>
         <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
-        <translation>Auf Ihrem Computer befinden sich Open-Sankoré Dokumente. Um diese in OpenBoard zu importieren drücken Sie den "Fortfahren" Knopf um die Importanwendung zu starten.</translation>
+        <translation>Auf Ihrem Computer befinden sich Open-Sankoré Dokumente. Um diese in OpenBoard zu importieren drücken Sie den &quot;Fortfahren&quot; Knopf um die Importanwendung zu starten.</translation>
     </message>
 </context>
 <context>
@@ -1775,6 +1840,18 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     <message>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>Verbindung zum Dokumentenarchiv verloren. Um fehlerhafte Daten zu vermeiden muss die Anwendung leider geschlossen werden. Letzte Änderungen können auch verloren gehen.</translation>
+    </message>
+    <message>
+        <source>saving document thumbnail for the page %1</source>
+        <translation type="obsolete">Backup Übersichtsseite %1</translation>
+    </message>
+    <message>
+        <source>Saving thumbnail of page %1</source>
+        <translation type="vanished">Miniaturansicht der Seite %1 speichern</translation>
+    </message>
+    <message>
+        <source>Moving page to trash folder...</source>
+        <translation>Die Seite in den Papierkorb verschieben...</translation>
     </message>
 </context>
 <context>
@@ -1860,7 +1937,7 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     </message>
     <message>
         <source>OpenBoard Cast</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard Cast</translation>
     </message>
 </context>
 <context>
@@ -1919,7 +1996,7 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     <name>UBStartupHintsPalette</name>
     <message>
         <source>Visible next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Sichtbar beim nächsten Mal</translation>
     </message>
 </context>
 <context>
@@ -1938,6 +2015,18 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>Miniaturansicht %1 wird erstellt...</translation>
+    </message>
+    <message>
+        <source>loading thumbnail of page %1</source>
+        <translation>
+Miniaturansicht der Seite %1 wird geladen</translation>
+    </message>
+</context>
+<context>
+    <name>UBThumbnailTextItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation>Seite %0</translation>
     </message>
 </context>
 <context>
@@ -2377,7 +2466,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>OpenBoard</source>
-        <translation type="unfinished">OpenBoard</translation>
+        <translation>OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -2413,6 +2502,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Pen is Pressure Sensitive</source>
         <translation>Der Stift ist druckempfindlich</translation>
+    </message>
+    <message>
+        <source>Show preview circle from</source>
+        <translation>Ansichtsgrösse von</translation>
+    </message>
+    <message>
+        <source>px</source>
+        <translation>px</translation>
     </message>
 </context>
 <context>
@@ -2599,6 +2696,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Built-in virtual keyboard button size:</source>
         <translation>Tastengröße der integrierten virtuellen Tastatur</translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation>Gitter</translation>
+    </message>
+    <message>
+        <source>On Dark Background</source>
+        <translation>Auf dunklem Hintergrund</translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation>Deckkraft</translation>
+    </message>
+    <message>
+        <source>On Light Background</source>
+        <translation>Auf hellem Hintergrund</translation>
     </message>
 </context>
 <context>

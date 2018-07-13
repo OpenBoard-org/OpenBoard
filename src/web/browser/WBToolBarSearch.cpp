@@ -71,7 +71,7 @@
 #include "WBToolBarSearch.h"
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QtWebKitWidgets>
 #include <QMenu>
 #include <QCompleter>
 

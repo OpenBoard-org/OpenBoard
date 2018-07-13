@@ -25,7 +25,31 @@ HEADERS += src/domain/UBGraphicsScene.h \
     src/domain/UBGraphicsMediaItemDelegate.h \
     src/domain/UBSelectionFrame.h \
     src/domain/UBUndoCommand.h \
-    src/domain/UBGraphicsItemZLevelUndoCommand.h
+    src/domain/UBGraphicsItemZLevelUndoCommand.h \
+    $$PWD/UBShapeFactory.h \
+    $$PWD/UB1HEditableGraphicsSquareItem.h \
+    $$PWD/UB1HEditableGraphicsCircleItem.h \
+    $$PWD/UBGraphicsFreehandItem.h \
+    $$PWD/UBEditableGraphicsPolygonItem.h \
+    $$PWD/UBEditableGraphicsRegularShapeItem.h \
+    $$PWD/UBGraphicsLineItem.h \
+    $$PWD/UBGraphicsRectItem.h \
+    $$PWD/UBGraphicsEllipseItem.h \
+    $$PWD/UBAbstractGraphicsPathItem.h \
+    $$PWD/UBAbstractGraphicsItem.h \
+    $$PWD/UB3HandlesEditable.h \
+    $$PWD/UBShapeEditable.h \
+    $$PWD/UBAbstractHandle.h \
+    $$PWD/UBEditable.h \
+    $$PWD/UBAbstractEditableGraphicsPathItem.h \
+    $$PWD/UB1HEditableGraphicsBasicShapeItem.h \
+    $$PWD/UBFreeHandle.h \
+    $$PWD/UBAbstractHandlesBuilder.h \
+    $$PWD/UBHorizontalHandle.h \
+    $$PWD/UBVerticalHandle.h \
+    $$PWD/UBDiagonalHandle.h \
+    $$PWD/UBAlignObjectManager.h \
+    $$PWD/UBAbstractGraphicsProxyWidget.h
 
 SOURCES += src/domain/UBGraphicsScene.cpp \
     src/domain/UBGraphicsItemUndoCommand.cpp \
@@ -54,4 +78,28 @@ SOURCES += src/domain/UBGraphicsScene.cpp \
     src/domain/UBGraphicsWidgetItemDelegate.cpp \
     src/domain/UBSelectionFrame.cpp \
     src/domain/UBUndoCommand.cpp \
-    src/domain/UBGraphicsItemZLevelUndoCommand.cpp
+    src/domain/UBGraphicsItemZLevelUndoCommand.cpp \
+    $$PWD/UBShapeFactory.cpp \
+    $$PWD/UB1HEditableGraphicsSquareItem.cpp \
+    $$PWD/UB1HEditableGraphicsCircleItem.cpp \
+    $$PWD/UBGraphicsFreehandItem.cpp \
+    $$PWD/UBEditableGraphicsPolygonItem.cpp \
+    $$PWD/UBEditableGraphicsRegularShapeItem.cpp \
+    $$PWD/UBGraphicsLineItem.cpp \
+    $$PWD/UBGraphicsRectItem.cpp \
+    $$PWD/UBGraphicsEllipseItem.cpp \
+    $$PWD/UBAbstractGraphicsPathItem.cpp \
+    $$PWD/UBAbstractGraphicsItem.cpp \
+    $$PWD/UB3HandlesEditable.cpp \
+    $$PWD/UBShapeEditable.cpp \
+    $$PWD/UBAbstractHandle.cpp \
+    $$PWD/UBEditable.cpp \
+    $$PWD/UBAbstractEditableGraphicsPathItem.cpp \
+    $$PWD/UB1HEditableGraphicsBasicShapeItem.cpp \
+    $$PWD/UBFreeHandle.cpp \
+    $$PWD/UBAbstractHandlesBuilder.cpp \
+    $$PWD/UBHorizontalHandle.cpp \
+    $$PWD/UBVerticalHandle.cpp \
+    $$PWD/UBDiagonalHandle.cpp \
+    $$PWD/UBAlignObjectManager.cpp \
+    $$PWD/UBAbstractGraphicsProxyWidget.cpp

@@ -35,14 +35,16 @@
 #include "core/UB.h"
 
 
+
 class UBGraphicsPolygonItem;
+class UBGraphicsScene;
 
 class UBGraphicsStroke
 {
     friend class UBGraphicsPolygonItem;
 
     public:
-        UBGraphicsStroke();
+        UBGraphicsStroke(UBGraphicsScene* scene = NULL);
         virtual ~UBGraphicsStroke();
 
         bool hasPressure();
@@ -57,13 +59,28 @@ class UBGraphicsStroke
 
         void clear();
 
+        QList<QPair<QPointF, qreal> > addPoint(const QPointF& point, qreal width, bool interpolate = false);
+
+        const QList<QPair<QPointF, qreal> >& points() { return mDrawnPoints; }
+
+        UBGraphicsStroke* simplify();
+
     protected:
         void addPolygon(UBGraphicsPolygonItem* pol);
 
     private:
 
+        UBGraphicsScene * mScene;
+
         QList<UBGraphicsPolygonItem*> mPolygons;
 
+        /// Points that were drawn by the user (i.e, actually received through input device)
+        QList<QPair<QPointF, qreal> > mReceivedPoints;
+
+        /// All the points (including interpolated) that are used to draw the stroke
+        QList<QPair<QPointF, qreal> > mDrawnPoints;
+
+        qreal mAntiScaleRatio;
 };
 
 #endif /* UBGRAPHICSSTROKE_H_ */

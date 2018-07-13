@@ -35,13 +35,21 @@
 #include <QTime>
 #include <QGraphicsSceneHoverEvent>
 
+#include "core/UBApplication.h"
+#include "board/UBBoardController.h"
 #include "frameworks/UBCoreGraphicsScene.h"
 #include "core/UBSettings.h"
 #include "domain/UBItem.h"
+#include "gui/UBThumbnailView.h"
+#include "document/UBDocumentProxy.h"
+
+#include <QLabel>
+#include <QHBoxLayout>
+
 
 #define STARTDRAGTIME   1000000
-#define BUTTONSIZE      48
-#define BUTTONSPACING   5
+#define BUTTONSIZE      96
+#define BUTTONSPACING 10
 
 class UBDocumentProxy;
 class UBThumbnailTextItem;
@@ -135,7 +143,6 @@ class UBThumbnailWidget : public QGraphicsView
         QTime mClickTime;
 };
 
-
 class UBThumbnail
 {
     public:
@@ -190,6 +197,8 @@ class UBThumbnail
         void setColumn(int column) { mColumn = column; }
         int row() { return mRow; }
         void setRow(int row) { mRow = row; }
+        UBThumbnailTextItem *label(){return mLabel;}
+        void setLabel(UBThumbnailTextItem *label){mLabel = label;}
 
     protected:
         QGraphicsRectItem *mSelectionItem;
@@ -198,37 +207,74 @@ class UBThumbnail
 
         int mColumn;
         int mRow;
+        UBThumbnailTextItem *mLabel;
 };
 
-
-class UBThumbnailSvg : public QGraphicsSvgItem, public UBThumbnail
+class UBThumbnailTextItem : public QGraphicsTextItem
 {
+    Q_OBJECT
     public:
-        UBThumbnailSvg(const QString& path)
-            : QGraphicsSvgItem(path)
+        UBThumbnailTextItem(int index)
+            : QGraphicsTextItem(tr("Page %0").arg(index+1))
+            , mWidth(0)
+            , mUnelidedText(toPlainText())
+            , mIsHighlighted(false)
+        {
+
+        }
+
+        UBThumbnailTextItem(const QString& text)
+            : QGraphicsTextItem(text)
+            , mWidth(0)
+            , mUnelidedText(text)
+            , mIsHighlighted(false)
         {
             setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
         }
 
-        virtual ~UBThumbnailSvg()
+        QRectF boundingRect() const { return QRectF(QPointF(0.0, 0.0), QSize(mWidth, QFontMetricsF(font()).height() + 5));}
+
+        void setWidth(qreal pWidth)
         {
-            // NOOP
+                if (mWidth != pWidth)
+                {
+                        prepareGeometryChange();
+                        mWidth = pWidth;
+                        computeText();
+                }
         }
 
-        virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+        qreal width() {return mWidth;}
+
+        void highlight()
         {
-            QStyleOptionGraphicsItem styleOption = UBThumbnail::muteStyleOption(option);
-            QGraphicsSvgItem::paint(painter, &styleOption, widget);
+                if (!mIsHighlighted)
+                {
+                        mIsHighlighted = true;
+                        computeText();
+                }
         }
 
-        virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value)
+        void computeText()
         {
-            UBThumbnail::itemChange(this, change, value);
-            return QGraphicsSvgItem::itemChange(change, value);
+            QFontMetricsF fm(font());
+            QString elidedText = fm.elidedText(mUnelidedText, Qt::ElideRight, mWidth);
+
+            if (mIsHighlighted)
+            {
+                setHtml("<span style=\"color: #6682b5\">" + elidedText + "</span>");
+            }
+            else
+            {
+                setPlainText(elidedText);
+            }
         }
 
+    private:
+        qreal mWidth;
+        QString mUnelidedText;
+        bool mIsHighlighted;
 };
-
 
 class UBThumbnailPixmap : public QGraphicsPixmapItem, public UBThumbnail
 {
@@ -266,7 +312,6 @@ class UBThumbnailPixmap : public QGraphicsPixmapItem, public UBThumbnail
             return QGraphicsPixmapItem::itemChange(change, value);
         }
 };
-
 
 class UBSceneThumbnailPixmap : public UBThumbnailPixmap
 {
@@ -328,86 +373,6 @@ class UBSceneThumbnailNavigPixmap : public UBSceneThumbnailPixmap
         bool bCanMoveDown;
 };
 
-class UBThumbnailVideo : public UBThumbnailPixmap
-{
-    public:
-        UBThumbnailVideo(const QUrl &path)
-            : UBThumbnailPixmap(QPixmap(":/images/movie.svg"))
-            , mPath(path)
-        {
-            // NOOP
-        }
-
-        virtual ~UBThumbnailVideo()
-        {
-            // NOOP
-        }
-
-        QUrl path()
-        {
-            return mPath;
-        }
-
-    private:
-
-        QUrl mPath;
-};
-
-class UBThumbnailTextItem : public QGraphicsTextItem
-{
-    public:
-        UBThumbnailTextItem(const QString& text)
-            : QGraphicsTextItem(text)
-            , mUnelidedText(text)
-            , mIsHighlighted(false)
-        {
-            setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
-        }
-
-        QRectF boundingRect() const { return QRectF(QPointF(0.0, 0.0), QSize(mWidth, QFontMetricsF(font()).height() + 5));}
-
-        void setWidth(qreal pWidth)
-        {
-                if (mWidth != pWidth)
-                {
-                        prepareGeometryChange();
-                        mWidth = pWidth;
-                        computeText();
-                }
-        };
-
-        qreal width() {return mWidth;}
-
-        void highlight()
-        {
-                if (!mIsHighlighted)
-                {
-                        mIsHighlighted = true;
-                        computeText();
-                }
-        }
-
-        void computeText()
-        {
-            QFontMetricsF fm(font());
-            QString elidedText = fm.elidedText(mUnelidedText, Qt::ElideRight, mWidth);
-
-            if (mIsHighlighted)
-            {
-                setHtml("<span style=\"color: #6682b5\">" + elidedText + "</span>");
-            }
-            else
-            {
-                setPlainText(elidedText);
-            }
-        }
-
-    private:
-        qreal mWidth;
-        QString mUnelidedText;
-        bool mIsHighlighted;
-};
-
 class UBImgTextThumbnailElement
 {
 private:
@@ -434,5 +399,238 @@ public:
     void setBorder(int newBorder) { this->border = newBorder; }
 };
 
+class UBThumbnailProxyWidget : public QGraphicsProxyWidget
+{
+    public:
+        UBThumbnailProxyWidget(UBDocumentProxy* proxy, int index)
+            : mDocumentProxy(proxy)
+            , mSceneIndex(index)
+        {
+
+        }
+
+        UBDocumentProxy* documentProxy()
+        {
+            return mDocumentProxy;
+        }
+
+        void setSceneIndex(int i)
+        {
+            mSceneIndex = i;
+        }
+
+        int sceneIndex()
+        {
+            return mSceneIndex;
+        }
+
+private:
+        UBDocumentProxy* mDocumentProxy;
+        int mSceneIndex;
+};
+
+class UBDraggableThumbnail : public UBThumbnailProxyWidget
+{
+    public:
+        UBDraggableThumbnail(UBDocumentProxy* documentProxy, int index)
+        : UBThumbnailProxyWidget(documentProxy, index)
+        , mPageNumber(new UBThumbnailTextItem(index))
+        , mEditable(false)
+        {
+
+        }
+
+        ~UBDraggableThumbnail()
+        {
+            delete mPageNumber; // not a child of "this" QObject so it has to be deleted manually
+        }
+
+        bool editable()
+        {
+            return mEditable;
+        }
+
+        bool deletable()
+        {
+            return documentProxy()->pageCount() > 1;
+        }
+
+        bool movableUp()
+        {
+            return sceneIndex() > 0;
+        }
+
+        bool movableDown()
+        {
+            return sceneIndex() < (documentProxy()->pageCount() -1);
+        }
+
+        void showUI()
+        {
+            setEditable(true);
+        }
+
+        void hideUI()
+        {
+            setEditable(false);
+        }
+
+        void setEditable(bool editable)
+        {
+            mEditable = editable;
+        }
+
+        UBThumbnailTextItem* pageNumber()
+        {
+            return mPageNumber;
+        }
+
+        void setPageNumber(int i)
+        {
+            mPageNumber->setPlainText(tr("Page %0").arg(i+1));
+
+            if (UBApplication::boardController->activeSceneIndex() == i)
+                mPageNumber->setHtml("<span style=\";font-weight:bold;color: red\">" + tr("Page %0").arg(i+1) + "</span>");
+            else
+                mPageNumber->setHtml("<span style=\";color: #000000\">" + tr("Page %0").arg(i+1) + "</span>");
+        }
+
+        virtual void updatePos(qreal w, qreal h);
+
+    protected:
+        void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+        void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+        void mousePressEvent(QGraphicsSceneMouseEvent *event);
+        void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+
+        UBThumbnailTextItem* mPageNumber;
+    private:
+        void deletePage();
+        void duplicatePage();
+        void moveUpPage();
+        void moveDownPage();
+
+        bool mEditable;
+};
+
+class UBDraggableThumbnailPixmap : public UBDraggableThumbnail
+{
+    Q_OBJECT
+    public:
+        UBDraggableThumbnailPixmap(UBThumbnailPixmap* thumbnailPixmap, UBDocumentProxy* documentProxy, int index)
+            : UBDraggableThumbnail(documentProxy, index)
+            , mThumbnailPixmap(thumbnailPixmap)
+        {
+            setFlag(QGraphicsItem::ItemIsSelectable, true);
+            setAcceptDrops(true);
+        }
+
+        ~UBDraggableThumbnailPixmap()
+        {
+
+        }
+
+        UBThumbnailPixmap* thumbnailPixmap()
+        {
+            return mThumbnailPixmap;
+        }
+
+        void updatePos(qreal w, qreal h);
+
+    private:
+        UBThumbnailPixmap* mThumbnailPixmap;
+};
+
+class UBDraggableThumbnailView : public UBDraggableThumbnail
+{
+    Q_OBJECT
+    public:
+        UBDraggableThumbnailView(UBThumbnailView* thumbnailView, UBDocumentProxy* documentProxy, int index)
+            : UBDraggableThumbnail(documentProxy, index)
+            , mThumbnailView(thumbnailView)
+        {
+            setFlag(QGraphicsItem::ItemIsSelectable, true);
+            setWidget(mThumbnailView);
+            setAcceptDrops(true);            
+        }
+
+        ~UBDraggableThumbnailView()
+        {
+            delete mPageNumber; // not a child of "this" QObject so it has to be deleted manually
+        }
+
+        UBThumbnailView* thumbnailView()
+        {
+            return mThumbnailView;
+        }
+
+        UBThumbnailTextItem* pageNumber()
+        {
+            return mPageNumber;
+        }
+
+        void setPageNumber(int i)
+        {
+            mPageNumber->setPlainText(tr("Page %0").arg(i+1));
+
+            if (UBApplication::boardController->activeSceneIndex() == i)
+                mPageNumber->setHtml("<span style=\";font-weight:bold;color: red\">" + tr("Page %0").arg(i+1) + "</span>");
+            else
+                mPageNumber->setHtml("<span style=\";color: #000000\">" + tr("Page %0").arg(i+1) + "</span>");
+        }
+
+    private:        
+        UBThumbnailView* mThumbnailView;
+};
+
+namespace UBThumbnailUI
+{
+    const int ICONSIZE      = 96;
+    const int ICONSPACING   = 10;
+
+    class UBThumbnailUIIcon : public QPixmap
+    {
+        public:
+
+            UBThumbnailUIIcon(const QString& filename, int pos)
+                : QPixmap(QSize(ICONSIZE, ICONSIZE))
+                , mPos(pos)
+            {
+                QSvgRenderer svgRenderer(filename);
+                QPainter painter;
+                fill(Qt::transparent);
+                painter.begin(this);
+                svgRenderer.render(&painter);
+                painter.end();
+            }
+
+            int pos() const
+            {
+                return mPos;
+            }
+
+            bool triggered(qreal x) const
+            {
+                using namespace UBThumbnailUI;
+                return (x >= pos()*(ICONSIZE + ICONSPACING) && x <= (pos()+1)*ICONSIZE + pos()*ICONSPACING);
+            }
+
+        private:
+            int mPos;
+    };
+
+    namespace _private
+    {
+        //do not use this directly
+        static QMap<QString, UBThumbnailUIIcon*> catalog;
+        void initCatalog();
+    }
+
+    UBThumbnailUIIcon* addIcon(const QString& thumbnailIcon, int pos);
+    UBThumbnailUIIcon* getIcon(const QString& thumbnailIcon);
+    void draw(QPainter* painter, const UBThumbnailUIIcon& thumbnailIcon);
+    bool triggered(qreal y);
+}
 
 #endif /* UBTHUMBNAILWIDGET_H_ */

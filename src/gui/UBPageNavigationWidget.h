@@ -38,6 +38,7 @@
 #include <QLabel>
 #include <QString>
 
+#include "UBBoardThumbnailsView.h"
 #include "UBDocumentNavigator.h"
 #include "UBDockPaletteWidget.h"
 #include "document/UBDocumentProxy.h"

@@ -37,6 +37,8 @@
 #include "domain/UBGraphicsGroupContainerItemDelegate.h"
 #include "domain/UBGraphicsScene.h"
 
+#include "customWidgets/UBGraphicsItemAction.h"
+
 #include "core/memcheck.h"
 
 UBGraphicsGroupContainerItem::UBGraphicsGroupContainerItem(QGraphicsItem *parent)
@@ -50,6 +52,7 @@ UBGraphicsGroupContainerItem::UBGraphicsGroupContainerItem(QGraphicsItem *parent
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
+    Delegate()->setCanTrigAnAction(true); // Issue 12/03/2018 - OpenBoard - Custom Widgets
 
     UBGraphicsGroupContainerItem::setAcceptHoverEvents(true);
 
@@ -62,7 +65,7 @@ UBGraphicsGroupContainerItem::~UBGraphicsGroupContainerItem()
 {
 }
 
-void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
+void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item, bool removeAction)
 {
     if (!item) {
         qWarning("UBGraphicsGroupContainerItem::addToGroup: cannot add null item");
@@ -71,6 +74,12 @@ void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
     if (item == this) {
         qWarning("UBGraphicsGroupContainerItem::addToGroup: cannot add a group to itself");
         return;
+    }
+
+    // Issue 13/03/2018 - OpenBoard - Custom Widget.
+    UBGraphicsItem* ubGraphics = dynamic_cast<UBGraphicsItem*>(item);
+    if(ubGraphics && ubGraphics->Delegate() && removeAction){
+        ubGraphics->Delegate()->setAction(0);
     }
 
     //Check if group is allready rotatable or flippable
@@ -89,7 +98,10 @@ void UBGraphicsGroupContainerItem::addToGroup(QGraphicsItem *item)
         Delegate()->setUBFlag(GF_FLIPPABLE_ALL_AXIS, UBGraphicsItem::isFlippable(item));
         Delegate()->setUBFlag(GF_REVOLVABLE, UBGraphicsItem::isRotatable(item));
         Delegate()->setLocked(UBGraphicsItem::isLocked(item));
-    }
+    }        
+
+    if (item->data(UBGraphicsItemData::ItemLayerType) == UBItemLayerType::Control)
+        setData(UBGraphicsItemData::ItemLayerType, item->data(UBGraphicsItemData::ItemLayerType));
 
     // COMBINE
     bool ok;
@@ -216,7 +228,7 @@ UBGraphicsGroupContainerItem *UBGraphicsGroupContainerItem::deepCopy() const
         UBItem *childAsUBItem = dynamic_cast<UBItem*>(it);
         if (childAsUBItem) {
             QGraphicsItem *cloneItem = dynamic_cast<QGraphicsItem*>(childAsUBItem->deepCopy());
-            copy->addToGroup(cloneItem);
+            copy->addToGroup(cloneItem,false);
         }
     }
     copyItemParameters(copy);
@@ -237,6 +249,17 @@ void UBGraphicsGroupContainerItem::copyItemParameters(UBItem *copy) const
         cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
         cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
+        // Issue 13/03/2018 - OpenBoard - Custom Widget.
+        if(Delegate()->action()){
+            if(Delegate()->action()->linkType() == eLinkToAudio){
+                UBGraphicsItemPlayAudioAction* audioAction = dynamic_cast<UBGraphicsItemPlayAudioAction*>(Delegate()->action());
+                UBGraphicsItemPlayAudioAction* action = new UBGraphicsItemPlayAudioAction(audioAction->fullPath());
+                cp->Delegate()->setAction(action);
+            }
+            else
+                cp->Delegate()->setAction(Delegate()->action());
+        }
+        // END Issue 13/03/2018 - OpenBoard - Custom Widget.
     }
 }
 

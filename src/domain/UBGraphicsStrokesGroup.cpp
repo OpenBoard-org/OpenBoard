@@ -32,6 +32,8 @@
 
 #include "domain/UBGraphicsPolygonItem.h"
 
+#include "customWidgets/UBGraphicsItemAction.h"
+
 #include "core/memcheck.h"
 
 UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent)
@@ -49,6 +51,8 @@ UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent)
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
+
+    Delegate()->setCanTrigAnAction(true); // Issue 12/03/2018 - OpenBoard - Custom Widgets
 
     mDebugText = NULL;
     debugTextEnabled = false; // set to true to get a graphical display of strokes' Z-levels
@@ -139,6 +143,9 @@ void UBGraphicsStrokesGroup::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void UBGraphicsStrokesGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     Delegate()->commitUndoStep();
+    if(Delegate()->action()){
+        Delegate()->action()->play();
+    }
     event->accept();
 
     Delegate()->mouseReleaseEvent(event);
@@ -198,6 +205,19 @@ void UBGraphicsStrokesGroup::copyItemParameters(UBItem *copy) const
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
         cp->setData(UBGraphicsItemData::ItemLocked, this->data(UBGraphicsItemData::ItemLocked));
         cp->setZValue(this->zValue());
+        // Issue 13/03/2018 - OpenBoard - Custom Widget.
+        UBGraphicsStrokesGroup* cpGroup = dynamic_cast<UBGraphicsStrokesGroup*>(copy);
+        if(Delegate()->action()){
+            if(Delegate()->action()->linkType() == eLinkToAudio){
+                UBGraphicsItemPlayAudioAction* audioAction = dynamic_cast<UBGraphicsItemPlayAudioAction*>(Delegate()->action());
+                UBGraphicsItemPlayAudioAction* action = new UBGraphicsItemPlayAudioAction(audioAction->fullPath());
+                cpGroup->Delegate()->setAction(action);
+            }
+            else
+                cpGroup->Delegate()->setAction(Delegate()->action());
+        }
+        // END Issue 13/03/2018 - OpenBoard - Custom Widget.
+
     }
 }
 

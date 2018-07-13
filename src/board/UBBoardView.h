@@ -73,6 +73,12 @@ signals:
     void resized(QResizeEvent* event);
     void shown();
     void mouseReleased();
+    void clickOnBoard();
+
+    //EV-7 - NNE - 20131231
+    void mouseMove(QMouseEvent* event);
+    void mousePress(QMouseEvent* event);
+    void mouseRelease(QMouseEvent* event);
 
 protected:
 
@@ -182,6 +188,7 @@ private slots:
 
 public slots:
 
+    void createTextItem(QString text);
     void virtualKeyboardActivated(bool b);
     void longPressEvent();
 

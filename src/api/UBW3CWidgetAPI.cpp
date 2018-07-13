@@ -30,7 +30,7 @@
 #include "UBW3CWidgetAPI.h"
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QtWebKitWidgets>
 
 #include "core/UBApplication.h"
 #include "core/UBApplicationController.h"
@@ -38,7 +38,7 @@
 #include "web/UBWebController.h"
 
 #include "domain/UBGraphicsWidgetItem.h"
-#include "domain/UBGraphicsProxyWidget.h"
+#include "domain/UBAbstractGraphicsProxyWidget.h"
 
 #include "UBWidgetMessageAPI.h"
 
