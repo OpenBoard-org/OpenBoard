@@ -46,6 +46,15 @@ UBDocumentProxy::UBDocumentProxy()
     init();
 }
 
+UBDocumentProxy::UBDocumentProxy(const UBDocumentProxy &rValue) :
+    QObject()
+{
+    mPersistencePath = rValue.mPersistencePath;
+    mMetaDatas = rValue.mMetaDatas;
+    mIsModified = rValue.mIsModified;
+    mPageCount = rValue.mPageCount;
+}
+
 
 UBDocumentProxy::UBDocumentProxy(const QString& pPersistancePath)
     : mPageCount(0)
@@ -70,6 +79,10 @@ void UBDocumentProxy::init()
     setDefaultDocumentSize(UBSettings::settings()->pageSize->get().toSize());
 }
 
+bool UBDocumentProxy::theSameDocument(UBDocumentProxy *proxy)
+{
+    return  proxy && mPersistencePath == proxy->mPersistencePath;
+}
 
 UBDocumentProxy::~UBDocumentProxy()
 {

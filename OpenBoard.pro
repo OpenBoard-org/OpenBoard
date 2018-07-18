@@ -65,6 +65,11 @@ DEPENDPATH += src/pdf-merger
 INCLUDEPATH += src/pdf-merger
 include(src/pdf-merger/pdfMerger.pri)
 
+
+#plugins
+include(plugins/plugins.pri)
+INCLUDEPATH += plugins/cffadaptor/src
+
 #ThirdParty
 DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
 INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
@@ -82,7 +87,8 @@ FORMS += resources/forms/mainWindow.ui \
    resources/forms/trapFlash.ui \
    resources/forms/youTubePublishingDialog.ui \
    resources/forms/capturePublishing.ui \
-   resources/forms/intranetPodcastPublishingDialog.ui
+   resources/forms/intranetPodcastPublishingDialog.ui \
+    resources/forms/webPublishing.ui
 
 UB_ETC.files = resources/etc
 UB_I18N.files = resources/i18n/*.qm

@@ -43,6 +43,7 @@
 #include "domain/UBGraphicsPDFItem.h"
 
 #include "document/UBDocumentProxy.h"
+#include "document/UBDocumentController.h"
 
 #include "pdf/GraphicsPDFItem.h"
 
@@ -260,6 +261,16 @@ bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
         {
             QFile::remove(overlayName);
         }
+    }
+
+    return true;
+}
+
+bool UBExportFullPDF::associatedActionactionAvailableFor(const QModelIndex &selectedIndex)
+{
+    const UBDocumentTreeModel *docModel = qobject_cast<const UBDocumentTreeModel*>(selectedIndex.model());
+    if (!selectedIndex.isValid() || docModel->isCatalog(selectedIndex)) {
+        return false;
     }
 
     return true;

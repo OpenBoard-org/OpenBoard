@@ -635,6 +635,7 @@ void UBApplicationController::mirroringEnabled(bool enabled)
 }
 
 
+
 void UBApplicationController::closing()
 {
     if (mMirror)
@@ -642,12 +643,18 @@ void UBApplicationController::closing()
 
     if (mUninoteController)
     {
+        mUninoteController->hideWindow();
         mUninoteController->close();
     }
+
+    /*
 
     if (UBApplication::documentController)
         UBApplication::documentController->closing();
 
+    */
+
+    UBPersistenceManager::persistenceManager()->closing(); // ALTI/AOU - 20140616 : to update the file "documents/folders.xml"
 }
 
 

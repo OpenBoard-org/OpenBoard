@@ -15,7 +15,8 @@ HEADERS      += src/core/UB.h \
                 src/core/UBDownloadThread.h \
                 src/core/UBOpenSankoreImporter.h \
                 src/core/UBTextTools.h \
-    src/core/UBPersistenceWorker.h
+    src/core/UBPersistenceWorker.h \
+    $$PWD/UBForeignObjectsHandler.h
 
 SOURCES      += src/core/main.cpp \
                 src/core/UBApplication.cpp \
@@ -33,4 +34,5 @@ SOURCES      += src/core/main.cpp \
                 src/core/UBDownloadThread.cpp \
                 src/core/UBOpenSankoreImporter.cpp \
                 src/core/UBTextTools.cpp \
-    src/core/UBPersistenceWorker.cpp
+    src/core/UBPersistenceWorker.cpp \
+    $$PWD/UBForeignObjectsHandler.cpp

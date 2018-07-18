@@ -47,11 +47,13 @@ class UBDocumentProxy : public QObject
     public:
 
         UBDocumentProxy();
+        UBDocumentProxy(const UBDocumentProxy &rValue);
         UBDocumentProxy(const QString& pPersistencePath);
 
         virtual ~UBDocumentProxy();
 
         UBDocumentProxy * deepCopy() const;
+        bool theSameDocument(UBDocumentProxy *proxy);
 
         QString persistencePath() const;
 

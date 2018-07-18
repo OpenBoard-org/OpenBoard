@@ -102,6 +102,14 @@ void UBDocumentContainer::addPage(int index)
     emit addThumbnailRequired(this, index);
 }
 
+
+void UBDocumentContainer::addPixmapAt(const QPixmap *pix, int index)
+{
+    mDocumentThumbs.insert(index, pix);
+    emit documentThumbnailsUpdated(this);
+}
+
+
 void UBDocumentContainer::clearThumbPage()
 {
     qDeleteAll(mDocumentThumbs);

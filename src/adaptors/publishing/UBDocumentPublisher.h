@@ -1,30 +1,23 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
  *
- * Copyright (C) 2013 Open Education Foundation
+ * This file is part of Open-Sankoré.
  *
- * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
- * l'Education Numérique en Afrique (GIP ENA)
- *
- * This file is part of OpenBoard.
- *
- * OpenBoard is free software: you can redistribute it and/or modify
+ * Open-Sankoré is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3 of the License,
  * with a specific linking exception for the OpenSSL project's
  * "OpenSSL" library (or with modified versions of it that use the
  * same license as the "OpenSSL" library).
  *
- * OpenBoard is distributed in the hope that it will be useful,
+ * Open-Sankoré is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
+ * along with Open-Sankoré.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
 
 
 #ifndef UBDOCUMENTPUBLISHER_H
@@ -32,13 +25,10 @@
 
 #include <QtGui>
 #include <QtNetwork>
-#include <QDialog>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QDialogButtonBox>
-#include <QLabel>
-#include <QLineEdit>
-#include <QTextEdit>
+
+#include "ui_webPublishing.h"
+
+#define DOCPUBLICATION_URL     "http://planete.sankore.org/xwiki/bin/view/CreateResources/UniboardUpload?xpage=plain&outputSyntax=plain"
 
 typedef struct
 {
@@ -93,5 +83,59 @@ private:
     QLabel* mpDescLabel;
     QTextEdit* mpDescription;
     QDialogButtonBox* mpButtons;
+};
+
+
+class UBDocumentPublisher : public QObject
+{
+    Q_OBJECT;
+
+public:
+    explicit UBDocumentPublisher(UBDocumentProxy* sourceDocument, QObject *parent = 0);
+    virtual ~UBDocumentPublisher();
+
+    void publish();
+
+signals:
+
+    void loginDone();
+
+protected:
+
+    virtual void updateGoogleMapApiKey();
+    virtual void rasterizeScenes();
+    virtual void upgradeDocumentForPublishing();
+    virtual void generateWidgetPropertyScript(UBGraphicsW3CWidgetItem *widgetItem, int pageNumber);
+
+private slots:
+
+    void onFinished(QNetworkReply* reply);
+
+private:
+
+    UBDocumentProxy *mSourceDocument;
+
+    //UBDocumentProxy *mPublishingDocument;
+    QString mPublishingPath;
+    int mPublishingSize;
+
+
+    void init();
+    void sendUbw(QString username, QString password);
+    QString getBase64Of(QString stringToEncode);
+
+    QHBoxLayout* mpLayout;
+    QNetworkAccessManager* mpNetworkMgr;
+    QNetworkCookieJar* mpCookieJar;
+    QString mUsername;
+    QString mPassword;
+    QString mCrlf;
+    bool bLoginCookieSet;
+
+    void buildUbwFile();
+    QString mTmpZipFile;
+    QList<QNetworkCookie> mCookies;
+    sDocumentInfos mDocInfos;
+
 };
 #endif // UBDOCUMENTPUBLISHER_H

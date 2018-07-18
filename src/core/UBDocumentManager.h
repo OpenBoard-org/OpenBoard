@@ -45,9 +45,12 @@ class UBDocumentManager : public QObject
         static UBDocumentManager* documentManager();
         virtual ~UBDocumentManager();
 
-        QString importFileFilter();
-        QStringList importFileExtensions();
 
+        QString importFileFilter(bool notUbx = false);
+
+        QStringList importFileExtensions(bool notUbx = false);
+
+        QFileInfoList importUbx(const QString &Incomingfile, const QString &destination);
         UBDocumentProxy* importFile(const QFile& pFile, const QString& pGroup);
 
         int addFilesToDocument(UBDocumentProxy* pDocument, QStringList fileNames);

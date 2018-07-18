@@ -854,7 +854,6 @@ void UBBoardController::blackout()
     UBApplication::applicationController->blackout();
 }
 
-
 void UBBoardController::showKeyboard(bool show)
 {
     if(show)
@@ -1993,7 +1992,7 @@ void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool force
             && (mActiveSceneIndex >= 0) && mActiveSceneIndex != mMovingSceneIndex
             && (mActiveScene->isModified()))
     {
-        UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, isAnAutomaticBackup,forceImmediateSave);
+        UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex);
         updatePage(mActiveSceneIndex);
     }
 }

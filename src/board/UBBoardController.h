@@ -253,6 +253,8 @@ class UBBoardController : public UBDocumentContainer
 
         void saveData(SaveFlags fls = sf_none);
 
+        //void regenerateThumbnails();
+
     signals:
         void newPageAdded();
         void activeSceneChanged();

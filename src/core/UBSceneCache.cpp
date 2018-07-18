@@ -190,6 +190,33 @@ void UBSceneCache::moveScene(UBDocumentProxy* proxy, int sourceIndex, int target
 
 }
 
+void UBSceneCache::reassignDocProxy(UBDocumentProxy *newDocument, UBDocumentProxy *oldDocument)
+{
+    if (!newDocument || !oldDocument) {
+        return;
+    }
+    if (newDocument->pageCount() != oldDocument->pageCount()) {
+        return;
+    }
+    if (!QFileInfo(oldDocument->persistencePath()).exists()) {
+        return;
+    }
+    for (int i = 0; i < oldDocument->pageCount(); i++) {
+
+        UBSceneCacheID sourceKey(oldDocument, i);
+        UBGraphicsScene *currentScene = value(sourceKey);
+        if (currentScene) {
+            currentScene->setDocument(newDocument);
+        }
+        mCachedKeyFIFO.removeAll(sourceKey);
+        int count = QHash<UBSceneCacheID, UBGraphicsScene*>::remove(sourceKey);
+        mCachedSceneCount -= count;
+
+        insert(newDocument, i, currentScene);
+    }
+
+}
+
 
 void UBSceneCache::shiftUpScenes(UBDocumentProxy* proxy, int startIncIndex, int endIncIndex)
 {
