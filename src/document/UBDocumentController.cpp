@@ -347,8 +347,8 @@ UBDocumentTreeModel::UBDocumentTreeModel(QObject *parent) :
 
     UBDocumentTreeNode *myDocsNode = new UBDocumentTreeNode(UBDocumentTreeNode::Catalog, UBPersistenceManager::myDocumentsName, tr("My documents"));
     rootNode->addChild(myDocsNode);
-    UBDocumentTreeNode *modelsNode = new UBDocumentTreeNode(UBDocumentTreeNode::Catalog, UBPersistenceManager::modelsName, tr("Models"));
-    rootNode->addChild(modelsNode);
+    //UBDocumentTreeNode *modelsNode = new UBDocumentTreeNode(UBDocumentTreeNode::Catalog, UBPersistenceManager::modelsName, tr("Models"));
+    //rootNode->addChild(modelsNode);
     UBDocumentTreeNode *trashNode = new UBDocumentTreeNode(UBDocumentTreeNode::Catalog, trashName, tr("Trash"));
     rootNode->addChild(trashNode);
     UBDocumentTreeNode *untitledDocumentsNode = new UBDocumentTreeNode(UBDocumentTreeNode::Catalog, UBPersistenceManager::untitledDocumentsName, tr("Untitled documents"));
@@ -358,8 +358,7 @@ UBDocumentTreeModel::UBDocumentTreeModel(QObject *parent) :
 
     mRoot = index(0, 0, QModelIndex());
     mMyDocuments =  index(0, 0, QModelIndex());
-    mModels =  index(1, 0, QModelIndex());
-    mTrash =  index(2, 0, QModelIndex());
+    mTrash =  index(1, 0, QModelIndex());
     mUntitledDocuments = index(0, 0, mMyDocuments);
     mAscendingOrder = true;
 }
@@ -711,13 +710,8 @@ bool UBDocumentTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction act
 
     QList<QModelIndex> incomingIndexes = mimeData->indexes();
 
-    foreach (QModelIndex curIndex, incomingIndexes) {
-#ifdef Q_WS_MAC
-        if (inModel(curIndex)) {
-            return true;
-        }
-#endif
-
+    foreach (QModelIndex curIndex, incomingIndexes)
+    {
         //Issue N/C - NNE - 20140528 : use just the index on the first column
         if(curIndex.column() == 0){
             QModelIndex clonedTopLevel = copyIndexToNewParent(curIndex, parent, action == Qt::MoveAction ? aReference : aContentCopy);
@@ -1070,11 +1064,6 @@ bool UBDocumentTreeModel::inTrash(const QModelIndex &index) const
     return isDescendantOf(index, trashIndex());
 }
 
-bool UBDocumentTreeModel::inModel(const QModelIndex &index) const
-{
-    return isDescendantOf(index, modelsIndex());
-}
-
 bool UBDocumentTreeModel::inUntitledDocuments(const QModelIndex &index) const
 {
     return isDescendantOf(index, untitledDocumentsIndex());
@@ -1409,11 +1398,11 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
 
     bool isUBPage = event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardPage);
 
-    bool inModel = docModel->inModel(targetIndex) || targetIndex == docModel->modelsIndex();
+    bool inModel = false;
 
     //just check the first index, because the selection is exclusive between
     //myDocuments, Model and Tash
-    bool isSourceAModel = docModel->inModel(dropIndex.first());
+    bool isSourceAModel = false;
 
     //issue 1629 - NNE - 20131212
     bool targetIsInTrash = docModel->inTrash(targetIndex) || docModel->trashIndex() == targetIndex;
@@ -1502,27 +1491,12 @@ bool UBDocumentTreeView::isAcceptable(const QModelIndex &dragIndex, const QModel
         return false;
     }
 
-    if (fullModel() && fullModel()->inModel(dragIndexSource)) {
-        if (atIndexSource == fullModel()->modelsIndex() || fullModel()->inModel(atIndexSource)) {
-            return false; //do not accept drop from model to itself
-        }
-    }
-
     return true;
 }
 
 Qt::DropAction UBDocumentTreeView::acceptableAction(const QModelIndex &dragIndex, const QModelIndex &atIndex)
-{
-    if (fullModel()->inModel(dragIndex)) {
-        if (atIndex == fullModel()->trashIndex() || fullModel()->inTrash(atIndex)) {
-            return Qt::MoveAction; //do not accept drop from model to trash, only "delete" command accepted
-        }
-        return Qt::CopyAction;
-    } else {
-        return Qt::MoveAction;
-    }
-
-    return Qt::IgnoreAction;
+{    
+    return Qt::MoveAction;
 }
 
 void UBDocumentTreeView::updateIndexEnvirons(const QModelIndex &index)
@@ -1844,9 +1818,7 @@ void UBDocumentController::TreeViewSelectionChanged(const QItemSelection &select
 
             UBDocumentTreeModel *model = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel;
 
-            bool sameFolder = (model->inModel(sourceIndex1) && model->inModel(sourceIndex2));
-
-            sameFolder |= (model->inTrash(sourceIndex1) && model->inTrash(sourceIndex2));
+            bool sameFolder = (model->inTrash(sourceIndex1) && model->inTrash(sourceIndex2));
 
             sameFolder |= (model->inMyDocuments(sourceIndex1) && model->inMyDocuments(sourceIndex2));
 
@@ -2022,14 +1994,8 @@ void UBDocumentController::setupViews()
         mDocumentUI->documentTreeView->hideColumn(1);
         mDocumentUI->documentTreeView->hideColumn(2);
 
-        mDocumentUI->sortOrder->hide();
-
         connect(mDocumentUI->sortKind, SIGNAL(activated(int)), this, SLOT(onSortKindChanged(int)));
         connect(mDocumentUI->sortOrder, SIGNAL(activated(int)), this, SLOT(onSortOrderChanged(int)));
-
-        connect(mDocumentUI->collapseAll, SIGNAL(clicked()), this, SLOT(collapseAll()));
-
-        connect(mDocumentUI->expandAll, SIGNAL(clicked()), this, SLOT(expandAll()));
 
         connect(mDocumentUI->documentTreeView->itemDelegate(), SIGNAL(closeEditor(QWidget*,QAbstractItemDelegate::EndEditHint) ), mDocumentUI->documentTreeView, SLOT(adjustSize()));
         connect(mDocumentUI->documentTreeView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(TreeViewSelectionChanged(QItemSelection,QItemSelection)));
@@ -2083,22 +2049,12 @@ void UBDocumentController::sortDocuments(int kind, int order)
     if(kind == UBDocumentController::CreationDate){
         mSortFilterProxyModel->setSortRole(UBDocumentTreeModel::CreationDate);
         mSortFilterProxyModel->sort(1, sortOrder);
-
-        mDocumentUI->documentTreeView->showColumn(1);
-        mDocumentUI->documentTreeView->hideColumn(2);
     }else if(kind == UBDocumentController::UpdateDate){
         mSortFilterProxyModel->setSortRole(UBDocumentTreeModel::UpdateDate);
         mSortFilterProxyModel->sort(2, sortOrder);
-
-        mDocumentUI->documentTreeView->hideColumn(1);
-        mDocumentUI->documentTreeView->showColumn(2);
     }else{
         mSortFilterProxyModel->setSortRole(Qt::DisplayRole);
         mSortFilterProxyModel->sort(0, sortOrder);
-
-        //alphabetical order or nothing
-        mDocumentUI->documentTreeView->hideColumn(1);
-        mDocumentUI->documentTreeView->hideColumn(2);
     }
 }
 
@@ -2114,11 +2070,6 @@ void UBDocumentController::onSortOrderChanged(int index)
 void UBDocumentController::onSortKindChanged(int index)
 {
     int orderIndex = mDocumentUI->sortOrder->currentIndex();
-
-    if(index == -1 || index == 0)
-        mDocumentUI->sortOrder->hide();
-    else
-        mDocumentUI->sortOrder->show();
 
     sortDocuments(index, orderIndex);
 }
@@ -2762,10 +2713,7 @@ void UBDocumentController::thumbnailPageDoubleClicked(QGraphicsItem* item, int i
     QModelIndex selectedIndex = firstSelectedTreeIndex();
 
     if (selectedIndex.isValid()) {
-        if (docModel->inModel(selectedIndex)) {
-            UBApplication::showMessage(tr("The model documents are not editable. Copy it to \"My documents\" to be able to work with"));
-            return;
-        } else if (docModel->inTrash(selectedIndex)) {
+        if (docModel->inTrash(selectedIndex)) {
             return;
         }
     }
@@ -3070,9 +3018,8 @@ void UBDocumentController::updateActions()
     }
 
     bool trashSelected = docModel->inTrash(selectedIndex) || selectedIndex == docModel->trashIndex()  ? true : false;
-    bool modelSelected = docModel->inModel(selectedIndex) || selectedIndex == docModel->modelsIndex() ? true : false;
 
-    mMainWindow->actionNewDocument->setEnabled(docModel->newNodeAllowed(selectedIndex) && !modelSelected);
+    mMainWindow->actionNewDocument->setEnabled(docModel->newNodeAllowed(selectedIndex));
     mMainWindow->actionNewFolder->setEnabled(docModel->newNodeAllowed(selectedIndex));
     mMainWindow->actionExport->setEnabled((docSelected || pageSelected || groupSelected) && !trashSelected);
     updateExportSubActions(selectedIndex);
@@ -3080,7 +3027,7 @@ void UBDocumentController::updateActions()
     bool firstSceneSelected = false;
 
     if (docSelected) {
-        mMainWindow->actionDuplicate->setEnabled(!trashSelected && !modelSelected);
+        mMainWindow->actionDuplicate->setEnabled(!trashSelected);
 
     } else if (pageSelected) {
         QList<QGraphicsItem*> selection = mDocumentUI->thumbnailWidget->selectedItems();
@@ -3104,7 +3051,7 @@ void UBDocumentController::updateActions()
         mMainWindow->actionDuplicate->setEnabled(false);
     }
 
-    mMainWindow->actionOpen->setEnabled((docSelected || pageSelected) && !trashSelected && !modelSelected);
+    mMainWindow->actionOpen->setEnabled((docSelected || pageSelected) && !trashSelected);
     mMainWindow->actionRename->setEnabled(docModel->isOkToRename(selectedIndex));
 
     mMainWindow->actionAddToWorkingDocument->setEnabled(pageSelected
@@ -3133,7 +3080,7 @@ void UBDocumentController::updateActions()
         break;
     }
 
-    mMainWindow->actionDocumentAdd->setEnabled((docSelected || pageSelected) && !trashSelected && !modelSelected);
+    mMainWindow->actionDocumentAdd->setEnabled((docSelected || pageSelected) && !trashSelected);
     mMainWindow->actionImport->setEnabled(!trashSelected);
 
 }
@@ -3344,7 +3291,7 @@ void UBDocumentController::refreshDocumentThumbnailsView(UBDocumentContainer*)
 
     mDocumentUI->thumbnailWidget->setGraphicsItems(items, itemsPath, labels, UBApplication::mimeTypeUniboardPage);
 
-    if (docModel->inTrash(current) || docModel->inModel(current)) {
+    if (docModel->inTrash(current)) {
         mDocumentUI->thumbnailWidget->setDragEnabled(false);
     } else {
         mDocumentUI->thumbnailWidget->setDragEnabled(true);

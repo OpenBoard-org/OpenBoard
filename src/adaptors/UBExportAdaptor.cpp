@@ -55,22 +55,25 @@ UBExportAdaptor::~UBExportAdaptor()
     // NOOP
 }
 
-
 QString UBExportAdaptor::askForFileName(UBDocumentProxy* pDocument, const QString& pDialogTitle)
 {
     QString defaultName;
 
-    if (pDocument->metaData(UBSettings::documentGroupName).toString().length() > 0)
-    {
-        defaultName += pDocument->metaData(UBSettings::documentGroupName).toString() + QString(" ");
-    }
-
     defaultName += pDocument->metaData(UBSettings::documentName).toString() + exportExtention();
 
     defaultName = UBFileSystemUtils::cleanName(defaultName);
+
     QString defaultPath = UBSettings::settings()->lastExportFilePath->get().toString() + "/" + defaultName;
 
-    QString filename = QFileDialog::getSaveFileName(UBApplication::mainWindow, pDialogTitle, defaultPath);
+    bool useNativeDialog = true;
+#ifdef Q_OS_MAC
+    int versionMac = qMacVersion();
+    if (versionMac == QSysInfo::MV_Unknown || versionMac >= 11){ // version 11 is MacOSX 10.9 Mavericks
+        useNativeDialog = false;
+    }
+#endif
+
+    QString filename = QFileDialog::getSaveFileName(UBApplication::mainWindow, pDialogTitle, defaultPath, QString(), 0, useNativeDialog?(QFileDialog::Option)0:QFileDialog::DontUseNativeDialog);
 
     if (filename.size() == 0)
     {

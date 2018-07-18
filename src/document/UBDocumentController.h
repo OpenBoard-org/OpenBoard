@@ -199,7 +199,6 @@ public:
     bool newNodeAllowed(const QModelIndex &pSelectedIndex)  const;
     QModelIndex goTo(const QString &dir);
     bool inTrash(const QModelIndex &index) const;
-    bool inModel(const QModelIndex &index) const;
     bool inUntitledDocuments(const QModelIndex &index) const;
     bool isCatalog(const QModelIndex &index) const {return nodeFromIndex(index)->nodeType() == UBDocumentTreeNode::Catalog;}
     bool isDocument(const QModelIndex &index) const {return nodeFromIndex(index)->nodeType() == UBDocumentTreeNode::Document;}
@@ -216,7 +215,6 @@ public:
     QString adjustNameForParentIndex(const QString &pName, const QModelIndex &pIndex);
 
     QPersistentModelIndex myDocumentsIndex() const {return mMyDocuments;}
-    QPersistentModelIndex modelsIndex() const {return mModels;}
     QPersistentModelIndex trashIndex() const {return mTrash;}
     QPersistentModelIndex untitledDocumentsIndex() const {return mUntitledDocuments;}
     UBDocumentTreeNode *nodeFromIndex(const QModelIndex &pIndex) const;
@@ -251,7 +249,6 @@ private:
     void updateIndexNameBindings(UBDocumentTreeNode *nd);
     QPersistentModelIndex mRoot;
     QPersistentModelIndex mMyDocuments;
-    QPersistentModelIndex mModels;
     QPersistentModelIndex mTrash;
     QPersistentModelIndex mUntitledDocuments;
     QList<UBDocumentProxy*> mNewDocuments;
@@ -360,7 +357,6 @@ class UBDocumentController : public UBDocumentContainer
 
     enum SortKind
     {
-        Reset = 0,
         CreationDate,
         UpdateDate,
         Alphabetical

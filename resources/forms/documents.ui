@@ -54,82 +54,6 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
-             <widget class="QPushButton" name="collapseAll">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="toolTip">
-               <string>Collapse All</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="../OpenBoard.qrc">
-                <normaloff>:/images/collapse-all.png</normaloff>:/images/collapse-all.png</iconset>
-              </property>
-              <property name="flat">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="expandAll">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="toolTip">
-               <string>Expand All</string>
-              </property>
-              <property name="text">
-               <string notr="true"/>
-              </property>
-              <property name="icon">
-               <iconset resource="../OpenBoard.qrc">
-                <normaloff>:/images/expand-all.png</normaloff>:/images/expand-all.png</iconset>
-              </property>
-              <property name="flat">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QComboBox" name="sortKind">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>4</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <item>
-               <property name="text">
-                <string>Select a sort</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Creation date</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Update date</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Alphabetical order</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item>
              <widget class="QComboBox" name="sortOrder">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -145,6 +69,31 @@
               <item>
                <property name="text">
                 <string>Descending order</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="sortKind">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>4</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <item>
+               <property name="text">
+                <string>Creation date</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Update date</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Alphabetical order</string>
                </property>
               </item>
              </widget>
@@ -344,8 +293,6 @@
    <header>document/UBDocumentController.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../OpenBoard.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

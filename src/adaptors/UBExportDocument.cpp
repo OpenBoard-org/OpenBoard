@@ -35,6 +35,7 @@
 #include "core/UBApplication.h"
 
 #include "document/UBDocumentProxy.h"
+#include "document/UBDocumentController.h"
 
 #include "globals/UBGlobals.h"
 
@@ -110,4 +111,14 @@ QString UBExportDocument::exportExtention()
 QString UBExportDocument::exportName()
 {
     return tr("Export to OpenBoard Format");
+}
+
+bool UBExportDocument::associatedActionactionAvailableFor(const QModelIndex &selectedIndex)
+{
+    const UBDocumentTreeModel *docModel = qobject_cast<const UBDocumentTreeModel*>(selectedIndex.model());
+    if (!selectedIndex.isValid() || docModel->isCatalog(selectedIndex)) {
+        return false;
+    }
+
+    return true;
 }
