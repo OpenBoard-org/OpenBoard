@@ -476,7 +476,7 @@ QVariant UBDocumentTreeModel::data(const QModelIndex &index, int role) const
     }
 
     if(role == Qt::BackgroundRole){
-        if (isConstant(index) || dataNode->nodeType() == UBDocumentTreeNode::Catalog) {
+        if (isConstant(index)) {
             return QBrush(0xD9DFEB);
         }
 
@@ -500,12 +500,12 @@ QVariant UBDocumentTreeModel::data(const QModelIndex &index, int role) const
                 } else if (isConstant(index)) {
                     return QIcon(":images/libpalette/ApplicationsCategory.svg");
                 }
-                switch (static_cast<int>(dataNode->nodeType())) {
-                case UBDocumentTreeNode::Catalog :
-                    return QIcon(":images/folder.png");
-                case UBDocumentTreeNode::Document :
-                    return QIcon(":images/toolbar/board.png");
-                }
+//                switch (static_cast<int>(dataNode->nodeType())) {
+//                case UBDocumentTreeNode::Catalog :
+//                    return QIcon(":images/folder.png");
+//                case UBDocumentTreeNode::Document :
+//                    return QIcon(":images/toolbar/board.png");
+//                }
             }
             break;
         case (Qt::FontRole) :
