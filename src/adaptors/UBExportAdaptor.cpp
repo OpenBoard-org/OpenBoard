@@ -67,7 +67,7 @@ QString UBExportAdaptor::askForFileName(UBDocumentProxy* pDocument, const QStrin
 
     bool useNativeDialog = true;
 #ifdef Q_OS_MAC
-    int versionMac = qMacVersion();
+    int versionMac = QSysInfo::macVersion();
     if (versionMac == QSysInfo::MV_Unknown || versionMac >= 11){ // version 11 is MacOSX 10.9 Mavericks
         useNativeDialog = false;
     }
