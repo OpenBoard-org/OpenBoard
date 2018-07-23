@@ -2107,6 +2107,9 @@ void UBDocumentController::show()
 {
     selectDocument(mBoardController->selectedDocument());
 
+    //to be sure thumbnails will be up-to-date
+    reloadThumbnails();
+
     updateActions();
 
     if(!mToolsPalette)
@@ -2777,7 +2780,7 @@ void UBDocumentController::addToDocument()
         UBMetadataDcSubsetAdaptor::persist(mBoardController->selectedDocument());
         mBoardController->reloadThumbnails();
 
-        //UBApplication::boardController->documentNavigator()->generateThumbnails(this);
+        emit UBApplication::boardController->documentThumbnailsUpdated(this);
         UBApplication::applicationController->showBoard();
 
         mBoardController->setActiveDocumentScene(newActiveSceneIndex);
@@ -3138,7 +3141,7 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
         if(UBApplication::mainWindow->yesNoQuestion(tr("Remove Page"),tr("This is an irreversible action!") +"\n\n" + tr("Are you sure you want to remove %n page(s) from the selected document '%1'?", "", sceneIndexes.count()).arg(proxy->metaData(UBSettings::documentName).toString())))
         {
             UBDocumentContainer::deletePages(sceneIndexes);
-            //mBoardController->regenerateThumbnails();
+            emit UBApplication::boardController->documentThumbnailsUpdated(this);
 
             proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
             UBMetadataDcSubsetAdaptor::persist(proxy);
