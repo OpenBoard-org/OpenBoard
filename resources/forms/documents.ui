@@ -34,6 +34,12 @@
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QSplitter" name="splitter">
+        <property name="minimumSize">
+         <size>
+          <width>400</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -42,6 +48,9 @@
         </property>
         <property name="handleWidth">
          <number>6</number>
+        </property>
+        <property name="childrenCollapsible">
+         <bool>false</bool>
         </property>
         <widget class="QWidget" name="topLeftWidget" native="true">
          <property name="sizePolicy">
@@ -83,17 +92,17 @@
               </property>
               <item>
                <property name="text">
+                <string>Alphabetical order</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
                 <string>Creation date</string>
                </property>
               </item>
               <item>
                <property name="text">
                 <string>Update date</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Alphabetical order</string>
                </property>
               </item>
              </widget>
@@ -104,7 +113,7 @@
            <widget class="UBDocumentTreeView" name="documentTreeView">
             <property name="minimumSize">
              <size>
-              <width>400</width>
+              <width>0</width>
               <height>0</height>
              </size>
             </property>

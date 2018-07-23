@@ -93,6 +93,8 @@ static bool lessThan(UBDocumentTreeNode *lValue, UBDocumentTreeNode *rValue)
     return false;
 }
 
+
+
 UBDocumentReplaceDialog::UBDocumentReplaceDialog(const QString &pIncommingName, const QStringList &pFileList, QWidget *parent, Qt::WindowFlags pFlags)
     : QDialog(parent, pFlags)
     , mFileNameList(pFileList)
@@ -1991,6 +1993,12 @@ void UBDocumentController::setupViews()
         mDocumentUI->documentTreeView->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
         mDocumentUI->documentTreeView->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
 
+        //set sizes (left and right sides of the splitter) for the splitter here because it cannot be done in the form editor.
+        const int leftSplitterSize = 100;
+        const int rightSplitterSize = 1600;
+        QList<int> splitterSizes = { leftSplitterSize, rightSplitterSize };
+        mDocumentUI->splitter->setSizes(splitterSizes);
+
         mDocumentUI->documentTreeView->hideColumn(1);
         mDocumentUI->documentTreeView->hideColumn(2);
 
@@ -2804,14 +2812,14 @@ bool UBDocumentController::isOKToOpenDocument(UBDocumentProxy* proxy)
 
     if (docVersion.isEmpty() || docVersion.startsWith("4.1") || docVersion.startsWith("4.2")
             || docVersion.startsWith("4.3") || docVersion.startsWith("4.4") || docVersion.startsWith("4.5")
-            || docVersion.startsWith("4.6") || docVersion.startsWith("4.7")) // TODO UB 4.8 update if necessary
+            || docVersion.startsWith("4.6") || docVersion.startsWith("4.8")) // TODO UB 4.7 update if necessary
     {
         return true;
     }
     else
     {
         if (UBApplication::mainWindow->yesNoQuestion(tr("Open Document"),
-                tr("The document '%1' has been generated with a newer version of Sankore (%2). By opening it, you may lose some information. Do you want to proceed?")
+                tr("The document '%1' has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?")
                     .arg(proxy->metaData(UBSettings::documentName).toString())
                     .arg(docVersion)))
         {
