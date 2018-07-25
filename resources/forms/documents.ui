@@ -92,17 +92,17 @@
               </property>
               <item>
                <property name="text">
-                <string>Alphabetical order</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
                 <string>Creation date</string>
                </property>
               </item>
               <item>
                <property name="text">
                 <string>Update date</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Alphabetical order</string>
                </property>
               </item>
              </widget>

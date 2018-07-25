@@ -104,6 +104,9 @@ QPointer<QSettings> UBSettings::sAppSettings = 0;
 
 const int UBSettings::maxThumbnailWidth = 400;
 const int UBSettings::defaultThumbnailWidth = 150;
+const int UBSettings::defaultSortKind = 0;
+const int UBSettings::defaultSortOrder = 0;
+
 const int UBSettings::defaultLibraryIconSize = 80;
 
 const int UBSettings::defaultGipWidth = 150;
@@ -425,7 +428,9 @@ void UBSettings::init()
     // removed in version 4.4.b.2
     mUserSettings->remove("Podcast/RecordMicrophone");
 
-    documentThumbnailWidth = new UBSetting(this, "Document", "ThumbnailWidth", UBSettings::defaultThumbnailWidth);
+    documentThumbnailWidth  = new UBSetting(this, "Document", "ThumbnailWidth", UBSettings::defaultThumbnailWidth);
+    documentSortKind        = new UBSetting(this, "Document", "SortKind", UBSettings::defaultSortKind);
+    documentSortOrder       = new UBSetting(this, "Document", "SortOrder", UBSettings::defaultSortOrder);
 
     libraryShowDetailsForLocalItems = new UBSetting(this, "Library", "ShowDetailsForLocalItems", false);
 

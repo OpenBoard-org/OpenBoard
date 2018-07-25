@@ -215,6 +215,8 @@ class UBSettings : public QObject
 
         static const int maxThumbnailWidth;
         static const int defaultThumbnailWidth;
+        static const int defaultSortKind;
+        static const int defaultSortOrder;
         static const int defaultLibraryIconSize;
 
         static const int defaultImageWidth;
@@ -372,6 +374,8 @@ class UBSettings : public QObject
         UBSetting* favoritesNativeToolUris;
 
         UBSetting* documentThumbnailWidth;
+        UBSetting* documentSortKind;
+        UBSetting* documentSortOrder;
         UBSetting* imageThumbnailWidth;
         UBSetting* videoThumbnailWidth;
         UBSetting* shapeThumbnailWidth;
