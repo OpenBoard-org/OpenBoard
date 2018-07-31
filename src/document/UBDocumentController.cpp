@@ -502,12 +502,13 @@ QVariant UBDocumentTreeModel::data(const QModelIndex &index, int role) const
                 } else if (isConstant(index)) {
                     return QIcon(":images/libpalette/ApplicationsCategory.svg");
                 }
-//                switch (static_cast<int>(dataNode->nodeType())) {
-//                case UBDocumentTreeNode::Catalog :
-//                    return QIcon(":images/folder.png");
+                switch (static_cast<int>(dataNode->nodeType()))
+                {
+                    case UBDocumentTreeNode::Catalog :
+                        return QIcon(":images/folder.png");
 //                case UBDocumentTreeNode::Document :
 //                    return QIcon(":images/toolbar/board.png");
-//                }
+                }
             }
             break;
         case (Qt::FontRole) :
