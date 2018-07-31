@@ -445,7 +445,7 @@ class UBDocumentController : public UBDocumentContainer
 
         //N/C - NNE - 20140403
         void onSortKindChanged(int index);
-        void onSortOrderChanged(int index);
+        void onSortOrderChanged(bool order);
         void collapseAll();
         void expandAll();
 
@@ -487,9 +487,6 @@ protected:
         bool mCurrentIndexMoved;
 
         UBSortFilterProxyModel *mSortFilterProxyModel;
-
-        //N/C - NNE - 20140407
-        bool mUserHasChangedSortOrder;
 
     public slots:
         void TreeViewSelectionChanged(const QModelIndex &current, const QModelIndex &previous);

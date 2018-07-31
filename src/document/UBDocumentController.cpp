@@ -1643,8 +1643,6 @@ UBDocumentController::UBDocumentController(UBMainWindow* mainWindow)
     setupToolbar();
     connect(this, SIGNAL(exportDone()), mMainWindow, SLOT(onExportDone()));
     connect(this, SIGNAL(documentThumbnailsUpdated(UBDocumentContainer*)), this, SLOT(refreshDocumentThumbnailsView(UBDocumentContainer*)));
-
-    mUserHasChangedSortOrder = false;
 }
 
 UBDocumentController::~UBDocumentController()
@@ -1980,13 +1978,16 @@ void UBDocumentController::setupViews()
 
         mSortFilterProxyModel->setSourceModel(model);
 
+        // sort documents according to preferences
         int sortKind  = UBSettings::settings()->documentSortKind->get().toInt();
-        int sortOrder = UBSettings::settings()->documentSortOrder->get().toInt();
-        mUserHasChangedSortOrder = true;
+        int sortOrder = UBSettings::settings()->documentSortOrder->get().toInt();        
+
         sortDocuments(sortKind, sortOrder);
 
+        // update icon and button
         mDocumentUI->sortKind->setCurrentIndex(sortKind);
-        mDocumentUI->sortOrder->setCurrentIndex(sortOrder);
+        if (sortOrder == UBDocumentController::DESC)
+            mDocumentUI->sortOrder->setChecked(true);
 
         mDocumentUI->documentTreeView->setModel(mSortFilterProxyModel);
 
@@ -2002,15 +2003,15 @@ void UBDocumentController::setupViews()
 
         //set sizes (left and right sides of the splitter) for the splitter here because it cannot be done in the form editor.
         const int leftSplitterSize = 100;
-        const int rightSplitterSize = 900;
+        const int rightSplitterSize = 1200;
         QList<int> splitterSizes = { leftSplitterSize, rightSplitterSize };
         mDocumentUI->splitter->setSizes(splitterSizes);
 
-        mDocumentUI->documentTreeView->hideColumn(1);
+        //mDocumentUI->documentTreeView->hideColumn(1);
         mDocumentUI->documentTreeView->hideColumn(2);
 
         connect(mDocumentUI->sortKind, SIGNAL(activated(int)), this, SLOT(onSortKindChanged(int)));
-        connect(mDocumentUI->sortOrder, SIGNAL(activated(int)), this, SLOT(onSortOrderChanged(int)));
+        connect(mDocumentUI->sortOrder, SIGNAL(toggled(bool)), this, SLOT(onSortOrderChanged(bool)));
 
         connect(mDocumentUI->documentTreeView->itemDelegate(), SIGNAL(closeEditor(QWidget*,QAbstractItemDelegate::EndEditHint) ), mDocumentUI->documentTreeView, SLOT(adjustSize()));
         connect(mDocumentUI->documentTreeView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(TreeViewSelectionChanged(QItemSelection,QItemSelection)));
@@ -2046,20 +2047,8 @@ void UBDocumentController::setupViews()
 void UBDocumentController::sortDocuments(int kind, int order)
 {
     Qt::SortOrder sortOrder = Qt::AscendingOrder;
-
-    //if the user hasn't change the sort
-    //set order to its default value according to
-    //the kind of sort
-    if(!mUserHasChangedSortOrder){
-        if(kind == UBDocumentController::CreationDate || kind == UBDocumentController::UpdateDate){
-            sortOrder = Qt::DescendingOrder;
-            mDocumentUI->sortOrder->setCurrentIndex(1);
-        }else{
-            mDocumentUI->sortOrder->setCurrentIndex(0);
-        }
-    }else if(order == UBDocumentController::DESC){
+    if(order == UBDocumentController::DESC)
         sortOrder = Qt::DescendingOrder;
-    }
 
     if(kind == UBDocumentController::CreationDate){
         mSortFilterProxyModel->setSortRole(UBDocumentTreeModel::CreationDate);
@@ -2073,22 +2062,21 @@ void UBDocumentController::sortDocuments(int kind, int order)
     }
 }
 
-void UBDocumentController::onSortOrderChanged(int index)
+
+void UBDocumentController::onSortOrderChanged(bool order)
 {
     int kindIndex = mDocumentUI->sortKind->currentIndex();
+    int orderIndex = order ? UBDocumentController::DESC : UBDocumentController::ASC;
 
-    mUserHasChangedSortOrder = true;
-
-    sortDocuments(kindIndex, index);
+    sortDocuments(kindIndex, orderIndex);
 }
 
 void UBDocumentController::onSortKindChanged(int index)
 {
-    int orderIndex = mDocumentUI->sortOrder->currentIndex();
+    int orderIndex = mDocumentUI->sortOrder->isChecked() ? UBDocumentController::DESC : UBDocumentController::ASC;
 
     sortDocuments(index, orderIndex);
 }
-//N/C - NNE - 20140403 : END
 
 QWidget* UBDocumentController::controlView()
 {
