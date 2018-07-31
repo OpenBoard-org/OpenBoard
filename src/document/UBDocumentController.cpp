@@ -1686,7 +1686,7 @@ void UBDocumentController::selectDocument(UBDocumentProxy* proxy, bool setAsCurr
         if (proxy != mBoardController->selectedDocument()) // only if wanted Document is different from document actually on Board,  // ALTI/AOU - 20140217
         {
             //issue 1629 - NNE - 20131105 : When set a current document, change in the board controller
-            mBoardController->setActiveDocumentScene(proxy, 0, false);
+            mBoardController->setActiveDocumentScene(proxy, 0, false, onImport);
         }
     }
 

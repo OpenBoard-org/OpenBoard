@@ -1537,7 +1537,7 @@ void UBBoardController::setActiveDocumentScene(int pSceneIndex)
     setActiveDocumentScene(selectedDocument(), pSceneIndex);
 }
 
-void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, const int pSceneIndex, bool forceReload)
+void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, const int pSceneIndex, bool forceReload, bool onImport)
 {
     saveViewState();
 
@@ -1554,9 +1554,15 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
 
     if (targetScene)
     {
-        freezeW3CWidgets(true);
-
-        ClearUndoStack();
+        if (mActiveScene && !onImport)
+        {
+            persistCurrentScene();
+            freezeW3CWidgets(true);
+            ClearUndoStack();
+        }else
+        {
+            UBApplication::undoStack->clear();
+        }
 
         mActiveScene = targetScene;
         mActiveSceneIndex = index;
