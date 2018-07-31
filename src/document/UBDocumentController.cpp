@@ -2069,6 +2069,8 @@ void UBDocumentController::onSortOrderChanged(bool order)
     int orderIndex = order ? UBDocumentController::DESC : UBDocumentController::ASC;
 
     sortDocuments(kindIndex, orderIndex);
+
+    UBSettings::settings()->documentSortOrder->setInt(orderIndex);
 }
 
 void UBDocumentController::onSortKindChanged(int index)
@@ -2076,6 +2078,8 @@ void UBDocumentController::onSortKindChanged(int index)
     int orderIndex = mDocumentUI->sortOrder->isChecked() ? UBDocumentController::DESC : UBDocumentController::ASC;
 
     sortDocuments(index, orderIndex);
+
+    UBSettings::settings()->documentSortKind->setInt(index);
 }
 
 QWidget* UBDocumentController::controlView()
