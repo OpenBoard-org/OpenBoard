@@ -2004,7 +2004,9 @@ void UBDocumentController::setupViews()
         //set sizes (left and right sides of the splitter) for the splitter here because it cannot be done in the form editor.
         const int leftSplitterSize = 100;
         const int rightSplitterSize = 1200;
-        QList<int> splitterSizes = { leftSplitterSize, rightSplitterSize };
+        QList<int> splitterSizes;
+        splitterSizes.append(leftSplitterSize);
+        splitterSizes.append(rightSplitterSize);
         mDocumentUI->splitter->setSizes(splitterSizes);
 
         //mDocumentUI->documentTreeView->hideColumn(1);

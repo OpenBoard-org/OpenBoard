@@ -33,11 +33,11 @@
 #include "UBGlobals.h"
 #include "UBCFFConstants.h"
 
-THIRD_PARTY_WARNINGS_DISABLE
+//THIRD_PARTY_WARNINGS_DISABLE
 #include "quazip.h"
 #include "quazipfile.h"
 #include "quazipfileinfo.h"
-THIRD_PARTY_WARNINGS_ENABLE
+//THIRD_PARTY_WARNINGS_ENABLE
 
 UBCFFAdaptor::UBCFFAdaptor()
 {}
