@@ -526,6 +526,10 @@ private:
             QString reqExt = element.attribute(aReqExt);
             if (reqExt == vReqExt) { //pdf reference
                 QString ref = element.attribute(aHref);
+                int i = ref.indexOf("#page");
+                QString dest = ref.replace(i, ref.length()-i, "");
+                if (!QFileInfo::exists(dest))
+                    cureNCopy(dest, false);
                 if (ref.isEmpty()) {
                     return;
                 }
@@ -553,14 +557,23 @@ private:
         }
     }
 
-    QString cureNCopy(const QString &relativePath)
+    QString cureNCopy(const QString &relativePath, bool createNewUuid=true)
     {
         QString relative = relativePath;
-        QUuid newUuid = QUuid::createUuid();
-        QString newPath = relative.replace(QRegExp("\\{.*\\}"), newUuid.toString());
-        cp_rf(mFromDir + "/" + relativePath, mToDir + "/" + newPath);
+        if (createNewUuid)
+        {
+            QUuid newUuid = QUuid::createUuid();
+            QString newPath = relative.replace(QRegExp("\\{.*\\}"), newUuid.toString());
 
-        return newPath;
+            cp_rf(mFromDir + "/" + relativePath, mToDir + "/" + newPath);
+
+            return newPath;
+        }
+        else
+        {
+            cp_rf(mFromDir + "/" + relativePath, mToDir + "/" + relativePath);
+            return relativePath;
+        }
     }
 
 private:
