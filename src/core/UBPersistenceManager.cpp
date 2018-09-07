@@ -943,7 +943,7 @@ QString UBPersistenceManager::generateUniqueDocumentPath(const QString& baseFold
     QDateTime now = QDateTime::currentDateTime();
     QString dirName = now.toString("yyyy-MM-dd hh-mm-ss.zzz");
 
-    return baseFolder + QString("/Sankore Document %1").arg(dirName);
+    return baseFolder + QString("/OpenBoard Document %1").arg(dirName);
 }
 
 QString UBPersistenceManager::generateUniqueDocumentPath()
