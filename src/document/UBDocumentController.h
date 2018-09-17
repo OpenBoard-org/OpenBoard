@@ -386,7 +386,7 @@ class UBDocumentController : public UBDocumentContainer
         inline DeletionType deletionTypeForSelection(LastSelectedElementType pTypeSelection
                                                      , const QModelIndex &selectedIndex
                                                      , UBDocumentTreeModel *docModel) const;
-        bool firstSceneSelected() const;
+        bool firstAndOnlySceneSelected() const;
         QWidget *mainWidget() const {return mDocumentWidget;}
 
         //issue 1629 - NNE - 20131212

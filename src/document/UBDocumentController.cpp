@@ -456,9 +456,9 @@ QVariant UBDocumentTreeModel::data(const QModelIndex &index, int role) const
                 QDateTime d;
 
                 if(index.column() == 1){
-                    d = proxy->metaData(UBSettings::documentDate).toDateTime();
+                    d = proxy->documentDate();
                 }else if(index.column() == 2){
-                    d = proxy->metaData(UBSettings::documentUpdatedAt).toDateTime();
+                    d = proxy->lastUpdate();
                 }
 
                 displayText = d.toString("dd/MM/yyyy hh:mm");
@@ -1571,15 +1571,13 @@ void UBDocumentTreeItemDelegate::processChangedText(const QString &str) const
 
 bool UBDocumentTreeItemDelegate::validateString(const QString &str) const
 {
-    return QRegExp("[^\\/\\:\\?\\*\\|\\<\\>\\\"]{1,}").exactMatch(str)
-            && !mExistingFileNames.contains(str);
+    return !mExistingFileNames.contains(str);
 
 }
 
 QWidget *UBDocumentTreeItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     Q_UNUSED(option);
-
     //N/C - NNE - 20140407 : Add the test for the index column.
     if(index.column() == 0){
         mExistingFileNames.clear();
@@ -2055,9 +2053,13 @@ void UBDocumentController::sortDocuments(int kind, int order)
     if(kind == UBDocumentController::CreationDate){
         mSortFilterProxyModel->setSortRole(UBDocumentTreeModel::CreationDate);
         mSortFilterProxyModel->sort(1, sortOrder);
+        mDocumentUI->documentTreeView->showColumn(1);
+        mDocumentUI->documentTreeView->hideColumn(2);
     }else if(kind == UBDocumentController::UpdateDate){
         mSortFilterProxyModel->setSortRole(UBDocumentTreeModel::UpdateDate);
         mSortFilterProxyModel->sort(2, sortOrder);
+        mDocumentUI->documentTreeView->hideColumn(1);
+        mDocumentUI->documentTreeView->showColumn(2);
     }else{
         mSortFilterProxyModel->setSortRole(Qt::DisplayRole);
         mSortFilterProxyModel->sort(0, sortOrder);
@@ -2550,9 +2552,16 @@ void UBDocumentController::importFile()
             QApplication::processEvents();
             QFile selectedFile(filePath);
 
-            QString groupName = UBPersistenceManager::myDocumentsName;
+            UBDocumentTreeModel *docModel = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel;
 
-            groupName = "";
+            QModelIndex selectedIndex = firstSelectedTreeIndex();
+            QString groupName = "";
+            if (selectedIndex.isValid())
+            {
+                groupName = docModel->isCatalog(selectedIndex)
+                    ? docModel->virtualPathForIndex(selectedIndex)
+                    : docModel->virtualDirForIndex(selectedIndex);
+            }
 
             showMessage(tr("Importing file %1...").arg(fileInfo.baseName()), true);
 
@@ -2800,9 +2809,8 @@ void UBDocumentController::addToDocument()
 
 void UBDocumentController::renameSelectedItem()
 {
-    QModelIndex selectedIndex = firstSelectedTreeIndex();
-    if (selectedIndex.isValid()) {
-        mDocumentUI->documentTreeView->edit(selectedIndex);
+    if (mDocumentUI->documentTreeView->currentIndex().isValid()) {
+        mDocumentUI->documentTreeView->edit(mDocumentUI->documentTreeView->currentIndex());
     }
 }
 
@@ -3159,6 +3167,11 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
             foreach (int i, sceneIndexes)
                  minIndex = qMin(i, minIndex);
 
+            if (mBoardController->activeSceneIndex() > minIndex)
+            {
+                mBoardController->setActiveSceneIndex(minIndex);
+            }
+
             mDocumentUI->thumbnailWidget->selectItemAt(minIndex);
 
             mBoardController->setActiveDocumentScene(minIndex);
@@ -3214,8 +3227,9 @@ UBDocumentController::deletionTypeForSelection(LastSelectedElementType pTypeSele
                                                , const QModelIndex &selectedIndex
                                                , UBDocumentTreeModel *docModel) const
 {
+
     if (pTypeSelection == Page) {
-        if (!firstSceneSelected()) {
+        if (!firstAndOnlySceneSelected()) {
             return DeletePage;
         }
     } else if (docModel->isConstant(selectedIndex)) {
@@ -3234,17 +3248,31 @@ UBDocumentController::deletionTypeForSelection(LastSelectedElementType pTypeSele
     return NoDeletion;
 }
 
-bool UBDocumentController::firstSceneSelected() const
+bool UBDocumentController::firstAndOnlySceneSelected() const
 {
     bool firstSceneSelected = false;
     QList<QGraphicsItem*> selection = mDocumentUI->thumbnailWidget->selectedItems();
-    for(int i = 0; i < selection.count() && !firstSceneSelected; i += 1){
-        if(dynamic_cast<UBSceneThumbnailPixmap*>(selection.at(i))->sceneIndex() == 0){
-            firstSceneSelected = true;
+    for(int i = 0; i < selection.count() && !firstSceneSelected; i += 1)
+    {
+        UBSceneThumbnailPixmap* p = dynamic_cast<UBSceneThumbnailPixmap*>(selection.at(i));
+        if (p)
+        {
+            int pageCount = p->proxy()->pageCount();
+            if (pageCount > 1) //not the only scene
+            {
+                return false;
+            }
+            else
+            {
+                if (p->sceneIndex() == 0)
+                {
+                    return true; //the first and only scene
+                }
+            }
         }
     }
 
-    return firstSceneSelected;
+    return false;
 }
 
 void UBDocumentController::refreshDocumentThumbnailsView(UBDocumentContainer*)

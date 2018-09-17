@@ -1840,6 +1840,10 @@ int UBBoardController::activeSceneIndex() const
     return mActiveSceneIndex;
 }
 
+void UBBoardController::setActiveSceneIndex(int i)
+{
+    mActiveSceneIndex = i;
+}
 
 void UBBoardController::documentSceneChanged(UBDocumentProxy* pDocumentProxy, int pIndex)
 {
