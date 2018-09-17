@@ -1,0 +1,921 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="description" content="Traceur de fonctions mathématiques en JavaScript"/>
+	<meta name="author" content="Yannick Vessaz"/>
+	<meta name="revised" content="2018/06/04"/>
+	<title>GraphMe</title>
+	<link rel="shortcut icon" type="image/png" href="Images/mini_icon.png"/>
+	<link rel="stylesheet" type="text/css" href="Style/ColorPicker.css"/>
+	<link rel="stylesheet" type="text/css" href="Style/Haut.css"/>
+	<link rel="stylesheet" type="text/css" href="Style/Menus.css"/>
+	<link rel="stylesheet" type="text/css" href="Style/Widget.css"/>
+	<script type="text/javascript" src="JavaScript/Affichage.js"></script>
+	<script type="text/javascript" src="JavaScript/Affichage3D.js"></script>
+	<script type="text/javascript" src="JavaScript/AffichageUniboard.js"></script>
+	<script type="text/javascript" src="JavaScript/ColorPicker.js"></script>
+	<script type="text/javascript" src="JavaScript/Editeur.js"></script>
+	<script type="text/javascript" src="JavaScript/Etudes.js"></script>
+	<script type="text/javascript" src="JavaScript/CartesianFunction.js"></script>
+	<script type="text/javascript" src="JavaScript/Fonction.js"></script>
+	<script type="text/javascript" src="JavaScript/ImplicitFunction.js"></script>
+	<script type="text/javascript" src="JavaScript/Interface.js"></script>
+	<script type="text/javascript" src="JavaScript/Languages.js"></script>
+	<script type="text/javascript" src="JavaScript/Outils.js"></script>
+	<script type="text/javascript" src="JavaScript/ParametricFunction.js"></script>
+	<script type="text/javascript" src="JavaScript/PolarFunction.js"></script>
+	<script type="text/javascript" src="JavaScript/Sauvegardes.js"></script>
+	<script type="text/javascript" src="JavaScript/Souris.js"></script>
+	<script type="text/javascript" src="JavaScript/Utils.js"></script>
+	<script type="text/javascript" src="JavaScript/Widget.js"></script>
+</head>
+<body onload="widget.init()" onresize="widget.resize()" onkeypress="keyPress(event)">
+	<table id="background">
+	<tr class="background-border-x">
+	<td id="background-top-left" class="background-border-y"></td>
+	<td id="background-top"></td>
+	<td id="background-top-right" class="background-border-y"></td>
+	</tr>
+	<tr>
+	<td id="background-left" class="background-border-y"></td>
+	<td id="background-center">
+<!-- ..... Haut du Widget ..... -->
+		<!-- Onglets -->
+		<div id="haut">
+			<div id="ongletsHaut">
+				<span class="ongletHaut premierOngletHaut" onclick="afficherMenu('menuGraphMe')">
+					<img src="Images/mini_icon.png" style="width:18px; vertical-align:top;"/>
+					<span id="graphMeButton">
+						GraphMe
+					</span>
+				</span>
+				<span class="ongletHaut" onclick="if(fonction3D){afficherMenu('menuFonctions3D')}else{afficherMenu('menuFonctions');if(fct.list[editeur.idFct]){editeur.setOptions()}}">
+					<span id="functionsButton">
+						Functions
+					</span>
+				</span>
+				<span class="ongletHaut" onclick="if(fonction3D){afficherMenu('menuAffichage3D')}else{afficherMenu('menuAffichage')}">
+					<span id="displayButton">
+						Display
+					</span>
+				</span>
+				<span class="ongletHaut" onclick="afficherMenu('menuAide')">
+					<span id="helpButton">
+						Help
+					</span>
+				</span>
+			</div>
+			
+			<!-- Onglet3D -->
+			<div id="onglet3D" onclick="activer3D()">
+				3D
+			</div>
+			
+			<!-- Mini-boutons -->
+			<div id="topRightButtons">
+				<div id="boutonSaveGraph" title="Save" class="miniBouton" onclick="afficherMenu('menuSaveGraph')">S</div>
+				<div id="boutonAgrandir" title="Full screen" class="miniBouton" onclick="agrandirAffichage()">^</div>
+				<!--<div id="miniMax" onclick="miniMax()">-</div>  ▶▼ -->
+			</div>
+		</div>
+
+<!-- ..... Millieu du Widget ..... -->
+		<div id="widgetCenter">
+			<!-- Zone d'affichage -->
+			<div id="eventAffichage" onmousedown="souris.down(event)" onmouseup="souris.up()" onmousemove="souris.move(event)" onmouseout="souris.out(event)" ondblclick="souris.dblClick(event)">
+				<div id="affichage"></div>
+				<div id="affichageOutils"></div>
+			</div>
+			
+			<div id="divInputRapide">
+				f(x) =
+				<input type="text" id="inputRapide" onkeypress="if(event.keyCode == 13) widget.addStartFunction()"/>
+				<input id="inputRapideButton" type="button" value="Display" onclick="widget.addStartFunction()"/>
+			</div>
+			
+			<div id="zoneJoystick">
+				<div id="joystick" onclick="">
+					<table>
+						<tr>
+							<td></td>
+							<td onclick="if(fonction3D){display3D.zoom(1.25)}else{affichage.deplacerY(1)}">↑</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td onclick="affichage.deplacerX(-1)">←</td>
+							<td onclick="affichage.centrer();">⚫</td>
+							<td onclick="affichage.deplacerX(1)">→</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td onclick="if(fonction3D){display3D.zoom(0.8)}else{affichage.deplacerY(-1)}">↓</td>
+							<td></td>
+						</tr>
+					</table>
+				</div>
+				<div id="boutonJoystick" onclick=""></div>
+			</div>
+			
+			<div id="zoomButtons">
+				<div id="zoomOut" class="toolButton zoomButton" onclick="affichage.zoom(1.25)">-</div><div id="zoomIn" class="toolButton zoomButton" onclick="affichage.zoom(0.8)">+</div>
+			</div>
+			
+			<div id="toolButtons">
+				<div id="pointTool" title="Point tool" class="toolButton selectedTool" onclick="outil.choisir('point')">·</div>
+				<div id="moveTool" title="Move tool" class="toolButton" onclick="outil.choisir('deplacement')"><div class="icon"></div></div>
+				<div id="tangentTool" title="Tangent tool" class="toolButton" onclick="outil.choisir('tangente')"><div class="icon"></div></div>
+			</div>
+
+
+	<!-- ..... Menus ..... -->
+			
+			<!-- Menu d'exemple -->
+			<div id="menuExemple" class="menu">
+				<div class="contenuMenu"></div>
+				<div class="barreBasMenu"><div><div>
+					<input id="menuExempleCloseButton" type="button" onclick="cacherMenu()" value="Close"/>
+				</div></div></div>
+			</div>
+				
+			<!-- GraphMe -->
+			<div id="menuGraphMe" class="menu">
+				<div class="ongletMenu deuxOnglets">
+					<span id="menuGraphMeOptionsTab" class="ongletMenuActuel" onclick='afficherMenu("menuGraphMe")'>Options</span>
+					<span id="menuGraphMeAboutTab" onclick='afficherMenu("menuCredits")'>About</span>
+				</div>
+				<div class="contenuMenu avecBordures">
+					<h3 id="widgetOptions">Widget options</h3>
+
+					<span id="widgetTheme">Widget theme</span> : <select id="selectTheme" onchange="changerTheme(this.value)">
+						<option id="selectThemeDarkBlue" value="darkblue">Dark blue</option>
+						<option id="selectThemeBlack" value="black">Black</option>
+						<option id="selectThemeBlue" value="blue">Blue</option>
+						<option id="selectThemeWhite" value="white">White</option>
+					</select><br/>
+					<br/><br/>
+					<input type="button" onclick='widget.reset()' id="resetWidgetButton" value="Reset widget" style=" height:32px;"/>
+					<!-- TODO option to resize widget on OpenBoard / Sankore -->
+					<!--<span class="gras">Options :</span><br/>
+					<input type="button" class="boutonSauvegarde" onclick="saveOptions()" value="Save"/><input type="button" class="boutonSauvegarde" onclick="loadOptions()" value="Load"/> <input class="boutonSauvegarde2" type="button" onclick="delOptions()" value="Remove"/><input class="boutonSauvegarde2" type="button" onclick="alertOptions()" value="Display"/><br/>
+					<span class="texteSecondaire">Save widget preferences in cookies, load preferences from cookies or delete preferences in cookies.</span>
+					<br/><br/>
+					<label for="checkMaJ">Update widget at startup</label> <input type="checkbox" id="checkMaJ" onclick="checkboxMaJ()"/>
+					<br/>
+					<div id="cacheCookies"><br/><br/><h1>Cookies are disabled. You cannot save preferences...</h1></div>
+					<div id="cacheMaJ">You are using the latest version of this widget.</div>-->
+				</div>
+				<div class="barreBasMenu"><div><div>
+					<input type="button" id="menuGraphMeCloseButton" class="bouton" onclick="cacherMenu(); actualiserGraph()" value="Close"/>
+				</div></div></div>
+			</div>
+
+			<!-- Cookies alert -->
+			<div id="menuAlertCookies" class="miniMenu">
+				<h1> Preferences saved :</h1>
+				<div id="divAlertCookies"></div>
+				<br/>
+				<input type="button" onclick="afficherMenu(dernierMenu)" value="Ok"/>
+			</div>
+			
+			<!-- Crédits -->
+			<div id="menuCredits" class="menu">
+				<div class="ongletMenu deuxOnglets">
+					<span id="menuCreditsOptionsTab" onclick='afficherMenu("menuGraphMe")'>Options</span>
+					<span id="menuCreditsAboutTab" class="ongletMenuActuel" onclick='afficherMenu("menuCredits")'>About</span>
+				</div>
+				<div class="contenuMenu avecBordures" style="text-align:justify;">
+					<table id="credits">
+						<tr>
+							<td>
+								<img src="icon.png"/>
+								<h3 id="widgetDevelopedBy">Widget developed by</h3> 
+								Yannick Vessaz <br/>
+								<a href='mailto:yannick.vessaz@gmail.com'>yannick.vessaz@gmail.com</a><br/>
+								<a href='https://yannick.vessaz.net/GraphMe'>https://yannick.vessaz.net/GraphMe</a>
+							</td>
+						</tr>
+					</table>
+					<span class="texteSecondaire">
+						<br/>
+						<span id="widgetContactInfo">If you want to report a bug, make a proposal or just ask questions about this widget, you can contact me at the following e-mail</span> : <a href='mailto:yannick.vessaz@gmail.com'>yannick.vessaz@gmail.com</a>.
+						<br/><br/>
+						<span id="widgetBackgroundSource">Background images come from the KDE desktop environment</span>.
+					</span>
+				</div>
+				<div class="barreBasMenu"><div><div>
+					<input type="button" id="menuCreditsCloseButton" class="bouton" onclick="cacherMenu()" value="Close"/>
+					<span id="version" class="texteSecondaire" style="position:absolute;bottom:10px;left:15px;">
+						version 2.1.0 (2018-06-04)
+						(<span id="changelogButton" style="color: rgb(0,128,255); text-decoration: underline; cursor: pointer;" onclick="afficherMenu('menuChangelog')">changelog</span>)
+						<input type="button" id="checkForUpdateButton" onclick='miseAjour()' value="Check for updates"/>
+					</span>
+				</div></div></div>
+			</div>
+
+			<!-- Changelog -->
+			<div id="menuChangelog" class="menu">
+				<div class="ongletMenu deuxOnglets">
+					<span id="changelogTitle" class="ongletMenuActuel">Changelog</span>
+				</div>
+				<iframe id="versionIframe" src="version.txt" style="display:none" onload="document.getElementById('versionFileContent').innerHTML = this.contentWindow.document.body.innerHTML"></iframe>
+				<div id="versionFileContent" class="contenuMenu">
+				</div>
+				<div class="barreBasMenu"><div><div>
+					<input type="button" id="menuChangelogBackButton" class="bouton" onclick="afficherMenu('menuCredits')" value="Back"/>
+					<input type="button" id="menuChangelogCloseButton" class="bouton" onclick="cacherMenu()" value="Close"/>
+				</div></div></div>
+			</div>
+			
+			<!-- Affichage -->
+			<div id="menuAffichage" class="menu">
+				<div class="ongletMenu deuxOnglets">
+					<span id="menuAffichageDisplayParametersTab" class="ongletMenuActuel" onclick='afficherMenu("menuAffichage")'>Display parameters</span>
+					<span id="menuAffichageFunctionsParametersTab" onclick='afficherMenu("menuFunctionParameters")'>Functions parameters</span>
+				</div>
+				<div class="contenuMenu">
+				<table class="colonnes">
+					<tr>
+						<td class="premiereColonne" style="width: 30%;">
+							<!--<h4>Souris</h4>
+							<select id="selectSouris" onchange="outil.choisir(this.value)" style="width: 100%;">
+									<option value="point">Point</option>
+									<option value="deplacement">Déplacement</option>
+									<option value="tangente">Tangente</option>
+							</select>-->
+							<h4 id="plotRange">Plot range</h4>
+							<span id="xAxis">X-axis</span>: <br/>
+							<input id="borneXGauche" class="mediumInput" value="-5" onkeypress="if(event.keyCode==13) actualiserGraph()"/> <span id="xAxisTo">to</span> <input id="borneXDroite" class="mediumInput" value="5" onkeypress="if(event.keyCode==13) actualiserGraph()"/> <br/>
+							<span id="yAxis">Y-axis</span>: <br/>
+							<input id="borneYGauche" class="mediumInput" value="-5" onkeypress="if(event.keyCode==13) actualiserGraph()"/> <span id="yAxisTo">to</span> <input id="borneYDroite" class="mediumInput" value="5" onkeypress="if(event.keyCode==13) actualiserGraph()"/>
+							<br/>
+							<br/>Zoom: <br/>
+							<input type="button" class="bouton" style="width:30px;" onclick='affichage.zoom(1.25)' value="-"/><input type="button" class="bouton" style="width:30px; position:relative; left: 9px;" onclick='affichage.zoom(0.8)' value="+"/><br/>
+							<br/>
+							<span id="defaultZoom">Default zoom</span> : 
+							<input value="3.7" class="smallInput" id="zoomDefaut"/>
+							<input type="button" id="defaultDisplayParameters" onclick="affichage.initZoom2(document.getElementById('zoomDefaut').value)" value="Default display parameters"/>
+							<br/><br/><br/><br/>
+							
+						</td>
+						<td>
+							<h4 id="displayOptions">Options</h4>
+							<span id="displayMethod">Display method</span> : <select id="selectMethodeAffichage" onchange="affichage.getOptions()">
+								<option value="canvas">canvas</option>
+								<option value="svg">svg</option>
+								<option value="uniboard">uniboard</option>
+							</select> <br/>
+							<br/>
+							<input type="checkbox" id="checkGrille" checked="true" onclick="actualiserGraph()"/><label for="checkGrille"> <span id="showGrid">Show grid</span></label> <br/>
+							<input type="checkbox" id="checkAxes" checked="true" onclick="actualiserGraph()"/><label for="checkAxes"> <span id="showAxis">Show axis</span></label> <br/>
+							<input type="checkbox" id="checkEchelle" checked="true" onclick="actualiserGraph()"/><label for="checkEchelle"> <span id="showScale">Show scale</span></label> <br/>
+							<br/>
+							<span id="graphAccuracy">Graph accuracy, computed points</span> : <input value="100" class="smallInput" id="inputPrecision" onchange="affichage.calculer()"/>
+							<div class="boutonPlus" type="button" onclick="boutonPlus('inputPrecision', 20); affichage.calculer();">+</div><div class="boutonMoins" type="button" onclick="boutonMoins('inputPrecision', 20); affichage.calculer();">-</div> <br/>
+							<input type="checkbox" id="checkPrecision" onclick="actualiserGraph()"/><label for="checkPrecision"> <span id="improveAccuracy">Improve accuracy on zoom (can be slower)</span>.</label> <br/>
+							<br/><br/>
+						</td>
+					</tr>
+				</table>
+				</div>
+				<div class="barreBasMenu"><div><div>
+					<input type="button" id="menuAffichageOkButton" class="bouton" onclick='cacherMenu(); actualiserGraph()' value="Ok"/>
+				</div></div></div>
+			</div>
+			
+			<div id="menuFunctionParameters" class="menu">
+				<div class="ongletMenu deuxOnglets">
+					<span id="menuFunctionParametersDisplayParametersTab" onclick='afficherMenu("menuAffichage")'>Display parameters</span>
+					<span id="menuFunctionParametersFunctionsParametersTab" class="ongletMenuActuel" onclick='afficherMenu("menuFunctionParameters")'>Functions parameters</span>
+				</div>
+				<div class="contenuMenu">
+					<h3 id="defaultFunctionParameters">Default functions parameters</h3>
+					<span id="thickness">Thickness</span> : <input id="inputTaille" class="smallInput" value="3" onkeypress="if(event.keyCode==13) actualiserGraph()"/>
+					<div class="boutonPlus" type="button" onclick="boutonPlus('inputTaille', 1); actualiserGraph()">+</div><div class="boutonMoins" type="button" onclick="boutonMoins('inputTaille', 1); actualiserGraph()">-</div>
+					<br/><br/>
+					<span id="drawDerivativeAndPrimitive">Draw derivatives and primitives</span> :<br/>
+					<label for="checkDerivee1"> f'(x) </label><input type="checkbox" id="checkDerivee1" onchange="actualiserGraph()"/><label for="checkDerivee2"> f''(x) </label><input type="checkbox" id="checkDerivee2" onchange="actualiserGraph()"/><label for="checkPrimitive1"> F(x) </label><input type="checkbox" id="checkPrimitive1" onchange="actualiserGraph()"/>
+					<br/><br/>
+					<input type="checkbox" id="checkAire" onchange="actualiserGraph()"/><label for="checkAire"> <span id="drawArea">Draw area under function</span></label><br/>
+					<br/>
+					<span id="lineStyle">Line style</span> : 
+					<select id="selectStyle" onchange="actualiserGraph()">
+							<option id="selectStyleLine" value="continu">line</option>
+							<option id="selectStyleDotted" value="points">dotted</option>
+							<option id="selectStyleDashed" value="traits">dashed</option>
+					</select> <br/>
+				</div>
+				<div class="barreBasMenu"><div><div>
+					<input type="button" id="menuFunctionParametersCloseButton" class="bouton" onclick="cacherMenu()" value="Close"/>
+				</div></div></div>
+			</div>
+
+			<div id="menuAffichage3D" class="menu">
+				<div class="ongletMenu deuxOnglets">
+					<span id="display3D" class="ongletMenuActuel">3D Display</span>
+				</div>
+				<div class="contenuMenu">
+					<span id="displayStyle">Display style</span> : 
+					<select id="selectAffichage3D" onchange="actualiserGraph()">
+						<option id="displayStyleSurfaces" value="surfaces">surfaces</option>
+						<option id="displayStyleDotted" value="points">dotted</option>
+					</select> <input type="button" id="resetDisplay3D" onclick="display3D.initZoom()" value="Reset display"/> <br/>
+					<br/>
+					<span id="graphAccuracy3D">Graph accuracy</span> : <input value="0.2" class="smallInput" id="inputPrecision3D" onchange="display3D.functionPrecision = parseFloat(this.value); actualiserGraph();"/>
+					<div class="boutonPlus" type="button" onclick="boutonPlus('inputPrecision3D', 0.1); display3D.functionPrecision = parseFloat(document.getElementById('inputPrecision3D').value); actualiserGraph()">+</div><div class="boutonMoins" type="button" onclick="boutonMoins('inputPrecision3D', 0.1); display3D.functionPrecision = parseFloat(document.getElementById('inputPrecision3D').value); actualiserGraph()">-</div> <br/>
+					<br/>
+					<span id="colorsConfig">Colors configuration</span><br/>
+					<span id="useRedFor">use red for</span>:
+					<select onchange="display3D.checkCouleurs3D()" id="selectRouge3D">
+						<option id="redPositive" value="plus">positive values</option>
+						<option id="redNegative" value="moins">negative values</option>
+						<option id="redAlways" value="tout">always</option>
+					</select>
+					<br/>
+					<span id="useGreenFor">use green for</span>:
+					<select onchange="display3D.checkCouleurs3D()" id="selectVert3D">
+						<option id="greenPositive" value="moins">negative values</option>
+						<option id="greenNegative" value="plus">positive values</option>
+						<option id="greenAlways" value="tout">always</option>
+					</select>
+					<br/>
+					<span id="useBlueFor">use blue for</span>:
+					<select onchange="display3D.checkCouleurs3D()" id="selectBleu3D">
+						<option id="bluePositive" value="tout">always</option>
+						<option id="blueNegative" value="plus">positive values</option>
+						<option id="blueAlways" value="moins">negative values</option>
+					</select>
+					<br/>
+					<span id="globalValue">General value</span> : <input class="smallInput" id="couleur3Dgenerale" type="texte" value="0" onkeyup="display3D.checkCouleurs3D()"/> <span id="globalValueRange">(between 0 and 255)</span>
+					<br/>
+					<span id="apercuCouleur3D"></span>
+				</div>
+				<div class="barreBasMenu"><div><div>
+					<input type="button" id="menuAffichage3dOk" class="bouton" onclick='cacherMenu(); actualiserGraph()' value="Ok"/>
+				</div></div></div>
+			</div>
+
+			<!-- Aide -->
+			<div id="menuAide" class="menu">
+				<div class="ongletMenu deuxOnglets">
+					<span id="menuAideUsageTab" class="ongletMenuActuel" onclick='afficherMenu("menuAide")'>Usage</span>
+					<span id="menuAideExamplesTab" onclick='afficherMenu("menuAideExemples")'>Exemples</span>
+				</div>
+				<div class="contenuMenu avecBordures">
+					<h1 id="howItWorks">How it works</h1>
+					<p id="howItWorksText">
+						This widget allow to draw mathematical function.
+						Enter function in the field in the top part of widget and press "Show".
+						Open the "Fonctions" menu to modify the current function or add a new function.
+					</p>
+					<p><span id="availableFunctionsText">You can enter following mathematical functions</span> : <br/>
+						<h2 id="basicOperations">Basic operations</h2>
+						<ul>
+							<li><span id="plus">Plus</span> -> <span class="gras">+</span></li>
+							<li><span id="minus">Minus</span> -> <span class="gras">-</span></li>
+							<li><span id="multiplication">Multiplication</span> -> <span class="gras">*</span></li>
+							<li><span id="division">Division</span> -> <span class="gras">/</span></li>
+							<li><span id="modulus">Modulus</span> -> <span class="gras">%</span></li>
+						</ul>
+						<h2 id="trigonometricFunctions">Trigonometric functions</h2>
+						<ul>
+							<li><span id="sine">Sine</span> -> <span class="gras">sin(x)</span></li>
+							<li><span id="cosine">Cosine</span> -> <span class="gras">cos(x)</span></li>
+							<li><span id="tangent">Tangent</span> -> <span class="gras">tan(x)</span></li>
+							<li><span id="cotangent">Cotangent</span> -> <span class="gras">cot(x)</span></li>
+							<li><span id="secant">Secant</span> -> <span class="gras">sec(x)</span></li>
+							<li><span id="cosecant">Cosecant</span> -> <span class="gras">csc(x)</span></li>
+						</ul>
+						<ul>
+							<li><span id="arcSine">Arc sine</span> -> <span class="gras">arcsin(x)</span> or <span class="gras">asin(x)</span></li>
+							<li><span id="arcCosine">Arc cosine</span> -> <span class="gras">arccos(x)</span> or <span class="gras">acos(x)</span></li>
+							<li><span id="arcTangent">Arc tangent</span> -> <span class="gras">arctan(x)</span> or <span class="gras">atan(x)</span></li>
+							<li><span id="arcCotangent">Arc cotangent</span> -> <span class="gras">arccot(x)</span> or <span class="gras">acot(x)</span></li>
+						</ul>
+						<h2 id="hyperbolicFunctions">Hyperbolic functions</h2>
+						<ul>
+							<li><span id="hypSine">Hyperbolic sine</span> -> <span class="gras">sinh(x)</span></li>
+							<li><span id="hypCosine">Hyperbolic cosine</span> -> <span class="gras">cosh(x)</span></li>
+							<li><span id="hypTangent">Hyperbolic tangent</span> -> <span class="gras">tanh(x)</span></li>
+							<li><span id="hypCotangent">Hyperbolic cotangent</span> -> <span class="gras">coth(x)</span></li>
+							<li><span id="hypSecant">Hyperbolic secant</span> -> <span class="gras">sech(x)</span></li>
+							<li><span id="hypCosecant">Hyperbolic cosecant</span> -> <span class="gras">csch(x)</span></li>
+						</ul>
+						<ul>
+							<li><span id="hypArcSine">Hyperbolic arc sine</span> -> <span class="gras">arcsinh(x)</span> or <span class="gras">asinh(x)</span></li>
+							<li><span id="hypArcCosine">Hyperbolic arc cosine</span> -> <span class="gras">arccosh(x)</span> or <span class="gras">acosh(x)</span></li>
+							<li><span id="hypArcTangent">Hyperbolic arc tangent</span> -> <span class="gras">arctanh(x)</span> or <span class="gras">atanh(x)</span></li>
+							<li><span id="hypArcCotangent">Hyperbolic arc cotangent</span> -> <span class="gras">arccoth(x)</span> or <span class="gras">acoth(x)</span></li>
+						</ul>
+						<h2 id="powerAndRoot">Power and root</h2>
+						<ul>
+							<li><span id="squareRoot">Square root</span> -> <span class="gras">sqrt(x)</span></li>
+							<li><span id="power">Power</span> -> <span class="gras">pow(x, y)</span> <span id="xPowY" class="texteSecondaire">Élève x à la puissance y</span></li>
+							<li><span id="root">Root</span> -> <span class="gras">root(x, y)</span> <span id="rootText" class="texteSecondaire">Root y de x</span></li>
+						</ul>
+						<h2 id="expAndLog">Exponential and logarithm</h2>
+						<ul>
+							<li>e<span style="vertical-align:super;">x</span> -> <span class="gras">exp(x)</span></li>
+							<li><span id="naturalLog">Natural logarithm</span> -> <span class="gras">ln(x)</span></li>
+							<li><span id="decimalLog">Decimal logarithm</span> -> <span class="gras">log(x)</span></li>
+						</ul>
+						<h2 id="absValue">Absolute value</h2>
+						<ul>
+							<li>|x| -> <span class="gras">abs(x)</span></li>
+						</ul>
+						<h2 id="rounding">Rounding</h2>
+						<ul>
+							<li><span class="gras">round(x)</span> -> <span id="roundText">round to the nearest integer</span></li>
+							<li><span class="gras">ceil(x)</span> -> <span id="ceilText">round to the first integer bigger than x</span></li>
+							<li><span class="gras">floor(x)</span> -> <span id="floorText">round to the first integer lower than x</span></li>
+						</ul>					
+					</p> <br/>
+					<hr/>
+					<h1 id="constants">Constants</h1>
+					<p>
+						<span id="constantsText">Some constants are also available</span> : <br/>
+						<ul>
+							<li><span class="gras">pi</span> = 4 * atan(1) ≈  3,141592653589793</li>
+							<li><span class="gras">e</span> = exp(1) ≈ 2.718281828459045</li>
+						</ul>
+					</p>
+					<br/>
+					<hr/>
+					<h1 id="keyboardShortcuts">Keyboard shortcuts</h1>
+					<p style="font-size:90%;">
+						ctrl + <span>left arrow</span> -> <span id="moveLeft">graph will be moved left</span><br/>
+						ctrl + <span>top arrow</span> -> <span id="moveTop">graph will be moved top</span><br/>
+						ctrl + <span>right arrow</span> -> <span id="moveRight">graph will be moved right</span><br/>
+						ctrl + <span>bottom arrow</span> -> <span id="moveBottom">graph will be moved bottom</span><br/>
+						<br/>
+					</p>
+				</div>
+				<div class="barreBasMenu"><div><div>
+					<input type="button" id="menuAideCloseButton" class="bouton" onclick="cacherMenu()" value="Close"/>
+<!-- 					<input type="button" id="usersGuideButton" class="bouton" value="User's guide" onclick="navigateur('Guide_Utilisateur.html')" style="position:absolute;bottom:0px;left:0px;"/> -->
+				</div></div></div>
+			</div>
+
+			<div id="menuAideExemples" class="menu">
+				<div class="ongletMenu deuxOnglets">
+					<span id="menuAideExemplesUsageTab" onclick='afficherMenu("menuAide")'>Usage</span>
+					<span id="menuAideExemplesExamplesTab" class="ongletMenuActuel" onclick='afficherMenu("menuAideExemples")'>Exemples</span>
+				</div>
+				<div class="contenuMenu avecBordures">
+					<span id="examplesText" class="texteSecondaire">(You can click on an example to view it. Do not forget to set accuracy in options if necessary.)</span>
+					<br/><br/>
+					<hr/>
+					<h1 id="functions2d">2D Fonctions</h1>
+					<p>
+						<span class="survol" onclick="fct.addCartesian('0.5*x+1')">f(x) = 0.5*x+1</span> <br/>
+						<span class="survol" onclick="fct.addCartesian('pow(x,2)-3')">f(x) = pow(x,2)-3</span> <br/>
+						<span class="survol" onclick="fct.addCartesian('1/x')">f(x) = 1/x</span> <br/>
+						<span class="survol" onclick="fct.addCartesian('atan(x)')">f(x) = atan(x)</span> <br/>
+						<span class="survol" onclick="fct.addCartesian('(x+1/x)/1.2')">f(x) = (x+1/x)/1.2</span> <br/>
+						<span class="survol" onclick="fct.addCartesian('sin(10*x*x)*0.5')">f(x) = sin(10*x*x)*0.5</span> <br/>
+						<span class="survol" onclick="fct.addCartesian('log(pow(x-2,2))')">f(x) = log(pow(x-2,2))</span> <br/>
+						<span class="survol" onclick="fct.addCartesian('(x*x-5*x+5)*exp(x)/5')">f(x) = (x*x-5*x+5)*exp(x)/5</span> <br/>
+
+						<span class="survol" onclick="fct.addCartesian('random()')">f(x) = random()</span> <br/>
+					</p>
+					<br/><br/>
+					<hr/>
+					<h1 id="functions3d">3D Fonctions</h1>
+					<p>
+						<span class="survol" onclick="document.getElementById('input3D').value = 'sin(x)+cos(y)'; display3D.draw()">f(x,y) = sin(x)+cos(y)</span> <br/>
+						<span class="survol" onclick="document.getElementById('input3D').value = 'sqrt(10-x*x)'; display3D.draw()">f(x,y) = sqrt(10-x*x)</span> <br/>
+						<span class="survol" onclick="document.getElementById('input3D').value = 'atan(x)+atan(y)'; display3D.draw()">f(x,y) = atan(x)+atan(y)</span> <br/>
+					</p>
+					<br/>
+				</div>
+				<div class="barreBasMenu"><div><div>
+					<input type="button" id="menuAideExemplesCloseButton" class="bouton" onclick="cacherMenu()" value="Close"/>
+				</div></div></div>
+			</div>
+
+			<!--<div id="menuAideAutres" class="menu">
+				<div class="ongletMenu troisOnglets">
+					<span id="menuAideAutreUsageTab" onclick='afficherMenu("menuAide")'>Usage</span>
+					<span id="menuAideAutreExamplesTab" onclick='afficherMenu("menuAideExemples")'>Exemples</span>
+					<span id="menuAideAutreOtherTab" class="ongletMenuActuel" onclick='afficherMenu("menuAideAutres")'>Other</span>
+				</div>
+				<div class="contenuMenu avecBordures">
+					<h4 id="saveGraph">Save graph</h4>
+					<span id="saveGraphText">You can save the graph by clicking on the "S" button in the top right corner.
+					In some webbrowsers, it is impossible to save in JPEG format. The PNG format should be selected in preference.
+					Inside Sankore or Uniboard, the graph image is opened in a new web page. You can save it with right click on it. The image will be saved on desktop and you can't modify its name. Use your favourite folder explorer to rename it "image.png".</span>
+					<br/><br/>
+					<h4 id="openBoardOrSankore">OpenBoard or Sankore</h4>
+					<span id="openBoardOrSankoreText">If you use the widget in OpenBoard or Sankore, you can draw functions directly on the white page. For that, you can use the "uniboard" display method in preferences menu.
+					With this method, the graph will be displayed at the center of the page on top of existing content. To delete the graph, you have to use the erase tool of OpenBoard or Sankore.</span>
+				</div>
+				<div class="barreBasMenu"><div><div>
+					<input type="button" id="menuAideAutreCloseButton" class="bouton" onclick="cacherMenu()" value="Close"/>
+				</div></div></div>
+			</div>-->
+
+			<!--Etude de fonction -->
+			<div id="menuEtude" class="menu">
+				<div class="ongletMenu deuxOnglets">
+					<span id="functionStudyTitle" class="ongletMenuActuel">Function study</span>
+				</div>
+				<div class="contenuMenu">
+					<p class="gras">
+						f(x) = <span id="etudeFdeX">...</span>
+					</p>
+					<p><span id="domainOfDefinition" class="gras">Domain of definition</span> : 
+						<span id="etudeEDF">...</span>
+					</p>
+					<p><span id="symmetry" class="gras">Symmetry</span> : 
+						<span id="etudeParite">...</span>
+					</p>
+					<p><span id="zeros" class="gras">Zeros</span> :
+						<span id="etudeZeros">...</span>
+					</p>
+					<p><span id="sign" class="gras">Sign</span> :<table id="etudeSigne">
+						<tr id="etudeSigneRow">
+						</tr>
+					</table></p>
+					<p><span id="asymptotes" class="gras">Asymptotes</span> : <br/>
+						<span id="etudeA">...</span>
+					</p>
+					<p><span id="extremums" class="gras">Extremums</span> : <br/>
+						<span id="etudeMinMax">...</span>
+					</p>
+					<p><span id="inflexionPoints" class="gras">Inflexion points</span> : <br/>
+						<span id="etudeI">...</span> <br/>
+					</p>
+					<br/>
+					<span id="functionStudyText" class="texteSecondaire" style="font-size:10px;">The tool for function analysis is not 100% reliable. Don't forget to check the results before any usage.</span>
+					<br/>
+					<br/>
+				</div>
+				
+				<div class="barreBasMenu"><div><div>
+	<!-- 				<input type="button" class="bouton" onclick="etude.etudier(document.getElementById('input').value)" value="Actualiser" style="position:relative;right:310px;"/> -->
+					<input type="button" id="menuEtudeBackButton" class="bouton" onclick="afficherMenu(dernierMenu)" style="position: absolute; left: 0px;" value="Back"/>
+					<input type="button" id="menuEtudeCloseButton" class="bouton" onclick="cacherMenu()" value="Close"/>
+				</div></div></div>
+			</div>
+
+			<!-- Fonctions 2D -->
+			<div id="menuFonctions" class="menu">
+				<div class="ongletMenu deuxOnglets">
+					<span id="menuFonctionsFunctionsTab" class="ongletMenuActuel" onclick='afficherMenu("menuFonctions")'>Functions</span>
+					<span id="menuFonctionsHistoryTab" onclick='afficherMenu("menuHistorique")'>History</span>
+				</div>
+				<div class="contenuMenu avecBordures">
+					<div id="functionMenuRight">
+						<div id="editeurFonction" style="visibility: hidden">
+							<div id="editeurPageModifier">
+								<div class="editeurOnglets">
+									<span id="editorEditPageEditTab" class="ongletActuel">Edit</span>
+									<span id="editorEditPageToolsTab" onclick="document.getElementById('editeurPageModifier').style.display='none';document.getElementById('editeurPageOutils').style.display='block';">Tools</span>
+								</div>
+								<br/>
+								<canvas id="editeurApercu" width="100" height="80"></canvas>
+								<br/>
+								<div id="editeurFctDiv">
+									<span id="editeurFctPrefix">f(x) = </span>
+									<input id="editeurInput" style="width: 75%;" onchange="editeur.getOptions()"/>
+									<br/>
+								</div>
+								<div id="editeurFctXYDiv" style="display:none">
+									x(t) = <input id="editeurFctX" style="width: 75%;" onchange="editeur.getOptions()"/>
+									<br/>
+									y(t) = <input id="editeurFctY" style="width: 75%;" onchange="editeur.getOptions()"/>
+									<br/>
+								</div>
+								<div id="editeurRangeDiv" style="display:none">
+									"t" <span id="editorRangeFrom">from</span> <input id="editeurFrom" class="smallInput" onchange="editeur.getOptions()"/>
+									<span id="editorRangeTo">to</span> <input id="editeurTo" class="smallInput" onchange="editeur.getOptions()"/>
+									<br/>
+								</div>
+								<br/>
+								<span id="editorThickness">Thickness</span> : <input class="smallInput" id="editeurWidth" onchange="editeur.getOptions()" value="3"/>
+								&nbsp;&nbsp;
+								<span id="editorColor">Color</span> : <span id="editeurCouleur" title="editeur.fct.couleur" class="boutonCouleur" onclick="editeur.couleur(this.id)" style="background-color: rgba(0,128,255,1)"></span>
+								<br/>
+								<div id="editeurDeriveesDiv">
+									<span id="editorDerivatives">Derivatives</span> : <label for="editeurD1"> f'(x)</label><input type="checkbox" id="editeurD1" onchange="editeur.getOptions()"/><span id="editeurCouleurD1" title="editeur.fct.couleurD1" class="miniCouleur" onclick="editeur.couleur(this.id)" style="background-color: rgba(0,128,255,1)"></span>
+									&nbsp;&nbsp;
+									<label for="editeurD2"> f''(x)</label><input type="checkbox" id="editeurD2" onchange="editeur.getOptions()"/><span id="editeurCouleurD2" title="editeur.fct.couleurD2" class="miniCouleur" onclick="editeur.couleur(this.id)" style="background-color: rgba(0,128,255,1)"></span>
+									<br/>
+									<span id="editorPrimitive">Primitive</span> : <label for="editeurP1"> F(x)</label><input type="checkbox" id="editeurP1" onchange="editeur.getOptions()"/><span id="editeurCouleurP1" title="editeur.fct.couleurP1" class="miniCouleur" onclick="editeur.couleur(this.id)" style="background-color: rgba(0,128,255,1)"></span>
+									<span id="editeurTexteConditionInitiale"> F(0) = </span><input id="editeurConditionInitiale" onchange="editeur.getOptions()" value="0" style="width:20px"/>
+									<br/>
+								</div>
+								<div id="editeurStyleDiv">
+									<span id="editorLineStyle">Style</span> : 
+									<select id="editeurStyle" onchange="editeur.getOptions()">
+											<option id="editorStyleLine" value="continu">line</option>
+											<option id="editorStyleDotted" value="points">dotted</option>
+											<option id="editorStyleDashed" value="traits">dashed</option>
+									</select>
+									<br/>
+								</div>
+								<div id="editeurAireDiv">
+									<label for="editeurAire"><span id="editorDrawArea">Area under function</span> : </label><input type="checkbox" id="editeurAire" onchange="editeur.getOptions()"/>
+									<br/>
+								</div>
+								<br/>
+								<div style="text-align:right;">
+									<input type="button" id="editorDuplicate" class="bouton" value="Duplicate" onclick="editeur.dupliquer()"/>
+									<input type="button" id="editorRemove" class="bouton" value="Remove" onclick="editeur.supprimer()"/>
+								</div>
+							</div>
+							<div id="editeurPageOutils" style="display: none;">
+								<div class="editeurOnglets">
+									<span id="editorToolsPageEditTab" onclick="document.getElementById('editeurPageOutils').style.display='none';document.getElementById('editeurPageModifier').style.display='block';">Edit</span>
+									<span id="editorToolsPageToolsTab" class="ongletActuel">Tools</span>
+								</div>
+								<br/>
+								<span id="computePoint">Compute a point on the fonction</span> :<br/>
+								x=<input value="0" class="smallInput" id="inputX" onkeypress="if(event.keyCode==13) calculerPoint()"/>
+								<input type="button" id="computePointButton" onclick="calculerPoint()" value="Compute"/><br/>
+								<span id="outputX"> </span>
+								<br/><br/>
+								<span id="computeArea">Compute area under the function</span> :<br/>
+								<span id="areaFrom">De</span> <input value="-5" class="smallInput" id="aireG"/> <span id="areaTo">à</span> <input value="5" class="smallInput" id="aireD"/> <input type="button" id="computeAreaButton" onclick='calculerAire()' value="Compute"/><br/>
+								<span id="outputAire"> </span>
+								<br/><br/>
+								<span id="functionStudy">Function study</span> : <br/>
+								<input type="button" id="functionStudyButton" class="bouton" value="Start study" onclick="editeur.etudier()"/><br/>
+								<br/><br/>
+								<div style="text-align:right;">
+									<input type="button" id="editorToolsDuplicate" class="bouton" value="Duplicate" onclick="editeur.dupliquer()"/>
+									<input type="button" id="editorToolsRemove" class="bouton" value="Remove" onclick="editeur.supprimer()"/>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="functionMenuLeft">
+						<span id="newFunction">New function</span> :
+						<select id="functionType" onchange="fct.changeType(this.value)">
+							<option id="functionTypeCartesian" value="cartesian">Cartesian</option>
+							<option id="functionTypePolar" value="polar">Polar</option>
+							<option id="functionTypeParametric" value="parametric">Parametric</option>
+							<option id="functionTypeImplicit" value="implicit">Implicit</option>
+						</select>
+						<br/>
+						<span id="cartesianDiv">
+							f(x) =
+							<input id="input" placeholder="sin(x)" style="width:220px; position:relative; right:2px;" onkeypress="if(event.keyCode == 13) fct.ajouter()"/>
+						</span>
+						<span id="implicitDiv" style="display:none">
+							<input id="implicitInput" placeholder="x^2 + y^2 = 9" style="width:220px; position:relative; right:2px;" onkeypress="if(event.keyCode == 13) fct.ajouter()"/>
+						</span>
+						<span id="polarDiv" style="display:none">
+							r(t) = 
+							<input id="polarInput" placeholder="t" style="width:220px; position:relative; right:2px;" onkeypress="if(event.keyCode == 13) fct.ajouter()"/>
+						</span>
+						<span id="parametricDiv" style="display:none">
+							x(t) = 
+							<input id="parametricInputX" placeholder="cos(t)" style="width:220px; position:relative; right:2px;" onkeypress="if(event.keyCode == 13) document.getElementById('parametricInputY').focus()"/>
+							<br/>
+							y(t) = 
+							<input id="parametricInputY" placeholder="sin(t)" style="width:220px; position:relative; right:2px;" onkeypress="if(event.keyCode == 13) fct.ajouter()"/>
+						</span>
+						<input type="button" id="addFunctionButton" value="Add" onclick="fct.ajouter();"/>
+						<br/>
+						<br/>
+						<span id="functionsListText">Functions list</span> :
+						<div id="fonctionsSupp"></div>
+					</div>
+				</div>
+				<div class="barreBasMenu"><div><div>
+					<input type="button" id="menuFonctionsCloseButton" class="bouton" onclick="cacherMenu()" value="Close"/>
+				</div></div></div>
+			</div>
+			
+			<!-- Fonctions 3D -->
+			<div id="menuFonctions3D" style="display:none;">
+				f(x,y) =
+				<input type="text" id="input3D" onkeypress="if(event.keyCode == 13) display3D.draw();saveOptions();"/>
+				<input type="button" id="input3dDisplayButton" value="Display" onclick="display3D.draw();saveOptions();"/>
+			</div>
+
+			<!-- Historique -->
+			<div id="menuHistorique" class="menu">
+				<div class="ongletMenu deuxOnglets">
+					<span id="menuHistoriqueFunctionsTab" onclick='afficherMenu("menuFonctions")'>Functions</span>
+					<span id="menuHistoriqueHistoryTab" class="ongletMenuActuel" onclick='afficherMenu("menuHistorique")'>History</span>
+				</div>
+				<div class="contenuMenu avecBordures" id="divHistorique">
+					<h3 id="latestDisplayedFunctions">Latest displayed functions</h3>
+					<span id="spanHistorique"></span>
+				</div>
+				<div class="barreBasMenu"><div><div>
+					<input type="button" id="menuHistoriqueCloseButton" class="bouton" onclick="cacherMenu()" value="Close"/>
+				</div></div></div>
+			</div>
+
+			<!-- Couleur -->
+			<div id="menuCouleur" class="menu" onmouseup="colorPicker.sourisUp()">
+				<div class="ongletMenu deuxOnglets">
+					<span id="chooseColor" class="ongletMenuActuel">Color picker</span>
+				</div>
+				<div class="contenuMenu">
+					<br/>
+					<canvas id="canvasSV" onmousemove="colorPicker.moveSV(event)" onmousedown="colorPicker.sourisClick(this.id); colorPicker.moveSV(event)" onmouseup="colorPicker.sourisUp()" onmouseover="colorPicker.sourisOver(this.id)" onmouseout="colorPicker.sourisOut()"></canvas>
+					<canvas id="canvasT" onmousemove="colorPicker.moveT(event)" onmousedown="colorPicker.sourisClick(this.id); colorPicker.moveT(event)" onmouseup="colorPicker.sourisUp()" onmouseover="colorPicker.sourisOver(this.id)" onmouseout="colorPicker.sourisOut()"></canvas>
+					
+					<table id="colorValues">
+						<tr>
+							<td><span id="colorPickerColor">Color</span> : </td><td><input id="inputTeinte" class="smallInput" value="0" onchange="colorPicker.recupererInputs()"/></td>
+						</tr><tr>
+							<td><span id="colorPickerValue">Value</span> : </td><td><input id="inputValeur" class="smallInput" value="0" onchange="colorPicker.recupererInputs()"/></td>
+						</tr><tr>
+							<td><span id="colorPickerSaturation">Saturation</span> : </td><td><input id="inputSaturation" class="smallInput" value="0" onchange="colorPicker.recupererInputs()"/></td>
+						</tr><tr>
+							<td><span id="colorPickerRed">Red</span> : </td><td><input id="inputRouge" class="smallInput" value="255" onchange="colorPicker.recupererInputs2()"/></td>
+						</tr><tr>
+							<td><span id="colorPickerGreen">Green</span> : </td><td><input id="inputVert" class="smallInput" value="0" onchange="colorPicker.recupererInputs2()"/></td>
+						</tr><tr>
+							<td><span id="colorPickerBlue">Blue</span> : </td><td><input id="inputBleu" class="smallInput" value="0" onchange="colorPicker.recupererInputs2()"/></td>
+						</tr><tr>
+							<td><span id="colorPickerOpacity">Opacity</span> : </td><td><input id="inputOpacity" class="smallInput" value="1" onchange="colorPicker.recupererInputs()"/></td>
+						</tr><!--<tr>
+							<td><input id="inputCouleur" style="width: 70%" value="cyan" onkeypress="fct.couleur = this.value; if(event.keyCode==13) actualiserGraph()"/></td>
+						</tr>-->
+					</table>
+					
+					<div id="apercuCouleur" title="New color"></div><div id="apercuCouleur2" title="Old color"></div>
+					
+					<br/>
+					<canvas id="canvasO" onmousemove="colorPicker.moveO(event)" onmousedown="colorPicker.sourisClick(this.id); colorPicker.moveO(event)" onmouseup="colorPicker.sourisUp()" onmouseover="colorPicker.sourisOver(this.id)" onmouseout="colorPicker.sourisOut()"></canvas>
+				</div>
+				<div class="barreBasMenu"><div><div>
+					<input type="button" id="colorPickerCancelButton" class="bouton" onclick="cacherMenu()" value="Cancel"/><input type="button" id="colorPickerOkButton" class="bouton" onclick="colorPicker.fermer()" value="Ok"/>
+				</div></div></div>
+			</div>
+			
+			<!-- Save image -->
+			<div id="menuSaveImage" class="menu">
+				<div class="ongletMenu deuxOnglets">
+					<span id="saveImageTitle" class="ongletMenuActuel">Save image</span>
+				</div>
+				<div class="contenuMenu">
+					<p id="saveImageText">
+						You can right click on the image and select "Save image". It is also possible to choose "Copy image" and past it into another application.
+					</p>
+					<div id="saveImageContent"></div>
+				</div>
+				<div class="barreBasMenu"><div><div>
+					<input id="menuSaveImageCloseButton" type="button" onclick="cacherMenu()" value="Close"/>
+				</div></div></div>
+			</div>
+
+			<!-- Erreurs Fonctions interdites -->
+			<div id="fctInterdite" class="miniMenu">
+				<br/>
+				<h1>------- <span id="blackListError">Error</span> -------</h1>
+				<br/>
+				<span id="cannotDrawFunction">Cannot draw function</span> ...
+				<br/><br/>
+				<span id="invalidExpression">Invalid character or expression</span> : <br/>
+				<span id="spanFctInterdite" style="font-style:italic;"></span>
+				<br/><br/>
+				<input type="button" id="blackListErrorOkButton" onclick="cacherMenu()" value="Ok"/>
+			</div>
+
+			<!-- Autres erreurs -->
+			<div id="erreurFct" class="miniMenu">
+				<h4>------- <span id="fctError">Error</span> -------</h4>
+				<span id="checkTheFunction">Check the function and try to draw it again</span>.
+				<br/><br/>
+				<span id="errorMessage">Error message</span> : <span id="spanErreurFct"></span>.
+				<br/><br/>
+				<span id="youCanFindExamples">You can find examples of various drawable functions in the help menu</span>.
+				<br/>
+				<input type="button" id="fctErrorHelpButton" onclick="afficherMenu('menuAide')" value="Help"/>
+				<input type="button" id="fctErrorOkButton" onclick="cacherMenu()" value="Ok"/>
+			</div>
+
+			<!-- Sauvegarder le graphique-->
+			<div id="menuSaveGraph" class="miniMenu">
+				<h1 id="menuSaveGraphTitle">Save graph</h1>
+				<span id="saveWidthText">Width</span> : <input id="saveWidth" class="smallInput" type="text" value="800"/><br/>
+				<span id="saveHeightText">Height</span> : <input id="saveHeight" class="smallInput" type="text" value="600"/><br/>
+				<br/>
+				<span id="saveBackgroundColor">Background color</span> : <span id="boutonBackgroundSauvegarde" class="boutonCouleur" title="backgroundSauvegarde" onclick="colorPicker.init(this.id); afficherMenu('menuCouleur')" style="background-color: rgba(0,0,0,0.5);"></span><br/>
+				<br/>
+				<span id="imageFormat">Image format</span> :
+				<select id="selectSaveType">
+						<option value="png">PNG</option>
+						<option value="jpg">JPG</option>
+				</select>
+				<br/><br/>
+				<input type="button" id="menuSaveGraphCancelButton" onclick="cacherMenu()" value="Cancel"/>
+				<input type="button" id="menuSaveGraphOkButton" onclick="saveGraph()" value="Ok"/>
+			</div>
+
+			<!-- Menu des mises à jour -->
+			<div id="mAj" class="menu">
+				<div class="ongletMenu deuxOnglets">
+					<span id="updateTitle" class="ongletMenuActuel">Updates</span>
+				</div>
+				<div class="contenuMenu">
+					<br/>
+					<span id="currentVersion">Current version</span> : <br/><span id="thisVersion"></span><br/><br/>
+					<span id="latestVersionAvailable">Latest version available online</span> : <br/><span id="newVersion"></span><br/>
+					<br/><br/>
+					<!--<span id="useLatestVersionText">You can replace the current version with an online version.
+					This will only affect the current session. You have to do it again after next startup.</span><br/>
+					<br/>
+					<input type="button" id="useLatestVersion" onclick="majAccept()" value="Use latest version"/><br/>-->
+		<!-- 			<input type="button" onclick="cacherMenu()" value="Keep my version"/> -->
+				</div>
+				<div class="barreBasMenu"><div><div>
+					<input type="button" id="updateBackButton" class="bouton" onclick="afficherMenu('menuCredits')" value="Back"/>
+					<input type="button" id="updateOkButton" class="bouton" onclick="cacherMenu()" value="Ok"/>
+				</div></div></div>
+			</div>
+
+			<!-- Erreur mise à jour -->
+			<div id="erreurMaJ" class="miniMenu">
+				<br/>
+				<h1>------- <span id="updateErrorTitle">Error</span> -------</h1>
+				<br/><br/>
+				<span id="updateErrorText">Update to latest version is not available because you already use the latest version</span>.
+				<br/><br/><br/>
+				<input type="button" id="updateErrorOkButton" onclick="cacherMenu()" value="Ok"/>
+			</div>
+
+			<!-- Info options sauvegardées -->
+			<div id="infoSauvegarde" class="alertMenu">
+				<br/>
+				<h1>Preferences saved!</h1>
+				<br/>
+				<input type="button" onclick="document.getElementById('infoSauvegarde').style.display = 'none'" value="Ok"/>
+			</div>
+
+			<!-- Demande mise à jour auto -->
+			<div id="demandeMaJ" class="miniMenu">
+				<br/>
+				<h1>Automatic update</h1>
+				<br/><br/>
+				Do you really want to use the latest online widget version ?
+				<br/><br/><br/>
+				<input type="button" onclick="afficherMenu(dernierMenu)" value="No"/>
+				<input type="button" onclick="majAccept()" value="Yes"/>
+			</div>
+
+			<!-- ..... Flèches de déplacement ..... -->
+			<div class="flecheDeplacement" id="flecheHaut" onclick="if(fonction3D){display3D.zoom(1.25)}else{affichage.deplacerY(1)}" onmousemove="souris.move(event)">▲</div>
+			<div class="flecheDeplacement" id="flecheGauche" onclick="affichage.deplacerX(-1)" onmousemove="souris.move(event)">◀</div>
+			<div class="flecheDeplacement" id="flecheBas" onclick="if(fonction3D){display3D.zoom(0.8)}else{affichage.deplacerY(-1)}" onmousemove="souris.move(event)">▼</div>
+			<div class="flecheDeplacement" id="flecheDroite" onclick="affichage.deplacerX(1)" onmousemove="souris.move(event)">▶</div>
+			
+			<!-- .... Add SVG display script .... -->
+			<embed id="embedSVG" src="JavaScript/AffichageSVG.svg" type="image/svg+xml" style="position:absolute; display:none; z-index: -1;"/>
+			
+		</div>
+	</td>
+	<td id="background-right" class="background-border-y"></td>
+	</tr>
+	<tr class="background-border-x">
+	<td id="background-bottom-left" class="background-border-y"></td>
+	<td id="background-bottom"></td>
+	<td id="background-bottom-right" class="background-border-y"></td>
+	</tr>
+	</table>
+
+	<!-- Menu clique droite sur le graphique -->
+	<div id="ctxMenu">
+		<h1 id="ctxMenuDisplay">Display</h1>
+		<input type="checkbox" id="ctxAxes" checked="checked" onchange="affichage.axes = this.checked ? true : false ; affichage.dessiner()"/>
+		<label for="ctxAxes" id="ctxMenuAxes">Axes</label>
+		<div class="miniCouleur" id="ctxCouleurAxes" style="background-color:rgba(0,0,0,0.5)" title="affichage.couleurAxes" onclick="colorPicker.init(this.id); afficherMenu('menuCouleur'); ctxMenu.fermer()"></div>
+		<br/>
+		
+		<input type="checkbox" id="ctxEchelle" checked="checked" onchange="affichage.echelle = this.checked ? true : false ; affichage.dessiner()"/>
+		<label for="ctxEchelle" id="ctxMenuScale">Scale</label>
+		<div class="miniCouleur" id="ctxCouleurEchelle" style="background-color:rgba(255,255,255,1)" title="affichage.couleurEchelle" onclick="colorPicker.init(this.id); afficherMenu('menuCouleur'); ctxMenu.fermer()"></div>
+		<br/>
+		
+		<input type="checkbox" id="ctxGrille" checked="checked" onchange="affichage.grille = this.checked ? true : false ; affichage.dessiner()"/>
+		<label for="ctxGrille" id="ctxMenuGrid">Grid</label>
+		<div class="miniCouleur" id="ctxCouleurGrille" style="background-color:rgba(255,255,255,0.1)" title="affichage.couleurGrille" onclick="colorPicker.init(this.id); afficherMenu('menuCouleur'); ctxMenu.fermer()"></div>
+		<br/>
+		
+		<input type="button" id="ctxMenuReset" class="bouton" value="Reset" onclick="affichage.initZoom2(document.getElementById('zoomDefaut').value); ctxMenu.fermer()"/>
+		<br/>
+		<input type="button" id="ctxMenuSave" class="bouton" value="Save" onclick="afficherMenu('menuSaveGraph'); ctxMenu.fermer()"/>
+		
+		<div class="fermer" onclick="ctxMenu.fermer();">x</div>
+	</div>
+
+	<!-- Boutons de suppression des points et des ronds ajoutés -->
+	<span id="divSuppOutil"></span>
+	
+	<!-- Messages d'aide -->
+	<div id="divMessages"></div>
+	
+	<!-- .... Setup translations .... -->
+	<script type="text/javascript">languages.init();</script>
+	
+</body>
+<!-- Widget made by Yannick Vessaz    -->
+<!-- E-mail: yannick.vessaz@gmail.com -->
+</html>

@@ -1,0 +1,56 @@
+/* ColorPicker */
+#canvasSV{
+	width: 250px;
+	height: 250px;
+	border: 1px solid black;
+}
+#canvasT{
+	width: 25px;
+	height: 250px;
+	border: 1px solid black;
+	position: relative;
+	left: 10px;
+}
+#canvasO{
+	width: 290px;
+	height: 25px;
+	position: relative;
+	top: 5px;
+}
+
+/* Valeurs de la couleur dans le ColorPicker */
+#colorValues{
+   position: relative;
+   left: 10px;
+   font-size: 11px;
+   float: right;
+} 
+#colorValues td{
+	vertical-align: middle;
+	text-align: right;
+}
+
+/* Aperçus dans le ColorPicker */
+#apercuCouleur{
+   position: absolute;
+   right: 20px;
+   bottom: 40px;
+   width: 40px;
+   height: 30px;
+   border: 1px white solid;
+   border-radius: 5px;
+   -webkit-border-radius: 5px;
+   background-color: rgb(193,255,0);
+}
+
+#apercuCouleur2{
+   position: absolute;
+   right: 65px;
+   bottom: 40px;
+   width: 40px;
+   height: 30px;
+   border: 1px white solid;
+   border-radius: 5px;
+   -webkit-border-radius: 5px;
+   background-color: rgb(193,255,0);
+}

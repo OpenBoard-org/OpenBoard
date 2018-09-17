@@ -1,0 +1,341 @@
+/* Boutons qui sont en haut du widget */
+#haut{
+	position: absolute;
+	top: 0px;
+	left: 8px;
+	right: 0px;
+	height: 30px;
+	z-index: 2;
+	pointer-events: none;
+}
+
+#haut > *{
+	pointer-events: auto;
+}
+
+/* Onglets */
+.ongletHaut{
+/* 	background-color: rgba(255, 255, 255, 0.3); */
+	background-image: url('../Images/gradient2.png');
+    border-color: rgba(255, 255, 255, 0.2);
+    border-style: none solid solid solid;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-width: 1px;
+	box-shadow: 0px 0px 2px rgba(0,0,0,0.5);
+    color: white;
+	font-size: 16px;
+	text-align: center;
+	display: inline-block;
+	min-width: 90px;
+	height: 19px;
+    margin-right: 5px;
+    padding: 2px 8px;
+	opacity: 0.9;
+    cursor: pointer;
+	vertical-align: bottom;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.ongletHaut:hover{
+	background-color: rgba(0,180,255,0.3);
+/*     border-color: rgba(255, 255, 255, 0.6); */
+	box-shadow:0px 0px 6px rgba(0,180,255,1), 0px 0px 3px rgba(0,0,0,1);
+	opacity: 1;
+}
+.ongletHaut:active{
+	background-color: rgba(0,90,128,0.3);
+	box-shadow:0px 0px 6px rgba(0,90,128,1), 0px 0px 3px rgba(0,0,0,1);
+	position: relative;
+    color: rgba(255,255,255,0.8);
+	padding-top: 1px;
+	bottom: 1px;
+}
+.premierOngletHaut{
+	font-weight: bold;
+	background-color: rgba(255,160,0,0.3);
+}
+.premierOngletHaut:hover{
+	background-color: rgba(255,160,0,0.5);
+	box-shadow:0px 0px 6px rgba(255,160,0,1), 0px 0px 3px rgba(0,0,0,1);
+}
+.premierOngletHaut:active{
+	background-color: rgba(128,80,0,0.5);
+	box-shadow:0px 0px 6px rgba(128,80,0,1), 0px 0px 3px rgba(0,0,0,1);
+/* 	position: relative; */
+/* 	bottom: 1px; */
+}
+
+/* Bouton qui sert à choisir entre l'affichage 3D et 2D */
+#onglet3D{
+	position: absolute;
+	top: 8px;
+	left: 538px;
+	width: 40px;
+	height: 19px;
+	padding-top: 2px;
+	color: white;
+	font-size: 16px;
+	text-align: center;
+	background-color: rgba(255,255,255,0);
+	background-image: url('../Images/gradient2.png');
+/* 	background-image: url("../Images/onglet1.png"); */
+	border: 1px solid rgba(255,255,255,0.2);
+	border-bottom: none;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	-webkit-border-top-left-radius: 4px;
+	-webkit-border-top-right-radius: 4px;
+	box-shadow: 0px 0px 2px rgba(0,0,0,0.2);
+	cursor: pointer;
+	opacity: 0.8;
+	z-index: 3;
+}
+#onglet3D:hover{
+	background-color: rgba(255, 255, 255, 0.2);
+	box-shadow: 0px 0px 4px rgba(255,255,255,1);
+	opacity: 1;
+}
+#onglet3D:active{
+	background-color: rgba(255, 255, 255, 0.1);
+	box-shadow: 0px 0px 4px rgba(255,255,255,0.5);
+	top: 9px;
+    color: rgba(255,255,255,0.8);
+}
+
+/* Petits boutons en haut à droite du widget */
+#topRightButtons{
+	position: absolute;
+	right: 10px;
+	top: 3px;
+	z-index: 4;
+}
+.miniBouton{
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	color: white;
+	font-size: 12px;
+	text-align: center;
+	background-color: rgba(255,255,255,0);
+	background-image: url('../Images/gradient.png');
+	background-position: 0px 0px;
+	border: 1px solid rgba(255,255,255,0.5);
+	border-radius: 6px;
+	-webkit-border-radius: 6px;
+	box-shadow: 0px 0px 2px rgba(0,0,0,1);
+	cursor: pointer;
+	opacity: 0.5;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.miniBouton:hover{
+	opacity: 1;
+	box-shadow: 0px 0px 4px rgba(255,255,255,1);
+}
+.miniBouton:active{
+	box-shadow: 0px 0px 4px rgba(255,255,255,0.5);
+	border: 1px solid rgba(255,255,255,0.4);
+	width: 11px;
+	height: 11px;
+	font-size: 11px;
+	margin-left: 1px;
+}
+
+/* Bouton permettant de minimiser et maximiser le widget */
+/* Non utilisé pour le moment...*/
+#miniMax{
+	position: absolute;
+	left: 564px;
+	top: 3px;
+	z-index: 3;
+}
+
+/* Boutons pour changer l'action de la souris*/
+#zoomButtons{
+	position: absolute;
+	left: 13px;
+	top: 70px;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#toolButtons{
+	position: absolute;
+	left: 23px;
+	top: 103px;
+	padding: 2px;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#toolButtons .toolButton{
+	margin-bottom: 5px;
+	margin-top: 0px;
+}
+#toolButtons .toolButton:active{
+	margin-bottom: 7px;
+}
+
+.toolButton{
+	margin-left: auto;
+	margin-right: auto;
+	width: 16px;
+	height: 16px;
+	color: white;
+	font-size: 14px;
+	text-align: center;
+	font-weight: bold;
+	background-color: rgba(255,255,255,0);
+	background-image: url('../Images/gradient.png');
+	background-position: 0px 0px;
+	border: 1px solid rgba(255,255,255,0.5);
+	border-radius: 100%;
+	-webkit-border-radius: 10px;
+	box-shadow: 0px 0px 2px rgba(0,0,0,1);
+	cursor: pointer;
+	opacity: 0.5;
+}
+.toolButton:hover{
+	opacity: 1;
+	box-shadow: 0px 0px 4px rgba(255,255,255,1);
+}
+.toolButton:active{
+	box-shadow: 0px 0px 4px rgba(255,255,255,0.5);
+	border: 1px solid rgba(255,255,255,0.4);
+	width: 14px;
+	height: 14px;
+	font-size: 12px;
+	position: relative;
+	top: 1px;
+}
+
+.toolButton.selectedTool{
+/* 	background-color: rgba(255,255,255,0); */
+	background-color: rgba(0,180,255,0.3);
+	box-shadow:0px 0px 6px rgba(0,180,255,1), 0px 0px 3px rgba(0,0,0,1);
+	opacity: 0.7;
+}
+
+.zoomButton{
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+	border-radius: 6px;
+	box-sizing: border-box;
+	padding: 2px;
+}
+.zoomButton:active{
+	width: 20px;
+	height: 20px;
+	top: 0px;
+}
+
+#zoomOut{
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+#zoomOut:active{
+	margin-left: 2px;
+}
+
+#zoomIn{
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.toolButton > .icon{
+	background-size: 100%;
+	width: 100%;
+	height: 100%;
+}
+
+#moveTool > .icon{
+	background-image: url('../Images/move.png');
+}
+
+#tangentTool> .icon{
+	background-image: url('../Images/tangent.png');
+}
+
+/* Joystick de déplacement */
+#zoneJoystick{
+	position: absolute;
+	left: 8px;
+	top: 8px;
+	width: 50px;
+	height: 50px;
+	padding-left: 6px;
+	padding-top: 6px;
+/* 	border: 1px solid green; */
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+}
+
+#joystick{
+	width: 40px;
+	height: 40px;
+	color: white;
+	font-size: 14px;
+	text-align: center;
+	font-weight: bold;
+	background-color: rgba(255,255,255,0.2);
+	background-image: url('../Images/gradient4.png');
+	background-position: 0px 0px;
+	border: 1px solid rgba(255,255,255,0.5);
+	border-radius: 25px; /*100% bug dans uniboard*/
+	-webkit-border-radius: 25px;
+	box-shadow: 0px 0px 2px rgba(0,0,0,1);
+	cursor: pointer;
+	opacity: 0.5;
+}
+#joystick:hover{
+	opacity: 1;
+	box-shadow: 0px 0px 2px rgba(255,255,255,1);
+}
+#joystick:active{
+/* 	box-shadow: 0px 0px 4px rgba(255,255,255,0.5); */
+/* 	border: 1px solid rgba(255,255,255,0.4); */
+/* 	width: 38px; */
+/* 	height: 38px; */
+/* 	font-size: 12px; */
+/* 	position: relative; */
+/* 	top: 1px; */
+/* 	left: 1px; */
+/* 	margin-bottom: 7px; */
+}
+#joystick table{
+	border-collapse: collapse;
+	width: 40px;
+	height: 40px;
+	font-size: 11px;
+}
+#joystick table tr td{
+	padding: 0px;
+	text-shadow: 0px 0px 5px black;
+/* 	border: 1px solid orange; */
+	opacity: 0.5;
+}
+#joystick table tr td:hover{
+	text-shadow: 0px 0px 3px white;
+	opacity: 1;
+}
+#joystick table tr td:active{
+	opacity: 0.8;
+}

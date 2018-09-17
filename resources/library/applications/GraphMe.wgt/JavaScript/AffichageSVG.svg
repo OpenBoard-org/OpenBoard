@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="100%" height="100%">
+	<script type="text/javascript">
+	<![CDATA[
+		top.svg = {
+                cursorX : 50,
+                cursorY : 50,
+
+                fillStyle : "blue",
+                fillOpacity : 1,
+                strokeStyle : "red",
+                strokeOpacity : 1,
+                lineWidth : 1,
+
+                moveTo : function(x, y){
+                    this.cursorX = x;
+                    this.cursorY = y;
+                },
+
+                lineTo : function(x, y){
+                    var newLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    newLine.setAttribute("x1", this.cursorX);
+                    newLine.setAttribute("y1", this.cursorY);
+                    newLine.setAttribute("x2", x);
+                    newLine.setAttribute("y2", y);
+                    newLine.setAttribute("stroke", this.strokeStyle);
+                    newLine.setAttribute("stroke-width", this.lineWidth);
+                    newLine.setAttribute("stroke-opacity", this.strokeOpacity);
+                    document.getElementById("affichageSVG").appendChild(newLine);
+
+                    this.moveTo(x, y);
+                },
+                
+                beginPath : function(){
+					this.moveTo(0,0);
+                },
+                
+                stroke : function(){
+					// rien
+                },
+                
+                fill : function(){
+					// rien
+                },
+
+                clearRect : function(){
+                    var element = document.getElementById("affichageSVG");
+                    if(element.hasChildNodes()){
+                        while(element.childNodes.length >= 1 ){
+                            element.removeChild(element.firstChild);
+                        }
+                    }
+                },
+                
+                fillRect : function(x, y, l, h){
+					if(h<0){
+						h = Math.abs(h);
+						y -= h;
+					}
+					if(l<0){
+						l = Math.abs(l);
+						x -= l;
+					}
+                    var newRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    newRect.setAttribute("x", x);
+                    newRect.setAttribute("y", y);
+                    newRect.setAttribute("width", l);
+                    newRect.setAttribute("height", h);
+                    newRect.setAttribute("fill", this.fillStyle);
+                    newRect.setAttribute("fill-opacity", this.fillOpacity);
+                    document.getElementById("affichageSVG").appendChild(newRect);
+                },
+				
+                arc : function(cx, cy, r){
+                    var newCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                    newCircle.setAttribute("cx", cx);
+                    newCircle.setAttribute("cy", cy);
+                    newCircle.setAttribute("r", r);
+                    newCircle.setAttribute("fill", this.fillStyle);
+                    newCircle.setAttribute("fill-opacity", this.fillOpacity);
+                    document.getElementById("affichageSVG").appendChild(newCircle);
+                },
+                
+                fillText : function(txt, x, y){
+                    var newText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    newText.setAttribute("x", x);
+                    newText.setAttribute("y", y);
+                    newText.setAttribute("fill", this.fillStyle);
+                    newText.setAttribute("fill-opacity", 0.6);
+                    newText.setAttribute("style", "font-size: 14px;");
+                    newText.textContent = txt;
+                    document.getElementById("affichageSVG").appendChild(newText);
+                }
+            }
+		]]>
+	</script>
+	<g id="affichageSVG">
+	</g>
+</svg>
