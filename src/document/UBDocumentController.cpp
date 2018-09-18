@@ -1109,14 +1109,14 @@ void UBDocumentTreeModel::addNewDocument(UBDocumentProxy *pProxyData, const QMod
     mNewDocuments << pProxyData;
 }
 
-void UBDocumentTreeModel::addCatalog(const QString &pName, const QModelIndex &pParent)
+QModelIndex UBDocumentTreeModel::addCatalog(const QString &pName, const QModelIndex &pParent)
 {
     if (pName.isEmpty() || !pParent.isValid()) {
-        return;
+        return QModelIndex();
     }
 
     UBDocumentTreeNode *catalogNode = new UBDocumentTreeNode(UBDocumentTreeNode::Catalog, pName);
-    addNode(catalogNode, pParent);
+    return addNode(catalogNode, pParent);
 }
 
 void UBDocumentTreeModel::setNewName(const QModelIndex &index, const QString &newName)
@@ -1272,7 +1272,7 @@ UBDocumentTreeView::UBDocumentTreeView(QWidget *parent) : QTreeView(parent)
     setRootIsDecorated(true);
 }
 
-void UBDocumentTreeView::setSelectedAndExpanded(const QModelIndex &pIndex, bool pExpand)
+void UBDocumentTreeView::setSelectedAndExpanded(const QModelIndex &pIndex, bool pExpand, bool pEdit)
 {
     if (!pIndex.isValid()) {
         return;
@@ -1287,7 +1287,7 @@ void UBDocumentTreeView::setSelectedAndExpanded(const QModelIndex &pIndex, bool 
                                                 ? QItemSelectionModel::Select
                                                 : QItemSelectionModel::Deselect;
 
-     selectionModel()->select(proxy->mapFromSource(indexCurrentDoc), QItemSelectionModel::Rows | sel);
+    selectionModel()->select(proxy->mapFromSource(indexCurrentDoc), QItemSelectionModel::Rows | sel);
 
     setCurrentIndex(pExpand
                     ? indexCurrentDoc
@@ -1299,6 +1299,9 @@ void UBDocumentTreeView::setSelectedAndExpanded(const QModelIndex &pIndex, bool 
     }
 
     scrollTo(proxy->mapFromSource(pIndex), QAbstractItemView::PositionAtCenter);
+
+    if (pEdit)
+        edit(proxy->mapFromSource(pIndex));
 }
 
 void UBDocumentTreeView::onModelIndexChanged(const QModelIndex &pNewIndex, const QModelIndex &pOldIndex)
@@ -1660,14 +1663,14 @@ void UBDocumentController::createNewDocument()
                 : docModel->virtualDirForIndex(selectedIndex);
 
         UBDocumentProxy *document = pManager->createDocument(groupName);
-        selectDocument(document);
+        selectDocument(document, true, false, true);
 
         if (document)
             pManager->mDocumentTreeStructureModel->markDocumentAsNew(document);
     }
 }
 
-void UBDocumentController::selectDocument(UBDocumentProxy* proxy, bool setAsCurrentDocument, const bool onImport)
+void UBDocumentController::selectDocument(UBDocumentProxy* proxy, bool setAsCurrentDocument, const bool onImport, const bool editMode)
 {
     if (proxy==NULL)
     {
@@ -1678,7 +1681,7 @@ void UBDocumentController::selectDocument(UBDocumentProxy* proxy, bool setAsCurr
     if (setAsCurrentDocument) {
         UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->setCurrentDocument(proxy);
         QModelIndex indexCurrentDoc = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->indexForProxy(proxy);
-        mDocumentUI->documentTreeView->setSelectedAndExpanded(indexCurrentDoc, true);
+        mDocumentUI->documentTreeView->setSelectedAndExpanded(indexCurrentDoc, true, editMode);
 
         if (proxy != mBoardController->selectedDocument()) // only if wanted Document is different from document actually on Board,  // ALTI/AOU - 20140217
         {
@@ -1705,7 +1708,8 @@ void UBDocumentController::createNewDocumentGroup()
 
     QString newFolderName = docModel->adjustNameForParentIndex(tr("New Folder"), parentIndex);
 
-    docModel->addCatalog(newFolderName, parentIndex);
+    QModelIndex newIndex = docModel->addCatalog(newFolderName, parentIndex);
+    mDocumentUI->documentTreeView->setSelectedAndExpanded(newIndex, true, true);
 }
 
 

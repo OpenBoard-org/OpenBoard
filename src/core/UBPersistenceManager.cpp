@@ -532,8 +532,8 @@ void UBPersistenceManager::deleteDocument(UBDocumentProxy* pDocumentProxy)
 
     emit documentWillBeDeleted(pDocumentProxy);
 
-    Q_ASSERT(QFileInfo(pDocumentProxy->persistencePath()).exists());
-    UBFileSystemUtils::deleteDir(pDocumentProxy->persistencePath());
+    if (QFileInfo(pDocumentProxy->persistencePath()).exists())
+        UBFileSystemUtils::deleteDir(pDocumentProxy->persistencePath());
 
     mSceneCache.removeAllScenes(pDocumentProxy);
 

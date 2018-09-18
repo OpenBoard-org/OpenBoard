@@ -208,7 +208,7 @@ public:
     UBDocumentProxy *proxyData(const QModelIndex &index) const {return nodeFromIndex(index)->proxyData();}
     void addDocument(UBDocumentProxy *pProxyData, const QModelIndex &pParent = QModelIndex());
     void addNewDocument(UBDocumentProxy *pProxyData, const QModelIndex &pParent = QModelIndex());
-    void addCatalog(const QString &pName, const QModelIndex &pParent);
+    QModelIndex addCatalog(const QString &pName, const QModelIndex &pParent);
     QList<UBDocumentProxy*> newDocuments() {return mNewDocuments;}
     void markDocumentAsNew(UBDocumentProxy *pDoc) {if (indexForProxy(pDoc).isValid()) mNewDocuments << pDoc;}
     void setNewName(const QModelIndex &index, const QString &newName);
@@ -286,7 +286,7 @@ public:
     QModelIndexList mapIndexesToSource(const QModelIndexList &indexes);
 
 public slots:
-    void setSelectedAndExpanded(const QModelIndex &pIndex, bool pExpand = true);
+    void setSelectedAndExpanded(const QModelIndex &pIndex, bool pExpand = true, bool pEdit = false);
     void onModelIndexChanged(const QModelIndex &pNewIndex, const QModelIndex &pOldIndex);
     void hSliderRangeChanged(int min, int max);
 
@@ -429,7 +429,7 @@ class UBDocumentController : public UBDocumentContainer
         void duplicateSelectedItem();
         void importFile();
         void moveSceneToIndex(UBDocumentProxy* proxy, int source, int target);
-        void selectDocument(UBDocumentProxy* proxy, bool setAsCurrentDocument = true, const bool onImport = false);
+        void selectDocument(UBDocumentProxy* proxy, bool setAsCurrentDocument = true, const bool onImport = false, const bool editMode = false);
         void show();
         void hide();
         void showMessage(const QString& message, bool showSpinningWheel = false);
