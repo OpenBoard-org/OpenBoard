@@ -239,15 +239,6 @@ void UBDockPalette::paintEvent(QPaintEvent *event)
             path.addRect(0.0, 0.0, width(), height());
         }
 
-        // THEN DRAW THE small tabs (yes, the tabs are small...)
-        if(eUBDockTabOrientation_Up == mTabsOrientation)
-        {
-            mHTab = border();
-        }
-        else
-        {
-            mHTab = height() - border() - nbTabs*TABSIZE - (nbTabs-1)*tabSpacing();
-        }
         painter.drawPath(path);
     }
 }
@@ -447,6 +438,7 @@ void UBDockPalette::onShowTabWidget(UBDockPaletteWidget* widget)
     {
         widget->setVisibleState(true);
         addTab(widget);
+        moveTabs();
     }
 }
 
@@ -460,6 +452,7 @@ void UBDockPalette::onHideTabWidget(UBDockPaletteWidget* widget)
     {
         widget->setVisibleState(false);
         removeTab(widget);
+        moveTabs();
     }
 }
 
@@ -524,6 +517,7 @@ void UBDockPalette::moveTabs()
     case eUBDockOrientation_Right:
         if (parentWidget()) {
             origin.setX(parentWidget()->width() - width() - border() * 2);
+            origin.setY(parentWidget()->height() - border()- mTabWidgets.size() * TABSIZE);
         }
         break;
     case eUBDockOrientation_Top: ;
