@@ -510,10 +510,13 @@ void UBDockPalette::moveTabs()
     int y = border();
     if(eUBDockTabOrientation_Down == mTabsOrientation)
     {
-       if (mOrientation == eUBDockOrientation_Right)
-           y = parentWidget()->height() - border()- mTabWidgets.size() * TABSIZE;
-       else
-           y = height() - border()- mTabWidgets.size() * TABSIZE;
+        if (mOrientation == eUBDockOrientation_Right)
+        {
+            if (parentWidget())
+                y = parentWidget()->height() - border()- mTabWidgets.size() * TABSIZE;
+        }
+        else
+            y = height() - border()- mTabWidgets.size() * TABSIZE;
     }
 
     mHTab = y;
