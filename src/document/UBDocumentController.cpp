@@ -2357,6 +2357,10 @@ void UBDocumentController::moveIndexesToTrash(const QModelIndexList &list, UBDoc
         }
 
     }
+    else
+    {
+        setDocument(NULL);
+    }
 
     docModel->moveIndexes(list, docModel->trashIndex());
 
