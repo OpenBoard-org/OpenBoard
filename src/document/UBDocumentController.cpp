@@ -2335,6 +2335,7 @@ void UBDocumentController::moveIndexesToTrash(const QModelIndexList &list, UBDoc
             UBDocumentProxy *proxy = docModel->proxyForIndex(sourceSibling);
 
             docModel->setCurrentDocument(proxy);
+            setDocument(proxy);
 
             selectionModel->select(sibling, QItemSelectionModel::ClearAndSelect);
 
@@ -2348,6 +2349,7 @@ void UBDocumentController::moveIndexesToTrash(const QModelIndexList &list, UBDoc
                 UBDocumentProxy *proxy = docModel->proxyForIndex(sourceSibling);
 
                 docModel->setCurrentDocument(proxy);
+                setDocument(proxy);
 
                 selectionModel->select(sibling, QItemSelectionModel::ClearAndSelect);
 

@@ -151,8 +151,8 @@ void UBDocumentContainer::reloadThumbnails()
     if (mCurrentDocument)
     {
         UBThumbnailAdaptor::load(mCurrentDocument, mDocumentThumbs);
-        emit documentThumbnailsUpdated(this);
     }
+    emit documentThumbnailsUpdated(this);
 }
 
 int UBDocumentContainer::pageFromSceneIndex(int sceneIndex)
