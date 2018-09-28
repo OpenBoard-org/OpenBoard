@@ -1449,6 +1449,9 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
 
     if(targetIsInTrash)
     {
+        if (!UBApplication::mainWindow->yesNoQuestion(tr("Remove Item"), tr("Are you sure you want to remove the selected item(s) ?")))
+            return;
+
         UBApplication::documentController->moveIndexesToTrash(dropIndex, docModel);
     }else{
         docModel->moveIndexes(dropIndex, targetIndex);
@@ -3146,29 +3149,25 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
 
             }
         }
+        UBDocumentContainer::deletePages(sceneIndexes);
+        emit UBApplication::boardController->documentThumbnailsUpdated(this);
 
-        if(UBApplication::mainWindow->yesNoQuestion(tr("Remove Page"), tr("Are you sure you want to remove %n page(s) from the selected document '%1'?", "", sceneIndexes.count()).arg(proxy->metaData(UBSettings::documentName).toString())))
+        proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+        UBMetadataDcSubsetAdaptor::persist(proxy);
+
+        int minIndex = proxy->pageCount() - 1;
+        foreach (int i, sceneIndexes)
+             minIndex = qMin(i, minIndex);
+
+        if (mBoardController->activeSceneIndex() > minIndex)
         {
-            UBDocumentContainer::deletePages(sceneIndexes);
-            emit UBApplication::boardController->documentThumbnailsUpdated(this);
-
-            proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-            UBMetadataDcSubsetAdaptor::persist(proxy);
-
-            int minIndex = proxy->pageCount() - 1;
-            foreach (int i, sceneIndexes)
-                 minIndex = qMin(i, minIndex);
-
-            if (mBoardController->activeSceneIndex() > minIndex)
-            {
-                mBoardController->setActiveSceneIndex(minIndex);
-            }
-
-            mDocumentUI->thumbnailWidget->selectItemAt(minIndex);
-
-            mBoardController->setActiveDocumentScene(minIndex);
-            mBoardController->reloadThumbnails();
+            mBoardController->setActiveSceneIndex(minIndex);
         }
+
+        mDocumentUI->thumbnailWidget->selectItemAt(minIndex);
+
+        mBoardController->setActiveDocumentScene(minIndex);
+        mBoardController->reloadThumbnails();
     }
 }
 
