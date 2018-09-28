@@ -42,6 +42,7 @@
 UBDocumentProxy::UBDocumentProxy()
     : mPageCount(0)
     , mPageDpi(0)
+    , mPersistencePath("")
 {
     init();
 }

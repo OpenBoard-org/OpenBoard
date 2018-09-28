@@ -46,7 +46,15 @@ class UBDocumentContainer : public QObject
 
         UBDocumentProxy* selectedDocument(){return mCurrentDocument;}
         int pageCount(){return mCurrentDocument->pageCount();}
-        const QPixmap* pageAt(int index){return mDocumentThumbs[index];}
+        const QPixmap* pageAt(int index)
+        {
+            if (index < mDocumentThumbs.size())
+                return mDocumentThumbs[index];
+            else
+            {
+                return NULL;
+            }
+        }
 
         static int pageFromSceneIndex(int sceneIndex);
         static int sceneIndexFromPage(int sceneIndex);

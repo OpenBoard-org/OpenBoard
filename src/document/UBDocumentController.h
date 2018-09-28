@@ -111,7 +111,14 @@ public:
     void removeChild(int index);
     UBDocumentProxy *proxyData() const {return mProxy;}
     bool isRoot() {return !mParent;}
-    bool isTopLevel() {return mParent && !mParent->mParent;}
+    bool isTopLevel()
+    {
+        if (mParent)
+        {
+            return !mParent->mParent;
+        }
+        else return false;
+    }
     UBDocumentTreeNode *clone();
     QString dirPathInHierarchy();
 
@@ -216,7 +223,7 @@ public:
 
     QPersistentModelIndex myDocumentsIndex() const {return mMyDocuments;}
     QPersistentModelIndex trashIndex() const {return mTrash;}
-    QPersistentModelIndex untitledDocumentsIndex() const {return mUntitledDocuments;}
+    QPersistentModelIndex untitledDocumentsIndex() const {return mMyDocuments;}
     UBDocumentTreeNode *nodeFromIndex(const QModelIndex &pIndex) const;
     static bool nodeLessThan(const UBDocumentTreeNode *firstIndex, const UBDocumentTreeNode *secondIndex);
     void setHighLighted(const QModelIndex &newHighLighted) {mHighLighted = newHighLighted;}
