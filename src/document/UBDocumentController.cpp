@@ -1460,6 +1460,8 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
     expand(proxy->mapFromSource(targetIndex));
 
     QTreeView::dropEvent(event);
+
+    UBApplication::documentController->updateActions();
 }
 
 void UBDocumentTreeView::paintEvent(QPaintEvent *event)
