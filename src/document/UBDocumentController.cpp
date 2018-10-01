@@ -1641,17 +1641,19 @@ void UBDocumentController::createNewDocument()
     UBPersistenceManager *pManager = UBPersistenceManager::persistenceManager();
     UBDocumentTreeModel *docModel = pManager->mDocumentTreeStructureModel;
     QModelIndex selectedIndex = firstSelectedTreeIndex();
-    if (selectedIndex.isValid()) {
-        QString groupName = docModel->isCatalog(selectedIndex)
+
+    if (!selectedIndex.isValid())
+        selectedIndex = docModel->myDocumentsIndex();
+
+    QString groupName = docModel->isCatalog(selectedIndex)
                 ? docModel->virtualPathForIndex(selectedIndex)
                 : docModel->virtualDirForIndex(selectedIndex);
 
-        UBDocumentProxy *document = pManager->createDocument(groupName);
-        selectDocument(document, true, false, true);
+    UBDocumentProxy *document = pManager->createDocument(groupName);
+    selectDocument(document, true, false, true);
 
-        if (document)
-            pManager->mDocumentTreeStructureModel->markDocumentAsNew(document);
-    }
+    if (document)
+        pManager->mDocumentTreeStructureModel->markDocumentAsNew(document);
 }
 
 void UBDocumentController::selectDocument(UBDocumentProxy* proxy, bool setAsCurrentDocument, const bool onImport, const bool editMode)
@@ -1684,7 +1686,7 @@ void UBDocumentController::createNewDocumentGroup()
     UBDocumentTreeModel *docModel = pManager->mDocumentTreeStructureModel;
     QModelIndex selectedIndex = firstSelectedTreeIndex();
     if (!selectedIndex.isValid()) {
-        return;
+        selectedIndex = docModel->myDocumentsIndex();
     }
     QModelIndex parentIndex = docModel->isCatalog(selectedIndex)
             ? selectedIndex
@@ -2287,6 +2289,7 @@ void UBDocumentController::deleteSelectedItem()
             }
         }
     }
+    updateActions();
 }
 
 //N/C - NNE - 20140410
@@ -2444,8 +2447,8 @@ void UBDocumentController::moveToTrash(QModelIndex &index, UBDocumentTreeModel* 
 void UBDocumentController::emptyFolder(const QModelIndex &index, DeletionType pDeletionType)
 {
     // Issue NC - CFA - 20131029 : ajout d'une popup de confirmation pour la suppression definitive
-    if(pDeletionType == CompleteDelete && !UBApplication::mainWindow->yesNoQuestion(tr("Empty the trash"),tr("You're about to empty the trash.") +"\n\n" + tr("Are you sure ?")))
-        return;
+//    if(pDeletionType == CompleteDelete && !UBApplication::mainWindow->yesNoQuestion(tr("Empty the trash"),tr("You're about to empty the trash.") +"\n\n" + tr("Are you sure ?")))
+//        return;
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -3225,9 +3228,16 @@ UBDocumentController::deletionTypeForSelection(LastSelectedElementType pTypeSele
         }
     } else if (docModel->isConstant(selectedIndex)) {
         if (selectedIndex == docModel->trashIndex()) {
-            return EmptyTrash;
+            if (docModel->rowCount(selectedIndex) > 0)
+                return EmptyTrash;
+            else
+                return NoDeletion;
         }
-        return EmptyFolder;
+
+        if (selectedIndex.isValid())
+            return EmptyFolder;
+        else
+            return NoDeletion;
     } else if (pTypeSelection != None) {
         if (docModel->inTrash(selectedIndex)) {
             return CompleteDelete;
