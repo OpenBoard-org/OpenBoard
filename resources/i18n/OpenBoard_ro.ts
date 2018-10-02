@@ -792,19 +792,19 @@
         <translation>Eliminare fundal</translation>
     </message>
     <message>
-        <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ruled Light Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Tutorial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open the tutorial web page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -854,11 +854,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="vanished">ID element =</translation>
+        <translation>ID element =</translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="vanished">Conținutul nu este suportat în formatul de destinație.</translation>
+        <translation>Conținutul nu este suportat în formatul de destinație.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -1069,43 +1069,43 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation>Eliminare pagină</translation>
+        <translation type="vanished">Eliminare pagină</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation>Eliminare document</translation>
+        <translation type="vanished">Eliminare document</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation>Sunteţi siguri că doriţi să eliminaţi documentul %1?</translation>
+        <translation type="vanished">Sunteţi siguri că doriţi să eliminaţi documentul %1?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Golire coş de gunoi</translation>
+        <translation type="vanished">Golire coş de gunoi</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation>Sunteţi siguri că doriţi să goliţi coşul de gunoi?</translation>
+        <translation type="vanished">Sunteţi siguri că doriţi să goliţi coşul de gunoi?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation>Golire coş de gunoi</translation>
+        <translation type="vanished">Golire coş de gunoi</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation>Coş de gunoi golit</translation>
+        <translation type="vanished">Coş de gunoi golit</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation>Eliminare folder</translation>
+        <translation type="vanished">Eliminare folder</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation>Sunteţi siguri că doriţi să eliminaţi folderul &apos;%1&apos; şi toate conţinuturile sale?</translation>
+        <translation type="vanished">Sunteţi siguri că doriţi să eliminaţi folderul &apos;%1&apos; şi toate conţinuturile sale?</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation>Nu s-a selectat niciun document!</translation>
+        <translation type="vanished">Nu s-a selectat niciun document!</translation>
     </message>
     <message>
         <source>Open Supported File</source>
@@ -1153,7 +1153,7 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Sunteţi sigur că doriţi să eliminaţi %n pagină din documentul selectat &apos;%1&apos;?</numerusform>
             <numerusform>Sunteţi sigur că doriţi să eliminaţi %n pagini din documentul selectat &apos;%1&apos;?</numerusform>
         </translation>
@@ -1166,16 +1166,28 @@
         <source>Untitled Documents</source>
         <translation>Documente fără titlu</translation>
     </message>
+    <message numerus="yes">
+        <source>duplicated %1 page</source>
+        <comment>duplicated %1 pages</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove multiple documents</source>
+        <source>Title page</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1230,18 +1242,82 @@
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
+    <name>UBDocumentPublisher</name>
     <message>
-        <source>%1 (copy)</source>
-        <translation>%1 (copie)</translation>
+        <source>Export failed.</source>
+        <translation type="obsolete">Exportare nereuşită.</translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentReplaceDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished">Acceptare</translation>
     </message>
     <message>
-        <source>Copying page %1/%2</source>
-        <translation>Copiere pagina %1/%2</translation>
+        <source>Cancel</source>
+        <translation type="unfinished">Anulare</translation>
+    </message>
+    <message>
+        <source>Replace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name %1 is allready used.
+Keeping this name will replace the document.
+Providing a new name will create a new document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeModel</name>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">Coş de gunoi</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation>
+        <translation type="unfinished">
+            <numerusform>%1 pagini copiate</numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>My documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeView</name>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="unfinished">
+            <numerusform>%1 pagini copiate</numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeWidget</name>
+    <message>
+        <source>%1 (copy)</source>
+        <translation type="vanished">%1 (copie)</translation>
+    </message>
+    <message>
+        <source>Copying page %1/%2</source>
+        <translation type="vanished">Copiere pagina %1/%2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="vanished">
             <numerusform>%1 pagini copiate</numerusform>
             <numerusform></numerusform>
         </translation>
@@ -1279,6 +1355,10 @@
         <translation>Au apărut atenționări în timpul exportului</translation>
     </message>
     <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Exportare reuşită.</translation>
+    </message>
+    <message>
         <source>Exporting document...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1294,32 +1374,28 @@
         <source>Export failed: location not writable</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="unfinished">Exportare reuşită.</translation>
-    </message>
 </context>
 <context>
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="vanished">Exportare în IWB</translation>
+        <translation>Exportare în IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="vanished">Exportare ca fișier IWB</translation>
+        <translation>Exportare ca fișier IWB</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="vanished">Exportare document...</translation>
+        <translation>Exportare document...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">Exportare reuşită.</translation>
+        <translation>Exportare reuşită.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="vanished">Exportare nereuşită.</translation>
+        <translation>Exportare nereuşită.</translation>
     </message>
 </context>
 <context>
@@ -1346,6 +1422,33 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBExportDocumentSetAdaptor</name>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Exportare reuşită.</translation>
+    </message>
+    <message>
+        <source>Export failed.</source>
+        <translation type="unfinished">Exportare nereuşită.</translation>
+    </message>
+    <message>
+        <source>Failed to export...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as UBX File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to OpenBoard UBX Format</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1637,23 +1740,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="vanished">Format de fişier comun (</translation>
+        <translation>Format de fişier comun (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="vanished">Importare fişier %1...</translation>
+        <translation>Importare fişier %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="vanished">Importare fişier %1 nereuşită.</translation>
+        <translation>Importare fişier %1 nereuşită.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="vanished">Importare reuşită.</translation>
+        <translation>Importare reuşită.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="vanished">Importare nereuşită.</translation>
+        <translation>Importare nereuşită.</translation>
     </message>
 </context>
 <context>
@@ -1672,6 +1775,13 @@
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBImportDocumentSetAdaptor</name>
+    <message>
+        <source>Openboard (set of documents) (*.ubx)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1782,7 +1892,15 @@ Doriţi să ignoraţi aceste erori pentru acest host?</translation>
 <context>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anulare</translation>
+    </message>
+    <message>
         <source>Open-Sankore Documents Detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1794,15 +1912,7 @@ Doriţi să ignoraţi aceste erori pentru acest host?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation type="unfinished">Anulare</translation>
-    </message>
-    <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1817,11 +1927,7 @@ Doriţi să ignoraţi aceste erori pentru acest host?</translation>
         <translation>Pierdere depozit de documente</translation>
     </message>
     <message>
-        <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Moving page to trash folder...</source>
+        <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1926,34 +2032,34 @@ Doriţi să ignoraţi aceste erori pentru acest host?</translation>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation>Conectare Proxy</translation>
+        <translation type="vanished">Conectare Proxy</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Nume de utilizator:</translation>
+        <translation type="vanished">Nume de utilizator:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>Parolă:</translation>
+        <translation type="vanished">Parolă:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation>Publicare document pe web</translation>
+        <translation type="vanished">Publicare document pe web</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation>Titlu:</translation>
+        <translation type="vanished">Titlu:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation>Descriere:</translation>
+        <translation type="vanished">Descriere:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation>Publicare</translation>
+        <translation type="vanished">Publicare</translation>
     </message>
 </context>
 <context>
@@ -2502,9 +2608,48 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>documentPublishingDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="obsolete">Dialog</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="obsolete">Titlu</translation>
+    </message>
+    <message>
+        <source>E-mail</source>
+        <translation type="obsolete">E-mail</translation>
+    </message>
+    <message>
+        <source>Author</source>
+        <translation type="obsolete">Autor</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="obsolete">Descriere</translation>
+    </message>
+</context>
+<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creation date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alphabetical order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2647,26 +2792,6 @@ p, li { white-space: pre-wrap; }
         <translation>Credite</translation>
     </message>
     <message>
-        <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>On Dark Background</source>
         <translation type="unfinished">Pe fundal închis</translation>
     </message>
@@ -2680,6 +2805,26 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap first and second view displays</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré Importer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

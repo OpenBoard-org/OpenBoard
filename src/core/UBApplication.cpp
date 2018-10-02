@@ -60,8 +60,6 @@
 #include "gui/UBResources.h"
 #include "gui/UBThumbnailWidget.h"
 
-#include "adaptors/publishing/UBSvgSubsetRasterizer.h"
-
 #include "ui_mainWindow.h"
 
 #include "frameworks/UBCryptoUtils.h"

@@ -792,19 +792,19 @@
         <translation>Esorina ny ao ambadika</translation>
     </message>
     <message>
-        <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ruled Light Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Tutorial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open the tutorial web page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -854,11 +854,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="vanished">Isa famantaranaan&apos;ilay zavatra =</translation>
+        <translation>Isa famantaranaan&apos;ilay zavatra =</translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="vanished">Tsy zakan&apos;ny andrefy tanjona ilay mpiatiny.</translation>
+        <translation>Tsy zakan&apos;ny andrefy tanjona ilay mpiatiny.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -1069,43 +1069,43 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation>Fafao ny pejy</translation>
+        <translation type="vanished">Fafao ny pejy</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation>Fafao ny rakitra</translation>
+        <translation type="vanished">Fafao ny rakitra</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation>Tena te hamafa an&apos;ilay rakitra &apos;%1&apos; ve ianao ?</translation>
+        <translation type="vanished">Tena te hamafa an&apos;ilay rakitra &apos;%1&apos; ve ianao ?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Daba foana</translation>
+        <translation type="vanished">Daba foana</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation>Tena te hanafoana an&apos;ilay daba ve ianao ?</translation>
+        <translation type="vanished">Tena te hanafoana an&apos;ilay daba ve ianao ?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation>Manafoana daba</translation>
+        <translation type="vanished">Manafoana daba</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation>Daba voafoana</translation>
+        <translation type="vanished">Daba voafoana</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation>Mamafa fitoeran-drakitra</translation>
+        <translation type="vanished">Mamafa fitoeran-drakitra</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation>Tena te hamafa an&apos;ilay fitoeran-drakitra &apos;%1&apos; ve ianao sy ny mpiatiny rehetra ?</translation>
+        <translation type="vanished">Tena te hamafa an&apos;ilay fitoeran-drakitra &apos;%1&apos; ve ianao sy ny mpiatiny rehetra ?</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation>Tsisy fitoeran-drakitra voafidy!</translation>
+        <translation type="vanished">Tsisy fitoeran-drakitra voafidy!</translation>
     </message>
     <message>
         <source>Open Supported File</source>
@@ -1153,7 +1153,7 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Tena te hamafa pejy %n avy amin&apos;ilay rakitra &apos;%1&apos; voafidy ve ianao ?</numerusform>
             <numerusform></numerusform>
         </translation>
@@ -1166,16 +1166,28 @@
         <source>Untitled Documents</source>
         <translation>Rakitra tsy misy lohateny</translation>
     </message>
+    <message numerus="yes">
+        <source>duplicated %1 page</source>
+        <comment>duplicated %1 pages</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove multiple documents</source>
+        <source>Title page</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1230,18 +1242,82 @@
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
+    <name>UBDocumentPublisher</name>
     <message>
-        <source>%1 (copy)</source>
-        <translation>%1 (fandikana)</translation>
+        <source>Export failed.</source>
+        <translation type="obsolete">Fandefasana tsy nety.</translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentReplaceDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished">Ekena</translation>
     </message>
     <message>
-        <source>Copying page %1/%2</source>
-        <translation>Mandika pejy %1/%2</translation>
+        <source>Cancel</source>
+        <translation type="unfinished">Ajanony</translation>
+    </message>
+    <message>
+        <source>Replace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name %1 is allready used.
+Keeping this name will replace the document.
+Providing a new name will create a new document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeModel</name>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">Daba</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation>
+        <translation type="unfinished">
+            <numerusform>%1 pejy voadika</numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>My documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeView</name>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="unfinished">
+            <numerusform>%1 pejy voadika</numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeWidget</name>
+    <message>
+        <source>%1 (copy)</source>
+        <translation type="vanished">%1 (fandikana)</translation>
+    </message>
+    <message>
+        <source>Copying page %1/%2</source>
+        <translation type="vanished">Mandika pejy %1/%2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="vanished">
             <numerusform>%1 pejy voadika</numerusform>
             <numerusform></numerusform>
         </translation>
@@ -1279,6 +1355,10 @@
         <translation>Nisy fitandremana niseho tamin&apos;ny fandefasana ny rakitra</translation>
     </message>
     <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Fandefasana nety.</translation>
+    </message>
+    <message>
         <source>Exporting document...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1294,32 +1374,28 @@
         <source>Export failed: location not writable</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="unfinished">Fandefasana nety.</translation>
-    </message>
 </context>
 <context>
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="vanished">Alefa ho IWB</translation>
+        <translation>Alefa ho IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="vanished">Alefa ho rakitra IWB</translation>
+        <translation>Alefa ho rakitra IWB</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="vanished">Mandefa ny rakitra ...</translation>
+        <translation>Mandefa ny rakitra ...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">Fandefasana nety.</translation>
+        <translation>Fandefasana nety.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="vanished">Fandefasana tsy nety.</translation>
+        <translation>Fandefasana tsy nety.</translation>
     </message>
 </context>
 <context>
@@ -1346,6 +1422,33 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBExportDocumentSetAdaptor</name>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Fandefasana nety.</translation>
+    </message>
+    <message>
+        <source>Export failed.</source>
+        <translation type="unfinished">Fandefasana tsy nety.</translation>
+    </message>
+    <message>
+        <source>Failed to export...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as UBX File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to OpenBoard UBX Format</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1637,23 +1740,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="vanished">Andrefin&apos;ny rakitra mahazatra (</translation>
+        <translation>Andrefin&apos;ny rakitra mahazatra (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="vanished">Manafatra rakitra %1 ...</translation>
+        <translation>Manafatra rakitra %1 ...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="vanished">Fanafarana ny rakitra %1 tsy nety.</translation>
+        <translation>Fanafarana ny rakitra %1 tsy nety.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="vanished">Fanafarana nety.</translation>
+        <translation>Fanafarana nety.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="vanished">Fanafarana tsy nety.</translation>
+        <translation>Fanafarana tsy nety.</translation>
     </message>
 </context>
 <context>
@@ -1672,6 +1775,13 @@
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBImportDocumentSetAdaptor</name>
+    <message>
+        <source>Openboard (set of documents) (*.ubx)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1782,7 +1892,15 @@ Tena tsy te hiraharaha an&apos;ireo tsy mety ho an&apos;ilay milina ve ianao?</t
 <context>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Ajanony</translation>
+    </message>
+    <message>
         <source>Open-Sankore Documents Detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1794,15 +1912,7 @@ Tena tsy te hiraharaha an&apos;ireo tsy mety ho an&apos;ilay milina ve ianao?</t
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation type="unfinished">Ajanony</translation>
-    </message>
-    <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1817,11 +1927,7 @@ Tena tsy te hiraharaha an&apos;ireo tsy mety ho an&apos;ilay milina ve ianao?</t
         <translation>Haverezana ny fitehirizana ny rakitra </translation>
     </message>
     <message>
-        <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Moving page to trash folder...</source>
+        <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1926,34 +2032,34 @@ Tena tsy te hiraharaha an&apos;ireo tsy mety ho an&apos;ilay milina ve ianao?</t
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation>Fidirana Proxy</translation>
+        <translation type="vanished">Fidirana Proxy</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Anaran&apos;ny mpampiasa:</translation>
+        <translation type="vanished">Anaran&apos;ny mpampiasa:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>Teny fanalahidy:</translation>
+        <translation type="vanished">Teny fanalahidy:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation>Apetraka amin&apos;ny tranon-kala ny rakitra</translation>
+        <translation type="vanished">Apetraka amin&apos;ny tranon-kala ny rakitra</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation>Lohateny:</translation>
+        <translation type="vanished">Lohateny:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation>Fanazavana:</translation>
+        <translation type="vanished">Fanazavana:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation>Alefa</translation>
+        <translation type="vanished">Alefa</translation>
     </message>
 </context>
 <context>
@@ -2427,12 +2533,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;Rehefa tsindrinao ny &quot;Alefa&quot; dia manamarina ianao fa manana ny alalana rehetra ami&apos;ny mpiatiny na nomen&apos;ny mpamorona alalana ianao andefa an&apos;ilay rakitra amin&apos;ny YouTube.&lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>Restore credentials on reboot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>OpenBoard</source>
         <translation type="unfinished">OpenBoard</translation>
+    </message>
+    <message>
+        <source>Restore credentials on reboot</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2502,9 +2608,48 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>documentPublishingDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="obsolete">Fifakalozan-kevitra</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="obsolete">Lohateny</translation>
+    </message>
+    <message>
+        <source>E-mail</source>
+        <translation type="obsolete">Mailaka</translation>
+    </message>
+    <message>
+        <source>Author</source>
+        <translation type="obsolete">Mpamorona</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="obsolete">Fanazavana</translation>
+    </message>
+</context>
+<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creation date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alphabetical order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2647,26 +2792,6 @@ p, li { white-space: pre-wrap; }
         <translation>Voaka</translation>
     </message>
     <message>
-        <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>On Dark Background</source>
         <translation type="unfinished">Amin&apos;ny ambadika maizina</translation>
     </message>
@@ -2680,6 +2805,26 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap first and second view displays</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré Importer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

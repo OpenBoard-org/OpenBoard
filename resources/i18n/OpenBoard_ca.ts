@@ -792,19 +792,19 @@
         <translation>Elimina el fons</translation>
     </message>
     <message>
-        <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ruled Light Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Tutorial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open the tutorial web page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -854,11 +854,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="vanished">ID de l&apos;element = </translation>
+        <translation>ID de l&apos;element = </translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="vanished">Aquest contingut no està suportat pel format escollit.</translation>
+        <translation>Aquest contingut no està suportat pel format escollit.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -1069,43 +1069,43 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation>Suprimeix la pàgina</translation>
+        <translation type="vanished">Suprimeix la pàgina</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation>Suprimeix el document</translation>
+        <translation type="vanished">Suprimeix el document</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation>Esteu segur que voleu eliminar el document &apos;%1&apos;?</translation>
+        <translation type="vanished">Esteu segur que voleu eliminar el document &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Buida la paperera</translation>
+        <translation type="vanished">Buida la paperera</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation>Esteu segur que voleu buidar la paperera?</translation>
+        <translation type="vanished">Esteu segur que voleu buidar la paperera?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation>S&apos;està buidant la paperera</translation>
+        <translation type="vanished">S&apos;està buidant la paperera</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation>S&apos;ha buidat la paperera</translation>
+        <translation type="vanished">S&apos;ha buidat la paperera</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation>Suprimeix la carpeta</translation>
+        <translation type="vanished">Suprimeix la carpeta</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation>Esteu segur que voleu suprimir la carpeta &apos;%1&apos; i tot el seu contingut?</translation>
+        <translation type="vanished">Esteu segur que voleu suprimir la carpeta &apos;%1&apos; i tot el seu contingut?</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation>No hi ha cap document seleccionat!</translation>
+        <translation type="vanished">No hi ha cap document seleccionat!</translation>
     </message>
     <message>
         <source>Open Supported File</source>
@@ -1153,7 +1153,7 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Esteu segur que voleu eliminar %n pàgina del document seleccionat &apos;%1&apos;?</numerusform>
             <numerusform>Esteu segur que voleu eliminar %n pàgines del document seleccionat &apos;%1&apos;?</numerusform>
         </translation>
@@ -1166,16 +1166,28 @@
         <source>Untitled Documents</source>
         <translation>Documents sense títol</translation>
     </message>
+    <message numerus="yes">
+        <source>duplicated %1 page</source>
+        <comment>duplicated %1 pages</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove multiple documents</source>
+        <source>Title page</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1230,18 +1242,82 @@
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
+    <name>UBDocumentPublisher</name>
     <message>
-        <source>%1 (copy)</source>
-        <translation>%1 (còpia)</translation>
+        <source>Export failed.</source>
+        <translation type="obsolete">L&apos;exportació ha fallat.</translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentReplaceDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished">D&apos;acord</translation>
     </message>
     <message>
-        <source>Copying page %1/%2</source>
-        <translation>S&apos;està copiant la pàgina %1/%2</translation>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel·la</translation>
+    </message>
+    <message>
+        <source>Replace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name %1 is allready used.
+Keeping this name will replace the document.
+Providing a new name will create a new document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeModel</name>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">Paperera</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation>
+        <translation type="unfinished">
+            <numerusform>%1 pàgina copiada</numerusform>
+            <numerusform>%1 pàgines copiades</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>My documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeView</name>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="unfinished">
+            <numerusform>%1 pàgina copiada</numerusform>
+            <numerusform>%1 pàgines copiades</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeWidget</name>
+    <message>
+        <source>%1 (copy)</source>
+        <translation type="vanished">%1 (còpia)</translation>
+    </message>
+    <message>
+        <source>Copying page %1/%2</source>
+        <translation type="vanished">S&apos;està copiant la pàgina %1/%2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="vanished">
             <numerusform>%1 pàgina copiada</numerusform>
             <numerusform>%1 pàgines copiades</numerusform>
         </translation>
@@ -1283,6 +1359,10 @@
         <translation type="unfinished">S&apos;està exportant el document...</translation>
     </message>
     <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">L&apos;exportació ha estat correcta.</translation>
+    </message>
+    <message>
         <source>Export failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1294,32 +1374,28 @@
         <source>Export failed: location not writable</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="unfinished">L&apos;exportació ha estat correcta.</translation>
-    </message>
 </context>
 <context>
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="vanished">Exporta a IWB</translation>
+        <translation>Exporta a IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="vanished">Exporta com a fitxer IWB</translation>
+        <translation>Exporta com a fitxer IWB</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="vanished">S&apos;està exportant el document...</translation>
+        <translation>S&apos;està exportant el document...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">L&apos;exportació ha estat correcta.</translation>
+        <translation>L&apos;exportació ha estat correcta.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="vanished">L&apos;exportació ha fallat.</translation>
+        <translation>L&apos;exportació ha fallat.</translation>
     </message>
 </context>
 <context>
@@ -1346,6 +1422,33 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBExportDocumentSetAdaptor</name>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">S&apos;està exportant el document...</translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">L&apos;exportació ha estat correcta.</translation>
+    </message>
+    <message>
+        <source>Export failed.</source>
+        <translation type="unfinished">L&apos;exportació ha fallat.</translation>
+    </message>
+    <message>
+        <source>Failed to export...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as UBX File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to OpenBoard UBX Format</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1637,23 +1740,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="vanished">Format de fitxer comú (</translation>
+        <translation>Format de fitxer comú (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="vanished">S&apos;està important el fitxer %1...</translation>
+        <translation>S&apos;està important el fitxer %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="vanished">Ha fallat la importació del fitxer %1.</translation>
+        <translation>Ha fallat la importació del fitxer %1.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="vanished">La importació ha estat correcta.</translation>
+        <translation>La importació ha estat correcta.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="vanished">Ha fallat la importació.</translation>
+        <translation>Ha fallat la importació.</translation>
     </message>
 </context>
 <context>
@@ -1672,6 +1775,13 @@
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBImportDocumentSetAdaptor</name>
+    <message>
+        <source>Openboard (set of documents) (*.ubx)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1782,7 +1892,15 @@ Voleu ignorar aquests errors per a aquest amfitrió?</translation>
 <context>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancel·la</translation>
+    </message>
+    <message>
         <source>Open-Sankore Documents Detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1794,15 +1912,7 @@ Voleu ignorar aquests errors per a aquest amfitrió?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation type="unfinished">Cancel·la</translation>
-    </message>
-    <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1817,11 +1927,7 @@ Voleu ignorar aquests errors per a aquest amfitrió?</translation>
         <translation>Pèrdua del repositori de documents</translation>
     </message>
     <message>
-        <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Moving page to trash folder...</source>
+        <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1926,34 +2032,34 @@ Voleu ignorar aquests errors per a aquest amfitrió?</translation>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation>Inici de sessió al servidor intermediari</translation>
+        <translation type="vanished">Inici de sessió al servidor intermediari</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Usuari:</translation>
+        <translation type="vanished">Usuari:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>Contrasenya:</translation>
+        <translation type="vanished">Contrasenya:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation>Publica el document a la web</translation>
+        <translation type="vanished">Publica el document a la web</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation>Títol:</translation>
+        <translation type="vanished">Títol:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation>Descripció:</translation>
+        <translation type="vanished">Descripció:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation>Publica</translation>
+        <translation type="vanished">Publica</translation>
     </message>
 </context>
 <context>
@@ -2420,12 +2526,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;Clicant &apos;Carrega,&apos; certifiqueu que teniu tots els drets sobre el contingut o que esteu autoritzats pel propietari dels drets a fer-lo públicament disponible al YouTube, així com que el contingut compleix amb els termes de servei del YouTube localitzats a &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>Restore credentials on reboot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>OpenBoard</source>
         <translation type="unfinished">OpenBoard</translation>
+    </message>
+    <message>
+        <source>Restore credentials on reboot</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2495,9 +2601,48 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>documentPublishingDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="obsolete">Diàleg</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="obsolete">Títol</translation>
+    </message>
+    <message>
+        <source>E-mail</source>
+        <translation type="obsolete">Adreça de correu electrònic</translation>
+    </message>
+    <message>
+        <source>Author</source>
+        <translation type="obsolete">Autor/a</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="obsolete">Descripció</translation>
+    </message>
+</context>
+<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creation date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alphabetical order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2640,26 +2785,6 @@ p, li { white-space: pre-wrap; }
         <translation>Crèdits</translation>
     </message>
     <message>
-        <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>On Dark Background</source>
         <translation type="unfinished">Sobre fons fosc</translation>
     </message>
@@ -2673,6 +2798,26 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap first and second view displays</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré Importer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

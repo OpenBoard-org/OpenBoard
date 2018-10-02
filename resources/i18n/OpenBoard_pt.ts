@@ -856,11 +856,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="vanished">ID do Elemento</translation>
+        <translation>ID do Elemento</translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="vanished">O conteúdo não é suportado no formato de destino.</translation>
+        <translation>O conteúdo não é suportado no formato de destino.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -1071,43 +1071,43 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation>Remover Página</translation>
+        <translation type="vanished">Remover Página</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation>Remover Documento</translation>
+        <translation type="vanished">Remover Documento</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation>Tem a certeza que quer remover o documento &apos;%1&apos;?</translation>
+        <translation type="vanished">Tem a certeza que quer remover o documento &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Vazar Lixo</translation>
+        <translation type="vanished">Vazar Lixo</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation>Tem a certeza que quer vazar a pasta Lixo? </translation>
+        <translation type="vanished">Tem a certeza que quer vazar a pasta Lixo? </translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation>A vazar Lixo</translation>
+        <translation type="vanished">A vazar Lixo</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation>Pasta Lixo limpa</translation>
+        <translation type="vanished">Pasta Lixo limpa</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation>Apagar Pasta</translation>
+        <translation type="vanished">Apagar Pasta</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation>Tem a certeza que quer apagar a pasta &apos;%1&apos; e todo o seu conteúdo?</translation>
+        <translation type="vanished">Tem a certeza que quer apagar a pasta &apos;%1&apos; e todo o seu conteúdo?</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation>Não há documentos selecionados!</translation>
+        <translation type="vanished">Não há documentos selecionados!</translation>
     </message>
     <message>
         <source>Open Supported File</source>
@@ -1155,7 +1155,7 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Tem certeza que quer apagar %n página do documento selecionado &apos;%1&apos;?</numerusform>
             <numerusform>Tem certeza que quer apagar %n páginas do documento selecionado &apos;%1&apos;?</numerusform>
         </translation>
@@ -1174,11 +1174,31 @@
     </message>
     <message>
         <source>Are you sure you want to remove all selected documents?</source>
-        <translation>Você tem certeza que deseja remover todos os documentos selecionados?</translation>
+        <translation type="vanished">Você tem certeza que deseja remover todos os documentos selecionados?</translation>
     </message>
     <message>
         <source>Remove multiple documents</source>
-        <translation>Remover múltiplos documentos</translation>
+        <translation type="vanished">Remover múltiplos documentos</translation>
+    </message>
+    <message numerus="yes">
+        <source>duplicated %1 page</source>
+        <comment>duplicated %1 pages</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title page</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1232,18 +1252,75 @@
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
+    <name>UBDocumentReplaceDialog</name>
     <message>
-        <source>%1 (copy)</source>
-        <translation>%1 (cópia)</translation>
+        <source>Accept</source>
+        <translation type="unfinished">Aceitar</translation>
     </message>
     <message>
-        <source>Copying page %1/%2</source>
-        <translation>A copiar página %1/%2</translation>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
+    </message>
+    <message>
+        <source>Replace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name %1 is allready used.
+Keeping this name will replace the document.
+Providing a new name will create a new document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeModel</name>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">Lixo</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation>
+        <translation type="unfinished">
+            <numerusform>%1 página copiada</numerusform>
+            <numerusform>%1 páginas copiadas</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>My documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeView</name>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="unfinished">
+            <numerusform>%1 página copiada</numerusform>
+            <numerusform>%1 páginas copiadas</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeWidget</name>
+    <message>
+        <source>%1 (copy)</source>
+        <translation type="vanished">%1 (cópia)</translation>
+    </message>
+    <message>
+        <source>Copying page %1/%2</source>
+        <translation type="vanished">A copiar página %1/%2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="vanished">
             <numerusform>%1 página copiada</numerusform>
             <numerusform>%1 páginas copiadas</numerusform>
         </translation>
@@ -1289,10 +1366,6 @@
         <translation type="unfinished">Exportação falhou</translation>
     </message>
     <message>
-        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Export failed: location not writable</source>
         <translation type="unfinished">Exportação falhou: localização não gravável</translation>
     </message>
@@ -1300,28 +1373,32 @@
         <source>Export successful.</source>
         <translation type="unfinished">Exportação bem sucedida.</translation>
     </message>
+    <message>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="vanished">Exportar para IWB</translation>
+        <translation>Exportar para IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="vanished">Exportar como ficheiro IWB</translation>
+        <translation>Exportar como ficheiro IWB</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="vanished">A exportar documento...</translation>
+        <translation>A exportar documento...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">Exportação bem sucedida.</translation>
+        <translation>Exportação bem sucedida.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="vanished">Falha na Exportação.</translation>
+        <translation>Falha na Exportação.</translation>
     </message>
 </context>
 <context>
@@ -1361,6 +1438,33 @@
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
         <translation type="vanished">Impossível exportar para a localização selcionada. Você não possui as permissões necessárias para gravar o arquivo.</translation>
+    </message>
+</context>
+<context>
+    <name>UBExportDocumentSetAdaptor</name>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">A exportar documento...</translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Exportação bem sucedida.</translation>
+    </message>
+    <message>
+        <source>Failed to export...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as UBX File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to OpenBoard UBX Format</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1664,23 +1768,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="vanished">Formato de Ficheiro Frequente (</translation>
+        <translation>Formato de Ficheiro Frequente (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="vanished">A importar ficheiro %1...</translation>
+        <translation>A importar ficheiro %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="vanished">Falha a importar ficheiro %1.</translation>
+        <translation>Falha a importar ficheiro %1.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="vanished">Importação bem sucedida.</translation>
+        <translation>Importação bem sucedida.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="vanished">Falha na importação.</translation>
+        <translation>Falha na importação.</translation>
     </message>
 </context>
 <context>
@@ -1700,6 +1804,13 @@
     <message>
         <source>OpenBoard (*.ubz)</source>
         <translation>OpenBoard (*.ubz)</translation>
+    </message>
+</context>
+<context>
+    <name>UBImportDocumentSetAdaptor</name>
+    <message>
+        <source>Openboard (set of documents) (*.ubx)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1845,10 +1956,10 @@ Quer ignorar estes erros, deste servidor?</translation>
     </message>
     <message>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation>Acesso ao repositório &apos;%1&apos; foi perdido. Infelizmente a aplicação deverá desligar para avitar a corrupção de dados. As últimas alterações também serão perdidas.</translation>
+        <translation type="vanished">Acesso ao repositório &apos;%1&apos; foi perdido. Infelizmente a aplicação deverá desligar para avitar a corrupção de dados. As últimas alterações também serão perdidas.</translation>
     </message>
     <message>
-        <source>Moving page to trash folder...</source>
+        <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1953,34 +2064,34 @@ Quer ignorar estes erros, deste servidor?</translation>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation>Iniciar sessão no Proxy</translation>
+        <translation type="vanished">Iniciar sessão no Proxy</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Nome de Utilizador:</translation>
+        <translation type="vanished">Nome de Utilizador:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>Senha:</translation>
+        <translation type="vanished">Senha:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation>Publicar documentos na web</translation>
+        <translation type="vanished">Publicar documentos na web</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation>Título:</translation>
+        <translation type="vanished">Título:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation>Descrição:</translation>
+        <translation type="vanished">Descrição:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation>Publicar</translation>
+        <translation type="vanished">Publicar</translation>
     </message>
 </context>
 <context>
@@ -2524,10 +2635,49 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>documentPublishingDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="obsolete">Caixa de Diálogo</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="obsolete">Título</translation>
+    </message>
+    <message>
+        <source>E-mail</source>
+        <translation type="obsolete">E-mail</translation>
+    </message>
+    <message>
+        <source>Author</source>
+        <translation type="obsolete">Autor</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="obsolete">Descrição</translation>
+    </message>
+</context>
+<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
         <translation>Documentos OpenBoard</translation>
+    </message>
+    <message>
+        <source>Creation date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alphabetical order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort Order</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2687,10 +2837,6 @@ p, li { white-space: pre-wrap; }
         <translation>Tamanho da tecla do teclado virtual embarcado:</translation>
     </message>
     <message>
-        <source>Grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>On Dark Background</source>
         <translation type="unfinished">Num fundo preto</translation>
     </message>
@@ -2704,6 +2850,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap first and second view displays</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

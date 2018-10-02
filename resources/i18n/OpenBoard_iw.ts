@@ -793,19 +793,19 @@
         <translation>הסר רקע</translation>
     </message>
     <message>
-        <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ruled Light Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Tutorial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open the tutorial web page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -855,11 +855,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="vanished">זהות הרכיב:</translation>
+        <translation>זהות הרכיב:</translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="vanished">התוכן אינו נתמך בפורמט היעד</translation>
+        <translation>התוכן אינו נתמך בפורמט היעד</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -1070,43 +1070,43 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation>הסר את הדף</translation>
+        <translation type="vanished">הסר את הדף</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation>הסר את המסמך</translation>
+        <translation type="vanished">הסר את המסמך</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation>אתה בטוח שברצונך להסיר את  %1&apos;המסמך?</translation>
+        <translation type="vanished">אתה בטוח שברצונך להסיר את  %1&apos;המסמך?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>רוקן את הסל</translation>
+        <translation type="vanished">רוקן את הסל</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation>אתה בטוח שברצונך לרוקן את הסל?</translation>
+        <translation type="vanished">אתה בטוח שברצונך לרוקן את הסל?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation>מרוקן סל</translation>
+        <translation type="vanished">מרוקן סל</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation>הסל הורק</translation>
+        <translation type="vanished">הסל הורק</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation>הסר תיקיה</translation>
+        <translation type="vanished">הסר תיקיה</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation>אתה בטוח שברצונך להסיר את התיקיה %1 ואת כל תכנה?</translation>
+        <translation type="vanished">אתה בטוח שברצונך להסיר את התיקיה %1 ואת כל תכנה?</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation>לא נבחר כל מסמך!</translation>
+        <translation type="vanished">לא נבחר כל מסמך!</translation>
     </message>
     <message>
         <source>Open Supported File</source>
@@ -1154,7 +1154,7 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>האם אתה בטוח שברצונך להסיר %n עמוד(ים) מהמסמך שנבחר %1&apos;?</numerusform>
             <numerusform></numerusform>
         </translation>
@@ -1167,16 +1167,28 @@
         <source>Untitled Documents</source>
         <translation>מסמכים ללא שם</translation>
     </message>
+    <message numerus="yes">
+        <source>duplicated %1 page</source>
+        <comment>duplicated %1 pages</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove multiple documents</source>
+        <source>Title page</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1231,18 +1243,75 @@
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
+    <name>UBDocumentReplaceDialog</name>
     <message>
-        <source>%1 (copy)</source>
-        <translation>%1 (העתק)</translation>
+        <source>Accept</source>
+        <translation type="unfinished">קבל</translation>
     </message>
     <message>
-        <source>Copying page %1/%2</source>
-        <translation>מעתיק עמוד %1/%2</translation>
+        <source>Cancel</source>
+        <translation type="unfinished">בטל</translation>
+    </message>
+    <message>
+        <source>Replace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name %1 is allready used.
+Keeping this name will replace the document.
+Providing a new name will create a new document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeModel</name>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">סל</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation>
+        <translation type="unfinished">
+            <numerusform>%1 דפים הועתקו</numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>My documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeView</name>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="unfinished">
+            <numerusform>%1 דפים הועתקו</numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeWidget</name>
+    <message>
+        <source>%1 (copy)</source>
+        <translation type="vanished">%1 (העתק)</translation>
+    </message>
+    <message>
+        <source>Copying page %1/%2</source>
+        <translation type="vanished">מעתיק עמוד %1/%2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="vanished">
             <numerusform>%1 דפים הועתקו</numerusform>
             <numerusform></numerusform>
         </translation>
@@ -1276,13 +1345,12 @@
 <context>
     <name>UBExportAdaptor</name>
     <message>
-        <source>Warnings during export was appeared</source>
-        <translatorcomment>I don&apos;t understand this sentence</translatorcomment>
-        <translation></translation>
-    </message>
-    <message>
         <source>Exporting document...</source>
         <translation type="unfinished">מייצא מסמך...</translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">הייצוא בוצע בהצלחה.</translation>
     </message>
     <message>
         <source>Export failed</source>
@@ -1297,31 +1365,31 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Export successful.</source>
-        <translation type="unfinished">הייצוא בוצע בהצלחה.</translation>
+        <source>Warnings during export was appeared</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="vanished">ייצא ל-IWB</translation>
+        <translation>ייצא ל-IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="vanished">ייצא כקובץ IWB</translation>
+        <translation>ייצא כקובץ IWB</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="vanished">מייצא מסמך...</translation>
+        <translation>מייצא מסמך...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">הייצוא בוצע בהצלחה.</translation>
+        <translation>הייצוא בוצע בהצלחה.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="vanished">פעולת הייצוא נכשלה</translation>
+        <translation>פעולת הייצוא נכשלה</translation>
     </message>
 </context>
 <context>
@@ -1348,6 +1416,33 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBExportDocumentSetAdaptor</name>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">מייצא מסמך...</translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">הייצוא בוצע בהצלחה.</translation>
+    </message>
+    <message>
+        <source>Failed to export...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as UBX File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to OpenBoard UBX Format</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1639,23 +1734,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="vanished">פורמט קובץ רגיל )</translation>
+        <translation>פורמט קובץ רגיל )</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="vanished">מייבא קובץ %1...</translation>
+        <translation>מייבא קובץ %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="vanished">ייבוא קובץ %1 נכשל.</translation>
+        <translation>ייבוא קובץ %1 נכשל.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="vanished">הייבוא בוצע בהצלחה.</translation>
+        <translation>הייבוא בוצע בהצלחה.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="vanished">הייבוא נכשל.</translation>
+        <translation>הייבוא נכשל.</translation>
     </message>
 </context>
 <context>
@@ -1674,6 +1769,13 @@
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBImportDocumentSetAdaptor</name>
+    <message>
+        <source>Openboard (set of documents) (*.ubx)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1779,7 +1881,15 @@ Do you want to ignore these errors for this host?</source>
 <context>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
+        <source>Cancel</source>
+        <translation type="unfinished">בטל</translation>
+    </message>
+    <message>
         <source>Open-Sankore Documents Detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1791,15 +1901,7 @@ Do you want to ignore these errors for this host?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation type="unfinished">בטל</translation>
-    </message>
-    <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1814,11 +1916,7 @@ Do you want to ignore these errors for this host?</source>
         <translation>אבד מקום האכסון של המסמך</translation>
     </message>
     <message>
-        <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Moving page to trash folder...</source>
+        <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1923,34 +2021,34 @@ Do you want to ignore these errors for this host?</source>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation>כניסה לפרוקסי</translation>
+        <translation type="vanished">כניסה לפרוקסי</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>שם משתמש:</translation>
+        <translation type="vanished">שם משתמש:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>סיסמא:</translation>
+        <translation type="vanished">סיסמא:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation>פרסם מסמך באינטרנט</translation>
+        <translation type="vanished">פרסם מסמך באינטרנט</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation>שם:</translation>
+        <translation type="vanished">שם:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation>תיאור:</translation>
+        <translation type="vanished">תיאור:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation>פרסם</translation>
+        <translation type="vanished">פרסם</translation>
     </message>
 </context>
 <context>
@@ -2412,16 +2510,16 @@ Please reboot the application to access the updated documents.</source>
         <translation>הסיסמא ליוטיוב</translation>
     </message>
     <message>
+        <source>OpenBoard</source>
+        <translation type="unfinished">הגרסה הפתוחה של Sankoré</translation>
+    </message>
+    <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;By clicking &apos;Upload,&apos; you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>OpenBoard</source>
-        <translation type="unfinished">הגרסה הפתוחה של Sankoré</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Restore credentials on reboot</source>
@@ -2495,9 +2593,48 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>documentPublishingDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="obsolete">דיאלוג</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="obsolete">שם</translation>
+    </message>
+    <message>
+        <source>E-mail</source>
+        <translation type="obsolete">דואל</translation>
+    </message>
+    <message>
+        <source>Author</source>
+        <translation type="obsolete">מחבר</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="obsolete">תיאור</translation>
+    </message>
+</context>
+<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creation date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alphabetical order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2550,10 +2687,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Positioned at the Top (recommended for tablets)</source>
         <translation>ממוקם בראש הדף )מומלץ למחשבי לוח(</translation>
-    </message>
-    <message>
-        <source>Positioned at the Bottom (recommended for white boards)</source>
-        <translation></translation>
     </message>
     <message>
         <source>Display Text Under Button</source>
@@ -2640,26 +2773,6 @@ p, li { white-space: pre-wrap; }
         <translation>אשראי</translation>
     </message>
     <message>
-        <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>On Dark Background</source>
         <translation type="unfinished">על רקע כהה</translation>
     </message>
@@ -2673,6 +2786,30 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap first and second view displays</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Positioned at the Bottom (recommended for white boards)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré Importer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

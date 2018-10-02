@@ -792,19 +792,19 @@
         <translation>移除背景</translation>
     </message>
     <message>
-        <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ruled Light Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Tutorial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open the tutorial web page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -854,11 +854,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="vanished">元件ID =</translation>
+        <translation>元件ID =</translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="vanished">內容格式不支援。</translation>
+        <translation>內容格式不支援。</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -1069,43 +1069,43 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation>移除頁面</translation>
+        <translation type="vanished">移除頁面</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation>移除文件</translation>
+        <translation type="vanished">移除文件</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation>確定要移除文件 &apos;%1&apos;?</translation>
+        <translation type="vanished">確定要移除文件 &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>清空回收桶</translation>
+        <translation type="vanished">清空回收桶</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation>確定要清空回收桶?</translation>
+        <translation type="vanished">確定要清空回收桶?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation>回收桶清空中</translation>
+        <translation type="vanished">回收桶清空中</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation>回收桶已清空</translation>
+        <translation type="vanished">回收桶已清空</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation>移除檔案夾</translation>
+        <translation type="vanished">移除檔案夾</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation>確定要移除檔案夾 &apos;%1&apos; 及其所有內容?</translation>
+        <translation type="vanished">確定要移除檔案夾 &apos;%1&apos; 及其所有內容?</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation>未選擇任何文件！</translation>
+        <translation type="vanished">未選擇任何文件！</translation>
     </message>
     <message>
         <source>Open Supported File</source>
@@ -1153,7 +1153,7 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="unfinished">
+        <translation type="obsolete">
             <numerusform>確定要從所選文件 &apos;%1&apos; 移除 %n 個頁面?</numerusform>
         </translation>
     </message>
@@ -1165,16 +1165,27 @@
         <source>Untitled Documents</source>
         <translation>未命名文件</translation>
     </message>
+    <message numerus="yes">
+        <source>duplicated %1 page</source>
+        <comment>duplicated %1 pages</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove multiple documents</source>
+        <source>Title page</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1229,18 +1240,80 @@
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
+    <name>UBDocumentPublisher</name>
     <message>
-        <source>%1 (copy)</source>
-        <translation>%1 (copy)</translation>
+        <source>Export failed.</source>
+        <translation type="obsolete">匯出失敗。</translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentReplaceDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished">接受</translation>
     </message>
     <message>
-        <source>Copying page %1/%2</source>
-        <translation>頁面 %1/%2 複製中</translation>
+        <source>Cancel</source>
+        <translation type="unfinished">取消</translation>
+    </message>
+    <message>
+        <source>Replace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name %1 is allready used.
+Keeping this name will replace the document.
+Providing a new name will create a new document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeModel</name>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">回收桶</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
         <translation type="unfinished">
+            <numerusform>已複製 %1 個頁面</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>My documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeView</name>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="unfinished">
+            <numerusform>已複製 %1 個頁面</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeWidget</name>
+    <message>
+        <source>%1 (copy)</source>
+        <translation type="vanished">%1 (copy)</translation>
+    </message>
+    <message>
+        <source>Copying page %1/%2</source>
+        <translation type="vanished">頁面 %1/%2 複製中</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="obsolete">
             <numerusform>已複製 %1 個頁面</numerusform>
         </translation>
     </message>
@@ -1301,23 +1374,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="vanished">匯出至IWB</translation>
+        <translation>匯出至IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="vanished">以IWB格式匯出</translation>
+        <translation>以IWB格式匯出</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="vanished">匯出文件...</translation>
+        <translation>匯出文件...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">成功匯出。</translation>
+        <translation>成功匯出。</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="vanished">匯出失敗。</translation>
+        <translation>匯出失敗。</translation>
     </message>
 </context>
 <context>
@@ -1344,6 +1417,33 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBExportDocumentSetAdaptor</name>
+    <message>
+        <source>Export failed.</source>
+        <translation type="unfinished">匯出失敗。</translation>
+    </message>
+    <message>
+        <source>Failed to export...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as UBX File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to OpenBoard UBX Format</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1635,23 +1735,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="vanished">常見檔案格式 (</translation>
+        <translation>常見檔案格式 (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="vanished">檔案 %1 匯入中...</translation>
+        <translation>檔案 %1 匯入中...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="vanished">檔案 %1 匯入失敗。</translation>
+        <translation>檔案 %1 匯入失敗。</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="vanished">匯入成功。</translation>
+        <translation>匯入成功。</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="vanished">匯入失敗。</translation>
+        <translation>匯入失敗。</translation>
     </message>
 </context>
 <context>
@@ -1670,6 +1770,13 @@
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBImportDocumentSetAdaptor</name>
+    <message>
+        <source>Openboard (set of documents) (*.ubx)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1774,7 +1881,15 @@ Do you want to ignore these errors for this host?</source>
 <context>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
+        <source>Cancel</source>
+        <translation type="unfinished">取消</translation>
+    </message>
+    <message>
         <source>Open-Sankore Documents Detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1786,15 +1901,7 @@ Do you want to ignore these errors for this host?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
-    </message>
-    <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1809,11 +1916,7 @@ Do you want to ignore these errors for this host?</source>
         <translation>文件資料庫遺失</translation>
     </message>
     <message>
-        <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Moving page to trash folder...</source>
+        <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1918,34 +2021,34 @@ Do you want to ignore these errors for this host?</source>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation>Proxy登入</translation>
+        <translation type="vanished">Proxy登入</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>帳號:</translation>
+        <translation type="vanished">帳號:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>密碼:</translation>
+        <translation type="vanished">密碼:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation>發佈文件至網路</translation>
+        <translation type="vanished">發佈文件至網路</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation>標題:</translation>
+        <translation type="vanished">標題:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation>描述:</translation>
+        <translation type="vanished">描述:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation>發佈</translation>
+        <translation type="vanished">發佈</translation>
     </message>
 </context>
 <context>
@@ -2487,9 +2590,48 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>documentPublishingDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="obsolete">對話</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="obsolete">標題</translation>
+    </message>
+    <message>
+        <source>E-mail</source>
+        <translation type="obsolete">E-mail</translation>
+    </message>
+    <message>
+        <source>Author</source>
+        <translation type="obsolete">作者</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="obsolete">描述</translation>
+    </message>
+</context>
+<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creation date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alphabetical order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2632,26 +2774,6 @@ p, li { white-space: pre-wrap; }
         <translation>貢獻</translation>
     </message>
     <message>
-        <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>On Dark Background</source>
         <translation type="unfinished">深色背景</translation>
     </message>
@@ -2665,6 +2787,26 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap first and second view displays</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré Importer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -792,19 +792,19 @@
         <translation>Arkaplanı Kaldır</translation>
     </message>
     <message>
-        <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ruled Light Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Tutorial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open the tutorial web page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -854,11 +854,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="vanished">Element ID = </translation>
+        <translation>Element ID = </translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="vanished">İçerik hedef içerik için uygun geğil.</translation>
+        <translation>İçerik hedef içerik için uygun geğil.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -1069,43 +1069,43 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation>Sayfayı Kaldır</translation>
+        <translation type="vanished">Sayfayı Kaldır</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation>Dökümanı Kaldır</translation>
+        <translation type="vanished">Dökümanı Kaldır</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation>%1 adlı dökümanı kaldırmak istediğinizden eminmisiniz?</translation>
+        <translation type="vanished">%1 adlı dökümanı kaldırmak istediğinizden eminmisiniz?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Çöpü Boşalt</translation>
+        <translation type="vanished">Çöpü Boşalt</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation>Çöp kutusunu boşaltmak istediğinizden eminmisiniz?</translation>
+        <translation type="vanished">Çöp kutusunu boşaltmak istediğinizden eminmisiniz?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation>Çöp Kutusu boşaltılıyor</translation>
+        <translation type="vanished">Çöp Kutusu boşaltılıyor</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation>Çöp kutusu boşaltıldı</translation>
+        <translation type="vanished">Çöp kutusu boşaltıldı</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation>Klasörü Kaldır</translation>
+        <translation type="vanished">Klasörü Kaldır</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation>&apos;%1&apos; adlı klasörü ve içindeki tüm dosyaları kaldırmak istediğinizden eminmisiniz?</translation>
+        <translation type="vanished">&apos;%1&apos; adlı klasörü ve içindeki tüm dosyaları kaldırmak istediğinizden eminmisiniz?</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation>Seçili döküman yok!</translation>
+        <translation type="vanished">Seçili döküman yok!</translation>
     </message>
     <message>
         <source>Open Supported File</source>
@@ -1153,7 +1153,7 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Seçili &apos;%1&apos; adlı dökümandan %n sayfayı kaldırmak istediğinizden eminmisiniz?</numerusform>
         </translation>
     </message>
@@ -1165,16 +1165,27 @@
         <source>Untitled Documents</source>
         <translation>Başlıksız Döküman</translation>
     </message>
+    <message numerus="yes">
+        <source>duplicated %1 page</source>
+        <comment>duplicated %1 pages</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove multiple documents</source>
+        <source>Title page</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1229,19 +1240,74 @@
     </message>
 </context>
 <context>
+    <name>UBDocumentReplaceDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished">Kabul Et</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">İptal</translation>
+    </message>
+    <message>
+        <source>Replace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name %1 is allready used.
+Keeping this name will replace the document.
+Providing a new name will create a new document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeModel</name>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">Çöp</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="unfinished">
+            <numerusform>%1 sayfa kopyalandı</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>My documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeView</name>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="unfinished">
+            <numerusform>%1 sayfa kopyalandı</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBDocumentTreeWidget</name>
     <message>
         <source>%1 (copy)</source>
-        <translation>%1 (kopyala)</translation>
+        <translation type="vanished">%1 (kopyala)</translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation>Kopyalanan sayfa %1/%2</translation>
+        <translation type="vanished">Kopyalanan sayfa %1/%2</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
         <translatorcomment>The translation is correct but it is giving error message.</translatorcomment>
-        <translation>
+        <translation type="vanished">
             <numerusform>%1 sayfa kopyalandı</numerusform>
         </translation>
     </message>
@@ -1302,23 +1368,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="vanished">IWB&apos;e Aktar</translation>
+        <translation>IWB&apos;e Aktar</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="vanished">IWB Dosyası Olarak Aktar</translation>
+        <translation>IWB Dosyası Olarak Aktar</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="vanished">Döküman dışa aktarılıyor...</translation>
+        <translation>Döküman dışa aktarılıyor...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">Dışa aktarma tamamlandı.</translation>
+        <translation>Dışa aktarma tamamlandı.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="vanished">Dışa aktarma başarısız oldu.</translation>
+        <translation>Dışa aktarma başarısız oldu.</translation>
     </message>
 </context>
 <context>
@@ -1345,6 +1411,33 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBExportDocumentSetAdaptor</name>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">Döküman dışa aktarılıyor...</translation>
+    </message>
+    <message>
+        <source>Failed to export...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as UBX File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to OpenBoard UBX Format</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1593,7 +1686,7 @@
     <name>UBGraphicsTextItem</name>
     <message>
         <source>&lt;Type Text Here&gt;</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1636,23 +1729,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="vanished">Genel Dosya Biçimi (</translation>
+        <translation>Genel Dosya Biçimi (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="vanished">İçe aktarılan dosya: %1...</translation>
+        <translation>İçe aktarılan dosya: %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="vanished">%1 adlı dosya içe aktarılamadı.</translation>
+        <translation>%1 adlı dosya içe aktarılamadı.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="vanished">İçe aktarım tamamlandı.</translation>
+        <translation>İçe aktarım tamamlandı.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="vanished">İçe aktarım tamamlanmadı.</translation>
+        <translation>İçe aktarım tamamlanmadı.</translation>
     </message>
 </context>
 <context>
@@ -1671,6 +1764,13 @@
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBImportDocumentSetAdaptor</name>
+    <message>
+        <source>Openboard (set of documents) (*.ubx)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1780,7 +1880,15 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
 <context>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
+        <source>Cancel</source>
+        <translation type="unfinished">İptal</translation>
+    </message>
+    <message>
         <source>Open-Sankore Documents Detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1792,15 +1900,7 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation type="unfinished">İptal</translation>
-    </message>
-    <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1815,11 +1915,7 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
         <translation>Döküman Deposu Kaybedildi</translation>
     </message>
     <message>
-        <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Moving page to trash folder...</source>
+        <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1924,34 +2020,34 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation>Proxy Girişi</translation>
+        <translation type="vanished">Proxy Girişi</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Kullanıcı Adı:</translation>
+        <translation type="vanished">Kullanıcı Adı:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>Şifre:</translation>
+        <translation type="vanished">Şifre:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation>Dökümanı web üzerinde yayınla</translation>
+        <translation type="vanished">Dökümanı web üzerinde yayınla</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation>Başlık:</translation>
+        <translation type="vanished">Başlık:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation>Açıklama:</translation>
+        <translation type="vanished">Açıklama:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation>Yayınla</translation>
+        <translation type="vanished">Yayınla</translation>
     </message>
 </context>
 <context>
@@ -2425,12 +2521,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;By clicking &apos;Upload,&apos; you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>Restore credentials on reboot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>OpenBoard</source>
         <translation type="unfinished">OpenBoard</translation>
+    </message>
+    <message>
+        <source>Restore credentials on reboot</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2500,9 +2596,48 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>documentPublishingDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="obsolete">Diyalog</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="obsolete">Başlık</translation>
+    </message>
+    <message>
+        <source>E-mail</source>
+        <translation type="obsolete">E-mail</translation>
+    </message>
+    <message>
+        <source>Author</source>
+        <translation type="obsolete">Yazar</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="obsolete">Açıklama</translation>
+    </message>
+</context>
+<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creation date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alphabetical order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2645,26 +2780,6 @@ p, li { white-space: pre-wrap; }
         <translation>Künye</translation>
     </message>
     <message>
-        <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>On Dark Background</source>
         <translation type="unfinished">Kapalı Arkaplan Üzerine</translation>
     </message>
@@ -2678,6 +2793,26 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap first and second view displays</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré Importer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

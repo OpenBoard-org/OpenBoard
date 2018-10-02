@@ -792,19 +792,19 @@
         <translation type="unfinished">배경 제거</translation>
     </message>
     <message>
-        <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ruled Light Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Tutorial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open the tutorial web page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -854,11 +854,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="obsolete">요소 ID = </translation>
+        <translation type="unfinished">요소 ID = </translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="obsolete">대상 형식으로 지원되지 않는 콘텐츠입니다.</translation>
+        <translation type="unfinished">대상 형식으로 지원되지 않는 콘텐츠입니다.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -1069,43 +1069,43 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation>페이지 제거</translation>
+        <translation type="vanished">페이지 제거</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation>문서 제거</translation>
+        <translation type="vanished">문서 제거</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation>정말로 &apos;%1&apos; 문서를 제거하시겠습니까?</translation>
+        <translation type="vanished">정말로 &apos;%1&apos; 문서를 제거하시겠습니까?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>휴지통 비우기</translation>
+        <translation type="vanished">휴지통 비우기</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation>정말로 휴지통을 비우시겠습니까?</translation>
+        <translation type="vanished">정말로 휴지통을 비우시겠습니까?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation>휴지통 비우는 중</translation>
+        <translation type="vanished">휴지통 비우는 중</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation>휴지통 비우기 완료</translation>
+        <translation type="vanished">휴지통 비우기 완료</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation>폴더 제거</translation>
+        <translation type="vanished">폴더 제거</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation>정말로 &apos;%1&apos; 폴더와 해당 내용을 모두 제거하시겠습니까?</translation>
+        <translation type="vanished">정말로 &apos;%1&apos; 폴더와 해당 내용을 모두 제거하시겠습니까?</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation>선택된 문서가 없습니다!</translation>
+        <translation type="vanished">선택된 문서가 없습니다!</translation>
     </message>
     <message>
         <source>Open Supported File</source>
@@ -1153,7 +1153,7 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="unfinished">
+        <translation type="obsolete">
             <numerusform>선택한 문서 &apos;%1&apos;에서 %n페이지를 제거하시겠습니까?</numerusform>
         </translation>
     </message>
@@ -1165,16 +1165,27 @@
         <source>Untitled Documents</source>
         <translation type="unfinished">무제 문서</translation>
     </message>
+    <message numerus="yes">
+        <source>duplicated %1 page</source>
+        <comment>duplicated %1 pages</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove multiple documents</source>
+        <source>Title page</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1229,18 +1240,86 @@
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
+    <name>UBDocumentPublisher</name>
     <message>
-        <source>%1 (copy)</source>
-        <translation>%1 (사본)</translation>
+        <source>Export failed.</source>
+        <translation type="obsolete">내보내기 실패.</translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentReplaceDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished">적용</translation>
     </message>
     <message>
-        <source>Copying page %1/%2</source>
-        <translation>%1/%2 페이지 복사 중</translation>
+        <source>Cancel</source>
+        <translation type="unfinished">취소</translation>
+    </message>
+    <message>
+        <source>Replace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name %1 is allready used.
+Keeping this name will replace the document.
+Providing a new name will create a new document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeModel</name>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">휴지통</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
         <translation type="unfinished">
+            <numerusform variants="yes">
+                <lengthvariant>%1 페이지 복사됨</lengthvariant>
+                <lengthvariant></lengthvariant>
+            </numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>My documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeView</name>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="unfinished">
+            <numerusform variants="yes">
+                <lengthvariant>%1 페이지 복사됨</lengthvariant>
+                <lengthvariant></lengthvariant>
+            </numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeWidget</name>
+    <message>
+        <source>%1 (copy)</source>
+        <translation type="vanished">%1 (사본)</translation>
+    </message>
+    <message>
+        <source>Copying page %1/%2</source>
+        <translation type="vanished">%1/%2 페이지 복사 중</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="obsolete">
             <numerusform variants="yes">
                 <lengthvariant>%1 페이지 복사됨</lengthvariant>
                 <lengthvariant></lengthvariant>
@@ -1284,6 +1363,10 @@
         <translation type="unfinished">문서를 내보내는 중...</translation>
     </message>
     <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">내보내기 완료.</translation>
+    </message>
+    <message>
         <source>Export failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1295,32 +1378,28 @@
         <source>Export failed: location not writable</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="unfinished">내보내기 완료.</translation>
-    </message>
 </context>
 <context>
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="obsolete">IWB로 내보내기</translation>
+        <translation type="unfinished">IWB로 내보내기</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="obsolete">IWB 파일로 내보내기</translation>
+        <translation type="unfinished">IWB 파일로 내보내기</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="obsolete">문서를 내보내는 중...</translation>
+        <translation type="unfinished">문서를 내보내는 중...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="obsolete">내보내기 완료.</translation>
+        <translation type="unfinished">내보내기 완료.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="obsolete">내보내기 실패.</translation>
+        <translation type="unfinished">내보내기 실패.</translation>
     </message>
 </context>
 <context>
@@ -1347,6 +1426,33 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBExportDocumentSetAdaptor</name>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">문서를 내보내는 중...</translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">내보내기 완료.</translation>
+    </message>
+    <message>
+        <source>Export failed.</source>
+        <translation type="unfinished">내보내기 실패.</translation>
+    </message>
+    <message>
+        <source>Failed to export...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as UBX File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to OpenBoard UBX Format</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1638,23 +1744,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="vanished">일반 파일 형식 (</translation>
+        <translation>일반 파일 형식 (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="vanished">%1 파일 가져오는 중...</translation>
+        <translation>%1 파일 가져오는 중...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="vanished">%1 파일 가져오기 실패.</translation>
+        <translation>%1 파일 가져오기 실패.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="vanished">가져오기 완료.</translation>
+        <translation>가져오기 완료.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="vanished">가져오기 실패.</translation>
+        <translation>가져오기 실패.</translation>
     </message>
 </context>
 <context>
@@ -1673,6 +1779,13 @@
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBImportDocumentSetAdaptor</name>
+    <message>
+        <source>Openboard (set of documents) (*.ubx)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1783,7 +1896,15 @@ Do you want to ignore these errors for this host?</source>
 <context>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
+        <source>Cancel</source>
+        <translation type="unfinished">취소</translation>
+    </message>
+    <message>
         <source>Open-Sankore Documents Detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1795,15 +1916,7 @@ Do you want to ignore these errors for this host?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation type="unfinished">취소</translation>
-    </message>
-    <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1818,11 +1931,7 @@ Do you want to ignore these errors for this host?</source>
         <translation>문서 저장소 손실</translation>
     </message>
     <message>
-        <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Moving page to trash folder...</source>
+        <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1927,34 +2036,34 @@ Do you want to ignore these errors for this host?</source>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation>프록시 로그인</translation>
+        <translation type="vanished">프록시 로그인</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>사용자명:</translation>
+        <translation type="vanished">사용자명:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>암호:</translation>
+        <translation type="vanished">암호:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation>웹에 문서 게시</translation>
+        <translation type="vanished">웹에 문서 게시</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation>제목:</translation>
+        <translation type="vanished">제목:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation>설명:</translation>
+        <translation type="vanished">설명:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation>게시</translation>
+        <translation type="vanished">게시</translation>
     </message>
 </context>
 <context>
@@ -2503,9 +2612,48 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>documentPublishingDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="obsolete">대화</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="obsolete">제목</translation>
+    </message>
+    <message>
+        <source>E-mail</source>
+        <translation type="obsolete">이메일</translation>
+    </message>
+    <message>
+        <source>Author</source>
+        <translation type="obsolete">저자</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="obsolete">설명</translation>
+    </message>
+</context>
+<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creation date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alphabetical order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2648,26 +2796,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">Credits</translation>
     </message>
     <message>
-        <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>On Dark Background</source>
         <translation type="unfinished">어두운 배경</translation>
     </message>
@@ -2681,6 +2809,26 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap first and second view displays</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré Importer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

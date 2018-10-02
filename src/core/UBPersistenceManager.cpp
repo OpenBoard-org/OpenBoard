@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -1150,7 +1150,7 @@ void UBPersistenceManager::checkIfDocumentRepositoryExists()
         QString humanPath = QDir::cleanPath(mDocumentRepositoryPath);
         humanPath = QDir::toNativeSeparators(humanPath);
 
-        UBApplication::mainWindow->warning(tr("Document Repository Loss"),tr("Sankore has lost access to the document repository '%1'. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.").arg(humanPath));
+        UBApplication::mainWindow->warning(tr("Document Repository Loss"),tr("OpenBoard has lost access to the document repository '%1'. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.").arg(humanPath));
 
         UBApplication::quit();
     }

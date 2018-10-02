@@ -87,8 +87,7 @@ FORMS += resources/forms/mainWindow.ui \
    resources/forms/trapFlash.ui \
    resources/forms/youTubePublishingDialog.ui \
    resources/forms/capturePublishing.ui \
-   resources/forms/intranetPodcastPublishingDialog.ui \
-    resources/forms/webPublishing.ui
+   resources/forms/intranetPodcastPublishingDialog.ui
 
 UB_ETC.files = resources/etc
 UB_I18N.files = resources/i18n/*.qm
@@ -384,6 +383,12 @@ macx {
        TRANSLATION_mg.path = "$$RESOURCES_DIR/mg.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_mg
    }
+   exists(resources/i18n/OpenBoard_gl.qm) {
+       TRANSLATION_gl.files = resources/i18n/OpenBoard_gl.qm \
+           resources/i18n/localizable.strings
+       TRANSLATION_gl.path = "$$RESOURCES_DIR/gl.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_gl
+   }
 
    QMAKE_BUNDLE_DATA += UB_ETC \
        UB_LIBRARY \
@@ -453,6 +458,7 @@ TRANSLATIONS = resources/i18n/OpenBoard_en.ts \
    resources/i18n/OpenBoard_el.ts \
    resources/i18n/OpenBoard_tr.ts \
    resources/i18n/OpenBoard_cs.ts \
+   resources/i18n/OpenBoard_gl.ts \
    resources/i18n/OpenBoard_mg.ts
 
 INSTALLS = UB_ETC \

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -34,7 +34,6 @@
 #include "adaptors/UBExportWeb.h"
 #include "adaptors/UBExportCFF.h"
 #include "adaptors/UBExportDocumentSetAdaptor.h"
-#include "adaptors/UBWebPublisher.h"
 #include "adaptors/UBImportDocument.h"
 #include "adaptors/UBImportPDF.h"
 #include "adaptors/UBImportImage.h"
@@ -81,7 +80,7 @@ UBDocumentManager::UBDocumentManager(QObject *parent)
     //UBExportCFF* cffExporter = new UBExportCFF(this);
     UBExportFullPDF* exportFullPdf = new UBExportFullPDF(this);
     UBExportDocument* exportDocument = new UBExportDocument(this);
-    //UBWebPublisher* webPublished = new UBWebPublisher(this);
+
     UBExportDocumentSetAdaptor *exportDocumentSet = new UBExportDocumentSetAdaptor(this);
     mExportAdaptors.append(exportDocument);
     mExportAdaptors.append(exportDocumentSet);
