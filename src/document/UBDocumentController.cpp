@@ -1292,11 +1292,12 @@ void UBDocumentTreeView::setSelectedAndExpanded(const QModelIndex &pIndex, bool 
                                                 ? QItemSelectionModel::Select
                                                 : QItemSelectionModel::Deselect;
 
-    selectionModel()->select(proxy->mapFromSource(indexCurrentDoc), QItemSelectionModel::Rows | sel);
-
     setCurrentIndex(pExpand
                     ? indexCurrentDoc
                     : QModelIndex());
+
+    selectionModel()->select(proxy->mapFromSource(indexCurrentDoc), QItemSelectionModel::Rows | sel);
+
 
     while (indexCurrentDoc.parent().isValid()) {
         setExpanded(indexCurrentDoc.parent(), pExpand);
@@ -1808,6 +1809,8 @@ void UBDocumentController::TreeViewSelectionChanged(const QItemSelection &select
 
         //if multi-selection
         if(list.count() > 1){
+            //selectOnlyTopLevelItems(mDocumentUI->documentTreeView->selectionModel()->selectedRows());
+
             //check if the selection is in the same top-level folder
             QModelIndex sourceIndex1 = mapIndexToSource(list.at(list.count()-1));
             QModelIndex sourceIndex2 = mapIndexToSource(list.at(list.count()-2));
@@ -1868,7 +1871,6 @@ void UBDocumentController::TreeViewSelectionChanged(const QItemSelection &select
         }
         */
     }
-
 }
 
 void UBDocumentController::itemSelectionChanged(LastSelectedElementType newSelection)
@@ -2330,8 +2332,10 @@ void UBDocumentController::moveIndexesToTrash(const QModelIndexList &list, UBDoc
 
             UBDocumentProxy *proxy = docModel->proxyForIndex(sourceSibling);
 
-            docModel->setCurrentDocument(proxy);
             setDocument(proxy);
+            UBApplication::boardController->setActiveDocumentScene(proxy,0,true);
+            docModel->setCurrentDocument(proxy);
+
 
             selectionModel->select(sibling, QItemSelectionModel::ClearAndSelect);
 
@@ -2344,8 +2348,9 @@ void UBDocumentController::moveIndexesToTrash(const QModelIndexList &list, UBDoc
 
                 UBDocumentProxy *proxy = docModel->proxyForIndex(sourceSibling);
 
-                docModel->setCurrentDocument(proxy);
                 setDocument(proxy);
+                UBApplication::boardController->setActiveDocumentScene(proxy,0,true);
+                docModel->setCurrentDocument(proxy);
 
                 selectionModel->select(sibling, QItemSelectionModel::ClearAndSelect);
 
@@ -2572,7 +2577,6 @@ void UBDocumentController::importFile()
 
             createdDocument = docManager->importFile(selectedFile, groupName);
 
-
             if (createdDocument) {
                 selectDocument(createdDocument, true, true);
 
@@ -2704,10 +2708,18 @@ void UBDocumentController::pageSelectionChanged()
     if (mIsClosing)
         return;
 
+    UBDocumentTreeModel *docModel = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel;
+
     bool pageSelected = mDocumentUI->thumbnailWidget->selectedItems().count() > 0;
+    bool docSelected = docModel->isDocument(firstSelectedTreeIndex());
+    bool folderSelected = docModel->isCatalog(firstSelectedTreeIndex());
 
     if (pageSelected)
         itemSelectionChanged(Page);
+    else if (docSelected)
+        itemSelectionChanged(Document);
+    else if (folderSelected)
+        itemSelectionChanged(Folder);
     else
         itemSelectionChanged(None);
 

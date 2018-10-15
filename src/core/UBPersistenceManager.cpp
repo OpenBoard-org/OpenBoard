@@ -504,8 +504,6 @@ UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDoc
     doc->setUuid(QUuid::createUuid());
     doc->setPageCount(sceneCount(doc));
 
-    UBMetadataDcSubsetAdaptor::persist(doc);
-
     for(int i = 0; i < doc->pageCount(); i++)
     {
         UBSvgSubsetAdaptor::setSceneUuid(doc, i, QUuid::createUuid());
@@ -519,6 +517,7 @@ UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDoc
         addDoc = true;
     }
     if (addDoc) {
+        UBMetadataDcSubsetAdaptor::persist(doc);
         mDocumentTreeStructureModel->addDocument(doc);
         emit proxyListChanged();
         emit documentCreated(doc);
