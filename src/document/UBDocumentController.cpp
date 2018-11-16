@@ -1924,7 +1924,7 @@ void UBDocumentController::setupViews()
             }
         }
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_OSX
         mMainWindow->actionDelete->setShortcut(QKeySequence(Qt::Key_Backspace));
 #endif
 
@@ -3019,10 +3019,12 @@ void UBDocumentController::focusChanged(QWidget *old, QWidget *current)
 
     if (current == mDocumentUI->thumbnailWidget)
     {
-        if (mDocumentUI->thumbnailWidget->selectedItems().count() > 0)
-            mSelectionType = Page;
-        else
-            mSelectionType = None;
+        /*
+            if (mDocumentUI->thumbnailWidget->selectedItems().count() > 0)
+                mSelectionType = Page;
+            else
+                mSelectionType = None;
+        */
     }
     else if (current == mDocumentUI->documentTreeView)
     {
@@ -3079,6 +3081,10 @@ void UBDocumentController::updateActions()
         return;
     }
     //N/C - NNE - 20140408 : END
+
+#ifdef Q_OS_OSX
+        mMainWindow->actionDelete->setShortcut(QKeySequence(Qt::Key_Backspace));
+#endif
 
     QModelIndex selectedIndex = firstSelectedTreeIndex();
     UBDocumentProxy *selectedProxy = docModel->proxyData(selectedIndex);
