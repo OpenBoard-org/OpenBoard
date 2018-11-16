@@ -137,8 +137,15 @@ void UBDocumentContainer::deleteThumbPage(int index)
 
 void UBDocumentContainer::updateThumbPage(int index)
 {
-    mDocumentThumbs[index] = UBThumbnailAdaptor::get(mCurrentDocument, index);
-    emit documentPageUpdated(index);
+    if (mDocumentThumbs.size() > index)
+    {
+        mDocumentThumbs[index] = UBThumbnailAdaptor::get(mCurrentDocument, index);
+        emit documentPageUpdated(index);
+    }
+    else
+    {
+        qDebug() << "error [updateThumbPage] : index > mDocumentThumbs' size.";
+    }
 }
 
 void UBDocumentContainer::insertThumbPage(int index)

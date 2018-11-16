@@ -434,6 +434,8 @@ class UBDocumentController : public UBDocumentContainer
 
         void createNewDocumentGroup();
         void deleteSelectedItem();
+        void deleteSingleItem(QModelIndex index, UBDocumentTreeModel *docModel);
+        void deleteMultipleItems(QModelIndexList indexes, UBDocumentTreeModel *docModel);
         void emptyFolder(const QModelIndex &index, DeletionType pDeletionType = MoveToTrash);
         void deleteIndexAndAssociatedData(const QModelIndex &pIndex);
         void renameSelectedItem();
