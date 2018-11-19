@@ -1926,6 +1926,8 @@ void UBDocumentController::setupViews()
 
 #ifdef Q_OS_OSX
         mMainWindow->actionDelete->setShortcut(QKeySequence(Qt::Key_Backspace));
+#else
+        mMainWindow->actionDelete->setShortcut(QKeySequence(Qt::Key_Delete));
 #endif
 
         connect(mMainWindow->actionDelete, SIGNAL(triggered()), this, SLOT(deleteSelectedItem()));
@@ -3084,6 +3086,8 @@ void UBDocumentController::updateActions()
 
 #ifdef Q_OS_OSX
         mMainWindow->actionDelete->setShortcut(QKeySequence(Qt::Key_Backspace));
+#else
+        mMainWindow->actionDelete->setShortcut(QKeySequence(Qt::Key_Delete));
 #endif
 
     QModelIndex selectedIndex = firstSelectedTreeIndex();
