@@ -1298,7 +1298,6 @@ void UBDocumentTreeView::setSelectedAndExpanded(const QModelIndex &pIndex, bool 
 
     selectionModel()->select(proxy->mapFromSource(indexCurrentDoc), QItemSelectionModel::Rows | sel);
 
-
     while (indexCurrentDoc.parent().isValid()) {
         setExpanded(indexCurrentDoc.parent(), pExpand);
         indexCurrentDoc = indexCurrentDoc.parent();
@@ -1680,7 +1679,7 @@ void UBDocumentController::selectDocument(UBDocumentProxy* proxy, bool setAsCurr
         if (proxy != mBoardController->selectedDocument()) // only if wanted Document is different from document actually on Board,  // ALTI/AOU - 20140217
         {
             //issue 1629 - NNE - 20131105 : When set a current document, change in the board controller
-            mBoardController->setActiveDocumentScene(proxy, 0, false, onImport);
+            mBoardController->setActiveDocumentScene(proxy, 0, true, onImport);
         }
     }
 
@@ -2278,7 +2277,6 @@ void UBDocumentController::deleteMultipleItems(QModelIndexList indexes, UBDocume
             break;
         }
     }
-    updateActions();
 }
 
 void UBDocumentController::deleteSingleItem(QModelIndex currentIndex, UBDocumentTreeModel* docModel)
@@ -2341,7 +2339,6 @@ void UBDocumentController::deleteSingleItem(QModelIndex currentIndex, UBDocument
             break;
         }
     }
-    updateActions();
 }
 
 //N/C - NNE - 20140410
@@ -2377,12 +2374,7 @@ void UBDocumentController::moveIndexesToTrash(const QModelIndexList &list, UBDoc
 
             if (proxy)
             {
-                setDocument(proxy);
-                UBApplication::boardController->setActiveDocumentScene(proxy,0,true);
-                docModel->setCurrentDocument(proxy);
-
-
-                selectionModel->select(sibling, QItemSelectionModel::ClearAndSelect);
+                selectDocument(proxy,true);
 
                 deleteCurrentScene = false;
             }
@@ -2396,11 +2388,7 @@ void UBDocumentController::moveIndexesToTrash(const QModelIndexList &list, UBDoc
 
                 if (proxy)
                 {
-                    setDocument(proxy);
-                    UBApplication::boardController->setActiveDocumentScene(proxy,0,true);
-                    docModel->setCurrentDocument(proxy);
-
-                    selectionModel->select(sibling, QItemSelectionModel::ClearAndSelect);
+                    selectDocument(proxy,true);
 
                     deleteCurrentScene = false;
                 }
@@ -2410,7 +2398,7 @@ void UBDocumentController::moveIndexesToTrash(const QModelIndexList &list, UBDoc
     else
     {
         UBDocumentProxy* proxy = docModel->proxyForIndex(currentScene);
-        setDocument(proxy);
+        selectDocument(proxy, true);
     }
 
     docModel->moveIndexes(list, docModel->trashIndex());
