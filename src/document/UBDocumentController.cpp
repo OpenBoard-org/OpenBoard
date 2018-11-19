@@ -2190,16 +2190,16 @@ void UBDocumentController::deleteSelectedItem()
 {
     UBDocumentTreeModel *docModel = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel;
 
-    QModelIndexList indexes = selectedTreeIndexes();
-
     if (!UBApplication::mainWindow->yesNoQuestion(tr("Remove Item"), tr("Are you sure you want to remove the selected item(s) ?")))
         return;
+
+    QModelIndexList indexes = selectedTreeIndexes();
 
     if (indexes.size() > 1)
     {
         deleteMultipleItems(indexes, docModel);
     }
-    else
+    else if (indexes.size() == 1)
     {
         deleteSingleItem(indexes.at(0), docModel);
     }
