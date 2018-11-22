@@ -904,7 +904,7 @@
     </message>
     <message>
         <source>Board drawing...</source>
-        <translation>Brettzeichnung...</translation>
+        <translation type="vanished">Brettzeichnung...</translation>
     </message>
 </context>
 <context>
@@ -1230,7 +1230,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation type="vanished">Seite %0</translation>
+        <translation>Seite %0</translation>
     </message>
 </context>
 <context>
@@ -1260,6 +1260,13 @@
     <message>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnail</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Seite %0</translation>
     </message>
 </context>
 <context>
@@ -2018,7 +2025,7 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     </message>
     <message>
         <source>loading thumbnail of page %1</source>
-        <translation>
+        <translation type="vanished">
 Miniaturansicht der Seite %1 wird geladen</translation>
     </message>
 </context>
@@ -2712,6 +2719,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>On Light Background</source>
         <translation>Auf hellem Hintergrund</translation>
+    </message>
+    <message>
+        <source>Swap first and second view displays</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

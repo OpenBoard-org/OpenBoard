@@ -369,6 +369,8 @@ bool UBFFmpegVideoEncoder::init()
         connect(mAudioInput, SIGNAL(dataAvailable(QByteArray)),
                 this, SLOT(onAudioAvailable(QByteArray)));
 
+        mAudioInput->setInputDevice(audioRecordingDevice());
+
         if (!mAudioInput->init()) {
             setLastErrorMessage("Couldn't initialize audio input");
             return false;
@@ -392,13 +394,20 @@ bool UBFFmpegVideoEncoder::init()
         c = mAudioStream->codec;
 
         c->bit_rate = 96000;
-        c->sample_fmt = audioCodec->sample_fmts[0]; // FLTP by default for AAC
+        c->sample_fmt  = audioCodec->sample_fmts ? audioCodec->sample_fmts[0] : AV_SAMPLE_FMT_FLTP;// FLTP by default for AAC
         c->sample_rate = mAudioSampleRate;
-        c->channels = 2;
-        c->channel_layout = av_get_default_channel_layout(c->channels);
-        c->profile = FF_PROFILE_AAC_MAIN;
-        c->time_base = {1, mAudioSampleRate};
-        c->strict_std_compliance = -2; // Enable use of experimental codec
+        c->channel_layout = AV_CH_LAYOUT_STEREO;
+        c->channels  = av_get_channel_layout_nb_channels(c->channel_layout);
+
+        //deprecated on ffmpeg 4
+        c->strict_std_compliance = -2;// Enable use of experimental codec
+
+        //https://trac.ffmpeg.org/wiki/Encode/H.264#Profile
+        //Omit this unless your target device only supports a certain profile
+        //(see https://trac.ffmpeg.org/wiki/Encode/H.264#Compatibility).
+        //c->profile = FF_PROFILE_AAC_MAIN;
+
+        c->time_base = { 1, c->sample_rate };
 
         if (mOutputFormatContext->oformat->flags & AVFMT_GLOBALHEADER)
             c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
@@ -562,9 +571,11 @@ void UBFFmpegVideoEncoder::processAudio(QByteArray &data)
     }
 
     // Convert to destination format
+
     ret = swr_convert(mSwrContext,
                       outSamples, outSamplesCount,
                       (const uint8_t **)&inSamples, inSamplesCount);
+
     if (ret < 0) {
         qWarning() << "Error converting audio samples: " << avErrorToQString(ret);
         return;

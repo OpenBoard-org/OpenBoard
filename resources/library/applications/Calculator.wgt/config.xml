@@ -3,9 +3,12 @@
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://uniboard.mnemis.com/widgets/calculator" 
         version="1.1"
-        width="200"
-        height="300" 
-		ub:resizable="false">
+        width="460"
+        height="418"
+        minimum_width="460"
+        minimum_height="418"
+		ub:resizable="true"
+        ub:transparent="true">
   <name>Calculator</name>
   <content src="index.html"/>
 </widget>

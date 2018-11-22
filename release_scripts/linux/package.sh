@@ -345,10 +345,15 @@ fi
 
 for ((i=0;i<${#tab[@]};i++)); do
     if [ $i -ne "0" ]; then
-        echo -n ",    " >> "$CONTROL_FILE"
+        echo -n ", " >> "$CONTROL_FILE"
     fi
-    
-    echo -n "${tab[$i]} (>= "`apt-cache show ${tab[$i]} | grep "Version: " | head -1 | awk '{      print $2 }' | sed -e 's/\([:. 0-9?]*\).*/\1/g' | sed -e 's/\.$//'`") " >> "$CONTROL_FILE"
+    # conditional dependency when libavcodec-ffmpeg56 or libavcodec-ffmpeg-extra56 is found
+    depdVer=$(apt-cache show ${tab[$i]} | grep "Version: " | head -1 | awk '{ print $2 }' | sed -e 's/\([:. 0-9?]*\).*/\1/g' | sed -e 's/\.$//')
+    if [ "${tab[$i]}" == "libavcodec-ffmpeg56" ] || [ "${tab[$i]}" == "libavcodec-ffmpeg-extra56" ]; then
+      echo -n "libavcodec-ffmpeg56 (>= ${depdVer}) | libavcodec-ffmpeg-extra56 (>= ${depdVer})" >> "$CONTROL_FILE"
+    else
+      echo -n "${tab[$i]} (>= ${depdVer})" >> "$CONTROL_FILE"
+    fi
 done
 echo -n ",  onboard" >> "$CONTROL_FILE"
 

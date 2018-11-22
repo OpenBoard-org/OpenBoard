@@ -1,0 +1,20 @@
+{
+  "author": "Alti-TCS",
+  "name": "Calculatrice.wgt",
+  "version": "2.3.0RC-32-g426c891",
+  "repository": {
+    "type": "git",
+    "url": "ssh://devalti@VM-REPO/home/devalti/projets/opensankore/Sankore-3.1.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.3.2",
+    "grunt-contrib-watch": "~0.5.3"
+  },
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}

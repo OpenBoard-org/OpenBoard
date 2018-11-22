@@ -91,6 +91,7 @@ class UBDisplayManager : public QObject
    signals:
 
            void screenLayoutChanged();
+           void adjustDisplayViewsRequired();
 
    public slots:
 
@@ -104,6 +105,7 @@ class UBDisplayManager : public QObject
 
         void setRoleToScreen(DisplayRole role, int screenIndex);
 
+        void swapDisplayScreens(bool swap);
     private:
 
         void positionScreens();

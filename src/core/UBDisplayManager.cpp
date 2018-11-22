@@ -24,8 +24,6 @@
  * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
 #include "UBDisplayManager.h"
 
 #include "frameworks/UBPlatformUtils.h"
@@ -107,6 +105,26 @@ void UBDisplayManager::initScreenIndexes()
                 mPreviousScreenIndexes.append(i);
         }
     }
+}
+
+void UBDisplayManager::swapDisplayScreens(bool swap)
+{
+    initScreenIndexes();
+
+    if (swap)
+    {
+        // As it s a really specific ask and we don't have much time to handle it correctly
+        // this code handles only the swap between the main display screen and the first previous one
+        int displayScreenIndex = mDisplayScreenIndex;
+        mDisplayScreenIndex = mPreviousScreenIndexes.at(0);
+        mPreviousScreenIndexes.clear();
+        mPreviousScreenIndexes.append(displayScreenIndex);
+    }
+
+    positionScreens();
+
+    emit screenLayoutChanged();
+    emit adjustDisplayViewsRequired();
 }
 
 

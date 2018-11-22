@@ -902,10 +902,6 @@
         <source>Update</source>
         <translation>Avaozy</translation>
     </message>
-    <message>
-        <source>Board drawing...</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>UBBackgroundPalette</name>
@@ -1230,7 +1226,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation type="vanished">Pejy %0</translation>
+        <translation>Pejy %0</translation>
     </message>
 </context>
 <context>
@@ -1260,6 +1256,13 @@
     <message>
         <source>Cancel</source>
         <translation>Ajanony</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnail</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Pejy %0</translation>
     </message>
 </context>
 <context>
@@ -1984,10 +1987,6 @@ Tena tsy te hiraharaha an&apos;ireo tsy mety ho an&apos;ilay milina ve ianao?</t
         <source>%1 thumbnails generated ...</source>
         <translation>%1 ny  kisarisary no voaforona ...</translation>
     </message>
-    <message>
-        <source>loading thumbnail of page %1</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>UBThumbnailTextItem</name>
@@ -2678,6 +2677,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>On Light Background</source>
         <translation type="unfinished">Amin&apos;ny ambadika mazava</translation>
+    </message>
+    <message>
+        <source>Swap first and second view displays</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

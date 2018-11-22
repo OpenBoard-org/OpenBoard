@@ -36,7 +36,10 @@ extern "C" {
     #include <libswscale/swscale.h>
 
 // Due to the whole ffmpeg / libAV silliness, we have to support libavresample on some platforms
-#if LIBAVFORMAT_VERSION_MICRO > 100
+// Should libswresample be used with libavformat.*.*.100 ? compiles fine but crashes in swr_convert (internal call of soxr_create causes a SIGSEV (EXC_BAD_ACCESS))
+// Bad config ?
+// With libavresample, no crash, but the sound is inaudible (lot of noise)
+#if LIBAVFORMAT_VERSION_MICRO >= 100
     #include <libswresample/swresample.h>
 #else
     #include <libavresample/avresample.h>

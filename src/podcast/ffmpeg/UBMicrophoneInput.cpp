@@ -42,6 +42,18 @@ bool UBMicrophoneInput::init()
     }
 
     mAudioFormat = mAudioDeviceInfo.preferredFormat();
+
+    /*
+     *  https://ffmpeg.org/doxygen/3.1/group__lavu__sampfmts.html#gaf9a51ca15301871723577c730b5865c5
+        The data described by the sample format is always in native-endian order.
+        Sample values can be expressed by native C types, hence the lack of a signed 24-bit sample format
+        even though it is a common raw audio data format.
+
+        If a signed 24-bit sample format is natively preferred, we a set signed 16-bit sample format instead.
+    */
+    if (mAudioFormat.sampleSize() == 24)
+        mAudioFormat.setSampleSize(16);
+
     mAudioInput = new QAudioInput(mAudioDeviceInfo, mAudioFormat, NULL);
 
     connect(mAudioInput, SIGNAL(stateChanged(QAudio::State)),
@@ -294,6 +306,8 @@ QString UBMicrophoneInput::getErrorString(QAudio::Error errorCode)
         case QAudio::FatalError :
             return "Fatal error; audio device unusable";
 
+        default:
+            return "unhandled error...";
     }
     return "";
 }

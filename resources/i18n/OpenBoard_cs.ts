@@ -903,10 +903,6 @@
         <source>Update available</source>
         <translation>K dispozici je aktualizace</translation>
     </message>
-    <message>
-        <source>Board drawing...</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>UBBackgroundPalette</name>
@@ -1232,7 +1228,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation type="vanished">Stránka %0</translation>
+        <translation>Stránka %0</translation>
     </message>
 </context>
 <context>
@@ -1263,6 +1259,13 @@
     <message>
         <source>Cancel</source>
         <translation>Zrušit</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnail</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Stránka %0</translation>
     </message>
 </context>
 <context>
@@ -1987,10 +1990,6 @@ Chcete ignorovat tyto chyby na tomto serveru?</translation>
         <source>Generating preview thumbnails ...</source>
         <translation>Vytváří se miniatury obrázků ...</translation>
     </message>
-    <message>
-        <source>loading thumbnail of page %1</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>UBThumbnailTextItem</name>
@@ -2681,6 +2680,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>On Light Background</source>
         <translation type="unfinished">Na světlém pozadí</translation>
+    </message>
+    <message>
+        <source>Swap first and second view displays</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

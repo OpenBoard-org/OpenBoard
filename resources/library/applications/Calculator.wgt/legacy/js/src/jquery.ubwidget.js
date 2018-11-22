@@ -2,10 +2,6 @@
 	jQuery.fn.ubwidget = function(options) {
 		var settings = jQuery.extend({}, jQuery.fn.ubwidget.defaults, options);
 		
-		DD_roundies.addRule('.ubw-standard-corners', '5px', true);
-		DD_roundies.addRule('.ubw-button-corners', '4px', true);
-		DD_roundies.addRule('.ubw-i-corners', '4px', true);
-		
 		$(window)
 			.bind("blur", function(event){ 
   			})

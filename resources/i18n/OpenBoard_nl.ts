@@ -894,10 +894,6 @@
         <source>Update</source>
         <translation>Update</translation>
     </message>
-    <message>
-        <source>Board drawing...</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>UBBackgroundPalette</name>
@@ -1218,7 +1214,7 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation type="vanished">Pagina %0</translation>
+        <translation>Pagina %0</translation>
     </message>
 </context>
 <context>
@@ -1248,6 +1244,13 @@
     <message>
         <source>Cancel</source>
         <translation>Annuleren</translation>
+    </message>
+</context>
+<context>
+    <name>UBDraggableThumbnail</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Pagina %0</translation>
     </message>
 </context>
 <context>
@@ -1966,10 +1969,6 @@ Do you want to ignore these errors for this host?</source>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 miniaturen opgeladen...</translation>
     </message>
-    <message>
-        <source>loading thumbnail of page %1</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>UBThumbnailTextItem</name>
@@ -2659,6 +2658,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>On Light Background</source>
         <translation type="unfinished">Op een Lichte Achtergrond</translation>
+    </message>
+    <message>
+        <source>Swap first and second view displays</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
