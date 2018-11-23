@@ -3009,12 +3009,10 @@ void UBDocumentController::focusChanged(QWidget *old, QWidget *current)
 
     if (current == mDocumentUI->thumbnailWidget)
     {
-        /*
-            if (mDocumentUI->thumbnailWidget->selectedItems().count() > 0)
-                mSelectionType = Page;
-            else
-                mSelectionType = None;
-        */
+        if (mDocumentUI->thumbnailWidget->selectedItems().count() > 0)
+            mSelectionType = Page;
+        else
+            mSelectionType = None;
     }
     else if (current == mDocumentUI->documentTreeView)
     {
