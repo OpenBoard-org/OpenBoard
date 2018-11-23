@@ -1278,7 +1278,9 @@
         <source>The name %1 is allready used.
 Keeping this name will replace the document.
 Providing a new name will create a new document.</source>
-        <translation>Der Name %1 wird bereits benutzt. Wenn Sie den Namen behalten möchten, wird das Dokument ersetzt. Wenn Sie einen neuen Namen wählen, wird ein neues Dokument erstellt.</translation>
+        <translation>Der Name %1 wird bereits benutzt.
+Wenn Sie den Namen behalten möchten, wird das Dokument ersetzt.
+Wenn Sie einen neuen Namen wählen, wird ein neues Dokument erstellt.</translation>
     </message>
 </context>
 <context>

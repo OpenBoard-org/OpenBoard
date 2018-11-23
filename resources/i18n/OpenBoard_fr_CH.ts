@@ -1290,8 +1290,7 @@ Keeping this name will replace the document.
 Providing a new name will create a new document.</source>
         <translation>Le nom %1 est déjà utilisé.
 ATTENTION : En gardant ce nom, l&apos;ancien document sera écrasé par le nouveau.
-Un nouveau nom vous permettra de conserver l&apos;ancien document.
-</translation>
+Un nouveau nom vous permettra de conserver l&apos;ancien document.</translation>
     </message>
 </context>
 <context>

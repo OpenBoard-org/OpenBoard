@@ -958,15 +958,15 @@
     </message>
     <message>
         <source>Saving document...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Document has just been saved...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Deleting page %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1273,36 +1273,36 @@ Providing a new name will create a new document.</source>
     <name>UBDocumentTreeModel</name>
     <message>
         <source>Trash</source>
-        <translation type="unfinished">Paperera</translation>
+        <translation>Paperera</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%1 pàgina copiada</numerusform>
             <numerusform>%1 pàgines copiades</numerusform>
         </translation>
     </message>
     <message>
         <source>My documents</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
     <name>UBDocumentTreeView</name>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%1 pàgina copiada</numerusform>
             <numerusform>%1 pàgines copiades</numerusform>
         </translation>
     </message>
     <message>
         <source>Remove Item</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation type="unfinished"></translation>
+        <translation>¿Está seguro de que desexa eliminar els elements seleccionats?</translation>
     </message>
 </context>
 <context>

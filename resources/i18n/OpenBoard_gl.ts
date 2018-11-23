@@ -1271,7 +1271,9 @@
         <source>The name %1 is allready used.
 Keeping this name will replace the document.
 Providing a new name will create a new document.</source>
-        <translation>O nome %1 xa está en uso. Manter este nome sustituirá o documento. Proporcionar un novo nome creará un novo documento.</translation>
+        <translation>O nome %1 xa está en uso.
+Manter este nome sustituirá o documento.
+Proporcionar un novo nome creará un novo documento.</translation>
     </message>
 </context>
 <context>
@@ -1307,7 +1309,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation>¿Está seguro de que desexa eliminar els elements seleccionats?</translation>
+        <translation>¿Está seguro que desexa eliminar o/s elemento(s) seleccionado(s) ?</translation>
     </message>
 </context>
 <context>

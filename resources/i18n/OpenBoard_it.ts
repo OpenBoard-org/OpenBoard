@@ -1279,8 +1279,8 @@
 Keeping this name will replace the document.
 Providing a new name will create a new document.</source>
         <translation>Il nome %1 è già usato.
-Mantenendo questo nome sarà sovrascritto il documento esistente.
-Fornendo un nome nuovo sarà creato un nuovo documento.</translation>
+Conservando questo nome sostituirà il documento.
+Dando un nuovo nome creerà un nuovo documento.</translation>
     </message>
 </context>
 <context>
