@@ -1545,7 +1545,7 @@ void UBDocumentTreeItemDelegate::commitAndCloseEditor()
     QLineEdit *lineEditor = qobject_cast<QLineEdit*>(sender());
     if (lineEditor) {
         emit commitData(lineEditor);
-        emit closeEditor(lineEditor);
+        //emit closeEditor(lineEditor);
     }
 }
 
