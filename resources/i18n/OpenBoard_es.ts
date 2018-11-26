@@ -1271,7 +1271,9 @@
         <source>The name %1 is allready used.
 Keeping this name will replace the document.
 Providing a new name will create a new document.</source>
-        <translation>El nombre %1 ya está en uso. Mantener este nombre reemplazará el documento. Proporcionar un nuevo nombre creará un nuevo documento.</translation>
+        <translation>El nombre %1 ya está en uso.
+Mantener este nombre reemplazará el documento.
+Proporcionar un nuevo nombre creará un nuevo documento.</translation>
     </message>
 </context>
 <context>
