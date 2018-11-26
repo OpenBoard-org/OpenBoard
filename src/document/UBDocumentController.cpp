@@ -2615,7 +2615,7 @@ void UBDocumentController::importFile()
             createdDocument = docManager->importFile(selectedFile, groupName);
 
             if (createdDocument) {
-                selectDocument(createdDocument, true, true);
+                selectDocument(createdDocument, true, true, true);
 
             } else {
                 showMessage(tr("Failed to import file ... "));
