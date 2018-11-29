@@ -1,7 +1,7 @@
 # OpenBoard
 OpenBoard is an open source cross-platform interactive white board application designed primarily for use in schools. It was originally forked from Open-Sankoré, which was itself based on Uniboard.
 
-Supported platforms are Windows (7+), OS X (10.9+) and Linux (tested on Ubuntu 14.04 and 16.04).
+Supported platforms are Windows (7+), OS X (10.9+) and Linux (tested on Ubuntu 16.04).
 
 
 ## Installing
@@ -22,7 +22,7 @@ Alternatively, you can easily build OpenBoard with qmake and make:
 Compilers used are gcc (Linux), clang (OS X) and MSVC 2010 (Windows). Make sure that your version of Qt matches this, as it is not possible e.g to build OpenBoard with clang if Qt was built with gcc.
 
 ## Dependencies
-The latest version (1.3) requires Qt 5.5. (While it has been shown to mostly work with Qt 5.2, we cannot guarantee compatibility with Qt versions other than 5.5.)
+The latest version (1.5) requires Qt 5.5. (While it has been shown to mostly work with Qt 5.2, we cannot guarantee compatibility with Qt versions other than 5.5.)
 
 ### Qt 5.5 on Linux
 
