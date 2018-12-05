@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -72,12 +72,9 @@ void UBDocumentTreeWidget::itemChangedValidation(QTreeWidgetItem * item, int col
 
     if (column == 0)
     {
-
-
-
-    UBDocumentGroupTreeItem* group = dynamic_cast<UBDocumentGroupTreeItem *>(item);
-    if(group)
-    {
+        UBDocumentGroupTreeItem* group = dynamic_cast<UBDocumentGroupTreeItem *>(item);
+        if(group)
+        {
             QString name = group->text(0);
 
             for(int i = 0; i < topLevelItemCount (); i++)

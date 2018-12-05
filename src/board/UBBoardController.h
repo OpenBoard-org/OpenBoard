@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -79,6 +79,7 @@ class UBBoardController : public UBDocumentContainer
 
         UBGraphicsScene* activeScene() const;
         int activeSceneIndex() const;
+        void setActiveSceneIndex(int i);
         QSize displayViewport();
         QSize controlViewport();
         QRectF controlGeometry();
@@ -179,7 +180,7 @@ class UBBoardController : public UBDocumentContainer
         void findUniquesItems(const QUndoCommand *parent, QSet<QGraphicsItem *> &itms);
         void ClearUndoStack();
 
-        void setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, int pSceneIndex = 0, bool forceReload = false);
+        void setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, int pSceneIndex = 0, bool forceReload = false, bool onImport = false);
         void setActiveDocumentScene(int pSceneIndex);
 
         void moveSceneToIndex(int source, int target);
@@ -252,6 +253,8 @@ class UBBoardController : public UBDocumentContainer
         void stopScript();
 
         void saveData(SaveFlags fls = sf_none);
+
+        //void regenerateThumbnails();
 
     signals:
         void newPageAdded();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -122,7 +122,9 @@ QString UBStringUtils::toUtcIsoDateTime(const QDateTime& dateTime)
 
 QDateTime UBStringUtils::fromUtcIsoDate(const QString& dateString)
 {
-    return QDateTime::fromString(dateString,Qt::ISODate).toLocalTime();
+    QDateTime date = QDateTime::fromString(dateString, Qt::ISODate);
+    date.setTimeSpec(Qt::UTC);
+    return date.toLocalTime();
 }
 
 

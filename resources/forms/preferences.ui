@@ -14,7 +14,14 @@
    <string>Preferences</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="3" column="0">
+   <item row="0" column="0">
+    <widget class="QLabel" name="versionLabel">
+     <property name="text">
+      <string>version : …</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
     <widget class="QFrame" name="frame">
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
@@ -75,7 +82,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="mainTabWidget">
      <property name="currentIndex">
-      <number>7</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="displayTab">
       <attribute name="title">
@@ -3230,13 +3237,6 @@ p, li { white-space: pre-wrap; }
      </widget>
     </widget>
    </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="versionLabel">
-     <property name="text">
-      <string>version : …</string>
-     </property>
-    </widget>
-   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -3248,7 +3248,6 @@ p, li { white-space: pre-wrap; }
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>mainTabWidget</tabstop>
   <tabstop>useExternalBrowserCheckBox</tabstop>
   <tabstop>displayBrowserPageCheckBox</tabstop>
   <tabstop>toolbarAtTopRadioButton</tabstop>

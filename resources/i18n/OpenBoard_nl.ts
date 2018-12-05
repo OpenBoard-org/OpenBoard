@@ -792,19 +792,19 @@
         <translation>Achtyergrond verwijderen</translation>
     </message>
     <message>
-        <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ruled Light Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Tutorial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open the tutorial web page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -855,6 +855,14 @@
     <message>
         <source>Remove Page</source>
         <translation type="unfinished">Pagina verwijderen</translation>
+    </message>
+    <message>
+        <source>Element ID = </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Content is not supported in destination format.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
@@ -929,14 +937,6 @@
         <translation>Alle ondersteunden (%1)</translation>
     </message>
     <message>
-        <source>Page %1 deleted</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add file operation failed: file copying error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Group</source>
         <translation type="unfinished"></translation>
     </message>
@@ -954,6 +954,14 @@
     </message>
     <message>
         <source>Deleting page %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Page %1 deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add file operation failed: file copying error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1057,43 +1065,43 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation>Pagina verwijderen</translation>
+        <translation type="vanished">Pagina verwijderen</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation>Document verwijderen</translation>
+        <translation type="vanished">Document verwijderen</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation>Weet u zeker dat u document &quot;%1&quot; wilt verwijderen?</translation>
+        <translation type="vanished">Weet u zeker dat u document &quot;%1&quot; wilt verwijderen?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Prullenbak legen</translation>
+        <translation type="vanished">Prullenbak legen</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation>Weet u zeker dat u de prullenbak wilt legen?</translation>
+        <translation type="vanished">Weet u zeker dat u de prullenbak wilt legen?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation>Prullenbak wordt geleegd</translation>
+        <translation type="vanished">Prullenbak wordt geleegd</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation>Prullenbak is leeg</translation>
+        <translation type="vanished">Prullenbak is leeg</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation>Map verwijderen</translation>
+        <translation type="vanished">Map verwijderen</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation>Weet u zeker dat u de map &quot;%1&quot; met inhoud wilt verwijderen?</translation>
+        <translation type="vanished">Weet u zeker dat u de map &quot;%1&quot; met inhoud wilt verwijderen?</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation>Geen document geselecteerd!</translation>
+        <translation type="vanished">Geen document geselecteerd!</translation>
     </message>
     <message>
         <source>Open Supported File</source>
@@ -1141,29 +1149,41 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Ben je zeker dat je %n pagina van geselecteerde document &apos;%1&apos; wilt verwijderen?</numerusform>
             <numerusform>Ben je zeker dat je %n pagina(s) van geselecteerde document &apos;%1&apos; wilt verwijderen?</numerusform>
         </translation>
+    </message>
+    <message>
+        <source>Untitled Documents</source>
+        <translation type="unfinished">Onbenoemde Documenten</translation>
+    </message>
+    <message numerus="yes">
+        <source>duplicated %1 page</source>
+        <comment>duplicated %1 pages</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Folder does not contain any image files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Untitled Documents</source>
-        <translation type="unfinished">Onbenoemde Documenten</translation>
-    </message>
-    <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove multiple documents</source>
+        <source>Title page</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1194,19 +1214,19 @@
         <translation>Bestand %1 opgeslagen</translation>
     </message>
     <message>
-        <source>Inserting page %1 of %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Import successful.</source>
         <translation type="unfinished">Import gelukt.</translation>
     </message>
     <message>
-        <source>Import of file %1 successful.</source>
+        <source>Inserting page %1 of %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Importing file %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import of file %1 successful.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1218,18 +1238,82 @@
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
+    <name>UBDocumentPublisher</name>
     <message>
-        <source>%1 (copy)</source>
-        <translation>%1 (kopie)</translation>
+        <source>Export failed.</source>
+        <translation type="obsolete">Export mislukt.</translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentReplaceDialog</name>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuleren</translation>
     </message>
     <message>
-        <source>Copying page %1/%2</source>
-        <translation>Kopie van pagina %1/%2</translation>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Replace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name %1 is allready used.
+Keeping this name will replace the document.
+Providing a new name will create a new document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeModel</name>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">Prullenbak</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation>
+        <translation type="unfinished">
+            <numerusform>%1 pagina gekopieerd</numerusform>
+            <numerusform>%1 pagina&apos;s gekopieerd</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>My documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeView</name>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="unfinished">
+            <numerusform>%1 pagina gekopieerd</numerusform>
+            <numerusform>%1 pagina&apos;s gekopieerd</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeWidget</name>
+    <message>
+        <source>%1 (copy)</source>
+        <translation type="vanished">%1 (kopie)</translation>
+    </message>
+    <message>
+        <source>Copying page %1/%2</source>
+        <translation type="vanished">Kopie van pagina %1/%2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="vanished">
             <numerusform>%1 pagina gekopieerd</numerusform>
             <numerusform>%1 pagina&apos;s gekopieerd</numerusform>
         </translation>
@@ -1263,12 +1347,12 @@
 <context>
     <name>UBExportAdaptor</name>
     <message>
-        <source>Warnings during export was appeared</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Exporting document...</source>
         <translation type="unfinished">Document wordt geëxporteerd...</translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Export gelukt.</translation>
     </message>
     <message>
         <source>Export failed</source>
@@ -1283,31 +1367,31 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Export successful.</source>
-        <translation type="unfinished">Export gelukt.</translation>
+        <source>Warnings during export was appeared</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="vanished">Exporteer naar IWB</translation>
+        <translation>Exporteer naar IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="vanished">Exporteer als IWB bestand</translation>
+        <translation>Exporteer als IWB bestand</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="vanished">Document wordt geëxporteerd...</translation>
+        <translation>Document wordt geëxporteerd...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">Export gelukt.</translation>
+        <translation>Export gelukt.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="vanished">Export mislukt.</translation>
+        <translation>Export mislukt.</translation>
     </message>
 </context>
 <context>
@@ -1334,6 +1418,33 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBExportDocumentSetAdaptor</name>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">Document wordt geëxporteerd...</translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Export gelukt.</translation>
+    </message>
+    <message>
+        <source>Export failed.</source>
+        <translation type="unfinished">Export mislukt.</translation>
+    </message>
+    <message>
+        <source>Failed to export...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as UBX File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to OpenBoard UBX Format</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1495,6 +1606,10 @@
         <translation type="unfinished">Vormen</translation>
     </message>
     <message>
+        <source>Trash</source>
+        <translation type="unfinished">Prullenbak</translation>
+    </message>
+    <message>
         <source>Favorites</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1502,20 +1617,16 @@
         <source>Web search</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Trash</source>
-        <translation type="unfinished">Prullenbak</translation>
-    </message>
 </context>
 <context>
     <name>UBFeaturesNewFolderDialog</name>
     <message>
-        <source>Accept</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation type="unfinished">Annuleren</translation>
+    </message>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Enter a new folder name</source>
@@ -1625,23 +1736,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="vanished">Standaard bestandformaat (</translation>
+        <translation>Standaard bestandformaat (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="vanished">Importering van bestand %1...</translation>
+        <translation>Importering van bestand %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="vanished">Importering van bestand %1 is mislukt.</translation>
+        <translation>Importering van bestand %1 is mislukt.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="vanished">Import gelukt.</translation>
+        <translation>Import gelukt.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="vanished">Import mislukt.</translation>
+        <translation>Import mislukt.</translation>
     </message>
 </context>
 <context>
@@ -1660,6 +1771,13 @@
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBImportDocumentSetAdaptor</name>
+    <message>
+        <source>Openboard (set of documents) (*.ubx)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1764,7 +1882,15 @@ Do you want to ignore these errors for this host?</source>
 <context>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuleren</translation>
+    </message>
+    <message>
         <source>Open-Sankore Documents Detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1776,15 +1902,7 @@ Do you want to ignore these errors for this host?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation type="unfinished">Annuleren</translation>
-    </message>
-    <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1799,11 +1917,7 @@ Do you want to ignore these errors for this host?</source>
         <translation>Documentopslag verloren</translation>
     </message>
     <message>
-        <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Moving page to trash folder...</source>
+        <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1908,34 +2022,34 @@ Do you want to ignore these errors for this host?</source>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation>Proxy Login</translation>
+        <translation type="vanished">Proxy Login</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Gebruikersnaam:</translation>
+        <translation type="vanished">Gebruikersnaam:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>Wachtwoord:</translation>
+        <translation type="vanished">Wachtwoord:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation>Document op internet publiceren</translation>
+        <translation type="vanished">Document op internet publiceren</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation>Titel:</translation>
+        <translation type="vanished">Titel:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation>Beschrijving:</translation>
+        <translation type="vanished">Beschrijving:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation>Publiceren</translation>
+        <translation type="vanished">Publiceren</translation>
     </message>
 </context>
 <context>
@@ -2068,7 +2182,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Remind me later</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2483,9 +2597,48 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>documentPublishingDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="obsolete">Dialoog</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="obsolete">Titel</translation>
+    </message>
+    <message>
+        <source>E-mail</source>
+        <translation type="obsolete">E-mail</translation>
+    </message>
+    <message>
+        <source>Author</source>
+        <translation type="obsolete">Auteur</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="obsolete">Beschrijving</translation>
+    </message>
+</context>
+<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creation date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alphabetical order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2628,26 +2781,6 @@ p, li { white-space: pre-wrap; }
         <translation>Credits</translation>
     </message>
     <message>
-        <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>On Dark Background</source>
         <translation type="unfinished">Op een Donkere Achtergrond</translation>
     </message>
@@ -2661,6 +2794,26 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap first and second view displays</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré Importer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

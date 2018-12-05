@@ -854,11 +854,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="obsolete">Element ID = </translation>
+        <translation>Element ID = </translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="obsolete">Inhalt wird im Zielformat nicht unterstützt.</translation>
+        <translation>Inhalt wird im Zielformat nicht unterstützt.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -1073,43 +1073,43 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation>Seite entfernen</translation>
+        <translation type="vanished">Seite entfernen</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation>Dokument entfernen</translation>
+        <translation type="vanished">Dokument entfernen</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation>Möchten Sie das Dokument &apos;%1&apos; wirklich entfernen?</translation>
+        <translation type="vanished">Möchten Sie das Dokument &apos;%1&apos; wirklich entfernen?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Papierkorb leeren</translation>
+        <translation type="vanished">Papierkorb leeren</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation>Möchten Sie den Papierkorb wirklich leeren?</translation>
+        <translation type="vanished">Möchten Sie den Papierkorb wirklich leeren?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation>Papierkorb wird geleert</translation>
+        <translation type="vanished">Papierkorb wird geleert</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation>Papierkorb wurde geleert</translation>
+        <translation type="vanished">Papierkorb wurde geleert</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation>Ordner entfernen</translation>
+        <translation type="vanished">Ordner entfernen</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation>Möchten Sie den Ordner &apos;%1 und seinen gesamten Inhalt wirklich entfernen?</translation>
+        <translation type="vanished">Möchten Sie den Ordner &apos;%1 und seinen gesamten Inhalt wirklich entfernen?</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation>Kein Dokument ausgewählt!</translation>
+        <translation type="vanished">Kein Dokument ausgewählt!</translation>
     </message>
     <message>
         <source>Open Supported File</source>
@@ -1157,7 +1157,7 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Wollen Sie wirklich %n Seite vom ausgewählten Dokument &apos;%1&apos; entfernen?</numerusform>
             <numerusform>Wollen Sie wirklich %n Seiten vom ausgewählten Dokument &apos;%1&apos; entfernen?</numerusform>
         </translation>
@@ -1176,11 +1176,31 @@
     </message>
     <message>
         <source>Are you sure you want to remove all selected documents?</source>
-        <translation>Möchten sie wirklich alle ausgewählten Dokumente entfernen?</translation>
+        <translation type="vanished">Möchten sie wirklich alle ausgewählten Dokumente entfernen?</translation>
     </message>
     <message>
         <source>Remove multiple documents</source>
-        <translation>Mehrere Dokumente entfernen</translation>
+        <translation type="vanished">Mehrere Dokumente entfernen</translation>
+    </message>
+    <message numerus="yes">
+        <source>duplicated %1 page</source>
+        <comment>duplicated %1 pages</comment>
+        <translation>
+            <numerusform>%1 Seite wurde kopiert</numerusform>
+            <numerusform>%1 Seiten wurden kopiert</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation>Objekte löschen</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation>Möchten Sie die ausgewählten Elemente wirklich entfernen ?</translation>
+    </message>
+    <message>
+        <source>Title page</source>
+        <translation>Titelseite</translation>
     </message>
 </context>
 <context>
@@ -1234,18 +1254,84 @@
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
+    <name>UBDocumentPublisher</name>
     <message>
-        <source>%1 (copy)</source>
-        <translation>%1 (Kopie)</translation>
+        <source>Export failed.</source>
+        <translation type="obsolete">Export fehlgeschlagen.</translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentReplaceDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation>Akzeptieren</translation>
     </message>
     <message>
-        <source>Copying page %1/%2</source>
-        <translation>Seite %1/%2 wird kopiert</translation>
+        <source>Replace</source>
+        <translation>Ersetzen</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Abbrechen</translation>
+    </message>
+    <message>
+        <source>The name %1 is allready used.
+Keeping this name will replace the document.
+Providing a new name will create a new document.</source>
+        <translation>Der Name %1 wird bereits benutzt.
+Wenn Sie den Namen behalten möchten, wird das Dokument ersetzt.
+Wenn Sie einen neuen Namen wählen, wird ein neues Dokument erstellt.</translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeModel</name>
+    <message>
+        <source>My documents</source>
+        <translation>Eigene Dokumente</translation>
+    </message>
+    <message>
+        <source>Trash</source>
+        <translation>Papierkorb</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
         <translation>
+            <numerusform>%1 Seite wurde kopiert</numerusform>
+            <numerusform>%1 Seiten wurden kopiert</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeView</name>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation>
+            <numerusform>%1 Seite wurde kopiert</numerusform>
+            <numerusform>%1 Seiten wurden kopiert</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation>Objekte löschen</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation>Möchten Sie die ausgewählten Elemente wirklich entfernen ?</translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeWidget</name>
+    <message>
+        <source>%1 (copy)</source>
+        <translation type="vanished">%1 (Kopie)</translation>
+    </message>
+    <message>
+        <source>Copying page %1/%2</source>
+        <translation type="vanished">Seite %1/%2 wird kopiert</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="vanished">
             <numerusform>%1 Seite wurde kopiert</numerusform>
             <numerusform>%1 Seiten wurden kopiert</numerusform>
         </translation>
@@ -1266,7 +1352,7 @@
     <name>UBDraggableThumbnail</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">Seite %0</translation>
+        <translation>Seite %0</translation>
     </message>
 </context>
 <context>
@@ -1296,7 +1382,7 @@
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
+        <translation>Export fehlgeschlagen: Zielpfad nicht beschreibbar</translation>
     </message>
     <message>
         <source>Export successful.</source>
@@ -1307,23 +1393,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="vanished">Exportieren nach IWB</translation>
+        <translation>Exportieren nach IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="vanished">Exportieren als IWB-Datei</translation>
+        <translation>Exportieren als IWB-Datei</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="vanished">Dokument wird exportiert...</translation>
+        <translation>Dokument wird exportiert...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">Export erfolgreich.</translation>
+        <translation>Export erfolgreich.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="vanished">Export fehlgeschlagen.</translation>
+        <translation>Export fehlgeschlagen.</translation>
     </message>
 </context>
 <context>
@@ -1363,6 +1449,33 @@
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
         <translation type="vanished">Export im ausgewählten Zielpfad nicht möglich. Sie haben nicht die erforderliche Berechtigung um die Datei zu speichern.</translation>
+    </message>
+</context>
+<context>
+    <name>UBExportDocumentSetAdaptor</name>
+    <message>
+        <source>Failed to export...</source>
+        <translation>Export fehlgeschlagen...</translation>
+    </message>
+    <message>
+        <source>Export as UBX File</source>
+        <translation>Als UBX-Datei exportieren</translation>
+    </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation>Dokument wird exportiert...</translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation>Export erfolgreich.</translation>
+    </message>
+    <message>
+        <source>Export failed.</source>
+        <translation>Export fehlgeschlagen.</translation>
+    </message>
+    <message>
+        <source>Export to OpenBoard UBX Format</source>
+        <translation>In das UBX OpenBoard Format exportieren</translation>
     </message>
 </context>
 <context>
@@ -1508,65 +1621,65 @@
     </message>
     <message>
         <source>Audios</source>
-        <translation type="unfinished">Audiodateien</translation>
+        <translation>Audiodateien</translation>
     </message>
     <message>
         <source>Movies</source>
-        <translation type="unfinished">Filme</translation>
+        <translation>Filme</translation>
     </message>
     <message>
         <source>Pictures</source>
-        <translation type="unfinished">Bilder</translation>
+        <translation>Bilder</translation>
     </message>
     <message>
         <source>Animations</source>
-        <translation type="unfinished">Animationen</translation>
+        <translation>Animationen</translation>
     </message>
     <message>
         <source>Interactivities</source>
-        <translation type="unfinished">Interaktivitäten</translation>
+        <translation>Interaktivitäten</translation>
     </message>
     <message>
         <source>Applications</source>
-        <translation type="unfinished">Anwendungen</translation>
+        <translation>Anwendungen</translation>
     </message>
     <message>
         <source>Shapes</source>
-        <translation type="unfinished">Formen</translation>
+        <translation>Formen</translation>
     </message>
     <message>
         <source>Favorites</source>
-        <translation type="unfinished">Favoriten</translation>
+        <translation>Favoriten</translation>
     </message>
     <message>
         <source>Web search</source>
-        <translation type="unfinished">Websuche</translation>
+        <translation>Websuche</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation type="unfinished">Papierkorb</translation>
+        <translation>Papierkorb</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesNewFolderDialog</name>
     <message>
         <source>Accept</source>
-        <translation type="unfinished">Akzeptieren</translation>
+        <translation>Akzeptieren</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <source>Enter a new folder name</source>
-        <translation type="unfinished">Geben Sie den Namen des Verzeichnisses ein</translation>
+        <translation>Geben Sie den Namen des Verzeichnisses ein</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesProgressInfo</name>
     <message>
         <source>Loading </source>
-        <translation type="unfinished">Laden </translation>
+        <translation>Laden </translation>
     </message>
 </context>
 <context>
@@ -1665,23 +1778,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="vanished">Standard-Dateiformat (</translation>
+        <translation>Standard-Dateiformat (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="vanished">Datei %1 wird importiert...</translation>
+        <translation>Datei %1 wird importiert...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="vanished">Import der Datei %1 fehlgeschlagen.</translation>
+        <translation>Import der Datei %1 fehlgeschlagen.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="vanished">Import erfolgreich.</translation>
+        <translation>Import erfolgreich.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="vanished">Import fehlgeschlagen.</translation>
+        <translation>Import fehlgeschlagen.</translation>
     </message>
 </context>
 <context>
@@ -1701,6 +1814,13 @@
     <message>
         <source>OpenBoard (*.ubz)</source>
         <translation>OpenBoard (*.ubz)</translation>
+    </message>
+</context>
+<context>
+    <name>UBImportDocumentSetAdaptor</name>
+    <message>
+        <source>Openboard (set of documents) (*.ubx)</source>
+        <translation>Openboard (Dokumentensammlung) (*.ubx)</translation>
     </message>
 </context>
 <context>
@@ -1846,7 +1966,7 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     </message>
     <message>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation>Verbindung zum Dokumentenarchiv verloren. Um fehlerhafte Daten zu vermeiden muss die Anwendung leider geschlossen werden. Letzte Änderungen können auch verloren gehen.</translation>
+        <translation type="vanished">Verbindung zum Dokumentenarchiv verloren. Um fehlerhafte Daten zu vermeiden muss die Anwendung leider geschlossen werden. Letzte Änderungen können auch verloren gehen.</translation>
     </message>
     <message>
         <source>saving document thumbnail for the page %1</source>
@@ -1858,7 +1978,11 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     </message>
     <message>
         <source>Moving page to trash folder...</source>
-        <translation>Die Seite in den Papierkorb verschieben...</translation>
+        <translation type="vanished">Die Seite in den Papierkorb verschieben...</translation>
+    </message>
+    <message>
+        <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
+        <translation>Openboard hat den Zugang zum Dokumentenarchiv &apos;%1&apos; verloren. Die Anwendung muss leider beendet werden, um Datenkorruption zu vermeiden. Der Verlust kürzlich vorgenommener Änderungen ist möglich.</translation>
     </message>
 </context>
 <context>
@@ -1962,34 +2086,34 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation>Proxy-Login</translation>
+        <translation type="vanished">Proxy-Login</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Benutzername:</translation>
+        <translation type="vanished">Benutzername:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>Passwort:</translation>
+        <translation type="vanished">Passwort:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation>Dokument im Internet veröffentlichen</translation>
+        <translation type="vanished">Dokument im Internet veröffentlichen</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation>Titel:</translation>
+        <translation type="vanished">Titel:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation>Beschreibung:</translation>
+        <translation type="vanished">Beschreibung:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation>Veröffentlichen</translation>
+        <translation type="vanished">Veröffentlichen</translation>
     </message>
 </context>
 <context>
@@ -2543,10 +2667,49 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>documentPublishingDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="vanished">Dialog</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="vanished">Titel</translation>
+    </message>
+    <message>
+        <source>E-mail</source>
+        <translation type="vanished">E-Mail</translation>
+    </message>
+    <message>
+        <source>Author</source>
+        <translation type="vanished">Autor</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="vanished">Beschreibung</translation>
+    </message>
+</context>
+<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
         <translation>OpenBoard Dokumente</translation>
+    </message>
+    <message>
+        <source>Creation date</source>
+        <translation>Erstellungsdatum</translation>
+    </message>
+    <message>
+        <source>Update date</source>
+        <translation>Änderungsdatum</translation>
+    </message>
+    <message>
+        <source>Alphabetical order</source>
+        <translation>Alphabetische Reihenfolge</translation>
+    </message>
+    <message>
+        <source>Sort Order</source>
+        <translation>Sortierreihenfolge</translation>
     </message>
 </context>
 <context>
@@ -2684,11 +2847,6 @@ p, li { white-space: pre-wrap; }
         <translation>Passwort:</translation>
     </message>
     <message>
-        <source>Credits</source>
-        <translatorcomment>do not translate!</translatorcomment>
-        <translation></translation>
-    </message>
-    <message>
         <source>Open-Sankoré Importer</source>
         <translation>Open-Sankoré Importer</translation>
     </message>
@@ -2722,7 +2880,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap first and second view displays</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontroll- und Anzeige-Bildschirm vertauschen</translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <translation></translation>
     </message>
 </context>
 <context>

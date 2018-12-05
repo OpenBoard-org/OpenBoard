@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -26,7 +26,6 @@
 
 
 
-
 #ifndef UBPERSISTENCEMANAGER_H_
 #define UBPERSISTENCEMANAGER_H_
 
@@ -34,11 +33,13 @@
 
 #include "UBSceneCache.h"
 
-#include "UBPersistenceWorker.h"
-
+class QDomNode;
+class QDomElement;
 class UBDocument;
 class UBDocumentProxy;
 class UBGraphicsScene;
+class UBDocumentTreeNode;
+class UBDocumentTreeModel;
 
 class UBPersistenceManager : public QObject
 {
@@ -57,16 +58,40 @@ class UBPersistenceManager : public QObject
         static const QString videoDirectory;
         static const QString audioDirectory;
         static const QString widgetDirectory;
-        static const QString teacherGuideDirectory;
-        static void shiftPagesToStartWithTheZeroOne(QString persistencePath);
+        static const QString fileDirectory; // Issue 1683 (Evolution) - AOU - 20131206
+
+        static const QString myDocumentsName;
+        static const QString modelsName;
+        static const QString untitledDocumentsName;
+        static const QString fFolders;
+        static const QString tFolder;
+        static const QString aName;
 
         static UBPersistenceManager* persistenceManager();
         static void destroy();
 
-        virtual UBDocumentProxy* createDocument(const QString& pGroupName = "", const QString& pName = "", bool withEmptyPage = true);
-        virtual UBDocumentProxy* createDocumentFromDir(const QString& pDocumentDirectory, const QString& pGroupName = "", const QString& pName = "");
+        virtual UBDocumentProxy* createDocument(const QString& pGroupName = ""
+                , const QString& pName = ""
+                , bool withEmptyPage = true
+                , QString directory =QString()
+                , int pageCount = 0
+                , bool promptDialogIfExists = false);
 
-        virtual void persistDocumentMetadata(UBDocumentProxy* pDocumentProxy, bool forceImmediateSaving = false);
+        virtual UBDocumentProxy *createNewDocument(const QString& pGroupName = ""
+                , const QString& pName = ""
+                , bool withEmptyPage = true
+                , QString directory =QString()
+                , int pageCount = 0
+                , bool promptDialogIfExists = false);
+
+        virtual UBDocumentProxy* createDocumentFromDir(const QString& pDocumentDirectory
+                                                       , const QString& pGroupName = ""
+                , const QString& pName = ""
+                , bool withEmptyPage = false
+                , bool addTitlePage = false
+                , bool promptDialogIfExists = false);
+
+        virtual UBDocumentProxy* persistDocumentMetadata(UBDocumentProxy* pDocumentProxy);
 
         virtual UBDocumentProxy* duplicateDocument(UBDocumentProxy* pDocumentProxy);
 
@@ -76,19 +101,24 @@ class UBPersistenceManager : public QObject
 
         virtual void duplicateDocumentScene(UBDocumentProxy* pDocumentProxy, int index);
 
+        virtual void copyDocumentScene(UBDocumentProxy *from, int fromIndex, UBDocumentProxy *to, int toIndex);
+
         virtual void persistDocumentScene(UBDocumentProxy* pDocumentProxy,
-                UBGraphicsScene* pScene, const int pSceneIndex, bool isAnAutomaticBackup = false, bool forceImmediateSaving = false);
+                UBGraphicsScene* pScene, const int pSceneIndex);
 
         virtual UBGraphicsScene* createDocumentSceneAt(UBDocumentProxy* pDocumentProxy, int index, bool useUndoRedoStack = true);
 
-        virtual void insertDocumentSceneAt(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* scene, int index);
+        virtual void insertDocumentSceneAt(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* scene, int index, bool persist = true);
 
         virtual void moveSceneToIndex(UBDocumentProxy* pDocumentProxy, int source, int target);
 
-        virtual UBGraphicsScene* loadDocumentScene(UBDocumentProxy* pDocumentProxy, int sceneIndex, bool cacheNeighboringScenes = true);
+        virtual UBGraphicsScene* loadDocumentScene(UBDocumentProxy* pDocumentProxy, int sceneIndex);
         UBGraphicsScene *getDocumentScene(UBDocumentProxy* pDocumentProxy, int sceneIndex) {return mSceneCache.value(pDocumentProxy, sceneIndex);}
+        void reassignDocProxy(UBDocumentProxy *newDocument, UBDocumentProxy *oldDocument);
 
-        QList<QPointer<UBDocumentProxy> > documentProxies;
+//        QList<QPointer<UBDocumentProxy> > documentProxies;
+        UBDocumentTreeNode *mDocumentTreeStructure;
+        UBDocumentTreeModel *mDocumentTreeStructureModel;
 
         virtual QStringList allShapes();
         virtual QStringList allGips();
@@ -101,7 +131,9 @@ class UBPersistenceManager : public QObject
 
         bool addDirectoryContentToDocument(const QString& documentRootFolder, UBDocumentProxy* pDocument);
 
-        virtual UBDocumentProxy* documentByUuid(const QUuid& pUuid);
+        void createDocumentProxiesStructure(bool interactive = false);
+        void createDocumentProxiesStructure(const QFileInfoList &contentInfo, bool interactive = false);
+        QDialog::DialogCode processInteractiveReplacementDialog(UBDocumentProxy *pProxy);
 
         QStringList documentSubDirectories()
         {
@@ -114,7 +146,21 @@ class UBPersistenceManager : public QObject
         bool addGraphicsWidgetToDocument(UBDocumentProxy *mDocumentProxy, QString path, QUuid objectUuid, QString& destinationPath);
         bool addFileToDocument(UBDocumentProxy* pDocumentProxy, QString path, const QString& subdir,  QUuid objectUuid, QString& destinationPath, QByteArray* data = NULL);
 
+        bool mayHaveVideo(UBDocumentProxy* pDocumentProxy);
+        bool mayHaveAudio(UBDocumentProxy* pDocumentProxy);
+        bool mayHavePDF(UBDocumentProxy* pDocumentProxy);
+        bool mayHaveSVGImages(UBDocumentProxy* pDocumentProxy);
+        bool mayHaveWidget(UBDocumentProxy* pDocumentProxy);
+
+        QString adjustDocumentVirtualPath(const QString &str);
+
+        void closing();
+        bool isSceneInCached(UBDocumentProxy *proxy, int index) const;
+
     signals:
+
+        void proxyListChanged();
+
         void documentCreated(UBDocumentProxy* pDocumentProxy);
         void documentMetadataChanged(UBDocumentProxy* pDocumentProxy);
         void documentWillBeDeleted(UBDocumentProxy* pDocumentProxy);
@@ -122,50 +168,31 @@ class UBPersistenceManager : public QObject
         void documentSceneCreated(UBDocumentProxy* pDocumentProxy, int pIndex);
         void documentSceneWillBeDeleted(UBDocumentProxy* pDocumentProxy, int pIndex);
 
-    private:
-
+private:
         int sceneCount(const UBDocumentProxy* pDocumentProxy);
-
         static QStringList getSceneFileNames(const QString& folder);
-
-        QList<QPointer<UBDocumentProxy> > allDocumentProxies();
-
         void renamePage(UBDocumentProxy* pDocumentProxy,
-                const int sourceIndex, const int targetIndex);
-
+                        const int sourceIndex, const int targetIndex);
         void copyPage(UBDocumentProxy* pDocumentProxy,
-                const int sourceIndex, const int targetIndex);
-
+                      const int sourceIndex, const int targetIndex);
         void generatePathIfNeeded(UBDocumentProxy* pDocumentProxy);
-
         void checkIfDocumentRepositoryExists();
 
+        void saveFoldersTreeToXml(QXmlStreamWriter &writer, const QModelIndex &parentIndex);
+        void loadFolderTreeFromXml(const QString &path, const QDomElement &element);
+
+        QString xmlFolderStructureFilename;
+
         UBSceneCache mSceneCache;
-
         QStringList mDocumentSubDirectories;
-
         QMutex mDeletedListMutex;
-
         bool mHasPurgedDocuments;
-
-        QList<UBDocumentProxy*> mDocumentCreatedDuringSession;
-
         QString mDocumentRepositoryPath;
-
-        UBPersistenceWorker* mWorker;
-
-        QThread* mThread;
-        bool mIsWorkerFinished;
-
-        bool mIsApplicationClosing;
+        QString mFoldersXmlStorageName;
 
     private slots:
         void documentRepositoryChanged(const QString& path);
-        void errorString(QString error);
-        void onSceneLoaded(QByteArray,UBDocumentProxy*,int);
-        void onWorkerFinished();
-        void onScenePersisted(UBGraphicsScene* scene);
-        void onMetadataPersisted(UBDocumentProxy* proxy);
+
 };
 
 

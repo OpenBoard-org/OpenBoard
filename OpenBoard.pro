@@ -9,8 +9,8 @@ CONFIG += debug_and_release \
 
 
 VERSION_MAJ = 1
-VERSION_MIN = 4
-VERSION_PATCH = 1
+VERSION_MIN = 5
+VERSION_PATCH = 0
 VERSION_TYPE = r # a = alpha, b = beta, rc = release candidate, r = release, other => error
 VERSION_BUILD = 0
 
@@ -64,6 +64,11 @@ include(src/web/web.pri)
 DEPENDPATH += src/pdf-merger
 INCLUDEPATH += src/pdf-merger
 include(src/pdf-merger/pdfMerger.pri)
+
+
+#plugins
+include(plugins/plugins.pri)
+INCLUDEPATH += plugins/cffadaptor/src
 
 #ThirdParty
 DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
@@ -378,6 +383,24 @@ macx {
        TRANSLATION_mg.path = "$$RESOURCES_DIR/mg.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_mg
    }
+   exists(resources/i18n/OpenBoard_gl.qm) {
+       TRANSLATION_gl.files = resources/i18n/OpenBoard_gl.qm \
+           resources/i18n/localizable.strings
+       TRANSLATION_gl.path = "$$RESOURCES_DIR/gl.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_gl
+   }
+   exists(resources/i18n/OpenBoard_ua.qm) {
+       TRANSLATION_ua.files = resources/i18n/OpenBoard_ua.qm \
+           resources/i18n/localizable.strings
+       TRANSLATION_ua.path = "$$RESOURCES_DIR/ua.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_ua
+   }
+   exists(resources/i18n/OpenBoard_hu.qm) {
+       TRANSLATION_hu.files = resources/i18n/OpenBoard_hu.qm \
+           resources/i18n/localizable.strings
+       TRANSLATION_hu.path = "$$RESOURCES_DIR/hu.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_hu
+   }
 
    QMAKE_BUNDLE_DATA += UB_ETC \
        UB_LIBRARY \
@@ -447,6 +470,9 @@ TRANSLATIONS = resources/i18n/OpenBoard_en.ts \
    resources/i18n/OpenBoard_el.ts \
    resources/i18n/OpenBoard_tr.ts \
    resources/i18n/OpenBoard_cs.ts \
+   resources/i18n/OpenBoard_gl.ts \
+   resources/i18n/OpenBoard_ua.ts \
+   resources/i18n/OpenBoard_hu.ts \
    resources/i18n/OpenBoard_mg.ts
 
 INSTALLS = UB_ETC \

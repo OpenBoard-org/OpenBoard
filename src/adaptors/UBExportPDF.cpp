@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -44,6 +44,7 @@
 #include "domain/UBGraphicsPDFItem.h"
 
 #include "document/UBDocumentProxy.h"
+#include "document/UBDocumentController.h"
 
 #include "pdf/GraphicsPDFItem.h"
 
@@ -63,6 +64,16 @@ UBExportPDF::~UBExportPDF()
 void UBExportPDF::persist(UBDocumentProxy* pDocumentProxy)
 {
     persistLocally(pDocumentProxy, tr("Export as PDF File"));
+}
+
+bool UBExportPDF::associatedActionactionAvailableFor(const QModelIndex &selectedIndex)
+{
+    const UBDocumentTreeModel *docModel = qobject_cast<const UBDocumentTreeModel*>(selectedIndex.model());
+    if (!selectedIndex.isValid() || docModel->isCatalog(selectedIndex)) {
+        return false;
+    }
+
+    return true;
 }
 
 

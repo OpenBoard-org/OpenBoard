@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -55,22 +55,17 @@ UBExportAdaptor::~UBExportAdaptor()
     // NOOP
 }
 
-
 QString UBExportAdaptor::askForFileName(UBDocumentProxy* pDocument, const QString& pDialogTitle)
 {
     QString defaultName;
 
-    if (pDocument->metaData(UBSettings::documentGroupName).toString().length() > 0)
-    {
-        defaultName += pDocument->metaData(UBSettings::documentGroupName).toString() + QString(" ");
-    }
-
     defaultName += pDocument->metaData(UBSettings::documentName).toString() + exportExtention();
 
     defaultName = UBFileSystemUtils::cleanName(defaultName);
+
     QString defaultPath = UBSettings::settings()->lastExportFilePath->get().toString() + "/" + defaultName;
 
-    QString filename = QFileDialog::getSaveFileName(UBApplication::mainWindow, pDialogTitle, defaultPath);
+    QString filename = QFileDialog::getSaveFileName(UBApplication::mainWindow, pDialogTitle, defaultPath, QString());
 
     if (filename.size() == 0)
     {

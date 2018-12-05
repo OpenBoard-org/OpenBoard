@@ -68,6 +68,10 @@
 <context>
     <name>MainWindow</name>
     <message>
+        <source>OpenBoard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Board</source>
         <translation type="unfinished"></translation>
     </message>
@@ -92,39 +96,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Text</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Capture</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add To Current Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add To New Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add To Library</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New Page</source>
+        <source>Change Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Change Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -180,6 +156,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Small Line</source>
         <translation type="unfinished"></translation>
     </message>
@@ -189,6 +169,18 @@
     </message>
     <message>
         <source>Large Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quit OpenBoard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Eraser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -204,7 +196,35 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Forward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Reload Current Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -212,7 +232,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Show Bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bookmark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -224,7 +252,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Ctrl+B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Erase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Erase Content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -232,7 +272,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Show Library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Desktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -244,7 +296,39 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Bigger</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Zoom In</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl++</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smaller</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Zoom Out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Create a New Folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -252,7 +336,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Import a Document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -260,7 +352,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Open in Board</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Open Page in Board</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -268,7 +372,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Delete Selected Content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Del</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to Working Document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Selected Content to Open Document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -276,7 +400,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Rename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Rename Content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -284,7 +416,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Multi Screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wide Size (16/9)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Use Document Wide Size (16/9)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Regular Size (4/3)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -292,7 +436,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Custom Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Use Custom Document Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop Loading</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -300,7 +452,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sleep</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Put Presentation to Sleep</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Virtual Keyboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -308,7 +480,51 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Plain Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ruled Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plain Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Podcast</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Record Presentation to Video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Record</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Screen Recording</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -325,6 +541,10 @@
     </message>
     <message>
         <source>Erase All Annotations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -380,226 +600,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Capture Part of the Screen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Custom Capture</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Capture a Window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Embed Web Content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Capture Embeddable Web Content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Main Screen on Display Screen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Erase all Annotations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>eduMedia</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import eduMedia simulation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check Update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+H</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Zoom In</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Quit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Eraser</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Back</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Left</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Forward</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Right</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reload</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Home</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bookmarks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bookmark</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+B</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clear Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Preferences</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Erase</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Library</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+L</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Desktop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bigger</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl++</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Smaller</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New Folder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New Document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open in Board</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Duplicate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Del</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add to Working Document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add Selected Content to Open Document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rename</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Paste</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid Light Background</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid Dark Background</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Screen Recording</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Scroll Page</source>
         <translation type="unfinished"></translation>
     </message>
@@ -624,6 +624,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Write Text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -632,7 +636,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Capture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Capture Part of the Screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add To Current Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Add Item To Current Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add To New Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -640,11 +660,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Add To Library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Add Item To Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Pages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Create a New Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -696,7 +728,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Custom Capture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Window Capture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Capture a Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Embed Web Content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Capture Embeddable Web Content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -704,67 +752,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Sleep</source>
+        <source>Show Main Screen on Display Screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Virtual Keyboard</source>
+        <source>Erase all Annotations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Plain Light Background</source>
+        <source>eduMedia</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Light</source>
+        <source>Import eduMedia simulation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Plain Dark Background</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Dark</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Podcast</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Multi Screen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Wide Size (16/9)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Regular Size (4/3)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Custom Size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop Loading</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OpenBoard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Quit OpenBoard</source>
+        <source>Check Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -773,6 +777,10 @@
     </message>
     <message>
         <source>Hide OpenBoard Application</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+H</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -797,14 +805,6 @@
     </message>
     <message>
         <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ruled Light Background</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ruled Dark Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -853,6 +853,14 @@
 <context>
     <name>QObject</name>
     <message>
+        <source>Element ID = </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Content is not supported in destination format.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Remove Page</source>
         <translation type="unfinished"></translation>
     </message>
@@ -879,19 +887,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>New update available, would you go to the web page ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No update available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Update available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>New update available, would you go to the web page ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No update available</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -904,38 +912,6 @@
 </context>
 <context>
     <name>UBBoardController</name>
-    <message>
-        <source>Downloading content %1 failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Download finished</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unknown tool type %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add Item</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>All Supported (%1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unknown content type %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Page %1 deleted</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add file operation failed: file copying error</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Group</source>
         <translation type="unfinished"></translation>
@@ -956,15 +932,47 @@
         <source>Deleting page %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Page %1 deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloading content %1 failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add file operation failed: file copying error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown tool type %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown content type %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Supported (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
     <message>
-        <source>Error Adding Image to Library</source>
+        <source>CapturedImage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>CapturedImage</source>
+        <source>Error Adding Image to Library</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1001,6 +1009,10 @@
 <context>
     <name>UBDesktopPalette</name>
     <message>
+        <source>Show OpenBoard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Capture Part of the Screen</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1020,19 +1032,19 @@
         <source>Show Desktop on Secondary Screen</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Show OpenBoard</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>UBDocumentController</name>
     <message>
-        <source>New Folder</source>
+        <source>Trash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Page %1</source>
+        <source>Untitled Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1047,6 +1059,13 @@
         <source>Add Pages from File</source>
         <translation type="unfinished"></translation>
     </message>
+    <message numerus="yes">
+        <source>duplicated %1 page</source>
+        <comment>duplicated %1 pages</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
         <source>Duplicating Document %1</source>
         <translation type="unfinished"></translation>
@@ -1056,43 +1075,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Remove Page</source>
+        <source>Remove Item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Remove Document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Empty Trash</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to empty trash?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Emptying trash</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Emptied trash</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove Folder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No document selected!</source>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1112,19 +1099,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Empty</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trash</source>
+        <source>Folder does not contain any image files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Open Document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1139,30 +1122,20 @@
         <source>Selection does not contain any image files!</source>
         <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
-    </message>
     <message>
-        <source>Folder does not contain any image files</source>
+        <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Untitled Documents</source>
+        <source>Empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
+        <source>Page %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove multiple documents</source>
+        <source>Title page</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1189,10 +1162,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>File %1 saved</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Inserting page %1 of %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1201,11 +1170,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Importing file %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Import of file %1 successful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Importing file %1</source>
+        <source>File %1 saved</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1217,13 +1190,34 @@
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
+    <name>UBDocumentReplaceDialog</name>
     <message>
-        <source>%1 (copy)</source>
+        <source>Accept</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Copying page %1/%2</source>
+        <source>Replace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name %1 is allready used.
+Keeping this name will replace the document.
+Providing a new name will create a new document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeModel</name>
+    <message>
+        <source>My documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trash</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
@@ -1231,6 +1225,23 @@
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeView</name>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1261,10 +1272,6 @@
 <context>
     <name>UBExportAdaptor</name>
     <message>
-        <source>Warnings during export was appeared</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Exporting document...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1284,6 +1291,33 @@
         <source>Export successful.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Warnings during export was appeared</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBExportCFF</name>
+    <message>
+        <source>Export to IWB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as IWB File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBExportDocument</name>
@@ -1301,6 +1335,33 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBExportDocumentSetAdaptor</name>
+    <message>
+        <source>Failed to export...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as UBX File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to OpenBoard UBX Format</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1387,6 +1448,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Rescan file system</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1402,17 +1467,9 @@
         <source>Create new folder</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Rescan file system</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>UBFeaturesController</name>
-    <message>
-        <source>ImportedImage</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Audios</source>
         <translation type="unfinished"></translation>
@@ -1451,6 +1508,10 @@
     </message>
     <message>
         <source>Trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ImportedImage</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1498,11 +1559,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Go to Content Source</source>
+        <source>Set as background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Set as background</source>
+        <source>Go to Content Source</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1569,13 +1630,13 @@
     </message>
 </context>
 <context>
-    <name>UBImportDocument</name>
+    <name>UBImportCFF</name>
     <message>
-        <source>Importing file %1...</source>
+        <source>Common File Format (</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Import successful.</source>
+        <source>Importing file %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1583,7 +1644,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Import successful.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBImportDocument</name>
+    <message>
         <source>OpenBoard (*.ubz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Importing file %1...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import of file %1 failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import successful.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBImportDocumentSetAdaptor</name>
+    <message>
+        <source>Openboard (set of documents) (*.ubx)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1692,6 +1783,10 @@ Do you want to ignore these errors for this host?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Show this panel next time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1707,10 +1802,6 @@ Do you want to ignore these errors for this host?</source>
         <source>Proceed</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>UBPersistenceManager</name>
@@ -1723,11 +1814,7 @@ Do you want to ignore these errors for this host?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Moving page to trash folder...</source>
+        <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1756,6 +1843,10 @@ Do you want to ignore these errors for this host?</source>
 </context>
 <context>
     <name>UBPodcastController</name>
+    <message>
+        <source>OpenBoard Cast</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>Failed to start encoder ...</source>
         <translation type="unfinished"></translation>
@@ -1812,10 +1903,6 @@ Do you want to ignore these errors for this host?</source>
         <source>Publish to Youtube</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>OpenBoard Cast</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>UBPreferencesController</name>
@@ -1825,40 +1912,6 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Marker is pressure sensitive</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>UBProxyLoginDlg</name>
-    <message>
-        <source>Proxy Login</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>UBPublicationDlg</name>
-    <message>
-        <source>Publish document on the web</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Title:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Publish</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1904,7 +1957,7 @@ Do you want to ignore these errors for this host?</source>
 <context>
     <name>UBToolsManager</name>
     <message>
-        <source>Compass</source>
+        <source>Mask</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1912,11 +1965,11 @@ Do you want to ignore these errors for this host?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Protractor</source>
+        <source>Compass</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Mask</source>
+        <source>Protractor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1966,7 +2019,15 @@ Do you want to ignore these errors for this host?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Remind me later</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Select a backup folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please wait the import process will start soon...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1984,14 +2045,6 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Updating file </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Please wait the import process will start soon...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remind me later</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2164,12 +2217,12 @@ Please reboot the application to access the updated documents.</source>
 <context>
     <name>WBDownloadManager</name>
     <message>
-        <source>%1 Downloads</source>
-        <comment>always &gt;= 2</comment>
+        <source>1 Download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>1 Download</source>
+        <source>%1 Downloads</source>
+        <comment>always &gt;= 2</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2262,6 +2315,10 @@ Please reboot the application to access the updated documents.</source>
 <context>
     <name>WBWebPage</name>
     <message>
+        <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Download</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2275,10 +2332,6 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Error loading page: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2308,6 +2361,10 @@ Please reboot the application to access the updated documents.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>OpenBoard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Category</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2331,13 +2388,13 @@ p, li { white-space: pre-wrap; }
         <source>Restore credentials on reboot</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>OpenBoard</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>brushProperties</name>
+    <message>
+        <source>Pen is Pressure Sensitive</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>Opacity</source>
         <translation type="unfinished"></translation>
@@ -2364,10 +2421,6 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Fine</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pen is Pressure Sensitive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2408,6 +2461,22 @@ p, li { white-space: pre-wrap; }
         <source>OpenBoard Documents</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Creation date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alphabetical order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort Order</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>preferencesDialog</name>
@@ -2428,11 +2497,23 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show Page with External Browser</source>
+        <source>Multi display</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Virtual Keyboard</source>
+        <source>Swap control display and view display</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show internal web page content on secondary screen or projector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Swap first and second view displays</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Toolbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2460,62 +2541,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>About</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Software Update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check software update at launch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Internet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Home Page:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Toolbar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Marker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>version : …</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Licences</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Network</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show internal web page content on secondary screen or projector</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Multi display</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Swap control display and view display</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2532,6 +2557,58 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Virtual Keyboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Internet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Page with External Browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Home Page:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Proxy User:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2540,7 +2617,23 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Licences</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Software Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check software update at launch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2552,31 +2645,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>On Dark Background</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Opacity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>On Light Background</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Swap first and second view displays</source>
+        <source>version : …</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

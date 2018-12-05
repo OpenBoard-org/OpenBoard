@@ -1,0 +1,659 @@
+body{
+   background-color: transparent;
+   font-family: Sans-Serif;
+}
+table tr td{
+	padding: 0px;
+}
+
+/* Widget background */
+html, body{
+	height: 100%;
+	margin: 0px;
+}
+
+#background{
+	width: 100%;
+	height: 100%;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+.background-border-x{
+	height: 14px;
+	padding: 0px;
+	background-color: "black";
+}
+.background-border-y{
+	width: 14px;
+	padding: 0px;
+	background-color: "black";
+}
+#background-top-left{
+	background-image: url('../Images/darkblue/top-left.png');
+	background-size: 100% 100%;
+}
+#background-top{
+	background-image: url('../Images/darkblue/top.png');
+	background-size: 100% 100%;
+}
+#background-top-right{
+	background-image: url('../Images/darkblue/top-right.png');
+	background-size: 100% 100%;
+}
+#background-bottom-left{
+	background-image: url('../Images/darkblue/bottom-left.png');
+	background-size: 100% 100%;
+}
+#background-bottom{
+	background-image: url('../Images/darkblue/bottom.png');
+	background-size: 100% 100%;
+}
+#background-bottom-right{
+	background-image: url('../Images/darkblue/bottom-right.png');
+	background-size: 100% 100%;
+}
+#background-left{
+	background-image: url('../Images/darkblue/left.png');
+	background-size: 100% 100%;
+}
+#background-right{
+	background-image: url('../Images/darkblue/right.png');
+	background-size: 100% 100%;
+}
+#background-center{
+	background-image: url('../Images/darkblue/center.png');
+	background-size: 100% 100%;
+	height: 100%;
+	padding-top: 30px;
+	position: relative;
+}
+
+/* Widget center */
+#widgetCenter{
+	height: 100%;
+	position: relative;
+}
+
+/* Zone d'affichage des fonctions */
+#eventAffichage{
+   height: 100%;
+   position: relative;
+}
+#eventAffichage canvas{
+	display: block;
+}
+#affichage{
+   height: 100%;
+   box-sizing: border-box;
+   overflow: hidden;
+   border: 1px solid rgba(255,255,255,0.5);
+   border-radius: 5px;
+   -webkit-border-radius: 5px;
+}
+#affichageOutils{
+   position: absolute;
+   top: 0px;
+   box-sizing: border-box;
+   height: 100%;
+   width: 100%;
+}
+
+#divInputRapide{
+	display: none;
+	position: absolute;
+	top: 11px;
+	left: 108px;
+	padding: 3px;
+	color: white;
+	text-align: center;
+	border: 1px solid rgba(255,255,255,0.2);
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	box-shadow: 0px 0px 2px rgba(0,0,0,0.5);
+	background-image: url('../Images/gradient3.png');
+	background-color: rgba(255,255,255,0.1);
+	background-size: 100% 100%;
+	z-index: 2;
+}
+#inputRapide{
+	width: 270px;
+}
+
+#menuFonctions3D{
+	position: absolute;
+	top: 11px;
+	left: 108px;
+	padding: 3px;
+	color: white;
+	text-align: center;
+	border: 1px solid rgba(255,255,255,0.2);
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	box-shadow: 0px 0px 2px rgba(0,0,0,0.5);
+	background-image: url('../Images/gradient3.png');
+	background-color: rgba(255,255,255,0.1);
+	background-size: 100% 100%;
+	z-index: 2;
+}
+#input3D{
+	width: 265px;
+}
+
+/* Messages */
+#divMessages div{
+	position: absolute;
+	background-image: url('../Images/cursor.png');
+	background-repeat: no-repeat;
+	z-index: 4;
+	pointer-events: none;
+	min-height: 24px;
+}
+#divMessages div span{
+	position: relative;
+	left: 19px;
+	top: 20px;
+	padding: 2px;
+	color: white;
+	font-size: 11px;
+	text-align: center;
+	border: 1px solid rgba(255,255,255,0.2);
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	box-shadow: 0px 0px 2px rgba(0,0,0,0.5);
+	text-shadow: 0px 0px 3px rgba(0,165,255,0.7);
+	background-image: url('../Images/gradient2.png');
+	background-color: rgba(0,86,134,0.6);
+	pointer-events: auto;
+}
+#divMessages div span a{
+	color : rgb(135,210,255);
+	cursor: pointer;
+}
+#divMessages div span a:hover{
+	color : rgb(110,200,255);
+	text-decoration: underline;
+	text-decoration-style: dotted;
+}
+
+
+/* Taille standard des boutons*/
+.bouton{
+   /*width: 100px;*/
+   height: 25px;
+   font-size: 12px;
+}
+
+/* Boutons qui sont dans la partie gauche et qui ouvrent les différents menus */
+.boutonGauche{
+   width: 100%;
+   height: 32px;
+   text-align: center;
+}
+
+/* Aperçu couleur 3D*/
+#apercuCouleur3D{
+	border: 1px solid rgba(0, 0, 0, 0.7);
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+
+/* Taille des champs contenant seulement 2 ou 3 caractères */
+.smallInput{
+   width: 35px;
+}
+.mediumInput{
+   width: 45px;
+}
+
+
+/* Boutons qui ouvrent le ColorPicker */
+.boutonCouleur{
+   position: relative;
+   left: 2px;
+   top: 4px;
+   width: 15px;
+   height: 15px;
+   border: 1px solid rgba(0,0,0,0.5);
+   border-radius: 5px;
+   -webkit-border-radius: 5px;
+   background-color: rgba(0,128,255,0.8);
+   display: inline-block;
+   cursor:pointer;
+   opacity: 0.7;
+}
+.boutonCouleur:hover{
+	box-shadow: 0px 0px 2px rgba(0,128,255,1);
+	opacity: 1;
+}
+
+/* Texte d'information (plus petit) */
+.texteSecondaire{
+   font-size: 11px;
+   color: rgba(0,0,0,0.5);
+   margin-left: 10px;
+}
+
+/* Style pour le texte où on peut cliquer dessus */
+.survol{
+   cursor: pointer;
+   color: rgb(0,70,120);
+}
+.survol:hover{
+   color: rgb(0,110,150);
+	opacity: 0.7;
+/* 	text-shadow: 0px 0px 3px white; */
+}
+
+/* Texte en gras */
+.gras{
+   font-weight: bold;
+}
+
+/* Flèches permettant de deplacer l'affichage */
+.flecheDeplacement{
+	color: black;
+	text-shadow: 0px 0px 20px rgba(255,255,255,1);
+	opacity: 0;
+	font-size: 56px;
+	text-align: center;
+	cursor: pointer;
+	z-index: 1;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.flecheDeplacement:hover{
+	opacity: 0.4;
+}
+.flecheDeplacement:active{
+	opacity: 0.3;
+}
+#flecheHaut{
+	position: absolute;
+	top: 15px;
+	left: 50%;
+	margin-left: -35px;
+	width: 70px;
+	height: 55px;
+}
+#flecheBas{
+	position: absolute;
+	bottom: 20px;
+	left: 50%;
+	margin-left: -35px;
+	width: 70px;
+	height: 55px;
+}
+#flecheGauche{
+	position: absolute;
+	top: 50%;
+	margin-top: -36px;
+	left: 15px;
+	width: 55px;
+	height: 70px;
+}
+#flecheDroite{
+	position: absolute;
+	top: 50%;
+	margin-top: -36px;
+	right: 15px;
+	width: 55px;
+	height: 70px;
+}
+
+
+/* Boutons permettant de choisir l'action de la souris dans le menu des outils */
+.choixOutil{
+   width: 125px;
+   height: 40px;
+   font-size: 14px;
+   cursor: pointer;
+}
+
+
+/* Petits boutons plus et moins dans les options */
+.boutonPlus{
+   position: relative;
+   top: -7px;
+   left: -5px;
+   width: 10px;
+   height: 10px;
+   font-size: 9px;
+   text-align: center;
+   background-color: rgba(0, 140, 255, 0.2);
+   border: 1px rgba(0,0,0,0.5) solid;
+   border-radius: 3px;
+   -webkit-border-radius: 3px;
+   cursor: pointer;
+   display: inline-block;
+}
+.boutonMoins{
+   position: relative;
+   top: 6px;
+   left: -17px;
+   width: 10px;
+   height: 10px;
+   font-size: 9px;
+   text-align: center;
+   background-color: rgba(0, 140, 255, 0.2);
+   border: 1px rgba(0,0,0,0.5) solid;
+   border-radius: 3px;
+   -webkit-border-radius: 3px;
+   cursor: pointer;
+   display: inline-block;
+}
+.boutonPlus:hover{
+   border: 1px rgba(0,0,0,0.7) solid;
+   background-color: rgba(0, 140, 255, 0.5);
+}
+.boutonMoins:hover{
+   border: 1px rgba(0,0,0,0.7) solid;
+   background-color: rgba(0, 140, 255, 0.5);
+}
+
+
+
+/* Menu etudes fonctions*/
+#menuEtude p{
+	margin-top: 7px;
+	margin-bottom: 0px;
+/* 	font-weight: bold; */
+}
+#menuEtude span{
+/* 	font-weight : normal; */
+}
+/* Tableau du signe dans le menu d'étude de la fonction*/
+#etudeSigne{
+/* 	border-collapse: collapse; */
+	border-spacing: 0px;
+}
+#etudeSigne td{
+	min-width: 25px;
+	text-align: center;
+	padding: 0px;
+}
+#etudeSigne td.premier{
+	font-weight: bold;
+}
+#etudeSigne td.bordure{
+	border: 1px solid black;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+#etudeSigne td.fondNoir{
+	background-color: rgba(0,0,0,0.5);
+}
+
+/* Titres des menus */
+h1{
+	font-size: 16px;
+	font-weight: 600;
+	text-align: center;
+	/*font-style: italic;*/
+	margin-top: 15px;
+	margin-bottom: 25px;
+}
+h2{
+	font-size: 14px;
+	font-weight: normal;
+	font-style: italic;
+	margin-top: 30px;
+}
+h3{
+	font-size: 16px;
+	font-weight: 600;
+	text-align: left;
+	/*font-style: italic;*/
+	margin-top: 7px;
+	margin-bottom: 20px;
+}
+h4{
+	font-size: 16px;
+	font-weight: 600;
+	text-align: center;
+	/*font-style: italic;*/
+	margin-top: 15px;
+	margin-bottom: 10px;
+}
+
+
+/* Menu Mise à Jour */
+#mAj{
+	text-align: center;
+	font-size: 14px;
+}
+#mAj h1{
+	font-size: 22px;
+	margin-top: 5px;
+	margin-bottom: 15px;
+}
+#mAj span object{
+	position: relative;
+	bottom: 4px;
+	width: 150px;
+	height: 27px;
+	overflow: hidden;
+}
+#mAj input{
+	min-height: 27px;
+}
+
+.boutonSauvegarde{
+	width: 100px;
+	height: 32px;
+}
+#cacheCookies{
+	position: absolute;
+	top: 150px;
+	left: 10px;
+	width: 93%;
+	height: 150px;
+	background-color: rgba(255,255,255,0.7);
+	border: 1px rgba(255,255,255,0.8) solid;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	text-align: center;
+	display: none;
+}
+#cacheMaJ{
+	position: absolute;
+	padding-top: 20px;
+	padding-bottom: 10px;
+	top: 250px;
+	left: 14px;
+	width: 93%;
+	height: 25px;
+	background-color: rgba(255,255,255,0.8);
+	border: 1px rgba(255,255,255,0.8) solid;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	text-align: center;
+	font-weight: bold;
+	display: none;
+}
+
+/* Menu clique droite sur le graphique */
+#ctxMenu{
+	position: absolute;
+	border: 1px solid black;
+	border-radius: 5px;
+	background-color: rgba(255,255,255,0.8);
+	box-shadow: 0px 0px 5px rgba(0,64,126,0.5);
+	font-size: 12px;
+	padding: 2px;
+	z-index: 2;
+	display: none;
+}
+#ctxMenu input.bouton{
+	width: 140px;
+	height: 25px;
+}
+#ctxMenu h1{
+	font-size: 14px;
+	text-align: center;
+	text-decoration: underline;
+	text-shadow: 0px 0px 4px rgba(0,100,200,0.7);
+	margin: 3px;
+}
+#ctxMenu div.fermer{
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	width: 10px;
+	height: 10px;
+	font-size: 10px;
+	cursor: pointer;
+	opacity: 0.7;
+}
+#ctxMenu div.fermer:hover{
+	text-shadow: 0px 0px 2px rgba(0,128,255,1);
+	opacity: 1;
+}
+.miniCouleur{
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	border: 1px solid rgba(0,0,0,0.5);
+	border-radius: 3px;
+	background-color: rgba(0,128,255,0.8);
+	cursor: pointer;
+	opacity: 0.7;
+}
+.miniCouleur:hover{
+	box-shadow: 0px 0px 2px rgba(0,128,255,1);
+	opacity: 1;
+}
+
+/* Editeur de fonctions dans le menu + */
+#functionMenuRight{
+	position: absolute;
+	right: 15px;
+	width: 45%;
+	box-sizing: border-box;
+}
+#functionMenuLeft{
+	max-width: 50%;
+/* 	min-height: 400px; */
+	box-sizing: border-box;
+}
+#fonctionsSupp{
+	width: 100%;
+	min-height: 305px;
+/* 	height: 245px; */
+/* 	border: 1px solid blue; */
+	overflow: auto;
+}
+.spanFonction{
+/* 	width: 320px; */
+	border: 1px solid rgba(0,0,0,0.3);
+	border-radius: 5px;
+	background-color: rgba(255,255,255,0.2);
+	background-image: url('../Images/gradient2.png');
+	background-position: 0px -2px;
+	box-shadow: 0px 0px 4px rgba(0,64,126,0.2);
+	padding: 2px;
+	margin: 4px;
+	font-weight: bold;
+	text-align: center;
+	overflow: hidden;
+	cursor: pointer;
+}
+.spanFonction:hover{
+	background-color: rgba(164,228,255,0.2);
+	box-shadow: 0px 0px 2px rgba(0,150,255,0.6);
+}
+.spanFonctionSelect{
+	background-color: rgba(118,214,255,0.4);
+	border-color: rgba(0,63,126,0.3);
+}
+.spanFonctionSelect:hover{
+	background-color: rgba(118,214,255,0.6);
+}
+#editeurFonction{
+/* 	position: absolute; */
+/* 	right: 15px; */
+/* 	top: 45px; */
+	min-width: 300px;
+/* 	height: 75%; */
+	border: 1px solid rgba(255,255,255,0.7);
+/* 	border-top: 1px solid rgba(255,255,255,0.3); */
+	border-radius: 5px;
+	background-color: rgba(255,255,255,0.2);
+	background-image: url('../Images/gradient2.png');
+	background-size: 100% 100%;
+	box-shadow: 0px 0px 4px rgba(0,64,126,0.2);
+	font-size: 12px;
+	padding: 2px;
+}
+#editeurApercu{
+	position: relative;
+	display : block;
+	margin : auto;
+	width: 100px;
+	height : 80px;
+	border: 1px solid white;
+	border-radius: 3px;
+	background-color: rgba(255,255,255,0.8);
+	box-shadow: 0px 0px 2px rgba(0,64,126,0.5);
+	font-size: 12px;
+	padding: 2px;
+}
+.editeurOnglets{
+	position: relative;
+	bottom: 3px;
+	width: 100%;
+	text-align: center;
+}
+.editeurOnglets span{
+	display: inline-block;
+	min-width: 70px;
+	width: 40%;
+	padding: 5px;
+	margin: 0px 2px;
+	text-align: center;
+	font-weight: normal;
+	background-color: rgba(255, 255, 255, 0.7);
+	background-image: url('../Images/gradient3.png');
+	border: 1px solid rgba(255, 255, 255, 0.9);
+	border-top: 1px solid white;
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	-webkit-border-bottom-left-radius: 6px;
+	-webkit-border-bottom-right-radius: 6px;
+	box-shadow: 0px 0px 3px rgba(0,0,0,0.5);
+	opacity: 0.5;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.editeurOnglets span.ongletActuel{
+	opacity: 0.8;
+	font-weight: bold;
+}
+.editeurOnglets span:hover{
+	opacity: 1;
+	box-shadow:0px 0px 3px rgba(0,0,0,0.5), 0px 0px 7px rgba(255,255,255,1);
+}
+.editeurOnglets span:active{
+	opacity: 0.7;
+	font-weight: bold;
+	box-shadow:0px 0px 3px rgba(0,0,0,0.5), 0px 0px 7px rgba(255,255,255,0.5);
+}
+
+#divSuppOutil div{
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	font-size: 10px;
+	cursor: pointer;
+	opacity: 1;
+	z-index: 1;
+}
+#divSuppOutil div:hover{
+	color: rgb(200,0,0);
+}

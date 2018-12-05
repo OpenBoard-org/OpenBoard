@@ -793,19 +793,19 @@
         <translation>Odstranit pozadí</translation>
     </message>
     <message>
-        <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ruled Light Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Tutorial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open the tutorial web page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -855,11 +855,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="obsolete">ID objektu = </translation>
+        <translation type="unfinished">ID objektu = </translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="vanished">Obsah není podporován v cílovém formátu.</translation>
+        <translation>Obsah není podporován v cílovém formátu.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -1050,11 +1050,11 @@
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation>Určitě chcete vyprázdnit koš?</translation>
+        <translation type="vanished">Určitě chcete vyprázdnit koš?</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation>Určitě chcete odstranit složku &quot;%1&quot; a celý její obsah?</translation>
+        <translation type="vanished">Určitě chcete odstranit složku &quot;%1&quot; a celý její obsah?</translation>
     </message>
     <message>
         <source>Open Supported File</source>
@@ -1062,7 +1062,7 @@
     </message>
     <message>
         <source>Remove Document</source>
-        <translation>Odstranit dokument</translation>
+        <translation type="vanished">Odstranit dokument</translation>
     </message>
     <message>
         <source>All Images (%1)</source>
@@ -1114,27 +1114,27 @@
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation>Určitě chcete odstranit dokument &quot;%1&quot;?</translation>
+        <translation type="vanished">Určitě chcete odstranit dokument &quot;%1&quot;?</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation>Koš byl vyprázdněn</translation>
+        <translation type="vanished">Koš byl vyprázdněn</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Vyprázdnit koš</translation>
+        <translation type="vanished">Vyprázdnit koš</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation>Odstranit složku</translation>
+        <translation type="vanished">Odstranit složku</translation>
     </message>
     <message>
         <source>Remove Page</source>
-        <translation>Odstranit stránku</translation>
+        <translation type="vanished">Odstranit stránku</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation>Nevybrali jste žádný dokument!</translation>
+        <translation type="vanished">Nevybrali jste žádný dokument!</translation>
     </message>
     <message>
         <source>Import all Images from Folder</source>
@@ -1142,11 +1142,11 @@
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation>Vyprazdňuje se koš</translation>
+        <translation type="vanished">Vyprazdňuje se koš</translation>
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Určitě chcete odstranit %n stránku z vybraného dokumentu %1?</numerusform>
             <numerusform>Určitě chcete odstranit %n stránky z vybraného dokumentu %1?</numerusform>
             <numerusform>Určitě chcete odstranit %n stránek z vybraného dokumentu %1?</numerusform>
@@ -1168,16 +1168,29 @@
         <source>Untitled Documents</source>
         <translation>Dokumenty bez názvu</translation>
     </message>
+    <message numerus="yes">
+        <source>duplicated %1 page</source>
+        <comment>duplicated %1 pages</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove multiple documents</source>
+        <source>Title page</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1232,10 +1245,69 @@
     </message>
 </context>
 <context>
+    <name>UBDocumentReplaceDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished">Přijmout</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
+    <message>
+        <source>Replace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name %1 is allready used.
+Keeping this name will replace the document.
+Providing a new name will create a new document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeModel</name>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">Koš</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="unfinished">
+            <numerusform>%1 zkopírovaná stránka</numerusform>
+            <numerusform>%1 zkopírované stránky</numerusform>
+            <numerusform>%1 zkopírovaných stránek</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>My documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeView</name>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="unfinished">
+            <numerusform>%1 zkopírovaná stránka</numerusform>
+            <numerusform>%1 zkopírované stránky</numerusform>
+            <numerusform>%1 zkopírovaných stránek</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBDocumentTreeWidget</name>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>%1 zkopírovaná stránka</numerusform>
             <numerusform>%1 zkopírované stránky</numerusform>
             <numerusform>%1 zkopírovaných stránek</numerusform>
@@ -1243,11 +1315,11 @@
     </message>
     <message>
         <source>%1 (copy)</source>
-        <translation>%1 (kopie)</translation>
+        <translation type="vanished">%1 (kopie)</translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation>Kopíruje se stránka %1/%2</translation>
+        <translation type="vanished">Kopíruje se stránka %1/%2</translation>
     </message>
 </context>
 <context>
@@ -1286,6 +1358,10 @@
         <translation type="unfinished">Exportuje se dokument...</translation>
     </message>
     <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Export byl úspěšně dokončen.</translation>
+    </message>
+    <message>
         <source>Export failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1297,32 +1373,28 @@
         <source>Export failed: location not writable</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="unfinished">Export byl úspěšně dokončen.</translation>
-    </message>
 </context>
 <context>
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="vanished">Export do IWB</translation>
+        <translation>Export do IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="vanished">Exportovat jako IWB soubor</translation>
+        <translation>Exportovat jako IWB soubor</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="vanished">Exportuje se dokument...</translation>
+        <translation>Exportuje se dokument...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">Export byl úspěšně dokončen.</translation>
+        <translation>Export byl úspěšně dokončen.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="vanished">Export se nezdařil.</translation>
+        <translation>Export se nezdařil.</translation>
     </message>
 </context>
 <context>
@@ -1349,6 +1421,33 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBExportDocumentSetAdaptor</name>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">Exportuje se dokument...</translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Export byl úspěšně dokončen.</translation>
+    </message>
+    <message>
+        <source>Failed to export...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as UBX File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to OpenBoard UBX Format</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1640,23 +1739,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Importing file %1...</source>
-        <translation type="vanished">Importuje se soubor %1...</translation>
+        <translation>Importuje se soubor %1...</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="vanished">Import se nezdařil.</translation>
+        <translation>Import se nezdařil.</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="vanished">Import souboru %1 se nezdařil.</translation>
+        <translation>Import souboru %1 se nezdařil.</translation>
     </message>
     <message>
         <source>Common File Format (</source>
-        <translation type="vanished">Univerzální IWB soubor (</translation>
+        <translation>Univerzální IWB soubor (</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="vanished">Import byl úspěšně dokončen.</translation>
+        <translation>Import byl úspěšně dokončen.</translation>
     </message>
 </context>
 <context>
@@ -1675,6 +1774,13 @@
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBImportDocumentSetAdaptor</name>
+    <message>
+        <source>Openboard (set of documents) (*.ubx)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1785,7 +1891,15 @@ Chcete ignorovat tyto chyby na tomto serveru?</translation>
 <context>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
+    <message>
         <source>Open-Sankore Documents Detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1797,15 +1911,7 @@ Chcete ignorovat tyto chyby na tomto serveru?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation type="unfinished">Zrušit</translation>
-    </message>
-    <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1820,11 +1926,7 @@ Chcete ignorovat tyto chyby na tomto serveru?</translation>
         <translation>Ztráta repozitáře s dokumenty</translation>
     </message>
     <message>
-        <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Moving page to trash folder...</source>
+        <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1929,34 +2031,34 @@ Chcete ignorovat tyto chyby na tomto serveru?</translation>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Password:</source>
-        <translation>Heslo:</translation>
+        <translation type="vanished">Heslo:</translation>
     </message>
     <message>
         <source>Proxy Login</source>
-        <translation>Přihlášení na proxy</translation>
+        <translation type="vanished">Přihlášení na proxy</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Uživatelské jméno:</translation>
+        <translation type="vanished">Uživatelské jméno:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Description:</source>
-        <translation>Popis:</translation>
+        <translation type="vanished">Popis:</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation>Název:</translation>
+        <translation type="vanished">Název:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation>Publikovat</translation>
+        <translation type="vanished">Publikovat</translation>
     </message>
     <message>
         <source>Publish document on the web</source>
-        <translation>Publikovat dokument na webu</translation>
+        <translation type="vanished">Publikovat dokument na webu</translation>
     </message>
 </context>
 <context>
@@ -2430,12 +2532,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;Kliknutím na &quot;Upload&quot; (Nahrať) potvrdzujete, že máte všetky práva k materiálu alebo že máte písomný súhlas vlastníka týchto práv na zverejnenie materiálu na sieti YouTube a že materiál je v súlade s podmienkami využívania služieb siete YouTube, ktorých aktuálne znenie sa nachádza na adrese  &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>Restore credentials on reboot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>OpenBoard</source>
         <translation type="unfinished">OpenBoard</translation>
+    </message>
+    <message>
+        <source>Restore credentials on reboot</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2505,9 +2607,48 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>documentPublishingDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="obsolete">Dialog</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="obsolete">Název</translation>
+    </message>
+    <message>
+        <source>E-mail</source>
+        <translation type="obsolete">E-mail</translation>
+    </message>
+    <message>
+        <source>Author</source>
+        <translation type="obsolete">Autor</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="obsolete">Popis</translation>
+    </message>
+</context>
+<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creation date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alphabetical order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2650,26 +2791,6 @@ p, li { white-space: pre-wrap; }
         <translation>Zásluhy</translation>
     </message>
     <message>
-        <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>On Dark Background</source>
         <translation type="unfinished">Na tmavém pozadí</translation>
     </message>
@@ -2683,6 +2804,26 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap first and second view displays</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré Importer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

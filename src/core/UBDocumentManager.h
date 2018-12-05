@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -45,9 +45,12 @@ class UBDocumentManager : public QObject
         static UBDocumentManager* documentManager();
         virtual ~UBDocumentManager();
 
-        QString importFileFilter();
-        QStringList importFileExtensions();
 
+        QString importFileFilter(bool notUbx = false);
+
+        QStringList importFileExtensions(bool notUbx = false);
+
+        QFileInfoList importUbx(const QString &Incomingfile, const QString &destination);
         UBDocumentProxy* importFile(const QFile& pFile, const QString& pGroup);
 
         int addFilesToDocument(UBDocumentProxy* pDocument, QStringList fileNames);

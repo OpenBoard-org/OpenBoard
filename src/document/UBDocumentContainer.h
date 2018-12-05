@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -42,10 +42,19 @@ class UBDocumentContainer : public QObject
         virtual ~UBDocumentContainer();
 
         void setDocument(UBDocumentProxy* document, bool forceReload = false);
+        void pureSetDocument(UBDocumentProxy *document) {mCurrentDocument = document;}
 
         UBDocumentProxy* selectedDocument(){return mCurrentDocument;}
         int pageCount(){return mCurrentDocument->pageCount();}
-        const QPixmap* pageAt(int index){return mDocumentThumbs[index];}
+        const QPixmap* pageAt(int index)
+        {
+            if (index < mDocumentThumbs.size())
+                return mDocumentThumbs[index];
+            else
+            {
+                return NULL;
+            }
+        }
 
         static int pageFromSceneIndex(int sceneIndex);
         static int sceneIndexFromPage(int sceneIndex);
@@ -56,8 +65,10 @@ class UBDocumentContainer : public QObject
         void clearThumbPage();
         void initThumbPage();
         void addPage(int index);
+        void addPixmapAt(const QPixmap *pix, int index);
         void updatePage(int index);
         void addEmptyThumbPage();
+        void reloadThumbnails();
 
         void insertThumbPage(int index);
 
@@ -69,7 +80,6 @@ class UBDocumentContainer : public QObject
     protected:
         void deleteThumbPage(int index);
         void updateThumbPage(int index);
-        void reloadThumbnails();
 
     signals:
         void documentSet(UBDocumentProxy* document);

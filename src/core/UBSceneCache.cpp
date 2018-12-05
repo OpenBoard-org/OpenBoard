@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -186,6 +186,33 @@ void UBSceneCache::moveScene(UBDocumentProxy* proxy, int sourceIndex, int target
     {
         scene = QHash<UBSceneCacheID, UBGraphicsScene*>::take(keyTarget);
         mCachedKeyFIFO.removeAll(keyTarget);
+    }
+
+}
+
+void UBSceneCache::reassignDocProxy(UBDocumentProxy *newDocument, UBDocumentProxy *oldDocument)
+{
+    if (!newDocument || !oldDocument) {
+        return;
+    }
+    if (newDocument->pageCount() != oldDocument->pageCount()) {
+        return;
+    }
+    if (!QFileInfo(oldDocument->persistencePath()).exists()) {
+        return;
+    }
+    for (int i = 0; i < oldDocument->pageCount(); i++) {
+
+        UBSceneCacheID sourceKey(oldDocument, i);
+        UBGraphicsScene *currentScene = value(sourceKey);
+        if (currentScene) {
+            currentScene->setDocument(newDocument);
+        }
+        mCachedKeyFIFO.removeAll(sourceKey);
+        int count = QHash<UBSceneCacheID, UBGraphicsScene*>::remove(sourceKey);
+        mCachedSceneCount -= count;
+
+        insert(newDocument, i, currentScene);
     }
 
 }

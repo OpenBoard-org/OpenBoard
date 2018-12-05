@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -102,6 +102,14 @@ void UBDocumentContainer::addPage(int index)
     emit addThumbnailRequired(this, index);
 }
 
+
+void UBDocumentContainer::addPixmapAt(const QPixmap *pix, int index)
+{
+    mDocumentThumbs.insert(index, pix);
+    emit documentThumbnailsUpdated(this);
+}
+
+
 void UBDocumentContainer::clearThumbPage()
 {
     qDeleteAll(mDocumentThumbs);
@@ -129,8 +137,15 @@ void UBDocumentContainer::deleteThumbPage(int index)
 
 void UBDocumentContainer::updateThumbPage(int index)
 {
-    mDocumentThumbs[index] = UBThumbnailAdaptor::get(mCurrentDocument, index);
-    emit documentPageUpdated(index);
+    if (mDocumentThumbs.size() > index)
+    {
+        mDocumentThumbs[index] = UBThumbnailAdaptor::get(mCurrentDocument, index);
+        emit documentPageUpdated(index);
+    }
+    else
+    {
+        qDebug() << "error [updateThumbPage] : index > mDocumentThumbs' size.";
+    }
 }
 
 void UBDocumentContainer::insertThumbPage(int index)
@@ -143,8 +158,8 @@ void UBDocumentContainer::reloadThumbnails()
     if (mCurrentDocument)
     {
         UBThumbnailAdaptor::load(mCurrentDocument, mDocumentThumbs);
-        emit documentThumbnailsUpdated(this);
     }
+    emit documentThumbnailsUpdated(this);
 }
 
 int UBDocumentContainer::pageFromSceneIndex(int sceneIndex)

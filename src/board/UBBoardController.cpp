@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -538,17 +538,10 @@ void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmp
         {
             foreach(QUrl relativeFile, scene->relativeDependencies())
             {
-                QString source = scene->document()->persistencePath() + "/" + relativeFile.toString();
-                QString target = selectedDocument()->persistencePath() + "/" + relativeFile.toString();
+                QString source = scene->document()->persistencePath() + "/" + relativeFile.path();
+                QString destination = selectedDocument()->persistencePath() + "/" + relativeFile.path();
 
-                if(QFileInfo(source).isDir())
-                    UBFileSystemUtils::copyDir(source,target);
-                else{
-                    QFileInfo fi(target);
-                    QDir d = fi.dir();
-                    d.mkpath(d.absolutePath());
-                    QFile::copy(source, target);
-                }
+                UBFileSystemUtils::copy(source, destination, true);
             }
         }
 
@@ -856,7 +849,6 @@ void UBBoardController::blackout()
 {
     UBApplication::applicationController->blackout();
 }
-
 
 void UBBoardController::showKeyboard(bool show)
 {
@@ -1541,7 +1533,7 @@ void UBBoardController::setActiveDocumentScene(int pSceneIndex)
     setActiveDocumentScene(selectedDocument(), pSceneIndex);
 }
 
-void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, const int pSceneIndex, bool forceReload)
+void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, const int pSceneIndex, bool forceReload, bool onImport)
 {
     saveViewState();
 
@@ -1558,9 +1550,15 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
 
     if (targetScene)
     {
-        freezeW3CWidgets(true);
-
-        ClearUndoStack();
+        if (mActiveScene && !onImport)
+        {
+            persistCurrentScene();
+            freezeW3CWidgets(true);
+            ClearUndoStack();
+        }else
+        {
+            UBApplication::undoStack->clear();
+        }
 
         mActiveScene = targetScene;
         mActiveSceneIndex = index;
@@ -1845,6 +1843,10 @@ int UBBoardController::activeSceneIndex() const
     return mActiveSceneIndex;
 }
 
+void UBBoardController::setActiveSceneIndex(int i)
+{
+    mActiveSceneIndex = i;
+}
 
 void UBBoardController::documentSceneChanged(UBDocumentProxy* pDocumentProxy, int pIndex)
 {
@@ -1996,7 +1998,7 @@ void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool force
             && (mActiveSceneIndex >= 0) && mActiveSceneIndex != mMovingSceneIndex
             && (mActiveScene->isModified()))
     {
-        UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, isAnAutomaticBackup,forceImmediateSave);
+        UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex);
         updatePage(mActiveSceneIndex);
     }
 }

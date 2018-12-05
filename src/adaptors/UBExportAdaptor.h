@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -36,7 +36,7 @@ class UBDocumentProxy;
 
 class UBExportAdaptor : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBExportAdaptor(QObject *parent = 0);
@@ -46,6 +46,9 @@ class UBExportAdaptor : public QObject
         virtual QString exportExtention() { return "";}
         virtual void persist(UBDocumentProxy* pDocument) = 0;
         virtual bool persistsDocument(UBDocumentProxy* pDocument, const QString& filename);
+        virtual bool associatedActionactionAvailableFor(const QModelIndex &selectedIndex) {Q_UNUSED(selectedIndex); return false;}
+        QAction *associatedAction() {return mAssociatedAction;}
+        void setAssociatedAction(QAction *pAssociatedAction) {mAssociatedAction = pAssociatedAction;}
 
         virtual void setVerbose(bool verbose)
         {
@@ -66,6 +69,7 @@ class UBExportAdaptor : public QObject
         void showErrorsList(QList<QString> errorsList);
 
         bool mIsVerbose;
+        QAction* mAssociatedAction;
 
 };
 

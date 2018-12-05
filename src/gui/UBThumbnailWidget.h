@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -57,7 +57,7 @@ class UBThumbnail;
 
 class UBThumbnailWidget : public QGraphicsView
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     public:
         UBThumbnailWidget(QWidget* parent);
@@ -431,6 +431,7 @@ private:
 
 class UBDraggableThumbnail : public UBThumbnailProxyWidget
 {
+    Q_OBJECT
     public:
         UBDraggableThumbnail(UBDocumentProxy* documentProxy, int index)
         : UBThumbnailProxyWidget(documentProxy, index)

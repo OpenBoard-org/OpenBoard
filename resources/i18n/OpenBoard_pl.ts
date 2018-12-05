@@ -796,19 +796,19 @@
         <translation>Usuń tło</translation>
     </message>
     <message>
-        <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ruled Light Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Tutorial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open the tutorial web page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -858,11 +858,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="vanished">ID elementu =</translation>
+        <translation>ID elementu =</translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="vanished">Zawartość nie jest obsługiwana w formacie docelowym.</translation>
+        <translation>Zawartość nie jest obsługiwana w formacie docelowym.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -1073,43 +1073,43 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation>Usuń stronę</translation>
+        <translation type="vanished">Usuń stronę</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation>Usuń dokument</translation>
+        <translation type="vanished">Usuń dokument</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation>Czy na pewno chcesz usunąć dokument „%1”?</translation>
+        <translation type="vanished">Czy na pewno chcesz usunąć dokument „%1”?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Opróżnij kosz</translation>
+        <translation type="vanished">Opróżnij kosz</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation>Czy na pewno chcesz opróżnić kosz?</translation>
+        <translation type="vanished">Czy na pewno chcesz opróżnić kosz?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation>Opróżnianie kosza</translation>
+        <translation type="vanished">Opróżnianie kosza</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation>Opróżniono kosz</translation>
+        <translation type="vanished">Opróżniono kosz</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation>Usuń folder</translation>
+        <translation type="vanished">Usuń folder</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation>Czy na pewno chcesz usunąć folder „%1” wraz z zawartością?</translation>
+        <translation type="vanished">Czy na pewno chcesz usunąć folder „%1” wraz z zawartością?</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation>Nie wybrano żadnego dokumentu!</translation>
+        <translation type="vanished">Nie wybrano żadnego dokumentu!</translation>
     </message>
     <message>
         <source>Open Supported File</source>
@@ -1157,7 +1157,7 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Czy na pewno chcesz usunąć %n stronę z wybranego dokumentu „%1”?</numerusform>
             <numerusform>Czy na pewno chcesz usunąć %n strony z wybranego dokumentu „%1”?</numerusform>
             <numerusform>Czy na pewno chcesz usunąć %n stron z wybranego dokumentu „%1”?</numerusform>
@@ -1171,16 +1171,29 @@
         <source>Untitled Documents</source>
         <translation>Dokumenty niezatytułowane</translation>
     </message>
+    <message numerus="yes">
+        <source>duplicated %1 page</source>
+        <comment>duplicated %1 pages</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove multiple documents</source>
+        <source>Title page</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1235,19 +1248,85 @@
     </message>
 </context>
 <context>
+    <name>UBDocumentPublisher</name>
+    <message>
+        <source>Export failed.</source>
+        <translation type="obsolete">Eksportowanie zakończone niepowodzeniem.</translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentReplaceDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished">Akceptuj</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
+    </message>
+    <message>
+        <source>Replace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name %1 is allready used.
+Keeping this name will replace the document.
+Providing a new name will create a new document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeModel</name>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">Kosz</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="unfinished">
+            <numerusform>Skopiowano %1 stronę</numerusform>
+            <numerusform>Skopiowano %1 strony</numerusform>
+            <numerusform>Skopiowano %1 stron</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>My documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeView</name>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="unfinished">
+            <numerusform>Skopiowano %1 stronę</numerusform>
+            <numerusform>Skopiowano %1 strony</numerusform>
+            <numerusform>Skopiowano %1 stron</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBDocumentTreeWidget</name>
     <message>
         <source>%1 (copy)</source>
-        <translation>%1 (kopia)</translation>
+        <translation type="vanished">%1 (kopia)</translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation>Kopiowanie strony %1/%2</translation>
+        <translation type="vanished">Kopiowanie strony %1/%2</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
         <translatorcomment>The first translation is the singular form</translatorcomment>
-        <translation>
+        <translation type="vanished">
             <numerusform>Skopiowano %1 stronę</numerusform>
             <numerusform>Skopiowano %1 strony</numerusform>
             <numerusform>Skopiowano %1 stron</numerusform>
@@ -1290,6 +1369,10 @@
         <translation type="unfinished">Eksportowanie dokumentu...</translation>
     </message>
     <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Eksportowanie zakończone powodzeniem.</translation>
+    </message>
+    <message>
         <source>Export failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1301,32 +1384,28 @@
         <source>Export failed: location not writable</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="unfinished">Eksportowanie zakończone powodzeniem.</translation>
-    </message>
 </context>
 <context>
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="vanished">Eksportowanie do IWB</translation>
+        <translation>Eksportowanie do IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="vanished">Eksportuj jako plik IWB</translation>
+        <translation>Eksportuj jako plik IWB</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="vanished">Eksportowanie dokumentu...</translation>
+        <translation>Eksportowanie dokumentu...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">Eksportowanie zakończone powodzeniem.</translation>
+        <translation>Eksportowanie zakończone powodzeniem.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="vanished">Eksportowanie zakończone niepowodzeniem.</translation>
+        <translation>Eksportowanie zakończone niepowodzeniem.</translation>
     </message>
 </context>
 <context>
@@ -1353,6 +1432,33 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBExportDocumentSetAdaptor</name>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">Eksportowanie dokumentu...</translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Eksportowanie zakończone powodzeniem.</translation>
+    </message>
+    <message>
+        <source>Export failed.</source>
+        <translation type="unfinished">Eksportowanie zakończone niepowodzeniem.</translation>
+    </message>
+    <message>
+        <source>Failed to export...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as UBX File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to OpenBoard UBX Format</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1644,23 +1750,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="vanished">Wspólny format plików (</translation>
+        <translation>Wspólny format plików (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="vanished">Importowanie pliku %1...</translation>
+        <translation>Importowanie pliku %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="vanished">Importowanie pliku %1 zakończone niepowodzeniem.</translation>
+        <translation>Importowanie pliku %1 zakończone niepowodzeniem.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="vanished">Importowanie zakończone powodzeniem.</translation>
+        <translation>Importowanie zakończone powodzeniem.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="vanished">Importowanie zakończone niepowodzeniem.</translation>
+        <translation>Importowanie zakończone niepowodzeniem.</translation>
     </message>
 </context>
 <context>
@@ -1679,6 +1785,13 @@
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBImportDocumentSetAdaptor</name>
+    <message>
+        <source>Openboard (set of documents) (*.ubx)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1789,7 +1902,15 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
 <context>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
+    </message>
+    <message>
         <source>Open-Sankore Documents Detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1801,15 +1922,7 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
-    </message>
-    <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1824,11 +1937,7 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
         <translation>Utrata repozytorium dokumentów</translation>
     </message>
     <message>
-        <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Moving page to trash folder...</source>
+        <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1933,34 +2042,34 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation>Login serwera proxy</translation>
+        <translation type="vanished">Login serwera proxy</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Nazwa użytkownika:</translation>
+        <translation type="vanished">Nazwa użytkownika:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>Hasło:</translation>
+        <translation type="vanished">Hasło:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation>Publikuj dokument w sieci Web</translation>
+        <translation type="vanished">Publikuj dokument w sieci Web</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation>Tytuł:</translation>
+        <translation type="vanished">Tytuł:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation>Opis:</translation>
+        <translation type="vanished">Opis:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation>Publikuj</translation>
+        <translation type="vanished">Publikuj</translation>
     </message>
 </context>
 <context>
@@ -2513,9 +2622,48 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>documentPublishingDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="obsolete">Dialog</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="obsolete">Tytuł</translation>
+    </message>
+    <message>
+        <source>E-mail</source>
+        <translation type="obsolete">E-mail</translation>
+    </message>
+    <message>
+        <source>Author</source>
+        <translation type="obsolete">Autor</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="obsolete">Opis</translation>
+    </message>
+</context>
+<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creation date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alphabetical order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2658,26 +2806,6 @@ p, li { white-space: pre-wrap; }
         <translation>Podziękowania</translation>
     </message>
     <message>
-        <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>On Dark Background</source>
         <translation type="unfinished">Na ciemnym tle</translation>
     </message>
@@ -2691,6 +2819,26 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap first and second view displays</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré Importer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

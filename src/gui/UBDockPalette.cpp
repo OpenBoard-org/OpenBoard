@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -239,15 +239,6 @@ void UBDockPalette::paintEvent(QPaintEvent *event)
             path.addRect(0.0, 0.0, width(), height());
         }
 
-        // THEN DRAW THE small tabs (yes, the tabs are small...)
-        if(eUBDockTabOrientation_Up == mTabsOrientation)
-        {
-            mHTab = border();
-        }
-        else
-        {
-            mHTab = height() - border() - nbTabs*TABSIZE - (nbTabs-1)*tabSpacing();
-        }
         painter.drawPath(path);
     }
 }
@@ -447,6 +438,7 @@ void UBDockPalette::onShowTabWidget(UBDockPaletteWidget* widget)
     {
         widget->setVisibleState(true);
         addTab(widget);
+        moveTabs();
     }
 }
 
@@ -460,6 +452,7 @@ void UBDockPalette::onHideTabWidget(UBDockPaletteWidget* widget)
     {
         widget->setVisibleState(false);
         removeTab(widget);
+        moveTabs();
     }
 }
 
@@ -507,30 +500,28 @@ void UBDockPalette::onAllDownloadsFinished()
 
 void UBDockPalette::moveTabs()
 {
-    //   if (!mHTab) {
-    if(eUBDockTabOrientation_Up == mTabsOrientation) {
-        mHTab = border();
-    } else {
-        mHTab = height() - border() - mTabWidgets.size() * TABSIZE - (mTabWidgets.size() - 1) * tabSpacing();
+    int x = width();
+    if (mOrientation == eUBDockOrientation_Right)
+    {
+        if (parentWidget())
+            x = parentWidget()->width() - width() - border() * 2;
     }
-    //    }
 
-    QPoint origin(width(), mHTab + mTabPalette->mVerticalOffset);
-
-    switch (mOrientation) {
-    case eUBDockOrientation_Left:
-        origin.setX(width());
-        break;
-    case eUBDockOrientation_Right:
-        if (parentWidget()) {
-            origin.setX(parentWidget()->width() - width() - border() * 2);
+    int y = border();
+    if(eUBDockTabOrientation_Down == mTabsOrientation)
+    {
+        if (mOrientation == eUBDockOrientation_Right)
+        {
+            if (parentWidget())
+                y = parentWidget()->height() - border()- mTabWidgets.size() * TABSIZE;
         }
-        break;
-    case eUBDockOrientation_Top: ;
-    case eUBDockOrientation_Bottom: ;
+        else
+            y = height() - border()- mTabWidgets.size() * TABSIZE;
     }
 
-    mTabPalette->move(origin.x(), origin.y());
+    mHTab = y;
+
+    mTabPalette->move(x,y + mTabPalette->mVerticalOffset);
 }
 void UBDockPalette::resizeTabs()
 {

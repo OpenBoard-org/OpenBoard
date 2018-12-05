@@ -792,19 +792,19 @@
         <translation>Ta bort bakgrund</translation>
     </message>
     <message>
-        <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Ruled Light Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Tutorial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open the tutorial web page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -854,11 +854,11 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="vanished">Element ID=</translation>
+        <translation>Element ID=</translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="vanished">Innehållet stöds inte i destinationsformatet</translation>
+        <translation>Innehållet stöds inte i destinationsformatet</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -1070,43 +1070,43 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation>Ta bort sida</translation>
+        <translation type="vanished">Ta bort sida</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation>Ta bort dokument</translation>
+        <translation type="vanished">Ta bort dokument</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation>Är du säker på att du vill ta bort dokument &apos;%1&apos;?</translation>
+        <translation type="vanished">Är du säker på att du vill ta bort dokument &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Töm papperskorgen</translation>
+        <translation type="vanished">Töm papperskorgen</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation>Är du säker på att du vill tömma papperskorgen?</translation>
+        <translation type="vanished">Är du säker på att du vill tömma papperskorgen?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation>Tömmer papperskorgen</translation>
+        <translation type="vanished">Tömmer papperskorgen</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation>Papperskorgen tömd</translation>
+        <translation type="vanished">Papperskorgen tömd</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation>Tabort mapp</translation>
+        <translation type="vanished">Tabort mapp</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation>Är du säker på att du vill ta bort mapp &apos;%1&apos; och all dess innehåll?</translation>
+        <translation type="vanished">Är du säker på att du vill ta bort mapp &apos;%1&apos; och all dess innehåll?</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation>Inget dokument markerat!</translation>
+        <translation type="vanished">Inget dokument markerat!</translation>
     </message>
     <message>
         <source>Open Supported File</source>
@@ -1154,7 +1154,7 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Är du säker på att du vill ta bort mapp %n sida/sidor från det makrerade dokumentet &apos;%1&apos;?</numerusform>
             <numerusform></numerusform>
         </translation>
@@ -1167,16 +1167,28 @@
         <source>Untitled Documents</source>
         <translation>Namnlösa dokument</translation>
     </message>
+    <message numerus="yes">
+        <source>duplicated %1 page</source>
+        <comment>duplicated %1 pages</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove multiple documents</source>
+        <source>Title page</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1231,18 +1243,82 @@
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
+    <name>UBDocumentPublisher</name>
     <message>
-        <source>%1 (copy)</source>
-        <translation>%1 (kopiera)</translation>
+        <source>Export failed.</source>
+        <translation type="obsolete">Export misslyckades.</translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentReplaceDialog</name>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished">Acceptera</translation>
     </message>
     <message>
-        <source>Copying page %1/%2</source>
-        <translation>Kopierar sida %1/%2</translation>
+        <source>Cancel</source>
+        <translation type="unfinished">Avsluta</translation>
+    </message>
+    <message>
+        <source>Replace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name %1 is allready used.
+Keeping this name will replace the document.
+Providing a new name will create a new document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeModel</name>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">Papperskorg</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation>
+        <translation type="unfinished">
+            <numerusform>%1 sidor kopierade</numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>My documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeView</name>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="unfinished">
+            <numerusform>%1 sidor kopierade</numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeWidget</name>
+    <message>
+        <source>%1 (copy)</source>
+        <translation type="vanished">%1 (kopiera)</translation>
+    </message>
+    <message>
+        <source>Copying page %1/%2</source>
+        <translation type="vanished">Kopierar sida %1/%2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="vanished">
             <numerusform>%1 sidor kopierade</numerusform>
             <numerusform></numerusform>
         </translation>
@@ -1284,6 +1360,10 @@
         <translation type="unfinished">Exporterar dokument...</translation>
     </message>
     <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Export lyckades.</translation>
+    </message>
+    <message>
         <source>Export failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1295,32 +1375,28 @@
         <source>Export failed: location not writable</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="unfinished">Export lyckades.</translation>
-    </message>
 </context>
 <context>
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="vanished">Exporter till IWB</translation>
+        <translation>Exporter till IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="vanished">Exportera som IWB-fil</translation>
+        <translation>Exportera som IWB-fil</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="vanished">Exporterar dokument...</translation>
+        <translation>Exporterar dokument...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">Export lyckades.</translation>
+        <translation>Export lyckades.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="vanished">Export misslyckades.</translation>
+        <translation>Export misslyckades.</translation>
     </message>
 </context>
 <context>
@@ -1347,6 +1423,33 @@
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBExportDocumentSetAdaptor</name>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">Exporterar dokument...</translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Export lyckades.</translation>
+    </message>
+    <message>
+        <source>Export failed.</source>
+        <translation type="unfinished">Export misslyckades.</translation>
+    </message>
+    <message>
+        <source>Failed to export...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as UBX File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export to OpenBoard UBX Format</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1638,23 +1741,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="vanished">Gemensamt filformat</translation>
+        <translation>Gemensamt filformat</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="vanished">Importerar fil %1...</translation>
+        <translation>Importerar fil %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="vanished">Import av fil %1 misslyckades.</translation>
+        <translation>Import av fil %1 misslyckades.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="vanished">Import lyckades.</translation>
+        <translation>Import lyckades.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="vanished">Import msslyckades.</translation>
+        <translation>Import msslyckades.</translation>
     </message>
 </context>
 <context>
@@ -1673,6 +1776,13 @@
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBImportDocumentSetAdaptor</name>
+    <message>
+        <source>Openboard (set of documents) (*.ubx)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1783,7 +1893,15 @@ Vill du ignorera felen för den här värden?</translation>
 <context>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Avsluta</translation>
+    </message>
+    <message>
         <source>Open-Sankore Documents Detected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1795,15 +1913,7 @@ Vill du ignorera felen för den här värden?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation type="unfinished">Avsluta</translation>
-    </message>
-    <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1818,11 +1928,7 @@ Vill du ignorera felen för den här värden?</translation>
         <translation>Dokumentarkiv förlust</translation>
     </message>
     <message>
-        <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Moving page to trash folder...</source>
+        <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1927,34 +2033,34 @@ Vill du ignorera felen för den här värden?</translation>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation>Proxy inloggning</translation>
+        <translation type="vanished">Proxy inloggning</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Användarnamn:</translation>
+        <translation type="vanished">Användarnamn:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>Lösenord:</translation>
+        <translation type="vanished">Lösenord:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation>Publicera dokumentet på nätet</translation>
+        <translation type="vanished">Publicera dokumentet på nätet</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation>Titel:</translation>
+        <translation type="vanished">Titel:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation>Beskrivning:</translation>
+        <translation type="vanished">Beskrivning:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation>Publicera</translation>
+        <translation type="vanished">Publicera</translation>
     </message>
 </context>
 <context>
@@ -2503,9 +2609,48 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>documentPublishingDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="obsolete">Dialog</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="obsolete">Titel</translation>
+    </message>
+    <message>
+        <source>E-mail</source>
+        <translation type="obsolete">E-post</translation>
+    </message>
+    <message>
+        <source>Author</source>
+        <translation type="obsolete">Författare</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="obsolete">Beskrivning</translation>
+    </message>
+</context>
+<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creation date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alphabetical order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2648,26 +2793,6 @@ p, li { white-space: pre-wrap; }
         <translation>Poäng</translation>
     </message>
     <message>
-        <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>On Dark Background</source>
         <translation type="unfinished">På mörk bakgrund</translation>
     </message>
@@ -2681,6 +2806,26 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap first and second view displays</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in virtual keyboard button size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open-Sankoré Importer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

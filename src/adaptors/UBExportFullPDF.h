@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -47,6 +47,7 @@ class UBExportFullPDF : public UBExportAdaptor
         virtual QString exportName();
         virtual QString exportExtention();
         virtual void persist(UBDocumentProxy* pDocument);
+        virtual bool associatedActionactionAvailableFor(const QModelIndex &selectedIndex);
 
         virtual bool persistsDocument(UBDocumentProxy* pDocument, const QString& filename);
 
