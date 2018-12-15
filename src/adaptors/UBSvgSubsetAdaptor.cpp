@@ -1204,7 +1204,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
     // Get the items from the scene
     QList<QGraphicsItem*> items = mScene->items();
 
-    qSort(items.begin(), items.end(), itemZIndexComp);
+    std::sort(items.begin(), items.end(), itemZIndexComp);
 
     UBGraphicsStroke *openStroke = 0;
 

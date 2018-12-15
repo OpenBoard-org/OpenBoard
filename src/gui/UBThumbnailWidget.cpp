@@ -228,7 +228,7 @@ void UBThumbnailWidget::refreshScene()
 QList<QGraphicsItem*> UBThumbnailWidget::selectedItems()
 {
     QList<QGraphicsItem*> sortedSelectedItems = mThumbnailsScene.selectedItems();
-    qSort(sortedSelectedItems.begin(), sortedSelectedItems.end(), thumbnailLessThan);
+    std::sort(sortedSelectedItems.begin(), sortedSelectedItems.end(), thumbnailLessThan);
     return sortedSelectedItems;
 }
 
