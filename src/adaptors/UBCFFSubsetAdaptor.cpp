@@ -685,7 +685,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgText(const QDomElement &elem
 
     QFont startFont(fontFamily, fontSize, fontWeight, italic);
     height = QFontMetrics(startFont).height();
-    width = QFontMetrics(startFont).width(element.text()) + 5;
+    width = QFontMetrics(startFont).boundingRect(element.text()).width() + 5;
 
     QSvgGenerator *generator = createSvgGenerator(width, height);
     QPainter painter;
