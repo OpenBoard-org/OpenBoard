@@ -1451,15 +1451,17 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
 
         docModel->setHighLighted(QModelIndex());
     }
-
-    if(targetIsInTrash)
+    else
     {
-        if (!UBApplication::mainWindow->yesNoQuestion(tr("Remove Item"), tr("Are you sure you want to remove the selected item(s) ?")))
-            return;
+        if(targetIsInTrash)
+        {
+            if (!UBApplication::mainWindow->yesNoQuestion(tr("Remove Item"), tr("Are you sure you want to remove the selected item(s) ?")))
+                return;
 
-        UBApplication::documentController->moveIndexesToTrash(dropIndex, docModel);
-    }else{
-        docModel->moveIndexes(dropIndex, targetIndex);
+            UBApplication::documentController->moveIndexesToTrash(dropIndex, docModel);
+        }else{
+            docModel->moveIndexes(dropIndex, targetIndex);
+        }
     }
 
     expand(proxy->mapFromSource(targetIndex));
