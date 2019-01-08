@@ -460,6 +460,7 @@ class UBDocumentController : public UBDocumentContainer
         //N/C - NNE - 20140403
         void onSortKindChanged(int index);
         void onSortOrderChanged(bool order);
+        void onSplitterMoved(int size, int index);
         void collapseAll();
         void expandAll();
 

@@ -1965,12 +1965,11 @@ void UBDocumentController::setupViews()
         mDocumentUI->documentTreeView->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
         mDocumentUI->documentTreeView->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
 
-        //set sizes (left and right sides of the splitter) for the splitter here because it cannot be done in the form editor.
-        const int leftSplitterSize = 100;
-        const int rightSplitterSize = 1200;
+        const int splitterLeftSize = UBSettings::settings()->documentSplitterLeftSize->get().toInt();
+        const int splitterRightSize = UBSettings::settings()->documentSplitterRightSize->get().toInt();
         QList<int> splitterSizes;
-        splitterSizes.append(leftSplitterSize);
-        splitterSizes.append(rightSplitterSize);
+        splitterSizes.append(splitterLeftSize);
+        splitterSizes.append(splitterRightSize);
         mDocumentUI->splitter->setSizes(splitterSizes);
 
         //mDocumentUI->documentTreeView->hideColumn(1);
@@ -1978,6 +1977,8 @@ void UBDocumentController::setupViews()
 
         connect(mDocumentUI->sortKind, SIGNAL(activated(int)), this, SLOT(onSortKindChanged(int)));
         connect(mDocumentUI->sortOrder, SIGNAL(toggled(bool)), this, SLOT(onSortOrderChanged(bool)));
+
+        connect(mDocumentUI->splitter, SIGNAL(splitterMoved(int,int)), this, SLOT(onSplitterMoved(int, int)));
 
         connect(mDocumentUI->documentTreeView->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(TreeViewSelectionChanged(QItemSelection,QItemSelection)));
         connect(UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel, SIGNAL(indexChanged(QModelIndex,QModelIndex))
@@ -2049,6 +2050,13 @@ void UBDocumentController::onSortKindChanged(int index)
     sortDocuments(index, orderIndex);
 
     UBSettings::settings()->documentSortKind->setInt(index);
+}
+
+void UBDocumentController::onSplitterMoved(int size, int index)
+{
+    Q_UNUSED(index);
+    UBSettings::settings()->documentSplitterLeftSize->setInt(size);
+    UBSettings::settings()->documentSplitterRightSize->setInt(controlView()->size().width()-size);
 }
 
 QWidget* UBDocumentController::controlView()

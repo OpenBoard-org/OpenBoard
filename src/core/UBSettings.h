@@ -217,6 +217,8 @@ class UBSettings : public QObject
         static const int defaultThumbnailWidth;
         static const int defaultSortKind;
         static const int defaultSortOrder;
+        static const int defaultSplitterLeftSize;
+        static const int defaultSplitterRightSize;
         static const int defaultLibraryIconSize;
 
         static const int defaultImageWidth;
@@ -376,6 +378,8 @@ class UBSettings : public QObject
         UBSetting* documentThumbnailWidth;
         UBSetting* documentSortKind;
         UBSetting* documentSortOrder;
+        UBSetting* documentSplitterLeftSize;
+        UBSetting* documentSplitterRightSize;
         UBSetting* imageThumbnailWidth;
         UBSetting* videoThumbnailWidth;
         UBSetting* shapeThumbnailWidth;
