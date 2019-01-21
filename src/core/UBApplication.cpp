@@ -356,6 +356,8 @@ int UBApplication::exec(const QString& pFileToImport)
     else
         applicationController->showBoard();
 
+    emit UBDrawingController::drawingController()->colorPaletteChanged();
+
     onScreenCountChanged(1);
     connect(desktop(), SIGNAL(screenCountChanged(int)), this, SLOT(onScreenCountChanged(int)));
     return QApplication::exec();
