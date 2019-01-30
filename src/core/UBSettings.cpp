@@ -106,6 +106,8 @@ const int UBSettings::maxThumbnailWidth = 400;
 const int UBSettings::defaultThumbnailWidth = 150;
 const int UBSettings::defaultSortKind = 0;
 const int UBSettings::defaultSortOrder = 0;
+const int UBSettings::defaultSplitterLeftSize = 200;
+const int UBSettings::defaultSplitterRightSize = 800;
 
 const int UBSettings::defaultLibraryIconSize = 80;
 
@@ -433,9 +435,11 @@ void UBSettings::init()
     // removed in version 4.4.b.2
     mUserSettings->remove("Podcast/RecordMicrophone");
 
-    documentThumbnailWidth  = new UBSetting(this, "Document", "ThumbnailWidth", UBSettings::defaultThumbnailWidth);
-    documentSortKind        = new UBSetting(this, "Document", "SortKind", UBSettings::defaultSortKind);
-    documentSortOrder       = new UBSetting(this, "Document", "SortOrder", UBSettings::defaultSortOrder);
+    documentThumbnailWidth      = new UBSetting(this, "Document", "ThumbnailWidth", UBSettings::defaultThumbnailWidth);
+    documentSortKind            = new UBSetting(this, "Document", "SortKind", UBSettings::defaultSortKind);
+    documentSortOrder           = new UBSetting(this, "Document", "SortOrder", UBSettings::defaultSortOrder);
+    documentSplitterLeftSize    = new UBSetting(this, "Document", "SplitterLeftSize", UBSettings::defaultSplitterLeftSize);
+    documentSplitterRightSize   = new UBSetting(this, "Document", "SplitterRightSize", UBSettings::defaultSplitterRightSize);
 
     libraryShowDetailsForLocalItems = new UBSetting(this, "Library", "ShowDetailsForLocalItems", false);
 
