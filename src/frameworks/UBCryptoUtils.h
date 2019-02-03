@@ -60,8 +60,8 @@ class UBCryptoUtils : public QObject
 
         void aesInit();
 
-        EVP_CIPHER_CTX mAesEncryptContext;
-        EVP_CIPHER_CTX mAesDecryptContext;
+        EVP_CIPHER_CTX * mAesEncryptContext;
+        EVP_CIPHER_CTX * mAesDecryptContext;
 
 };
 
