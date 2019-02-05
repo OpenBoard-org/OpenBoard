@@ -741,7 +741,7 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
         return retItem;
     }
 
-    UBItem *createdItem = downloadFinished(true, sourceUrl, srcFile, contentTypeHeader, pData, itemPos, QSize(itemSize.width(), itemSize.height()), false);
+    UBItem *createdItem = downloadFinished(true, sourceUrl, QUrl::fromLocalFile(srcFile), contentTypeHeader, pData, itemPos, QSize(itemSize.width(), itemSize.height()), false);
     if (createdItem)
     {
         createdItem->setSourceUrl(item->sourceUrl());
@@ -1375,11 +1375,8 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
             widgetItem->setSourceUrl(QUrl::fromLocalFile(widgetUrl));
             qDebug() << widgetItem->getOwnFolder();
             qDebug() << widgetItem->getSnapshotPath();
-            QString ownFolder = selectedDocument()->persistencePath() + "/" + UBPersistenceManager::widgetDirectory + "/" + widgetItem->uuid().toString() + ".wgt";
-            widgetItem->setOwnFolder(ownFolder);
-            QString adaptedUUid = widgetItem->uuid().toString().replace("{","").replace("}","");
-            ownFolder = ownFolder.replace(widgetItem->uuid().toString() + ".wgt", adaptedUUid + ".png");
-            widgetItem->setSnapshotPath(ownFolder);
+
+            widgetItem->setSnapshotPath(widgetItem->getOwnFolder());
 
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 
@@ -2500,22 +2497,25 @@ void UBBoardController::togglePodcast(bool checked)
 void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* graphicsWidget)
 {
     mActiveScene->setURStackEnable(false);
-    UBGraphicsItem *toolW3C = duplicateItem(dynamic_cast<UBItem *>(graphicsWidget));
+     UBGraphicsItem *toolW3C = duplicateItem(dynamic_cast<UBItem *>(graphicsWidget));
     UBGraphicsWidgetItem *copyedGraphicsWidget = NULL;
 
-    if (UBGraphicsWidgetItem::Type == toolW3C->type())
-        copyedGraphicsWidget = static_cast<UBGraphicsWidgetItem *>(toolW3C);
+    if (toolW3C)
+    {
+        if (UBGraphicsWidgetItem::Type == toolW3C->type())
+            copyedGraphicsWidget = static_cast<UBGraphicsWidgetItem *>(toolW3C);
 
-    UBToolWidget *toolWidget = new UBToolWidget(copyedGraphicsWidget, mControlView);
+        UBToolWidget *toolWidget = new UBToolWidget(copyedGraphicsWidget, mControlView);
 
-    graphicsWidget->remove(false);
-    mActiveScene->addItemToDeletion(graphicsWidget);
+        graphicsWidget->remove(false);
+        mActiveScene->addItemToDeletion(graphicsWidget);
 
-    mActiveScene->setURStackEnable(true);
+        mActiveScene->setURStackEnable(true);
 
-    QPoint controlViewPos = mControlView->mapFromScene(graphicsWidget->sceneBoundingRect().center());
-    toolWidget->centerOn(mControlView->mapTo(mControlContainer, controlViewPos));
-    toolWidget->show();
+        QPoint controlViewPos = mControlView->mapFromScene(graphicsWidget->sceneBoundingRect().center());
+        toolWidget->centerOn(mControlView->mapTo(mControlContainer, controlViewPos));
+        toolWidget->show();
+    }
 }
 
 
