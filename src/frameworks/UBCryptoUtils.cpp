@@ -63,6 +63,10 @@ UBCryptoUtils::UBCryptoUtils(QObject * pParent)
 UBCryptoUtils::~UBCryptoUtils()
 {
     // TODO UB 4.x aes destroy
+#if OPENSSL_VERSION_NUMBER >= 10100000L
+    EVP_CIPHER_CTX_free(mAesEncryptContext);
+    EVP_CIPHER_CTX_free(mAesDecryptContext);
+#endif
 }
 
 
@@ -74,18 +78,30 @@ QString UBCryptoUtils::symetricEncrypt(const QString& clear)
     int paddingLength = 0;
     unsigned char *ciphertext = (unsigned char *)malloc(cipheredLength);
 
+#if OPENSSL_VERSION_NUMBER >= 10100000L
+    if(!EVP_EncryptInit_ex(mAesEncryptContext, NULL, NULL, NULL, NULL)){
+#else
     if(!EVP_EncryptInit_ex(&mAesEncryptContext, NULL, NULL, NULL, NULL)){
+#endif
         free(ciphertext);
         return QString();
     }
 
+#if OPENSSL_VERSION_NUMBER >= 10100000L
+    if(!EVP_EncryptUpdate(mAesEncryptContext, ciphertext, &cipheredLength, (unsigned char *)clearData.data(), clearData.length())){
+#else
     if(!EVP_EncryptUpdate(&mAesEncryptContext, ciphertext, &cipheredLength, (unsigned char *)clearData.data(), clearData.length())){
+#endif
         free(ciphertext);
         return QString();
     }
 
     /* update ciphertext with the final remaining bytes */
+#if OPENSSL_VERSION_NUMBER >= 10100000L
+    if(!EVP_EncryptFinal_ex(mAesEncryptContext, ciphertext + cipheredLength, &paddingLength)){
+#else
     if(!EVP_EncryptFinal_ex(&mAesEncryptContext, ciphertext + cipheredLength, &paddingLength)){
+#endif
         free(ciphertext);
         return QString();
     }
@@ -106,17 +122,29 @@ QString UBCryptoUtils::symetricDecrypt(const QString& encrypted)
     int paddingLength = 0;
     unsigned char *plaintext = (unsigned char *)malloc(encryptedLength);
 
+#if OPENSSL_VERSION_NUMBER >= 10100000L
+    if(!EVP_DecryptInit_ex(mAesDecryptContext, NULL, NULL, NULL, NULL)){
+#else
     if(!EVP_DecryptInit_ex(&mAesDecryptContext, NULL, NULL, NULL, NULL)){
+#endif
         free(plaintext);
         return QString();
     }
 
+#if OPENSSL_VERSION_NUMBER >= 10100000L
+    if(!EVP_DecryptUpdate(mAesDecryptContext, plaintext, &encryptedLength, (const unsigned char *)encryptedData.data(), encryptedData.length())){
+#else
     if(!EVP_DecryptUpdate(&mAesDecryptContext, plaintext, &encryptedLength, (const unsigned char *)encryptedData.data(), encryptedData.length())){
+#endif
         free(plaintext);
         return QString();
     }
 
+#if OPENSSL_VERSION_NUMBER >= 10100000L
+    if(!EVP_DecryptFinal_ex(mAesDecryptContext, plaintext + encryptedLength, &paddingLength)){
+#else
     if(!EVP_DecryptFinal_ex(&mAesDecryptContext, plaintext + encryptedLength, &paddingLength)){
+#endif
         free(plaintext);
         return QString();
     }
@@ -146,8 +174,15 @@ void UBCryptoUtils::aesInit()
         return;
     }
 
+#if OPENSSL_VERSION_NUMBER >= 10100000L
+    mAesEncryptContext = EVP_CIPHER_CTX_new();
+    EVP_EncryptInit_ex(mAesEncryptContext, EVP_aes_256_cbc(), NULL, key, iv);
+    mAesDecryptContext = EVP_CIPHER_CTX_new();
+    EVP_DecryptInit_ex(mAesDecryptContext, EVP_aes_256_cbc(), NULL, key, iv);
+#else
     EVP_CIPHER_CTX_init(&mAesEncryptContext);
     EVP_EncryptInit_ex(&mAesEncryptContext, EVP_aes_256_cbc(), NULL, key, iv);
     EVP_CIPHER_CTX_init(&mAesDecryptContext);
     EVP_DecryptInit_ex(&mAesDecryptContext, EVP_aes_256_cbc(), NULL, key, iv);
+#endif
 }
