@@ -24,6 +24,18 @@ Compilers used are gcc (Linux), clang (OS X) and MSVC 2010 (Windows). Make sure 
 ## Dependencies
 The latest version (1.5) requires Qt 5.5. (While it has been shown to mostly work with Qt 5.2, we cannot guarantee compatibility with Qt versions other than 5.5.)
 
+Additionally the following libs are needed:
+
+     apt install libavcodec-dev libavformat-dev libswscale-dev libfdk-aac1
+
+When compiling under Ubuntu Bionic (18.04) libx264-152 is needed.
+
+     apt install libx264-152
+
+When compiling under Ubuntu Disco (19.04) libx264-155 is needed.
+
+     apt install libx264-155
+
 ### Qt 5.5 on Linux
 
 Due to a shared library conflict within Qt 5 in some distributions / some Qt versions (the Multimedia and Webkit modules were built against different versions of gstreamer by default), a specific installation of Qt5.5 may be needed for all of OpenBoard's features to work correctly.
