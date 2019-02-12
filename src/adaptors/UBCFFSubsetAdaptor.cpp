@@ -749,9 +749,23 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::parseTSpan(const QDomElement &parent
         } else if (curNode.nodeType() == QDomNode::CharacterDataNode
                    || curNode.nodeType() == QDomNode::CDATASectionNode
                    || curNode.nodeType() == QDomNode::TextNode) {
-
-            QDomCharacterData textData = curNode.toCharacterData();
-            QString text = textData.data().trimmed();
+            QString text;
+            switch (curNode.nodeType()) {
+                case QDomNode::CharacterDataNode: {
+                    text = curNode.toCharacterData().data().trimmed();
+                    break;
+                }
+                case QDomNode::CDATASectionNode: {
+                    text = curNode.toCDATASection().data().trimmed();
+                    break;
+                }
+                case QDomNode::TextNode: {
+                    text = curNode.toText().data().trimmed();
+                    break;
+                }
+                default:
+                    break;
+            }
 //            width = painter.fontMetrics().width(text);
             //get bounding rect to obtain desired text height
             lastDrawnTextBoundingRect = painter.boundingRect(QRectF(curX, curY, width, height - curY), textAlign|Qt::TextWordWrap, text);
@@ -784,8 +798,23 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::parseTSpan(const QDomElement &elemen
                    || curNode.nodeType() == QDomNode::CDATASectionNode
                    || curNode.nodeType() == QDomNode::TextNode) {
 
-            QDomCharacterData textData = curNode.toCharacterData();
-            QString text = textData.data().trimmed();
+            QString text;
+            switch (curNode.nodeType()) {
+                case QDomNode::CharacterDataNode: {
+                    text = curNode.toCharacterData().data().trimmed();
+                    break;
+                }
+                case QDomNode::CDATASectionNode: {
+                    text = curNode.toCDATASection().data().trimmed();
+                    break;
+                }
+                case QDomNode::TextNode: {
+                    text = curNode.toText().data().trimmed();
+                    break;
+                }
+                default:
+                    break;
+            }
             cursor.insertText(text, charFormat);
 
         } else if (curNode.nodeType() == QDomNode::ElementNode
