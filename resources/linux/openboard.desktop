@@ -1,0 +1,15 @@
+[Desktop Entry]
+Name=OpenBoard
+GenericName=Interactive whiteboard
+GenericName[fr]=Tableau blanc interactif
+GenericName[ru]=Интерактивная доска
+Comment=Interactive whiteboard for schools and universities
+Comment[fr]=Tableau blanc interactif pour les écoles et universités
+Comment[ru]=Интерактивная доска для школ и университетов
+Exec=openboard %f
+Icon=openboard
+StartupNotify=true
+Terminal=false
+Type=Application
+MimeType=application/x-openboard;
+Categories=Qt;KDE;Education;Engineering;
