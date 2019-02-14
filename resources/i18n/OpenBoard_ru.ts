@@ -35,7 +35,7 @@
     </message>
     <message>
         <source>Try Again</source>
-        <translation>Попробовать еще</translation>
+        <translation>Попробовать ещё</translation>
     </message>
     <message>
         <source>Stop</source>
@@ -125,7 +125,7 @@
     </message>
     <message>
         <source>Next</source>
-        <translation>Вперед</translation>
+        <translation>Вперёд</translation>
     </message>
     <message>
         <source>Next Page</source>
@@ -201,7 +201,7 @@
     </message>
     <message>
         <source>Forward</source>
-        <translation>Вперед</translation>
+        <translation>Вперёд</translation>
     </message>
     <message>
         <source>Right</source>
@@ -485,15 +485,15 @@
     </message>
     <message>
         <source>Plain Dark Background</source>
-        <translation>Однотонный темный фон</translation>
+        <translation>Однотонный тёмный фон</translation>
     </message>
     <message>
         <source>Dark</source>
-        <translation>Темный</translation>
+        <translation>Тёмный</translation>
     </message>
     <message>
         <source>Grid Dark Background</source>
-        <translation>Темный фон с сеткой</translation>
+        <translation>Тёмный фон с сеткой</translation>
     </message>
     <message>
         <source>Podcast</source>
@@ -561,7 +561,7 @@
     </message>
     <message>
         <source>Highlight </source>
-        <translation>Выделить</translation>
+        <translation>Выделить </translation>
     </message>
     <message>
         <source>Ctrl+M</source>
@@ -729,7 +729,7 @@
     </message>
     <message>
         <source>Capture Embeddable Web Content</source>
-        <translation>Захватить веб-содержимого с возможностью вставки</translation>
+        <translation>Захватить веб-содержимое с возможностью вставки</translation>
     </message>
     <message>
         <source>Show on Display</source>
@@ -793,23 +793,23 @@
     </message>
     <message>
         <source>Ruled Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Управляемый светлый фон</translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Управляемый тёмный фон</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть учебное пособие</translation>
     </message>
     <message>
         <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть веб-страницу учебного пособия</translation>
     </message>
     <message>
         <source>Reset grid size</source>
-        <translation type="unfinished"></translation>
+        <translation>Сбросить размер сетки</translation>
     </message>
 </context>
 <context>
@@ -854,7 +854,7 @@
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation>ID элемента =</translation>
+        <translation>ID элемента = </translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
@@ -888,7 +888,7 @@
     </message>
     <message>
         <source>New update available, would you go to the web page ?</source>
-        <translation>Доступны обновления, перейти на страницу?</translation>
+        <translation>Доступны обновления, перейти на веб страницу?</translation>
     </message>
     <message>
         <source>No update available</source>
@@ -907,7 +907,7 @@
     <name>UBBackgroundPalette</name>
     <message>
         <source>Grid size</source>
-        <translation type="unfinished"></translation>
+        <translation>Размер сетки</translation>
     </message>
 </context>
 <context>
@@ -958,15 +958,15 @@
     </message>
     <message>
         <source>Saving document...</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранение документа...</translation>
     </message>
     <message>
         <source>Document has just been saved...</source>
-        <translation type="unfinished"></translation>
+        <translation>Документ только что был сохранён...</translation>
     </message>
     <message>
         <source>Deleting page %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаление страницы %1</translation>
     </message>
 </context>
 <context>
@@ -984,7 +984,7 @@
     <name>UBBoardThumbnailsView</name>
     <message>
         <source>Loading page (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузка страницы (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1034,7 +1034,7 @@
     </message>
     <message>
         <source>Show OpenBoard</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -1101,7 +1101,7 @@
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="vanished">Вы уверены, что хотите удалить папку &apos;%1 и все ее содержимое?</translation>
+        <translation type="vanished">Вы уверены, что хотите удалить папку &apos;%1 и всё её содержимое?</translation>
     </message>
     <message>
         <source>No document selected!</source>
@@ -1117,7 +1117,7 @@
     </message>
     <message>
         <source>Failed to import file ... </source>
-        <translation>Ошибка импорта файла ...</translation>
+        <translation>Ошибка импорта файла ... </translation>
     </message>
     <message>
         <source>Import all Images from Folder</source>
@@ -1169,26 +1169,26 @@
     <message numerus="yes">
         <source>duplicated %1 page</source>
         <comment>duplicated %1 pages</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 страница дублирована</numerusform>
+            <numerusform>%1 страниц дублировано</numerusform>
         </translation>
     </message>
     <message>
         <source>Remove Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить элемент</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы уверены, что хотите удалить выбранный/выбранные элемент(ы)?</translation>
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation type="unfinished"></translation>
+        <translation>Документ &quot;%1&quot; был создан более новой версией OpenBoard (%2). Открыв его, вы можете потерять некоторую информацию. Вы хотите продолжить?</translation>
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
+        <translation>Титульный лист</translation>
     </message>
 </context>
 <context>
@@ -1215,7 +1215,7 @@
     </message>
     <message>
         <source>File %1 saved</source>
-        <translation>Файл %1 сохранен</translation>
+        <translation>Файл %1 сохранён</translation>
     </message>
     <message>
         <source>Inserting page %1 of %2</source>
@@ -1223,11 +1223,11 @@
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Импорт успешно завершен.</translation>
+        <translation>Импорт успешно завершён.</translation>
     </message>
     <message>
         <source>Import of file %1 successful.</source>
-        <translation>Импорт файла %1 успешно завершен.</translation>
+        <translation>Импорт файла %1 успешно завершён.</translation>
     </message>
     <message>
         <source>Importing file %1</source>
@@ -1252,57 +1252,59 @@
     <name>UBDocumentReplaceDialog</name>
     <message>
         <source>Accept</source>
-        <translation type="unfinished">Принять</translation>
+        <translation>Принять</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отменить</translation>
     </message>
     <message>
         <source>Replace</source>
-        <translation type="unfinished"></translation>
+        <translation>Заменить</translation>
     </message>
     <message>
         <source>The name %1 is allready used.
 Keeping this name will replace the document.
 Providing a new name will create a new document.</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя %1 уже используется.
+При сохранении этого имени документ будет заменён.
+При предоставлении нового имени будет создан новый документ.</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentTreeModel</name>
     <message>
         <source>Trash</source>
-        <translation type="unfinished">Корзина</translation>
+        <translation>Корзина</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
-            <numerusform>%1 страницы скопировано</numerusform>
+        <translation>
+            <numerusform>%1 страница скопирована</numerusform>
             <numerusform>%1 страниц скопировано</numerusform>
         </translation>
     </message>
     <message>
         <source>My documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Мои документы</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentTreeView</name>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
-            <numerusform>%1 страницы скопировано</numerusform>
+        <translation>
+            <numerusform>%1 страница скопирована</numerusform>
             <numerusform>%1 страниц скопировано</numerusform>
         </translation>
     </message>
     <message>
         <source>Remove Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить элемент</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы уверены, что хотите удалить выбранный/выбранные элемент(ы)?</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1320,7 @@ Providing a new name will create a new document.</source>
     <message numerus="yes">
         <source>%1 pages copied</source>
         <translation type="vanished">
-            <numerusform>%1 страницы скопировано</numerusform>
+            <numerusform>%1 страница(ы) скопировано</numerusform>
             <numerusform>%1 страниц скопировано</numerusform>
         </translation>
     </message>
@@ -1338,14 +1340,14 @@ Providing a new name will create a new document.</source>
     <name>UBDraggableThumbnail</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">Страница %0</translation>
+        <translation>Страница %0</translation>
     </message>
 </context>
 <context>
     <name>UBDraggableThumbnailView</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">Страница %0</translation>
+        <translation>Страница %0</translation>
     </message>
 </context>
 <context>
@@ -1356,23 +1358,23 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished">Экспорт документа...</translation>
+        <translation>Экспорт документа...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished">Экспорт успешно завершен.</translation>
+        <translation>Экспорт успешно завершён.</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт неудачен</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно экспортировать в выбранное местоположение. У вас нет прав, необходимых для сохранения файла.</translation>
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт неудачен: местоположение незаписываемое</translation>
     </message>
 </context>
 <context>
@@ -1391,7 +1393,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Экспорт успешно завершен.</translation>
+        <translation>Экспорт успешно завершён.</translation>
     </message>
     <message>
         <source>Export failed.</source>
@@ -1414,7 +1416,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">Экспорт успешно завершен.</translation>
+        <translation type="vanished">Экспорт успешно завершён.</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
@@ -1422,34 +1424,34 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспортировать в формат OpenBoard</translation>
     </message>
 </context>
 <context>
     <name>UBExportDocumentSetAdaptor</name>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished">Экспорт документа...</translation>
+        <translation>Экспорт документа...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished">Экспорт успешно завершен.</translation>
+        <translation>Экспорт успешно завершён.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished">Ошибка экспорта.</translation>
+        <translation>Ошибка экспорта.</translation>
     </message>
     <message>
         <source>Failed to export...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка экспорта...</translation>
     </message>
     <message>
         <source>Export as UBX File</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспортировать как файл UBX</translation>
     </message>
     <message>
         <source>Export to OpenBoard UBX Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспортировать в формат OpenBoard UBX</translation>
     </message>
 </context>
 <context>
@@ -1464,7 +1466,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">Экспорт успешно завершен.</translation>
+        <translation type="vanished">Экспорт успешно завершён.</translation>
     </message>
     <message>
         <source>Export to PDF</source>
@@ -1483,7 +1485,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">Экспорт успешно завершен.</translation>
+        <translation type="vanished">Экспорт успешно завершён.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1510,7 +1512,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Экспорт успешно завершен.</translation>
+        <translation>Экспорт успешно завершён.</translation>
     </message>
     <message>
         <source>Export failed.</source>
@@ -1641,7 +1643,7 @@ Providing a new name will create a new document.</source>
     <name>UBFeaturesProgressInfo</name>
     <message>
         <source>Loading </source>
-        <translation>Загрузка</translation>
+        <translation>Загрузка </translation>
     </message>
 </context>
 <context>
@@ -1671,26 +1673,26 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="unfinished">Сделать фоновым изображением</translation>
+        <translation>Сделать фоновым изображением</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsMediaItem</name>
     <message>
         <source>Media resource couldn&apos;t be resolved</source>
-        <translation type="unfinished"></translation>
+        <translation>Медиа-ресурс не может быть определён</translation>
     </message>
     <message>
         <source>Unsupported media format</source>
-        <translation type="unfinished"></translation>
+        <translation>Неподдерживаемый формат медиа</translation>
     </message>
     <message>
         <source>Media playback service not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Служба воспроизведение медиа не найдена</translation>
     </message>
     <message>
         <source>Media error: </source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка медиа: </translation>
     </message>
 </context>
 <context>
@@ -1733,7 +1735,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Transform as Tool </source>
-        <translation>Преобразовать в инструмент</translation>
+        <translation>Преобразовать в инструмент </translation>
     </message>
 </context>
 <context>
@@ -1752,7 +1754,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Импорт успешно завершен.</translation>
+        <translation>Импорт успешно завершён.</translation>
     </message>
     <message>
         <source>Import failed.</source>
@@ -1767,7 +1769,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Импорт успешно завершен.</translation>
+        <translation>Импорт успешно завершён.</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
@@ -1775,14 +1777,14 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard (*.ubz)</translation>
     </message>
 </context>
 <context>
     <name>UBImportDocumentSetAdaptor</name>
     <message>
         <source>Openboard (set of documents) (*.ubx)</source>
-        <translation type="unfinished"></translation>
+        <translation>Openboard (набор документов) (*.ubx)</translation>
     </message>
 </context>
 <context>
@@ -1893,27 +1895,27 @@ Do you want to ignore these errors for this host?</source>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <source>Open-Sankore Documents Detected</source>
-        <translation type="unfinished"></translation>
+        <translation>Выявлены документы Open-Sankore</translation>
     </message>
     <message>
         <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
+        <translation>Документы Open-Sankoré присутствуют на вашем компьютере. Импортировать их можно в OpenBoard, нажав кнопку «Продолжить», чтобы запустить программу для импорта.</translation>
     </message>
     <message>
         <source>Show this panel next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать эту панель в следующий раз</translation>
     </message>
     <message>
         <source>You can always access the OpenBoard Document Importer through the Preferences panel in the About tab. Warning, if you have already imported your Open-Sankore datas, you might loose your current OpenBoard documents.</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы всегда можете получить доступ к мастеру импорта документа OpenBoard через панель &quot;Настройка&quot; на вкладке &quot;О программе&quot;. Предупреждение: если вы уже импортировали данные &quot;Open-Sankore&quot;, вы можете потерять свои текущие документы OpenBoard.</translation>
     </message>
     <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
+        <translation>Продолжить</translation>
     </message>
 </context>
 <context>
@@ -1928,7 +1930,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard потерял доступ к репозиторию документов &quot;%1&quot;. К сожалению, приложение должно закрыться, чтобы избежать повреждения данных. Последние изменения также могут быть потеряны.</translation>
     </message>
 </context>
 <context>
@@ -2014,14 +2016,14 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>OpenBoard Cast</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard-каст</translation>
     </message>
 </context>
 <context>
     <name>UBPreferencesController</name>
     <message>
         <source>version: </source>
-        <translation>версия:</translation>
+        <translation>версия: </translation>
     </message>
     <message>
         <source>Marker is pressure sensitive</source>
@@ -2073,7 +2075,7 @@ Do you want to ignore these errors for this host?</source>
     <name>UBStartupHintsPalette</name>
     <message>
         <source>Visible next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Видимый в следующий раз</translation>
     </message>
 </context>
 <context>
@@ -2098,7 +2100,7 @@ Do you want to ignore these errors for this host?</source>
     <name>UBThumbnailTextItem</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">Страница %0</translation>
+        <translation>Страница %0</translation>
     </message>
 </context>
 <context>
@@ -2151,11 +2153,11 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source> files require an update.</source>
-        <translation>файлы требуют обновления.</translation>
+        <translation> файлы требуют обновления.</translation>
     </message>
     <message>
         <source>Backup path: </source>
-        <translation>Путь к резервной копии:</translation>
+        <translation>Путь к резервной копии: </translation>
     </message>
     <message>
         <source>Browse</source>
@@ -2173,7 +2175,7 @@ Do you want to ignore these errors for this host?</source>
         <source>Files update successful!
 Please reboot the application to access the updated documents.</source>
         <translation>Обновление файлов завершено успешно!
-Перезагрузите приложение, чтобы получить доступ к обновленным документам.</translation>
+Перезагрузите приложение, чтобы получить доступ к обновлённым документам.</translation>
     </message>
     <message>
         <source>An error occured during the update. The files have not been affected.</source>
@@ -2185,11 +2187,11 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Updating file </source>
-        <translation>Обновление файла</translation>
+        <translation>Обновление файла </translation>
     </message>
     <message>
         <source>Please wait the import process will start soon...</source>
-        <translation>Пожалуйста, подождите, процесс импорта скоро начнется...</translation>
+        <translation>Пожалуйста, подождите, процесс импорта скоро начнётся...</translation>
     </message>
     <message>
         <source>Remind me later</source>
@@ -2314,7 +2316,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Error opening saved file: %1</source>
-        <translation>Ошибка открытия сохраненного файла: %1</translation>
+        <translation>Ошибка открытия сохранённого файла: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
@@ -2334,7 +2336,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation>- %4 %5 остается</translation>
+        <translation>- %4 %5 остаётся</translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
@@ -2480,7 +2482,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузка PDF-документа: хотели бы вы загрузить файл PDF или добавить его к текущему документу OpenBoard?</translation>
     </message>
 </context>
 <context>
@@ -2530,15 +2532,15 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;Нажав &quot;Загрузить&quot;, вы подтверждаете, что обладаете всеми правами на данное содержимое, или что вы были уполномочены владельцем на публикацию данного содержимого на YouTube, или что иным образом удовлетворяете требованиям Условий предоставления услуг YouTube, размещенных по адресу &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;Нажав &quot;Загрузить&quot;, вы подтверждаете, что обладаете всеми правами на данное содержимое, или что вы были уполномочены владельцем на публикацию данного содержимого на YouTube, или что иным образом удовлетворяете требованиям Условий предоставления услуг YouTube, размещённых по адресу &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>OpenBoard</source>
-        <translation type="unfinished">OpenBoard</translation>
+        <translation>OpenBoard</translation>
     </message>
     <message>
         <source>Restore credentials on reboot</source>
-        <translation type="unfinished"></translation>
+        <translation>Восстановить учётные данные при перезагрузке</translation>
     </message>
 </context>
 <context>
@@ -2549,7 +2551,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>On Dark Background</source>
-        <translation>На темном фоне</translation>
+        <translation>На тёмном фоне</translation>
     </message>
     <message>
         <source>Opacity</source>
@@ -2577,11 +2579,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Show preview circle from</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать круг предварительного просмотра с</translation>
     </message>
     <message>
         <source>px</source>
-        <translation type="unfinished"></translation>
+        <translation>пикс</translation>
     </message>
 </context>
 <context>
@@ -2634,23 +2636,23 @@ p, li { white-space: pre-wrap; }
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Документы OpenBoard</translation>
     </message>
     <message>
         <source>Creation date</source>
-        <translation type="unfinished"></translation>
+        <translation>Дата создания</translation>
     </message>
     <message>
         <source>Update date</source>
-        <translation type="unfinished"></translation>
+        <translation>Дата обновления</translation>
     </message>
     <message>
         <source>Alphabetical order</source>
-        <translation type="unfinished"></translation>
+        <translation>Алфавитный порядок</translation>
     </message>
     <message>
         <source>Sort Order</source>
-        <translation type="unfinished"></translation>
+        <translation>Отсортированный порядок</translation>
     </message>
 </context>
 <context>
@@ -2705,7 +2707,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Positioned at the Bottom (recommended for white boards)</source>
-        <translation>Расположение внизу (рекомендуется для белых досок)</translation>
+        <translation>Расположение внизу (рекомендуется для интерактивных досок)</translation>
     </message>
     <message>
         <source>Display Text Under Button</source>
@@ -2793,39 +2795,39 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>On Dark Background</source>
-        <translation type="unfinished">На темном фоне</translation>
+        <translation>На тёмном фоне</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="unfinished">Непрозрачность</translation>
+        <translation>Непрозрачность</translation>
     </message>
     <message>
         <source>On Light Background</source>
-        <translation type="unfinished">На светлом фоне</translation>
+        <translation>На светлом фоне</translation>
     </message>
     <message>
         <source>Swap first and second view displays</source>
-        <translation type="unfinished"></translation>
+        <translation>Инвертировать первый и второй мониторы</translation>
     </message>
     <message>
         <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Размер встроенной виртуальной клавиатуры:</translation>
     </message>
     <message>
         <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать системную клавиатуру (рекомендуется)</translation>
     </message>
     <message>
         <source>Grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Сетка</translation>
     </message>
     <message>
         <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
+        <translation>Мастер импорта Open-Sankoré</translation>
     </message>
     <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
+        <translation>Проверить можно ли импортировать Open-Sankoré данные при запуске</translation>
     </message>
 </context>
 <context>
