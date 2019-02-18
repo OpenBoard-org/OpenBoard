@@ -82,55 +82,7 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
     if (!pDocumentProxy || filename.length() == 0 || pDocumentProxy->pageCount() == 0)
         return;
 
-    //PDF
-    qDebug() << "exporting document to PDF Merger" << filename;
-    QPrinter pdfPrinter;
-
-    pdfPrinter.setOutputFormat(QPrinter::PdfFormat);
-    pdfPrinter.setResolution(UBSettings::settings()->pdfResolution->get().toInt());
-    pdfPrinter.setOutputFileName(filename);
-    pdfPrinter.setFullPage(true);
-
-    QPainter* pdfPainter = 0;
-
-    for(int pageIndex = 0 ; pageIndex < pDocumentProxy->pageCount(); pageIndex++)
-    {
-        UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
-        // set background to white, no grid for PDF output
-        bool isDark = scene->isDarkBackground();
-        UBPageBackground pageBackground = scene->pageBackground();
-        scene->setBackground(false, UBPageBackground::plain);
-
-        // set high res rendering
-        scene->setRenderingQuality(UBItem::RenderingQualityHigh);
-        scene->setRenderingContext(UBGraphicsScene::PdfExport);
-
-        QSize pageSize = scene->nominalSize();
-
-        UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(scene->backgroundObject());
-
-        if (pdfItem) mHasPDFBackgrounds = true;
-        
-        pdfPrinter.setPaperSize(QSizeF(pageSize.width()*mScaleFactor, pageSize.height()*mScaleFactor), QPrinter::Point);
-
-        if (!pdfPainter) pdfPainter = new QPainter(&pdfPrinter);
-
-        if (pageIndex != 0) pdfPrinter.newPage();
-
-        //render to PDF
-        scene->setDrawingMode(true);
-        scene->render(pdfPainter, QRectF(), scene->normalizedSceneRect());
-
-        //restore screen rendering quality
-        scene->setRenderingContext(UBGraphicsScene::Screen);
-        scene->setRenderingQuality(UBItem::RenderingQualityNormal);
-
-        //restore background state
-        scene->setDrawingMode(false);
-        scene->setBackground(isDark, pageBackground);
-    }
-
-    if (pdfPainter) delete pdfPainter;
+    mSimpleExporter->persistsDocument(pDocumentProxy, filename);
 }
 
 
