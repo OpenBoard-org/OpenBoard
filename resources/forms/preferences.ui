@@ -82,7 +82,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="mainTabWidget">
      <property name="currentIndex">
-      <number>7</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="displayTab">
       <attribute name="title">
@@ -385,6 +385,11 @@
               <item>
                <property name="text">
                 <string>Desktop</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Document</string>
                </property>
               </item>
              </widget>
