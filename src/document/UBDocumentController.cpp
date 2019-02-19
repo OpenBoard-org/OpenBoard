@@ -120,8 +120,8 @@ UBDocumentReplaceDialog::UBDocumentReplaceDialog(const QString &pIncommingName, 
     mLineEdit->setText(pIncommingName);
     mLineEdit->selectedText();
 
-    mValidator = new QRegExpValidator(QRegExp("[^\\/\\:\\?\\*\\|\\<\\>\\\"]{1,}"), this);
-//    mLineEdit->setValidator(mValidator);
+    mValidator = new QRegExpValidator(QRegExp("[^\\/]{1,}"), this);
+    mLineEdit->setValidator(mValidator);
     labelLayout->addWidget(mLabelText);
     labelLayout->addWidget(mLineEdit);
 
@@ -1567,8 +1567,8 @@ void UBDocumentTreeItemDelegate::processChangedText(const QString &str) const
 
 bool UBDocumentTreeItemDelegate::validateString(const QString &str) const
 {
-    return !mExistingFileNames.contains(str);
-
+    return QRegExp("[^\\/]{1,}").exactMatch(str)
+            && !mExistingFileNames.contains(str);
 }
 
 QWidget *UBDocumentTreeItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
