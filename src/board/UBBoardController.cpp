@@ -694,10 +694,15 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
         mActiveScene->setURStackEnable(false);
         foreach(QGraphicsItem* pIt, children){
             UBItem* pItem = dynamic_cast<UBItem*>(pIt);
-            if(pItem){
+            if(pItem)
+            {
                 QGraphicsItem * itemToGroup = dynamic_cast<QGraphicsItem *>(duplicateItem(pItem));
                 if (itemToGroup)
+                {
+                    itemToGroup->setZValue(pIt->zValue());
+                    itemToGroup->setData(UBGraphicsItemData::ItemOwnZValue, pIt->data(UBGraphicsItemData::ItemOwnZValue).toReal());
                     duplicatedItems.append(itemToGroup);
+                }
             }
         }
         duplicatedGroup = mActiveScene->createGroup(duplicatedItems);
