@@ -70,11 +70,6 @@ include(src/pdf-merger/pdfMerger.pri)
 include(plugins/plugins.pri)
 INCLUDEPATH += plugins/cffadaptor/src
 
-#ThirdParty
-DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
-INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
-include($$THIRD_PARTY_PATH/quazip/quazip.pri)
-
 FORMS += resources/forms/mainWindow.ui \
    resources/forms/preferences.ui \
    resources/forms/brushProperties.ui \
@@ -115,7 +110,10 @@ RCC_DIR = $$BUILD_DIR/rcc
 UI_DIR = $$BUILD_DIR/ui
 
 win32 {
-
+    #ThirdParty
+    DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
+    INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
+    include($$THIRD_PARTY_PATH/quazip/quazip.pri)
 
    LIBS += -lUser32
    LIBS += -lGdi32
@@ -163,6 +161,7 @@ macx {
    LIBS += -framework AVFoundation
    LIBS += -framework CoreMedia
    LIBS += -lcrypto
+   LIBS += -lquazip
 
    CONFIG(release, debug|release):CONFIG += x86_64
    CONFIG(debug, debug|release):CONFIG += x86_64
@@ -420,6 +419,7 @@ macx {
 linux-g++* {
     CONFIG += link_prl
     LIBS += -lcrypto
+    LIBS += -lquazip
     #LIBS += -lprofiler
     LIBS += -lX11
     QMAKE_CFLAGS += -fopenmp
