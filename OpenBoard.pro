@@ -60,11 +60,11 @@ include(src/podcast/podcast.pri)
 include(src/tools/tools.pri)
 include(src/desktop/desktop.pri)
 include(src/web/web.pri)
+include(src/qtsingleapplication/src/qtsingleapplication.pri)
 
 DEPENDPATH += src/pdf-merger
 INCLUDEPATH += src/pdf-merger
 include(src/pdf-merger/pdfMerger.pri)
-
 
 #plugins
 include(plugins/plugins.pri)
@@ -74,10 +74,6 @@ INCLUDEPATH += plugins/cffadaptor/src
 DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
 INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
 include($$THIRD_PARTY_PATH/quazip/quazip.pri)
-DEPENDPATH += $$THIRD_PARTY_PATH/qt/singleapplication
-INCLUDEPATH += $$THIRD_PARTY_PATH/qt/singleapplication
-include($$THIRD_PARTY_PATH/qt/singleapplication/qtsingleapplication.pri)
-include($$THIRD_PARTY_PATH/qt/lockedfile/qtlockedfile.pri)
 
 FORMS += resources/forms/mainWindow.ui \
    resources/forms/preferences.ui \
