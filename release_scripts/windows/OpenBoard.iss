@@ -57,8 +57,10 @@ Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\vcredist_x86.exe"; Des
 Source: "{#ProjectRoot}\build\win32\release\product\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ;OpenSSL
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.0.2-win32\lib\libeay32.lib"; DestDir:"{app}"; Flags: ignoreversion
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.0.2-win32\lib\ssleay32.lib"; DestDir:"{app}"; Flags: ignoreversion
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.1.0-win32\bin\libssl-1_1.dll"; DestDir:"{app}"; Flags: ignoreversion
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.1.0-win32\bin\libcrypto-1_1.dll"; DestDir:"{app}"; Flags: ignoreversion
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\win32\libeay32.dll"; DestDir:"{app}"; Flags: ignoreversion
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\win32\ssleay32.dll"; DestDir:"{app}"; Flags: ignoreversion
 
 ;Qt base dll
 ;Source: "OpenBoard.exe"; DestDir: "{app}"
