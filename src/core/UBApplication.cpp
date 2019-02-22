@@ -355,6 +355,7 @@ int UBApplication::exec(const QString& pFileToImport)
         applicationController->showBoard();
 
     UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Pen);
+    emit UBDrawingController::drawingController()->colorPaletteChanged();
 
     onScreenCountChanged(1);
     connect(desktop(), SIGNAL(screenCountChanged(int)), this, SLOT(onScreenCountChanged(int)));
