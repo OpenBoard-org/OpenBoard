@@ -311,6 +311,8 @@ void UBBoardView::keyReleaseEvent(QKeyEvent *event)
 
 bool UBBoardView::event (QEvent * e)
 {
+   //qDebug() << "event: " << e->type();
+
     if (e->type () == QEvent::Gesture)
     {
         QGestureEvent *gestureEvent = dynamic_cast<QGestureEvent *> (e);
@@ -337,8 +339,19 @@ bool UBBoardView::event (QEvent * e)
     return QGraphicsView::event (e);
 }
 
+/*QDebug&
+operator<<(QDebug& os, const QTabletEvent& l) {
+    os << "(";
+    os << l.device() << l.type();
+    os << ")";
+
+    return os;
+}*/
+
+
 void UBBoardView::tabletEvent (QTabletEvent * event)
 {
+    qDebug() << "tablet-event: " << event->device() << " " << event->type() << " highres:" << mUseHighResTabletEvent;
     if (!mUseHighResTabletEvent) {
         event->setAccepted (false);
         return;
@@ -370,6 +383,7 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
         pressure = event->pressure ();
     else{
         //Explanation: rerouting to mouse event
+        qDebug() << "tablet-event: rerouting to mouse-event";
         event->setAccepted (false);
         return;
     }
@@ -1094,6 +1108,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
 
 void UBBoardView::mouseMoveEvent (QMouseEvent *event)
 {
+    qDebug() << "mousemove-event " << event->type();
     //    static QTime lastCallTime;
     //    if (!lastCallTime.isNull()) {
     //        qDebug() << "time interval is " << lastCallTime.msecsTo(QTime::currentTime());
