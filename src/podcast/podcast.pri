@@ -67,14 +67,30 @@ linux-g++* {
             -l:libva.so.2 \
             -l:libxcb-shm.so.0 \
             -lxcb-xfixes \
-            -lxcb-render -lxcb-shape -lxcb -lX11 -l:libasound.so.2 -l:libSDL-1.2.so.0 -l:libx264.so.152 -lpthread -l:libvpx.so.5 -l:libvorbisenc.so.2 -l:libvorbis.so.0 -l:libtheoraenc.so.1 -l:libtheoradec.so.1 -l:libogg.so.0 -l:libopus.so.0 -l:libmp3lame.so.0 -lfreetype -l:libfdk-aac.so.1 -l:libass.so.9 -l:liblzma.so.5 -l:libbz2.so.1 -lz -ldl -lswresample -lswscale -lavutil -lm
 
     UBUNTU_VERSION = $$system(lsb_release -irs)
     equals(UBUNTU_VERSION, Ubuntu 14.04) {
         LIBS -= -lswresample
         LIBS += -lavresample
     }
-
+    equals(UBUNTU_VERSION, Ubuntu 18.04) {
+        LIBS += -lxcb-render -lxcb-shape -lxcb -lX11 -l:libasound.so.2 \
+                -l:libSDL-1.2.so.0 -l:libx264.so.152 -lpthread -l:libvpx.so.5 \
+                -l:libvorbisenc.so.2 -l:libvorbis.so.0 -l:libtheoraenc.so.1 \
+                -l:libtheoradec.so.1 -l:libogg.so.0 -l:libopus.so.0 \
+                -l:libmp3lame.so.0 -lfreetype -l:libfdk-aac.so.1 \
+                -l:libass.so.9 -l:liblzma.so.5 -l:libbz2.so.1 -lz -ldl \
+                -lswresample -lswscale -lavutil -lm
+    }
+    equals(UBUNTU_VERSION, Ubuntu 19.04) {
+        LIBS += -lxcb-render -lxcb-shape -lxcb -lX11 -l:libasound.so.2 \
+                -l:libSDL-1.2.so.0 -l:libx264.so.155 -lpthread -l:libvpx.so.5 \
+                -l:libvorbisenc.so.2 -l:libvorbis.so.0 -l:libtheoraenc.so.1 \
+                -l:libtheoradec.so.1 -l:libogg.so.0 -l:libopus.so.0 \
+                -l:libmp3lame.so.0 -lfreetype -l:libfdk-aac.so.1 \
+                -l:libass.so.9 -l:liblzma.so.5 -l:libbz2.so.1 -lz -ldl \
+                -lswresample -lswscale -lavutil -lm
+    }
 
     QMAKE_CXXFLAGS += -std=c++11 # move this to OpenBoard.pro when we can use C++11 on all platforms
 }
