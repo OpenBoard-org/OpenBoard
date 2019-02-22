@@ -301,8 +301,6 @@ int UBApplication::exec(const QString& pFileToImport)
     webController = new UBWebController(mainWindow);
     documentController = new UBDocumentController(mainWindow);
 
-    UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Pen);
-
     applicationController = new UBApplicationController(boardController->controlView(),
                                                         boardController->displayView(),
                                                         mainWindow,
@@ -357,6 +355,7 @@ int UBApplication::exec(const QString& pFileToImport)
         applicationController->showBoard();
 
     emit UBDrawingController::drawingController()->colorPaletteChanged();
+    UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Pen);
 
     onScreenCountChanged(1);
     connect(desktop(), SIGNAL(screenCountChanged(int)), this, SLOT(onScreenCountChanged(int)));
