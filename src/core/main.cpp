@@ -92,13 +92,13 @@ int main(int argc, char *argv[])
     _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
 */
-
     // QT_NO_GLIB=1 is set by default on Linux, and prevents media playback
     if (qEnvironmentVariableIsSet("QT_NO_GLIB"))
         qunsetenv("QT_NO_GLIB");
 
     Q_INIT_RESOURCE(OpenBoard);
 
+    qSetMessagePattern("%{file}(%{line}): %{message}");
     qInstallMessageHandler(ub_message_output);
 
     UBApplication app("OpenBoard", argc, argv);
