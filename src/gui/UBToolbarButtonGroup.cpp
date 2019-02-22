@@ -112,6 +112,7 @@ void UBToolbarButtonGroup::setIcon(const QIcon &icon, int index)
         if (button)
         {
             button->setIcon(icon);
+            button->setCheckable(true);
         }
     }
 }
@@ -155,6 +156,7 @@ void UBToolbarButtonGroup::setCurrentIndex(int index)
 {
     Q_ASSERT(index < mButtons.size());
 
+    if(index>=0) {
     if (index != mCurrentIndex)
     {
         for(int i = 0; i < mButtons.size(); i++)
@@ -163,6 +165,9 @@ void UBToolbarButtonGroup::setCurrentIndex(int index)
         }
         mCurrentIndex = index;
         emit currentIndexChanged(index);
+    }
+    } else {
+      qWarning() << "index is negative!";
     }
 }
 
