@@ -1772,7 +1772,6 @@ void UBBoardView::setToolCursor (int tool)
         controlViewport->setCursor (UBResources::resources ()->penCursor);
         break;
     default:
-        qDebug() << "unhandled tool: " << tool;
         Q_ASSERT (false);
         //failsafe
         controlViewport->setCursor (UBResources::resources ()->penCursor);
