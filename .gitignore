@@ -49,6 +49,9 @@ Thumbs.db
 .project
 .settings
 Makefile.Sankore*
+Debug.properties
+project/private/configurations.xml
+nbproject/configurations.xml
 
 *.swp
 *.vim
