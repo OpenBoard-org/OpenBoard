@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="100">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="data"
+                   displayName="data"
+                   projectFiles="true"
+                   root="/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data">
+      <itemPath>/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="qt"
+                   displayName="qt"
+                   projectFiles="true"
+                   root="../OpenBoard-ThirdParty/qt">
+      <logicalFolder name="lockedfile" displayName="lockedfile" projectFiles="true">
+        <itemPath>../OpenBoard-ThirdParty/qt/lockedfile/qtlockedfile.cpp</itemPath>
+        <itemPath>../OpenBoard-ThirdParty/qt/lockedfile/qtlockedfile.h</itemPath>
+        <itemPath>../OpenBoard-ThirdParty/qt/lockedfile/qtlockedfile_unix.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="singleapplication"
+                     displayName="singleapplication"
+                     projectFiles="true">
+        <itemPath>../OpenBoard-ThirdParty/qt/singleapplication/qtlocalpeer.cpp</itemPath>
+        <itemPath>../OpenBoard-ThirdParty/qt/singleapplication/qtlocalpeer.h</itemPath>
+        <itemPath>../OpenBoard-ThirdParty/qt/singleapplication/qtsingleapplication.cpp</itemPath>
+        <itemPath>../OpenBoard-ThirdParty/qt/singleapplication/qtsingleapplication.h</itemPath>
+      </logicalFolder>
+    </logicalFolder>
+    <df root="src" name="1">
+      <df name="adaptors">
+        <in>UBExportAdaptor.cpp</in>
+        <in>UBExportDocument.cpp</in>
+        <in>UBExportFullPDF.cpp</in>
+        <in>UBExportPDF.cpp</in>
+        <in>UBExportWeb.cpp</in>
+        <in>UBImportAdaptor.cpp</in>
+        <in>UBImportDocument.cpp</in>
+        <in>UBImportImage.cpp</in>
+        <in>UBImportPDF.cpp</in>
+        <in>UBMetadataDcSubsetAdaptor.cpp</in>
+        <in>UBSvgSubsetAdaptor.cpp</in>
+        <in>UBThumbnailAdaptor.cpp</in>
+      </df>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+      <itemPath>OpenBoard.pro</itemPath>
+      <itemPath>nbproject/private/launcher.properties</itemPath>
+      <itemPath>resources</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>src</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="0">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <flagsDictionary>
+        <element flagsID="0" commonFlags="-std=c++11 -fopenmp"/>
+        <element flagsID="1" commonFlags="-std=c++11 -fopenmp -fPIC"/>
+      </flagsDictionary>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile.Debug</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile.Debug clean</cleanCommand>
+          <executablePath>build/linux/debug/product/OpenBoard</executablePath>
+        </makeTool>
+        <preBuild>
+          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
+          <preBuildCommand>qmake OpenBoard.pro QMAKE_CC=${IDE_CC} QMAKE_CXX=${IDE_CXX} QMAKE_CFLAGS="-g3 -gdwarf-2" QMAKE_CXXFLAGS="-g3 -gdwarf-2"</preBuildCommand>
+        </preBuild>
+      </makefileType>
+      <item path="../OpenBoard-ThirdParty/qt/lockedfile/qtlockedfile.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="../OpenBoard-ThirdParty/qt/lockedfile/qtlockedfile_unix.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="../OpenBoard-ThirdParty/qt/singleapplication/qtlocalpeer.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="../OpenBoard-ThirdParty/qt/singleapplication/qtsingleapplication.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <folder path="1">
+        <ccTool>
+          <incDir>
+            <pElem>src</pElem>
+            <pElem>../OpenBoard-ThirdParty/zlib/1.2.8/include</pElem>
+            <pElem>../OpenBoard-ThirdParty/xpdf/xpdf-3.04</pElem>
+            <pElem>../OpenBoard-ThirdParty/xpdf/xpdf-3.04/goo</pElem>
+            <pElem>../OpenBoard-ThirdParty/xpdf/xpdf-3.04/splash</pElem>
+            <pElem>src/web/browser</pElem>
+            <pElem>src/pdf-merger</pElem>
+            <pElem>plugins/cffadaptor/src</pElem>
+            <pElem>../OpenBoard-ThirdParty/quazip</pElem>
+            <pElem>../OpenBoard-ThirdParty/quazip/quazip-0.7.1</pElem>
+            <pElem>../OpenBoard-ThirdParty/qt/singleapplication</pElem>
+            <pElem>../OpenBoard-ThirdParty/qt/lockedfile</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtWebKitWidgets</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtWebKit</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtSvg</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtUiTools</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtMultimediaWidgets</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtPrintSupport</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtWidgets</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtMultimedia</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtGui</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtXmlPatterns</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtNetwork</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtXml</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtScript</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtCore</pElem>
+            <pElem>build/linux/debug/moc</pElem>
+            <pElem>/usr/include/libdrm</pElem>
+            <pElem>build/linux/debug/ui</pElem>
+            <pElem>/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++</pElem>
+            <pElem>.</pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>NO_THIRD_PARTY_WARNINGS</Elem>
+            <Elem>QT_CORE_LIB</Elem>
+            <Elem>QT_GUI_LIB</Elem>
+            <Elem>QT_MULTIMEDIAWIDGETS_LIB</Elem>
+            <Elem>QT_MULTIMEDIA_LIB</Elem>
+            <Elem>QT_NETWORK_LIB</Elem>
+            <Elem>QT_PRINTSUPPORT_LIB</Elem>
+            <Elem>QT_SCRIPT_LIB</Elem>
+            <Elem>QT_SVG_LIB</Elem>
+            <Elem>QT_UITOOLS_LIB</Elem>
+            <Elem>QT_WEBKITWIDGETS_LIB</Elem>
+            <Elem>QT_WEBKIT_LIB</Elem>
+            <Elem>QT_WIDGETS_LIB</Elem>
+            <Elem>QT_XMLPATTERNS_LIB</Elem>
+            <Elem>QT_XML_LIB</Elem>
+            <Elem>QUAZIP_STATIC</Elem>
+            <Elem>UBVERSION="1.5.2."</Elem>
+            <Elem>UBVERSION_RC=1,5,2,240,0</Elem>
+            <Elem>_REENTRANT</Elem>
+          </preprocessorList>
+        </ccTool>
+      </folder>
+      <folder path="home/ksp/Dokumente/Openboard-org/OpenBoard-ThirdParty/qt">
+        <ccTool>
+          <incDir>
+            <pElem>src</pElem>
+            <pElem>../OpenBoard-ThirdParty/zlib/1.2.8/include</pElem>
+            <pElem>../OpenBoard-ThirdParty/xpdf/xpdf-3.04</pElem>
+            <pElem>../OpenBoard-ThirdParty/xpdf/xpdf-3.04/goo</pElem>
+            <pElem>../OpenBoard-ThirdParty/xpdf/xpdf-3.04/splash</pElem>
+            <pElem>src/web/browser</pElem>
+            <pElem>src/pdf-merger</pElem>
+            <pElem>plugins/cffadaptor/src</pElem>
+            <pElem>../OpenBoard-ThirdParty/quazip</pElem>
+            <pElem>../OpenBoard-ThirdParty/quazip/quazip-0.7.1</pElem>
+            <pElem>../OpenBoard-ThirdParty/qt/singleapplication</pElem>
+            <pElem>../OpenBoard-ThirdParty/qt/lockedfile</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtWebKitWidgets</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtWebKit</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtSvg</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtUiTools</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtMultimediaWidgets</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtPrintSupport</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtWidgets</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtMultimedia</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtGui</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtXmlPatterns</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtNetwork</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtXml</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtScript</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtCore</pElem>
+            <pElem>build/linux/debug/moc</pElem>
+            <pElem>/usr/include/libdrm</pElem>
+            <pElem>build/linux/debug/ui</pElem>
+            <pElem>/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++</pElem>
+            <pElem>.</pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>NO_THIRD_PARTY_WARNINGS</Elem>
+            <Elem>QT_CORE_LIB</Elem>
+            <Elem>QT_GUI_LIB</Elem>
+            <Elem>QT_MULTIMEDIAWIDGETS_LIB</Elem>
+            <Elem>QT_MULTIMEDIA_LIB</Elem>
+            <Elem>QT_NETWORK_LIB</Elem>
+            <Elem>QT_PRINTSUPPORT_LIB</Elem>
+            <Elem>QT_SCRIPT_LIB</Elem>
+            <Elem>QT_SVG_LIB</Elem>
+            <Elem>QT_UITOOLS_LIB</Elem>
+            <Elem>QT_WEBKITWIDGETS_LIB</Elem>
+            <Elem>QT_WEBKIT_LIB</Elem>
+            <Elem>QT_WIDGETS_LIB</Elem>
+            <Elem>QT_XMLPATTERNS_LIB</Elem>
+            <Elem>QT_XML_LIB</Elem>
+            <Elem>QUAZIP_STATIC</Elem>
+            <Elem>UBVERSION="1.5.2."</Elem>
+            <Elem>UBVERSION_RC=1,5,2,240,0</Elem>
+            <Elem>_REENTRANT</Elem>
+          </preprocessorList>
+        </ccTool>
+      </folder>
+      <folder path="usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data">
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <item path="src/adaptors/UBExportAdaptor.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/adaptors/UBExportDocument.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/adaptors/UBExportFullPDF.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/adaptors/UBExportPDF.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/adaptors/UBExportWeb.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/adaptors/UBImportAdaptor.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/adaptors/UBImportDocument.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/adaptors/UBImportImage.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/adaptors/UBImportPDF.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/adaptors/UBMetadataDcSubsetAdaptor.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/adaptors/UBSvgSubsetAdaptor.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/adaptors/UBThumbnailAdaptor.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+    </conf>
+    <conf name="Release" type="0">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <flagsDictionary>
+        <element flagsID="0" commonFlags="-std=c++11 -fopenmp -O2"/>
+        <element flagsID="1" commonFlags="-std=c++11 -fopenmp -O2 -fPIC"/>
+      </flagsDictionary>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath>build/linux/release/product/OpenBoard</executablePath>
+        </makeTool>
+        <preBuild>
+          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
+          <preBuildCommand>qmake OpenBoard.pro QMAKE_CC=${IDE_CC} QMAKE_CXX=${IDE_CXX} QMAKE_CFLAGS="-g3 -gdwarf-2" QMAKE_CXXFLAGS="-g3 -gdwarf-2"</preBuildCommand>
+        </preBuild>
+      </makefileType>
+      <item path="../OpenBoard-ThirdParty/qt/lockedfile/qtlockedfile.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="../OpenBoard-ThirdParty/qt/lockedfile/qtlockedfile_unix.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="../OpenBoard-ThirdParty/qt/singleapplication/qtlocalpeer.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="../OpenBoard-ThirdParty/qt/singleapplication/qtsingleapplication.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <folder path="home/ksp/Dokumente/Openboard-org/OpenBoard-ThirdParty/qt">
+        <ccTool>
+          <incDir>
+            <pElem>src</pElem>
+            <pElem>../OpenBoard-ThirdParty/zlib/1.2.8/include</pElem>
+            <pElem>../OpenBoard-ThirdParty/xpdf/xpdf-3.04</pElem>
+            <pElem>../OpenBoard-ThirdParty/xpdf/xpdf-3.04/goo</pElem>
+            <pElem>../OpenBoard-ThirdParty/xpdf/xpdf-3.04/splash</pElem>
+            <pElem>src/web/browser</pElem>
+            <pElem>src/pdf-merger</pElem>
+            <pElem>plugins/cffadaptor/src</pElem>
+            <pElem>../OpenBoard-ThirdParty/quazip</pElem>
+            <pElem>../OpenBoard-ThirdParty/quazip/quazip-0.7.1</pElem>
+            <pElem>../OpenBoard-ThirdParty/qt/singleapplication</pElem>
+            <pElem>../OpenBoard-ThirdParty/qt/lockedfile</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtWebKitWidgets</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtWebKit</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtSvg</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtUiTools</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtMultimediaWidgets</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtPrintSupport</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtWidgets</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtMultimedia</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtGui</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtXmlPatterns</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtNetwork</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtXml</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtScript</pElem>
+            <pElem>/usr/include/x86_64-linux-gnu/qt5/QtCore</pElem>
+            <pElem>build/linux/release/moc</pElem>
+            <pElem>/usr/include/libdrm</pElem>
+            <pElem>build/linux/release/ui</pElem>
+            <pElem>/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++</pElem>
+            <pElem>.</pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>NO_THIRD_PARTY_WARNINGS</Elem>
+            <Elem>QT_CORE_LIB</Elem>
+            <Elem>QT_GUI_LIB</Elem>
+            <Elem>QT_MULTIMEDIAWIDGETS_LIB</Elem>
+            <Elem>QT_MULTIMEDIA_LIB</Elem>
+            <Elem>QT_NETWORK_LIB</Elem>
+            <Elem>QT_NO_DEBUG</Elem>
+            <Elem>QT_PRINTSUPPORT_LIB</Elem>
+            <Elem>QT_SCRIPT_LIB</Elem>
+            <Elem>QT_SVG_LIB</Elem>
+            <Elem>QT_UITOOLS_LIB</Elem>
+            <Elem>QT_WEBKITWIDGETS_LIB</Elem>
+            <Elem>QT_WEBKIT_LIB</Elem>
+            <Elem>QT_WIDGETS_LIB</Elem>
+            <Elem>QT_XMLPATTERNS_LIB</Elem>
+            <Elem>QT_XML_LIB</Elem>
+            <Elem>QUAZIP_STATIC</Elem>
+            <Elem>UBVERSION="1.5.2."</Elem>
+            <Elem>UBVERSION_RC=1,5,2,240,0</Elem>
+            <Elem>_REENTRANT</Elem>
+          </preprocessorList>
+        </ccTool>
+      </folder>
+      <folder path="usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data">
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+    </conf>
+  </confs>
+</configurationDescriptor>
