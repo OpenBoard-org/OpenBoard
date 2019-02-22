@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1342</width>
-    <height>223</height>
+    <height>226</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -464,6 +464,42 @@
    </property>
    <property name="toolTip">
     <string>Color 4</string>
+   </property>
+  </action>
+  <action name="actionColor5">
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
+   </property>
+   <property name="text">
+    <string>Color 5</string>
+   </property>
+   <property name="toolTip">
+    <string>Color 5</string>
+   </property>
+  </action>
+  <action name="actionColor6">
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
+   </property>
+   <property name="text">
+    <string>Color 6</string>
+   </property>
+   <property name="toolTip">
+    <string>Color 6</string>
+   </property>
+  </action>
+  <action name="actionColor7">
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
+   </property>
+   <property name="text">
+    <string>Color</string>
+   </property>
+   <property name="toolTip">
+    <string>Color 7</string>
    </property>
   </action>
   <action name="actionWebBack">
@@ -1669,42 +1705,6 @@
    </property>
    <property name="toolTip">
     <string>Reset grid size</string>
-   </property>
-  </action>
-  <action name="actionColor5">
-   <property name="icon">
-    <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
-   </property>
-   <property name="text">
-    <string>Color 5</string>
-   </property>
-   <property name="toolTip">
-    <string>Color 5</string>
-   </property>
-  </action>
-  <action name="actionColor6">
-   <property name="icon">
-    <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
-   </property>
-   <property name="text">
-    <string>Color 6</string>
-   </property>
-   <property name="toolTip">
-    <string>Color 6</string>
-   </property>
-  </action>
-  <action name="actionColor7">
-   <property name="icon">
-    <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
-   </property>
-   <property name="text">
-    <string>Color</string>
-   </property>
-   <property name="toolTip">
-    <string>Color</string>
    </property>
   </action>
  </widget>
