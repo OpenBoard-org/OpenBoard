@@ -412,7 +412,9 @@ void UBDesktopAnnotationController::hideWindow()
     mDesktopPalette->hide();
 
     mDesktopStylusTool = UBDrawingController::drawingController()->stylusTool();
-    UBDrawingController::drawingController()->setStylusTool(mBoardStylusTool);
+    if(mBoardStylusTool!=-1) {
+      UBDrawingController::drawingController()->setStylusTool(mBoardStylusTool);
+    }
 }
 
 
