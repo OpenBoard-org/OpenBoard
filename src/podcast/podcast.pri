@@ -66,14 +66,14 @@ linux-g++* {
             -l:libva-x11.so.2 \
             -l:libva.so.2 \
             -l:libxcb-shm.so.0 \
-            -lxcb-xfixes \
+            -lxcb-xfixes
 
     UBUNTU_VERSION = $$system(lsb_release -irs)
     equals(UBUNTU_VERSION, Ubuntu 14.04) {
         LIBS -= -lswresample
         LIBS += -lavresample
     }
-    equals(UBUNTU_VERSION, Ubuntu 18.04) {
+    equals(UBUNTU_VERSION, neon 18.04) {
         LIBS += -lxcb-render -lxcb-shape -lxcb -lX11 -l:libasound.so.2 \
                 -l:libSDL-1.2.so.0 -l:libx264.so.152 -lpthread -l:libvpx.so.5 \
                 -l:libvorbisenc.so.2 -l:libvorbis.so.0 -l:libtheoraenc.so.1 \
