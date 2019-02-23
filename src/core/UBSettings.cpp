@@ -691,7 +691,11 @@ QColor UBSettings::currentMarkerColor()
 QColor UBSettings::markerColor(bool onDarkBackground)
 {
     QList<QColor> colors = markerColors(onDarkBackground);
-    return colors.at(markerColorIndex());
+    int mci=markerColorIndex();
+    if(mci<0  || mci>=colors.length()) {
+        mci=0;
+    }
+    return colors.at(mci);
 }
 
 
