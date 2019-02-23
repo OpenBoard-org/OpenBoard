@@ -117,10 +117,14 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     int penColorIndex = UBSettings::settings()->penColorIndex();
     int markerColorIndex = UBSettings::settings()->markerColorIndex();
 
-    mPenColorOnDarkBackground = UBSettings::settings()->penColors(true).at(penColorIndex);
-    mPenColorOnLightBackground = UBSettings::settings()->penColors(false).at(penColorIndex);
-    mMarkerColorOnDarkBackground = UBSettings::settings()->markerColors(true).at(markerColorIndex);
-    mMarkerColorOnLightBackground = UBSettings::settings()->markerColors(false).at(markerColorIndex);
+    if(penColorIndex>=0  && penColorIndex<UBSettings::settings()->penColors(true).length()) {
+      mPenColorOnDarkBackground = UBSettings::settings()->penColors(true).at(penColorIndex);
+      mPenColorOnLightBackground = UBSettings::settings()->penColors(false).at(penColorIndex);
+    }
+    if(markerColorIndex>=0  && markerColorIndex<UBSettings::settings()->markerColors(true).length()) {
+      mMarkerColorOnDarkBackground = UBSettings::settings()->markerColors(true).at(markerColorIndex);
+      mMarkerColorOnLightBackground = UBSettings::settings()->markerColors(false).at(markerColorIndex);
+    }
 
 }
 
