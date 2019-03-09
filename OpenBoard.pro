@@ -166,7 +166,7 @@ macx {
 
    INCLUDEPATH += /usr/local/opt/openssl/include
    INCLUDEPATH += /usr/local/opt/ffmpeg/include
-   INCLUDEPATH += /usr/local/opt/quazip/include
+   INCLUDEPATH += /usr/local/opt/quazip/include/quazip
 
    CONFIG(release, debug|release):CONFIG += x86_64
    CONFIG(debug, debug|release):CONFIG += x86_64
@@ -424,6 +424,7 @@ macx {
 linux-g++* {
     CONFIG += link_prl
     LIBS += -lcrypto
+    INCLUDEPATH += /usr/include/quazip
     LIBS += -lquazip
     #LIBS += -lprofiler
     LIBS += -lX11

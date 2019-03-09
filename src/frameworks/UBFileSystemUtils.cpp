@@ -36,11 +36,7 @@
 #include "globals/UBGlobals.h"
 
 THIRD_PARTY_WARNINGS_DISABLE
-#if defined(Q_OS_LINUX) || defined(Q_OS_OSX)
-    #include <quazip/quazipfile.h>
-#else
-    #include "quazipfile.h"
-#endif
+#include "quazipfile.h"
 #include <openssl/md5.h>
 THIRD_PARTY_WARNINGS_ENABLE
 

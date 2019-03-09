@@ -41,13 +41,8 @@
 #include "core/UBForeignObjectsHandler.h"
 
 THIRD_PARTY_WARNINGS_DISABLE
-#if defined(Q_OS_LINUX) || defined(Q_OS_OSX)
-    #include <quazip/quazip.h>
-    #include <quazip/quazipfile.h>
-#else
-    #include "quazip.h"
-    #include "quazipfile.h"
-#endif
+#include "quazip.h"
+#include "quazipfile.h"
 THIRD_PARTY_WARNINGS_ENABLE
 
 #include "core/memcheck.h"
