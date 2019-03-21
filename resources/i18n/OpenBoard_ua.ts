@@ -31,7 +31,7 @@
     </message>
     <message>
         <source>Filename</source>
-        <translation>Ім'я файлу</translation>
+        <translation>Ім&apos;я файлу</translation>
     </message>
     <message>
         <source>Try Again</source>
@@ -281,7 +281,7 @@
     </message>
     <message>
         <source>Show Computer Desktop</source>
-        <translation>Показати робочий стіл комп'ютера</translation>
+        <translation>Показати робочий стіл комп&apos;ютера</translation>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
@@ -573,7 +573,7 @@
     </message>
     <message>
         <source>Select And Modify Objects</source>
-        <translation>Вибрати і змінити об'єкти</translation>
+        <translation>Вибрати і змінити об&apos;єкти</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
@@ -820,7 +820,7 @@
     </message>
     <message>
         <source>Username:</source>
-        <translation>Ім'я користувача:</translation>
+        <translation>Ім&apos;я користувача:</translation>
     </message>
     <message>
         <source>Password:</source>
@@ -835,11 +835,11 @@
     </message>
     <message>
         <source>Connect to Proxy</source>
-        <translation>З'єднатися з проксі-сервера</translation>
+        <translation>З&apos;єднатися з проксі-сервера</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Ім'я користувача:</translation>
+        <translation>Ім&apos;я користувача:</translation>
     </message>
     <message>
         <source>Password:</source>
@@ -847,18 +847,18 @@
     </message>
     <message>
         <source>Save username and password for future use</source>
-        <translation>Зберегти ім'я користувача і пароль для майбутнього використання</translation>
+        <translation>Зберегти ім&apos;я користувача і пароль для майбутнього використання</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="vanished">ID елемента =</translation>
+        <translation>ID елемента =</translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="vanished">Не підтримується в поточному форматі.</translation>
+        <translation>Не підтримується в поточному форматі.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -1069,43 +1069,43 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation>Видалити сторінку</translation>
+        <translation type="vanished">Видалити сторінку</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation>Видалити документ</translation>
+        <translation type="vanished">Видалити документ</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation>Ви впевнені, що хочете видалити документ &apos;%1&apos;?</translation>
+        <translation type="vanished">Ви впевнені, що хочете видалити документ &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Очистити корзину</translation>
+        <translation type="vanished">Очистити корзину</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation>Ви впевнені, що хочете очистити кошик?</translation>
+        <translation type="vanished">Ви впевнені, що хочете очистити кошик?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation>Очищення кошика</translation>
+        <translation type="vanished">Очищення кошика</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation>Кошик порожній</translation>
+        <translation type="vanished">Кошик порожній</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation>Видалити папку</translation>
+        <translation type="vanished">Видалити папку</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation>Ви впевнені, що хочете видалити папку &apos;%1 і весь її вміст?</translation>
+        <translation type="vanished">Ви впевнені, що хочете видалити папку &apos;%1 і весь її вміст?</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation>Нічого не вибрано!</translation>
+        <translation type="vanished">Нічого не вибрано!</translation>
     </message>
     <message>
         <source>Open Supported File</source>
@@ -1153,7 +1153,7 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Ви впевнені, що хочете видалити %n сторінку з обраного документа &apos;%1&apos;?</numerusform>
             <numerusform>Ви впевнені, що хочете видалити %n сторінок з обраного документа &apos;%1&apos;?</numerusform>
         </translation>
@@ -1172,11 +1172,31 @@
     </message>
     <message>
         <source>Are you sure you want to remove all selected documents?</source>
-        <translation>Ви впевнені, що хочете видалити всі вибрані документи?</translation>
+        <translation type="vanished">Ви впевнені, що хочете видалити всі вибрані документи?</translation>
     </message>
     <message>
         <source>Remove multiple documents</source>
-        <translation>Видалити кілька документів</translation>
+        <translation type="vanished">Видалити кілька документів</translation>
+    </message>
+    <message numerus="yes">
+        <source>duplicated %1 page</source>
+        <comment>duplicated %1 pages</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title page</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1191,7 +1211,7 @@
     </message>
     <message>
         <source>objects</source>
-        <translation>об'єкти</translation>
+        <translation>об&apos;єкти</translation>
     </message>
     <message>
         <source>widgets</source>
@@ -1230,18 +1250,75 @@
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
+    <name>UBDocumentReplaceDialog</name>
     <message>
-        <source>%1 (copy)</source>
-        <translation>%1 (копіювання)</translation>
+        <source>Accept</source>
+        <translation type="unfinished">Прийняти</translation>
     </message>
     <message>
-        <source>Copying page %1/%2</source>
-        <translation>Копіювання сторінки %1/%2</translation>
+        <source>Replace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Відміна</translation>
+    </message>
+    <message>
+        <source>The name %1 is allready used.
+Keeping this name will replace the document.
+Providing a new name will create a new document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeModel</name>
+    <message>
+        <source>My documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trash</source>
+        <translation type="unfinished">Кошик</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation>
+        <translation type="unfinished">
+            <numerusform>%1 сторінки скопійовано</numerusform>
+            <numerusform>%1 сторінок скопійовано</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeView</name>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="unfinished">
+            <numerusform>%1 сторінки скопійовано</numerusform>
+            <numerusform>%1 сторінок скопійовано</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Remove Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeWidget</name>
+    <message>
+        <source>%1 (copy)</source>
+        <translation type="vanished">%1 (копіювання)</translation>
+    </message>
+    <message>
+        <source>Copying page %1/%2</source>
+        <translation type="vanished">Копіювання сторінки %1/%2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="vanished">
             <numerusform>%1 сторінки скопійовано</numerusform>
             <numerusform>%1 сторінок скопійовано</numerusform>
         </translation>
@@ -1303,23 +1380,23 @@
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="vanished">Експорт в IWB</translation>
+        <translation>Експорт в IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="vanished">Експортувати як IWB файл</translation>
+        <translation>Експортувати як IWB файл</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="vanished">Експорт документа ...</translation>
+        <translation>Експорт документа ...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">Експорт успішно завершено.</translation>
+        <translation>Експорт успішно завершено.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="vanished">Помилка експорту.</translation>
+        <translation>Помилка експорту.</translation>
     </message>
 </context>
 <context>
@@ -1347,6 +1424,33 @@
     <message>
         <source>Export to OpenBoard Format</source>
         <translation>Експорт у формат OpenBoard</translation>
+    </message>
+</context>
+<context>
+    <name>UBExportDocumentSetAdaptor</name>
+    <message>
+        <source>Failed to export...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export as UBX File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exporting document...</source>
+        <translation type="unfinished">Експорт документа ...</translation>
+    </message>
+    <message>
+        <source>Export successful.</source>
+        <translation type="unfinished">Експорт успішно завершено.</translation>
+    </message>
+    <message>
+        <source>Export failed.</source>
+        <translation type="unfinished">Помилка експорту.</translation>
+    </message>
+    <message>
+        <source>Export to OpenBoard UBX Format</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1434,7 +1538,7 @@
     </message>
     <message>
         <source>Object informations</source>
-        <translation>Інформація про об'єкт</translation>
+        <translation>Інформація про об&apos;єкт</translation>
     </message>
 </context>
 <context>
@@ -1637,23 +1741,23 @@
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="vanished">Стандартний формат файлу (</translation>
+        <translation>Стандартний формат файлу (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="vanished">Імпорт файлу %1...</translation>
+        <translation>Імпорт файлу %1...</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="vanished">Помилка імпорту файлу %1.</translation>
+        <translation>Помилка імпорту файлу %1.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="vanished">Імпорт успішно завершений.</translation>
+        <translation>Імпорт успішно завершений.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="vanished">Помилка імпорту.</translation>
+        <translation>Помилка імпорту.</translation>
     </message>
 </context>
 <context>
@@ -1672,6 +1776,13 @@
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UBImportDocumentSetAdaptor</name>
+    <message>
+        <source>Openboard (set of documents) (*.ubx)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1748,7 +1859,7 @@
     <name>UBNetworkAccessManager</name>
     <message>
         <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
-        <translation>&lt;qt&gt;Введіть ім'я користувача і пароль для &quot;%1&quot; в %2&lt;/qt&gt;</translation>
+        <translation>&lt;qt&gt;Введіть ім&apos;я користувача і пароль для &quot;%1&quot; в %2&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>Failed to log to Proxy</source>
@@ -1791,7 +1902,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>You can always access the OpenBoard Document Importer through the Preferences panel in the About tab. Warning, if you have already imported your Open-Sankore datas, you might loose your current OpenBoard documents.</source>
-        <translation>Ви завжди можете отримати доступ до імпортера документа OpenBoard через панель "Налаштування" на вкладці "Про". Попередження, якщо ви вже імпортували дані "Open-Sankore", ви можете втратити свої поточні документи OpenBoard.</translation>
+        <translation>Ви завжди можете отримати доступ до імпортера документа OpenBoard через панель &quot;Налаштування&quot; на вкладці &quot;Про&quot;. Попередження, якщо ви вже імпортували дані &quot;Open-Sankore&quot;, ви можете втратити свої поточні документи OpenBoard.</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1803,7 +1914,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
-        <translation>Документи Open-Sankoré присутні на вашому комп'ютері. Імпортувати їх можна в OpenBoard, натиснувши кнопку «Продовжити», щоб запустити програму для імпорту.</translation>
+        <translation>Документи Open-Sankoré присутні на вашому комп&apos;ютері. Імпортувати їх можна в OpenBoard, натиснувши кнопку «Продовжити», щоб запустити програму для імпорту.</translation>
     </message>
 </context>
 <context>
@@ -1814,15 +1925,19 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Document Repository Loss</source>
-        <translation>Втрата з'єднання з репозиторієм документів</translation>
+        <translation>Втрата з&apos;єднання з репозиторієм документів</translation>
     </message>
     <message>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation>втрачено доступ до сховища документів &apos;%1&apos;. На жаль, програма повинна бути закрита, щоб уникнути псування даних. Останні зміни також можуть бути втрачені.</translation>
+        <translation type="vanished">втрачено доступ до сховища документів &apos;%1&apos;. На жаль, програма повинна бути закрита, щоб уникнути псування даних. Останні зміни також можуть бути втрачені.</translation>
     </message>
     <message>
         <source>Moving page to trash folder...</source>
-        <translation>Переміщення сторінки в папку для сміття ...</translation>
+        <translation type="vanished">Переміщення сторінки в папку для сміття ...</translation>
+    </message>
+    <message>
+        <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1926,34 +2041,34 @@ Do you want to ignore these errors for this host?</source>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation>Вхід на проксі-сервер</translation>
+        <translation type="vanished">Вхід на проксі-сервер</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Ім'я користувача:</translation>
+        <translation type="vanished">Ім&apos;я користувача:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>Пароль:</translation>
+        <translation type="vanished">Пароль:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation>Опублікувати документ в інтернеті</translation>
+        <translation type="vanished">Опублікувати документ в інтернеті</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation>Назва:</translation>
+        <translation type="vanished">Назва:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation>Опис:</translation>
+        <translation type="vanished">Опис:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation>Опублікувати</translation>
+        <translation type="vanished">Опублікувати</translation>
     </message>
 </context>
 <context>
@@ -2147,7 +2262,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Gaming</source>
-        <translation>Комп'ютерні ігри</translation>
+        <translation>Комп&apos;ютерні ігри</translation>
     </message>
     <message>
         <source>Comedy</source>
@@ -2408,7 +2523,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>YouTube Username</source>
-        <translation>Ім'я користувача YouTube</translation>
+        <translation>Ім&apos;я користувача YouTube</translation>
     </message>
     <message>
         <source>YouTube Password</source>
@@ -2506,6 +2621,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>OpenBoard Documents</source>
         <translation>Документи OpenBoard</translation>
+    </message>
+    <message>
+        <source>Creation date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alphabetical order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort Order</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2681,6 +2812,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Swap first and second view displays</source>
         <translation>Поміняйте перший і другий види відображення</translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

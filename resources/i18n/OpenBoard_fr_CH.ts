@@ -2785,7 +2785,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Home Page:</source>
-        <translation>Page d&apos;accueil :</translation>
+        <translation>Page d&apos;accueil&#xa0;:</translation>
     </message>
     <message>
         <source>version : …</source>
@@ -2902,6 +2902,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Swap first and second view displays</source>
         <translation>Inverser les écrans élèves</translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

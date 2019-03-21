@@ -2817,6 +2817,10 @@ p, li { white-space: pre-wrap; }
         <source>Swap first and second view displays</source>
         <translation>Intercambiar control de pantalla e vista de pantalla</translation>
     </message>
+    <message>
+        <source>Document</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>trapFlashDialog</name>
