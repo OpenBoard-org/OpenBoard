@@ -161,12 +161,7 @@ macx {
    LIBS += -framework AVFoundation
    LIBS += -framework CoreMedia
    LIBS += -lcrypto
-   LIBS += -L/usr/local/opt/quazip/lib
-   LIBS += -L/usr/local/opt/ffmpeg/lib
-
-   INCLUDEPATH += /usr/local/opt/openssl/include
-   INCLUDEPATH += /usr/local/opt/ffmpeg/include
-   INCLUDEPATH += /usr/local/opt/quazip/include
+   LIBS += -lquazip
 
    CONFIG(release, debug|release):CONFIG += x86_64
    CONFIG(debug, debug|release):CONFIG += x86_64
