@@ -10,8 +10,8 @@ CONFIG += debug_and_release \
 
 VERSION_MAJ = 1
 VERSION_MIN = 5
-VERSION_PATCH = 2
-VERSION_TYPE = r # a = alpha, b = beta, rc = release candidate, r = release, other => error
+VERSION_PATCH = 3
+VERSION_TYPE = rc # a = alpha, b = beta, rc = release candidate, r = release, other => error
 VERSION_BUILD = 0
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$${VERSION_BUILD}"
