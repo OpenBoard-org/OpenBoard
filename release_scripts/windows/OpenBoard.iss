@@ -10,7 +10,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{8CCA6AC7-BBF9-4DD2-8E70-A907E0FCA38F}}
 AppName=OpenBoard
-AppVerName=OpenBoard {#ApplicationVersion}
+AppVersion={#ApplicationVersion}
 AppPublisher=Open Education Foundation
 
 AppPublisherURL=http://www.oe-f.org
