@@ -46,10 +46,11 @@
 QPointer<UBSettings> UBSettings::sSingleton = 0;
 
 int UBSettings::pointerDiameter = 40;
+
 int UBSettings::crossSize = 24;
-int UBSettings::defaultCrossSize = 24;
 int UBSettings::minCrossSize = 12;
 int UBSettings::maxCrossSize = 96; //TODO: user-settable?
+
 int UBSettings::colorPaletteSize = 8;
 int UBSettings::objectFrameWidth = 20;
 int UBSettings::boardMargin = 10;
@@ -299,6 +300,7 @@ void UBSettings::init()
     boardDarkBackgroundColors= new UBColorListSetting(this, "Board", "DarkBackgroundColors", darkBackgroundColors, -1.0);
     boardDarkBackgroundColor = new UBSetting(this, "Board", "DarkBackgroundColor", "#0E634E");
 
+    boardDefaultCrossSize = new UBSetting(this, "Board", "DefaultCrossSize", 24);
     boardCrossColorDarkBackground = new UBSetting(this, "Board", "CrossColorDarkBackground", "#C8C0C0C0");
     boardCrossColorLightBackground = new UBSetting(this, "Board", "CrossColorLightBackground", "#A5E1FF");
 
@@ -541,7 +543,7 @@ void UBSettings::save()
     // Force save to file
     mUserSettings->sync();
 
-    qDebug() << "User settings saved";
+    qDebug() << "User settings saved to " << mUserSettings->fileName();
 }
 
 int UBSettings::penWidthIndex()
