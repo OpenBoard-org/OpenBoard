@@ -417,6 +417,9 @@
    <property name="toolTip">
     <string>Color</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+0</string>
+   </property>
   </action>
   <action name="actionColor1">
    <property name="icon">
@@ -1223,7 +1226,7 @@
     <string>Annotate Document</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+I</string>
+    <string>Shift+Ctrl+P</string>
    </property>
   </action>
   <action name="actionEraser">
@@ -1242,7 +1245,7 @@
     <string>Erase Annotation</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+E</string>
+    <string>Shift+Ctrl+E</string>
    </property>
   </action>
   <action name="actionMarker">
@@ -1280,7 +1283,7 @@
     <string>Select And Modify Objects</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+F</string>
+    <string>Shift+Ctrl+G</string>
    </property>
   </action>
   <action name="actionHand">
@@ -1297,6 +1300,9 @@
    </property>
    <property name="toolTip">
     <string>Scroll Page</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+Ctrl+A</string>
    </property>
   </action>
   <action name="actionZoomIn">
