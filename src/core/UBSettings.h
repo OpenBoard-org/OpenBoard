@@ -187,8 +187,7 @@ class UBSettings : public QObject
         static QColor documentSizeMarkColorLightBackground;
 
         // Background grid
-        static int crossSize;
-        static int defaultCrossSize;
+        static int crossSize;        
         static int minCrossSize;
         static int maxCrossSize;
 
@@ -300,6 +299,7 @@ class UBSettings : public QObject
         UBSetting* boardDarkBackgroundColor;
         UBSetting* boardCrossColorDarkBackground;
         UBSetting* boardCrossColorLightBackground;
+        UBSetting* boardDefaultCrossSize;
 
         UBColorListSetting* boardDarkBackgroundColors;
         UBColorListSetting* boardGridLightBackgroundColors;

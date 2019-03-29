@@ -143,13 +143,19 @@ void UBBackgroundPalette::showEvent(QShowEvent* event)
 void UBBackgroundPalette::sliderValueChanged(int value)
 {
     UBApplication::boardController->activeScene()->setBackgroundGridSize(value);
-    UBSettings::settings()->crossSize = value; // since this function is called (indirectly, by refresh) when we switch scenes, the settings will always have the current scene's cross size.
+    
+     // since this function is called (indirectly, by refresh) when we switch
+    // scenes, the settings will always have the current scene's cross size.
+    UBSettings::settings()->crossSize=value;
+    mSliderLabel->setText(QString("%1 %2").arg(tr("Grid size")).arg(value));
+    qDebug() << "background grid size: " << value;
 }
 
 void UBBackgroundPalette::defaultBackgroundGridSize()
 {
-    mSlider->setValue(UBSettings::settings()->defaultCrossSize);
-    sliderValueChanged(UBSettings::settings()->defaultCrossSize);
+    int dcs=UBSettings::settings()->boardDefaultCrossSize->get().toInt();
+    mSlider->setValue(dcs);
+    sliderValueChanged(dcs);
 }
 
 void UBBackgroundPalette::backgroundChanged()

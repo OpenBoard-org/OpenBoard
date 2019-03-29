@@ -359,6 +359,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     }
 
     mBackgroundGridSize = UBSettings::settings()->crossSize;
+    qDebug() << "GraphSce: grid size: " << mBackgroundGridSize;
 
 //    Just for debug. Do not delete please
 //    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));

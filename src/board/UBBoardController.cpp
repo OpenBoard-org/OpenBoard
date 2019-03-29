@@ -190,10 +190,15 @@ void UBBoardController::initBackgroundGridSize()
 
     //qDebug() << "resolution ratio: " << resolutionRatio;
 
-    int gridSize = (resolutionRatio * 10. * dpi) / UBGeometryUtils::inchSize;
+    bool suc;
+    int gridSize = UBSettings::settings()->boardDefaultCrossSize->get().toInt(&suc);
+    if (!suc) {
+      gridSize = (resolutionRatio * 10. * dpi) / UBGeometryUtils::inchSize;
+    }
 
+    qDebug() << "boardctl grid size: " << gridSize;  
     UBSettings::settings()->crossSize = gridSize;
-    UBSettings::settings()->defaultCrossSize = gridSize;
+    UBSettings::settings()->boardDefaultCrossSize->setInt(gridSize);
     mActiveScene->setBackgroundGridSize(gridSize);
 
     //qDebug() << "grid size: " << gridSize;
@@ -331,6 +336,7 @@ void UBBoardController::setupToolbar()
 
     colorChoice->displayText(QVariant(settings->appToolBarDisplayText->get().toBool()));
     colorChoice->colorPaletteChanged();
+    colorChoice->setCurrentIndex(settings->penColorIndex());
 
     // Setup line width choice widget
     QList<QAction *> lineWidthActions;
