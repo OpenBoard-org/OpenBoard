@@ -1433,6 +1433,7 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
             return;
         }
 
+        int count = 0;
         int total = ubMime->items().size();
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -1440,16 +1441,60 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
         {
             UBDocumentProxy *fromProxy = sourceItem.documentProxy();
             int fromIndex = sourceItem.sceneIndex();
-            int toIndex = targetDocProxy->pageCount();
+            int toIndex = targetDocProxy->pageCount();            
 
-            UBPersistenceManager::persistenceManager()->copyDocumentScene(fromProxy, fromIndex,
-                                                                          targetDocProxy, toIndex);
+            count++;
+
+            UBApplication::applicationController->showMessage(tr("Copying page %1/%2").arg(count).arg(total), true);
+
+            // TODO UB 4.x Move following code to some controller class
+            UBGraphicsScene *scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(sourceItem.documentProxy(), sourceItem.sceneIndex());
+            if (scene)
+            {
+                UBGraphicsScene* sceneClone = scene->sceneDeepCopy();
+
+                UBDocumentProxy *targetDocProxy = docModel->proxyForIndex(targetIndex);
+
+                foreach (QUrl relativeFile, scene->relativeDependencies())
+                {
+                    QString source = scene->document()->persistencePath() + "/" + relativeFile.toString();
+                    QString target = targetDocProxy->persistencePath() + "/" + relativeFile.toString();
+
+                    QString sourceDecoded = scene->document()->persistencePath() + "/" + relativeFile.toString(QUrl::DecodeReserved);
+                    QString targetDecoded = targetDocProxy->persistencePath() + "/" + relativeFile.toString(QUrl::DecodeReserved);
+
+                    if(QFileInfo(source).isDir())
+                        UBFileSystemUtils::copyDir(source,target);
+                    else{
+                        QFileInfo fi(targetDecoded);
+                        QDir d = fi.dir();
+                        d.mkpath(d.absolutePath());
+                        QFile::copy(sourceDecoded, targetDecoded);
+                    }
+                }
+
+                UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(targetDocProxy, sceneClone, targetDocProxy->pageCount());
+
+                QString thumbTmp(fromProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", fromIndex));
+                QString thumbTo(targetDocProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", toIndex));
+
+                QFile::remove(thumbTo);
+                QFile::copy(thumbTmp, thumbTo);
+
+                Q_ASSERT(QFileInfo(thumbTmp).exists());
+                Q_ASSERT(QFileInfo(thumbTo).exists());
+                const QPixmap *pix = new QPixmap(thumbTmp);
+                UBDocumentController *ctrl = UBApplication::documentController;
+                ctrl->addPixmapAt(pix, toIndex);
+                ctrl->TreeViewSelectionChanged(ctrl->firstSelectedTreeIndex(), QModelIndex());
+            }
+
+            QApplication::restoreOverrideCursor();
+            UBApplication::applicationController->showMessage(tr("%1 pages copied", "", total).arg(total), false);
+
+            docModel->setHighLighted(QModelIndex());
         }
 
-        QApplication::restoreOverrideCursor();
-        UBApplication::applicationController->showMessage(tr("%1 pages copied", "", total).arg(total), false);
-
-        docModel->setHighLighted(QModelIndex());
     }
     else
     {
