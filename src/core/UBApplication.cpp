@@ -351,12 +351,10 @@ int UBApplication::exec(const QString& pFileToImport)
     if (pFileToImport.length() > 0)
         UBApplication::applicationController->importFile(pFileToImport);
 
-    if (UBSettings::settings()->appStartMode->get().toInt() == 0)
-        applicationController->showBoard();
-    else if (UBSettings::settings()->appStartMode->get().toInt() == 1)
+    if (UBSettings::settings()->appStartMode->get().toInt())
         applicationController->showDesktop();
-    else if (UBSettings::settings()->appStartMode->get().toInt() == 2)
-        applicationController->showDocument();
+    else
+        applicationController->showBoard();
 
     emit UBDrawingController::drawingController()->colorPaletteChanged();
 
