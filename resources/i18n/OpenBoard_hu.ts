@@ -860,14 +860,6 @@
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
         <translation>Biztosan el akarsz távolítani 1 oldalt a kiválasztott dokumentumból &apos;%0&apos;?</translation>
     </message>
-    <message>
-        <source>Element ID = </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Content is not supported in destination format.</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>UBApplication</name>
@@ -904,7 +896,7 @@
     </message>
     <message>
         <source>Board drawing...</source>
-        <translation type="vanished">Tábla rajzolása...</translation>
+        <translation>Tábla rajzolása...</translation>
     </message>
 </context>
 <context>
@@ -1069,43 +1061,43 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation type="vanished">Oldal eltávolítása</translation>
+        <translation>Oldal eltávolítása</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation type="vanished">Documentum eltávolítása</translation>
+        <translation>Documentum eltávolítása</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation type="vanished">Biztosan szeretné eltávolítani a &apos;%1&apos; dokumentumot?</translation>
+        <translation>Biztosan szeretné eltávolítani a &apos;%1&apos; dokumentumot?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation type="vanished">Kuka kiürítése</translation>
+        <translation>Kuka kiürítése</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation type="vanished">Biztosan szeretné a kukát üríteni?</translation>
+        <translation>Biztosan szeretné a kukát üríteni?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation type="vanished">Kuka kiürítése folyamatban</translation>
+        <translation>Kuka kiürítése folyamatban</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation type="vanished">Kuka kiürítve</translation>
+        <translation>Kuka kiürítve</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation type="vanished">Mappa eltávolítása</translation>
+        <translation>Mappa eltávolítása</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="vanished">Biztosan eltávolítja a(z) &apos;%1&apos; mappát és minden tartalmát?</translation>
+        <translation>Biztosan eltávolítja a(z) &apos;%1&apos; mappát és minden tartalmát?</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation type="vanished">Nincs dokumentum kiválasztva!</translation>
+        <translation>Nincs dokumentum kiválasztva!</translation>
     </message>
     <message>
         <source>Open Supported File</source>
@@ -1153,7 +1145,7 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="vanished">
+        <translation>
             <numerusform>Biztosan szeretne eltávolítani %n oldalt a kiválasztott &apos;%1&apos; dokumentumból?</numerusform>
         </translation>
     </message>
@@ -1171,30 +1163,11 @@
     </message>
     <message>
         <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="vanished">Biztosan szeretne eltávolítani minden kiválasztott dokumentumot?</translation>
+        <translation>Biztosan szeretne eltávolítani minden kiválasztott dokumentumot?</translation>
     </message>
     <message>
         <source>Remove multiple documents</source>
-        <translation type="vanished">Több dokumentum eltávolítása</translation>
-    </message>
-    <message numerus="yes">
-        <source>duplicated %1 page</source>
-        <comment>duplicated %1 pages</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Remove Item</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Title page</source>
-        <translation type="unfinished"></translation>
+        <translation>Több dokumentum eltávolítása</translation>
     </message>
 </context>
 <context>
@@ -1241,80 +1214,18 @@
     </message>
 </context>
 <context>
-    <name>UBDocumentNavigator</name>
-    <message>
-        <source>Page %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>UBDocumentReplaceDialog</name>
-    <message>
-        <source>Accept</source>
-        <translation type="unfinished">Elfogad</translation>
-    </message>
-    <message>
-        <source>Replace</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished">Mégse</translation>
-    </message>
-    <message>
-        <source>The name %1 is allready used.
-Keeping this name will replace the document.
-Providing a new name will create a new document.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>UBDocumentTreeModel</name>
-    <message>
-        <source>My documents</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trash</source>
-        <translation type="unfinished">Kuka</translation>
-    </message>
-    <message numerus="yes">
-        <source>%1 pages copied</source>
-        <translation type="unfinished">
-            <numerusform>%1 oldal másolva</numerusform>
-        </translation>
-    </message>
-</context>
-<context>
-    <name>UBDocumentTreeView</name>
-    <message numerus="yes">
-        <source>%1 pages copied</source>
-        <translation type="unfinished">
-            <numerusform>%1 oldal másolva</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Remove Item</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>UBDocumentTreeWidget</name>
     <message>
         <source>%1 (copy)</source>
-        <translation type="vanished">%1 (másolás)</translation>
+        <translation>%1 (másolás)</translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation type="vanished">%1/%2 oldal másolása</translation>
+        <translation>%1/%2 oldal másolása</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="vanished">
+        <translation>
             <numerusform>%1 oldal másolva</numerusform>
         </translation>
     </message>
@@ -1328,13 +1239,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Cancel</source>
         <translation>Mégse</translation>
-    </message>
-</context>
-<context>
-    <name>UBDraggableThumbnail</name>
-    <message>
-        <source>Page %0</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1372,29 +1276,6 @@ Providing a new name will create a new document.</source>
     </message>
 </context>
 <context>
-    <name>UBExportCFF</name>
-    <message>
-        <source>Export to IWB</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export as IWB File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Exporting document...</source>
-        <translation type="unfinished">Dokumentum exportálása...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="unfinished">Exportálás sikeres.</translation>
-    </message>
-    <message>
-        <source>Export failed.</source>
-        <translation type="unfinished">Exportálás sikertelen.</translation>
-    </message>
-</context>
-<context>
     <name>UBExportDocument</name>
     <message>
         <source>Page</source>
@@ -1411,33 +1292,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Export to OpenBoard Format</source>
         <translation>Exportálás OpenBoard formátumba</translation>
-    </message>
-</context>
-<context>
-    <name>UBExportDocumentSetAdaptor</name>
-    <message>
-        <source>Failed to export...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export as UBX File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Exporting document...</source>
-        <translation type="unfinished">Dokumentum exportálása...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="unfinished">Exportálás sikeres.</translation>
-    </message>
-    <message>
-        <source>Export failed.</source>
-        <translation type="unfinished">Exportálás sikertelen.</translation>
-    </message>
-    <message>
-        <source>Export to OpenBoard UBX Format</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1705,29 +1559,6 @@ Providing a new name will create a new document.</source>
     </message>
 </context>
 <context>
-    <name>UBImportCFF</name>
-    <message>
-        <source>Common File Format (</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Importing file %1...</source>
-        <translation type="unfinished">%1 fájl importálása...</translation>
-    </message>
-    <message>
-        <source>Import of file %1 failed.</source>
-        <translation type="unfinished">%1 fájl importálása sikertelen.</translation>
-    </message>
-    <message>
-        <source>Import successful.</source>
-        <translation type="unfinished">Importálás sikeres.</translation>
-    </message>
-    <message>
-        <source>Import failed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>UBImportDocument</name>
     <message>
         <source>Importing file %1...</source>
@@ -1744,13 +1575,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>OpenBoard (*.ubz)</source>
         <translation>OpenBoard (*.ubz)</translation>
-    </message>
-</context>
-<context>
-    <name>UBImportDocumentSetAdaptor</name>
-    <message>
-        <source>Openboard (set of documents) (*.ubx)</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1896,15 +1720,11 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     </message>
     <message>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="vanished">elveszítette a &apos;%1&apos; dokumentum repository hozzáférését. Sajnálatosan az alkalmazásnak le kellett állnia, hogy elkerülje az adatsérülést. A legutóbbi változtatások elveszhettek.</translation>
+        <translation>elveszítette a &apos;%1&apos; dokumentum repository hozzáférését. Sajnálatosan az alkalmazásnak le kellett állnia, hogy elkerülje az adatsérülést. A legutóbbi változtatások elveszhettek.</translation>
     </message>
     <message>
         <source>Moving page to trash folder...</source>
-        <translation type="vanished">Oldal áthelyezése a kukába...</translation>
-    </message>
-    <message>
-        <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
+        <translation>Oldal áthelyezése a kukába...</translation>
     </message>
 </context>
 <context>
@@ -2008,34 +1828,34 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation type="vanished">Proxy belépés</translation>
+        <translation>Proxy belépés</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="vanished">Felhasználónév:</translation>
+        <translation>Felhasználónév:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="vanished">Jelszó:</translation>
+        <translation>Jelszó:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation type="vanished">Dokumentum publikálása a WEBre</translation>
+        <translation>Dokumentum publikálása a WEBre</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation type="vanished">Cím:</translation>
+        <translation>Cím:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="vanished">Leírás:</translation>
+        <translation>Leírás:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation type="vanished">Publikálás</translation>
+        <translation>Publikálás</translation>
     </message>
 </context>
 <context>
@@ -2071,7 +1891,7 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     </message>
     <message>
         <source>loading thumbnail of page %1</source>
-        <translation type="vanished">%1. oldal előképének betöltése</translation>
+        <translation>%1. oldal előképének betöltése</translation>
     </message>
 </context>
 <context>
@@ -2592,22 +2412,6 @@ p, li { white-space: pre-wrap; }
         <source>OpenBoard Documents</source>
         <translation>OpenBoard Dokumentumok</translation>
     </message>
-    <message>
-        <source>Creation date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Update date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Alphabetical order</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sort Order</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>preferencesDialog</name>
@@ -2774,14 +2578,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>On Light Background</source>
         <translation>Világos háttéren</translation>
-    </message>
-    <message>
-        <source>Swap first and second view displays</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Document</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

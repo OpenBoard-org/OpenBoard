@@ -2856,10 +2856,6 @@ p, li { white-space: pre-wrap; }
         <source>Grid</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Document</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>trapFlashDialog</name>
