@@ -1313,6 +1313,10 @@ Providing a new name will create a new document.</source>
         <source>Are you sure you want to remove the selected item(s) ?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Copying page %1/%2</source>
+        <translation type="unfinished">Kopíruje sa stránka %1/%2</translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentTreeWidget</name>

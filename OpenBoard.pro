@@ -391,11 +391,11 @@ macx {
        TRANSLATION_gl.path = "$$RESOURCES_DIR/gl.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_gl
    }
-   exists(resources/i18n/OpenBoard_ua.qm) {
-       TRANSLATION_ua.files = resources/i18n/OpenBoard_ua.qm \
+   exists(resources/i18n/OpenBoard_uk.qm) {
+       TRANSLATION_uk.files = resources/i18n/OpenBoard_uk.qm \
            resources/i18n/localizable.strings
-       TRANSLATION_ua.path = "$$RESOURCES_DIR/ua.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_ua
+       TRANSLATION_uk.path = "$$RESOURCES_DIR/uk.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_uk
    }
    exists(resources/i18n/OpenBoard_hu.qm) {
        TRANSLATION_hu.files = resources/i18n/OpenBoard_hu.qm \
@@ -473,7 +473,7 @@ TRANSLATIONS = resources/i18n/OpenBoard_en.ts \
    resources/i18n/OpenBoard_tr.ts \
    resources/i18n/OpenBoard_cs.ts \
    resources/i18n/OpenBoard_gl.ts \
-   resources/i18n/OpenBoard_ua.ts \
+   resources/i18n/OpenBoard_uk.ts \
    resources/i18n/OpenBoard_hu.ts \
    resources/i18n/OpenBoard_mg.ts
 
