@@ -354,7 +354,7 @@ int UBApplication::exec(const QString& pFileToImport)
     else
         applicationController->showBoard();
 
-    //UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Pen);
+    UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Pen);
     emit UBDrawingController::drawingController()->colorPaletteChanged();
 
     onScreenCountChanged(1);
