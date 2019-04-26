@@ -1311,6 +1311,10 @@ Proporcionar un novo nome creará un novo documento.</translation>
         <source>Are you sure you want to remove the selected item(s) ?</source>
         <translation>¿Está seguro que desexa eliminar o/s elemento(s) seleccionado(s) ?</translation>
     </message>
+    <message>
+        <source>Copying page %1/%2</source>
+        <translation type="unfinished">Copiando páxina %1/%2</translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentTreeWidget</name>

@@ -1180,7 +1180,7 @@
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">¿Está seguro de que desexa eliminar els elements seleccionats?</translation>
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
@@ -1303,6 +1303,10 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
         <translation>¿Está seguro de que desexa eliminar els elements seleccionats?</translation>
+    </message>
+    <message>
+        <source>Copying page %1/%2</source>
+        <translation type="unfinished">S&apos;està copiant la pàgina %1/%2</translation>
     </message>
 </context>
 <context>

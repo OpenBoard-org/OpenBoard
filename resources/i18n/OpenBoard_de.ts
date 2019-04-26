@@ -1318,6 +1318,10 @@ Wenn Sie einen neuen Namen wählen, wird ein neues Dokument erstellt.</translati
         <source>Are you sure you want to remove the selected item(s) ?</source>
         <translation>Möchten Sie die ausgewählten Elemente wirklich entfernen ?</translation>
     </message>
+    <message>
+        <source>Copying page %1/%2</source>
+        <translation type="unfinished">Seite %1/%2 wird kopiert</translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentTreeWidget</name>

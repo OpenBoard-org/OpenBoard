@@ -10,7 +10,7 @@ CONFIG += debug_and_release \
 
 VERSION_MAJ = 1
 VERSION_MIN = 5
-VERSION_PATCH = 2
+VERSION_PATCH = 3
 VERSION_TYPE = r # a = alpha, b = beta, rc = release candidate, r = release, other => error
 VERSION_BUILD = 0
 
@@ -60,11 +60,11 @@ include(src/podcast/podcast.pri)
 include(src/tools/tools.pri)
 include(src/desktop/desktop.pri)
 include(src/web/web.pri)
+include(src/qtsingleapplication/src/qtsingleapplication.pri)
 
 DEPENDPATH += src/pdf-merger
 INCLUDEPATH += src/pdf-merger
 include(src/pdf-merger/pdfMerger.pri)
-
 
 #plugins
 include(plugins/plugins.pri)
@@ -74,10 +74,6 @@ INCLUDEPATH += plugins/cffadaptor/src
 DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
 INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
 include($$THIRD_PARTY_PATH/quazip/quazip.pri)
-DEPENDPATH += $$THIRD_PARTY_PATH/qt/singleapplication
-INCLUDEPATH += $$THIRD_PARTY_PATH/qt/singleapplication
-include($$THIRD_PARTY_PATH/qt/singleapplication/qtsingleapplication.pri)
-include($$THIRD_PARTY_PATH/qt/lockedfile/qtlockedfile.pri)
 
 FORMS += resources/forms/mainWindow.ui \
    resources/forms/preferences.ui \
@@ -167,6 +163,12 @@ macx {
    LIBS += -framework AVFoundation
    LIBS += -framework CoreMedia
    LIBS += -lcrypto
+
+   LIBS += -L/usr/local/opt/quazip/lib
+   LIBS += -L/usr/local/opt/ffmpeg/lib
+   INCLUDEPATH += /usr/local/opt/openssl/include
+   INCLUDEPATH += /usr/local/opt/ffmpeg/include
+   INCLUDEPATH += /usr/local/opt/quazip/include
 
    CONFIG(release, debug|release):CONFIG += x86_64
    CONFIG(debug, debug|release):CONFIG += x86_64
@@ -389,11 +391,11 @@ macx {
        TRANSLATION_gl.path = "$$RESOURCES_DIR/gl.lproj"
        QMAKE_BUNDLE_DATA += TRANSLATION_gl
    }
-   exists(resources/i18n/OpenBoard_ua.qm) {
-       TRANSLATION_ua.files = resources/i18n/OpenBoard_ua.qm \
+   exists(resources/i18n/OpenBoard_uk.qm) {
+       TRANSLATION_uk.files = resources/i18n/OpenBoard_uk.qm \
            resources/i18n/localizable.strings
-       TRANSLATION_ua.path = "$$RESOURCES_DIR/ua.lproj"
-       QMAKE_BUNDLE_DATA += TRANSLATION_ua
+       TRANSLATION_uk.path = "$$RESOURCES_DIR/uk.lproj"
+       QMAKE_BUNDLE_DATA += TRANSLATION_uk
    }
    exists(resources/i18n/OpenBoard_hu.qm) {
        TRANSLATION_hu.files = resources/i18n/OpenBoard_hu.qm \
@@ -471,7 +473,7 @@ TRANSLATIONS = resources/i18n/OpenBoard_en.ts \
    resources/i18n/OpenBoard_tr.ts \
    resources/i18n/OpenBoard_cs.ts \
    resources/i18n/OpenBoard_gl.ts \
-   resources/i18n/OpenBoard_ua.ts \
+   resources/i18n/OpenBoard_uk.ts \
    resources/i18n/OpenBoard_hu.ts \
    resources/i18n/OpenBoard_mg.ts
 

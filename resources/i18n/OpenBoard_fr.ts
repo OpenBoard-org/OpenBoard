@@ -1328,6 +1328,10 @@ Un nouveau nom vous permettra de conserver l&apos;ancien document.</translation>
         <source>Are you sure you want to remove the selected item(s) ?</source>
         <translation>Voulez-vous vraiment supprimer le(s) élément(s) sélectionné(s) ?</translation>
     </message>
+    <message>
+        <source>Copying page %1/%2</source>
+        <translation type="unfinished">Copie de la page %1/%2 en cours</translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentTreeWidget</name>
