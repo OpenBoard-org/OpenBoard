@@ -102,7 +102,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     mTransparentDrawingView->setScene(mTransparentDrawingScene);
     mTransparentDrawingScene->setDrawingMode(true);
 
-    mDesktopPalette = new UBDesktopPalette(mTransparentDrawingView, rightPalette); 
+    mDesktopPalette = new UBDesktopPalette(mTransparentDrawingView, rightPalette);
     // This was not fix, parent reverted
     // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
 
@@ -903,6 +903,10 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
         }
 
 #ifdef Q_OS_LINUX
+        // workaround required for Ubuntu 18 (issue : drawing is not visible in Desktop Mode until updateMask is recalled)
+        QRect desktopRect = QApplication::desktop()->screenGeometry(mDesktopPalette->pos());
+        p.drawRect(desktopRect);
+
         //Rquiered only for compiz wm
         //TODO. Window manager detection screen
 
