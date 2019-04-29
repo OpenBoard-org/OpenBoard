@@ -222,16 +222,15 @@ void UBDisplayManager::adjustScreens(int screen)
 
 void UBDisplayManager::positionScreens()
 {
-
     if(mDesktopWidget && mControlScreenIndex > -1)
     {
         mDesktopWidget->hide();
-        mDesktopWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
+        mDesktopWidget->setGeometry(mDesktop->availableGeometry(mDesktopWidget));
     }
     if (mControlWidget && mControlScreenIndex > -1)
     {
         mControlWidget->hide();
-        mControlWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
+        mControlWidget->setGeometry(mDesktop->availableGeometry(mControlWidget));
         UBPlatformUtils::showFullScreen(mControlWidget);
     }
 
