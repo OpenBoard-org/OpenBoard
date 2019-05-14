@@ -2176,7 +2176,7 @@ Miniaturansicht der Seite %1 wird geladen</translation>
     </message>
     <message>
         <source>Compass</source>
-        <translation>Kompass</translation>
+        <translation>Zirkel</translation>
     </message>
     <message>
         <source>Protractor</source>
