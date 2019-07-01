@@ -59,6 +59,7 @@ UBDocumentNavigator::UBDocumentNavigator(QWidget *parent, const char *name):QGra
   , mThumbnailWidth(0)
   , mThumbnailMinWidth(100)
   , mSelectedThumbnail(NULL)
+  , mLastClickedThumbnail(NULL)
   , mDropSource(NULL)
   , mDropTarget(NULL)
   , mDropBar(new QGraphicsRectItem())
@@ -285,50 +286,65 @@ void UBDocumentNavigator::resizeEvent(QResizeEvent *event)
  */
 void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
 {
-    mLongPressTimer.start();
-    mLastPressedMousePos = event->pos();
+    QGraphicsView::mousePressEvent(event);
 
-    QGraphicsItem* pClickedItem = itemAt(event->pos());
-    if(NULL != pClickedItem)
+    if (!event->isAccepted())
     {
+        mLongPressTimer.start();
+        mLastPressedMousePos = event->pos();
 
-        // First, select the clicked item
-        UBSceneThumbnailNavigPixmap* pCrntItem = dynamic_cast<UBSceneThumbnailNavigPixmap*>(pClickedItem);
+        mLastClickedThumbnail = clickedThumbnail(mLastPressedMousePos);
 
-        if(NULL == pCrntItem)
+        if(mLastClickedThumbnail)
+        {
+            int index = 0;
+            for(int i = 0; i < mThumbsWithLabels.size(); i++)
+            {
+                if (mThumbsWithLabels.at(i).getThumbnail() == mLastClickedThumbnail)
+                {
+                    mSelectedThumbnail = mLastClickedThumbnail;
+                    index = i;
+                    break;
+                }
+            }
+            UBApplication::boardController->persistViewPositionOnCurrentScene();
+            UBApplication::boardController->persistCurrentScene();
+            UBApplication::boardController->setActiveDocumentScene(index);
+            UBApplication::boardController->centerOn(UBApplication::boardController->activeScene()->lastCenter());
+        }
+    }
+}
+
+UBSceneThumbnailNavigPixmap* UBDocumentNavigator::clickedThumbnail(const QPoint pos) const
+{
+    UBSceneThumbnailNavigPixmap* clickedThumbnail = NULL;
+
+    QGraphicsItem* clickedItem = itemAt(pos);
+
+    if(clickedItem)
+    {
+        clickedThumbnail = dynamic_cast<UBSceneThumbnailNavigPixmap*>(clickedItem);
+
+        if(!clickedThumbnail)
         {
             // If we fall here we may have clicked on the label instead of the thumbnail
-            UBThumbnailTextItem* pTextItem = dynamic_cast<UBThumbnailTextItem*>(pClickedItem);
-            if(NULL != pTextItem)
+            UBThumbnailTextItem* clickedTextItem = dynamic_cast<UBThumbnailTextItem*>(clickedItem);
+            if(clickedTextItem)
             {
                 for(int i = 0; i < mThumbsWithLabels.size(); i++)
                 {
                     const UBImgTextThumbnailElement& el = mThumbsWithLabels.at(i);
-                    if(el.getCaption() == pTextItem)
+                    if(el.getCaption() == clickedTextItem)
                     {
-                        pCrntItem = el.getThumbnail();
+                        clickedThumbnail = el.getThumbnail();
                         break;
                     }
                 }
             }
         }
-
-        int index = 0;
-        for(int i = 0; i < mThumbsWithLabels.size(); i++)
-        {
-            if (mThumbsWithLabels.at(i).getThumbnail() == pCrntItem)
-            {
-                mSelectedThumbnail = pCrntItem;
-                index = i;
-                break;
-            }
-        }
-        UBApplication::boardController->persistViewPositionOnCurrentScene();
-        UBApplication::boardController->persistCurrentScene();
-        UBApplication::boardController->setActiveDocumentScene(index);
-        UBApplication::boardController->centerOn(UBApplication::boardController->activeScene()->lastCenter());
     }
-    QGraphicsView::mousePressEvent(event);
+
+    return clickedThumbnail;
 }
 
 void UBDocumentNavigator::mouseReleaseEvent(QMouseEvent *event)
@@ -346,13 +362,13 @@ void UBDocumentNavigator::longPressTimeout()
 
 void UBDocumentNavigator::mousePressAndHoldEvent(QPoint pos)
 {
-    UBSceneThumbnailNavigPixmap* item = dynamic_cast<UBSceneThumbnailNavigPixmap*>(itemAt(pos));
-    if (item)
+   // UBSceneThumbnailNavigPixmap* item = dynamic_cast<UBSceneThumbnailNavigPixmap*>(itemAt(pos));
+    if (mLastClickedThumbnail)
     {
-        mDropSource = item;
-        mDropTarget = item;
+        mDropSource = mLastClickedThumbnail;
+        mDropTarget = mLastClickedThumbnail;
 
-        QPixmap pixmap = item->pixmap().scaledToWidth(mThumbnailWidth/2);
+        QPixmap pixmap = mLastClickedThumbnail->pixmap().scaledToWidth(mThumbnailWidth/2);
 
         QDrag *drag = new QDrag(this);
         drag->setMimeData(new QMimeData());

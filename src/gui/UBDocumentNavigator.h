@@ -53,6 +53,7 @@ public:
     int nbColumns();
     void setThumbnailMinWidth(int width);
     int thumbnailMinWidth();
+    UBSceneThumbnailNavigPixmap* clickedThumbnail(const QPoint pos) const;
 
 public slots:
     void onScrollToSelectedPage(int index);// { if (mCrntItem) centerOn(mCrntItem); }
@@ -94,7 +95,7 @@ private:
     int mThumbnailMinWidth;
     /** The selected thumbnail */
     UBSceneThumbnailNavigPixmap* mSelectedThumbnail;
-
+    UBSceneThumbnailNavigPixmap* mLastClickedThumbnail;
     UBSceneThumbnailNavigPixmap* mDropSource;
     UBSceneThumbnailNavigPixmap* mDropTarget;
     QGraphicsRectItem *mDropBar;

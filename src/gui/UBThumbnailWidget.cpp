@@ -773,10 +773,7 @@ UBThumbnail::~UBThumbnail()
 
 UBSceneThumbnailNavigPixmap::UBSceneThumbnailNavigPixmap(const QPixmap& pix, UBDocumentProxy* proxy, int pSceneIndex)
     : UBSceneThumbnailPixmap(pix, proxy, pSceneIndex)
-    , bButtonsVisible(false)
-    , bCanDelete(false)
-    , bCanMoveUp(false)
-    , bCanMoveDown(false)
+    , mEditable(false)
 {
     if(0 <= UBDocumentContainer::pageFromSceneIndex(pSceneIndex)){
         setAcceptHoverEvents(true);
@@ -792,49 +789,30 @@ UBSceneThumbnailNavigPixmap::~UBSceneThumbnailNavigPixmap()
 void UBSceneThumbnailNavigPixmap::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     event->accept();
-    bButtonsVisible = true;
-    bCanDelete = true;
-    bCanMoveDown = false;
-    bCanMoveUp = false;
-    if(sceneIndex() < proxy()->pageCount() - 1)
-        bCanMoveDown = true;
-    if(sceneIndex() > 0)
-        bCanMoveUp = true;
-    if(proxy()->pageCount() == 1)
-        bCanDelete = false;
+    showUI();
     update();
 }
 
 void UBSceneThumbnailNavigPixmap::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     event->accept();
-    bButtonsVisible = false;
+    hideUI();
     update();
 }
 
 void UBSceneThumbnailNavigPixmap::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
-
     UBSceneThumbnailPixmap::paint(painter, option, widget);
-    if(bButtonsVisible)
+    using namespace UBThumbnailUI;
+
+    if (editable())
     {
-        if(bCanDelete)
-            painter->drawPixmap(0, 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/close.svg"));
+        if(deletable())
+            draw(painter, *getIcon("close"));
         else
-            painter->drawPixmap(0, 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/closeDisabled.svg"));
+            draw(painter, *getIcon("closeDisabled"));
 
-        painter->drawPixmap(BUTTONSIZE + BUTTONSPACING, 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/duplicate.svg"));
-
-//        if(bCanMoveUp)
-//            painter->drawPixmap(2*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/moveUp.svg"));
-//        else
-//            painter->drawPixmap(2*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/moveUpDisabled.svg"));
-//        if(bCanMoveDown)
-//            painter->drawPixmap(3*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/menu.svg"));
-//        else
-//            painter->drawPixmap(3*(BUTTONSIZE + BUTTONSPACING), 0, BUTTONSIZE, BUTTONSIZE, QPixmap(":images/menuDisabled.svg"));
+        draw(painter, *getIcon("duplicate"));
     }
 }
 
@@ -842,18 +820,41 @@ void UBSceneThumbnailNavigPixmap::mousePressEvent(QGraphicsSceneMouseEvent *even
 {
     QPointF p = event->pos();
 
-    // Here we check the position of the click and verify if it has to trig an action or not.
-    if(bCanDelete && p.x() >= 0 && p.x() <= BUTTONSIZE && p.y() >= 0 && p.y() <= BUTTONSIZE)
-        deletePage();
-    if(p.x() >= BUTTONSIZE + BUTTONSPACING && p.x() <= 2*BUTTONSIZE + BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE)
-        duplicatePage();
+    using namespace UBThumbnailUI;
 
-//    if(bCanMoveUp && p.x() >= 2*(BUTTONSIZE + BUTTONSPACING) && p.x() <= 3*BUTTONSIZE + 2*BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE)
-//        moveUpPage();
-//    if(bCanMoveDown && p.x() >= 3*(BUTTONSIZE + BUTTONSPACING) && p.x() <= 4*BUTTONSIZE + 3*BUTTONSPACING && p.y() >= 0 && p.y() <= BUTTONSIZE)
-//        moveDownPage();
-
-    event->accept();
+    if (triggered(p.y()))
+    {
+        if(deletable() && getIcon("close")->triggered(p.x()))
+        {
+            event->accept();
+            deletePage();
+        }
+        else if(getIcon("duplicate")->triggered(p.x()))
+        {
+            event->accept();
+            duplicatePage();
+        }
+        else
+        {
+            event->ignore();
+        }
+        /*
+        else if(movableUp() && getIcon("moveUp")->triggered(p.x()))
+        {
+            event->accept();
+            moveUpPage();
+        }
+        else if (movableDown() && getIcon("moveDown")->triggered(p.x()))
+        {
+            event->accept();
+            moveDownPage();
+        }
+        */
+    }
+    else
+    {
+        event->ignore();
+    }
 }
 
 void UBSceneThumbnailNavigPixmap::deletePage()
