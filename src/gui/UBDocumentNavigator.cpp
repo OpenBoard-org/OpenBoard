@@ -87,7 +87,7 @@ UBDocumentNavigator::UBDocumentNavigator(QWidget *parent, const char *name):QGra
 
     connect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressTimeout()), Qt::UniqueConnection);
 
-    connect(this, SIGNAL(mousePressAndHoldEventRequired(QPoint)), this, SLOT(mousePressAndHoldEvent(QPoint)), Qt::UniqueConnection);
+    connect(this, SIGNAL(mousePressAndHoldEventRequired()), this, SLOT(mousePressAndHoldEvent()), Qt::UniqueConnection);
 }
 
 /**
@@ -109,6 +109,12 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 {
     mThumbsWithLabels.clear();
     int selectedIndex = -1;
+    int lastClickedIndex = -1;
+    if (mLastClickedThumbnail)
+    {
+        lastClickedIndex = mLastClickedThumbnail->sceneIndex();
+    }
+
     QList<QGraphicsItem*> graphicsItemList = mScene->items();
     for(int i = 0; i < graphicsItemList.size(); i+=1)
     {
@@ -144,6 +150,9 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
         thumbWithText.setBorder(border());
         mThumbsWithLabels.append(thumbWithText);
 
+        if (lastClickedIndex == i)
+            mLastClickedThumbnail = pixmapItem;
+
         mScene->addItem(pixmapItem);
         mScene->addItem(labelItem);
     }
@@ -174,7 +183,7 @@ void UBDocumentNavigator::onScrollToSelectedPage(int index)
         c++;
     }
     if(NULL != mSelectedThumbnail)
-        centerOn(mSelectedThumbnail);
+        ensureVisible(mSelectedThumbnail);
 }
 
 /**
@@ -193,6 +202,8 @@ void UBDocumentNavigator::updateSpecificThumbnail(int iPage)
         mScene->removeItem(oldItem);
         mScene->addItem(newItem);
         mThumbsWithLabels[iPage].setThumbnail(newItem);
+        if (mLastClickedThumbnail == oldItem)
+            mLastClickedThumbnail = newItem;
         delete oldItem;
         oldItem = NULL;
     }
@@ -274,7 +285,7 @@ void UBDocumentNavigator::resizeEvent(QResizeEvent *event)
     mThumbnailWidth = (width() > mThumbnailMinWidth) ? width() - 2*border() : mThumbnailMinWidth;
 
     if(mSelectedThumbnail)
-        centerOn(mSelectedThumbnail);
+        ensureVisible(mSelectedThumbnail);
 
     // Refresh the scene
     refreshScene();
@@ -297,19 +308,9 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
 
         if(mLastClickedThumbnail)
         {
-            int index = 0;
-            for(int i = 0; i < mThumbsWithLabels.size(); i++)
-            {
-                if (mThumbsWithLabels.at(i).getThumbnail() == mLastClickedThumbnail)
-                {
-                    mSelectedThumbnail = mLastClickedThumbnail;
-                    index = i;
-                    break;
-                }
-            }
             UBApplication::boardController->persistViewPositionOnCurrentScene();
             UBApplication::boardController->persistCurrentScene();
-            UBApplication::boardController->setActiveDocumentScene(index);
+            UBApplication::boardController->setActiveDocumentScene(mLastClickedThumbnail->sceneIndex());
             UBApplication::boardController->centerOn(UBApplication::boardController->activeScene()->lastCenter());
         }
     }
@@ -355,14 +356,13 @@ void UBDocumentNavigator::mouseReleaseEvent(QMouseEvent *event)
 void UBDocumentNavigator::longPressTimeout()
 {
     if (QApplication::mouseButtons() != Qt::NoButton)
-        emit mousePressAndHoldEventRequired(mLastPressedMousePos);
+        emit mousePressAndHoldEventRequired();
 
     mLongPressTimer.stop();
 }
 
-void UBDocumentNavigator::mousePressAndHoldEvent(QPoint pos)
+void UBDocumentNavigator::mousePressAndHoldEvent()
 {
-   // UBSceneThumbnailNavigPixmap* item = dynamic_cast<UBSceneThumbnailNavigPixmap*>(itemAt(pos));
     if (mLastClickedThumbnail)
     {
         mDropSource = mLastClickedThumbnail;
@@ -452,6 +452,7 @@ void UBDocumentNavigator::dropEvent(QDropEvent *event)
 
     mDropSource = NULL;
     mDropTarget = NULL;
+    mLastClickedThumbnail = NULL;
 
     mDropBar->setRect(QRectF());
     mDropBar->hide();
