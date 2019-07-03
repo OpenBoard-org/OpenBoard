@@ -39,6 +39,7 @@
 #include "core/UBDisplayManager.h"
 
 #include "board/UBBoardController.h"
+#include "document/UBDocumentController.h"
 #include "domain/UBGraphicsScene.h"
 #include "board/UBDrawingController.h"
 #include "podcast/UBPodcastController.h"
@@ -136,6 +137,9 @@ void UBPreferencesController::wire()
 
     connect(mPreferencesUI->useSystemOSKCheckBox, SIGNAL(clicked(bool)), settings->useSystemOnScreenKeyboard, SLOT(setBool(bool)));
     connect(mPreferencesUI->useSystemOSKCheckBox, SIGNAL(clicked(bool)), this, SLOT(systemOSKCheckBoxToggled(bool)));
+
+    connect(mPreferencesUI->showDateColumnOnAlphabeticalSort, SIGNAL(clicked(bool)), settings->showDateColumnOnAlphabeticalSort, SLOT(setBool(bool)));
+    connect(mPreferencesUI->showDateColumnOnAlphabeticalSort, SIGNAL(clicked(bool)), UBApplication::documentController, SLOT(refreshDateColumns()));
 
     connect(mPreferencesUI->keyboardPaletteKeyButtonSize, SIGNAL(currentIndexChanged(const QString &)), settings->boardKeyboardPaletteKeyBtnSize, SLOT(setString(const QString &)));
     connect(mPreferencesUI->startModeComboBox, SIGNAL(currentIndexChanged(int)), settings->appStartMode, SLOT(setInt(int)));
@@ -274,6 +278,8 @@ void UBPreferencesController::init()
     mPreferencesUI->useSystemOSKCheckBox->setChecked(settings->useSystemOnScreenKeyboard->get().toBool());
     this->systemOSKCheckBoxToggled(mPreferencesUI->useSystemOSKCheckBox->isChecked());
 
+    mPreferencesUI->showDateColumnOnAlphabeticalSort->setChecked(settings->showDateColumnOnAlphabeticalSort->get().toBool());
+
     mPreferencesUI->startModeComboBox->setCurrentIndex(settings->appStartMode->get().toInt());
 
     mPreferencesUI->useExternalBrowserCheckBox->setChecked(settings->webUseExternalBrowser->get().toBool());
@@ -338,6 +344,8 @@ void UBPreferencesController::defaultSettings()
         mPreferencesUI->startModeComboBox->setCurrentIndex(0);
 
         mPreferencesUI->useSystemOSKCheckBox->setChecked(settings->useSystemOnScreenKeyboard->reset().toBool());
+        mPreferencesUI->showDateColumnOnAlphabeticalSort->setChecked(settings->showDateColumnOnAlphabeticalSort->reset().toBool());
+        UBApplication::documentController->refreshDateColumns();
     }
     else if (mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->penTab)
     {

@@ -429,6 +429,7 @@ class UBDocumentController : public UBDocumentContainer
 
     public slots:
         void createNewDocument();
+        void refreshDateColumns();
         //issue 1629 - NNE - 20131105
         void createNewDocumentInUntitledFolder();
 

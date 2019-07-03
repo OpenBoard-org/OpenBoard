@@ -413,6 +413,8 @@ class UBSettings : public QObject
 
         UBSetting* useSystemOnScreenKeyboard;
 
+        UBSetting* showDateColumnOnAlphabeticalSort;
+
         UBSetting* magnifierDrawingMode;
         UBSetting* autoSaveInterval;
 

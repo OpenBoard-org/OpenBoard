@@ -1989,9 +1989,7 @@ void UBDocumentController::setupViews()
 
         // sort documents according to preferences
         int sortKind  = UBSettings::settings()->documentSortKind->get().toInt();
-        int sortOrder = UBSettings::settings()->documentSortOrder->get().toInt();        
-
-        sortDocuments(sortKind, sortOrder);
+        int sortOrder = UBSettings::settings()->documentSortOrder->get().toInt();
 
         // update icon and button
         mDocumentUI->sortKind->setCurrentIndex(sortKind);
@@ -2019,6 +2017,8 @@ void UBDocumentController::setupViews()
 
         //mDocumentUI->documentTreeView->hideColumn(1);
         mDocumentUI->documentTreeView->hideColumn(2);
+
+        sortDocuments(sortKind, sortOrder);
 
         connect(mDocumentUI->sortKind, SIGNAL(activated(int)), this, SLOT(onSortKindChanged(int)));
         connect(mDocumentUI->sortOrder, SIGNAL(toggled(bool)), this, SLOT(onSortOrderChanged(bool)));
@@ -2055,6 +2055,24 @@ void UBDocumentController::setupViews()
 }
 
 //N/C - NNE - 20140403
+void UBDocumentController::refreshDateColumns()
+{
+    if (UBSettings::settings()->documentSortKind->get().toInt() == UBDocumentController::Alphabetical)
+    {
+        if (!UBSettings::settings()->showDateColumnOnAlphabeticalSort->get().toBool())
+        {
+            mDocumentUI->documentTreeView->hideColumn(1);
+            mDocumentUI->documentTreeView->hideColumn(2);
+        }
+        else
+        {
+            mDocumentUI->documentTreeView->showColumn(1);
+            mDocumentUI->documentTreeView->hideColumn(2);
+        }
+    }
+}
+
+
 void UBDocumentController::sortDocuments(int kind, int order)
 {
     Qt::SortOrder sortOrder = Qt::AscendingOrder;
@@ -2074,6 +2092,11 @@ void UBDocumentController::sortDocuments(int kind, int order)
     }else{
         mSortFilterProxyModel->setSortRole(Qt::DisplayRole);
         mSortFilterProxyModel->sort(0, sortOrder);
+        if (!UBSettings::settings()->showDateColumnOnAlphabeticalSort->get().toBool())
+        {
+            mDocumentUI->documentTreeView->hideColumn(1);
+            mDocumentUI->documentTreeView->hideColumn(2);
+        }
     }
 }
 

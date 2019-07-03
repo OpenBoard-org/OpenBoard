@@ -458,6 +458,8 @@ void UBSettings::init()
 
     useSystemOnScreenKeyboard = new UBSetting(this, "App", "UseSystemOnScreenKeyboard", true);
 
+    showDateColumnOnAlphabeticalSort = new UBSetting(this, "Document", "ShowDateColumnOnAlphabeticalSort", false);
+
     cleanNonPersistentSettings();
     checkNewSettings();
 }
