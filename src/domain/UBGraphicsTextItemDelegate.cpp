@@ -630,7 +630,15 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
             nextCharBrush = cursor.charFormat().foreground();
             iNextPointSize = nextCharFont.pointSize();
 
-            if ((iPointSize != iNextPointSize)||(iCursorPos+iBlockLen >= endPos)||(0 != curFont.family().compare(nextCharFont.family()))||(curBrush != nextCharBrush)){
+            if (
+                    (iPointSize != iNextPointSize)
+                 || (iCursorPos+iBlockLen >= endPos)
+                 || (curFont.family().compare(nextCharFont.family()) != 0)
+                 || (curFont.italic() != nextCharFont.italic())
+                 || (curFont.bold() != nextCharFont.bold())
+                 || (curFont.underline() != nextCharFont.underline())
+                 || (curBrush != nextCharBrush))
+            {
                 bEndofTheSameBlock = true;
                 break;
             }
@@ -647,7 +655,7 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
         textFormat.setFont(tmpFont);
         textFormat.setForeground(curBrush);
         cursor.setPosition (iCursorPos+iBlockLen, QTextCursor::KeepAnchor);
-        cursor.setCharFormat(textFormat);
+        cursor.mergeCharFormat(textFormat);
 
         iCursorPos += iBlockLen;
         cursor.setPosition (iCursorPos, QTextCursor::MoveAnchor);
