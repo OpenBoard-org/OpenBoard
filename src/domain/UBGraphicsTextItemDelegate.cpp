@@ -376,6 +376,7 @@ void UBGraphicsTextItemDelegate::pickColor()
             UBGraphicsTextItem::lastUsedTextColor = selectedColor;
 
             delegated()->setSelected(true);
+            delegated()->document()->adjustSize();
             delegated()->contentsChanged();
         }
     }
