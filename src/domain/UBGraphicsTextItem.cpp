@@ -41,7 +41,7 @@
 #include "core/UBSettings.h"
 
 #include "core/memcheck.h"
-QColor UBGraphicsTextItem::lastUsedTextColor;
+QColor UBGraphicsTextItem::lastUsedTextColor = QColor(Qt::black);
 
 UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent)
     : QGraphicsTextItem(parent)
@@ -79,6 +79,13 @@ UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent)
 
 UBGraphicsTextItem::~UBGraphicsTextItem()
 {
+}
+
+void UBGraphicsTextItem::recolor()
+{
+    UBGraphicsTextItemDelegate * del = dynamic_cast<UBGraphicsTextItemDelegate*>(Delegate());
+    if (del)
+        del->recolor();
 }
 
 void UBGraphicsTextItem::setSelected(bool selected)

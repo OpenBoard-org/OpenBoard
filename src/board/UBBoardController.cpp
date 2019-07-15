@@ -1589,7 +1589,7 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
 
     if(documentChange)
     {
-        UBGraphicsTextItem::lastUsedTextColor = QColor();
+        UBGraphicsTextItem::lastUsedTextColor = QColor(Qt::black);
     }
 
     if (sceneChange)

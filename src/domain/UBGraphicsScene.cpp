@@ -1179,6 +1179,12 @@ void UBGraphicsScene::recolorAllItems()
                 curGroup->setColor(newColor);
             }
         }
+
+        if (item->type() == UBGraphicsTextItem::Type)
+        {
+            UBGraphicsTextItem *textItem = static_cast<UBGraphicsTextItem*>(item);
+            textItem->recolor();
+        }
     }
 
     foreach(QGraphicsView* view, views())

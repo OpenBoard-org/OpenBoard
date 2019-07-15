@@ -115,9 +115,21 @@ UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDele
     QTextCursor curCursor = delegated()->textCursor();
     QTextCharFormat format;
     QFont font(createDefaultFont());
-    font.setPointSize(UBSettings::settings()->fontPointSize());
 
+    font.setPointSize(UBSettings::settings()->fontPointSize());
     format.setFont(font);
+    if (UBSettings::settings()->isDarkBackground())
+    {
+        if (UBGraphicsTextItem::lastUsedTextColor == Qt::black)
+            UBGraphicsTextItem::lastUsedTextColor = Qt::white;
+    }
+    else
+    {
+        if (UBGraphicsTextItem::lastUsedTextColor == Qt::white)
+            UBGraphicsTextItem::lastUsedTextColor = Qt::black;
+    }
+    delegated()->setDefaultTextColor(UBGraphicsTextItem::lastUsedTextColor);
+    format.setForeground(QBrush(UBGraphicsTextItem::lastUsedTextColor));
     curCursor.mergeCharFormat(format);
     delegated()->setTextCursor(curCursor);
     delegated()->setFont(font);
@@ -368,12 +380,14 @@ void UBGraphicsTextItemDelegate::pickColor()
             QColor selectedColor = colorDialog.selectedColor();
             delegated()->setDefaultTextColor(selectedColor);
             QTextCursor curCursor = delegated()->textCursor();
+
             QTextCharFormat format;
             format.setForeground(QBrush(selectedColor));
             curCursor.mergeCharFormat(format);
             delegated()->setTextCursor(curCursor);
 
-            UBGraphicsTextItem::lastUsedTextColor = selectedColor;
+            if (!curCursor.hasComplexSelection())
+                UBGraphicsTextItem::lastUsedTextColor = selectedColor;
 
             delegated()->setSelected(true);
             delegated()->document()->adjustSize();
@@ -666,6 +680,95 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
 
     delegated()->setFont(curFont);
     UBSettings::settings()->setFontPointSize(iPointSize);
+    //returning initial selection
+    cursor.setPosition (anchorPos, QTextCursor::MoveAnchor);
+    cursor.setPosition (cursorPos, QTextCursor::KeepAnchor);
+
+    delegated()->setTextCursor(cursor);
+}
+
+void UBGraphicsTextItemDelegate::recolor()
+{
+    QTextCursor cursor = delegated()->textCursor();
+    QTextCharFormat textFormat;
+
+    int anchorPos = cursor.anchor();
+    int cursorPos = cursor.position();
+
+    if (0 == anchorPos-cursorPos)
+    {
+        // If nothing is selected, then we select all the text
+        cursor.setPosition (0, QTextCursor::MoveAnchor);
+        cursor.setPosition (cursor.document()->characterCount()-1, QTextCursor::KeepAnchor);
+    }
+
+    int startPos = qMin(cursor.anchor(), cursor.position());
+    int endPos = qMax(cursor.anchor(), cursor.position());
+
+    QFont curFont;
+    QFont nextCharFont;
+    bool bEndofTheSameBlock;
+    int iBlockLen;
+    int iCursorPos = startPos;
+    QBrush curBrush;
+    QBrush nextCharBrush;
+
+    cursor.setPosition (startPos, QTextCursor::MoveAnchor);
+    while(iCursorPos < endPos)
+    {
+        bEndofTheSameBlock = false;
+        iBlockLen = 0;
+
+        // Here we get the point size of the first character
+        cursor.setPosition (iCursorPos+1, QTextCursor::KeepAnchor);
+        curBrush = cursor.charFormat().foreground();
+
+        // Then we position the end cursor to the start cursor position
+        cursor.setPosition (iCursorPos, QTextCursor::KeepAnchor);
+
+        do
+        {
+            cursor.setPosition (iCursorPos+iBlockLen+1, QTextCursor::KeepAnchor);
+            nextCharBrush = cursor.charFormat().foreground();
+
+            if (curBrush != nextCharBrush || (iCursorPos+iBlockLen >= endPos))
+            {
+                bEndofTheSameBlock = true;
+                break;
+            }
+
+            iBlockLen++;
+
+        }while(!bEndofTheSameBlock);
+
+
+        //setting new parameters
+        if (UBSettings::settings()->isDarkBackground())
+        {
+            if (curBrush.color() == Qt::black)
+            {
+                curBrush = QBrush(Qt::white);
+            }
+        }
+        else
+        {
+            if (curBrush.color() == Qt::white)
+            {
+                curBrush = QBrush(Qt::black);
+            }
+        }
+
+        cursor.setPosition (iCursorPos+iBlockLen, QTextCursor::KeepAnchor);
+        textFormat.setForeground(curBrush);
+        cursor.mergeCharFormat(textFormat);
+
+        iCursorPos += iBlockLen;
+        cursor.setPosition (iCursorPos, QTextCursor::MoveAnchor);
+
+        curFont = nextCharFont;
+    }
+
+    delegated()->setFont(curFont);
     //returning initial selection
     cursor.setPosition (anchorPos, QTextCursor::MoveAnchor);
     cursor.setPosition (cursorPos, QTextCursor::KeepAnchor);

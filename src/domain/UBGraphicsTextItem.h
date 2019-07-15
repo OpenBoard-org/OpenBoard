@@ -99,6 +99,7 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
         virtual void setUuid(const QUuid &pUuid);
         void activateTextEditor(bool activate);
         void setSelected(bool selected);
+        void recolor();
 
         QString mTypeTextHereLabel;
 
