@@ -181,6 +181,7 @@ chown -R root:root $PACKAGE_DIRECTORY
 
 cp -R resources/customizations $PACKAGE_DIRECTORY/
 cp resources/linux/openboard-ubz.xml $PACKAGE_DIRECTORY/etc/
+cp resources/linux/openboard-ubx.xml $PACKAGE_DIRECTORY/etc/
 
 if $BUNDLE_QT; then
     cp -R resources/linux/run.sh $PACKAGE_DIRECTORY/
@@ -284,6 +285,7 @@ cat > "$BASE_WORKING_DIR/DEBIAN/postinst" << EOF
 
 xdg-desktop-menu install --novendor /usr/share/applications/${APPLICATION_CODE}.desktop
 xdg-mime install --mode system /$APPLICATION_PATH/$APPLICATION_CODE/etc/openboard-ubz.xml
+xdg-mime install --mode system /$APPLICATION_PATH/$APPLICATION_CODE/etc/openboard-ubx.xml
 xdg-mime default /usr/share/applications/${APPLICATION_CODE}.desktop application/ubz
 
 ln -s $SYMLINK_TARGET /usr/bin/$APPLICATION_CODE

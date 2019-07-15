@@ -93,6 +93,7 @@ class UBApplicationController : public QObject
         void showMessage(const QString& message, bool showSpinningWheel);
 
         void importFile(const QString& pFilePath);
+        void importUbx(const QString& pFilePath);
 
         UBDisplayManager* displayManager()
         {
