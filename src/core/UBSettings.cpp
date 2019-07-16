@@ -75,19 +75,19 @@ const char *UBSettings::sDefaultFontFamily = "Arial";
 QString UBSettings::currentFileVersion = "4.8.0";
 
 QBrush UBSettings::eraserBrushDarkBackground = QBrush(QColor(127, 127, 127, 80));
-QBrush UBSettings::eraserBrushLightBackground = QBrush(QColor(255, 255, 255, 30));
+QBrush UBSettings::eraserBrushLightBackground = QBrush(QColor(127, 127, 127, 80));
 
 QPen UBSettings::eraserPenDarkBackground = QPen(QColor(255, 255, 255, 127));
 QPen UBSettings::eraserPenLightBackground = QPen(QColor(0, 0, 0, 127));
 
 QColor UBSettings::markerCircleBrushColorDarkBackground = QColor(127, 127, 127, 80);
-QColor UBSettings::markerCircleBrushColorLightBackground = QColor(255, 255, 255, 30);
+QColor UBSettings::markerCircleBrushColorLightBackground = QColor(127, 127, 127, 80);
 
 QColor UBSettings::markerCirclePenColorDarkBackground = QColor(255, 255, 255, 127);
 QColor UBSettings::markerCirclePenColorLightBackground = QColor(0, 0, 0, 127);
 
 QColor UBSettings::penCircleBrushColorDarkBackground = QColor(127, 127, 127, 80);
-QColor UBSettings::penCircleBrushColorLightBackground = QColor(255, 255, 255, 30);
+QColor UBSettings::penCircleBrushColorLightBackground = QColor(127, 127, 127, 80);
 
 QColor UBSettings::penCirclePenColorDarkBackground = QColor(255, 255, 255, 127);
 QColor UBSettings::penCirclePenColorLightBackground = QColor(0, 0, 0, 127);
