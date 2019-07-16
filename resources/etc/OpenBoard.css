@@ -9,6 +9,7 @@ QWidget:disabled
 }
 
 QComboBox,
+QPushButton,
 QComboBox QAbstractItemView
 {
     background: #dddddd;
