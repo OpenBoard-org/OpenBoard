@@ -188,15 +188,11 @@ void UBPersistenceManager::createDocumentProxiesStructure(const QFileInfoList &c
             }
 
             docProxy->setPageCount(sceneCount(docProxy));
-            bool addDoc = false;
-            if (!interactive) {
-                addDoc = true;
-            } else if (processInteractiveReplacementDialog(docProxy) == QDialog::Accepted) {
-                addDoc = true;
-            }
-            if (addDoc) {
+
+            if (!interactive)
                 mDocumentTreeStructureModel->addDocument(docProxy, parentIndex);
-            }
+            else
+                processInteractiveReplacementDialog(docProxy);
         }
     }
 }
@@ -231,7 +227,9 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
                                                                                  , docList
                                                                                  , /*UBApplication::documentController->mainWidget()*/0
                                                                                  , Qt::Widget);
-            if (replaceDialog->exec() == QDialog::Accepted) {
+            if (replaceDialog->exec() == QDialog::Accepted)
+            {
+                mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
                 result = QDialog::Accepted;
                 QString resultName = replaceDialog->lineEditText();
                 int i = docList.indexOf(resultName);
@@ -256,8 +254,10 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
             replaceDialog->setParent(0);
             delete replaceDialog;
         } else {
+            mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
             result = QDialog::Accepted;
         }
+
     }
     //TODO claudio the if is an hack
     if(UBApplication::overrideCursor())
@@ -452,11 +452,11 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName
     bool addDoc = false;
     if (!promptDialogIfExists) {
         addDoc = true;
+        mDocumentTreeStructureModel->addDocument(doc);
     } else if (processInteractiveReplacementDialog(doc) == QDialog::Accepted) {
         addDoc = true;
     }
     if (addDoc) {
-        mDocumentTreeStructureModel->addDocument(doc);
         emit proxyListChanged();
     } else {
         deleteDocument(doc);
@@ -524,12 +524,12 @@ UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDoc
     bool addDoc = false;
     if (!promptDialogIfExists) {
         addDoc = true;
+        mDocumentTreeStructureModel->addDocument(doc);
     } else if (processInteractiveReplacementDialog(doc) == QDialog::Accepted) {
         addDoc = true;
     }
     if (addDoc) {
         UBMetadataDcSubsetAdaptor::persist(doc);
-        mDocumentTreeStructureModel->addDocument(doc);
         emit proxyListChanged();
         emit documentCreated(doc);
     } else {
