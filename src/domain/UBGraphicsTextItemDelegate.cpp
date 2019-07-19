@@ -386,7 +386,7 @@ void UBGraphicsTextItemDelegate::pickColor()
             curCursor.mergeCharFormat(format);
             delegated()->setTextCursor(curCursor);
 
-            if (!curCursor.hasComplexSelection())
+            if (!curCursor.hasSelection())
                 UBGraphicsTextItem::lastUsedTextColor = selectedColor;
 
             delegated()->setSelected(true);
