@@ -8,6 +8,13 @@ QWidget:disabled
     color: #777777;
 }
 
+QComboBox,
+QPushButton,
+QComboBox QAbstractItemView
+{
+    background: #dddddd;
+}
+
 QTextEdit,
 QLineEdit,
 QComboBox#DockPaletteWidgetComboBox QAbstractItemView
@@ -40,6 +47,7 @@ QMenu
 {
     border: none;
     font-size: 12px;
+    background-color: #dddddd;
 }
 
 QMenu::item
