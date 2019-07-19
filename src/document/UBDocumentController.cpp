@@ -120,8 +120,6 @@ UBDocumentReplaceDialog::UBDocumentReplaceDialog(const QString &pIncommingName, 
     mLineEdit->setText(pIncommingName);
     mLineEdit->selectedText();
 
-    mValidator = new QRegExpValidator(QRegExp("[^\\/]{1,}"), this);
-    mLineEdit->setValidator(mValidator);
     labelLayout->addWidget(mLabelText);
     labelLayout->addWidget(mLineEdit);
 
@@ -1135,8 +1133,9 @@ void UBDocumentTreeModel::setNewName(const QModelIndex &index, const QString &ne
     QString magicSeparator = "+!##s";
     if (isCatalog(index)) {
         QString fullNewName = newName;
+        fullNewName.replace('/', '-');
         if (!newName.contains(magicSeparator)) {
-            indexNode->setNodeName(newName);
+            indexNode->setNodeName(fullNewName);
             QString virtualDir = virtualDirForIndex(index);
             fullNewName.prepend(virtualDir.isEmpty() ? "" : virtualDir + magicSeparator);
         }
@@ -1612,8 +1611,7 @@ void UBDocumentTreeItemDelegate::processChangedText(const QString &str) const
 
 bool UBDocumentTreeItemDelegate::validateString(const QString &str) const
 {
-    return QRegExp("[^\\/]{1,}").exactMatch(str)
-            && !mExistingFileNames.contains(str);
+    return !mExistingFileNames.contains(str);
 }
 
 QWidget *UBDocumentTreeItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
