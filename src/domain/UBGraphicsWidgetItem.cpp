@@ -556,15 +556,6 @@ void UBGraphicsWidgetItem::sendJSLeaveEvent()
         page()->mainFrame()->evaluateJavaScript("if(widget && widget.onleave) { widget.onleave();}");
 }
 
-void UBGraphicsWidgetItem::sendJSResizeEvent()
-{
-    if (page() && page()->mainFrame())
-    {
-        page()->mainFrame()->evaluateJavaScript("if(widget && widget.onresize) { widget.onresize();}");
-        page()->mainFrame()->evaluateJavaScript("if(window && window.onresize) { window.onresize();}");
-    }
-}
-
 void UBGraphicsWidgetItem::injectInlineJavaScript()
 {
     if (!sInlineJavaScriptLoaded) {
@@ -663,7 +654,6 @@ void UBGraphicsWidgetItem::resize(qreal w, qreal h)
 
 void UBGraphicsWidgetItem::resize(const QSizeF & pSize)
 {
-    sendJSResizeEvent();
     if (pSize != size()) {
         QGraphicsWebView::setMaximumSize(pSize.width(), pSize.height());
         QGraphicsWebView::resize(pSize.width(), pSize.height());

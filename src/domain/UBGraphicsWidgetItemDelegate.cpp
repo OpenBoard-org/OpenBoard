@@ -44,7 +44,8 @@
 #include "core/memcheck.h"
 
 UBGraphicsWidgetItemDelegate::UBGraphicsWidgetItemDelegate(UBGraphicsWidgetItem* pDelegated, int widgetType)
-    : UBGraphicsItemDelegate(pDelegated, 0, GF_SCALABLE_Y_AXIS)
+    : UBGraphicsItemDelegate(pDelegated, 0, GF_COMMON
+                             | GF_RESPECT_RATIO)
     , freezeAction(0)
     , setAsToolAction(0)
 {

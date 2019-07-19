@@ -165,7 +165,6 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
         virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
         virtual void sendJSEnterEvent();
         virtual void sendJSLeaveEvent();
-        virtual void sendJSResizeEvent();
         virtual void injectInlineJavaScript();
         virtual void wheelEvent(QGraphicsSceneWheelEvent *event);
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
