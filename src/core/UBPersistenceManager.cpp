@@ -238,6 +238,12 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
                 if (i != -1) { //replace
                     QModelIndex replaceIndex = mDocumentTreeStructureModel->index(i, 0, parentIndex);
                     UBDocumentProxy *replaceProxy = mDocumentTreeStructureModel->proxyData(replaceIndex);
+
+                    if (mDocumentTreeStructureModel->currentIndex() == replaceIndex)
+                    {
+                        UBApplication::documentController->selectDocument(pProxy, true, true);
+                    }
+
                     if (replaceProxy) {
                         deleteDocument(replaceProxy);
                     }
