@@ -11,6 +11,9 @@
 AppId={{8CCA6AC7-BBF9-4DD2-8E70-A907E0FCA38F}}
 AppName=OpenBoard
 AppVersion={#ApplicationVersion}
+AppVerName=OpenBoard {#ApplicationVersion}
+
+
 AppPublisher=Open Education Foundation
 
 AppPublisherURL=http://www.oe-f.org
@@ -140,6 +143,11 @@ Root: HKCR; Subkey: ".ubz"; ValueType: string; ValueName: ""; ValueData: "OpenBo
 Root: HKCR; Subkey: "OpenBoardFile"; ValueType: string; ValueName: ""; ValueData: "OpenBoard document"; Flags: uninsdeletekey
 Root: HKCR; Subkey: "OpenBoardFile\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\OpenBoard.exe,1"
 Root: HKCR; Subkey: "OpenBoardFile\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\OpenBoard.exe"" ""%1"""
+
+Root: HKCR; Subkey: ".ubx"; ValueType: string; ValueName: ""; ValueData: "OpenBoardFileSet"; Flags: uninsdeletevalue
+Root: HKCR; Subkey: "OpenBoardFileSet"; ValueType: string; ValueName: ""; ValueData: "OpenBoard document set"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "OpenBoardFileSet\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\OpenBoard.exe,1"
+Root: HKCR; Subkey: "OpenBoardFileSet\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\OpenBoard.exe"" ""%1"""
 
 Root: HKLM; Subkey: "SOFTWARE\OpenBoard"; ValueType: string; ValueName: "Client application"; ValueData: "{app}\OpenBoard.exe"; Flags: uninsdeletevalue; Check: isProcessorNotX64
 Root: HKLM; Subkey: "SOFTWARE\OpenBoard"; ValueType: dword; ValueName: "Transfer mode"; ValueData: "0"; Flags: uninsdeletevalue; Check: isProcessorNotX64
