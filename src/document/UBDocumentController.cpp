@@ -2500,23 +2500,36 @@ QModelIndex UBDocumentController::findPreviousSiblingNotSelected(const QModelInd
 {
     QModelIndex sibling = index.sibling(index.row() - 1, 0);
 
-    if(sibling.isValid()){
-        //if sibling is not selected and it is a document
-        //else keep searching
+    if(sibling.isValid())
+    {
         if(!parentIsSelected(sibling, selectionModel)
-                && !selectionModel->isSelected(sibling)
-                && !sibling.model()->hasChildren(sibling)){
-            return sibling;
-        }else{
+                && !selectionModel->isSelected(sibling))
+        {
+            QModelIndex model = mSortFilterProxyModel->mapToSource(sibling);
+
+            if(UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->isCatalog(model))
+            {
+                return findPreviousSiblingNotSelected(sibling, selectionModel);
+            }
+            else
+            {
+                return sibling;
+            }
+        }
+        else
+        {
             return findPreviousSiblingNotSelected(sibling, selectionModel);
         }
     }else{
         //if the parent exist keep searching, else stop the search
         QModelIndex parent = index.model()->parent(index);
 
-        if(parent.isValid()){
+        if(parent.isValid())
+        {
             return findPreviousSiblingNotSelected(parent, selectionModel);
-        }else{
+        }
+        else
+        {
             return QModelIndex();
         }
     }
@@ -2526,29 +2539,38 @@ QModelIndex UBDocumentController::findNextSiblingNotSelected(const QModelIndex &
 {
     QModelIndex sibling = index.sibling(index.row() + 1, 0);
 
-    if(sibling.isValid()){
-        //if sibling is not selected and it is a document and its parent are not selected
-        //else keep searching
+    if(sibling.isValid())
+    {
         if(!parentIsSelected(sibling, selectionModel)
-                && !selectionModel->isSelected(sibling)
-                && !sibling.model()->hasChildren(sibling)){
-            QModelIndex model = mSortFilterProxyModel->mapToSource(index);
+            && !selectionModel->isSelected(sibling))
+        {
+            QModelIndex model = mSortFilterProxyModel->mapToSource(sibling);
 
-            if(UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->isCatalog(model)){
-                return QModelIndex();
-            }else{
+            if(UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->isCatalog(model))
+            {
+                return findNextSiblingNotSelected(sibling, selectionModel);
+            }
+            else
+            {
                 return sibling;
             }
-        }else{
+        }
+        else
+        {
             return findNextSiblingNotSelected(sibling, selectionModel);
         }
-    }else{
+    }
+    else
+    {
         //if the parent exist keep searching, else stop the search
         QModelIndex parent = index.parent();
 
-        if(parent.isValid()){
+        if(parent.isValid())
+        {
             return findNextSiblingNotSelected(parent, selectionModel);
-        }else{
+        }
+        else
+        {
             return QModelIndex();
         }
     }
