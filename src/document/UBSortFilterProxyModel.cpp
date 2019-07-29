@@ -4,7 +4,7 @@
 UBSortFilterProxyModel::UBSortFilterProxyModel():
     QSortFilterProxyModel()
 {
-    setDynamicSortFilter(true);
+    setDynamicSortFilter(false);
     setSortCaseSensitivity(Qt::CaseInsensitive);
 }
 

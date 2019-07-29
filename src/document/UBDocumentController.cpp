@@ -1592,6 +1592,7 @@ void UBDocumentTreeItemDelegate::commitAndCloseEditor()
     if (lineEditor) {
         emit commitData(lineEditor);
         //emit closeEditor(lineEditor);
+        emit UBApplication::documentController->reorderDocumentsRequested();
     }
 }
 
@@ -1680,6 +1681,7 @@ UBDocumentController::UBDocumentController(UBMainWindow* mainWindow)
     setupToolbar();
     connect(this, SIGNAL(exportDone()), mMainWindow, SLOT(onExportDone()));
     connect(this, SIGNAL(documentThumbnailsUpdated(UBDocumentContainer*)), this, SLOT(refreshDocumentThumbnailsView(UBDocumentContainer*)));
+    connect(this, SIGNAL(reorderDocumentsRequested()), this, SLOT(reorderDocuments()));
 }
 
 UBDocumentController::~UBDocumentController()
@@ -2070,6 +2072,13 @@ void UBDocumentController::refreshDateColumns()
     }
 }
 
+void UBDocumentController::reorderDocuments()
+{
+   int kindIndex = mDocumentUI->sortKind->currentIndex();
+   int orderIndex = mDocumentUI->sortOrder->isChecked() ? UBDocumentController::DESC : UBDocumentController::ASC;
+
+   sortDocuments(kindIndex, orderIndex);
+}
 
 void UBDocumentController::sortDocuments(int kind, int order)
 {

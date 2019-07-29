@@ -426,10 +426,12 @@ class UBDocumentController : public UBDocumentContainer
 
     signals:
         void exportDone();
+        void reorderDocumentsRequested();
 
     public slots:
         void createNewDocument();
         void refreshDateColumns();
+        void reorderDocuments();
         //issue 1629 - NNE - 20131105
         void createNewDocumentInUntitledFolder();
 
