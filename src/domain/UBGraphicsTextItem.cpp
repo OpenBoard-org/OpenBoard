@@ -253,13 +253,15 @@ void UBGraphicsTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 
     QGraphicsTextItem::paint(painter, &styleOption, widget);
 
-    if (widget == UBApplication::boardController->controlView()->viewport() &&
-            !isSelected() && toPlainText().isEmpty())
+    if (widget == UBApplication::boardController->controlView()->viewport() && !isSelected())
     {
-        painter->setFont(font());
-        painter->setPen(UBSettings::paletteColor);
-        painter->drawText(boundingRect(), Qt::AlignCenter, mTypeTextHereLabel);
         setTextInteractionFlags(Qt::NoTextInteraction);
+        if (toPlainText().isEmpty())
+        {
+            painter->setFont(font());
+            painter->setPen(UBSettings::paletteColor);
+            painter->drawText(boundingRect(), Qt::AlignCenter, mTypeTextHereLabel);
+        }
     }
 
     Delegate()->postpaint(painter, option, widget);
