@@ -743,7 +743,7 @@ void UBGraphicsTextItemDelegate::recolor()
 
 
         //setting new parameters
-        if (UBSettings::settings()->isDarkBackground())
+        if (delegated()->scene()->isDarkBackground())
         {
             if (curBrush.color() == Qt::black)
             {
