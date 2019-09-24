@@ -10,8 +10,8 @@ CONFIG += debug_and_release \
 
 VERSION_MAJ = 1
 VERSION_MIN = 5
-VERSION_PATCH = 3
-VERSION_TYPE = r # a = alpha, b = beta, rc = release candidate, r = release, other => error
+VERSION_PATCH = 4
+VERSION_TYPE = a # a = alpha, b = beta, rc = release candidate, r = release, other => error
 VERSION_BUILD = 0
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$${VERSION_BUILD}"
@@ -164,6 +164,7 @@ macx {
    LIBS += -framework CoreMedia
    LIBS += -lcrypto
 
+   LIBS += -L/usr/local/opt/openssl/lib
    LIBS += -L/usr/local/opt/quazip/lib
    LIBS += -L/usr/local/opt/ffmpeg/lib
    INCLUDEPATH += /usr/local/opt/openssl/include
