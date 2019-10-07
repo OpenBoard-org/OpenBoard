@@ -351,6 +351,7 @@ UBSceneThumbnailNavigPixmap* UBDocumentNavigator::clickedThumbnail(const QPoint 
 void UBDocumentNavigator::mouseReleaseEvent(QMouseEvent *event)
 {
     event->accept();
+    mLongPressTimer.stop();
 }
 
 void UBDocumentNavigator::longPressTimeout()
