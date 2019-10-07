@@ -349,12 +349,7 @@ int UBApplication::exec(const QString& pFileToImport)
     boardController->setupLayout();
 
     if (pFileToImport.length() > 0)
-    {
-        if (pFileToImport.endsWith(".ubx"))
-            UBApplication::applicationController->importUbx(pFileToImport);
-        else
-            UBApplication::applicationController->importFile(pFileToImport);
-    }
+        UBApplication::applicationController->importFile(pFileToImport);
 
     if (UBSettings::settings()->appStartMode->get().toInt())
         applicationController->showDesktop();

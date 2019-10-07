@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
-  <mime-type type="application/ubx">
-    <comment>OpenBoard documents set</comment>
-    <comment xml:lang="fr">Ensemble de documents OpenBoard</comment>
-    <glob pattern="*.ubx"/>
-  </mime-type>
-</mime-info>

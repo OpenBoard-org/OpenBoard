@@ -675,6 +675,7 @@ void UBApplicationController::showMessage(const QString& message, bool showSpinn
     }
 }
 
+
 void UBApplicationController::importFile(const QString& pFilePath)
 {
     const QFile fileToOpen(pFilePath);
@@ -704,26 +705,6 @@ void UBApplicationController::importFile(const QString& pFilePath)
         {
             if (UBApplication::documentController)
                 UBApplication::documentController->selectDocument(document);
-        }
-    }
-}
-
-void UBApplicationController::importUbx(const QString& pFilePath)
-{
-    bool success = false;
-
-    QFileInfoList list = UBDocumentManager::documentManager()->importUbx(pFilePath, UBSettings::userDocumentDirectory());
-
-    success = (list.length() != 0);
-
-    if (success)
-    {
-        if (mMainMode == Board || mMainMode == Internet)
-        {
-            if (UBApplication::boardController)
-            {
-                showBoard();
-            }
         }
     }
 }
