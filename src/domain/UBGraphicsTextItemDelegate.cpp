@@ -353,9 +353,6 @@ void UBGraphicsTextItemDelegate::pickFont()
 
             delegated()->setTextCursor(curCursor);
 
-            if (curCursor.selectedText().length() == 0)
-                delegated()->setFont(selectedFont);
-
             delegated()->setSelected(true);
             delegated()->document()->adjustSize();
             delegated()->contentsChanged();
@@ -378,7 +375,7 @@ void UBGraphicsTextItemDelegate::pickColor()
         if (colorDialog.exec())
         {
             QColor selectedColor = colorDialog.selectedColor();
-            delegated()->setDefaultTextColor(selectedColor);
+
             QTextCursor curCursor = delegated()->textCursor();
 
             QTextCharFormat format;
@@ -386,8 +383,11 @@ void UBGraphicsTextItemDelegate::pickColor()
             curCursor.mergeCharFormat(format);
             delegated()->setTextCursor(curCursor);
 
-            if (!curCursor.hasSelection())
+            if (!curCursor.hasSelection() || (curCursor.selectedText().length() == delegated()->toPlainText().length()))
+            {
+                delegated()->setDefaultTextColor(selectedColor);
                 UBGraphicsTextItem::lastUsedTextColor = selectedColor;
+            }
 
             delegated()->setSelected(true);
             delegated()->document()->adjustSize();
@@ -600,11 +600,9 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
     int anchorPos = cursor.anchor();
     int cursorPos = cursor.position();
 
-    if (0 == anchorPos-cursorPos)
+    if (!cursor.hasSelection())
     {
-        // If nothing is selected, then we select all the text
-        cursor.setPosition (0, QTextCursor::MoveAnchor);
-        cursor.setPosition (cursor.document()->characterCount()-1, QTextCursor::KeepAnchor);
+        cursor.select(QTextCursor::Document);
     }
 
     // Now we got the real start and stop positions
