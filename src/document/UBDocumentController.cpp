@@ -2268,6 +2268,8 @@ void UBDocumentController::duplicateSelectedItem()
 
         showMessage(tr("Document %1 copied").arg(""), false);
     }
+
+    emit reorderDocumentsRequested();
 }
 
 void UBDocumentController::deleteSelectedItem()
