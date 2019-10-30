@@ -280,8 +280,6 @@ void UBGraphicsTextItemDelegate::contentsChanged()
 // will remain in the font list.
 void UBGraphicsTextItemDelegate::customize(QFontDialog &fontDialog)
 {
-    fontDialog.setOption(QFontDialog::DontUseNativeDialog);
-
     if (UBSettings::settings()->isDarkBackground()) {
         fontDialog.setStyleSheet("background-color: white;");
     }
@@ -334,7 +332,11 @@ void UBGraphicsTextItemDelegate::pickFont()
 {
     if (mDelegated && mDelegated->scene() && mDelegated->scene()->views().size() > 0)
     {
-        QFontDialog fontDialog(delegated()->textCursor().charFormat().font(), static_cast<QGraphicsView*>(UBApplication::boardController->controlView()));
+        // https://bugreports.qt.io/browse/QTBUG-79637
+        QFontDialog fontDialog(static_cast<QGraphicsView*>(UBApplication::boardController->controlView()));
+
+        fontDialog.setOption(QFontDialog::DontUseNativeDialog);
+        fontDialog.setCurrentFont(delegated()->textCursor().charFormat().font());
         customize(fontDialog);
 
         if (fontDialog.exec())
