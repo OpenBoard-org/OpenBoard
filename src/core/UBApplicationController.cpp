@@ -543,19 +543,17 @@ void UBApplicationController::downloadJsonFinished(QString currentJson)
           }
     */
 
-    QScriptValue scriptValue;
-    QScriptEngine scriptEngine;
-    scriptValue = scriptEngine.evaluate ("(" + currentJson + ")");
+    QJsonObject jsonObject = QJsonDocument::fromJson(currentJson.toUtf8()).object();
 
     UBVersion installedVersion (qApp->applicationVersion());
-    UBVersion jsonVersion (scriptValue.property("version").toString());
+    UBVersion jsonVersion (jsonObject.value("version").toString());
 
     qDebug() << "json version: " << jsonVersion.toUInt();
     qDebug() << "installed version: " << installedVersion.toUInt();
 
     if (jsonVersion > installedVersion) {
         if (UBApplication::mainWindow->yesNoQuestion(tr("Update available"), tr ("New update available, would you go to the web page ?"))){
-            QUrl url(scriptValue.property("url").toString());
+            QUrl url(jsonObject.value("url").toString());
             QDesktopServices::openUrl(url);
         }
     }

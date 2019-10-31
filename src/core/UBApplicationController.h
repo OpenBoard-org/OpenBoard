@@ -38,8 +38,6 @@
 
 
 #include <QtNetwork/QHttpPart>
-#include <QScriptValue>
-#include <QScriptEngine>
 
 
 class UBBoardView;

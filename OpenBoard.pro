@@ -34,7 +34,6 @@ QT += webkit
 QT += svg
 QT += network
 QT += xml
-QT += script
 QT += xmlpatterns
 QT += uitools
 QT += multimedia
