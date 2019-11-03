@@ -153,19 +153,19 @@
     </message>
     <message>
         <source>Line</source>
-        <translation>Linie</translation>
+        <translation>Strichstärke</translation>
     </message>
     <message>
         <source>Small Line</source>
-        <translation>Kleine Linie</translation>
+        <translation>Dünner Strich</translation>
     </message>
     <message>
         <source>Medium Line</source>
-        <translation>Mittelgroße Linie</translation>
+        <translation>Mittelstarker Strich</translation>
     </message>
     <message>
         <source>Large Line</source>
-        <translation>Große Linie</translation>
+        <translation>Dicker Strich</translation>
     </message>
     <message>
         <source>Quit</source>
@@ -801,11 +801,11 @@
     </message>
     <message>
         <source>Ruled Light Background</source>
-        <translation>Hell linierter Hintergrund</translation>
+        <translation>Heller linierter Hintergrund</translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
-        <translation>Dunkel linierter Hintergrund</translation>
+        <translation>Dunkler linierter Hintergrund</translation>
     </message>
     <message>
         <source>Reset grid size</source>
@@ -884,7 +884,7 @@
     <name>UBApplicationController</name>
     <message>
         <source>Web</source>
-        <translation>Internet</translation>
+        <translation>Browser</translation>
     </message>
     <message>
         <source>New update available, would you go to the web page ?</source>
@@ -2176,7 +2176,7 @@ Miniaturansicht der Seite %1 wird geladen</translation>
     </message>
     <message>
         <source>Compass</source>
-        <translation>Kompass</translation>
+        <translation>Zirkel</translation>
     </message>
     <message>
         <source>Protractor</source>
@@ -2620,7 +2620,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Line Width</source>
-        <translation>Linienstärke</translation>
+        <translation>Strichstärke</translation>
     </message>
     <message>
         <source>Medium</source>
