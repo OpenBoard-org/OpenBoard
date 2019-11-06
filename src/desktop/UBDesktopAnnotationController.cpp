@@ -85,7 +85,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
 #ifdef Q_OS_OSX
     mTransparentDrawingView->setAttribute(Qt::WA_MacNoShadow, true);
 #endif
-    mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window | Qt::NoDropShadowWindowHint);
+    mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window | Qt::NoDropShadowWindowHint | Qt::X11BypassWindowManagerHint);
     mTransparentDrawingView->setCacheMode(QGraphicsView::CacheNone);
     mTransparentDrawingView->resize(UBApplication::desktop()->width(), UBApplication::desktop()->height());
 
@@ -948,9 +948,20 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
     }
     else
     {
-        // Remove the mask
-        QPixmap noMask(mTransparentDrawingView->width(), mTransparentDrawingView->height());
-        mTransparentDrawingView->setMask(noMask.mask());
+        mMask = QPixmap(mTransparentDrawingView->width(), mTransparentDrawingView->height());
+        mMask.fill(Qt::transparent);
+
+        QPainter p;
+
+        p.begin(&mMask);
+
+        p.setPen(Qt::red);
+        p.setBrush(QBrush(Qt::red));
+
+        p.drawRect(mTransparentDrawingView->geometry().x(), mTransparentDrawingView->geometry().y(), mTransparentDrawingView->width(), mTransparentDrawingView->height());
+        p.end();
+
+        mTransparentDrawingView->setMask(mMask.mask());
     }
 }
 
