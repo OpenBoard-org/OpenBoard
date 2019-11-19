@@ -387,7 +387,7 @@
     </message>
     <message>
         <source>Stylus</source>
-        <translation>Interaktívne pero</translation>
+        <translation>Dotykové pero</translation>
     </message>
     <message>
         <source>Quit OpenBoard</source>
@@ -2683,19 +2683,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Creation date</source>
-        <translation type="unfinished"></translation>
+        <translation>Dátum vytvorenia</translation>
     </message>
     <message>
         <source>Update date</source>
-        <translation type="unfinished"></translation>
+        <translation>Dátum úpravy</translation>
     </message>
     <message>
         <source>Alphabetical order</source>
-        <translation type="unfinished"></translation>
+        <translation>Podľa abecedy</translation>
     </message>
     <message>
         <source>Sort Order</source>
-        <translation type="unfinished"></translation>
+        <translation>Kritérium triedenia</translation>
     </message>
 </context>
 <context>
@@ -2826,7 +2826,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Proxy User:</source>
-        <translation>Použ. m. na proxy:</translation>
+        <translation>Použ. meno na proxy:</translation>
     </message>
     <message>
         <source>Pass:</source>
@@ -2842,7 +2842,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation>Zistiť, či sa pri spustení majú nahrať dáta z Open-Sankoré</translation>
+        <translation>Zistiť, či pri spustení možno nahrať dáta Open-Sankoré</translation>
     </message>
     <message>
         <source>Use system keyboard (recommended)</source>
@@ -2854,23 +2854,23 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>On Dark Background</source>
-        <translation type="unfinished">Na tmavom pozadí</translation>
+        <translation>Na tmavom pozadí</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="unfinished">Priehľadnosť</translation>
+        <translation>Priehľadnosť</translation>
     </message>
     <message>
         <source>On Light Background</source>
-        <translation type="unfinished">Na svetlom pozadí</translation>
+        <translation>Na svetlom pozadí</translation>
     </message>
     <message>
-        <source>Swap first and second view displays</source>
-        <translation type="unfinished"></translation>
+     <source>Swap first and second view displays</source>
+     <translation>Vymeniť obrazovku 1. a 2. zobrazenia</translation>
     </message>
     <message>
         <source>Grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Mriežka</translation>
     </message>
 </context>
 <context>
