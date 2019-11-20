@@ -2890,6 +2890,14 @@ p, li { white-space: pre-wrap; }
         <source>Credits</source>
         <translation></translation>
     </message>
+    <message>
+        <source>Documents Mode</source>
+        <translation>Dokumentmodus</translation>
+    </message>
+    <message>
+        <source>Display date column on alphabetical sort</source>
+        <translation>Datumsspalte nur in alphabetischer Reihenfolge anzeigen</translation>
+    </message>
 </context>
 <context>
     <name>trapFlashDialog</name>

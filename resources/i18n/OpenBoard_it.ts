@@ -2885,6 +2885,14 @@ p, li { white-space: pre-wrap; }
         <source>Swap first and second view displays</source>
         <translation>Scambia lo schermo di controllo con quello di visualizzazione</translation>
     </message>
+    <message>
+        <source>Documents Mode</source>
+        <translation>Modalità Documenti</translation>
+    </message>
+    <message>
+        <source>Display date column on alphabetical sort</source>
+        <translation>Visualizza la colonna delle date con ordinamento alfabetico.</translation>
+    </message>
 </context>
 <context>
     <name>trapFlashDialog</name>

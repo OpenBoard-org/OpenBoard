@@ -2835,6 +2835,14 @@ p, li { white-space: pre-wrap; }
         <source>Check if Open-Sankoré data could be imported at launch</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Documents Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display date column on alphabetical sort</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>trapFlashDialog</name>

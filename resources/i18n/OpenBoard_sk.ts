@@ -2865,12 +2865,20 @@ p, li { white-space: pre-wrap; }
         <translation>Na svetlom pozadí</translation>
     </message>
     <message>
-     <source>Swap first and second view displays</source>
-     <translation>Vymeniť obrazovku 1. a 2. zobrazenia</translation>
+        <source>Swap first and second view displays</source>
+        <translation>Vymeniť obrazovku 1. a 2. zobrazenia</translation>
     </message>
     <message>
         <source>Grid</source>
         <translation>Mriežka</translation>
+    </message>
+    <message>
+        <source>Documents Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display date column on alphabetical sort</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -2783,6 +2783,14 @@ p, li { white-space: pre-wrap; }
         <source>Swap first and second view displays</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Documents Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display date column on alphabetical sort</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>trapFlashDialog</name>

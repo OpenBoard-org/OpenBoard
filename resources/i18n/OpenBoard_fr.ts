@@ -2907,6 +2907,14 @@ p, li { white-space: pre-wrap; }
         <source>Swap first and second view displays</source>
         <translation>Inverser les écrans élèves</translation>
     </message>
+    <message>
+        <source>Documents Mode</source>
+        <translation>Mode Documents</translation>
+    </message>
+    <message>
+        <source>Display date column on alphabetical sort</source>
+        <translation>Afficher la colonne des dates avec le tri alphabétique</translation>
+    </message>
 </context>
 <context>
     <name>trapFlashDialog</name>
