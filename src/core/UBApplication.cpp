@@ -455,7 +455,8 @@ void UBApplication::closing()
     {
         UBDocumentTreeModel *docModel = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel;
         documentController->deleteDocumentsInFolderOlderThan(docModel->trashIndex(), UBSettings::settings()->emptyTrashDaysValue->get().toInt());
-        documentController->deleteEmptyFolders(docModel->trashIndex());
+        if (docModel->hasChildren(docModel->trashIndex()))
+            documentController->deleteEmptyFolders(docModel->trashIndex());
     }
 
     if (boardController)
