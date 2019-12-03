@@ -187,6 +187,8 @@ public:
     bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
     bool removeRows(int row, int count, const QModelIndex &parent);
 
+    bool containsDocuments(const QModelIndex& index);
+
     QModelIndex indexForNode(UBDocumentTreeNode *pNode) const;
     QPersistentModelIndex persistentIndexForNode(UBDocumentTreeNode *pNode);
 //    bool insertRow(int row, const QModelIndex &parent);
@@ -413,6 +415,9 @@ class UBDocumentController : public UBDocumentContainer
           * \return True if the index passed in argument was the current view, false otherwise.
           */
         void moveToTrash(QModelIndex &index, UBDocumentTreeModel* docModel);
+
+        void deleteDocumentsInFolderOlderThan(const QModelIndex &index, const int days);
+        void deleteEmptyFolders(const QModelIndex &index);
 
         QModelIndex mapIndexToSource(const QModelIndex &index);
         QModelIndexList mapIndexesToSource(const QModelIndexList &indexes);

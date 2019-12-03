@@ -415,6 +415,9 @@ class UBSettings : public QObject
 
         UBSetting* showDateColumnOnAlphabeticalSort;
 
+        UBSetting* emptyTrashForOlderDocuments;
+        UBSetting* emptyTrashDaysValue;
+
         UBSetting* magnifierDrawingMode;
         UBSetting* autoSaveInterval;
 

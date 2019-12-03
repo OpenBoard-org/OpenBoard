@@ -459,6 +459,8 @@ void UBSettings::init()
     useSystemOnScreenKeyboard = new UBSetting(this, "App", "UseSystemOnScreenKeyboard", true);
 
     showDateColumnOnAlphabeticalSort = new UBSetting(this, "Document", "ShowDateColumnOnAlphabeticalSort", false);
+    emptyTrashForOlderDocuments = new UBSetting(this, "Document", "emptyTrashForOlderDocuments", true);
+    emptyTrashDaysValue = new UBSetting(this, "Document", "emptyTrashDaysValue", 30);
 
     cleanNonPersistentSettings();
     checkNewSettings();

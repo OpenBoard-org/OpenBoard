@@ -762,6 +762,31 @@ bool UBDocumentTreeModel::removeRows(int row, int count, const QModelIndex &pare
     return true;
 }
 
+bool UBDocumentTreeModel::containsDocuments(const QModelIndex &index)
+{
+    for (int i = 0; i < rowCount(index); i++)
+    {
+        QModelIndex child = this->index(i, 0, index);
+        if (isCatalog(child))
+        {
+            if (containsDocuments(child))
+            {
+                return true;
+            }
+        }
+        else if (isDocument(child))
+        {
+           return true;
+        }
+        else
+        {
+            qDebug() << "Who the hell are you ?";
+        }
+    }
+
+    return false;
+}
+
 QModelIndex UBDocumentTreeModel::indexForNode(UBDocumentTreeNode *pNode) const
 {
     if (pNode == 0) {
@@ -2054,7 +2079,6 @@ void UBDocumentController::setupViews()
     }
 }
 
-//N/C - NNE - 20140403
 void UBDocumentController::refreshDateColumns()
 {
     if (UBSettings::settings()->documentSortKind->get().toInt() == UBDocumentController::Alphabetical)
@@ -2601,6 +2625,69 @@ void UBDocumentController::moveToTrash(QModelIndex &index, UBDocumentTreeModel* 
     moveIndexesToTrash(list, docModel);
 }
 //issue 1629 - NNE - 20131212 : END
+
+void UBDocumentController::deleteDocumentsInFolderOlderThan(const QModelIndex &index, const int days)
+{
+    UBDocumentTreeModel *docModel = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel;
+
+    QModelIndexList list;
+    for (int i = 0; i < docModel->rowCount(index); i++)
+    {
+        list << docModel->index(i, 0, index);
+    }
+
+    foreach (QModelIndex child, list)
+    {
+        UBDocumentProxy *documentProxy= docModel->proxyForIndex(child);
+
+        if (documentProxy)
+        {
+            if (documentProxy->lastUpdate() < QDateTime::currentDateTime().addDays(-days))
+            {
+                deleteIndexAndAssociatedData(child);
+            }
+        }
+        else
+        {
+            if (docModel->isCatalog(child))
+            {
+                deleteDocumentsInFolderOlderThan(child, days);
+            }
+        }
+    }
+}
+
+void UBDocumentController::deleteEmptyFolders(const QModelIndex &index)
+{
+    UBDocumentTreeModel *docModel = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel;
+
+    QModelIndexList list;
+    for (int i = 0; i < docModel->rowCount(index); i++)
+    {
+        list << docModel->index(i, 0, index);
+    }
+
+    if (list.length() > 0)
+    {
+        foreach (QModelIndex child, list)
+        {
+            if (docModel->isCatalog(child))
+            {
+                if (!docModel->containsDocuments(child))
+                {
+                    deleteIndexAndAssociatedData(child);
+                }
+            }
+        }
+    }
+    else
+    {
+        if (docModel->isCatalog(index))
+        {
+            deleteIndexAndAssociatedData(index);
+        }
+    }
+}
 
 void UBDocumentController::emptyFolder(const QModelIndex &index, DeletionType pDeletionType)
 {

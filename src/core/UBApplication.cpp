@@ -451,6 +451,12 @@ void UBApplication::closeEvent(QCloseEvent *event)
 
 void UBApplication::closing()
 {
+    if (UBSettings::settings()->emptyTrashForOlderDocuments->get().toBool())
+    {
+        UBDocumentTreeModel *docModel = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel;
+        documentController->deleteDocumentsInFolderOlderThan(docModel->trashIndex(), UBSettings::settings()->emptyTrashDaysValue->get().toInt());
+        documentController->deleteEmptyFolders(docModel->trashIndex());
+    }
 
     if (boardController)
         boardController->closing();
