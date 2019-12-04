@@ -2644,7 +2644,7 @@ void UBDocumentController::deleteDocumentsInFolderOlderThan(const QModelIndex &i
         {
             if (documentProxy->lastUpdate() < QDateTime::currentDateTime().addDays(-days))
             {
-                deleteIndexAndAssociatedData(child);
+                UBPersistenceManager::persistenceManager()->deleteDocument(documentProxy);
             }
         }
         else
