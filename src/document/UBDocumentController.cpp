@@ -942,7 +942,6 @@ void UBDocumentTreeModel::moveIndexes(const QModelIndexList &source, const QMode
             fixNodeName(s, destinationParent);
             sourceNode->parentNode()->moveChild(sourceNode, destIndex, newParentNode);
             updateIndexNameBindings(sourceNode);
-
             hasOneInsertion = true;
         }
     }
@@ -1224,6 +1223,7 @@ void UBDocumentTreeModel::updateIndexNameBindings(UBDocumentTreeNode *nd)
     } else if (nd->proxyData()) {
         nd->proxyData()->setMetaData(UBSettings::documentGroupName, virtualPathForIndex(indexForNode(nd->parentNode())));
         nd->proxyData()->setMetaData(UBSettings::documentName, nd->nodeName());
+        nd->proxyData()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         UBPersistenceManager::persistenceManager()->persistDocumentMetadata(nd->proxyData());
     }
 }

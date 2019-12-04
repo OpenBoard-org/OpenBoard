@@ -260,7 +260,7 @@ QDateTime UBDocumentProxy::lastUpdate()
 {
     if(mMetaDatas.contains(UBSettings::documentUpdatedAt))
         return UBStringUtils::fromUtcIsoDate(metaData(UBSettings::documentUpdatedAt).toString());
-    return QDateTime().currentDateTime();
+    return QDateTime::currentDateTime();
 }
 
 bool UBDocumentProxy::isModified() const
