@@ -229,7 +229,6 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
                                                                                  , Qt::Widget);
             if (replaceDialog->exec() == QDialog::Accepted)
             {
-                mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
                 result = QDialog::Accepted;
                 QString resultName = replaceDialog->lineEditText();
                 int i = docList.indexOf(resultName);
@@ -250,6 +249,7 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
                     }
                 }
                 pProxy->setMetaData(UBSettings::documentName, resultName);
+                mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
             }
             replaceDialog->setParent(0);
             delete replaceDialog;
