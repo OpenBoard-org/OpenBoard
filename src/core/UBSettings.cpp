@@ -60,6 +60,7 @@ QString UBSettings::documentSize = QString("Size");
 QString UBSettings::documentIdentifer = QString("ID");
 QString UBSettings::documentVersion = QString("Version");
 QString UBSettings::documentUpdatedAt = QString("UpdatedAt");
+QString UBSettings::documentPageCount = QString("PageCount");
 QString UBSettings::documentDate = QString("date");
 
 QString UBSettings::trashedDocumentGroupNamePrefix = QString("_Trash:");
