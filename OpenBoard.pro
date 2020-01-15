@@ -9,9 +9,9 @@ CONFIG += debug_and_release \
 
 
 VERSION_MAJ = 1
-VERSION_MIN = 5
-VERSION_PATCH = 4
-VERSION_TYPE = r # a = alpha, b = beta, rc = release candidate, r = release, other => error
+VERSION_MIN = 6
+VERSION_PATCH = 0
+VERSION_TYPE = a # a = alpha, b = beta, rc = release candidate, r = release, other => error
 VERSION_BUILD = 0
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$${VERSION_BUILD}"
@@ -429,6 +429,9 @@ linux-g++* {
     LIBS += -lcrypto
     #LIBS += -lprofiler
     LIBS += -lX11
+    LIBS += -lpoppler
+    INCLUDEPATH += "/usr/include/poppler"
+
     QMAKE_CFLAGS += -fopenmp
     QMAKE_CXXFLAGS += -fopenmp
     QMAKE_LFLAGS += -fopenmp
