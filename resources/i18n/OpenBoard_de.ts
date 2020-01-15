@@ -153,19 +153,19 @@
     </message>
     <message>
         <source>Line</source>
-        <translation>Linie</translation>
+        <translation>Strichstärke</translation>
     </message>
     <message>
         <source>Small Line</source>
-        <translation>Kleine Linie</translation>
+        <translation>Dünner Strich</translation>
     </message>
     <message>
         <source>Medium Line</source>
-        <translation>Mittelgroße Linie</translation>
+        <translation>Mittelstarker Strich</translation>
     </message>
     <message>
         <source>Large Line</source>
-        <translation>Große Linie</translation>
+        <translation>Dicker Strich</translation>
     </message>
     <message>
         <source>Quit</source>
@@ -801,11 +801,11 @@
     </message>
     <message>
         <source>Ruled Light Background</source>
-        <translation>Hell linierter Hintergrund</translation>
+        <translation>Heller linierter Hintergrund</translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
-        <translation>Dunkel linierter Hintergrund</translation>
+        <translation>Dunkler linierter Hintergrund</translation>
     </message>
     <message>
         <source>Reset grid size</source>
@@ -884,7 +884,7 @@
     <name>UBApplicationController</name>
     <message>
         <source>Web</source>
-        <translation>Internet</translation>
+        <translation>Browser</translation>
     </message>
     <message>
         <source>New update available, would you go to the web page ?</source>
@@ -1320,7 +1320,7 @@ Wenn Sie einen neuen Namen wählen, wird ein neues Dokument erstellt.</translati
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation type="unfinished">Seite %1/%2 wird kopiert</translation>
+        <translation>Seite %1/%2 wird kopiert</translation>
     </message>
 </context>
 <context>
@@ -2620,7 +2620,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Line Width</source>
-        <translation>Linienstärke</translation>
+        <translation>Strichstärke</translation>
     </message>
     <message>
         <source>Medium</source>
@@ -2889,6 +2889,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Credits</source>
         <translation></translation>
+    </message>
+    <message>
+        <source>Documents Mode</source>
+        <translation>Dokumentmodus</translation>
+    </message>
+    <message>
+        <source>Display date column on alphabetical sort</source>
+        <translation>Datumsspalte nur in alphabetischer Reihenfolge anzeigen</translation>
+    </message>
+    <message>
+        <source>Empty trash for documents older than</source>
+        <translation>Dokumente aus dem Papierkorb löschen, die älter als</translation>
+    </message>
+    <message>
+        <source>days</source>
+        <translation>Tage sind</translation>
     </message>
 </context>
 <context>

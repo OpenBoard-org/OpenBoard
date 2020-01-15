@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>825</width>
-    <height>748</height>
+    <height>767</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -552,7 +552,7 @@
           <string>Documents Mode</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_19">
-          <item row="0" column="0">
+          <item row="0" column="1">
            <layout class="QGridLayout" name="gridLayout_18">
             <item row="0" column="1">
              <widget class="QCheckBox" name="showDateColumnOnAlphabeticalSort">
@@ -567,23 +567,53 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="0">
-             <spacer name="horizontalSpacer_9">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
+            <item row="3" column="1">
+             <widget class="QCheckBox" name="emptyTrashForOlderDocuments">
+              <property name="text">
+               <string>Empty trash for documents older than</string>
               </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
+             </widget>
+            </item>
+            <item row="3" column="2">
+             <widget class="QSpinBox" name="emptyTrashDaysValue"/>
+            </item>
+            <item row="3" column="3">
+             <widget class="QLabel" name="emptyTrashDaysLabel">
+              <property name="text">
+               <string>days</string>
               </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
+             </widget>
             </item>
            </layout>
+          </item>
+          <item row="0" column="0" rowspan="2">
+           <spacer name="horizontalSpacer_9">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="2">
+           <spacer name="horizontalSpacer_10">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>

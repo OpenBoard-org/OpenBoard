@@ -49,6 +49,7 @@ class UBDocumentProxy : public QObject
         UBDocumentProxy();
         UBDocumentProxy(const UBDocumentProxy &rValue);
         UBDocumentProxy(const QString& pPersistencePath);
+        UBDocumentProxy(const QString& pPersistencePath, QMap<QString, QVariant> metadatas);
 
         virtual ~UBDocumentProxy();
 

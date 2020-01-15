@@ -201,6 +201,7 @@ class UBSettings : public QObject
         static QString documentIdentifer;
         static QString documentVersion;
         static QString documentUpdatedAt;
+        static QString documentPageCount;
 
         static QString documentDate;
 
@@ -414,6 +415,9 @@ class UBSettings : public QObject
         UBSetting* useSystemOnScreenKeyboard;
 
         UBSetting* showDateColumnOnAlphabeticalSort;
+
+        UBSetting* emptyTrashForOlderDocuments;
+        UBSetting* emptyTrashDaysValue;
 
         UBSetting* magnifierDrawingMode;
         UBSetting* autoSaveInterval;

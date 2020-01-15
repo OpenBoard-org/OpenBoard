@@ -60,6 +60,7 @@ QString UBSettings::documentSize = QString("Size");
 QString UBSettings::documentIdentifer = QString("ID");
 QString UBSettings::documentVersion = QString("Version");
 QString UBSettings::documentUpdatedAt = QString("UpdatedAt");
+QString UBSettings::documentPageCount = QString("PageCount");
 QString UBSettings::documentDate = QString("date");
 
 QString UBSettings::trashedDocumentGroupNamePrefix = QString("_Trash:");
@@ -459,6 +460,8 @@ void UBSettings::init()
     useSystemOnScreenKeyboard = new UBSetting(this, "App", "UseSystemOnScreenKeyboard", true);
 
     showDateColumnOnAlphabeticalSort = new UBSetting(this, "Document", "ShowDateColumnOnAlphabeticalSort", false);
+    emptyTrashForOlderDocuments = new UBSetting(this, "Document", "emptyTrashForOlderDocuments", false);
+    emptyTrashDaysValue = new UBSetting(this, "Document", "emptyTrashDaysValue", 30);
 
     cleanNonPersistentSettings();
     checkNewSettings();
