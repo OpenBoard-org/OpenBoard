@@ -2853,6 +2853,14 @@ p, li { white-space: pre-wrap; }
         <source>Display date column on alphabetical sort</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Empty trash for documents older than</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>days</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>trapFlashDialog</name>

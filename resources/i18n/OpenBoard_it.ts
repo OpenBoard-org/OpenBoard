@@ -1320,7 +1320,7 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation type="unfinished">Sto copiando pagina %1/%2</translation>
+        <translation>Sto copiando pagina %1/%2</translation>
     </message>
 </context>
 <context>
@@ -2892,6 +2892,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Display date column on alphabetical sort</source>
         <translation>Visualizza la colonna delle date con ordinamento alfabetico.</translation>
+    </message>
+    <message>
+        <source>Empty trash for documents older than</source>
+        <translation>Cancellare dal cestino i documenti di étà superiore a</translation>
+    </message>
+    <message>
+        <source>days</source>
+        <translation>giorni</translation>
     </message>
 </context>
 <context>

@@ -1330,7 +1330,7 @@ Un nouveau nom vous permettra de conserver l&apos;ancien document.</translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation type="unfinished">Copie de la page %1/%2 en cours</translation>
+        <translation>Copie de la page %1/%2 en cours</translation>
     </message>
 </context>
 <context>
@@ -2914,6 +2914,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Display date column on alphabetical sort</source>
         <translation>Afficher la colonne des dates avec le tri alphabétique</translation>
+    </message>
+    <message>
+        <source>Empty trash for documents older than</source>
+        <translation>Supprimer de la corbeille les documents de plus de</translation>
+    </message>
+    <message>
+        <source>days</source>
+        <translation>jours</translation>
     </message>
 </context>
 <context>

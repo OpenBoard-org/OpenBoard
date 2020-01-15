@@ -1320,7 +1320,7 @@ Wenn Sie einen neuen Namen wählen, wird ein neues Dokument erstellt.</translati
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation type="unfinished">Seite %1/%2 wird kopiert</translation>
+        <translation>Seite %1/%2 wird kopiert</translation>
     </message>
 </context>
 <context>
@@ -2897,6 +2897,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Display date column on alphabetical sort</source>
         <translation>Datumsspalte nur in alphabetischer Reihenfolge anzeigen</translation>
+    </message>
+    <message>
+        <source>Empty trash for documents older than</source>
+        <translation>Dokumente aus dem Papierkorb löschen, die älter als</translation>
+    </message>
+    <message>
+        <source>days</source>
+        <translation>Tage sind</translation>
     </message>
 </context>
 <context>
