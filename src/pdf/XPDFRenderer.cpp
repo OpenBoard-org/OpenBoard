@@ -48,7 +48,11 @@ XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
     {
         // globalParams must be allocated once and never be deleted
         // note that this is *not* an instance variable of this XPDFRenderer class
+#if POPPLER_VERSION_MAJOR > 0 || POPPLER_VERSION_MINOR >= 83
+        globalParams = std::make_unique<GlobalParams>();
+#else
         globalParams = new GlobalParams(0);
+#endif
         globalParams->setupBaseFonts(QFile::encodeName(UBPlatformUtils::applicationResourcesDirectory() + "/" + "fonts").data());
     }
 
@@ -71,8 +75,12 @@ XPDFRenderer::~XPDFRenderer()
 
     if (sInstancesCount.loadAcquire() == 0 && globalParams)
     {
+#if POPPLER_VERSION_MAJOR > 0 || POPPLER_VERSION_MINOR >= 83
+        globalParams.reset();
+#else
         delete globalParams;
         globalParams = 0;
+#endif
     }
 }
 
