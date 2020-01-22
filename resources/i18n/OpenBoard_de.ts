@@ -2192,7 +2192,7 @@ Miniaturansicht der Seite %1 wird geladen</translation>
     </message>
     <message>
         <source>Cache</source>
-        <translation>Zwischenspeicher</translation>
+        <translation>Versteck</translation>
     </message>
 </context>
 <context>
