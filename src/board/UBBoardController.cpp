@@ -90,40 +90,45 @@
 #include "core/memcheck.h"
 
 UBBoardController::UBBoardController(UBMainWindow* mainWindow)
-    : UBDocumentContainer(mainWindow->centralWidget())
-    , mMainWindow(mainWindow)
-    , mActiveScene(0)
-    , mActiveSceneIndex(-1)
-    , mPaletteManager(0)
-    , mSoftwareUpdateDialog(0)
-    , mMessageWindow(0)
-    , mControlView(0)
-    , mDisplayView(0)
-    , mControlContainer(0)
-    , mControlLayout(0)
-    , mZoomFactor(1.0)
-    , mIsClosing(false)
-    , mSystemScaleFactor(1.0)
-    , mCleanupDone(false)
-    , mCacheWidgetIsEnabled(false)
-    , mDeletingSceneIndex(-1)
-    , mMovingSceneIndex(-1)
-    , mActionGroupText(tr("Group"))
-    , mActionUngroupText(tr("Ungroup"))
-    , mAutosaveTimer(0)
+: UBDocumentContainer(mainWindow->centralWidget())
+, mMainWindow(mainWindow)
+, mActiveScene(0)
+, mActiveSceneIndex(-1)
+, mPaletteManager(0)
+, mSoftwareUpdateDialog(0)
+, mMessageWindow(0)
+, mControlView(0)
+, mDisplayView(0)
+, mControlContainer(0)
+, mControlLayout(0)
+, mZoomFactor(1.0)
+, mIsClosing(false)
+, mSystemScaleFactor(1.0)
+, mCleanupDone(false)
+, mCacheWidgetIsEnabled(false)
+, mDeletingSceneIndex(-1)
+, mMovingSceneIndex(-1)
+, mActionGroupText(tr("Group"))
+, mActionUngroupText(tr("Ungroup"))
+, mAutosaveTimer(0)
 {
     mZoomFactor = UBSettings::settings()->boardZoomFactor->get().toDouble();
 
     int penColorIndex = UBSettings::settings()->penColorIndex();
     int markerColorIndex = UBSettings::settings()->markerColorIndex();
 
-    mPenColorOnDarkBackground = UBSettings::settings()->penColors(true).at(penColorIndex);
-    mPenColorOnLightBackground = UBSettings::settings()->penColors(false).at(penColorIndex);
-    mMarkerColorOnDarkBackground = UBSettings::settings()->markerColors(true).at(markerColorIndex);
-    mMarkerColorOnLightBackground = UBSettings::settings()->markerColors(false).at(markerColorIndex);
+    if (penColorIndex >= 0 && penColorIndex < UBSettings::settings()->penColors(true).length())
+    {
+        mPenColorOnDarkBackground = UBSettings::settings()->penColors(true).at(penColorIndex);
+        mPenColorOnLightBackground = UBSettings::settings()->penColors(false).at(penColorIndex);
+    }
+    if (markerColorIndex >= 0 && markerColorIndex < UBSettings::settings()->markerColors(true).length())
+    {
+        mMarkerColorOnDarkBackground = UBSettings::settings()->markerColors(true).at(markerColorIndex);
+        mMarkerColorOnLightBackground = UBSettings::settings()->markerColors(false).at(markerColorIndex);
+    }
 
 }
-
 
 void UBBoardController::init()
 {
@@ -133,7 +138,7 @@ void UBBoardController::init()
     connect(UBApplication::undoStack, SIGNAL(canUndoChanged(bool))
             , this, SLOT(undoRedoStateChange(bool)));
 
-    connect(UBApplication::undoStack, SIGNAL(canRedoChanged (bool))
+    connect(UBApplication::undoStack, SIGNAL(canRedoChanged(bool))
             , this, SLOT(undoRedoStateChange(bool)));
 
     connect(UBDrawingController::drawingController(), SIGNAL(stylusToolChanged(int))
@@ -146,7 +151,7 @@ void UBBoardController::init()
             , this, SLOT(lastWindowClosed()));
 
     connect(UBDownloadManager::downloadManager(), SIGNAL(downloadModalFinished()), this, SLOT(onDownloadModalFinished()));
-    connect(UBDownloadManager::downloadManager(), SIGNAL(addDownloadedFileToBoard(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool)), this, SLOT(downloadFinished(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool)));
+    connect(UBDownloadManager::downloadManager(), SIGNAL(addDownloadedFileToBoard(bool, QUrl, QUrl, QString, QByteArray, QPointF, QSize, bool)), this, SLOT(downloadFinished(bool, QUrl, QUrl, QString, QByteArray, QPointF, QSize, bool)));
 
     UBDocumentProxy* doc = UBPersistenceManager::persistenceManager()->createNewDocument();
 
@@ -157,7 +162,6 @@ void UBBoardController::init()
     undoRedoStateChange(true);
 
 }
-
 
 UBBoardController::~UBBoardController()
 {
@@ -237,13 +241,11 @@ void UBBoardController::setupViews()
     connect(this, SIGNAL(activeSceneChanged()), mPaletteManager, SLOT(activeSceneChanged()));
 }
 
-
 void UBBoardController::setupLayout()
 {
-    if(mPaletteManager)
+    if (mPaletteManager)
         mPaletteManager->setupLayout();
 }
-
 
 void UBBoardController::setBoxing(QRect displayRect)
 {
@@ -253,10 +255,10 @@ void UBBoardController::setBoxing(QRect displayRect)
         return;
     }
 
-    qreal controlWidth = (qreal)mMainWindow->centralWidget()->width();
-    qreal controlHeight = (qreal)mMainWindow->centralWidget()->height();
-    qreal displayWidth = (qreal)displayRect.width();
-    qreal displayHeight = (qreal)displayRect.height();
+    qreal controlWidth = (qreal) mMainWindow->centralWidget()->width();
+    qreal controlHeight = (qreal) mMainWindow->centralWidget()->height();
+    qreal displayWidth = (qreal) displayRect.width();
+    qreal displayHeight = (qreal) displayRect.height();
 
     qreal displayRatio = displayWidth / displayHeight;
     qreal controlRatio = controlWidth / controlHeight;
@@ -280,24 +282,20 @@ void UBBoardController::setBoxing(QRect displayRect)
     }
 }
 
-
 QSize UBBoardController::displayViewport()
 {
     return mDisplayView->geometry().size();
 }
-
 
 QSize UBBoardController::controlViewport()
 {
     return mControlView->geometry().size();
 }
 
-
 QRectF UBBoardController::controlGeometry()
 {
     return mControlView->geometry();
 }
-
 
 void UBBoardController::setupToolbar()
 {
@@ -384,7 +382,6 @@ void UBBoardController::setupToolbar()
     UBApplication::app()->toolBarDisplayTextChanged(QVariant(settings->appToolBarDisplayText->get().toBool()));
 }
 
-
 void UBBoardController::setToolCursor(int tool)
 {
     if (mActiveScene)
@@ -392,7 +389,6 @@ void UBBoardController::setToolCursor(int tool)
 
     mControlView->setToolCursor(tool);
 }
-
 
 void UBBoardController::connectToolbar()
 {
@@ -403,12 +399,12 @@ void UBBoardController::connectToolbar()
     connect(mMainWindow->actionClearPage, SIGNAL(triggered()), this, SLOT(clearScene()));
     connect(mMainWindow->actionEraseItems, SIGNAL(triggered()), this, SLOT(clearSceneItems()));
     connect(mMainWindow->actionEraseAnnotations, SIGNAL(triggered()), this, SLOT(clearSceneAnnotation()));
-    connect(mMainWindow->actionEraseBackground,SIGNAL(triggered()),this,SLOT(clearSceneBackground()));
+    connect(mMainWindow->actionEraseBackground, SIGNAL(triggered()), this, SLOT(clearSceneBackground()));
 
     connect(mMainWindow->actionUndo, SIGNAL(triggered()), UBApplication::undoStack, SLOT(undo()));
     connect(mMainWindow->actionRedo, SIGNAL(triggered()), UBApplication::undoStack, SLOT(redo()));
     connect(mMainWindow->actionRedo, SIGNAL(triggered()), this, SLOT(startScript()));
-    connect(mMainWindow->actionBack, SIGNAL( triggered()), this, SLOT(previousScene()));
+    connect(mMainWindow->actionBack, SIGNAL(triggered()), this, SLOT(previousScene()));
     connect(mMainWindow->actionForward, SIGNAL(triggered()), this, SLOT(nextScene()));
     connect(mMainWindow->actionSleep, SIGNAL(triggered()), this, SLOT(stopScript()));
     connect(mMainWindow->actionSleep, SIGNAL(triggered()), this, SLOT(blackout()));
@@ -429,13 +425,16 @@ void UBBoardController::stopScript()
 void UBBoardController::saveData(SaveFlags fls)
 {
     bool verbose = fls | sf_showProgress;
-    if (verbose) {
+    if (verbose)
+    {
         UBApplication::showMessage(tr("Saving document..."));
     }
-    if (mActiveScene && mActiveScene->isModified()) {
+    if (mActiveScene && mActiveScene->isModified())
+    {
         persistCurrentScene(true);
     }
-    if (verbose) {
+    if (verbose)
+    {
         UBApplication::showMessage(tr("Document has just been saved..."));
     }
 }
@@ -457,7 +456,6 @@ void UBBoardController::initToolbarTexts()
         mActionTexts.insert(action, texts);
     }
 }
-
 
 void UBBoardController::setToolbarTexts()
 {
@@ -488,13 +486,11 @@ void UBBoardController::setToolbarTexts()
     }
 }
 
-
 QString UBBoardController::truncate(QString text, int maxWidth)
 {
     QFontMetricsF fontMetrics(mMainWindow->font());
     return fontMetrics.elidedText(text, Qt::ElideRight, maxWidth);
 }
-
 
 void UBBoardController::stylusToolDoubleClicked(int tool)
 {
@@ -505,17 +501,15 @@ void UBBoardController::stylusToolDoubleClicked(int tool)
     else if (tool == UBStylusTool::Hand)
     {
         centerRestore();
-        mActiveScene->setLastCenter(QPointF(0,0));
+        mActiveScene->setLastCenter(QPointF(0, 0));
     }
 }
-
-
 
 void UBBoardController::addScene()
 {
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     persistViewPositionOnCurrentScene();
-    persistCurrentScene(false,true);
+    persistCurrentScene(false, true);
 
     UBDocumentContainer::addPage(mActiveSceneIndex + 1);
 
@@ -533,6 +527,7 @@ void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmp
 
         if (scene->document() && (scene->document() != selectedDocument()))
         {
+
             foreach(QUrl relativeFile, scene->relativeDependencies())
             {
                 QString source = scene->document()->persistencePath() + "/" + relativeFile.path();
@@ -551,7 +546,7 @@ void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmp
         }
         else
         {
-            persistCurrentScene(false,true);
+            persistCurrentScene(false, true);
             UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(selectedDocument(), clone, mActiveSceneIndex + 1);
             emit addThumbnailRequired(this, mActiveSceneIndex + 1);
             setActiveDocumentScene(mActiveSceneIndex + 1);
@@ -560,7 +555,6 @@ void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmp
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
     }
 }
-
 
 void UBBoardController::addScene(UBDocumentProxy* proxy, int sceneIndex, bool replaceActiveIfEmpty)
 {
@@ -575,7 +569,7 @@ void UBBoardController::addScene(UBDocumentProxy* proxy, int sceneIndex, bool re
 void UBBoardController::duplicateScene(int nIndex)
 {
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    persistCurrentScene(false,true);
+    persistCurrentScene(false, true);
 
     QList<int> scIndexes;
     scIndexes << nIndex;
@@ -612,11 +606,11 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
     QPointF itemPos;
     QSizeF itemSize;
 
-    QGraphicsItem *commonItem = dynamic_cast<QGraphicsItem*>(item);
+    QGraphicsItem *commonItem = dynamic_cast<QGraphicsItem*> (item);
     if (commonItem)
     {
         qreal shifting = UBSettings::settings()->objectFrameWidth;
-        itemPos = commonItem->pos() + QPointF(shifting,shifting);
+        itemPos = commonItem->pos() + QPointF(shifting, shifting);
         itemSize = commonItem->boundingRect().size();
         commonItem->setSelected(false);
 
@@ -632,71 +626,77 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
     if (!srcFile.isEmpty())
         contentTypeHeader = UBFileSystemUtils::mimeTypeFromFileName(srcFile);
 
-    if(NULL != qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(commonItem))
+    if (NULL != qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(commonItem))
         itemMimeType = UBMimeType::Group;
     else
         itemMimeType = UBFileSystemUtils::mimeTypeFromString(contentTypeHeader);
 
-    switch(static_cast<int>(itemMimeType))
+    switch (static_cast<int> (itemMimeType))
     {
     case UBMimeType::AppleWidget:
     case UBMimeType::W3CWidget:
+    {
+        UBGraphicsWidgetItem *witem = dynamic_cast<UBGraphicsWidgetItem*> (item);
+        if (witem)
         {
-            UBGraphicsWidgetItem *witem = dynamic_cast<UBGraphicsWidgetItem*>(item);
-            if (witem)
-            {
-                sourceUrl = witem->getOwnFolder();
-            }
-        }break;
+            sourceUrl = witem->getOwnFolder();
+        }
+    }
+        break;
 
     case UBMimeType::Video:
     case UBMimeType::Audio:
+    {
+        UBGraphicsMediaItem *mitem = dynamic_cast<UBGraphicsMediaItem*> (item);
+        if (mitem)
         {
-            UBGraphicsMediaItem *mitem = dynamic_cast<UBGraphicsMediaItem*>(item);
-            if (mitem)
-            {
-                sourceUrl = mitem->mediaFileUrl();
-                downloadURL(sourceUrl, srcFile, itemPos, QSize(itemSize.width(), itemSize.height()), false, false);
-                return NULL; // async operation
-            }
-        }break;
+            sourceUrl = mitem->mediaFileUrl();
+            downloadURL(sourceUrl, srcFile, itemPos, QSize(itemSize.width(), itemSize.height()), false, false);
+            return NULL; // async operation
+        }
+    }
+        break;
 
     case UBMimeType::VectorImage:
+    {
+        UBGraphicsSvgItem *viitem = dynamic_cast<UBGraphicsSvgItem*> (item);
+        if (viitem)
         {
-            UBGraphicsSvgItem *viitem = dynamic_cast<UBGraphicsSvgItem*>(item);
-            if (viitem)
-            {
-                pData = viitem->fileData();
-                sourceUrl = item->sourceUrl();
-            }
-        }break;
+            pData = viitem->fileData();
+            sourceUrl = item->sourceUrl();
+        }
+    }
+        break;
 
     case UBMimeType::RasterImage:
+    {
+        UBGraphicsPixmapItem *pixitem = dynamic_cast<UBGraphicsPixmapItem*> (item);
+        if (pixitem)
         {
-            UBGraphicsPixmapItem *pixitem = dynamic_cast<UBGraphicsPixmapItem*>(item);
-            if (pixitem)
-            {
-                 QBuffer buffer(&pData);
-                 buffer.open(QIODevice::WriteOnly);
-                 QString format = UBFileSystemUtils::extension(item->sourceUrl().toString(QUrl::DecodeReserved));
-                 pixitem->pixmap().save(&buffer, format.toLatin1());
-            }
-        }break;
+            QBuffer buffer(&pData);
+            buffer.open(QIODevice::WriteOnly);
+            QString format = UBFileSystemUtils::extension(item->sourceUrl().toString(QUrl::DecodeReserved));
+            pixitem->pixmap().save(&buffer, format.toLatin1());
+        }
+    }
+        break;
 
     case UBMimeType::Group:
     {
-        UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
+        UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*> (item);
         UBGraphicsGroupContainerItem* duplicatedGroup = NULL;
 
         QList<QGraphicsItem*> duplicatedItems;
         QList<QGraphicsItem*> children = groupItem->childItems();
 
         mActiveScene->setURStackEnable(false);
-        foreach(QGraphicsItem* pIt, children){
-            UBItem* pItem = dynamic_cast<UBItem*>(pIt);
-            if(pItem)
+
+        foreach(QGraphicsItem* pIt, children)
+        {
+            UBItem* pItem = dynamic_cast<UBItem*> (pIt);
+            if (pItem)
             {
-                QGraphicsItem * itemToGroup = dynamic_cast<QGraphicsItem *>(duplicateItem(pItem));
+                QGraphicsItem * itemToGroup = dynamic_cast<QGraphicsItem *> (duplicateItem(pItem));
                 if (itemToGroup)
                 {
                     itemToGroup->setZValue(pIt->zValue());
@@ -709,39 +709,42 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
         duplicatedGroup->setTransform(groupItem->transform());
         groupItem->setSelected(false);
 
-        retItem = dynamic_cast<UBGraphicsItem *>(duplicatedGroup);
+        retItem = dynamic_cast<UBGraphicsItem *> (duplicatedGroup);
 
-        QGraphicsItem * itemToAdd = dynamic_cast<QGraphicsItem *>(retItem);
+        QGraphicsItem * itemToAdd = dynamic_cast<QGraphicsItem *> (retItem);
         if (itemToAdd)
         {
             mActiveScene->addItem(itemToAdd);
             itemToAdd->setSelected(true);
         }
         mActiveScene->setURStackEnable(true);
-    }break;
+    }
+        break;
 
     case UBMimeType::UNKNOWN:
+    {
+        QGraphicsItem *gitem = dynamic_cast<QGraphicsItem*> (item->deepCopy());
+        if (gitem)
         {
-            QGraphicsItem *gitem = dynamic_cast<QGraphicsItem*>(item->deepCopy());
-            if (gitem)
-            {
-                mActiveScene->addItem(gitem);
+            mActiveScene->addItem(gitem);
 
-                gitem->setPos(itemPos);
+            gitem->setPos(itemPos);
 
-                mLastCreatedItem = gitem;
-                gitem->setSelected(true);
-            }
-            retItem = dynamic_cast<UBGraphicsItem *>(gitem);
-        }break;
+            mLastCreatedItem = gitem;
+            gitem->setSelected(true);
+        }
+        retItem = dynamic_cast<UBGraphicsItem *> (gitem);
+    }
+        break;
     }
 
     if (retItem)
     {
-        QGraphicsItem *graphicsRetItem = dynamic_cast<QGraphicsItem *>(retItem);
-        if (mActiveScene->isURStackIsEnabled()) { //should be deleted after scene own undo stack implemented
-             UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(mActiveScene, 0, graphicsRetItem);
-             UBApplication::undoStack->push(uc);
+        QGraphicsItem *graphicsRetItem = dynamic_cast<QGraphicsItem *> (retItem);
+        if (mActiveScene->isURStackIsEnabled())
+        { //should be deleted after scene own undo stack implemented
+            UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(mActiveScene, 0, graphicsRetItem);
+            UBApplication::undoStack->push(uc);
         }
         return retItem;
     }
@@ -752,13 +755,13 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
         createdItem->setSourceUrl(item->sourceUrl());
         item->copyItemParameters(createdItem);
 
-        QGraphicsItem *createdGitem = dynamic_cast<QGraphicsItem*>(createdItem);
+        QGraphicsItem *createdGitem = dynamic_cast<QGraphicsItem*> (createdItem);
         if (createdGitem)
             createdGitem->setPos(itemPos);
-        mLastCreatedItem = dynamic_cast<QGraphicsItem*>(createdItem);
+        mLastCreatedItem = dynamic_cast<QGraphicsItem*> (createdItem);
         mLastCreatedItem->setSelected(true);
 
-        retItem = dynamic_cast<UBGraphicsItem *>(createdItem);
+        retItem = dynamic_cast<UBGraphicsItem *> (createdItem);
     }
 
     return retItem;
@@ -766,12 +769,12 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
 
 void UBBoardController::deleteScene(int nIndex)
 {
-    if (selectedDocument()->pageCount()>=2)
+    if (selectedDocument()->pageCount() >= 2)
     {
         mDeletingSceneIndex = nIndex;
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistCurrentScene();
-        showMessage(tr("Deleting page %1").arg(nIndex+1), true);
+        showMessage(tr("Deleting page %1").arg(nIndex + 1), true);
 
         QList<int> scIndexes;
         scIndexes << nIndex;
@@ -779,14 +782,13 @@ void UBBoardController::deleteScene(int nIndex)
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
         if (nIndex >= pageCount())
-            nIndex = pageCount()-1;
+            nIndex = pageCount() - 1;
         setActiveDocumentScene(nIndex);
-        showMessage(tr("Page %1 deleted").arg(nIndex+1));
+        showMessage(tr("Page %1 deleted").arg(nIndex + 1));
         QApplication::restoreOverrideCursor();
         mDeletingSceneIndex = -1;
     }
 }
-
 
 void UBBoardController::clearScene()
 {
@@ -794,12 +796,11 @@ void UBBoardController::clearScene()
     {
         freezeW3CWidgets(true);
         mActiveScene->clearContent(UBGraphicsScene::clearItemsAndAnnotations);
-        mActiveScene->setLastCenter(QPointF(0,0));
+        mActiveScene->setLastCenter(QPointF(0, 0));
         mControlView->centerOn(mActiveScene->lastCenter());
         updateActionStates();
     }
 }
-
 
 void UBBoardController::clearSceneItems()
 {
@@ -810,7 +811,6 @@ void UBBoardController::clearSceneItems()
         updateActionStates();
     }
 }
-
 
 void UBBoardController::clearSceneAnnotation()
 {
@@ -846,7 +846,6 @@ void UBBoardController::libraryDialogClosed(int ret)
     mMainWindow->actionLibrary->setChecked(false);
 }
 
-
 void UBBoardController::blackout()
 {
     UBApplication::applicationController->blackout();
@@ -854,16 +853,15 @@ void UBBoardController::blackout()
 
 void UBBoardController::showKeyboard(bool show)
 {
-    if(show)
+    if (show)
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 
-    if(UBSettings::settings()->useSystemOnScreenKeyboard->get().toBool())
+    if (UBSettings::settings()->useSystemOnScreenKeyboard->get().toBool())
         UBPlatformUtils::showOSK(show);
     else
         mPaletteManager->showVirtualKeyboard(show);
 
 }
-
 
 void UBBoardController::zoomIn(QPointF scenePoint)
 {
@@ -874,7 +872,6 @@ void UBBoardController::zoomIn(QPointF scenePoint)
     }
     zoom(mZoomFactor, scenePoint);
 }
-
 
 void UBBoardController::zoomOut(QPointF scenePoint)
 {
@@ -890,7 +887,6 @@ void UBBoardController::zoomOut(QPointF scenePoint)
     zoom(newZoomFactor, scenePoint);
 }
 
-
 void UBBoardController::zoomRestore()
 {
     QTransform tr;
@@ -900,7 +896,7 @@ void UBBoardController::zoomRestore()
 
     centerRestore();
 
-    foreach(QGraphicsItem *gi, mActiveScene->selectedItems ())
+    foreach(QGraphicsItem *gi, mActiveScene->selectedItems())
     {
         //force item to redraw the frame (for the anti scale calculation)
         gi->setSelected(false);
@@ -910,19 +906,16 @@ void UBBoardController::zoomRestore()
     emit zoomChanged(1.0);
 }
 
-
 void UBBoardController::centerRestore()
 {
-    centerOn(QPointF(0,0));
+    centerOn(QPointF(0, 0));
 }
-
 
 void UBBoardController::centerOn(QPointF scenePoint)
 {
     mControlView->centerOn(scenePoint);
     UBApplication::applicationController->adjustDisplayView();
 }
-
 
 void UBBoardController::zoom(const qreal ratio, QPointF scenePoint)
 {
@@ -953,11 +946,10 @@ void UBBoardController::zoom(const qreal ratio, QPointF scenePoint)
     mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
 }
 
-
 void UBBoardController::handScroll(qreal dx, qreal dy)
 {
-    qreal antiScaleRatio = 1/(mSystemScaleFactor * currentZoom());
-    mControlView->translate(dx*antiScaleRatio, dy*antiScaleRatio);
+    qreal antiScaleRatio = 1 / (mSystemScaleFactor * currentZoom());
+    mControlView->translate(dx*antiScaleRatio, dy * antiScaleRatio);
 
     UBApplication::applicationController->adjustDisplayView();
 
@@ -987,7 +979,6 @@ void UBBoardController::previousScene()
     updateActionStates();
 }
 
-
 void UBBoardController::nextScene()
 {
     if (mActiveSceneIndex < selectedDocument()->pageCount() - 1)
@@ -1003,7 +994,6 @@ void UBBoardController::nextScene()
     updateActionStates();
 }
 
-
 void UBBoardController::firstScene()
 {
     if (mActiveSceneIndex > 0)
@@ -1018,7 +1008,6 @@ void UBBoardController::firstScene()
 
     updateActionStates();
 }
-
 
 void UBBoardController::lastScene()
 {
@@ -1044,8 +1033,7 @@ void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, c
     if (isBackground)
         oldBackgroundObject = mActiveScene->backgroundObject();
 
-    if(sUrl.startsWith("openboardtool://"))
-
+    if (sUrl.startsWith("openboardtool://"))
     {
         downloadFinished(true, url, QUrl(), "application/openboard-tool", QByteArray(), pPos, pSize, isBackground);
     }
@@ -1060,36 +1048,36 @@ void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, c
                 || contentType.startsWith("application/widget")
                 || contentType.startsWith("application/vnd.apple-widget");
 
-       if (shouldLoadFileData)
-       {
+        if (shouldLoadFileData)
+        {
             QFile file(fileName);
             file.open(QIODevice::ReadOnly);
             downloadFinished(true, formedUrl, QUrl(), contentType, file.readAll(), pPos, pSize, isBackground, internalData);
             file.close();
-       }
-       else
-       {
-           // media items should be copyed in separate thread
+        }
+        else
+        {
+            // media items should be copyed in separate thread
 
-           sDownloadFileDesc desc;
-           desc.modal = false;
-           desc.srcUrl = sUrl;
-           desc.originalSrcUrl = contentSourceUrl;
-           desc.currentSize = 0;
-           desc.name = QFileInfo(url.toString()).fileName();
-           desc.totalSize = 0; // The total size will be retrieved during the download
-           desc.pos = pPos;
-           desc.size = pSize;
-           desc.isBackground = isBackground;
+            sDownloadFileDesc desc;
+            desc.modal = false;
+            desc.srcUrl = sUrl;
+            desc.originalSrcUrl = contentSourceUrl;
+            desc.currentSize = 0;
+            desc.name = QFileInfo(url.toString()).fileName();
+            desc.totalSize = 0; // The total size will be retrieved during the download
+            desc.pos = pPos;
+            desc.size = pSize;
+            desc.isBackground = isBackground;
 
-           UBDownloadManager::downloadManager()->addFileToDownload(desc);
-       }
+            UBDownloadManager::downloadManager()->addFileToDownload(desc);
+        }
     }
     else
     {
         QString urlString = url.toString();
         int parametersStringPosition = urlString.indexOf("?");
-        if(parametersStringPosition != -1)
+        if (parametersStringPosition != -1)
             urlString = urlString.left(parametersStringPosition);
 
         // When we fall there, it means that we are dropping something from the web to the board
@@ -1108,7 +1096,8 @@ void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, c
 
     if (isBackground && oldBackgroundObject != mActiveScene->backgroundObject())
     {
-        if (mActiveScene->isURStackIsEnabled()) { //should be deleted after scene own undo stack implemented
+        if (mActiveScene->isURStackIsEnabled())
+        { //should be deleted after scene own undo stack implemented
             UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(mActiveScene, oldBackgroundObject, mActiveScene->backgroundObject());
             UBApplication::undoStack->push(uc);
         }
@@ -1116,7 +1105,6 @@ void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, c
 
 
 }
-
 
 UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl contentUrl, QString pContentTypeHeader,
                                             QByteArray pData, QPointF pPos, QSize pSize,
@@ -1126,12 +1114,12 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
     // In some cases "image/jpeg;charset=" is retourned by the drag-n-drop. That is
     // why we will check if an ; exists and take the first part (the standard allows this kind of mimetype)
-    if(mimeType.isEmpty())
-      mimeType = UBFileSystemUtils::mimeTypeFromFileName(sourceUrl.toString());
+    if (mimeType.isEmpty())
+        mimeType = UBFileSystemUtils::mimeTypeFromFileName(sourceUrl.toString());
 
-    int position=mimeType.indexOf(";");
-    if(position != -1)
-        mimeType=mimeType.left(position);
+    int position = mimeType.indexOf(";");
+    if (position != -1)
+        mimeType = mimeType.left(position);
 
     UBMimeType::Enum itemMimeType = UBFileSystemUtils::mimeTypeFromString(mimeType);
 
@@ -1154,10 +1142,12 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
 
         QPixmap pix;
-        if(pData.length() == 0){
+        if (pData.length() == 0)
+        {
             pix.load(sourceUrl.toLocalFile());
         }
-        else{
+        else
+        {
             QImage img;
             img.loadFromData(pData);
             pix = QPixmap::fromImage(img);
@@ -1256,11 +1246,11 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         {
             QString destFile;
             bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
-                sourceUrl.toString(),
-                UBPersistenceManager::videoDirectory,
-                uuid,
-                destFile,
-                &pData);
+                                                                                   sourceUrl.toString(),
+                                                                                   UBPersistenceManager::videoDirectory,
+                                                                                   uuid,
+                                                                                   destFile,
+                                                                                   &pData);
             if (!b)
             {
                 showMessage(tr("Add file operation failed: file copying error"));
@@ -1277,7 +1267,8 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
             mediaVideoItem = addVideo(sourceUrl, false, pPos, true);
         }
 
-        if(mediaVideoItem){
+        if (mediaVideoItem)
+        {
             if (contentUrl.isEmpty())
                 mediaVideoItem->setSourceUrl(sourceUrl);
             else
@@ -1301,11 +1292,11 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         {
             QString destFile;
             bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
-                sourceUrl.toString(),
-                UBPersistenceManager::audioDirectory,
-                uuid,
-                destFile,
-                &pData);
+                                                                                   sourceUrl.toString(),
+                                                                                   UBPersistenceManager::audioDirectory,
+                                                                                   uuid,
+                                                                                   destFile,
+                                                                                   &pData);
             if (!b)
             {
                 showMessage(tr("Add file operation failed: file copying error"));
@@ -1321,7 +1312,8 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
             audioMediaItem = addAudio(sourceUrl, false, pPos, true);
         }
 
-        if(audioMediaItem){
+        if (audioMediaItem)
+        {
             if (contentUrl.isEmpty())
                 audioMediaItem->setSourceUrl(sourceUrl);
             else
@@ -1334,7 +1326,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
         return audioMediaItem;
     }
-
     else if (UBMimeType::Flash == itemMimeType)
     {
 
@@ -1398,12 +1389,14 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         qDebug() << "pdf data length: " << pData.size();
         qDebug() << "sourceurl : " + sourceUrl.toString();
         int result = 0;
-        if(!sourceUrl.isEmpty()){
+        if (!sourceUrl.isEmpty())
+        {
             QStringList fileNames;
             fileNames << sourceUrl.toLocalFile();
             result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
         }
-        else if(pData.size()){
+        else if (pData.size())
+        {
             QTemporaryFile pdfFile("XXXXXX.pdf");
             if (pdfFile.open())
             {
@@ -1415,7 +1408,8 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
             }
         }
 
-        if (result){
+        if (result)
+        {
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         }
     }
@@ -1521,7 +1515,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
     else
     {
         showMessage(tr("Unknown content type %1").arg(pContentTypeHeader));
-        qWarning() << "ignoring mime type" << pContentTypeHeader ;
+        qWarning() << "ignoring mime type" << pContentTypeHeader;
     }
 
     return NULL;
@@ -1554,7 +1548,8 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
             persistCurrentScene();
             freezeW3CWidgets(true);
             ClearUndoStack();
-        }else
+        }
+        else
         {
             UBApplication::undoStack->clear();
         }
@@ -1587,7 +1582,7 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
 
     updateBackgroundActionsState(mActiveScene->isDarkBackground(), mActiveScene->pageBackground());
 
-    if(documentChange)
+    if (documentChange)
     {
         UBGraphicsTextItem::lastUsedTextColor = QColor(Qt::black);
     }
@@ -1598,12 +1593,11 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
     }
 }
 
-
 void UBBoardController::moveSceneToIndex(int source, int target)
 {
     if (selectedDocument())
     {
-        persistCurrentScene(false,true);
+        persistCurrentScene(false, true);
 
         UBDocumentContainer::movePageToIndex(source, target);
 
@@ -1621,22 +1615,25 @@ void UBBoardController::moveSceneToIndex(int source, int target)
 
 void UBBoardController::findUniquesItems(const QUndoCommand *parent, QSet<QGraphicsItem*> &itms)
 {
-    if (parent->childCount()) {
-        for (int i = 0; i < parent->childCount(); i++) {
+    if (parent->childCount())
+    {
+        for (int i = 0; i < parent->childCount(); i++)
+        {
             findUniquesItems(parent->child(i), itms);
         }
     }
 
     // Undo command transaction macros. Process separatedly
-    if (parent->text() == UBSettings::undoCommandTransactionName) {
+    if (parent->text() == UBSettings::undoCommandTransactionName)
+    {
         return;
     }
 
-    const UBUndoCommand *undoCmd = static_cast<const UBUndoCommand*>(parent);
-    if(undoCmd->getType() != UBUndoType::undotype_GRAPHICITEM)
+    const UBUndoCommand *undoCmd = static_cast<const UBUndoCommand*> (parent);
+    if (undoCmd->getType() != UBUndoType::undotype_GRAPHICITEM)
         return;
 
-    const UBGraphicsItemUndoCommand *cmd = dynamic_cast<const UBGraphicsItemUndoCommand*>(parent);
+    const UBGraphicsItemUndoCommand *cmd = dynamic_cast<const UBGraphicsItemUndoCommand*> (parent);
 
     // go through all added and removed objects, for create list of unique objects
     // grouped items will be deleted by groups, so we don't need do delete that items.
@@ -1644,7 +1641,7 @@ void UBBoardController::findUniquesItems(const QUndoCommand *parent, QSet<QGraph
     while (itAdded.hasNext())
     {
         QGraphicsItem* item = itAdded.next();
-        if( !itms.contains(item) && !(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()))
+        if (!itms.contains(item) && !(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()))
             itms.insert(item);
     }
 
@@ -1652,7 +1649,7 @@ void UBBoardController::findUniquesItems(const QUndoCommand *parent, QSet<QGraph
     while (itRemoved.hasNext())
     {
         QGraphicsItem* item = itRemoved.next();
-        if( !itms.contains(item) && !(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()))
+        if (!itms.contains(item) && !(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()))
             itms.insert(item);
     }
 }
@@ -1661,7 +1658,8 @@ void UBBoardController::ClearUndoStack()
 {
     QSet<QGraphicsItem*> uniqueItems;
     // go through all stack command
-    for (int i = 0; i < UBApplication::undoStack->count(); i++) {
+    for (int i = 0; i < UBApplication::undoStack->count(); i++)
+    {
         findUniquesItems(UBApplication::undoStack->command(i), uniqueItems);
     }
 
@@ -1672,11 +1670,15 @@ void UBBoardController::ClearUndoStack()
     const QMimeData* data = clipboard->mimeData();
     QList<QUrl> sourceURLs;
 
-    if (data && data->hasFormat(UBApplication::mimeTypeUniboardPageItem)) {
+    if (data && data->hasFormat(UBApplication::mimeTypeUniboardPageItem))
+    {
         const UBMimeDataGraphicsItem* mimeDataGI = qobject_cast <const UBMimeDataGraphicsItem*>(data);
 
-        if (mimeDataGI) {
-            foreach (UBItem* sourceItem, mimeDataGI->items()) {
+        if (mimeDataGI)
+        {
+
+            foreach(UBItem* sourceItem, mimeDataGI->items())
+            {
                 sourceURLs << sourceItem->sourceUrl();
             }
         }
@@ -1689,18 +1691,20 @@ void UBBoardController::ClearUndoStack()
     {
         QGraphicsItem* item = itUniq.next();
         UBGraphicsScene *scene = NULL;
-        if (item->scene()) {
-            scene = dynamic_cast<UBGraphicsScene*>(item->scene());
+        if (item->scene())
+        {
+            scene = dynamic_cast<UBGraphicsScene*> (item->scene());
         }
 
         bool inClipboard = false;
-        UBItem* ubi = dynamic_cast<UBItem*>(item);
+        UBItem* ubi = dynamic_cast<UBItem*> (item);
         if (ubi && sourceURLs.contains(ubi->sourceUrl()))
             inClipboard = true;
 
-        if(!scene && !inClipboard)
+        if (!scene && !inClipboard)
         {
-            if (!mActiveScene->deleteItem(item)){
+            if (!mActiveScene->deleteItem(item))
+            {
                 delete item;
                 item = 0;
             }
@@ -1719,7 +1723,6 @@ void UBBoardController::adjustDisplayViews()
         UBApplication::applicationController->adjustPreviousViews(mActiveSceneIndex, selectedDocument());
     }
 }
-
 
 int UBBoardController::autosaveTimeoutFromSettings()
 {
@@ -1756,16 +1759,17 @@ void UBBoardController::boardViewResized(QResizeEvent* event)
     mMessageWindow->adjustSizeAndPosition();
 
     UBApplication::applicationController->initViewState(
-                mControlView->horizontalScrollBar()->value(),
-                mControlView->verticalScrollBar()->value());
+                                                        mControlView->horizontalScrollBar()->value(),
+                                                        mControlView->verticalScrollBar()->value());
 
     updateSystemScaleFactor();
 
-    mControlView->centerOn(0,0);
+    mControlView->centerOn(0, 0);
 
-    if (mDisplayView) {
+    if (mDisplayView)
+    {
         UBApplication::applicationController->adjustDisplayView();
-        mDisplayView->centerOn(0,0);
+        mDisplayView->centerOn(0, 0);
     }
 
     mPaletteManager->containerResized();
@@ -1773,7 +1777,6 @@ void UBBoardController::boardViewResized(QResizeEvent* event)
     UBApplication::boardController->controlView()->scene()->moveMagnifier();
 
 }
-
 
 void UBBoardController::documentWillBeDeleted(UBDocumentProxy* pProxy)
 {
@@ -1784,18 +1787,15 @@ void UBBoardController::documentWillBeDeleted(UBDocumentProxy* pProxy)
     }
 }
 
-
 void UBBoardController::showMessage(const QString& message, bool showSpinningWheel)
 {
     mMessageWindow->showMessage(message, showSpinningWheel);
 }
 
-
 void UBBoardController::hideMessage()
 {
     mMessageWindow->hideMessage();
 }
-
 
 void UBBoardController::setDisabled(bool disable)
 {
@@ -1803,14 +1803,12 @@ void UBBoardController::setDisabled(bool disable)
     mControlView->setDisabled(disable);
 }
 
-
 void UBBoardController::selectionChanged()
 {
     updateActionStates();
     emit pageSelectionChanged(activeSceneIndex());
     emit updateThumbnailsRequired();
 }
-
 
 void UBBoardController::undoRedoStateChange(bool canUndo)
 {
@@ -1822,7 +1820,6 @@ void UBBoardController::undoRedoStateChange(bool canUndo)
     updateActionStates();
 }
 
-
 void UBBoardController::updateActionStates()
 {
     mMainWindow->actionBack->setEnabled(selectedDocument() && (mActiveSceneIndex > 0));
@@ -1830,12 +1827,10 @@ void UBBoardController::updateActionStates()
     mMainWindow->actionErase->setEnabled(mActiveScene && !mActiveScene->isEmpty());
 }
 
-
 UBGraphicsScene* UBBoardController::activeScene() const
 {
     return mActiveScene;
 }
-
 
 int UBBoardController::activeSceneIndex() const
 {
@@ -1851,7 +1846,7 @@ void UBBoardController::documentSceneChanged(UBDocumentProxy* pDocumentProxy, in
 {
     Q_UNUSED(pIndex);
 
-    if(selectedDocument() == pDocumentProxy)
+    if (selectedDocument() == pDocumentProxy)
     {
         setActiveDocumentScene(mActiveSceneIndex);
         updatePage(pIndex);
@@ -1860,7 +1855,8 @@ void UBBoardController::documentSceneChanged(UBDocumentProxy* pDocumentProxy, in
 
 void UBBoardController::autosaveTimeout()
 {
-    if (UBApplication::applicationController->displayMode() != UBApplicationController::Board) {
+    if (UBApplication::applicationController->displayMode() != UBApplicationController::Board)
+    {
         //perform autosave only in board mode
         return;
     }
@@ -1872,18 +1868,23 @@ void UBBoardController::autosaveTimeout()
 void UBBoardController::appMainModeChanged(UBApplicationController::MainMode md)
 {
     int autoSaveInterval = autosaveTimeoutFromSettings();
-    if (!autoSaveInterval) {
+    if (!autoSaveInterval)
+    {
         return;
     }
 
-    if (!mAutosaveTimer) {
+    if (!mAutosaveTimer)
+    {
         mAutosaveTimer = new QTimer(this);
         connect(mAutosaveTimer, SIGNAL(timeout()), this, SLOT(autosaveTimeout()));
     }
 
-    if (md == UBApplicationController::Board) {
+    if (md == UBApplicationController::Board)
+    {
         mAutosaveTimer->start(autoSaveInterval);
-    } else if (mAutosaveTimer->isActive()) {
+    }
+    else if (mAutosaveTimer->isActive())
+    {
         mAutosaveTimer->stop();
     }
 }
@@ -1915,10 +1916,105 @@ void UBBoardController::lastWindowClosed()
     }
 }
 
+static void
+setColorOnGraphicsItem(UBBoardController* ctl, int pColorIndex,
+                       const QColor& colOnDark, const QColor& colOnLight,
+                       UBGraphicsStrokesGroup& pStrokesGroup)
+{
+    const QColor& markOnDark = UBSettings::settings()->markerColors(true).at(pColorIndex);
+    const QColor& markOnLight = UBSettings::settings()->markerColors(false).at(pColorIndex);
 
+    const QColor* cod = nullptr;
+    const QColor* col = nullptr;
+    if (pStrokesGroup.color().alpha() == 255)
+    {
+        // no transparency, set solid pen color
+        cod = &colOnDark;
+        col = &colOnLight;
+    }
+    else
+    {
+        // transparency, set marker color
+        cod = &markOnDark;
+        col = &markOnLight;
+    }
+    pStrokesGroup.setColor(*cod, UBGraphicsStrokesGroup::colorType::colorOnDarkBackground);
+    pStrokesGroup.setColor(*col, UBGraphicsStrokesGroup::colorType::colorOnLightBackground);
+    if (ctl->activeScene()->isDarkBackground())
+    {
+        pStrokesGroup.setColor(*cod);
+    }
+    else
+    {
+        pStrokesGroup.setColor(*col);
+    }
+}
+
+static bool setColorOnItems(UBBoardController* pBoardCtl, int pColorIndex, const QList<QGraphicsItem *>& pItemsToProcess)
+{
+    qDebug() << "setColorOnItems - ColorIndex" << pColorIndex << endl;
+    bool anyChange = false;
+
+    for (auto i : pItemsToProcess)
+    {
+        if (UBGraphicsItem * gi = dynamic_cast<UBGraphicsItem*> (i))
+        {
+            const QColor& colOnDark = UBSettings::settings()->penColors(true).at(pColorIndex);
+            const QColor& colOnLight = UBSettings::settings()->penColors(false).at(pColorIndex);
+
+            switch (gi->type())
+            {
+            case UBGraphicsItemType::StrokeItemType:
+                if (auto gsg = dynamic_cast<UBGraphicsStrokesGroup*> (gi))
+                {
+                    setColorOnGraphicsItem(pBoardCtl, pColorIndex, colOnDark, colOnLight, *gsg);
+                    anyChange = true;
+                }
+                break;
+
+            case UBGraphicsItemType::TextItemType:
+                if (auto gti = dynamic_cast<UBGraphicsTextItem*> (gi))
+                {
+                    gti->setColorOnDarkBackground(colOnDark);
+                    gti->setColorOnLightBackground(colOnLight);
+                    anyChange = true;
+                }
+                break;
+            case UBGraphicsItemType::groupContainerType:
+                if (auto ggi = dynamic_cast<UBGraphicsGroupContainerItem*> (gi))
+                {
+                    anyChange = setColorOnItems(pBoardCtl, pColorIndex, ggi->childItems());
+                }
+                break;
+            default:
+                qDebug() << "unhandled type: " << gi->type() << endl;
+                break;
+            }
+        }
+    }
+
+    return anyChange;
+}
 
 void UBBoardController::setColorIndex(int pColorIndex)
 {
+    if (UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector)
+    {
+        // any items selected?
+        auto si = activeScene()->selectedItems();
+
+        if (si.count() > 0)
+        {
+            // change color of selected items
+            if (setColorOnItems(this, pColorIndex, si))
+            {
+                // changed color, event completely consumed.
+                return;
+            }
+        }
+    }
+
+
     UBDrawingController::drawingController()->setColorIndex(pColorIndex);
 
     if (UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker &&
@@ -1940,7 +2036,7 @@ void UBBoardController::setColorIndex(int pColorIndex)
         if (UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector)
         {
             // If we are in mode board, then do that
-            if(UBApplication::applicationController->displayMode() == UBApplicationController::Board)
+            if (UBApplication::applicationController->displayMode() == UBApplicationController::Board)
             {
                 UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Pen);
                 mMainWindow->actionPen->setChecked(true);
@@ -1962,8 +2058,9 @@ void UBBoardController::colorPaletteChanged()
     mPenColorOnLightBackground = UBSettings::settings()->penColor(false);
     mMarkerColorOnDarkBackground = UBSettings::settings()->markerColor(true);
     mMarkerColorOnLightBackground = UBSettings::settings()->markerColor(false);
-}
 
+    qDebug() << "Farbe geändert" << endl;
+}
 
 qreal UBBoardController::currentZoom()
 {
@@ -1992,7 +2089,7 @@ void UBBoardController::show()
 
 void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool forceImmediateSave)
 {
-    if(UBPersistenceManager::persistenceManager()
+    if (UBPersistenceManager::persistenceManager()
             && selectedDocument() && mActiveScene && mActiveSceneIndex != mDeletingSceneIndex
             && (mActiveSceneIndex >= 0) && mActiveSceneIndex != mMovingSceneIndex
             && (mActiveScene->isModified()))
@@ -2011,12 +2108,12 @@ void UBBoardController::updateSystemScaleFactor()
         QSize pageNominalSize = mActiveScene->nominalSize();
         //we're going to keep scale factor untouched if the size is custom
         QMap<DocumentSizeRatio::Enum, QSize> sizesMap = UBSettings::settings()->documentSizes;
-      //  if(pageNominalSize == sizesMap.value(DocumentSizeRatio::Ratio16_9) || pageNominalSize == sizesMap.value(DocumentSizeRatio::Ratio4_3))
+        //  if(pageNominalSize == sizesMap.value(DocumentSizeRatio::Ratio16_9) || pageNominalSize == sizesMap.value(DocumentSizeRatio::Ratio4_3))
         {
             QSize controlSize = controlViewport();
 
-            qreal hFactor = ((qreal)controlSize.width()) / ((qreal)pageNominalSize.width());
-            qreal vFactor = ((qreal)controlSize.height()) / ((qreal)pageNominalSize.height());
+            qreal hFactor = ((qreal) controlSize.width()) / ((qreal) pageNominalSize.width());
+            qreal vFactor = ((qreal) controlSize.height()) / ((qreal) pageNominalSize.height());
 
             newScaleFactor = qMin(hFactor, vFactor);
         }
@@ -2035,8 +2132,8 @@ void UBBoardController::updateSystemScaleFactor()
     mControlView->setTransform(scalingTransform);
     mControlView->horizontalScrollBar()->setValue(viewState.horizontalPosition);
     mControlView->verticalScrollBar()->setValue(viewState.verticalPostition);
-    mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());}
-
+    mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
+}
 
 void UBBoardController::setWidePageSize(bool checked)
 {
@@ -2052,7 +2149,6 @@ void UBBoardController::setWidePageSize(bool checked)
     }
 }
 
-
 void UBBoardController::setRegularPageSize(bool checked)
 {
     Q_UNUSED(checked);
@@ -2066,7 +2162,6 @@ void UBBoardController::setRegularPageSize(bool checked)
         setPageSize(newSize);
     }
 }
-
 
 void UBBoardController::setPageSize(QSize newSize)
 {
@@ -2087,7 +2182,7 @@ void UBBoardController::setPageSize(QSize newSize)
 
 void UBBoardController::notifyCache(bool visible)
 {
-    if(visible)
+    if (visible)
         emit cacheEnabled();
 
     mCacheWidgetIsEnabled = visible;
@@ -2099,7 +2194,7 @@ void UBBoardController::updatePageSizeState()
     {
         mMainWindow->actionWidePageSize->setChecked(true);
     }
-    else if(mActiveScene->nominalSize() == UBSettings::settings()->documentSizes.value(DocumentSizeRatio::Ratio4_3))
+    else if (mActiveScene->nominalSize() == UBSettings::settings()->documentSizes.value(DocumentSizeRatio::Ratio4_3))
     {
         mMainWindow->actionRegularPageSize->setChecked(true);
     }
@@ -2108,7 +2203,6 @@ void UBBoardController::updatePageSizeState()
         mMainWindow->actionCustomPageSize->setChecked(true);
     }
 }
-
 
 void UBBoardController::saveViewState()
 {
@@ -2126,15 +2220,14 @@ void UBBoardController::stylusToolChanged(int tool)
     if (UBPlatformUtils::hasVirtualKeyboard() && mPaletteManager->mKeyboardPalette)
     {
         UBStylusTool::Enum eTool = (UBStylusTool::Enum)tool;
-        if(eTool != UBStylusTool::Selector && eTool != UBStylusTool::Text)
+        if (eTool != UBStylusTool::Selector && eTool != UBStylusTool::Text)
         {
-            if(mPaletteManager->mKeyboardPalette->m_isVisible)
+            if (mPaletteManager->mKeyboardPalette->m_isVisible)
                 UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction::Trigger);
         }
     }
 
 }
-
 
 QUrl UBBoardController::expandWidgetToTempDir(const QByteArray& pZipedData, const QString& ext)
 {
@@ -2158,7 +2251,6 @@ QUrl UBBoardController::expandWidgetToTempDir(const QByteArray& pZipedData, cons
     return widgetUrl;
 }
 
-
 void UBBoardController::grabScene(const QRectF& pSceneRect)
 {
     if (mActiveScene)
@@ -2177,7 +2269,7 @@ void UBBoardController::grabScene(const QRectF& pSceneRect)
         mActiveScene->render(&painter, targetRect, pSceneRect);
 
         mActiveScene->setRenderingContext(UBGraphicsScene::Screen);
-//        mActiveScene->setRenderingQuality(UBItem::RenderingQualityNormal);
+        //        mActiveScene->setRenderingQuality(UBItem::RenderingQualityNormal);
         mActiveScene->setRenderingQuality(UBItem::RenderingQualityHigh);
 
 
@@ -2196,10 +2288,10 @@ UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
     {
         QString destFile;
         bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
-                    pSourceUrl.toLocalFile(),
-                    UBPersistenceManager::videoDirectory,
-                    uuid,
-                    destFile);
+                                                                               pSourceUrl.toLocalFile(),
+                                                                               UBPersistenceManager::videoDirectory,
+                                                                               uuid,
+                                                                               destFile);
         if (!b)
         {
             showMessage(tr("Add file operation failed: file copying error"));
@@ -2212,7 +2304,8 @@ UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
     UBGraphicsMediaItem* vi = mActiveScene->addMedia(concreteUrl, startPlay, pos);
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
-    if (vi) {
+    if (vi)
+    {
         vi->setUuid(uuid);
         vi->setSourceUrl(pSourceUrl);
     }
@@ -2231,10 +2324,10 @@ UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool st
     {
         QString destFile;
         bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
-            pSourceUrl.toLocalFile(),
-            UBPersistenceManager::audioDirectory,
-            uuid,
-            destFile);
+                                                                               pSourceUrl.toLocalFile(),
+                                                                               UBPersistenceManager::audioDirectory,
+                                                                               uuid,
+                                                                               destFile);
         if (!b)
         {
             showMessage(tr("Add file operation failed: file copying error"));
@@ -2246,7 +2339,8 @@ UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool st
     UBGraphicsMediaItem* ai = mActiveScene->addMedia(concreteUrl, startPlay, pos);
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
-    if (ai){
+    if (ai)
+    {
         ai->setUuid(uuid);
         ai->setSourceUrl(pSourceUrl);
     }
@@ -2268,17 +2362,18 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
 
     w3cWidgetItem = mActiveScene->addW3CWidget(newUrl, pos);
 
-    if (w3cWidgetItem) {
+    if (w3cWidgetItem)
+    {
         w3cWidgetItem->setUuid(uuid);
         w3cWidgetItem->setOwnFolder(newUrl);
         w3cWidgetItem->setSourceUrl(pUrl);
 
         QString struuid = UBStringUtils::toCanonicalUuid(uuid);
-        QString snapshotPath = selectedDocument()->persistencePath() +  "/" + UBPersistenceManager::widgetDirectory + "/" + struuid + ".png";
+        QString snapshotPath = selectedDocument()->persistencePath() + "/" + UBPersistenceManager::widgetDirectory + "/" + struuid + ".png";
         w3cWidgetItem->setSnapshotPath(QUrl::fromLocalFile(snapshotPath));
-        UBGraphicsWidgetItem *tmpItem = dynamic_cast<UBGraphicsWidgetItem*>(w3cWidgetItem);
+        UBGraphicsWidgetItem *tmpItem = dynamic_cast<UBGraphicsWidgetItem*> (w3cWidgetItem);
         if (tmpItem && tmpItem->scene())
-           tmpItem->takeSnapshot().save(snapshotPath, "PNG");
+            tmpItem->takeSnapshot().save(snapshotPath, "PNG");
 
     }
 
@@ -2291,17 +2386,18 @@ void UBBoardController::cut()
 
     QList<QGraphicsItem*> selectedItems;
     foreach(QGraphicsItem* gi, mActiveScene->selectedItems())
-        selectedItems << gi;
+    selectedItems << gi;
 
     //---------------------------------------------------------//
 
     QList<UBItem*> selected;
+
     foreach(QGraphicsItem* gi, selectedItems)
     {
         gi->setSelected(false);
 
-        UBItem* ubItem = dynamic_cast<UBItem*>(gi);
-        UBGraphicsItem *ubGi =  dynamic_cast<UBGraphicsItem*>(gi);
+        UBItem* ubItem = dynamic_cast<UBItem*> (gi);
+        UBGraphicsItem *ubGi = dynamic_cast<UBGraphicsItem*> (gi);
 
         if (ubItem && ubGi && !mActiveScene->tools().contains(gi))
         {
@@ -2316,7 +2412,7 @@ void UBBoardController::cut()
     {
         QClipboard *clipboard = QApplication::clipboard();
 
-        UBMimeDataGraphicsItem*  mimeGi = new UBMimeDataGraphicsItem(selected);
+        UBMimeDataGraphicsItem* mimeGi = new UBMimeDataGraphicsItem(selected);
 
         mimeGi->setData(UBApplication::mimeTypeUniboardPageItem, QByteArray());
         clipboard->setMimeData(mimeGi);
@@ -2327,14 +2423,13 @@ void UBBoardController::cut()
     //---------------------------------------------------------//
 }
 
-
 void UBBoardController::copy()
 {
     QList<UBItem*> selected;
 
     foreach(QGraphicsItem* gi, mActiveScene->selectedItems())
     {
-        UBItem* ubItem = dynamic_cast<UBItem*>(gi);
+        UBItem* ubItem = dynamic_cast<UBItem*> (gi);
 
         if (ubItem && !mActiveScene->tools().contains(gi))
             selected << ubItem;
@@ -2344,7 +2439,7 @@ void UBBoardController::copy()
     {
         QClipboard *clipboard = QApplication::clipboard();
 
-        UBMimeDataGraphicsItem*  mimeGi = new UBMimeDataGraphicsItem(selected);
+        UBMimeDataGraphicsItem* mimeGi = new UBMimeDataGraphicsItem(selected);
 
         mimeGi->setData(UBApplication::mimeTypeUniboardPageItem, QByteArray());
         clipboard->setMimeData(mimeGi);
@@ -2352,23 +2447,21 @@ void UBBoardController::copy()
     }
 }
 
-
 void UBBoardController::paste()
 {
     QClipboard *clipboard = QApplication::clipboard();
-    qreal xPosition = ((qreal)qrand()/(qreal)RAND_MAX) * 400;
-    qreal yPosition = ((qreal)qrand()/(qreal)RAND_MAX) * 200;
-    QPointF pos(xPosition -200 , yPosition - 100);
+    qreal xPosition = ((qreal) qrand() / (qreal) RAND_MAX) * 400;
+    qreal yPosition = ((qreal) qrand() / (qreal) RAND_MAX) * 200;
+    QPointF pos(xPosition - 200, yPosition - 100);
     processMimeData(clipboard->mimeData(), pos);
 
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 }
 
-
-bool zLevelLessThan( UBItem* s1, UBItem* s2)
+bool zLevelLessThan(UBItem* s1, UBItem* s2)
 {
-    qreal s1Zvalue = dynamic_cast<QGraphicsItem*>(s1)->data(UBGraphicsItemData::ItemOwnZValue).toReal();
-    qreal s2Zvalue = dynamic_cast<QGraphicsItem*>(s2)->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+    qreal s1Zvalue = dynamic_cast<QGraphicsItem*> (s1)->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+    qreal s2Zvalue = dynamic_cast<QGraphicsItem*> (s2)->data(UBGraphicsItemData::ItemOwnZValue).toReal();
     return s1Zvalue < s2Zvalue;
 }
 
@@ -2383,8 +2476,8 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
             int previousActiveSceneIndex = activeSceneIndex();
             int previousPageCount = selectedDocument()->pageCount();
 
-            foreach (UBMimeDataItem sourceItem, mimeData->items())
-                addScene(sourceItem.documentProxy(), sourceItem.sceneIndex(), true);
+            foreach(UBMimeDataItem sourceItem, mimeData->items())
+            addScene(sourceItem.documentProxy(), sourceItem.sceneIndex(), true);
 
             if (selectedDocument()->pageCount() < previousPageCount + mimeData->items().count())
                 setActiveDocumentScene(previousActiveSceneIndex);
@@ -2402,11 +2495,13 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
         if (mimeData)
         {
             QList<UBItem*> items = mimeData->items();
-            qStableSort(items.begin(),items.end(),zLevelLessThan);
+            qStableSort(items.begin(), items.end(), zLevelLessThan);
+
             foreach(UBItem* item, items)
             {
-                QGraphicsItem* pItem = dynamic_cast<QGraphicsItem*>(item);
-                if(NULL != pItem){
+                QGraphicsItem* pItem = dynamic_cast<QGraphicsItem*> (item);
+                if (NULL != pItem)
+                {
                     duplicateItem(item);
                 }
             }
@@ -2415,12 +2510,12 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
         }
     }
 
-    if(pMimeData->hasHtml())
+    if (pMimeData->hasHtml())
     {
         QString qsHtml = pMimeData->html();
         QString url = UBApplication::urlFromHtml(qsHtml);
 
-        if("" != url)
+        if ("" != url)
         {
             downloadURL(url, QString(), pPos);
             return;
@@ -2435,14 +2530,16 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
 
         const UBFeaturesMimeData *internalMimeData = qobject_cast<const UBFeaturesMimeData*>(pMimeData);
         bool internalData = false;
-        if (internalMimeData) {
+        if (internalMimeData)
+        {
             internalData = true;
         }
 
-        foreach(const QUrl url, urls){
+        foreach(const QUrl url, urls)
+        {
             QPointF pos(pPos + QPointF(index * 15, index * 15));
 
-            downloadURL(url, QString(), pos, QSize(), false,  internalData);
+            downloadURL(url, QString(), pos, QSize(), false, internalData);
             index++;
         }
 
@@ -2464,34 +2561,37 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
 
     if (pMimeData->hasText())
     {
-        if("" != pMimeData->text()){
+        if ("" != pMimeData->text())
+        {
             // Sometimes, it is possible to have an URL as text. we check here if it is the case
             QString qsTmp = pMimeData->text().remove(QRegExp("[\\0]"));
-            if(qsTmp.startsWith("http"))
+            if (qsTmp.startsWith("http"))
                 downloadURL(QUrl(qsTmp), QString(), pPos);
-            else{
-                if(mActiveScene->selectedItems().count() && mActiveScene->selectedItems().at(0)->type() == UBGraphicsItemType::TextItemType)
-                    dynamic_cast<UBGraphicsTextItem*>(mActiveScene->selectedItems().at(0))->setHtml(pMimeData->text());
+            else
+            {
+                if (mActiveScene->selectedItems().count() && mActiveScene->selectedItems().at(0)->type() == UBGraphicsItemType::TextItemType)
+                    dynamic_cast<UBGraphicsTextItem*> (mActiveScene->selectedItems().at(0))->setHtml(pMimeData->text());
                 else
                     mActiveScene->addTextHtml("", pPos)->setHtml(pMimeData->text());
             }
         }
-        else{
+        else
+        {
 #ifdef Q_OS_OSX
-                //  With Safari, in 95% of the drops, the mime datas are hidden in Apple Web Archive pasteboard type.
-                //  This is due to the way Safari is working so we have to dig into the pasteboard in order to retrieve
-                //  the data.
-                QString qsUrl = UBPlatformUtils::urlFromClipboard();
-                if("" != qsUrl){
-                    // We finally got the url of the dropped ressource! Let's import it!
-                    downloadURL(qsUrl, qsUrl, pPos);
-                    return;
-                }
+            //  With Safari, in 95% of the drops, the mime datas are hidden in Apple Web Archive pasteboard type.
+            //  This is due to the way Safari is working so we have to dig into the pasteboard in order to retrieve
+            //  the data.
+            QString qsUrl = UBPlatformUtils::urlFromClipboard();
+            if ("" != qsUrl)
+            {
+                // We finally got the url of the dropped ressource! Let's import it!
+                downloadURL(qsUrl, qsUrl, pPos);
+                return;
+            }
 #endif
         }
     }
 }
-
 
 void UBBoardController::togglePodcast(bool checked)
 {
@@ -2502,13 +2602,13 @@ void UBBoardController::togglePodcast(bool checked)
 void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* graphicsWidget)
 {
     mActiveScene->setURStackEnable(false);
-     UBGraphicsItem *toolW3C = duplicateItem(dynamic_cast<UBItem *>(graphicsWidget));
+    UBGraphicsItem *toolW3C = duplicateItem(dynamic_cast<UBItem *> (graphicsWidget));
     UBGraphicsWidgetItem *copyedGraphicsWidget = NULL;
 
     if (toolW3C)
     {
         if (UBGraphicsWidgetItem::Type == toolW3C->type())
-            copyedGraphicsWidget = static_cast<UBGraphicsWidgetItem *>(toolW3C);
+            copyedGraphicsWidget = static_cast<UBGraphicsWidgetItem *> (toolW3C);
 
         UBToolWidget *toolWidget = new UBToolWidget(copyedGraphicsWidget, mControlView);
 
@@ -2522,7 +2622,6 @@ void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* gr
         toolWidget->show();
     }
 }
-
 
 void UBBoardController::moveToolWidgetToScene(UBToolWidget* toolWidget)
 {
@@ -2539,40 +2638,40 @@ void UBBoardController::moveToolWidgetToScene(UBToolWidget* toolWidget)
     toolWidget->remove();
 }
 
-
 void UBBoardController::updateBackgroundActionsState(bool isDark, UBPageBackground pageBackground)
 {
-    switch (pageBackground) {
+    switch (pageBackground)
+    {
 
-        case UBPageBackground::crossed:
-            if (isDark)
-                mMainWindow->actionCrossedDarkBackground->setChecked(true);
-            else
-                mMainWindow->actionCrossedLightBackground->setChecked(true);
+    case UBPageBackground::crossed:
+        if (isDark)
+            mMainWindow->actionCrossedDarkBackground->setChecked(true);
+        else
+            mMainWindow->actionCrossedLightBackground->setChecked(true);
         break;
 
-        case UBPageBackground::ruled :
-            if (isDark)
-                mMainWindow->actionRuledDarkBackground->setChecked(true);
-            else
-                mMainWindow->actionRuledLightBackground->setChecked(true);
+    case UBPageBackground::ruled:
+        if (isDark)
+            mMainWindow->actionRuledDarkBackground->setChecked(true);
+        else
+            mMainWindow->actionRuledLightBackground->setChecked(true);
         break;
 
-        default:
-            if (isDark)
-                mMainWindow->actionPlainDarkBackground->setChecked(true);
-            else
-                mMainWindow->actionPlainLightBackground->setChecked(true);
+    default:
+        if (isDark)
+            mMainWindow->actionPlainDarkBackground->setChecked(true);
+        else
+            mMainWindow->actionPlainLightBackground->setChecked(true);
         break;
     }
 }
-
 
 void UBBoardController::addItem()
 {
     QString defaultPath = UBSettings::settings()->lastImportToLibraryPath->get().toString();
 
     QString extensions;
+
     foreach(QString ext, UBSettings::imageFileExtensions)
     {
         extensions += " *.";
@@ -2620,6 +2719,7 @@ void UBBoardController::freezeW3CWidgets(bool freeze)
     if (mActiveSceneIndex >= 0)
     {
         QList<QGraphicsItem *> list = UBApplication::boardController->activeScene()->getFastAccessItems();
+
         foreach(QGraphicsItem *item, list)
         {
             freezeW3CWidget(item, freeze);
@@ -2629,15 +2729,17 @@ void UBBoardController::freezeW3CWidgets(bool freeze)
 
 void UBBoardController::freezeW3CWidget(QGraphicsItem *item, bool freeze)
 {
-    if(item->type() == UBGraphicsW3CWidgetItem::Type)
+    if (item->type() == UBGraphicsW3CWidgetItem::Type)
     {
-        UBGraphicsW3CWidgetItem* item_casted = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
+        UBGraphicsW3CWidgetItem* item_casted = dynamic_cast<UBGraphicsW3CWidgetItem*> (item);
         if (0 == item_casted)
             return;
 
-        if (freeze) {
+        if (freeze)
+        {
             item_casted->load(QUrl(UBGraphicsW3CWidgetItem::freezedWidgetFilePath()));
-        } else
+        }
+        else
             item_casted->loadMainHtml();
     }
 }
