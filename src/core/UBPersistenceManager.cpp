@@ -171,7 +171,7 @@ void UBPersistenceManager::createDocumentProxiesStructure(const QFileInfoList &c
 
         if (docName.isEmpty()) {
             qDebug() << "Group name and document name are empty in UBPersistenceManager::createDocumentProxiesStructure()";
-            return;
+            continue;
         }
 
         QModelIndex parentIndex = mDocumentTreeStructureModel->goTo(docGroupName);
