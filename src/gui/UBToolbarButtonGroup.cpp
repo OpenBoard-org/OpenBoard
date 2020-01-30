@@ -41,11 +41,11 @@
 #include "core/memcheck.h"
 
 UBToolbarButtonGroup::UBToolbarButtonGroup(QToolBar *toolBar, const QList<QAction*> &actions)
-    : QWidget(toolBar)
-    , mActions(actions)
-    , mCurrentIndex(-1)
-    , mDisplayLabel(true)
-    , mActionGroup(0)
+: QWidget(toolBar)
+, mActions(actions)
+, mCurrentIndex(-1)
+, mDisplayLabel(true)
+, mActionGroup(0)
 {
     Q_ASSERT(actions.size() > 0);
 
@@ -75,7 +75,7 @@ UBToolbarButtonGroup::UBToolbarButtonGroup(QToolBar *toolBar, const QList<QActio
         button->setDefaultAction(action);
         button->setCheckable(true);
 
-        if(i == 0)
+        if (i == 0)
         {
             button->setObjectName("ubButtonGroupLeft");
         }
@@ -127,6 +127,9 @@ void UBToolbarButtonGroup::setColor(const QColor &color, int index)
 
 void UBToolbarButtonGroup::selected(QAction *action)
 {
+    // TODO why do we have to filter out multiple calls?
+    std::vector<bool> emitted(mActions.count());
+
     foreach(QWidget *widget, action->associatedWidgets())
     {
         QToolButton *button = qobject_cast<QToolButton*>(widget);
@@ -135,8 +138,9 @@ void UBToolbarButtonGroup::selected(QAction *action)
             int i = 0;
             foreach(QAction *eachAction, mActions)
             {
-                if (eachAction == action)
+                if (eachAction == action && !emitted[i])
                 {
+                    emitted[i] = true;
                     setCurrentIndex(i);
                     emit activated(i);
                     break;
@@ -156,18 +160,21 @@ void UBToolbarButtonGroup::setCurrentIndex(int index)
 {
     Q_ASSERT(index < mButtons.size());
 
-    if(index>=0) {
-    if (index != mCurrentIndex)
+    if (index >= 0)
     {
-        for(int i = 0; i < mButtons.size(); i++)
+        if (index != mCurrentIndex)
         {
-            mButtons.at(i)->setChecked(i == index);
+            for (int i = 0; i < mButtons.size(); i++)
+            {
+                mButtons.at(i)->setChecked(i == index);
+            }
+            mCurrentIndex = index;
+            emit currentIndexChanged(index);
         }
-        mCurrentIndex = index;
-        emit currentIndexChanged(index);
     }
-    } else {
-      qWarning() << "index is negative!";
+    else
+    {
+        qWarning() << "index is negative!";
     }
 }
 
@@ -202,15 +209,14 @@ void UBToolbarButtonGroup::paintEvent(QPaintEvent *)
     style()->drawControl(QStyle::CE_ToolButtonLabel, &option, &painter, this);
 }
 
-
 void UBToolbarButtonGroup::colorPaletteChanged()
 {
     bool isDarkBackground = UBSettings::settings()->isDarkBackground();
 
     QList<QColor> colors;
 
-    if (UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Pen 
-        || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line)
+    if (UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Pen
+            || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line)
     {
         colors = UBSettings::settings()->penColors(isDarkBackground);
     }
@@ -228,7 +234,7 @@ void UBToolbarButtonGroup::colorPaletteChanged()
 void UBToolbarButtonGroup::displayText(QVariant display)
 {
     mDisplayLabel = display.toBool();
-    QVBoxLayout* verticalLayout = (QVBoxLayout*)layout();
+    QVBoxLayout* verticalLayout = (QVBoxLayout*) layout();
     verticalLayout->setStretch(2, mDisplayLabel ? 1 : 0);
     update();
 }

@@ -228,6 +228,7 @@ class UBBoardController : public UBDocumentContainer
         void hideMessage();
         void setDisabled(bool disable);
         void setColorIndex(int pColorIndex);
+        bool setColorOnItems(int pColorIndex, const QList<QGraphicsItem *>& pItemsToProcess);
         void removeTool(UBToolWidget* toolWidget);
         void hide();
         void show();
