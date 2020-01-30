@@ -88,6 +88,10 @@
 #include "core/UBSettings.h"
 
 #include "core/memcheck.h"
+#include "domain/UBGraphicsItemColorUndoCommand.h"
+
+#include <memory>
+#include <vector>
 
 UBBoardController::UBBoardController(UBMainWindow* mainWindow)
 : UBDocumentContainer(mainWindow->centralWidget())
@@ -1926,7 +1930,7 @@ void UBBoardController::lastWindowClosed()
     }
 }
 
-static void
+static std::shared_ptr<UBGraphicsItemColorUndoCommand::ColorCommand>
 setColorOnGraphicsItem(UBBoardController* ctl, int pColorIndex,
                        const QColor& colOnDark, const QColor& colOnLight,
                        UBGraphicsStrokesGroup& pStrokesGroup)
@@ -1936,6 +1940,7 @@ setColorOnGraphicsItem(UBBoardController* ctl, int pColorIndex,
 
     const QColor* cod = nullptr;
     const QColor* col = nullptr;
+
     if (pStrokesGroup.color().alpha() == 255)
     {
         // no transparency, set solid pen color
@@ -1948,22 +1953,19 @@ setColorOnGraphicsItem(UBBoardController* ctl, int pColorIndex,
         cod = &markOnDark;
         col = &markOnLight;
     }
-    pStrokesGroup.setColor(*cod, UBGraphicsStrokesGroup::colorType::colorOnDarkBackground);
-    pStrokesGroup.setColor(*col, UBGraphicsStrokesGroup::colorType::colorOnLightBackground);
-    if (ctl->activeScene()->isDarkBackground())
-    {
-        pStrokesGroup.setColor(*cod);
-    }
-    else
-    {
-        pStrokesGroup.setColor(*col);
-    }
+    const UBGraphicsItemColorUndoCommand::ColorPair nextColors(*cod, *col);
+    auto ccmd = std::make_shared<UBGraphicsItemColorUndoCommand::StrokeColorCommand>(nextColors, pStrokesGroup, *ctl->activeScene());
+
+    ccmd->setColor();
+
+    return ccmd;
 }
 
-static bool setColorOnItems(UBBoardController* pBoardCtl, int pColorIndex, const QList<QGraphicsItem *>& pItemsToProcess)
+
+static void
+setColorOnItems(UBGraphicsItemColorUndoCommand::ColorCommandsVector& ccv, UBBoardController* ctl, int pColorIndex, const QList<QGraphicsItem *>& pItemsToProcess)
 {
-    qDebug() << "setColorOnItems - ColorIndex" << pColorIndex << endl;
-    bool anyChange = false;
+    qDebug() << "::setColorOnItems - ColorIndex" << pColorIndex << endl;
 
     for (auto i : pItemsToProcess)
     {
@@ -1977,23 +1979,24 @@ static bool setColorOnItems(UBBoardController* pBoardCtl, int pColorIndex, const
             case UBGraphicsItemType::StrokeItemType:
                 if (auto gsg = dynamic_cast<UBGraphicsStrokesGroup*> (gi))
                 {
-                    setColorOnGraphicsItem(pBoardCtl, pColorIndex, colOnDark, colOnLight, *gsg);
-                    anyChange = true;
+                    auto cc = setColorOnGraphicsItem(ctl, pColorIndex, colOnDark, colOnLight, *gsg);
+                    ccv.push_back(cc);
                 }
                 break;
 
             case UBGraphicsItemType::TextItemType:
                 if (auto gti = dynamic_cast<UBGraphicsTextItem*> (gi))
                 {
-                    gti->setColorOnDarkBackground(colOnDark);
-                    gti->setColorOnLightBackground(colOnLight);
-                    anyChange = true;
+                    UBGraphicsItemColorUndoCommand::ColorPair ctr(colOnDark, colOnLight);
+                    auto ccmd = std::make_shared<UBGraphicsItemColorUndoCommand::TextColorCommand>(ctr, *gti);
+                    ccmd->setColor();
+                    ccv.push_back(ccmd);
                 }
                 break;
             case UBGraphicsItemType::groupContainerType:
                 if (auto ggi = dynamic_cast<UBGraphicsGroupContainerItem*> (gi))
                 {
-                    anyChange = setColorOnItems(pBoardCtl, pColorIndex, ggi->childItems());
+                    setColorOnItems(ccv, ctl, pColorIndex, ggi->childItems());
                 }
                 break;
             default:
@@ -2002,21 +2005,39 @@ static bool setColorOnItems(UBBoardController* pBoardCtl, int pColorIndex, const
             }
         }
     }
+}
 
-    return anyChange;
+bool
+UBBoardController::setColorOnItems(int pColorIndex, const QList<QGraphicsItem *>& pItemsToProcess)
+{
+    qDebug() << "UBBoardController::setColorOnItems - ColorIndex" << pColorIndex << endl;
+
+    UBGraphicsItemColorUndoCommand::ColorCommandsVector ccv;
+    const auto canUndo = mActiveScene->isURStackIsEnabled();
+    ::setColorOnItems(ccv, this, pColorIndex, pItemsToProcess);
+
+    qDebug() << "ccv.size: " << ccv.size() << ", canUndo: " << canUndo << endl;
+    if (canUndo && ccv.size() > 0)
+    {
+        //should be deleted after scene own undo stack implemented
+        auto* uc = new UBGraphicsItemColorUndoCommand(mActiveScene, ccv);
+        UBApplication::undoStack->push(uc);
+    }
+
+
+    return ccv.size() > 0;
 }
 
 void UBBoardController::setColorIndex(int pColorIndex)
 {
+    // Color-Change while Selector active --> change color of selected items
     if (UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector)
     {
-        // any items selected?
-        auto si = activeScene()->selectedItems();
+        auto selectedItem = activeScene()->selectedItems();
 
-        if (si.count() > 0)
+        if (selectedItem.count() > 0)
         {
-            // change color of selected items
-            if (setColorOnItems(this, pColorIndex, si))
+            if (setColorOnItems(pColorIndex, selectedItem))
             {
                 // changed color, event completely consumed.
                 return;
