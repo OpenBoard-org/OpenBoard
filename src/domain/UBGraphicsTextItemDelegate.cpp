@@ -687,8 +687,12 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
     delegated()->setTextCursor(cursor);
 }
 
-void UBGraphicsTextItemDelegate::recolor()
+void UBGraphicsTextItemDelegate::replaceColor(const QColor& pOldColor, const QColor& pNewColor)
 {
+    /*qDebug() << "onDark: " << delegated()->colorOnDarkBackground()
+             << "onLight: " << delegated()->colorOnLightBackground()
+            << endl;*/
+    
     QTextCursor cursor = delegated()->textCursor();
     QTextCharFormat textFormat;
 
@@ -741,22 +745,15 @@ void UBGraphicsTextItemDelegate::recolor()
 
         }while(!bEndofTheSameBlock);
 
-
-        //setting new parameters
-        if (delegated()->scene()->isDarkBackground())
+        const QColor& bcol=curBrush.color();
+        const QColor& po=pOldColor;
+        const QColor& no=pNewColor;
+        //qDebug() << "bcol: " << bcol << "po: " << po << ", no: " << no  << endl;
+        if (bcol==po)
         {
-            if (curBrush.color() == Qt::black)
-            {
-                curBrush = QBrush(Qt::white);
-            }
+            curBrush = QBrush(no);
         }
-        else
-        {
-            if (curBrush.color() == Qt::white)
-            {
-                curBrush = QBrush(Qt::black);
-            }
-        }
+        //qDebug() << "brush.color: " << curBrush.color() << ", pos: " << iCursorPos << ", len: " << iBlockLen << endl;
 
         cursor.setPosition (iCursorPos+iBlockLen, QTextCursor::KeepAnchor);
         textFormat.setForeground(curBrush);
@@ -775,6 +772,29 @@ void UBGraphicsTextItemDelegate::recolor()
 
     delegated()->setTextCursor(cursor);
 }
+
+void UBGraphicsTextItemDelegate::recolor()
+{
+    /*qDebug() << "onDark: " << delegated()->colorOnDarkBackground()
+             << "onLight: " << delegated()->colorOnLightBackground()
+             << endl;*/
+    
+    const QColor& cod=delegated()->colorOnDarkBackground();
+    const QColor& col=delegated()->colorOnLightBackground();
+    //qDebug() << "onDark: " << cod << "onLight: " << col << endl;
+    
+    //setting new parameters
+    if (delegated()->scene()->isDarkBackground())
+    {
+        replaceColor(col, cod);
+    }
+    else
+    {
+        replaceColor(cod, col);
+    }
+}
+    
+
 
 void UBGraphicsTextItemDelegate::updateAlighButtonState()
 {

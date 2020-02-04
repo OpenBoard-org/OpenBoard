@@ -50,6 +50,8 @@ UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent)
     , mMultiClickState(0)
     , mLastMousePressTime(QTime::currentTime())
     , isActivatedTextEditor(true)
+    , mColorOnDarkBackground(Qt::white)
+    , mColorOnLightBackground(Qt::black)
 {
     setDelegate(new UBGraphicsTextItemDelegate(this, 0));
 
@@ -80,6 +82,24 @@ UBGraphicsTextItem::UBGraphicsTextItem(QGraphicsItem * parent)
 UBGraphicsTextItem::~UBGraphicsTextItem()
 {
 }
+
+void UBGraphicsTextItem::setColorOnDarkBackground(QColor pColorOnDarkBackground)
+{
+    UBGraphicsTextItemDelegate * del = dynamic_cast<UBGraphicsTextItemDelegate*>(Delegate());
+    if(del)
+        del->replaceColor(mColorOnDarkBackground, pColorOnDarkBackground);
+    mColorOnDarkBackground = pColorOnDarkBackground;
+
+}
+
+void UBGraphicsTextItem::setColorOnLightBackground(QColor pColorOnLightBackground)
+{
+    UBGraphicsTextItemDelegate * del = dynamic_cast<UBGraphicsTextItemDelegate*>(Delegate());
+    if(del)
+        del->replaceColor(mColorOnLightBackground, pColorOnLightBackground);
+    mColorOnLightBackground = pColorOnLightBackground;
+}
+
 
 void UBGraphicsTextItem::recolor()
 {

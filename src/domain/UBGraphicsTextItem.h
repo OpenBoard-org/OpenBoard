@@ -79,22 +79,14 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
         {
             return mColorOnDarkBackground;
         }
-
-        void setColorOnDarkBackground(QColor pColorOnDarkBackground)
-        {
-            mColorOnDarkBackground = pColorOnDarkBackground;
-        }
-
+        void setColorOnDarkBackground(QColor pColorOnDarkBackground);
+        
         QColor colorOnLightBackground() const
         {
             return mColorOnLightBackground;
         }
-
-        void setColorOnLightBackground(QColor pColorOnLightBackground)
-        {
-            mColorOnLightBackground = pColorOnLightBackground;
-        }
-
+        void setColorOnLightBackground(QColor pColorOnLightBackground);
+        
         virtual void clearSource(){;}
         virtual void setUuid(const QUuid &pUuid);
         void activateTextEditor(bool activate);

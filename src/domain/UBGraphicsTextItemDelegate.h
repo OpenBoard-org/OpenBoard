@@ -112,6 +112,7 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
         virtual ~UBGraphicsTextItemDelegate();
         bool isEditable();
         void scaleTextSize(qreal multiplyer);
+        void replaceColor(const QColor& pOldColor, const QColor& pNewColor);
         void recolor();
         virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value);
         virtual void createControls();
