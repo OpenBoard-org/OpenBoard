@@ -231,7 +231,28 @@ void UBDisplayManager::positionScreens()
     {
         mControlWidget->hide();
         mControlWidget->setGeometry(mDesktop->availableGeometry(mControlWidget));
+
+#ifdef Q_OS_LINUX
+        /*
+         * in Gnome (X11), a very strange behavior randomly happens if this call is done at app start (the transparent drawing view of the desktop mode
+         * becomes somewhat a screenshot of the gnome desktop, so no interaction is possible through the view, and a second "screenshot" (or a second "thread" of the window ? ...) of the desktpop appears ...
+         *
+         * It seems to be already assumed by Qt though, so not sure if a qtbug should be created..
+         *
+         * A known regression is that starting OpenBoard in DesktopMode directly may not handle perfectly until a screen mode change occurs (going to BoardMode and go back to Desktop Mode)
+         * (left palette closed by default and pen size way too large...) but it is less blocking than the other issue.
+         *
+         * Maybe To be able to start in DesktopMode should be reconsidered as it seems to work only on Windows at this time (or available only on Windows)
+         *
+         * https://doc.qt.io/qt-5/qwidget.html#showFullScreen
+        */
+        if (qgetenv("XDG_SESSION_TYPE") != "x11")
+        {
+            UBPlatformUtils::showFullScreen(mControlWidget);
+        }
+#else
         UBPlatformUtils::showFullScreen(mControlWidget);
+#endif
     }
 
     if (mDisplayWidget && mDisplayScreenIndex > -1)
