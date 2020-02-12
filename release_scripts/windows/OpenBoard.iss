@@ -59,8 +59,8 @@ Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\vcredist_x86.exe"; Des
 Source: "{#ProjectRoot}\build\win32\release\product\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ;OpenSSL
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.1.0-win32\bin\libssl-1_1.dll"; DestDir:"{app}"; Flags: ignoreversion
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.1.0-win32\bin\libcrypto-1_1.dll"; DestDir:"{app}"; Flags: ignoreversion
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.1.0-win64\bin\libssl-1_1-x64.dll"; DestDir:"{app}"; Flags: ignoreversion
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.1.0-win64\bin\libcrypto-1_1-x64.dll"; DestDir:"{app}"; Flags: ignoreversion
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\win32\libeay32.dll"; DestDir:"{app}"; Flags: ignoreversion
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\win32\ssleay32.dll"; DestDir:"{app}"; Flags: ignoreversion
 
@@ -91,9 +91,13 @@ Source: "{#QtLibs}\libEGL.dll"; DestDir: "{app}"
 ;Source: "/etc/freezedWidgetWrapper.html"; DestDir: "{app}"  
 ;Source: "*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
-Source: "{#QtLibs}\icudt54.dll"; DestDir: "{app}"  
-Source: "{#QtLibs}\icuin54.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\icuuc54.dll"; DestDir: "{app}"  
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\zlib\zlib-1.2.11\bin\zlib.dll"; DestDir:"{app}"; Flags: ignoreversion
+
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\qtwebkit\bin\icudt64.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\qtwebkit\bin\icuin64.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\qtwebkit\bin\icuuc64.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\qtwebkit\bin\libxml2.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\qtwebkit\bin\libxslt.dll"; DestDir: "{app}"
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
@@ -103,11 +107,20 @@ Source: "{#QtDir}\plugins\platforms\qoffscreen.dll"; DestDir: "{app}\platforms";
 Source: "{#QtDir}\plugins\platforms\qwindows.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
 
 
+;ffmpeg
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\avcodec-58.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\avdevice-58.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\avfilter-7.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\avformat-58.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\avutil-56.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\postproc-55.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\swresample-3.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\swscale-5.dll"; DestDir: "{app}"
+
 ;Qt images formats plugins
 Source: "{#QtDir}\plugins\imageformats\qgif.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtDir}\plugins\imageformats\qico.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtDir}\plugins\imageformats\qjpeg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\imageformats\qmng.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtDir}\plugins\imageformats\qsvg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtDir}\plugins\imageformats\qtiff.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion   
 
