@@ -37,7 +37,9 @@ Is intended for multiplatform support
 #ifdef WIN32
 
 #define _CRT_SECURE_NO_WARNINGS 
+#if _MSC_VER < 1700
 #define snprintf _snprintf
+#endif
 
 #endif    
 
