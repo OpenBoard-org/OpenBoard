@@ -777,6 +777,7 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
                 if ((*it)->pos().x() < 0 || (*it)->pos().y() < 0)
                     (*it)->setPos(0,item->boundingRect().size().height());
         }
+        movingItem = item;
     }
     else
     {

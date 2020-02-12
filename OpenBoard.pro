@@ -430,6 +430,9 @@ linux-g++* {
     LIBS += -lcrypto
     #LIBS += -lprofiler
     LIBS += -lX11
+    LIBS += -lquazip5
+    INCLUDEPATH += "/usr/include/quazip"
+
     LIBS += -lpoppler
     INCLUDEPATH += "/usr/include/poppler"
 
