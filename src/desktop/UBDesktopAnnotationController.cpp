@@ -84,8 +84,18 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     mTransparentDrawingView->setAttribute(Qt::WA_TranslucentBackground, true);
 #ifdef Q_OS_OSX
     mTransparentDrawingView->setAttribute(Qt::WA_MacNoShadow, true);
-#endif
+    /* https://bugreports.qt.io/browse/QTBUG-81456 */
+    if (QOperatingSystemVersion::current().minorVersion() > 12) /* > Sierra */
+    {
+        mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Window | Qt::NoDropShadowWindowHint | Qt::X11BypassWindowManagerHint);
+    }
+    else
+    {
+        mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window | Qt::NoDropShadowWindowHint | Qt::X11BypassWindowManagerHint);
+    }
+#else
     mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window | Qt::NoDropShadowWindowHint | Qt::X11BypassWindowManagerHint);
+#endif
     mTransparentDrawingView->setCacheMode(QGraphicsView::CacheNone);
     mTransparentDrawingView->resize(UBApplication::desktop()->width(), UBApplication::desktop()->height());
 
