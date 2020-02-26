@@ -1397,8 +1397,11 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         qDebug() << "accepting mime type" << mimeType << "as PDF";
         qDebug() << "pdf data length: " << pData.size();
         qDebug() << "sourceurl : " + sourceUrl.toString();
+        QString sUrl = sourceUrl.toString();
+
         int result = 0;
-        if(!sourceUrl.isEmpty()){
+        if(!sourceUrl.isEmpty() && (sUrl.startsWith("file://") || sUrl.startsWith("/")))
+        {
             QStringList fileNames;
             fileNames << sourceUrl.toLocalFile();
             result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
@@ -1411,6 +1414,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
                 QStringList fileNames;
                 fileNames << pdfFile.fileName();
                 result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
+                emit documentThumbnailsUpdated(this);
                 pdfFile.close();
             }
         }
