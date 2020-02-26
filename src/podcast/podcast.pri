@@ -13,16 +13,13 @@ SOURCES      += src/podcast/UBPodcastController.cpp \
 
 win32 {
 
-    SOURCES  += src/podcast/ffmpeg/UBFFmpegVideoEncoder.cpp \
-                src/podcast/ffmpeg/UBMicrophoneInput.cpp
+    SOURCES  += src/podcast/windowsmedia/UBWindowsMediaVideoEncoder.cpp \
+                src/podcast/windowsmedia/UBWindowsMediaFile.cpp \
+                src/podcast/windowsmedia/UBWaveRecorder.cpp
 
-    HEADERS  += src/podcast/ffmpeg/UBFFmpegVideoEncoder.h \
-                src/podcast/ffmpeg/UBMicrophoneInput.h
-
-    LIBS += -L$$PWD/../OpenBoard-ThirdParty/ffmpeg/lib/ -lavformat -lavcodec -lswscale  -lswresample -lavutil
-
-    INCLUDEPATH += $$PWD/../OpenBoard-ThirdParty/ffmpeg/include
-    DEPENDPATH += $$PWD/../OpenBoard-ThirdParty/ffmpeg/include
+    HEADERS  += src/podcast/windowsmedia/UBWindowsMediaVideoEncoder.h \
+                src/podcast/windowsmedia/UBWindowsMediaFile.h \
+                src/podcast/windowsmedia/UBWaveRecorder.h
 }
 
 macx {

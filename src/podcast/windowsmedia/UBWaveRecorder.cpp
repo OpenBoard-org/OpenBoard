@@ -76,8 +76,7 @@ bool UBWaveRecorder::init(const QString& waveInDeviceName)
         }
     }
 
-    WAVEFORMATEX format;
-    format.cbSize = 0;
+    WAVEFORMATEX format = {0};
     format.wFormatTag = WAVE_FORMAT_PCM;
     format.nChannels = mNbChannels;
     format.wBitsPerSample = mBitsPerSample;
@@ -85,7 +84,7 @@ bool UBWaveRecorder::init(const QString& waveInDeviceName)
     format.nBlockAlign = format.nChannels * (format.wBitsPerSample / 8);
     format.nAvgBytesPerSec = format.nSamplesPerSec * format.nBlockAlign;
 
-    if (waveInOpen(&mWaveInDevice, deviceID, &format, (DWORD)waveInProc, (DWORD_PTR)this, CALLBACK_FUNCTION) != MMSYSERR_NOERROR)
+    if (waveInOpen(&mWaveInDevice, deviceID, &format, reinterpret_cast<DWORD_PTR>(waveInProc), reinterpret_cast<DWORD_PTR>(this), CALLBACK_FUNCTION) != MMSYSERR_NOERROR)
     {
         setLastErrorMessage("Cannot open wave in device ");
         return false;
