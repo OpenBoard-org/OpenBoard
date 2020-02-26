@@ -328,7 +328,7 @@ if $BUNDLE_QT; then
             presence=`echo ${tab[*]} | grep -c "$lib"`;
             if [ "$presence" == "0" ]; then
 		if [ "$lib" != "openboard" ]; then
-			 echo "adding $lib to tab"
+			 echo "adding $lib to needed dependencies"
         	        tab[$count]=$lib;
         	        ((count++));
 		fi;
@@ -352,12 +352,12 @@ for ((i=0;i<${#tab[@]};i++)); do
     if [ $i -ne "0" ]; then
         echo -n ", " >> "$CONTROL_FILE"
     fi
-    # conditional dependency when libavcodec-ffmpeg56 or libavcodec-ffmpeg-extra56 is found
+    # conditional dependency when libavcodec is found
     depdVer=$(apt-cache show ${tab[$i]} | grep "Version: " | head -1 | awk '{ print $2 }' | sed -e 's/\([~:. 0-9?]*\).*/\1/g' | sed -e 's/\.$//')
-    if [ "${tab[$i]}" == "libavcodec-ffmpeg56" ] || [ "${tab[$i]}" == "libavcodec-ffmpeg-extra56" ]; then
-      echo -n "libavcodec-ffmpeg56 (>= ${depdVer}) | libavcodec-ffmpeg-extra56 (>= ${depdVer})" >> "$CONTROL_FILE"
-    elif [ "${tab[$i]}" == "libavcodec-ffmpeg57" ] || [ "${tab[$i]}" == "libavcodec-ffmpeg-extra57" ]; then
-      echo -n "libavcodec-ffmpeg57 (>= ${depdVer}) | libavcodec-ffmpeg-extra57 (>= ${depdVer})" >> "$CONTROL_FILE"
+    if [[ "${tab[$i]}" == *"libavcodec"* ]]; then
+        depName="${tab[$i]::-2}"
+        versionNumber="${tab[$i]: -2}"
+        echo -n "${depName}${versionNumber} (>= ${depdVer}) | ${depName}-extra${versionNumber} (>= ${depdVer})" >> "$CONTROL_FILE"
     else
       echo -n "${tab[$i]} (>= ${depdVer})" >> "$CONTROL_FILE"
     fi
