@@ -32,8 +32,9 @@
 #include <QtGui>
 
 #include <frameworks/UBPlatformUtils.h>
-#include <poppler/cpp/poppler-version.h>
-
+#ifndef USE_XPDF
+    #include <poppler/cpp/poppler-version.h>
+#endif
 #include "core/memcheck.h"
 
 QAtomicInt XPDFRenderer::sInstancesCount = 0;
@@ -56,7 +57,11 @@ XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
         globalParams->setupBaseFonts(QFile::encodeName(UBPlatformUtils::applicationResourcesDirectory() + "/" + "fonts").data());
     }
 
+#ifdef USE_XPDF
+    mDocument = new PDFDoc(new GString(filename.toLocal8Bit()), 0, 0, 0); // the filename GString is deleted on PDFDoc desctruction
+#else
     mDocument = new PDFDoc(new GooString(filename.toLocal8Bit()), 0, 0, 0); // the filename GString is deleted on PDFDoc desctruction
+#endif
     sInstancesCount.ref();
 }
 
@@ -194,7 +199,11 @@ QImage* XPDFRenderer::createPDFImage(int pageNumber, qreal xscale, qreal yscale,
         if(mSplash)
             delete mSplash;
         mSplash = new SplashOutputDev(splashModeRGB8, 1, false, paperColor);
+#ifdef USE_XPDF
+        mSplash->startDoc(mDocument->getXRef());
+#else
         mSplash->startDoc(mDocument);
+#endif
         int rotation = 0; // in degrees (get it from the worldTransform if we want to support rotation)
         bool useMediaBox = false;
         bool crop = true;

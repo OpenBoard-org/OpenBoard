@@ -36,10 +36,23 @@
 #include "globals/UBGlobals.h"
 
 THIRD_PARTY_WARNINGS_DISABLE
-#include <poppler/Object.h>
-#include <poppler/GlobalParams.h>
-#include <poppler/SplashOutputDev.h>
-#include <poppler/PDFDoc.h>
+
+#ifdef WIN32
+    #define USE_XPDF
+#endif
+
+#ifdef USE_XPDF
+    #include <xpdf/Object.h>
+    #include <xpdf/GlobalParams.h>
+    #include <xpdf/SplashOutputDev.h>
+    #include <xpdf/PDFDoc.h>
+#else
+    #include <poppler/Object.h>
+    #include <poppler/GlobalParams.h>
+    #include <poppler/SplashOutputDev.h>
+    #include <poppler/PDFDoc.h>
+#endif
+
 THIRD_PARTY_WARNINGS_ENABLE
 
 class PDFDoc;
