@@ -251,3 +251,14 @@ void UBMainWindow::hideDownloadWidget()
         mpDownloadWidget->hide();
     }
 }
+
+void UBMainWindow::setupShortcuts()
+{
+    actionColorRotate=new QAction(tr("Rotate Color"));
+    actionColorRotate->setShortcut(QKeySequence::fromString("Ctrl-R"));
+
+    actionColor0->setShortcut(QKeySequence::fromString("Ctrl-0"));
+
+}
+
+

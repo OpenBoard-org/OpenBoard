@@ -70,6 +70,7 @@ UBDesktopPenPalette::UBDesktopPenPalette(QWidget *parent, UBRightPalette* rightP
     connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), colorChoice, SLOT(colorPaletteChanged()));
     connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), this, SLOT(close()));
 
+    connect(UBApplication::mainWindow->actionColorRotate, &QAction::triggered, colorChoice, &UBToolbarButtonGroup::setNextIndex);
     layout()->addWidget(colorChoice);
 
     // Setup line width choice widget
