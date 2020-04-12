@@ -75,6 +75,7 @@ UBWebPluginPDFWidget::~UBWebPluginPDFWidget()
 void UBWebPluginPDFWidget::handleFile(const QString &filePath)
 {
     mRenderer = new XPDFRenderer(filePath);
+// TODO DEBIAN : mRenderer = new PopplerPDFRenderer(filePath);
 }
 
 void UBWebPluginPDFWidget::keyReleaseEvent(QKeyEvent *keyEvent)

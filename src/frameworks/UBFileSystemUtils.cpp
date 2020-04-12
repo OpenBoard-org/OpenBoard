@@ -35,8 +35,16 @@
 
 #include "globals/UBGlobals.h"
 
+// Use installed quazip if available
+#if __has_include(<quazipfile.h>)
+    #include <quazipfile.h>
+#else
+    THIRD_PARTY_WARNINGS_DISABLE
+    #include "quazipfile.h"
+    THIRD_PARTY_WARNINGS_ENABLE
+#endif
+
 THIRD_PARTY_WARNINGS_DISABLE
-#include "quazipfile.h"
 #include <openssl/md5.h>
 THIRD_PARTY_WARNINGS_ENABLE
 

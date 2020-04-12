@@ -1,8 +1,6 @@
 TARGET = "OpenBoard"
 TEMPLATE = app
 
-THIRD_PARTY_PATH=../OpenBoard-ThirdParty
-
 CONFIG += c++14
 CONFIG -= flat
 CONFIG += debug_and_release \
@@ -46,7 +44,7 @@ QT += core
 
 INCLUDEPATH += src
 
-include($$THIRD_PARTY_PATH/libs.pri)
+include(libs.pri)
 include(src/adaptors/adaptors.pri)
 include(src/api/api.pri)
 include(src/board/board.pri)
@@ -71,11 +69,6 @@ include(src/pdf-merger/pdfMerger.pri)
 include(plugins/plugins.pri)
 INCLUDEPATH += plugins/cffadaptor/src
 
-#ThirdParty
-DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
-INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
-include($$THIRD_PARTY_PATH/quazip/quazip.pri)
-
 FORMS += resources/forms/mainWindow.ui \
    resources/forms/preferences.ui \
    resources/forms/brushProperties.ui \
@@ -86,11 +79,11 @@ FORMS += resources/forms/mainWindow.ui \
    resources/forms/capturePublishing.ui \
    resources/forms/intranetPodcastPublishingDialog.ui
 
-UB_ETC.files = resources/etc
+UB_ETC.files = resources/etc/*
 UB_I18N.files = resources/i18n/*.qm
-UB_LIBRARY.files = resources/library
-UB_FONTS.files = resources/fonts
-UB_THIRDPARTY_INTERACTIVE.files = thirdparty/interactive
+UB_LIBRARY.files = resources/library/*
+UB_FONTS.files = resources/fonts/*
+UB_THIRDPARTY_INTERACTIVE.files = thirdparty/interactive/*
 
 DEFINES += NO_THIRD_PARTY_WARNINGS
 DEFINES += UBVERSION=\"\\\"$${LONG_VERSION}\"\\\" \
@@ -109,6 +102,8 @@ CONFIG(release, debug|release) {
    CONFIG += warn_off
 }
 
+# TODO DEBIAN:
+# DESTDIR =
 DESTDIR = $$BUILD_DIR/product
 OBJECTS_DIR = $$BUILD_DIR/objects
 MOC_DIR = $$BUILD_DIR/moc
@@ -430,12 +425,6 @@ linux-g++* {
     LIBS += -lcrypto
     #LIBS += -lprofiler
     LIBS += -lX11
-    LIBS += -lquazip5
-    INCLUDEPATH += "/usr/include/quazip"
-
-    LIBS += -lpoppler
-    INCLUDEPATH += "/usr/include/poppler"
-
     QMAKE_CFLAGS += -fopenmp
     QMAKE_CXXFLAGS += -fopenmp
     QMAKE_LFLAGS += -fopenmp
@@ -443,6 +432,13 @@ linux-g++* {
     UB_I18N.path = $$DESTDIR/i18n
     UB_ETC.path = $$DESTDIR
     UB_THIRDPARTY_INTERACTIVE.path = $$DESTDIR/library
+
+# TODO DEBIAN:
+#    UB_LIBRARY.path = $$DESTDIR/usr/share/openboard/library
+#    UB_I18N.path = $$DESTDIR/usr/share/openboard/i18n
+#    UB_ETC.path = $$DESTDIR/etc/openboard
+#    UB_THIRDPARTY_INTERACTIVE.path = $$DESTDIR/usr/share/openboard/library
+
     system(mkdir -p $$BUILD_DIR)
     system(echo "$$VERSION" > $$BUILD_DIR/version)
     system(echo "$$LONG_VERSION" > $$BUILD_DIR/longversion)

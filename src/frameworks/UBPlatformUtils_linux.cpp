@@ -46,6 +46,9 @@ void UBPlatformUtils::init()
 QString UBPlatformUtils::applicationResourcesDirectory()
 {
     return QApplication::applicationDirPath();
+
+    // TODO Why?
+    // Debian:  return QString("/usr/share/openboard");
 }
 
 void UBPlatformUtils::hideFile(const QString &filePath)

@@ -59,6 +59,9 @@ PDFRenderer* PDFRenderer::rendererForUuid(const QUuid &uuid, const QString &file
     {
         PDFRenderer *newRenderer = new XPDFRenderer(filename,importingFile);
 
+	// DEBIAN: PDFRenderer *newRenderer = new PopplerPDFRenderer(filename,importingFile);
+	// TODO - verify, should not XPDFRenderer already use Poppler?
+
         newRenderer->setRefCount(0);
         newRenderer->setFileUuid(uuid);
 
