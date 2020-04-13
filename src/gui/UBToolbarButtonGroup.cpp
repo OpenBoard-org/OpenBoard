@@ -168,9 +168,20 @@ void UBToolbarButtonGroup::setCurrentIndex(int index)
 
 void UBToolbarButtonGroup::setNextIndex()
 {
-    if(mCurrentIndex<mButtons.size())
+    if(mCurrentIndex<mButtons.size()-1)
         setCurrentIndex(mCurrentIndex+1);
     else setCurrentIndex(0);
+
+    qDebug("New Index = %i, %d", mCurrentIndex, mActions[mCurrentIndex]->isChecked());
+    for(int i = 0; i < mButtons.size(); i++)
+    {
+        qDebug("State = %i, %d", mCurrentIndex, mActions[i]->isChecked());
+    }
+
+
+    mActions[mCurrentIndex]->trigger();
+
+
 }
 
 void UBToolbarButtonGroup::paintEvent(QPaintEvent *)
