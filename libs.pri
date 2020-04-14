@@ -31,4 +31,8 @@ linux {
 !linux {
     DEFINES += USE_XPDF
     include($$THIRD_PARTY_PATH/libs.pri)
+    #ThirdParty
+    DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
+    INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
+    include($$THIRD_PARTY_PATH/quazip/quazip.pri)
 }
