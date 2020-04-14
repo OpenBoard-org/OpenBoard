@@ -256,7 +256,7 @@ void UBMainWindow::hideDownloadWidget()
 
 void UBMainWindow::setupShortcuts()
 {
-
+    qDebug("Setting up shortcuts");
     QList<QAction*> actions = UBMainWindow::findChildren<QAction*>();
 
     for (auto action : actions)
@@ -264,17 +264,11 @@ void UBMainWindow::setupShortcuts()
         qDebug("Action found: %s -> %s", qUtf8Printable(action->text()),qUtf8Printable(action->shortcut().toString()));
     }
 
-    actionColorRotate = new QShortcut(QKeySequence(UBSettings::settings()->defaultPenColorRotateShortcut), this);
+    actionColorRotate = new QShortcut(QKeySequence(UBSettings::settings()->defaultPenColorRotateShortcut->get().toString()), this);
     actionColorRotate->setContext(Qt::ApplicationShortcut);
 
-    actionColor0->setShortcut(QKeySequence::fromString("Ctrl-0"));
-
-    qDebug("Setting up shortcuts");
-    testEvent = new QShortcut(QKeySequence("L"), this);
-    testEvent->setContext(Qt::ApplicationShortcut);
-    connect(testEvent, &QShortcut::activated, [=]() { qDebug("main window test event Action Called"); });
-    connect(actionColorRotate, &QShortcut::activated, [=]() { qDebug("main window rotate Action Called"); });
-
+    actionWidthRotate = new QShortcut(QKeySequence(UBSettings::settings()->defaultWidthRotateShortcut->get().toString()), this);
+    actionWidthRotate->setContext(Qt::ApplicationShortcut);
 
 }
 

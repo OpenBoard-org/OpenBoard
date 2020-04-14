@@ -425,7 +425,8 @@ class UBSettings : public QObject
         // Shortcuts
 
         // Defaults - Standard
-        static const QString defaultPenColorRotateShortcut;
+        UBSetting* defaultPenColorRotateShortcut;
+        UBSetting* defaultWidthRotateShortcut;
         static const QString defaultPenColor0Shortcut;
         static const QString defaultPenColor1Shortcut;
         static const QString defaultPenColor2Shortcut;

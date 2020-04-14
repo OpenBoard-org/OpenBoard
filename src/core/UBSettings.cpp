@@ -463,6 +463,10 @@ void UBSettings::init()
     emptyTrashForOlderDocuments = new UBSetting(this, "Document", "emptyTrashForOlderDocuments", false);
     emptyTrashDaysValue = new UBSetting(this, "Document", "emptyTrashDaysValue", 30);
 
+    defaultPenColorRotateShortcut = new UBSetting(this, "Shortcuts", "PenColorRotate", "Q");
+    defaultWidthRotateShortcut = new UBSetting(this, "Shortcuts", "WidthRotate", "W");
+
+
     cleanNonPersistentSettings();
     checkNewSettings();
 }

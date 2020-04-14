@@ -69,7 +69,7 @@ class UBMainWindow : public QMainWindow, public Ui::MainWindow
 
         // shortcut actions
         QShortcut *actionColorRotate;
-        QShortcut* testEvent;
+        QShortcut *actionWidthRotate;
 
     signals:
         void closeEvent_Signal( QCloseEvent *event );

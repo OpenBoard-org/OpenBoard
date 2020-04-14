@@ -72,11 +72,6 @@ UBDesktopPenPalette::UBDesktopPenPalette(QWidget *parent, UBRightPalette* rightP
 
     connect(UBApplication::mainWindow->actionColorRotate, &QShortcut::activated, colorChoice, &UBToolbarButtonGroup::setNextIndex);
 
-    // connect(UBApplication::mainWindow->actionColorRotate, &QAction::triggered, colorChoice, &UBToolbarButtonGroup::setNextIndex);
-
-    connect(UBApplication::mainWindow->actionColorRotate, &QShortcut::activated, [=]() { qDebug("Action Called"); });
-    connect(UBApplication::mainWindow->actionColorRotate, &QShortcut::activatedAmbiguously, [=]() { qDebug("Action Called Ambiguously"); });
-
     layout()->addWidget(colorChoice);
 
     // Setup line width choice widget
@@ -93,6 +88,9 @@ UBDesktopPenPalette::UBDesktopPenPalette(QWidget *parent, UBRightPalette* rightP
     connect(lineWidthChoice, SIGNAL(activated(int)), this, SLOT(close()));
     connect(UBDrawingController::drawingController(), SIGNAL(lineWidthIndexChanged(int)), lineWidthChoice, SLOT(setCurrentIndex(int)));
     connect(UBDrawingController::drawingController(), SIGNAL(lineWidthIndexChanged(int)), this, SLOT(close()));
+
+    connect(UBApplication::mainWindow->actionWidthRotate, &QShortcut::activated, lineWidthChoice, &UBToolbarButtonGroup::setNextIndex);
+
 
     onParentMaximized();
 
