@@ -488,5 +488,6 @@ INSTALLS = UB_ETC \
 
 DISTFILES += \
     resources/images/moveDown.svg \
-    resources/images/moveDownDisabled.svg
+    resources/images/moveDownDisabled.svg \
+    libs.pri
 

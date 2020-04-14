@@ -112,6 +112,7 @@ void UBToolbarButtonGroup::setIcon(const QIcon &icon, int index)
         if (button)
         {
             button->setIcon(icon);
+            button->setCheckable(true);
         }
     }
 }

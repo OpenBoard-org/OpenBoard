@@ -29,5 +29,6 @@ linux {
 }
 
 !linux {
+    DEFINES += USE_XPDF
     include($$THIRD_PARTY_PATH/libs.pri)
 }
