@@ -37,10 +37,6 @@
 
 THIRD_PARTY_WARNINGS_DISABLE
 
-#ifdef WIN32
-    #define USE_XPDF
-#endif
-
 #ifdef USE_XPDF
     #include <xpdf/Object.h>
     #include <xpdf/GlobalParams.h>
