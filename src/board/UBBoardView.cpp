@@ -110,6 +110,8 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool
 
     mLongPressTimer.setInterval(mLongPressInterval);
     mLongPressTimer.setSingleShot(true);
+
+    _numScheduledScalings = 0;
 }
 
 UBBoardView::UBBoardView (UBBoardController* pController, int pStartLayer, int pEndLayer, QWidget* pParent, bool isControl, bool isDesktop)
@@ -1482,27 +1484,70 @@ void UBBoardView::mouseDoubleClickEvent (QMouseEvent *event)
 
 void UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
 {
-    QList<QGraphicsItem *> selItemsList = scene()->selectedItems();
-    // if NO have selected items, than no need process mouse wheel. just exist
-    if( selItemsList.count() > 0 )
+
+    if( wheelEvent->modifiers() & Qt::ControlModifier )
     {
-        // only one selected item possible, so we will work with first item only
-        QGraphicsItem * selItem = selItemsList[0];
-
-        // get items list under mouse cursor
-        QPointF scenePos = mapToScene(wheelEvent->pos());
-        QList<QGraphicsItem *> itemsList = scene()->items(scenePos);
-
-        bool isSelectedAndMouseHower = itemsList.contains(selItem);
-        if(isSelectedAndMouseHower)
-        {
-            QGraphicsView::wheelEvent(wheelEvent);
-            wheelEvent->accept();
-        }
-
+        wheelZoomEvent(wheelEvent);
     }
+    else
+    {
 
+
+        QList<QGraphicsItem *> selItemsList = scene()->selectedItems();
+        // if NO have selected items, than no need process mouse wheel. just exist
+        if( selItemsList.count() > 0 )
+        {
+            // only one selected item possible, so we will work with first item only
+            QGraphicsItem * selItem = selItemsList[0];
+
+            // get items list under mouse cursor
+            QPointF scenePos = mapToScene(wheelEvent->pos());
+            QList<QGraphicsItem *> itemsList = scene()->items(scenePos);
+
+            bool isSelectedAndMouseHower = itemsList.contains(selItem);
+            if(isSelectedAndMouseHower)
+            {
+                QGraphicsView::wheelEvent(wheelEvent);
+                wheelEvent->accept();
+            }
+
+        }
+    }
 }
+
+void UBBoardView::wheelZoomEvent(QWheelEvent *event){
+    int numDegrees = event->delta() / 8;
+     int numSteps = numDegrees / 15; // see QWheelEvent documentation
+     _numScheduledScalings += numSteps;
+     if (_numScheduledScalings * numSteps < 0) // if user moved the wheel in another direction, we reset previously scheduled scalings
+     _numScheduledScalings = numSteps;
+
+
+
+     QTimeLine *anim = new QTimeLine(150, this);
+     anim->setCurveShape(QTimeLine::LinearCurve);
+     anim->setUpdateInterval(10);
+
+     connect(anim, SIGNAL (valueChanged(qreal)), SLOT (wheelZoomEventScalingTime(qreal)));
+     connect(anim, SIGNAL (finished()), SLOT (wheelZoomEventAnimFinished()));
+     anim->start();
+}
+void UBBoardView::wheelZoomEventScalingTime(qreal x){
+    qreal factor = 1.0+ qreal(_numScheduledScalings) / 300.0;
+
+    QPointF scenepoint =  this->mapToScene(QCursor::pos());
+
+    mController->zoom(factor, scenepoint);
+    // scale(factor, factor);
+}
+void UBBoardView::wheelZoomEventAnimFinished(){
+    if (_numScheduledScalings > 0)
+    _numScheduledScalings--;
+    else
+    _numScheduledScalings++;
+    sender()->~QObject();
+}
+
 
 void UBBoardView::leaveEvent (QEvent * event)
 {
