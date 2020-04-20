@@ -577,6 +577,10 @@ void UBBoardController::duplicateScene(int nIndex)
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     persistCurrentScene(false,true);
 
+    // Persist scroll position
+    int pos_x = mControlView->horizontalScrollBar()->value();
+    int pos_y = mControlView->verticalScrollBar()->value();
+
     QList<int> scIndexes;
     scIndexes << nIndex;
     duplicatePages(scIndexes);
@@ -586,6 +590,11 @@ void UBBoardController::duplicateScene(int nIndex)
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
     setActiveDocumentScene(nIndex + 1);
+
+    // Set duplicated page to same scroll position as original
+    mControlView->horizontalScrollBar()->setValue(pos_x);
+    mControlView->verticalScrollBar()->setValue(pos_y);
+
     QApplication::restoreOverrideCursor();
 }
 
