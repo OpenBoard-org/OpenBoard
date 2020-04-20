@@ -85,6 +85,8 @@
 
 #include "core/memcheck.h"
 
+#include <QShortcut>
+
 UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool isControl, bool isDesktop)
     : QGraphicsView (pParent)
     , mController (pController)
@@ -143,6 +145,7 @@ UBBoardView::~UBBoardView ()
 
 void UBBoardView::init ()
 {
+
     connect (UBSettings::settings ()->boardPenPressureSensitive, SIGNAL (changed (QVariant)),
              this, SLOT (settingChanged (QVariant)));
 
@@ -234,62 +237,6 @@ void UBBoardView::keyPressEvent (QKeyEvent *event)
         {
             setMultiselection(true);
         }break;
-        }
-
-
-        if (event->modifiers () & Qt::ControlModifier) // keep only ctrl/cmd keys
-        {
-            switch (event->key ())
-            {
-            case Qt::Key_Plus:
-            case Qt::Key_I:
-            {
-                mController->zoomIn ();
-                event->accept ();
-                break;
-            }
-            case Qt::Key_Minus:
-            case Qt::Key_O:
-            {
-                mController->zoomOut ();
-                event->accept ();
-                break;
-            }
-            case Qt::Key_0:
-            {
-                mController->zoomRestore ();
-                event->accept ();
-                break;
-            }
-            case Qt::Key_Left:
-            {
-                mController->handScroll (-100, 0);
-                event->accept ();
-                break;
-            }
-            case Qt::Key_Right:
-            {
-                mController->handScroll (100, 0);
-                event->accept ();
-                break;
-            }
-            case Qt::Key_Up:
-            {
-                mController->handScroll (0, -100);
-                event->accept ();
-                break;
-            }
-            case Qt::Key_Down:
-            {
-                mController->handScroll (0, 100);
-                event->accept ();
-                break;
-            }
-            default:
-            {
-                // NOOP
-            }
-            }
         }
     }
 

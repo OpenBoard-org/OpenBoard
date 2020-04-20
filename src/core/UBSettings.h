@@ -422,34 +422,6 @@ class UBSettings : public QObject
         UBSetting* magnifierDrawingMode;
         UBSetting* autoSaveInterval;
 
-        // Shortcuts
-
-        // Defaults - Standard
-        UBSetting* defaultPenColorRotateShortcut;
-        UBSetting* defaultWidthRotateShortcut;
-        static const QString defaultPenColor0Shortcut;
-        static const QString defaultPenColor1Shortcut;
-        static const QString defaultPenColor2Shortcut;
-        static const QString defaultPenColor3Shortcut;
-        static const QString defaultPenColor4Shortcut;
-
-        static const QString defaultPenSizeSmallShortcut;
-        static const QString defaultPenSizeMediumShortcut;
-        static const QString defaultPenSizeLargeShortcut;
-
-        static const QString defaultMarkerColor0Shortcut;
-        static const QString defaultMarkerColor1Shortcut;
-        static const QString defaultMarkerColor2Shortcut;
-        static const QString defaultMarkerColor3Shortcut;
-        static const QString defaultMarkerColor4Shortcut;
-
-        static const QString defaultMarkerSizeSmallShortcut;
-        static const QString defaultMarkerSizeMediumShortcut;
-        static const QString defaultMarkerSizeLargeShortcut;
-
-
-
-
     public slots:
 
         void setPenWidthIndex(int index);

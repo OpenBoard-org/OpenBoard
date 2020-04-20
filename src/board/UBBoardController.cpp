@@ -129,6 +129,23 @@ void UBBoardController::init()
 {
     setupViews();
     setupToolbar();
+    setupShortcuts();
+
+    qDebug("Listing shortcuts and actions:");
+    QList<QAction*> actions = mMainWindow->findChildren<QAction*>();
+    QList<QShortcut*> shortcuts = mMainWindow->findChildren<QShortcut*>();
+
+    for (auto action : actions)
+    {
+        QWidget* parent = action->parentWidget();
+        qDebug("Board Controller: Action found: %s/%s -> %s", qUtf8Printable(parent->objectName()), qUtf8Printable(action->objectName()),qUtf8Printable(action->shortcut().toString()));
+    }
+
+    for (auto sc : shortcuts)
+    {
+        QWidget* parent = sc->parentWidget();
+        qDebug("Board Controller: Shortcut found: %s/%s -> %s", qUtf8Printable(parent->objectName()), qUtf8Printable(sc->objectName()),qUtf8Printable(sc->key().toString()));
+    }
 
     connect(UBApplication::undoStack, SIGNAL(canUndoChanged(bool))
             , this, SLOT(undoRedoStateChange(bool)));
@@ -383,6 +400,57 @@ void UBBoardController::setupToolbar()
 
     UBApplication::app()->toolBarDisplayTextChanged(QVariant(settings->appToolBarDisplayText->get().toBool()));
 }
+
+QShortcut* UBBoardController::addShortcut(QString name, QKeySequence defaultKeySequence)
+{
+    QString keyString = UBSettings::settings()->value(QString("Shortcuts/%1").arg(name)).toString();
+    QKeySequence keySequence = keyString=="" ? defaultKeySequence : QKeySequence(keyString);
+    QShortcut* newShortcut = new QShortcut(keySequence, mMainWindow);
+    newShortcut->setObjectName(name);
+
+    return newShortcut;
+}
+
+void UBBoardController::setupShortcuts()
+{
+    qDebug("Setting up shortcuts for Board View");
+
+    // Pen Rotate
+    actionColorRotate = addShortcut("Color Rotate", QKeySequence("Q"));
+    actionWidthRotate = addShortcut("Width Rotate", QKeySequence("W"));
+
+    // Zoom
+    shortcutZoomIn = addShortcut("Zoom In", QKeySequence::ZoomIn);
+    shortcutZoomOut = addShortcut("Zoom Out", QKeySequence::ZoomOut);
+    shortcutZoomInAlternative = addShortcut("Zoom In (alternative)", QKeySequence()); // Old logic: Ctrl+I, but that is a duplicate assignment with "Pen"
+    shortcutZoomOutAlternative = addShortcut("Zoom Out alternative", QKeySequence("Ctrl+O"));
+    shortcutZoomRestore = addShortcut("Zoom Restore", QKeySequence("Ctrl+0"));
+
+    connect(shortcutZoomIn, &QShortcut::activated,  [=](){ zoomIn();});
+    connect(shortcutZoomOut, &QShortcut::activated,  [=](){ zoomOut();});
+    connect(shortcutZoomInAlternative, &QShortcut::activated,  [=](){ zoomIn();});
+    connect(shortcutZoomOutAlternative, &QShortcut::activated,  [=](){ zoomOut();});
+    connect(shortcutZoomRestore, &QShortcut::activated,  [=](){ zoomRestore();});
+
+    // Pan
+    shortcutScrollLeft = addShortcut("Scroll Left", QKeySequence("Ctrl+LEFT"));
+    shortcutScrollRight = addShortcut("Scroll Right", QKeySequence("Ctrl+RIGHT"));
+    shortcutScrollUp = addShortcut("Scroll Up", QKeySequence("Ctrl+UP"));
+    shortcutScrollDown = addShortcut("Scroll Down", QKeySequence("Ctrl+DOWN"));
+
+    connect(shortcutScrollLeft, &QShortcut::activated, [=](){ handScroll (-100, 0);});
+    connect(shortcutScrollRight, &QShortcut::activated, [=](){ handScroll (100, 0);});
+    connect(shortcutScrollUp, &QShortcut::activated, [=](){ handScroll (0, -100);});
+    connect(shortcutScrollDown, &QShortcut::activated, [=](){ handScroll (0, 100);});
+
+    // Pages
+    shortcutNewPage = addShortcut("New Page", QKeySequence("Ctrl+N"));
+    shortcutDuplicatePage = addShortcut("Duplicate Page", QKeySequence("Ctrl+D"));
+    connect(shortcutNewPage, &QShortcut::activated, [=](){ mMainWindow->actionNewPage->trigger();});
+    connect(shortcutDuplicatePage, &QShortcut::activated, [=](){mMainWindow->actionDuplicatePage->trigger();});
+}
+
+
 
 
 void UBBoardController::setToolCursor(int tool)

@@ -70,7 +70,7 @@ UBDesktopPenPalette::UBDesktopPenPalette(QWidget *parent, UBRightPalette* rightP
     connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), colorChoice, SLOT(colorPaletteChanged()));
     connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), this, SLOT(close()));
 
-    connect(UBApplication::mainWindow->actionColorRotate, &QShortcut::activated, colorChoice, &UBToolbarButtonGroup::setNextIndex);
+    connect(UBApplication::boardController->actionColorRotate, &QShortcut::activated, colorChoice, &UBToolbarButtonGroup::setNextIndex);
 
     layout()->addWidget(colorChoice);
 
@@ -89,7 +89,7 @@ UBDesktopPenPalette::UBDesktopPenPalette(QWidget *parent, UBRightPalette* rightP
     connect(UBDrawingController::drawingController(), SIGNAL(lineWidthIndexChanged(int)), lineWidthChoice, SLOT(setCurrentIndex(int)));
     connect(UBDrawingController::drawingController(), SIGNAL(lineWidthIndexChanged(int)), this, SLOT(close()));
 
-    connect(UBApplication::mainWindow->actionWidthRotate, &QShortcut::activated, lineWidthChoice, &UBToolbarButtonGroup::setNextIndex);
+    connect(UBApplication::boardController->actionWidthRotate, &QShortcut::activated, lineWidthChoice, &UBToolbarButtonGroup::setNextIndex);
 
 
     onParentMaximized();

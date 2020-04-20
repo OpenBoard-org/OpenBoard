@@ -35,7 +35,6 @@
 #include <QtWebKitWidgets/QWebView>
 #include <QMessageBox>
 #include "UBDownloadWidget.h"
-#include <QShortcut>
 
 class QStackedLayout;
 
@@ -64,12 +63,6 @@ class UBMainWindow : public QMainWindow, public Ui::MainWindow
 
         void showDownloadWidget();
         void hideDownloadWidget();
-
-        void setupShortcuts();
-
-        // shortcut actions
-        QShortcut *actionColorRotate;
-        QShortcut *actionWidthRotate;
 
     signals:
         void closeEvent_Signal( QCloseEvent *event );

@@ -69,6 +69,9 @@ public:
     bool directTabletEvent(QEvent *event);
     QWidget *widgetForTabletEvent(QWidget *w, const QPoint &pos);
 #endif
+
+
+
 signals:
     void resized(QResizeEvent* event);
     void shown();
