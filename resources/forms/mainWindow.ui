@@ -273,9 +273,6 @@
    <property name="toolTip">
     <string>Manage Documents</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl+D</string>
-   </property>
   </action>
   <action name="actionWeb">
    <property name="icon">
