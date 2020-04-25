@@ -197,6 +197,9 @@ class UBBoardController : public UBDocumentContainer
 
         // Shortcuts
 
+        QList<QAction*> getActions();
+        QList<QShortcut*> getShortcuts();
+
         QShortcut *actionColorRotate;
         QShortcut *actionWidthRotate;
 

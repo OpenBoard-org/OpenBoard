@@ -438,6 +438,15 @@ void UBBoardController::setupShortcuts()
     shortcutsChanged();
 }
 
+QList<QAction*> UBBoardController::getActions()
+{
+    return mMainWindow->findChildren<QAction*>();
+}
+
+QList<QShortcut*> UBBoardController::getShortcuts()
+{
+    return mMainWindow->findChildren<QShortcut*>();
+}
 
 void UBBoardController::shortcutsChanged()
 {
@@ -447,10 +456,10 @@ void UBBoardController::shortcutsChanged()
     QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
 
     qDebug("Setting shortcuts and actions:");
-    QList<QAction*> actions = mMainWindow->findChildren<QAction*>();
-    QList<QShortcut*> shortcuts = mMainWindow->findChildren<QShortcut*>();
+    //QList<QAction*> actions = mMainWindow->findChildren<QAction*>();
+    //QList<QShortcut*> shortcuts = mMainWindow->findChildren<QShortcut*>();
 
-    for (auto action : actions)
+    for (auto action : getActions())
     {
         QWidget* parent = action->parentWidget();
         QString key = QString("action/%1/%2").arg(parent->objectName(), action->objectName());
@@ -463,7 +472,7 @@ void UBBoardController::shortcutsChanged()
         else qDebug("Board Controller: Action set to default: %s -> %s", qUtf8Printable(key),qUtf8Printable(action->shortcut().toString()));
     }
 
-    for (auto sc : shortcuts)
+    for (auto sc : getShortcuts())
     {
         QWidget* parent = sc->parentWidget();
         QString key = QString("shortcut/%1/%2").arg(parent->objectName(), sc->objectName());
