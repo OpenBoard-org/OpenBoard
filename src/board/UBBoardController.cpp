@@ -131,21 +131,6 @@ void UBBoardController::init()
     setupToolbar();
     setupShortcuts();
 
-    qDebug("Listing shortcuts and actions:");
-    QList<QAction*> actions = mMainWindow->findChildren<QAction*>();
-    QList<QShortcut*> shortcuts = mMainWindow->findChildren<QShortcut*>();
-
-    for (auto action : actions)
-    {
-        QWidget* parent = action->parentWidget();
-        qDebug("Board Controller: Action found: %s/%s -> %s", qUtf8Printable(parent->objectName()), qUtf8Printable(action->objectName()),qUtf8Printable(action->shortcut().toString()));
-    }
-
-    for (auto sc : shortcuts)
-    {
-        QWidget* parent = sc->parentWidget();
-        qDebug("Board Controller: Shortcut found: %s/%s -> %s", qUtf8Printable(parent->objectName()), qUtf8Printable(sc->objectName()),qUtf8Printable(sc->key().toString()));
-    }
 
     connect(UBApplication::undoStack, SIGNAL(canUndoChanged(bool))
             , this, SLOT(undoRedoStateChange(bool)));
@@ -448,8 +433,50 @@ void UBBoardController::setupShortcuts()
     shortcutDuplicatePage = addShortcut("Duplicate Page", QKeySequence("Ctrl+D"));
     connect(shortcutNewPage, &QShortcut::activated, [=](){ mMainWindow->actionNewPage->trigger();});
     connect(shortcutDuplicatePage, &QShortcut::activated, [=](){mMainWindow->actionDuplicatePage->trigger();});
+
+    // Read Settings
+    shortcutsChanged();
 }
 
+
+void UBBoardController::shortcutsChanged()
+{
+    QHash<QString, QVariant> shortcutSetting = UBSettings::settings()->shortcuts->get().toHash();
+
+    qInstallMessageHandler(0);
+    QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
+
+    qDebug("Setting shortcuts and actions:");
+    QList<QAction*> actions = mMainWindow->findChildren<QAction*>();
+    QList<QShortcut*> shortcuts = mMainWindow->findChildren<QShortcut*>();
+
+    for (auto action : actions)
+    {
+        QWidget* parent = action->parentWidget();
+        QString key = QString("action/%1/%2").arg(parent->objectName(), action->objectName());
+        if(shortcutSetting.contains(key))
+        {
+            QString shortcut = shortcutSetting.value(key).toString();
+            action->setShortcut(QKeySequence(shortcut));
+            qDebug("Board Controller: Action set from settings: %s -> %s", qUtf8Printable(key),qUtf8Printable(action->shortcut().toString()));
+        }
+        else qDebug("Board Controller: Action set to default: %s -> %s", qUtf8Printable(key),qUtf8Printable(action->shortcut().toString()));
+    }
+
+    for (auto sc : shortcuts)
+    {
+        QWidget* parent = sc->parentWidget();
+        QString key = QString("shortcut/%1/%2").arg(parent->objectName(), sc->objectName());
+        if(shortcutSetting.contains(key))
+        {
+            QString shortcut = shortcutSetting.value(key).toString();
+            sc->setKey(QKeySequence(shortcut));
+            qDebug("Board Controller: Shortcut set from settings: %s -> %s", qUtf8Printable(key),qUtf8Printable(sc->key().toString()));
+        }
+        else qDebug("Board Controller: Shortcut set to default: %s -> %s", qUtf8Printable(key),qUtf8Printable(sc->key().toString()));
+    }
+
+}
 
 
 
