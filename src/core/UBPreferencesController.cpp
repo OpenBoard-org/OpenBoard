@@ -318,6 +318,39 @@ void UBPreferencesController::init()
 
     mMarkerProperties->opacitySlider->setValue(settings->boardMarkerAlpha->get().toDouble() * 100);
 
+    // advanced tab
+
+    // shortcuts
+
+    mPreferencesUI->shortcutTable->setColumnCount(2);
+
+    QHash<QString, QVariant> shortcutSetting = UBSettings::settings()->shortcuts->get().toHash();
+
+    QList<QShortcut*> shortcuts = UBApplication::boardController->getShortcuts();
+
+    for (auto shortcut : shortcuts)
+    {
+
+
+        QString key = QString("shortcut/%1/%2").arg(shortcut->parentWidget()->objectName(), shortcut->objectName());
+        QLabel* label = new QLabel(key);
+
+        QKeySequence keysequence;
+        if(shortcutSetting.contains(key))
+            keysequence = QKeySequence(shortcutSetting.value(key).toString());
+        else
+            keysequence = shortcut->key();
+        QKeySequenceEdit* keysequenceEdit = new QKeySequenceEdit(keysequence);
+
+        QTableWidgetItem* labelItem = new QTableWidgetItem(key);
+        QTableWidgetItem* keyItem = new QTableWidgetItem();
+
+        mPreferencesUI->shortcutTable->insertRow(mPreferencesUI->shortcutTable->rowCount()+1);
+        mPreferencesUI->shortcutTable->setItem(mPreferencesUI->shortcutTable->rowCount(), 1, labelItem);
+        mPreferencesUI->shortcutTable->setItem(mPreferencesUI->shortcutTable->rowCount(), 2, keyItem);
+        mPreferencesUI->shortcutTable->setCellWidget(mPreferencesUI->shortcutTable->rowCount(), 2, keysequenceEdit);
+    }
+
 }
 
 void UBPreferencesController::close()
