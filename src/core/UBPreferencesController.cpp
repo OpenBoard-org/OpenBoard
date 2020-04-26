@@ -392,6 +392,7 @@ void UBPreferencesController::init()
 
         QPushButton* resetButton = new QPushButton(tr("R"));
         resetButton->setToolTip(tr("Reset Shortcut to factory default (requires restart)"));
+        resetButton->setMinimumWidth(5);
         connect(resetButton, &QPushButton::pressed, [key, keysequenceEdit, actionMap, shortcutMap](){
             qDebug("Key Sequence reset to default: %s", qUtf8Printable(key));
             UBSettings* settings = UBSettings::settings();
@@ -422,6 +423,7 @@ void UBPreferencesController::init()
 
         QPushButton* clearButton = new QPushButton(tr("X"));
         clearButton->setToolTip(tr("Clear Shortcut"));
+        clearButton->setMinimumWidth(5);
         connect(clearButton, &QPushButton::pressed, [key, keysequenceEdit](){
             qDebug("Key Sequence cleared: %s", qUtf8Printable(key));
             UBSettings* settings = UBSettings::settings();

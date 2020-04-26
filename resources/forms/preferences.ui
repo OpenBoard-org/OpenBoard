@@ -3283,49 +3283,6 @@ p, li { white-space: pre-wrap; }
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
-      <widget class="QGroupBox" name="groupBox_WindowMode">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-       </property>
-       <property name="title">
-        <string>Window Mode</string>
-       </property>
-         <layout class="QVBoxLayout" name="verticalLayout_7">
-          <item>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <item>
-          <widget class="QRadioButton" name="radioButton_FullScreen">
-           <property name="text">
-            <string>Full Screen (Default)</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="radioButton_WidnowedMulitple">
-           <property name="text">
-            <string>Windowed - Single</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="radioButton_WindowsedSingle">
-           <property name="text">
-            <string>Windowed - Multiple</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-          </item>
-         </layout>
-       </widget>
-       </item>
-       <item>
       <widget class="QGroupBox" name="groupBox">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
