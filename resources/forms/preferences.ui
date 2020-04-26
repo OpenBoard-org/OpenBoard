@@ -3281,27 +3281,20 @@ p, li { white-space: pre-wrap; }
       <attribute name="title">
        <string>Advanced</string>
       </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
       <widget class="QGroupBox" name="groupBox_WindowMode">
-       <property name="geometry">
-        <rect>
-         <x>30</x>
-         <y>50</y>
-         <width>211</width>
-         <height>131</height>
-        </rect>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
        </property>
        <property name="title">
         <string>Window Mode</string>
        </property>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>191</width>
-          <height>86</height>
-         </rect>
-        </property>
+         <layout class="QVBoxLayout" name="verticalLayout_7">
+          <item>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
           <widget class="QRadioButton" name="radioButton_FullScreen">
@@ -3328,44 +3321,40 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
         </layout>
+          </item>
+         </layout>
        </widget>
-      </widget>
+       </item>
+       <item>
       <widget class="QGroupBox" name="groupBox">
-       <property name="geometry">
-        <rect>
-         <x>30</x>
-         <y>210</y>
-         <width>691</width>
-         <height>431</height>
-        </rect>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
        </property>
        <property name="title">
         <string>Shortcuts</string>
        </property>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
        <widget class="QLineEdit" name="shortcutSearch">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>671</width>
-          <height>20</height>
-         </rect>
-        </property>
         <property name="placeholderText">
          <string>Search Shortcut</string>
         </property>
        </widget>
+          </item>
+          <item>
        <widget class="QTableWidget" name="shortcutTable">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>60</y>
-          <width>671</width>
-          <height>371</height>
-         </rect>
-        </property>
+            <attribute name="horizontalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
        </widget>
+          </item>
+         </layout>
       </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>

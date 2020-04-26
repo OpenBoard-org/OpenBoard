@@ -322,33 +322,84 @@ void UBPreferencesController::init()
 
     // shortcuts
 
-    mPreferencesUI->shortcutTable->setColumnCount(2);
+    mPreferencesUI->shortcutTable->setColumnCount(1);
+    mPreferencesUI->shortcutTable->horizontalHeader()->setStretchLastSection(true);
 
     QHash<QString, QVariant> shortcutSetting = UBSettings::settings()->shortcuts->get().toHash();
 
     QList<QShortcut*> shortcuts = UBApplication::boardController->getShortcuts();
+    QList<QAction*> actions = UBApplication::boardController->getActions();
+
+    QMap <QString, QKeySequence> keySequenceList = QMap<QString, QKeySequence>();
+
+    QTableWidget* mShortcutTable = mPreferencesUI->shortcutTable;
 
     for (auto shortcut : shortcuts)
     {
-
-
         QString key = QString("shortcut/%1/%2").arg(shortcut->parentWidget()->objectName(), shortcut->objectName());
-        QLabel* label = new QLabel(key);
 
-        QKeySequence keysequence;
         if(shortcutSetting.contains(key))
-            keysequence = QKeySequence(shortcutSetting.value(key).toString());
+            keySequenceList[key] = QKeySequence(shortcutSetting.value(key).toString());
         else
-            keysequence = shortcut->key();
-        QKeySequenceEdit* keysequenceEdit = new QKeySequenceEdit(keysequence);
+            keySequenceList[key] = shortcut->key();
+    }
+
+    for(auto action : actions)
+    {
+        QString key = QString("action/%1/%2").arg(action->parentWidget()->objectName(), action->objectName());
+
+        if(shortcutSetting.contains(key))
+            keySequenceList[key] = QKeySequence(shortcutSetting.value(key).toString());
+        else
+            keySequenceList[key] = action->shortcut();
+    }
+
+
+
+    // Filter for table
+    mPreferencesUI->shortcutSearch->setText("");
+    auto filter = [mShortcutTable](QString text){
+        for( int i = 0; i < mShortcutTable->rowCount(); ++i)
+        {
+            QString keySequenceString = qobject_cast<QKeySequenceEdit*>(mShortcutTable->cellWidget(i,0))->keySequence().toString(QKeySequence::NativeText);
+
+            bool match = (
+                        mShortcutTable->verticalHeaderItem(i)->text().contains(text, Qt::CaseInsensitive )
+                        | keySequenceString.contains(text, Qt::CaseInsensitive)
+                        );
+            mShortcutTable->setRowHidden(i, !match);
+        }
+    };
+
+    // Reset to empty table
+    mShortcutTable->setRowCount(0);
+
+    for (auto key : keySequenceList.keys())
+    {
+        QKeySequence keysequence = keySequenceList.value(key);
+
+        QKeySequenceEdit* keysequenceEdit = new QKeySequenceEdit;
+        keysequenceEdit->setKeySequence(keysequence);
+        connect(keysequenceEdit, &QKeySequenceEdit::keySequenceChanged, [key](QKeySequence ks){
+            qDebug("Key Sequence changed: %s -> %s",qUtf8Printable(key), qUtf8Printable(ks.toString()));
+            UBSettings* settings = UBSettings::settings();
+            QHash<QString, QVariant> setting = settings->shortcuts->
+                    get().toHash();
+            setting.insert(key, ks.toString());
+            settings->shortcuts->set(setting);
+            UBApplication::boardController->shortcutsChanged();
+        });
 
         QTableWidgetItem* labelItem = new QTableWidgetItem(key);
-        QTableWidgetItem* keyItem = new QTableWidgetItem();
 
-        mPreferencesUI->shortcutTable->insertRow(mPreferencesUI->shortcutTable->rowCount()+1);
-        mPreferencesUI->shortcutTable->setItem(mPreferencesUI->shortcutTable->rowCount(), 1, labelItem);
-        mPreferencesUI->shortcutTable->setItem(mPreferencesUI->shortcutTable->rowCount(), 2, keyItem);
-        mPreferencesUI->shortcutTable->setCellWidget(mPreferencesUI->shortcutTable->rowCount(), 2, keysequenceEdit);
+        mShortcutTable->insertRow(mPreferencesUI->shortcutTable->rowCount());
+        mShortcutTable->setVerticalHeaderItem(mPreferencesUI->shortcutTable->rowCount()-1, labelItem);
+        mShortcutTable->setCellWidget(mPreferencesUI->shortcutTable->rowCount()-1, 0, keysequenceEdit);
+
+        // Filter Shortcuts
+        connect(mPreferencesUI->shortcutSearch, &QLineEdit::textEdited, filter);
+
+
     }
 
 }
