@@ -321,9 +321,9 @@ void UBPreferencesController::init()
     // advanced tab
 
     // shortcuts
-
-    mPreferencesUI->shortcutTable->setColumnCount(1);
-    mPreferencesUI->shortcutTable->horizontalHeader()->setStretchLastSection(true);
+    QTableWidget* mShortcutTable = mPreferencesUI->shortcutTable;
+    mShortcutTable->setColumnCount(1);
+    mShortcutTable->horizontalHeader()->setStretchLastSection(true);
 
     QHash<QString, QVariant> shortcutSetting = UBSettings::settings()->shortcuts->get().toHash();
 
