@@ -95,6 +95,9 @@ UBToolbarButtonGroup::UBToolbarButtonGroup(QToolBar *toolBar, const QList<QActio
         buttonSize = button->sizeHint();
         i++;
     }
+
+    // Make sure the first action is enabled
+    mActionGroup->actions()[0]->trigger();
 }
 
 UBToolbarButtonGroup::~UBToolbarButtonGroup()
