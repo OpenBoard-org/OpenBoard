@@ -60,6 +60,10 @@ linux-g++* {
                 src/podcast/ffmpeg/UBMicrophoneInput.cpp
 
 
+    SOURCES  += src/podcast/v4l2/UBv4l2loopVideo.cpp
+    HEADERS  += src/podcast/v4l2/UBv4l2loopVideo.h
+
+
     DEPENDPATH += /usr/lib/x86_64-linux-gnu
 
     LIBS += -lavformat -lavcodec -lswscale -lavutil \

@@ -67,6 +67,7 @@
 #elif defined(Q_OS_LINUX)
     #include "ffmpeg/UBFFmpegVideoEncoder.h"
     #include "ffmpeg/UBMicrophoneInput.h"
+    #include "v4l2/UBv4l2loopVideo.h"
 #endif
 
 #include "core/memcheck.h"
@@ -313,7 +314,10 @@ void UBPodcastController::start()
 #elif defined(Q_OS_OSX)
         mVideoEncoder = new UBFFmpegVideoEncoder(this);
 #elif defined(Q_OS_LINUX)
-        mVideoEncoder = new UBFFmpegVideoEncoder(this);
+        if (getenv("V4L2_DEVICE") != NULL)
+            mVideoEncoder = new UBv4l2loopVideoEncoder(this);
+        else
+            mVideoEncoder = new UBFFmpegVideoEncoder(this);
 #endif
 
         if (mVideoEncoder)
