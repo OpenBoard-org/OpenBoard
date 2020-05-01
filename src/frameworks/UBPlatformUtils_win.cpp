@@ -436,7 +436,11 @@ void UBPlatformUtils::setFrontProcess()
 
 void UBPlatformUtils::showFullScreen(QWidget *pWidget)
 {
+#ifdef OB_INAWINDOW
+	pWidget->showNormal();
+#else
     pWidget->showFullScreen();
+#endif
 }
 
 void UBPlatformUtils::showOSK(bool show)
