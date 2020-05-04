@@ -681,7 +681,10 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
     case UBGraphicsStrokesGroup::Type:
         return false;
     case UBGraphicsTextItem::Type:
-        return !item->isSelected();
+        if (currentTool == UBStylusTool::Play)
+            return true;
+        else
+            return !item->isSelected();
     }
 
     return false;
