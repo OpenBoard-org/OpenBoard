@@ -337,8 +337,9 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     , magniferDisplayViewWidget(0)
     , mZLayerController(new UBZLayerController(this))
     , mpLastPolygon(NULL)
-    , mCurrentPolygon(0)
     , mTempPolygon(NULL)
+    , mDrawWithCompass(false)
+    , mCurrentPolygon(0)
     , mSelectionFrame(0)
 {
     UBCoreGraphicsScene::setObjectName("BoardScene");
