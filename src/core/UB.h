@@ -147,28 +147,28 @@ struct UBGraphicsItemType
 {
     enum Enum
     {
-        PolygonItemType = QGraphicsItem::UserType + 1,
-        PixmapItemType,
-        SvgItemType,
-        DelegateButtonType,
-        MediaItemType,
-        VideoItemType,
-        AudioItemType,
-        PDFItemType,
-        TextItemType,
-        CurtainItemType,
-        RulerItemType,
-        CompassItemType,
-        ProtractorItemType,
-        StrokeItemType,
-        TriangleItemType,
-        MagnifierItemType,
-        cacheItemType,
-        groupContainerType,
-        ToolWidgetItemType,
-        GraphicsWidgetItemType,
-        UserTypesCount,
-        SelectionFrameType// this line must be the last line in this enum because it is types counter.
+        PolygonItemType = QGraphicsItem::UserType + 1,  //65537
+        PixmapItemType,                                 //65538
+        SvgItemType,                                    //65539
+        DelegateButtonType,                             //65540
+        MediaItemType,                                  //65541
+        VideoItemType,                                  //65542
+        AudioItemType,                                  //65543
+        PDFItemType,                                    //65544
+        TextItemType,                                   //65545
+        CurtainItemType,                                //65546
+        RulerItemType,                                  //65547
+        CompassItemType,                                //65548
+        ProtractorItemType,                             //65549
+        StrokeItemType,                                 //65550
+        TriangleItemType,                               //65551
+        MagnifierItemType,                              //65552
+        cacheItemType,                                  //65553
+        groupContainerType,                             //65554
+        ToolWidgetItemType,                             //65555
+        GraphicsWidgetItemType,                         //65556
+        UserTypesCount,                                 //65557
+        SelectionFrameType                              // this line must be the last line in this enum because it is types counter.
     };
 };
 
