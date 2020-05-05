@@ -279,7 +279,13 @@ int UBApplication::exec(const QString& pFileToImport)
 
 
 #ifdef OB_INAWINDOW
-    mainWindow = new UBMainWindow(0, Qt::WindowCloseButtonHint); // deleted by application destructor
+    mainWindow = new UBMainWindow(0,
+		Qt::Window |
+		Qt::WindowCloseButtonHint |
+		Qt::WindowMinimizeButtonHint |
+		Qt::WindowMaximizeButtonHint |
+		Qt::WindowShadeButtonHint
+	); // deleted by application destructor
 #else
     mainWindow = new UBMainWindow(0, Qt::FramelessWindowHint); // deleted by application destructor
 #endif
