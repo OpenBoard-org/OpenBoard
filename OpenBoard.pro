@@ -437,7 +437,8 @@ linux-g++* {
     QMAKE_CFLAGS += -fopenmp
     QMAKE_CXXFLAGS += -fopenmp
     QMAKE_LFLAGS += -fopenmp
-	INCLUDEPATH += /usr/include/ffmpeg
+	# Necessary for CentOS/RHEL and won't harm in other distributions
+    INCLUDEPATH += /usr/include/ffmpeg
     UB_LIBRARY.path = $$DESTDIR
     UB_I18N.path = $$DESTDIR/i18n
     UB_ETC.path = $$DESTDIR
