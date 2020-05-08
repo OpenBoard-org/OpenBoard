@@ -53,6 +53,8 @@ public:
     UBBoardView(UBBoardController* pController, int pStartLayer, int pEndLayer, QWidget* pParent = 0, bool isControl = false, bool isDesktop = false);
     virtual ~UBBoardView();
 
+    bool event(QEvent* event) override;
+
     UBGraphicsScene* scene();
 
     void forcedTabletRelease();
@@ -88,8 +90,6 @@ protected:
     QGraphicsItem* determineItemToMove(QGraphicsItem *item);
     void handleItemMousePress(QMouseEvent *event);
     void handleItemMouseMove(QMouseEvent *event);
-
-    virtual bool event (QEvent * e);
 
     virtual void keyPressEvent(QKeyEvent *event);
     virtual void keyReleaseEvent(QKeyEvent *event);
@@ -175,6 +175,8 @@ private:
     bool mRubberBandInPlayMode;
 
     static bool hasSelectedParents(QGraphicsItem * item);
+
+    bool tabletDeviceActive;
 
 private slots:
 
