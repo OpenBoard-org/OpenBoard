@@ -463,6 +463,8 @@ void UBSettings::init()
     emptyTrashForOlderDocuments = new UBSetting(this, "Document", "emptyTrashForOlderDocuments", false);
     emptyTrashDaysValue = new UBSetting(this, "Document", "emptyTrashDaysValue", 30);
 
+    shortcuts = new UBSetting(this, "App", "Shortcuts", QVariant::fromValue(QHash<QString, QVariant>()));
+
     cleanNonPersistentSettings();
     checkNewSettings();
 }

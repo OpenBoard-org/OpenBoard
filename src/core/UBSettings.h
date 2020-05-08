@@ -422,6 +422,8 @@ class UBSettings : public QObject
         UBSetting* magnifierDrawingMode;
         UBSetting* autoSaveInterval;
 
+        UBSetting* shortcuts;
+
     public slots:
 
         void setPenWidthIndex(int index);
