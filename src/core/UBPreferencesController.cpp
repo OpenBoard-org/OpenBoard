@@ -318,6 +318,138 @@ void UBPreferencesController::init()
 
     mMarkerProperties->opacitySlider->setValue(settings->boardMarkerAlpha->get().toDouble() * 100);
 
+    // advanced tab
+
+    // shortcuts
+    QTableWidget* mShortcutTable = mPreferencesUI->shortcutTable;
+    mShortcutTable->setColumnCount(3);
+    mShortcutTable->horizontalHeader()->setStretchLastSection(true);
+
+    QHash<QString, QVariant> shortcutSetting = UBSettings::settings()->shortcuts->get().toHash();
+
+    QList<QShortcut*> shortcuts = UBApplication::boardController->getShortcuts();
+    QList<QAction*> actions = UBApplication::boardController->getActions();
+
+    QMap <QString, QKeySequence> keySequenceList = QMap<QString, QKeySequence>();
+    QMap <QString, QShortcut*> shortcutMap;
+    QMap <QString, QAction*> actionMap;
+
+    for (auto shortcut : shortcuts)
+    {
+        QString key = QString("shortcut/%1/%2").arg(shortcut->parentWidget()->objectName(), shortcut->objectName());
+        shortcutMap[key] = shortcut;
+        if(shortcutSetting.contains(key))
+            keySequenceList[key] = QKeySequence(shortcutSetting.value(key).toString());
+        else
+            keySequenceList[key] = shortcut->key();
+    }
+
+    for(auto action : actions)
+    {
+        QString key = QString("action/%1/%2").arg(action->parentWidget()->objectName(), action->objectName());
+        actionMap[key] = action;
+        if(shortcutSetting.contains(key))
+            keySequenceList[key] = QKeySequence(shortcutSetting.value(key).toString());
+        else
+            keySequenceList[key] = action->shortcut();
+    }
+
+
+
+    // Filter for table
+    mPreferencesUI->shortcutSearch->setText("");
+    auto filter = [mShortcutTable](QString text){
+        for( int i = 0; i < mShortcutTable->rowCount(); ++i)
+        {
+            QString keySequenceString = qobject_cast<QKeySequenceEdit*>(mShortcutTable->cellWidget(i,2))->keySequence().toString(QKeySequence::NativeText);
+
+            bool match = (
+                        mShortcutTable->verticalHeaderItem(i)->text().contains(text, Qt::CaseInsensitive )
+                        | keySequenceString.contains(text, Qt::CaseInsensitive)
+                        );
+            mShortcutTable->setRowHidden(i, !match);
+        }
+    };
+
+    // Reset to empty table
+    mShortcutTable->setRowCount(0);
+
+    for (auto key : keySequenceList.keys())
+    {
+        QKeySequence keysequence = keySequenceList.value(key);
+
+        QKeySequenceEdit* keysequenceEdit = new QKeySequenceEdit;
+        keysequenceEdit->setKeySequence(keysequence);
+        connect(keysequenceEdit, &QKeySequenceEdit::keySequenceChanged, [key](QKeySequence ks){
+            qDebug("Key Sequence changed: %s -> %s",qUtf8Printable(key), qUtf8Printable(ks.toString()));
+            UBSettings* settings = UBSettings::settings();
+            QHash<QString, QVariant> setting = settings->shortcuts->
+                    get().toHash();
+            setting.insert(key, ks.toString());
+            settings->shortcuts->set(setting);
+            UBApplication::boardController->shortcutsChanged();
+        });
+
+        QPushButton* resetButton = new QPushButton(tr("R"));
+        resetButton->setToolTip(tr("Reset Shortcut to factory default (requires restart)"));
+        resetButton->setMinimumWidth(5);
+        connect(resetButton, &QPushButton::pressed, [key, keysequenceEdit, actionMap, shortcutMap](){
+            qDebug("Key Sequence reset to default: %s", qUtf8Printable(key));
+            UBSettings* settings = UBSettings::settings();
+            QHash<QString, QVariant> setting = settings->shortcuts->
+                    get().toHash();
+            setting.remove(key);
+            settings->shortcuts->set(setting);
+            UBApplication::boardController->shortcutsChanged();
+            if(actionMap.contains(key))
+                keysequenceEdit->setKeySequence(actionMap.value(key)->shortcut());
+            else if(shortcutMap.contains(key))
+                keysequenceEdit->setKeySequence(shortcutMap.value(key)->key());
+
+
+            // Resetting to factory default requires a restart - inform the user
+            QMessageBox* msgbox = new QMessageBox();
+            msgbox->setWindowTitle("Note");
+            msgbox->setText(tr("Resetting shortcuts requires a restart"));
+            msgbox->open();
+
+            QTimer* timer = new QTimer();
+            QObject::connect(timer, SIGNAL(timeout()), msgbox, SLOT(close()));
+            QObject::connect(timer, SIGNAL(timeout()), timer, SLOT(stop()));
+            QObject::connect(timer, SIGNAL(timeout()), timer, SLOT(deleteLater()));
+            timer->start(1000);
+
+        });
+
+        QPushButton* clearButton = new QPushButton(tr("X"));
+        clearButton->setToolTip(tr("Clear Shortcut"));
+        clearButton->setMinimumWidth(5);
+        connect(clearButton, &QPushButton::pressed, [key, keysequenceEdit](){
+            qDebug("Key Sequence cleared: %s", qUtf8Printable(key));
+            UBSettings* settings = UBSettings::settings();
+            QHash<QString, QVariant> setting = settings->shortcuts->
+                    get().toHash();
+            setting.insert(key, "");
+            settings->shortcuts->set(setting);
+            UBApplication::boardController->shortcutsChanged();
+            keysequenceEdit->setKeySequence(QKeySequence());
+        });
+
+
+        QTableWidgetItem* labelItem = new QTableWidgetItem(key);
+
+        mShortcutTable->insertRow(mPreferencesUI->shortcutTable->rowCount());
+        mShortcutTable->setVerticalHeaderItem(mPreferencesUI->shortcutTable->rowCount()-1, labelItem);
+        mShortcutTable->setCellWidget(mShortcutTable->rowCount()-1, 2, keysequenceEdit);
+        mShortcutTable->setCellWidget(mShortcutTable->rowCount()-1, 0, resetButton);
+        mShortcutTable->setCellWidget(mShortcutTable->rowCount()-1, 1, clearButton);
+
+        // Filter Shortcuts
+        connect(mPreferencesUI->shortcutSearch, &QLineEdit::textEdited, filter);
+
+
+    }
+
 }
 
 void UBPreferencesController::close()
