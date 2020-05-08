@@ -129,6 +129,8 @@ void UBBoardController::init()
 {
     setupViews();
     setupToolbar();
+    setupShortcuts();
+
 
     connect(UBApplication::undoStack, SIGNAL(canUndoChanged(bool))
             , this, SLOT(undoRedoStateChange(bool)));
@@ -383,6 +385,108 @@ void UBBoardController::setupToolbar()
 
     UBApplication::app()->toolBarDisplayTextChanged(QVariant(settings->appToolBarDisplayText->get().toBool()));
 }
+
+QShortcut* UBBoardController::addShortcut(QString name, QKeySequence defaultKeySequence)
+{
+    QString keyString = UBSettings::settings()->value(QString("Shortcuts/%1").arg(name)).toString();
+    QKeySequence keySequence = keyString=="" ? defaultKeySequence : QKeySequence(keyString);
+    QShortcut* newShortcut = new QShortcut(keySequence, mMainWindow);
+    newShortcut->setObjectName(name);
+
+    return newShortcut;
+}
+
+void UBBoardController::setupShortcuts()
+{
+    qDebug("Setting up shortcuts for Board View");
+
+    // Pen Rotate
+    actionColorRotate = addShortcut("Color Rotate", QKeySequence("Q"));
+    actionWidthRotate = addShortcut("Width Rotate", QKeySequence("W"));
+
+    // Zoom
+    shortcutZoomIn = addShortcut("Zoom In", QKeySequence::ZoomIn);
+    shortcutZoomOut = addShortcut("Zoom Out", QKeySequence::ZoomOut);
+    shortcutZoomInAlternative = addShortcut("Zoom In (alternative)", QKeySequence()); // Old logic: Ctrl+I, but that is a duplicate assignment with "Pen"
+    shortcutZoomOutAlternative = addShortcut("Zoom Out alternative", QKeySequence("Ctrl+O"));
+    shortcutZoomRestore = addShortcut("Zoom Restore", QKeySequence("Ctrl+0"));
+
+    connect(shortcutZoomIn, &QShortcut::activated,  [=](){ zoomIn();});
+    connect(shortcutZoomOut, &QShortcut::activated,  [=](){ zoomOut();});
+    connect(shortcutZoomInAlternative, &QShortcut::activated,  [=](){ zoomIn();});
+    connect(shortcutZoomOutAlternative, &QShortcut::activated,  [=](){ zoomOut();});
+    connect(shortcutZoomRestore, &QShortcut::activated,  [=](){ zoomRestore();});
+
+    // Pan
+    shortcutScrollLeft = addShortcut("Scroll Left", QKeySequence("Ctrl+LEFT"));
+    shortcutScrollRight = addShortcut("Scroll Right", QKeySequence("Ctrl+RIGHT"));
+    shortcutScrollUp = addShortcut("Scroll Up", QKeySequence("Ctrl+UP"));
+    shortcutScrollDown = addShortcut("Scroll Down", QKeySequence("Ctrl+DOWN"));
+
+    connect(shortcutScrollLeft, &QShortcut::activated, [=](){ handScroll (-100, 0);});
+    connect(shortcutScrollRight, &QShortcut::activated, [=](){ handScroll (100, 0);});
+    connect(shortcutScrollUp, &QShortcut::activated, [=](){ handScroll (0, -100);});
+    connect(shortcutScrollDown, &QShortcut::activated, [=](){ handScroll (0, 100);});
+
+    // Pages
+    shortcutNewPage = addShortcut("New Page", QKeySequence("Ctrl+N"));
+    shortcutDuplicatePage = addShortcut("Duplicate Page", QKeySequence("Ctrl+D"));
+    connect(shortcutNewPage, &QShortcut::activated, [=](){ mMainWindow->actionNewPage->trigger();});
+    connect(shortcutDuplicatePage, &QShortcut::activated, [=](){mMainWindow->actionDuplicatePage->trigger();});
+
+    // Read Settings
+    shortcutsChanged();
+}
+
+QList<QAction*> UBBoardController::getActions()
+{
+    return mMainWindow->findChildren<QAction*>();
+}
+
+QList<QShortcut*> UBBoardController::getShortcuts()
+{
+    return mMainWindow->findChildren<QShortcut*>();
+}
+
+void UBBoardController::shortcutsChanged()
+{
+    QHash<QString, QVariant> shortcutSetting = UBSettings::settings()->shortcuts->get().toHash();
+
+    // For debug messages
+	qInstallMessageHandler(0);
+    QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
+
+    qDebug("Setting shortcuts and actions:");
+    
+
+    for (auto action : getActions())
+    {
+        QWidget* parent = action->parentWidget();
+        QString key = QString("action/%1/%2").arg(parent->objectName(), action->objectName());
+        if(shortcutSetting.contains(key))
+        {
+            QString shortcut = shortcutSetting.value(key).toString();
+            action->setShortcut(QKeySequence(shortcut));
+            qDebug("Board Controller: Action set from settings: %s -> %s", qUtf8Printable(key),qUtf8Printable(action->shortcut().toString()));
+        }
+        else qDebug("Board Controller: Action set to default: %s -> %s", qUtf8Printable(key),qUtf8Printable(action->shortcut().toString()));
+    }
+
+    for (auto sc : getShortcuts())
+    {
+        QWidget* parent = sc->parentWidget();
+        QString key = QString("shortcut/%1/%2").arg(parent->objectName(), sc->objectName());
+        if(shortcutSetting.contains(key))
+        {
+            QString shortcut = shortcutSetting.value(key).toString();
+            sc->setKey(QKeySequence(shortcut));
+            qDebug("Board Controller: Shortcut set from settings: %s -> %s", qUtf8Printable(key),qUtf8Printable(sc->key().toString()));
+        }
+        else qDebug("Board Controller: Shortcut set to default: %s -> %s", qUtf8Printable(key),qUtf8Printable(sc->key().toString()));
+    }
+
+}
+
 
 
 void UBBoardController::setToolCursor(int tool)
