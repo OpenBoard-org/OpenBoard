@@ -35,6 +35,10 @@
 
 #include "globals/UBGlobals.h"
 
+#ifdef WIN32
+    #define USE_XPDF
+#endif
+
 #ifdef USE_XPDF
     THIRD_PARTY_WARNINGS_DISABLE
     #include <xpdf/Object.h>
