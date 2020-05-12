@@ -35,6 +35,7 @@
 #include <QObject>
 #include <QHBoxLayout>
 #include <QUndoCommand>
+#include <QShortcut>
 
 #include "document/UBDocumentContainer.h"
 #include "core/UBApplicationController.h"
@@ -193,6 +194,33 @@ class UBBoardController : public UBDocumentContainer
         QString actionGroupText(){ return mActionGroupText;}
         QString actionUngroupText(){ return mActionUngroupText;}
 
+
+        // Shortcuts
+
+        QList<QAction*> getActions();
+        QList<QShortcut*> getShortcuts();
+
+        QShortcut *actionColorRotate;
+        QShortcut *actionWidthRotate;
+
+        QShortcut* shortcutZoomIn;
+        QShortcut* shortcutZoomOut;
+        QShortcut* shortcutZoomInAlternative;
+        QShortcut* shortcutZoomOutAlternative;
+        QShortcut* shortcutZoomRestore;
+        QShortcut* shortcutScrollLeft;
+        QShortcut* shortcutScrollRight;
+        QShortcut* shortcutScrollUp;
+        QShortcut* shortcutScrollDown;
+
+        // Pages
+        QShortcut* shortcutNewPage;
+        QShortcut* shortcutDuplicatePage;
+
+        void setupShortcuts();
+
+
+
     public slots:
         void showDocumentsDialog();
         void showKeyboard(bool show);
@@ -253,6 +281,7 @@ class UBBoardController : public UBDocumentContainer
         void stopScript();
 
         void saveData(SaveFlags fls = sf_none);
+        void shortcutsChanged();
 
         //void regenerateThumbnails();
 
@@ -293,6 +322,8 @@ class UBBoardController : public UBDocumentContainer
         void updatePageSizeState();
         void saveViewState();
         int autosaveTimeoutFromSettings();
+
+        QShortcut* addShortcut(QString, QKeySequence);
 
         UBMainWindow *mMainWindow;
         UBGraphicsScene* mActiveScene;

@@ -166,6 +166,15 @@ void UBToolbarButtonGroup::setCurrentIndex(int index)
     }
 }
 
+void UBToolbarButtonGroup::setNextIndex()
+{
+    int nextIndex;
+    if(mCurrentIndex<mButtons.size()-1)
+        nextIndex = mCurrentIndex+1;
+    else nextIndex=0;
+    mActions[nextIndex]->trigger();
+}
+
 void UBToolbarButtonGroup::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);

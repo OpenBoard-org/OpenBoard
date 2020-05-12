@@ -304,7 +304,7 @@
      <normaloff>:/images/toolbar/smallPen.png</normaloff>:/images/toolbar/smallPen.png</iconset>
    </property>
    <property name="text">
-    <string>Line</string>
+    <string>Small Line</string>
    </property>
    <property name="toolTip">
     <string>Small Line</string>
@@ -319,7 +319,7 @@
      <normaloff>:/images/toolbar/mediumPen.png</normaloff>:/images/toolbar/mediumPen.png</iconset>
    </property>
    <property name="text">
-    <string>Line</string>
+    <string>Medium Line</string>
    </property>
    <property name="toolTip">
     <string>Medium Line</string>
@@ -334,7 +334,7 @@
      <normaloff>:/images/toolbar/largePen.png</normaloff>:/images/toolbar/largePen.png</iconset>
    </property>
    <property name="text">
-    <string>Line</string>
+    <string>Large Line</string>
    </property>
    <property name="toolTip">
     <string>Large Line</string>
@@ -367,10 +367,10 @@
      <normaloff>:/images/toolbar/smallEraser.png</normaloff>:/images/toolbar/smallEraser.png</iconset>
    </property>
    <property name="text">
-    <string>Eraser</string>
+    <string>Small Eraser</string>
    </property>
    <property name="toolTip">
-    <string>Smalle Eraser</string>
+    <string>Small Eraser</string>
    </property>
   </action>
   <action name="actionEraserMedium">
@@ -385,7 +385,7 @@
      <normaloff>:/images/toolbar/mediumEraser.png</normaloff>:/images/toolbar/mediumEraser.png</iconset>
    </property>
    <property name="text">
-    <string>Eraser</string>
+    <string>Medium Eraser</string>
    </property>
    <property name="toolTip">
     <string>Medium Eraser</string>
@@ -400,7 +400,7 @@
      <normaloff>:/images/toolbar/largeEraser.png</normaloff>:/images/toolbar/largeEraser.png</iconset>
    </property>
    <property name="text">
-    <string>Eraser</string>
+    <string>Large Eraser</string>
    </property>
    <property name="toolTip">
     <string>Large Eraser</string>
@@ -412,10 +412,10 @@
      <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
    </property>
    <property name="text">
-    <string>Color</string>
+    <string>Color 0</string>
    </property>
    <property name="toolTip">
-    <string>Color</string>
+    <string>Color 0</string>
    </property>
   </action>
   <action name="actionColor1">
@@ -424,7 +424,7 @@
      <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
    </property>
    <property name="text">
-    <string>Color</string>
+    <string>Color 1</string>
    </property>
   </action>
   <action name="actionColor2">
@@ -433,7 +433,7 @@
      <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
    </property>
    <property name="text">
-    <string>Color</string>
+    <string>Color 2</string>
    </property>
   </action>
   <action name="actionColor3">
@@ -442,7 +442,7 @@
      <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
    </property>
    <property name="text">
-    <string>Color</string>
+    <string>Color 3</string>
    </property>
   </action>
   <action name="actionColor4">
@@ -451,7 +451,7 @@
      <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
    </property>
    <property name="text">
-    <string>Color</string>
+    <string>Color 4</string>
    </property>
   </action>
   <action name="actionWebBack">
