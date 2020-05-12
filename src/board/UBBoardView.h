@@ -156,7 +156,32 @@ private:
 
     bool mWidgetMoved;
     QPointF mLastPressedMousePos;
-    QGraphicsItem *movingItem;
+
+
+    /* when an item is moved around, the tracking must stop if the object is deleted */
+    QGraphicsItem *_movingItem;
+
+    QGraphicsItem *getMovingItem() {
+        return _movingItem;
+    }
+
+    void setMovingItem(QGraphicsItem *item) {
+        // if the current moving item is a qobject, it MUST be disconnected
+        if (_movingItem) {
+            QObject *moving_item_obj = dynamic_cast<QObject*>(_movingItem);
+            if (moving_item_obj != nullptr)
+                disconnect(moving_item_obj, &QObject::destroyed, this, &UBBoardView::movingItemDestroyed);
+        }
+
+        // attach the new moving item if relevant
+        if (item) {
+            QObject *item_obj = dynamic_cast<QObject*>(item);
+            if (item_obj != nullptr)
+                connect(item_obj, &QObject::destroyed, this, &UBBoardView::movingItemDestroyed);
+        }
+        _movingItem = item;
+    }
+
     QMouseEvent *suspendedMousePressEvent;
 
     bool moveRubberBand;
@@ -177,11 +202,10 @@ private:
     static bool hasSelectedParents(QGraphicsItem * item);
 
 private slots:
-
     void settingChanged(QVariant newValue);
+    void movingItemDestroyed(QObject* item = nullptr);
 
 public slots:
-
     void virtualKeyboardActivated(bool b);
     void longPressEvent();
 
