@@ -14,6 +14,7 @@ AppVersion={#ApplicationVersion}
 AppVerName=OpenBoard {#ApplicationVersion}
 UninstallDisplayName=OpenBoard {#ApplicationVersion}
 AppPublisher=Open Education Foundation
+ArchitecturesInstallIn64BitMode=x64
 
 AppPublisherURL=http://www.oe-f.org
 AppSupportURL=http://www.openboard.org
@@ -91,7 +92,7 @@ Source: "{#QtLibs}\libEGL.dll"; DestDir: "{app}"
 ;Source: "/etc/freezedWidgetWrapper.html"; DestDir: "{app}"  
 ;Source: "*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\zlib\zlib-1.2.11\bin\zlib.dll"; DestDir:"{app}"; Flags: ignoreversion
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\zlib\1.2.11\bin\zlib.dll"; DestDir:"{app}"; Flags: ignoreversion
 
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\qtwebkit\bin\icudt64.dll"; DestDir: "{app}"
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\qtwebkit\bin\icuin64.dll"; DestDir: "{app}"
@@ -106,16 +107,6 @@ Source: "{#QtDir}\plugins\platforms\qminimal.dll"; DestDir: "{app}\platforms"; F
 Source: "{#QtDir}\plugins\platforms\qoffscreen.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "{#QtDir}\plugins\platforms\qwindows.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
 
-
-;ffmpeg
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\avcodec-58.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\avdevice-58.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\avfilter-7.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\avformat-58.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\avutil-56.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\postproc-55.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\swresample-3.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\swscale-5.dll"; DestDir: "{app}"
 
 ;Qt images formats plugins
 Source: "{#QtDir}\plugins\imageformats\qgif.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
