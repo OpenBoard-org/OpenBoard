@@ -524,6 +524,18 @@ QString UBPlatformUtils::urlFromClipboard()
     return qsRet;
 }
 
+void UBPlatformUtils::toggleFinder(const bool on)
+{
+    if (on)
+    {
+        [NSApp setPresentationOptions:NSApplicationPresentationDefault];
+    }
+    else
+    {
+        [NSApp setPresentationOptions:NSApplicationPresentationHideMenuBar | NSApplicationPresentationHideDock];
+    }
+}
+
 
 void UBPlatformUtils::SetMacLocaleByIdentifier(const QString& id)
 {

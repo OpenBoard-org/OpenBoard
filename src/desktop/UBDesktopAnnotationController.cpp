@@ -374,14 +374,21 @@ void UBDesktopAnnotationController::close()
 void UBDesktopAnnotationController::stylusToolChanged(int tool)
 {
     Q_UNUSED(tool);
-//     UBStylusTool::Enum eTool = (UBStylusTool::Enum)tool;
-//     if(eTool != UBStylusTool::Selector && eTool != UBStylusTool::Text)
-//     {
-//         if(mKeyboardPalette->m_isVisible)
-//             UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction::Trigger);
-//     }
 
-    updateBackground();
+     if (UBDrawingController::drawingController()->isInDesktopMode())
+     {
+         UBStylusTool::Enum eTool = (UBStylusTool::Enum)tool;
+         if(eTool == UBStylusTool::Selector)
+         {
+             UBPlatformUtils::toggleFinder(true);
+         }
+         else
+         {
+             UBPlatformUtils::toggleFinder(false);
+         }
+
+         updateBackground();
+     }
 }
 
 
