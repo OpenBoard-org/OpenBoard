@@ -32,7 +32,7 @@ macx {
                 src/podcast/ffmpeg/UBMicrophoneInput.h
 
     LIBS += -lavformat -lavcodec -lswscale  -lswresample -lavutil \
-        -lpthread -lvpx -lvorbisenc -lfreetype -llzma -lbz2 -lz -ldl -lavutil -lm
+        -lpthread -lvpx -lvorbisenc -llzma -lbz2 -lz -ldl -lavutil -lm
 
     # (ffmpeg-4.0 with all options (to clean))
     # brew install ffmpeg --with-chromaprint --with-fdk-aac --with-libass --with-librsvg --with-libsoxr --with-libssh --with-tesseract
@@ -41,14 +41,12 @@ macx {
     # brew install opus
 
     LIBS += -L/usr/local/opt/x264/lib
-    LIBS += -L/usr/local/opt/sdl/lib
     LIBS += -L/usr/local/opt/libvorbis/lib
     LIBS += -L/usr/local/opt/libvpx/lib
     LIBS += -L/usr/local/opt/theora/lib
     LIBS += -L/usr/local/opt/libogg/lib
     LIBS += -L/usr/local/opt/opus/lib
     LIBS += -L/usr/local/opt/lame/lib
-    LIBS += -L/usr/local/opt/fdk-aac/lib
     LIBS += -L/usr/local/opt/libass/lib
 }
 

@@ -43,11 +43,17 @@
 
 #include "globals/UBGlobals.h"
 
-THIRD_PARTY_WARNINGS_DISABLE
-#include "quazip.h"
-#include "quazipfile.h"
-#include "quazipfileinfo.h"
-THIRD_PARTY_WARNINGS_ENABLE
+//THIRD_PARTY_WARNINGS_DISABLE
+#ifdef Q_OS_OSX
+    #include <quazip.h>
+    #include <quazipfile.h>
+    #include <quazipfileinfo.h>
+#else
+    #include "quazip.h"
+    #include "quazipfile.h"
+    #include "quazipfileinfo.h"
+#endif
+//THIRD_PARTY_WARNINGS_ENABLE
 
 #include "core/memcheck.h"
 

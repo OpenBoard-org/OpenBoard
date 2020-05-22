@@ -71,11 +71,6 @@ include(src/pdf-merger/pdfMerger.pri)
 include(plugins/plugins.pri)
 INCLUDEPATH += plugins/cffadaptor/src
 
-#ThirdParty
-DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
-INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
-include($$THIRD_PARTY_PATH/quazip/quazip.pri)
-
 FORMS += resources/forms/mainWindow.ui \
    resources/forms/preferences.ui \
    resources/forms/brushProperties.ui \
@@ -166,11 +161,15 @@ macx {
    LIBS += -lcrypto
 
    LIBS += -L/usr/local/opt/openssl/lib
-   LIBS += -L/usr/local/opt/quazip/lib
+   LIBS += -L/usr/local/opt/quazip/lib -lquazip
    LIBS += -L/usr/local/opt/ffmpeg/lib
    INCLUDEPATH += /usr/local/opt/openssl/include
    INCLUDEPATH += /usr/local/opt/ffmpeg/include
-   INCLUDEPATH += /usr/local/opt/quazip/include
+   INCLUDEPATH += /usr/local/opt/quazip/include/quazip
+
+   LIBS        += -L/usr/local/opt/poppler/lib -lpoppler
+   INCLUDEPATH += /usr/local/opt/poppler/include
+   INCLUDEPATH += /usr/local/opt/poppler/include/poppler
 
    CONFIG(release, debug|release):CONFIG += x86_64
    CONFIG(debug, debug|release):CONFIG += x86_64
