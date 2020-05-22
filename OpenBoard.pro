@@ -118,6 +118,10 @@ win32 {
    LIBS += -lAdvApi32
    LIBS += -lOle32
 
+   DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
+   INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
+   include($$THIRD_PARTY_PATH/quazip/quazip.pri)
+
    RC_FILE = resources/win/OpenBoard.rc
    CONFIG += axcontainer
    exists(console):CONFIG += console
