@@ -386,10 +386,10 @@ void UBDesktopAnnotationController::stylusToolChanged(int tool)
          {
              UBPlatformUtils::toggleFinder(false);
          }
-
-         updateBackground();
      }
 #endif
+
+    updateBackground();
 }
 
 
