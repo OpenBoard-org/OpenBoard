@@ -1,3 +1,5 @@
+<a href='https://www.flathub.org/apps/details/ch.openboard.OpenBoard'><img width='150' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
+
 # OpenBoard
 OpenBoard is an open source cross-platform interactive white board application designed primarily for use in schools. It was originally forked from Open-Sankoré, which was itself based on Uniboard.
 
