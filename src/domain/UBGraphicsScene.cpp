@@ -1295,7 +1295,9 @@ void UBGraphicsScene::updateSelectionFrame()
 {
     if (!mSelectionFrame) {
         mSelectionFrame = new UBSelectionFrame();
+        bool sceneWasModified = isModified();
         addItem(mSelectionFrame);
+        setModified(sceneWasModified);
     }
 
     QList<QGraphicsItem*> selItems = selectedItems();
