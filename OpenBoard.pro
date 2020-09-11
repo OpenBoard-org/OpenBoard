@@ -1,8 +1,6 @@
 TARGET = "OpenBoard"
 TEMPLATE = app
 
-THIRD_PARTY_PATH=../OpenBoard-ThirdParty
-
 CONFIG += c++14
 CONFIG -= flat
 CONFIG += debug_and_release \
@@ -46,7 +44,6 @@ QT += core
 
 INCLUDEPATH += src
 
-include($$THIRD_PARTY_PATH/libs.pri)
 include(src/adaptors/adaptors.pri)
 include(src/api/api.pri)
 include(src/board/board.pri)
@@ -117,6 +114,9 @@ win32 {
    LIBS += -lGdi32
    LIBS += -lAdvApi32
    LIBS += -lOle32
+
+   THIRD_PARTY_PATH=../OpenBoard-ThirdParty
+   include($$THIRD_PARTY_PATH/libs.pri)
 
    DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
    INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
