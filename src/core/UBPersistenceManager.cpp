@@ -186,7 +186,11 @@ void UBPersistenceManager::createDocumentProxiesStructure(const QFileInfoList &c
 
         if (metadatas.contains(UBSettings::documentPageCount))
         {
-            docProxy->setPageCount(metadatas.value(UBSettings::documentPageCount).toInt());
+            int pageCount = metadatas.value(UBSettings::documentPageCount).toInt();
+            if (pageCount == 0)
+                pageCount = sceneCount(docProxy);
+
+            docProxy->setPageCount(pageCount);
         }
         else
         {
