@@ -121,7 +121,7 @@
     </message>
     <message>
         <source>PgUp</source>
-        <translation>PgUp</translation>
+        <translation> الصفحة للأعلى</translation>
     </message>
     <message>
         <source>Next</source>
@@ -133,7 +133,7 @@
     </message>
     <message>
         <source>PgDown</source>
-        <translation>PgDown</translation>
+        <translation>الصفحة للأسفل</translation>
     </message>
     <message>
         <source>Manage Documents</source>
@@ -2853,35 +2853,4 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Empty trash for documents older than</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>days</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>trapFlashDialog</name>
-    <message>
-        <source>Trap flash</source>
-        <translation>إمساك فلاش</translation>
-    </message>
-    <message>
-        <source>Select a flash to trap</source>
-        <translation>اختيار فلاش للامساك به</translation>
-    </message>
-    <message>
-        <source>about:blank</source>
-        <translation>about:blank</translation>
-    </message>
-    <message>
-        <source>Application name</source>
-        <translation>اسم التطبيق</translation>
-    </message>
-    <message>
-        <source>Create Application</source>
-        <translation>إنشاء تطبيق</translation>
-    </message>
-</context>
-</TS>
+        <source>Empty trash
