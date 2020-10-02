@@ -72,6 +72,8 @@ protected:
     virtual void dragMoveEvent(QDragMoveEvent* event);
     virtual void dropEvent(QDropEvent* event);
 
+    virtual void keyPressEvent(QKeyEvent *event);
+
 signals:
     void mousePressAndHoldEventRequired();
     void moveThumbnailRequired(int from, int to);
