@@ -88,7 +88,7 @@ initializeVariables()
   BUNDLE_QT=true
 
   # Qt installation path. This may vary across machines
-  QT_PATH="/home/dev/Qt/5.13.2/gcc_64"
+  QT_PATH="/home/dev/Qt/5.14.2/gcc_64"
   QT_PLUGINS_SOURCE_PATH="$QT_PATH/plugins"
   GUI_TRANSLATIONS_DIRECTORY_PATH="/usr/share/qt5/translations"
   QT_LIBRARY_SOURCE_PATH="$QT_PATH/lib"
@@ -225,6 +225,7 @@ if $BUNDLE_QT; then
     copyQtLibrary libQt5Positioning
     copyQtLibrary libQt5PrintSupport
     copyQtLibrary libQt5Qml
+    copyQtLibrary libQt5QmlModels
     copyQtLibrary libQt5Quick
     copyQtLibrary libQt5Script
     copyQtLibrary libQt5Sensors

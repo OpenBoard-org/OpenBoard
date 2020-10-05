@@ -356,7 +356,7 @@ void UBGraphicsTextItemDelegate::pickFont()
             delegated()->setTextCursor(curCursor);
 
             delegated()->setSelected(true);
-            delegated()->document()->adjustSize();
+            delegated()->setFocus();
             delegated()->contentsChanged();
         }
     }
@@ -392,7 +392,7 @@ void UBGraphicsTextItemDelegate::pickColor()
             }
 
             delegated()->setSelected(true);
-            delegated()->document()->adjustSize();
+            delegated()->setFocus();
             delegated()->contentsChanged();
         }
     }
