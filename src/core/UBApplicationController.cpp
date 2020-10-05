@@ -371,6 +371,7 @@ void UBApplicationController::showBoard()
 
     mIsShowingDesktop = false;
     UBPlatformUtils::setDesktopMode(false);
+    UBDrawingController::drawingController()->setInDesktopMode(false);
 
     mUninoteController->hideWindow();
 
@@ -473,7 +474,7 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
         UBPlatformUtils::bringPreviousProcessToFront();
     }
 
-    UBDrawingController::drawingController()->setInDestopMode(true);
+    UBDrawingController::drawingController()->setInDesktopMode(true);
     UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
 }
 

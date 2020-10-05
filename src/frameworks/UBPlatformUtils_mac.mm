@@ -90,10 +90,10 @@ void UBPlatformUtils::setDesktopMode(bool desktop)
     @try {
         // temporarily disabled due to bug: when switching to desktop mode (and calling this),
         // openboard switches right back to the board mode. clicking again on desktop mode works.
-        /*if (desktop) {
+        if (desktop) {
             [NSApp setPresentationOptions:NSApplicationPresentationAutoHideMenuBar | NSApplicationPresentationAutoHideDock];
         }
-        else*/
+        else
             [NSApp setPresentationOptions:NSApplicationPresentationHideMenuBar | NSApplicationPresentationHideDock];
     }
 
