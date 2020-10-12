@@ -319,11 +319,14 @@ void UBBoardController::setupToolbar()
     connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), colorChoice, SLOT(displayText(QVariant)));
     connect(colorChoice, SIGNAL(activated(int)), this, SLOT(setColorIndex(int)));
     connect(UBDrawingController::drawingController(), SIGNAL(colorIndexChanged(int)), colorChoice, SLOT(setCurrentIndex(int)));
+    connect(UBDrawingController::drawingController(), SIGNAL(colorIndexChanged(int)), UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()));
     connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), colorChoice, SLOT(colorPaletteChanged()));
     connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), this, SLOT(colorPaletteChanged()));
 
     colorChoice->displayText(QVariant(settings->appToolBarDisplayText->get().toBool()));
     colorChoice->colorPaletteChanged();
+    colorChoice->setCurrentIndex(settings->penColorIndex());
+    colorActions.at(settings->penColorIndex())->setChecked(true);
 
     // Setup line width choice widget
     QList<QAction *> lineWidthActions;
