@@ -780,6 +780,7 @@ void UBBoardController::deleteScene(int nIndex)
         scIndexes << nIndex;
         deletePages(scIndexes);
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+        selectedDocument()->setMetaData(UBSettings::documentPageCount, QString::number(pageCount()-1));
 
         if (nIndex >= pageCount())
             nIndex = pageCount()-1;
