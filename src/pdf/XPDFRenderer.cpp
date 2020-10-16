@@ -38,21 +38,28 @@
 
 #include "core/memcheck.h"
 
+#ifdef XPDFRENDERER_CACHE_ZOOM_IMAGE
 #ifdef XPDFRENDERER_CACHE_ZOOM_WITH_LOSS
 double const XPDFRenderer::sRatioZoomRendering[] = { 3.0 };
 #else //XPDFRENDERER_CACHE_ZOOM_WITH_LOSS
 double const XPDFRenderer::sRatioZoomRendering[] = { 2.5, 5, 10.0 };
 #endif //XPDFRENDERER_CACHE_ZOOM_WITH_LOSS
+#endif //XPDFRENDERER_CACHE_ZOOM_IMAGE
 
 QAtomicInt XPDFRenderer::sInstancesCount = 0;
 
-XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
-    : mDocument(0)
+XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile) :
+#ifndef XPDFRENDERER_CACHE_ZOOM_IMAGE
+    mSplash(nullptr),
+#endif //XPDFRENDERER_CACHE_ZOOM_IMAGE
+    mDocument(0)
 {
+#ifdef XPDFRENDERER_CACHE_ZOOM_IMAGE
     for (int i = 0; i < NbrZoomCache; i++)
     {
         m_cache.push_back(TypeCacheData(sRatioZoomRendering[i]));
     }
+#endif //XPDFRENDERER_CACHE_ZOOM_IMAGE
 
     Q_UNUSED(importingFile);
     if (!globalParams)
@@ -76,6 +83,7 @@ XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
 
 XPDFRenderer::~XPDFRenderer()
 {
+#ifdef XPDFRENDERER_CACHE_ZOOM_IMAGE
     for(int i = 0; i < m_cache.size(); i++)
     {
         TypeCacheData &cacheData = m_cache[i];
@@ -85,6 +93,7 @@ XPDFRenderer::~XPDFRenderer()
             cacheData.splash = nullptr;
         }
     }
+#endif //XPDFRENDERER_CACHE_ZOOM_IMAGE
 
     if (mDocument)
     {

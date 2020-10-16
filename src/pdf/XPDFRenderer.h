@@ -99,19 +99,22 @@ class XPDFRenderer : public PDFRenderer
         };
 
         QImage &createPDFImage(int pageNumber, TypeCacheData &cacheData);
+
+        static const double sRatioZoomRendering[NbrZoomCache];
+        QVector<TypeCacheData> m_cache;
 #else
         QImage* createPDFImage(int pageNumber, qreal xscale = 0.5, qreal yscale = 0.5, const QRectF &bounds = QRectF());
+
+        SplashBitmap* mpSplashBitmap;
+        SplashOutputDev* mSplash;
 #endif
 
         PDFDoc *mDocument;
         static QAtomicInt sInstancesCount;
         //! The image is rendered with a quality above normal, so we can use that same
         //! image while zooming.
-        static const double sRatioZoomRendering[NbrZoomCache];
         qreal mSliceX;
         qreal mSliceY;
-
-        QVector<TypeCacheData> m_cache;
 };
 
 #endif // XPDFRENDERER_H
