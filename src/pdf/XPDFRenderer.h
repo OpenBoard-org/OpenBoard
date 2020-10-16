@@ -51,6 +51,9 @@
 
 class PDFDoc;
 
+#define XPDFRENDERER_CACHE_ZOOM_IMAGE
+//#define XPDFRENDERER_CACHE_ZOOM_WITH_LOSS
+
 class XPDFRenderer : public PDFRenderer
 {
     Q_OBJECT
@@ -74,15 +77,41 @@ class XPDFRenderer : public PDFRenderer
 
     private:
         void init();
+#ifdef XPDFRENDERER_CACHE_ZOOM_IMAGE
+
+        enum {
+#ifndef XPDFRENDERER_CACHE_ZOOM_WITH_LOSS
+            NbrZoomCache = 3
+#else //XPDFRENDERER_CACHE_ZOOM_WITH_LOSS
+            NbrZoomCache = 1
+#endif //XPDFRENDERER_CACHE_ZOOM_WITH_LOSS
+        };
+
+        class TypeCacheData {
+        public:
+            TypeCacheData(double const a_ratio) : splashBitmap(nullptr), cachedPageNumber(-1), splash(nullptr), ratio(a_ratio) {};
+            ~TypeCacheData() {};
+            SplashBitmap* splashBitmap;
+            QImage cachedImage;
+            int cachedPageNumber;
+            SplashOutputDev* splash;
+            double const ratio;
+        };
+
+        QImage &createPDFImage(int pageNumber, TypeCacheData &cacheData);
+#else
         QImage* createPDFImage(int pageNumber, qreal xscale = 0.5, qreal yscale = 0.5, const QRectF &bounds = QRectF());
+#endif
 
         PDFDoc *mDocument;
         static QAtomicInt sInstancesCount;
+        //! The image is rendered with a quality above normal, so we can use that same
+        //! image while zooming.
+        static const double sRatioZoomRendering[NbrZoomCache];
         qreal mSliceX;
         qreal mSliceY;
 
-        SplashBitmap* mpSplashBitmap;
-        SplashOutputDev* mSplash;
+        QVector<TypeCacheData> m_cache;
 };
 
 #endif // XPDFRENDERER_H
