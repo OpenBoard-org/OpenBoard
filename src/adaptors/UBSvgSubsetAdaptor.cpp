@@ -35,6 +35,7 @@
 #include <QGraphicsTextItem>
 #include <QDomElement>
 #include <QGraphicsVideoItem>
+#include <QElapsedTimer>
 
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
@@ -98,7 +99,7 @@ const QString tStrokeGroup = "strokeGroup";
 const QString tGroups = "groups";
 const QString aId = "id";
 
-QString UBSvgSubsetAdaptor::toSvgTransform(const QMatrix& matrix)
+QString UBSvgSubsetAdaptor::toSvgTransform(const QTransform& matrix)
 {
     return QString("matrix(%1, %2, %3, %4, %5, %6)")
             .arg(matrix.m11(), 0 , 'g')
@@ -110,9 +111,9 @@ QString UBSvgSubsetAdaptor::toSvgTransform(const QMatrix& matrix)
 }
 
 
-QMatrix UBSvgSubsetAdaptor::fromSvgTransform(const QString& transform)
+QTransform UBSvgSubsetAdaptor::fromSvgTransform(const QString& transform)
 {
-    QMatrix matrix;
+    QTransform matrix;
     QString ts = transform;
     ts.replace("matrix(", "");
     ts.replace(")", "");
@@ -123,10 +124,13 @@ QMatrix UBSvgSubsetAdaptor::fromSvgTransform(const QString& transform)
         matrix.setMatrix(
                     sl.at(0).toFloat(),
                     sl.at(1).toFloat(),
+                    0,
                     sl.at(2).toFloat(),
                     sl.at(3).toFloat(),
+                    0,
                     sl.at(4).toFloat(),
-                    sl.at(5).toFloat());
+                    sl.at(5).toFloat(),
+                    1);
     }
 
     return matrix;
@@ -353,7 +357,7 @@ UBSvgSubsetAdaptor::UBSvgSubsetReader::UBSvgSubsetReader(UBDocumentProxy* pProxy
 UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProxy* proxy)
 {
     qDebug() << "loadScene() : starting reading...";
-    QTime time;
+    QElapsedTimer time;
     time.start();
     mScene = 0;
     UBGraphicsWidgetItem *currentWidget = 0;
@@ -1260,7 +1264,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
                         QVariant layer = sg->data(UBGraphicsItemData::ItemLayerType);
                         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "layer", QString("%1").arg(layer.toInt()));
 
-                        QMatrix matrix = sg->sceneMatrix();
+                        QTransform matrix = sg->sceneTransform();
                         if (!matrix.isIdentity())
                             mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
 
@@ -1639,7 +1643,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::polygonItemToSvgPolygon(UBGraphicsPo
 
         QString points = pointsToSvgPointsAttribute(polygon);
         mXmlWriter.writeAttribute("points", points);
-        mXmlWriter.writeAttribute("transform",toSvgTransform(polygonItem->matrix()));
+        mXmlWriter.writeAttribute("transform",toSvgTransform(polygonItem->transform()));
         mXmlWriter.writeAttribute("fill", polygonItem->brush().color().name());
 
         qreal alpha = polygonItem->brush().color().alphaF();
@@ -2282,12 +2286,12 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
 
     QStringRef svgTransform = mXmlReader.attributes().value("transform");
 
-    QMatrix itemMatrix;
+    QTransform itemMatrix;
 
     if (!svgTransform.isNull())
     {
         itemMatrix = fromSvgTransform(svgTransform.toString());
-        gItem->setMatrix(itemMatrix);
+        gItem->setTransform(itemMatrix);
     }
 
     QStringRef svgX = mXmlReader.attributes().value("x");
@@ -2392,7 +2396,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsItemToSvg(QGraphicsItem* ite
     mXmlWriter.writeAttribute("width", QString("%1").arg(rect.width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(rect.height()));
 
-    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneTransform()));
 
     QString zs;
     zs.setNum(item->zValue(), 'f'); // 'f' keeps precision
@@ -2826,7 +2830,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::curtainItemToSvg(UBGraphicsCurtainIt
     mXmlWriter.writeAttribute("y", QString("%1").arg(rect.center().y()));
     mXmlWriter.writeAttribute("width", QString("%1").arg(rect.width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(rect.height()));
-    mXmlWriter.writeAttribute("transform", toSvgTransform(curtainItem->sceneMatrix()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(curtainItem->sceneTransform()));
 
     //graphicsItemToSvg(curtainItem);
     QString zs;
@@ -2887,7 +2891,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::rulerToSvg(UBGraphicsRuler* item)
     mXmlWriter.writeAttribute("y", QString("%1").arg(rect.y()));
     mXmlWriter.writeAttribute("width", QString("%1").arg(rect.width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(rect.height()));
-    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneTransform()));
 
     QString zs;
     zs.setNum(item->zValue(), 'f'); // 'f' keeps precision
@@ -3016,7 +3020,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::compassToSvg(UBGraphicsCompass* item
     mXmlWriter.writeAttribute("y", QString("%1").arg(rect.y()));
     mXmlWriter.writeAttribute("width", QString("%1").arg(rect.width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(rect.height()));
-    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneTransform()));
 
     QString zs;
     zs.setNum(item->zValue(), 'f'); // 'f' keeps precision
@@ -3075,7 +3079,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::protractorToSvg(UBGraphicsProtractor
     mXmlWriter.writeAttribute("y", QString("%1").arg(item->rect().y()));
     mXmlWriter.writeAttribute("width", QString("%1").arg(item->rect().width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(item->rect().height()));
-    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneTransform()));
 
     QString angle;
     angle.setNum(item->angle(), 'f'); // 'f' keeps precision
@@ -3151,7 +3155,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::triangleToSvg(UBGraphicsTriangle *it
     mXmlWriter.writeAttribute("y", QString("%1").arg(rect.y()));
     mXmlWriter.writeAttribute("width", QString("%1").arg(rect.width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(rect.height()));
-    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
+    mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneTransform()));
     mXmlWriter.writeAttribute("orientation", UBGraphicsTriangle::orientationToStr(item->getOrientation()));
 
     QString zs;

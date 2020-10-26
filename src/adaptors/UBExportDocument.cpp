@@ -98,7 +98,7 @@ bool UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, const Q
 
 void UBExportDocument::processing(const QString& pObjectName, int pCurrent, int pTotal)
 {
-    QString localized = UBExportDocument::trUtf8(pObjectName.toUtf8());
+    QString localized = UBExportDocument::tr(pObjectName.toUtf8());
 
     if (mIsVerbose)
         UBApplication::showMessage(tr("Exporting %1 %2 of %3").arg(localized).arg(pCurrent).arg(pTotal));

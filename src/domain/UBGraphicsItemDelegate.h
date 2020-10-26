@@ -240,7 +240,7 @@ class UBGraphicsItemDelegate : public QObject
     Q_OBJECT
 
     public:
-    UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent = 0, UBGraphicsFlags fls = 0);
+    UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent = 0, UBGraphicsFlags fls = {});
 
         virtual ~UBGraphicsItemDelegate();
 

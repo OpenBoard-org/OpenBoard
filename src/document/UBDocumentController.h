@@ -60,7 +60,7 @@ class UBDocumentReplaceDialog : public QDialog
     Q_OBJECT
 
 public:
-    UBDocumentReplaceDialog(const QString &pIncommingName, const QStringList &pFileList, QWidget *parent = 0, Qt::WindowFlags pFlags = 0);
+    UBDocumentReplaceDialog(const QString &pIncommingName, const QStringList &pFileList, QWidget *parent = 0, Qt::WindowFlags pFlags = {});
     void setRegexp(const QRegExp pRegExp);
     bool validString(const QString &pStr);
     void setFileNameAndList(const QString &fileName, const QStringList &pLst);
