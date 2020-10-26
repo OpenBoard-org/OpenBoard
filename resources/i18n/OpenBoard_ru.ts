@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE TS>
-<TS version="2.1" language="en_US">
+<TS language="en_US" version="2.1">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -793,23 +793,23 @@
     </message>
     <message>
         <source>Ruled Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Управляемый светлый фон</translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Управляемый тёмный фон</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть руководство</translation>
     </message>
     <message>
         <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть веб-страницу с руководством</translation>
     </message>
     <message>
         <source>Reset grid size</source>
-        <translation type="unfinished"></translation>
+        <translation>Сбросить размер сетки</translation>
     </message>
 </context>
 <context>
@@ -865,8 +865,8 @@
         <translation>Удалить Страницу</translation>
     </message>
     <message>
-        <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation>Вы уверены, что хотите удалить 1 страницу из документа &apos;%0&apos;?</translation>
+        <source>Are you sure you want to remove 1 page from the selected document '%0'?</source>
+        <translation>Вы уверены, что хотите удалить 1 страницу из документа '%0'?</translation>
     </message>
 </context>
 <context>
@@ -907,7 +907,7 @@
     <name>UBBackgroundPalette</name>
     <message>
         <source>Grid size</source>
-        <translation type="unfinished"></translation>
+        <translation>Размер сетки</translation>
     </message>
 </context>
 <context>
@@ -958,15 +958,15 @@
     </message>
     <message>
         <source>Saving document...</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранение документа...</translation>
     </message>
     <message>
         <source>Document has just been saved...</source>
-        <translation type="unfinished"></translation>
+        <translation>Документ был только что сохранён...</translation>
     </message>
     <message>
         <source>Deleting page %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаление страницы %1</translation>
     </message>
 </context>
 <context>
@@ -984,7 +984,7 @@
     <name>UBBoardThumbnailsView</name>
     <message>
         <source>Loading page (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузка страницы (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1034,7 +1034,7 @@
     </message>
     <message>
         <source>Show OpenBoard</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -1076,8 +1076,8 @@
         <translation type="vanished">Удалить документ</translation>
     </message>
     <message>
-        <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation type="vanished">Вы уверены, что хотите удалить документ &apos;%1&apos;?</translation>
+        <source>Are you sure you want to remove the document '%1'?</source>
+        <translation type="vanished">Вы уверены, что хотите удалить документ '%1'?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
@@ -1100,8 +1100,8 @@
         <translation type="vanished">Удалить папку</translation>
     </message>
     <message>
-        <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="vanished">Вы уверены, что хотите удалить папку &apos;%1 и все ее содержимое?</translation>
+        <source>Are you sure you want to remove the folder '%1' and all its content?</source>
+        <translation type="vanished">Вы уверены, что хотите удалить папку '%1 и все ее содержимое?</translation>
     </message>
     <message>
         <source>No document selected!</source>
@@ -1152,10 +1152,10 @@
         <translation>Не выбрано ни одного изображения!</translation>
     </message>
     <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
+        <source>Are you sure you want to remove %n page(s) from the selected document '%1'?</source>
         <translation type="vanished">
-            <numerusform>Вы уверены, что хотите удалить %n страницу из выбранного документа &apos;%1&apos;?</numerusform>
-            <numerusform>Вы уверены, что хотите удалить %n страниц из выбранного документа &apos;%1&apos;?</numerusform>
+            <numerusform>Вы уверены, что хотите удалить %n страницу из выбранного документа '%1'?</numerusform>
+            <numerusform>Вы уверены, что хотите удалить %n страниц из выбранного документа '%1'?</numerusform>
         </translation>
     </message>
     <message>
@@ -1169,26 +1169,26 @@
     <message numerus="yes">
         <source>duplicated %1 page</source>
         <comment>duplicated %1 pages</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>продублировано %1 страницы</numerusform>
+            <numerusform>продублировано %1 страниц</numerusform>
         </translation>
     </message>
     <message>
         <source>Remove Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить элемент</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Действительно удалить выделенные элементы?</translation>
     </message>
     <message>
-        <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation type="unfinished"></translation>
+        <source>The document '%1' has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
+        <translation>Документ «%1» был создан в более новой версии OpenBoard (%2). При открытии этого документа может быть потеряна некоторая информация. Продолжить?</translation>
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
+        <translation>Заглавная страница</translation>
     </message>
 </context>
 <context>
@@ -1245,68 +1245,70 @@
     <name>UBDocumentPublisher</name>
     <message>
         <source>Export failed.</source>
-        <translation type="obsolete">Ошибка экспорта.</translation>
+        <translation type="obsolete">Не удалось выполнить экспорт.</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentReplaceDialog</name>
     <message>
         <source>Accept</source>
-        <translation type="unfinished">Принять</translation>
+        <translation>Принять</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <source>Replace</source>
-        <translation type="unfinished"></translation>
+        <translation>Заменить</translation>
     </message>
     <message>
         <source>The name %1 is allready used.
 Keeping this name will replace the document.
 Providing a new name will create a new document.</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя «%1» уже используется.
+Сохранение под этим именем приведёт к замене документа.
+Сохранение под другим именем приведёт к созданию нового документа.</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentTreeModel</name>
     <message>
         <source>Trash</source>
-        <translation type="unfinished">Корзина</translation>
+        <translation>Корзина</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%1 страницы скопировано</numerusform>
             <numerusform>%1 страниц скопировано</numerusform>
         </translation>
     </message>
     <message>
         <source>My documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Мои документы</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentTreeView</name>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%1 страницы скопировано</numerusform>
             <numerusform>%1 страниц скопировано</numerusform>
         </translation>
     </message>
     <message>
         <source>Remove Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить элемент</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Действительно удалить выделенные элементы?</translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation type="unfinished">Копирование страницы %1/%2</translation>
+        <translation>Копирование страницы %1/%2</translation>
     </message>
 </context>
 <context>
@@ -1342,14 +1344,14 @@ Providing a new name will create a new document.</source>
     <name>UBDraggableThumbnail</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">Страница %0</translation>
+        <translation>Страница %0</translation>
     </message>
 </context>
 <context>
     <name>UBDraggableThumbnailView</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">Страница %0</translation>
+        <translation>Страница %0</translation>
     </message>
 </context>
 <context>
@@ -1360,23 +1362,23 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished">Экспорт документа...</translation>
+        <translation>Экспорт документа...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished">Экспорт успешно завершен.</translation>
+        <translation>Экспорт успешно завершён.</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось выполнить экспорт</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось экспортировать в выбранное расположение. Нет доступа к возможности сохранения.</translation>
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось экспортировать: невозможно записать в этот каталог</translation>
     </message>
 </context>
 <context>
@@ -1426,34 +1428,34 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспортировать в формат OpenBoard</translation>
     </message>
 </context>
 <context>
     <name>UBExportDocumentSetAdaptor</name>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished">Экспорт документа...</translation>
+        <translation>Экспорт документа...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished">Экспорт успешно завершен.</translation>
+        <translation>Экспорт успешно завершён.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished">Ошибка экспорта.</translation>
+        <translation>Ошибка экспорта.</translation>
     </message>
     <message>
         <source>Failed to export...</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось экспортировать...</translation>
     </message>
     <message>
         <source>Export as UBX File</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспортировать как файл UBX</translation>
     </message>
     <message>
         <source>Export to OpenBoard UBX Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспортировать в формат OpenBoard UBX</translation>
     </message>
 </context>
 <context>
@@ -1675,33 +1677,33 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="unfinished">Сделать фоновым изображением</translation>
+        <translation>Сделать фоновым изображением</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsMediaItem</name>
     <message>
-        <source>Media resource couldn&apos;t be resolved</source>
-        <translation type="unfinished"></translation>
+        <source>Media resource couldn't be resolved</source>
+        <translation>Не удалось разрешить медиа-ресурс</translation>
     </message>
     <message>
         <source>Unsupported media format</source>
-        <translation type="unfinished"></translation>
+        <translation>Неподдерживаемый формат медиафайла</translation>
     </message>
     <message>
         <source>Media playback service not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Не найдена служба воспроизведения мультимедиа</translation>
     </message>
     <message>
         <source>Media error: </source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка мультимедиа: </translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsTextItem</name>
     <message>
-        <source>&lt;Type Text Here&gt;</source>
-        <translation>&lt;Введите здесь текст&gt;</translation>
+        <source>&lt;Type Text Here></source>
+        <translation>&lt;Введите здесь текст></translation>
     </message>
 </context>
 <context>
@@ -1779,14 +1781,14 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard (*.ubz)</translation>
     </message>
 </context>
 <context>
     <name>UBImportDocumentSetAdaptor</name>
     <message>
         <source>Openboard (set of documents) (*.ubx)</source>
-        <translation type="unfinished"></translation>
+        <translation>Openboard (набор документов) (*.ubx)</translation>
     </message>
 </context>
 <context>
@@ -1861,8 +1863,8 @@ Providing a new name will create a new document.</source>
 <context>
     <name>UBNetworkAccessManager</name>
     <message>
-        <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
-        <translation>&lt;qt&gt;Введите имя пользователя и пароль для &quot;%1&quot; в %2&lt;/qt&gt;</translation>
+        <source>&lt;qt>Enter username and password for "%1" at %2&lt;/qt></source>
+        <translation>&lt;qt>Введите имя пользователя и пароль для "%1" в %2&lt;/qt></translation>
     </message>
     <message>
         <source>Failed to log to Proxy</source>
@@ -1897,27 +1899,27 @@ Do you want to ignore these errors for this host?</source>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <source>Open-Sankore Documents Detected</source>
-        <translation type="unfinished"></translation>
+        <translation>Найдены документы Open-Sankore</translation>
     </message>
     <message>
         <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
+        <translation>На этом компьютере найдены документы Open-Sankore. Их можно импортировать в OpenBoard с помощью кнопки «Продолжить».</translation>
     </message>
     <message>
         <source>Show this panel next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Показывать эту панель в следующий раз</translation>
     </message>
     <message>
         <source>You can always access the OpenBoard Document Importer through the Preferences panel in the About tab. Warning, if you have already imported your Open-Sankore datas, you might loose your current OpenBoard documents.</source>
-        <translation type="unfinished"></translation>
+        <translation>Доступ к средству импорта документов OpenBoard можно получить из панели «Настройка» на вкладке «О программе». Предупреждение: если данные Open-Sankore уже были импортированы, есть риск потери текущих документов OpenBoard.</translation>
     </message>
     <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
+        <translation>Продолжить</translation>
     </message>
 </context>
 <context>
@@ -1931,8 +1933,8 @@ Do you want to ignore these errors for this host?</source>
         <translation>Потеря соединения с репозиторием документов</translation>
     </message>
     <message>
-        <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
+        <source>OpenBoard has lost access to the document repository '%1'. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
+        <translation>Потерян доступ к репозиторию документов «%1». Приложение должно быть закрыто, чтобы избежать повреждения данных. Последние изменения также могут быть утеряны.</translation>
     </message>
 </context>
 <context>
@@ -2018,7 +2020,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>OpenBoard Cast</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard Cast</translation>
     </message>
 </context>
 <context>
@@ -2077,7 +2079,7 @@ Do you want to ignore these errors for this host?</source>
     <name>UBStartupHintsPalette</name>
     <message>
         <source>Visible next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Видимый в следующий раз</translation>
     </message>
 </context>
 <context>
@@ -2102,7 +2104,7 @@ Do you want to ignore these errors for this host?</source>
     <name>UBThumbnailTextItem</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">Страница %0</translation>
+        <translation>Страница %0</translation>
     </message>
 </context>
 <context>
@@ -2374,7 +2376,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>%1 Downloads</source>
-        <comment>always &gt;= 2</comment>
+        <comment>always >= 2</comment>
         <translation>%1 загрузок</translation>
     </message>
 </context>
@@ -2484,7 +2486,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузить PDF-документ: загрузить PDF-файл или добавить его в текущий документ OpenBoard?</translation>
     </message>
 </context>
 <context>
@@ -2525,24 +2527,24 @@ Please reboot the application to access the updated documents.</source>
         <translation>Пароль YouTube</translation>
     </message>
     <message>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+        <source>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;By clicking &apos;Upload,&apos; you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-family:'Lucida Grande'; font-size:10pt;">By clicking 'Upload,' you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at &lt;/span>&lt;a href="http://www.youtube.com/t/terms">&lt;span style=" font-family:'Lucida Grande'; font-size:10pt; text-decoration: underline; color:#0000ff;">http://www.youtube.com/t/terms&lt;/span>&lt;/a>&lt;/p>&lt;/body>&lt;/html></source>
+        <translation>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;Нажав &quot;Загрузить&quot;, вы подтверждаете, что обладаете всеми правами на данное содержимое, или что вы были уполномочены владельцем на публикацию данного содержимого на YouTube, или что иным образом удовлетворяете требованиям Условий предоставления услуг YouTube, размещенных по адресу &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-family:'Lucida Grande'; font-size:10pt;">Нажав "Загрузить", вы подтверждаете, что обладаете всеми правами на данное содержимое, или что вы были уполномочены владельцем на публикацию данного содержимого на YouTube, или что иным образом удовлетворяете требованиям Условий предоставления услуг YouTube, размещенных по адресу &lt;/span>&lt;a href="http://www.youtube.com/t/terms">&lt;span style=" font-family:'Lucida Grande'; font-size:10pt; text-decoration: underline; color:#0000ff;">http://www.youtube.com/t/terms&lt;/span>&lt;/a>&lt;/p>&lt;/body>&lt;/html></translation>
     </message>
     <message>
         <source>OpenBoard</source>
-        <translation type="unfinished">OpenBoard</translation>
+        <translation>OpenBoard</translation>
     </message>
     <message>
         <source>Restore credentials on reboot</source>
-        <translation type="unfinished"></translation>
+        <translation>Восстановить учётные данные при перезагрузке</translation>
     </message>
 </context>
 <context>
@@ -2581,11 +2583,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Show preview circle from</source>
-        <translation type="unfinished"></translation>
+        <translation>Показывать круг предпросмотра из</translation>
     </message>
     <message>
         <source>px</source>
-        <translation type="unfinished"></translation>
+        <translation>пикс.</translation>
     </message>
 </context>
 <context>
@@ -2638,23 +2640,23 @@ p, li { white-space: pre-wrap; }
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Документы OpenBoard</translation>
     </message>
     <message>
         <source>Creation date</source>
-        <translation type="unfinished"></translation>
+        <translation>Дата создания</translation>
     </message>
     <message>
         <source>Update date</source>
-        <translation type="unfinished"></translation>
+        <translation>Дата обновления</translation>
     </message>
     <message>
         <source>Alphabetical order</source>
-        <translation type="unfinished"></translation>
+        <translation>В алфавитном порядке</translation>
     </message>
     <message>
         <source>Sort Order</source>
-        <translation type="unfinished"></translation>
+        <translation>Порядок сортировки</translation>
     </message>
 </context>
 <context>
@@ -2797,55 +2799,55 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>On Dark Background</source>
-        <translation type="unfinished">На темном фоне</translation>
+        <translation>На тёмном фоне</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="unfinished">Непрозрачность</translation>
+        <translation>Непрозрачность</translation>
     </message>
     <message>
         <source>On Light Background</source>
-        <translation type="unfinished">На светлом фоне</translation>
+        <translation>На светлом фоне</translation>
     </message>
     <message>
         <source>Swap first and second view displays</source>
-        <translation type="unfinished"></translation>
+        <translation>Поменять местами первый и второй монитор</translation>
     </message>
     <message>
         <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Размер кнопок встроенной виртуальной клавиатуры</translation>
     </message>
     <message>
         <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать системную клавиатуру (рекомендуется)</translation>
     </message>
     <message>
         <source>Grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Сетка</translation>
     </message>
     <message>
         <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
+        <translation>Импорт из Open-Sankoré</translation>
     </message>
     <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
+        <translation>Проверять, могут ли быть данные Open-Sankoré импортированы при запуске</translation>
     </message>
     <message>
         <source>Documents Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Режим документов</translation>
     </message>
     <message>
         <source>Display date column on alphabetical sort</source>
-        <translation type="unfinished"></translation>
+        <translation>Сортировать столбец с датой в алфавитном порядке</translation>
     </message>
     <message>
         <source>Empty trash for documents older than</source>
-        <translation type="unfinished"></translation>
+        <translation>Очищать корзину от документов старше, чем</translation>
     </message>
     <message>
         <source>days</source>
-        <translation type="unfinished"></translation>
+        <translation>дней</translation>
     </message>
 </context>
 <context>
