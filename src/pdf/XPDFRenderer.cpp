@@ -32,10 +32,6 @@
 #include <QtGui>
 
 #include <frameworks/UBPlatformUtils.h>
-#ifndef USE_XPDF
-    #include <poppler/cpp/poppler-version.h>
-#endif
-
 #include "core/memcheck.h"
 
 QAtomicInt XPDFRenderer::sInstancesCount = 0;
@@ -50,7 +46,7 @@ XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
     {
         // globalParams must be allocated once and never be deleted
         // note that this is *not* an instance variable of this XPDFRenderer class
-#if POPPLER_VERSION_MAJOR > 0 || POPPLER_VERSION_MINOR >= 83
+#ifndef USE_XPDF
         globalParams = std::make_unique<GlobalParams>();
 #else
         globalParams = new GlobalParams(0);
@@ -80,7 +76,7 @@ XPDFRenderer::~XPDFRenderer()
 
     if (sInstancesCount.loadAcquire() == 0 && globalParams)
     {
-#if POPPLER_VERSION_MAJOR > 0 || POPPLER_VERSION_MINOR >= 83
+#ifndef USE_XPDF
         globalParams.reset();
 #else
         delete globalParams;
@@ -113,7 +109,7 @@ QString XPDFRenderer::title() const
 {
     if (isValid())
     {
-#if POPPLER_VERSION_MAJOR > 0 || POPPLER_VERSION_MINOR >= 55
+#ifndef USE_XPDF
         Object pdfInfo = mDocument->getDocInfo();
 #else
         Object pdfInfo;
@@ -122,7 +118,7 @@ QString XPDFRenderer::title() const
         if (pdfInfo.isDict())
         {
             Dict *infoDict = pdfInfo.getDict();
-#if POPPLER_VERSION_MAJOR > 0 || POPPLER_VERSION_MINOR >= 55
+#ifndef USE_XPDF
             Object title = infoDict->lookup((char*)"Title");
 #else
             Object title;
@@ -130,7 +126,7 @@ QString XPDFRenderer::title() const
 #endif
             if (title.isString())
             {
-#if POPPLER_VERSION_MAJOR > 0 || POPPLER_VERSION_MINOR >= 72
+#ifndef USE_XPDF
                 return QString(title.getString()->c_str());
 #else
                 return QString(title.getString()->getCString());
