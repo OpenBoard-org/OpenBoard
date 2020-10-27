@@ -301,7 +301,7 @@ QImage& XPDFRenderer::createPDFImageCached(int pageNumber, TypePdfZoomCacheData 
         {
             if(cacheData.splash != nullptr)
             {
-                cacheData.cachedImage = QImage(); // The 'm_pdfZoomCachedImage' uses a buffer from 'mSplash'.
+                cacheData.cachedImage = QImage();
                 delete cacheData.splash;
             }
             cacheData.splash = new SplashOutputDev(splashModeRGB8, 1, false, paperColor);

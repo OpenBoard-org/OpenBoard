@@ -100,8 +100,6 @@ class XPDFRenderer : public PDFRenderer
 
         PDFDoc *mDocument;
         static QAtomicInt sInstancesCount;
-        //! The image is rendered with a quality above normal, so we can use that same
-        //! image while zooming.
         qreal mSliceX;
         qreal mSliceY;
 };
