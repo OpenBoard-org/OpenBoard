@@ -51,9 +51,6 @@
 
 class PDFDoc;
 
-#define XPDFRENDERER_CACHE_ZOOM_IMAGE
-//#define XPDFRENDERER_CACHE_ZOOM_WITH_LOSS
-
 class XPDFRenderer : public PDFRenderer
 {
     Q_OBJECT
@@ -77,20 +74,10 @@ class XPDFRenderer : public PDFRenderer
 
     private:
         void init();
-#ifdef XPDFRENDERER_CACHE_ZOOM_IMAGE
 
-        enum {
-#ifndef XPDFRENDERER_CACHE_ZOOM_WITH_LOSS
-            NbrZoomCache = 3
-#else //XPDFRENDERER_CACHE_ZOOM_WITH_LOSS
-            NbrZoomCache = 1
-#endif //XPDFRENDERER_CACHE_ZOOM_WITH_LOSS
-        };
-
-        class TypeCacheData {
-        public:
-            TypeCacheData(double const a_ratio) : splashBitmap(nullptr), cachedPageNumber(-1), splash(nullptr), ratio(a_ratio) {};
-            ~TypeCacheData() {};
+        struct TypePdfZoomCacheData {
+            TypePdfZoomCacheData(double const a_ratio) : splashBitmap(nullptr), cachedPageNumber(-1), splash(nullptr), ratio(a_ratio) {};
+            ~TypePdfZoomCacheData() {};
             SplashBitmap* splashBitmap;
             QImage cachedImage;
             int cachedPageNumber;
@@ -98,16 +85,18 @@ class XPDFRenderer : public PDFRenderer
             double const ratio;
         };
 
-        QImage &createPDFImage(int pageNumber, TypeCacheData &cacheData);
+        QImage &createPDFImageCached(int pageNumber, TypePdfZoomCacheData &cacheData);
+        QImage* createPDFImageHistorical(int pageNumber, qreal xscale, qreal yscale, const QRectF &bounds);
 
-        static const double sRatioZoomRendering[NbrZoomCache];
-        QVector<TypeCacheData> m_cache;
-#else
-        QImage* createPDFImage(int pageNumber, qreal xscale = 0.5, qreal yscale = 0.5, const QRectF &bounds = QRectF());
+        // Used when 'ZoomBehavior == 1 or 2'.
+        // =1 has only x3 zoom in cache (= loss if user zoom > 3.0).
+        // =2, has 2.5, 5 and 10 (= no loss, but a bit slower).
+        QVector<TypePdfZoomCacheData> m_pdfZoomCache;
 
-        SplashBitmap* mpSplashBitmap;
-        SplashOutputDev* mSplash;
-#endif
+        // Used when 'ZoomBehavior == 0' (no cache).
+        SplashBitmap* mpSplashBitmapHistorical;
+        // Used when 'ZoomBehavior == 0' (no cache).
+        SplashOutputDev* mSplashHistorical;
 
         PDFDoc *mDocument;
         static QAtomicInt sInstancesCount;
