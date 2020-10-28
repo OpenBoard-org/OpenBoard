@@ -42,6 +42,13 @@
 
 QAtomicInt XPDFRenderer::sInstancesCount = 0;
 
+namespace constants{
+   const double mode1_zoomFactor = 3.0;
+   const double mode2_zoomFactorStage1 = 2.5;
+   const double mode2_zoomFactorStage2 = 5.0;
+   const double mode2_zoomFactorStage3 = 10.0;
+}
+
 XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile) :
     mpSplashBitmapHistorical(nullptr), mSplashHistorical(nullptr), mDocument(nullptr)
 {
@@ -50,12 +57,12 @@ XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile) :
         break;
         case 1: // Render a single image, degradated quality when zoomed big.
         default:
-            m_pdfZoomCache.push_back(3.0);
+            m_pdfZoomCache.push_back(constants::mode1_zoomFactor);
         break;
         case 2: // Render three images, optimal quality all the time.
-            m_pdfZoomCache.push_back(2.5);
-            m_pdfZoomCache.push_back(5.0);
-            m_pdfZoomCache.push_back(10.0);
+            m_pdfZoomCache.push_back(constants::mode2_zoomFactorStage1);
+            m_pdfZoomCache.push_back(constants::mode2_zoomFactorStage2);
+            m_pdfZoomCache.push_back(constants::mode2_zoomFactorStage3);
         break;
     }
 
@@ -83,7 +90,7 @@ XPDFRenderer::~XPDFRenderer()
 {
     for(int i = 0; i < m_pdfZoomCache.size(); i++)
     {
-        TypePdfZoomCacheData &cacheData = m_pdfZoomCache[i];
+        PdfZoomCacheData &cacheData = m_pdfZoomCache[i];
         if(cacheData.splash != nullptr){
             cacheData.cachedImage = QImage(); // The 'cachedImage' uses a buffer from 'splash'.
             delete cacheData.splash;
@@ -209,7 +216,7 @@ QImage* XPDFRenderer::createPDFImageHistorical(int pageNumber, qreal xscale, qre
 #ifdef USE_XPDF
         mSplashHistorical->startDoc(mDocument->getXRef());
 #else
-        mSplash->startDoc(mDocument);
+        mSplashHistorical->startDoc(mDocument);
 #endif
         int rotation = 0; // in degrees (get it from the worldTransform if we want to support rotation)
         bool useMediaBox = false;
@@ -291,21 +298,14 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, const QRectF &bounds)
     }
 }
 
-QImage& XPDFRenderer::createPDFImageCached(int pageNumber, TypePdfZoomCacheData &cacheData)
+QImage& XPDFRenderer::createPDFImageCached(int pageNumber, PdfZoomCacheData &cacheData)
 {
     if (isValid())
     {      
         SplashColor paperColor = {0xFF, 0xFF, 0xFF}; // white
-        bool const requireUpdateImage = (pageNumber != cacheData.cachedPageNumber) || (cacheData.splash == nullptr);
-        if (requireUpdateImage)
+        if (cacheData.requireUpdateImage(pageNumber))
         {
-            if(cacheData.splash != nullptr)
-            {
-                cacheData.cachedImage = QImage();
-                delete cacheData.splash;
-            }
-            cacheData.splash = new SplashOutputDev(splashModeRGB8, 1, false, paperColor);
-            cacheData.cachedPageNumber = pageNumber;
+            cacheData.prepareNewSplash(pageNumber, paperColor);
 
 #ifdef USE_XPDF
             cacheData.splash->startDoc(mDocument->getXRef());
@@ -324,7 +324,7 @@ QImage& XPDFRenderer::createPDFImageCached(int pageNumber, TypePdfZoomCacheData 
             cacheData.splashBitmap = cacheData.splash->getBitmap();
         }
 
-        // Note this uses the 'mSplash->getBitmap()->getDataPtr()' as data buffer.
+        // Note this uses the 'cacheData.splash->getBitmap()->getDataPtr()' as data buffer.
         cacheData.cachedImage = QImage(cacheData.splashBitmap->getDataPtr(), cacheData.splashBitmap->getWidth(), cacheData.splashBitmap->getHeight(),
                                cacheData.splashBitmap->getWidth() * 3 /* bytesPerLine, 24 bits for RGB888, = 3 bytes */,
                                QImage::Format_RGB888);
