@@ -37,14 +37,28 @@
 #endif
 
 #include "core/memcheck.h"
+#include "core/UBSettings.h"
+
 
 QAtomicInt XPDFRenderer::sInstancesCount = 0;
 
-XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
-    : mDocument(0)
-    , mpSplashBitmap(0)
-    , mSplash(0)
+XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile) :
+    mpSplashBitmapHistorical(nullptr), mSplashHistorical(nullptr), mDocument(nullptr)
 {
+    switch (UBSettings::settings()->pdfZoomBehavior->get().toUInt()) {
+        case 0: // Render each time (historical initial implementation).
+        break;
+        case 1: // Render a single image, degradated quality when zoomed big.
+        default:
+            m_pdfZoomCache.push_back(XPDFRendererZoomFactor::mode1_zoomFactor);
+        break;
+        case 2: // Render three images, optimal quality all the time.
+            m_pdfZoomCache.push_back(XPDFRendererZoomFactor::mode2_zoomFactorStage1);
+            m_pdfZoomCache.push_back(XPDFRendererZoomFactor::mode2_zoomFactorStage2);
+            m_pdfZoomCache.push_back(XPDFRendererZoomFactor::mode2_zoomFactorStage3);
+        break;
+    }
+
     Q_UNUSED(importingFile);
     if (!globalParams)
     {
@@ -67,10 +81,18 @@ XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
 
 XPDFRenderer::~XPDFRenderer()
 {
-    if(mSplash){
-        delete mSplash;
-        mSplash = NULL;
+    for(int i = 0; i < m_pdfZoomCache.size(); i++)
+    {
+        PdfZoomCacheData &cacheData = m_pdfZoomCache[i];
+        if(cacheData.splash != nullptr){
+            cacheData.cachedImage = QImage(); // The 'cachedImage' uses a buffer from 'splash'.
+            delete cacheData.splash;
+            cacheData.splash = nullptr;
+        }
     }
+
+    if(mSplashHistorical)
+        delete mSplashHistorical;
 
     if (mDocument)
     {
@@ -175,34 +197,19 @@ int XPDFRenderer::pageRotation(int pageNumber) const
         return 0;
 }
 
-void XPDFRenderer::render(QPainter *p, int pageNumber, const QRectF &bounds)
-{
-    if (isValid())
-    {
-        qreal xscale = p->worldTransform().m11();
-        qreal yscale = p->worldTransform().m22();
 
-        QImage *pdfImage = createPDFImage(pageNumber, xscale, yscale, bounds);
-        QTransform savedTransform = p->worldTransform();
-        p->resetTransform();
-        p->drawImage(QPointF(savedTransform.dx() + mSliceX, savedTransform.dy() + mSliceY), *pdfImage);
-        p->setWorldTransform(savedTransform);
-        delete pdfImage;
-    }
-}
-
-QImage* XPDFRenderer::createPDFImage(int pageNumber, qreal xscale, qreal yscale, const QRectF &bounds)
+QImage* XPDFRenderer::createPDFImageHistorical(int pageNumber, qreal xscale, qreal yscale, const QRectF &bounds)
 {
     if (isValid())
     {
         SplashColor paperColor = {0xFF, 0xFF, 0xFF}; // white
-        if(mSplash)
-            delete mSplash;
-        mSplash = new SplashOutputDev(splashModeRGB8, 1, false, paperColor);
+        if(mSplashHistorical)
+            delete mSplashHistorical;
+        mSplashHistorical = new SplashOutputDev(splashModeRGB8, 1, false, paperColor);
 #ifdef USE_XPDF
-        mSplash->startDoc(mDocument->getXRef());
+        mSplashHistorical->startDoc(mDocument->getXRef());
 #else
-        mSplash->startDoc(mDocument);
+        mSplashHistorical->startDoc(mDocument);
 #endif
         int rotation = 0; // in degrees (get it from the worldTransform if we want to support rotation)
         bool useMediaBox = false;
@@ -213,7 +220,7 @@ QImage* XPDFRenderer::createPDFImage(int pageNumber, qreal xscale, qreal yscale,
 
         if (bounds.isNull())
         {
-            mDocument->displayPage(mSplash, pageNumber, this->dpiForRendering * xscale, this->dpiForRendering *yscale,
+            mDocument->displayPage(mSplashHistorical, pageNumber, this->dpiForRendering * xscale, this->dpiForRendering *yscale,
                                    rotation, useMediaBox, crop, printing);
         }
         else
@@ -223,11 +230,100 @@ QImage* XPDFRenderer::createPDFImage(int pageNumber, qreal xscale, qreal yscale,
             qreal sliceW = bounds.width() * xscale;
             qreal sliceH = bounds.height() * yscale;
 
-            mDocument->displayPageSlice(mSplash, pageNumber, this->dpiForRendering * xscale, this->dpiForRendering * yscale,
+            mDocument->displayPageSlice(mSplashHistorical, pageNumber, this->dpiForRendering * xscale, this->dpiForRendering * yscale,
                 rotation, useMediaBox, crop, printing, mSliceX, mSliceY, sliceW, sliceH);
         }
 
-        mpSplashBitmap = mSplash->getBitmap();
+        mpSplashBitmapHistorical = mSplashHistorical->getBitmap();
     }
-    return new QImage(mpSplashBitmap->getDataPtr(), mpSplashBitmap->getWidth(), mpSplashBitmap->getHeight(), mpSplashBitmap->getWidth() * 3, QImage::Format_RGB888);
+    return new QImage(mpSplashBitmapHistorical->getDataPtr(), mpSplashBitmapHistorical->getWidth(), mpSplashBitmapHistorical->getHeight(), mpSplashBitmapHistorical->getWidth() * 3, QImage::Format_RGB888);
+}
+
+void XPDFRenderer::render(QPainter *p, int pageNumber, const QRectF &bounds)
+{
+    Q_UNUSED(bounds);
+    if (isValid())
+    {
+        if (m_pdfZoomCache.size() > 0)
+        {
+            qreal xscale = p->worldTransform().m11();
+            qreal yscale = p->worldTransform().m22();
+            Q_ASSERT(qFuzzyCompare(xscale, yscale)); // Zoom equal in all axes expected.
+            Q_ASSERT(xscale > 0.0); // Potential Div0 later if this assert fail.
+
+            int zoomIndex = 0;
+            bool foundIndex = false;
+            for (; zoomIndex < m_pdfZoomCache.size() && !foundIndex;)
+            {
+                if (xscale <= m_pdfZoomCache[zoomIndex].ratio) {
+                    foundIndex = true;
+                } else {
+                    zoomIndex++;
+                }
+            }
+
+            if (!foundIndex) // Use the previous one.
+                zoomIndex--;
+
+
+            QImage const &pdfImage = createPDFImageCached(pageNumber, m_pdfZoomCache[zoomIndex]);
+            QTransform savedTransform = p->worldTransform();
+
+            double const ratioDifferenceBetweenWorldAndImage = 1.0/m_pdfZoomCache[zoomIndex].ratio;
+            // The 'pdfImage' is rendered with a quality equal or superior. We adjust the 'transform' to zoom it
+            // out the required ratio.
+            QTransform newTransform = savedTransform.scale(ratioDifferenceBetweenWorldAndImage, ratioDifferenceBetweenWorldAndImage);
+            p->setWorldTransform(newTransform);
+            p->drawImage(QPointF( mSliceX,  mSliceY), pdfImage);
+
+            p->setWorldTransform(savedTransform);
+        } else {
+            qreal xscale = p->worldTransform().m11();
+            qreal yscale = p->worldTransform().m22();
+
+            QImage *pdfImage = createPDFImageHistorical(pageNumber, xscale, yscale, bounds);
+            QTransform savedTransform = p->worldTransform();
+            p->resetTransform();
+            p->drawImage(QPointF(savedTransform.dx() + mSliceX, savedTransform.dy() + mSliceY), *pdfImage);
+            p->setWorldTransform(savedTransform);
+            delete pdfImage;
+        }
+    }
+}
+
+QImage& XPDFRenderer::createPDFImageCached(int pageNumber, PdfZoomCacheData &cacheData)
+{
+    if (isValid())
+    {      
+        SplashColor paperColor = {0xFF, 0xFF, 0xFF}; // white
+        if (cacheData.requireUpdateImage(pageNumber))
+        {
+            cacheData.prepareNewSplash(pageNumber, paperColor);
+
+#ifdef USE_XPDF
+            cacheData.splash->startDoc(mDocument->getXRef());
+#else
+            cacheData.splash->startDoc(mDocument);
+#endif
+            int rotation = 0; // in degrees (get it from the worldTransform if we want to support rotation)
+            bool useMediaBox = false;
+            bool crop = true;
+            bool printing = false;
+            mSliceX = 0.;
+            mSliceY = 0.;
+
+            mDocument->displayPage(cacheData.splash, pageNumber, this->dpiForRendering * cacheData.ratio, this->dpiForRendering * cacheData.ratio,
+                                   rotation, useMediaBox, crop, printing);
+            cacheData.splashBitmap = cacheData.splash->getBitmap();
+        }
+
+        // Note this uses the 'cacheData.splash->getBitmap()->getDataPtr()' as data buffer.
+        cacheData.cachedImage = QImage(cacheData.splashBitmap->getDataPtr(), cacheData.splashBitmap->getWidth(), cacheData.splashBitmap->getHeight(),
+                               cacheData.splashBitmap->getWidth() * 3 /* bytesPerLine, 24 bits for RGB888, = 3 bytes */,
+                               QImage::Format_RGB888);
+    } else {
+        cacheData.cachedImage = QImage();
+    }
+
+    return cacheData.cachedImage;
 }

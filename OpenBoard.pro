@@ -126,7 +126,11 @@ win32 {
    CONFIG += axcontainer
    exists(console):CONFIG += console
    QMAKE_CXXFLAGS += /MP
-   QMAKE_CXXFLAGS += /MD
+   CONFIG( debug, debug|release ) {
+      QMAKE_CXXFLAGS += /MDd
+   } else {
+      QMAKE_CXXFLAGS += /MD
+   }
    QMAKE_CXXFLAGS_RELEASE += /Od /Zi
    QMAKE_LFLAGS += /VERBOSE:LIB
    UB_LIBRARY.path = $$DESTDIR

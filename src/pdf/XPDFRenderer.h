@@ -51,6 +51,15 @@
 
 class PDFDoc;
 
+
+namespace XPDFRendererZoomFactor
+{
+    const double mode1_zoomFactor = 3.0;
+    const double mode2_zoomFactorStage1 = 2.5;
+    const double mode2_zoomFactorStage2 = 5.0;
+    const double mode2_zoomFactorStage3 = 10.0;
+}
+
 class XPDFRenderer : public PDFRenderer
 {
     Q_OBJECT
@@ -74,15 +83,49 @@ class XPDFRenderer : public PDFRenderer
 
     private:
         void init();
-        QImage* createPDFImage(int pageNumber, qreal xscale = 0.5, qreal yscale = 0.5, const QRectF &bounds = QRectF());
+
+        struct PdfZoomCacheData {
+            PdfZoomCacheData(double const a_ratio) : splashBitmap(nullptr), cachedPageNumber(-1), splash(nullptr), ratio(a_ratio) {};
+            ~PdfZoomCacheData() {};
+            SplashBitmap* splashBitmap;
+            QImage cachedImage;
+            int cachedPageNumber;
+            SplashOutputDev* splash;
+            double const ratio;
+
+            bool requireUpdateImage(int const pageNumber) const {
+                return (pageNumber != cachedPageNumber) || (splash == nullptr);
+            }
+
+            void prepareNewSplash(int const pageNumber, SplashColor &paperColor)
+            {
+                if(splash != nullptr)
+                {
+                    cachedImage = QImage();
+                    delete splash;
+                }
+                splash = new SplashOutputDev(splashModeRGB8, 1, false, paperColor);
+                cachedPageNumber = pageNumber;
+            }
+        };
+
+        QImage &createPDFImageCached(int pageNumber, PdfZoomCacheData &cacheData);
+        QImage* createPDFImageHistorical(int pageNumber, qreal xscale, qreal yscale, const QRectF &bounds);
+
+        // Used when 'ZoomBehavior == 1 or 2'.
+        // =1 has only x3 zoom in cache (= loss if user zoom > 3.0).
+        // =2, has 2.5, 5 and 10 (= no loss, but a bit slower).
+        QVector<PdfZoomCacheData> m_pdfZoomCache;
+
+        // Used when 'ZoomBehavior == 0' (no cache).
+        SplashBitmap* mpSplashBitmapHistorical;
+        // Used when 'ZoomBehavior == 0' (no cache).
+        SplashOutputDev* mSplashHistorical;
 
         PDFDoc *mDocument;
         static QAtomicInt sInstancesCount;
         qreal mSliceX;
         qreal mSliceY;
-
-        SplashBitmap* mpSplashBitmap;
-        SplashOutputDev* mSplash;
 };
 
 #endif // XPDFRENDERER_H
