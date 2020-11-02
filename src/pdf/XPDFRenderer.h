@@ -51,6 +51,15 @@
 
 class PDFDoc;
 
+
+namespace XPDFRendererZoomFactor
+{
+    const double mode1_zoomFactor = 3.0;
+    const double mode2_zoomFactorStage1 = 2.5;
+    const double mode2_zoomFactorStage2 = 5.0;
+    const double mode2_zoomFactorStage3 = 10.0;
+}
+
 class XPDFRenderer : public PDFRenderer
 {
     Q_OBJECT

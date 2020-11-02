@@ -42,13 +42,6 @@
 
 QAtomicInt XPDFRenderer::sInstancesCount = 0;
 
-namespace constants{
-   const double mode1_zoomFactor = 3.0;
-   const double mode2_zoomFactorStage1 = 2.5;
-   const double mode2_zoomFactorStage2 = 5.0;
-   const double mode2_zoomFactorStage3 = 10.0;
-}
-
 XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile) :
     mpSplashBitmapHistorical(nullptr), mSplashHistorical(nullptr), mDocument(nullptr)
 {
@@ -57,12 +50,12 @@ XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile) :
         break;
         case 1: // Render a single image, degradated quality when zoomed big.
         default:
-            m_pdfZoomCache.push_back(constants::mode1_zoomFactor);
+            m_pdfZoomCache.push_back(XPDFRendererZoomFactor::mode1_zoomFactor);
         break;
         case 2: // Render three images, optimal quality all the time.
-            m_pdfZoomCache.push_back(constants::mode2_zoomFactorStage1);
-            m_pdfZoomCache.push_back(constants::mode2_zoomFactorStage2);
-            m_pdfZoomCache.push_back(constants::mode2_zoomFactorStage3);
+            m_pdfZoomCache.push_back(XPDFRendererZoomFactor::mode2_zoomFactorStage1);
+            m_pdfZoomCache.push_back(XPDFRendererZoomFactor::mode2_zoomFactorStage2);
+            m_pdfZoomCache.push_back(XPDFRendererZoomFactor::mode2_zoomFactorStage3);
         break;
     }
 
