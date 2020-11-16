@@ -123,12 +123,6 @@ class XPDFRenderer : public PDFRenderer
                     splash = nullptr;
                 }
             }
-
-            PdfZoomCacheData& operator=(PdfZoomCacheData &rhs) {
-                Q_ASSERT(splash == nullptr); // Assigning non null rhs not managed.
-                ratio = rhs.ratio;
-                return *this;
-            }
         };
 
         //! Spawned when a pdf processing is required, when no matching image is found in cache.
