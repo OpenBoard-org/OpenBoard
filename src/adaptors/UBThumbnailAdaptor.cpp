@@ -153,12 +153,12 @@ void UBThumbnailAdaptor::persistScene(UBDocumentProxy* proxy, UBGraphicsScene* p
         }
 
         pScene->setRenderingContext(UBGraphicsScene::NonScreen);
-        pScene->setRenderingQuality(UBItem::RenderingQualityHigh);
+        pScene->setRenderingQuality(UBItem::RenderingQualityHigh, UBItem::CacheNotAllowed);
 
         pScene->render(&painter, imageRect, sceneRect, Qt::KeepAspectRatio);
 
         pScene->setRenderingContext(UBGraphicsScene::Screen);
-        pScene->setRenderingQuality(UBItem::RenderingQualityNormal);
+        pScene->setRenderingQuality(UBItem::RenderingQualityNormal, UBItem::CacheAllowed);
 
         thumb.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation).save(fileName, "JPG");
     }

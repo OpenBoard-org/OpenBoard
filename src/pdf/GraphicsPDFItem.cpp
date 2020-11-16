@@ -39,13 +39,16 @@ GraphicsPDFItem::GraphicsPDFItem(PDFRenderer *renderer, int pageNumber, QGraphic
     : QObject(0), QGraphicsItem(parentItem)
     , mRenderer(renderer)
     , mPageNumber(pageNumber)
+    , mIsCacheAllowed(true)
 {
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     mRenderer->attach();
+    connect(mRenderer, SIGNAL(signalUpdateParent()), this, SLOT(OnRequireUpdate()));
 }
 
 GraphicsPDFItem::~GraphicsPDFItem()
 {
+    disconnect(mRenderer, SIGNAL(signalUpdateParent()), this, SLOT(OnRequireUpdate()));
     mRenderer->detach();
 }
 
@@ -70,8 +73,15 @@ void GraphicsPDFItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     }
 
     if (option)
-        mRenderer->render(painter, mPageNumber, option->exposedRect);
-    else
+    {
+        mRenderer->render(painter, mPageNumber, mIsCacheAllowed, option->exposedRect);
+    } else
         qWarning("GraphicsPDFItem::paint: option is null, ignoring painting");
 
 }
+
+void GraphicsPDFItem::OnRequireUpdate()
+{
+    updateChild();
+}
+

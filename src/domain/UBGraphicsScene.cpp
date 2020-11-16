@@ -2396,7 +2396,7 @@ void UBGraphicsScene::addMask(const QPointF &center)
     curtain->setSelected(true);
 }
 
-void UBGraphicsScene::setRenderingQuality(UBItem::RenderingQuality pRenderingQuality)
+void UBGraphicsScene::setRenderingQuality(UBItem::RenderingQuality pRenderingQuality, UBItem::CacheBehavior cacheBehavior)
 {
     QListIterator<QGraphicsItem*> itItems(mFastAccessItems);
 
@@ -2409,6 +2409,7 @@ void UBGraphicsScene::setRenderingQuality(UBItem::RenderingQuality pRenderingQua
         if (ubItem)
         {
             ubItem->setRenderingQuality(pRenderingQuality);
+            ubItem->setCacheBehavior(cacheBehavior);
         }
     }
 }
