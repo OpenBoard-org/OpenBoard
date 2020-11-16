@@ -43,15 +43,6 @@
 QAtomicInt XPDFRenderer::sInstancesCount = 0;
 
 namespace constants{
-    const double mode1_zoomFactor = 3.0;
-    const double mode2_zoomFactorStage1 = 2.5;
-    const double mode2_zoomFactorStage2 = 5.0;
-    const double mode2_zoomFactorStage3 = 10.0;
-    const double mode3_zoomFactorStage1 = 1.0;
-    const double mode3_zoomFactorStage2 = 3.0;
-    const double mode4_zoomFactorStart = .25;
-    const double mode4_zoomFactorStepSquare = .25;
-    const double mode4_zoomFactorIterations = 7;
     SplashColor paperColor = {0xFF, 0xFF, 0xFF}; // white
 }
 
@@ -66,25 +57,25 @@ XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
         break;
         case 1: // Render a single image, degradated quality when zoomed big.
         default:
-            m_pdfZoomCache.push_back(constants::mode1_zoomFactor);
+            m_pdfZoomCache.push_back(XPDFRendererZoomFactor::mode1_zoomFactor);
         break;
         case 2: // Render three images, use downsampling, optimal quality all the time, slower.
-            m_pdfZoomCache.push_back(constants::mode2_zoomFactorStage1);
-            m_pdfZoomCache.push_back(constants::mode2_zoomFactorStage2);
-            m_pdfZoomCache.push_back(constants::mode2_zoomFactorStage3);
+            m_pdfZoomCache.push_back(XPDFRendererZoomFactor::mode2_zoomFactorStage1);
+            m_pdfZoomCache.push_back(XPDFRendererZoomFactor::mode2_zoomFactorStage2);
+            m_pdfZoomCache.push_back(XPDFRendererZoomFactor::mode2_zoomFactorStage3);
         break;
         case 3: // Do not downsample, minimal loss, faster. Not necessarily the expected result,
                 // because a 'zoom factor 1' here does not correspond to a user choice 'zoom factor 1'.
                 // The zoom requested is dependent on many factors, including the input pdf, the output screen resolution
                 // and the zoom user choice. Thus, the 'mode3_zoomFactorStage1' might be fine on one screen, but
                 // fuzzy on another one.
-            m_pdfZoomCache.push_back(constants::mode3_zoomFactorStage1);
-            m_pdfZoomCache.push_back(constants::mode3_zoomFactorStage2);
+            m_pdfZoomCache.push_back(XPDFRendererZoomFactor::mode3_zoomFactorStage1);
+            m_pdfZoomCache.push_back(XPDFRendererZoomFactor::mode3_zoomFactorStage2);
         break;
         case 4: // Multithreaded, several steps, downsampled.
-            for (int i = 0; i < constants::mode4_zoomFactorIterations; i++ )
+            for (int i = 0; i < XPDFRendererZoomFactor::mode4_zoomFactorIterations; i++ )
             {
-                double const zoomValue = constants::mode4_zoomFactorStart+constants::mode4_zoomFactorStepSquare*static_cast<double>(i*i);
+                double const zoomValue = XPDFRendererZoomFactor::mode4_zoomFactorStart+XPDFRendererZoomFactor::mode4_zoomFactorStepSquare*static_cast<double>(i*i);
                 m_pdfZoomCache.push_back(zoomValue);
             }
         break;
