@@ -51,6 +51,13 @@ class UBItem
             RenderingQualityNormal = 0, RenderingQualityHigh
         };
 
+        enum CacheBehavior
+        {
+            CacheNotAllowed,
+            CacheAllowed,
+            nbrCacheBehavior
+        };
+
         virtual QUuid uuid() const
         {
                 return mUuid;
@@ -69,6 +76,11 @@ class UBItem
         virtual void setRenderingQuality(RenderingQuality pRenderingQuality)
         {
             mRenderingQuality = pRenderingQuality;
+        }
+
+        virtual void setCacheBehavior(CacheBehavior cacheBehavior)
+        {
+            mCacheBehavior = cacheBehavior;
         }
 
         virtual UBItem* deepCopy() const = 0;
@@ -98,6 +110,7 @@ class UBItem
 
         QUrl mSourceUrl;
 
+        CacheBehavior mCacheBehavior;
 };
 
 class UBGraphicsItem

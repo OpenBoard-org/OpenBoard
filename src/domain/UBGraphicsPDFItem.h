@@ -59,13 +59,14 @@ class UBGraphicsPDFItem: public GraphicsPDFItem, public UBItem, public UBGraphic
 
         virtual void setRenderingQuality(RenderingQuality pRenderingQuality);
 
+        virtual void setCacheBehavior(CacheBehavior cacheBehavior);
+
         virtual UBGraphicsScene* scene();
 
         virtual UBGraphicsPixmapItem* toPixmapItem() const;
 
         virtual void clearSource(){;}
         virtual void setUuid(const QUuid &pUuid);
-
     protected:
 
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -74,7 +75,9 @@ class UBGraphicsPDFItem: public GraphicsPDFItem, public UBItem, public UBGraphic
 
         virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-
+        virtual void updateChild();
+    private slots:
+        void OnRequireUpdate();
 };
 
 #endif /* UBGRAPHICSPDFITEM_H_ */

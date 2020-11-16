@@ -30,6 +30,8 @@
 #ifndef XPDFRENDERER_H
 #define XPDFRENDERER_H
 #include <QImage>
+#include <QThread>
+#include <QMutexLocker>
 #include "PDFRenderer.h"
 #include <splash/SplashBitmap.h>
 
@@ -59,30 +61,30 @@ class XPDFRenderer : public PDFRenderer
         XPDFRenderer(const QString &filename, bool importingFile = false);
         virtual ~XPDFRenderer();
 
-        bool isValid() const;
+        virtual bool isValid() const override;
+        virtual int pageCount() const override;
+        virtual QSizeF pageSizeF(int pageNumber) const override;
+        virtual int pageRotation(int pageNumber) const override;
+        virtual QString title() const override;
+        virtual void render(QPainter *p, int pageNumber, const bool cacheAllowed, const QRectF &bounds = QRectF()) override;
 
-        virtual int pageCount() const;
-
-        virtual QSizeF pageSizeF(int pageNumber) const;
-
-        virtual int pageRotation(int pageNumber) const;
-
-        virtual QString title() const;
-
-    public slots:
-        void render(QPainter *p, int pageNumber, const QRectF &bounds = QRectF());
+    signals:
+        void signalUpdateParent();
 
     private:
         void init();
 
         struct PdfZoomCacheData {
-            PdfZoomCacheData(double const a_ratio) : splashBitmap(nullptr), cachedPageNumber(-1), splash(nullptr), ratio(a_ratio) {};
+            PdfZoomCacheData(double const a_ratio) : splashBitmap(nullptr), cachedPageNumber(-1), splash(nullptr), ratio(a_ratio), hasToBeProcessed(false) {};
             ~PdfZoomCacheData() {};
             SplashBitmap* splashBitmap;
+            //! Note: The 'cachedImage' uses a buffer from 'splash'. Make sure it is invalidated BEFORE 'splash' deallocation.
             QImage cachedImage;
             int cachedPageNumber;
             SplashOutputDev* splash;
-            double const ratio;
+            double ratio;
+            bool hasToBeProcessed;
+            QList<QObject *> updateListAfterProcessing;
 
             bool requireUpdateImage(int const pageNumber) const {
                 return (pageNumber != cachedPageNumber) || (splash == nullptr);
@@ -98,15 +100,61 @@ class XPDFRenderer : public PDFRenderer
                 splash = new SplashOutputDev(splashModeRGB8, 1, false, paperColor);
                 cachedPageNumber = pageNumber;
             }
+
+            void cleanup()
+            {
+                if(splash != nullptr){
+                    cachedImage = QImage();
+                    delete splash;
+                    splash = nullptr;
+                }
+            }
+
+            PdfZoomCacheData& operator=(PdfZoomCacheData &rhs) {
+                Q_ASSERT(splash == nullptr); // Assigning non null rhs not managed.
+                ratio = rhs.ratio;
+                return *this;
+            }
         };
+
+        //! Spawned when a pdf processing is required, when no matching image is found in cache.
+        class CacheThread : public QThread
+        {
+        public:
+            struct JobData {
+                PdfZoomCacheData* cacheData;
+                PDFDoc *document;
+                int pageNumber;
+                double dpiForRendering;
+            };
+
+            CacheThread() {}
+            ~CacheThread() {}
+            void pushJob(JobData &jobData) {               
+                QMutexLocker lock(&m_jobMutex);
+                m_nextJob.push_back(jobData);
+            }
+
+            virtual void run() override;
+            bool isJobPending() { QMutexLocker lock(&m_jobMutex); return m_nextJob.size() > 0; }
+            void cancelPending() { QMutexLocker lock(&m_jobMutex); m_nextJob.clear(); }
+        private:
+            QList<JobData> m_nextJob;
+            QMutex m_jobMutex;
+        };
+
+        CacheThread m_cacheThread;
 
         QImage &createPDFImageCached(int pageNumber, PdfZoomCacheData &cacheData);
         QImage* createPDFImageHistorical(int pageNumber, qreal xscale, qreal yscale, const QRectF &bounds);
 
-        // Used when 'ZoomBehavior == 1 or 2'.
+        // Used when 'ZoomBehavior == 1, 2, 3 or 4'.
         // =1 has only x3 zoom in cache (= loss if user zoom > 3.0).
         // =2, has 2.5, 5 and 10 (= no loss, but a bit slower).
+        // =3, has 1.0, 2.5, 5 and 10, but downsampled instead of upsampled (= minor quality loss, a bit faster).
+        // =4, multithreaded, multiple level of zoom.
         QVector<PdfZoomCacheData> m_pdfZoomCache;
+        int const m_pdfZoomMode;
 
         // Used when 'ZoomBehavior == 0' (no cache).
         SplashBitmap* mpSplashBitmapHistorical;
@@ -117,6 +165,9 @@ class XPDFRenderer : public PDFRenderer
         static QAtomicInt sInstancesCount;
         qreal mSliceX;
         qreal mSliceY;
+
+private slots:
+        void OnThreadFinished();
 };
 
 #endif // XPDFRENDERER_H
