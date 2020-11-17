@@ -358,7 +358,6 @@ void UBDocumentNavigator::mouseReleaseEvent(QMouseEvent *event)
 
 void UBDocumentNavigator::keyPressEvent(QKeyEvent *event)
 {
-    return;
     UBBoardController* controller = UBApplication::boardController;
     // send to the scene anyway
     QApplication::sendEvent (scene (), event);
