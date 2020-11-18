@@ -135,8 +135,8 @@ UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
      * active scene has changed, or when the item is first created.
      * If and when Qt fix this issue, this should be changed back.
      * */
-    //mMediaObject->setVideoOutput(mVideoItem);
-    mHasVideoOutput = false;
+    mMediaObject->setVideoOutput(mVideoItem);
+    mHasVideoOutput = true;
 
     mMediaObject->setNotifyInterval(50);
 
@@ -426,7 +426,9 @@ void UBGraphicsMediaItem::mediaError(QMediaPlayer::Error errorCode)
 
     if (!mErrorString.isEmpty() ) {
         UBApplication::showMessage(mErrorString);
-        qDebug() << mErrorString;
+        qDebug() << this->metaObject() << this->sourceUrl() << mErrorString;
+        qDebug() << mMediaObject->errorString();
+        mErrorString.clear();
     }
 }
 
@@ -579,17 +581,17 @@ void UBGraphicsVideoItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 }
 
 QVariant UBGraphicsVideoItem::itemChange(GraphicsItemChange change, const QVariant &value) {
-    if (change == QGraphicsItem::ItemVisibleChange
-            && value.toBool()
-            && !mHasVideoOutput
-            && UBApplication::app()->boardController
-            && UBApplication::app()->boardController->activeScene() == scene())
-    {
-        //qDebug() << "Item change, setting video output";
+//    if (change == QGraphicsItem::ItemVisibleChange
+//            && value.toBool()
+//            && !mHasVideoOutput
+//            && UBApplication::app()->boardController
+//            && UBApplication::app()->boardController->activeScene() == scene())
+//    {
+//        //qDebug() << "Item change, setting video output";
 
-        mMediaObject->setVideoOutput(mVideoItem);
-        mHasVideoOutput = true;
-    }
+//        mMediaObject->setVideoOutput(mVideoItem);
+//        mHasVideoOutput = true;
+//    }
 
     return UBGraphicsMediaItem::itemChange(change, value);
 }
@@ -640,13 +642,13 @@ void UBGraphicsVideoItem::activeSceneChanged()
     // Update the visibility of the placeholder, to prevent it being hidden when switching pages
     setPlaceholderVisible(!mErrorString.isEmpty());
 
-    // Call setVideoOutput, if the video is visible and if it hasn't been called already
-    if (!mHasVideoOutput && UBApplication::boardController->activeScene() == scene()) {
-        //qDebug() << "setting video output";
-        mMediaObject->setMedia(mMediaFileUrl);
-        mMediaObject->setVideoOutput(mVideoItem);
-        mHasVideoOutput = true;
-    }
+//    // Call setVideoOutput, if the video is visible and if it hasn't been called already
+//    if (!mHasVideoOutput && UBApplication::boardController->activeScene() == scene()) {
+//        qDebug() << "setting video output";
+//        mMediaObject->setMedia(mMediaFileUrl);
+//        mMediaObject->setVideoOutput(mVideoItem);
+//        mHasVideoOutput = true;
+//    }
 
     UBGraphicsMediaItem::activeSceneChanged();
 }
