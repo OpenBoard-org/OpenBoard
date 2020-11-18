@@ -867,11 +867,11 @@ void UBPersistenceManager::insertDocumentSceneAt(UBDocumentProxy* proxy, UBGraph
 
     mSceneCache.insert(proxy, index, scene);
 
+    proxy->incPageCount();
+
     if (persist) {
         persistDocumentScene(proxy, scene, index);
     }
-
-    proxy->incPageCount();
 
     emit documentSceneCreated(proxy, index);
 

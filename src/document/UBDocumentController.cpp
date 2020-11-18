@@ -2786,6 +2786,8 @@ void UBDocumentController::importFile()
     if (fileInfo.suffix().toLower() == "ubx") {
         UBPersistenceManager::persistenceManager()->createDocumentProxiesStructure(docManager->importUbx(filePath, UBSettings::userDocumentDirectory()), true);
 
+        emit documentThumbnailsUpdated(this); // some documents might have been overwritten while not having the same page count
+
     } else {
         UBSettings::settings()->lastImportFilePath->set(QVariant(fileInfo.absolutePath()));
 

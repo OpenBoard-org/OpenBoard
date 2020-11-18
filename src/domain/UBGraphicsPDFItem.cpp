@@ -58,6 +58,16 @@ QVariant UBGraphicsPDFItem::itemChange(GraphicsItemChange change, const QVariant
     return GraphicsPDFItem::itemChange(change, newValue);
 }
 
+void UBGraphicsPDFItem::updateChild()
+{
+    CacheMode prevCacheMode = cacheMode();
+
+    GraphicsPDFItem::update();
+
+    // Workaround: Necessary, otherwise only the control scene is updated, the display scene refresh is ignored for an unknown reason.
+    setCacheMode(prevCacheMode);
+}
+
 void UBGraphicsPDFItem::setUuid(const QUuid &pUuid)
 {
     UBItem::setUuid(pUuid);
@@ -142,6 +152,11 @@ void UBGraphicsPDFItem::setRenderingQuality(RenderingQuality pRenderingQuality)
     }
 }
 
+void UBGraphicsPDFItem::setCacheBehavior(UBItem::CacheBehavior cacheBehavior)
+{
+    UBItem::setCacheBehavior(cacheBehavior);
+    GraphicsPDFItem::setCacheAllowed(cacheBehavior == UBItem::CacheAllowed);
+}
 
 UBGraphicsScene* UBGraphicsPDFItem::scene()
 {
@@ -153,7 +168,7 @@ UBGraphicsPixmapItem* UBGraphicsPDFItem::toPixmapItem() const
 {   
     QPixmap pixmap(mRenderer->pageSizeF(mPageNumber).toSize());
     QPainter painter(&pixmap);
-    mRenderer->render(&painter, mPageNumber);
+    mRenderer->render(&painter, mPageNumber, false /* Cache allowed */);
 
     UBGraphicsPixmapItem *pixmapItem =  new UBGraphicsPixmapItem();
     pixmapItem->setPixmap(pixmap);

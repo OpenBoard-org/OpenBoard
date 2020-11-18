@@ -358,7 +358,9 @@ for ((i=0;i<${#tab[@]};i++)); do
     if [[ "${tab[$i]}" == *"libavcodec"* ]]; then
         depName="${tab[$i]::-2}"
         versionNumber="${tab[$i]: -2}"
-        echo -n "${depName}${versionNumber} (>= ${depdVer}) | ${depName}-extra${versionNumber} (>= ${depdVer})" >> "$CONTROL_FILE"
+        depdVer_part1=`echo ${depdVer} | awk -F'.' '{print $1}'`
+        depdVer_part2=`echo ${depdVer} | awk -F'.' '{print $2}'`
+        echo -n "${depName}${versionNumber} (>= ${depdVer_part1}.${depdVer_part2}) | ${depName}-extra${versionNumber} (>= ${depdVer_part1}.${depdVer_part2})" >> "$CONTROL_FILE"
     else
       echo -n "${tab[$i]} (>= ${depdVer})" >> "$CONTROL_FILE"
     fi
