@@ -332,8 +332,15 @@ UBGraphicsScene* UBGraphicsMediaItem::scene()
 
 void UBGraphicsMediaItem::activeSceneChanged()
 {
+    disconnect(mMediaObject, static_cast<void(QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error), this, &UBGraphicsMediaItem::mediaError);
     if (UBApplication::boardController->activeScene() != scene())
+    {
         mMediaObject->pause();
+    }
+    else
+    {
+        connect(mMediaObject, static_cast<void(QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error), this, &UBGraphicsMediaItem::mediaError);
+    }
 }
 
 
