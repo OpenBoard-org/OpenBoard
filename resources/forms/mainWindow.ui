@@ -370,7 +370,7 @@
     <string>Eraser</string>
    </property>
    <property name="toolTip">
-    <string>Smalle Eraser</string>
+    <string>Small Eraser</string>
    </property>
   </action>
   <action name="actionEraserMedium">
@@ -407,51 +407,78 @@
    </property>
   </action>
   <action name="actionColor0">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
    </property>
    <property name="text">
-    <string>Color</string>
+    <string>Color0</string>
    </property>
    <property name="toolTip">
-    <string>Color</string>
+    <string>Color 1</string>
    </property>
   </action>
   <action name="actionColor1">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
    </property>
    <property name="text">
-    <string>Color</string>
+    <string>Color1</string>
+   </property>
+   <property name="toolTip">
+    <string>Color 2</string>
    </property>
   </action>
   <action name="actionColor2">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
    </property>
    <property name="text">
-    <string>Color</string>
+    <string>Color2</string>
+   </property>
+   <property name="toolTip">
+    <string>Color 3</string>
    </property>
   </action>
   <action name="actionColor3">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
    </property>
    <property name="text">
-    <string>Color</string>
+    <string>Color3</string>
+   </property>
+   <property name="toolTip">
+    <string>Color 4</string>
    </property>
   </action>
   <action name="actionColor4">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
    </property>
    <property name="text">
-    <string>Color</string>
+    <string>Color4</string>
+   </property>
+   <property name="toolTip">
+    <string>Color 5</string>
    </property>
   </action>
   <action name="actionWebBack">

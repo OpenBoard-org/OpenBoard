@@ -66,7 +66,7 @@ class UBDrawingController : public QObject
 
         UBAbstractDrawRuler* mActiveRuler;
 
-        void setInDestopMode(bool mode){
+        void setInDesktopMode(bool mode){
             mIsDesktopMode = mode;
         }
 
