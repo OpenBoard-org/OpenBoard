@@ -67,6 +67,11 @@ namespace XPDFRendererZoomFactor
     const double mode4_zoomFactorIterations = 7;
 }
 
+namespace XPDFThreadMaxTimeoutOnExit
+{
+    const double timeout_ms = 3000;
+}
+
 class XPDFRenderer : public PDFRenderer
 {
     Q_OBJECT

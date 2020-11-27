@@ -106,7 +106,13 @@ XPDFRenderer::~XPDFRenderer()
 {
     disconnect(&m_cacheThread, SIGNAL(finished()), this, SLOT(OnThreadFinished()));
     m_cacheThread.cancelPending();
-    m_cacheThread.wait(); // Would crash if data deleted during processing.
+    m_cacheThread.wait(XPDFThreadMaxTimeoutOnExit::timeout_ms);
+    if (m_cacheThread.isRunning())
+    {
+        // Kill the thread, which might still run for minutes if the user choose a heavy pdf highly zoomed.
+        // Since there is no data written, but only processing, this is safe on a modern OS.
+        m_cacheThread.terminate();
+    }
 
     for(int i = 0; i < m_pdfZoomCache.size(); i++)
     {
