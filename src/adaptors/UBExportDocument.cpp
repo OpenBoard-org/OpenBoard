@@ -25,7 +25,7 @@
  */
 
 
-
+#include <QXmlReader>
 
 #include "UBExportDocument.h"
 
@@ -36,6 +36,8 @@
 
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
+
+#include "adaptors/UBSvgSubsetAdaptor.h"
 
 #include "globals/UBGlobals.h"
 
@@ -48,6 +50,26 @@
 #endif
 
 #include "core/memcheck.h"
+
+namespace {
+    //! From 'https://stackoverflow.com/questions/2536524/copy-directory-using-qt'
+    void copyPath(QString src, QString dst)
+    {
+        QDir dir(src);
+        if (! dir.exists())
+            return;
+
+        foreach (QString d, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+            QString dst_path = dst + QDir::separator() + d;
+            dir.mkpath(dst_path);
+            copyPath(src+ QDir::separator() + d, dst_path);
+        }
+
+        foreach (QString f, dir.entryList(QDir::Files)) {
+            QFile::copy(src + QDir::separator() + f, dst + QDir::separator() + f);
+        }
+    }
+}
 
 UBExportDocument::UBExportDocument(QObject *parent)
     : UBExportAdaptor(parent)
@@ -76,9 +98,59 @@ bool UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, const Q
         return false;
     }
 
-    QDir documentDir = QDir(pDocumentProxy->persistencePath());
+    // Create a temporary directory, from which we will alter files to clean up the data, if necessary.
+    QTemporaryDir tempDir;
+    copyPath(pDocumentProxy->persistencePath(), tempDir.path());
+
+    QMap<QString, QVariant> metaDatas = pDocumentProxy->metaDatas();
+
+    // Find every PDF in this dir. For every PDF, build a list of pages to export.
+    QMap<QString, QList<int>> pdfPages;
+    QDirIterator it(tempDir.path(), QStringList() << "*.svg", QDir::Files, QDirIterator::Subdirectories);
+    while (it.hasNext())
+    {
+        QString svgFile = it.next();
+        QFile file(svgFile);
+        file.open(QFile::ReadOnly);
+        QXmlStreamReader xmlReader(&file);
+
+        // Xml decoding as done by 'UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene'.
+        while (!xmlReader.atEnd())
+        {
+            xmlReader.readNext();
+            if (xmlReader.isStartElement())
+            {
+                if (xmlReader.name() == "foreignObject")
+                {
+                    QString href = xmlReader.attributes().value(UBSvgSubsetAdaptor::nsXLink, "href").toString();
+                    if (href.contains(".pdf"))
+                    {
+                        QString href = xmlReader.attributes().value(UBSvgSubsetAdaptor::nsXLink, "href").toString();
+                        QStringList parts = href.split("#page=");
+                        if (parts.count() != 2)
+                        {
+                            qWarning() << "invalid pdf href value" << href;
+                        } else {
+                            QString pdfPath = parts[0];
+                            QUuid uuid(QFileInfo(pdfPath).baseName());
+                            int pageNumber = parts[1].toInt();
+                            QString finalPath = QString("%1/%2").arg(tempDir.path()).arg(pdfPath);
+                            QList<int> &pages = pdfPages[finalPath];
+                            pages.push_back(pageNumber);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    for (QMap<QString, QList<int>>::iterator i = pdfPages.begin(); i != pdfPages.end(); i++)
+    {
+        m_cleaner.stripePdf(i.key(), i.value());
+    }
 
     QuaZipFile outFile(&zip);
+    QDir const documentDir = QDir(tempDir.path());
     UBFileSystemUtils::compressDirInZip(documentDir, "", &outFile, true, this);
 
     zip.close();

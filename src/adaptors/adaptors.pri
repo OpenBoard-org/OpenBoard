@@ -1,5 +1,6 @@
 
 HEADERS      += src/adaptors/UBExportAdaptor.h\
+                src/adaptors/UBExportDocumentCleaner.h \
                 src/adaptors/UBExportPDF.h \
                 src/adaptors/UBExportFullPDF.h \
                 src/adaptors/UBExportDocument.h \
@@ -19,6 +20,7 @@ HEADERS      += src/adaptors/UBExportAdaptor.h\
 
 
 SOURCES      += src/adaptors/UBExportAdaptor.cpp\
+                src/adaptors/UBExportDocumentCleaner.cpp \
                 src/adaptors/UBExportPDF.cpp \
                 src/adaptors/UBExportFullPDF.cpp \
                 src/adaptors/UBExportDocument.cpp \
