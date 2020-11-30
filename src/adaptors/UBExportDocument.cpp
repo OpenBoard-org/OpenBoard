@@ -144,9 +144,19 @@ bool UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, const Q
         }
     }
 
+    bool stripeSuccess = true;
     for (QMap<QString, QList<int>>::iterator i = pdfPages.begin(); i != pdfPages.end(); i++)
     {
-        m_cleaner.stripePdf(i.key(), i.value());
+        stripeSuccess &= m_cleaner.stripePdf(i.key(), i.value());
+    }
+
+    if (!stripeSuccess)
+    {
+        QMessageBox errorBox;
+        errorBox.setWindowTitle(tr("Export warning"));
+        errorBox.setText(tr("The stripe of a pdf file failed (is qpdf missing?).\n\nThe export has been completed, but please note the final archive will contain ALL the inital PDF data, which may expose pages you have not selected."));
+        errorBox.setIcon(QMessageBox::Warning);
+        errorBox.exec();
     }
 
     QuaZipFile outFile(&zip);

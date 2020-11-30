@@ -13,7 +13,9 @@ class UBExportDocumentCleaner
 public:
     UBExportDocumentCleaner();
 
-    void stripePdf(QString const &file, QList<int> const &pagesToKeep);
+    //! Return 'true' is success, 'false' otherwise. Note the final archive is
+    //! always available, but in case of failure, it is not stripped.
+    bool stripePdf(QString const &file, QList<int> const &pagesToKeep);
 private:
 
 };

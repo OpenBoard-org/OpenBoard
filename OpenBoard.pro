@@ -60,6 +60,7 @@ include(src/desktop/desktop.pri)
 include(src/web/web.pri)
 include(src/qtsingleapplication/src/qtsingleapplication.pri)
 
+
 DEPENDPATH += src/pdf-merger
 INCLUDEPATH += src/pdf-merger
 include(src/pdf-merger/pdfMerger.pri)
@@ -107,15 +108,13 @@ MOC_DIR = $$BUILD_DIR/moc
 RCC_DIR = $$BUILD_DIR/rcc
 UI_DIR = $$BUILD_DIR/ui
 
+THIRD_PARTY_PATH=../OpenBoard-ThirdParty
 win32 {
-
-
    LIBS += -lUser32
    LIBS += -lGdi32
    LIBS += -lAdvApi32
    LIBS += -lOle32
 
-   THIRD_PARTY_PATH=../OpenBoard-ThirdParty
    include($$THIRD_PARTY_PATH/libs.pri)
 
    DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
@@ -455,6 +454,8 @@ linux-g++* {
     system(echo "$$LONG_VERSION" > $$BUILD_DIR/longversion)
     system(echo "$$SVN_VERSION" > $$BUILD_DIR/svnversion)
 }
+
+include($$THIRD_PARTY_PATH/qpdf/qpdf.pri)
 
 RESOURCES += resources/OpenBoard.qrc
 
