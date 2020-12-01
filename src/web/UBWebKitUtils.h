@@ -30,7 +30,8 @@
 #ifndef UBWEBKITUTILS_H_
 #define UBWEBKITUTILS_H_
 
-#include <QtWebKit>
+// Forward declarations.
+class QWebFrame;
 
 class UBWebKitUtils
 {

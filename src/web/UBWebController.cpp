@@ -31,6 +31,7 @@
 #include <QDomDocument>
 #include <QXmlQuery>
 #include <QWebFrame>
+#include <QWebElementCollection>
 
 #include "frameworks/UBPlatformUtils.h"
 

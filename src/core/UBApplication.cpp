@@ -30,7 +30,6 @@
 #include "UBApplication.h"
 
 #include <QtGui>
-#include <QtWebKit>
 #include <QtXml>
 #include <QFontDatabase>
 #include <QStyleFactory>

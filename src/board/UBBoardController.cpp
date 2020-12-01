@@ -30,7 +30,6 @@
 #include "UBBoardController.h"
 
 #include <QtWidgets>
-#include <QtWebKitWidgets>
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBPlatformUtils.h"
