@@ -366,6 +366,7 @@ for ((i=0;i<${#tab[@]};i++)); do
     fi
 done
 echo -n ",  onboard" >> "$CONTROL_FILE"
+echo -n ",  qpdf" >> "$CONTROL_FILE"
 
 if $BUNDLE_QT; then
     # Listing some dependencies manually; ideally we should use dpkg -p recursively 
