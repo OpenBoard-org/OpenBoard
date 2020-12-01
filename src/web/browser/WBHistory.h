@@ -74,7 +74,7 @@
 #include "WBModelMenu.h"
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QWebHistoryInterface>
 
 class WBHistoryItem
 {

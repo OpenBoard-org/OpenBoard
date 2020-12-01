@@ -31,7 +31,6 @@
 #define UBLIBRARYAPI_H_
 
 #include <QtGui>
-#include <QtWebKit>
 #include <QWebView>
 
 class UBLibraryAPI : public QObject

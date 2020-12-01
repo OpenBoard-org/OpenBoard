@@ -88,6 +88,7 @@ void UBPlatformUtils::setDesktopMode(bool desktop)
 {
 
     @try {
+#if defined(Q_OS_OSX) && (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
         // temporarily disabled due to bug: when switching to desktop mode (and calling this),
         // openboard switches right back to the board mode. clicking again on desktop mode works.
         if (desktop) {
@@ -95,6 +96,9 @@ void UBPlatformUtils::setDesktopMode(bool desktop)
         }
         else
             [NSApp setPresentationOptions:NSApplicationPresentationHideMenuBar | NSApplicationPresentationHideDock];
+#else // QT_VERSION_CHECK(5, 10, 0)
+        [NSApp setPresentationOptions:NSApplicationPresentationHideMenuBar | NSApplicationPresentationHideDock];
+#endif // QT_VERSION_CHECK(5, 10, 0)
     }
 
     @catch(NSException * exception) {
@@ -526,6 +530,7 @@ QString UBPlatformUtils::urlFromClipboard()
 
 void UBPlatformUtils::toggleFinder(const bool on)
 {
+#if defined(Q_OS_OSX) && (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
     if (on)
     {
         [NSApp setPresentationOptions:NSApplicationPresentationDefault];
@@ -534,6 +539,9 @@ void UBPlatformUtils::toggleFinder(const bool on)
     {
         [NSApp setPresentationOptions:NSApplicationPresentationHideMenuBar | NSApplicationPresentationHideDock];
     }
+#else // QT_VERSION_CHECK(5, 10, 0)
+    Q_UNUSED(on);
+#endif //QT_VERSION_CHECK(5, 10, 0)
 }
 
 

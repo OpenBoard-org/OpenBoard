@@ -76,6 +76,7 @@ class XPDFRenderer : public PDFRenderer
         void init();
 
         struct PdfZoomCacheData {
+            PdfZoomCacheData() : splashBitmap(nullptr), cachedPageNumber(-1), splash(nullptr), ratio(1.0) {};
             PdfZoomCacheData(double const a_ratio) : splashBitmap(nullptr), cachedPageNumber(-1), splash(nullptr), ratio(a_ratio) {};
             ~PdfZoomCacheData() {};
             SplashBitmap* splashBitmap;

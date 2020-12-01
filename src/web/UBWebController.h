@@ -31,7 +31,6 @@
 #define UBWEBCONTROLLER_H_
 
 #include <QtGui>
-#include <QtWebKit>
 #include <QWebView>
 
 #include "UBOEmbedParser.h"

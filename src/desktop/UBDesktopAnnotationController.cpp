@@ -84,6 +84,9 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     mTransparentDrawingView->setAttribute(Qt::WA_TranslucentBackground, true);
 #ifdef Q_OS_OSX
     mTransparentDrawingView->setAttribute(Qt::WA_MacNoShadow, true);
+#endif //Q_OS_OSX
+
+#if defined(Q_OS_OSX) && (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
     /* https://bugreports.qt.io/browse/QTBUG-81456 */
     if (QOperatingSystemVersion::current().minorVersion() > 12) /* > Sierra */
     {
