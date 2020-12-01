@@ -130,7 +130,6 @@ win32 {
    } else {
       QMAKE_CXXFLAGS += /MD
    }
-   QMAKE_CXXFLAGS_RELEASE += /Od /Zi
    QMAKE_LFLAGS += /VERBOSE:LIB
    UB_LIBRARY.path = $$DESTDIR
    UB_I18N.path = $$DESTDIR/i18n
