@@ -170,6 +170,7 @@ UBGraphicsMediaItem::~UBGraphicsMediaItem()
 
 QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
+    qDebug() << "UBGraphicsMediaItem" << change;
     if ((change == QGraphicsItem::ItemEnabledChange)
             || (change == QGraphicsItem::ItemSceneChange)
             || (change == QGraphicsItem::ItemVisibleChange))
@@ -369,6 +370,7 @@ void UBGraphicsMediaItem::pause()
 
 void UBGraphicsMediaItem::stop()
 {
+    setMediaPos(0);
     mMediaObject->stop();
     mStopped = true;
 }
@@ -381,7 +383,9 @@ void UBGraphicsMediaItem::togglePlayPause()
     }
 
     if (mMediaObject->state() == QMediaPlayer::StoppedState)
+    {
         mMediaObject->play();
+    }
 
     else if (mMediaObject->state() == QMediaPlayer::PlayingState) {
 
@@ -600,6 +604,7 @@ QVariant UBGraphicsVideoItem::itemChange(GraphicsItemChange change, const QVaria
 //        mHasVideoOutput = true;
 //    }
 
+    qDebug() << "UBGraphicsVideoItem itemChange => change + mVideoItem" << change;
     return UBGraphicsMediaItem::itemChange(change, value);
 }
 

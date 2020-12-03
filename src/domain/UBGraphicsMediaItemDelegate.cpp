@@ -237,7 +237,7 @@ void UBGraphicsMediaItemDelegate::mediaStatusChanged(QMediaPlayer::MediaStatus s
     // Possible statuses are: UnknownMediaStatus, NoMedia, LoadingMedia, LoadedMedia,
     // StalledMedia, BufferingMedia, BufferedMedia, EndOfMedia, InvalidMedia
 
-    //qDebug() << "Media status changed to " << status << "; state: " << delegated()->playerState();
+    qDebug() << "Media status changed to " << status << "; state: " << delegated()->playerState();
 
     if (status == QMediaPlayer::LoadedMedia)
         mMediaControl->totalTimeChanged(delegated()->mediaDuration());
@@ -252,7 +252,12 @@ void UBGraphicsMediaItemDelegate::mediaStatusChanged(QMediaPlayer::MediaStatus s
 
     // At the end of the video, make sure the progress bar doesn't autohide
     if (status == QMediaPlayer::EndOfMedia)
+    {
+        delegated()->setMediaPos(0);
+        updateTicker(0);
+
         showToolBar(false);
+    }
 
 
     // in most cases, the only necessary action is to update the play/pause state
