@@ -130,8 +130,8 @@ bool UBExportDocumentCleaner::StripePdf(QString const &originalFile, QList<int> 
     QString pdfEmptyFileName = relaseEmptyFileName;
     if (!QFile::exists(pdfEmptyFileName))
     {
-        // No emtpy file in the expected place? Try a dev one.
-        pdfEmptyFileName = "../../../../resources/etc/empty.pdf";
+        // No empty file in the expected place? Try a dev one.
+        pdfEmptyFileName = "../../../../../OpenBoard/resources/etc/empty.pdf";
     }
 
     if (!QFile::exists(pdfEmptyFileName))
