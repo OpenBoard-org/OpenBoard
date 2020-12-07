@@ -37,8 +37,6 @@
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
 
-#include "adaptors/UBSvgSubsetAdaptor.h"
-
 #include "globals/UBGlobals.h"
 
 #ifdef Q_OS_OSX
@@ -101,54 +99,7 @@ bool UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, const Q
     // Create a temporary directory, from which we will alter files to clean up the data, if necessary.
     QTemporaryDir tempDir;
     copyPath(pDocumentProxy->persistencePath(), tempDir.path());
-
-    QMap<QString, QVariant> metaDatas = pDocumentProxy->metaDatas();
-
-    // Find every PDF in this dir. For every PDF, build a list of pages to export.
-    QMap<QString, QList<int>> pdfPages;
-    QDirIterator it(tempDir.path(), QStringList() << "*.svg", QDir::Files, QDirIterator::Subdirectories);
-    while (it.hasNext())
-    {
-        QString svgFile = it.next();
-        QFile file(svgFile);
-        file.open(QFile::ReadOnly);
-        QXmlStreamReader xmlReader(&file);
-
-        // Xml decoding as done by 'UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene'.
-        while (!xmlReader.atEnd())
-        {
-            xmlReader.readNext();
-            if (xmlReader.isStartElement())
-            {
-                if (xmlReader.name() == "foreignObject")
-                {
-                    QString href = xmlReader.attributes().value(UBSvgSubsetAdaptor::nsXLink, "href").toString();
-                    if (href.contains(".pdf"))
-                    {
-                        QString href = xmlReader.attributes().value(UBSvgSubsetAdaptor::nsXLink, "href").toString();
-                        QStringList parts = href.split("#page=");
-                        if (parts.count() != 2)
-                        {
-                            qWarning() << "invalid pdf href value" << href;
-                        } else {
-                            QString pdfPath = parts[0];
-                            QUuid uuid(QFileInfo(pdfPath).baseName());
-                            int pageNumber = parts[1].toInt();
-                            QString finalPath = QString("%1/%2").arg(tempDir.path()).arg(pdfPath);
-                            QList<int> &pages = pdfPages[finalPath];
-                            pages.push_back(pageNumber);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    bool stripeSuccess = true;
-    for (QMap<QString, QList<int>>::iterator i = pdfPages.begin(); i != pdfPages.end(); i++)
-    {
-        stripeSuccess &= m_cleaner.stripePdf(i.key(), i.value());
-    }
+    bool const stripeSuccess = UBExportDocumentCleaner::StripeDocument(pDocumentProxy, tempDir.path());
 
     if (!stripeSuccess)
     {

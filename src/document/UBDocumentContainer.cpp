@@ -95,7 +95,7 @@ void UBDocumentContainer::deletePages(QList<int>& pageIndexes)
 
 void UBDocumentContainer::addPage(int index)
 {
-    UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mCurrentDocument, index);
+    UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mCurrentDocument, index, true /* useUndoRedoStack */, UBPersistenceManager::PdfStripeYes);
     insertThumbPage(index);
 
     emit documentThumbnailsUpdated(this);

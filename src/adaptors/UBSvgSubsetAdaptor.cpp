@@ -2075,21 +2075,24 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::pdfItemToLinkedPDF(UBGraphicsPDFItem
 
     QString path = mDocumentPath + "/" + fileName;
 
-    if (!QFile::exists(path))
+    QDir dir;
+    dir.mkdir(mDocumentPath + "/" + UBPersistenceManager::objectDirectory);
+
+    QFile file(path);
+    if (!file.open(QIODevice::ReadWrite))
     {
-        QDir dir;
-        dir.mkdir(mDocumentPath + "/" + UBPersistenceManager::objectDirectory);
-
-        QFile file(path);
-        if (!file.open(QIODevice::WriteOnly))
-        {
-            qWarning() << "cannot open file for writing embeded pdf content " << path;
-            return;
-        }
-
-        file.write(pdfItem->fileData());
-        file.close();
+        qWarning() << "cannot open file for writing embeded pdf content " << path;
+        return;
     }
+
+    // We rewrite the file if the size differs, because if we striped pages in previous import,
+    // we have restore the original file in order to include the new pages.
+    size_t const fileSize = file.size();
+    size_t const itemSize = pdfItem->fileData().size();
+    //qDebug() << "fileSize=" << fileSize << "itemSize=" << itemSize;
+    if (fileSize != itemSize)
+        file.write(pdfItem->fileData());
+    file.close();
 
     mXmlWriter.writeAttribute(nsXLink, "href", fileName + "#page=" + QString::number(pdfItem->pageNumber()));
 

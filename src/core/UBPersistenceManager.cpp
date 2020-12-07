@@ -49,6 +49,7 @@
 #include "adaptors/UBSvgSubsetAdaptor.h"
 #include "adaptors/UBThumbnailAdaptor.h"
 #include "adaptors/UBMetadataDcSubsetAdaptor.h"
+#include "adaptors/UBExportDocumentCleaner.h"
 
 #include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
@@ -446,7 +447,7 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName
     doc->setMetaData(UBSettings::documentDate,currentDate);
 
     if (withEmptyPage) {
-        createDocumentSceneAt(doc, 0);
+        createDocumentSceneAt(doc, 0, true /* useUndoRedoStack */, UBPersistenceManager::PdfStripeYes);
     }
     else{
         this->generatePathIfNeeded(doc);
@@ -512,8 +513,8 @@ UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDoc
 
     QMap<QString, QVariant> metadatas = UBMetadataDcSubsetAdaptor::load(pDocumentDirectory);
 
-    if(withEmptyPage) createDocumentSceneAt(doc, 0);
-    if(addTitlePage) persistDocumentScene(doc, mSceneCache.createScene(doc, 0, false), 0);
+    if(withEmptyPage) createDocumentSceneAt(doc, 0, true /* useUndoRedoStack */, UBPersistenceManager::PdfStripeNo);
+    if(addTitlePage) persistDocumentScene(doc, mSceneCache.createScene(doc, 0, false), 0, UBPersistenceManager::PdfStripeNo);
 
     foreach(QString key, metadatas.keys())
     {
@@ -782,7 +783,7 @@ void UBPersistenceManager::duplicateDocumentScene(UBDocumentProxy* proxy, int in
     }
     scene->setModified(true);
 
-    persistDocumentScene(proxy,scene, index + 1);
+    persistDocumentScene(proxy,scene, index + 1, UBPersistenceManager::PdfStripeYes);
 
     proxy->incPageCount();
 
@@ -826,7 +827,7 @@ void UBPersistenceManager::copyDocumentScene(UBDocumentProxy *from, int fromInde
 }
 
 
-UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* proxy, int index, bool useUndoRedoStack)
+UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* proxy, int index, bool useUndoRedoStack, UBPersistenceManager::PdfStripe const &pdfStripe)
 {
     int count = sceneCount(proxy);
 
@@ -842,7 +843,7 @@ UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* pr
 
     newScene->setBackgroundGridSize(UBSettings::settings()->crossSize);
 
-    persistDocumentScene(proxy, newScene, index);
+    persistDocumentScene(proxy, newScene, index, pdfStripe);
 
     proxy->incPageCount();
 
@@ -870,7 +871,7 @@ void UBPersistenceManager::insertDocumentSceneAt(UBDocumentProxy* proxy, UBGraph
     proxy->incPageCount();
 
     if (persist) {
-        persistDocumentScene(proxy, scene, index);
+        persistDocumentScene(proxy, scene, index, UBPersistenceManager::PdfStripeYes);
     }
 
     emit documentSceneCreated(proxy, index);
@@ -923,7 +924,7 @@ UBGraphicsScene* UBPersistenceManager::loadDocumentScene(UBDocumentProxy* proxy,
     else {
         UBGraphicsScene* scene = UBSvgSubsetAdaptor::loadScene(proxy, sceneIndex);
         if(!scene){
-            createDocumentSceneAt(proxy,0);
+            createDocumentSceneAt(proxy, 0, true /* useUndoRedoStack */, UBPersistenceManager::PdfStripeYes);
             scene = UBSvgSubsetAdaptor::loadScene(proxy, 0);
         }
 
@@ -939,7 +940,8 @@ void UBPersistenceManager::reassignDocProxy(UBDocumentProxy *newDocument, UBDocu
     return mSceneCache.reassignDocProxy(newDocument, oldDocument);
 }
 
-void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex)
+void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex,
+                                                UBPersistenceManager::PdfStripe const &pdfStripe)
 {
     checkIfDocumentRepositoryExists();
 
@@ -960,6 +962,13 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
         UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
 
         pScene->setModified(false);
+    }
+
+    if (pdfStripe == UBPersistenceManager::PdfStripeYes)
+    {
+        bool const stripeSuccess = UBExportDocumentCleaner::StripeDocument(pDocumentProxy, pDocumentProxy->persistencePath());
+        if (!stripeSuccess)
+            qWarning() << "Failed to stripe '" << pDocumentProxy->persistencePath() << "' (Is 'qpdf' installed properly?)";
     }
 
     mSceneCache.insert(pDocumentProxy, pSceneIndex, pScene);

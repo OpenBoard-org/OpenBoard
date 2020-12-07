@@ -8,16 +8,19 @@
 
 #include <QString>
 
+class UBDocumentProxy;
+
 class UBExportDocumentCleaner
 {
 public:
     UBExportDocumentCleaner();
 
+    static bool StripeDocument(UBDocumentProxy* pDocumentProxy, const QString &filename);
+
+private:
     //! Return 'true' is success, 'false' otherwise. Note the final archive is
     //! always available, but in case of failure, it is not stripped.
-    bool stripePdf(QString const &file, QList<int> const &pagesToKeep);
-private:
-
+    static bool StripePdf(QString const &file, QList<int> const &pagesToKeep);
 };
 
 #endif // UBEXPORTDOCUMENTCLEANER_H
