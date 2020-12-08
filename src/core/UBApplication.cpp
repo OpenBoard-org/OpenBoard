@@ -56,14 +56,14 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QAppli
 
 UBApplication::~UBApplication()
 {
+    if (boardController) delete boardController;
+    boardController = NULL;
+
     delete mainWindow;
     mainWindow = 0;
 
     if (applicationController) delete applicationController;
     applicationController = NULL;
-
-    if (boardController) delete boardController;
-    boardController = NULL;
 }
 
 int UBApplication::exec(const QString& pFileToImport)
