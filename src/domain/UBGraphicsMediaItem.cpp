@@ -32,7 +32,6 @@
 #include "UBGraphicsMediaItemDelegate.h"
 #include "UBGraphicsScene.h"
 #include "UBGraphicsDelegateFrame.h"
-#include "document/UBDocumentProxy.h"
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
 #include "core/memcheck.h"
@@ -184,9 +183,9 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
         else {
             QString absoluteMediaFilename;
 
-            if(mMediaFileUrl.toLocalFile().startsWith("audios/") || mMediaFileUrl.toLocalFile().startsWith("videos/"))
-                absoluteMediaFilename = scene()->document()->persistencePath() + "/"  + mMediaFileUrl.toLocalFile();
-            else
+            //if(mMediaFileUrl.toLocalFile().startsWith("audios/") || mMediaFileUrl.toLocalFile().startsWith("videos/"))
+            //    absoluteMediaFilename = scene()->document()->persistencePath() + "/"  + mMediaFileUrl.toLocalFile();
+            //else
                 absoluteMediaFilename = mMediaFileUrl.toLocalFile();
 
             if (absoluteMediaFilename.length() > 0)
@@ -303,8 +302,8 @@ void UBGraphicsMediaItem::clearSource()
 {
     QString path = mediaFileUrl().toLocalFile();
     //if path is absolute clean duplicated path string
-    if (!path.contains(UBApplication::boardController->selectedDocument()->persistencePath()))
-        path = UBApplication::boardController->selectedDocument()->persistencePath() + "/" + path;
+    //if (!path.contains(UBApplication::boardController->selectedDocument()->persistencePath()))
+    //    path = UBApplication::boardController->selectedDocument()->persistencePath() + "/" + path;
 
     if (!UBFileSystemUtils::deleteFile(path))
         qDebug() << "cannot delete file: " << path;
@@ -369,7 +368,7 @@ void UBGraphicsMediaItem::stop()
 void UBGraphicsMediaItem::togglePlayPause()
 {
     if (!mErrorString.isEmpty()) {
-        UBApplication::showMessage("Can't play media: " + mErrorString);
+        //UBApplication::showMessage("Can't play media: " + mErrorString);
         return;
     }
 
@@ -425,7 +424,7 @@ void UBGraphicsMediaItem::mediaError(QMediaPlayer::Error errorCode)
     }
 
     if (!mErrorString.isEmpty() ) {
-        UBApplication::showMessage(mErrorString);
+        //UBApplication::showMessage(mErrorString);
         qDebug() << mErrorString;
     }
 }
@@ -582,8 +581,9 @@ QVariant UBGraphicsVideoItem::itemChange(GraphicsItemChange change, const QVaria
     if (change == QGraphicsItem::ItemVisibleChange
             && value.toBool()
             && !mHasVideoOutput
-            && UBApplication::app()->boardController
-            && UBApplication::app()->boardController->activeScene() == scene())
+            //&& UBApplication::app()->boardController
+            //&& UBApplication::app()->boardController->activeScene() == scene()
+            )
     {
         //qDebug() << "Item change, setting video output";
 

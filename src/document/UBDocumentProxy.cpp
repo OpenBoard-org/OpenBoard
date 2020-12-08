@@ -32,12 +32,12 @@
 #include "frameworks/UBStringUtils.h"
 
 #include "core/UBApplication.h"
-#include "core/UBPersistenceManager.h"
+//#include "core/UBPersistenceManager.h"
 #include "core/UBSettings.h"
-#include "core/UBDocumentManager.h"
+//#include "core/UBDocumentManager.h"
 #include "core/memcheck.h"
 
-#include "adaptors/UBMetadataDcSubsetAdaptor.h"
+//#include "adaptors/UBMetadataDcSubsetAdaptor.h"
 
 UBDocumentProxy::UBDocumentProxy()
     : mPageCount(0)
@@ -63,7 +63,7 @@ UBDocumentProxy::UBDocumentProxy(const QString& pPersistancePath)
     init();
     setPersistencePath(pPersistancePath);
 
-    mMetaDatas = UBMetadataDcSubsetAdaptor::load(pPersistancePath);
+    //mMetaDatas = UBMetadataDcSubsetAdaptor::load(pPersistancePath);
 }
 
 
@@ -186,9 +186,9 @@ void UBDocumentProxy::setMetaData(const QString& pKey, const QVariant& pValue)
         mMetaDatas.insert(pKey, pValue);
         if (pKey == UBSettings::documentUpdatedAt)
         {
-            UBDocumentManager *documentManager = UBDocumentManager::documentManager();
-            if (documentManager)
-                documentManager->emitDocumentUpdated(this);
+            //UBDocumentManager *documentManager = UBDocumentManager::documentManager();
+            //if (documentManager)
+            //    documentManager->emitDocumentUpdated(this);
         }
     }
 }

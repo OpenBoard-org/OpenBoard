@@ -29,9 +29,6 @@
 
 #include "UBBoardPaletteManager.h"
 
-#include "frameworks/UBPlatformUtils.h"
-#include "frameworks/UBFileSystemUtils.h"
-
 #include "core/UBApplication.h"
 #include "core/UBApplicationController.h"
 #include "core/UBSettings.h"
@@ -47,16 +44,9 @@
 #include "gui/UBActionPalette.h"
 #include "gui/UBBackgroundPalette.h"
 #include "gui/UBFavoriteToolPalette.h"
-#include "gui/UBStartupHintsPalette.h"
-
-#include "web/UBWebPage.h"
-#include "web/UBWebController.h"
-#include "web/browser/WBBrowserWindow.h"
-#include "web/browser/WBTabWidget.h"
-#include "web/browser/WBWebView.h"
+//#include "gui/UBStartupHintsPalette.h"
 
 #include "desktop/UBDesktopAnnotationController.h"
-
 
 #include "network/UBNetworkAccessManager.h"
 #include "network/UBServerXMLHttpRequest.h"
@@ -64,17 +54,16 @@
 #include "domain/UBGraphicsScene.h"
 #include "domain/UBGraphicsPixmapItem.h"
 
-#include "document/UBDocumentProxy.h"
-#include "podcast/UBPodcastController.h"
+//#include "podcast/UBPodcastController.h"
 #include "board/UBDrawingController.h"
 
 #include "tools/UBToolsManager.h"
 
 #include "UBBoardController.h"
 
-#include "document/UBDocumentController.h"
+//#include "document/UBDocumentController.h"
 
-#include "core/UBPersistenceManager.h"
+
 #include "core/memcheck.h"
 
 UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardController* pBoardController)
@@ -85,7 +74,7 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mBoardControler(pBoardController)
     , mStylusPalette(0)
     , mZoomPalette(0)
-    , mTipPalette(0)
+    //, mTipPalette(0)
     , mLeftPalette(NULL)
     , mRightPalette(NULL)
     , mBackgroundsPalette(0)
@@ -97,9 +86,8 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mPendingZoomButtonPressed(false)
     , mPendingPanButtonPressed(false)
     , mPendingEraseButtonPressed(false)
-    , mpPageNavigWidget(NULL)
+    //, mpPageNavigWidget(NULL)
     , mpCachePropWidget(NULL)
-    , mpDownloadWidget(NULL)
     , mDownloadInProgress(false)
 {
     setupPalettes();
@@ -135,39 +123,36 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
 
     //------------------------------------------------//
     // Create the widgets for the dock palettes
-    mpPageNavigWidget = new UBPageNavigationWidget();
+    //mpPageNavigWidget = new UBPageNavigationWidget();
 
     mpCachePropWidget = new UBCachePropertiesWidget();
 
-    mpDownloadWidget = new UBDockDownloadWidget();
 
     // Add the dock palettes
     mLeftPalette = new UBLeftPalette(mContainer);
 
     // LEFT palette widgets
-    mLeftPalette->registerWidget(mpPageNavigWidget);
-    mLeftPalette->addTab(mpPageNavigWidget);
+    //mLeftPalette->registerWidget(mpPageNavigWidget);
+    //mLeftPalette->addTab(mpPageNavigWidget);
 
     mLeftPalette->connectSignals();
     mLeftPalette->showTabWidget(0);
 
     mRightPalette = new UBRightPalette(mContainer);
     // RIGHT palette widgets
-    mpFeaturesWidget = new UBFeaturesWidget();
-    mRightPalette->registerWidget(mpFeaturesWidget);
-    mRightPalette->addTab(mpFeaturesWidget);
+    //mpFeaturesWidget = new UBFeaturesWidget();
+    //mRightPalette->registerWidget(mpFeaturesWidget);
+    //mRightPalette->addTab(mpFeaturesWidget);
 
     // The cache widget will be visible only if a cache is put on the page
     mRightPalette->registerWidget(mpCachePropWidget);
 
     //  The download widget will be part of the right palette but
     //  will become visible only when the first download starts
-    mRightPalette->registerWidget(mpDownloadWidget);
     mRightPalette->connectSignals();
     changeMode(eUBDockPaletteWidget_BOARD, true);
 
     // Hide the tabs that must be hidden
-    mRightPalette->removeTab(mpDownloadWidget);
     mRightPalette->removeTab(mpCachePropWidget);
 
 }
@@ -195,8 +180,7 @@ void UBBoardPaletteManager::slot_changeMainMode(UBApplicationController::MainMod
 
         default:
             {
-                if (UBPlatformUtils::hasVirtualKeyboard() && mKeyboardPalette != NULL)
-                    mKeyboardPalette->hide();
+
             }
             break;
     }
@@ -223,15 +207,6 @@ void UBBoardPaletteManager::slot_changeDesktopMode(bool isDesktop)
 
 void UBBoardPaletteManager::setupPalettes()
 {
-
-    if (UBPlatformUtils::hasVirtualKeyboard())
-    {
-        mKeyboardPalette = new UBKeyboardPalette(0);
-#ifndef Q_OS_WIN
-        connect(mKeyboardPalette, SIGNAL(closed()), mKeyboardPalette, SLOT(onDeactivated()));
-#endif
-    }
-
 
     setupDockPaletteWidgets();
 
@@ -386,14 +361,14 @@ void UBBoardPaletteManager::erasePaletteButtonReleased()
 void UBBoardPaletteManager::linkClicked(const QUrl& url)
 {
       UBApplication::applicationController->showInternet();
-      UBApplication::webController->loadUrl(url);
+      //UBApplication::webController->loadUrl(url);
 }
 
 
 void UBBoardPaletteManager::purchaseLinkActivated(const QString& link)
 {
     UBApplication::applicationController->showInternet();
-    UBApplication::webController->loadUrl(QUrl(link));
+    //UBApplication::webController->loadUrl(QUrl(link));
 }
 
 void UBBoardPaletteManager::connectPalettes()
@@ -558,9 +533,9 @@ void UBBoardPaletteManager::activeSceneChanged()
     if (mStylusPalette)
         connect(mStylusPalette, SIGNAL(mouseEntered()), activeScene, SLOT(hideTool()));
 
-    if (mpPageNavigWidget)
+    //if (mpPageNavigWidget)
     {
-        mpPageNavigWidget->setPageNumber(UBDocumentContainer::pageFromSceneIndex(pageIndex), activeScene->document()->pageCount());
+        //mpPageNavigWidget->setPageNumber(UBDocumentContainer::pageFromSceneIndex(pageIndex), activeScene->document()->pageCount());
     }
 
     if (mZoomPalette)
@@ -645,7 +620,7 @@ void UBBoardPaletteManager::pagePaletteClosed()
 
 void UBBoardPaletteManager::tooglePodcastPalette(bool checked)
 {
-    UBPodcastController::instance()->toggleRecordingPalette(checked);
+    //UBPodcastController::instance()->toggleRecordingPalette(checked);
 }
 
 
@@ -787,8 +762,8 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
             {
                 mLeftPalette->setVisible(leftPaletteVisible);
                 mRightPalette->setVisible(rightPaletteVisible);
-                mLeftPalette->assignParent(UBApplication::documentController->controlView());
-                mRightPalette->assignParent(UBApplication::documentController->controlView());
+                //mLeftPalette->assignParent(UBApplication::documentController->controlView());
+                //mRightPalette->assignParent(UBApplication::documentController->controlView());
                 if (UBPlatformUtils::hasVirtualKeyboard()
                     && mKeyboardPalette != NULL
                     && UBSettings::settings()->useSystemOnScreenKeyboard->get().toBool() == false)
@@ -797,11 +772,13 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                     if(mKeyboardPalette->m_isVisible)
                     {
                         mKeyboardPalette->hide();
-                        mKeyboardPalette->setParent(UBApplication::documentController->controlView());
+                        //mKeyboardPalette->setParent(UBApplication::documentController->controlView());
                         mKeyboardPalette->show();
                     }
                     else
-                        mKeyboardPalette->setParent(UBApplication::documentController->controlView());
+                    {
+                        //mKeyboardPalette->setParent(UBApplication::documentController->controlView());
+                    }
                 }
                 if (mWebToolsCurrentPalette)
                     mWebToolsCurrentPalette->hide();
@@ -861,11 +838,11 @@ void UBBoardPaletteManager::addItemToCurrentPage()
     {
         UBGraphicsPixmapItem* item = UBApplication::boardController->activeScene()->addPixmap(mPixmap, NULL, mPos, mScaleFactor);
 
-        QString documentPath = UBApplication::boardController->selectedDocument()->persistencePath();
-        QString fileName = UBPersistenceManager::imageDirectory + "/" + item->uuid().toString() + ".png";
-        QString path = documentPath + "/" + fileName;
+        //QString documentPath = UBApplication::boardController->selectedDocument()->persistencePath();
+        //QString fileName = UBPersistenceManager::imageDirectory + "/" + item->uuid().toString() + ".png";
+        //QString path = documentPath + "/" + fileName;
 
-        item->setSourceUrl(QUrl(path));
+        //item->setSourceUrl(QUrl(path));
         item->setSelected(true);
 
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
@@ -898,11 +875,11 @@ void UBBoardPaletteManager::addItemToLibrary()
 
         QDateTime now = QDateTime::currentDateTime();
         QString capturedName  = tr("CapturedImage") + "-" + now.toString("dd-MM-yyyy hh-mm-ss") + ".png";
-        mpFeaturesWidget->importImage(image, capturedName);
+        //mpFeaturesWidget->importImage(image, capturedName);
     }
     else
     {
-        UBApplication::showMessage(tr("Error Adding Image to Library"));
+        //UBApplication::showMessage(tr("Error Adding Image to Library"));
     }
 
     mAddItemPalette->hide();
@@ -996,8 +973,6 @@ void UBBoardPaletteManager::startDownloads()
     if(!mDownloadInProgress)
     {
         mDownloadInProgress = true;
-        mpDownloadWidget->setVisibleState(true);
-        mRightPalette->addTab(mpDownloadWidget);
     }
 }
 
@@ -1006,7 +981,5 @@ void UBBoardPaletteManager::stopDownloads()
     if(mDownloadInProgress)
     {
         mDownloadInProgress = false;
-        mpDownloadWidget->setVisibleState(false);
-        mRightPalette->removeTab(mpDownloadWidget);
     }
 }

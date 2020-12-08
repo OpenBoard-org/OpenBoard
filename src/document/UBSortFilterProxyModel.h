@@ -2,7 +2,7 @@
 #define UBSORTFILTERPROXYMODEL_H
 
 #include <QSortFilterProxyModel>
-#include "core/UBPersistenceManager.h"
+//#include "core/UBPersistenceManager.h"
 
 class UBSortFilterProxyModel : public QSortFilterProxyModel
 {

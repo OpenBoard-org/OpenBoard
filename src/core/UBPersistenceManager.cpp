@@ -43,7 +43,7 @@
 #include "core/UBSetting.h"
 #include "core/UBForeignObjectsHandler.h"
 
-#include "document/UBDocumentProxy.h"
+//#include "document/UBDocumentProxy.h"
 
 #include "adaptors/UBExportPDF.h"
 #include "adaptors/UBSvgSubsetAdaptor.h"
@@ -59,7 +59,7 @@
 #include "board/UBBoardController.h"
 #include "board/UBBoardPaletteManager.h"
 
-#include "document/UBDocumentController.h"
+//#include "document/UBDocumentController.h"
 
 #include "core/memcheck.h"
 
@@ -96,7 +96,7 @@ UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     mDocumentRepositoryPath = UBSettings::userDocumentDirectory();
     mFoldersXmlStorageName =  mDocumentRepositoryPath + "/" + fFolders;
 
-    mDocumentTreeStructureModel = new UBDocumentTreeModel(this);
+    //mDocumentTreeStructureModel = new UBDocumentTreeModel(this);
     createDocumentProxiesStructure();
 
 
@@ -105,10 +105,10 @@ UBPersistenceManager::UBPersistenceManager(QObject *pParent)
 
 UBPersistenceManager* UBPersistenceManager::persistenceManager()
 {
-    if (!sSingleton)
-    {
-        sSingleton = new UBPersistenceManager(UBApplication::staticMemoryCleaner);
-    }
+    //if (!sSingleton)
+    //{
+    //    sSingleton = new UBPersistenceManager(UBApplication::staticMemoryCleaner);
+    //}
 
     return sSingleton;
 }
@@ -175,15 +175,15 @@ void UBPersistenceManager::createDocumentProxiesStructure(const QFileInfoList &c
             continue;
         }
 
-        QModelIndex parentIndex = mDocumentTreeStructureModel->goTo(docGroupName);
-        if (!parentIndex.isValid()) {
-            return;
-        }
+        //QModelIndex parentIndex = mDocumentTreeStructureModel->goTo(docGroupName);
+        //if (!parentIndex.isValid()) {
+        //    return;
+        //}
 
-        UBDocumentProxy* docProxy = new UBDocumentProxy(fullPath, metadatas); // managed in UBDocumentTreeNode
-        foreach(QString key, metadatas.keys()) {
-            docProxy->setMetaData(key, metadatas.value(key));
-        }
+        //UBDocumentProxy* docProxy = new UBDocumentProxy(fullPath, metadatas); // managed in UBDocumentTreeNode
+        //foreach(QString key, metadatas.keys()) {
+        //    docProxy->setMetaData(key, metadatas.value(key));
+        //}
 
         if (metadatas.contains(UBSettings::documentPageCount))
         {
@@ -191,18 +191,18 @@ void UBPersistenceManager::createDocumentProxiesStructure(const QFileInfoList &c
             if (pageCount == 0)
                 pageCount = sceneCount(docProxy);
 
-            docProxy->setPageCount(pageCount);
+            //docProxy->setPageCount(pageCount);
         }
         else
         {
-            int pageCount = sceneCount(docProxy);
-            docProxy->setPageCount(pageCount);
+            //int pageCount = sceneCount(docProxy);
+            //docProxy->setPageCount(pageCount);
         }
 
-        if (!interactive)
-            mDocumentTreeStructureModel->addDocument(docProxy, parentIndex);
-        else
-            processInteractiveReplacementDialog(docProxy);
+        //if (!interactive)
+        //    mDocumentTreeStructureModel->addDocument(docProxy, parentIndex);
+        //else
+            //processInteractiveReplacementDialog(docProxy);
     }
 }
 
@@ -219,6 +219,7 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
 
     QDialog::DialogCode result = QDialog::Rejected;
 
+#if 0
     if (UBApplication::documentController
             && UBApplication::documentController->mainWidget()) {
         QString docGroupName = pProxy->metaData(UBSettings::documentGroupName).toString();
@@ -247,7 +248,7 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
 
                     if (mDocumentTreeStructureModel->currentIndex() == replaceIndex)
                     {
-                        UBApplication::documentController->selectDocument(pProxy, true, true);
+                        //UBApplication::documentController->selectDocument(pProxy, true, true);
                     }
 
                     if (replaceProxy) {
@@ -268,6 +269,8 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
         }
 
     }
+#endif
+
     //TODO claudio the if is an hack
     if(UBApplication::overrideCursor())
         UBApplication::overrideCursor()->setShape(saveShape);
@@ -461,7 +464,7 @@ UBDocumentProxy* UBPersistenceManager::createDocument(const QString& pGroupName
     bool addDoc = false;
     if (!promptDialogIfExists) {
         addDoc = true;
-        mDocumentTreeStructureModel->addDocument(doc);
+        //mDocumentTreeStructureModel->addDocument(doc);
     } else if (processInteractiveReplacementDialog(doc) == QDialog::Accepted) {
         addDoc = true;
     }
@@ -484,7 +487,7 @@ UBDocumentProxy* UBPersistenceManager::createNewDocument(const QString& pGroupNa
 {
     UBDocumentProxy *resultDoc = createDocument(pGroupName, pName, withEmptyPage, directory, pageCount, promptDialogIfExists);
     if (resultDoc) {
-        mDocumentTreeStructureModel->markDocumentAsNew(resultDoc);
+        //mDocumentTreeStructureModel->markDocumentAsNew(resultDoc);
     }
 
     return resultDoc;
@@ -533,7 +536,7 @@ UBDocumentProxy* UBPersistenceManager::createDocumentFromDir(const QString& pDoc
     bool addDoc = false;
     if (!promptDialogIfExists) {
         addDoc = true;
-        mDocumentTreeStructureModel->addDocument(doc);
+        //mDocumentTreeStructureModel->addDocument(doc);
     } else if (processInteractiveReplacementDialog(doc) == QDialog::Accepted) {
         addDoc = true;
     }
@@ -804,9 +807,9 @@ void UBPersistenceManager::copyDocumentScene(UBDocumentProxy *from, int fromInde
         mSceneCache.moveScene(to, i - 1, i);
     }
 
-    UBForeighnObjectsHandler hl;
-    hl.copyPage(QUrl::fromLocalFile(from->persistencePath()), fromIndex,
-                QUrl::fromLocalFile(to->persistencePath()), toIndex);
+    //UBForeighnObjectsHandler hl;
+    //hl.copyPage(QUrl::fromLocalFile(from->persistencePath()), fromIndex,
+    //            QUrl::fromLocalFile(to->persistencePath()), toIndex);
 
     to->incPageCount();
 
@@ -819,9 +822,9 @@ void UBPersistenceManager::copyDocumentScene(UBDocumentProxy *from, int fromInde
     Q_ASSERT(QFileInfo(thumbTmp).exists());
     Q_ASSERT(QFileInfo(thumbTo).exists());
     const QPixmap *pix = new QPixmap(thumbTmp);
-    UBDocumentController *ctrl = UBApplication::documentController;
-    ctrl->addPixmapAt(pix, toIndex);
-    ctrl->TreeViewSelectionChanged(ctrl->firstSelectedTreeIndex(), QModelIndex());
+    //UBDocumentController *ctrl = UBApplication::documentController;
+    //ctrl->addPixmapAt(pix, toIndex);
+    //ctrl->TreeViewSelectionChanged(ctrl->firstSelectedTreeIndex(), QModelIndex());
 
 //    emit documentSceneCreated(to, toIndex + 1);
 }
@@ -1139,13 +1142,14 @@ void UBPersistenceManager::purgeEmptyDocuments()
 {
     QList<UBDocumentProxy*> toBeDeleted;
 
+    /*
     foreach(UBDocumentProxy* docProxy, mDocumentTreeStructureModel->newDocuments())
     {
         if (isEmpty(docProxy))
         {
             toBeDeleted << docProxy;
         }
-    }
+    } */
 
     foreach(UBDocumentProxy* docProxy, toBeDeleted)
     {
@@ -1261,6 +1265,7 @@ void UBPersistenceManager::checkIfDocumentRepositoryExists()
 
 void UBPersistenceManager::saveFoldersTreeToXml(QXmlStreamWriter &writer, const QModelIndex &parentIndex)
 {
+#if 0
     for (int i = 0; i < mDocumentTreeStructureModel->rowCount(parentIndex); i++)
     {
         QModelIndex currentIndex = mDocumentTreeStructureModel->index(i, 0, parentIndex);
@@ -1272,6 +1277,7 @@ void UBPersistenceManager::saveFoldersTreeToXml(QXmlStreamWriter &writer, const 
             writer.writeEndElement();
         }
     }
+#endif
 }
 
 void UBPersistenceManager::loadFolderTreeFromXml(const QString &path, const QDomElement &element)
@@ -1287,7 +1293,7 @@ void UBPersistenceManager::loadFolderTreeFromXml(const QString &path, const QDom
 
             if (!leafPath.isEmpty())
             {
-                mDocumentTreeStructureModel->goTo(path + "/" + leafPath);
+                //mDocumentTreeStructureModel->goTo(path + "/" + leafPath);
                 if (!iterElement.firstChildElement().isNull())
                     loadFolderTreeFromXml(path + "/" +  leafPath, iterElement);
             }

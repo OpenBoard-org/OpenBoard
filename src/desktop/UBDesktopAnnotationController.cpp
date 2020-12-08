@@ -38,8 +38,6 @@
 #include "core/UBDisplayManager.h"
 #include "core/UBSettings.h"
 
-#include "web/UBWebController.h"
-
 #include "gui/UBMainWindow.h"
 
 #include "board/UBBoardView.h"
@@ -88,14 +86,14 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
 
 #if defined(Q_OS_OSX) && (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
     /* https://bugreports.qt.io/browse/QTBUG-81456 */
-    if (QOperatingSystemVersion::current().minorVersion() > 12) /* > Sierra */
-    {
-        mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Window | Qt::NoDropShadowWindowHint | Qt::X11BypassWindowManagerHint);
-    }
-    else
-    {
+    //if (QOperatingSystemVersion::current().minorVersion() > 12) /* > Sierra */
+    //{
+    //    mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Window | Qt::NoDropShadowWindowHint | Qt::X11BypassWindowManagerHint);
+    //}
+    //else
+    //{
         mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window | Qt::NoDropShadowWindowHint | Qt::X11BypassWindowManagerHint);
-    }
+    //}
 #else
     mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window | Qt::NoDropShadowWindowHint | Qt::X11BypassWindowManagerHint);
 #endif
@@ -119,6 +117,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     // This was not fix, parent reverted
     // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
 
+#if 0
     if (UBPlatformUtils::hasVirtualKeyboard())
     {
         connect( UBApplication::boardController->paletteManager()->mKeyboardPalette, SIGNAL(keyboardActivated(bool)), 
@@ -130,6 +129,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
         connect(mDesktopPalette,SIGNAL(refreshMask()), this, SLOT(refreshMask()));
 #endif
     }
+#endif
 
     connect(mDesktopPalette, SIGNAL(uniboardClick()), this, SLOT(goToUniboard()));
     connect(mDesktopPalette, SIGNAL(customClick()), this, SLOT(customCapture()));
@@ -358,6 +358,7 @@ void UBDesktopAnnotationController::showWindow()
     UBPlatformUtils::setDesktopMode(true);
 
     mDesktopPalette->appear();
+    mTransparentDrawingView->showFullScreen();
 
 #ifdef Q_OS_LINUX
     updateMask(true);
@@ -523,12 +524,12 @@ void UBDesktopAnnotationController::screenCapture()
 QPixmap UBDesktopAnnotationController::getScreenPixmap()
 {
     QDesktopWidget *desktop = QApplication::desktop();
-    QScreen * screen = UBApplication::controlScreen();
+    //QScreen * screen = UBApplication::controlScreen();
 
-    QRect rect = desktop->screenGeometry(QCursor::pos());
+    //QRect rect = desktop->screenGeometry(QCursor::pos());
 
-    return screen->grabWindow(desktop->effectiveWinId(),
-                              rect.x(), rect.y(), rect.width(), rect.height());
+    return QPixmap(); //screen->grabWindow(desktop->effectiveWinId(),
+                      //        rect.x(), rect.y(), rect.width(), rect.height());
 }
 
 

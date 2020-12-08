@@ -31,17 +31,11 @@
 
 #include <QtWidgets>
 
-#include "frameworks/UBFileSystemUtils.h"
-#include "frameworks/UBPlatformUtils.h"
-
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
-#include "core/UBPersistenceManager.h"
 #include "core/UBApplicationController.h"
-#include "core/UBDocumentManager.h"
 #include "core/UBMimeData.h"
-#include "core/UBDownloadManager.h"
 
 #include "network/UBHttpGet.h"
 
@@ -54,6 +48,7 @@
 #include "gui/UBMagnifer.h"
 #include "gui/UBDockPaletteWidget.h"
 
+#include "domain/UBGraphicsScene.h"
 #include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBGraphicsItemUndoCommand.h"
 #include "domain/UBGraphicsSvgItem.h"
@@ -67,20 +62,15 @@
 #include "domain/UBItem.h"
 #include "board/UBFeaturesController.h"
 
-#include "gui/UBFeaturesWidget.h"
-
 #include "tools/UBToolsManager.h"
-
-#include "document/UBDocumentProxy.h"
-#include "document/UBDocumentController.h"
 
 #include "board/UBDrawingController.h"
 #include "board/UBBoardView.h"
 
-#include "podcast/UBPodcastController.h"
+//#include "podcast/UBPodcastController.h"
 
-#include "adaptors/UBMetadataDcSubsetAdaptor.h"
-#include "adaptors/UBSvgSubsetAdaptor.h"
+//#include "adaptors/UBMetadataDcSubsetAdaptor.h"
+//#include "adaptors/UBSvgSubsetAdaptor.h"
 
 #include "UBBoardPaletteManager.h"
 
@@ -126,14 +116,16 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
 
 void UBBoardController::init()
 {
+    mActiveScene = new UBGraphicsScene(this);
+
     setupViews();
     setupToolbar();
 
-    connect(UBApplication::undoStack, SIGNAL(canUndoChanged(bool))
-            , this, SLOT(undoRedoStateChange(bool)));
+    //connect(UBApplication::undoStack, SIGNAL(canUndoChanged(bool))
+    //        , this, SLOT(undoRedoStateChange(bool)));
 
-    connect(UBApplication::undoStack, SIGNAL(canRedoChanged (bool))
-            , this, SLOT(undoRedoStateChange(bool)));
+    //connect(UBApplication::undoStack, SIGNAL(canRedoChanged (bool))
+    //        , this, SLOT(undoRedoStateChange(bool)));
 
     connect(UBDrawingController::drawingController(), SIGNAL(stylusToolChanged(int))
             , this, SLOT(setToolCursor(int)));
@@ -141,15 +133,15 @@ void UBBoardController::init()
     connect(UBDrawingController::drawingController(), SIGNAL(stylusToolChanged(int))
             , this, SLOT(stylusToolChanged(int)));
 
-    connect(UBApplication::app(), SIGNAL(lastWindowClosed())
-            , this, SLOT(lastWindowClosed()));
+    //connect(UBApplication::app(), SIGNAL(lastWindowClosed())
+    //        , this, SLOT(lastWindowClosed()));
 
-    connect(UBDownloadManager::downloadManager(), SIGNAL(downloadModalFinished()), this, SLOT(onDownloadModalFinished()));
-    connect(UBDownloadManager::downloadManager(), SIGNAL(addDownloadedFileToBoard(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool)), this, SLOT(downloadFinished(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool)));
+    //connect(UBDownloadManager::downloadManager(), SIGNAL(downloadModalFinished()), this, SLOT(onDownloadModalFinished()));
+    //connect(UBDownloadManager::downloadManager(), SIGNAL(addDownloadedFileToBoard(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool)), this, SLOT(downloadFinished(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool)));
 
-    UBDocumentProxy* doc = UBPersistenceManager::persistenceManager()->createNewDocument();
+    //UBDocumentProxy* doc = UBPersistenceManager::persistenceManager()->createNewDocument();
 
-    setActiveDocumentScene(doc);
+    //setActiveDocumentScene(doc);
 
     initBackgroundGridSize();
 
@@ -185,7 +177,7 @@ void UBBoardController::initBackgroundGridSize()
 
     //qDebug() << "resolution ratio: " << resolutionRatio;
 
-    int gridSize = (resolutionRatio * 10. * dpi) / UBGeometryUtils::inchSize;
+    int gridSize = (resolutionRatio * 10. * dpi) / 25.4f;
 
     UBSettings::settings()->crossSize = gridSize;
     UBSettings::settings()->defaultCrossSize = gridSize;
@@ -371,9 +363,9 @@ void UBBoardController::setupToolbar()
 
     //-----------------------------------------------------------//
 
-    UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->boardToolBar, mMainWindow->actionBoard);
+    //UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->boardToolBar, mMainWindow->actionBoard);
 
-    UBApplication::app()->decorateActionMenu(mMainWindow->actionMenu);
+    //UBApplication::app()->decorateActionMenu(mMainWindow->actionMenu);
 
     mMainWindow->actionBoard->setVisible(false);
 
@@ -383,7 +375,7 @@ void UBBoardController::setupToolbar()
     connectToolbar();
     initToolbarTexts();
 
-    UBApplication::app()->toolBarDisplayTextChanged(QVariant(settings->appToolBarDisplayText->get().toBool()));
+    //UBApplication::app()->toolBarDisplayTextChanged(QVariant(settings->appToolBarDisplayText->get().toBool()));
 }
 
 
@@ -407,8 +399,8 @@ void UBBoardController::connectToolbar()
     connect(mMainWindow->actionEraseAnnotations, SIGNAL(triggered()), this, SLOT(clearSceneAnnotation()));
     connect(mMainWindow->actionEraseBackground,SIGNAL(triggered()),this,SLOT(clearSceneBackground()));
 
-    connect(mMainWindow->actionUndo, SIGNAL(triggered()), UBApplication::undoStack, SLOT(undo()));
-    connect(mMainWindow->actionRedo, SIGNAL(triggered()), UBApplication::undoStack, SLOT(redo()));
+    //connect(mMainWindow->actionUndo, SIGNAL(triggered()), UBApplication::undoStack, SLOT(undo()));
+    //connect(mMainWindow->actionRedo, SIGNAL(triggered()), UBApplication::undoStack, SLOT(redo()));
     connect(mMainWindow->actionRedo, SIGNAL(triggered()), this, SLOT(startScript()));
     connect(mMainWindow->actionBack, SIGNAL( triggered()), this, SLOT(previousScene()));
     connect(mMainWindow->actionForward, SIGNAL(triggered()), this, SLOT(nextScene()));
@@ -432,13 +424,13 @@ void UBBoardController::saveData(SaveFlags fls)
 {
     bool verbose = fls | sf_showProgress;
     if (verbose) {
-        UBApplication::showMessage(tr("Saving document..."));
+        //UBApplication::showMessage(tr("Saving document..."));
     }
     if (mActiveScene && mActiveScene->isModified()) {
         persistCurrentScene(true);
     }
     if (verbose) {
-        UBApplication::showMessage(tr("Document has just been saved..."));
+        //UBApplication::showMessage(tr("Document has just been saved..."));
     }
 }
 
@@ -533,20 +525,20 @@ void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmp
     {
         UBGraphicsScene* clone = scene->sceneDeepCopy();
 
-        if (scene->document() && (scene->document() != selectedDocument()))
-        {
-            foreach(QUrl relativeFile, scene->relativeDependencies())
-            {
-                QString source = scene->document()->persistencePath() + "/" + relativeFile.path();
-                QString destination = selectedDocument()->persistencePath() + "/" + relativeFile.path();
+//        if (scene->document() && (scene->document() != selectedDocument()))
+//        {
+//            foreach(QUrl relativeFile, scene->relativeDependencies())
+//            {
+//                QString source = scene->document()->persistencePath() + "/" + relativeFile.path();
+//                QString destination = selectedDocument()->persistencePath() + "/" + relativeFile.path();
 
-                UBFileSystemUtils::copy(source, destination, true);
-            }
-        }
+//                UBFileSystemUtils::copy(source, destination, true);
+//            }
+//        }
 
         if (replaceActiveIfEmpty && mActiveScene->isEmpty())
         {
-            UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(selectedDocument(), clone, mActiveSceneIndex);
+            //UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(selectedDocument(), clone, mActiveSceneIndex);
             emit addThumbnailRequired(this, mActiveSceneIndex);
             setActiveDocumentScene(mActiveSceneIndex);
             deleteScene(mActiveSceneIndex + 1);
@@ -554,7 +546,7 @@ void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmp
         else
         {
             persistCurrentScene(false,true);
-            UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(selectedDocument(), clone, mActiveSceneIndex + 1);
+            //UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(selectedDocument(), clone, mActiveSceneIndex + 1);
             emit addThumbnailRequired(this, mActiveSceneIndex + 1);
             setActiveDocumentScene(mActiveSceneIndex + 1);
         }
@@ -563,7 +555,7 @@ void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmp
     }
 }
 
-
+#if 0
 void UBBoardController::addScene(UBDocumentProxy* proxy, int sceneIndex, bool replaceActiveIfEmpty)
 {
     UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(proxy, sceneIndex);
@@ -573,6 +565,7 @@ void UBBoardController::addScene(UBDocumentProxy* proxy, int sceneIndex, bool re
         addScene(scene, replaceActiveIfEmpty);
     }
 }
+#endif
 
 void UBBoardController::duplicateScene(int nIndex)
 {
@@ -742,8 +735,8 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
     {
         QGraphicsItem *graphicsRetItem = dynamic_cast<QGraphicsItem *>(retItem);
         if (mActiveScene->isURStackIsEnabled()) { //should be deleted after scene own undo stack implemented
-             UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(mActiveScene, 0, graphicsRetItem);
-             UBApplication::undoStack->push(uc);
+             //UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(mActiveScene, 0, graphicsRetItem);
+             //UBApplication::undoStack->push(uc);
         }
         return retItem;
     }
@@ -779,7 +772,7 @@ void UBBoardController::deleteScene(int nIndex)
         scIndexes << nIndex;
         deletePages(scIndexes);
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-        UBMetadataDcSubsetAdaptor::persist(selectedDocument());
+        //UBMetadataDcSubsetAdaptor::persist(selectedDocument());
 
         if (nIndex >= pageCount())
             nIndex = pageCount()-1;
@@ -859,11 +852,6 @@ void UBBoardController::showKeyboard(bool show)
 {
     if(show)
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-
-    if(UBSettings::settings()->useSystemOnScreenKeyboard->get().toBool())
-        UBPlatformUtils::showOSK(show);
-    else
-        mPaletteManager->showVirtualKeyboard(show);
 
 }
 
@@ -1074,18 +1062,6 @@ void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, c
        {
            // media items should be copyed in separate thread
 
-           sDownloadFileDesc desc;
-           desc.modal = false;
-           desc.srcUrl = sUrl;
-           desc.originalSrcUrl = contentSourceUrl;
-           desc.currentSize = 0;
-           desc.name = QFileInfo(url.toString()).fileName();
-           desc.totalSize = 0; // The total size will be retrieved during the download
-           desc.pos = pPos;
-           desc.size = pSize;
-           desc.isBackground = isBackground;
-
-           UBDownloadManager::downloadManager()->addFileToDownload(desc);
        }
     }
     else
@@ -1095,25 +1071,13 @@ void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, c
         if(parametersStringPosition != -1)
             urlString = urlString.left(parametersStringPosition);
 
-        // When we fall there, it means that we are dropping something from the web to the board
-        sDownloadFileDesc desc;
-        desc.modal = true;
-        desc.srcUrl = urlString;
-        desc.currentSize = 0;
-        desc.name = QFileInfo(urlString).fileName();
-        desc.totalSize = 0; // The total size will be retrieved during the download
-        desc.pos = pPos;
-        desc.size = pSize;
-        desc.isBackground = isBackground;
-
-        UBDownloadManager::downloadManager()->addFileToDownload(desc);
     }
 
     if (isBackground && oldBackgroundObject != mActiveScene->backgroundObject())
     {
         if (mActiveScene->isURStackIsEnabled()) { //should be deleted after scene own undo stack implemented
-            UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(mActiveScene, oldBackgroundObject, mActiveScene->backgroundObject());
-            UBApplication::undoStack->push(uc);
+            //UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(mActiveScene, oldBackgroundObject, mActiveScene->backgroundObject());
+            //UBApplication::undoStack->push(uc);
         }
     }
 
@@ -1258,17 +1222,17 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         if (pData.length() > 0)
         {
             QString destFile;
-            bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
-                sourceUrl.toString(),
-                UBPersistenceManager::videoDirectory,
-                uuid,
-                destFile,
-                &pData);
-            if (!b)
-            {
-                showMessage(tr("Add file operation failed: file copying error"));
-                return NULL;
-            }
+            //bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
+            //    sourceUrl.toString(),
+            //    UBPersistenceManager::videoDirectory,
+            //    uuid,
+            //    destFile,
+            //    &pData);
+            //if (!b)
+            //{
+            //    showMessage(tr("Add file operation failed: file copying error"));
+            //    return NULL;
+            //}
 
             QUrl url = QUrl::fromLocalFile(destFile);
 
@@ -1303,17 +1267,17 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         if (pData.length() > 0)
         {
             QString destFile;
-            bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
-                sourceUrl.toString(),
-                UBPersistenceManager::audioDirectory,
-                uuid,
-                destFile,
-                &pData);
-            if (!b)
-            {
-                showMessage(tr("Add file operation failed: file copying error"));
-                return NULL;
-            }
+            //bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
+            //    sourceUrl.toString(),
+            //    UBPersistenceManager::audioDirectory,
+            //    uuid,
+             //   destFile,
+             //   &pData);
+            //if (!b)
+            //{
+            //    showMessage(tr("Add file operation failed: file copying error"));
+             //   return NULL;
+            //}
 
             QUrl url = QUrl::fromLocalFile(destFile);
 
@@ -1407,7 +1371,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         {
             QStringList fileNames;
             fileNames << sourceUrl.toLocalFile();
-            result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
+            //result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
         }
         else if(pData.size()){
             QTemporaryFile pdfFile("XXXXXX.pdf");
@@ -1416,7 +1380,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
                 pdfFile.write(pData);
                 QStringList fileNames;
                 fileNames << pdfFile.fileName();
-                result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
+                //result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
                 emit documentThumbnailsUpdated(this);
                 pdfFile.close();
             }
@@ -1536,9 +1500,10 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
 void UBBoardController::setActiveDocumentScene(int pSceneIndex)
 {
-    setActiveDocumentScene(selectedDocument(), pSceneIndex);
+    //setActiveDocumentScene(selectedDocument(), pSceneIndex);
 }
 
+#if 0
 void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, const int pSceneIndex, bool forceReload, bool onImport)
 {
     saveViewState();
@@ -1563,7 +1528,7 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
             ClearUndoStack();
         }else
         {
-            UBApplication::undoStack->clear();
+            //UBApplication::undoStack->clear();
         }
 
         mActiveScene = targetScene;
@@ -1604,6 +1569,7 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
         emit activeSceneChanged();
     }
 }
+#endif
 
 
 void UBBoardController::moveSceneToIndex(int source, int target)
@@ -1615,7 +1581,7 @@ void UBBoardController::moveSceneToIndex(int source, int target)
         UBDocumentContainer::movePageToIndex(source, target);
 
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
-        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
+        //UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
         mMovingSceneIndex = source;
         mActiveSceneIndex = target;
         setActiveDocumentScene(target);
@@ -1668,9 +1634,9 @@ void UBBoardController::ClearUndoStack()
 {
     QSet<QGraphicsItem*> uniqueItems;
     // go through all stack command
-    for (int i = 0; i < UBApplication::undoStack->count(); i++) {
-        findUniquesItems(UBApplication::undoStack->command(i), uniqueItems);
-    }
+    //for (int i = 0; i < UBApplication::undoStack->count(); i++) {
+    //    findUniquesItems(UBApplication::undoStack->command(i), uniqueItems);
+    //}
 
     // Get items from clipboard in order not to delete an item that was cut
     // (using source URL of graphics items as a surrogate for equality testing)
@@ -1679,15 +1645,15 @@ void UBBoardController::ClearUndoStack()
     const QMimeData* data = clipboard->mimeData();
     QList<QUrl> sourceURLs;
 
-    if (data && data->hasFormat(UBApplication::mimeTypeUniboardPageItem)) {
-        const UBMimeDataGraphicsItem* mimeDataGI = qobject_cast <const UBMimeDataGraphicsItem*>(data);
+    //if (data && data->hasFormat(UBApplication::mimeTypeUniboardPageItem)) {
+       // const UBMimeDataGraphicsItem* mimeDataGI = qobject_cast <const UBMimeDataGraphicsItem*>(data);
 
-        if (mimeDataGI) {
-            foreach (UBItem* sourceItem, mimeDataGI->items()) {
-                sourceURLs << sourceItem->sourceUrl();
-            }
-        }
-    }
+       // if (mimeDataGI) {
+       //     foreach (UBItem* sourceItem, mimeDataGI->items()) {
+       //         sourceURLs << sourceItem->sourceUrl();
+       //     }
+       // }
+    //}
 
     // go through all unique items, and check, if they are on scene, or not.
     // if not on scene, than item can be deleted
@@ -1715,7 +1681,7 @@ void UBBoardController::ClearUndoStack()
     }
 
     // clear stack, and command list
-    UBApplication::undoStack->clear();
+    //UBApplication::undoStack->clear();
 }
 
 void UBBoardController::adjustDisplayViews()
@@ -1723,7 +1689,7 @@ void UBBoardController::adjustDisplayViews()
     if (UBApplication::applicationController)
     {
         UBApplication::applicationController->adjustDisplayView();
-        UBApplication::applicationController->adjustPreviousViews(mActiveSceneIndex, selectedDocument());
+        //UBApplication::applicationController->adjustPreviousViews(mActiveSceneIndex, selectedDocument());
     }
 }
 
@@ -1777,11 +1743,11 @@ void UBBoardController::boardViewResized(QResizeEvent* event)
 
     mPaletteManager->containerResized();
 
-    UBApplication::boardController->controlView()->scene()->moveMagnifier();
+    //UBApplication::boardController->controlView()->scene()->moveMagnifier();
 
 }
 
-
+#if 0
 void UBBoardController::documentWillBeDeleted(UBDocumentProxy* pProxy)
 {
     if (selectedDocument() == pProxy)
@@ -1790,6 +1756,7 @@ void UBBoardController::documentWillBeDeleted(UBDocumentProxy* pProxy)
             setActiveDocumentScene(UBPersistenceManager::persistenceManager()->createDocument());
     }
 }
+#endif
 
 
 void UBBoardController::showMessage(const QString& message, bool showSpinningWheel)
@@ -1823,8 +1790,8 @@ void UBBoardController::undoRedoStateChange(bool canUndo)
 {
     Q_UNUSED(canUndo);
 
-    mMainWindow->actionUndo->setEnabled(UBApplication::undoStack->canUndo());
-    mMainWindow->actionRedo->setEnabled(UBApplication::undoStack->canRedo());
+    //mMainWindow->actionUndo->setEnabled(UBApplication::undoStack->canUndo());
+    //mMainWindow->actionRedo->setEnabled(UBApplication::undoStack->canRedo());
 
     updateActionStates();
 }
@@ -1854,6 +1821,7 @@ void UBBoardController::setActiveSceneIndex(int i)
     mActiveSceneIndex = i;
 }
 
+#if 0
 void UBBoardController::documentSceneChanged(UBDocumentProxy* pDocumentProxy, int pIndex)
 {
     Q_UNUSED(pIndex);
@@ -1864,6 +1832,7 @@ void UBBoardController::documentSceneChanged(UBDocumentProxy* pDocumentProxy, in
         updatePage(pIndex);
     }
 }
+#endif
 
 void UBBoardController::autosaveTimeout()
 {
@@ -1909,14 +1878,14 @@ void UBBoardController::lastWindowClosed()
     {
         if (selectedDocument()->pageCount() == 1 && (!mActiveScene || mActiveScene->isEmpty()))
         {
-            UBPersistenceManager::persistenceManager()->deleteDocument(selectedDocument());
+            //UBPersistenceManager::persistenceManager()->deleteDocument(selectedDocument());
         }
         else
         {
             persistCurrentScene();
         }
 
-        UBPersistenceManager::persistenceManager()->purgeEmptyDocuments();
+        //UBPersistenceManager::persistenceManager()->purgeEmptyDocuments();
 
         mCleanupDone = true;
     }
@@ -1999,14 +1968,14 @@ void UBBoardController::show()
 
 void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool forceImmediateSave)
 {
-    if(UBPersistenceManager::persistenceManager()
-            && selectedDocument() && mActiveScene && mActiveSceneIndex != mDeletingSceneIndex
-            && (mActiveSceneIndex >= 0) && mActiveSceneIndex != mMovingSceneIndex
-            && (mActiveScene->isModified()))
-    {
-        UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, UBPersistenceManager::PdfStripeYes);
-        updatePage(mActiveSceneIndex);
-    }
+    //if(UBPersistenceManager::persistenceManager()
+    //        && selectedDocument() && mActiveScene && mActiveSceneIndex != mDeletingSceneIndex
+    //        && (mActiveSceneIndex >= 0) && mActiveSceneIndex != mMovingSceneIndex
+    //        && (mActiveScene->isModified()))
+    //{
+    //    UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, UBPersistenceManager::PdfStripeYes);
+    //    updatePage(mActiveSceneIndex);
+    //}
 }
 
 void UBBoardController::updateSystemScaleFactor()
@@ -2052,8 +2021,8 @@ void UBBoardController::setWidePageSize(bool checked)
 
     if (mActiveScene->nominalSize() != newSize)
     {
-        UBPageSizeUndoCommand* uc = new UBPageSizeUndoCommand(mActiveScene, mActiveScene->nominalSize(), newSize);
-        UBApplication::undoStack->push(uc);
+        //UBPageSizeUndoCommand* uc = new UBPageSizeUndoCommand(mActiveScene, mActiveScene->nominalSize(), newSize);
+        //UBApplication::undoStack->push(uc);
 
         setPageSize(newSize);
     }
@@ -2067,8 +2036,8 @@ void UBBoardController::setRegularPageSize(bool checked)
 
     if (mActiveScene->nominalSize() != newSize)
     {
-        UBPageSizeUndoCommand* uc = new UBPageSizeUndoCommand(mActiveScene, mActiveScene->nominalSize(), newSize);
-        UBApplication::undoStack->push(uc);
+        //UBPageSizeUndoCommand* uc = new UBPageSizeUndoCommand(mActiveScene, mActiveScene->nominalSize(), newSize);
+        //UBApplication::undoStack->push(uc);
 
         setPageSize(newSize);
     }
@@ -2130,15 +2099,6 @@ void UBBoardController::saveViewState()
 
 void UBBoardController::stylusToolChanged(int tool)
 {
-    if (UBPlatformUtils::hasVirtualKeyboard() && mPaletteManager->mKeyboardPalette)
-    {
-        UBStylusTool::Enum eTool = (UBStylusTool::Enum)tool;
-        if(eTool != UBStylusTool::Selector && eTool != UBStylusTool::Text)
-        {
-            if(mPaletteManager->mKeyboardPalette->m_isVisible)
-                UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction::Trigger);
-        }
-    }
 
 }
 
@@ -2202,16 +2162,16 @@ UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
     if (!bUseSource)
     {
         QString destFile;
-        bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
-                    pSourceUrl.toLocalFile(),
-                    UBPersistenceManager::videoDirectory,
-                    uuid,
-                    destFile);
-        if (!b)
-        {
-            showMessage(tr("Add file operation failed: file copying error"));
-            return NULL;
-        }
+        //bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
+        //            pSourceUrl.toLocalFile(),
+        //            UBPersistenceManager::videoDirectory,
+        //            uuid,
+        //            destFile);
+        //if (!b)
+        //{
+        //    showMessage(tr("Add file operation failed: file copying error"));
+         //   return NULL;
+        //}
         concreteUrl = QUrl::fromLocalFile(destFile);
     }// else we just use source Url.
 
@@ -2237,16 +2197,16 @@ UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool st
     if (!bUseSource)
     {
         QString destFile;
-        bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
-            pSourceUrl.toLocalFile(),
-            UBPersistenceManager::audioDirectory,
-            uuid,
-            destFile);
-        if (!b)
-        {
-            showMessage(tr("Add file operation failed: file copying error"));
-            return NULL;
-        }
+        //bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
+         //   pSourceUrl.toLocalFile(),
+         //   UBPersistenceManager::audioDirectory,
+         //   uuid,
+         //   destFile);
+        //if (!b)
+        //{
+        //    showMessage(tr("Add file operation failed: file copying error"));
+        //    return NULL;
+        //}
         concreteUrl = QUrl::fromLocalFile(destFile);
     }// else we just use source Url.
 
@@ -2269,8 +2229,8 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
     QUuid uuid = QUuid::createUuid();
 
     QString destPath;
-    if (!UBPersistenceManager::persistenceManager()->addGraphicsWidgetToDocument(selectedDocument(), pUrl.toLocalFile(), uuid, destPath))
-        return NULL;
+    //if (!UBPersistenceManager::persistenceManager()->addGraphicsWidgetToDocument(selectedDocument(), pUrl.toLocalFile(), uuid, destPath))
+    //    return NULL;
     QUrl newUrl = QUrl::fromLocalFile(destPath);
 
     w3cWidgetItem = mActiveScene->addW3CWidget(newUrl, pos);
@@ -2281,11 +2241,11 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
         w3cWidgetItem->setSourceUrl(pUrl);
 
         QString struuid = UBStringUtils::toCanonicalUuid(uuid);
-        QString snapshotPath = selectedDocument()->persistencePath() +  "/" + UBPersistenceManager::widgetDirectory + "/" + struuid + ".png";
-        w3cWidgetItem->setSnapshotPath(QUrl::fromLocalFile(snapshotPath));
+        //QString snapshotPath = selectedDocument()->persistencePath() +  "/" + UBPersistenceManager::widgetDirectory + "/" + struuid + ".png";
+        //w3cWidgetItem->setSnapshotPath(QUrl::fromLocalFile(snapshotPath));
         UBGraphicsWidgetItem *tmpItem = dynamic_cast<UBGraphicsWidgetItem*>(w3cWidgetItem);
-        if (tmpItem && tmpItem->scene())
-           tmpItem->takeSnapshot().save(snapshotPath, "PNG");
+        //if (tmpItem && tmpItem->scene())
+         //  tmpItem->takeSnapshot().save(snapshotPath, "PNG");
 
     }
 
@@ -2323,10 +2283,10 @@ void UBBoardController::cut()
     {
         QClipboard *clipboard = QApplication::clipboard();
 
-        UBMimeDataGraphicsItem*  mimeGi = new UBMimeDataGraphicsItem(selected);
+        //UBMimeDataGraphicsItem*  mimeGi = new UBMimeDataGraphicsItem(selected);
 
-        mimeGi->setData(UBApplication::mimeTypeUniboardPageItem, QByteArray());
-        clipboard->setMimeData(mimeGi);
+        //mimeGi->setData(UBApplication::mimeTypeUniboardPageItem, QByteArray());
+        //clipboard->setMimeData(mimeGi);
 
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
     }
@@ -2351,10 +2311,10 @@ void UBBoardController::copy()
     {
         QClipboard *clipboard = QApplication::clipboard();
 
-        UBMimeDataGraphicsItem*  mimeGi = new UBMimeDataGraphicsItem(selected);
+        //UBMimeDataGraphicsItem*  mimeGi = new UBMimeDataGraphicsItem(selected);
 
-        mimeGi->setData(UBApplication::mimeTypeUniboardPageItem, QByteArray());
-        clipboard->setMimeData(mimeGi);
+        //mimeGi->setData(UBApplication::mimeTypeUniboardPageItem, QByteArray());
+        //clipboard->setMimeData(mimeGi);
 
     }
 }
@@ -2381,7 +2341,7 @@ bool zLevelLessThan( UBItem* s1, UBItem* s2)
 
 void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPointF& pPos)
 {
-    if (pMimeData->hasFormat(UBApplication::mimeTypeUniboardPage))
+/*   if (pMimeData->hasFormat(UBApplication::mimeTypeUniboardPage))
     {
         const UBMimeData* mimeData = qobject_cast <const UBMimeData*>(pMimeData);
 
@@ -2496,14 +2456,14 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
                 }
 #endif
         }
-    }
+    }*/
 }
 
 
 void UBBoardController::togglePodcast(bool checked)
 {
-    if (UBPodcastController::instance())
-        UBPodcastController::instance()->toggleRecordingPalette(checked);
+    //if (UBPodcastController::instance())
+    //    UBPodcastController::instance()->toggleRecordingPalette(checked);
 }
 
 void UBBoardController::moveGraphicsWidgetToControlView(UBGraphicsWidgetItem* graphicsWidget)
@@ -2601,10 +2561,10 @@ void UBBoardController::addItem()
 void UBBoardController::importPage()
 {
     int pageCount = selectedDocument()->pageCount();
-    if (UBApplication::documentController->addFileToDocument(selectedDocument()))
-    {
-        setActiveDocumentScene(selectedDocument(), pageCount, true);
-    }
+    //if (UBApplication::documentController->addFileToDocument(selectedDocument()))
+    //{
+    //    setActiveDocumentScene(selectedDocument(), pageCount, true);
+    //}
 }
 
 void UBBoardController::notifyPageChanged()
@@ -2642,9 +2602,9 @@ void UBBoardController::freezeW3CWidget(QGraphicsItem *item, bool freeze)
         if (0 == item_casted)
             return;
 
-        if (freeze) {
+        /* if (freeze) {
             item_casted->load(QUrl(UBGraphicsW3CWidgetItem::freezedWidgetFilePath()));
         } else
-            item_casted->loadMainHtml();
+            item_casted->loadMainHtml(); */
     }
 }

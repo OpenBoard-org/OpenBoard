@@ -42,7 +42,7 @@
 #include "core/UBMimeData.h"
 #include "core/UBApplication.h"
 #include "core/UBSetting.h"
-#include "core/UBPersistenceManager.h"
+
 #include "core/UB.h"
 
 #include "network/UBHttpGet.h"
@@ -52,7 +52,7 @@
 #include "gui/UBToolWidget.h"
 #include "gui/UBResources.h"
 #include "gui/UBMainWindow.h"
-#include "gui/UBThumbnailWidget.h"
+//#include "gui/UBThumbnailWidget.h"
 
 #include "board/UBBoardController.h"
 #include "board/UBBoardPaletteManager.h"
@@ -65,7 +65,7 @@
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
-#include "domain/UBGraphicsPDFItem.h"
+//#include "domain/UBGraphicsPDFItem.h"
 #include "domain/UBGraphicsPolygonItem.h"
 #include "domain/UBItem.h"
 #include "domain/UBGraphicsMediaItem.h"
@@ -73,8 +73,7 @@
 #include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBGraphicsStrokesGroup.h"
 #include "domain/UBGraphicsItemDelegate.h"
-
-#include "document/UBDocumentProxy.h"
+#include "domain/UBGraphicsScene.h"
 
 #include "tools/UBGraphicsRuler.h"
 #include "tools/UBGraphicsCurtainItem.h"
@@ -585,8 +584,8 @@ Here we determines cases when items should to get mouse press event at pressing 
         }
         return false;
         break;
-    case QGraphicsWebView::Type:
-        return true;
+    //case QGraphicsWebView::Type:
+    //    return true;
     case QGraphicsProxyWidget::Type:
         return false;
 
@@ -616,8 +615,8 @@ bool UBBoardView::itemShouldReceiveSuspendedMousePressEvent(QGraphicsItem *item)
 
     switch(item->type())
     {
-    case QGraphicsWebView::Type:
-        return false;
+    //case QGraphicsWebView::Type:
+    //    return false;
     case UBGraphicsPixmapItem::Type:
     case UBGraphicsSvgItem::Type:
     case UBGraphicsTextItem::Type:
@@ -1283,7 +1282,7 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
                             DelegateButton::Type != getMovingItem()->type() &&
                             UBGraphicsDelegateFrame::Type !=  getMovingItem()->type() &&
                             UBGraphicsCache::Type != getMovingItem()->type() &&
-                            QGraphicsWebView::Type != getMovingItem()->type() && // for W3C widgets as Tools.
+                            //QGraphicsWebView::Type != getMovingItem()->type() && // for W3C widgets as Tools.
                             !(!isMultipleSelectionEnabled() && getMovingItem()->parentItem() && UBGraphicsWidgetItem::Type == getMovingItem()->type() && UBGraphicsGroupContainerItem::Type == getMovingItem()->parentItem()->type()))
                     {
                         bReleaseIsNeed = false;
@@ -1365,7 +1364,7 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
                         QGraphicsSvgItem::Type !=  getMovingItem()->type() &&
                         UBGraphicsDelegateFrame::Type !=  getMovingItem()->type() &&
                         UBGraphicsCache::Type != getMovingItem()->type() &&
-                        QGraphicsWebView::Type != getMovingItem()->type() && // for W3C widgets as Tools.
+                        //QGraphicsWebView::Type != getMovingItem()->type() && // for W3C widgets as Tools.
                         !(!isMultipleSelectionEnabled() && getMovingItem()->parentItem() && UBGraphicsWidgetItem::Type == getMovingItem()->type() && UBGraphicsGroupContainerItem::Type == getMovingItem()->parentItem()->type()))
                 {
                     bReleaseIsNeed = false;
@@ -1566,8 +1565,8 @@ void UBBoardView::dropEvent (QDropEvent *event)
     }
     else {
         if (!event->source()
-                || qobject_cast<UBThumbnailWidget *>(event->source())
-                || qobject_cast<QWebView*>(event->source())
+                //|| qobject_cast<UBThumbnailWidget *>(event->source())
+                //|| qobject_cast<QWebView*>(event->source())
                 || qobject_cast<QListView *>(event->source())) {
             mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
             event->acceptProposedAction();
@@ -1765,7 +1764,7 @@ void UBBoardView::setToolCursor (int tool)
         controlViewport->setCursor (UBResources::resources ()->penCursor);
         break;
     default:
-        Q_ASSERT (false);
+        //Q_ASSERT (false);
         //failsafe
         controlViewport->setCursor (UBResources::resources ()->penCursor);
     }

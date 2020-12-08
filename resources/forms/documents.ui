@@ -163,52 +163,6 @@
             </item>
            </layout>
           </item>
-          <item>
-           <widget class="UBDocumentTreeView" name="documentTreeView">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="autoScroll">
-             <bool>true</bool>
-            </property>
-            <property name="autoScrollMargin">
-             <number>65</number>
-            </property>
-            <property name="selectionMode">
-             <enum>QAbstractItemView::ExtendedSelection</enum>
-            </property>
-            <property name="selectionBehavior">
-             <enum>QAbstractItemView::SelectRows</enum>
-            </property>
-            <property name="verticalScrollMode">
-             <enum>QAbstractItemView::ScrollPerItem</enum>
-            </property>
-            <property name="animated">
-             <bool>true</bool>
-            </property>
-            <property name="headerHidden">
-             <bool>true</bool>
-            </property>
-            <attribute name="headerVisible">
-             <bool>false</bool>
-            </attribute>
-           </widget>
-          </item>
          </layout>
         </widget>
         <widget class="QFrame" name="topRightFrame">
@@ -216,34 +170,6 @@
           <string notr="true"/>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <widget class="UBDocumentThumbnailWidget" name="thumbnailWidget">
-            <property name="contextMenuPolicy">
-             <enum>Qt::NoContextMenu</enum>
-            </property>
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Plain</enum>
-            </property>
-            <property name="lineWidth">
-             <number>1</number>
-            </property>
-            <property name="verticalScrollBarPolicy">
-             <enum>Qt::ScrollBarAsNeeded</enum>
-            </property>
-            <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOff</enum>
-            </property>
-            <property name="dragMode">
-             <enum>QGraphicsView::NoDrag</enum>
-            </property>
-           </widget>
-          </item>
           <item>
            <widget class="QWidget" name="bottomRightFrame" native="true">
             <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -344,18 +270,6 @@
   </layout>
  </widget>
  <layoutdefault spacing="0" margin="0"/>
- <customwidgets>
-  <customwidget>
-   <class>UBDocumentThumbnailWidget</class>
-   <extends>QGraphicsView</extends>
-   <header>gui/UBDocumentThumbnailWidget.h</header>
-  </customwidget>
-  <customwidget>
-   <class>UBDocumentTreeView</class>
-   <extends>QTreeView</extends>
-   <header>document/UBDocumentController.h</header>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="../OpenBoard.qrc"/>
  </resources>

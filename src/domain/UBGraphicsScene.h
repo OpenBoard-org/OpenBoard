@@ -46,12 +46,12 @@ class UBGraphicsWidgetItem;
 class UBGraphicsW3CWidgetItem;
 class UBGraphicsAppleWidgetItem;
 class UBToolWidget;
-class UBGraphicsPDFItem;
+//class UBGraphicsPDFItem;
 class UBGraphicsTextItem;
 class UBGraphicsRuler;
 class UBGraphicsProtractor;
 class UBGraphicsCompass;
-class UBDocumentProxy;
+//class UBDocumentProxy;
 class UBGraphicsCurtainItem;
 class UBGraphicsStroke;
 class UBMagnifierParams;
@@ -128,7 +128,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void setURStackEnable(bool enable){mUndoRedoStackEnabled = enable;}
         bool isURStackIsEnabled(){return mUndoRedoStackEnabled;}
 
-        UBGraphicsScene(UBDocumentProxy *parent, bool enableUndoRedoStack = true);
+        UBGraphicsScene(QObject *parent, bool enableUndoRedoStack = true);
         virtual ~UBGraphicsScene();
 
         virtual UBItem* deepCopy() const;
@@ -203,12 +203,12 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         bool isEmpty() const;
 
-        void setDocument(UBDocumentProxy* pDocument);
+        //void setDocument(UBDocumentProxy* pDocument);
 
-        UBDocumentProxy* document() const
-        {
-            return mDocument;
-        }
+        //UBDocumentProxy* document() const
+        //{
+        //    return mDocument;
+        //}
 
         bool isDarkBackground() const
         {
@@ -436,7 +436,7 @@ public slots:
         QSet<QGraphicsItem*> mAddedItems;
         QSet<QGraphicsItem*> mRemovedItems;
 
-        UBDocumentProxy* mDocument;
+        //UBDocumentProxy* mDocument;
 
         bool mDarkBackground;
         UBPageBackground mPageBackground;

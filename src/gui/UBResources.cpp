@@ -54,7 +54,7 @@ UBResources* UBResources::resources()
 {
     if (!sSingleton)
     {
-        sSingleton = new UBResources(UBApplication::staticMemoryCleaner);
+        sSingleton = new UBResources(nullptr);
         sSingleton->init();
         sSingleton->buildFontList();
     }

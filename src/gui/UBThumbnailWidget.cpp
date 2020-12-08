@@ -42,7 +42,7 @@
 #include "core/UBApplication.h"
 
 #include "document/UBDocumentProxy.h"
-#include "document/UBDocumentController.h"
+//#include "document/UBDocumentController.h"
 
 #include "board/UBBoardPaletteManager.h"
 
@@ -981,9 +981,9 @@ void UBDraggableThumbnail::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void UBDraggableThumbnail::deletePage()
 {
-    if(UBApplication::mainWindow->yesNoQuestion(QObject::tr("Remove Page"), QObject::tr("Are you sure you want to remove 1 page from the selected document '%0'?").arg(UBApplication::documentController->selectedDocument()->metaData(UBSettings::documentName).toString()))){
-        UBApplication::boardController->deleteScene(sceneIndex());
-    }
+    //if(UBApplication::mainWindow->yesNoQuestion(QObject::tr("Remove Page"), QObject::tr("Are you sure you want to remove 1 page from the selected document '%0'?").arg(UBApplication::documentController->selectedDocument()->metaData(UBSettings::documentName).toString()))){
+    //    UBApplication::boardController->deleteScene(sceneIndex());
+    //}
 }
 
 void UBDraggableThumbnail::duplicatePage()

@@ -32,9 +32,9 @@
 #include <QtGui>
 
 
-#include "frameworks/UBPlatformUtils.h"
-#include "frameworks/UBFileSystemUtils.h"
-#include "frameworks/UBCryptoUtils.h"
+//#include "frameworks/UBPlatformUtils.h"
+//#include "frameworks/UBFileSystemUtils.h"
+//#include "frameworks/UBCryptoUtils.h"
 
 #include "UB.h"
 #include "UBSetting.h"
@@ -157,18 +157,18 @@ QSettings* UBSettings::getAppSettings()
     if (!UBSettings::sAppSettings)
     {
         QString tmpSettings = QDir::tempPath() + "/" + qApp->applicationName() + ".config";
-        QString appSettings = UBPlatformUtils::applicationResourcesDirectory() + "/etc/" + qApp->applicationName() + ".config";
+        QString appSettings = ""; // UBPlatformUtils::applicationResourcesDirectory() + "/etc/" + qApp->applicationName() + ".config";
 
         // tmpSettings exists when upgrading Uniboard on Mac (see UBPlatformUtils_mac.mm updater:willInstallUpdate:)
         if (QFile::exists(tmpSettings))
         {
-            QFile::rename(tmpSettings, appSettings);
+            //QFile::rename(tmpSettings, appSettings);
         }
 
         UBSettings::sAppSettings = new QSettings(appSettings, QSettings::IniFormat, 0);
         UBSettings::sAppSettings->setIniCodec("utf-8");
 
-        qDebug() << "sAppSettings location: " << appSettings;
+        //qDebug() << "sAppSettings location: " << appSettings;
     }
 
     return UBSettings::sAppSettings;
@@ -917,7 +917,7 @@ QString UBSettings::userDataDirectory()
                 qCritical() << "Impossible to create datadirpath " << dataDirPath;
 
         }
-        dataDirPath = UBFileSystemUtils::normalizeFilePath(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+        //dataDirPath = UBFileSystemUtils::normalizeFilePath(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
         if (qApp->organizationName().size() > 0)
             dataDirPath.replace(qApp->organizationName() + "/", "");
     }
@@ -1064,7 +1064,7 @@ QString UBSettings::applicationShapeLibraryDirectory()
     QString configPath = value("Library/ShapeDirectory", QVariant(defaultRelativePath)).toString();
 
     if (configPath.startsWith(".")) {
-        return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
+        return ""; //UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
     }
     else {
         return configPath;
@@ -1074,7 +1074,7 @@ QString UBSettings::applicationShapeLibraryDirectory()
 QString UBSettings::applicationCustomizationDirectory()
 {
     QString defaultRelativePath = QString("/customizations");
-    return UBPlatformUtils::applicationResourcesDirectory() + defaultRelativePath;
+    return ""; //UBPlatformUtils::applicationResourcesDirectory() + defaultRelativePath;
 
 }
 
@@ -1088,7 +1088,7 @@ QString UBSettings::userSearchDirectory()
 {
     static QString dirPath = "";
     if(dirPath.isEmpty()){
-        dirPath = UBPlatformUtils::applicationResourcesDirectory() + "/library/search";
+        dirPath = ""; // UBPlatformUtils::applicationResourcesDirectory() + "/library/search";
         checkDirectory(dirPath);
     }
     return dirPath;
@@ -1101,7 +1101,7 @@ QString UBSettings::applicationImageLibraryDirectory()
     QString configPath = value("Library/ImageDirectory", QVariant(defaultRelativePath)).toString();
 
     if (configPath.startsWith(".")) {
-        return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
+        return "";// UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
     }
     else {
         return configPath;
@@ -1144,7 +1144,7 @@ QString UBSettings::applicationInteractivesDirectory()
     QString configPath = value("Library/InteractivitiesDirectory", QVariant(defaultRelativePath)).toString();
 
     if (configPath.startsWith(".")) {
-        return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
+        return ""; // UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
     }
     else {
         return configPath;
@@ -1158,7 +1158,7 @@ QString UBSettings::applicationApplicationsLibraryDirectory()
     QString configPath = value("Library/ApplicationsDirectory", QVariant(defaultRelativePath)).toString();
 
     if (configPath.startsWith(".")) {
-        return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
+        return ""; // UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
     }
     else {
         return configPath;
@@ -1173,7 +1173,7 @@ QString UBSettings::applicationAudiosLibraryDirectory()
     QString configPath = value("Library/AudiosDirectory", QVariant(defaultRelativePath)).toString();
 
     if (configPath.startsWith(".")) {
-        return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
+        return ""; // UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
     }
     else {
         return configPath;
@@ -1187,7 +1187,7 @@ QString UBSettings::applicationVideosLibraryDirectory()
     QString configPath = value("Library/VideosDirectory", QVariant(defaultRelativePath)).toString();
 
     if (configPath.startsWith(".")) {
-        return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
+        return ""; // UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
     }
     else {
         return configPath;
@@ -1201,7 +1201,7 @@ QString UBSettings::applicationAnimationsLibraryDirectory()
     QString configPath = value("Library/AnimationsDirectory", QVariant(defaultRelativePath)).toString();
 
     if (configPath.startsWith(".")) {
-        return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
+        return ""; // UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
     }
     else {
         return configPath;
@@ -1215,7 +1215,7 @@ QString UBSettings::applicationStartupHintsDirectory()
     QString configPath = value("StartupHintsDirectory", QVariant(defaultRelativePath)).toString();
 
     if (configPath.startsWith(".")) {
-        return UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
+        return ""; // UBPlatformUtils::applicationResourcesDirectory() + configPath.right(configPath.size() - 1);
     }
     else
         return configPath;
@@ -1240,7 +1240,7 @@ QString UBSettings::userInteractiveFavoritesDirectory()
     return dirPath;
 }
 
-
+/*
 QNetworkProxy* UBSettings::httpProxy()
 {
     QNetworkProxy* proxy = 0;
@@ -1262,13 +1262,13 @@ QNetworkProxy* UBSettings::httpProxy()
 
     return proxy;
 }
-
+*/
 
 void UBSettings::setPassword(const QString& id, const QString& password)
 {
-    QString encrypted = UBCryptoUtils::instance()->symetricEncrypt(password);
+    //QString encrypted = UBCryptoUtils::instance()->symetricEncrypt(password);
 
-    mUserSettings->setValue(QString("Vault/") + id, encrypted);
+    //mUserSettings->setValue(QString("Vault/") + id, encrypted);
 }
 
 
@@ -1284,8 +1284,8 @@ QString UBSettings::password(const QString& id)
 
     QString result = "";
 
-    if (encrypted.length() > 0)
-        result =  UBCryptoUtils::instance()->symetricDecrypt(encrypted);
+    //if (encrypted.length() > 0)
+    //    result =  UBCryptoUtils::instance()->symetricDecrypt(encrypted);
 
     return result;
 }
@@ -1383,9 +1383,9 @@ QString UBSettings::replaceWildcard(QString& path)
         result = result.replace("{Desktop}", QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
     }
 
-    if(result.contains("{UserLoginName}") && UBPlatformUtils::osUserLoginName().length() > 0) {
-        result = result.replace("{UserLoginName}", UBPlatformUtils::osUserLoginName());
-    }
+    //if(result.contains("{UserLoginName}") && UBPlatformUtils::osUserLoginName().length() > 0) {
+    //    result = result.replace("{UserLoginName}", UBPlatformUtils::osUserLoginName());
+    //}
 
     return result;
 }

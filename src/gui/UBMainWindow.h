@@ -33,7 +33,6 @@
 #include <QMainWindow>
 #include <QWidget>
 #include <QMessageBox>
-#include "UBDownloadWidget.h"
 
 class QStackedLayout;
 
@@ -92,7 +91,6 @@ private:
 #if defined(Q_OS_OSX)
         bool event(QEvent *event);
 #endif
-        UBDownloadWidget* mpDownloadWidget;
 };
 
 #endif /* UBMAINWINDOW_H_ */

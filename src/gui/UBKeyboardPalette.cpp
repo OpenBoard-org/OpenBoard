@@ -77,8 +77,6 @@ UBKeyboardPalette::UBKeyboardPalette(QWidget *parent)
         buttons[i] = new UBKeyButton(this);
     }
 
-    locales = UBPlatformUtils::getKeyboardLayouts(this->nLocalesCount);
-
     createCtrlButtons();
 
     nCurrentLocale = UBSettings::settings()->KeyboardLocale->get().toInt();

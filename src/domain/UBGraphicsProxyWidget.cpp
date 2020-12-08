@@ -37,7 +37,7 @@
 #include "UBGraphicsDelegateFrame.h"
 
 #include "core/UBApplication.h"
-#include "core/UBPersistenceManager.h"
+
 
 #include "board/UBBoardController.h"
 

@@ -39,10 +39,10 @@
 #include "core/UBDisplayManager.h"
 
 #include "board/UBBoardController.h"
-#include "document/UBDocumentController.h"
+//#include "document/UBDocumentController.h"
 #include "domain/UBGraphicsScene.h"
 #include "board/UBDrawingController.h"
-#include "podcast/UBPodcastController.h"
+//#include "podcast/UBPodcastController.h"
 
 #include "ui_preferences.h"
 
@@ -140,7 +140,7 @@ void UBPreferencesController::wire()
 
     // Documents Mode preferences
     connect(mPreferencesUI->showDateColumnOnAlphabeticalSort, SIGNAL(clicked(bool)), settings->showDateColumnOnAlphabeticalSort, SLOT(setBool(bool)));
-    connect(mPreferencesUI->showDateColumnOnAlphabeticalSort, SIGNAL(clicked(bool)), UBApplication::documentController, SLOT(refreshDateColumns()));
+    //connect(mPreferencesUI->showDateColumnOnAlphabeticalSort, SIGNAL(clicked(bool)), UBApplication::documentController, SLOT(refreshDateColumns()));
     connect(mPreferencesUI->emptyTrashForOlderDocuments, SIGNAL(clicked(bool)), settings->emptyTrashForOlderDocuments, SLOT(setBool(bool)));
     connect(mPreferencesUI->emptyTrashDaysValue, SIGNAL(valueChanged(int)), settings->emptyTrashDaysValue,  SLOT(setInt(int)));
 
@@ -352,7 +352,7 @@ void UBPreferencesController::defaultSettings()
         mPreferencesUI->useSystemOSKCheckBox->setChecked(settings->useSystemOnScreenKeyboard->reset().toBool());
 
         mPreferencesUI->showDateColumnOnAlphabeticalSort->setChecked(settings->showDateColumnOnAlphabeticalSort->reset().toBool());
-        UBApplication::documentController->refreshDateColumns();
+        //UBApplication::documentController->refreshDateColumns();
 
         mPreferencesUI->emptyTrashForOlderDocuments->setChecked(settings->emptyTrashForOlderDocuments->reset().toBool());
         mPreferencesUI->emptyTrashDaysValue->setValue(settings->emptyTrashDaysValue->reset().toInt());

@@ -66,13 +66,13 @@ UBLeftPalette::~UBLeftPalette()
 
 }
 
-
+/*
 void UBLeftPalette::onDocumentSet(UBDocumentProxy* documentProxy)
 {
     Q_UNUSED(documentProxy)
     // the tab zero is forced
     mLastOpenedTabForMode.insert(eUBDockPaletteWidget_BOARD, 0);
-}
+}*/
 
 /**
  * \brief Update the maximum width

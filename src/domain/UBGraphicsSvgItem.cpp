@@ -36,7 +36,6 @@
 #include "UBGraphicsPixmapItem.h"
 
 #include "core/UBApplication.h"
-#include "core/UBPersistenceManager.h"
 
 #include "board/UBBoardController.h"
 
@@ -236,7 +235,7 @@ void UBGraphicsSvgItem::setUuid(const QUuid &pUuid)
 
 void UBGraphicsSvgItem::clearSource()
 {
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + uuid().toString() + ".svg";
-    QString diskPath =  UBApplication::boardController->selectedDocument()->persistencePath() + "/" + fileName;
-    UBFileSystemUtils::deleteFile(diskPath);
+    //QString fileName = UBPersistenceManager::imageDirectory + "/" + uuid().toString() + ".svg";
+    //QString diskPath =  UBApplication::boardController->selectedDocument()->persistencePath() + "/" + fileName;
+    //UBFileSystemUtils::deleteFile(diskPath);
 }

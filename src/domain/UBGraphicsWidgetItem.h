@@ -32,17 +32,17 @@
 
 #include <QtGui>
 #include <QDomElement>
-#include <QGraphicsWebView>
+//#include <QGraphicsWebView>
 
 #include "core/UB.h"
 
 #include "UBItem.h"
 #include "UBResizableGraphicsItem.h"
 
-class UBWidgetUniboardAPI;
+//class UBWidgetUniboardAPI;
 class UBGraphicsScene;
-class UBW3CWidgetAPI;
-class UBW3CWidgetWebStorageAPI;
+//class UBW3CWidgetAPI;
+//class UBW3CWidgetWebStorageAPI;
 class UBGraphiscItem;
 class UBGraphiscItemDelegate;
 
@@ -54,7 +54,7 @@ struct UBWidgetType
     };
 };
 
-class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBResizableGraphicsItem, public UBGraphicsItem
+class UBGraphicsWidgetItem : public QGraphicsWidget, public UBItem, public UBResizableGraphicsItem, public UBGraphicsItem
 {
     Q_OBJECT
 
@@ -182,7 +182,7 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
         bool mIsFrozen;
         bool mIsTakingSnapshot;
         bool mShouldMoveWidget;
-        UBWidgetUniboardAPI* mUniboardAPI;
+        //UBWidgetUniboardAPI* mUniboardAPI;
         QPixmap mSnapshot;
         QPointF mLastMousePos;
         QUrl ownFolder;
@@ -267,7 +267,7 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         static void loadNPAPIWrappersTemplates();
         static QString textForSubElementByLocale(QDomElement rootElement, QString subTagName, QLocale locale);
 
-        UBW3CWidgetAPI* mW3CWidgetAPI;
+        //UBW3CWidgetAPI* mW3CWidgetAPI;
         QMap<QString, PreferenceValue> mPreferences;
 
         static bool sTemplateLoaded;

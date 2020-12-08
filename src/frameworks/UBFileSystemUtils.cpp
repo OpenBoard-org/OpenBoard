@@ -35,14 +35,6 @@
 
 #include "globals/UBGlobals.h"
 
-THIRD_PARTY_WARNINGS_DISABLE
-#ifdef Q_OS_OSX
-    #include <quazipfile.h>
-#else
-    #include "quazipfile.h"
-#endif
-#include <openssl/md5.h>
-THIRD_PARTY_WARNINGS_ENABLE
 
 #include "core/memcheck.h"
 
@@ -641,7 +633,7 @@ QString UBFileSystemUtils::getFirstExistingFileFromList(const QString& path, con
 
 }
 
-
+#if 0
 bool UBFileSystemUtils::compressDirInZip(const QDir& pDir, const QString& pDestPath, QuaZipFile *pOutZipFile, bool pRootDocumentFolder, UBProcessingProgressListener* progressListener)
 {
     QFileInfoList files = pDir.entryInfoList(QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot);
@@ -725,11 +717,15 @@ bool UBFileSystemUtils::compressDirInZip(const QDir& pDir, const QString& pDestP
 
     return true;
 }
+#endif
 
 
 
 bool UBFileSystemUtils::expandZipToDir(const QFile& pZipFile, const QDir& pTargetDir)
 {
+    return false;
+
+#if 0
     QuaZip zip(pZipFile.fileName());
 
     if(!zip.open(QuaZip::mdUnzip))
@@ -824,11 +820,14 @@ bool UBFileSystemUtils::expandZipToDir(const QFile& pZipFile, const QDir& pTarge
     }
 
     return true;
+#endif
 }
 
 
 QString UBFileSystemUtils::md5InHex(const QByteArray &pByteArray)
 {
+    return "";
+#if 0
     MD5_CTX ctx;
     MD5_Init(&ctx);
     MD5_Update(&ctx, pByteArray.data(), pByteArray.size());
@@ -837,10 +836,14 @@ QString UBFileSystemUtils::md5InHex(const QByteArray &pByteArray)
     MD5_Final(result, &ctx);
 
     return QString(QByteArray((char *)result, 16).toHex());
+#endif
 }
 
 QString UBFileSystemUtils::md5(const QByteArray &pByteArray)
 {
+    return "";
+
+#if 0
     MD5_CTX ctx;
     MD5_Init(&ctx);
     MD5_Update(&ctx, pByteArray.data(), pByteArray.size());
@@ -855,6 +858,7 @@ QString UBFileSystemUtils::md5(const QByteArray &pByteArray)
     }
 
     return s;
+#endif
 }
 
 QString UBFileSystemUtils::readTextFile(QString path)

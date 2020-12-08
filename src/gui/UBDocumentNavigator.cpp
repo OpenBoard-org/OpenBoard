@@ -40,9 +40,9 @@
 #include "UBDocumentNavigator.h"
 #include "board/UBBoardController.h"
 #include "board/UBBoardView.h"
-#include "adaptors/UBThumbnailAdaptor.h"
-#include "adaptors/UBSvgSubsetAdaptor.h"
-#include "document/UBDocumentController.h"
+//#include "adaptors/UBThumbnailAdaptor.h"
+//#include "adaptors/UBSvgSubsetAdaptor.h"
+//#include "document/UBDocumentController.h"
 #include "domain/UBGraphicsScene.h"
 #include "board/UBBoardPaletteManager.h"
 #include "core/UBApplicationController.h"
@@ -145,17 +145,17 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
         UBSceneThumbnailNavigPixmap* pixmapItem = new UBSceneThumbnailNavigPixmap(*pix, source->selectedDocument(), i);
 
         QString label = tr("Page %0").arg(pageIndex);
-        UBThumbnailTextItem *labelItem = new UBThumbnailTextItem(label);
+        //UBThumbnailTextItem *labelItem = new UBThumbnailTextItem(label);
 
-        UBImgTextThumbnailElement thumbWithText(pixmapItem, labelItem);
-        thumbWithText.setBorder(border());
-        mThumbsWithLabels.append(thumbWithText);
+        //UBImgTextThumbnailElement thumbWithText(pixmapItem, labelItem);
+        //thumbWithText.setBorder(border());
+        //mThumbsWithLabels.append(thumbWithText);
 
         if (lastClickedIndex == i)
             mLastClickedThumbnail = pixmapItem;
 
         mScene->addItem(pixmapItem);
-        mScene->addItem(labelItem);
+        //mScene->addItem(labelItem);
     }
 
     if (selectedIndex >= 0 && selectedIndex < mThumbsWithLabels.count())

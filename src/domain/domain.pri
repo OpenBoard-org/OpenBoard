@@ -9,7 +9,7 @@ HEADERS += src/domain/UBGraphicsScene.h \
     src/domain/UBGraphicsPolygonItem.h \
     src/domain/UBItem.h \
     src/domain/UBGraphicsWidgetItem.h \
-    src/domain/UBGraphicsPDFItem.h \
+    #src/domain/UBGraphicsPDFItem.h \
     src/domain/UBGraphicsTextItem.h \
     src/domain/UBResizableGraphicsItem.h \
     src/domain/UBGraphicsStroke.h \
@@ -38,7 +38,7 @@ SOURCES += src/domain/UBGraphicsScene.cpp \
     src/domain/UBGraphicsPolygonItem.cpp \
     src/domain/UBItem.cpp \
     src/domain/UBGraphicsWidgetItem.cpp \
-    src/domain/UBGraphicsPDFItem.cpp \
+    #src/domain/UBGraphicsPDFItem.cpp \
     src/domain/UBGraphicsTextItem.cpp \
     src/domain/UBResizableGraphicsItem.cpp \
     src/domain/UBGraphicsStroke.cpp \

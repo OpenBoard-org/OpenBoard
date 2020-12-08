@@ -122,8 +122,8 @@ class UBPersistenceManager : public QObject
         void reassignDocProxy(UBDocumentProxy *newDocument, UBDocumentProxy *oldDocument);
 
 //        QList<QPointer<UBDocumentProxy> > documentProxies;
-        UBDocumentTreeNode *mDocumentTreeStructure;
-        UBDocumentTreeModel *mDocumentTreeStructureModel;
+        //UBDocumentTreeNode *mDocumentTreeStructure;
+        //UBDocumentTreeModel *mDocumentTreeStructureModel;
 
         virtual QStringList allShapes();
         virtual QStringList allGips();

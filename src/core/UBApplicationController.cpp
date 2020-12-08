@@ -32,10 +32,10 @@
 #include "frameworks/UBVersion.h"
 
 #include "core/UBApplication.h"
-#include "core/UBPersistenceManager.h"
+
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
-#include "core/UBDocumentManager.h"
+//#include "core/UBDocumentManager.h"
 #include "core/UBDisplayManager.h"
 #include "core/UBOpenSankoreImporter.h"
 
@@ -45,23 +45,18 @@
 #include "board/UBBoardPaletteManager.h"
 #include "board/UBDrawingController.h"
 
-
-#include "document/UBDocumentProxy.h"
-#include "document/UBDocumentController.h"
-
 #include "domain/UBGraphicsWidgetItem.h"
+#include "domain/UBGraphicsScene.h"
 
 #include "desktop/UBDesktopPalette.h"
 #include "desktop/UBDesktopAnnotationController.h"
-
-#include "web/UBWebController.h"
 
 #include "gui/UBScreenMirror.h"
 #include "gui/UBMainWindow.h"
 
 #include "domain/UBGraphicsPixmapItem.h"
 
-#include "podcast/UBPodcastController.h"
+//#include "podcast/UBPodcastController.h"
 
 #include "network/UBNetworkAccessManager.h"
 
@@ -97,7 +92,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
 
     connect(mDisplayManager, SIGNAL(screenLayoutChanged()), this, SLOT(screenLayoutChanged()));
     connect(mDisplayManager, SIGNAL(screenLayoutChanged()), mUninoteController, SLOT(screenLayoutChanged()));
-    connect(mDisplayManager, SIGNAL(screenLayoutChanged()), UBApplication::webController, SLOT(screenLayoutChanged()));
+    //connect(mDisplayManager, SIGNAL(screenLayoutChanged()), UBApplication::webController, SLOT(screenLayoutChanged()));
     connect(mDisplayManager, SIGNAL(adjustDisplayViewsRequired()), UBApplication::boardController, SLOT(adjustDisplayViews()));
     connect(mUninoteController, SIGNAL(imageCaptured(const QPixmap &, bool)), this, SLOT(addCapturedPixmap(const QPixmap &, bool)));
     connect(mUninoteController, SIGNAL(restoreUniboard()), this, SLOT(hideDesktop()));
@@ -117,8 +112,8 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
         mMirror = new UBScreenMirror();
     }
 
-    connect(UBApplication::webController, SIGNAL(imageCaptured(const QPixmap &, bool, const QUrl&))
-            , this, SLOT(addCapturedPixmap(const QPixmap &, bool, const QUrl&)));
+    //connect(UBApplication::webController, SIGNAL(imageCaptured(const QPixmap &, bool, const QUrl&))
+    //        , this, SLOT(addCapturedPixmap(const QPixmap &, bool, const QUrl&)));
 
     mNetworkAccessManager = new QNetworkAccessManager (this);
     QTimer::singleShot (1000, this, SLOT (checkAtLaunch()));
@@ -178,7 +173,7 @@ void UBApplicationController::screenLayoutChanged()
        UBApplication::boardController->setBoxing(QRect());
     }
 
-    adjustPreviousViews(0, 0);
+    //adjustPreviousViews(0, 0);
 }
 
 
@@ -198,18 +193,18 @@ void UBApplicationController::adaptToolBar()
 
     if (Document == mMainMode)
     {
-        connect(UBApplication::instance(), SIGNAL(focusChanged(QWidget *, QWidget *)), UBApplication::documentController, SLOT(focusChanged(QWidget *, QWidget *)));
+        //connect(UBApplication::instance(), SIGNAL(focusChanged(QWidget *, QWidget *)), UBApplication::documentController, SLOT(focusChanged(QWidget *, QWidget *)));
     }
     else
     {
-        disconnect(UBApplication::instance(), SIGNAL(focusChanged(QWidget *, QWidget *)), UBApplication::documentController, SLOT(focusChanged(QWidget *, QWidget *)));
+        //disconnect(UBApplication::instance(), SIGNAL(focusChanged(QWidget *, QWidget *)), UBApplication::documentController, SLOT(focusChanged(QWidget *, QWidget *)));
         if (Board == mMainMode)
             mMainWindow->actionDuplicate->setEnabled(true);
     }
 
     UBApplication::boardController->setToolbarTexts();
 
-    UBApplication::webController->adaptToolBar();
+    //UBApplication::webController->adaptToolBar();
 
 }
 
@@ -245,7 +240,7 @@ void UBApplicationController::adjustDisplayView()
     }
 }
 
-
+#if 0
 void UBApplicationController::adjustPreviousViews(int pActiveSceneIndex, UBDocumentProxy *pActiveDocument)
 {
     int viewIndex = pActiveSceneIndex;
@@ -279,7 +274,7 @@ void UBApplicationController::adjustPreviousViews(int pActiveSceneIndex, UBDocum
         }
     }
 }
-
+#endif
 
 void UBApplicationController::blackout()
 {
@@ -351,11 +346,11 @@ void UBApplicationController::showBoard()
 
     if (mMainMode == Document)
     {
-        int selectedSceneIndex = UBApplication::documentController->getSelectedItemIndex();
-        if (selectedSceneIndex != -1)
-        {
-            UBApplication::boardController->setActiveDocumentScene(UBApplication::documentController->selectedDocument(), selectedSceneIndex, true);
-        }
+        //int selectedSceneIndex = UBApplication::documentController->getSelectedItemIndex();
+        //if (selectedSceneIndex != -1)
+        //{
+        //    UBApplication::boardController->setActiveDocumentScene(UBApplication::documentController->selectedDocument(), selectedSceneIndex, true);
+        //}
     }
 
     mMainMode = Board;
@@ -395,7 +390,7 @@ void UBApplicationController::showInternet()
     if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
     {
         showDesktop(true);
-        UBApplication::webController->show();
+        //UBApplication::webController->show();
     }
     else
     {
@@ -410,7 +405,7 @@ void UBApplicationController::showInternet()
         mMainWindow->show();
         mUninoteController->hideWindow();
 
-        UBApplication::webController->show();
+        //UBApplication::webController->show();
 
         emit mainModeChanged(Internet);
     }
@@ -438,11 +433,11 @@ void UBApplicationController::showDocument()
         UBApplication::boardController->hide();
     }
 
-    if (UBApplication::documentController)
-    {
-        emit UBApplication::documentController->reorderDocumentsRequested();
-        UBApplication::documentController->show();
-    }
+    //if (UBApplication::documentController)
+    //{
+    //    emit UBApplication::documentController->reorderDocumentsRequested();
+    //    UBApplication::documentController->show();
+    //}
 
     mMainWindow->show();
 
@@ -658,7 +653,7 @@ void UBApplicationController::closing()
 
     */
 
-    UBPersistenceManager::persistenceManager()->closing(); // ALTI/AOU - 20140616 : to update the file "documents/folders.xml"
+    //UBPersistenceManager::persistenceManager()->closing(); // ALTI/AOU - 20140616 : to update the file "documents/folders.xml"
 }
 
 
@@ -669,11 +664,11 @@ void UBApplicationController::showMessage(const QString& message, bool showSpinn
         if (mMainMode == Document)
         {
             UBApplication::boardController->hideMessage();
-            UBApplication::documentController->showMessage(message, showSpinningWheel);
+            //UBApplication::documentController->showMessage(message, showSpinningWheel);
         }
         else
         {
-            UBApplication::documentController->hideMessage();
+            //UBApplication::documentController->hideMessage();
             UBApplication::boardController->showMessage(message, showSpinningWheel);
         }
     }
@@ -687,30 +682,30 @@ void UBApplicationController::importFile(const QString& pFilePath)
     if (!fileToOpen.exists())
         return;
 
-    UBDocumentProxy* document = 0;
+    //UBDocumentProxy* document = 0;
 
     bool success = false;
 
-    document = UBDocumentManager::documentManager()->importFile(fileToOpen, "");
+    //document = UBDocumentManager::documentManager()->importFile(fileToOpen, "");
 
-    success = (document != 0);
+    //success = (document != 0);
 
-    if (success && document)
+    /*if (success && document)
     {
         if (mMainMode == Board || mMainMode == Internet)
         {
             if (UBApplication::boardController)
             {
-                UBApplication::boardController->setActiveDocumentScene(document, 0);
+                //UBApplication::boardController->setActiveDocumentScene(document, 0);
                 showBoard();
             }
         }
         else if (mMainMode == Document)
         {
-            if (UBApplication::documentController)
-                UBApplication::documentController->selectDocument(document);
+            //if (UBApplication::documentController)
+            //    UBApplication::documentController->selectDocument(document);
         }
-    }
+    }*/
 }
 
 void UBApplicationController::useMultiScreen(bool use)
@@ -731,7 +726,7 @@ void UBApplicationController::useMultiScreen(bool use)
 
 QStringList UBApplicationController::widgetInlineJavaScripts()
 {
-    QString scriptDirPath = UBPlatformUtils::applicationResourcesDirectory() + "/widget-inline-js";
+    QString scriptDirPath; // = UBPlatformUtils::applicationResourcesDirectory() + "/widget-inline-js";
     QDir scriptDir(scriptDirPath);
 
     QStringList scripts;
@@ -771,11 +766,11 @@ void UBApplicationController::actionCut()
         }
         else if(mMainMode == Document)
         {
-            UBApplication::documentController->cut();
+            //UBApplication::documentController->cut();
         }
         else if(mMainMode == Internet)
         {
-            UBApplication::webController->cut();
+            //UBApplication::webController->cut();
         }
     }
 }
@@ -791,11 +786,11 @@ void UBApplicationController::actionCopy()
         }
         else if(mMainMode == Document)
         {
-            UBApplication::documentController->copy();
+            //UBApplication::documentController->copy();
         }
         else if(mMainMode == Internet)
         {
-            UBApplication::webController->copy();
+            //UBApplication::webController->copy();
         }
     }
 }
@@ -811,11 +806,11 @@ void UBApplicationController::actionPaste()
         }
         else if (mMainMode == Document)
         {
-            UBApplication::documentController->paste();
+            //UBApplication::documentController->paste();
         }
         else if(mMainMode == Internet)
         {
-            UBApplication::webController->paste();
+            //UBApplication::webController->paste();
         }
     }
 }

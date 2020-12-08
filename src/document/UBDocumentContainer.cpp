@@ -28,8 +28,8 @@
 
 
 #include "UBDocumentContainer.h"
-#include "adaptors/UBThumbnailAdaptor.h"
-#include "core/UBPersistenceManager.h"
+//#include "adaptors/UBThumbnailAdaptor.h"
+//#include "core/UBPersistenceManager.h"
 #include "core/memcheck.h"
 
 
@@ -62,7 +62,7 @@ void UBDocumentContainer::duplicatePages(QList<int>& pageIndexes)
     int offset = 0;
     foreach(int sceneIndex, pageIndexes)
     {
-        UBPersistenceManager::persistenceManager()->duplicateDocumentScene(mCurrentDocument, sceneIndex + offset);
+        //UBPersistenceManager::persistenceManager()->duplicateDocumentScene(mCurrentDocument, sceneIndex + offset);
         offset++;
     }
 }
@@ -70,7 +70,7 @@ void UBDocumentContainer::duplicatePages(QList<int>& pageIndexes)
 bool UBDocumentContainer::movePageToIndex(int source, int target)
 {
     //on document view
-    UBPersistenceManager::persistenceManager()->moveSceneToIndex(mCurrentDocument, source, target);
+    //UBPersistenceManager::persistenceManager()->moveSceneToIndex(mCurrentDocument, source, target);
     deleteThumbPage(source);
     insertThumbPage(target);
     emit documentThumbnailsUpdated(this);
@@ -81,7 +81,7 @@ bool UBDocumentContainer::movePageToIndex(int source, int target)
 
 void UBDocumentContainer::deletePages(QList<int>& pageIndexes)
 {
-    UBPersistenceManager::persistenceManager()->deleteDocumentScenes(mCurrentDocument, pageIndexes);
+    //UBPersistenceManager::persistenceManager()->deleteDocumentScenes(mCurrentDocument, pageIndexes);
     int offset = 0;
     foreach(int index, pageIndexes)
     {
@@ -95,7 +95,7 @@ void UBDocumentContainer::deletePages(QList<int>& pageIndexes)
 
 void UBDocumentContainer::addPage(int index)
 {
-    UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mCurrentDocument, index, true /* useUndoRedoStack */, UBPersistenceManager::PdfStripeYes);
+    //UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mCurrentDocument, index, true /* useUndoRedoStack */, UBPersistenceManager::PdfStripeYes);
     insertThumbPage(index);
 
     emit documentThumbnailsUpdated(this);
@@ -139,7 +139,7 @@ void UBDocumentContainer::updateThumbPage(int index)
 {
     if (mDocumentThumbs.size() > index)
     {
-        mDocumentThumbs[index] = UBThumbnailAdaptor::get(mCurrentDocument, index);
+        //mDocumentThumbs[index] = UBThumbnailAdaptor::get(mCurrentDocument, index);
         emit documentPageUpdated(index);
     }
     else
@@ -150,14 +150,14 @@ void UBDocumentContainer::updateThumbPage(int index)
 
 void UBDocumentContainer::insertThumbPage(int index)
 {
-    mDocumentThumbs.insert(index, UBThumbnailAdaptor::get(mCurrentDocument, index));
+    //mDocumentThumbs.insert(index, UBThumbnailAdaptor::get(mCurrentDocument, index));
 }
 
 void UBDocumentContainer::reloadThumbnails()
 {
     if (mCurrentDocument)
     {
-        UBThumbnailAdaptor::load(mCurrentDocument, mDocumentThumbs);
+        //UBThumbnailAdaptor::load(mCurrentDocument, mDocumentThumbs);
     }
     emit documentThumbnailsUpdated(this);
 }

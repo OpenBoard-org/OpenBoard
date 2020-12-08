@@ -32,7 +32,6 @@
 
 #include <QtCore>
 #include <QtGui>
-#include <QtNetwork>
 
 #include "UB.h"
 #include "UBSetting.h"
@@ -155,7 +154,7 @@ class UBSettings : public QObject
         QString applicationAnimationsLibraryDirectory();
         QString applicationStartupHintsDirectory();
 
-        QNetworkProxy* httpProxy();
+        //QNetworkProxy* httpProxy();
 
         static int pointerDiameter;
         static int boardMargin;

@@ -30,7 +30,7 @@
 #ifndef UBDOCKPALETTE_H
 #define UBDOCKPALETTE_H
 
-class UBDocumentProxy;
+//class UBDocumentProxy;
 
 #include <QWidget>
 #include <QMouseEvent>
@@ -148,7 +148,7 @@ public slots:
     void onShowTabWidget(UBDockPaletteWidget* widget);
     void onHideTabWidget(UBDockPaletteWidget* widget);
     void onAllDownloadsFinished();
-    virtual void onDocumentSet(UBDocumentProxy* documentProxy);
+    //virtual void onDocumentSet(UBDocumentProxy* documentProxy);
 
 signals:
     void mouseEntered();

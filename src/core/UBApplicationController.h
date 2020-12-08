@@ -43,7 +43,6 @@
 
 
 class UBBoardView;
-class UBDocumentProxy;
 class UBGraphicsScene;
 class UBDesktopAnnotationController;
 class UBScreenMirror;
@@ -70,7 +69,7 @@ class UBApplicationController : public QObject
 
         void adaptToolBar();
         void adjustDisplayView();
-        void adjustPreviousViews(int pActiveSceneIndex, UBDocumentProxy *pActiveDocument);
+        //void adjustPreviousViews(int pActiveSceneIndex, UBDocumentProxy *pActiveDocument);
 
         void blackout();
 

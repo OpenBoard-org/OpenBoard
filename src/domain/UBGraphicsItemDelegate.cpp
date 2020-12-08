@@ -45,9 +45,7 @@
 #include "core/UBApplicationController.h"
 #include "core/UBDisplayManager.h"
 #include "core/UBSettings.h"
-#include "core/UBPersistenceManager.h"
 
-#include "document/UBDocumentProxy.h"
 
 #include "UBGraphicsWidgetItem.h"
 
@@ -55,7 +53,7 @@
 #include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
 
-#include "web/UBWebController.h"
+//#include "web/UBWebController.h"
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "board/UBDrawingController.h"
@@ -520,15 +518,15 @@ void UBGraphicsItemDelegate::remove(bool canUndo)
 
         /* this is performed because when removing delegated from scene while it contains flash content, segfault happens because of QGraphicsScene::removeItem() */
         UBGraphicsWidgetItem *mDelegated_casted = dynamic_cast<UBGraphicsWidgetItem*>(mDelegated);
-        if (mDelegated_casted)
-            mDelegated_casted->setHtml(QString());
+        //if (mDelegated_casted)
+        //    mDelegated_casted->setHtml(QString());
 
         scene->removeItem(mDelegated);
 
         if (canUndo)
         {
             UBGraphicsItemUndoCommand *uc = new UBGraphicsItemUndoCommand(scene, mDelegated, 0);
-            UBApplication::undoStack->push(uc);
+            // UBApplication::undoStack->push(uc);
         }
     }
 }
@@ -633,7 +631,7 @@ void UBGraphicsItemDelegate::setAsBackground()
                                                        mPreviousZValue,
                                                        mPreviousSize,
                                                        true);
-        UBApplication::undoStack->push(uc);
+        // UBApplication::undoStack->push(uc);
     }
 }
 
@@ -644,7 +642,7 @@ void UBGraphicsItemDelegate::gotoContentSource()
     if(item && !item->sourceUrl().isEmpty())
     {
         UBApplication::applicationController->showInternet();
-        UBApplication::webController->loadUrl(item->sourceUrl());
+        //UBApplication::webController->loadUrl(item->sourceUrl());
     }
 }
 
@@ -678,7 +676,7 @@ void UBGraphicsItemDelegate::commitUndoStep()
                                                        mPreviousZValue,
                                                        mPreviousSize);
 
-        UBApplication::undoStack->push(uc);
+        // UBApplication::undoStack->push(uc);
     }
 }
 

@@ -36,7 +36,7 @@ UBToolsManager* UBToolsManager::sManager = 0;
 UBToolsManager* UBToolsManager::manager()
 {
     if (!sManager)
-        sManager = new UBToolsManager(UBApplication::staticMemoryCleaner);
+        sManager = new UBToolsManager(nullptr);
     return sManager;
 }
 

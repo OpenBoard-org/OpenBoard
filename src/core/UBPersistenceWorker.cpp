@@ -37,6 +37,7 @@ UBPersistenceWorker::UBPersistenceWorker(QObject *parent) :
 {
 }
 
+#if 0
 void UBPersistenceWorker::saveScene(UBDocumentProxy* proxy, UBGraphicsScene* scene, const int pageIndex)
 {
     PersistenceInformation entry = {WriteScene, proxy, scene, pageIndex};
@@ -59,6 +60,7 @@ void UBPersistenceWorker::saveMetadata(UBDocumentProxy *proxy)
     saves.append(entry);
     mSemaphore.release();
 }
+#endif
 
 void UBPersistenceWorker::applicationWillClose()
 {

@@ -41,7 +41,7 @@
 #define BUTTON_SIZE 24
 #define ACTIONBAR_HEIGHT 42
 
-class UBFeaturesMimeData;
+//class UBFeaturesMimeData;
 
 typedef enum
 {
@@ -79,9 +79,9 @@ public:
 signals:
     void searchElement(const QString &text);
     void newFolderToCreate();
-    void deleteElements(const UBFeaturesMimeData *data);
-    void addToFavorite(const UBFeaturesMimeData *data);
-    void removeFromFavorite(const UBFeaturesMimeData *data);
+    //void deleteElements(const UBFeaturesMimeData *data);
+    //void addToFavorite(const UBFeaturesMimeData *data);
+    //void removeFromFavorite(const UBFeaturesMimeData *data);
     void addElementsToFavorite();
     void removeElementsFromFavorite();
     void deleteSelectedElements();

@@ -68,7 +68,7 @@ class UBToolWidget : public QWidget
         void javaScriptWindowObjectCleared();
 
     protected:
-        QWebView *mWebView;
+        //QWebView *mWebView;
         UBGraphicsWidgetItem *mToolWidget;
 
         static QPixmap *sClosePixmap;

@@ -39,9 +39,8 @@
 #include <QString>
 
 #include "UBBoardThumbnailsView.h"
-#include "UBDocumentNavigator.h"
+//#include "UBDocumentNavigator.h"
 #include "UBDockPaletteWidget.h"
-#include "document/UBDocumentProxy.h"
 
 class UBPageNavigationWidget : public UBDockPaletteWidget
 {

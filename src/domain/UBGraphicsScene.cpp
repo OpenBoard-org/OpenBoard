@@ -41,7 +41,7 @@
 #include "core/UBSettings.h"
 #include "core/UBApplicationController.h"
 #include "core/UBDisplayManager.h"
-#include "core/UBPersistenceManager.h"
+
 #include "core/UBTextTools.h"
 
 #include "gui/UBMagnifer.h"
@@ -56,8 +56,6 @@
 #include "tools/UBGraphicsCurtainItem.h"
 #include "tools/UBGraphicsCache.h"
 
-#include "document/UBDocumentProxy.h"
-
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
 #include "board/UBBoardView.h"
@@ -71,7 +69,7 @@
 #include "UBGraphicsPolygonItem.h"
 #include "UBGraphicsMediaItem.h"
 #include "UBGraphicsWidgetItem.h"
-#include "UBGraphicsPDFItem.h"
+//#include "UBGraphicsPDFItem.h"
 #include "UBGraphicsTextItem.h"
 #include "UBGraphicsStrokesGroup.h"
 #include "UBSelectionFrame.h"
@@ -312,13 +310,13 @@ bool UBZLayerController::zLevelAvailable(qreal z)
     return true;
 }
 
-UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoStack)
+UBGraphicsScene::UBGraphicsScene(QObject* parent, bool enableUndoRedoStack)
     : UBCoreGraphicsScene(parent)
     , mEraser(0)
     , mPointer(0)
     , mMarkerCircle(0)
     , mPenCircle(0)
-    , mDocument(parent)
+    //, mDocument(parent)
     , mDarkBackground(false)
     , mPageBackground(UBPageBackground::plain)
     , mIsDesktopMode(false)
@@ -344,7 +342,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     setItemIndexMethod(BspTreeIndex);
 
     setUuid(QUuid::createUuid());
-    setDocument(parent);
+    //setDocument(parent);
     createEraiser();
     createPointer();
     createMarkerCircle();
@@ -361,7 +359,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
 
 //    Just for debug. Do not delete please
 //    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
-    connect(UBApplication::undoStack.data(), SIGNAL(indexChanged(int)), this, SLOT(updateSelectionFrameWrapper(int)));
+    //connect(UBApplication::undoStack.data(), SIGNAL(indexChanged(int)), this, SLOT(updateSelectionFrameWrapper(int)));
 }
 
 UBGraphicsScene::~UBGraphicsScene()
@@ -377,11 +375,11 @@ UBGraphicsScene::~UBGraphicsScene()
 
 void UBGraphicsScene::selectionChangedProcessing()
 {
-    if (selectedItems().count()){
-        UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f') + "own z value is "
-                                   + QString::number(selectedItems().first()->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f'));
+    //if (selectedItems().count()){
+        //UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f') + "own z value is "
+        //                           + QString::number(selectedItems().first()->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f'));
 
-    }
+    //}
 }
 
 void UBGraphicsScene::setLastCenter(QPointF center)
@@ -736,8 +734,8 @@ bool UBGraphicsScene::inputDeviceRelease()
         if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
             UBGraphicsItemUndoCommand* udcmd = new UBGraphicsItemUndoCommand(this, mRemovedItems, mAddedItems); //deleted by the undoStack
 
-            if(UBApplication::undoStack)
-                UBApplication::undoStack->push(udcmd);
+            //if(UBApplication::undoStack)
+            //    UBApplication::undoStack->push(udcmd);
         }
 
         mRemovedItems.clear();
@@ -887,7 +885,7 @@ void UBGraphicsScene::DisposeMagnifierQWidgets()
     // so i just add try/catch section here
     try
     {
-        UBApplication::app()->restoreOverrideCursor();
+        //UBApplication::app()->restoreOverrideCursor();
     }
     catch (...)
     {
@@ -1351,14 +1349,14 @@ void UBGraphicsScene::leaveEvent(QEvent * event)
 
 UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
 {
-    UBGraphicsScene* copy = new UBGraphicsScene(this->document(), this->mUndoRedoStackEnabled);
+    //UBGraphicsScene* copy = new UBGraphicsScene(this->document(), this->mUndoRedoStackEnabled);
 
-    copy->setBackground(this->isDarkBackground(), mPageBackground);
-    copy->setBackgroundGridSize(mBackgroundGridSize);
-    copy->setSceneRect(this->sceneRect());
+    //copy->setBackground(this->isDarkBackground(), mPageBackground);
+    //copy->setBackgroundGridSize(mBackgroundGridSize);
+    //copy->setSceneRect(this->sceneRect());
 
-    if (this->mNominalSize.isValid())
-        copy->setNominalSize(this->mNominalSize);
+    //if (this->mNominalSize.isValid())
+    //    copy->setNominalSize(this->mNominalSize);
 
     QListIterator<QGraphicsItem*> itItems(this->mFastAccessItems);
     QMap<UBGraphicsStroke*, UBGraphicsStroke*> groupClone;
@@ -1380,14 +1378,14 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
 
             foreach(QGraphicsItem* eachItem ,group->childItems()){
                 QGraphicsItem* copiedChild = dynamic_cast<QGraphicsItem*>(dynamic_cast<UBItem*>(eachItem)->deepCopy());
-                copy->addItem(copiedChild);
+                //copy->addItem(copiedChild);
                 groupCloned->addToGroup(copiedChild);
             }
 
             if (locked)
                 groupCloned->setData(UBGraphicsItemData::ItemLocked, QVariant(true));
 
-            copy->addItem(groupCloned);
+            //copy->addItem(groupCloned);
             groupCloned->setMatrix(group->matrix());
             groupCloned->setTransform(QTransform::fromTranslate(group->pos().x(), group->pos().y()));
             groupCloned->setTransform(group->transform(), true);
@@ -1398,13 +1396,13 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
 
         if (cloneItem)
         {
-            copy->addItem(cloneItem);
+            //copy->addItem(cloneItem);
 
-            if (isBackgroundObject(item))
-                copy->setAsBackgroundObject(cloneItem);
+            //if (isBackgroundObject(item))
+            //    copy->setAsBackgroundObject(cloneItem);
 
-            if (this->mTools.contains(item))
-                copy->mTools << cloneItem;
+            //if (this->mTools.contains(item))
+            //    copy->mTools << cloneItem;
 
             UBGraphicsPolygonItem* polygon = dynamic_cast<UBGraphicsPolygonItem*>(item);
 
@@ -1430,7 +1428,7 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
 
     // TODO UB 4.7 ... complete all members ?
 
-    return copy;
+    return nullptr; //copy;
 }
 
 UBItem* UBGraphicsScene::deepCopy() const
@@ -1508,7 +1506,7 @@ void UBGraphicsScene::clearContent(clearCase pCase)
     if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
 
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, removedItems, QSet<QGraphicsItem*>(), groupsMap);
-        UBApplication::undoStack->push(uc);
+        //UBApplication::undoStack->push(uc);
     }
 
     if (pCase == clearBackground) {
@@ -1534,7 +1532,7 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, QGraphi
 
     if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, replaceFor, pixmapItem);
-        UBApplication::undoStack->push(uc);
+        //UBApplication::undoStack->push(uc);
     }
 
     pixmapItem->setTransform(QTransform::fromScale(pScaleFactor, pScaleFactor), true);
@@ -1555,22 +1553,22 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, QGraphi
     setDocumentUpdated();
 
     QString documentPath;
-    if(useProxyForDocumentPath)
-        documentPath = this->document()->persistencePath();
-    else
-        documentPath = UBApplication::boardController->selectedDocument()->persistencePath();
+    //if(useProxyForDocumentPath)
+    //    documentPath = this->document()->persistencePath();
+    //else
+    //    documentPath = UBApplication::boardController->selectedDocument()->persistencePath();
 
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png";
+    //QString fileName = UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png";
 
-    QString path = documentPath + "/" + fileName;
+    //QString path = documentPath + "/" + fileName;
 
-    if (!QFile::exists(path))
-    {
-        QDir dir;
-        dir.mkdir(documentPath + "/" + UBPersistenceManager::imageDirectory);
+    //if (!QFile::exists(path))
+    //{
+    //    QDir dir;
+        //dir.mkdir(documentPath + "/" + UBPersistenceManager::imageDirectory);
 
-        pixmapItem->pixmap().toImage().save(path, "PNG");
-    }
+    //    pixmapItem->pixmap().toImage().save(path, "PNG");
+    //}
 
     return pixmapItem;
 }
@@ -1579,7 +1577,7 @@ void UBGraphicsScene::textUndoCommandAdded(UBGraphicsTextItem *textItem)
 {
     if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
         UBGraphicsTextItemUndoCommand* uc = new UBGraphicsTextItemUndoCommand(textItem);
-        UBApplication::undoStack->push(uc);
+        //UBApplication::undoStack->push(uc);
     }
 }
 UBGraphicsMediaItem* UBGraphicsScene::addMedia(const QUrl& pMediaFileUrl, bool shouldPlayAsap, const QPointF& pPos)
@@ -1605,7 +1603,7 @@ UBGraphicsMediaItem* UBGraphicsScene::addMedia(const QUrl& pMediaFileUrl, bool s
 
     if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, mediaItem);
-        UBApplication::undoStack->push(uc);
+        //UBApplication::undoStack->push(uc);
     }
 
     if (shouldPlayAsap)
@@ -1683,7 +1681,7 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
         graphicsWidget->setSelected(true);
         if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
             UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, graphicsWidget);
-            UBApplication::undoStack->push(uc);
+            //UBApplication::undoStack->push(uc);
         }
 
         setDocumentUpdated();
@@ -1700,24 +1698,24 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
 
 UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const QUrl& pContentUrl, const QPointF& pPos)
 {
-    QStringList widgetPaths = UBPersistenceManager::persistenceManager()->allWidgets(UBSettings::settings()->applicationApplicationsLibraryDirectory());
+    //QStringList widgetPaths = UBPersistenceManager::persistenceManager()->allWidgets(UBSettings::settings()->applicationApplicationsLibraryDirectory());
 
     UBGraphicsW3CWidgetItem *widget = 0;
 
-    foreach(QString widgetPath, widgetPaths)
-    {
-        if (widgetPath.contains("VideoPicker"))
-        {
-            widget = addW3CWidget(QUrl::fromLocalFile(widgetPath), pPos);
+//    foreach(QString widgetPath, widgetPaths)
+//    {
+//        if (widgetPath.contains("VideoPicker"))
+//        {
+//            widget = addW3CWidget(QUrl::fromLocalFile(widgetPath), pPos);
 
-            if (widget)
-            {
-                widget->setPreference("oembedUrl", pContentUrl.toString());
-                setDocumentUpdated();
-                break;
-            }
-        }
-    }
+//            if (widget)
+//            {
+//                widget->setPreference("oembedUrl", pContentUrl.toString());
+//                setDocumentUpdated();
+//                break;
+//            }
+//        }
+//    }
 
     return widget;
 }
@@ -1749,7 +1747,7 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
 
     if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
         UBGraphicsItemGroupUndoCommand* uc = new UBGraphicsItemGroupUndoCommand(this, groupItem);
-        UBApplication::undoStack->push(uc);
+        //UBApplication::undoStack->push(uc);
     }
 
     setDocumentUpdated();
@@ -1778,7 +1776,7 @@ void UBGraphicsScene::addGroup(UBGraphicsGroupContainerItem *groupItem)
 
     if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, groupItem);
-        UBApplication::undoStack->push(uc);
+        //UBApplication::undoStack->push(uc);
     }
 
     setDocumentUpdated();
@@ -1808,32 +1806,32 @@ UBGraphicsSvgItem* UBGraphicsScene::addSvg(const QUrl& pSvgFileUrl, const QPoint
 
     if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, svgItem);
-        UBApplication::undoStack->push(uc);
+        //UBApplication::undoStack->push(uc);
     }
 
     setDocumentUpdated();
 
-    QString documentPath = UBApplication::boardController->selectedDocument()->persistencePath();
+    //QString documentPath = UBApplication::boardController->selectedDocument()->persistencePath();
 
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg";
+    //QString fileName = UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg";
 
-    QString completePath = documentPath + "/" + fileName;
+    //QString completePath = documentPath + "/" + fileName;
 
-    if (!QFile::exists(completePath))
-    {
-        QDir dir;
-        dir.mkdir(documentPath + "/" + UBPersistenceManager::imageDirectory);
+    //if (!QFile::exists(completePath))
+    //{
+    //    QDir dir;
+    //    dir.mkdir(documentPath + "/" + UBPersistenceManager::imageDirectory);
 
-        QFile file(completePath);
-        if (!file.open(QIODevice::WriteOnly))
-        {
-            qWarning() << "cannot open file for writing embeded svg content " << completePath;
-            return NULL;
-        }
+    //    QFile file(completePath);
+    //    if (!file.open(QIODevice::WriteOnly))
+    //    {
+    //        qWarning() << "cannot open file for writing embeded svg content " << completePath;
+     //       return NULL;
+    //    }
 
-        file.write(svgItem->fileData());
-        file.close();
-    }
+    //    file.write(svgItem->fileData());
+    //    file.close();
+    //}
 
     return svgItem;
 }
@@ -1889,7 +1887,7 @@ UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, con
 
     if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, textItem);
-        UBApplication::undoStack->push(uc);
+        //UBApplication::undoStack->push(uc);
     }
 
     connect(textItem, SIGNAL(textUndoCommandAdded(UBGraphicsTextItem *)), this, SLOT(textUndoCommandAdded(UBGraphicsTextItem *)));
@@ -1913,7 +1911,7 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString, const Q
 
     if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
         UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, textItem);
-        UBApplication::undoStack->push(uc);
+        //UBApplication::undoStack->push(uc);
     }
 
     connect(textItem, SIGNAL(textUndoCommandAdded(UBGraphicsTextItem *)), this, SLOT(textUndoCommandAdded(UBGraphicsTextItem *)));
@@ -2137,9 +2135,9 @@ QGraphicsItem *UBGraphicsScene::itemForUuid(QUuid uuid)
     return result;
 }
 
-void UBGraphicsScene::setDocument(UBDocumentProxy* pDocument)
-{
-    if (pDocument != mDocument)
+//void UBGraphicsScene::setDocument(UBDocumentProxy* pDocument)
+//{
+    /*if (pDocument != mDocument)
     {
         if (mDocument)
         {
@@ -2148,8 +2146,8 @@ void UBGraphicsScene::setDocument(UBDocumentProxy* pDocument)
 
         mDocument = pDocument;
         setParent(pDocument);
-    }
-}
+    } */
+//}
 
 QGraphicsItem* UBGraphicsScene::scaleToFitDocumentSize(QGraphicsItem* item, bool center, int margin, bool expand)
 {
@@ -2426,37 +2424,37 @@ QList<QUrl> UBGraphicsScene::relativeDependencies() const
         UBGraphicsVideoItem *videoItem = qgraphicsitem_cast<UBGraphicsVideoItem*> (item);
         if (videoItem){
             QString completeFileName = QFileInfo(videoItem->mediaFileUrl().toLocalFile()).fileName();
-            QString path = UBPersistenceManager::videoDirectory + "/";
-            relativePathes << QUrl(path + completeFileName);
+            //QString path = UBPersistenceManager::videoDirectory + "/";
+            //relativePathes << QUrl(path + completeFileName);
             continue;
         }
 
         UBGraphicsAudioItem *audioItem = qgraphicsitem_cast<UBGraphicsAudioItem*> (item);
         if (audioItem){
             QString completeFileName = QFileInfo(audioItem->mediaFileUrl().toLocalFile()).fileName();
-            QString path = UBPersistenceManager::audioDirectory + "/";
-            relativePathes << QUrl(path + completeFileName);
+            //QString path = UBPersistenceManager::audioDirectory + "/";
+            //relativePathes << QUrl(path + completeFileName);
             continue;
         }
 
         UBGraphicsWidgetItem* widget = qgraphicsitem_cast<UBGraphicsWidgetItem*>(item);
         if(widget){
-            QString widgetPath = UBPersistenceManager::widgetDirectory + "/" + widget->uuid().toString() + ".wgt";
-            QString screenshotPath = UBPersistenceManager::widgetDirectory + "/" + widget->uuid().toString().remove("{").remove("}") + ".png";
-            relativePathes << QUrl(widgetPath);
-            relativePathes << QUrl(screenshotPath);
+            //QString widgetPath = UBPersistenceManager::widgetDirectory + "/" + widget->uuid().toString() + ".wgt";
+            //QString screenshotPath = UBPersistenceManager::widgetDirectory + "/" + widget->uuid().toString().remove("{").remove("}") + ".png";
+            //relativePathes << QUrl(widgetPath);
+            //relativePathes << QUrl(screenshotPath);
             continue;
         }
 
         UBGraphicsPixmapItem* pixmapItem = qgraphicsitem_cast<UBGraphicsPixmapItem*>(item);
         if(pixmapItem){
-            relativePathes << QUrl(UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png");
+            //relativePathes << QUrl(UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png");
             continue;
         }
 
         UBGraphicsSvgItem* svgItem = qgraphicsitem_cast<UBGraphicsSvgItem*>(item);
         if(svgItem){
-            relativePathes << QUrl(UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg");
+            //relativePathes << QUrl(UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg");
             continue;
         }
     }
@@ -2466,11 +2464,11 @@ QList<QUrl> UBGraphicsScene::relativeDependencies() const
 
 QSize UBGraphicsScene::nominalSize()
 {
-    if (mDocument && !mNominalSize.isValid())
+    /* if (mDocument && !mNominalSize.isValid())
     {
         mNominalSize = mDocument->defaultDocumentSize();
     }
-
+*/
     return mNominalSize;
 }
 
@@ -2481,14 +2479,14 @@ QSize UBGraphicsScene::nominalSize()
  */
 QSize UBGraphicsScene::sceneSize()
 {
-    UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(backgroundObject());
+    /*UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(backgroundObject());
 
     if (pdfItem) {
         QRectF targetRect = pdfItem->sceneBoundingRect();
         return targetRect.size().toSize();
     }
 
-    else
+    else */
         return nominalSize();
 }
 
@@ -2498,8 +2496,8 @@ void UBGraphicsScene::setNominalSize(const QSize& pSize)
     {
         mNominalSize = pSize;
 
-        if(mDocument)
-            mDocument->setDefaultDocumentSize(pSize);
+        //if(mDocument)
+        //    mDocument->setDefaultDocumentSize(pSize);
     }
 }
 
@@ -2531,7 +2529,7 @@ qreal UBGraphicsScene::changeZLevelTo(QGraphicsItem *item, UBZLayerController::m
 
     if(addUndo){
         UBGraphicsItemZLevelUndoCommand* uc = new UBGraphicsItemZLevelUndoCommand(this, item, previousZVal, dest);
-        UBApplication::undoStack->push(uc);
+        //UBApplication::undoStack->push(uc);
     }
 
     return res;
@@ -2563,7 +2561,7 @@ void UBGraphicsScene::drawItems (QPainter * painter, int numItems,
         {
             if (!mTools.contains(rootItem(items[i])))
             {
-                bool isPdfItem =  qgraphicsitem_cast<UBGraphicsPDFItem*> (items[i]) != NULL;
+                bool isPdfItem = false; // qgraphicsitem_cast<UBGraphicsPDFItem*> (items[i]) != NULL;
                 if(!isPdfItem || mRenderingContext == NonScreen)
                 {
                     itemsFiltered[count] = items[i];
@@ -2808,9 +2806,9 @@ void UBGraphicsScene::simplifyCurrentStroke()
 
 void UBGraphicsScene::setDocumentUpdated()
 {
-    if (document())
-        document()->setMetaData(UBSettings::documentUpdatedAt
-                , UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+    //if (document())
+    //    document()->setMetaData(UBSettings::documentUpdatedAt
+    //            , UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 }
 
 void UBGraphicsScene::createEraiser()

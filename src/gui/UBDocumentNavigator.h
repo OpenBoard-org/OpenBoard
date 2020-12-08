@@ -36,9 +36,9 @@
 #include <QMouseEvent>
 #include <QThread>
 
-#include "document/UBDocumentProxy.h"
+//#include "document/UBDocumentProxy.h"
 #include "document/UBDocumentContainer.h"
-#include "UBThumbnailWidget.h"
+//#include "UBThumbnailWidget.h"
 
 #define NO_PAGESELECTED            -1
 

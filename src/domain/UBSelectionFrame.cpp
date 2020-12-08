@@ -245,16 +245,16 @@ void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     mLastTranslateOffset = dp;
 }
 
-void UBSelectionFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent */*event*/)
+void UBSelectionFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent * /* event */)
 {
     mPressedPos = mLastMovedPos = mLastTranslateOffset = QPointF();
 
     if (mOperationMode == om_moving || mOperationMode == om_rotating) {
-        UBApplication::undoStack->beginMacro(UBSettings::undoCommandTransactionName);
+        // UBApplication::undoStack->beginMacro(UBSettings::undoCommandTransactionName);
         foreach (UBGraphicsItemDelegate *d, mEnclosedtems) {
             d->commitUndoStep();
         }
-        UBApplication::undoStack->endMacro();
+        // UBApplication::undoStack->endMacro();
     }
     mOperationMode = om_idle;
 
@@ -268,11 +268,11 @@ void UBSelectionFrame::onZoomChanged(qreal pZoom)
 
 void UBSelectionFrame::remove()
 {
-    UBApplication::undoStack->beginMacro(UBSettings::undoCommandTransactionName);
+    // UBApplication::undoStack->beginMacro(UBSettings::undoCommandTransactionName);
     foreach (UBGraphicsItemDelegate *d, mEnclosedtems) {
         d->remove(true);
     }
-    UBApplication::undoStack->endMacro();
+    // UBApplication::undoStack->endMacro();
 
     updateRect();
 }
@@ -285,7 +285,7 @@ static bool sortByZ(UBGraphicsItemDelegate* A, UBGraphicsItemDelegate* B)
 
 void UBSelectionFrame::duplicate()
 {
-    UBApplication::undoStack->beginMacro(UBSettings::undoCommandTransactionName);
+    // UBApplication::undoStack->beginMacro(UBSettings::undoCommandTransactionName);
 
     // The mEnclosedtems list items are in order of selection. To avoid losing their
     // relative zValues when duplicating, we re-order the list.
@@ -294,7 +294,7 @@ void UBSelectionFrame::duplicate()
     foreach (UBGraphicsItemDelegate *d, mEnclosedtems) {
         d->duplicate();
     }
-    UBApplication::undoStack->endMacro();
+    // UBApplication::undoStack->endMacro();
 
     updateRect();
 }
@@ -355,11 +355,11 @@ void UBSelectionFrame::addSelectionUndo(QList<QGraphicsItem*> items, UBZLayerCon
     if(!items.empty()){
         qreal topItemLevel = items.at(0)->data(UBGraphicsItemData::ItemOwnZValue).toReal();
         UBGraphicsItemZLevelUndoCommand* cmd = new UBGraphicsItemZLevelUndoCommand(ubscene(), items, topItemLevel, dest);
-        UBApplication::undoStack->push(cmd);
+        // UBApplication::undoStack->push(cmd);
     }
 }
 
-void UBSelectionFrame::translateItem(QGraphicsItem */*item*/, const QPointF &/*translatePoint*/)
+void UBSelectionFrame::translateItem(QGraphicsItem * /* item */, const QPointF & /* translatePoint */)
 {
 }
 

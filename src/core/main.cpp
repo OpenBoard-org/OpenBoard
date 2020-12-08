@@ -63,23 +63,6 @@ void ub_message_output(QtMsgType type, const QMessageLogContext& context, const 
     // Default output in debug builds
     qt_message_output(type, context, msg);
 #endif
-
-    if (UBApplication::app() && UBApplication::app()->isVerbose()) {
-        QString logFileNamePath = UBSettings::userDataDirectory() + "/log/"+ qApp->applicationName() + ".log";
-        QFile logFile(logFileNamePath);
-
-        if (logFile.exists() && logFile.size() > 10000000)
-            logFile.remove();
-
-        if (logFile.open(QIODevice::Append | QIODevice::Text)) {
-            QTextStream out(&logFile);
-            out << QDateTime::currentDateTime().toString(Qt::ISODate)
-                << "      " << msg << "\n";
-            logFile.close();
-        }
-    }
-
-    qInstallMessageHandler(previousHandler);
 }
 
 int main(int argc, char *argv[])
@@ -99,16 +82,16 @@ int main(int argc, char *argv[])
 
     Q_INIT_RESOURCE(OpenBoard);
 
-    qInstallMessageHandler(ub_message_output);
+    //qInstallMessageHandler(ub_message_output);
 
     UBApplication app("OpenBoard", argc, argv);
 
     QStringList args = app.arguments();
 
-    QString dumpPath = UBSettings::userDataDirectory() + "/log";
-    QDir logDir(dumpPath);
-    if (!logDir.exists())
-        logDir.mkdir(dumpPath);
+    //QString dumpPath = UBSettings::userDataDirectory() + "/log";
+    //QDir logDir(dumpPath);
+    //if (!logDir.exists())
+    //    logDir.mkdir(dumpPath);
 
     QString fileToOpen;
 
@@ -121,22 +104,13 @@ int main(int argc, char *argv[])
 
         if (f.exists()) {
             fileToOpen += args[1];
-
-            if (app.sendMessage(UBSettings::appPingMessage, 20000)) {
-                app.sendMessage(fileToOpen, 1000000);
-                return 0;
-            }
-        }
+       }
     }
 
     qDebug() << "file name argument" << fileToOpen;
     int result = app.exec(fileToOpen);
 
-    app.cleanup();
-
     qDebug() << "application is quitting";
-
-
 
     return result;
 

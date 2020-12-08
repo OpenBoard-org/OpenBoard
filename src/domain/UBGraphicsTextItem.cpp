@@ -148,6 +148,7 @@ void UBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     setTextInteractionFlags(Qt::TextEditorInteraction);
 
+#if 0
     int elapsed = mLastMousePressTime.msecsTo(QTime::currentTime());
 
     if (elapsed < UBApplication::app()->doubleClickInterval())
@@ -160,6 +161,7 @@ void UBGraphicsTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
         mMultiClickState = 1;
     }
+#endif
 
     mLastMousePressTime = QTime::currentTime();
 

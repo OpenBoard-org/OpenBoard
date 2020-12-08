@@ -101,12 +101,12 @@ void UBDocumentThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
 
 void UBDocumentThumbnailWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-    if (!event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardPage))
+    /* if (!event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardPage))
     {
         event->setDropAction(Qt::IgnoreAction);
         event->ignore();
         return;
-    }
+    } */
 
     UBThumbnailWidget::dragEnterEvent(event);
 }
@@ -226,12 +226,12 @@ void UBDocumentThumbnailWidget::dropEvent(QDropEvent *event)
         int targetIndex = mDropIsRight ? mGraphicItems.indexOf(mClosestDropItem) + 1 : mGraphicItems.indexOf(mClosestDropItem);
 
         QList<UBMimeDataItem> mimeDataItems;
-        if (event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardPage))
-        {
-            const UBMimeData* mimeData = qobject_cast<const UBMimeData*>(event->mimeData());
-            if (mimeData)
-                mimeDataItems = mimeData->items();
-        }
+        //if (event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardPage))
+        //{
+        //    const UBMimeData* mimeData = qobject_cast<const UBMimeData*>(event->mimeData());
+        //    if (mimeData)
+        //        mimeDataItems = mimeData->items();
+        //}
 
         if (1 == mimeDataItems.count() &&
                 (mimeDataItems.at(0).sceneIndex() == mGraphicItems.indexOf(mClosestDropItem) ||

@@ -29,7 +29,7 @@
 
 #include "UBDownloadManager.h"
 #include "core/UBApplication.h"
-#include "core/UBPersistenceManager.h"
+
 #include "gui/UBMainWindow.h"
 #include "board/UBBoardController.h"
 #include "board/UBBoardPaletteManager.h"
@@ -70,22 +70,22 @@ void UBAsyncLocalFileDownloader::run()
 
 
     QString destDirectory;
-    if (UBMimeType::Video == itemMimeType)
-        destDirectory = UBPersistenceManager::videoDirectory;
-    else 
-        if (UBMimeType::Audio == itemMimeType)
-            destDirectory = UBPersistenceManager::audioDirectory;
+    //if (UBMimeType::Video == itemMimeType)
+    //    destDirectory = UBPersistenceManager::videoDirectory;
+    //else
+    //    if (UBMimeType::Audio == itemMimeType)
+    //        destDirectory = UBPersistenceManager::audioDirectory;
 
     if (mDesc.originalSrcUrl.isEmpty())
         mDesc.originalSrcUrl = mDesc.srcUrl;
 
     QString uuid = QUuid::createUuid().toString();
-    UBPersistenceManager::persistenceManager()->addFileToDocument(UBApplication::boardController->selectedDocument(), 
-        mDesc.srcUrl,
-        destDirectory,
-        uuid,
-        mTo,
-        NULL);
+    //UBPersistenceManager::persistenceManager()->addFileToDocument(UBApplication::boardController->selectedDocument(),
+    //    mDesc.srcUrl,
+    //    destDirectory,
+    //    uuid,
+     //   mTo,
+     //   NULL);
 
     if (m_bAborting)
     {

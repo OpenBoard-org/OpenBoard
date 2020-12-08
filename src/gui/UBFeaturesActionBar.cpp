@@ -30,7 +30,6 @@
 
 #include "UBFeaturesActionBar.h"
 #include "core/memcheck.h"
-#include "gui/UBFeaturesWidget.h"
 
 UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWidget* parent, const char* name ) : QWidget (parent)
     , featuresController(controller)
@@ -251,16 +250,17 @@ void UBFeaturesActionBar::unlockIt()
 
 void UBFeaturesActionBar::dragEnterEvent( QDragEnterEvent *event )
 {
-    const UBFeaturesMimeData *fMimeData = qobject_cast<const UBFeaturesMimeData*>(event->mimeData());
+/*    const UBFeaturesMimeData *fMimeData = qobject_cast<const UBFeaturesMimeData*>(event->mimeData());
     if (fMimeData) {
         event->acceptProposedAction();
     } else {
         event->ignore();
-    }
+    } */
 }
 
 void UBFeaturesActionBar::dropEvent(QDropEvent *event)
 {    
+#if 0
     const UBFeaturesMimeData *fMimeData = qobject_cast<const UBFeaturesMimeData*>(event->mimeData());
 
     if (!fMimeData) {
@@ -271,14 +271,14 @@ void UBFeaturesActionBar::dropEvent(QDropEvent *event)
 
     QWidget *dest = childAt(event->pos());
     if (dest == mpDeleteBtn) {
-        QList<UBFeature> featuresList = fMimeData->features();
-        foreach (UBFeature curFeature, featuresList) {
-            if (!curFeature.isDeletable()) {
-                qWarning() << "Undeletable feature found, stopping deleting process";
-                event->ignore();
-                return;
-            }
-        }
+        //QList<UBFeature> featuresList = fMimeData->features();
+        //foreach (UBFeature curFeature, featuresList) {
+        //    if (!curFeature.isDeletable()) {
+        //        qWarning() << "Undeletable feature found, stopping deleting process";
+        //        event->ignore();
+        //        return;
+        //    }
+        //}
         event->setDropAction(Qt::MoveAction);
         event->accept();
 
@@ -296,6 +296,7 @@ void UBFeaturesActionBar::dropEvent(QDropEvent *event)
 
         emit removeFromFavorite(fMimeData);
     }
+#endif
 }
 
 UBFeaturesActionBar::~UBFeaturesActionBar()

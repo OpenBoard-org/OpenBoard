@@ -39,13 +39,12 @@
 #include "core/UBApplication.h"
 #include "UBBoardThumbnailsView.h"
 #include "board/UBBoardController.h"
-#include "adaptors/UBThumbnailAdaptor.h"
-#include "adaptors/UBSvgSubsetAdaptor.h"
-#include "document/UBDocumentController.h"
+//#include "adaptors/UBThumbnailAdaptor.h"
+//#include "adaptors/UBSvgSubsetAdaptor.h"
+//#include "document/UBDocumentController.h"
 #include "domain/UBGraphicsScene.h"
 #include "board/UBBoardPaletteManager.h"
 #include "core/UBApplicationController.h"
-#include "core/UBPersistenceManager.h"
 #include "UBThumbnailView.h"
 
 UBBoardThumbnailsView::UBBoardThumbnailsView(QWidget *parent, const char *name)
@@ -115,12 +114,12 @@ void UBBoardThumbnailsView::removeThumbnail(int i)
 
 UBDraggableThumbnailView* UBBoardThumbnailsView::createThumbnail(UBDocumentContainer* source, int i)
 {
-    UBApplication::showMessage(tr("Loading page (%1/%2)").arg(i+1).arg(source->selectedDocument()->pageCount()));
+    //UBApplication::showMessage(tr("Loading page (%1/%2)").arg(i+1).arg(source->selectedDocument()->pageCount()));
 
-    UBGraphicsScene* pageScene = UBPersistenceManager::persistenceManager()->loadDocumentScene(source->selectedDocument(), i);
-    UBThumbnailView* pageView = new UBThumbnailView(pageScene);
+    //UBGraphicsScene* pageScene = UBPersistenceManager::persistenceManager()->loadDocumentScene(source->selectedDocument(), i);
+    //UBThumbnailView* pageView = new UBThumbnailView(pageScene);
 
-    return new UBDraggableThumbnailView(pageView, source->selectedDocument(), i);
+    return nullptr; // new UBDraggableThumbnailView(pageView, source->selectedDocument(), i);
 }
 
 void UBBoardThumbnailsView::addThumbnail(UBDocumentContainer* source, int i)

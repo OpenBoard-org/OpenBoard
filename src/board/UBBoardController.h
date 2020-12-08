@@ -43,10 +43,9 @@ class UBMainWindow;
 class UBApplication;
 class UBBoardView;
 
-class UBDocumentController;
+//class UBDocumentController;
 class UBMessageWindow;
 class UBGraphicsScene;
-class UBDocumentProxy;
 class UBBlackoutWidget;
 class UBToolWidget;
 class UBVersion;
@@ -180,7 +179,7 @@ class UBBoardController : public UBDocumentContainer
         void findUniquesItems(const QUndoCommand *parent, QSet<QGraphicsItem *> &itms);
         void ClearUndoStack();
 
-        void setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, int pSceneIndex = 0, bool forceReload = false, bool onImport = false);
+        //void setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, int pSceneIndex = 0, bool forceReload = false, bool onImport = false);
         void setActiveDocumentScene(int pSceneIndex);
 
         void moveSceneToIndex(int source, int target);
@@ -199,7 +198,7 @@ class UBBoardController : public UBDocumentContainer
         void togglePodcast(bool checked);
         void blackout();
         void addScene();
-        void addScene(UBDocumentProxy* proxy, int sceneIndex, bool replaceActiveIfEmpty = false);
+        //void addScene(UBDocumentProxy* proxy, int sceneIndex, bool replaceActiveIfEmpty = false);
         void addScene(UBGraphicsScene* scene, bool replaceActiveIfEmpty = false);
         void duplicateScene();
         void importPage();
@@ -282,7 +281,7 @@ class UBBoardController : public UBDocumentContainer
     protected slots:
         void selectionChanged();
         void undoRedoStateChange(bool canUndo);
-        void documentSceneChanged(UBDocumentProxy* proxy, int pIndex);
+        //void documentSceneChanged(UBDocumentProxy* proxy, int pIndex);
 
     private slots:
         void autosaveTimeout();
@@ -325,7 +324,7 @@ class UBBoardController : public UBDocumentContainer
     private slots:
         void stylusToolDoubleClicked(int tool);
         void boardViewResized(QResizeEvent* event);
-        void documentWillBeDeleted(UBDocumentProxy* pProxy);
+        //void documentWillBeDeleted(UBDocumentProxy* pProxy);
         void updateBackgroundActionsState(bool isDark, UBPageBackground pageBackground);
         void colorPaletteChanged();
         void libraryDialogClosed(int ret);

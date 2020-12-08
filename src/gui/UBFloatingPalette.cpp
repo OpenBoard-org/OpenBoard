@@ -32,8 +32,6 @@
 
 #include "UBFloatingPalette.h"
 
-#include "frameworks/UBPlatformUtils.h"
-
 #include "core/UBSettings.h"
 
 #include "core/memcheck.h"

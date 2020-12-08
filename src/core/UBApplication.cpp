@@ -29,254 +29,45 @@
 
 #include "UBApplication.h"
 
+#include "UBDisplayManager.h"
+#include "gui/UBMainWindow.h"
+#include "board/UBBoardController.h"
+#include "board/UBBoardPaletteManager.h"
+#include "board/UBBoardView.h"
+#include "frameworks/UBPlatformUtils.h"
+
 #include <QtGui>
-#include <QtXml>
 #include <QFontDatabase>
 #include <QStyleFactory>
-
-#include "frameworks/UBPlatformUtils.h"
-#include "frameworks/UBFileSystemUtils.h"
-#include "frameworks/UBStringUtils.h"
-
-#include "UBSettings.h"
-#include "UBSetting.h"
-#include "UBPersistenceManager.h"
-#include "UBDocumentManager.h"
-#include "UBPreferencesController.h"
-#include "UBIdleTimer.h"
 #include "UBApplicationController.h"
-
-#include "board/UBBoardController.h"
-#include "board/UBDrawingController.h"
-#include "board/UBBoardView.h"
-#include "board/UBBoardPaletteManager.h"
-#include "web/UBWebController.h"
-
-#include "document/UBDocumentController.h"
-#include "document/UBDocumentProxy.h"
-
-#include "gui/UBMainWindow.h"
-#include "gui/UBResources.h"
-#include "gui/UBThumbnailWidget.h"
 
 #include "ui_mainWindow.h"
 
-#include "frameworks/UBCryptoUtils.h"
-#include "tools/UBToolsManager.h"
-
-#include "UBDisplayManager.h"
-#include "core/memcheck.h"
-
-QPointer<QUndoStack> UBApplication::undoStack;
-
 UBApplicationController* UBApplication::applicationController = 0;
 UBBoardController* UBApplication::boardController = 0;
-UBWebController* UBApplication::webController = 0;
-UBDocumentController* UBApplication::documentController = 0;
-
 UBMainWindow* UBApplication::mainWindow = 0;
 
-const QString UBApplication::mimeTypeUniboardDocument = QString("application/vnd.mnemis-uniboard-document");
-const QString UBApplication::mimeTypeUniboardPage = QString("application/vnd.mnemis-uniboard-page");
-const QString UBApplication::mimeTypeUniboardPageItem =  QString("application/vnd.mnemis-uniboard-page-item");
-const QString UBApplication::mimeTypeUniboardPageThumbnail = QString("application/vnd.mnemis-uniboard-thumbnail");
-
-#if defined(Q_OS_OSX) || defined(Q_OS_LINUX)
-bool bIsMinimized = false;
-#endif
-
-QObject* UBApplication::staticMemoryCleaner = 0;
-
-
-UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QtSingleApplication(id, argc, argv)
-  , mPreferencesController(NULL)
-  , mApplicationTranslator(NULL)
-  , mQtGuiTranslator(NULL)
+UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QApplication(argc, argv)
 {
 
-    staticMemoryCleaner = new QObject(0); // deleted in UBApplication destructor
-
-    setOrganizationName("Open Education Foundation");
-    setOrganizationDomain("oe-f.org");
-    setApplicationName("OpenBoard");
-
-    QString version = UBVERSION;
-    if(version.endsWith("."))
-        version = version.left(version.length()-1);
-    setApplicationVersion(version);
-
-    QStringList args = arguments();
-
-    mIsVerbose = args.contains("-v")
-        || args.contains("-verbose")
-        || args.contains("verbose")
-        || args.contains("-log")
-        || args.contains("log");
-
-
-    setupTranslators(args);
-
-    UBResources::resources();
-
-    if (!undoStack)
-        undoStack = new QUndoStack(staticMemoryCleaner);
-
-    UBPlatformUtils::init();
-
-    UBSettings *settings = UBSettings::settings();
-
-    connect(settings->appToolBarPositionedAtTop, SIGNAL(changed(QVariant)), this, SLOT(toolBarPositionChanged(QVariant)));
-    connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), this, SLOT(toolBarDisplayTextChanged(QVariant)));
-    updateProtoActionsState();
-
-#ifndef Q_OS_OSX
-    setWindowIcon(QIcon(":/images/OpenBoard.png"));
-#endif
-
-    setStyle("fusion");
-
-    QString css = UBFileSystemUtils::readTextFile(UBPlatformUtils::applicationResourcesDirectory() + "/etc/"+ qApp->applicationName()+".css");
-    if (css.length() > 0)
-        setStyleSheet(css);
-
-    QApplication::setStartDragDistance(8); // default is 4, and is a bit small for tablets
-
     installEventFilter(this);
-
 }
 
 
 UBApplication::~UBApplication()
 {
-    UBPlatformUtils::destroy();
-
-    UBFileSystemUtils::deleteAllTempDirCreatedDuringSession();
-
     delete mainWindow;
     mainWindow = 0;
 
-    UBPersistenceManager::destroy();
+    if (applicationController) delete applicationController;
+    applicationController = NULL;
 
-    UBDownloadManager::destroy();
-
-    UBDrawingController::destroy();
-
-    UBSettings::destroy();
-
-    UBCryptoUtils::destroy();
-
-    UBToolsManager::destroy();
-
-    if(mApplicationTranslator != NULL){
-        delete mApplicationTranslator;
-        mApplicationTranslator = NULL;
-    }
-    if(mQtGuiTranslator!=NULL){
-        delete mQtGuiTranslator;
-        mQtGuiTranslator = NULL;
-    }
-
-    delete staticMemoryCleaner;
-    staticMemoryCleaner = 0;
-}
-
-QString UBApplication::checkLanguageAvailabilityForSankore(QString &language)
-{
-    QStringList availableTranslations = UBPlatformUtils::availableTranslations();
-
-    if(availableTranslations.contains(language,Qt::CaseInsensitive))
-        return language;
-    else{
-        if(language.length() > 2){
-            QString shortLanguageCode = language.left(2);
-
-            foreach (const QString &str, availableTranslations) {
-                       if (str.contains(shortLanguageCode))
-                           return shortLanguageCode;
-                   }
-
-        }
-    }
-    return QString("");
-}
-
-void UBApplication::setupTranslators(QStringList args)
-{
-    QString forcedLanguage("");
-    if(args.contains("-lang"))
-        forcedLanguage=args.at(args.indexOf("-lang") + 1);
-// TODO claudio: this has been commented because some of the translation seem to be loaded at this time
-//               especially tools name. This is a workaround and we have to be able to load settings without
-//               impacting the translations
-//    else{
-//        QString setLanguage = UBSettings::settings()->appPreferredLanguage->get().toString();
-//        if(!setLanguage.isEmpty())
-//            forcedLanguage = setLanguage;
-//    }
-
-    QString language("");
-
-    if(!forcedLanguage.isEmpty())
-        language = checkLanguageAvailabilityForSankore(forcedLanguage);
-
-    if(language.isEmpty()){
-        QString systemLanguage = UBPlatformUtils::systemLanguage();
-        language = checkLanguageAvailabilityForSankore(systemLanguage);
-    }
-
-    if(language.isEmpty()){
-        language = "en_US";
-        //fallback if no translation are available
-    }
-    else{
-        mApplicationTranslator = new QTranslator(this);
-        mQtGuiTranslator = new QTranslator(this);
-        mApplicationTranslator->load(UBPlatformUtils::translationPath(QString("OpenBoard_"),language));
-        installTranslator(mApplicationTranslator);
-
-        QString qtGuiTranslationPath = UBPlatformUtils::translationPath("qt_", language);
-
-
-        if(!QFile(qtGuiTranslationPath).exists()){
-            qtGuiTranslationPath = UBPlatformUtils::translationPath("qt_", language.left(2));
-            if(!QFile(qtGuiTranslationPath).exists())
-                qtGuiTranslationPath = "";
-        }
-
-        if(!qtGuiTranslationPath.isEmpty()){
-            mQtGuiTranslator->load(qtGuiTranslationPath);
-            installTranslator(mQtGuiTranslator);
-        }
-        else
-            qDebug() << "Qt gui translation in " << language << " is not available";
-    }
-
-    QLocale::setDefault(QLocale(language));
-    qDebug() << "Running application in:" << language;
+    if (boardController) delete boardController;
+    boardController = NULL;
 }
 
 int UBApplication::exec(const QString& pFileToImport)
 {
-    QPixmapCache::setCacheLimit(1024 * 100);
-
-    QString webDbPath = UBSettings::userDataDirectory() + "/web-databases";
-    QDir webDbDir(webDbPath);
-    if (!webDbDir.exists(webDbPath))
-        webDbDir.mkpath(webDbPath);
-
-    QWebSettings::setIconDatabasePath(webDbPath);
-    QWebSettings::setOfflineStoragePath (webDbPath);
-
-    QWebSettings *gs = QWebSettings::globalSettings();
-    gs->setAttribute(QWebSettings::JavaEnabled, true);
-    gs->setAttribute(QWebSettings::PluginsEnabled, true);
-    gs->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
-    gs->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
-    gs->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
-    gs->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
-    gs->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
-
-
     mainWindow = new UBMainWindow(0, Qt::FramelessWindowHint); // deleted by application destructor
     mainWindow->setAttribute(Qt::WA_NativeWindow, true);
 
@@ -284,28 +75,20 @@ int UBApplication::exec(const QString& pFileToImport)
     mainWindow->actionPaste->setShortcuts(QKeySequence::Paste);
     mainWindow->actionCut->setShortcuts(QKeySequence::Cut);
 
-    UBThumbnailUI::_private::initCatalog();
-
     connect(mainWindow->actionBoard, SIGNAL(triggered()), this, SLOT(showBoard()));
-    connect(mainWindow->actionWeb, SIGNAL(triggered()), this, SLOT(showInternet()));
-    connect(mainWindow->actionWeb, SIGNAL(triggered()), this, SLOT(stopScript()));
+    //connect(mainWindow->actionWeb, SIGNAL(triggered()), this, SLOT(showInternet()));
+    //connect(mainWindow->actionWeb, SIGNAL(triggered()), this, SLOT(stopScript()));
     connect(mainWindow->actionDocument, SIGNAL(triggered()), this, SLOT(showDocument()));
-    connect(mainWindow->actionDocument, SIGNAL(triggered()), this, SLOT(stopScript()));
-    connect(mainWindow->actionQuit, SIGNAL(triggered()), this, SLOT(closing()));
-    connect(mainWindow, SIGNAL(closeEvent_Signal(QCloseEvent*)), this, SLOT(closeEvent(QCloseEvent*)));
+    //connect(mainWindow->actionDocument, SIGNAL(triggered()), this, SLOT(stopScript()));
+    //connect(mainWindow->actionQuit, SIGNAL(triggered()), this, SLOT(closing()));
+    //connect(mainWindow, SIGNAL(closeEvent_Signal(QCloseEvent*)), this, SLOT(closeEvent(QCloseEvent*)));
 
     boardController = new UBBoardController(mainWindow);
     boardController->init();
-
-    webController = new UBWebController(mainWindow);
-    documentController = new UBDocumentController(mainWindow);
-
-    UBDrawingController::drawingController()->setStylusTool((int)UBStylusTool::Pen);
-
     applicationController = new UBApplicationController(boardController->controlView(),
                                                         boardController->displayView(),
                                                         mainWindow,
-                                                        staticMemoryCleaner,
+                                                        nullptr,
                                                         boardController->paletteManager()->rightPalette());
 
 
@@ -319,23 +102,14 @@ int UBApplication::exec(const QString& pFileToImport)
           , boardController,       SLOT(appMainModeChanged(UBApplicationController::MainMode)));
 
     connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), applicationController, SLOT(showDesktop(bool)));
-    connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), this, SLOT(stopScript()));
+    //connect(mainWindow->actionDesktop, SIGNAL(triggered(bool)), this, SLOT(stopScript()));
 #if defined(Q_OS_OSX) || defined(Q_OS_LINUX)
     connect(mainWindow->actionHideApplication, SIGNAL(triggered()), this, SLOT(showMinimized()));
 #else
     connect(mainWindow->actionHideApplication, SIGNAL(triggered()), mainWindow, SLOT(showMinimized()));
 #endif
 
-    mPreferencesController = new UBPreferencesController(mainWindow);
-
-    connect(mainWindow->actionPreferences, SIGNAL(triggered()), mPreferencesController, SLOT(show()));
     connect(mainWindow->actionCheckUpdate, SIGNAL(triggered()), applicationController, SLOT(checkUpdateRequest()));
-
-
-    toolBarPositionChanged(UBSettings::settings()->appToolBarPositionedAtTop->get());
-
-    bool bUseMultiScreen = UBSettings::settings()->appUseMultiscreen->get().toBool();
-    mainWindow->actionMultiScreen->setChecked(bUseMultiScreen);
     connect(mainWindow->actionMultiScreen, SIGNAL(triggered(bool)), applicationController, SLOT(useMultiScreen(bool)));
     connect(mainWindow->actionWidePageSize, SIGNAL(triggered(bool)), boardController, SLOT(setWidePageSize(bool)));
     connect(mainWindow->actionRegularPageSize, SIGNAL(triggered(bool)), boardController, SLOT(setRegularPageSize(bool)));
@@ -344,21 +118,19 @@ int UBApplication::exec(const QString& pFileToImport)
     connect(mainWindow->actionCopy, SIGNAL(triggered()), applicationController, SLOT(actionCopy()));
     connect(mainWindow->actionPaste, SIGNAL(triggered()), applicationController, SLOT(actionPaste()));
 
+    bool const bUseMultiScreen = true;
     applicationController->initScreenLayout(bUseMultiScreen);
     boardController->setupLayout();
 
     if (pFileToImport.length() > 0)
         UBApplication::applicationController->importFile(pFileToImport);
 
-    if (UBSettings::settings()->appStartMode->get().toInt())
-        applicationController->showDesktop();
-    else
-        applicationController->showBoard();
-
-    emit UBDrawingController::drawingController()->colorPaletteChanged();
+    //if (UBSettings::settings()->appStartMode->get().toInt())
+    applicationController->showDesktop();
+    //else
+    //    applicationController->showBoard();
 
     onScreenCountChanged(1);
-    connect(desktop(), SIGNAL(screenCountChanged(int)), this, SLOT(onScreenCountChanged(int)));
     return QApplication::exec();
 }
 
@@ -380,191 +152,14 @@ void UBApplication::showMinimized()
 #endif
 
 }
-
-
-void UBApplication::startScript()
-{
-    this->boardController->freezeW3CWidgets(false);
-}
-
-void UBApplication::stopScript()
-{
-    this->boardController->freezeW3CWidgets(true);
-}
-
 void UBApplication::showBoard()
 {
     applicationController->showBoard();
 }
-
-void UBApplication::showInternet()
-{
-    applicationController->showInternet();
-    webController->showTabAtTop(true);
-}
-
 void UBApplication::showDocument()
 {
     applicationController->showDocument();
 }
-
-int UBApplication::toolBarHeight()
-{
-    return mainWindow->boardToolBar->rect().height();
-}
-
-
-void UBApplication::toolBarPositionChanged(QVariant topOrBottom)
-{
-    Qt::ToolBarArea area;
-
-    if (topOrBottom.toBool())
-        area = Qt::TopToolBarArea;
-    else
-        area = Qt::BottomToolBarArea;
-
-    mainWindow->addToolBar(area, mainWindow->boardToolBar);
-    mainWindow->addToolBar(area, mainWindow->webToolBar);
-    mainWindow->addToolBar(area, mainWindow->documentToolBar);
-
-    webController->showTabAtTop(topOrBottom.toBool());
-
-}
-
-
-void UBApplication::toolBarDisplayTextChanged(QVariant display)
-{
-    Qt::ToolButtonStyle toolButtonStyle = display.toBool() ? Qt::ToolButtonTextUnderIcon : Qt::ToolButtonIconOnly;
-    mainWindow->boardToolBar->setToolButtonStyle(toolButtonStyle);
-    mainWindow->webToolBar->setToolButtonStyle(toolButtonStyle);
-    mainWindow->documentToolBar->setToolButtonStyle(toolButtonStyle);
-}
-
-
-void UBApplication::closeEvent(QCloseEvent *event)
-{
-    Q_UNUSED(event);
-
-    closing();
-}
-
-void UBApplication::closing()
-{
-    if (UBSettings::settings()->emptyTrashForOlderDocuments->get().toBool())
-    {
-        UBDocumentTreeModel *docModel = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel;
-        documentController->deleteDocumentsInFolderOlderThan(docModel->trashIndex(), UBSettings::settings()->emptyTrashDaysValue->get().toInt());
-        if (docModel->hasChildren(docModel->trashIndex()))
-            documentController->deleteEmptyFolders(docModel->trashIndex());
-    }
-
-    if (boardController)
-        boardController->closing();
-
-    if (applicationController)
-        applicationController->closing();
-
-    if (webController)
-        webController->closing();
-
-    UBSettings::settings()->closing();
-
-    UBSettings::settings()->appToolBarPositionedAtTop->set(mainWindow->toolBarArea(mainWindow->boardToolBar) == Qt::TopToolBarArea);
-
-    quit();
-}
-
-
-void UBApplication::showMessage(const QString& message, bool showSpinningWheel)
-{
-    if (applicationController)
-        applicationController->showMessage(message, showSpinningWheel);
-}
-
-
-void UBApplication::setDisabled(bool disable)
-{
-    boardController->setDisabled(disable);
-}
-
-
-void UBApplication::decorateActionMenu(QAction* action)
-{
-    foreach(QWidget* menuWidget,  action->associatedWidgets())
-    {
-        QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
-
-        if (tb && !tb->menu())
-        {
-            tb->setObjectName("ubButtonMenu");
-            tb->setPopupMode(QToolButton::InstantPopup);
-            QMenu* menu = new QMenu(mainWindow);
-
-            QActionGroup* pageSizeGroup = new QActionGroup(mainWindow);
-            pageSizeGroup->addAction(mainWindow->actionWidePageSize);
-            pageSizeGroup->addAction(mainWindow->actionRegularPageSize);
-            pageSizeGroup->addAction(mainWindow->actionCustomPageSize);
-
-            QMenu* documentSizeMenu = menu->addMenu(QIcon(":/images/toolbar/pageSize.png"),tr("Page Size"));
-            documentSizeMenu->addAction(mainWindow->actionWidePageSize);
-            documentSizeMenu->addAction(mainWindow->actionRegularPageSize);
-            documentSizeMenu->addAction(mainWindow->actionCustomPageSize);
-            menu->addAction(mainWindow->actionCut);
-            menu->addAction(mainWindow->actionCopy);
-            menu->addAction(mainWindow->actionPaste);
-            menu->addAction(mainWindow->actionHideApplication);
-            menu->addAction(mainWindow->actionSleep);
-
-            menu->addSeparator();
-            menu->addAction(mainWindow->actionOpenTutorial);
-            menu->addSeparator();
-            menu->addAction(mainWindow->actionPreferences);
-            menu->addAction(mainWindow->actionMultiScreen);
-            if (!UBSettings::settings()->appHideCheckForSoftwareUpdate->get().toBool())
-                menu->addAction(mainWindow->actionCheckUpdate);
-            menu->addSeparator();
-
-            menu->addAction(mainWindow->actionPodcast);
-            mainWindow->actionPodcast->setText(tr("Podcast"));
-
-            menu->addSeparator();
-            menu->addAction(mainWindow->actionQuit);
-
-            tb->setMenu(menu);
-        }
-    }
-}
-
-
-void UBApplication::updateProtoActionsState()
-{
-    if (mainWindow)
-    {
-        mainWindow->actionMultiScreen->setVisible(true);
-    }
-
-    foreach(QMenu* protoMenu, mProtoMenus)
-        protoMenu->setVisible(true);
-
-}
-
-
-void UBApplication::insertSpaceToToolbarBeforeAction(QToolBar* toolbar, QAction* action, int width)
-{
-    QWidget* spacer = new QWidget();
-
-    if (width >= 0){
-        QHBoxLayout *layout = new QHBoxLayout();
-        layout->addSpacing(width);
-        spacer->setLayout(layout);
-    }
-    else
-        spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
-
-    toolbar->insertWidget(action, spacer);
-}
-
-
 bool UBApplication::eventFilter(QObject *obj, QEvent *event)
 {
     bool result = QObject::eventFilter(obj, event);
@@ -604,88 +199,4 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
     }
 
     return result;
-}
-
-
-bool UBApplication::handleOpenMessage(const QString& pMessage)
-{
-    qDebug() << "received message" << pMessage;
-
-    if (pMessage == UBSettings::appPingMessage)
-    {
-        qDebug() << "received ping";
-        return true;
-    }
-
-    qDebug() << "importing file" << pMessage;
-
-    UBApplication::applicationController->importFile(pMessage);
-
-    return true;
-}
-
-void UBApplication::cleanup()
-{
-    if (applicationController) delete applicationController;
-    if (boardController) delete boardController;
-    if (webController) delete webController;
-    if (documentController) delete documentController;
-
-    applicationController = NULL;
-    boardController = NULL;
-    webController = NULL;
-    documentController = NULL;
-}
-
-QString UBApplication::urlFromHtml(QString html)
-{
-    QString _html;
-    QRegExp comments("\\<![ \r\n\t]*(--([^\\-]|[\r\n]|-[^\\-])*--[ \r\n\t]*)\\>");
-    QString url;
-    QDomDocument domDoc;
-
-    //    We remove all the comments & CRLF of this html
-    _html = html.remove(comments);
-    domDoc.setContent(_html.remove(QRegExp("[\\0]")));
-    QDomElement rootElem = domDoc.documentElement();
-
-    //  QUICKFIX: Here we have to check rootElem. Sometimes it can be a <meta> tag
-    //  In such a case we will not be able to retrieve the src value
-    if(rootElem.tagName().toLower().contains("meta")){
-        qDebug() << rootElem.firstChildElement().tagName();
-        //  In that case we get the next element
-        url = rootElem.firstChildElement().attribute("src");
-    }else{
-        url = rootElem.attribute("src");
-    }
-
-    return url;
-}
-
-bool UBApplication::isFromWeb(QString url)
-{
-    bool res = true;
-
-    if( url.startsWith("openboardtool://") ||
-        url.startsWith("file://") ||
-        url.startsWith("/")){
-        res = false;
-    }
-
-    return res;
-}
-
-QScreen* UBApplication::controlScreen()
-{
-    QList<QScreen*> screenList = screens();
-    if (screenList.size() == 1)
-        return screenList.first();
-
-    return screenList[controlScreenIndex()];
-}
-
-
-int UBApplication::controlScreenIndex()
-{
-    return applicationController->displayManager()->controleScreenIndex();
 }

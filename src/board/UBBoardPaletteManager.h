@@ -34,11 +34,10 @@
 
 #include "gui/UBLeftPalette.h"
 #include "gui/UBRightPalette.h"
-#include "gui/UBPageNavigationWidget.h"
+//#include "gui/UBPageNavigationWidget.h"
 #include "gui/UBCachePropertiesWidget.h"
-#include "gui/UBDockDownloadWidget.h"
 #include "core/UBApplicationController.h"
-#include "gui/UBFeaturesWidget.h"
+//#include "gui/UBFeaturesWidget.h"
 
 
 class UBWebToolsPalette;
@@ -53,7 +52,7 @@ class UBServerXMLHttpRequest;
 class UBKeyboardPalette;
 class UBMainWindow;
 class UBApplicationController;
-class UBStartupHintsPalette;
+//class UBStartupHintsPalette;
 
 class UBBoardPaletteManager : public QObject
 {
@@ -107,7 +106,7 @@ class UBBoardPaletteManager : public QObject
         UBStylusPalette *mStylusPalette;
 
         UBZoomPalette *mZoomPalette;
-	UBStartupHintsPalette* mTipPalette;
+        //UBStartupHintsPalette* mTipPalette;
         /** The left dock palette */
         UBLeftPalette* mLeftPalette;
         /** The right dock palette */
@@ -137,15 +136,12 @@ class UBBoardPaletteManager : public QObject
         bool mPendingEraseButtonPressed;
 
         /** The page navigator widget */
-        UBPageNavigationWidget* mpPageNavigWidget;
+        //UBPageNavigationWidget* mpPageNavigWidget;
 
         /** The cache properties widget */
         UBCachePropertiesWidget* mpCachePropWidget;
 
-        UBFeaturesWidget *mpFeaturesWidget;
-
-        /** The download widget */
-        UBDockDownloadWidget* mpDownloadWidget;
+        //UBFeaturesWidget *mpFeaturesWidget;
 
         bool mDownloadInProgress;
 

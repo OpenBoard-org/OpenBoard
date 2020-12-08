@@ -35,7 +35,7 @@
 
 #include "core/UB.h"
 
-class QuaZipFile;
+//class QuaZipFile;
 class UBProcessingProgressListener;
 
 class UBFileSystemUtils : public QObject
@@ -103,8 +103,8 @@ class UBFileSystemUtils : public QObject
          * @arg UBProcessingProgressListener an object listening to the compression progress
          * @return bool. true if compression is successful.
          */
-        static bool compressDirInZip(const QDir& pDir, const QString& pDestDir, QuaZipFile *pOutZipFile
-                        , bool pRootDocumentFolder, UBProcessingProgressListener* progressListener = 0);
+        /* static bool compressDirInZip(const QDir& pDir, const QString& pDestDir, QuaZipFile *pOutZipFile
+                        , bool pRootDocumentFolder, UBProcessingProgressListener* progressListener = 0); */
 
         static bool expandZipToDir(const QFile& pZipFile, const QDir& pTargetDir);
 
