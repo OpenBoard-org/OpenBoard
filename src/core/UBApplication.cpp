@@ -47,6 +47,10 @@ UBApplicationController* UBApplication::applicationController = 0;
 UBBoardController* UBApplication::boardController = 0;
 UBMainWindow* UBApplication::mainWindow = 0;
 
+#if defined(Q_OS_OSX) || defined(Q_OS_LINUX)
+bool bIsMinimized = false;
+#endif //defined(Q_OS_OSX) || defined(Q_OS_LINUX)
+
 UBApplication::UBApplication(const QString &id, int &argc, char **argv) : QApplication(argc, argv)
 {
 
