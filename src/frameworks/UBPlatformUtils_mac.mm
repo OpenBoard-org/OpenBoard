@@ -644,13 +644,13 @@ void UBPlatformUtils::showOSK(bool show)
 
             if (result == paramErr) {
                 qWarning() << "Unable to select input source";
-                UBApplication::showMessage(tr("Unable to activate system on-screen keyboard"));
+                //UBApplication::showMessage(tr("Unable to activate system on-screen keyboard"));
             }
         }
 
         else {
             qWarning() << "System OSK not found";
-            UBApplication::showMessage(tr("System on-screen keyboard not found"));
+            //UBApplication::showMessage(tr("System on-screen keyboard not found"));
         }
     }
 }
