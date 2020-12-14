@@ -183,16 +183,16 @@ bool UBExportDocumentCleaner::StripePdf(QString const &originalFile, QList<int> 
         if (pagesToKeep.indexOf(i) == -1)
         {
             // The empty.pdf has only 1 page. We need to insert it as many times as required.
-            commands.push_back(QString("\"%1\"").arg(pdfEmptyFileName).toUtf8());
+            commands.push_back(QString("%1").arg(pdfEmptyFileName).toUtf8());
             commands.push_back(QString("1").toUtf8());
         } else {
-            commands.push_back(QString("\"%1\"").arg(tempName).toUtf8());
+            commands.push_back(QString("%1").arg(tempName).toUtf8());
             commands.push_back(QString::number(i).toUtf8());
         }
     }
 
     commands.push_back(QString("--").toUtf8());
-    commands.push_back(QString("\"%1\"").arg(originalFile).toUtf8());
+    commands.push_back(QString("%1").arg(originalFile).toUtf8());
     int argc = commands.size();
     char **argv = new char*[argc];
     for (int i = 0; i < argc; i++)
