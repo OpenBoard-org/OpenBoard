@@ -140,6 +140,15 @@ class UBSvgSubsetAdaptor
 
                 UBGraphicsTextItem* textItemFromSvg();
 
+                void addTextItemsFromSvg();
+                void extractSvgText (QFont& font, qreal& dx, qreal& dy, qreal& textEnd, UBGraphicsTextItem*& textItem, qreal& last_y);
+                void doTransform (QString& trString,  qreal& dx, qreal& dy);
+                void readFontAttributes (QFont& font);
+
+                void parseTextAttributes(qreal &fontSize, QColor &fontColor, QString &fontFamily,
+                                                                QString &fontStretch, bool &italic, int &fontWeight);
+
+
                 UBGraphicsCurtainItem* curtainItemFromSvg();
 
                 UBGraphicsRuler* rulerFromSvg();

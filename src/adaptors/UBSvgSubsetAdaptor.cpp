@@ -360,7 +360,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
     mFileVersion = 40100; // default to 4.1.0
 
     UBGraphicsStrokesGroup* strokesGroup = 0;
-    UBGraphicsStroke* currentStroke = 0;
 
     while (!mXmlReader.atEnd())
     {
@@ -432,6 +431,25 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                     else
                     {
                         qWarning() << "cannot make sense of 'viewBox' value " << svgViewBox.toString();
+                    }
+                }
+                else
+                {
+                    QStringRef w = mXmlReader.attributes().value("width");
+                    QStringRef h = mXmlReader.attributes().value("height");
+                    if (!w.isNull() && !h.isNull())
+                    {
+                        QRectF sceneRect;
+                        sceneRect.setX(0);
+                        sceneRect.setY(0);
+                        sceneRect.setWidth(w.toFloat());
+                        sceneRect.setHeight(h.toFloat());
+                        mScene->setSceneRect(sceneRect);
+                        QSize sceneSize;
+                        sceneSize.setWidth(w.toFloat());
+                        sceneSize.setHeight(h.toFloat());
+
+                        mScene->setNominalSize(sceneSize);
                     }
                 }
 
@@ -585,15 +603,14 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                     else
                         group = mStrokesList.value(parentId);
 
-                    if (!currentStroke)
-                        currentStroke = new UBGraphicsStroke();
+                    UBGraphicsStroke* stroke = new UBGraphicsStroke();
 
                     if(polygonItem->transform().isIdentity())
                         polygonItem->setTransform(group->transform());
 
                     group->addToGroup(polygonItem);
                     polygonItem->setStrokesGroup(group);
-                    polygonItem->setStroke(currentStroke);
+                    polygonItem->setStroke(stroke);
 
                     polygonItem->show();
                     group->addToGroup(polygonItem);
@@ -626,15 +643,14 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                     else
                         group = mStrokesList.value(parentId);
 
-                    if (!currentStroke)
-                        currentStroke = new UBGraphicsStroke();
+                    UBGraphicsStroke* stroke = new UBGraphicsStroke();
 
                     if(polygonItem->transform().isIdentity())
                         polygonItem->setTransform(group->transform());
 
                     group->addToGroup(polygonItem);
                     polygonItem->setStrokesGroup(group);
-                    polygonItem->setStroke(currentStroke);
+                    polygonItem->setStroke(stroke);
 
                     polygonItem->show();
                     group->addToGroup(polygonItem);
@@ -655,7 +671,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
 
                     if (href.contains("png"))
                     {
-
                         UBGraphicsPixmapItem* pixmapItem = pixmapItemFromSvg();
                         if (pixmapItem)
                         {
@@ -722,18 +737,10 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                     videoItem->show();
                 }
             }
-            else if (mXmlReader.name() == "text")//This is for backward compatibility with proto text field prior to version 4.3
+            else if (mXmlReader.name() == "text")
             {
-                UBGraphicsTextItem* textItem = textItemFromSvg();
-                if (textItem)
-                {
-                    textItem->setFlag(QGraphicsItem::ItemIsMovable, true);
-                    textItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-
-                    mScene->addItem(textItem);
-
-                    textItem->show();
-                }
+                // For SMART Notebook import
+                addTextItemsFromSvg();
             }
             else if (mXmlReader.name() == "curtain")
             {
@@ -933,7 +940,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                 mGroupDarkBackgroundColor = QColor();
                 mGroupLightBackgroundColor = QColor();
                 strokesGroup = NULL;
-                currentStroke = NULL;
             }
         }
     }
@@ -1213,15 +1219,18 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
                     QColor colorOnLightBackground = polygonItem->colorOnLightBackground();
                     UBGraphicsStrokesGroup * sg = polygonItem->strokesGroup();
 
-                    if (colorOnDarkBackground.isValid() && colorOnLightBackground.isValid() && sg)
+                    if (sg)
                     {
                         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "z-value"
                                                   , QString("%1").arg(polygonItem->strokesGroup()->zValue()));
+                        if (colorOnDarkBackground.isValid() && colorOnLightBackground.isValid())
+                        {
 
-                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
-                                                  , "fill-on-dark-background", colorOnDarkBackground.name());
-                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
-                                                  , "fill-on-light-background", colorOnLightBackground.name());
+                          mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
+                                                    , "fill-on-dark-background", colorOnDarkBackground.name());
+                          mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
+                                                    , "fill-on-light-background", colorOnLightBackground.name());
+                        }
 
                         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(sg->uuid()));
 
@@ -1235,8 +1244,6 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
                         QMatrix matrix = sg->sceneMatrix();
                         if (!matrix.isIdentity())
                             mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
-
-                        qDebug() << "Attributes written";
 
                         groupHoldsInfo = true;
                     }
@@ -1987,7 +1994,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::pixmapItemToLinkedImage(UBGraphicsPi
 {
     mXmlWriter.writeStartElement("image");
 
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png";
+    QString fileName = pixmapItem->getHref();
 
     QString path = mDocumentPath + "/" + fileName;
 
@@ -2006,10 +2013,12 @@ UBGraphicsPixmapItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::pixmapItemFromSvg()
 
     QStringRef imageHref = mXmlReader.attributes().value(nsXLink, "href");
 
+    QString imagePath;
     if (!imageHref.isNull())
     {
         QString href = imageHref.toString();
-        QPixmap pix(mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(href));
+        imagePath = mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(href);
+        QPixmap pix(imagePath);
         pixmapItem->setPixmap(pix);
     }
     else
@@ -2019,6 +2028,35 @@ UBGraphicsPixmapItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::pixmapItemFromSvg()
     }
 
     graphicsItemFromSvg(pixmapItem);
+
+    QStringRef svgWidth = mXmlReader.attributes().value("width");
+    QStringRef svgHeight = mXmlReader.attributes().value("height");
+    if (!svgWidth.isNull() && !svgHeight.isNull())
+    {
+      qreal naturalWidth = pixmapItem->pixmap().width();
+      qreal naturalHeight = pixmapItem->pixmap().height();
+      QTransform stretchMatrix(svgWidth.toFloat() / naturalWidth, 0,
+                               0, svgHeight.toFloat() / naturalHeight, 0, 0);
+
+      pixmapItem->setTransform(stretchMatrix, true);
+    }
+
+
+   pixmapItem->setHref(imageHref);
+
+    // should possibly move image file to name using the uuid
+    // and use this name in pixmapItemToLinkedImage, but this
+    // breaks if an image is referenced on more than one page
+#if 0
+    QString permanentName = mDocumentPath + "/" + UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png";
+    if (imagePath != permanentName)
+    {
+      if (!QFile::rename(imagePath, permanentName))
+      {
+        qWarning() << "could not move " << imagePath << " to " << permanentName;
+      }
+    }
+#endif
 
     return pixmapItem;
 
@@ -2272,9 +2310,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
     {
         if (!svgX.isNull() && !svgY.isNull())
         {
-#ifdef Q_OS_WIN
             gItem->setPos(svgX.toString().toFloat(), svgY.toString().toFloat());
-#endif
         }
     }
 
@@ -2605,6 +2641,251 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::textItemToSvg(UBGraphicsTextItem* it
 
     mXmlWriter.writeEndElement(); //foreignObject
 }
+
+void UBSvgSubsetAdaptor::UBSvgSubsetReader::parseTextAttributes(qreal &fontSize, QColor &fontColor, QString &fontFamily,
+                                                                QString &fontStretch, bool &italic, int &fontWeight)
+{ 
+    QXmlStreamAttributes a = mXmlReader.attributes();
+    //consider inch has 72 liens
+    //since svg font size is given in pixels, divide it by pixels per line
+    QString fontSz = a.value("font-size").toString();
+    if (!fontSz.isNull()) fontSize = fontSz.toDouble() * 72 / QApplication::desktop()->physicalDpiY();
+
+    QString fontColorText = a.value("fill").toString();
+    if (!fontColorText.isNull())
+    {
+      //init regexp with pattern
+      //pattern corresponds to strings like 'rgb(1,2,3) or rgb(10%,20%,30%)'
+      QRegExp regexp("rgb\\(([0-9]+%{0,1}),([0-9]+%{0,1}),([0-9]+%{0,1})\\)");
+      if (regexp.exactMatch(fontColorText))
+      {
+          if (regexp.capturedTexts().count() == 4 && regexp.capturedTexts().at(0).length() == fontColorText.length())
+          {
+              int r = regexp.capturedTexts().at(1).toInt();
+              if (regexp.capturedTexts().at(1).indexOf("%") != -1)
+                  r = r * 255 / 100;
+              int g = regexp.capturedTexts().at(2).toInt();
+              if (regexp.capturedTexts().at(2).indexOf("%") != -1)
+                  g = g * 255 / 100;
+              int b = regexp.capturedTexts().at(3).toInt();
+              if (regexp.capturedTexts().at(3).indexOf("%") != -1)
+                  b = b * 255 / 100;
+              fontColor = QColor(r, g, b);
+          }
+          else
+              fontColor = QColor();
+      }
+      else
+        fontColor = QColor(fontColorText);
+    }
+
+    QString fontFamilyText = a.value("font-family").toString();
+    if (!fontFamilyText.isNull()) fontFamily = fontFamilyText;
+
+    QString fontStretchText = a.value("font-stretch").toString();
+    if (!fontStretchText.isNull()) fontStretch = fontStretchText;
+
+    if (!a.value("font-style").isNull())
+        italic = (a.value("font-style") == "italic");
+
+    QString weight = a.value("font-weight").toString();
+    if (!weight.isNull()) {
+        if      (weight == "normal")   fontWeight = QFont::Normal;
+        else if (weight == "light")    fontWeight = QFont::Light;
+        else if (weight == "demibold") fontWeight = QFont::DemiBold;
+        else if (weight == "bold")     fontWeight = QFont::Bold;
+        else if (weight == "black")    fontWeight = QFont::Black;
+    }
+}
+
+void UBSvgSubsetAdaptor::UBSvgSubsetReader::readFontAttributes (QFont& font)
+{
+    qreal fontSize = 12;
+    QColor fontColor(qApp->palette().foreground().color());
+    QString fontFamily = "Arial";
+    QString fontStretch = "normal";
+    bool italic = false;
+    int fontWeight = QFont::Normal;
+    parseTextAttributes(fontSize, fontColor, fontFamily, fontStretch, italic, fontWeight);
+
+    QFont startFont(fontFamily, fontSize, fontWeight, italic);
+    font = startFont; // is there a better way of assigning?
+}
+
+// Recursively extract text from a <text> element with nested <tspan>.
+// dx, dy, textEnd, textItem and last_y are shared among all calls
+// to the function.
+void UBSvgSubsetAdaptor::UBSvgSubsetReader::extractSvgText (QFont& font, qreal& dx, qreal& dy, qreal& textEnd, UBGraphicsTextItem*& textItem, qreal& last_y)
+{
+    QString text;
+    readFontAttributes(font);
+
+    // dx, dy are from transform property on <text> element
+    // x, y are properties on <tspan>, coords of starting point of text baseline
+    QXmlStreamAttributes a = mXmlReader.attributes();
+    QStringRef decoration = a.value("text-decoration");
+    if (!decoration.isNull())
+    {
+      if (decoration == "underline")
+        font.setUnderline(true);
+      else
+        font.setUnderline(false);
+    }
+
+    qreal x = 0.0, y = 0.0, textLength = 0.0;
+    if (!a.value("x").isNull())
+        x = a.value("x").toDouble();
+    if (!a.value("y").isNull())
+        y = a.value("y").toDouble();
+    if (!a.value("textLength").isNull())
+        textLength = a.value("textLength").toDouble();
+
+    QXmlStreamReader::TokenType tt = mXmlReader.readNext();
+    while (!(mXmlReader.isEndElement()))
+    {
+        if (tt == QXmlStreamReader::Characters)
+        {
+          text = mXmlReader.text().toString();
+          if (!text.trimmed().isEmpty())
+          {
+              // heuristic to see if multiple <tspan> should be combined
+              // into a single text item.  do this by keeping track of
+              // the end of the last block of text and seeing if the
+              // new block of text starts there.  we should check y values
+              // are exactly the same too.
+              // check if x and textEnd are very close.  may not be equal
+              // due to floating point imprecision.
+              if (textItem && -5.e-1 < x - textEnd && x - textEnd < 5.e-1
+                  && y == last_y)
+              {
+                textEnd += textLength;
+              }
+              else
+              {
+                textEnd = x + textLength;
+                textItem = new UBGraphicsTextItem();
+                graphicsItemFromSvg(textItem);
+                textItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+                textItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+                mScene->addItem(textItem);
+                textItem->show();
+
+                qreal height = QFontMetrics(font).height();
+                textItem->setPos(QPoint(dx + x, dy + y - height));
+
+                // should implement more transformations like rotation
+                // (see repositionSvgItem in UBCFFSubsetAdaptor.cpp)
+              }
+
+              QTextCursor curCursor = textItem->textCursor();
+              QTextCharFormat format;
+              format.setFont(font);
+              curCursor.mergeCharFormat(format);
+              textItem->setTextCursor(curCursor);
+
+              // just the following doesn't seem to do anything
+              //textItem->setFont(font);
+
+              last_y = y;
+
+              // Attempt to make the text item wide enough.  With
+              // text wrapping turned off the width of the text is
+              // automatically increased.  I don't know why it's
+              // necessary but increase the width by 100, otherwise
+              // the text is slightly too narrow after saving and
+              // reloading.
+              QTextOption option = textItem->document()->defaultTextOption();
+              option.setWrapMode(QTextOption::NoWrap);
+              textItem->document()->setDefaultTextOption(option);
+
+              curCursor.insertText(text);
+              QSizeF size = textItem->document()->size();
+              textItem->setTextWidth(size.width() + 100);
+
+              option.setWrapMode(QTextOption::WordWrap);
+              textItem->document()->setDefaultTextOption(option);
+          }
+        }
+        else if (mXmlReader.isStartElement() && mXmlReader.name() == "tspan")
+        {
+          extractSvgText (font, dx, dy, textEnd, textItem, last_y);
+        }
+        tt = mXmlReader.readNext();
+    }
+}
+
+void UBSvgSubsetAdaptor::UBSvgSubsetReader::addTextItemsFromSvg()
+{
+    qreal dx = 0.0;
+    qreal dy = 0.0;
+    QXmlStreamAttributes a = mXmlReader.attributes();
+    if (!a.value("transform").isNull())
+    {
+        QString trString = a.value("transform").toString();
+        doTransform(trString, dx, dy);
+    }
+
+    qreal fontSize = 12;
+    QColor fontColor(qApp->palette().foreground().color());
+    QString fontFamily = "Arial";
+    QString fontStretch = "normal";
+    bool italic = false;
+    int fontWeight = QFont::Normal;
+    parseTextAttributes(fontSize, fontColor, fontFamily, fontStretch, italic, fontWeight);
+    QFont startFont(fontFamily, fontSize, fontWeight, italic);
+
+    qreal textEnd = 0;
+    UBGraphicsTextItem *textItem = 0;
+    qreal last_y = 0;
+    extractSvgText(startFont, dx, dy, textEnd, textItem, last_y);
+
+    return;
+}
+
+
+// extract dx and dy from SVG transform attribute.  other transformations
+// (like rotations) are ignored.
+void UBSvgSubsetAdaptor::UBSvgSubsetReader::doTransform (QString& trString, qreal& dx, qreal& dy)
+{
+#if 0
+  qreal dxr = 0.0;
+  qreal dyr = 0.0;
+  qreal dx = 0.0;
+  qreal dy = 0.0;
+  qreal angle = 0.0;
+#endif
+
+  foreach(QString trStr, trString.split(" ", QString::SkipEmptyParts))
+  {
+      QRegExp regexp;
+#if 0
+      //check pattern for strings like 'rotate(10)'
+      regexp.setPattern("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)");
+      if (regexp.exactMatch(trStr)) {
+          angle = regexp.capturedTexts().at(1).toDouble();
+          continue;
+      };
+      
+      //check pattern for strings like 'rotate(10,20,20)' or 'rotate(10.1,10.2,34.2)'
+      regexp.setPattern("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)");
+      if (regexp.exactMatch(trStr)) {
+          angle = regexp.capturedTexts().at(1).toDouble();
+          dxr = regexp.capturedTexts().at(2).toDouble();
+          dyr = regexp.capturedTexts().at(3).toDouble();
+          continue;
+      }
+#endif
+      //check pattern for strings like 'translate(11.0, 12.34)'
+      regexp.setPattern("translate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *,*([-+]{0,1}[0-9]*\\.{0,1}[0-9]*)*\\)");
+      if (regexp.exactMatch(trStr)) {
+          dx = regexp.capturedTexts().at(1).toDouble();
+          dy = regexp.capturedTexts().at(2).toDouble();
+          continue;
+      }
+  }
+}
+
 
 UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
 {

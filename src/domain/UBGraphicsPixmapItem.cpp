@@ -192,3 +192,17 @@ void UBGraphicsPixmapItem::clearSource()
     QString diskPath =  UBApplication::boardController->selectedDocument()->persistencePath() + "/" + fileName;
     UBFileSystemUtils::deleteFile(diskPath);
 }
+
+void UBGraphicsPixmapItem::setHref(QStringRef href)
+{
+  mHref.clear();
+  mHref.append(href);
+}
+
+QString UBGraphicsPixmapItem::getHref()
+{
+  if (!mHref.isNull())
+    return mHref;
+  else
+    return UBPersistenceManager::imageDirectory + "/" + this->uuid().toString() + ".png";
+}
