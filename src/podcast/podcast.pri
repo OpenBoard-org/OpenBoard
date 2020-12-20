@@ -67,7 +67,7 @@ linux-g++* {
             -lxcb-xfixes \
             -lxcb-render -lxcb-shape -lxcb -lX11 -lasound -lSDL -lx264 -lpthread -lvpx -lvorbisenc -lvorbis -ltheoraenc -ltheoradec -logg -lopus -lmp3lame -lfreetype -lfdk-aac -lass -llzma -lbz2 -lz -ldl -lswresample -lswscale -lavutil -lm
 
-    FFMPEG_VERSION = $$system(ffmpeg --version|& grep -oP "version.*?\K[0-9]\.[0-9]")
+    FFMPEG_VERSION = $$system(ffmpeg -version | grep -oP "version.*?\K[0-9]\.[0-9]")
     equals(FFMPEG_VERSION, 2.8) {
         LIBS -= -lswresample
         LIBS += -lavresample

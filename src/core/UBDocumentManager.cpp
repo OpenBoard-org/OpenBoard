@@ -38,6 +38,7 @@
 #include "adaptors/UBImportPDF.h"
 #include "adaptors/UBImportImage.h"
 #include "adaptors/UBImportCFF.h"
+#include "adaptors/UBImportSMART.h"
 #include "adaptors/UBImportDocumentSetAdaptor.h"
 
 #include "domain/UBGraphicsScene.h"
@@ -101,6 +102,8 @@ UBDocumentManager::UBDocumentManager(QObject *parent)
     mImportAdaptors.append(imageImport);
     UBImportCFF* cffImport = new UBImportCFF(this);
     mImportAdaptors.append(cffImport);
+    UBImportSMART* smartImport = new UBImportSMART(this);
+    mImportAdaptors.append(smartImport);
 }
 
 

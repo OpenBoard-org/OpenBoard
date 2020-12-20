@@ -31,6 +31,7 @@
 #define UBGRAPHICSPIXMAPITEM_H_
 
 #include <QtGui>
+#include <QString>
 
 #include "core/UB.h"
 
@@ -66,6 +67,8 @@ class UBGraphicsPixmapItem : public QObject, public QGraphicsPixmapItem, public 
         virtual void clearSource();
 
         virtual void setUuid(const QUuid &pUuid);
+        QString getHref();
+        void setHref(QStringRef href);
 
 protected:
 
@@ -76,6 +79,9 @@ protected:
         virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
+private:
+  	QString mHref;
 };
 
 #endif /* UBGRAPHICSPIXMAPITEM_H_ */
