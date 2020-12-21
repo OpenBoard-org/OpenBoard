@@ -13,6 +13,7 @@
 #include "document/UBDocumentProxy.h"
 #include "adaptors/UBSvgSubsetAdaptor.h"
 #include "frameworks/UBPlatformUtils.h"
+#include "pdf/XPDFRenderer.h"
 
 #ifdef USE_XPDF
     THIRD_PARTY_WARNINGS_DISABLE
@@ -32,7 +33,12 @@
 
 UBExportDocumentCleaner::UBExportDocumentCleaner()
 {
+    XPDFRenderer::initGlobal_incrementRef();
+}
 
+UBExportDocumentCleaner::~UBExportDocumentCleaner()
+{
+    XPDFRenderer::decrementRef_deallocateGlobalIfNoMoreRef();
 }
 
 bool UBExportDocumentCleaner::StripeDocument(UBDocumentProxy* pDocumentProxy,

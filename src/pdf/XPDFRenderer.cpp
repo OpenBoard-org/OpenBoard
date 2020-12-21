@@ -78,17 +78,7 @@ XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
     }
 
     Q_UNUSED(importingFile);
-    if (!globalParams)
-    {
-        // globalParams must be allocated once and never be deleted
-        // note that this is *not* an instance variable of this XPDFRenderer class
-#ifndef USE_XPDF
-        globalParams = std::make_unique<GlobalParams>();
-#else
-        globalParams = new GlobalParams(0);
-#endif
-        globalParams->setupBaseFonts(QFile::encodeName(UBPlatformUtils::applicationResourcesDirectory() + "/" + "fonts").data());
-    }
+    initGlobalIfFirstRef();
 #ifdef USE_XPDF
     mDocument = new PDFDoc(new GString(filename.toLocal8Bit()), 0, 0, 0); // the filename GString is deleted on PDFDoc desctruction
 #else
@@ -125,14 +115,9 @@ XPDFRenderer::~XPDFRenderer()
         sInstancesCount.deref();
     }
 
-    if (sInstancesCount.loadAcquire() == 0 && globalParams)
+    if (sInstancesCount.loadAcquire() == 0)
     {
-#ifndef USE_XPDF
-        globalParams.reset();
-#else
-        delete globalParams;
-        globalParams = 0;
-#endif
+        deallocateGlobalIfNoMoreRef();
     }
 }
 
@@ -271,6 +256,40 @@ void XPDFRenderer::OnThreadFinished()
         m_cacheThread.start();
 }
 
+void XPDFRenderer::initGlobalIfFirstRef()
+{
+    Q_ASSERT((!globalParams && sInstancesCount.loadAcquire() == 0) ||
+             (globalParams && sInstancesCount.loadAcquire() != 0)); // If this is not consistent, we are probably creating or deleting it twice.
+
+    if (!globalParams)
+    {
+        // globalParams must be allocated once and never be deleted
+        // note that this is *not* an instance variable of this XPDFRenderer class
+#ifndef USE_XPDF
+        globalParams = std::make_unique<GlobalParams>();
+#else
+        globalParams = new GlobalParams(0);
+#endif
+        globalParams->setupBaseFonts(QFile::encodeName(UBPlatformUtils::applicationResourcesDirectory() + "/" + "fonts").data());
+    }
+}
+
+void XPDFRenderer::deallocateGlobalIfNoMoreRef()
+{
+    if (sInstancesCount.loadAcquire() == 0 && globalParams)
+    {
+#ifndef USE_XPDF
+        globalParams.reset();
+#else
+        delete globalParams;
+        globalParams = 0;
+#endif
+    }
+
+    Q_ASSERT((!globalParams && sInstancesCount.loadAcquire() == 0) ||
+             (globalParams && sInstancesCount.loadAcquire() != 0)); // If this is not consistent, we are probably creating or deleting it twice.
+}
+
 void XPDFRenderer::render(QPainter *p, int pageNumber, bool const cacheAllowed, const QRectF &bounds)
 {
     //qDebug() << "render enter";
@@ -395,6 +414,18 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, bool const cacheAllowed, 
         }
     }
     //qDebug() << "render leave";
+}
+
+void XPDFRenderer::initGlobal_incrementRef()
+{
+    initGlobalIfFirstRef();
+    sInstancesCount.ref();
+}
+
+void XPDFRenderer::decrementRef_deallocateGlobalIfNoMoreRef()
+{
+    sInstancesCount.deref();
+    deallocateGlobalIfNoMoreRef();
 }
 
 QImage& XPDFRenderer::createPDFImageCached(int pageNumber, PdfZoomCacheData &cacheData)

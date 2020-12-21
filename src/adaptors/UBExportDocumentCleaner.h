@@ -14,9 +14,9 @@ class UBExportDocumentCleaner
 {
 public:
     UBExportDocumentCleaner();
+    virtual ~UBExportDocumentCleaner();
 
     static bool StripeDocument(UBDocumentProxy* pDocumentProxy, const QString &filename);
-
 private:
     //! Return 'true' is success, 'false' otherwise. Note the final archive is
     //! always available, but in case of failure, it is not stripped.
