@@ -28,9 +28,7 @@
     #include <poppler/PDFDoc.h>
 #endif
 
-#ifdef OB_USE_QPDF_AS_LIB
 #include "qpdf.cc"
-#endif //OB_USE_QPDF_AS_LIB
 
 UBExportDocumentCleaner::UBExportDocumentCleaner()
 {
@@ -143,37 +141,6 @@ bool UBExportDocumentCleaner::StripePdf(QString const &originalFile, QList<int> 
         qWarning() << "The file '" << relaseEmptyFileName << "' was not found. Therefore, the following qpdf stripe operation is likely to fail.";
     }
 
-#ifdef OB_USE_QPDF_AS_SIDE_BY_SIDE
-    // Build a string list with all required pages.
-    QString commandLinePagesString;
-    for (int i = 1; i <= totalPages; i++)
-    {
-        if (commandLinePagesString.size() > 0)
-            commandLinePagesString += " ";
-
-        if (pagesToKeep.indexOf(i) == -1)
-        {
-            // The empty.pdf has only 1 page. We need to insert it as many times as required.
-            commandLinePagesString += QString("\"%1\" 1").arg(pdfEmptyFileName);
-        } else {
-            commandLinePagesString += QString("\"%1\" %2").arg(tempName).arg(QString::number(i));
-        }
-    }
-
-
-    // Try the 'release' config first. The binary is either side by side of OB, or in the system path.
-    QString command = QString("\"%1\" --empty --pages %2 -- \"%3\"").arg(QPDF_BINARY).arg(commandLinePagesString).arg(originalFile);
-    int result = QProcess::execute(command);
-    if (result != 0)
-    {
-        // 'qpdf' not on the path? Then try for a debug configuration, so it ease debugging.
-        command = QString("\"%1/%2\" --empty --pages %3 -- \"%4\"").arg(QPDF_DEBUG_BIN_DIR).arg(QPDF_BINARY).arg(commandLinePagesString).arg(originalFile);
-        result = QProcess::execute(command);
-        //qDebug() << command << "result=" << result;
-    }
-#endif //OB_USE_QPDF_AS_SIDE_BY_SIDE
-
-#ifdef OB_USE_QPDF_AS_LIB
     QList<QByteArray> commands;
     commands.push_back(QString("qpdf.exe").toUtf8());
     commands.push_back(QString("--empty").toUtf8());
@@ -209,7 +176,6 @@ bool UBExportDocumentCleaner::StripePdf(QString const &originalFile, QList<int> 
     }
 
     delete [] argv;
-#endif //OB_USE_QPDF_AS_LIB
 
     if (result != 0) {
         // Can't stripe? Recover the original file.
