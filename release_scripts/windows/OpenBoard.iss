@@ -65,9 +65,6 @@ Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.1.0-win64\bin\
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\win32\libeay32.dll"; DestDir:"{app}"; Flags: ignoreversion
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\win32\ssleay32.dll"; DestDir:"{app}"; Flags: ignoreversion
 
-;qpdf
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\qpdf\qpdf-10.0.4\bin\*.*"; DestDir:"{app}"; Flags: ignoreversion
-
 ;Qt base dll
 ;Source: "OpenBoard.exe"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Core.dll"; DestDir: "{app}"
