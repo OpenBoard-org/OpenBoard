@@ -449,16 +449,11 @@ void UBGraphicsTextItemDelegate::alignButtonProcess()
 
 void UBGraphicsTextItemDelegate::onCursorPositionChanged(const QTextCursor &cursor)
 {
-    qDebug() << "cursor position changed";
-    qDebug() << "-----------------------";
-    qDebug() << "we have a selection!" << cursor.selectionStart();
-    qDebug() << "-----------------------";
 }
 
 void UBGraphicsTextItemDelegate::onModificationChanged(bool ch)
 {
     Q_UNUSED(ch);
-    qDebug() << "modification changed";
 }
 
 void UBGraphicsTextItemDelegate::onContentChanged()
