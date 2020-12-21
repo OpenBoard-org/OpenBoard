@@ -346,6 +346,21 @@ UBSvgSubsetAdaptor::UBSvgSubsetReader::UBSvgSubsetReader(UBDocumentProxy* pProxy
     // NOOP
 }
 
+// Interpret an SVG fill attribute
+static void
+parseFill (const QString& string, QBrush& brush)
+{
+    QColor color;
+    if (string[0] == '#')
+        color.setNamedColor(string);
+    else if (string == "white")
+        color.setNamedColor("#ffffff");
+    else if (string == "black")
+        color.setNamedColor("#000000");
+    if (color.isValid())
+        brush.setColor(color);
+}
+
 
 UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProxy* proxy)
 {
@@ -910,6 +925,42 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                     qWarning() << "Ignoring unknown foreignObject:" << href;
                 }
             }
+            else if (mXmlReader.name() == "rect")
+            {
+                qreal x = mXmlReader.attributes().value("x").toFloat();
+                qreal y = mXmlReader.attributes().value("y").toFloat();
+                qreal width, height;
+
+                QStringRef widthString = mXmlReader.attributes().value("width");
+                QStringRef heightString = mXmlReader.attributes().value("height");
+
+                if (widthString == "100%")
+                  width = mScene->width();
+                else
+                  width = widthString.toFloat();
+
+                if (heightString == "100%")
+                  height = mScene->height();
+                else
+                  height = heightString.toFloat();
+
+                QBrush brush(Qt::white);
+
+                QString fill = mXmlReader.attributes().value("fill").toString();
+                if (!fill.isNull())
+                {
+                    parseFill(fill, brush);
+                }
+                auto rect = new QGraphicsRectItem(x, y, width, height);
+                graphicsItemFromSvg(rect);
+
+                mScene->addItem(rect);
+                rect->setBrush(brush);
+
+                QPen pen;
+                pen.setStyle(Qt::NoPen);
+                rect->setPen(pen);
+            }
             else if (currentWidget && (mXmlReader.name() == "preference"))
             {
                 QString key = mXmlReader.attributes().value("key").toString();
@@ -1398,6 +1449,24 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
         {
             persistGroupToDom(groupItem, &groupRoot, &groupDomDocument);
             continue;
+        }
+
+        QGraphicsRectItem *rectItem = qgraphicsitem_cast<QGraphicsRectItem*> (item);
+        if (rectItem && rectItem->isVisible())
+        {
+            QRectF r = rectItem->rect();
+            mXmlWriter.writeStartElement("rect");
+            mXmlWriter.writeAttribute("x", QString::number(r.x(), 'f', 3));
+            mXmlWriter.writeAttribute("y", QString::number(r.y(), 'f', 3));
+            mXmlWriter.writeAttribute("width", QString::number(r.width(), 'f', 3));
+            mXmlWriter.writeAttribute("height", QString::number(r.height(), 'f', 3));
+
+            QString fill = rectItem->brush().color().name();
+            mXmlWriter.writeAttribute("fill", fill);
+            QMatrix matrix = rectItem->sceneMatrix();
+            if (!matrix.isIdentity())
+                mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
+            mXmlWriter.writeEndElement();
         }
     }
 
