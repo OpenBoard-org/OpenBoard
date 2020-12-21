@@ -219,9 +219,9 @@ UBDocumentProxy* UBDocumentManager::importFile(const QFile& pFile, const QString
                     QApplication::processEvents();
 #endif
                     int pageIndex = document->pageCount();
-                    UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(document, pageIndex);
+                    UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(document, pageIndex, true /* useUndoRedoStack */, UBPersistenceManager::PdfStripeYes);
                     importAdaptor->placeImportedItemToScene(scene, page);
-                    UBPersistenceManager::persistenceManager()->persistDocumentScene(document, scene, pageIndex);
+                    UBPersistenceManager::persistenceManager()->persistDocumentScene(document, scene, pageIndex, UBPersistenceManager::PdfStripeYes);
                 }
 
                 UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
@@ -283,9 +283,9 @@ int UBDocumentManager::addFilesToDocument(UBDocumentProxy* document, QStringList
                     {
                         UBApplication::showMessage(tr("Inserting page %1 of %2").arg(++nPage).arg(pages.size()), true);
                         int pageIndex = document->pageCount();
-                        UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(document, pageIndex);
+                        UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(document, pageIndex, true /* useUndoRedoStack */, UBPersistenceManager::PdfStripeNo);
                         importAdaptor->placeImportedItemToScene(scene, page);
-                        UBPersistenceManager::persistenceManager()->persistDocumentScene(document, scene, pageIndex);
+                        UBPersistenceManager::persistenceManager()->persistDocumentScene(document, scene, pageIndex, UBPersistenceManager::PdfStripeNo);
                         UBApplication::boardController->insertThumbPage(pageIndex);
                     }
 

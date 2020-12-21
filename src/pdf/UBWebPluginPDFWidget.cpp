@@ -152,7 +152,9 @@ void UBWebPluginPDFWidget::paintEvent(QPaintEvent *event)
 
     painter.translate((geometry().width() - (pageSize.width() * mScale)) / 2, 0);
     painter.scale(mScale, mScale);
-    mRenderer->render(&painter, mPageNumber, event->rect());
+    // Note: If you ever want to use the cache, you need to make sure the object 'update' is called
+    // when the processing is completed. See 'signalUpdateParent'.
+    mRenderer->render(&painter, mPageNumber, false /* Cache allowed */, event->rect());
     painter.setPen(QPen(Qt::gray, 1));
     painter.drawRect(0, 0, pageSize.width(), pageSize.height());
 }

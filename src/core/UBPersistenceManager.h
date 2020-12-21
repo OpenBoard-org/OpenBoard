@@ -50,6 +50,11 @@ class UBPersistenceManager : public QObject
         static UBPersistenceManager* sSingleton;
 
     public:
+        enum PdfStripe {
+            PdfStripeNo,
+            PdfStripeYes,
+            nbrPdfStripe
+        };
 
         virtual ~UBPersistenceManager();
 
@@ -104,9 +109,9 @@ class UBPersistenceManager : public QObject
         virtual void copyDocumentScene(UBDocumentProxy *from, int fromIndex, UBDocumentProxy *to, int toIndex);
 
         virtual void persistDocumentScene(UBDocumentProxy* pDocumentProxy,
-                UBGraphicsScene* pScene, const int pSceneIndex);
+                UBGraphicsScene* pScene, const int pSceneIndex, const PdfStripe &pdfStripe);
 
-        virtual UBGraphicsScene* createDocumentSceneAt(UBDocumentProxy* pDocumentProxy, int index, bool useUndoRedoStack = true);
+        virtual UBGraphicsScene* createDocumentSceneAt(UBDocumentProxy* pDocumentProxy, int index, bool useUndoRedoStack, const PdfStripe &pdfStripe);
 
         virtual void insertDocumentSceneAt(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* scene, int index, bool persist = true);
 

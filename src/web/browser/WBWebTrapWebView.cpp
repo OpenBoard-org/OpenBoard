@@ -30,7 +30,7 @@
 #include "WBWebTrapWebView.h"
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QWebElement>
 #include <QWebHitTestResult>
 #include <QWebFrame>
 

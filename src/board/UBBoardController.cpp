@@ -30,7 +30,6 @@
 #include "UBBoardController.h"
 
 #include <QtWidgets>
-#include <QtWebKitWidgets>
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBPlatformUtils.h"
@@ -780,6 +779,7 @@ void UBBoardController::deleteScene(int nIndex)
         scIndexes << nIndex;
         deletePages(scIndexes);
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+        UBMetadataDcSubsetAdaptor::persist(selectedDocument());
 
         if (nIndex >= pageCount())
             nIndex = pageCount()-1;
@@ -2004,7 +2004,7 @@ void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool force
             && (mActiveSceneIndex >= 0) && mActiveSceneIndex != mMovingSceneIndex
             && (mActiveScene->isModified()))
     {
-        UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex);
+        UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, UBPersistenceManager::PdfStripeYes);
         updatePage(mActiveSceneIndex);
     }
 }
@@ -2179,13 +2179,13 @@ void UBBoardController::grabScene(const QRectF& pSceneRect)
         painter.setRenderHint(QPainter::Antialiasing);
 
         mActiveScene->setRenderingContext(UBGraphicsScene::NonScreen);
-        mActiveScene->setRenderingQuality(UBItem::RenderingQualityHigh);
+        mActiveScene->setRenderingQuality(UBItem::RenderingQualityHigh, UBItem::CacheNotAllowed);
 
         mActiveScene->render(&painter, targetRect, pSceneRect);
 
         mActiveScene->setRenderingContext(UBGraphicsScene::Screen);
 //        mActiveScene->setRenderingQuality(UBItem::RenderingQualityNormal);
-        mActiveScene->setRenderingQuality(UBItem::RenderingQualityHigh);
+        mActiveScene->setRenderingQuality(UBItem::RenderingQualityHigh, UBItem::CacheAllowed);
 
 
         mPaletteManager->addItem(QPixmap::fromImage(image));

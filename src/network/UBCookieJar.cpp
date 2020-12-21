@@ -75,8 +75,7 @@
 #include "core/UBSettings.h"
 
 #include <QtGui>
-#include <QtWebKit>
-
+#include <QWebSettings>
 #include "core/memcheck.h"
 
 static const unsigned int JAR_VERSION = 23;

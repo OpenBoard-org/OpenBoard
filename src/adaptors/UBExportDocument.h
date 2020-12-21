@@ -33,6 +33,7 @@
 #include <QtCore>
 
 #include "UBExportAdaptor.h"
+#include "UBExportDocumentCleaner.h"
 
 #include "frameworks/UBFileSystemUtils.h"
 
@@ -56,6 +57,8 @@ class UBExportDocument : public UBExportAdaptor, public UBProcessingProgressList
         virtual void processing(const QString& pObjectName, int pCurrent, int pTotal);
 
         virtual bool associatedActionactionAvailableFor(const QModelIndex &selectedIndex);
+    private:
+        UBExportDocumentCleaner m_cleaner;
 };
 
 #endif /* UBEXPORTDOCUMENT_H_ */

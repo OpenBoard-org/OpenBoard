@@ -72,7 +72,6 @@
 #define WBWEBVIEW_H
 
 #include <QtGui>
-#include <QtWebKit>
 
 #include "WBWebTrapWebView.h"
 #include "web/UBWebPage.h"

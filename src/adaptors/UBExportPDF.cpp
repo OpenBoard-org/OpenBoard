@@ -113,7 +113,7 @@ bool UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QStrin
         QSize pageSize = scene->sceneSize();
 
         // set high res rendering
-        scene->setRenderingQuality(UBItem::RenderingQualityHigh);
+        scene->setRenderingQuality(UBItem::RenderingQualityHigh, UBItem::CacheNotAllowed);
         scene->setRenderingContext(UBGraphicsScene::NonScreen);
 
         // Setting output page size
@@ -132,7 +132,7 @@ bool UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QStrin
 
         // Restore screen rendering quality
         scene->setRenderingContext(UBGraphicsScene::Screen);
-        scene->setRenderingQuality(UBItem::RenderingQualityNormal);
+        scene->setRenderingQuality(UBItem::RenderingQualityNormal, UBItem::CacheAllowed);
 
         // Restore background state
         scene->setBackground(isDark, pageBackground);

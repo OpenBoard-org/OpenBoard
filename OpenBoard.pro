@@ -9,9 +9,9 @@ CONFIG += debug_and_release \
 
 VERSION_MAJ = 1
 VERSION_MIN = 6
-VERSION_PATCH = 0
-VERSION_TYPE = r # a = alpha, b = beta, rc = release candidate, r = release, other => error
-VERSION_BUILD = 0
+VERSION_PATCH = 1
+VERSION_TYPE = a # a = alpha, b = beta, rc = release candidate, r = release, other => error
+VERSION_BUILD = 1116
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$${VERSION_BUILD}"
 
@@ -60,6 +60,7 @@ include(src/desktop/desktop.pri)
 include(src/web/web.pri)
 include(src/qtsingleapplication/src/qtsingleapplication.pri)
 
+
 DEPENDPATH += src/pdf-merger
 INCLUDEPATH += src/pdf-merger
 include(src/pdf-merger/pdfMerger.pri)
@@ -107,15 +108,13 @@ MOC_DIR = $$BUILD_DIR/moc
 RCC_DIR = $$BUILD_DIR/rcc
 UI_DIR = $$BUILD_DIR/ui
 
+THIRD_PARTY_PATH=../OpenBoard-ThirdParty
 win32 {
-
-
    LIBS += -lUser32
    LIBS += -lGdi32
    LIBS += -lAdvApi32
    LIBS += -lOle32
 
-   THIRD_PARTY_PATH=../OpenBoard-ThirdParty
    include($$THIRD_PARTY_PATH/libs.pri)
 
    DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
@@ -126,8 +125,11 @@ win32 {
    CONFIG += axcontainer
    exists(console):CONFIG += console
    QMAKE_CXXFLAGS += /MP
-   QMAKE_CXXFLAGS += /MD
-   QMAKE_CXXFLAGS_RELEASE += /Od /Zi
+   CONFIG( debug, debug|release ) {
+      QMAKE_CXXFLAGS += /MDd
+   } else {
+      QMAKE_CXXFLAGS += /MD
+   }
    QMAKE_LFLAGS += /VERBOSE:LIB
    UB_LIBRARY.path = $$DESTDIR
    UB_I18N.path = $$DESTDIR/i18n
@@ -157,6 +159,8 @@ win32 {
 }
 
 macx {
+   DEFINES += Q_WS_MACX
+
    LIBS += -framework Foundation
    LIBS += -framework Cocoa
    LIBS += -framework Carbon
@@ -165,11 +169,23 @@ macx {
    LIBS += -lcrypto
 
    LIBS += -L/usr/local/opt/openssl/lib
-   LIBS += -L/usr/local/opt/quazip/lib -lquazip
+
+   # quazip depends on QT. Current is 5.14, so if you wish to build
+   # OB using a previous QT version, you have to build your own quazip,
+   # otherwise it won't link.
+   equals(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 14) {
+      LIBS += "-L../OpenBoard-ThirdParty/quazip/lib/macx" "-lquazip"
+   } else {
+       LIBS += -L/usr/local/opt/quazip/lib -lquazip
+   }
    LIBS += -L/usr/local/opt/ffmpeg/lib
    INCLUDEPATH += /usr/local/opt/openssl/include
    INCLUDEPATH += /usr/local/opt/ffmpeg/include
-   INCLUDEPATH += /usr/local/opt/quazip/include/quazip
+   equals(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 14) {
+       INCLUDEPATH += ../OpenBoard-ThirdParty/quazip/quazip-0.7.1
+   } else {
+       INCLUDEPATH += /usr/local/opt/quazip/include/quazip
+   }
 
    LIBS        += -L/usr/local/opt/poppler/lib -lpoppler
    INCLUDEPATH += /usr/local/opt/poppler/include
@@ -451,6 +467,8 @@ linux-g++* {
     system(echo "$$LONG_VERSION" > $$BUILD_DIR/longversion)
     system(echo "$$SVN_VERSION" > $$BUILD_DIR/svnversion)
 }
+
+include($$THIRD_PARTY_PATH/qpdf/qpdf.pri)
 
 RESOURCES += resources/OpenBoard.qrc
 

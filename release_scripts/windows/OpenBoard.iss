@@ -65,6 +65,9 @@ Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.1.0-win64\bin\
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\win32\libeay32.dll"; DestDir:"{app}"; Flags: ignoreversion
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\win32\ssleay32.dll"; DestDir:"{app}"; Flags: ignoreversion
 
+;qpdf
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\qpdf\qpdf-10.0.4\bin\*.*"; DestDir:"{app}"; Flags: ignoreversion
+
 ;Qt base dll
 ;Source: "OpenBoard.exe"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Core.dll"; DestDir: "{app}"
@@ -87,18 +90,18 @@ Source: "{#QtLibs}\libGLESv2.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Quick.dll"; DestDir: "{app}"  
 Source: "{#QtLibs}\Qt5Positioning.dll"; DestDir: "{app}"  
 Source: "{#QtLibs}\Qt5Sensors.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\icuuc65.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\icuin65.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\icudt65.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\libxslt.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\libxml2.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5QmlModels.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5WebChannel.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\libEGL.dll"; DestDir: "{app}"  
 ;Source: "/etc/freezedWidgetWrapper.html"; DestDir: "{app}"  
 ;Source: "*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\zlib\1.2.11\bin\zlib.dll"; DestDir:"{app}"; Flags: ignoreversion
-
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\qtwebkit\bin\icudt64.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\qtwebkit\bin\icuin64.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\qtwebkit\bin\icuuc64.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\qtwebkit\bin\libxml2.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\qtwebkit\bin\libxslt.dll"; DestDir: "{app}"
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

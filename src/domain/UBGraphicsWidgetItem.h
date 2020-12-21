@@ -31,7 +31,6 @@
 #define UBGRAPHICSWIDGETITEM_H
 
 #include <QtGui>
-#include <QtWebKit>
 #include <QDomElement>
 #include <QGraphicsWebView>
 

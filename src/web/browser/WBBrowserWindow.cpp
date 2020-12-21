@@ -71,7 +71,7 @@
 #include "WBBrowserWindow.h"
 
 #include <QtGui>
-#include <QtWebKit>
+#include <QWebHistory>
 #include <QDesktopWidget>
 
 #include "core/UBSettings.h"

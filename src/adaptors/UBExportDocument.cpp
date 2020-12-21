@@ -25,7 +25,7 @@
  */
 
 
-
+#include <QXmlReader>
 
 #include "UBExportDocument.h"
 
@@ -48,6 +48,26 @@
 #endif
 
 #include "core/memcheck.h"
+
+namespace {
+    //! From 'https://stackoverflow.com/questions/2536524/copy-directory-using-qt'
+    void copyPath(QString src, QString dst)
+    {
+        QDir dir(src);
+        if (! dir.exists())
+            return;
+
+        foreach (QString d, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+            QString dst_path = dst + QDir::separator() + d;
+            dir.mkpath(dst_path);
+            copyPath(src+ QDir::separator() + d, dst_path);
+        }
+
+        foreach (QString f, dir.entryList(QDir::Files)) {
+            QFile::copy(src + QDir::separator() + f, dst + QDir::separator() + f);
+        }
+    }
+}
 
 UBExportDocument::UBExportDocument(QObject *parent)
     : UBExportAdaptor(parent)
@@ -76,9 +96,22 @@ bool UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, const Q
         return false;
     }
 
-    QDir documentDir = QDir(pDocumentProxy->persistencePath());
+    // Create a temporary directory, from which we will alter files to clean up the data, if necessary.
+    QTemporaryDir tempDir;
+    copyPath(pDocumentProxy->persistencePath(), tempDir.path());
+    bool const stripeSuccess = UBExportDocumentCleaner::StripeDocument(pDocumentProxy, tempDir.path());
+
+    if (!stripeSuccess)
+    {
+        QMessageBox errorBox;
+        errorBox.setWindowTitle(tr("Export warning"));
+        errorBox.setText(tr("The stripe of a pdf file failed (is qpdf missing?).\n\nThe export has been completed, but please note the final archive will contain ALL the inital PDF data, which may expose pages you have not selected."));
+        errorBox.setIcon(QMessageBox::Warning);
+        errorBox.exec();
+    }
 
     QuaZipFile outFile(&zip);
+    QDir const documentDir = QDir(tempDir.path());
     UBFileSystemUtils::compressDirInZip(documentDir, "", &outFile, true, this);
 
     zip.close();
