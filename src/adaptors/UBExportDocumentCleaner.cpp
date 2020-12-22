@@ -123,7 +123,7 @@ bool UBExportDocumentCleaner::StripePdf(QString const &originalFile, QList<int> 
 
     int result = -1;
     try {
-        result = UBExportDocumentCleanerQPDF::Cleanup(tempName /* input */, originalFile /* output */, pagesToKeep, pdfEmptyFileName);
+        result = UBExportDocumentCleanerQPDF::Stripe(tempName /* input */, originalFile /* output */, pagesToKeep, pdfEmptyFileName);
     } catch (std::exception &e)
     {
         qWarning() << "qpdf_main returned " << e.what();
