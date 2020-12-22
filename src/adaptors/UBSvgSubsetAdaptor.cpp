@@ -346,22 +346,6 @@ UBSvgSubsetAdaptor::UBSvgSubsetReader::UBSvgSubsetReader(UBDocumentProxy* pProxy
     // NOOP
 }
 
-// Interpret an SVG fill attribute
-static void
-parseFill (const QString& string, QBrush& brush)
-{
-    QColor color;
-    if (string[0] == '#')
-        color.setNamedColor(string);
-    else if (string == "white")
-        color.setNamedColor("#ffffff");
-    else if (string == "black")
-        color.setNamedColor("#000000");
-    if (color.isValid())
-        brush.setColor(color);
-}
-
-
 UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProxy* proxy)
 {
     qDebug() << "loadScene() : starting reading...";
@@ -925,6 +909,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                     qWarning() << "Ignoring unknown foreignObject:" << href;
                 }
             }
+            // for SMART Notebook import
             else if (mXmlReader.name() == "rect")
             {
                 qreal x = mXmlReader.attributes().value("x").toFloat();
@@ -949,17 +934,30 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                 QString fill = mXmlReader.attributes().value("fill").toString();
                 if (!fill.isNull())
                 {
-                    parseFill(fill, brush);
-                }
-                auto rect = new QGraphicsRectItem(x, y, width, height);
-                graphicsItemFromSvg(rect);
+                  if (fill[0] == '#')
+                  {
+                    QColor color;
+                    color.setNamedColor(fill);
+                    if (color.isValid())
+                    {
+                      brush.setColor(color);
+                      auto rect = new QGraphicsRectItem(x, y, width, height);
+                      graphicsItemFromSvg(rect);
 
-                mScene->addItem(rect);
-                rect->setBrush(brush);
+                      mScene->addItem(rect);
+                      rect->setBrush(brush);
 
-                QPen pen;
-                pen.setStyle(Qt::NoPen);
-                rect->setPen(pen);
+                      QPen pen;
+                      pen.setStyle(Qt::NoPen);
+                      rect->setPen(pen);
+                    }
+                 }
+                 // color could also be "white" or "black" representing
+                 // the background of the page: do not add a
+                 // QGraphicsRectItem for these as this makes the page
+                 // non-empty and stops an empty document being removed
+                 // at closing time.
+              }
             }
             else if (currentWidget && (mXmlReader.name() == "preference"))
             {
