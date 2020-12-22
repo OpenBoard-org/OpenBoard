@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2020 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -414,18 +414,6 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, bool const cacheAllowed, 
         }
     }
     //qDebug() << "render leave";
-}
-
-void XPDFRenderer::initGlobal_incrementRef()
-{
-    initGlobalIfFirstRef();
-    sInstancesCount.ref();
-}
-
-void XPDFRenderer::decrementRef_deallocateGlobalIfNoMoreRef()
-{
-    sInstancesCount.deref();
-    deallocateGlobalIfNoMoreRef();
 }
 
 QImage& XPDFRenderer::createPDFImageCached(int pageNumber, PdfZoomCacheData &cacheData)

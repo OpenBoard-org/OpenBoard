@@ -19,24 +19,22 @@
  * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UBEXPORTDOCUMENTCLEANER_H
-#define UBEXPORTDOCUMENTCLEANER_H
+
+#ifndef UBEXPORTDOCUMENTCLEANERQPDF_H
+#define UBEXPORTDOCUMENTCLEANERQPDF_H
 
 #include <QString>
+#include <QList>
 
-class UBDocumentProxy;
-
-class UBExportDocumentCleaner
-{
+class UBExportDocumentCleanerQPDF {
 public:
-    UBExportDocumentCleaner();
-    virtual ~UBExportDocumentCleaner();
-
-    static bool StripeDocument(UBDocumentProxy* pDocumentProxy, const QString &filename);
+    //! Read 'inputFile', remove all unwanted pages, which are replaced by the page 1 of 'pdfEmptyFileName', and save it to 'outputFile'.
+    //! \return 0 if success. Any other value is an error.
+    //! Note it might throw an exception due to the 'qpdf' underlying layer, so any exception caught has to be interpreted as a failure.
+    static int Cleanup(QString const &inputFile, const QString &outputFile, QList<int> const &pagesToKeep, QString const &pdfEmptyFileName);
 private:
-    //! Return 'true' is success, 'false' otherwise. Note the final archive is
-    //! always available, but in case of failure, it is not stripped.
-    static bool StripePdf(QString const &file, QList<int> const &pagesToKeep);
+    //! Make sure this static class is not instanciated.
+    UBExportDocumentCleanerQPDF() {}
 };
 
-#endif // UBEXPORTDOCUMENTCLEANER_H
+#endif //UBEXPORTDOCUMENTCLEANERQPDF_H

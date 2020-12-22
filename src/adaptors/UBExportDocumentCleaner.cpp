@@ -1,6 +1,22 @@
 /*
  * Copyright (C) 2015-2020 Département de l'Instruction Publique (DIP-SEM)
  *
+ * This file is part of OpenBoard.
+ *
+ * OpenBoard is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3 of the License,
+ * with a specific linking exception for the OpenSSL project's
+ * "OpenSSL" library (or with modified versions of it that use the
+ * same license as the "OpenSSL" library).
+ *
+ * OpenBoard is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <QFile>
@@ -10,35 +26,17 @@
 #include "globals/UBGlobals.h"
 
 #include "UBExportDocumentCleaner.h"
+#include "UBExportDocumentCleanerQPDF.h"
 #include "document/UBDocumentProxy.h"
 #include "adaptors/UBSvgSubsetAdaptor.h"
 #include "frameworks/UBPlatformUtils.h"
-#include "pdf/XPDFRenderer.h"
-
-#ifdef USE_XPDF
-    THIRD_PARTY_WARNINGS_DISABLE
-    #include <xpdf/Object.h>
-    #include <xpdf/GlobalParams.h>
-    #include <xpdf/SplashOutputDev.h>
-    #include <xpdf/PDFDoc.h>
-    THIRD_PARTY_WARNINGS_ENABLE
-#else
-    #include <poppler/Object.h>
-    #include <poppler/GlobalParams.h>
-    #include <poppler/SplashOutputDev.h>
-    #include <poppler/PDFDoc.h>
-#endif
-
-#include "qpdf.cc"
 
 UBExportDocumentCleaner::UBExportDocumentCleaner()
 {
-    XPDFRenderer::initGlobal_incrementRef();
 }
 
 UBExportDocumentCleaner::~UBExportDocumentCleaner()
 {
-    XPDFRenderer::decrementRef_deallocateGlobalIfNoMoreRef();
 }
 
 bool UBExportDocumentCleaner::StripeDocument(UBDocumentProxy* pDocumentProxy,
@@ -107,30 +105,6 @@ bool UBExportDocumentCleaner::StripePdf(QString const &originalFile, QList<int> 
     //qDebug() << "UBExportDocumentCleaner::StripePdf originalFile=" << originalFile << "pagesToKeep=" << pagesToKeep;
     Q_ASSERT(pagesToKeep.size() != 0);
 
-    int totalPages = 0;
-    {
-        // Scope, necessary because the pdf file remains opens as long as the PDFDoc exist.
-#ifdef USE_XPDF
-        PDFDoc pdfDocument(new GString(originalFile.toLocal8Bit()), 0, 0, 0); // the filename GString is deleted on PDFDoc desctruction
-#else
-        PDFDoc pdfDocument(new GooString(originalFile.toLocal8Bit()), 0, 0, 0); // the filename GString is deleted on PDFDoc desctruction
-#endif
-
-        totalPages = pdfDocument.getNumPages();
-    }
-
-    if (totalPages <= 0)
-        return false;
-
-    Q_ASSERT(pagesToKeep.size() <= totalPages);
-
-    if (pagesToKeep.size() == totalPages)
-    {
-        // If the totality of the file has to be kept, then we have nothing to stripe.
-        Q_ASSERT(pagesToKeep[pagesToKeep.size()-1] == totalPages); // If all pages are there, the last one nbr is also the total.
-        return true;
-    }
-
     QString const tempName = originalFile+"_temp";
     QFile::rename(originalFile, tempName);
 
@@ -147,41 +121,13 @@ bool UBExportDocumentCleaner::StripePdf(QString const &originalFile, QList<int> 
         qWarning() << "The file '" << relaseEmptyFileName << "' was not found. Therefore, the following qpdf stripe operation is likely to fail.";
     }
 
-    QList<QByteArray> commands;
-    commands.push_back(QString("qpdf.exe").toUtf8());
-    commands.push_back(QString("--empty").toUtf8());
-    commands.push_back(QString("--pages").toUtf8());
-    for (int i = 1; i <= totalPages; i++)
-    {
-        if (pagesToKeep.indexOf(i) == -1)
-        {
-            // The empty.pdf has only 1 page. We need to insert it as many times as required.
-            commands.push_back(QString("%1").arg(pdfEmptyFileName).toUtf8());
-            commands.push_back(QString("1").toUtf8());
-        } else {
-            commands.push_back(QString("%1").arg(tempName).toUtf8());
-            commands.push_back(QString::number(i).toUtf8());
-        }
-    }
-
-    commands.push_back(QString("--").toUtf8());
-    commands.push_back(QString("%1").arg(originalFile).toUtf8());
-    int argc = commands.size();
-    char **argv = new char*[argc];
-    for (int i = 0; i < argc; i++)
-    {
-        argv[i] = commands[i].data();
-    }
-
     int result = -1;
     try {
-        result = qpdf_main(argc, argv);
+        result = UBExportDocumentCleanerQPDF::Cleanup(tempName /* input */, originalFile /* output */, pagesToKeep, pdfEmptyFileName);
     } catch (std::exception &e)
     {
         qWarning() << "qpdf_main returned " << e.what();
     }
-
-    delete [] argv;
 
     if (result != 0) {
         // Can't stripe? Recover the original file.

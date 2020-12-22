@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2020 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -87,9 +87,7 @@ class XPDFRenderer : public PDFRenderer
         virtual QString title() const override;
         virtual void render(QPainter *p, int pageNumber, const bool cacheAllowed, const QRectF &bounds = QRectF()) override;
 
-        static void initGlobal_incrementRef();
-        static void decrementRef_deallocateGlobalIfNoMoreRef();
-    signals:
+signals:
         void signalUpdateParent();
 
     private:
