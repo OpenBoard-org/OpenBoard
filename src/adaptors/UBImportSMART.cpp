@@ -298,7 +298,7 @@ UBDocumentProxy* UBImportSMART::importFile(const QFile& pFile, const QString& pG
 
             QSize sceneSize;
             sceneSize.setWidth(rect.width());
-            sceneSize.setHeight(newHeight());
+            sceneSize.setHeight(newHeight);
             scene->setNominalSize(sceneSize);
 
             UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(document, scene, pageIndex++);
