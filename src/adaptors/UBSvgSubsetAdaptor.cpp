@@ -958,11 +958,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                       }
                     }
                  }
-                 // color could also be "white" or "black" representing
-                 // the background of the page: do not add a
-                 // QGraphicsRectItem for these as this makes the page
-                 // non-empty and stops an empty document being removed
-                 // at closing time.
               }
             }
             else if (currentWidget && (mXmlReader.name() == "preference"))
