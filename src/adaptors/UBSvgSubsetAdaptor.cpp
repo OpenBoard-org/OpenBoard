@@ -940,16 +940,22 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                     color.setNamedColor(fill);
                     if (color.isValid())
                     {
-                      brush.setColor(color);
-                      auto rect = new QGraphicsRectItem(x, y, width, height);
-                      graphicsItemFromSvg(rect);
+                      if (height == mScene->height()
+                          && width == mScene->width())
+                        mScene->setBgColor(color);
+                      else
+                      {
+                        brush.setColor(color);
+                        auto rect = new QGraphicsRectItem(x, y, width, height);
+                        graphicsItemFromSvg(rect);
 
-                      mScene->addItem(rect);
-                      rect->setBrush(brush);
+                        mScene->addItem(rect);
+                        rect->setBrush(brush);
 
-                      QPen pen;
-                      pen.setStyle(Qt::NoPen);
-                      rect->setPen(pen);
+                        QPen pen;
+                        pen.setStyle(Qt::NoPen);
+                        rect->setPen(pen);
+                      }
                     }
                  }
                  // color could also be "white" or "black" representing
@@ -1196,7 +1202,12 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement(UBDocumentProxy* pro
 
 
     mXmlWriter.writeStartElement("rect");
-    mXmlWriter.writeAttribute("fill", mScene->isDarkBackground() ? "black" : "white");
+    QString fillString;
+    if (mScene->bgColor().isValid())
+      fillString = mScene->bgColor().name();
+    else
+      fillString = mScene->isDarkBackground() ? "black" : "white";
+    mXmlWriter.writeAttribute("fill", fillString);
     mXmlWriter.writeAttribute("x", QString::number(normalized.x()));
     mXmlWriter.writeAttribute("y", QString::number(normalized.y()));
     mXmlWriter.writeAttribute("width", QString::number(normalized.width()));

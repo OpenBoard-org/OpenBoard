@@ -235,6 +235,13 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
             return (mBackgroundObject != 0);
         }
 
+        void setBgColor(const QColor &color)
+        {
+            mBgColor = color;
+        }
+
+        QColor bgColor() { return mBgColor; }
+
         void addRuler(QPointF center);
         void addProtractor(QPointF center);
         void addCompass(QPointF center);
@@ -441,6 +448,7 @@ public slots:
         bool mDarkBackground;
         UBPageBackground mPageBackground;
         int mBackgroundGridSize;
+        QColor mBgColor;
 
         bool mIsDesktopMode;
         qreal mZoomFactor;
