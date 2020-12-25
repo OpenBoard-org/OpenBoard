@@ -89,7 +89,7 @@ class XPDFRenderer : public PDFRenderer
         void init();
 
         struct PdfZoomCacheData {
-            PdfZoomCacheData(double const a_ratio) : splashBitmap(nullptr), cachedPageNumber(-1), splash(nullptr), ratio(a_ratio), hasToBeProcessed(false) {};
+            PdfZoomCacheData(double const a_ratio = 1.0) : splashBitmap(nullptr), cachedPageNumber(-1), splash(nullptr), ratio(a_ratio), hasToBeProcessed(false) {};
             ~PdfZoomCacheData() {};
             SplashBitmap* splashBitmap;
             //! Note: The 'cachedImage' uses a buffer from 'splash'. Make sure it is invalidated BEFORE 'splash' deallocation.
