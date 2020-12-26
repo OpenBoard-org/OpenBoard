@@ -2719,7 +2719,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::parseTextAttributes(qreal &fontSize,
                                                                 QString &fontStretch, bool &italic, int &fontWeight)
 { 
     QXmlStreamAttributes a = mXmlReader.attributes();
-    //consider inch has 72 liens
+
+    //consider inch has 72 lines
     //since svg font size is given in pixels, divide it by pixels per line
     QString fontSz = a.value("font-size").toString();
     if (!fontSz.isNull()) fontSize = fontSz.toDouble() * 72 / QApplication::desktop()->physicalDpiY();
@@ -2824,12 +2825,14 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::extractSvgText (QFont& font, qreal& 
               // heuristic to see if multiple <tspan> should be combined
               // into a single text item.  do this by keeping track of
               // the end of the last block of text and seeing if the
-              // new block of text starts there.  we should check y values
-              // are exactly the same too.
-              // check if x and textEnd are very close.  may not be equal
-              // due to floating point imprecision.
-              if (textItem && -5.e-1 < x - textEnd && x - textEnd < 5.e-1
-                  && y == last_y)
+              // new block of text starts there.  x and textEnd may be very
+              // close but not equal due to floating point imprecision.
+              // There should also be an option to combine separate
+              // lines into a single text item.
+              if (textItem
+                  && ((x == 0.0 && y == 0.0) // no x, y given
+                       || (-5.e-1 < x - textEnd && x - textEnd < 5.e-1
+                           && y == last_y)))
               {
                 textEnd += textLength;
               }
@@ -2852,8 +2855,24 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::extractSvgText (QFont& font, qreal& 
               }
 
               QTextCursor curCursor = textItem->textCursor();
+
+              // sub-/superscript import
               QTextCharFormat format;
-              format.setFont(font);
+              bool ok;
+              qreal baselineShift = a.value("baseline-shift").toDouble(&ok);
+              if (ok && baselineShift > 0)
+                format.setVerticalAlignment(QTextCharFormat::AlignSuperScript);
+              else if (ok && baselineShift < 0)
+                format.setVerticalAlignment(QTextCharFormat::AlignSubScript);
+              else
+              {
+                format.setVerticalAlignment(QTextCharFormat::AlignNormal);
+                format.setFont(font);
+              }
+              // Note: do not use font when baseline-shift is given
+              // as this makes the text too small.  In SMART output the
+              // original font size was given in the supersuboriginalfont
+              // attribute.
               curCursor.mergeCharFormat(format);
               textItem->setTextCursor(curCursor);
 
@@ -2862,20 +2881,21 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::extractSvgText (QFont& font, qreal& 
 
               last_y = y;
 
-              // Attempt to make the text item wide enough.  With
-              // text wrapping turned off the width of the text is
-              // automatically increased.  I don't know why it's
-              // necessary but increase the width by 100, otherwise
-              // the text is slightly too narrow after saving and
-              // reloading.
+              // Turn off text wrapping so that the width of the text is
+              // automatically increased.
               QTextOption option = textItem->document()->defaultTextOption();
               option.setWrapMode(QTextOption::NoWrap);
               textItem->document()->setDefaultTextOption(option);
 
               curCursor.insertText(text);
+
+              // Attempt to make the text item wide enough, and turn
+              // word wrap back on.
+              // I don't know why it's necessary but increase the width
+              // by 100, otherwise the text is slightly too narrow after
+              // saving and reloading.
               QSizeF size = textItem->document()->size();
               textItem->setTextWidth(size.width() + 100);
-
               option.setWrapMode(QTextOption::WordWrap);
               textItem->document()->setDefaultTextOption(option);
           }
