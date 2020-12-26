@@ -183,6 +183,12 @@ class UBSvgSubsetAdaptor
                 UBGraphicsScene *mScene;
 
                 QHash<QString,UBGraphicsStrokesGroup*> mStrokesList;
+
+                void startSvgPattern();
+                void finishSvgPattern();
+                QString patternID;
+                qreal patternWidth;
+                qreal patternHeight;
         };
 
         class UBSvgSubsetWriter

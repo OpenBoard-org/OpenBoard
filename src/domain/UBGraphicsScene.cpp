@@ -2620,7 +2620,17 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
     }
     bool darkBackground = isDarkBackground ();
 
-    if (mBgColor.isValid())
+    if (!mBgPattern.isEmpty())
+    {
+      QPixmap pixmap = mPatterns[mBgPattern];
+      if (!pixmap.isNull())
+      {
+        QBrush brush;
+        brush.setTexture(pixmap);
+        painter->fillRect (rect, brush);
+      }
+    }
+    else if (mBgColor.isValid())
     {
       painter->fillRect (rect, QBrush (mBgColor));
     }

@@ -186,7 +186,7 @@ void UBGraphicsPolygonItem::paint ( QPainter * painter, const QStyleOptionGraphi
     if(mHasAlpha && scene() && scene()->isLightBackground())
         painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
 
-    painter->setRenderHints(QPainter::Antialiasing);
+    //painter->setRenderHints(QPainter::Antialiasing);
 
     QGraphicsPolygonItem::paint(painter, option, widget);
 }
