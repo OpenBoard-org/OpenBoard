@@ -235,12 +235,19 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
             return (mBackgroundObject != 0);
         }
 
-        void setBgColor(const QColor &color)
-        {
-            mBgColor = color;
-        }
+        void setBgColor(const QColor &color) { mBgColor = color; }
 
         QColor bgColor() { return mBgColor; }
+
+        void setBgPattern(const QString& pattern) { mBgPattern = pattern; }
+        QPixmap bgPattern() { return mPatterns[mBgPattern]; }
+
+        void addPattern(QString id, QPixmap& pixmap)
+        {
+          mPatterns[id] = pixmap;
+        }
+
+        QPixmap getPattern(QString id) { return mPatterns[id]; }
 
         void addRuler(QPointF center);
         void addProtractor(QPointF center);
@@ -449,6 +456,8 @@ public slots:
         UBPageBackground mPageBackground;
         int mBackgroundGridSize;
         QColor mBgColor;
+        QString mBgPattern;
+        QHash <QString, QPixmap> mPatterns;
 
         bool mIsDesktopMode;
         qreal mZoomFactor;

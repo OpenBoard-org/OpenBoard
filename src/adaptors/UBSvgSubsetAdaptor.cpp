@@ -958,7 +958,40 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                       }
                     }
                  }
-              }
+                 else
+                 {
+                   QRegExp regexp("^url\\(#(.*)\\)$");
+                   if (regexp.exactMatch(fill))
+                   {
+                     QString id = regexp.capturedTexts().at(1);
+                     if (!id.isEmpty())
+                     {
+                       QPixmap pixmap = mScene->getPattern(id);
+                       if (!pixmap.isNull())
+                       {
+                         mScene->setBgPattern(id);
+#if 0
+                         brush.setTexture(pixmap);
+                         auto rect = new QGraphicsRectItem(x, y, width, height);
+                         graphicsItemFromSvg(rect);
+
+                         mScene->addItem(rect);
+                         rect->setBrush(brush);
+
+                         QPen pen;
+                         pen.setStyle(Qt::NoPen);
+                         rect->setPen(pen);
+#endif
+                       }
+                     }
+                   }
+                 }
+               }
+            }
+            // for SMART Notebook import of background
+            else if (mXmlReader.name() == "pattern")
+            {
+                startSvgPattern();
             }
             else if (currentWidget && (mXmlReader.name() == "preference"))
             {
@@ -991,6 +1024,10 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                 mGroupLightBackgroundColor = QColor();
                 strokesGroup = NULL;
             }
+            else if (mXmlReader.name() == "pattern")
+            {
+              finishSvgPattern();
+            }
         }
     }
 
@@ -1015,6 +1052,68 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
     qDebug() << "loadScene() : created scene and read file";
     qDebug() << "spent milliseconds: " << time.elapsed();
     return mScene;
+}
+
+void
+UBSvgSubsetAdaptor::UBSvgSubsetReader::startSvgPattern()
+{
+  // need to create QPixmap for use with QBrush texture in drawBackground
+  // functions.  this will take care of tiling the pattern.  (could get
+  // correct alignment with setBrushOrigin on QPainter)
+  // use graphics scene inbuilt render
+  patternID = mXmlReader.attributes().value("id").toString();
+  if (patternID.isNull())
+    return;
+  patternWidth = mXmlReader.attributes().value("width").toDouble();
+  patternHeight = mXmlReader.attributes().value("height").toDouble();
+}
+
+void
+UBSvgSubsetAdaptor::UBSvgSubsetReader::finishSvgPattern()
+{
+  QHashIterator<QString, UBGraphicsStrokesGroup*> iterator(mStrokesList);
+  while (iterator.hasNext()) {
+      iterator.next();
+      mScene->addItem(iterator.value());
+  }
+  if (patternID.isEmpty())
+    return;
+
+  auto image= new QImage(patternWidth, patternHeight, QImage::Format_RGB32);
+
+  QPainter painter(image);
+
+  painter.setRenderHint(QPainter::Antialiasing, false);
+  painter.setRenderHint(QPainter::SmoothPixmapTransform, false);
+
+  QRect rect = image->rect();
+
+  // Since the pattern is one of the first things in the file, we
+  // just render a rectangle from the current scene.  It might be more
+  // correct to use a new QGraphicsScene but this would be harder to do.
+  mScene->render(&painter, rect, rect);
+
+  QPixmap pixmap = QPixmap::fromImage(*image);
+
+  // save the pixmap on the scene...
+  // do we want it as a scene item or kept separately?
+  // QGraphicsPixmapItem *scenePixmap = mScene->addPixmap(*pixmap, NULL);
+  // scenePixmap->setVisible(true);
+
+  mScene->addPattern(patternID, pixmap);
+ 
+  patternID.clear();
+
+  mStrokesList.clear();
+  // Remove the pattern from the scene.  This assumes nothing else has
+  // been added to the scene.
+  for (QGraphicsItem* item : mScene->items())
+  {
+    if (item->isVisible())
+    {
+      mScene->removeItem(item);
+    }
+  }
 }
 
 

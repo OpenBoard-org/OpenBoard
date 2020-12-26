@@ -1598,10 +1598,17 @@ void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
         QGraphicsView::drawBackground (painter, rect);
         return;
     }
-
     bool darkBackground = scene () && scene ()->isDarkBackground ();
 
-    if (scene()->bgColor().isValid())
+    QPixmap bgPixmap = scene()->bgPattern();
+    if (!bgPixmap.isNull())
+    {
+        QBrush brush;
+        brush.setTexture(bgPixmap);
+        painter->setBrushOrigin(-scene()->width() / 2, -scene()->height() / 2);
+        painter->fillRect (rect, brush);
+    }
+    else if (scene()->bgColor().isValid())
     {
         painter->fillRect (rect, QBrush (scene()->bgColor()));
     }
