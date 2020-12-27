@@ -1606,6 +1606,7 @@ void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
         QBrush brush;
         brush.setTexture(bgPixmap);
         painter->setBrushOrigin(-scene()->width() / 2, -scene()->height() / 2);
+        painter->setRenderHints(QPainter::SmoothPixmapTransform);
         painter->fillRect (rect, brush);
     }
     else if (scene()->bgColor().isValid())
