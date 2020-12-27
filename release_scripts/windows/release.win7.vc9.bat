@@ -25,7 +25,7 @@ set QT_BIN=%QT_DIR%\bin
 set PROGRAMS_FILE_PATH=C:\Program Files (x86)
 
 set GIT_BIN=C:\Program Files\Git\bin
-set VS_BIN=%PROGRAMS_FILE_PATH%\Microsoft Visual Studio 14.0\VC\bin
+set VS_BIN=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\bin\Hostx64\x64
 set WIN_SDK_BIN=%PROGRAMS_FILE_PATH%\Microsoft SDKs\Windows\v6.0A\Bin
 set INNO_EXE=%PROGRAMS_FILE_PATH%\Inno Setup 6\iscc.exe
 set BUILD_DIR=%PROJECT_ROOT%\build\win32\release
@@ -88,7 +88,7 @@ xcopy /s resources\customizations %CUSTOMIZATIONS%
 set I18n=build\win32\release\product\i18n
 xcopy /s "%BASE_QT_TRANSLATIONS_DIRECTORY%\qt_*.qm" %I18n%\
 
-call "%INNO_EXE%" "%SCRIPT_PATH%\%APPLICATION_NAME%.iss" /F"%APPLICATION_NAME%_Installer_%VERSION%"
+call "%INNO_EXE%" "%SCRIPT_PATH%\%APPLICATION_NAME%.iss" /F"%APPLICATION_NAME%_Installer_%VERSION%_gs"
 
 GOTO END
 

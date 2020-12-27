@@ -56,6 +56,7 @@ Type: files ; Name: "{app}\*.dll"
 #define QtDir GetEnv('QT_DIR')
 
 [Files]
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\vcredist_x64.exe"; DestDir:"{tmp}"
 ; Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\vcredist_2013.x64.exe"; DestDir:"{tmp}"
 ; Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\vcredist_2015_2019.x64.exe"; DestDir:"{tmp}"
 Source: "{#ProjectRoot}\build\win32\release\product\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -167,6 +168,7 @@ Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Righ
 Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Rights\DragDrop\{{E63D17F8-D9DA-479D-B9B5-0D101A03703B}"; ValueType: string; ValueName: "AppPath"; ValueData: "{app}"; Flags: uninsdeletevalue; Check: isProcessorX64
 
 [Run]
+Filename: "{tmp}\vcredist_x64.exe";WorkingDir:"{tmp}"; Parameters: "/passive /norestart"; StatusMsg: Installing CRT...
 ; Filename: "{tmp}\vcredist_2013.x64.exe";WorkingDir:"{tmp}"; Parameters: "/norestart"; StatusMsg: Installing CRT 2013...
 ; Filename: "{tmp}\vcredist_2015_2019.x64.exe";WorkingDir:"{tmp}"; Parameters: "/norestart"; StatusMsg: Installing CRT 2015-2019 ...
 Filename: "{app}\OpenBoard.exe"; Description: "{cm:LaunchProgram,OpenBoard}"; Flags: nowait postinstall skipifsilent 
