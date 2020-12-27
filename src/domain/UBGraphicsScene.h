@@ -240,6 +240,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         QColor bgColor() { return mBgColor; }
 
         void setBgPattern(const QString& pattern) { mBgPattern = pattern; }
+        QString bgPatternName() { return mBgPattern; }
         QPixmap bgPattern() { return mPatterns[mBgPattern]; }
 
         void addPattern(QString id, QPixmap& pixmap)

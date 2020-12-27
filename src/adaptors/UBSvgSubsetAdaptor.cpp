@@ -1077,7 +1077,7 @@ UBSvgSubsetAdaptor::UBSvgSubsetReader::finishSvgPattern()
       mScene->addItem(iterator.value());
   }
   if (patternID.isEmpty())
-    return;
+      return;
 
   auto image= new QImage(patternWidth, patternHeight, QImage::Format_RGB32);
 
@@ -1101,7 +1101,15 @@ UBSvgSubsetAdaptor::UBSvgSubsetReader::finishSvgPattern()
   // scenePixmap->setVisible(true);
 
   mScene->addPattern(patternID, pixmap);
- 
+
+  QString imagePath = QString("%1/%2").arg(mDocumentPath, "images");
+  QDir imageDir = QDir(imagePath);
+  if (!imageDir.exists())
+      imageDir.mkpath(".");
+  QString path = QString("%1/%2.png").arg(imagePath, patternID);
+  if (!image->save(path, "PNG"))
+      qDebug() << QString("saving image to %1 failed").arg(path);
+
   patternID.clear();
 
   mStrokesList.clear();
@@ -1109,10 +1117,8 @@ UBSvgSubsetAdaptor::UBSvgSubsetReader::finishSvgPattern()
   // been added to the scene.
   for (QGraphicsItem* item : mScene->items())
   {
-    if (item->isVisible())
-    {
-      mScene->removeItem(item);
-    }
+      if (item->isVisible())
+          mScene->removeItem(item);
   }
 }
 
@@ -1294,13 +1300,16 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement(UBDocumentProxy* pro
 
     mXmlWriter.writeAttribute("pageDpi", QString::number(proxy->pageDpi()));
 
+    persistDefs();
 
     mXmlWriter.writeStartElement("rect");
     QString fillString;
-    if (mScene->bgColor().isValid())
-      fillString = mScene->bgColor().name();
+    if (!mScene->bgPatternName().isEmpty())
+        fillString = QString("url(#%1)").arg(mScene->bgPatternName());
+    else if (mScene->bgColor().isValid())
+        fillString = mScene->bgColor().name();
     else
-      fillString = mScene->isDarkBackground() ? "black" : "white";
+        fillString = mScene->isDarkBackground() ? "black" : "white";
     mXmlWriter.writeAttribute("fill", fillString);
     mXmlWriter.writeAttribute("x", QString::number(normalized.x()));
     mXmlWriter.writeAttribute("y", QString::number(normalized.y()));
@@ -1625,6 +1634,31 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
     file.close();
 
     return true;
+}
+
+void
+UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistDefs()
+{
+  QPixmap bgPattern = mScene->bgPattern();
+  QString bgPatternName = mScene->bgPatternName();
+  if (bgPattern.isNull())
+      return;
+  mXmlWriter.writeStartElement("defs");
+  mXmlWriter.writeStartElement("pattern");
+  mXmlWriter.writeAttribute("x", "0");
+  mXmlWriter.writeAttribute("y", "0");
+  mXmlWriter.writeAttribute("patternUnits", "userSpaceOnUse");
+  mXmlWriter.writeAttribute("width", QString::number(bgPattern.width()));
+  mXmlWriter.writeAttribute("height", QString::number(bgPattern.height()));
+  mXmlWriter.writeAttribute("id", bgPatternName);
+
+  mXmlWriter.writeStartElement("image");
+  QString fileName = QString("%1/%2.png").arg("images").arg(bgPatternName);
+  mXmlWriter.writeAttribute(nsXLink, "href", fileName);
+
+  mXmlWriter.writeEndElement();
+  mXmlWriter.writeEndElement();
+  mXmlWriter.writeEndElement();
 }
 
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *groupItem, QDomElement *curParent, QDomDocument *groupDomDocument)
