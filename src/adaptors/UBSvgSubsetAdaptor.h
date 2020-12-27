@@ -267,6 +267,7 @@ class UBSvgSubsetAdaptor
                 void cacheToSvg(UBGraphicsCache* item);
                 void triangleToSvg(UBGraphicsTriangle *item);
                 void writeSvgElement(UBDocumentProxy *proxy);
+                void persistDefs();
 
         private:
 
