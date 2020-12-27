@@ -933,19 +933,45 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
 
                 QString fill = mXmlReader.attributes().value("fill").toString();
                 if (!fill.isNull())
-                {
-                  if (fill[0] == '#')
-                  {
+                { 
                     QColor color;
-                    color.setNamedColor(fill);
-                    if (color.isValid())
+                    QString patternId;
+                    if (fill[0] == '#')
                     {
-                      if (height == mScene->height()
-                          && width == mScene->width())
-                        mScene->setBgColor(color);
-                      else
-                      {
-                        brush.setColor(color);
+                        color.setNamedColor(fill);
+                        if (color.isValid())
+                            brush.setColor(color);
+                    }
+                    else
+                    {
+                        QRegExp regexp("^url\\(#(.*)\\)$");
+                        if (regexp.exactMatch(fill))
+                        {
+                            patternId = regexp.capturedTexts().at(1);
+                            if (!patternId.isEmpty())
+                            {
+                                QPixmap pixmap = mScene->getPattern(patternId);
+                                if (!pixmap.isNull())
+                                    brush.setTexture(pixmap);
+                            }
+                        }
+                    }
+
+                    // check if dimensions of the rectangle are the
+                    // same as the dimensions of the scene, allowing
+                    // for off-by-one errors in the generating program
+                    if ((width == mScene->width()
+                               || width == mScene->width() + 1)
+                         && (height == mScene->height()
+                               || height == mScene->height() + 1))
+                    {
+                        if (color.isValid())
+                            mScene->setBgColor(color);
+                        else if (!patternId.isEmpty())
+                            mScene->setBgPattern(patternId);
+                    }
+                    else
+                    {
                         auto rect = new QGraphicsRectItem(x, y, width, height);
                         graphicsItemFromSvg(rect);
 
@@ -955,38 +981,8 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                         QPen pen;
                         pen.setStyle(Qt::NoPen);
                         rect->setPen(pen);
-                      }
                     }
-                 }
-                 else
-                 {
-                   QRegExp regexp("^url\\(#(.*)\\)$");
-                   if (regexp.exactMatch(fill))
-                   {
-                     QString id = regexp.capturedTexts().at(1);
-                     if (!id.isEmpty())
-                     {
-                       QPixmap pixmap = mScene->getPattern(id);
-                       if (!pixmap.isNull())
-                       {
-                         mScene->setBgPattern(id);
-#if 0
-                         brush.setTexture(pixmap);
-                         auto rect = new QGraphicsRectItem(x, y, width, height);
-                         graphicsItemFromSvg(rect);
-
-                         mScene->addItem(rect);
-                         rect->setBrush(brush);
-
-                         QPen pen;
-                         pen.setStyle(Qt::NoPen);
-                         rect->setPen(pen);
-#endif
-                       }
-                     }
-                   }
-                 }
-               }
+                }
             }
             // for SMART Notebook import of background
             else if (mXmlReader.name() == "pattern")
