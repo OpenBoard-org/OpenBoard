@@ -140,7 +140,7 @@ class UBDesktopAnnotationController : public QObject
         UBDesktopMarkerPalette* mDesktopMarkerPalette;
         UBDesktopEraserPalette* mDesktopEraserPalette;
 
-        UBRightPalette* mRightPalette;
+        //UBRightPalette* mRightPalette;
 
         QTime mPenHoldTimer;
         QTime mMarkerHoldTimer;

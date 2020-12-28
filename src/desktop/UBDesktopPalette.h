@@ -86,7 +86,7 @@ private:
         QAction* mActionTest;
 
 
-        UBRightPalette* rightPalette;
+        //UBRightPalette* rightPalette;
         void adjustPosition();
 
 

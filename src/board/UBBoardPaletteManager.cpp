@@ -76,7 +76,7 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mZoomPalette(0)
     //, mTipPalette(0)
     , mLeftPalette(NULL)
-    , mRightPalette(NULL)
+    //, mRightPalette(NULL)
     , mBackgroundsPalette(0)
     , mToolsPalette(0)
     , mAddItemPalette(0)
@@ -138,22 +138,22 @@ void UBBoardPaletteManager::setupDockPaletteWidgets()
     mLeftPalette->connectSignals();
     mLeftPalette->showTabWidget(0);
 
-    mRightPalette = new UBRightPalette(mContainer);
+    //mRightPalette = new UBRightPalette(mContainer);
     // RIGHT palette widgets
     //mpFeaturesWidget = new UBFeaturesWidget();
     //mRightPalette->registerWidget(mpFeaturesWidget);
     //mRightPalette->addTab(mpFeaturesWidget);
 
     // The cache widget will be visible only if a cache is put on the page
-    mRightPalette->registerWidget(mpCachePropWidget);
+    //mRightPalette->registerWidget(mpCachePropWidget);
 
     //  The download widget will be part of the right palette but
     //  will become visible only when the first download starts
-    mRightPalette->connectSignals();
+    //mRightPalette->connectSignals();
     changeMode(eUBDockPaletteWidget_BOARD, true);
 
     // Hide the tabs that must be hidden
-    mRightPalette->removeTab(mpCachePropWidget);
+    //RightPalette->removeTab(mpCachePropWidget);
 
 }
 
@@ -493,11 +493,11 @@ void UBBoardPaletteManager::containerResized()
         mLeftPalette->resize(mLeftPalette->width(), mContainer->height());
     }
 
-    if(mRightPalette)
+    /* if(mRightPalette)
     {
         mRightPalette->resize(mRightPalette->width()-1, mContainer->height());
         mRightPalette->resize(mRightPalette->width(), mContainer->height());
-    }
+    } */
 }
 
 
@@ -640,7 +640,7 @@ void UBBoardPaletteManager::addItem(const QUrl& pUrl)
 
 void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool isInit)
 {
-    bool rightPaletteVisible = mRightPalette->switchMode(newMode);
+    //bool rightPaletteVisible = mRightPalette->switchMode(newMode);
     bool leftPaletteVisible = mLeftPalette->switchMode(newMode);
 
     switch( newMode )
@@ -652,8 +652,8 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                     mAddItemPalette->setParent(UBApplication::boardController->controlContainer());
                 }
                 mLeftPalette->assignParent(mContainer);
-                mRightPalette->assignParent(mContainer);
-                mRightPalette->stackUnder(mStylusPalette);
+                //mRightPalette->assignParent(mContainer);
+                //mRightPalette->stackUnder(mStylusPalette);
                 mLeftPalette->stackUnder(mStylusPalette);
                 if (UBPlatformUtils::hasVirtualKeyboard()
                     && mKeyboardPalette != NULL
@@ -669,10 +669,10 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                 }
 
                 mLeftPalette->setVisible(leftPaletteVisible);
-                mRightPalette->setVisible(rightPaletteVisible);
+                //mRightPalette->setVisible(rightPaletteVisible);
 #ifdef Q_OS_WIN
-                if (rightPaletteVisible)
-                    mRightPalette->setAdditionalVOffset(0);
+                //if (rightPaletteVisible)
+                //    mRightPalette->setAdditionalVOffset(0);
 #endif
 
                 if( !isInit )
@@ -686,7 +686,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
             {
                 mAddItemPalette->setParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
                 mLeftPalette->assignParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
-                mRightPalette->assignParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
+                //mRightPalette->assignParent((QWidget*)UBApplication::applicationController->uninotesController()->drawingView());
                 mStylusPalette->raise();
 
                 if (UBPlatformUtils::hasVirtualKeyboard()
@@ -721,10 +721,10 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
                 }
 
                 mLeftPalette->setVisible(leftPaletteVisible);
-                mRightPalette->setVisible(rightPaletteVisible);
+                //mRightPalette->setVisible(rightPaletteVisible);
 #ifdef Q_OS_WIN
-                if (rightPaletteVisible && UBSettings::settings()->appToolBarPositionedAtTop->get().toBool())
-                    mRightPalette->setAdditionalVOffset(30);
+                //if (rightPaletteVisible && UBSettings::settings()->appToolBarPositionedAtTop->get().toBool())
+                //    mRightPalette->setAdditionalVOffset(30);
 #endif
 
                 if(!isInit)
@@ -761,7 +761,7 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
         case eUBDockPaletteWidget_DOCUMENT:
             {
                 mLeftPalette->setVisible(leftPaletteVisible);
-                mRightPalette->setVisible(rightPaletteVisible);
+                //mRightPalette->setVisible(rightPaletteVisible);
                 //mLeftPalette->assignParent(UBApplication::documentController->controlView());
                 //mRightPalette->assignParent(UBApplication::documentController->controlView());
                 if (UBPlatformUtils::hasVirtualKeyboard()
@@ -788,9 +788,9 @@ void UBBoardPaletteManager::changeMode(eUBDockPaletteWidgetMode newMode, bool is
         default:
             {
                 mLeftPalette->setVisible(leftPaletteVisible);
-                mRightPalette->setVisible(rightPaletteVisible);
+                //mRightPalette->setVisible(rightPaletteVisible);
                 mLeftPalette->assignParent(0);
-                mRightPalette->assignParent(0);
+                //mRightPalette->assignParent(0);
                 if (UBPlatformUtils::hasVirtualKeyboard()
                     && mKeyboardPalette != NULL
                     && UBSettings::settings()->useSystemOnScreenKeyboard->get().toBool() == false)
@@ -964,7 +964,7 @@ void UBBoardPaletteManager::changeStylusPaletteOrientation(QVariant var)
 
 void UBBoardPaletteManager::refreshPalettes()
 {
-    mRightPalette->update();
+    //mRightPalette->update();
     mLeftPalette->update();
 }
 

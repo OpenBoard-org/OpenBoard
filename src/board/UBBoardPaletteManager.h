@@ -64,7 +64,7 @@ class UBBoardPaletteManager : public QObject
 
         void setupLayout();
         UBLeftPalette* leftPalette(){return mLeftPalette;}
-        UBRightPalette* rightPalette(){return mRightPalette;}
+        //UBRightPalette* rightPalette(){return mRightPalette;}
         UBStylusPalette* stylusPalette(){return mStylusPalette;}
         UBActionPalette *addItemPalette() {return mAddItemPalette;}
         void showVirtualKeyboard(bool show = true);
@@ -110,7 +110,7 @@ class UBBoardPaletteManager : public QObject
         /** The left dock palette */
         UBLeftPalette* mLeftPalette;
         /** The right dock palette */
-        UBRightPalette* mRightPalette;
+        //UBRightPalette* mRightPalette;
 
         UBBackgroundPalette *mBackgroundsPalette;
         UBActionPalette *mToolsPalette;

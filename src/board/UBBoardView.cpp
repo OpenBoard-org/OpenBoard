@@ -192,7 +192,8 @@ UBGraphicsScene* UBBoardView::scene ()
 void UBBoardView::keyPressEvent (QKeyEvent *event)
 {
     // send to the scene anyway
-    QApplication::sendEvent (scene (), event);
+    if (scene () != nullptr)
+        QApplication::sendEvent (scene (), event);
 
     if (!event->isAccepted ())
     {
@@ -992,7 +993,13 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
     }
 
     mMouseDownPos = event->pos ();
-    setMovingItem(scene()->itemAt(this->mapToScene(event->localPos().toPoint()), QTransform()));
+    QGraphicsScene *sceneP = scene();
+    if (sceneP != nullptr)
+    {
+        QGraphicsItem *itemP = sceneP->itemAt(this->mapToScene(event->localPos().toPoint()), QTransform());
+        if (itemP != nullptr)
+            setMovingItem(itemP);
+    }
 
     if (event->button () == Qt::LeftButton && isInteractive())
     {

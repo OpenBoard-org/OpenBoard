@@ -47,15 +47,15 @@ include(src/frameworks/frameworks.pri)
 include(src/tools/tools.pri)
 include(src/document/document.pri)
 
-FORMS += resources/forms/mainWindow.ui \
-   resources/forms/preferences.ui \
-   resources/forms/brushProperties.ui \
-   resources/forms/documents.ui \
-   resources/forms/blackoutWidget.ui \
-   resources/forms/trapFlash.ui \
-   resources/forms/youTubePublishingDialog.ui \
-   resources/forms/capturePublishing.ui \
-   resources/forms/intranetPodcastPublishingDialog.ui
+FORMS += resources/forms/mainWindow.ui
+   #resources/forms/preferences.ui \
+   #resources/forms/brushProperties.ui \
+   #resources/forms/documents.ui \
+   #resources/forms/blackoutWidget.ui \
+   #resources/forms/trapFlash.ui \
+   #resources/forms/youTubePublishingDialog.ui \
+   #resources/forms/capturePublishing.ui \
+   #resources/forms/intranetPodcastPublishingDialog.ui
 
 UB_ETC.files = resources/etc
 UB_I18N.files = resources/i18n/*.qm

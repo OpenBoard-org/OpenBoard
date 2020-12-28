@@ -66,7 +66,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
         , mDesktopPenPalette(NULL)
         , mDesktopMarkerPalette(NULL)
         , mDesktopEraserPalette(NULL)
-        , mRightPalette(rightPalette)
+        //, mRightPalette(rightPalette)
         , mWindowPositionInitialized(false)
         , mIsFullyTransparent(false)
         , mDesktopToolsPalettePositioned(false)
@@ -140,7 +140,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     connect(mDesktopPalette, SIGNAL(maximized()), this, SLOT(onDesktopPaletteMaximized()));
     connect(mDesktopPalette, SIGNAL(minimizeStart(eMinimizedLocation)), this, SLOT(onDesktopPaletteMinimize()));
     connect(mDesktopPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene, SLOT(hideTool()));
-    connect(mRightPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene, SLOT(hideTool()));
+    //connect(mRightPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene, SLOT(hideTool()));
 
     connect(mTransparentDrawingView, SIGNAL(resized(QResizeEvent*)), this, SLOT(onTransparentWidgetResized()));
 
@@ -288,12 +288,12 @@ void UBDesktopAnnotationController::setAssociatedPalettePosition(UBActionPalette
     }
 
     // First determine if the palette must be shown on the left or on the right
-    if(desktopPalettePos.x() <= (mTransparentDrawingView->width() - (palette->width() + mDesktopPalette->width() + mRightPalette->width() + 20))) // we take a small margin of 20 pixels
+    /* if(desktopPalettePos.x() <= (mTransparentDrawingView->width() - (palette->width() + mDesktopPalette->width() + mRightPalette->width() + 20))) // we take a small margin of 20 pixels
     {
         // Display it on the right
         desktopPalettePos += QPoint(mDesktopPalette->width(), yPen);
     }
-    else
+    else */
     {
         // Display it on the left
         desktopPalettePos += QPoint(0 - palette->width(), yPen);
@@ -440,7 +440,8 @@ void UBDesktopAnnotationController::hideWindow()
 
 void UBDesktopAnnotationController::goToUniboard()
 {
-    UBApplication::applicationController->showBoard();
+    exit(0);
+    //UBApplication::applicationController->showBoard();
 }
 
 
@@ -859,13 +860,13 @@ void UBDesktopAnnotationController::TransparentWidgetResized()
  */
 void UBDesktopAnnotationController::onTransparentWidgetResized()
 {
-    int rW = UBApplication::boardController->paletteManager()->rightPalette()->width();
+    //int rW = UBApplication::boardController->paletteManager()->rightPalette()->width();
     int lW = UBApplication::boardController->paletteManager()->leftPalette()->width();
 
     int rH = mTransparentDrawingView->height();
 
-    UBApplication::boardController->paletteManager()->rightPalette()->resize(rW+1, rH);
-    UBApplication::boardController->paletteManager()->rightPalette()->resize(rW, rH);
+    //UBApplication::boardController->paletteManager()->rightPalette()->resize(rW+1, rH);
+    //UBApplication::boardController->paletteManager()->rightPalette()->resize(rW, rH);
 
     UBApplication::boardController->paletteManager()->leftPalette()->resize(lW+1, rH);
     UBApplication::boardController->paletteManager()->leftPalette()->resize(lW, rH);
@@ -911,7 +912,7 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
             p.drawRect(tabsPalette);
         }
 
-        if(UBApplication::boardController->paletteManager()->rightPalette()->isVisible())
+        /*if(UBApplication::boardController->paletteManager()->rightPalette()->isVisible())
         {
             QRect rightPalette(UBApplication::boardController->paletteManager()->rightPalette()->geometry().x(),
                         UBApplication::boardController->paletteManager()->rightPalette()->geometry().y(),
@@ -922,7 +923,7 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
 
             p.drawRect(rightPalette);
             p.drawRect(tabsPalette);
-        }
+        } */
 
 #ifdef Q_OS_LINUX
         //Rquiered only for compiz wm

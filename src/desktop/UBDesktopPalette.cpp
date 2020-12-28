@@ -48,7 +48,7 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
     : UBActionPalette(Qt::TopLeftCorner, parent)
     , mShowHideAction(NULL)
     , mDisplaySelectAction(NULL)
-    , rightPalette(_rightPalette)
+    //, rightPalette(_rightPalette)
 {
     QList<QAction*> actions;
 
@@ -95,7 +95,7 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
     connect(this, SIGNAL(minimizeStart(eMinimizedLocation)), this, SLOT(minimizeMe(eMinimizedLocation)));
     setMinimizePermission(true);
 
-    connect(rightPalette, SIGNAL(resized()), this, SLOT(parentResized()));
+    //connect(rightPalette, SIGNAL(resized()), this, SLOT(parentResized()));
 }
 
 
@@ -184,14 +184,14 @@ void UBDesktopPalette::maximizeMe()
 
     actions << mActionUniboard;
     actions << UBApplication::mainWindow->actionPen;
-    actions << UBApplication::mainWindow->actionEraser;
-    actions << UBApplication::mainWindow->actionMarker;
+    //actions << UBApplication::mainWindow->actionEraser;
+    //actions << UBApplication::mainWindow->actionMarker;
     actions << UBApplication::mainWindow->actionSelector;
-    actions << UBApplication::mainWindow->actionPointer;
+    //actions << UBApplication::mainWindow->actionPointer;
 
-    actions << mActionCustomSelect;
-    actions << mDisplaySelectAction;
-    actions << mShowHideAction;
+    //actions << mActionCustomSelect;
+    //actions << mDisplaySelectAction;
+    //actions << mShowHideAction;
 
     setActions(actions);
 
@@ -256,7 +256,7 @@ QPoint UBDesktopPalette::buttonPos(QAction *action)
 
 int UBDesktopPalette::getParentRightOffset()
 {
-    return rightPalette->width();
+    return 0; //rightPalette->width();
 }
 
 void UBDesktopPalette::parentResized()

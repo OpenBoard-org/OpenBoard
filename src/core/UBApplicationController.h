@@ -53,7 +53,7 @@ class UBSoftwareUpdate;
 class QNetworkAccessManager;
 class QNetworkReply;
 class UBRightPalette;
-class UBOpenSankoreImporter;
+//class UBOpenSankoreImporter;
 
 class UBApplicationController : public QObject
 {
@@ -162,7 +162,7 @@ class UBApplicationController : public QObject
 
         UBMainWindow *mMainWindow;
 
-        UBOpenSankoreImporter *mOpenSankoreImporter;
+        //UBOpenSankoreImporter *mOpenSankoreImporter;
 
         UBBoardView *mControlView;
         UBBoardView *mDisplayView;

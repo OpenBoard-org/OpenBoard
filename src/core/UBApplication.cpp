@@ -93,8 +93,8 @@ int UBApplication::exec(const QString& pFileToImport)
                                                         boardController->displayView(),
                                                         mainWindow,
                                                         nullptr,
-                                                        boardController->paletteManager()->rightPalette());
-
+                                                        nullptr);
+                                                        //boardController->paletteManager()->rightPalette());
 
     connect(applicationController, SIGNAL(mainModeChanged(UBApplicationController::MainMode)),
             boardController->paletteManager(), SLOT(slot_changeMainMode(UBApplicationController::MainMode)));

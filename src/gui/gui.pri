@@ -33,7 +33,7 @@ HEADERS += \
     src/gui/UBCachePropertiesWidget.h \
     src/gui/UBFeaturesActionBar.h \
     src/gui/UBMessagesDialog.h \
-    src/gui/UBOpenSankoreImporterWidget.h \
+    #src/gui/UBOpenSankoreImporterWidget.h \
     src/gui/UBBackgroundPalette.h
     #src/gui/UBBoardThumbnailsView.h
     #src/gui/UBThumbnailWidget.h
@@ -73,7 +73,7 @@ SOURCES += \
     src/gui/UBCachePropertiesWidget.cpp \
     src/gui/UBFeaturesActionBar.cpp \
     src/gui/UBMessagesDialog.cpp \
-    src/gui/UBOpenSankoreImporterWidget.cpp \
+    #src/gui/UBOpenSankoreImporterWidget.cpp \
     src/gui/UBBackgroundPalette.cpp
     #src/gui/UBBoardThumbnailsView.cpp
     #src/gui/UBThumbnailWidget.cpp
