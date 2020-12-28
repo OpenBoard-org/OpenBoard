@@ -124,9 +124,9 @@ qreal UBZLayerController::generateZLevel(itemLayerType::Enum key)
     result += incrementalStep;
     if (result >= top) {
         // If not only one variable presents in the scope, notify that values for scope are over
-        if (scopeMap.value(key).topLimit != scopeMap.value(key).bottomLimit) {
-            qDebug() << "new values are over for the scope" << key;
-        }
+        // if (scopeMap.value(key).topLimit != scopeMap.value(key).bottomLimit) {
+        //     qDebug() << "new values are over for the scope" << key;
+        // }
         result = top - incrementalStep;
     }
 
