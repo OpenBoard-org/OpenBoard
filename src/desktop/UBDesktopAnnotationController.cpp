@@ -179,11 +179,11 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     connect(&mHoldTimerMarker, SIGNAL(timeout()), this, SLOT(markerActionReleased()));
     connect(&mHoldTimerEraser, SIGNAL(timeout()), this, SLOT(eraserActionReleased()));
 
-#ifdef Q_OS_LINUX
+//#ifdef Q_OS_LINUX
     connect(mDesktopPalette, SIGNAL(moving()), this, SLOT(refreshMask()));
-    connect(UBApplication::boardController->paletteManager()->rightPalette(), SIGNAL(resized()), this, SLOT(refreshMask()));
+    //connect(UBApplication::boardController->paletteManager()->rightPalette(), SIGNAL(resized()), this, SLOT(refreshMask()));
     connect(UBApplication::boardController->paletteManager()->addItemPalette(), SIGNAL(closed()), this, SLOT(refreshMask()));
-#endif
+//#endif
     onDesktopPaletteMaximized();
 
     // FIX #633: Ensure that these palettes stay on top of the other elements
@@ -358,11 +358,11 @@ void UBDesktopAnnotationController::showWindow()
     UBPlatformUtils::setDesktopMode(true);
 
     mDesktopPalette->appear();
-    mTransparentDrawingView->showFullScreen();
+    UBPlatformUtils::showFullScreen(mTransparentDrawingView);
 
-#ifdef Q_OS_LINUX
+//#ifdef Q_OS_LINUX
     updateMask(true);
-#endif
+//#endif
 }
 
 
@@ -405,9 +405,9 @@ void UBDesktopAnnotationController::updateBackground()
             || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector)
     {
         newBrush = QBrush(Qt::transparent);
-#ifdef Q_OS_LINUX
+//#ifdef Q_OS_LINUX
         updateMask(true);
-#endif
+//#endif
     }
     else
     {
@@ -416,9 +416,9 @@ void UBDesktopAnnotationController::updateBackground()
 #else
         newBrush = QBrush(QColor(127, 127, 127, 1));
 #endif
-#ifdef Q_OS_LINUX
+//#ifdef Q_OS_LINUX
         updateMask(false);
-#endif
+//#endif
     }
 
     if (mTransparentDrawingScene && mTransparentDrawingScene->backgroundBrush() != newBrush)
@@ -893,11 +893,11 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
         {
             p.drawRect(mDesktopPalette->geometry().x(), mDesktopPalette->geometry().y(), mDesktopPalette->width(), mDesktopPalette->height());
         }
-        if(UBApplication::boardController->paletteManager()->mKeyboardPalette->isVisible())
+        /* if(UBApplication::boardController->paletteManager()->mKeyboardPalette->isVisible())
         {
             p.drawRect(UBApplication::boardController->paletteManager()->mKeyboardPalette->geometry().x(), UBApplication::boardController->paletteManager()->mKeyboardPalette->geometry().y(),
                        UBApplication::boardController->paletteManager()->mKeyboardPalette->width(), UBApplication::boardController->paletteManager()->mKeyboardPalette->height());
-        }
+        } */
 
         if(UBApplication::boardController->paletteManager()->leftPalette()->isVisible())
         {

@@ -171,9 +171,9 @@ void UBDesktopPalette::minimizeMe(eMinimizedLocation location)
 
     adjustSizeAndPosition();
 
-#ifdef Q_OS_LINUX
+//#ifdef Q_OS_LINUX
         emit refreshMask();
-#endif
+//#endif
 }
 
 //  Called when the user wants to maximize the palette
@@ -199,9 +199,9 @@ void UBDesktopPalette::maximizeMe()
 
     // Notify that the maximization has been done
     emit maximized();
-#ifdef Q_OS_LINUX
+//#ifdef Q_OS_LINUX
         emit refreshMask();
-#endif
+//#endif
 }
 
 void UBDesktopPalette::showEvent(QShowEvent *event)
