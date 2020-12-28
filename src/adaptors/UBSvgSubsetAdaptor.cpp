@@ -1343,7 +1343,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
 
     qSort(items.begin(), items.end(), itemZIndexComp);
 
-    UBGraphicsStroke *openStroke = 0;
+    UBGraphicsStrokesGroup *openStroke = 0;
 
     bool groupHoldsInfo = false;
 
@@ -1355,62 +1355,55 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
         UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*> (item);
         if (polygonItem && polygonItem->isVisible())
         {
-            UBGraphicsStroke* currentStroke = polygonItem->stroke();
-            if (openStroke && (currentStroke != openStroke))
+            UBGraphicsStrokesGroup* group = polygonItem->strokesGroup();
+            UBGraphicsStroke* stroke = polygonItem->stroke();
+
+            if (openStroke && (group != openStroke))
             {
                 mXmlWriter.writeEndElement(); //g
                 openStroke = 0;
                 groupHoldsInfo = false;
             }
 
-            bool firstPolygonInStroke = currentStroke  && !openStroke;
-
-            if (firstPolygonInStroke)
+            if (group && !openStroke) // first polygon in stroke
             {
                 mXmlWriter.writeStartElement("g");
-                openStroke = currentStroke;
+                openStroke = group;
 
-                UBGraphicsStroke* stroke = dynamic_cast<UBGraphicsStroke* >(currentStroke);
-
-                if (stroke)
+                if (stroke && group)
                 {
                     QColor colorOnDarkBackground = polygonItem->colorOnDarkBackground();
                     QColor colorOnLightBackground = polygonItem->colorOnLightBackground();
-                    UBGraphicsStrokesGroup * sg = polygonItem->strokesGroup();
 
-                    if (sg)
+                    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "z-value"
+                                              , QString("%1").arg(polygonItem->strokesGroup()->zValue()));
+                    if (colorOnDarkBackground.isValid() && colorOnLightBackground.isValid())
                     {
-                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "z-value"
-                                                  , QString("%1").arg(polygonItem->strokesGroup()->zValue()));
-                        if (colorOnDarkBackground.isValid() && colorOnLightBackground.isValid())
-                        {
-
-                          mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
-                                                    , "fill-on-dark-background", colorOnDarkBackground.name());
-                          mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
-                                                    , "fill-on-light-background", colorOnLightBackground.name());
-                        }
-
-                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(sg->uuid()));
-
-                        QVariant locked = sg->data(UBGraphicsItemData::ItemLocked);
-                        if (!locked.isNull() && locked.toBool())
-                            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "locked", xmlTrue);
-
-                        QVariant layer = sg->data(UBGraphicsItemData::ItemLayerType);
-                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "layer", QString("%1").arg(layer.toInt()));
-
-                        QMatrix matrix = sg->sceneMatrix();
-                        if (!matrix.isIdentity())
-                            mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
-
-                        groupHoldsInfo = true;
+                      mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
+                                                , "fill-on-dark-background", colorOnDarkBackground.name());
+                      mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
+                                                , "fill-on-light-background", colorOnLightBackground.name());
                     }
+
+                    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid",
+                                              UBStringUtils::toCanonicalUuid(group->uuid()));
+
+                    QVariant locked = group->data(UBGraphicsItemData::ItemLocked);
+                    if (!locked.isNull() && locked.toBool())
+                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "locked", xmlTrue);
+
+                    QVariant layer = group->data(UBGraphicsItemData::ItemLayerType);
+                    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "layer", QString("%1").arg(layer.toInt()));
+
+                    QMatrix matrix = group->sceneMatrix();
+                    if (!matrix.isIdentity())
+                        mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
+
+                    groupHoldsInfo = true;
                 }
 
                 if (stroke && !stroke->hasPressure())
                 {
-
                     strokeToSvgPolyline(stroke, groupHoldsInfo);
 
                     //we can dequeue all polygons belonging to that stroke
@@ -1421,8 +1414,6 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
                     continue;
                 }
             }
-
-            UBGraphicsStroke* stroke = dynamic_cast<UBGraphicsStroke* >(currentStroke);
 
             if (stroke && stroke->hasPressure())
                 polygonItemToSvgPolygon(polygonItem, groupHoldsInfo);
