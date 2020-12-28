@@ -911,7 +911,6 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
             p.drawRect(tabsPalette);
         }
 
-#ifdef Q_OS_LINUX
         //Rquiered only for compiz wm
         //TODO. Window manager detection screen
 
@@ -919,7 +918,6 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
             p.drawRect(UBApplication::boardController->paletteManager()->addItemPalette()->geometry());
         }
 
-#endif
 
         p.end();
 
