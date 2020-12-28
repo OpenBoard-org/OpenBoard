@@ -295,7 +295,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
             mViewState = pViewState;
         }
 
-        virtual void setRenderingQuality(UBItem::RenderingQuality pRenderingQuality);
+        virtual void setRenderingQuality(UBItem::RenderingQuality pRenderingQuality, UBItem::CacheBehavior cacheBehavior);
 
         QList<QUrl> relativeDependencies() const;
 
