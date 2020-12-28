@@ -140,8 +140,8 @@ void UBBoardController::init()
     //connect(UBDownloadManager::downloadManager(), SIGNAL(addDownloadedFileToBoard(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool)), this, SLOT(downloadFinished(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool)));
 
     //UBDocumentProxy* doc = UBPersistenceManager::persistenceManager()->createNewDocument();
-
-    //setActiveDocumentScene(doc);
+    UBDocumentProxy* doc = new UBDocumentProxy();
+    setActiveDocumentScene(doc);
 
     initBackgroundGridSize();
 
@@ -1503,7 +1503,6 @@ void UBBoardController::setActiveDocumentScene(int pSceneIndex)
     //setActiveDocumentScene(selectedDocument(), pSceneIndex);
 }
 
-#if 0
 void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, const int pSceneIndex, bool forceReload, bool onImport)
 {
     saveViewState();
@@ -1515,7 +1514,8 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
     if (index >= sceneCount && sceneCount > 0)
         index = sceneCount - 1;
 
-    UBGraphicsScene* targetScene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, index);
+//    UBGraphicsScene* targetScene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, index);
+    UBGraphicsScene* targetScene = new UBGraphicsScene(nullptr);
 
     bool sceneChange = targetScene != mActiveScene;
 
@@ -1569,7 +1569,7 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
         emit activeSceneChanged();
     }
 }
-#endif
+
 
 
 void UBBoardController::moveSceneToIndex(int source, int target)

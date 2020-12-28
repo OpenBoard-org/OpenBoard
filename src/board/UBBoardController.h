@@ -179,7 +179,7 @@ class UBBoardController : public UBDocumentContainer
         void findUniquesItems(const QUndoCommand *parent, QSet<QGraphicsItem *> &itms);
         void ClearUndoStack();
 
-        //void setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, int pSceneIndex = 0, bool forceReload = false, bool onImport = false);
+        void setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, int pSceneIndex = 0, bool forceReload = false, bool onImport = false);
         void setActiveDocumentScene(int pSceneIndex);
 
         void moveSceneToIndex(int source, int target);
