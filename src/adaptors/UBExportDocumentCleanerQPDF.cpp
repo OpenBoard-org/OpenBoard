@@ -53,17 +53,10 @@ namespace {
     {
         this->selected_page = page;
     }
-
-    QPDFPageData::QPDFPageData(QPDFPageData const& other, int page) :
-        filename(other.filename),
-        qpdf(other.qpdf),
-        orig_pages(other.orig_pages)
-    {
-        this->selected_page = page;
-    }
 }
 
-int UBExportDocumentCleanerQPDF::Stripe(QString const &inputFile, QString const &outputFile, QList<int> const &pagesToKeep, const QString &pdfEmptyFileName) throw(std::exception)
+int UBExportDocumentCleanerQPDF::Stripe(QString const &inputFile, QString const &outputFile, QList<int> const &pagesToKeep,
+                                        const QString &pdfEmptyFileName) /* throw(std::exception) */
 {
     // Note: The code below is basically the code from the qpdf.cc command line file, cleaned up. If
     // something misses (e.g. you want to add encrypted pdf), you can probably 'diff' both files and

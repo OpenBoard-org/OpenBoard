@@ -31,7 +31,7 @@ public:
     //! Read 'inputFile', remove all unwanted pages, which are replaced by the page 1 of 'pdfEmptyFileName', and save it to 'outputFile'.
     //! \return 0 if success, -1 otherwise.
     //! Note it might throw an exception due to the 'qpdf' underlying layer, so any exception caught has to be interpreted as a failure.
-    static int Stripe(QString const &inputFile, const QString &outputFile, QList<int> const &pagesToKeep, QString const &pdfEmptyFileName) throw(std::exception);
+    static int Stripe(QString const &inputFile, const QString &outputFile, QList<int> const &pagesToKeep, QString const &pdfEmptyFileName) /* throw(std::exception) */;
 private:
     //! Make sure this static class is not instanciated.
     UBExportDocumentCleanerQPDF() {}
