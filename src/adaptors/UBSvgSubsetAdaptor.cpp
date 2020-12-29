@@ -1871,20 +1871,18 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
         QPointF point;
         for (i = ts.constBegin(); i != ts.constEnd(); ++i)
         {
-            sCoord = i->toString().split(QLatin1Char(','), QString::SkipEmptyParts);
+            char *p = i->toUtf8().data();
 
-            if (sCoord.size() == 2)
+            float x, y;
+            x = atof(p);
+            p = strchr(p, ',');
+            if (p)
             {
-                point.setX(sCoord.at(0).toFloat());
-                point.setY(sCoord.at(1).toFloat());
-                polygon << point;
-            }
-            else if (sCoord.size() == 4){
-                //This is the case on system were the "," is used to seperate decimal
-                QString x = sCoord.at(0) + "." + sCoord.at(1);
-                QString y = sCoord.at(2) + "." + sCoord.at(3);
-                point.setX(x.toFloat());
-                point.setY(y.toFloat());
+                p++;
+                y = atof(p);
+
+                point.setX(x);
+                point.setY(y);
                 polygon << point;
             }
             else
