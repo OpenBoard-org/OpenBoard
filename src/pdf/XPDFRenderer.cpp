@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2020 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -32,10 +32,6 @@
 #include <QtGui>
 
 #include <frameworks/UBPlatformUtils.h>
-#ifndef USE_XPDF
-    #include <poppler/cpp/poppler-version.h>
-#endif
-
 #include "core/memcheck.h"
 #include "core/UBSettings.h"
 
@@ -82,17 +78,7 @@ XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
     }
 
     Q_UNUSED(importingFile);
-    if (!globalParams)
-    {
-        // globalParams must be allocated once and never be deleted
-        // note that this is *not* an instance variable of this XPDFRenderer class
-#if POPPLER_VERSION_MAJOR > 0 || POPPLER_VERSION_MINOR >= 83
-        globalParams = std::make_unique<GlobalParams>();
-#else
-        globalParams = new GlobalParams(0);
-#endif
-        globalParams->setupBaseFonts(QFile::encodeName(UBPlatformUtils::applicationResourcesDirectory() + "/" + "fonts").data());
-    }
+    initGlobalIfFirstRef();
 #ifdef USE_XPDF
     mDocument = new PDFDoc(new GString(filename.toLocal8Bit()), 0, 0, 0); // the filename GString is deleted on PDFDoc desctruction
 #else
@@ -129,14 +115,9 @@ XPDFRenderer::~XPDFRenderer()
         sInstancesCount.deref();
     }
 
-    if (sInstancesCount.loadAcquire() == 0 && globalParams)
+    if (sInstancesCount.loadAcquire() == 0)
     {
-#if POPPLER_VERSION_MAJOR > 0 || POPPLER_VERSION_MINOR >= 83
-        globalParams.reset();
-#else
-        delete globalParams;
-        globalParams = 0;
-#endif
+        deallocateGlobalIfNoMoreRef();
     }
 }
 
@@ -164,7 +145,7 @@ QString XPDFRenderer::title() const
 {
     if (isValid())
     {
-#if POPPLER_VERSION_MAJOR > 0 || POPPLER_VERSION_MINOR >= 55
+#ifndef USE_XPDF
         Object pdfInfo = mDocument->getDocInfo();
 #else
         Object pdfInfo;
@@ -173,7 +154,7 @@ QString XPDFRenderer::title() const
         if (pdfInfo.isDict())
         {
             Dict *infoDict = pdfInfo.getDict();
-#if POPPLER_VERSION_MAJOR > 0 || POPPLER_VERSION_MINOR >= 55
+#ifndef USE_XPDF
             Object title = infoDict->lookup((char*)"Title");
 #else
             Object title;
@@ -181,7 +162,7 @@ QString XPDFRenderer::title() const
 #endif
             if (title.isString())
             {
-#if POPPLER_VERSION_MAJOR > 0 || POPPLER_VERSION_MINOR >= 72
+#ifndef USE_XPDF
                 return QString(title.getString()->c_str());
 #else
                 return QString(title.getString()->getCString());
@@ -273,6 +254,40 @@ void XPDFRenderer::OnThreadFinished()
     emit signalUpdateParent();
     if (m_cacheThread.isJobPending())
         m_cacheThread.start();
+}
+
+void XPDFRenderer::initGlobalIfFirstRef()
+{
+    Q_ASSERT((!globalParams && sInstancesCount.loadAcquire() == 0) ||
+             (globalParams && sInstancesCount.loadAcquire() != 0)); // If this is not consistent, we are probably creating or deleting it twice.
+
+    if (!globalParams)
+    {
+        // globalParams must be allocated once and never be deleted
+        // note that this is *not* an instance variable of this XPDFRenderer class
+#ifndef USE_XPDF
+        globalParams = std::make_unique<GlobalParams>();
+#else
+        globalParams = new GlobalParams(0);
+#endif
+        globalParams->setupBaseFonts(QFile::encodeName(UBPlatformUtils::applicationResourcesDirectory() + "/" + "fonts").data());
+    }
+}
+
+void XPDFRenderer::deallocateGlobalIfNoMoreRef()
+{
+    if (sInstancesCount.loadAcquire() == 0 && globalParams)
+    {
+#ifndef USE_XPDF
+        globalParams.reset();
+#else
+        delete globalParams;
+        globalParams = 0;
+#endif
+    }
+
+    Q_ASSERT((!globalParams && sInstancesCount.loadAcquire() == 0) ||
+             (globalParams && sInstancesCount.loadAcquire() != 0)); // If this is not consistent, we are probably creating or deleting it twice.
 }
 
 void XPDFRenderer::render(QPainter *p, int pageNumber, bool const cacheAllowed, const QRectF &bounds)

@@ -34,6 +34,7 @@
 #include <QDomDocument>
 #include <QXmlStreamWriter>
 #include <QModelIndex>
+#include <QMessageBox>
 
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
@@ -642,14 +643,19 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
             //scene is about to move into new document
             foreach (QUrl relativeFile, scene->relativeDependencies())
             {
-                QString source = scene->document()->persistencePath() + "/" + relativeFile.toString();
-                QString target = trashDocProxy->persistencePath() + "/" + relativeFile.toString();
+                QString source = scene->document()->persistencePath() + "/" + QUrl::fromPercentEncoding(relativeFile.toString().toUtf8());
+                QString target = trashDocProxy->persistencePath() + "/" + QUrl::fromPercentEncoding(relativeFile.toString().toUtf8());
 
                 QFileInfo fi(target);
                 QDir d = fi.dir();
 
                 d.mkpath(d.absolutePath());
-                QFile::copy(source, target);
+                QFile sourceFile(source);
+                bool ok = sourceFile.rename(target);
+                if (!ok)
+                {
+                    QMessageBox::warning(nullptr, tr("Move to trash error."), tr("The selected file failed to move to trash bin. Error: '%1'.").arg(sourceFile.errorString()));
+                }
             }
 
             insertDocumentSceneAt(trashDocProxy, scene, trashDocProxy->pageCount());

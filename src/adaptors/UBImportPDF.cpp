@@ -34,11 +34,13 @@
 #include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
 
+#include "domain/UBGraphicsPixmapItem.h"
 #include "domain/UBGraphicsPDFItem.h"
 
 #include "pdf/PDFRenderer.h"
 
 #include "core/memcheck.h"
+
 
 UBImportPDF::UBImportPDF(QObject *parent)
     : UBPageBasedImportAdaptor(parent)
@@ -84,23 +86,49 @@ QList<UBGraphicsItem*> UBImportPDF::import(const QUuid& uuid, const QString& fil
     for(int pdfPageNumber = 1; pdfPageNumber <= pdfPageCount; pdfPageNumber++)
     {
         UBApplication::showMessage(tr("Importing page %1 of %2").arg(pdfPageNumber).arg(pdfPageCount), true);
+#define UBIMPORTPDF_IMPORT_AS_PDF
+#ifdef UBIMPORTPDF_IMPORT_AS_PDF
         result << new UBGraphicsPDFItem(pdfRenderer, pdfPageNumber); // deleted by the scene
+#else //UBIMPORTPDF_IMPORT_AS_PDF
+        QPixmap pixmap(pdfRenderer->pageSizeF(pdfPageNumber).toSize());
+        QPainter painter(&pixmap);
+        pdfRenderer->render(&painter, pdfPageNumber);
+
+        UBGraphicsPixmapItem* pixmapItem = new UBGraphicsPixmapItem();
+        pixmapItem->setPixmap(pixmap);
+        result << pixmapItem;
+#endif //UBIMPORTPDF_IMPORT_AS_PDF
     }
     return result;
 }
 
 void UBImportPDF::placeImportedItemToScene(UBGraphicsScene* scene, UBGraphicsItem* item)
 {
-    UBGraphicsPDFItem *pdfItem = (UBGraphicsPDFItem*)item;
+    UBGraphicsPDFItem *pdfItem = dynamic_cast<UBGraphicsPDFItem*>(item);
 
-    pdfItem->setPos(-pdfItem->boundingRect().width() / 2, -pdfItem->boundingRect().height() / 2);
+    if (pdfItem)
+    {
+        pdfItem->setPos(-pdfItem->boundingRect().width() / 2, -pdfItem->boundingRect().height() / 2);
 
-    scene->setAsBackgroundObject(pdfItem, false, false);
+        scene->setAsBackgroundObject(pdfItem, false, false);
 
-    scene->setNominalSize(pdfItem->boundingRect().width(), pdfItem->boundingRect().height());
+        scene->setNominalSize(pdfItem->boundingRect().width(), pdfItem->boundingRect().height());
+    } else {
+        UBGraphicsPixmapItem *imageItem = dynamic_cast<UBGraphicsPixmapItem*>(item);
+        UBGraphicsPixmapItem* sceneItem = scene->addPixmap(imageItem->pixmap(), NULL, QPointF(0, 0),1.0,false,true);
+        scene->setAsBackgroundObject(sceneItem, false, false);
+
+        // Only stored pixmap, should be deleted now
+        delete imageItem;
+    }
 }
 
 const QString& UBImportPDF::folderToCopy()
 {
+#ifdef UBIMPORTPDF_IMPORT_AS_PDF
     return UBPersistenceManager::objectDirectory;
+#else //UBIMPORTPDF_IMPORT_AS_PDF
+    static const QString empty("");
+    return empty;
+#endif //UBIMPORTPDF_IMPORT_AS_PDF
 }

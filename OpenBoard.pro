@@ -194,6 +194,13 @@ macx {
    CONFIG(release, debug|release):CONFIG += x86_64
    CONFIG(debug, debug|release):CONFIG += x86_64
 
+   # qpdf (obtained using brew).
+   LIBS += "-L/usr/local/opt/qpdf/lib" "-lqpdf"
+   INCLUDEPATH += "/usr/local/opt/qpdf/include"
+
+   # libjpeg header (obtained using brew), only required by "qpdf.cc".
+   INCLUDEPATH += "/usr/local/opt/jpeg/include"
+
    QMAKE_MAC_SDK = macosx
    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.10
 
@@ -455,6 +462,9 @@ linux-g++* {
     LIBS += -lpoppler
     INCLUDEPATH += "/usr/include/poppler"
 
+    LIBS += -lqpdf
+    INCLUDEPATH += "/usr/include/qpdf"
+
     QMAKE_CFLAGS += -fopenmp
     QMAKE_CXXFLAGS += -fopenmp
     QMAKE_LFLAGS += -fopenmp
@@ -467,8 +477,6 @@ linux-g++* {
     system(echo "$$LONG_VERSION" > $$BUILD_DIR/longversion)
     system(echo "$$SVN_VERSION" > $$BUILD_DIR/svnversion)
 }
-
-include($$THIRD_PARTY_PATH/qpdf/qpdf.pri)
 
 RESOURCES += resources/OpenBoard.qrc
 
