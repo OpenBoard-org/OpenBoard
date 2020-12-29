@@ -333,7 +333,8 @@ QUuid UBSvgSubsetAdaptor::sceneUuid(UBDocumentProxy* proxy, const int pageIndex)
 
 UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const QByteArray& pArray)
 {
-    UBSvgSubsetReader reader(proxy, UBTextTools::cleanHtmlCData(QString(pArray)).toUtf8());
+    //UBSvgSubsetReader reader(proxy, UBTextTools::cleanHtmlCData(QString(pArray)).toUtf8());
+    UBSvgSubsetReader reader(proxy, pArray);
     return reader.loadScene(proxy);
 }
 
@@ -348,7 +349,7 @@ UBSvgSubsetAdaptor::UBSvgSubsetReader::UBSvgSubsetReader(UBDocumentProxy* pProxy
 
 UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProxy* proxy)
 {
-    qDebug() << "loadScene() : starting reading...";
+    qWarning() << "loadScene() : starting reading...";
     QTime time;
     time.start();
     mScene = 0;
@@ -1045,8 +1046,8 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
         mScene->enableUndoRedoStack();
     }
 
-    qDebug() << "loadScene() : created scene and read file";
-    qDebug() << "spent milliseconds: " << time.elapsed();
+    qWarning() << "loadScene() : created scene and read file";
+    qWarning() << "spent milliseconds: " << time.elapsed();
     return mScene;
 }
 
@@ -1862,22 +1863,24 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
 
     if (!svgPoints.isNull())
     {
-        QStringList ts = svgPoints.toString().split(QLatin1Char(' '), QString::SkipEmptyParts);
+        QVector<QStringRef> ts = svgPoints.split(QLatin1Char(' '), QString::SkipEmptyParts);
+        polygon.reserve(ts.length());
 
-        foreach(const QString sPoint, ts)
+        QVector<QStringRef>::const_iterator i;
+        QStringList sCoord;
+        QPointF point;
+        for (i = ts.constBegin(); i != ts.constEnd(); ++i)
         {
-            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
+            sCoord = i->toString().split(QLatin1Char(','), QString::SkipEmptyParts);
 
             if (sCoord.size() == 2)
             {
-                QPointF point;
                 point.setX(sCoord.at(0).toFloat());
                 point.setY(sCoord.at(1).toFloat());
                 polygon << point;
             }
             else if (sCoord.size() == 4){
                 //This is the case on system were the "," is used to seperate decimal
-                QPointF point;
                 QString x = sCoord.at(0) + "." + sCoord.at(1);
                 QString y = sCoord.at(2) + "." + sCoord.at(3);
                 point.setX(x.toFloat());
