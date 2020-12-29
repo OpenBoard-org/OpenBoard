@@ -1582,8 +1582,16 @@ void UBBoardView::dropEvent (QDropEvent *event)
 
 void UBBoardView::resizeEvent (QResizeEvent * event)
 {
-    const qreal maxWidth = width () * 10;
-    const qreal maxHeight = height () * 10;
+    QRectF oldRect = sceneRect();
+
+    qreal maxWidth = width () * 10;
+    qreal maxHeight = height () * 20;
+
+    // avoid making parts of a large page inaccessible
+    if (maxWidth < oldRect.width())
+        maxWidth = oldRect.width();
+    if (maxHeight < oldRect.height())
+        maxHeight = oldRect.height();
 
     setSceneRect (-(maxWidth / 2), -(maxHeight / 2), maxWidth, maxHeight);
     centerOn (0, 0);
