@@ -1803,7 +1803,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::polygonItemToSvgPolygon(UBGraphicsPo
 
         QString points = pointsToSvgPointsAttribute(polygon);
         mXmlWriter.writeAttribute("points", points);
-        mXmlWriter.writeAttribute("transform",toSvgTransform(polygonItem->matrix()));
+        QMatrix matrix = polygonItem->matrix();
+        if (!matrix.isIdentity())
+            mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
         mXmlWriter.writeAttribute("fill", polygonItem->brush().color().name());
 
         qreal alpha = polygonItem->brush().color().alphaF();
