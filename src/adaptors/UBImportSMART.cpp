@@ -189,17 +189,13 @@ QString UBImportSMART::expandFileToDir(const QFile& pZipFile, const QString& pDi
 }
 
 
-void UBImportSMART::importSinglePage(UBDocumentProxy* document, QString name)
+void UBImportSMART::importSinglePage(UBDocumentProxy* document,
+                                     QByteArray xml)
 {
-    qDebug() << "import file" << name;
-    QFile file(name);
-    if (!file.open(QIODevice::ReadOnly))
-        return;
-
     int pageIndex = document->pageCount();
-    UBApplication::showMessage(tr("Inserting page %1").arg(pageIndex), true);
 
-    UBGraphicsScene* scene = UBSvgSubsetAdaptor::loadScene(document, file.readAll());
+    UBGraphicsScene* scene = UBSvgSubsetAdaptor::loadScene(document, xml);
+    UBApplication::showMessage(tr("Inserting page %1").arg(pageIndex), true);
 
     // Adjust coordinates of scene items so (0,0) is the
     // very centre of the page.
@@ -253,9 +249,26 @@ UBDocumentProxy* UBImportSMART::importFile(const QFile& pFile, const QString& pG
 
     if (documentRootFolder.isEmpty())
     {
-        // If file has failed to unzip it may be an svg file
-        // (e.g. .xbk extension, SMART Notebook 8.0)
-        importSinglePage(document, pFile.fileName());
+        QFile file(pFile.fileName());
+        // If file has failed to unzip it may be .xbk extension (e.g.
+        // SMART Notebook 8.0) with several <svg> elements.
+        QDomDocument doc("smart-import");
+        if (!doc.setContent(&file)) {
+            file.close();
+            return 0;
+        }
+        file.close();
+        QDomNodeList pageList = doc.elementsByTagName("svg");
+        int length = pageList.length();
+        for (int pageIndex = 0; pageIndex < length; pageIndex++)
+        {
+            QDomNode node = pageList.at(pageIndex);
+            QByteArray xml;
+            QTextStream xmlWriter(&xml);
+            node.save(xmlWriter, 0);
+
+            importSinglePage(document, xml);
+        }
     }
     else
     {
@@ -308,7 +321,12 @@ UBDocumentProxy* UBImportSMART::importFile(const QFile& pFile, const QString& pG
                 fileSeen[base] = true;
                 QString pageFile;
                 pageFile = QString("%1/%2").arg(documentRootFolder).arg(base);
-                importSinglePage(document, pageFile);
+                QFile file(pageFile);
+                if (!file.open(QIODevice::ReadOnly))
+                    return 0;
+
+                QByteArray xml = file.readAll();
+                importSinglePage(document, xml);
             }
         }
     }
