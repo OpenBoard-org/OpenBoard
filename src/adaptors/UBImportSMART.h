@@ -50,6 +50,7 @@ class UBImportSMART : public UBDocumentBasedImportAdaptor
 
     private:
         QString expandFileToDir(const QFile& pZipFile, const QString& pDir);
+        void importSinglePage(UBDocumentProxy* document,  QString file);
 };
 
 #endif // UBIMPORTSMART_H

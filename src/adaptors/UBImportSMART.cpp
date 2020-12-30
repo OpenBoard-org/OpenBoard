@@ -67,7 +67,8 @@ UBImportSMART::~UBImportSMART()
 
 QStringList UBImportSMART::supportedExtentions()
 {
-    return QStringList("notebook");
+    QStringList formats = {"notebook", "xbk"};
+    return formats;
 }
 
 
@@ -188,6 +189,50 @@ QString UBImportSMART::expandFileToDir(const QFile& pZipFile, const QString& pDi
 }
 
 
+void UBImportSMART::importSinglePage(UBDocumentProxy* document, QString name)
+{
+    qDebug() << "import file" << name;
+    QFile file(name);
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+
+    int pageIndex = document->pageCount();
+    UBApplication::showMessage(tr("Inserting page %1").arg(pageIndex), true);
+
+    UBGraphicsScene* scene = UBSvgSubsetAdaptor::loadScene(document, file.readAll());
+
+    // Adjust coordinates of scene items so (0,0) is the
+    // very centre of the page.
+    qreal adjust_x = scene->width() / 2;
+    qreal adjust_y = scene->height() / 2;
+
+    // Do not use the original height of the page, as the
+    // page is scaled to appear on the screen.  Use a 4:3 ratio
+    // instead so the page is large enough to read.
+    qreal newHeight = scene->width() * 0.75;
+    adjust_y -= 0.5 * (scene->height() - newHeight);
+
+    for (QGraphicsItem* item : scene->items())
+    {
+        if (nullptr == item->parentItem() && item->isVisible())
+            item->setPos(item->x() - adjust_x, item->y() - adjust_y);
+      // I don't know why but without the isVisible() check
+      // mouse pointer movement is broken.  There must be an
+      // invisible item that is used for pointer positioning.
+    }
+
+    QRectF rect = scene->sceneRect();
+    rect.setHeight(newHeight);
+    scene->setSceneRect(rect);
+
+    QSize sceneSize;
+    sceneSize.setWidth(rect.width());
+    sceneSize.setHeight(newHeight);
+    scene->setNominalSize(sceneSize);
+
+    UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(document, scene, pageIndex);
+}
+
 UBDocumentProxy* UBImportSMART::importFile(const QFile& pFile, const QString& pGroup)
 {
     QList<UBGraphicsScene*> pages;
@@ -200,118 +245,78 @@ UBDocumentProxy* UBImportSMART::importFile(const QFile& pFile, const QString& pG
 
     QString documentRootFolder = expandFileToDir(pFile, path);
     QString contentFile;
-    if (documentRootFolder.isEmpty())
-        //if file has failed to unzip it is probably just svg file (.xbk extension)
-        return 0;
-    else
-        //get path to imsmanifest xml
-        contentFile = QString("%1/imsmanifest.xml").arg(documentRootFolder);
 
-    if(!contentFile.length()){
-            UBApplication::showMessage(tr("Import of file %1 failed.").arg(fi.baseName()));
+    QString documentName = QFileInfo(pFile.fileName()).completeBaseName();
+    UBDocumentProxy* document = UBPersistenceManager::persistenceManager()->createDocument(pGroup, documentName, false, QString(), 0, true);
+
+    QString documentPath = document->persistencePath();
+
+    if (documentRootFolder.isEmpty())
+    {
+        // If file has failed to unzip it may be an svg file
+        // (e.g. .xbk extension, SMART Notebook 8.0)
+        importSinglePage(document, pFile.fileName());
     }
     else
     {
-      QFile file(contentFile);
+        //get path to imsmanifest xml
+        contentFile = QString("%1/imsmanifest.xml").arg(documentRootFolder);
 
-      if (!file.open(QIODevice::ReadOnly))
-      {
-          qWarning() << "Cannot open file " << contentFile << " for reading ...";
-          return 0;
-      }
+        if (!contentFile.length())
+        {
+            UBApplication::showMessage(tr("Import of file %1 failed.").arg(fi.baseName()));
+            return 0;
+        }
+        QFile file(contentFile);
 
-      QDomDocument doc("smart-import");
-      if (!doc.setContent(&file)) {
+        if (!file.open(QIODevice::ReadOnly))
+        {
+            qWarning() << "Cannot open file " << contentFile << " for reading ...";
+            return 0;
+        }
+
+        QDomDocument doc("smart-import");
+        if (!doc.setContent(&file)) {
+            file.close();
+            return 0;
+        }
         file.close();
-        return 0;
-      }
-      file.close();
 
-      QString documentName = QFileInfo(pFile.fileName()).completeBaseName();
-      UBDocumentProxy* document = UBPersistenceManager::persistenceManager()->createDocument(pGroup, documentName, false, QString(), 0, true);
-
-      QString documentPath = document->persistencePath();
-      QDir imgDir(documentRootFolder + "/images");
-      if (imgDir.exists())
-      {
-        if (!UBFileSystemUtils::copyDir(documentRootFolder + "/images",
-                 documentPath + "/images"))
-          return 0;
-      }
-
-
-
-      // In imsmanifest.xml, pages are named in the href attributes
-      // of <file> elements.  They may be named more than once by elements
-      // contained by different <resource> elements, so only import each
-      // page the first time it is seen.
-      QDomNodeList filelist = doc.elementsByTagName("file");
-      QHash<QString, bool> fileSeen;
-
-      int length = filelist.length();
-      int pageIndex = 0;
-      for (int fileIndex = 0; fileIndex < length; fileIndex++)
-      {
-          QDomNode node = filelist.at(fileIndex);
-          QDomElement element = node.toElement();
-          QString base = element.attribute("href");
-          if (!base.isEmpty() && base.endsWith(".svg") && !fileSeen[base])
-          {
-            fileSeen[base] = true;
-            QString pageFile;
-            pageFile = QString("%1/%2").arg(documentRootFolder).arg(base);
-
-            QFile file(pageFile);
-            if (!file.open(QIODevice::ReadOnly))
-            {
-                UBFileSystemUtils::deleteDir(documentRootFolder);
+        QDir imgDir(documentRootFolder + "/images");
+        if (imgDir.exists())
+        {
+            if (!UBFileSystemUtils::copyDir(documentRootFolder + "/images",
+                     documentPath + "/images"))
                 return 0;
-            }
-            pageIndex = document->pageCount();
-            UBApplication::showMessage(tr("Inserting page %1").arg(pageIndex), true);
+        }
 
-            UBGraphicsScene* scene = UBSvgSubsetAdaptor::loadScene(document, file.readAll());
+        // In imsmanifest.xml, pages are named in the href attributes
+        // of <file> elements.  They may be named more than once by elements
+        // contained by different <resource> elements, so only import each
+        // page the first time it is seen.
+        QDomNodeList filelist = doc.elementsByTagName("file");
+        QHash<QString, bool> fileSeen;
 
-            // Adjust coordinates of scene items so (0,0) is the
-            // very centre of the page.
-            qreal adjust_x = scene->width() / 2;
-            qreal adjust_y = scene->height() / 2;
-
-            // Do not use the original height of the page, as the
-            // page is scaled to appear on the screen.  Use a 4:3 ratio
-            // instead so the page is large enough to read.
-            qreal newHeight = scene->width() * 0.75;
-            adjust_y -= 0.5 * (scene->height() - newHeight);
-
-            for (QGraphicsItem* item : scene->items())
+        int length = filelist.length();
+        for (int fileIndex = 0; fileIndex < length; fileIndex++)
+        {
+            QDomNode node = filelist.at(fileIndex);
+            QDomElement element = node.toElement();
+            QString base = element.attribute("href");
+            if (!base.isEmpty() && base.endsWith(".svg") && !fileSeen[base])
             {
-              if (nullptr == item->parentItem() && item->isVisible())
-                item->setPos(item->x() - adjust_x, item->y() - adjust_y);
-              // I don't know why but without the isVisible() check
-              // mouse pointer movement is broken.  There must be an
-              // invisible item that is used for pointer positioning.
+                fileSeen[base] = true;
+                QString pageFile;
+                pageFile = QString("%1/%2").arg(documentRootFolder).arg(base);
+                importSinglePage(document, pageFile);
             }
-
-            QRectF rect = scene->sceneRect();
-            rect.setHeight(newHeight);
-            scene->setSceneRect(rect);
-
-            QSize sceneSize;
-            sceneSize.setWidth(rect.width());
-            sceneSize.setHeight(newHeight);
-            scene->setNominalSize(sceneSize);
-
-            UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(document, scene, pageIndex++);
-          }
-      }
-
-      UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
-      UBApplication::showMessage(tr("Import successful."));
-      UBFileSystemUtils::deleteDir(documentRootFolder);
-      return document;
+        }
     }
-  UBFileSystemUtils::deleteDir(documentRootFolder);
-  return 0;
+
+    UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
+    UBApplication::showMessage(tr("Import successful."));
+    UBFileSystemUtils::deleteDir(documentRootFolder);
+    return document;
 }
 
 bool UBImportSMART::addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile)

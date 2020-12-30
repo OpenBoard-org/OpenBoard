@@ -443,9 +443,9 @@ linux-g++* {
     LIBS += -lpoppler
     INCLUDEPATH += "/usr/include/poppler"
 
-    QMAKE_CFLAGS += -fopenmp
-    QMAKE_CXXFLAGS += -fopenmp
-    QMAKE_LFLAGS += -fopenmp
+    QMAKE_CFLAGS += -fopenmp -pg
+    QMAKE_CXXFLAGS += -fopenmp -pg
+    QMAKE_LFLAGS += -fopenmp -pg
     UB_LIBRARY.path = $$DESTDIR
     UB_I18N.path = $$DESTDIR/i18n
     UB_ETC.path = $$DESTDIR
