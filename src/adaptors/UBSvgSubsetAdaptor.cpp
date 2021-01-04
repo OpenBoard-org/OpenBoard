@@ -34,6 +34,7 @@
 #include <QGraphicsTextItem>
 #include <QDomElement>
 #include <QGraphicsVideoItem>
+#include <QSvgRenderer>
 
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
@@ -990,6 +991,52 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
             {
                 startSvgPattern();
             }
+            else if (mXmlReader.name() == "path")
+            {
+                QString outerXml;
+                QXmlStreamWriter writer(&outerXml);
+
+                while (!mXmlReader.isEndElement()
+                        || mXmlReader.name() != "path")
+                {
+                    writer.writeCurrentToken(mXmlReader);
+                    mXmlReader.readNext();
+                }
+                writer.writeCurrentToken(mXmlReader);
+
+                qWarning() << "Reading" << outerXml;
+                QString svgDoc = QString("<svg>%1</svg>").arg(outerXml);
+                QSvgRenderer renderer(svgDoc.toUtf8());
+                if (!renderer.isValid())
+                {
+                    qWarning() << "error reading" << outerXml;
+                }
+                else
+                {
+                    QString imagePath = QString("%1/%2").arg(mDocumentPath, "images");
+                    QString path = QString("%1/UB-import.svg").arg(imagePath);
+                    qDebug() << "OPEN " << path;
+                    QFile file(path);
+                    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+                    {
+                        qDebug() << "cannot open " << path << " for writing ...";
+                        continue;
+                    }
+                    file.write(svgDoc.toUtf8());
+                    file.flush();
+                    file.close();
+
+                    UBGraphicsSvgItem *svgItem = mScene->addSvg(QUrl::fromLocalFile(path));
+
+                    QString uuid = QUuid::createUuid().toString();
+                    svgItem->setUuid(QUuid(uuid));
+                    QString permanentName = mDocumentPath + "/" + UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg";
+                    if (!QFile::rename(path, permanentName))
+                    {
+                        qWarning() << "could not move " << path << " to " << permanentName;
+                    }
+                }
+            }
             else if (currentWidget && (mXmlReader.name() == "preference"))
             {
                 QString key = mXmlReader.attributes().value("key").toString();
@@ -1054,10 +1101,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
 void
 UBSvgSubsetAdaptor::UBSvgSubsetReader::startSvgPattern()
 {
-  // need to create QPixmap for use with QBrush texture in drawBackground
-  // functions.  this will take care of tiling the pattern.  (could get
-  // correct alignment with setBrushOrigin on QPainter)
-  // use graphics scene inbuilt render
   patternID = mXmlReader.attributes().value("id").toString();
   if (patternID.isNull())
     return;
