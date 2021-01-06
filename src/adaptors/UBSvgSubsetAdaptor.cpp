@@ -1004,11 +1004,15 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                 }
                 writer.writeCurrentToken(mXmlReader);
 
+                // create an SVG document containing just this element.  we
+                // do not know the correct width and height so use the
+                // dimensions of the page instead.
                 QString svgDoc = QString(
-                    "<svg width=\"%1\" height=\"%2\">%3</svg>")
+                    "<svg width=\"%1\" height=\"%2\"><g id=\"UB-import\">%3</g></svg>")
                        .arg(QString::number(mScene->width()))
                        .arg(QString::number(mScene->height()))
                        .arg(outerXml);
+
                 QSvgRenderer renderer(svgDoc.toUtf8());
                 if (!renderer.isValid())
                 {
@@ -1033,13 +1037,35 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                     svgItem->setPos(0,0);
                     svgItem->setTransform(QTransform());
 
+                    // shrink item to just the part where the element is
+                    QSvgRenderer *renderer = svgItem->renderer();
+                    QRectF rect = renderer->boundsOnElement("UB-Import");
+                    svgItem->setElementId("UB-import");
+                    svgItem->setPos(rect.x(), rect.y());
+
+                    // now save the SVG file with the correct size
+                    svgDoc = QString(
+                        "<svg viewbox=\"%1 %2 %3 %4\">%5</svg>")
+                           .arg(QString::number(rect.x()))
+                           .arg(QString::number(rect.y()))
+                           .arg(QString::number(rect.width()))
+                           .arg(QString::number(rect.height()))
+                           .arg(outerXml);
+
                     QString uuid = QUuid::createUuid().toString();
                     svgItem->setUuid(QUuid(uuid));
-                    QString permanentName = mDocumentPath + "/" + UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg";
-                    if (!QFile::rename(path, permanentName))
+                    QString path2 = mDocumentPath + "/" + UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg";
+                    QFile file2(path2);
+                    if (!file2.open(QIODevice::WriteOnly | QIODevice::Truncate))
                     {
-                        qWarning() << "could not move " << path << " to " << permanentName;
+                        qDebug() << "cannot open " << path2 << " for writing ...";
+                        continue;
                     }
+                    file2.write(svgDoc.toUtf8());
+                    file2.flush();
+                    file2.close();
+
+                    file.remove();
                 }
             }
             else if (currentWidget && (mXmlReader.name() == "preference"))
