@@ -348,6 +348,79 @@ UBSvgSubsetAdaptor::UBSvgSubsetReader::UBSvgSubsetReader(UBDocumentProxy* pProxy
     // NOOP
 }
 
+
+// used for <path> and <ellipse>.  import an svg element as an image.
+void UBSvgSubsetAdaptor::UBSvgSubsetReader::importSvgElement(QStringRef name)
+{
+    QString outerXml;
+    QXmlStreamWriter writer(&outerXml);
+
+    while (!mXmlReader.isEndElement() || mXmlReader.name() != name)
+    {
+        writer.writeCurrentToken(mXmlReader);
+        mXmlReader.readNext();
+    }
+    writer.writeCurrentToken(mXmlReader);
+
+    // create an SVG document containing just this element.  we
+    // do not know the correct width and height so use the
+    // dimensions of the page instead.
+    QString svgDoc = QString(
+        "<svg width=\"%1\" height=\"%2\"><g id=\"UB-import\">%3</g></svg>")
+           .arg(QString::number(mScene->width()))
+           .arg(QString::number(mScene->height()))
+           .arg(outerXml);
+
+    QString imagePath = QString("%1/%2").arg(mDocumentPath, "images");
+    QDir imageDir = QDir(imagePath);
+    if (!imageDir.exists())
+        imageDir.mkpath(".");
+    QString path = QString("%1/UB-import.svg").arg(imagePath);
+    QFile file(path);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+    {
+        qDebug() << "cannot open " << path << " for writing ...";
+        return;
+    }
+    file.write(svgDoc.toUtf8());
+    file.flush();
+    file.close();
+
+    UBGraphicsSvgItem *svgItem = mScene->addSvg(QUrl::fromLocalFile(path));
+    // reset to identity transform
+    svgItem->setPos(0,0);
+    svgItem->setTransform(QTransform());
+
+    // shrink item to just the part where the element is
+    QSvgRenderer *renderer = svgItem->renderer();
+    QRectF rect = renderer->boundsOnElement("UB-Import");
+    svgItem->setElementId("UB-import");
+    svgItem->setPos(rect.x(), rect.y());
+
+    // now save the SVG file with the correct size
+    svgDoc = QString(
+        "<svg viewbox=\"%1 %2 %3 %4\">%5</svg>")
+           .arg(QString::number(rect.x()))
+           .arg(QString::number(rect.y()))
+           .arg(QString::number(rect.width()))
+           .arg(QString::number(rect.height()))
+           .arg(outerXml);
+
+    QString uuid = QUuid::createUuid().toString();
+    svgItem->setUuid(QUuid(uuid));
+    QString path2 = mDocumentPath + "/" + UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg";
+    QFile file2(path2);
+    if (!file2.open(QIODevice::WriteOnly | QIODevice::Truncate))
+    {
+        qDebug() << "cannot open " << path2 << " for writing ...";
+    }
+    file2.write(svgDoc.toUtf8());
+    file2.flush();
+    file2.close();
+
+    file.remove();
+}
+
 UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProxy* proxy)
 {
     qWarning() << "loadScene() : starting reading...";
@@ -991,82 +1064,11 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
             {
                 startSvgPattern();
             }
-            else if (mXmlReader.name() == "path")
+            else if (mXmlReader.name() == "path"
+                     || mXmlReader.name() == "ellipse"
+                     || mXmlReader.name() == "circle")
             {
-                QString outerXml;
-                QXmlStreamWriter writer(&outerXml);
-
-                while (!mXmlReader.isEndElement()
-                        || mXmlReader.name() != "path")
-                {
-                    writer.writeCurrentToken(mXmlReader);
-                    mXmlReader.readNext();
-                }
-                writer.writeCurrentToken(mXmlReader);
-
-                // create an SVG document containing just this element.  we
-                // do not know the correct width and height so use the
-                // dimensions of the page instead.
-                QString svgDoc = QString(
-                    "<svg width=\"%1\" height=\"%2\"><g id=\"UB-import\">%3</g></svg>")
-                       .arg(QString::number(mScene->width()))
-                       .arg(QString::number(mScene->height()))
-                       .arg(outerXml);
-
-                QSvgRenderer renderer(svgDoc.toUtf8());
-                if (!renderer.isValid())
-                {
-                    qWarning() << "error reading" << outerXml;
-                }
-                else
-                {
-                    QString imagePath = QString("%1/%2").arg(mDocumentPath, "images");
-                    QString path = QString("%1/UB-import.svg").arg(imagePath);
-                    QFile file(path);
-                    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
-                    {
-                        qDebug() << "cannot open " << path << " for writing ...";
-                        continue;
-                    }
-                    file.write(svgDoc.toUtf8());
-                    file.flush();
-                    file.close();
-
-                    UBGraphicsSvgItem *svgItem = mScene->addSvg(QUrl::fromLocalFile(path));
-                    // reset to identity transform
-                    svgItem->setPos(0,0);
-                    svgItem->setTransform(QTransform());
-
-                    // shrink item to just the part where the element is
-                    QSvgRenderer *renderer = svgItem->renderer();
-                    QRectF rect = renderer->boundsOnElement("UB-Import");
-                    svgItem->setElementId("UB-import");
-                    svgItem->setPos(rect.x(), rect.y());
-
-                    // now save the SVG file with the correct size
-                    svgDoc = QString(
-                        "<svg viewbox=\"%1 %2 %3 %4\">%5</svg>")
-                           .arg(QString::number(rect.x()))
-                           .arg(QString::number(rect.y()))
-                           .arg(QString::number(rect.width()))
-                           .arg(QString::number(rect.height()))
-                           .arg(outerXml);
-
-                    QString uuid = QUuid::createUuid().toString();
-                    svgItem->setUuid(QUuid(uuid));
-                    QString path2 = mDocumentPath + "/" + UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg";
-                    QFile file2(path2);
-                    if (!file2.open(QIODevice::WriteOnly | QIODevice::Truncate))
-                    {
-                        qDebug() << "cannot open " << path2 << " for writing ...";
-                        continue;
-                    }
-                    file2.write(svgDoc.toUtf8());
-                    file2.flush();
-                    file2.close();
-
-                    file.remove();
-                }
+                importSvgElement(mXmlReader.name());
             }
             else if (currentWidget && (mXmlReader.name() == "preference"))
             {
