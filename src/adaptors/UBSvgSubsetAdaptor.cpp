@@ -1004,8 +1004,11 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                 }
                 writer.writeCurrentToken(mXmlReader);
 
-                qWarning() << "Reading" << outerXml;
-                QString svgDoc = QString("<svg>%1</svg>").arg(outerXml);
+                QString svgDoc = QString(
+                    "<svg width=\"%1\" height=\"%2\">%3</svg>")
+                       .arg(QString::number(mScene->width()))
+                       .arg(QString::number(mScene->height()))
+                       .arg(outerXml);
                 QSvgRenderer renderer(svgDoc.toUtf8());
                 if (!renderer.isValid())
                 {
@@ -1015,7 +1018,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                 {
                     QString imagePath = QString("%1/%2").arg(mDocumentPath, "images");
                     QString path = QString("%1/UB-import.svg").arg(imagePath);
-                    qDebug() << "OPEN " << path;
                     QFile file(path);
                     if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
                     {
@@ -1027,6 +1029,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                     file.close();
 
                     UBGraphicsSvgItem *svgItem = mScene->addSvg(QUrl::fromLocalFile(path));
+                    // reset to identity transform
+                    svgItem->setPos(0,0);
+                    svgItem->setTransform(QTransform());
 
                     QString uuid = QUuid::createUuid().toString();
                     svgItem->setUuid(QUuid(uuid));
