@@ -464,6 +464,9 @@ void UBSettings::init()
     emptyTrashForOlderDocuments = new UBSetting(this, "Document", "emptyTrashForOlderDocuments", false);
     emptyTrashDaysValue = new UBSetting(this, "Document", "emptyTrashDaysValue", 30);
 
+    importViewWholePages = new UBSetting(this, "Import", "ViewWholePages", false);
+    importCombineText = new UBSetting(this, "Import", "CombineText", false);
+
     cleanNonPersistentSettings();
     checkNewSettings();
 }

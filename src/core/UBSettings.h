@@ -423,6 +423,9 @@ class UBSettings : public QObject
         UBSetting* magnifierDrawingMode;
         UBSetting* autoSaveInterval;
 
+        UBSetting* importViewWholePages;
+        UBSetting* importCombineText;
+
     public slots:
 
         void setPenWidthIndex(int index);

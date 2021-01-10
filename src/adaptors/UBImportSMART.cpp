@@ -201,31 +201,41 @@ void UBImportSMART::importSinglePage(UBDocumentProxy* document,
     // very centre of the page.
     qreal adjust_x = scene->width() / 2;
     qreal adjust_y = scene->height() / 2;
+    qreal newHeight;
 
-    // Do not use the original height of the page, as the
-    // page is scaled to appear on the screen.  Use a 4:3 ratio
-    // instead so the page is large enough to read.
-    qreal newHeight = scene->width() * 0.75;
-    adjust_y -= 0.5 * (scene->height() - newHeight);
+    bool changeView = !UBSettings::settings()->importViewWholePages->get().toBool();
+    if (changeView)
+    {
+        // Do not use the original height of the page, as then the page
+        // is scaled to fit on the screen when the page is first
+        // loaded.  Use a 4:3 ratio rectangle at the top of the page as the
+        // default view instead, so the contents of the page is large enough
+        // to read.  This can be turned off in the preferences.
+        newHeight = scene->width() * 0.75;
+        adjust_y -= 0.5 * (scene->height() - newHeight);
+    }
 
     const auto sceneItems = scene->items();
     for (QGraphicsItem* item : sceneItems)
     {
         if (nullptr == item->parentItem() && item->isVisible())
             item->setPos(item->x() - adjust_x, item->y() - adjust_y);
-      // I don't know why but without the isVisible() check
-      // mouse pointer movement is broken.  There must be an
-      // invisible item that is used for pointer positioning.
+        // I don't know why but without the isVisible() check
+        // mouse pointer movement is broken.  There must be an
+        // invisible item that is used for pointer positioning.
     }
 
-    QRectF rect = scene->sceneRect();
-    rect.setHeight(newHeight);
-    scene->setSceneRect(rect);
+    if (changeView)
+    {
+        QRectF rect = scene->sceneRect();
+        rect.setHeight(newHeight);
+        scene->setSceneRect(rect);
 
-    QSize sceneSize;
-    sceneSize.setWidth(rect.width());
-    sceneSize.setHeight(newHeight);
-    scene->setNominalSize(sceneSize);
+        QSize sceneSize;
+        sceneSize.setWidth(rect.width());
+        sceneSize.setHeight(newHeight);
+        scene->setNominalSize(sceneSize);
+    }
 
     UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(document, scene, pageIndex);
 }
