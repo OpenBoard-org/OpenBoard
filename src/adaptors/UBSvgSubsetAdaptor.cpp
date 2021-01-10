@@ -3148,7 +3148,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::doTransform (QString& trString, qrea
   qreal angle = 0.0;
 #endif
 
-  foreach(QString trStr, trString.split(" ", QString::SkipEmptyParts))
+  const auto splitTrString = trString.split(" ", QString::SkipEmptyParts);
+  for (const QString &trStr : splitTrString)
   {
       QRegExp regexp;
 #if 0
