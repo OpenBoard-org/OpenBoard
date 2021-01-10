@@ -1703,26 +1703,26 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
 void
 UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistDefs()
 {
-  QPixmap bgPattern = mScene->bgPattern();
-  QString bgPatternName = mScene->bgPatternName();
-  if (bgPattern.isNull())
+    QPixmap bgPattern = mScene->bgPattern();
+    QString bgPatternName = mScene->bgPatternName();
+    if (bgPattern.isNull())
       return;
-  mXmlWriter.writeStartElement("defs");
-  mXmlWriter.writeStartElement("pattern");
-  mXmlWriter.writeAttribute("x", "0");
-  mXmlWriter.writeAttribute("y", "0");
-  mXmlWriter.writeAttribute("patternUnits", "userSpaceOnUse");
-  mXmlWriter.writeAttribute("width", QString::number(bgPattern.width()));
-  mXmlWriter.writeAttribute("height", QString::number(bgPattern.height()));
-  mXmlWriter.writeAttribute("id", bgPatternName);
+    mXmlWriter.writeStartElement("defs");
+    mXmlWriter.writeStartElement("pattern");
+    mXmlWriter.writeAttribute("x", "0");
+    mXmlWriter.writeAttribute("y", "0");
+    mXmlWriter.writeAttribute("patternUnits", "userSpaceOnUse");
+    mXmlWriter.writeAttribute("width", QString::number(bgPattern.width()));
+    mXmlWriter.writeAttribute("height", QString::number(bgPattern.height()));
+    mXmlWriter.writeAttribute("id", bgPatternName);
 
-  mXmlWriter.writeStartElement("image");
-  QString fileName = QString("%1/%2.png").arg("images").arg(bgPatternName);
-  mXmlWriter.writeAttribute(nsXLink, "href", fileName);
+    mXmlWriter.writeStartElement("image");
+    QString fileName = QString("%1/%2.png").arg("images").arg(bgPatternName);
+    mXmlWriter.writeAttribute(nsXLink, "href", fileName);
 
-  mXmlWriter.writeEndElement();
-  mXmlWriter.writeEndElement();
-  mXmlWriter.writeEndElement();
+    mXmlWriter.writeEndElement();
+    mXmlWriter.writeEndElement();
+    mXmlWriter.writeEndElement();
 }
 
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *groupItem, QDomElement *curParent, QDomDocument *groupDomDocument)
