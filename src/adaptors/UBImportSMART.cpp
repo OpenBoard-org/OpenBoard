@@ -75,7 +75,7 @@ QStringList UBImportSMART::supportedExtentions()
 QString UBImportSMART::importFileFilter()
 {
     QString filter = tr("SMART Notebook (");
-    QStringList formats = supportedExtentions();
+    const QStringList formats = supportedExtentions();
     bool isFirst = true;
 
     for (const QString &format : formats)
