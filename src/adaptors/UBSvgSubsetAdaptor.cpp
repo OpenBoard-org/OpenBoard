@@ -2991,6 +2991,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::readFontAttributes (QFont& font)
 void UBSvgSubsetAdaptor::UBSvgSubsetReader::extractSvgText (QFont& font, qreal& dx, qreal& dy, qreal& textEnd, UBGraphicsTextItem*& textItem, qreal& last_y)
 {
     QString text;
+    bool lumpTextTogether = UBSettings::settings()->importCombineText->get().toBool();
     readFontAttributes(font);
 
     // dx, dy are from transform property on <text> element
@@ -3029,7 +3030,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::extractSvgText (QFont& font, qreal& 
               // There should also be an option to combine separate
               // lines into a single text item.
               if (textItem
-                  && ((x == 0.0 && y == 0.0) // no x, y given
+                  && (lumpTextTogether
+                       || (x == 0.0 && y == 0.0) // no x, y given
                        || (-5.e-1 < x - textEnd && x - textEnd < 5.e-1
                            && y == last_y)))
               {

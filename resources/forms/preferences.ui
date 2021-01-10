@@ -1047,6 +1047,50 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="importTab">
+      <attribute name="title">
+       <string>Import</string>
+      </attribute>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>331</width>
+         <height>91</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>SMART Notebook files</string>
+       </property>
+       <widget class="QCheckBox" name="importViewWholePagesCheckBox">
+        <property name="geometry">
+         <rect>
+          <x>70</x>
+          <y>30</y>
+          <width>181</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>View whole pages at once</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="importCombineTextCheckBox">
+        <property name="geometry">
+         <rect>
+          <x>70</x>
+          <y>60</y>
+          <width>201</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Combine related text items</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
      <widget class="QWidget" name="thirdPartyLicence">
       <property name="enabled">
        <bool>true</bool>

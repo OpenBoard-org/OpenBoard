@@ -258,6 +258,11 @@ void UBPreferencesController::wire()
     connect(mMarkerProperties->pressureSensitiveCheckBox, SIGNAL(clicked(bool)), settings, SLOT(setMarkerPressureSensitive(bool)));
     connect(mMarkerProperties->opacitySlider, SIGNAL(valueChanged(int)), this, SLOT(opacitySliderChanged(int)));
 
+
+    // SMART Notebook import options
+    connect(mPreferencesUI->importCombineTextCheckBox, SIGNAL(clicked(bool)), settings->importCombineText, SLOT(setBool(bool)));
+    connect(mPreferencesUI->importViewWholePagesCheckBox, SIGNAL(clicked(bool)), settings->importViewWholePages, SLOT(setBool(bool)));
+
     // about tab
     connect(mPreferencesUI->checkSoftwareUpdateAtLaunchCheckBox, SIGNAL(clicked(bool)), settings->appEnableAutomaticSoftwareUpdates, SLOT(setBool(bool)));
 
@@ -318,6 +323,9 @@ void UBPreferencesController::init()
 
     mMarkerProperties->opacitySlider->setValue(settings->boardMarkerAlpha->get().toDouble() * 100);
 
+    // import tab
+    mPreferencesUI->importViewWholePagesCheckBox->setChecked(settings->importViewWholePages->get().toBool());
+    mPreferencesUI->importCombineTextCheckBox->setChecked(settings->importCombineText->get().toBool());
 }
 
 void UBPreferencesController::close()
@@ -444,6 +452,13 @@ void UBPreferencesController::defaultSettings()
         mPreferencesUI->lightBackgroundOpacitySlider->setValue(lightBackgroundOpacity);
         lightBackgroundCrossOpacityValueChanged(lightBackgroundOpacity);
 
+    }
+    else if (mPreferencesUI->mainTabWidget->currentWidget() == mPreferencesUI->importTab)
+    {
+        bool defaultValue = settings->importCombineText->reset().toBool();
+        mPreferencesUI->importCombineTextCheckBox->setChecked(defaultValue);
+        defaultValue = settings->importViewWholePages->reset().toBool();
+        mPreferencesUI->importViewWholePagesCheckBox->setChecked(defaultValue);
     }
 }
 
