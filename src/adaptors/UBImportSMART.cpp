@@ -78,7 +78,7 @@ QString UBImportSMART::importFileFilter()
     QStringList formats = supportedExtentions();
     bool isFirst = true;
 
-    foreach(QString format, formats)
+    for (const QString &format : formats)
     {
             if(isFirst)
                     isFirst = false;
@@ -342,5 +342,4 @@ bool UBImportSMART::addFileToDocument(UBDocumentProxy* pDocument, const QFile& p
   qWarning() << "addFileToDocument not implemented";
   return false;
 }
-
 
