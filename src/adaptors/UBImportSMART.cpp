@@ -208,7 +208,8 @@ void UBImportSMART::importSinglePage(UBDocumentProxy* document,
     qreal newHeight = scene->width() * 0.75;
     adjust_y -= 0.5 * (scene->height() - newHeight);
 
-    for (QGraphicsItem* item : scene->items())
+    const auto sceneItems = scene->items();
+    for (QGraphicsItem* item : sceneItems)
     {
         if (nullptr == item->parentItem() && item->isVisible())
             item->setPos(item->x() - adjust_x, item->y() - adjust_y);
@@ -342,4 +343,3 @@ bool UBImportSMART::addFileToDocument(UBDocumentProxy* pDocument, const QFile& p
   qWarning() << "addFileToDocument not implemented";
   return false;
 }
-
