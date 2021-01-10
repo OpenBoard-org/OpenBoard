@@ -2991,7 +2991,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::readFontAttributes (QFont& font)
 void UBSvgSubsetAdaptor::UBSvgSubsetReader::extractSvgText (QFont& font, qreal& dx, qreal& dy, qreal& textEnd, UBGraphicsTextItem*& textItem, qreal& last_y)
 {
     QString text;
-    bool lumpTextTogether = UBSettings::settings()->importCombineText->get().toBool();
+    bool lumpText = UBSettings::settings()->importCombineText->get().toBool();
     readFontAttributes(font);
 
     // dx, dy are from transform property on <text> element
@@ -3027,15 +3027,15 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::extractSvgText (QFont& font, qreal& 
               // the end of the last block of text and seeing if the
               // new block of text starts there.  x and textEnd may be very
               // close but not equal due to floating point imprecision.
-              // There should also be an option to combine separate
-              // lines into a single text item.
               if (textItem
-                  && (lumpTextTogether
+                  && (lumpText
                        || (x == 0.0 && y == 0.0) // no x, y given
                        || (-5.e-1 < x - textEnd && x - textEnd < 5.e-1
                            && y == last_y)))
               {
                 textEnd += textLength;
+                if (lumpText && y != last_y)
+                    text += "\n";
               }
               else
               {
@@ -3077,28 +3077,32 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::extractSvgText (QFont& font, qreal& 
               curCursor.mergeCharFormat(format);
               textItem->setTextCursor(curCursor);
 
-              // just the following doesn't seem to do anything
-              //textItem->setFont(font);
-
               last_y = y;
 
-              // Turn off text wrapping so that the width of the text is
-              // automatically increased.
-              QTextOption option = textItem->document()->defaultTextOption();
-              option.setWrapMode(QTextOption::NoWrap);
-              textItem->document()->setDefaultTextOption(option);
+              QTextOption option;
+              if (!lumpText)
+              {
+                  // Turn off text wrapping so that the width of the text is
+                  // automatically increased.
+                  option = textItem->document()->defaultTextOption();
+                  option.setWrapMode(QTextOption::NoWrap);
+                  textItem->document()->setDefaultTextOption(option);
+              }
 
               curCursor.insertText(text);
 
-              // Attempt to make the text item wide enough, and turn
-              // word wrap back on.
-              // I don't know why it's necessary but increase the width
-              // by 100, otherwise the text is slightly too narrow after
-              // saving and reloading.
-              QSizeF size = textItem->document()->size();
-              textItem->setTextWidth(size.width() + 100);
-              option.setWrapMode(QTextOption::WordWrap);
-              textItem->document()->setDefaultTextOption(option);
+              if (!lumpText)
+              {
+                  // Attempt to make the text item wide enough, and turn
+                  // word wrap back on.
+                  // I don't know why it's necessary but increase the width
+                  // slightly, otherwise the text is slightly too narrow after
+                  // saving and reloading.
+                  QSizeF size = textItem->document()->size();
+                  textItem->setTextWidth(size.width() + 20);
+                  option.setWrapMode(QTextOption::WordWrap);
+                  textItem->document()->setDefaultTextOption(option);
+              }
           }
         }
         else if (mXmlReader.isStartElement() && mXmlReader.name() == "tspan")
@@ -3132,6 +3136,34 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::addTextItemsFromSvg()
     qreal textEnd = 0;
     UBGraphicsTextItem *textItem = 0;
     qreal last_y = 0;
+    bool lumpText = UBSettings::settings()->importCombineText->get().toBool();
+    if (lumpText)
+    {
+        qreal w = 0, h = 0;
+        if (!a.value("editwidth").isNull())
+        {
+            w = a.value("editwidth").toDouble();
+        }
+        if (w && !a.value("editheight").isNull())
+        {
+            h = a.value("editheight").toDouble();
+        }
+        if (w && h)
+        {
+            // make one text item to hold all of the text
+            textItem = new UBGraphicsTextItem();
+            textItem->setTextWidth(w);
+            graphicsItemFromSvg(textItem);
+            textItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+            textItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+            mScene->addItem(textItem);
+            textItem->show();
+
+            qreal height = QFontMetrics(startFont).height();
+            textItem->setPos(QPoint(dx, dy - height));
+        }
+    }
     extractSvgText(startFont, dx, dy, textEnd, textItem, last_y);
 
     return;
