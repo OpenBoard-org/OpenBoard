@@ -118,8 +118,6 @@ class WBTabBar : public QTabBar
         QPoint mDragStartPos;
 };
 
-#include <QtWebKit>
-
 
 class WBWebView;
 /*!

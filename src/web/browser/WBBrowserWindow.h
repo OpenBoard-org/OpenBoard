@@ -72,7 +72,6 @@
 #define WBBROWSERMAINWINDOW_H
 
 #include <QtGui>
-#include <QtWebKit>
 
 class WBChaseWidget;
 class WBTabWidget;

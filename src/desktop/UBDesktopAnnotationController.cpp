@@ -84,18 +84,9 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     mTransparentDrawingView->setAttribute(Qt::WA_TranslucentBackground, true);
 #ifdef Q_OS_OSX
     mTransparentDrawingView->setAttribute(Qt::WA_MacNoShadow, true);
-    /* https://bugreports.qt.io/browse/QTBUG-81456 */
-    if (QOperatingSystemVersion::current().minorVersion() > 12) /* > Sierra */
-    {
-        mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Window | Qt::NoDropShadowWindowHint | Qt::X11BypassWindowManagerHint);
-    }
-    else
-    {
-        mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window | Qt::NoDropShadowWindowHint | Qt::X11BypassWindowManagerHint);
-    }
-#else
+#endif //Q_OS_OSX
+
     mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window | Qt::NoDropShadowWindowHint | Qt::X11BypassWindowManagerHint);
-#endif
     mTransparentDrawingView->setCacheMode(QGraphicsView::CacheNone);
     mTransparentDrawingView->resize(UBApplication::desktop()->width(), UBApplication::desktop()->height());
 
@@ -121,7 +112,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
         connect( UBApplication::boardController->paletteManager()->mKeyboardPalette, SIGNAL(keyboardActivated(bool)), 
                  mTransparentDrawingView, SLOT(virtualKeyboardActivated(bool)));
 
-#ifdef Q_OS_LINUX
+#ifdef UB_REQUIRES_MASK_UPDATE
         connect(UBApplication::boardController->paletteManager()->mKeyboardPalette, SIGNAL(moved(QPoint)), this, SLOT(refreshMask()));
         connect(UBApplication::mainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(refreshMask()));
         connect(mDesktopPalette,SIGNAL(refreshMask()), this, SLOT(refreshMask()));
@@ -176,7 +167,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     connect(&mHoldTimerMarker, SIGNAL(timeout()), this, SLOT(markerActionReleased()));
     connect(&mHoldTimerEraser, SIGNAL(timeout()), this, SLOT(eraserActionReleased()));
 
-#ifdef Q_OS_LINUX
+#ifdef UB_REQUIRES_MASK_UPDATE
     connect(mDesktopPalette, SIGNAL(moving()), this, SLOT(refreshMask()));
     connect(UBApplication::boardController->paletteManager()->rightPalette(), SIGNAL(resized()), this, SLOT(refreshMask()));
     connect(UBApplication::boardController->paletteManager()->addItemPalette(), SIGNAL(closed()), this, SLOT(refreshMask()));
@@ -356,9 +347,9 @@ void UBDesktopAnnotationController::showWindow()
 
     mDesktopPalette->appear();
 
-#ifdef Q_OS_LINUX
+#ifdef UB_REQUIRES_MASK_UPDATE
     updateMask(true);
-#endif
+#endif // UB_REQUIRES_MASK_UPDATE
 }
 
 
@@ -401,9 +392,9 @@ void UBDesktopAnnotationController::updateBackground()
             || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector)
     {
         newBrush = QBrush(Qt::transparent);
-#ifdef Q_OS_LINUX
+#ifdef UB_REQUIRES_MASK_UPDATE
         updateMask(true);
-#endif
+#endif //UB_REQUIRES_MASK_UPDATE
     }
     else
     {
@@ -412,9 +403,9 @@ void UBDesktopAnnotationController::updateBackground()
 #else
         newBrush = QBrush(QColor(127, 127, 127, 1));
 #endif
-#ifdef Q_OS_LINUX
+#ifdef UB_REQUIRES_MASK_UPDATE
         updateMask(false);
-#endif
+#endif //UB_REQUIRES_MASK_UPDATE
     }
 
     if (mTransparentDrawingScene && mTransparentDrawingScene->backgroundBrush() != newBrush)
@@ -920,7 +911,6 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
             p.drawRect(tabsPalette);
         }
 
-#ifdef Q_OS_LINUX
         //Rquiered only for compiz wm
         //TODO. Window manager detection screen
 
@@ -928,7 +918,6 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
             p.drawRect(UBApplication::boardController->paletteManager()->addItemPalette()->geometry());
         }
 
-#endif
 
         p.end();
 

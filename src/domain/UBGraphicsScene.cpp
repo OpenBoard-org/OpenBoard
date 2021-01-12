@@ -30,7 +30,6 @@
 #include "UBGraphicsScene.h"
 
 #include <QtGui>
-#include <QtWebKit>
 #include <QtSvg>
 #include <QGraphicsView>
 #include <QGraphicsVideoItem>
@@ -2804,6 +2803,8 @@ void UBGraphicsScene::simplifyCurrentStroke()
     }
 
 }
+
+
 
 void UBGraphicsScene::setDocumentUpdated()
 {

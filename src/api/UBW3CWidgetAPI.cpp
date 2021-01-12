@@ -30,7 +30,6 @@
 #include "UBW3CWidgetAPI.h"
 
 #include <QtGui>
-#include <QtWebKit>
 
 #include "core/UBApplication.h"
 #include "core/UBApplicationController.h"

@@ -173,7 +173,7 @@ void UBDesktopPalette::minimizeMe(eMinimizedLocation location)
 
     adjustSizeAndPosition();
 
-#ifdef Q_OS_LINUX
+#ifdef UB_REQUIRES_MASK_UPDATE
         emit refreshMask();
 #endif
 }
@@ -203,7 +203,7 @@ void UBDesktopPalette::maximizeMe()
 
     // Notify that the maximization has been done
     emit maximized();
-#ifdef Q_OS_LINUX
+#ifdef UB_REQUIRES_MASK_UPDATE
         emit refreshMask();
 #endif
 }
