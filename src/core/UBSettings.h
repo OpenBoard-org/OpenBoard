@@ -359,7 +359,9 @@ class UBSettings : public QObject
         UBSetting* pdfMargin;
         UBSetting* pdfPageFormat;
         UBSetting* pdfResolution;
+
         UBSetting* pdfZoomBehavior;
+        UBSetting* enableQualityLossToIncreaseZoomPerfs;
 
         UBSetting* podcastFramesPerSecond;
         UBSetting* podcastVideoSize;

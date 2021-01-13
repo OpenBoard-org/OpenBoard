@@ -102,6 +102,7 @@ class UBPreferencesController : public QObject
         void toolbarOrientationVertical(bool checked);
         void toolbarOrientationHorizontal(bool checked);
         void systemOSKCheckBoxToggled(bool checked);
+        void setPdfZoomBehavior(bool checked);
 
     private slots:
         void adjustScreens(int screen);

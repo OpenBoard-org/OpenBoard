@@ -408,7 +408,9 @@ void UBSettings::init()
     pdfMargin = new UBSetting(this, "PDF", "Margin", "20");
     pdfPageFormat = new UBSetting(this, "PDF", "PageFormat", "A4");
     pdfResolution = new UBSetting(this, "PDF", "Resolution", "300");
+
     pdfZoomBehavior = new UBSetting(this, "PDF", "ZoomBehavior", "4");
+    enableQualityLossToIncreaseZoomPerfs = new UBSetting(this, "PDF", "enableQualityLossToIncreaseZoomPerfs", true);
 
     podcastFramesPerSecond = new UBSetting(this, "Podcast", "FramesPerSecond", 10);
     podcastVideoSize = new UBSetting(this, "Podcast", "VideoSize", "Medium");
