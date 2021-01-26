@@ -1028,8 +1028,14 @@ QStringList UBDocumentTreeModel::nodeNameList(const QModelIndex &pIndex) const
         return QStringList();
     }
 
-    foreach (UBDocumentTreeNode *curNode, catalog->children()) {
-        result << curNode->nodeName();
+    foreach (UBDocumentTreeNode *curNode, catalog->children())
+    {
+        /* this function is only used (at this time) to compare filenames eachother, so it has to distinguish a folder named "A" from a file named "A"
+        // notice that it is a really poor way to search for file indexes, and that the code where it is called should be entirely reworked, when the time permits it. */
+        if (curNode->nodeType() != UBDocumentTreeNode::Catalog)
+            result << curNode->nodeName();
+        else
+            result << "folder - " + curNode->nodeName();
     }
 
     return result;
@@ -1070,9 +1076,12 @@ QModelIndex UBDocumentTreeModel::goTo(const QString &dir)
         QString curLevelName = pathList.takeFirst();
         if (searchingNode) {
             searchingNode = false;
-            for (int i = 0; i < rowCount(parentIndex); ++i) {
+            int irowCount = rowCount(parentIndex);
+            for (int i = 0; i < irowCount; ++i) {
                 QModelIndex curChildIndex = index(i, 0, parentIndex);
-                if (nodeFromIndex(curChildIndex)->nodeName() == curLevelName) {
+                UBDocumentTreeNode* currentNode = nodeFromIndex(curChildIndex);
+                if (currentNode->nodeName() == curLevelName && currentNode->nodeType() == UBDocumentTreeNode::Catalog)
+                {
                     searchingNode = true;
                     parentIndex = curChildIndex;
                     break;
