@@ -227,7 +227,7 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
             return QDialog::Rejected;
         }
 
-        QStringList docList = mDocumentTreeStructureModel->nodeNameList(parentIndex);
+        QStringList docList = mDocumentTreeStructureModel->nodeNameList(parentIndex, true);
         QString docName = pProxy->metaData(UBSettings::documentName).toString();
 
         if (docList.contains(docName)) {

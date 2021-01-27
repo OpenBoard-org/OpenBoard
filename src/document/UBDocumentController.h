@@ -209,7 +209,7 @@ public:
     UBDocumentProxy *proxyForIndex(const QModelIndex &pIndex) const;
     QString virtualDirForIndex(const QModelIndex &pIndex) const;
     QString virtualPathForIndex(const QModelIndex &pIndex) const;
-    QStringList nodeNameList(const QModelIndex &pIndex) const;
+    QStringList nodeNameList(const QModelIndex &pIndex, bool distinctNodeType = false) const;
     bool newNodeAllowed(const QModelIndex &pSelectedIndex)  const;
     QModelIndex goTo(const QString &dir);
     bool inTrash(const QModelIndex &index) const;
