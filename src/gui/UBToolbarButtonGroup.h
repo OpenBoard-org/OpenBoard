@@ -48,6 +48,7 @@ class UBToolbarButtonGroup : public QWidget
         void setIcon(const QIcon &icon, int index);
         void setColor(const QColor &color, int index);
         int currentIndex() const;
+        void setLabel(const QString& label);
 
     protected:
         void paintEvent(QPaintEvent *);
