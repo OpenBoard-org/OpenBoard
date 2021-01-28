@@ -9,10 +9,12 @@
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="Calque_1"
    data-name="Calque 1"
-   viewBox="0 0 112.84 112.84"
+   viewBox="0 0 118.06574 103.25525"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="nofill_octogon.svg">
+   sodipodi:docname="white_triangle_rect.svg"
+   width="118.06574"
+   height="103.25525">
   <metadata
      id="metadata11">
     <rdf:RDF>
@@ -21,6 +23,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>triangle</dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -39,15 +42,29 @@
      inkscape:window-height="480"
      id="namedview7"
      showgrid="false"
-     inkscape:zoom="28.961362"
-     inkscape:cx="96.43121"
-     inkscape:cy="103.9428"
-     inkscape:current-layer="Calque_1" />
+     inkscape:zoom="5.7272353"
+     inkscape:cx="23.185417"
+     inkscape:cy="57.763972"
+     inkscape:current-layer="Calque_1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
   <title
-     id="title3">test4</title>
-  <path
-     d="M81.54,3.16,114,35.62V81.54L81.54,114H35.62L3.16,81.54V35.62L35.62,3.16H81.54m.41-1H35.21l-33,33.05V82L35.21,115H82L115,82V35.21l-33-33Z"
-     transform="translate(-2.16 -2.16)"
-     id="path5"
-     style="fill:#595959;fill-opacity:1" />
+     id="title3">triangle</title>
+  <g
+     id="g4256">
+    <path
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       style="opacity:0.25;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.98430401;stroke-opacity:1"
+       id="path5-3"
+       d="m 5.6185935,3.9682462 0,99.2870038 112.4471465,0 z" />
+    <path
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path5"
+       d="m 0.49215201,1.0910975 0,99.2867525 112.44688799,0 z" />
+  </g>
 </svg>
