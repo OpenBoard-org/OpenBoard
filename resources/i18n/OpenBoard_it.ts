@@ -177,7 +177,7 @@
     </message>
     <message>
         <source>Smalle Eraser</source>
-        <translation>Gomma piccola</translation>
+        <translation type="vanished">Gomma piccola</translation>
     </message>
     <message>
         <source>Medium Eraser</source>
@@ -189,7 +189,7 @@
     </message>
     <message>
         <source>Color</source>
-        <translation>Colore</translation>
+        <translation type="vanished">Colore</translation>
     </message>
     <message>
         <source>Back</source>
@@ -811,6 +811,30 @@
         <source>Reset grid size</source>
         <translation>Ripristina la dimensione della griglia</translation>
     </message>
+    <message>
+        <source>Small Eraser</source>
+        <translation>Gomma piccola</translation>
+    </message>
+    <message>
+        <source>Color 1</source>
+        <translation>Colore 1</translation>
+    </message>
+    <message>
+        <source>Color 2</source>
+        <translation>Colore 2</translation>
+    </message>
+    <message>
+        <source>Color 3</source>
+        <translation>Colore 3</translation>
+    </message>
+    <message>
+        <source>Color 4</source>
+        <translation>Colore 4</translation>
+    </message>
+    <message>
+        <source>Color 5</source>
+        <translation>Colore 5</translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -972,6 +996,10 @@
         <source>Deleting page %1</source>
         <translation>eliminazione della pagina %1</translation>
     </message>
+    <message>
+        <source>Color</source>
+        <translation>Colore</translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -1085,7 +1113,7 @@
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation type="vanished">Svuota il cestino</translation>
+        <translation>Svuota il cestino</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
@@ -1133,7 +1161,7 @@
     </message>
     <message>
         <source>Empty</source>
-        <translation>Vuoto</translation>
+        <translation type="vanished">Vuoto</translation>
     </message>
     <message>
         <source>Trash</source>
@@ -1201,6 +1229,10 @@
     <message>
         <source>Title page</source>
         <translation>Frontespizio</translation>
+    </message>
+    <message>
+        <source>Empty My Documents</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1637,7 +1669,7 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
     </message>
     <message>
         <source>Animations</source>
-        <translation>Animazioni</translation>
+        <translation type="vanished">Animazioni</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -2549,6 +2581,13 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     </message>
 </context>
 <context>
+    <name>XPDFRenderer</name>
+    <message>
+        <source>Processing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>YouTubePublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
@@ -2900,6 +2939,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>days</source>
         <translation>giorni</translation>
+    </message>
+    <message>
+        <source>PDF Rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable quality loss to increase zoom performances</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

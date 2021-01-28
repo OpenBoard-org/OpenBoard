@@ -177,7 +177,7 @@
     </message>
     <message>
         <source>Smalle Eraser</source>
-        <translation>小</translation>
+        <translation type="vanished">小</translation>
     </message>
     <message>
         <source>Medium Eraser</source>
@@ -189,7 +189,7 @@
     </message>
     <message>
         <source>Color</source>
-        <translation>颜色</translation>
+        <translation type="vanished">颜色</translation>
     </message>
     <message>
         <source>Back</source>
@@ -811,6 +811,30 @@
         <source>Reset grid size</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Small Eraser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 5</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -968,6 +992,10 @@
         <source>Deleting page %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished">颜色</translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -1081,7 +1109,7 @@
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation type="vanished">清空回收站</translation>
+        <translation>清空回收站</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
@@ -1129,7 +1157,7 @@
     </message>
     <message>
         <source>Empty</source>
-        <translation>清空</translation>
+        <translation type="vanished">清空</translation>
     </message>
     <message>
         <source>Trash</source>
@@ -1186,6 +1214,10 @@
     </message>
     <message>
         <source>Title page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Empty My Documents</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1587,7 +1619,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Animations</source>
-        <translation>动画</translation>
+        <translation type="vanished">动画</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -2483,6 +2515,13 @@ Please reboot the application to access the updated documents.</source>
     </message>
 </context>
 <context>
+    <name>XPDFRenderer</name>
+    <message>
+        <source>Processing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>YouTubePublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
@@ -2833,6 +2872,14 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF Rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable quality loss to increase zoom performances</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -415,7 +415,7 @@
      <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
    </property>
    <property name="text">
-    <string>Color0</string>
+    <string>Color 1</string>
    </property>
    <property name="toolTip">
     <string>Color 1</string>
@@ -430,7 +430,7 @@
      <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
    </property>
    <property name="text">
-    <string>Color1</string>
+    <string>Color 2</string>
    </property>
    <property name="toolTip">
     <string>Color 2</string>
@@ -445,7 +445,7 @@
      <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
    </property>
    <property name="text">
-    <string>Color2</string>
+    <string>Color 3</string>
    </property>
    <property name="toolTip">
     <string>Color 3</string>
@@ -460,7 +460,7 @@
      <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
    </property>
    <property name="text">
-    <string>Color3</string>
+    <string>Color 4</string>
    </property>
    <property name="toolTip">
     <string>Color 4</string>
@@ -475,7 +475,7 @@
      <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
    </property>
    <property name="text">
-    <string>Color4</string>
+    <string>Color 5</string>
    </property>
    <property name="toolTip">
     <string>Color 5</string>

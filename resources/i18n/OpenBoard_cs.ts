@@ -150,7 +150,7 @@
     </message>
     <message>
         <source>Color</source>
-        <translation>Barva</translation>
+        <translation type="vanished">Barva</translation>
     </message>
     <message>
         <source>Erase</source>
@@ -746,7 +746,7 @@
     </message>
     <message>
         <source>Smalle Eraser</source>
-        <translation>Malá guma</translation>
+        <translation type="vanished">Malá guma</translation>
     </message>
     <message>
         <source>Add Item To Current Page</source>
@@ -810,6 +810,30 @@
     </message>
     <message>
         <source>Reset grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Small Eraser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 5</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -969,6 +993,10 @@
         <source>Deleting page %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished">Barva</translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -1042,7 +1070,7 @@
     <name>UBDocumentController</name>
     <message>
         <source>Empty</source>
-        <translation>Vyprázdnit</translation>
+        <translation type="vanished">Vyprázdnit</translation>
     </message>
     <message>
         <source>Trash</source>
@@ -1122,7 +1150,7 @@
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation type="vanished">Vyprázdnit koš</translation>
+        <translation>Vyprázdnit koš</translation>
     </message>
     <message>
         <source>Remove Folder</source>
@@ -1191,6 +1219,10 @@
     </message>
     <message>
         <source>Title page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Empty My Documents</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1598,7 +1630,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Animations</source>
-        <translation>Animace</translation>
+        <translation type="vanished">Animace</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -2494,6 +2526,13 @@ Znovu spusťte aplikaci, abyste mohli pracovat s aktualizovanými dokumenty.</tr
     </message>
 </context>
 <context>
+    <name>XPDFRenderer</name>
+    <message>
+        <source>Processing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>YouTubePublishingDialog</name>
     <message>
         <source>Title</source>
@@ -2844,6 +2883,14 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF Rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable quality loss to increase zoom performances</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
