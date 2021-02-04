@@ -84,6 +84,7 @@ class UBToolsManager : public QObject
         }
 
         UBToolDescriptor ruler;
+        UBToolDescriptor axes;
         UBToolDescriptor protractor;
         UBToolDescriptor compass;
         UBToolDescriptor mask;

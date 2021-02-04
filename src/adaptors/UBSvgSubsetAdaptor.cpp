@@ -51,6 +51,7 @@
 #include "domain/UBItem.h"
 
 #include "tools/UBGraphicsRuler.h"
+#include "tools/UBGraphicsAxes.h"
 #include "tools/UBGraphicsCompass.h"
 #include "tools/UBGraphicsProtractor.h"
 #include "tools/UBGraphicsCurtainItem.h"
@@ -755,6 +756,17 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                 }
 
             }
+            else if (mXmlReader.name() == "axes")
+            {
+
+                UBGraphicsAxes *axes = axesFromSvg();
+                if (axes)
+                {
+                    mScene->addItem(axes);
+                    mScene->registerTool(axes);
+                }
+
+            }
             else if (mXmlReader.name() == "compass")
             {
                 UBGraphicsCompass *compass = compassFromSvg();
@@ -1350,6 +1362,14 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
         if (ruler && ruler->isVisible())
         {
             rulerToSvg(ruler);
+            continue;
+        }
+
+        // Is the item a axes?
+        UBGraphicsAxes *axes = qgraphicsitem_cast<UBGraphicsAxes*> (item);
+        if (axes && axes->isVisible())
+        {
+            axesToSvg(axes);
             continue;
         }
 
@@ -2859,6 +2879,40 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::rulerToSvg(UBGraphicsRuler* item)
     mXmlWriter.writeEndElement();
 }
 
+void UBSvgSubsetAdaptor::UBSvgSubsetWriter::axesToSvg(UBGraphicsAxes *item)
+{
+
+    /**
+     *
+     * sample
+     *
+      <ub:axes x="250" y="150" left="65" top="28" width="122" height="67" numbers="1"...>
+      </ub:ruler>
+     */
+
+    mXmlWriter.writeStartElement(UBSettings::uniboardDocumentNamespaceUri, "axes");
+    mXmlWriter.writeAttribute("x", QString("%1").arg(item->pos().x()));
+    mXmlWriter.writeAttribute("y", QString("%1").arg(item->pos().y()));
+    mXmlWriter.writeAttribute("left", QString("%1").arg(item->bounds().left()));
+    mXmlWriter.writeAttribute("top", QString("%1").arg(item->bounds().top()));
+    mXmlWriter.writeAttribute("width", QString("%1").arg(item->bounds().width()));
+    mXmlWriter.writeAttribute("height", QString("%1").arg(item->bounds().height()));
+    mXmlWriter.writeAttribute("numbers", QString("%1").arg(item->showNumbes()));
+
+    QString zs;
+    zs.setNum(item->zValue(), 'f'); // 'f' keeps precision
+    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "z-value", zs);
+
+    UBItem* ubItem = dynamic_cast<UBItem*>(item);
+
+    if (ubItem)
+    {
+        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(ubItem->uuid()));
+    }
+
+    mXmlWriter.writeEndElement();
+}
+
 
 UBGraphicsRuler* UBSvgSubsetAdaptor::UBSvgSubsetReader::rulerFromSvg()
 {
@@ -2881,6 +2935,43 @@ UBGraphicsRuler* UBSvgSubsetAdaptor::UBSvgSubsetReader::rulerFromSvg()
     ruler->setVisible(true);
 
     return ruler;
+}
+
+UBGraphicsAxes *UBSvgSubsetAdaptor::UBSvgSubsetReader::axesFromSvg()
+{
+    UBGraphicsAxes* axes = new UBGraphicsAxes();
+
+    graphicsItemFromSvg(axes);
+
+    axes->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
+
+    QStringRef svgX = mXmlReader.attributes().value("x");
+    QStringRef svgY = mXmlReader.attributes().value("y");
+    QStringRef svgLeft = mXmlReader.attributes().value("left");
+    QStringRef svgTop = mXmlReader.attributes().value("top");
+    QStringRef svgWidth = mXmlReader.attributes().value("width");
+    QStringRef svgHeight = mXmlReader.attributes().value("height");
+    QStringRef svgNumbers = mXmlReader.attributes().value("numbers");
+
+    if (!svgX.isNull() && !svgY.isNull())
+    {
+        axes->setPos(svgX.toString().toFloat(), svgY.toString().toFloat());
+    }
+
+    if (!svgWidth.isNull() && !svgHeight.isNull() && !svgLeft.isNull() && !svgTop.isNull())
+    {
+        axes->setRect(svgLeft.toString().toFloat(), svgTop.toString().toFloat(),
+                      svgWidth.toString().toFloat(), svgHeight.toString().toFloat());
+    }
+
+    if (!svgNumbers.isNull())
+    {
+        axes->setShowNumbers(svgNumbers.toInt());
+    }
+
+    axes->setVisible(true);
+
+    return axes;
 }
 
 

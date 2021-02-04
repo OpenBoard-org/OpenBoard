@@ -68,6 +68,14 @@ UBToolsManager::UBToolsManager(QObject *parent)
     mDescriptors << ruler;
 
 
+    axes.id = "openboardtool://axes";
+    axes.icon = QPixmap(":/images/toolPalette/axesTool.png");
+    axes.label = tr("Axes");
+    axes.version = "1.0";
+    mToolsIcon.insert(axes.id, ":/images/toolPalette/axesTool.png");
+    mDescriptors << axes;
+
+
     compass.id = "openboardtool://compass";
     compass.icon = QPixmap(":/images/toolPalette/compassTool.png");
     compass.label = tr("Compass");

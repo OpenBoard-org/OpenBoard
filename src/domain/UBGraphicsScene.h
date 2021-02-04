@@ -236,6 +236,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         }
 
         void addRuler(QPointF center);
+        void addAxes(QPointF center);
         void addProtractor(QPointF center);
         void addCompass(QPointF center);
         void addTriangle(QPointF center);

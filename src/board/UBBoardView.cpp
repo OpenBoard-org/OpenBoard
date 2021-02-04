@@ -77,6 +77,7 @@
 #include "document/UBDocumentProxy.h"
 
 #include "tools/UBGraphicsRuler.h"
+#include "tools/UBGraphicsAxes.h"
 #include "tools/UBGraphicsCurtainItem.h"
 #include "tools/UBGraphicsCompass.h"
 #include "tools/UBGraphicsCache.h"
@@ -467,6 +468,7 @@ bool UBBoardView::isCppTool(QGraphicsItem *item)
 {
     return (item->type() == UBGraphicsItemType::CompassItemType
             || item->type() == UBGraphicsItemType::RulerItemType
+            || item->type() == UBGraphicsItemType::AxesItemType
             || item->type() == UBGraphicsItemType::ProtractorItemType
             || item->type() == UBGraphicsItemType::TriangleItemType
             || item->type() == UBGraphicsItemType::CurtainItemType);
@@ -537,6 +539,7 @@ Here we determines cases when items should to get mouse press event at pressing 
     {
     case UBGraphicsProtractor::Type:
     case UBGraphicsRuler::Type:
+    case UBGraphicsAxes::Type:
     case UBGraphicsTriangle::Type:
     case UBGraphicsCompass::Type:
     case UBGraphicsCache::Type:

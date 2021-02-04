@@ -50,6 +50,7 @@
 #include "gui/UBResources.h"
 
 #include "tools/UBGraphicsRuler.h"
+#include "tools/UBGraphicsAxes.h"
 #include "tools/UBGraphicsProtractor.h"
 #include "tools/UBGraphicsCompass.h"
 #include "tools/UBGraphicsTriangle.h"
@@ -2189,6 +2190,21 @@ void UBGraphicsScene::addRuler(QPointF center)
     addItem(ruler);
 
     ruler->setVisible(true);
+}
+
+void UBGraphicsScene::addAxes(QPointF center)
+{
+    UBGraphicsAxes* axes = new UBGraphicsAxes(); // mem : owned and destroyed by the scene
+    mTools << axes;
+
+    axes->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
+
+    addItem(axes);
+
+    QPointF itemSceneCenter = axes->sceneBoundingRect().center();
+    axes->moveBy(center.x() - itemSceneCenter.x(), center.y() - itemSceneCenter.y());
+
+    axes->setVisible(true);
 }
 
 void UBGraphicsScene::addProtractor(QPointF center)
