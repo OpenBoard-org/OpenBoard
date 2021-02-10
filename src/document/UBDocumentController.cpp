@@ -661,7 +661,14 @@ QMimeData *UBDocumentTreeModel::mimeData (const QModelIndexList &indexes) const
         }
     }
 
+#if defined(Q_OS_OSX)
+    #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
+        if (QOperatingSystemVersion::current().minorVersion() < 15) /* < Mojave */
+            mimeData->setUrls(urlList);
+    #endif
+#else
     mimeData->setUrls(urlList);
+#endif
     mimeData->setIndexes(indexList);
 
     return mimeData;
