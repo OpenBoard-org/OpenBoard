@@ -366,6 +366,7 @@ void UBDesktopAnnotationController::stylusToolChanged(int tool)
 {
     Q_UNUSED(tool);
 #ifdef Q_OS_OSX
+    /* no longer needed
      if (UBDrawingController::drawingController()->isInDesktopMode())
      {
          UBStylusTool::Enum eTool = (UBStylusTool::Enum)tool;
@@ -377,7 +378,7 @@ void UBDesktopAnnotationController::stylusToolChanged(int tool)
          {
              UBPlatformUtils::toggleFinder(false);
          }
-     }
+     }*/
 #endif
 
     updateBackground();

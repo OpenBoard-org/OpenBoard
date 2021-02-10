@@ -91,10 +91,10 @@ void UBPlatformUtils::setDesktopMode(bool desktop)
 #if defined(Q_OS_OSX) && (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
         // temporarily disabled due to bug: when switching to desktop mode (and calling this),
         // openboard switches right back to the board mode. clicking again on desktop mode works.
-        if (desktop) {
+        /*if (desktop) {
             [NSApp setPresentationOptions:NSApplicationPresentationAutoHideMenuBar | NSApplicationPresentationAutoHideDock];
         }
-        else
+        else*/
             [NSApp setPresentationOptions:NSApplicationPresentationHideMenuBar | NSApplicationPresentationHideDock];
 #else // QT_VERSION_CHECK(5, 10, 0)
         [NSApp setPresentationOptions:NSApplicationPresentationHideMenuBar | NSApplicationPresentationHideDock];
