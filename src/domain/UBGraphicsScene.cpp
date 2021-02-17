@@ -359,6 +359,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     }
 
     mBackgroundGridSize = UBSettings::settings()->crossSize;
+    mIntermediateLines = UBSettings::settings()->intermediateLines;
 
 //    Just for debug. Do not delete please
 //    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
@@ -1153,6 +1154,15 @@ void UBGraphicsScene::setBackgroundGridSize(int pSize)
         foreach(QGraphicsView* view, views())
             view->resetCachedContent();
     }
+}
+
+void UBGraphicsScene::setIntermediateLines(bool checked)
+{
+    mIntermediateLines = checked;
+    setModified(true);
+
+    foreach(QGraphicsView* view, views())
+        view->resetCachedContent();
 }
 
 void UBGraphicsScene::setDrawingMode(bool bModeDesktop)

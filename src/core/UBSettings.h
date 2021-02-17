@@ -191,6 +191,7 @@ class UBSettings : public QObject
         static int defaultCrossSize;
         static int minCrossSize;
         static int maxCrossSize;
+        static bool intermediateLines;
 
         static int colorPaletteSize;
         static int objectFrameWidth;

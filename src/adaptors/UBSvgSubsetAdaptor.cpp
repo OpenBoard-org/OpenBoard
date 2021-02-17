@@ -469,6 +469,14 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
 
                         mScene->setBackgroundGridSize(gridSize);
                     }
+
+                    QStringRef ubIntermediateLines = mXmlReader.attributes().value(mNamespaceUri, "intermediate-lines");
+
+                    if (!ubIntermediateLines.isNull()) {
+                        bool intermediateLines = ubIntermediateLines.toInt();
+
+                        mScene->setIntermediateLines(intermediateLines);
+                    }
                 }
 
                 QStringRef ubRuledBackground = mXmlReader.attributes().value(mNamespaceUri, "ruled-background");
@@ -483,6 +491,14 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                         int gridSize = ubGridSize.toInt();
 
                         mScene->setBackgroundGridSize(gridSize);
+                    }
+
+                    QStringRef ubIntermediateLines = mXmlReader.attributes().value(mNamespaceUri, "intermediate-lines");
+
+                    if (!ubIntermediateLines.isNull()) {
+                        bool intermediateLines = ubIntermediateLines.toInt();
+
+                        mScene->setIntermediateLines(intermediateLines);
                     }
                 }
 
@@ -1140,8 +1156,10 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement(UBDocumentProxy* pro
 
     if (crossedBackground || ruledBackground) {
         int gridSize = mScene->backgroundGridSize();
+        bool intermediateLines = mScene->intermediateLines();
 
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "grid-size", QString::number(gridSize));
+        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "intermediate-lines", QString::number(intermediateLines));
     }
 
     QDesktopWidget* desktop = UBApplication::desktop();
