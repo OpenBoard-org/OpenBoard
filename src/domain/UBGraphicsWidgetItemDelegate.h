@@ -44,11 +44,12 @@ class UBGraphicsWidgetItemDelegate : public UBGraphicsItemDelegate
         UBGraphicsWidgetItemDelegate(UBGraphicsWidgetItem* pDelegated, int widgetType = 0);
         virtual ~UBGraphicsWidgetItemDelegate();
 
+        virtual void createControls() override;
     protected:
 
-        virtual void decorateMenu(QMenu* menu);
-        virtual void updateMenuActionState();
-        virtual void remove(bool canundo);
+        virtual void decorateMenu(QMenu* menu) override;
+        virtual void updateMenuActionState() override;
+        virtual void remove(bool canundo) override;
 
     private slots:
 

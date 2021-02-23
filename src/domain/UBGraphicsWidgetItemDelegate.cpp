@@ -64,6 +64,13 @@ void UBGraphicsWidgetItemDelegate::pin()
     UBApplication::boardController->moveGraphicsWidgetToControlView(delegated());
 }
 
+void UBGraphicsWidgetItemDelegate::createControls()
+{
+    UBGraphicsItemDelegate::createControls();
+
+    if (delegated() && delegated()->resizable())
+        frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
+}
 
 void UBGraphicsWidgetItemDelegate::updateMenuActionState()
 {
