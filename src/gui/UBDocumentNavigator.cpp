@@ -532,29 +532,31 @@ void UBDocumentNavigator::dragMoveEvent(QDragMoveEvent *event)
                            item->pos().y() + item->boundingRect().height() * scale / 2);
 
         bool dropAbove = mapToScene(position.toPoint()).y() < itemCenter.y();
-        bool movingUp = mDropSource->sceneIndex() > item->sceneIndex();
-        qreal y = 0;
+        if (mDropSource)
+        {
+            bool movingUp = mDropSource->sceneIndex() > item->sceneIndex();
+            qreal y = 0;
 
-        if (movingUp)
-        {
-            if (dropAbove)
+            if (movingUp)
             {
-                y = item->pos().y() - UBSettings::thumbnailSpacing / 2;
-                if (mDropBar->y() != y)
-                    mDropBar->setRect(QRectF(item->pos().x(), y, mThumbnailWidth-verticalScrollBar()->width(), 3));
+                if (dropAbove)
+                {
+                    y = item->pos().y() - UBSettings::thumbnailSpacing / 2;
+                    if (mDropBar->y() != y)
+                        mDropBar->setRect(QRectF(item->pos().x(), y, mThumbnailWidth-verticalScrollBar()->width(), 3));
+                }
             }
-        }
-        else
-        {
-            if (!dropAbove)
+            else
             {
-                y = item->pos().y() + item->boundingRect().height() * scale + UBSettings::thumbnailSpacing / 2;
-                if (mDropBar->y() != y)
-                    mDropBar->setRect(QRectF(item->pos().x(), y, mThumbnailWidth-verticalScrollBar()->width(), 3));
+                if (!dropAbove)
+                {
+                    y = item->pos().y() + item->boundingRect().height() * scale + UBSettings::thumbnailSpacing / 2;
+                    if (mDropBar->y() != y)
+                        mDropBar->setRect(QRectF(item->pos().x(), y, mThumbnailWidth-verticalScrollBar()->width(), 3));
+                }
             }
         }
     }
-
     event->acceptProposedAction();
 }
 
@@ -562,8 +564,11 @@ void UBDocumentNavigator::dropEvent(QDropEvent *event)
 {
     Q_UNUSED(event);
 
-    if (mDropSource->sceneIndex() != mDropTarget->sceneIndex())
-        UBApplication::boardController->moveSceneToIndex(mDropSource->sceneIndex(), mDropTarget->sceneIndex());
+    if (mDropSource && mDropTarget)
+    {
+        if (mDropSource->sceneIndex() != mDropTarget->sceneIndex())
+            UBApplication::boardController->moveSceneToIndex(mDropSource->sceneIndex(), mDropTarget->sceneIndex());
+    }
 
     mDropSource = NULL;
     mDropTarget = NULL;
