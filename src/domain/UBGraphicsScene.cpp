@@ -1050,8 +1050,11 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
                 intersectedPolygonItem->copyItemParameters(polygonItem);
                 polygonItem->setNominalLine(false);
                 polygonItem->setStroke(intersectedPolygonItem->stroke());
-                polygonItem->setStrokesGroup(intersectedPolygonItem->strokesGroup());
-                intersectedPolygonItem->strokesGroup()->addToGroup(polygonItem);
+                if (intersectedPolygonItem->strokesGroup())
+                {
+                    polygonItem->setStrokesGroup(intersectedPolygonItem->strokesGroup());
+                    intersectedPolygonItem->strokesGroup()->addToGroup(polygonItem);
+                }
                 mAddedItems << polygonItem;
             }
         }
