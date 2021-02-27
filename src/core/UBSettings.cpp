@@ -466,6 +466,8 @@ void UBSettings::init()
     emptyTrashForOlderDocuments = new UBSetting(this, "Document", "emptyTrashForOlderDocuments", false);
     emptyTrashDaysValue = new UBSetting(this, "Document", "emptyTrashDaysValue", 30);
 
+    pointerDiameter = value("Board/PointerDiameter", pointerDiameter).toInt();
+
     cleanNonPersistentSettings();
     checkNewSettings();
 }
