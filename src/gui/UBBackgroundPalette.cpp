@@ -56,22 +56,31 @@ void UBBackgroundPalette::init()
 
     connect(UBApplication::mainWindow->actionDefaultGridSize, SIGNAL(triggered()), this, SLOT(defaultBackgroundGridSize()));
 
-    mDrawIntermediateLinesCheckBox = createPaletteButton(UBApplication::mainWindow->actionDrawIntermediateGridLines, this);
-    mDrawIntermediateLinesCheckBox->setFixedSize(24,24);
-    mDrawIntermediateLinesCheckBox->setCheckable(true);
-    mActions << UBApplication::mainWindow->actionDrawIntermediateGridLines;
-    mButtons.removeLast(); // don't add to button group
+    bool enableIntermediateLines = UBSettings::settings()->enableIntermediateLines->get().toBool();
 
-    connect(UBApplication::mainWindow->actionDrawIntermediateGridLines, SIGNAL(toggled(bool)), this, SLOT(toggleIntermediateLines(bool)));
+    if (enableIntermediateLines)
+    {
+        mDrawIntermediateLinesCheckBox = createPaletteButton(UBApplication::mainWindow->actionDrawIntermediateGridLines, this);
+        mDrawIntermediateLinesCheckBox->setFixedSize(24,24);
+        mDrawIntermediateLinesCheckBox->setCheckable(true);
+        mActions << UBApplication::mainWindow->actionDrawIntermediateGridLines;
+        mButtons.removeLast(); // don't add to button group
+
+        connect(UBApplication::mainWindow->actionDrawIntermediateGridLines, SIGNAL(toggled(bool)), this, SLOT(toggleIntermediateLines(bool)));
+    }
 
     mBottomLayout->addSpacing(16);
     mBottomLayout->addWidget(mSliderLabel);
     mBottomLayout->addWidget(mSlider);
     mBottomLayout->addWidget(mResetDefaultGridSizeButton);
     mBottomLayout->addSpacing(16);
-    mBottomLayout->addWidget(mIntermediateLinesLabel);
-    mBottomLayout->addWidget(mDrawIntermediateLinesCheckBox);
-    mBottomLayout->addSpacing(16);
+
+    if (enableIntermediateLines)
+    {
+        mBottomLayout->addWidget(mIntermediateLinesLabel);
+        mBottomLayout->addWidget(mDrawIntermediateLinesCheckBox);
+        mBottomLayout->addSpacing(16);
+    }
 
     updateLayout();
 }
@@ -149,7 +158,10 @@ void UBBackgroundPalette::showEvent(QShowEvent* event)
     connect(mSlider, SIGNAL(valueChanged(int)),
             this, SLOT(sliderValueChanged(int)));
 
-    mDrawIntermediateLinesCheckBox->setChecked(UBApplication::boardController->activeScene()->intermediateLines());
+    if (UBSettings::settings()->enableIntermediateLines->get().toBool())
+    {
+        mDrawIntermediateLinesCheckBox->setChecked(UBApplication::boardController->activeScene()->intermediateLines());
+    }
 
     QWidget::showEvent(event);
 }

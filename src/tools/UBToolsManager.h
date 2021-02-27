@@ -83,6 +83,11 @@ class UBToolsManager : public QObject
             return UBToolDescriptor();
         }
 
+        void addTool(const UBToolDescriptor& tool)
+        {
+            mDescriptors << tool;
+        }
+
         UBToolDescriptor ruler;
         UBToolDescriptor axes;
         UBToolDescriptor protractor;
