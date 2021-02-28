@@ -120,6 +120,7 @@ void UBDrawingController::setStylusTool(int tool)
             emit colorIndexChanged(UBSettings::settings()->markerColorIndex());
         }
 
+        UBStylusTool::Enum previousTool = mStylusTool;
         mStylusTool = (UBStylusTool::Enum)tool;
 
 
@@ -148,7 +149,7 @@ void UBDrawingController::setStylusTool(int tool)
         else if (mStylusTool == UBStylusTool::Capture)
             UBApplication::mainWindow->actionCapture->setChecked(true);
 
-        emit stylusToolChanged(tool);
+        emit stylusToolChanged(tool, previousTool);
         if (mStylusTool != UBStylusTool::Selector)
             emit colorPaletteChanged();
     }

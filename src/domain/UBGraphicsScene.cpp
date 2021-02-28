@@ -362,6 +362,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
 //    Just for debug. Do not delete please
 //    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
     connect(UBApplication::undoStack.data(), SIGNAL(indexChanged(int)), this, SLOT(updateSelectionFrameWrapper(int)));
+    connect(UBDrawingController::drawingController(), SIGNAL(stylusToolChanged(int,int)), this, SLOT(stylusToolChanged(int,int)));
 }
 
 UBGraphicsScene::~UBGraphicsScene()
@@ -615,10 +616,13 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                         mTempPolygon = NULL;
                     }
 
-                    QPointF lastDrawnPoint = mCurrentStroke->points().last().first;
+                    if (!mCurrentStroke->points().empty())
+                    {
+                        QPointF lastDrawnPoint = mCurrentStroke->points().last().first;
 
-                    mTempPolygon = lineToPolygonItem(QLineF(lastDrawnPoint, scenePos), mPreviousWidth, width);
-                    addItem(mTempPolygon);
+                        mTempPolygon = lineToPolygonItem(QLineF(lastDrawnPoint, scenePos), mPreviousWidth, width);
+                        addItem(mTempPolygon);
+                    }
                 }
             }
         }
@@ -641,7 +645,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
     return accepted;
 }
 
-bool UBGraphicsScene::inputDeviceRelease()
+bool UBGraphicsScene::inputDeviceRelease(int tool)
 {
     bool accepted = false;
 
@@ -651,10 +655,15 @@ bool UBGraphicsScene::inputDeviceRelease()
         accepted = true;
     }
 
-    UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();
+    if (tool < 0)
+    {
+        tool = UBDrawingController::drawingController()->stylusTool();
+    }
+
+    UBStylusTool::Enum currentTool = (UBStylusTool::Enum)tool;
 
     if (currentTool == UBStylusTool::Eraser)
-        redrawEraser(false);
+        hideEraser();
 
 
     UBDrawingController *dc = UBDrawingController::drawingController();
@@ -2352,6 +2361,17 @@ void UBGraphicsScene::resizedMagnifier(qreal newPercent)
         magniferDisplayViewWidget->setSize(newPercent);
         magniferDisplayViewWidget->grabPoint();
         setModified(true);
+    }
+}
+
+void UBGraphicsScene::stylusToolChanged(int tool, int previousTool)
+{
+    if (mInputDeviceIsPressed && tool != previousTool)
+    {
+        // tool was changed while input device is pressed
+        // simulate release and press to terminate pervious strokes
+        inputDeviceRelease(previousTool);
+        inputDevicePress(mPreviousPoint);
     }
 }
 
