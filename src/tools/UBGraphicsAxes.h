@@ -114,14 +114,15 @@ class UBGraphicsAxes : public QObject, public QGraphicsPolygonItem, public UBIte
         bool mShowButtons;
         bool mShowNumbers;
 
-
         QCursor mResizeCursorH;
         QCursor mResizeCursorV;
 
-        int drawLineDirection;
+        qreal mAntiScaleRatio;
+        qreal mPixelsPerCentimeter;
+        QRectF mBounds;
 
         // Constants
-        static const QRect               sDefaultRect;
+        static const QRect     sDefaultRect;
 
         static const int    sMinLength = 50;    // 1sm
         static const int    sMaxLength = 35000; // 700sm
@@ -132,11 +133,6 @@ class UBGraphicsAxes : public QObject, public QGraphicsPolygonItem, public UBIte
         static const int                  sDrawTransparency = 255;
         static const QColor       sLightBackgroundDrawColor;
         static const QColor        sDarkBackgroundDrawColor;
-
-        qreal mStrokeWidth;
-        qreal mAntiScaleRatio;
-        qreal sPixelsPerCentimeter;
-        QRectF mBounds;
 };
 
 #endif // UBGRAPHICSAXES_H

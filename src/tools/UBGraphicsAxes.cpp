@@ -210,20 +210,20 @@ void UBGraphicsAxes::paintGraduations(QPainter *painter)
     QFontMetricsF fontMetrics(painter->font());
 
     // Update the width of one "centimeter" to correspond to the width of the background grid (whether it is displayed or not)
-    sPixelsPerCentimeter = UBApplication::boardController->activeScene()->backgroundGridSize();
+    mPixelsPerCentimeter = UBApplication::boardController->activeScene()->backgroundGridSize();
 
     // When a "centimeter" is too narrow, we only display every 5th number
     double numbersWidth = fontMetrics.boundingRect("-00").width();
-    bool shouldDisplayAllNumbers = (numbersWidth <= (sPixelsPerCentimeter - 5));
+    bool shouldDisplayAllNumbers = (numbersWidth <= (mPixelsPerCentimeter - 5));
 
     // draw numbers on x axis
-    int fromX = (xAxis().x1() + sMargin) / sPixelsPerCentimeter;
-    int toX = (xAxis().x2() - sMargin) / sPixelsPerCentimeter;
+    int fromX = (xAxis().x1() + sMargin) / mPixelsPerCentimeter;
+    int toX = (xAxis().x2() - sMargin) / mPixelsPerCentimeter;
 
     for (int centimeters(fromX); centimeters <= toX; centimeters++)
     {
         bool isImportant = abs(centimeters) == 1 || abs(centimeters) % 5 == 0;
-        double graduationX = sPixelsPerCentimeter * centimeters;
+        double graduationX = mPixelsPerCentimeter * centimeters;
         double graduationHeight = UBGeometryUtils::millimeterGraduationHeight;
 
         painter->drawLine(QLineF(graduationX, graduationHeight, graduationX, -graduationHeight));
@@ -244,13 +244,13 @@ void UBGraphicsAxes::paintGraduations(QPainter *painter)
     }
 
     // draw numbers on y axis
-    int fromY = (-yAxis().y1() + sMargin) / sPixelsPerCentimeter;
-    int toY = (-yAxis().y2() - sMargin) / sPixelsPerCentimeter;
+    int fromY = (-yAxis().y1() + sMargin) / mPixelsPerCentimeter;
+    int toY = (-yAxis().y2() - sMargin) / mPixelsPerCentimeter;
 
     for (int centimeters(fromY); centimeters <= toY; centimeters++)
     {
         bool isImportant = abs(centimeters) == 1 || abs(centimeters) % 5 == 0;
-        double graduationY = - sPixelsPerCentimeter * centimeters;
+        double graduationY = - mPixelsPerCentimeter * centimeters;
         double graduationHeight = UBGeometryUtils::millimeterGraduationHeight;
 
         painter->drawLine(QLineF(graduationHeight, graduationY, - graduationHeight, graduationY));

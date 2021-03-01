@@ -189,9 +189,15 @@ void UBBackgroundPalette::backgroundChanged()
     bool dark = UBApplication::boardController->activeScene()->isDarkBackground();
 
     if (dark)
+    {
         mSliderLabel->setStyleSheet("QLabel { color : white; }");
+        mIntermediateLinesLabel->setStyleSheet("QLabel { color : white; }");
+    }
     else
+    {
         mSliderLabel->setStyleSheet("QLabel { color : black; }");
+        mIntermediateLinesLabel->setStyleSheet("QLabel { color : black; }");
+    }
 }
 
 void UBBackgroundPalette::refresh()
