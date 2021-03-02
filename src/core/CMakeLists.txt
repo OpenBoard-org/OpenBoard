@@ -33,6 +33,8 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBSetting.h
     UBSettings.cpp
     UBSettings.h
+    UBShortcutManager.cpp
+    UBShortcutManager.h
     UBTextTools.cpp
     UBTextTools.h
 )
