@@ -29,7 +29,6 @@ void UBBackgroundPalette::init()
     mButtonSize = QSize(32, 32);
     mIsClosable = false;
     mAutoClose = false;
-    mButtonGroup = 0;
     mToolButtonStyle = Qt::ToolButtonIconOnly;
     mButtons.clear();
 
@@ -60,8 +59,7 @@ void UBBackgroundPalette::init()
     mDrawIntermediateLinesCheckBox->setFixedSize(24,24);
     mDrawIntermediateLinesCheckBox->setCheckable(true);
     mActions << UBApplication::mainWindow->actionDrawIntermediateGridLines;
-    mButtons.removeLast(); // don't add to button group
-
+    UBApplication::mainWindow->actionDrawIntermediateGridLines->setProperty("ungrouped", true);
     connect(UBApplication::mainWindow->actionDrawIntermediateGridLines, SIGNAL(toggled(bool)), this, SLOT(toggleIntermediateLines(bool)));
 
     mBottomLayout->addSpacing(16);
