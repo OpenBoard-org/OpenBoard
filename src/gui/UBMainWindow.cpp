@@ -36,6 +36,7 @@
 #include "core/UBApplicationController.h"
 #include "board/UBBoardController.h"
 #include "core/UBDisplayManager.h"
+#include "core/UBShortcutManager.h"
 
 // work around for handling tablet events on MAC OS with Qt 4.8.0 and above
 #if defined(Q_OS_OSX)
@@ -76,6 +77,8 @@ UBMainWindow::UBMainWindow(QWidget *parent, Qt::WindowFlags flags)
 #else
     actionQuit->setShortcut(QKeySequence(Qt::ALT + Qt::Key_F4));
 #endif
+
+    UBShortcutManager::shortcutManager()->addMainActions(this);
 }
 
 UBMainWindow::~UBMainWindow()

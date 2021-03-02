@@ -45,6 +45,7 @@
 #include "UBPreferencesController.h"
 #include "UBIdleTimer.h"
 #include "UBApplicationController.h"
+#include "UBShortcutManager.h"
 
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
@@ -638,14 +639,14 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
         }
     }
 
-    if (event->type() == QEvent::TabletLeaveProximity)
+    else if (event->type() == QEvent::TabletLeaveProximity)
     {
         if (boardController && boardController->controlView())
             boardController->controlView()->forcedTabletRelease();
     }
 
 
-    if (event->type() == QEvent::ApplicationActivate)
+    else if (event->type() == QEvent::ApplicationActivate)
     {
         boardController->controlView()->setMultiselection(false);
 
@@ -661,6 +662,34 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
             UBPlatformUtils::showFullScreen(mainWindow);
         }
 #endif
+    }
+
+    else if (event->type() == QEvent::MouseButtonPress)
+    {
+        // intercept special mouse buttons for shortcut handler
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+        Qt::MouseButton button = mouseEvent->button();
+
+        if (button != Qt::LeftButton && button != Qt::RightButton)
+        {
+            return mPreferencesController->handleMouseEvent(mouseEvent)
+                    || UBShortcutManager::shortcutManager()->handleMouseEvent(mouseEvent)
+                    || result;
+        }
+    }
+
+    else if (event->type() == QEvent::TabletPress)
+    {
+        // intercept special tablet buttons for shortcut handler
+        QTabletEvent *tabletEvent = static_cast<QTabletEvent *>(event);
+        Qt::MouseButton button = tabletEvent->button();
+
+        if (button != Qt::LeftButton)
+        {
+            return mPreferencesController->handleTabletEvent(tabletEvent)
+                    || UBShortcutManager::shortcutManager()->handleTabletEvent(tabletEvent)
+                    || result;
+        }
     }
 
     return result;

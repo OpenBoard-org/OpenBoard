@@ -78,12 +78,13 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
     {
         // VirtualKeyboard action is not in group
         // So, groupping all buttons, except last
-        mButtonGroup = new QButtonGroup(this);
-        for(int i=0; i < mButtons.size()-1; i++)
+        mActionGroup = new QActionGroup(this);
+        for(int i=0; i < mActions.size()-1; i++)
         {
-            mButtonGroup->addButton(mButtons[i], i);
+            mActions[i]->setProperty("id", i);
+            mActionGroup->addAction(mActions[i]);
         }
-        connect(mButtonGroup, SIGNAL(buttonClicked(int)), this, SIGNAL(buttonGroupClicked(int)));
+        connect(mActionGroup, SIGNAL(triggered(QAction*)), this, SIGNAL(buttonGroupClicked(QAction*)));
     }
 
     adjustSizeAndPosition();
@@ -130,7 +131,7 @@ UBStylusPalette::~UBStylusPalette()
 
 void UBStylusPalette::stylusToolDoubleClicked()
 {
-    emit stylusToolDoubleClicked(mButtonGroup->checkedId());
+    emit stylusToolDoubleClicked(mActionGroup->checkedAction()->property("id").toInt());
 }
 
 

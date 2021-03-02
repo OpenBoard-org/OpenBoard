@@ -32,7 +32,7 @@
 
 #include <QtGui>
 #include <QPoint>
-#include <QButtonGroup>
+#include <QActionGroup>
 #include <QToolButton>
 
 #include "UBFloatingPalette.h"
@@ -83,7 +83,7 @@ class UBActionPalette : public UBFloatingPalette
 
     signals:
         void closed();
-        void buttonGroupClicked(int id);
+        void buttonGroupClicked(QAction* action);
         void customMouseReleased();
 
     protected:
@@ -94,7 +94,7 @@ class UBActionPalette : public UBFloatingPalette
         virtual void updateLayout();
 
         QList<UBActionPaletteButton*> mButtons;
-        QButtonGroup* mButtonGroup;
+        QActionGroup* mActionGroup;
         QList<QAction*> mActions;
         QMap<QAction*, UBActionPaletteButton*> mMapActionToButton;
 
