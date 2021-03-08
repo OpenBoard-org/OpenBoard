@@ -2159,7 +2159,7 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
     </message>
     <message>
         <source>Compass</source>
-        <translation>Kompas</translation>
+        <translation>Cyrkiel</translation>
     </message>
     <message>
         <source>Protractor</source>
@@ -2167,7 +2167,7 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
     </message>
     <message>
         <source>Triangle</source>
-        <translation>Trójkąt</translation>
+        <translation>Ekierka</translation>
     </message>
     <message>
         <source>Magnifier</source>
