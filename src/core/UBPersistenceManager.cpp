@@ -782,9 +782,9 @@ void UBPersistenceManager::duplicateDocumentScene(UBDocumentProxy* proxy, int in
     }
     scene->setModified(true);
 
-    persistDocumentScene(proxy,scene, index + 1);
-
     proxy->incPageCount();
+
+    persistDocumentScene(proxy,scene, index + 1);
 
     emit documentSceneCreated(proxy, index + 1);
 }
@@ -842,9 +842,9 @@ UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* pr
 
     newScene->setBackgroundGridSize(UBSettings::settings()->crossSize);
 
-    persistDocumentScene(proxy, newScene, index);
-
     proxy->incPageCount();
+
+    persistDocumentScene(proxy, newScene, index);
 
     emit documentSceneCreated(proxy, index);
 
