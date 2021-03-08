@@ -230,12 +230,18 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
             return mBackgroundGridSize;
         }
 
+        bool intermediateLines() const
+        {
+            return mIntermediateLines;
+        }
+
         bool hasBackground()
         {
             return (mBackgroundObject != 0);
         }
 
         void addRuler(QPointF center);
+        void addAxes(QPointF center);
         void addProtractor(QPointF center);
         void addCompass(QPointF center);
         void addTriangle(QPointF center);
@@ -358,6 +364,7 @@ public slots:
         void setBackground(bool pIsDark, UBPageBackground pBackground);
         void setBackgroundZoomFactor(qreal zoom);
         void setBackgroundGridSize(int pSize);
+        void setIntermediateLines(bool checked);
         void setDrawingMode(bool bModeDesktop);
         void deselectAllItems();
 
@@ -443,6 +450,7 @@ public slots:
         bool mDarkBackground;
         UBPageBackground mPageBackground;
         int mBackgroundGridSize;
+        bool mIntermediateLines;
 
         bool mIsDesktopMode;
         qreal mZoomFactor;

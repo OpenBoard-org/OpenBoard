@@ -172,6 +172,7 @@ struct UBGraphicsItemType
         ToolWidgetItemType,                             //65555
         GraphicsWidgetItemType,                         //65556
         UserTypesCount,                                 //65557
+        AxesItemType,                                   //65558
         SelectionFrameType                              // this line must be the last line in this enum because it is types counter.
     };
 };

@@ -1686,6 +1686,22 @@
     <string>Reset grid size</string>
    </property>
   </action>
+  <action name="actionDrawIntermediateGridLines">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/minus.svg</normaloff>
+     <normalon>:/images/save.svg</normalon>:/images/minus.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Draw intermediate grid lines</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw intermediate grid lines</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="../OpenBoard.qrc"/>

@@ -48,6 +48,7 @@ void UBBackgroundPalette::init()
     mSlider->setTracking(true); // valueChanged() is emitted during movement and not just upon releasing the slider
 
     mSliderLabel = new QLabel(tr("Grid size"));
+    mIntermediateLinesLabel = new QLabel(tr("Draw intermediate grid lines"));
 
     mResetDefaultGridSizeButton = createPaletteButton(UBApplication::mainWindow->actionDefaultGridSize, this);
     mResetDefaultGridSizeButton->setFixedSize(24,24);
@@ -55,11 +56,31 @@ void UBBackgroundPalette::init()
 
     connect(UBApplication::mainWindow->actionDefaultGridSize, SIGNAL(triggered()), this, SLOT(defaultBackgroundGridSize()));
 
+    bool enableIntermediateLines = UBSettings::settings()->enableIntermediateLines->get().toBool();
+
+    if (enableIntermediateLines)
+    {
+        mDrawIntermediateLinesCheckBox = createPaletteButton(UBApplication::mainWindow->actionDrawIntermediateGridLines, this);
+        mDrawIntermediateLinesCheckBox->setFixedSize(24,24);
+        mDrawIntermediateLinesCheckBox->setCheckable(true);
+        mActions << UBApplication::mainWindow->actionDrawIntermediateGridLines;
+        mButtons.removeLast(); // don't add to button group
+
+        connect(UBApplication::mainWindow->actionDrawIntermediateGridLines, SIGNAL(toggled(bool)), this, SLOT(toggleIntermediateLines(bool)));
+    }
+
     mBottomLayout->addSpacing(16);
     mBottomLayout->addWidget(mSliderLabel);
     mBottomLayout->addWidget(mSlider);
     mBottomLayout->addWidget(mResetDefaultGridSizeButton);
     mBottomLayout->addSpacing(16);
+
+    if (enableIntermediateLines)
+    {
+        mBottomLayout->addWidget(mIntermediateLinesLabel);
+        mBottomLayout->addWidget(mDrawIntermediateLinesCheckBox);
+        mBottomLayout->addSpacing(16);
+    }
 
     updateLayout();
 }
@@ -137,6 +158,11 @@ void UBBackgroundPalette::showEvent(QShowEvent* event)
     connect(mSlider, SIGNAL(valueChanged(int)),
             this, SLOT(sliderValueChanged(int)));
 
+    if (UBSettings::settings()->enableIntermediateLines->get().toBool())
+    {
+        mDrawIntermediateLinesCheckBox->setChecked(UBApplication::boardController->activeScene()->intermediateLines());
+    }
+
     QWidget::showEvent(event);
 }
 
@@ -152,14 +178,26 @@ void UBBackgroundPalette::defaultBackgroundGridSize()
     sliderValueChanged(UBSettings::settings()->defaultCrossSize);
 }
 
+void UBBackgroundPalette::toggleIntermediateLines(bool checked)
+{
+    UBApplication::boardController->activeScene()->setIntermediateLines(checked);
+    UBSettings::settings()->intermediateLines = checked; // since this function is called (indirectly, by refresh) when we switch scenes, the settings will always have the current scene's value.
+}
+
 void UBBackgroundPalette::backgroundChanged()
 {
     bool dark = UBApplication::boardController->activeScene()->isDarkBackground();
 
     if (dark)
+    {
         mSliderLabel->setStyleSheet("QLabel { color : white; }");
+        mIntermediateLinesLabel->setStyleSheet("QLabel { color : white; }");
+    }
     else
+    {
         mSliderLabel->setStyleSheet("QLabel { color : black; }");
+        mIntermediateLinesLabel->setStyleSheet("QLabel { color : black; }");
+    }
 }
 
 void UBBackgroundPalette::refresh()

@@ -835,6 +835,10 @@
         <source>Color 5</source>
         <translation>Farbe 5</translation>
     </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation>Gitter-Zwischenlinien zeichnen</translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -936,6 +940,10 @@
     <message>
         <source>Grid size</source>
         <translation>Gittergrösse</translation>
+    </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation>Gitter-Zwischenlinien zeichnen</translation>
     </message>
 </context>
 <context>
@@ -2225,6 +2233,10 @@ Miniaturansicht der Seite %1 wird geladen</translation>
     <message>
         <source>Cache</source>
         <translation>Zwischenspeicher</translation>
+    </message>
+    <message>
+        <source>Axes</source>
+        <translation>Achsen</translation>
     </message>
 </context>
 <context>

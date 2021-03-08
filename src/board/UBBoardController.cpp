@@ -1441,6 +1441,11 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
             mActiveScene->addRuler(pPos);
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
+        else if (sourceUrl.toString() == UBToolsManager::manager()->axes.id)
+        {
+            mActiveScene->addAxes(pPos);
+            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+        }
         else if (sourceUrl.toString() == UBToolsManager::manager()->protractor.id)
         {
             mActiveScene->addProtractor(pPos);

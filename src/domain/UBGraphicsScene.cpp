@@ -50,6 +50,7 @@
 #include "gui/UBResources.h"
 
 #include "tools/UBGraphicsRuler.h"
+#include "tools/UBGraphicsAxes.h"
 #include "tools/UBGraphicsProtractor.h"
 #include "tools/UBGraphicsCompass.h"
 #include "tools/UBGraphicsTriangle.h"
@@ -359,6 +360,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     }
 
     mBackgroundGridSize = UBSettings::settings()->crossSize;
+    mIntermediateLines = UBSettings::settings()->intermediateLines;
 
 //    Just for debug. Do not delete please
 //    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
@@ -1162,6 +1164,15 @@ void UBGraphicsScene::setBackgroundGridSize(int pSize)
         foreach(QGraphicsView* view, views())
             view->resetCachedContent();
     }
+}
+
+void UBGraphicsScene::setIntermediateLines(bool checked)
+{
+    mIntermediateLines = checked;
+    setModified(true);
+
+    foreach(QGraphicsView* view, views())
+        view->resetCachedContent();
 }
 
 void UBGraphicsScene::setDrawingMode(bool bModeDesktop)
@@ -2199,6 +2210,20 @@ void UBGraphicsScene::addRuler(QPointF center)
     addItem(ruler);
 
     ruler->setVisible(true);
+}
+
+void UBGraphicsScene::addAxes(QPointF center)
+{
+    UBGraphicsAxes* axes = new UBGraphicsAxes(); // mem : owned and destroyed by the scene
+
+    axes->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
+
+    addItem(axes);
+
+    QPointF itemSceneCenter = axes->sceneBoundingRect().center();
+    axes->moveBy(center.x() - itemSceneCenter.x(), center.y() - itemSceneCenter.y());
+
+    axes->setVisible(true);
 }
 
 void UBGraphicsScene::addProtractor(QPointF center)

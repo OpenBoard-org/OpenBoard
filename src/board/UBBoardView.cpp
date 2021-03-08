@@ -77,6 +77,7 @@
 #include "document/UBDocumentProxy.h"
 
 #include "tools/UBGraphicsRuler.h"
+#include "tools/UBGraphicsAxes.h"
 #include "tools/UBGraphicsCurtainItem.h"
 #include "tools/UBGraphicsCompass.h"
 #include "tools/UBGraphicsCache.h"
@@ -467,6 +468,7 @@ bool UBBoardView::isCppTool(QGraphicsItem *item)
 {
     return (item->type() == UBGraphicsItemType::CompassItemType
             || item->type() == UBGraphicsItemType::RulerItemType
+            || item->type() == UBGraphicsItemType::AxesItemType
             || item->type() == UBGraphicsItemType::ProtractorItemType
             || item->type() == UBGraphicsItemType::TriangleItemType
             || item->type() == UBGraphicsItemType::CurtainItemType);
@@ -537,6 +539,7 @@ Here we determines cases when items should to get mouse press event at pressing 
     {
     case UBGraphicsProtractor::Type:
     case UBGraphicsRuler::Type:
+    case UBGraphicsAxes::Type:
     case UBGraphicsTriangle::Type:
     case UBGraphicsCompass::Type:
     case UBGraphicsCache::Type:
@@ -1626,6 +1629,7 @@ void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
         }
 
         qreal gridSize = scene()->backgroundGridSize();
+        bool intermediateLines = scene()->intermediateLines();
 
         painter->setPen (bgCrossColor);
 
@@ -1644,6 +1648,22 @@ void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
             {
                 painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
             }
+
+            if (intermediateLines) {
+                QColor intermediateColor = bgCrossColor;
+                intermediateColor.setAlphaF(0.5 * bgCrossColor.alphaF());
+                painter->setPen(intermediateColor);
+
+                for (qreal yPos = firstY - gridSize/2; yPos < rect.y () + rect.height (); yPos += gridSize)
+                {
+                    painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
+                }
+
+                for (qreal xPos = firstX - gridSize/2; xPos < rect.x () + rect.width (); xPos += gridSize)
+                {
+                    painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
+                }
+            }
         }
 
         if (scene() && scene()->pageBackground() == UBPageBackground::ruled)
@@ -1653,6 +1673,17 @@ void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
             for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += gridSize)
             {
                 painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
+            }
+
+            if (intermediateLines) {
+                QColor intermediateColor = bgCrossColor;
+                intermediateColor.setAlphaF(0.5 * bgCrossColor.alphaF());
+                painter->setPen(intermediateColor);
+
+                for (qreal yPos = firstY - gridSize/2; yPos < rect.y () + rect.height (); yPos += gridSize)
+                {
+                    painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
+                }
             }
         }
     }
