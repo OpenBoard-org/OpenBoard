@@ -3382,11 +3382,11 @@ void UBDocumentController::updateActions()
         break;
     case EmptyFolder :
         mMainWindow->actionDelete->setIcon(QIcon(":/images/trash.png"));
-        mMainWindow->actionDelete->setText(tr("Empty My Documents"));
+        mMainWindow->actionDelete->setText(tr("Empty"));
         break;
     case EmptyTrash :
         mMainWindow->actionDelete->setIcon(QIcon(":/images/toolbar/deleteDocument.png"));
-        mMainWindow->actionDelete->setText(tr("Empty Trash"));
+        mMainWindow->actionDelete->setText(tr("Empty"));
         break;
     }
 
