@@ -32,9 +32,9 @@
 #include <QDomDocument>
 #include <QDomElement>
 #include <QDomNode>
-#include <QScriptValue>
-#include <QScriptEngine>
 #include <QDebug>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 #include "UBOEmbedParser.h"
 
@@ -119,23 +119,21 @@ sOEmbedContent UBOEmbedParser::getJSONInfos(const QString &json)
 {
     sOEmbedContent content;
 
-    QScriptValue scriptValue;
-    QScriptEngine scriptEngine;
-    scriptValue = scriptEngine.evaluate ("(" + json + ")");
+    QJsonObject jsonObject = QJsonDocument::fromJson(json.toUtf8()).object();
 
-    QString providerUrl = scriptValue.property("provider_url").toString();
-    QString title = scriptValue.property("title").toString();
-    QString html = scriptValue.property("html").toString();
-    QString authorName = scriptValue.property("author_name").toString();
-    int height = scriptValue.property("height").toInteger();
-    int thumbnailWidth = scriptValue.property("thumbnail_width").toInteger();
-    int width = scriptValue.property("width").toInteger();
-    float version = scriptValue.property("version").toString().toFloat();
-    QString authorUrl = scriptValue.property("author_url").toString();
-    QString providerName = scriptValue.property("provider_name").toString();
-    QString thumbnailUrl = scriptValue.property("thumbnail_url").toString();
-    QString type = scriptValue.property("type").toString();
-    int thumbnailHeight = scriptValue.property("thumbnail_height").toInteger();
+    QString providerUrl = jsonObject.value("provider_url").toString();
+    QString title = jsonObject.value("title").toString();
+    QString html = jsonObject.value("html").toString();
+    QString authorName = jsonObject.value("author_name").toString();
+    int height = jsonObject.value("height").toInt();
+    int thumbnailWidth = jsonObject.value("thumbnail_width").toInt();
+    int width = jsonObject.value("width").toInt();
+    float version = jsonObject.value("version").toString().toFloat();
+    QString authorUrl = jsonObject.value("author_url").toString();
+    QString providerName = jsonObject.value("provider_name").toString();
+    QString thumbnailUrl = jsonObject.value("thumbnail_url").toString();
+    QString type = jsonObject.value("type").toString();
+    int thumbnailHeight = jsonObject.value("thumbnail_height").toInt();
 
     content.providerUrl = providerUrl;
     content.title = title;
@@ -152,7 +150,7 @@ sOEmbedContent UBOEmbedParser::getJSONInfos(const QString &json)
     content.thumbHeight = thumbnailHeight;
 
     if("photo" == content.type){
-        content.url = scriptValue.property("url").toString();
+        content.url = jsonObject.value("url").toString();
     }else if("video" == content.type){
         QStringList strl = content.html.split('\"');
         for(int i=0; i<strl.size(); i++){
