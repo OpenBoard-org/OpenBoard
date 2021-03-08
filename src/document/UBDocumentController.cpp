@@ -345,6 +345,7 @@ UBDocumentTreeNode *UBDocumentTreeNode::previousSibling()
 UBDocumentTreeModel::UBDocumentTreeModel(QObject *parent) :
     QAbstractItemModel(parent)
   , mRootNode(0)
+  , mCurrentNode(nullptr)
 {
     UBDocumentTreeNode *rootNode = new UBDocumentTreeNode(UBDocumentTreeNode::Catalog, "root");
 

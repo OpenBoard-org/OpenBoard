@@ -67,6 +67,7 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     , mFlippedY(false)
     , mMirrorX(false)
     , mMirrorY(false)
+    , mResizing(false)
     , mTitleBarHeight(hasTitleBar ? 20 :0)
     , mNominalTitleBarHeight(hasTitleBar ? 20:0)
 {
