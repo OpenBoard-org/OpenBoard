@@ -141,7 +141,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         bool inputDevicePress(const QPointF& scenePos, const qreal& pressure = 1.0);
         bool inputDeviceMove(const QPointF& scenePos, const qreal& pressure = 1.0);
-        bool inputDeviceRelease();
+        bool inputDeviceRelease(int tool = -1);
 
         void leaveEvent (QEvent* event);
 
@@ -380,6 +380,8 @@ public slots:
         void zoomOutMagnifier();
         void changeMagnifierMode(int mode);
         void resizedMagnifier(qreal newPercent);
+
+        void stylusToolChanged(int tool, int previousTool);
 
     protected:
 
