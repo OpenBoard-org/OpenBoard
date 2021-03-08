@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Papier</title>
+		<link rel="stylesheet" type="text/css" href="jquery/jquery-ui-base.min.css">
+		<link rel="stylesheet" type="text/css" href="spectrum-1.8.1/spectrum.css">
+		<link rel="stylesheet" type="text/css" href="papier.css">
+		
+		<script type="text/javascript" src="jquery/jquery-2.2.4.min.js"></script>
+		<script type="text/javascript" src="jquery/jquery-ui-1.12.1.min.js"></script>
+
+		<script type="text/javascript" src="spectrum-1.8.1/spectrum.js"></script>
+		<script type="text/javascript" src="spectrum-1.8.1/i18n/jquery.spectrum-fr.js"></script>
+		<script type="text/javascript" src="papier.js"></script>
+		
+	</head>
+	<body onload="initialisation();">
+	<div id="widget">
+		<div class="onglet">
+			<!-- Définition des onglets !-->
+			<button class="lien_onglet" onclick="onglet(event, 'uni')">Uni</button>
+			<button class="lien_onglet" onclick="onglet(event, 'seyes')">Seyes</button>
+			<button class="lien_onglet" onclick="onglet(event, 'maternelle')">Maternelle</button>
+			<button class="lien_onglet" onclick="onglet(event, 'guide_ane')">Guide Âne</button>
+			<button class="lien_onglet" onclick="onglet(event, 'dys')">Dys</button>
+			<button class="lien_onglet" onclick="onglet(event, 'quadrillage')">Quadrillage</button>
+			<button class="lien_onglet" onclick="onglet(event, 'mm')">Millimétré</button>
+			<button class="lien_onglet" onclick="onglet(event, 'pointé')">Pointé</button>
+			<button class="lien_onglet" onclick="onglet(event, 'aide')">?</button>
+		</div>
+		<!-- Contenu de l'onglet 1 !-->
+		<div id="uni" class="contenu_onglet">
+			<!-- Boîte de commandes à droite !-->
+			<div class="boite_droite">
+				<!-- Bouton générateur !-->
+				<button id="bouton_générer" class="bouton_commande"></button>
+				<!-- Paramètres de la page !-->
+				<div class="parametres">
+					<!-- Choix du format de page !-->
+					<div class="etiquette haut"><span>Format de page</span><br></div>
+					<input type="radio" id="4/3" name="taille_page_uni" value="4/3">4/3
+					<input type="radio" checked id="16/9" name="taille_page_uni" value="16/9">16/9
+				</div>
+			</div>
+			<!-- Boîte des options à gauche !-->
+			<div class="boite_gauche">
+				<!-- Option 1 !-->
+				<div class="etiquette haut"><span>Couleur</span></div>
+				<div class='palette'>
+					<input type='text' id="palette_fond_uni"/> <!-- Couleur du fond !-->
+				</div>
+			</div>
+			
+		</div>
+		<!-- Contenu de l'onglet 2 !-->
+		<div id="seyes" class="contenu_onglet">
+			<!-- Boîte de commandes à droite !-->
+			<div class="boite_droite">
+				<!-- Bouton générateur !-->
+				<button id="bouton_générer" class="bouton_commande"></button>
+				<!-- Paramètres de la page !-->
+				<div class="parametres">
+					<!-- Choix du format de page !-->
+					<div class="etiquette haut"><span>Format de page</span></div>
+					<input type="radio" id="4/3" name="taille_page_seyes" value="4/3">4/3
+					<input type="radio" checked id="16/9" name="taille_page_seyes" value="16/9">16/9
+					<!-- Marge ? !-->
+					<div class="etiquette milieu"><input type="checkbox" id="marge_seyes"><span>Marge</span></div>
+					<input type="text" id="taille_marge_seyes" class="taille">
+					<div id="curseur_position_marge_seyes" class="potentiometre" ></div>
+				</div>
+			</div>
+			<!-- Boîte des options à gauche !-->
+			<div class="boite_gauche">
+				<!-- Option 1 !-->
+				<div class="etiquette haut"><span>Interligne</span></div>
+				<input type="text" id="taille_carreau_seyes" class="taille">
+				<div id="curseur_seyes" class="potentiometre" ></div>
+				<!-- Option 2 !-->
+				<div class="etiquette milieu"><span>Couleurs des lignes/du fond</span></div>
+				<div class='palette'>
+					<input type='text' id="palette_seyes_1"/> <!-- Ligne Horizontale !-->
+					<input type='text' id="palette_seyes_2"/><!-- Ligne Verticale !-->
+					<input type='text' id="palette_seyes_3"/><!-- Interligne !-->
+					<input type='text' id="palette_fond_seyes" class='palette'/> <!-- Couleur du fond !-->
+				</div>
+				<!-- Option 3 !-->
+				<div class="etiquette milieu"><span>Épaisseur des lignes</span></div>
+				<input type="text" id="épaisseur_seyes" readonly class="taille">
+				<div id="curseur_épaisseur_seyes" class="potentiometre" ></div>				
+			</div>
+		</div>
+		<!-- Contenu de l'onglet 3 !-->
+		<div id="maternelle" class="contenu_onglet">
+			<!-- Boîte de commandes à droite !-->
+			<div class="boite_droite">
+				<!-- Bouton générateur !-->
+				<button id="bouton_générer" class="bouton_commande"></button>
+				<!-- Paramètres de la page !-->
+				<div class="parametres">
+					<!-- Choix du format de page !-->
+					<div class="etiquette haut"><span>Format de page</span></div>
+					<input type="radio" id="4/3" name="taille_page_maternelle" value="4/3">4/3
+					<input type="radio" checked id="16/9" name="taille_page_maternelle" value="16/9">16/9
+					<!-- Marge ? !-->
+					<div class="etiquette milieu"><input type="checkbox" id="marge_maternelle"><span>Marge</span></div>
+					<input type="text" id="taille_marge_maternelle" class="taille">
+					<div id="curseur_position_marge_maternelle" class="potentiometre" ></div>
+				</div>
+			</div>
+			<!-- Boîte des options à gauche !-->
+			<div class="boite_gauche">
+				<!-- Option 1 !-->
+				<div class="etiquette haut"><span>Interligne</span></div>
+				<input type="text" id="taille_carreau_maternelle" class="taille">
+				<div id="curseur_maternelle" class="potentiometre" ></div>
+				<!-- Option 2 !-->
+				<div class="etiquette milieu"><span>Couleurs des lignes/du fond</span></div>
+				<div class='palette'>
+					<input type='text' id="palette_maternelle_1"/> <!-- Ligne Horizontale !-->
+					<input type='text' id="palette_maternelle_2"/><!-- Interligne !-->
+					<input type='text' id="palette_fond_maternelle" class='palette'/> <!-- Couleur du fond !-->
+				</div>
+				<!-- Option 3 !-->
+				<div class="etiquette milieu"><span>Épaisseur des lignes</span></div>
+				<input type="text" id="épaisseur_maternelle" readonly class="taille">
+				<div id="curseur_épaisseur_maternelle" class="potentiometre" ></div>				
+			</div>
+		</div>
+		<!-- Contenu de l'onglet 3 !-->
+		<div id="guide_ane" class="contenu_onglet">
+			<!-- Boîte de commandes à droite !-->
+			<div class="boite_droite">
+				<!-- Bouton générateur !-->
+				<button id="bouton_générer" class="bouton_commande"></button>
+				<!-- Paramètres de la page !-->
+				<div class="parametres">
+					<!-- Choix du format de page !-->
+					<div class="etiquette haut"><span>Format de page</span></div>
+					<input type="radio" id="4/3" name="taille_page_guide_ane" value="4/3">4/3
+					<input type="radio" checked id="16/9" name="taille_page_guide_ane" value="16/9">16/9
+					
+					<div class="etiquette milieu"><input type="checkbox" id="marge_guide_ane"><span>Marge</span></div>
+					<input type="text" id="taille_marge_guide_ane" class="taille">
+					<div id="curseur_position_marge_guide_ane" class="potentiometre" ></div>
+				</div>
+			</div>
+			<!-- Boîte des options à gauche !-->
+			<div class="boite_gauche">
+				<!-- Option 1 !-->
+				<div class="etiquette haut"><span>Interligne</span></div>
+					<input type="text" id="interligne_guide_ane" class="taille">
+					<div id="curseur_guide_ane" class="potentiometre" ></div>
+				<!-- Option 2 !-->
+				<div class="etiquette milieu"><span>Couleurs des lignes/du fond</span></div>
+				<div class='palette'>
+					<input type='text' id="palette_fond_guide_ane"/> <!-- Couleur du fond !-->
+					<input type='text' id="palette_ligne_guide_ane"/> <!-- Couleur des lignes !-->
+				</div>
+				<!-- Option 3 !-->
+				<div class="etiquette milieu"><span>Épaisseur des lignes</span></div>
+				<input type="text" id="épaisseur_guide_ane" readonly class="taille">
+				<div id="curseur_épaisseur_guide_ane" class="potentiometre" ></div>	
+			</div>
+		</div>
+		<!-- Contenu de l'onglet 4 !-->
+		<div id="dys" class="contenu_onglet">
+			<!-- Boîte de commandes à droite !-->
+			<div class="boite_droite">
+				<!-- Bouton générateur !-->
+				<button id="bouton_générer" class="bouton_commande"></button>
+				<!-- Paramètres de la page !-->
+				<div class="parametres">
+					<!-- Choix du format de page !-->
+					<div class="etiquette haut"><span>Format de page</span></div>
+					<input type="radio" id="4/3" name="taille_page_dys" value="4/3">4/3
+					<input type="radio" checked id="16/9" name="taille_page_dys" value="16/9">16/9
+				</div>
+			</div>
+			<!-- Boîte des options à gauche !-->
+			<div class="boite_gauche">
+				<!-- Option 1 !-->
+				<div class="etiquette haut"><span>Interligne centrale</span></div>
+				<input type="text" id="taille_carreau_dys" class="taille">
+				<div id="curseur_dys" class="potentiometre" ></div>
+				<!-- Option 2 !-->
+				<div class="etiquette milieu"><span>Couleur du fond</span></div>
+				<div class='palette'>
+					<input type='text' id="palette_fond_dys" class='palette'/> <!-- Couleur du fond !-->
+				</div>
+				<!-- Option 3 !-->
+				<div class="etiquette milieu"><span>Épaisseur des lignes</span></div>
+				<input type="text" id="épaisseur_dys" readonly class="taille">
+				<div id="curseur_épaisseur_dys" class="potentiometre" ></div>
+			</div>
+		</div>
+		<!-- Contenu de l'onglet 5 !-->
+		<div id="quadrillage" class="contenu_onglet">
+			<!-- Boîte de commandes à droite !-->
+			<div class="boite_droite">
+				<!-- Bouton générateur !-->
+				<button id="bouton_générer" class="bouton_commande"></button>
+				<!-- Paramètres de la page !-->
+				<div class="parametres">
+					<!-- Choix du format de page !-->
+					<div class="etiquette haut"><span>Format de page</span></div>
+					<input type="radio" id="4/3" name="taille_page_quadrillage" value="4/3">4/3
+					<input type="radio" checked id="16/9" name="taille_page_quadrillage" value="16/9">16/9
+				</div>
+			</div>
+			<!-- Boîte des options à gauche !-->
+			<div class="boite_gauche">
+				<!-- Option 1 !-->
+				<div class="etiquette haut"><span>Quadrillage</span></div>
+				<input type="text" id="taille_carreau_quadrillage" class="taille">
+				<div id="curseur_quadrillage" class="potentiometre" ></div>
+				<!-- Option 2 !-->
+				<div class="etiquette milieu"><span>Couleurs des lignes/du fond</span></div>
+				<div class='palette'>
+					<input type='text' id='palette_quadrillage'/><!--  Ligne !-->
+					<input type='text' id="palette_fond_quadrillage" class='palette'/> <!-- Couleur du fond !-->
+				</div>
+				<!-- Option 3 !-->
+				<div class="etiquette milieu"><span>Épaisseur des lignes</span></div>
+				<input type="text" id="épaisseur_quadrillage" readonly class="taille">
+				<div id="curseur_épaisseur_quadrillage" class="potentiometre" ></div>
+			</div>
+		</div>
+		<!-- Contenu de l'onglet 6 !-->
+		<div id="mm" class="contenu_onglet">
+			<!-- Boîte de commandes à droite !-->
+			<div class="boite_droite">
+				<!-- Bouton générateur !-->
+				<button id="bouton_générer" class="bouton_commande"></button>
+				<!-- Paramètres de la page !-->
+				<div class="parametres">
+					<!-- Choix du format de page !-->
+					<div class="etiquette haut"><span>Format de page</span></div>
+					<input type="radio" id="4/3" name="taille_page_mm" value="4/3">4/3
+					<input type="radio" checked id="16/9" name="taille_page_mm" value="16/9">16/9
+				</div>
+			</div>
+			<!-- Boîte des options à gauche !-->
+			<div class="boite_gauche">
+				<!-- Option 1 !-->
+				<div class="etiquette haut"><span>Interligne</span></div>
+				<input type="text" id="taille_carreau_mm" class="taille">
+				<div id="curseur_mm" class="potentiometre" ></div>
+				<!-- Option 2 !-->				
+				<div class="etiquette milieu"><span>Couleurs des lignes/du fond</span></div>
+				<div class='palette'>
+					<input type='text' id='palette_mm_ligne'/><!-- Ligne Horizontale et Verticale!-->
+					<input type='text' id='palette_mm_interligne'/><!--  Interligne !-->
+					<input type='text' id="palette_fond_mm" class='palette'/> <!-- Couleur du fond !-->
+				</div>
+				<!-- Option 3 !-->
+				<div class="etiquette milieu"><span>Épaisseur des lignes</span></div>
+				<input type="text" id="épaisseur_mm" readonly class="taille">
+				<div id="curseur_épaisseur_mm" class="potentiometre" ></div>
+			</div>
+		</div>
+		<!-- Contenu de l'onglet 7 !-->
+		<div id="pointé" class="contenu_onglet">
+			<!-- Boîte de commandes à droite !-->
+			<div class="boite_droite">
+				<!-- Bouton générateur !-->
+				<button id="bouton_générer" class="bouton_commande"></button>
+				<!-- Paramètres de la page !-->
+				<div class="parametres">
+					<!-- Choix du format de page !-->
+					<div class="etiquette haut"><span>Format de page</span></div>
+					<input type="radio" id="4/3" name="taille_page_pointé" value="4/3">4/3
+					<input type="radio" checked id="16/9" name="taille_page_pointé" value="16/9">16/9
+					<!-- Choix du type de point !-->
+					<div class="etiquette milieu"><span>Type de point</span></div>
+					<input type="radio" checked id="point" name="type_point_page_pointé" value="point"><span>&#8226;</span>
+					<input type="radio"  id="plus" name="type_point_page_pointé" value="plus"><span>+</span>
+					<input type="radio"  id="croix" name="type_point_page_pointé" value="croix"><span>x</span>
+					<!-- Choix du Maillage !-->
+					<div class="etiquette milieu"><span>Type de Maillage</span></div>
+					<input type="radio" checked id="pointé_carré" name="type_papier_pointé" value="pointé_carré"><span><b style="font-size:20pt">&#x2237;</b></span>
+					<input type="radio"  id="pointé_iso" name="type_papier_pointé" value="pointé_iso"><span><b style="font-size:20pt">&#x2234;</b></span>
+				</div>
+			</div>
+			<!-- Boîte des options à gauche !-->
+			<div class="boite_gauche">
+				<!-- Option 1 !-->
+				<div class="etiquette haut"><span>Maillage</span></div>
+				<input type="text" id="taille_pointé" class="taille">
+				<div id="curseur_pointé" class="potentiometre" ></div>
+				<!-- Option 2 !-->
+				<div class="etiquette milieu"><span>Couleur des points/du fond</span></div>
+				<div class='palette'>
+					<input type='text' id='palette_pointé'/> <!-- Couleur des points !-->
+					<input type='text' id="palette_fond_pointé"/> <!-- Couleur du fond !-->
+				</div>
+				<!-- Option 3 !-->
+				<div class="etiquette milieu"><span>Épaisseur des points</span></div>
+				<input type="text" id="épaisseur_pointé" readonly class="taille">
+				<div id="curseur_épaisseur_pointé" class="potentiometre" ></div>
+			</div>
+		</div>
+		<!-- Contenu de l'onglet 8 !-->
+		<div id="aide" class="contenu_onglet"> <!-- Aide ponctuelle !-->
+			<h1>PAPIER</h1>
+			<h2>Application pour Open-Sankoré / OpenBoard</h2>
+			
+			<p>
+				<li>Cliquer sur les onglets pour choisir le papier à mettre en fond de page.</li>
+				<li>Modifier les paramètres du papier et visualisez le résultat dans la fenêtre d'apeçu.</li>
+				<li>Cliquer sur le bouton <button class="petit_bouton_commande" width="10" height="10" disabled></button> pour générer le fond.</li>
+			</p>
+			<p style="text-align:center">Développée par <a href="https://openedu.fr/" target="blank">F. Le Cléac'h</a>
+				<a href="http://creativecommons.org/licenses/by-nc-sa/3.0/fr/legalcode" target="blank"><img src="images/cc-by-nc-sa-min.svg"></a>
+				<a href="rev.txt" target="blank">Version 2.5.4</a> Novembre 2020
+			</p>
+		</div>
+		<canvas id="aperçu" width="300px" height="200px">Votre navigateur ne supporte pas le CANVAS</canvas> <!-- fenêtre d'aperçu dans l'onglet !-->
+		<canvas id="feuille" width="1820px" height="1024px">Votre navigateur ne supporte pas le CANVAS</canvas> <!-- page finale 4/3 ou 16/9 !-->
+</div>
+	</body>
+</html>

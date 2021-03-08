@@ -1,0 +1,254 @@
+body {font-family: Verdana;
+	font-size:10pt;
+	background-color:white ;
+	}
+/* Bloc figurant sur chaque onglet, comportant le bouton de Génération et les boutons radio du format de page ...*/
+.boite_droite{
+	position:absolute;
+	margin-left:240px;
+	width:160px;
+	height:140px;
+	margin-top:5px;
+	}
+/* Bloc sous le bouton de commande */
+.parametres {
+	border:solid 1px;
+	border-color:rgba(7,55,99,0.8);
+	font-size:inherit;
+	font-weight:bold;
+	color:white;
+	background-color:rgba(7,55,99,0.8);
+	text-align:center;
+	border-radius:5px;
+	line-height:1.6em;
+	margin-top:5px;
+	}
+/* Options de réglage du papier dans chaque onglet */	
+.boite_gauche {
+	border:solid 1px;
+	border-color:rgba(7,55,99,0.8);
+	font-size:inherit;
+	font-weight:bold;
+	color:white;
+	background-color:rgba(7,55,99,0.8);
+	text-align:center;
+	border-radius:5px;
+	width:230px;
+	height:auto;
+	padding-bottom:5px;
+}
+/* Étiquettes des blocs internes de l'onglet */	
+.etiquette{
+	background-color:lightblue;
+	font-size:inherit;
+	width:100%;
+	color:rgba(7,55,99,0.8);
+	text-align:left;
+	}
+/* Intitulé des rubriques des boites*/
+span {padding-left:5px;} /* Marge à gauche de l'intitulé de l'étiquette */
+
+/* Adaptation des angles de l'étiquette en fonction de sa position */
+.haut{
+		border-radius:5px 5px 0px 0px;
+}
+.milieu{
+		border-radius:0px;
+}
+.bas{
+		border-radius:0px 0px 5px 5px;
+}
+/* Mise en forme du texte */
+h1{
+	color:rgba(7,55,99,0.8);
+	font-size:14pt;
+	text-align:center;}
+h2{
+	color:lightblue;
+	font-size:12pt;
+	text-align:center;
+	}
+
+li{
+	margin-left:10px;}
+
+/* Adaptattion de l'onglet Aide (pas d'aperçu) */
+#aide{
+	width:700px;
+	height:190px;
+}
+
+/* Mise en forme générale du widget*/	
+#widget{
+	width:720px;
+	height:260px;
+	border:2px solid rgba(7,55,99,0.8);
+	border-radius:10px;
+	padding-bottom:5px;
+	border-top:none;
+	background-color:white;
+}
+/* Feuille générée et transférée vers OpenBoard */
+#feuille{
+}
+/* Fenêtre d'aperçu du papier dans les onglets */
+#aperçu{
+	position: relative;
+	float:right;
+	margin:5px;
+	border-style: dashed;
+	border:dashed 2px rgba(7,55,99,0.8);
+}
+
+/* Barre des onglets */
+.onglet {
+	overflow: hidden;
+	border: none;
+	border-radius:10px 10px 0px 0px;
+	width:100%;
+	height:50px;
+	background-color:white;
+}
+
+/* Bouton de l'onglet */
+.onglet button {
+	width:80px;
+	height:100%;
+	border-radius:10px 10px 0px 0px;
+	background-color: lightblue;
+	border:1px solid rgba(7,55,99,0.8);
+	color:rgba(7,55,99,0.8);
+	font-weight:bold;
+	float: left;
+	cursor: pointer;
+	padding: 2px 2px;
+	transition: 0.5s;
+	font-size: inherit;
+}
+
+/* Onglet survolé */
+.onglet button:hover {
+	color:white;
+	background-color:rgba(7,55,99,0.8);
+}
+
+/* Onglet actif */
+.onglet button.active {
+	background-color: rgba(7,55,99,0.8);
+	color:white;
+}
+.onglet button.active:hover {
+	color:lightblue;
+}
+
+/* Contenu de l'onglet */
+.contenu_onglet {
+	display: none;
+	margin-top:5px;
+	margin-left:5px;
+	border: none;
+	width:290px;
+	border-top: none;
+	float:left;
+	background-color:white;
+}
+
+
+/* Palettes dans les onglets */
+.palette {
+	margin:10px 0px;
+	text-align:left;
+	padding:0px 5px;
+	
+}
+/* Curseur dans les onglets*/
+ .potentiometre{
+	margin:10px;
+	width:130px;
+}
+/* Affichage de la taille des carreaux, maillage... */
+.taille{
+	border:none;
+	color:white;
+	background-color:rgba(0,0,0,0);	
+	font-weight:bold;
+	width:70px;
+	text-align:center;
+	position:relative;
+	float:right;
+	margin:5pt;
+}
+
+
+/* Bouton miniature générer Onglet ? */
+.petit_bouton_commande{
+	position:relative;
+	color:white;
+	border:solid 1px;
+	border-color:rgba(7,55,99,0.8);
+	border-radius:50%;
+	background-color: lightblue;
+	font-size: 12px;
+	width: 25px;
+	height:25px;
+	text-align: center;
+	vertical-align:middle
+	transition-duration: 1s;
+	text-decoration: none;
+	overflow: hidden;
+	cursor: pointer;
+}
+.petit_bouton_commande:before{
+		  content:"\2713";
+}
+
+/* Bouton de Génération de la feuille */
+.bouton_commande {
+	position:relative;
+	display:block;
+	margin:auto;
+	border:solid 1px;
+	border-color:rgba(7,55,99,0.8);
+	border-radius:50%;
+	background-color: lightblue;
+	font-size: 28px;
+	width: 50px;
+	height:50px;
+	text-align: center;
+	vertical-align:middle
+	transition-duration: 1s;
+	text-decoration: none;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.bouton_commande:before {
+  content:"\2713";
+  color:white;
+}
+.bouton_commande:after {
+  content: "";
+  background: #f1f1f1;
+  display: block;
+  position: absolute;
+  padding-top: 300%;
+  padding-left: 350%;
+  margin-left: -20px !important;
+  margin-top: -120%;
+  opacity: 0;
+  transition: all 0.8s
+}
+
+.bouton_commande:active:after {
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  transition: 0s
+}
+
+#curseur_position_marge_seyes, #curseur_position_marge_guide_ane {
+	width:80px;
+	}
+#taille_marge_seyes, #taille_marge_guide_ane{
+	width:20px;
+	}
