@@ -827,6 +827,10 @@
         <source>Color 5</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -923,6 +927,10 @@
     <name>UBBackgroundPalette</name>
     <message>
         <source>Grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1155,11 +1163,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Empty My Documents</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Empty Trash</source>
+        <source>Empty</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2006,6 +2010,10 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Cache</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Axes</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

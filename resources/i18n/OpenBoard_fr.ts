@@ -836,6 +836,10 @@
         <source>Color 5</source>
         <translation>Couleur 5</translation>
     </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation>Dessiner des lignes intermédiaires</translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -941,6 +945,10 @@
     <message>
         <source>Grid size</source>
         <translation>Taille du quadrillage</translation>
+    </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation>Dessiner des lignes intermédiaires</translation>
     </message>
 </context>
 <context>
@@ -1118,7 +1126,7 @@
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Vider la corbeille</translation>
+        <translation type="vanished">Vider la corbeille</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
@@ -1158,7 +1166,7 @@
     </message>
     <message>
         <source>Empty</source>
-        <translation type="vanished">Vider</translation>
+        <translation>Vider</translation>
     </message>
     <message>
         <source>Trash</source>
@@ -1241,7 +1249,7 @@
     </message>
     <message>
         <source>Empty My Documents</source>
-        <translation>Vider Mes Documents</translation>
+        <translation type="vanished">Vider Mes Documents</translation>
     </message>
 </context>
 <context>
@@ -2237,6 +2245,10 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     <message>
         <source>Cache</source>
         <translation>Spot</translation>
+    </message>
+    <message>
+        <source>Axes</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

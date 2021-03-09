@@ -835,6 +835,10 @@
         <source>Color 5</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -936,6 +940,10 @@
     <message>
         <source>Grid size</source>
         <translation>Tamaño da cuadrícula</translation>
+    </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1113,7 +1121,7 @@
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Baleirar papeleira</translation>
+        <translation type="vanished">Baleirar papeleira</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
@@ -1161,7 +1169,7 @@
     </message>
     <message>
         <source>Empty</source>
-        <translation type="vanished">Baleirar</translation>
+        <translation>Baleirar</translation>
     </message>
     <message>
         <source>Trash</source>
@@ -1229,10 +1237,6 @@
     <message>
         <source>Title page</source>
         <translation>Páxina de título</translation>
-    </message>
-    <message>
-        <source>Empty My Documents</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2179,6 +2183,10 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>Cache</source>
         <translation>Caché</translation>
+    </message>
+    <message>
+        <source>Axes</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

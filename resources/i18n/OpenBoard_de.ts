@@ -1121,7 +1121,7 @@
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Papierkorb leeren</translation>
+        <translation type="vanished">Papierkorb leeren</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
@@ -1169,7 +1169,7 @@
     </message>
     <message>
         <source>Empty</source>
-        <translation type="vanished">Leeren</translation>
+        <translation>Leeren</translation>
     </message>
     <message>
         <source>Trash</source>
@@ -1240,7 +1240,7 @@
     </message>
     <message>
         <source>Empty My Documents</source>
-        <translation>Eigene Dokumente leeren</translation>
+        <translation type="vanished">Eigene Dokumente leeren</translation>
     </message>
 </context>
 <context>
@@ -2601,7 +2601,7 @@ Bitte starten Sie die Anwendung erneut, um auf die aktualisierten Dokumente zugr
     <name>XPDFRenderer</name>
     <message>
         <source>Processing...</source>
-        <translation>Verarbeitet...</translation>
+        <translation>Verarbeitung…</translation>
     </message>
 </context>
 <context>
@@ -2959,11 +2959,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>PDF Rendering</source>
-        <translation>PDF Darstellung</translation>
+        <translation>PDF-Wiedergabe</translation>
     </message>
     <message>
         <source>Enable quality loss to increase zoom performances</source>
-        <translation>Reduzierte Qualität für schnelleres Zoomen</translation>
+        <translation>Zulassen eines Qualitätsverlusts zur Erhöhung der Zoomleistung</translation>
     </message>
 </context>
 <context>

@@ -836,6 +836,10 @@
         <source>Color 5</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -932,6 +936,10 @@
     <name>UBBackgroundPalette</name>
     <message>
         <source>Grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1070,7 +1078,7 @@
     <name>UBDocumentController</name>
     <message>
         <source>Empty</source>
-        <translation type="vanished">Vyprázdnit</translation>
+        <translation>Vyprázdnit</translation>
     </message>
     <message>
         <source>Trash</source>
@@ -1150,7 +1158,7 @@
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Vyprázdnit koš</translation>
+        <translation type="vanished">Vyprázdnit koš</translation>
     </message>
     <message>
         <source>Remove Folder</source>
@@ -1219,10 +1227,6 @@
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Empty My Documents</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2165,6 +2169,10 @@ Chcete ignorovat tyto chyby na tomto serveru?</translation>
     <message>
         <source>Magnifier</source>
         <translation>Lupa</translation>
+    </message>
+    <message>
+        <source>Axes</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

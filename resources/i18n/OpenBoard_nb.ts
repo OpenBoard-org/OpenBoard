@@ -835,6 +835,10 @@
         <source>Color 5</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -931,6 +935,10 @@
     <name>UBBackgroundPalette</name>
     <message>
         <source>Grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1110,7 +1118,7 @@
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Tøm søppel</translation>
+        <translation type="vanished">Tøm søppel</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
@@ -1158,7 +1166,7 @@
     </message>
     <message>
         <source>Empty</source>
-        <translation type="vanished">Åpne dokument</translation>
+        <translation>Åpne dokument</translation>
     </message>
     <message>
         <source>Trash</source>
@@ -1217,10 +1225,6 @@
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Empty My Documents</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2155,6 +2159,10 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>Cache</source>
         <translation>Skjul</translation>
+    </message>
+    <message>
+        <source>Axes</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

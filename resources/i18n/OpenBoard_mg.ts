@@ -835,6 +835,10 @@
         <source>Color 5</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -931,6 +935,10 @@
     <name>UBBackgroundPalette</name>
     <message>
         <source>Grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1109,7 +1117,7 @@
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Daba foana</translation>
+        <translation type="vanished">Daba foana</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
@@ -1157,7 +1165,7 @@
     </message>
     <message>
         <source>Empty</source>
-        <translation type="vanished">Foana</translation>
+        <translation>Foana</translation>
     </message>
     <message>
         <source>Trash</source>
@@ -1216,10 +1224,6 @@
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Empty My Documents</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2166,6 +2170,10 @@ Tena tsy te hiraharaha an&apos;ireo tsy mety ho an&apos;ilay milina ve ianao?</t
     <message>
         <source>Cache</source>
         <translation>Tahiry</translation>
+    </message>
+    <message>
+        <source>Axes</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

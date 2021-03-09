@@ -1,6 +1,6 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS language="en_US" version="2.1">
+<TS version="2.1" language="en_US">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -835,6 +835,10 @@
         <source>Color 5</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -889,8 +893,8 @@
         <translation>Удалить Страницу</translation>
     </message>
     <message>
-        <source>Are you sure you want to remove 1 page from the selected document '%0'?</source>
-        <translation>Вы уверены, что хотите удалить 1 страницу из документа '%0'?</translation>
+        <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
+        <translation>Вы уверены, что хотите удалить 1 страницу из документа &apos;%0&apos;?</translation>
     </message>
 </context>
 <context>
@@ -932,6 +936,10 @@
     <message>
         <source>Grid size</source>
         <translation>Размер сетки</translation>
+    </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1104,12 +1112,12 @@
         <translation type="vanished">Удалить документ</translation>
     </message>
     <message>
-        <source>Are you sure you want to remove the document '%1'?</source>
-        <translation type="vanished">Вы уверены, что хотите удалить документ '%1'?</translation>
+        <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
+        <translation type="vanished">Вы уверены, что хотите удалить документ &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Очистить корзину</translation>
+        <translation type="vanished">Очистить корзину</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
@@ -1128,8 +1136,8 @@
         <translation type="vanished">Удалить папку</translation>
     </message>
     <message>
-        <source>Are you sure you want to remove the folder '%1' and all its content?</source>
-        <translation type="vanished">Вы уверены, что хотите удалить папку '%1 и все ее содержимое?</translation>
+        <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
+        <translation type="vanished">Вы уверены, что хотите удалить папку &apos;%1 и все ее содержимое?</translation>
     </message>
     <message>
         <source>No document selected!</source>
@@ -1157,7 +1165,7 @@
     </message>
     <message>
         <source>Empty</source>
-        <translation type="vanished">Пусто</translation>
+        <translation>Пусто</translation>
     </message>
     <message>
         <source>Trash</source>
@@ -1180,10 +1188,10 @@
         <translation>Не выбрано ни одного изображения!</translation>
     </message>
     <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document '%1'?</source>
+        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
         <translation type="vanished">
-            <numerusform>Вы уверены, что хотите удалить %n страницу из выбранного документа '%1'?</numerusform>
-            <numerusform>Вы уверены, что хотите удалить %n страниц из выбранного документа '%1'?</numerusform>
+            <numerusform>Вы уверены, что хотите удалить %n страницу из выбранного документа &apos;%1&apos;?</numerusform>
+            <numerusform>Вы уверены, что хотите удалить %n страниц из выбранного документа &apos;%1&apos;?</numerusform>
         </translation>
     </message>
     <message>
@@ -1211,16 +1219,12 @@
         <translation>Действительно удалить выделенные элементы?</translation>
     </message>
     <message>
-        <source>The document '%1' has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
+        <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation>Документ «%1» был создан в более новой версии OpenBoard (%2). При открытии этого документа может быть потеряна некоторая информация. Продолжить?</translation>
     </message>
     <message>
         <source>Title page</source>
         <translation>Заглавная страница</translation>
-    </message>
-    <message>
-        <source>Empty My Documents</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1715,7 +1719,7 @@ Providing a new name will create a new document.</source>
 <context>
     <name>UBGraphicsMediaItem</name>
     <message>
-        <source>Media resource couldn't be resolved</source>
+        <source>Media resource couldn&apos;t be resolved</source>
         <translation>Не удалось разрешить медиа-ресурс</translation>
     </message>
     <message>
@@ -1734,8 +1738,8 @@ Providing a new name will create a new document.</source>
 <context>
     <name>UBGraphicsTextItem</name>
     <message>
-        <source>&lt;Type Text Here></source>
-        <translation>&lt;Введите здесь текст></translation>
+        <source>&lt;Type Text Here&gt;</source>
+        <translation>&lt;Введите здесь текст&gt;</translation>
     </message>
 </context>
 <context>
@@ -1895,8 +1899,8 @@ Providing a new name will create a new document.</source>
 <context>
     <name>UBNetworkAccessManager</name>
     <message>
-        <source>&lt;qt>Enter username and password for "%1" at %2&lt;/qt></source>
-        <translation>&lt;qt>Введите имя пользователя и пароль для "%1" в %2&lt;/qt></translation>
+        <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
+        <translation>&lt;qt&gt;Введите имя пользователя и пароль для &quot;%1&quot; в %2&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>Failed to log to Proxy</source>
@@ -1965,7 +1969,7 @@ Do you want to ignore these errors for this host?</source>
         <translation>Потеря соединения с репозиторием документов</translation>
     </message>
     <message>
-        <source>OpenBoard has lost access to the document repository '%1'. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
+        <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>Потерян доступ к репозиторию документов «%1». Приложение должно быть закрыто, чтобы избежать повреждения данных. Последние изменения также могут быть утеряны.</translation>
     </message>
 </context>
@@ -2168,6 +2172,10 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>Cache</source>
         <translation>Кэш</translation>
+    </message>
+    <message>
+        <source>Axes</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2408,7 +2416,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>%1 Downloads</source>
-        <comment>always >= 2</comment>
+        <comment>always &gt;= 2</comment>
         <translation>%1 загрузок</translation>
     </message>
 </context>
@@ -2566,16 +2574,16 @@ Please reboot the application to access the updated documents.</source>
         <translation>Пароль YouTube</translation>
     </message>
     <message>
-        <source>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
-&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-family:'Lucida Grande'; font-size:10pt;">By clicking 'Upload,' you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at &lt;/span>&lt;a href="http://www.youtube.com/t/terms">&lt;span style=" font-family:'Lucida Grande'; font-size:10pt; text-decoration: underline; color:#0000ff;">http://www.youtube.com/t/terms&lt;/span>&lt;/a>&lt;/p>&lt;/body>&lt;/html></source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
-&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;By clicking &apos;Upload,&apos; you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-family:'Lucida Grande'; font-size:10pt;">Нажав "Загрузить", вы подтверждаете, что обладаете всеми правами на данное содержимое, или что вы были уполномочены владельцем на публикацию данного содержимого на YouTube, или что иным образом удовлетворяете требованиям Условий предоставления услуг YouTube, размещенных по адресу &lt;/span>&lt;a href="http://www.youtube.com/t/terms">&lt;span style=" font-family:'Lucida Grande'; font-size:10pt; text-decoration: underline; color:#0000ff;">http://www.youtube.com/t/terms&lt;/span>&lt;/a>&lt;/p>&lt;/body>&lt;/html></translation>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;Нажав &quot;Загрузить&quot;, вы подтверждаете, что обладаете всеми правами на данное содержимое, или что вы были уполномочены владельцем на публикацию данного содержимого на YouTube, или что иным образом удовлетворяете требованиям Условий предоставления услуг YouTube, размещенных по адресу &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>OpenBoard</source>
