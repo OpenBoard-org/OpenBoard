@@ -62,8 +62,8 @@ Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\LAVFilters-0.74.1-Inst
 Source: "{#ProjectRoot}\build\win32\release\product\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ;OpenSSL
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.1.0-win64\bin\libssl-1_1-x64.dll"; DestDir:"{app}"; Flags: ignoreversion
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.1.0-win64\bin\libcrypto-1_1-x64.dll"; DestDir:"{app}"; Flags: ignoreversion
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.1.1j-win64\bin\libssl-1_1-x64.dll"; DestDir:"{app}"; Flags: ignoreversion
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.1.1j-win64\bin\libcrypto-1_1-x64.dll"; DestDir:"{app}"; Flags: ignoreversion
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\win32\libeay32.dll"; DestDir:"{app}"; Flags: ignoreversion
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\win32\ssleay32.dll"; DestDir:"{app}"; Flags: ignoreversion
 
@@ -77,7 +77,6 @@ Source: "{#QtLibs}\Qt5Network.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Opengl.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5PrintSupport.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Qml.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5Script.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Sql.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Svg.dll"; DestDir: "{app}"   
 ;Source: "Qt5V8.dll"; DestDir: "{app}"
