@@ -43,7 +43,7 @@ UBShortcutManager* UBShortcutManager::sShortcutManager = nullptr;
 
 UBShortcutManager::UBShortcutManager() : mIgnoreCtrl(false)
 {
-    actionsOfGroup(QObject::tr("Common"));
+    actionsOfGroup(tr("Common"));
 }
 
 UBShortcutManager *UBShortcutManager::shortcutManager()
