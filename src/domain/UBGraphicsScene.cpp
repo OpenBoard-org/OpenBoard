@@ -808,6 +808,7 @@ void UBGraphicsScene::hideEraser()
 void UBGraphicsScene::drawPointer(const QPointF &pPoint, bool isFirstDraw)
 {
     qreal pointerDiameter = UBSettings::pointerDiameter / UBApplication::boardController->currentZoom();
+    pointerDiameter /= UBApplication::boardController->systemScaleFactor();
     qreal pointerRadius = pointerDiameter / 2;
 
     // TODO UB 4.x optimize - no need to do that every time we move it
