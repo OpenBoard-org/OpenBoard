@@ -945,6 +945,10 @@ Do you wish to override the security check and continue ?   </source>
         <translation>Czy na pewno chcesz usunąć 1 stronę z wybranego dokumentu „%0”?</translation>
     </message>
     <message>
+        <source>Common</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Loading scene (%1/%2)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2083,12 +2087,176 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
         <source>Marker is pressure sensitive</source>
         <translation>Marker jest czuły na nacisk</translation>
     </message>
+    <message>
+        <source>Key sequence already in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mouse button already in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stylus button already in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Accept</source>
+        <comment>preferencesDialog</comment>
+        <translation type="unfinished">Akceptuj</translation>
+    </message>
+    <message>
+        <source>Record</source>
+        <comment>preferencesDialog</comment>
+        <translation type="unfinished">Nagraj</translation>
+    </message>
 </context>
 <context>
     <name>UBSettings</name>
     <message>
         <source>My Movies</source>
         <translation>Moje filmy</translation>
+    </message>
+</context>
+<context>
+    <name>UBShortcutManager</name>
+    <message>
+        <source>Common</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Board</source>
+        <translation type="unfinished">Tablica</translation>
+    </message>
+    <message>
+        <source>Stylus Palette</source>
+        <translation type="unfinished">Paleta piórka</translation>
+    </message>
+    <message>
+        <source>Lines and colours</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Podcast</source>
+        <translation type="unfinished">Podkast</translation>
+    </message>
+    <message>
+        <source>First scene</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show first scene</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last scene</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show last scene</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Zoom reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset zoom factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scroll left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scroll page left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scroll right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scroll page right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scroll up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scroll page up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scroll down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scroll page down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Built-in (not editable)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished">Opis</translation>
+    </message>
+    <message>
+        <source>Key Sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mouse Button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tablet Button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left</source>
+        <comment>MouseButton</comment>
+        <translation type="unfinished">Lewo</translation>
+    </message>
+    <message>
+        <source>Right</source>
+        <comment>MouseButton</comment>
+        <translation type="unfinished">Prawo</translation>
+    </message>
+    <message>
+        <source>Middle</source>
+        <comment>MouseButton</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Back</source>
+        <comment>MouseButton</comment>
+        <translation type="unfinished">Powrót</translation>
+    </message>
+    <message>
+        <source>Forward</source>
+        <comment>MouseButton</comment>
+        <translation type="unfinished">Do przodu</translation>
+    </message>
+    <message>
+        <source>Task</source>
+        <comment>MouseButton</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extra</source>
+        <comment>MouseButton</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2745,6 +2913,46 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>PDF Rendering</source>
         <translation>Renderowanie PDF</translation>
+    </message>
+    <message>
+        <source>Shortcut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Active keyboard shortcuts without pressing Ctrl key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shortcuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Abort</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Record</source>
+        <translation type="unfinished">Nagraj</translation>
+    </message>
+    <message>
+        <source>Stylus Button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mouse Button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Key Sequence</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Improve zoom execution time (can slightly affect rendering quality)</source>
