@@ -374,6 +374,7 @@ if $BUNDLE_QT; then
     echo -n ",  libxcb-xkb1" >> "$CONTROL_FILE"
     echo -n ",  libxcb-image0" >> "$CONTROL_FILE"
     echo -n ",  libxcb-render-util0" >> "$CONTROL_FILE"
+    echo -n ",  libxcb-xinerama0" >> "$CONTROL_FILE"
 else
     echo -n ",  libqt5multimedia5-plugins" >> "$CONTROL_FILE"
 fi
