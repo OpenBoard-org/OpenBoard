@@ -82,7 +82,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="mainTabWidget">
      <property name="currentIndex">
-      <number>7</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="displayTab">
       <attribute name="title">
@@ -230,7 +230,7 @@
             <item row="2" column="0">
              <widget class="QCheckBox" name="enableQualityLossToIncreaseZoomPerfs">
               <property name="text">
-               <string>Enable quality loss to increase zoom performances</string>
+               <string>Improve zoom execution time (can slightly affect rendering quality)</string>
               </property>
               <property name="checked">
                <bool>true</bool>
