@@ -193,8 +193,8 @@ void UBShortcutManager::addMainActions(UBMainWindow *mainWindow)
                }, mainWindow);
 
     addActions(tr("Podcast"), {
-                   mainWindow->actionPodcastRecord,
-                   mainWindow->actionPodcastPause
+                   mainWindow->actionPodcastRecord //,
+                   // mainWindow->actionPodcastPause currently not activated in UBPodcastRecordingPalette
                }, mainWindow);
 
     // add builtIn actions
