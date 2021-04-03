@@ -37,6 +37,7 @@ QT += xmlpatterns
 QT += uitools
 QT += multimedia
 QT += webkitwidgets
+QT += webenginewidgets
 QT += multimediawidgets
 QT += printsupport
 QT += core
