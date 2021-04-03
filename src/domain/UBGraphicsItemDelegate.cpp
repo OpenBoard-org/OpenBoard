@@ -522,9 +522,10 @@ void UBGraphicsItemDelegate::remove(bool canUndo)
         }
 
         /* this is performed because when removing delegated from scene while it contains flash content, segfault happens because of QGraphicsScene::removeItem() */
-        UBGraphicsWidgetItem *mDelegated_casted = dynamic_cast<UBGraphicsWidgetItem*>(mDelegated);
-        if (mDelegated_casted)
-            mDelegated_casted->setHtml(QString());
+// TODO no more flash content?
+//        UBGraphicsWidgetItem *mDelegated_casted = dynamic_cast<UBGraphicsWidgetItem*>(mDelegated);
+//        if (mDelegated_casted)
+//            mDelegated_casted->setHtml(QString());
 
         scene->removeItem(mDelegated);
 
@@ -735,10 +736,10 @@ void UBGraphicsItemDelegate::decorateMenu(QMenu* menu)
 
     if (testUBFlags(GF_SHOW_CONTENT_SOURCE))
     {
-        mGotoContentSourceAction = menu->addAction(tr("Go to Content Source"), this, SLOT(gotoContentSource()));
+        mGotoContentSourceAction = menu->addAction(tr("Web Inspector"), this, SLOT(gotoContentSource()));
 
         QIcon sourceIcon;
-        sourceIcon.addPixmap(QPixmap(":/images/toolbar/internet.png"), QIcon::Normal, QIcon::On);
+        sourceIcon.addPixmap(QPixmap(":/images/libpalette/miniSearch.png"), QIcon::Normal, QIcon::On);
         mGotoContentSourceAction->setIcon(sourceIcon);
     }
 }
@@ -757,7 +758,7 @@ void UBGraphicsItemDelegate::updateMenuActionState()
     if (mGotoContentSourceAction)
     {
         UBItem* item = dynamic_cast<UBItem*>(mDelegated);
-        mGotoContentSourceAction->setEnabled(item && !item->sourceUrl().isEmpty());
+        mGotoContentSourceAction->setEnabled(item);
     }
 }
 

@@ -106,13 +106,13 @@ UBWidgetUniboardAPI::~UBWidgetUniboardAPI()
     // NOOP
 }
 
-QObject* UBWidgetUniboardAPI::messages()
+QObject* UBWidgetUniboardAPI::messages() const
 {
     return mMessagesAPI;
 }
 
 
-QObject* UBWidgetUniboardAPI::datastore()
+QObject* UBWidgetUniboardAPI::datastore() const
 {
     return mDatastoreAPI;
 }
@@ -329,7 +329,7 @@ void UBWidgetUniboardAPI::addText(const QString& text, const qreal x, const qrea
 }
 
 
-int UBWidgetUniboardAPI::pageCount()
+int UBWidgetUniboardAPI::pageCount() const
 {
     if (mScene && mScene->document())
         return mScene->document()->pageCount();
@@ -338,7 +338,7 @@ int UBWidgetUniboardAPI::pageCount()
 }
 
 
-int UBWidgetUniboardAPI::currentPageNumber()
+int UBWidgetUniboardAPI::currentPageNumber() const
 {
     // TODO UB 4.x widget find a better way to get the current page number
 
@@ -425,7 +425,7 @@ QStringList UBWidgetUniboardAPI::preferenceKeys()
 }
 
 
-QString UBWidgetUniboardAPI::uuid()
+QString UBWidgetUniboardAPI::uuid() const
 {
     if (mGraphicsWidget)
         return UBStringUtils::toCanonicalUuid(mGraphicsWidget->uuid());
@@ -439,7 +439,7 @@ QString UBWidgetUniboardAPI::locale()
     return QLocale().name();
 }
 
-QString UBWidgetUniboardAPI::lang()
+QString UBWidgetUniboardAPI::lang() const
 {
     QString lang = QLocale().name();
 
@@ -733,7 +733,7 @@ QString UBDocumentDatastoreAPI::getItem(const QString& key)
 }
 
 
-int UBDocumentDatastoreAPI::length()
+int UBDocumentDatastoreAPI::length() const
 {
    return mGraphicsW3CWidget->datastoreEntries().size();
 }
@@ -767,7 +767,7 @@ UBDatastoreAPI::UBDatastoreAPI(UBGraphicsW3CWidgetItem *widget)
 }
 
 
-QObject* UBDatastoreAPI::document()
+QObject* UBDatastoreAPI::document() const
 {
     return mDocumentDatastore;
 }

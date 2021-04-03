@@ -51,18 +51,18 @@ class UBWidgetUniboardAPI : public QObject
     /**
      * The number of pages in the current document
      */
-    Q_PROPERTY(int pageCount READ pageCount SCRIPTABLE true)
+    Q_PROPERTY(int pageCount READ pageCount SCRIPTABLE true CONSTANT)
 
     /**
      * The page number of the current page
      */
-    Q_PROPERTY(int currentPageNumber READ currentPageNumber SCRIPTABLE true)
+    Q_PROPERTY(int currentPageNumber READ currentPageNumber SCRIPTABLE true CONSTANT)
 
     /**
      * instance UUID, return a unique identifier for the widget, this value is guaranted to be unique
      * and constant for a widget, deprecated, use window.widget.uuid instead
      */
-    Q_PROPERTY(QString uuid READ uuid SCRIPTABLE true)
+    Q_PROPERTY(QString uuid READ uuid SCRIPTABLE true CONSTANT)
 
     /**
      * Returns the language and eventually the country of this locale as a string of the form
@@ -79,20 +79,20 @@ class UBWidgetUniboardAPI : public QObject
      * fr-FR
      *
      */
-    Q_PROPERTY(QString lang READ lang SCRIPTABLE true)
+    Q_PROPERTY(QString lang READ lang SCRIPTABLE true CONSTANT)
 
-    Q_PROPERTY(QObject* messages READ messages SCRIPTABLE true)
+    Q_PROPERTY(QObject* messages READ messages SCRIPTABLE true CONSTANT)
 
-    Q_PROPERTY(QObject* datastore READ datastore SCRIPTABLE true)
+    Q_PROPERTY(QObject* datastore READ datastore SCRIPTABLE true CONSTANT)
 
     public:
 
         UBWidgetUniboardAPI(UBGraphicsScene *pScene, UBGraphicsWidgetItem *widget = 0);
         ~UBWidgetUniboardAPI();
 
-        QObject* messages();
+        QObject* messages() const;
 
-        QObject* datastore();
+        QObject* datastore() const;
 
     public slots:
 
@@ -274,13 +274,13 @@ private:
 
     private:
 
-        QString uuid();
+        QString uuid() const;
 
-        QString lang();
+        QString lang() const;
 
-        int pageCount();
+        int pageCount() const;
 
-        int currentPageNumber();
+        int currentPageNumber() const;
         QString getObjDir();
         QString createMimeText(bool downloaded, const QString &mimeType, const QString &fileName);
         bool supportedTypeHeader(const QString &) const;
@@ -303,13 +303,13 @@ class UBDatastoreAPI : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QObject* document READ document SCRIPTABLE true)
+    Q_PROPERTY(QObject* document READ document SCRIPTABLE true CONSTANT)
 
     public:
         UBDatastoreAPI(UBGraphicsW3CWidgetItem *widget);
         virtual ~UBDatastoreAPI(){;}
 
-        QObject* document();
+        QObject* document() const;
 
     private:
 
@@ -336,7 +336,7 @@ class UBDocumentDatastoreAPI : public UBW3CWebStorage
         virtual void clear();
 
     protected:
-        virtual int length();
+        virtual int length() const;
 
     private:
         UBGraphicsW3CWidgetItem* mGraphicsW3CWidget;

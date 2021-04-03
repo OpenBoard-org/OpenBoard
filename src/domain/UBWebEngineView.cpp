@@ -25,48 +25,40 @@
  */
 
 
+#include "UBWebEngineView.h"
 
+#include <QAction>
+#include <QContextMenuEvent>
+#include <QMenu>
 
-#ifndef UBGRAPHICSWIDGETITEMDELEGATE_H_
-#define UBGRAPHICSWIDGETITEMDELEGATE_H_
-
-#include <QtGui>
-
-#include "UBGraphicsItemDelegate.h"
-#include "UBGraphicsWidgetItem.h"
-
-
-class UBGraphicsWidgetItemDelegate : public UBGraphicsItemDelegate
+UBWebEngineView::UBWebEngineView(QWidget *parent) : QWebEngineView(parent)
 {
-    Q_OBJECT
 
-    public:
-        UBGraphicsWidgetItemDelegate(UBGraphicsWidgetItem* pDelegated, int widgetType = 0);
-        virtual ~UBGraphicsWidgetItemDelegate();
+}
 
-        virtual void createControls() override;
+void UBWebEngineView::contextMenuEvent(QContextMenuEvent *event)
+{
+    QMenu *menu = page()->createStandardContextMenu();
 
-    protected:
-        virtual void decorateMenu(QMenu* menu) override;
-        virtual void updateMenuActionState() override;
-        virtual void remove(bool canundo) override;
+    // suppress actions requiring a new window
+    const QList<QWebEnginePage::WebAction> suppressed = {
+        QWebEnginePage::OpenLinkInNewWindow,
+        QWebEnginePage::OpenLinkInNewTab,
+        QWebEnginePage::OpenLinkInNewBackgroundTab,
+        QWebEnginePage::InspectElement,
+        QWebEnginePage::ViewSource
+    };
 
-    protected slots:
-        virtual void gotoContentSource() override;
+    for (QWebEnginePage::WebAction action : suppressed) {
+        menu->removeAction(page()->action(action));
+    }
 
-private slots:
-        void freeze(bool frozeon);
-        void pin();
+    // set background style
+    QPalette palette = menu->palette();
+    palette.setBrush(QPalette::Window, QBrush(Qt::white));
+    menu->setPalette(palette);
+    menu->setBackgroundRole(QPalette::Window);
+    menu->setAutoFillBackground(true);
 
-    private:
-        int mWidgetType;
-
-        UBGraphicsWidgetItem* delegated();
-
-        QAction* freezeAction;
-        QAction* setAsToolAction;
-
-};
-
-
-#endif /* UBGRAPHICSWIDGETITEMDELEGATE_H_ */
+    menu->popup(event->globalPos());
+}

@@ -32,12 +32,15 @@
 
 #include <QtGui>
 #include <QDomElement>
-#include <QGraphicsWebView>
+#include <QGraphicsProxyWidget>
 
 #include "core/UB.h"
 
 #include "UBItem.h"
 #include "UBResizableGraphicsItem.h"
+
+class QWebChannel;
+class QWebEngineView;
 
 class UBWidgetUniboardAPI;
 class UBGraphicsScene;
@@ -54,7 +57,7 @@ struct UBWidgetType
     };
 };
 
-class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBResizableGraphicsItem, public UBGraphicsItem
+class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public UBResizableGraphicsItem, public UBGraphicsItem
 {
     Q_OBJECT
 
@@ -74,6 +77,7 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
 
         QUrl mainHtml();
         void loadMainHtml();
+        void load(QUrl url);
         QUrl widgetUrl();
         void widgetUrl(QUrl url) { mWidgetUrl = url; }
         QString mainHtmlFileName();
@@ -93,6 +97,7 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
         void removeDatastoreEntry(const QString& key);
         void removeAllDatastoreEntries();
 
+        void runScript(const QString& script);
         void removeScript();
 
         void processDropEvent(QGraphicsSceneDragDropEvent *event);
@@ -127,8 +132,11 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
         static QString iconFilePath(const QUrl& pUrl);
 
     public slots:
+        void activeSceneChanged();
         void freeze();
         void unFreeze();
+        void inspectPage();
+        void closeInspector();
 
     protected:
         enum OSType
@@ -148,6 +156,7 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
         bool mMouseIsPressed;
         int mCanBeContent;
         int mCanBeTool;
+        QWebEngineView* webEngineView;
         QSize mNominalSize;
         QString mMainHtmlFileName;
         QUrl mMainHtmlUrl;
@@ -171,7 +180,7 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
 
     protected slots:
         void geometryChangeRequested(const QRect& geom);
-        virtual void javaScriptWindowObjectCleared();
+        virtual void registerAPI();
         void mainFrameLoadFinished(bool ok);
 
     private slots:
@@ -182,6 +191,8 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
         bool mIsFrozen;
         bool mIsTakingSnapshot;
         bool mShouldMoveWidget;
+        QWebChannel* mWebChannel;
+        QMainWindow* mInspectorWindow;
         UBWidgetUniboardAPI* mUniboardAPI;
         QPixmap mSnapshot;
         QPointF mLastMousePos;
@@ -261,7 +272,7 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         Metadata mMetadatas;
 
     private slots:
-        virtual void javaScriptWindowObjectCleared();
+        virtual void registerAPI();
 
     private:
         static void loadNPAPIWrappersTemplates();

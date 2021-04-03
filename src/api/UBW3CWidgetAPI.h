@@ -42,22 +42,22 @@ class UBW3CWidgetAPI : public QObject
 
     //w3c widget norma (http://www.w3.org/TR/widgets-apis/#widget)
 
-    Q_PROPERTY(QString id READ id SCRIPTABLE true);
-    Q_PROPERTY(QString name READ name SCRIPTABLE true);
-    Q_PROPERTY(QString description READ description SCRIPTABLE true);
-    Q_PROPERTY(QString author READ author SCRIPTABLE true);
+    Q_PROPERTY(QString id READ id SCRIPTABLE true CONSTANT);
+    Q_PROPERTY(QString name READ name SCRIPTABLE true CONSTANT);
+    Q_PROPERTY(QString description READ description SCRIPTABLE true CONSTANT);
+    Q_PROPERTY(QString author READ author SCRIPTABLE true CONSTANT);
 
-    Q_PROPERTY(QString authorEmail READ authorEmail SCRIPTABLE true);
-    Q_PROPERTY(QString authorHref READ authorHref SCRIPTABLE true);
-    Q_PROPERTY(QString version READ version SCRIPTABLE true);
+    Q_PROPERTY(QString authorEmail READ authorEmail SCRIPTABLE true CONSTANT);
+    Q_PROPERTY(QString authorHref READ authorHref SCRIPTABLE true CONSTANT);
+    Q_PROPERTY(QString version READ version SCRIPTABLE true CONSTANT);
 
-    Q_PROPERTY(int width READ width SCRIPTABLE true);
-    Q_PROPERTY(int height READ height SCRIPTABLE true);
+    Q_PROPERTY(int width READ width SCRIPTABLE true CONSTANT);
+    Q_PROPERTY(int height READ height SCRIPTABLE true CONSTANT);
 
-    Q_PROPERTY(QObject* preferences READ preferences SCRIPTABLE true);
+    Q_PROPERTY(QObject* preferences READ preferences SCRIPTABLE true CONSTANT);
 
     // Mnemis extensions
-    Q_PROPERTY(QString uuid READ uuid SCRIPTABLE true);
+    Q_PROPERTY(QString uuid READ uuid SCRIPTABLE true CONSTANT);
 
     public:
 
@@ -65,20 +65,20 @@ class UBW3CWidgetAPI : public QObject
 
         virtual ~UBW3CWidgetAPI();
 
-        QString uuid();
+        QString uuid() const;
 
-        QString id();
-        QString name();
-        QString description();
-        QString author();
-        QString authorEmail();
-        QString authorHref();
-        QString version();
+        QString id() const;
+        QString name() const;
+        QString description() const;
+        QString author() const;
+        QString authorEmail() const;
+        QString authorHref() const;
+        QString version() const;
 
-        QObject* preferences();
+        QObject* preferences() const;
 
-        int width();
-        int height();
+        int width() const;
+        int height() const;
 
         void openURL(const QString& url);
 
@@ -96,7 +96,7 @@ class UBW3CWebStorage : public QObject
 {
     Q_OBJECT;
 
-    Q_PROPERTY(int length READ length SCRIPTABLE true);
+    Q_PROPERTY(int length READ length SCRIPTABLE true CONSTANT);
 
     public:
         UBW3CWebStorage(QObject *parent = 0)
@@ -112,7 +112,7 @@ class UBW3CWebStorage : public QObject
         virtual void clear() = 0;
 
     protected:
-        virtual int length() = 0;
+        virtual int length() const = 0;
 
 };
 
@@ -135,7 +135,7 @@ class UBW3CWidgetPreferenceAPI : public UBW3CWebStorage
         virtual void clear();
 
     protected:
-        virtual int length();
+        virtual int length() const;
 
     private:
 

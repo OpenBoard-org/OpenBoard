@@ -25,48 +25,21 @@
  */
 
 
+#ifndef UBWEBENGINEVIEW_H
+#define UBWEBENGINEVIEW_H
 
+#include <QWebEngineView>
 
-#ifndef UBGRAPHICSWIDGETITEMDELEGATE_H_
-#define UBGRAPHICSWIDGETITEMDELEGATE_H_
-
-#include <QtGui>
-
-#include "UBGraphicsItemDelegate.h"
-#include "UBGraphicsWidgetItem.h"
-
-
-class UBGraphicsWidgetItemDelegate : public UBGraphicsItemDelegate
+class UBWebEngineView : public QWebEngineView
 {
     Q_OBJECT
+public:
+    explicit UBWebEngineView(QWidget *parent = nullptr);
+    virtual ~UBWebEngineView() override = default;
 
-    public:
-        UBGraphicsWidgetItemDelegate(UBGraphicsWidgetItem* pDelegated, int widgetType = 0);
-        virtual ~UBGraphicsWidgetItemDelegate();
-
-        virtual void createControls() override;
-
-    protected:
-        virtual void decorateMenu(QMenu* menu) override;
-        virtual void updateMenuActionState() override;
-        virtual void remove(bool canundo) override;
-
-    protected slots:
-        virtual void gotoContentSource() override;
-
-private slots:
-        void freeze(bool frozeon);
-        void pin();
-
-    private:
-        int mWidgetType;
-
-        UBGraphicsWidgetItem* delegated();
-
-        QAction* freezeAction;
-        QAction* setAsToolAction;
+protected:
+    void contextMenuEvent(QContextMenuEvent *event) override;
 
 };
 
-
-#endif /* UBGRAPHICSWIDGETITEMDELEGATE_H_ */
+#endif // UBWEBENGINEVIEW_H

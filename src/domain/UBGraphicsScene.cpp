@@ -1696,6 +1696,7 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
     graphicsWidget->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
     addItem(graphicsWidget);
+    graphicsWidget->activeSceneChanged();
 
     qreal ssf = 1 / UBApplication::boardController->systemScaleFactor();
 
