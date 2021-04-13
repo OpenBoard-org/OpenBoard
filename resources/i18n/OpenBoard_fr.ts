@@ -2248,7 +2248,7 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     </message>
     <message>
         <source>Axes</source>
-        <translation type="unfinished"></translation>
+        <translation>Axes</translation>
     </message>
 </context>
 <context>
@@ -2980,7 +2980,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Enable quality loss to increase zoom performances</source>
-        <translation>Activer la perte de qualité pour améliorer les performaces de zoom</translation>
+        <translation type="vanished">Activer la perte de qualité pour améliorer les performaces de zoom</translation>
+    </message>
+    <message>
+        <source>Improve zoom execution time (can slightly affect rendering quality)</source>
+        <translation>Améliorer la vitesse d&apos;exécution du zoom (peut légèrement affecter la qualité du rendu)</translation>
     </message>
 </context>
 <context>

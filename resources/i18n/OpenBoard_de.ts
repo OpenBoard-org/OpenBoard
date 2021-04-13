@@ -2963,7 +2963,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Enable quality loss to increase zoom performances</source>
-        <translation>Zulassen eines Qualitätsverlusts zur Erhöhung der Zoomleistung</translation>
+        <translation type="vanished">Zulassen eines Qualitätsverlusts zur Erhöhung der Zoomleistung</translation>
+    </message>
+    <message>
+        <source>Improve zoom execution time (can slightly affect rendering quality)</source>
+        <translation>Die Zoomgeschwindigkeit verbessern (kann die Renderqualität geringfügig beeinträchtigen)</translation>
     </message>
 </context>
 <context>

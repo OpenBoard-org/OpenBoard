@@ -837,7 +837,7 @@
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
-        <translation type="unfinished"></translation>
+        <translation>disegna linee di griglia intermedie</translation>
     </message>
 </context>
 <context>
@@ -943,7 +943,7 @@
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
-        <translation type="unfinished"></translation>
+        <translation>disegna linee di griglia intermedie</translation>
     </message>
 </context>
 <context>
@@ -2227,7 +2227,7 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
     <message>
         <source>Axes</source>
-        <translation type="unfinished"></translation>
+        <translation>Assi</translation>
     </message>
 </context>
 <context>
@@ -2954,7 +2954,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Enable quality loss to increase zoom performances</source>
-        <translation>Permettere una perdita di qualità per aumentare le prestazioni dello zoom</translation>
+        <translation type="vanished">Permettere una perdita di qualità per aumentare le prestazioni dello zoom</translation>
+    </message>
+    <message>
+        <source>Improve zoom execution time (can slightly affect rendering quality)</source>
+        <translation>Migliorare la velocità dello zoom (può influire leggermente sulla qualità del rendering)</translation>
     </message>
 </context>
 <context>
