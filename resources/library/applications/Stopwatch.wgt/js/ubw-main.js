@@ -13,16 +13,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-function init(){
+async function init(){
 	
     var tempHours;
     var tempMinutes;
     var tempSeconds;
 	
     if(window.sankore){
-        tempHours = window.sankore.preference("hours","00");
-        tempMinutes = window.sankore.preference("minutes","00");
-        tempSeconds = window.sankore.preference("seconds","00");
+        tempHours = await window.sankore.async.preference("hours","00");
+        tempMinutes = await window.sankore.async.preference("minutes","00");
+        tempSeconds = await window.sankore.async.preference("seconds","00");
     } else {
         tempHours = "00";
         tempMinutes = "00";
