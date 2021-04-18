@@ -130,6 +130,7 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         static int widgetType(const QUrl& pUrl);
         static QString widgetName(const QUrl& pUrl);
         static QString iconFilePath(const QUrl& pUrl);
+        static void injectScripts(QWebEngineView* view);
 
     public slots:
         void activeSceneChanged();

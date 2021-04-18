@@ -152,27 +152,7 @@ void UBGraphicsWidgetItem::initialize()
     // https://doc.qt.io/qt-5.12/qwebengineprofile.html#scripts
 
     // inject the QWebChannel interface and initialization script
-    QFile js(":/qtwebchannel/qwebchannel.js");
-
-    if (js.open(QIODevice::ReadOnly))
-    {
-        qDebug() << "Injecting qwebchannel.js";
-        QString src = js.readAll();
-
-        QFile asyncwrapper(UBPlatformUtils::applicationResourcesDirectory() + "/etc/asyncAPI.js");
-
-        if (asyncwrapper.open(QIODevice::ReadOnly))
-        {
-            src += asyncwrapper.readAll();
-        }
-
-        QWebEngineScript script;
-        script.setName("qwebchannel");
-        script.setInjectionPoint(QWebEngineScript::DocumentCreation);
-        script.setWorldId(QWebEngineScript::MainWorld);
-        script.setSourceCode(src);
-        webEngineView->page()->scripts().insert(script);
-    }
+    injectScripts(webEngineView);
 
     connect(webEngineView->page(), SIGNAL(geometryChangeRequested(const QRect&)), this, SLOT(geometryChangeRequested(const QRect&)));
     connect(webEngineView, SIGNAL(loadFinished(bool)), this, SLOT(mainFrameLoadFinished (bool)));
@@ -533,6 +513,32 @@ QString UBGraphicsWidgetItem::iconFilePath(const QUrl& pUrl)
         file = QString(":/images/defaultWidgetIcon.png");
     }
     return file;
+}
+
+void UBGraphicsWidgetItem::injectScripts(QWebEngineView* view)
+{
+    // inject the QWebChannel interface and initialization script
+    QFile js(":/qtwebchannel/qwebchannel.js");
+
+    if (js.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Injecting qwebchannel.js";
+        QString src = js.readAll();
+
+        QFile asyncwrapper(UBPlatformUtils::applicationResourcesDirectory() + "/etc/asyncAPI.js");
+
+        if (asyncwrapper.open(QIODevice::ReadOnly))
+        {
+            src += asyncwrapper.readAll();
+        }
+
+        QWebEngineScript script;
+        script.setName("qwebchannel");
+        script.setInjectionPoint(QWebEngineScript::DocumentCreation);
+        script.setWorldId(QWebEngineScript::MainWorld);
+        script.setSourceCode(src);
+        view->page()->scripts().insert(script);
+    }
 }
 
 void UBGraphicsWidgetItem::activeSceneChanged()
