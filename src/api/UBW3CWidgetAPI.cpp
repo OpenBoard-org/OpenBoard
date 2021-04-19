@@ -37,7 +37,6 @@
 #include "web/UBWebController.h"
 
 #include "domain/UBGraphicsWidgetItem.h"
-#include "domain/UBGraphicsProxyWidget.h"
 
 #include "UBWidgetMessageAPI.h"
 

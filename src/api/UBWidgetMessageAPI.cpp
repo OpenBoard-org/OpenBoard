@@ -25,8 +25,6 @@
  */
 
 
-#include <QWebFrame>
-
 #include "UBWidgetMessageAPI.h"
 
 #include "core/UBApplication.h"

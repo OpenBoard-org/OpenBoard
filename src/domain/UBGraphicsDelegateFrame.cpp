@@ -40,7 +40,7 @@
 
 #include "domain/UBGraphicsItemDelegate.h"
 #include "domain/UBGraphicsScene.h"
-#include "domain/UBGraphicsProxyWidget.h"
+#include "domain/UBResizableGraphicsItem.h"
 
 #include "gui/UBResources.h"
 

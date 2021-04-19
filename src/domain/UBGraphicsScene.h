@@ -38,7 +38,6 @@
 #include "tools/UBGraphicsCurtainItem.h"
 
 class UBGraphicsPixmapItem;
-class UBGraphicsProxyWidget;
 class UBGraphicsSvgItem;
 class UBGraphicsPolygonItem;
 class UBGraphicsMediaItem;

@@ -29,7 +29,6 @@
 
 #include "UBWidgetUniboardAPI.h"
 
-#include <QWebView>
 #include <QDomDocument>
 #include <QtGui>
 
@@ -503,8 +502,6 @@ void UBWidgetUniboardAPI::ProcessDropEvent(QGraphicsSceneDragDropEvent *event)
     QString contentType;
     bool downloaded = false;
 
-    QGraphicsView *tmpView = mGraphicsWidget->scene()->views().at(0);
-    QPoint dropPoint(mGraphicsWidget->mapFromScene(tmpView->mapToScene(event->pos().toPoint())).toPoint());
     Qt::DropActions dropActions = event->possibleActions();
     Qt::MouseButtons dropMouseButtons = event->buttons();
     Qt::KeyboardModifiers dropModifiers = event->modifiers();

@@ -66,7 +66,6 @@
 #include "UBGraphicsItemUndoCommand.h"
 #include "UBGraphicsItemGroupUndoCommand.h"
 #include "UBGraphicsTextItemUndoCommand.h"
-#include "UBGraphicsProxyWidget.h"
 #include "UBGraphicsPixmapItem.h"
 #include "UBGraphicsSvgItem.h"
 #include "UBGraphicsPolygonItem.h"
