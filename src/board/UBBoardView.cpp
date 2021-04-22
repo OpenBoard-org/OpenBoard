@@ -787,7 +787,7 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
         QGraphicsItem* item = determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos().toPoint()), transform()));
         //use QGraphicsView::transform() to use not deprecated QGraphicsScene::itemAt() method
 
-        // XXX @letsfindaway obsolete, probably from UBThumbnailProxyWidget
+        // NOTE @letsfindaway obsolete, probably from UBThumbnailProxyWidget
         if (item && (item->type() == QGraphicsProxyWidget::Type) && item->parentObject() && item->parentObject()->type() != QGraphicsProxyWidget::Type)
         {
             //Clean up children
@@ -1361,7 +1361,7 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
                 bReleaseIsNeed = true;
         }
 
-        qDebug() << "bReleaseIsNeeded" << bReleaseIsNeed; // XXX remove
+        qDebug() << "bReleaseIsNeeded" << bReleaseIsNeed; // NOTE @letsfindaway remove
         if (bReleaseIsNeed)
         {
             QGraphicsView::mouseReleaseEvent (event);

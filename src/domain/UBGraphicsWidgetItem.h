@@ -204,6 +204,7 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         static QStringList sInlineJavaScripts;
 };
 
+// NOTE @letsfindaway obsolete
 class UBGraphicsAppleWidgetItem : public UBGraphicsWidgetItem
 {
     Q_OBJECT

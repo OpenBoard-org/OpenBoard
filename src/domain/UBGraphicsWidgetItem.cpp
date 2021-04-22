@@ -418,7 +418,7 @@ int UBGraphicsWidgetItem::widgetType(const QUrl& pUrl)
 {
     QString mime = UBFileSystemUtils::mimeTypeFromFileName(pUrl.toString());
 
-    if (mime == "application/vnd.apple-widget")
+    if (mime == "application/vnd.apple-widget") // NOTE @letsfindaway obsolete
         return UBWidgetType::Apple;
     else if (mime == "application/widget")
         return UBWidgetType::W3C;
@@ -642,7 +642,7 @@ void UBGraphicsWidgetItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsWidgetItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug() << "mouseReleaseEvent";// XXX remove
+    qDebug() << "mouseReleaseEvent";// NOTE @letsfindaway remove
     mShouldMoveWidget = false;
 
     Delegate()->mouseReleaseEvent(event);
@@ -787,7 +787,7 @@ QSizeF UBGraphicsWidgetItem::size() const
 }
 
 
-
+// NOTE @letsfindaway obsolete
 UBGraphicsAppleWidgetItem::UBGraphicsAppleWidgetItem(const QUrl& pWidgetUrl, QGraphicsItem *parent)
     : UBGraphicsWidgetItem(pWidgetUrl, parent)
 {

@@ -54,6 +54,7 @@ class UBW3CWidgetAPI : public QObject
     Q_PROPERTY(int width READ width SCRIPTABLE true CONSTANT);
     Q_PROPERTY(int height READ height SCRIPTABLE true CONSTANT);
 
+    // NOTE @letsfindaway obsolete
     Q_PROPERTY(QObject* preferences READ preferences SCRIPTABLE true CONSTANT);
 
     // Mnemis extensions
@@ -91,7 +92,7 @@ class UBW3CWidgetAPI : public QObject
 
 };
 
-
+// NOTE @letsfindaway obsolete
 class UBW3CWebStorage : public QObject
 {
     Q_OBJECT;
@@ -116,7 +117,7 @@ class UBW3CWebStorage : public QObject
 
 };
 
-
+// NOTE @letsfindaway obsolete
 class UBW3CWidgetPreferenceAPI : public UBW3CWebStorage
 {
     Q_OBJECT;

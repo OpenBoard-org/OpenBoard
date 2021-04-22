@@ -129,7 +129,7 @@ void UBW3CWidgetAPI::openURL(const QString& url)
     UBApplication::webController->loadUrl(QUrl(url));
 }
 
-
+// NOTE @letsfindaway all code from here to the end is obsolete
 UBW3CWidgetPreferenceAPI::UBW3CWidgetPreferenceAPI(UBGraphicsW3CWidgetItem *graphicsWidget, QObject *parent)
     : UBW3CWebStorage(parent)
     , mGraphicsW3CWidget(graphicsWidget)

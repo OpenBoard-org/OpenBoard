@@ -62,7 +62,7 @@ UBToolWidget::UBToolWidget(const QUrl& pUrl, QWidget *pParent)
 
 {
     int widgetType = UBGraphicsWidgetItem::widgetType(pUrl);
-    if (widgetType == UBWidgetType::Apple)
+    if (widgetType == UBWidgetType::Apple) // NOTE @letsfindaway obsolete
         mToolWidget = new UBGraphicsAppleWidgetItem(pUrl);
     else if (widgetType == UBWidgetType::W3C)
         mToolWidget = new UBGraphicsW3CWidgetItem(pUrl);
