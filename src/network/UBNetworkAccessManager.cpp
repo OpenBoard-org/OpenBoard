@@ -38,7 +38,7 @@
 #include "core/UBApplicationController.h"
 #include "core/UBSettings.h"
 
-#include "ui_passworddialog.h"
+#include "ui_old-passworddialog.h"
 #include "ui_proxy.h"
 
 #include "UBCookieJar.h"

@@ -2,13 +2,25 @@
 QT           += uitools
 
 FORMS        += src/web/browser/downloaditem.ui \
+                $$PWD/browser/old-passworddialog.ui \
+                $$PWD/simplebrowser/certificateerrordialog.ui \
+                $$PWD/simplebrowser/downloadmanagerwidget.ui \
+                $$PWD/simplebrowser/downloadwidget.ui \
+                $$PWD/simplebrowser/passworddialog.ui \
                 src/web/browser/downloads.ui \
-                src/web/browser/passworddialog.ui \
                 src/web/browser/proxy.ui
 
 INCLUDEPATH  += src/web/browser
 
 HEADERS      += src/web/UBWebController.h \
+                $$PWD/simplebrowser/browser.h \
+                $$PWD/simplebrowser/browserwindow.h \
+                $$PWD/simplebrowser/downloadmanagerwidget.h \
+                $$PWD/simplebrowser/downloadwidget.h \
+                $$PWD/simplebrowser/tabwidget.h \
+                $$PWD/simplebrowser/webpage.h \
+                $$PWD/simplebrowser/webpopupwindow.h \
+                $$PWD/simplebrowser/webview.h \
                 src/web/UBTrapFlashController.h \
                 src/web/UBWebKitUtils.h \
                 src/web/UBWebPage.h \
@@ -30,6 +42,14 @@ HEADERS      += src/web/UBWebController.h \
 
 
 SOURCES      += src/web/UBWebController.cpp \
+    $$PWD/simplebrowser/browser.cpp \
+    $$PWD/simplebrowser/browserwindow.cpp \
+    $$PWD/simplebrowser/downloadmanagerwidget.cpp \
+    $$PWD/simplebrowser/downloadwidget.cpp \
+    $$PWD/simplebrowser/tabwidget.cpp \
+    $$PWD/simplebrowser/webpage.cpp \
+    $$PWD/simplebrowser/webpopupwindow.cpp \
+    $$PWD/simplebrowser/webview.cpp \
                 src/web/UBTrapFlashController.cpp \
                 src/web/UBWebKitUtils.cpp \
                 src/web/UBWebPage.cpp \
