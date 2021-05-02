@@ -67,8 +67,9 @@
 #include <QVBoxLayout>
 #include <QWebEngineProfile>
 
-BrowserWindow::BrowserWindow(Browser *browser, QWebEngineProfile *profile, bool forDevTools)
-    : m_browser(browser)
+BrowserWindow::BrowserWindow(QWidget *parent, Ui::MainWindow *uniboardMainWindow, QWebEngineProfile *profile, bool forDevTools)
+    : QWidget(parent)
+    , mUniboardMainWindow(uniboardMainWindow)
     , m_profile(profile)
     , m_tabWidget(new TabWidget(profile, this))
     , m_progressBar(nullptr)
@@ -83,24 +84,27 @@ BrowserWindow::BrowserWindow(Browser *browser, QWebEngineProfile *profile, bool 
     setAttribute(Qt::WA_DeleteOnClose, true);
     setFocusPolicy(Qt::ClickFocus);
 
-    if (!forDevTools) {
-        m_progressBar = new QProgressBar(this);
-
-        QToolBar *toolbar = createToolBar();
-        addToolBar(toolbar);
-        menuBar()->addMenu(createFileMenu(m_tabWidget));
-        menuBar()->addMenu(createEditMenu());
-        menuBar()->addMenu(createViewMenu(toolbar));
-        menuBar()->addMenu(createWindowMenu(m_tabWidget));
-        menuBar()->addMenu(createHelpMenu());
-    }
-
-    QWidget *centralWidget = new QWidget(this);
+    QWidget *centralWidget = this; //new QWidget(this);
     QVBoxLayout *layout = new QVBoxLayout;
     layout->setSpacing(0);
     layout->setMargin(0);
+
     if (!forDevTools) {
-        addToolBarBreak();
+        m_progressBar = new QProgressBar(this);
+
+        // FIXME toolbar handling as in WBBrowserWindow
+        QToolBar *toolbar = createToolBar();
+        layout->addWidget(toolbar);
+//        addToolBar(toolbar);
+//        menuBar()->addMenu(createFileMenu(m_tabWidget));
+//        menuBar()->addMenu(createEditMenu());
+//        menuBar()->addMenu(createViewMenu(toolbar));
+//        menuBar()->addMenu(createWindowMenu(m_tabWidget));
+//        menuBar()->addMenu(createHelpMenu());
+    }
+
+    if (!forDevTools) {
+//        addToolBarBreak();
 
         m_progressBar->setMaximumHeight(1);
         m_progressBar->setTextVisible(false);
@@ -111,13 +115,14 @@ BrowserWindow::BrowserWindow(Browser *browser, QWebEngineProfile *profile, bool 
 
     layout->addWidget(m_tabWidget);
     centralWidget->setLayout(layout);
-    setCentralWidget(centralWidget);
+//    setCentralWidget(centralWidget);
 
     connect(m_tabWidget, &TabWidget::titleChanged, this, &BrowserWindow::handleWebViewTitleChanged);
     if (!forDevTools) {
-        connect(m_tabWidget, &TabWidget::linkHovered, [this](const QString& url) {
-            statusBar()->showMessage(url);
-        });
+        // FIXME would be nice to have
+//        connect(m_tabWidget, &TabWidget::linkHovered, [this](const QString& url) {
+//            statusBar()->showMessage(url);
+//        });
         connect(m_tabWidget, &TabWidget::loadProgress, this, &BrowserWindow::handleWebViewLoadProgress);
         connect(m_tabWidget, &TabWidget::webActionEnabledChanged, this, &BrowserWindow::handleWebActionEnabledChanged);
         connect(m_tabWidget, &TabWidget::urlChanged, [this](const QUrl &url) {
@@ -148,6 +153,7 @@ QSize BrowserWindow::sizeHint() const
     return size;
 }
 
+// FIXME remove, no menus at all
 QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
 {
     QMenu *fileMenu = new QMenu(tr("&File"));
@@ -177,12 +183,12 @@ QMenu *BrowserWindow::createFileMenu(TabWidget *tabWidget)
     connect(closeAction, &QAction::triggered, this, &QWidget::close);
     fileMenu->addAction(closeAction);
 
-    connect(fileMenu, &QMenu::aboutToShow, [this, closeAction]() {
-        if (m_browser->windows().count() == 1)
-            closeAction->setText(tr("&Quit"));
-        else
-            closeAction->setText(tr("&Close Window"));
-    });
+//    connect(fileMenu, &QMenu::aboutToShow, [this, closeAction]() {
+//        if (m_browser->windows().count() == 1)
+//            closeAction->setText(tr("&Quit"));
+//        else
+//            closeAction->setText(tr("&Close Window"));
+//    });
     return fileMenu;
 }
 
@@ -268,15 +274,15 @@ QMenu *BrowserWindow::createViewMenu(QToolBar *toolbar)
 
     QAction *viewStatusbarAction = new QAction(tr("Hide Status Bar"), this);
     viewStatusbarAction->setShortcut(tr("Ctrl+/"));
-    connect(viewStatusbarAction, &QAction::triggered, [this, viewStatusbarAction]() {
-        if (statusBar()->isVisible()) {
-            viewStatusbarAction->setText(tr("Show Status Bar"));
-            statusBar()->close();
-        } else {
-            viewStatusbarAction->setText(tr("Hide Status Bar"));
-            statusBar()->show();
-        }
-    });
+//    connect(viewStatusbarAction, &QAction::triggered, [this, viewStatusbarAction]() {
+//        if (statusBar()->isVisible()) {
+//            viewStatusbarAction->setText(tr("Show Status Bar"));
+//            statusBar()->close();
+//        } else {
+//            viewStatusbarAction->setText(tr("Hide Status Bar"));
+//            statusBar()->show();
+//        }
+//    });
     viewMenu->addAction(viewStatusbarAction);
     return viewMenu;
 }
@@ -309,15 +315,15 @@ QMenu *BrowserWindow::createWindowMenu(TabWidget *tabWidget)
         menu->addAction(previousTabAction);
         menu->addSeparator();
 
-        QVector<BrowserWindow*> windows = m_browser->windows();
-        int index(-1);
-        for (auto window : windows) {
-            QAction *action = menu->addAction(window->windowTitle(), this, &BrowserWindow::handleShowWindowTriggered);
-            action->setData(++index);
-            action->setCheckable(true);
-            if (window == this)
-                action->setChecked(true);
-        }
+//        QVector<BrowserWindow*> windows = m_browser->windows();
+//        int index(-1);
+//        for (auto window : windows) {
+//            QAction *action = menu->addAction(window->windowTitle(), this, &BrowserWindow::handleShowWindowTriggered);
+//            action->setData(++index);
+//            action->setCheckable(true);
+//            if (window == this)
+//                action->setChecked(true);
+//        }
     });
     return menu;
 }
@@ -390,7 +396,12 @@ QToolBar *BrowserWindow::createToolBar()
     downloadsAction->setToolTip(tr("Show downloads"));
     navigationBar->addAction(downloadsAction);
     connect(downloadsAction, &QAction::triggered, [this]() {
-        m_browser->downloadManagerWidget().show();
+        DownloadManagerWidget* downloadManager = findChild<DownloadManagerWidget*>();
+
+        if (downloadManager)
+        {
+            downloadManager->show();
+        }
     });
 
     return navigationBar;
@@ -398,22 +409,23 @@ QToolBar *BrowserWindow::createToolBar()
 
 void BrowserWindow::handleWebActionEnabledChanged(QWebEnginePage::WebAction action, bool enabled)
 {
-    switch (action) {
-    case QWebEnginePage::Back:
-        m_historyBackAction->setEnabled(enabled);
-        break;
-    case QWebEnginePage::Forward:
-        m_historyForwardAction->setEnabled(enabled);
-        break;
-    case QWebEnginePage::Reload:
-        m_reloadAction->setEnabled(enabled);
-        break;
-    case QWebEnginePage::Stop:
-        m_stopAction->setEnabled(enabled);
-        break;
-    default:
-        qWarning("Unhandled webActionChanged signal");
-    }
+    // FIXME
+//    switch (action) {
+//    case QWebEnginePage::Back:
+//        m_historyBackAction->setEnabled(enabled);
+//        break;
+//    case QWebEnginePage::Forward:
+//        m_historyForwardAction->setEnabled(enabled);
+//        break;
+//    case QWebEnginePage::Reload:
+//        m_reloadAction->setEnabled(enabled);
+//        break;
+//    case QWebEnginePage::Stop:
+//        m_stopAction->setEnabled(enabled);
+//        break;
+//    default:
+//        qWarning("Unhandled webActionChanged signal");
+//    }
 }
 
 void BrowserWindow::handleWebViewTitleChanged(const QString &title)
@@ -430,14 +442,16 @@ void BrowserWindow::handleWebViewTitleChanged(const QString &title)
 
 void BrowserWindow::handleNewWindowTriggered()
 {
-    BrowserWindow *window = m_browser->createWindow();
-    window->m_urlLineEdit->setFocus();
+    // FIXME never used
+//    BrowserWindow *window = m_browser->createWindow();
+//    window->m_urlLineEdit->setFocus();
 }
 
 void BrowserWindow::handleNewIncognitoWindowTriggered()
 {
-    BrowserWindow *window = m_browser->createWindow(/* offTheRecord: */ true);
-    window->m_urlLineEdit->setFocus();
+    // FIXME never used
+//    BrowserWindow *window = m_browser->createWindow(/* offTheRecord: */ true);
+//    window->m_urlLineEdit->setFocus();
 }
 
 void BrowserWindow::handleFileOpenTriggered()
@@ -460,8 +474,8 @@ void BrowserWindow::handleFindActionTriggered()
     if (ok && !search.isEmpty()) {
         m_lastSearch = search;
         currentTab()->findText(m_lastSearch, 0, [this](bool found) {
-            if (!found)
-                statusBar()->showMessage(tr("\"%1\" not found.").arg(m_lastSearch));
+//            if (!found)
+//                statusBar()->showMessage(tr("\"%1\" not found.").arg(m_lastSearch));
         });
     }
 }
@@ -498,30 +512,37 @@ void BrowserWindow::handleWebViewLoadProgress(int progress)
     static QIcon reloadIcon(QStringLiteral(":view-refresh.png"));
 
     if (0 < progress && progress < 100) {
-        m_stopReloadAction->setData(QWebEnginePage::Stop);
-        m_stopReloadAction->setIcon(stopIcon);
-        m_stopReloadAction->setToolTip(tr("Stop loading the current page"));
+        if (m_stopReloadAction)
+        {
+            m_stopReloadAction->setData(QWebEnginePage::Stop);
+            m_stopReloadAction->setIcon(stopIcon);
+            m_stopReloadAction->setToolTip(tr("Stop loading the current page"));
+        }
         m_progressBar->setValue(progress);
     } else {
-        m_stopReloadAction->setData(QWebEnginePage::Reload);
-        m_stopReloadAction->setIcon(reloadIcon);
-        m_stopReloadAction->setToolTip(tr("Reload the current page"));
+        if (m_stopReloadAction)
+        {
+            m_stopReloadAction->setData(QWebEnginePage::Reload);
+            m_stopReloadAction->setIcon(reloadIcon);
+            m_stopReloadAction->setToolTip(tr("Reload the current page"));
+        }
         m_progressBar->setValue(0);
     }
 }
 
 void BrowserWindow::handleShowWindowTriggered()
 {
-    if (QAction *action = qobject_cast<QAction*>(sender())) {
-        int offset = action->data().toInt();
-        QVector<BrowserWindow*> windows = m_browser->windows();
-        windows.at(offset)->activateWindow();
-        windows.at(offset)->currentTab()->setFocus();
-    }
+//    if (QAction *action = qobject_cast<QAction*>(sender())) {
+//        int offset = action->data().toInt();
+//        QVector<BrowserWindow*> windows = m_browser->windows();
+//        windows.at(offset)->activateWindow();
+//        windows.at(offset)->currentTab()->setFocus();
+//    }
 }
 
 void BrowserWindow::handleDevToolsRequested(QWebEnginePage *source)
 {
-    source->setDevToolsPage(m_browser->createDevToolsWindow()->currentTab()->page());
-    source->triggerAction(QWebEnginePage::InspectElement);
+    // FIXME use same mechanism as for the widget apps
+//    source->setDevToolsPage(m_browser->createDevToolsWindow()->currentTab()->page());
+//    source->triggerAction(QWebEnginePage::InspectElement);
 }

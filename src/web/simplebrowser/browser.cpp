@@ -47,7 +47,7 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
+/*
 #include "browser.h"
 #include "browserwindow.h"
 
@@ -90,3 +90,4 @@ BrowserWindow *Browser::createDevToolsWindow()
     mainWindow->show();
     return mainWindow;
 }
+*/

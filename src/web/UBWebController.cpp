@@ -32,6 +32,7 @@
 #include <QXmlQuery>
 #include <QWebFrame>
 #include <QWebElementCollection>
+#include <QWebEngineProfile>
 
 #include "frameworks/UBPlatformUtils.h"
 
@@ -39,10 +40,9 @@
 #include "UBOEmbedParser.h"
 #include "UBTrapFlashController.h"
 
-#include "web/browser/WBBrowserWindow.h"
-#include "web/browser/WBWebView.h"
-#include "web/browser/WBDownloadManager.h"
-#include "web/browser/WBTabWidget.h"
+#include "web/simplebrowser/browserwindow.h"
+#include "web/simplebrowser/webview.h"
+#include "web/simplebrowser/tabwidget.h"
 
 #include "network/UBServerXMLHttpRequest.h"
 #include "network/UBNetworkAccessManager.h"
@@ -108,7 +108,6 @@ void UBWebController::initialiazemOEmbedProviders()
     mOEmbedProviders << "metacafe.com";
     mOEmbedProviders << "qik.com";
     mOEmbedProviders << "slideshare";
-    mOEmbedProviders << "5min.com";
     mOEmbedProviders << "twitpic.com";
     mOEmbedProviders << "viddler.com";
     mOEmbedProviders << "vimeo.com";
@@ -120,7 +119,7 @@ void UBWebController::initialiazemOEmbedProviders()
 void UBWebController::webBrowserInstance()
 {
     QString webHomePage = UBSettings::settings()->webHomePage->get().toString();
-    QUrl currentUrl = WBBrowserWindow::guessUrlFromString(webHomePage);
+    QUrl currentUrl = guessUrlFromString(webHomePage);
 
     if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
     {
@@ -130,13 +129,14 @@ void UBWebController::webBrowserInstance()
     {
         if (!mCurrentWebBrowser)
         {
-            mCurrentWebBrowser = new WBBrowserWindow(mMainWindow->centralWidget(), mMainWindow);
+            QWebEngineProfile *profile = QWebEngineProfile::defaultProfile(); // FIXME
+            mCurrentWebBrowser = new BrowserWindow(mMainWindow->centralWidget(), mMainWindow, profile);
 
             mMainWindow->addWebWidget(mCurrentWebBrowser);
 
             connect(mCurrentWebBrowser, SIGNAL(activeViewChange(QWidget*)), this, SLOT(setSourceWidget(QWidget*)));
 
-            WBBrowserWindow::downloadManager()->setParent(mCurrentWebBrowser, Qt::Tool);
+            m_downloadManagerWidget.setParent(mCurrentWebBrowser, Qt::Tool);
 
             UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->webToolBar, mMainWindow->actionBoard, 32);
             UBApplication::app()->decorateActionMenu(mMainWindow->actionMenu);
@@ -149,13 +149,13 @@ void UBWebController::webBrowserInstance()
 
             connect(mCurrentWebBrowser, SIGNAL(activeViewPageChanged()), this, SLOT(activePageChanged()));
 
-            mCurrentWebBrowser->loadUrl(currentUrl);
+            mCurrentWebBrowser->currentTab()->load(currentUrl);
 
             mCurrentWebBrowser->tabWidget()->tabBar()->show();
-            mCurrentWebBrowser->tabWidget()->lineEdits()->show();
+            // FIXME mCurrentWebBrowser->tabWidget()->lineEdits()->show();
         }
 
-        UBApplication::applicationController->setMirrorSourceWidget(mCurrentWebBrowser->paintWidget());
+        UBApplication::applicationController->setMirrorSourceWidget(mCurrentWebBrowser->tabWidget()->currentWebView());
         mMainWindow->switchToWebWidget();
 
         setupPalettes();
@@ -167,7 +167,7 @@ void UBWebController::webBrowserInstance()
     }
 
     if (mDownloadViewIsVisible)
-        WBBrowserWindow::downloadManager()->show();
+        m_downloadManagerWidget.show();
 }
 
 void UBWebController::show()
@@ -191,14 +191,14 @@ void UBWebController::trapFlash()
 
 void UBWebController::activePageChanged()
 {
-    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView())
+    if (mCurrentWebBrowser && mCurrentWebBrowser->tabWidget()->currentWebView())
     {
-        if (mTrapFlashController && mCurrentWebBrowser->currentTabWebView()->page())
-            mTrapFlashController->updateTrapFlashFromPage(mCurrentWebBrowser->currentTabWebView()->page()->currentFrame());
+        if (mTrapFlashController && mCurrentWebBrowser->tabWidget()->currentWebView()->page())
+        {} // FIXME mTrapFlashController->updateTrapFlashFromPage(mCurrentWebBrowser->tabWidget()->currentWebView()->page()->currentFrame());
 
         mMainWindow->actionWebTrap->setChecked(false);
 
-        QUrl latestUrl = mCurrentWebBrowser->currentTabWebView()->url();
+        QUrl latestUrl = mCurrentWebBrowser->tabWidget()->currentWebView()->url();
 
         // TODO : Uncomment the next line to continue the youtube button bugfix
         //UBApplication::mainWindow->actionWebOEmbed->setEnabled(hasEmbeddedContent());
@@ -206,15 +206,17 @@ void UBWebController::activePageChanged()
         UBApplication::mainWindow->actionWebOEmbed->setEnabled(isOEmbedable(latestUrl));
         UBApplication::mainWindow->actionEduMedia->setEnabled(isEduMedia(latestUrl));
 
-        emit activeWebPageChanged(mCurrentWebBrowser->currentTabWebView());
+        emit activeWebPageChanged(mCurrentWebBrowser->tabWidget()->currentWebView());
     }
 }
 
+// FIXME can only give ansynchronous result, but line 208 is the only line calling this
+/*
 bool UBWebController::hasEmbeddedContent()
 {
     bool bHasContent = false;
     if(mCurrentWebBrowser){
-        QString html = mCurrentWebBrowser->currentTabWebView()->webPage()->mainFrame()->toHtml();
+        QString html = mCurrentWebBrowser->tabWidget()->currentWebView()->page()->toHtml();
 
         // search the presence of "+oembed"
         QString query = "\\+oembed([^>]*)>";
@@ -240,35 +242,36 @@ bool UBWebController::hasEmbeddedContent()
 
     return bHasContent;
 }
-
+*/
 QPixmap UBWebController::captureCurrentPage()
 {
     QPixmap pix;
 
     if (mCurrentWebBrowser
-            && mCurrentWebBrowser->currentTabWebView()
-            && mCurrentWebBrowser->currentTabWebView()->page()
-            && mCurrentWebBrowser->currentTabWebView()->page()->mainFrame())
+            && mCurrentWebBrowser->tabWidget()->currentWebView()
+            && mCurrentWebBrowser->tabWidget()->currentWebView()->page())
     {
-        QWebFrame* frame = mCurrentWebBrowser->currentTabWebView()->page()->mainFrame();
-        QSize size = frame->contentsSize();
+        WebView* view = mCurrentWebBrowser->tabWidget()->currentWebView();
+        QWebEnginePage* frame = mCurrentWebBrowser->tabWidget()->currentWebView()->page();
+        QSizeF size = frame->contentsSize();
 
         qDebug() << size;
 
-        QVariant top = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientTop");
-        QVariant left = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientLeft");
-        QVariant width = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientWidth");
-        QVariant height = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientHeight");
+        // FIXME JS results are only asynchronous
+//        QVariant top = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientTop");
+//        QVariant left = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientLeft");
+//        QVariant width = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientWidth");
+//        QVariant height = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientHeight");
 
-        QSize vieportSize = mCurrentWebBrowser->currentTabWebView()->page()->viewportSize();
-        mCurrentWebBrowser->currentTabWebView()->page()->setViewportSize(frame->contentsSize());
-        pix = QPixmap(frame->geometry().width(), frame->geometry().height());
+//        QSize vieportSize = mCurrentWebBrowser->tabWidget()->currentWebView()->page()->viewportSize();
+//        mCurrentWebBrowser->tabWidget()->currentWebView()->page()->setViewportSize(frame->contentsSize());
+        pix = QPixmap(view->geometry().width(), view->geometry().height());
 
         {
             QPainter p(&pix);
-            frame->render(&p);
+            view->render(&p);
         }
-
+/* FIXME this cutting just removed
         if (left.isValid() && top.isValid() && width.isValid() && height.isValid())
         {
             bool okLeft, okTop, okWidth, okHeight;
@@ -283,9 +286,9 @@ QPixmap UBWebController::captureCurrentPage()
                 pix = pix.copy(iLeft, iTop, iWidth, iHeight);
             }
         }
+*/
 
-
-        mCurrentWebBrowser->currentTabWebView()->page()->setViewportSize(vieportSize);
+// FIXME        mCurrentWebBrowser->tabWidget()->currentWebView()->page()->setViewportSize(vieportSize);
     }
 
     return pix;
@@ -329,8 +332,8 @@ void UBWebController::setupPalettes()
 
 void UBWebController::toggleWebTrap(bool checked)
 {
-    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView())
-        mCurrentWebBrowser->currentTabWebView()->setIsTrapping(checked);
+    if (mCurrentWebBrowser && mCurrentWebBrowser->tabWidget()->currentWebView())
+    {}// FIXME    mCurrentWebBrowser->tabWidget()->currentWebView()->setIsTrapping(checked);
 }
 
 
@@ -339,7 +342,7 @@ void UBWebController::captureWindow()
     QPixmap webPagePixmap = captureCurrentPage();
 
     if (!webPagePixmap.isNull())
-        emit imageCaptured(webPagePixmap, true, mCurrentWebBrowser->currentTabWebView()->url());
+        emit imageCaptured(webPagePixmap, true, mCurrentWebBrowser->tabWidget()->currentWebView()->url());
 }
 
 
@@ -355,7 +358,7 @@ void UBWebController::customCapture()
     if (customCaptureWindow.execute(getScreenPixmap()) == QDialog::Accepted)
     {
         QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
-        emit imageCaptured(selectedPixmap, false, mCurrentWebBrowser->currentTabWebView()->url());
+        emit imageCaptured(selectedPixmap, false, mCurrentWebBrowser->tabWidget()->currentWebView()->url());
     }
 
     mToolsCurrentPalette->setVisible(true);
@@ -405,7 +408,7 @@ void UBWebController::adaptToolBar()
     mMainWindow->actionStopLoading->setVisible(highResolution);
 
     if(mCurrentWebBrowser )
-        mCurrentWebBrowser->adaptToolBar(highResolution);
+    {} // FIXME enables search on wide monitors mCurrentWebBrowser->adaptToolBar(highResolution);
 
 }
 
@@ -413,18 +416,18 @@ void UBWebController::adaptToolBar()
 void UBWebController::showTabAtTop(bool attop)
 {
     if (mCurrentWebBrowser)
-        mCurrentWebBrowser->showTabAtTop(attop);
+        mCurrentWebBrowser->tabWidget()->setTabPosition(attop ? QTabWidget::North : QTabWidget::South);
 }
 
 void UBWebController::captureoEmbed()
 {
-    if ( mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView()){
+    if ( mCurrentWebBrowser && mCurrentWebBrowser->tabWidget()->currentWebView()){
         // TODO : Uncomment the next lines to continue the youtube button bugfix
         //    getEmbeddableContent();
 
         // And comment from here
 
-        QWebView* webView = mCurrentWebBrowser->currentTabWebView();
+        WebView* webView = mCurrentWebBrowser->tabWidget()->currentWebView();
         QUrl currentUrl = webView->url();
 
         if (isOEmbedable(currentUrl))
@@ -471,13 +474,74 @@ void UBWebController::checkForOEmbed(QString *pHtml)
     mOEmbedParser.parse(*pHtml);
 }
 
+QUrl UBWebController::guessUrlFromString(const QString &string)
+{
+    QString urlStr = string.trimmed();
+    QRegExp test(QLatin1String("^[a-zA-Z]+\\:.*"));
+
+    // Check if it looks like a qualified URL. Try parsing it and see.
+    bool hasSchema = test.exactMatch(urlStr);
+    if (hasSchema)
+    {
+        int dotCount = urlStr.count(".");
+
+        if (dotCount == 0 && !urlStr.contains(".com"))
+        {
+            urlStr += ".com";
+        }
+
+        QUrl url = QUrl::fromEncoded(urlStr.toUtf8(), QUrl::TolerantMode);
+        if (url.isValid())
+        {
+            return url;
+        }
+    }
+
+    // Might be a file.
+    if (QFile::exists(urlStr))
+    {
+        QFileInfo info(urlStr);
+        return QUrl::fromLocalFile(info.absoluteFilePath());
+    }
+
+    // Might be a shorturl - try to detect the schema.
+    if (!hasSchema)
+    {
+        QString schema = "http";
+
+        QString guessed = schema + "://" + urlStr;
+
+        int dotCount = guessed.count(".");
+
+        if (dotCount == 0 && !urlStr.contains(".com"))
+        {
+            guessed += ".com";
+        }
+
+        QUrl url = QUrl::fromEncoded(guessed.toUtf8(), QUrl::TolerantMode);
+
+        if (url.isValid())
+            return url;
+    }
+
+    // Fall back to QUrl's own tolerant parser.
+    QUrl url = QUrl::fromEncoded(string.toUtf8(), QUrl::TolerantMode);
+
+    // finally for cases where the user just types in a hostname add http
+    if (url.scheme().isEmpty())
+        url = QUrl::fromEncoded("http://" + string.toUtf8(), QUrl::TolerantMode);
+
+    return url;
+}
+
+/* currently not needed
 void UBWebController::getEmbeddableContent()
 {
     // Get the source code of the page
     if(mCurrentWebBrowser){
-        QNetworkAccessManager* pNam = mCurrentWebBrowser->currentTabWebView()->webPage()->networkAccessManager();
+        QNetworkAccessManager* pNam = mCurrentWebBrowser->tabWidget()->currentWebView()->webPage()->networkAccessManager();
         if(NULL != pNam){
-            QString html = mCurrentWebBrowser->currentTabWebView()->webPage()->mainFrame()->toHtml();
+            QString html = mCurrentWebBrowser->tabWidget()->currentWebView()->webPage()->mainFrame()->toHtml();
             mOEmbedParser.setNetworkAccessManager(pNam);
 
             // First, we have to check if there is some oembed content
@@ -487,14 +551,14 @@ void UBWebController::getEmbeddableContent()
         }
     }
 }
-
+*/
 void UBWebController::captureEduMedia()
 {
-    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView())
+    if (mCurrentWebBrowser && mCurrentWebBrowser->tabWidget()->currentWebView())
     {
-        QWebView* webView = mCurrentWebBrowser->currentTabWebView();
+        WebView* webView = mCurrentWebBrowser->tabWidget()->currentWebView();
         QUrl currentUrl = webView->url();
-
+/* FIXME DOM access not possible with QWebEngine
         if (isEduMedia(currentUrl))
         {
             QWebElementCollection objects = webView->page()->currentFrame()->findAllElements("object");
@@ -542,7 +606,7 @@ void UBWebController::captureEduMedia()
                     }
                 }
             }
-        }
+        }*/
     }
     else
     {
@@ -581,30 +645,32 @@ void UBWebController::loadUrl(const QUrl& url)
 {
     UBApplication::applicationController->showInternet();
     if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
-
+    {
         QDesktopServices::openUrl(url);
+    }
     else
-        mCurrentWebBrowser->loadUrlInNewTab(url);
-
-
+    {
+        WebView* view = mCurrentWebBrowser->tabWidget()->createTab();
+        view->load(url);
+    }
 }
 
 
-QWebView* UBWebController::createNewTab()
+WebView* UBWebController::createNewTab()
 {
     if (mCurrentWebBrowser)
         UBApplication::applicationController->showInternet();
 
-    return mCurrentWebBrowser->createNewTab();
+    return mCurrentWebBrowser->tabWidget()->createTab();
 }
 
 
 void UBWebController::copy()
 {
-    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView())
+    if (mCurrentWebBrowser && mCurrentWebBrowser->tabWidget()->currentWebView())
     {
-        QWebView* webView = mCurrentWebBrowser->currentTabWebView();
-        QAction *act = webView->pageAction(QWebPage::Copy);
+        WebView* webView = mCurrentWebBrowser->tabWidget()->currentWebView();
+        QAction *act = webView->pageAction(QWebEnginePage::Copy);
         if(act)
             act->trigger();
     }
@@ -613,10 +679,10 @@ void UBWebController::copy()
 
 void UBWebController::paste()
 {
-    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView())
+    if (mCurrentWebBrowser && mCurrentWebBrowser->tabWidget()->currentWebView())
     {
-        QWebView* webView = mCurrentWebBrowser->currentTabWebView();
-        QAction *act = webView->pageAction(QWebPage::Paste);
+        WebView* webView = mCurrentWebBrowser->tabWidget()->currentWebView();
+        QAction *act = webView->pageAction(QWebEnginePage::Paste);
         if(act)
             act->trigger();
     }
@@ -625,10 +691,10 @@ void UBWebController::paste()
 
 void UBWebController::cut()
 {
-    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView())
+    if (mCurrentWebBrowser && mCurrentWebBrowser->tabWidget()->currentWebView())
     {
-        QWebView* webView = mCurrentWebBrowser->currentTabWebView();
-        QAction *act = webView->pageAction(QWebPage::Cut);
+        WebView* webView = mCurrentWebBrowser->tabWidget()->currentWebView();
+        QAction *act = webView->pageAction(QWebEnginePage::Cut);
         if(act)
             act->trigger();
     }

@@ -55,25 +55,27 @@
 #include <QTime>
 #include <QWebEnginePage>
 
+#include "ui_mainWindow.h"
+
 QT_BEGIN_NAMESPACE
 class QLineEdit;
 class QProgressBar;
 QT_END_NAMESPACE
 
-class Browser;
+// FIXME class Browser;
 class TabWidget;
 class WebView;
 
-class BrowserWindow : public QMainWindow
+class BrowserWindow : public QWidget
 {
     Q_OBJECT
 
 public:
-    BrowserWindow(Browser *browser, QWebEngineProfile *profile, bool forDevTools = false);
+    BrowserWindow(QWidget *parent, Ui::MainWindow* uniboardMainWindow, QWebEngineProfile *profile, bool forDevTools = false);
     QSize sizeHint() const override;
     TabWidget *tabWidget() const;
     WebView *currentTab() const;
-    Browser *browser() { return m_browser; }
+// FIXME    Browser *browser() { return m_browser; }
 
 protected:
     void closeEvent(QCloseEvent *event) override;
@@ -98,7 +100,7 @@ private:
     QToolBar *createToolBar();
 
 private:
-    Browser *m_browser;
+    Ui::MainWindow* mUniboardMainWindow;
     QWebEngineProfile *m_profile;
     TabWidget *m_tabWidget;
     QProgressBar *m_progressBar;

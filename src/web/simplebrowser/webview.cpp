@@ -163,7 +163,7 @@ QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)
         return mainWindow->tabWidget()->createBackgroundTab();
     }
     case QWebEnginePage::WebBrowserWindow: {
-        return mainWindow->browser()->createWindow()->currentTab();
+        return nullptr; // FIXME we never create new windows mainWindow->browser()->createWindow()->currentTab();
     }
     case QWebEnginePage::WebDialog: {
         WebPopupWindow *popup = new WebPopupWindow(page()->profile());

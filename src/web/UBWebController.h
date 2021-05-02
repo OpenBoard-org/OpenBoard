@@ -31,16 +31,16 @@
 #define UBWEBCONTROLLER_H_
 
 #include <QtGui>
-#include <QWebView>
 
 #include "UBOEmbedParser.h"
+#include "simplebrowser/downloadmanagerwidget.h"
 
-class WBBrowserWindow;
+class BrowserWindow;
+class WebView;
 class UBApplication;
 class UBTrapFlashController;
 class UBMainWindow;
 class UBWebToolsPalette;
-class WBWebView;
 class UBServerXMLHttpRequest;
 
 
@@ -60,13 +60,13 @@ class UBWebController : public QObject
 
         void loadUrl(const QUrl& url);
 
-        QWebView* createNewTab();
+        WebView* createNewTab();
 
         QUrl currentPageUrl() const;
 
         void show();
 
-        WBBrowserWindow* GetCurrentWebBrowser(){return mCurrentWebBrowser;}
+        BrowserWindow* GetCurrentWebBrowser(){return mCurrentWebBrowser;}
 
 
     protected:
@@ -91,8 +91,8 @@ class UBWebController : public QObject
         void captureEduMedia();
 
         bool isOEmbedable(const QUrl& pUrl);
-        bool hasEmbeddedContent();
-        void getEmbeddableContent();
+        // FIXME bool hasEmbeddedContent();
+        // FIXME void getEmbeddableContent();
 
         bool isEduMedia(const QUrl& pUrl);
 
@@ -105,10 +105,12 @@ class UBWebController : public QObject
         void webBrowserInstance();
         void lookForEmbedContent(QString* pHtml, QString tag, QString attribute, QList<QUrl>* pList);
         void checkForOEmbed(QString* pHtml);
+        static QUrl guessUrlFromString(const QString &string);
 
         UBMainWindow *mMainWindow;
 
-        WBBrowserWindow* mCurrentWebBrowser;
+        BrowserWindow* mCurrentWebBrowser;
+        DownloadManagerWidget m_downloadManagerWidget;
 
         QWidget* mBrowserWidget;
         UBTrapFlashController* mTrapFlashController;
@@ -142,7 +144,7 @@ class UBWebController : public QObject
          */
         void imageCaptured(const QPixmap& pCapturedPixmap, bool pageMode, const QUrl& source);
 
-        void activeWebPageChanged(WBWebView* pWebView);
+        void activeWebPageChanged(WebView* pWebView);
 
 };
 

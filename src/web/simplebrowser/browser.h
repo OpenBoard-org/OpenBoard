@@ -50,7 +50,7 @@
 
 #ifndef BROWSER_H
 #define BROWSER_H
-
+/*
 #include "downloadmanagerwidget.h"
 
 #include <QVector>
@@ -74,5 +74,5 @@ private:
     QVector<BrowserWindow*> m_windows;
     DownloadManagerWidget m_downloadManagerWidget;
     QScopedPointer<QWebEngineProfile> m_otrProfile;
-};
+};*/
 #endif // BROWSER_H
