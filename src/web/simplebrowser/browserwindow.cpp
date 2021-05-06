@@ -67,9 +67,8 @@
 #include <QVBoxLayout>
 #include <QWebEngineProfile>
 
-BrowserWindow::BrowserWindow(QWidget *parent, Ui::MainWindow *uniboardMainWindow, QWebEngineProfile *profile, bool forDevTools)
+BrowserWindow::BrowserWindow(QWidget *parent, QWebEngineProfile *profile, bool forDevTools)
     : QWidget(parent)
-    , mUniboardMainWindow(uniboardMainWindow)
     , m_profile(profile)
     , m_tabWidget(new TabWidget(profile, this))
     , m_progressBar(nullptr)
@@ -143,7 +142,14 @@ BrowserWindow::BrowserWindow(QWidget *parent, Ui::MainWindow *uniboardMainWindow
     }
 
     handleWebViewTitleChanged(QString());
+    connect(m_tabWidget, &TabWidget::currentChanged, [this](int index){
+        QWidget* current = m_tabWidget->widget(index);
+
+        emit activeViewChange(current);
+        emit activeViewPageChanged();
+    });
     m_tabWidget->createTab();
+
 }
 
 QSize BrowserWindow::sizeHint() const
@@ -341,49 +347,52 @@ QToolBar *BrowserWindow::createToolBar()
     navigationBar->setMovable(false);
     navigationBar->toggleViewAction()->setEnabled(false);
 
-    m_historyBackAction = new QAction(this);
-    QList<QKeySequence> backShortcuts = QKeySequence::keyBindings(QKeySequence::Back);
-    for (auto it = backShortcuts.begin(); it != backShortcuts.end();) {
-        // Chromium already handles navigate on backspace when appropriate.
-        if ((*it)[0] == Qt::Key_Backspace)
-            it = backShortcuts.erase(it);
-        else
-            ++it;
-    }
-    // For some reason Qt doesn't bind the dedicated Back key to Back.
-    backShortcuts.append(QKeySequence(Qt::Key_Back));
-    m_historyBackAction->setShortcuts(backShortcuts);
-    m_historyBackAction->setIconVisibleInMenu(false);
-    m_historyBackAction->setIcon(QIcon(QStringLiteral(":go-previous.png")));
-    m_historyBackAction->setToolTip(tr("Go back in history"));
-    connect(m_historyBackAction, &QAction::triggered, [this]() {
-        m_tabWidget->triggerWebPageAction(QWebEnginePage::Back);
-    });
-    navigationBar->addAction(m_historyBackAction);
+// FIXME remove m_historyBackAction
+//    m_historyBackAction = new QAction(this);
+//    QList<QKeySequence> backShortcuts = QKeySequence::keyBindings(QKeySequence::Back);
+//    for (auto it = backShortcuts.begin(); it != backShortcuts.end();) {
+//        // Chromium already handles navigate on backspace when appropriate.
+//        if ((*it)[0] == Qt::Key_Backspace)
+//            it = backShortcuts.erase(it);
+//        else
+//            ++it;
+//    }
+//    // For some reason Qt doesn't bind the dedicated Back key to Back.
+//    backShortcuts.append(QKeySequence(Qt::Key_Back));
+//    m_historyBackAction->setShortcuts(backShortcuts);
+//    m_historyBackAction->setIconVisibleInMenu(false);
+//    m_historyBackAction->setIcon(QIcon(QStringLiteral(":go-previous.png")));
+//    m_historyBackAction->setToolTip(tr("Go back in history"));
+//    connect(m_historyBackAction, &QAction::triggered, [this]() {
+//        m_tabWidget->triggerWebPageAction(QWebEnginePage::Back);
+//    });
+//    navigationBar->addAction(m_historyBackAction);
 
-    m_historyForwardAction = new QAction(this);
-    QList<QKeySequence> fwdShortcuts = QKeySequence::keyBindings(QKeySequence::Forward);
-    for (auto it = fwdShortcuts.begin(); it != fwdShortcuts.end();) {
-        if (((*it)[0] & Qt::Key_unknown) == Qt::Key_Backspace)
-            it = fwdShortcuts.erase(it);
-        else
-            ++it;
-    }
-    fwdShortcuts.append(QKeySequence(Qt::Key_Forward));
-    m_historyForwardAction->setShortcuts(fwdShortcuts);
-    m_historyForwardAction->setIconVisibleInMenu(false);
-    m_historyForwardAction->setIcon(QIcon(QStringLiteral(":go-next.png")));
-    m_historyForwardAction->setToolTip(tr("Go forward in history"));
-    connect(m_historyForwardAction, &QAction::triggered, [this]() {
-        m_tabWidget->triggerWebPageAction(QWebEnginePage::Forward);
-    });
-    navigationBar->addAction(m_historyForwardAction);
+// FIXME remove m_historyForwardAction
+//    m_historyForwardAction = new QAction(this);
+//    QList<QKeySequence> fwdShortcuts = QKeySequence::keyBindings(QKeySequence::Forward);
+//    for (auto it = fwdShortcuts.begin(); it != fwdShortcuts.end();) {
+//        if (((*it)[0] & Qt::Key_unknown) == Qt::Key_Backspace)
+//            it = fwdShortcuts.erase(it);
+//        else
+//            ++it;
+//    }
+//    fwdShortcuts.append(QKeySequence(Qt::Key_Forward));
+//    m_historyForwardAction->setShortcuts(fwdShortcuts);
+//    m_historyForwardAction->setIconVisibleInMenu(false);
+//    m_historyForwardAction->setIcon(QIcon(QStringLiteral(":go-next.png")));
+//    m_historyForwardAction->setToolTip(tr("Go forward in history"));
+//    connect(m_historyForwardAction, &QAction::triggered, [this]() {
+//        m_tabWidget->triggerWebPageAction(QWebEnginePage::Forward);
+//    });
+//    navigationBar->addAction(m_historyForwardAction);
 
-    m_stopReloadAction = new QAction(this);
-    connect(m_stopReloadAction, &QAction::triggered, [this]() {
-        m_tabWidget->triggerWebPageAction(QWebEnginePage::WebAction(m_stopReloadAction->data().toInt()));
-    });
-    navigationBar->addAction(m_stopReloadAction);
+    // FIXME remove m_stopReloadAction
+//    m_stopReloadAction = new QAction(this);
+//    connect(m_stopReloadAction, &QAction::triggered, [this]() {
+//        m_tabWidget->triggerWebPageAction(QWebEnginePage::WebAction(m_stopReloadAction->data().toInt()));
+//    });
+//    navigationBar->addAction(m_stopReloadAction);
 
     m_urlLineEdit = new QLineEdit(this);
     m_favAction = new QAction(this);
@@ -494,6 +503,26 @@ void BrowserWindow::closeEvent(QCloseEvent *event)
     }
     event->accept();
     deleteLater();
+}
+
+void BrowserWindow::zoomIn()
+{
+    WebView* webView = m_tabWidget->currentWebView();
+
+    if (!webView)
+        return;
+
+    webView->setZoomFactor(webView->zoomFactor() + 0.1);
+}
+
+void BrowserWindow::zoomOut()
+{
+    WebView* webView = m_tabWidget->currentWebView();
+
+    if (!webView)
+        return;
+
+    webView->setZoomFactor(webView->zoomFactor() - 0.1);
 }
 
 TabWidget *BrowserWindow::tabWidget() const

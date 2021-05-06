@@ -64,6 +64,7 @@ class UBWebPluginFactory : public QWebPluginFactory
         Q_UNUSED(argumentNames);
         Q_UNUSED(argumentValues);
 
+        // NOTE @letsfindaway seems to be obsolete, browser has own pdf renderer
         if (mimeType == "application/x-ub-pdf")
         {
             UBWebPluginPDFWidget *pdfWidget = new UBWebPluginPDFWidget(url);

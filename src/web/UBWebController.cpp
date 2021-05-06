@@ -130,7 +130,7 @@ void UBWebController::webBrowserInstance()
         if (!mCurrentWebBrowser)
         {
             QWebEngineProfile *profile = QWebEngineProfile::defaultProfile(); // FIXME
-            mCurrentWebBrowser = new BrowserWindow(mMainWindow->centralWidget(), mMainWindow, profile);
+            mCurrentWebBrowser = new BrowserWindow(mMainWindow->centralWidget(), profile);
 
             mMainWindow->addWebWidget(mCurrentWebBrowser);
 
@@ -149,10 +149,42 @@ void UBWebController::webBrowserInstance()
 
             connect(mCurrentWebBrowser, SIGNAL(activeViewPageChanged()), this, SLOT(activePageChanged()));
 
+            // connect buttons
+            TabWidget* tabWidget = mCurrentWebBrowser->tabWidget();
+
+            connect(mMainWindow->actionWebBack, &QAction::triggered, [tabWidget]() {
+                tabWidget->triggerWebPageAction(QWebEnginePage::Back);
+            });
+
+            connect(mMainWindow->actionWebForward, &QAction::triggered, [tabWidget]() {
+                tabWidget->triggerWebPageAction(QWebEnginePage::Forward);
+            });
+
+            connect(mMainWindow->actionWebReload, &QAction::triggered, [tabWidget]() {
+                tabWidget->triggerWebPageAction(QWebEnginePage::Reload);
+            });
+
+            connect(mMainWindow->actionStopLoading, &QAction::triggered, [tabWidget]() {
+                tabWidget->triggerWebPageAction(QWebEnginePage::Stop);
+            });
+
+            connect(mMainWindow->actionHome, &QAction::triggered, [this, currentUrl](){
+                mCurrentWebBrowser->currentTab()->load(currentUrl);
+            });
+//            connect(mMainWindow->actionBookmarks, SIGNAL(triggered()), this , SLOT(bookmarks()));
+//            connect(mMainWindow->actionAddBookmark, SIGNAL(triggered()), this , SLOT(addBookmark()));
+            connect(mMainWindow->actionWebBigger, SIGNAL(triggered()), mCurrentWebBrowser, SLOT(zoomIn()));
+            connect(mMainWindow->actionWebSmaller, SIGNAL(triggered()), mCurrentWebBrowser, SLOT(zoomOut()));
+
+
             mCurrentWebBrowser->currentTab()->load(currentUrl);
 
             mCurrentWebBrowser->tabWidget()->tabBar()->show();
             // FIXME mCurrentWebBrowser->tabWidget()->lineEdits()->show();
+
+            QObject::connect(
+                QWebEngineProfile::defaultProfile(), &QWebEngineProfile::downloadRequested,
+                &m_downloadManagerWidget, &DownloadManagerWidget::downloadRequested);
         }
 
         UBApplication::applicationController->setMirrorSourceWidget(mCurrentWebBrowser->tabWidget()->currentWebView());

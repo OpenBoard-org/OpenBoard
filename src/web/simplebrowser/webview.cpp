@@ -151,16 +151,24 @@ QIcon WebView::favIcon() const
 
 QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)
 {
-    BrowserWindow *mainWindow = qobject_cast<BrowserWindow*>(window());
-    if (!mainWindow)
+    QWidget *w = this;
+    QWidget *p = w->parentWidget();
+    BrowserWindow* browserWindow;
+
+    while (!(browserWindow = qobject_cast<BrowserWindow*>(w)) && p) {
+        w = p;
+        p = p->parentWidget();
+    }
+
+    if (!browserWindow)
         return nullptr;
 
     switch (type) {
     case QWebEnginePage::WebBrowserTab: {
-        return mainWindow->tabWidget()->createTab();
+        return browserWindow->tabWidget()->createTab();
     }
     case QWebEnginePage::WebBrowserBackgroundTab: {
-        return mainWindow->tabWidget()->createBackgroundTab();
+        return browserWindow->tabWidget()->createBackgroundTab();
     }
     case QWebEnginePage::WebBrowserWindow: {
         return nullptr; // FIXME we never create new windows mainWindow->browser()->createWindow()->currentTab();

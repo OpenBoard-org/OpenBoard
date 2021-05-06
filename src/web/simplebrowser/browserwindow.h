@@ -55,8 +55,6 @@
 #include <QTime>
 #include <QWebEnginePage>
 
-#include "ui_mainWindow.h"
-
 QT_BEGIN_NAMESPACE
 class QLineEdit;
 class QProgressBar;
@@ -71,14 +69,22 @@ class BrowserWindow : public QWidget
     Q_OBJECT
 
 public:
-    BrowserWindow(QWidget *parent, Ui::MainWindow* uniboardMainWindow, QWebEngineProfile *profile, bool forDevTools = false);
+    BrowserWindow(QWidget *parent, QWebEngineProfile *profile, bool forDevTools = false);
     QSize sizeHint() const override;
     TabWidget *tabWidget() const;
     WebView *currentTab() const;
 // FIXME    Browser *browser() { return m_browser; }
 
+signals:
+    void activeViewPageChanged();
+    void activeViewChange(QWidget*);
+
 protected:
     void closeEvent(QCloseEvent *event) override;
+
+public slots:
+    void zoomIn();
+    void zoomOut();
 
 private slots:
     void handleNewWindowTriggered();
@@ -100,7 +106,6 @@ private:
     QToolBar *createToolBar();
 
 private:
-    Ui::MainWindow* mUniboardMainWindow;
     QWebEngineProfile *m_profile;
     TabWidget *m_tabWidget;
     QProgressBar *m_progressBar;
