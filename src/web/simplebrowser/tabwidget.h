@@ -78,6 +78,7 @@ signals:
     void favIconChanged(const QIcon &icon);
     void webActionEnabledChanged(QWebEnginePage::WebAction action, bool enabled);
     void devToolsRequested(QWebEnginePage *source);
+    void tabClosing(WebView* webView);
 
 public slots:
     // current tab/page slots

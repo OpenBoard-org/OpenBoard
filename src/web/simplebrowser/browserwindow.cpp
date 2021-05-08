@@ -67,6 +67,10 @@
 #include <QVBoxLayout>
 #include <QWebEngineProfile>
 
+#include "core/UBApplication.h"
+#include "core/UBApplicationController.h"
+#include "core/UBDisplayManager.h"
+
 BrowserWindow::BrowserWindow(QWidget *parent, QWebEngineProfile *profile, bool forDevTools)
     : QWidget(parent)
     , m_profile(profile)
@@ -79,6 +83,7 @@ BrowserWindow::BrowserWindow(QWidget *parent, QWebEngineProfile *profile, bool f
     , m_stopReloadAction(nullptr)
     , m_urlLineEdit(nullptr)
     , m_favAction(nullptr)
+    , m_InspectorWindow(nullptr)
 {
     setAttribute(Qt::WA_DeleteOnClose, true);
     setFocusPolicy(Qt::ClickFocus);
@@ -148,6 +153,7 @@ BrowserWindow::BrowserWindow(QWidget *parent, QWebEngineProfile *profile, bool f
         emit activeViewChange(current);
         emit activeViewPageChanged();
     });
+    connect(m_tabWidget, &TabWidget::tabClosing, this, &BrowserWindow::handleTabClosing);
     m_tabWidget->createTab();
 
 }
@@ -571,7 +577,53 @@ void BrowserWindow::handleShowWindowTriggered()
 
 void BrowserWindow::handleDevToolsRequested(QWebEnginePage *source)
 {
-    // FIXME use same mechanism as for the widget apps
-//    source->setDevToolsPage(m_browser->createDevToolsWindow()->currentTab()->page());
-//    source->triggerAction(QWebEnginePage::InspectElement);
+    // use same mechanism as for the widget apps
+    if (m_InspectorWindow)
+    {
+        QWebEngineView *inspector = qobject_cast<QWebEngineView*>(m_InspectorWindow->centralWidget());
+
+        if (inspector && inspector->page()->inspectedPage() != source) {
+            source->setDevToolsPage(inspector->page());
+        }
+
+        m_InspectorWindow->activateWindow();
+    }
+    else
+    {
+        QRect controlGeometry = UBApplication::applicationController->displayManager()->controlGeometry();
+        QRect inspectorGeometry(controlGeometry.left() + 50, controlGeometry.top() + 50, controlGeometry.width() / 2, controlGeometry.height() / 2);
+
+        m_InspectorWindow = new QMainWindow();
+        m_InspectorWindow->setAttribute(Qt::WA_DeleteOnClose, true);
+        m_InspectorWindow->setFocusPolicy(Qt::ClickFocus);
+
+        QWebEngineView *inspector = new QWebEngineView();
+        m_InspectorWindow->setCentralWidget(inspector);
+        m_InspectorWindow->setGeometry(inspectorGeometry);
+        m_InspectorWindow->show();
+
+        source->setDevToolsPage(inspector->page());
+        source->triggerAction(QWebEnginePage::InspectElement);
+
+        connect(m_InspectorWindow, &QObject::destroyed, [this](){
+            m_InspectorWindow = nullptr;
+        });
+    }
+}
+
+void BrowserWindow::handleTabClosing(WebView* webView)
+{
+    // close inspector window if it is attached to the source page
+    if (webView && m_InspectorWindow)
+    {
+        QWebEnginePage* source = webView->page();
+        QWebEngineView *inspector = qobject_cast<QWebEngineView*>(m_InspectorWindow->centralWidget());
+
+        if (inspector && inspector->page()->inspectedPage() == source)
+        {
+            m_InspectorWindow->close();
+            m_InspectorWindow->deleteLater();
+            m_InspectorWindow = nullptr;
+        }
+    }
 }

@@ -240,6 +240,7 @@ void TabWidget::closeOtherTabs(int index)
 void TabWidget::closeTab(int index)
 {
     if (WebView *view = webView(index)) {
+        emit tabClosing(view);
         bool hasFocus = view->hasFocus();
         removeTab(index);
         if (hasFocus && count() > 0)

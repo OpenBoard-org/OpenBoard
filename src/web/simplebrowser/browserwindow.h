@@ -96,6 +96,7 @@ private slots:
     void handleWebViewTitleChanged(const QString &title);
     void handleWebActionEnabledChanged(QWebEnginePage::WebAction action, bool enabled);
     void handleDevToolsRequested(QWebEnginePage *source);
+    void handleTabClosing(WebView *webView);
 
 private:
     QMenu *createFileMenu(TabWidget *tabWidget);
@@ -117,6 +118,7 @@ private:
     QLineEdit *m_urlLineEdit;
     QAction *m_favAction;
     QString m_lastSearch;
+    QMainWindow* m_InspectorWindow;
 };
 
 #endif // BROWSERWINDOW_H

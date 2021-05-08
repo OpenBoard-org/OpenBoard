@@ -33,6 +33,7 @@
 #include <QWebFrame>
 #include <QWebElementCollection>
 #include <QWebEngineProfile>
+#include <QWebEngineSettings>
 
 #include "frameworks/UBPlatformUtils.h"
 
@@ -129,8 +130,10 @@ void UBWebController::webBrowserInstance()
     {
         if (!mCurrentWebBrowser)
         {
+            QWebEngineSettings::defaultSettings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
             QWebEngineProfile *profile = QWebEngineProfile::defaultProfile(); // FIXME
-            mCurrentWebBrowser = new BrowserWindow(mMainWindow->centralWidget(), profile);
+            profile->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+            mCurrentWebBrowser = new BrowserWindow(nullptr, profile);
 
             mMainWindow->addWebWidget(mCurrentWebBrowser);
 
