@@ -13,13 +13,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-function init(){
+async function init(){
     var embed;
     var lang = "";
     
     if(window.sankore){
         try{
-            lang = sankore.locale().substr(0,2);
+            lang = sankore.lang.substr(0,2);
             sankoreLang[lang].embed;
         } catch(e){
             lang = "en";
@@ -105,14 +105,13 @@ function init(){
         }		
     });
 	
-    if(window.sankore){
+    if (window.sankore.async) {
+        var loadEmbed = unescape(await window.sankore.async.preference("embed", ""));
 
-        if(window.sankore.preferenceKeys().length != 0){
-
-            var loadEmbed = unescape(window.sankore.preference("embed"));
+        if (loadEmbed !== "") {
             inputBox.val(loadEmbed);
-            submit.trigger("click");	
-        }	
+            submit.trigger("click");
+        }
     }
     
     if (window.widget) {
@@ -121,4 +120,11 @@ function init(){
         }
     }
 
+    window.onresize = function(event) {
+        var child = $(loadWindow).children()[0];
+        if (child) {
+            child.width = document.documentElement.clientWidth;
+            child.height = document.documentElement.clientHeight;
+        }
+    };
 }

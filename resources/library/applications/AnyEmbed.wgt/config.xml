@@ -5,7 +5,7 @@
         version="1.1"
         width="477"
         height="85" 
-		ub:resizable="false">        
+		ub:resizable="true">        
   <name>AnyEmbed</name>
   <content src="index.html"/> 
 </widget>

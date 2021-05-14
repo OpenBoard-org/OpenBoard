@@ -113,7 +113,6 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     viewPalette.setBrush(QPalette::Window, QBrush(Qt::transparent));
     setPalette(viewPalette);
 
-
     setDelegate(new UBGraphicsWidgetItemDelegate(this));
 
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);

@@ -1727,21 +1727,35 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
 
 
 
-UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const QUrl& pContentUrl, const QPointF& pPos)
+UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const sOEmbedContent &content, const QPointF& pPos)
 {
     QStringList widgetPaths = UBPersistenceManager::persistenceManager()->allWidgets(UBSettings::settings()->applicationApplicationsLibraryDirectory());
 
     UBGraphicsW3CWidgetItem *widget = 0;
+    QString html;
 
+    if (content.type == "video")
+    {
+        html = content.html;
+    }
+    else if (content.type == "photo")
+    {
+        html = "<img src=\"" + content.url + "\"/>";
+    }
+
+    // use the html in AnyEmbed
+    // TODO allow to adapt the size, probably also later within the AnyEmbed widget
     foreach(QString widgetPath, widgetPaths)
     {
-        if (widgetPath.contains("VideoPicker"))
+        if (widgetPath.contains("AnyEmbed"))
         {
-            widget = addW3CWidget(QUrl::fromLocalFile(widgetPath), pPos);
+            widget = dynamic_cast<UBGraphicsW3CWidgetItem*>(UBApplication::boardController->addW3cWidget(QUrl::fromLocalFile(widgetPath), pPos));
+            // FIXME may be race condition between displaying the widget and setting the preference
 
             if (widget)
             {
-                widget->setPreference("oembedUrl", pContentUrl.toString());
+                qDebug() << "Launching AnyEmbed with html " << html;
+                widget->setPreference("embed", html);
                 setDocumentUpdated();
                 break;
             }

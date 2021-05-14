@@ -37,15 +37,22 @@
 #include <QJsonObject>
 
 #include "UBOEmbedParser.h"
+#include "network/UBNetworkAccessManager.h"
 
 #include "core/memcheck.h"
 
+// FIXME There is only one UBOEmbedParser for the UBWebController.
+// We have to avoid that parsing is triggered by multiple tabs.
+// FIXME QNetworkAccessManager for the parser.
+// Check where UBNetworkAccessManager is used and what this means.
 UBOEmbedParser::UBOEmbedParser(QObject *parent, const char* name)
+    : mpNam(nullptr)
 {
     Q_UNUSED(parent);
     setObjectName(name);
     mParsedTitles.clear();
     connect(this, SIGNAL(parseContent(QString)), this, SLOT(onParseContent(QString)));
+    setNetworkAccessManager(UBNetworkAccessManager::defaultAccessManager());
 }
 
 UBOEmbedParser::~UBOEmbedParser()
@@ -62,6 +69,7 @@ void UBOEmbedParser::setNetworkAccessManager(QNetworkAccessManager *nam)
 void UBOEmbedParser::parse(const QString& html)
 {
     mContents.clear();
+    mParsedTitles.clear();
     QString query = "<link([^>]*)>";
     QRegExp exp(query);
     QStringList results;
@@ -100,6 +108,7 @@ void UBOEmbedParser::parse(const QString& html)
     }
 
     mPending = oembedUrls.size();
+    qDebug() << "EmbedParser.parse, pending =" << mPending;
 
     if(0 == mPending){
         emit oembedParsed(mContents);
@@ -152,6 +161,7 @@ sOEmbedContent UBOEmbedParser::getJSONInfos(const QString &json)
     if("photo" == content.type){
         content.url = jsonObject.value("url").toString();
     }else if("video" == content.type){
+        // FIXME for videos we should use the HTML as provided and not parse it further
         QStringList strl = content.html.split('\"');
         for(int i=0; i<strl.size(); i++){
             if(strl.at(i).endsWith("src=") && strl.size() > (i+1)){
@@ -159,6 +169,7 @@ sOEmbedContent UBOEmbedParser::getJSONInfos(const QString &json)
             }
         }
     }
+    // TODO any relevance of content type "rich"?
 
     return content;
 }
@@ -212,6 +223,7 @@ sOEmbedContent UBOEmbedParser::getXMLInfos(const QString &xml)
         }
     }
 
+    // FIXME for videos we should use the HTML as provided and not parse it further
     if("video" == content.type){
         QStringList strl = content.html.split('\"');
         for(int i=0; i<strl.size(); i++){
@@ -237,26 +249,28 @@ void UBOEmbedParser::onParseContent(QString url)
 
 void UBOEmbedParser::onFinished(QNetworkReply *reply)
 {
-    if(QNetworkReply::NoError == reply->error()){
+    if (QNetworkReply::NoError == reply->error()) {
         QString receivedDatas = reply->readAll().constData();
         sOEmbedContent crntContent;
         // The received datas can be in two different formats: JSON or XML
-        if(receivedDatas.contains("<oembed>")){
+        QString contentType = reply->header(QNetworkRequest::ContentTypeHeader).toString();
+
+        if (contentType.contains("xml")) {
             // XML !
             crntContent = getXMLInfos(receivedDatas);
-        }else if(receivedDatas.contains("{\"provider_url")){
+        } else if (contentType.contains("json")) {
             // JSON !
             crntContent = getJSONInfos(receivedDatas);
         }
 
         //  As we don't want duplicates, we have to check if the content title has already
         //  been parsed.
-        if("" != crntContent.title && !mParsedTitles.contains(crntContent.title)){
+        if ("" != crntContent.title && !mParsedTitles.contains(crntContent.title)) {
             mParsedTitles << crntContent.title;
             mContents << crntContent;
         }
 
-    }else{
+    } else {
         //  We decided to not handle the error case here. If there is a problem with
         //  getting the oembed content information, we just don't handle it: the content
         //  will not be available for importation.
@@ -264,7 +278,8 @@ void UBOEmbedParser::onFinished(QNetworkReply *reply)
 
     // Decrement the number of content to analyze
     mPending--;
-    if(0 == mPending){
+
+    if (0 == mPending) {
         //  All the oembed contents have been parsed. We notify it!
         emit oembedParsed(mContents);
     }

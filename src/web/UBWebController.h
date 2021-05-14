@@ -91,8 +91,8 @@ class UBWebController : public QObject
         void captureEduMedia();
 
         bool isOEmbedable(const QUrl& pUrl);
-        // FIXME bool hasEmbeddedContent();
-        // FIXME void getEmbeddableContent();
+        //bool hasEmbeddedContent();
+        void getEmbeddableContent();
 
         bool isEduMedia(const QUrl& pUrl);
 
@@ -104,7 +104,7 @@ class UBWebController : public QObject
         void initialiazemOEmbedProviders();
         void webBrowserInstance();
         void lookForEmbedContent(QString* pHtml, QString tag, QString attribute, QList<QUrl>* pList);
-        void checkForOEmbed(QString* pHtml);
+        void checkForOEmbed(const QString& html);
         static QUrl guessUrlFromString(const QString &string);
 
         UBMainWindow *mMainWindow;
@@ -123,7 +123,7 @@ class UBWebController : public QObject
         QStringList mOEmbedProviders;
 
         UBOEmbedParser mOEmbedParser;
-
+        QVector<sOEmbedContent> contents;
 
     private slots:
 
@@ -132,8 +132,11 @@ class UBWebController : public QObject
 
         void toggleWebTrap(bool checked);
 
+//        void onLoadFinished();
         void onOEmbedParsed(QVector<sOEmbedContent> contents);
         void onOpenTutorial();
+
+        void createEmbeddedContentWidget();
 
 
     signals:
