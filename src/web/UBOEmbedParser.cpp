@@ -25,7 +25,7 @@
  */
 
 
-
+#include "UBOEmbedParser.h"
 
 #include <QRegExp>
 #include <QStringList>
@@ -35,24 +35,108 @@
 #include <QDebug>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QWebEngineView>
 
-#include "UBOEmbedParser.h"
 #include "network/UBNetworkAccessManager.h"
 
 #include "core/memcheck.h"
 
-// FIXME There is only one UBOEmbedParser for the UBWebController.
-// We have to avoid that parsing is triggered by multiple tabs.
-// FIXME QNetworkAccessManager for the parser.
-// Check where UBNetworkAccessManager is used and what this means.
-UBOEmbedParser::UBOEmbedParser(QObject *parent, const char* name)
-    : mpNam(nullptr)
+
+UBOEmbedContent::UBOEmbedContent()
+    : mType(UBOEmbedType::UNKNOWN), mThumbWidth(0), mThumbHeight(0), mWidth(0), mHeight(0)
 {
-    Q_UNUSED(parent);
+
+}
+
+UBOEmbedType UBOEmbedContent::type() const
+{
+    return mType;
+}
+
+QString UBOEmbedContent::title() const
+{
+    return mTitle;
+}
+
+QString UBOEmbedContent::authorName() const
+{
+    return mAuthorName;
+}
+
+QUrl UBOEmbedContent::authorUrl() const
+{
+    return mAuthorUrl;
+}
+
+QString UBOEmbedContent::providerName() const
+{
+    return mProviderName;
+}
+
+QUrl UBOEmbedContent::providerUrl() const
+{
+    return mProviderUrl;
+}
+
+QUrl UBOEmbedContent::thumbUrl() const
+{
+    return mThumbUrl;
+}
+
+int UBOEmbedContent::thumbWidth() const
+{
+    return mThumbWidth;
+}
+
+int UBOEmbedContent::thumbHeight() const
+{
+    return mThumbHeight;
+}
+
+int UBOEmbedContent::width() const
+{
+    return mWidth;
+}
+
+int UBOEmbedContent::height() const
+{
+    return mHeight;
+}
+
+QString UBOEmbedContent::html() const
+{
+    return mHtml;
+}
+
+QUrl UBOEmbedContent::url() const
+{
+    return mUrl;
+}
+
+
+UBOEmbedParser::UBOEmbedParser(QWebEngineView *parent, const char* name)
+    : QObject(parent)
+{
     setObjectName(name);
-    mParsedTitles.clear();
-    connect(this, SIGNAL(parseContent(QString)), this, SLOT(onParseContent(QString)));
-    setNetworkAccessManager(UBNetworkAccessManager::defaultAccessManager());
+    mView = parent;
+    mpNam = UBNetworkAccessManager::defaultAccessManager();
+    mParsing = false;
+    mPending = 0;
+
+    connect(mView, &QWebEngineView::loadProgress, [this](int progress){
+        // Note: The loadFinished signal is not always emitted, but progress = 100 is.
+        if (progress == 100)
+        {
+            onLoadFinished();
+        }
+    });
+// DEBUG
+//    connect(mView, &QWebEngineView::loadStarted, [](){qDebug() << QDateTime::currentDateTime().toString(Qt::ISODateWithMs) << "loadStarted";});
+//    connect(mView, &QWebEngineView::loadProgress, [](int p){qDebug() << QDateTime::currentDateTime().toString(Qt::ISODateWithMs) << "loadProgress" << p;});
+//    connect(mView, &QWebEngineView::loadFinished, [](){qDebug() << QDateTime::currentDateTime().toString(Qt::ISODateWithMs) << "loadFinished";});
+//    connect(mView, &QWebEngineView::renderProcessTerminated, [](){qDebug() << QDateTime::currentDateTime().toString(Qt::ISODateWithMs) << "renderProcessTerminated";});
+//    connect(mView, &QWebEngineView::urlChanged, [](){qDebug() << QDateTime::currentDateTime().toString(Qt::ISODateWithMs) << "urlChanged";});
+    qDebug() << "Created UBOEmbedParser";
 }
 
 UBOEmbedParser::~UBOEmbedParser()
@@ -60,198 +144,109 @@ UBOEmbedParser::~UBOEmbedParser()
 
 }
 
-void UBOEmbedParser::setNetworkAccessManager(QNetworkAccessManager *nam)
+bool UBOEmbedParser::hasEmbeddedContent()
 {
-    mpNam = nam;
-    connect(mpNam, SIGNAL(finished(QNetworkReply*)), this, SLOT(onFinished(QNetworkReply*)));
+    return !mContents.empty();
+}
+
+QVector<UBOEmbedContent> UBOEmbedParser::embeddedContent()
+{
+    return mContents;
+}
+
+void UBOEmbedParser::onLoadFinished()
+{
+    qDebug() << "loadFinished";
+    if (!mParsing)
+    {
+        mParsing = true;
+        mView->page()->toHtml([this](const QString &html) {
+            parse(html);
+        });
+    }
 }
 
 void UBOEmbedParser::parse(const QString& html)
 {
+    qDebug() << "parse" << html.length();
     mContents.clear();
     mParsedTitles.clear();
-    QString query = "<link([^>]*)>";
-    QRegExp exp(query);
+
+    // extract all <link> tags
+    QRegExp exp("<link([^>]*)>");
     QStringList results;
     int count = 0;
     int pos = 0;
-    while ((pos = exp.indexIn(html, pos)) != -1) {
+
+    while ((pos = exp.indexIn(html, pos)) != -1)
+    {
         ++count;
         pos += exp.matchedLength();
         QStringList res = exp.capturedTexts();
-        if("" != res.at(1)){
+
+        if ("" != res.at(1)) {
             results << res.at(1);
         }
     }
 
     QVector<QString> oembedUrls;
 
-    if(2 <= results.size()){
-        for(int i=1; i<results.size(); i++){
-            if("" != results.at(i)){
-                QString qsNode = QString("<link%0>").arg(results.at(i));
-                QDomDocument domDoc;
-                domDoc.setContent(qsNode);
-                QDomNode linkNode = domDoc.documentElement();
+    for (const QString& link : results)
+    {
+        QString qsNode = QString("<link%0>").arg(link);
+        QDomDocument domDoc;
+        domDoc.setContent(qsNode);
+        QDomElement linkNode = domDoc.documentElement();
 
-                //  At this point, we have a node that is the <link> element. Now we have to parse its attributes
-                //  in order to check if it is a oEmbed node or not
-                QDomAttr typeAttribute = linkNode.toElement().attributeNode("type");
-                if(typeAttribute.value().contains("oembed")){
-                    // The node is an oembed one! We have to get the url and the type of oembed encoding
-                    QDomAttr hrefAttribute = linkNode.toElement().attributeNode("href");
-                    QString url = hrefAttribute.value();
-                    oembedUrls.append(url);
-                }
-            }
+        //  At this point, we have a node that is the <link> element. Now we have to parse its attributes
+        //  in order to check if it is a oEmbed node or not
+        QDomAttr typeAttribute = linkNode.attributeNode("type");
+
+        if (typeAttribute.value().contains("oembed"))
+        {
+            // The node is an oembed one! We have to get the url
+            QDomAttr hrefAttribute = linkNode.attributeNode("href");
+            QString url = hrefAttribute.value();
+            oembedUrls.append(url);
         }
     }
 
     mPending = oembedUrls.size();
-    qDebug() << "EmbedParser.parse, pending =" << mPending;
+    qDebug() << "UBOEmbedParser.parse, pending =" << mPending;
 
-    if(0 == mPending){
-        emit oembedParsed(mContents);
-    }else{
+    if (0 == mPending)
+    {
+        emit parseResult(mView, false);
+        mParsing = false;
+    }
+    else
+    {
         // Here we start the parsing (finally...)!
-        for(int i=0; i<oembedUrls.size(); i++){
-            emit parseContent(oembedUrls.at(i));
+        for(const QString& url : oembedUrls)
+        {
+            fetchOEmbed(url);
         }
     }
 }
 
-/**
-  /brief Extract the oembed infos from the JSON
-  @param jsonUrl as the url of the JSON file
-  */
-sOEmbedContent UBOEmbedParser::getJSONInfos(const QString &json)
-{
-    sOEmbedContent content;
-
-    QJsonObject jsonObject = QJsonDocument::fromJson(json.toUtf8()).object();
-
-    QString providerUrl = jsonObject.value("provider_url").toString();
-    QString title = jsonObject.value("title").toString();
-    QString html = jsonObject.value("html").toString();
-    QString authorName = jsonObject.value("author_name").toString();
-    int height = jsonObject.value("height").toInt();
-    int thumbnailWidth = jsonObject.value("thumbnail_width").toInt();
-    int width = jsonObject.value("width").toInt();
-    float version = jsonObject.value("version").toString().toFloat();
-    QString authorUrl = jsonObject.value("author_url").toString();
-    QString providerName = jsonObject.value("provider_name").toString();
-    QString thumbnailUrl = jsonObject.value("thumbnail_url").toString();
-    QString type = jsonObject.value("type").toString();
-    int thumbnailHeight = jsonObject.value("thumbnail_height").toInt();
-
-    content.providerUrl = providerUrl;
-    content.title = title;
-    content.html = html;
-    content.author = authorName;
-    content.height = height;
-    content.thumbWidth = thumbnailWidth;
-    content.width = width;
-    content.version = version;
-    content.authorUrl = authorUrl;
-    content.providerName = providerName;
-    content.thumbUrl = thumbnailUrl;
-    content.type = type;
-    content.thumbHeight = thumbnailHeight;
-
-    if("photo" == content.type){
-        content.url = jsonObject.value("url").toString();
-    }else if("video" == content.type){
-        // FIXME for videos we should use the HTML as provided and not parse it further
-        QStringList strl = content.html.split('\"');
-        for(int i=0; i<strl.size(); i++){
-            if(strl.at(i).endsWith("src=") && strl.size() > (i+1)){
-                content.url = strl.at(i+1);
-            }
-        }
-    }
-    // TODO any relevance of content type "rich"?
-
-    return content;
-}
-
-/**
-  /brief Extract the oembed infos from the XML
-  @param xmlUrl as the url of the XML file
-  */
-sOEmbedContent UBOEmbedParser::getXMLInfos(const QString &xml)
-{
-    sOEmbedContent content;
-
-    QDomDocument domDoc;
-    domDoc.setContent(xml);
-    QDomNode oembed = domDoc.documentElement();
-
-    QDomNodeList children = oembed.toElement().childNodes();
-
-    for(int i=0; i<children.size(); i++){
-        QDomNode node = children.at(i);
-        QString tag = node.nodeName();
-        QString value = node.toElement().text();
-        if("provider_url" == tag){
-            content.providerUrl = value;
-        }else if("title" == tag){
-            content.title = value;
-        }else if("html" == tag){
-            content.html = value;
-        }else if("author_name" == tag){
-            content.author = value;
-        }else if("height" == tag){
-            content.height = value.toInt();
-        }else if("thumbnail_width" == tag){
-            content.thumbWidth = value.toInt();
-        }else if("width" == tag){
-            content.width = value.toInt();
-        }else if("version" == tag){
-            content.version = value.toFloat();
-        }else if("author_url" == tag){
-            content.authorUrl = value;
-        }else if("provider_name" == tag){
-            content.providerName = value;
-        }else if("thumbnail_url" == tag){
-            content.thumbUrl = value;
-        }else if("type" == tag){
-            content.type = value;
-        }else if("thumbnail_height" == tag){
-            content.thumbHeight = value.toInt();
-        }else if("url" == tag){
-            content.url = value; // This case appears only for type = photo
-        }
-    }
-
-    // FIXME for videos we should use the HTML as provided and not parse it further
-    if("video" == content.type){
-        QStringList strl = content.html.split('\"');
-        for(int i=0; i<strl.size(); i++){
-            if(strl.at(i).endsWith("src=") && strl.size() > (i+1)){
-                content.url = strl.at(i+1);
-            }
-        }
-    }
-
-    return content;
-}
-
-void UBOEmbedParser::onParseContent(QString url)
+void UBOEmbedParser::fetchOEmbed(const QString &url)
 {
     QUrl qurl = QUrl::fromEncoded(url.toLatin1());
 
-    QNetworkRequest req;
-    req.setUrl(qurl);
-    if(NULL != mpNam){
-        mpNam->get(req);
-    }
+    QNetworkRequest req(qurl);
+    QNetworkReply* reply = mpNam->get(req);
+    connect(reply, &QNetworkReply::finished, [this,reply](){
+        onFinished(reply);
+    });
 }
 
 void UBOEmbedParser::onFinished(QNetworkReply *reply)
 {
-    if (QNetworkReply::NoError == reply->error()) {
+    if (QNetworkReply::NoError == reply->error())
+    {
         QString receivedDatas = reply->readAll().constData();
-        sOEmbedContent crntContent;
+        qDebug() << "Received oEmbed" << receivedDatas;
+        UBOEmbedContent crntContent;
         // The received datas can be in two different formats: JSON or XML
         QString contentType = reply->header(QNetworkRequest::ContentTypeHeader).toString();
 
@@ -265,8 +260,9 @@ void UBOEmbedParser::onFinished(QNetworkReply *reply)
 
         //  As we don't want duplicates, we have to check if the content title has already
         //  been parsed.
-        if ("" != crntContent.title && !mParsedTitles.contains(crntContent.title)) {
-            mParsedTitles << crntContent.title;
+        if ("" != crntContent.mTitle && !mParsedTitles.contains(crntContent.mTitle)) {
+            qDebug() << "Found" << crntContent.mTitle;
+            mParsedTitles << crntContent.mTitle;
             mContents << crntContent;
         }
 
@@ -278,9 +274,140 @@ void UBOEmbedParser::onFinished(QNetworkReply *reply)
 
     // Decrement the number of content to analyze
     mPending--;
+    qDebug() << "Remaining pending" << mPending;
 
     if (0 == mPending) {
         //  All the oembed contents have been parsed. We notify it!
-        emit oembedParsed(mContents);
+        emit parseResult(mView, hasEmbeddedContent());
+        mParsing = false;
     }
+
+    reply->deleteLater();
+}
+
+/**
+  /brief Extract the oembed infos from the JSON
+  @param jsonUrl as the url of the JSON file
+  */
+UBOEmbedContent UBOEmbedParser::getJSONInfos(const QString &json) const
+{
+    UBOEmbedContent content;
+
+    QJsonObject jsonObject = QJsonDocument::fromJson(json.toUtf8()).object();
+    QString version = jsonObject.value("version").toString();
+
+    if (version != "1.0") {
+        qDebug() << "Unknown oEmbed version" << version;
+        return content;
+    }
+
+    QString type = jsonObject.value("type").toString();
+
+    if (type == "photo")
+    {
+        content.mType = UBOEmbedType::PHOTO;
+    }
+    else if (type == "video")
+    {
+        content.mType = UBOEmbedType::VIDEO;
+    }
+    else if (type == "link")
+    {
+        content.mType = UBOEmbedType::LINK;
+    }
+    else if (type == "rich")
+    {
+        content.mType = UBOEmbedType::RICH;
+    }
+
+    content.mTitle = jsonObject.value("title").toString();
+    content.mAuthorName = jsonObject.value("author_name").toString();
+    content.mAuthorUrl = jsonObject.value("author_url").toString();
+    content.mProviderName = jsonObject.value("provider_name").toString();
+    content.mProviderUrl = jsonObject.value("provider_url").toString();
+    content.mThumbUrl = jsonObject.value("thumbnail_url").toString();
+    content.mThumbWidth = jsonObject.value("thumbnail_width").toInt();
+    content.mThumbHeight = jsonObject.value("thumbnail_height").toInt();
+    content.mWidth = jsonObject.value("width").toInt();
+    content.mHeight = jsonObject.value("height").toInt();
+    content.mHtml = jsonObject.value("html").toString();
+    content.mUrl = jsonObject.value("url").toString();
+
+    return content;
+}
+
+/**
+  /brief Extract the oembed infos from the XML
+  @param xmlUrl as the url of the XML file
+  */
+UBOEmbedContent UBOEmbedParser::getXMLInfos(const QString &xml) const
+{
+    UBOEmbedContent content;
+
+    QDomDocument domDoc;
+    domDoc.setContent(xml);
+    QDomElement oembed = domDoc.documentElement();
+
+    QString version = oembed.firstChildElement("version").text();
+
+    if (version != "1.0") {
+        qDebug() << "Unknown oEmbed version" << version;
+        return content;
+    }
+
+    QString type = oembed.firstChildElement("type").text();
+
+    if (type == "photo")
+    {
+        content.mType = UBOEmbedType::PHOTO;
+    }
+    else if (type == "video")
+    {
+        content.mType = UBOEmbedType::VIDEO;
+    }
+    else if (type == "link")
+    {
+        content.mType = UBOEmbedType::LINK;
+    }
+    else if (type == "rich")
+    {
+        content.mType = UBOEmbedType::RICH;
+    }
+
+    QDomNodeList children = oembed.childNodes();
+
+    for (int i = 0; i < children.size(); ++i)
+    {
+        QDomNode child = children.at(i);
+        QString tag = child.nodeName();
+        QString value = child.toElement().text();
+
+        if ("provider_url" == tag) {
+            content.mProviderUrl = value;
+        } else if ("title" == tag) {
+            content.mTitle = value;
+        } else if ("html" == tag) {
+            content.mHtml = value;
+        } else if ("author_name" == tag) {
+            content.mAuthorName = value;
+        } else if ("height" == tag) {
+            content.mHeight = value.toInt();
+        } else if ("thumbnail_width" == tag) {
+            content.mThumbWidth = value.toInt();
+        } else if ("width" == tag) {
+            content.mWidth = value.toInt();
+        } else if ("author_url" == tag) {
+            content.mAuthorUrl = value;
+        } else if ("provider_name" == tag) {
+            content.mProviderName = value;
+        } else if ("thumbnail_url" == tag) {
+            content.mThumbUrl = value;
+        } else if ("thumbnail_height" == tag) {
+            content.mThumbHeight = value.toInt();
+        } else if ("url" == tag) {
+            content.mUrl = value; // This case appears only for type = photo
+        }
+    }
+
+    return content;
 }

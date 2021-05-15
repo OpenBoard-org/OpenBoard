@@ -65,7 +65,7 @@ async function init(){
 	
     //FIT WIDGET FRAME ON LAUNCH...
     if(window.sankore){
-        window.sankore.resize($("#ubwidget").width() + 20,85);
+        //window.sankore.resize($("#ubwidget").width() + 20,85);
     }
 	
     searchWrap.append(inputBox)
@@ -90,7 +90,7 @@ async function init(){
             }
 
             if(window.sankore){
-                window.sankore.resize($(document).width(),$(document).height());
+                //window.sankore.resize($(document).width(),$(document).height());
                 window.sankore.setPreference("embed", escape(embed));
             }
         } else{

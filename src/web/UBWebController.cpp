@@ -78,37 +78,18 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
     , mToolsPalettePositionned(false)
     , mDownloadViewIsVisible(false)
 {
-    connect(&mOEmbedParser, SIGNAL(oembedParsed(QVector<sOEmbedContent>)), this, SLOT(onOEmbedParsed(QVector<sOEmbedContent>)));
-
-    // TODO : Comment the next line to continue the Youtube button bugfix
-    initialiazemOEmbedProviders();
-
     connect(mMainWindow->actionOpenTutorial,SIGNAL(triggered()),this, SLOT(onOpenTutorial()));
+
+    webProfile = new QWebEngineProfile("OpenBoardWeb", this);
+    QWebEngineSettings* settings = webProfile->settings();
+    settings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+
 }
 
 
 UBWebController::~UBWebController()
 {
     // NOOP
-}
-
-void UBWebController::initialiazemOEmbedProviders()
-{
-    mOEmbedProviders << "5min.com";
-    mOEmbedProviders << "amazon.com";
-    mOEmbedProviders << "flickr";
-    mOEmbedProviders << "video.google.";
-    mOEmbedProviders << "hulu.com";
-    mOEmbedProviders << "imdb.com";
-    mOEmbedProviders << "metacafe.com";
-    mOEmbedProviders << "qik.com";
-    mOEmbedProviders << "slideshare";
-    mOEmbedProviders << "twitpic.com";
-    mOEmbedProviders << "viddler.com";
-    mOEmbedProviders << "vimeo.com";
-    mOEmbedProviders << "wikipedia.org";
-    mOEmbedProviders << "wordpress.com";
-    mOEmbedProviders << "youtube.com";
 }
 
 void UBWebController::webBrowserInstance()
@@ -124,10 +105,7 @@ void UBWebController::webBrowserInstance()
     {
         if (!mCurrentWebBrowser)
         {
-            QWebEngineSettings::defaultSettings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-            QWebEngineProfile *profile = QWebEngineProfile::defaultProfile(); // FIXME
-            profile->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-            mCurrentWebBrowser = new BrowserWindow(nullptr, profile);
+            mCurrentWebBrowser = new BrowserWindow(nullptr, webProfile);
 
             mMainWindow->addWebWidget(mCurrentWebBrowser);
 
@@ -145,6 +123,11 @@ void UBWebController::webBrowserInstance()
             mTrapFlashController = new UBTrapFlashController(mCurrentWebBrowser);
 
             connect(mCurrentWebBrowser, SIGNAL(activeViewPageChanged()), this, SLOT(activePageChanged()));
+            connect(mCurrentWebBrowser->tabWidget(), &TabWidget::tabCreated, this, &UBWebController::tabCreated);
+
+            // signals are not emitted for first tab, so call explicitly
+            setSourceWidget(mCurrentWebBrowser->currentTab());
+            tabCreated(mCurrentWebBrowser->currentTab());
 
             // connect buttons
             TabWidget* tabWidget = mCurrentWebBrowser->tabWidget();
@@ -180,11 +163,11 @@ void UBWebController::webBrowserInstance()
             // FIXME mCurrentWebBrowser->tabWidget()->lineEdits()->show();
 
             QObject::connect(
-                QWebEngineProfile::defaultProfile(), &QWebEngineProfile::downloadRequested,
+                webProfile, &QWebEngineProfile::downloadRequested,
                 &m_downloadManagerWidget, &DownloadManagerWidget::downloadRequested);
         }
 
-        UBApplication::applicationController->setMirrorSourceWidget(mCurrentWebBrowser->tabWidget()->currentWebView());
+        UBApplication::applicationController->setMirrorSourceWidget(mCurrentWebBrowser->currentTab());
         mMainWindow->switchToWebWidget();
 
         setupPalettes();
@@ -199,9 +182,19 @@ void UBWebController::webBrowserInstance()
         m_downloadManagerWidget.show();
 }
 
+UBOEmbedParser *UBWebController::embedParser(const QWebEngineView* view) const
+{
+    return view->findChild<UBOEmbedParser*>("UBOEmbedParser");
+}
+
 void UBWebController::show()
 {
     webBrowserInstance();
+}
+
+QWidget *UBWebController::controlView() const
+{
+    return mBrowserWidget;
 }
 
 void UBWebController::setSourceWidget(QWidget* pWidget)
@@ -220,95 +213,64 @@ void UBWebController::trapFlash()
 
 void UBWebController::activePageChanged()
 {
-    if (mCurrentWebBrowser && mCurrentWebBrowser->tabWidget()->currentWebView())
+    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTab())
     {
-        WebView* view = mCurrentWebBrowser->tabWidget()->currentWebView();
+        WebView* view = mCurrentWebBrowser->currentTab();
 
         if (mTrapFlashController && view->page())
-        {} // FIXME mTrapFlashController->updateTrapFlashFromPage(mCurrentWebBrowser->tabWidget()->currentWebView()->page()->currentFrame());
+        {} // FIXME mTrapFlashController->updateTrapFlashFromPage(mCurrentWebBrowser->currentTab()->page()->currentFrame());
 
         mMainWindow->actionWebTrap->setChecked(false);
 
         QUrl latestUrl = view->url();
 
-        // TODO : Uncomment the next line to continue the youtube button bugfix
-        UBApplication::mainWindow->actionWebOEmbed->setEnabled(false);
-
-        // Trigger parsing of current page, either immediately or when load is finished
-        if (latestUrl.isEmpty())
-        {
-            disconnect(view, &QWebEngineView::loadFinished, this, &UBWebController::captureoEmbed);
-            connect(view, &QWebEngineView::loadFinished, this, &UBWebController::captureoEmbed);
-        }
-        else
-        {
-            captureoEmbed();
-        }
+        UBOEmbedParser* parser = embedParser(view);
+        UBApplication::mainWindow->actionWebOEmbed->setEnabled(parser ? parser->hasEmbeddedContent() : false);
 
         // And remove this line once the previous one is uncommented
         //UBApplication::mainWindow->actionWebOEmbed->setEnabled(isOEmbedable(latestUrl));
         UBApplication::mainWindow->actionEduMedia->setEnabled(isEduMedia(latestUrl));
 
-        emit activeWebPageChanged(mCurrentWebBrowser->tabWidget()->currentWebView());
+        emit activeWebPageChanged(mCurrentWebBrowser->currentTab());
     }
 }
 
-// FIXME can only give ansynchronous result, but line 208 is the only line calling this
-/*
-bool UBWebController::hasEmbeddedContent()
-{
-    bool bHasContent = false;
-    if(mCurrentWebBrowser){
-        QString html = mCurrentWebBrowser->tabWidget()->currentWebView()->page()->toHtml();
 
-        // search the presence of "+oembed"
-        QString query = "\\+oembed([^>]*)>";
-        QRegExp exp(query);
-        exp.indexIn(html);
-        QStringList results = exp.capturedTexts();
-        if(2 <= results.size() && "" != results.at(1)){
-            // An embedded content has been found, no need to check the other ones
-            bHasContent = true;
-        }else{
-            QList<QUrl> contentUrls;
-            lookForEmbedContent(&html, "embed", "src", &contentUrls);
-            lookForEmbedContent(&html, "video", "src", &contentUrls);
-            lookForEmbedContent(&html, "object", "data", &contentUrls);
-
-            // TODO: check the hidden iFrame
-
-            if(!contentUrls.empty()){
-                bHasContent = true;
-            }
-        }
-    }
-
-    return bHasContent;
-}
-*/
 QPixmap UBWebController::captureCurrentPage()
 {
     QPixmap pix;
 
     if (mCurrentWebBrowser
-            && mCurrentWebBrowser->tabWidget()->currentWebView()
-            && mCurrentWebBrowser->tabWidget()->currentWebView()->page())
+            && mCurrentWebBrowser->currentTab()
+            && mCurrentWebBrowser->currentTab()->page())
     {
-        WebView* view = mCurrentWebBrowser->tabWidget()->currentWebView();
-        QWebEnginePage* frame = mCurrentWebBrowser->tabWidget()->currentWebView()->page();
-        QSizeF size = frame->contentsSize();
+        WebView* view = mCurrentWebBrowser->currentTab();
+        QWebEnginePage* frame = mCurrentWebBrowser->currentTab()->page();
+        QSize size = frame->contentsSize().toSize();
 
         qDebug() << size;
 
-        // FIXME JS results are only asynchronous
+        /*
+         * FIXME capturing a complete web page
+         *
+         * QWebEngine does not use a QPainter for rendering and only renders
+         * those parts of a web page which are really visible. Therefore there
+         * is no way to render a directly complete web page into a QPixmap.
+         * The only solution I see is to use injected JavaScript to scroll
+         * through the page and render the visible parts. Finally, we can
+         * return to the initial scroll position.
+         */
+        // NOTE JS results are only asynchronous
 //        QVariant top = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientTop");
 //        QVariant left = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientLeft");
 //        QVariant width = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientWidth");
 //        QVariant height = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientHeight");
 
-//        QSize vieportSize = mCurrentWebBrowser->tabWidget()->currentWebView()->page()->viewportSize();
-//        mCurrentWebBrowser->tabWidget()->currentWebView()->page()->setViewportSize(frame->contentsSize());
+//        QSize vieportSize = mCurrentWebBrowser->currentTab()->page()->viewportSize();
+//        mCurrentWebBrowser->currentTab()->page()->setViewportSize(frame->contentsSize());
+//        pix = QPixmap(size);
         pix = QPixmap(view->geometry().width(), view->geometry().height());
+
 
         {
             QPainter p(&pix);
@@ -330,8 +292,7 @@ QPixmap UBWebController::captureCurrentPage()
             }
         }
 */
-
-// FIXME        mCurrentWebBrowser->tabWidget()->currentWebView()->page()->setViewportSize(vieportSize);
+// FIXME        mCurrentWebBrowser->currentTab()->page()->setViewportSize(vieportSize);
     }
 
     return pix;
@@ -375,8 +336,8 @@ void UBWebController::setupPalettes()
 
 void UBWebController::toggleWebTrap(bool checked)
 {
-    if (mCurrentWebBrowser && mCurrentWebBrowser->tabWidget()->currentWebView())
-    {}// FIXME    mCurrentWebBrowser->tabWidget()->currentWebView()->setIsTrapping(checked);
+    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTab())
+    {}// FIXME    mCurrentWebBrowser->currentTab()->setIsTrapping(checked);
 }
 
 
@@ -385,7 +346,7 @@ void UBWebController::captureWindow()
     QPixmap webPagePixmap = captureCurrentPage();
 
     if (!webPagePixmap.isNull())
-        emit imageCaptured(webPagePixmap, true, mCurrentWebBrowser->tabWidget()->currentWebView()->url());
+        emit imageCaptured(webPagePixmap, true, mCurrentWebBrowser->currentTab()->url());
 }
 
 
@@ -401,7 +362,7 @@ void UBWebController::customCapture()
     if (customCaptureWindow.execute(getScreenPixmap()) == QDialog::Accepted)
     {
         QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
-        emit imageCaptured(selectedPixmap, false, mCurrentWebBrowser->tabWidget()->currentWebView()->url());
+        emit imageCaptured(selectedPixmap, false, mCurrentWebBrowser->currentTab()->url());
     }
 
     mToolsCurrentPalette->setVisible(true);
@@ -462,66 +423,6 @@ void UBWebController::showTabAtTop(bool attop)
         mCurrentWebBrowser->tabWidget()->setTabPosition(attop ? QTabWidget::North : QTabWidget::South);
 }
 
-void UBWebController::captureoEmbed()
-{
-    qDebug() << "captureoEmbed";
-    contents.clear();
-
-    if ( mCurrentWebBrowser && mCurrentWebBrowser->tabWidget()->currentWebView()){
-        // TODO : Uncomment the next lines to continue the youtube button bugfix
-            getEmbeddableContent();
-
-        // And comment from here
-            /*
-
-        WebView* webView = mCurrentWebBrowser->tabWidget()->currentWebView();
-        QUrl currentUrl = webView->url();
-
-        if (isOEmbedable(currentUrl))
-        {
-            UBGraphicsW3CWidgetItem * widget = UBApplication::boardController->activeScene()->addOEmbed(currentUrl);
-
-            if(widget)
-            {
-                UBApplication::applicationController->showBoard();
-                UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-            }
-        }
-        */
-        // --> Until here
-    }
-}
-
-void UBWebController::lookForEmbedContent(QString* pHtml, QString tag, QString attribute, QList<QUrl> *pList)
-{
-    if(NULL != pHtml && NULL != pList){
-        QVector<QString> urlsFound;
-        // Check for <embed> content
-        QRegExp exp(QString("<%0(.*)").arg(tag));
-        exp.indexIn(*pHtml);
-        QStringList strl = exp.capturedTexts();
-        if(2 <= strl.size() && strl.at(1) != ""){
-            // Here we call this regular expression:
-            // src\s?=\s?['"]([^'"]*)['"]
-            // It says: give me all characters that are after src=" (or src = ")
-            QRegExp src(QString("%0\\s?=\\s?['\"]([^'\"]*)['\"]").arg(attribute));
-            for(int i=1; i<strl.size(); i++){
-                src.indexIn(strl.at(i));
-                QStringList urls = src.capturedTexts();
-                if(2 <= urls.size() && urls.at(1) != "" && !urlsFound.contains(urls.at(1))){
-                    urlsFound << urls.at(1);
-                    pList->append(QUrl(urls.at(1)));
-                }
-            }
-        }
-    }
-}
-
-void UBWebController::checkForOEmbed(const QString &html)
-{
-    qDebug() << "checkForOEmbed" << html.length();
-    mOEmbedParser.parse(html);
-}
 
 QUrl UBWebController::guessUrlFromString(const QString &string)
 {
@@ -574,7 +475,7 @@ QUrl UBWebController::guessUrlFromString(const QString &string)
     }
 
     // Fall back to QUrl's own tolerant parser.
-    QUrl url = QUrl::fromEncoded(string.toUtf8(), QUrl::TolerantMode);
+    QUrl url = QUrl::fromUserInput(string);
 
     // finally for cases where the user just types in a hostname add http
     if (url.scheme().isEmpty())
@@ -583,24 +484,21 @@ QUrl UBWebController::guessUrlFromString(const QString &string)
     return url;
 }
 
-void UBWebController::getEmbeddableContent()
+void UBWebController::tabCreated(WebView *webView)
 {
-    qDebug() << "getEmbeddableContent";
-    // Get the source code of the page
-    if(mCurrentWebBrowser){
-        mCurrentWebBrowser->tabWidget()->currentWebView()->page()->toHtml([this](const QString &html){
-            checkForOEmbed(html);
-        });
-    }
+    // create and attach an UBOEmbedParser to the view
+    UBOEmbedParser* parser = new UBOEmbedParser(webView);
+    connect(parser, &UBOEmbedParser::parseResult, this, &UBWebController::onOEmbedParsed);
 }
+
 /**/
 void UBWebController::captureEduMedia()
 {
-    if (mCurrentWebBrowser && mCurrentWebBrowser->tabWidget()->currentWebView())
+    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTab())
     {
-        WebView* webView = mCurrentWebBrowser->tabWidget()->currentWebView();
+        WebView* webView = mCurrentWebBrowser->currentTab();
         QUrl currentUrl = webView->url();
-/* FIXME DOM access not possible with QWebEngine
+/* FIXME DOM access not possible with QWebEngine, but eduMedia may be obsolete, anyway
         if (isEduMedia(currentUrl))
         {
             QWebElementCollection objects = webView->page()->currentFrame()->findAllElements("object");
@@ -656,19 +554,6 @@ void UBWebController::captureEduMedia()
     }
 }
 
-bool UBWebController::isOEmbedable(const QUrl& pUrl)
-{
-    QString urlAsString = pUrl.toString();
-
-    foreach(QString provider, mOEmbedProviders)
-    {
-        if(urlAsString.contains(provider))
-            return true;
-    }
-
-    return false;
-}
-
 
 bool UBWebController::isEduMedia(const QUrl& pUrl)
 {
@@ -709,9 +594,9 @@ WebView* UBWebController::createNewTab()
 
 void UBWebController::copy()
 {
-    if (mCurrentWebBrowser && mCurrentWebBrowser->tabWidget()->currentWebView())
+    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTab())
     {
-        WebView* webView = mCurrentWebBrowser->tabWidget()->currentWebView();
+        WebView* webView = mCurrentWebBrowser->currentTab();
         QAction *act = webView->pageAction(QWebEnginePage::Copy);
         if(act)
             act->trigger();
@@ -721,9 +606,9 @@ void UBWebController::copy()
 
 void UBWebController::paste()
 {
-    if (mCurrentWebBrowser && mCurrentWebBrowser->tabWidget()->currentWebView())
+    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTab())
     {
-        WebView* webView = mCurrentWebBrowser->tabWidget()->currentWebView();
+        WebView* webView = mCurrentWebBrowser->currentTab();
         QAction *act = webView->pageAction(QWebEnginePage::Paste);
         if(act)
             act->trigger();
@@ -733,58 +618,23 @@ void UBWebController::paste()
 
 void UBWebController::cut()
 {
-    if (mCurrentWebBrowser && mCurrentWebBrowser->tabWidget()->currentWebView())
+    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTab())
     {
-        WebView* webView = mCurrentWebBrowser->tabWidget()->currentWebView();
+        WebView* webView = mCurrentWebBrowser->currentTab();
         QAction *act = webView->pageAction(QWebEnginePage::Cut);
         if(act)
             act->trigger();
     }
 }
 
-void UBWebController::onOEmbedParsed(QVector<sOEmbedContent> contents)
+void UBWebController::onOEmbedParsed(QWebEngineView *view, bool hasEmbeddedContent)
 {
-    qDebug() << "onOEmbedParsed" << contents.size();
-    this->contents = contents;
-
-    // enable/disable embed button
-    UBApplication::mainWindow->actionWebOEmbed->setEnabled(!contents.empty());
-
-    // TODO show thumbnails in selection dialog, probably TrapFlash
-    // TODO create different type of widgets for photo and video
-
-    /* TODO remove
-    QList<QUrl> urls;
-
-    foreach(sOEmbedContent cnt, contents){
-        urls << QUrl(cnt.url);
+    // check: is this for current tab?
+    if (view == mBrowserWidget)
+    {
+        // enable/disable embed button
+        UBApplication::mainWindow->actionWebOEmbed->setEnabled(hasEmbeddedContent);
     }
-
-    // TODO : Implement this
-    //lookForEmbedContent(&html, "embed", "src", &urls);
-    //lookForEmbedContent(&html, "video", "src", &contentUrls);
-    //lookForEmbedContent(&html, "object", "data", &contentUrls);
-
-    // TODO: check the hidden iFrame
-
-    if(!urls.empty()){
-        QUrl contentUrl;    // The selected content url
-
-        if(1 == urls.size()){
-            contentUrl = urls.at(0);
-        }else{
-            // TODO : Display a dialog box asking the user which content to get and set contentUrl to the selected content
-
-        }
-
-        UBGraphicsW3CWidgetItem * widget = UBApplication::boardController->activeScene()->addOEmbed(contentUrl);
-
-        if(widget)
-        {
-            UBApplication::applicationController->showBoard();
-            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-        }
-    } */
 }
 
 void UBWebController::onOpenTutorial()
@@ -794,15 +644,22 @@ void UBWebController::onOpenTutorial()
 
 void UBWebController::createEmbeddedContentWidget()
 {
-    // FIXME workaround: just use the first entry in contents
-    if (!contents.empty()) {
-        UBGraphicsW3CWidgetItem * widget = UBApplication::boardController->activeScene()->addOEmbed(contents[0]);
+    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTab())
+    {
+        WebView* webView = mCurrentWebBrowser->currentTab();
+        UBOEmbedParser* parser = embedParser(webView);
 
-        if(widget)
-        {
-            UBApplication::applicationController->showBoard();
-            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+        // FIXME workaround: just use the first entry in contents
+        if (parser && parser->hasEmbeddedContent()) {
+            UBOEmbedContent content = parser->embeddedContent()[0];
+            qDebug() << "Embedding" << content.title();
+            UBGraphicsW3CWidgetItem* widget = UBApplication::boardController->activeScene()->addOEmbed(content);
+
+            if (widget)
+            {
+                UBApplication::applicationController->showBoard();
+                UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+            }
         }
-
     }
 }

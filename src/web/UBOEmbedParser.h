@@ -34,10 +34,11 @@
 #include <QVector>
 #include <QString>
 #include <QUrl>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QMutex>
+
+// forward
+class QNetworkAccessManager;
+class QNetworkReply;
+class QWebEngineView;
 
 /**********************************************************************************
   ----------------------------------------------------------------
@@ -61,46 +62,81 @@
     <thumbnail_height>360</thumbnail_height>
   </oembed>
 ***********************************************************************************/
-typedef struct {
-    QString providerUrl;
-    QString title;
-    QString author;
-    int height;
-    int width;
-    int thumbWidth;
-    float version;
-    QString authorUrl;
-    QString providerName;
-    QString thumbUrl;
-    QString type;
-    QString thumbHeight;
-    QString html;
-    QString url;
-} sOEmbedContent;
+
+enum class UBOEmbedType {
+    UNKNOWN,
+    PHOTO,
+    VIDEO,
+    LINK,
+    RICH
+};
+
+class UBOEmbedContent
+{
+public:
+    UBOEmbedContent();
+
+    UBOEmbedType type() const;
+    QString title() const;
+    QString authorName() const;
+    QUrl authorUrl() const;
+    QString providerName() const;
+    QUrl providerUrl() const;
+    QUrl thumbUrl() const;
+    int thumbWidth() const;
+    int thumbHeight() const;
+    int width() const;
+    int height() const;
+    QString html() const;
+    QUrl url() const;
+
+private:
+    friend class UBOEmbedParser;
+    UBOEmbedType mType;
+    QString mTitle;
+    QString mAuthorName;
+    QUrl mAuthorUrl;
+    QString mProviderName;
+    QUrl mProviderUrl;
+    QUrl mThumbUrl;
+    int mThumbWidth;
+    int mThumbHeight;
+    int mWidth;
+    int mHeight;
+    QString mHtml;
+    QUrl mUrl;
+};
 
 class UBOEmbedParser : public QObject
 {
     Q_OBJECT
+
 public:
-    UBOEmbedParser(QObject* parent=0, const char* name="UBOEmbedParser");
+    explicit UBOEmbedParser(QWebEngineView* parent, const char* name="UBOEmbedParser");
     ~UBOEmbedParser();
-    void parse(const QString& html);
-    void setNetworkAccessManager(QNetworkAccessManager* nam);
+
+    bool hasEmbeddedContent();
+    QVector<UBOEmbedContent> embeddedContent();
 
 signals:
-    void parseContent(QString url);
-    void oembedParsed(QVector<sOEmbedContent> contents);
+    void parseResult(QWebEngineView* view, bool hasEmbeddedContent);
 
 private slots:
+    void onLoadFinished();
+    void parse(const QString& html);
+    void fetchOEmbed(const QString& url);
     void onFinished(QNetworkReply* reply);
-    void onParseContent(QString url);
 
 private:
-    sOEmbedContent getJSONInfos(const QString& json);
-    sOEmbedContent getXMLInfos(const QString& xml);
-    QVector<sOEmbedContent> mContents;
+    UBOEmbedContent getJSONInfos(const QString& json) const;
+    UBOEmbedContent getXMLInfos(const QString& xml) const;
+
+private:
+    QWebEngineView* mView;
+    QVector<UBOEmbedContent> mContents;
     QVector<QString> mParsedTitles;
     QNetworkAccessManager* mpNam;
+    bool mParsing;
     int mPending;
 };
 

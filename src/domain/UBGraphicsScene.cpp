@@ -1727,20 +1727,26 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
 
 
 
-UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const sOEmbedContent &content, const QPointF& pPos)
+UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const UBOEmbedContent &content, const QPointF& pPos)
 {
     QStringList widgetPaths = UBPersistenceManager::persistenceManager()->allWidgets(UBSettings::settings()->applicationApplicationsLibraryDirectory());
 
     UBGraphicsW3CWidgetItem *widget = 0;
     QString html;
 
-    if (content.type == "video")
+    switch (content.type())
     {
-        html = content.html;
-    }
-    else if (content.type == "photo")
-    {
-        html = "<img src=\"" + content.url + "\"/>";
+    case UBOEmbedType::VIDEO:
+        html = content.html();
+        break;
+
+    case UBOEmbedType::PHOTO:
+        html = "<img src=\"" + content.url().toString() + "\"/>";
+        break;
+
+    default:
+        // unhandled
+        break;
     }
 
     // use the html in AnyEmbed

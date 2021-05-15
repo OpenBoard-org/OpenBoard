@@ -37,6 +37,7 @@
 
 class BrowserWindow;
 class WebView;
+class QWebEngineProfile;
 class UBApplication;
 class UBTrapFlashController;
 class UBMainWindow;
@@ -66,15 +67,13 @@ class UBWebController : public QObject
 
         void show();
 
-        BrowserWindow* GetCurrentWebBrowser(){return mCurrentWebBrowser;}
-
+        QWidget* controlView() const;
 
     protected:
         void setupPalettes();
         QPixmap getScreenPixmap();
 
     public slots:
-
         void screenLayoutChanged();
 
         void setSourceWidget(QWidget* pWidget);
@@ -82,58 +81,26 @@ class UBWebController : public QObject
         void customCapture();
         void toogleMirroring(bool checked);
 
-        QWidget* controlView()
-        {
-            return mBrowserWidget;
-        }
-
-        void captureoEmbed();
         void captureEduMedia();
-
-        bool isOEmbedable(const QUrl& pUrl);
-        //bool hasEmbeddedContent();
-        void getEmbeddableContent();
-
-        bool isEduMedia(const QUrl& pUrl);
 
         void copy();
         void paste();
         void cut();
 
     private:
-        void initialiazemOEmbedProviders();
         void webBrowserInstance();
-        void lookForEmbedContent(QString* pHtml, QString tag, QString attribute, QList<QUrl>* pList);
-        void checkForOEmbed(const QString& html);
+        bool isEduMedia(const QUrl& pUrl);
+        UBOEmbedParser* embedParser(const QWebEngineView* view) const;
         static QUrl guessUrlFromString(const QString &string);
 
-        UBMainWindow *mMainWindow;
-
-        BrowserWindow* mCurrentWebBrowser;
-        DownloadManagerWidget m_downloadManagerWidget;
-
-        QWidget* mBrowserWidget;
-        UBTrapFlashController* mTrapFlashController;
-        UBWebToolsPalette* mToolsCurrentPalette;
-
-        bool mToolsPalettePositionned;
-
-        bool mDownloadViewIsVisible;
-
-        QStringList mOEmbedProviders;
-
-        UBOEmbedParser mOEmbedParser;
-        QVector<sOEmbedContent> contents;
-
     private slots:
-
+        void tabCreated(WebView* webView);
         void activePageChanged();
         void trapFlash();
 
         void toggleWebTrap(bool checked);
 
-//        void onLoadFinished();
-        void onOEmbedParsed(QVector<sOEmbedContent> contents);
+        void onOEmbedParsed(QWebEngineView* view, bool hasEmbeddedContent);
         void onOpenTutorial();
 
         void createEmbeddedContentWidget();
@@ -148,6 +115,22 @@ class UBWebController : public QObject
         void imageCaptured(const QPixmap& pCapturedPixmap, bool pageMode, const QUrl& source);
 
         void activeWebPageChanged(WebView* pWebView);
+
+private:
+        UBMainWindow *mMainWindow;
+
+        BrowserWindow* mCurrentWebBrowser;
+        DownloadManagerWidget m_downloadManagerWidget;
+
+        QWidget* mBrowserWidget;
+        UBTrapFlashController* mTrapFlashController;
+        UBWebToolsPalette* mToolsCurrentPalette;
+
+        QWebEngineProfile* webProfile;
+        QWebEngineProfile* widgetProfile;
+
+        bool mToolsPalettePositionned;
+        bool mDownloadViewIsVisible;
 
 };
 

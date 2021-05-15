@@ -220,6 +220,7 @@ WebView *TabWidget::createBackgroundTab()
     // Workaround for QTBUG-61770
     webView->resize(currentWidget()->size());
     webView->show();
+    emit tabCreated(webView);
     return webView;
 }
 
