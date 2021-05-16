@@ -30,7 +30,7 @@
 #include "UBTrapFlashController.h"
 
 #include <QtXml>
-#include <QWebFrame>
+#include <QWebEnginePage>
 
 
 #include "frameworks/UBFileSystemUtils.h"
@@ -80,7 +80,7 @@ void UBTrapFlashController::showTrapFlash()
         mTrapFlashUi = new Ui::trapFlashDialog();
         mTrapFlashUi->setupUi(mTrapFlashDialog);
 
-        mTrapFlashUi->webView->page()->setNetworkAccessManager(UBNetworkAccessManager::defaultAccessManager());
+//        mTrapFlashUi->webView->page()->setNetworkAccessManager(UBNetworkAccessManager::defaultAccessManager());
         int viewWidth = mParentWidget->width() / 2;
         int viewHeight = mParentWidget->height() * 2. / 3.;
         mTrapFlashDialog->setGeometry(
@@ -139,19 +139,19 @@ void UBTrapFlashController::hideTrapFlash()
 }
 
 
-void UBTrapFlashController::updateListOfFlashes(const QList<UBWebKitUtils::HtmlObject>& pAllFlashes)
+void UBTrapFlashController::updateListOfFlashes(/*const QList<UBWebKitUtils::HtmlObject>& pAllFlashes*/)
 {
     if (mTrapFlashDialog)
     {
-        mAvailableFlashes = pAllFlashes;
+//        mAvailableFlashes = pAllFlashes;
         disconnect(mTrapFlashUi->flashCombobox, SIGNAL(currentIndexChanged(int)), this, SLOT(selectFlash(int)));
         mTrapFlashUi->flashCombobox->clear();
         mTrapFlashUi->flashCombobox->addItem(tr("Whole page"));
 
-        foreach(UBWebKitUtils::HtmlObject wrapper, pAllFlashes)
-        {
-            mTrapFlashUi->flashCombobox->addItem(widgetNameForObject(wrapper));
-        }
+//        foreach(UBWebKitUtils::HtmlObject wrapper, pAllFlashes)
+//        {
+//            mTrapFlashUi->flashCombobox->addItem(widgetNameForObject(wrapper));
+//        }
 
         connect(mTrapFlashUi->flashCombobox, SIGNAL(currentIndexChanged(int)), this, SLOT(selectFlash(int)));
         selectFlash(mTrapFlashUi->flashCombobox->currentIndex());
@@ -164,15 +164,18 @@ void UBTrapFlashController::selectFlash(int pFlashIndex)
     if (pFlashIndex == 0)
     {
         mTrapFlashUi->webView->setHtml(generateFullPageHtml("", false));
-        QVariant res = mCurrentWebFrame->evaluateJavaScript("window.document.title");
-        mTrapFlashUi->widgetNameLineEdit->setText(res.toString().trimmed());
+        mCurrentWebFrame->runJavaScript("window.document.title", [this](const QVariant& res){
+            mTrapFlashUi->widgetNameLineEdit->setText(res.toString().trimmed());
+        });
     }
+/* TODO
     else if (pFlashIndex > 0 && pFlashIndex <= mAvailableFlashes.size())
     {
         UBWebKitUtils::HtmlObject currentObject = mAvailableFlashes.at(pFlashIndex - 1);
         mTrapFlashUi->webView->setHtml(generateHtml(currentObject, "", false));
         mTrapFlashUi->widgetNameLineEdit->setText(widgetNameForObject(currentObject));
     }
+    */
 }
 
 
@@ -206,10 +209,12 @@ void UBTrapFlashController::createWidget()
     }
     else
     {
+        /* TODO
         // flash widget
         UBWebKitUtils::HtmlObject selectedObject = mAvailableFlashes.at(selectedIndex - 1);
         UBApplication::applicationController->showBoard();
         UBApplication::boardController->downloadURL(QUrl(selectedObject.source), QString(), QPoint(0, 0), QSize(selectedObject.width, selectedObject.height));
+        */
     }
 
     QString freezedWidgetPath = UBPlatformUtils::applicationResourcesDirectory() + "/etc/freezedWidgetWrapper.html";
@@ -255,13 +260,13 @@ void UBTrapFlashController::importWidgetInLibrary(QDir pSourceDir)
 }
 
 
-void UBTrapFlashController::updateTrapFlashFromPage(QWebFrame* pCurrentWebFrame)
+void UBTrapFlashController::updateTrapFlashFromPage(QWebEnginePage* pCurrentWebFrame)
 {
     if (pCurrentWebFrame && mTrapFlashDialog && mTrapFlashDialog->isVisible())
     {
-        QList<UBWebKitUtils::HtmlObject> list = UBWebKitUtils::objectsInFrame(pCurrentWebFrame);
+        //QList<UBWebKitUtils::HtmlObject> list = UBWebKitUtils::objectsInFrame(pCurrentWebFrame);
         mCurrentWebFrame = pCurrentWebFrame;
-        updateListOfFlashes(list);
+        updateListOfFlashes(/*list*/);
     }
 }
 
@@ -375,7 +380,7 @@ QString UBTrapFlashController::generateFullPageHtml(const QString& pDirPath, boo
     }
 }
 
-
+/* TODO
 QString UBTrapFlashController::generateHtml(const UBWebKitUtils::HtmlObject& pObject,
         const QString& pDirPath, bool pGenerateFile)
 {
@@ -492,4 +497,4 @@ QString UBTrapFlashController::widgetNameForObject(UBWebKitUtils::HtmlObject pOb
 
     return result;
 }
-
+*/

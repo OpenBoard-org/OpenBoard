@@ -218,7 +218,7 @@ void UBWebController::activePageChanged()
         WebView* view = mCurrentWebBrowser->currentTab();
 
         if (mTrapFlashController && view->page())
-        {} // FIXME mTrapFlashController->updateTrapFlashFromPage(mCurrentWebBrowser->currentTab()->page()->currentFrame());
+            mTrapFlashController->updateTrapFlashFromPage(view->page());
 
         mMainWindow->actionWebTrap->setChecked(false);
 
