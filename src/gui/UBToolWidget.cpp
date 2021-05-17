@@ -45,6 +45,8 @@
 #include "domain/UBWebEngineView.h"
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
+#include "web/UBWebController.h"
+
 #include "core/memcheck.h"
 
 
@@ -215,7 +217,7 @@ void UBToolWidget::paintEvent(QPaintEvent *event)
 
 void UBToolWidget::registerAPI()
 {
-    UBGraphicsWidgetItem::injectScripts(mWebView);
+    UBWebController::injectScripts(mWebView);
 
     QWebChannel* channel = new QWebChannel(this);
     mWebView->page()->setWebChannel(channel);

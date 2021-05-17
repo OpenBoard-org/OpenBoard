@@ -1620,7 +1620,7 @@ void UBBoardView::dropEvent (QDropEvent *event)
     else {
         if (!event->source()
                 || qobject_cast<UBThumbnailWidget *>(event->source())
-                || qobject_cast<QWebView*>(event->source())
+                || qobject_cast<QWebEngineView*>(event->source())
                 || qobject_cast<QListView *>(event->source())) {
             mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
             event->acceptProposedAction();

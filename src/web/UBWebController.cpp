@@ -33,6 +33,8 @@
 #include <QWebFrame>
 #include <QWebElementCollection>
 #include <QWebEngineProfile>
+#include <QWebEngineScript>
+#include <QWebEngineScriptCollection>
 #include <QWebEngineSettings>
 
 #include "frameworks/UBPlatformUtils.h"
@@ -80,10 +82,18 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
 {
     connect(mMainWindow->actionOpenTutorial,SIGNAL(triggered()),this, SLOT(onOpenTutorial()));
 
-    webProfile = new QWebEngineProfile("OpenBoardWeb", this);
-    QWebEngineSettings* settings = webProfile->settings();
+    mWebProfile = new QWebEngineProfile("OpenBoardWeb", this);
+    QWebEngineSettings* settings = mWebProfile->settings();
     settings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
 
+    mWidgetProfile = new QWebEngineProfile(this);
+    settings = mWidgetProfile->settings();
+    settings->setAttribute(QWebEngineSettings::JavascriptEnabled, true);
+    settings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+    settings->setAttribute(QWebEngineSettings::LocalStorageEnabled, true);
+    settings->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
+    settings->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
+    settings->setAttribute(QWebEngineSettings::LocalContentCanAccessRemoteUrls, true);
 }
 
 
@@ -105,7 +115,7 @@ void UBWebController::webBrowserInstance()
     {
         if (!mCurrentWebBrowser)
         {
-            mCurrentWebBrowser = new BrowserWindow(nullptr, webProfile);
+            mCurrentWebBrowser = new BrowserWindow(nullptr, mWebProfile);
 
             mMainWindow->addWebWidget(mCurrentWebBrowser);
 
@@ -163,7 +173,7 @@ void UBWebController::webBrowserInstance()
             // FIXME mCurrentWebBrowser->tabWidget()->lineEdits()->show();
 
             QObject::connect(
-                webProfile, &QWebEngineProfile::downloadRequested,
+                mWebProfile, &QWebEngineProfile::downloadRequested,
                 &m_downloadManagerWidget, &DownloadManagerWidget::downloadRequested);
         }
 
@@ -195,6 +205,37 @@ void UBWebController::show()
 QWidget *UBWebController::controlView() const
 {
     return mBrowserWidget;
+}
+
+QWebEngineProfile *UBWebController::widgetProfile() const
+{
+    return mWidgetProfile;
+}
+
+void UBWebController::injectScripts(QWebEngineView *view)
+{
+    // inject the QWebChannel interface and initialization script
+    QFile js(":/qtwebchannel/qwebchannel.js");
+
+    if (js.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Injecting qwebchannel.js";
+        QString src = js.readAll();
+
+        QFile asyncwrapper(UBPlatformUtils::applicationResourcesDirectory() + "/etc/asyncAPI.js");
+
+        if (asyncwrapper.open(QIODevice::ReadOnly))
+        {
+            src += asyncwrapper.readAll();
+        }
+
+        QWebEngineScript script;
+        script.setName("qwebchannel");
+        script.setInjectionPoint(QWebEngineScript::DocumentCreation);
+        script.setWorldId(QWebEngineScript::MainWorld);
+        script.setSourceCode(src);
+        view->page()->scripts().insert(script);
+    }
 }
 
 void UBWebController::setSourceWidget(QWidget* pWidget)

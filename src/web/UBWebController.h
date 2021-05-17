@@ -52,22 +52,20 @@ class UBWebController : public QObject
     public:
         UBWebController(UBMainWindow* mainWindow);
         virtual ~UBWebController();
+
         void closing();
         void adaptToolBar();
 
         QPixmap captureCurrentPage();
-
         void showTabAtTop(bool attop);
-
         void loadUrl(const QUrl& url);
-
         WebView* createNewTab();
-
         QUrl currentPageUrl() const;
-
         void show();
-
         QWidget* controlView() const;
+        QWebEngineProfile* widgetProfile() const;
+
+        static void injectScripts(QWebEngineView* view);
 
     protected:
         void setupPalettes();
@@ -126,8 +124,8 @@ private:
         UBTrapFlashController* mTrapFlashController;
         UBWebToolsPalette* mToolsCurrentPalette;
 
-        QWebEngineProfile* webProfile;
-        QWebEngineProfile* widgetProfile;
+        QWebEngineProfile* mWebProfile;
+        QWebEngineProfile* mWidgetProfile;
 
         bool mToolsPalettePositionned;
         bool mDownloadViewIsVisible;

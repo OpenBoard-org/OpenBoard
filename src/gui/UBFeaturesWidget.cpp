@@ -28,8 +28,7 @@
 
 
 #include <QDomDocument>
-#include <QWebView>
-#include <QWebFrame>
+#include <QWebChannel>
 #include <QWidget>
 
 #include "UBFeaturesWidget.h"
@@ -39,6 +38,7 @@
 #include "core/UBDownloadManager.h"
 #include "globals/UBGlobals.h"
 #include "board/UBBoardController.h"
+#include "web/UBWebController.h"
 
 const char *UBFeaturesWidget::objNamePathList = "PathList";
 const char *UBFeaturesWidget::objNameFeatureList = "FeatureList";
@@ -764,7 +764,6 @@ void UBFeaturesProgressInfo::sendFeature(UBFeature pFeature)
 
 UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(parent)
     , mpView(NULL)
-    , mpWebSettings(NULL)
     , mpLayout(NULL)
     , mpSankoreAPI(NULL)
 {
@@ -775,20 +774,13 @@ UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(
     mpLayout = new QVBoxLayout();
     setLayout(mpLayout);
 
-    mpView = new QWebView(this);
+    mpView = new QWebEngineView(this);
     mpView->setObjectName("SearchEngineView");
     mpSankoreAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene());
-    mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
-    connect(mpView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
-    mpWebSettings = QWebSettings::globalSettings();
-    mpWebSettings->setAttribute(QWebSettings::JavaEnabled, true);
-    mpWebSettings->setAttribute(QWebSettings::PluginsEnabled, true);
-    mpWebSettings->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
-    mpWebSettings->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
-    mpWebSettings->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
-    mpWebSettings->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
-    mpWebSettings->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
-    mpWebSettings->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
+    QWebChannel* channel = new QWebChannel(this);
+    mpView->page()->setWebChannel(channel);
+    mpView->page()->webChannel()->registerObject("sankore", mpSankoreAPI);
+    UBWebController::injectScripts(mpView);
 
     mpLayout->addWidget(mpView);
     mpLayout->setMargin(0);
@@ -817,7 +809,8 @@ UBFeaturesWebView::~UBFeaturesWebView()
 
 void UBFeaturesWebView::javaScriptWindowObjectCleared()
 {
-    mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
+    // TODO not needed
+//    mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
 }
 
 void UBFeaturesWebView::showElement(const UBFeature &elem)
@@ -857,7 +850,7 @@ void UBFeaturesWebView::showElement(const UBFeature &elem)
 void UBFeaturesWebView::onLoadFinished(bool ok)
 {
     if(ok && NULL != mpSankoreAPI){
-        mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
+// TODO not needed        mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
     }
 }
 

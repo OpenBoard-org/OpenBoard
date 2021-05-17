@@ -30,9 +30,6 @@
 #include <QtNetwork>
 #include <QtXml>
 #include <QWebChannel>
-#include <QWebEngineScript>
-#include <QWebEngineScriptCollection>
-#include <QWebEngineSettings>
 #include <QWebEngineView>
 #include <QWebFrame>
 
@@ -86,19 +83,16 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
 
     setData(UBGraphicsItemData::ItemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 
-    // TODO create the page using a profile
-    webEngineView->setPage(new QWebEnginePage(this));
+    // create the page using a profile
+    QWebEngineProfile* profile = UBApplication::webController->widgetProfile();
+    webEngineView->setPage(new QWebEnginePage(profile, this));
 
     // see https://stackoverflow.com/questions/31928444/qt-qwebenginepagesetwebchannel-transport-object
     mWebChannel = new QWebChannel(this);
     webEngineView->page()->setWebChannel(mWebChannel);
 
-    webEngineView->settings()->setAttribute(QWebEngineSettings::JavascriptEnabled, true);
-    webEngineView->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-    webEngineView->settings()->setAttribute(QWebEngineSettings::LocalStorageEnabled, true);
-    webEngineView->settings()->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
-    webEngineView->settings()->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
-    webEngineView->settings()->setAttribute(QWebEngineSettings::LocalContentCanAccessRemoteUrls, true);
+    // NOTE to enable fullscreen, we would have to move the page to a fullscreen view.
+    // webEngineView->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
 
 //    webEngineView->page()->setNetworkAccessManager(UBNetworkAccessManager::defaultAccessManager());
 
@@ -151,7 +145,7 @@ void UBGraphicsWidgetItem::initialize()
     // https://doc.qt.io/qt-5.12/qwebengineprofile.html#scripts
 
     // inject the QWebChannel interface and initialization script
-    injectScripts(webEngineView);
+    UBWebController::injectScripts(webEngineView);
 
     connect(webEngineView->page(), SIGNAL(geometryChangeRequested(const QRect&)), this, SLOT(geometryChangeRequested(const QRect&)));
     connect(webEngineView, SIGNAL(loadFinished(bool)), this, SLOT(mainFrameLoadFinished (bool)));
@@ -512,32 +506,6 @@ QString UBGraphicsWidgetItem::iconFilePath(const QUrl& pUrl)
         file = QString(":/images/defaultWidgetIcon.png");
     }
     return file;
-}
-
-void UBGraphicsWidgetItem::injectScripts(QWebEngineView* view)
-{
-    // inject the QWebChannel interface and initialization script
-    QFile js(":/qtwebchannel/qwebchannel.js");
-
-    if (js.open(QIODevice::ReadOnly))
-    {
-        qDebug() << "Injecting qwebchannel.js";
-        QString src = js.readAll();
-
-        QFile asyncwrapper(UBPlatformUtils::applicationResourcesDirectory() + "/etc/asyncAPI.js");
-
-        if (asyncwrapper.open(QIODevice::ReadOnly))
-        {
-            src += asyncwrapper.readAll();
-        }
-
-        QWebEngineScript script;
-        script.setName("qwebchannel");
-        script.setInjectionPoint(QWebEngineScript::DocumentCreation);
-        script.setWorldId(QWebEngineScript::MainWorld);
-        script.setSourceCode(src);
-        view->page()->scripts().insert(script);
-    }
 }
 
 void UBGraphicsWidgetItem::activeSceneChanged()
