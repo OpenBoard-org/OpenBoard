@@ -37,6 +37,7 @@
 
 class BrowserWindow;
 class WebView;
+class QMenu;
 class QWebEngineProfile;
 class UBApplication;
 class UBTrapFlashController;
@@ -85,6 +86,10 @@ class UBWebController : public QObject
         void paste();
         void cut();
 
+        void aboutToShowBackMenu();
+        void aboutToShowForwardMenu();
+        void openActionUrl(QAction *action);
+
     private:
         void webBrowserInstance();
         bool isEduMedia(const QUrl& pUrl);
@@ -130,6 +135,8 @@ private:
         bool mToolsPalettePositionned;
         bool mDownloadViewIsVisible;
 
+        QMenu* mHistoryBackMenu;
+        QMenu* mHistoryForwardMenu;
 };
 
 #endif /* UBWEBCONTROLLER_H_ */

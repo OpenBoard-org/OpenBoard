@@ -29,9 +29,12 @@
 
 #include <QtGui>
 #include <QDomDocument>
+#include <QMenu>
 #include <QXmlQuery>
 #include <QWebFrame>
 #include <QWebElementCollection>
+#include <QWebEngineHistory>
+#include <QWebEngineHistoryItem>
 #include <QWebEngineProfile>
 #include <QWebEngineScript>
 #include <QWebEngineScriptCollection>
@@ -82,11 +85,12 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
 {
     connect(mMainWindow->actionOpenTutorial,SIGNAL(triggered()),this, SLOT(onOpenTutorial()));
 
-    mWebProfile = new QWebEngineProfile("OpenBoardWeb", this);
+    // note: do not delete profiles at application cleanup as they are still used by some web page
+    mWebProfile = new QWebEngineProfile("OpenBoardWeb");
     QWebEngineSettings* settings = mWebProfile->settings();
     settings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
 
-    mWidgetProfile = new QWebEngineProfile(this);
+    mWidgetProfile = new QWebEngineProfile();
     settings = mWidgetProfile->settings();
     settings->setAttribute(QWebEngineSettings::JavascriptEnabled, true);
     settings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
@@ -124,6 +128,8 @@ void UBWebController::webBrowserInstance()
             m_downloadManagerWidget.setParent(mCurrentWebBrowser, Qt::Tool);
 
             UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->webToolBar, mMainWindow->actionBoard, 32);
+            QToolBar* navigationBar = mCurrentWebBrowser->createToolBar(mMainWindow->webToolBar);
+            mMainWindow->webToolBar->insertWidget(mMainWindow->actionBoard, navigationBar);
             UBApplication::app()->decorateActionMenu(mMainWindow->actionMenu);
 
             showTabAtTop(UBSettings::settings()->appToolBarPositionedAtTop->get().toBool());
@@ -135,13 +141,16 @@ void UBWebController::webBrowserInstance()
             connect(mCurrentWebBrowser, SIGNAL(activeViewPageChanged()), this, SLOT(activePageChanged()));
             connect(mCurrentWebBrowser->tabWidget(), &TabWidget::tabCreated, this, &UBWebController::tabCreated);
 
+            // initialize the browser
+            mCurrentWebBrowser->init();
+
+            TabWidget* tabWidget = mCurrentWebBrowser->tabWidget();
+
             // signals are not emitted for first tab, so call explicitly
             setSourceWidget(mCurrentWebBrowser->currentTab());
             tabCreated(mCurrentWebBrowser->currentTab());
 
             // connect buttons
-            TabWidget* tabWidget = mCurrentWebBrowser->tabWidget();
-
             connect(mMainWindow->actionWebBack, &QAction::triggered, [tabWidget]() {
                 tabWidget->triggerWebPageAction(QWebEnginePage::Back);
             });
@@ -166,6 +175,37 @@ void UBWebController::webBrowserInstance()
             connect(mMainWindow->actionWebBigger, SIGNAL(triggered()), mCurrentWebBrowser, SLOT(zoomIn()));
             connect(mMainWindow->actionWebSmaller, SIGNAL(triggered()), mCurrentWebBrowser, SLOT(zoomOut()));
 
+            mHistoryBackMenu = new QMenu(mMainWindow);
+            connect(mHistoryBackMenu, SIGNAL(aboutToShow()),this, SLOT(aboutToShowBackMenu()));
+            connect(mHistoryBackMenu, SIGNAL(triggered(QAction *)), this, SLOT(openActionUrl(QAction *)));
+
+            for (QWidget* menuWidget : mMainWindow->actionWebBack->associatedWidgets())
+            {
+                QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
+
+                if (tb && !tb->menu())
+                {
+                    tb->setMenu(mHistoryBackMenu);
+                    tb->setStyleSheet("QToolButton::menu-indicator { subcontrol-position: bottom left; }");
+                }
+            }
+
+            mHistoryForwardMenu = new QMenu(mMainWindow);
+            connect(mHistoryForwardMenu, SIGNAL(aboutToShow()), this, SLOT(aboutToShowForwardMenu()));
+            connect(mHistoryForwardMenu, SIGNAL(triggered(QAction *)), this, SLOT(openActionUrl(QAction *)));
+
+            for (QWidget* menuWidget : mMainWindow->actionWebForward->associatedWidgets())
+            {
+                QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
+
+                if (tb && !tb->menu())
+                {
+                    tb->setMenu(mHistoryForwardMenu);
+                    tb->setStyleSheet("QToolButton { padding-right: 8px; }");
+                }
+            }
+
+
 
             mCurrentWebBrowser->currentTab()->load(currentUrl);
 
@@ -175,6 +215,10 @@ void UBWebController::webBrowserInstance()
             QObject::connect(
                 mWebProfile, &QWebEngineProfile::downloadRequested,
                 &m_downloadManagerWidget, &DownloadManagerWidget::downloadRequested);
+
+            connect(mMainWindow->actionWebTools, &QAction::triggered, [this](){
+                mToolsCurrentPalette->setVisible(mMainWindow->actionWebTools->isChecked());
+            });
         }
 
         UBApplication::applicationController->setMirrorSourceWidget(mCurrentWebBrowser->currentTab());
@@ -667,6 +711,76 @@ void UBWebController::cut()
             act->trigger();
     }
 }
+
+void UBWebController::aboutToShowBackMenu()
+{
+    mHistoryBackMenu->clear();
+
+    if (!mCurrentWebBrowser->currentTab())
+        return;
+
+    QWebEngineHistory *history = mCurrentWebBrowser->currentTab()->history();
+
+    int historyCount = history->count();
+    int historyLimit = history->backItems(historyCount).count() - UBSettings::settings()->historyLimit->get().toReal();
+    if (historyLimit < 0)
+        historyLimit = 0;
+
+    for (int i = history->backItems(historyCount).count() - 1; i >= historyLimit; --i)
+    {
+        QWebEngineHistoryItem item = history->backItems(historyCount).at(i);
+
+        QAction *action = new QAction(this);
+        action->setData(-1*(historyCount-i-1));
+
+        // TODO fetch icon or keep a cache somewhere
+//        if (!item.iconUrl().isEmpty())
+//            action->setIcon(item.icon());
+        action->setText(item.title().isEmpty() ? item.url().toString() : item.title());
+        mHistoryBackMenu->addAction(action);
+    }
+}
+
+void UBWebController::aboutToShowForwardMenu()
+{
+    mHistoryForwardMenu->clear();
+
+    if (!mCurrentWebBrowser->currentTab())
+        return;
+
+    QWebEngineHistory *history = mCurrentWebBrowser->currentTab()->history();
+    int historyCount = history->count();
+
+    int historyLimit = history->forwardItems(historyCount).count();
+    if (historyLimit > UBSettings::settings()->historyLimit->get().toReal())
+        historyLimit = UBSettings::settings()->historyLimit->get().toReal();
+
+    for (int i = 0; i < historyLimit; ++i)
+    {
+        QWebEngineHistoryItem item = history->forwardItems(historyCount).at(i);
+
+        QAction *action = new QAction(this);
+        action->setData(historyCount-i);
+
+        // TODO fetch icon or keep a cache somewhere
+//        if (!item.iconUrl().isEmpty())
+//            action->setIcon(item.icon());
+        action->setText(item.title().isEmpty() ? item.url().toString() : item.title());
+        mHistoryForwardMenu->addAction(action);
+    }
+}
+
+void UBWebController::openActionUrl(QAction *action)
+{
+    QWebEngineHistory *history = mCurrentWebBrowser->currentTab()->history();
+
+    int offset = action->data().toInt();
+
+    if (offset < 0)
+        history->goToItem(history->backItems(-1*offset).first());
+    else if (offset > 0)
+        history->goToItem(history->forwardItems(history->count() - offset + 1).back());
+ }
 
 void UBWebController::onOEmbedParsed(QWebEngineView *view, bool hasEmbeddedContent)
 {

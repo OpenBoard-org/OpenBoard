@@ -70,6 +70,7 @@
 #include "core/UBApplication.h"
 #include "core/UBApplicationController.h"
 #include "core/UBDisplayManager.h"
+#include "core/UBSettings.h"
 
 BrowserWindow::BrowserWindow(QWidget *parent, QWebEngineProfile *profile, bool forDevTools)
     : QWidget(parent)
@@ -97,8 +98,8 @@ BrowserWindow::BrowserWindow(QWidget *parent, QWebEngineProfile *profile, bool f
         m_progressBar = new QProgressBar(this);
 
         // FIXME toolbar handling as in WBBrowserWindow
-        QToolBar *toolbar = createToolBar();
-        layout->addWidget(toolbar);
+//        QToolBar *toolbar = createToolBar(this);
+//        layout->addWidget(toolbar);
 //        addToolBar(toolbar);
 //        menuBar()->addMenu(createFileMenu(m_tabWidget));
 //        menuBar()->addMenu(createEditMenu());
@@ -121,30 +122,43 @@ BrowserWindow::BrowserWindow(QWidget *parent, QWebEngineProfile *profile, bool f
     centralWidget->setLayout(layout);
 //    setCentralWidget(centralWidget);
 
+
+
+}
+
+void BrowserWindow::init()
+{
     connect(m_tabWidget, &TabWidget::titleChanged, this, &BrowserWindow::handleWebViewTitleChanged);
-    if (!forDevTools) {
         // FIXME would be nice to have
 //        connect(m_tabWidget, &TabWidget::linkHovered, [this](const QString& url) {
 //            statusBar()->showMessage(url);
 //        });
-        connect(m_tabWidget, &TabWidget::loadProgress, this, &BrowserWindow::handleWebViewLoadProgress);
-        connect(m_tabWidget, &TabWidget::webActionEnabledChanged, this, &BrowserWindow::handleWebActionEnabledChanged);
-        connect(m_tabWidget, &TabWidget::urlChanged, [this](const QUrl &url) {
-            m_urlLineEdit->setText(url.toDisplayString());
-        });
-        connect(m_tabWidget, &TabWidget::favIconChanged, m_favAction, &QAction::setIcon);
-        connect(m_tabWidget, &TabWidget::devToolsRequested, this, &BrowserWindow::handleDevToolsRequested);
-        connect(m_urlLineEdit, &QLineEdit::returnPressed, [this]() {
-            m_tabWidget->setUrl(QUrl::fromUserInput(m_urlLineEdit->text()));
-        });
+    connect(m_tabWidget, &TabWidget::loadProgress, this, &BrowserWindow::handleWebViewLoadProgress);
+    connect(m_tabWidget, &TabWidget::webActionEnabledChanged, this, &BrowserWindow::handleWebActionEnabledChanged);
+    connect(m_tabWidget, &TabWidget::urlChanged, [this](const QUrl &url) {
+        m_urlLineEdit->setText(url.toDisplayString());
+    });
+    connect(m_tabWidget, &TabWidget::favIconChanged, m_favAction, &QAction::setIcon);
+    connect(m_tabWidget, &TabWidget::devToolsRequested, this, &BrowserWindow::handleDevToolsRequested);
+    connect(m_urlLineEdit, &QLineEdit::returnPressed, [this]() {
+        QString input = m_urlLineEdit->text();
+        QUrl url = QUrl::fromUserInput(m_urlLineEdit->text());
 
-        QAction *focusUrlLineEditAction = new QAction(this);
-        addAction(focusUrlLineEditAction);
-        focusUrlLineEditAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
-        connect(focusUrlLineEditAction, &QAction::triggered, this, [this] () {
-            m_urlLineEdit->setFocus(Qt::ShortcutFocusReason);
-        });
-    }
+        if (input.startsWith("?") || !url.isValid()) {
+            QString searchEngine = UBSettings::settings()->webSearchEngineUrl->get().toString();
+            input = QUrl::toPercentEncoding(input.mid(1).trimmed());
+            url = QUrl::fromUserInput(searchEngine.arg(input));
+        }
+
+        m_tabWidget->setUrl(url);
+    });
+
+    QAction *focusUrlLineEditAction = new QAction(this);
+    addAction(focusUrlLineEditAction);
+    focusUrlLineEditAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
+    connect(focusUrlLineEditAction, &QAction::triggered, this, [this] () {
+        m_urlLineEdit->setFocus(Qt::ShortcutFocusReason);
+    });
 
     handleWebViewTitleChanged(QString());
     connect(m_tabWidget, &TabWidget::currentChanged, [this](int index){
@@ -155,7 +169,6 @@ BrowserWindow::BrowserWindow(QWidget *parent, QWebEngineProfile *profile, bool f
     });
     connect(m_tabWidget, &TabWidget::tabClosing, this, &BrowserWindow::handleTabClosing);
     m_tabWidget->createTab();
-
 }
 
 QSize BrowserWindow::sizeHint() const
@@ -347,7 +360,7 @@ QMenu *BrowserWindow::createHelpMenu()
     return helpMenu;
 }
 
-QToolBar *BrowserWindow::createToolBar()
+QToolBar *BrowserWindow::createToolBar(QWidget *parent)
 {
     QToolBar *navigationBar = new QToolBar(tr("Navigation"));
     navigationBar->setMovable(false);
@@ -400,13 +413,13 @@ QToolBar *BrowserWindow::createToolBar()
 //    });
 //    navigationBar->addAction(m_stopReloadAction);
 
-    m_urlLineEdit = new QLineEdit(this);
-    m_favAction = new QAction(this);
+    m_urlLineEdit = new QLineEdit(parent);
+    m_favAction = new QAction(parent);
     m_urlLineEdit->addAction(m_favAction, QLineEdit::LeadingPosition);
     m_urlLineEdit->setClearButtonEnabled(true);
     navigationBar->addWidget(m_urlLineEdit);
 
-    auto downloadsAction = new QAction(this);
+    auto downloadsAction = new QAction(parent);
     downloadsAction->setIcon(QIcon(QStringLiteral(":go-bottom.png")));
     downloadsAction->setToolTip(tr("Show downloads"));
     navigationBar->addAction(downloadsAction);
@@ -508,7 +521,7 @@ void BrowserWindow::closeEvent(QCloseEvent *event)
         }
     }
     event->accept();
-    deleteLater();
+//    deleteLater(); deleted by parent
 }
 
 void BrowserWindow::zoomIn()

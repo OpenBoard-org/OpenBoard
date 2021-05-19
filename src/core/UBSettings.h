@@ -329,6 +329,7 @@ class UBSettings : public QObject
         UBSetting* webShowPageImmediatelyOnMirroredScreen;
 
         UBSetting* webHomePage;
+        UBSetting* webSearchEngineUrl;
 
         UBSetting* pageCacheSize;
 

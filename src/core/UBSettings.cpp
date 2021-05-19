@@ -361,6 +361,7 @@ void UBSettings::init()
     webShowPageImmediatelyOnMirroredScreen = new UBSetting(this, "Web", "ShowPageImediatelyOnMirroredScreen", defaultShowPageImmediatelyOnMirroredScreen);
 
     webHomePage = new UBSetting(this, "Web", "Homepage", softwareHomeUrl);
+    webSearchEngineUrl = new UBSetting(this, "Web", "SearchEngineUrl", "https://duckduckgo.com/?q=%1");
 
     pageCacheSize = new UBSetting(this, "App", "PageCacheSize", 20);
 
