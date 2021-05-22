@@ -32,8 +32,10 @@
 
 #include <QtGui>
 
+#include <web/UBEmbedContent.h>
+
 // forward
-class QWebEnginePage;
+class QWebEngineView;
 
 namespace Ui
 {
@@ -52,7 +54,7 @@ class UBTrapFlashController : public QObject
         void hideTrapFlash();
 
     public slots:
-        void updateTrapFlashFromPage(QWebEnginePage* pCurrentWebFrame);
+        void updateTrapFlashFromView(QWebEngineView* pCurrentWebFrame);
         void text_Changed(const QString &);
         void text_Edited(const QString &);
 
@@ -63,12 +65,12 @@ class UBTrapFlashController : public QObject
 
     private:
 
-        void updateListOfFlashes(/*const QList<UBWebKitUtils::HtmlObject>& pAllFlashes*/);
+        void updateListOfFlashes(const QList<UBEmbedContent>& pAllContent);
 
-//        QString widgetNameForObject(UBWebKitUtils::HtmlObject pObject);
+        QString widgetNameForObject(const UBEmbedContent& pObject);
 
-        QString generateFullPageHtml(const QString& pDirPath, bool pGenerateFile);
-//        QString generateHtml(const UBWebKitUtils::HtmlObject& pObject, const QString& pDirPath, bool pGenerateFile);
+        QString generateFullPageHtml(const QUrl& url, const QString& pDirPath, bool pGenerateFile);
+        QString generateHtml(const UBEmbedContent& pObject, const QString& pDirPath, bool pGenerateFile);
 
         QString generateIcon(const QString& pDirPath);
 
@@ -79,8 +81,8 @@ class UBTrapFlashController : public QObject
         Ui::trapFlashDialog* mTrapFlashUi;
         QDialog* mTrapFlashDialog;
         QWidget* mParentWidget;
-        QWebEnginePage* mCurrentWebFrame;
-//        QList<UBWebKitUtils::HtmlObject> mAvailableFlashes;
+        QWebEngineView* mCurrentWebFrame;
+        QList<UBEmbedContent> mAvailableContent;
 };
 
 

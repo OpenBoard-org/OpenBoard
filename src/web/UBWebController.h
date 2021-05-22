@@ -32,7 +32,7 @@
 
 #include <QtGui>
 
-#include "UBOEmbedParser.h"
+#include "UBEmbedParser.h"
 #include "simplebrowser/downloadmanagerwidget.h"
 
 class BrowserWindow;
@@ -65,6 +65,7 @@ class UBWebController : public QObject
         void show();
         QWidget* controlView() const;
         QWebEngineProfile* widgetProfile() const;
+        QList<UBEmbedContent> getEmbeddedContent(const QWebEngineView* view);
 
         static void injectScripts(QWebEngineView* view);
 
@@ -93,7 +94,7 @@ class UBWebController : public QObject
     private:
         void webBrowserInstance();
         bool isEduMedia(const QUrl& pUrl);
-        UBOEmbedParser* embedParser(const QWebEngineView* view) const;
+        UBEmbedParser* embedParser(const QWebEngineView* view) const;
         static QUrl guessUrlFromString(const QString &string);
 
     private slots:

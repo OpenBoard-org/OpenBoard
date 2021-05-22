@@ -36,7 +36,7 @@
 
 #include "UBItem.h"
 #include "tools/UBGraphicsCurtainItem.h"
-#include "web/UBOEmbedParser.h"
+#include "web/UBEmbedParser.h"
 
 class UBGraphicsPixmapItem;
 class UBGraphicsSvgItem;
@@ -169,7 +169,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
                 , int pointSize = -1, const QString& fontFamily = "", bool bold = false, bool italic = false);
         UBGraphicsTextItem* addTextHtml(const QString &pString = QString(), const QPointF& pTopLeft = QPointF(0, 0));
 
-        UBGraphicsW3CWidgetItem* addOEmbed(const UBOEmbedContent& content, const QPointF& pPos = QPointF(0, 0));
+        UBGraphicsW3CWidgetItem* addOEmbed(const UBEmbedContent& content, const QPointF& pPos = QPointF(0, 0));
 
         UBGraphicsGroupContainerItem *createGroup(QList<QGraphicsItem*> items);
         void addGroup(UBGraphicsGroupContainerItem *groupItem);

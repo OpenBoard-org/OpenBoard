@@ -1727,7 +1727,7 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
 
 
 
-UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const UBOEmbedContent &content, const QPointF& pPos)
+UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const UBEmbedContent &content, const QPointF& pPos)
 {
     QStringList widgetPaths = UBPersistenceManager::persistenceManager()->allWidgets(UBSettings::settings()->applicationApplicationsLibraryDirectory());
 
@@ -1736,11 +1736,11 @@ UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const UBOEmbedContent &conte
 
     switch (content.type())
     {
-    case UBOEmbedType::VIDEO:
+    case UBEmbedType::VIDEO:
         html = content.html();
         break;
 
-    case UBOEmbedType::PHOTO:
+    case UBEmbedType::PHOTO:
         html = "<img src=\"" + content.url().toString() + "\"/>";
         break;
 

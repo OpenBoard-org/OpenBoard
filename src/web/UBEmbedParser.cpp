@@ -25,10 +25,11 @@
  */
 
 
-#include "UBOEmbedParser.h"
+#include "UBEmbedParser.h"
 
 #include <QRegExp>
 #include <QStringList>
+#include <QDomAttr>
 #include <QDomDocument>
 #include <QDomElement>
 #include <QDomNode>
@@ -42,79 +43,7 @@
 #include "core/memcheck.h"
 
 
-UBOEmbedContent::UBOEmbedContent()
-    : mType(UBOEmbedType::UNKNOWN), mThumbWidth(0), mThumbHeight(0), mWidth(0), mHeight(0)
-{
-
-}
-
-UBOEmbedType UBOEmbedContent::type() const
-{
-    return mType;
-}
-
-QString UBOEmbedContent::title() const
-{
-    return mTitle;
-}
-
-QString UBOEmbedContent::authorName() const
-{
-    return mAuthorName;
-}
-
-QUrl UBOEmbedContent::authorUrl() const
-{
-    return mAuthorUrl;
-}
-
-QString UBOEmbedContent::providerName() const
-{
-    return mProviderName;
-}
-
-QUrl UBOEmbedContent::providerUrl() const
-{
-    return mProviderUrl;
-}
-
-QUrl UBOEmbedContent::thumbUrl() const
-{
-    return mThumbUrl;
-}
-
-int UBOEmbedContent::thumbWidth() const
-{
-    return mThumbWidth;
-}
-
-int UBOEmbedContent::thumbHeight() const
-{
-    return mThumbHeight;
-}
-
-int UBOEmbedContent::width() const
-{
-    return mWidth;
-}
-
-int UBOEmbedContent::height() const
-{
-    return mHeight;
-}
-
-QString UBOEmbedContent::html() const
-{
-    return mHtml;
-}
-
-QUrl UBOEmbedContent::url() const
-{
-    return mUrl;
-}
-
-
-UBOEmbedParser::UBOEmbedParser(QWebEngineView *parent, const char* name)
+UBEmbedParser::UBEmbedParser(QWebEngineView *parent, const char* name)
     : QObject(parent)
 {
     setObjectName(name);
@@ -139,22 +68,22 @@ UBOEmbedParser::UBOEmbedParser(QWebEngineView *parent, const char* name)
     qDebug() << "Created UBOEmbedParser";
 }
 
-UBOEmbedParser::~UBOEmbedParser()
+UBEmbedParser::~UBEmbedParser()
 {
 
 }
 
-bool UBOEmbedParser::hasEmbeddedContent()
+bool UBEmbedParser::hasEmbeddedContent()
 {
     return !mContents.empty();
 }
 
-QVector<UBOEmbedContent> UBOEmbedParser::embeddedContent()
+QList<UBEmbedContent> UBEmbedParser::embeddedContent()
 {
     return mContents;
 }
 
-void UBOEmbedParser::onLoadFinished()
+void UBEmbedParser::onLoadFinished()
 {
     qDebug() << "loadFinished";
     if (!mParsing)
@@ -166,14 +95,14 @@ void UBOEmbedParser::onLoadFinished()
     }
 }
 
-void UBOEmbedParser::parse(const QString& html)
+void UBEmbedParser::parse(const QString& html)
 {
     qDebug() << "parse" << html.length();
     mContents.clear();
     mParsedTitles.clear();
 
-    // extract all <link> tags
-    QRegExp exp("<link([^>]*)>");
+    // extract all <link> and <iframe> tags upto but not including the final >
+    QRegExp exp("<(link|iframe)([^>]*)");
     QStringList results;
     int count = 0;
     int pos = 0;
@@ -184,30 +113,52 @@ void UBOEmbedParser::parse(const QString& html)
         pos += exp.matchedLength();
         QStringList res = exp.capturedTexts();
 
-        if ("" != res.at(1)) {
-            results << res.at(1);
+        if ("" != res.at(0)) {
+            results << res.at(0);
         }
     }
 
-    QVector<QString> oembedUrls;
+    QList<QString> oembedUrls;
 
-    for (const QString& link : results)
+    for (QString result : results)
     {
-        QString qsNode = QString("<link%0>").arg(link);
-        QDomDocument domDoc;
-        domDoc.setContent(qsNode);
-        QDomElement linkNode = domDoc.documentElement();
+        // add trailing slash if necessary
+        result = result.trimmed();
 
-        //  At this point, we have a node that is the <link> element. Now we have to parse its attributes
-        //  in order to check if it is a oEmbed node or not
-        QDomAttr typeAttribute = linkNode.attributeNode("type");
-
-        if (typeAttribute.value().contains("oembed"))
+        if (result.at(result.length() - 1) != '/')
         {
-            // The node is an oembed one! We have to get the url
-            QDomAttr hrefAttribute = linkNode.attributeNode("href");
-            QString url = hrefAttribute.value();
-            oembedUrls.append(url);
+            result += "/";
+        }
+
+        QString qsNode = result + ">";
+
+        if (qsNode.startsWith("<iframe"))
+        {
+            // here we can already create a UBEmbedContent from the iframe
+            UBEmbedContent content = createIframeContent(qsNode);
+
+            if (content.type() == UBEmbedType::IFRAME)
+            {
+                mContents << createIframeContent(qsNode);
+            }
+        }
+        else
+        {
+            QDomDocument domDoc;
+            domDoc.setContent(qsNode);
+            QDomElement node = domDoc.documentElement();
+
+            //  At this point, we have a node that is the <link> element.
+            //  Now we have to parse its attributes in order to check if it is a oEmbed node or not
+            QDomAttr typeAttribute = node.attributeNode("type");
+
+            if (typeAttribute.value().contains("oembed"))
+            {
+                // The node is an oembed one! We have to get the url
+                QDomAttr hrefAttribute = node.attributeNode("href");
+                QString url = hrefAttribute.value();
+                oembedUrls.append(url);
+            }
         }
     }
 
@@ -216,7 +167,7 @@ void UBOEmbedParser::parse(const QString& html)
 
     if (0 == mPending)
     {
-        emit parseResult(mView, false);
+        emit parseResult(mView, !mContents.empty());
         mParsing = false;
     }
     else
@@ -229,7 +180,7 @@ void UBOEmbedParser::parse(const QString& html)
     }
 }
 
-void UBOEmbedParser::fetchOEmbed(const QString &url)
+void UBEmbedParser::fetchOEmbed(const QString &url)
 {
     QUrl qurl = QUrl::fromEncoded(url.toLatin1());
 
@@ -240,13 +191,13 @@ void UBOEmbedParser::fetchOEmbed(const QString &url)
     });
 }
 
-void UBOEmbedParser::onFinished(QNetworkReply *reply)
+void UBEmbedParser::onFinished(QNetworkReply *reply)
 {
     if (QNetworkReply::NoError == reply->error())
     {
         QString receivedDatas = reply->readAll().constData();
         qDebug() << "Received oEmbed" << receivedDatas;
-        UBOEmbedContent crntContent;
+        UBEmbedContent crntContent;
         // The received datas can be in two different formats: JSON or XML
         QString contentType = reply->header(QNetworkRequest::ContentTypeHeader).toString();
 
@@ -289,9 +240,9 @@ void UBOEmbedParser::onFinished(QNetworkReply *reply)
   /brief Extract the oembed infos from the JSON
   @param jsonUrl as the url of the JSON file
   */
-UBOEmbedContent UBOEmbedParser::getJSONInfos(const QString &json) const
+UBEmbedContent UBEmbedParser::getJSONInfos(const QString &json) const
 {
-    UBOEmbedContent content;
+    UBEmbedContent content;
 
     QJsonObject jsonObject = QJsonDocument::fromJson(json.toUtf8()).object();
     QString version = jsonObject.value("version").toString();
@@ -302,24 +253,7 @@ UBOEmbedContent UBOEmbedParser::getJSONInfos(const QString &json) const
     }
 
     QString type = jsonObject.value("type").toString();
-
-    if (type == "photo")
-    {
-        content.mType = UBOEmbedType::PHOTO;
-    }
-    else if (type == "video")
-    {
-        content.mType = UBOEmbedType::VIDEO;
-    }
-    else if (type == "link")
-    {
-        content.mType = UBOEmbedType::LINK;
-    }
-    else if (type == "rich")
-    {
-        content.mType = UBOEmbedType::RICH;
-    }
-
+    content.mType = UBEmbedContent::typeFromString(type);
     content.mTitle = jsonObject.value("title").toString();
     content.mAuthorName = jsonObject.value("author_name").toString();
     content.mAuthorUrl = jsonObject.value("author_url").toString();
@@ -340,9 +274,9 @@ UBOEmbedContent UBOEmbedParser::getJSONInfos(const QString &json) const
   /brief Extract the oembed infos from the XML
   @param xmlUrl as the url of the XML file
   */
-UBOEmbedContent UBOEmbedParser::getXMLInfos(const QString &xml) const
+UBEmbedContent UBEmbedParser::getXMLInfos(const QString &xml) const
 {
-    UBOEmbedContent content;
+    UBEmbedContent content;
 
     QDomDocument domDoc;
     domDoc.setContent(xml);
@@ -356,23 +290,7 @@ UBOEmbedContent UBOEmbedParser::getXMLInfos(const QString &xml) const
     }
 
     QString type = oembed.firstChildElement("type").text();
-
-    if (type == "photo")
-    {
-        content.mType = UBOEmbedType::PHOTO;
-    }
-    else if (type == "video")
-    {
-        content.mType = UBOEmbedType::VIDEO;
-    }
-    else if (type == "link")
-    {
-        content.mType = UBOEmbedType::LINK;
-    }
-    else if (type == "rich")
-    {
-        content.mType = UBOEmbedType::RICH;
-    }
+    content.mType = UBEmbedContent::typeFromString(type);
 
     QDomNodeList children = oembed.childNodes();
 
@@ -408,6 +326,57 @@ UBOEmbedContent UBOEmbedParser::getXMLInfos(const QString &xml) const
             content.mUrl = value; // This case appears only for type = photo
         }
     }
+
+    return content;
+}
+
+UBEmbedContent UBEmbedParser::createIframeContent(const QString &iframe) const
+{
+    QString html = iframe;
+    html.replace("\\&quot;", "\"");
+    qDebug() << "Found iframe" << html;
+    UBEmbedContent content;
+    content.mType = UBEmbedType::IFRAME;
+
+    // DOM parsing is not possible, as iframes contain boolean attributes
+    // eg "allowfullscreen", which are not XML conformant
+
+    QRegExp matchAttribute("(\\w+)(=\"([^\"]*)\")?");
+
+    int pos = 7;    // size of initial <iframe
+
+    while ((pos = matchAttribute.indexIn(html, pos)) != -1)
+    {
+        pos += matchAttribute.matchedLength();
+        QStringList res = matchAttribute.capturedTexts();
+
+        if (res.size() >= 4) {
+            QString tag = res.at(1);
+            QString value = res.at(3);
+
+            if ("title" == tag) {
+                content.mTitle = value;
+            } else if ("height" == tag) {
+                content.mHeight = value.toInt();
+
+                if (content.mHeight == 0) {
+                    // hidden iframe, skip
+                    content.mType = UBEmbedType::UNKNOWN;
+                }
+            } else if ("width" == tag) {
+                content.mWidth = value.toInt();
+
+                if (content.mWidth == 0) {
+                    // hidden iframe, skip
+                    content.mType = UBEmbedType::UNKNOWN;
+                }
+            } else if ("src" == tag) {
+                content.mUrl = value;
+            }
+        }
+    }
+
+    content.mHtml = html;
 
     return content;
 }
