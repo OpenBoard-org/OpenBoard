@@ -42,7 +42,6 @@ QT += core
 
 INCLUDEPATH += src
 
-include(libs.pri)
 include(src/adaptors/adaptors.pri)
 include(src/api/api.pri)
 include(src/board/board.pri)

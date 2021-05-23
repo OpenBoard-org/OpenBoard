@@ -28,7 +28,6 @@
 
 
 #include <QtGui>
-//#include <QDomDocument>
 #include <QMenu>
 #include <QWebEngineHistory>
 #include <QWebEngineHistoryItem>
@@ -48,7 +47,6 @@
 
 #include "network/UBNetworkAccessManager.h"
 
-#include "gui/UBWidgetMirror.h"
 #include "gui/UBMainWindow.h"
 #include "gui/UBWebToolsPalette.h"
 #include "gui/UBKeyboardPalette.h"
@@ -166,8 +164,7 @@ void UBWebController::webBrowserInstance()
             connect(mMainWindow->actionHome, &QAction::triggered, [this, currentUrl](){
                 mCurrentWebBrowser->currentTab()->load(currentUrl);
             });
-//            connect(mMainWindow->actionBookmarks, SIGNAL(triggered()), this , SLOT(bookmarks()));
-//            connect(mMainWindow->actionAddBookmark, SIGNAL(triggered()), this , SLOT(addBookmark()));
+
             connect(mMainWindow->actionWebBigger, SIGNAL(triggered()), mCurrentWebBrowser, SLOT(zoomIn()));
             connect(mMainWindow->actionWebSmaller, SIGNAL(triggered()), mCurrentWebBrowser, SLOT(zoomOut()));
 
@@ -175,6 +172,7 @@ void UBWebController::webBrowserInstance()
             connect(mHistoryBackMenu, SIGNAL(aboutToShow()),this, SLOT(aboutToShowBackMenu()));
             connect(mHistoryBackMenu, SIGNAL(triggered(QAction *)), this, SLOT(openActionUrl(QAction *)));
 
+            // setup history drop down menus
             for (QWidget* menuWidget : mMainWindow->actionWebBack->associatedWidgets())
             {
                 QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
@@ -201,12 +199,8 @@ void UBWebController::webBrowserInstance()
                 }
             }
 
-
-
             mCurrentWebBrowser->currentTab()->load(currentUrl);
-
             mCurrentWebBrowser->tabWidget()->tabBar()->show();
-            // FIXME mCurrentWebBrowser->tabWidget()->lineEdits()->show();
 
             QObject::connect(
                 mWebProfile, &QWebEngineProfile::downloadRequested,
@@ -229,7 +223,9 @@ void UBWebController::webBrowserInstance()
     }
 
     if (mDownloadViewIsVisible)
+    {
         m_downloadManagerWidget.show();
+    }
 }
 
 UBEmbedParser *UBWebController::embedParser(const QWebEngineView* view) const
@@ -256,7 +252,8 @@ QList<UBEmbedContent> UBWebController::getEmbeddedContent(const QWebEngineView *
 {
     UBEmbedParser* parser = embedParser(view);
 
-    if (parser) {
+    if (parser)
+    {
         return parser->embeddedContent();
     }
 
@@ -302,7 +299,6 @@ void UBWebController::trapFlash()
     activePageChanged();
 }
 
-
 void UBWebController::activePageChanged()
 {
     if (mCurrentWebBrowser && mCurrentWebBrowser->currentTab())
@@ -327,69 +323,30 @@ void UBWebController::activePageChanged()
     }
 }
 
-
-QPixmap UBWebController::captureCurrentPage()
+void UBWebController::captureCurrentPage()
 {
-    QPixmap pix;
+    QPixmap* pix;
 
     if (mCurrentWebBrowser
             && mCurrentWebBrowser->currentTab()
             && mCurrentWebBrowser->currentTab()->page())
     {
         WebView* view = mCurrentWebBrowser->currentTab();
-        QWebEnginePage* frame = mCurrentWebBrowser->currentTab()->page();
-        QSize size = frame->contentsSize().toSize();
+        QWebEnginePage* page = view->page();
+        QSize size = page->contentsSize().toSize();
+        QPoint scrollPosition = page->scrollPosition().toPoint();
+        QSize viewportSize = view->size();
 
-        qDebug() << size;
+        qDebug() << size << scrollPosition << viewportSize;
 
-        /*
-         * FIXME capturing a complete web page
-         *
-         * QWebEngine does not use a QPainter for rendering and only renders
-         * those parts of a web page which are really visible. Therefore there
-         * is no way to render a directly complete web page into a QPixmap.
-         * The only solution I see is to use injected JavaScript to scroll
-         * through the page and render the visible parts. Finally, we can
-         * return to the initial scroll position.
-         */
-        // NOTE JS results are only asynchronous
-//        QVariant top = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientTop");
-//        QVariant left = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientLeft");
-//        QVariant width = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientWidth");
-//        QVariant height = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientHeight");
+        // pix is deleted at the final run of captureStripe
+        pix = new QPixmap(size);
+        QPointF pos(0, 0);
 
-//        QSize vieportSize = mCurrentWebBrowser->currentTab()->page()->viewportSize();
-//        mCurrentWebBrowser->currentTab()->page()->setViewportSize(frame->contentsSize());
-//        pix = QPixmap(size);
-        pix = QPixmap(view->geometry().width(), view->geometry().height());
-
-
-        {
-            QPainter p(&pix);
-            view->render(&p);
-        }
-/* FIXME this cutting just removed
-        if (left.isValid() && top.isValid() && width.isValid() && height.isValid())
-        {
-            bool okLeft, okTop, okWidth, okHeight;
-
-            int iLeft = left.toInt(&okLeft) * frame->zoomFactor();
-            int iTop = top.toInt(&okTop) * frame->zoomFactor();
-            int iWidth = width.toInt(&okWidth) * frame->zoomFactor();
-            int iHeight = height.toInt(&okHeight) * frame->zoomFactor();
-
-            if(okLeft && okTop && okWidth && okHeight)
-            {
-                pix = pix.copy(iLeft, iTop, iWidth, iHeight);
-            }
-        }
-*/
-// FIXME        mCurrentWebBrowser->currentTab()->page()->setViewportSize(vieportSize);
+        // capture complete web page in stripes, starting at top left
+        captureStripe(pos, viewportSize, pix, scrollPosition);
     }
-
-    return pix;
 }
-
 
 void UBWebController::setupPalettes()
 {
@@ -435,10 +392,7 @@ void UBWebController::toggleWebTrap(bool checked)
 
 void UBWebController::captureWindow()
 {
-    QPixmap webPagePixmap = captureCurrentPage();
-
-    if (!webPagePixmap.isNull())
-        emit imageCaptured(webPagePixmap, true, mCurrentWebBrowser->currentTab()->url());
+    captureCurrentPage();
 }
 
 
@@ -829,4 +783,49 @@ void UBWebController::createEmbeddedContentWidget()
             }
         }
     }
+}
+
+void UBWebController::captureStripe(QPointF pos, QSize size, QPixmap* pix, QPointF scrollPosition)
+{
+    WebView* view = mCurrentWebBrowser->currentTab();
+    QString scrollto = QString("window.scrollTo(%1,%2)").arg(pos.x()).arg(pos.y());
+    view->page()->runJavaScript(scrollto, [this,pos,size,pix,scrollPosition](const QVariant&){
+        // we need some time for rendering - there is no signal when finished, so just wait
+        QTimer::singleShot(100, [this,pos,size,pix,scrollPosition](){
+            WebView* view = mCurrentWebBrowser->currentTab();
+            QPixmap stripe(size);
+
+            {
+                // render stripe, local block to release QPainter
+                QPainter p(&stripe);
+                view->render(&p);
+            }
+            {
+                // copy rendered stripe to pix
+                QPointF actualPos = view->page()->scrollPosition();
+                QRectF target(actualPos, size);
+                QPainter p(pix);
+                p.drawPixmap(target.toRect(), stripe);
+            }
+
+            QPointF nextPos = pos + QPointF(0, size.height() / view->zoomFactor());
+
+            if (nextPos.y() < pix->height() / view->zoomFactor())
+            {
+                // capture next stripe
+                captureStripe(nextPos, size, pix, scrollPosition);
+            }
+            else
+            {
+                QPixmap captured = *pix;
+                // allocated at captureCurrentPage()
+                delete pix;
+                emit imageCaptured(captured, true, view->url());
+
+                // scroll back to initial position
+                QString scrollto = QString("window.scrollTo(%1,%2)").arg(scrollPosition.x()).arg(scrollPosition.y());
+                view->page()->runJavaScript(scrollto);
+            }
+        });
+    });
 }

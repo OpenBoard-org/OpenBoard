@@ -57,7 +57,7 @@ class UBWebController : public QObject
         void closing();
         void adaptToolBar();
 
-        QPixmap captureCurrentPage();
+        void captureCurrentPage();
         void showTabAtTop(bool attop);
         void loadUrl(const QUrl& url);
         WebView* createNewTab();
@@ -109,6 +109,7 @@ class UBWebController : public QObject
 
         void createEmbeddedContentWidget();
 
+        void captureStripe(QPointF pos, QSize size, QPixmap *pix, QPointF scrollPosition);
 
     signals:
         /**
