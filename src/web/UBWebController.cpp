@@ -28,11 +28,8 @@
 
 
 #include <QtGui>
-#include <QDomDocument>
+//#include <QDomDocument>
 #include <QMenu>
-#include <QXmlQuery>
-#include <QWebFrame>
-#include <QWebElementCollection>
 #include <QWebEngineHistory>
 #include <QWebEngineHistoryItem>
 #include <QWebEngineProfile>
@@ -49,7 +46,6 @@
 #include "web/simplebrowser/webview.h"
 #include "web/simplebrowser/tabwidget.h"
 
-#include "network/UBServerXMLHttpRequest.h"
 #include "network/UBNetworkAccessManager.h"
 
 #include "gui/UBWidgetMirror.h"

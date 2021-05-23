@@ -75,7 +75,7 @@
 #include "core/UBSettings.h"
 
 #include <QtGui>
-#include <QWebSettings>
+#include <QWebEngineSettings>
 #include "core/memcheck.h"
 
 static const unsigned int JAR_VERSION = 23;
@@ -246,11 +246,11 @@ QList<QNetworkCookie> UBCookieJar::cookiesForUrl(const QUrl &url) const
     if (!mLoaded)
         that->load();
 
-    QWebSettings *globalSettings = QWebSettings::globalSettings();
-    if (globalSettings->testAttribute(QWebSettings::PrivateBrowsingEnabled)) {
-        QList<QNetworkCookie> noCookies;
-        return noCookies;
-    }
+//    QWebEngineSettings *globalSettings = QWebEngineSettings::globalSettings();
+//    if (globalSettings->testAttribute(QWebEngineSettings::PrivateBrowsingEnabled)) {
+//        QList<QNetworkCookie> noCookies;
+//        return noCookies;
+//    }
 
     return QNetworkCookieJar::cookiesForUrl(url);
 }
@@ -260,9 +260,9 @@ bool UBCookieJar::setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, con
     if (!mLoaded)
         load();
 
-    QWebSettings *globalSettings = QWebSettings::globalSettings();
-    if (globalSettings->testAttribute(QWebSettings::PrivateBrowsingEnabled))
-        return false;
+//    QWebSettings *globalSettings = QWebSettings::globalSettings();
+//    if (globalSettings->testAttribute(QWebSettings::PrivateBrowsingEnabled))
+//        return false;
 
     QString host = url.host();
     bool eBlock = qBinaryFind(mExceptionsBlock.begin(), mExceptionsBlock.end(), host) != mExceptionsBlock.end();

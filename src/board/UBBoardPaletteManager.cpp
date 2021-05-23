@@ -47,13 +47,8 @@
 #include "gui/UBActionPalette.h"
 #include "gui/UBBackgroundPalette.h"
 #include "gui/UBFavoriteToolPalette.h"
-#include "gui/UBStartupHintsPalette.h"
 
-#include "web/UBWebPage.h"
 #include "web/UBWebController.h"
-#include "web/browser/WBBrowserWindow.h"
-#include "web/browser/WBTabWidget.h"
-#include "web/browser/WBWebView.h"
 
 #include "desktop/UBDesktopAnnotationController.h"
 

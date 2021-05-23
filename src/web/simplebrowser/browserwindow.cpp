@@ -48,7 +48,6 @@
 **
 ****************************************************************************/
 
-#include "browser.h"
 #include "browserwindow.h"
 #include "downloadmanagerwidget.h"
 #include "tabwidget.h"

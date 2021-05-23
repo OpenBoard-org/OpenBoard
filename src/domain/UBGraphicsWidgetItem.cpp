@@ -31,7 +31,6 @@
 #include <QtXml>
 #include <QWebChannel>
 #include <QWebEngineView>
-#include <QWebFrame>
 
 #include "UBGraphicsWidgetItem.h"
 #include "UBGraphicsScene.h"
@@ -56,8 +55,6 @@
 
 #include "network/UBNetworkAccessManager.h"
 
-#include "web/UBWebPage.h"
-#include "web/UBWebKitUtils.h"
 #include "web/UBWebController.h"
 
 bool UBGraphicsWidgetItem::sInlineJavaScriptLoaded = false;

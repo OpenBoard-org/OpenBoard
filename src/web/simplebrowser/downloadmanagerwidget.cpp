@@ -50,7 +50,6 @@
 
 #include "downloadmanagerwidget.h"
 
-#include "browser.h"
 #include "browserwindow.h"
 #include "downloadwidget.h"
 

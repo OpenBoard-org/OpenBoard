@@ -29,21 +29,20 @@ VERSION_RC = $$replace(VERSION_RC, "b", "176") # 0xB0
 VERSION_RC = $$replace(VERSION_RC, "rc", "192" ) # 0xC0
 VERSION_RC = $$replace(VERSION_RC, "r", "240") # 0xF0
 
-QT += webkit
 QT += svg
 QT += network
 QT += xml
 QT += xmlpatterns
 QT += uitools
 QT += multimedia
-QT += webkitwidgets
-QT += webenginewidgets
 QT += multimediawidgets
+QT += webenginewidgets
 QT += printsupport
 QT += core
 
 INCLUDEPATH += src
 
+include(libs.pri)
 include(src/adaptors/adaptors.pri)
 include(src/api/api.pri)
 include(src/board/board.pri)
