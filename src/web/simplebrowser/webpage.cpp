@@ -48,16 +48,16 @@
 **
 ****************************************************************************/
 
-#include "browserwindow.h"
-#include "tabwidget.h"
 #include "ui_certificateerrordialog.h"
 #include "ui_passworddialog.h"
 #include "webpage.h"
-#include "webview.h"
 #include <QAuthenticator>
 #include <QMessageBox>
 #include <QStyle>
 #include <QWebEngineCertificateError>
+
+#include "core/UBApplication.h"
+#include "gui/UBMainWindow.h"
 
 WebPage::WebPage(QWebEngineProfile *profile, QObject *parent)
     : QWebEnginePage(profile, parent)
@@ -73,7 +73,7 @@ WebPage::WebPage(QWebEngineProfile *profile, QObject *parent)
 
 bool WebPage::certificateError(const QWebEngineCertificateError &error)
 {
-    QWidget *mainWindow = view()->window();
+    QWidget *mainWindow = UBApplication::mainWindow->centralWidget(); //view()->window();
     if (error.isOverridable()) {
         QDialog dialog(mainWindow);
         dialog.setModal(true);
@@ -94,7 +94,7 @@ bool WebPage::certificateError(const QWebEngineCertificateError &error)
 
 void WebPage::handleAuthenticationRequired(const QUrl &requestUrl, QAuthenticator *auth)
 {
-    QWidget *mainWindow = view()->window();
+    QWidget *mainWindow = UBApplication::mainWindow->centralWidget(); // view()->window();
     QDialog dialog(mainWindow);
     dialog.setModal(true);
     dialog.setWindowFlags(dialog.windowFlags() & ~Qt::WindowContextHelpButtonHint);
@@ -147,7 +147,8 @@ void WebPage::handleFeaturePermissionRequested(const QUrl &securityOrigin, Featu
 {
     QString title = tr("Permission Request");
     QString question = questionForFeature(feature).arg(securityOrigin.host());
-    if (!question.isEmpty() && QMessageBox::question(view()->window(), title, question) == QMessageBox::Yes)
+
+    if (!question.isEmpty() && QMessageBox::question(UBApplication::mainWindow->centralWidget(), title, question) == QMessageBox::Yes)
         setFeaturePermission(securityOrigin, feature, PermissionGrantedByUser);
     else
         setFeaturePermission(securityOrigin, feature, PermissionDeniedByUser);
@@ -155,7 +156,7 @@ void WebPage::handleFeaturePermissionRequested(const QUrl &securityOrigin, Featu
 
 void WebPage::handleProxyAuthenticationRequired(const QUrl &, QAuthenticator *auth, const QString &proxyHost)
 {
-    QWidget *mainWindow = view()->window();
+    QWidget *mainWindow = UBApplication::mainWindow->centralWidget(); //view()->window();
     QDialog dialog(mainWindow);
     dialog.setModal(true);
     dialog.setWindowFlags(dialog.windowFlags() & ~Qt::WindowContextHelpButtonHint);
@@ -185,7 +186,7 @@ void WebPage::handleProxyAuthenticationRequired(const QUrl &, QAuthenticator *au
 void WebPage::handleRegisterProtocolHandlerRequested(QWebEngineRegisterProtocolHandlerRequest request)
 {
     auto answer = QMessageBox::question(
-        view()->window(),
+        UBApplication::mainWindow->centralWidget(), //view()->window(),
         tr("Permission Request"),
         tr("Allow %1 to open all %2 links?")
         .arg(request.origin().host())

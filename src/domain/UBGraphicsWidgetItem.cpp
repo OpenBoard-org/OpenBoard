@@ -56,6 +56,7 @@
 #include "network/UBNetworkAccessManager.h"
 
 #include "web/UBWebController.h"
+#include "web/simplebrowser/webpage.h"
 
 bool UBGraphicsWidgetItem::sInlineJavaScriptLoaded = false;
 QStringList UBGraphicsWidgetItem::sInlineJavaScripts;
@@ -82,7 +83,7 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
 
     // create the page using a profile
     QWebEngineProfile* profile = UBApplication::webController->widgetProfile();
-    webEngineView->setPage(new QWebEnginePage(profile, this));
+    webEngineView->setPage(new WebPage(profile, this));
 
     // see https://stackoverflow.com/questions/31928444/qt-qwebenginepagesetwebchannel-transport-object
     mWebChannel = new QWebChannel(this);
@@ -90,8 +91,6 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
 
     // NOTE to enable fullscreen, we would have to move the page to a fullscreen view.
     // webEngineView->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
-
-//    webEngineView->page()->setNetworkAccessManager(UBNetworkAccessManager::defaultAccessManager());
 
     setAcceptDrops(true);
     setAutoFillBackground(false);
