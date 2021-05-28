@@ -98,6 +98,7 @@ private slots:
     void handleWebActionEnabledChanged(QWebEnginePage::WebAction action, bool enabled);
     void handleDevToolsRequested(QWebEnginePage *source);
     void handleTabClosing(WebView *webView);
+    void handleReturnPressed();
 
 private:
     QMenu *createFileMenu(TabWidget *tabWidget);

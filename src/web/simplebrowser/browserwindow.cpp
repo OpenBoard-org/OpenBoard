@@ -139,18 +139,7 @@ void BrowserWindow::init()
     });
     connect(m_tabWidget, &TabWidget::favIconChanged, m_favAction, &QAction::setIcon);
     connect(m_tabWidget, &TabWidget::devToolsRequested, this, &BrowserWindow::handleDevToolsRequested);
-    connect(m_urlLineEdit, &QLineEdit::returnPressed, [this]() {
-        QString input = m_urlLineEdit->text();
-        QUrl url = QUrl::fromUserInput(m_urlLineEdit->text());
-
-        if (input.startsWith("?") || !url.isValid()) {
-            QString searchEngine = UBSettings::settings()->webSearchEngineUrl->get().toString();
-            input = QUrl::toPercentEncoding(input.mid(1).trimmed());
-            url = QUrl::fromUserInput(searchEngine.arg(input));
-        }
-
-        m_tabWidget->setUrl(url);
-    });
+    connect(m_urlLineEdit, &QLineEdit::returnPressed, this, &BrowserWindow::handleReturnPressed);
 
     QAction *focusUrlLineEditAction = new QAction(this);
     addAction(focusUrlLineEditAction);
@@ -638,4 +627,37 @@ void BrowserWindow::handleTabClosing(WebView* webView)
             m_InspectorWindow = nullptr;
         }
     }
+}
+
+void BrowserWindow::handleReturnPressed()
+{
+    QString input = m_urlLineEdit->text().trimmed();
+
+    // get first word
+    int wordEnd = input.indexOf(QRegExp("\\s"));
+    QString firstWord = wordEnd < 0 ? input : input.left(wordEnd);
+    bool search = false;
+
+    if (firstWord.startsWith("?"))
+    {
+        // ? as marker for search
+        search = true;
+        input = input.mid(1);
+    }
+    else if (firstWord.indexOf(".") < 0)
+    {
+        // search if first work does not contain a dot
+        search = true;
+    }
+
+    QUrl url = QUrl::fromUserInput(input);
+
+    if (search || !url.isValid())
+    {
+        QString searchEngine = UBSettings::settings()->webSearchEngineUrl->get().toString();
+        input = QUrl::toPercentEncoding(input);
+        url = QUrl::fromUserInput(searchEngine.arg(input));
+    }
+
+    m_tabWidget->setUrl(url);
 }
