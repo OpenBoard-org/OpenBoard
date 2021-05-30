@@ -83,6 +83,11 @@ class UBW3CWidgetAPI : public QObject
 
         void openURL(const QString& url);
 
+signals:
+        void onenter();
+        void onleave();
+        void onremove();
+
     private:
 
         UBGraphicsW3CWidgetItem* mGraphicsW3CWidget;

@@ -300,8 +300,6 @@ void UBGraphicsWidgetItem::runScript(const QString &script)
 
 void UBGraphicsWidgetItem::removeScript()
 {
-    if (webEngineView->page())
-        webEngineView->page()->runJavaScript("if(widget && widget.onremove) { widget.onremove();}");
 }
 
 void UBGraphicsWidgetItem::processDropEvent(QGraphicsSceneDragDropEvent *event)
@@ -625,14 +623,10 @@ void UBGraphicsWidgetItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void UBGraphicsWidgetItem::sendJSEnterEvent()
 {
-    if (webEngineView->page())
-        webEngineView->page()->runJavaScript("if(widget && widget.onenter) { widget.onenter();}");
 }
 
 void UBGraphicsWidgetItem::sendJSLeaveEvent()
 {
-    if (webEngineView->page())
-        webEngineView->page()->runJavaScript("if(widget && widget.onleave) { widget.onleave();}");
 }
 
 void UBGraphicsWidgetItem::injectInlineJavaScript()
@@ -1012,6 +1006,21 @@ QMap<QString, UBGraphicsW3CWidgetItem::PreferenceValue> UBGraphicsW3CWidgetItem:
 UBGraphicsW3CWidgetItem::Metadata UBGraphicsW3CWidgetItem::metadatas() const
 {
     return mMetadatas;
+}
+
+void UBGraphicsW3CWidgetItem::removeScript()
+{
+    emit mW3CWidgetAPI->onremove();
+}
+
+void UBGraphicsW3CWidgetItem::sendJSEnterEvent()
+{
+    emit mW3CWidgetAPI->onenter();
+}
+
+void UBGraphicsW3CWidgetItem::sendJSLeaveEvent()
+{
+    emit mW3CWidgetAPI->onleave();
 }
 
 QString UBGraphicsW3CWidgetItem::createNPAPIWrapper(const QString& url, const QString& pMimeType, const QSize& sizeHint, const QString& pName)

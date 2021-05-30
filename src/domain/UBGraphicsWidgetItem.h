@@ -98,7 +98,7 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         void removeAllDatastoreEntries();
 
         void runScript(const QString& script);
-        void removeScript();
+        virtual void removeScript();
 
         void processDropEvent(QGraphicsSceneDragDropEvent *event);
         bool isDropableData(const QMimeData *data) const;
@@ -262,6 +262,10 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         virtual void copyItemParameters(UBItem *copy) const;
         QMap<QString, PreferenceValue> preferences();
         Metadata metadatas() const;
+
+        virtual void removeScript();
+        virtual void sendJSEnterEvent();
+        virtual void sendJSLeaveEvent();
 
         static QString freezedWidgetFilePath();
         static QString createNPAPIWrapper(const QString& url, const QString& pMimeType = QString(), const QSize& sizeHint = QSize(300, 150), const QString& pName = QString());
