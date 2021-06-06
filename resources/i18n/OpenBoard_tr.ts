@@ -2165,7 +2165,7 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
     </message>
 </context>
 <context>
-    <name>UBTrapFlashController</name>
+    <name>UBEmbedController</name>
     <message>
         <source>Whole page</source>
         <translation>Tüm sayfa</translation>

@@ -2177,7 +2177,7 @@ Doriţi să ignoraţi aceste erori pentru acest host?</translation>
     </message>
 </context>
 <context>
-    <name>UBTrapFlashController</name>
+    <name>UBEmbedController</name>
     <message>
         <source>Whole page</source>
         <translation>Toată pagina</translation>

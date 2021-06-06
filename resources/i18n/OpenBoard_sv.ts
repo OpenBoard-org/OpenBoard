@@ -2178,7 +2178,7 @@ Vill du ignorera felen för den här värden?</translation>
     </message>
 </context>
 <context>
-    <name>UBTrapFlashController</name>
+    <name>UBEmbedController</name>
     <message>
         <source>Whole page</source>
         <translation>Hela sidan</translation>

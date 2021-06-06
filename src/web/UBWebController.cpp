@@ -39,7 +39,7 @@
 #include "frameworks/UBPlatformUtils.h"
 
 #include "UBWebController.h"
-#include "UBTrapFlashController.h"
+#include "UBEmbedController.h"
 
 #include "web/simplebrowser/browserwindow.h"
 #include "web/simplebrowser/webview.h"
@@ -72,7 +72,7 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
     , mMainWindow(mainWindow)
     , mCurrentWebBrowser(0)
     , mBrowserWidget(0)
-    , mTrapFlashController(0)
+    , mEmbedController(0)
     , mToolsCurrentPalette(0)
     , mToolsPalettePositionned(false)
     , mDownloadViewIsVisible(false)
@@ -130,7 +130,7 @@ void UBWebController::webBrowserInstance()
 
             adaptToolBar();
 
-            mTrapFlashController = new UBTrapFlashController(mCurrentWebBrowser);
+            mEmbedController = new UBEmbedController(mCurrentWebBrowser);
 
             connect(mCurrentWebBrowser, SIGNAL(activeViewPageChanged()), this, SLOT(activePageChanged()));
             connect(mCurrentWebBrowser->tabWidget(), &TabWidget::tabCreated, this, &UBWebController::tabCreated);
@@ -230,7 +230,7 @@ void UBWebController::webBrowserInstance()
 
 UBEmbedParser *UBWebController::embedParser(const QWebEngineView* view) const
 {
-    return view->findChild<UBEmbedParser*>("UBOEmbedParser");
+    return view->findChild<UBEmbedParser*>("UBEmbedParser");
 }
 
 void UBWebController::show()
@@ -293,9 +293,9 @@ void UBWebController::setSourceWidget(QWidget* pWidget)
 }
 
 
-void UBWebController::trapFlash()
+void UBWebController::trap()
 {
-    mTrapFlashController->showTrapFlash();
+    mEmbedController->showTrapDialog();
     activePageChanged();
 }
 
@@ -305,10 +305,8 @@ void UBWebController::activePageChanged()
     {
         WebView* view = mCurrentWebBrowser->currentTab();
 
-        if (mTrapFlashController)
-            mTrapFlashController->updateTrapFlashFromView(view);
-
-        mMainWindow->actionWebTrap->setChecked(false);
+        if (mEmbedController)
+            mEmbedController->updateTrapFlashFromView(view);
 
         QUrl latestUrl = view->url();
 
@@ -360,33 +358,27 @@ void UBWebController::setupPalettes()
                     UBApplication::boardController->paletteManager()->mKeyboardPalette, SLOT(onDeactivated()));
 #endif
 
-        connect(mMainWindow->actionWebTrapFlash, SIGNAL(triggered()), this, SLOT(trapFlash()));
+        connect(mMainWindow->actionWebTrapFlash, SIGNAL(triggered()), this, SLOT(trap()));
         connect(mMainWindow->actionWebCustomCapture, SIGNAL(triggered()), this, SLOT(customCapture()));
         connect(mMainWindow->actionWebWindowCapture, SIGNAL(triggered()), this, SLOT(captureWindow()));
         connect(mMainWindow->actionWebOEmbed, SIGNAL(triggered()), this, SLOT(createEmbeddedContentWidget()));
         connect(mMainWindow->actionEduMedia, SIGNAL(triggered()), this, SLOT(captureEduMedia()));
 
         connect(mMainWindow->actionWebShowHideOnDisplay, SIGNAL(toggled(bool)), this, SLOT(toogleMirroring(bool)));
-        connect(mMainWindow->actionWebTrap, SIGNAL(toggled(bool)), this, SLOT(toggleWebTrap(bool)));
 
         mToolsCurrentPalette->hide();
         mToolsCurrentPalette->adjustSizeAndPosition();
 
-        if (controlView()){
+        if (controlView())
+        {
             int left = controlView()->width() - 20 - mToolsCurrentPalette->width();
             int top = (controlView()->height() - mToolsCurrentPalette->height()) / 2;
             mToolsCurrentPalette->setCustomPosition(true);
             mToolsCurrentPalette->move(left, top);
         }
+
         mMainWindow->actionWebTools->trigger();
     }
-}
-
-
-void UBWebController::toggleWebTrap(bool checked)
-{
-    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTab())
-    {}// FIXME    mCurrentWebBrowser->currentTab()->setIsTrapping(checked);
 }
 
 
@@ -532,9 +524,9 @@ QUrl UBWebController::guessUrlFromString(const QString &string)
 
 void UBWebController::tabCreated(WebView *webView)
 {
-    // create and attach an UBOEmbedParser to the view
+    // create and attach an UBEmbedParser to the view
     UBEmbedParser* parser = new UBEmbedParser(webView);
-    connect(parser, &UBEmbedParser::parseResult, this, &UBWebController::onOEmbedParsed);
+    connect(parser, &UBEmbedParser::parseResult, this, &UBWebController::onEmbedParsed);
 }
 
 /**/
@@ -743,7 +735,7 @@ void UBWebController::openActionUrl(QAction *action)
         history->goToItem(history->forwardItems(history->count() - offset + 1).back());
  }
 
-void UBWebController::onOEmbedParsed(QWebEngineView *view, bool hasEmbeddedContent)
+void UBWebController::onEmbedParsed(QWebEngineView *view, bool hasEmbeddedContent)
 {
     // check: is this for current tab?
     if (view == mBrowserWidget)
@@ -751,9 +743,9 @@ void UBWebController::onOEmbedParsed(QWebEngineView *view, bool hasEmbeddedConte
         // enable/disable embed button
         UBApplication::mainWindow->actionWebOEmbed->setEnabled(hasEmbeddedContent);
 
-        if (mTrapFlashController)
+        if (mEmbedController)
         {
-            mTrapFlashController->updateTrapFlashFromView(view);
+            mEmbedController->updateTrapFlashFromView(view);
         }
     }
 }

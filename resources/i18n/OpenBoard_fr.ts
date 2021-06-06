@@ -2252,7 +2252,7 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     </message>
 </context>
 <context>
-    <name>UBTrapFlashController</name>
+    <name>UBEmbedController</name>
     <message>
         <source>Whole page</source>
         <translation>Page complète</translation>

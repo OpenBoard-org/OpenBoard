@@ -2240,7 +2240,7 @@ Miniaturansicht der Seite %1 wird geladen</translation>
     </message>
 </context>
 <context>
-    <name>UBTrapFlashController</name>
+    <name>UBEmbedController</name>
     <message>
         <source>Whole page</source>
         <translation>Ganze Seite</translation>

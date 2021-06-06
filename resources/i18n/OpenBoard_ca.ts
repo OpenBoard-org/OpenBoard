@@ -2170,7 +2170,7 @@ Voleu ignorar aquests errors per a aquest amfitrió?</translation>
     </message>
 </context>
 <context>
-    <name>UBTrapFlashController</name>
+    <name>UBEmbedController</name>
     <message>
         <source>Whole page</source>
         <translation>Pàgina sencera</translation>

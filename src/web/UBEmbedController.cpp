@@ -27,7 +27,7 @@
 
 
 
-#include "UBTrapFlashController.h"
+#include "UBEmbedController.h"
 
 #include <QtXml>
 #include <QWebEnginePage>
@@ -45,6 +45,7 @@
 #include "domain/UBGraphicsScene.h"
 
 #include "board/UBBoardController.h"
+#include "board/UBDrawingController.h"
 
 #include "web/UBWebController.h"
 
@@ -52,10 +53,10 @@
 
 #include "core/memcheck.h"
 
-UBTrapFlashController::UBTrapFlashController(QWidget* parent)
+UBEmbedController::UBEmbedController(QWidget* parent)
     : QObject(parent)
     , mTrapFlashUi(0)
-    , mTrapFlashDialog(0)
+    , mTrapDialog(0)
     , mParentWidget(parent)
     , mCurrentWebFrame(0)
 {
@@ -63,28 +64,28 @@ UBTrapFlashController::UBTrapFlashController(QWidget* parent)
 }
 
 
-UBTrapFlashController::~UBTrapFlashController()
+UBEmbedController::~UBEmbedController()
 {
     // NOOP
 }
 
 
-void UBTrapFlashController::showTrapFlash()
+void UBEmbedController::showTrapDialog()
 {
-    if (!mTrapFlashDialog)
+    if (!mTrapDialog)
     {
         Qt::WindowFlags flag = Qt::Dialog | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint ;
         flag &= ~ Qt::WindowContextHelpButtonHint;
         flag &= ~ Qt::WindowMinimizeButtonHint;
 
-        mTrapFlashDialog = new QDialog(mParentWidget, flag);
+        mTrapDialog = new QDialog(mParentWidget, flag);
         mTrapFlashUi = new Ui::trapFlashDialog();
-        mTrapFlashUi->setupUi(mTrapFlashDialog);
+        mTrapFlashUi->setupUi(mTrapDialog);
 
 //        mTrapFlashUi->webView->page()->setNetworkAccessManager(UBNetworkAccessManager::defaultAccessManager());
         int viewWidth = mParentWidget->width() / 2;
         int viewHeight = mParentWidget->height() * 2. / 3.;
-        mTrapFlashDialog->setGeometry(
+        mTrapDialog->setGeometry(
                 (mParentWidget->width() - viewWidth) / 2
                 , (mParentWidget->height() - viewHeight) / 2
                 , viewWidth
@@ -103,10 +104,10 @@ void UBTrapFlashController::showTrapFlash()
 
     }
 
-    mTrapFlashDialog->show();
+    mTrapDialog->show();
 }
 
-void UBTrapFlashController::text_Changed(const QString &newText)
+void UBEmbedController::text_Changed(const QString &newText)
 {
     QString new_text = newText;
 
@@ -133,23 +134,23 @@ void UBTrapFlashController::text_Changed(const QString &newText)
     }
 }
 
-void UBTrapFlashController::text_Edited(const QString &newText)
+void UBEmbedController::text_Edited(const QString &newText)
 {
     Q_UNUSED(newText);
 }
 
-void UBTrapFlashController::hideTrapFlash()
+void UBEmbedController::hideTrapFlash()
 {
-    if (mTrapFlashDialog)
+    if (mTrapDialog)
     {
-        mTrapFlashDialog->hide();
+        mTrapDialog->hide();
     }
 }
 
 
-void UBTrapFlashController::updateListOfFlashes(const QList<UBEmbedContent>& pAllContent)
+void UBEmbedController::updateListOfFlashes(const QList<UBEmbedContent>& pAllContent)
 {
-    if (mTrapFlashDialog)
+    if (mTrapDialog)
     {
         mAvailableContent = pAllContent;
         disconnect(mTrapFlashUi->flashCombobox, SIGNAL(currentIndexChanged(int)), this, SLOT(selectFlash(int)));
@@ -167,7 +168,7 @@ void UBTrapFlashController::updateListOfFlashes(const QList<UBEmbedContent>& pAl
 }
 
 
-void UBTrapFlashController::selectFlash(int pFlashIndex)
+void UBEmbedController::selectFlash(int pFlashIndex)
 {
     if (pFlashIndex == 0)
     {
@@ -185,7 +186,7 @@ void UBTrapFlashController::selectFlash(int pFlashIndex)
 }
 
 
-void UBTrapFlashController::createWidget()
+void UBEmbedController::createWidget()
 {
     int selectedIndex = mTrapFlashUi->flashCombobox->currentIndex();
 
@@ -234,11 +235,11 @@ void UBTrapFlashController::createWidget()
     QString freezedWidgetPath = UBPlatformUtils::applicationResourcesDirectory() + "/etc/freezedWidgetWrapper.html";
     mTrapFlashUi->webView->load(QUrl::fromLocalFile(freezedWidgetPath));
 
-    mTrapFlashDialog->hide();
+    mTrapDialog->hide();
 }
 
 
-void UBTrapFlashController::importWidgetInLibrary(QDir pSourceDir)
+void UBEmbedController::importWidgetInLibrary(QDir pSourceDir)
 {
     const QString userWidgetPath = UBSettings::settings()->userInteractiveDirectory() + "/" + tr("Web");
     QDir userWidgetDir(userWidgetPath);
@@ -270,13 +271,14 @@ void UBTrapFlashController::importWidgetInLibrary(QDir pSourceDir)
         UBApplication::boardController->activeScene())
     {
         UBApplication::boardController->activeScene()->addWidget(QUrl::fromLocalFile(widgetLibraryPath));
+        UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
     }
 }
 
 
-void UBTrapFlashController::updateTrapFlashFromView(QWebEngineView *pCurrentWebFrame)
+void UBEmbedController::updateTrapFlashFromView(QWebEngineView *pCurrentWebFrame)
 {
-    if (pCurrentWebFrame && mTrapFlashDialog && mTrapFlashDialog->isVisible())
+    if (pCurrentWebFrame && mTrapDialog && mTrapDialog->isVisible())
     {
         QList<UBEmbedContent> list = UBApplication::webController->getEmbeddedContent(pCurrentWebFrame);
         mCurrentWebFrame = pCurrentWebFrame;
@@ -285,7 +287,7 @@ void UBTrapFlashController::updateTrapFlashFromView(QWebEngineView *pCurrentWebF
 }
 
 
-QString UBTrapFlashController::generateIcon(const QString& pDirPath)
+QString UBEmbedController::generateIcon(const QString& pDirPath)
 {
     QDesktopWidget* desktop = QApplication::desktop();
     QPoint webViewPosition = mTrapFlashUi->webView->mapToGlobal(mTrapFlashUi->webView->pos());
@@ -311,7 +313,7 @@ QString UBTrapFlashController::generateIcon(const QString& pDirPath)
 }
 
 
-void UBTrapFlashController::generateConfig(int pWidth, int pHeight, const QString& pDestinationPath)
+void UBEmbedController::generateConfig(int pWidth, int pHeight, const QString& pDestinationPath)
 {
     QFile configFile(pDestinationPath + "/" + "config.xml");
 
@@ -348,7 +350,7 @@ void UBTrapFlashController::generateConfig(int pWidth, int pHeight, const QStrin
 }
 
 
-QString UBTrapFlashController::generateFullPageHtml(const QUrl &url, const QString& pDirPath, bool pGenerateFile)
+QString UBEmbedController::generateFullPageHtml(const QUrl &url, const QString& pDirPath, bool pGenerateFile)
 {
     if (mCurrentWebFrame->url().isEmpty())
     {
@@ -400,7 +402,7 @@ QString UBTrapFlashController::generateFullPageHtml(const QUrl &url, const QStri
 }
 
 
-QString UBTrapFlashController::generateHtml(const UBEmbedContent& pObject,
+QString UBEmbedController::generateHtml(const UBEmbedContent& pObject,
         const QString& pDirPath, bool pGenerateFile)
 {
     if (pObject.type() == UBEmbedType::IFRAME)
@@ -468,7 +470,7 @@ QString UBTrapFlashController::generateHtml(const UBEmbedContent& pObject,
     }
 }
 
-QString UBTrapFlashController::widgetNameForObject(const UBEmbedContent& pObject)
+QString UBEmbedController::widgetNameForObject(const UBEmbedContent& pObject)
 {
     QString result;
 

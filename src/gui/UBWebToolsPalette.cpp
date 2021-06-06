@@ -53,7 +53,8 @@ UBWebToolsPalette::UBWebToolsPalette(QWidget *parent)
 
     actions << UBApplication::mainWindow->actionWebCustomCapture;
     actions << UBApplication::mainWindow->actionWebWindowCapture;
-    actions << UBApplication::mainWindow->actionWebOEmbed;
+// NOTE @letsfindaway obsolete, covered by actionWebTrapFlash
+//    actions << UBApplication::mainWindow->actionWebOEmbed;
 
     actions << UBApplication::mainWindow->actionWebShowHideOnDisplay;
 

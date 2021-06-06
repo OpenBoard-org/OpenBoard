@@ -71,7 +71,7 @@ class UBEmbedParser : public QObject
     Q_OBJECT
 
 public:
-    explicit UBEmbedParser(QWebEngineView* parent, const char* name="UBOEmbedParser");
+    explicit UBEmbedParser(QWebEngineView* parent, const char* name="UBEmbedParser");
     ~UBEmbedParser();
 
     bool hasEmbeddedContent();
@@ -89,7 +89,7 @@ private slots:
 private:
     UBEmbedContent getJSONInfos(const QString& json) const;
     UBEmbedContent getXMLInfos(const QString& xml) const;
-    UBEmbedContent createIframeContent(const QString& iframe) const;
+    UBEmbedContent createIframeContent(const QString& html) const;
 
 private:
     QWebEngineView* mView;

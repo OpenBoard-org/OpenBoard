@@ -27,8 +27,8 @@
 
 
 
-#ifndef UBTRAPFLASHCONTROLLER_H_
-#define UBTRAPFLASHCONTROLLER_H_
+#ifndef UBEMBEDCONTROLLER_H_
+#define UBEMBEDCONTROLLER_H_
 
 #include <QtGui>
 
@@ -43,14 +43,14 @@ namespace Ui
 }
 
 
-class UBTrapFlashController : public QObject
+class UBEmbedController : public QObject
 {
     Q_OBJECT;
     public:
-        UBTrapFlashController(QWidget* parent = 0);
-        virtual ~UBTrapFlashController();
+        UBEmbedController(QWidget* parent = 0);
+        virtual ~UBEmbedController();
 
-        void showTrapFlash();
+        void showTrapDialog();
         void hideTrapFlash();
 
     public slots:
@@ -79,7 +79,7 @@ class UBTrapFlashController : public QObject
         void importWidgetInLibrary(QDir pSourceDir);
 
         Ui::trapFlashDialog* mTrapFlashUi;
-        QDialog* mTrapFlashDialog;
+        QDialog* mTrapDialog;
         QWidget* mParentWidget;
         QWebEngineView* mCurrentWebFrame;
         QList<UBEmbedContent> mAvailableContent;

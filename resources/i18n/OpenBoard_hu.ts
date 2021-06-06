@@ -2157,7 +2157,7 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     </message>
 </context>
 <context>
-    <name>UBTrapFlashController</name>
+    <name>UBEmbedController</name>
     <message>
         <source>Whole page</source>
         <translation>Teljes oldal</translation>

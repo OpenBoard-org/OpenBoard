@@ -1878,7 +1878,7 @@ Ostalari onentzako errore hauek ez-ikusi nahi dituzu?</translation>
     </message>
 </context>
 <context>
-    <name>UBTrapFlashController</name>
+    <name>UBEmbedController</name>
     <message>
         <source>Whole page</source>
         <translation type="vanished">Orri osoa</translation>

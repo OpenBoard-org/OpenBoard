@@ -102,7 +102,7 @@ void UBEmbedParser::parse(const QString& html)
     mParsedTitles.clear();
 
     // extract all <link> and <iframe> tags upto but not including the final >
-    QRegExp exp("<(link|iframe)([^>]*)");
+    QRegExp exp("(<|&lt;)(link|iframe)([^>]*)");
     QStringList results;
     int count = 0;
     int pos = 0;
@@ -113,7 +113,8 @@ void UBEmbedParser::parse(const QString& html)
         pos += exp.matchedLength();
         QStringList res = exp.capturedTexts();
 
-        if ("" != res.at(0)) {
+        if ("" != res.at(0))
+        {
             results << res.at(0);
         }
     }
@@ -122,9 +123,18 @@ void UBEmbedParser::parse(const QString& html)
 
     for (QString result : results)
     {
-        // add trailing slash if necessary
-        result = result.trimmed();
+        // replace entities
+        result = result.trimmed().replace("&lt;", "<").replace("&gt;", ">").replace("\\&quot;", "\"").replace("\\", "");
 
+        // again cut at first ">"
+        int greater = result.indexOf('>');
+
+        if (greater >= 0)
+        {
+            result.truncate(greater);
+        }
+
+        // add trailing slash if necessary
         if (result.at(result.length() - 1) != '/')
         {
             result += "/";
@@ -139,7 +149,7 @@ void UBEmbedParser::parse(const QString& html)
 
             if (content.type() == UBEmbedType::IFRAME)
             {
-                mContents << createIframeContent(qsNode);
+                mContents << content;
             }
         }
         else
@@ -201,23 +211,29 @@ void UBEmbedParser::onFinished(QNetworkReply *reply)
         // The received datas can be in two different formats: JSON or XML
         QString contentType = reply->header(QNetworkRequest::ContentTypeHeader).toString();
 
-        if (contentType.contains("xml")) {
+        if (contentType.contains("xml"))
+        {
             // XML !
             crntContent = getXMLInfos(receivedDatas);
-        } else if (contentType.contains("json")) {
+        }
+        else if (contentType.contains("json"))
+        {
             // JSON !
             crntContent = getJSONInfos(receivedDatas);
         }
 
         //  As we don't want duplicates, we have to check if the content title has already
         //  been parsed.
-        if ("" != crntContent.mTitle && !mParsedTitles.contains(crntContent.mTitle)) {
+        if ("" != crntContent.mTitle && !mParsedTitles.contains(crntContent.mTitle))
+        {
             qDebug() << "Found" << crntContent.mTitle;
             mParsedTitles << crntContent.mTitle;
             mContents << crntContent;
         }
 
-    } else {
+    }
+    else
+    {
         //  We decided to not handle the error case here. If there is a problem with
         //  getting the oembed content information, we just don't handle it: the content
         //  will not be available for importation.
@@ -227,7 +243,8 @@ void UBEmbedParser::onFinished(QNetworkReply *reply)
     mPending--;
     qDebug() << "Remaining pending" << mPending;
 
-    if (0 == mPending) {
+    if (0 == mPending)
+    {
         //  All the oembed contents have been parsed. We notify it!
         emit parseResult(mView, hasEmbeddedContent());
         mParsing = false;
@@ -247,7 +264,8 @@ UBEmbedContent UBEmbedParser::getJSONInfos(const QString &json) const
     QJsonObject jsonObject = QJsonDocument::fromJson(json.toUtf8()).object();
     QString version = jsonObject.value("version").toString();
 
-    if (version != "1.0") {
+    if (version != "1.0")
+    {
         qDebug() << "Unknown oEmbed version" << version;
         return content;
     }
@@ -284,7 +302,8 @@ UBEmbedContent UBEmbedParser::getXMLInfos(const QString &xml) const
 
     QString version = oembed.firstChildElement("version").text();
 
-    if (version != "1.0") {
+    if (version != "1.0")
+    {
         qDebug() << "Unknown oEmbed version" << version;
         return content;
     }
@@ -300,29 +319,52 @@ UBEmbedContent UBEmbedParser::getXMLInfos(const QString &xml) const
         QString tag = child.nodeName();
         QString value = child.toElement().text();
 
-        if ("provider_url" == tag) {
+        if ("provider_url" == tag)
+        {
             content.mProviderUrl = value;
-        } else if ("title" == tag) {
+        }
+        else if ("title" == tag)
+        {
             content.mTitle = value;
-        } else if ("html" == tag) {
+        }
+        else if ("html" == tag)
+        {
             content.mHtml = value;
-        } else if ("author_name" == tag) {
+        }
+        else if ("author_name" == tag)
+        {
             content.mAuthorName = value;
-        } else if ("height" == tag) {
+        }
+        else if ("height" == tag)
+        {
             content.mHeight = value.toInt();
-        } else if ("thumbnail_width" == tag) {
+        }
+        else if ("thumbnail_width" == tag)
+        {
             content.mThumbWidth = value.toInt();
-        } else if ("width" == tag) {
+        }
+        else if ("width" == tag)
+        {
             content.mWidth = value.toInt();
-        } else if ("author_url" == tag) {
+        }
+        else if ("author_url" == tag)
+        {
             content.mAuthorUrl = value;
-        } else if ("provider_name" == tag) {
+        }
+        else if ("provider_name" == tag)
+        {
             content.mProviderName = value;
-        } else if ("thumbnail_url" == tag) {
+        }
+        else if ("thumbnail_url" == tag)
+        {
             content.mThumbUrl = value;
-        } else if ("thumbnail_height" == tag) {
+        }
+        else if ("thumbnail_height" == tag)
+        {
             content.mThumbHeight = value.toInt();
-        } else if ("url" == tag) {
+        }
+        else if ("url" == tag)
+        {
             content.mUrl = value; // This case appears only for type = photo
         }
     }
@@ -330,17 +372,14 @@ UBEmbedContent UBEmbedParser::getXMLInfos(const QString &xml) const
     return content;
 }
 
-UBEmbedContent UBEmbedParser::createIframeContent(const QString &iframe) const
+UBEmbedContent UBEmbedParser::createIframeContent(const QString &html) const
 {
-    QString html = iframe;
-    html.replace("\\&quot;", "\"");
     qDebug() << "Found iframe" << html;
     UBEmbedContent content;
     content.mType = UBEmbedType::IFRAME;
 
     // DOM parsing is not possible, as iframes contain boolean attributes
     // eg "allowfullscreen", which are not XML conformant
-
     QRegExp matchAttribute("(\\w+)(=\"([^\"]*)\")?");
 
     int pos = 7;    // size of initial <iframe
@@ -350,28 +389,66 @@ UBEmbedContent UBEmbedParser::createIframeContent(const QString &iframe) const
         pos += matchAttribute.matchedLength();
         QStringList res = matchAttribute.capturedTexts();
 
-        if (res.size() >= 4) {
+        if (res.size() >= 4)
+        {
             QString tag = res.at(1);
             QString value = res.at(3);
 
-            if ("title" == tag) {
+            if ("title" == tag || "subject" == tag)
+            {
                 content.mTitle = value;
-            } else if ("height" == tag) {
-                content.mHeight = value.toInt();
+            }
+            else if ("height" == tag)
+            {
+                bool ok;
+                content.mHeight = value.toInt(&ok);
 
-                if (content.mHeight == 0) {
+                if (ok && content.mHeight <= 1)
+                {
                     // hidden iframe, skip
                     content.mType = UBEmbedType::UNKNOWN;
                 }
-            } else if ("width" == tag) {
-                content.mWidth = value.toInt();
+            }
+            else if ("width" == tag)
+            {
+                bool ok;
+                content.mWidth = value.toInt(&ok);
 
-                if (content.mWidth == 0) {
+                if (ok && content.mWidth <= 1)
+                {
                     // hidden iframe, skip
                     content.mType = UBEmbedType::UNKNOWN;
                 }
-            } else if ("src" == tag) {
-                content.mUrl = value;
+            }
+            else if ("src" == tag)
+            {
+                // check valid src
+                if (value.left(4) == "http")
+                {
+                    content.mUrl = value;
+                }
+                else
+                {
+                    // invalid src, skip
+                    content.mType = UBEmbedType::UNKNOWN;
+                }
+            }
+            else if ("aria-hidden" == tag && "true" == value)
+            {
+                // hidden iframe, skip
+                content.mType = UBEmbedType::UNKNOWN;
+            }
+            else if ("style" == tag)
+            {
+                // check for display: none
+                value.replace(" ", "");
+
+
+                if (value.contains("display:none"))
+                {
+                    // hidden iframe, skip
+                    content.mType = UBEmbedType::UNKNOWN;
+                }
             }
         }
     }

@@ -2202,7 +2202,7 @@ Quer ignorar estes erros deste servidor?</translation>
     </message>
 </context>
 <context>
-    <name>UBTrapFlashController</name>
+    <name>UBEmbedController</name>
     <message>
         <source>Whole page</source>
         <translation>Página completa</translation>

@@ -2217,7 +2217,7 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     </message>
 </context>
 <context>
-    <name>UBTrapFlashController</name>
+    <name>UBEmbedController</name>
     <message>
         <source>Web</source>
         <translation>Web</translation>

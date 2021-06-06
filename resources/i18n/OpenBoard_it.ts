@@ -2231,7 +2231,7 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
 </context>
 <context>
-    <name>UBTrapFlashController</name>
+    <name>UBEmbedController</name>
     <message>
         <source>Whole page</source>
         <translation>Pagina intera</translation>

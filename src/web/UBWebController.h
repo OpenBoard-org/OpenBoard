@@ -40,7 +40,7 @@ class WebView;
 class QMenu;
 class QWebEngineProfile;
 class UBApplication;
-class UBTrapFlashController;
+class UBEmbedController;
 class UBMainWindow;
 class UBWebToolsPalette;
 class UBServerXMLHttpRequest;
@@ -100,11 +100,9 @@ class UBWebController : public QObject
     private slots:
         void tabCreated(WebView* webView);
         void activePageChanged();
-        void trapFlash();
+        void trap();
 
-        void toggleWebTrap(bool checked);
-
-        void onOEmbedParsed(QWebEngineView* view, bool hasEmbeddedContent);
+        void onEmbedParsed(QWebEngineView* view, bool hasEmbeddedContent);
         void onOpenTutorial();
 
         void createEmbeddedContentWidget();
@@ -128,7 +126,7 @@ private:
         DownloadManagerWidget m_downloadManagerWidget;
 
         QWidget* mBrowserWidget;
-        UBTrapFlashController* mTrapFlashController;
+        UBEmbedController* mEmbedController;
         UBWebToolsPalette* mToolsCurrentPalette;
 
         QWebEngineProfile* mWebProfile;

@@ -2186,7 +2186,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
 </context>
 <context>
-    <name>UBTrapFlashController</name>
+    <name>UBEmbedController</name>
     <message>
         <source>Whole page</source>
         <translation>Вся сторінка</translation>
