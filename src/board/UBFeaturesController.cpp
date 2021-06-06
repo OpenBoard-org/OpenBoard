@@ -298,6 +298,7 @@ bool UBFeature::isDeletable() const
             || elementType == FEATURE_VIDEO
             || elementType == FEATURE_IMAGE
             || elementType == FEATURE_FLASH
+            || elementType == FEATURE_INTERACTIVE
             || elementType == FEATURE_FOLDER
     //Ilia. Just a hotfix. Permission mechanism for UBFeatures should be reworked
             || getVirtualPath().startsWith("/root/Applications/Web");
