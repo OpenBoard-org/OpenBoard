@@ -2370,8 +2370,8 @@ void UBDocumentController::deleteMultipleItems(QModelIndexList indexes, UBDocume
             for (int i =0; i < indexes.size(); i++)
             {
                 deleteIndexAndAssociatedData(indexes.at(i));
-                emit documentThumbnailsUpdated(this);
             }
+            emit documentThumbnailsUpdated(this);
             break;
         }
         case EmptyFolder:
@@ -2762,9 +2762,15 @@ void UBDocumentController::deleteIndexAndAssociatedData(const QModelIndex &pInde
     }
 
     //N/C - NNE - 20140408
-    if(pIndex.column() == 0){
+    if(pIndex.column() == 0)
+    {
         if (docModel->isDocument(pIndex)) {
             UBDocumentProxy *proxyData = docModel->proxyData(pIndex);
+
+            if (selectedDocument() == proxyData)
+            {
+                setDocument(nullptr);
+            }
 
             if (proxyData) {
                 UBPersistenceManager::persistenceManager()->deleteDocument(proxyData);
