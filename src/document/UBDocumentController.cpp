@@ -2788,6 +2788,16 @@ void UBDocumentController::deleteIndexAndAssociatedData(const QModelIndex &pInde
             qDebug() << "could not remove row (r:" << indexForProxy.row() << "p:" << indexForProxy.parent() << ")";
         }
     }
+    else
+    {
+        if (docModel->isCatalog(pIndex))
+        {
+            if (!docModel->removeRow(pIndex.row(), pIndex.parent()))
+            {
+                qDebug() << "could not remove row (r:" << pIndex.row() << "p:" << pIndex.parent() << ")";
+            }
+        }
+    }
 }
 
 
