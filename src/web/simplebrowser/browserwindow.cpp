@@ -52,6 +52,8 @@
 #include "downloadmanagerwidget.h"
 #include "tabwidget.h"
 #include "webview.h"
+#include "WBHistory.h"
+
 #include <QApplication>
 #include <QCloseEvent>
 #include <QDesktopWidget>
@@ -71,6 +73,7 @@
 #include "core/UBDisplayManager.h"
 #include "core/UBSettings.h"
 
+
 BrowserWindow::BrowserWindow(QWidget *parent, QWebEngineProfile *profile, bool forDevTools)
     : QWidget(parent)
     , m_profile(profile)
@@ -83,7 +86,8 @@ BrowserWindow::BrowserWindow(QWidget *parent, QWebEngineProfile *profile, bool f
     , m_stopReloadAction(nullptr)
     , m_urlLineEdit(nullptr)
     , m_favAction(nullptr)
-    , m_InspectorWindow(nullptr)
+    , m_inspectorWindow(nullptr)
+    , m_historyManager(nullptr)
 {
     setAttribute(Qt::WA_DeleteOnClose, true);
     setFocusPolicy(Qt::ClickFocus);
@@ -407,6 +411,22 @@ QToolBar *BrowserWindow::createToolBar(QWidget *parent)
     m_urlLineEdit->setClearButtonEnabled(true);
     navigationBar->addWidget(m_urlLineEdit);
 
+    // add QCompleter
+    WBHistoryCompletionModel *completionModel = new WBHistoryCompletionModel(this);
+    completionModel->setSourceModel(historyManager()->historyFilterModel());
+    m_lineEditCompleter = new QCompleter(completionModel, this);
+    m_lineEditCompleter->setFilterMode(Qt::MatchContains);
+    // Should this be in Qt by default?
+    QAbstractItemView *popup = m_lineEditCompleter->popup();
+    QListView *listView = qobject_cast<QListView*>(popup);
+
+    if (listView)
+    {
+        listView->setUniformItemSizes(true);
+    }
+
+    m_urlLineEdit->setCompleter(m_lineEditCompleter);
+
     auto downloadsAction = new QAction(parent);
     downloadsAction->setIcon(QIcon(QStringLiteral(":go-bottom.png")));
     downloadsAction->setToolTip(tr("Show downloads"));
@@ -454,6 +474,11 @@ void BrowserWindow::handleWebViewTitleChanged(const QString &title)
         setWindowTitle(suffix);
     else
         setWindowTitle(title + " - " + suffix);
+
+    if (!title.isEmpty() && currentTab())
+    {
+        historyManager()->updateHistoryItem(currentTab()->url(), title);
+    }
 }
 
 void BrowserWindow::handleNewWindowTriggered()
@@ -542,6 +567,15 @@ WebView *BrowserWindow::currentTab() const
     return m_tabWidget->currentWebView();
 }
 
+WBHistoryManager *BrowserWindow::historyManager()
+{
+    if (!m_historyManager) {
+        m_historyManager = new WBHistoryManager(this);
+    }
+
+    return m_historyManager;
+}
+
 void BrowserWindow::handleWebViewLoadProgress(int progress)
 {
     static QIcon stopIcon(QStringLiteral(":process-stop.png"));
@@ -579,35 +613,35 @@ void BrowserWindow::handleShowWindowTriggered()
 void BrowserWindow::handleDevToolsRequested(QWebEnginePage *source)
 {
     // use same mechanism as for the widget apps
-    if (m_InspectorWindow)
+    if (m_inspectorWindow)
     {
-        QWebEngineView *inspector = qobject_cast<QWebEngineView*>(m_InspectorWindow->centralWidget());
+        QWebEngineView *inspector = qobject_cast<QWebEngineView*>(m_inspectorWindow->centralWidget());
 
         if (inspector && inspector->page()->inspectedPage() != source) {
             source->setDevToolsPage(inspector->page());
         }
 
-        m_InspectorWindow->activateWindow();
+        m_inspectorWindow->activateWindow();
     }
     else
     {
         QRect controlGeometry = UBApplication::applicationController->displayManager()->controlGeometry();
         QRect inspectorGeometry(controlGeometry.left() + 50, controlGeometry.top() + 50, controlGeometry.width() / 2, controlGeometry.height() / 2);
 
-        m_InspectorWindow = new QMainWindow();
-        m_InspectorWindow->setAttribute(Qt::WA_DeleteOnClose, true);
-        m_InspectorWindow->setFocusPolicy(Qt::ClickFocus);
+        m_inspectorWindow = new QMainWindow();
+        m_inspectorWindow->setAttribute(Qt::WA_DeleteOnClose, true);
+        m_inspectorWindow->setFocusPolicy(Qt::ClickFocus);
 
         QWebEngineView *inspector = new QWebEngineView();
-        m_InspectorWindow->setCentralWidget(inspector);
-        m_InspectorWindow->setGeometry(inspectorGeometry);
-        m_InspectorWindow->show();
+        m_inspectorWindow->setCentralWidget(inspector);
+        m_inspectorWindow->setGeometry(inspectorGeometry);
+        m_inspectorWindow->show();
 
         source->setDevToolsPage(inspector->page());
         source->triggerAction(QWebEnginePage::InspectElement);
 
-        connect(m_InspectorWindow, &QObject::destroyed, [this](){
-            m_InspectorWindow = nullptr;
+        connect(m_inspectorWindow, &QObject::destroyed, [this](){
+            m_inspectorWindow = nullptr;
         });
     }
 }
@@ -615,16 +649,16 @@ void BrowserWindow::handleDevToolsRequested(QWebEnginePage *source)
 void BrowserWindow::handleTabClosing(WebView* webView)
 {
     // close inspector window if it is attached to the source page
-    if (webView && m_InspectorWindow)
+    if (webView && m_inspectorWindow)
     {
         QWebEnginePage* source = webView->page();
-        QWebEngineView *inspector = qobject_cast<QWebEngineView*>(m_InspectorWindow->centralWidget());
+        QWebEngineView *inspector = qobject_cast<QWebEngineView*>(m_inspectorWindow->centralWidget());
 
         if (inspector && inspector->page()->inspectedPage() == source)
         {
-            m_InspectorWindow->close();
-            m_InspectorWindow->deleteLater();
-            m_InspectorWindow = nullptr;
+            m_inspectorWindow->close();
+            m_inspectorWindow->deleteLater();
+            m_inspectorWindow = nullptr;
         }
     }
 }

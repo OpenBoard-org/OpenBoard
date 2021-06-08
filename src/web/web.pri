@@ -7,6 +7,8 @@ FORMS        += src/web/simplebrowser/certificateerrordialog.ui \
                 src/web/simplebrowser/passworddialog.ui
 
 HEADERS      += src/web/UBWebController.h \
+                src/web/simplebrowser/WBHistory.h \
+                src/web/simplebrowser/WBModelMenu.h \
                 src/web/UBEmbedController.h \
                 src/web/UBEmbedContent.h \
                 src/web/UBEmbedParser.h \
@@ -20,6 +22,8 @@ HEADERS      += src/web/UBWebController.h \
                 src/web/simplebrowser/webview.h
 
 SOURCES      += src/web/UBWebController.cpp \
+                src/web/simplebrowser/WBHistory.cpp \
+                src/web/simplebrowser/WBModelMenu.cpp \
                 src/web/UBEmbedController.cpp \
                 src/web/UBEmbedContent.cpp \
                 src/web/UBEmbedParser.cpp \

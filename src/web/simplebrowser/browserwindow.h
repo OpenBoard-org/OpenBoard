@@ -51,6 +51,7 @@
 #ifndef BROWSERWINDOW_H
 #define BROWSERWINDOW_H
 
+#include <QCompleter>
 #include <QMainWindow>
 #include <QTime>
 #include <QWebEnginePage>
@@ -60,9 +61,9 @@ class QLineEdit;
 class QProgressBar;
 QT_END_NAMESPACE
 
-// FIXME class Browser;
 class TabWidget;
 class WebView;
+class WBHistoryManager;
 
 class BrowserWindow : public QWidget
 {
@@ -74,7 +75,7 @@ public:
     QSize sizeHint() const override;
     TabWidget *tabWidget() const;
     WebView *currentTab() const;
-// FIXME    Browser *browser() { return m_browser; }
+    WBHistoryManager *historyManager();
 
 signals:
     void activeViewPageChanged();
@@ -120,9 +121,12 @@ private:
     QAction *m_reloadAction;
     QAction *m_stopReloadAction;
     QLineEdit *m_urlLineEdit;
+    QCompleter *m_lineEditCompleter;
     QAction *m_favAction;
     QString m_lastSearch;
-    QMainWindow* m_InspectorWindow;
+    QMainWindow* m_inspectorWindow;
+
+    WBHistoryManager *m_historyManager;
 };
 
 #endif // BROWSERWINDOW_H

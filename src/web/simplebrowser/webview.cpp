@@ -53,6 +53,7 @@
 #include "webpage.h"
 #include "webpopupwindow.h"
 #include "webview.h"
+#include "WBHistory.h"
 #include <QContextMenuEvent>
 #include <QDebug>
 #include <QMenu>
@@ -76,6 +77,9 @@ WebView::WebView(QWidget *parent)
     });
     connect(this, &QWebEngineView::iconChanged, [this](const QIcon &) {
         emit favIconChanged(favIcon());
+    });
+    connect(this, &QWebEngineView::urlChanged, [this](const QUrl& url){
+        browserWindow()->historyManager()->addHistoryEntry(url);
     });
 
     connect(this, &QWebEngineView::renderProcessTerminated,
@@ -125,6 +129,20 @@ void WebView::createWebActionTrigger(QWebEnginePage *page, QWebEnginePage::WebAc
     });
 }
 
+BrowserWindow *WebView::browserWindow()
+{
+    QWidget *w = this;
+    QWidget *p = w->parentWidget();
+    BrowserWindow* browserWindow;
+
+    while (!(browserWindow = qobject_cast<BrowserWindow*>(w)) && p) {
+        w = p;
+        p = p->parentWidget();
+    }
+
+    return browserWindow;
+}
+
 bool WebView::isWebActionEnabled(QWebEnginePage::WebAction webAction) const
 {
     return page()->action(webAction)->isEnabled();
@@ -150,25 +168,18 @@ QIcon WebView::favIcon() const
 
 QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)
 {
-    QWidget *w = this;
-    QWidget *p = w->parentWidget();
-    BrowserWindow* browserWindow;
+    BrowserWindow* browser = browserWindow();
 
-    while (!(browserWindow = qobject_cast<BrowserWindow*>(w)) && p) {
-        w = p;
-        p = p->parentWidget();
-    }
-
-    if (!browserWindow)
+    if (!browser)
         return nullptr;
 
     switch (type) {
     case QWebEnginePage::WebBrowserWindow:
     case QWebEnginePage::WebBrowserTab: {
-        return browserWindow->tabWidget()->createTab();
+        return browser->tabWidget()->createTab();
     }
     case QWebEnginePage::WebBrowserBackgroundTab: {
-        return browserWindow->tabWidget()->createBackgroundTab();
+        return browser->tabWidget()->createBackgroundTab();
     }
     case QWebEnginePage::WebDialog: {
         WebPopupWindow *popup = new WebPopupWindow(page()->profile());

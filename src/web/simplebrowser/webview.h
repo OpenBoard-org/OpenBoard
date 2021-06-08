@@ -54,6 +54,7 @@
 #include <QIcon>
 #include <QWebEngineView>
 
+class BrowserWindow;
 class WebPage;
 
 class WebView : public QWebEngineView
@@ -79,6 +80,7 @@ signals:
 
 private:
     void createWebActionTrigger(QWebEnginePage *page, QWebEnginePage::WebAction);
+    BrowserWindow *browserWindow();
 
 private:
     int m_loadProgress;

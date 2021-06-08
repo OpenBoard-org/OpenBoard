@@ -66,6 +66,7 @@ class UBWebController : public QObject
         QWidget* controlView() const;
         QWebEngineProfile* widgetProfile() const;
         QList<UBEmbedContent> getEmbeddedContent(const QWebEngineView* view);
+        BrowserWindow* browserWindow() const;
 
         static void injectScripts(QWebEngineView* view);
 
