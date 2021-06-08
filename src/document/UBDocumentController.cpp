@@ -2762,10 +2762,11 @@ void UBDocumentController::deleteIndexAndAssociatedData(const QModelIndex &pInde
     }
 
     //N/C - NNE - 20140408
+    UBDocumentProxy *proxyData = nullptr;
     if(pIndex.column() == 0)
     {
         if (docModel->isDocument(pIndex)) {
-            UBDocumentProxy *proxyData = docModel->proxyData(pIndex);
+            proxyData = docModel->proxyData(pIndex);
 
             if (selectedDocument() == proxyData)
             {
@@ -2778,7 +2779,15 @@ void UBDocumentController::deleteIndexAndAssociatedData(const QModelIndex &pInde
         }
     }
 
-    docModel->removeRow(pIndex.row(), pIndex.parent());
+    if (proxyData)
+    {
+        // need to recall indexForProxy as rows could have changed when performing a multiple deletion
+        QModelIndex indexForProxy = docModel->indexForProxy(proxyData);
+        if (!docModel->removeRow(indexForProxy.row(), indexForProxy.parent()))
+        {
+            qDebug() << "could not remove row (r:" << indexForProxy.row() << "p:" << indexForProxy.parent() << ")";
+        }
+    }
 }
 
 
