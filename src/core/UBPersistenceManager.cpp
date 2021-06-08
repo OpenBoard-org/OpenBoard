@@ -256,7 +256,12 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
                         mDocumentTreeStructureModel->removeRow(i, parentIndex);
                     }
                 }
-                pProxy->setMetaData(UBSettings::documentName, resultName);
+
+                if (docName != resultName)
+                {
+                    pProxy->setMetaData(UBSettings::documentName, resultName);
+                    UBMetadataDcSubsetAdaptor::persist(pProxy);
+                }
                 mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
             }
             replaceDialog->setParent(0);
