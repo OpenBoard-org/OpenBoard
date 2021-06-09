@@ -164,44 +164,36 @@ void UBPersistenceManager::createDocumentProxiesStructure(const QFileInfoList &c
     {
         QString fullPath = path.absoluteFilePath();
 
-        QMap<QString, QVariant> metadatas = UBMetadataDcSubsetAdaptor::load(fullPath);
+        QDir dir(fullPath);
 
-        QString docGroupName = metadatas.value(UBSettings::documentGroupName, QString()).toString();
-        QString docName = metadatas.value(UBSettings::documentName, QString()).toString();
-
-        if (docName.isEmpty()) {
-            qDebug() << "Group name and document name are empty in UBPersistenceManager::createDocumentProxiesStructure()";
-            continue;
-        }
-
-        QModelIndex parentIndex = mDocumentTreeStructureModel->goTo(docGroupName);
-        if (!parentIndex.isValid()) {
-            return;
-        }
-
-        UBDocumentProxy* docProxy = new UBDocumentProxy(fullPath, metadatas); // managed in UBDocumentTreeNode
-        foreach(QString key, metadatas.keys()) {
-            docProxy->setMetaData(key, metadatas.value(key));
-        }
-
-        if (metadatas.contains(UBSettings::documentPageCount))
+        if (dir.entryList(QDir::Files | QDir::NoDotAndDotDot).size() > 0)
         {
-            int pageCount = metadatas.value(UBSettings::documentPageCount).toInt();
-            if (pageCount == 0)
-                pageCount = sceneCount(docProxy);
+            QMap<QString, QVariant> metadatas = UBMetadataDcSubsetAdaptor::load(fullPath);
+            QString docGroupName = metadatas.value(UBSettings::documentGroupName, QString()).toString();
+            QString docName = metadatas.value(UBSettings::documentName, QString()).toString();
 
-            docProxy->setPageCount(pageCount);
-        }
-        else
-        {
-            int pageCount = sceneCount(docProxy);
-            docProxy->setPageCount(pageCount);
-        }
+            if (docName.isEmpty()) {
+                qDebug() << "Group name and document name are empty in UBPersistenceManager::createDocumentProxiesStructure()";
+                continue;
+            }
 
-        if (!interactive)
-            mDocumentTreeStructureModel->addDocument(docProxy, parentIndex);
-        else
-            processInteractiveReplacementDialog(docProxy);
+            QModelIndex parentIndex = mDocumentTreeStructureModel->goTo(docGroupName);
+            if (!parentIndex.isValid()) {
+                return;
+            }
+
+            UBDocumentProxy* docProxy = new UBDocumentProxy(fullPath); // managed in UBDocumentTreeNode
+            foreach(QString key, metadatas.keys()) {
+                docProxy->setMetaData(key, metadatas.value(key));
+            }
+
+            docProxy->setPageCount(sceneCount(docProxy));
+
+            if (!interactive)
+                mDocumentTreeStructureModel->addDocument(docProxy, parentIndex);
+            else
+                processInteractiveReplacementDialog(docProxy);
+        }
     }
 }
 
