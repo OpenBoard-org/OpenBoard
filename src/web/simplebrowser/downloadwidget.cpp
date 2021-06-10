@@ -50,6 +50,7 @@
 
 #include "downloadwidget.h"
 
+#include <QDesktopServices>
 #include <QFileInfo>
 #include <QUrl>
 #include <QWebEngineDownloadItem>
@@ -71,11 +72,23 @@ DownloadWidget::DownloadWidget(QWebEngineDownloadItem *download, QWidget *parent
             emit removeClicked(this);
     });
 
+    connect(m_openButton, &QPushButton::clicked,
+            [this](bool) {
+        QUrl url = QUrl::fromLocalFile(m_download->path());
+        QDesktopServices::openUrl(url);
+    });
+
     connect(m_download, &QWebEngineDownloadItem::downloadProgress,
             this, &DownloadWidget::updateWidget);
 
     connect(m_download, &QWebEngineDownloadItem::stateChanged,
             this, &DownloadWidget::updateWidget);
+
+
+    static QIcon openIcon(QStringLiteral(":images/toolbar/export.png"));
+    m_openButton->setIcon(openIcon);
+    m_openButton->setToolTip(tr("Open file"));
+    m_openButton->setDisabled(true);
 
     updateWidget();
 }
@@ -128,6 +141,7 @@ void DownloadWidget::updateWidget()
             tr("completed - %1 downloaded - %2/s")
             .arg(withUnit(receivedBytes))
             .arg(withUnit(bytesPerSecond)));
+        m_openButton->setDisabled(false);
         break;
     case QWebEngineDownloadItem::DownloadCancelled:
         m_progressBar->setValue(0);
@@ -147,11 +161,11 @@ void DownloadWidget::updateWidget()
     }
 
     if (state == QWebEngineDownloadItem::DownloadInProgress) {
-        static QIcon cancelIcon(QStringLiteral(":process-stop.png"));
+        static QIcon cancelIcon(QStringLiteral(":webbrowser/process-stop.png"));
         m_cancelButton->setIcon(cancelIcon);
         m_cancelButton->setToolTip(tr("Stop downloading"));
     } else {
-        static QIcon removeIcon(QStringLiteral(":edit-clear.png"));
+        static QIcon removeIcon(QStringLiteral(":webbrowser/edit-clear.png"));
         m_cancelButton->setIcon(removeIcon);
         m_cancelButton->setToolTip(tr("Remove from list"));
     }

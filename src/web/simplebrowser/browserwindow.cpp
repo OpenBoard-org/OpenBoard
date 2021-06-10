@@ -428,7 +428,7 @@ QToolBar *BrowserWindow::createToolBar(QWidget *parent)
     m_urlLineEdit->setCompleter(m_lineEditCompleter);
 
     auto downloadsAction = new QAction(parent);
-    downloadsAction->setIcon(QIcon(QStringLiteral(":go-bottom.png")));
+    downloadsAction->setIcon(QIcon(QStringLiteral(":webbrowser/go-bottom.png")));
     downloadsAction->setToolTip(tr("Show downloads"));
     navigationBar->addAction(downloadsAction);
     connect(downloadsAction, &QAction::triggered, [this]() {
