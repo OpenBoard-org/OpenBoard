@@ -1020,7 +1020,7 @@
     <name>UBBoardThumbnailsView</name>
     <message>
         <source>Loading page (%1/%2)</source>
-        <translation type="unfinished">正在載入第 %1 頁，共 %2 頁</translation>
+        <translation>正在載入第 %1 頁，共 %2 頁</translation>
     </message>
 </context>
 <context>
