@@ -64,7 +64,7 @@ class UBWebController : public QObject
         QUrl currentPageUrl() const;
         void show();
         QWidget* controlView() const;
-        QWebEngineProfile* widgetProfile() const;
+        QWebEngineProfile* webProfile() const;
         QList<UBEmbedContent> getEmbeddedContent(const QWebEngineView* view);
         BrowserWindow* browserWindow() const;
 
@@ -131,7 +131,6 @@ private:
         UBWebToolsPalette* mToolsCurrentPalette;
 
         QWebEngineProfile* mWebProfile;
-        QWebEngineProfile* mWidgetProfile;
 
         bool mToolsPalettePositionned;
         bool mDownloadViewIsVisible;

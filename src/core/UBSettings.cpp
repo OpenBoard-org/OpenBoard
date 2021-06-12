@@ -362,6 +362,7 @@ void UBSettings::init()
 
     webHomePage = new UBSetting(this, "Web", "Homepage", softwareHomeUrl);
     webSearchEngineUrl = new UBSetting(this, "Web", "SearchEngineUrl", "https://duckduckgo.com/?q=%1");
+    webUserAgent = new UBSetting(this, "Web", "UserAgent", "Mozilla/5.0 (%1; %2; rv:78.0) Gecko/20100101 Firefox/78.0");
 
     pageCacheSize = new UBSetting(this, "App", "PageCacheSize", 20);
 

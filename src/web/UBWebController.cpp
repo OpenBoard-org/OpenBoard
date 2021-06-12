@@ -29,6 +29,7 @@
 
 #include <QtGui>
 #include <QMenu>
+#include <QRegularExpression>
 #include <QWebEngineHistory>
 #include <QWebEngineHistoryItem>
 #include <QWebEngineProfile>
@@ -81,19 +82,32 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
 
     // note: do not delete profiles at application cleanup as they are still used by some web page
     mWebProfile = new QWebEngineProfile("OpenBoardWeb");
+    mWebProfile->setHttpCacheType(QWebEngineProfile::DiskHttpCache);
+
+    // compute a system specific user agent string
+    QString originalUserAgent = mWebProfile->httpUserAgent();
+    QRegularExpression exp("\\(([^;]*);([^)]*)\\)");
+
+    QString p1;
+    QString p2;
+
+    QRegularExpressionMatch match = exp.match(originalUserAgent);
+
+    if (match.hasMatch())
+    {
+        p1 = match.captured(1);
+        p2 = match.captured(2);
+    }
+
+    QString userAgent = UBSettings::settings()->webUserAgent->get().toString();
+    userAgent = userAgent.arg(p1).arg(p2);
+    mWebProfile->setHttpUserAgent(userAgent);
+
     QWebEngineSettings* settings = mWebProfile->settings();
     settings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-
-    mWidgetProfile = new QWebEngineProfile();
-    settings = mWidgetProfile->settings();
-    settings->setAttribute(QWebEngineSettings::JavascriptEnabled, true);
-    settings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-    settings->setAttribute(QWebEngineSettings::LocalStorageEnabled, true);
-    settings->setAttribute(QWebEngineSettings::JavascriptCanAccessClipboard, true);
     settings->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
     settings->setAttribute(QWebEngineSettings::LocalContentCanAccessRemoteUrls, true);
 }
-
 
 UBWebController::~UBWebController()
 {
@@ -243,9 +257,9 @@ QWidget *UBWebController::controlView() const
     return mBrowserWidget;
 }
 
-QWebEngineProfile *UBWebController::widgetProfile() const
+QWebEngineProfile *UBWebController::webProfile() const
 {
-    return mWidgetProfile;
+    return mWebProfile;
 }
 
 QList<UBEmbedContent> UBWebController::getEmbeddedContent(const QWebEngineView *view)

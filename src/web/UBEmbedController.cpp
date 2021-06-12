@@ -91,7 +91,7 @@ void UBEmbedController::showTrapDialog()
                 , viewWidth
                 , viewHeight);
 
-        QWebEngineProfile* profile = UBApplication::webController->widgetProfile();
+        QWebEngineProfile* profile = UBApplication::webController->webProfile();
         mTrapFlashUi->webView->setPage(new QWebEnginePage(profile, this));
 
         connect(mTrapFlashUi->flashCombobox, SIGNAL(currentIndexChanged(int)), this, SLOT(selectFlash(int)));
@@ -191,7 +191,7 @@ void UBEmbedController::createWidget()
     int selectedIndex = mTrapFlashUi->flashCombobox->currentIndex();
 
     // create widget
-    QString tempDir = UBFileSystemUtils::createTempDir("TrapFlashRendering");
+    QString tempDir = UBFileSystemUtils::createTempDir("EmbedRendering");
     QDir widgetDir(tempDir + "/" + mTrapFlashUi->widgetNameLineEdit->text() + ".wgt");
 
     if (widgetDir.exists() && !UBFileSystemUtils::deleteDir(widgetDir.path()))

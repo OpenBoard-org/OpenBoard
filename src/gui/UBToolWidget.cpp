@@ -46,6 +46,7 @@
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
 #include "web/UBWebController.h"
+#include "web/simplebrowser/webpage.h"
 
 #include "core/memcheck.h"
 
@@ -107,8 +108,11 @@ void UBToolWidget::initialize()
         wscene->removeItem(mToolWidget);
     }
 
-
     mWebView = new UBWebEngineView();
+
+    // create the page using a profile
+    QWebEngineProfile* profile = UBApplication::webController->webProfile();
+    mWebView->setPage(new WebPage(profile, this));
 
     mWebView->setBackgroundRole(QPalette::Window);
     mWebView->page()->setBackgroundColor(QColor(Qt::transparent));

@@ -82,7 +82,7 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     setData(UBGraphicsItemData::ItemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 
     // create the page using a profile
-    QWebEngineProfile* profile = UBApplication::webController->widgetProfile();
+    QWebEngineProfile* profile = UBApplication::webController->webProfile();
     webEngineView->setPage(new WebPage(profile, this));
 
     // see https://stackoverflow.com/questions/31928444/qt-qwebenginepagesetwebchannel-transport-object

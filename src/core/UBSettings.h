@@ -330,6 +330,7 @@ class UBSettings : public QObject
 
         UBSetting* webHomePage;
         UBSetting* webSearchEngineUrl;
+        UBSetting* webUserAgent;
 
         UBSetting* pageCacheSize;
 
