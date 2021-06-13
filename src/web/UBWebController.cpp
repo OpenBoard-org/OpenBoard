@@ -327,15 +327,6 @@ void UBWebController::activePageChanged()
         if (mEmbedController)
             mEmbedController->updateTrapFlashFromView(view);
 
-        QUrl latestUrl = view->url();
-
-        UBEmbedParser* parser = embedParser(view);
-        UBApplication::mainWindow->actionWebOEmbed->setEnabled(parser ? parser->hasEmbeddedContent() : false);
-
-        // And remove this line once the previous one is uncommented
-        //UBApplication::mainWindow->actionWebOEmbed->setEnabled(isOEmbedable(latestUrl));
-        UBApplication::mainWindow->actionEduMedia->setEnabled(isEduMedia(latestUrl));
-
         emit activeWebPageChanged(mCurrentWebBrowser->currentTab());
     }
 }
@@ -380,9 +371,6 @@ void UBWebController::setupPalettes()
         connect(mMainWindow->actionWebTrapFlash, SIGNAL(triggered()), this, SLOT(trap()));
         connect(mMainWindow->actionWebCustomCapture, SIGNAL(triggered()), this, SLOT(customCapture()));
         connect(mMainWindow->actionWebWindowCapture, SIGNAL(triggered()), this, SLOT(captureWindow()));
-        connect(mMainWindow->actionWebOEmbed, SIGNAL(triggered()), this, SLOT(createEmbeddedContentWidget()));
-        connect(mMainWindow->actionEduMedia, SIGNAL(triggered()), this, SLOT(captureEduMedia()));
-
         connect(mMainWindow->actionWebShowHideOnDisplay, SIGNAL(toggled(bool)), this, SLOT(toogleMirroring(bool)));
 
         mToolsCurrentPalette->hide();
@@ -467,10 +455,6 @@ void UBWebController::adaptToolBar()
 
     mMainWindow->actionWebReload->setVisible(highResolution);
     mMainWindow->actionStopLoading->setVisible(highResolution);
-
-    if(mCurrentWebBrowser )
-    {} // FIXME enables search on wide monitors mCurrentWebBrowser->adaptToolBar(highResolution);
-
 }
 
 
@@ -546,82 +530,6 @@ void UBWebController::tabCreated(WebView *webView)
     // create and attach an UBEmbedParser to the view
     UBEmbedParser* parser = new UBEmbedParser(webView);
     connect(parser, &UBEmbedParser::parseResult, this, &UBWebController::onEmbedParsed);
-}
-
-/**/
-void UBWebController::captureEduMedia()
-{
-    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTab())
-    {
-        WebView* webView = mCurrentWebBrowser->currentTab();
-        QUrl currentUrl = webView->url();
-/* FIXME DOM access not possible with QWebEngine, but eduMedia may be obsolete, anyway
-        if (isEduMedia(currentUrl))
-        {
-            QWebElementCollection objects = webView->page()->currentFrame()->findAllElements("object");
-
-            foreach(QWebElement object, objects)
-            {
-                foreach(QWebElement param, object.findAll("param"))
-                {
-                    if(param.attribute("name") == "flashvars")
-                    {
-                        QString value = param.attribute("value");
-                        QString midValue;
-                        QString langValue;
-                        QString hostValue;
-
-                        QStringList flashVars = value.split("&");
-
-                        foreach(QString flashVar, flashVars)
-                        {
-                            QStringList var = flashVar.split("=");
-
-                            if (var.length() < 2)
-                                break;
-
-                            if (var.at(0) == "mid")
-                                midValue = var.at(1);
-                            else if (var.at(0) == "lang")
-                                langValue = var.at(1);
-                            else if (var.at(0) == "host")
-                                hostValue = var.at(1);
-
-                        }
-
-                        if (midValue.length() > 0 && langValue.length() > 0 && hostValue.length() > 0)
-                        {
-                            QString swfUrl = "http://" + hostValue + "/" + langValue + "/fl/" + midValue;
-
-                            UBApplication::boardController->downloadURL(QUrl(swfUrl));
-
-                            UBApplication::applicationController->showBoard();
-                            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-
-                            return;
-                        }
-                    }
-                }
-            }
-        }*/
-    }
-    else
-    {
-        UBApplication::showMessage("Cannot find any reference to eduMedia content");
-    }
-}
-
-
-bool UBWebController::isEduMedia(const QUrl& pUrl)
-{
-    QString urlAsString = pUrl.toString();
-
-    if (urlAsString.contains("edumedia-sciences.com"))
-    {
-        return true;
-    }
-
-    return false;
 }
 
 
@@ -772,28 +680,6 @@ void UBWebController::onEmbedParsed(QWebEngineView *view, bool hasEmbeddedConten
 void UBWebController::onOpenTutorial()
 {
     loadUrl(QUrl(UBSettings::settings()->tutorialUrl->get().toString()));
-}
-
-void UBWebController::createEmbeddedContentWidget()
-{
-    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTab())
-    {
-        WebView* webView = mCurrentWebBrowser->currentTab();
-        UBEmbedParser* parser = embedParser(webView);
-
-        // FIXME workaround: just use the first entry in contents
-        if (parser && parser->hasEmbeddedContent()) {
-            UBEmbedContent content = parser->embeddedContent()[0];
-            qDebug() << "Embedding" << content.title();
-            UBGraphicsW3CWidgetItem* widget = UBApplication::boardController->activeScene()->addOEmbed(content);
-
-            if (widget)
-            {
-                UBApplication::applicationController->showBoard();
-                UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-            }
-        }
-    }
 }
 
 void UBWebController::captureStripe(QPointF pos, QSize size, QPixmap* pix, QPointF scrollPosition)

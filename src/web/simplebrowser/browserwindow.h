@@ -59,6 +59,7 @@
 QT_BEGIN_NAMESPACE
 class QLineEdit;
 class QProgressBar;
+class QStatusBar;
 QT_END_NAMESPACE
 
 class TabWidget;
@@ -83,30 +84,23 @@ signals:
 
 protected:
     void closeEvent(QCloseEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
+    void showEvent(QShowEvent *event) override;
+    void hideEvent(QHideEvent *event) override;
 
 public slots:
     void zoomIn();
     void zoomOut();
 
 private slots:
-    void handleNewWindowTriggered();
-    void handleNewIncognitoWindowTriggered();
     void handleFileOpenTriggered();
     void handleFindActionTriggered();
-    void handleShowWindowTriggered();
     void handleWebViewLoadProgress(int);
     void handleWebViewTitleChanged(const QString &title);
     void handleWebActionEnabledChanged(QWebEnginePage::WebAction action, bool enabled);
     void handleDevToolsRequested(QWebEnginePage *source);
     void handleTabClosing(WebView *webView);
     void handleReturnPressed();
-
-private:
-    QMenu *createFileMenu(TabWidget *tabWidget);
-    QMenu *createEditMenu();
-    QMenu *createViewMenu(QToolBar *toolBar);
-    QMenu *createWindowMenu(TabWidget *tabWidget);
-    QMenu *createHelpMenu();
 
 public:
     QToolBar *createToolBar(QWidget* parent);
@@ -115,11 +109,7 @@ private:
     QWebEngineProfile *m_profile;
     TabWidget *m_tabWidget;
     QProgressBar *m_progressBar;
-    QAction *m_historyBackAction;
-    QAction *m_historyForwardAction;
-    QAction *m_stopAction;
-    QAction *m_reloadAction;
-    QAction *m_stopReloadAction;
+    QStatusBar *m_statusBar;
     QLineEdit *m_urlLineEdit;
     QCompleter *m_lineEditCompleter;
     QAction *m_favAction;

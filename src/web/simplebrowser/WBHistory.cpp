@@ -499,6 +499,7 @@ QVariant WBHistoryModel::data(const QModelIndex &index, int role) const
             case 1:
                 return item.url;
         }
+        break;
         }
     case Qt::DecorationRole:
         if (index.column() == 0) {
@@ -917,8 +918,10 @@ bool WBHistoryFilterModel::removeRows(int row, int count, const QModelIndex &par
                 this, SLOT(sourceRowsRemoved(const QModelIndex &, int, int)));
     m_loaded = false;
     if (oldCount - count != rowCount())
+    {
         beginResetModel();
         endResetModel();
+    }
     return true;
 }
 

@@ -82,8 +82,6 @@ class UBWebController : public QObject
         void customCapture();
         void toogleMirroring(bool checked);
 
-        void captureEduMedia();
-
         void copy();
         void paste();
         void cut();
@@ -94,7 +92,6 @@ class UBWebController : public QObject
 
     private:
         void webBrowserInstance();
-        bool isEduMedia(const QUrl& pUrl);
         UBEmbedParser* embedParser(const QWebEngineView* view) const;
         static QUrl guessUrlFromString(const QString &string);
 
@@ -105,8 +102,6 @@ class UBWebController : public QObject
 
         void onEmbedParsed(QWebEngineView* view, bool hasEmbeddedContent);
         void onOpenTutorial();
-
-        void createEmbeddedContentWidget();
 
         void captureStripe(QPointF pos, QSize size, QPixmap *pix, QPointF scrollPosition);
 
