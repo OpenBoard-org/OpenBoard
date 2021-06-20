@@ -266,6 +266,7 @@ void UBSettings::init()
     appLookForOpenSankoreInstall = new UBSetting(this, "App", "LookForOpenSankoreInstall", true);
 
     appStartMode = new UBSetting(this, "App", "StartMode", "");
+    appRunInWindow = new UBSetting(this, "App", "RunInWindow", false);
 
     featureSliderPosition = new UBSetting(this, "Board", "FeatureSliderPosition", 40);
 
