@@ -97,6 +97,8 @@ class UBSettings : public QObject
         // Text related
         QString fontFamily();
         void setFontFamily(const QString &family);
+        QString fontStyleName();
+        void setFontStyleName(const QString &family);
         int fontPixelSize();
         void setFontPixelSize(int pixelSize);
         int fontPointSize();
@@ -465,6 +467,7 @@ class UBSettings : public QObject
 
         static const int sDefaultFontPixelSize;
         static const char *sDefaultFontFamily;
+        static const char *sDefaultFontStyleName;
 
         static QSettings* getAppSettings();
 

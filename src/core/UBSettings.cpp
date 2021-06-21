@@ -72,6 +72,7 @@ QString UBSettings::undoCommandTransactionName = "UndoTransaction";
 
 const int UBSettings::sDefaultFontPixelSize = 36;
 const char *UBSettings::sDefaultFontFamily = "Arial";
+const char *UBSettings::sDefaultFontStyleName = "Regular";
 
 QString UBSettings::currentFileVersion = "4.8.0";
 
@@ -869,6 +870,17 @@ void UBSettings::setFontFamily(const QString &family)
     setValue("Board/FontFamily", family);
 }
 
+
+QString UBSettings::fontStyleName()
+{
+    return value("Board/FontStyleName", sDefaultFontStyleName).toString();
+}
+
+
+void UBSettings::setFontStyleName(const QString &styleName)
+{
+    setValue("Board/FontStyleName", styleName);
+}
 
 int UBSettings::fontPixelSize()
 {
