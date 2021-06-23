@@ -401,6 +401,7 @@ class UBDocumentController : public UBDocumentContainer
                                                      , const QModelIndex &selectedIndex
                                                      , UBDocumentTreeModel *docModel) const;
         bool firstAndOnlySceneSelected() const;
+        bool everySceneSelected() const;
         QWidget *mainWidget() const {return mDocumentWidget;}
 
         //issue 1629 - NNE - 20131212

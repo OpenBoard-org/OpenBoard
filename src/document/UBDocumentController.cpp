@@ -3360,6 +3360,7 @@ void UBDocumentController::updateActions()
     updateExportSubActions(selectedIndex);
 
     bool firstSceneSelected = false;
+    bool everyPageSelected = false;
 
     if (docSelected) {
         mMainWindow->actionDuplicate->setEnabled(!trashSelected);
@@ -3539,7 +3540,12 @@ UBDocumentController::deletionTypeForSelection(LastSelectedElementType pTypeSele
                                                , UBDocumentTreeModel *docModel) const
 {
 
-    if (pTypeSelection == Page) {
+    if (pTypeSelection == Page)
+    {
+        if (everySceneSelected())
+        {
+            return NoDeletion;
+        }
         if (!firstAndOnlySceneSelected()) {
             return DeletePage;
         }
@@ -3566,11 +3572,24 @@ UBDocumentController::deletionTypeForSelection(LastSelectedElementType pTypeSele
     return NoDeletion;
 }
 
+bool UBDocumentController::everySceneSelected() const
+{
+    QList<QGraphicsItem*> selection = mDocumentUI->thumbnailWidget->selectedItems();
+    if (selection.count() > 0)
+    {
+        UBSceneThumbnailPixmap* p = dynamic_cast<UBSceneThumbnailPixmap*>(selection.at(0));
+        if (p)
+        {
+            return (selection.count() == p->proxy()->pageCount());
+        }
+    }
+    return false;
+}
+
 bool UBDocumentController::firstAndOnlySceneSelected() const
 {
-    bool firstSceneSelected = false;
     QList<QGraphicsItem*> selection = mDocumentUI->thumbnailWidget->selectedItems();
-    for(int i = 0; i < selection.count() && !firstSceneSelected; i += 1)
+    for(int i = 0; i < selection.count(); i += 1)
     {
         UBSceneThumbnailPixmap* p = dynamic_cast<UBSceneThumbnailPixmap*>(selection.at(i));
         if (p)
