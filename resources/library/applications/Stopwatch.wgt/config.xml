@@ -2,7 +2,7 @@
 <widget xmlns="http://www.w3.org/ns/widgets" 
 		xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://uniboard.mnemis.com/widgets/stopwatch" 
-        version="1.1"
+        version="2.0"
         width="262"
         height="97" >        
 

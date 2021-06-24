@@ -333,7 +333,7 @@ void UBEmbedController::generateConfig(int pWidth, int pHeight, const QString& p
     out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << endl;
     out << "<widget xmlns=\"http://www.w3.org/ns/widgets\"" << endl;
     out << "        xmlns:ub=\"http://uniboard.mnemis.com/widgets\"" << endl;
-    out << "        identifier=\"http://uniboard.mnemis.com/" << mTrapFlashUi->widgetNameLineEdit->text() << "\"" <<endl;
+    out << "        id=\"http://uniboard.mnemis.com/" << mTrapFlashUi->widgetNameLineEdit->text() << "\"" <<endl;
 
     out << "        version=\"1.0\"" << endl;
     out << "        width=\"" << pWidth << "\"" << endl;

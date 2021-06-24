@@ -1726,7 +1726,7 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
 }
 
 
-
+// NOTE @letsfindaway obsolete, now handled differently
 UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const UBEmbedContent &content, const QPointF& pPos)
 {
     QStringList widgetPaths = UBPersistenceManager::persistenceManager()->allWidgets(UBSettings::settings()->applicationApplicationsLibraryDirectory());
