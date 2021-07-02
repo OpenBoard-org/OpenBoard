@@ -1726,51 +1726,6 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
 }
 
 
-// NOTE @letsfindaway obsolete, now handled differently
-UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const UBEmbedContent &content, const QPointF& pPos)
-{
-    QStringList widgetPaths = UBPersistenceManager::persistenceManager()->allWidgets(UBSettings::settings()->applicationApplicationsLibraryDirectory());
-
-    UBGraphicsW3CWidgetItem *widget = 0;
-    QString html;
-
-    switch (content.type())
-    {
-    case UBEmbedType::VIDEO:
-        html = content.html();
-        break;
-
-    case UBEmbedType::PHOTO:
-        html = "<img src=\"" + content.url().toString() + "\"/>";
-        break;
-
-    default:
-        // unhandled
-        break;
-    }
-
-    // use the html in AnyEmbed
-    // TODO allow to adapt the size, probably also later within the AnyEmbed widget
-    foreach(QString widgetPath, widgetPaths)
-    {
-        if (widgetPath.contains("AnyEmbed"))
-        {
-            widget = dynamic_cast<UBGraphicsW3CWidgetItem*>(UBApplication::boardController->addW3cWidget(QUrl::fromLocalFile(widgetPath), pPos));
-            // FIXME may be race condition between displaying the widget and setting the preference
-
-            if (widget)
-            {
-                qDebug() << "Launching AnyEmbed with html " << html;
-                widget->setPreference("embed", html);
-                setDocumentUpdated();
-                break;
-            }
-        }
-    }
-
-    return widget;
-}
-
 UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *> items)
 {
     UBGraphicsGroupContainerItem *groupItem = new UBGraphicsGroupContainerItem();

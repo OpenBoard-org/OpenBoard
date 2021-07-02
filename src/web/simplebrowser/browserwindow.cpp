@@ -115,7 +115,6 @@ void BrowserWindow::init()
         m_statusBar->showMessage(url);
     });
     connect(m_tabWidget, &TabWidget::loadProgress, this, &BrowserWindow::handleWebViewLoadProgress);
-    connect(m_tabWidget, &TabWidget::webActionEnabledChanged, this, &BrowserWindow::handleWebActionEnabledChanged);
     connect(m_tabWidget, &TabWidget::urlChanged, [this](const QUrl &url) {
         m_urlLineEdit->setText(url.toDisplayString());
     });
@@ -190,27 +189,6 @@ QToolBar *BrowserWindow::createToolBar(QWidget *parent)
     });
 
     return navigationBar;
-}
-
-void BrowserWindow::handleWebActionEnabledChanged(QWebEnginePage::WebAction action, bool enabled)
-{
-    // FIXME needed?
-//    switch (action) {
-//    case QWebEnginePage::Back:
-//        m_historyBackAction->setEnabled(enabled);
-//        break;
-//    case QWebEnginePage::Forward:
-//        m_historyForwardAction->setEnabled(enabled);
-//        break;
-//    case QWebEnginePage::Reload:
-//        m_reloadAction->setEnabled(enabled);
-//        break;
-//    case QWebEnginePage::Stop:
-//        m_stopAction->setEnabled(enabled);
-//        break;
-//    default:
-//        qWarning("Unhandled webActionChanged signal");
-//    }
 }
 
 void BrowserWindow::handleWebViewTitleChanged(const QString &title)
@@ -414,7 +392,7 @@ void BrowserWindow::handleReturnPressed()
     }
     else if (firstWord.indexOf(".") < 0)
     {
-        // search if first work does not contain a dot
+        // search if first word does not contain a dot
         search = true;
     }
 

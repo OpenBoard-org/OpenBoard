@@ -448,27 +448,6 @@ QString UBWidgetUniboardAPI::lang() const
     return lang;
 }
 
-void UBWidgetUniboardAPI::returnStatus(const QString& method, const QString& status)
-{
-    QString msg = QString(tr("%0 called (method=%1, status=%2)")).arg("returnStatus").arg(method).arg(status);
-    UBApplication::showMessage(msg);
-}
-
-void UBWidgetUniboardAPI::usedMethods(QStringList methods)
-{
-    // TODO: Implement this method
-    foreach(QString method, methods)
-    {
-
-    }
-}
-
-void UBWidgetUniboardAPI::response(bool correct)
-{
-    Q_UNUSED(correct);
-    // TODO: Implement this method
-}
-
 void UBWidgetUniboardAPI::sendFileMetadata(QString metaData)
 {
     //  Build the QMap of metadata and send it to application

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2021 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -335,7 +335,7 @@ void UBEmbedController::generateConfig(int pWidth, int pHeight, const QString& p
     out << "        xmlns:ub=\"http://uniboard.mnemis.com/widgets\"" << endl;
     out << "        id=\"http://uniboard.mnemis.com/" << mTrapFlashUi->widgetNameLineEdit->text() << "\"" <<endl;
 
-    out << "        version=\"1.0\"" << endl;
+    out << "        version=\"2.0\"" << endl;
     out << "        width=\"" << pWidth << "\"" << endl;
     out << "        height=\"" << pHeight << "\"" << endl;
     out << "        ub:resizable=\"true\">" << endl;

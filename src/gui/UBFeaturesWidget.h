@@ -311,10 +311,6 @@ public:
 
     void showElement(const UBFeature &elem);
 
-private slots:
-    void onLoadFinished(bool ok);
-    void javaScriptWindowObjectCleared();
-
 private:
     QWebEngineView* mpView;
     QVBoxLayout* mpLayout;

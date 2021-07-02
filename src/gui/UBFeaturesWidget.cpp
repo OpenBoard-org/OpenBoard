@@ -784,8 +784,6 @@ UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(
 
     mpLayout->addWidget(mpView);
     mpLayout->setMargin(0);
-
-    connect(mpView, SIGNAL(loadFinished(bool)), this, SLOT(onLoadFinished(bool)));
 }
 
 UBFeaturesWebView::~UBFeaturesWebView()
@@ -805,12 +803,6 @@ UBFeaturesWebView::~UBFeaturesWebView()
         delete mpLayout;
         mpLayout = NULL;
     }
-}
-
-void UBFeaturesWebView::javaScriptWindowObjectCleared()
-{
-    // TODO not needed
-//    mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
 }
 
 void UBFeaturesWebView::showElement(const UBFeature &elem)
@@ -845,13 +837,6 @@ void UBFeaturesWebView::showElement(const UBFeature &elem)
     }
 
     mpView->load(QUrl::fromLocalFile(QString("%0/%1").arg(path).arg(qsWidgetName)));
-}
-
-void UBFeaturesWebView::onLoadFinished(bool ok)
-{
-    if(ok && NULL != mpSankoreAPI){
-// TODO not needed        mpView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
-    }
 }
 
 

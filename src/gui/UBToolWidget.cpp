@@ -132,9 +132,6 @@ void UBToolWidget::initialize()
     mWebView->setAcceptDrops(false);
     mWebView->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
     mWebView->setAttribute(Qt::WA_OpaquePaintEvent, false);
-
-// TODO probably not necessary
-//    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(javaScriptWindowObjectCleared()));
 }
 
 

@@ -1,10 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
- *
- * Copyright (C) 2013 Open Education Foundation
- *
- * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
- * l'Education Numérique en Afrique (GIP ENA)
+ * Copyright (C) 2021 Département de l'Instruction Publique (DIP-SEM)
  *
  * This file is part of OpenBoard.
  *
@@ -32,6 +27,8 @@
 
 #include <QCryptographicHash>
 #include <QDomDocument>
+
+#include "core/memcheck.h"
 
 UBWidgetUpgradeAdaptor::UBWidgetUpgradeAdaptor()
 {
@@ -95,8 +92,6 @@ void UBWidgetUpgradeAdaptor::copyDir(QDir target, QDir source)
 void UBWidgetUpgradeAdaptor::fillLibraryWidgets()
 {
     QStringList widgetPaths = UBPersistenceManager::persistenceManager()->allWidgets(UBSettings::settings()->applicationApplicationsLibraryDirectory());
-
-    // TODO for interactivities the name can not be taken from any of the metadata - sad
     widgetPaths << UBPersistenceManager::persistenceManager()->allWidgets(UBSettings::settings()->applicationInteractivesDirectory());
 
     for (QString wigetPath : widgetPaths) {
@@ -112,6 +107,8 @@ void UBWidgetUpgradeAdaptor::fillLibraryWidgets()
 
 UBWidgetUpgradeAdaptor::Widget::Widget(const QString &dir) : m_path(dir)
 {
+    // widgetHashes are used to identify widgets by the MD% sum of their config.xml
+    // neccessary because many interactivities share the same id
     static QMap<QByteArray, QString> widgetHashes;
 
     if (widgetHashes.empty())

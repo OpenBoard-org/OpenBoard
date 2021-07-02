@@ -1,10 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
- *
- * Copyright (C) 2013 Open Education Foundation
- *
- * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
- * l'Education Numérique en Afrique (GIP ENA)
+ * Copyright (C) 2021 Département de l'Instruction Publique (DIP-SEM)
  *
  * This file is part of OpenBoard.
  *
@@ -25,6 +20,8 @@
  */
 
 #include "UBEmbedContent.h"
+
+#include "core/memcheck.h"
 
 UBEmbedContent::UBEmbedContent()
     : mType(UBEmbedType::UNKNOWN), mThumbWidth(0), mThumbHeight(0), mWidth(0), mHeight(0)

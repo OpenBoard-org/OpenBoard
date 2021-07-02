@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2021 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -603,7 +603,6 @@ void UBGraphicsWidgetItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsWidgetItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug() << "mouseReleaseEvent";// NOTE @letsfindaway remove
     mShouldMoveWidget = false;
 
     Delegate()->mouseReleaseEvent(event);
