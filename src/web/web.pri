@@ -12,7 +12,6 @@ HEADERS      += src/web/UBWebController.h \
                 src/web/UBEmbedController.h \
                 src/web/UBEmbedContent.h \
                 src/web/UBEmbedParser.h \
-                src/web/UBWebPluginWidget.h \
                 src/web/simplebrowser/browserwindow.h \
                 src/web/simplebrowser/downloadmanagerwidget.h \
                 src/web/simplebrowser/downloadwidget.h \
@@ -27,7 +26,6 @@ SOURCES      += src/web/UBWebController.cpp \
                 src/web/UBEmbedController.cpp \
                 src/web/UBEmbedContent.cpp \
                 src/web/UBEmbedParser.cpp \
-                src/web/UBWebPluginWidget.cpp \
                 src/web/simplebrowser/browserwindow.cpp \
                 src/web/simplebrowser/downloadmanagerwidget.cpp \
                 src/web/simplebrowser/downloadwidget.cpp \
