@@ -321,6 +321,27 @@ private:
     void updateIndexEnvirons(const QModelIndex &index);
 };
 
+class UBValidator : public QValidator
+{
+    const QStringList mExistingFileNames;
+
+    public:
+        UBValidator(const QStringList existingFileNames, QObject *parent = nullptr)
+        : QValidator(parent)
+        , mExistingFileNames(existingFileNames)
+        {
+
+        }
+
+        QValidator::State validate(QString &input, int &pos) const
+        {
+            if (mExistingFileNames.contains(input))
+                return QValidator::Intermediate;
+            else
+                return QValidator::Acceptable;
+        }
+};
+
 class UBDocumentTreeItemDelegate : public QStyledItemDelegate
 {
     Q_OBJECT

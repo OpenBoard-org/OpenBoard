@@ -1645,10 +1645,15 @@ UBDocumentTreeItemDelegate::UBDocumentTreeItemDelegate(QObject *parent)
 
 void UBDocumentTreeItemDelegate::commitAndCloseEditor()
 {
-    QLineEdit *lineEditor = qobject_cast<QLineEdit*>(sender());
-    if (lineEditor) {
-        emit commitData(lineEditor);
+    QLineEdit *lineEditor = dynamic_cast<QLineEdit*>(sender());
+    if (lineEditor)
+    {
+        if (lineEditor->hasAcceptableInput())
+        {
+            emit commitData(lineEditor);
         //emit closeEditor(lineEditor);
+        }
+
         emit UBApplication::documentController->reorderDocumentsRequested();
     }
 }
@@ -1678,13 +1683,26 @@ QWidget *UBDocumentTreeItemDelegate::createEditor(QWidget *parent, const QStyleO
     //N/C - NNE - 20140407 : Add the test for the index column.
     if(index.column() == 0){
         mExistingFileNames.clear();
-        const UBDocumentTreeModel *indexModel = qobject_cast<const UBDocumentTreeModel*>(index.model());
-        if (indexModel) {
-            mExistingFileNames = indexModel->nodeNameList(index.parent());
-            mExistingFileNames.removeOne(index.data().toString());
+        const UBDocumentTreeModel *docModel = 0;
+
+        const UBSortFilterProxyModel *proxy = dynamic_cast<const UBSortFilterProxyModel*>(index.model());
+
+        if(proxy){
+            docModel = dynamic_cast<UBDocumentTreeModel*>(proxy->sourceModel());
+        }else{
+            docModel =  dynamic_cast<const UBDocumentTreeModel*>(index.model());
+        }
+
+        QModelIndex sourceIndex = proxy->mapToSource(index);
+
+        if (docModel) {
+            mExistingFileNames = docModel->nodeNameList(sourceIndex.parent());
+            mExistingFileNames.removeOne(sourceIndex.data().toString());
         }
 
         QLineEdit *nameEditor = new QLineEdit(parent);
+        UBValidator* validator = new UBValidator(mExistingFileNames);
+        nameEditor->setValidator(validator);
         connect(nameEditor, SIGNAL(editingFinished()), this, SLOT(commitAndCloseEditor()));
         connect(nameEditor, SIGNAL(textChanged(QString)), this, SLOT(processChangedText(QString)));
         return nameEditor;
@@ -1760,7 +1778,12 @@ void UBDocumentController::createNewDocument()
                 ? docModel->virtualPathForIndex(selectedIndex)
                 : docModel->virtualDirForIndex(selectedIndex);
 
-    UBDocumentProxy *document = pManager->createDocument(groupName);
+
+    QDateTime now = QDateTime::currentDateTime();
+    QString documentName = docModel->adjustNameForParentIndex(now.toString(Qt::SystemLocaleShortDate), selectedIndex.parent());
+
+    UBDocumentProxy *document = pManager->createDocument(groupName, documentName);
+
     selectDocument(document, true, false, true);
 
     if (document)
