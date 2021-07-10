@@ -37,6 +37,7 @@
 #include <QGraphicsPixmapItem>
 
 #include "core/UBApplication.h"
+#include "UBDrawingController.h"
 #include "UBDocumentNavigator.h"
 #include "board/UBBoardController.h"
 #include "board/UBBoardView.h"
@@ -451,6 +452,12 @@ void UBDocumentNavigator::keyPressEvent(QKeyEvent *event)
             case Qt::Key_Down:
             {
                 controller->handScroll (0, 100);
+                event->accept ();
+                break;
+            }
+            case Qt::Key_H:
+            {
+                UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Hand);
                 event->accept ();
                 break;
             }
