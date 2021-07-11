@@ -541,7 +541,6 @@ void UBGraphicsWidgetItem::inspectPage()
         mInspectorWindow->show();
 
         webEngineView->page()->setDevToolsPage(inspector->page());
-        webEngineView->page()->triggerAction(QWebEnginePage::InspectElement);
 
         connect(mInspectorWindow, &QObject::destroyed, [this](){
             webEngineView->page()->setDevToolsPage(nullptr);
@@ -964,7 +963,6 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
     if(!f.exists())
         mMainHtmlUrl = QUrl(mMainHtmlFileName);
 
-//    connect(page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(activeSceneChanged()));
 
     webEngineView->load(mMainHtmlUrl);
@@ -1009,17 +1007,26 @@ UBGraphicsW3CWidgetItem::Metadata UBGraphicsW3CWidgetItem::metadatas() const
 
 void UBGraphicsW3CWidgetItem::removeScript()
 {
-    emit mW3CWidgetAPI->onremove();
+    if (mW3CWidgetAPI)
+    {
+        emit mW3CWidgetAPI->onremove();
+    }
 }
 
 void UBGraphicsW3CWidgetItem::sendJSEnterEvent()
 {
-    emit mW3CWidgetAPI->onenter();
+    if (mW3CWidgetAPI)
+    {
+        emit mW3CWidgetAPI->onenter();
+    }
 }
 
 void UBGraphicsW3CWidgetItem::sendJSLeaveEvent()
 {
-    emit mW3CWidgetAPI->onleave();
+    if (mW3CWidgetAPI)
+    {
+        emit mW3CWidgetAPI->onleave();
+    }
 }
 
 QString UBGraphicsW3CWidgetItem::createNPAPIWrapper(const QString& url, const QString& pMimeType, const QSize& sizeHint, const QString& pName)
