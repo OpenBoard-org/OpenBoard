@@ -76,18 +76,18 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     , mInspectorWindow(nullptr)
     , mUniboardAPI(nullptr)
 {
-    webEngineView = new UBWebEngineView();
-    setWidget(webEngineView);
+    mWebEngineView = new UBWebEngineView();
+    setWidget(mWebEngineView);
 
     setData(UBGraphicsItemData::ItemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 
     // create the page using a profile
     QWebEngineProfile* profile = UBApplication::webController->webProfile();
-    webEngineView->setPage(new WebPage(profile, this));
+    mWebEngineView->setPage(new WebPage(profile, this));
 
     // see https://stackoverflow.com/questions/31928444/qt-qwebenginepagesetwebchannel-transport-object
     mWebChannel = new QWebChannel(this);
-    webEngineView->page()->setWebChannel(mWebChannel);
+    mWebEngineView->page()->setWebChannel(mWebChannel);
 
     // NOTE to enable fullscreen, we would have to move the page to a fullscreen view.
     // webEngineView->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
@@ -95,8 +95,8 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     setAcceptDrops(true);
     setAutoFillBackground(false);
 
-    webEngineView->setBackgroundRole(QPalette::Window);
-    webEngineView->page()->setBackgroundColor(QColor(Qt::transparent));
+    mWebEngineView->setBackgroundRole(QPalette::Window);
+    mWebEngineView->page()->setBackgroundColor(QColor(Qt::transparent));
 
     QPalette viewPalette = palette();
     viewPalette.setBrush(QPalette::Base, QBrush(Qt::transparent));
@@ -123,46 +123,16 @@ void UBGraphicsWidgetItem::initialize()
     if (Delegate() && Delegate()->frame() && resizable())
         Delegate()->frame()->setOperationMode(UBGraphicsDelegateFrame::Resizing);
 
-//    QPalette palette = page()->palette();
-//    palette.setBrush(QPalette::Base, QBrush(Qt::transparent));
-//    page()->setPalette(palette);
-    /* There is no way to connect a signal to run C++ code when a link is clicked.
-     * However, link clicks can be delegated to the Qt application instead of having
-     * the HTML handler engine process them by overloading the QWebEnginePage::acceptNavigationRequest()
-     * function. This is necessary when an HTML document is used as part of the user interface,
-     * and not to display external data, for example, when displaying a list of results.
-     *
-     * Note: acceptNavigationRequest() starts the loading process and emits the loadStarted() signal
-     * before the request is accepted or rejected. Therefore, a loadFinished() signal that returns
-     * false is to be expected even after delegating the request. */
-//    webEngineView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
-
+    // inject the QWebChannel interface and initialization script
     // see https://doc.qt.io/qt-5.12/qtwebengine-overview.html#script-injection to do that with WebEngine
     // https://doc.qt.io/qt-5.12/qwebengineprofile.html#scripts
+    UBWebController::injectScripts(mWebEngineView);
 
-    // inject the QWebChannel interface and initialization script
-    UBWebController::injectScripts(webEngineView);
-
-    connect(webEngineView->page(), SIGNAL(geometryChangeRequested(const QRect&)), this, SLOT(geometryChangeRequested(const QRect&)));
-    connect(webEngineView, SIGNAL(loadFinished(bool)), this, SLOT(mainFrameLoadFinished (bool)));
-    connect(webEngineView, &QWebEngineView::loadFinished, this, &UBGraphicsWidgetItem::initialLayoutCompleted);
-//    connect(webEngineView->page(), SIGNAL(linkClicked(const QUrl&)), this, SLOT(onLinkClicked(const QUrl&)));
+    connect(mWebEngineView->page(), SIGNAL(geometryChangeRequested(const QRect&)), this, SLOT(geometryChangeRequested(const QRect&)));
+    connect(mWebEngineView, SIGNAL(loadFinished(bool)), this, SLOT(mainFrameLoadFinished (bool)));
 }
 
-void UBGraphicsWidgetItem::onLinkClicked(const QUrl& url)
-{
-    webEngineView->load(url);
-}
-
-void UBGraphicsWidgetItem::initialLayoutCompleted()
-{
-    mInitialLoadDone = true;
-
-    // repaint when initial rendering is done
-    update();
-}
-
-QUrl UBGraphicsWidgetItem::mainHtml()
+QUrl UBGraphicsWidgetItem::mainHtml() const
 {
     return mMainHtmlUrl;
 }
@@ -171,25 +141,25 @@ void UBGraphicsWidgetItem::loadMainHtml()
 {
     qDebug() << "load main HTML";
     mInitialLoadDone = false;
-    webEngineView->load(mMainHtmlUrl);
+    mWebEngineView->load(mMainHtmlUrl);
 }
 
 void UBGraphicsWidgetItem::load(QUrl url)
 {
-    webEngineView->load(url);
+    mWebEngineView->load(url);
 }
 
-QUrl UBGraphicsWidgetItem::widgetUrl()
+QUrl UBGraphicsWidgetItem::widgetUrl() const
 {
     return mWidgetUrl;
 }
 
-QString UBGraphicsWidgetItem::mainHtmlFileName()
+QString UBGraphicsWidgetItem::mainHtmlFileName() const
 {
     return mMainHtmlFileName;
 }
 
-bool UBGraphicsWidgetItem::canBeContent()
+bool UBGraphicsWidgetItem::canBeContent() const
 {
     // if we under MAC OS
     #if defined(Q_OS_MAC)
@@ -207,7 +177,7 @@ bool UBGraphicsWidgetItem::canBeContent()
     #endif
 }
 
-bool UBGraphicsWidgetItem::canBeTool()
+bool UBGraphicsWidgetItem::canBeTool() const
 {
     // if we under MAC OS
     #if defined(Q_OS_MAC)
@@ -294,8 +264,8 @@ void UBGraphicsWidgetItem::removeAllDatastoreEntries()
 
 void UBGraphicsWidgetItem::runScript(const QString &script)
 {
-    if (webEngineView->page())
-        webEngineView->page()->runJavaScript(script);
+    if (mWebEngineView->page())
+        mWebEngineView->page()->runJavaScript(script);
 }
 
 void UBGraphicsWidgetItem::removeScript()
@@ -313,22 +283,22 @@ bool UBGraphicsWidgetItem::isDropableData(const QMimeData *data) const
 
 QUrl UBGraphicsWidgetItem::getOwnFolder() const
 {
-    return ownFolder;
+    return mOwnFolder;
 }
 
 void UBGraphicsWidgetItem::setOwnFolder(const QUrl &newFolder)
 {
-    ownFolder = newFolder;
+    mOwnFolder = newFolder;
 }
 
 void UBGraphicsWidgetItem::setSnapshotPath(const QUrl &newFilePath)
 {
-    SnapshotFile = newFilePath;
+    mSnapshotFile = newFilePath;
 }
 
-QUrl UBGraphicsWidgetItem::getSnapshotPath()
+QUrl UBGraphicsWidgetItem::getSnapshotPath() const
 {
-    return SnapshotFile;
+    return mSnapshotFile;
 }
 
 void UBGraphicsWidgetItem::clearSource()
@@ -353,22 +323,22 @@ bool UBGraphicsWidgetItem::hasLoadedSuccessfully() const
     return (mInitialLoadDone && !mLoadIsErronous);
 }
 
-bool UBGraphicsWidgetItem::freezable()
+bool UBGraphicsWidgetItem::freezable() const
 {
     return mIsFreezable;
 }
 
-bool UBGraphicsWidgetItem::resizable()
+bool UBGraphicsWidgetItem::resizable() const
 {
     return mIsResizable;
 }
 
-bool UBGraphicsWidgetItem::isFrozen()
+bool UBGraphicsWidgetItem::isFrozen() const
 {
     return mIsFrozen;
 }
 
-QPixmap UBGraphicsWidgetItem::snapshot()
+QPixmap UBGraphicsWidgetItem::snapshot() const
 {
     return mSnapshot;
 }
@@ -540,10 +510,10 @@ void UBGraphicsWidgetItem::inspectPage()
         mInspectorWindow->setGeometry(inspectorGeometry);
         mInspectorWindow->show();
 
-        webEngineView->page()->setDevToolsPage(inspector->page());
+        mWebEngineView->page()->setDevToolsPage(inspector->page());
 
         connect(mInspectorWindow, &QObject::destroyed, [this](){
-            webEngineView->page()->setDevToolsPage(nullptr);
+            mWebEngineView->page()->setDevToolsPage(nullptr);
             mInspectorWindow = nullptr;
         });
     }
@@ -553,7 +523,7 @@ void UBGraphicsWidgetItem::closeInspector()
 {
     if (mInspectorWindow)
     {
-        webEngineView->page()->setDevToolsPage(nullptr);
+        mWebEngineView->page()->setDevToolsPage(nullptr);
         mInspectorWindow->close();
         mInspectorWindow->deleteLater();
         mInspectorWindow = nullptr;
@@ -635,7 +605,7 @@ void UBGraphicsWidgetItem::injectInlineJavaScript()
     }
 
     foreach(QString script, sInlineJavaScripts)
-        webEngineView->page()->runJavaScript(script);
+        mWebEngineView->page()->runJavaScript(script);
 }
 
 void UBGraphicsWidgetItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -675,10 +645,10 @@ void UBGraphicsWidgetItem::registerAPI()
 {
     injectInlineJavaScript();
 
-    if(!mUniboardAPI)
+    if (!mUniboardAPI)
     {
         mUniboardAPI = new UBWidgetUniboardAPI(scene(), this);
-        webEngineView->page()->webChannel()->registerObject("sankore", mUniboardAPI);
+        mWebEngineView->page()->webChannel()->registerObject("sankore", mUniboardAPI);
     }
     else
     {
@@ -688,8 +658,11 @@ void UBGraphicsWidgetItem::registerAPI()
 
 void UBGraphicsWidgetItem::mainFrameLoadFinished (bool ok)
 {
+    mInitialLoadDone = true;
     mLoadIsErronous = !ok;
-    update(boundingRect());
+
+    // repaint when initial rendering is done
+    update();
 
     if (mInitialLoadDone && scene() && scene()->renderingContext() == UBGraphicsScene::Screen)
         takeSnapshot();
@@ -709,9 +682,8 @@ QVariant UBGraphicsWidgetItem::itemChange(GraphicsItemChange change, const QVari
     if ((change == QGraphicsItem::ItemSelectedHasChanged) &&  scene()) {
         if (isSelected())
             scene()->setActiveWindow(this);
-        else
-            if(scene()->activeWindow() == this)
-                scene()->setActiveWindow(0);
+        else if (scene()->activeWindow() == this)
+            scene()->setActiveWindow(nullptr);
     }
 
     QVariant newValue = Delegate()->itemChange(change, value);
@@ -727,8 +699,8 @@ void UBGraphicsWidgetItem::resize(qreal w, qreal h)
 void UBGraphicsWidgetItem::resize(const QSizeF & pSize)
 {
     if (pSize != size()) {
-        webEngineView->setMaximumSize(pSize.width(), pSize.height());
-        webEngineView->resize(pSize.width(), pSize.height());
+        mWebEngineView->setMaximumSize(pSize.width(), pSize.height());
+        mWebEngineView->resize(pSize.width(), pSize.height());
         if (Delegate())
             Delegate()->positionHandles();
         if (scene())
@@ -738,7 +710,7 @@ void UBGraphicsWidgetItem::resize(const QSizeF & pSize)
 
 QSizeF UBGraphicsWidgetItem::size() const
 {
-    return webEngineView->size();
+    return mWebEngineView->size();
 }
 
 
@@ -770,7 +742,7 @@ UBGraphicsAppleWidgetItem::UBGraphicsAppleWidgetItem(const QUrl& pWidgetUrl, QGr
     mMainHtmlUrl = pWidgetUrl;
     mMainHtmlUrl.setPath(pWidgetUrl.path() + "/" + mMainHtmlFileName);
 
-    webEngineView->load(mMainHtmlUrl);
+    mWebEngineView->load(mMainHtmlUrl);
 
     QPixmap defaultPixmap(pWidgetUrl.toLocalFile() + "/Default.png");
 
@@ -795,7 +767,7 @@ void UBGraphicsAppleWidgetItem::setUuid(const QUuid &pUuid)
 
 UBItem* UBGraphicsAppleWidgetItem::deepCopy() const
 {
-    UBGraphicsAppleWidgetItem *appleWidget = new UBGraphicsAppleWidgetItem(webEngineView->url(), parentItem());
+    UBGraphicsAppleWidgetItem *appleWidget = new UBGraphicsAppleWidgetItem(mWebEngineView->url(), parentItem());
 
     copyItemParameters(appleWidget);
 
@@ -960,16 +932,16 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
     /* is it a valid local file ? */
     QFile f(mMainHtmlUrl.toLocalFile());
 
-    if(!f.exists())
+    if (!f.exists())
         mMainHtmlUrl = QUrl(mMainHtmlFileName);
 
     connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(activeSceneChanged()));
 
-    webEngineView->load(mMainHtmlUrl);
-
-    setMaximumSize(QSize(width, height));
+    mWebEngineView->load(mMainHtmlUrl);
 
     mNominalSize = QSize(width, height);
+    setMaximumSize(mNominalSize);
+
 
     initialize();
     setOwnFolder(pWidgetUrl);
@@ -995,7 +967,7 @@ UBItem* UBGraphicsW3CWidgetItem::deepCopy() const
     return copy;
 }
 
-QMap<QString, UBGraphicsW3CWidgetItem::PreferenceValue> UBGraphicsW3CWidgetItem::preferences()
+QMap<QString, UBGraphicsW3CWidgetItem::PreferenceValue> UBGraphicsW3CWidgetItem::preferences() const
 {
     return mPreferences;
 }
@@ -1152,7 +1124,7 @@ QString UBGraphicsW3CWidgetItem::createHtmlWrapperInDir(const QString& html, con
     outConfig << "    xmlns:ub=\"http://uniboard.mnemis.com/widgets\"" << endl;
     outConfig << "    id=\"http://uniboard.mnemis.com/" << pName << "\"" <<endl;
 
-    outConfig << "    version=\"1.0\"" << endl;
+    outConfig << "    version=\"2.0\"" << endl;
     outConfig << "    width=\"" << sizeHint.width() << "\"" << endl;
     outConfig << "    height=\"" << sizeHint.height() << "\"" << endl;
     outConfig << "    ub:resizable=\"true\">" << endl;
@@ -1192,6 +1164,7 @@ QString UBGraphicsW3CWidgetItem::createHtmlWrapperInDir(const QString& html, con
     return widgetPath;
 }
 
+// NOTE @letsfindaway obsolete, no references
 QString UBGraphicsW3CWidgetItem::freezedWidgetPage()
 {
     static QString defaultcontent;
@@ -1233,10 +1206,10 @@ void UBGraphicsW3CWidgetItem::registerAPI()
 {
     UBGraphicsWidgetItem::registerAPI();
 
-    if(!mW3CWidgetAPI)
+    if (!mW3CWidgetAPI)
     {
         mW3CWidgetAPI = new UBW3CWidgetAPI(this);
-        webEngineView->page()->webChannel()->registerObject("widget", mW3CWidgetAPI);
+        mWebEngineView->page()->webChannel()->registerObject("widget", mW3CWidgetAPI);
     }
 }
 
@@ -1290,8 +1263,8 @@ QString UBGraphicsW3CWidgetItem::textForSubElementByLocale(QDomElement rootEleme
 
             QString configLang = element.attribute("xml:lang", "");
 
-            if(lang == configLang || (configLang.length() == 2 && configLang == lang.left(2)))
-                 return element.text();
+            if (lang == configLang || (configLang.length() == 2 && configLang == lang.left(2)))
+                return element.text();
         }
     }
 

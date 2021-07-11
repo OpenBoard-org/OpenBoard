@@ -59,12 +59,7 @@ UBEmbedParser::UBEmbedParser(QWebEngineView *parent, const char* name)
             onLoadFinished();
         }
     });
-// DEBUG
-//    connect(mView, &QWebEngineView::loadStarted, [](){qDebug() << QDateTime::currentDateTime().toString(Qt::ISODateWithMs) << "loadStarted";});
-//    connect(mView, &QWebEngineView::loadProgress, [](int p){qDebug() << QDateTime::currentDateTime().toString(Qt::ISODateWithMs) << "loadProgress" << p;});
-//    connect(mView, &QWebEngineView::loadFinished, [](){qDebug() << QDateTime::currentDateTime().toString(Qt::ISODateWithMs) << "loadFinished";});
-//    connect(mView, &QWebEngineView::renderProcessTerminated, [](){qDebug() << QDateTime::currentDateTime().toString(Qt::ISODateWithMs) << "renderProcessTerminated";});
-//    connect(mView, &QWebEngineView::urlChanged, [](){qDebug() << QDateTime::currentDateTime().toString(Qt::ISODateWithMs) << "urlChanged";});
+
     qDebug() << "Created UBOEmbedParser";
 }
 
@@ -73,7 +68,7 @@ UBEmbedParser::~UBEmbedParser()
 
 }
 
-bool UBEmbedParser::hasEmbeddedContent()
+bool UBEmbedParser::hasEmbeddedContent() const
 {
     return !mContents.empty();
 }
@@ -86,6 +81,7 @@ QList<UBEmbedContent> UBEmbedParser::embeddedContent()
 void UBEmbedParser::onLoadFinished()
 {
     qDebug() << "loadFinished";
+
     if (!mParsing)
     {
         mParsing = true;

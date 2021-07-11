@@ -575,7 +575,7 @@ int WBHistoryMenuModel::rowCount(const QModelIndex &parent) const
         return bumpedItems + folders;
     }
 
-    if (parent.internalId() == -1)
+    if (parent.internalId() == quintptr(-1))
     {
         if (parent.row() < bumpedRows())
             return 0;
@@ -601,7 +601,7 @@ QModelIndex WBHistoryMenuModel::mapToSource(const QModelIndex &proxyIndex) const
     if (!proxyIndex.isValid())
         return QModelIndex();
 
-    if (proxyIndex.internalId() == -1)
+    if (proxyIndex.internalId() == quintptr(-1))
     {
         int bumpedItems = bumpedRows();
         if (proxyIndex.row() < bumpedItems)

@@ -47,16 +47,16 @@ class UBEmbedController : public QObject
 {
     Q_OBJECT;
     public:
-        UBEmbedController(QWidget* parent = 0);
+        UBEmbedController(QWidget* parent = nullptr);
         virtual ~UBEmbedController();
 
-        void showTrapDialog();
-        void hideTrapFlash();
+        void showEmbedDialog();
+        void hideEmbedDialog();
 
     public slots:
-        void updateTrapFlashFromView(QWebEngineView* pCurrentWebFrame);
-        void text_Changed(const QString &);
-        void text_Edited(const QString &);
+        void updateEmbeddableContentFromView(QWebEngineView* pCurrentWebFrame);
+        void textChanged(const QString &);
+        void textEdited(const QString &);
 
 
     private slots:
@@ -64,10 +64,9 @@ class UBEmbedController : public QObject
         void createWidget();
 
     private:
+        void updateListOfEmbeddableContent(const QList<UBEmbedContent>& pAllContent);
 
-        void updateListOfFlashes(const QList<UBEmbedContent>& pAllContent);
-
-        QString widgetNameForObject(const UBEmbedContent& pObject);
+        QString widgetNameForObject(const UBEmbedContent& pObject) const;
 
         QString generateFullPageHtml(const QUrl& url, const QString& pDirPath, bool pGenerateFile);
         QString generateHtml(const UBEmbedContent& pObject, const QString& pDirPath, bool pGenerateFile);

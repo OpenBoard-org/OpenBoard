@@ -75,15 +75,15 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         virtual void resize(const QSizeF & size);
         virtual QSizeF size() const;
 
-        QUrl mainHtml();
+        QUrl mainHtml() const;
         void loadMainHtml();
         void load(QUrl url);
-        QUrl widgetUrl();
-        void widgetUrl(QUrl url) { mWidgetUrl = url; }
-        QString mainHtmlFileName();
+        QUrl widgetUrl() const;
+        void widgetUrl(const QUrl &url) { mWidgetUrl = url; }
+        QString mainHtmlFileName() const;
 
-        bool canBeContent();
-        bool canBeTool();
+        bool canBeContent() const;
+        bool canBeTool() const;
 
         QString preference(const QString& key) const;
         void setPreference(const QString& key, QString value);
@@ -106,7 +106,7 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         virtual QUrl getOwnFolder() const;
         virtual void setOwnFolder(const QUrl &newFolder);
         virtual void setSnapshotPath(const QUrl &newFilePath);
-        virtual QUrl getSnapshotPath();
+        virtual QUrl getSnapshotPath() const;
 
         virtual void clearSource();
 
@@ -116,11 +116,11 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
 
         bool hasLoadedSuccessfully() const;
 
-        bool freezable();
-        bool resizable();
-        bool isFrozen();
+        bool freezable() const;
+        bool resizable() const;
+        bool isFrozen() const;
 
-        QPixmap snapshot();
+        QPixmap snapshot() const;
         void setSnapshot(const QPixmap& pix);
         QPixmap takeSnapshot();
 
@@ -156,7 +156,7 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         bool mMouseIsPressed;
         int mCanBeContent;
         int mCanBeTool;
-        QWebEngineView* webEngineView;
+        QWebEngineView* mWebEngineView;
         QSize mNominalSize;
         QString mMainHtmlFileName;
         QUrl mMainHtmlUrl;
@@ -183,10 +183,6 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         virtual void registerAPI();
         void mainFrameLoadFinished(bool ok);
 
-    private slots:
-        void onLinkClicked(const QUrl& url);
-        void initialLayoutCompleted();
-
     private:
         bool mIsFrozen;
         bool mIsTakingSnapshot;
@@ -196,8 +192,8 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         UBWidgetUniboardAPI* mUniboardAPI;
         QPixmap mSnapshot;
         QPointF mLastMousePos;
-        QUrl ownFolder;
-        QUrl SnapshotFile;
+        QUrl mOwnFolder;
+        QUrl mSnapshotFile;
 
         static bool sInlineJavaScriptLoaded;
         static QStringList sInlineJavaScripts;
@@ -260,7 +256,7 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         virtual void setUuid(const QUuid &pUuid);
         virtual UBItem* deepCopy() const;
         virtual void copyItemParameters(UBItem *copy) const;
-        QMap<QString, PreferenceValue> preferences();
+        QMap<QString, PreferenceValue> preferences() const;
         Metadata metadatas() const;
 
         virtual void removeScript();

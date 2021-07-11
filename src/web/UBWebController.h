@@ -119,7 +119,7 @@ private:
         UBMainWindow *mMainWindow;
 
         BrowserWindow* mCurrentWebBrowser;
-        DownloadManagerWidget m_downloadManagerWidget;
+        DownloadManagerWidget mDownloadManagerWidget;
 
         QWidget* mBrowserWidget;
         UBEmbedController* mEmbedController;

@@ -71,10 +71,10 @@
 UBWebController::UBWebController(UBMainWindow* mainWindow)
     : QObject(mainWindow->centralWidget())
     , mMainWindow(mainWindow)
-    , mCurrentWebBrowser(0)
-    , mBrowserWidget(0)
-    , mEmbedController(0)
-    , mToolsCurrentPalette(0)
+    , mCurrentWebBrowser(nullptr)
+    , mBrowserWidget(nullptr)
+    , mEmbedController(nullptr)
+    , mToolsCurrentPalette(nullptr)
     , mToolsPalettePositionned(false)
     , mDownloadViewIsVisible(false)
 {
@@ -133,7 +133,7 @@ void UBWebController::webBrowserInstance()
 
             connect(mCurrentWebBrowser, SIGNAL(activeViewChange(QWidget*)), this, SLOT(setSourceWidget(QWidget*)));
 
-            m_downloadManagerWidget.setParent(mCurrentWebBrowser, Qt::Tool);
+            mDownloadManagerWidget.setParent(mCurrentWebBrowser, Qt::Tool);
 
             UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->webToolBar, mMainWindow->actionBoard, 32);
             QToolBar* navigationBar = mCurrentWebBrowser->createToolBar(mMainWindow->webToolBar);
@@ -218,7 +218,7 @@ void UBWebController::webBrowserInstance()
 
             QObject::connect(
                 mWebProfile, &QWebEngineProfile::downloadRequested,
-                &m_downloadManagerWidget, &DownloadManagerWidget::downloadRequested);
+                &mDownloadManagerWidget, &DownloadManagerWidget::downloadRequested);
 
             connect(mMainWindow->actionWebTools, &QAction::triggered, [this](){
                 mToolsCurrentPalette->setVisible(mMainWindow->actionWebTools->isChecked());
@@ -238,7 +238,7 @@ void UBWebController::webBrowserInstance()
 
     if (mDownloadViewIsVisible)
     {
-        m_downloadManagerWidget.show();
+        mDownloadManagerWidget.show();
     }
 }
 
@@ -314,7 +314,7 @@ void UBWebController::setSourceWidget(QWidget* pWidget)
 
 void UBWebController::trap()
 {
-    mEmbedController->showTrapDialog();
+    mEmbedController->showEmbedDialog();
     activePageChanged();
 }
 
@@ -325,7 +325,7 @@ void UBWebController::activePageChanged()
         WebView* view = mCurrentWebBrowser->currentTab();
 
         if (mEmbedController)
-            mEmbedController->updateTrapFlashFromView(view);
+            mEmbedController->updateEmbeddableContentFromView(view);
 
         emit activeWebPageChanged(mCurrentWebBrowser->currentTab());
     }
@@ -672,7 +672,7 @@ void UBWebController::onEmbedParsed(QWebEngineView *view, bool hasEmbeddedConten
 
         if (mEmbedController)
         {
-            mEmbedController->updateTrapFlashFromView(view);
+            mEmbedController->updateEmbeddableContentFromView(view);
         }
     }
 }

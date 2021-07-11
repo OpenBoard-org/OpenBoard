@@ -33,7 +33,6 @@
 #include <QList>
 #include <QObject>
 #include <QString>
-#include <QUrl>
 
 #include "web/UBEmbedContent.h"
 
@@ -74,7 +73,7 @@ public:
     explicit UBEmbedParser(QWebEngineView* parent, const char* name="UBEmbedParser");
     ~UBEmbedParser();
 
-    bool hasEmbeddedContent();
+    bool hasEmbeddedContent() const;
     QList<UBEmbedContent> embeddedContent();
 
 signals:

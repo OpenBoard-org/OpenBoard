@@ -55,10 +55,10 @@
 
 UBEmbedController::UBEmbedController(QWidget* parent)
     : QObject(parent)
-    , mTrapFlashUi(0)
-    , mTrapDialog(0)
+    , mTrapFlashUi(nullptr)
+    , mTrapDialog(nullptr)
     , mParentWidget(parent)
-    , mCurrentWebFrame(0)
+    , mCurrentWebFrame(nullptr)
 {
     // NOOP
 }
@@ -70,7 +70,7 @@ UBEmbedController::~UBEmbedController()
 }
 
 
-void UBEmbedController::showTrapDialog()
+void UBEmbedController::showEmbedDialog()
 {
     if (!mTrapDialog)
     {
@@ -82,7 +82,6 @@ void UBEmbedController::showTrapDialog()
         mTrapFlashUi = new Ui::trapFlashDialog();
         mTrapFlashUi->setupUi(mTrapDialog);
 
-//        mTrapFlashUi->webView->page()->setNetworkAccessManager(UBNetworkAccessManager::defaultAccessManager());
         int viewWidth = mParentWidget->width() / 2;
         int viewHeight = mParentWidget->height() * 2. / 3.;
         mTrapDialog->setGeometry(
@@ -95,8 +94,8 @@ void UBEmbedController::showTrapDialog()
         mTrapFlashUi->webView->setPage(new QWebEnginePage(profile, this));
 
         connect(mTrapFlashUi->flashCombobox, SIGNAL(currentIndexChanged(int)), this, SLOT(selectFlash(int)));
-        connect(mTrapFlashUi->widgetNameLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(text_Changed(const QString &)));
-        connect(mTrapFlashUi->widgetNameLineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(text_Edited(const QString &)));
+        connect(mTrapFlashUi->widgetNameLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(textChanged(const QString &)));
+        connect(mTrapFlashUi->widgetNameLineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(textEdited(const QString &)));
         connect(mTrapFlashUi->createWidgetButton, SIGNAL(clicked(bool)), this, SLOT(createWidget()));
         connect(mTrapFlashUi->webView, &QWebEngineView::loadFinished, [this](){
             mTrapFlashUi->webView->update();
@@ -107,7 +106,7 @@ void UBEmbedController::showTrapDialog()
     mTrapDialog->show();
 }
 
-void UBEmbedController::text_Changed(const QString &newText)
+void UBEmbedController::textChanged(const QString &newText)
 {
     QString new_text = newText;
 
@@ -126,7 +125,7 @@ void UBEmbedController::text_Changed(const QString &newText)
     QRegExp regExp("[<>:\"/\\\\|?*]");
 #endif
 
-    if(new_text.indexOf(regExp) > -1)
+    if (new_text.indexOf(regExp) > -1)
     {
         new_text.remove(regExp);
         mTrapFlashUi->widgetNameLineEdit->setText(new_text);
@@ -134,12 +133,12 @@ void UBEmbedController::text_Changed(const QString &newText)
     }
 }
 
-void UBEmbedController::text_Edited(const QString &newText)
+void UBEmbedController::textEdited(const QString &newText)
 {
     Q_UNUSED(newText);
 }
 
-void UBEmbedController::hideTrapFlash()
+void UBEmbedController::hideEmbedDialog()
 {
     if (mTrapDialog)
     {
@@ -148,7 +147,7 @@ void UBEmbedController::hideTrapFlash()
 }
 
 
-void UBEmbedController::updateListOfFlashes(const QList<UBEmbedContent>& pAllContent)
+void UBEmbedController::updateListOfEmbeddableContent(const QList<UBEmbedContent>& pAllContent)
 {
     if (mTrapDialog)
     {
@@ -276,13 +275,13 @@ void UBEmbedController::importWidgetInLibrary(QDir pSourceDir)
 }
 
 
-void UBEmbedController::updateTrapFlashFromView(QWebEngineView *pCurrentWebFrame)
+void UBEmbedController::updateEmbeddableContentFromView(QWebEngineView *pCurrentWebFrame)
 {
     if (pCurrentWebFrame && mTrapDialog && mTrapDialog->isVisible())
     {
         QList<UBEmbedContent> list = UBApplication::webController->getEmbeddedContent(pCurrentWebFrame);
         mCurrentWebFrame = pCurrentWebFrame;
-        updateListOfFlashes(list);
+        updateListOfEmbeddableContent(list);
     }
 }
 
@@ -470,7 +469,7 @@ QString UBEmbedController::generateHtml(const UBEmbedContent& pObject,
     }
 }
 
-QString UBEmbedController::widgetNameForObject(const UBEmbedContent& pObject)
+QString UBEmbedController::widgetNameForObject(const UBEmbedContent& pObject) const
 {
     QString result;
 
