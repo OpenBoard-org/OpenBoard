@@ -236,7 +236,9 @@ async function init(){
     var activeTimeScroll = null;
 				
     function addbtn(m){
-	
+        if (m.button != 0)
+            return; // handle left mouse button only
+
         var button = m.data.button;
         var content = button.find(".ubw-button-content");
 		
@@ -252,7 +254,9 @@ async function init(){
     }
 	
     function rembtn(m){
-	
+        if (m.button != 0)
+            return; // handle left mouse button only
+
         var button = m.data.button;
         var content = button.find(".ubw-button-content");
 		
