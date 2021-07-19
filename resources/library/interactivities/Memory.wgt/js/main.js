@@ -215,7 +215,7 @@ function reloadApp(app) {
         $(".card-container .actions button[role=flip]").click();
     }
     if(window.sankore)
-        window.sankore.enableDropOnWidget(app.onEdit);
+        window.sankore.enableDropOnWidget(app.onEdit, app.onEdit);
 }
 
 function cardParameterKey(card, i) {

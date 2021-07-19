@@ -38,7 +38,7 @@ var sankoreLang = {
 };
 
 //main function
-function start(){
+async function start(){
     
     $("#wgt_display").text(sankoreLang.display);
     $("#wgt_edit").text(sankoreLang.edit);
@@ -53,8 +53,8 @@ function start(){
     $("div.inline label").html(sankoreLang.theme + tmpl)
     
     if(window.sankore){
-        if(sankore.preference("odr_des_imgs","")){
-            var data = jQuery.parseJSON(sankore.preference("odr_des_imgs",""));
+        if(await sankore.async.preference("odr_des_imgs","")){
+            var data = jQuery.parseJSON(await sankore.async.preference("odr_des_imgs",""));
             importData(data);
         } else {
             showExample();
@@ -65,9 +65,9 @@ function start(){
 
     //events
     if (window.widget) {
-        window.widget.onleave = function(){
+        window.widget.onleave.connect(() => {
             exportData();
-        }
+        });
     }
     
     $("#wgt_help").click(function(){
@@ -155,7 +155,7 @@ function start(){
         } else {            
             if(!$(this).hasClass("selected")){
                 if(window.sankore)
-                    sankore.enableDropOnWidget(true);
+                    sankore.enableDropOnWidget(true, true);
                 $(this).addClass("selected");
                 $("#wgt_display").removeClass("selected");
                 $("#parameters").css("display","block");
@@ -276,7 +276,7 @@ function exportData(){
 }
 
 //import
-function importData(data){
+async function importData(data){
     
     var tmp = 0;    
     for(var i in data){
@@ -309,8 +309,8 @@ function importData(data){
                 img_block.append(hidden_input).append(img);
                 tmp_array.push(img_block);
             }
-            if(sankore.preference("odr_des_imgs_state","")){
-                if(sankore.preference("odr_des_imgs_state","") == "edit")
+            if(await sankore.async.preference("odr_des_imgs_state","")){
+                if(await sankore.async.preference("odr_des_imgs_state","") == "edit")
                     tmp_array = shuffle(tmp_array);
             } else 
                 tmp_array = shuffle(tmp_array);
@@ -537,7 +537,7 @@ function onDropTarget(obj, event) {
     $(obj).find("img").remove();
     if (event.dataTransfer) {
         var format = "text/plain";
-        var textData = event.dataTransfer.getData(format);
+        var textData = event.dataTransfer.getData(format) || window.sankore.dropData;
         if (!textData) {
             alert(":(");
         }

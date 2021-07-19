@@ -85,8 +85,9 @@ UBWidgetUniboardAPI::UBWidgetUniboardAPI(UBGraphicsScene *pScene, UBGraphicsWidg
     , mScene(pScene)
     , mGraphicsWidget(widget)
     , mIsVisible(false)
-    , mMessagesAPI(0)
-    , mDatastoreAPI(0)
+    , mMessagesAPI(nullptr)
+    , mDatastoreAPI(nullptr)
+    , mProcessFileDrop(false)
  {
     UBGraphicsW3CWidgetItem* w3CGraphicsWidget = dynamic_cast<UBGraphicsW3CWidgetItem*>(widget);
 
@@ -347,6 +348,14 @@ int UBWidgetUniboardAPI::currentPageNumber() const
     return UBApplication::boardController->activeSceneIndex() + 1;
 }
 
+void UBWidgetUniboardAPI::setDropData(const QString &data)
+{
+    if (data != mDropData) {
+        mDropData = data;
+        emit dropDataChanged(mDropData);
+    }
+}
+
 QString UBWidgetUniboardAPI::getObjDir()
 {
     return mGraphicsWidget->getOwnFolder().toLocalFile() + "/" + objectsPath + "/";
@@ -465,16 +474,22 @@ void UBWidgetUniboardAPI::sendFileMetadata(QString metaData)
     UBApplication::boardController->displayMetaData(qmMetaDatas);
 }
 
-void UBWidgetUniboardAPI::enableDropOnWidget(bool enable)
+void UBWidgetUniboardAPI::enableDropOnWidget(bool enable, bool processFileDrop)
 {
     if (mGraphicsWidget)
     {
         mGraphicsWidget->setAcceptDrops(enable);
     }
+
+    mProcessFileDrop = processFileDrop;
 }
 
-void UBWidgetUniboardAPI::ProcessDropEvent(QGraphicsSceneDragDropEvent *event)
+bool UBWidgetUniboardAPI::ProcessDropEvent(QGraphicsSceneDragDropEvent *event)
 {
+    if (!mProcessFileDrop) {
+        return false;
+    }
+
     const QMimeData *pMimeData = event->mimeData();
 
     QString destFileName;
@@ -529,7 +544,7 @@ void UBWidgetUniboardAPI::ProcessDropEvent(QGraphicsSceneDragDropEvent *event)
 
                 if (!UBFileSystemUtils::copyFile(fileName, destFileName)) {
                     qDebug() << "can't copy from" << fileName << "to" << destFileName;
-                    return;
+                    return false;
                 }
                 downloaded = true;
 
@@ -541,6 +556,8 @@ void UBWidgetUniboardAPI::ProcessDropEvent(QGraphicsSceneDragDropEvent *event)
     dropMimeData->setData(tMimeText, mimeText.toLatin1());
 
     event->setMimeData(dropMimeData);
+    setDropData(mimeText);
+    return true;
 }
 
 void UBWidgetUniboardAPI::onDownloadFinished(bool pSuccess, sDownloadFileDesc desc, QByteArray pData)

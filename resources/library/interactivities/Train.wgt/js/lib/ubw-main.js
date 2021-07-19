@@ -111,7 +111,7 @@ function initAfterI18nMessagesLoaded(reload, templates, callbacks) {
 }
 
 function init(reload, templates, callbacks){
-    var locale = window.sankore ? sankore.locale() : "";
+    var locale = window.sankore ? sankore.lang : "";
     $.i18n.properties({
         name: 'Messages', 
         path: 'i18n/',

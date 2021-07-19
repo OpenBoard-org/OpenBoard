@@ -104,7 +104,7 @@ function initAfterI18nMessagesLoaded(reload, templates, callbacks) {
 }
 
 function init(reload, templates, callbacks){
-    var locale = window.sankore ? sankore.locale() : "";
+    var locale = window.sankore ? sankore.lang : "";
     $.i18n.properties({
         name: 'Messages', 
         path: 'i18n/',
@@ -236,7 +236,7 @@ var App = (function() {
                                     }
                                     return doc;
                                 }
-                                var file = stringToXML(e.dataTransfer.getData("text/plain"));
+                                var file = stringToXML(e.dataTransfer.getData("text/plain") || window.sankore.dropData);
                                 callback({
                                     src: $(file).find("path:eq(0)").text()
                                 });

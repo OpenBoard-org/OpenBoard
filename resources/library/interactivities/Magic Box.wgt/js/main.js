@@ -34,7 +34,7 @@ function cards(app, index) {
 
     /*var sample1 = "", sample2 = "";
     
-    if(!window.sankore || !window.sankore.preference("trans","")){
+    if(!window.sankore || !window.await sankore.async.preference("trans","")){
         if(index == 1){
             sample1 = "<img src='images/coq.png' class='uploadPic' title='coq.png' alt='coq.png'/>";
             sample2 = "<img src='images/poule.png' class='uploadPic' title='poule.png' alt='poule.png'/>";
@@ -50,7 +50,7 @@ function cards(app, index) {
     var usePicture = parameters.value("#UsePicture"+index+"before") === "true"
     || parameters.value("#UsePicture"+index+"before") == true;
     
-    //if(!window.sankore || !window.sankore.preference("trans",""))
+    //if(!window.sankore || !window.await sankore.async.preference("trans",""))
         //usePicture = true;
     
     if(usePicture) {
@@ -65,7 +65,7 @@ function cards(app, index) {
     usePicture = parameters.value("#UsePicture"+index+"after") === "true"
     || parameters.value("#UsePicture"+index+"after") == true;
 
-    //if(!window.sankore || !window.sankore.preference("trans",""))
+    //if(!window.sankore || !window.await sankore.async.preference("trans",""))
         //usePicture = true;
 	
     if(usePicture) {
@@ -225,8 +225,8 @@ $(document).ready(function(){
     }, callbacks);
     
     if (window.widget) {
-        window.widget.onleave = function(){
+        window.widget.onleave.connect(() => {
             sankore.setPreference("trans", "true");
-        }
+        });
     }
 });

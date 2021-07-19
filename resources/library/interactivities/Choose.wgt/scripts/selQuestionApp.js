@@ -70,7 +70,7 @@ var currentQstId = "";
 var lang = ""; //locale language
 var begin = true;
 
-function init(){
+async function init(){
 
     //variables
     var toggleFlag = false;
@@ -103,8 +103,8 @@ function init(){
     
     //import saved data
     if(window.sankore){
-        if(sankore.preference("qstArrayData","") && sankore.preference("qstArrayData","") != "[]")
-            questionArray = jQuery.parseJSON(sankore.preference("qstArrayData",""));         
+        if(await sankore.async.preference("qstArrayData","") && await sankore.async.preference("qstArrayData","") != "[]")
+            questionArray = jQuery.parseJSON(await sankore.async.preference("qstArrayData",""));         
         else
             questionArray = jQuery.parseJSON('[{"text":"' + sankoreLang.example_question + '","type":"1","id":538,"rightAns":"2","answers":[{"id":953,"text":"' + sankoreLang.answer + ' 1.","value":1,"state":"","was":false},{"id":526,"text":"' + sankoreLang.answer + ' 2.","value":2,"state":"","was":false},{"id":473,"text":"' + sankoreLang.answer + ' 3.","value":3,"state":"","was":false}]}]');
         
@@ -127,16 +127,16 @@ function init(){
     
     //saving widget data into sankore object for a correct import
     if (window.widget) {
-        window.widget.onleave = function(){
+        window.widget.onleave.connect(() => {
             sankore.setPreference("qstArrayData", JSON.stringify(questionArray));
             sankore.setPreference("choisir_style", $("#style_select").find("option:selected").val());
-        }
+        });
     }
     
     if(window.sankore)
-        if(sankore.preference("choisir_style","")){
-            changeStyle(sankore.preference("choisir_style",""));
-            $("#style_select").val(sankore.preference("choisir_style",""));
+        if(await sankore.async.preference("choisir_style","")){
+            changeStyle(await sankore.async.preference("choisir_style",""));
+            $("#style_select").val(await sankore.async.preference("choisir_style",""));
         } else
             changeStyle("3")
 

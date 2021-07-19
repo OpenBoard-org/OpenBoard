@@ -85,8 +85,9 @@ class UBWidgetUniboardAPI : public QObject
 
     Q_PROPERTY(QObject* datastore READ datastore SCRIPTABLE true CONSTANT)
 
-    public:
+    Q_PROPERTY(QString dropData MEMBER mDropData WRITE setDropData NOTIFY dropDataChanged SCRIPTABLE true)
 
+public:
         UBWidgetUniboardAPI(UBGraphicsScene *pScene, UBGraphicsWidgetItem *widget = 0);
         ~UBWidgetUniboardAPI();
 
@@ -252,14 +253,17 @@ class UBWidgetUniboardAPI : public QObject
         /**
          * If the widget support a the drop of an object it will notify sankore about this.
          */
-        void enableDropOnWidget (bool enable = true);
+        void enableDropOnWidget (bool enable = true, bool processFileDrop = false);
 
         /**
          * When an object is dropped on a widget, this one send us the informations to download it locally.
          * this method download the object on the widget directory and return the path of the downloaded object
          */
-        void ProcessDropEvent(QGraphicsSceneDragDropEvent *);
+        bool ProcessDropEvent(QGraphicsSceneDragDropEvent *);
         bool isDropableData(const QMimeData *pMimeData) const;
+
+signals:
+        void dropDataChanged(const QString& data);
 
 private slots:
         void onDownloadFinished(bool pSuccess, sDownloadFileDesc desc, QByteArray pData);
@@ -268,9 +272,6 @@ private:
         inline void registerIDWidget(int id){webDownloadIds.append(id);}
         inline bool takeIDWidget(int id);
 
-
-    private:
-
         QString uuid() const;
 
         QString lang() const;
@@ -278,6 +279,9 @@ private:
         int pageCount() const;
 
         int currentPageNumber() const;
+
+        void setDropData(const QString& data);
+
         QString getObjDir();
         QString createMimeText(bool downloaded, const QString &mimeType, const QString &fileName);
         bool supportedTypeHeader(const QString &) const;
@@ -293,6 +297,8 @@ private:
 
         UBDatastoreAPI* mDatastoreAPI;
         QList<int> webDownloadIds;
+        bool mProcessFileDrop;
+        QString mDropData;
 };
 
 

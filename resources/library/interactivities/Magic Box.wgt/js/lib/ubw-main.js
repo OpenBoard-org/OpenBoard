@@ -16,7 +16,7 @@ function log(object) {
     console.log(object);
 }
 
-function initAfterI18nMessagesLoaded(reload, templates, callbacks) {
+async function initAfterI18nMessagesLoaded(reload, templates, callbacks) {
     document.title = fr.njin.i18n.document.title;
 	
     var ubwidget = $("#ubwidget");
@@ -41,7 +41,7 @@ function initAfterI18nMessagesLoaded(reload, templates, callbacks) {
             value: reload
         }
     });
-    if(!window.sankore.preference("trans","")){
+//    if(!await window.sankore.async.preference("trans","")){
         app.parameters.value("#Picture0before", JSON.stringify({
             alt: "coq.png", 
             src: "images/coq.png", 
@@ -66,7 +66,7 @@ function initAfterI18nMessagesLoaded(reload, templates, callbacks) {
         app.parameters.value("#UsePicture0after", true)
         app.parameters.value("#UsePicture1before", true)
         app.parameters.value("#UsePicture1after", true)
-    }
+//    }
     app.init();
     app.onEdit = false;	
     //e("#Picture"+key, JSON.stringify(f));
@@ -131,7 +131,7 @@ function initAfterI18nMessagesLoaded(reload, templates, callbacks) {
 }
 
 function init(reload, templates, callbacks){
-    var locale = window.sankore ? sankore.locale() : "";
+    var locale = window.sankore ? sankore.lang : "";
     $.i18n.properties({
         name: 'Messages', 
         path: 'i18n/',

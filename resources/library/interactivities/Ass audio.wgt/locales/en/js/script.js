@@ -32,7 +32,7 @@ var sankoreLang = {
 };
 
 //main function
-function start(){
+async function start(){
 
     $("#wgt_display").text(sankoreLang.display);
     $("#wgt_edit").text(sankoreLang.edit);
@@ -47,15 +47,15 @@ function start(){
     $("div.inline label").html(sankoreLang.theme + tmpl)
     
     if(window.sankore){
-        if(sankore.preference("associer_sound","")){
-            var data = jQuery.parseJSON(sankore.preference("associer_sound",""));
+        if(await sankore.async.preference("associer_sound","")){
+            var data = jQuery.parseJSON(await sankore.async.preference("associer_sound",""));
             importData(data);
         }
         else 
             showExample();
-        if(sankore.preference("as_snd_style","")){
-            changeStyle(sankore.preference("as_snd_style",""));
-            $("#style_select").val(sankore.preference("as_snd_style",""));
+        if(await sankore.async.preference("as_snd_style","")){
+            changeStyle(await sankore.async.preference("as_snd_style",""));
+            $("#style_select").val(await sankore.async.preference("as_snd_style",""));
         } else
             changeStyle("3")
     } 
@@ -64,10 +64,10 @@ function start(){
     
     //events
     if (window.widget) {
-        window.widget.onleave = function(){
+        window.widget.onleave.connect(() => {
             exportData();
             sankore.setPreference("as_snd_style", $("#style_select").find("option:selected").val());
-        }
+        });
     }
     
     $("#wgt_help").click(function(){
@@ -214,7 +214,7 @@ function start(){
         } else {            
             if(!$(this).hasClass("selected")){
                 if(window.sankore)
-                    sankore.enableDropOnWidget(true);
+                    sankore.enableDropOnWidget(true, true);
                 $(this).addClass("selected");
                 $("#wgt_display").removeClass("selected");
                 $("#parameters").css("display", "block");
@@ -844,7 +844,7 @@ function onDropTarget(obj, event) {
     $(obj).find("img").remove();
     if (event.dataTransfer) {
         var format = "text/plain";
-        var textData = event.dataTransfer.getData(format);
+        var textData = event.dataTransfer.getData(format) || window.sankore.dropData;
         if (!textData) {
             alert(":(");
         }
@@ -879,9 +879,10 @@ function onDropTarget(obj, event) {
 function onDropAudio(obj, event) {
     if (event.dataTransfer) {
         var format = "text/plain";
-        var textData = event.dataTransfer.getData(format);
+        var textData = event.dataTransfer.getData(format) || window.sankore.dropData;
         if (!textData) {
             alert(":(");
+            return false;
         }
         textData = stringToXML(textData);
         var tmp = textData.getElementsByTagName("path")[0].firstChild.textContent;
@@ -909,10 +910,10 @@ function onDropAudio(obj, event) {
 }
 
 if (window.widget) {
-    window.widget.onremove = function(){
+    window.widget.onremove.connect(() => {
         $("audio").each(function(){
             this.pause();
             $(this).parent().find(":first-child").removeClass("stop").addClass("play");
         });
-    }
+    });
 }

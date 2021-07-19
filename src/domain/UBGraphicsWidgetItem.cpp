@@ -272,10 +272,11 @@ void UBGraphicsWidgetItem::removeScript()
 {
 }
 
-void UBGraphicsWidgetItem::processDropEvent(QGraphicsSceneDragDropEvent *event)
+bool UBGraphicsWidgetItem::processDropEvent(QGraphicsSceneDragDropEvent *event)
 {
-    mUniboardAPI->ProcessDropEvent(event);
+    return mUniboardAPI->ProcessDropEvent(event);
 }
+
 bool UBGraphicsWidgetItem::isDropableData(const QMimeData *data) const
 {
     return mUniboardAPI->isDropableData(data);
@@ -551,8 +552,47 @@ bool UBGraphicsWidgetItem::event(QEvent *event)
 
 void UBGraphicsWidgetItem::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
-    processDropEvent(event);
-    QGraphicsProxyWidget::dropEvent(event);
+    if (processDropEvent(event))
+    {
+        /*
+         * NOTE: With QWebEngine, the drop event arriving at the widget is always
+         * the original event, not the one modified by processDropEvent. The
+         * dropData is therefore forwarded to the widget using a property of the
+         * widget API.
+         * Anyway we need to send the event to the QGraphicsProxyWidget, else it
+         * would not arrive at the widget at all.
+         * In order to be sure that the property change has arrived at the widget,
+         * we must delay sending the drop event, else it could arrive at the widget
+         * before the dropData Property is set.
+         * And to send the delayed event, we have to copy it, as the original event
+         * will be deleted immediately after returning from this method.
+         */
+
+        // delay delivery of dropEvent to allow property to propagate to widget
+        // create a copy as the original event will be deleted
+        QGraphicsSceneDragDropEvent* copy = new QGraphicsSceneDragDropEvent();
+        copy->setPos(event->pos());
+        copy->setSource(event->source());
+        copy->setButtons(event->buttons());
+        copy->setMimeData(event->mimeData());
+        copy->setScenePos(event->scenePos());
+        copy->setModifiers(event->modifiers());
+        copy->setScreenPos(event->screenPos());
+        copy->setDropAction(event->dropAction());
+        copy->setProposedAction(event->proposedAction());
+        copy->setPossibleActions(event->possibleActions());
+        copy->setWidget(event->widget());
+
+        // deliver the event after 100ms
+        QTimer::singleShot(100, this, [this,copy](){
+            QGraphicsProxyWidget::dropEvent(copy);
+            delete copy;
+        });
+    }
+    else
+    {
+        QGraphicsProxyWidget::dropEvent(event);
+    }
 }
 
 void UBGraphicsWidgetItem::mousePressEvent(QGraphicsSceneMouseEvent *event)

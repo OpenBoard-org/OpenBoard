@@ -100,7 +100,7 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         void runScript(const QString& script);
         virtual void removeScript();
 
-        void processDropEvent(QGraphicsSceneDragDropEvent *event);
+        bool processDropEvent(QGraphicsSceneDragDropEvent *event);
         bool isDropableData(const QMimeData *data) const;
 
         virtual QUrl getOwnFolder() const;
