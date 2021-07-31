@@ -160,7 +160,7 @@
         			sankore.setPreference("osm", JSON.stringify({center: map.getCenter(), zoom: map.getZoom()})); 
 			}
 
-			window.onload = function() {
+                        window.onload = async function() {
 				map = new OpenLayers.Map({
 					div: "map"
 				});
@@ -213,16 +213,16 @@
 
 				/* importing state from Sankoré preferences */
 				if (window.sankore) {
-			        if (sankore.preference("osm","")) {
-			            importData(JSON.parse(sankore.preference("osm","")));
+                                if (await sankore.async.preference("osm","")) {
+                                    importData(JSON.parse(await sankore.async.preference("osm","")));
 			        }
    				}
 
    				/* exporting state when receiving a leave event */
    				if (window.widget) {
-			        window.widget.onleave = function() {
+                                window.widget.onleave.connect(() => {
 			            exportData();
-			        }
+                                });
 			    }
 			};
 			-->

@@ -115,16 +115,16 @@ async function init(){
     }
     
     if (window.widget) {
-        window.widget.onremove = function(){
+        window.widget.onremove.connect(() => {
             loadWindow.empty();
-        }
+        });
     }
 
-    window.onresize = function(event) {
+    window.onresize.connect((event) => {
         var child = $(loadWindow).children()[0];
         if (child) {
             child.width = document.documentElement.clientWidth;
             child.height = document.documentElement.clientHeight;
         }
-    };
+    });
 }

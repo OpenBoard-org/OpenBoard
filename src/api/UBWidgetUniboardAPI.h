@@ -51,12 +51,12 @@ class UBWidgetUniboardAPI : public QObject
     /**
      * The number of pages in the current document
      */
-    Q_PROPERTY(int pageCount READ pageCount SCRIPTABLE true CONSTANT)
+    int pageCount() const;
 
     /**
      * The page number of the current page
      */
-    Q_PROPERTY(int currentPageNumber READ currentPageNumber SCRIPTABLE true CONSTANT)
+    int currentPageNumber() const;
 
     /**
      * instance UUID, return a unique identifier for the widget, this value is guaranted to be unique
@@ -275,10 +275,6 @@ private:
         QString uuid() const;
 
         QString lang() const;
-
-        int pageCount() const;
-
-        int currentPageNumber() const;
 
         void setDropData(const QString& data);
 

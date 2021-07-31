@@ -18,7 +18,7 @@
 
             if(window.sankore){
                 try{
-                    lang = sankore.locale().substr(0,2);
+                    lang = sankore.lang.substr(0,2);
                     sankoreLang[lang].welcome;
                 } catch(e){
                     lang = "en";
@@ -26,7 +26,7 @@
             } else 
                 lang = "en";
             
-            $(document).ready(function(){
+            $(document).ready(async function(){
 
                 $("#reset-btn").hide();
 
@@ -36,7 +36,7 @@
                 $('iframe').width($(window).width()-24)
                 .height($(window).height()-46);
                 if(window.sankore){
-                    var html = window.sankore.preference("iHtml", sankoreLang[lang].welcome);
+                    var html = await window.sankore.async.preference("iHtml", sankoreLang[lang].welcome);
                     $("#markItUp").val(html);
                 };
 

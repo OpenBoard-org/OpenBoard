@@ -35,7 +35,7 @@
                 
             if(window.sankore){
                 try{
-                    lang = sankore.locale().substr(0,2);
+                    lang = sankore.lang.substr(0,2);
                     sankoreLang[lang].show;
                 } catch(e){
                     lang = "en";
@@ -43,9 +43,9 @@
             } else 
                 lang = "en";
 		
-            function initialize() {
+            async function initialize() {
                 if(window.sankore){
-                    oembedUrl = window.sankore.preference("oembedUrl", "");
+                    oembedUrl = await window.sankore.async.preference("oembedUrl", "");
                 }
 			
                 window.resizeTo(426, 630);
@@ -185,9 +185,9 @@
                 };
 			
                 if (window.widget) {
-                    window.widget.onremove = function(){
+                    window.widget.onremove.connect(() => {
                         $("#embeded-content").empty();
-                    }
+                    });
                 }
                 $("#search-button").html(sankoreLang[lang].show);
                 initialize();

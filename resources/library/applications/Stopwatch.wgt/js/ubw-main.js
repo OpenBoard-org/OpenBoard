@@ -124,11 +124,11 @@ async function init(){
     });
 			
     if (window.widget) {
-        window.widget.onremove = function(){
+        window.widget.onremove.connect(() => {
             if(play){
                 $("#pausebutton").trigger("click");
             }
-        };
+        });
     }
 					
     pause.toggle(

@@ -45,10 +45,10 @@ function saveOptions(){
 	}
 }
 
-function loadOptions(){
+async function loadOptions(){
 	var state;
 	if(window.sankore){
-		state = sankore.preference("state", null);
+        state = await sankore.async.preference("state", null);
 	}
 	else if(navigator.cookieEnabled){
 		state = getCookie("state");
