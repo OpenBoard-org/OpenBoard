@@ -2468,6 +2468,12 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
             UBFileSystemUtils::copyDir(widgetRootDir, path);
         }
 
+        // save snapshot of frozen widget
+        if (item->isFrozen()) {
+            QString pixPath = mDocumentPath + "/" + UBPersistenceManager::widgetDirectory + "/" + uuid + ".png";
+            item->snapshot().save(pixPath);
+        }
+
         widgetRootUrl = widgetTargetDir;
     }
 
@@ -2585,14 +2591,12 @@ UBGraphicsW3CWidgetItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsW3CWidge
     QString pixPath = mDocumentPath + "/" + UBPersistenceManager::widgetDirectory + "/" + uuid.toString() + ".png";
 
     QPixmap snapshot(pixPath);
-    if (!snapshot.isNull())
-        widgetItem->setSnapshot(snapshot);
 
     QStringRef frozen = mXmlReader.attributes().value(mNamespaceUri, "frozen");
 
     if (!frozen.isNull() && frozen.toString() == xmlTrue && !snapshot.isNull())
     {
-        widgetItem->freeze();
+        widgetItem->setSnapshot(snapshot);
     }
 
     graphicsItemFromSvg(widgetItem);

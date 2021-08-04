@@ -71,7 +71,6 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     , mCanBeTool(0)
     , mWidgetUrl(pWidgetUrl)
     , mIsFrozen(false)
-    , mIsTakingSnapshot(false)
     , mShouldMoveWidget(false)
     , mInspectorWindow(nullptr)
     , mUniboardAPI(nullptr)
@@ -339,32 +338,28 @@ bool UBGraphicsWidgetItem::isFrozen() const
     return mIsFrozen;
 }
 
-QPixmap UBGraphicsWidgetItem::snapshot() const
+const QPixmap &UBGraphicsWidgetItem::snapshot() const
 {
     return mSnapshot;
 }
 
-QPixmap UBGraphicsWidgetItem::takeSnapshot()
+const QPixmap &UBGraphicsWidgetItem::takeSnapshot()
 {
-    mIsTakingSnapshot = true;
-
     QPixmap pixmap(size().toSize());
     pixmap.fill(Qt::transparent);
     QPainter painter(&pixmap);
 
-    QStyleOptionGraphicsItem options;
-    paint(&painter, &options);
-
-    mIsTakingSnapshot = false;
+    mWebEngineView->render(&painter);
 
     mSnapshot = pixmap;
 
-    return pixmap;
+    return mSnapshot;
 }
 
 void UBGraphicsWidgetItem::setSnapshot(const QPixmap& pix)
 {
     mSnapshot = pix;
+    mIsFrozen = true;
 }
 
 UBGraphicsScene* UBGraphicsWidgetItem::scene()
@@ -481,14 +476,14 @@ void UBGraphicsWidgetItem::activeSceneChanged()
 
 void UBGraphicsWidgetItem::freeze()
 {
-    QPixmap pix = takeSnapshot();
+    takeSnapshot();
     mIsFrozen = true;
-    setSnapshot(pix);
 }
 
 void UBGraphicsWidgetItem::unFreeze()
 {
     mIsFrozen = false;
+    mSnapshot = QPixmap();
 }
 
 void UBGraphicsWidgetItem::inspectPage()
@@ -650,7 +645,14 @@ void UBGraphicsWidgetItem::injectInlineJavaScript()
 
 void UBGraphicsWidgetItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    QGraphicsProxyWidget::paint(painter, option, widget);
+    if (isFrozen())
+    {
+        painter->drawPixmap(0, 0, snapshot());
+    }
+    else
+    {
+        QGraphicsProxyWidget::paint(painter, option, widget);
+    }
 
     if (!mInitialLoadDone) {
         QString message;
@@ -703,9 +705,6 @@ void UBGraphicsWidgetItem::mainFrameLoadFinished (bool ok)
 
     // repaint when initial rendering is done
     update();
-
-    if (mInitialLoadDone && scene() && scene()->renderingContext() == UBGraphicsScene::Screen)
-        takeSnapshot();
 }
 
 void UBGraphicsWidgetItem::wheelEvent(QGraphicsSceneWheelEvent *event)

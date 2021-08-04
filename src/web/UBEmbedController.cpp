@@ -43,6 +43,7 @@
 #include "network/UBNetworkAccessManager.h"
 
 #include "domain/UBGraphicsScene.h"
+#include "domain/UBGraphicsWidgetItem.h"
 
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
@@ -225,14 +226,11 @@ void UBEmbedController::createWidget()
         generateConfig(800, 600, widgetDir.path());
     }
 
-    //generateDefaultPng(width, height, widgetDir.path());
-
     importWidgetInLibrary(widgetDir);
 
     UBFileSystemUtils::deleteDir(tempDir);
 
-    QString freezedWidgetPath = UBPlatformUtils::applicationResourcesDirectory() + "/etc/freezedWidgetWrapper.html";
-    mTrapFlashUi->webView->load(QUrl::fromLocalFile(freezedWidgetPath));
+    mTrapFlashUi->webView->load(QUrl(UBGraphicsW3CWidgetItem::freezedWidgetFilePath()));
 
     mTrapDialog->hide();
 }

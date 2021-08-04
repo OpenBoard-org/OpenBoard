@@ -120,9 +120,9 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         bool resizable() const;
         bool isFrozen() const;
 
-        QPixmap snapshot() const;
+        const QPixmap& snapshot() const;
         void setSnapshot(const QPixmap& pix);
-        QPixmap takeSnapshot();
+        const QPixmap& takeSnapshot();
 
         virtual UBItem* deepCopy() const = 0;
         virtual UBGraphicsScene* scene();
@@ -185,7 +185,6 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
 
     private:
         bool mIsFrozen;
-        bool mIsTakingSnapshot;
         bool mShouldMoveWidget;
         QWebChannel* mWebChannel;
         QMainWindow* mInspectorWindow;
