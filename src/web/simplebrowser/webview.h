@@ -80,6 +80,7 @@ signals:
 
 private:
     void createWebActionTrigger(QWebEnginePage *page, QWebEnginePage::WebAction);
+    void openExternalBrowser(const QUrl& url);
     BrowserWindow *browserWindow();
 
 private:

@@ -112,6 +112,7 @@ void BrowserWindow::init()
 
     connect(m_tabWidget, &TabWidget::titleChanged, this, &BrowserWindow::handleWebViewTitleChanged);
     connect(m_tabWidget, &TabWidget::linkHovered, [this](const QString& url) {
+        m_statusBar->setVisible(!url.isEmpty());
         m_statusBar->showMessage(url);
     });
     connect(m_tabWidget, &TabWidget::loadProgress, this, &BrowserWindow::handleWebViewLoadProgress);
@@ -255,7 +256,7 @@ void BrowserWindow::resizeEvent(QResizeEvent *event)
 
     QRect geo = geometry();
     geo.moveTopLeft(parentWidget()->mapToGlobal(geo.topLeft()));
-    QRect statusGeo(geo.left(), geo.bottom() - 20, 400, 20);
+    QRect statusGeo(geo.left(), geo.bottom() - 20, geo.width() / 3, 20);
     m_statusBar->setGeometry(statusGeo);
 }
 

@@ -79,7 +79,11 @@ WebView::WebView(QWidget *parent)
         emit favIconChanged(favIcon());
     });
     connect(this, &QWebEngineView::urlChanged, [this](const QUrl& url){
-        browserWindow()->historyManager()->addHistoryEntry(url);
+        BrowserWindow* browser = browserWindow();
+
+        if (browser) {
+            browser->historyManager()->addHistoryEntry(url);
+        }
     });
 
     connect(this, &QWebEngineView::renderProcessTerminated,
@@ -129,6 +133,15 @@ void WebView::createWebActionTrigger(QWebEnginePage *page, QWebEnginePage::WebAc
     });
 }
 
+void WebView::openExternalBrowser(const QUrl &url)
+{
+    // open url in system default browser
+    QDesktopServices::openUrl(url);
+
+    // delete temporary view
+    parent()->deleteLater();
+}
+
 BrowserWindow *WebView::browserWindow()
 {
     QWidget *w = this;
@@ -174,7 +187,13 @@ QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)
         return nullptr;
 
     switch (type) {
-    case QWebEnginePage::WebBrowserWindow:
+    case QWebEnginePage::WebBrowserWindow: {
+        // create a hidden, temporary view to catch the urlChanged signal
+        WebPopupWindow *popup = new WebPopupWindow(page()->profile());
+        popup->hide();
+        connect(popup->view(), &QWebEngineView::urlChanged, popup->view(), &WebView::openExternalBrowser);
+        return popup->view();
+    }
     case QWebEnginePage::WebBrowserTab: {
         return browser->tabWidget()->createTab();
     }
