@@ -705,6 +705,11 @@ void UBGraphicsWidgetItem::mainFrameLoadFinished (bool ok)
 
     // repaint when initial rendering is done
     update();
+
+    // Workaround: slightly change size to make sure QWebEngineView knows size and position
+    QSize actualSize = size().toSize();
+    mWebEngineView->resize(actualSize - QSize(1,1));
+    mWebEngineView->resize(actualSize);
 }
 
 void UBGraphicsWidgetItem::wheelEvent(QGraphicsSceneWheelEvent *event)
@@ -723,6 +728,11 @@ QVariant UBGraphicsWidgetItem::itemChange(GraphicsItemChange change, const QVari
             scene()->setActiveWindow(this);
         else if (scene()->activeWindow() == this)
             scene()->setActiveWindow(nullptr);
+    } else if (change == QGraphicsItem::ItemTransformHasChanged) {
+        // Workaround: slightly change size to make sure QWebEngineView knows size and position
+        QSize actualSize = size().toSize();
+        mWebEngineView->resize(actualSize - QSize(1,1));
+        mWebEngineView->resize(actualSize);
     }
 
     QVariant newValue = Delegate()->itemChange(change, value);
