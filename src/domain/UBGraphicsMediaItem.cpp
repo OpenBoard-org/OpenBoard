@@ -427,6 +427,7 @@ void UBGraphicsMediaItem::mediaError(QMediaPlayer::Error errorCode)
     if (!mErrorString.isEmpty() ) {
         UBApplication::showMessage(mErrorString);
         qDebug() << mErrorString;
+        mErrorString.clear();
     }
 }
 
