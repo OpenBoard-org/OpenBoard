@@ -1780,7 +1780,16 @@ void UBDocumentController::createNewDocument()
 
 
     QDateTime now = QDateTime::currentDateTime();
-    QString documentName = docModel->adjustNameForParentIndex(now.toString(Qt::SystemLocaleShortDate), selectedIndex.parent());
+    QString documentName = "";
+    if (docModel->isCatalog(selectedIndex))
+    {
+        documentName = docModel->adjustNameForParentIndex(now.toString(Qt::SystemLocaleShortDate), selectedIndex);
+    }
+    else
+    {
+        documentName = docModel->adjustNameForParentIndex(now.toString(Qt::SystemLocaleShortDate), selectedIndex.parent());
+    }
+
 
     UBDocumentProxy *document = pManager->createDocument(groupName, documentName);
 
