@@ -166,7 +166,6 @@ class UBPersistenceManager : public QObject
         void documentWillBeDeleted(UBDocumentProxy* pDocumentProxy);
 
         void documentSceneCreated(UBDocumentProxy* pDocumentProxy, int pIndex);
-        void documentSceneWillBeDeleted(UBDocumentProxy* pDocumentProxy, int pIndex);
 
 private:
         int sceneCount(const UBDocumentProxy* pDocumentProxy);

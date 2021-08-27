@@ -622,11 +622,6 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
     if (compactedIndexes.size() == 0)
         return;
 
-    foreach(int index, compactedIndexes)
-    {
-        emit documentSceneWillBeDeleted(proxy, index);
-    }
-
     QString sourceName = proxy->metaData(UBSettings::documentName).toString();
     UBDocumentProxy *trashDocProxy = createDocument(UBSettings::trashedDocumentGroupNamePrefix/* + sourceGroupName*/, sourceName, false);
 
