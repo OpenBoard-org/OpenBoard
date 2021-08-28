@@ -18,7 +18,7 @@ html, body {
 .theme-pad #ubwidget {
 	border-radius: 40px;
 	border-width: 52px;
-	
+
 	-webkit-border-image: url("images/pad-bd.png") 52 repeat;
 	   -moz-border-image: url("images/pad-bd.png") 52 repeat;
 			border-image: url("images/pad-bd.png") 52 repeat;
@@ -27,7 +27,7 @@ html, body {
 .theme-slate #ubwidget {
 	border-radius: 44px;
 	border-width: 52px;
-	
+
 	-webkit-border-image: url("images/slate-bd.png") 52 repeat;
 	   -moz-border-image: url("images/slate-bd.png") 52 repeat;
 			border-image: url("images/slate-bd.png") 52 repeat;
@@ -45,10 +45,10 @@ html, body {
 
 .theme-slate #ubwidget > .wrapper, .theme-pad #ubwidget > .wrapper {
 	position: absolute;
-	top: -49px;
+	/* top: -49px;
 	bottom: -5px;
 	left: -5px;
-	right: -5px;
+	right: -5px; */
 	overflow: hidden;
 }
 
@@ -99,7 +99,7 @@ html, body {
 	padding: none;
 	outline: none;
 	background: none;
-	
+
 	cursor: pointer;
 	padding-left: 34px;
 	margin-left: 10px;
@@ -112,7 +112,7 @@ html, body {
 }
 
 #toolbar button[role='edit'] {
-	background: url("images/toolbar-edit.png") left top no-repeat;	
+	background: url("images/toolbar-edit.png") left top no-repeat;
 }
 
 #toolbar button[role='view'] {
@@ -122,11 +122,11 @@ html, body {
 }
 
 #toolbar button[role='reload'] {
-	background: url("images/toolbar-reload.png") left top no-repeat;	
+	background: url("images/toolbar-reload.png") left top no-repeat;
 }
 
 #toolbar button[role='help'] {
-	background: url("images/toolbar-help.png") left top no-repeat;	
+	background: url("images/toolbar-help.png") left top no-repeat;
 	display: none;
 }
 
@@ -202,7 +202,7 @@ html, body {
 	display:none;
 	padding: 10px 20px;
 	background: url("images/parameters-bg.png");
-	
+
 	-webkit-border-radius: 4px 4px 0 0;
 	   -moz-border-radius: 4px 4px 0 0;
 		-mz-border-radius: 4px 4px 0 0;
@@ -231,14 +231,14 @@ html, body {
 	height: 26px;
 	border: 1px solid #BBB;
 	background-color: #FFF;
-	
+
 	padding: 0 4px;
-	
+
 	-webkit-border-radius: 4px;
 	   -moz-border-radius: 4px;
 	    -ms-border-radius: 4px;
 			border-radius: 4px;
-	
+
 	-webkit-box-shadow: 0 1px 0 #FFF;
 	   -moz-box-shadow: 0 1px 0 #FFF;
 	    -ms-box-shadow: 0 1px 0 #FFF;

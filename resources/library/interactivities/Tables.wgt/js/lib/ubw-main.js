@@ -16,20 +16,29 @@ function log(object) {
 	console.log(object);
 }
 
-function initAfterI18nMessagesLoaded(reload, templates, callbacks) {
+async function initAfterI18nMessagesLoaded(reload, templates, callbacks) {
 	document.title = fr.njin.i18n.document.title;
-	
+
 	var ubwidget = $("#ubwidget");
-	
+
+	function createDelegate() {
+			if (window.sankore.async) {
+					return Object.create(SankoreAsyncDelegate);
+			}
+			else {
+					return window.sankore || Object.create(ParametersDelegate);
+			}
+	}
+
 	var parameters = Object.create(Parameters,{
-		container: {
-			value: ubwidget
-		},
-		delegate: {
-			value: window.sankore || Object.create(ParametersDelegate)
-		}
+			container: {
+					value: ubwidget
+			},
+			delegate: {
+					value: createDelegate()
+			}
 	});
-	
+
 	var app = Object.create(App, {
 		container: {
 			value: ubwidget
@@ -42,20 +51,34 @@ function initAfterI18nMessagesLoaded(reload, templates, callbacks) {
 		}
 	});
 
+	async function fillParameters() {
+			var keys = await window.sankore.async.preferenceKeys();
+			for (var i = 0; i < keys.length; i++) {
+					var key = keys[i];
+					var value = await window.sankore.async.preference(key);
+					log("Init parameter value ["+value+"] for key : ["+key+"]");
+					app.parameters.delegate[key] = value;
+			}
+	}
+
+	if (window.sankore.async) {
+			await fillParameters();
+	}
+
 	app.init();
 	app.onEdit = false;
-	
+
 	if(templates.toolbar) {
 		$("#toolbar").html(Mustache.render(templates.toolbar, window));
 	}
 	if(templates.parameters) {
 		$("#parameters").html(Mustache.render(templates.parameters, window));
 	}
-	
+
 	if(callbacks.onTemplatesLoaded && typeof callbacks.onTemplatesLoaded === 'function') {
 		callbacks.onTemplatesLoaded(app);
 	}
-	
+
 	log("Update setting views with stored parameters");
 	$("#parameters (input|select)[role=parameter]").each(function(i, input) {
 		(function(input){
@@ -73,7 +96,7 @@ function initAfterI18nMessagesLoaded(reload, templates, callbacks) {
 			});
 		})(input);
 	});
-	
+
 	log("Toobar Initialisation");
 	$("button[role=edit]").click(function(){
 		app.onEdit = true;
@@ -83,7 +106,7 @@ function initAfterI18nMessagesLoaded(reload, templates, callbacks) {
 		}
 	});
 	$("button[role=view]").click(function(){
-		app.onEdit = false;		
+		app.onEdit = false;
 		$(document.body).removeClass("onEdit");
 		if(callbacks.onView && typeof callbacks.onView === 'function') {
 			callbacks.onView(app);
@@ -95,7 +118,7 @@ function initAfterI18nMessagesLoaded(reload, templates, callbacks) {
 	$("button[role=help]").click(function(){
 		$("body").toggleClass("showHelp");
 	});
-	
+
 	$("select[name='themes']").change(function() {
 		$("body").get(0).className = $("body")[0].className.replace(/\btheme-[^\s]*\b/gi, '');
 		$("body").addClass("theme-"+$(this).val());
@@ -106,10 +129,10 @@ function initAfterI18nMessagesLoaded(reload, templates, callbacks) {
 function init(reload, templates, callbacks){
 	var locale = window.sankore ? sankore.lang : "";
 	$.i18n.properties({
-	  	name: 'Messages', 
+	  	name: 'Messages',
 		path: 'i18n/',
 		language: locale,
-	  	callback: function(){ 
+	  	callback: function(){
 			initAfterI18nMessagesLoaded(reload, templates, callbacks);
 		}
 	});
@@ -133,7 +156,7 @@ var Parameters = (function(){
 				else {
 					log("Set parameter value ["+value+"] for key : ["+key+"]");
 					this.delegate.setPreference(key, value);
-					this.container.trigger("preferenceChange", {key: key, value: value});					
+					this.container.trigger("preferenceChange", {key: key, value: value});
 				}
 			}
 		}
@@ -155,6 +178,25 @@ var ParametersDelegate = (function(){
 		}
 	});
 	return self;
+})();
+
+var SankoreAsyncDelegate = (function(){
+    var self = Object.create({}, {
+        preference: {
+            value: function(key) {
+                // return cached value
+                return this[key];
+            }
+        },
+        setPreference: {
+            value: function(key, value) {
+                // store in cache and application
+                this[key] = value
+                window.sankore.setPreference(key, value);
+            }
+        }
+    });
+    return self;
 })();
 
 var App = (function() {
@@ -205,7 +247,7 @@ var App = (function() {
 					}
 				},
 				droppable: {
-					value: function($e, callback) {							
+					value: function($e, callback) {
 						$e.bind("dragover", function(){
 							$(this).addClass("hover");
 							return false;
@@ -220,7 +262,7 @@ var App = (function() {
 							e.preventDefault();
 					        // jQuery wraps the originalEvent, so we try to detect that here...
 					        e = e.originalEvent || e;
-							
+
 							if(window.sankore) {
 								function stringToXML(text){
 								    if (window.ActiveXObject){
@@ -233,7 +275,7 @@ var App = (function() {
 								    }
 								    return doc;
 								}
-								var file = stringToXML(e.dataTransfer.getData("text/plain"));
+								var file = stringToXML(e.dataTransfer.getData("text/plain") || window.sankore.dropData);
 								callback({
 			                        src: $(file).find("path:eq(0)").text()
 								});
