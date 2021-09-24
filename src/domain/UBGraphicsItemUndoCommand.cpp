@@ -128,7 +128,7 @@ void UBGraphicsItemUndoCommand::undo()
         QGraphicsItem* item = itRemoved.next();
         if (item)
         {
-            if (UBItemLayerType::FixedBackground == item->data(UBGraphicsItemData::ItemLayerType))
+            if (itemLayerType::BackgroundItem == item->data(UBGraphicsItemData::itemLayerType))
                 mScene->setAsBackgroundObject(item);
             else
                 mScene->addItem(item);
