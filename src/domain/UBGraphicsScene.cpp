@@ -1335,9 +1335,12 @@ void UBGraphicsScene::updateSelectionFrame()
         mSelectionFrame->setEnclosedItems(QList<QGraphicsItem*>());
 
         UBGraphicsItemDelegate *itemDelegate = UBGraphicsItem::Delegate(selItems.first());
-        itemDelegate->createControls();
-        selItems.first()->setVisible(true);
-        itemDelegate->showControls();
+        if (itemDelegate)
+        {
+            itemDelegate->createControls();
+            selItems.first()->setVisible(true);
+            itemDelegate->showControls();
+        }
 
     } break;
     default: {
