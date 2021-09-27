@@ -848,6 +848,13 @@ void UBBoardView::handleItemMouseMove(QMouseEvent *event)
             QGraphicsView::mouseMoveEvent (event);
             posAfterMove = getMovingItem()->pos();
         }
+        else
+        {
+            if (!mMouseButtonIsPressed)
+            {
+                QGraphicsView::mouseMoveEvent(event);
+            }
+        }
 
         mWidgetMoved = ((posAfterMove-posBeforeMove).manhattanLength() != 0);
 
@@ -1133,9 +1140,6 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
         event->accept ();
         return;
     }
-
-    if ((UBDrawingController::drawingController()->isDrawingTool()) && !mMouseButtonIsPressed)
-        QGraphicsView::mouseMoveEvent(event);
 
     int currentTool = static_cast<int>(UBDrawingController::drawingController()->stylusTool());
     switch (currentTool) {
