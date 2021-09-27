@@ -262,6 +262,7 @@ class UBSettings : public QObject
         UBSetting* appHideSwapDisplayScreens;
         UBSetting* appToolBarOrientationVertical;
         UBSetting* appPreferredLanguage;
+        UBSetting* appRunInWindow;
 
         UBSetting* appIsInSoftwareUpdateProcess;
 
