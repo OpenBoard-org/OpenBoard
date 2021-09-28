@@ -305,6 +305,7 @@ public slots:
     void hSliderRangeChanged(int min, int max);
 
 protected:
+    void mousePressEvent(QMouseEvent *event) override;
     void dragEnterEvent(QDragEnterEvent *event);
     void dragLeaveEvent(QDragLeaveEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);

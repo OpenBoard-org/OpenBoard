@@ -1387,6 +1387,12 @@ void UBDocumentTreeView::hSliderRangeChanged(int min, int max)
     }
 }
 
+void UBDocumentTreeView::mousePressEvent(QMouseEvent *event)
+{
+    QTreeView::mousePressEvent(event);
+    UBApplication::documentController->updateActions();
+}
+
 void UBDocumentTreeView::dragEnterEvent(QDragEnterEvent *event)
 {
     QTreeView::dragEnterEvent(event);
@@ -3429,20 +3435,57 @@ void UBDocumentController::updateActions()
 
     switch (static_cast<int>(deletionForSelection)) {
     case MoveToTrash :
+        if (mSelectionType == Folder)
+        {
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-folder.png"));
+            mMainWindow->actionDelete->setText(tr("Empty"));
+        }
+        else if (mSelectionType == Document)
+        {
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document.png"));
+            mMainWindow->actionDelete->setText(tr("Trash"));
+        }
+        else if (mSelectionType == Page)
+        {
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document-page.png"));
+            mMainWindow->actionDelete->setText(tr("Trash"));
+        }
+        else
+        {//can happen ?
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash.png"));
+            mMainWindow->actionDelete->setText(tr("Trash"));
+        }
+        break;
     case DeletePage :
-        mMainWindow->actionDelete->setIcon(QIcon(":/images/trash.png"));
+        mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document-page.png"));
         mMainWindow->actionDelete->setText(tr("Trash"));
         break;
     case CompleteDelete :
-        mMainWindow->actionDelete->setIcon(QIcon(":/images/toolbar/deleteDocument.png"));
-        mMainWindow->actionDelete->setText(tr("Delete"));
+        if (mSelectionType == Folder)
+        {
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-folder.png"));
+            mMainWindow->actionDelete->setText(tr("Delete"));
+        }
+        else
+        {
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-document.png"));
+            mMainWindow->actionDelete->setText(tr("Delete"));
+        }
         break;
     case EmptyFolder :
-        mMainWindow->actionDelete->setIcon(QIcon(":/images/trash.png"));
-        mMainWindow->actionDelete->setText(tr("Empty"));
+        if (firstSelectedTreeIndex() == docModel->myDocumentsIndex())
+        {
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-my-documents.png"));
+            mMainWindow->actionDelete->setText(tr("Empty"));
+        }
+        else
+        {
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-folder.png"));
+            mMainWindow->actionDelete->setText(tr("Empty"));
+        }
         break;
     case EmptyTrash :
-        mMainWindow->actionDelete->setIcon(QIcon(":/images/toolbar/deleteDocument.png"));
+        mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-empty.png"));
         mMainWindow->actionDelete->setText(tr("Empty"));
         break;
     }
