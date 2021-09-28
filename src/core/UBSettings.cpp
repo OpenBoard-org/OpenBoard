@@ -361,9 +361,6 @@ void UBSettings::init()
     webShowPageImmediatelyOnMirroredScreen = new UBSetting(this, "Web", "ShowPageImediatelyOnMirroredScreen", defaultShowPageImmediatelyOnMirroredScreen);
 
     webHomePage = new UBSetting(this, "Web", "Homepage", softwareHomeUrl);
-    webBookmarksPage = new UBSetting(this, "Web", "BookmarksPage", "http://www.myuniboard.com");
-    webAddBookmarkUrl = new UBSetting(this, "Web", "AddBookmarkURL", "http://www.myuniboard.com/bookmarks/save/?url=");
-    webShowAddBookmarkButton = new UBSetting(this, "Web", "ShowAddBookmarkButton", false);
 
     pageCacheSize = new UBSetting(this, "App", "PageCacheSize", 20);
 

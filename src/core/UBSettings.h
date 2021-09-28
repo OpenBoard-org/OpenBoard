@@ -329,9 +329,6 @@ class UBSettings : public QObject
         UBSetting* webShowPageImmediatelyOnMirroredScreen;
 
         UBSetting* webHomePage;
-        UBSetting* webBookmarksPage;
-        UBSetting* webAddBookmarkUrl;
-        UBSetting* webShowAddBookmarkButton;
 
         UBSetting* pageCacheSize;
 

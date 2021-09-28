@@ -141,10 +141,6 @@ void UBWebController::webBrowserInstance()
             UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->webToolBar, mMainWindow->actionBoard, 32);
             UBApplication::app()->decorateActionMenu(mMainWindow->actionMenu);
 
-            bool showAddBookmarkButtons = UBSettings::settings()->webShowAddBookmarkButton->get().toBool();
-            mMainWindow->actionBookmarks->setVisible(showAddBookmarkButtons);
-            mMainWindow->actionAddBookmark->setVisible(showAddBookmarkButtons);
-
             showTabAtTop(UBSettings::settings()->appToolBarPositionedAtTop->get().toBool());
 
             adaptToolBar();
