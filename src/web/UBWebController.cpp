@@ -107,6 +107,7 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
     settings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
     settings->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
     settings->setAttribute(QWebEngineSettings::LocalContentCanAccessRemoteUrls, true);
+    settings->setAttribute(QWebEngineSettings::ScreenCaptureEnabled, true);
 }
 
 UBWebController::~UBWebController()
@@ -277,6 +278,24 @@ QList<UBEmbedContent> UBWebController::getEmbeddedContent(const QWebEngineView *
 BrowserWindow* UBWebController::browserWindow() const
 {
     return mCurrentWebBrowser;
+}
+
+QWebEnginePage::PermissionPolicy UBWebController::hasFeaturePermission(const QUrl &securityOrigin, QWebEnginePage::Feature feature)
+{
+    QPair<QUrl,QWebEnginePage::Feature> featurePermission(securityOrigin, feature);
+
+    if (mFeaturePermissions.contains(featurePermission))
+    {
+        return mFeaturePermissions[featurePermission];
+    }
+
+    return QWebEnginePage::PermissionUnknown;
+}
+
+void UBWebController::setFeaturePermission(const QUrl &securityOrigin, QWebEnginePage::Feature feature, QWebEnginePage::PermissionPolicy policy)
+{
+    QPair<QUrl,QWebEnginePage::Feature> featurePermission(securityOrigin, feature);
+    mFeaturePermissions[featurePermission] = policy;
 }
 
 void UBWebController::injectScripts(QWebEngineView *view)

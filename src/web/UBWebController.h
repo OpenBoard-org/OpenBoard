@@ -32,6 +32,8 @@
 
 #include <QtGui>
 
+#include <QWebEnginePage>
+
 #include "UBEmbedParser.h"
 #include "simplebrowser/downloadmanagerwidget.h"
 
@@ -67,6 +69,8 @@ class UBWebController : public QObject
         QWebEngineProfile* webProfile() const;
         QList<UBEmbedContent> getEmbeddedContent(const QWebEngineView* view);
         BrowserWindow* browserWindow() const;
+        QWebEnginePage::PermissionPolicy hasFeaturePermission(const QUrl &securityOrigin, QWebEnginePage::Feature feature);
+        void setFeaturePermission(const QUrl &securityOrigin, QWebEnginePage::Feature feature, QWebEnginePage::PermissionPolicy policy);
 
         static void injectScripts(QWebEngineView* view);
 
@@ -132,6 +136,8 @@ private:
 
         QMenu* mHistoryBackMenu;
         QMenu* mHistoryForwardMenu;
+
+        QMap<QPair<QUrl,QWebEnginePage::Feature>,QWebEnginePage::PermissionPolicy> mFeaturePermissions;
 };
 
 #endif /* UBWEBCONTROLLER_H_ */

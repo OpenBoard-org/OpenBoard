@@ -58,6 +58,7 @@
 
 #include "core/UBApplication.h"
 #include "gui/UBMainWindow.h"
+#include "web/UBWebController.h"
 
 WebPage::WebPage(QWebEngineProfile *profile, QObject *parent)
     : QWebEnginePage(profile, parent)
@@ -145,13 +146,22 @@ inline QString questionForFeature(QWebEnginePage::Feature feature)
 
 void WebPage::handleFeaturePermissionRequested(const QUrl &securityOrigin, Feature feature)
 {
-    QString title = tr("Permission Request");
-    QString question = questionForFeature(feature).arg(securityOrigin.host());
+    PermissionPolicy policy = UBApplication::webController->hasFeaturePermission(securityOrigin, feature);
 
-    if (!question.isEmpty() && QMessageBox::question(UBApplication::mainWindow->centralWidget(), title, question) == QMessageBox::Yes)
-        setFeaturePermission(securityOrigin, feature, PermissionGrantedByUser);
-    else
-        setFeaturePermission(securityOrigin, feature, PermissionDeniedByUser);
+    if (policy == PermissionUnknown)
+    {
+        QString title = tr("Permission Request");
+        QString question = questionForFeature(feature).arg(securityOrigin.host());
+
+        if (!question.isEmpty() && QMessageBox::question(UBApplication::mainWindow->centralWidget(), title, question) == QMessageBox::Yes)
+            policy = PermissionGrantedByUser;
+        else
+            policy = PermissionDeniedByUser;
+
+        UBApplication::webController->setFeaturePermission(securityOrigin, feature, policy);
+    }
+
+    setFeaturePermission(securityOrigin, feature, policy);
 }
 
 void WebPage::handleProxyAuthenticationRequired(const QUrl &, QAuthenticator *auth, const QString &proxyHost)
