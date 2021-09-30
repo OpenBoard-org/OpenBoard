@@ -50,7 +50,7 @@
     <name>IntranetPodcastPublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation>發佈Podcast至YouTube</translation>
+        <translation>發佈 Podcast 至 YouTube</translation>
     </message>
     <message>
         <source>Title</source>
@@ -333,7 +333,7 @@
     </message>
     <message>
         <source>Pen</source>
-        <translation>電子筆</translation>
+        <translation>筆</translation>
     </message>
     <message>
         <source>Annotate Document</source>
@@ -365,7 +365,7 @@
     </message>
     <message>
         <source>Selector</source>
-        <translation>選擇器</translation>
+        <translation>選擇工具</translation>
     </message>
     <message>
         <source>Select And Modify Objects</source>
@@ -413,7 +413,7 @@
     </message>
     <message>
         <source>Import eduMedia simulation</source>
-        <translation>匯入eduMedia模擬程序</translation>
+        <translation>匯入 eduMedia 模擬程序</translation>
     </message>
     <message>
         <source>Check Update</source>
@@ -673,19 +673,19 @@
     </message>
     <message>
         <source>Podcast Config</source>
-        <translation>Podcast設定</translation>
+        <translation>Podcast 設定</translation>
     </message>
     <message>
         <source>Configure Podcast Recording</source>
-        <translation>Podcast錄製設定</translation>
+        <translation>Podcast 錄製設定</translation>
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation>Flash動畫擷取</translation>
+        <translation>Flash 動畫擷取</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>擷取Flash動畫內容</translation>
+        <translation>擷取 Flash 動畫內容</translation>
     </message>
     <message>
         <source>Web Trap</source>
@@ -745,11 +745,11 @@
     </message>
     <message>
         <source>Wide Size (16/9)</source>
-        <translation>寬螢幕顯示(16/9)</translation>
+        <translation>寬螢幕顯示 (16/9)</translation>
     </message>
     <message>
         <source>Regular Size (4/3)</source>
-        <translation>一般螢幕顯示(4/3)</translation>
+        <translation>一般螢幕顯示 (4/3)</translation>
     </message>
     <message>
         <source>Custom Size</source>
@@ -765,15 +765,15 @@
     </message>
     <message>
         <source>Quit OpenBoard</source>
-        <translation>退出OpenBoard</translation>
+        <translation>退出 OpenBoard</translation>
     </message>
     <message>
         <source>Hide OpenBoard</source>
-        <translation>隱藏OpenBoard</translation>
+        <translation>隱藏 OpenBoard</translation>
     </message>
     <message>
         <source>Hide OpenBoard Application</source>
-        <translation>隱藏OpenBoard應用程式</translation>
+        <translation>隱藏 OpenBoard 應用程式</translation>
     </message>
     <message>
         <source>Play</source>
@@ -801,39 +801,39 @@
     </message>
     <message>
         <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>開啟新手教學</translation>
     </message>
     <message>
         <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
+        <translation>打開教學網頁</translation>
     </message>
     <message>
         <source>Reset grid size</source>
-        <translation type="unfinished"></translation>
+        <translation>重設網格大小</translation>
     </message>
     <message>
         <source>Small Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>小橡皮擦</translation>
     </message>
     <message>
         <source>Color 1</source>
-        <translation type="unfinished"></translation>
+        <translation>顏色 1</translation>
     </message>
     <message>
         <source>Color 2</source>
-        <translation type="unfinished"></translation>
+        <translation>顏色 2</translation>
     </message>
     <message>
         <source>Color 3</source>
-        <translation type="unfinished"></translation>
+        <translation>顏色 3</translation>
     </message>
     <message>
         <source>Color 4</source>
-        <translation type="unfinished"></translation>
+        <translation>顏色 4</translation>
     </message>
     <message>
         <source>Color 5</source>
-        <translation type="unfinished"></translation>
+        <translation>顏色 5</translation>
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
@@ -848,30 +848,30 @@
     </message>
     <message>
         <source>Username:</source>
-        <translation>帳號:</translation>
+        <translation>帳號：</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>密碼:</translation>
+        <translation>密碼：</translation>
     </message>
 </context>
 <context>
     <name>ProxyDialog</name>
     <message>
         <source>Proxy Authentication</source>
-        <translation>Proxy驗證</translation>
+        <translation>Proxy 驗證</translation>
     </message>
     <message>
         <source>Connect to Proxy</source>
-        <translation>連接至Proxy</translation>
+        <translation>連接至 Proxy</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>帳號:</translation>
+        <translation>帳號：</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>密碼:</translation>
+        <translation>密碼：</translation>
     </message>
     <message>
         <source>Save username and password for future use</source>
@@ -894,7 +894,7 @@
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation>確定要移除所選文件 &apos;%0&apos; 的一個頁面 ?</translation>
+        <translation>確定要移除所選文件 &apos;%0&apos; 的一個頁面？</translation>
     </message>
 </context>
 <context>
@@ -916,7 +916,7 @@
     </message>
     <message>
         <source>New update available, would you go to the web page ?</source>
-        <translation>可更新，要上網頁嗎？</translation>
+        <translation>有可用更新，要前往網頁下載嗎？</translation>
     </message>
     <message>
         <source>No update available</source>
@@ -924,7 +924,7 @@
     </message>
     <message>
         <source>Update available</source>
-        <translation>目前可更新</translation>
+        <translation>有可用更新</translation>
     </message>
     <message>
         <source>Update</source>
@@ -935,7 +935,7 @@
     <name>UBBackgroundPalette</name>
     <message>
         <source>Grid size</source>
-        <translation type="unfinished"></translation>
+        <translation>網格大小</translation>
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
@@ -954,7 +954,7 @@
     </message>
     <message>
         <source>Unknown tool type %1</source>
-        <translation>陌生工具型態 %1</translation>
+        <translation>未知工具類型 %1</translation>
     </message>
     <message>
         <source>Add Item</source>
@@ -962,11 +962,11 @@
     </message>
     <message>
         <source>All Supported (%1)</source>
-        <translation>全部已支援(%1)</translation>
+        <translation>全部已支援 (%1)</translation>
     </message>
     <message>
         <source>Unknown content type %1</source>
-        <translation>陌生內容型態 %1</translation>
+        <translation>未知內容類型 %1</translation>
     </message>
     <message>
         <source>Delete page %1 from document</source>
@@ -978,7 +978,7 @@
     </message>
     <message>
         <source>Add file operation failed: file copying error</source>
-        <translation>新增檔案失敗:檔案複製有錯誤</translation>
+        <translation>新增檔案失敗：檔案複製錯誤</translation>
     </message>
     <message>
         <source>Group</source>
@@ -990,26 +990,26 @@
     </message>
     <message>
         <source>Saving document...</source>
-        <translation type="unfinished"></translation>
+        <translation>正在儲存檔案...</translation>
     </message>
     <message>
         <source>Document has just been saved...</source>
-        <translation type="unfinished"></translation>
+        <translation>檔案已被儲存...</translation>
     </message>
     <message>
         <source>Deleting page %1</source>
-        <translation type="unfinished"></translation>
+        <translation>正在刪除第 %1 頁</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation type="unfinished">顏色</translation>
+        <translation>顏色</translation>
     </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
     <message>
         <source>Error Adding Image to Library</source>
-        <translation>錯誤新增圖像至圖書館</translation>
+        <translation>新增圖像至圖書館時發生錯誤</translation>
     </message>
     <message>
         <source>CapturedImage</source>
@@ -1020,26 +1020,26 @@
     <name>UBBoardThumbnailsView</name>
     <message>
         <source>Loading page (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>正在載入第 %1 頁，共 %2 頁</translation>
     </message>
 </context>
 <context>
     <name>UBCachePropertiesWidget</name>
     <message>
         <source>Cache Properties</source>
-        <translation>Cache屬性</translation>
+        <translation>Cache 屬性</translation>
     </message>
     <message>
         <source>Color:</source>
-        <translation>顏色:</translation>
+        <translation>顏色：</translation>
     </message>
     <message>
         <source>Shape:</source>
-        <translation>形狀:</translation>
+        <translation>形狀：</translation>
     </message>
     <message>
         <source>Size:</source>
-        <translation>大小:</translation>
+        <translation>大小：</translation>
     </message>
     <message>
         <source>Close</source>
@@ -1070,7 +1070,7 @@
     </message>
     <message>
         <source>Show OpenBoard</source>
-        <translation type="unfinished"></translation>
+        <translation>顯示 OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -1085,7 +1085,7 @@
     </message>
     <message>
         <source>Add Folder of Images</source>
-        <translation>新增圖像檔案夾</translation>
+        <translation>新增圖像資料夾</translation>
     </message>
     <message>
         <source>Add Images</source>
@@ -1210,19 +1210,19 @@
     </message>
     <message>
         <source>Remove Item</source>
-        <translation type="unfinished"></translation>
+        <translation>刪除項目</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation type="unfinished"></translation>
+        <translation>您確定要刪除所選項目嗎？</translation>
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation type="unfinished"></translation>
+        <translation>檔案 &apos;%1&apos; 是由新版的 OpenBoard (%2) 建立的。開啟後可能會遺失資料。您確定要繼續嗎？</translation>
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
+        <translation>標題頁</translation>
     </message>
 </context>
 <context>
@@ -1286,15 +1286,15 @@
     <name>UBDocumentReplaceDialog</name>
     <message>
         <source>Accept</source>
-        <translation type="unfinished">接受</translation>
+        <translation>接受</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Replace</source>
-        <translation type="unfinished"></translation>
+        <translation>取代</translation>
     </message>
     <message>
         <source>The name %1 is allready used.
@@ -1307,38 +1307,38 @@ Providing a new name will create a new document.</source>
     <name>UBDocumentTreeModel</name>
     <message>
         <source>Trash</source>
-        <translation type="unfinished">回收桶</translation>
+        <translation>回收桶</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>已複製 %1 個頁面</numerusform>
         </translation>
     </message>
     <message>
         <source>My documents</source>
-        <translation type="unfinished"></translation>
+        <translation>我的檔案</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentTreeView</name>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>已複製 %1 個頁面</numerusform>
         </translation>
     </message>
     <message>
         <source>Remove Item</source>
-        <translation type="unfinished"></translation>
+        <translation>刪除項目</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation type="unfinished"></translation>
+        <translation>您確定要刪除所選項目嗎？</translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation type="unfinished">頁面 %1/%2 複製中</translation>
+        <translation>頁面 %1/%2 複製中</translation>
     </message>
 </context>
 <context>
@@ -1391,38 +1391,38 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>匯出檔案中...</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation type="unfinished"></translation>
+        <translation>匯出失敗</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法匯出至指定位置。您沒有儲存檔案的權限。</translation>
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
+        <translation>匯出失敗：路徑無法被寫入</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>匯出成功。</translation>
     </message>
 </context>
 <context>
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation>匯出至IWB</translation>
+        <translation>匯出至 IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation>以IWB格式匯出</translation>
+        <translation>以 IWB 格式匯出</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>匯出文件...</translation>
+        <translation>匯出檔案中...</translation>
     </message>
     <message>
         <source>Export successful.</source>
@@ -1457,41 +1457,41 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation type="unfinished"></translation>
+        <translation>以 OpenBoard 格式匯出</translation>
     </message>
 </context>
 <context>
     <name>UBExportDocumentSetAdaptor</name>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished">匯出失敗。</translation>
+        <translation>匯出失敗。</translation>
     </message>
     <message>
         <source>Failed to export...</source>
-        <translation type="unfinished"></translation>
+        <translation>匯出失敗...</translation>
     </message>
     <message>
         <source>Export as UBX File</source>
-        <translation type="unfinished"></translation>
+        <translation>以 UBX 檔案匯出</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished"></translation>
+        <translation>匯出檔案中...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation>匯出成功。</translation>
     </message>
     <message>
         <source>Export to OpenBoard UBX Format</source>
-        <translation type="unfinished"></translation>
+        <translation>以 OpenBoard UBX 格式匯出</translation>
     </message>
 </context>
 <context>
     <name>UBExportFullPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation>以PDF格式匯出</translation>
+        <translation>以 PDF 格式匯出</translation>
     </message>
     <message>
         <source>Exporting document...</source>
@@ -1499,7 +1499,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export to PDF</source>
-        <translation>匯出成PDF</translation>
+        <translation>匯出成 PDF</translation>
     </message>
     <message>
         <source>Export successful.</source>
@@ -1510,7 +1510,7 @@ Providing a new name will create a new document.</source>
     <name>UBExportPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation>以PDF格式匯出</translation>
+        <translation>以 PDF 格式匯出</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1526,7 +1526,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export to PDF</source>
-        <translation>匯出成PDF</translation>
+        <translation>匯出成 PDF</translation>
     </message>
 </context>
 <context>
@@ -1553,7 +1553,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export to Web Browser</source>
-        <translation>匯出成網頁瀏覽</translation>
+        <translation>匯出至瀏覽器</translation>
     </message>
 </context>
 <context>
@@ -1669,7 +1669,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Enter a new folder name</source>
-        <translation>鍵入檔案名稱</translation>
+        <translation>輸入檔案名稱</translation>
     </message>
 </context>
 <context>
@@ -1706,7 +1706,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="unfinished">設定成背景</translation>
+        <translation>設定成背景</translation>
     </message>
 </context>
 <context>
@@ -1717,7 +1717,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Unsupported media format</source>
-        <translation type="unfinished"></translation>
+        <translation>不支援的媒體格式</translation>
     </message>
     <message>
         <source>Media playback service not found</source>
@@ -1725,14 +1725,14 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Media error: </source>
-        <translation type="unfinished"></translation>
+        <translation>媒體錯誤：</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsTextItem</name>
     <message>
         <source>&lt;Type Text Here&gt;</source>
-        <translation>&lt;此處鍵入文字&gt;</translation>
+        <translation>&lt;此處輸入文字&gt;</translation>
     </message>
 </context>
 <context>
@@ -1810,7 +1810,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard (*.ubz)</translation>
     </message>
 </context>
 <context>
@@ -1824,18 +1824,18 @@ Providing a new name will create a new document.</source>
     <name>UBImportImage</name>
     <message>
         <source>Image Format (</source>
-        <translation>圖像格式(</translation>
+        <translation>圖像格式 (</translation>
     </message>
 </context>
 <context>
     <name>UBImportPDF</name>
     <message>
         <source>Portable Document Format (*.pdf)</source>
-        <translation>Portable Document Format (*.pdf)</translation>
+        <translation>可攜式檔案格式 (*.pdf)</translation>
     </message>
     <message>
         <source>PDF import failed.</source>
-        <translation>PDF匯入失敗。</translation>
+        <translation>PDF 匯入失敗。</translation>
     </message>
     <message>
         <source>Importing page %1 of %2</source>
@@ -1864,7 +1864,7 @@ Providing a new name will create a new document.</source>
     <name>UBKeyboardPalette</name>
     <message>
         <source>Enter</source>
-        <translation>鍵入</translation>
+        <translation>輸入</translation>
     </message>
 </context>
 <context>
@@ -1897,7 +1897,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Failed to log to Proxy</source>
-        <translation>登入Proxy失敗</translation>
+        <translation>登入 Proxy 失敗</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -1922,7 +1922,7 @@ Do you want to ignore these errors for this host?</source>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Open-Sankore Documents Detected</source>
@@ -1942,7 +1942,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
+        <translation>繼續</translation>
     </message>
 </context>
 <context>
@@ -1980,22 +1980,22 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Swiss French</source>
-        <translation>法文(瑞士)</translation>
+        <translation>法文 (瑞士)</translation>
     </message>
 </context>
 <context>
     <name>UBPodcastController</name>
     <message>
         <source>Failed to start encoder ...</source>
-        <translation>編碼器(encoder)啟動失敗...</translation>
+        <translation>編碼器啟動失敗...</translation>
     </message>
     <message>
         <source>No Podcast encoder available ...</source>
-        <translation>沒有可用的Podcast編碼器(encoder)...</translation>
+        <translation>沒有可用的Podcast編碼器...</translation>
     </message>
     <message>
         <source>Part %1</source>
-        <translation>Part %1</translation>
+        <translation>第 %1 部分</translation>
     </message>
     <message>
         <source>on your desktop ...</source>
@@ -2011,7 +2011,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Podcast recording error (%1)</source>
-        <translation>Podcast錄製有錯誤 (%1)</translation>
+        <translation>Podcast 錄製有錯誤 (%1)</translation>
     </message>
     <message>
         <source>Default Audio Input</source>
@@ -2039,7 +2039,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Publish to Youtube</source>
-        <translation>發佈至YouTube</translation>
+        <translation>發佈至 YouTube</translation>
     </message>
     <message>
         <source>OpenBoard Cast</source>
@@ -2050,7 +2050,7 @@ Do you want to ignore these errors for this host?</source>
     <name>UBPreferencesController</name>
     <message>
         <source>version: </source>
-        <translation>版本:</translation>
+        <translation>版本：</translation>
     </message>
     <message>
         <source>Marker is pressure sensitive</source>
@@ -2061,15 +2061,15 @@ Do you want to ignore these errors for this host?</source>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation type="vanished">Proxy登入</translation>
+        <translation type="vanished">Proxy 登入</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="vanished">帳號:</translation>
+        <translation type="vanished">帳號：</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="vanished">密碼:</translation>
+        <translation type="vanished">密碼：</translation>
     </message>
 </context>
 <context>
@@ -2080,11 +2080,11 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Title:</source>
-        <translation type="vanished">標題:</translation>
+        <translation type="vanished">標題：</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="vanished">描述:</translation>
+        <translation type="vanished">描述：</translation>
     </message>
     <message>
         <source>Publish</source>
@@ -2120,7 +2120,7 @@ Do you want to ignore these errors for this host?</source>
     <name>UBThumbnailTextItem</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">第 %0 頁</translation>
+        <translation>第 %0 頁</translation>
     </message>
 </context>
 <context>
@@ -2151,7 +2151,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Cache</source>
-        <translation>Cache</translation>
+        <translation>快取</translation>
     </message>
     <message>
         <source>Axes</source>
@@ -2199,7 +2199,7 @@ Do you want to ignore these errors for this host?</source>
         <source>Files update successful!
 Please reboot the application to access the updated documents.</source>
         <translation>成功更新檔案!
-請重新啟動程式使用該檔案。</translation>
+請重新啟動程式以使用該檔案。</translation>
     </message>
     <message>
         <source>An error occured during the update. The files have not been affected.</source>
@@ -2215,11 +2215,11 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Please wait the import process will start soon...</source>
-        <translation>即將開始匯入，請稍待...</translation>
+        <translation>即將開始匯入，請稍候...</translation>
     </message>
     <message>
         <source>Remind me later</source>
-        <translation>稍候題提醒我</translation>
+        <translation>稍候提醒我</translation>
     </message>
 </context>
 <context>
@@ -2240,15 +2240,15 @@ Please reboot the application to access the updated documents.</source>
     <name>UBYouTubePublisher</name>
     <message>
         <source>YouTube authentication failed.</source>
-        <translation>YouTube驗證失敗。</translation>
+        <translation>YouTube 驗證失敗。</translation>
     </message>
     <message>
         <source>Error while uploading video to YouTube (%1)</source>
-        <translation>影片上傳至YouTube (%1)過程中有錯誤</translation>
+        <translation>影片上傳至 YouTube (%1)過程中有錯誤</translation>
     </message>
     <message>
         <source>Upload to YouTube in progress %1 %</source>
-        <translation>上傳至YouTube中 %1 %</translation>
+        <translation>上傳至 YouTube 中 %1 %</translation>
     </message>
 </context>
 <context>
@@ -2385,7 +2385,7 @@ Please reboot the application to access the updated documents.</source>
     <message>
         <source>?</source>
         <comment>unknown file size</comment>
-        <translation type="unfinished">?</translation>
+        <translation>?</translation>
     </message>
 </context>
 <context>
@@ -2520,14 +2520,14 @@ Please reboot the application to access the updated documents.</source>
     <name>XPDFRenderer</name>
     <message>
         <source>Processing...</source>
-        <translation type="unfinished"></translation>
+        <translation>處理中...</translation>
     </message>
 </context>
 <context>
     <name>YouTubePublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation>發佈Podcast至YouTube</translation>
+        <translation>發佈 Podcast 至 YouTube</translation>
     </message>
     <message>
         <source>Title</source>
@@ -2547,11 +2547,11 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>YouTube Username</source>
-        <translation>YouTube帳號</translation>
+        <translation>YouTube 帳號</translation>
     </message>
     <message>
         <source>YouTube Password</source>
-        <translation>YouTube密碼</translation>
+        <translation>YouTube 密碼</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2567,7 +2567,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>OpenBoard</source>
-        <translation type="unfinished">OpenBoard</translation>
+        <translation>OpenBoard</translation>
     </message>
     <message>
         <source>Restore credentials on reboot</source>
@@ -2614,7 +2614,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>px</source>
-        <translation type="unfinished"></translation>
+        <translation>像素</translation>
     </message>
 </context>
 <context>
@@ -2671,19 +2671,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Creation date</source>
-        <translation type="unfinished"></translation>
+        <translation>建立日期</translation>
     </message>
     <message>
         <source>Update date</source>
-        <translation type="unfinished"></translation>
+        <translation>更新日期</translation>
     </message>
     <message>
         <source>Alphabetical order</source>
-        <translation type="unfinished"></translation>
+        <translation>按字母排序</translation>
     </message>
     <message>
         <source>Sort Order</source>
-        <translation type="unfinished"></translation>
+        <translation>排序方式</translation>
     </message>
 </context>
 <context>
@@ -2750,7 +2750,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Check software update at launch</source>
-        <translation>啟用時檢查更新</translation>
+        <translation>啟動時檢查更新</translation>
     </message>
     <message>
         <source>Internet</source>
@@ -2758,7 +2758,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Home Page:</source>
-        <translation>主頁:</translation>
+        <translation>主頁：</translation>
     </message>
     <message>
         <source>Toolbar</source>
@@ -2774,7 +2774,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>version : …</source>
-        <translation>版本: …</translation>
+        <translation>版本： …</translation>
     </message>
     <message>
         <source>Licences</source>
@@ -2802,7 +2802,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Mode to start in:</source>
-        <translation>啟動模式:</translation>
+        <translation>啟動模式：</translation>
     </message>
     <message>
         <source>Board</source>
@@ -2814,11 +2814,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Proxy User:</source>
-        <translation>Proxy User:</translation>
+        <translation>Proxy 使用者：</translation>
     </message>
     <message>
         <source>Pass:</source>
-        <translation>密碼:</translation>
+        <translation>密碼：</translation>
     </message>
     <message>
         <source>Credits</source>
@@ -2826,15 +2826,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>On Dark Background</source>
-        <translation type="unfinished">深色背景</translation>
+        <translation>深色背景</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="unfinished">透明度</translation>
+        <translation>透明度</translation>
     </message>
     <message>
         <source>On Light Background</source>
-        <translation type="unfinished">淡色背景</translation>
+        <translation>淡色背景</translation>
     </message>
     <message>
         <source>Swap first and second view displays</source>
@@ -2842,15 +2842,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
+        <translation>內建虛擬鍵盤按鍵大小：</translation>
     </message>
     <message>
         <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
+        <translation>使用系統鍵盤 (推薦)</translation>
     </message>
     <message>
         <source>Grid</source>
-        <translation type="unfinished"></translation>
+        <translation>網格</translation>
     </message>
     <message>
         <source>Open-Sankoré Importer</source>
@@ -2874,7 +2874,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>days</source>
-        <translation type="unfinished"></translation>
+        <translation>天</translation>
     </message>
     <message>
         <source>PDF Rendering</source>
@@ -2889,11 +2889,11 @@ p, li { white-space: pre-wrap; }
     <name>trapFlashDialog</name>
     <message>
         <source>Trap flash</source>
-        <translation>擷取flash</translation>
+        <translation>擷取 flash</translation>
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation>選擇要擷取的flash動畫</translation>
+        <translation>選擇要擷取的 flash 動畫</translation>
     </message>
     <message>
         <source>about:blank</source>
