@@ -516,6 +516,7 @@ void UBBoardView::handleItemsSelection(QGraphicsItem *item)
             if ((UBGraphicsItemType::UserTypesCount > item->type()) && (item->type() > QGraphicsItem::UserType))
             {
                 scene()->deselectAllItemsExcept(item);
+                scene()->updateSelectionFrame();
             }
         }
     }
