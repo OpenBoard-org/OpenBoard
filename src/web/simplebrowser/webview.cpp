@@ -54,11 +54,17 @@
 #include "webpopupwindow.h"
 #include "webview.h"
 #include "WBHistory.h"
+
 #include <QContextMenuEvent>
 #include <QDebug>
 #include <QMenu>
 #include <QMessageBox>
 #include <QTimer>
+#include <QWebEngineContextMenuData>
+
+#include "board/UBBoardController.h"
+#include "core/UBApplication.h"
+#include "core/UBApplicationController.h"
 
 WebView::WebView(QWidget *parent)
     : QWebEngineView(parent)
@@ -228,6 +234,43 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
     } else {
         (*inspectElement)->setText(tr("Inspect element"));
     }
+
+    // add menu entry "Add to board" with PDF browser, PDF link or image
+    QUrl contentUrl;
+
+    QUrl pageUrl = page()->url();
+    QUrl linkUrl = page()->contextMenuData().linkUrl();
+    auto mediaType = page()->contextMenuData().mediaType();
+
+    if (pageUrl.scheme() == "chrome-extension" && pageUrl.query().endsWith(".pdf", Qt::CaseInsensitive))
+    {
+        // in PDF browser, browsed document URL is available in the query
+        contentUrl = pageUrl.query();
+    }
+    else if (linkUrl.path().endsWith(".pdf", Qt::CaseInsensitive))
+    {
+        // on PDF link
+        contentUrl = linkUrl;
+    }
+    else if (mediaType == QWebEngineContextMenuData::MediaTypeImage)
+    {
+        // on image
+        contentUrl = page()->contextMenuData().mediaUrl();
+    }
+
+    if (contentUrl.isValid())
+    {
+        QAction* actionAddToBoard = new QAction(menu);
+        actionAddToBoard->setText(tr("Add to board"));
+        connect(actionAddToBoard, &QAction::triggered, [contentUrl](){
+            UBApplication::applicationController->showBoard();
+            UBApplication::boardController->downloadURL(contentUrl);
+        });
+
+        menu->addSeparator();
+        menu->addAction(actionAddToBoard);
+    }
+
     menu->popup(event->globalPos());
 }
 
