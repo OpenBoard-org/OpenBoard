@@ -25,6 +25,8 @@
 
 #include <QWebEngineView>
 
+class QMainWindow;
+
 class UBWebEngineView : public QWebEngineView
 {
     Q_OBJECT
@@ -32,9 +34,15 @@ public:
     explicit UBWebEngineView(QWidget *parent = nullptr);
     virtual ~UBWebEngineView() override = default;
 
+public slots:
+    void inspectPage();
+    void closeInspector();
+
 protected:
     void contextMenuEvent(QContextMenuEvent *event) override;
 
+private:
+    QMainWindow* mInspectorWindow;
 };
 
 #endif // UBWEBENGINEVIEW_H

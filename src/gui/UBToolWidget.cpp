@@ -249,7 +249,8 @@ QPoint UBToolWidget::naturalCenter() const
 
 void UBToolWidget::remove()
 {
-    mToolWidget = NULL;
+    mToolWidget = nullptr;
+    mWebView->closeInspector();
     hide();
     deleteLater();
 }

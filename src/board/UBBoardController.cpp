@@ -1999,9 +1999,7 @@ qreal UBBoardController::currentZoom()
 
 void UBBoardController::removeTool(UBToolWidget* toolWidget)
 {
-    toolWidget->hide();
-
-    delete toolWidget;
+    toolWidget->remove();
 }
 
 void UBBoardController::hide()

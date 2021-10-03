@@ -40,7 +40,6 @@
 #include "UBResizableGraphicsItem.h"
 
 class QWebChannel;
-class QWebEngineView;
 
 class UBWidgetUniboardAPI;
 class UBGraphicsScene;
@@ -48,6 +47,7 @@ class UBW3CWidgetAPI;
 class UBW3CWidgetWebStorageAPI;
 class UBGraphiscItem;
 class UBGraphiscItemDelegate;
+class UBWebEngineView;
 
 struct UBWidgetType
 {
@@ -156,7 +156,7 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         bool mMouseIsPressed;
         int mCanBeContent;
         int mCanBeTool;
-        QWebEngineView* mWebEngineView;
+        UBWebEngineView* mWebEngineView;
         QSize mNominalSize;
         QString mMainHtmlFileName;
         QUrl mMainHtmlUrl;
@@ -187,7 +187,6 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         bool mIsFrozen;
         bool mShouldMoveWidget;
         QWebChannel* mWebChannel;
-        QMainWindow* mInspectorWindow;
         UBWidgetUniboardAPI* mUniboardAPI;
         QPixmap mSnapshot;
         QPointF mLastMousePos;

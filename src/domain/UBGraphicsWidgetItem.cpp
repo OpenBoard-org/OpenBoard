@@ -72,7 +72,6 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     , mWidgetUrl(pWidgetUrl)
     , mIsFrozen(false)
     , mShouldMoveWidget(false)
-    , mInspectorWindow(nullptr)
     , mUniboardAPI(nullptr)
 {
     mWebEngineView = new UBWebEngineView();
@@ -488,42 +487,12 @@ void UBGraphicsWidgetItem::unFreeze()
 
 void UBGraphicsWidgetItem::inspectPage()
 {
-    if (mInspectorWindow)
-    {
-        mInspectorWindow->activateWindow();
-    }
-    else
-    {
-        QRect controlGeometry = UBApplication::applicationController->displayManager()->controlGeometry();
-        QRect inspectorGeometry(controlGeometry.left() + 50, controlGeometry.top() + 50, controlGeometry.width() / 2, controlGeometry.height() / 2);
-
-        mInspectorWindow = new QMainWindow();
-        mInspectorWindow->setAttribute(Qt::WA_DeleteOnClose, true);
-        mInspectorWindow->setFocusPolicy(Qt::ClickFocus);
-
-        QWebEngineView *inspector = new QWebEngineView();
-        mInspectorWindow->setCentralWidget(inspector);
-        mInspectorWindow->setGeometry(inspectorGeometry);
-        mInspectorWindow->show();
-
-        mWebEngineView->page()->setDevToolsPage(inspector->page());
-
-        connect(mInspectorWindow, &QObject::destroyed, [this](){
-            mWebEngineView->page()->setDevToolsPage(nullptr);
-            mInspectorWindow = nullptr;
-        });
-    }
+    mWebEngineView->inspectPage();
 }
 
 void UBGraphicsWidgetItem::closeInspector()
 {
-    if (mInspectorWindow)
-    {
-        mWebEngineView->page()->setDevToolsPage(nullptr);
-        mInspectorWindow->close();
-        mInspectorWindow->deleteLater();
-        mInspectorWindow = nullptr;
-    }
+    mWebEngineView->closeInspector();
 }
 
 bool UBGraphicsWidgetItem::event(QEvent *event)

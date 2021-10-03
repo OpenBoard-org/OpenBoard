@@ -24,11 +24,57 @@
 
 #include <QAction>
 #include <QContextMenuEvent>
+#include <QMainWindow>
 #include <QMenu>
 
+#include "core/UBApplication.h"
+#include "core/UBApplicationController.h"
+#include "core/UBDisplayManager.h"
+
 UBWebEngineView::UBWebEngineView(QWidget *parent) : QWebEngineView(parent)
+  , mInspectorWindow(nullptr)
 {
 
+}
+
+void UBWebEngineView::inspectPage()
+{
+    if (mInspectorWindow)
+    {
+        mInspectorWindow->activateWindow();
+    }
+    else
+    {
+        QRect controlGeometry = UBApplication::applicationController->displayManager()->controlGeometry();
+        QRect inspectorGeometry(controlGeometry.left() + 50, controlGeometry.top() + 50, controlGeometry.width() / 2, controlGeometry.height() / 2);
+
+        mInspectorWindow = new QMainWindow();
+        mInspectorWindow->setAttribute(Qt::WA_DeleteOnClose, true);
+        mInspectorWindow->setFocusPolicy(Qt::ClickFocus);
+
+        QWebEngineView *inspector = new QWebEngineView();
+        mInspectorWindow->setCentralWidget(inspector);
+        mInspectorWindow->setGeometry(inspectorGeometry);
+        mInspectorWindow->show();
+
+        page()->setDevToolsPage(inspector->page());
+
+        connect(mInspectorWindow, &QObject::destroyed, [this](){
+            page()->setDevToolsPage(nullptr);
+            mInspectorWindow = nullptr;
+        });
+    }
+}
+
+void UBWebEngineView::closeInspector()
+{
+    if (mInspectorWindow)
+    {
+        page()->setDevToolsPage(nullptr);
+        mInspectorWindow->close();
+        mInspectorWindow->deleteLater();
+        mInspectorWindow = nullptr;
+    }
 }
 
 void UBWebEngineView::contextMenuEvent(QContextMenuEvent *event)
@@ -47,6 +93,14 @@ void UBWebEngineView::contextMenuEvent(QContextMenuEvent *event)
     for (QWebEnginePage::WebAction action : suppressed) {
         menu->removeAction(page()->action(action));
     }
+
+    // add web inspector action
+    QAction *action = new QAction(menu);
+    action->setText(tr("Open Web Inspector"));
+    connect(action, &QAction::triggered, [this]() { inspectPage(); });
+
+    menu->addSeparator();
+    menu->addAction(action);
 
     // set background style
     QPalette palette = menu->palette();

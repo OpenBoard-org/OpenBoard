@@ -36,7 +36,7 @@
 class UBGraphicsWidgetItem;
 class QWidget;
 class UBGraphicsScene;
-class QWebEngineView;
+class UBWebEngineView;
 
 class UBToolWidget : public QWidget
 {
@@ -68,7 +68,7 @@ class UBToolWidget : public QWidget
         void registerAPI();
 
     protected:
-        QWebEngineView *mWebView;
+        UBWebEngineView *mWebView;
         UBGraphicsWidgetItem *mToolWidget;
 
         static QPixmap *sClosePixmap;
