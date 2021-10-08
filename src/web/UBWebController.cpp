@@ -29,7 +29,6 @@
 
 #include <QtGui>
 #include <QMenu>
-#include <QRegularExpression>
 #include <QWebEngineHistory>
 #include <QWebEngineHistoryItem>
 #include <QWebEngineProfile>
@@ -99,9 +98,11 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
         p2 = match.captured(2);
     }
 
-    QString userAgent = UBSettings::settings()->webUserAgent->get().toString();
+    QString userAgent = UBSettings::settings()->alternativeUserAgent->get().toString();
     userAgent = userAgent.arg(p1).arg(p2);
-    mWebProfile->setHttpUserAgent(userAgent);
+
+    mInterceptor = new UBUserAgentInterceptor(userAgent.toUtf8(), mWebProfile);
+    mWebProfile->setUrlRequestInterceptor(mInterceptor);
 
     QWebEngineSettings* settings = mWebProfile->settings();
     settings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
@@ -547,8 +548,11 @@ QUrl UBWebController::guessUrlFromString(const QString &string)
 void UBWebController::tabCreated(WebView *webView)
 {
     // create and attach an UBEmbedParser to the view
-    UBEmbedParser* parser = new UBEmbedParser(webView);
-    connect(parser, &UBEmbedParser::parseResult, this, &UBWebController::onEmbedParsed);
+    if (!embedParser(webView))
+    {
+        UBEmbedParser* parser = new UBEmbedParser(webView);
+        connect(parser, &UBEmbedParser::parseResult, this, &UBWebController::onEmbedParsed);
+    }
 }
 
 
@@ -744,4 +748,44 @@ void UBWebController::captureStripe(QPointF pos, QSize size, QPixmap* pix, QPoin
             }
         });
     });
+}
+
+UBUserAgentInterceptor::UBUserAgentInterceptor(const QByteArray &alternativeUserAgent, QObject *parent)
+    : QWebEngineUrlRequestInterceptor(parent), mAlternativeUserAgent(alternativeUserAgent)
+{
+    QStringList userAgentDomains = UBSettings::settings()->alternativeUserAgentDomains->get().toStringList();
+
+    // convert patterns to regular expressions
+    for (QString& pattern : userAgentDomains) {
+        // escape dots
+        pattern.replace(".", "\\.");
+
+        // replace wildcards
+        pattern.replace("*", "\\w*");
+    }
+
+    // set patterns in brachets, join with | and anchor at end of string with $
+    QString domains = "(" + userAgentDomains.join(")|(") + ")$";
+
+    mDomainMatcher.setPattern(domains);
+
+    // handle invalid pattern
+    if (!mDomainMatcher.isValid())
+    {
+        // this works!
+        qDebug() << "Wrong pattern syntax " << domains << "fallback to google.*";
+        mDomainMatcher.setPattern("google\\.\\w*$");
+    }
+
+    mDomainMatcher.optimize();
+}
+
+void UBUserAgentInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info)
+{
+    QUrl url = info.requestUrl();
+
+    if (mDomainMatcher.match(url.host()).hasMatch())
+    {
+        info.setHttpHeader("User-Agent", mAlternativeUserAgent);
+    }
 }

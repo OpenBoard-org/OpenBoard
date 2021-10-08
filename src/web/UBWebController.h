@@ -31,8 +31,10 @@
 #define UBWEBCONTROLLER_H_
 
 #include <QtGui>
+#include <QRegularExpression>
 
 #include <QWebEnginePage>
+#include <QWebEngineUrlRequestInterceptor>
 
 #include "UBEmbedParser.h"
 #include "simplebrowser/downloadmanagerwidget.h"
@@ -47,6 +49,18 @@ class UBMainWindow;
 class UBWebToolsPalette;
 class UBServerXMLHttpRequest;
 
+
+class UBUserAgentInterceptor : public QWebEngineUrlRequestInterceptor
+{
+public:
+    UBUserAgentInterceptor(const QByteArray &alternativeUserAgent, QObject *parent = nullptr);
+
+    virtual void interceptRequest(QWebEngineUrlRequestInfo &info);
+
+private:
+    QByteArray mAlternativeUserAgent;
+    QRegularExpression mDomainMatcher;
+};
 
 class UBWebController : public QObject
 {
@@ -130,6 +144,7 @@ private:
         UBWebToolsPalette* mToolsCurrentPalette;
 
         QWebEngineProfile* mWebProfile;
+        UBUserAgentInterceptor* mInterceptor;
 
         bool mToolsPalettePositionned;
         bool mDownloadViewIsVisible;
