@@ -43,9 +43,9 @@ namespace merge_lib
    class Filter
    {
    public:
-      Filter(Object * objectWithStream): _objectWithStream(objectWithStream)
+      Filter(Object * objectWithStream): m_objectWithStream(objectWithStream)
       {
-         _createAllDecodersSet();
+         createAllDecodersSet();
       }
       virtual ~Filter();
       //replace coded stream with decoded
@@ -55,12 +55,12 @@ namespace merge_lib
 
       //parse object's content and fill out vector with
       //necessary decoders
-      std::vector <Decoder * > _getDecoders();
-      void _createAllDecodersSet();
+      std::vector <Decoder * > getDecoders();
+      void createAllDecodersSet();
 
       //members
-      Object * _objectWithStream;
-      static std::map<std::string, Decoder *> _allDecoders;
+      Object * m_objectWithStream;
+      static std::map<std::string, Decoder *> s_allDecoders;
    };
 }
 #endif

@@ -62,8 +62,8 @@ namespace merge_lib
        Object(unsigned int objectNumber, unsigned int generationNumber, const std::string & objectContent, 
            std::string fileName = "", std::pair<unsigned int, unsigned int> streamBounds = std::make_pair ((unsigned int)0,(unsigned int)0), bool hasStream = false
                   ):
-       _number(objectNumber), _generationNumber(generationNumber), _oldNumber(objectNumber), _content(objectContent),_parents(),_children(),_isPassed(false),
-           _streamBounds(streamBounds), _fileName(fileName), _hasStream(hasStream), _hasStreamInContent(false)
+       m_number(objectNumber), m_generationNumber(generationNumber), m_oldNumber(objectNumber), m_content(objectContent),m_parents(),m_children(),m_isPassed(false),
+           m_streamBounds(streamBounds), m_fileName(fileName), m_hasStream(hasStream), m_hasStreamInContent(false)
        {
        }
        virtual ~Object();
@@ -100,15 +100,15 @@ namespace merge_lib
 
        bool isPassed()
        {
-          return _isPassed;
+          return m_isPassed;
        }
        void retrieveMaxObjectNumber(unsigned int & maxNumber);
        void resetIsPassed()
        {
-          if(_isPassed)
-             _isPassed = false;
+          if(m_isPassed)
+             m_isPassed = false;
           Children::iterator it;
-          for ( it=_children.begin() ; it != _children.end(); it++ )
+          for ( it=m_children.begin() ; it != m_children.end(); it++ )
           {
              if((*it).second.first->isPassed())
                 (*it).second.first->resetIsPassed();
@@ -117,12 +117,12 @@ namespace merge_lib
        }
        unsigned int getOldNumber()
        {
-          return _oldNumber;
+          return m_oldNumber;
        }
        void setObjectNumber(unsigned int objNumber)
        {
-          _number = objNumber;
-          _oldNumber = objNumber;
+          m_number = objNumber;
+          m_oldNumber = objNumber;
 
        }
        bool getStream(std::string &);
@@ -130,8 +130,8 @@ namespace merge_lib
        bool getHeader(std::string &content);
        void forgetStreamInFile()
        {
-            _hasStreamInContent = true;
-            _hasStream = true;
+            m_hasStreamInContent = true;
+            m_hasStream = true;
        }
 
        std::string getNameSimpleValue(const std::string &content, const std::string &patten, size_t pos = 0);
@@ -139,7 +139,7 @@ namespace merge_lib
        unsigned int getChildPosition(const Object * child); //throw (Exception)
        const std::set<Object *> & getParents()
        {
-           return _parents;
+           return m_parents;
        }
        
       Object* findPatternInObjOrParents(const std::string &pattern);
@@ -147,30 +147,30 @@ namespace merge_lib
     private:
        //methods
        Object(const Object & copy);
-       Object * _getClone(std::map<unsigned int, Object *> & clones);
-       void _addChild(Object * child, const ReferencePositionsInContent & childPositionsInContent);
-       void _setObjectNumber(unsigned int objectNumber);       
-       void _addParent(Object * child);
-       bool _findObject(const std::string & token, Object* & foundObject, unsigned int & tokenPositionInContent);
-       void _serialize(std::ofstream  & out, const std::string & stream);
-       void _recalculateObjectNumbers(unsigned int & maxNumber);
-       void _recalculateReferencePositions(unsigned int changedReference, int displacement);
-       void _retrieveMaxObjectNumber(unsigned int & maxNumber);
-       void _serialize(std::ofstream & out, std::map<unsigned int, unsigned long long> & sizes);       
-       bool _getStreamFromContent(std::string & stream);
+       Object * getCloneImpl(std::map<unsigned int, Object *> & clones);
+       void addChildImpl(Object * child, const ReferencePositionsInContent & childPositionsInContent);
+       void setObjectNumberImpl(unsigned int objectNumber);
+       void addParentImpl(Object * child);
+       bool findObjectImpl(const std::string & token, Object* & foundObject, unsigned int & tokenPositionInContent);
+       void serializeImpl(std::ofstream  & out, const std::string & stream);
+       void recalculateObjectNumbersImpl(unsigned int & maxNumber);
+       void recalculateReferencePositionsImpl(unsigned int changedReference, int displacement);
+       void retrieveMaxObjectNumberImpl(unsigned int & maxNumber);
+       void serializeImpl(std::ofstream & out, std::map<unsigned int, unsigned long long> & sizes);
+       bool getStreamFromContentImpl(std::string & stream);
 
        //members
-       unsigned int                          _number;
-       unsigned int                          _generationNumber;
-       unsigned int                          _oldNumber;
-       std::string                           _content;
-       std::set <Object *>                   _parents;
-       Children                              _children;
-       bool                                  _isPassed;
-       std::pair<unsigned int, unsigned int> _streamBounds;
-       std::string                           _fileName;
-       bool                                  _hasStream;
-       bool                                  _hasStreamInContent;
+       unsigned int                          m_number;
+       unsigned int                          m_generationNumber;
+       unsigned int                          m_oldNumber;
+       std::string                           m_content;
+       std::set <Object *>                   m_parents;
+       Children                              m_children;
+       bool                                  m_isPassed;
+       std::pair<unsigned int, unsigned int> m_streamBounds;
+       std::string                           m_fileName;
+       bool                                  m_hasStream;
+       bool                                  m_hasStreamInContent;
 
     };
 }

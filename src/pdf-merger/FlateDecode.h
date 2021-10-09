@@ -48,7 +48,7 @@ namespace merge_lib
          bool decode(std::string & encoded);
          void initialize(Object * objectWithStream);
       private:
-         FilterPredictor *_predict;
+         FilterPredictor *m_predict;
    };
 }
 #endif // FLATEDECODE_H_INCLUDED

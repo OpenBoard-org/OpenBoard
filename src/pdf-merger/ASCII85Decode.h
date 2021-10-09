@@ -45,7 +45,7 @@ namespace merge_lib
          bool decode(std::string & encoded);
          void initialize(Object * objectWithStram);
       private:
-         void _wput(std::string &cur,unsigned long tuple, int len);
+         void wput(std::string &cur,unsigned long tuple, int len);
 
    };
 }

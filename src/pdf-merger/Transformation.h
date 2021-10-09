@@ -52,142 +52,142 @@ namespace merge_lib
    {
    public:
       TransformationMatrix(double a = 1, double b = 0, double c = 0, double d = 1, double e = 0, double f = 0):
-         _a(a), _b(b), _c(c), _d(d), _e(e), _f(f)
+         m_a(a), m_b(b), m_c(c), m_d(d), m_e(e), m_f(f)
          {}
          TransformationMatrix(const TransformationMatrix & copy)
          {
-            setParameters(copy._a, copy._b, copy._c, copy._d, copy._e, copy._f);
+            setParameters(copy.m_a, copy.m_b, copy.m_c, copy.m_d, copy.m_e, copy.m_f);
          }
          void setParameters(double a, double b, double c, double d, double e, double f)
          {
-            _a = Utils::normalizeValue(a);
-            _b = Utils::normalizeValue(b);
-            _c = Utils::normalizeValue(c);
-            _d = Utils::normalizeValue(d);
-            _e = Utils::normalizeValue(e);
-            _f = Utils::normalizeValue(f);
+            m_a = Utils::normalizeValue(a);
+            m_b = Utils::normalizeValue(b);
+            m_c = Utils::normalizeValue(c);
+            m_d = Utils::normalizeValue(d);
+            m_e = Utils::normalizeValue(e);
+            m_f = Utils::normalizeValue(f);
          }
          void add(const TransformationMatrix & tm)
          {
-            double newA = _a*tm._a + _b*tm._c;
-            double newB = _a*tm._b + _b*tm._d;
-            double newC = _c*tm._a + _d*tm._c;
-            double newD = _c*tm._b + _d*tm._d;
-            double newE = _e*tm._a + _f*tm._c + tm._e;
-            double newF = _e*tm._b + _f*tm._d + tm._f;
+            double newA = m_a*tm.m_a + m_b*tm.m_c;
+            double newB = m_a*tm.m_b + m_b*tm.m_d;
+            double newC = m_c*tm.m_a + m_d*tm.m_c;
+            double newD = m_c*tm.m_b + m_d*tm.m_d;
+            double newE = m_e*tm.m_a + m_f*tm.m_c + tm.m_e;
+            double newF = m_e*tm.m_b + m_f*tm.m_d + tm.m_f;
 
             // we need to round the values to avoid not-needed transformation
             // since 1.e-17 is not 0 from PDF point of view, while such double
             // value really means 0.
-            _a = Utils::normalizeValue(newA);
-            _b = Utils::normalizeValue(newB);
-            _c = Utils::normalizeValue(newC);
-            _d = Utils::normalizeValue(newD);
-            _e = Utils::normalizeValue(newE);
-            _f = Utils::normalizeValue(newF);        
+            m_a = Utils::normalizeValue(newA);
+            m_b = Utils::normalizeValue(newB);
+            m_c = Utils::normalizeValue(newC);
+            m_d = Utils::normalizeValue(newD);
+            m_e = Utils::normalizeValue(newE);
+            m_f = Utils::normalizeValue(newF);
          }
          std::string getValue()
          {
             std::ostringstream value;
 
-            value << "[ " << _a << " " << _b << " " << _c << " " << _d << " " << _e << " " << _f << " ]\n";
+            value << "[ " << m_a << " " << m_b << " " << m_c << " " << m_d << " " << m_e << " " << m_f << " ]\n";
             return value.str();
 
          }
          std::string getCMT()
          {
             std::ostringstream buf;      
-            buf << std::fixed << _a <<" "<< _b <<" "<< _c <<" "<< _d << " "<< _e << " "<< _f << " cm\n";
+            buf << std::fixed << m_a <<" "<< m_b <<" "<< m_c <<" "<< m_d << " "<< m_e << " "<< m_f << " cm\n";
             return buf.str();
          }
          void recalculateCoordinates(double & x, double &y)
          {
             double inputX = x;
             double inputY = y;
-            x = _a*inputX + _c*inputY + _e;
-            y = _b*inputX + _d*inputY + _f;
+            x = m_a*inputX + m_c*inputY + m_e;
+            y = m_b*inputX + m_d*inputY + m_f;
          }
    private:
-      double _a, _b, _c, _d, _e, _f;
+      double m_a, m_b, m_c, m_d, m_e, m_f;
    };
 
    // base class of transformation CMT
    class Transformation
    {
    public:
-      Transformation(): _tm(){};
+      Transformation(): m_tm(){};
       virtual Transformation * getClone() const = 0;
       std::string getCMT()
       {
-         return _tm.getCMT();
+         return m_tm.getCMT();
       }
       virtual ~Transformation() {};
       const TransformationMatrix & getMatrix()
       {
-         return _tm;
+         return m_tm;
       }
       void addMatrix(const TransformationMatrix & tm)
       {
-         _tm.add(tm);
+         m_tm.add(tm);
       }
    protected:
-      TransformationMatrix _tm;
+      TransformationMatrix m_tm;
    };
 
    // rotation CMT
    class Rotation: public Transformation
    {
    public:
-      Rotation(double angle):Transformation(),_angle(angle)
+      Rotation(double angle):Transformation(),m_angle(angle)
       {
-         double cosValue = cos(_angle * (M_PI / 180));
-         double sinValue = sin(_angle * (M_PI / 180));
+         double cosValue = cos(m_angle * (M_PI / 180));
+         double sinValue = sin(m_angle * (M_PI / 180));
 
-         _tm.setParameters(cosValue, sinValue, -sinValue, cosValue, 0, 0);
+         m_tm.setParameters(cosValue, sinValue, -sinValue, cosValue, 0, 0);
 
       };
       virtual ~Rotation(){};
       virtual Transformation * getClone() const
       {
-         return new Rotation(_angle);
+         return new Rotation(m_angle);
       }   
 
    protected:
-      double _angle;   // number of degrees to rotate
+      double m_angle;   // number of degrees to rotate
    };
 
    // translation CMT
    class Translation: public Transformation
    {
    public:
-      Translation(double x, double y):Transformation(),_x(x),_y(y)
+      Translation(double x, double y):Transformation(),m_x(x),m_y(y)
       {
-         _tm.setParameters(1, 0, 0, 1, _x, _y);
+         m_tm.setParameters(1, 0, 0, 1, m_x, m_y);
       };
       virtual ~Translation(){};
       virtual Transformation * getClone() const
       {
-         return new Translation(_x, _y);
+         return new Translation(m_x, m_y);
       }   
    protected:
-      double _x;
-      double _y;
+      double m_x;
+      double m_y;
    };
 
    // scaling CMT
    class Scaling: public Transformation
    {
    public:
-      Scaling(double x):Transformation(),_x(x)
+      Scaling(double x):Transformation(),m_x(x)
       {      
-         _tm.setParameters(_x, 0, 0, _x, 0, 0);
+         m_tm.setParameters(m_x, 0, 0, m_x, 0, 0);
       };
       virtual Transformation * getClone() const
       {
-         return new Scaling(_x);
+         return new Scaling(m_x);
       }   
    protected:
-      double _x; // the value to multiply the content
+      double m_x; // the value to multiply the content
    };
 
 
@@ -205,67 +205,67 @@ namespace merge_lib
          double y = 0,  // leftBottomY coordinate
          double scale = 1, // scale (by default = 1 = NONE
          int angel = 0): // rotation (0,90,180,270)
-      _x(x),_y(y),_scale(scale),_angel(angel)
+      m_x(x),m_y(y),m_scale(scale),m_angel(angel)
       {
-         if( _angel )
+         if( m_angel )
          {
-            _transforms.push_back(new Rotation(_angel));
+            m_transforms.push_back(new Rotation(m_angel));
          }
 
-         if( !Utils::doubleEquals(_scale,1) && !Utils::doubleEquals(_scale,0) )
+         if( !Utils::doubleEquals(m_scale,1) && !Utils::doubleEquals(m_scale,0) )
          {
-            _transforms.push_back(new Scaling(_scale));
+            m_transforms.push_back(new Scaling(m_scale));
          }
       }
       virtual ~TransformationDescription()
       {
-         for(size_t i = 0;i<_annotsTransforms.size();i++)
+         for(size_t i = 0;i<m_annotsTransforms.size();i++)
          {
-            if( _annotsTransforms[i] )
+            if( m_annotsTransforms[i] )
             {
-               delete _annotsTransforms[i];
-               _annotsTransforms[i] = 0;
+               delete m_annotsTransforms[i];
+               m_annotsTransforms[i] = 0;
             }
-            _annotsTransforms.clear();
+            m_annotsTransforms.clear();
          }
-         for(size_t i = 0;i<_transforms.size();i++)
+         for(size_t i = 0;i<m_transforms.size();i++)
          {
-            if( _transforms[i] )
+            if( m_transforms[i] )
             {
-               delete _transforms[i];
-               _transforms[i] = 0;
+               delete m_transforms[i];
+               m_transforms[i] = 0;
             }
          }
-         _transforms.clear();
+         m_transforms.clear();
       }
       void addRotation(int rotation)
       {
          if( rotation )
          {
-            _angel = (_angel - rotation)%360;
-            // /Rotation rotate the object, while _angel rotate the coordinate system
+            m_angel = (m_angel - rotation)%360;
+            // /Rotation rotate the object, while m_angel rotate the coordinate system
             // where object is located, that's why 
             // we should compensate that
-            _transforms.push_back(new Rotation(360-rotation));
+            m_transforms.push_back(new Rotation(360-rotation));
          }
       }
       const PageTransformations & getTransformations() const
       {
-         return _transforms;
+         return m_transforms;
       }
       const PageTransformations getAnnotsTransformations() const
       {
            PageTransformations trans;
-           trans = _transforms;
-           for(size_t i = 0; i < _annotsTransforms.size(); ++i)
+           trans = m_transforms;
+           for(size_t i = 0; i < m_annotsTransforms.size(); ++i)
            {
-              trans.push_back(_annotsTransforms[i]);
+              trans.push_back(m_annotsTransforms[i]);
            }
            return trans;
       }
       void addAnnotsTransformation( Transformation & trans )
       {
-         _annotsTransforms.push_back(trans.getClone());
+         m_annotsTransforms.push_back(trans.getClone());
       }
 
       // method recalculates the final translation in order to put 
@@ -276,31 +276,31 @@ namespace merge_lib
          double dx1 = 0;
          double dy1 = 0;
 
-         double scaling = ( Utils::doubleEquals(_scale,0))?1:_scale;
+         double scaling = ( Utils::doubleEquals(m_scale,0))?1:m_scale;
 
-         switch(_angel)
+         switch(m_angel)
          {
          case 0: 
-            dx1 = _x/scaling;
-            dy1 = _y/scaling;
+            dx1 = m_x/scaling;
+            dy1 = m_y/scaling;
             break;
          case -270:
          case  90:
-            dx1 = _y/scaling ;
-            dy1 = - _x /scaling - height;
+            dx1 = m_y/scaling ;
+            dy1 = - m_x /scaling - height;
             break;
          case 180:
          case -180:
-            dx1 = - _x /scaling - width;
-            dy1 = - _y /scaling - height;
+            dx1 = - m_x /scaling - width;
+            dy1 = - m_y /scaling - height;
             break;
          case 270:
          case -90:
-            dx1 = - _y/scaling - width;
-            dy1 = _x/scaling;
+            dx1 = - m_y/scaling - width;
+            dy1 = m_x/scaling;
             break;
          default:
-            std::cerr<<"Unsupported rotation parameter"<<_angel<<std::endl;
+            std::cerr<<"Unsupported rotation parameter"<<m_angel<<std::endl;
             break;
          }
 
@@ -309,7 +309,7 @@ namespace merge_lib
          {
             // This translation is needed to put transformed content into
             // desired coordinates
-            _transforms.push_back(new Translation(dx1,dy1));
+            m_transforms.push_back(new Translation(dx1,dy1));
          }
       }
       TransformationDescription( const TransformationDescription & copy)
@@ -320,40 +320,40 @@ namespace merge_lib
       {
          if( this != &copy )
          {
-            for(size_t i = 0;i < copy._annotsTransforms.size();i++)
+            for(size_t i = 0;i < copy.m_annotsTransforms.size();i++)
             {
-               _annotsTransforms.push_back(copy._annotsTransforms[i]->getClone());
+               m_annotsTransforms.push_back(copy.m_annotsTransforms[i]->getClone());
             }
-            for(size_t i = 0; i < copy._transforms.size(); ++i)
+            for(size_t i = 0; i < copy.m_transforms.size(); ++i)
             {
-               _transforms.push_back(copy._transforms[i]->getClone());
+               m_transforms.push_back(copy.m_transforms[i]->getClone());
             }
-            _x = copy._x;
-            _y = copy._y;
-            _scale = copy._scale;
-            _angel = copy._angel;
+            m_x = copy.m_x;
+            m_y = copy.m_y;
+            m_scale = copy.m_scale;
+            m_angel = copy.m_angel;
          }
          return *this;
       }
       std::string getCMT()
       {
          std::stringstream content;
-         for(size_t i = 0;i<_transforms.size();i++)
+         for(size_t i = 0;i<m_transforms.size();i++)
          {
-            content<<_transforms[i]->getCMT();
+            content<<m_transforms[i]->getCMT();
          }
          return content.str();
       }
 
 
    private:
-      double _x;
-      double _y;
-      double _scale;
-      int _angel;
+      double m_x;
+      double m_y;
+      double m_scale;
+      int m_angel;
 
-      PageTransformations _transforms;
-      PageTransformations _annotsTransforms;
+      PageTransformations m_transforms;
+      PageTransformations m_annotsTransforms;
    };
 
 }

@@ -51,8 +51,8 @@ namespace merge_lib
       static unsigned long getFileSize(const char * fileName);
 
    private:
-      static int _stringToInt(const std::string & str); //throw ConvertException
-      static int _stringToInt(std::string & str); //throw ConvertException
+      static int stringToIntImpl(const std::string & str); //throw ConvertException
+      static int stringToIntImpl(std::string & str); //throw ConvertException
    };
 
 

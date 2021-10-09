@@ -41,20 +41,20 @@ namespace merge_lib
    public:
       AnnotsHandler(Object * page, const std::string & handlerName, std::vector<Object *> & annots): 
                         RemoveHimselfHandler(page, handlerName),
-                        _annotations(annots)
+                        m_annotations(annots)
 
       {
-        _setHandlerName(handlerName);
+        setHandlerName(handlerName);
       }
 
       
    private:
       //methods
-      void _processObjectContent(unsigned int startOfPageElement);
+      void processObjectContentImpl(unsigned int startOfPageElement);
        
 
       //memebers
-      std::vector<Object *> & _annotations;
+      std::vector<Object *> & m_annotations;
       
    };
 }

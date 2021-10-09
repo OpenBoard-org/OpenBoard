@@ -60,11 +60,11 @@ int Utils::stringToInt(const std::string & str) //throw ConvertException
       //all number is zero, for ex. 00000000
       std::string copy = str;
       const std::string & cutedStr = copy.erase(0, lastZero);
-      return _stringToInt(cutedStr) ;
+      return stringToIntImpl(cutedStr) ;
    }
    else
    {
-      return _stringToInt(str);
+      return stringToIntImpl(str);
    }
 }
 
@@ -88,7 +88,7 @@ std::string Utils::doubleToStr(double doubleValue)
     return std::string(QString::number(doubleValue).toLatin1());
 }
 
-int Utils::_stringToInt(const std::string & str) //throw ConvertException
+int Utils::stringToIntImpl(const std::string & str) //throw ConvertException
 {
    int intValue = atoi(str.c_str());
 

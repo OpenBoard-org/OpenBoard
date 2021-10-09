@@ -40,14 +40,14 @@ namespace merge_lib
     public:
         RemoveHimselfHandler(Object * page, const std::string & handlerName): PageElementHandler(page)    
         {
-            _setHandlerName(handlerName);        
+            setHandlerName(handlerName);        
         }
         virtual ~RemoveHimselfHandler()
         {
         }
     private:
         //methods
-        virtual void _changeObjectContent(unsigned int startOfPageElement);
+        virtual void changeObjectContentImpl(unsigned int startOfPageElement);
     };
 }
 #endif

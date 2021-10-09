@@ -42,7 +42,7 @@ namespace merge_lib
                 PageElementHandler(page)
                      
       {
-         _setHandlerName(handlerName);
+         setHandlerName(handlerName);
       }
       virtual ~ContentHandler(){};
 
@@ -51,24 +51,24 @@ namespace merge_lib
       //methods
 
       //concatedate stream of all objects which contains Content of Page
-      void _processObjectContent(unsigned int startOfPageElement);
+      void processObjectContentImpl(unsigned int startOfPageElement);
 
       //write concatenated stream to Page object
-      void _changeObjectContent(unsigned int startOfPageElement);
+      void changeObjectContentImpl(unsigned int startOfPageElement);
       //get content of stream 
       // object - object with stream
       //leftBound - left bound of object's content
       //rightBound - right bound of object's content
-      std::string _retrieveStreamContent(Object * object, unsigned int leftBound, unsigned int rightBound);
+      std::string retrieveStreamContent(Object * object, unsigned int leftBound, unsigned int rightBound);
 
       //get stream from Arrey elemetns
-      std::string _getStreamFromReferencies(Object * objectWithArray, unsigned int leftBound, unsigned int rightBound);
+      std::string getStreamFromReferencies(Object * objectWithArray, unsigned int leftBound, unsigned int rightBound);
 
       //get stream from Object
-      std::string _getStreamFromContent(Object * objectWithStream);
+      std::string getStreamFromContent(Object * objectWithStream);
 
       //memebers
-      std::string _concatenatedStream;
+      std::string m_concatenatedStream;
    };
 }
 #endif

@@ -39,9 +39,9 @@
 
 using namespace merge_lib;
 
-Parser Merger::_parser;
+Parser Merger::s_parser;
 
-Merger::Merger():_baseDocuments(),_overlayDocument(0)
+Merger::Merger():m_baseDocuments(),m_overlayDocument(0)
 {
 
 }
@@ -50,40 +50,40 @@ Merger::Merger():_baseDocuments(),_overlayDocument(0)
 
 Merger::~Merger()
 {
-   std::map<std::string, Document *>::iterator docIterator = _baseDocuments.begin();
-   for(; docIterator != _baseDocuments.end(); ++docIterator)
+   std::map<std::string, Document *>::iterator docIterator = m_baseDocuments.begin();
+   for(; docIterator != m_baseDocuments.end(); ++docIterator)
    {
       delete (*docIterator).second;
    }
-   if( _overlayDocument )
+   if( m_overlayDocument )
    {
-      delete _overlayDocument;
-      _overlayDocument = 0;
+      delete m_overlayDocument;
+      m_overlayDocument = 0;
    }
-   _baseDocuments.clear();
+   m_baseDocuments.clear();
 }
 
 void Merger::addBaseDocument(const char * docName)
 {
    //if docName has been already opened then do nothing
-   if(_baseDocuments.count(docName))
+   if(m_baseDocuments.count(docName))
       return;
-   Document * newBaseDoc = _parser.parseDocument(docName);
-   _baseDocuments.insert(std::pair<std::string, Document *>(docName, newBaseDoc));
+   Document * newBaseDoc = s_parser.parseDocument(docName);
+   m_baseDocuments.insert(std::pair<std::string, Document *>(docName, newBaseDoc));
 }
 
 void Merger::addOverlayDocument(const char * docName)
 {
-   if( _overlayDocument )
+   if( m_overlayDocument )
    {
-      delete _overlayDocument;
-      _overlayDocument = 0;
+      delete m_overlayDocument;
+      m_overlayDocument = 0;
    }
-   if( !_overlayDocument )
+   if( !m_overlayDocument )
    {
       OverlayDocumentParser overlayDocParser;
-      _overlayDocument = overlayDocParser.parseDocument(docName);
-      if( !_overlayDocument )
+      m_overlayDocument = overlayDocParser.parseDocument(docName);
+      if( !m_overlayDocument )
       {
          throw Exception("Error loading overlay document!");
       }
@@ -93,10 +93,10 @@ void Merger::addOverlayDocument(const char * docName)
 // The main method which performs the merge
 void Merger::merge(const char * overlayDocName, const MergeDescription & pagesToMerge)
 {
-   if( !_overlayDocument)
+   if( !m_overlayDocument)
    {
       addOverlayDocument(overlayDocName);
-      if( !_overlayDocument )
+      if( !m_overlayDocument )
       {
          throw Exception("Error loading overlay document!");
       }
@@ -104,7 +104,7 @@ void Merger::merge(const char * overlayDocName, const MergeDescription & pagesTo
    MergeDescription::const_iterator pageIterator = pagesToMerge.begin();
    for(; pageIterator != pagesToMerge.end(); ++pageIterator )
    {            
-      Page * destinationPage = _overlayDocument->getPage( (*pageIterator).overlayPageNumber);
+      Page * destinationPage = m_overlayDocument->getPage( (*pageIterator).overlayPageNumber);
       if( destinationPage == 0 )
       {
          std::stringstream error;
@@ -112,7 +112,7 @@ void Merger::merge(const char * overlayDocName, const MergeDescription & pagesTo
                " number in " << overlayDocName;
          throw Exception(error);
       }
-      Document * sourceDocument = _baseDocuments[(*pageIterator).baseDocumentName];
+      Document * sourceDocument = m_baseDocuments[(*pageIterator).baseDocumentName];
       Page * sourcePage = (sourceDocument == 0)? 0 : sourceDocument->getPage((*pageIterator).basePageNumber);
       bool isPageDuplicated = false;
       if( sourcePage )
@@ -128,13 +128,13 @@ void Merger::merge(const char * overlayDocName, const MergeDescription & pagesTo
          isPageDuplicated = (2 == howManyTimesPageFound) ? true : false;
       }
 
-      destinationPage->merge(sourcePage, _overlayDocument, const_cast<MergePageDescription&>((*pageIterator)), isPageDuplicated);
+      destinationPage->merge(sourcePage, m_overlayDocument, const_cast<MergePageDescription&>((*pageIterator)), isPageDuplicated);
    }
 
 }
 // Method performs saving of merged documents into selected file
 void Merger::saveMergedDocumentsAs(const char * outDocumentName)
 {
-   _overlayDocument->saveAs(outDocumentName);
+   m_overlayDocument->saveAs(outDocumentName);
 }
 

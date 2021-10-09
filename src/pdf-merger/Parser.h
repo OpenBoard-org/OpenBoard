@@ -47,7 +47,7 @@ namespace merge_lib
    class Parser
    {
    public:   
-      Parser(): _root(0), _fileContent(), _objects(), _document(0)  {};
+      Parser(): m_root(0), m_fileContent(), m_objects(), m_document(0)  {};
       Document * parseDocument(const char * fileName);
 
       static const std::string WHITESPACES;
@@ -65,39 +65,39 @@ namespace merge_lib
       static unsigned int findEndOfElementContent(const std::string &content, unsigned int startOfPageElement);
       static bool tokenIsAName(const std::string &content, size_t start );
    protected:
-      const std::string &                           _getObjectContent(unsigned int objectPosition, unsigned int & objectNumber, unsigned int & generationNumber, std::pair<unsigned int, unsigned int> &, bool &);
-      virtual unsigned int                          _readTrailerAndReturnRoot();
+      const std::string &                           getObjectContent(unsigned int objectPosition, unsigned int & objectNumber, unsigned int & generationNumber, std::pair<unsigned int, unsigned int> &, bool &);
+      virtual unsigned int                          readTrailerAndReturnRoot();
    private:
       //methods
-      virtual void                                  _getFileContent(const char * fileName);
-      bool                                          _getNextObject(Object * object);
-      void                                          _callObserver(std::string objectContent);
-      void                                          _createObjectTree(const char * fileName);
-      void                                          _retrieveAllPages(Object * objectWithKids);
-      void                                          _fillOutObjects();
-      virtual void                                  _readXRefAndCreateObjects();
-      unsigned int                                  _getEndOfLineFromContent(unsigned int fromPosition);
-      const std::pair<unsigned int, unsigned int> & _getLineBounds(const std::string & str, unsigned int fromPosition);
-      const std::string &                           _getNextToken(unsigned int & fromPosition);
-      unsigned int                                  _countTokens(unsigned int leftBound, unsigned int rightBount);
-      unsigned int                                  _skipWhiteSpaces(const std::string & str);
-      unsigned int                                  _skipWhiteSpacesFromContent(unsigned int fromPosition);
-      const std::map<unsigned int, Object::ReferencePositionsInContent> & _getReferences(const std::string & objectContent);
-      unsigned int                                  _skipNumber(const std::string & str, unsigned int currentPosition);      
-      unsigned int                                  _skipWhiteSpaces(const std::string & str, unsigned int fromPosition);
-      void                                          _createDocument(const char * docName);      
-      virtual unsigned int                          _getStartOfXrefWithRoot();
-      unsigned int                                  _readTrailerAndRterievePrev(const unsigned int startPositionForSearch, unsigned int & previosXref);
-      void                                          _clearParser();      
+      virtual void                                  getFileContent(const char * fileName);
+      bool                                          getNextObject(Object * object);
+      void                                          callObserver(std::string objectContent);
+      void                                          createObjectTree(const char * fileName);
+      void                                          retrieveAllPages(Object * objectWithKids);
+      void                                          fillOutObjects();
+      virtual void                                  readXRefAndCreateObjects();
+      unsigned int                                  getEndOfLineFromContent(unsigned int fromPosition);
+      const std::pair<unsigned int, unsigned int> & getLineBounds(const std::string & str, unsigned int fromPosition);
+      const std::string &                           getNextToken(unsigned int & fromPosition);
+      unsigned int                                  countTokens(unsigned int leftBound, unsigned int rightBount);
+      unsigned int                                  skipWhiteSpaces(const std::string & str);
+      unsigned int                                  skipWhiteSpacesFromContent(unsigned int fromPosition);
+      const std::map<unsigned int, Object::ReferencePositionsInContent> & getReferences(const std::string & objectContent);
+      unsigned int                                  skipNumber(const std::string & str, unsigned int currentPosition);
+      unsigned int                                  skipWhiteSpaces(const std::string & str, unsigned int fromPosition);
+      void                                          createDocument(const char * docName);
+      virtual unsigned int                          getStartOfXrefWithRoot();
+      unsigned int                                  readTrailerAndRterievePrev(const unsigned int startPositionForSearch, unsigned int & previosXref);
+      void                                          clearParser();
       
 
    protected:  
 
       //members
-      Object *                         _root;
-      std::string                      _fileContent;
-      std::map<unsigned int, Object *> _objects;
-      Document *                       _document;
+      Object *                         m_root;
+      std::string                      m_fileContent;
+      std::map<unsigned int, Object *> m_objects;
+      Document *                       m_document;
       
    };
 }

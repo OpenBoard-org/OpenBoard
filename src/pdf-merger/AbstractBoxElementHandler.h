@@ -48,11 +48,11 @@ namespace merge_lib
 
    protected:
 
-      void _retrieveBoxFromParent()
+      void retrieveBoxFromParent()
       {                  
-         std::string content = _page->getObjectContent();
+         std::string content = m_page->getObjectContent();
          std::string mediaBox;
-         Object * parent = _page;
+         Object * parent = m_page;
          while(1)
          {
             unsigned int startOfParent = content.find("/Parent");
@@ -64,7 +64,7 @@ namespace merge_lib
                break;
             parent = parents[0];
             std::string parentContent = parent->getObjectContent();
-            unsigned int startOfMediaBox = parentContent.find(_handlerName);
+            unsigned int startOfMediaBox = parentContent.find(m_handlerName);
             if((int)startOfMediaBox == -1)
             {
                content = parentContent;
@@ -76,13 +76,13 @@ namespace merge_lib
          }
          if(!mediaBox.empty())
          {
-            unsigned int startOfMediaBox = _page->getObjectContent().rfind(">>");
-            _page->insertToContent(startOfMediaBox, mediaBox);
-            _changeObjectContent(startOfMediaBox);            
+            unsigned int startOfMediaBox = m_page->getObjectContent().rfind(">>");
+            m_page->insertToContent(startOfMediaBox, mediaBox);
+            changeObjectContentImpl(startOfMediaBox);
          }            
       }
    private:
-      virtual void _changeObjectContent(unsigned int startOfPageElement) = 0;
+      virtual void changeObjectContentImpl(unsigned int startOfPageElement) = 0;
    };
 }
 #endif

@@ -42,23 +42,23 @@
 #include "core/memcheck.h"
 
 using namespace merge_lib;
-std::map<std::string, Decoder *> Filter::_allDecoders;
+std::map<std::string, Decoder *> Filter::s_allDecoders;
 
 Filter::~Filter()
 {
-   std::map<std::string, Decoder *>::iterator it = _allDecoders.begin();
-   for(; it != _allDecoders.end(); ++it)
+   std::map<std::string, Decoder *>::iterator it = s_allDecoders.begin();
+   for(; it != s_allDecoders.end(); ++it)
    {
       delete (*it).second;
    }
-   _allDecoders.clear();
+   s_allDecoders.clear();
 }
 
 //replace coded stream with decoded
 void Filter::getDecodedStream(std::string & stream)
 {
-   std::vector <Decoder * >  decoders = _getDecoders();
-   _objectWithStream->getStream(stream);
+   std::vector <Decoder * >  decoders = getDecoders();
+   m_objectWithStream->getStream(stream);
    for(size_t i = 0; i < decoders.size(); ++i)
    {
       decoders[i]->decode(stream);
@@ -67,11 +67,11 @@ void Filter::getDecodedStream(std::string & stream)
 
 //parse object's content and fill out vector with
 //necessary decoders
-std::vector <Decoder * > Filter::_getDecoders()
+std::vector <Decoder * > Filter::getDecoders()
 {
    std::string streamHeader;
    static std::string whitespacesAndDelimeters(" \t\f\v\n\r<<>>]/");
-   _objectWithStream->getHeader(streamHeader);
+   m_objectWithStream->getHeader(streamHeader);
    unsigned int filterPosition = streamHeader.find("/Filter"); 
    std::vector <Decoder * > result;   
    unsigned int startOfDecoder = filterPosition + 1;
@@ -86,11 +86,11 @@ std::vector <Decoder * > Filter::_getDecoders()
       if((int)endOfDecoder == -1)
          break;
       std::map<std::string, Decoder *>::iterator foundDecoder = 
-         _allDecoders.find(streamHeader.substr(startOfDecoder, endOfDecoder - startOfDecoder));
-      if(foundDecoder == _allDecoders.end())
+         s_allDecoders.find(streamHeader.substr(startOfDecoder, endOfDecoder - startOfDecoder));
+      if(foundDecoder == s_allDecoders.end())
          break;
       Decoder * decoder = foundDecoder->second;
-      decoder->initialize(_objectWithStream);
+      decoder->initialize(m_objectWithStream);
       result.push_back(decoder);
    }
    return result;
@@ -98,19 +98,19 @@ std::vector <Decoder * > Filter::_getDecoders()
 
 }
 
-void Filter::_createAllDecodersSet()
+void Filter::createAllDecodersSet()
 {
 
-   if(!_allDecoders.empty())
+   if(!s_allDecoders.empty())
       return;
-   _allDecoders.insert(std::pair<std::string, Decoder *> (std::string("ASCIIHexDecode"), new ASCIIHexDecode()));
-   _allDecoders.insert(std::pair<std::string, Decoder *> (std::string("ASCII85Decode"), new ASCII85Decode()));   
-   _allDecoders.insert(std::pair<std::string, Decoder *> (std::string("LZWDecode"), new LZWDecode()));   
-   _allDecoders.insert(std::pair<std::string, Decoder *> (std::string("FlateDecode"), new FlateDecode()));   
-   _allDecoders.insert(std::pair<std::string, Decoder *> (std::string("RunLengthDecode"), new RunLengthDecode()));   
-   _allDecoders.insert(std::pair<std::string, Decoder *> (std::string("CCITTFaxDecode"), new CCITTFaxDecode()));   
-   _allDecoders.insert(std::pair<std::string, Decoder *> (std::string("JBIG2Decode"), new JBIG2Decode())); 
-   _allDecoders.insert(std::pair<std::string, Decoder *> (std::string("DCTDecode"), new DCTDecode())); 
+   s_allDecoders.insert(std::pair<std::string, Decoder *> (std::string("ASCIIHexDecode"), new ASCIIHexDecode()));
+   s_allDecoders.insert(std::pair<std::string, Decoder *> (std::string("ASCII85Decode"), new ASCII85Decode()));   
+   s_allDecoders.insert(std::pair<std::string, Decoder *> (std::string("LZWDecode"), new LZWDecode()));   
+   s_allDecoders.insert(std::pair<std::string, Decoder *> (std::string("FlateDecode"), new FlateDecode()));   
+   s_allDecoders.insert(std::pair<std::string, Decoder *> (std::string("RunLengthDecode"), new RunLengthDecode()));   
+   s_allDecoders.insert(std::pair<std::string, Decoder *> (std::string("CCITTFaxDecode"), new CCITTFaxDecode()));   
+   s_allDecoders.insert(std::pair<std::string, Decoder *> (std::string("JBIG2Decode"), new JBIG2Decode())); 
+   s_allDecoders.insert(std::pair<std::string, Decoder *> (std::string("DCTDecode"), new DCTDecode())); 
 }
 
 

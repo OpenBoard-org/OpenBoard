@@ -51,7 +51,7 @@ namespace merge_lib
       ~Page();
       unsigned int getPageNumber()
       {
-         return _pageNumber;
+         return m_pageNumber;
       }
       void merge(Page * sourcePage, Document * parentDocument, MergePageDescription & description, bool isPageDuplicated);
 
@@ -61,13 +61,13 @@ namespace merge_lib
       Object * pageToXObject(std::vector<Object *> & allObjects, std::vector<Object *> & annots, bool isCloneNeeded);
       void setRotation(int rotation)
       {
-         _rotation = rotation;
+         m_rotation = rotation;
       }
 
    private:
       //methods
-      Object * _pageToXObject(Object *& page, std::vector<Object *> & annots);
-      std::string _getMergedPageContent(  unsigned int & contentPosition, 
+      Object * pageToXObjectImpl(Object *& page, std::vector<Object *> & annots);
+      std::string getMergedPageContentImpl(  unsigned int & contentPosition,
          unsigned int & parentPosition, 
          unsigned int & originalPage1Position, 
          unsigned int & originalPage2Position,
@@ -78,9 +78,9 @@ namespace merge_lib
          std::vector <Object::ChildAndItPositionInContent> & annotsPositions
          );
       //members
-      Object * _root;
-      unsigned int _pageNumber;
-      int _rotation;
+      Object * m_root;
+      unsigned int m_pageNumber;
+      int m_rotation;
 
    };
 }

@@ -33,11 +33,11 @@
 
 using namespace merge_lib;
 
-void RemoveHimselfHandler::_changeObjectContent(unsigned int startOfPageElement)
+void RemoveHimselfHandler::changeObjectContentImpl(unsigned int startOfPageElement)
 {
-   unsigned int endOfElement = _findEndOfElementContent(startOfPageElement);
-   _page->forgetAboutChildren(startOfPageElement, endOfElement);
-   _page->eraseContent(startOfPageElement, endOfElement - startOfPageElement);
+   unsigned int endOfElement = findEndOfElementContent(startOfPageElement);
+   m_page->forgetAboutChildren(startOfPageElement, endOfElement);
+   m_page->eraseContent(startOfPageElement, endOfElement - startOfPageElement);
 }
 
 

@@ -41,60 +41,60 @@
 using namespace merge_lib;
 using namespace std;
 //concatenate stream of all objects which contain Content of Page
-void ContentHandler::_processObjectContent(unsigned int startOfPageElement)
+void ContentHandler::processObjectContentImpl(unsigned int startOfPageElement)
 {
 
-   unsigned int endOfPage = _findEndOfElementContent(startOfPageElement);
-   _concatenatedStream = _retrieveStreamContent(_page, startOfPageElement, endOfPage);
+   unsigned int endOfPage = findEndOfElementContent(startOfPageElement);
+   m_concatenatedStream = retrieveStreamContent(m_page, startOfPageElement, endOfPage);
 
    FlateDecode flate;   
-   flate.encode(_concatenatedStream);
+   flate.encode(m_concatenatedStream);
 }
 
 //write concatenated stream to Page object
-void ContentHandler::_changeObjectContent(unsigned int startOfPageElement)
+void ContentHandler::changeObjectContentImpl(unsigned int startOfPageElement)
 {
 
-   unsigned int endOfPage = _findEndOfElementContent(startOfPageElement);
-   _page->forgetAboutChildren(startOfPageElement, endOfPage);
-   _page->eraseContent(startOfPageElement, endOfPage - startOfPageElement);
-   unsigned int endOfObjectDescription = _pageContent.rfind(">>");
+   unsigned int endOfPage = findEndOfElementContent(startOfPageElement);
+   m_page->forgetAboutChildren(startOfPageElement, endOfPage);
+   m_page->eraseContent(startOfPageElement, endOfPage - startOfPageElement);
+   unsigned int endOfObjectDescription = m_pageContent.rfind(">>");
    const char * length = "/Filter /FlateDecode\n/Length ";
    unsigned int sizeOfLength = strlen(length);
-   _page->insertToContent(endOfObjectDescription, length, sizeOfLength);
-   _page->insertToContent(endOfObjectDescription + sizeOfLength, Utils::uIntToStr(_concatenatedStream.size()).c_str());
-   _page->appendContent("\nstream\n");
-   _page->appendContent(_concatenatedStream);
-   _page->appendContent("endstream\n");
-   _page->forgetStreamInFile();
+   m_page->insertToContent(endOfObjectDescription, length, sizeOfLength);
+   m_page->insertToContent(endOfObjectDescription + sizeOfLength, Utils::uIntToStr(m_concatenatedStream.size()).c_str());
+   m_page->appendContent("\nstream\n");
+   m_page->appendContent(m_concatenatedStream);
+   m_page->appendContent("endstream\n");
+   m_page->forgetStreamInFile();
 }
 
 //get content of stream 
 // object - object with stream
 //leftBound - left bound of object's content
 //rightBound - right bound of object's content
-string ContentHandler::_retrieveStreamContent(merge_lib::Object * object, unsigned int leftBound, unsigned int rightBound)
+string ContentHandler::retrieveStreamContent(merge_lib::Object * object, unsigned int leftBound, unsigned int rightBound)
 {   
    return (object->hasStream()) ? 
-      _getStreamFromContent(object) :
-      _getStreamFromReferencies(object, leftBound, rightBound);
+      getStreamFromContent(object) :
+      getStreamFromReferencies(object, leftBound, rightBound);
 
 }
 //get stream from Array elements
-string ContentHandler::_getStreamFromReferencies(merge_lib::Object * objectWithArray, unsigned int leftBound, unsigned int rightBound)
+string ContentHandler::getStreamFromReferencies(merge_lib::Object * objectWithArray, unsigned int leftBound, unsigned int rightBound)
 {
    std::string result;
    std::vector<Object *> referencies = objectWithArray->getSortedByPositionChildren(leftBound, rightBound);
    for(size_t i = 0; i < referencies.size(); ++i)
    {
-      result.append(_retrieveStreamContent(referencies[i], 0, referencies[i]->getObjectContent().size()));      
+      result.append(retrieveStreamContent(referencies[i], 0, referencies[i]->getObjectContent().size()));
    }
    objectWithArray->forgetAboutChildren(leftBound,rightBound);
    return result;
 }
 
 //get stream from Object
-string ContentHandler::_getStreamFromContent(merge_lib::Object * objectWithStream)
+string ContentHandler::getStreamFromContent(merge_lib::Object * objectWithStream)
 {
    Filter filter(objectWithStream);    
    string decodedStream;

@@ -33,78 +33,78 @@
 
 using namespace merge_lib;
 
-std::set<std::string> PageElementHandler::_allPageFields;
+std::set<std::string> PageElementHandler::s_allPageFields;
 
-void PageElementHandler::_createAllPageFieldsSet()
+void PageElementHandler::createAllPageFieldsSet()
 {
-   if(!_allPageFields.empty())
+   if(!s_allPageFields.empty())
       return;
-   _allPageFields.insert(std::string("Type"));
-   _allPageFields.insert(std::string("Parent"));
-   _allPageFields.insert(std::string("LastModified"));
-   _allPageFields.insert(std::string("Resources"));
-   _allPageFields.insert(std::string("MediaBox"));
-   _allPageFields.insert(std::string("CropBox"));
-   _allPageFields.insert(std::string("BleedBox"));
-   _allPageFields.insert(std::string("TrimBox"));
-   _allPageFields.insert(std::string("ArtBox"));
-   _allPageFields.insert(std::string("BoxColorInfo"));
-   _allPageFields.insert(std::string("Contents"));
-   _allPageFields.insert(std::string("Rotate"));
-   _allPageFields.insert(std::string("Group"));
-   _allPageFields.insert(std::string("Thumb"));
-   _allPageFields.insert(std::string("B"));
-   _allPageFields.insert(std::string("Dur"));
-   _allPageFields.insert(std::string("Trans"));
-   _allPageFields.insert(std::string("Annots"));
-   _allPageFields.insert(std::string("AA"));
-   _allPageFields.insert(std::string("Metadata"));
-   _allPageFields.insert(std::string("PieceInfo"));
-   _allPageFields.insert(std::string("StructParents"));   
-   _allPageFields.insert(std::string("ID"));   
-   _allPageFields.insert(std::string("PZ"));   
-   _allPageFields.insert(std::string("SeparationInfo"));   
-   _allPageFields.insert(std::string("Tabs"));   
-   _allPageFields.insert(std::string("TemplateInstantiated"));   
-   _allPageFields.insert(std::string("PresSteps"));   
-   _allPageFields.insert(std::string("UserUnit"));   
-   _allPageFields.insert(std::string("VP"));
+   s_allPageFields.insert(std::string("Type"));
+   s_allPageFields.insert(std::string("Parent"));
+   s_allPageFields.insert(std::string("LastModified"));
+   s_allPageFields.insert(std::string("Resources"));
+   s_allPageFields.insert(std::string("MediaBox"));
+   s_allPageFields.insert(std::string("CropBox"));
+   s_allPageFields.insert(std::string("BleedBox"));
+   s_allPageFields.insert(std::string("TrimBox"));
+   s_allPageFields.insert(std::string("ArtBox"));
+   s_allPageFields.insert(std::string("BoxColorInfo"));
+   s_allPageFields.insert(std::string("Contents"));
+   s_allPageFields.insert(std::string("Rotate"));
+   s_allPageFields.insert(std::string("Group"));
+   s_allPageFields.insert(std::string("Thumb"));
+   s_allPageFields.insert(std::string("B"));
+   s_allPageFields.insert(std::string("Dur"));
+   s_allPageFields.insert(std::string("Trans"));
+   s_allPageFields.insert(std::string("Annots"));
+   s_allPageFields.insert(std::string("AA"));
+   s_allPageFields.insert(std::string("Metadata"));
+   s_allPageFields.insert(std::string("PieceInfo"));
+   s_allPageFields.insert(std::string("StructParents"));
+   s_allPageFields.insert(std::string("ID"));
+   s_allPageFields.insert(std::string("PZ"));
+   s_allPageFields.insert(std::string("SeparationInfo"));
+   s_allPageFields.insert(std::string("Tabs"));
+   s_allPageFields.insert(std::string("TemplateInstantiated"));
+   s_allPageFields.insert(std::string("PresSteps"));
+   s_allPageFields.insert(std::string("UserUnit"));
+   s_allPageFields.insert(std::string("VP"));
    //for correct search all fields of XObject should be present to
-   _allPageFields.insert(std::string("Subtype"));
-   _allPageFields.insert(std::string("FormType"));
-   _allPageFields.insert(std::string("BBox"));
-   _allPageFields.insert(std::string("Matrix"));
-   _allPageFields.insert(std::string("Ref"));
-   _allPageFields.insert(std::string("StructParent"));
-   _allPageFields.insert(std::string("OPI"));
-   _allPageFields.insert(std::string("OC"));
-   _allPageFields.insert(std::string("Name"));
+   s_allPageFields.insert(std::string("Subtype"));
+   s_allPageFields.insert(std::string("FormType"));
+   s_allPageFields.insert(std::string("BBox"));
+   s_allPageFields.insert(std::string("Matrix"));
+   s_allPageFields.insert(std::string("Ref"));
+   s_allPageFields.insert(std::string("StructParent"));
+   s_allPageFields.insert(std::string("OPI"));
+   s_allPageFields.insert(std::string("OC"));
+   s_allPageFields.insert(std::string("Name"));
 
 }
 
-unsigned int PageElementHandler::_findEndOfElementContent(unsigned int startOfPageElement)
+unsigned int PageElementHandler::findEndOfElementContent(unsigned int startOfPageElement)
 {
    static std::string whitespacesAndDelimeters(" \t\f\v\n\r<<[/");
-   unsigned int foundSlash = _pageContent.find("/", startOfPageElement + 1);
+   unsigned int foundSlash = m_pageContent.find("/", startOfPageElement + 1);
    std::string fieldType;
    while((int)foundSlash != -1)
    {
-      unsigned int foundWhitespace = _pageContent.find_first_of(whitespacesAndDelimeters, foundSlash + 1);
+      unsigned int foundWhitespace = m_pageContent.find_first_of(whitespacesAndDelimeters, foundSlash + 1);
       if((int)foundWhitespace != -1)
-         fieldType = _pageContent.substr(foundSlash + 1, foundWhitespace - foundSlash - 1);
+         fieldType = m_pageContent.substr(foundSlash + 1, foundWhitespace - foundSlash - 1);
       else 
          break;
       //is this any page element between "/" and " "
-      if(_allPageFields.count(fieldType))
+      if(s_allPageFields.count(fieldType))
       {         
          return foundSlash;
       }
       foundSlash = foundWhitespace;
    }
-   return _pageContent.rfind(">>");
+   return m_pageContent.rfind(">>");
 }
 
-void PageElementHandler::_processObjectContent(unsigned int startOfPageElement)
+void PageElementHandler::processObjectContentImpl(unsigned int startOfPageElement)
 {
     Q_UNUSED(startOfPageElement);
 }

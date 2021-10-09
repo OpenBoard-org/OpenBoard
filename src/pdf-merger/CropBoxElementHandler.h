@@ -41,7 +41,7 @@ namespace merge_lib
    public:
       CropBoxElementHandler(Object * page): AbstractBoxElementHandler(page)
       {
-         _setHandlerName("/CropBox");
+         setHandlerName("/CropBox");
       }
       virtual ~CropBoxElementHandler()
       {
@@ -49,30 +49,30 @@ namespace merge_lib
    private:
 
       //replace CropBox with BBox
-      virtual void _changeObjectContent(unsigned int startOfPageElement)
+      virtual void changeObjectContentImpl(unsigned int startOfPageElement)
       {
-         Rectangle mediaBox("/CropBox", _page->getObjectContent());
+         Rectangle mediaBox("/CropBox", m_page->getObjectContent());
 
          double shiftX = Utils::doubleEquals(mediaBox.x1,0)?0:-mediaBox.x1;
          double shiftY = Utils::doubleEquals(mediaBox.y1,0)?0:-mediaBox.y1;
 
          mediaBox.setNewRectangleName("/BBox");
 
-         unsigned int endOfElement = _findEndOfElementContent(startOfPageElement);
-         _page->forgetAboutChildren(startOfPageElement,endOfElement);
-         _page->eraseContent(startOfPageElement,endOfElement-startOfPageElement);
+         unsigned int endOfElement = findEndOfElementContent(startOfPageElement);
+         m_page->forgetAboutChildren(startOfPageElement,endOfElement);
+         m_page->eraseContent(startOfPageElement,endOfElement-startOfPageElement);
 
          std::string newContent;
          mediaBox.appendRectangleToString(newContent," ");
-         _page->insertToContent(startOfPageElement, newContent);
+         m_page->insertToContent(startOfPageElement, newContent);
 
          std::stringstream matrix;
          matrix<<"/Matrix [ 1 0 0 1 "<<shiftX<<" "<< shiftY<<" ]\n";
-         _page->insertToContent(startOfPageElement, matrix.str());
+         m_page->insertToContent(startOfPageElement, matrix.str());
       }
-      void _pageElementNotFound()
+      void pageElementNotFound()
       {                  
-         _retrieveBoxFromParent();
+         retrieveBoxFromParent();
       }
    };
 }

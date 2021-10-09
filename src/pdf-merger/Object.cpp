@@ -43,15 +43,15 @@ std::string NUMBERANDWHITESPACE(" 0123456789");
 
 Object::~Object()
 {       
-   _parents.clear();
-   _children.clear();
-   _content.clear();
+   m_parents.clear();
+   m_children.clear();
+   m_content.clear();
 }
 
 Object * Object::getClone(std::vector<Object *> & clones)
 {
    std::map<unsigned int, Object *> clonesMap;
-   Object * clone = _getClone(clonesMap);
+   Object * clone = getCloneImpl(clonesMap);
    std::map<unsigned int, Object *>::iterator conesIterator = clonesMap.begin();
    for(; conesIterator != clonesMap.end(); ++conesIterator)
       clones.push_back((*conesIterator).second);
@@ -60,16 +60,16 @@ Object * Object::getClone(std::vector<Object *> & clones)
    return clone;
 }
 
-Object * Object::_getClone(std::map<unsigned int, Object *> & clones)
+Object * Object::getCloneImpl(std::map<unsigned int, Object *> & clones)
 {
-   _isPassed = true;
+   m_isPassed = true;
    unsigned int objectNumber = this->getObjectNumber();   
-   Object * clone = new Object(objectNumber, this->_generationNumber, this->getObjectContent(), _fileName, _streamBounds, _hasStream);
-   clone->_hasStreamInContent = _hasStreamInContent;
+   Object * clone = new Object(objectNumber, this->m_generationNumber, this->getObjectContent(), m_fileName, m_streamBounds, m_hasStream);
+   clone->m_hasStreamInContent = m_hasStreamInContent;
    clones.insert(std::pair<unsigned int, Object *>(objectNumber, clone));
-   Children::iterator currentChild = _children.begin();
+   Children::iterator currentChild = m_children.begin();
 
-   for(; currentChild != _children.end(); ++currentChild)
+   for(; currentChild != m_children.end(); ++currentChild)
    {
       Object * currentObject = (*currentChild).second.first;
       unsigned int childObjectNumber = currentObject->getObjectNumber();
@@ -82,13 +82,13 @@ Object * Object::_getClone(std::map<unsigned int, Object *> & clones)
       }
       else
       {
-         cloneOfCurrentChild = currentObject->_getClone(clones);
+         cloneOfCurrentChild = currentObject->getCloneImpl(clones);
       }
       ChildAndItPositionInContent newChild(
          cloneOfCurrentChild, 
          currentChild->second.second);
 
-      clone->_children.insert(std::pair<unsigned int, ChildAndItPositionInContent>
+      clone->m_children.insert(std::pair<unsigned int, ChildAndItPositionInContent>
          (newChild.first->getObjectNumber(), newChild)
          );
    }
@@ -97,15 +97,15 @@ Object * Object::_getClone(std::map<unsigned int, Object *> & clones)
 }
 void Object::addChild(Object * child, const std::vector<unsigned int> childPositionsInContent)
 {
-   child->_addParent(this);
-   _addChild(child, childPositionsInContent);
+   child->addParentImpl(this);
+   addChildImpl(child, childPositionsInContent);
 }
 
 
 Object::ReferencePositionsInContent Object::removeChild(Object * child)
 {
-   ReferencePositionsInContent positions = _children[child->getObjectNumber()].second;
-   _children.erase(child->getObjectNumber());
+   ReferencePositionsInContent positions = m_children[child->getObjectNumber()].second;
+   m_children.erase(child->getObjectNumber());
    return positions;
 }
 
@@ -114,7 +114,7 @@ void Object::forgetAboutChildren(unsigned int leftBound, unsigned int rightBound
    std::vector<Object *> children = getChildrenByBounds(leftBound, rightBound);
    for(size_t i = 0; i < children.size(); ++i)
    {         
-      _children.erase(_children.find(children[i]->getObjectNumber()));         
+      m_children.erase(m_children.find(children[i]->getObjectNumber()));
    }
 }
 
@@ -122,13 +122,13 @@ void Object::forgetAboutChildren(unsigned int leftBound, unsigned int rightBound
 Object * Object::getChild(unsigned int objectNumber)
 {
    //TODO: check object before returning
-   return _children[objectNumber].first;
+   return m_children[objectNumber].first;
 }
 
 std::vector<Object *> Object::getChildrenByBounds(unsigned int leftBound, unsigned int rightBound)
 {
    std::vector<Object *> result;
-   for(Children::iterator currentChild = _children.begin(); currentChild != _children.end(); ++currentChild)
+   for(Children::iterator currentChild = m_children.begin(); currentChild != m_children.end(); ++currentChild)
    {
       ReferencePositionsInContent childPositions = (*currentChild).second.second;
       for(size_t i = 0; i < childPositions.size(); ++i)
@@ -148,7 +148,7 @@ std::vector<Object *> Object::getChildrenByBounds(unsigned int leftBound, unsign
 std::vector<Object *> Object::getSortedByPositionChildren(unsigned int leftBound, unsigned int rightBound)
 {
    std::vector<Object *> result;
-   for(Children::iterator currentChild = _children.begin(); currentChild != _children.end(); ++currentChild)
+   for(Children::iterator currentChild = m_children.begin(); currentChild != m_children.end(); ++currentChild)
    {
       ReferencePositionsInContent childPositions = (*currentChild).second.second;
       for(size_t i = 0; i < childPositions.size(); ++i)
@@ -172,10 +172,10 @@ std::vector<Object *> Object::getSortedByPositionChildren(unsigned int leftBound
 
 unsigned int Object::getChildPosition(const Object * child)//throw (Exception)
 {
-   const ReferencePositionsInContent & childrenPostion = _children[child->getObjectNumber()].second;
+   const ReferencePositionsInContent & childrenPostion = m_children[child->getObjectNumber()].second;
    if(
       (childrenPostion.size() != 1) ||
-      (_children[child->getObjectNumber()].first != child)
+      (m_children[child->getObjectNumber()].first != child)
       )
       throw Exception("Internal error or wrong document (some reference is found twise)");
    return childrenPostion[0];
@@ -193,15 +193,15 @@ void Object::removeChildrenByBounds(unsigned int leftBound, unsigned int rightBo
 
 const Object::Children & Object::getChildren()
 {
-   return _children;
+   return m_children;
 }
 
 void Object::removeHimself()
 {
-   if(!_parents.empty())
+   if(!m_parents.empty())
    {
-      std::set<Object *>::iterator currentParent = _parents.begin();
-      for(; currentParent != _parents.end(); ++currentParent)
+      std::set<Object *>::iterator currentParent = m_parents.begin();
+      for(; currentParent != m_parents.end(); ++currentParent)
       {
          (*currentParent)->removeChild(this);
       }
@@ -209,82 +209,82 @@ void Object::removeHimself()
 }
 unsigned int Object::getObjectNumber() const
 {
-   return _number;
+   return m_number;
 }
 
 unsigned int Object::getgenerationNumber() const
 {
-   return _generationNumber;
+   return m_generationNumber;
 }
 
 std::string & Object::getObjectContent()
 {
-   return _content;
+   return m_content;
 }
 
-void Object::_setObjectNumber(unsigned int objectNumber)
+void Object::setObjectNumberImpl(unsigned int objectNumber)
 {
    if(!isPassed())
    {
-      _isPassed = true;
-      _oldNumber = _number;
-      _number = objectNumber;
+      m_isPassed = true;
+      m_oldNumber = m_number;
+      m_number = objectNumber;
    }
 }
 
 void Object::setObjectContent(const std::string & objectContent)
 {
-   _content = objectContent;
+   m_content = objectContent;
 }
 
 void Object::appendContent(const std::string & addToContent)
 {
-   _content.append(addToContent);
+   m_content.append(addToContent);
 }
 
 void Object::eraseContent(unsigned int from, unsigned int size)
 {
    int iSize = size;
-   _recalculateReferencePositions(from + size, -iSize);
-   _content.erase(from, size);
+   recalculateReferencePositionsImpl(from + size, -iSize);
+   m_content.erase(from, size);
 }
 
 void Object::insertToContent(unsigned int position, const std::string & insertedStr)
 {
-   _recalculateReferencePositions(position, insertedStr.size());
-   _content.insert(position, insertedStr);
+   recalculateReferencePositionsImpl(position, insertedStr.size());
+   m_content.insert(position, insertedStr);
 }
 
 void Object::insertToContent(unsigned int position, const char * insertedStr, unsigned int length)
 {    
-   _recalculateReferencePositions(position, length);
-   _content.insert(position, insertedStr, length);    
+   recalculateReferencePositionsImpl(position, length);
+   m_content.insert(position, insertedStr, length);
 }
 
 //vector <object number, its size>
 void Object::serialize(std::ofstream & out, std::map< unsigned int, std::pair<unsigned long long, unsigned int > > & sizesAndGenerationNumbers)
 {
    //is this element already printed
-   if(sizesAndGenerationNumbers.find(_number) != sizesAndGenerationNumbers.end()) return;
+   if(sizesAndGenerationNumbers.find(m_number) != sizesAndGenerationNumbers.end()) return;
 
    std::string stream;
-   if(_hasStream && !_hasStreamInContent)
+   if(m_hasStream && !m_hasStreamInContent)
    {       
       getStream(stream);
       stream.append("endstream\n");       
    }
-   // xxxx + " " + "0" + " " + "obj" + "\n" + _content.size() + "endobj\n", where x - is a digit
-   unsigned long long objectSizeForXref = (static_cast<unsigned int>(std::log10(static_cast<double>(_number))) + 1) + 14 + _content.size() + stream.size();    
+   // xxxx + " " + "0" + " " + "obj" + "\n" + m_content.size() + "endobj\n", where x - is a digit
+   unsigned long long objectSizeForXref = (static_cast<unsigned int>(std::log10(static_cast<double>(m_number))) + 1) + 14 + m_content.size() + stream.size();
 
-   sizesAndGenerationNumbers.insert(std::pair<unsigned int, std::pair<unsigned long long, unsigned int > >(_number, std::make_pair(objectSizeForXref, _generationNumber)));
+   sizesAndGenerationNumbers.insert(std::pair<unsigned int, std::pair<unsigned long long, unsigned int > >(m_number, std::make_pair(objectSizeForXref, m_generationNumber)));
 
-   _serialize(out, stream);
+   serializeImpl(out, stream);
    stream.clear();
    stream.reserve();
 
    //call serialize of each child
    Children::iterator it;
-   for ( it=_children.begin() ; it != _children.end(); it++ )
+   for ( it=m_children.begin() ; it != m_children.end(); it++ )
    {
       Object * currentChild = (*it).second.first;
       currentChild->serialize(out, sizesAndGenerationNumbers);
@@ -292,24 +292,24 @@ void Object::serialize(std::ofstream & out, std::map< unsigned int, std::pair<un
 }
 void Object::recalculateObjectNumbers(unsigned int & newNumber)
 {    
-   _recalculateObjectNumbers(newNumber);
+   recalculateObjectNumbersImpl(newNumber);
    resetIsPassed();
 }
 
-void Object::_recalculateObjectNumbers(unsigned int & newNumber)
+void Object::recalculateObjectNumbersImpl(unsigned int & newNumber)
 {    
-   _setObjectNumber(newNumber);
+   setObjectNumberImpl(newNumber);
 
    Children::iterator childIterator;
-   for ( childIterator = _children.begin() ; childIterator != _children.end(); ++childIterator )
+   for ( childIterator = m_children.begin() ; childIterator != m_children.end(); ++childIterator )
    {
       Object * currentChild = (*childIterator).second.first;
       if(currentChild->isPassed()) continue;                
-      currentChild->_recalculateObjectNumbers(++newNumber);        
+      currentChild->recalculateObjectNumbersImpl(++newNumber);
    }
 
    //recalculate referencies in content
-   for ( childIterator = _children.begin() ; childIterator != _children.end(); ++childIterator)
+   for ( childIterator = m_children.begin() ; childIterator != m_children.end(); ++childIterator)
    {    
       Object * currentChild = (*childIterator).second.first;
       //if(currentChild->getOldNumber() == currentChild->getObjectNumber()) continue;
@@ -324,9 +324,9 @@ void Object::_recalculateObjectNumbers(unsigned int & newNumber)
 
          for(size_t referencePositionIter(0); referencePositionIter < refPositionForcurrentChild.size(); ++referencePositionIter)               
          {
-            _recalculateReferencePositions(refPositionForcurrentChild[referencePositionIter], newNumberStringSize - oldNumberStringSize);
+            recalculateReferencePositionsImpl(refPositionForcurrentChild[referencePositionIter], newNumberStringSize - oldNumberStringSize);
             for(size_t referenceStringInter(oldNumberStringSize); referenceStringInter < newNumberStringSize; ++referenceStringInter )  
-               _content.insert(
+               m_content.insert(
                refPositionForcurrentChild[referencePositionIter] + referenceStringInter, 
                1,
                newNumber[referenceStringInter]);                
@@ -337,8 +337,8 @@ void Object::_recalculateObjectNumbers(unsigned int & newNumber)
       {
          for(size_t referencePositionIter(0); referencePositionIter < refPositionForcurrentChild.size(); ++referencePositionIter)
          {
-            _recalculateReferencePositions(refPositionForcurrentChild[referencePositionIter], newNumberStringSize - oldNumberStringSize);
-            _content.erase(refPositionForcurrentChild[referencePositionIter] + newNumberStringSize, 
+            recalculateReferencePositionsImpl(refPositionForcurrentChild[referencePositionIter], newNumberStringSize - oldNumberStringSize);
+            m_content.erase(refPositionForcurrentChild[referencePositionIter] + newNumberStringSize,
                oldNumberStringSize - newNumberStringSize
                );
          }
@@ -346,17 +346,17 @@ void Object::_recalculateObjectNumbers(unsigned int & newNumber)
 
       for(unsigned int i = 0; i < diff; i++)
          for(size_t referencePositionIter(0); referencePositionIter < refPositionForcurrentChild.size(); ++referencePositionIter)            
-            _content[i + refPositionForcurrentChild[referencePositionIter]] = newNumber[i];
+            m_content[i + refPositionForcurrentChild[referencePositionIter]] = newNumber[i];
 
 
    }    
 }
 
 //this method should be called in case changing object's content
-void Object::_recalculateReferencePositions(unsigned int changedReference, int displacement)
+void Object::recalculateReferencePositionsImpl(unsigned int changedReference, int displacement)
 {
    Children::iterator childIterator;
-   for ( childIterator = _children.begin() ; childIterator != _children.end(); ++childIterator )
+   for ( childIterator = m_children.begin() ; childIterator != m_children.end(); ++childIterator )
    {
       ReferencePositionsInContent & refPositionForcurrentChild = (*childIterator).second.second;
       for(size_t i = 0; i < refPositionForcurrentChild.size(); ++i)
@@ -367,31 +367,31 @@ void Object::_recalculateReferencePositions(unsigned int changedReference, int d
 }
 
 
-void Object::_retrieveMaxObjectNumber(unsigned int & maxNumber)
+void Object::retrieveMaxObjectNumberImpl(unsigned int & maxNumber)
 {
 
    if(isPassed())  return;
-   _isPassed = true;
-   if(maxNumber < _number)
-      maxNumber = _number;
+   m_isPassed = true;
+   if(maxNumber < m_number)
+      maxNumber = m_number;
    Children::iterator it;
-   for ( it=_children.begin() ; it != _children.end(); ++it )
-      (*it).second.first->_retrieveMaxObjectNumber(maxNumber);       
+   for ( it=m_children.begin() ; it != m_children.end(); ++it )
+      (*it).second.first->retrieveMaxObjectNumber(maxNumber);
 }
 
 //TODO add check for absent token
-bool Object::_findObject(const std::string & token, Object* & foundObject, unsigned int & tokenPositionInContent)
+bool Object::findObjectImpl(const std::string & token, Object* & foundObject, unsigned int & tokenPositionInContent)
 {
-   _isPassed = true;
-   tokenPositionInContent = Parser::findToken(_content,token);
+   m_isPassed = true;
+   tokenPositionInContent = Parser::findToken(m_content,token);
    if((int)tokenPositionInContent != -1)
    {
       foundObject = this;
       return true;
    }      
-   for (Children::iterator  it=_children.begin() ; it != _children.end(); ++it )
-      if((!(*it).second.first->_isPassed) &&
-         ((*it).second.first->_findObject(token, foundObject, tokenPositionInContent)))
+   for (Children::iterator  it=m_children.begin() ; it != m_children.end(); ++it )
+      if((!(*it).second.first->m_isPassed) &&
+         ((*it).second.first->findObject(token, foundObject, tokenPositionInContent)))
          return true;
 
    return false;
@@ -399,7 +399,7 @@ bool Object::_findObject(const std::string & token, Object* & foundObject, unsig
 
 bool Object::findObject(const std::string & token, Object* & foundObject, unsigned int & tokenPositionInContent)
 {
-   bool result = _findObject(token, foundObject, tokenPositionInContent);
+   bool result = findObjectImpl(token, foundObject, tokenPositionInContent);
    resetIsPassed();
    if(result)
    {    
@@ -410,28 +410,28 @@ bool Object::findObject(const std::string & token, Object* & foundObject, unsign
 
 void Object::retrieveMaxObjectNumber(unsigned int & maxNumber)
 {
-   _retrieveMaxObjectNumber(maxNumber);
+   retrieveMaxObjectNumberImpl(maxNumber);
    resetIsPassed();   
 }
 
 //methods 
-void Object::_addChild(Object * child, const ReferencePositionsInContent & childPositionsInContent)
+void Object::addChildImpl(Object * child, const ReferencePositionsInContent & childPositionsInContent)
 {
    ChildAndItPositionInContent childAndItPositions(child, childPositionsInContent);
    unsigned int childObjectNumber = child->getObjectNumber();
-   while(_children.count(childObjectNumber))
+   while(m_children.count(childObjectNumber))
       ++childObjectNumber;
-   _children.insert(std::pair<unsigned int, ChildAndItPositionInContent > (childObjectNumber, childAndItPositions));
+   m_children.insert(std::pair<unsigned int, ChildAndItPositionInContent > (childObjectNumber, childAndItPositions));
 }
 
 
-void Object::_addParent(Object * child)
+void Object::addParentImpl(Object * child)
 {
-   _parents.insert(child);
+   m_parents.insert(child);
 }
-void Object::_serialize(std::ofstream  & out, const std::string & stream)
+void Object::serializeImpl(std::ofstream  & out, const std::string & stream)
 {
-    out << _number << " " << _generationNumber << " obj\n" << _content << stream << "endobj\n";
+    out << m_number << " " << m_generationNumber << " obj\n" << m_content << stream << "endobj\n";
    out.flush();
 }
 
@@ -441,57 +441,57 @@ void Object::_serialize(std::ofstream  & out, const std::string & stream)
 */
 bool Object::getStream(std::string & stream)
 {
-   if(!_hasStream && !_hasStreamInContent)
+   if(!m_hasStream && !m_hasStreamInContent)
       return false;
-   if( _hasStream && _hasStreamInContent)
+   if( m_hasStream && m_hasStreamInContent)
    {
-      if(_getStreamFromContent(stream))
+      if(getStreamFromContentImpl(stream))
          return true;
       else
          return false;
    }
 
    std::ifstream pdfFile;
-   pdfFile.open (_fileName.c_str(), std::ios::binary );
+   pdfFile.open (m_fileName.c_str(), std::ios::binary );
    if (pdfFile.fail())
    {
       std::stringstream errorMessage("File ");
-      errorMessage << _fileName << " is absent" << "\0";
+      errorMessage << m_fileName << " is absent" << "\0";
       throw Exception(errorMessage);
    }
    // get length of file:
-   int length = _streamBounds.second - _streamBounds.first;
-   pdfFile.seekg (_streamBounds.first, std::ios_base::beg);
+   int length = m_streamBounds.second - m_streamBounds.first;
+   pdfFile.seekg (m_streamBounds.first, std::ios_base::beg);
    stream.resize(length);
    pdfFile.read(&stream[0], length);   
    pdfFile.close();
    return true;
 }
 
-bool Object::_getStreamFromContent(std::string & stream)
+bool Object::getStreamFromContentImpl(std::string & stream)
 {
-   size_t stream_begin = _content.find("stream");
+   size_t stream_begin = m_content.find("stream");
    if((int) stream_begin == -1 )
    {
       return false;
    }
-   size_t stream_end = _content.find("endstream",stream_begin);
+   size_t stream_end = m_content.find("endstream",stream_begin);
    if((int) stream_end == -1 )
    {
       return false;
    }
    stream_begin += strlen("stream");
    // need to skip trailing \r
-   while(_content[stream_begin] == '\r')
+   while(m_content[stream_begin] == '\r')
    {
       stream_begin ++;
    }
-   if( _content[stream_begin] == '\n')
+   if( m_content[stream_begin] == '\n')
    {
       stream_begin ++;
    }
 
-   stream = _content.substr(stream_begin, stream_end - stream_begin);
+   stream = m_content.substr(stream_begin, stream_end - stream_begin);
    return true;
 }
 
@@ -504,11 +504,11 @@ bool Object::getHeader(std::string &content)
 {
    if( !hasStream() )
    {
-      content = _content;
+      content = m_content;
       return true;
    }
-   size_t stream_begin = _content.find("stream");
-   content = _content.substr(0,stream_begin);
+   size_t stream_begin = m_content.find("stream");
+   content = m_content.substr(0,stream_begin);
    return true;
 }
 
@@ -519,7 +519,7 @@ bool Object::getHeader(std::string &content)
 */
 bool Object::hasStream()
 {
-   return _hasStream;
+   return m_hasStream;
 }
 
 // the method returns the value of some object.

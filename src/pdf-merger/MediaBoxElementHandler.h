@@ -42,7 +42,7 @@ namespace merge_lib
    public:
       MediaBoxElementHandler(Object * page): AbstractBoxElementHandler(page)
       {
-         _setHandlerName("/MediaBox");
+         setHandlerName("/MediaBox");
       }
       virtual ~MediaBoxElementHandler()
       {
@@ -51,30 +51,30 @@ namespace merge_lib
    private:
 
       //replace MediaBox with BBox
-      virtual void _changeObjectContent(unsigned int startOfPageElement)
+      virtual void changeObjectContentImpl(unsigned int startOfPageElement)
       {
-         if(_wasCropBoxHandlerCalled())
+         if(wasCropBoxHandlerCalled())
          {
-            PageElementHandler * tempNextHandler = _nextHandler;            
-            _nextHandler = new RemoveHimselfHandler(_page, _handlerName);
-            _nextHandler->addNextHandler(tempNextHandler);
+            PageElementHandler * tempNextHandler = m_nextHandler;
+            m_nextHandler = new RemoveHimselfHandler(m_page, m_handlerName);
+            m_nextHandler->addNextHandler(tempNextHandler);
             return;
          }
-         _page->eraseContent(startOfPageElement, _handlerName.size());
+         m_page->eraseContent(startOfPageElement, m_handlerName.size());
          static std::string bbox("/BBox");
          static std::string matrix("/Matrix [ 1 0 0 1 0 0 ]\n");
-         _page->insertToContent(startOfPageElement, bbox);
-         _page->insertToContent(startOfPageElement, matrix);
+         m_page->insertToContent(startOfPageElement, bbox);
+         m_page->insertToContent(startOfPageElement, matrix);
       }
-      void _pageElementNotFound()
+      void pageElementNotFound()
       {          
-         if(_wasCropBoxHandlerCalled())
+         if(wasCropBoxHandlerCalled())
             return;
-         _retrieveBoxFromParent();
+         retrieveBoxFromParent();
       }
-      bool _wasCropBoxHandlerCalled()
+      bool wasCropBoxHandlerCalled()
       {
-         return ((int)_page->getObjectContent().find("/BBox") != -1) ? true : false;
+         return ((int)m_page->getObjectContent().find("/BBox") != -1) ? true : false;
       }
    };
 }

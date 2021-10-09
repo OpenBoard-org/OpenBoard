@@ -44,22 +44,22 @@ namespace merge_lib
    public:
       Exception() {}
 
-      Exception(const char * message) : _message(message) {}
+      Exception(const char * message) : m_message(message) {}
       
-      Exception(std::string & message) : _message(message) {}
+      Exception(std::string & message) : m_message(message) {}
 
-      Exception(std::stringstream & message) : _message(message.str()) {}
+      Exception(std::stringstream & message) : m_message(message.str()) {}
 
-      Exception(const std::string & message) : _message(message) {}
+      Exception(const std::string & message) : m_message(message) {}
       
       virtual ~Exception() throw () {}
       
-      virtual const char * what() const throw() { return _message.c_str(); }
+      virtual const char * what() const throw() { return m_message.c_str(); }
 
       void show() const {}
 
    protected:
-      std::string _message;
+      std::string m_message;
    };
 }
 #endif // EXCEPTION_HH

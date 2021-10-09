@@ -51,7 +51,7 @@
 using namespace merge_lib;
 
 
-Page::Page(unsigned int pageNumber): _root(NULL),_pageNumber(pageNumber), _rotation(0)
+Page::Page(unsigned int pageNumber): m_root(NULL),m_pageNumber(pageNumber), m_rotation(0)
 {
 
 }
@@ -66,28 +66,28 @@ Page::~Page()
 
 std::string & Page::getPageContent()
 {
-   return _root->getObjectContent();
+   return m_root->getObjectContent();
 }
 
 const Object::Children &  Page::getPageRefs()
 {
-   return _root->getChildren();
+   return m_root->getChildren();
 }
 
 
 void Page::recalculateObjectNumbers(unsigned int & newNumber)
 {
-   _root->recalculateObjectNumbers(newNumber);
+   m_root->recalculateObjectNumbers(newNumber);
 }
 
 Object * Page::pageToXObject(std::vector<Object *> & allObjects, std::vector<Object *> & annots, bool isCloneNeeded)
 {
-   Object * xObject = (isCloneNeeded) ? _root->getClone(allObjects) : _root;
-   return _pageToXObject(xObject, annots);
+   Object * xObject = (isCloneNeeded) ? m_root->getClone(allObjects) : m_root;
+   return pageToXObjectImpl(xObject, annots);
 }
 
 
-Object * Page::_pageToXObject(Object *& page, std::vector<Object *> & annots)
+Object * Page::pageToXObjectImpl(Object *& page, std::vector<Object *> & annots)
 {   
    RemoveHimselfHandler   * removeParent = new RemoveHimselfHandler(page, "/Parent");
    RemoveHimselfHandler   * removeBleedBox = new RemoveHimselfHandler(page, "/BleedBox");
@@ -146,7 +146,7 @@ Object * Page::_pageToXObject(Object *& page, std::vector<Object *> & annots)
 }
 
 
-std::string _getContentOfContentObject(MergePageDescription & description)
+std::string getContentOfContentObject(MergePageDescription & description)
 {
    std::string content("<<\n/Length ");
    std::string stream = "";
@@ -176,7 +176,7 @@ std::string _getContentOfContentObject(MergePageDescription & description)
    return content;
 }
 
-void _recalculateAnnotsCoordinates(Object * annotation, 
+void recalculateAnnotsCoordinates(Object * annotation,
                                    const Rectangle & basePagesRectangle,
                                    const Rectangle & outputPagesRectangle,
                                    const MergePageDescription & description)
@@ -201,7 +201,7 @@ void _recalculateAnnotsCoordinates(Object * annotation,
 }
 
 // function updates parent reference of annotation with new page object
-static void _updateAnnotParentPage(Object *annotation,Object *newParentPage)
+static void updateAnnotParentPage(Object *annotation,Object *newParentPage)
 {
    if( annotation )
    {
@@ -242,7 +242,7 @@ static void _updateAnnotParentPage(Object *annotation,Object *newParentPage)
 
 // function performs adjusting of some color parameters of annotation
 // to avoid interference with overlay content
-static void _updateAnnotFormColor(Object *annotation )
+static void updateAnnotFormColor(Object *annotation )
 {
    std::string &objectContent = annotation->getObjectContent();
    if((int) objectContent.find("/Widget") == -1 )
@@ -401,7 +401,7 @@ static void processBasePageResources(Object *basePage)
    }
 }
 
-std::string Page::_getMergedPageContent(  unsigned int & contentPosition, 
+std::string Page::getMergedPageContentImpl(  unsigned int & contentPosition, 
                                         unsigned int & parentPosition, 
                                         unsigned int & originalPage1Position, 
                                         unsigned int & originalPage2Position,
@@ -452,8 +452,8 @@ std::string Page::_getMergedPageContent(  unsigned int & contentPosition,
       Rectangle basePageRectangle("/BBox", basePage->getObjectContent());
       for(size_t i = 0; i < annots.size(); ++i)
       {
-         _updateAnnotFormColor(annots[i]);
-         _recalculateAnnotsCoordinates(annots[i], basePageRectangle, mediaBox, description);
+         updateAnnotFormColor(annots[i]);
+         recalculateAnnotsCoordinates(annots[i], basePageRectangle, mediaBox, description);
          Object::ReferencePositionsInContent annotationPosition;
          annotationPosition.push_back(content.size());
          Object::ChildAndItPositionInContent annotAndItPosition(annots[i], annotationPosition);
@@ -479,11 +479,11 @@ void Page::merge(Page * sourcePage, Document * parentDocument, MergePageDescript
    {
       // Lets recalculate final transformation of overlay page
       // before it will be places into XObject
-      Rectangle mediaBox("/MediaBox",_root->getObjectContent());
+      Rectangle mediaBox("/MediaBox",m_root->getObjectContent());
       description.overlayPageTransformation.recalculateTranslation(mediaBox.getWidth(),mediaBox.getHeight());
 
       std::vector<Object *> fake;
-      _pageToXObject(_root, fake);
+      pageToXObjectImpl(m_root, fake);
    }
 
    std::vector<Object *> toAllObjects;
@@ -491,13 +491,13 @@ void Page::merge(Page * sourcePage, Document * parentDocument, MergePageDescript
    Object * sourcePageToXObject = 0;
    if(!description.skipBasePage)
    {  
-      RotationHandler rotationHandler(sourcePage->_root, "/Rotate", *this);
+      RotationHandler rotationHandler(sourcePage->m_root, "/Rotate", *this);
       rotationHandler.processObjectContent();
-      description.basePageTransformation.addRotation(_rotation);
+      description.basePageTransformation.addRotation(m_rotation);
 
-      if((int) sourcePage->_root->getObjectContent().find("/Annots") != -1 )
+      if((int) sourcePage->m_root->getObjectContent().find("/Annots") != -1 )
       {
-         Object *crop = sourcePage->_root->findPatternInObjOrParents("/CropBox");
+         Object *crop = sourcePage->m_root->findPatternInObjOrParents("/CropBox");
          if( crop )
          {
             // we need to calculate special compensational shifting
@@ -512,7 +512,7 @@ void Page::merge(Page * sourcePage, Document * parentDocument, MergePageDescript
             }
          }
       }
-      processBasePageResources(sourcePage->_root);
+      processBasePageResources(sourcePage->m_root);
       sourcePageToXObject = sourcePage->pageToXObject(toAllObjects, annotations, isPageDuplicated);
       Rectangle mediaBox("/BBox", sourcePageToXObject->getObjectContent());
       description.basePageTransformation.recalculateTranslation(mediaBox.getWidth(),mediaBox.getHeight());      
@@ -526,14 +526,14 @@ void Page::merge(Page * sourcePage, Document * parentDocument, MergePageDescript
       error.append("There is no object with Kids field");
       throw Exception(error);
    }
-   Object::ReferencePositionsInContent pagePosition = catalog->removeChild(_root);
+   Object::ReferencePositionsInContent pagePosition = catalog->removeChild(m_root);
    //create merged Page
    unsigned int contentPosition, parentPosition, originalPage1Position, originalPage2Position;
-   std::pair<unsigned int, unsigned int> originalPageNumbers(_root->getObjectNumber(), 0);
+   std::pair<unsigned int, unsigned int> originalPageNumbers(m_root->getObjectNumber(), 0);
    if(!description.skipBasePage)
       originalPageNumbers.second = sourcePageToXObject->getObjectNumber();
    std::vector <Object::ChildAndItPositionInContent> annotsAndItPositions;
-   std::string mergedPageContent = _getMergedPageContent(contentPosition, 
+   std::string mergedPageContent = getMergedPageContentImpl(contentPosition, 
       parentPosition, 
       originalPage1Position, 
       originalPage2Position, 
@@ -543,20 +543,20 @@ void Page::merge(Page * sourcePage, Document * parentDocument, MergePageDescript
       annotations,
       annotsAndItPositions
       );
-   Object * mergedPage = new Object(_root->getObjectNumber(), _root->getgenerationNumber(), mergedPageContent);
+   Object * mergedPage = new Object(m_root->getObjectNumber(), m_root->getgenerationNumber(), mergedPageContent);
    toAllObjects.push_back(mergedPage);
    std::vector < unsigned int > contentPositionVec, parentPositionVec, originalPage1PositionVec, originalPage2PositionVec;
    contentPositionVec.push_back(contentPosition);
    parentPositionVec.push_back(parentPosition);
    originalPage1PositionVec.push_back(originalPage1Position);
    originalPage2PositionVec.push_back(originalPage2Position);
-   Object * contentOfMergedPage = new Object(1, 0, _getContentOfContentObject(description));
+   Object * contentOfMergedPage = new Object(1, 0, getContentOfContentObject(description));
    toAllObjects.push_back(contentOfMergedPage);
    parentDocument->addToAllObjects(toAllObjects);
    mergedPage->addChild(contentOfMergedPage, contentPositionVec);
    mergedPage->addChild(catalog, parentPositionVec);
    if(!description.skipOverlayPage)
-      mergedPage->addChild(_root, originalPage1PositionVec);
+      mergedPage->addChild(m_root, originalPage1PositionVec);
    if(!description.skipBasePage)
       mergedPage->addChild(sourcePageToXObject, originalPage2PositionVec);
       // Annotation parent page should be changed, since we moved old page
@@ -565,7 +565,7 @@ void Page::merge(Page * sourcePage, Document * parentDocument, MergePageDescript
    {
       for(size_t i = 0; i< annotations.size();i++)
       {
-         _updateAnnotParentPage(annotations[i],mergedPage);
+         updateAnnotParentPage(annotations[i],mergedPage);
       }
    }
    for(size_t i = 0; i < annotsAndItPositions.size(); ++i)
@@ -573,7 +573,7 @@ void Page::merge(Page * sourcePage, Document * parentDocument, MergePageDescript
       mergedPage->addChild(annotsAndItPositions[i].first, annotsAndItPositions[i].second);
    }
    catalog->addChild(mergedPage, pagePosition);
-   _root = mergedPage; 
+   m_root = mergedPage; 
 }
 
 

@@ -53,11 +53,11 @@ const std::string DICT_END_TOKEN = ">>";
 
 
 FilterPredictor::FilterPredictor():
-_predictor(1),
-_colors(1),
-_bits(8),
-_columns(1),
-_earlyChange(1)
+m_predictor(1),
+m_colors(1),
+m_bits(8),
+m_columns(1),
+m_earlyChange(1)
 {
 }
 
@@ -95,11 +95,11 @@ void FilterPredictor::obtainDecodeParams(Object *objectWithStream, std::string &
 
    DecodeParams params;
    // set some initiaial values
-   params[PREDICTOR_TOKEN] = _predictor;
-   params[COLUMNS_TOKEN] = _columns;
-   params[COLORS_TOKEN] = _colors;
-   params[BITS_TOKEN] = _bits;
-   params[EARLY_TOKEN] = _earlyChange;
+   params[PREDICTOR_TOKEN] = m_predictor;
+   params[COLUMNS_TOKEN] = m_columns;
+   params[COLORS_TOKEN] = m_colors;
+   params[BITS_TOKEN] = m_bits;
+   params[EARLY_TOKEN] = m_earlyChange;
 
    // lets parse the content of dictionary and set actual values into the map
 
@@ -123,11 +123,11 @@ void FilterPredictor::obtainDecodeParams(Object *objectWithStream, std::string &
       }
    }
    // refresh the values after reading
-   _predictor = params[PREDICTOR_TOKEN];
-   _columns = params[COLUMNS_TOKEN];
-   _colors = params[COLORS_TOKEN];
-   _bits = params[BITS_TOKEN];
-   _earlyChange = params[EARLY_TOKEN];
+   m_predictor = params[PREDICTOR_TOKEN];
+   m_columns = params[COLUMNS_TOKEN];
+   m_colors = params[COLORS_TOKEN];
+   m_bits = params[BITS_TOKEN];
+   m_earlyChange = params[EARLY_TOKEN];
 }
 
 void FilterPredictor::initialize(Object *objectWithStream)
@@ -152,10 +152,10 @@ void FilterPredictor::initialize(Object *objectWithStream)
 //-----------------------------
 bool FilterPredictor::decodeRow(const char *in,std::string & out,const std::string &prev,int curPrediction)
 {
-   std::string dec(_bytesPerPixel,'\0');
-   dec.append(in,_rowLen); // the buffer to decode
-   int start = _bytesPerPixel;
-   int end = _bytesPerPixel + _rowLen;
+   std::string dec(m_bytesPerPixel,'\0');
+   dec.append(in,m_rowLen); // the buffer to decode
+   int start = m_bytesPerPixel;
+   int end = m_bytesPerPixel + m_rowLen;
    switch(curPrediction)
    {
    case 2: // TIFF predictor
@@ -173,7 +173,7 @@ bool FilterPredictor::decodeRow(const char *in,std::string & out,const std::stri
    case 11: // PNG SUB on all raws
       for(int i = start;i<end;i++)
       {
-         dec[i] += dec[ i - _bytesPerPixel ];
+         dec[i] += dec[ i - m_bytesPerPixel ];
       }
       break;
    case 12: // PNG UP on all raws
@@ -186,8 +186,8 @@ bool FilterPredictor::decodeRow(const char *in,std::string & out,const std::stri
       //Average(x) + floor((Raw(x-bpp)+Prior(x))/2)
       for(int i = start;i<end;i++)
       {
-         int leftV  = int(dec[i - _bytesPerPixel])&0xFF;
-         int   aboveV = int(prev[i - _bytesPerPixel])&0xFF;
+         int leftV  = int(dec[i - m_bytesPerPixel])&0xFF;
+         int   aboveV = int(prev[i - m_bytesPerPixel])&0xFF;
          unsigned char average = (unsigned char)( (((leftV+aboveV)>>1)&0xFF));
          dec[i] += average;
       }
@@ -208,8 +208,8 @@ bool FilterPredictor::decodeRow(const char *in,std::string & out,const std::stri
       */
       for(int i = start;i<end;i++)
       {
-         int left = int( dec[i - _bytesPerPixel]) & 0xFF;
-         int upperLeft = int( prev[i - _bytesPerPixel]) & 0xFF;
+         int left = int( dec[i - m_bytesPerPixel]) & 0xFF;
+         int upperLeft = int( prev[i - m_bytesPerPixel]) & 0xFF;
 
          int above = int( prev[i]) & 0xFF;
          int p = left + above - upperLeft;
@@ -244,38 +244,38 @@ bool FilterPredictor::decodeRow(const char *in,std::string & out,const std::stri
 
 bool FilterPredictor::decode(std::string &content)
 {
-   bool isPNG = _predictor >= 10?true:false;
-   int rowBits = _columns*_colors*_bits;
-   _rowLen = (rowBits>>3) + (rowBits&7);
-   _bytesPerPixel =  (_colors * _bits + 7) >> 3;
+   bool isPNG = m_predictor >= 10?true:false;
+   int rowBits = m_columns*m_colors*m_bits;
+   m_rowLen = (rowBits>>3) + (rowBits&7);
+   m_bytesPerPixel =  (m_colors * m_bits + 7) >> 3;
    int rows = 0;
 
    if( isPNG )
    {
-      rows = content.size()/(_rowLen+1) + (content.size()% (_rowLen+1));
+      rows = content.size()/(m_rowLen+1) + (content.size()% (m_rowLen+1));
    }
    else
    {
-      rows = content.size()/(_rowLen) + (content.size()% (_rowLen) );
+      rows = content.size()/(m_rowLen) + (content.size()% (m_rowLen) );
    }
 
    int inSize = content.size();
    std::string  out = "";
 
-   if( inSize%(isPNG?_rowLen+1:_rowLen) != 0 )
+   if( inSize%(isPNG?m_rowLen+1:m_rowLen) != 0 )
    {
-      std::cerr<<"Warning : wrong PNG identation inSize "<<inSize<<" rowLen = "<<_rowLen<<" isPNG = "<<isPNG<<"\n";
+      std::cerr<<"Warning : wrong PNG identation inSize "<<inSize<<" rowLen = "<<m_rowLen<<" isPNG = "<<isPNG<<"\n";
       content = out;
       return false;
    }
 
    const char *curRow  = NULL;
-   std::string prev(_bytesPerPixel+_rowLen,'\0');  //"previous" line
+   std::string prev(m_bytesPerPixel+m_rowLen,'\0');  //"previous" line
    int curPredictor  = 1;
 
    for(int i = 0;i<rows;i++)
    {
-      curRow = content.data() + (i* (_rowLen + (isPNG?1:0)) );            
+      curRow = content.data() + (i* (m_rowLen + (isPNG?1:0)) );            
       if( isPNG )
       {
          // this is PNG predictor!
@@ -284,7 +284,7 @@ bool FilterPredictor::decode(std::string &content)
       }
       else
       {
-         curPredictor = _predictor; // default NONE predictor
+         curPredictor = m_predictor; // default NONE predictor
       }
       std::string dec;
       if( !decodeRow(curRow,dec,prev,curPredictor) )
@@ -295,7 +295,7 @@ bool FilterPredictor::decode(std::string &content)
       }
       //trace_hex(dec.data()+_bytesPerPixel,_rowLen);
       prev = dec;
-      out += std::string(dec.data()+_bytesPerPixel,_rowLen);
+      out += std::string(dec.data()+m_bytesPerPixel,m_rowLen);
    }
    content = out;
    return true;

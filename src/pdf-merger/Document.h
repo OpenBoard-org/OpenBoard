@@ -58,7 +58,7 @@ namespace merge_lib
       //add objects to allObjects repository
       void addToAllObjects(const std::vector<Object *> & allObjs)
       {
-         _allObjects.insert(_allObjects.end(), allObjs.begin(), allObjs.end());
+         m_allObjects.insert(m_allObjects.end(), allObjs.begin(), allObjs.end());
       }
 
    private:
@@ -67,21 +67,21 @@ namespace merge_lib
       //members
 
       //root of all document's objects
-      Object * _root;
+      Object * m_root;
 
       //document's pages
       //key - is a page number
       //values is a page
-      std::map <unsigned int, Page *> _pages;
+      std::map <unsigned int, Page *> m_pages;
 
       //repository for all objects. 
       //this repository is using to destroy all document's objects in destructor
-      std::vector<Object *> _allObjects;
+      std::vector<Object *> m_allObjects;
 
-      std::string _documentName;
+      std::string m_documentName;
 
       //max number of all document's objects
-      unsigned int _maxObjectNumber;
+      unsigned int m_maxObjectNumber;
 
    };
 }

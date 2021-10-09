@@ -39,19 +39,19 @@ namespace merge_lib
    public:
       TypeElementHandler(Object * page): PageElementHandler(page)
       {
-         _setHandlerName("/Type");
+         setHandlerName("/Type");
       }
       
    private:
-      virtual void _changeObjectContent(unsigned int startOfPageElement)
+      virtual void changeObjectContentImpl(unsigned int startOfPageElement)
       {
          std::string searchPattern("/Page");
-         unsigned int startOfPage = _pageContent.find(searchPattern, startOfPageElement);
-         _page->eraseContent(startOfPage, searchPattern.size());
+         unsigned int startOfPage = m_pageContent.find(searchPattern, startOfPageElement);
+         m_page->eraseContent(startOfPage, searchPattern.size());
          std::string xObject = " /XObject\n";
-         _page->insertToContent(startOfPage, xObject);
+         m_page->insertToContent(startOfPage, xObject);
          static std::string subtype("/Subtype /Form\n");
-         _page->insertToContent(startOfPage + xObject.size(), subtype);
+         m_page->insertToContent(startOfPage + xObject.size(), subtype);
       }
    };
 }

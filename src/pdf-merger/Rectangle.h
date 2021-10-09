@@ -58,10 +58,10 @@ namespace merge_lib
       double x1, y1, x2, y2;
    private:
       //methods
-      const std::string _getRectangleAsString(const char * delimeter);
+      const std::string getRectangleAsString(const char * delimeter);
       //members   
-      const char * _rectangleName;
-      TransformationMatrix _tm;
+      const char * m_rectangleName;
+      TransformationMatrix m_tm;
    };
 }
 #endif

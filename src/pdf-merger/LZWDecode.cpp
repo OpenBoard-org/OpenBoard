@@ -38,26 +38,26 @@
 using namespace merge_lib;
 
 LZWDecode::LZWDecode():
-      _predict(NULL),
-      _dummy(""),
-      _encoded(_dummy),
-      _curSymbolIndex(0),
-      _earlyChange(1),
-      _readBuf(0),
-      _readBits(0),
-      _nextCode(0),
-      _bitsToRead(0),
-      _first(true),
-      _curSequenceLength(0)
+      m_predict(NULL),
+      m_dummy(""),
+      m_encoded(m_dummy),
+      m_curSymbolIndex(0),
+      m_earlyChange(1),
+      m_readBuf(0),
+      m_readBits(0),
+      m_nextCode(0),
+      m_bitsToRead(0),
+      m_first(true),
+      m_curSequenceLength(0)
 
 {
    clearTable();
 }
 LZWDecode::~LZWDecode()
 {
-   if( _predict ) 
+   if( m_predict ) 
    {
-      delete _predict;
+      delete m_predict;
    }
 }
 
@@ -76,22 +76,22 @@ void LZWDecode::initialize(Object * objectWithStream)
 
       if((int) head.find(FilterPredictor::DECODE_PARAM_TOKEN)  != -1 )
       {
-         _predict = new FilterPredictor();
-         _predict->initialize(objectWithStream);
-         _earlyChange = _predict->getEarlyChange();
+         m_predict = new FilterPredictor();
+         m_predict->initialize(objectWithStream);
+         m_earlyChange = m_predict->getEarlyChange();
       }
-      _readBits = 0;
-      _readBuf = 0;
+      m_readBits = 0;
+      m_readBuf = 0;
       clearTable();
    }
 }
 
 void LZWDecode::clearTable() 
 {
-   _nextCode = 258;
-   _bitsToRead = 9;
-   _curSequenceLength = 0;
-   _first = true;
+   m_nextCode = 258;
+   m_bitsToRead = 9;
+   m_curSequenceLength = 0;
+   m_first = true;
 }
 
 int LZWDecode::getCode() 
@@ -99,29 +99,29 @@ int LZWDecode::getCode()
    int c = 0;
    int code = 0;
 
-   while (_readBits < _bitsToRead) 
+   while (m_readBits < m_bitsToRead) 
    {
-      if( _curSymbolIndex < _encoded.size() )
+      if( m_curSymbolIndex < m_encoded.size() )
       {
-         c = _encoded[_curSymbolIndex++];
+         c = m_encoded[m_curSymbolIndex++];
       }
       else
       {
          return EOF;
       }
-      _readBuf = (_readBuf << 8) | (c & 0xff);
-      _readBits += 8;
+      m_readBuf = (m_readBuf << 8) | (c & 0xff);
+      m_readBits += 8;
    }
-   code = (_readBuf >> (_readBits - _bitsToRead)) & ((1 << _bitsToRead) - 1);
-   _readBits -= _bitsToRead;
+   code = (m_readBuf >> (m_readBits - m_bitsToRead)) & ((1 << m_bitsToRead) - 1);
+   m_readBits -= m_bitsToRead;
    return code;
 }
 
 // Method performs LZW decoding
 bool LZWDecode::decode(std::string & encoded)
 {
-   _curSymbolIndex = 0;
-   _encoded = encoded;
+   m_curSymbolIndex = 0;
+   m_encoded = encoded;
 
    // LZW decoding
    std::string decoded;
@@ -151,34 +151,34 @@ bool LZWDecode::decode(std::string & encoded)
          clearTable();
          continue;
       }
-      if( _nextCode >= 4997 )
+      if( m_nextCode >= 4997 )
       {
          std::cout<<"Bad LZW stream - unexpected clearTable\n";
          clearTable();
          continue;
       }
-      nextLength = _curSequenceLength + 1;
+      nextLength = m_curSequenceLength + 1;
       if( code < 256 )
       {
          curSequence[ 0 ] = code;
-         _curSequenceLength = 1;
+         m_curSequenceLength = 1;
       }
-      else if( code < _nextCode )
+      else if( code < m_nextCode )
       {
          //lets take sequence from table
-         _curSequenceLength = decTable[code].length;
+         m_curSequenceLength = decTable[code].length;
          int j = code;
-         for( int i = _curSequenceLength - 1; i > 0; i--)
+         for( int i = m_curSequenceLength - 1; i > 0; i--)
          {
             curSequence[ i ] = decTable[j].tail;
             j = decTable[ j ].head;
          }
          curSequence[0] = j;
       }
-      else if( code == _nextCode )
+      else if( code == m_nextCode )
       {
-        curSequence[ _curSequenceLength ] = newChar;  
-         ++_curSequenceLength;
+        curSequence[ m_curSequenceLength ] = newChar;  
+         ++m_curSequenceLength;
       }
       else
       {
@@ -186,34 +186,34 @@ bool LZWDecode::decode(std::string & encoded)
          break;
       }
       newChar = curSequence[0];      
-      if( _first ) 
+      if( m_first ) 
       {
-         _first = false;
+         m_first = false;
       }
       else
       {
          // lets build decoding table
-         decTable[ _nextCode ].length = nextLength;
-         decTable[ _nextCode ].head = prevCode;
-         decTable[ _nextCode ].tail = newChar;
-         ++ _nextCode;
+         decTable[ m_nextCode ].length = nextLength;
+         decTable[ m_nextCode ].head = prevCode;
+         decTable[ m_nextCode ].tail = newChar;
+         ++ m_nextCode;
          // processing of PDF LZW parameter
-         if (_nextCode + _earlyChange == 512)
+         if (m_nextCode + m_earlyChange == 512)
          {
-            _bitsToRead = 10;
+            m_bitsToRead = 10;
          }
-         else if (_nextCode + _earlyChange == 1024)
+         else if (m_nextCode + m_earlyChange == 1024)
          {
-            _bitsToRead = 11;
+            m_bitsToRead = 11;
          }
-         else if (_nextCode + _earlyChange == 2048)
+         else if (m_nextCode + m_earlyChange == 2048)
          {
-            _bitsToRead = 12;
+            m_bitsToRead = 12;
          }
       }
       prevCode = code;
       // put current sequence to output stream
-      for(int i = 0;i < _curSequenceLength;i++)
+      for(int i = 0;i < m_curSequenceLength;i++)
       {
          decoded += (char)curSequence[ i ];
       }
@@ -221,9 +221,9 @@ bool LZWDecode::decode(std::string & encoded)
    encoded = decoded;
 
    // if predictor exists for that object, then lets decode it
-   if( _predict )
+   if( m_predict )
    {
-      _predict->decode(encoded);
+      m_predict->decode(encoded);
    }
    return true;    
 }

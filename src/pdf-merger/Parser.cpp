@@ -51,23 +51,23 @@ const std::string Parser::WHITESPACES_AND_DELIMETERS = Parser::WHITESPACES + Par
 
 Document * Parser::parseDocument(const char * fileName)
 {
-   _document = new Document(fileName);
+   m_document = new Document(fileName);
    try
    {
-      _createObjectTree(fileName);
-      _createDocument(fileName);
+      createObjectTree(fileName);
+      createDocument(fileName);
    }
    catch( std::exception &)
    {
-      _clearParser();
-      delete _document;
-      _document = NULL;
+      clearParser();
+      delete m_document;
+      m_document = NULL;
       throw;
    }
-   return _document;
+   return m_document;
 }
 
-void Parser::_retrieveAllPages(Object * objectWithKids)
+void Parser::retrieveAllPages(Object * objectWithKids)
 {
    std::string & objectContent = objectWithKids->getObjectContent();
    unsigned int startOfKids = objectContent.find("/Kids");
@@ -77,48 +77,48 @@ void Parser::_retrieveAllPages(Object * objectWithKids)
       ((int)objectContent.find("/Page") != -1)
       )
    {
-      unsigned int numberOfPages = _document->_pages.size() + 1;
+      unsigned int numberOfPages = m_document->m_pages.size() + 1;
       Page * newPage = new Page(numberOfPages);     
-      newPage->_root = objectWithKids;
-      _document->_pages.insert(std::pair<unsigned int, Page *>(numberOfPages, newPage));
+      newPage->m_root = objectWithKids;
+      m_document->m_pages.insert(std::pair<unsigned int, Page *>(numberOfPages, newPage));
       return;
    }
 
    const std::vector<Object *> & kids = objectWithKids->getSortedByPositionChildren(startOfKids, endOfKids);
    for(size_t i(0); i < kids.size(); ++i)
    {
-      _retrieveAllPages(kids[i]);
+      retrieveAllPages(kids[i]);
    }
 }
 
-void Parser::_createDocument(const char * docName)
+void Parser::createDocument(const char * docName)
 {
     Q_UNUSED(docName);
-   _document->_root = _root;
-   std::string & rootContent = _root->getObjectContent();
+   m_document->m_root = m_root;
+   std::string & rootContent = m_root->getObjectContent();
    unsigned int startOfPages = rootContent.find("/Pages");
    if((int)startOfPages == -1)
       throw Exception("Some document is wrong");
    unsigned int endOfPages = rootContent.find("R", startOfPages);
-   std::vector<Object *> objectWithKids = _root->getChildrenByBounds(startOfPages, endOfPages);
+   std::vector<Object *> objectWithKids = m_root->getChildrenByBounds(startOfPages, endOfPages);
    if(objectWithKids.size() != 1)
       throw Exception("Some document is wrong");
-   _retrieveAllPages(objectWithKids[0]);
+   retrieveAllPages(objectWithKids[0]);
 
-   _root->retrieveMaxObjectNumber(_document->_maxObjectNumber);
-   _clearParser();
+   m_root->retrieveMaxObjectNumber(m_document->m_maxObjectNumber);
+   clearParser();
 }
 
-void Parser::_clearParser()
+void Parser::clearParser()
 {
-   _root = 0;
-   _fileContent.clear();
-   _fileContent.reserve();
-   _objects.clear();
+   m_root = 0;
+   m_fileContent.clear();
+   m_fileContent.reserve();
+   m_objects.clear();
 }
 
 
-void Parser::_getFileContent(const char * fileName)
+void Parser::getFileContent(const char * fileName)
 {
    ifstream pdfFile;
    pdfFile.open (fileName, ios::binary );
@@ -132,16 +132,16 @@ void Parser::_getFileContent(const char * fileName)
    pdfFile.seekg (0, ios::end);
    int length = pdfFile.tellg();
    pdfFile.seekg (0, ios::beg);
-   _fileContent.resize(length);
-   pdfFile.read(&_fileContent[0], length);
+   m_fileContent.resize(length);
+   pdfFile.read(&m_fileContent[0], length);
 
    // check version
    const char *header = "%PDF-1.";
-   size_t verPos = _fileContent.find(header);
+   size_t verPos = m_fileContent.find(header);
    if( verPos == 0 )
    {
       verPos += strlen(header);
-      char ver = _fileContent[verPos];
+      char ver = m_fileContent[verPos];
       if( ver < '0' || ver > '4' )
       {
          stringstream errorMsg;
@@ -157,47 +157,47 @@ void Parser::_getFileContent(const char * fileName)
 }
 
 
-void Parser::_createObjectTree(const char * fileName)
+void Parser::createObjectTree(const char * fileName)
 {
    unsigned int rootObjectNumber = 0;
    try
    {
-      _getFileContent(fileName);
-      _readXRefAndCreateObjects();
-      rootObjectNumber = _readTrailerAndReturnRoot();
+      getFileContent(fileName);
+      readXRefAndCreateObjects();
+      rootObjectNumber = readTrailerAndReturnRoot();
    }
    catch (std::exception &)
    {
-      std::map<unsigned int, Object *>::const_iterator it(_objects.begin());
-      for(;it != _objects.end();it++)
+      std::map<unsigned int, Object *>::const_iterator it(m_objects.begin());
+      for(;it != m_objects.end();it++)
       {
          delete (*it).second;
       }
-      _objects.clear();
+      m_objects.clear();
       throw;
    }
 
    std::map<unsigned int, Object *>::iterator objectsIterator;
 
-   for ( objectsIterator = _objects.begin() ; objectsIterator != _objects.end(); objectsIterator++ )
+   for ( objectsIterator = m_objects.begin() ; objectsIterator != m_objects.end(); objectsIterator++ )
    {
       Object * currentObject = (*objectsIterator).second;
-      _document->_allObjects.push_back(currentObject);
+      m_document->m_allObjects.push_back(currentObject);
       //key - object number :  value - positions in object content of this reference
       const std::map<unsigned int, Object::ReferencePositionsInContent> & refs = 
-         _getReferences(currentObject->getObjectContent());      
+         getReferences(currentObject->getObjectContent());
       std::map<unsigned int, Object::ReferencePositionsInContent>::const_iterator refsIterator = refs.begin();
       for(; refsIterator !=  refs.end(); ++refsIterator)
       {        
-         if(_objects.count((*refsIterator).first))
-            currentObject->addChild(_objects[(*refsIterator).first], (*refsIterator).second);        
+         if(m_objects.count((*refsIterator).first))
+            currentObject->addChild(m_objects[(*refsIterator).first], (*refsIterator).second);
       }
    }   
-   _root = _objects[rootObjectNumber];
+   m_root = m_objects[rootObjectNumber];
 
 }
 
-const std::map<unsigned int, Object::ReferencePositionsInContent> & Parser::_getReferences(const std::string & objectContent)
+const std::map<unsigned int, Object::ReferencePositionsInContent> & Parser::getReferences(const std::string & objectContent)
 {
    unsigned int currentPosition(0), startOfNextSearch(0);
    static std::map<unsigned int, std::vector<unsigned int> >  searchResult;
@@ -223,7 +223,7 @@ const std::map<unsigned int, Object::ReferencePositionsInContent> & Parser::_get
             continue;
          }
          //get previos symbol and check that it is a number
-         unsigned int numberSearchCounter = _skipNumber(objectContent, --currentPosition);
+         unsigned int numberSearchCounter = skipNumber(objectContent, --currentPosition);
 
          //previos symbol is not a number
          if(numberSearchCounter == currentPosition)
@@ -250,7 +250,7 @@ const std::map<unsigned int, Object::ReferencePositionsInContent> & Parser::_get
             continue;
          }
          //check that this and may be previos symbols are a numbers     
-         numberSearchCounter = _skipNumber(objectContent, currentPosition);
+         numberSearchCounter = skipNumber(objectContent, currentPosition);
          if(numberSearchCounter == currentPosition)
          {
             ++startOfNextSearch;
@@ -270,7 +270,7 @@ const std::map<unsigned int, Object::ReferencePositionsInContent> & Parser::_get
    return searchResult;
 }
 
-unsigned int Parser::_skipNumber(const std::string & str, unsigned int currentPosition)
+unsigned int Parser::skipNumber(const std::string & str, unsigned int currentPosition)
 {
    unsigned int numberSearchCounter = currentPosition;    
    while(((int)NUMBERS.find(str[numberSearchCounter]) != -1) && --numberSearchCounter)
@@ -278,18 +278,18 @@ unsigned int Parser::_skipNumber(const std::string & str, unsigned int currentPo
 
    return numberSearchCounter;
 }
-void Parser::_readXRefAndCreateObjects()
+void Parser::readXRefAndCreateObjects()
 {      
-   unsigned int currentPostion = _getStartOfXrefWithRoot();
+   unsigned int currentPostion = getStartOfXrefWithRoot();
    do
    {
-      const std::string & currentToken = _getNextToken(currentPostion);
+      const std::string & currentToken = getNextToken(currentPostion);
       if(currentToken != "xref")
       {
          throw Exception("Wrong xref in some document");
       }
-      unsigned int endOfLine = _getEndOfLineFromContent(currentPostion );
-      if(_countTokens(currentPostion, endOfLine) != 2)
+      unsigned int endOfLine = getEndOfLineFromContent(currentPostion );
+      if(countTokens(currentPostion, endOfLine) != 2)
       {
          throw Exception("Wrong xref in some document");
 
@@ -297,17 +297,17 @@ void Parser::_readXRefAndCreateObjects()
       //now we are reading the xref
       while(1)
       {
-         Utils::stringToInt(_getNextToken(currentPostion));
-         unsigned int objectCount = Utils::stringToInt(_getNextToken(currentPostion));
+         Utils::stringToInt(getNextToken(currentPostion));
+         unsigned int objectCount = Utils::stringToInt(getNextToken(currentPostion));
          for(unsigned int i(0); i < objectCount; i++)
          {
             unsigned long  first;
 
-            if(_countTokens(currentPostion, _getEndOfLineFromContent(currentPostion)) == 3)
+            if(countTokens(currentPostion, getEndOfLineFromContent(currentPostion)) == 3)
             {
-               first  = Utils::stringToInt(_getNextToken(currentPostion));
-               Utils::stringToInt(_getNextToken(currentPostion));
-               const string & use         = _getNextToken(currentPostion);
+               first  = Utils::stringToInt(getNextToken(currentPostion));
+               Utils::stringToInt(getNextToken(currentPostion));
+               const string & use         = getNextToken(currentPostion);
                if(!use.compare("n"))
                {
                   unsigned int objectNumber;
@@ -317,11 +317,11 @@ void Parser::_readXRefAndCreateObjects()
                      std::pair<unsigned int, unsigned int> streamBounds;
                      bool hasObjectStream;
                      unsigned int generationNumber;
-                     const std::string content = _getObjectContent(first, objectNumber, generationNumber, streamBounds, hasObjectStream);
-                     if(!_objects.count(objectNumber))
+                     const std::string content = getObjectContent(first, objectNumber, generationNumber, streamBounds, hasObjectStream);
+                     if(!m_objects.count(objectNumber))
                      {
-                        Object * newObject = new Object(objectNumber, generationNumber, content, _document->_documentName ,streamBounds, hasObjectStream);
-                        _objects[objectNumber] = newObject;
+                        Object * newObject = new Object(objectNumber, generationNumber, content, m_document->m_documentName ,streamBounds, hasObjectStream);
+                        m_objects[objectNumber] = newObject;
                      }
                   }
                   catch(std::exception &)
@@ -339,7 +339,7 @@ void Parser::_readXRefAndCreateObjects()
 
          }
          unsigned int previosPostion = currentPostion;
-         const std::string & isTrailer = _getNextToken(currentPostion);
+         const std::string & isTrailer = getNextToken(currentPostion);
 
          std::string trailer("trailer");
          if(isTrailer == trailer)
@@ -352,33 +352,33 @@ void Parser::_readXRefAndCreateObjects()
 
       }
    }
-   while(_readTrailerAndRterievePrev(currentPostion, currentPostion));
+   while(readTrailerAndRterievePrev(currentPostion, currentPostion));
 
 
 }
 
-unsigned int Parser::_getStartOfXrefWithRoot()
+unsigned int Parser::getStartOfXrefWithRoot()
 {
-   unsigned int leftBoundOfStartOfXref = _fileContent.rfind("startxref");
-   leftBoundOfStartOfXref = _fileContent.find_first_of(NUMBERS, leftBoundOfStartOfXref);
+   unsigned int leftBoundOfStartOfXref = m_fileContent.rfind("startxref");
+   leftBoundOfStartOfXref = m_fileContent.find_first_of(NUMBERS, leftBoundOfStartOfXref);
 
-   unsigned int rightBoundOfStartOfXref = _fileContent.find_first_not_of(NUMBERS, leftBoundOfStartOfXref + 1);
+   unsigned int rightBoundOfStartOfXref = m_fileContent.find_first_not_of(NUMBERS, leftBoundOfStartOfXref + 1);
 
-   std::string  startOfXref = _fileContent.substr(leftBoundOfStartOfXref, rightBoundOfStartOfXref - leftBoundOfStartOfXref);
+   std::string  startOfXref = m_fileContent.substr(leftBoundOfStartOfXref, rightBoundOfStartOfXref - leftBoundOfStartOfXref);
    int integerStartOfXref = Utils::stringToInt(startOfXref);
    return integerStartOfXref;
 }
 
-unsigned int Parser::_getEndOfLineFromContent(unsigned int fromPosition)
+unsigned int Parser::getEndOfLineFromContent(unsigned int fromPosition)
 {
-   fromPosition = _skipWhiteSpacesFromContent(fromPosition);
-   unsigned int endOfLine = _fileContent.find_first_of("\n\r", fromPosition);
-   endOfLine = _fileContent.find_last_of("\n\r", endOfLine);
+   fromPosition = skipWhiteSpacesFromContent(fromPosition);
+   unsigned int endOfLine = m_fileContent.find_first_of("\n\r", fromPosition);
+   endOfLine = m_fileContent.find_last_of("\n\r", endOfLine);
    return endOfLine;
 
 }
 
-const std::pair<unsigned int, unsigned int> & Parser::_getLineBounds(const std::string & str, unsigned int fromPosition)
+const std::pair<unsigned int, unsigned int> & Parser::getLineBounds(const std::string & str, unsigned int fromPosition)
 {
    static std::pair<unsigned int, unsigned int> bounds;
    bounds.first = str.rfind('\n', fromPosition);
@@ -390,17 +390,17 @@ const std::pair<unsigned int, unsigned int> & Parser::_getLineBounds(const std::
    return bounds;
 }
 
-const std::string & Parser::_getNextToken(unsigned int & fromPosition)
+const std::string & Parser::getNextToken(unsigned int & fromPosition)
 {
-   fromPosition = _skipWhiteSpacesFromContent(fromPosition);
-   unsigned int position = _fileContent.find_first_of(WHITESPACES, fromPosition);
+   fromPosition = skipWhiteSpacesFromContent(fromPosition);
+   unsigned int position = m_fileContent.find_first_of(WHITESPACES, fromPosition);
 
    static std::string token;
    if(position > fromPosition)
    {        
       unsigned int tokenSize = position - fromPosition;
       token.resize(tokenSize);
-      memcpy(&token[0], &_fileContent[fromPosition], tokenSize);
+      memcpy(&token[0], &m_fileContent[fromPosition], tokenSize);
       fromPosition = position;
       return token;
    }
@@ -412,14 +412,14 @@ const std::string & Parser::_getNextToken(unsigned int & fromPosition)
    return token;
 }
 
-unsigned int Parser::_countTokens(unsigned int leftBound, unsigned int rightBount)
+unsigned int Parser::countTokens(unsigned int leftBound, unsigned int rightBount)
 {
-   unsigned int position = _skipWhiteSpacesFromContent(leftBound);
+   unsigned int position = skipWhiteSpacesFromContent(leftBound);
    unsigned int tokensCount = 0;
 
    while (position < rightBount)
    {
-      position = _fileContent.find_first_of(WHITESPACES, position);
+      position = m_fileContent.find_first_of(WHITESPACES, position);
       if ((int)position != -1)
          ++tokensCount;
       //start search from next symbol
@@ -428,7 +428,7 @@ unsigned int Parser::_countTokens(unsigned int leftBound, unsigned int rightBoun
    return tokensCount;
 }
 
-unsigned int Parser::_skipWhiteSpaces(const std::string & str, unsigned int fromPosition)
+unsigned int Parser::skipWhiteSpaces(const std::string & str, unsigned int fromPosition)
 {
    unsigned int position = fromPosition;
    if((int)WHITESPACES.find(str[0]) != -1)
@@ -436,27 +436,27 @@ unsigned int Parser::_skipWhiteSpaces(const std::string & str, unsigned int from
    return position;
 }
 
-unsigned int Parser::_skipWhiteSpacesFromContent(unsigned int fromPosition)
+unsigned int Parser::skipWhiteSpacesFromContent(unsigned int fromPosition)
 {
    unsigned int position = fromPosition;
-   if((int)WHITESPACES.find(_fileContent[position]) != -1)
-      position = _fileContent.find_first_not_of(WHITESPACES, position);// + 1;
+   if((int)WHITESPACES.find(m_fileContent[position]) != -1)
+      position = m_fileContent.find_first_not_of(WHITESPACES, position);// + 1;
 
    return position;
 }
 
-const std::string & Parser::_getObjectContent(unsigned int objectPosition, unsigned int & objectNumber, unsigned int & generationNumber, std::pair<unsigned int, unsigned int> & streamBounds, bool & hasObjectStream)
+const std::string & Parser::getObjectContent(unsigned int objectPosition, unsigned int & objectNumber, unsigned int & generationNumber, std::pair<unsigned int, unsigned int> & streamBounds, bool & hasObjectStream)
 {
    hasObjectStream = false;
    unsigned int currentPosition = objectPosition;
 
-   std::string token = _getNextToken(currentPosition);  // number of object
+   std::string token = getNextToken(currentPosition);  // number of object
    objectNumber = Utils::stringToInt(token);
 
-   token = _getNextToken(currentPosition);  // generation number - not interesting
+   token = getNextToken(currentPosition);  // generation number - not interesting
    generationNumber = Utils::stringToInt(token);
 
-   token = Parser::getNextToken(_fileContent,currentPosition);
+   token = Parser::getNextToken(m_fileContent,currentPosition);
 
    if( token != "obj" )
    {
@@ -467,7 +467,7 @@ const std::string & Parser::_getObjectContent(unsigned int objectPosition, unsig
 
    static std::string objectContent;
 
-   size_t contentStart = _fileContent.find_first_not_of(Parser::WHITESPACES,currentPosition);
+   size_t contentStart = m_fileContent.find_first_not_of(Parser::WHITESPACES,currentPosition);
    if((int) contentStart == -1 )
    {
       std::stringstream strOut;
@@ -475,22 +475,22 @@ const std::string & Parser::_getObjectContent(unsigned int objectPosition, unsig
       throw Exception(strOut.str());
    }
    currentPosition = contentStart;
-   unsigned int endOfContent = _fileContent.find("endobj", contentStart);
+   unsigned int endOfContent = m_fileContent.find("endobj", contentStart);
    if((int) endOfContent == -1 )
    {
       stringstream errorMessage("Corrupted PDF file, obj does not have matching endobj");
       throw Exception(errorMessage);
    }
-   unsigned int endOfStream = _fileContent.find("endstream", currentPosition);
+   unsigned int endOfStream = m_fileContent.find("endstream", currentPosition);
    if(((int)endOfStream != -1) && (endOfStream < endOfContent))
    {
       std::string stream("stream");
-      unsigned int beginOfStream = _fileContent.find(stream, currentPosition) + stream.size();
-      while(_fileContent[beginOfStream] == '\r')
+      unsigned int beginOfStream = m_fileContent.find(stream, currentPosition) + stream.size();
+      while(m_fileContent[beginOfStream] == '\r')
       {
          ++beginOfStream;
       }
-      if( _fileContent[beginOfStream] == '\n')
+      if( m_fileContent[beginOfStream] == '\n')
       {
          ++beginOfStream;
       }
@@ -498,19 +498,19 @@ const std::string & Parser::_getObjectContent(unsigned int objectPosition, unsig
 
       // try to use Length field to determine end of stream.
       std::string lengthToken = "/Length";
-      size_t lengthBegin = Parser::findTokenName(_fileContent,lengthToken,contentStart);
+      size_t lengthBegin = Parser::findTokenName(m_fileContent,lengthToken,contentStart);
       if ((int) lengthBegin != -1 )
       {
          std::string lengthStr;
          size_t lenPos = lengthBegin + lengthToken.size();
          bool useContentLength = false;
-         if( Parser::getNextWord(lengthStr,_fileContent,lenPos) )
+         if( Parser::getNextWord(lengthStr,m_fileContent,lenPos) )
          {
             useContentLength = true;
             std::string refStr;
-            if( Parser::getNextWord(refStr,_fileContent,lenPos))
+            if( Parser::getNextWord(refStr,m_fileContent,lenPos))
             {
-               if( Parser::getNextWord(refStr,_fileContent,lenPos))
+               if( Parser::getNextWord(refStr,m_fileContent,lenPos))
                {
                   if( refStr == "R" )
                   {
@@ -526,7 +526,7 @@ const std::string & Parser::_getObjectContent(unsigned int objectPosition, unsig
             unsigned int streamEnd = 0;
             strin>>streamEnd;
             streamEnd += beginOfStream;
-            unsigned int streamEndBegin = _fileContent.find("endstream",streamEnd);
+            unsigned int streamEndBegin = m_fileContent.find("endstream",streamEnd);
             if((int) streamEndBegin != -1 )
             {
                endOfStream = streamEndBegin;
@@ -541,44 +541,44 @@ const std::string & Parser::_getObjectContent(unsigned int objectPosition, unsig
    unsigned int contentSize = endOfContent - currentPosition;
 
    objectContent.resize(contentSize);
-   memcpy(&objectContent[0], &_fileContent[currentPosition], contentSize);
+   memcpy(&objectContent[0], &m_fileContent[currentPosition], contentSize);
    return objectContent;
 
 }
 
-unsigned int Parser::_readTrailerAndReturnRoot()
+unsigned int Parser::readTrailerAndReturnRoot()
 {
 
-   unsigned int startOfTrailer = Parser::findToken(_fileContent,"trailer", _getStartOfXrefWithRoot());
+   unsigned int startOfTrailer = Parser::findToken(m_fileContent,"trailer", getStartOfXrefWithRoot());
    std::string rootStr("/Root");
-   unsigned int startOfRoot = Parser::findToken(_fileContent,rootStr.data(), startOfTrailer);
+   unsigned int startOfRoot = Parser::findToken(m_fileContent,rootStr.data(), startOfTrailer);
    if((int) startOfRoot == -1)
    {
       throw Exception("Cannot find Root object !");
    }
    std::string encryptStr("/Encrypt");
-   if((int) Parser::findToken(_fileContent,encryptStr,startOfTrailer) != -1 )
+   if((int) Parser::findToken(m_fileContent,encryptStr,startOfTrailer) != -1 )
    {
       throw Exception("Encrypted PDF is not supported!");
    }
    startOfRoot += rootStr.size()+1; //"/Root + ' ' 
    unsigned int endOfRoot = startOfRoot;
-   while((int)NUMBERS.find(_fileContent[endOfRoot++]) != -1)
+   while((int)NUMBERS.find(m_fileContent[endOfRoot++]) != -1)
    {}
    --endOfRoot;
-   return Utils::stringToInt(_fileContent.substr(startOfRoot, endOfRoot - startOfRoot));   
+   return Utils::stringToInt(m_fileContent.substr(startOfRoot, endOfRoot - startOfRoot));
 }
 
-unsigned int Parser::_readTrailerAndRterievePrev(const unsigned int startPositionForSearch, unsigned int & previosXref)
+unsigned int Parser::readTrailerAndRterievePrev(const unsigned int startPositionForSearch, unsigned int & previosXref)
 {
-   unsigned int startOfTrailer = Parser::findToken(_fileContent,"trailer", startPositionForSearch);
+   unsigned int startOfTrailer = Parser::findToken(m_fileContent,"trailer", startPositionForSearch);
    if((int) startOfTrailer == -1 )
    {
       throw Exception("Cannot find trailer!");
    }
 
-   unsigned int startOfPrev = _fileContent.find("Prev ", startOfTrailer);
-   unsigned int startxref = _fileContent.find("startxref", startOfTrailer);
+   unsigned int startOfPrev = m_fileContent.find("Prev ", startOfTrailer);
+   unsigned int startxref = m_fileContent.find("startxref", startOfTrailer);
    if((int)startOfPrev == -1 || (startOfPrev > startxref))
       return false;
    //"Prev "s length = 5
@@ -586,10 +586,10 @@ unsigned int Parser::_readTrailerAndRterievePrev(const unsigned int startPositio
       startOfPrev += 5;
 
    unsigned int endOfPrev = startOfPrev;
-   while((int)NUMBERS.find(_fileContent[endOfPrev++]) != -1)
+   while((int)NUMBERS.find(m_fileContent[endOfPrev++]) != -1)
    {}
    --endOfPrev;
-   previosXref = Utils::stringToInt(_fileContent.substr(startOfPrev, endOfPrev - startOfPrev));   
+   previosXref = Utils::stringToInt(m_fileContent.substr(startOfPrev, endOfPrev - startOfPrev));
    return true;
 }
 

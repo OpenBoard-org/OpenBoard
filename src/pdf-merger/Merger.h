@@ -57,9 +57,9 @@ namespace merge_lib
       void merge(const char *overlayDocName, const MergeDescription & pagesToMerge);
 
    private:
-      std::map<std::string, Document * > _baseDocuments;
-      static Parser _parser;
-      Document * _overlayDocument;
+      std::map<std::string, Document * > m_baseDocuments;
+      static Parser s_parser;
+      Document * m_overlayDocument;
    };
 }
 #endif //

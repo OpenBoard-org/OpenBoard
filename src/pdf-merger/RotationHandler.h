@@ -43,19 +43,19 @@ namespace merge_lib
    public:
       RotationHandler(Object * page, const std::string & handlerName, Page & basePage): 
          PageElementHandler(page),
-            _basePage(basePage)
+            m_basePage(basePage)
          {
-            _setHandlerName(handlerName);        
+            setHandlerName(handlerName);        
          }
          virtual ~RotationHandler()
          {
          }
    private:
       //methods
-      virtual void _processObjectContent(unsigned int startOfPageElement)
+      virtual void processObjectContentImpl(unsigned int startOfPageElement)
       {
-         unsigned int endOfElement = _findEndOfElementContent(startOfPageElement);
-         std::string rotationField = _page->getObjectContent().substr(startOfPageElement, endOfElement - startOfPageElement);
+         unsigned int endOfElement = findEndOfElementContent(startOfPageElement);
+         std::string rotationField = m_page->getObjectContent().substr(startOfPageElement, endOfElement - startOfPageElement);
          std::string numbers("1234567890");
          unsigned int startOfNumber = rotationField.find_first_of(numbers);
          if( startOfNumber > 0 )
@@ -70,12 +70,12 @@ namespace merge_lib
          int rotation = 0;
          std::stringstream strin(rotationStr);
          strin>>rotation;
-         _basePage.setRotation(rotation);
+         m_basePage.setRotation(rotation);
       }
-      virtual void _changeObjectContent(unsigned int startOfPageElement) {Q_UNUSED(startOfPageElement);};
+      virtual void changeObjectContentImpl(unsigned int startOfPageElement) {Q_UNUSED(startOfPageElement);};
 
       //members
-      Page & _basePage;
+      Page & m_basePage;
    };
 }
 #endif

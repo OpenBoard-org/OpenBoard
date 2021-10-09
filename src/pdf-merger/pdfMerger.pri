@@ -21,7 +21,6 @@ HEADERS += \
 	src/pdf-merger/Object.h \
 	src/pdf-merger/Page.h \
 	src/pdf-merger/PageElementHandler.h \
-	src/pdf-merger/PageParser.h \
 	src/pdf-merger/Parser.h \
 	src/pdf-merger/Rectangle.h \
 	src/pdf-merger/RemoveHimSelfHandler.h \

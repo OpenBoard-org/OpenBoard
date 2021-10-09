@@ -49,20 +49,20 @@ namespace merge_lib
       static const std::string PREDICTOR_TOKEN;
       static const std::string DECODE_PARAM_TOKEN;
 
-      int getEarlyChange() const { return _earlyChange;}
+      int getEarlyChange() const { return m_earlyChange;}
 
 
    private:
       bool decodeRow(const char *input, std::string &out,const std::string &prev,int curPrediction);
       void obtainDecodeParams(Object*objectWithStream,std::string &dictStr);
       std::string getDictionaryContentStr(std::string & in, size_t &pos );
-      int _predictor;
-      int _colors;
-      int _bits;
-      int _columns;
-      int _earlyChange;
-      int _rowLen;
-      int _bytesPerPixel;
+      int m_predictor;
+      int m_colors;
+      int m_bits;
+      int m_columns;
+      int m_earlyChange;
+      int m_rowLen;
+      int m_bytesPerPixel;
 
    };
 }

@@ -43,15 +43,15 @@ using namespace merge_lib;
    std::cout<<msg<<" ZLIB error:"<<err<<std::endl; \
    }\
 
-FlateDecode::FlateDecode():_predict(NULL)
+FlateDecode::FlateDecode():m_predict(NULL)
 {
 }
 
 FlateDecode::~FlateDecode()
 {
-   if( _predict )
+   if( m_predict )
    {
-      delete _predict;
+      delete m_predict;
    }
 }
 
@@ -64,8 +64,8 @@ void FlateDecode::initialize(Object * objectWithStream)
 
       if((int) head.find(FilterPredictor::DECODE_PARAM_TOKEN)  != -1 )
       {
-         _predict = new FilterPredictor();
-         _predict->initialize(objectWithStream);
+         m_predict = new FilterPredictor();
+         m_predict->initialize(objectWithStream);
       }
 
    }
@@ -223,9 +223,9 @@ bool FlateDecode::decode(std::string & encoded)
    free(out_p);
    //    trace_hex((char*)encoded.c_str(),encoded.size());
    // if predictor exists for that object, then lets decode it
-   if( _predict )
+   if( m_predict )
    {
-      _predict->decode(encoded);
+      m_predict->decode(encoded);
    }
 
    return true;

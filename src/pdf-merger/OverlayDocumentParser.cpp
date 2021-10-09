@@ -44,19 +44,19 @@ unsigned int partSize = 10485760; // = 10 Mb
 
 Document * OverlayDocumentParser::parseDocument(const char * fileName)
 {
-   _fileName = fileName;
+   m_fileName = fileName;
    return Parser::parseDocument(fileName);
 }
 
 
-void OverlayDocumentParser::_readXRefAndCreateObjects()
+void OverlayDocumentParser::readXRefAndCreateObjects()
 {
    std::map<unsigned int, unsigned long> objectsAndPositions;
-   _readXref(objectsAndPositions);
+   readXref(objectsAndPositions);
    std::map<unsigned int, unsigned long> objectsAndSizes;
    std::map<unsigned int, unsigned long>::iterator objAndSIter;
    std::map<unsigned int, unsigned long>::iterator objAndPIter;
-   unsigned long fileSize = Utils::getFileSize(_fileName.c_str());
+   unsigned long fileSize = Utils::getFileSize(m_fileName.c_str());
 
    for(objAndSIter = objectsAndPositions.begin(); objAndSIter != objectsAndPositions.end(); ++objAndSIter)
    {
@@ -82,10 +82,10 @@ void OverlayDocumentParser::_readXRefAndCreateObjects()
       unsigned long nextPartStart = partStart + partSize;                 
 
       if((nextPartStart) < fileSize)
-         _getPartOfFileContent(partStart, partSize);
+         getPartOfFileContent(partStart, partSize);
       else
       {
-         _getPartOfFileContent(partStart, fileSize - partStart);
+         getPartOfFileContent(partStart, fileSize - partStart);
          nextPartStart = fileSize;
          notEndOfFile = false;
       }
@@ -98,11 +98,11 @@ void OverlayDocumentParser::_readXRefAndCreateObjects()
             unsigned int objectNumber;
             unsigned int generationNumber;
             bool hasObjectStream;
-            const std::string content = _getObjectContent(objIter->second - partStart, objectNumber, generationNumber, streamBounds, hasObjectStream);
+            const std::string content = getObjectContent(objIter->second - partStart, objectNumber, generationNumber, streamBounds, hasObjectStream);
             streamBounds.first += partStart;
             streamBounds.second += partStart;
-            Object * newObject = new Object(objectNumber, generationNumber, content, _document->_documentName ,streamBounds, hasObjectStream);
-            _objects[objectNumber] = newObject;
+            Object * newObject = new Object(objectNumber, generationNumber, content, m_document->m_documentName ,streamBounds, hasObjectStream);
+            m_objects[objectNumber] = newObject;
             std::map<unsigned int, unsigned long>::iterator temp = objIter;                   
             ++objIter;
             objectsAndPositions.erase(temp);
@@ -115,19 +115,19 @@ void OverlayDocumentParser::_readXRefAndCreateObjects()
    while(notEndOfFile);   
 }
 
-void OverlayDocumentParser::_getFileContent(const char * fileName)
+void OverlayDocumentParser::getFileContent(const char * fileName)
 {
     Q_UNUSED(fileName);
 }
 
-void OverlayDocumentParser::_getPartOfFileContent(long startOfPart, unsigned int length)
+void OverlayDocumentParser::getPartOfFileContent(long startOfPart, unsigned int length)
 {
    ifstream pdfFile;
-   pdfFile.open (_fileName.c_str(), ios::binary );
+   pdfFile.open (m_fileName.c_str(), ios::binary );
    if (pdfFile.fail())
    {
       stringstream errorMessage("File ");
-      errorMessage << _fileName << " is absent" << "\0";
+      errorMessage << m_fileName << " is absent" << "\0";
       throw Exception(errorMessage);
    }   
    ios_base::seekdir dir;
@@ -136,44 +136,44 @@ void OverlayDocumentParser::_getPartOfFileContent(long startOfPart, unsigned int
    else 
       dir = ios_base::end;
    pdfFile.seekg (startOfPart, dir);
-   _fileContent.resize(length);
-   pdfFile.read(&_fileContent[0], length);
+   m_fileContent.resize(length);
+   pdfFile.read(&m_fileContent[0], length);
    pdfFile.close();
 }
 
-void OverlayDocumentParser::_readXref(std::map<unsigned int, unsigned long> & objectsAndSizes)
+void OverlayDocumentParser::readXref(std::map<unsigned int, unsigned long> & objectsAndSizes)
 {
-   _getPartOfFileContent(- DOC_PART_WITH_START_OF_XREF, DOC_PART_WITH_START_OF_XREF);
-   unsigned int startOfStartxref = _fileContent.find("startxref");
-   unsigned int startOfNumber = _fileContent.find_first_of(Parser::NUMBERS, startOfStartxref);
-   unsigned int endOfNumber = _fileContent.find_first_not_of(Parser::NUMBERS, startOfNumber + 1);
-   std::string startXref = _fileContent.substr(startOfNumber, endOfNumber - startOfNumber);
+   getPartOfFileContent(- DOC_PART_WITH_START_OF_XREF, DOC_PART_WITH_START_OF_XREF);
+   unsigned int startOfStartxref = m_fileContent.find("startxref");
+   unsigned int startOfNumber = m_fileContent.find_first_of(Parser::NUMBERS, startOfStartxref);
+   unsigned int endOfNumber = m_fileContent.find_first_not_of(Parser::NUMBERS, startOfNumber + 1);
+   std::string startXref = m_fileContent.substr(startOfNumber, endOfNumber - startOfNumber);
    unsigned int strtXref = Utils::stringToInt(startXref);
 
-   unsigned int sizeOfXref = Utils::getFileSize(_fileName.c_str()) - strtXref;
-   _getPartOfFileContent(strtXref, sizeOfXref);
-   unsigned int leftBoundOfObjectNumber = _fileContent.find("0 ") + strlen("0 ");
-   unsigned int rightBoundOfObjectNumber = _fileContent.find_first_not_of(Parser::NUMBERS, leftBoundOfObjectNumber);
-   std::string objectNuberStr = _fileContent.substr(leftBoundOfObjectNumber, rightBoundOfObjectNumber - leftBoundOfObjectNumber);
+   unsigned int sizeOfXref = Utils::getFileSize(m_fileName.c_str()) - strtXref;
+   getPartOfFileContent(strtXref, sizeOfXref);
+   unsigned int leftBoundOfObjectNumber = m_fileContent.find("0 ") + strlen("0 ");
+   unsigned int rightBoundOfObjectNumber = m_fileContent.find_first_not_of(Parser::NUMBERS, leftBoundOfObjectNumber);
+   std::string objectNuberStr = m_fileContent.substr(leftBoundOfObjectNumber, rightBoundOfObjectNumber - leftBoundOfObjectNumber);
    unsigned long objectNumber = Utils::stringToInt(objectNuberStr);
-   unsigned int startOfObjectPosition = _fileContent.find("0000000000 65535 f ") + strlen("0000000000 65535 f ");
+   unsigned int startOfObjectPosition = m_fileContent.find("0000000000 65535 f ") + strlen("0000000000 65535 f ");
    for(unsigned long i = 1; i < objectNumber; ++i)
    {
-      startOfObjectPosition = _fileContent.find_first_of(Parser::NUMBERS, startOfObjectPosition);
-      unsigned int endOfObjectPostion = _fileContent.find(" 00000 n", startOfObjectPosition);
-      std::string objectPostionStr = _fileContent.substr(startOfObjectPosition, endOfObjectPostion - startOfObjectPosition);
+      startOfObjectPosition = m_fileContent.find_first_of(Parser::NUMBERS, startOfObjectPosition);
+      unsigned int endOfObjectPostion = m_fileContent.find(" 00000 n", startOfObjectPosition);
+      std::string objectPostionStr = m_fileContent.substr(startOfObjectPosition, endOfObjectPostion - startOfObjectPosition);
       objectsAndSizes[i] = Utils::stringToInt(objectPostionStr);
       startOfObjectPosition = endOfObjectPostion + strlen(" 00000 n");
    }
 }
 
-unsigned int OverlayDocumentParser::_readTrailerAndReturnRoot()
+unsigned int OverlayDocumentParser::readTrailerAndReturnRoot()
 {
-   _getPartOfFileContent(- (3*DOC_PART_WITH_START_OF_XREF), (3*DOC_PART_WITH_START_OF_XREF));
-   return Parser::_readTrailerAndReturnRoot();
+   getPartOfFileContent(- (3*DOC_PART_WITH_START_OF_XREF), (3*DOC_PART_WITH_START_OF_XREF));
+   return Parser::readTrailerAndReturnRoot();
 }
 
-unsigned int OverlayDocumentParser::_getStartOfXrefWithRoot()
+unsigned int OverlayDocumentParser::getStartOfXrefWithRoot()
 {
    return 0;
 }

@@ -43,8 +43,8 @@ x1(0),
 y1(0),
 x2(0),
 y2(0),
-_rectangleName(rectangleName),
-_tm()
+m_rectangleName(rectangleName),
+m_tm()
 
 {}
 
@@ -53,7 +53,7 @@ x1(0),
 y1(0),
 x2(0),
 y2(0),
-_rectangleName(rectangleName)
+m_rectangleName(rectangleName)
 {
    unsigned int rectanglePosition = Parser::findToken(content,rectangleName);
    
@@ -74,12 +74,12 @@ _rectangleName(rectangleName)
 }
 void Rectangle::appendRectangleToString(std::string & content, const char * delimeter)
 {   
-   content.append(_getRectangleAsString(delimeter));      
+   content.append(getRectangleAsString(delimeter));      
 }
 
-const std::string Rectangle::_getRectangleAsString(const char * delimeter)
+const std::string Rectangle::getRectangleAsString(const char * delimeter)
 {
-   std::string result(_rectangleName);    
+   std::string result(m_rectangleName);    
    result.append(" [");
    result.append(Utils::doubleToStr(x1));
    result.append(delimeter);
@@ -94,7 +94,7 @@ const std::string Rectangle::_getRectangleAsString(const char * delimeter)
 
 void Rectangle::setNewRectangleName(const char * newName)
 {
-   _rectangleName = newName;
+   m_rectangleName = newName;
 }
 
 void Rectangle::recalculateInternalRectangleCoordinates(const PageTransformations & transformations)
@@ -103,23 +103,23 @@ void Rectangle::recalculateInternalRectangleCoordinates(const PageTransformation
    for(size_t i = 0; i < transformations.size(); ++i)
    {
       tempTm = transformations[i]->getMatrix();
-      tempTm.add(_tm);
-      _tm = tempTm;
+      tempTm.add(m_tm);
+      m_tm = tempTm;
    }
-   _tm.recalculateCoordinates(x1, y1);
-   _tm.recalculateCoordinates(x2, y2);
+   m_tm.recalculateCoordinates(x1, y1);
+   m_tm.recalculateCoordinates(x2, y2);
 }
 
 void Rectangle::updateRectangle(Object * objectWithRectangle, const char * delimeter)
 {
    Object * foundObjectWithRectangle;
    unsigned int fake;
-   objectWithRectangle->findObject(std::string(_rectangleName), foundObjectWithRectangle, fake);
+   objectWithRectangle->findObject(std::string(m_rectangleName), foundObjectWithRectangle, fake);
    std::string objectContent = foundObjectWithRectangle->getObjectContent();
-   unsigned int rectanglePosition = objectContent.find(_rectangleName);
+   unsigned int rectanglePosition = objectContent.find(m_rectangleName);
    unsigned int endOfRectangle = objectContent.find("]", rectanglePosition) + 1;
    foundObjectWithRectangle->eraseContent(rectanglePosition, endOfRectangle - rectanglePosition);
-   foundObjectWithRectangle->insertToContent(rectanglePosition, _getRectangleAsString(delimeter));
+   foundObjectWithRectangle->insertToContent(rectanglePosition, getRectangleAsString(delimeter));
 
    // reread the objectContent, since it was changed just above;
    objectContent = foundObjectWithRectangle->getObjectContent();
@@ -139,7 +139,7 @@ void Rectangle::updateRectangle(Object * objectWithRectangle, const char * delim
       unsigned int matrixValueLeftBound = objectContent.find("[", matrixPosition);
       unsigned int matrixValueRightBound = objectContent.find("]", matrixValueLeftBound) + 1;
       objectWithMatrix->eraseContent(matrixValueLeftBound, matrixValueRightBound - matrixValueLeftBound);
-      objectWithMatrix->insertToContent(matrixValueLeftBound, _tm.getValue());
+      objectWithMatrix->insertToContent(matrixValueLeftBound, m_tm.getValue());
 
    }
 }

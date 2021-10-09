@@ -47,22 +47,22 @@ namespace merge_lib
       void initialize(Object * objectWithStram);
    private:
 
-      FilterPredictor *_predict;
+      FilterPredictor *m_predict;
 
       void clearTable();
       int getCode();
 
-      std::string _dummy;
-      std::string &_encoded;
-      size_t _curSymbolIndex;
+      std::string m_dummy;
+      std::string &m_encoded;
+      size_t m_curSymbolIndex;
 
-      int _earlyChange;    // early parameter
-      int _readBuf;       
-      int _readBits;       
-      int _nextCode;     
-      int _bitsToRead;     
-      bool _first;          
-      int _curSequenceLength;    
+      int m_earlyChange;    // early parameter
+      int m_readBuf;
+      int m_readBits;
+      int m_nextCode;
+      int m_bitsToRead;
+      bool m_first;
+      int m_curSequenceLength;
    };
 }
 

@@ -43,46 +43,46 @@ using namespace merge_lib;
 const std::string firstObj("%PDF-1.4\n1 0 obj\n<<\n/Title ()/Creator ()/Producer (Qt 4.5.0 (C) 1992-2009 Nokia Corporation and/or its subsidiary(-ies))/CreationDate (D:20090424120829)\n>>\nendobj\n");
 const std::string zeroStr("0000000000");
 Document::Document(const char * fileName):
-    _root(0), _pages(), _documentName(fileName), _maxObjectNumber(0)
+    m_root(0), m_pages(), m_documentName(fileName), m_maxObjectNumber(0)
 {
 
 }
 
 Document::~Document()
 {
-   for(size_t i = 0; i < _allObjects.size(); ++i)
-      delete _allObjects[i];         
-   _allObjects.clear();
+   for(size_t i = 0; i < m_allObjects.size(); ++i)
+      delete m_allObjects[i];
+   m_allObjects.clear();
 
-   std::map<unsigned int, Page *>::const_iterator it(_pages.begin());
-   for(;it != _pages.end();it++)
+   std::map<unsigned int, Page *>::const_iterator it(m_pages.begin());
+   for(;it != m_pages.end();it++)
    {
       delete (*it).second;
    }
-   _pages.clear();
+   m_pages.clear();
 }
 
 
 Page * Document::getPage(unsigned int pageNumber)
 {
-   if(!_pages.count(pageNumber))
+   if(!m_pages.count(pageNumber))
    {
       return 0;
 /*      std::stringstream error;
       error << "There is no page with " 
          << pageNumber << " number in " 
-         << _documentName;
+         << m_documentName;
       throw Exception(error);*/
    }
-   return  _pages[pageNumber];
+   return  m_pages[pageNumber];
 }
 
 void Document::saveAs(const char * newFileName)
 {
    //first two objects will be created by hand
    unsigned int fromObjNumber = 2;
-   _root->recalculateObjectNumbers(fromObjNumber);
-   _root->retrieveMaxObjectNumber(_maxObjectNumber);
+   m_root->recalculateObjectNumbers(fromObjNumber);
+   m_root->retrieveMaxObjectNumber(m_maxObjectNumber);
    
    //sizes of all objects
    //key - object number
@@ -98,7 +98,7 @@ void Document::saveAs(const char * newFileName)
    }
 
    out << firstObj.c_str();
-   _root->serialize( out, sizesAndGenerationNumbers);
+   m_root->serialize( out, sizesAndGenerationNumbers);
    
    std::map< unsigned int, std::pair<unsigned long long, unsigned int > >::iterator sizeIterator;
 
@@ -123,13 +123,13 @@ void Document::saveAs(const char * newFileName)
       sizeInXref = sizeInXref + (*sizeIterator).second.first;
    }
    out << "trailer\n<<\n/Size " << numberOfObjects  << "\n/Info 1 0 R\n"
-      << "/Root " << _root->getObjectNumber() << " 0 R\n >>\nstartxref\n" << sizeInXref << "\n%%EOF";
+      << "/Root " << m_root->getObjectNumber() << " 0 R\n >>\nstartxref\n" << sizeInXref << "\n%%EOF";
 
 }
 
 Object * Document::getDocumentObject()
 {
-   return _root;
+   return m_root;
 }
 
 

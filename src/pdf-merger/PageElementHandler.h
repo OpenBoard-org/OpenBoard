@@ -45,67 +45,67 @@ namespace merge_lib
    {
    public:
 
-      PageElementHandler(Object * page): _page(page), _pageContent(page->_content), _nextHandler(0)
+      PageElementHandler(Object * page): m_page(page), m_pageContent(page->m_content), m_nextHandler(0)
       {
-         _createAllPageFieldsSet();
+         createAllPageFieldsSet();
       }
       virtual ~PageElementHandler()
       {
-         delete _nextHandler;
+         delete m_nextHandler;
       }
       void addNextHandler(PageElementHandler * nextHandler)
       {
-         _nextHandler = nextHandler;
+         m_nextHandler = nextHandler;
       }
 
       void processObjectContent()
       {
-         unsigned int startOfPageElement = _findStartOfPageElement();
+         unsigned int startOfPageElement = findStartOfPageElement();
          if((int)startOfPageElement != -1)
-            _processObjectContent(startOfPageElement);
-         if(_nextHandler)
-            _nextHandler->processObjectContent();
+            processObjectContentImpl(startOfPageElement);
+         if(m_nextHandler)
+            m_nextHandler->processObjectContent();
       }
 
       void changeObjectContent()
       {
-         unsigned int startOfPageElement = _findStartOfPageElement();
+         unsigned int startOfPageElement = findStartOfPageElement();
          if((int)startOfPageElement != -1)
-            _changeObjectContent(startOfPageElement);
+            changeObjectContentImpl(startOfPageElement);
          else
-            _pageElementNotFound();
-         if(_nextHandler)
-            _nextHandler->changeObjectContent();
+            pageElementNotFound();
+         if(m_nextHandler)
+            m_nextHandler->changeObjectContent();
       }
 
    protected:   
       //methods
-      void _setHandlerName(const std::string & handlerName)
+      void setHandlerName(const std::string & handlerName)
       {
-         _handlerName = handlerName;
+         m_handlerName = handlerName;
       }
-      unsigned int _findEndOfElementContent(unsigned int startOfPageElement);
-      void _createAllPageFieldsSet();
+      unsigned int findEndOfElementContent(unsigned int startOfPageElement);
+      void createAllPageFieldsSet();
 
       //members   
-      Object * _page;
-      std::string & _pageContent;
-      std::string _handlerName;  
-      PageElementHandler * _nextHandler;
+      Object * m_page;
+      std::string & m_pageContent;
+      std::string m_handlerName;  
+      PageElementHandler * m_nextHandler;
 
    private:
       //methods
-      virtual void _processObjectContent(unsigned int startOfPageElement);
-      virtual void _changeObjectContent(unsigned int startOfPageElement) = 0;
-      virtual void _pageElementNotFound() {};
-      unsigned int _findStartOfPageElement()
+      virtual void processObjectContentImpl(unsigned int startOfPageElement);
+      virtual void changeObjectContentImpl(unsigned int startOfPageElement) = 0;
+      virtual void pageElementNotFound() {};
+      unsigned int findStartOfPageElement()
       {
-         return Parser::findToken(_pageContent,_handlerName);
+         return Parser::findToken(m_pageContent,m_handlerName);
       }
       //members
 
 
-      static std::set<std::string> _allPageFields;
+      static std::set<std::string> s_allPageFields;
 
    };
 }

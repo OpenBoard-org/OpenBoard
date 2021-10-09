@@ -36,13 +36,13 @@ class FileIsAbsentException
 {
 public:
     FileIsAbsentException(const char * fileName):
-    _fileName(fileName){};
+    m_fileName(fileName){};
     const char * getFileName()
     {
-        return _fileName.c_str();
+        return m_fileName.c_str();
     }
 private:
-    std::string _fileName;
+    std::string m_fileName;
 };
 
 #endif

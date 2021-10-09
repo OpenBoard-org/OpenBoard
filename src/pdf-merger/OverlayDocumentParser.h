@@ -45,24 +45,24 @@ namespace merge_lib
    class OverlayDocumentParser: private Parser
    {
    public:   
-      OverlayDocumentParser(): Parser(), _fileName()  {};
+      OverlayDocumentParser(): Parser(), m_fileName()  {};
       Document * parseDocument(const char * fileName);
 
    protected:
-      unsigned int _readTrailerAndReturnRoot();
+      unsigned int readTrailerAndReturnRoot();
       
    private:
        //methods
-      void         _getFileContent(const char * fileName);
-      void         _readXRefAndCreateObjects();
-      void         _readXref(std::map<unsigned int, unsigned long> & objectsAndSizes);
-      void         _getPartOfFileContent(long startOfPart, unsigned int length);
-      unsigned int _getStartOfXrefWithRoot();
+      void         getFileContent(const char * fileName);
+      void         readXRefAndCreateObjects();
+      void         readXref(std::map<unsigned int, unsigned long> & objectsAndSizes);
+      void         getPartOfFileContent(long startOfPart, unsigned int length);
+      unsigned int getStartOfXrefWithRoot();
       //constants
       static int DOC_PART_WITH_START_OF_XREF;
 
       //members
-      std::string _fileName;
+      std::string m_fileName;
    };
 }
 #endif

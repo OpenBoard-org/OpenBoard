@@ -32,10 +32,10 @@
 #include "core/memcheck.h"
 
 using namespace merge_lib;
-void AnnotsHandler::_processObjectContent(unsigned int startOfPageElement)
+void AnnotsHandler::processObjectContentImpl(unsigned int startOfPageElement)
 {
-   unsigned int endOfAnnots = _findEndOfElementContent(startOfPageElement);
-   _annotations = _page->getSortedByPositionChildren(startOfPageElement, endOfAnnots);
+   unsigned int endOfAnnots = findEndOfElementContent(startOfPageElement);
+   m_annotations = m_page->getSortedByPositionChildren(startOfPageElement, endOfAnnots);
 
    // sometimes annotations array is defined not directly in page object content but 
    // in referred object.
@@ -43,33 +43,33 @@ void AnnotsHandler::_processObjectContent(unsigned int startOfPageElement)
    // /Annots 12 0 R
    // ...
    // 12 0 obj[ 13 0 R 14 0 R] endobj
-   // So in this case _annotations contains one element which content is array of annotation 
+   // So in this case m_annotations contains one element which content is array of annotation
    // references.
 
    // lets check the content if it is really annotation object
-   if( _annotations.size() )
+   if( m_annotations.size() )
    {
-      Object * child = _annotations[0];
+      Object * child = m_annotations[0];
       std::string childContent = child->getObjectContent();
       if((int) Parser::findToken(childContent,"/Rect") == -1 &&
          (int)Parser::findToken(childContent,"/Subtype") == -1 )
       {
          // this was not Annotation but reference to array 
          // of annotations 
-         _annotations.erase(_annotations.begin(),_annotations.end());
+         m_annotations.erase(m_annotations.begin(),m_annotations.end());
          size_t begin = 0;
          size_t end  = childContent.size()-1;
-         _annotations = child->getSortedByPositionChildren(begin,end);
+         m_annotations = child->getSortedByPositionChildren(begin,end);
          
          // lets update the parent in order to skip this intermediate child
          // For now it seems to be not needed, but code below is working
          // it is pity to delete
          /*
-         _page->removeChild(child);
-         _page->eraseContent(startOfPageElement,endOfAnnots-startOfPageElement);
+         m_page->removeChild(child);
+         m_page->eraseContent(startOfPageElement,endOfAnnots-startOfPageElement);
 
          std::string annotTag= "/Annots [";
-         _page->insertToContent(startOfPageElement,annotTag);
+         m_page->insertToContent(startOfPageElement,annotTag);
          size_t pos = startOfPageElement + annotTag.size();
 
          for(size_t i = 0;i<_annotations.size();i++)
@@ -80,11 +80,11 @@ void AnnotsHandler::_processObjectContent(unsigned int startOfPageElement)
             std::vector<unsigned int> posVec;
             posVec.push_back(pos);
 
-            _page->insertToContent(pos,newContent.str());
-            _page->addChild(_annotations[i],posVec);
+            m_page->insertToContent(pos,newContent.str());
+            m_page->addChild(_annotations[i],posVec);
             pos += newContent.str().size();
          }
-         _page->insertToContent(pos," ]\n");
+         m_page->insertToContent(pos," ]\n");
          */
       }
    }

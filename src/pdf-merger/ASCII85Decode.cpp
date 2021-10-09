@@ -38,7 +38,7 @@ static const unsigned long pow85[] = {
    85*85*85*85, 85*85*85, 85*85, 85, 1
 };
 
-void ASCII85Decode::_wput(std::string &cur,unsigned long tuple, int len)
+void ASCII85Decode::wput(std::string &cur,unsigned long tuple, int len)
 {
    switch (len) 
    {
@@ -94,7 +94,7 @@ bool ASCII85Decode::decode(std::string &encoded)
          tuple += (unsigned long)(ch - '!') * pow85[count++];
          if( count == 5)
          {
-            _wput(decoded,tuple,4);
+            wput(decoded,tuple,4);
             count = 0;
             tuple = 0;
          }
@@ -117,7 +117,7 @@ bool ASCII85Decode::decode(std::string &encoded)
                {
                   count --;
                   tuple += pow85[count];
-                  _wput(decoded,tuple,count);
+                  wput(decoded,tuple,count);
                }
             }
             encoded = decoded;
