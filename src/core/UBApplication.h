@@ -35,7 +35,7 @@
 #include <QToolBar>
 #include <QMenu>
 
-#include "qtsingleapplication.h"
+#include "singleapplication/singleapplication.h"
 
 namespace Ui
 {
@@ -54,7 +54,7 @@ class UBApplicationController;
 class UBDocumentController;
 class UBMainWindow;
 
-class UBApplication : public QtSingleApplication
+class UBApplication : public SingleApplication
 {
     Q_OBJECT
 

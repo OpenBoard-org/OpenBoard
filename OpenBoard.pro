@@ -57,7 +57,8 @@ include(src/podcast/podcast.pri)
 include(src/tools/tools.pri)
 include(src/desktop/desktop.pri)
 include(src/web/web.pri)
-include(src/qtsingleapplication/src/qtsingleapplication.pri)
+include(src/singleapplication/singleapplication.pri)
+DEFINES += QAPPLICATION_CLASS=QApplication
 
 DEPENDPATH += src/pdf-merger
 INCLUDEPATH += src/pdf-merger
