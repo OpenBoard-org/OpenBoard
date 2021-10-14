@@ -2380,6 +2380,9 @@ void UBGraphicsScene::changeMagnifierMode(int mode)
 {
     if(magniferControlViewWidget)
         magniferControlViewWidget->setDrawingMode(mode);
+
+    if(magniferDisplayViewWidget)
+        magniferDisplayViewWidget->setDrawingMode(mode);
 }
 
 void UBGraphicsScene::resizedMagnifier(qreal newPercent)
