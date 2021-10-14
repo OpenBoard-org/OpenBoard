@@ -103,8 +103,7 @@ class UBPersistenceManager : public QObject
 
         virtual void copyDocumentScene(UBDocumentProxy *from, int fromIndex, UBDocumentProxy *to, int toIndex);
 
-        virtual void persistDocumentScene(UBDocumentProxy* pDocumentProxy,
-                UBGraphicsScene* pScene, const int pSceneIndex);
+        virtual void persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex, bool isAnAutomaticBackup = false);
 
         virtual UBGraphicsScene* createDocumentSceneAt(UBDocumentProxy* pDocumentProxy, int index, bool useUndoRedoStack = true);
 

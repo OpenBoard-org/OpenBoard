@@ -931,11 +931,12 @@ void UBPersistenceManager::reassignDocProxy(UBDocumentProxy *newDocument, UBDocu
     return mSceneCache.reassignDocProxy(newDocument, oldDocument);
 }
 
-void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex)
+void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex, bool isAnAutomaticBackup)
 {
     checkIfDocumentRepositoryExists();
 
-    pScene->deselectAllItems();
+    if (!isAnAutomaticBackup)
+        pScene->deselectAllItems();
 
     generatePathIfNeeded(pDocumentProxy);
 
