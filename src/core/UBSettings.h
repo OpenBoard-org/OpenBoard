@@ -270,8 +270,6 @@ class UBSettings : public QObject
 
         UBSetting* appUseMultiscreen;
 
-        UBSetting* appStartupHintsEnabled;
-
         UBSetting* appLookForOpenSankoreInstall;
 
         UBSetting* boardPenFineWidth;
@@ -350,8 +348,6 @@ class UBSettings : public QObject
         UBSetting* lastPicturePath;
         UBSetting* lastWidgetPath;
         UBSetting* lastVideoPath;
-
-        UBSetting* appOnlineUserName;
 
         UBSetting* boardShowToolsPalette;
 
