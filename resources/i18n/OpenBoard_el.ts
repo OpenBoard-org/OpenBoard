@@ -9,41 +9,105 @@
     </message>
 </context>
 <context>
-    <name>DownloadDialog</name>
+    <name>BrowserWindow</name>
     <message>
-        <source>Downloads</source>
-        <translation>Λήψεις</translation>
+        <source>Navigation</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clean Up</source>
-        <translation>Καθαρισμος</translation>
-    </message>
-    <message>
-        <source>0 Items</source>
-        <translation>Αντικείμενα</translation>
+        <source>Show downloads</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>DownloadItem</name>
+    <name>CertificateErrorDialog</name>
     <message>
-        <source>Form</source>
-        <translation>Σχήμα</translation>
+        <source>Dialog</source>
+        <translation type="unfinished">Διάλογος</translation>
     </message>
     <message>
-        <source>Filename</source>
-        <translation>Όνομα αρχειου</translation>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Try Again</source>
-        <translation>Προσπάθησε πάλι</translation>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>Διακοπή</translation>
+        <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
+
+Do you wish to override the security check and continue ?   </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadManagerWidget</name>
+    <message>
+        <source>Downloads</source>
+        <translation type="unfinished">Λήψεις</translation>
     </message>
     <message>
-        <source>Open</source>
-        <translation>Άνοιγμα</translation>
+        <source>No downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save as</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadWidget</name>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 KiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 MiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 GiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%p% - %1 of %2 downloaded - %3/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown size - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>completed - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cancelled - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>interrupted: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop downloading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from list</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -424,20 +488,12 @@
         <translation>Χοντρή γραμμή</translation>
     </message>
     <message>
-        <source>Smalle Eraser</source>
-        <translation type="vanished">Μικρή σβήστρα</translation>
-    </message>
-    <message>
         <source>Medium Eraser</source>
         <translation>Μέτρια σβήστρα</translation>
     </message>
     <message>
         <source>Large Eraser</source>
         <translation>Μεγάλη σβήστρα</translation>
-    </message>
-    <message>
-        <source>Color</source>
-        <translation type="vanished">Χρώμα</translation>
     </message>
     <message>
         <source>Reload Current Page</source>
@@ -854,28 +910,13 @@
         <source>Password:</source>
         <translation>Κωδικός πρόσβασης:</translation>
     </message>
-</context>
-<context>
-    <name>ProxyDialog</name>
     <message>
-        <source>Proxy Authentication</source>
-        <translation>Πιστοποίηση μέσω εξουσιοδοτημένου διακομιστή</translation>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Connect to Proxy</source>
-        <translation>Σύνδεση στον εξουσιοδοτημένο διακομιστή</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation>Όνομα χρήστη:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation>Κωδικός πρόσβασης:</translation>
-    </message>
-    <message>
-        <source>Save username and password for future use</source>
-        <translation>Αποθήκευση στοιχείων σύνδεσης για μελλοντική χρήση</translation>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -895,6 +936,37 @@
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
         <translation>Είστε βέβαιος ότι θέλετε να αφαιρέσετε μια σελίδα από το επιλεγμένο έγγραφο &apos;%0&apos;?</translation>
+    </message>
+</context>
+<context>
+    <name>TabWidget</name>
+    <message>
+        <source>New &amp;Tab</source>
+        <translation>Νέο &amp; Καρτέλα</translation>
+    </message>
+    <message>
+        <source>Clone Tab</source>
+        <translation>Κλωνοποίηση καρτέλας</translation>
+    </message>
+    <message>
+        <source>&amp;Close Tab</source>
+        <translation>&amp;Κλείσιμο καρτέλας</translation>
+    </message>
+    <message>
+        <source>Close &amp;Other Tabs</source>
+        <translation>Κλείσιμο &amp; Άλλες καρτέλες</translation>
+    </message>
+    <message>
+        <source>Reload Tab</source>
+        <translation>Επαναφόρτωση καρτέλας</translation>
+    </message>
+    <message>
+        <source>Reload All Tabs</source>
+        <translation>Επαναφόρτωση όλων των καρτελών</translation>
+    </message>
+    <message>
+        <source>(Untitled)</source>
+        <translation>(Χωρίς τίτλο)</translation>
     </message>
 </context>
 <context>
@@ -967,10 +1039,6 @@
     <message>
         <source>All Supported (%1)</source>
         <translation>Όλα προστατευόμενα (%1)</translation>
-    </message>
-    <message>
-        <source>Delete page %1 from document</source>
-        <translation type="vanished">Διαγραφή της σελιδας %1 από το έγγραφο</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -1104,46 +1172,6 @@
         <translation>Δημιουργήθηκε αντίγραφο του εγγράφου %1</translation>
     </message>
     <message>
-        <source>Remove Page</source>
-        <translation type="vanished">Αφαίρεση σελίδας</translation>
-    </message>
-    <message>
-        <source>Remove Document</source>
-        <translation type="vanished">Αφαίρεση εγγράφου</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation type="vanished">Είστε βέβαιος ότι θέλετε να αφαιρέσετε το έγγραφο &apos;%1&apos;;</translation>
-    </message>
-    <message>
-        <source>Empty Trash</source>
-        <translation type="vanished">Άδειασμα Κάδου Ανακύκλωσης</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to empty trash?</source>
-        <translation type="vanished">Είστε βέβαιος ότι θέλετε να αδειάσετε τον Κάδο Ανακύκλωσης;</translation>
-    </message>
-    <message>
-        <source>Emptying trash</source>
-        <translation type="vanished">Άδειασμα Κάδου Ανακύκλωσης</translation>
-    </message>
-    <message>
-        <source>Emptied trash</source>
-        <translation type="vanished">Ολοκληρώθηκε το άδειασμα του Κάδου Ανακύκλωσης</translation>
-    </message>
-    <message>
-        <source>Remove Folder</source>
-        <translation type="vanished">Αφαίρεση φακέλου</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="vanished">Είστε βέβαιος ότι θέλετε να αφαιρέσετε τον φάκελο &apos;%1&apos; και όλα τα περιεχόμενά του;</translation>
-    </message>
-    <message>
-        <source>No document selected!</source>
-        <translation type="vanished">Δεν επιλέχθηκε κανένα έγγραφο!</translation>
-    </message>
-    <message>
         <source>Open Supported File</source>
         <translation>Άνοιγμα υποστηριζόμενου αρχείου</translation>
     </message>
@@ -1186,13 +1214,6 @@
     <message>
         <source>Selection does not contain any image files!</source>
         <translation>Η επιλογή δεν περιέχει αρχεία εικόνας!</translation>
-    </message>
-    <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="vanished">
-            <numerusform>Είστε βέβαιος ότι θέλετε να αφαιρέσετε %n σελίδα από το επιλεγμένο έγγραφο &apos;%1&apos;;</numerusform>
-            <numerusform>Είστε βέβαιος ότι θέλετε να αφαιρέσετε %n σελίδες από το επιλεγμένο έγγραφο &apos;%1&apos;;</numerusform>
-        </translation>
     </message>
     <message>
         <source>Folder does not contain any image files</source>
@@ -1339,24 +1360,6 @@ Providing a new name will create a new document.</source>
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
-    <message>
-        <source>%1 (copy)</source>
-        <translation type="vanished">%1 (αντιγραφή)</translation>
-    </message>
-    <message>
-        <source>Copying page %1/%2</source>
-        <translation type="vanished">Αντιγραφή σελίδας %1/%2</translation>
-    </message>
-    <message numerus="yes">
-        <source>%1 pages copied</source>
-        <translation type="vanished">
-            <numerusform>%1 σελίδα αντιγράφηκε</numerusform>
-            <numerusform>%1 σελίδες αντιγράφηκαν</numerusform>
-        </translation>
-    </message>
-</context>
-<context>
     <name>UBDownloadWidget</name>
     <message>
         <source>Downloading files</source>
@@ -1379,6 +1382,22 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Page %0</source>
         <translation type="unfinished">Σελίδα %0</translation>
+    </message>
+</context>
+<context>
+    <name>UBEmbedController</name>
+    <message>
+        <source>Whole page</source>
+        <translation>Ολόκληρη σελίδα</translation>
+    </message>
+    <message>
+        <source>Web</source>
+        <translation>Web</translation>
+    </message>
+    <message>
+        <source>Application name can`t contain any of the following characters:<byte value="xd"/>
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1442,14 +1461,6 @@ Providing a new name will create a new document.</source>
         <translation>Εξαγωγή ως αρχείο UBZ</translation>
     </message>
     <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Εξαγωγή εγγράφου...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Επιτυχημένη εξαγωγή</translation>
-    </message>
-    <message>
         <source>Exporting %1 %2 of %3</source>
         <translation>Εξαγωγή %1 %2 από %3</translation>
     </message>
@@ -1492,14 +1503,6 @@ Providing a new name will create a new document.</source>
         <translation>Εξαγωγή ως αρχείο PDF</translation>
     </message>
     <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Εξαγωγή εγγράφου...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Επιτυχημένη εξαγωγή</translation>
-    </message>
-    <message>
         <source>Export to PDF</source>
         <translation>Εξαγωγή σε PDF</translation>
     </message>
@@ -1509,14 +1512,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Export as PDF File</source>
         <translation>Εξαγωγή ως αρχείο PDF</translation>
-    </message>
-    <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Εξαγωγή εγγράφου...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Επιτυχημένη εξαγωγή</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1559,10 +1554,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Add to page</source>
         <translation>Προσθήκη σε σελίδα</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation type="vanished">Ορισμός ως παρασκήνιο</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1625,10 +1616,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Pictures</source>
         <translation>Εικόνες</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <translation type="vanished">Κινούμενα σχέδια</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -1699,12 +1686,12 @@ Providing a new name will create a new document.</source>
         <translation>Ορατό σε Εκταταμένη Οθόνη</translation>
     </message>
     <message>
-        <source>Go to Content Source</source>
-        <translation>Μετάβαση στην Πηγή Περιεχομένου</translation>
-    </message>
-    <message>
         <source>Set as background</source>
         <translation type="unfinished">Ορισμός ως παρασκήνιο</translation>
+    </message>
+    <message>
+        <source>Web Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2062,51 +2049,10 @@ Do you want to ignore these errors for this host?</source>
     </message>
 </context>
 <context>
-    <name>UBProxyLoginDlg</name>
-    <message>
-        <source>Proxy Login</source>
-        <translation type="vanished">Σύνδεση στον εξουσιοδοτημένο διακομιστή</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation type="vanished">Όνομα χρήστη:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="vanished">Κωδικός πρόσβασης:</translation>
-    </message>
-</context>
-<context>
-    <name>UBPublicationDlg</name>
-    <message>
-        <source>Publish document on the web</source>
-        <translation type="vanished">Δημοσίευση εγγράφου στο Web</translation>
-    </message>
-    <message>
-        <source>Title:</source>
-        <translation type="vanished">Τίτλος:</translation>
-    </message>
-    <message>
-        <source>Description:</source>
-        <translation type="vanished">Περιγραφή:</translation>
-    </message>
-    <message>
-        <source>Publish</source>
-        <translation type="vanished">Δημοσίευση</translation>
-    </message>
-</context>
-<context>
     <name>UBSettings</name>
     <message>
         <source>My Movies</source>
         <translation>Οι ταινίες μου</translation>
-    </message>
-</context>
-<context>
-    <name>UBStartupHintsPalette</name>
-    <message>
-        <source>Visible next time</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2170,17 +2116,6 @@ Do you want to ignore these errors for this host?</source>
     </message>
 </context>
 <context>
-    <name>UBEmbedController</name>
-    <message>
-        <source>Whole page</source>
-        <translation>Ολόκληρη σελίδα</translation>
-    </message>
-    <message>
-        <source>Web</source>
-        <translation>Web</translation>
-    </message>
-</context>
-<context>
     <name>UBUpdateDlg</name>
     <message>
         <source>Document updater</source>
@@ -2234,17 +2169,10 @@ Please reboot the application to access the updated documents.</source>
     </message>
 </context>
 <context>
-    <name>UBWebPluginWidget</name>
+    <name>UBWebEngineView</name>
     <message>
-        <source>Loading...</source>
-        <translation>Φόρτωση...</translation>
-    </message>
-</context>
-<context>
-    <name>UBWidgetUniboardAPI</name>
-    <message>
-        <source>%0 called (method=%1, status=%2)</source>
-        <translation>%0 κλήθηκε (μέθοδος=%1, κατάσταση=%2)</translation>
+        <source>Open Web Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2333,85 +2261,6 @@ Please reboot the application to access the updated documents.</source>
     </message>
 </context>
 <context>
-    <name>WBClearButton</name>
-    <message>
-        <source>Clear</source>
-        <translation>Καθαρισμός</translation>
-    </message>
-</context>
-<context>
-    <name>WBDownloadItem</name>
-    <message>
-        <source>Save File</source>
-        <translation>Αποθήκευση αρχείου</translation>
-    </message>
-    <message>
-        <source>Download canceled: %1</source>
-        <translation>Η λήψη ακυρώθηκε: %1</translation>
-    </message>
-    <message>
-        <source>Error opening saved file: %1</source>
-        <translation>Σφάλμα κατά το άνοιγμα του αποθηκευμένου αρχείου: %1</translation>
-    </message>
-    <message>
-        <source>Error saving: %1</source>
-        <translation>Σφάλμα κατά την αποθήκευση:%1</translation>
-    </message>
-    <message>
-        <source>Network Error: %1</source>
-        <translation>Σφάλμα στο δίκτυο: %1</translation>
-    </message>
-    <message>
-        <source>seconds</source>
-        <translation>δευτερόλεπτα</translation>
-    </message>
-    <message>
-        <source>minutes</source>
-        <translation>λεπτά</translation>
-    </message>
-    <message>
-        <source>- %4 %5 remaining</source>
-        <translation>- %4 %5 απομένουν</translation>
-    </message>
-    <message>
-        <source>%1 of %2 (%3/sec) %4</source>
-        <translation>%1 από %2 (%3/δευτ) %4</translation>
-    </message>
-    <message>
-        <source>?</source>
-        <comment>unknown file size</comment>
-        <translation>?</translation>
-    </message>
-    <message>
-        <source>%1 of %2 - Stopped</source>
-        <translation>%1 από %2 - Διακόπηκε</translation>
-    </message>
-    <message>
-        <source>bytes</source>
-        <translation>bytes</translation>
-    </message>
-    <message>
-        <source>KB</source>
-        <translation>KB</translation>
-    </message>
-    <message>
-        <source>MB</source>
-        <translation>MB</translation>
-    </message>
-</context>
-<context>
-    <name>WBDownloadManager</name>
-    <message>
-        <source>1 Download</source>
-        <translation>1 Λήψη</translation>
-    </message>
-    <message>
-        <source>%1 Downloads</source>
-        <comment>always &gt;= 2</comment>
-        <translation>%1 Λήψεις</translation>
-    </message>
-</context>
-<context>
     <name>WBHistoryModel</name>
     <message>
         <source>Title</source>
@@ -2434,97 +2283,90 @@ Please reboot the application to access the updated documents.</source>
     </message>
 </context>
 <context>
-    <name>WBSearchLineEdit</name>
+    <name>WebPage</name>
     <message>
-        <source>Search</source>
-        <translation>Αναζήτηση</translation>
-    </message>
-</context>
-<context>
-    <name>WBTabBar</name>
-    <message>
-        <source>New &amp;Tab</source>
-        <translation>Νέο &amp; Καρτέλα</translation>
+        <source>Certificate Error</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clone Tab</source>
-        <translation>Κλωνοποίηση καρτέλας</translation>
+        <source>Enter username and password for &quot;%1&quot; at %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Close Tab</source>
-        <translation>&amp;Κλείσιμο καρτέλας</translation>
+        <source>Allow %1 to access your location information?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Close &amp;Other Tabs</source>
-        <translation>Κλείσιμο &amp; Άλλες καρτέλες</translation>
+        <source>Allow %1 to access your microphone?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reload Tab</source>
-        <translation>Επαναφόρτωση καρτέλας</translation>
+        <source>Allow %1 to access your webcam?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reload All Tabs</source>
-        <translation>Επαναφόρτωση όλων των καρτελών</translation>
-    </message>
-</context>
-<context>
-    <name>WBTabWidget</name>
-    <message>
-        <source>Recently Closed Tabs</source>
-        <translation>Πρόσφατα κλεισμένες καρτέλες</translation>
+        <source>Allow %1 to access your microphone and webcam?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>(Untitled)</source>
-        <translation>(Χωρίς τίτλο)</translation>
-    </message>
-</context>
-<context>
-    <name>WBToolbarSearch</name>
-    <message>
-        <source>Search</source>
-        <translation>Αναζήτηση</translation>
+        <source>Allow %1 to lock your mouse cursor?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No Recent Searches</source>
-        <translation>Δεν υπάρχουν πρόσφατες αναζητήσεις</translation>
+        <source>Allow %1 to capture video of your desktop?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Recent Searches</source>
-        <translation>Πρόσφατες αναζητήσεις</translation>
+        <source>Allow %1 to capture audio and video of your desktop?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clear Recent Searches</source>
-        <translation>Καθαρισμός πρόσφατων αναζητήσεων</translation>
-    </message>
-</context>
-<context>
-    <name>WBWebPage</name>
-    <message>
-        <source>Download</source>
-        <translation>Λήψη</translation>
+        <source>Permission Request</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add to Current Document</source>
-        <translation>Προσθήκη στο τρέχον έγγραφο</translation>
+        <source>Connect to proxy &quot;%1&quot; using:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>PDF</source>
-        <translation>PDF</translation>
-    </message>
-    <message>
-        <source>Error loading page: %1</source>
-        <translation>Σφάλμα φόρτωσης σελίδας: %1</translation>
-    </message>
-    <message>
-        <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
+        <source>Allow %1 to open all %2 links?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>WBWebView</name>
+    <name>WebView</name>
     <message>
-        <source>Open in New Tab</source>
-        <translation>Άνοιγμα σε νέα καρτέλα</translation>
+        <source>Render process normal exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process abnormal exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process crashed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process killed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process exited with code: %1
+Do you want to reload the page ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Web Inspector in new window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inspect element</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to board</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2652,29 +2494,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>documentPublishingDialog</name>
-    <message>
-        <source>Dialog</source>
-        <translation type="obsolete">Διάλογος</translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="obsolete">Τίτλος</translation>
-    </message>
-    <message>
-        <source>E-mail</source>
-        <translation type="obsolete">E-mail</translation>
-    </message>
-    <message>
-        <source>Author</source>
-        <translation type="obsolete">Δημιουργός</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="obsolete">Περιγραφή</translation>
-    </message>
-</context>
-<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
@@ -2722,10 +2541,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Virtual Keyboard</source>
         <translation>Εικονικό πληκτρολόγιο</translation>
-    </message>
-    <message>
-        <source>Keyboard button size:</source>
-        <translation type="vanished">Μέγεθος πλήκτρων πληκτρολογίου:</translation>
     </message>
     <message>
         <source>Positioned at the Top (recommended for tablets)</source>

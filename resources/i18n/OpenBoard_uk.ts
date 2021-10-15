@@ -9,41 +9,105 @@
     </message>
 </context>
 <context>
-    <name>DownloadDialog</name>
+    <name>BrowserWindow</name>
     <message>
-        <source>Downloads</source>
-        <translation>Завантаження</translation>
+        <source>Navigation</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clean Up</source>
-        <translation>Очистити</translation>
-    </message>
-    <message>
-        <source>0 Items</source>
-        <translation>0 елементів</translation>
+        <source>Show downloads</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>DownloadItem</name>
+    <name>CertificateErrorDialog</name>
     <message>
-        <source>Form</source>
-        <translation>Форма</translation>
+        <source>Dialog</source>
+        <translation type="unfinished">Діалог</translation>
     </message>
     <message>
-        <source>Filename</source>
-        <translation>Ім&apos;я файлу</translation>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Try Again</source>
-        <translation>Спробувати ще</translation>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>Стоп</translation>
+        <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
+
+Do you wish to override the security check and continue ?   </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadManagerWidget</name>
+    <message>
+        <source>Downloads</source>
+        <translation type="unfinished">Завантаження</translation>
     </message>
     <message>
-        <source>Open</source>
-        <translation>Відкрити</translation>
+        <source>No downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save as</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadWidget</name>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 KiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 MiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 GiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%p% - %1 of %2 downloaded - %3/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown size - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>completed - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cancelled - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>interrupted: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop downloading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from list</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -176,20 +240,12 @@
         <translation>Ластик</translation>
     </message>
     <message>
-        <source>Smalle Eraser</source>
-        <translation type="vanished">Малий ластик</translation>
-    </message>
-    <message>
         <source>Medium Eraser</source>
         <translation>Середній ластик</translation>
     </message>
     <message>
         <source>Large Eraser</source>
         <translation>Великий ластик</translation>
-    </message>
-    <message>
-        <source>Color</source>
-        <translation type="vanished">Колір</translation>
     </message>
     <message>
         <source>Back</source>
@@ -854,28 +910,13 @@
         <source>Password:</source>
         <translation>Пароль:</translation>
     </message>
-</context>
-<context>
-    <name>ProxyDialog</name>
     <message>
-        <source>Proxy Authentication</source>
-        <translation>Авторизація на проксі-сервері</translation>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Connect to Proxy</source>
-        <translation>З&apos;єднатися з проксі-сервера</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation>Ім&apos;я користувача:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation>Пароль:</translation>
-    </message>
-    <message>
-        <source>Save username and password for future use</source>
-        <translation>Зберегти ім&apos;я користувача і пароль для майбутнього використання</translation>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -895,6 +936,37 @@
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
         <translation>Ви впевнені, що хочете видалити 1 сторінку з документа &apos;%0&apos;?</translation>
+    </message>
+</context>
+<context>
+    <name>TabWidget</name>
+    <message>
+        <source>New &amp;Tab</source>
+        <translation>Нова &amp;вкладка</translation>
+    </message>
+    <message>
+        <source>Clone Tab</source>
+        <translation>Дублювати вкладку</translation>
+    </message>
+    <message>
+        <source>&amp;Close Tab</source>
+        <translation>&amp;Закрити вкладку</translation>
+    </message>
+    <message>
+        <source>Close &amp;Other Tabs</source>
+        <translation>Закрити всі &amp;інші вкладки</translation>
+    </message>
+    <message>
+        <source>Reload Tab</source>
+        <translation>Перезавантажити вкладку</translation>
+    </message>
+    <message>
+        <source>Reload All Tabs</source>
+        <translation>Перезавантажити всі вкладки</translation>
+    </message>
+    <message>
+        <source>(Untitled)</source>
+        <translation>(Без назви)</translation>
     </message>
 </context>
 <context>
@@ -967,10 +1039,6 @@
     <message>
         <source>All Supported (%1)</source>
         <translation>Всі підтримувані типи (%1)</translation>
-    </message>
-    <message>
-        <source>Delete page %1 from document</source>
-        <translation type="vanished">Видалити сторінку %1 з документа</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -1104,46 +1172,6 @@
         <translation>Документ %1 скопійований</translation>
     </message>
     <message>
-        <source>Remove Page</source>
-        <translation type="vanished">Видалити сторінку</translation>
-    </message>
-    <message>
-        <source>Remove Document</source>
-        <translation type="vanished">Видалити документ</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation type="vanished">Ви впевнені, що хочете видалити документ &apos;%1&apos;?</translation>
-    </message>
-    <message>
-        <source>Empty Trash</source>
-        <translation type="vanished">Очистити корзину</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to empty trash?</source>
-        <translation type="vanished">Ви впевнені, що хочете очистити кошик?</translation>
-    </message>
-    <message>
-        <source>Emptying trash</source>
-        <translation type="vanished">Очищення кошика</translation>
-    </message>
-    <message>
-        <source>Emptied trash</source>
-        <translation type="vanished">Кошик порожній</translation>
-    </message>
-    <message>
-        <source>Remove Folder</source>
-        <translation type="vanished">Видалити папку</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="vanished">Ви впевнені, що хочете видалити папку &apos;%1 і весь її вміст?</translation>
-    </message>
-    <message>
-        <source>No document selected!</source>
-        <translation type="vanished">Нічого не вибрано!</translation>
-    </message>
-    <message>
         <source>Open Supported File</source>
         <translation>Відкрити файл підтримуваного формату</translation>
     </message>
@@ -1187,13 +1215,6 @@
         <source>Selection does not contain any image files!</source>
         <translation>Не вибрано жодного зображення!</translation>
     </message>
-    <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="vanished">
-            <numerusform>Ви впевнені, що хочете видалити %n сторінку з обраного документа &apos;%1&apos;?</numerusform>
-            <numerusform>Ви впевнені, що хочете видалити %n сторінок з обраного документа &apos;%1&apos;?</numerusform>
-        </translation>
-    </message>
     <message>
         <source>Folder does not contain any image files</source>
         <translation>Каталог не містить файлів зображень</translation>
@@ -1205,14 +1226,6 @@
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation>Документ &apos;%1&apos; був створений за допомогою нової версії OpenBoard (%2). Відкривши його, ви можете втратити деяку інформацію. Ви хочете продовжити?</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="vanished">Ви впевнені, що хочете видалити всі вибрані документи?</translation>
-    </message>
-    <message>
-        <source>Remove multiple documents</source>
-        <translation type="vanished">Видалити кілька документів</translation>
     </message>
     <message numerus="yes">
         <source>duplicated %1 page</source>
@@ -1347,24 +1360,6 @@ Providing a new name will create a new document.</source>
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
-    <message>
-        <source>%1 (copy)</source>
-        <translation type="vanished">%1 (копіювання)</translation>
-    </message>
-    <message>
-        <source>Copying page %1/%2</source>
-        <translation type="vanished">Копіювання сторінки %1/%2</translation>
-    </message>
-    <message numerus="yes">
-        <source>%1 pages copied</source>
-        <translation type="vanished">
-            <numerusform>%1 сторінки скопійовано</numerusform>
-            <numerusform>%1 сторінок скопійовано</numerusform>
-        </translation>
-    </message>
-</context>
-<context>
     <name>UBDownloadWidget</name>
     <message>
         <source>Downloading files</source>
@@ -1387,6 +1382,22 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Page %0</source>
         <translation>Сторінка %0</translation>
+    </message>
+</context>
+<context>
+    <name>UBEmbedController</name>
+    <message>
+        <source>Whole page</source>
+        <translation>Вся сторінка</translation>
+    </message>
+    <message>
+        <source>Web</source>
+        <translation>Веб</translation>
+    </message>
+    <message>
+        <source>Application name can`t contain any of the following characters:<byte value="xd"/>
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1450,14 +1461,6 @@ Providing a new name will create a new document.</source>
         <translation>Експортувати як файл UBZ</translation>
     </message>
     <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Експорт документа ...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Експорт успішно завершено.</translation>
-    </message>
-    <message>
         <source>Exporting %1 %2 of %3</source>
         <translation>Експорт %1 %2 з %3</translation>
     </message>
@@ -1500,14 +1503,6 @@ Providing a new name will create a new document.</source>
         <translation>Експортувати як файл PDF</translation>
     </message>
     <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Експорт документа ...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Експорт успішно завершено.</translation>
-    </message>
-    <message>
         <source>Export to PDF</source>
         <translation>Експорт в PDF</translation>
     </message>
@@ -1517,14 +1512,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Export as PDF File</source>
         <translation>Експортувати як файл PDF</translation>
-    </message>
-    <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Експорт документа ...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Експорт успішно завершено.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1567,10 +1554,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Add to page</source>
         <translation>Додати на сторінку</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation type="vanished">Зробити фоновим зображенням</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1633,10 +1616,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Pictures</source>
         <translation>Картинки</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <translation type="vanished">Мультфільми</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -1707,12 +1686,12 @@ Providing a new name will create a new document.</source>
         <translation>Видимий на другому екрані</translation>
     </message>
     <message>
-        <source>Go to Content Source</source>
-        <translation>Перейти до джерела вмісту</translation>
-    </message>
-    <message>
         <source>Set as background</source>
         <translation>Зробити фоновим зображенням</translation>
+    </message>
+    <message>
+        <source>Web Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1968,14 +1947,6 @@ Do you want to ignore these errors for this host?</source>
         <translation>Втрата з&apos;єднання з репозиторієм документів</translation>
     </message>
     <message>
-        <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="vanished">втрачено доступ до сховища документів &apos;%1&apos;. На жаль, програма повинна бути закрита, щоб уникнути псування даних. Останні зміни також можуть бути втрачені.</translation>
-    </message>
-    <message>
-        <source>Moving page to trash folder...</source>
-        <translation type="vanished">Переміщення сторінки в папку для сміття ...</translation>
-    </message>
-    <message>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2078,51 +2049,10 @@ Do you want to ignore these errors for this host?</source>
     </message>
 </context>
 <context>
-    <name>UBProxyLoginDlg</name>
-    <message>
-        <source>Proxy Login</source>
-        <translation type="vanished">Вхід на проксі-сервер</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation type="vanished">Ім&apos;я користувача:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="vanished">Пароль:</translation>
-    </message>
-</context>
-<context>
-    <name>UBPublicationDlg</name>
-    <message>
-        <source>Publish document on the web</source>
-        <translation type="vanished">Опублікувати документ в інтернеті</translation>
-    </message>
-    <message>
-        <source>Title:</source>
-        <translation type="vanished">Назва:</translation>
-    </message>
-    <message>
-        <source>Description:</source>
-        <translation type="vanished">Опис:</translation>
-    </message>
-    <message>
-        <source>Publish</source>
-        <translation type="vanished">Опублікувати</translation>
-    </message>
-</context>
-<context>
     <name>UBSettings</name>
     <message>
         <source>My Movies</source>
         <translation>Мої відеофайли</translation>
-    </message>
-</context>
-<context>
-    <name>UBStartupHintsPalette</name>
-    <message>
-        <source>Visible next time</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2186,17 +2116,6 @@ Do you want to ignore these errors for this host?</source>
     </message>
 </context>
 <context>
-    <name>UBEmbedController</name>
-    <message>
-        <source>Whole page</source>
-        <translation>Вся сторінка</translation>
-    </message>
-    <message>
-        <source>Web</source>
-        <translation>Веб</translation>
-    </message>
-</context>
-<context>
     <name>UBUpdateDlg</name>
     <message>
         <source>Document updater</source>
@@ -2250,17 +2169,10 @@ Please reboot the application to access the updated documents.</source>
     </message>
 </context>
 <context>
-    <name>UBWebPluginWidget</name>
+    <name>UBWebEngineView</name>
     <message>
-        <source>Loading...</source>
-        <translation>Завантаження...</translation>
-    </message>
-</context>
-<context>
-    <name>UBWidgetUniboardAPI</name>
-    <message>
-        <source>%0 called (method=%1, status=%2)</source>
-        <translation>виклик %0 (метод=%1, статус=%2)</translation>
+        <source>Open Web Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2349,85 +2261,6 @@ Please reboot the application to access the updated documents.</source>
     </message>
 </context>
 <context>
-    <name>WBClearButton</name>
-    <message>
-        <source>Clear</source>
-        <translation>Очистити</translation>
-    </message>
-</context>
-<context>
-    <name>WBDownloadItem</name>
-    <message>
-        <source>Save File</source>
-        <translation>Зберегти файл</translation>
-    </message>
-    <message>
-        <source>Download canceled: %1</source>
-        <translation>Завантаження скасовано: %1</translation>
-    </message>
-    <message>
-        <source>Error opening saved file: %1</source>
-        <translation>Помилка відкриття збереженого файлу: %1</translation>
-    </message>
-    <message>
-        <source>Error saving: %1</source>
-        <translation>Помилка збереження: %1</translation>
-    </message>
-    <message>
-        <source>Network Error: %1</source>
-        <translation>Помилка мережі: %1</translation>
-    </message>
-    <message>
-        <source>seconds</source>
-        <translation>секунди</translation>
-    </message>
-    <message>
-        <source>minutes</source>
-        <translation>хвилини</translation>
-    </message>
-    <message>
-        <source>- %4 %5 remaining</source>
-        <translation>- %4 %5 залишається</translation>
-    </message>
-    <message>
-        <source>%1 of %2 (%3/sec) %4</source>
-        <translation>%1 з %2 (%3/с) %4</translation>
-    </message>
-    <message>
-        <source>?</source>
-        <comment>unknown file size</comment>
-        <translation>?</translation>
-    </message>
-    <message>
-        <source>%1 of %2 - Stopped</source>
-        <translation>%1 из %2 - зупинено</translation>
-    </message>
-    <message>
-        <source>bytes</source>
-        <translation>байт</translation>
-    </message>
-    <message>
-        <source>KB</source>
-        <translation>КБ</translation>
-    </message>
-    <message>
-        <source>MB</source>
-        <translation>МБ</translation>
-    </message>
-</context>
-<context>
-    <name>WBDownloadManager</name>
-    <message>
-        <source>1 Download</source>
-        <translation>1 завантаження</translation>
-    </message>
-    <message>
-        <source>%1 Downloads</source>
-        <comment>always &gt;= 2</comment>
-        <translation>%1 завантажень</translation>
-    </message>
-</context>
-<context>
     <name>WBHistoryModel</name>
     <message>
         <source>Title</source>
@@ -2450,97 +2283,90 @@ Please reboot the application to access the updated documents.</source>
     </message>
 </context>
 <context>
-    <name>WBSearchLineEdit</name>
+    <name>WebPage</name>
     <message>
-        <source>Search</source>
-        <translation>Пошук</translation>
+        <source>Certificate Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter username and password for &quot;%1&quot; at %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to access your location information?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to access your microphone?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to access your webcam?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to access your microphone and webcam?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to lock your mouse cursor?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to capture video of your desktop?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to capture audio and video of your desktop?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Permission Request</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect to proxy &quot;%1&quot; using:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to open all %2 links?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>WBTabBar</name>
+    <name>WebView</name>
     <message>
-        <source>New &amp;Tab</source>
-        <translation>Нова &amp;вкладка</translation>
+        <source>Render process normal exit</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clone Tab</source>
-        <translation>Дублювати вкладку</translation>
+        <source>Render process abnormal exit</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Close Tab</source>
-        <translation>&amp;Закрити вкладку</translation>
+        <source>Render process crashed</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Close &amp;Other Tabs</source>
-        <translation>Закрити всі &amp;інші вкладки</translation>
+        <source>Render process killed</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reload Tab</source>
-        <translation>Перезавантажити вкладку</translation>
+        <source>Render process exited with code: %1
+Do you want to reload the page ?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reload All Tabs</source>
-        <translation>Перезавантажити всі вкладки</translation>
-    </message>
-</context>
-<context>
-    <name>WBTabWidget</name>
-    <message>
-        <source>Recently Closed Tabs</source>
-        <translation>Недавно закриті вкладки</translation>
+        <source>Open Web Inspector in new window</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>(Untitled)</source>
-        <translation>(Без назви)</translation>
-    </message>
-</context>
-<context>
-    <name>WBToolbarSearch</name>
-    <message>
-        <source>Search</source>
-        <translation>Пошук</translation>
+        <source>Inspect element</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No Recent Searches</source>
-        <translation>Немає останніх пошуків</translation>
-    </message>
-    <message>
-        <source>Recent Searches</source>
-        <translation>Останні пошуки</translation>
-    </message>
-    <message>
-        <source>Clear Recent Searches</source>
-        <translation>Очистити останні пошуки</translation>
-    </message>
-</context>
-<context>
-    <name>WBWebPage</name>
-    <message>
-        <source>Download</source>
-        <translation>Завантажити</translation>
-    </message>
-    <message>
-        <source>Add to Current Document</source>
-        <translation>Додати в поточний документ</translation>
-    </message>
-    <message>
-        <source>PDF</source>
-        <translation>PDF</translation>
-    </message>
-    <message>
-        <source>Error loading page: %1</source>
-        <translation>Помилка завантаження сторінки: %1</translation>
-    </message>
-    <message>
-        <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
-        <translation>Завантаження PDF-документа: чи хотіли б ви завантажити файл PDF або додати його до поточного документа OpenBoard?</translation>
-    </message>
-</context>
-<context>
-    <name>WBWebView</name>
-    <message>
-        <source>Open in New Tab</source>
-        <translation>Відкрити в новій вкладці</translation>
+        <source>Add to board</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2727,10 +2553,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Virtual Keyboard</source>
         <translation>Віртуальна клавіатура</translation>
-    </message>
-    <message>
-        <source>Keyboard button size:</source>
-        <translation type="vanished">Розмір клавіш клавіатури:</translation>
     </message>
     <message>
         <source>Toolbar</source>

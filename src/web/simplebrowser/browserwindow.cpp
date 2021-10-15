@@ -194,14 +194,10 @@ QToolBar *BrowserWindow::createToolBar(QWidget *parent)
 
 void BrowserWindow::handleWebViewTitleChanged(const QString &title)
 {
-    QString suffix = m_profile->isOffTheRecord()
-        ? tr("Qt Simple Browser (Incognito)")
-        : tr("Qt Simple Browser");
-
     if (title.isEmpty())
-        setWindowTitle(suffix);
+        setWindowTitle("");
     else
-        setWindowTitle(title + " - " + suffix);
+        setWindowTitle(title);
 
     if (!title.isEmpty() && currentTab())
     {
@@ -209,44 +205,8 @@ void BrowserWindow::handleWebViewTitleChanged(const QString &title)
     }
 }
 
-void BrowserWindow::handleFileOpenTriggered()
-{
-    QUrl url = QFileDialog::getOpenFileUrl(this, tr("Open Web Resource"), QString(),
-                                                tr("Web Resources (*.html *.htm *.svg *.png *.gif *.svgz);;All files (*.*)"));
-    if (url.isEmpty())
-        return;
-    currentTab()->setUrl(url);
-}
-
-void BrowserWindow::handleFindActionTriggered()
-{
-    if (!currentTab())
-        return;
-    bool ok = false;
-    QString search = QInputDialog::getText(this, tr("Find"),
-                                           tr("Find:"), QLineEdit::Normal,
-                                           m_lastSearch, &ok);
-    if (ok && !search.isEmpty()) {
-        m_lastSearch = search;
-        currentTab()->findText(m_lastSearch, 0, [this](bool found) {
-            if (!found)
-                m_statusBar->showMessage(tr("\"%1\" not found.").arg(m_lastSearch));
-        });
-    }
-}
-
 void BrowserWindow::closeEvent(QCloseEvent *event)
 {
-    if (m_tabWidget->count() > 1) {
-        int ret = QMessageBox::warning(this, tr("Confirm close"),
-                                       tr("Are you sure you want to close the window ?\n"
-                                          "There are %1 tabs open.").arg(m_tabWidget->count()),
-                                       QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
-        if (ret == QMessageBox::No) {
-            event->ignore();
-            return;
-        }
-    }
     event->accept();
 }
 

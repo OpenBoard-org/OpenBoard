@@ -9,41 +9,105 @@
     </message>
 </context>
 <context>
-    <name>DownloadDialog</name>
+    <name>BrowserWindow</name>
     <message>
-        <source>Downloads</source>
-        <translation>ダウンロード</translation>
+        <source>Navigation</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clean Up</source>
-        <translation>クリーンアップ</translation>
-    </message>
-    <message>
-        <source>0 Items</source>
-        <translation>0アイテム </translation>
+        <source>Show downloads</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>DownloadItem</name>
+    <name>CertificateErrorDialog</name>
     <message>
-        <source>Form</source>
-        <translation>フォーム</translation>
+        <source>Dialog</source>
+        <translation type="unfinished">ダイアログ</translation>
     </message>
     <message>
-        <source>Filename</source>
-        <translation>ファイル名</translation>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Try Again</source>
-        <translation>再度試みてください</translation>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>停止</translation>
+        <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
+
+Do you wish to override the security check and continue ?   </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadManagerWidget</name>
+    <message>
+        <source>Downloads</source>
+        <translation type="unfinished">ダウンロード</translation>
     </message>
     <message>
-        <source>Open</source>
-        <translation>開く</translation>
+        <source>No downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save as</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadWidget</name>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 KiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 MiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 GiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%p% - %1 of %2 downloaded - %3/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown size - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>completed - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cancelled - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>interrupted: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop downloading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from list</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -176,20 +240,12 @@
         <translation>消しゴム</translation>
     </message>
     <message>
-        <source>Smalle Eraser</source>
-        <translation type="vanished">消しゴム（小）</translation>
-    </message>
-    <message>
         <source>Medium Eraser</source>
         <translation>消しゴム（中）</translation>
     </message>
     <message>
         <source>Large Eraser</source>
         <translation>消しゴム（大）</translation>
-    </message>
-    <message>
-        <source>Color</source>
-        <translation type="vanished">カラー</translation>
     </message>
     <message>
         <source>Back</source>
@@ -854,28 +910,13 @@
         <source>Password:</source>
         <translation>パスワード:</translation>
     </message>
-</context>
-<context>
-    <name>ProxyDialog</name>
     <message>
-        <source>Proxy Authentication</source>
-        <translation>プロキシ認証</translation>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Connect to Proxy</source>
-        <translation>プロキシに接続</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation>ユーザー名:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation>パスワード： </translation>
-    </message>
-    <message>
-        <source>Save username and password for future use</source>
-        <translation>今後の使用のためにユーザー名とパスワードを保存</translation>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -895,6 +936,37 @@
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TabWidget</name>
+    <message>
+        <source>New &amp;Tab</source>
+        <translation>新規 &amp; タブ</translation>
+    </message>
+    <message>
+        <source>Clone Tab</source>
+        <translation>クローンタブ</translation>
+    </message>
+    <message>
+        <source>&amp;Close Tab</source>
+        <translation>&amp; タブを閉じる</translation>
+    </message>
+    <message>
+        <source>Close &amp;Other Tabs</source>
+        <translation>他のタブを&amp;閉じる</translation>
+    </message>
+    <message>
+        <source>Reload Tab</source>
+        <translation>タブをリロード</translation>
+    </message>
+    <message>
+        <source>Reload All Tabs</source>
+        <translation>全タブをリロード</translation>
+    </message>
+    <message>
+        <source>(Untitled)</source>
+        <translation>（タイトルなし）</translation>
     </message>
 </context>
 <context>
@@ -1100,46 +1172,6 @@
         <translation>ドキュメント%1コピー済み</translation>
     </message>
     <message>
-        <source>Remove Page</source>
-        <translation type="vanished">ページ削除</translation>
-    </message>
-    <message>
-        <source>Remove Document</source>
-        <translation type="vanished">ドキュメント削除 </translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation type="vanished">本当にドキュメント%1を削除しますか？</translation>
-    </message>
-    <message>
-        <source>Empty Trash</source>
-        <translation type="vanished">ゴミ箱を空にする</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to empty trash?</source>
-        <translation type="vanished">本当にこのゴミ箱を空にしますか？</translation>
-    </message>
-    <message>
-        <source>Emptying trash</source>
-        <translation type="vanished">ゴミ箱を空にしています</translation>
-    </message>
-    <message>
-        <source>Emptied trash</source>
-        <translation type="vanished">ゴミ箱を空にしました</translation>
-    </message>
-    <message>
-        <source>Remove Folder</source>
-        <translation type="vanished">フォルダーを削除</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="vanished">本当にフォルダー%1とそのコンテンツを削除しますか？</translation>
-    </message>
-    <message>
-        <source>No document selected!</source>
-        <translation type="vanished">ドキュメントが選択されていません！</translation>
-    </message>
-    <message>
         <source>Open Supported File</source>
         <translation>サポートされたファイルを開く</translation>
     </message>
@@ -1182,12 +1214,6 @@
     <message>
         <source>Selection does not contain any image files!</source>
         <translation>選択には画像ファイルが含まれていません！ </translation>
-    </message>
-    <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="vanished">
-            <numerusform>選抜した資料から%nページを除けたいですか？</numerusform>
-        </translation>
     </message>
     <message>
         <source>Untitled Documents</source>
@@ -1331,23 +1357,6 @@ Providing a new name will create a new document.</source>
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
-    <message>
-        <source>%1 (copy)</source>
-        <translation type="vanished">%1 (コピー) </translation>
-    </message>
-    <message>
-        <source>Copying page %1/%2</source>
-        <translation type="vanished">%1/%2 ページ コピー中</translation>
-    </message>
-    <message numerus="yes">
-        <source>%1 pages copied</source>
-        <translation type="vanished">
-            <numerusform>ページを%1枚をコピーしました</numerusform>
-        </translation>
-    </message>
-</context>
-<context>
     <name>UBDownloadWidget</name>
     <message>
         <source>Downloading files</source>
@@ -1370,6 +1379,22 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Page %0</source>
         <translation type="unfinished">%0ページ</translation>
+    </message>
+</context>
+<context>
+    <name>UBEmbedController</name>
+    <message>
+        <source>Whole page</source>
+        <translation>ページ全体</translation>
+    </message>
+    <message>
+        <source>Web</source>
+        <translation>ウェブ</translation>
+    </message>
+    <message>
+        <source>Application name can`t contain any of the following characters:<byte value="xd"/>
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1433,14 +1458,6 @@ Providing a new name will create a new document.</source>
         <translation>UBZ ファイルとしてエクスポート</translation>
     </message>
     <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">ドキュメントのエクスポート中... </translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">エクスポートに成功 </translation>
-    </message>
-    <message>
         <source>Exporting %1 %2 of %3</source>
         <translation>%1 %2 / %3 をエクスポート中</translation>
     </message>
@@ -1483,14 +1500,6 @@ Providing a new name will create a new document.</source>
         <translation>PDFファイルとしてエクスポート</translation>
     </message>
     <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">ドキュメントのエクスポート中... </translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">エクスポートに成功 </translation>
-    </message>
-    <message>
         <source>Export to PDF</source>
         <translation>PDFへエクスポート</translation>
     </message>
@@ -1500,14 +1509,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Export as PDF File</source>
         <translation>PDFファイルとしてエクスポート</translation>
-    </message>
-    <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">ドキュメントのエクスポート中... </translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">エクスポートに成功。</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1550,10 +1551,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Add to page</source>
         <translation>ページに追加 </translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation type="vanished">背景として設定</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1616,10 +1613,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Pictures</source>
         <translation type="unfinished">写真</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <translation type="obsolete">動画</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -1690,12 +1683,12 @@ Providing a new name will create a new document.</source>
         <translation>拡張画面でみることができます </translation>
     </message>
     <message>
-        <source>Go to Content Source</source>
-        <translation>コンテンツのソースへ移動 </translation>
-    </message>
-    <message>
         <source>Set as background</source>
         <translation type="unfinished">背景として設定</translation>
+    </message>
+    <message>
+        <source>Web Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2054,51 +2047,10 @@ Do you want to ignore these errors for this host?</source>
     </message>
 </context>
 <context>
-    <name>UBProxyLoginDlg</name>
-    <message>
-        <source>Proxy Login</source>
-        <translation type="vanished">プロキシログイン</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation type="vanished">ユーザー名： </translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="vanished">パスワード： </translation>
-    </message>
-</context>
-<context>
-    <name>UBPublicationDlg</name>
-    <message>
-        <source>Publish document on the web</source>
-        <translation type="vanished">ドキュメントをウェブに公開</translation>
-    </message>
-    <message>
-        <source>Title:</source>
-        <translation type="vanished">タイトル： </translation>
-    </message>
-    <message>
-        <source>Description:</source>
-        <translation type="vanished">説明： </translation>
-    </message>
-    <message>
-        <source>Publish</source>
-        <translation type="vanished">公開</translation>
-    </message>
-</context>
-<context>
     <name>UBSettings</name>
     <message>
         <source>My Movies</source>
         <translation>マイ・ムービー </translation>
-    </message>
-</context>
-<context>
-    <name>UBStartupHintsPalette</name>
-    <message>
-        <source>Visible next time</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2162,17 +2114,6 @@ Do you want to ignore these errors for this host?</source>
     </message>
 </context>
 <context>
-    <name>UBEmbedController</name>
-    <message>
-        <source>Whole page</source>
-        <translation>ページ全体</translation>
-    </message>
-    <message>
-        <source>Web</source>
-        <translation>ウェブ</translation>
-    </message>
-</context>
-<context>
     <name>UBUpdateDlg</name>
     <message>
         <source>Document updater</source>
@@ -2226,17 +2167,10 @@ Please reboot the application to access the updated documents.</source>
     </message>
 </context>
 <context>
-    <name>UBWebPluginWidget</name>
+    <name>UBWebEngineView</name>
     <message>
-        <source>Loading...</source>
-        <translation>ロード中… </translation>
-    </message>
-</context>
-<context>
-    <name>UBWidgetUniboardAPI</name>
-    <message>
-        <source>%0 called (method=%1, status=%2)</source>
-        <translation>%0 コール(メソッド=%1, ステータス=%2) </translation>
+        <source>Open Web Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2325,85 +2259,6 @@ Please reboot the application to access the updated documents.</source>
     </message>
 </context>
 <context>
-    <name>WBClearButton</name>
-    <message>
-        <source>Clear</source>
-        <translation>クリア</translation>
-    </message>
-</context>
-<context>
-    <name>WBDownloadItem</name>
-    <message>
-        <source>Save File</source>
-        <translation>ファイルを保存</translation>
-    </message>
-    <message>
-        <source>Download canceled: %1</source>
-        <translation>キャンセルされたダウンロード: %1 </translation>
-    </message>
-    <message>
-        <source>Error opening saved file: %1</source>
-        <translation>保存されたファイルを開く時にエラー: %1 </translation>
-    </message>
-    <message>
-        <source>Error saving: %1</source>
-        <translation>保存時にエラー: %1 </translation>
-    </message>
-    <message>
-        <source>Network Error: %1</source>
-        <translation>ネットワークエラー: %1 </translation>
-    </message>
-    <message>
-        <source>seconds</source>
-        <translation>秒</translation>
-    </message>
-    <message>
-        <source>minutes</source>
-        <translation>分</translation>
-    </message>
-    <message>
-        <source>- %4 %5 remaining</source>
-        <translation>残り - %4 %5 </translation>
-    </message>
-    <message>
-        <source>%1 of %2 (%3/sec) %4</source>
-        <translation>%1 / %2 (%3/秒) %4 </translation>
-    </message>
-    <message>
-        <source>?</source>
-        <comment>unknown file size</comment>
-        <translation> ? </translation>
-    </message>
-    <message>
-        <source>%1 of %2 - Stopped</source>
-        <translation>%1 / %2 – 中止</translation>
-    </message>
-    <message>
-        <source>bytes</source>
-        <translation>バイト</translation>
-    </message>
-    <message>
-        <source>KB</source>
-        <translation> KB </translation>
-    </message>
-    <message>
-        <source>MB</source>
-        <translation> MB </translation>
-    </message>
-</context>
-<context>
-    <name>WBDownloadManager</name>
-    <message>
-        <source>1 Download</source>
-        <translation>1 ダウンロード</translation>
-    </message>
-    <message>
-        <source>%1 Downloads</source>
-        <comment>always &gt;= 2</comment>
-        <translation>%1ダウンロード</translation>
-    </message>
-</context>
-<context>
     <name>WBHistoryModel</name>
     <message>
         <source>Title</source>
@@ -2426,97 +2281,90 @@ Please reboot the application to access the updated documents.</source>
     </message>
 </context>
 <context>
-    <name>WBSearchLineEdit</name>
+    <name>WebPage</name>
     <message>
-        <source>Search</source>
-        <translation>検索</translation>
-    </message>
-</context>
-<context>
-    <name>WBTabBar</name>
-    <message>
-        <source>New &amp;Tab</source>
-        <translation>新規 &amp; タブ</translation>
+        <source>Certificate Error</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clone Tab</source>
-        <translation>クローンタブ</translation>
+        <source>Enter username and password for &quot;%1&quot; at %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Close Tab</source>
-        <translation>&amp; タブを閉じる</translation>
+        <source>Allow %1 to access your location information?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Close &amp;Other Tabs</source>
-        <translation>他のタブを&amp;閉じる</translation>
+        <source>Allow %1 to access your microphone?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reload Tab</source>
-        <translation>タブをリロード</translation>
+        <source>Allow %1 to access your webcam?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reload All Tabs</source>
-        <translation>全タブをリロード</translation>
-    </message>
-</context>
-<context>
-    <name>WBTabWidget</name>
-    <message>
-        <source>Recently Closed Tabs</source>
-        <translation>最近閉じたタブ</translation>
+        <source>Allow %1 to access your microphone and webcam?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>(Untitled)</source>
-        <translation>（タイトルなし）</translation>
-    </message>
-</context>
-<context>
-    <name>WBToolbarSearch</name>
-    <message>
-        <source>Search</source>
-        <translation>検索</translation>
+        <source>Allow %1 to lock your mouse cursor?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No Recent Searches</source>
-        <translation>最近の検索なし</translation>
+        <source>Allow %1 to capture video of your desktop?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Recent Searches</source>
-        <translation>最近の検索</translation>
+        <source>Allow %1 to capture audio and video of your desktop?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clear Recent Searches</source>
-        <translation>最近の検索のクリア</translation>
-    </message>
-</context>
-<context>
-    <name>WBWebPage</name>
-    <message>
-        <source>Download</source>
-        <translation>ダウンロード</translation>
+        <source>Permission Request</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add to Current Document</source>
-        <translation>現在のドキュメントに追加</translation>
+        <source>Connect to proxy &quot;%1&quot; using:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>PDF</source>
-        <translation>PDF</translation>
-    </message>
-    <message>
-        <source>Error loading page: %1</source>
-        <translation>ページのロード中にエラー: %1 </translation>
-    </message>
-    <message>
-        <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
+        <source>Allow %1 to open all %2 links?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>WBWebView</name>
+    <name>WebView</name>
     <message>
-        <source>Open in New Tab</source>
-        <translation>新規タブ内で開く</translation>
+        <source>Render process normal exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process abnormal exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process crashed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process killed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process exited with code: %1
+Do you want to reload the page ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Web Inspector in new window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inspect element</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to board</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2640,29 +2488,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>documentPublishingDialog</name>
-    <message>
-        <source>Dialog</source>
-        <translation type="obsolete">ダイアログ</translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="obsolete">タイトル</translation>
-    </message>
-    <message>
-        <source>E-mail</source>
-        <translation type="obsolete">Eメール</translation>
-    </message>
-    <message>
-        <source>Author</source>
-        <translation type="obsolete">作成者</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="obsolete">説明</translation>
-    </message>
-</context>
-<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
@@ -2722,10 +2547,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Virtual Keyboard</source>
         <translation>バーチャルキーボード</translation>
-    </message>
-    <message>
-        <source>Keyboard button size:</source>
-        <translation type="vanished">キーボードボタンサイズ: </translation>
     </message>
     <message>
         <source>Toolbar</source>

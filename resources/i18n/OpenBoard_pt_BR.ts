@@ -2372,7 +2372,7 @@ Por favor, reinicie o aplicativo para ir aos documentos atualizados.</translatio
     </message>
 </context>
 <context>
-    <name>WBDownloadItem</name>
+    <name>DownloadItem</name>
     <message>
         <source>Save File</source>
         <translation>Gravar arquivo</translation>
@@ -2474,7 +2474,7 @@ Por favor, reinicie o aplicativo para ir aos documentos atualizados.</translatio
     </message>
 </context>
 <context>
-    <name>WBTabBar</name>
+    <name>TabWidget</name>
     <message>
         <source>New &amp;Tab</source>
         <translation>Novo &amp;Separador</translation>
@@ -2501,7 +2501,7 @@ Por favor, reinicie o aplicativo para ir aos documentos atualizados.</translatio
     </message>
 </context>
 <context>
-    <name>WBTabWidget</name>
+    <name>TabWidget</name>
     <message>
         <source>Recently Closed Tabs</source>
         <translation>Separadores recentemente fechados</translation>

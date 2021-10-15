@@ -130,7 +130,7 @@ void UBEmbedController::textChanged(const QString &newText)
     {
         new_text.remove(regExp);
         mTrapFlashUi->widgetNameLineEdit->setText(new_text);
-        QToolTip::showText(mTrapFlashUi->widgetNameLineEdit->mapToGlobal(QPoint()), "Application name can`t contain any of the following characters:\r\n"+illegalCharList);
+        QToolTip::showText(mTrapFlashUi->widgetNameLineEdit->mapToGlobal(QPoint()), tr("Application name can`t contain any of the following characters:\r\n") + illegalCharList);
     }
 }
 

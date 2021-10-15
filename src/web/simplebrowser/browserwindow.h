@@ -93,8 +93,6 @@ public slots:
     void zoomOut();
 
 private slots:
-    void handleFileOpenTriggered();
-    void handleFindActionTriggered();
     void handleWebViewLoadProgress(int);
     void handleWebViewTitleChanged(const QString &title);
     void handleDevToolsRequested(QWebEnginePage *source);
