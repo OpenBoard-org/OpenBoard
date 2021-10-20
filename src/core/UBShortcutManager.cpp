@@ -126,7 +126,11 @@ void UBShortcutManager::addMainActions(UBMainWindow *mainWindow)
                    mainWindow->actionLibrary,
                    mainWindow->actionVirtualKeyboard,
                    mainWindow->actionOpenTutorial,
-                   mainWindow->actionHideApplication
+                   mainWindow->actionHideApplication,
+                   mainWindow->actionCut,
+                   mainWindow->actionCopy,
+                   mainWindow->actionPaste,
+                   mainWindow->actionQuit
                }, mainWindow);
 
     addActions(tr("Board"), {
@@ -238,14 +242,14 @@ void UBShortcutManager::addMainActions(UBMainWindow *mainWindow)
     action = new QAction(this);
     action->setText(mainWindow->actionZoomIn->text());
     action->setToolTip(mainWindow->actionZoomIn->toolTip());
-    action->setShortcuts( { QKeySequence(Qt::CTRL + Qt::Key_Plus), QKeySequence(Qt::CTRL + Qt::Key_I) } );
+    action->setShortcuts( { QKeySequence(Qt::CTRL + Qt::Key_Plus) } );
     action->setProperty("builtIn", true);
     actions << action;
 
     action = new QAction(this);
     action->setText(mainWindow->actionZoomOut->text());
     action->setToolTip(mainWindow->actionZoomOut->toolTip());
-    action->setShortcuts( { QKeySequence(Qt::CTRL + Qt::Key_Minus), QKeySequence(Qt::CTRL + Qt::Key_O) } );
+    action->setShortcuts( { QKeySequence(Qt::CTRL + Qt::Key_Minus) } );
     action->setProperty("builtIn", true);
     actions << action;
 
