@@ -156,11 +156,16 @@ void UBDrawingController::setStylusTool(int tool)
 }
 
 
-bool UBDrawingController::isDrawingTool()
+bool UBDrawingController::isDrawingTool(int tool)
 {
-    return (stylusTool() == UBStylusTool::Pen)
-            || (stylusTool() == UBStylusTool::Marker)
-            || (stylusTool() == UBStylusTool::Line);
+    if (tool < 0)
+    {
+        tool = stylusTool();
+    }
+
+    return (tool == UBStylusTool::Pen)
+            || (tool == UBStylusTool::Marker)
+            || (tool == UBStylusTool::Line);
 }
 
 

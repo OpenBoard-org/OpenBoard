@@ -198,47 +198,52 @@ void UBBoardView::keyPressEvent (QKeyEvent *event)
 
     if (!event->isAccepted ())
     {
+        if (event->modifiers () == 0)
+        {
+            switch (event->key ())
+            {
+            case Qt::Key_Up:
+            case Qt::Key_PageUp:
+            case Qt::Key_Left:
+            {
+                mController->previousScene ();
+                break;
+            }
+
+            case Qt::Key_Down:
+            case Qt::Key_PageDown:
+            case Qt::Key_Right:
+            case Qt::Key_Space:
+            {
+                mController->nextScene ();
+                break;
+            }
+
+            case Qt::Key_Home:
+            {
+                mController->firstScene ();
+                break;
+            }
+            case Qt::Key_End:
+            {
+                mController->lastScene ();
+                break;
+            }
+            case Qt::Key_Insert:
+            {
+                mController->addScene ();
+                break;
+            }
+            }
+        }
+
         switch (event->key ())
         {
-        case Qt::Key_Up:
-        case Qt::Key_PageUp:
-        case Qt::Key_Left:
-        {
-            mController->previousScene ();
-            break;
-        }
-
-        case Qt::Key_Down:
-        case Qt::Key_PageDown:
-        case Qt::Key_Right:
-        case Qt::Key_Space:
-        {
-            mController->nextScene ();
-            break;
-        }
-
-        case Qt::Key_Home:
-        {
-            mController->firstScene ();
-            break;
-        }
-        case Qt::Key_End:
-        {
-            mController->lastScene ();
-            break;
-        }
-        case Qt::Key_Insert:
-        {
-            mController->addScene ();
-            break;
-        }
         case Qt::Key_Control:
         case Qt::Key_Shift:
-        {
             setMultiselection(true);
-        }break;
+            break;
         }
-
 
         if (event->modifiers () & Qt::ControlModifier) // keep only ctrl/cmd keys
         {
