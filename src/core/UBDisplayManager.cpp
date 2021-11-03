@@ -180,7 +180,7 @@ void UBDisplayManager::setDisplayWidget(QWidget* pDisplayWidget)
         }
         mDisplayWidget = pDisplayWidget;
         mDisplayWidget->setGeometry(mDesktop->screenGeometry(mDisplayScreenIndex));
-        if (UBSettings::settings()->appUseMultiscreen->get().toBool())
+        if (numScreens() > 1 && UBSettings::settings()->appUseMultiscreen->get().toBool())
             UBPlatformUtils::showFullScreen(mDisplayWidget);
     }
 }

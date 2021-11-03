@@ -664,7 +664,7 @@ QMimeData *UBDocumentTreeModel::mimeData (const QModelIndexList &indexes) const
 
 #if defined(Q_OS_OSX)
     #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
-        if (QOperatingSystemVersion::current().minorVersion() < 15) /* < Mojave */
+        if (QOperatingSystemVersion::current().majorVersion() == 10 && QOperatingSystemVersion::current().minorVersion() < 15) /* <= Mojave */
             mimeData->setUrls(urlList);
     #endif
 #else
@@ -1548,7 +1548,6 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
                 const QPixmap *pix = new QPixmap(thumbTmp);
                 UBDocumentController *ctrl = UBApplication::documentController;
                 ctrl->addPixmapAt(pix, toIndex);
-                ctrl->TreeViewSelectionChanged(ctrl->firstSelectedTreeIndex(), QModelIndex());
             }
 
             QApplication::restoreOverrideCursor();
@@ -1556,6 +1555,8 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
 
             docModel->setHighLighted(QModelIndex());
         }
+
+        UBApplication::documentController->TreeViewSelectionChanged(UBApplication::documentController->firstSelectedTreeIndex(), QModelIndex());
 
     }
     else
