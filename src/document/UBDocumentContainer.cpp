@@ -106,7 +106,6 @@ void UBDocumentContainer::addPage(int index)
 void UBDocumentContainer::addPixmapAt(const QPixmap *pix, int index)
 {
     mDocumentThumbs.insert(index, pix);
-    emit documentThumbnailsUpdated(this);
 }
 
 

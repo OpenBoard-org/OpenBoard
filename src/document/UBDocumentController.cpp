@@ -1548,7 +1548,6 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
                 const QPixmap *pix = new QPixmap(thumbTmp);
                 UBDocumentController *ctrl = UBApplication::documentController;
                 ctrl->addPixmapAt(pix, toIndex);
-                ctrl->TreeViewSelectionChanged(ctrl->firstSelectedTreeIndex(), QModelIndex());
             }
 
             QApplication::restoreOverrideCursor();
@@ -1556,6 +1555,8 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
 
             docModel->setHighLighted(QModelIndex());
         }
+
+        UBApplication::documentController->TreeViewSelectionChanged(UBApplication::documentController->firstSelectedTreeIndex(), QModelIndex());
 
     }
     else
