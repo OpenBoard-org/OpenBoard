@@ -31,6 +31,7 @@
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 #include "frameworks/UBFileSystemUtils.h"
+#include "gui/UBMainWindow.h"
 
 #include <QWidget>
 
@@ -622,35 +623,93 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
 
 void UBPlatformUtils::showOSK(bool show)
 {
-    @autoreleasepool {
-        CFDictionaryRef properties = (CFDictionaryRef)[NSDictionary
-                      dictionaryWithObject: @"com.apple.KeyboardViewer"
-                      forKey: (NSString *)kTISPropertyInputSourceID];
+    if (QOperatingSystemVersion::current().majorVersion() == 10 && QOperatingSystemVersion::current().minorVersion() < 15) /* < Catalina */
+    {
+        @autoreleasepool {
+            CFDictionaryRef properties = (CFDictionaryRef)[NSDictionary
+                          dictionaryWithObject: @"com.apple.keyboardViewer"
+                          forKey: (NSString *)kTISPropertyInputSourceID];
 
-        NSArray *sources = (NSArray *)TISCreateInputSourceList(properties, true);
+            NSArray *sources = (NSArray *)TISCreateInputSourceList(properties, true);
 
-        if ([sources count] > 0) {
-            TISInputSourceRef osk = (TISInputSourceRef)[sources objectAtIndex: 0];
+            if ([sources count] > 0) {
+                TISInputSourceRef osk = (TISInputSourceRef)[sources objectAtIndex: 0];
 
-            OSStatus result;
-            if (show) {
-                TISEnableInputSource(osk);
-                result = TISSelectInputSource(osk);
+                OSStatus result;
+                if (show) {
+                    TISEnableInputSource(osk);
+                    result = TISSelectInputSource(osk);
+                }
+                else {
+                    TISDisableInputSource(osk);
+                    result = TISDeselectInputSource(osk);
+                }
+
+                if (result == paramErr) {
+                    qWarning() << "Unable to select input source";
+                    UBApplication::showMessage(tr("Unable to activate system on-screen keyboard"));
+                }
             }
+
             else {
-                TISDisableInputSource(osk);
-                result = TISDeselectInputSource(osk);
-            }
-
-            if (result == paramErr) {
-                qWarning() << "Unable to select input source";
-                UBApplication::showMessage(tr("Unable to activate system on-screen keyboard"));
+                qWarning() << "System OSK not found";
+                UBApplication::showMessage(tr("System on-screen keyboard not found"));
             }
         }
+    }
+    else
+    {
+        NSString *source =
+            @"tell application \"System Events\"\n\
+                if application process \"TextInputMenuAgent\" exists then\n\
+                    tell application process \"TextInputMenuAgent\"\n\
+                        tell menu bar item 1 of menu bar 2\n\
+                            ignoring application responses\n\
+                                click\n\
+                            end ignoring\n\
+                        end tell\n\
+                    end tell\n\
+                end if\n\
+            end tell\n\
+            do shell script \"killall 'System Events'\"\n";
 
-        else {
-            qWarning() << "System OSK not found";
-            UBApplication::showMessage(tr("System on-screen keyboard not found"));
+            source = [source stringByAppendingString:@"if application \"Assistive Control\" is"];
+
+            if (show)
+            {
+                source = [source stringByAppendingString:@" not"];
+            }
+
+            source = [source stringByAppendingString:@" running then\n\
+                tell application \"System Events\"\n\
+                    tell application process \"TextInputMenuAgent\"\n\
+                        tell menu 1 of menu bar item 1 of menu bar 2\n\
+                            click menu item 2\n\
+                        end tell\n\
+                    end tell\n\
+                end tell\n\
+            end if"];
+
+        NSAppleScript *script = [[[NSAppleScript alloc] initWithSource:source] autorelease];
+        NSDictionary  *errorInfo   = nil;
+        [script executeAndReturnError:&errorInfo];
+
+        if(errorInfo!=nil)
+        {
+            NSAlert *alert = [[NSAlert alloc] init];
+
+            if (alert != nil)
+            {
+                alert.messageText = errorInfo.allValues[0];
+                [alert runModal];
+                [alert release];
+
+                //restore action state to previous one as it failed
+                if (show)
+                    UBApplication::mainWindow->actionVirtualKeyboard->setChecked(false);
+                else
+                    UBApplication::mainWindow->actionVirtualKeyboard->setChecked(true);
+            }
         }
     }
 }
