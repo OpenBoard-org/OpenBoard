@@ -209,7 +209,8 @@ public:
     UBDocumentProxy *proxyForIndex(const QModelIndex &pIndex) const;
     QString virtualDirForIndex(const QModelIndex &pIndex) const;
     QString virtualPathForIndex(const QModelIndex &pIndex) const;
-    QStringList nodeNameList(const QModelIndex &pIndex) const;
+    QStringList nodeNameList(const QModelIndex &pIndex, bool distinctNodeType = false) const;
+    QList<UBDocumentTreeNode*> nodeChildrenFromIndex(const QModelIndex &pIndex) const;
     bool newNodeAllowed(const QModelIndex &pSelectedIndex)  const;
     QModelIndex goTo(const QString &dir);
     bool inTrash(const QModelIndex &index) const;
@@ -305,6 +306,7 @@ public slots:
     void hSliderRangeChanged(int min, int max);
 
 protected:
+    void mousePressEvent(QMouseEvent *event) override;
     void dragEnterEvent(QDragEnterEvent *event);
     void dragLeaveEvent(QDragLeaveEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);
@@ -319,6 +321,32 @@ private:
     bool isAcceptable(const QModelIndex &dragIndex, const QModelIndex &atIndex);
     Qt::DropAction acceptableAction(const QModelIndex &dragIndex, const QModelIndex &atIndex);
     void updateIndexEnvirons(const QModelIndex &index);
+};
+
+class UBValidator : public QValidator
+{
+    const QList<UBDocumentTreeNode*> mExistingNodes;
+    UBDocumentTreeNode::Type mEditedNodeType;
+
+    public:
+        UBValidator(const QList<UBDocumentTreeNode*> existingNodes, UBDocumentTreeNode::Type editedNodeType, QObject *parent = nullptr)
+        : QValidator(parent)
+        , mExistingNodes(existingNodes)
+        , mEditedNodeType(editedNodeType)
+        {
+
+        }
+
+        QValidator::State validate(QString &input, int &pos) const
+        {
+            for (auto node : mExistingNodes)
+            {
+                if (node->nodeName() == input && node->nodeType() == mEditedNodeType)
+                    return QValidator::Intermediate;
+            }
+
+            return QValidator::Acceptable;
+        }
 };
 
 class UBDocumentTreeItemDelegate : public QStyledItemDelegate
@@ -401,6 +429,7 @@ class UBDocumentController : public UBDocumentContainer
                                                      , const QModelIndex &selectedIndex
                                                      , UBDocumentTreeModel *docModel) const;
         bool firstAndOnlySceneSelected() const;
+        bool everySceneSelected() const;
         QWidget *mainWidget() const {return mDocumentWidget;}
 
         //issue 1629 - NNE - 20131212

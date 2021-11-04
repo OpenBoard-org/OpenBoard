@@ -345,6 +345,7 @@ UBDocumentTreeNode *UBDocumentTreeNode::previousSibling()
 UBDocumentTreeModel::UBDocumentTreeModel(QObject *parent) :
     QAbstractItemModel(parent)
   , mRootNode(0)
+  , mCurrentNode(nullptr)
 {
     UBDocumentTreeNode *rootNode = new UBDocumentTreeNode(UBDocumentTreeNode::Catalog, "root");
 
@@ -539,7 +540,14 @@ bool UBDocumentTreeModel::setData(const QModelIndex &index, const QVariant &valu
         if (!index.isValid() || value.toString().isEmpty()) {
             return false;
         }
-        setNewName(index, value.toString());
+
+        QString fullNewName = value.toString();
+        if (isCatalog(index))
+        {
+            fullNewName.replace('/', '-');
+        }
+
+        setNewName(index, fullNewName);
         return true;
     }
     return QAbstractItemModel::setData(index, value, role);
@@ -654,7 +662,14 @@ QMimeData *UBDocumentTreeModel::mimeData (const QModelIndexList &indexes) const
         }
     }
 
+#if defined(Q_OS_OSX)
+    #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
+        if (QOperatingSystemVersion::current().majorVersion() == 10 && QOperatingSystemVersion::current().minorVersion() < 15) /* <= Mojave */
+            mimeData->setUrls(urlList);
+    #endif
+#else
     mimeData->setUrls(urlList);
+#endif
     mimeData->setIndexes(indexList);
 
     return mimeData;
@@ -1019,7 +1034,17 @@ QString UBDocumentTreeModel::virtualPathForIndex(const QModelIndex &pIndex) cons
     return virtualDirForIndex(pIndex) + "/" + curNode->nodeName();
 }
 
-QStringList UBDocumentTreeModel::nodeNameList(const QModelIndex &pIndex) const
+QList<UBDocumentTreeNode*> UBDocumentTreeModel::nodeChildrenFromIndex(const QModelIndex &pIndex) const
+{
+    UBDocumentTreeNode *node = nodeFromIndex(pIndex);
+
+    if (node)
+        return node->children();
+    else
+        return QList<UBDocumentTreeNode*>();
+}
+
+QStringList UBDocumentTreeModel::nodeNameList(const QModelIndex &pIndex, bool distinctNodeType) const
 {
     QStringList result;
 
@@ -1028,8 +1053,23 @@ QStringList UBDocumentTreeModel::nodeNameList(const QModelIndex &pIndex) const
         return QStringList();
     }
 
-    foreach (UBDocumentTreeNode *curNode, catalog->children()) {
-        result << curNode->nodeName();
+    foreach (UBDocumentTreeNode *curNode, catalog->children())
+    {
+        if (distinctNodeType)
+        {
+            if (curNode->nodeType() == UBDocumentTreeNode::Catalog)
+            {
+                result << "folder - " + curNode->nodeName();
+            }
+            else
+            {
+                result << curNode->nodeName();
+            }
+        }
+        else
+        {
+            result << curNode->nodeName();
+        }
     }
 
     return result;
@@ -1070,9 +1110,12 @@ QModelIndex UBDocumentTreeModel::goTo(const QString &dir)
         QString curLevelName = pathList.takeFirst();
         if (searchingNode) {
             searchingNode = false;
-            for (int i = 0; i < rowCount(parentIndex); ++i) {
+            int irowCount = rowCount(parentIndex);
+            for (int i = 0; i < irowCount; ++i) {
                 QModelIndex curChildIndex = index(i, 0, parentIndex);
-                if (nodeFromIndex(curChildIndex)->nodeName() == curLevelName) {
+                UBDocumentTreeNode* currentNode = nodeFromIndex(curChildIndex);
+                if (currentNode->nodeName() == curLevelName && currentNode->nodeType() == UBDocumentTreeNode::Catalog)
+                {
                     searchingNode = true;
                     parentIndex = curChildIndex;
                     break;
@@ -1157,7 +1200,6 @@ void UBDocumentTreeModel::setNewName(const QModelIndex &index, const QString &ne
     QString magicSeparator = "+!##s";
     if (isCatalog(index)) {
         QString fullNewName = newName;
-        fullNewName.replace('/', '-');
         if (!newName.contains(magicSeparator)) {
             indexNode->setNodeName(fullNewName);
             QString virtualDir = virtualDirForIndex(index);
@@ -1355,6 +1397,12 @@ void UBDocumentTreeView::hSliderRangeChanged(int min, int max)
     }
 }
 
+void UBDocumentTreeView::mousePressEvent(QMouseEvent *event)
+{
+    QTreeView::mousePressEvent(event);
+    UBApplication::documentController->updateActions();
+}
+
 void UBDocumentTreeView::dragEnterEvent(QDragEnterEvent *event)
 {
     QTreeView::dragEnterEvent(event);
@@ -1510,7 +1558,6 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
                 const QPixmap *pix = new QPixmap(thumbTmp);
                 UBDocumentController *ctrl = UBApplication::documentController;
                 ctrl->addPixmapAt(pix, toIndex);
-                ctrl->TreeViewSelectionChanged(ctrl->firstSelectedTreeIndex(), QModelIndex());
             }
 
             QApplication::restoreOverrideCursor();
@@ -1518,6 +1565,8 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
 
             docModel->setHighLighted(QModelIndex());
         }
+
+        UBApplication::documentController->TreeViewSelectionChanged(UBApplication::documentController->firstSelectedTreeIndex(), QModelIndex());
 
     }
     else
@@ -1613,10 +1662,15 @@ UBDocumentTreeItemDelegate::UBDocumentTreeItemDelegate(QObject *parent)
 
 void UBDocumentTreeItemDelegate::commitAndCloseEditor()
 {
-    QLineEdit *lineEditor = qobject_cast<QLineEdit*>(sender());
-    if (lineEditor) {
-        emit commitData(lineEditor);
+    QLineEdit *lineEditor = dynamic_cast<QLineEdit*>(sender());
+    if (lineEditor)
+    {
+        if (lineEditor->hasAcceptableInput())
+        {
+            emit commitData(lineEditor);
         //emit closeEditor(lineEditor);
+        }
+
         emit UBApplication::documentController->reorderDocumentsRequested();
     }
 }
@@ -1624,14 +1678,20 @@ void UBDocumentTreeItemDelegate::commitAndCloseEditor()
 void UBDocumentTreeItemDelegate::processChangedText(const QString &str) const
 {
     QLineEdit *editor = qobject_cast<QLineEdit*>(sender());
-    if (!editor) {
-        return;
-    }
-
-    if (!validateString(str)) {
-        editor->setStyleSheet("background-color: #FFB3C8;");
-    } else {
-        editor->setStyleSheet("background-color: #FFFFFF;");
+    if (editor)
+    {
+        if (editor->validator())
+        {
+            int pos = 0;
+            if (editor->validator()->validate(const_cast<QString&>(str), pos) != QValidator::Acceptable)
+            {
+                editor->setStyleSheet("background-color: #FFB3C8;");
+            }
+            else
+            {
+                editor->setStyleSheet("background-color: #FFFFFF;");
+            }
+        }
     }
 }
 
@@ -1646,16 +1706,41 @@ QWidget *UBDocumentTreeItemDelegate::createEditor(QWidget *parent, const QStyleO
     //N/C - NNE - 20140407 : Add the test for the index column.
     if(index.column() == 0){
         mExistingFileNames.clear();
-        const UBDocumentTreeModel *indexModel = qobject_cast<const UBDocumentTreeModel*>(index.model());
-        if (indexModel) {
-            mExistingFileNames = indexModel->nodeNameList(index.parent());
-            mExistingFileNames.removeOne(index.data().toString());
+        const UBDocumentTreeModel *docModel = 0;
+
+        const UBSortFilterProxyModel *proxy = dynamic_cast<const UBSortFilterProxyModel*>(index.model());
+
+        if(proxy){
+            docModel = dynamic_cast<UBDocumentTreeModel*>(proxy->sourceModel());
+        }else{
+            docModel =  dynamic_cast<const UBDocumentTreeModel*>(index.model());
         }
 
-        QLineEdit *nameEditor = new QLineEdit(parent);
-        connect(nameEditor, SIGNAL(editingFinished()), this, SLOT(commitAndCloseEditor()));
-        connect(nameEditor, SIGNAL(textChanged(QString)), this, SLOT(processChangedText(QString)));
-        return nameEditor;
+        QModelIndex sourceIndex = proxy->mapToSource(index);
+
+        if (docModel)
+        {
+            mExistingFileNames = docModel->nodeNameList(sourceIndex.parent());
+            mExistingFileNames.removeOne(sourceIndex.data().toString());
+
+            UBDocumentTreeNode* sourceNode = docModel->nodeFromIndex(sourceIndex);
+
+            if (sourceNode)
+            {
+                QLineEdit *nameEditor = new QLineEdit(parent);
+                QList<UBDocumentTreeNode*> nodeChildren = docModel->nodeChildrenFromIndex(sourceIndex.parent());
+                nodeChildren.removeOne(sourceNode);
+
+                UBValidator* validator = new UBValidator(nodeChildren, sourceNode->nodeType());
+                nameEditor->setValidator(validator);
+                connect(nameEditor, SIGNAL(editingFinished()), this, SLOT(commitAndCloseEditor()));
+                connect(nameEditor, SIGNAL(textChanged(QString)), this, SLOT(processChangedText(QString)));
+
+                return nameEditor;
+            }
+        }
+
+        return nullptr;
     }
 
     //N/C - NNe - 20140407 : the other column are not editable.
@@ -1674,8 +1759,17 @@ void UBDocumentTreeItemDelegate::setEditorData(QWidget *editor, const QModelInde
 void UBDocumentTreeItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
     QLineEdit *lineEditor = qobject_cast<QLineEdit*>(editor);
-    if (validateString(lineEditor->text())) {
-        model->setData(index, lineEditor->text());
+    if (lineEditor)
+    {
+        int pos;
+        QString input = lineEditor->text();
+        if (lineEditor->validator())
+        {
+            if (lineEditor->validator()->validate(input, pos) == QValidator::Acceptable)
+            {
+                model->setData(index, input);
+            }
+        }
     }
 }
 
@@ -1728,7 +1822,21 @@ void UBDocumentController::createNewDocument()
                 ? docModel->virtualPathForIndex(selectedIndex)
                 : docModel->virtualDirForIndex(selectedIndex);
 
-    UBDocumentProxy *document = pManager->createDocument(groupName);
+
+    QDateTime now = QDateTime::currentDateTime();
+    QString documentName = "";
+    if (docModel->isCatalog(selectedIndex))
+    {
+        documentName = docModel->adjustNameForParentIndex(now.toString(Qt::SystemLocaleShortDate), selectedIndex);
+    }
+    else
+    {
+        documentName = docModel->adjustNameForParentIndex(now.toString(Qt::SystemLocaleShortDate), selectedIndex.parent());
+    }
+
+
+    UBDocumentProxy *document = pManager->createDocument(groupName, documentName);
+
     selectDocument(document, true, false, true);
 
     if (document)
@@ -2064,7 +2172,6 @@ void UBDocumentController::setupViews()
         connect(mDocumentUI->thumbnailWidget->scene(), SIGNAL(selectionChanged()), this, SLOT(pageSelectionChanged()));
 
         connect(UBPersistenceManager::persistenceManager(), SIGNAL(documentSceneCreated(UBDocumentProxy*, int)), this, SLOT(documentSceneChanged(UBDocumentProxy*, int)));
-        connect(UBPersistenceManager::persistenceManager(), SIGNAL(documentSceneWillBeDeleted(UBDocumentProxy*, int)), this, SLOT(documentSceneChanged(UBDocumentProxy*, int)));
 
         mDocumentUI->thumbnailWidget->setBackgroundBrush(UBSettings::documentViewLightColor);
 
@@ -2338,8 +2445,8 @@ void UBDocumentController::deleteMultipleItems(QModelIndexList indexes, UBDocume
             for (int i =0; i < indexes.size(); i++)
             {
                 deleteIndexAndAssociatedData(indexes.at(i));
-                emit documentThumbnailsUpdated(this);
             }
+            emit documentThumbnailsUpdated(this);
             break;
         }
         case EmptyFolder:
@@ -2730,9 +2837,16 @@ void UBDocumentController::deleteIndexAndAssociatedData(const QModelIndex &pInde
     }
 
     //N/C - NNE - 20140408
-    if(pIndex.column() == 0){
+    UBDocumentProxy *proxyData = nullptr;
+    if(pIndex.column() == 0)
+    {
         if (docModel->isDocument(pIndex)) {
-            UBDocumentProxy *proxyData = docModel->proxyData(pIndex);
+            proxyData = docModel->proxyData(pIndex);
+
+            if (selectedDocument() == proxyData)
+            {
+                setDocument(nullptr);
+            }
 
             if (proxyData) {
                 UBPersistenceManager::persistenceManager()->deleteDocument(proxyData);
@@ -2740,7 +2854,25 @@ void UBDocumentController::deleteIndexAndAssociatedData(const QModelIndex &pInde
         }
     }
 
-    docModel->removeRow(pIndex.row(), pIndex.parent());
+    if (proxyData)
+    {
+        // need to recall indexForProxy as rows could have changed when performing a multiple deletion
+        QModelIndex indexForProxy = docModel->indexForProxy(proxyData);
+        if (!docModel->removeRow(indexForProxy.row(), indexForProxy.parent()))
+        {
+            qDebug() << "could not remove row (r:" << indexForProxy.row() << "p:" << indexForProxy.parent() << ")";
+        }
+    }
+    else
+    {
+        if (docModel->isCatalog(pIndex))
+        {
+            if (!docModel->removeRow(pIndex.row(), pIndex.parent()))
+            {
+                qDebug() << "could not remove row (r:" << pIndex.row() << "p:" << pIndex.parent() << ")";
+            }
+        }
+    }
 }
 
 
@@ -3303,6 +3435,7 @@ void UBDocumentController::updateActions()
     updateExportSubActions(selectedIndex);
 
     bool firstSceneSelected = false;
+    bool everyPageSelected = false;
 
     if (docSelected) {
         mMainWindow->actionDuplicate->setEnabled(!trashSelected);
@@ -3340,20 +3473,57 @@ void UBDocumentController::updateActions()
 
     switch (static_cast<int>(deletionForSelection)) {
     case MoveToTrash :
+        if (mSelectionType == Folder)
+        {
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-folder.png"));
+            mMainWindow->actionDelete->setText(tr("Empty"));
+        }
+        else if (mSelectionType == Document)
+        {
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document.png"));
+            mMainWindow->actionDelete->setText(tr("Trash"));
+        }
+        else if (mSelectionType == Page)
+        {
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document-page.png"));
+            mMainWindow->actionDelete->setText(tr("Trash"));
+        }
+        else
+        {//can happen ?
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash.png"));
+            mMainWindow->actionDelete->setText(tr("Trash"));
+        }
+        break;
     case DeletePage :
-        mMainWindow->actionDelete->setIcon(QIcon(":/images/trash.png"));
+        mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document-page.png"));
         mMainWindow->actionDelete->setText(tr("Trash"));
         break;
     case CompleteDelete :
-        mMainWindow->actionDelete->setIcon(QIcon(":/images/toolbar/deleteDocument.png"));
-        mMainWindow->actionDelete->setText(tr("Delete"));
+        if (mSelectionType == Folder)
+        {
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-folder.png"));
+            mMainWindow->actionDelete->setText(tr("Delete"));
+        }
+        else
+        {
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-document.png"));
+            mMainWindow->actionDelete->setText(tr("Delete"));
+        }
         break;
     case EmptyFolder :
-        mMainWindow->actionDelete->setIcon(QIcon(":/images/trash.png"));
-        mMainWindow->actionDelete->setText(tr("Empty"));
+        if (firstSelectedTreeIndex() == docModel->myDocumentsIndex())
+        {
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-my-documents.png"));
+            mMainWindow->actionDelete->setText(tr("Empty"));
+        }
+        else
+        {
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-folder.png"));
+            mMainWindow->actionDelete->setText(tr("Empty"));
+        }
         break;
     case EmptyTrash :
-        mMainWindow->actionDelete->setIcon(QIcon(":/images/toolbar/deleteDocument.png"));
+        mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-empty.png"));
         mMainWindow->actionDelete->setText(tr("Empty"));
         break;
     }
@@ -3482,7 +3652,12 @@ UBDocumentController::deletionTypeForSelection(LastSelectedElementType pTypeSele
                                                , UBDocumentTreeModel *docModel) const
 {
 
-    if (pTypeSelection == Page) {
+    if (pTypeSelection == Page)
+    {
+        if (everySceneSelected())
+        {
+            return NoDeletion;
+        }
         if (!firstAndOnlySceneSelected()) {
             return DeletePage;
         }
@@ -3509,11 +3684,24 @@ UBDocumentController::deletionTypeForSelection(LastSelectedElementType pTypeSele
     return NoDeletion;
 }
 
+bool UBDocumentController::everySceneSelected() const
+{
+    QList<QGraphicsItem*> selection = mDocumentUI->thumbnailWidget->selectedItems();
+    if (selection.count() > 0)
+    {
+        UBSceneThumbnailPixmap* p = dynamic_cast<UBSceneThumbnailPixmap*>(selection.at(0));
+        if (p)
+        {
+            return (selection.count() == p->proxy()->pageCount());
+        }
+    }
+    return false;
+}
+
 bool UBDocumentController::firstAndOnlySceneSelected() const
 {
-    bool firstSceneSelected = false;
     QList<QGraphicsItem*> selection = mDocumentUI->thumbnailWidget->selectedItems();
-    for(int i = 0; i < selection.count() && !firstSceneSelected; i += 1)
+    for(int i = 0; i < selection.count(); i += 1)
     {
         UBSceneThumbnailPixmap* p = dynamic_cast<UBSceneThumbnailPixmap*>(selection.at(i));
         if (p)

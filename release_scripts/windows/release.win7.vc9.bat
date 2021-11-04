@@ -19,7 +19,7 @@ set SCRIPT_PATH=%~dp0
 set PROJECT_ROOT=%SCRIPT_PATH%\..\..
 
 set APPLICATION_NAME=OpenBoard
-set QT_DIR=C:\Qt\5.14.2\msvc2017_64
+set QT_DIR=C:\Qt\5.15.0\msvc2019_64
 set QT_BIN=%QT_DIR%\bin
 
 set PROGRAMS_FILE_PATH=C:\Program Files (x86)

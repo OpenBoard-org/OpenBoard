@@ -312,6 +312,7 @@ void UBBoardController::setupToolbar()
 
     UBToolbarButtonGroup *colorChoice =
             new UBToolbarButtonGroup(mMainWindow->boardToolBar, colorActions);
+    colorChoice->setLabel(tr("Color"));
 
     mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, colorChoice);
 
@@ -983,7 +984,7 @@ void UBBoardController::previousScene()
         persistViewPositionOnCurrentScene();
         persistCurrentScene();
         setActiveDocumentScene(mActiveSceneIndex - 1);
-        mControlView->centerOn(mActiveScene->lastCenter());
+        centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -999,7 +1000,7 @@ void UBBoardController::nextScene()
         persistViewPositionOnCurrentScene();
         persistCurrentScene();
         setActiveDocumentScene(mActiveSceneIndex + 1);
-        mControlView->centerOn(mActiveScene->lastCenter());
+        centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -1015,7 +1016,7 @@ void UBBoardController::firstScene()
         persistViewPositionOnCurrentScene();
         persistCurrentScene();
         setActiveDocumentScene(0);
-        mControlView->centerOn(mActiveScene->lastCenter());
+        centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -1031,7 +1032,7 @@ void UBBoardController::lastScene()
         persistViewPositionOnCurrentScene();
         persistCurrentScene();
         setActiveDocumentScene(selectedDocument()->pageCount() - 1);
-        mControlView->centerOn(mActiveScene->lastCenter());
+        centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -1440,6 +1441,11 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
             mActiveScene->addRuler(pPos);
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
+        else if (sourceUrl.toString() == UBToolsManager::manager()->axes.id)
+        {
+            mActiveScene->addAxes(pPos);
+            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+        }
         else if (sourceUrl.toString() == UBToolsManager::manager()->protractor.id)
         {
             mActiveScene->addProtractor(pPos);
@@ -1626,11 +1632,11 @@ void UBBoardController::moveSceneToIndex(int source, int target)
     }
 }
 
-void UBBoardController::findUniquesItems(const QUndoCommand *parent, QSet<QGraphicsItem*> &itms)
+void UBBoardController::findUniquesItems(const QUndoCommand *parent, QSet<QGraphicsItem*> &items)
 {
     if (parent->childCount()) {
         for (int i = 0; i < parent->childCount(); i++) {
-            findUniquesItems(parent->child(i), itms);
+            findUniquesItems(parent->child(i), items);
         }
     }
 
@@ -1651,16 +1657,26 @@ void UBBoardController::findUniquesItems(const QUndoCommand *parent, QSet<QGraph
     while (itAdded.hasNext())
     {
         QGraphicsItem* item = itAdded.next();
-        if( !itms.contains(item) && !(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()))
-            itms.insert(item);
+        if (!items.contains(item) &&
+            !(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()) &&
+            !items.contains(item->parentItem())
+            )
+        {
+            items.insert(item);
+        }
     }
 
     QSetIterator<QGraphicsItem*> itRemoved(cmd->GetRemovedList());
     while (itRemoved.hasNext())
     {
         QGraphicsItem* item = itRemoved.next();
-        if( !itms.contains(item) && !(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()))
-            itms.insert(item);
+        if (!items.contains(item) &&
+            !(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()) &&
+            !items.contains(item->parentItem())
+            )
+        {
+            items.insert(item);
+        }
     }
 }
 
@@ -2004,7 +2020,7 @@ void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool force
             && (mActiveSceneIndex >= 0) && mActiveSceneIndex != mMovingSceneIndex
             && (mActiveScene->isModified()))
     {
-        UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, UBPersistenceManager::PdfStripeYes);
+        UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, isAnAutomaticBackup, UBPersistenceManager::PdfStripeYes);
         updatePage(mActiveSceneIndex);
     }
 }

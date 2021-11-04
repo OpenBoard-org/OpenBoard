@@ -107,9 +107,7 @@ class UBPersistenceManager : public QObject
         virtual void duplicateDocumentScene(UBDocumentProxy* pDocumentProxy, int index);
 
         virtual void copyDocumentScene(UBDocumentProxy *from, int fromIndex, UBDocumentProxy *to, int toIndex);
-
-        virtual void persistDocumentScene(UBDocumentProxy* pDocumentProxy,
-                UBGraphicsScene* pScene, const int pSceneIndex, const PdfStripe &pdfStripe);
+        virtual void persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex, bool isAnAutomaticBackup = false, const PdfStripe &pdfStripe = PdfStripeNo);
 
         virtual UBGraphicsScene* createDocumentSceneAt(UBDocumentProxy* pDocumentProxy, int index, bool useUndoRedoStack, const PdfStripe &pdfStripe);
 
@@ -171,7 +169,6 @@ class UBPersistenceManager : public QObject
         void documentWillBeDeleted(UBDocumentProxy* pDocumentProxy);
 
         void documentSceneCreated(UBDocumentProxy* pDocumentProxy, int pIndex);
-        void documentSceneWillBeDeleted(UBDocumentProxy* pDocumentProxy, int pIndex);
 
 private:
         int sceneCount(const UBDocumentProxy* pDocumentProxy);

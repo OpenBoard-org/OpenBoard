@@ -177,7 +177,7 @@
     </message>
     <message>
         <source>Smalle Eraser</source>
-        <translation>Mała gumka</translation>
+        <translation type="vanished">Mała gumka</translation>
     </message>
     <message>
         <source>Medium Eraser</source>
@@ -189,7 +189,7 @@
     </message>
     <message>
         <source>Color</source>
-        <translation>Kolor</translation>
+        <translation type="vanished">Kolor</translation>
     </message>
     <message>
         <source>Back</source>
@@ -815,6 +815,34 @@
         <source>Reset grid size</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Small Eraser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -913,6 +941,10 @@
         <source>Grid size</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardController</name>
@@ -971,6 +1003,10 @@
     <message>
         <source>Deleting page %1</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished">Kolor</translation>
     </message>
 </context>
 <context>
@@ -1609,7 +1645,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Animations</source>
-        <translation>Animacje</translation>
+        <translation type="vanished">Animacje</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -2127,7 +2163,7 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
     </message>
     <message>
         <source>Compass</source>
-        <translation>Kompas</translation>
+        <translation>Cyrkiel</translation>
     </message>
     <message>
         <source>Protractor</source>
@@ -2135,7 +2171,7 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
     </message>
     <message>
         <source>Triangle</source>
-        <translation>Trójkąt</translation>
+        <translation>Ekierka</translation>
     </message>
     <message>
         <source>Magnifier</source>
@@ -2144,6 +2180,10 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
     <message>
         <source>Cache</source>
         <translation>Pamięć podręczna</translation>
+    </message>
+    <message>
+        <source>Axes</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2505,6 +2545,13 @@ Aby uzyskać dostęp do zaktualizowanych dokumentów, należy ponownie uruchomi�
     </message>
 </context>
 <context>
+    <name>XPDFRenderer</name>
+    <message>
+        <source>Processing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>YouTubePublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
@@ -2859,6 +2906,14 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF Rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Improve zoom execution time (can slightly affect rendering quality)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

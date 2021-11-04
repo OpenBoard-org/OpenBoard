@@ -88,7 +88,7 @@ initializeVariables()
   BUNDLE_QT=true
 
   # Qt installation path. This may vary across machines
-  QT_PATH="/home/dev/Qt/5.14.2/gcc_64"
+  QT_PATH="/home/dev/Qt/5.15.0/gcc_64"
   QT_PLUGINS_SOURCE_PATH="$QT_PATH/plugins"
   GUI_TRANSLATIONS_DIRECTORY_PATH="/usr/share/qt5/translations"
   QT_LIBRARY_SOURCE_PATH="$QT_PATH/lib"
@@ -227,7 +227,6 @@ if $BUNDLE_QT; then
     copyQtLibrary libQt5Qml
     copyQtLibrary libQt5QmlModels
     copyQtLibrary libQt5Quick
-    copyQtLibrary libQt5Script
     copyQtLibrary libQt5Sensors
     copyQtLibrary libQt5Sql
     copyQtLibrary libQt5Svg
@@ -376,6 +375,7 @@ if $BUNDLE_QT; then
     echo -n ",  libxcb-xkb1" >> "$CONTROL_FILE"
     echo -n ",  libxcb-image0" >> "$CONTROL_FILE"
     echo -n ",  libxcb-render-util0" >> "$CONTROL_FILE"
+    echo -n ",  libxcb-xinerama0" >> "$CONTROL_FILE"
 else
     echo -n ",  libqt5multimedia5-plugins" >> "$CONTROL_FILE"
 fi

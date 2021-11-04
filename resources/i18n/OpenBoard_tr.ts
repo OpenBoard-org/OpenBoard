@@ -425,7 +425,7 @@
     </message>
     <message>
         <source>Smalle Eraser</source>
-        <translation>Küçük Silgi</translation>
+        <translation type="vanished">Küçük Silgi</translation>
     </message>
     <message>
         <source>Medium Eraser</source>
@@ -437,7 +437,7 @@
     </message>
     <message>
         <source>Color</source>
-        <translation>Renkler</translation>
+        <translation type="vanished">Renkler</translation>
     </message>
     <message>
         <source>Reload Current Page</source>
@@ -811,6 +811,34 @@
         <source>Reset grid size</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Small Eraser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -909,6 +937,10 @@
         <source>Grid size</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardController</name>
@@ -967,6 +999,10 @@
     <message>
         <source>Deleting page %1</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished">Renkler</translation>
     </message>
 </context>
 <context>
@@ -1588,7 +1624,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Animations</source>
-        <translation>Animasyonlar</translation>
+        <translation type="vanished">Animasyonlar</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -2123,6 +2159,10 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
         <source>Cache</source>
         <translation>Gizli Yer</translation>
     </message>
+    <message>
+        <source>Axes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>
@@ -2483,6 +2523,13 @@ Güncellenen dökümanlara erişmek için uygulamayı yeniden başlatın.</trans
     </message>
 </context>
 <context>
+    <name>XPDFRenderer</name>
+    <message>
+        <source>Processing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>YouTubePublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
@@ -2833,6 +2880,14 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF Rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Improve zoom execution time (can slightly affect rendering quality)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

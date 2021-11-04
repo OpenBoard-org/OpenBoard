@@ -221,7 +221,7 @@ UBDocumentProxy* UBDocumentManager::importFile(const QFile& pFile, const QString
                     int pageIndex = document->pageCount();
                     UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(document, pageIndex, true /* useUndoRedoStack */, UBPersistenceManager::PdfStripeYes);
                     importAdaptor->placeImportedItemToScene(scene, page);
-                    UBPersistenceManager::persistenceManager()->persistDocumentScene(document, scene, pageIndex, UBPersistenceManager::PdfStripeYes);
+                    UBPersistenceManager::persistenceManager()->persistDocumentScene(document, scene, pageIndex, false, UBPersistenceManager::PdfStripeYes);
                 }
 
                 UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);

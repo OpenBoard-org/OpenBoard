@@ -193,7 +193,7 @@
     </message>
     <message>
         <source>Smalle Eraser</source>
-        <translation>Fafotse kely</translation>
+        <translation type="vanished">Fafotse kely</translation>
     </message>
     <message>
         <source>Medium Eraser</source>
@@ -445,7 +445,7 @@
     </message>
     <message>
         <source>Color</source>
-        <translation>Loko</translation>
+        <translation type="vanished">Loko</translation>
     </message>
     <message>
         <source>Back</source>
@@ -811,6 +811,34 @@
         <source>Reset grid size</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Small Eraser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -909,6 +937,10 @@
         <source>Grid size</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardController</name>
@@ -967,6 +999,10 @@
     <message>
         <source>Deleting page %1</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished">Loko</translation>
     </message>
 </context>
 <context>
@@ -1599,7 +1635,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Animations</source>
-        <translation>Sary ahetsika</translation>
+        <translation type="vanished">Sary ahetsika</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -2135,6 +2171,10 @@ Tena tsy te hiraharaha an&apos;ireo tsy mety ho an&apos;ilay milina ve ianao?</t
         <source>Cache</source>
         <translation>Tahiry</translation>
     </message>
+    <message>
+        <source>Axes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>
@@ -2495,6 +2535,13 @@ Avereno alefa ny rindr&apos;asa ahafahana mampiasa ny rakitra novoazana azafady.
     </message>
 </context>
 <context>
+    <name>XPDFRenderer</name>
+    <message>
+        <source>Processing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>YouTubePublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
@@ -2845,6 +2892,14 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF Rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Improve zoom execution time (can slightly affect rendering quality)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

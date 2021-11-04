@@ -1,0 +1,62 @@
+Version 2.0	Juin 2020 
+Refonte d'une application initialement développée pour Open-Sankoré.
+Cette application permettait simplement d'afficher une image sur la page active de Open-Sankoré (seyes, mm, quadrillage...)
+
+- Simplification  des algorithmes générant les feuilles
+- Création d'onglets
+- Possibilité de paramétrer
+	* les couleurs de lignes
+	* les hauteurs d'interligne
+	* les maillages des réseaux pointés
+- Ajout d'une fenêtre d'aperçu
+- Ajout de l'image en fond de page
+- Adaptation du fond de page (16/9 ou 4/3)
+
+Version 2.1	Juin 2020 
+- Possibilité d'ajouter une marge sur les feuilles seyes
+- Option papier pointé : choix entre point et croix.
+- Lignage Dyspraxique (4 lignes de couleurs différentes)
+
+Version 2.2	Juin 2020
+- Regroupement des onglets de papier pointé
+
+Version 2.3	Juin 2020
+- Mise en forme des apparences (feuille de style CSS) 
+
+Version 2.4	Juin 2020
+- Ajout du papier Ligne simple (papier Ã  lettre)
+
+Version 2.5	Juin 2020
+- Possibilité de modifier la position de la marge (Seyes & Guide Âne)
+
+Version 2.5.1	Juin 2020
+- Compression de l'image générée afin de faciliter le chargement sous Windows.
+
+Version 2.5.2	Juin 2020
+- Remplacement de Jquery 3.5 par la version 2.4 pour une compatibilité avec Open Sankoré
+
+Version 2.5.3	Juin 2020
+Suppression du mode Outil en raison d'un Bug d'OpenBoard/OpenSankoré qui conservent le dossier du Widget dans la sauvegarde du document malgré sa suppression sur la page, ce qui avait pour conséquence, d'alourdir considérablement les sauvegardes automatiques .
+
+Version 2.5.4	Novembre 2020
+Ajout d'une réglure 5mm Maternelle
+simpliciation d'une partie du code
+correction du bug d'affichage de la fenêtre d'aperçu : le déclenchement de l'aperçu sur l'événement "slide" fait que c'est la valeur précédente du curseur qui est prise en compte. Sur l'événement "change", il s'agit de la bonne valeur.
+
+$( "#curseur_seyes" ).slider({
+		value:15,
+		min: 10,
+		max: 60,
+		step: 5,
+		slide: function( event, ui ) {
+				$( "#taille_carreau_seyes" ).val( ui.value );//Actualisation de la valeur affichée
+			},
+		change: function( event, ui ) {
+				dessiner('seyes','aperçu'); // Actualisation de l'aperçu
+			}
+	});
+
+En projet
+- Réglure Gurvan
+- lignage triangulaire
+

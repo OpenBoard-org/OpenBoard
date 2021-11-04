@@ -148,21 +148,25 @@ UBGraphicsTextItemDelegate::~UBGraphicsTextItemDelegate()
 
 QFont UBGraphicsTextItemDelegate::createDefaultFont()
 {
-    QTextCharFormat textFormat;
+    QFont font;
 
     QString fFamily = UBSettings::settings()->fontFamily();
     if (!fFamily.isEmpty())
-        textFormat.setFontFamily(fFamily);
+        font.setFamily(fFamily);
+
+    QString fStyleName = UBSettings::settings()->fontStyleName();
+    if (!fStyleName .isEmpty())
+        font.setStyleName(fStyleName);
 
     bool bold = UBSettings::settings()->isBoldFont();
     if (bold)
-        textFormat.setFontWeight(QFont::Bold);
+        font.setWeight(QFont::Bold);
 
     bool italic = UBSettings::settings()->isItalicFont();
     if (italic)
-        textFormat.setFontItalic(true);
+        font.setItalic(true);
 
-    QFont font(fFamily, -1, bold ? QFont::Bold : -1, italic);
+
     int pointSize = UBSettings::settings()->fontPointSize();
     if (pointSize > 0) {
         font.setPointSize(pointSize);
@@ -336,6 +340,7 @@ void UBGraphicsTextItemDelegate::pickFont()
         QFontDialog fontDialog(static_cast<QGraphicsView*>(UBApplication::boardController->controlView()));
 
         fontDialog.setOption(QFontDialog::DontUseNativeDialog);
+
         fontDialog.setCurrentFont(delegated()->textCursor().charFormat().font());
         customize(fontDialog);
 
@@ -343,6 +348,7 @@ void UBGraphicsTextItemDelegate::pickFont()
         {
             QFont selectedFont = fontDialog.selectedFont();
             UBSettings::settings()->setFontFamily(selectedFont.family());
+            UBSettings::settings()->setFontStyleName(selectedFont.styleName());
             UBSettings::settings()->setBoldFont(selectedFont.bold());
             UBSettings::settings()->setItalicFont(selectedFont.italic());
             UBSettings::settings()->setFontPointSize(selectedFont.pointSize());
@@ -384,6 +390,7 @@ void UBGraphicsTextItemDelegate::pickColor()
             format.setForeground(QBrush(selectedColor));
             curCursor.mergeCharFormat(format);
             delegated()->setTextCursor(curCursor);
+            saveTextCursorFormats();
 
             if (!curCursor.hasSelection() || (curCursor.selectedText().length() == delegated()->toPlainText().length()))
             {
@@ -543,7 +550,7 @@ bool UBGraphicsTextItemDelegate::mouseReleaseEvent(QGraphicsSceneMouseEvent *eve
     mSelectionData.mButtonIsPressed = false;
     qDebug() << "Reporting selection of the cursor (mouse release)" << delegated()->textCursor().selection().isEmpty();
     qDebug() << QString("Anchor: %1\nposition: %2 (mouse mouse release)").arg(delegated()->textCursor().anchor()).arg(delegated()->textCursor().position());
-    updateAlighButtonState();
+    updateAlignButtonState();
 
     if (!UBGraphicsItemDelegate::mouseReleaseEvent(event)) {
         return false;
@@ -564,14 +571,10 @@ bool UBGraphicsTextItemDelegate::keyReleaseEvent(QKeyEvent *event)
         return true;
     }
 
-    switch (event->key()) {
-    case Qt::Key_Left:
-    case Qt::Key_Right:
-    case Qt::Key_Up:
-    case Qt::Key_Down:
-        updateAlighButtonState();
-        break;
-    }
+    // to be sure the save/restore TextCursorFormats mechanism is always up-to-date
+    // and because if some text is selected, almost any typed key can clear the selection before
+    // keyReleaseEvent is called, it's safer to call updateAlignButtonState everytime a key is released
+    updateAlignButtonState();
 
     qDebug() << "Key has been released" << QString::number(event->key(), 16);
     return true;
@@ -685,6 +688,7 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
     cursor.setPosition (cursorPos, QTextCursor::KeepAnchor);
 
     delegated()->setTextCursor(cursor);
+    saveTextCursorFormats();
 }
 
 void UBGraphicsTextItemDelegate::recolor()
@@ -774,9 +778,10 @@ void UBGraphicsTextItemDelegate::recolor()
     cursor.setPosition (cursorPos, QTextCursor::KeepAnchor);
 
     delegated()->setTextCursor(cursor);
+    saveTextCursorFormats();
 }
 
-void UBGraphicsTextItemDelegate::updateAlighButtonState()
+void UBGraphicsTextItemDelegate::updateAlignButtonState()
 {
     if (!mAlignButton) {
         return;
@@ -844,7 +849,10 @@ void UBGraphicsTextItemDelegate::restoreTextCursorFormats()
 
     QTextCursor tcrsr = delegated()->textCursor();
     tcrsr.setPosition(mSelectionData.position);
-    tcrsr.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor, steps);
+    if (mSelectionData.position >= mSelectionData.anchor)
+        tcrsr.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor, steps);
+    else
+        tcrsr.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, steps);
     delegated()->setTextCursor(tcrsr);
 }
 
@@ -864,6 +872,7 @@ QVariant UBGraphicsTextItemDelegate::itemChange(QGraphicsItem::GraphicsItemChang
             {
                 c.clearSelection();
                 delegated()->setTextCursor(c);
+                saveTextCursorFormats();
             }
         }
     }

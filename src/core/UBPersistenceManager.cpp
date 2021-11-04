@@ -166,44 +166,36 @@ void UBPersistenceManager::createDocumentProxiesStructure(const QFileInfoList &c
     {
         QString fullPath = path.absoluteFilePath();
 
-        QMap<QString, QVariant> metadatas = UBMetadataDcSubsetAdaptor::load(fullPath);
+        QDir dir(fullPath);
 
-        QString docGroupName = metadatas.value(UBSettings::documentGroupName, QString()).toString();
-        QString docName = metadatas.value(UBSettings::documentName, QString()).toString();
-
-        if (docName.isEmpty()) {
-            qDebug() << "Group name and document name are empty in UBPersistenceManager::createDocumentProxiesStructure()";
-            continue;
-        }
-
-        QModelIndex parentIndex = mDocumentTreeStructureModel->goTo(docGroupName);
-        if (!parentIndex.isValid()) {
-            return;
-        }
-
-        UBDocumentProxy* docProxy = new UBDocumentProxy(fullPath, metadatas); // managed in UBDocumentTreeNode
-        foreach(QString key, metadatas.keys()) {
-            docProxy->setMetaData(key, metadatas.value(key));
-        }
-
-        if (metadatas.contains(UBSettings::documentPageCount))
+        if (dir.entryList(QDir::Files | QDir::NoDotAndDotDot).size() > 0)
         {
-            int pageCount = metadatas.value(UBSettings::documentPageCount).toInt();
-            if (pageCount == 0)
-                pageCount = sceneCount(docProxy);
+            QMap<QString, QVariant> metadatas = UBMetadataDcSubsetAdaptor::load(fullPath);
+            QString docGroupName = metadatas.value(UBSettings::documentGroupName, QString()).toString();
+            QString docName = metadatas.value(UBSettings::documentName, QString()).toString();
 
-            docProxy->setPageCount(pageCount);
-        }
-        else
-        {
-            int pageCount = sceneCount(docProxy);
-            docProxy->setPageCount(pageCount);
-        }
+            if (docName.isEmpty()) {
+                qDebug() << "Group name and document name are empty in UBPersistenceManager::createDocumentProxiesStructure()";
+                continue;
+            }
 
-        if (!interactive)
-            mDocumentTreeStructureModel->addDocument(docProxy, parentIndex);
-        else
-            processInteractiveReplacementDialog(docProxy);
+            QModelIndex parentIndex = mDocumentTreeStructureModel->goTo(docGroupName);
+            if (!parentIndex.isValid()) {
+                return;
+            }
+
+            UBDocumentProxy* docProxy = new UBDocumentProxy(fullPath); // managed in UBDocumentTreeNode
+            foreach(QString key, metadatas.keys()) {
+                docProxy->setMetaData(key, metadatas.value(key));
+            }
+
+            docProxy->setPageCount(sceneCount(docProxy));
+
+            if (!interactive)
+                mDocumentTreeStructureModel->addDocument(docProxy, parentIndex);
+            else
+                processInteractiveReplacementDialog(docProxy);
+        }
     }
 }
 
@@ -229,7 +221,7 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
             return QDialog::Rejected;
         }
 
-        QStringList docList = mDocumentTreeStructureModel->nodeNameList(parentIndex);
+        QStringList docList = mDocumentTreeStructureModel->nodeNameList(parentIndex, true);
         QString docName = pProxy->metaData(UBSettings::documentName).toString();
 
         if (docList.contains(docName)) {
@@ -258,7 +250,12 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
                         mDocumentTreeStructureModel->removeRow(i, parentIndex);
                     }
                 }
-                pProxy->setMetaData(UBSettings::documentName, resultName);
+
+                if (docName != resultName)
+                {
+                    pProxy->setMetaData(UBSettings::documentName, resultName);
+                    UBMetadataDcSubsetAdaptor::persist(pProxy);
+                }
                 mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
             }
             replaceDialog->setParent(0);
@@ -627,11 +624,6 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
     if (compactedIndexes.size() == 0)
         return;
 
-    foreach(int index, compactedIndexes)
-    {
-        emit documentSceneWillBeDeleted(proxy, index);
-    }
-
     QString sourceName = proxy->metaData(UBSettings::documentName).toString();
     UBDocumentProxy *trashDocProxy = createDocument(UBSettings::trashedDocumentGroupNamePrefix/* + sourceGroupName*/, sourceName, false);
 
@@ -789,9 +781,9 @@ void UBPersistenceManager::duplicateDocumentScene(UBDocumentProxy* proxy, int in
     }
     scene->setModified(true);
 
-    persistDocumentScene(proxy,scene, index + 1, UBPersistenceManager::PdfStripeYes);
-
     proxy->incPageCount();
+
+    persistDocumentScene(proxy,scene, index + 1);
 
     emit documentSceneCreated(proxy, index + 1);
 }
@@ -849,9 +841,9 @@ UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* pr
 
     newScene->setBackgroundGridSize(UBSettings::settings()->crossSize);
 
-    persistDocumentScene(proxy, newScene, index, pdfStripe);
-
     proxy->incPageCount();
+
+    persistDocumentScene(proxy, newScene, index, false, pdfStripe);
 
     emit documentSceneCreated(proxy, index);
 
@@ -946,12 +938,12 @@ void UBPersistenceManager::reassignDocProxy(UBDocumentProxy *newDocument, UBDocu
     return mSceneCache.reassignDocProxy(newDocument, oldDocument);
 }
 
-void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex,
-                                                UBPersistenceManager::PdfStripe const &pdfStripe)
+void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex, bool isAnAutomaticBackup, UBPersistenceManager::PdfStripe const &pdfStripe)
 {
     checkIfDocumentRepositoryExists();
 
-    pScene->deselectAllItems();
+    if (!isAnAutomaticBackup)
+        pScene->deselectAllItems();
 
     generatePathIfNeeded(pDocumentProxy);
 

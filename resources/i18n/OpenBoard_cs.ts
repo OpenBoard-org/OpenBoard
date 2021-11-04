@@ -150,7 +150,7 @@
     </message>
     <message>
         <source>Color</source>
-        <translation>Barva</translation>
+        <translation type="vanished">Barva</translation>
     </message>
     <message>
         <source>Erase</source>
@@ -746,7 +746,7 @@
     </message>
     <message>
         <source>Smalle Eraser</source>
-        <translation>Malá guma</translation>
+        <translation type="vanished">Malá guma</translation>
     </message>
     <message>
         <source>Add Item To Current Page</source>
@@ -810,6 +810,34 @@
     </message>
     <message>
         <source>Reset grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Small Eraser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -910,6 +938,10 @@
         <source>Grid size</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardController</name>
@@ -968,6 +1000,10 @@
     <message>
         <source>Deleting page %1</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished">Barva</translation>
     </message>
 </context>
 <context>
@@ -1598,7 +1634,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Animations</source>
-        <translation>Animace</translation>
+        <translation type="vanished">Animace</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -2134,6 +2170,10 @@ Chcete ignorovat tyto chyby na tomto serveru?</translation>
         <source>Magnifier</source>
         <translation>Lupa</translation>
     </message>
+    <message>
+        <source>Axes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>
@@ -2494,6 +2534,13 @@ Znovu spusťte aplikaci, abyste mohli pracovat s aktualizovanými dokumenty.</tr
     </message>
 </context>
 <context>
+    <name>XPDFRenderer</name>
+    <message>
+        <source>Processing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>YouTubePublishingDialog</name>
     <message>
         <source>Title</source>
@@ -2844,6 +2891,14 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF Rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Improve zoom execution time (can slightly affect rendering quality)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

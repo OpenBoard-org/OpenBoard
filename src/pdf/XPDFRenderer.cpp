@@ -50,9 +50,9 @@ XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
 {
     switch (m_pdfZoomMode) {
         case 0: // Render each time (historical initial implementation).
+        default:
         break;
         case 1: // Render a single image, degradated quality when zoomed big.
-        default:
             m_pdfZoomCache.push_back(XPDFRendererZoomFactor::mode1_zoomFactor);
         break;
         case 2: // Render three images, use downsampling, optimal quality all the time, slower.

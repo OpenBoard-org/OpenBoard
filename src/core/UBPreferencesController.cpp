@@ -138,6 +138,10 @@ void UBPreferencesController::wire()
     connect(mPreferencesUI->useSystemOSKCheckBox, SIGNAL(clicked(bool)), settings->useSystemOnScreenKeyboard, SLOT(setBool(bool)));
     connect(mPreferencesUI->useSystemOSKCheckBox, SIGNAL(clicked(bool)), this, SLOT(systemOSKCheckBoxToggled(bool)));
 
+    //Zoom Behavior preferences
+    connect(mPreferencesUI->enableQualityLossToIncreaseZoomPerfs, SIGNAL(clicked(bool)), settings->enableQualityLossToIncreaseZoomPerfs, SLOT(setBool(bool)));
+    connect(mPreferencesUI->enableQualityLossToIncreaseZoomPerfs, SIGNAL(clicked(bool)), this, SLOT(setPdfZoomBehavior(bool)));
+
     // Documents Mode preferences
     connect(mPreferencesUI->showDateColumnOnAlphabeticalSort, SIGNAL(clicked(bool)), settings->showDateColumnOnAlphabeticalSort, SLOT(setBool(bool)));
     connect(mPreferencesUI->showDateColumnOnAlphabeticalSort, SIGNAL(clicked(bool)), UBApplication::documentController, SLOT(refreshDateColumns()));
@@ -282,6 +286,8 @@ void UBPreferencesController::init()
     mPreferencesUI->useSystemOSKCheckBox->setChecked(settings->useSystemOnScreenKeyboard->get().toBool());
     this->systemOSKCheckBoxToggled(mPreferencesUI->useSystemOSKCheckBox->isChecked());
 
+    mPreferencesUI->enableQualityLossToIncreaseZoomPerfs->setChecked(settings->enableQualityLossToIncreaseZoomPerfs->get().toBool());
+
     mPreferencesUI->showDateColumnOnAlphabeticalSort->setChecked(settings->showDateColumnOnAlphabeticalSort->get().toBool());
     mPreferencesUI->emptyTrashForOlderDocuments->setChecked(settings->emptyTrashForOlderDocuments->get().toBool());
     mPreferencesUI->emptyTrashDaysValue->setValue(settings->emptyTrashDaysValue->get().toInt());
@@ -353,6 +359,8 @@ void UBPreferencesController::defaultSettings()
 
         mPreferencesUI->showDateColumnOnAlphabeticalSort->setChecked(settings->showDateColumnOnAlphabeticalSort->reset().toBool());
         UBApplication::documentController->refreshDateColumns();
+
+        mPreferencesUI->enableQualityLossToIncreaseZoomPerfs->setChecked(settings->enableQualityLossToIncreaseZoomPerfs->reset().toBool());
 
         mPreferencesUI->emptyTrashForOlderDocuments->setChecked(settings->emptyTrashForOlderDocuments->reset().toBool());
         mPreferencesUI->emptyTrashDaysValue->setValue(settings->emptyTrashDaysValue->reset().toInt());
@@ -653,6 +661,18 @@ void UBPreferencesController::systemOSKCheckBoxToggled(bool checked)
 {
     mPreferencesUI->keyboardPaletteKeyButtonSize->setVisible(!checked);
     mPreferencesUI->keyboardPaletteKeyButtonSize_Label->setVisible(!checked);
+}
+
+void UBPreferencesController::setPdfZoomBehavior(bool checked)
+{
+    if (checked)
+    {
+        UBSettings::settings()->pdfZoomBehavior->setInt(4);// Multithreaded, several steps, downsampled.
+    }
+    else
+    {
+        UBSettings::settings()->pdfZoomBehavior->setInt(0);//Old behavior. To remove if no issues found with the other mode
+    }
 }
 
 UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor>& lightBackgroundColors,

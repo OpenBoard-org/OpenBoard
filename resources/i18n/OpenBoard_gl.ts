@@ -177,7 +177,7 @@
     </message>
     <message>
         <source>Smalle Eraser</source>
-        <translation>Borrador pequeno</translation>
+        <translation type="vanished">Borrador pequeno</translation>
     </message>
     <message>
         <source>Medium Eraser</source>
@@ -189,7 +189,7 @@
     </message>
     <message>
         <source>Color</source>
-        <translation>Cor</translation>
+        <translation type="vanished">Cor</translation>
     </message>
     <message>
         <source>Back</source>
@@ -811,6 +811,34 @@
         <source>Reset grid size</source>
         <translation>Restablecer o tamaño da cuadrícula</translation>
     </message>
+    <message>
+        <source>Small Eraser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color 5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -913,6 +941,10 @@
         <source>Grid size</source>
         <translation>Tamaño da cuadrícula</translation>
     </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardController</name>
@@ -971,6 +1003,10 @@
     <message>
         <source>Deleting page %1</source>
         <translation>Borrando páxina %1</translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished">Cor</translation>
     </message>
 </context>
 <context>
@@ -1606,7 +1642,7 @@ Proporcionar un novo nome creará un novo documento.</translation>
     </message>
     <message>
         <source>Animations</source>
-        <translation>Animacións</translation>
+        <translation type="vanished">Animacións</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -2148,6 +2184,10 @@ Do you want to ignore these errors for this host?</source>
         <source>Cache</source>
         <translation>Caché</translation>
     </message>
+    <message>
+        <source>Axes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>
@@ -2508,6 +2548,13 @@ Por favor, reinicie a aplicación para acceder aos documentos actualizados.</tra
     </message>
 </context>
 <context>
+    <name>XPDFRenderer</name>
+    <message>
+        <source>Processing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>YouTubePublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
@@ -2835,6 +2882,14 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF Rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Improve zoom execution time (can slightly affect rendering quality)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

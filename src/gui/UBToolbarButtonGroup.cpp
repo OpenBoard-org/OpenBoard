@@ -102,6 +102,11 @@ UBToolbarButtonGroup::~UBToolbarButtonGroup()
     // NOOP
 }
 
+void UBToolbarButtonGroup::setLabel(const QString& label)
+{
+    mLabel = label;
+}
+
 void UBToolbarButtonGroup::setIcon(const QIcon &icon, int index)
 {
     Q_ASSERT(index < mActions.size());

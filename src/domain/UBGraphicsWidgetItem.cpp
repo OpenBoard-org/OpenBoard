@@ -84,6 +84,9 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     QGraphicsWebView::settings()->setAttribute(QWebSettings::JavascriptCanAccessClipboard, true);
     QGraphicsWebView::settings()->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
     QGraphicsWebView::settings()->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
+#ifdef QT_DEBUG
+    QGraphicsWebView::settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+#endif
 
     page()->setNetworkAccessManager(UBNetworkAccessManager::defaultAccessManager());
 

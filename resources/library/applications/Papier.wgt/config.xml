@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<widget xmlns="http://www.w3.org/ns/widgets" 
+		xmlns:ub=""
+        id="https://openedu.fr/" 
+        version="1.0"
+	width="750"
+	height="300"
+ub:resizable="true"
+ub:transparent="true"
+>
+		
+		<name>Papier</name>
+		<author href="https://openedu.fr/"
+	            email="contact@openedu.fr">Fanch Le Cléac'h</author>
+		<description>Affichage de différents types de papiers</description>
+		<preference name="skin"
+		            value="uniboard"/>
+		<content src="papier.html"/> 
+</widget>

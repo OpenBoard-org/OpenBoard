@@ -9,9 +9,9 @@ CONFIG += debug_and_release \
 
 VERSION_MAJ = 1
 VERSION_MIN = 6
-VERSION_PATCH = 1
+VERSION_PATCH = 2
 VERSION_TYPE = a # a = alpha, b = beta, rc = release candidate, r = release, other => error
-VERSION_BUILD = 1116
+VERSION_BUILD = 0930
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$${VERSION_BUILD}"
 
@@ -33,7 +33,6 @@ QT += webkit
 QT += svg
 QT += network
 QT += xml
-QT += script
 QT += xmlpatterns
 QT += uitools
 QT += multimedia
@@ -58,7 +57,8 @@ include(src/podcast/podcast.pri)
 include(src/tools/tools.pri)
 include(src/desktop/desktop.pri)
 include(src/web/web.pri)
-include(src/qtsingleapplication/src/qtsingleapplication.pri)
+include(src/singleapplication/singleapplication.pri)
+DEFINES += QAPPLICATION_CLASS=QApplication
 
 
 DEPENDPATH += src/pdf-merger

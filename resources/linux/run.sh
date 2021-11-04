@@ -25,4 +25,4 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 # Add custom libraries to LD_LIBRARY_PATH
 # TODO: Remomve the need for this
-env LD_LIBRARY_PATH=$DIR/qtlib:$LD_LIBRARY_PATH QT_PLUGIN_PATH=$DIR/plugins $DIR/OpenBoard
+env LD_LIBRARY_PATH=$DIR/qtlib:$LD_LIBRARY_PATH QT_PLUGIN_PATH=$DIR/plugins $DIR/OpenBoard "$@"
