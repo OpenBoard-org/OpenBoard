@@ -1034,6 +1034,16 @@ QString UBDocumentTreeModel::virtualPathForIndex(const QModelIndex &pIndex) cons
     return virtualDirForIndex(pIndex) + "/" + curNode->nodeName();
 }
 
+QList<UBDocumentTreeNode*> UBDocumentTreeModel::nodeChildrenFromIndex(const QModelIndex &pIndex) const
+{
+    UBDocumentTreeNode *node = nodeFromIndex(pIndex);
+
+    if (node)
+        return node->children();
+    else
+        return QList<UBDocumentTreeNode*>();
+}
+
 QStringList UBDocumentTreeModel::nodeNameList(const QModelIndex &pIndex, bool distinctNodeType) const
 {
     QStringList result;
@@ -1668,14 +1678,20 @@ void UBDocumentTreeItemDelegate::commitAndCloseEditor()
 void UBDocumentTreeItemDelegate::processChangedText(const QString &str) const
 {
     QLineEdit *editor = qobject_cast<QLineEdit*>(sender());
-    if (!editor) {
-        return;
-    }
-
-    if (!validateString(str)) {
-        editor->setStyleSheet("background-color: #FFB3C8;");
-    } else {
-        editor->setStyleSheet("background-color: #FFFFFF;");
+    if (editor)
+    {
+        if (editor->validator())
+        {
+            int pos = 0;
+            if (editor->validator()->validate(const_cast<QString&>(str), pos) != QValidator::Acceptable)
+            {
+                editor->setStyleSheet("background-color: #FFB3C8;");
+            }
+            else
+            {
+                editor->setStyleSheet("background-color: #FFFFFF;");
+            }
+        }
     }
 }
 
@@ -1702,17 +1718,29 @@ QWidget *UBDocumentTreeItemDelegate::createEditor(QWidget *parent, const QStyleO
 
         QModelIndex sourceIndex = proxy->mapToSource(index);
 
-        if (docModel) {
+        if (docModel)
+        {
             mExistingFileNames = docModel->nodeNameList(sourceIndex.parent());
             mExistingFileNames.removeOne(sourceIndex.data().toString());
+
+            UBDocumentTreeNode* sourceNode = docModel->nodeFromIndex(sourceIndex);
+
+            if (sourceNode)
+            {
+                QLineEdit *nameEditor = new QLineEdit(parent);
+                QList<UBDocumentTreeNode*> nodeChildren = docModel->nodeChildrenFromIndex(sourceIndex.parent());
+                nodeChildren.removeOne(sourceNode);
+
+                UBValidator* validator = new UBValidator(nodeChildren, sourceNode->nodeType());
+                nameEditor->setValidator(validator);
+                connect(nameEditor, SIGNAL(editingFinished()), this, SLOT(commitAndCloseEditor()));
+                connect(nameEditor, SIGNAL(textChanged(QString)), this, SLOT(processChangedText(QString)));
+
+                return nameEditor;
+            }
         }
 
-        QLineEdit *nameEditor = new QLineEdit(parent);
-        UBValidator* validator = new UBValidator(mExistingFileNames);
-        nameEditor->setValidator(validator);
-        connect(nameEditor, SIGNAL(editingFinished()), this, SLOT(commitAndCloseEditor()));
-        connect(nameEditor, SIGNAL(textChanged(QString)), this, SLOT(processChangedText(QString)));
-        return nameEditor;
+        return nullptr;
     }
 
     //N/C - NNe - 20140407 : the other column are not editable.
@@ -1731,8 +1759,17 @@ void UBDocumentTreeItemDelegate::setEditorData(QWidget *editor, const QModelInde
 void UBDocumentTreeItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
     QLineEdit *lineEditor = qobject_cast<QLineEdit*>(editor);
-    if (validateString(lineEditor->text())) {
-        model->setData(index, lineEditor->text());
+    if (lineEditor)
+    {
+        int pos;
+        QString input = lineEditor->text();
+        if (lineEditor->validator())
+        {
+            if (lineEditor->validator()->validate(input, pos) == QValidator::Acceptable)
+            {
+                model->setData(index, input);
+            }
+        }
     }
 }
 

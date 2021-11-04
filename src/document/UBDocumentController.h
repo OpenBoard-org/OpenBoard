@@ -210,6 +210,7 @@ public:
     QString virtualDirForIndex(const QModelIndex &pIndex) const;
     QString virtualPathForIndex(const QModelIndex &pIndex) const;
     QStringList nodeNameList(const QModelIndex &pIndex, bool distinctNodeType = false) const;
+    QList<UBDocumentTreeNode*> nodeChildrenFromIndex(const QModelIndex &pIndex) const;
     bool newNodeAllowed(const QModelIndex &pSelectedIndex)  const;
     QModelIndex goTo(const QString &dir);
     bool inTrash(const QModelIndex &index) const;
@@ -324,22 +325,27 @@ private:
 
 class UBValidator : public QValidator
 {
-    const QStringList mExistingFileNames;
+    const QList<UBDocumentTreeNode*> mExistingNodes;
+    UBDocumentTreeNode::Type mEditedNodeType;
 
     public:
-        UBValidator(const QStringList existingFileNames, QObject *parent = nullptr)
+        UBValidator(const QList<UBDocumentTreeNode*> existingNodes, UBDocumentTreeNode::Type editedNodeType, QObject *parent = nullptr)
         : QValidator(parent)
-        , mExistingFileNames(existingFileNames)
+        , mExistingNodes(existingNodes)
+        , mEditedNodeType(editedNodeType)
         {
 
         }
 
         QValidator::State validate(QString &input, int &pos) const
         {
-            if (mExistingFileNames.contains(input))
-                return QValidator::Intermediate;
-            else
-                return QValidator::Acceptable;
+            for (auto node : mExistingNodes)
+            {
+                if (node->nodeName() == input && node->nodeType() == mEditedNodeType)
+                    return QValidator::Intermediate;
+            }
+
+            return QValidator::Acceptable;
         }
 };
 
