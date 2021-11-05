@@ -2021,7 +2021,7 @@ void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool force
             && (mActiveScene->isModified()))
     {
         UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, isAnAutomaticBackup);
-        updatePage(mActiveSceneIndex);
+        //updatePage(mActiveSceneIndex);
     }
 }
 

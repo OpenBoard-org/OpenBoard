@@ -72,7 +72,7 @@ bool UBDocumentContainer::movePageToIndex(int source, int target)
     //on document view
     UBPersistenceManager::persistenceManager()->moveSceneToIndex(mCurrentDocument, source, target);
     deleteThumbPage(source);
-    insertThumbPage(target);
+    //insertThumbPage(target);
     emit documentThumbnailsUpdated(this);
     //on board thumbnails view
     emit moveThumbnailRequired(source, target);

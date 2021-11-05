@@ -2298,7 +2298,7 @@ void UBDocumentController::show()
     selectDocument(mBoardController->selectedDocument());
 
     //to be sure thumbnails will be up-to-date
-    reloadThumbnails();
+    //reloadThumbnails();
 
     updateActions();
 
@@ -2383,7 +2383,7 @@ void UBDocumentController::duplicateSelectedItem()
             showMessage(tr("duplicated %1 page","duplicated %1 pages",sceneCount).arg(sceneCount), false);
 
             mBoardController->setActiveDocumentScene(selectedThumbnail);
-            mBoardController->reloadThumbnails();
+            //mBoardController->reloadThumbnails();
         }
     }
     else
@@ -2987,7 +2987,7 @@ void UBDocumentController::addFolderOfImages()
             {
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
                 UBMetadataDcSubsetAdaptor::persist(document);
-                reloadThumbnails();
+                //reloadThumbnails();
             }
         }
     }
@@ -3001,7 +3001,7 @@ void UBDocumentController::addFileToDocument()
     if (document)
     {
          addFileToDocument(document);
-         reloadThumbnails();
+         //reloadThumbnails();
     }
 }
 
@@ -3057,7 +3057,7 @@ void UBDocumentController::moveSceneToIndex(UBDocumentProxy* proxy, int source, 
         mDocumentUI->thumbnailWidget->hightlightItem(target);
 
         mBoardController->setActiveDocumentScene(target);
-        mBoardController->reloadThumbnails();
+        //mBoardController->reloadThumbnails();
     }
 }
 
@@ -3097,10 +3097,10 @@ void UBDocumentController::documentSceneChanged(UBDocumentProxy* proxy, int pSce
 {
     Q_UNUSED(pSceneIndex);
 
-    if (proxy == selectedDocumentProxy())
-    {
-        reloadThumbnails();
-    }
+//    if (proxy == selectedDocumentProxy())
+//    {
+//        reloadThumbnails();
+//    }
 
     QModelIndexList sel = mDocumentUI->documentTreeView->selectionModel()->selectedRows(0);
 
@@ -3180,7 +3180,7 @@ void UBDocumentController::addToDocument()
         selectDocument(mBoardController->selectedDocument());
         mBoardController->selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         UBMetadataDcSubsetAdaptor::persist(mBoardController->selectedDocument());
-        mBoardController->reloadThumbnails();
+        //mBoardController->reloadThumbnails();
 
         emit UBApplication::boardController->documentThumbnailsUpdated(this);
         UBApplication::applicationController->showBoard();
@@ -3290,7 +3290,7 @@ void UBDocumentController::addImages()
             {
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
                 UBMetadataDcSubsetAdaptor::persist(document);
-                reloadThumbnails();
+                //reloadThumbnails();
             }
         }
     }
@@ -3600,7 +3600,7 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
         mDocumentUI->thumbnailWidget->selectItemAt(minIndex);
 
         mBoardController->setActiveDocumentScene(minIndex);
-        mBoardController->reloadThumbnails();
+        //mBoardController->reloadThumbnails();
     }
 }
 
@@ -3726,6 +3726,9 @@ bool UBDocumentController::firstAndOnlySceneSelected() const
 
 void UBDocumentController:: refreshDocumentThumbnailsView(UBDocumentContainer*)
 {
+    return;
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
     UBDocumentTreeModel *docModel = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel;
     UBDocumentProxy *currentDocumentProxy = selectedDocument();
 
@@ -3740,15 +3743,6 @@ void UBDocumentController:: refreshDocumentThumbnailsView(UBDocumentContainer*)
         return;
     }
 
-    QList<const QPixmap*> thumbs;
-
-    if (currentDocumentProxy)
-    {
-        UBThumbnailAdaptor::load(currentDocumentProxy, thumbs);
-    }
-
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
     QList<QGraphicsItem*> items;
     QList<QUrl> itemsPath;
 
@@ -3758,25 +3752,27 @@ void UBDocumentController:: refreshDocumentThumbnailsView(UBDocumentContainer*)
 
     if (currentDocumentProxy)
     {
-        for (int i = 0; i < currentDocumentProxy->pageCount(); i++)
-        {
-            const QPixmap* pix = thumbs.at(i);
-            QGraphicsPixmapItem *pixmapItem = new UBSceneThumbnailPixmap(*pix, currentDocumentProxy, i); // deleted by the tree widget
+        setDocument(currentDocumentProxy);
+        //initThumbPage();
+//        for (int i = 0; i < currentDocumentProxy->pageCount(); i++)
+//        {
+//            const QPixmap* pix = pageAt(i);
+//            QGraphicsPixmapItem *pixmapItem = new UBSceneThumbnailPixmap(*pix, currentDocumentProxy, i); // deleted by the tree widget
 
-            if (currentDocumentProxy == mBoardController->selectedDocument() && mBoardController->activeSceneIndex() == i)
-            {
-                selection = pixmapItem;
-            }
+//            if (currentDocumentProxy == mBoardController->selectedDocument() && mBoardController->activeSceneIndex() == i)
+//            {
+//                selection = pixmapItem;
+//            }
 
-            items << pixmapItem;
-            int pageIndex = pageFromSceneIndex(i);
-            if(pageIndex)
-                labels << tr("Page %1").arg(pageIndex);
-            else
-                labels << tr("Title page");
+//            items << pixmapItem;
+//            int pageIndex = pageFromSceneIndex(i);
+//            if(pageIndex)
+//                labels << tr("Page %1").arg(pageIndex);
+//            else
+//                labels << tr("Title page");
 
-            itemsPath.append(QUrl::fromLocalFile(currentDocumentProxy->persistencePath() + QString("/pages/%1").arg(UBDocumentContainer::pageFromSceneIndex(i))));
-        }
+//            itemsPath.append(QUrl::fromLocalFile(currentDocumentProxy->persistencePath() + QString("/pages/%1").arg(UBDocumentContainer::pageFromSceneIndex(i))));
+//        }
     }
 
     mDocumentUI->thumbnailWidget->setGraphicsItems(items, itemsPath, labels, UBApplication::mimeTypeUniboardPage);
