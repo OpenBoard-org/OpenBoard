@@ -85,7 +85,7 @@ void UBDocumentThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
         QDrag *drag = new QDrag(this);
         QList<UBMimeDataItem> mimeDataItems;
         foreach (QGraphicsItem *item, selectedItems())
-            mimeDataItems.append(UBMimeDataItem(sceneItem->proxy(), mGraphicItems.indexOf(item)));
+            mimeDataItems.append(UBMimeDataItem(sceneItem->documentProxy(), mGraphicItems.indexOf(item)));
 
         UBMimeData *mime = new UBMimeData(mimeDataItems);
         drag->setMimeData(mime);

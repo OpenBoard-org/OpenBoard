@@ -276,9 +276,42 @@ class UBThumbnailTextItem : public QGraphicsTextItem
         bool mIsHighlighted;
 };
 
+class UBWidgetTextThumbnailElement
+{
+protected:
+    QGraphicsItem* thumbnail;
+    UBThumbnailTextItem* caption;
+    int border;
+
+public:
+    UBWidgetTextThumbnailElement(QGraphicsProxyWidget* proxyWidget, UBThumbnailTextItem* text)
+        : thumbnail(proxyWidget)
+        , caption(text)
+        , border(0)
+    {
+    }
+
+    QGraphicsItem* getThumbnail() const { return this->thumbnail; }
+    void setThumbnail(QGraphicsItem* newGItem) { this->thumbnail = newGItem; }
+
+    UBThumbnailTextItem* getCaption() const { return this->caption; }
+    void setCaption(UBThumbnailTextItem* newcaption) { this->caption = newcaption; }
+
+    void Place(int row, int col, qreal width, qreal height);
+
+    int getBorder() const { return this->border; }
+    void setBorder(int newBorder) { this->border = newBorder; }
+};
+
 class UBThumbnailPixmap : public QGraphicsPixmapItem, public UBThumbnail
 {
     public:
+        UBThumbnailPixmap(const QPixmap& pix, UBDocumentProxy* proxy, int pSceneIndex)
+            : QGraphicsPixmapItem(pix)
+        {
+
+        }
+
         UBThumbnailPixmap(const QPixmap& pix)
             : QGraphicsPixmapItem(pix)
         {
@@ -287,18 +320,12 @@ class UBThumbnailPixmap : public QGraphicsPixmapItem, public UBThumbnail
             setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
         }
 
-        virtual ~UBThumbnailPixmap()
-        {
-            // NOOP
-        }
-
         virtual QPainterPath shape () const
         {
             QPainterPath path;
             path.addRect(boundingRect());
             return path;
         }
-
 
         virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
         {
@@ -310,7 +337,7 @@ class UBThumbnailPixmap : public QGraphicsPixmapItem, public UBThumbnail
         {
             UBThumbnail::itemChange(this, change, value);
             return QGraphicsPixmapItem::itemChange(change, value);
-        }
+        }      
 };
 
 class UBSceneThumbnailPixmap : public UBThumbnailPixmap
@@ -318,7 +345,7 @@ class UBSceneThumbnailPixmap : public UBThumbnailPixmap
     public:
         UBSceneThumbnailPixmap(const QPixmap& pix, UBDocumentProxy* proxy, int pSceneIndex)
             : UBThumbnailPixmap(pix)
-            , mProxy(proxy)
+            , mDocumentProxy(proxy)
             , mSceneIndex(pSceneIndex)
         {
             // NOOP
@@ -329,9 +356,9 @@ class UBSceneThumbnailPixmap : public UBThumbnailPixmap
             // NOOP
         }
 
-        UBDocumentProxy* proxy()
+        UBDocumentProxy* documentProxy()
         {
-            return mProxy;
+            return mDocumentProxy;
         }
 
         int sceneIndex()
@@ -341,11 +368,11 @@ class UBSceneThumbnailPixmap : public UBThumbnailPixmap
 
         void highlight()
         {
-            //NOOP
+
         }
 
     private:
-        UBDocumentProxy* mProxy;
+        UBDocumentProxy* mDocumentProxy;
         int mSceneIndex;
 };
 
@@ -362,7 +389,7 @@ class UBSceneThumbnailNavigPixmap : public UBSceneThumbnailPixmap
 
         bool deletable()
         {
-            return proxy()->pageCount() > 1;
+            return documentProxy()->pageCount() > 1;
         }
 
         bool movableUp()
@@ -372,7 +399,7 @@ class UBSceneThumbnailNavigPixmap : public UBSceneThumbnailPixmap
 
         bool movableDown()
         {
-            return sceneIndex() < (proxy()->pageCount() -1);
+            return sceneIndex() < (documentProxy()->pageCount() -1);
         }
 
         void showUI()
@@ -467,15 +494,9 @@ class UBDraggableThumbnail : public UBThumbnailProxyWidget
     public:
         UBDraggableThumbnail(UBDocumentProxy* documentProxy, int index)
         : UBThumbnailProxyWidget(documentProxy, index)
-        , mPageNumber(new UBThumbnailTextItem(index))
         , mEditable(false)
         {
 
-        }
-
-        ~UBDraggableThumbnail()
-        {
-            delete mPageNumber; // not a child of "this" QObject so it has to be deleted manually
         }
 
         bool editable()
@@ -513,23 +534,6 @@ class UBDraggableThumbnail : public UBThumbnailProxyWidget
             mEditable = editable;
         }
 
-        UBThumbnailTextItem* pageNumber()
-        {
-            return mPageNumber;
-        }
-
-        void setPageNumber(int i)
-        {
-            mPageNumber->setPlainText(tr("Page %0").arg(i+1));
-
-            if (UBApplication::boardController->activeSceneIndex() == i)
-                mPageNumber->setHtml("<span style=\";font-weight:bold;color: red\">" + tr("Page %0").arg(i+1) + "</span>");
-            else
-                mPageNumber->setHtml("<span style=\";color: #000000\">" + tr("Page %0").arg(i+1) + "</span>");
-        }
-
-        virtual void updatePos(qreal w, qreal h);
-
     protected:
         void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
         void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
@@ -537,7 +541,6 @@ class UBDraggableThumbnail : public UBThumbnailProxyWidget
         void mousePressEvent(QGraphicsSceneMouseEvent *event);
         void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
-        UBThumbnailTextItem* mPageNumber;
     private:
         void deletePage();
         void duplicatePage();
@@ -549,30 +552,9 @@ class UBDraggableThumbnail : public UBThumbnailProxyWidget
 
 class UBDraggableThumbnailPixmap : public UBDraggableThumbnail
 {
-    Q_OBJECT
     public:
-        UBDraggableThumbnailPixmap(UBThumbnailPixmap* thumbnailPixmap, UBDocumentProxy* documentProxy, int index)
-            : UBDraggableThumbnail(documentProxy, index)
-            , mThumbnailPixmap(thumbnailPixmap)
-        {
-            setFlag(QGraphicsItem::ItemIsSelectable, true);
-            setAcceptDrops(true);
-        }
-
-        ~UBDraggableThumbnailPixmap()
-        {
-
-        }
-
-        UBThumbnailPixmap* thumbnailPixmap()
-        {
-            return mThumbnailPixmap;
-        }
-
-        void updatePos(qreal w, qreal h);
-
-    private:
-        UBThumbnailPixmap* mThumbnailPixmap;
+        UBDraggableThumbnailPixmap(const QPixmap& pix, UBDocumentProxy* proxy, int pSceneIndex);
+        ~UBDraggableThumbnailPixmap();
 };
 
 class UBDraggableThumbnailView : public UBDraggableThumbnail
@@ -582,6 +564,7 @@ class UBDraggableThumbnailView : public UBDraggableThumbnail
         UBDraggableThumbnailView(UBThumbnailView* thumbnailView, UBDocumentProxy* documentProxy, int index)
             : UBDraggableThumbnail(documentProxy, index)
             , mThumbnailView(thumbnailView)
+            , mPageNumber(new UBThumbnailTextItem(index))
         {
             setFlag(QGraphicsItem::ItemIsSelectable, true);
             setWidget(mThumbnailView);
@@ -592,6 +575,8 @@ class UBDraggableThumbnailView : public UBDraggableThumbnail
         {
             delete mPageNumber; // not a child of "this" QObject so it has to be deleted manually
         }
+
+        void updatePos(qreal w, qreal h);
 
         UBThumbnailView* thumbnailView()
         {
@@ -614,7 +599,8 @@ class UBDraggableThumbnailView : public UBDraggableThumbnail
         }
 
     private:        
-        UBThumbnailView* mThumbnailView;
+        UBThumbnailView* mThumbnailView;        
+        UBThumbnailTextItem* mPageNumber;
 };
 
 namespace UBThumbnailUI

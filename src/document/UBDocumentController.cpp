@@ -2325,7 +2325,7 @@ void UBDocumentController::openSelectedItem()
 
         if (thumb)
         {
-            UBDocumentProxy* proxy = thumb->proxy();
+            UBDocumentProxy* proxy = thumb->documentProxy();
 
             if (proxy && isOKToOpenDocument(proxy))
             {
@@ -2362,7 +2362,7 @@ void UBDocumentController::duplicateSelectedItem()
             UBSceneThumbnailPixmap *thumb = dynamic_cast<UBSceneThumbnailPixmap*>(item);
             if (thumb)
             {
-                UBDocumentProxy *proxy = thumb->proxy();
+                UBDocumentProxy *proxy = thumb->documentProxy();
 
                 if (proxy)
                 {
@@ -3127,7 +3127,7 @@ void UBDocumentController::thumbnailPageDoubleClicked(QGraphicsItem* item, int i
     UBSceneThumbnailPixmap* thumb = qgraphicsitem_cast<UBSceneThumbnailPixmap*> (item);
 
     if (thumb) {
-        UBDocumentProxy* proxy = thumb->proxy();
+        UBDocumentProxy* proxy = thumb->documentProxy();
         if (proxy && isOKToOpenDocument(proxy)) {
             mBoardController->setActiveDocumentScene(proxy, index);
             UBApplication::applicationController->showBoard();
@@ -3163,9 +3163,9 @@ void UBDocumentController::addToDocument()
         {
             UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (item);
 
-            if (thumb &&  thumb->proxy())
+            if (thumb &&  thumb->documentProxy())
             {
-                QPair<UBDocumentProxy*, int> pageInfo(thumb->proxy(), thumb->sceneIndex());
+                QPair<UBDocumentProxy*, int> pageInfo(thumb->documentProxy(), thumb->sceneIndex());
                 pageInfoList << pageInfo;
             }
         }
@@ -3574,7 +3574,7 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
 
             if (thumb)
             {
-                proxy = thumb->proxy();
+                proxy = thumb->documentProxy();
                 if (proxy)
                 {
                     sceneIndexes.append(thumb->sceneIndex());
@@ -3692,7 +3692,7 @@ bool UBDocumentController::everySceneSelected() const
         UBSceneThumbnailPixmap* p = dynamic_cast<UBSceneThumbnailPixmap*>(selection.at(0));
         if (p)
         {
-            return (selection.count() == p->proxy()->pageCount());
+            return (selection.count() == p->documentProxy()->pageCount());
         }
     }
     return false;
@@ -3706,7 +3706,7 @@ bool UBDocumentController::firstAndOnlySceneSelected() const
         UBSceneThumbnailPixmap* p = dynamic_cast<UBSceneThumbnailPixmap*>(selection.at(i));
         if (p)
         {
-            int pageCount = p->proxy()->pageCount();
+            int pageCount = p->documentProxy()->pageCount();
             if (pageCount > 1) //not the only scene
             {
                 return false;
