@@ -356,11 +356,6 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, bool const cacheAllowed, 
 
             if (m_perPagepdfZoomCache[pageNumber][zoomIndex].cachedImage == QImage() || m_perPagepdfZoomCache[pageNumber][zoomIndex].cachedPageNumber != pageNumber)
             {
-                qDebug() << "no alternate image found for page number " << pageNumber;
-                if (pageNumber == 1)
-                {
-                    qDebug() << "why are you different..";
-                }
                 // No alternate image found. Build an alternate image in order to display some progress.
                 // Also make sure we fallback to the initial ratio request.
                 zoomIndex = initialZoomIndex;
