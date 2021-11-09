@@ -70,7 +70,7 @@ XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
     mDocument = new PDFDoc(new GooString(filename.toLocal8Bit()), 0, 0, 0); // the filename GString is deleted on PDFDoc desctruction
 #endif
 
-    if (mDocument->isOk())
+    if (isValid())
     {
         initPDFZoomData();
 
@@ -126,25 +126,16 @@ XPDFRenderer::~XPDFRenderer()
 
 void XPDFRenderer::initPDFZoomData()
 {
-    qDebug() << "initPDFZoomData";
-    if (mDocument)
+    for (int i=1; i <= mDocument->getNumPages(); i++)
     {
-        for (int i=1; i <= mDocument->getNumPages(); i++)
-        {
-            m_perPagepdfZoomCache.insert(i, QVector<PdfZoomCacheData>());
+        m_perPagepdfZoomCache.insert(i, QVector<PdfZoomCacheData>());
 
-            for (int j = 0; j < XPDFRendererZoomFactor::mode4_zoomFactorIterations; j++ )
-            {
-                double const zoomValue = XPDFRendererZoomFactor::mode4_zoomFactorStart+XPDFRendererZoomFactor::mode4_zoomFactorStepSquare*static_cast<double>(j*j);
-                m_perPagepdfZoomCache[i].push_back(zoomValue);
-            }
+        for (int j = 0; j < XPDFRendererZoomFactor::mode4_zoomFactorIterations; j++ )
+        {
+            double const zoomValue = XPDFRendererZoomFactor::mode4_zoomFactorStart+XPDFRendererZoomFactor::mode4_zoomFactorStepSquare*static_cast<double>(j*j);
+            m_perPagepdfZoomCache[i].push_back(zoomValue);
         }
     }
-    else
-    {
-        qDebug() << "an error occured. mDocument failed to open requested file";
-    }
-    qDebug() << "end initPDFZoomData";
 }
 
 bool XPDFRenderer::isValid() const
@@ -411,9 +402,9 @@ void XPDFRenderer::render(QPainter *p, int pageNumber, bool const cacheAllowed, 
 QImage& XPDFRenderer::createPDFImageCached(int pageNumber, PdfZoomCacheData &cacheData)
 {
     if (isValid())
-    {      
+    {
         if (cacheData.requireUpdateImage(pageNumber) && !cacheData.hasToBeProcessed)
-        {           
+        {
             mSliceX = 0.;
             mSliceY = 0.;
 
