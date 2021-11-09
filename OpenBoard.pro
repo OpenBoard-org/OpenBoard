@@ -40,6 +40,7 @@ QT += webkitwidgets
 QT += multimediawidgets
 QT += printsupport
 QT += core
+QT += concurrent
 
 INCLUDEPATH += src
 
