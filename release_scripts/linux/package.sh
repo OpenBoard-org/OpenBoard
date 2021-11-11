@@ -215,6 +215,7 @@ if $BUNDLE_QT; then
 
     notifyProgress "Copying and stripping Qt libraries"
     mkdir -p $QT_LIBRARY_DEST_PATH
+    copyQtLibrary libQt5Concurrent
     copyQtLibrary libQt5Core
     copyQtLibrary libQt5DBus
     copyQtLibrary libQt5Gui
