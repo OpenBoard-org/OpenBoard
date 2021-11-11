@@ -98,8 +98,23 @@ UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     mDocumentTreeStructureModel = new UBDocumentTreeModel(this);
     createDocumentProxiesStructure();
 
-
     emit proxyListChanged();
+
+    mThread = new QThread;
+    mWorker = new UBPersistenceWorker();
+    mWorker->moveToThread(mThread);
+
+    connect(mWorker, SIGNAL(error(QString)), this, SLOT(errorString(QString)));
+    connect(mThread, SIGNAL(started()), mWorker, SLOT(process()));
+    connect(mWorker, SIGNAL(finished()), mThread, SLOT(quit()));
+    connect(mWorker, SIGNAL(finished()), this, SLOT(onWorkerFinished()));
+    connect(mWorker, SIGNAL(finished()), mWorker, SLOT(deleteLater()));
+    connect(mThread, SIGNAL(finished()), mThread, SLOT(deleteLater()));
+    connect(mWorker, SIGNAL(sceneLoaded(QByteArray,UBDocumentProxy*,int)), this, SLOT(onSceneLoaded(QByteArray,UBDocumentProxy*,int)));
+    connect(mWorker, SIGNAL(scenePersisted(UBGraphicsScene*)), this, SLOT(onScenePersisted(UBGraphicsScene*)));
+    connect(mWorker, SIGNAL(metadataPersisted(UBDocumentProxy*)), this, SLOT(onMetadataPersisted(UBDocumentProxy*)));
+
+    mThread->start();
 }
 
 UBPersistenceManager* UBPersistenceManager::persistenceManager()
@@ -119,8 +134,55 @@ void UBPersistenceManager::destroy()
     sSingleton = NULL;
 }
 
+void UBPersistenceManager::onScenePersisted(UBGraphicsScene* scene)
+{
+    if (!mIsApplicationClosing) {
+        delete scene;
+        scene = NULL;
+    }
+}
+
+void UBPersistenceManager::onMetadataPersisted(UBDocumentProxy* proxy)
+{
+    delete proxy;
+}
+
+void UBPersistenceManager::onWorkerFinished()
+{
+    mIsWorkerFinished = true;
+}
+
 UBPersistenceManager::~UBPersistenceManager()
 {
+    mIsApplicationClosing = true;
+
+    if(mWorker)
+        mWorker->applicationWillClose();
+
+    QElapsedTimer t;
+    t.start();
+    qDebug() << "start waiting";
+
+    while(!mIsWorkerFinished)
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    qDebug() << "stop waiting after " << t.elapsed() << " ms";
+
+    // to be sure that all the scenes are stored on disk
+}
+
+void UBPersistenceManager::errorString(QString error)
+{
+    qWarning() << "An error occured in the peristence thread " << error;
+}
+
+void UBPersistenceManager::onSceneLoaded(QByteArray scene, UBDocumentProxy* proxy, int sceneIndex)
+{
+    Q_UNUSED(scene);
+    qDebug() << "scene loaded " << sceneIndex;
+    QTime time;
+    time.start();
+    mSceneCache.insert(proxy, sceneIndex, loadDocumentScene(proxy, sceneIndex, false));
+    qDebug() << "millisecond for sceneCache " << time.elapsed();
 }
 
 void UBPersistenceManager::createDocumentProxiesStructure(bool interactive)
@@ -908,22 +970,38 @@ void UBPersistenceManager::moveSceneToIndex(UBDocumentProxy* proxy, int source, 
 }
 
 
-UBGraphicsScene* UBPersistenceManager::loadDocumentScene(UBDocumentProxy* proxy, int sceneIndex)
+UBGraphicsScene* UBPersistenceManager::loadDocumentScene(UBDocumentProxy* proxy, int sceneIndex, bool cacheNeighboringScenes)
 {
+    UBGraphicsScene* scene = nullptr;
+
     if (mSceneCache.contains(proxy, sceneIndex))
+    {
         return mSceneCache.value(proxy, sceneIndex);
-    else {
-        UBGraphicsScene* scene = UBSvgSubsetAdaptor::loadScene(proxy, sceneIndex);
-        if(!scene){
+    }
+    else
+    {
+        scene = UBSvgSubsetAdaptor::loadScene(proxy, sceneIndex);
+        if(!scene)
+        {
             createDocumentSceneAt(proxy,0);
             scene = UBSvgSubsetAdaptor::loadScene(proxy, 0);
         }
 
         if (scene)
             mSceneCache.insert(proxy, sceneIndex, scene);
-
-        return scene;
     }
+
+    if (cacheNeighboringScenes)
+    {
+        if(sceneIndex + 1 < proxy->pageCount() &&  !mSceneCache.contains(proxy, sceneIndex + 1))
+            mWorker->readScene(proxy,sceneIndex+1);
+
+        if(sceneIndex - 1 >= 0 &&  !mSceneCache.contains(proxy, sceneIndex - 1))
+            mWorker->readScene(proxy,sceneIndex-1);
+    }
+
+
+    return scene;
 }
 
 void UBPersistenceManager::reassignDocProxy(UBDocumentProxy *newDocument, UBDocumentProxy *oldDocument)
@@ -931,7 +1009,7 @@ void UBPersistenceManager::reassignDocProxy(UBDocumentProxy *newDocument, UBDocu
     return mSceneCache.reassignDocProxy(newDocument, oldDocument);
 }
 
-void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex, bool isAnAutomaticBackup)
+void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex, bool isAnAutomaticBackup, bool forceImmediateSaving)
 {
     checkIfDocumentRepositoryExists();
 
@@ -944,14 +1022,23 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
     dir.mkpath(pDocumentProxy->persistencePath());
 
     if (pDocumentProxy->isModified())
-        UBMetadataDcSubsetAdaptor::persist(pDocumentProxy);
+    {
+        persistDocumentMetadata(pDocumentProxy, forceImmediateSaving);
+    }
 
     if (pScene->isModified())
     {
-        UBSvgSubsetAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
+        if(forceImmediateSaving)
+        {
+            UBSvgSubsetAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
+        }
+        else
+        {
+           UBGraphicsScene* copiedScene = pScene->sceneDeepCopy();
+           mWorker->saveScene(pDocumentProxy, copiedScene, pSceneIndex);
+        }
 
         UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
-
         pScene->setModified(false);
     }
 
@@ -959,11 +1046,18 @@ void UBPersistenceManager::persistDocumentScene(UBDocumentProxy* pDocumentProxy,
 }
 
 
-UBDocumentProxy* UBPersistenceManager::persistDocumentMetadata(UBDocumentProxy* pDocumentProxy)
+UBDocumentProxy* UBPersistenceManager::persistDocumentMetadata(UBDocumentProxy* pDocumentProxy, bool forceImmediateSaving)
 {
-    UBMetadataDcSubsetAdaptor::persist(pDocumentProxy);
-
-    emit documentMetadataChanged(pDocumentProxy);
+    if (forceImmediateSaving)
+    {
+        UBMetadataDcSubsetAdaptor::persist(pDocumentProxy);
+        emit documentMetadataChanged(pDocumentProxy);
+    }
+    else
+    {
+        UBDocumentProxy* copy = pDocumentProxy->deepCopy();
+        mWorker->saveMetadata(copy);
+    }
 
     return pDocumentProxy;
 }

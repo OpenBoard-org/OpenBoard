@@ -32,6 +32,7 @@
 #include <QtCore>
 
 #include "UBSceneCache.h"
+#include "UBPersistenceWorker.h"
 
 class QDomNode;
 class QDomElement;
@@ -91,7 +92,7 @@ class UBPersistenceManager : public QObject
                 , bool addTitlePage = false
                 , bool promptDialogIfExists = false);
 
-        virtual UBDocumentProxy* persistDocumentMetadata(UBDocumentProxy* pDocumentProxy);
+        virtual UBDocumentProxy* persistDocumentMetadata(UBDocumentProxy* pDocumentProxy, bool forceImmediateSaving = false);
 
         virtual UBDocumentProxy* duplicateDocument(UBDocumentProxy* pDocumentProxy);
 
@@ -103,7 +104,7 @@ class UBPersistenceManager : public QObject
 
         virtual void copyDocumentScene(UBDocumentProxy *from, int fromIndex, UBDocumentProxy *to, int toIndex);
 
-        virtual void persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex, bool isAnAutomaticBackup = false);
+        virtual void persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex, bool isAnAutomaticBackup = false, bool forceImmediateSaving = false);
 
         virtual UBGraphicsScene* createDocumentSceneAt(UBDocumentProxy* pDocumentProxy, int index, bool useUndoRedoStack = true);
 
@@ -111,7 +112,7 @@ class UBPersistenceManager : public QObject
 
         virtual void moveSceneToIndex(UBDocumentProxy* pDocumentProxy, int source, int target);
 
-        virtual UBGraphicsScene* loadDocumentScene(UBDocumentProxy* pDocumentProxy, int sceneIndex);
+        virtual UBGraphicsScene* loadDocumentScene(UBDocumentProxy* pDocumentProxy, int sceneIndex, bool cacheNeighboringScenes = true);
         UBGraphicsScene *getDocumentScene(UBDocumentProxy* pDocumentProxy, int sceneIndex) {return mSceneCache.value(pDocumentProxy, sceneIndex);}
         void reassignDocProxy(UBDocumentProxy *newDocument, UBDocumentProxy *oldDocument);
 
@@ -187,9 +188,20 @@ private:
         bool mHasPurgedDocuments;
         QString mDocumentRepositoryPath;
         QString mFoldersXmlStorageName;
+        UBPersistenceWorker* mWorker;
+
+        QThread* mThread;
+        bool mIsWorkerFinished;
+
+        bool mIsApplicationClosing;
 
     private slots:
         void documentRepositoryChanged(const QString& path);
+        void errorString(QString error);
+        void onSceneLoaded(QByteArray,UBDocumentProxy*,int);
+        void onWorkerFinished();
+        void onScenePersisted(UBGraphicsScene* scene);
+        void onMetadataPersisted(UBDocumentProxy* proxy);
 
 };
 
