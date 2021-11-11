@@ -358,7 +358,6 @@ void UBApplicationController::showBoard()
         }
     }
 
-    UBApplication::showMessage(tr("Board drawing..."));
     mMainMode = Board;
 
     adaptToolBar();
