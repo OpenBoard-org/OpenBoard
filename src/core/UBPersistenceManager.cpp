@@ -809,7 +809,7 @@ void UBPersistenceManager::copyDocumentScene(UBDocumentProxy *from, int fromInde
 
     Q_ASSERT(QFileInfo(thumbTmp).exists());
     Q_ASSERT(QFileInfo(thumbTo).exists());
-    const QPixmap *pix = new QPixmap(thumbTmp);
+    auto pix = std::make_shared<QPixmap>(thumbTmp);
     UBDocumentController *ctrl = UBApplication::documentController;
     ctrl->addPixmapAt(pix, toIndex);
     ctrl->TreeViewSelectionChanged(ctrl->firstSelectedTreeIndex(), QModelIndex());
@@ -820,10 +820,13 @@ void UBPersistenceManager::copyDocumentScene(UBDocumentProxy *from, int fromInde
 
 UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* proxy, int index, bool useUndoRedoStack)
 {
-    int count = sceneCount(proxy);
+    int count = proxy->pageCount();
 
     for(int i = count - 1; i >= index; i--)
+    {
+        UBApplication::showMessage(tr("renaming pages (%1/%2)").arg(i).arg(count));
         renamePage(proxy, i , i + 1);
+    }
 
     mSceneCache.shiftUpScenes(proxy, index, count -1);
 

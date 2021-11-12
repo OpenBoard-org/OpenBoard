@@ -133,12 +133,31 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 
     for(int i = 0; i < source->selectedDocument()->pageCount(); i++)
     {
-        //claudio This is a very bad hack and shows a architectural problem
-        // source->selectedDocument()->pageCount()  !=   source->pageCount()
-        if(i>=source->pageCount() || !source->pageAt(i))
-            source->insertThumbPage(i);
+        UBApplication::showMessage(tr("generating thumbnails for board (%1/%2)").arg(i+1).arg(source->selectedDocument()->pageCount()));
 
-        const QPixmap* pix = source->pageAt(i);
+        bool found = false;
+        if (UBApplication::documentController)
+        {
+            if (UBApplication::documentController->selectedDocument() == source->selectedDocument())
+            {
+                if (UBApplication::documentController->pageAt(i))
+                {
+                    found = true;
+                    //thumbnail has already been loaded on the documentController so we don't need to do it again
+                    source->insertExistingThumbPage(i, UBApplication::documentController->pageAt(i));
+                }
+            }
+        }
+
+        if (!found)
+        {
+            //claudio This is a very bad hack and shows a architectural problem
+            // source->selectedDocument()->pageCount()  !=   source->pageCount()
+            if(i>=source->pageCount() || !source->pageAt(i))
+                source->insertThumbPage(i);
+        }
+
+        auto pix = source->pageAt(i);
         Q_ASSERT(!pix->isNull());
         int pageIndex = UBDocumentContainer::pageFromSceneIndex(i);
 
@@ -193,12 +212,12 @@ void UBDocumentNavigator::onScrollToSelectedPage(int index)
  */
 void UBDocumentNavigator::updateSpecificThumbnail(int iPage)
 {
-    const QPixmap* pix = UBApplication::boardController->pageAt(iPage);
+    auto pix = UBApplication::boardController->pageAt(iPage);
     UBSceneThumbnailNavigPixmap* newItem = new UBSceneThumbnailNavigPixmap(*pix, UBApplication::boardController->selectedDocument(), iPage);
 
     // Get the old thumbnail
     UBSceneThumbnailNavigPixmap* oldItem = mThumbsWithLabels.at(iPage).getThumbnail();
-    if(NULL != oldItem)
+    if(oldItem)
     {
         mScene->removeItem(oldItem);
         mScene->addItem(newItem);
@@ -209,6 +228,18 @@ void UBDocumentNavigator::updateSpecificThumbnail(int iPage)
         oldItem = NULL;
     }
 
+    ensureVisible(0, 0, 10, 10);
+
+    refreshScene();
+
+    if (UBApplication::documentController)
+    {
+        if (UBApplication::documentController->selectedDocument() == UBApplication::boardController->selectedDocument())
+        {
+            //update the pixmap in document mode
+            UBApplication::documentController->updateThumbnailPixmap(iPage, *pix);
+        }
+    }
 }
 
 /**
@@ -302,7 +333,6 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
 
     if (!event->isAccepted())
     {
-        mLongPressTimer.start();
         mLastPressedMousePos = event->pos();
 
         mLastClickedThumbnail = clickedThumbnail(mLastPressedMousePos);
@@ -314,6 +344,8 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
             UBApplication::boardController->setActiveDocumentScene(mLastClickedThumbnail->sceneIndex());
             UBApplication::boardController->centerOn(UBApplication::boardController->activeScene()->lastCenter());
         }
+
+        mLongPressTimer.start();
     }
 }
 

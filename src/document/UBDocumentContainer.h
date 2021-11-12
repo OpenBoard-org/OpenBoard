@@ -45,8 +45,9 @@ class UBDocumentContainer : public QObject
         void pureSetDocument(UBDocumentProxy *document) {mCurrentDocument = document;}
 
         UBDocumentProxy* selectedDocument(){return mCurrentDocument;}
+        QList<std::shared_ptr<QPixmap>>& documentThumbs() { return mDocumentThumbs; }
         int pageCount() const{return mCurrentDocument->pageCount();}
-        const QPixmap* pageAt(int index)
+        std::shared_ptr<QPixmap> pageAt(int index)
         {
             if (index < mDocumentThumbs.size())
                 return mDocumentThumbs[index];
@@ -65,16 +66,17 @@ class UBDocumentContainer : public QObject
         void clearThumbPage();
         void initThumbPage();
         void addPage(int index);
-        void addPixmapAt(const QPixmap *pix, int index);
+        void addPixmapAt(std::shared_ptr<QPixmap> pix, int index);
         void updatePage(int index);
         void addEmptyThumbPage();
-        void reloadThumbnails();
+        virtual void reloadThumbnails();
 
         void insertThumbPage(int index);
+        void insertExistingThumbPage(int index, std::shared_ptr<QPixmap> thumbnailPixmap);
 
     private:
         UBDocumentProxy* mCurrentDocument;
-        QList<const QPixmap*>  mDocumentThumbs;
+        QList<std::shared_ptr<QPixmap>>  mDocumentThumbs;
 
 
     protected:

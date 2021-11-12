@@ -627,7 +627,7 @@ void UBPlatformUtils::showOSK(bool show)
     {
         @autoreleasepool {
             CFDictionaryRef properties = (CFDictionaryRef)[NSDictionary
-                          dictionaryWithObject: @"com.apple.keyboardViewer"
+                          dictionaryWithObject: @"com.apple.KeyboardViewer"
                           forKey: (NSString *)kTISPropertyInputSourceID];
 
             NSArray *sources = (NSArray *)TISCreateInputSourceList(properties, true);
