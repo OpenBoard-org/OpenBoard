@@ -29,6 +29,7 @@
 
 #include "UBSvgSubsetAdaptor.h"
 
+#include <QObject>
 #include <QtCore>
 #include <QtXml>
 #include <QGraphicsTextItem>
@@ -239,6 +240,7 @@ QString UBSvgSubsetAdaptor::uniboardDocumentNamespaceUriFromVersion(int mFileVer
 
 UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const int pageIndex)
 {
+    UBApplication::showMessage(QObject::tr("Loading scene (%1/%2)").arg(pageIndex+1).arg(proxy->pageCount()));
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
     qDebug() << fileName;
     QFile file(fileName);

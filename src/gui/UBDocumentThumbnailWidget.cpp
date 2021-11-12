@@ -297,6 +297,18 @@ bool UBDocumentThumbnailWidget::dragEnabled() const
     return mDragEnabled;
 }
 
+void UBDocumentThumbnailWidget::updateThumbnailPixmap(int index, const QPixmap& newThumbnail)
+{
+    if (index >= 0 && index < mGraphicItems.length())
+    {
+        UBSceneThumbnailPixmap *thumbnail = dynamic_cast<UBSceneThumbnailPixmap*>(mGraphicItems.at(index));
+        if (thumbnail)
+        {
+            thumbnail->setPixmap(newThumbnail);
+        }
+    }
+}
+
 void UBDocumentThumbnailWidget::hightlightItem(int index)
 {
     if (0 <= index && index < mLabelsItems.length())

@@ -45,8 +45,8 @@ public:
 
     static void persistScene(UBDocumentProxy* proxy, UBGraphicsScene* pScene, int pageIndex, bool overrideModified = false);
 
-    static const QPixmap* get(UBDocumentProxy* proxy, int index);
-    static void load(UBDocumentProxy* proxy, QList<const QPixmap*>& list);
+    static QPixmap get(UBDocumentProxy* proxy, int index);
+    static void load(UBDocumentProxy* proxy, QList<std::shared_ptr<QPixmap>>& list);
 
 private:
     static void generateMissingThumbnails(UBDocumentProxy* proxy);

@@ -501,6 +501,8 @@ class UBDocumentController : public UBDocumentContainer
         void collapseAll();
         void expandAll();
 
+        void updateThumbnailPixmap(int index, const QPixmap& newThumbnail);
+
 protected:
         virtual void setupViews();
         virtual void setupToolbar();

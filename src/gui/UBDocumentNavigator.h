@@ -58,7 +58,7 @@ public:
 public slots:
     void onScrollToSelectedPage(int index);// { if (mCrntItem) centerOn(mCrntItem); }
     void generateThumbnails(UBDocumentContainer* source);
-    void updateSpecificThumbnail(int iPage);    
+    void updateSpecificThumbnail(int iPage);
 
     void longPressTimeout();
     void mousePressAndHoldEvent();
