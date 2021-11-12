@@ -238,7 +238,10 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
 
                     if (mDocumentTreeStructureModel->currentIndex() == replaceIndex)
                     {
-                        UBApplication::documentController->selectDocument(pProxy, true, true);
+                        if (pProxy->pageCount() > 0)
+                        {
+                            UBApplication::documentController->selectDocument(pProxy, true, true);
+                        }
                     }
 
                     if (replaceProxy) {

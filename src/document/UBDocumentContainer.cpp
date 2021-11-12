@@ -49,7 +49,6 @@ void UBDocumentContainer::setDocument(UBDocumentProxy* document, bool forceReloa
     {
         mCurrentDocument = document;
 
-        //qDebug() << documentThumbs();
         clearThumbPage();
         reloadThumbnails();
         emit documentSet(mCurrentDocument);

@@ -224,6 +224,8 @@ void UBDocumentNavigator::updateSpecificThumbnail(int iPage)
         mThumbsWithLabels[iPage].setThumbnail(newItem);
         if (mLastClickedThumbnail == oldItem)
             mLastClickedThumbnail = newItem;
+        if (mSelectedThumbnail == oldItem)
+            mSelectedThumbnail = newItem;
         delete oldItem;
         oldItem = NULL;
     }
@@ -317,7 +319,7 @@ void UBDocumentNavigator::resizeEvent(QResizeEvent *event)
     mThumbnailWidth = (width() > mThumbnailMinWidth) ? width() - 2*border() : mThumbnailMinWidth;
 
     if(mSelectedThumbnail)
-        ensureVisible(mSelectedThumbnail);
+            ensureVisible(mSelectedThumbnail);
 
     // Refresh the scene
     refreshScene();
