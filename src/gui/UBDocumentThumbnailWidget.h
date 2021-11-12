@@ -48,9 +48,8 @@ class UBDocumentThumbnailWidget: public UBThumbnailWidget
         void hightlightItem(int index);
 
     public slots:
-        virtual void setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsItems,
-            const QList<QUrl>& pItemPaths, const QStringList pLabels = QStringList(),
-            const QString& pMimeType = QString(""));
+            void updateThumbnailPixmap(int index, const QPixmap& newThumbnail);
+            virtual void setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsItems, const QList<QUrl>& pItemPaths, const QStringList pLabels = QStringList(), const QString& pMimeType = QString(""));
 
     signals:
         void sceneDropped(UBDocumentProxy* proxy, int source, int target);

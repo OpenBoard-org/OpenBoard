@@ -222,6 +222,7 @@ void UBSceneCache::shiftUpScenes(UBDocumentProxy* proxy, int startIncIndex, int 
 {
     for(int i = endIncIndex; i >= startIncIndex; i--)
     {
+        UBApplication::showMessage(QObject::tr("moving cached scenes (%1/%2)").arg(i).arg(endIncIndex));
         internalMoveScene(proxy, i, i + 1);
     }
 }
