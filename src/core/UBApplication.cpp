@@ -290,13 +290,24 @@ int UBApplication::exec(const QString& pFileToImport)
     QPixmapCache::setCacheLimit(1024 * 100);
 
     /* TODO remove, will be in the default directories
-    QString webDbPath = UBSettings::userDataDirectory() + "/web-databases";
-    QDir webDbDir(webDbPath);
-    if (!webDbDir.exists(webDbPath))
-        webDbDir.mkpath(webDbPath);
-        */
+        QString webDbPath = UBSettings::userDataDirectory() + "/web-databases";
+        QDir webDbDir(webDbPath);
+        if (!webDbDir.exists(webDbPath))
+            webDbDir.mkpath(webDbPath);
+     */
 
-    mainWindow = new UBMainWindow(0, Qt::FramelessWindowHint); // deleted by application destructor
+    if (UBSettings::settings()->appRunInWindow->get().toBool()) {
+        mainWindow = new UBMainWindow(0,
+                Qt::Window |
+                Qt::WindowCloseButtonHint |
+                Qt::WindowMinimizeButtonHint |
+                Qt::WindowMaximizeButtonHint |
+                Qt::WindowShadeButtonHint
+        ); // deleted by application destructor
+    } else {
+        mainWindow = new UBMainWindow(0, Qt::FramelessWindowHint); // deleted by application destructor
+    }
+
     mainWindow->setAttribute(Qt::WA_NativeWindow, true);
 
     mainWindow->actionCopy->setShortcuts(QKeySequence::Copy);

@@ -36,6 +36,7 @@
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/memcheck.h"
+#include "core/UBSettings.h"
 
 void UBPlatformUtils::init()
 {
@@ -436,7 +437,11 @@ void UBPlatformUtils::setFrontProcess()
 
 void UBPlatformUtils::showFullScreen(QWidget *pWidget)
 {
-    pWidget->showFullScreen();
+    if (UBSettings::settings()->appRunInWindow->get().toBool()) {
+        pWidget->showNormal();
+    } else {
+        pWidget->showFullScreen();
+    }
 }
 
 void UBPlatformUtils::showOSK(bool show)
