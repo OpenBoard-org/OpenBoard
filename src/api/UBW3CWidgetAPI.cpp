@@ -37,7 +37,6 @@
 #include "web/UBWebController.h"
 
 #include "domain/UBGraphicsWidgetItem.h"
-#include "domain/UBGraphicsProxyWidget.h"
 
 #include "UBWidgetMessageAPI.h"
 
@@ -57,7 +56,7 @@ UBW3CWidgetAPI::~UBW3CWidgetAPI()
 }
 
 
-QString UBW3CWidgetAPI::uuid()
+QString UBW3CWidgetAPI::uuid() const
 {
     if (mGraphicsW3CWidget)
         return mGraphicsW3CWidget->uuid().toString();
@@ -66,60 +65,60 @@ QString UBW3CWidgetAPI::uuid()
 }
 
 
-int UBW3CWidgetAPI::width()
+int UBW3CWidgetAPI::width() const
 {
     return mGraphicsW3CWidget->nominalSize().width();
 }
 
 
-int UBW3CWidgetAPI::height()
+int UBW3CWidgetAPI::height() const
 {
     return mGraphicsW3CWidget->nominalSize().height();
 }
 
 
-QString UBW3CWidgetAPI::id()
+QString UBW3CWidgetAPI::id() const
 {
     return mGraphicsW3CWidget->metadatas().id;
 }
 
 
-QString UBW3CWidgetAPI::name()
+QString UBW3CWidgetAPI::name() const
 {
     return mGraphicsW3CWidget->metadatas().name;
 }
 
 
-QString UBW3CWidgetAPI::description()
+QString UBW3CWidgetAPI::description() const
 {
     return mGraphicsW3CWidget->metadatas().description;
 }
 
 
-QString UBW3CWidgetAPI::author()
+QString UBW3CWidgetAPI::author() const
 {
     return mGraphicsW3CWidget->metadatas().author;
 }
 
 
-QString UBW3CWidgetAPI::authorEmail()
+QString UBW3CWidgetAPI::authorEmail() const
 {
     return mGraphicsW3CWidget->metadatas().authorEmail;
 }
 
 
-QString UBW3CWidgetAPI::authorHref()
+QString UBW3CWidgetAPI::authorHref() const
 {
     return mGraphicsW3CWidget->metadatas().authorHref;
 }
 
 
-QString UBW3CWidgetAPI::version()
+QString UBW3CWidgetAPI::version() const
 {
     return mGraphicsW3CWidget->metadatas().version;
 }
 
-QObject* UBW3CWidgetAPI::preferences()
+QObject* UBW3CWidgetAPI::preferences() const
 {
     return mPreferencesAPI;
 }
@@ -130,7 +129,7 @@ void UBW3CWidgetAPI::openURL(const QString& url)
     UBApplication::webController->loadUrl(QUrl(url));
 }
 
-
+// NOTE @letsfindaway all code from here to the end is obsolete
 UBW3CWidgetPreferenceAPI::UBW3CWidgetPreferenceAPI(UBGraphicsW3CWidgetItem *graphicsWidget, QObject *parent)
     : UBW3CWebStorage(parent)
     , mGraphicsW3CWidget(graphicsWidget)
@@ -172,7 +171,7 @@ QString UBW3CWidgetPreferenceAPI::getItem(const QString& key)
   return QString();
 }
 
-int UBW3CWidgetPreferenceAPI::length()
+int UBW3CWidgetPreferenceAPI::length() const
 {
    QMap<QString, UBGraphicsW3CWidgetItem::PreferenceValue> w3cPrefs = mGraphicsW3CWidget->preferences();
 

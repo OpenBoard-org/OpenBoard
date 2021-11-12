@@ -9,41 +9,105 @@
     </message>
 </context>
 <context>
-    <name>DownloadDialog</name>
+    <name>BrowserWindow</name>
     <message>
-        <source>Downloads</source>
-        <translation>Downloads</translation>
+        <source>Navigation</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clean Up</source>
-        <translation>Ryd</translation>
-    </message>
-    <message>
-        <source>0 Items</source>
-        <translation>O enheder</translation>
+        <source>Show downloads</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>DownloadItem</name>
+    <name>CertificateErrorDialog</name>
     <message>
-        <source>Form</source>
-        <translation>Form</translation>
+        <source>Dialog</source>
+        <translation type="unfinished">Dialog</translation>
     </message>
     <message>
-        <source>Filename</source>
-        <translation>Filnavn</translation>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Try Again</source>
-        <translation>Prøv igen</translation>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>Stop</translation>
+        <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
+
+Do you wish to override the security check and continue ?   </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadManagerWidget</name>
+    <message>
+        <source>Downloads</source>
+        <translation type="unfinished">Downloads</translation>
     </message>
     <message>
-        <source>Open</source>
-        <translation>Åbn</translation>
+        <source>No downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save as</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadWidget</name>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 KiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 MiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 GiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%p% - %1 of %2 downloaded - %3/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown size - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>completed - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cancelled - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>interrupted: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop downloading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from list</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -176,20 +240,12 @@
         <translation>Viskelæder</translation>
     </message>
     <message>
-        <source>Smalle Eraser</source>
-        <translation type="vanished">Lille viskelæder</translation>
-    </message>
-    <message>
         <source>Medium Eraser</source>
         <translation>Mellem viskelæder</translation>
     </message>
     <message>
         <source>Large Eraser</source>
         <translation>Stort viskelæder</translation>
-    </message>
-    <message>
-        <source>Color</source>
-        <translation type="vanished">Farve</translation>
     </message>
     <message>
         <source>Back</source>
@@ -854,28 +910,13 @@
         <source>Password:</source>
         <translation>Adgangskode:</translation>
     </message>
-</context>
-<context>
-    <name>ProxyDialog</name>
     <message>
-        <source>Proxy Authentication</source>
-        <translation>Godkendelse af Proxy</translation>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Connect to Proxy</source>
-        <translation>Forbind til Proxy</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation>Brugernavn:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation>Adgangskode:</translation>
-    </message>
-    <message>
-        <source>Save username and password for future use</source>
-        <translation>Gem brugernavn og adgangskode</translation>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -895,6 +936,37 @@
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
         <translation>Er du sikker på, at du vil fjerne 1 side fra det valgte dokument&apos;%0&apos;?</translation>
+    </message>
+</context>
+<context>
+    <name>TabWidget</name>
+    <message>
+        <source>New &amp;Tab</source>
+        <translation>Ny &amp;Fane</translation>
+    </message>
+    <message>
+        <source>Clone Tab</source>
+        <translation>Klon fane</translation>
+    </message>
+    <message>
+        <source>&amp;Close Tab</source>
+        <translation>&amp;Luk fane</translation>
+    </message>
+    <message>
+        <source>Close &amp;Other Tabs</source>
+        <translation>Luk &amp;Andre faner</translation>
+    </message>
+    <message>
+        <source>Reload Tab</source>
+        <translation>Genindlæs fane</translation>
+    </message>
+    <message>
+        <source>Reload All Tabs</source>
+        <translation>Genindlæs alle faner</translation>
+    </message>
+    <message>
+        <source>(Untitled)</source>
+        <translation>(Uden titel)</translation>
     </message>
 </context>
 <context>
@@ -967,10 +1039,6 @@
     <message>
         <source>All Supported (%1)</source>
         <translation>Alle understøttede (%1)</translation>
-    </message>
-    <message>
-        <source>Delete page %1 from document</source>
-        <translation type="vanished">Slet side %1 fra dokumentet</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -1104,46 +1172,6 @@
         <translation>Dokument %1 kopieret</translation>
     </message>
     <message>
-        <source>Remove Page</source>
-        <translation type="vanished">Fjern side</translation>
-    </message>
-    <message>
-        <source>Remove Document</source>
-        <translation type="vanished">Fjern dokument</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation type="vanished">Er du sikker på, at du ønsker at fjerne dokumentet &apos;%1&apos;?</translation>
-    </message>
-    <message>
-        <source>Empty Trash</source>
-        <translation type="vanished">Tøm papirkurv</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to empty trash?</source>
-        <translation type="vanished">Er du sikker på, at du ønsker at tømme papirkurven?</translation>
-    </message>
-    <message>
-        <source>Emptying trash</source>
-        <translation type="vanished">Tømmer papirkurv</translation>
-    </message>
-    <message>
-        <source>Emptied trash</source>
-        <translation type="vanished">Tømt papirkurv</translation>
-    </message>
-    <message>
-        <source>Remove Folder</source>
-        <translation type="vanished">Fjern mappe</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="vanished">Er du sikker på, at du ønsker at fjerne mappen &apos; %1&apos; og hele dens indhold?</translation>
-    </message>
-    <message>
-        <source>No document selected!</source>
-        <translation type="vanished">Der er ikke valgt noget dokument!</translation>
-    </message>
-    <message>
         <source>Open Supported File</source>
         <translation>Åbn understøttet fil</translation>
     </message>
@@ -1186,13 +1214,6 @@
     <message>
         <source>Selection does not contain any image files!</source>
         <translation>Udsnittet indeholder ikke nogen billedfiler!</translation>
-    </message>
-    <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="vanished">
-            <numerusform>Er du sikker på, at du vil fjerne %n side fra det valgte dokument &apos;%1&apos;?</numerusform>
-            <numerusform>Er du sikker på, at du vil fjerne %n sider fra det valgte dokument &apos;%1&apos;?</numerusform>
-        </translation>
     </message>
     <message>
         <source>Folder does not contain any image files</source>
@@ -1278,13 +1299,6 @@
     </message>
 </context>
 <context>
-    <name>UBDocumentPublisher</name>
-    <message>
-        <source>Export failed.</source>
-        <translation type="obsolete">Eksport mislykkedes.</translation>
-    </message>
-</context>
-<context>
     <name>UBDocumentReplaceDialog</name>
     <message>
         <source>Accept</source>
@@ -1346,24 +1360,6 @@ Providing a new name will create a new document.</source>
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
-    <message>
-        <source>%1 (copy)</source>
-        <translation type="vanished">%1 (kopier)</translation>
-    </message>
-    <message>
-        <source>Copying page %1/%2</source>
-        <translation type="vanished">Kopierer side %1/%2</translation>
-    </message>
-    <message numerus="yes">
-        <source>%1 pages copied</source>
-        <translation type="vanished">
-            <numerusform>%1 side kopieret</numerusform>
-            <numerusform>%1 sider kopieret</numerusform>
-        </translation>
-    </message>
-</context>
-<context>
     <name>UBDownloadWidget</name>
     <message>
         <source>Downloading files</source>
@@ -1386,6 +1382,22 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Page %0</source>
         <translation type="unfinished">Side %0</translation>
+    </message>
+</context>
+<context>
+    <name>UBEmbedController</name>
+    <message>
+        <source>Whole page</source>
+        <translation>Hel side</translation>
+    </message>
+    <message>
+        <source>Web</source>
+        <translation>Web</translation>
+    </message>
+    <message>
+        <source>Application name can`t contain any of the following characters:<byte value="xd"/>
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1449,14 +1461,6 @@ Providing a new name will create a new document.</source>
         <translation>Eksporter som UBZ-fil</translation>
     </message>
     <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Eksporterer dokument...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Eksport gennemført.</translation>
-    </message>
-    <message>
         <source>Exporting %1 %2 of %3</source>
         <translation>Eksporterer %1 %2 af %3</translation>
     </message>
@@ -1499,14 +1503,6 @@ Providing a new name will create a new document.</source>
         <translation>Eksporter som PDF-fil</translation>
     </message>
     <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Eksporterer dokument...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Eksport gennemført.</translation>
-    </message>
-    <message>
         <source>Export to PDF</source>
         <translation>Eksport til PDF</translation>
     </message>
@@ -1516,14 +1512,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Export as PDF File</source>
         <translation>Eksport som PDF-fil</translation>
-    </message>
-    <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Eksporterer dokument...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Eksport gennemført.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1566,10 +1554,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Add to page</source>
         <translation>Tilføj til side</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation type="vanished">Brug som baggrund</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1632,10 +1616,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Pictures</source>
         <translation>Billeder</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <translation type="vanished">Animationer</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -1706,12 +1686,12 @@ Providing a new name will create a new document.</source>
         <translation>Synlig på udvidet skærm</translation>
     </message>
     <message>
-        <source>Go to Content Source</source>
-        <translation>Gå til indholdskilde</translation>
-    </message>
-    <message>
         <source>Set as background</source>
         <translation type="unfinished">Brug som baggrund</translation>
+    </message>
+    <message>
+        <source>Web Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2069,51 +2049,10 @@ Do you want to ignore these errors for this host?</source>
     </message>
 </context>
 <context>
-    <name>UBProxyLoginDlg</name>
-    <message>
-        <source>Proxy Login</source>
-        <translation type="vanished">Proxy Login</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation type="vanished">Brugernavn:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="vanished">Adgangskode:</translation>
-    </message>
-</context>
-<context>
-    <name>UBPublicationDlg</name>
-    <message>
-        <source>Publish document on the web</source>
-        <translation type="vanished">Udgiv dokument på web</translation>
-    </message>
-    <message>
-        <source>Title:</source>
-        <translation type="vanished">Titel:</translation>
-    </message>
-    <message>
-        <source>Description:</source>
-        <translation type="vanished">Beskrivelse:</translation>
-    </message>
-    <message>
-        <source>Publish</source>
-        <translation type="vanished">Udgiv</translation>
-    </message>
-</context>
-<context>
     <name>UBSettings</name>
     <message>
         <source>My Movies</source>
         <translation>Mine Film</translation>
-    </message>
-</context>
-<context>
-    <name>UBStartupHintsPalette</name>
-    <message>
-        <source>Visible next time</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2177,17 +2116,6 @@ Do you want to ignore these errors for this host?</source>
     </message>
 </context>
 <context>
-    <name>UBTrapFlashController</name>
-    <message>
-        <source>Whole page</source>
-        <translation>Hel side</translation>
-    </message>
-    <message>
-        <source>Web</source>
-        <translation>Web</translation>
-    </message>
-</context>
-<context>
     <name>UBUpdateDlg</name>
     <message>
         <source>Document updater</source>
@@ -2241,17 +2169,10 @@ Genstart venligst applikationen for at få adgang til de opdaterede dokumenter.<
     </message>
 </context>
 <context>
-    <name>UBWebPluginWidget</name>
+    <name>UBWebEngineView</name>
     <message>
-        <source>Loading...</source>
-        <translation>Indlæser...</translation>
-    </message>
-</context>
-<context>
-    <name>UBWidgetUniboardAPI</name>
-    <message>
-        <source>%0 called (method=%1, status=%2)</source>
-        <translation>%0 kaldt (metode=%1, status=%2)</translation>
+        <source>Open Web Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2340,85 +2261,6 @@ Genstart venligst applikationen for at få adgang til de opdaterede dokumenter.<
     </message>
 </context>
 <context>
-    <name>WBClearButton</name>
-    <message>
-        <source>Clear</source>
-        <translation>Ryd</translation>
-    </message>
-</context>
-<context>
-    <name>WBDownloadItem</name>
-    <message>
-        <source>Save File</source>
-        <translation>Gem fil</translation>
-    </message>
-    <message>
-        <source>Download canceled: %1</source>
-        <translation>Download annulleret: %1</translation>
-    </message>
-    <message>
-        <source>Error opening saved file: %1</source>
-        <translation>Fejl under åbning af gemt fil: %1</translation>
-    </message>
-    <message>
-        <source>Error saving: %1</source>
-        <translation>Fejl under gem: %1</translation>
-    </message>
-    <message>
-        <source>Network Error: %1</source>
-        <translation>Netværksfejl: %1</translation>
-    </message>
-    <message>
-        <source>seconds</source>
-        <translation>sekunder</translation>
-    </message>
-    <message>
-        <source>minutes</source>
-        <translation>minutter</translation>
-    </message>
-    <message>
-        <source>- %4 %5 remaining</source>
-        <translation>- %4 %5 tilbage</translation>
-    </message>
-    <message>
-        <source>%1 of %2 (%3/sec) %4</source>
-        <translation>%1 af %2 (%3/sek) %4</translation>
-    </message>
-    <message>
-        <source>?</source>
-        <comment>unknown file size</comment>
-        <translation>?</translation>
-    </message>
-    <message>
-        <source>%1 of %2 - Stopped</source>
-        <translation>%1 af %2 - Stoppet</translation>
-    </message>
-    <message>
-        <source>bytes</source>
-        <translation>bytes</translation>
-    </message>
-    <message>
-        <source>KB</source>
-        <translation>KB</translation>
-    </message>
-    <message>
-        <source>MB</source>
-        <translation>MB</translation>
-    </message>
-</context>
-<context>
-    <name>WBDownloadManager</name>
-    <message>
-        <source>1 Download</source>
-        <translation>1 Download</translation>
-    </message>
-    <message>
-        <source>%1 Downloads</source>
-        <comment>always &gt;= 2</comment>
-        <translation>%1 Downloads</translation>
-    </message>
-</context>
-<context>
     <name>WBHistoryModel</name>
     <message>
         <source>Title</source>
@@ -2441,97 +2283,90 @@ Genstart venligst applikationen for at få adgang til de opdaterede dokumenter.<
     </message>
 </context>
 <context>
-    <name>WBSearchLineEdit</name>
+    <name>WebPage</name>
     <message>
-        <source>Search</source>
-        <translation>Søg</translation>
-    </message>
-</context>
-<context>
-    <name>WBTabBar</name>
-    <message>
-        <source>New &amp;Tab</source>
-        <translation>Ny &amp;Fane</translation>
+        <source>Certificate Error</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clone Tab</source>
-        <translation>Klon fane</translation>
+        <source>Enter username and password for &quot;%1&quot; at %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Close Tab</source>
-        <translation>&amp;Luk fane</translation>
+        <source>Allow %1 to access your location information?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Close &amp;Other Tabs</source>
-        <translation>Luk &amp;Andre faner</translation>
+        <source>Allow %1 to access your microphone?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reload Tab</source>
-        <translation>Genindlæs fane</translation>
+        <source>Allow %1 to access your webcam?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reload All Tabs</source>
-        <translation>Genindlæs alle faner</translation>
-    </message>
-</context>
-<context>
-    <name>WBTabWidget</name>
-    <message>
-        <source>Recently Closed Tabs</source>
-        <translation>Senest lukkede faner</translation>
+        <source>Allow %1 to access your microphone and webcam?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>(Untitled)</source>
-        <translation>(Uden titel)</translation>
-    </message>
-</context>
-<context>
-    <name>WBToolbarSearch</name>
-    <message>
-        <source>Search</source>
-        <translation>Søg</translation>
+        <source>Allow %1 to lock your mouse cursor?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No Recent Searches</source>
-        <translation>Ingen seneste søgninger</translation>
+        <source>Allow %1 to capture video of your desktop?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Recent Searches</source>
-        <translation>Seneste søgninger</translation>
+        <source>Allow %1 to capture audio and video of your desktop?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clear Recent Searches</source>
-        <translation>Ryd seneste søgninger</translation>
-    </message>
-</context>
-<context>
-    <name>WBWebPage</name>
-    <message>
-        <source>Download</source>
-        <translation>Download</translation>
+        <source>Permission Request</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add to Current Document</source>
-        <translation>Tilføj til aktuelt dokument</translation>
+        <source>Connect to proxy &quot;%1&quot; using:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>PDF</source>
-        <translation>PDF</translation>
-    </message>
-    <message>
-        <source>Error loading page: %1</source>
-        <translation>Fejl under indlæsning af side: %1</translation>
-    </message>
-    <message>
-        <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
+        <source>Allow %1 to open all %2 links?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>WBWebView</name>
+    <name>WebView</name>
     <message>
-        <source>Open in New Tab</source>
-        <translation>Åbn i ny fane</translation>
+        <source>Render process normal exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process abnormal exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process crashed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process killed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process exited with code: %1
+Do you want to reload the page ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Web Inspector in new window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inspect element</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to board</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2655,29 +2490,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>documentPublishingDialog</name>
-    <message>
-        <source>Dialog</source>
-        <translation type="obsolete">Dialog</translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="obsolete">Titel</translation>
-    </message>
-    <message>
-        <source>E-mail</source>
-        <translation type="obsolete">E-mail</translation>
-    </message>
-    <message>
-        <source>Author</source>
-        <translation type="obsolete">Forfatter</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="obsolete">Beskrivelse</translation>
-    </message>
-</context>
-<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
@@ -2737,10 +2549,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Virtual Keyboard</source>
         <translation>Virtuelt tastatur</translation>
-    </message>
-    <message>
-        <source>Keyboard button size:</source>
-        <translation type="vanished">Størrelse på tastaturknapper:</translation>
     </message>
     <message>
         <source>Toolbar</source>

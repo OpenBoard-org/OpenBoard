@@ -31,7 +31,7 @@ var sankoreLang = {
     theme: "Тема"
 };
 
-function init(){
+async function init(){
 
     //variables
     var toggleFlag = false; // detects toggling in toggle button
@@ -74,8 +74,8 @@ function init(){
     $("div.inline label").html(sankoreLang.theme + tmpl)
     
     if(window.sankore){
-        if(sankore.preference("blackYellowData","")){
-            var importArray = jQuery.parseJSON(sankore.preference("blackYellowData",""));
+        if(await sankore.async.preference("blackYellowData","")){
+            var importArray = jQuery.parseJSON(await sankore.async.preference("blackYellowData",""));
             for(var i in importArray){
                 var tmpReadyTask = $("<div class='readyTask'>");
                 var exprContainer = $("<div class='taskContainer' style='color: yellow;'>" + importArray[i].data1 + "</div>").appendTo(tmpReadyTask);
@@ -94,9 +94,9 @@ function init(){
     /* ------------- BUTTONS -------------*/
     
     if(window.sankore){
-        if(sankore.preference("by_style","")){
-            changeStyle(sankore.preference("by_style",""));
-            $("#style_select").val(sankore.preference("by_style",""));
+        if(await sankore.async.preference("by_style","")){
+            changeStyle(await sankore.async.preference("by_style",""));
+            $("#style_select").val(await sankore.async.preference("by_style",""));
         } else
             changeStyle("3")
     } else
@@ -415,10 +415,10 @@ function init(){
     });
     
     if (window.widget) {
-        window.widget.onleave = function(){
+        window.widget.onleave.connect(() => {
             exportToSankore();
             sankore.setPreference("by_style", $("#style_select").find("option:selected").val());
-        }
+        });
     }
     
     // export data

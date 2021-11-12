@@ -63,7 +63,7 @@
         function loadPage() {
 
             // Get OpenBoard's current language
-            var appLanguage = window.sankore ? sankore.locale().substr(0,2) : searchLanguage;
+            var appLanguage = window.sankore ? sankore.lang.substr(0,2) : searchLanguage;
             
             // Set it as search language, if possible
             if (availableLanguages.indexOf(appLanguage) > -1)

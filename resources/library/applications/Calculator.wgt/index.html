@@ -17,14 +17,14 @@
         var unpredictable = false;
         
         var c = Sankore.Calculator.create('ubwidget', {
-            locale: window.sankore ? window.sankore.locale() : 'fr_FR', 
+            locale: window.sankore ? window.sankore.lang : 'fr_FR',
             unpredictableMode: unpredictable,
-            ready: function () {
+            ready: async function () {
                 var self = this, state = {}, timer = null;
 
                 if (window.sankore) {
                     try {
-                        state = JSON.parse(window.sankore.preference('state'));
+                        state = JSON.parse(await window.sankore.async.preference('state'));
                     } catch (e) {}
 
                     this.eventDispatcher.addEventSubscriber({

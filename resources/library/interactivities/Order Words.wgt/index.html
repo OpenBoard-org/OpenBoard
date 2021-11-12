@@ -14,7 +14,7 @@
                 parent.loaded();
 
             $(document).ready(function(){
-                var lang = (window.sankore)?sankore.locale().substr(0,2):"en"; //local language
+                var lang = (window.sankore)?sankore.lang.substr(0,2):"en"; //local language
 
                 $.ajax({
                     type: 'POST',

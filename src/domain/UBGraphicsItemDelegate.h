@@ -50,7 +50,6 @@
 class QGraphicsSceneMouseEvent;
 class QGraphicsItem;
 class UBGraphicsScene;
-class UBGraphicsProxyWidget;
 class UBGraphicsDelegateFrame;
 class UBGraphicsWidgetItem;
 class UBGraphicsMediaItem;

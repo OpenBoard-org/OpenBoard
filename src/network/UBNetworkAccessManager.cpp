@@ -39,7 +39,6 @@
 #include "core/UBSettings.h"
 
 #include "ui_passworddialog.h"
-#include "ui_proxy.h"
 
 #include "UBCookieJar.h"
 
@@ -115,20 +114,20 @@ void UBNetworkAccessManager::authenticationRequired(QNetworkReply *reply, QAuthe
     Ui::PasswordDialog passwordDialog;
     passwordDialog.setupUi(&dialog);
 
-    passwordDialog.iconLabel->setText(QString());
-    passwordDialog.iconLabel->setPixmap(mainWindow->style()->standardIcon(QStyle::SP_MessageBoxQuestion, 0, mainWindow).pixmap(32, 32));
+    passwordDialog.m_iconLabel->setText(QString());
+    passwordDialog.m_iconLabel->setPixmap(mainWindow->style()->standardIcon(QStyle::SP_MessageBoxQuestion, 0, mainWindow).pixmap(32, 32));
 
     QString introMessage = tr("<qt>Enter username and password for \"%1\" at %2</qt>");
     introMessage = introMessage.arg((reply->url().toString()).toHtmlEscaped()).arg((reply->url().toString()).toHtmlEscaped());
-    passwordDialog.introLabel->setText(introMessage);
-    passwordDialog.introLabel->setWordWrap(true);
+    passwordDialog.m_infoLabel->setText(introMessage);
+    passwordDialog.m_infoLabel->setWordWrap(true);
 
     if (dialog.exec() == QDialog::Accepted)
     {
-        if(auth && passwordDialog.userNameLineEdit)
-            auth->setUser(passwordDialog.userNameLineEdit->text());
-        if(auth && passwordDialog.passwordLineEdit)
-            auth->setPassword(passwordDialog.passwordLineEdit->text());
+        if(auth && passwordDialog.m_userNameLineEdit)
+            auth->setUser(passwordDialog.m_userNameLineEdit->text());
+        if(auth && passwordDialog.m_passwordLineEdit)
+            auth->setPassword(passwordDialog.m_passwordLineEdit->text());
     }
 
 }

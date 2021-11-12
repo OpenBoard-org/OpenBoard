@@ -37,7 +37,7 @@
 #include "core/UBApplicationController.h"
 
 class UBGraphicsScene;
-class WBWebView;
+class WebView;
 class UBPodcastRecordingPalette;
 
 
@@ -106,7 +106,7 @@ class UBPodcastController : public QObject
 
         void applicationDesktopMode(bool displayed);
 
-        void webActiveWebPageChanged(WBWebView* pWebView);
+        void webActiveWebPageChanged(WebView* pWebView);
 
         void encodingStatus(const QString& pStatus);
 

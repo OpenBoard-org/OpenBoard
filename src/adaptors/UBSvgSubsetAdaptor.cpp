@@ -38,7 +38,6 @@
 
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
-#include "domain/UBGraphicsProxyWidget.h"
 #include "domain/UBGraphicsPolygonItem.h"
 #include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsWidgetItem.h"
@@ -869,7 +868,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                         currentWidget = 0;
                     }
                 }
-                else if (src.contains(".wdgt"))
+                else if (src.contains(".wdgt")) // NOTE @letsfindaway obsolete
                 {
                     UBGraphicsAppleWidgetItem* appleWidgetItem = graphicsAppleWidgetFromSvg();
                     if (appleWidgetItem)
@@ -1337,7 +1336,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
             continue;
         }
 
-        // Is the item an app?
+        // Is the item an app? // NOTE @letsfindaway obsolete
         UBGraphicsAppleWidgetItem *appleWidgetItem = qgraphicsitem_cast<UBGraphicsAppleWidgetItem*> (item);
         if (appleWidgetItem && appleWidgetItem->isVisible())
         {
@@ -2437,7 +2436,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsItemToSvg(QGraphicsItem* ite
 
 
 
-
+// NOTE @letsfindaway obsolete
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsAppleWidgetToSvg(UBGraphicsAppleWidgetItem* item)
 {
     graphicsWidgetToSvg(item);
@@ -2469,6 +2468,12 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
             QDir dir;
             dir.mkpath(path);
             UBFileSystemUtils::copyDir(widgetRootDir, path);
+        }
+
+        // save snapshot of frozen widget
+        if (item->isFrozen()) {
+            QString pixPath = mDocumentPath + "/" + UBPersistenceManager::widgetDirectory + "/" + uuid + ".png";
+            item->snapshot().save(pixPath);
         }
 
         widgetRootUrl = widgetTargetDir;
@@ -2536,7 +2541,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
     mXmlWriter.writeEndElement();
 }
 
-
+// NOTE @letsfindaway obsolete
 UBGraphicsAppleWidgetItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsAppleWidgetFromSvg()
 {
 
@@ -2588,14 +2593,12 @@ UBGraphicsW3CWidgetItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsW3CWidge
     QString pixPath = mDocumentPath + "/" + UBPersistenceManager::widgetDirectory + "/" + uuid.toString() + ".png";
 
     QPixmap snapshot(pixPath);
-    if (!snapshot.isNull())
-        widgetItem->setSnapshot(snapshot);
 
     QStringRef frozen = mXmlReader.attributes().value(mNamespaceUri, "frozen");
 
     if (!frozen.isNull() && frozen.toString() == xmlTrue && !snapshot.isNull())
     {
-        widgetItem->freeze();
+        widgetItem->setSnapshot(snapshot);
     }
 
     graphicsItemFromSvg(widgetItem);

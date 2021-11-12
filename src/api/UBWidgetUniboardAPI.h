@@ -51,18 +51,18 @@ class UBWidgetUniboardAPI : public QObject
     /**
      * The number of pages in the current document
      */
-    Q_PROPERTY(int pageCount READ pageCount SCRIPTABLE true)
+    int pageCount() const;
 
     /**
      * The page number of the current page
      */
-    Q_PROPERTY(int currentPageNumber READ currentPageNumber SCRIPTABLE true)
+    int currentPageNumber() const;
 
     /**
      * instance UUID, return a unique identifier for the widget, this value is guaranted to be unique
      * and constant for a widget, deprecated, use window.widget.uuid instead
      */
-    Q_PROPERTY(QString uuid READ uuid SCRIPTABLE true)
+    Q_PROPERTY(QString uuid READ uuid SCRIPTABLE true CONSTANT)
 
     /**
      * Returns the language and eventually the country of this locale as a string of the form
@@ -79,20 +79,21 @@ class UBWidgetUniboardAPI : public QObject
      * fr-FR
      *
      */
-    Q_PROPERTY(QString lang READ lang SCRIPTABLE true)
+    Q_PROPERTY(QString lang READ lang SCRIPTABLE true CONSTANT)
 
-    Q_PROPERTY(QObject* messages READ messages SCRIPTABLE true)
+    Q_PROPERTY(QObject* messages READ messages SCRIPTABLE true CONSTANT)
 
-    Q_PROPERTY(QObject* datastore READ datastore SCRIPTABLE true)
+    Q_PROPERTY(QObject* datastore READ datastore SCRIPTABLE true CONSTANT)
 
-    public:
+    Q_PROPERTY(QString dropData MEMBER mDropData WRITE setDropData NOTIFY dropDataChanged SCRIPTABLE true)
 
+public:
         UBWidgetUniboardAPI(UBGraphicsScene *pScene, UBGraphicsWidgetItem *widget = 0);
         ~UBWidgetUniboardAPI();
 
-        QObject* messages();
+        QObject* messages() const;
 
-        QObject* datastore();
+        QObject* datastore() const;
 
     public slots:
 
@@ -237,9 +238,6 @@ class UBWidgetUniboardAPI : public QObject
         void addText(const QString& text, const qreal x, const qreal y, const int height = -1, const QString& font = ""
                 , bool bold = false, bool italic = false);
 
-        void returnStatus(const QString& method, const QString& status);
-        void usedMethods(QStringList methods);
-        void response(bool correct);
 
         /**
           * Give the file metadata to Sankore. The format must be
@@ -255,14 +253,17 @@ class UBWidgetUniboardAPI : public QObject
         /**
          * If the widget support a the drop of an object it will notify sankore about this.
          */
-        void enableDropOnWidget (bool enable = true);
+        void enableDropOnWidget (bool enable = true, bool processFileDrop = false);
 
         /**
          * When an object is dropped on a widget, this one send us the informations to download it locally.
          * this method download the object on the widget directory and return the path of the downloaded object
          */
-        void ProcessDropEvent(QGraphicsSceneDragDropEvent *);
+        bool ProcessDropEvent(QGraphicsSceneDragDropEvent *);
         bool isDropableData(const QMimeData *pMimeData) const;
+
+signals:
+        void dropDataChanged(const QString& data);
 
 private slots:
         void onDownloadFinished(bool pSuccess, sDownloadFileDesc desc, QByteArray pData);
@@ -271,16 +272,12 @@ private:
         inline void registerIDWidget(int id){webDownloadIds.append(id);}
         inline bool takeIDWidget(int id);
 
+        QString uuid() const;
 
-    private:
+        QString lang() const;
 
-        QString uuid();
+        void setDropData(const QString& data);
 
-        QString lang();
-
-        int pageCount();
-
-        int currentPageNumber();
         QString getObjDir();
         QString createMimeText(bool downloaded, const QString &mimeType, const QString &fileName);
         bool supportedTypeHeader(const QString &) const;
@@ -296,6 +293,8 @@ private:
 
         UBDatastoreAPI* mDatastoreAPI;
         QList<int> webDownloadIds;
+        bool mProcessFileDrop;
+        QString mDropData;
 };
 
 
@@ -303,13 +302,13 @@ class UBDatastoreAPI : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QObject* document READ document SCRIPTABLE true)
+    Q_PROPERTY(QObject* document READ document SCRIPTABLE true CONSTANT)
 
     public:
         UBDatastoreAPI(UBGraphicsW3CWidgetItem *widget);
         virtual ~UBDatastoreAPI(){;}
 
-        QObject* document();
+        QObject* document() const;
 
     private:
 
@@ -336,7 +335,7 @@ class UBDocumentDatastoreAPI : public UBW3CWebStorage
         virtual void clear();
 
     protected:
-        virtual int length();
+        virtual int length() const;
 
     private:
         UBGraphicsW3CWidgetItem* mGraphicsW3CWidget;

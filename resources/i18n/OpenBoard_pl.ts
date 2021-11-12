@@ -9,41 +9,105 @@
     </message>
 </context>
 <context>
-    <name>DownloadDialog</name>
+    <name>BrowserWindow</name>
     <message>
-        <source>Downloads</source>
-        <translation>Pobrane</translation>
+        <source>Navigation</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clean Up</source>
-        <translation>Wyczyść</translation>
-    </message>
-    <message>
-        <source>0 Items</source>
-        <translation>0 elementów</translation>
+        <source>Show downloads</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>DownloadItem</name>
+    <name>CertificateErrorDialog</name>
     <message>
-        <source>Form</source>
-        <translation>Formularz</translation>
+        <source>Dialog</source>
+        <translation type="unfinished">Dialog</translation>
     </message>
     <message>
-        <source>Filename</source>
-        <translation>Nazwa pliku</translation>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Try Again</source>
-        <translation>Spróbuj ponownie</translation>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>Zatrzymaj</translation>
+        <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
+
+Do you wish to override the security check and continue ?   </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadManagerWidget</name>
+    <message>
+        <source>Downloads</source>
+        <translation type="unfinished">Pobrane</translation>
     </message>
     <message>
-        <source>Open</source>
-        <translation>Otwórz</translation>
+        <source>No downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save as</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadWidget</name>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 KiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 MiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 GiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%p% - %1 of %2 downloaded - %3/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown size - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>completed - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cancelled - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>interrupted: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop downloading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from list</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -176,20 +240,12 @@
         <translation>Gumka</translation>
     </message>
     <message>
-        <source>Smalle Eraser</source>
-        <translation type="vanished">Mała gumka</translation>
-    </message>
-    <message>
         <source>Medium Eraser</source>
         <translation>Średnia gumka</translation>
     </message>
     <message>
         <source>Large Eraser</source>
         <translation>Duża gumka</translation>
-    </message>
-    <message>
-        <source>Color</source>
-        <translation type="vanished">Kolor</translation>
     </message>
     <message>
         <source>Back</source>
@@ -858,28 +914,13 @@
         <source>Password:</source>
         <translation>Hasło:</translation>
     </message>
-</context>
-<context>
-    <name>ProxyDialog</name>
     <message>
-        <source>Proxy Authentication</source>
-        <translation>Autoryzacja serwera proxy</translation>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Connect to Proxy</source>
-        <translation>Połącz się z serwerem proxy</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation>Nazwa użytkownika:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation>Hasło:</translation>
-    </message>
-    <message>
-        <source>Save username and password for future use</source>
-        <translation>Zachowaj nazwę użytkownika i hasło do użytku w przyszłości</translation>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -899,6 +940,37 @@
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
         <translation>Czy na pewno chcesz usunąć 1 stronę z wybranego dokumentu „%0”?</translation>
+    </message>
+</context>
+<context>
+    <name>TabWidget</name>
+    <message>
+        <source>New &amp;Tab</source>
+        <translation>Nowa zakładka</translation>
+    </message>
+    <message>
+        <source>Clone Tab</source>
+        <translation>Klonuj zakładkę</translation>
+    </message>
+    <message>
+        <source>&amp;Close Tab</source>
+        <translation>Zamknij zakładkę</translation>
+    </message>
+    <message>
+        <source>Close &amp;Other Tabs</source>
+        <translation>Zamknij inne zakładki</translation>
+    </message>
+    <message>
+        <source>Reload Tab</source>
+        <translation>Ponownie wczytaj zakładkę</translation>
+    </message>
+    <message>
+        <source>Reload All Tabs</source>
+        <translation>Ponownie wczytaj wszystkie zakładki</translation>
+    </message>
+    <message>
+        <source>(Untitled)</source>
+        <translation>(Bez tytułu)</translation>
     </message>
 </context>
 <context>
@@ -971,10 +1043,6 @@
     <message>
         <source>All Supported (%1)</source>
         <translation>Wszystkie obsługiwane (%1)</translation>
-    </message>
-    <message>
-        <source>Delete page %1 from document</source>
-        <translation type="vanished">Usuń stronę %1 z dokumentu</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -1108,46 +1176,6 @@
         <translation>Dokument %1 skopiowany</translation>
     </message>
     <message>
-        <source>Remove Page</source>
-        <translation type="vanished">Usuń stronę</translation>
-    </message>
-    <message>
-        <source>Remove Document</source>
-        <translation type="vanished">Usuń dokument</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation type="vanished">Czy na pewno chcesz usunąć dokument „%1”?</translation>
-    </message>
-    <message>
-        <source>Empty Trash</source>
-        <translation type="vanished">Opróżnij kosz</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to empty trash?</source>
-        <translation type="vanished">Czy na pewno chcesz opróżnić kosz?</translation>
-    </message>
-    <message>
-        <source>Emptying trash</source>
-        <translation type="vanished">Opróżnianie kosza</translation>
-    </message>
-    <message>
-        <source>Emptied trash</source>
-        <translation type="vanished">Opróżniono kosz</translation>
-    </message>
-    <message>
-        <source>Remove Folder</source>
-        <translation type="vanished">Usuń folder</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="vanished">Czy na pewno chcesz usunąć folder „%1” wraz z zawartością?</translation>
-    </message>
-    <message>
-        <source>No document selected!</source>
-        <translation type="vanished">Nie wybrano żadnego dokumentu!</translation>
-    </message>
-    <message>
         <source>Open Supported File</source>
         <translation>Otwórz obsługiwany plik</translation>
     </message>
@@ -1190,14 +1218,6 @@
     <message>
         <source>Selection does not contain any image files!</source>
         <translation>Zaznaczenie nie zawiera żadnych plików obrazów!</translation>
-    </message>
-    <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="vanished">
-            <numerusform>Czy na pewno chcesz usunąć %n stronę z wybranego dokumentu „%1”?</numerusform>
-            <numerusform>Czy na pewno chcesz usunąć %n strony z wybranego dokumentu „%1”?</numerusform>
-            <numerusform>Czy na pewno chcesz usunąć %n stron z wybranego dokumentu „%1”?</numerusform>
-        </translation>
     </message>
     <message>
         <source>Folder does not contain any image files</source>
@@ -1284,13 +1304,6 @@
     </message>
 </context>
 <context>
-    <name>UBDocumentPublisher</name>
-    <message>
-        <source>Export failed.</source>
-        <translation type="obsolete">Eksportowanie zakończone niepowodzeniem.</translation>
-    </message>
-</context>
-<context>
     <name>UBDocumentReplaceDialog</name>
     <message>
         <source>Accept</source>
@@ -1354,26 +1367,6 @@ Providing a new name will create a new document.</source>
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
-    <message>
-        <source>%1 (copy)</source>
-        <translation type="vanished">%1 (kopia)</translation>
-    </message>
-    <message>
-        <source>Copying page %1/%2</source>
-        <translation type="vanished">Kopiowanie strony %1/%2</translation>
-    </message>
-    <message numerus="yes">
-        <source>%1 pages copied</source>
-        <translatorcomment>The first translation is the singular form</translatorcomment>
-        <translation type="vanished">
-            <numerusform>Skopiowano %1 stronę</numerusform>
-            <numerusform>Skopiowano %1 strony</numerusform>
-            <numerusform>Skopiowano %1 stron</numerusform>
-        </translation>
-    </message>
-</context>
-<context>
     <name>UBDownloadWidget</name>
     <message>
         <source>Downloading files</source>
@@ -1396,6 +1389,22 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Page %0</source>
         <translation type="unfinished">Strona %0</translation>
+    </message>
+</context>
+<context>
+    <name>UBEmbedController</name>
+    <message>
+        <source>Whole page</source>
+        <translation>Cała strona</translation>
+    </message>
+    <message>
+        <source>Web</source>
+        <translation>Sieć Web</translation>
+    </message>
+    <message>
+        <source>Application name can`t contain any of the following characters:<byte value="xd"/>
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1459,14 +1468,6 @@ Providing a new name will create a new document.</source>
         <translation>Eksportowanie jako plik UBZ</translation>
     </message>
     <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Eksportowanie dokumentu...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Eksportowanie zakończone powodzeniem.</translation>
-    </message>
-    <message>
         <source>Exporting %1 %2 of %3</source>
         <translation>Eksportowanie %1 %2 z %3</translation>
     </message>
@@ -1509,14 +1510,6 @@ Providing a new name will create a new document.</source>
         <translation>Eksportowanie jako plik PDF</translation>
     </message>
     <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Eksportowanie dokumentu...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Eksportowanie zakończone powodzeniem.</translation>
-    </message>
-    <message>
         <source>Export to PDF</source>
         <translation>Eksportowanie do PDF</translation>
     </message>
@@ -1526,14 +1519,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Export as PDF File</source>
         <translation>Eksportowanie jako plik PDF</translation>
-    </message>
-    <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Eksportowanie dokumentu...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Eksportowanie zakończone powodzeniem.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1576,10 +1561,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Add to page</source>
         <translation>Dodaj do strony</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation type="vanished">Ustaw jako tło</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1642,10 +1623,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Pictures</source>
         <translation>Obrazy</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <translation type="vanished">Animacje</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -1716,12 +1693,12 @@ Providing a new name will create a new document.</source>
         <translation>Widoczne na ekranie rozszerzonym</translation>
     </message>
     <message>
-        <source>Go to Content Source</source>
-        <translation>Przejdź do źródła zawartości</translation>
-    </message>
-    <message>
         <source>Set as background</source>
         <translation type="unfinished">Ustaw jako tło</translation>
+    </message>
+    <message>
+        <source>Web Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2079,51 +2056,10 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
     </message>
 </context>
 <context>
-    <name>UBProxyLoginDlg</name>
-    <message>
-        <source>Proxy Login</source>
-        <translation type="vanished">Login serwera proxy</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation type="vanished">Nazwa użytkownika:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="vanished">Hasło:</translation>
-    </message>
-</context>
-<context>
-    <name>UBPublicationDlg</name>
-    <message>
-        <source>Publish document on the web</source>
-        <translation type="vanished">Publikuj dokument w sieci Web</translation>
-    </message>
-    <message>
-        <source>Title:</source>
-        <translation type="vanished">Tytuł:</translation>
-    </message>
-    <message>
-        <source>Description:</source>
-        <translation type="vanished">Opis:</translation>
-    </message>
-    <message>
-        <source>Publish</source>
-        <translation type="vanished">Publikuj</translation>
-    </message>
-</context>
-<context>
     <name>UBSettings</name>
     <message>
         <source>My Movies</source>
         <translation>Moje filmy</translation>
-    </message>
-</context>
-<context>
-    <name>UBStartupHintsPalette</name>
-    <message>
-        <source>Visible next time</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2187,17 +2123,6 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
     </message>
 </context>
 <context>
-    <name>UBTrapFlashController</name>
-    <message>
-        <source>Whole page</source>
-        <translation>Cała strona</translation>
-    </message>
-    <message>
-        <source>Web</source>
-        <translation>Sieć Web</translation>
-    </message>
-</context>
-<context>
     <name>UBUpdateDlg</name>
     <message>
         <source>Document updater</source>
@@ -2251,17 +2176,10 @@ Aby uzyskać dostęp do zaktualizowanych dokumentów, należy ponownie uruchomi�
     </message>
 </context>
 <context>
-    <name>UBWebPluginWidget</name>
+    <name>UBWebEngineView</name>
     <message>
-        <source>Loading...</source>
-        <translation>Wczytywanie...</translation>
-    </message>
-</context>
-<context>
-    <name>UBWidgetUniboardAPI</name>
-    <message>
-        <source>%0 called (method=%1, status=%2)</source>
-        <translation>Wywołano %0 (metoda=%1, stan=%2)</translation>
+        <source>Open Web Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2350,85 +2268,6 @@ Aby uzyskać dostęp do zaktualizowanych dokumentów, należy ponownie uruchomi�
     </message>
 </context>
 <context>
-    <name>WBClearButton</name>
-    <message>
-        <source>Clear</source>
-        <translation>Wyczyść</translation>
-    </message>
-</context>
-<context>
-    <name>WBDownloadItem</name>
-    <message>
-        <source>Save File</source>
-        <translation>Zapisz plik</translation>
-    </message>
-    <message>
-        <source>Download canceled: %1</source>
-        <translation>Pobieranie anulowane: %1</translation>
-    </message>
-    <message>
-        <source>Error opening saved file: %1</source>
-        <translation>Błąd podczas otwierania zapisanego pliku: %1</translation>
-    </message>
-    <message>
-        <source>Error saving: %1</source>
-        <translation>Błąd zapisywania: %1</translation>
-    </message>
-    <message>
-        <source>Network Error: %1</source>
-        <translation>Błąd sieci: %1</translation>
-    </message>
-    <message>
-        <source>seconds</source>
-        <translation>sekundy</translation>
-    </message>
-    <message>
-        <source>minutes</source>
-        <translation>minuty</translation>
-    </message>
-    <message>
-        <source>- %4 %5 remaining</source>
-        <translation>Zostało - %4 %5</translation>
-    </message>
-    <message>
-        <source>%1 of %2 (%3/sec) %4</source>
-        <translation>%1 z %2 (%3/sek.) %4</translation>
-    </message>
-    <message>
-        <source>?</source>
-        <comment>unknown file size</comment>
-        <translation>?</translation>
-    </message>
-    <message>
-        <source>%1 of %2 - Stopped</source>
-        <translation>%1 z %2 - Zatrzymano</translation>
-    </message>
-    <message>
-        <source>bytes</source>
-        <translation>bity</translation>
-    </message>
-    <message>
-        <source>KB</source>
-        <translation>KB</translation>
-    </message>
-    <message>
-        <source>MB</source>
-        <translation>MB</translation>
-    </message>
-</context>
-<context>
-    <name>WBDownloadManager</name>
-    <message>
-        <source>1 Download</source>
-        <translation>1 pobieranie</translation>
-    </message>
-    <message>
-        <source>%1 Downloads</source>
-        <comment>always &gt;= 2</comment>
-        <translation>%1 pobrań</translation>
-    </message>
-</context>
-<context>
     <name>WBHistoryModel</name>
     <message>
         <source>Title</source>
@@ -2451,97 +2290,90 @@ Aby uzyskać dostęp do zaktualizowanych dokumentów, należy ponownie uruchomi�
     </message>
 </context>
 <context>
-    <name>WBSearchLineEdit</name>
+    <name>WebPage</name>
     <message>
-        <source>Search</source>
-        <translation>Szukaj</translation>
-    </message>
-</context>
-<context>
-    <name>WBTabBar</name>
-    <message>
-        <source>New &amp;Tab</source>
-        <translation>Nowa zakładka</translation>
+        <source>Certificate Error</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clone Tab</source>
-        <translation>Klonuj zakładkę</translation>
+        <source>Enter username and password for &quot;%1&quot; at %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Close Tab</source>
-        <translation>Zamknij zakładkę</translation>
+        <source>Allow %1 to access your location information?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Close &amp;Other Tabs</source>
-        <translation>Zamknij inne zakładki</translation>
+        <source>Allow %1 to access your microphone?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reload Tab</source>
-        <translation>Ponownie wczytaj zakładkę</translation>
+        <source>Allow %1 to access your webcam?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reload All Tabs</source>
-        <translation>Ponownie wczytaj wszystkie zakładki</translation>
-    </message>
-</context>
-<context>
-    <name>WBTabWidget</name>
-    <message>
-        <source>Recently Closed Tabs</source>
-        <translation>Ostatnio zamknięte zakładki</translation>
+        <source>Allow %1 to access your microphone and webcam?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>(Untitled)</source>
-        <translation>(Bez tytułu)</translation>
-    </message>
-</context>
-<context>
-    <name>WBToolbarSearch</name>
-    <message>
-        <source>Search</source>
-        <translation>Szukaj</translation>
+        <source>Allow %1 to lock your mouse cursor?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No Recent Searches</source>
-        <translation>Brak ostatnio wyszukiwanych</translation>
+        <source>Allow %1 to capture video of your desktop?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Recent Searches</source>
-        <translation>Ostatnio wyszukiwane</translation>
+        <source>Allow %1 to capture audio and video of your desktop?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clear Recent Searches</source>
-        <translation>Wyczyść ostatnio wyszukiwane</translation>
-    </message>
-</context>
-<context>
-    <name>WBWebPage</name>
-    <message>
-        <source>Download</source>
-        <translation>Pobierz</translation>
+        <source>Permission Request</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add to Current Document</source>
-        <translation>Dodaj do bieżącego dokumentu</translation>
+        <source>Connect to proxy &quot;%1&quot; using:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>PDF</source>
-        <translation>PDF</translation>
-    </message>
-    <message>
-        <source>Error loading page: %1</source>
-        <translation>Błąd wczytywania strony: %1</translation>
-    </message>
-    <message>
-        <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
+        <source>Allow %1 to open all %2 links?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>WBWebView</name>
+    <name>WebView</name>
     <message>
-        <source>Open in New Tab</source>
-        <translation>Otwórz w nowej zakładce</translation>
+        <source>Render process normal exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process abnormal exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process crashed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process killed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process exited with code: %1
+Do you want to reload the page ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Web Inspector in new window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inspect element</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to board</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2673,29 +2505,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>documentPublishingDialog</name>
-    <message>
-        <source>Dialog</source>
-        <translation type="obsolete">Dialog</translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="obsolete">Tytuł</translation>
-    </message>
-    <message>
-        <source>E-mail</source>
-        <translation type="obsolete">E-mail</translation>
-    </message>
-    <message>
-        <source>Author</source>
-        <translation type="obsolete">Autor</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="obsolete">Opis</translation>
-    </message>
-</context>
-<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
@@ -2755,10 +2564,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Virtual Keyboard</source>
         <translation>Wirtualna klawiatura</translation>
-    </message>
-    <message>
-        <source>Keyboard button size:</source>
-        <translation type="vanished">Rozmiar przycisków klawiatury:</translation>
     </message>
     <message>
         <source>Toolbar</source>

@@ -7,7 +7,7 @@
         <script type="text/javascript" src="scripts/jquery-1.6.2.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
-                var lang = (window.sankore)?sankore.locale().substr(0,2):"en"; //local language
+                var lang = (window.sankore)?sankore.lang.substr(0,2):"en"; //local language
 
                 $.ajax({
                     type: 'POST',

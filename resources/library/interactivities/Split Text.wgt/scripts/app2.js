@@ -19,19 +19,23 @@ function createElements( text )
     return s;
 }
 
-$(document).ready(function()
+$(document).ready(function() {
+    start();
+});
+
+async function start()
 {
     var w = new wcontainer( "#ub-widget" );
     
     var sentences = "";
     
     if(window.sankore)
-        sentences = (sankore.preference("ordSplText", ""))?sankore.preference("ordSplText", ""):sankoreLang.example;
+        sentences = (await sankore.async.preference("ordSplText", ""))?await sankore.async.preference("ordSplText", ""):sankoreLang.example;
     else
         sentences = sankoreLang.example;
     
     if (window.widget) {
-        window.widget.onleave = function(){
+        window.widget.onleave.connect(() => {
             sankore.setPreference("spl_text_style", $("#style_select").find("option:selected").val());
             if(w.editMode){
                 sankore.setPreference("ordSplText", w.elements.container.find( "textarea" ).val());
@@ -43,12 +47,12 @@ $(document).ready(function()
                 sankore.setPreference("ordSplTextAnswer", ($("#mp_view").hasClass("answerRight"))?"answerRight":"");
                 sankore.setPreference("ordSplText", w.getData( "text" ));              
             }
-        }
+        });
     }
     
-    if(sankore.preference("spl_text_style","")){
-        changeStyle(sankore.preference("spl_text_style",""));
-        $("#style_select").val(sankore.preference("spl_text_style",""));
+    if(await sankore.async.preference("spl_text_style","")){
+        changeStyle(await sankore.async.preference("spl_text_style",""));
+        $("#style_select").val(await sankore.async.preference("spl_text_style",""));
     } else
         changeStyle("3")
     
@@ -128,7 +132,7 @@ $(document).ready(function()
 	
 	
     // onViewMode
-    w.onViewMode = function()
+    w.onViewMode = async function()
     {
         // clean up the text
         var text = w.elements.container.find( "textarea" ).val()
@@ -141,10 +145,10 @@ $(document).ready(function()
         text = text.replace( /\. /g, ' ' ).trim( ["."] );
 		
         // create the html
-        if(sankore.preference("ordSplTextState", "") == "1" && flag){
-            $("#mp_view").html(sankore.preference("ordSplTextCode", ""));
-            if(sankore.preference("ordSplTextAnswer", ""))
-                $("#mp_view").addClass(sankore.preference("ordSplTextAnswer", ""));
+        if(await sankore.async.preference("ordSplTextState", "") == "1" && flag){
+            $("#mp_view").html(await sankore.async.preference("ordSplTextCode", ""));
+            if(await sankore.async.preference("ordSplTextAnswer", ""))
+                $("#mp_view").addClass(await sankore.async.preference("ordSplTextAnswer", ""));
             flag = false;
         } 
         else
@@ -325,4 +329,4 @@ $(document).ready(function()
         }
     }
     
-});
+}

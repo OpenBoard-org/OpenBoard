@@ -261,8 +261,6 @@ void UBSettings::init()
     appLastSessionPageIndex = new UBSetting(this, "App", "LastSessionPageIndex", 0);
     appUseMultiscreen = new UBSetting(this, "App", "UseMultiscreenMode", true);
 
-    appStartupHintsEnabled = new UBSetting(this,"App","EnableStartupHints",true);
-
     appLookForOpenSankoreInstall = new UBSetting(this, "App", "LookForOpenSankoreInstall", true);
 
     appStartMode = new UBSetting(this, "App", "StartMode", "");
@@ -361,6 +359,9 @@ void UBSettings::init()
     webShowPageImmediatelyOnMirroredScreen = new UBSetting(this, "Web", "ShowPageImediatelyOnMirroredScreen", defaultShowPageImmediatelyOnMirroredScreen);
 
     webHomePage = new UBSetting(this, "Web", "Homepage", softwareHomeUrl);
+    webSearchEngineUrl = new UBSetting(this, "Web", "SearchEngineUrl", "https://www.qwant.com/?q=%1");
+    alternativeUserAgent = new UBSetting(this, "Web", "AlternativeUserAgent", "Mozilla/5.0 (%1; %2; rv:91.0) Gecko/20100101 Firefox/91.0");
+    alternativeUserAgentDomains = new UBSetting(this, "Web", "AlternativeUserAgentDomains", "google.*");
 
     pageCacheSize = new UBSetting(this, "App", "PageCacheSize", 20);
 
@@ -394,8 +395,6 @@ void UBSettings::init()
     lastPicturePath = new UBSetting(this, "Library", "LastPicturePath", QVariant(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)));
     lastWidgetPath = new UBSetting(this, "Library", "LastWidgetPath", QVariant(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)));
     lastVideoPath = new UBSetting(this, "Library", "LastVideoPath", QVariant(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation)));
-
-    appOnlineUserName = new UBSetting(this, "App", "OnlineUserName", "");
 
     boardShowToolsPalette = new UBSetting(this, "Board", "ShowToolsPalette", "false");
     magnifierDrawingMode = new UBSetting(this, "Board", "MagnifierDrawingMode", "0");

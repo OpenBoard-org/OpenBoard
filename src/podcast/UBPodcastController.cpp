@@ -45,7 +45,7 @@
 #include "gui/UBMainWindow.h"
 
 #include "web/UBWebController.h"
-#include "web/browser/WBWebView.h"
+#include "web/simplebrowser/webview.h"
 
 #include "domain/UBGraphicsScene.h"
 
@@ -106,8 +106,8 @@ UBPodcastController::UBPodcastController(QObject* pParent)
     connect(UBApplication::applicationController, SIGNAL(desktopMode(bool)),
             this, SLOT(applicationDesktopMode(bool)));
 
-    connect(UBApplication::webController, SIGNAL(activeWebPageChanged(WBWebView*)),
-            this, SLOT(webActiveWebPageChanged(WBWebView*)));
+    connect(UBApplication::webController, SIGNAL(activeWebPageChanged(WebView*)),
+            this, SLOT(webActiveWebPageChanged(WebView*)));
 
     connect(UBApplication::app(), SIGNAL(lastWindowClosed()),
             this, SLOT(applicationAboutToQuit()));
@@ -694,7 +694,7 @@ void UBPodcastController::applicationDesktopMode(bool displayed)
 }
 
 
-void UBPodcastController::webActiveWebPageChanged(WBWebView* pWebView)
+void UBPodcastController::webActiveWebPageChanged(WebView* pWebView)
 {
     if(UBApplication::applicationController->displayMode() == UBApplicationController::Internet)
     {

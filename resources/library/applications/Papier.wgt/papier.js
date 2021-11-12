@@ -659,7 +659,7 @@ $(document).on('click', '.bouton_commande', function (e) {
 			var canvas = document.getElementById('feuille');
 			var adresse=canvas.toDataURL('image/png',0.1); // Compression forte (0.1) car sans compression (1), image générée trop lourde à charger sous windows
 			// Décallage pour voir toutes les Ã©tiquettes
-			sankore.addObject(adresse,'100%','100%',0,0,true);
+			sankore.addObject(adresse,0,0,0,0,true);
 			//~ Description Ajoute l'objet à la scène
 			//~ Paramètres
 			//~ [QString] pUrl: the object URL.

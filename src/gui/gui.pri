@@ -39,7 +39,6 @@ HEADERS += src/gui/UBThumbnailView.h \
     src/gui/UBFeaturesActionBar.h \
     src/gui/UBMessagesDialog.h \
     src/gui/UBOpenSankoreImporterWidget.h \
-    src/gui/UBStartupHintsPalette.h \
     src/gui/UBBackgroundPalette.h \
     src/gui/UBBoardThumbnailsView.h
 SOURCES += src/gui/UBThumbnailView.cpp \
@@ -83,7 +82,6 @@ SOURCES += src/gui/UBThumbnailView.cpp \
     src/gui/UBFeaturesActionBar.cpp \
     src/gui/UBMessagesDialog.cpp \
     src/gui/UBOpenSankoreImporterWidget.cpp \
-    src/gui/UBStartupHintsPalette.cpp \
     src/gui/UBBackgroundPalette.cpp \
     src/gui/UBBoardThumbnailsView.cpp
 win32:SOURCES += src/gui/UBKeyboardPalette_win.cpp

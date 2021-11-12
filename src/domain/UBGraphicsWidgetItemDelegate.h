@@ -45,19 +45,20 @@ class UBGraphicsWidgetItemDelegate : public UBGraphicsItemDelegate
         virtual ~UBGraphicsWidgetItemDelegate();
 
         virtual void createControls() override;
-    protected:
 
+    protected:
         virtual void decorateMenu(QMenu* menu) override;
         virtual void updateMenuActionState() override;
         virtual void remove(bool canundo) override;
 
-    private slots:
+    protected slots:
+        virtual void gotoContentSource() override;
 
+private slots:
         void freeze(bool frozeon);
         void pin();
 
     private:
-
         int mWidgetType;
 
         UBGraphicsWidgetItem* delegated();

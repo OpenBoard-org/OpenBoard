@@ -45,6 +45,7 @@
 
 #include "adaptors/UBExportPDF.h"
 #include "adaptors/UBThumbnailAdaptor.h"
+#include "adaptors/UBWidgetUpgradeAdaptor.h"
 
 #include "adaptors/UBMetadataDcSubsetAdaptor.h"
 
@@ -3201,6 +3202,8 @@ void UBDocumentController::renameSelectedItem()
 
 bool UBDocumentController::isOKToOpenDocument(UBDocumentProxy* proxy)
 {
+    static UBWidgetUpgradeAdaptor widgetUpgradeAdaptor;
+
     //check version
     QString docVersion = proxy->metaData(UBSettings::documentVersion).toString();
 
@@ -3208,6 +3211,8 @@ bool UBDocumentController::isOKToOpenDocument(UBDocumentProxy* proxy)
             || docVersion.startsWith("4.3") || docVersion.startsWith("4.4") || docVersion.startsWith("4.5")
             || docVersion.startsWith("4.6") || docVersion.startsWith("4.8")) // TODO UB 4.7 update if necessary
     {
+        // Invoke widget upgrader
+        widgetUpgradeAdaptor.upgradeWidgets(proxy);
         return true;
     }
     else

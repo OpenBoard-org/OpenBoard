@@ -1,10 +1,10 @@
 HEADERS += src/domain/UBGraphicsScene.h \
+    src/domain/UBWebEngineView.h \
     src/domain/UBGraphicsItemUndoCommand.h \
     src/domain/UBGraphicsTextItemUndoCommand.h \
     src/domain/UBGraphicsItemTransformUndoCommand.h \
     src/domain/UBGraphicsPixmapItem.h \
     src/domain/UBPageSizeUndoCommand.h \
-    src/domain/UBGraphicsProxyWidget.h \
     src/domain/UBGraphicsSvgItem.h \
     src/domain/UBGraphicsPolygonItem.h \
     src/domain/UBItem.h \
@@ -28,12 +28,12 @@ HEADERS += src/domain/UBGraphicsScene.h \
     src/domain/UBGraphicsItemZLevelUndoCommand.h
 
 SOURCES += src/domain/UBGraphicsScene.cpp \
+    src/domain/UBWebEngineView.cpp \
     src/domain/UBGraphicsItemUndoCommand.cpp \
     src/domain/UBGraphicsTextItemUndoCommand.cpp \
     src/domain/UBGraphicsItemTransformUndoCommand.cpp \
     src/domain/UBGraphicsPixmapItem.cpp \
     src/domain/UBPageSizeUndoCommand.cpp \
-    src/domain/UBGraphicsProxyWidget.cpp \
     src/domain/UBGraphicsSvgItem.cpp \
     src/domain/UBGraphicsPolygonItem.cpp \
     src/domain/UBItem.cpp \

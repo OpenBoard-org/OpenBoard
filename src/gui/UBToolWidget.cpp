@@ -28,8 +28,10 @@
 
 
 #include <QtGui>
-#include <QWebView>
-#include <QWebFrame>
+#include <QWebChannel>
+#include <QWebEngineView>
+#include <QWebEnginePage>
+#include <QWebEngineSettings>
 
 #include "UBToolWidget.h"
 #include "api/UBWidgetUniboardAPI.h"
@@ -40,8 +42,12 @@
 #include "core/UBSettings.h"
 #include "domain/UBGraphicsScene.h"
 #include "domain/UBGraphicsWidgetItem.h"
+#include "domain/UBWebEngineView.h"
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
+#include "web/UBWebController.h"
+#include "web/simplebrowser/webpage.h"
+
 #include "core/memcheck.h"
 
 
@@ -59,7 +65,7 @@ UBToolWidget::UBToolWidget(const QUrl& pUrl, QWidget *pParent)
 
 {
     int widgetType = UBGraphicsWidgetItem::widgetType(pUrl);
-    if (widgetType == UBWidgetType::Apple)
+    if (widgetType == UBWidgetType::Apple) // NOTE @letsfindaway obsolete
         mToolWidget = new UBGraphicsAppleWidgetItem(pUrl);
     else if (widgetType == UBWidgetType::W3C)
         mToolWidget = new UBGraphicsW3CWidgetItem(pUrl);
@@ -79,7 +85,7 @@ UBToolWidget::UBToolWidget(UBGraphicsWidgetItem *pWidget, QWidget *pParent)
 
 {
     initialize();
-    javaScriptWindowObjectCleared();
+    registerAPI();
 }
 
 UBToolWidget::~UBToolWidget()
@@ -102,13 +108,14 @@ void UBToolWidget::initialize()
         wscene->removeItem(mToolWidget);
     }
 
+    mWebView = new UBWebEngineView();
 
-    mWebView = new QWebView(this);
+    // create the page using a profile
+    QWebEngineProfile* profile = UBApplication::webController->webProfile();
+    mWebView->setPage(new WebPage(profile, this));
 
-    QPalette palette = mWebView->page()->palette();
-    palette.setBrush(QPalette::Base, QBrush(Qt::transparent));
-    mWebView->page()->setPalette(palette);
-
+    mWebView->setBackgroundRole(QPalette::Window);
+    mWebView->page()->setBackgroundColor(QColor(Qt::transparent));
 
     mWebView->installEventFilter(this);
 
@@ -120,17 +127,11 @@ void UBToolWidget::initialize()
 
     setFixedSize(mToolWidget->boundingRect().width() + mContentMargin * 2, mToolWidget->boundingRect().height() + mContentMargin * 2);
 
-    connect(mWebView->page()->mainFrame(), &QWebFrame::javaScriptWindowObjectCleared,
-            this, &UBToolWidget::javaScriptWindowObjectCleared);
     mWebView->load(mToolWidget->mainHtml());
 
-
     mWebView->setAcceptDrops(false);
-    mWebView->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+    mWebView->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
     mWebView->setAttribute(Qt::WA_OpaquePaintEvent, false);
-
-
-    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(javaScriptWindowObjectCleared()));
 }
 
 
@@ -215,17 +216,21 @@ void UBToolWidget::paintEvent(QPaintEvent *event)
     }
 }
 
-void UBToolWidget::javaScriptWindowObjectCleared()
+void UBToolWidget::registerAPI()
 {
+    UBWebController::injectScripts(mWebView);
+
+    QWebChannel* channel = new QWebChannel(this);
+    mWebView->page()->setWebChannel(channel);
     UBWidgetUniboardAPI *uniboardAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene(), mToolWidget);
 
-    mWebView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", uniboardAPI);
+    channel->registerObject("sankore", uniboardAPI);
 
     UBGraphicsW3CWidgetItem *graphicsW3cWidgetItem = dynamic_cast<UBGraphicsW3CWidgetItem*>(mToolWidget);
     if (graphicsW3cWidgetItem)
     {
         UBW3CWidgetAPI* widgetAPI = new UBW3CWidgetAPI(graphicsW3cWidgetItem);
-        mWebView->page()->mainFrame()->addToJavaScriptWindowObject("widget", widgetAPI);
+        channel->registerObject("widget", widgetAPI);
     }
 }
 
@@ -244,7 +249,8 @@ QPoint UBToolWidget::naturalCenter() const
 
 void UBToolWidget::remove()
 {
-    mToolWidget = NULL;
+    mToolWidget = nullptr;
+    mWebView->closeInspector();
     hide();
     deleteLater();
 }
