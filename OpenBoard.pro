@@ -178,26 +178,25 @@ macx {
    equals(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 14) {
       LIBS += "-L../OpenBoard-ThirdParty/quazip/lib/macx" "-lquazip"
    } else {
-       LIBS += -L/usr/local/opt/quazip/lib -lquazip
+       LIBS += -L/usr/local/opt/quazip/lib -lquazip1-qt5
    }
-   LIBS += -L/usr/local/opt/ffmpeg/lib
+   LIBS += -L/opt/local/lib
    INCLUDEPATH += /usr/local/opt/openssl/include
-   INCLUDEPATH += /usr/local/opt/ffmpeg/include
+   INCLUDEPATH += /opt/local/include
    equals(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 14) {
        INCLUDEPATH += ../OpenBoard-ThirdParty/quazip/quazip-0.7.1
    } else {
        INCLUDEPATH += /usr/local/opt/quazip/include/quazip
    }
 
-   LIBS        += -L/usr/local/opt/poppler/lib -lpoppler
-   INCLUDEPATH += /usr/local/opt/poppler/include
-   INCLUDEPATH += /usr/local/opt/poppler/include/poppler
+   LIBS        += -L/opt/local/lib -lpoppler
+   INCLUDEPATH += /opt/local/include/poppler
 
    CONFIG(release, debug|release):CONFIG += x86_64
    CONFIG(debug, debug|release):CONFIG += x86_64
 
    QMAKE_MAC_SDK = macosx
-   QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.10
+   QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.13
 
    QMAKE_CXXFLAGS += -Wno-overloaded-virtual
    #VERSION_RC_PATH = "$$BUILD_DIR/version_rc"
