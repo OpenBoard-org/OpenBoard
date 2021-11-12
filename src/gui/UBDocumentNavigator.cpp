@@ -333,7 +333,6 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
 
     if (!event->isAccepted())
     {
-        mLongPressTimer.start();
         mLastPressedMousePos = event->pos();
 
         mLastClickedThumbnail = clickedThumbnail(mLastPressedMousePos);
@@ -345,6 +344,8 @@ void UBDocumentNavigator::mousePressEvent(QMouseEvent *event)
             UBApplication::boardController->setActiveDocumentScene(mLastClickedThumbnail->sceneIndex());
             UBApplication::boardController->centerOn(UBApplication::boardController->activeScene()->lastCenter());
         }
+
+        mLongPressTimer.start();
     }
 }
 
