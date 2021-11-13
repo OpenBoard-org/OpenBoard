@@ -112,7 +112,7 @@ void UBToolWidget::initialize()
 
     // create the page using a profile
     QWebEngineProfile* profile = UBApplication::webController->webProfile();
-    mWebView->setPage(new WebPage(profile, this));
+    mWebView->setPage(new WebPage(profile, mWebView));
 
     mWebView->setBackgroundRole(QPalette::Window);
     mWebView->page()->setBackgroundColor(QColor(Qt::transparent));
