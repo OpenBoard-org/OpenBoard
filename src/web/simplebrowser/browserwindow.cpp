@@ -76,7 +76,6 @@
 
 BrowserWindow::BrowserWindow(QWidget *parent, QWebEngineProfile *profile, bool forDevTools)
     : QWidget(parent)
-    , m_profile(profile)
     , m_tabWidget(new TabWidget(profile, this))
     , m_progressBar(nullptr)
     , m_urlLineEdit(nullptr)
