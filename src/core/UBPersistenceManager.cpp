@@ -827,7 +827,6 @@ UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* pr
 
     for(int i = count - 1; i >= index; i--)
     {
-        UBApplication::showMessage(tr("renaming pages (%1/%2)").arg(i).arg(count));
         renamePage(proxy, i , i + 1);
     }
 
@@ -977,6 +976,7 @@ UBDocumentProxy* UBPersistenceManager::persistDocumentMetadata(UBDocumentProxy* 
 
 void UBPersistenceManager::renamePage(UBDocumentProxy* pDocumentProxy, const int sourceIndex, const int targetIndex)
 {
+    UBApplication::showMessage(tr("renaming pages (%1/%2)").arg(sourceIndex).arg(pDocumentProxy->pageCount()));
     QFile svg(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", sourceIndex));
     svg.rename(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg",  targetIndex));
 

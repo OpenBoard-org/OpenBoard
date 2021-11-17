@@ -65,16 +65,15 @@ void UBDocumentContainer::duplicatePages(QList<int>& pageIndexes)
     }
 }
 
-bool UBDocumentContainer::movePageToIndex(int source, int target)
+void UBDocumentContainer::moveThumbPage(int source, int target)
 {
-    //on document view
-    UBPersistenceManager::persistenceManager()->moveSceneToIndex(mCurrentDocument, source, target);
-    deleteThumbPage(source);
-    insertThumbPage(target);
-    emit documentThumbnailsUpdated(this);
-    //on board thumbnails view
+    mDocumentThumbs.move(source, target);
+
+    //on board thumbnails view (UBDocumentNavigator)
+    emit documentPageMoved(source, target);
+
+    //on board thumbnails view (UBoardThumbnailsView)
     emit moveThumbnailRequired(source, target);
-    return true;
 }
 
 void UBDocumentContainer::deletePages(QList<int>& pageIndexes)
@@ -84,26 +83,20 @@ void UBDocumentContainer::deletePages(QList<int>& pageIndexes)
     foreach(int index, pageIndexes)
     {
         deleteThumbPage(index - offset);
-        emit removeThumbnailRequired(index - offset);
         offset++;
-
     }
-    emit documentThumbnailsUpdated(this);
 }
 
 void UBDocumentContainer::addPage(int index)
 {
     UBPersistenceManager::persistenceManager()->createDocumentSceneAt(mCurrentDocument, index);
     insertThumbPage(index);
-
-    emit documentThumbnailsUpdated(this);
-    emit addThumbnailRequired(this, index);
 }
 
 
 void UBDocumentContainer::addPixmapAt(std::shared_ptr<QPixmap> pix, int index)
 {
-    documentThumbs().insert(index, pix);
+    mDocumentThumbs.insert(index, pix);
 }
 
 
@@ -120,14 +113,15 @@ void UBDocumentContainer::initThumbPage()
         insertThumbPage(i);
 }
 
-void UBDocumentContainer::updatePage(int index)
-{
-    updateThumbPage(index);
-}
-
 void UBDocumentContainer::deleteThumbPage(int index)
 {
     mDocumentThumbs.removeAt(index);
+
+    //on board thumbnails view (UBDocumentNavigator)
+    emit documentPageRemoved(index);
+
+    //on board thumbnails view (UBoardThumbnailsView)
+    emit removeThumbnailRequired(index);
 }
 
 void UBDocumentContainer::updateThumbPage(int index)
@@ -136,30 +130,26 @@ void UBDocumentContainer::updateThumbPage(int index)
     {
         QPixmap pixmap = UBThumbnailAdaptor::get(mCurrentDocument, index);
         mDocumentThumbs[index] = std::make_shared<QPixmap>(pixmap);
-        emit documentPageUpdated(index); //refresh specific thumbnail in board
-    }
-    else
-    {
-        qDebug() << "error [updateThumbPage] : index > mDocumentThumbs' size.";
+
+        emit documentPageUpdated(index);
     }
 }
 
 void UBDocumentContainer::insertThumbPage(int index)
 {
     QPixmap newPixmap = UBThumbnailAdaptor::get(mCurrentDocument, index);
-    if (index < documentThumbs().size())
-    {
-        *documentThumbs().at(index) = newPixmap;
-    }
-    else
-    {
-        documentThumbs().insert(index, std::make_shared<QPixmap>(newPixmap));
-    }
+    mDocumentThumbs.insert(index, std::make_shared<QPixmap>(newPixmap));
+
+    emit documentPageInserted(index);
+    emit addThumbnailRequired(this, index);
 }
 
 void UBDocumentContainer::insertExistingThumbPage(int index, std::shared_ptr<QPixmap> thumbnailPixmap)
 {
-    documentThumbs().insert(index, thumbnailPixmap);
+    mDocumentThumbs.insert(index, thumbnailPixmap);
+
+    emit documentPageInserted(index);
+    emit addThumbnailRequired(this, index);
 }
 
 void UBDocumentContainer::reloadThumbnails()

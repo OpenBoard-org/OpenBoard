@@ -61,39 +61,40 @@ class UBDocumentContainer : public QObject
         static int sceneIndexFromPage(int sceneIndex);
 
         void duplicatePages(QList<int>& pageIndexes);
-        bool movePageToIndex(int source, int target);
         void deletePages(QList<int>& pageIndexes);
-        void clearThumbPage();
-        void initThumbPage();
+
+
         void addPage(int index);
         void addPixmapAt(std::shared_ptr<QPixmap> pix, int index);
-        void updatePage(int index);
-        void addEmptyThumbPage();
+
         virtual void reloadThumbnails();
 
-        void insertThumbPage(int index);
+        void clearThumbPage();
+        void initThumbPage();
         void insertExistingThumbPage(int index, std::shared_ptr<QPixmap> thumbnailPixmap);
+        void insertThumbPage(int index);
+        void addEmptyThumbPage();
+        void deleteThumbPage(int index);
+        void updateThumbPage(int index);
+        void moveThumbPage(int source, int target);
 
     private:
         UBDocumentProxy* mCurrentDocument;
         QList<std::shared_ptr<QPixmap>>  mDocumentThumbs;
 
-
-    protected:
-        void deleteThumbPage(int index);
-        void updateThumbPage(int index);
-
     signals:
         void documentSet(UBDocumentProxy* document);
+        void documentPageInserted(int index);
         void documentPageUpdated(int index);
+        void documentPageRemoved(int index);
+        void documentPageMoved(int from, int to);
+        void documentThumbnailsUpdated(UBDocumentContainer* source);
 
         void initThumbnailsRequired(UBDocumentContainer* source);
         void addThumbnailRequired(UBDocumentContainer* source, int index);
         void removeThumbnailRequired(int index);
         void moveThumbnailRequired(int from, int to);
         void updateThumbnailsRequired();
-
-        void documentThumbnailsUpdated(UBDocumentContainer* source);
 };
 
 

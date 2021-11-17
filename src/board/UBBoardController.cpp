@@ -521,6 +521,10 @@ void UBBoardController::addScene()
     persistCurrentScene(false,true);
 
     UBDocumentContainer::addPage(mActiveSceneIndex + 1);
+    if (UBApplication::documentController->selectedDocument() == selectedDocument())
+    {
+        UBApplication::documentController->insertThumbPage(mActiveSceneIndex+1);
+    }
 
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
@@ -584,7 +588,11 @@ void UBBoardController::duplicateScene(int nIndex)
     scIndexes << nIndex;
     duplicatePages(scIndexes);
     insertThumbPage(nIndex);
-    emit documentThumbnailsUpdated(this);
+    if (UBApplication::documentController->selectedDocument() == selectedDocument())
+    {
+        UBApplication::documentController->insertThumbPage(nIndex);
+    }
+    //emit documentThumbnailsUpdated(this);
     emit addThumbnailRequired(this, nIndex + 1);
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
@@ -779,6 +787,10 @@ void UBBoardController::deleteScene(int nIndex)
         QList<int> scIndexes;
         scIndexes << nIndex;
         deletePages(scIndexes);
+        if (UBApplication::documentController->selectedDocument() == selectedDocument())
+        {
+            UBApplication::documentController->deleteThumbPage(nIndex);
+        }
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         UBMetadataDcSubsetAdaptor::persist(selectedDocument());
 
@@ -1618,7 +1630,12 @@ void UBBoardController::moveSceneToIndex(int source, int target)
     {
         persistCurrentScene(false,true);
 
-        UBDocumentContainer::movePageToIndex(source, target);
+        UBPersistenceManager::persistenceManager()->moveSceneToIndex(selectedDocument(), source, target);
+        UBDocumentContainer::moveThumbPage(source, target);
+        if (UBApplication::documentController->selectedDocument() == selectedDocument())
+        {
+            UBApplication::documentController->moveThumbPage(source, target);
+        }
 
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
@@ -1877,7 +1894,7 @@ void UBBoardController::documentSceneChanged(UBDocumentProxy* pDocumentProxy, in
     if(selectedDocument() == pDocumentProxy)
     {
         setActiveDocumentScene(mActiveSceneIndex);
-        updatePage(pIndex);
+        updateThumbPage(pIndex);
     }
 }
 
@@ -2021,7 +2038,11 @@ void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool force
             && (mActiveScene->isModified()))
     {
         UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, isAnAutomaticBackup);
-        updatePage(mActiveSceneIndex);
+        updateThumbPage(mActiveSceneIndex);
+        if (UBApplication::documentController->selectedDocument() == selectedDocument())
+        {
+            UBApplication::documentController->updateThumbPage(mActiveSceneIndex);
+        }
     }
 }
 

@@ -49,6 +49,9 @@ class UBDocumentThumbnailWidget: public UBThumbnailWidget
 
     public slots:
             void updateThumbnailPixmap(int index, const QPixmap& newThumbnail);
+            void removeThumbnail(int index);
+            void moveThumbnail(int from, int to);
+            void insertThumbnail(int index, QGraphicsPixmapItem *newThumbnail);
             virtual void setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsItems, const QList<QUrl>& pItemPaths, const QStringList pLabels = QStringList(), const QString& pMimeType = QString(""));
 
     signals:
