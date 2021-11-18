@@ -1141,6 +1141,9 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
         return;
     }
 
+    if ((UBDrawingController::drawingController()->isDrawingTool()) && !mMouseButtonIsPressed)
+        QGraphicsView::mouseMoveEvent(event);
+
     int currentTool = static_cast<int>(UBDrawingController::drawingController()->stylusTool());
     switch (currentTool) {
 
@@ -1242,35 +1245,6 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
     default:
         if (!mTabletStylusIsPressed && scene()) {
             scene()->inputDeviceMove(mapToScene(UBGeometryUtils::pointConstrainedInRect(event->pos(), rect())) , mMouseButtonIsPressed);
-        }
-        if (UBDrawingController::drawingController()->isDrawingTool())
-        {
-            QGraphicsItem* item = scene()->itemAt(mapToScene(event->pos()), QTransform());
-            if (item)
-            {
-                //if showMarkerPreviewCircle, showPenPreviewCircle or showEraserPreviewCircle is true, then the topmost visible item under the mouse is the preview circle
-                QGraphicsEllipseItem* circle = dynamic_cast<QGraphicsEllipseItem*>(scene()->itemAt(mapToScene(event->pos()), QTransform()));
-                if (circle)
-                {
-                    circle->setVisible(false);
-                    item = scene()->itemAt(mapToScene(event->pos()), QTransform());
-                    if (item)
-                    {
-                        if (item->type() == UBGraphicsRuler::Type || item->type() == UBGraphicsTriangle::Type)
-                        {
-                            QGraphicsView::mouseMoveEvent(event);
-                        }
-                    }
-                    circle->setVisible(true);
-                }
-                else
-                {
-                    if (item->type() == UBGraphicsRuler::Type || item->type() == UBGraphicsTriangle::Type)
-                    {
-                        QGraphicsView::mouseMoveEvent(event);
-                    }
-                }
-            }
         }
         event->accept ();
     }
