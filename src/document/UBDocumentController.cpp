@@ -1805,7 +1805,7 @@ UBDocumentController::UBDocumentController(UBMainWindow* mainWindow)
     setupToolbar();
     connect(this, SIGNAL(exportDone()), mMainWindow, SLOT(onExportDone()));
     connect(this, SIGNAL(documentThumbnailsUpdated(UBDocumentContainer*)), this, SLOT(refreshDocumentThumbnailsView(UBDocumentContainer*)));
-    connect(this, SIGNAL(documentPageInserted(int)), this, SLOT(insertThumbnail(int)));
+    //connect(this, SIGNAL(documentPageInserted(int)), this, SLOT(insertThumbnail(int)));
     connect(this, SIGNAL(documentPageUpdated(int)), this, SLOT(updateThumbnail(int)));
     connect(this, SIGNAL(documentPageRemoved(int)), this, SLOT(removeThumbnail(int)));
     connect(this, SIGNAL(documentPageMoved(int, int)), this, SLOT(moveThumbnail(int, int)));
