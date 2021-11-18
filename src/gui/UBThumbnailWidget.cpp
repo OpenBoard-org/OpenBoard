@@ -202,6 +202,8 @@ void UBThumbnailWidget::refreshScene()
 
         if (mLabelsItems.size() > i)
         {
+            mLabelsItems.at(i)->setWidth(mThumbnailWidth);
+            mLabelsItems.at(i)->setPageNumber(i+1);
             QFontMetrics fm(mLabelsItems.at(i)->font(), this);
             QString elidedText = fm.elidedText(mLabelsItems.at(i)->toPlainText(), Qt::ElideRight, mThumbnailWidth);
 

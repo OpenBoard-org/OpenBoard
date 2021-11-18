@@ -240,8 +240,6 @@ void UBDocumentNavigator::updateThumbnail(int index)
         oldItem = NULL;
     }
 
-    ensureVisible(0, 0, 10, 10);
-
     refreshScene();
 }
 
@@ -259,6 +257,7 @@ void UBDocumentNavigator::removeThumbnail(int index)
     //update thumbs page number accordingly
     for (int i=0; i < mThumbsWithLabels.length(); i++)
     {
+        mThumbsWithLabels.at(i).getThumbnail()->setSceneIndex(i);
         mThumbsWithLabels.at(i).getCaption()->setText(tr("Page %0").arg(i+1));
     }
 
@@ -372,11 +371,11 @@ void UBDocumentNavigator::resizeEvent(QResizeEvent *event)
     // Update the thumbnails width
     mThumbnailWidth = (width() > mThumbnailMinWidth) ? width() - 2*border() : mThumbnailMinWidth;
 
-    if(mSelectedThumbnail)
-          ensureVisible(mSelectedThumbnail);
-
     // Refresh the scene
     refreshScene();
+
+    if(mSelectedThumbnail)
+          ensureVisible(mSelectedThumbnail);
 }
 
 /**
@@ -617,8 +616,6 @@ void UBDocumentNavigator::dragMoveEvent(QDragMoveEvent *event)
     int thumbnailHeight = mThumbnailWidth / UBSettings::minScreenRatio;
     QRectF thumbnailArea(0, scenePos.y() - thumbnailHeight/2, mThumbnailWidth, thumbnailHeight);
 
-    ensureVisible(thumbnailArea);
-
     UBSceneThumbnailNavigPixmap* item = dynamic_cast<UBSceneThumbnailNavigPixmap*>(itemAt(position.toPoint()));
     if (item)
     {
@@ -642,7 +639,7 @@ void UBDocumentNavigator::dragMoveEvent(QDragMoveEvent *event)
                 {
                     y = item->pos().y() - UBSettings::thumbnailSpacing / 2;
                     if (mDropBar->y() != y)
-                        mDropBar->setRect(QRectF(item->pos().x(), y, mThumbnailWidth-verticalScrollBar()->width(), 3));
+                        mDropBar->setRect(QRectF(item->pos().x(), y, (item->boundingRect().width()-verticalScrollBar()->width())*scale, 3));
                 }
             }
             else
@@ -651,11 +648,14 @@ void UBDocumentNavigator::dragMoveEvent(QDragMoveEvent *event)
                 {
                     y = item->pos().y() + item->boundingRect().height() * scale + UBSettings::thumbnailSpacing / 2;
                     if (mDropBar->y() != y)
-                        mDropBar->setRect(QRectF(item->pos().x(), y, mThumbnailWidth-verticalScrollBar()->width(), 3));
+                        mDropBar->setRect(QRectF(item->pos().x(), y,  (item->boundingRect().width()-verticalScrollBar()->width())*scale, 3));
                 }
             }
         }
     }
+
+    ensureVisible(thumbnailArea);
+
     event->acceptProposedAction();
 }
 

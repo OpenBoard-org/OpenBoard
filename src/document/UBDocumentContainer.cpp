@@ -65,6 +65,11 @@ void UBDocumentContainer::duplicatePages(QList<int>& pageIndexes)
     }
 }
 
+void UBDocumentContainer::duplicatePage(int index)
+{
+    UBPersistenceManager::persistenceManager()->duplicateDocumentScene(mCurrentDocument, index);
+}
+
 void UBDocumentContainer::moveThumbPage(int source, int target)
 {
     mDocumentThumbs.move(source, target);

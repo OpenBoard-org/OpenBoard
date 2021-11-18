@@ -318,6 +318,9 @@ void UBDocumentThumbnailWidget::removeThumbnail(int sceneIndex)
         UBSceneThumbnailPixmap *thumbnail = dynamic_cast<UBSceneThumbnailPixmap*>(thumbnailItem);
         if (thumbnail)
         {
+            if (thumbnail->isSelected())
+                scene()->removeItem(thumbnail->selectionItem());
+
             mGraphicItems.removeAt(sceneIndex);
             if (thumbnailItem)
                 scene()->removeItem(thumbnailItem);

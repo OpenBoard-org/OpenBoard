@@ -3618,7 +3618,11 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
             }
         }
         UBDocumentContainer::deletePages(sceneIndexes);
-        emit mBoardController->documentThumbnailsUpdated(this);
+        if (mBoardController->selectedDocument() == selectedDocument())
+        {
+            for (auto index : sceneIndexes)
+                mBoardController->deleteThumbPage(index);
+        }
 
         proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         UBMetadataDcSubsetAdaptor::persist(proxy);
@@ -3635,7 +3639,6 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
         mDocumentUI->thumbnailWidget->selectItemAt(minIndex);
 
         mBoardController->setActiveDocumentScene(minIndex);
-        mBoardController->reloadThumbnails();
     }
 }
 

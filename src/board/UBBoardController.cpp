@@ -584,9 +584,7 @@ void UBBoardController::duplicateScene(int nIndex)
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     persistCurrentScene(false,true);
 
-    QList<int> scIndexes;
-    scIndexes << nIndex;
-    duplicatePages(scIndexes);
+    duplicatePage(nIndex);
     insertThumbPage(nIndex);
     if (UBApplication::documentController->selectedDocument() == selectedDocument())
     {
