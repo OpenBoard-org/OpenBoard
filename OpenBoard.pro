@@ -11,7 +11,7 @@ VERSION_MAJ = 1
 VERSION_MIN = 6
 VERSION_PATCH = 2
 VERSION_TYPE = a # a = alpha, b = beta, rc = release candidate, r = release, other => error
-VERSION_BUILD = 0930
+VERSION_BUILD = 1118
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$${VERSION_BUILD}"
 
@@ -36,6 +36,7 @@ QT += xmlpatterns
 QT += uitools
 QT += multimedia
 QT += multimediawidgets
+QT += webengine
 QT += webenginewidgets
 QT += printsupport
 QT += core

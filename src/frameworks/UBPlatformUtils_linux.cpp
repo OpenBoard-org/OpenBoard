@@ -441,7 +441,7 @@ void UBPlatformUtils::setFrontProcess()
 void UBPlatformUtils::showFullScreen(QWidget *pWidget)
 {
     if (UBSettings::settings()->appRunInWindow->get().toBool()) {
-        pWidget->showNormal();
+        pWidget->show();
     } else {
         pWidget->showFullScreen();
     }

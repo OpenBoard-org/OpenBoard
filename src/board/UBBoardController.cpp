@@ -520,7 +520,12 @@ void UBBoardController::addScene()
     persistViewPositionOnCurrentScene();
     persistCurrentScene(false,true);
 
-    UBDocumentContainer::addPage(mActiveSceneIndex + 1);
+    UBPersistenceManager::persistenceManager()->createDocumentSceneAt(selectedDocument(), mActiveSceneIndex+1);
+    emit addThumbnailRequired(this, mActiveSceneIndex+1);
+    if (UBApplication::documentController->selectedDocument() == selectedDocument())
+    {
+        UBApplication::documentController->insertThumbPage(mActiveSceneIndex+1);
+    }
 
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
@@ -580,11 +585,13 @@ void UBBoardController::duplicateScene(int nIndex)
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     persistCurrentScene(false,true);
 
-    QList<int> scIndexes;
-    scIndexes << nIndex;
-    duplicatePages(scIndexes);
+    duplicatePage(nIndex);
     insertThumbPage(nIndex);
-    emit documentThumbnailsUpdated(this);
+    if (UBApplication::documentController->selectedDocument() == selectedDocument())
+    {
+        UBApplication::documentController->insertThumbPage(nIndex);
+    }
+    //emit documentThumbnailsUpdated(this);
     emit addThumbnailRequired(this, nIndex + 1);
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
@@ -779,6 +786,11 @@ void UBBoardController::deleteScene(int nIndex)
         QList<int> scIndexes;
         scIndexes << nIndex;
         deletePages(scIndexes);
+        emit removeThumbnailRequired(nIndex);
+        if (UBApplication::documentController->selectedDocument() == selectedDocument())
+        {
+            UBApplication::documentController->deleteThumbPage(nIndex);
+        }
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         UBMetadataDcSubsetAdaptor::persist(selectedDocument());
 
@@ -1619,7 +1631,12 @@ void UBBoardController::moveSceneToIndex(int source, int target)
     {
         persistCurrentScene(false,true);
 
-        UBDocumentContainer::movePageToIndex(source, target);
+        UBPersistenceManager::persistenceManager()->moveSceneToIndex(selectedDocument(), source, target);
+        emit moveThumbnailRequired(source, target);
+        if (UBApplication::documentController->selectedDocument() == selectedDocument())
+        {
+            UBApplication::documentController->moveThumbPage(source, target);
+        }
 
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
@@ -1878,7 +1895,6 @@ void UBBoardController::documentSceneChanged(UBDocumentProxy* pDocumentProxy, in
     if(selectedDocument() == pDocumentProxy)
     {
         setActiveDocumentScene(mActiveSceneIndex);
-        updatePage(pIndex);
     }
 }
 

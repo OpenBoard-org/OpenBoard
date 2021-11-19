@@ -428,7 +428,6 @@ void UBGraphicsAxes::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     setCursor(Qt::ArrowCursor);
     mCloseSvgItem->setVisible(mShowButtons);
     mNumbersSvgItem->setVisible(mShowButtons);
-    UBDrawingController::drawingController()->mActiveRuler = NULL;
     event->accept();
     update();
 }

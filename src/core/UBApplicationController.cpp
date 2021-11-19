@@ -351,11 +351,11 @@ void UBApplicationController::showBoard()
 
     if (mMainMode == Document)
     {
-        int selectedSceneIndex = UBApplication::documentController->getSelectedItemIndex();
-        if (selectedSceneIndex != -1)
-        {
-            UBApplication::boardController->setActiveDocumentScene(UBApplication::documentController->selectedDocument(), selectedSceneIndex);
-        }
+//        int selectedSceneIndex = UBApplication::documentController->getSelectedItemIndex();
+//        if (selectedSceneIndex != -1)
+//        {
+//            UBApplication::boardController->setActiveDocumentScene(UBApplication::documentController->selectedDocument(), selectedSceneIndex);
+//        }
     }
 
     mMainMode = Board;
@@ -435,6 +435,7 @@ void UBApplicationController::showDocument()
     {
         if (UBApplication::boardController->activeScene()->isModified())
             UBApplication::boardController->persistCurrentScene();
+
         UBApplication::boardController->hide();
     }
 

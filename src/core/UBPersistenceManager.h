@@ -133,7 +133,7 @@ class UBPersistenceManager : public QObject
 
         void createDocumentProxiesStructure(bool interactive = false);
         void createDocumentProxiesStructure(const QFileInfoList &contentInfoList, bool interactive = false);
-        void createDocumentProxyStructure(const QFileInfo& contentInfo, bool interactive = false);
+        UBDocumentProxy* createDocumentProxyStructure(QFileInfo &contentInfo);
         QDialog::DialogCode processInteractiveReplacementDialog(UBDocumentProxy *pProxy);
 
         QStringList documentSubDirectories()
