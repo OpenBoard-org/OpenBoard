@@ -209,7 +209,7 @@ void UBPersistenceManager::createDocumentProxiesStructure(const QFileInfoList &c
 
     QList<UBDocumentProxy*> proxies = futureWatcher.future().results();
 
-    for (auto proxy : proxies)
+    for (auto&& proxy : qAsConst(proxies))
     {
         if (proxy)
         {
@@ -226,7 +226,6 @@ void UBPersistenceManager::createDocumentProxiesStructure(const QFileInfoList &c
             {
                 qDebug() << "something went wrong";
             }
-
         }
     }
 }
