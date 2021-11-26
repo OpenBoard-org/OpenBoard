@@ -80,7 +80,7 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
     connect(mMainWindow->actionOpenTutorial,SIGNAL(triggered()),this, SLOT(onOpenTutorial()));
 
     // note: do not delete profiles at application cleanup as they are still used by some web page
-    mWebProfile = new QWebEngineProfile("OpenBoardWeb");
+    mWebProfile = QWebEngineProfile::defaultProfile();
     mWebProfile->setHttpCacheType(QWebEngineProfile::DiskHttpCache);
 
     // compute a system specific user agent string
