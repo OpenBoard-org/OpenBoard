@@ -113,6 +113,7 @@ private:
     QMainWindow* m_inspectorWindow;
 
     WBHistoryManager *m_historyManager;
+    bool m_offTheRecord;
 };
 
 #endif // BROWSERWINDOW_H

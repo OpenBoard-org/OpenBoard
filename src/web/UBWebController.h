@@ -65,8 +65,15 @@ private:
 class UBWebController : public QObject
 {
     Q_OBJECT
+    Q_ENUMS(CookiePolicy)
 
     public:
+        enum CookiePolicy {
+            DenyAll,
+            DenyThirdParty,
+            AcceptAll
+        };
+
         UBWebController(UBMainWindow* mainWindow);
         virtual ~UBWebController();
 
@@ -153,6 +160,9 @@ private:
         QMenu* mHistoryForwardMenu;
 
         QMap<QPair<QUrl,QWebEnginePage::Feature>,QWebEnginePage::PermissionPolicy> mFeaturePermissions;
+
+        bool cookieAutoDelete;
+        QStringList cookieKeepDomains;
 };
 
 #endif /* UBWEBCONTROLLER_H_ */

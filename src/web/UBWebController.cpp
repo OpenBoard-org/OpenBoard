@@ -29,6 +29,7 @@
 
 #include <QtGui>
 #include <QMenu>
+#include <QWebEngineCookieStore>
 #include <QWebEngineHistory>
 #include <QWebEngineHistoryItem>
 #include <QWebEngineProfile>
@@ -45,6 +46,7 @@
 #include "web/simplebrowser/webview.h"
 #include "web/simplebrowser/tabwidget.h"
 
+#include "network/UBCookieJar.h"
 #include "network/UBNetworkAccessManager.h"
 
 #include "gui/UBMainWindow.h"
@@ -77,11 +79,21 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
     , mToolsPalettePositionned(false)
     , mDownloadViewIsVisible(false)
 {
-    connect(mMainWindow->actionOpenTutorial,SIGNAL(triggered()),this, SLOT(onOpenTutorial()));
+    connect(mMainWindow->actionOpenTutorial, SIGNAL(triggered()), this, SLOT(onOpenTutorial()));
 
-    // note: do not delete profiles at application cleanup as they are still used by some web page
-    mWebProfile = QWebEngineProfile::defaultProfile();
-    mWebProfile->setHttpCacheType(QWebEngineProfile::DiskHttpCache);
+    bool privateBrowsing = UBSettings::settings()->webPrivateBrowsing->get().toBool();
+    qDebug() << "Private browsing" << privateBrowsing;
+
+    if (privateBrowsing)
+    {
+        // create off-the-record profile that leaves no record on the local machine, and has no persistent data or cache
+        mWebProfile = new QWebEngineProfile();
+    }
+    else
+    {
+        mWebProfile = QWebEngineProfile::defaultProfile();
+        mWebProfile->setHttpCacheType(QWebEngineProfile::DiskHttpCache);
+    }
 
     // compute a system specific user agent string
     QString originalUserAgent = mWebProfile->httpUserAgent();
@@ -109,11 +121,99 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
     settings->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
     settings->setAttribute(QWebEngineSettings::LocalContentCanAccessRemoteUrls, true);
     settings->setAttribute(QWebEngineSettings::ScreenCaptureEnabled, true);
+
+    // install cookie filter
+    QWebEngineCookieStore* cookieStore = mWebProfile->cookieStore();
+
+    QByteArray value = UBSettings::settings()->webCookiePolicy->get().toByteArray();
+    QMetaEnum cookiePolicyEnum = staticMetaObject.enumerator(staticMetaObject.indexOfEnumerator("CookiePolicy"));
+    int enumOrdinal = cookiePolicyEnum.keyToValue(value);
+    CookiePolicy cookiePolicy = enumOrdinal == -1 ?
+                DenyThirdParty :
+                static_cast<CookiePolicy>(enumOrdinal);
+
+    qDebug() << "Using cookie policy" << value;
+    cookieStore->setCookieFilter(
+                [cookiePolicy](const QWebEngineCookieStore::FilterRequest &request)
+    {
+        switch (cookiePolicy) {
+        case DenyAll:
+            return false;
+
+        case DenyThirdParty:
+            return !request.thirdParty;
+
+        case AcceptAll:
+            return true;
+        }
+
+        return false;
+    }
+    );
+
+    // synchronize with QNetworkAccessManager
+    QNetworkCookieJar* jar = UBNetworkAccessManager::defaultAccessManager()->cookieJar();
+
+    connect(cookieStore, &QWebEngineCookieStore::cookieAdded, [jar](const QNetworkCookie &cookie){
+        jar->insertCookie(cookie);
+    });
+    connect(cookieStore, &QWebEngineCookieStore::cookieRemoved, [jar](const QNetworkCookie &cookie){
+        jar->deleteCookie(cookie);
+    });
+
+    // remember settings for cleanup
+    cookieAutoDelete = UBSettings::settings()->webCookieAutoDelete->get().toBool();
+    cookieKeepDomains = UBSettings::settings()->webCookieKeepDomains->get().toStringList();
 }
 
 UBWebController::~UBWebController()
 {
-    // NOOP
+    if (cookieAutoDelete)
+    {
+        QWebEngineCookieStore* cookieStore = mWebProfile->cookieStore();
+
+        if (cookieKeepDomains.empty())
+        {
+            cookieStore->deleteAllCookies();
+        }
+        else
+        {
+            UBCookieJar* jar = dynamic_cast<UBCookieJar*>(UBNetworkAccessManager::defaultAccessManager()->cookieJar());
+
+            if (jar)
+            {
+                for (const QNetworkCookie& cookie : jar->cookieList())
+                {
+                    QString domain = cookie.domain();
+                    bool keep = false;
+
+                    for (QString keepDomain : cookieKeepDomains)
+                    {
+                        if (keepDomain.startsWith('.'))
+                        {
+                            // check for suffix match
+                            keep = domain.endsWith(keepDomain);
+                        }
+                        else
+                        {
+                            // check for exact match
+                            keep = domain == keepDomain;
+                        }
+
+                        if (keep)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (!keep)
+                    {
+                        cookieStore->deleteCookie(cookie);
+                    }
+                }
+            }
+        }
+    }
 }
 
 void UBWebController::webBrowserInstance()
@@ -364,8 +464,6 @@ void UBWebController::captureCurrentPage()
         QSize size = page->contentsSize().toSize();
         QPoint scrollPosition = page->scrollPosition().toPoint();
         QSize viewportSize = view->size();
-
-        qDebug() << size << scrollPosition << viewportSize;
 
         // pix is deleted at the final run of captureStripe
         pix = new QPixmap(size);

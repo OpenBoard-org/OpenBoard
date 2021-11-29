@@ -82,6 +82,7 @@ BrowserWindow::BrowserWindow(QWidget *parent, QWebEngineProfile *profile, bool f
     , m_favAction(nullptr)
     , m_inspectorWindow(nullptr)
     , m_historyManager(nullptr)
+    , m_offTheRecord(profile->isOffTheRecord())
 {
     setAttribute(Qt::WA_DeleteOnClose, true);
     setFocusPolicy(Qt::ClickFocus);
@@ -198,7 +199,7 @@ void BrowserWindow::handleWebViewTitleChanged(const QString &title)
     else
         setWindowTitle(title);
 
-    if (!title.isEmpty() && currentTab())
+    if (!title.isEmpty() && currentTab() && !m_offTheRecord)
     {
         historyManager()->updateHistoryItem(currentTab()->url(), title);
     }

@@ -363,6 +363,10 @@ void UBSettings::init()
     webSearchEngineUrl = new UBSetting(this, "Web", "SearchEngineUrl", "https://www.qwant.com/?q=%1");
     alternativeUserAgent = new UBSetting(this, "Web", "AlternativeUserAgent", "Mozilla/5.0 (%1; %2; rv:91.0) Gecko/20100101 Firefox/91.0");
     alternativeUserAgentDomains = new UBSetting(this, "Web", "AlternativeUserAgentDomains", "google.*");
+    webCookieAutoDelete = new UBSetting(this, "Web", "CookieAutoDelete", false);
+    webCookieKeepDomains = new UBSetting(this, "Web", "CookieKeepDomains", QStringList());
+    webCookiePolicy = new UBSetting(this, "Web", "CookiePolicy", "DenyThirdParty");
+    webPrivateBrowsing = new UBSetting(this, "Web", "PrivateBrowsing", false);
 
     pageCacheSize = new UBSetting(this, "App", "PageCacheSize", 20);
 
