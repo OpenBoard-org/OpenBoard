@@ -41,7 +41,7 @@ static const char* tabletButtonProperty("tabletButton");
 
 UBShortcutManager* UBShortcutManager::sShortcutManager = nullptr;
 
-UBShortcutManager::UBShortcutManager()
+UBShortcutManager::UBShortcutManager() : mIgnoreCtrl(false)
 {
     actionsOfGroup(QObject::tr("Common"));
 }
@@ -289,6 +289,9 @@ void UBShortcutManager::addMainActions(UBMainWindow *mainWindow)
     actions << action;
 
     addActions(tr("Built-in (not editable)"), actions);
+
+    // load ignoreCtrl setting
+    ignoreCtrl(UBSettings::settings()->value("Shortcut/IgnoreCtrl").toBool());
 }
 
 bool UBShortcutManager::handleMouseEvent(QMouseEvent *event)
@@ -623,6 +626,12 @@ Qt::MouseButton UBShortcutManager::buttonIndex(QString button)
 
 void UBShortcutManager::ignoreCtrl(bool ignore)
 {
+    if (ignore == mIgnoreCtrl) {
+        return;
+    }
+
+    mIgnoreCtrl = ignore;
+
     for (auto& actionGroup : mActionGroups)
     {
         for (QAction* action : actionGroup.second)

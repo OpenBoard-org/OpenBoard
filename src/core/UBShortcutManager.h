@@ -87,6 +87,7 @@ private:
     QList<QPair<QString,QList<QAction*>>> mActionGroups;
     QMap<Qt::MouseButton, QAction*> mMouseActions;
     QMap<Qt::MouseButton, QAction*> mTabletActions;
+    bool mIgnoreCtrl;
 
     static UBShortcutManager* sShortcutManager;
 };
