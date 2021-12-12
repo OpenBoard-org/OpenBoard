@@ -692,6 +692,15 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
         }
     }
 
+    else if (event->type() == QEvent::KeyRelease)
+    {
+        // intercept key release events for shortcut handler
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
+        return UBShortcutManager::shortcutManager()->handleKeyReleaseEvent(keyEvent)
+                    || result;
+    }
+
     return result;
 }
 

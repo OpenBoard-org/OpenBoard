@@ -294,6 +294,20 @@ void UBShortcutManager::addMainActions(UBMainWindow *mainWindow)
     ignoreCtrl(UBSettings::settings()->value("Shortcut/IgnoreCtrl").toBool());
 }
 
+void UBShortcutManager::addActionGroup(QActionGroup *actionGroup)
+{
+    mActionGroupHistoryMap[actionGroup] = new UBActionGroupHistory(actionGroup);
+}
+
+void UBShortcutManager::removeActionGroup(QActionGroup *actionGroup)
+{
+    if (mActionGroupHistoryMap.contains(actionGroup))
+    {
+        delete mActionGroupHistoryMap[actionGroup];
+        mActionGroupHistoryMap.remove(actionGroup);
+    }
+}
+
 bool UBShortcutManager::handleMouseEvent(QMouseEvent *event)
 {
     if (mMouseActions.contains(event->button()))
@@ -323,6 +337,18 @@ bool UBShortcutManager::handleTabletEvent(QTabletEvent *event)
         }
 
         return true;
+    }
+
+    return false;
+}
+
+bool UBShortcutManager::handleKeyReleaseEvent(QKeyEvent *event)
+{
+    for (UBActionGroupHistory* actionGroupHistory : mActionGroupHistoryMap.values())
+    {
+        if (actionGroupHistory->keyReleased(event)) {
+            return true;
+        }
     }
 
     return false;
@@ -479,6 +505,16 @@ bool UBShortcutManager::setData(const QModelIndex &index, const QVariant &value,
 
     case 3:
         action->setProperty(mouseButtonProperty, value);
+
+        for (Qt::MouseButton key : mMouseActions.keys())
+        {
+            if (mMouseActions[key] == action)
+            {
+                mMouseActions.remove(key);
+                break;
+            }
+        }
+
         mMouseActions[static_cast<Qt::MouseButton>(value.toInt())] = action;
         updateSettings(action);
         emit dataChanged(index, index);
@@ -486,6 +522,16 @@ bool UBShortcutManager::setData(const QModelIndex &index, const QVariant &value,
 
     case 4:
         action->setProperty(tabletButtonProperty, value);
+
+        for (Qt::MouseButton key : mTabletActions.keys())
+        {
+            if (mTabletActions[key] == action)
+            {
+                mTabletActions.remove(key);
+                break;
+            }
+        }
+
         mTabletActions[static_cast<Qt::MouseButton>(value.toInt())] = action;
         updateSettings(action);
         emit dataChanged(index, index);
@@ -749,4 +795,60 @@ void UBShortcutManager::updateSettings(const QAction *action) const
         list << QString("%1").arg(tabletButton);
         UBSettings::settings()->setValue(key, list);
     }
+}
+
+// ---------- UBActionGroupHistory ----------
+
+UBActionGroupHistory::UBActionGroupHistory(QActionGroup *parent)
+    : QObject(parent)
+    , mActionGroup(parent)
+    , mCurrentAction(parent->checkedAction())
+    , mPreviousAction(nullptr)
+    , mRevertingAction(nullptr)
+{
+    connect(parent, &QActionGroup::triggered, this, &UBActionGroupHistory::triggered);
+}
+
+void UBActionGroupHistory::triggered(QAction *action)
+{
+    if (mCurrentAction != action)
+    {
+        mPreviousAction = mCurrentAction;
+        mCurrentAction = action;
+    }
+}
+
+bool UBActionGroupHistory::keyReleased(QKeyEvent *event)
+{
+    int key = event->key() & ~Qt::KeyboardModifierMask;
+
+    for (QAction* action : mActionGroup->actions())
+    {
+        QKeySequence keySequence = action->shortcut();
+
+        if (keySequence.count() > 0)
+        {
+            int actionKey = action->shortcut()[0] & ~Qt::KeyboardModifierMask;
+
+            if (key == actionKey)
+            {
+                if (event->isAutoRepeat())
+                {
+                    if (!mRevertingAction)
+                    {
+                        mRevertingAction = mPreviousAction;;
+                    }
+                }
+                else if (mRevertingAction)
+                {
+                    mRevertingAction->trigger();
+                    mRevertingAction = nullptr;
+                }
+
+                return true;
+            }
+        }
+    }
+
+    return false;
 }

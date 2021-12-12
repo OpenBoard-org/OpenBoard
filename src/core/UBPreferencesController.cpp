@@ -115,7 +115,7 @@ bool UBPreferencesController::handleKeyEvent(QKeyEvent *event)
 
     int keys = mods;
 
-    if (key < Qt::Key_Shift || key > Qt::Key_Alt)
+    if (key < Qt::Key_Shift || key > Qt::Key_ScrollLock)
     {
         keys += key;
     }

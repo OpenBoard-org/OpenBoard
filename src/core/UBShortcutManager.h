@@ -36,11 +36,13 @@
 #include <QTabletEvent>
 
 class QAction;
+class QActionGroup;
 class UBMainWindow;
+class UBActionGroupHistory;
 
 class UBShortcutManager : public QAbstractTableModel
 {
-    Q_OBJECT;
+    Q_OBJECT
 
 private:
     UBShortcutManager();
@@ -57,8 +59,12 @@ public:
     void addActions(const QString& group, const QList<QAction*> actions, QWidget* widget = nullptr);
     void addMainActions(UBMainWindow* mainWindow);
 
+    void addActionGroup(QActionGroup* actionGroup);
+    void removeActionGroup(QActionGroup* actionGroup);
+
     bool handleMouseEvent(QMouseEvent* event);
     bool handleTabletEvent(QTabletEvent* event);
+    bool handleKeyReleaseEvent(QKeyEvent* event);
 
     // QAbstractTableModel overrides
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
@@ -87,9 +93,28 @@ private:
     QList<QPair<QString,QList<QAction*>>> mActionGroups;
     QMap<Qt::MouseButton, QAction*> mMouseActions;
     QMap<Qt::MouseButton, QAction*> mTabletActions;
+    QMap<QActionGroup*, UBActionGroupHistory*> mActionGroupHistoryMap;
     bool mIgnoreCtrl;
 
     static UBShortcutManager* sShortcutManager;
+};
+
+class UBActionGroupHistory : public QObject
+{
+    Q_OBJECT
+
+public:
+    UBActionGroupHistory(QActionGroup* parent);
+
+public slots:
+    void triggered(QAction* action);
+    bool keyReleased(QKeyEvent* event);
+
+private:
+    QActionGroup* mActionGroup;
+    QAction* mCurrentAction;
+    QAction* mPreviousAction;
+    QAction* mRevertingAction;
 };
 
 #endif // UBSHORTCUTMANAGER_H
