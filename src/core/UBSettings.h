@@ -332,6 +332,7 @@ class UBSettings : public QObject
 
         UBSetting* pageCacheSize;
 
+        UBSetting* boardZoomBase;
         UBSetting* boardZoomFactor;
 
         UBSetting* mirroringRefreshRateInFps;
