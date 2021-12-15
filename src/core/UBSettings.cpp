@@ -380,6 +380,11 @@ void UBSettings::init()
     widgetFileExtensions << "wdgt" << "wgt" << "pwgt";
     interactiveContentFileExtensions << widgetFileExtensions << "swf";
 
+    boardZoomBase = new UBSetting(this, "Board", "ZoomBase", 1.0005);
+
+    if (boardZoomBase->get().toDouble() <= 1. || boardZoomBase->get().toDouble() > 1.01)
+        boardZoomBase->set(1.0005);
+
     boardZoomFactor = new UBSetting(this, "Board", "ZoomFactor", QVariant(1.41));
 
     if (boardZoomFactor->get().toDouble() <= 1.)

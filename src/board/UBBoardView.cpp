@@ -1542,6 +1542,17 @@ void UBBoardView::mouseDoubleClickEvent (QMouseEvent *event)
 
 void UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
 {
+    // Zoom in/out when Ctrl is pressed
+    if (wheelEvent->modifiers() == Qt::ControlModifier && wheelEvent->orientation() == Qt::Vertical)
+    {
+        qreal angle = wheelEvent->angleDelta().y();
+        qreal zoomBase = UBSettings::settings()->boardZoomBase->get().toDouble();
+        qreal zoomFactor = qPow(zoomBase, angle);
+        mController->zoom(zoomFactor, mapToScene(wheelEvent->pos()));
+        wheelEvent->accept();
+        return;
+    }
+
     QList<QGraphicsItem *> selItemsList = scene()->selectedItems();
     // if NO have selected items, than no need process mouse wheel. just exist
     if( selItemsList.count() > 0 )
