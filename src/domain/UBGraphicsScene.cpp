@@ -1476,6 +1476,7 @@ void UBGraphicsScene::clearContent(clearCase pCase)
         if(mBackgroundObject){
             removeItem(mBackgroundObject);
             removedItems << mBackgroundObject;
+            mBackgroundObject = nullptr;
         }
         break;
 
