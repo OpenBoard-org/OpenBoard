@@ -39,17 +39,13 @@
 
 #include "core/memcheck.h"
 
-const QRect UBGraphicsCompass::sDefaultRect = QRect(0, -20, 300, 36);
-const QColor UBGraphicsCompass::sLightBackgroundMiddleFillColor = QColor(0x72, 0x72, 0x72, sFillTransparency);
-const QColor UBGraphicsCompass::sLightBackgroundEdgeFillColor = QColor(0xc3, 0xc3, 0xc3, sFillTransparency);
-const QColor UBGraphicsCompass::sLightBackgroundDrawColor = QColor(0x33, 0x33, 0x33, sDrawTransparency);
-const QColor UBGraphicsCompass::sDarkBackgroundMiddleFillColor = QColor(0xb5, 0xb5, 0xb5, sFillTransparency);
-const QColor UBGraphicsCompass::sDarkBackgroundEdgeFillColor = QColor(0xdd, 0xdd, 0xdd, sFillTransparency);
-const QColor UBGraphicsCompass::sDarkBackgroundDrawColor = QColor(0xff, 0xff, 0xff, sDrawTransparency);
-
-const int UBGraphicsCompass::sMinRadius = UBGraphicsCompass::sNeedleLength + UBGraphicsCompass::sNeedleBaseLength
-        + 24 + UBGraphicsCompass::sDefaultRect.height() + 24 + UBGraphicsCompass::sPencilBaseLength
-        + UBGraphicsCompass::sPencilLength;
+constexpr QRect UBGraphicsCompass::sDefaultRect;
+constexpr QColor UBGraphicsCompass::sLightBackgroundMiddleFillColor;
+constexpr QColor UBGraphicsCompass::sLightBackgroundEdgeFillColor;
+constexpr QColor UBGraphicsCompass::sLightBackgroundDrawColor;
+constexpr QColor UBGraphicsCompass::sDarkBackgroundMiddleFillColor;
+constexpr QColor UBGraphicsCompass::sDarkBackgroundEdgeFillColor;
+constexpr QColor UBGraphicsCompass::sDarkBackgroundDrawColor;
 
 UBGraphicsCompass::UBGraphicsCompass()
     : QGraphicsRectItem()
