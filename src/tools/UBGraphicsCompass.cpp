@@ -221,7 +221,7 @@ void UBGraphicsCompass::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
         qDebug() << "the rest";
 
-        mDrawing = event->pos().x() > rect().right() - sPencilLength - sPencilBaseLength;
+        mDrawing = event->pos().x() > hingeRect().right();
         if (mDrawing)
         {
             qDebug() << "drawing";
@@ -342,12 +342,12 @@ void UBGraphicsCompass::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     {
         if (hingeRect().contains(event->pos()))
             setCursor(rotateCursor());
-        else if (event->pos().x() > rect().right() - sPencilLength - sPencilBaseLength)
-            setCursor(drawCursor());
         else if (resizeButtonRect().contains(event->pos()))
             setCursor(resizeCursor());
         else if (closeButtonRect().contains(event->pos()))
             setCursor(closeCursor());
+        else if (event->pos().x() > hingeRect().right())
+            setCursor(drawCursor());
         else
             setCursor(moveCursor());
     }
@@ -382,12 +382,12 @@ void UBGraphicsCompass::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
     {
         if (hingeRect().contains(event->pos()))
             setCursor(rotateCursor());
-        else if (event->pos().x() > rect().right() - sPencilLength - sPencilBaseLength)
-            setCursor(drawCursor());
         else if (resizeButtonRect().contains(event->pos()))
             setCursor(resizeCursor());
         else if (closeButtonRect().contains(event->pos()))
             setCursor(closeCursor());
+        else if (event->pos().x() > hingeRect().right())
+            setCursor(drawCursor());
         else
             setCursor(moveCursor());
     }
