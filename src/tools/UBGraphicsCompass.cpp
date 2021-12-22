@@ -202,38 +202,37 @@ void UBGraphicsCompass::mousePressEvent(QGraphicsSceneMouseEvent *event)
         return;
 
     bool closing = false;
+    auto pointedElement = getPointedElement(event->pos());
 
-    if (resizeButtonRect().contains(event->pos()))
+    switch (pointedElement)
     {
+    case ShapeElement::RESIZE_BUTTON:
         mResizing = true;
         mRotating = false;
         event->accept();
         qDebug() << "resizing";
-    }
-    else if (hingeRect().contains(event->pos()))
-    {
+        break;
+    case ShapeElement::HINGE_BUTTON:
         mRotating = true;
         mResizing = false;
         event->accept();
         qDebug() << "hinge";
-    }
-    else if (!closeButtonRect().contains(event->pos()))
-    {
-        qDebug() << "the rest";
-
-        mDrawing = event->pos().x() > hingeRect().right();
-        if (mDrawing)
-        {
-            qDebug() << "drawing";
-            mSpanAngleInDegrees = 0;
-            mSceneArcStartPoint = mapToScene(pencilPosition());
-            scene()->initStroke();
-            scene()->moveTo(mSceneArcStartPoint);
-        }
-        QGraphicsRectItem::mousePressEvent(event);
-    }
-    else
+        break;
+    case ShapeElement::CLOSE_BUTTON:
         closing = true;
+        break;
+    case ShapeElement::INNER_ARM:
+    case ShapeElement::PENCIL:
+        mDrawing = true;
+        qDebug() << "drawing";
+        mSpanAngleInDegrees = 0;
+        mSceneArcStartPoint = mapToScene(pencilPosition());
+        scene()->initStroke();
+        scene()->moveTo(mSceneArcStartPoint);
+    default:
+        QGraphicsRectItem::mousePressEvent(event);
+        break;
+    }
 
     mResizeSvgItem->setVisible(mShowButtons && mResizing);
     mCloseSvgItem->setVisible(mShowButtons && closing);
@@ -337,22 +336,53 @@ void UBGraphicsCompass::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     mCloseSvgItem->setParentItem(this);
     mResizeSvgItem->setParentItem(this);
 
-    mCloseSvgItem->setVisible(mShowButtons);
-    if (mShowButtons)
-    {
-        if (hingeRect().contains(event->pos()))
-            setCursor(rotateCursor());
-        else if (resizeButtonRect().contains(event->pos()))
-            setCursor(resizeCursor());
-        else if (closeButtonRect().contains(event->pos()))
-            setCursor(closeCursor());
-        else if (event->pos().x() > hingeRect().right())
-            setCursor(drawCursor());
-        else
-            setCursor(moveCursor());
-    }
+    auto pointedElement = getPointedElement(event->pos());
+    mCloseSvgItem->setVisible(pointedElement != ShapeElement::NONE);
+
     event->accept();
     update();
+}
+
+void UBGraphicsCompass::updateCursor(ShapeElement const &element) {
+    switch (element)
+    {
+    case ShapeElement::HINGE_BUTTON:
+        setCursor(rotateCursor());
+        break;
+    case ShapeElement::RESIZE_BUTTON:
+        setCursor(resizeCursor());
+        break;
+    case ShapeElement::CLOSE_BUTTON:
+        setCursor(closeCursor());
+        break;
+    case ShapeElement::INNER_ARM:
+    case ShapeElement::PENCIL:
+        setCursor(drawCursor());
+        break;
+    case ShapeElement::OUTER_ARM:
+        setCursor(moveCursor());
+        break;
+    default:
+        unsetCursor();
+        break;
+    }
+}
+
+UBGraphicsCompass::ShapeElement UBGraphicsCompass::getPointedElement(QPointF const &pos) const {
+    if (!shape().contains(pos))
+        return ShapeElement::NONE;
+    else if (hingeRect().contains(pos))
+        return ShapeElement::HINGE_BUTTON;
+    else if (resizeButtonRect().contains(pos))
+        return ShapeElement::RESIZE_BUTTON;
+    else if (closeButtonRect().contains(pos))
+        return ShapeElement::CLOSE_BUTTON;
+    else if (pos.x() > rect().right() - sPencilLength - sPencilBaseLength)
+        return ShapeElement::PENCIL;
+    else if (pos.x() > hingeRect().right())
+        return ShapeElement::INNER_ARM;
+    else
+        return ShapeElement::OUTER_ARM;
 }
 
 void UBGraphicsCompass::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
@@ -375,26 +405,12 @@ void UBGraphicsCompass::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
         UBDrawingController::drawingController ()->stylusTool() != UBStylusTool::Play)
         return;
 
-    mShowButtons = shape().contains(event->pos());
+    auto pointedElement = getPointedElement(event->pos());
+    mShowButtons = pointedElement != ShapeElement::NONE;
     mCloseSvgItem->setVisible(mShowButtons);
     mResizeSvgItem->setVisible(mShowButtons);
-    if (mShowButtons)
-    {
-        if (hingeRect().contains(event->pos()))
-            setCursor(rotateCursor());
-        else if (resizeButtonRect().contains(event->pos()))
-            setCursor(resizeCursor());
-        else if (closeButtonRect().contains(event->pos()))
-            setCursor(closeCursor());
-        else if (event->pos().x() > hingeRect().right())
-            setCursor(drawCursor());
-        else
-            setCursor(moveCursor());
-    }
-    else
-    {
-        setCursor(mOuterCursor);
-    }
+    updateCursor(pointedElement);
+
     event->accept();
     update();
 }

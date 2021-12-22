@@ -74,6 +74,16 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         void lineWidthChanged();
 
     private:
+        enum ShapeElement {
+            OUTER_ARM,
+            CLOSE_BUTTON,
+            HINGE_BUTTON,
+            INNER_ARM,
+            RESIZE_BUTTON,
+            PENCIL,
+            NONE,
+        };
+
         // Helpers
         void            paintAngleDisplay(QPainter *painter);
         void           paintRadiusDisplay(QPainter *painter);
@@ -82,6 +92,9 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         void           updateResizeCursor();
         void             updateDrawCursor();
         void             paintCenterCross();
+
+        ShapeElement getPointedElement(QPointF const &pos) const;
+        void updateCursor(ShapeElement const &element);
 
         QCursor                moveCursor() const;
         QCursor              resizeCursor() const;
