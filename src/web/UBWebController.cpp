@@ -36,6 +36,7 @@
 #include <QWebEngineScript>
 #include <QWebEngineScriptCollection>
 #include <QWebEngineSettings>
+#include <QtWebEngineWidgetsVersion>
 
 #include "frameworks/UBPlatformUtils.h"
 
@@ -114,7 +115,12 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
     userAgent = userAgent.arg(p1).arg(p2);
 
     mInterceptor = new UBUserAgentInterceptor(userAgent.toUtf8(), mWebProfile);
+
+#if QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(5, 13, 0)
     mWebProfile->setUrlRequestInterceptor(mInterceptor);
+#else
+    mWebProfile->setRequestInterceptor(mInterceptor);
+#endif
 
     QWebEngineSettings* settings = mWebProfile->settings();
     settings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
