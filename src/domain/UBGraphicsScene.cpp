@@ -2711,15 +2711,16 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
         QGraphicsScene::drawBackground (painter, rect);
         return;
     }
+
     bool darkBackground = isDarkBackground ();
 
     if (darkBackground)
     {
-      painter->fillRect (rect, QBrush (QColor (Qt::black)));
+        painter->fillRect (rect, QBrush (QColor (Qt::black)));
     }
     else
     {
-      painter->fillRect (rect, QBrush (QColor (Qt::white)));
+        painter->fillRect (rect, QBrush (QColor (Qt::white)));
     }
 
     if (mZoomFactor > 0.5)
@@ -2730,38 +2731,69 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
             bgCrossColor = QColor(UBSettings::settings()->boardCrossColorDarkBackground->get().toString());
         else
             bgCrossColor = QColor(UBSettings::settings()->boardCrossColorLightBackground->get().toString());
+
         if (mZoomFactor < 0.7)
         {
             int alpha = 255 * mZoomFactor / 2;
             bgCrossColor.setAlpha (alpha); // fade the crossing on small zooms
         }
 
+        qreal gridSize = backgroundGridSize();
         painter->setPen (bgCrossColor);
 
         if (mPageBackground == UBPageBackground::crossed)
         {
-            qreal firstY = ((int) (rect.y () / backgroundGridSize())) * backgroundGridSize();
+            qreal firstY = ((int) (rect.y () / gridSize)) * gridSize;
 
-            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += backgroundGridSize())
+            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += gridSize)
             {
                 painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
             }
 
-            qreal firstX = ((int) (rect.x () / backgroundGridSize())) * backgroundGridSize();
+            qreal firstX = ((int) (rect.x () / gridSize)) * gridSize;
 
-            for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += backgroundGridSize())
+            for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += gridSize)
             {
                 painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
+            }
+
+            if (mIntermediateLines)
+            {
+                QColor intermediateColor = bgCrossColor;
+                intermediateColor.setAlphaF(0.5 * bgCrossColor.alphaF());
+                painter->setPen(intermediateColor);
+
+                for (qreal yPos = firstY - gridSize/2; yPos < rect.y () + rect.height (); yPos += gridSize)
+                {
+                    painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
+                }
+
+                for (qreal xPos = firstX - gridSize/2; xPos < rect.x () + rect.width (); xPos += gridSize)
+                {
+                    painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
+                }
             }
         }
 
         else if (mPageBackground == UBPageBackground::ruled)
         {
-            qreal firstY = ((int) (rect.y () / backgroundGridSize())) * backgroundGridSize();
+            qreal firstY = ((int) (rect.y () / gridSize)) * gridSize;
 
-            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += backgroundGridSize())
+            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += gridSize)
             {
                 painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
+            }
+
+            if (mIntermediateLines)
+            {
+                QColor intermediateColor = bgCrossColor;
+                intermediateColor.setAlphaF(0.5 * bgCrossColor.alphaF());
+                painter->setPen(intermediateColor);
+
+                for (qreal yPos = firstY - gridSize/2; yPos < rect.y () + rect.height (); yPos += gridSize)
+                {
+                    painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
+                }
             }
         }
     }
