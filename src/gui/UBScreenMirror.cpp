@@ -66,10 +66,12 @@ void UBScreenMirror::paintEvent(QPaintEvent *event)
 
     if (!mLastPixmap.isNull())
     {
-        int x = (width() - mLastPixmap.width()) / 2;
-        int y = (height() - mLastPixmap.height()) / 2;
+        // compute size and offset in device independent coordinates
+        QSizeF pixmapSize = mLastPixmap.size() / mLastPixmap.devicePixelRatioF();
+        int x = (width() - pixmapSize.width()) / 2;
+        int y = (height() - pixmapSize.height()) / 2;
 
-        painter.drawPixmap(x, y, width(), height(), mLastPixmap);
+        painter.drawPixmap(x, y, mLastPixmap);
     }
 }
 
@@ -95,7 +97,7 @@ void UBScreenMirror::grabPixmap()
     }
 
     if (!mLastPixmap.isNull())
-        mLastPixmap = mLastPixmap.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        mLastPixmap = mLastPixmap.scaled(size() * mLastPixmap.devicePixelRatioF(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 }
 
 
