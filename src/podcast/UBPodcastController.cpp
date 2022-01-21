@@ -203,7 +203,7 @@ void UBPodcastController::setSourceWidget(QWidget* pWidget)
             QSizeF sourceWidgetSize(mSourceWidget->size());
 
             if (mSourceWidget == qApp->desktop())
-                sourceWidgetSize = qApp->desktop()->availableGeometry(UBApplication::applicationController->displayManager()->controleScreenIndex()).size();
+                sourceWidgetSize = qApp->desktop()->availableGeometry(UBApplication::displayManager->controleScreenIndex()).size();
 
             QSizeF videoFrameSize(mVideoFrameSizeAtStart);
 

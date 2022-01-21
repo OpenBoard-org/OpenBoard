@@ -532,8 +532,8 @@ void UBDesktopAnnotationController::updateShowHideState(bool pEnabled)
 void UBDesktopAnnotationController::screenLayoutChanged()
 {
     if (UBApplication::applicationController &&
-            UBApplication::applicationController->displayManager() &&
-            UBApplication::applicationController->displayManager()->hasDisplay())
+            UBApplication::displayManager &&
+            UBApplication::displayManager->hasDisplay())
     {
         mDesktopPalette->setShowHideButtonVisible(true);
     }

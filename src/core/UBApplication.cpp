@@ -69,6 +69,7 @@
 
 QPointer<QUndoStack> UBApplication::undoStack;
 
+UBDisplayManager* UBApplication::displayManager = nullptr;
 UBApplicationController* UBApplication::applicationController = 0;
 UBBoardController* UBApplication::boardController = 0;
 UBWebController* UBApplication::webController = 0;
@@ -298,6 +299,8 @@ int UBApplication::exec(const QString& pFileToImport)
             webDbDir.mkpath(webDbPath);
      */
 
+    displayManager = new UBDisplayManager(staticMemoryCleaner);
+
     if (UBSettings::settings()->appRunInWindow->get().toBool()) {
         mainWindow = new UBMainWindow(0,
                 Qt::Window |
@@ -410,8 +413,7 @@ int UBApplication::exec(const QString& pFileToImport)
 void UBApplication::onScreenCountChanged(int newCount)
 {
     Q_UNUSED(newCount);
-    UBDisplayManager displayManager;
-    mainWindow->actionMultiScreen->setEnabled(displayManager.numScreens() > 1);
+    mainWindow->actionMultiScreen->setEnabled(displayManager->numScreens() > 1);
 }
 
 void UBApplication::showMinimized()
@@ -746,5 +748,5 @@ QScreen* UBApplication::controlScreen()
 
 int UBApplication::controlScreenIndex()
 {
-    return applicationController->displayManager()->controleScreenIndex();
+    return displayManager->controleScreenIndex();
 }

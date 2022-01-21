@@ -51,6 +51,7 @@ class UBResources;
 class UBSettings;
 class UBPersistenceManager;
 class UBApplicationController;
+class UBDisplayManager;
 class UBDocumentController;
 class UBMainWindow;
 
@@ -69,6 +70,7 @@ class UBApplication : public SingleApplication
 
         static QPointer<QUndoStack> undoStack;
 
+        static UBDisplayManager* displayManager;
         static UBApplicationController *applicationController;
         static UBBoardController* boardController;
         static UBWebController* webController;

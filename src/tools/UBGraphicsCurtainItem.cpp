@@ -130,7 +130,7 @@ void UBGraphicsCurtainItem::paint(QPainter *painter, const QStyleOptionGraphicsI
     if(widget == UBApplication::boardController->controlView()->viewport())
     {
         color = UBSettings::paletteColor;
-        if(!UBApplication::applicationController->displayManager()->hasDisplay())
+        if(!UBApplication::displayManager->hasDisplay())
         {
             color = opaqueControlColor();
         }

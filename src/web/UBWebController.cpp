@@ -560,8 +560,8 @@ QPixmap UBWebController::getScreenPixmap()
 void UBWebController::screenLayoutChanged()
 {
     bool hasDisplay = (UBApplication::applicationController &&
-                       UBApplication::applicationController->displayManager() &&
-                       UBApplication::applicationController->displayManager()->hasDisplay());
+                       UBApplication::displayManager &&
+                       UBApplication::displayManager->hasDisplay());
 
     UBApplication::mainWindow->actionWebShowHideOnDisplay->setVisible(hasDisplay);
 }
