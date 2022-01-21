@@ -2382,7 +2382,10 @@ void UBDocumentController::duplicateSelectedItem()
         if (selectedSceneIndexes.count() > 0)
         {
             duplicatePages(selectedSceneIndexes);
-            emit documentThumbnailsUpdated(this);
+            if (selectedDocument() == selectedDocumentProxy())
+            {
+                reloadThumbnails();
+            }
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
             UBMetadataDcSubsetAdaptor::persist(selectedDocument());
             int selectedThumbnail = selectedSceneIndexes.last() + selectedSceneIndexes.size();
@@ -3131,11 +3134,6 @@ void UBDocumentController::pageSelectionChanged()
 void UBDocumentController::documentSceneChanged(UBDocumentProxy* proxy, int pSceneIndex)
 {
     Q_UNUSED(pSceneIndex);
-
-    if (proxy == selectedDocumentProxy())
-    {
-        reloadThumbnails();
-    }
 
     QModelIndexList sel = mDocumentUI->documentTreeView->selectionModel()->selectedRows(0);
 

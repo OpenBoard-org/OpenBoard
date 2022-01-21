@@ -589,8 +589,8 @@ void UBBoardController::duplicateScene(int nIndex)
     if (UBApplication::documentController->selectedDocument() == selectedDocument())
     {
         UBApplication::documentController->insertThumbPage(nIndex);
+        UBApplication::documentController->reloadThumbnails();
     }
-    //emit documentThumbnailsUpdated(this);
     emit addThumbnailRequired(this, nIndex + 1);
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
