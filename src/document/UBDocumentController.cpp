@@ -3013,6 +3013,10 @@ void UBDocumentController::addFileToDocument()
     {
          addFileToDocument(document);
          reloadThumbnails();
+         if (UBApplication::boardController->selectedDocument() == selectedDocument())
+         {
+             UBApplication::boardController->reloadThumbnails();
+         }
     }
 }
 
