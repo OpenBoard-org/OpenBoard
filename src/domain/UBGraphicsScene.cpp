@@ -1934,8 +1934,11 @@ UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, con
 UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString, const QPointF& pTopLeft)
 {
     UBGraphicsTextItem *textItem = new UBGraphicsTextItem();
+
     textItem->setPlainText("");
     textItem->setHtml(UBTextTools::cleanHtml(pString));
+
+    textItem->initFontProperties();
 
     addItem(textItem);
     textItem->show();

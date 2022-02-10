@@ -81,6 +81,64 @@ UBGraphicsTextItem::~UBGraphicsTextItem()
 {
 }
 
+void UBGraphicsTextItem::initFontProperties()
+{
+    QTextCursor curCursor = textCursor();
+    QTextCharFormat format;
+    QFont font(createDefaultFont());
+
+    font.setPointSize(UBSettings::settings()->fontPointSize());
+    format.setFont(font);
+    if (UBSettings::settings()->isDarkBackground())
+    {
+        if (UBGraphicsTextItem::lastUsedTextColor == Qt::black)
+            UBGraphicsTextItem::lastUsedTextColor = Qt::white;
+    }
+    else
+    {
+        if (UBGraphicsTextItem::lastUsedTextColor == Qt::white)
+            UBGraphicsTextItem::lastUsedTextColor = Qt::black;
+    }
+
+    setDefaultTextColor(UBGraphicsTextItem::lastUsedTextColor);
+    format.setForeground(QBrush(UBGraphicsTextItem::lastUsedTextColor));
+    curCursor.mergeCharFormat(format);
+    setTextCursor(curCursor);
+    setFont(font);
+
+    adjustSize();
+    contentsChanged();
+}
+
+QFont UBGraphicsTextItem::createDefaultFont()
+{
+    QFont font;
+
+    QString fFamily = UBSettings::settings()->fontFamily();
+    if (!fFamily.isEmpty())
+        font.setFamily(fFamily);
+
+    QString fStyleName = UBSettings::settings()->fontStyleName();
+    if (!fStyleName .isEmpty())
+        font.setStyleName(fStyleName);
+
+    bool bold = UBSettings::settings()->isBoldFont();
+    if (bold)
+        font.setWeight(QFont::Bold);
+
+    bool italic = UBSettings::settings()->isItalicFont();
+    if (italic)
+        font.setItalic(true);
+
+
+    int pointSize = UBSettings::settings()->fontPointSize();
+    if (pointSize > 0) {
+        font.setPointSize(pointSize);
+    }
+
+    return font;
+}
+
 void UBGraphicsTextItem::recolor()
 {
     UBGraphicsTextItemDelegate * del = dynamic_cast<UBGraphicsTextItemDelegate*>(Delegate());
