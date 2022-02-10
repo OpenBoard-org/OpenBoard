@@ -1566,11 +1566,11 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
             }
 
             QApplication::restoreOverrideCursor();
-            UBApplication::applicationController->showMessage(tr("%1 pages copied", "", total).arg(total), false);
 
             docModel->setHighLighted(QModelIndex());
         }
 
+        UBApplication::applicationController->showMessage(tr("%1 pages copied", "", total).arg(total), false);
         UBApplication::documentController->TreeViewSelectionChanged(UBApplication::documentController->firstSelectedTreeIndex(), QModelIndex());
 
     }
