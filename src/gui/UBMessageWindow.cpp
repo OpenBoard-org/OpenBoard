@@ -87,7 +87,7 @@ void UBMessageWindow::showMessage(const QString& message, bool showSpinningWheel
     // showMessage may have been called from the GUI thread, so make sure the message window is drawn right now
     repaint();
     // I mean it, *right now*, also on Mac
-    qApp->processEvents();
+    qApp->flush();
     //qApp->sendPostedEvents();
 }
 
