@@ -976,7 +976,7 @@ UBDocumentProxy* UBPersistenceManager::persistDocumentMetadata(UBDocumentProxy* 
 
 void UBPersistenceManager::renamePage(UBDocumentProxy* pDocumentProxy, const int sourceIndex, const int targetIndex)
 {
-    UBApplication::showMessage(tr("renaming pages (%1/%2)").arg(sourceIndex).arg(pDocumentProxy->pageCount()));
+    UBApplication::showMessage(tr("Renaming pages (%1/%2)").arg(sourceIndex).arg(pDocumentProxy->pageCount()));
     QFile svg(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", sourceIndex));
     svg.rename(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg",  targetIndex));
 

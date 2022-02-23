@@ -896,6 +896,14 @@
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
         <translation>Sunteți sigur că doriți să eliminați 1 pagină din documentul selectat &apos;%0&apos;?</translation>
     </message>
+    <message>
+        <source>Loading scene (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moving cached scenes (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBApplication</name>
@@ -1226,6 +1234,10 @@
         <source>Title page</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Refreshing Document Thumbnails View (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1275,6 +1287,10 @@
     <message>
         <source>Page %0</source>
         <translation>Pagina %0</translation>
+    </message>
+    <message>
+        <source>Generating thumbnails for board (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1970,6 +1986,10 @@ Doriţi să ignoraţi aceste erori pentru acest host?</translation>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Renaming pages (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -2132,6 +2152,10 @@ Doriţi să ignoraţi aceste erori pentru acest host?</translation>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 miniaturi generate ...</translation>
+    </message>
+    <message>
+        <source>Loading thumbnail (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

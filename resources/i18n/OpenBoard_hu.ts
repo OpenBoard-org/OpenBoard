@@ -896,6 +896,14 @@
         <source>Content is not supported in destination format.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Loading scene (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moving cached scenes (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBApplication</name>
@@ -1232,6 +1240,10 @@
         <source>Title page</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Refreshing Document Thumbnails View (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1280,6 +1292,10 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Generating thumbnails for board (%1/%2)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1946,6 +1962,10 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Renaming pages (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -2112,6 +2132,10 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     <message>
         <source>loading thumbnail of page %1</source>
         <translation type="vanished">%1. oldal előképének betöltése</translation>
+    </message>
+    <message>
+        <source>Loading thumbnail (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

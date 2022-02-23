@@ -896,6 +896,14 @@
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
         <translation type="unfinished">선택한 문서 &apos;%0&apos;에서 1페이지를 제거하시겠습니까?</translation>
     </message>
+    <message>
+        <source>Loading scene (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moving cached scenes (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBApplication</name>
@@ -1224,6 +1232,10 @@
         <source>Title page</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Refreshing Document Thumbnails View (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1273,6 +1285,10 @@
     <message>
         <source>Page %0</source>
         <translation>%0 페이지</translation>
+    </message>
+    <message>
+        <source>Generating thumbnails for board (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1974,6 +1990,10 @@ Do you want to ignore these errors for this host?</source>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Renaming pages (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -2136,6 +2156,10 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 썸네일 생성됨 ...</translation>
+    </message>
+    <message>
+        <source>Loading thumbnail (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

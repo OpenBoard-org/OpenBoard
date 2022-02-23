@@ -897,6 +897,14 @@
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
         <translation>Voulez-vous vraiment effacer 1 page de ce document &apos;%0&apos;?</translation>
     </message>
+    <message>
+        <source>Loading scene (%1/%2)</source>
+        <translation>Chargement de la scène (%1/%2)</translation>
+    </message>
+    <message>
+        <source>Moving cached scenes (%1/%2)</source>
+        <translation>Déplacement des scènes mises en cache (%1/%2)</translation>
+    </message>
 </context>
 <context>
     <name>UBApplication</name>
@@ -1251,6 +1259,10 @@
         <source>Empty My Documents</source>
         <translation type="vanished">Vider Mes Documents</translation>
     </message>
+    <message>
+        <source>Refreshing Document Thumbnails View (%1/%2)</source>
+        <translation>Actualisation des aperçus du mode Documents (%1/%2)</translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1301,6 +1313,10 @@
     <message>
         <source>Page %0</source>
         <translation>Page %0</translation>
+    </message>
+    <message>
+        <source>Generating thumbnails for board (%1/%2)</source>
+        <translation>Création des aperçus du mode Tableau (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -2041,6 +2057,10 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>OpenBoard a perdu l&apos;accès au répertoire des documents &apos;%1&apos;. Malheureusement, l&apos;application sera fermée afin d&apos;éviter la corruption des données. Les dernières modifications pourraient être également perdues.</translation>
     </message>
+    <message>
+        <source>Renaming pages (%1/%2)</source>
+        <translation>Actualisation des noms des pages en cours (%1/%2)</translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -2207,6 +2227,10 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     <message>
         <source>loading thumbnail of page %1</source>
         <translation type="vanished">Chargement aperçu page %1</translation>
+    </message>
+    <message>
+        <source>Loading thumbnail (%1/%2)</source>
+        <translation>Chargement de l&apos;aperçu (%1/%2)</translation>
     </message>
 </context>
 <context>
