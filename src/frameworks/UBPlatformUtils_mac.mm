@@ -684,6 +684,7 @@ void UBPlatformUtils::showOSK(bool show)
                 tell application \"System Events\"\n\
                     tell application process \"TextInputMenuAgent\"\n\
                         tell menu 1 of menu bar item 1 of menu bar 2\n\
+                            delay 0.2\n\
                             click menu item 2\n\
                         end tell\n\
                     end tell\n\
@@ -696,6 +697,8 @@ void UBPlatformUtils::showOSK(bool show)
 
         if(errorInfo!=nil)
         {
+            errorOpeningVirtualKeyboard = true;
+
             NSAlert *alert = [[NSAlert alloc] init];
 
             if (alert != nil)
@@ -710,6 +713,10 @@ void UBPlatformUtils::showOSK(bool show)
                 else
                     UBApplication::mainWindow->actionVirtualKeyboard->setChecked(true);
             }
+        }
+        else
+        {
+            errorOpeningVirtualKeyboard = false;
         }
     }
 }
