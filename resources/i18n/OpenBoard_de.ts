@@ -898,11 +898,11 @@
     </message>
     <message>
         <source>Loading scene (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Laden der Szene (%1/%2)</translation>
     </message>
     <message>
         <source>Moving cached scenes (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschieben von zwischengespeicherten Szenen (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1252,7 +1252,7 @@
     </message>
     <message>
         <source>Refreshing Document Thumbnails View (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualisieren der Vorschauen im Dokumentenmodus (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1306,7 +1306,7 @@
     </message>
     <message>
         <source>Generating thumbnails for board (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Erstellen von Voransichten des Tabellenmodus (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -2046,7 +2046,7 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     </message>
     <message>
         <source>Renaming pages (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualisieren der aktuellen Seitennamen (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -2218,7 +2218,7 @@ Miniaturansicht der Seite %1 wird geladen</translation>
     </message>
     <message>
         <source>Loading thumbnail (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Laden der Vorschau (%1/%2)</translation>
     </message>
 </context>
 <context>
