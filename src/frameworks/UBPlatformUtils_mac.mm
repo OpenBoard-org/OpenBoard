@@ -661,10 +661,15 @@ void UBPlatformUtils::showOSK(bool show)
     {
         NSString *source =
             @"tell application \"System Events\"\n\
+                delay 0.1\n\
                 if application process \"TextInputMenuAgent\" exists then\n\
+                    delay 0.1\n\
                     tell application process \"TextInputMenuAgent\"\n\
+                        delay 0.1\n\
                         tell menu bar item 1 of menu bar 2\n\
+                            delay 0.1\n\
                             ignoring application responses\n\
+                                delay 0.1\n\
                                 click\n\
                             end ignoring\n\
                         end tell\n\
@@ -681,10 +686,13 @@ void UBPlatformUtils::showOSK(bool show)
             }
 
             source = [source stringByAppendingString:@" running then\n\
+                delay 0.1\n\
                 tell application \"System Events\"\n\
+                    delay 0.1\n\
                     tell application process \"TextInputMenuAgent\"\n\
+                        delay 0.1\n\
                         tell menu 1 of menu bar item 1 of menu bar 2\n\
-                            delay 0.2\n\
+                            delay 0.1\n\
                             click menu item 2\n\
                         end tell\n\
                     end tell\n\
