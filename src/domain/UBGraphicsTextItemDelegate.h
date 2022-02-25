@@ -158,7 +158,6 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
         void restoreTextCursorFormats();
 
 
-        QFont createDefaultFont();
         QAction *mEditableAction;
         struct selectionData_t {
             selectionData_t()

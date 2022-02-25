@@ -522,6 +522,7 @@ void UBBoardController::addScene()
 
     UBPersistenceManager::persistenceManager()->createDocumentSceneAt(selectedDocument(), mActiveSceneIndex+1);
     emit addThumbnailRequired(this, mActiveSceneIndex+1);
+
     if (UBApplication::documentController->selectedDocument() == selectedDocument())
     {
         UBApplication::documentController->insertThumbPage(mActiveSceneIndex+1);
@@ -877,7 +878,6 @@ void UBBoardController::showKeyboard(bool show)
         UBPlatformUtils::showOSK(show);
     else
         mPaletteManager->showVirtualKeyboard(show);
-
 }
 
 
@@ -2166,7 +2166,10 @@ void UBBoardController::stylusToolChanged(int tool)
         if(eTool != UBStylusTool::Selector && eTool != UBStylusTool::Text)
         {
             if(mPaletteManager->mKeyboardPalette->m_isVisible)
-                UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction::Trigger);
+            {
+                if (!UBPlatformUtils::errorOpeningVirtualKeyboard)
+                    UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction::Trigger);
+            }
         }
     }
 

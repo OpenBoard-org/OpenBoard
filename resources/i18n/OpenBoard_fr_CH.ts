@@ -938,6 +938,14 @@ Do you wish to override the security check and continue ?   </source>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
         <translation>Voulez-vous vraiment effacer 1 page de ce document &apos;%0&apos;?</translation>
     </message>
+    <message>
+        <source>Loading scene (%1/%2)</source>
+        <translation>Chargement de la scène (%1/%2)</translation>
+    </message>
+    <message>
+        <source>Moving cached scenes (%1/%2)</source>
+        <translation>Déplacement des scènes mises en cache (%1/%2)</translation>
+    </message>
 </context>
 <context>
     <name>TabWidget</name>
@@ -1298,6 +1306,10 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <source>Page %0</source>
         <translation>Page %0</translation>
+    </message>
+    <message>
+        <source>Generating thumbnails for board (%1/%2)</source>
+        <translation>Création des aperçus du mode Tableau (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1956,6 +1968,10 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>OpenBoard a perdu l&apos;accès au répertoire des documents &apos;%1&apos;. Malheureusement, l&apos;application sera fermée afin d&apos;éviter la corruption des données. Les dernières modifications pourraient être également perdues.</translation>
     </message>
+    <message>
+        <source>Renaming pages (%1/%2)</source>
+        <translation>Actualisation des noms des pages en cours (%1/%2)</translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -2078,6 +2094,17 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 vignettes créées ...</translation>
     </message>
+<<<<<<< HEAD
+=======
+    <message>
+        <source>loading thumbnail of page %1</source>
+        <translation type="vanished">Chargement aperçu page %1</translation>
+    </message>
+    <message>
+        <source>Loading thumbnail (%1/%2)</source>
+        <translation>Chargement de l&apos;aperçu (%1/%2)</translation>
+    </message>
+>>>>>>> origin/dev
 </context>
 <context>
     <name>UBThumbnailTextItem</name>

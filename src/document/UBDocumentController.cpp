@@ -1567,11 +1567,11 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
             }
 
             QApplication::restoreOverrideCursor();
-            UBApplication::applicationController->showMessage(tr("%1 pages copied", "", total).arg(total), false);
 
             docModel->setHighLighted(QModelIndex());
         }
 
+        UBApplication::applicationController->showMessage(tr("%1 pages copied", "", total).arg(total), false);
         UBApplication::documentController->TreeViewSelectionChanged(UBApplication::documentController->firstSelectedTreeIndex(), QModelIndex());
 
     }
@@ -2383,7 +2383,10 @@ void UBDocumentController::duplicateSelectedItem()
         if (selectedSceneIndexes.count() > 0)
         {
             duplicatePages(selectedSceneIndexes);
-            emit documentThumbnailsUpdated(this);
+            if (selectedDocument() == selectedDocumentProxy())
+            {
+                reloadThumbnails();
+            }
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
             UBMetadataDcSubsetAdaptor::persist(selectedDocument());
             int selectedThumbnail = selectedSceneIndexes.last() + selectedSceneIndexes.size();
@@ -3095,6 +3098,16 @@ void UBDocumentController::moveThumbnail(int from, int to)
     mDocumentUI->thumbnailWidget->moveThumbnail(from, to);
 }
 
+void UBDocumentController::removeThumbnail(int index)
+{
+    mDocumentUI->thumbnailWidget->removeThumbnail(index);
+}
+
+void UBDocumentController::moveThumbnail(int from, int to)
+{
+    mDocumentUI->thumbnailWidget->moveThumbnail(from, to);
+}
+
 void UBDocumentController::thumbnailViewResized()
 {
     int maxWidth = qMin(UBSettings::maxThumbnailWidth, mDocumentUI->thumbnailWidget->width());
@@ -3215,7 +3228,6 @@ void UBDocumentController::addToDocument()
         UBMetadataDcSubsetAdaptor::persist(mBoardController->selectedDocument());
         //mBoardController->reloadThumbnails();
 
-        emit mBoardController->documentThumbnailsUpdated(this);
         UBApplication::applicationController->showBoard();
 
         mBoardController->setActiveDocumentScene(newActiveSceneIndex);

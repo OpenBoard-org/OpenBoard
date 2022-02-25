@@ -66,7 +66,9 @@ UBKeyboardLocale::~UBKeyboardLocale()
 
 int UBPlatformUtils::nKeyboardLayouts;
 UBKeyboardLocale** UBPlatformUtils::keyboardLayouts;
-
+#ifdef Q_OS_OSX
+bool UBPlatformUtils::errorOpeningVirtualKeyboard = false;
+#endif
 UBKeyboardLocale** UBPlatformUtils::getKeyboardLayouts(int& nCount)
 {
     nCount = nKeyboardLayouts;

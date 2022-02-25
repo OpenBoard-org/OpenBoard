@@ -54,7 +54,6 @@ void UBThumbnailAdaptor::generateMissingThumbnails(UBDocumentProxy* proxy)
 
     for (int iPageNo = 0; iPageNo < existingPageCount; ++iPageNo)
     {
-        UBApplication::showMessage(tr("check generateMissingThumbnails (%1/%2)").arg(iPageNo).arg(existingPageCount));
         QString thumbFileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", iPageNo);
 
         QFile thumbFile(thumbFileName);
