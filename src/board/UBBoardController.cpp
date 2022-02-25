@@ -2171,8 +2171,12 @@ void UBBoardController::stylusToolChanged(int tool)
         {
             if(mPaletteManager->mKeyboardPalette->m_isVisible)
             {
+#ifdef Q_OS_OSX
                 if (!UBPlatformUtils::errorOpeningVirtualKeyboard)
                     UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction::Trigger);
+#else
+                UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction::Trigger);
+#endif
             }
         }
     }
