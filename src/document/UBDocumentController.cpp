@@ -3098,16 +3098,6 @@ void UBDocumentController::moveThumbnail(int from, int to)
     mDocumentUI->thumbnailWidget->moveThumbnail(from, to);
 }
 
-void UBDocumentController::removeThumbnail(int index)
-{
-    mDocumentUI->thumbnailWidget->removeThumbnail(index);
-}
-
-void UBDocumentController::moveThumbnail(int from, int to)
-{
-    mDocumentUI->thumbnailWidget->moveThumbnail(from, to);
-}
-
 void UBDocumentController::thumbnailViewResized()
 {
     int maxWidth = qMin(UBSettings::maxThumbnailWidth, mDocumentUI->thumbnailWidget->width());
