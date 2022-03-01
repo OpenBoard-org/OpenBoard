@@ -898,11 +898,11 @@
     </message>
     <message>
         <source>Loading scene (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Caricamento della scena (%1/%2)</translation>
     </message>
     <message>
         <source>Moving cached scenes (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Spostamento delle scene in cache (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1248,7 +1248,7 @@
     </message>
     <message>
         <source>Refreshing Document Thumbnails View (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiornamento delle anteprime in modalità Documenti (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1302,7 +1302,7 @@
     </message>
     <message>
         <source>Generating thumbnails for board (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Creazione delle anteprime in modalità Lavagna (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -2038,7 +2038,7 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
     <message>
         <source>Renaming pages (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiornamento dei nomi delle pagine in corso (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -2209,7 +2209,7 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
     <message>
         <source>Loading thumbnail (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Caricamento dell&apos;anteprima (%1/%2)</translation>
     </message>
 </context>
 <context>
