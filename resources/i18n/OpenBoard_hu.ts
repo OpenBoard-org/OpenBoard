@@ -1121,15 +1121,15 @@
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation>Biztosan szeretné eltávolítani a(z) „%1” dokumentumot?</translation>
+        <translation type="vanished">Biztosan szeretné eltávolítani a(z) „%1” dokumentumot?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation>Törölt elemek kiürítése</translation>
+        <translation type="vanished">Törölt elemek kiürítése</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation>Biztosan szeretné kiüríteni a törölt elemeket?</translation>
+        <translation type="vanished">Biztosan szeretné kiüríteni a törölt elemeket?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
@@ -1195,9 +1195,9 @@
         <source>Selection does not contain any image files!</source>
         <translation>A kiválasztásban nincs egyetlen kép sem!</translation>
     </message>
-    <message numerus="yes">
+    <message>
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>Biztosan szeretné eltávolítani %n oldalt a kiválasztott „%1” dokumentumból?</translation>
+        <translation type="vanished">Biztosan szeretné eltávolítani %n oldalt a kiválasztott „%1” dokumentumból?</translation>
     </message>
     <message>
         <source>Folder does not contain any image files</source>
@@ -1213,7 +1213,7 @@
     </message>
     <message>
         <source>Are you sure you want to remove all selected documents?</source>
-        <translation>Biztosan szeretné eltávolítani minden kijelölt dokumentumot?</translation>
+        <translation type="vanished">Biztosan szeretné eltávolítani minden kijelölt dokumentumot?</translation>
     </message>
     <message>
         <source>Remove multiple documents</source>
@@ -1222,7 +1222,9 @@
     <message numerus="yes">
         <source>duplicated %1 page</source>
         <comment>duplicated %1 pages</comment>
-        <translation>%1 oldal másolata</translation>
+        <translation type="unfinished">
+            <numerusform>%1 oldal másolata</numerusform>
+        </translation>
     </message>
     <message>
         <source>Remove Item</source>
@@ -1330,7 +1332,9 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation>%1 oldal másolva</translation>
+        <translation type="unfinished">
+            <numerusform>%1 oldal másolva</numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -1341,7 +1345,9 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation>%1 oldal másolva</translation>
+        <translation type="unfinished">
+            <numerusform>%1 oldal másolva</numerusform>
+        </translation>
     </message>
     <message>
         <source>Remove Item</source>
@@ -1360,13 +1366,11 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation>Oldal másolása: %1/%2</translation>
+        <translation type="vanished">Oldal másolása: %1/%2</translation>
     </message>
-    <message numerus="yes">
+    <message>
         <source>%1 pages copied</source>
-        <translation type="vanished">
-            <numerusform>%1 oldal másolva</numerusform>
-        </translation>
+        <translation type="vanished">%1 oldal másolva</translation>
     </message>
 </context>
 <context>
@@ -1613,7 +1617,7 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
     </message>
     <message>
         <source>Animations</source>
-        <translation>Animációk</translation>
+        <translation type="vanished">Animációk</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -1950,7 +1954,7 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     </message>
     <message>
         <source>Moving page to trash folder...</source>
-        <translation>Oldal áthelyezése a törölt elemek mappába…</translation>
+        <translation type="vanished">Oldal áthelyezése a törölt elemek mappába…</translation>
     </message>
     <message>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
@@ -2066,30 +2070,30 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Felhasználónév:</translation>
+        <translation type="vanished">Felhasználónév:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>Jelszó:</translation>
+        <translation type="vanished">Jelszó:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation>Dokumentum közzététele az interneten</translation>
+        <translation type="vanished">Dokumentum közzététele az interneten</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation>Cím:</translation>
+        <translation type="vanished">Cím:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation>Leírás:</translation>
+        <translation type="vanished">Leírás:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation>Közzététel</translation>
+        <translation type="vanished">Közzététel</translation>
     </message>
 </context>
 <context>
