@@ -886,7 +886,7 @@
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation>Biztosan szeretné eltávolítani 1 oldalt a kijelölt &apos;%0&apos;-dokumentumból?</translation>
+        <translation>Biztosan szeretné eltávolítani 1 oldalt a kijelölt „%0”-dokumentumból?</translation>
     </message>
     <message>
         <source>Element ID = </source>
@@ -1121,7 +1121,7 @@
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation>Biztosan szeretné eltávolítani a(z) &apos;%1&apos; dokumentumot?</translation>
+        <translation>Biztosan szeretné eltávolítani a(z) „%1” dokumentumot?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
@@ -1145,7 +1145,7 @@
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="vanished">Biztosan szeretné eltávolítani a(z) &apos;%1&apos; mappát és az összes tartalmát?</translation>
+        <translation type="vanished">Biztosan szeretné eltávolítani a(z) „%1” mappát és az összes tartalmát?</translation>
     </message>
     <message>
         <source>No document selected!</source>
@@ -1197,7 +1197,7 @@
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation>Biztosan szeretné eltávolítani %n oldalt a kiválasztott &apos;%1&apos; dokumentumból?</translation>
+        <translation>Biztosan szeretné eltávolítani %n oldalt a kiválasztott „%1” dokumentumból?</translation>
     </message>
     <message>
         <source>Folder does not contain any image files</source>
@@ -1209,7 +1209,7 @@
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation>A(z) &apos;%1&apos; dokumentum az OpenBoard újabb verziójával (%2) készült. Megnyitásával néhány információ elveszhet. Szeretné folytatni?</translation>
+        <translation>A(z) „%1” dokumentum az OpenBoard újabb verziójával (%2) készült. Megnyitásával néhány információ elveszhet. Szeretné folytatni?</translation>
     </message>
     <message>
         <source>Are you sure you want to remove all selected documents?</source>
@@ -1946,7 +1946,7 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     </message>
     <message>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="vanished">elveszítette a(z) &apos;%1&apos; dokumentum repository hozzáférését. Sajnálatosan az alkalmazásnak le kellett állnia, hogy elkerülje az adatsérülést. A legutóbbi változtatások elveszhettek.</translation>
+        <translation type="vanished">elveszítette a(z) „%1” dokumentum repository hozzáférését. Sajnálatosan az alkalmazásnak le kellett állnia, hogy elkerülje az adatsérülést. A legutóbbi változtatások elveszhettek.</translation>
     </message>
     <message>
         <source>Moving page to trash folder...</source>
@@ -1954,7 +1954,7 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     </message>
     <message>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation>Az OpenBoard elvesztette a hozzáférést a(z) &apos;%1&apos; dokumentumtárához. Sajnos az alkalmazást le kell állítani az adatvesztés elkerülése érdekében. A legújabb változások is elveszhetnek.</translation>
+        <translation>Az OpenBoard elvesztette a hozzáférést a(z) „%1” dokumentumtárához. Sajnos az alkalmazást le kell állítani az adatvesztés elkerülése érdekében. A legújabb változások is elveszhetnek.</translation>
     </message>
     <message>
         <source>Renaming pages (%1/%2)</source>
