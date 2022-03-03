@@ -685,7 +685,16 @@ void UBPlatformUtils::showOSK(bool show)
                 tell application \"System Events\"\n\
                     tell application process \"TextInputMenuAgent\"\n\
                         tell menu 1 of menu bar item 1 of menu bar 2\n\
-                            click menu item 2\n\
+                            set nbItems to count menu items\n\
+                            if (nbItems = 4)\n\
+                                -- only one language so items are\n\
+                                -- 1. emojis&symbols n-2. keyboard n-1. separator n.preferences\n\
+                                click menu item (nbItems-2)\n\
+                            else\n\
+                                -- items are ... n-4. access keyboard n-3. separator n-2 display names n-1. separator n. preferences\n\
+                                -- target is in fourth position from bottom\n\
+                                click menu item (nbItems - 4)\n\
+                            end if\n\
                         end tell\n\
                     end tell\n\
                 end tell\n\
