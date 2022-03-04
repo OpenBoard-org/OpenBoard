@@ -3513,7 +3513,7 @@ void UBDocumentController::updateActions()
         if (mSelectionType == Folder)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-folder.png"));
-            mMainWindow->actionDelete->setText(tr("Empty"));
+            mMainWindow->actionDelete->setText(tr("Delete"));
         }
         else if (mSelectionType == Document)
         {
@@ -3556,7 +3556,7 @@ void UBDocumentController::updateActions()
         else
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-folder.png"));
-            mMainWindow->actionDelete->setText(tr("Empty"));
+            mMainWindow->actionDelete->setText(tr("Delete"));
         }
         break;
     case EmptyTrash :
