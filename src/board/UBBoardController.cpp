@@ -524,7 +524,7 @@ void UBBoardController::addScene()
     if (UBApplication::documentController->selectedDocument() == selectedDocument())
     {
         UBApplication::documentController->insertThumbPage(mActiveSceneIndex+1);
-        emit UBApplication::documentController->documentThumbnailsUpdated(UBApplication::documentController);
+        emit UBApplication::documentController->reloadThumbnails();
     }
 
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
