@@ -3049,6 +3049,7 @@ bool UBDocumentController::addFileToDocument(UBDocumentProxy* document)
         {
             document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
             UBMetadataDcSubsetAdaptor::persist(document);
+            reloadThumbnails();
         }
         else
         {

@@ -1428,12 +1428,15 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
                 QStringList fileNames;
                 fileNames << pdfFile.fileName();
                 result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
-                emit documentThumbnailsUpdated(this);
                 pdfFile.close();
             }
         }
 
-        if (result){
+        if (result)
+        {
+            if (UBApplication::documentController->selectedDocument() == selectedDocument())
+                UBApplication::documentController->reloadThumbnails();
+
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         }
     }
