@@ -1934,7 +1934,12 @@ void UBBoardController::closing()
     mIsClosing = true;
     lastWindowClosed();
     ClearUndoStack();
-    showKeyboard(false);
+#ifdef Q_OS_OSX
+    if (!UBPlatformUtils::errorOpeningVirtualKeyboard)
+        showKeyboard(false);
+#else
+        showKeyboard(false);
+#endif
 }
 
 void UBBoardController::lastWindowClosed()
