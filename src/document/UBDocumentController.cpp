@@ -3781,6 +3781,8 @@ void UBDocumentController:: refreshDocumentThumbnailsView(UBDocumentContainer* s
                                                        , QList<QUrl>()
                                                        , QStringList()
                                                        , UBApplication::mimeTypeUniboardPage);
+
+        QApplication::restoreOverrideCursor();
         return;
     }
 
