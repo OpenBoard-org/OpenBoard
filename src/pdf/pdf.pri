@@ -1,3 +1,4 @@
+CONFIG += c++17
 
 HEADERS      += src/pdf/GraphicsPDFItem.h \
                 src/pdf/PDFRenderer.h \
