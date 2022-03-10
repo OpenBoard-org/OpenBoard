@@ -131,7 +131,8 @@ class UBPersistenceManager : public QObject
         bool addDirectoryContentToDocument(const QString& documentRootFolder, UBDocumentProxy* pDocument);
 
         void createDocumentProxiesStructure(bool interactive = false);
-        void createDocumentProxiesStructure(const QFileInfoList &contentInfo, bool interactive = false);
+        void createDocumentProxiesStructure(const QFileInfoList &contentInfoList, bool interactive = false);
+        UBDocumentProxy* createDocumentProxyStructure(QFileInfo &contentInfo);
         QDialog::DialogCode processInteractiveReplacementDialog(UBDocumentProxy *pProxy);
 
         QStringList documentSubDirectories()
@@ -187,6 +188,8 @@ private:
         bool mHasPurgedDocuments;
         QString mDocumentRepositoryPath;
         QString mFoldersXmlStorageName;
+        QProgressDialog mProgress;
+        QFutureWatcher<void> futureWatcher;
 
     private slots:
         void documentRepositoryChanged(const QString& path);

@@ -307,7 +307,7 @@ void UBBoardThumbnailsView::dragMoveEvent(QDragMoveEvent *event)
             {
                 y = item->pos().y() - UBSettings::thumbnailSpacing / 2;
                 if (mDropBar->y() != y)
-                    mDropBar->setRect(QRectF(item->pos().x(), y, mThumbnailWidth-verticalScrollBar()->width(), 3));
+                    mDropBar->setRect(QRectF(item->pos().x(), y, (item->boundingRect().width()-verticalScrollBar()->width())*scale, 3));
             }
         }
         else
@@ -316,7 +316,7 @@ void UBBoardThumbnailsView::dragMoveEvent(QDragMoveEvent *event)
             {
                 y = item->pos().y() + item->boundingRect().height() * scale + UBSettings::thumbnailSpacing / 2;
                 if (mDropBar->y() != y)
-                    mDropBar->setRect(QRectF(item->pos().x(), y, mThumbnailWidth-verticalScrollBar()->width(), 3));
+                    mDropBar->setRect(QRectF(item->pos().x(), y, (item->boundingRect().width()-verticalScrollBar()->width())*scale, 3));
             }
         }
     }

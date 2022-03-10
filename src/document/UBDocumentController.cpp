@@ -2393,8 +2393,11 @@ void UBDocumentController::duplicateSelectedItem()
             int sceneCount = selectedSceneIndexes.count();
             showMessage(tr("duplicated %1 page","duplicated %1 pages",sceneCount).arg(sceneCount), false);
 
-            mBoardController->setActiveDocumentScene(selectedThumbnail);
-            mBoardController->reloadThumbnails();
+            if (selectedDocument() == mBoardController->selectedDocument())
+            {
+                mBoardController->setActiveDocumentScene(selectedThumbnail);
+                mBoardController->reloadThumbnails();
+            }
         }
     }
     else
@@ -2999,6 +3002,8 @@ void UBDocumentController::addFolderOfImages()
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
                 UBMetadataDcSubsetAdaptor::persist(document);
                 reloadThumbnails();
+                if (selectedDocument() == UBApplication::boardController->selectedDocument())
+                    UBApplication::boardController->reloadThumbnails();
             }
         }
     }
@@ -3012,11 +3017,6 @@ void UBDocumentController::addFileToDocument()
     if (document)
     {
          addFileToDocument(document);
-         reloadThumbnails();
-         if (UBApplication::boardController->selectedDocument() == selectedDocument())
-         {
-             UBApplication::boardController->reloadThumbnails();
-         }
     }
 }
 
@@ -3050,6 +3050,8 @@ bool UBDocumentController::addFileToDocument(UBDocumentProxy* document)
             document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
             UBMetadataDcSubsetAdaptor::persist(document);
             reloadThumbnails();
+            if (selectedDocument() == UBApplication::boardController->selectedDocument())
+                UBApplication::boardController->reloadThumbnails();
         }
         else
         {
@@ -3328,6 +3330,8 @@ void UBDocumentController::addImages()
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
                 UBMetadataDcSubsetAdaptor::persist(document);
                 reloadThumbnails();
+                if (selectedDocument() == UBApplication::boardController->selectedDocument())
+                    UBApplication::boardController->reloadThumbnails();
             }
         }
     }
@@ -3777,6 +3781,8 @@ void UBDocumentController:: refreshDocumentThumbnailsView(UBDocumentContainer* s
                                                        , QList<QUrl>()
                                                        , QStringList()
                                                        , UBApplication::mimeTypeUniboardPage);
+
+        QApplication::restoreOverrideCursor();
         return;
     }
 
