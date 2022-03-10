@@ -242,13 +242,15 @@ void UBGraphicsMediaItemDelegate::mediaStatusChanged(QMediaPlayer::MediaStatus s
     if (status == QMediaPlayer::LoadedMedia)
         mMediaControl->totalTimeChanged(delegated()->mediaDuration());
 
-    // At the beginning of the video, play/pause to load and display the first frame
+    // At the beginning of the video, play/pause to load and display the first frame (not working on OSX)
+#ifndef Q_OS_OSX
     if ((status == QMediaPlayer::LoadedMedia || status == QMediaPlayer::BufferedMedia)
             && delegated()->mediaPosition() == delegated()->initialPos()
             && !delegated()->isStopped()) {
         delegated()->play();
         delegated()->pause();
     }
+#endif
 
     // At the end of the video, make sure the progress bar doesn't autohide
     if (status == QMediaPlayer::EndOfMedia)
