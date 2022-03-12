@@ -2094,17 +2094,10 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 vignettes créées ...</translation>
     </message>
-<<<<<<< HEAD
-=======
-    <message>
-        <source>loading thumbnail of page %1</source>
-        <translation type="vanished">Chargement aperçu page %1</translation>
-    </message>
     <message>
         <source>Loading thumbnail (%1/%2)</source>
         <translation>Chargement de l&apos;aperçu (%1/%2)</translation>
     </message>
->>>>>>> origin/dev
 </context>
 <context>
     <name>UBThumbnailTextItem</name>

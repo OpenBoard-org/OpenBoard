@@ -2093,18 +2093,10 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
         <source>%1 thumbnails generated ...</source>
         <translation>Miniaturansicht %1 wird erstellt...</translation>
     </message>
-<<<<<<< HEAD
-=======
-    <message>
-        <source>loading thumbnail of page %1</source>
-        <translation type="vanished">
-Miniaturansicht der Seite %1 wird geladen</translation>
-    </message>
     <message>
         <source>Loading thumbnail (%1/%2)</source>
         <translation>Laden der Vorschau (%1/%2)</translation>
     </message>
->>>>>>> origin/dev
 </context>
 <context>
     <name>UBThumbnailTextItem</name>
