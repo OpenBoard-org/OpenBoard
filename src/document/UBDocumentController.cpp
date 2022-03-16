@@ -3072,12 +3072,9 @@ void UBDocumentController::moveSceneToIndex(UBDocumentProxy* proxy, int source, 
 
     proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
     UBMetadataDcSubsetAdaptor::persist(proxy);
+    //mBoardController->reloadThumbnails();
 
     UBDocumentContainer::moveThumbPage(source, target);
-    if (UBApplication::boardController->selectedDocument() == selectedDocument())
-    {
-        UBApplication::boardController->moveThumbPage(source, target);
-    }
     mDocumentUI->thumbnailWidget->hightlightItem(target);
 
     //mBoardController->setActiveDocumentScene(target);
@@ -3631,7 +3628,7 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
         if (mBoardController->selectedDocument() == selectedDocument())
         {
             for (auto index : sceneIndexes)
-                mBoardController->deleteThumbPage(index);
+                emit mBoardController->removeThumbnailRequired(index);
         }
 
         proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));

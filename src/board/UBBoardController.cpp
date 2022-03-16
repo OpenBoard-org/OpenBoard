@@ -522,6 +522,7 @@ void UBBoardController::addScene()
 
     UBPersistenceManager::persistenceManager()->createDocumentSceneAt(selectedDocument(), mActiveSceneIndex+1);
     emit addThumbnailRequired(this, mActiveSceneIndex+1);
+
     if (UBApplication::documentController->selectedDocument() == selectedDocument())
     {
         UBApplication::documentController->insertThumbPage(mActiveSceneIndex+1);
@@ -590,7 +591,6 @@ void UBBoardController::duplicateScene(int nIndex)
     insertThumbPage(nIndex);
     if (UBApplication::documentController->selectedDocument() == selectedDocument())
     {
-        UBApplication::documentController->insertThumbPage(nIndex);
         UBApplication::documentController->reloadThumbnails();
     }
     emit addThumbnailRequired(this, nIndex + 1);

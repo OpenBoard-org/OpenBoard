@@ -49,8 +49,7 @@ void UBDocumentContainer::setDocument(UBDocumentProxy* document, bool forceReloa
     {
         mCurrentDocument = document;
         emit initThumbnailsRequired(this); //for board mode
-
-        clearThumbPage();
+        clearThumbPage(); //for document mode
         reloadThumbnails();
         emit documentSet(mCurrentDocument);
     }
