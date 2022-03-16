@@ -50,7 +50,7 @@ void UBDocumentContainer::setDocument(UBDocumentProxy* document, bool forceReloa
         mCurrentDocument = document;
         emit initThumbnailsRequired(this); //for board mode
 
-        clearThumbPage(); //for document mode
+        clearThumbPage();
         reloadThumbnails();
         emit documentSet(mCurrentDocument);
     }
@@ -77,6 +77,9 @@ void UBDocumentContainer::moveThumbPage(int source, int target)
 
     //on board thumbnails view (UBDocumentNavigator)
     emit documentPageMoved(source, target);
+
+    //on board thumbnails view (UBoardThumbnailsView)
+    emit moveThumbnailRequired(source, target);
 }
 
 void UBDocumentContainer::deletePages(QList<int>& pageIndexes)
@@ -122,6 +125,9 @@ void UBDocumentContainer::deleteThumbPage(int index)
 
     //on board thumbnails view (UBDocumentNavigator)
     emit documentPageRemoved(index);
+
+    //on board thumbnails view (UBoardThumbnailsView)
+    emit removeThumbnailRequired(index);
 }
 
 void UBDocumentContainer::updateThumbPage(int index)
@@ -141,6 +147,7 @@ void UBDocumentContainer::insertThumbPage(int index)
     mDocumentThumbs.insert(index, std::make_shared<QPixmap>(newPixmap));
 
     emit documentPageInserted(index);
+    emit addThumbnailRequired(this, index);
 }
 
 void UBDocumentContainer::insertExistingThumbPage(int index, std::shared_ptr<QPixmap> thumbnailPixmap)
@@ -148,6 +155,7 @@ void UBDocumentContainer::insertExistingThumbPage(int index, std::shared_ptr<QPi
     mDocumentThumbs.insert(index, thumbnailPixmap);
 
     emit documentPageInserted(index);
+    emit addThumbnailRequired(this, index);
 }
 
 void UBDocumentContainer::reloadThumbnails()

@@ -537,7 +537,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Grid Light Background</source>
-        <translation>Jasne rastrowe tło</translation>
+        <translation>Jasne tło w kratkę</translation>
     </message>
     <message>
         <source>Plain Dark Background</source>
@@ -549,7 +549,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Grid Dark Background</source>
-        <translation>Ciemne rastrowe tło</translation>
+        <translation>Ciemne tło w kratkę</translation>
     </message>
     <message>
         <source>Podcast</source>
@@ -617,7 +617,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Highlight </source>
-        <translation>Wyróżnienie</translation>
+        <translation>Wyróżnienie </translation>
     </message>
     <message>
         <source>Ctrl+M</source>
@@ -761,8 +761,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Web Trap</source>
-        <translation>
-        </translation>
+        <translation>Pułapka sieciowa</translation>
     </message>
     <message>
         <source>Trap Web Content</source>
@@ -853,51 +852,51 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Ruled Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Jasne tło w linie</translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Ciemne tło w linie</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>Otwórz samouczek</translation>
     </message>
     <message>
         <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
+        <translation>Otwórz stronę samouczka</translation>
     </message>
     <message>
         <source>Reset grid size</source>
-        <translation type="unfinished"></translation>
+        <translation>Zresetuj rozmiar kratki</translation>
     </message>
     <message>
         <source>Small Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>Mała gumka</translation>
     </message>
     <message>
         <source>Color 1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kolor 1</translation>
     </message>
     <message>
         <source>Color 2</source>
-        <translation type="unfinished"></translation>
+        <translation>Kolor 2</translation>
     </message>
     <message>
         <source>Color 3</source>
-        <translation type="unfinished"></translation>
+        <translation>Kolor 3</translation>
     </message>
     <message>
         <source>Color 4</source>
-        <translation type="unfinished"></translation>
+        <translation>Kolor 4</translation>
     </message>
     <message>
         <source>Color 5</source>
-        <translation type="unfinished"></translation>
+        <translation>Kolor 5</translation>
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Rysuj drobne linie kratki</translation>
     </message>
 </context>
 <context>
@@ -927,7 +926,7 @@ Do you wish to override the security check and continue ?   </source>
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation>ID elementu =</translation>
+        <translation>ID elementu = </translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
@@ -940,6 +939,14 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
         <translation>Czy na pewno chcesz usunąć 1 stronę z wybranego dokumentu „%0”?</translation>
+    </message>
+    <message>
+        <source>Loading scene (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moving cached scenes (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1011,11 +1018,11 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBBackgroundPalette</name>
     <message>
         <source>Grid size</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozmiar kratki</translation>
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Rysuj drobne linie kratki</translation>
     </message>
 </context>
 <context>
@@ -1062,19 +1069,19 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Saving document...</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapisywanie dokumentu...</translation>
     </message>
     <message>
         <source>Document has just been saved...</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokument został właśnie zapisany...</translation>
     </message>
     <message>
         <source>Deleting page %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuwanie strony %1</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation type="unfinished">Kolor</translation>
+        <translation>Kolor</translation>
     </message>
 </context>
 <context>
@@ -1092,7 +1099,7 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBBoardThumbnailsView</name>
     <message>
         <source>Loading page (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ładowanie strony (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1142,7 +1149,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Show OpenBoard</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -1185,7 +1192,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Failed to import file ... </source>
-        <translation>Importowanie pliku zakończone niepowodzeniem...</translation>
+        <translation>Importowanie pliku zakończone niepowodzeniem... </translation>
     </message>
     <message>
         <source>Import all Images from Folder</source>
@@ -1230,26 +1237,30 @@ Do you wish to override the security check and continue ?   </source>
     <message numerus="yes">
         <source>duplicated %1 page</source>
         <comment>duplicated %1 pages</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>zduplikowano %1 stronę</numerusform>
+            <numerusform>zduplikowano %1 strony</numerusform>
+            <numerusform>Zduplikowano %1 stron</numerusform>
         </translation>
     </message>
     <message>
         <source>Remove Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń element</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy na pewno chcesz usunąć zaznaczone elementy?</translation>
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokument &apos;%1&apos; został utworzony przy użyciu nowszej wersji OpenBoard (%2). Otwierając go możesz stracić niektóre informację. Czy chcesz kontynuować?</translation>
     </message>
     <message>
         <source>Title page</source>
+        <translation>Strona tytułowa</translation>
+    </message>
+    <message>
+        <source>Refreshing Document Thumbnails View (%1/%2)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1302,37 +1313,43 @@ Do you wish to override the security check and continue ?   </source>
         <source>Page %0</source>
         <translation>Strona %0</translation>
     </message>
+    <message>
+        <source>Generating thumbnails for board (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentReplaceDialog</name>
     <message>
         <source>Accept</source>
-        <translation type="unfinished">Akceptuj</translation>
+        <translation>Akceptuj</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <source>Replace</source>
-        <translation type="unfinished"></translation>
+        <translation>Zastąp</translation>
     </message>
     <message>
         <source>The name %1 is allready used.
 Keeping this name will replace the document.
 Providing a new name will create a new document.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa %1 jest już używana.
+Pozostawienie tej nazwy zastąpi ten dokument.
+Zmiana nazwy na nową utworzy nowy dokument.</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentTreeModel</name>
     <message>
         <source>Trash</source>
-        <translation type="unfinished">Kosz</translation>
+        <translation>Kosz</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>Skopiowano %1 stronę</numerusform>
             <numerusform>Skopiowano %1 strony</numerusform>
             <numerusform>Skopiowano %1 stron</numerusform>
@@ -1340,14 +1357,14 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>My documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Moje dokumenty</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentTreeView</name>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>Skopiowano %1 stronę</numerusform>
             <numerusform>Skopiowano %1 strony</numerusform>
             <numerusform>Skopiowano %1 stron</numerusform>
@@ -1355,15 +1372,15 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Remove Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń elementy</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy na pewno chcesz usunąć zaznaczone elementy?</translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation type="unfinished">Kopiowanie strony %1/%2</translation>
+        <translation>Kopiowanie strony %1/%2</translation>
     </message>
 </context>
 <context>
@@ -1381,14 +1398,14 @@ Providing a new name will create a new document.</source>
     <name>UBDraggableThumbnail</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">Strona %0</translation>
+        <translation>Strona %0</translation>
     </message>
 </context>
 <context>
     <name>UBDraggableThumbnailView</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">Strona %0</translation>
+        <translation>Strona %0</translation>
     </message>
 </context>
 <context>
@@ -1415,23 +1432,23 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished">Eksportowanie dokumentu...</translation>
+        <translation>Eksportowanie dokumentu...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished">Eksportowanie zakończone powodzeniem.</translation>
+        <translation>Eksportowanie zakończone powodzeniem.</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Eksportowanie zakończone niepowodzeniem</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się wyeksportować do wybranej lokacji. Nie masz wystarczających uprawnień do zapisania pliku.</translation>
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
+        <translation>Eksportowanie nie powiodło się: niemożliwy zapis do lokacji</translation>
     </message>
 </context>
 <context>
@@ -1473,34 +1490,34 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyeksportuj do formatu OpenBoard</translation>
     </message>
 </context>
 <context>
     <name>UBExportDocumentSetAdaptor</name>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished">Eksportowanie dokumentu...</translation>
+        <translation>Eksportowanie dokumentu...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished">Eksportowanie zakończone powodzeniem.</translation>
+        <translation>Eksportowanie zakończone powodzeniem.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished">Eksportowanie zakończone niepowodzeniem.</translation>
+        <translation>Eksportowanie zakończone niepowodzeniem.</translation>
     </message>
     <message>
         <source>Failed to export...</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się wyeksportować...</translation>
     </message>
     <message>
         <source>Export as UBX File</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyeksportuj jako plik UBX</translation>
     </message>
     <message>
         <source>Export to OpenBoard UBX Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyeksportuj jako plik formatu OpenBoard UBX</translation>
     </message>
 </context>
 <context>
@@ -1668,7 +1685,7 @@ Providing a new name will create a new document.</source>
     <name>UBFeaturesProgressInfo</name>
     <message>
         <source>Loading </source>
-        <translation>Wczytywanie</translation>
+        <translation>Wczytywanie </translation>
     </message>
 </context>
 <context>
@@ -1694,7 +1711,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="unfinished">Ustaw jako tło</translation>
+        <translation>Ustaw jako tło</translation>
     </message>
     <message>
         <source>Web Inspector</source>
@@ -1705,19 +1722,19 @@ Providing a new name will create a new document.</source>
     <name>UBGraphicsMediaItem</name>
     <message>
         <source>Media resource couldn&apos;t be resolved</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się znaleźć zasobu multimedialnego</translation>
     </message>
     <message>
         <source>Unsupported media format</source>
-        <translation type="unfinished"></translation>
+        <translation>Niewspierany format zasobu multimedialnego</translation>
     </message>
     <message>
         <source>Media playback service not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie znaleziono usługi odtwarzania</translation>
     </message>
     <message>
         <source>Media error: </source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd multimediów: </translation>
     </message>
 </context>
 <context>
@@ -1760,7 +1777,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Transform as Tool </source>
-        <translation>Przekształć jako narzędzie</translation>
+        <translation>Przekształć jako narzędzie </translation>
     </message>
 </context>
 <context>
@@ -1802,14 +1819,14 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard (*.ubz)</translation>
     </message>
 </context>
 <context>
     <name>UBImportDocumentSetAdaptor</name>
     <message>
         <source>Openboard (set of documents) (*.ubx)</source>
-        <translation type="unfinished"></translation>
+        <translation>Openboard (zbiór dokumentów) (*.ubx)</translation>
     </message>
 </context>
 <context>
@@ -1920,27 +1937,27 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <source>Open-Sankore Documents Detected</source>
-        <translation type="unfinished"></translation>
+        <translation>Wykryto dokumenty Open-Sankore</translation>
     </message>
     <message>
         <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokumenty Open-Sankoré są dostępne na twoimkomputerze. Możliwy jest ich import do OpenBoard naciskając przycisk &quot;Kontynuuj&quot; by uruchomić aplikację importującą.</translation>
     </message>
     <message>
         <source>Show this panel next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż ten panel następnym razem</translation>
     </message>
     <message>
         <source>You can always access the OpenBoard Document Importer through the Preferences panel in the About tab. Warning, if you have already imported your Open-Sankore datas, you might loose your current OpenBoard documents.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zawsze możesz zyskać dostęp do aplikacji importującej OpenBoard poprzez panel Ustawień w karcie O programie. Uwaga: jeśli zaimportowałaś już dane Open-Sankore, możesz stracić swoje aktualne dokumenty OpenBoard.</translation>
     </message>
     <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontynuuj</translation>
     </message>
 </context>
 <context>
@@ -1955,6 +1972,10 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
     </message>
     <message>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
+        <translation>OpenBoard stracił dostęp do repozytorium dokumentów &apos;%1&apos;. Niestety aplikacja musi zostać zamknięta by uniknąć korupcji danych. Ostatnie zmiany również mogą zostać utracone.</translation>
+    </message>
+    <message>
+        <source>Renaming pages (%1/%2)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2041,7 +2062,7 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
     </message>
     <message>
         <source>OpenBoard Cast</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard Cast</translation>
     </message>
 </context>
 <context>
@@ -2079,12 +2100,16 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
         <source>%1 thumbnails generated ...</source>
         <translation>Wygenerowano %1 miniatur...</translation>
     </message>
+    <message>
+        <source>Loading thumbnail (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBThumbnailTextItem</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">Strona %0</translation>
+        <translation>Strona %0</translation>
     </message>
 </context>
 <context>
@@ -2119,7 +2144,7 @@ Czy chcesz ignorować te błędy dla tego hosta?</translation>
     </message>
     <message>
         <source>Axes</source>
-        <translation type="unfinished"></translation>
+        <translation>Osie</translation>
     </message>
 </context>
 <context>
@@ -2380,7 +2405,7 @@ Do you want to reload the page ?</source>
     <name>XPDFRenderer</name>
     <message>
         <source>Processing...</source>
-        <translation type="unfinished"></translation>
+        <translation>Przetwarzanie...</translation>
     </message>
 </context>
 <context>
@@ -2423,19 +2448,15 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;Klikając „Wyślij”, poświadczasz, że posiadasz wszelkie prawa do zawartości lub masz zezwolenie właściciela zawartości na jej publiczne udostępnianie w serwisie YouTube, a także, że zawartość jest zgodna z Warunkami korzystania z serwisu YouTube dostępnymi pod adresem &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;Klikając „Wyślij”, poświadczasz, że posiadasz wszelkie prawa do zawartości lub masz zezwolenie właściciela zawartości na jej publiczne udostępnianie w serwisie YouTube, a także, że zawartość jest zgodna z Warunkami korzystania z serwisu YouTube dostępnymi pod adresem &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>OpenBoard</source>
-        <translation type="unfinished" variants="yes">
-            <lengthvariant>OpenBoard</lengthvariant>
-            <lengthvariant></lengthvariant>
-        </translation>
+        <translation>OpenBoard</translation>
     </message>
     <message>
         <source>Restore credentials on reboot</source>
-        <translation type="unfinished"></translation>
+        <translation>Przywróć dane logowania po restarcie</translation>
     </message>
 </context>
 <context>
@@ -2474,11 +2495,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Show preview circle from</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż podgląd pędzla od</translation>
     </message>
     <message>
         <source>px</source>
-        <translation type="unfinished"></translation>
+        <translation>px</translation>
     </message>
 </context>
 <context>
@@ -2508,23 +2529,23 @@ p, li { white-space: pre-wrap; }
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokumenty OpenBoard</translation>
     </message>
     <message>
         <source>Creation date</source>
-        <translation type="unfinished"></translation>
+        <translation>Data utworzenia</translation>
     </message>
     <message>
         <source>Update date</source>
-        <translation type="unfinished"></translation>
+        <translation>Data modyfikacji</translation>
     </message>
     <message>
         <source>Alphabetical order</source>
-        <translation type="unfinished"></translation>
+        <translation>Porządek alfabetyczny</translation>
     </message>
     <message>
         <source>Sort Order</source>
-        <translation type="unfinished"></translation>
+        <translation>Porządek sortowania</translation>
     </message>
 </context>
 <context>
@@ -2547,7 +2568,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Display</source>
-        <translation>Wyświetlaj</translation>
+        <translation>Wyświetlanie</translation>
     </message>
     <message>
         <source>Internet</source>
@@ -2663,63 +2684,63 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>On Dark Background</source>
-        <translation type="unfinished">Na ciemnym tle</translation>
+        <translation>Na ciemnym tle</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="unfinished">Nieprzezroczystość</translation>
+        <translation>Nieprzezroczystość</translation>
     </message>
     <message>
         <source>On Light Background</source>
-        <translation type="unfinished">Na jasnym tle</translation>
+        <translation>Na jasnym tle</translation>
     </message>
     <message>
         <source>Swap first and second view displays</source>
-        <translation type="unfinished"></translation>
+        <translation>Zamień wyświetlacze</translation>
     </message>
     <message>
         <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozmiar klawiszy wyświetlanej klawiatury:</translation>
     </message>
     <message>
         <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
+        <translation>Użyj klawiatury systemowej (zalecane)</translation>
     </message>
     <message>
         <source>Grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Kratka</translation>
     </message>
     <message>
         <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoré Importer</translation>
     </message>
     <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
+        <translation>Sprawdź czy dane Open-Sankoré mogą być zaimportowane przy starcie</translation>
     </message>
     <message>
         <source>Documents Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Tryb dokumentów</translation>
     </message>
     <message>
         <source>Display date column on alphabetical sort</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyświetl kolumnę dat w porządku alfabetycznym</translation>
     </message>
     <message>
         <source>Empty trash for documents older than</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń dokumenty z kosza, które są starsze niż</translation>
     </message>
     <message>
         <source>days</source>
-        <translation type="unfinished"></translation>
+        <translation>dni</translation>
     </message>
     <message>
         <source>PDF Rendering</source>
-        <translation type="unfinished"></translation>
+        <translation>Renderowanie PDF</translation>
     </message>
     <message>
         <source>Improve zoom execution time (can slightly affect rendering quality)</source>
-        <translation type="unfinished"></translation>
+        <translation>Usprawnij wykonywanie przybliżania (może nieco pogorszyć jakość renderowania)</translation>
     </message>
 </context>
 <context>

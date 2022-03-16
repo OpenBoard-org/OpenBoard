@@ -377,7 +377,7 @@ int UBApplication::exec(const QString& pFileToImport)
     applicationController->initScreenLayout(bUseMultiScreen);
     boardController->setupLayout();
 
-    if (pFileToImport.length() > 0)
+    if (pFileToImport.length() > 0 && !pFileToImport.endsWith("ubx"))
         UBApplication::applicationController->importFile(pFileToImport);
 
     if (UBSettings::settings()->appStartMode->get().toInt())
@@ -605,7 +605,10 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
 
         UBPlatformUtils::setFrontProcess();
 
-        applicationController->importFile(fileToOpenEvent->file());
+        if (!fileToOpenEvent->file().endsWith("ubx"))
+            applicationController->importFile(fileToOpenEvent->file());
+        else
+            applicationController->showMessage(tr("Cannot open your UBX file directly. Please import it in Documents mode instead"), false);
     }
 
     if (event->type() == QEvent::TabletLeaveProximity)

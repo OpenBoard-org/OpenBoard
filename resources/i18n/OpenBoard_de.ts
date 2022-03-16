@@ -939,6 +939,14 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
         <translation>Wollen Sie wirklich die ausgewählte Seite des Dokuments &apos;%0&apos; entfernen?</translation>
     </message>
+    <message>
+        <source>Loading scene (%1/%2)</source>
+        <translation>Laden der Szene (%1/%2)</translation>
+    </message>
+    <message>
+        <source>Moving cached scenes (%1/%2)</source>
+        <translation>Verschieben von zwischengespeicherten Szenen (%1/%2)</translation>
+    </message>
 </context>
 <context>
     <name>TabWidget</name>
@@ -1249,6 +1257,14 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
         <source>Title page</source>
         <translation>Titelseite</translation>
     </message>
+    <message>
+        <source>Empty My Documents</source>
+        <translation type="vanished">Eigene Dokumente leeren</translation>
+    </message>
+    <message>
+        <source>Refreshing Document Thumbnails View (%1/%2)</source>
+        <translation>Aktualisieren der Vorschauen im Dokumentenmodus (%1/%2)</translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1298,6 +1314,10 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     <message>
         <source>Page %0</source>
         <translation>Seite %0</translation>
+    </message>
+    <message>
+        <source>Generating thumbnails for board (%1/%2)</source>
+        <translation>Erstellen von Voransichten des Tabellenmodus (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1955,6 +1975,10 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>Openboard hat den Zugang zum Dokumentenarchiv &apos;%1&apos; verloren. Die Anwendung muss leider beendet werden, um Datenkorruption zu vermeiden. Der Verlust kürzlich vorgenommener Änderungen ist möglich.</translation>
     </message>
+    <message>
+        <source>Renaming pages (%1/%2)</source>
+        <translation>Aktualisieren der aktuellen Seitennamen (%1/%2)</translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -2076,6 +2100,15 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>Miniaturansicht %1 wird erstellt...</translation>
+    </message>
+    <message>
+        <source>loading thumbnail of page %1</source>
+        <translation type="vanished">
+Miniaturansicht der Seite %1 wird geladen</translation>
+    </message>
+    <message>
+        <source>Loading thumbnail (%1/%2)</source>
+        <translation>Laden der Vorschau (%1/%2)</translation>
     </message>
 </context>
 <context>

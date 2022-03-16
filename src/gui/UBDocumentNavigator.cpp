@@ -136,7 +136,7 @@ void UBDocumentNavigator::generateThumbnails(UBDocumentContainer* source)
 
     for(int i = 0; i < source->selectedDocument()->pageCount(); i++)
     {
-        UBApplication::showMessage(tr("generating thumbnails for board (%1/%2)").arg(i+1).arg(source->selectedDocument()->pageCount()));
+        UBApplication::showMessage(tr("Generating thumbnails for board (%1/%2)").arg(i+1).arg(source->selectedDocument()->pageCount()));
 
         bool found = false;
         if (UBApplication::documentController)

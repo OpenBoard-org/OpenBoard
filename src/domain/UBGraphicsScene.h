@@ -301,6 +301,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         virtual void setRenderingQuality(UBItem::RenderingQuality pRenderingQuality, UBItem::CacheBehavior cacheBehavior);
 
+        QList<QUrl> relativeDependenciesOfItem(QGraphicsItem* item) const;
         QList<QUrl> relativeDependencies() const;
 
         QSize nominalSize();

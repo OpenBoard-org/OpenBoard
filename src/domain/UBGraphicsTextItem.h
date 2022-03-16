@@ -100,6 +100,8 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
         void activateTextEditor(bool activate);
         void setSelected(bool selected);
         void recolor();
+        void initFontProperties();
+        QFont createDefaultFont();
 
         QString mTypeTextHereLabel;
 

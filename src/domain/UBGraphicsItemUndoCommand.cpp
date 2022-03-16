@@ -246,7 +246,11 @@ void UBGraphicsItemUndoCommand::redo()
 
                 polygonItem->strokesGroup()->removeFromGroup(polygonItem);
             }
-            mScene->removeItem(item);
+
+            if (itemLayerType::BackgroundItem == item->data(UBGraphicsItemData::itemLayerType))
+                mScene->setAsBackgroundObject(nullptr);
+            else
+                mScene->removeItem(item);
 
             if (bApplyTransform)
                 item->setTransform(t);

@@ -937,6 +937,14 @@ Do you wish to override the security check and continue ?   </source>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
         <translation>Seçili olan &apos;%0&apos; adlı dökümandan 1 sayfayı kaldırmak üzeresiniz. Bu işlemi yapmak istediğinizden eminmisiniz?</translation>
     </message>
+    <message>
+        <source>Loading scene (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moving cached scenes (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TabWidget</name>
@@ -1246,6 +1254,10 @@ Do you wish to override the security check and continue ?   </source>
         <source>Title page</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Refreshing Document Thumbnails View (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1295,6 +1307,10 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <source>Page %0</source>
         <translation>Sayfa %0</translation>
+    </message>
+    <message>
+        <source>Generating thumbnails for board (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1946,6 +1962,10 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Renaming pages (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -2067,6 +2087,10 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 adet önizleme resmi oluşturuldu ...</translation>
+    </message>
+    <message>
+        <source>Loading thumbnail (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

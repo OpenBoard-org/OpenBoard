@@ -1567,11 +1567,11 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
             }
 
             QApplication::restoreOverrideCursor();
-            UBApplication::applicationController->showMessage(tr("%1 pages copied", "", total).arg(total), false);
 
             docModel->setHighLighted(QModelIndex());
         }
 
+        UBApplication::applicationController->showMessage(tr("%1 pages copied", "", total).arg(total), false);
         UBApplication::documentController->TreeViewSelectionChanged(UBApplication::documentController->firstSelectedTreeIndex(), QModelIndex());
 
     }
@@ -2383,7 +2383,10 @@ void UBDocumentController::duplicateSelectedItem()
         if (selectedSceneIndexes.count() > 0)
         {
             duplicatePages(selectedSceneIndexes);
-            emit documentThumbnailsUpdated(this);
+            if (selectedDocument() == selectedDocumentProxy())
+            {
+                reloadThumbnails();
+            }
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
             UBMetadataDcSubsetAdaptor::persist(selectedDocument());
             int selectedThumbnail = selectedSceneIndexes.last() + selectedSceneIndexes.size();
@@ -2391,8 +2394,11 @@ void UBDocumentController::duplicateSelectedItem()
             int sceneCount = selectedSceneIndexes.count();
             showMessage(tr("duplicated %1 page","duplicated %1 pages",sceneCount).arg(sceneCount), false);
 
-            mBoardController->setActiveDocumentScene(selectedThumbnail);
-            //mBoardController->reloadThumbnails();
+            if (selectedDocument() == mBoardController->selectedDocument())
+            {
+                mBoardController->setActiveDocumentScene(selectedThumbnail);
+                mBoardController->reloadThumbnails();
+            }
         }
     }
     else
@@ -2996,7 +3002,9 @@ void UBDocumentController::addFolderOfImages()
             {
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
                 UBMetadataDcSubsetAdaptor::persist(document);
-                //reloadThumbnails();
+                reloadThumbnails();
+                if (selectedDocument() == UBApplication::boardController->selectedDocument())
+                    UBApplication::boardController->reloadThumbnails();
             }
         }
     }
@@ -3010,7 +3018,6 @@ void UBDocumentController::addFileToDocument()
     if (document)
     {
          addFileToDocument(document);
-         //reloadThumbnails();
     }
 }
 
@@ -3043,6 +3050,9 @@ bool UBDocumentController::addFileToDocument(UBDocumentProxy* document)
         {
             document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
             UBMetadataDcSubsetAdaptor::persist(document);
+            reloadThumbnails();
+            if (selectedDocument() == UBApplication::boardController->selectedDocument())
+                UBApplication::boardController->reloadThumbnails();
         }
         else
         {
@@ -3062,9 +3072,12 @@ void UBDocumentController::moveSceneToIndex(UBDocumentProxy* proxy, int source, 
 
     proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
     UBMetadataDcSubsetAdaptor::persist(proxy);
-    //mBoardController->reloadThumbnails();
 
     UBDocumentContainer::moveThumbPage(source, target);
+    if (UBApplication::boardController->selectedDocument() == selectedDocument())
+    {
+        UBApplication::boardController->moveThumbPage(source, target);
+    }
     mDocumentUI->thumbnailWidget->hightlightItem(target);
 
     //mBoardController->setActiveDocumentScene(target);
@@ -3129,12 +3142,6 @@ void UBDocumentController::pageSelectionChanged()
 void UBDocumentController::documentSceneChanged(UBDocumentProxy* proxy, int pSceneIndex)
 {
     Q_UNUSED(pSceneIndex);
-
-//    if (proxy == selectedDocumentProxy())
-//    {
-//        reloadThumbnails();
-//    }
-
     QModelIndexList sel = mDocumentUI->documentTreeView->selectionModel()->selectedRows(0);
 
     QModelIndex selection;
@@ -3215,7 +3222,6 @@ void UBDocumentController::addToDocument()
         UBMetadataDcSubsetAdaptor::persist(mBoardController->selectedDocument());
         //mBoardController->reloadThumbnails();
 
-        emit mBoardController->documentThumbnailsUpdated(this);
         UBApplication::applicationController->showBoard();
 
         mBoardController->setActiveDocumentScene(newActiveSceneIndex);
@@ -3327,7 +3333,9 @@ void UBDocumentController::addImages()
             {
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
                 UBMetadataDcSubsetAdaptor::persist(document);
-                //reloadThumbnails();
+                reloadThumbnails();
+                if (selectedDocument() == UBApplication::boardController->selectedDocument())
+                    UBApplication::boardController->reloadThumbnails();
             }
         }
     }
@@ -3513,7 +3521,7 @@ void UBDocumentController::updateActions()
         if (mSelectionType == Folder)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-folder.png"));
-            mMainWindow->actionDelete->setText(tr("Empty"));
+            mMainWindow->actionDelete->setText(tr("Delete"));
         }
         else if (mSelectionType == Document)
         {
@@ -3556,7 +3564,7 @@ void UBDocumentController::updateActions()
         else
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-folder.png"));
-            mMainWindow->actionDelete->setText(tr("Empty"));
+            mMainWindow->actionDelete->setText(tr("Delete"));
         }
         break;
     case EmptyTrash :
@@ -3623,7 +3631,7 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
         if (mBoardController->selectedDocument() == selectedDocument())
         {
             for (auto index : sceneIndexes)
-                emit mBoardController->removeThumbnailRequired(index);
+                mBoardController->deleteThumbPage(index);
         }
 
         proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));

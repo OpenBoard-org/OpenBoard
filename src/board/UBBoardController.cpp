@@ -525,6 +525,7 @@ void UBBoardController::addScene()
     if (UBApplication::documentController->selectedDocument() == selectedDocument())
     {
         UBApplication::documentController->insertThumbPage(mActiveSceneIndex+1);
+        emit UBApplication::documentController->reloadThumbnails();
     }
 
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
@@ -590,8 +591,8 @@ void UBBoardController::duplicateScene(int nIndex)
     if (UBApplication::documentController->selectedDocument() == selectedDocument())
     {
         UBApplication::documentController->insertThumbPage(nIndex);
+        UBApplication::documentController->reloadThumbnails();
     }
-    //emit documentThumbnailsUpdated(this);
     emit addThumbnailRequired(this, nIndex + 1);
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
@@ -877,7 +878,6 @@ void UBBoardController::showKeyboard(bool show)
         UBPlatformUtils::showOSK(show);
     else
         mPaletteManager->showVirtualKeyboard(show);
-
 }
 
 
@@ -1430,12 +1430,15 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
                 QStringList fileNames;
                 fileNames << pdfFile.fileName();
                 result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
-                emit documentThumbnailsUpdated(this);
                 pdfFile.close();
             }
         }
 
-        if (result){
+        if (result)
+        {
+            if (UBApplication::documentController->selectedDocument() == selectedDocument())
+                UBApplication::documentController->reloadThumbnails();
+
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
             updateActionStates();
         }
@@ -1933,7 +1936,12 @@ void UBBoardController::closing()
     mIsClosing = true;
     lastWindowClosed();
     ClearUndoStack();
-    showKeyboard(false);
+#ifdef Q_OS_OSX
+    if (!UBPlatformUtils::errorOpeningVirtualKeyboard)
+        showKeyboard(false);
+#else
+        showKeyboard(false);
+#endif
 }
 
 void UBBoardController::lastWindowClosed()
@@ -2166,7 +2174,14 @@ void UBBoardController::stylusToolChanged(int tool)
         if(eTool != UBStylusTool::Selector && eTool != UBStylusTool::Text)
         {
             if(mPaletteManager->mKeyboardPalette->m_isVisible)
+            {
+#ifdef Q_OS_OSX
+                if (!UBPlatformUtils::errorOpeningVirtualKeyboard)
+                    UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction::Trigger);
+#else
                 UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction::Trigger);
+#endif
+            }
         }
     }
 

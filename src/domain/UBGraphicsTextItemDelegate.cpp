@@ -110,32 +110,6 @@ UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDele
     , delta(5)
 {
     delegated()->setData(UBGraphicsItemData::ItemEditable, QVariant(true));
-    delegated()->setPlainText("");
-
-    QTextCursor curCursor = delegated()->textCursor();
-    QTextCharFormat format;
-    QFont font(createDefaultFont());
-
-    font.setPointSize(UBSettings::settings()->fontPointSize());
-    format.setFont(font);
-    if (UBSettings::settings()->isDarkBackground())
-    {
-        if (UBGraphicsTextItem::lastUsedTextColor == Qt::black)
-            UBGraphicsTextItem::lastUsedTextColor = Qt::white;
-    }
-    else
-    {
-        if (UBGraphicsTextItem::lastUsedTextColor == Qt::white)
-            UBGraphicsTextItem::lastUsedTextColor = Qt::black;
-    }
-    delegated()->setDefaultTextColor(UBGraphicsTextItem::lastUsedTextColor);
-    format.setForeground(QBrush(UBGraphicsTextItem::lastUsedTextColor));
-    curCursor.mergeCharFormat(format);
-    delegated()->setTextCursor(curCursor);
-    delegated()->setFont(font);
-
-    delegated()->adjustSize();
-    delegated()->contentsChanged();
 
     connect(delegated()->document(), SIGNAL(cursorPositionChanged(QTextCursor)), this, SLOT(onCursorPositionChanged(QTextCursor)));
     connect(delegated()->document(), SIGNAL(modificationChanged(bool)), this, SLOT(onModificationChanged(bool)));
@@ -144,35 +118,6 @@ UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDele
 UBGraphicsTextItemDelegate::~UBGraphicsTextItemDelegate()
 {
     // NOOP
-}
-
-QFont UBGraphicsTextItemDelegate::createDefaultFont()
-{
-    QFont font;
-
-    QString fFamily = UBSettings::settings()->fontFamily();
-    if (!fFamily.isEmpty())
-        font.setFamily(fFamily);
-
-    QString fStyleName = UBSettings::settings()->fontStyleName();
-    if (!fStyleName .isEmpty())
-        font.setStyleName(fStyleName);
-
-    bool bold = UBSettings::settings()->isBoldFont();
-    if (bold)
-        font.setWeight(QFont::Bold);
-
-    bool italic = UBSettings::settings()->isItalicFont();
-    if (italic)
-        font.setItalic(true);
-
-
-    int pointSize = UBSettings::settings()->fontPointSize();
-    if (pointSize > 0) {
-        font.setPointSize(pointSize);
-    }
-
-    return font;
 }
 
 void UBGraphicsTextItemDelegate::createControls()

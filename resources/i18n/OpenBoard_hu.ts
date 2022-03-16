@@ -114,7 +114,7 @@ Do you wish to override the security check and continue ?   </source>
     <name>IntranetPodcastPublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation>Podcast publikálása a YouTubera</translation>
+        <translation>Podcast közzététele a YouTube-on</translation>
     </message>
     <message>
         <source>Title</source>
@@ -497,7 +497,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Reload Current Page</source>
-        <translation>Aktuális oldal újratöltése</translation>
+        <translation>Jelenlegi oldal újratöltése</translation>
     </message>
     <message>
         <source>Load Home Page</source>
@@ -697,11 +697,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add To New Page</source>
-        <translation>Hozzáadás új oldalhoz</translation>
+        <translation>Hozzáadás az új oldalhoz</translation>
     </message>
     <message>
         <source>Add Item To New Page</source>
-        <translation>Tartalom hozzáadása új oldalhoz</translation>
+        <translation>Elem hozzáadása az új oldalhoz</translation>
     </message>
     <message>
         <source>Add To Library</source>
@@ -709,7 +709,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add Item To Library</source>
-        <translation>Tartalom hozzáadása a könyvtárhoz</translation>
+        <translation>Elem hozzáadása a könyvtárhoz</translation>
     </message>
     <message>
         <source>Pages</source>
@@ -869,31 +869,31 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Small Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>Kis radír</translation>
     </message>
     <message>
         <source>Color 1</source>
-        <translation type="unfinished"></translation>
+        <translation>1. szín</translation>
     </message>
     <message>
         <source>Color 2</source>
-        <translation type="unfinished"></translation>
+        <translation>2. szín</translation>
     </message>
     <message>
         <source>Color 3</source>
-        <translation type="unfinished"></translation>
+        <translation>3. szín</translation>
     </message>
     <message>
         <source>Color 4</source>
-        <translation type="unfinished"></translation>
+        <translation>4. szín</translation>
     </message>
     <message>
         <source>Color 5</source>
-        <translation type="unfinished"></translation>
+        <translation>5. szín</translation>
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Köztes rácsvonalak rajzolása</translation>
     </message>
 </context>
 <context>
@@ -927,14 +927,22 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation>Biztosan el akarsz távolítani 1 oldalt a kiválasztott dokumentumból &apos;%0&apos;?</translation>
+        <translation>Biztosan szeretné eltávolítani 1 oldalt a kijelölt „%0”-dokumentumból?</translation>
     </message>
     <message>
         <source>Element ID = </source>
-        <translation type="unfinished"></translation>
+        <translation>Elem azonosítója = </translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
+        <translation>A tartalom nem támogatott célformátumban.</translation>
+    </message>
+    <message>
+        <source>Loading scene (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moving cached scenes (%1/%2)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1011,7 +1019,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Köztes rácsvonalak rajzolása</translation>
     </message>
 </context>
 <context>
@@ -1058,11 +1066,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Saving document...</source>
-        <translation>Dokumentum mentése...</translation>
+        <translation>Dokumentum mentése…</translation>
     </message>
     <message>
         <source>Document has just been saved...</source>
-        <translation>Dokumentum éppen most mentve...</translation>
+        <translation>Dokumentum éppen most mentve…</translation>
     </message>
     <message>
         <source>Deleting page %1</source>
@@ -1070,7 +1078,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Color</source>
-        <translation type="unfinished">Szín</translation>
+        <translation>Szín</translation>
     </message>
 </context>
 <context>
@@ -1088,7 +1096,7 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBBoardThumbnailsView</name>
     <message>
         <source>Loading page (%1/%2)</source>
-        <translation>Oldalak betöltése (%1/%2)</translation>
+        <translation>Oldalak betöltése: %1/%2</translation>
     </message>
 </context>
 <context>
@@ -1172,12 +1180,52 @@ Do you wish to override the security check and continue ?   </source>
         <translation>%1 dokumentum átmásolva</translation>
     </message>
     <message>
+        <source>Remove Page</source>
+        <translation type="vanished">Oldal eltávolítása</translation>
+    </message>
+    <message>
+        <source>Remove Document</source>
+        <translation type="vanished">Documentum eltávolítása</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
+        <translation type="vanished">Biztosan szeretné eltávolítani a(z) „%1” dokumentumot?</translation>
+    </message>
+    <message>
+        <source>Empty Trash</source>
+        <translation type="vanished">Törölt elemek kiürítése</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to empty trash?</source>
+        <translation type="vanished">Biztosan szeretné kiüríteni a törölt elemeket?</translation>
+    </message>
+    <message>
+        <source>Emptying trash</source>
+        <translation type="vanished">Törölt elemek kiürítése folyamatban van…</translation>
+    </message>
+    <message>
+        <source>Emptied trash</source>
+        <translation type="vanished">Törölt elemek kiürítve</translation>
+    </message>
+    <message>
+        <source>Remove Folder</source>
+        <translation type="vanished">Mappa eltávolítása</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
+        <translation type="vanished">Biztosan szeretné eltávolítani a(z) „%1” mappát és az összes tartalmát?</translation>
+    </message>
+    <message>
+        <source>No document selected!</source>
+        <translation type="vanished">Nincs dokumentum kiválasztva!</translation>
+    </message>
+    <message>
         <source>Open Supported File</source>
         <translation>Támogatott fájl megnyitása</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation>%1 fájl importálása...</translation>
+        <translation>%1 fájl importálása…</translation>
     </message>
     <message>
         <source>Failed to import file ... </source>
@@ -1197,7 +1245,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Trash</source>
-        <translation>Kuka</translation>
+        <translation>Törölt elemek</translation>
     </message>
     <message>
         <source>Open Document</source>
@@ -1216,6 +1264,10 @@ Do you wish to override the security check and continue ?   </source>
         <translation>A kiválasztásban nincs egyetlen kép sem!</translation>
     </message>
     <message>
+        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
+        <translation type="vanished">Biztosan szeretné eltávolítani %n oldalt a kiválasztott „%1” dokumentumból?</translation>
+    </message>
+    <message>
         <source>Folder does not contain any image files</source>
         <translation>A mappa nem tartalmaz egyetlen képet sem</translation>
     </message>
@@ -1225,25 +1277,37 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation>A &apos;%1&apos; dokumentum az OpenBoard újabb verziójával (%2) készült. Megnyitásával néhány információ elveszhet. Szeretné folytatni?</translation>
+        <translation>A(z) „%1” dokumentum az OpenBoard újabb verziójával (%2) készült. Megnyitásával néhány információ elveszhet. Szeretné folytatni?</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove all selected documents?</source>
+        <translation type="vanished">Biztosan szeretné eltávolítani minden kijelölt dokumentumot?</translation>
+    </message>
+    <message>
+        <source>Remove multiple documents</source>
+        <translation type="vanished">Több dokumentum eltávolítása</translation>
     </message>
     <message numerus="yes">
         <source>duplicated %1 page</source>
         <comment>duplicated %1 pages</comment>
         <translation type="unfinished">
-            <numerusform></numerusform>
+            <numerusform>%1 oldal másolata</numerusform>
         </translation>
     </message>
     <message>
         <source>Remove Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Elem eltávolítása</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Biztosan szeretné eltávolítani a kijelölt elem(ek)et?</translation>
     </message>
     <message>
         <source>Title page</source>
+        <translation>Címlap</translation>
+    </message>
+    <message>
+        <source>Refreshing Document Thumbnails View (%1/%2)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1275,7 +1339,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Inserting page %1 of %2</source>
-        <translation>%2 / %1 oldal beszúrása</translation>
+        <translation>Oldal beszúrása: %1/%2</translation>
     </message>
     <message>
         <source>Import successful.</source>
@@ -1294,6 +1358,10 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
+        <translation>%0. oldal</translation>
+    </message>
+    <message>
+        <source>Generating thumbnails for board (%1/%2)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1301,32 +1369,34 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBDocumentReplaceDialog</name>
     <message>
         <source>Accept</source>
-        <translation type="unfinished">Elfogad</translation>
+        <translation>Elfogadás</translation>
     </message>
     <message>
         <source>Replace</source>
-        <translation type="unfinished"></translation>
+        <translation>Csere</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Mégse</translation>
+        <translation>Mégse</translation>
     </message>
     <message>
         <source>The name %1 is allready used.
 Keeping this name will replace the document.
 Providing a new name will create a new document.</source>
-        <translation type="unfinished"></translation>
+        <translation>A(z) %1 név már használatban van.
+Ennek a névnek a megtartása helyettesíti a dokumentumot.
+Új név megadása új dokumentumot hoz létre.</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentTreeModel</name>
     <message>
         <source>My documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Saját dokumentumok</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation type="unfinished">Kuka</translation>
+        <translation>Törölt elemek</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
@@ -1339,7 +1409,7 @@ Providing a new name will create a new document.</source>
     <name>UBDocumentTreeView</name>
     <message>
         <source>Copying page %1/%2</source>
-        <translation type="unfinished">%1/%2 oldal másolása</translation>
+        <translation>Oldal másolása: %1/%2</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
@@ -1349,11 +1419,26 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Remove Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Elem eltávolítása</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Biztosan szeretné eltávolítani a kijelölt elem(ek)et?</translation>
+    </message>
+</context>
+<context>
+    <name>UBDocumentTreeWidget</name>
+    <message>
+        <source>%1 (copy)</source>
+        <translation type="vanished">%1 (másolás)</translation>
+    </message>
+    <message>
+        <source>Copying page %1/%2</source>
+        <translation type="vanished">Oldal másolása: %1/%2</translation>
+    </message>
+    <message>
+        <source>%1 pages copied</source>
+        <translation type="vanished">%1 oldal másolva</translation>
     </message>
 </context>
 <context>
@@ -1371,7 +1456,7 @@ Providing a new name will create a new document.</source>
     <name>UBDraggableThumbnail</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished"></translation>
+        <translation>%0. oldal</translation>
     </message>
 </context>
 <context>
@@ -1405,7 +1490,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Dokumentum exportálása...</translation>
+        <translation>Dokumentum exportálása…</translation>
     </message>
     <message>
         <source>Export failed</source>
@@ -1428,23 +1513,23 @@ Providing a new name will create a new document.</source>
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportálás IWB-formátumként</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportálás IWB-fájlformátumként</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished">Dokumentum exportálása...</translation>
+        <translation>Dokumentum exportálása…</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished">Exportálás sikeres.</translation>
+        <translation>Az exportálás sikeres.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished">Exportálás sikertelen.</translation>
+        <translation>Az exportálás sikertelen.</translation>
     </message>
 </context>
 <context>
@@ -1459,7 +1544,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
-        <translation>%1 exportálása %2/%3</translation>
+        <translation>%1 exportálása: %2/%3</translation>
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
@@ -1470,27 +1555,27 @@ Providing a new name will create a new document.</source>
     <name>UBExportDocumentSetAdaptor</name>
     <message>
         <source>Failed to export...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportálás sikertelen…</translation>
     </message>
     <message>
         <source>Export as UBX File</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportálás UBX-fájlként</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished">Dokumentum exportálása...</translation>
+        <translation>Dokumentum exportálása…</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished">Exportálás sikeres.</translation>
+        <translation>Exportálás sikeres.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished">Exportálás sikertelen.</translation>
+        <translation>Exportálás sikertelen.</translation>
     </message>
     <message>
         <source>Export to OpenBoard UBX Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportálás OpenBoard UBX-formátumként</translation>
     </message>
 </context>
 <context>
@@ -1512,7 +1597,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
-        <translation>%2 / %1 oldal exportálása</translation>
+        <translation>Oldal exportálása: %1/%2</translation>
     </message>
     <message>
         <source>Export to PDF</source>
@@ -1531,7 +1616,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>Dokumentum exportálása...</translation>
+        <translation>Dokumentum exportálása…</translation>
     </message>
     <message>
         <source>Export successful.</source>
@@ -1636,14 +1721,14 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Trash</source>
-        <translation>Kuka</translation>
+        <translation>Törölt elemek</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesNewFolderDialog</name>
     <message>
         <source>Accept</source>
-        <translation>Elfogad</translation>
+        <translation>Elfogadás</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1714,7 +1799,7 @@ Providing a new name will create a new document.</source>
     <name>UBGraphicsTextItem</name>
     <message>
         <source>&lt;Type Text Here&gt;</source>
-        <translation>&lt;Szöveg helye&gt;</translation>
+        <translation>&lt;Adja meg a szöveget ide&gt;</translation>
     </message>
 </context>
 <context>
@@ -1739,7 +1824,7 @@ Providing a new name will create a new document.</source>
     <name>UBGraphicsWidgetItem</name>
     <message>
         <source>Loading ...</source>
-        <translation>Betöltés ...</translation>
+        <translation>Betöltés folyamatban van…</translation>
     </message>
 </context>
 <context>
@@ -1757,30 +1842,30 @@ Providing a new name will create a new document.</source>
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="unfinished"></translation>
+        <translation>Közös fájlformátum (</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation type="unfinished">%1 fájl importálása...</translation>
+        <translation>%1 fájl importálása…</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation type="unfinished">%1 fájl importálása sikertelen.</translation>
+        <translation>%1 fájl importálása sikertelen.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished">Importálás sikeres.</translation>
+        <translation>Importálás sikeres.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Importálás sikertelen.</translation>
     </message>
 </context>
 <context>
     <name>UBImportDocument</name>
     <message>
         <source>Importing file %1...</source>
-        <translation>%1 fájl importálása...</translation>
+        <translation>%1 fájl importálása…</translation>
     </message>
     <message>
         <source>Import successful.</source>
@@ -1799,14 +1884,14 @@ Providing a new name will create a new document.</source>
     <name>UBImportDocumentSetAdaptor</name>
     <message>
         <source>Openboard (set of documents) (*.ubx)</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard (dokumentumkészlet) (*.ubx)</translation>
     </message>
 </context>
 <context>
     <name>UBImportImage</name>
     <message>
         <source>Image Format (</source>
-        <translation>Kép formátum (</translation>
+        <translation>Kép-formátum (</translation>
     </message>
 </context>
 <context>
@@ -1821,25 +1906,25 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Importing page %1 of %2</source>
-        <translation>%2 / %1 oldal importálása</translation>
+        <translation>Oldal importálása: %1/%2</translation>
     </message>
 </context>
 <context>
     <name>UBIntranetPodcastPublisher</name>
     <message>
         <source>Error while publishing video to intranet (%1)</source>
-        <translation>Hiba a videó intranetre való publikálása közben (%1)</translation>
+        <translation>Hiba történt videó közzétételekor az intraneten (%1)</translation>
     </message>
     <message>
         <source>Publishing to Intranet in progress %1 %</source>
-        <translation>Intranetre publikálás folyamatban %1 %</translation>
+        <translation>Az intraneten való közzététel folyamatban van %1%</translation>
     </message>
 </context>
 <context>
     <name>UBIntranetPodcastPublishingDialog</name>
     <message>
         <source>Publish</source>
-        <translation>Publikálás</translation>
+        <translation>Közzététel</translation>
     </message>
 </context>
 <context>
@@ -1944,7 +2029,19 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
         <translation>Dokumentum repository veszteség</translation>
     </message>
     <message>
+        <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
+        <translation type="vanished">elveszítette a(z) „%1” dokumentum repository hozzáférését. Sajnálatosan az alkalmazásnak le kellett állnia, hogy elkerülje az adatsérülést. A legutóbbi változtatások elveszhettek.</translation>
+    </message>
+    <message>
+        <source>Moving page to trash folder...</source>
+        <translation type="vanished">Oldal áthelyezése a törölt elemek mappába…</translation>
+    </message>
+    <message>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
+        <translation>Az OpenBoard elvesztette a hozzáférést a(z) „%1” dokumentumtárához. Sajnos az alkalmazást le kell állítani az adatvesztés elkerülése érdekében. A legújabb változások is elveszhetnek.</translation>
+    </message>
+    <message>
+        <source>Renaming pages (%1/%2)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1975,11 +2072,11 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     <name>UBPodcastController</name>
     <message>
         <source>Failed to start encoder ...</source>
-        <translation>Sikertelen a kódoló indítása...</translation>
+        <translation>Sikertelen a kódoló indítása…</translation>
     </message>
     <message>
         <source>No Podcast encoder available ...</source>
-        <translation>Nincs elérhető podcast kódoló ...</translation>
+        <translation>Nincs elérhető podcast kódoló…</translation>
     </message>
     <message>
         <source>Part %1</source>
@@ -1987,7 +2084,7 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     </message>
     <message>
         <source>on your desktop ...</source>
-        <translation>az asztalán ...</translation>
+        <translation>az asztalán…</translation>
     </message>
     <message>
         <source>in folder %1</source>
@@ -2023,11 +2120,11 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     </message>
     <message>
         <source>Publish to Intranet</source>
-        <translation>Publikálás az Intranetre</translation>
+        <translation>Közzététel az Intraneten</translation>
     </message>
     <message>
         <source>Publish to Youtube</source>
-        <translation>Publikálás a YouTubera</translation>
+        <translation>Közzététel a Youtube-on</translation>
     </message>
     <message>
         <source>OpenBoard Cast</source>
@@ -2063,11 +2160,11 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     <name>UBThumbnailAdaptor</name>
     <message>
         <source>Generating preview thumbnails ...</source>
-        <translation>Előképek létrehozása...</translation>
+        <translation>Előképek létrehozása…</translation>
     </message>
     <message>
         <source>%1 thumbnails generated ...</source>
-        <translation>%1 előkép létrehozva...</translation>
+        <translation>%1 előkép létrehozva…</translation>
     </message>
 </context>
 <context>
@@ -2109,7 +2206,7 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     </message>
     <message>
         <source>Axes</source>
-        <translation type="unfinished"></translation>
+        <translation>Tengelyek</translation>
     </message>
 </context>
 <context>
@@ -2157,7 +2254,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Please wait the import process will start soon...</source>
-        <translation>Kérem várjon. Az importálási folyamat hamarosan elindul...</translation>
+        <translation>Kérem várjon. Az importálási folyamat hamarosan elindul…</translation>
     </message>
     <message>
         <source>Remind me later</source>
@@ -2194,7 +2291,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Autos &amp; Vehicles</source>
-        <translation>Autók &amp; Járművek</translation>
+        <translation>Autók és Járművek</translation>
     </message>
     <message>
         <source>Music</source>
@@ -2202,7 +2299,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Pets &amp; Animals</source>
-        <translation>Házi kedvencek @ Állatok</translation>
+        <translation>Háziállatok és Állatok</translation>
     </message>
     <message>
         <source>Sports</source>
@@ -2210,7 +2307,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Travel &amp; Events</source>
-        <translation>Utazás &amp; Események</translation>
+        <translation>Utazás és Események</translation>
     </message>
     <message>
         <source>Gaming</source>
@@ -2222,11 +2319,11 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>People &amp; Blogs</source>
-        <translation>Emberek &amp; Blogok</translation>
+        <translation>Emberek és Webes naplók</translation>
     </message>
     <message>
         <source>News &amp; Politics</source>
-        <translation>Hírek &amp; Politika</translation>
+        <translation>Hírek és Politika</translation>
     </message>
     <message>
         <source>Entertainment</source>
@@ -2238,15 +2335,15 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Howto &amp; Style</source>
-        <translation>Hogyan Csináld &amp; Stílus</translation>
+        <translation>Hogyan kell és Stílus</translation>
     </message>
     <message>
         <source>Nonprofits &amp; Activism</source>
-        <translation>NonProfit &amp; Aktivisták</translation>
+        <translation>Nonprofit szervezetek és Aktivizmus</translation>
     </message>
     <message>
         <source>Science &amp; Technology</source>
-        <translation>Tudomány &amp; Technológia</translation>
+        <translation>Tudomány és Technológia</translation>
     </message>
 </context>
 <context>
@@ -2369,14 +2466,14 @@ Do you want to reload the page ?</source>
     <name>XPDFRenderer</name>
     <message>
         <source>Processing...</source>
-        <translation type="unfinished"></translation>
+        <translation>Feldolgozás folyamatban van…</translation>
     </message>
 </context>
 <context>
     <name>YouTubePublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation>Podcast publikálása YouTubera</translation>
+        <translation>Podcast közzététele a YouTube-on</translation>
     </message>
     <message>
         <source>Title</source>
@@ -2497,19 +2594,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Creation date</source>
-        <translation type="unfinished"></translation>
+        <translation>Létrehozás dátuma</translation>
     </message>
     <message>
         <source>Update date</source>
-        <translation type="unfinished"></translation>
+        <translation>Frissítés dátuma</translation>
     </message>
     <message>
         <source>Alphabetical order</source>
-        <translation type="unfinished"></translation>
+        <translation>Rendezés betűrendben</translation>
     </message>
     <message>
         <source>Sort Order</source>
-        <translation type="unfinished"></translation>
+        <translation>Rendezési sorrend</translation>
     </message>
 </context>
 <context>
@@ -2596,7 +2693,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>version : …</source>
-        <translation>verziószám: ...</translation>
+        <translation>verziószám: </translation>
     </message>
     <message>
         <source>Licences</source>
@@ -2680,31 +2777,31 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap first and second view displays</source>
-        <translation type="unfinished"></translation>
+        <translation>Első és második kijelző megcserélése</translation>
     </message>
     <message>
         <source>Documents Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokumentum üzemmód</translation>
     </message>
     <message>
         <source>Display date column on alphabetical sort</source>
-        <translation type="unfinished"></translation>
+        <translation>Dátum oszlop megjelenítése betűrendben</translation>
     </message>
     <message>
         <source>Empty trash for documents older than</source>
-        <translation type="unfinished"></translation>
+        <translation>A törölt elemek ürítése a következőknél régebbi dokumentumokhoz:</translation>
     </message>
     <message>
         <source>days</source>
-        <translation type="unfinished"></translation>
+        <translation>nap</translation>
     </message>
     <message>
         <source>PDF Rendering</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF-megjelenítő</translation>
     </message>
     <message>
         <source>Improve zoom execution time (can slightly affect rendering quality)</source>
-        <translation type="unfinished"></translation>
+        <translation>Nagyitás végrehajtási idő csökkentése (némileg befolyásolhatja a renderelés minőségét)</translation>
     </message>
 </context>
 <context>

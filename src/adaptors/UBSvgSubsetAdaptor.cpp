@@ -356,7 +356,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
     time.start();
     mScene = 0;
     UBGraphicsWidgetItem *currentWidget = 0;
-    bool pageDpiSpecified = true;
+    //bool pageDpiSpecified = true;
     saveSceneAfterLoading = false;
 
     mFileVersion = 40100; // default to 4.1.0
@@ -444,7 +444,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
 
                 else if (proxy->pageDpi() == 0) {
                     proxy->setPageDpi((UBApplication::desktop()->physicalDpiX() + UBApplication::desktop()->physicalDpiY())/2);
-                    pageDpiSpecified = false;
+                    //pageDpiSpecified = false;
                 }
 
                 bool darkBackground = false;
@@ -910,9 +910,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
 
                     if (textDelegate)
                     {
-                        QDesktopWidget* desktop = UBApplication::desktop();
-                        qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
-                        qreal textSizeMultiplier = qreal(proxy->pageDpi())/currentDpi;
+                        //QDesktopWidget* desktop = UBApplication::desktop();
+                        //qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+                        //qreal textSizeMultiplier = qreal(proxy->pageDpi())/currentDpi;
                         //textDelegate->scaleTextSize(textSizeMultiplier);
                     }
 
@@ -2391,8 +2391,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsItemToSvg(QGraphicsItem* ite
     mXmlWriter.writeAttribute("x", "0");
     mXmlWriter.writeAttribute("y", "0");
 
-    mXmlWriter.writeAttribute("width", QString("%1").arg(item->boundingRect().width()));
-    mXmlWriter.writeAttribute("height", QString("%1").arg(item->boundingRect().height()));
+    QRectF rect = item->boundingRect() - QMarginsF(0.5, 0.5, 0.5, 0.5);
+    mXmlWriter.writeAttribute("width", QString("%1").arg(rect.width()));
+    mXmlWriter.writeAttribute("height", QString("%1").arg(rect.height()));
 
     mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
 
@@ -2494,8 +2495,9 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
     mXmlWriter.writeStartElement(nsXHtml, "iframe");
 
     mXmlWriter.writeAttribute("style", "border: none");
-    mXmlWriter.writeAttribute("width", QString("%1").arg(item->boundingRect().width()));
-    mXmlWriter.writeAttribute("height", QString("%1").arg(item->boundingRect().height()));
+    QRectF rect = item->boundingRect() - QMarginsF(0.5, 0.5, 0.5, 0.5);
+    mXmlWriter.writeAttribute("width", QString("%1").arg(rect.width()));
+    mXmlWriter.writeAttribute("height", QString("%1").arg(rect.height()));
 
     QString startFileUrl;
     if (item->mainHtmlFileName().startsWith("http://"))
@@ -2822,10 +2824,11 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::curtainItemToSvg(UBGraphicsCurtainIt
      */
 
     mXmlWriter.writeStartElement(UBSettings::uniboardDocumentNamespaceUri, "curtain");
-    mXmlWriter.writeAttribute("x", QString("%1").arg(curtainItem->boundingRect().center().x()));
-    mXmlWriter.writeAttribute("y", QString("%1").arg(curtainItem->boundingRect().center().y()));
-    mXmlWriter.writeAttribute("width", QString("%1").arg(curtainItem->boundingRect().width()));
-    mXmlWriter.writeAttribute("height", QString("%1").arg(curtainItem->boundingRect().height()));
+    QRectF rect = curtainItem->boundingRect() - QMarginsF(0.5, 0.5, 0.5, 0.5);
+    mXmlWriter.writeAttribute("x", QString("%1").arg(rect.center().x()));
+    mXmlWriter.writeAttribute("y", QString("%1").arg(rect.center().y()));
+    mXmlWriter.writeAttribute("width", QString("%1").arg(rect.width()));
+    mXmlWriter.writeAttribute("height", QString("%1").arg(rect.height()));
     mXmlWriter.writeAttribute("transform", toSvgTransform(curtainItem->sceneMatrix()));
 
     //graphicsItemToSvg(curtainItem);
@@ -2882,10 +2885,11 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::rulerToSvg(UBGraphicsRuler* item)
      */
 
     mXmlWriter.writeStartElement(UBSettings::uniboardDocumentNamespaceUri, "ruler");
-    mXmlWriter.writeAttribute("x", QString("%1").arg(item->boundingRect().x()));
-    mXmlWriter.writeAttribute("y", QString("%1").arg(item->boundingRect().y()));
-    mXmlWriter.writeAttribute("width", QString("%1").arg(item->boundingRect().width()));
-    mXmlWriter.writeAttribute("height", QString("%1").arg(item->boundingRect().height()));
+    QRectF rect = item->boundingRect() - QMarginsF(0.5, 0.5, 0.5, 0.5);
+    mXmlWriter.writeAttribute("x", QString("%1").arg(rect.x()));
+    mXmlWriter.writeAttribute("y", QString("%1").arg(rect.y()));
+    mXmlWriter.writeAttribute("width", QString("%1").arg(rect.width()));
+    mXmlWriter.writeAttribute("height", QString("%1").arg(rect.height()));
     mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
 
     QString zs;
@@ -3010,10 +3014,11 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::compassToSvg(UBGraphicsCompass* item
      */
 
     mXmlWriter.writeStartElement(UBSettings::uniboardDocumentNamespaceUri, "compass");
-    mXmlWriter.writeAttribute("x", QString("%1").arg(item->boundingRect().x()));
-    mXmlWriter.writeAttribute("y", QString("%1").arg(item->boundingRect().y()));
-    mXmlWriter.writeAttribute("width", QString("%1").arg(item->boundingRect().width()));
-    mXmlWriter.writeAttribute("height", QString("%1").arg(item->boundingRect().height()));
+    QRectF rect = item->boundingRect() - QMarginsF(0.5, 0.5, 0.5, 0.5);
+    mXmlWriter.writeAttribute("x", QString("%1").arg(rect.x()));
+    mXmlWriter.writeAttribute("y", QString("%1").arg(rect.y()));
+    mXmlWriter.writeAttribute("width", QString("%1").arg(rect.width()));
+    mXmlWriter.writeAttribute("height", QString("%1").arg(rect.height()));
     mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
 
     QString zs;
@@ -3144,10 +3149,11 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::triangleToSvg(UBGraphicsTriangle *it
      */
 
     mXmlWriter.writeStartElement(UBSettings::uniboardDocumentNamespaceUri, "triangle");
-    mXmlWriter.writeAttribute("x", QString("%1").arg(item->boundingRect().x()));
-    mXmlWriter.writeAttribute("y", QString("%1").arg(item->boundingRect().y()));
-    mXmlWriter.writeAttribute("width", QString("%1").arg(item->boundingRect().width()));
-    mXmlWriter.writeAttribute("height", QString("%1").arg(item->boundingRect().height()));
+    QRectF rect = item->boundingRect() - QMarginsF(0.5, 0.5, 0.5, 0.5);
+    mXmlWriter.writeAttribute("x", QString("%1").arg(rect.x()));
+    mXmlWriter.writeAttribute("y", QString("%1").arg(rect.y()));
+    mXmlWriter.writeAttribute("width", QString("%1").arg(rect.width()));
+    mXmlWriter.writeAttribute("height", QString("%1").arg(rect.height()));
     mXmlWriter.writeAttribute("transform", toSvgTransform(item->sceneMatrix()));
     mXmlWriter.writeAttribute("orientation", UBGraphicsTriangle::orientationToStr(item->getOrientation()));
 

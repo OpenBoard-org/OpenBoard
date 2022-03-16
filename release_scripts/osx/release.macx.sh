@@ -192,7 +192,7 @@ rm -f "$APP/Contents/Resources/empty.lproj"
 # set various version infomration in Info.plist
 $PLISTBUDDY -c "Set :CFBundleVersion $VERSION" "$INFO_PLIST"
 $PLISTBUDDY -c "Set :CFBundleShortVersionString $VERSION" "$INFO_PLIST"
-$PLISTBUDDY -c "Set :CFBundleGetInfoString $APPLICATION_NAME" "$INFO_PLIST"
+$PLISTBUDDY -c "Set :CFBundleGetInfoString $VERSION" "$INFO_PLIST"
 
 # bundle Qt Frameworks into the app bundle
 notify "Bulding frameworks ..."
