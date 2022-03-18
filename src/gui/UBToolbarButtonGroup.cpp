@@ -116,7 +116,11 @@ void UBToolbarButtonGroup::setIcon(const QIcon &icon, int index)
         QToolButton *button = qobject_cast<QToolButton*>(widget);
         if (button)
         {
-            button->setIcon(icon);
+            // change icon at action, so that updates of action do not overwrite the icon
+            for (QAction* action : button->actions())
+            {
+                action->setIcon(icon);
+            }
         }
     }
 }
