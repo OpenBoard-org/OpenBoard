@@ -915,6 +915,10 @@
         <source>Podcast</source>
         <translation>Подкаст</translation>
     </message>
+    <message>
+        <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBApplicationController</name>

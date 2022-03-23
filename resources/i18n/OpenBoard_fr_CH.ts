@@ -916,6 +916,10 @@
         <source>Podcast</source>
         <translation>Podcast</translation>
     </message>
+    <message>
+        <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
+        <translation>Impossible d&apos;ouvrir un fichier UBX directement. Veuillez l&apos;importer depuis le mode Documents</translation>
+    </message>
 </context>
 <context>
     <name>UBApplicationController</name>
