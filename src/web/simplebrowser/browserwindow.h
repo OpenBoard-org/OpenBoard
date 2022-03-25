@@ -103,7 +103,6 @@ public:
     QToolBar *createToolBar(QWidget* parent);
 
 private:
-    QWebEngineProfile *m_profile;
     TabWidget *m_tabWidget;
     QProgressBar *m_progressBar;
     QStatusBar *m_statusBar;
@@ -114,6 +113,7 @@ private:
     QMainWindow* m_inspectorWindow;
 
     WBHistoryManager *m_historyManager;
+    bool m_offTheRecord;
 };
 
 #endif // BROWSERWINDOW_H

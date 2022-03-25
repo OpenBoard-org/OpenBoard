@@ -87,6 +87,7 @@ WBHistoryManager::WBHistoryManager(QObject *parent)
     : QObject(parent)
     , m_saveTimer(new UBAutoSaver(this))
     , m_historyLimit(30)
+    , m_fullSave(false)
     , m_historyModel(0)
     , m_historyFilterModel(0)
     , m_historyTreeModel(0)
@@ -196,6 +197,7 @@ void WBHistoryManager::checkForExpired()
         WBHistoryItem item = m_history.takeLast();
         // remove from saved file also
         m_lastSavedUrl = QString();
+        m_fullSave = true;
         emit entryRemoved(item);
     }
 
@@ -224,6 +226,7 @@ void WBHistoryManager::addHistoryItem(const WBHistoryItem &item)
             WBHistoryItem item = m_history.takeFirst();
             // remove from saved file also
             m_lastSavedUrl = QString();
+            m_fullSave = true;
             emit entryRemoved(item);
         }
     }
@@ -268,6 +271,7 @@ void WBHistoryManager::clear()
 {
     m_history.clear();
     m_lastSavedUrl = QString();
+    m_fullSave = true;
     m_saveTimer->changeOccurred();
     m_saveTimer->saveIfNeccessary();
     historyReset();
@@ -343,6 +347,7 @@ void WBHistoryManager::load()
     if (needToSort)
     {
         m_lastSavedUrl = QString();
+        m_fullSave = true;
         m_saveTimer->changeOccurred();
     }
 }
@@ -353,7 +358,8 @@ void WBHistoryManager::save()
     settings.beginGroup(QLatin1String("history"));
     settings.setValue(QLatin1String("historyLimit"), m_historyLimit);
 
-    bool saveAll = m_lastSavedUrl.isEmpty();
+    bool saveAll = m_fullSave || m_lastSavedUrl.isEmpty();
+    m_fullSave = false;
     int first = m_history.count() - 1;
     if (!saveAll)
     {

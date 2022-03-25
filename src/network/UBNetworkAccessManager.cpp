@@ -67,6 +67,8 @@ UBNetworkAccessManager::UBNetworkAccessManager(QObject *parent)
     connect(this, SIGNAL(sslErrors(QNetworkReply*, const QList<QSslError>&)),
             SLOT(sslErrors(QNetworkReply*, const QList<QSslError>&)));
 
+    // NOTE Setting the proxy here also affects QWebEngine.
+    // see https://doc.qt.io/qt-5/qtwebengine-overview.html#proxy-support
     QNetworkProxy* proxy = UBSettings::settings()->httpProxy();
 
     if (proxy)
@@ -82,18 +84,6 @@ UBNetworkAccessManager::UBNetworkAccessManager(QObject *parent)
     QString location = UBSettings::userDataDirectory() + "/web-cache";
     diskCache->setCacheDirectory(location);
     setCache(diskCache);
-}
-
-QNetworkReply* UBNetworkAccessManager::createRequest(Operation op, const QNetworkRequest & req, QIODevice * outgoingData)
-{
-    QNetworkRequest request = req; // copy so we can modify
-    // this is a temporary hack until we properly use the pipelining flags from QtWebkit
-    // pipeline everything! :)
-    request.setAttribute(QNetworkRequest::HttpPipeliningAllowedAttribute, true);
-
-    QNetworkReply* reply = QNetworkAccessManager::createRequest(op, request, outgoingData);
-
-    return reply;
 }
 
 QNetworkReply *UBNetworkAccessManager::get(const QNetworkRequest &request)

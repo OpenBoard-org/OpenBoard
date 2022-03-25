@@ -61,6 +61,7 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QWebEngineContextMenuData>
+#include <QWebEngineProfile>
 
 #include "board/UBBoardController.h"
 #include "core/UBApplication.h"
@@ -87,7 +88,7 @@ WebView::WebView(QWidget *parent)
     connect(this, &QWebEngineView::urlChanged, [this](const QUrl& url){
         BrowserWindow* browser = browserWindow();
 
-        if (browser) {
+        if (browser && page() && !page()->profile()->isOffTheRecord()) {
             browser->historyManager()->addHistoryEntry(url);
         }
     });

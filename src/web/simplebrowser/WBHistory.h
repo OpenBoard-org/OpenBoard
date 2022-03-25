@@ -153,6 +153,7 @@ class WBHistoryManager : public QObject
         QTimer m_expiredTimer;
         QList<WBHistoryItem> m_history;
         QString m_lastSavedUrl;
+        bool m_fullSave;
 
         WBHistoryModel *m_historyModel;
         WBHistoryFilterModel *m_historyFilterModel;

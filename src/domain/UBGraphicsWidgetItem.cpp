@@ -81,7 +81,7 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
 
     // create the page using a profile
     QWebEngineProfile* profile = UBApplication::webController->webProfile();
-    mWebEngineView->setPage(new WebPage(profile, this));
+    mWebEngineView->setPage(new WebPage(profile, mWebEngineView));
 
     // see https://stackoverflow.com/questions/31928444/qt-qwebenginepagesetwebchannel-transport-object
     mWebChannel = new QWebChannel(this);

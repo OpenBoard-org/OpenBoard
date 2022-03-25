@@ -331,6 +331,10 @@ class UBSettings : public QObject
         UBSetting* webSearchEngineUrl;
         UBSetting* alternativeUserAgent;
         UBSetting* alternativeUserAgentDomains;
+        UBSetting* webCookieAutoDelete;
+        UBSetting* webCookieKeepDomains;
+        UBSetting* webCookiePolicy;
+        UBSetting* webPrivateBrowsing;
 
         UBSetting* pageCacheSize;
 
