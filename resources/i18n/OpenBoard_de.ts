@@ -917,7 +917,7 @@
     </message>
     <message>
         <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
-        <translation type="unfinished"></translation>
+        <translation>Ihre UBX-Datei kann nicht direkt geöffnet werden. Bitte importieren Sie die Datei im Dokumentenmodus</translation>
     </message>
 </context>
 <context>
