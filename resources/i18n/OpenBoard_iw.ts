@@ -988,6 +988,10 @@ Do you wish to override the security check and continue ?   </source>
         <source>Podcast</source>
         <translation>פודקסט</translation>
     </message>
+    <message>
+        <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBApplicationController</name>

@@ -387,8 +387,13 @@ int UBApplication::exec(const QString& pFileToImport)
     applicationController->initScreenLayout(bUseMultiScreen);
     boardController->setupLayout();
 
-    if (pFileToImport.length() > 0 && !pFileToImport.endsWith("ubx"))
-        UBApplication::applicationController->importFile(pFileToImport);
+    if (pFileToImport.length() > 0)
+    {
+        if (!pFileToImport.endsWith("ubx"))
+            applicationController->importFile(pFileToImport);
+        else
+            applicationController->showMessage(tr("Cannot open your UBX file directly. Please import it in Documents mode instead"), false);
+    }
 
     if (UBSettings::settings()->appStartMode->get().toInt())
         applicationController->showDesktop();
