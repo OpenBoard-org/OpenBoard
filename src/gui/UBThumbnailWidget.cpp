@@ -232,6 +232,11 @@ QList<QGraphicsItem*> UBThumbnailWidget::selectedItems()
     return sortedSelectedItems;
 }
 
+void UBThumbnailWidget::clearSelection()
+{
+    mThumbnailsScene.clearSelection();
+}
+
 
 void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
 {

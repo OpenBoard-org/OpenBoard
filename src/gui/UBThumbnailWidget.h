@@ -66,6 +66,7 @@ class UBThumbnailWidget : public QGraphicsView
         QList<QGraphicsItem*> selectedItems();
         void selectItemAt(int pIndex, bool extend = false);
         void unselectItemAt(int pIndex);
+        void clearSelection();
 
         qreal thumbnailWidth()
         {

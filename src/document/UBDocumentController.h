@@ -458,6 +458,8 @@ class UBDocumentController : public UBDocumentContainer
         QModelIndex findNextSiblingNotSelected(const QModelIndex &index, QItemSelectionModel *selectionModel);
         bool parentIsSelected(const QModelIndex& child, QItemSelectionModel *selectionModel);
 
+        void clearThumbnailsSelection();
+
     signals:
         void exportDone();
         void reorderDocumentsRequested();

@@ -1401,7 +1401,6 @@ void UBDocumentTreeView::hSliderRangeChanged(int min, int max)
 void UBDocumentTreeView::mousePressEvent(QMouseEvent *event)
 {
     QTreeView::mousePressEvent(event);
-    UBApplication::documentController->updateActions();
 }
 
 void UBDocumentTreeView::dragEnterEvent(QDragEnterEvent *event)
@@ -1942,9 +1941,11 @@ void UBDocumentController::TreeViewSelectionChanged(const QModelIndex &current, 
     //We have just to pass a null proxy to disable the display of thumbnail
     UBDocumentProxy *currentDocumentProxy = 0;
 
-    if(current_index.isValid() && mDocumentUI->documentTreeView->selectionModel()->selectedRows(0).size() == 1){
+    if(current_index.isValid() && mDocumentUI->documentTreeView->selectionModel()->selectedRows(0).size() == 1)
+    {
         currentDocumentProxy = docModel->proxyData(current_index);
         setDocument(currentDocumentProxy, false);
+        clearThumbnailsSelection();
     }
     //N/C - NNE  - 20140414 : END
 
@@ -3906,4 +3907,9 @@ void UBDocumentController::expandAll()
     mDocumentUI->documentTreeView->expandAll();
 
     mDocumentUI->documentTreeView->setAnimated(true);
+}
+
+void UBDocumentController::clearThumbnailsSelection()
+{
+    mDocumentUI->thumbnailWidget->clearSelection();
 }
