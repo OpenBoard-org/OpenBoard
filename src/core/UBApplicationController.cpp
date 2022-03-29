@@ -441,7 +441,6 @@ void UBApplicationController::showDocument()
 
     if (UBApplication::documentController)
     {
-        emit UBApplication::documentController->reorderDocumentsRequested();
         UBApplication::documentController->show();
     }
 

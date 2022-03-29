@@ -67,13 +67,11 @@ UBThumbnailWidget::UBThumbnailWidget(QWidget* parent)
 
     setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
-    connect(&mThumbnailsScene, SIGNAL(selectionChanged()), this, SLOT(sceneSelectionChanged()));
 }
 
 
 UBThumbnailWidget::~UBThumbnailWidget()
 {
-    disconnect(&mThumbnailsScene, SIGNAL(selectionChanged()));
 }
 
 
@@ -108,7 +106,6 @@ void UBThumbnailWidget::setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsI
     {
         mThumbnailsScene.removeItem(it, true);
     }
-
     // set lasso to 0 as it has been cleared as well
     mLassoRectItem = 0;
 
