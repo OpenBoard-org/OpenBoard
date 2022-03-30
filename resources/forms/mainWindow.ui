@@ -1497,16 +1497,16 @@
     <string>Configure Podcast Recording</string>
    </property>
   </action>
-  <action name="actionWebTrapFlash">
+  <action name="actionCaptureWebContent">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/addToolToLibrary.png</normaloff>:/images/toolbar/addToolToLibrary.png</iconset>
    </property>
    <property name="text">
-    <string>Flash Trap</string>
+    <string>Capture Wep Content</string>
    </property>
    <property name="toolTip">
-    <string>Trap Flash Content</string>
+    <string>Capture Web Content</string>
    </property>
   </action>
   <action name="actionWebTrap">
