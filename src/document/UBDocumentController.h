@@ -492,7 +492,6 @@ class UBDocumentController : public UBDocumentContainer
         void copy();
         void paste();
         void focusChanged(QWidget *old, QWidget *current);
-        void updateActions();
         void updateExportSubActions(const QModelIndex &selectedIndex);
         void currentIndexMoved(const QModelIndex &newIndex, const QModelIndex &PreviousIndex);
 
@@ -551,6 +550,8 @@ protected:
         void TreeViewSelectionChanged(const QModelIndex &current, const QModelIndex &previous);
         void TreeViewSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
+        void pageSelectionChanged();
+
    private slots:
         void documentZoomSliderValueChanged (int value);
         void itemSelectionChanged(LastSelectedElementType newSelection);
@@ -558,7 +559,7 @@ protected:
         void exportDocumentSet();
 
         void thumbnailViewResized();
-        void pageSelectionChanged();
+        void updateActions();
 
         void documentSceneChanged(UBDocumentProxy* proxy, int pSceneIndex);
 

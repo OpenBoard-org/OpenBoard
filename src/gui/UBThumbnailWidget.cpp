@@ -315,7 +315,6 @@ void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
                 }
                 mSelectionSpan = index2 - index1;
                 selectItems(qMin(index1, index2), mSelectionSpan < 0 ? - mSelectionSpan + 1 : mSelectionSpan + 1);
-                return;
             }
         }
     }
@@ -334,8 +333,9 @@ void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
         if (!mLastSelectedThumbnail && mGraphicItems.count() > 0)
             mLastSelectedThumbnail = dynamic_cast<UBThumbnail*>(mGraphicItems.at(0));
         mSelectionSpan = 0;
-        return;
     }
+
+    UBApplication::documentController->pageSelectionChanged();
 }
 
 

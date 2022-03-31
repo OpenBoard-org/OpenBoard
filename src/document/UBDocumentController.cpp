@@ -1592,7 +1592,7 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
 
     QTreeView::dropEvent(event);
 
-    UBApplication::documentController->updateActions();
+    UBApplication::documentController->pageSelectionChanged();
 }
 
 void UBDocumentTreeView::paintEvent(QPaintEvent *event)
@@ -2445,8 +2445,6 @@ void UBDocumentController::deleteSelectedItem()
     }
 
     pageSelectionChanged();
-
-    updateActions();
 }
 
 void UBDocumentController::deleteMultipleItems(QModelIndexList indexes, UBDocumentTreeModel* docModel)
