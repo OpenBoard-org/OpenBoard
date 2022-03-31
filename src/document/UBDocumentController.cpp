@@ -1401,6 +1401,7 @@ void UBDocumentTreeView::hSliderRangeChanged(int min, int max)
 void UBDocumentTreeView::mousePressEvent(QMouseEvent *event)
 {
     QTreeView::mousePressEvent(event);
+    UBApplication::documentController->clearThumbnailsSelection();
 }
 
 void UBDocumentTreeView::dragEnterEvent(QDragEnterEvent *event)
@@ -1850,6 +1851,8 @@ void UBDocumentController::createNewDocument()
 
     if (document)
         pManager->mDocumentTreeStructureModel->markDocumentAsNew(document);
+
+    pageSelectionChanged();
 }
 
 void UBDocumentController::selectDocument(UBDocumentProxy* proxy, bool setAsCurrentDocument, const bool onImport, const bool editMode)
@@ -1899,6 +1902,8 @@ void UBDocumentController::createNewDocumentGroup()
 
     QModelIndex newIndex = docModel->addCatalog(newFolderName, parentIndex);
     mDocumentUI->documentTreeView->setSelectedAndExpanded(newIndex, true, true);
+
+    pageSelectionChanged();
 }
 
 
@@ -1945,7 +1950,6 @@ void UBDocumentController::TreeViewSelectionChanged(const QModelIndex &current, 
     {
         currentDocumentProxy = docModel->proxyData(current_index);
         setDocument(currentDocumentProxy, false);
-        clearThumbnailsSelection();
     }
     //N/C - NNE  - 20140414 : END
 
@@ -1958,8 +1962,6 @@ void UBDocumentController::TreeViewSelectionChanged(const QModelIndex &current, 
         }
         mCurrentIndexMoved = false;
     }
-
-    pageSelectionChanged();
 }
 
 //N/C - NNE - 20140402 : workaround for using a proxy model
@@ -2187,8 +2189,6 @@ void UBDocumentController::setupViews()
         connect(mDocumentUI->thumbnailWidget, SIGNAL(mouseDoubleClick(QGraphicsItem*,int)), this, SLOT(thumbnailPageDoubleClicked(QGraphicsItem*,int)));
         connect(mDocumentUI->thumbnailWidget, SIGNAL(mouseClick(QGraphicsItem*, int)), this, SLOT(pageClicked(QGraphicsItem*, int)));
 
-        connect(UBPersistenceManager::persistenceManager(), SIGNAL(documentSceneCreated(UBDocumentProxy*, int)), this, SLOT(documentSceneChanged(UBDocumentProxy*, int)));
-
         mDocumentUI->thumbnailWidget->setBackgroundBrush(UBSettings::documentViewLightColor);
 
         #ifdef Q_WS_MACX
@@ -2316,7 +2316,7 @@ void UBDocumentController::show()
 
     reorderDocuments();
 
-    updateActions();
+    pageSelectionChanged();
 
     if(!mToolsPalette)
         setupPalettes();
@@ -2423,6 +2423,7 @@ void UBDocumentController::duplicateSelectedItem()
     }
 
     emit reorderDocumentsRequested();
+    pageSelectionChanged();
 }
 
 void UBDocumentController::deleteSelectedItem()
@@ -3014,6 +3015,8 @@ void UBDocumentController::addFolderOfImages()
                 reloadThumbnails();
                 if (selectedDocument() == UBApplication::boardController->selectedDocument())
                     UBApplication::boardController->reloadThumbnails();
+
+                pageSelectionChanged();
             }
         }
     }
@@ -3062,6 +3065,8 @@ bool UBDocumentController::addFileToDocument(UBDocumentProxy* document)
             reloadThumbnails();
             if (selectedDocument() == UBApplication::boardController->selectedDocument())
                 UBApplication::boardController->reloadThumbnails();
+
+            pageSelectionChanged();
         }
         else
         {
@@ -3340,6 +3345,8 @@ void UBDocumentController::addImages()
                 reloadThumbnails();
                 if (selectedDocument() == UBApplication::boardController->selectedDocument())
                     UBApplication::boardController->reloadThumbnails();
+
+                pageSelectionChanged();
             }
         }
     }
@@ -3873,6 +3880,8 @@ void UBDocumentController::createNewDocumentInUntitledFolder()
 
     if (document)
         pManager->mDocumentTreeStructureModel->markDocumentAsNew(document);
+
+    pageSelectionChanged();
 }
 
 void UBDocumentController::collapseAll()
@@ -3912,4 +3921,5 @@ void UBDocumentController::expandAll()
 void UBDocumentController::clearThumbnailsSelection()
 {
     mDocumentUI->thumbnailWidget->clearSelection();
+    pageSelectionChanged();
 }
