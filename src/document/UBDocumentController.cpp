@@ -3649,6 +3649,7 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
         UBDocumentContainer::deletePages(sceneIndexes);
         if (mBoardController->selectedDocument() == selectedDocument())
         {
+            std::sort(sceneIndexes.begin(), sceneIndexes.end(), std::greater<>());
             for (auto index : sceneIndexes)
                 mBoardController->deleteThumbPage(index);
         }
