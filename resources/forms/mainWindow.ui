@@ -1503,7 +1503,7 @@
      <normaloff>:/images/toolbar/addToolToLibrary.png</normaloff>:/images/toolbar/addToolToLibrary.png</iconset>
    </property>
    <property name="text">
-    <string>Capture Wep Content</string>
+    <string>Capture Web Content</string>
    </property>
    <property name="toolTip">
     <string>Capture Web Content</string>
