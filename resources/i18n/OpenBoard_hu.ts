@@ -701,11 +701,11 @@
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation>Flash rögzítése</translation>
+        <translation type="vanished">Flash rögzítése</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>Flash tartalom rögzítése</translation>
+        <translation type="vanished">Flash tartalom rögzítése</translation>
     </message>
     <message>
         <source>Web Trap</source>
@@ -838,6 +838,10 @@
     <message>
         <source>Draw intermediate grid lines</source>
         <translation>Köztes rácsvonalak rajzolása</translation>
+    </message>
+    <message>
+        <source>Capture Web Content</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2889,7 +2893,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation>Flash kiválasztása a rögzítéshez</translation>
+        <translation type="vanished">Flash kiválasztása a rögzítéshez</translation>
     </message>
     <message>
         <source>about:blank</source>
@@ -2902,6 +2906,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Create Application</source>
         <translation>Alkalmazás létrehozása</translation>
+    </message>
+    <message>
+        <source>Select a content to capture</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

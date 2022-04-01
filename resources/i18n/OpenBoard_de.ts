@@ -697,11 +697,11 @@
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation>Einblendung einfangen</translation>
+        <translation type="vanished">Einblendung einfangen</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>Eingeblendeten Inhalt einfangen</translation>
+        <translation type="vanished">Eingeblendeten Inhalt einfangen</translation>
     </message>
     <message>
         <source>Web Trap</source>
@@ -838,6 +838,10 @@
     <message>
         <source>Draw intermediate grid lines</source>
         <translation>Gitter-Zwischenlinien zeichnen</translation>
+    </message>
+    <message>
+        <source>Capture Web Content</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3006,7 +3010,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation>Wählen Sie eine Einblendung, die festgehalten werden soll</translation>
+        <translation type="vanished">Wählen Sie eine Einblendung, die festgehalten werden soll</translation>
     </message>
     <message>
         <source>about:blank</source>
@@ -3019,6 +3023,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Create Application</source>
         <translation>Anwendung erstellen</translation>
+    </message>
+    <message>
+        <source>Select a content to capture</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

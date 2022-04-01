@@ -697,11 +697,11 @@
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation>מלכודת פלאש</translation>
+        <translation type="vanished">מלכודת פלאש</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>תוכן מלכודת פלאש</translation>
+        <translation type="vanished">תוכן מלכודת פלאש</translation>
     </message>
     <message>
         <source>Web Trap</source>
@@ -838,6 +838,10 @@
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Capture Web Content</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2924,7 +2928,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation>בחר פלאש ללכידה</translation>
+        <translation type="vanished">בחר פלאש ללכידה</translation>
     </message>
     <message>
         <source>about:blank</source>
@@ -2937,6 +2941,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Create Application</source>
         <translation>צור יישום</translation>
+    </message>
+    <message>
+        <source>Select a content to capture</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

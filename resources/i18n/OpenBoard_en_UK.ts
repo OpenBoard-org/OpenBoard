@@ -704,14 +704,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Flash Trap</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trap Flash Content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Web Trap</source>
         <translation type="unfinished"></translation>
     </message>
@@ -829,6 +821,10 @@
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Capture Web Content</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2747,10 +2743,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select a flash to trap</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>about:blank</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2760,6 +2752,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Create Application</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select a content to capture</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
