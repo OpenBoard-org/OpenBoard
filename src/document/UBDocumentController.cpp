@@ -2969,6 +2969,7 @@ void UBDocumentController::importFile()
 
             if (createdDocument) {
                 selectDocument(createdDocument, true, true, true);
+                pageSelectionChanged();
 
             } else {
                 showMessage(tr("Failed to import file ... "));
