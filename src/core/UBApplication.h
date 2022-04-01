@@ -86,6 +86,8 @@ class UBApplication : public SingleApplication
         static const QString mimeTypeUniboardPageItem;
         static const QString mimeTypeUniboardPageThumbnail;
 
+        static QString fileToOpen;
+
         static void showMessage(const QString& message, bool showSpinningWheel = false);
         static void setDisabled(bool disable);
 

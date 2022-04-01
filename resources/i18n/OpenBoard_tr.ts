@@ -701,11 +701,11 @@
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation>Flash Tuzağı</translation>
+        <translation type="vanished">Flash Tuzağı</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>Flash İçeriğini Yakala</translation>
+        <translation type="vanished">Flash İçeriğini Yakala</translation>
     </message>
     <message>
         <source>Web Trap</source>
@@ -839,6 +839,10 @@
         <source>Draw intermediate grid lines</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Capture Web Content</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -896,6 +900,14 @@
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
         <translation>Seçili olan &apos;%0&apos; adlı dökümandan 1 sayfayı kaldırmak üzeresiniz. Bu işlemi yapmak istediğinizden eminmisiniz?</translation>
     </message>
+    <message>
+        <source>Loading scene (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moving cached scenes (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBApplication</name>
@@ -906,6 +918,10 @@
     <message>
         <source>Podcast</source>
         <translation>Ekran Kaydı</translation>
+    </message>
+    <message>
+        <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1224,6 +1240,10 @@
         <source>Title page</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Refreshing Document Thumbnails View (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1273,6 +1293,10 @@
     <message>
         <source>Page %0</source>
         <translation>Sayfa %0</translation>
+    </message>
+    <message>
+        <source>Generating thumbnails for board (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1958,6 +1982,10 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Renaming pages (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -2120,6 +2148,10 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 adet önizleme resmi oluşturuldu ...</translation>
+    </message>
+    <message>
+        <source>Loading thumbnail (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2899,7 +2931,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation>Tuzağa almak için bir flash öğesi seçin</translation>
+        <translation type="vanished">Tuzağa almak için bir flash öğesi seçin</translation>
     </message>
     <message>
         <source>about:blank</source>
@@ -2912,6 +2944,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Create Application</source>
         <translation>Uygulama Oluştur</translation>
+    </message>
+    <message>
+        <source>Select a content to capture</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

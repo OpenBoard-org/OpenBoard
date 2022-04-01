@@ -66,6 +66,7 @@ class UBThumbnailWidget : public QGraphicsView
         QList<QGraphicsItem*> selectedItems();
         void selectItemAt(int pIndex, bool extend = false);
         void unselectItemAt(int pIndex);
+        void clearSelection();
 
         qreal thumbnailWidth()
         {
@@ -81,6 +82,7 @@ class UBThumbnailWidget : public QGraphicsView
         void setThumbnailWidth(qreal pThumbnailWidth);
         void setSpacing(qreal pSpacing);
         virtual void setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsItems, const QList<QUrl>& pItemPaths, const QStringList pLabels = QStringList(), const QString& pMimeType = QString(""));
+        void insertThumbnailToScene(QGraphicsPixmapItem* newThumbnail, UBThumbnailTextItem* thumbnailTextItem);
         void refreshScene();
         void sceneSelectionChanged();
 
@@ -184,7 +186,6 @@ class UBThumbnail
                         item->sceneBoundingRect().height() + 10);
 
                     mSelectionItem->show();
-
                 }
                 else
                 {
@@ -199,6 +200,7 @@ class UBThumbnail
         void setRow(int row) { mRow = row; }
         UBThumbnailTextItem *label(){return mLabel;}
         void setLabel(UBThumbnailTextItem *label){mLabel = label;}
+        QGraphicsRectItem* selectionItem(){ return mSelectionItem; }
 
     protected:
         QGraphicsRectItem *mSelectionItem;
@@ -253,6 +255,18 @@ class UBThumbnailTextItem : public QGraphicsTextItem
                         mIsHighlighted = true;
                         computeText();
                 }
+        }
+
+        void setPageNumber(int i)
+        {
+            mUnelidedText = tr("Page %0").arg(i);
+            computeText();
+        }
+
+        void setText(const QString& text)
+        {
+            mUnelidedText = text;
+            computeText();
         }
 
         void computeText()
@@ -337,6 +351,11 @@ class UBSceneThumbnailPixmap : public UBThumbnailPixmap
         int sceneIndex()
         {
             return mSceneIndex;
+        }
+
+        void setSceneIndex(int i)
+        {
+            mSceneIndex = i;
         }
 
         void highlight()

@@ -121,13 +121,7 @@ bool UBExportDocumentCleaner::StripePdf(QString const &originalFile, QList<int> 
         qWarning() << "The file '" << relaseEmptyFileName << "' was not found. Therefore, the following qpdf stripe operation is likely to fail.";
     }
 
-    int result = -1;
-    try {
-        result = UBExportDocumentCleanerQPDF::Stripe(tempName /* input */, originalFile /* output */, pagesToKeep, pdfEmptyFileName);
-    } catch (std::exception &e)
-    {
-        qWarning() << "qpdf_main returned " << e.what();
-    }
+    int result = UBExportDocumentCleanerQPDF::Stripe(tempName /* input */, originalFile /* output */, pagesToKeep, pdfEmptyFileName);
 
     if (result != 0) {
         // Can't stripe? Recover the original file.

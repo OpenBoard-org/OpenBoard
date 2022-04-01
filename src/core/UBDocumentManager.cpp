@@ -285,8 +285,7 @@ int UBDocumentManager::addFilesToDocument(UBDocumentProxy* document, QStringList
                         int pageIndex = document->pageCount();
                         UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(document, pageIndex, true /* useUndoRedoStack */, UBPersistenceManager::PdfStripeNo);
                         importAdaptor->placeImportedItemToScene(scene, page);
-                        UBPersistenceManager::persistenceManager()->persistDocumentScene(document, scene, pageIndex, UBPersistenceManager::PdfStripeNo);
-                        UBApplication::boardController->insertThumbPage(pageIndex);
+                        UBPersistenceManager::persistenceManager()->persistDocumentScene(document, scene, pageIndex, false, UBPersistenceManager::PdfStripeNo);
                     }
 
                     UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);

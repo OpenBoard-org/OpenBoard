@@ -236,7 +236,7 @@ void UBDisplayManager::positionScreens()
 
     if (mDisplayWidget && mDisplayScreenIndex > -1)
     {
-        mDisplayWidget->hide();
+        mDisplayWidget->showNormal();
         mDisplayWidget->setGeometry(mDesktop->screenGeometry(mDisplayScreenIndex));
         UBPlatformUtils::showFullScreen(mDisplayWidget);
     }

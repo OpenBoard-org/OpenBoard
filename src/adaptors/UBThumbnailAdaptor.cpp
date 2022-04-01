@@ -83,8 +83,9 @@ void UBThumbnailAdaptor::generateMissingThumbnails(UBDocumentProxy* proxy)
     }
 }
 
-const QPixmap* UBThumbnailAdaptor::get(UBDocumentProxy* proxy, int pageIndex)
+QPixmap UBThumbnailAdaptor::get(UBDocumentProxy* proxy, int pageIndex)
 {
+    UBApplication::showMessage(tr("Loading thumbnail (%1/%2)").arg(pageIndex+1).arg(proxy->pageCount()));
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
 
     QFile file(fileName);
@@ -93,30 +94,21 @@ const QPixmap* UBThumbnailAdaptor::get(UBDocumentProxy* proxy, int pageIndex)
         generateMissingThumbnails(proxy);
     }
 
-    QPixmap* pix = new QPixmap();
+    QPixmap pix;
     if (file.exists())
     {
-        //Warning. Works only with modified Qt
-#ifdef Q_OS_LINUX
-        pix->load(fileName, 0, Qt::AutoColor);
-#else
-        pix->load(fileName, 0, Qt::AutoColor);
-#endif
+        pix.load(fileName, 0, Qt::AutoColor);
     }
     return pix;
 }
 
-void UBThumbnailAdaptor::load(UBDocumentProxy* proxy, QList<const QPixmap*>& list)
+void UBThumbnailAdaptor::load(UBDocumentProxy* proxy, QList<std::shared_ptr<QPixmap>>& list)
 {
-    generateMissingThumbnails(proxy);
-
-    foreach(const QPixmap* pm, list){
-        delete pm;
-        pm = NULL;
-    }
     list.clear();
     for(int i=0; i<proxy->pageCount(); i++)
-        list.append(get(proxy, i));
+    {
+        list.append(std::make_shared<QPixmap>(get(proxy, i)));
+    }
 }
 
 void UBThumbnailAdaptor::persistScene(UBDocumentProxy* proxy, UBGraphicsScene* pScene, int pageIndex, bool overrideModified)

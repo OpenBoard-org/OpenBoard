@@ -242,17 +242,26 @@ void UBGraphicsMediaItemDelegate::mediaStatusChanged(QMediaPlayer::MediaStatus s
     if (status == QMediaPlayer::LoadedMedia)
         mMediaControl->totalTimeChanged(delegated()->mediaDuration());
 
-    // At the beginning of the video, play/pause to load and display the first frame
+    // At the beginning of the video, play/pause to load and display the first frame (not working on OSX)
+#ifndef Q_OS_OSX
     if ((status == QMediaPlayer::LoadedMedia || status == QMediaPlayer::BufferedMedia)
             && delegated()->mediaPosition() == delegated()->initialPos()
-            && !delegated()->isStopped()) {
+            && !delegated()->isStopped()
+            && delegated()->firstLoad()
+            )
+    {
         delegated()->play();
         delegated()->pause();
+        delegated()->setFirstLoad(false);
     }
+#endif
 
     // At the end of the video, make sure the progress bar doesn't autohide
     if (status == QMediaPlayer::EndOfMedia)
+    {
+        delegated()->setFirstLoad(true);
         showToolBar(false);
+    }
 
 
     // in most cases, the only necessary action is to update the play/pause state
@@ -265,6 +274,9 @@ void UBGraphicsMediaItemDelegate::mediaStateChanged(QMediaPlayer::State state)
     // Possible states are StoppedState, PlayingState and PausedState
 
     // updatePlayPauseState handles this functionality
+    if (state == QMediaPlayer::StoppedState)
+        delegated()->setMediaPos(0);
+
     updatePlayPauseState();
 }
 
@@ -280,8 +292,11 @@ void UBGraphicsMediaItemDelegate::updatePlayPauseState()
 
 void UBGraphicsMediaItemDelegate::updateTicker(qint64 time)
 {
-    mMediaControl->totalTimeChanged(delegated()->mediaDuration());
-    mMediaControl->updateTicker(time);
+    if (!delegated()->isStopped())
+    {
+        mMediaControl->totalTimeChanged(delegated()->mediaDuration());
+        mMediaControl->updateTicker(time);
+    }
 }
 
 

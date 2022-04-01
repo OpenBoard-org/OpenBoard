@@ -458,6 +458,8 @@ class UBDocumentController : public UBDocumentContainer
         QModelIndex findNextSiblingNotSelected(const QModelIndex &index, QItemSelectionModel *selectionModel);
         bool parentIsSelected(const QModelIndex& child, QItemSelectionModel *selectionModel);
 
+        void clearThumbnailsSelection();
+
     signals:
         void exportDone();
         void reorderDocumentsRequested();
@@ -490,7 +492,6 @@ class UBDocumentController : public UBDocumentContainer
         void copy();
         void paste();
         void focusChanged(QWidget *old, QWidget *current);
-        void updateActions();
         void updateExportSubActions(const QModelIndex &selectedIndex);
         void currentIndexMoved(const QModelIndex &newIndex, const QModelIndex &PreviousIndex);
 
@@ -500,6 +501,11 @@ class UBDocumentController : public UBDocumentContainer
         void onSplitterMoved(int size, int index);
         void collapseAll();
         void expandAll();
+
+        void updateThumbnail(int index);
+        void removeThumbnail(int index);
+        void moveThumbnail(int from, int to);
+        void insertThumbnail(int index, const QPixmap& pix);
 
 protected:
         virtual void setupViews();
@@ -544,6 +550,8 @@ protected:
         void TreeViewSelectionChanged(const QModelIndex &current, const QModelIndex &previous);
         void TreeViewSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
+        void pageSelectionChanged();
+
    private slots:
         void documentZoomSliderValueChanged (int value);
         void itemSelectionChanged(LastSelectedElementType newSelection);
@@ -551,7 +559,7 @@ protected:
         void exportDocumentSet();
 
         void thumbnailViewResized();
-        void pageSelectionChanged();
+        void updateActions();
 
         void documentSceneChanged(UBDocumentProxy* proxy, int pSceneIndex);
 

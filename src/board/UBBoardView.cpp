@@ -1141,6 +1141,9 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
         return;
     }
 
+    if ((UBDrawingController::drawingController()->isDrawingTool()) && !mMouseButtonIsPressed)
+        QGraphicsView::mouseMoveEvent(event);
+
     int currentTool = static_cast<int>(UBDrawingController::drawingController()->stylusTool());
     switch (currentTool) {
 
