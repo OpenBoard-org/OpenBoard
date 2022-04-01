@@ -346,6 +346,8 @@ void UBBoardController::setupToolbar()
             , lineWidthChoice, SLOT(setCurrentIndex(int)));
 
     lineWidthChoice->displayText(QVariant(settings->appToolBarDisplayText->get().toBool()));
+    lineWidthChoice->setCurrentIndex(settings->penWidthIndex());
+    lineWidthActions.at(settings->penWidthIndex())->setChecked(true);
 
     mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, lineWidthChoice);
 
@@ -367,6 +369,7 @@ void UBBoardController::setupToolbar()
 
     eraserWidthChoice->displayText(QVariant(settings->appToolBarDisplayText->get().toBool()));
     eraserWidthChoice->setCurrentIndex(settings->eraserWidthIndex());
+    eraserWidthActions.at(settings->eraserWidthIndex())->setChecked(true);
 
     mMainWindow->boardToolBar->insertSeparator(mMainWindow->actionBackgrounds);
 
