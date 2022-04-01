@@ -732,11 +732,19 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
 
     case UBMimeType::UNKNOWN:
         {
+            QGraphicsItem *copiedItem = dynamic_cast<QGraphicsItem*>(item);
             QGraphicsItem *gitem = dynamic_cast<QGraphicsItem*>(item->deepCopy());
             if (gitem)
             {
                 mActiveScene->addItem(gitem);
 
+                if (copiedItem)
+                {
+                    if (mActiveScene->tools().contains(copiedItem))
+                    {
+                        mActiveScene->registerTool(gitem);
+                    }
+                }
                 gitem->setPos(itemPos);
 
                 mLastCreatedItem = gitem;
