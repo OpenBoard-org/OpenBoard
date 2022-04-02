@@ -435,15 +435,6 @@ void UBSettings::init()
     communityPsw = new UBSetting(this, "Community", "Password", "");
     communityCredentialsPersistence = new UBSetting(this,"Community", "CredentialsPersistence",false);
 
-    enableToolAxes = new UBSetting(this, "Board", "EnableToolAxes", false);
-    enableIntermediateLines = new UBSetting(this, "Board", "EnableIntermediateLines", false);
-
-    if (enableToolAxes->get().toBool())
-    {
-        // add axes tool id to list
-        UBToolsManager::manager()->addTool(UBToolsManager::manager()->axes);
-    }
-
     QStringList uris = UBToolsManager::manager()->allToolIDs();
 
     favoritesNativeToolUris = new UBSetting(this, "App", "FavoriteToolURIs", uris);

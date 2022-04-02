@@ -434,9 +434,6 @@ class UBSettings : public QObject
         UBSetting* magnifierDrawingMode;
         UBSetting* autoSaveInterval;
 
-        UBSetting* enableToolAxes;
-        UBSetting* enableIntermediateLines;
-
     public slots:
 
         void setPenWidthIndex(int index);

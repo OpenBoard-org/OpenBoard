@@ -2201,6 +2201,7 @@ void UBGraphicsScene::addRuler(QPointF center)
 void UBGraphicsScene::addAxes(QPointF center)
 {
     UBGraphicsAxes* axes = new UBGraphicsAxes(); // mem : owned and destroyed by the scene
+    mTools << axes;
 
     axes->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 
