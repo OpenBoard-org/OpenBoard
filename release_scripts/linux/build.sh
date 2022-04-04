@@ -40,6 +40,10 @@ initializeVariables()
     if [ $ARCHITECTURE == "x86_64" ]; then
         ARCHITECTURE="amd64"
     fi
+    if [$ARCHITECTURE == "armv7l" ]; then
+        $ARCHITECTURE="armhf"
+        QT_PATH="/usr/lib/arm-linux-gnueabihf/qt5"
+    fi
   fi
 }
 
