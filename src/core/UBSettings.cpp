@@ -409,6 +409,8 @@ void UBSettings::init()
 
     pdfZoomBehavior = new UBSetting(this, "PDF", "ZoomBehavior", "4");
     enableQualityLossToIncreaseZoomPerfs = new UBSetting(this, "PDF", "enableQualityLossToIncreaseZoomPerfs", true);
+    exportBackgroundGrid = new UBSetting(this, "PDF", "ExportBackgroundGrid", false);
+    exportBackgroundColor = new UBSetting(this, "PDF", "ExportBackgroundColor", false);
 
     podcastFramesPerSecond = new UBSetting(this, "Podcast", "FramesPerSecond", 10);
     podcastVideoSize = new UBSetting(this, "Podcast", "VideoSize", "Medium");
