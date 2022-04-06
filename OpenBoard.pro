@@ -11,7 +11,7 @@ VERSION_MAJ = 1
 VERSION_MIN = 6
 VERSION_PATCH = 2
 VERSION_TYPE = rc # a = alpha, b = beta, rc = release candidate, r = release, other => error
-VERSION_BUILD = 0323
+VERSION_BUILD = 0408
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$${VERSION_BUILD}"
 
@@ -452,7 +452,7 @@ linux-g++* {
     #LIBS += -lprofiler
     LIBS += -lX11
     LIBS += -lquazip5
-    INCLUDEPATH += "/usr/include/quazip"
+    INCLUDEPATH += "/usr/include/quazip5"
 
     LIBS += -lpoppler
     INCLUDEPATH += "/usr/include/poppler"
