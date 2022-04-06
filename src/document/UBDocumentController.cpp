@@ -1558,8 +1558,11 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
                 Q_ASSERT(QFileInfo(thumbTo).exists());
 
                 auto pix = std::make_shared<QPixmap>(thumbTmp);
-                UBDocumentController *ctrl = UBApplication::documentController;
-                ctrl->addPixmapAt(pix, toIndex);
+                UBApplication::documentController->insertExistingThumbPage(toIndex, pix);
+                if (UBApplication::documentController->selectedDocument() == targetDocProxy)
+                {
+                    UBApplication::documentController->reloadThumbnails();
+                }
                 if (UBApplication::boardController->selectedDocument() == targetDocProxy)
                 {
                     UBApplication::boardController->insertThumbPage(toIndex);
@@ -1572,8 +1575,6 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
         }
 
         UBApplication::applicationController->showMessage(tr("%1 pages copied", "", total).arg(total), false);
-        UBApplication::documentController->TreeViewSelectionChanged(UBApplication::documentController->firstSelectedTreeIndex(), QModelIndex());
-
     }
     else
     {
