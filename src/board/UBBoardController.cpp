@@ -1439,6 +1439,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
                 QStringList fileNames;
                 fileNames << pdfFile.fileName();
                 result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
+                reloadThumbnails();
                 pdfFile.close();
             }
         }
