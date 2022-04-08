@@ -841,7 +841,7 @@
     </message>
     <message>
         <source>Capture Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Catturare il contenuto del web</translation>
     </message>
 </context>
 <context>
@@ -3017,7 +3017,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a content to capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Selezionare il contenuto da catturare</translation>
     </message>
 </context>
 </TS>
