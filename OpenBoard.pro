@@ -1,7 +1,7 @@
 TARGET = "OpenBoard"
 TEMPLATE = app
 
-CONFIG += c++14
+CONFIG += c++17
 CONFIG -= flat
 CONFIG += debug_and_release \
           no_include_pwd
