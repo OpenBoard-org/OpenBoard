@@ -35,6 +35,7 @@
 #include <QPdfWriter>
 
 #include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
 #include "core/UBPersistenceManager.h"
@@ -88,10 +89,9 @@ bool UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QStrin
     pdfWriter.setTitle(pDocumentProxy->name());
     pdfWriter.setCreator("OpenBoard PDF export");
 
-    //need to calculate screen resolution
-    QDesktopWidget* desktop = UBApplication::desktop();
-    int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
-    float scaleFactor = 72.0f / dpiCommon;
+    // need to calculate screen resolution
+    float dpiCommon = UBApplication::displayManager->logicalDpi(UBDisplayManager::DisplayRole::Control);
+    float scaleFactor = dpiCommon ? 72.0f / dpiCommon : 1.f;
 
     QPainter pdfPainter;
     bool painterNeedsBegin = true;
