@@ -28,13 +28,13 @@
 
 
 #include <QFile>
-#include <QDesktopWidget>
 
 #include "PDFRenderer.h"
 
 #include "XPDFRenderer.h"
 
 #include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 #include "core/memcheck.h"
 
 
@@ -69,8 +69,7 @@ PDFRenderer* PDFRenderer::rendererForUuid(const QUuid &uuid, const QString &file
 
         sRenderers.insert(newRenderer->fileUuid(), newRenderer);
 
-        QDesktopWidget* desktop = UBApplication::desktop();
-        int dpiCommon = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+        int dpiCommon = UBApplication::displayManager->logicalDpi(UBDisplayManager::DisplayRole::Control);
         newRenderer->setDPI(dpiCommon);
 
         return newRenderer;
