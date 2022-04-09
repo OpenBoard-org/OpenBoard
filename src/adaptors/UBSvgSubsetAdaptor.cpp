@@ -73,6 +73,7 @@
 #include "core/UBSetting.h"
 #include "core/UBPersistenceManager.h"
 #include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 #include "core/UBTextTools.h"
 
 #include "pdf/PDFRenderer.h"
@@ -443,7 +444,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                     proxy->setPageDpi(pageDpi.toInt());
 
                 else if (proxy->pageDpi() == 0) {
-                    proxy->setPageDpi((UBApplication::desktop()->physicalDpiX() + UBApplication::desktop()->physicalDpiY())/2);
+                    proxy->setPageDpi(UBApplication::displayManager->logicalDpi(UBDisplayManager::DisplayRole::Control));
                     //pageDpiSpecified = false;
                 }
 
@@ -836,9 +837,8 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                     UBGraphicsPDFItem* pdfItem = pdfItemFromPDF();
                     if (pdfItem)
                     {
-                        QDesktopWidget* desktop = UBApplication::desktop();
-                        qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
-                        // qDebug() << "currentDpi (" << desktop->physicalDpiX() << " + " << desktop->physicalDpiY() << ")/2 = " << currentDpi;
+                        qreal currentDpi = UBApplication::displayManager->logicalDpi(UBDisplayManager::DisplayRole::Control);
+                        // qDebug() << "currentDpi = " << currentDpi;
                         qreal pdfScale = qreal(proxy->pageDpi())/currentDpi;
                         // qDebug() << "pdfScale " << pdfScale;
 
@@ -910,8 +910,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
 
                     if (textDelegate)
                     {
-                        //QDesktopWidget* desktop = UBApplication::desktop();
-                        //qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
+                        //qreal currentDpi = UBApplication::displayManager->logicalDpi(UBDisplayManager::DisplayRole::Control);
                         //qreal textSizeMultiplier = qreal(proxy->pageDpi())/currentDpi;
                         //textDelegate->scaleTextSize(textSizeMultiplier);
                     }
@@ -1163,10 +1162,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement(UBDocumentProxy* pro
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "intermediate-lines", QString::number(intermediateLines));
     }
 
-    QDesktopWidget* desktop = UBApplication::desktop();
-
     if (proxy->pageDpi() == 0)
-        proxy->setPageDpi((desktop->physicalDpiX() + desktop->physicalDpiY()) / 2);
+        proxy->setPageDpi(UBApplication::displayManager->logicalDpi(UBDisplayManager::DisplayRole::Control));
 
     mXmlWriter.writeAttribute("pageDpi", QString::number(proxy->pageDpi()));
 
