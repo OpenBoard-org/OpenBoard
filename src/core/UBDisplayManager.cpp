@@ -331,13 +331,13 @@ QSize UBDisplayManager::availableScreenSize(UBDisplayManager::DisplayRole role) 
 qreal UBDisplayManager::physicalDpi(UBDisplayManager::DisplayRole role) const
 {
     QScreen* screen = mScreensByRole.value(role, nullptr);
-    return screen ? screen->physicalDotsPerInch() : 0;
+    return screen ? screen->physicalDotsPerInch() : 96.;
 }
 
 qreal UBDisplayManager::logicalDpi(UBDisplayManager::DisplayRole role) const
 {
     QScreen* screen = mScreensByRole.value(role, nullptr);
-    return screen ? screen->logicalDotsPerInch() : 0;
+    return screen ? screen->logicalDotsPerInch() : 96.;
 }
 
 QRect UBDisplayManager::controlGeometry()
