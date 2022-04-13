@@ -590,7 +590,7 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::parseTextAttributes(const QDomElemen
     //since svg font size is given in pixels, divide it by pixels per line
     QString fontSz = element.attribute(aFontSize);
     if (!fontSz.isNull())
-        fontSize = fontSz.toDouble() * 72. / UBApplication::displayManager->logicalDpi(UBDisplayManager::DisplayRole::Control);
+        fontSize = fontSz.toDouble() * 72. / UBApplication::displayManager->logicalDpi(DisplayRole::Control);
 
     QString fontColorText = element.attribute(aFill);
     if (!fontColorText.isNull()) fontColor = colorFromString(fontColorText);
@@ -1492,7 +1492,7 @@ QSvgGenerator* UBCFFSubsetAdaptor::UBCFFSubsetReader::createSvgGenerator(qreal w
     QSvgGenerator* generator = new QSvgGenerator();
 //    qWarning() << QString("Making generator with file %1, size (%2, %3) and viewbox (%4 %5 %6 %7)").arg(mTempFilePath)
 //        .arg(width).arg(height).arg(0.0).arg(0.0).arg(width).arg(width);
-    generator->setResolution(UBApplication::displayManager->logicalDpi(UBDisplayManager::DisplayRole::Control));
+    generator->setResolution(UBApplication::displayManager->logicalDpi(DisplayRole::Control));
     generator->setFileName(mTempFilePath);
     generator->setSize(QSize(width, height));
     generator->setViewBox(QRectF(0, 0, width, height));

@@ -173,11 +173,11 @@ void UBBoardController::initBackgroundGridSize()
     // to document size. Here we approximate this ratio as (document resolution) / (screen resolution).
     // Later on, this is calculated by `updateSystemScaleFactor` and stored in `mSystemScaleFactor`.
 
-    qreal dpi = UBApplication::displayManager->logicalDpi(UBDisplayManager::DisplayRole::Control);
+    qreal dpi = UBApplication::displayManager->logicalDpi(DisplayRole::Control);
 
     //qDebug() << "dpi: " << dpi;
 
-    qreal screenY = UBApplication::displayManager->screenSize(UBDisplayManager::DisplayRole::Control).height();
+    qreal screenY = UBApplication::displayManager->screenSize(DisplayRole::Control).height();
     qreal documentY = mActiveScene->nominalSize().height();
     qreal resolutionRatio = documentY / screenY;
 

@@ -322,19 +322,19 @@ QSize UBDisplayManager::screenSize(DisplayRole role) const
     return screen ? screen->size() : QSize();
 }
 
-QSize UBDisplayManager::availableScreenSize(UBDisplayManager::DisplayRole role) const
+QSize UBDisplayManager::availableScreenSize(DisplayRole role) const
 {
     QScreen* screen = mScreensByRole.value(role, nullptr);
     return screen ? screen->availableSize() : QSize();
 }
 
-qreal UBDisplayManager::physicalDpi(UBDisplayManager::DisplayRole role) const
+qreal UBDisplayManager::physicalDpi(DisplayRole role) const
 {
     QScreen* screen = mScreensByRole.value(role, nullptr);
     return screen ? screen->physicalDotsPerInch() : 96.;
 }
 
-qreal UBDisplayManager::logicalDpi(UBDisplayManager::DisplayRole role) const
+qreal UBDisplayManager::logicalDpi(DisplayRole role) const
 {
     QScreen* screen = mScreensByRole.value(role, nullptr);
     return screen ? screen->logicalDotsPerInch() : 96.;
