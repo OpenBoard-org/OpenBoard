@@ -85,8 +85,8 @@ UBPreferencesController::UBPreferencesController(QWidget *parent)
     mPreferencesWindow = new UBPreferencesDialog(this,parent, Qt::Dialog);
     mPreferencesUI = new Ui::preferencesDialog();  // deleted in
     mPreferencesUI->setupUi(mPreferencesWindow);
-    adjustScreens(1);
-    connect(mDesktop, &QDesktopWidget::screenCountChanged, this, &UBPreferencesController::adjustScreens);
+    adjustScreens();
+    connect(mDesktop, &QGuiApplication::screenAdded, this, &UBPreferencesController::adjustScreens);
 
     wire();
 }
@@ -103,9 +103,8 @@ UBPreferencesController::~UBPreferencesController()
     delete mMarkerProperties;
 }
 
-void UBPreferencesController::adjustScreens(int screen)
+void UBPreferencesController::adjustScreens()
 {
-    Q_UNUSED(screen);
     UBDisplayManager displayManager;
     mPreferencesUI->multiDisplayGroupBox->setEnabled(displayManager.numScreens() > 1);
 }

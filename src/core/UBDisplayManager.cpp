@@ -301,7 +301,8 @@ void UBDisplayManager::setRoleToScreen(DisplayRole role, int screenIndex)
 
 void UBDisplayManager::addOrRemoveScreen(QScreen *screen)
 {
-
+    Q_UNUSED(screen);
+    reinitScreens(false);
 }
 
 
