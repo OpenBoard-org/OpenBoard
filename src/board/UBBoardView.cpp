@@ -1538,7 +1538,7 @@ void UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
     }
 
     QList<QGraphicsItem *> selItemsList = scene()->selectedItems();
-    // if NO have selected items, than no need process mouse wheel. just exist
+    // if items selected, then forward mouse wheel event to item
     if( selItemsList.count() > 0 )
     {
         // only one selected item possible, so we will work with first item only
@@ -1551,12 +1551,22 @@ void UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
         bool isSelectedAndMouseHower = itemsList.contains(selItem);
         if(isSelectedAndMouseHower)
         {
+            QTransform previousTransform = viewportTransform();
             QGraphicsView::wheelEvent(wheelEvent);
-            wheelEvent->accept();
-        }
 
+            if (previousTransform != viewportTransform())
+            {
+                // processing the event changed the transformation
+                UBApplication::applicationController->adjustDisplayView();
+            }
+
+            return;
+        }
     }
 
+    // event not handled, send it to QAbstractScrollArea to scroll with wheel event
+    QAbstractScrollArea::wheelEvent(wheelEvent);
+    UBApplication::applicationController->adjustDisplayView();
 }
 
 void UBBoardView::leaveEvent (QEvent * event)
