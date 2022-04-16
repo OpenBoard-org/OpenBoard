@@ -1,4 +1,4 @@
-#!/bin/bash
+:#!/bin/bash
 # --------------------------------------------------------------------
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,11 +19,11 @@ PROJECT_ROOT="$SCRIPT_PATH/../.."
 
 
 APPLICATION_NAME="OpenBoard"
-BASE_QT_DIR=~/qt/5.5/clang_64
+BASE_QT_DIR=~/Qt/5.15.0/clang_64
 # Executables
 QMAKE=$BASE_QT_DIR/bin/qmake
 MACDEPLOYQT=$BASE_QT_DIR/bin/macdeployqt
-DMGUTIL="$PROJECT_ROOT/../OpenBoard-ThirdParty/refnum/dmgutil/dmgutil.pl"
+DMGUTIL="$PROJECT_ROOT/release_scripts/osx/refnum/dmgutil/dmgutil.pl"
 DSYMUTIL=/usr/bin/dsymutil
 STRIP=/usr/bin/strip
 PLISTBUDDY=/usr/libexec/PlistBuddy
@@ -201,30 +201,30 @@ $MACDEPLOYQT "`pwd`/$APPLICATION_NAME.app"
 cd -
 
 # make sure libs installed via homebrew 2.0 refer to in-app libs
-# notify "relinking libs ..."
+ notify "relinking libs ..."
 # libavformat
-# install_name_tool "$APP/Contents/Frameworks/libavformat.58.dylib" -change /usr/local/Cellar/ffmpeg/4.1.4_2/lib/libavcodec.58.dylib @executable_path/../Frameworks/libavcodec.58.dylib
-# install_name_tool "$APP/Contents/Frameworks/libavformat.58.dylib" -change /usr/local/Cellar/ffmpeg/4.1.4_2/lib/libswresample.3.dylib @executable_path/../Frameworks/libswresample.3.dylib
-# install_name_tool "$APP/Contents/Frameworks/libavformat.58.dylib" -change /usr/local/Cellar/ffmpeg/4.1.4_2/lib/libavutil.56.dylib @executable_path/../Frameworks/libavutil.56.dylib
+install_name_tool "$APP/Contents/Frameworks/libavformat.58.dylib" -change /usr/local/Cellar/ffmpeg/4.3.1_1/lib/libavcodec.58.dylib @executable_path/../Frameworks/libavcodec.58.dylib
+install_name_tool "$APP/Contents/Frameworks/libavformat.58.dylib" -change /usr/local/Cellar/ffmpeg/4.3.1_1/lib/libswresample.3.dylib @executable_path/../Frameworks/libswresample.3.dylib
+install_name_tool "$APP/Contents/Frameworks/libavformat.58.dylib" -change /usr/local/Cellar/ffmpeg/4.3.1_1/lib/libavutil.56.dylib @executable_path/../Frameworks/libavutil.56.dylib
 
 # libavcodec
-# install_name_tool "$APP/Contents/Frameworks/libavcodec.58.dylib" -change /usr/local/Cellar/ffmpeg/4.1.4_2/lib/libswresample.3.dylib  @executable_path/../Frameworks/libswresample.3.dylib
-# install_name_tool "$APP/Contents/Frameworks/libavcodec.58.dylib" -change /usr/local/Cellar/ffmpeg/4.1.4_2/lib/libavutil.56.dylib @executable_path/../Frameworks/libavutil.56.dylib
+install_name_tool "$APP/Contents/Frameworks/libavcodec.58.dylib" -change /usr/local/Cellar/ffmpeg/4.3.1_1/lib/libswresample.3.dylib  @executable_path/../Frameworks/libswresample.3.dylib
+install_name_tool "$APP/Contents/Frameworks/libavcodec.58.dylib" -change /usr/local/Cellar/ffmpeg/4.3.1_1/lib/libavutil.56.dylib @executable_path/../Frameworks/libavutil.56.dylib
 
 #libswresample
-# install_name_tool "$APP/Contents/Frameworks/libswresample.3.dylib" -change /usr/local/Cellar/ffmpeg/4.1.4_2/lib/libavutil.56.dylib @executable_path/../Frameworks/libavutil.56.dylib
+install_name_tool "$APP/Contents/Frameworks/libswresample.3.dylib" -change /usr/local/Cellar/ffmpeg/4.3.1_1/lib/libavutil.56.dylib @executable_path/../Frameworks/libavutil.56.dylib
 
 #libswscale
-# install_name_tool "$APP/Contents/Frameworks/libswscale.5.dylib" -change /usr/local/Cellar/ffmpeg/4.1.4_2/lib/libavutil.56.dylib @executable_path/../Frameworks/libavutil.56.dylib
+install_name_tool "$APP/Contents/Frameworks/libswscale.5.dylib" -change /usr/local/Cellar/ffmpeg/4.3.1_1/lib/libavutil.56.dylib @executable_path/../Frameworks/libavutil.56.dylib
 
 # libhogweed
-# install_name_tool "$APP/Contents/Frameworks/libhogweed.4.dylib" -change /usr/local/Cellar/nettle/3.4.1/lib/libnettle.6.dylib @executable_path/../Frameworks/libnettle.6.dylib
+install_name_tool "$APP/Contents/Frameworks/libhogweed.6.dylib" -change /usr/local/Cellar/nettle/3.6/lib/libnettle.8.dylib @executable_path/../Frameworks/libnettle.8.dylib
 
 # libssl
-# install_name_tool "$APP/Contents/Frameworks/libssl.1.1.dylib" -change /usr/local/Cellar/openssl@1.1/1.1.1d/lib/libcrypto.1.1.dylib @executable_path/../Frameworks/libcrypto.1.1.dylib
+install_name_tool "$APP/Contents/Frameworks/libssl.1.1.dylib" -change /usr/local/Cellar/openssl@1.1/1.1.1h/lib/libcrypto.1.1.dylib @executable_path/../Frameworks/libcrypto.1.1.dylib
 
 # libvorbis
-# install_name_tool "$APP/Contents/Frameworks/libvorbisenc.2.dylib" -change /usr/local/Cellar/libvorbis/1.3.6/lib/libvorbis.0.dylib @executable_path/../Frameworks/libvorbis.0.dylib
+install_name_tool "$APP/Contents/Frameworks/libvorbisenc.2.dylib" -change /usr/local/Cellar/libvorbis/1.3.6/lib/libvorbis.0.dylib @executable_path/../Frameworks/libvorbis.0.dylib
 
 notify "Extracting debug information ..."
 $DSYMUTIL "$APP/Contents/MacOS/$APPLICATION_NAME" -o "$DSYM"

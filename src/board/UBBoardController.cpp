@@ -30,7 +30,6 @@
 #include "UBBoardController.h"
 
 #include <QtWidgets>
-#include <QtWebKitWidgets>
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBPlatformUtils.h"
@@ -313,17 +312,21 @@ void UBBoardController::setupToolbar()
 
     UBToolbarButtonGroup *colorChoice =
             new UBToolbarButtonGroup(mMainWindow->boardToolBar, colorActions);
+    colorChoice->setLabel(tr("Color"));
 
     mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, colorChoice);
 
     connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), colorChoice, SLOT(displayText(QVariant)));
     connect(colorChoice, SIGNAL(activated(int)), this, SLOT(setColorIndex(int)));
     connect(UBDrawingController::drawingController(), SIGNAL(colorIndexChanged(int)), colorChoice, SLOT(setCurrentIndex(int)));
+    connect(UBDrawingController::drawingController(), SIGNAL(colorIndexChanged(int)), UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()));
     connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), colorChoice, SLOT(colorPaletteChanged()));
     connect(UBDrawingController::drawingController(), SIGNAL(colorPaletteChanged()), this, SLOT(colorPaletteChanged()));
 
     colorChoice->displayText(QVariant(settings->appToolBarDisplayText->get().toBool()));
     colorChoice->colorPaletteChanged();
+    colorChoice->setCurrentIndex(settings->penColorIndex());
+    colorActions.at(settings->penColorIndex())->setChecked(true);
 
     // Setup line width choice widget
     QList<QAction *> lineWidthActions;
@@ -777,6 +780,7 @@ void UBBoardController::deleteScene(int nIndex)
         scIndexes << nIndex;
         deletePages(scIndexes);
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+        UBMetadataDcSubsetAdaptor::persist(selectedDocument());
 
         if (nIndex >= pageCount())
             nIndex = pageCount()-1;
@@ -1435,6 +1439,11 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         else if (sourceUrl.toString() == UBToolsManager::manager()->ruler.id)
         {
             mActiveScene->addRuler(pPos);
+            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+        }
+        else if (sourceUrl.toString() == UBToolsManager::manager()->axes.id)
+        {
+            mActiveScene->addAxes(pPos);
             UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
         }
         else if (sourceUrl.toString() == UBToolsManager::manager()->protractor.id)
@@ -2176,13 +2185,13 @@ void UBBoardController::grabScene(const QRectF& pSceneRect)
         painter.setRenderHint(QPainter::Antialiasing);
 
         mActiveScene->setRenderingContext(UBGraphicsScene::NonScreen);
-        mActiveScene->setRenderingQuality(UBItem::RenderingQualityHigh);
+        mActiveScene->setRenderingQuality(UBItem::RenderingQualityHigh, UBItem::CacheNotAllowed);
 
         mActiveScene->render(&painter, targetRect, pSceneRect);
 
         mActiveScene->setRenderingContext(UBGraphicsScene::Screen);
 //        mActiveScene->setRenderingQuality(UBItem::RenderingQualityNormal);
-        mActiveScene->setRenderingQuality(UBItem::RenderingQualityHigh);
+        mActiveScene->setRenderingQuality(UBItem::RenderingQualityHigh, UBItem::CacheAllowed);
 
 
         mPaletteManager->addItem(QPixmap::fromImage(image));

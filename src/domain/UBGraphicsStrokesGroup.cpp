@@ -35,7 +35,10 @@
 #include "core/memcheck.h"
 
 UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent)
-    :QGraphicsItemGroup(parent), UBGraphicsItem()
+    : QGraphicsItemGroup(parent)
+    , UBGraphicsItem()
+    , debugTextEnabled(false) // set to true to get a graphical display of strokes' Z-levels
+    , mDebugText(nullptr)
 {
     setDelegate(new UBGraphicsItemDelegate(this, 0, GF_COMMON
                                            | GF_RESPECT_RATIO
@@ -49,9 +52,6 @@ UBGraphicsStrokesGroup::UBGraphicsStrokesGroup(QGraphicsItem *parent)
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
-
-    mDebugText = NULL;
-    debugTextEnabled = false; // set to true to get a graphical display of strokes' Z-levels
 }
 
 UBGraphicsStrokesGroup::~UBGraphicsStrokesGroup()

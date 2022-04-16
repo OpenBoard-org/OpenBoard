@@ -1,8 +1,6 @@
 TARGET = "OpenBoard"
 TEMPLATE = app
 
-THIRD_PARTY_PATH=../OpenBoard-ThirdParty
-
 CONFIG += c++14
 CONFIG -= flat
 CONFIG += debug_and_release \
@@ -11,9 +9,9 @@ CONFIG += debug_and_release \
 
 VERSION_MAJ = 1
 VERSION_MIN = 6
-VERSION_PATCH = 0
-VERSION_TYPE = a # a = alpha, b = beta, rc = release candidate, r = release, other => error
-VERSION_BUILD = 1
+VERSION_PATCH = 1
+VERSION_TYPE = r # a = alpha, b = beta, rc = release candidate, r = release, other => error
+VERSION_BUILD = 0309
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$${VERSION_BUILD}"
 
@@ -35,7 +33,6 @@ QT += webkit
 QT += svg
 QT += network
 QT += xml
-QT += script
 QT += xmlpatterns
 QT += uitools
 QT += multimedia
@@ -46,7 +43,6 @@ QT += core
 
 INCLUDEPATH += src
 
-include($$THIRD_PARTY_PATH/libs.pri)
 include(src/adaptors/adaptors.pri)
 include(src/api/api.pri)
 include(src/board/board.pri)
@@ -70,11 +66,6 @@ include(src/pdf-merger/pdfMerger.pri)
 #plugins
 include(plugins/plugins.pri)
 INCLUDEPATH += plugins/cffadaptor/src
-
-#ThirdParty
-DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
-INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
-include($$THIRD_PARTY_PATH/quazip/quazip.pri)
 
 FORMS += resources/forms/mainWindow.ui \
    resources/forms/preferences.ui \
@@ -123,11 +114,22 @@ win32 {
    LIBS += -lAdvApi32
    LIBS += -lOle32
 
+   THIRD_PARTY_PATH=../OpenBoard-ThirdParty
+   include($$THIRD_PARTY_PATH/libs.pri)
+
+   DEPENDPATH += $$THIRD_PARTY_PATH/quazip/
+   INCLUDEPATH += $$THIRD_PARTY_PATH/quazip/
+   include($$THIRD_PARTY_PATH/quazip/quazip.pri)
+
    RC_FILE = resources/win/OpenBoard.rc
    CONFIG += axcontainer
    exists(console):CONFIG += console
    QMAKE_CXXFLAGS += /MP
-   QMAKE_CXXFLAGS += /MD
+   CONFIG( debug, debug|release ) {
+      QMAKE_CXXFLAGS += /MDd
+   } else {
+      QMAKE_CXXFLAGS += /MD
+   }
    QMAKE_CXXFLAGS_RELEASE += /Od /Zi
    QMAKE_LFLAGS += /VERBOSE:LIB
    UB_LIBRARY.path = $$DESTDIR
@@ -158,6 +160,8 @@ win32 {
 }
 
 macx {
+   DEFINES += Q_WS_MACX
+
    LIBS += -framework Foundation
    LIBS += -framework Cocoa
    LIBS += -framework Carbon
@@ -166,11 +170,27 @@ macx {
    LIBS += -lcrypto
 
    LIBS += -L/usr/local/opt/openssl/lib
-   LIBS += -L/usr/local/opt/quazip/lib
+
+   # quazip depends on QT. Current is 5.14, so if you wish to build
+   # OB using a previous QT version, you have to build your own quazip,
+   # otherwise it won't link.
+   equals(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 14) {
+      LIBS += "-L../OpenBoard-ThirdParty/quazip/lib/macx" "-lquazip"
+   } else {
+       LIBS += -L/usr/local/opt/quazip/lib -lquazip
+   }
    LIBS += -L/usr/local/opt/ffmpeg/lib
    INCLUDEPATH += /usr/local/opt/openssl/include
    INCLUDEPATH += /usr/local/opt/ffmpeg/include
-   INCLUDEPATH += /usr/local/opt/quazip/include
+   equals(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 14) {
+       INCLUDEPATH += ../OpenBoard-ThirdParty/quazip/quazip-0.7.1
+   } else {
+       INCLUDEPATH += /usr/local/opt/quazip/include/quazip
+   }
+
+   LIBS        += -L/usr/local/opt/poppler/lib -lpoppler
+   INCLUDEPATH += /usr/local/opt/poppler/include
+   INCLUDEPATH += /usr/local/opt/poppler/include/poppler
 
    CONFIG(release, debug|release):CONFIG += x86_64
    CONFIG(debug, debug|release):CONFIG += x86_64

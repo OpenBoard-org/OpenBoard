@@ -60,7 +60,11 @@ QPixmap UBCustomCaptureWindow::getSelectedPixmap()
 {
     if (mSelectionBand)
     {
-        return mWholeScreenPixmap.copy(mSelectionBand->geometry());
+        QRect r = mSelectionBand->geometry();
+        return mWholeScreenPixmap.copy( r.x()       *mWholeScreenPixmap.devicePixelRatio(),
+                                        r.y()       *mWholeScreenPixmap.devicePixelRatio(),
+                                        r.width()   *mWholeScreenPixmap.devicePixelRatio(),
+                                        r.height()  *mWholeScreenPixmap.devicePixelRatio());
     }
     else
     {

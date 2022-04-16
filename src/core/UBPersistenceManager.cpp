@@ -186,7 +186,11 @@ void UBPersistenceManager::createDocumentProxiesStructure(const QFileInfoList &c
 
         if (metadatas.contains(UBSettings::documentPageCount))
         {
-            docProxy->setPageCount(metadatas.value(UBSettings::documentPageCount).toInt());
+            int pageCount = metadatas.value(UBSettings::documentPageCount).toInt();
+            if (pageCount == 0)
+                pageCount = sceneCount(docProxy);
+
+            docProxy->setPageCount(pageCount);
         }
         else
         {
@@ -223,7 +227,7 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
             return QDialog::Rejected;
         }
 
-        QStringList docList = mDocumentTreeStructureModel->nodeNameList(parentIndex);
+        QStringList docList = mDocumentTreeStructureModel->nodeNameList(parentIndex, true);
         QString docName = pProxy->metaData(UBSettings::documentName).toString();
 
         if (docList.contains(docName)) {
@@ -778,9 +782,9 @@ void UBPersistenceManager::duplicateDocumentScene(UBDocumentProxy* proxy, int in
     }
     scene->setModified(true);
 
-    persistDocumentScene(proxy,scene, index + 1);
-
     proxy->incPageCount();
+
+    persistDocumentScene(proxy,scene, index + 1);
 
     emit documentSceneCreated(proxy, index + 1);
 }
@@ -838,9 +842,9 @@ UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* pr
 
     newScene->setBackgroundGridSize(UBSettings::settings()->crossSize);
 
-    persistDocumentScene(proxy, newScene, index);
-
     proxy->incPageCount();
+
+    persistDocumentScene(proxy, newScene, index);
 
     emit documentSceneCreated(proxy, index);
 
@@ -863,11 +867,11 @@ void UBPersistenceManager::insertDocumentSceneAt(UBDocumentProxy* proxy, UBGraph
 
     mSceneCache.insert(proxy, index, scene);
 
+    proxy->incPageCount();
+
     if (persist) {
         persistDocumentScene(proxy, scene, index);
     }
-
-    proxy->incPageCount();
 
     emit documentSceneCreated(proxy, index);
 

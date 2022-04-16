@@ -34,9 +34,15 @@
 #include "UBCFFConstants.h"
 
 //THIRD_PARTY_WARNINGS_DISABLE
-#include "quazip.h"
-#include "quazipfile.h"
-#include "quazipfileinfo.h"
+#ifdef Q_OS_OSX
+    #include <quazip.h>
+    #include <quazipfile.h>
+    #include <quazipfileinfo.h>
+#else
+    #include "quazip.h"
+    #include "quazipfile.h"
+    #include "quazipfileinfo.h"
+#endif
 //THIRD_PARTY_WARNINGS_ENABLE
 
 UBCFFAdaptor::UBCFFAdaptor()

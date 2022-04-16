@@ -39,6 +39,7 @@
 #include "core/UBApplication.h"
 #include "UBDocumentNavigator.h"
 #include "board/UBBoardController.h"
+#include "board/UBBoardView.h"
 #include "adaptors/UBThumbnailAdaptor.h"
 #include "adaptors/UBSvgSubsetAdaptor.h"
 #include "document/UBDocumentController.h"
@@ -354,6 +355,119 @@ void UBDocumentNavigator::mouseReleaseEvent(QMouseEvent *event)
     mLongPressTimer.stop();
 }
 
+
+void UBDocumentNavigator::keyPressEvent(QKeyEvent *event)
+{
+    UBBoardController* controller = UBApplication::boardController;
+    // send to the scene anyway
+    QApplication::sendEvent (scene (), event);
+
+    if (!event->isAccepted ())
+    {
+        switch (event->key ())
+        {
+        case Qt::Key_Up:
+        case Qt::Key_PageUp:
+        case Qt::Key_Left:
+        {
+            controller->previousScene ();
+            break;
+        }
+
+        case Qt::Key_Down:
+        case Qt::Key_PageDown:
+        case Qt::Key_Right:
+        case Qt::Key_Space:
+        {
+            controller->nextScene ();
+            break;
+        }
+
+        case Qt::Key_Home:
+        {
+            controller->firstScene ();
+            break;
+        }
+        case Qt::Key_End:
+        {
+            controller->lastScene ();
+            break;
+        }
+        case Qt::Key_Insert:
+        {
+            controller->addScene ();
+            break;
+        }
+        case Qt::Key_Control:
+        case Qt::Key_Shift:
+        {
+            controller->controlView()->setMultiselection(true);
+        }break;
+        }
+
+
+        if (event->modifiers () & Qt::ControlModifier) // keep only ctrl/cmd keys
+        {
+            switch (event->key ())
+            {
+            case Qt::Key_Plus:
+            case Qt::Key_I:
+            {
+                controller->zoomIn ();
+                event->accept ();
+                break;
+            }
+            case Qt::Key_Minus:
+            case Qt::Key_O:
+            {
+                controller->zoomOut ();
+                event->accept ();
+                break;
+            }
+            case Qt::Key_0:
+            {
+                controller->zoomRestore ();
+                event->accept ();
+                break;
+            }
+            case Qt::Key_Left:
+            {
+                controller->handScroll (-100, 0);
+                event->accept ();
+                break;
+            }
+            case Qt::Key_Right:
+            {
+                controller->handScroll (100, 0);
+                event->accept ();
+                break;
+            }
+            case Qt::Key_Up:
+            {
+                controller->handScroll (0, -100);
+                event->accept ();
+                break;
+            }
+            case Qt::Key_Down:
+            {
+                controller->handScroll (0, 100);
+                event->accept ();
+                break;
+            }
+            default:
+            {
+                // NOOP
+            }
+            }
+        }
+    }
+
+    // if ctrl of shift was pressed combined with other keys - we need to disable multiple selection.
+    if (event->isAccepted())
+        controller->controlView()->setMultiselection(false);
+}
+
+
 void UBDocumentNavigator::longPressTimeout()
 {
     if (QApplication::mouseButtons() != Qt::NoButton)
@@ -418,29 +532,31 @@ void UBDocumentNavigator::dragMoveEvent(QDragMoveEvent *event)
                            item->pos().y() + item->boundingRect().height() * scale / 2);
 
         bool dropAbove = mapToScene(position.toPoint()).y() < itemCenter.y();
-        bool movingUp = mDropSource->sceneIndex() > item->sceneIndex();
-        qreal y = 0;
+        if (mDropSource)
+        {
+            bool movingUp = mDropSource->sceneIndex() > item->sceneIndex();
+            qreal y = 0;
 
-        if (movingUp)
-        {
-            if (dropAbove)
+            if (movingUp)
             {
-                y = item->pos().y() - UBSettings::thumbnailSpacing / 2;
-                if (mDropBar->y() != y)
-                    mDropBar->setRect(QRectF(item->pos().x(), y, mThumbnailWidth-verticalScrollBar()->width(), 3));
+                if (dropAbove)
+                {
+                    y = item->pos().y() - UBSettings::thumbnailSpacing / 2;
+                    if (mDropBar->y() != y)
+                        mDropBar->setRect(QRectF(item->pos().x(), y, mThumbnailWidth-verticalScrollBar()->width(), 3));
+                }
             }
-        }
-        else
-        {
-            if (!dropAbove)
+            else
             {
-                y = item->pos().y() + item->boundingRect().height() * scale + UBSettings::thumbnailSpacing / 2;
-                if (mDropBar->y() != y)
-                    mDropBar->setRect(QRectF(item->pos().x(), y, mThumbnailWidth-verticalScrollBar()->width(), 3));
+                if (!dropAbove)
+                {
+                    y = item->pos().y() + item->boundingRect().height() * scale + UBSettings::thumbnailSpacing / 2;
+                    if (mDropBar->y() != y)
+                        mDropBar->setRect(QRectF(item->pos().x(), y, mThumbnailWidth-verticalScrollBar()->width(), 3));
+                }
             }
         }
     }
-
     event->acceptProposedAction();
 }
 
@@ -448,8 +564,11 @@ void UBDocumentNavigator::dropEvent(QDropEvent *event)
 {
     Q_UNUSED(event);
 
-    if (mDropSource->sceneIndex() != mDropTarget->sceneIndex())
-        UBApplication::boardController->moveSceneToIndex(mDropSource->sceneIndex(), mDropTarget->sceneIndex());
+    if (mDropSource && mDropTarget)
+    {
+        if (mDropSource->sceneIndex() != mDropTarget->sceneIndex())
+            UBApplication::boardController->moveSceneToIndex(mDropSource->sceneIndex(), mDropTarget->sceneIndex());
+    }
 
     mDropSource = NULL;
     mDropTarget = NULL;

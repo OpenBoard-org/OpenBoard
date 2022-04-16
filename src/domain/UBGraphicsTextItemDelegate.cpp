@@ -356,7 +356,7 @@ void UBGraphicsTextItemDelegate::pickFont()
             delegated()->setTextCursor(curCursor);
 
             delegated()->setSelected(true);
-            delegated()->document()->adjustSize();
+            delegated()->setFocus();
             delegated()->contentsChanged();
         }
     }
@@ -384,6 +384,7 @@ void UBGraphicsTextItemDelegate::pickColor()
             format.setForeground(QBrush(selectedColor));
             curCursor.mergeCharFormat(format);
             delegated()->setTextCursor(curCursor);
+            saveTextCursorFormats();
 
             if (!curCursor.hasSelection() || (curCursor.selectedText().length() == delegated()->toPlainText().length()))
             {
@@ -392,7 +393,7 @@ void UBGraphicsTextItemDelegate::pickColor()
             }
 
             delegated()->setSelected(true);
-            delegated()->document()->adjustSize();
+            delegated()->setFocus();
             delegated()->contentsChanged();
         }
     }
@@ -543,7 +544,7 @@ bool UBGraphicsTextItemDelegate::mouseReleaseEvent(QGraphicsSceneMouseEvent *eve
     mSelectionData.mButtonIsPressed = false;
     qDebug() << "Reporting selection of the cursor (mouse release)" << delegated()->textCursor().selection().isEmpty();
     qDebug() << QString("Anchor: %1\nposition: %2 (mouse mouse release)").arg(delegated()->textCursor().anchor()).arg(delegated()->textCursor().position());
-    updateAlighButtonState();
+    updateAlignButtonState();
 
     if (!UBGraphicsItemDelegate::mouseReleaseEvent(event)) {
         return false;
@@ -564,14 +565,10 @@ bool UBGraphicsTextItemDelegate::keyReleaseEvent(QKeyEvent *event)
         return true;
     }
 
-    switch (event->key()) {
-    case Qt::Key_Left:
-    case Qt::Key_Right:
-    case Qt::Key_Up:
-    case Qt::Key_Down:
-        updateAlighButtonState();
-        break;
-    }
+    // to be sure the save/restore TextCursorFormats mechanism is always up-to-date
+    // and because if some text is selected, almost any typed key can clear the selection before
+    // keyReleaseEvent is called, it's safer to call updateAlignButtonState everytime a key is released
+    updateAlignButtonState();
 
     qDebug() << "Key has been released" << QString::number(event->key(), 16);
     return true;
@@ -685,6 +682,7 @@ void UBGraphicsTextItemDelegate::ChangeTextSize(qreal factor, textChangeMode cha
     cursor.setPosition (cursorPos, QTextCursor::KeepAnchor);
 
     delegated()->setTextCursor(cursor);
+    saveTextCursorFormats();
 }
 
 void UBGraphicsTextItemDelegate::recolor()
@@ -774,9 +772,10 @@ void UBGraphicsTextItemDelegate::recolor()
     cursor.setPosition (cursorPos, QTextCursor::KeepAnchor);
 
     delegated()->setTextCursor(cursor);
+    saveTextCursorFormats();
 }
 
-void UBGraphicsTextItemDelegate::updateAlighButtonState()
+void UBGraphicsTextItemDelegate::updateAlignButtonState()
 {
     if (!mAlignButton) {
         return;
@@ -844,7 +843,10 @@ void UBGraphicsTextItemDelegate::restoreTextCursorFormats()
 
     QTextCursor tcrsr = delegated()->textCursor();
     tcrsr.setPosition(mSelectionData.position);
-    tcrsr.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor, steps);
+    if (mSelectionData.position >= mSelectionData.anchor)
+        tcrsr.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor, steps);
+    else
+        tcrsr.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, steps);
     delegated()->setTextCursor(tcrsr);
 }
 
@@ -864,6 +866,7 @@ QVariant UBGraphicsTextItemDelegate::itemChange(QGraphicsItem::GraphicsItemChang
             {
                 c.clearSelection();
                 delegated()->setTextCursor(c);
+                saveTextCursorFormats();
             }
         }
     }

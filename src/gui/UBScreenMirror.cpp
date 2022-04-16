@@ -71,7 +71,7 @@ void UBScreenMirror::paintEvent(QPaintEvent *event)
         int x = (width() - mLastPixmap.width()) / 2;
         int y = (height() - mLastPixmap.height()) / 2;
 
-        painter.drawPixmap(x, y, mLastPixmap);
+        painter.drawPixmap(x, y, width(), height(), mLastPixmap);
     }
 }
 

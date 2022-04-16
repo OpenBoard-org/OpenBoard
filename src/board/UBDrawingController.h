@@ -66,7 +66,7 @@ class UBDrawingController : public QObject
 
         UBAbstractDrawRuler* mActiveRuler;
 
-        void setInDestopMode(bool mode){
+        void setInDesktopMode(bool mode){
             mIsDesktopMode = mode;
         }
 
@@ -82,7 +82,7 @@ class UBDrawingController : public QObject
         void setEraserWidthIndex(int index);
 
     signals:
-        void stylusToolChanged(int tool);
+        void stylusToolChanged(int tool, int previousTool = -1);
         void colorPaletteChanged();
 
         void lineWidthIndexChanged(int index);

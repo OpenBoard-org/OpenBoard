@@ -32,7 +32,6 @@
 
 #include <QMainWindow>
 #include <QWidget>
-#include <QtWebKitWidgets/QWebView>
 #include <QMessageBox>
 #include "UBDownloadWidget.h"
 

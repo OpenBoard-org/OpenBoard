@@ -1,93 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-	<dict>
-		<key>CFBundleDocumentTypes</key>
-		<array>
-			<dict>
-				<key>CFBundleTypeIconFile</key>
-				<string>ubz.icns</string>
-				<key>CFBundleTypeName</key>
+<dict>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeIconFile</key>
+			<string>ubz.icns</string>
+			<key>CFBundleTypeName</key>
+			<string>org.oe-f.OpenBoard.document</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
 				<string>org.oe-f.OpenBoard.document</string>
-				<key>CFBundleTypeRole</key>
-				<string>Editor</string>
-				<key>LSHandlerRank</key>
-				<string>Owner</string>
-				<key>LSItemContentTypes</key>
-				<array>
-					<string>org.oe-f.OpenBoard.document</string>
-				</array>
-			</dict>
-			<dict>
-				<key>CFBundleTypeName</key>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>com.adobe.pdf</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
 				<string>com.adobe.pdf</string>
-				<key>CFBundleTypeRole</key>
-				<string>Viewer</string>
-				<key>LSHandlerRank</key>
-				<string>Alternate</string>
-				<key>LSItemContentTypes</key>
-				<array>
-					<string>com.adobe.pdf</string>
-				</array>
-			</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>PowerPoint document</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.microsoft.powerpoint.ppt</string>
+				<string>com.microsoft.powerpoint.openxml.presentation</string>
+				<string>com.microsoft.powerpoint.openxml.presentation.macro-enabled</string>
+				<string>com.microsoft.powerpoint.pps</string>
+				<string>com.microsoft.powerpoint.openxml.slideshow</string>
+				<string>com.microsoft.powerpoint.openxml.slideshow.macro-enabled</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleExecutable</key>
+	<string>OpenBoard</string>
+	<key>CFBundleGetInfoString</key>
+	<string>OpenBoard @SHORT_VERSION@</string>
+	<key>CFBundleIconFile</key>
+	<string>OpenBoard.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>org.oe-f.OpenBoard</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>5.0.0 (rDEVELOPMENT)</string>
+	<key>CFBundleSignature</key>
+	<string>OpenB</string>
+	<key>CFBundleVersion</key>
+	<string>0</string>
+	<key>SUPublicDSAKeyFile</key>
+	<string>sparkle_public_key.pem</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Accès au microphone requis</string>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeIdentifier</key>
+			<string>org.oe-f.OpenBoard.document</string>
+			<key>UTTypeDescription</key>
+			<string>OpenBoard document</string>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.presentation</string>
+				<string>public.zip-archive</string>
+			</array>
+			<key>UTTypeTagSpecification</key>
 			<dict>
-				<key>CFBundleTypeName</key>
-				<string>PowerPoint document</string>
-				<key>CFBundleTypeRole</key>
-				<string>Viewer</string>
-				<key>LSHandlerRank</key>
-				<string>Alternate</string>
-				<key>LSItemContentTypes</key>
+				<key>com.apple.ostype</key>
+				<string>UBdz</string>
+				<key>public.filename-extension</key>
 				<array>
-					<string>com.microsoft.powerpoint.ppt</string>
-					<string>com.microsoft.powerpoint.openxml.presentation</string>
-					<string>com.microsoft.powerpoint.openxml.presentation.macro-enabled</string>
-					<string>com.microsoft.powerpoint.pps</string>
-					<string>com.microsoft.powerpoint.openxml.slideshow</string>
-					<string>com.microsoft.powerpoint.openxml.slideshow.macro-enabled</string>
+					<string>ubz</string>
 				</array>
 			</dict>
-		</array>
-		<key>CFBundleExecutable</key>
-		<string>OpenBoard</string>
-		<key>CFBundleGetInfoString</key>
-		<string>OpenBoard @SHORT_VERSION@</string>
-		<key>CFBundleIconFile</key>
-		<string>OpenBoard.icns</string>
-		<key>CFBundleIdentifier</key>
-		<string>org.oe-f.OpenBoard</string>
-		<key>CFBundlePackageType</key>
-		<string>APPL</string>
-		<key>CFBundleShortVersionString</key>
-		<string>5.0.0 (rDEVELOPMENT)</string>
-		<key>CFBundleSignature</key>
-		<string>OpenB</string>
-		<key>CFBundleVersion</key>
-		<string>0</string>
-		<key>SUPublicDSAKeyFile</key>
-		<string>sparkle_public_key.pem</string>
-		<key>UTExportedTypeDeclarations</key>
-		<array>
-			<dict>
-				<key>UTTypeIdentifier</key>
-				<string>org.oe-f.OpenBoard.document</string>
-				<key>UTTypeDescription</key>
-				<string>OpenBoard document</string>
-				<key>UTTypeConformsTo</key>
-				<array>
-					<string>public.presentation</string>
-					<string>public.zip-archive</string>
-				</array>
-				<key>UTTypeTagSpecification</key>
-				<dict>
-					<key>com.apple.ostype</key>
-					<string>UBdz</string>
-					<key>public.filename-extension</key>
-					<array>
-						<string>ubz</string>
-					</array>
-				</dict>
-			</dict>
-		</array>
-	</dict>
+		</dict>
+	</array>
+</dict>
 </plist>

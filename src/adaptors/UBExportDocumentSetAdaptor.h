@@ -33,10 +33,8 @@
 #include "frameworks/UBFileSystemUtils.h"
 #include "globals/UBGlobals.h"
 
-THIRD_PARTY_WARNINGS_DISABLE
 #include "quazip.h"
 #include "quazipfile.h"
-THIRD_PARTY_WARNINGS_ENABLE
 
 class UBDocumentProxy;
 class UBDocumentTreeModel;

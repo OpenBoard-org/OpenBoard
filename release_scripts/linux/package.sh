@@ -88,7 +88,7 @@ initializeVariables()
   BUNDLE_QT=true
 
   # Qt installation path. This may vary across machines
-  QT_PATH="/home/dev/Qt/5.13.2/gcc_64"
+  QT_PATH="/home/dev/Qt/5.15.0/gcc_64"
   QT_PLUGINS_SOURCE_PATH="$QT_PATH/plugins"
   GUI_TRANSLATIONS_DIRECTORY_PATH="/usr/share/qt5/translations"
   QT_LIBRARY_SOURCE_PATH="$QT_PATH/lib"
@@ -225,8 +225,8 @@ if $BUNDLE_QT; then
     copyQtLibrary libQt5Positioning
     copyQtLibrary libQt5PrintSupport
     copyQtLibrary libQt5Qml
+    copyQtLibrary libQt5QmlModels
     copyQtLibrary libQt5Quick
-    copyQtLibrary libQt5Script
     copyQtLibrary libQt5Sensors
     copyQtLibrary libQt5Sql
     copyQtLibrary libQt5Svg
@@ -357,7 +357,9 @@ for ((i=0;i<${#tab[@]};i++)); do
     if [[ "${tab[$i]}" == *"libavcodec"* ]]; then
         depName="${tab[$i]::-2}"
         versionNumber="${tab[$i]: -2}"
-        echo -n "${depName}${versionNumber} (>= ${depdVer}) | ${depName}-extra${versionNumber} (>= ${depdVer})" >> "$CONTROL_FILE"
+        depdVer_part1=`echo ${depdVer} | awk -F'.' '{print $1}'`
+        depdVer_part2=`echo ${depdVer} | awk -F'.' '{print $2}'`
+        echo -n "${depName}${versionNumber} (>= ${depdVer_part1}.${depdVer_part2}) | ${depName}-extra${versionNumber} (>= ${depdVer_part1}.${depdVer_part2})" >> "$CONTROL_FILE"
     else
       echo -n "${tab[$i]} (>= ${depdVer})" >> "$CONTROL_FILE"
     fi
@@ -372,6 +374,7 @@ if $BUNDLE_QT; then
     echo -n ",  libxcb-xkb1" >> "$CONTROL_FILE"
     echo -n ",  libxcb-image0" >> "$CONTROL_FILE"
     echo -n ",  libxcb-render-util0" >> "$CONTROL_FILE"
+    echo -n ",  libxcb-xinerama0" >> "$CONTROL_FILE"
 else
     echo -n ",  libqt5multimedia5-plugins" >> "$CONTROL_FILE"
 fi

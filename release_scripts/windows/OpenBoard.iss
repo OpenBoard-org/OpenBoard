@@ -14,6 +14,7 @@ AppVersion={#ApplicationVersion}
 AppVerName=OpenBoard {#ApplicationVersion}
 UninstallDisplayName=OpenBoard {#ApplicationVersion}
 AppPublisher=Open Education Foundation
+ArchitecturesInstallIn64BitMode=x64
 
 AppPublisherURL=http://www.oe-f.org
 AppSupportURL=http://www.openboard.org
@@ -55,12 +56,14 @@ Type: files ; Name: "{app}\*.dll"
 #define QtDir GetEnv('QT_DIR')
 
 [Files]
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\vcredist_x86.exe"; DestDir:"{tmp}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\vcredist_2013.x64.exe"; DestDir:"{tmp}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\vcredist_2015_2019.x64.exe"; DestDir:"{tmp}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\LAVFilters-0.74.1-Installer.exe"; DestDir:"{tmp}"
 Source: "{#ProjectRoot}\build\win32\release\product\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ;OpenSSL
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.1.0-win64\bin\libssl-1_1-x64.dll"; DestDir:"{app}"; Flags: ignoreversion
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.1.0-win64\bin\libcrypto-1_1-x64.dll"; DestDir:"{app}"; Flags: ignoreversion
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.1.1j-win64\bin\libssl-1_1-x64.dll"; DestDir:"{app}"; Flags: ignoreversion
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.1.1j-win64\bin\libcrypto-1_1-x64.dll"; DestDir:"{app}"; Flags: ignoreversion
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\win32\libeay32.dll"; DestDir:"{app}"; Flags: ignoreversion
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\win32\ssleay32.dll"; DestDir:"{app}"; Flags: ignoreversion
 
@@ -74,7 +77,6 @@ Source: "{#QtLibs}\Qt5Network.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Opengl.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5PrintSupport.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Qml.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5Script.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Sql.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Svg.dll"; DestDir: "{app}"   
 ;Source: "Qt5V8.dll"; DestDir: "{app}"
@@ -86,18 +88,18 @@ Source: "{#QtLibs}\libGLESv2.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Quick.dll"; DestDir: "{app}"  
 Source: "{#QtLibs}\Qt5Positioning.dll"; DestDir: "{app}"  
 Source: "{#QtLibs}\Qt5Sensors.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\icuuc65.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\icuin65.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\icudt65.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\libxslt.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\libxml2.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5QmlModels.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5WebChannel.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\libEGL.dll"; DestDir: "{app}"  
 ;Source: "/etc/freezedWidgetWrapper.html"; DestDir: "{app}"  
 ;Source: "*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\zlib\zlib-1.2.11\bin\zlib.dll"; DestDir:"{app}"; Flags: ignoreversion
-
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\qtwebkit\bin\icudt64.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\qtwebkit\bin\icuin64.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\qtwebkit\bin\icuuc64.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\qtwebkit\bin\libxml2.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\qtwebkit\bin\libxslt.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\zlib\1.2.11\bin\zlib.dll"; DestDir:"{app}"; Flags: ignoreversion
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
@@ -106,16 +108,6 @@ Source: "{#QtDir}\plugins\platforms\qminimal.dll"; DestDir: "{app}\platforms"; F
 Source: "{#QtDir}\plugins\platforms\qoffscreen.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
 Source: "{#QtDir}\plugins\platforms\qwindows.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
 
-
-;ffmpeg
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\avcodec-58.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\avdevice-58.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\avfilter-7.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\avformat-58.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\avutil-56.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\postproc-55.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\swresample-3.dll"; DestDir: "{app}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\ffmpeg\bin\swscale-5.dll"; DestDir: "{app}"
 
 ;Qt images formats plugins
 Source: "{#QtDir}\plugins\imageformats\qgif.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
@@ -175,7 +167,9 @@ Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Righ
 Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Rights\DragDrop\{{E63D17F8-D9DA-479D-B9B5-0D101A03703B}"; ValueType: string; ValueName: "AppPath"; ValueData: "{app}"; Flags: uninsdeletevalue; Check: isProcessorX64
 
 [Run]
-Filename: "{tmp}\vcredist_x86.exe";WorkingDir:"{tmp}"; Parameters: "/q /norestart"; StatusMsg: Installing CRT...
+Filename: "{tmp}\vcredist_2013.x64.exe";WorkingDir:"{tmp}"; Parameters: "/PASSIVE /VERYSILENT /SUPPRESSMSGBOXES /NORESTART"; StatusMsg: Installing CRT 2013...
+Filename: "{tmp}\vcredist_2015_2019.x64.exe";WorkingDir:"{tmp}"; Parameters: "/PASSIVE /VERYSILENT /SUPPRESSMSGBOXES /NORESTART"; StatusMsg: Installing CRT 2015-2019 ...
+Filename: "{tmp}\LAVFilters-0.74.1-Installer.exe";WorkingDir:"{tmp}"; Parameters: "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART"; StatusMsg: Installing LAV Filters ...
 Filename: "{app}\OpenBoard.exe"; Description: "{cm:LaunchProgram,OpenBoard}"; Flags: nowait postinstall skipifsilent 
 
 [UninstallDelete]

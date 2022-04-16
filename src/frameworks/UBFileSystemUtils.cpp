@@ -36,7 +36,11 @@
 #include "globals/UBGlobals.h"
 
 THIRD_PARTY_WARNINGS_DISABLE
-#include "quazipfile.h"
+#ifdef Q_OS_OSX
+    #include <quazipfile.h>
+#else
+    #include "quazipfile.h"
+#endif
 #include <openssl/md5.h>
 THIRD_PARTY_WARNINGS_ENABLE
 
@@ -117,7 +121,7 @@ bool UBFileSystemUtils::copyFile(const QString &source, const QString &destinati
 bool UBFileSystemUtils::copy(const QString &source, const QString &destination, bool overwrite)
 {
     if (QFileInfo(source).isDir()) {
-        return copyDir(source, destination);
+        return copyDir(source, destination, overwrite);
     } else {
         return copyFile(source, destination, overwrite);
     }
@@ -276,7 +280,7 @@ bool UBFileSystemUtils::deleteDir(const QString& pDirPath)
 }
 
 
-bool UBFileSystemUtils::copyDir(const QString& pSourceDirPath, const QString& pTargetDirPath)
+bool UBFileSystemUtils::copyDir(const QString& pSourceDirPath, const QString& pTargetDirPath, bool overwite)
 {
     if (pSourceDirPath == "" || pSourceDirPath == "." || pSourceDirPath == "..")
         return false;
@@ -300,8 +304,7 @@ bool UBFileSystemUtils::copyDir(const QString& pSourceDirPath, const QString& pT
             }
             else
             {
-                QFile f(pSourceDirPath + "/" + dirContent.fileName());
-                successSoFar = f.copy(pTargetDirPath + "/" + dirContent.fileName());
+                successSoFar = copyFile(pSourceDirPath + "/" + dirContent.fileName(), pTargetDirPath + "/" + dirContent.fileName(), overwite);
             }
         }
         else

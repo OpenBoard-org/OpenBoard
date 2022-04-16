@@ -274,37 +274,43 @@ UBGraphicsItemDelegate::~UBGraphicsItemDelegate()
 QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
     UBGraphicsScene *ubScene = castUBGraphicsScene();
-    switch (static_cast<int>(change)) {
-
-    case QGraphicsItem::ItemSelectedHasChanged : {
-        if (ubScene) {
-            if (value.toBool()) { //selected(true)
-                ubScene->setSelectedZLevel(delegated());
-            } else {
-                ubScene->setOwnZlevel(delegated());
-                freeControls();
-            }
-        }
-
-    } break;
-    case QGraphicsItem::ItemVisibleHasChanged :
+    switch (static_cast<int>(change))
     {
-        bool shownOnDisplay = mDelegated->data(UBGraphicsItemData::ItemLayerType).toInt() != UBItemLayerType::Control;
-        showHide(shownOnDisplay);
-        break;
-    }
-    case QGraphicsItem::ItemPositionHasChanged :
-    case QGraphicsItem::ItemTransformHasChanged :
-    case QGraphicsItem::ItemZValueHasChanged :
-        if (!controlsExist()) {
+        case QGraphicsItem::ItemSelectedHasChanged :
+        {
+            if (ubScene) {
+                if (value.toBool()) { //selected(true)
+                    ubScene->setSelectedZLevel(delegated());
+                } else {
+                    ubScene->setOwnZlevel(delegated());
+                    freeControls();
+                }
+            }
             break;
         }
-        mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
-        positionHandles();
-        if (ubScene) {
-            ubScene->setModified(true);
+        case QGraphicsItem::ItemVisibleHasChanged :
+        {
+            bool shownOnDisplay = mDelegated->data(UBGraphicsItemData::ItemLayerType).toInt() != UBItemLayerType::Control;
+            showHide(shownOnDisplay);
+            break;
         }
-        break;
+        case QGraphicsItem::ItemPositionHasChanged :
+        case QGraphicsItem::ItemTransformHasChanged :
+        case QGraphicsItem::ItemZValueHasChanged :
+        {
+            if (ubScene)
+            {
+                ubScene->setModified(true);
+            }
+
+            if (controlsExist())
+            {
+                mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
+                positionHandles();
+                break;
+            }
+            break;
+        }
     }
 
     return value;

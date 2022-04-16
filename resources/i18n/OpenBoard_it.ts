@@ -177,7 +177,7 @@
     </message>
     <message>
         <source>Smalle Eraser</source>
-        <translation>Gomma piccola</translation>
+        <translation type="vanished">Gomma piccola</translation>
     </message>
     <message>
         <source>Medium Eraser</source>
@@ -189,7 +189,7 @@
     </message>
     <message>
         <source>Color</source>
-        <translation>Colore</translation>
+        <translation type="vanished">Colore</translation>
     </message>
     <message>
         <source>Back</source>
@@ -811,6 +811,34 @@
         <source>Reset grid size</source>
         <translation>Ripristina la dimensione della griglia</translation>
     </message>
+    <message>
+        <source>Small Eraser</source>
+        <translation>Gomma piccola</translation>
+    </message>
+    <message>
+        <source>Color 1</source>
+        <translation>Colore 1</translation>
+    </message>
+    <message>
+        <source>Color 2</source>
+        <translation>Colore 2</translation>
+    </message>
+    <message>
+        <source>Color 3</source>
+        <translation>Colore 3</translation>
+    </message>
+    <message>
+        <source>Color 4</source>
+        <translation>Colore 4</translation>
+    </message>
+    <message>
+        <source>Color 5</source>
+        <translation>Colore 5</translation>
+    </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation>disegna linee di griglia intermedie</translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -913,6 +941,10 @@
         <source>Grid size</source>
         <translation>Dimensione della griglia</translation>
     </message>
+    <message>
+        <source>Draw intermediate grid lines</source>
+        <translation>disegna linee di griglia intermedie</translation>
+    </message>
 </context>
 <context>
     <name>UBBoardController</name>
@@ -971,6 +1003,10 @@
     <message>
         <source>Deleting page %1</source>
         <translation>eliminazione della pagina %1</translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation>Colore</translation>
     </message>
 </context>
 <context>
@@ -1637,7 +1673,7 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
     </message>
     <message>
         <source>Animations</source>
-        <translation>Animazioni</translation>
+        <translation type="vanished">Animazioni</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -2189,6 +2225,10 @@ Vuoi ignorare gli errori per questo host?</translation>
         <source>Cache</source>
         <translation>Cache</translation>
     </message>
+    <message>
+        <source>Axes</source>
+        <translation>Assi</translation>
+    </message>
 </context>
 <context>
     <name>UBTrapFlashController</name>
@@ -2549,6 +2589,13 @@ Si prega di riavviare l&apos;applicazione per accedere ai documenti aggiornati.<
     </message>
 </context>
 <context>
+    <name>XPDFRenderer</name>
+    <message>
+        <source>Processing...</source>
+        <translation>Processo in corso…</translation>
+    </message>
+</context>
+<context>
     <name>YouTubePublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
@@ -2900,6 +2947,18 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>days</source>
         <translation>giorni</translation>
+    </message>
+    <message>
+        <source>PDF Rendering</source>
+        <translation>rendering PDF</translation>
+    </message>
+    <message>
+        <source>Enable quality loss to increase zoom performances</source>
+        <translation type="vanished">Permettere una perdita di qualità per aumentare le prestazioni dello zoom</translation>
+    </message>
+    <message>
+        <source>Improve zoom execution time (can slightly affect rendering quality)</source>
+        <translation>Migliorare la velocità dello zoom (può influire leggermente sulla qualità del rendering)</translation>
     </message>
 </context>
 <context>

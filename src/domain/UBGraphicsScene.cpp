@@ -30,7 +30,6 @@
 #include "UBGraphicsScene.h"
 
 #include <QtGui>
-#include <QtWebKit>
 #include <QtSvg>
 #include <QGraphicsView>
 #include <QGraphicsVideoItem>
@@ -51,6 +50,7 @@
 #include "gui/UBResources.h"
 
 #include "tools/UBGraphicsRuler.h"
+#include "tools/UBGraphicsAxes.h"
 #include "tools/UBGraphicsProtractor.h"
 #include "tools/UBGraphicsCompass.h"
 #include "tools/UBGraphicsTriangle.h"
@@ -337,8 +337,9 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     , magniferDisplayViewWidget(0)
     , mZLayerController(new UBZLayerController(this))
     , mpLastPolygon(NULL)
-    , mCurrentPolygon(0)
     , mTempPolygon(NULL)
+    , mDrawWithCompass(false)
+    , mCurrentPolygon(0)
     , mSelectionFrame(0)
 {
     UBCoreGraphicsScene::setObjectName("BoardScene");
@@ -359,10 +360,12 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     }
 
     mBackgroundGridSize = UBSettings::settings()->crossSize;
+    mIntermediateLines = UBSettings::settings()->intermediateLines;
 
 //    Just for debug. Do not delete please
 //    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
     connect(UBApplication::undoStack.data(), SIGNAL(indexChanged(int)), this, SLOT(updateSelectionFrameWrapper(int)));
+    connect(UBDrawingController::drawingController(), SIGNAL(stylusToolChanged(int,int)), this, SLOT(stylusToolChanged(int,int)));
 }
 
 UBGraphicsScene::~UBGraphicsScene()
@@ -616,10 +619,13 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                         mTempPolygon = NULL;
                     }
 
-                    QPointF lastDrawnPoint = mCurrentStroke->points().last().first;
+                    if (!mCurrentStroke->points().empty())
+                    {
+                        QPointF lastDrawnPoint = mCurrentStroke->points().last().first;
 
-                    mTempPolygon = lineToPolygonItem(QLineF(lastDrawnPoint, scenePos), mPreviousWidth, width);
-                    addItem(mTempPolygon);
+                        mTempPolygon = lineToPolygonItem(QLineF(lastDrawnPoint, scenePos), mPreviousWidth, width);
+                        addItem(mTempPolygon);
+                    }
                 }
             }
         }
@@ -642,7 +648,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
     return accepted;
 }
 
-bool UBGraphicsScene::inputDeviceRelease()
+bool UBGraphicsScene::inputDeviceRelease(int tool)
 {
     bool accepted = false;
 
@@ -652,10 +658,15 @@ bool UBGraphicsScene::inputDeviceRelease()
         accepted = true;
     }
 
-    UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();
+    if (tool < 0)
+    {
+        tool = UBDrawingController::drawingController()->stylusTool();
+    }
+
+    UBStylusTool::Enum currentTool = (UBStylusTool::Enum)tool;
 
     if (currentTool == UBStylusTool::Eraser)
-        redrawEraser(false);
+        hideEraser();
 
 
     UBDrawingController *dc = UBDrawingController::drawingController();
@@ -797,6 +808,7 @@ void UBGraphicsScene::hideEraser()
 void UBGraphicsScene::drawPointer(const QPointF &pPoint, bool isFirstDraw)
 {
     qreal pointerDiameter = UBSettings::pointerDiameter / UBApplication::boardController->currentZoom();
+    pointerDiameter /= UBApplication::boardController->systemScaleFactor();
     qreal pointerRadius = pointerDiameter / 2;
 
     // TODO UB 4.x optimize - no need to do that every time we move it
@@ -1051,8 +1063,11 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
                 intersectedPolygonItem->copyItemParameters(polygonItem);
                 polygonItem->setNominalLine(false);
                 polygonItem->setStroke(intersectedPolygonItem->stroke());
-                polygonItem->setStrokesGroup(intersectedPolygonItem->strokesGroup());
-                intersectedPolygonItem->strokesGroup()->addToGroup(polygonItem);
+                if (intersectedPolygonItem->strokesGroup())
+                {
+                    polygonItem->setStrokesGroup(intersectedPolygonItem->strokesGroup());
+                    intersectedPolygonItem->strokesGroup()->addToGroup(polygonItem);
+                }
                 mAddedItems << polygonItem;
             }
         }
@@ -1150,6 +1165,15 @@ void UBGraphicsScene::setBackgroundGridSize(int pSize)
         foreach(QGraphicsView* view, views())
             view->resetCachedContent();
     }
+}
+
+void UBGraphicsScene::setIntermediateLines(bool checked)
+{
+    mIntermediateLines = checked;
+    setModified(true);
+
+    foreach(QGraphicsView* view, views())
+        view->resetCachedContent();
 }
 
 void UBGraphicsScene::setDrawingMode(bool bModeDesktop)
@@ -1295,7 +1319,9 @@ void UBGraphicsScene::updateSelectionFrame()
 {
     if (!mSelectionFrame) {
         mSelectionFrame = new UBSelectionFrame();
+        bool sceneWasModified = isModified();
         addItem(mSelectionFrame);
+        setModified(sceneWasModified);
     }
 
     QList<QGraphicsItem*> selItems = selectedItems();
@@ -2187,6 +2213,20 @@ void UBGraphicsScene::addRuler(QPointF center)
     ruler->setVisible(true);
 }
 
+void UBGraphicsScene::addAxes(QPointF center)
+{
+    UBGraphicsAxes* axes = new UBGraphicsAxes(); // mem : owned and destroyed by the scene
+
+    axes->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
+
+    addItem(axes);
+
+    QPointF itemSceneCenter = axes->sceneBoundingRect().center();
+    axes->moveBy(center.x() - itemSceneCenter.x(), center.y() - itemSceneCenter.y());
+
+    axes->setVisible(true);
+}
+
 void UBGraphicsScene::addProtractor(QPointF center)
 {
     // Protractor
@@ -2351,6 +2391,17 @@ void UBGraphicsScene::resizedMagnifier(qreal newPercent)
     }
 }
 
+void UBGraphicsScene::stylusToolChanged(int tool, int previousTool)
+{
+    if (mInputDeviceIsPressed && tool != previousTool)
+    {
+        // tool was changed while input device is pressed
+        // simulate release and press to terminate pervious strokes
+        inputDeviceRelease(previousTool);
+        inputDevicePress(mPreviousPoint);
+    }
+}
+
 void UBGraphicsScene::addCompass(QPointF center)
 {
     UBGraphicsCompass* compass = new UBGraphicsCompass(); // mem : owned and destroyed by the scene
@@ -2394,7 +2445,7 @@ void UBGraphicsScene::addMask(const QPointF &center)
     curtain->setSelected(true);
 }
 
-void UBGraphicsScene::setRenderingQuality(UBItem::RenderingQuality pRenderingQuality)
+void UBGraphicsScene::setRenderingQuality(UBItem::RenderingQuality pRenderingQuality, UBItem::CacheBehavior cacheBehavior)
 {
     QListIterator<QGraphicsItem*> itItems(mFastAccessItems);
 
@@ -2407,6 +2458,7 @@ void UBGraphicsScene::setRenderingQuality(UBItem::RenderingQuality pRenderingQua
         if (ubItem)
         {
             ubItem->setRenderingQuality(pRenderingQuality);
+            ubItem->setCacheBehavior(cacheBehavior);
         }
     }
 }
@@ -2801,6 +2853,8 @@ void UBGraphicsScene::simplifyCurrentStroke()
     }
 
 }
+
+
 
 void UBGraphicsScene::setDocumentUpdated()
 {

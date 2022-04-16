@@ -49,6 +49,7 @@ class UBGraphicsW3CWidgetItem;
 class UBGraphicsTextItem;
 class UBGraphicsCurtainItem;
 class UBGraphicsRuler;
+class UBGraphicsAxes;
 class UBGraphicsCompass;
 class UBGraphicsProtractor;
 class UBGraphicsScene;
@@ -143,6 +144,8 @@ class UBSvgSubsetAdaptor
                 UBGraphicsCurtainItem* curtainItemFromSvg();
 
                 UBGraphicsRuler* rulerFromSvg();
+
+                UBGraphicsAxes* axesFromSvg();
 
                 UBGraphicsCompass* compassFromSvg();
 
@@ -247,6 +250,7 @@ class UBSvgSubsetAdaptor
                 void textItemToSvg(UBGraphicsTextItem *item);
                 void curtainItemToSvg(UBGraphicsCurtainItem *item);
                 void rulerToSvg(UBGraphicsRuler *item);
+                void axesToSvg(UBGraphicsAxes *item);
                 void compassToSvg(UBGraphicsCompass *item);
                 void protractorToSvg(UBGraphicsProtractor *item);
                 void cacheToSvg(UBGraphicsCache* item);

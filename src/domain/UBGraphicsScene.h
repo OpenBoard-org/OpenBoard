@@ -141,7 +141,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         bool inputDevicePress(const QPointF& scenePos, const qreal& pressure = 1.0);
         bool inputDeviceMove(const QPointF& scenePos, const qreal& pressure = 1.0);
-        bool inputDeviceRelease();
+        bool inputDeviceRelease(int tool = -1);
 
         void leaveEvent (QEvent* event);
 
@@ -230,12 +230,18 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
             return mBackgroundGridSize;
         }
 
+        bool intermediateLines() const
+        {
+            return mIntermediateLines;
+        }
+
         bool hasBackground()
         {
             return (mBackgroundObject != 0);
         }
 
         void addRuler(QPointF center);
+        void addAxes(QPointF center);
         void addProtractor(QPointF center);
         void addCompass(QPointF center);
         void addTriangle(QPointF center);
@@ -295,7 +301,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
             mViewState = pViewState;
         }
 
-        virtual void setRenderingQuality(UBItem::RenderingQuality pRenderingQuality);
+        virtual void setRenderingQuality(UBItem::RenderingQuality pRenderingQuality, UBItem::CacheBehavior cacheBehavior);
 
         QList<QUrl> relativeDependencies() const;
 
@@ -358,6 +364,7 @@ public slots:
         void setBackground(bool pIsDark, UBPageBackground pBackground);
         void setBackgroundZoomFactor(qreal zoom);
         void setBackgroundGridSize(int pSize);
+        void setIntermediateLines(bool checked);
         void setDrawingMode(bool bModeDesktop);
         void deselectAllItems();
 
@@ -380,6 +387,8 @@ public slots:
         void zoomOutMagnifier();
         void changeMagnifierMode(int mode);
         void resizedMagnifier(qreal newPercent);
+
+        void stylusToolChanged(int tool, int previousTool);
 
     protected:
 
@@ -441,6 +450,7 @@ public slots:
         bool mDarkBackground;
         UBPageBackground mPageBackground;
         int mBackgroundGridSize;
+        bool mIntermediateLines;
 
         bool mIsDesktopMode;
         qreal mZoomFactor;

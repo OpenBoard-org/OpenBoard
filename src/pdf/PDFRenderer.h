@@ -66,8 +66,7 @@ class PDFRenderer : public QObject
 
         void setDPI(int desiredDPI) { this->dpiForRendering = desiredDPI; }
 
-    public slots:
-        virtual void render(QPainter *p, int pageNumber, const QRectF &bounds = QRectF()) = 0;
+        virtual void render(QPainter *p, int pageNumber, bool const cacheAllowed, const QRectF &bounds = QRectF()) = 0;
 
     private:
         QAtomicInt mRefCount;
