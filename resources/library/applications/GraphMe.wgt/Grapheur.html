@@ -66,12 +66,12 @@
 					</span>
 				</span>
 			</div>
-
+			
 			<!-- Onglet3D -->
 			<div id="onglet3D" onclick="activer3D()">
 				3D
 			</div>
-
+			
 			<!-- Mini-boutons -->
 			<div id="topRightButtons">
 				<div id="boutonSaveGraph" title="Save" class="miniBouton" onclick="afficherMenu('menuSaveGraph')">S</div>
@@ -87,13 +87,13 @@
 				<div id="affichage"></div>
 				<div id="affichageOutils"></div>
 			</div>
-
+			
 			<div id="divInputRapide">
 				f(x) =
 				<input type="text" id="inputRapide" onkeypress="if(event.keyCode == 13) widget.addStartFunction()"/>
 				<input id="inputRapideButton" type="button" value="Display" onclick="widget.addStartFunction()"/>
 			</div>
-
+			
 			<div id="zoneJoystick">
 				<div id="joystick" onclick="">
 					<table>
@@ -116,11 +116,11 @@
 				</div>
 				<div id="boutonJoystick" onclick=""></div>
 			</div>
-
+			
 			<div id="zoomButtons">
 				<div id="zoomOut" class="toolButton zoomButton" onclick="affichage.zoom(1.25)">-</div><div id="zoomIn" class="toolButton zoomButton" onclick="affichage.zoom(0.8)">+</div>
 			</div>
-
+			
 			<div id="toolButtons">
 				<div id="pointTool" title="Point tool" class="toolButton selectedTool" onclick="outil.choisir('point')">·</div>
 				<div id="moveTool" title="Move tool" class="toolButton" onclick="outil.choisir('deplacement')"><div class="icon"></div></div>
@@ -129,7 +129,7 @@
 
 
 	<!-- ..... Menus ..... -->
-
+			
 			<!-- Menu d'exemple -->
 			<div id="menuExemple" class="menu">
 				<div class="contenuMenu"></div>
@@ -137,7 +137,7 @@
 					<input id="menuExempleCloseButton" type="button" onclick="cacherMenu()" value="Close"/>
 				</div></div></div>
 			</div>
-
+				
 			<!-- GraphMe -->
 			<div id="menuGraphMe" class="menu">
 				<div class="ongletMenu deuxOnglets">
@@ -177,7 +177,7 @@
 				<br/>
 				<input type="button" onclick="afficherMenu(dernierMenu)" value="Ok"/>
 			</div>
-
+			
 			<!-- Crédits -->
 			<div id="menuCredits" class="menu">
 				<div class="ongletMenu deuxOnglets">
@@ -189,7 +189,7 @@
 						<tr>
 							<td>
 								<img src="icon.png"/>
-								<h3 id="widgetDevelopedBy">Widget developed by</h3>
+								<h3 id="widgetDevelopedBy">Widget developed by</h3> 
 								Yannick Vessaz <br/>
 								<a href='mailto:yannick.vessaz@gmail.com'>yannick.vessaz@gmail.com</a><br/>
 								<a href='https://yannick.vessaz.net/GraphMe'>https://yannick.vessaz.net/GraphMe</a>
@@ -226,7 +226,7 @@
 					<input type="button" id="menuChangelogCloseButton" class="bouton" onclick="cacherMenu()" value="Close"/>
 				</div></div></div>
 			</div>
-
+			
 			<!-- Affichage -->
 			<div id="menuAffichage" class="menu">
 				<div class="ongletMenu deuxOnglets">
@@ -252,11 +252,11 @@
 							<br/>Zoom: <br/>
 							<input type="button" class="bouton" style="width:30px;" onclick='affichage.zoom(1.25)' value="-"/><input type="button" class="bouton" style="width:30px; position:relative; left: 9px;" onclick='affichage.zoom(0.8)' value="+"/><br/>
 							<br/>
-							<span id="defaultZoom">Default zoom</span> :
+							<span id="defaultZoom">Default zoom</span> : 
 							<input value="3.7" class="smallInput" id="zoomDefaut"/>
 							<input type="button" id="defaultDisplayParameters" onclick="affichage.initZoom2(document.getElementById('zoomDefaut').value)" value="Default display parameters"/>
 							<br/><br/><br/><br/>
-
+							
 						</td>
 						<td>
 							<h4 id="displayOptions">Options</h4>
@@ -282,7 +282,7 @@
 					<input type="button" id="menuAffichageOkButton" class="bouton" onclick='cacherMenu(); actualiserGraph()' value="Ok"/>
 				</div></div></div>
 			</div>
-
+			
 			<div id="menuFunctionParameters" class="menu">
 				<div class="ongletMenu deuxOnglets">
 					<span id="menuFunctionParametersDisplayParametersTab" onclick='afficherMenu("menuAffichage")'>Display parameters</span>
@@ -298,7 +298,7 @@
 					<br/><br/>
 					<input type="checkbox" id="checkAire" onchange="actualiserGraph()"/><label for="checkAire"> <span id="drawArea">Draw area under function</span></label><br/>
 					<br/>
-					<span id="lineStyle">Line style</span> :
+					<span id="lineStyle">Line style</span> : 
 					<select id="selectStyle" onchange="actualiserGraph()">
 							<option id="selectStyleLine" value="continu">line</option>
 							<option id="selectStyleDotted" value="points">dotted</option>
@@ -315,7 +315,7 @@
 					<span id="display3D" class="ongletMenuActuel">3D Display</span>
 				</div>
 				<div class="contenuMenu">
-					<span id="displayStyle">Display style</span> :
+					<span id="displayStyle">Display style</span> : 
 					<select id="selectAffichage3D" onchange="actualiserGraph()">
 						<option id="displayStyleSurfaces" value="surfaces">surfaces</option>
 						<option id="displayStyleDotted" value="points">dotted</option>
@@ -428,7 +428,7 @@
 							<li><span class="gras">round(x)</span> -> <span id="roundText">round to the nearest integer</span></li>
 							<li><span class="gras">ceil(x)</span> -> <span id="ceilText">round to the first integer bigger than x</span></li>
 							<li><span class="gras">floor(x)</span> -> <span id="floorText">round to the first integer lower than x</span></li>
-						</ul>
+						</ul>					
 					</p> <br/>
 					<hr/>
 					<h1 id="constants">Constants</h1>
@@ -523,10 +523,10 @@
 					<p class="gras">
 						f(x) = <span id="etudeFdeX">...</span>
 					</p>
-					<p><span id="domainOfDefinition" class="gras">Domain of definition</span> :
+					<p><span id="domainOfDefinition" class="gras">Domain of definition</span> : 
 						<span id="etudeEDF">...</span>
 					</p>
-					<p><span id="symmetry" class="gras">Symmetry</span> :
+					<p><span id="symmetry" class="gras">Symmetry</span> : 
 						<span id="etudeParite">...</span>
 					</p>
 					<p><span id="zeros" class="gras">Zeros</span> :
@@ -550,7 +550,7 @@
 					<br/>
 					<br/>
 				</div>
-
+				
 				<div class="barreBasMenu"><div><div>
 	<!-- 				<input type="button" class="bouton" onclick="etude.etudier(document.getElementById('input').value)" value="Actualiser" style="position:relative;right:310px;"/> -->
 					<input type="button" id="menuEtudeBackButton" class="bouton" onclick="afficherMenu(dernierMenu)" style="position: absolute; left: 0px;" value="Back"/>
@@ -606,7 +606,7 @@
 									<br/>
 								</div>
 								<div id="editeurStyleDiv">
-									<span id="editorLineStyle">Style</span> :
+									<span id="editorLineStyle">Style</span> : 
 									<select id="editeurStyle" onchange="editeur.getOptions()">
 											<option id="editorStyleLine" value="continu">line</option>
 											<option id="editorStyleDotted" value="points">dotted</option>
@@ -666,14 +666,14 @@
 							<input id="implicitInput" placeholder="x^2 + y^2 = 9" style="width:220px; position:relative; right:2px;" onkeypress="if(event.keyCode == 13) fct.ajouter()"/>
 						</span>
 						<span id="polarDiv" style="display:none">
-							r(t) =
+							r(t) = 
 							<input id="polarInput" placeholder="t" style="width:220px; position:relative; right:2px;" onkeypress="if(event.keyCode == 13) fct.ajouter()"/>
 						</span>
 						<span id="parametricDiv" style="display:none">
-							x(t) =
+							x(t) = 
 							<input id="parametricInputX" placeholder="cos(t)" style="width:220px; position:relative; right:2px;" onkeypress="if(event.keyCode == 13) document.getElementById('parametricInputY').focus()"/>
 							<br/>
-							y(t) =
+							y(t) = 
 							<input id="parametricInputY" placeholder="sin(t)" style="width:220px; position:relative; right:2px;" onkeypress="if(event.keyCode == 13) fct.ajouter()"/>
 						</span>
 						<input type="button" id="addFunctionButton" value="Add" onclick="fct.ajouter();"/>
@@ -687,7 +687,7 @@
 					<input type="button" id="menuFonctionsCloseButton" class="bouton" onclick="cacherMenu()" value="Close"/>
 				</div></div></div>
 			</div>
-
+			
 			<!-- Fonctions 3D -->
 			<div id="menuFonctions3D" style="display:none;">
 				f(x,y) =
@@ -719,7 +719,7 @@
 					<br/>
 					<canvas id="canvasSV" onmousemove="colorPicker.moveSV(event)" onmousedown="colorPicker.sourisClick(this.id); colorPicker.moveSV(event)" onmouseup="colorPicker.sourisUp()" onmouseover="colorPicker.sourisOver(this.id)" onmouseout="colorPicker.sourisOut()"></canvas>
 					<canvas id="canvasT" onmousemove="colorPicker.moveT(event)" onmousedown="colorPicker.sourisClick(this.id); colorPicker.moveT(event)" onmouseup="colorPicker.sourisUp()" onmouseover="colorPicker.sourisOver(this.id)" onmouseout="colorPicker.sourisOut()"></canvas>
-
+					
 					<table id="colorValues">
 						<tr>
 							<td><span id="colorPickerColor">Color</span> : </td><td><input id="inputTeinte" class="smallInput" value="0" onchange="colorPicker.recupererInputs()"/></td>
@@ -739,9 +739,9 @@
 							<td><input id="inputCouleur" style="width: 70%" value="cyan" onkeypress="fct.couleur = this.value; if(event.keyCode==13) actualiserGraph()"/></td>
 						</tr>-->
 					</table>
-
+					
 					<div id="apercuCouleur" title="New color"></div><div id="apercuCouleur2" title="Old color"></div>
-
+					
 					<br/>
 					<canvas id="canvasO" onmousemove="colorPicker.moveO(event)" onmousedown="colorPicker.sourisClick(this.id); colorPicker.moveO(event)" onmouseup="colorPicker.sourisUp()" onmouseover="colorPicker.sourisOver(this.id)" onmouseout="colorPicker.sourisOut()"></canvas>
 				</div>
@@ -749,7 +749,7 @@
 					<input type="button" id="colorPickerCancelButton" class="bouton" onclick="cacherMenu()" value="Cancel"/><input type="button" id="colorPickerOkButton" class="bouton" onclick="colorPicker.fermer()" value="Ok"/>
 				</div></div></div>
 			</div>
-
+			
 			<!-- Save image -->
 			<div id="menuSaveImage" class="menu">
 				<div class="ongletMenu deuxOnglets">
@@ -866,10 +866,10 @@
 			<div class="flecheDeplacement" id="flecheGauche" onclick="affichage.deplacerX(-1)" onmousemove="souris.move(event)">◀</div>
 			<div class="flecheDeplacement" id="flecheBas" onclick="if(fonction3D){display3D.zoom(0.8)}else{affichage.deplacerY(-1)}" onmousemove="souris.move(event)">▼</div>
 			<div class="flecheDeplacement" id="flecheDroite" onclick="affichage.deplacerX(1)" onmousemove="souris.move(event)">▶</div>
-
+			
 			<!-- .... Add SVG display script .... -->
 			<embed id="embedSVG" src="JavaScript/AffichageSVG.svg" type="image/svg+xml" style="position:absolute; display:none; z-index: -1;"/>
-
+			
 		</div>
 	</td>
 	<td id="background-right" class="background-border-y"></td>
@@ -888,33 +888,33 @@
 		<label for="ctxAxes" id="ctxMenuAxes">Axes</label>
 		<div class="miniCouleur" id="ctxCouleurAxes" style="background-color:rgba(0,0,0,0.5)" title="affichage.couleurAxes" onclick="colorPicker.init(this.id); afficherMenu('menuCouleur'); ctxMenu.fermer()"></div>
 		<br/>
-
+		
 		<input type="checkbox" id="ctxEchelle" checked="checked" onchange="affichage.echelle = this.checked ? true : false ; affichage.dessiner()"/>
 		<label for="ctxEchelle" id="ctxMenuScale">Scale</label>
 		<div class="miniCouleur" id="ctxCouleurEchelle" style="background-color:rgba(255,255,255,1)" title="affichage.couleurEchelle" onclick="colorPicker.init(this.id); afficherMenu('menuCouleur'); ctxMenu.fermer()"></div>
 		<br/>
-
+		
 		<input type="checkbox" id="ctxGrille" checked="checked" onchange="affichage.grille = this.checked ? true : false ; affichage.dessiner()"/>
 		<label for="ctxGrille" id="ctxMenuGrid">Grid</label>
 		<div class="miniCouleur" id="ctxCouleurGrille" style="background-color:rgba(255,255,255,0.1)" title="affichage.couleurGrille" onclick="colorPicker.init(this.id); afficherMenu('menuCouleur'); ctxMenu.fermer()"></div>
 		<br/>
-
+		
 		<input type="button" id="ctxMenuReset" class="bouton" value="Reset" onclick="affichage.initZoom2(document.getElementById('zoomDefaut').value); ctxMenu.fermer()"/>
 		<br/>
 		<input type="button" id="ctxMenuSave" class="bouton" value="Save" onclick="afficherMenu('menuSaveGraph'); ctxMenu.fermer()"/>
-
+		
 		<div class="fermer" onclick="ctxMenu.fermer();">x</div>
 	</div>
 
 	<!-- Boutons de suppression des points et des ronds ajoutés -->
 	<span id="divSuppOutil"></span>
-
+	
 	<!-- Messages d'aide -->
 	<div id="divMessages"></div>
-
+	
 	<!-- .... Setup translations .... -->
 	<script type="text/javascript">languages.init();</script>
-
+	
 </body>
 <!-- Widget made by Yannick Vessaz    -->
 <!-- E-mail: yannick.vessaz@gmail.com -->

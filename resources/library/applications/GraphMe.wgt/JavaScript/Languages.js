@@ -1,7 +1,7 @@
 
 var languages = {
 	current: "en",
-
+	
 	init: function(){
 		var lang = this.navigatorLanguage();
 		if(lang){
@@ -9,41 +9,41 @@ var languages = {
 			this.set(lang);
 		}
 	},
-
+	
 	navigatorLanguage: function(){
 		if(window.sankore){
 			return sankore.locale();
 		}
 		return navigator.language || navigator.userLanguage;
 	},
-
+	
 	set: function(lang){
 		if(lang in langTexts){
 			this.current = lang;
 			this.setTexts(langTexts[lang]);
 		}
 	},
-
+	
 	getText: function(id){
 		return langTexts[this.current][id];
 	},
-
+	
 	setTexts: function(texts){
 		this.id("graphMeButton").textContent = texts.widgetName;
 		this.id("functionsButton").textContent = texts.functions;
 		this.id("displayButton").textContent = texts.display;
 		this.id("helpButton").textContent = texts.help;
-
+		
 		this.id("boutonAgrandir").title = texts.fullscreen;
 		this.id("boutonSaveGraph").title = texts.save;
 		this.id("inputRapideButton").value = texts.displayAction;
-
+		
 		this.id("pointTool").title = texts.pointTool;
 		this.id("moveTool").title = texts.moveTool;
 		this.id("tangentTool").title = texts.tangentTool;
-
+		
 		this.id("menuExempleCloseButton").value = texts.close;
-
+		
 		this.id("menuGraphMeOptionsTab").textContent = texts.options;
 		this.id("menuGraphMeAboutTab").textContent = texts.about;
 		this.id("widgetOptions").textContent = texts.widgetOptions;
@@ -55,7 +55,7 @@ var languages = {
 		this.id("resetWidgetButton").value = texts.resetWidget;
 		this.id("checkForUpdateButton").value = texts.checkForUpdate;
 		this.id("menuGraphMeCloseButton").value = texts.close;
-
+		
 		this.id("menuCreditsOptionsTab").textContent = texts.options;
 		this.id("menuCreditsAboutTab").textContent = texts.about;
 		this.id("widgetDevelopedBy").textContent = texts.widgetDevelopedBy;
@@ -63,11 +63,11 @@ var languages = {
 		this.id("widgetBackgroundSource").textContent = texts.widgetBackgroundSource;
 		this.id("changelogButton").textContent = texts.changelogButton;
 		this.id("menuCreditsCloseButton").value = texts.close;
-
+		
 		this.id("changelogTitle").textContent = texts.changelogTitle;
 		this.id("menuChangelogBackButton").value = texts.back;
 		this.id("menuChangelogCloseButton").value = texts.close;
-
+		
 		this.id("menuAffichageDisplayParametersTab").textContent = texts.displayParameters;
 		this.id("menuAffichageFunctionsParametersTab").textContent = texts.functionsParameters;
 		this.id("plotRange").textContent = texts.plotRange;
@@ -85,7 +85,7 @@ var languages = {
 		this.id("graphAccuracy").textContent = texts.graphAccuracy;
 		this.id("improveAccuracy").textContent = texts.improveAccuracy;
 		this.id("menuAffichageOkButton").value = texts.ok;
-
+		
 		this.id("menuFunctionParametersDisplayParametersTab").textContent = texts.displayParameters;
 		this.id("menuFunctionParametersFunctionsParametersTab").textContent = texts.functionsParameters;
 		this.id("defaultFunctionParameters").textContent = texts.defaultFunctionParameters;
@@ -97,7 +97,7 @@ var languages = {
 		this.id("selectStyleDotted").textContent = texts.styleDotted;
 		this.id("selectStyleDashed").textContent = texts.styleDashed;
 		this.id("menuFunctionParametersCloseButton").value = texts.close;
-
+		
 		this.id("display3D").textContent = texts.display3D;
 		this.id("displayStyle").textContent = texts.displayStyle;
 		this.id("displayStyleSurfaces").textContent = texts.styleSurfaces;
@@ -120,7 +120,7 @@ var languages = {
 		this.id("globalValue").textContent = texts.globalValue;
 		this.id("globalValueRange").textContent = texts.globalValueRange;
 		this.id("menuAffichage3dOk").value = texts.ok;
-
+		
 		this.id("menuAideUsageTab").textContent = texts.usage;
 		this.id("menuAideExamplesTab").textContent = texts.examples;
 		this.id("howItWorks").textContent = texts.howItWorks;
@@ -180,14 +180,14 @@ var languages = {
 		this.id("moveRight").textContent = texts.moveRight;
 		this.id("moveBottom").textContent = texts.moveBottom;
 		this.id("menuAideCloseButton").value = texts.close;
-
+		
 		this.id("menuAideExemplesUsageTab").textContent = texts.usage;
 		this.id("menuAideExemplesExamplesTab").textContent = texts.examples;
 		this.id("examplesText").textContent = texts.examplesText;
 		this.id("functions2d").textContent = texts.functions2d;
 		this.id("functions3d").textContent = texts.functions3d;
 		this.id("menuAideExemplesCloseButton").value = texts.close;
-
+		
 		this.id("functionStudyTitle").textContent = texts.functionStudy;
 		this.id("domainOfDefinition").textContent = texts.domainOfDefinition;
 		this.id("symmetry").textContent = texts.symmetry;
@@ -199,7 +199,7 @@ var languages = {
 		this.id("functionStudyText").textContent = texts.functionStudyText;
 		this.id("menuEtudeBackButton").value = texts.back;
 		this.id("menuEtudeCloseButton").value = texts.close;
-
+		
 		this.id("menuFonctionsFunctionsTab").textContent = texts.functions;
 		this.id("menuFonctionsHistoryTab").textContent = texts.history;
 		this.id("newFunction").textContent = texts.newFunction;
@@ -209,7 +209,7 @@ var languages = {
 		this.id("functionTypeParametric").textContent = texts.parametric;
 		this.id("addFunctionButton").value = texts.add;
 		this.id("functionsListText").textContent = texts.functionsListText;
-
+		
 		this.id("editorEditPageEditTab").textContent = texts.edit;
 		this.id("editorEditPageToolsTab").textContent = texts.tools;
 		this.id("editorRangeFrom").textContent = texts.from;
@@ -225,7 +225,7 @@ var languages = {
 		this.id("editorDrawArea").textContent = texts.drawArea;
 		this.id("editorDuplicate").value = texts.duplicate;
 		this.id("editorRemove").value = texts.remove;
-
+		
 		this.id("editorToolsPageEditTab").textContent = texts.edit;
 		this.id("editorToolsPageToolsTab").textContent = texts.tools;
 		this.id("computePoint").textContent = texts.computePoint;
@@ -239,14 +239,14 @@ var languages = {
 		this.id("editorToolsDuplicate").value = texts.duplicate;
 		this.id("editorToolsRemove").value = texts.remove;
 		this.id("menuFonctionsCloseButton").value = texts.close;
-
+		
 		this.id("input3dDisplayButton").value = texts.displayAction;
-
+		
 		this.id("menuHistoriqueFunctionsTab").textContent = texts.functions;
 		this.id("menuHistoriqueHistoryTab").textContent = texts.history;
 		this.id("latestDisplayedFunctions").textContent = texts.latestDisplayedFunctions;
 		this.id("menuHistoriqueCloseButton").value = texts.close;
-
+		
 		this.id("chooseColor").textContent = texts.chooseColor;
 		this.id("colorPickerColor").textContent = texts.color;
 		this.id("colorPickerValue").textContent = texts.value;
@@ -259,7 +259,7 @@ var languages = {
 		this.id("apercuCouleur2").title = texts.oldColor;
 		this.id("colorPickerCancelButton").value = texts.cancel;
 		this.id("colorPickerOkButton").value = texts.ok;
-
+		
 		this.id("blackListError").textContent = texts.error;
 		this.id("cannotDrawFunction").textContent = texts.cannotDrawFunction;
 		this.id("invalidExpression").textContent = texts.invalidExpression;
@@ -270,7 +270,7 @@ var languages = {
 		this.id("youCanFindExamples").textContent = texts.youCanFindExamples;
 		this.id("fctErrorHelpButton").value = texts.help;
 		this.id("fctErrorOkButton").value = texts.ok;
-
+		
 		this.id("menuSaveGraphTitle").textContent = texts.saveGraph;
 		this.id("saveWidthText").textContent = texts.width;
 		this.id("saveHeightText").textContent = texts.height;
@@ -278,11 +278,11 @@ var languages = {
 		this.id("imageFormat").textContent = texts.imageFormat;
 		this.id("menuSaveGraphCancelButton").value = texts.cancel;
 		this.id("menuSaveGraphOkButton").value = texts.ok;
-
+		
 		this.id("saveImageTitle").textContent = texts.saveImageTitle;
 		this.id("saveImageText").textContent = texts.saveImageText;
 		this.id("menuSaveImageCloseButton").value = texts.close;
-
+		
 		this.id("updateTitle").textContent = texts.update;
 		this.id("currentVersion").textContent = texts.currentVersion;
 		this.id("latestVersionAvailable").textContent = texts.latestVersionAvailable;
@@ -290,11 +290,11 @@ var languages = {
 // 		this.id("useLatestVersion").value = texts.useLatestVersion;
 		this.id("updateBackButton").value = texts.back;
 		this.id("updateOkButton").value = texts.ok;
-
+		
 		this.id("updateErrorTitle").textContent = texts.error;
 		this.id("updateErrorText").textContent = texts.updateErrorText;
 		this.id("updateErrorOkButton").value = texts.ok;
-
+		
 		this.id("ctxMenuDisplay").textContent = texts.display;
 		this.id("ctxMenuAxes").textContent = texts.axes;
 		this.id("ctxMenuScale").textContent = texts.scale;
@@ -302,11 +302,11 @@ var languages = {
 		this.id("ctxMenuReset").value = texts.reset;
 		this.id("ctxMenuSave").value = texts.save;
 	},
-
+	
 	class: function(className){
 		return document.getElementsByClassName(className);
 	},
-
+	
 	id: function(id){
 		return document.getElementById(id);
 	}
@@ -503,7 +503,7 @@ var langTexts = {
 		"reset": "Réinitialiser",
 		"saveImageTitle": "Sauvegarder l'image",
 		"saveImageText": "Cliquez avec le bouton de droite sur l'image et sélectionnez \"Enregistrer l'image\". Il est aussi possible de choisir \"Copier l'image\" et ensuite la coller dans une autre application.",
-
+		
 		/* Inside code */
 		"even": "paire",
 		"odd": "impaire",
