@@ -1,7 +1,7 @@
 
 var languages = {
 	current: "en",
-	
+
 	init: function(){
 		var lang = this.navigatorLanguage();
 		if(lang){
@@ -9,41 +9,41 @@ var languages = {
 			this.set(lang);
 		}
 	},
-	
+
 	navigatorLanguage: function(){
 		if(window.sankore){
 			return sankore.locale();
 		}
 		return navigator.language || navigator.userLanguage;
 	},
-	
+
 	set: function(lang){
 		if(lang in langTexts){
 			this.current = lang;
 			this.setTexts(langTexts[lang]);
 		}
 	},
-	
+
 	getText: function(id){
 		return langTexts[this.current][id];
 	},
-	
+
 	setTexts: function(texts){
 		this.id("graphMeButton").textContent = texts.widgetName;
 		this.id("functionsButton").textContent = texts.functions;
 		this.id("displayButton").textContent = texts.display;
 		this.id("helpButton").textContent = texts.help;
-		
+
 		this.id("boutonAgrandir").title = texts.fullscreen;
 		this.id("boutonSaveGraph").title = texts.save;
 		this.id("inputRapideButton").value = texts.displayAction;
-		
+
 		this.id("pointTool").title = texts.pointTool;
 		this.id("moveTool").title = texts.moveTool;
 		this.id("tangentTool").title = texts.tangentTool;
-		
+
 		this.id("menuExempleCloseButton").value = texts.close;
-		
+
 		this.id("menuGraphMeOptionsTab").textContent = texts.options;
 		this.id("menuGraphMeAboutTab").textContent = texts.about;
 		this.id("widgetOptions").textContent = texts.widgetOptions;
@@ -55,7 +55,7 @@ var languages = {
 		this.id("resetWidgetButton").value = texts.resetWidget;
 		this.id("checkForUpdateButton").value = texts.checkForUpdate;
 		this.id("menuGraphMeCloseButton").value = texts.close;
-		
+
 		this.id("menuCreditsOptionsTab").textContent = texts.options;
 		this.id("menuCreditsAboutTab").textContent = texts.about;
 		this.id("widgetDevelopedBy").textContent = texts.widgetDevelopedBy;
@@ -63,11 +63,11 @@ var languages = {
 		this.id("widgetBackgroundSource").textContent = texts.widgetBackgroundSource;
 		this.id("changelogButton").textContent = texts.changelogButton;
 		this.id("menuCreditsCloseButton").value = texts.close;
-		
+
 		this.id("changelogTitle").textContent = texts.changelogTitle;
 		this.id("menuChangelogBackButton").value = texts.back;
 		this.id("menuChangelogCloseButton").value = texts.close;
-		
+
 		this.id("menuAffichageDisplayParametersTab").textContent = texts.displayParameters;
 		this.id("menuAffichageFunctionsParametersTab").textContent = texts.functionsParameters;
 		this.id("plotRange").textContent = texts.plotRange;
@@ -85,7 +85,7 @@ var languages = {
 		this.id("graphAccuracy").textContent = texts.graphAccuracy;
 		this.id("improveAccuracy").textContent = texts.improveAccuracy;
 		this.id("menuAffichageOkButton").value = texts.ok;
-		
+
 		this.id("menuFunctionParametersDisplayParametersTab").textContent = texts.displayParameters;
 		this.id("menuFunctionParametersFunctionsParametersTab").textContent = texts.functionsParameters;
 		this.id("defaultFunctionParameters").textContent = texts.defaultFunctionParameters;
@@ -97,7 +97,7 @@ var languages = {
 		this.id("selectStyleDotted").textContent = texts.styleDotted;
 		this.id("selectStyleDashed").textContent = texts.styleDashed;
 		this.id("menuFunctionParametersCloseButton").value = texts.close;
-		
+
 		this.id("display3D").textContent = texts.display3D;
 		this.id("displayStyle").textContent = texts.displayStyle;
 		this.id("displayStyleSurfaces").textContent = texts.styleSurfaces;
@@ -120,7 +120,7 @@ var languages = {
 		this.id("globalValue").textContent = texts.globalValue;
 		this.id("globalValueRange").textContent = texts.globalValueRange;
 		this.id("menuAffichage3dOk").value = texts.ok;
-		
+
 		this.id("menuAideUsageTab").textContent = texts.usage;
 		this.id("menuAideExamplesTab").textContent = texts.examples;
 		this.id("howItWorks").textContent = texts.howItWorks;
@@ -169,20 +169,25 @@ var languages = {
 		this.id("ceilText").textContent = texts.ceilText;
 		this.id("floorText").textContent = texts.floorText;
 		this.id("constants").textContent = texts.constants;
+		this.id("constantsText").textContent = texts.constantsText;
 		this.id("keyboardShortcuts").textContent = texts.keyboardShortcuts;
+		this.id("leftArrow").textContent = texts.leftArrow;
+		this.id("topArrow").textContent = texts.topArrow;
+		this.id("rightArrow").textContent = texts.rightArrow;
+		this.id("bottomArrow").textContent = texts.bottomArrow;
 		this.id("moveLeft").textContent = texts.moveLeft;
 		this.id("moveTop").textContent = texts.moveTop;
 		this.id("moveRight").textContent = texts.moveRight;
 		this.id("moveBottom").textContent = texts.moveBottom;
 		this.id("menuAideCloseButton").value = texts.close;
-		
+
 		this.id("menuAideExemplesUsageTab").textContent = texts.usage;
 		this.id("menuAideExemplesExamplesTab").textContent = texts.examples;
 		this.id("examplesText").textContent = texts.examplesText;
 		this.id("functions2d").textContent = texts.functions2d;
 		this.id("functions3d").textContent = texts.functions3d;
 		this.id("menuAideExemplesCloseButton").value = texts.close;
-		
+
 		this.id("functionStudyTitle").textContent = texts.functionStudy;
 		this.id("domainOfDefinition").textContent = texts.domainOfDefinition;
 		this.id("symmetry").textContent = texts.symmetry;
@@ -194,7 +199,7 @@ var languages = {
 		this.id("functionStudyText").textContent = texts.functionStudyText;
 		this.id("menuEtudeBackButton").value = texts.back;
 		this.id("menuEtudeCloseButton").value = texts.close;
-		
+
 		this.id("menuFonctionsFunctionsTab").textContent = texts.functions;
 		this.id("menuFonctionsHistoryTab").textContent = texts.history;
 		this.id("newFunction").textContent = texts.newFunction;
@@ -204,7 +209,7 @@ var languages = {
 		this.id("functionTypeParametric").textContent = texts.parametric;
 		this.id("addFunctionButton").value = texts.add;
 		this.id("functionsListText").textContent = texts.functionsListText;
-		
+
 		this.id("editorEditPageEditTab").textContent = texts.edit;
 		this.id("editorEditPageToolsTab").textContent = texts.tools;
 		this.id("editorRangeFrom").textContent = texts.from;
@@ -220,7 +225,7 @@ var languages = {
 		this.id("editorDrawArea").textContent = texts.drawArea;
 		this.id("editorDuplicate").value = texts.duplicate;
 		this.id("editorRemove").value = texts.remove;
-		
+
 		this.id("editorToolsPageEditTab").textContent = texts.edit;
 		this.id("editorToolsPageToolsTab").textContent = texts.tools;
 		this.id("computePoint").textContent = texts.computePoint;
@@ -234,14 +239,14 @@ var languages = {
 		this.id("editorToolsDuplicate").value = texts.duplicate;
 		this.id("editorToolsRemove").value = texts.remove;
 		this.id("menuFonctionsCloseButton").value = texts.close;
-		
+
 		this.id("input3dDisplayButton").value = texts.displayAction;
-		
+
 		this.id("menuHistoriqueFunctionsTab").textContent = texts.functions;
 		this.id("menuHistoriqueHistoryTab").textContent = texts.history;
 		this.id("latestDisplayedFunctions").textContent = texts.latestDisplayedFunctions;
 		this.id("menuHistoriqueCloseButton").value = texts.close;
-		
+
 		this.id("chooseColor").textContent = texts.chooseColor;
 		this.id("colorPickerColor").textContent = texts.color;
 		this.id("colorPickerValue").textContent = texts.value;
@@ -254,7 +259,7 @@ var languages = {
 		this.id("apercuCouleur2").title = texts.oldColor;
 		this.id("colorPickerCancelButton").value = texts.cancel;
 		this.id("colorPickerOkButton").value = texts.ok;
-		
+
 		this.id("blackListError").textContent = texts.error;
 		this.id("cannotDrawFunction").textContent = texts.cannotDrawFunction;
 		this.id("invalidExpression").textContent = texts.invalidExpression;
@@ -265,7 +270,7 @@ var languages = {
 		this.id("youCanFindExamples").textContent = texts.youCanFindExamples;
 		this.id("fctErrorHelpButton").value = texts.help;
 		this.id("fctErrorOkButton").value = texts.ok;
-		
+
 		this.id("menuSaveGraphTitle").textContent = texts.saveGraph;
 		this.id("saveWidthText").textContent = texts.width;
 		this.id("saveHeightText").textContent = texts.height;
@@ -273,11 +278,11 @@ var languages = {
 		this.id("imageFormat").textContent = texts.imageFormat;
 		this.id("menuSaveGraphCancelButton").value = texts.cancel;
 		this.id("menuSaveGraphOkButton").value = texts.ok;
-		
+
 		this.id("saveImageTitle").textContent = texts.saveImageTitle;
 		this.id("saveImageText").textContent = texts.saveImageText;
 		this.id("menuSaveImageCloseButton").value = texts.close;
-		
+
 		this.id("updateTitle").textContent = texts.update;
 		this.id("currentVersion").textContent = texts.currentVersion;
 		this.id("latestVersionAvailable").textContent = texts.latestVersionAvailable;
@@ -285,11 +290,11 @@ var languages = {
 // 		this.id("useLatestVersion").value = texts.useLatestVersion;
 		this.id("updateBackButton").value = texts.back;
 		this.id("updateOkButton").value = texts.ok;
-		
+
 		this.id("updateErrorTitle").textContent = texts.error;
 		this.id("updateErrorText").textContent = texts.updateErrorText;
 		this.id("updateErrorOkButton").value = texts.ok;
-		
+
 		this.id("ctxMenuDisplay").textContent = texts.display;
 		this.id("ctxMenuAxes").textContent = texts.axes;
 		this.id("ctxMenuScale").textContent = texts.scale;
@@ -297,11 +302,11 @@ var languages = {
 		this.id("ctxMenuReset").value = texts.reset;
 		this.id("ctxMenuSave").value = texts.save;
 	},
-	
+
 	class: function(className){
 		return document.getElementsByClassName(className);
 	},
-	
+
 	id: function(id){
 		return document.getElementById(id);
 	}
@@ -421,7 +426,12 @@ var langTexts = {
 		"ceilText": "arrondit à l'entier supérieur",
 		"floorText": "arrondit à l'entier inférieur",
 		"constants": "Constantes",
+		"constantsText": "Les constantes suivantes sont disponibles",
 		"keyboardShortcuts": "Raccourcis clavier",
+		"leftArrow": "flèche gauche",
+		"topArrow": "flèche vers le haut",
+		"rightArrow": "flèche droite",
+		"bottomArrow": "flèche vers le bas",
 		"moveLeft": "déplacer le graphique à gauche",
 		"moveTop": "déplacer le graphique en haut",
 		"moveRight": "déplacer le graphique à droite",
@@ -493,7 +503,7 @@ var langTexts = {
 		"reset": "Réinitialiser",
 		"saveImageTitle": "Sauvegarder l'image",
 		"saveImageText": "Cliquez avec le bouton de droite sur l'image et sélectionnez \"Enregistrer l'image\". Il est aussi possible de choisir \"Copier l'image\" et ensuite la coller dans une autre application.",
-		
+
 		/* Inside code */
 		"even": "paire",
 		"odd": "impaire",
@@ -503,6 +513,207 @@ var langTexts = {
 		"enterFunction": "Entrez une fonction à dessiner",
 		"needHelp": "Consulter l'aide",
 		"unableLoadParameters": "Impossible de charger les paramètres enregistrés..."
+	},
+
+	"ru": {
+		"widgetName": "Графики",
+		"functions": "Функции",
+		"display": "Вид",
+		"help": "Помощь",
+		"close": "Закрыть",
+		"back": "Вернуться",
+		"ok": "ОК",
+		"fullscreen": "На весь экран",
+		"save": "Сохранить",
+		"displayAction": "График",
+		"pointTool": "Точки",
+		"moveTool": "Перемещение",
+		"tangentTool": "Outil tangente",
+		"options": "Настройки",
+		"about": "О программе",
+		"darkBlue": "Тёмно синий",
+		"black": "Чёрный",
+		"blue": "Синий",
+		"white": "Белый",
+		"widgetOptions": "Настройки виджета",
+		"widgetTheme": "Тема виджета",
+		"resetWidget": "Сбросить настройки",
+		"checkForUpdate": "Проверить обновления",
+		"widgetDevelopedBy": "Виджет разработан",
+		"widgetContactInfo": "Если вы хотите сообщить об ошибке, у вас есть предложения по работе виджета или вы хотите задать вопрос, вы можете направить мне эл.письмо по следующему адресу",
+		"widgetBackgroundSource": "Фоновые изображения берутся из KDE",
+		"changelogButton": "что нового?",
+		"changelogTitle": "Примечания к выпуску",
+		"displayParameters": "Система координат",
+		"functionsParameters": "Параметры функций",
+		"plotRange": "Область отрисовки",
+		"xAxis": "Ось X",
+		"yAxis": "Ось Y",
+		"to": "до",
+		"defaultZoom": "Масштаб по умолчанию",
+		"defaultDisplayParameters": "Стандартные параметры отображения",
+		"displayMethod": "Метод отображения",
+		"showGrid": "Сетка",
+		"showAxis": "Оси",
+		"showScale": "Масштабирование",
+		"graphAccuracy": "Точность рассчёта точек на графике",
+		"improveAccuracy": "Повышение точности при уменьшении масштаба",
+		"defaultFunctionParameters": "Параметры функций по умолчанию",
+		"thickness": "Толщина",
+		"drawDerivativeAndPrimitive": "Отображение производных и первообразных",
+		"drawArea": "Область под графиком",
+		"lineStyle": "Стиль линии",
+		"styleLine": "непрерывная",
+		"styleDotted": "точки",
+		"styleDashed": "пунктир",
+		"display3D": "Трёхмерный вид",
+		"displayStyle": "Стиль отрисовки",
+		"styleSurfaces": "грани",
+		"resetDisplay": "Сброс отображения",
+		"colorsConfig": "Настройки цветов",
+		"useRedFor": "красный",
+		"useGreenFor": "зелёный",
+		"useBlueFor": "синий",
+		"positiveValues": "положительные значения",
+		"negativeValues": "отрицательные значения",
+		"always": "всегда",
+		"globalValue": "Общее значение",
+		"globalValueRange": "(диапазон от 0 до 255)",
+		"usage": "Использование",
+		"examples": "Примеры",
+		"howItWorks": "Как это работает",
+		"howItWorksText": "Этот виджет позволяет рисовать графики математических функций. Введите функцию в поле в верхней части виджета и нажмите кнопку «График». В меню «Функции» можно изменить свою функцию или добавить новую.",
+		"availableFunctionsText": "Вы можете использовать следующие математические операции и функции",
+		"basicOperations": "Основные операции",
+		"plus": "Сложение",
+		"minus": "Вычитание",
+		"multiplication": "Умножение",
+		"division": "Деление",
+		"modulus": "Остаток от деления",
+		"trigonometricFunctions": "Тригонометрические функции",
+		"sine": "Синус",
+		"cosine": "Косинус",
+		"tangent": "Тангенс",
+		"cotangent": "Котангенс",
+		"secant": "Секанс",
+		"cosecant": "Косеканс",
+		"arcSine": "Арксинус",
+		"arcCosine": "Арксосинус",
+		"arcTangent": "Арктангенс",
+		"arcCotangent": "Арккотангенс",
+		"hyperbolicFunctions": "Гиперболические функции",
+		"hypSine": "Гиперболический синус",
+		"hypCosine": "Гиперболический косинус",
+		"hypTangent": "Гиперболический тангенс",
+		"hypCotangent": "Гиперболический котангенс",
+		"hypSecant": "Гиперболический секанс",
+		"hypCosecant": "Гиперболический косеканс",
+		"hypArcSine": "Ареа-синус",
+		"hypArcCosine": "Ареа-косинус",
+		"hypArcTangent": "Ареа-тангенс",
+		"hypArcCotangent": "Ареа-котангенс",
+		"powerAndRoot": "Возведение в степень",
+		"squareRoot": "Квадратный корень",
+		"power": "Возведение в степень",
+		"xPowY": "Возвести X в степень Y",
+		"root": "Извлечение корня",
+		"rootText": "Извлечь корень степени Y из числа X",
+		"expAndLog": "Экспоненты и логарифмы",
+		"naturalLog": "Натуральный логарифм",
+		"decimalLog": "Десятичный логарифм",
+		"absValue": "Абсолютное значение (модуль) числа",
+		"rounding": "Округления",
+		"roundText": "Округление до ближайшего целого",
+		"ceilText": "Округление до ближайшего большего целого",
+		"floorText": "Округление до ближайшего меньшего целого",
+		"constants": "Константы",
+		"constantsText": "Доступны следующие константы",
+		"keyboardShortcuts": "Доступны сочетания клавиш",
+		"leftArrow": "стрелка влево",
+		"topArrow": "стрелка вверх",
+		"rightArrow": "стрелка вправо",
+		"bottomArrow": "стрелка вниз",
+		"moveLeft": "перемещение изображения влево",
+		"moveTop": "перемещение изображения вверх",
+		"moveRight": "перемещение изображения вправо",
+		"moveBottom": "перемещение изображения вниз",
+		"examplesText": "(Вы можете нажать на пример функции, чтобы появился график этой функции.)",
+		"functions2d": "Двумерные функции",
+		"functions3d": "Трёхмерные функции",
+		"saveGraph": "Сохранить график",
+		"functionStudy": "Исследование функции",
+		"domainOfDefinition": "Область определения",
+		"symmetry": "Симметрия",
+		"zeros": "Нули функции",
+		"sign": "Знаки",
+		"asymptotes": "Асимптоты",
+		"extremums": "Экстремумы",
+		"inflexionPoints": "Точки перегиба",
+		"functionStudyText": "Инструмент для исследования функций не на 100% надёжен. Проверяйте результаты исследования, прежде чем их использовать.",
+		"history": "История",
+		"newFunction": "Новая функция",
+		"cartesian": "Выражение",
+		"implicit": "Каноническая",
+		"polar": "Полярная",
+		"parametric": "Параметрическая",
+		"add": "Добавить",
+		"functionsListText": "Графики функций",
+		"edit": "Изменить",
+		"tools": "Инструменты",
+		"from": "от",
+		"to": "до",
+		"color": "Цвет",
+		"derivatives": "Производные",
+		"primitive": "Первообразная",
+		"duplicate": "Дублировать",
+		"remove": "Удалить",
+		"computePoint": "Вычисление точки функции",
+		"compute": "Вычислить",
+		"computeArea": "Вычислить площадь под функцией",
+		"startStudy": "Перейти к исследованию",
+		"latestDisplayedFunctions": "Последние использованные функции",
+		"chooseColor": "Выбор цвета",
+		"value": "Значение",
+		"saturation": "Насыщенность",
+		"red": "Красный",
+		"green": "Зелёный",
+		"blue": "Синий",
+		"opacity": "Прозрачность",
+		"oldColor": "Предыдущий",
+		"newColor": "Новый",
+		"cancel": "Отменить",
+		"error": "Ошибка",
+		"cannotDrawFunction": "Невозможно нарисовать функцию",
+		"invalidExpression": "Недопустимое выражение или символ",
+		"checkTheFunction": "Проверьте функцию, которую вы хотите нарисовать",
+		"errorMessage": "Сообщение об ошибке",
+		"youCanFindExamples": "Описание, а также примеры различных функций, которые вы можете нарисовать, можно найти в справке",
+		"width": "Ширина",
+		"height": "Высота",
+		"backgroundColor": "Цвет фона",
+		"imageFormat": "Формат изображения",
+		"update": "Обновление",
+		"currentVersion": "Текущаяя версия",
+		"latestVersionAvailable": "Последняя доступная версия",
+		"useLatestVersionText": "Вы можете заменить используемую версию на версию онлайн-виджета. Обратите внимание, что это не обновляет виджет. Эту процедуру необходимо будет повторить при следующем использовании.",
+		"useLatestVersion": "Использовать последнюю версию",
+		"updateErrorText": "Невозможно обновить виджет до онлайн-версии, потому что вы уже используете онлайн-версию",
+		"axes": "Оси",
+		"scale": "Масштаб",
+		"grid": "Сетка",
+		"reset": "Сброс",
+		"saveImageTitle": "Сохранить изображения",
+		"saveImageText": "Щёлкните правой кнопкой мыши изображение и выберите «Сохранить изображение». Также можно выбрать «Скопировать изображение», а затем вставить его в другое приложение.",
+
+		/* Inside code */
+		"even": "чётная",
+		"odd": "нечётная",
+		"none_f": "нет",
+		"none_m": "нет",
+		"clickHereToModify": "Нажмите здесь, чтобы изменить функции или добавить новые.",
+		"enterFunction": "Введите функцию",
+		"needHelp": "Справка",
+		"unableLoadParameters": "Невозможно загрузить сохраненные настройки..."
 	}
 };
 
