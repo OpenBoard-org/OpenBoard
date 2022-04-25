@@ -366,6 +366,18 @@
         <file>images/desc.png</file>
         <file>images/toolPalette/axesTool.png</file>
         <file>images/numbersTool.svg</file>
+        <file>images/stylusPalette/eraserArrow.svg</file>
+        <file>images/stylusPalette/penArrow.svg</file>
+        <file>images/stylusPalette/eraserOnArrow.svg</file>
+        <file>images/stylusPalette/eraserOn.svg</file>
+        <file>images/stylusPalette/eraser.svg</file>
+        <file>images/stylusPalette/marker.svg</file>
+        <file>images/stylusPalette/markerArrow.svg</file>
+        <file>images/stylusPalette/markerOn.svg</file>
+        <file>images/stylusPalette/markerOnArrow.svg</file>
+        <file>images/stylusPalette/pen.svg</file>
+        <file>images/stylusPalette/penOn.svg</file>
+        <file>images/stylusPalette/penOnArrow.svg</file>
         <file>images/trash-my-documents.png</file>
         <file>images/trash-empty.png</file>
         <file>images/trash-folder.png</file>
