@@ -1,4 +1,3 @@
-
 HEADERS      += src/pdf/GraphicsPDFItem.h \
                 src/pdf/PDFRenderer.h \
                 src/pdf/UBWebPluginPDFWidget.h \

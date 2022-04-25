@@ -103,12 +103,11 @@ class UBPersistenceManager : public QObject
 
         virtual void copyDocumentScene(UBDocumentProxy *from, int fromIndex, UBDocumentProxy *to, int toIndex);
 
-        virtual void persistDocumentScene(UBDocumentProxy* pDocumentProxy,
-                UBGraphicsScene* pScene, const int pSceneIndex);
+        virtual void persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex, bool isAnAutomaticBackup = false);
 
         virtual UBGraphicsScene* createDocumentSceneAt(UBDocumentProxy* pDocumentProxy, int index, bool useUndoRedoStack = true);
 
-        virtual void insertDocumentSceneAt(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* scene, int index, bool persist = true);
+        virtual void insertDocumentSceneAt(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* scene, int index, bool persist = true, bool deleting = false);
 
         virtual void moveSceneToIndex(UBDocumentProxy* pDocumentProxy, int source, int target);
 
@@ -132,7 +131,8 @@ class UBPersistenceManager : public QObject
         bool addDirectoryContentToDocument(const QString& documentRootFolder, UBDocumentProxy* pDocument);
 
         void createDocumentProxiesStructure(bool interactive = false);
-        void createDocumentProxiesStructure(const QFileInfoList &contentInfo, bool interactive = false);
+        void createDocumentProxiesStructure(const QFileInfoList &contentInfoList, bool interactive = false);
+        UBDocumentProxy* createDocumentProxyStructure(QFileInfo &contentInfo);
         QDialog::DialogCode processInteractiveReplacementDialog(UBDocumentProxy *pProxy);
 
         QStringList documentSubDirectories()
@@ -166,7 +166,6 @@ class UBPersistenceManager : public QObject
         void documentWillBeDeleted(UBDocumentProxy* pDocumentProxy);
 
         void documentSceneCreated(UBDocumentProxy* pDocumentProxy, int pIndex);
-        void documentSceneWillBeDeleted(UBDocumentProxy* pDocumentProxy, int pIndex);
 
 private:
         int sceneCount(const UBDocumentProxy* pDocumentProxy);
@@ -189,6 +188,8 @@ private:
         bool mHasPurgedDocuments;
         QString mDocumentRepositoryPath;
         QString mFoldersXmlStorageName;
+        QProgressDialog mProgress;
+        QFutureWatcher<void> futureWatcher;
 
     private slots:
         void documentRepositoryChanged(const QString& path);

@@ -68,6 +68,7 @@ UBGraphicsMediaItem::UBGraphicsMediaItem(const QUrl& pMediaFileUrl, QGraphicsIte
         , mMuted(sIsMutedByDefault)
         , mMutedByUserAction(sIsMutedByDefault)
         , mStopped(false)
+        , mFirstLoad(true)
         , mMediaFileUrl(pMediaFileUrl)
         , mLinkedImage(NULL)
         , mInitialPos(0)
@@ -135,8 +136,8 @@ UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
      * active scene has changed, or when the item is first created.
      * If and when Qt fix this issue, this should be changed back.
      * */
-    //mMediaObject->setVideoOutput(mVideoItem);
-    mHasVideoOutput = false;
+    mMediaObject->setVideoOutput(mVideoItem);
+    mHasVideoOutput = true;
 
     mMediaObject->setNotifyInterval(50);
 
@@ -175,12 +176,12 @@ QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVaria
             || (change == QGraphicsItem::ItemVisibleChange))
     {
         if (mMediaObject && (!isEnabled() || !isVisible() || !scene()))
-            mMediaObject->pause();
+           pause();
     }
     else if (change == QGraphicsItem::ItemSceneHasChanged)
     {
         if (!scene())
-            mMediaObject->stop();
+            stop();
         else {
             QString absoluteMediaFilename;
 
@@ -223,6 +224,16 @@ QMediaPlayer::State UBGraphicsMediaItem::playerState() const
 bool UBGraphicsMediaItem::isStopped() const
 {
     return mStopped;
+}
+
+bool UBGraphicsMediaItem::firstLoad() const
+{
+    return mFirstLoad;
+}
+
+void UBGraphicsMediaItem::setFirstLoad(bool firstLoad)
+{
+    mFirstLoad = firstLoad;
 }
 
 qint64 UBGraphicsMediaItem::mediaDuration() const
@@ -333,7 +344,7 @@ UBGraphicsScene* UBGraphicsMediaItem::scene()
 void UBGraphicsMediaItem::activeSceneChanged()
 {
     if (UBApplication::boardController->activeScene() != scene())
-        mMediaObject->pause();
+        pause();
 }
 
 
@@ -374,17 +385,19 @@ void UBGraphicsMediaItem::togglePlayPause()
     }
 
     if (mMediaObject->state() == QMediaPlayer::StoppedState)
-        mMediaObject->play();
+    {
+        play();
+    }
 
     else if (mMediaObject->state() == QMediaPlayer::PlayingState) {
 
         if ((mMediaObject->duration() - mMediaObject->position()) <= 0) {
-            mMediaObject->stop();
-            mMediaObject->play();
+            stop();
+            play();
         }
 
         else {
-            mMediaObject->pause();
+            pause();
             if(scene())
                 scene()->setModified(true);
         }
@@ -392,14 +405,14 @@ void UBGraphicsMediaItem::togglePlayPause()
 
     else if (mMediaObject->state() == QMediaPlayer::PausedState) {
         if ((mMediaObject->duration() - mMediaObject->position()) <= 0)
-            mMediaObject->stop();
+            stop();
 
-        mMediaObject->play();
+        play();
     }
 
     else  if ( mMediaObject->mediaStatus() == QMediaPlayer::LoadingMedia) {
         mMediaObject->setMedia(mediaFileUrl());
-        mMediaObject->play();
+        play();
     }
 }
 
@@ -427,6 +440,7 @@ void UBGraphicsMediaItem::mediaError(QMediaPlayer::Error errorCode)
     if (!mErrorString.isEmpty() ) {
         UBApplication::showMessage(mErrorString);
         qDebug() << mErrorString;
+        mErrorString.clear();
     }
 }
 

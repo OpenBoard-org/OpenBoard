@@ -697,11 +697,11 @@
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation>Einblendung einfangen</translation>
+        <translation type="vanished">Einblendung einfangen</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>Eingeblendeten Inhalt einfangen</translation>
+        <translation type="vanished">Eingeblendeten Inhalt einfangen</translation>
     </message>
     <message>
         <source>Web Trap</source>
@@ -839,6 +839,10 @@
         <source>Draw intermediate grid lines</source>
         <translation>Gitter-Zwischenlinien zeichnen</translation>
     </message>
+    <message>
+        <source>Capture Web Content</source>
+        <translation>Webinhalte erfassen</translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -896,6 +900,14 @@
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
         <translation>Wollen Sie wirklich die ausgewählte Seite des Dokuments &apos;%0&apos; entfernen?</translation>
     </message>
+    <message>
+        <source>Loading scene (%1/%2)</source>
+        <translation>Laden der Szene (%1/%2)</translation>
+    </message>
+    <message>
+        <source>Moving cached scenes (%1/%2)</source>
+        <translation>Verschieben von zwischengespeicherten Szenen (%1/%2)</translation>
+    </message>
 </context>
 <context>
     <name>UBApplication</name>
@@ -906,6 +918,10 @@
     <message>
         <source>Podcast</source>
         <translation>Podcast</translation>
+    </message>
+    <message>
+        <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
+        <translation>Ihre UBX-Datei kann nicht direkt geöffnet werden. Bitte importieren Sie die Datei im Dokumentenmodus</translation>
     </message>
 </context>
 <context>
@@ -1242,6 +1258,10 @@
         <source>Empty My Documents</source>
         <translation type="vanished">Eigene Dokumente leeren</translation>
     </message>
+    <message>
+        <source>Refreshing Document Thumbnails View (%1/%2)</source>
+        <translation>Aktualisieren der Vorschauen im Dokumentenmodus (%1/%2)</translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1291,6 +1311,10 @@
     <message>
         <source>Page %0</source>
         <translation>Seite %0</translation>
+    </message>
+    <message>
+        <source>Generating thumbnails for board (%1/%2)</source>
+        <translation>Erstellen von Voransichten des Tabellenmodus (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -2028,6 +2052,10 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>Openboard hat den Zugang zum Dokumentenarchiv &apos;%1&apos; verloren. Die Anwendung muss leider beendet werden, um Datenkorruption zu vermeiden. Der Verlust kürzlich vorgenommener Änderungen ist möglich.</translation>
     </message>
+    <message>
+        <source>Renaming pages (%1/%2)</source>
+        <translation>Aktualisieren der aktuellen Seitennamen (%1/%2)</translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -2195,6 +2223,10 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
         <source>loading thumbnail of page %1</source>
         <translation type="vanished">
 Miniaturansicht der Seite %1 wird geladen</translation>
+    </message>
+    <message>
+        <source>Loading thumbnail (%1/%2)</source>
+        <translation>Laden der Vorschau (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -2978,7 +3010,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation>Wählen Sie eine Einblendung, die festgehalten werden soll</translation>
+        <translation type="vanished">Wählen Sie eine Einblendung, die festgehalten werden soll</translation>
     </message>
     <message>
         <source>about:blank</source>
@@ -2991,6 +3023,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Create Application</source>
         <translation>Anwendung erstellen</translation>
+    </message>
+    <message>
+        <source>Select a content to capture</source>
+        <translation>Einen zu erfassenden Inhalt auswählen</translation>
     </message>
 </context>
 </TS>

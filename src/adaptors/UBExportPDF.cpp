@@ -106,7 +106,17 @@ bool UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QStrin
         // set background to white, no crossing for PDF output
         bool isDark = scene->isDarkBackground();
         UBPageBackground pageBackground = scene->pageBackground();
-        scene->setBackground(false, UBPageBackground::plain);
+
+        bool exportDark = isDark && UBSettings::settings()->exportBackgroundColor->get().toBool();
+
+        if (UBSettings::settings()->exportBackgroundGrid->get().toBool())
+        {
+            scene->setBackground(exportDark, pageBackground);
+        }
+        else
+        {
+            scene->setBackground(exportDark, UBPageBackground::plain);
+        }
 
         // pageSize is the output PDF page size; it is set to equal the scene's boundary size; if the contents
         // of the scene overflow from the boundaries, they will be scaled down.

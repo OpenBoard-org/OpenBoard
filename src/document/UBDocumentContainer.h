@@ -45,8 +45,9 @@ class UBDocumentContainer : public QObject
         void pureSetDocument(UBDocumentProxy *document) {mCurrentDocument = document;}
 
         UBDocumentProxy* selectedDocument(){return mCurrentDocument;}
-        int pageCount(){return mCurrentDocument->pageCount();}
-        const QPixmap* pageAt(int index)
+        QList<std::shared_ptr<QPixmap>>& documentThumbs() { return mDocumentThumbs; }
+        int pageCount() const{return mCurrentDocument->pageCount();}
+        std::shared_ptr<QPixmap> pageAt(int index)
         {
             if (index < mDocumentThumbs.size())
                 return mDocumentThumbs[index];
@@ -60,38 +61,41 @@ class UBDocumentContainer : public QObject
         static int sceneIndexFromPage(int sceneIndex);
 
         void duplicatePages(QList<int>& pageIndexes);
-        bool movePageToIndex(int source, int target);
+        void duplicatePage(int index);
         void deletePages(QList<int>& pageIndexes);
+
+
+        void addPage(int index);
+        void addPixmapAt(std::shared_ptr<QPixmap> pix, int index);
+
+        virtual void reloadThumbnails();
+
         void clearThumbPage();
         void initThumbPage();
-        void addPage(int index);
-        void addPixmapAt(const QPixmap *pix, int index);
-        void updatePage(int index);
-        void addEmptyThumbPage();
-        void reloadThumbnails();
-
+        void insertExistingThumbPage(int index, std::shared_ptr<QPixmap> thumbnailPixmap);
         void insertThumbPage(int index);
+        void addEmptyThumbPage();
+        void deleteThumbPage(int index);
+        void updateThumbPage(int index);
+        void moveThumbPage(int source, int target);
 
     private:
         UBDocumentProxy* mCurrentDocument;
-        QList<const QPixmap*>  mDocumentThumbs;
-
-
-    protected:
-        void deleteThumbPage(int index);
-        void updateThumbPage(int index);
+        QList<std::shared_ptr<QPixmap>>  mDocumentThumbs;
 
     signals:
         void documentSet(UBDocumentProxy* document);
+        void documentPageInserted(int index);
         void documentPageUpdated(int index);
+        void documentPageRemoved(int index);
+        void documentPageMoved(int from, int to);
+        void documentThumbnailsUpdated(UBDocumentContainer* source);
 
         void initThumbnailsRequired(UBDocumentContainer* source);
         void addThumbnailRequired(UBDocumentContainer* source, int index);
         void removeThumbnailRequired(int index);
         void moveThumbnailRequired(int from, int to);
         void updateThumbnailsRequired();
-
-        void documentThumbnailsUpdated(UBDocumentContainer* source);
 };
 
 

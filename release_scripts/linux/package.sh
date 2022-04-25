@@ -85,13 +85,13 @@ initializeVariables()
 
   # Include Qt libraries and plugins in the package, or not
   # (this is necessary if the target system doesn't provide Qt 5.5.1)
-  BUNDLE_QT=true
+  BUNDLE_QT=false
 
   # Qt installation path. This may vary across machines
-  QT_PATH="/home/dev/Qt/5.15.0/gcc_64"
+  QT_PATH="/usr/lib/x86_64-linux-gnu/qt5"
   QT_PLUGINS_SOURCE_PATH="$QT_PATH/plugins"
   GUI_TRANSLATIONS_DIRECTORY_PATH="/usr/share/qt5/translations"
-  QT_LIBRARY_SOURCE_PATH="$QT_PATH/lib"
+  QT_LIBRARY_SOURCE_PATH="$QT_PATH/.."
 
   NOTIFY_CMD=`which notify-send`
   ZIP_PATH=`which zip`
@@ -180,6 +180,7 @@ chown -R root:root $PACKAGE_DIRECTORY
 
 cp -R resources/customizations $PACKAGE_DIRECTORY/
 cp resources/linux/openboard-ubz.xml $PACKAGE_DIRECTORY/etc/
+cp resources/linux/application-ubz.png $PACKAGE_DIRECTORY/etc/
 
 if $BUNDLE_QT; then
     cp -R resources/linux/run.sh $PACKAGE_DIRECTORY/
@@ -214,6 +215,7 @@ if $BUNDLE_QT; then
 
     notifyProgress "Copying and stripping Qt libraries"
     mkdir -p $QT_LIBRARY_DEST_PATH
+    copyQtLibrary libQt5Concurrent
     copyQtLibrary libQt5Core
     copyQtLibrary libQt5DBus
     copyQtLibrary libQt5Gui
@@ -287,6 +289,7 @@ cat > "$BASE_WORKING_DIR/DEBIAN/postinst" << EOF
 xdg-desktop-menu install --novendor /usr/share/applications/${APPLICATION_CODE}.desktop
 xdg-mime install --mode system /$APPLICATION_PATH/$APPLICATION_CODE/etc/openboard-ubz.xml
 xdg-mime default /usr/share/applications/${APPLICATION_CODE}.desktop application/ubz
+xdg-icon-resource install --context mimetypes --size 48 /$APPLICATION_PATH/$APPLICATION_CODE/etc/application-ubz.png application-ubz
 
 ln -s $SYMLINK_TARGET /usr/bin/$APPLICATION_CODE
 
@@ -399,8 +402,6 @@ echo "Type=Application" >> $APPLICATION_SHORTCUT
 echo "MimeType=application/ubz" >> $APPLICATION_SHORTCUT
 echo "Categories=Education;" >> $APPLICATION_SHORTCUT
 cp "resources/images/${APPLICATION_NAME}.png" "$PACKAGE_DIRECTORY/${APPLICATION_NAME}.png"
-
-
 
 # ----------------------------------------------------------------------------
 # Building the package

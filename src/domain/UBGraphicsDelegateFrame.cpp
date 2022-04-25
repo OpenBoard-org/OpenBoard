@@ -103,11 +103,10 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     mRotateButton->setCursor(UBResources::resources()->rotateCursor);
     mRotateButton->setVisible(mDelegate->testUBFlags(GF_REVOLVABLE));
 
-    updateResizeCursors();
-
     setAntiScale(1.0);
 
     positionHandles();
+    updateResizeCursors();
 
     this->setAcceptHoverEvents(true);
 }
@@ -839,6 +838,7 @@ void UBGraphicsDelegateFrame::positionHandles()
     resetTransform();
     setTransform(QTransform::fromTranslate(center.x(), center.y()), true);
     setTransform(QTransform().rotate(-angle), true);
+    mAngle = angle;
     setTransform(QTransform::fromTranslate(-center.x(), -center.y()), true);
     //TODO: combine these transforms into one
 

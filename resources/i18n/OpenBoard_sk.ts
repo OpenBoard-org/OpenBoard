@@ -351,7 +351,7 @@
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>Označiť obsah vo Flashi</translation>
+        <translation type="vanished">Označiť obsah vo Flashi</translation>
     </message>
     <message>
         <source>Import</source>
@@ -539,7 +539,7 @@
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation>Označiť Flash</translation>
+        <translation type="vanished">Označiť Flash</translation>
     </message>
     <message>
         <source>Window Capture</source>
@@ -843,6 +843,10 @@
         <source>Draw intermediate grid lines</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Capture Web Content</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -900,6 +904,14 @@
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
         <translation>Určite chcete odstrániť 1 stránku z vybraného dokumentu &apos;%0&apos;?</translation>
     </message>
+    <message>
+        <source>Loading scene (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moving cached scenes (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBApplication</name>
@@ -910,6 +922,10 @@
     <message>
         <source>Page Size</source>
         <translation>Veľkosť stránky</translation>
+    </message>
+    <message>
+        <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1240,6 +1256,10 @@
         <source>Title page</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Refreshing Document Thumbnails View (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1289,6 +1309,10 @@
     <message>
         <source>Page %0</source>
         <translation>Stránka %0</translation>
+    </message>
+    <message>
+        <source>Generating thumbnails for board (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2008,6 +2032,10 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Renaming pages (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -2172,6 +2200,10 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     <message>
         <source>Generating preview thumbnails ...</source>
         <translation>Vytvárajú sa ukážky miniatúr...</translation>
+    </message>
+    <message>
+        <source>Loading thumbnail (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2952,7 +2984,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation>Vyberte flash, ktorý chcete označiť</translation>
+        <translation type="vanished">Vyberte flash, ktorý chcete označiť</translation>
     </message>
     <message>
         <source>about:blank</source>
@@ -2965,6 +2997,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Create Application</source>
         <translation>Vytvoriť aplikáciu</translation>
+    </message>
+    <message>
+        <source>Select a content to capture</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

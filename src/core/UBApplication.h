@@ -35,7 +35,7 @@
 #include <QToolBar>
 #include <QMenu>
 
-#include "qtsingleapplication.h"
+#include "singleapplication/singleapplication.h"
 
 namespace Ui
 {
@@ -54,7 +54,7 @@ class UBApplicationController;
 class UBDocumentController;
 class UBMainWindow;
 
-class UBApplication : public QtSingleApplication
+class UBApplication : public SingleApplication
 {
     Q_OBJECT
 
@@ -85,6 +85,8 @@ class UBApplication : public QtSingleApplication
         static const QString mimeTypeUniboardPage;
         static const QString mimeTypeUniboardPageItem;
         static const QString mimeTypeUniboardPageThumbnail;
+
+        static QString fileToOpen;
 
         static void showMessage(const QString& message, bool showSpinningWheel = false);
         static void setDisabled(bool disable);

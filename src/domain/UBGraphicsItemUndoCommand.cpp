@@ -128,7 +128,7 @@ void UBGraphicsItemUndoCommand::undo()
         QGraphicsItem* item = itRemoved.next();
         if (item)
         {
-            if (UBItemLayerType::FixedBackground == item->data(UBGraphicsItemData::ItemLayerType))
+            if (itemLayerType::BackgroundItem == item->data(UBGraphicsItemData::itemLayerType))
                 mScene->setAsBackgroundObject(item);
             else
                 mScene->addItem(item);
@@ -246,7 +246,11 @@ void UBGraphicsItemUndoCommand::redo()
 
                 polygonItem->strokesGroup()->removeFromGroup(polygonItem);
             }
-            mScene->removeItem(item);
+
+            if (itemLayerType::BackgroundItem == item->data(UBGraphicsItemData::itemLayerType))
+                mScene->setAsBackgroundObject(nullptr);
+            else
+                mScene->removeItem(item);
 
             if (bApplyTransform)
                 item->setTransform(t);

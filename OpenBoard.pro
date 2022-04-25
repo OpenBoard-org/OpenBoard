@@ -1,7 +1,7 @@
 TARGET = "OpenBoard"
 TEMPLATE = app
 
-CONFIG += c++14
+CONFIG += c++17
 CONFIG -= flat
 CONFIG += debug_and_release \
           no_include_pwd
@@ -9,9 +9,9 @@ CONFIG += debug_and_release \
 
 VERSION_MAJ = 1
 VERSION_MIN = 6
-VERSION_PATCH = 1
-VERSION_TYPE = r # a = alpha, b = beta, rc = release candidate, r = release, other => error
-VERSION_BUILD = 0309
+VERSION_PATCH = 2
+VERSION_TYPE = rc # a = alpha, b = beta, rc = release candidate, r = release, other => error
+VERSION_BUILD = 0408
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$${VERSION_BUILD}"
 
@@ -40,6 +40,7 @@ QT += webkitwidgets
 QT += multimediawidgets
 QT += printsupport
 QT += core
+QT += concurrent
 
 INCLUDEPATH += src
 
@@ -57,7 +58,8 @@ include(src/podcast/podcast.pri)
 include(src/tools/tools.pri)
 include(src/desktop/desktop.pri)
 include(src/web/web.pri)
-include(src/qtsingleapplication/src/qtsingleapplication.pri)
+include(src/singleapplication/singleapplication.pri)
+DEFINES += QAPPLICATION_CLASS=QApplication
 
 DEPENDPATH += src/pdf-merger
 INCLUDEPATH += src/pdf-merger
@@ -177,26 +179,25 @@ macx {
    equals(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 14) {
       LIBS += "-L../OpenBoard-ThirdParty/quazip/lib/macx" "-lquazip"
    } else {
-       LIBS += -L/usr/local/opt/quazip/lib -lquazip
+       LIBS += -L/usr/local/opt/quazip/lib -lquazip1-qt5
    }
-   LIBS += -L/usr/local/opt/ffmpeg/lib
+   LIBS += -L/opt/local/lib
    INCLUDEPATH += /usr/local/opt/openssl/include
-   INCLUDEPATH += /usr/local/opt/ffmpeg/include
+   INCLUDEPATH += /opt/local/include
    equals(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 14) {
        INCLUDEPATH += ../OpenBoard-ThirdParty/quazip/quazip-0.7.1
    } else {
        INCLUDEPATH += /usr/local/opt/quazip/include/quazip
    }
 
-   LIBS        += -L/usr/local/opt/poppler/lib -lpoppler
-   INCLUDEPATH += /usr/local/opt/poppler/include
-   INCLUDEPATH += /usr/local/opt/poppler/include/poppler
+   LIBS        += -L/opt/local/lib -lpoppler
+   INCLUDEPATH += /opt/local/include/poppler
 
    CONFIG(release, debug|release):CONFIG += x86_64
    CONFIG(debug, debug|release):CONFIG += x86_64
 
    QMAKE_MAC_SDK = macosx
-   QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.10
+   QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.13
 
    QMAKE_CXXFLAGS += -Wno-overloaded-virtual
    #VERSION_RC_PATH = "$$BUILD_DIR/version_rc"
@@ -451,7 +452,7 @@ linux-g++* {
     #LIBS += -lprofiler
     LIBS += -lX11
     LIBS += -lquazip5
-    INCLUDEPATH += "/usr/include/quazip"
+    INCLUDEPATH += "/usr/include/quazip5"
 
     LIBS += -lpoppler
     INCLUDEPATH += "/usr/include/poppler"

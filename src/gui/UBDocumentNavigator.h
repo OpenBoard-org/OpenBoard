@@ -53,12 +53,16 @@ public:
     int nbColumns();
     void setThumbnailMinWidth(int width);
     int thumbnailMinWidth();
+    void clearSelection();
     UBSceneThumbnailNavigPixmap* clickedThumbnail(const QPoint pos) const;
 
 public slots:
     void onScrollToSelectedPage(int index);// { if (mCrntItem) centerOn(mCrntItem); }
     void generateThumbnails(UBDocumentContainer* source);
-    void updateSpecificThumbnail(int iPage);    
+    void insertThumbnail(int index);
+    void updateThumbnail(int index);
+    void removeThumbnail(int index);
+    void moveThumbnail(int from, int to);
 
     void longPressTimeout();
     void mousePressAndHoldEvent();

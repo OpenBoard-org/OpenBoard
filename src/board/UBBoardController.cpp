@@ -346,6 +346,8 @@ void UBBoardController::setupToolbar()
             , lineWidthChoice, SLOT(setCurrentIndex(int)));
 
     lineWidthChoice->displayText(QVariant(settings->appToolBarDisplayText->get().toBool()));
+    lineWidthChoice->setCurrentIndex(settings->penWidthIndex());
+    lineWidthActions.at(settings->penWidthIndex())->setChecked(true);
 
     mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, lineWidthChoice);
 
@@ -367,6 +369,7 @@ void UBBoardController::setupToolbar()
 
     eraserWidthChoice->displayText(QVariant(settings->appToolBarDisplayText->get().toBool()));
     eraserWidthChoice->setCurrentIndex(settings->eraserWidthIndex());
+    eraserWidthActions.at(settings->eraserWidthIndex())->setChecked(true);
 
     mMainWindow->boardToolBar->insertSeparator(mMainWindow->actionBackgrounds);
 
@@ -521,6 +524,11 @@ void UBBoardController::addScene()
     persistCurrentScene(false,true);
 
     UBDocumentContainer::addPage(mActiveSceneIndex + 1);
+    if (UBApplication::documentController->selectedDocument() == selectedDocument())
+    {
+        UBApplication::documentController->insertThumbPage(mActiveSceneIndex+1);
+        UBApplication::documentController->reloadThumbnails();
+    }
 
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
@@ -580,11 +588,13 @@ void UBBoardController::duplicateScene(int nIndex)
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     persistCurrentScene(false,true);
 
-    QList<int> scIndexes;
-    scIndexes << nIndex;
-    duplicatePages(scIndexes);
+    duplicatePage(nIndex);
     insertThumbPage(nIndex);
-    emit documentThumbnailsUpdated(this);
+    if (UBApplication::documentController->selectedDocument() == selectedDocument())
+    {
+        UBApplication::documentController->insertThumbPage(nIndex);
+        UBApplication::documentController->reloadThumbnails();
+    }
     emit addThumbnailRequired(this, nIndex + 1);
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
@@ -725,11 +735,19 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
 
     case UBMimeType::UNKNOWN:
         {
+            QGraphicsItem *copiedItem = dynamic_cast<QGraphicsItem*>(item);
             QGraphicsItem *gitem = dynamic_cast<QGraphicsItem*>(item->deepCopy());
             if (gitem)
             {
                 mActiveScene->addItem(gitem);
 
+                if (copiedItem)
+                {
+                    if (mActiveScene->tools().contains(copiedItem))
+                    {
+                        mActiveScene->registerTool(gitem);
+                    }
+                }
                 gitem->setPos(itemPos);
 
                 mLastCreatedItem = gitem;
@@ -779,6 +797,10 @@ void UBBoardController::deleteScene(int nIndex)
         QList<int> scIndexes;
         scIndexes << nIndex;
         deletePages(scIndexes);
+        if (UBApplication::documentController->selectedDocument() == selectedDocument())
+        {
+            UBApplication::documentController->deleteThumbPage(nIndex);
+        }
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         UBMetadataDcSubsetAdaptor::persist(selectedDocument());
 
@@ -865,7 +887,6 @@ void UBBoardController::showKeyboard(bool show)
         UBPlatformUtils::showOSK(show);
     else
         mPaletteManager->showVirtualKeyboard(show);
-
 }
 
 
@@ -984,7 +1005,7 @@ void UBBoardController::previousScene()
         persistViewPositionOnCurrentScene();
         persistCurrentScene();
         setActiveDocumentScene(mActiveSceneIndex - 1);
-        mControlView->centerOn(mActiveScene->lastCenter());
+        centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -1000,7 +1021,7 @@ void UBBoardController::nextScene()
         persistViewPositionOnCurrentScene();
         persistCurrentScene();
         setActiveDocumentScene(mActiveSceneIndex + 1);
-        mControlView->centerOn(mActiveScene->lastCenter());
+        centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -1016,7 +1037,7 @@ void UBBoardController::firstScene()
         persistViewPositionOnCurrentScene();
         persistCurrentScene();
         setActiveDocumentScene(0);
-        mControlView->centerOn(mActiveScene->lastCenter());
+        centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -1032,7 +1053,7 @@ void UBBoardController::lastScene()
         persistViewPositionOnCurrentScene();
         persistCurrentScene();
         setActiveDocumentScene(selectedDocument()->pageCount() - 1);
-        mControlView->centerOn(mActiveScene->lastCenter());
+        centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -1418,12 +1439,16 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
                 QStringList fileNames;
                 fileNames << pdfFile.fileName();
                 result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
-                emit documentThumbnailsUpdated(this);
+                reloadThumbnails();
                 pdfFile.close();
             }
         }
 
-        if (result){
+        if (result)
+        {
+            if (UBApplication::documentController->selectedDocument() == selectedDocument())
+                UBApplication::documentController->reloadThumbnails();
+
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         }
     }
@@ -1618,7 +1643,12 @@ void UBBoardController::moveSceneToIndex(int source, int target)
     {
         persistCurrentScene(false,true);
 
-        UBDocumentContainer::movePageToIndex(source, target);
+        UBPersistenceManager::persistenceManager()->moveSceneToIndex(selectedDocument(), source, target);
+        UBDocumentContainer::moveThumbPage(source, target);
+        if (UBApplication::documentController->selectedDocument() == selectedDocument())
+        {
+            UBApplication::documentController->moveThumbPage(source, target);
+        }
 
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
@@ -1632,11 +1662,11 @@ void UBBoardController::moveSceneToIndex(int source, int target)
     }
 }
 
-void UBBoardController::findUniquesItems(const QUndoCommand *parent, QSet<QGraphicsItem*> &itms)
+void UBBoardController::findUniquesItems(const QUndoCommand *parent, QSet<QGraphicsItem*> &items)
 {
     if (parent->childCount()) {
         for (int i = 0; i < parent->childCount(); i++) {
-            findUniquesItems(parent->child(i), itms);
+            findUniquesItems(parent->child(i), items);
         }
     }
 
@@ -1657,16 +1687,26 @@ void UBBoardController::findUniquesItems(const QUndoCommand *parent, QSet<QGraph
     while (itAdded.hasNext())
     {
         QGraphicsItem* item = itAdded.next();
-        if( !itms.contains(item) && !(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()))
-            itms.insert(item);
+        if (!items.contains(item) &&
+            !(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()) &&
+            !items.contains(item->parentItem())
+            )
+        {
+            items.insert(item);
+        }
     }
 
     QSetIterator<QGraphicsItem*> itRemoved(cmd->GetRemovedList());
     while (itRemoved.hasNext())
     {
         QGraphicsItem* item = itRemoved.next();
-        if( !itms.contains(item) && !(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()))
-            itms.insert(item);
+        if (!items.contains(item) &&
+            !(item->parentItem() && UBGraphicsGroupContainerItem::Type == item->parentItem()->type()) &&
+            !items.contains(item->parentItem())
+            )
+        {
+            items.insert(item);
+        }
     }
 }
 
@@ -1867,7 +1907,7 @@ void UBBoardController::documentSceneChanged(UBDocumentProxy* pDocumentProxy, in
     if(selectedDocument() == pDocumentProxy)
     {
         setActiveDocumentScene(mActiveSceneIndex);
-        updatePage(pIndex);
+        updateThumbPage(pIndex);
     }
 }
 
@@ -1906,7 +1946,12 @@ void UBBoardController::closing()
     mIsClosing = true;
     lastWindowClosed();
     ClearUndoStack();
-    showKeyboard(false);
+#ifdef Q_OS_OSX
+    if (!UBPlatformUtils::errorOpeningVirtualKeyboard)
+        showKeyboard(false);
+#else
+        showKeyboard(false);
+#endif
 }
 
 void UBBoardController::lastWindowClosed()
@@ -2010,8 +2055,12 @@ void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool force
             && (mActiveSceneIndex >= 0) && mActiveSceneIndex != mMovingSceneIndex
             && (mActiveScene->isModified()))
     {
-        UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex);
-        updatePage(mActiveSceneIndex);
+        UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, isAnAutomaticBackup);
+        updateThumbPage(mActiveSceneIndex);
+        if (UBApplication::documentController->selectedDocument() == selectedDocument())
+        {
+            UBApplication::documentController->updateThumbPage(mActiveSceneIndex);
+        }
     }
 }
 
@@ -2142,7 +2191,14 @@ void UBBoardController::stylusToolChanged(int tool)
         if(eTool != UBStylusTool::Selector && eTool != UBStylusTool::Text)
         {
             if(mPaletteManager->mKeyboardPalette->m_isVisible)
+            {
+#ifdef Q_OS_OSX
+                if (!UBPlatformUtils::errorOpeningVirtualKeyboard)
+                    UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction::Trigger);
+#else
                 UBApplication::mainWindow->actionVirtualKeyboard->activate(QAction::Trigger);
+#endif
+            }
         }
     }
 

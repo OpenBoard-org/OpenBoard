@@ -138,12 +138,41 @@
                     if($("#textbox").val().length > 0){
                         loadingState = false;
                         var url = $("#textbox").val();
-                        var urlStart = url.split("://");
-									
-                        if(urlStart[0]!="http"){
-                            url = "http://" + url;
-                        };
-						
+                        if(!url.startsWith("http"))
+                        {
+                            url = "https://" + url;
+                            $("#textbox").val(url);
+                        }
+
+			//non-exhaustive. add new names here as it is requested
+			var x_frame_options_secured_sites = [
+				"google.",
+				"youtube.",
+				"stackoverflow.",
+				"facebook.",
+				"github.",
+				"twitter.",
+				"amazon.",
+				"linkedin.",
+				"ebay."
+			];
+
+			var iframe_denied = x_frame_options_secured_sites.some(function(element, indice, array)
+			{
+				return url.includes(element);
+			});
+
+			if (iframe_denied)
+			{
+				$("#container").addClass("error");
+				$("#web-content").hide();
+				$("#container-shadow").hide();
+				$("#content").hide();
+				$("#arrow").hide();
+				$("#notifications").html(sankoreLang[lang].error_xframe_options);
+				return false;
+			}
+
                         if(checkURLs(references, url)){
                             if(currentHistory == references.length)
                                 references[currentHistory++] = url;
@@ -158,7 +187,8 @@
                         $("#arrow").hide();
                         $("#embeded-content").hide();
                         $("#web-content").hide();
-                        $('#web-content').attr('src',url);
+                        $('#web-content').contents().find("body").html("");
+                        $('#web-content').attr('src', url);
 							
                         checkcontent();
                         checkLoading();
@@ -225,11 +255,12 @@
                     };
                     if(resizerIndex > 80){
                         resizerIndex = 0;
-                        console.log("error on loading page");
-                        $("#back-button").trigger("click");
-                        $("#textbox").val($("#textbox").val().replace("http://", ""));
-                        $("#textbox").val("http://www.metacrawler.com/search/web?&q=" + $("#textbox").val().replace("http://", "")+"&ql=");
-                        $("#search-button").trigger("click");
+                        $("#container").addClass("error");
+                        $("#web-content").hide();
+                        $("#container-shadow").hide();
+                        $("#content").hide();
+                        $("#arrow").hide();
+                        $("#notifications").html(sankoreLang[lang].error_loading_page);
                     }else{
                         resizer = setTimeout(function(){checkLoading()}, 100);
                         resizerIndex++;
@@ -280,6 +311,7 @@
             </div>
 
             <div id="container" class="welcome">
+                <div id="notifications"></div>
                 <div id="arrow"><img src="imgs/arrow.png" alt="arrow-top"></div>
 
                 <div id="show-container">

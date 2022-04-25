@@ -286,7 +286,6 @@ int UBDocumentManager::addFilesToDocument(UBDocumentProxy* document, QStringList
                         UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(document, pageIndex);
                         importAdaptor->placeImportedItemToScene(scene, page);
                         UBPersistenceManager::persistenceManager()->persistDocumentScene(document, scene, pageIndex);
-                        UBApplication::boardController->insertThumbPage(pageIndex);
                     }
 
                     UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);

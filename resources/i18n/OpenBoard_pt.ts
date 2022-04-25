@@ -698,11 +698,11 @@
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation>Captura de Flash</translation>
+        <translation type="vanished">Captura de Flash</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>Captura de Conteúdo Flash</translation>
+        <translation type="vanished">Captura de Conteúdo Flash</translation>
     </message>
     <message>
         <source>Web Trap</source>
@@ -841,6 +841,10 @@
         <source>Draw intermediate grid lines</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Capture Web Content</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -898,6 +902,14 @@
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
         <translation>Tem a certeza que quer remover 1 página do documento selecionado &apos;%0&apos;?</translation>
     </message>
+    <message>
+        <source>Loading scene (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moving cached scenes (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBApplication</name>
@@ -908,6 +920,10 @@
     <message>
         <source>Podcast</source>
         <translation>Podcast</translation>
+    </message>
+    <message>
+        <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1236,6 +1252,10 @@
         <source>Title page</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Refreshing Document Thumbnails View (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1285,6 +1305,10 @@
     <message>
         <source>Page %0</source>
         <translation>Página %0</translation>
+    </message>
+    <message>
+        <source>Generating thumbnails for board (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2002,6 +2026,10 @@ Quer ignorar estes erros, deste servidor?</translation>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Renaming pages (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -2157,6 +2185,10 @@ Quer ignorar estes erros, deste servidor?</translation>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 de miniaturas geradas ...</translation>
+    </message>
+    <message>
+        <source>Loading thumbnail (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2940,7 +2972,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation>Selecionar o flash a capturar</translation>
+        <translation type="vanished">Selecionar o flash a capturar</translation>
     </message>
     <message>
         <source>about:blank</source>
@@ -2953,6 +2985,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Create Application</source>
         <translation>Criar Aplicação</translation>
+    </message>
+    <message>
+        <source>Select a content to capture</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

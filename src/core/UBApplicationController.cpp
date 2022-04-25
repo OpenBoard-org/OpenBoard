@@ -351,11 +351,11 @@ void UBApplicationController::showBoard()
 
     if (mMainMode == Document)
     {
-        int selectedSceneIndex = UBApplication::documentController->getSelectedItemIndex();
-        if (selectedSceneIndex != -1)
-        {
-            UBApplication::boardController->setActiveDocumentScene(UBApplication::documentController->selectedDocument(), selectedSceneIndex, true);
-        }
+//        int selectedSceneIndex = UBApplication::documentController->getSelectedItemIndex();
+//        if (selectedSceneIndex != -1)
+//        {
+//            UBApplication::boardController->setActiveDocumentScene(UBApplication::documentController->selectedDocument(), selectedSceneIndex);
+//        }
     }
 
     mMainMode = Board;
@@ -435,12 +435,12 @@ void UBApplicationController::showDocument()
     {
         if (UBApplication::boardController->activeScene()->isModified())
             UBApplication::boardController->persistCurrentScene();
+
         UBApplication::boardController->hide();
     }
 
     if (UBApplication::documentController)
     {
-        emit UBApplication::documentController->reorderDocumentsRequested();
         UBApplication::documentController->show();
     }
 
@@ -464,6 +464,7 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
     if (mMirror)
     {
         QRect rect = qApp->desktop()->screenGeometry(desktopWidgetIndex);
+        rect.moveTo(0, 0);
         mMirror->setSourceRect(rect);
     }
 

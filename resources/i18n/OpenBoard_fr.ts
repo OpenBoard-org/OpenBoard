@@ -181,11 +181,11 @@
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation>Capturer du contenu Flash</translation>
+        <translation type="vanished">Capturer du contenu Flash</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>Capturer du contenu Flash</translation>
+        <translation type="vanished">Capturer du contenu Flash</translation>
     </message>
     <message>
         <source>Web Trap</source>
@@ -840,6 +840,10 @@
         <source>Draw intermediate grid lines</source>
         <translation>Dessiner des lignes intermédiaires</translation>
     </message>
+    <message>
+        <source>Capture Web Content</source>
+        <translation>Capturer du contenu web</translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -897,6 +901,14 @@
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
         <translation>Voulez-vous vraiment effacer 1 page de ce document &apos;%0&apos;?</translation>
     </message>
+    <message>
+        <source>Loading scene (%1/%2)</source>
+        <translation>Chargement de la scène (%1/%2)</translation>
+    </message>
+    <message>
+        <source>Moving cached scenes (%1/%2)</source>
+        <translation>Déplacement des scènes mises en cache (%1/%2)</translation>
+    </message>
 </context>
 <context>
     <name>UBApplication</name>
@@ -907,6 +919,10 @@
     <message>
         <source>Podcast</source>
         <translation>Podcast</translation>
+    </message>
+    <message>
+        <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
+        <translation>Impossible d&apos;ouvrir un fichier UBX directement. Veuillez l&apos;importer depuis le mode Documents</translation>
     </message>
 </context>
 <context>
@@ -1251,6 +1267,10 @@
         <source>Empty My Documents</source>
         <translation type="vanished">Vider Mes Documents</translation>
     </message>
+    <message>
+        <source>Refreshing Document Thumbnails View (%1/%2)</source>
+        <translation>Actualisation des aperçus du mode Documents (%1/%2)</translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1301,6 +1321,10 @@
     <message>
         <source>Page %0</source>
         <translation>Page %0</translation>
+    </message>
+    <message>
+        <source>Generating thumbnails for board (%1/%2)</source>
+        <translation>Création des aperçus du mode Tableau (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -2041,6 +2065,10 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation>OpenBoard a perdu l&apos;accès au répertoire des documents &apos;%1&apos;. Malheureusement, l&apos;application sera fermée afin d&apos;éviter la corruption des données. Les dernières modifications pourraient être également perdues.</translation>
     </message>
+    <message>
+        <source>Renaming pages (%1/%2)</source>
+        <translation>Actualisation des noms des pages en cours (%1/%2)</translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
@@ -2207,6 +2235,10 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
     <message>
         <source>loading thumbnail of page %1</source>
         <translation type="vanished">Chargement aperçu page %1</translation>
+    </message>
+    <message>
+        <source>Loading thumbnail (%1/%2)</source>
+        <translation>Chargement de l&apos;aperçu (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -2995,7 +3027,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation>Sélectionner un contenu Flash à capturer</translation>
+        <translation type="vanished">Sélectionner un contenu Flash à capturer</translation>
     </message>
     <message>
         <source>about:blank</source>
@@ -3008,6 +3040,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Create Application</source>
         <translation>Créer une application</translation>
+    </message>
+    <message>
+        <source>Select a content to capture</source>
+        <translation>Sélectionner un contenu à capturer</translation>
     </message>
 </context>
 </TS>

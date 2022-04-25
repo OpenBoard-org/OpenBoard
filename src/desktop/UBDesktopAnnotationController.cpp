@@ -129,6 +129,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     connect(mDesktopPalette, SIGNAL(minimizeStart(eMinimizedLocation)), this, SLOT(onDesktopPaletteMinimize()));
     connect(mDesktopPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene, SLOT(hideTool()));
     connect(mRightPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene, SLOT(hideTool()));
+    connect(mRightPalette, SIGNAL(pageSelectionChangedRequired()), this, SLOT(updateBackground()));
 
     connect(mTransparentDrawingView, SIGNAL(resized(QResizeEvent*)), this, SLOT(onTransparentWidgetResized()));
 
@@ -515,6 +516,7 @@ QPixmap UBDesktopAnnotationController::getScreenPixmap()
     QScreen * screen = UBApplication::controlScreen();
 
     QRect rect = desktop->screenGeometry(QCursor::pos());
+    rect.moveTo(0, 0);
 
     return screen->grabWindow(desktop->effectiveWinId(),
                               rect.x(), rect.y(), rect.width(), rect.height());
@@ -555,7 +557,7 @@ void UBDesktopAnnotationController::penActionPressed()
 
     // Check if the mouse cursor is on the little arrow
     QPoint cursorPos = QCursor::pos();
-    QPoint palettePos = mDesktopPalette->pos();
+    QPoint palettePos = mDesktopPalette->mapToGlobal(QPoint(0, 0));  // global coordinates of palette
     QPoint buttonPos = mDesktopPalette->buttonPos(UBApplication::mainWindow->actionPen);
 
     int iX = cursorPos.x() - (palettePos.x() + buttonPos.x());    // x position of the cursor in the palette
@@ -609,7 +611,7 @@ void UBDesktopAnnotationController::eraserActionPressed()
 
     // Check if the mouse cursor is on the little arrow
     QPoint cursorPos = QCursor::pos();
-    QPoint palettePos = mDesktopPalette->pos();
+    QPoint palettePos = mDesktopPalette->mapToGlobal(QPoint(0, 0));
     QPoint buttonPos = mDesktopPalette->buttonPos(UBApplication::mainWindow->actionEraser);
 
     int iX = cursorPos.x() - (palettePos.x() + buttonPos.x());    // x position of the cursor in the palette
@@ -664,7 +666,7 @@ void UBDesktopAnnotationController::markerActionPressed()
 
     // Check if the mouse cursor is on the little arrow
     QPoint cursorPos = QCursor::pos();
-    QPoint palettePos = mDesktopPalette->pos();
+    QPoint palettePos = mDesktopPalette->mapToGlobal(QPoint(0, 0));
     QPoint buttonPos = mDesktopPalette->buttonPos(UBApplication::mainWindow->actionMarker);
 
     int iX = cursorPos.x() - (palettePos.x() + buttonPos.x());    // x position of the cursor in the palette
@@ -966,7 +968,7 @@ void UBDesktopAnnotationController::updateMask(bool bTransparent)
         p.setPen(Qt::red);
         p.setBrush(QBrush(Qt::red));
 
-        p.drawRect(mTransparentDrawingView->geometry().x(), mTransparentDrawingView->geometry().y(), mTransparentDrawingView->width(), mTransparentDrawingView->height());
+        p.drawRect(0, 0, mTransparentDrawingView->width(), mTransparentDrawingView->height());
         p.end();
 
         mTransparentDrawingView->setMask(mMask.mask());

@@ -68,6 +68,8 @@
 	<string>sparkle_public_key.pem</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Accès au microphone requis</string>
+	<key>NSAppleEventsUsageDescription</key>
+	<string>Accès au clavier virtuel requis</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>

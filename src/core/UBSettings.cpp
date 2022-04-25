@@ -61,7 +61,6 @@ QString UBSettings::documentSize = QString("Size");
 QString UBSettings::documentIdentifer = QString("ID");
 QString UBSettings::documentVersion = QString("Version");
 QString UBSettings::documentUpdatedAt = QString("UpdatedAt");
-QString UBSettings::documentPageCount = QString("PageCount");
 QString UBSettings::documentDate = QString("date");
 
 QString UBSettings::trashedDocumentGroupNamePrefix = QString("_Trash:");
@@ -73,6 +72,7 @@ QString UBSettings::undoCommandTransactionName = "UndoTransaction";
 
 const int UBSettings::sDefaultFontPixelSize = 36;
 const char *UBSettings::sDefaultFontFamily = "Arial";
+const char *UBSettings::sDefaultFontStyleName = "Regular";
 
 QString UBSettings::currentFileVersion = "4.8.0";
 
@@ -361,9 +361,6 @@ void UBSettings::init()
     webShowPageImmediatelyOnMirroredScreen = new UBSetting(this, "Web", "ShowPageImediatelyOnMirroredScreen", defaultShowPageImmediatelyOnMirroredScreen);
 
     webHomePage = new UBSetting(this, "Web", "Homepage", softwareHomeUrl);
-    webBookmarksPage = new UBSetting(this, "Web", "BookmarksPage", "http://www.myuniboard.com");
-    webAddBookmarkUrl = new UBSetting(this, "Web", "AddBookmarkURL", "http://www.myuniboard.com/bookmarks/save/?url=");
-    webShowAddBookmarkButton = new UBSetting(this, "Web", "ShowAddBookmarkButton", false);
 
     pageCacheSize = new UBSetting(this, "App", "PageCacheSize", 20);
 
@@ -412,6 +409,8 @@ void UBSettings::init()
 
     pdfZoomBehavior = new UBSetting(this, "PDF", "ZoomBehavior", "4");
     enableQualityLossToIncreaseZoomPerfs = new UBSetting(this, "PDF", "enableQualityLossToIncreaseZoomPerfs", true);
+    exportBackgroundGrid = new UBSetting(this, "PDF", "ExportBackgroundGrid", false);
+    exportBackgroundColor = new UBSetting(this, "PDF", "ExportBackgroundColor", false);
 
     podcastFramesPerSecond = new UBSetting(this, "Podcast", "FramesPerSecond", 10);
     podcastVideoSize = new UBSetting(this, "Podcast", "VideoSize", "Medium");
@@ -870,6 +869,17 @@ void UBSettings::setFontFamily(const QString &family)
     setValue("Board/FontFamily", family);
 }
 
+
+QString UBSettings::fontStyleName()
+{
+    return value("Board/FontStyleName", sDefaultFontStyleName).toString();
+}
+
+
+void UBSettings::setFontStyleName(const QString &styleName)
+{
+    setValue("Board/FontStyleName", styleName);
+}
 
 int UBSettings::fontPixelSize()
 {

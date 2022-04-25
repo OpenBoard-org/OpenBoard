@@ -56,6 +56,7 @@ UBDocumentProxy::UBDocumentProxy(const UBDocumentProxy &rValue) :
     mPageCount = rValue.mPageCount;
 }
 
+
 UBDocumentProxy::UBDocumentProxy(const QString& pPersistancePath)
     : mPageCount(0)
     , mPageDpi(0)
@@ -64,17 +65,6 @@ UBDocumentProxy::UBDocumentProxy(const QString& pPersistancePath)
     setPersistencePath(pPersistancePath);
 
     mMetaDatas = UBMetadataDcSubsetAdaptor::load(pPersistancePath);
-}
-
-
-UBDocumentProxy::UBDocumentProxy(const QString& pPersistancePath, QMap<QString, QVariant> metadatas)
-    : mPageCount(0)
-    , mPageDpi(0)
-{
-    init();
-    setPersistencePath(pPersistancePath);
-
-    mMetaDatas = metadatas;
 }
 
 

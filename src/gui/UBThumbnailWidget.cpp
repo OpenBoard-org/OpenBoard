@@ -67,13 +67,11 @@ UBThumbnailWidget::UBThumbnailWidget(QWidget* parent)
 
     setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
-    connect(&mThumbnailsScene, SIGNAL(selectionChanged()), this, SLOT(sceneSelectionChanged()));
 }
 
 
 UBThumbnailWidget::~UBThumbnailWidget()
 {
-    disconnect(&mThumbnailsScene, SIGNAL(selectionChanged()));
 }
 
 
@@ -108,7 +106,6 @@ void UBThumbnailWidget::setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsI
     {
         mThumbnailsScene.removeItem(it, true);
     }
-
     // set lasso to 0 as it has been cleared as well
     mLassoRectItem = 0;
 
@@ -136,6 +133,12 @@ void UBThumbnailWidget::setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsI
     mLastSelectedThumbnail = 0;
 }
 
+void UBThumbnailWidget::insertThumbnailToScene(QGraphicsPixmapItem* newThumbnail, UBThumbnailTextItem* thumbnailTextItem)
+{
+       mThumbnailsScene.addItem(newThumbnail);
+       mThumbnailsScene.addItem(thumbnailTextItem);
+}
+
 
 void UBThumbnailWidget::refreshScene()
 {
@@ -155,6 +158,10 @@ void UBThumbnailWidget::refreshScene()
     for (int i = 0; i < mGraphicItems.size(); i++)
     {
         QGraphicsItem* item = mGraphicItems.at(i);
+
+        UBSceneThumbnailPixmap *thumbnail = dynamic_cast<UBSceneThumbnailPixmap*>(item);
+        if (thumbnail)
+            thumbnail->setSceneIndex(i);
 
         qreal scaleWidth = mThumbnailWidth / item->boundingRect().width();
         qreal scaleHeight = thumbnailHeight / item->boundingRect().height();
@@ -192,8 +199,10 @@ void UBThumbnailWidget::refreshScene()
 
         if (mLabelsItems.size() > i)
         {
+            mLabelsItems.at(i)->setWidth(mThumbnailWidth);
+            mLabelsItems.at(i)->setPageNumber(i+1);
             QFontMetrics fm(mLabelsItems.at(i)->font(), this);
-            QString elidedText = fm.elidedText(mLabels.at(i), Qt::ElideRight, mThumbnailWidth);
+            QString elidedText = fm.elidedText(mLabelsItems.at(i)->toPlainText(), Qt::ElideRight, mThumbnailWidth);
 
             mLabelsItems.at(i)->setPlainText(elidedText);
             mLabelsItems.at(i)->setWidth(fm.width(elidedText) + 2 * mLabelsItems.at(i)->document()->documentMargin());
@@ -221,6 +230,11 @@ QList<QGraphicsItem*> UBThumbnailWidget::selectedItems()
     QList<QGraphicsItem*> sortedSelectedItems = mThumbnailsScene.selectedItems();
     qSort(sortedSelectedItems.begin(), sortedSelectedItems.end(), thumbnailLessThan);
     return sortedSelectedItems;
+}
+
+void UBThumbnailWidget::clearSelection()
+{
+    mThumbnailsScene.clearSelection();
 }
 
 
@@ -301,7 +315,6 @@ void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
                 }
                 mSelectionSpan = index2 - index1;
                 selectItems(qMin(index1, index2), mSelectionSpan < 0 ? - mSelectionSpan + 1 : mSelectionSpan + 1);
-                return;
             }
         }
     }
@@ -320,8 +333,9 @@ void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
         if (!mLastSelectedThumbnail && mGraphicItems.count() > 0)
             mLastSelectedThumbnail = dynamic_cast<UBThumbnail*>(mGraphicItems.at(0));
         mSelectionSpan = 0;
-        return;
     }
+
+    UBApplication::documentController->pageSelectionChanged();
 }
 
 

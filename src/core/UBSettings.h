@@ -97,6 +97,8 @@ class UBSettings : public QObject
         // Text related
         QString fontFamily();
         void setFontFamily(const QString &family);
+        QString fontStyleName();
+        void setFontStyleName(const QString &family);
         int fontPixelSize();
         void setFontPixelSize(int pixelSize);
         int fontPointSize();
@@ -202,7 +204,6 @@ class UBSettings : public QObject
         static QString documentIdentifer;
         static QString documentVersion;
         static QString documentUpdatedAt;
-        static QString documentPageCount;
 
         static QString documentDate;
 
@@ -328,9 +329,6 @@ class UBSettings : public QObject
         UBSetting* webShowPageImmediatelyOnMirroredScreen;
 
         UBSetting* webHomePage;
-        UBSetting* webBookmarksPage;
-        UBSetting* webAddBookmarkUrl;
-        UBSetting* webShowAddBookmarkButton;
 
         UBSetting* pageCacheSize;
 
@@ -363,6 +361,8 @@ class UBSettings : public QObject
 
         UBSetting* pdfZoomBehavior;
         UBSetting* enableQualityLossToIncreaseZoomPerfs;
+        UBSetting* exportBackgroundGrid;
+        UBSetting* exportBackgroundColor;
 
         UBSetting* podcastFramesPerSecond;
         UBSetting* podcastVideoSize;
@@ -466,6 +466,7 @@ class UBSettings : public QObject
 
         static const int sDefaultFontPixelSize;
         static const char *sDefaultFontFamily;
+        static const char *sDefaultFontStyleName;
 
         static QSettings* getAppSettings();
 

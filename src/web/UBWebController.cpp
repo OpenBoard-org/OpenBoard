@@ -141,10 +141,6 @@ void UBWebController::webBrowserInstance()
             UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->webToolBar, mMainWindow->actionBoard, 32);
             UBApplication::app()->decorateActionMenu(mMainWindow->actionMenu);
 
-            bool showAddBookmarkButtons = UBSettings::settings()->webShowAddBookmarkButton->get().toBool();
-            mMainWindow->actionBookmarks->setVisible(showAddBookmarkButtons);
-            mMainWindow->actionAddBookmark->setVisible(showAddBookmarkButtons);
-
             showTabAtTop(UBSettings::settings()->appToolBarPositionedAtTop->get().toBool());
 
             adaptToolBar();
@@ -308,7 +304,7 @@ void UBWebController::setupPalettes()
                     UBApplication::boardController->paletteManager()->mKeyboardPalette, SLOT(onDeactivated()));
 #endif
 
-        connect(mMainWindow->actionWebTrapFlash, SIGNAL(triggered()), this, SLOT(trapFlash()));
+        connect(mMainWindow->actionCaptureWebContent, SIGNAL(triggered()), this, SLOT(trapFlash()));
         connect(mMainWindow->actionWebCustomCapture, SIGNAL(triggered()), this, SLOT(customCapture()));
         connect(mMainWindow->actionWebWindowCapture, SIGNAL(triggered()), this, SLOT(captureWindow()));
         connect(mMainWindow->actionWebOEmbed, SIGNAL(triggered()), this, SLOT(captureoEmbed()));

@@ -110,32 +110,6 @@ UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDele
     , delta(5)
 {
     delegated()->setData(UBGraphicsItemData::ItemEditable, QVariant(true));
-    delegated()->setPlainText("");
-
-    QTextCursor curCursor = delegated()->textCursor();
-    QTextCharFormat format;
-    QFont font(createDefaultFont());
-
-    font.setPointSize(UBSettings::settings()->fontPointSize());
-    format.setFont(font);
-    if (UBSettings::settings()->isDarkBackground())
-    {
-        if (UBGraphicsTextItem::lastUsedTextColor == Qt::black)
-            UBGraphicsTextItem::lastUsedTextColor = Qt::white;
-    }
-    else
-    {
-        if (UBGraphicsTextItem::lastUsedTextColor == Qt::white)
-            UBGraphicsTextItem::lastUsedTextColor = Qt::black;
-    }
-    delegated()->setDefaultTextColor(UBGraphicsTextItem::lastUsedTextColor);
-    format.setForeground(QBrush(UBGraphicsTextItem::lastUsedTextColor));
-    curCursor.mergeCharFormat(format);
-    delegated()->setTextCursor(curCursor);
-    delegated()->setFont(font);
-
-    delegated()->adjustSize();
-    delegated()->contentsChanged();
 
     connect(delegated()->document(), SIGNAL(cursorPositionChanged(QTextCursor)), this, SLOT(onCursorPositionChanged(QTextCursor)));
     connect(delegated()->document(), SIGNAL(modificationChanged(bool)), this, SLOT(onModificationChanged(bool)));
@@ -144,31 +118,6 @@ UBGraphicsTextItemDelegate::UBGraphicsTextItemDelegate(UBGraphicsTextItem* pDele
 UBGraphicsTextItemDelegate::~UBGraphicsTextItemDelegate()
 {
     // NOOP
-}
-
-QFont UBGraphicsTextItemDelegate::createDefaultFont()
-{
-    QTextCharFormat textFormat;
-
-    QString fFamily = UBSettings::settings()->fontFamily();
-    if (!fFamily.isEmpty())
-        textFormat.setFontFamily(fFamily);
-
-    bool bold = UBSettings::settings()->isBoldFont();
-    if (bold)
-        textFormat.setFontWeight(QFont::Bold);
-
-    bool italic = UBSettings::settings()->isItalicFont();
-    if (italic)
-        textFormat.setFontItalic(true);
-
-    QFont font(fFamily, -1, bold ? QFont::Bold : -1, italic);
-    int pointSize = UBSettings::settings()->fontPointSize();
-    if (pointSize > 0) {
-        font.setPointSize(pointSize);
-    }
-
-    return font;
 }
 
 void UBGraphicsTextItemDelegate::createControls()
@@ -336,6 +285,7 @@ void UBGraphicsTextItemDelegate::pickFont()
         QFontDialog fontDialog(static_cast<QGraphicsView*>(UBApplication::boardController->controlView()));
 
         fontDialog.setOption(QFontDialog::DontUseNativeDialog);
+
         fontDialog.setCurrentFont(delegated()->textCursor().charFormat().font());
         customize(fontDialog);
 
@@ -343,6 +293,7 @@ void UBGraphicsTextItemDelegate::pickFont()
         {
             QFont selectedFont = fontDialog.selectedFont();
             UBSettings::settings()->setFontFamily(selectedFont.family());
+            UBSettings::settings()->setFontStyleName(selectedFont.styleName());
             UBSettings::settings()->setBoldFont(selectedFont.bold());
             UBSettings::settings()->setItalicFont(selectedFont.italic());
             UBSettings::settings()->setFontPointSize(selectedFont.pointSize());

@@ -378,5 +378,12 @@
         <file>images/stylusPalette/pen.svg</file>
         <file>images/stylusPalette/penOn.svg</file>
         <file>images/stylusPalette/penOnArrow.svg</file>
+        <file>images/trash-my-documents.png</file>
+        <file>images/trash-empty.png</file>
+        <file>images/trash-folder.png</file>
+        <file>images/trash-delete-document.png</file>
+        <file>images/trash-delete-folder.png</file>
+        <file>images/trash-document.png</file>
+        <file>images/trash-document-page.png</file>
     </qresource>
 </RCC>

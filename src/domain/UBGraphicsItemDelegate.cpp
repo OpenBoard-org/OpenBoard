@@ -328,12 +328,15 @@ void UBGraphicsItemDelegate::postpaint(QPainter *painter, const QStyleOptionGrap
 {
     Q_UNUSED(widget)
     if (option->state & QStyle::State_Selected && !controlsExist()) {
-        painter->save();
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(QColor(0x88, 0x88, 0x88, 0x77));
-        painter->drawRect(option->rect);
+        if (UBStylusTool::Play != UBDrawingController::drawingController()->stylusTool())
+        {
+            painter->save();
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(QColor(0x88, 0x88, 0x88, 0x77));
+            painter->drawRect(option->rect);
 
-        painter->restore();
+            painter->restore();
+        }
     }
 }
 
@@ -1304,7 +1307,7 @@ void MediaTimer::setNumDigits(int numDigits)
     } else {
         if (numDigits == ndigits)             // no change
             return;
-        register int i;
+        int i;
         int dif;
         if (numDigits > ndigits) {            // expand
             dif = numDigits - ndigits;

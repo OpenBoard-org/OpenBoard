@@ -55,6 +55,7 @@ Makefile.Sankore*
 
 # Build files #
 ###############
+.qmake.stash
 build
 install
 Makefile
