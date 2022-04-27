@@ -275,8 +275,12 @@ void UBGraphicsMediaItemDelegate::mediaStateChanged(QMediaPlayer::State state)
 
     // updatePlayPauseState handles this functionality
     if (state == QMediaPlayer::StoppedState)
+    {
         delegated()->setMediaPos(0);
-
+#ifdef Q_OS_OSX //media positionChanged signal is not always called in osx
+        mMediaControl->updateTicker(0);
+#endif
+    }
     updatePlayPauseState();
 }
 
