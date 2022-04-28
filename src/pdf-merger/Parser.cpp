@@ -142,7 +142,14 @@ void Parser::_getFileContent(const char * fileName)
    {
       verPos += strlen(header);
       char ver = _fileContent[verPos];
-      if( ver < '0' || ver > '4' )
+      /* As every previous standard is contained in newer ones, a lot of documents that would not use
+       * features > 1.4 are probably correctly exportable. Some optimizations and fixes have been added since 1.4, but after some tests I didn't encountered any issues.
+       * As an attempt (until 1.5 to 1.7 version can be really supported)to measure what would be the impact of using this library as-is,
+       * we allow document with version > 1.4 to be parsed by it.
+       * The big advantage to using it is that exported PDFs are real PDFs (with searchable content), not heavy images.
+       * If an exception is thrown, actual behavior (heavy images) is used.
+      */
+      if( ver < '0' || ver > '7' )
       {
          stringstream errorMsg;
          errorMsg<<" File with verion 1."<<ver<<" is not currently supported by merge library\n";
