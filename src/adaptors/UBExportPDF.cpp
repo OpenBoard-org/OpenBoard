@@ -87,6 +87,7 @@ bool UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QStrin
     pdfWriter.setPageMargins(QMarginsF());
     pdfWriter.setTitle(pDocumentProxy->name());
     pdfWriter.setCreator("OpenBoard PDF export");
+    pdfWriter.setPdfVersion(QPagedPaintDevice::PdfVersion_1_4);
 
     //need to calculate screen resolution
     QDesktopWidget* desktop = UBApplication::desktop();

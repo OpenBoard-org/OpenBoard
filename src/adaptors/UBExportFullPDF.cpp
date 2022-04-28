@@ -83,54 +83,66 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
         return;
 
     //PDF
-        qDebug() << "exporting document to PDF Merger" << filename;
-        QPrinter pdfPrinter;
+    qDebug() << "exporting document to PDF Merger" << filename;
+    QPrinter pdfPrinter;
 
-        pdfPrinter.setOutputFormat(QPrinter::PdfFormat);
-        pdfPrinter.setResolution(UBSettings::settings()->pdfResolution->get().toInt());
-        pdfPrinter.setOutputFileName(filename);
-        pdfPrinter.setFullPage(true);
+    pdfPrinter.setOutputFormat(QPrinter::PdfFormat);
+    pdfPrinter.setResolution(UBSettings::settings()->pdfResolution->get().toInt());
+    pdfPrinter.setOutputFileName(filename);
+    pdfPrinter.setFullPage(true);
 
-        QPainter* pdfPainter = 0;
+    QPainter* pdfPainter = 0;
 
-        for(int pageIndex = 0 ; pageIndex < pDocumentProxy->pageCount(); pageIndex++)
+    for(int pageIndex = 0 ; pageIndex < pDocumentProxy->pageCount(); pageIndex++)
+    {
+        UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
+        // set background to white, no grid for PDF output
+        bool isDark = scene->isDarkBackground();
+        UBPageBackground pageBackground = scene->pageBackground();
+
+        bool exportDark = isDark && UBSettings::settings()->exportBackgroundColor->get().toBool();
+
+        if (UBSettings::settings()->exportBackgroundGrid->get().toBool())
         {
-            UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
-            // set background to white, no grid for PDF output
-            bool isDark = scene->isDarkBackground();
-            UBPageBackground pageBackground = scene->pageBackground();
-            scene->setBackground(false, UBPageBackground::plain);
-
-            // set high res rendering
-            scene->setRenderingQuality(UBItem::RenderingQualityHigh, UBItem::CacheNotAllowed);
-            scene->setRenderingContext(UBGraphicsScene::PdfExport);
-
-            QSize pageSize = scene->nominalSize();
-
-            UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(scene->backgroundObject());
-
-            if (pdfItem) mHasPDFBackgrounds = true;
-
-            pdfPrinter.setPaperSize(QSizeF(pageSize.width()*mScaleFactor, pageSize.height()*mScaleFactor), QPrinter::Point);
-
-            if (!pdfPainter) pdfPainter = new QPainter(&pdfPrinter);
-
-            if (pageIndex != 0) pdfPrinter.newPage();
-
-            //render to PDF
-            scene->setDrawingMode(true);
-            scene->render(pdfPainter, QRectF(), scene->normalizedSceneRect());
-
-            //restore screen rendering quality
-            scene->setRenderingContext(UBGraphicsScene::Screen);
-            scene->setRenderingQuality(UBItem::RenderingQualityNormal, UBItem::CacheAllowed);
-
-            //restore background state
-            scene->setDrawingMode(false);
-            scene->setBackground(isDark, pageBackground);
+            scene->setBackground(exportDark, pageBackground);
+        }
+        else
+        {
+            scene->setBackground(exportDark, UBPageBackground::plain);
         }
 
-        if (pdfPainter) delete pdfPainter;
+        // set high res rendering
+        scene->setRenderingQuality(UBItem::RenderingQualityHigh, UBItem::CacheNotAllowed);
+        scene->setRenderingContext(UBGraphicsScene::PdfExport);
+
+        // pageSize is the output PDF page size; it is set to equal the scene's boundary size; if the contents
+        // of the scene overflow from the boundaries, they will be scaled down.
+        QSize pageSize = scene->sceneSize();
+
+        UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(scene->backgroundObject());
+
+        if (pdfItem) mHasPDFBackgrounds = true;
+
+        pdfPrinter.setPaperSize(QSizeF(pageSize.width()*mScaleFactor, pageSize.height()*mScaleFactor), QPrinter::Point);
+
+        if (!pdfPainter) pdfPainter = new QPainter(&pdfPrinter);
+
+        if (pageIndex != 0) pdfPrinter.newPage();
+
+        //render to PDF
+        scene->setDrawingMode(true);
+        scene->render(pdfPainter, QRectF(), scene->normalizedSceneRect());
+
+        //restore screen rendering quality
+        scene->setRenderingContext(UBGraphicsScene::Screen);
+        scene->setRenderingQuality(UBItem::RenderingQualityNormal, UBItem::CacheAllowed);
+
+        //restore background state
+        scene->setDrawingMode(false);
+        scene->setBackground(isDark, pageBackground);
+    }
+
+    if (pdfPainter) delete pdfPainter;
 }
 
 
