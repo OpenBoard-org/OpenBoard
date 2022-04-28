@@ -152,11 +152,11 @@ namespace merge_lib
        void _setObjectNumber(unsigned int objectNumber);       
        void _addParent(Object * child);
        bool _findObject(const std::string & token, Object* & foundObject, unsigned int & tokenPositionInContent);
-       void _serialize(std::ofstream  & out, const std::string & stream);
+       void serialize(std::ofstream  & out, const std::string & stream);
        void _recalculateObjectNumbers(unsigned int & maxNumber);
        void _recalculateReferencePositions(unsigned int changedReference, int displacement);
        void _retrieveMaxObjectNumber(unsigned int & maxNumber);
-       void _serialize(std::ofstream & out, std::map<unsigned int, unsigned long long> & sizes);       
+       void serialize(std::ofstream & out, std::map<unsigned int, unsigned long long> & sizes);
        bool _getStreamFromContent(std::string & stream);
 
        //members
