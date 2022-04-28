@@ -839,6 +839,8 @@ void UBGraphicsScene::drawMarkerCircle(const QPointF &pPoint)
 
 void UBGraphicsScene::drawPenCircle(const QPointF &pPoint)
 {
+    QCursor cursor;
+
     if (mPenCircle && UBSettings::settings()->showPenPreviewCircle->get().toBool() &&
         UBSettings::settings()->currentPenWidth() >= UBSettings::settings()->penPreviewFromSize->get().toInt()) {
         qreal penDiameter = UBSettings::settings()->currentPenWidth();
@@ -848,20 +850,20 @@ void UBGraphicsScene::drawPenCircle(const QPointF &pPoint)
 
         mPenCircle->setRect(QRectF(pPoint.x() - penRadius, pPoint.y() - penRadius,
                                       penDiameter, penDiameter));
-
-        if (controlView())
-            if (controlView()->viewport())
-                controlView()->viewport()->setCursor(QCursor (Qt::BlankCursor));
-
         mPenCircle->show();
+        cursor = Qt::BlankCursor;
     }
     else
     {
-        if (controlView())
-            if (controlView()->viewport())
-                controlView()->viewport()->setCursor(UBResources::resources()->penCursor);
+        cursor = UBResources::resources()->penCursor;
     }
 
+    if (!UBDrawingController::drawingController()->mActiveRuler)
+    {
+        // set cursor only if no active ruler
+        if (controlView() && controlView()->viewport())
+            controlView()->viewport()->setCursor(cursor);
+    }
 }
 
 void UBGraphicsScene::hideMarkerCircle()

@@ -492,7 +492,7 @@ void UBWebController::setupPalettes()
                     UBApplication::boardController->paletteManager()->mKeyboardPalette, SLOT(onDeactivated()));
 #endif
 
-        connect(mMainWindow->actionWebTrapFlash, SIGNAL(triggered()), this, SLOT(trap()));
+        connect(mMainWindow->actionCaptureWebContent, SIGNAL(triggered()), this, SLOT(trap()));
         connect(mMainWindow->actionWebCustomCapture, SIGNAL(triggered()), this, SLOT(customCapture()));
         connect(mMainWindow->actionWebWindowCapture, SIGNAL(triggered()), this, SLOT(captureWindow()));
         connect(mMainWindow->actionWebShowHideOnDisplay, SIGNAL(toggled(bool)), this, SLOT(toogleMirroring(bool)));

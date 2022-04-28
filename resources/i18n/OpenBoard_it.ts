@@ -753,11 +753,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation>Cattura Flash</translation>
+        <translation type="vanished">Cattura Flash</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>Cattura contenuto flash</translation>
+        <translation type="vanished">Cattura contenuto flash</translation>
     </message>
     <message>
         <source>Web Trap</source>
@@ -895,6 +895,10 @@ Do you wish to override the security check and continue ?   </source>
         <source>Draw intermediate grid lines</source>
         <translation>disegna linee di griglia intermedie</translation>
     </message>
+    <message>
+        <source>Capture Web Content</source>
+        <translation>Catturare il contenuto del web</translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -989,7 +993,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossibile aprire direttamente un file UBX. Si prega di importarlo dalla modalità Documenti</translation>
     </message>
 </context>
 <context>
@@ -2753,7 +2757,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation>Seleziona un&apos;applicazione flash da catturare</translation>
+        <translation type="vanished">Seleziona un&apos;applicazione flash da catturare</translation>
     </message>
     <message>
         <source>about:blank</source>
@@ -2766,6 +2770,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Create Application</source>
         <translation>Crea applicazione</translation>
+    </message>
+    <message>
+        <source>Select a content to capture</source>
+        <translation>Selezionare il contenuto da catturare</translation>
     </message>
 </context>
 </TS>

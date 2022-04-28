@@ -753,11 +753,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation>플래시 트랩</translation>
+        <translation type="vanished">플래시 트랩</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>플래시 콘텐츠 트랩</translation>
+        <translation type="vanished">플래시 콘텐츠 트랩</translation>
     </message>
     <message>
         <source>Web Trap</source>
@@ -893,6 +893,10 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Capture Web Content</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2750,7 +2754,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation>플래시를 트랩으로 저장</translation>
+        <translation type="vanished">플래시를 트랩으로 저장</translation>
     </message>
     <message>
         <source>about:blank</source>
@@ -2763,6 +2767,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Create Application</source>
         <translation>응용 프로그램 만들기</translation>
+    </message>
+    <message>
+        <source>Select a content to capture</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

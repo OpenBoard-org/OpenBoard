@@ -58,7 +58,6 @@ UBDocumentThumbnailWidget::~UBDocumentThumbnailWidget()
     // NOOP
 }
 
-
 void UBDocumentThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
 {
     if (!dragEnabled())

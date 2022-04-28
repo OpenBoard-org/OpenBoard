@@ -346,6 +346,8 @@ void UBBoardController::setupToolbar()
             , lineWidthChoice, SLOT(setCurrentIndex(int)));
 
     lineWidthChoice->displayText(QVariant(settings->appToolBarDisplayText->get().toBool()));
+    lineWidthChoice->setCurrentIndex(settings->penWidthIndex());
+    lineWidthActions.at(settings->penWidthIndex())->setChecked(true);
 
     mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, lineWidthChoice);
 
@@ -367,6 +369,7 @@ void UBBoardController::setupToolbar()
 
     eraserWidthChoice->displayText(QVariant(settings->appToolBarDisplayText->get().toBool()));
     eraserWidthChoice->setCurrentIndex(settings->eraserWidthIndex());
+    eraserWidthActions.at(settings->eraserWidthIndex())->setChecked(true);
 
     mMainWindow->boardToolBar->insertSeparator(mMainWindow->actionBackgrounds);
 
@@ -526,7 +529,7 @@ void UBBoardController::addScene()
     if (UBApplication::documentController->selectedDocument() == selectedDocument())
     {
         UBApplication::documentController->insertThumbPage(mActiveSceneIndex+1);
-        emit UBApplication::documentController->reloadThumbnails();
+        UBApplication::documentController->reloadThumbnails();
     }
 
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
@@ -733,11 +736,19 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
 
     case UBMimeType::UNKNOWN:
         {
+            QGraphicsItem *copiedItem = dynamic_cast<QGraphicsItem*>(item);
             QGraphicsItem *gitem = dynamic_cast<QGraphicsItem*>(item->deepCopy());
             if (gitem)
             {
                 mActiveScene->addItem(gitem);
 
+                if (copiedItem)
+                {
+                    if (mActiveScene->tools().contains(copiedItem))
+                    {
+                        mActiveScene->registerTool(gitem);
+                    }
+                }
                 gitem->setPos(itemPos);
 
                 mLastCreatedItem = gitem;
@@ -1430,6 +1441,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
                 QStringList fileNames;
                 fileNames << pdfFile.fileName();
                 result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
+                reloadThumbnails();
                 pdfFile.close();
             }
         }

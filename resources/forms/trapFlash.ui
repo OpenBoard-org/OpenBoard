@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="selectFlashLabel">
        <property name="text">
-        <string>Select a flash to trap</string>
+        <string>Select a content to capture</string>
        </property>
       </widget>
      </item>

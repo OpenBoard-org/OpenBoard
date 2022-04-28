@@ -17,7 +17,7 @@
 initializeVariables()
 {
   APPLICATION_NAME="OpenBoard"
-  STANDARD_QT_USED=false
+  STANDARD_QT_USED=true
 
   # Root directory
   SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -26,7 +26,7 @@ initializeVariables()
   PRODUCT_PATH="$BUILD_DIR/product"
 
   # Qt installation path. This may vary across machines
-  QT_PATH="/home/dev/Qt/5.15.0/gcc_64"
+  QT_PATH="/usr/lib/x86_64-linux-gnu/qt5"
   PLUGINS_PATH="$QT_PATH/plugins"
   GUI_TRANSLATIONS_DIRECTORY_PATH="/usr/share/qt5/translations"
   QMAKE_PATH="$QT_PATH/bin/qmake"
@@ -39,6 +39,9 @@ initializeVariables()
     ARCHITECTURE=`uname -m`
     if [ $ARCHITECTURE == "x86_64" ]; then
         ARCHITECTURE="amd64"
+    elif [$ARCHITECTURE == "armv7l" ]; then
+        $ARCHITECTURE="armhf"
+        QT_PATH="/usr/lib/arm-linux-gnueabihf/qt5"
     fi
   fi
 }

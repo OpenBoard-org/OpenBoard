@@ -1192,8 +1192,8 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/stylusPalette/pen.png</normaloff>
-     <normalon>:/images/stylusPalette/penOn.png</normalon>:/images/stylusPalette/pen.png</iconset>
+     <normaloff>:/images/stylusPalette/pen.svg</normaloff>
+     <normalon>:/images/stylusPalette/penOn.svg</normalon>:/images/stylusPalette/pen.svg</iconset>
    </property>
    <property name="text">
     <string>Pen</string>
@@ -1211,8 +1211,8 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/stylusPalette/eraser.png</normaloff>
-     <normalon>:/images/stylusPalette/eraserOn.png</normalon>:/images/stylusPalette/eraser.png</iconset>
+     <normaloff>:/images/stylusPalette/eraser.svg</normaloff>
+     <normalon>:/images/stylusPalette/eraserOn.svg</normalon>:/images/stylusPalette/eraser.svg</iconset>
    </property>
    <property name="text">
     <string>Eraser</string>
@@ -1230,8 +1230,8 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/stylusPalette/marker.png</normaloff>
-     <normalon>:/images/stylusPalette/markerOn.png</normalon>:/images/stylusPalette/marker.png</iconset>
+     <normaloff>:/images/stylusPalette/marker.svg</normaloff>
+     <normalon>:/images/stylusPalette/markerOn.svg</normalon>:/images/stylusPalette/marker.svg</iconset>
    </property>
    <property name="text">
     <string>Marker</string>
@@ -1497,16 +1497,16 @@
     <string>Configure Podcast Recording</string>
    </property>
   </action>
-  <action name="actionWebTrapFlash">
+  <action name="actionCaptureWebContent">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
      <normaloff>:/images/toolbar/addToolToLibrary.png</normaloff>:/images/toolbar/addToolToLibrary.png</iconset>
    </property>
    <property name="text">
-    <string>Flash Trap</string>
+    <string>Capture Web Content</string>
    </property>
    <property name="toolTip">
-    <string>Trap Flash Content</string>
+    <string>Capture Web Content</string>
    </property>
   </action>
   <action name="actionWebTrap">

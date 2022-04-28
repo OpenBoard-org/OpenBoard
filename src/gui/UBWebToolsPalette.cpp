@@ -49,7 +49,7 @@ UBWebToolsPalette::UBWebToolsPalette(QWidget *parent)
 {
     QList<QAction*> actions;
 
-    actions << UBApplication::mainWindow->actionWebTrapFlash;
+    actions << UBApplication::mainWindow->actionCaptureWebContent;
 
     actions << UBApplication::mainWindow->actionWebCustomCapture;
     actions << UBApplication::mainWindow->actionWebWindowCapture;

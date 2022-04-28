@@ -563,7 +563,7 @@ void UBDesktopAnnotationController::penActionPressed()
     int iX = cursorPos.x() - (palettePos.x() + buttonPos.x());    // x position of the cursor in the palette
     int iY = cursorPos.y() - (palettePos.y() + buttonPos.y());    // y position of the cursor in the palette
 
-    if(iX >= 37 && iX <= 44 && iY >= 37 && iY <= 44)
+    if(iX >= 30 && iX <= 44 && iY >= 30 && iY <= 44)
     {
         mbArrowClicked = true;
         penActionReleased();
@@ -617,7 +617,7 @@ void UBDesktopAnnotationController::eraserActionPressed()
     int iX = cursorPos.x() - (palettePos.x() + buttonPos.x());    // x position of the cursor in the palette
     int iY = cursorPos.y() - (palettePos.y() + buttonPos.y());    // y position of the cursor in the palette
 
-    if(iX >= 37 && iX <= 44 && iY >= 37 && iY <= 44)
+    if(iX >= 30 && iX <= 44 && iY >= 30 && iY <= 44)
     {
         mbArrowClicked = true;
         eraserActionReleased();
@@ -672,7 +672,7 @@ void UBDesktopAnnotationController::markerActionPressed()
     int iX = cursorPos.x() - (palettePos.x() + buttonPos.x());    // x position of the cursor in the palette
     int iY = cursorPos.y() - (palettePos.y() + buttonPos.y());    // y position of the cursor in the palette
 
-    if(iX >= 37 && iX <= 44 && iY >= 37 && iY <= 44)
+    if(iX >= 30 && iX <= 44 && iY >= 30 && iY <= 44)
     {
         mbArrowClicked = true;
         markerActionReleased();

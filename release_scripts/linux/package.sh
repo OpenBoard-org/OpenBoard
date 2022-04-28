@@ -85,13 +85,13 @@ initializeVariables()
 
   # Include Qt libraries and plugins in the package, or not
   # (this is necessary if the target system doesn't provide Qt 5.5.1)
-  BUNDLE_QT=true
+  BUNDLE_QT=false
 
   # Qt installation path. This may vary across machines
-  QT_PATH="/home/dev/Qt/5.15.0/gcc_64"
+  QT_PATH="/usr/lib/x86_64-linux-gnu/qt5"
   QT_PLUGINS_SOURCE_PATH="$QT_PATH/plugins"
   GUI_TRANSLATIONS_DIRECTORY_PATH="/usr/share/qt5/translations"
-  QT_LIBRARY_SOURCE_PATH="$QT_PATH/lib"
+  QT_LIBRARY_SOURCE_PATH="$QT_PATH/.."
 
   NOTIFY_CMD=`which notify-send`
   ZIP_PATH=`which zip`

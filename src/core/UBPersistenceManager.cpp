@@ -749,8 +749,7 @@ void UBPersistenceManager::deleteDocumentScenes(UBDocumentProxy* proxy, const QL
                 d.mkpath(d.absolutePath());
                 QFile::copy(source, target);
             }
-
-            insertDocumentSceneAt(trashDocProxy, scene, trashDocProxy->pageCount());
+            insertDocumentSceneAt(trashDocProxy, scene, trashDocProxy->pageCount(), true, true);
         }
     }
 
@@ -953,7 +952,7 @@ UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(UBDocumentProxy* pr
 }
 
 
-void UBPersistenceManager::insertDocumentSceneAt(UBDocumentProxy* proxy, UBGraphicsScene* scene, int index, bool persist)
+void UBPersistenceManager::insertDocumentSceneAt(UBDocumentProxy* proxy, UBGraphicsScene* scene, int index, bool persist, bool deleting)
 {
     scene->setDocument(proxy);
 
@@ -974,7 +973,8 @@ void UBPersistenceManager::insertDocumentSceneAt(UBDocumentProxy* proxy, UBGraph
         persistDocumentScene(proxy, scene, index);
     }
 
-    emit documentSceneCreated(proxy, index);
+    if (!deleting)
+        emit documentSceneCreated(proxy, index);
 
 }
 

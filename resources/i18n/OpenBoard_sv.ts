@@ -753,11 +753,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation>Lagra flash</translation>
+        <translation type="vanished">Lagra flash</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>Lagra flash innehål</translation>
+        <translation type="vanished">Lagra flash innehål</translation>
     </message>
     <message>
         <source>Web Trap</source>
@@ -893,6 +893,10 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Capture Web Content</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2748,7 +2752,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation>Välj en flash att lagra</translation>
+        <translation type="vanished">Välj en flash att lagra</translation>
     </message>
     <message>
         <source>about:blank</source>
@@ -2761,6 +2765,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Create Application</source>
         <translation>Skapa applikation</translation>
+    </message>
+    <message>
+        <source>Select a content to capture</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

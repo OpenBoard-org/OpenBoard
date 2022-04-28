@@ -757,11 +757,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation>Flash Tuzağı</translation>
+        <translation type="vanished">Flash Tuzağı</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>Flash İçeriğini Yakala</translation>
+        <translation type="vanished">Flash İçeriğini Yakala</translation>
     </message>
     <message>
         <source>Web Trap</source>
@@ -893,6 +893,10 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Capture Web Content</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2743,7 +2747,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation>Tuzağa almak için bir flash öğesi seçin</translation>
+        <translation type="vanished">Tuzağa almak için bir flash öğesi seçin</translation>
     </message>
     <message>
         <source>about:blank</source>
@@ -2756,6 +2760,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Create Application</source>
         <translation>Uygulama Oluştur</translation>
+    </message>
+    <message>
+        <source>Select a content to capture</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

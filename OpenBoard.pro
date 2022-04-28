@@ -1,7 +1,7 @@
 TARGET = "OpenBoard"
 TEMPLATE = app
 
-CONFIG += c++14
+CONFIG += c++17
 CONFIG -= flat
 CONFIG += debug_and_release \
           no_include_pwd
@@ -452,7 +452,7 @@ linux-g++* {
     #LIBS += -lprofiler
     LIBS += -lX11
     LIBS += -lquazip5
-    INCLUDEPATH += "/usr/include/quazip"
+    INCLUDEPATH += "/usr/include/quazip5"
 
     LIBS += -lpoppler
     INCLUDEPATH += "/usr/include/poppler"
