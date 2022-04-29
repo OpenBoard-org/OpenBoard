@@ -357,6 +357,7 @@ class UBSettings : public QObject
         UBSetting* svgViewBoxMargin;
         UBSetting* pdfMargin;
         UBSetting* pdfPageFormat;
+        UBSetting* pdfUsePDFMerger;
         UBSetting* pdfResolution;
 
         UBSetting* pdfZoomBehavior;
