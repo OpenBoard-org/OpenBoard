@@ -302,7 +302,7 @@ void UBDisplayManager::setRoleToScreen(DisplayRole role, int screenIndex)
 void UBDisplayManager::addOrRemoveScreen(QScreen *screen)
 {
     Q_UNUSED(screen);
-    reinitScreens(false);
+    adjustScreens(-1);
 }
 
 
@@ -349,11 +349,12 @@ QRect UBDisplayManager::controlGeometry()
 QPixmap UBDisplayManager::grab(DisplayRole role, QRect rect)
 {
     QScreen* screen = mScreensByRole.value(role, nullptr);
-    QWidget* widget = mWidgetsByRole.value(role, nullptr);
 
-    if (screen && widget)
+    if (screen)
     {
-        return screen->grabWindow(widget->winId(), rect.x(), rect.y(), rect.width(), rect.height());
+        // see https://doc.qt.io/qt-6.2/qtwidgets-desktop-screenshot-example.html
+        // for using window id 0
+        return screen->grabWindow(0, rect.x(), rect.y(), rect.width(), rect.height());
     }
 
     return QPixmap();

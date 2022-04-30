@@ -27,8 +27,6 @@
 
 
 
-#include <QDesktopWidget>
-
 #include "UBDesktopAnnotationController.h"
 
 #include "frameworks/UBPlatformUtils.h"
@@ -512,14 +510,7 @@ void UBDesktopAnnotationController::screenCapture()
 
 QPixmap UBDesktopAnnotationController::getScreenPixmap()
 {
-    QDesktopWidget *desktop = QApplication::desktop();
-    QScreen * screen = UBApplication::controlScreen();
-
-    QRect rect = desktop->screenGeometry(QCursor::pos());
-    rect.moveTo(0, 0);
-
-    return screen->grabWindow(desktop->effectiveWinId(),
-                              rect.x(), rect.y(), rect.width(), rect.height());
+    return UBApplication::displayManager->grab(DisplayRole::Control);
 }
 
 
