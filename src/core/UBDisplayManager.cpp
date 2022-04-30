@@ -360,3 +360,15 @@ QPixmap UBDisplayManager::grab(DisplayRole role, QRect rect)
     return QPixmap();
 }
 
+QPixmap UBDisplayManager::grabGlobal(QRect rect)
+{
+    QScreen* screen = QGuiApplication::screenAt(rect.topLeft());
+
+    if (screen) {
+        rect.translate(-screen->geometry().topLeft());
+        return screen->grabWindow(0, rect.x(), rect.y(), rect.width(), rect.height());
+    }
+
+    return QPixmap();
+}
+

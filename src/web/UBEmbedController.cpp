@@ -38,6 +38,7 @@
 
 #include "core/UBApplicationController.h"
 #include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 #include "core/UBSettings.h"
 
 #include "network/UBNetworkAccessManager.h"
@@ -85,11 +86,7 @@ void UBEmbedController::showEmbedDialog()
 
         int viewWidth = mParentWidget->width() / 2;
         int viewHeight = mParentWidget->height() * 2. / 3.;
-        mTrapDialog->setGeometry(
-                (mParentWidget->width() - viewWidth) / 2
-                , (mParentWidget->height() - viewHeight) / 2
-                , viewWidth
-                , viewHeight);
+        mTrapDialog->resize(viewWidth, viewHeight);
 
         QWebEngineProfile* profile = UBApplication::webController->webProfile();
         mTrapFlashUi->webView->setPage(new QWebEnginePage(profile, this));
@@ -286,11 +283,10 @@ void UBEmbedController::updateEmbeddableContentFromView(QWebEngineView *pCurrent
 
 QString UBEmbedController::generateIcon(const QString& pDirPath)
 {
-    QDesktopWidget* desktop = QApplication::desktop();
-    QPoint webViewPosition = mTrapFlashUi->webView->mapToGlobal(mTrapFlashUi->webView->pos());
-    QSize webViewSize = mTrapFlashUi->webView->size();
-    QPixmap capture = QPixmap::grabWindow(desktop->winId(), webViewPosition.x(), webViewPosition.y()
-            , webViewSize.width() - 10, webViewSize.height() -10);
+    // render web page to QPixmap
+    QPixmap capture(mTrapFlashUi->webView->size());
+    QPainter p(&capture);
+    mTrapFlashUi->webView->render(&p);
 
     QPixmap widgetIcon(75,75);
     widgetIcon.fill(Qt::transparent);

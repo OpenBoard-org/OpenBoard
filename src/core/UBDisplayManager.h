@@ -89,6 +89,7 @@ class UBDisplayManager : public QObject
 
         QRect controlGeometry();
         QPixmap grab(DisplayRole role, QRect rect = QRect(0, 0, -1, -1));
+        QPixmap grabGlobal(QRect rect);
 
    signals:
 
