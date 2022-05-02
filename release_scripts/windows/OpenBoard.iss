@@ -69,6 +69,7 @@ Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\win32\ssleay32.dll"; Des
 
 ;Qt base dll
 ;Source: "OpenBoard.exe"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5Concurrent.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Core.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Gui.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Multimedia.dll"; DestDir: "{app}"
