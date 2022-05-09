@@ -183,6 +183,11 @@ void UBDisplayManager::setPreviousDisplaysWidgets(QList<UBBoardView*> pPreviousV
     }
 }
 
+QWidget* UBDisplayManager::widget(DisplayRole role)
+{
+        return mWidgetsByRole.value(role, nullptr);
+}
+
 void UBDisplayManager::reinitScreens(bool swap)
 {
     Q_UNUSED(swap);

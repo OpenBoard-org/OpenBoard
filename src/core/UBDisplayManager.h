@@ -61,6 +61,8 @@ class UBDisplayManager : public QObject
 
         void setPreviousDisplaysWidgets(QList<UBBoardView*> pPreviousViews);
 
+        QWidget* widget(DisplayRole role);
+
         bool hasControl()
         {
             return mScreensByRole.contains(Control);
