@@ -80,9 +80,7 @@ class UBBoardController : public UBDocumentContainer
         UBGraphicsScene* activeScene() const;
         int activeSceneIndex() const;
         void setActiveSceneIndex(int i);
-        QSize displayViewport();
         QSize controlViewport();
-        QRectF controlGeometry();
         void closing();
 
         int currentPage();

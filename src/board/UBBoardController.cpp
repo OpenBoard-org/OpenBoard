@@ -278,21 +278,9 @@ void UBBoardController::setBoxing(QRect displayRect)
 }
 
 
-QSize UBBoardController::displayViewport()
-{
-    return mDisplayView->geometry().size();
-}
-
-
 QSize UBBoardController::controlViewport()
 {
-    return mControlView->geometry().size();
-}
-
-
-QRectF UBBoardController::controlGeometry()
-{
-    return mControlView->geometry();
+    return UBApplication::displayManager->screenSize(DisplayRole::Control);
 }
 
 
