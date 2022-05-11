@@ -454,8 +454,6 @@ void UBApplicationController::showDocument()
 
 void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
 {
-    int desktopWidgetIndex = qApp->desktop()->screenNumber(mMainWindow);
-
     if (UBApplication::boardController)
         UBApplication::boardController->hide();
 
@@ -464,9 +462,8 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
 
     if (mMirror)
     {
-        QRect rect = qApp->desktop()->screenGeometry(desktopWidgetIndex);
-        rect.moveTo(0, 0);
-        mMirror->setSourceRect(rect);
+        // grab from screen instead of widget
+        mMirror->setSourceWidget(nullptr);
     }
 
     mIsShowingDesktop = true;

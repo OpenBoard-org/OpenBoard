@@ -48,12 +48,6 @@ class UBScreenMirror : public QWidget
 
         void setSourceWidget(QWidget *sourceWidget);
 
-        void setSourceRect(const QRect& pRect)
-        {
-            mRect = pRect;
-            mSourceWidget = 0;
-        }
-
         void start();
 
         void stop();
@@ -62,11 +56,7 @@ class UBScreenMirror : public QWidget
 
         void grabPixmap();
 
-        int mScreenIndex;
-
         QWidget* mSourceWidget;
-
-        QRect mRect;
 
         QPixmap mLastPixmap;
 
