@@ -546,14 +546,7 @@ void UBWebController::toogleMirroring(bool checked)
 
 QPixmap UBWebController::getScreenPixmap()
 {
-    QDesktopWidget *desktop = QApplication::desktop();
-    // we capture the screen in which the mouse is.
-    const QRect primaryScreenRect = desktop->screenGeometry(QCursor::pos());
-    QCoreApplication::flush ();
-
-    return QPixmap::grabWindow(desktop->winId(),
-                               primaryScreenRect.x(), primaryScreenRect.y(),
-                               primaryScreenRect.width(), primaryScreenRect.height());
+    return UBApplication::displayManager->grab(DisplayRole::Control);
 }
 
 
