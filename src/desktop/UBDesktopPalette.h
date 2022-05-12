@@ -54,7 +54,6 @@ class UBDesktopPalette : public UBActionPalette
     signals:
         void uniboardClick();
         void customClick();
-        void windowClick();
         void screenClick();
 
 //#ifdef Q_OS_LINUX //TODO: check why this produces an error on linux if uncommented

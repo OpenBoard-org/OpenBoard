@@ -78,7 +78,6 @@ class UBDesktopAnnotationController : public QObject
         void screenLayoutChanged();
         void goToUniboard();
         void customCapture();
-        void windowCapture();
         void screenCapture();
         void updateShowHideState(bool pEnabled);
 
