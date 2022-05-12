@@ -143,9 +143,8 @@ void BrowserWindow::init()
 
 QSize BrowserWindow::sizeHint() const
 {
-    QRect desktopRect = QApplication::desktop()->screenGeometry();
-    QSize size = desktopRect.size() * qreal(0.9);
-    return size;
+    QSize size = UBApplication::displayManager->screenSize(DisplayRole::Control);
+    return size * qreal(0.9);
 }
 
 QToolBar *BrowserWindow::createToolBar(QWidget *parent)
