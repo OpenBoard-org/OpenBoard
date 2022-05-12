@@ -45,6 +45,7 @@
 
 UBDisplayManager::UBDisplayManager(QObject *parent)
     : QObject(parent)
+    , mAvailableScreenCount(0)
 //    , mControlWidget(nullptr)
 //    , mDisplayWidget(nullptr)
 //    , mDesktopWidget(nullptr)
@@ -90,6 +91,12 @@ void UBDisplayManager::initScreenIndexes()
         ++i;
     }
 
+    if (screens.count() != mAvailableScreenCount)
+    {
+        mAvailableScreenCount = screens.count();
+        emit availableScreenCountChanged(mAvailableScreenCount);
+    }
+
     bool swapScreens = UBSettings::settings()->swapControlAndDisplayScreens->get().toBool();
     bool useMultiscreen = UBSettings::settings()->appUseMultiscreen->get().toBool();
 
@@ -121,7 +128,7 @@ void UBDisplayManager::initScreenIndexes()
 
 int UBDisplayManager::numScreens()
 {
-    return mScreensByRole.count();
+    return mAvailableScreenCount;
 }
 
 
@@ -215,7 +222,7 @@ void UBDisplayManager::positionScreens()
     }
     if (mWidgetsByRole.contains(Control) && hasControl())
     {
-        mWidgetsByRole[Control]->hide();
+        mWidgetsByRole[Control]->showNormal();
         mWidgetsByRole[Control]->setGeometry(mScreensByRole[Control]->geometry());
         UBPlatformUtils::showFullScreen(mWidgetsByRole[Control]);
     }
@@ -307,7 +314,8 @@ void UBDisplayManager::setRoleToScreen(DisplayRole role, int screenIndex)
 void UBDisplayManager::addOrRemoveScreen(QScreen *screen)
 {
     Q_UNUSED(screen);
-    adjustScreens(-1);
+    // adjustment must be delayed, because OS also tries to position the widgets
+    QTimer::singleShot(3000, [this](){ adjustScreens(0); } );
 }
 
 

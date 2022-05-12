@@ -96,6 +96,7 @@ class UBDisplayManager : public QObject
    signals:
 
            void screenLayoutChanged();
+           void availableScreenCountChanged(int screenCount);
            void adjustDisplayViewsRequired();
 
    public slots:
@@ -120,6 +121,7 @@ class UBDisplayManager : public QObject
 
         QList<UBBlackoutWidget*> mBlackoutWidgets;
 
+        int mAvailableScreenCount;
         QMap<DisplayRole, QScreen*> mScreensByRole;
         QMap<DisplayRole, QWidget*> mWidgetsByRole;
 

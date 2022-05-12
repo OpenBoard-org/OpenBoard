@@ -96,7 +96,7 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : Single
   , mApplicationTranslator(NULL)
   , mQtGuiTranslator(NULL)
 {
-
+    Q_UNUSED(id)
     staticMemoryCleaner = new QObject(0); // deleted in UBApplication destructor
 
     setOrganizationName("Open Education Foundation");
@@ -405,15 +405,14 @@ int UBApplication::exec(const QString& pFileToImport)
 
     emit UBDrawingController::drawingController()->colorPaletteChanged();
 
-    onScreenCountChanged(1);
-    connect(desktop(), SIGNAL(screenCountChanged(int)), this, SLOT(onScreenCountChanged(int)));
+    onScreenCountChanged(displayManager->numScreens());
+    connect(displayManager, SIGNAL(availableScreenCountChanged(int)), this, SLOT(onScreenCountChanged(int)));
     return QApplication::exec();
 }
 
 void UBApplication::onScreenCountChanged(int newCount)
 {
-    Q_UNUSED(newCount);
-    mainWindow->actionMultiScreen->setEnabled(displayManager->numScreens() > 1);
+    mainWindow->actionMultiScreen->setEnabled(newCount > 1);
 }
 
 void UBApplication::showMinimized()
