@@ -180,6 +180,19 @@ void UBApplicationController::screenLayoutChanged()
     }
 
     adjustPreviousViews(0, 0);
+
+    // update mirror if necessary
+    UBDisplayManager* displayManager = UBApplication::displayManager;
+
+    if (displayManager->numScreens() > 1 && displayManager->useMultiScreen() && !mMirror)
+    {
+        mMirror = new UBScreenMirror();
+    }
+    else if ((displayManager->numScreens() == 1 || !displayManager->useMultiScreen()) && mMirror)
+    {
+        delete mMirror;
+        mMirror = nullptr;
+    }
 }
 
 
