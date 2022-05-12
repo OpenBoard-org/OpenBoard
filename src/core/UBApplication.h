@@ -106,9 +106,6 @@ class UBApplication : public SingleApplication
         static QString urlFromHtml(QString html);
         static bool isFromWeb(QString url);
 
-        static QScreen* controlScreen();
-        static int controlScreenIndex();
-
     signals:
 
     public slots:

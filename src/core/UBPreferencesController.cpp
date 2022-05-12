@@ -48,8 +48,6 @@
 
 #include "core/memcheck.h"
 
-#include "qdesktopwidget.h"
-
 qreal UBPreferencesController::sSliderRatio = 10.0;
 qreal UBPreferencesController::sMinPenWidth = 0.5;
 qreal UBPreferencesController::sMaxPenWidth = 50.0;
@@ -81,13 +79,11 @@ UBPreferencesController::UBPreferencesController(QWidget *parent)
     , mDarkBackgroundGridColorPicker(0)
     , mLightBackgroundGridColorPicker(0)
 {
-    mDesktop = qApp->desktop();
     mPreferencesWindow = new UBPreferencesDialog(this,parent, Qt::Dialog);
-    mPreferencesUI = new Ui::preferencesDialog();  // deleted in
+    mPreferencesUI = new Ui::preferencesDialog();  // deleted in destructor
     mPreferencesUI->setupUi(mPreferencesWindow);
     adjustScreens();
-    connect(mDesktop, &QGuiApplication::screenAdded, this, &UBPreferencesController::adjustScreens);
-
+    connect(UBApplication::displayManager, &UBDisplayManager::screenLayoutChanged, this, &UBPreferencesController::adjustScreens);
     wire();
 }
 

@@ -111,7 +111,6 @@ class UBPreferencesController : public QObject
         static qreal sSliderRatio;
         static qreal sMinPenWidth;
         static qreal sMaxPenWidth;
-        QDesktopWidget* mDesktop;
 
 };
 

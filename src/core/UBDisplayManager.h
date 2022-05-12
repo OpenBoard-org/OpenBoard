@@ -82,23 +82,20 @@ class UBDisplayManager : public QObject
 
         void setUseMultiScreen(bool pUse);
 
-        int controleScreenIndex();
-
         QSize screenSize(DisplayRole role) const;
         QSize availableScreenSize(DisplayRole role) const;
         QRect screenGeometry(DisplayRole role) const;
         qreal physicalDpi(DisplayRole role) const;
         qreal logicalDpi(DisplayRole role) const;
 
-        QRect controlGeometry();
-        QPixmap grab(DisplayRole role, QRect rect = QRect(0, 0, -1, -1));
-        QPixmap grabGlobal(QRect rect);
+        QPixmap grab(DisplayRole role, QRect rect = QRect(0, 0, -1, -1)) const;
+        QPixmap grabGlobal(QRect rect) const;
 
    signals:
 
-           void screenLayoutChanged();
-           void availableScreenCountChanged(int screenCount);
-           void adjustDisplayViewsRequired();
+        void screenLayoutChanged();
+        void availableScreenCountChanged(int screenCount);
+        void adjustDisplayViewsRequired();
 
    public slots:
 
@@ -109,8 +106,6 @@ class UBDisplayManager : public QObject
         void blackout();
 
         void unBlackout();
-
-        void setRoleToScreen(DisplayRole role, int screenIndex);
 
         void addOrRemoveScreen(QScreen* screen);
 

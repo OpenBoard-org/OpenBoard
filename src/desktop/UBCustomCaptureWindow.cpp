@@ -31,6 +31,9 @@
 
 #include "UBCustomCaptureWindow.h"
 
+#include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
+
 #include "frameworks/UBPlatformUtils.h"
 #include "gui/UBRubberBand.h"
 
@@ -78,7 +81,7 @@ int UBCustomCaptureWindow::execute(const QPixmap &pScreenPixmap)
 
     // necessary so that changing geometry really affects the widget
     showNormal();
-    setGeometry(QGuiApplication::screenAt(QCursor::pos())->geometry());
+    setGeometry(UBApplication::displayManager->screenGeometry(DisplayRole::Desktop));
     this->show();
     setWindowOpacity(1.0);
 

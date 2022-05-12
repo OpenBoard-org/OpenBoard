@@ -56,7 +56,6 @@
 
 #include <QApplication>
 #include <QCloseEvent>
-#include <QDesktopWidget>
 #include <QEvent>
 #include <QFileDialog>
 #include <QInputDialog>
@@ -297,7 +296,7 @@ void BrowserWindow::handleDevToolsRequested(QWebEnginePage *source)
     }
     else
     {
-        QRect controlGeometry = UBApplication::displayManager->controlGeometry();
+        QRect controlGeometry = UBApplication::displayManager->screenGeometry(DisplayRole::Control);
         QRect inspectorGeometry(controlGeometry.left() + 50, controlGeometry.top() + 50, controlGeometry.width() / 2, controlGeometry.height() / 2);
 
         m_inspectorWindow = new QMainWindow();

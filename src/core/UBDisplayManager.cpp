@@ -29,7 +29,6 @@
 #include "frameworks/UBPlatformUtils.h"
 
 #include "core/UBApplication.h"
-#include "core/UBApplicationController.h"
 #include "core/UBSettings.h"
 
 #include "board/UBBoardView.h"
@@ -41,17 +40,10 @@
 
 #include "core/memcheck.h"
 
-#include "qdesktopwidget.h"
-
 UBDisplayManager::UBDisplayManager(QObject *parent)
     : QObject(parent)
     , mAvailableScreenCount(0)
-//    , mControlWidget(nullptr)
-//    , mDisplayWidget(nullptr)
-//    , mDesktopWidget(nullptr)
 {
-//    mDesktop = qApp->desktop();
-
     mUseMultiScreen = UBSettings::settings()->appUseMultiscreen->get().toBool();
 
     initScreenIndexes();
@@ -308,12 +300,6 @@ void UBDisplayManager::unBlackout()
 }
 
 
-void UBDisplayManager::setRoleToScreen(DisplayRole role, int screenIndex)
-{
-    Q_UNUSED(role);
-    Q_UNUSED(screenIndex);
-}
-
 void UBDisplayManager::addOrRemoveScreen(QScreen *screen)
 {
     Q_UNUSED(screen);
@@ -325,12 +311,6 @@ void UBDisplayManager::addOrRemoveScreen(QScreen *screen)
 void UBDisplayManager::setUseMultiScreen(bool pUse)
 {
     mUseMultiScreen = pUse;
-}
-
-int UBDisplayManager::controleScreenIndex()
-{
-    // FIXME should later be removed, just for compatibility
-    return mScreensByRole[Control] == QGuiApplication::primaryScreen() ? 0 : 1;
 }
 
 QSize UBDisplayManager::screenSize(DisplayRole role) const
@@ -363,12 +343,7 @@ qreal UBDisplayManager::logicalDpi(DisplayRole role) const
     return screen ? screen->logicalDotsPerInch() : 96.;
 }
 
-QRect UBDisplayManager::controlGeometry()
-{
-    return qApp->desktop()->screenGeometry(controleScreenIndex());
-}
-
-QPixmap UBDisplayManager::grab(DisplayRole role, QRect rect)
+QPixmap UBDisplayManager::grab(DisplayRole role, QRect rect) const
 {
     QScreen* screen = mScreensByRole.value(role, nullptr);
 
@@ -382,7 +357,7 @@ QPixmap UBDisplayManager::grab(DisplayRole role, QRect rect)
     return QPixmap();
 }
 
-QPixmap UBDisplayManager::grabGlobal(QRect rect)
+QPixmap UBDisplayManager::grabGlobal(QRect rect) const
 {
     QScreen* screen = QGuiApplication::screenAt(rect.topLeft());
 
