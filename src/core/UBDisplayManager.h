@@ -36,7 +36,7 @@
 class UBBlackoutWidget;
 class UBBoardView;
 
-enum DisplayRole
+enum class DisplayRole
 {
     None = 0, Control, Display, Desktop, Previous1, Previous2, Previous3, Previous4, Previous5
 };
@@ -65,17 +65,17 @@ class UBDisplayManager : public QObject
 
         bool hasControl()
         {
-            return mScreensByRole.contains(Control);
+            return mScreensByRole.contains(DisplayRole::Control);
         }
 
         bool hasDisplay()
         {
-            return mScreensByRole.contains(Display);
+            return mScreensByRole.contains(DisplayRole::Display);
         }
 
         bool hasPrevious()
         {
-            return mScreensByRole.contains(Previous1);
+            return mScreensByRole.contains(DisplayRole::Previous1);
         }
 
         bool useMultiScreen() { return mUseMultiScreen; }

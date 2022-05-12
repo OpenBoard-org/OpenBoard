@@ -92,7 +92,7 @@ void UBDisplayManager::initScreenIndexes()
     bool swapScreens = UBSettings::settings()->swapControlAndDisplayScreens->get().toBool();
     bool useMultiscreen = UBSettings::settings()->appUseMultiscreen->get().toBool();
 
-    mScreensByRole[Control] = screens[0];
+    mScreensByRole[DisplayRole::Control] = screens[0];
 
     if (screens.count() > 1)
     {
@@ -104,21 +104,21 @@ void UBDisplayManager::initScreenIndexes()
             std::swap(controlScreen, displayScreen);
         }
 
-        mScreensByRole[Control] = controlScreen;
+        mScreensByRole[DisplayRole::Control] = controlScreen;
 
         if (useMultiscreen)
         {
-            mScreensByRole[Display] = displayScreen;
+            mScreensByRole[DisplayRole::Display] = displayScreen;
         }
     }
 
     for (int i = 2; i < screens.count(); ++i)
     {
-        mScreensByRole[static_cast<DisplayRole>(Previous1 + (i-2))] = screens[i];
+        mScreensByRole[static_cast<DisplayRole>(int(DisplayRole::Previous1) + (i-2))] = screens[i];
     }
 
     // Desktop screen is same as Control screen
-    mScreensByRole[Desktop] = mScreensByRole[Control];
+    mScreensByRole[DisplayRole::Desktop] = mScreensByRole[DisplayRole::Control];
 }
 
 int UBDisplayManager::numScreens()
@@ -131,9 +131,9 @@ int UBDisplayManager::numPreviousViews()
 {
     int previousViews = 0;
 
-    for (int i = 0; i < Previous5 - Previous1; ++i)
+    for (int i = 0; i < 5; ++i)
     {
-        if (mScreensByRole.contains(static_cast<DisplayRole>(Previous1 + i)))
+        if (mScreensByRole.contains(static_cast<DisplayRole>(int(DisplayRole::Previous1) + i)))
         {
             ++previousViews;
         }
@@ -146,32 +146,32 @@ int UBDisplayManager::numPreviousViews()
 void UBDisplayManager::setControlWidget(QWidget* pControlWidget)
 {
     if(hasControl() && pControlWidget)
-        mWidgetsByRole[Control] = pControlWidget;
+        mWidgetsByRole[DisplayRole::Control] = pControlWidget;
 }
 
 void UBDisplayManager::setDesktopWidget(QWidget* pDesktopWidget )
 {
     if(pDesktopWidget)
-        mWidgetsByRole[Desktop] = pDesktopWidget;
+        mWidgetsByRole[DisplayRole::Desktop] = pDesktopWidget;
 }
 
 void UBDisplayManager::setDisplayWidget(QWidget* pDisplayWidget)
 {
     if(pDisplayWidget)
     {
-        if (mWidgetsByRole.contains(Display))
+        if (mWidgetsByRole.contains(DisplayRole::Display))
         {
-            mWidgetsByRole[Display]->hide();
-            pDisplayWidget->setGeometry(mWidgetsByRole[Display]->geometry());
-            pDisplayWidget->setWindowFlags(mWidgetsByRole[Display]->windowFlags());
+            mWidgetsByRole[DisplayRole::Display]->hide();
+            pDisplayWidget->setGeometry(mWidgetsByRole[DisplayRole::Display]->geometry());
+            pDisplayWidget->setWindowFlags(mWidgetsByRole[DisplayRole::Display]->windowFlags());
         }
 
-        mWidgetsByRole[Display] = pDisplayWidget;
+        mWidgetsByRole[DisplayRole::Display] = pDisplayWidget;
 
-        if (mScreensByRole.contains(Display))
+        if (mScreensByRole.contains(DisplayRole::Display))
         {
-            mWidgetsByRole[Display]->setGeometry(mScreensByRole[Display]->geometry());
-            UBPlatformUtils::showFullScreen(mWidgetsByRole[Display]);
+            mWidgetsByRole[DisplayRole::Display]->setGeometry(mScreensByRole[DisplayRole::Display]->geometry());
+            UBPlatformUtils::showFullScreen(mWidgetsByRole[DisplayRole::Display]);
         }
     }
 }
@@ -181,7 +181,7 @@ void UBDisplayManager::setPreviousDisplaysWidgets(QList<UBBoardView*> pPreviousV
 {
     for (int i = 0; i < pPreviousViews.size(); ++i)
     {
-        mWidgetsByRole[static_cast<DisplayRole>(Previous1 + i)] = pPreviousViews[i];
+        mWidgetsByRole[static_cast<DisplayRole>(int(DisplayRole::Previous1) + i)] = pPreviousViews[i];
     }
 }
 
@@ -210,32 +210,32 @@ void UBDisplayManager::adjustScreens(int screen)
 
 void UBDisplayManager::positionScreens()
 {
-    if(mWidgetsByRole.contains(Desktop) && hasControl())
+    if(mWidgetsByRole.contains(DisplayRole::Desktop) && hasControl())
     {
-        mWidgetsByRole[Desktop]->hide();
-        mWidgetsByRole[Desktop]->setGeometry(mScreensByRole[Control]->geometry());
+        mWidgetsByRole[DisplayRole::Desktop]->hide();
+        mWidgetsByRole[DisplayRole::Desktop]->setGeometry(mScreensByRole[DisplayRole::Control]->geometry());
     }
-    if (mWidgetsByRole.contains(Control) && hasControl())
+    if (mWidgetsByRole.contains(DisplayRole::Control) && hasControl())
     {
-        mWidgetsByRole[Control]->showNormal();
-        mWidgetsByRole[Control]->setGeometry(mScreensByRole[Control]->geometry());
-        UBPlatformUtils::showFullScreen(mWidgetsByRole[Control]);
-    }
-
-    if (mWidgetsByRole.contains(Display) && hasDisplay())
-    {
-        mWidgetsByRole[Display]->showNormal();
-        mWidgetsByRole[Display]->setGeometry(mScreensByRole[Display]->geometry());
-        UBPlatformUtils::showFullScreen(mWidgetsByRole[Display]);
-    }
-    else if(mWidgetsByRole.contains(Display))
-    {
-        mWidgetsByRole[Display]->hide();
+        mWidgetsByRole[DisplayRole::Control]->showNormal();
+        mWidgetsByRole[DisplayRole::Control]->setGeometry(mScreensByRole[DisplayRole::Control]->geometry());
+        UBPlatformUtils::showFullScreen(mWidgetsByRole[DisplayRole::Control]);
     }
 
-    for (int i = 0; i < Previous5 - Previous1; ++i)
+    if (mWidgetsByRole.contains(DisplayRole::Display) && hasDisplay())
     {
-        DisplayRole role = static_cast<DisplayRole>(Previous1 + i);
+        mWidgetsByRole[DisplayRole::Display]->showNormal();
+        mWidgetsByRole[DisplayRole::Display]->setGeometry(mScreensByRole[DisplayRole::Display]->geometry());
+        UBPlatformUtils::showFullScreen(mWidgetsByRole[DisplayRole::Display]);
+    }
+    else if(mWidgetsByRole.contains(DisplayRole::Display))
+    {
+        mWidgetsByRole[DisplayRole::Display]->hide();
+    }
+
+    for (int i = 0; i < 5; ++i)
+    {
+        DisplayRole role = static_cast<DisplayRole>(int(DisplayRole::Previous1) + i);
 
         if (mWidgetsByRole.contains(role))
         {
@@ -251,8 +251,8 @@ void UBDisplayManager::positionScreens()
         }
     }
 
-    if (mWidgetsByRole.contains(Control) && hasControl())
-        mWidgetsByRole[Control]->activateWindow();
+    if (mWidgetsByRole.contains(DisplayRole::Control) && hasControl())
+        mWidgetsByRole[DisplayRole::Control]->activateWindow();
 }
 
 
@@ -268,7 +268,7 @@ void UBDisplayManager::blackout()
         connect(blackoutWidget, SIGNAL(activity()), this, SLOT(unBlackout()));
 
         // display Uniboard logo on main screen
-        bool isControlScreen = screen == mScreensByRole[Control];
+        bool isControlScreen = screen == mScreensByRole[DisplayRole::Control];
         blackoutUi->iconButton->setVisible(isControlScreen);
         blackoutUi->labelClickToReturn->setVisible(isControlScreen);
 
