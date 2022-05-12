@@ -124,6 +124,9 @@ void UBDisplayManager::initScreenIndexes()
     {
         mScreensByRole[static_cast<DisplayRole>(Previous1 + (i-2))] = screens[i];
     }
+
+    // Desktop screen is same as Control screen
+    mScreensByRole[Desktop] = mScreensByRole[Control];
 }
 
 int UBDisplayManager::numScreens()
@@ -340,6 +343,12 @@ QSize UBDisplayManager::availableScreenSize(DisplayRole role) const
 {
     QScreen* screen = mScreensByRole.value(role, nullptr);
     return screen ? screen->availableSize() : QSize();
+}
+
+QRect UBDisplayManager::screenGeometry(DisplayRole role) const
+{
+    QScreen* screen = mScreensByRole.value(role, nullptr);
+    return screen ? screen->geometry() : QRect();
 }
 
 qreal UBDisplayManager::physicalDpi(DisplayRole role) const

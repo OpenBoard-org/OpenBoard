@@ -86,6 +86,7 @@ class UBDisplayManager : public QObject
 
         QSize screenSize(DisplayRole role) const;
         QSize availableScreenSize(DisplayRole role) const;
+        QRect screenGeometry(DisplayRole role) const;
         qreal physicalDpi(DisplayRole role) const;
         qreal logicalDpi(DisplayRole role) const;
 
