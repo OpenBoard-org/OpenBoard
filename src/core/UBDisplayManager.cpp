@@ -90,7 +90,6 @@ void UBDisplayManager::initScreenIndexes()
     }
 
     bool swapScreens = UBSettings::settings()->swapControlAndDisplayScreens->get().toBool();
-    bool useMultiscreen = UBSettings::settings()->appUseMultiscreen->get().toBool();
 
     mScreensByRole[DisplayRole::Control] = screens[0];
 
@@ -106,7 +105,7 @@ void UBDisplayManager::initScreenIndexes()
 
         mScreensByRole[DisplayRole::Control] = controlScreen;
 
-        if (useMultiscreen)
+        if (mUseMultiScreen)
         {
             mScreensByRole[DisplayRole::Display] = displayScreen;
         }

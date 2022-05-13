@@ -728,6 +728,7 @@ void UBApplicationController::useMultiScreen(bool use)
     if (use && !mMirror)
         mMirror = new UBScreenMirror();
     if (!use && mMirror) {
+        mirroringEnabled(false);
         delete mMirror;
         mMirror = NULL;
     }
