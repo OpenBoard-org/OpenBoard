@@ -101,8 +101,7 @@ UBPreferencesController::~UBPreferencesController()
 
 void UBPreferencesController::adjustScreens()
 {
-    UBDisplayManager displayManager;
-    mPreferencesUI->multiDisplayGroupBox->setEnabled(displayManager.numScreens() > 1);
+    mPreferencesUI->multiDisplayGroupBox->setEnabled(UBApplication::displayManager->numScreens() > 1);
 }
 
 void UBPreferencesController::show()
