@@ -260,6 +260,7 @@ void UBSettings::init()
     appLastSessionDocumentUUID = new UBSetting(this, "App", "LastSessionDocumentUUID", "");
     appLastSessionPageIndex = new UBSetting(this, "App", "LastSessionPageIndex", 0);
     appUseMultiscreen = new UBSetting(this, "App", "UseMultiscreenMode", true);
+    appScreenList = new UBSetting(this, "App", "ScreenList", QStringList());
 
     appLookForOpenSankoreInstall = new UBSetting(this, "App", "LookForOpenSankoreInstall", true);
 

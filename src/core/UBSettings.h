@@ -270,6 +270,7 @@ class UBSettings : public QObject
         UBSetting* appLastSessionPageIndex;
 
         UBSetting* appUseMultiscreen;
+        UBSetting* appScreenList;
 
         UBSetting* appLookForOpenSankoreInstall;
 

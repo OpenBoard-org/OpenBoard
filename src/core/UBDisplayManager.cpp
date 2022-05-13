@@ -42,7 +42,6 @@
 
 UBDisplayManager::UBDisplayManager(QObject *parent)
     : QObject(parent)
-    , mAvailableScreenCount(0)
 {
     mUseMultiScreen = UBSettings::settings()->appUseMultiscreen->get().toBool();
 
@@ -62,7 +61,6 @@ void UBDisplayManager::initScreenIndexes()
 {
     mScreensByRole.clear();
     QScreen* primaryScreen = QGuiApplication::primaryScreen();
-
     QList<QScreen*> screens = primaryScreen->virtualSiblings();
 
     // make sure primary screen is first element and therefore never dropped
@@ -71,9 +69,13 @@ void UBDisplayManager::initScreenIndexes()
     // drop screens which duplicate another screen, i.e. have same geometry
     for (int i = 1; i < screens.size(); )
     {
+        QRect iGeomentry = screens[i]->geometry();
+
         for (int j = 0; j < i; ++j)
         {
-            if (screens[i]->geometry() == screens[j]->geometry())
+            QRect jGeometry = screens[j]->geometry();
+
+            if (iGeomentry.contains(jGeometry) || jGeometry.contains(iGeomentry))
             {
                 screens.removeAt(i);
                 break;
@@ -83,38 +85,104 @@ void UBDisplayManager::initScreenIndexes()
         ++i;
     }
 
-    if (screens.count() != mAvailableScreenCount)
+    if (screens.count() != mAvailableScreens.count())
     {
-        mAvailableScreenCount = screens.count();
-        emit availableScreenCountChanged(mAvailableScreenCount);
+        mAvailableScreens = screens;
+        emit availableScreenCountChanged(screens.count());
     }
 
-    bool swapScreens = UBSettings::settings()->swapControlAndDisplayScreens->get().toBool();
+    QStringList screenList = UBSettings::settings()->appScreenList->get().toStringList();
 
-    mScreensByRole[DisplayRole::Control] = screens[0];
-
-    if (screens.count() > 1)
+    if (screenList.empty())
     {
-        QScreen* controlScreen = screens[0];
-        QScreen* displayScreen = screens[1];
+        // "old" configuration mode
+        bool swapScreens = UBSettings::settings()->swapControlAndDisplayScreens->get().toBool();
 
-        if (swapScreens)
+        mScreensByRole[DisplayRole::Control] = screens[0];
+
+        if (screens.count() > 1)
         {
-            std::swap(controlScreen, displayScreen);
+            QScreen* controlScreen = screens[0];
+            QScreen* displayScreen = screens[1];
+
+            if (swapScreens)
+            {
+                std::swap(controlScreen, displayScreen);
+            }
+
+            mScreensByRole[DisplayRole::Control] = controlScreen;
+            screenList << controlScreen->name();
+
+            if (mUseMultiScreen)
+            {
+                mScreensByRole[DisplayRole::Display] = displayScreen;
+                screenList << displayScreen->name();
+
+                for (int i = 2; i < screens.count(); ++i)
+                {
+                    mScreensByRole[static_cast<DisplayRole>(int(DisplayRole::Previous1) + (i-2))] = screens[i];
+                    screenList << screens[i]->name();
+                }
+            }
+
+            if (screenList.count() > 1)
+            {
+                // Convert configuration to new mode
+                qDebug() << "Screen setting converted to screen list" << screenList;
+                UBSettings::settings()->appScreenList->set(screenList);
+            }
+        }
+    }
+    else
+    {
+        // "new" configuration mode using list of screen names
+
+        // first, create a map of screens by name
+        QMap<QString,QScreen*> screenByName;
+
+        for (QScreen* screen : mAvailableScreens)
+        {
+            screenByName[screen->name()] = screen;
+        }
+
+        // configure control screen
+        QScreen* controlScreen = screenByName.value(screenList[0], nullptr);
+
+        if (!controlScreen)
+        {
+            // by default use primary screen and remove it from the list of available screens
+            controlScreen = primaryScreen;
+            screenByName.remove(controlScreen->name());
         }
 
         mScreensByRole[DisplayRole::Control] = controlScreen;
 
-        if (mUseMultiScreen)
+        // configure display screen
+        if (mUseMultiScreen && screenList.count() > 1)
         {
-            mScreensByRole[DisplayRole::Display] = displayScreen;
+            QScreen* displayScreen = screenByName.value(screenList[1], nullptr);
+
+            if (displayScreen)
+            {
+                mScreensByRole[DisplayRole::Display] = displayScreen;
+            }
+        }
+
+        // configure previous screens
+        DisplayRole role = DisplayRole::Previous1;
+
+        for (int i = 2; i < screenList.count(); ++i)
+        {
+            QScreen* previousScreen = screenByName.value(screenList[i], nullptr);
+
+            if (previousScreen)
+            {
+                mScreensByRole[role] = previousScreen;
+                role = static_cast<DisplayRole>(int(role) + 1);
+            }
         }
     }
 
-    for (int i = 2; i < screens.count(); ++i)
-    {
-        mScreensByRole[static_cast<DisplayRole>(int(DisplayRole::Previous1) + (i-2))] = screens[i];
-    }
 
     // Desktop screen is same as Control screen
     mScreensByRole[DisplayRole::Desktop] = mScreensByRole[DisplayRole::Control];
@@ -122,7 +190,7 @@ void UBDisplayManager::initScreenIndexes()
 
 int UBDisplayManager::numScreens()
 {
-    return mAvailableScreenCount;
+    return mAvailableScreens.count();
 }
 
 
@@ -186,7 +254,12 @@ void UBDisplayManager::setPreviousDisplaysWidgets(QList<UBBoardView*> pPreviousV
 
 QWidget* UBDisplayManager::widget(DisplayRole role)
 {
-        return mWidgetsByRole.value(role, nullptr);
+    return mWidgetsByRole.value(role, nullptr);
+}
+
+QList<QScreen *> UBDisplayManager::availableScreens() const
+{
+    return mAvailableScreens;
 }
 
 void UBDisplayManager::reinitScreens(bool swap)

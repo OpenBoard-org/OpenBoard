@@ -63,6 +63,8 @@ class UBDisplayManager : public QObject
 
         QWidget* widget(DisplayRole role);
 
+        QList<QScreen*> availableScreens() const;
+
         bool hasControl()
         {
             return mScreensByRole.contains(DisplayRole::Control);
@@ -117,7 +119,7 @@ class UBDisplayManager : public QObject
 
         QList<UBBlackoutWidget*> mBlackoutWidgets;
 
-        int mAvailableScreenCount;
+        QList<QScreen*> mAvailableScreens;
         QMap<DisplayRole, QScreen*> mScreensByRole;
         QMap<DisplayRole, QWidget*> mWidgetsByRole;
 
