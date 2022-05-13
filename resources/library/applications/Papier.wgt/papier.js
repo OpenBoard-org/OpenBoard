@@ -536,7 +536,7 @@ $( function() {
 		min: 1,
 		max: 10,
 		step: 1,
-		change:function( event, ui ) {
+		slide:function( event, ui ) {
 				$( "#épaisseur_maternelle" ).val( ui.value ); // Actualisation de la valeur affichée
 			},
 		change:function( event, ui ) {
@@ -587,7 +587,7 @@ $( function() {
 		min: 1,
 		max: 10,
 		step: 1,
-		change:function( event, ui ) {
+		slide:function( event, ui ) {
 				$( "#épaisseur_mm" ).val( ui.value ); // Actualisation de la valeur affichée
 			},
 			
