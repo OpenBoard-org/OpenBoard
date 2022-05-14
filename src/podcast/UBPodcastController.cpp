@@ -642,7 +642,7 @@ void UBPodcastController::applicationDesktopMode(bool displayed)
 
     if (displayed)
     {
-        setSourceWidget(UBApplication::displayManager->widget(DisplayRole::Desktop));
+        setSourceWidget(UBApplication::displayManager->widget(ScreenRole::Desktop));
     }
     else
     {
@@ -742,7 +742,7 @@ void UBPodcastController::processScreenGrabingTimerEvent()
 
     if (mIsDesktopMode)
     {
-        widgetContent = UBApplication::displayManager->grab(DisplayRole::Control);
+        widgetContent = UBApplication::displayManager->grab(ScreenRole::Control);
     }
     else
     {

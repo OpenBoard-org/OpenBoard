@@ -64,7 +64,7 @@ UBExportFullPDF::UBExportFullPDF(QObject *parent)
     : UBExportAdaptor(parent)
 {
     // need to calculate screen resolution
-    float dpiCommon = UBApplication::displayManager->logicalDpi(DisplayRole::Control);
+    float dpiCommon = UBApplication::displayManager->logicalDpi(ScreenRole::Control);
     mScaleFactor = 72.0f / dpiCommon; // 1pt = 1/72 inch
 
     mSimpleExporter = new UBExportPDF();

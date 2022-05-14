@@ -36,10 +36,16 @@
 class UBBlackoutWidget;
 class UBBoardView;
 
-enum class DisplayRole
+enum class ScreenRole : int
 {
     None = 0, Control, Display, Desktop, Previous1, Previous2, Previous3, Previous4, Previous5
 };
+
+// prefix increment
+ScreenRole& operator++(ScreenRole& role);
+
+// postfix increment
+ScreenRole operator++(ScreenRole& role, int);
 
 class UBDisplayManager : public QObject
 {
@@ -61,36 +67,36 @@ class UBDisplayManager : public QObject
 
         void setPreviousDisplaysWidgets(QList<UBBoardView*> pPreviousViews);
 
-        QWidget* widget(DisplayRole role);
+        QWidget* widget(ScreenRole role);
 
         QList<QScreen*> availableScreens() const;
 
         bool hasControl()
         {
-            return mScreensByRole.contains(DisplayRole::Control);
+            return mScreensByRole.contains(ScreenRole::Control);
         }
 
         bool hasDisplay()
         {
-            return mScreensByRole.contains(DisplayRole::Display);
+            return mScreensByRole.contains(ScreenRole::Display);
         }
 
         bool hasPrevious()
         {
-            return mScreensByRole.contains(DisplayRole::Previous1);
+            return mScreensByRole.contains(ScreenRole::Previous1);
         }
 
         bool useMultiScreen() { return mUseMultiScreen; }
 
         void setUseMultiScreen(bool pUse);
 
-        QSize screenSize(DisplayRole role) const;
-        QSize availableScreenSize(DisplayRole role) const;
-        QRect screenGeometry(DisplayRole role) const;
-        qreal physicalDpi(DisplayRole role) const;
-        qreal logicalDpi(DisplayRole role) const;
+        QSize screenSize(ScreenRole role) const;
+        QSize availableScreenSize(ScreenRole role) const;
+        QRect screenGeometry(ScreenRole role) const;
+        qreal physicalDpi(ScreenRole role) const;
+        qreal logicalDpi(ScreenRole role) const;
 
-        QPixmap grab(DisplayRole role, QRect rect = QRect(0, 0, -1, -1)) const;
+        QPixmap grab(ScreenRole role, QRect rect = QRect(0, 0, -1, -1)) const;
         QPixmap grabGlobal(QRect rect) const;
 
    signals:
@@ -120,8 +126,8 @@ class UBDisplayManager : public QObject
         QList<UBBlackoutWidget*> mBlackoutWidgets;
 
         QList<QScreen*> mAvailableScreens;
-        QMap<DisplayRole, QScreen*> mScreensByRole;
-        QMap<DisplayRole, QWidget*> mWidgetsByRole;
+        QMap<ScreenRole, QScreen*> mScreensByRole;
+        QMap<ScreenRole, QWidget*> mWidgetsByRole;
 
         bool mUseMultiScreen;
 

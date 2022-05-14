@@ -69,7 +69,7 @@ PDFRenderer* PDFRenderer::rendererForUuid(const QUuid &uuid, const QString &file
 
         sRenderers.insert(newRenderer->fileUuid(), newRenderer);
 
-        int dpiCommon = UBApplication::displayManager->logicalDpi(DisplayRole::Control);
+        int dpiCommon = UBApplication::displayManager->logicalDpi(ScreenRole::Control);
         newRenderer->setDPI(dpiCommon);
 
         return newRenderer;

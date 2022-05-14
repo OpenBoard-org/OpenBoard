@@ -444,7 +444,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                     proxy->setPageDpi(pageDpi.toInt());
 
                 else if (proxy->pageDpi() == 0) {
-                    proxy->setPageDpi(UBApplication::displayManager->logicalDpi(DisplayRole::Control));
+                    proxy->setPageDpi(UBApplication::displayManager->logicalDpi(ScreenRole::Control));
                     //pageDpiSpecified = false;
                 }
 
@@ -837,7 +837,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                     UBGraphicsPDFItem* pdfItem = pdfItemFromPDF();
                     if (pdfItem)
                     {
-                        qreal currentDpi = UBApplication::displayManager->logicalDpi(DisplayRole::Control);
+                        qreal currentDpi = UBApplication::displayManager->logicalDpi(ScreenRole::Control);
                         // qDebug() << "currentDpi = " << currentDpi;
                         qreal pdfScale = qreal(proxy->pageDpi())/currentDpi;
                         // qDebug() << "pdfScale " << pdfScale;
@@ -1163,7 +1163,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement(UBDocumentProxy* pro
     }
 
     if (proxy->pageDpi() == 0)
-        proxy->setPageDpi(UBApplication::displayManager->logicalDpi(DisplayRole::Control));
+        proxy->setPageDpi(UBApplication::displayManager->logicalDpi(ScreenRole::Control));
 
     mXmlWriter.writeAttribute("pageDpi", QString::number(proxy->pageDpi()));
 

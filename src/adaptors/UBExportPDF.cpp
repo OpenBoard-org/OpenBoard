@@ -90,7 +90,7 @@ bool UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QStrin
     pdfWriter.setCreator("OpenBoard PDF export");
 
     // need to calculate screen resolution
-    float dpiCommon = UBApplication::displayManager->logicalDpi(DisplayRole::Control);
+    float dpiCommon = UBApplication::displayManager->logicalDpi(ScreenRole::Control);
     float scaleFactor = dpiCommon ? 72.0f / dpiCommon : 1.f;
 
     QPainter pdfPainter;

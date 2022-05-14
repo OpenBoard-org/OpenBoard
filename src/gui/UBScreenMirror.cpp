@@ -91,7 +91,7 @@ void UBScreenMirror::grabPixmap()
     }
     else
     {
-        mLastPixmap = UBApplication::displayManager->grab(DisplayRole::Control);
+        mLastPixmap = UBApplication::displayManager->grab(ScreenRole::Control);
     }
 
     if (!mLastPixmap.isNull())

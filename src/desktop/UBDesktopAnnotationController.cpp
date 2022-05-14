@@ -85,7 +85,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
 
     mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window | Qt::NoDropShadowWindowHint | Qt::X11BypassWindowManagerHint);
     mTransparentDrawingView->setCacheMode(QGraphicsView::CacheNone);
-    mTransparentDrawingView->resize(UBApplication::displayManager->screenSize(DisplayRole::Desktop));
+    mTransparentDrawingView->resize(UBApplication::displayManager->screenSize(ScreenRole::Desktop));
 
     mTransparentDrawingView->setMouseTracking(true);
 
@@ -319,7 +319,7 @@ void UBDesktopAnnotationController::showWindow()
 
     if (!mWindowPositionInitialized)
     {
-        QRect desktopRect = UBApplication::displayManager->screenGeometry(DisplayRole::Desktop);
+        QRect desktopRect = UBApplication::displayManager->screenGeometry(ScreenRole::Desktop);
 
         mDesktopPalette->move(5, desktopRect.top() + 150);
 
@@ -478,7 +478,7 @@ void UBDesktopAnnotationController::screenCapture()
 
 QPixmap UBDesktopAnnotationController::getScreenPixmap()
 {
-    return UBApplication::displayManager->grab(DisplayRole::Control);
+    return UBApplication::displayManager->grab(ScreenRole::Control);
 }
 
 

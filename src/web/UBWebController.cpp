@@ -546,7 +546,7 @@ void UBWebController::toogleMirroring(bool checked)
 
 QPixmap UBWebController::getScreenPixmap()
 {
-    return UBApplication::displayManager->grab(DisplayRole::Control);
+    return UBApplication::displayManager->grab(ScreenRole::Control);
 }
 
 

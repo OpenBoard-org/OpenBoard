@@ -45,7 +45,7 @@ void UBWebEngineView::inspectPage()
     }
     else
     {
-        QRect controlGeometry = UBApplication::displayManager->screenGeometry(DisplayRole::Control);
+        QRect controlGeometry = UBApplication::displayManager->screenGeometry(ScreenRole::Control);
         QRect inspectorGeometry(controlGeometry.left() + 50, controlGeometry.top() + 50, controlGeometry.width() / 2, controlGeometry.height() / 2);
 
         mInspectorWindow = new QMainWindow();

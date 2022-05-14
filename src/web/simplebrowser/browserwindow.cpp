@@ -142,7 +142,7 @@ void BrowserWindow::init()
 
 QSize BrowserWindow::sizeHint() const
 {
-    QSize size = UBApplication::displayManager->screenSize(DisplayRole::Control);
+    QSize size = UBApplication::displayManager->screenSize(ScreenRole::Control);
     return size * qreal(0.9);
 }
 
@@ -296,7 +296,7 @@ void BrowserWindow::handleDevToolsRequested(QWebEnginePage *source)
     }
     else
     {
-        QRect controlGeometry = UBApplication::displayManager->screenGeometry(DisplayRole::Control);
+        QRect controlGeometry = UBApplication::displayManager->screenGeometry(ScreenRole::Control);
         QRect inspectorGeometry(controlGeometry.left() + 50, controlGeometry.top() + 50, controlGeometry.width() / 2, controlGeometry.height() / 2);
 
         m_inspectorWindow = new QMainWindow();
