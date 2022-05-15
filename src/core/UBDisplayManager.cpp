@@ -50,6 +50,8 @@ UBDisplayManager::UBDisplayManager(QObject *parent)
     connect(qApp, &QGuiApplication::screenAdded, this, &UBDisplayManager::addOrRemoveScreen);
     connect(qApp, &QGuiApplication::screenRemoved, this, &UBDisplayManager::addOrRemoveScreen);
     connect(qApp, &QGuiApplication::primaryScreenChanged, this, &UBDisplayManager::addOrRemoveScreen);
+
+    connect(UBSettings::settings()->appScreenList, &UBSetting::changed, this, &UBDisplayManager::adjustScreens);
 }
 
 UBDisplayManager::~UBDisplayManager()
@@ -265,18 +267,9 @@ QList<QScreen *> UBDisplayManager::availableScreens() const
     return mAvailableScreens;
 }
 
-void UBDisplayManager::reinitScreens(bool swap)
+void UBDisplayManager::adjustScreens()
 {
-    Q_UNUSED(swap);
-    adjustScreens(-1);
-}
-
-void UBDisplayManager::adjustScreens(int screen)
-{
-    Q_UNUSED(screen);
-
     initScreenIndexes();
-
     positionScreens();
 
     emit screenLayoutChanged();
@@ -381,7 +374,7 @@ void UBDisplayManager::addOrRemoveScreen(QScreen *screen)
 {
     Q_UNUSED(screen);
     // adjustment must be delayed, because OS also tries to position the widgets
-    QTimer::singleShot(3000, [this](){ adjustScreens(0); } );
+    QTimer::singleShot(3000, [this](){ adjustScreens(); } );
 }
 
 

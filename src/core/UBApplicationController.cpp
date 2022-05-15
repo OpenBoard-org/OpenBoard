@@ -157,7 +157,7 @@ void UBApplicationController::initScreenLayout(bool useMultiscreen)
     displayManager->setDesktopWidget(mUninoteController->drawingView());
 
     displayManager->setUseMultiScreen(useMultiscreen);
-    displayManager->adjustScreens(-1);
+    displayManager->adjustScreens();
 }
 
 
@@ -608,7 +608,7 @@ void UBApplicationController::hideDesktop()
 
     mIsShowingDesktop = false;
 
-    UBApplication::displayManager->adjustScreens(-1);
+    UBApplication::displayManager->adjustScreens();
 
     emit desktopMode(false);
 }
@@ -734,7 +734,7 @@ void UBApplicationController::useMultiScreen(bool use)
     }
 
     UBApplication::displayManager->setUseMultiScreen(use);
-    UBApplication::displayManager->adjustScreens(0);
+    UBApplication::displayManager->adjustScreens();
     UBSettings::settings()->appUseMultiscreen->set(use);
 
 }

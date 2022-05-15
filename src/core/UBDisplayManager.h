@@ -107,9 +107,7 @@ class UBDisplayManager : public QObject
 
    public slots:
 
-        void reinitScreens(bool bswap);
-
-        void adjustScreens(int screen);
+        void adjustScreens();
 
         void blackout();
 
