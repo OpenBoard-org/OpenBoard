@@ -170,17 +170,9 @@ void UBGraphicsAxes::paint(QPainter *painter, const QStyleOptionGraphicsItem *st
     painter->drawLine(yAxis());
 
     // draw arrows at end
-    QPointF tip = xAxis().p1();
-    painter->drawLine(tip.x(), tip.y(), tip.x() + sArrowLength, tip.y() + sArrowWidth);
-    painter->drawLine(tip.x(), tip.y(), tip.x() + sArrowLength, tip.y() - sArrowWidth);
-
-    tip = xAxis().p2();
+    QPointF tip = xAxis().p2();
     painter->drawLine(tip.x(), tip.y(), tip.x() - sArrowLength, tip.y() + sArrowWidth);
     painter->drawLine(tip.x(), tip.y(), tip.x() - sArrowLength, tip.y() - sArrowWidth);
-
-    tip = yAxis().p1();
-    painter->drawLine(tip.x(), tip.y(), tip.x() + sArrowWidth, tip.y() - sArrowLength);
-    painter->drawLine(tip.x(), tip.y(), tip.x() - sArrowWidth, tip.y() - sArrowLength);
 
     tip = yAxis().p2();
     painter->drawLine(tip.x(), tip.y(), tip.x() + sArrowWidth, tip.y() + sArrowLength);
