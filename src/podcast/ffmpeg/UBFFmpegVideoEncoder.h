@@ -123,6 +123,7 @@ private:
 
     // Video
     // ------------------------------------------
+    AVCodecContext* mVideoCodecContext;
     QQueue<ImageFrame> mPendingFrames;
     struct SwsContext * mSwsContext;
 
@@ -133,6 +134,7 @@ private:
     bool mShouldRecordAudio;
 
     UBMicrophoneInput * mAudioInput;
+    AVCodecContext* mAudioCodecContext;
     struct SwrContext * mSwrContext;
     /// Queue for audio that has been rescaled/converted but not encoded yet
     AVAudioFifo *mAudioOutBuffer;

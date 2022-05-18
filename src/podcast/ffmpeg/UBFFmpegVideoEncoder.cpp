@@ -45,20 +45,20 @@
         AVFormatContext *s = avformat_alloc_context();
         int ret = 0;
          
-        *avctx = NULL;
+        *avctx = nullptr;
         if (!s)
             goto nomem;
 
         if (!oformat) {
             if (format) {
-                oformat = av_guess_format(format, NULL, NULL);
+                oformat = av_guess_format(format, nullptr, nullptr);
                 if (!oformat) {
                     av_log(s, AV_LOG_ERROR, "Requested output format '%s' is not a suitable output format\n", format);
                     ret = AVERROR(EINVAL);
                     goto error;
                 }
             } else {
-                oformat = av_guess_format(NULL, filename, NULL);
+                oformat = av_guess_format(nullptr, filename, nullptr);
                 if (!oformat) {
                     ret = AVERROR(EINVAL);
                     av_log(s, AV_LOG_ERROR, "Unable to find a suitable output format for '%s'\n",
@@ -78,7 +78,7 @@
                 av_opt_set_defaults(s->priv_data);
             }
         } else
-            s->priv_data = NULL;
+            s->priv_data = nullptr;
 
         if (filename)
             av_strlcpy(s->filename, filename, sizeof(s->filename));
@@ -168,15 +168,17 @@ QString avErrorToQString(int errnum)
 /**
  * @brief Write a given frame to the audio stream or, if a null frame is passed, flush the stream.
  *
- * @param frame An AVFrame to be written to the stream, or NULL to flush the stream
+ * @param frame An AVFrame to be written to the stream, or nullptr to flush the stream
  * @param packet A (reusable) packet, used to temporarily store frame data
  * @param stream The stream to write to
  * @param outputFormatContext The output format context
  */
-void writeFrame(AVFrame *frame, AVPacket *packet, AVStream *stream, AVFormatContext *outputFormatContext)
+void writeFrame(AVFrame *frame, AVPacket *packet, AVStream *stream, AVCodecContext* c, AVFormatContext *outputFormatContext)
 {
-    int gotOutput, ret;
+    int ret;
 
+#if LIBAVFORMAT_VERSION_MAJOR < 58
+    int gotOutput;
     av_init_packet(packet);
 
     do {
@@ -200,11 +202,34 @@ void writeFrame(AVFrame *frame, AVPacket *packet, AVStream *stream, AVFormatCont
         }
 
     } while (gotOutput && !frame);
+#else
+    // send the frame to the encoder
+    ret = avcodec_send_frame(c, frame);
+
+    while (ret >= 0) {
+        ret = avcodec_receive_packet(c, packet);
+        if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)
+            break;
+        else if (ret < 0) {
+            qWarning() << "Couldn't encode audio frame: " << avErrorToQString(ret);
+        }
+
+        /* rescale output packet timestamp values from codec to stream timebase */
+        av_packet_rescale_ts(packet, c->time_base, stream->time_base);
+        packet->stream_index = stream->index;
+
+        /* Write the compressed frame to the media file. */
+        ret = av_interleaved_write_frame(outputFormatContext, packet);
+        /* pkt is now blank (av_interleaved_write_frame() takes ownership of
+         * its contents and resets pkt), so that no unreferencing is necessary.
+         * This would be different if one used av_write_frame(). */
+    }
+#endif
 }
 
-void flushStream(AVPacket *packet, AVStream *stream, AVFormatContext *outputFormatContext)
+void flushStream(AVPacket *packet, AVStream *stream, AVCodecContext* c, AVFormatContext *outputFormatContext)
 {
-    writeFrame(NULL, packet, stream, outputFormatContext);
+    writeFrame(nullptr, packet, stream, c, outputFormatContext);
 }
 
 //-------------------------------------------------------------------------
@@ -213,12 +238,12 @@ void flushStream(AVPacket *packet, AVStream *stream, AVFormatContext *outputForm
 
 UBFFmpegVideoEncoder::UBFFmpegVideoEncoder(QObject* parent)
     : UBAbstractVideoEncoder(parent)
-    , mOutputFormatContext(NULL)
-    , mSwsContext(NULL)
+    , mOutputFormatContext(nullptr)
+    , mSwsContext(nullptr)
     , mShouldRecordAudio(true)
-    , mAudioInput(NULL)
-    , mSwrContext(NULL)
-    , mAudioOutBuffer(NULL)
+    , mAudioInput(nullptr)
+    , mSwrContext(nullptr)
+    , mAudioOutBuffer(nullptr)
     , mAudioSampleRate(44100)
     , mAudioFrameCount(0)
 {
@@ -288,16 +313,18 @@ bool UBFFmpegVideoEncoder::stop()
 
 bool UBFFmpegVideoEncoder::init()
 {
+#if LIBAVFORMAT_VERSION_MAJOR < 58
     av_register_all();
     avcodec_register_all();
+#endif
 
-    AVDictionary * options = NULL;
+    AVDictionary * options = nullptr;
     int ret;
 
     // Output format and context
     // --------------------------------------
-    if (avformat_alloc_output_context2(&mOutputFormatContext, NULL,
-                                       "mp4", NULL) < 0)
+    if (avformat_alloc_output_context2(&mOutputFormatContext, nullptr,
+                                       "mp4", nullptr) < 0)
     {
         setLastErrorMessage("Couldn't allocate video format context");
         return false;
@@ -308,16 +335,25 @@ bool UBFFmpegVideoEncoder::init()
 
     // Video codec and context
     // -------------------------------------
-    mVideoStream = avformat_new_stream(mOutputFormatContext, 0);
+    mVideoStream = avformat_new_stream(mOutputFormatContext, nullptr);
+    if (!mVideoStream) {
+        setLastErrorMessage("Could not allocate stream");
+        return false;
+    }
 
-    AVCodec * videoCodec = avcodec_find_encoder(mOutputFormatContext->oformat->video_codec);
+    auto videoCodec = avcodec_find_encoder(mOutputFormatContext->oformat->video_codec);
     if (!videoCodec) {
         setLastErrorMessage("Video codec not found");
         return false;
     }
 
     AVCodecContext* c = avcodec_alloc_context3(videoCodec);
+    if (!c) {
+        setLastErrorMessage("Could not allocate encoding context");
+        return false;
+    }
 
+    c->codec_id = mOutputFormatContext->oformat->video_codec;
     c->bit_rate = videoBitsPerSecond();
     c->width = videoSize().width();
     c->height = videoSize().height();
@@ -328,6 +364,8 @@ bool UBFFmpegVideoEncoder::init()
 
     if (mOutputFormatContext->oformat->flags & AVFMT_GLOBALHEADER)
         c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
+
+    mVideoStream->time_base = c->time_base;
 
     /*
      * Supported pixel formats for h264 are:
@@ -347,13 +385,20 @@ bool UBFFmpegVideoEncoder::init()
         return false;
     }
 
-    mVideoStream->codec = c;
+    mVideoCodecContext = c;
+
+    // copy the stream parameters to the muxer
+    ret = avcodec_parameters_from_context(mVideoStream->codecpar, c);
+    if (ret < 0) {
+        setLastErrorMessage("Could not copy the stream parameters");
+        return false;
+    }
 
     // Source images are RGB32, and should be converted to YUV for h264 video
     mSwsContext = sws_getCachedContext(mSwsContext,
                                        c->width, c->height, AV_PIX_FMT_RGB32,
                                        c->width, c->height, c->pix_fmt,
-                                       SWS_BICUBIC, 0, 0, 0);
+                                       SWS_BICUBIC, nullptr, nullptr, nullptr);
 
     // Audio codec and context
     // -------------------------------------
@@ -381,7 +426,7 @@ bool UBFFmpegVideoEncoder::init()
 
         // Codec
 
-        AVCodec * audioCodec = avcodec_find_encoder(mOutputFormatContext->oformat->audio_codec);
+        auto audioCodec = avcodec_find_encoder(mOutputFormatContext->oformat->audio_codec);
 
         if (!audioCodec) {
             setLastErrorMessage("Audio codec not found");
@@ -389,15 +434,29 @@ bool UBFFmpegVideoEncoder::init()
         }
 
         mAudioStream = avformat_new_stream(mOutputFormatContext, audioCodec);
+        if (!mAudioStream) {
+            setLastErrorMessage("Could not allocate stream");
+            return false;
+        }
+
         mAudioStream->id = mOutputFormatContext->nb_streams-1;
 
-        c = mAudioStream->codec;
+        c = avcodec_alloc_context3(audioCodec);
+        if (!c) {
+            setLastErrorMessage("Could not allocate encoding context");
+            return false;
+        }
 
         c->bit_rate = 96000;
         c->sample_fmt  = audioCodec->sample_fmts ? audioCodec->sample_fmts[0] : AV_SAMPLE_FMT_FLTP;// FLTP by default for AAC
         c->sample_rate = mAudioSampleRate;
+
+#if LIBAVUTIL_VERSION_INT < AV_VERSION_INT(57, 25, 100)
         c->channel_layout = AV_CH_LAYOUT_STEREO;
         c->channels  = av_get_channel_layout_nb_channels(c->channel_layout);
+#else
+        av_channel_layout_copy(&c->ch_layout, &(AVChannelLayout)AV_CHANNEL_LAYOUT_STEREO);
+#endif
 
         //deprecated on ffmpeg 4
         c->strict_std_compliance = -2;// Enable use of experimental codec
@@ -412,10 +471,19 @@ bool UBFFmpegVideoEncoder::init()
         if (mOutputFormatContext->oformat->flags & AVFMT_GLOBALHEADER)
             c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 
-        ret = avcodec_open2(c, audioCodec, NULL);
+        ret = avcodec_open2(c, audioCodec, nullptr);
 
         if (ret < 0) {
             setLastErrorMessage(QString("Couldn't open audio codec: ") + avErrorToQString(ret));
+            return false;
+        }
+
+        mAudioCodecContext = c;
+
+        // copy the stream parameters to the muxer
+        ret = avcodec_parameters_from_context(mAudioStream->codecpar, c);
+        if (ret < 0) {
+            setLastErrorMessage("Could not copy the stream parameters");
             return false;
         }
 
@@ -427,14 +495,22 @@ bool UBFFmpegVideoEncoder::init()
             return false;
         }
 
-        av_opt_set_int(mSwrContext, "in_channel_count", inChannelCount, 0);
-        av_opt_set_int(mSwrContext, "in_channel_layout", av_get_default_channel_layout(inChannelCount), 0);
         av_opt_set_int(mSwrContext, "in_sample_rate", inSampleRate, 0);
         av_opt_set_sample_fmt(mSwrContext, "in_sample_fmt", (AVSampleFormat)mAudioInput->sampleFormat(), 0);
-        av_opt_set_int(mSwrContext, "out_channel_count", c->channels, 0);
-        av_opt_set_int(mSwrContext, "out_channel_layout", c->channel_layout, 0);
         av_opt_set_int(mSwrContext, "out_sample_rate", c->sample_rate, 0);
         av_opt_set_sample_fmt(mSwrContext, "out_sample_fmt", c->sample_fmt, 0);
+
+#if LIBAVUTIL_VERSION_INT < AV_VERSION_INT(57, 25, 100)
+        av_opt_set_int(mSwrContext, "in_channel_count", inChannelCount, 0);
+        av_opt_set_int(mSwrContext, "in_channel_layout", av_get_default_channel_layout(inChannelCount), 0);
+        av_opt_set_int(mSwrContext, "out_channel_count", c->channels, 0);
+        av_opt_set_int(mSwrContext, "out_channel_layout", c->channel_layout, 0);
+#else
+        AVChannelLayout inChannelLayout;
+        av_channel_layout_default(&inChannelLayout, inChannelCount);
+        av_opt_set_chlayout  (mSwrContext, "in_chlayout", &inChannelLayout, 0);
+        av_opt_set_chlayout  (mSwrContext, "out_chlayout", &c->ch_layout, 0);
+#endif
 
         ret = swr_init(mSwrContext);
         if (ret < 0) {
@@ -456,7 +532,7 @@ bool UBFFmpegVideoEncoder::init()
     }
 
     // Write stream header
-    ret = avformat_write_header(mOutputFormatContext, NULL);
+    ret = avformat_write_header(mOutputFormatContext, nullptr);
 
     if (ret < 0) {
         setLastErrorMessage(QString("Couldn't write header to file: ") + avErrorToQString(ret));
@@ -506,9 +582,9 @@ AVFrame* UBFFmpegVideoEncoder::convertImageFrame(ImageFrame frame)
 {
     AVFrame* avFrame = av_frame_alloc();
 
-    avFrame->format = mVideoStream->codec->pix_fmt;
-    avFrame->width = mVideoStream->codec->width;
-    avFrame->height = mVideoStream->codec->height;
+    avFrame->format = mVideoCodecContext->pix_fmt;
+    avFrame->width = mVideoCodecContext->width;
+    avFrame->height = mVideoCodecContext->height;
     avFrame->pts = mVideoTimebase * frame.timestamp / 1000;
 
     const uchar * rgbImage = frame.image.bits();
@@ -516,18 +592,18 @@ AVFrame* UBFFmpegVideoEncoder::convertImageFrame(ImageFrame frame)
     const int in_linesize[1] = { frame.image.bytesPerLine() };
 
     // Allocate the output image
-    if (av_image_alloc(avFrame->data, avFrame->linesize, mVideoStream->codec->width,
-                       mVideoStream->codec->height, mVideoStream->codec->pix_fmt, 32) < 0)
+    if (av_image_alloc(avFrame->data, avFrame->linesize, mVideoCodecContext->width,
+                       mVideoCodecContext->height, mVideoCodecContext->pix_fmt, 32) < 0)
     {
         qWarning() << "Couldn't allocate image";
-        return NULL;
+        return nullptr;
     }
 
     sws_scale(mSwsContext,
               (const uint8_t* const*)&rgbImage,
               in_linesize,
               0,
-              mVideoStream->codec->height,
+              mVideoCodecContext->height,
               avFrame->data,
               avFrame->linesize);
 
@@ -548,7 +624,7 @@ void UBFFmpegVideoEncoder::onAudioAvailable(QByteArray data)
 void UBFFmpegVideoEncoder::processAudio(QByteArray &data)
 {
     int ret;
-    AVCodecContext* codecContext = mAudioStream->codec;
+    AVCodecContext* codecContext = mAudioCodecContext;
 
     const char * inSamples = data.constData();
 
@@ -559,7 +635,7 @@ void UBFFmpegVideoEncoder::processAudio(QByteArray &data)
     int outSamplesCount = swr_get_out_samples(mSwrContext, inSamplesCount);
 
     // Allocate output samples
-    uint8_t ** outSamples = NULL;
+    uint8_t ** outSamples = nullptr;
     int outSamplesLineSize;
 
     ret = av_samples_alloc_array_and_samples(&outSamples, &outSamplesLineSize,
@@ -597,13 +673,19 @@ void UBFFmpegVideoEncoder::processAudio(QByteArray &data)
 
         AVFrame * avFrame = av_frame_alloc();
         avFrame->nb_samples = codecContext->frame_size;
+
+#if LIBAVUTIL_VERSION_INT < AV_VERSION_INT(57, 25, 100)
         avFrame->channel_layout = codecContext->channel_layout;
+#else
+        av_channel_layout_copy(&avFrame->ch_layout, &codecContext->ch_layout);
+#endif
+
         avFrame->format = codecContext->sample_fmt;
         avFrame->sample_rate = codecContext->sample_rate;
         avFrame->pts = mAudioFrameCount;
 
 #if LIBAVFORMAT_VERSION_MICRO < 100
-        int buffer_size = av_samples_get_buffer_size(NULL, codecContext->channels, codecContext->frame_size, codecContext->sample_fmt, 0);
+        int buffer_size = av_samples_get_buffer_size(nullptr, codecContext->channels, codecContext->frame_size, codecContext->sample_fmt, 0);
         audio_samples_buffer = (uint8_t*)av_malloc(buffer_size);
         if (!audio_samples_buffer) {
             qWarning() << "Couldn't allocate samples for audio frame: " << avErrorToQString(ret);
@@ -645,19 +727,19 @@ void UBFFmpegVideoEncoder::finishEncoding()
 {
     qDebug() << "VideoEncoder::finishEncoding called";
 
-    flushStream(mVideoWorker->mVideoPacket, mVideoStream, mOutputFormatContext);
+    flushStream(mVideoWorker->mVideoPacket, mVideoStream, mVideoCodecContext, mOutputFormatContext);
 
     if (mShouldRecordAudio)
-        flushStream(mVideoWorker->mAudioPacket, mAudioStream, mOutputFormatContext);
+        flushStream(mVideoWorker->mAudioPacket, mAudioStream, mAudioCodecContext, mOutputFormatContext);
 
     av_write_trailer(mOutputFormatContext);
     avio_close(mOutputFormatContext->pb);
 
-    avcodec_close(mVideoStream->codec);
+    avcodec_close(mVideoCodecContext);
     sws_freeContext(mSwsContext);
 
     if (mShouldRecordAudio) {
-        avcodec_close(mAudioStream->codec);
+        avcodec_close(mAudioCodecContext);
         swr_free(&mSwrContext);
     }
 
@@ -676,17 +758,17 @@ UBFFmpegVideoEncoderWorker::UBFFmpegVideoEncoderWorker(UBFFmpegVideoEncoder* con
 {
     mStopRequested = false;
     mIsRunning = false;
-    mVideoPacket = new AVPacket();
-    mAudioPacket = new AVPacket();
+    mVideoPacket = av_packet_alloc();
+    mAudioPacket = av_packet_alloc();
 }
 
 UBFFmpegVideoEncoderWorker::~UBFFmpegVideoEncoderWorker()
 {
     if (mVideoPacket)
-        delete mVideoPacket;
+        av_packet_free(&mVideoPacket);
 
     if (mAudioPacket)
-        delete mAudioPacket;
+        av_packet_free(&mAudioPacket);
 }
 
 void UBFFmpegVideoEncoderWorker::stopEncoding()
@@ -743,7 +825,7 @@ void UBFFmpegVideoEncoderWorker::runEncoding()
 void UBFFmpegVideoEncoderWorker::writeLatestVideoFrame()
 {
     AVFrame* frame = mImageQueue.dequeue();
-    writeFrame(frame, mVideoPacket, mController->mVideoStream, mController->mOutputFormatContext);
+    writeFrame(frame, mVideoPacket, mController->mVideoStream, mController->mVideoCodecContext, mController->mOutputFormatContext);
     av_freep(&frame->data[0]);
     av_frame_free(&frame);
 }
@@ -751,14 +833,14 @@ void UBFFmpegVideoEncoderWorker::writeLatestVideoFrame()
 void UBFFmpegVideoEncoderWorker::writeLatestAudioFrame()
 {
     AVFrame *frame = mAudioQueue.dequeue();
-    writeFrame(frame, mAudioPacket, mController->mAudioStream, mController->mOutputFormatContext);
+    writeFrame(frame, mAudioPacket, mController->mAudioStream, mController->mAudioCodecContext, mController->mOutputFormatContext);
     av_frame_free(&frame);
 
 #if LIBAVFORMAT_VERSION_MICRO < 100
     if (audio_samples_buffer) {
         av_free(audio_samples_buffer);
         av_freep(&frame->data[0]);
-        audio_samples_buffer = NULL;
+        audio_samples_buffer = nullptr;
     }
 #endif
 }
