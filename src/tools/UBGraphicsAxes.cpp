@@ -228,9 +228,13 @@ void UBGraphicsAxes::paintGraduations(QPainter *painter)
             {
                 qreal textWidth = fontMetrics.width(text);
                 qreal textHeight = fontMetrics.tightBoundingRect(text).height();
-                painter->drawText(
-                    QRectF(graduationX - textWidth / 2, textHeight - 5, textWidth, textHeight),
-                    Qt::AlignVCenter, text);
+                QRectF textRect(graduationX - textWidth / 2, textHeight - 5, textWidth, textHeight);
+
+                // draw numbers only if they are completely within the bounds
+                if (mBounds.contains(textRect))
+                {
+                    painter->drawText(textRect, Qt::AlignVCenter, text);
+                }
             }
         }
     }
@@ -253,9 +257,13 @@ void UBGraphicsAxes::paintGraduations(QPainter *painter)
 
             qreal textWidth = fontMetrics.width(text);
             qreal textHeight = fontMetrics.tightBoundingRect(text).height();
-            painter->drawText(
-                QRectF(- textWidth - 10, graduationY - textHeight / 2, textWidth, textHeight),
-                Qt::AlignVCenter, text);
+            QRectF textRect(- textWidth - 10, graduationY - textHeight / 2, textWidth, textHeight);
+
+            // draw numbers only if they are completely within the bounds
+            if (mBounds.contains(textRect))
+            {
+                painter->drawText(textRect, Qt::AlignVCenter, text);
+            }
         }
     }
 
