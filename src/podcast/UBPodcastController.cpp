@@ -79,12 +79,13 @@ unsigned int UBPodcastController::sBackgroundColor = 0x00000000;  // BBGGRRAA
 UBPodcastController::UBPodcastController(QObject* pParent)
     : QObject(pParent)
     , mVideoEncoder(0)
-    , mIsGrabbing(false)
     , mInitialized(false)
+    , mEmptyChapter(true)
     , mVideoFramesPerSecondAtStart(10)
     , mVideoFrameSizeAtStart(1024, 768)
     , mVideoBitsPerSecondAtStart(1700000)
     , mSourceWidget(0)
+    , mIsDesktopMode(false)
     , mSourceScene(0)
     , mScreenGrabingTimerEventID(0)
     , mRecordingProgressTimerEventID(0)
@@ -178,21 +179,44 @@ void UBPodcastController::updateActionState()
 
 }
 
+void UBPodcastController::widgetSizeChanged(const QSizeF size)
+{
+    qDebug() << "widgetSizeChanged to" << size << "video" << mVideoFrameSizeAtStart;
+    mInitialized = false;
+    mViewToVideoTransform.reset();
+
+    QSizeF videoFrameSize(mVideoFrameSizeAtStart);
+    qreal scaleHorizontal = videoFrameSize.width() / size.width();
+    qreal scaleVertical = videoFrameSize.height() / size.height();
+    qreal scale = qMin(scaleHorizontal, scaleVertical);
+
+    mViewToVideoTransform.scale(scale, scale);
+
+    QSizeF scaledWidgetSize = size * scale;
+    int offsetX = (videoFrameSize.width() - scaledWidgetSize.width()) / 2;
+    int offsetY = (videoFrameSize.height() - scaledWidgetSize.height()) / 2;
+
+    mViewToVideoTransform.translate(offsetX / scale, offsetY / scale);
+}
+
 
 void UBPodcastController::setSourceWidget(QWidget* pWidget)
 {
     if (mSourceWidget != pWidget)
     {
-        if (mSourceWidget == qApp->desktop())
+        // cleanup timer and event filter
+        if (mScreenGrabingTimerEventID)
         {
             killTimer(mScreenGrabingTimerEventID);
             mScreenGrabingTimerEventID = 0;
         }
-        else if (mSourceWidget)
+
+        if (mSourceWidget)
         {
             mSourceWidget->removeEventFilter(this);
         }
 
+        // setup new source widget
         mSourceWidget = pWidget;
         mInitialized = false;
         mViewToVideoTransform.reset();
@@ -200,23 +224,11 @@ void UBPodcastController::setSourceWidget(QWidget* pWidget)
 
         if (mSourceWidget)
         {
-            QSizeF sourceWidgetSize(mSourceWidget->size());
-
-            if (mSourceWidget == qApp->desktop())
-                sourceWidgetSize = qApp->desktop()->availableGeometry(UBApplication::applicationController->displayManager()->controleScreenIndex()).size();
-
-            QSizeF videoFrameSize(mVideoFrameSizeAtStart);
-
-            qreal scaleHorizontal = videoFrameSize.width() / sourceWidgetSize.width();
-            qreal scaleVertical = videoFrameSize.height() / sourceWidgetSize.height();
-
-            qreal scale = qMin(scaleHorizontal, scaleVertical);
-
-            mViewToVideoTransform.scale(scale, scale);
+            widgetSizeChanged(mSourceWidget->size());
 
             UBBoardView *bv = qobject_cast<UBBoardView *>(mSourceWidget);
 
-            if (bv)
+            if (bv && !mIsDesktopMode)
             {
                 connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(activeSceneChanged()));
                 connect(UBApplication::boardController, SIGNAL(backgroundChanged()), this, SLOT(sceneBackgroundChanged()));
@@ -226,30 +238,21 @@ void UBPodcastController::setSourceWidget(QWidget* pWidget)
             }
             else
             {
-                QSizeF scaledWidgetSize = sourceWidgetSize * scale;
-
-                int offsetX = (videoFrameSize.width() - scaledWidgetSize.width()) / 2;
-                int offsetY = (videoFrameSize.height() - scaledWidgetSize.height()) / 2;
-
-                mViewToVideoTransform.translate(offsetX / scale, offsetY / scale);
-
                 disconnect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(activeSceneChanged()));
                 disconnect(UBApplication::boardController, SIGNAL(backgroundChanged()), this, SLOT(sceneBackgroundChanged()));
                 disconnect(UBApplication::boardController, SIGNAL(controlViewportChanged()), this, SLOT(activeSceneChanged()));
 
-                mSourceScene = 0;
+                mSourceScene = nullptr;
 
                 startNextChapter();
 
-                if(mSourceWidget == qApp->desktop())
+                if (mIsDesktopMode || UBApplication::applicationController->displayMode() == UBApplicationController::Internet)
                 {
                     mScreenGrabingTimerEventID  = startTimer(1000 / mVideoFramesPerSecondAtStart);
                 }
-                else
-                {
-                    mSourceWidget->installEventFilter(this);
-                }
             }
+
+            mSourceWidget->installEventFilter(this);
         }
     }
 }
@@ -380,17 +383,15 @@ void UBPodcastController::start()
 
             if(mVideoEncoder->start())
             {
-                applicationMainModeChanged(UBApplication::applicationController->displayMode());
-
                 setRecordingState(Recording);
 
                 if (mSourceScene)
                 {
                     processScenePaintEvent();
                 }
-                else if (mSourceWidget)
+                else
                 {
-                    processWidgetPaintEvent();
+                    processScreenGrabingTimerEvent();
                 }
             }
             else
@@ -460,59 +461,13 @@ void UBPodcastController::stop()
 
 bool UBPodcastController::eventFilter(QObject *obj, QEvent *event)
 {
-    if (mRecordingState == Recording && !mIsGrabbing && event->type() == QEvent::Paint)
+    if (mRecordingState == Recording && event->type() == QEvent::Resize)
     {
-        QPaintEvent *paintEvent = static_cast<QPaintEvent*>(event);
-
-        mWidgetRepaintRectQueue.enqueue(paintEvent->rect());
-
-        if (mWidgetRepaintRectQueue.length() == 1)
-            QTimer::singleShot(1000.0 / mVideoFramesPerSecondAtStart, this, SLOT(processWidgetPaintEvent()));
-     }
+        QResizeEvent *resizeEvent = static_cast<QResizeEvent*>(event);
+        widgetSizeChanged(resizeEvent->size());
+    }
 
     return QObject::eventFilter(obj, event);
-}
-
-
-void UBPodcastController::processWidgetPaintEvent()
-{
-    if(mRecordingState != Recording)
-        return;
-
-    QRect repaintRect;
-
-    if (!mInitialized)
-    {
-        mWidgetRepaintRectQueue.clear();
-        repaintRect = mSourceWidget->geometry();
-
-        mLatestCapture.fill(sBackgroundColor);
-
-        mInitialized = true;
-    }
-    else
-    {
-        while(mWidgetRepaintRectQueue.size() > 0)
-        {
-            repaintRect = repaintRect.united(mWidgetRepaintRectQueue.dequeue());
-        }
-    }
-
-    if (!repaintRect.isNull())
-    {
-        mIsGrabbing = true;
-
-        QPainter p(&mLatestCapture);
-        p.setTransform(mViewToVideoTransform);
-        p.setRenderHints(QPainter::Antialiasing);
-        p.setRenderHints(QPainter::SmoothPixmapTransform);
-
-        mSourceWidget->render(&p, repaintRect.topLeft(), QRegion(repaintRect), QWidget::DrawChildren);
-
-        mIsGrabbing = false;
-
-        sendLatestPixmapToEncoder();
-    }
 }
 
 
@@ -567,11 +522,13 @@ long UBPodcastController::elapsedRecordingMs()
 
 void UBPodcastController::startNextChapter()
 {
-    if (mVideoEncoder)
+    if (mVideoEncoder && !mEmptyChapter)
     {
         //punch chapter in
         ++mPartNumber;
         mVideoEncoder->newChapter(tr("Part %1").arg(mPartNumber), elapsedRecordingMs());
+        mEmptyChapter = true;
+        qDebug() << "Start chapter" << mPartNumber;
     }
 }
 
@@ -618,11 +575,9 @@ void UBPodcastController::processScenePaintEvent()
         repaintRect = bv->mapToScene(QRect(0, 0, bv->width(), bv->height())).boundingRect();
 
         if (bv->scene()->isDarkBackground())
-                mLatestCapture.fill(Qt::black);
+            mLatestCapture.fill(Qt::black);
         else
-                mLatestCapture.fill(Qt::white);
-
-        mLatestCapture.fill(Qt::white);
+            mLatestCapture.fill(Qt::white);
 
         mInitialized = true;
     }
@@ -668,6 +623,8 @@ void UBPodcastController::processScenePaintEvent()
 
 void UBPodcastController::applicationMainModeChanged(UBApplicationController::MainMode pMode)
 {
+    mIsDesktopMode = false;
+
     if (pMode == UBApplicationController::Internet)
     {
         setSourceWidget(UBApplication::webController->controlView());
@@ -681,11 +638,11 @@ void UBPodcastController::applicationMainModeChanged(UBApplicationController::Ma
 
 void UBPodcastController::applicationDesktopMode(bool displayed)
 {
-    Q_UNUSED(displayed);
+    mIsDesktopMode = displayed;
 
     if (displayed)
     {
-        setSourceWidget(qApp->desktop());
+        setSourceWidget(UBApplication::displayManager->widget(ScreenRole::Desktop));
     }
     else
     {
@@ -698,7 +655,7 @@ void UBPodcastController::webActiveWebPageChanged(WebView* pWebView)
 {
     if(UBApplication::applicationController->displayMode() == UBApplicationController::Internet)
     {
-         setSourceWidget(pWebView);
+        setSourceWidget(pWebView);
     }
 }
 
@@ -760,44 +717,56 @@ void UBPodcastController::sendLatestPixmapToEncoder()
 {
     if (mVideoEncoder)
         mVideoEncoder->newPixmap(mLatestCapture, elapsedRecordingMs());
+
+    mEmptyChapter = false;
 }
 
 void UBPodcastController::timerEvent(QTimerEvent *event)
 {
-    if (mRecordingState == Recording
-            && event->timerId() == mScreenGrabingTimerEventID
-            && mSourceWidget == qApp->desktop())
+    if (mRecordingState == Recording)
     {
-        QDesktopWidget * dtop = QApplication::desktop();
-        QRect dtopRect = dtop->screenGeometry(UBApplication::controlScreenIndex());
-        QScreen * screen = UBApplication::controlScreen();
-
-        QPixmap desktop = screen->grabWindow(dtop->effectiveWinId(),
-                                             dtopRect.x(), dtopRect.y(), dtopRect.width(), dtopRect.height());
-
+        if (event->timerId() == mScreenGrabingTimerEventID)
         {
-            QPainter p(&mLatestCapture);
-
-            if (!mInitialized)
-            {
-                mLatestCapture.fill(sBackgroundColor);
-                mInitialized = true;
-            }
-
-            QRectF targetRect = mViewToVideoTransform.mapRect(QRectF(0, 0, desktop.width(), desktop.height()));
-
-            p.setRenderHints(QPainter::Antialiasing);
-            p.setRenderHints(QPainter::SmoothPixmapTransform);
-            p.drawPixmap(targetRect.left(), targetRect.top(), desktop.scaled(targetRect.width(), targetRect.height(),  Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            processScreenGrabingTimerEvent();
         }
-
-        sendLatestPixmapToEncoder();
+        else if (event->timerId() == mRecordingProgressTimerEventID)
+        {
+            emit recordingProgressChanged(elapsedRecordingMs());
+        }
     }
+}
 
-    if (mRecordingProgressTimerEventID == event->timerId() && mRecordingState == Recording)
+void UBPodcastController::processScreenGrabingTimerEvent()
+{
+    QPixmap widgetContent;
+
+    if (mIsDesktopMode)
     {
-        emit recordingProgressChanged(elapsedRecordingMs());
+        widgetContent = UBApplication::displayManager->grab(ScreenRole::Control);
     }
+    else
+    {
+        // render web view
+        widgetContent = QPixmap(mSourceWidget->size());
+        QPainter p(&widgetContent);
+        mSourceWidget->render(&p);
+    }
+
+    QPainter p(&mLatestCapture);
+
+    if (!mInitialized)
+    {
+        mLatestCapture.fill(sBackgroundColor);
+        mInitialized = true;
+    }
+
+    QRectF targetRect = mViewToVideoTransform.mapRect(QRectF(0, 0, widgetContent.width(), widgetContent.height()));
+
+    p.setRenderHints(QPainter::Antialiasing);
+    p.setRenderHints(QPainter::SmoothPixmapTransform);
+    p.drawPixmap(targetRect.left(), targetRect.top(), widgetContent.scaled(targetRect.width(), targetRect.height(),  Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+    sendLatestPixmapToEncoder();
 }
 
 

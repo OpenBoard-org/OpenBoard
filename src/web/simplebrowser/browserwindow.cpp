@@ -56,7 +56,6 @@
 
 #include <QApplication>
 #include <QCloseEvent>
-#include <QDesktopWidget>
 #include <QEvent>
 #include <QFileDialog>
 #include <QInputDialog>
@@ -143,9 +142,8 @@ void BrowserWindow::init()
 
 QSize BrowserWindow::sizeHint() const
 {
-    QRect desktopRect = QApplication::desktop()->screenGeometry();
-    QSize size = desktopRect.size() * qreal(0.9);
-    return size;
+    QSize size = UBApplication::displayManager->screenSize(ScreenRole::Control);
+    return size * qreal(0.9);
 }
 
 QToolBar *BrowserWindow::createToolBar(QWidget *parent)
@@ -298,7 +296,7 @@ void BrowserWindow::handleDevToolsRequested(QWebEnginePage *source)
     }
     else
     {
-        QRect controlGeometry = UBApplication::applicationController->displayManager()->controlGeometry();
+        QRect controlGeometry = UBApplication::displayManager->screenGeometry(ScreenRole::Control);
         QRect inspectorGeometry(controlGeometry.left() + 50, controlGeometry.top() + 50, controlGeometry.width() / 2, controlGeometry.height() / 2);
 
         m_inspectorWindow = new QMainWindow();

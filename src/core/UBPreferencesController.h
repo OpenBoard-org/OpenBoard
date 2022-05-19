@@ -32,6 +32,7 @@
 
 #include <QtGui>
 #include <QDialog>
+#include <QLineEdit>
 
 class UBColorPicker;
 class UBApplication;
@@ -105,13 +106,12 @@ class UBPreferencesController : public QObject
         void setPdfZoomBehavior(bool checked);
 
     private slots:
-        void adjustScreens(int screen);
+        void adjustScreens();
 
     private:
         static qreal sSliderRatio;
         static qreal sMinPenWidth;
         static qreal sMaxPenWidth;
-        QDesktopWidget* mDesktop;
 
 };
 
@@ -126,6 +126,45 @@ class UBBrushPropertiesFrame : public Ui::brushProperties
         QList<UBColorPicker*> lightBackgroundColorPickers;
         QList<UBColorPicker*> darkBackgroundColorPickers;
 
+};
+
+class UBScreenListLineEdit : public QLineEdit
+{
+    Q_OBJECT;
+
+public:
+    UBScreenListLineEdit(QWidget* parent);
+    virtual ~UBScreenListLineEdit() = default;
+
+    void setDefault();
+
+protected:
+    virtual void focusInEvent(QFocusEvent* focusEvent) override;
+    virtual void focusOutEvent(QFocusEvent* focusEvent) override;
+
+private slots:
+    void addScreen();
+    void onTextChanged(const QString& input);
+
+private:
+    QList<QPushButton*> mScreenLabels;
+    QValidator* mValidator;
+    QCompleter* mCompleter;
+    QTimer* mFadeOutTimer;
+};
+
+class UBStringListValidator : public QValidator
+{
+    Q_OBJECT;
+
+public:
+    UBStringListValidator(QStringList list, QObject* parent = nullptr);
+    virtual ~UBStringListValidator() = default;
+
+    virtual QValidator::State validate(QString &input, int &pos) const;
+
+private:
+    QStringList mList;
 };
 
 #endif /* UBPREFERENCESCONTROLLER_H_ */

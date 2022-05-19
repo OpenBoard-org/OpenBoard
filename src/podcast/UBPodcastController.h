@@ -93,7 +93,7 @@ class UBPodcastController : public QObject
 
     private slots:
 
-        void processWidgetPaintEvent();
+        void processScreenGrabingTimerEvent();
 
         void processScenePaintEvent();
 
@@ -120,6 +120,7 @@ class UBPodcastController : public QObject
         void updateActionState();
 
     private:
+        void widgetSizeChanged(const QSizeF size);
 
         void setRecordingState(RecordingState pRecordingState);
 
@@ -133,12 +134,10 @@ class UBPodcastController : public QObject
 
         QTime mRecordStartTime;
 
-        bool mIsGrabbing;
-
-        QQueue<QRect> mWidgetRepaintRectQueue;
         QQueue<QRectF> mSceneRepaintRectQueue;
 
         bool mInitialized;
+        bool mEmptyChapter;
 
         QImage mLatestCapture;
 
@@ -149,6 +148,7 @@ class UBPodcastController : public QObject
         static unsigned int sBackgroundColor;
 
         QWidget* mSourceWidget;
+        bool mIsDesktopMode;
 
         UBGraphicsScene* mSourceScene;
 

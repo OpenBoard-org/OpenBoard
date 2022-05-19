@@ -69,6 +69,7 @@
 
 QPointer<QUndoStack> UBApplication::undoStack;
 
+UBDisplayManager* UBApplication::displayManager = nullptr;
 UBApplicationController* UBApplication::applicationController = 0;
 UBBoardController* UBApplication::boardController = 0;
 UBWebController* UBApplication::webController = 0;
@@ -95,7 +96,7 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : Single
   , mApplicationTranslator(NULL)
   , mQtGuiTranslator(NULL)
 {
-
+    Q_UNUSED(id)
     staticMemoryCleaner = new QObject(0); // deleted in UBApplication destructor
 
     setOrganizationName("Open Education Foundation");
@@ -298,6 +299,8 @@ int UBApplication::exec(const QString& pFileToImport)
             webDbDir.mkpath(webDbPath);
      */
 
+    displayManager = new UBDisplayManager(staticMemoryCleaner);
+
     if (UBSettings::settings()->appRunInWindow->get().toBool()) {
         mainWindow = new UBMainWindow(0,
                 Qt::Window |
@@ -402,16 +405,14 @@ int UBApplication::exec(const QString& pFileToImport)
 
     emit UBDrawingController::drawingController()->colorPaletteChanged();
 
-    onScreenCountChanged(1);
-    connect(desktop(), SIGNAL(screenCountChanged(int)), this, SLOT(onScreenCountChanged(int)));
+    onScreenCountChanged(displayManager->numScreens());
+    connect(displayManager, SIGNAL(availableScreenCountChanged(int)), this, SLOT(onScreenCountChanged(int)));
     return QApplication::exec();
 }
 
 void UBApplication::onScreenCountChanged(int newCount)
 {
-    Q_UNUSED(newCount);
-    UBDisplayManager displayManager;
-    mainWindow->actionMultiScreen->setEnabled(displayManager.numScreens() > 1);
+    mainWindow->actionMultiScreen->setEnabled(newCount > 1);
 }
 
 void UBApplication::showMinimized()
@@ -732,19 +733,4 @@ bool UBApplication::isFromWeb(QString url)
     }
 
     return res;
-}
-
-QScreen* UBApplication::controlScreen()
-{
-    QList<QScreen*> screenList = screens();
-    if (screenList.size() == 1)
-        return screenList.first();
-
-    return screenList[controlScreenIndex()];
-}
-
-
-int UBApplication::controlScreenIndex()
-{
-    return applicationController->displayManager()->controleScreenIndex();
 }

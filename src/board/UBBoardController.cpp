@@ -35,6 +35,7 @@
 #include "frameworks/UBPlatformUtils.h"
 
 #include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
 #include "core/UBPersistenceManager.h"
@@ -169,17 +170,14 @@ UBBoardController::~UBBoardController()
 void UBBoardController::initBackgroundGridSize()
 {
     // Besides adjusting for DPI, we also need to scale the grid size by the ratio of the control view size
-    // to document size. However the control view isn't available as soon as the boardController is created,
-    // so we approximate this ratio as (document resolution) / (screen resolution).
+    // to document size. Here we approximate this ratio as (document resolution) / (screen resolution).
     // Later on, this is calculated by `updateSystemScaleFactor` and stored in `mSystemScaleFactor`.
 
-    QDesktopWidget* desktop = UBApplication::desktop();
-    qreal dpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2.;
+    qreal dpi = UBApplication::displayManager->logicalDpi(ScreenRole::Control);
 
     //qDebug() << "dpi: " << dpi;
 
-    // The display manager isn't initialized yet so we have to just assume the control view is on the main display
-    qreal screenY = desktop->screenGeometry(mControlView).height();
+    qreal screenY = UBApplication::displayManager->screenSize(ScreenRole::Control).height();
     qreal documentY = mActiveScene->nominalSize().height();
     qreal resolutionRatio = documentY / screenY;
 
@@ -280,21 +278,9 @@ void UBBoardController::setBoxing(QRect displayRect)
 }
 
 
-QSize UBBoardController::displayViewport()
-{
-    return mDisplayView->geometry().size();
-}
-
-
 QSize UBBoardController::controlViewport()
 {
-    return mControlView->geometry().size();
-}
-
-
-QRectF UBBoardController::controlGeometry()
-{
-    return mControlView->geometry();
+    return UBApplication::displayManager->screenSize(ScreenRole::Control);
 }
 
 

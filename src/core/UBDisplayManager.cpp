@@ -29,7 +29,6 @@
 #include "frameworks/UBPlatformUtils.h"
 
 #include "core/UBApplication.h"
-#include "core/UBApplicationController.h"
 #include "core/UBSettings.h"
 
 #include "board/UBBoardView.h"
@@ -41,179 +40,236 @@
 
 #include "core/memcheck.h"
 
-#include "qdesktopwidget.h"
-
 UBDisplayManager::UBDisplayManager(QObject *parent)
     : QObject(parent)
-    , mControlScreenIndex(-1)
-    , mDisplayScreenIndex(-1)
-    , mControlWidget(0)
-    , mDisplayWidget(0)
-    , mDesktopWidget(0)
 {
-    mDesktop = qApp->desktop();
-
     mUseMultiScreen = UBSettings::settings()->appUseMultiscreen->get().toBool();
 
     initScreenIndexes();
 
-    connect(mDesktop, &QDesktopWidget::resized, this, &UBDisplayManager::adjustScreens);
-    connect(mDesktop, &QDesktopWidget::workAreaResized, this, &UBDisplayManager::adjustScreens);
+    connect(qApp, &QGuiApplication::screenAdded, this, &UBDisplayManager::addOrRemoveScreen);
+    connect(qApp, &QGuiApplication::screenRemoved, this, &UBDisplayManager::addOrRemoveScreen);
+    connect(qApp, &QGuiApplication::primaryScreenChanged, this, &UBDisplayManager::addOrRemoveScreen);
+
+    connect(UBSettings::settings()->appScreenList, &UBSetting::changed, this, &UBDisplayManager::adjustScreens);
 }
-
-
-void UBDisplayManager::initScreenIndexes()
-{
-    int screenCount = numScreens();
-
-    mScreenIndexesRoles.clear();
-
-    if (screenCount > 0)
-    {
-        mControlScreenIndex = mDesktop->primaryScreen();
-        if (screenCount > 1 && UBSettings::settings()->swapControlAndDisplayScreens->get().toBool())
-        {
-            mControlScreenIndex = mControlScreenIndex^1;
-        }
-
-        mScreenIndexesRoles << Control;
-    }
-    else
-    {
-        mControlScreenIndex = -1;
-    }
-
-    if (screenCount > 1 && mUseMultiScreen)
-    {
-        mDisplayScreenIndex = mControlScreenIndex != 0 ? 0 : 1;
-        mScreenIndexesRoles << Display;
-    }
-    else
-    {
-        mDisplayScreenIndex = -1;
-    }
-
-    mPreviousScreenIndexes.clear();
-
-    if (screenCount > 2)
-    {
-        for(int i = 2; i < screenCount; i++)
-        {
-            if(mControlScreenIndex == i)
-                mPreviousScreenIndexes.append(1);
-            else
-                mPreviousScreenIndexes.append(i);
-        }
-    }
-}
-
-void UBDisplayManager::swapDisplayScreens(bool swap)
-{
-    initScreenIndexes();
-
-    if (swap)
-    {
-        // As it s a really specific ask and we don't have much time to handle it correctly
-        // this code handles only the swap between the main display screen and the first previous one
-        int displayScreenIndex = mDisplayScreenIndex;
-        mDisplayScreenIndex = mPreviousScreenIndexes.at(0);
-        mPreviousScreenIndexes.clear();
-        mPreviousScreenIndexes.append(displayScreenIndex);
-    }
-
-    positionScreens();
-
-    emit screenLayoutChanged();
-    emit adjustDisplayViewsRequired();
-}
-
 
 UBDisplayManager::~UBDisplayManager()
 {
     // NOOP
 }
 
+void UBDisplayManager::initScreenIndexes()
+{
+    mScreensByRole.clear();
+    QScreen* primaryScreen = QGuiApplication::primaryScreen();
+    QList<QScreen*> screens = primaryScreen->virtualSiblings();
+
+    // make sure primary screen is first element and therefore never dropped
+    screens.insert(0, primaryScreen);
+
+    // drop screens which duplicate another screen, i.e. have same geometry
+    for (int i = 1; i < screens.size(); )
+    {
+        QRect iGeomentry = screens[i]->geometry();
+
+        for (int j = 0; j < i; ++j)
+        {
+            QRect jGeometry = screens[j]->geometry();
+
+            if (iGeomentry.contains(jGeometry) || jGeometry.contains(iGeomentry))
+            {
+                screens.removeAt(i);
+                break;
+            }
+        }
+
+        ++i;
+    }
+
+    if (screens.count() != mAvailableScreens.count())
+    {
+        mAvailableScreens = screens;
+        emit availableScreenCountChanged(screens.count());
+    }
+
+    QStringList screenList = UBSettings::settings()->appScreenList->get().toStringList();
+
+    if (screenList.empty())
+    {
+        // "old" configuration mode
+        bool swapScreens = UBSettings::settings()->swapControlAndDisplayScreens->get().toBool();
+
+        mScreensByRole[ScreenRole::Control] = screens[0];
+
+        if (screens.count() > 1)
+        {
+            QScreen* controlScreen = screens[0];
+            QScreen* displayScreen = screens[1];
+
+            if (swapScreens)
+            {
+                std::swap(controlScreen, displayScreen);
+            }
+
+            mScreensByRole[ScreenRole::Control] = controlScreen;
+            screenList << controlScreen->name();
+
+            if (mUseMultiScreen)
+            {
+                mScreensByRole[ScreenRole::Display] = displayScreen;
+                screenList << displayScreen->name();
+                ScreenRole role(ScreenRole::Previous1);
+
+                for (int i = 2; i < screens.count(); ++i)
+                {
+                    mScreensByRole[role++] = screens[i];
+                    screenList << screens[i]->name();
+                }
+            }
+
+            if (screenList.count() > 1)
+            {
+                // Convert configuration to new mode
+                qDebug() << "Screen setting converted to screen list" << screenList;
+                UBSettings::settings()->appScreenList->set(screenList);
+            }
+        }
+    }
+    else
+    {
+        // "new" configuration mode using list of screen names
+
+        // first, create a map of screens by name
+        QMap<QString,QScreen*> screenByName;
+
+        for (QScreen* screen : mAvailableScreens)
+        {
+            screenByName[screen->name()] = screen;
+        }
+
+        // configure control screen
+        QScreen* controlScreen = screenByName.value(screenList[0], nullptr);
+
+        if (!controlScreen)
+        {
+            // by default use primary screen and remove it from the list of available screens
+            controlScreen = primaryScreen;
+            screenByName.remove(controlScreen->name());
+        }
+
+        mScreensByRole[ScreenRole::Control] = controlScreen;
+
+        // configure display screen
+        if (mUseMultiScreen && screenList.count() > 1)
+        {
+            QScreen* displayScreen = screenByName.value(screenList[1], nullptr);
+
+            if (displayScreen)
+            {
+                mScreensByRole[ScreenRole::Display] = displayScreen;
+            }
+        }
+
+        // configure previous screens
+        ScreenRole role = ScreenRole::Previous1;
+
+        for (int i = 2; i < screenList.count(); ++i)
+        {
+            QScreen* previousScreen = screenByName.value(screenList[i], nullptr);
+
+            if (previousScreen)
+            {
+                mScreensByRole[role++] = previousScreen;
+            }
+        }
+    }
+
+
+    // Desktop screen is same as Control screen
+    mScreensByRole[ScreenRole::Desktop] = mScreensByRole[ScreenRole::Control];
+}
 
 int UBDisplayManager::numScreens()
 {
-    int screenCount = mDesktop->screenCount();
-    // Some window managers report two screens when the two monitors are in "cloned" mode; this hack ensures
-    // that we consider this as just one screen. On most desktops, at least one of the following conditions is
-    // a good indicator of the displays being in cloned or extended mode.
-#ifdef Q_OS_LINUX
-    if (screenCount > 1
-        && (mDesktop->screenNumber(mDesktop->screen(0)) == mDesktop->screenNumber(mDesktop->screen(1))
-            || mDesktop->screenGeometry(0) == mDesktop->screenGeometry(1)))
-        return 1;
-#endif
-    return screenCount;
+    return mAvailableScreens.count();
 }
 
 
 int UBDisplayManager::numPreviousViews()
 {
-    return mPreviousScreenIndexes.size();
+    int previousViews = 0;
+    ScreenRole role(ScreenRole::Previous1);
+
+    for (int i = 0; i < 5; ++i)
+    {
+        if (mScreensByRole.contains(role++))
+        {
+            ++previousViews;
+        }
+    }
+
+    return previousViews;
 }
 
 
 void UBDisplayManager::setControlWidget(QWidget* pControlWidget)
 {
-    if(hasControl() && pControlWidget && (pControlWidget != mControlWidget))
-        mControlWidget = pControlWidget;
+    if(hasControl() && pControlWidget)
+        mWidgetsByRole[ScreenRole::Control] = pControlWidget;
 }
 
-void UBDisplayManager::setDesktopWidget(QWidget* pControlWidget )
+void UBDisplayManager::setDesktopWidget(QWidget* pDesktopWidget )
 {
-    if(pControlWidget && (pControlWidget != mControlWidget))
-        mDesktopWidget = pControlWidget;
+    if(pDesktopWidget)
+        mWidgetsByRole[ScreenRole::Desktop] = pDesktopWidget;
 }
 
 void UBDisplayManager::setDisplayWidget(QWidget* pDisplayWidget)
 {
-    if(pDisplayWidget && (pDisplayWidget != mDisplayWidget))
+    if(pDisplayWidget)
     {
-        if (mDisplayWidget)
+        if (mWidgetsByRole.contains(ScreenRole::Display))
         {
-            mDisplayWidget->hide();
-            pDisplayWidget->setGeometry(mDisplayWidget->geometry());
-            pDisplayWidget->setWindowFlags(mDisplayWidget->windowFlags());
+            mWidgetsByRole[ScreenRole::Display]->hide();
+            pDisplayWidget->setGeometry(mWidgetsByRole[ScreenRole::Display]->geometry());
+            pDisplayWidget->setWindowFlags(mWidgetsByRole[ScreenRole::Display]->windowFlags());
         }
-        mDisplayWidget = pDisplayWidget;
-        mDisplayWidget->setGeometry(mDesktop->screenGeometry(mDisplayScreenIndex));
-        if (numScreens() > 1 && UBSettings::settings()->appUseMultiscreen->get().toBool())
-            UBPlatformUtils::showFullScreen(mDisplayWidget);
+
+        mWidgetsByRole[ScreenRole::Display] = pDisplayWidget;
+
+        if (mScreensByRole.contains(ScreenRole::Display))
+        {
+            mWidgetsByRole[ScreenRole::Display]->setGeometry(mScreensByRole[ScreenRole::Display]->geometry());
+            UBPlatformUtils::showFullScreen(mWidgetsByRole[ScreenRole::Display]);
+        }
     }
 }
 
 
 void UBDisplayManager::setPreviousDisplaysWidgets(QList<UBBoardView*> pPreviousViews)
 {
-    mPreviousDisplayWidgets = pPreviousViews;
+    ScreenRole role(ScreenRole::Previous1);
+
+    for (int i = 0; i < pPreviousViews.size(); ++i)
+    {
+        mWidgetsByRole[role++] = pPreviousViews[i];
+    }
 }
 
-
-QRect UBDisplayManager::controlGeometry()
+QWidget* UBDisplayManager::widget(ScreenRole role)
 {
-    return mDesktop->screenGeometry(mControlScreenIndex);
+    return mWidgetsByRole.value(role, nullptr);
 }
 
-QRect UBDisplayManager::displayGeometry()
+QList<QScreen *> UBDisplayManager::availableScreens() const
 {
-    return mDesktop->screenGeometry(mDisplayScreenIndex);
+    return mAvailableScreens;
 }
 
-void UBDisplayManager::reinitScreens(bool swap)
+void UBDisplayManager::adjustScreens()
 {
-    Q_UNUSED(swap);
-    adjustScreens(-1);
-}
-
-void UBDisplayManager::adjustScreens(int screen)
-{
-    Q_UNUSED(screen);
-
     initScreenIndexes();
-
     positionScreens();
 
     emit screenLayoutChanged();
@@ -222,66 +278,58 @@ void UBDisplayManager::adjustScreens(int screen)
 
 void UBDisplayManager::positionScreens()
 {
-    if(mDesktopWidget && mControlScreenIndex > -1)
+    if(mWidgetsByRole.contains(ScreenRole::Desktop) && hasControl())
     {
-        mDesktopWidget->hide();
-        mDesktopWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
+        mWidgetsByRole[ScreenRole::Desktop]->hide();
+        mWidgetsByRole[ScreenRole::Desktop]->setGeometry(mScreensByRole[ScreenRole::Control]->geometry());
     }
-    if (mControlWidget && mControlScreenIndex > -1)
+    if (mWidgetsByRole.contains(ScreenRole::Control) && hasControl())
     {
-        mControlWidget->hide();
-        mControlWidget->setGeometry(mDesktop->screenGeometry(mControlScreenIndex));
-        UBPlatformUtils::showFullScreen(mControlWidget);
-    }
-
-    if (mDisplayWidget && mDisplayScreenIndex > -1)
-    {
-        mDisplayWidget->showNormal();
-        mDisplayWidget->setGeometry(mDesktop->screenGeometry(mDisplayScreenIndex));
-        UBPlatformUtils::showFullScreen(mDisplayWidget);
-    }
-    else if(mDisplayWidget)
-    {
-        mDisplayWidget->hide();
+        mWidgetsByRole[ScreenRole::Control]->showNormal();
+        mWidgetsByRole[ScreenRole::Control]->setGeometry(mScreensByRole[ScreenRole::Control]->geometry());
+        UBPlatformUtils::showFullScreen(mWidgetsByRole[ScreenRole::Control]);
     }
 
-    for (int wi = mPreviousScreenIndexes.size(); wi < mPreviousDisplayWidgets.size(); wi++)
+    if (mWidgetsByRole.contains(ScreenRole::Display) && hasDisplay())
     {
-        mPreviousDisplayWidgets.at(wi)->hide();
+        mWidgetsByRole[ScreenRole::Display]->showNormal();
+        mWidgetsByRole[ScreenRole::Display]->setGeometry(mScreensByRole[ScreenRole::Display]->geometry());
+        UBPlatformUtils::showFullScreen(mWidgetsByRole[ScreenRole::Display]);
+    }
+    else if(mWidgetsByRole.contains(ScreenRole::Display))
+    {
+        mWidgetsByRole[ScreenRole::Display]->hide();
     }
 
-    for (int psi = 0; psi < mPreviousScreenIndexes.size(); psi++)
+    ScreenRole role(ScreenRole::Previous1);
+
+    for (int i = 0; i < 5; ++i)
     {
-        if (mPreviousDisplayWidgets.size() > psi)
+        if (mWidgetsByRole.contains(role))
         {
-            QWidget* previous = mPreviousDisplayWidgets.at(psi);
-            previous->setGeometry(mDesktop->screenGeometry(mPreviousScreenIndexes.at(psi)));
-            UBPlatformUtils::showFullScreen(previous);
+            if (mScreensByRole.contains(role)) {
+                QWidget* previous = mWidgetsByRole[role];
+                previous->setGeometry(mScreensByRole[role]->geometry());
+                UBPlatformUtils::showFullScreen(previous);
+            }
+            else
+            {
+                mWidgetsByRole[role]->hide();
+            }
         }
+
+        ++role;
     }
 
-    if (mControlWidget && mControlScreenIndex > -1)
-        mControlWidget->activateWindow();
-
+    if (mWidgetsByRole.contains(ScreenRole::Control) && hasControl())
+        mWidgetsByRole[ScreenRole::Control]->activateWindow();
 }
 
 
 void UBDisplayManager::blackout()
 {
-    QList<int> screenIndexes;
-
-    if (mControlScreenIndex > -1)
-        screenIndexes << mControlScreenIndex;
-
-    if (mDisplayScreenIndex > -1)
-        screenIndexes << mDisplayScreenIndex;
-
-    screenIndexes << mPreviousScreenIndexes;
-
-    for (int i = 0; i < screenIndexes.size(); i++)
+    for (auto screen : mScreensByRole)
     {
-        int screenIndex = screenIndexes.at(i);
-
         UBBlackoutWidget *blackoutWidget = new UBBlackoutWidget(); //deleted in UBDisplayManager::unBlackout
         Ui::BlackoutWidget *blackoutUi = new Ui::BlackoutWidget();
         blackoutUi->setupUi(blackoutWidget);
@@ -290,10 +338,11 @@ void UBDisplayManager::blackout()
         connect(blackoutWidget, SIGNAL(activity()), this, SLOT(unBlackout()));
 
         // display Uniboard logo on main screen
-        blackoutUi->iconButton->setVisible(screenIndex == mControlScreenIndex);
-        blackoutUi->labelClickToReturn->setVisible(screenIndex == mControlScreenIndex);
+        bool isControlScreen = screen == mScreensByRole[ScreenRole::Control];
+        blackoutUi->iconButton->setVisible(isControlScreen);
+        blackoutUi->labelClickToReturn->setVisible(isControlScreen);
 
-        blackoutWidget->setGeometry(mDesktop->screenGeometry(screenIndex));
+        blackoutWidget->setGeometry(screen->geometry());
 
         mBlackoutWidgets << blackoutWidget;
     }
@@ -321,10 +370,11 @@ void UBDisplayManager::unBlackout()
 }
 
 
-void UBDisplayManager::setRoleToScreen(DisplayRole role, int screenIndex)
+void UBDisplayManager::addOrRemoveScreen(QScreen *screen)
 {
-    Q_UNUSED(role);
-    Q_UNUSED(screenIndex);
+    Q_UNUSED(screen);
+    // adjustment must be delayed, because OS also tries to position the widgets
+    QTimer::singleShot(3000, [this](){ adjustScreens(); } );
 }
 
 
@@ -333,3 +383,72 @@ void UBDisplayManager::setUseMultiScreen(bool pUse)
     mUseMultiScreen = pUse;
 }
 
+QSize UBDisplayManager::screenSize(ScreenRole role) const
+{
+    QScreen* screen = mScreensByRole.value(role, nullptr);
+    return screen ? screen->size() : QSize();
+}
+
+QSize UBDisplayManager::availableScreenSize(ScreenRole role) const
+{
+    QScreen* screen = mScreensByRole.value(role, nullptr);
+    return screen ? screen->availableSize() : QSize();
+}
+
+QRect UBDisplayManager::screenGeometry(ScreenRole role) const
+{
+    QScreen* screen = mScreensByRole.value(role, nullptr);
+    return screen ? screen->geometry() : QRect();
+}
+
+qreal UBDisplayManager::physicalDpi(ScreenRole role) const
+{
+    QScreen* screen = mScreensByRole.value(role, nullptr);
+    return screen ? screen->physicalDotsPerInch() : 96.;
+}
+
+qreal UBDisplayManager::logicalDpi(ScreenRole role) const
+{
+    QScreen* screen = mScreensByRole.value(role, nullptr);
+    return screen ? screen->logicalDotsPerInch() : 96.;
+}
+
+QPixmap UBDisplayManager::grab(ScreenRole role, QRect rect) const
+{
+    QScreen* screen = mScreensByRole.value(role, nullptr);
+
+    if (screen)
+    {
+        // see https://doc.qt.io/qt-6.2/qtwidgets-desktop-screenshot-example.html
+        // for using window id 0
+        return screen->grabWindow(0, rect.x(), rect.y(), rect.width(), rect.height());
+    }
+
+    return QPixmap();
+}
+
+QPixmap UBDisplayManager::grabGlobal(QRect rect) const
+{
+    QScreen* screen = QGuiApplication::screenAt(rect.topLeft());
+
+    if (screen) {
+        rect.translate(-screen->geometry().topLeft());
+        return screen->grabWindow(0, rect.x(), rect.y(), rect.width(), rect.height());
+    }
+
+    return QPixmap();
+}
+
+
+ScreenRole &operator++(ScreenRole &role)
+{
+    role = ScreenRole(int(role) + 1);
+    return role;
+}
+
+ScreenRole operator++(ScreenRole &role, int)
+{
+    ScreenRole old = role;  // copy old value
+    ++role;                 // prefix increment
+    return old;             // return old value
+}
