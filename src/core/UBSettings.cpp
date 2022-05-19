@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -261,6 +261,8 @@ void UBSettings::init()
     appLastSessionPageIndex = new UBSetting(this, "App", "LastSessionPageIndex", 0);
     appUseMultiscreen = new UBSetting(this, "App", "UseMultiscreenMode", true);
 
+    appStartupHintsEnabled = new UBSetting(this,"App","EnableStartupHints",false);
+
     appLookForOpenSankoreInstall = new UBSetting(this, "App", "LookForOpenSankoreInstall", true);
 
     appStartMode = new UBSetting(this, "App", "StartMode", "");
@@ -409,6 +411,7 @@ void UBSettings::init()
 
     pdfMargin = new UBSetting(this, "PDF", "Margin", "20");
     pdfPageFormat = new UBSetting(this, "PDF", "PageFormat", "A4");
+    pdfUsePDFMerger = new UBSetting(this, "PDF", "UsePDFMerger", "true");
     pdfResolution = new UBSetting(this, "PDF", "Resolution", "300");
 
     pdfZoomBehavior = new UBSetting(this, "PDF", "ZoomBehavior", "4");

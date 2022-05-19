@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -47,6 +47,7 @@
 #include "gui/UBActionPalette.h"
 #include "gui/UBBackgroundPalette.h"
 #include "gui/UBFavoriteToolPalette.h"
+#include "gui/UBStartupHintsPalette.h"
 
 #include "web/UBWebController.h"
 
@@ -240,7 +241,7 @@ void UBBoardPaletteManager::setupPalettes()
 
     mStylusPalette->stackUnder(mZoomPalette);
 
-    //mTipPalette = new UBStartupHintsPalette(mContainer);
+    mTipPalette = new UBStartupHintsPalette(mContainer);
     QList<QAction*> backgroundsActions;
 
     backgroundsActions << UBApplication::mainWindow->actionPlainLightBackground;

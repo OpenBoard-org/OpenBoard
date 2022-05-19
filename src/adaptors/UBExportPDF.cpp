@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -87,6 +87,7 @@ bool UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QStrin
     pdfWriter.setPageMargins(QMarginsF());
     pdfWriter.setTitle(pDocumentProxy->name());
     pdfWriter.setCreator("OpenBoard PDF export");
+    pdfWriter.setPdfVersion(QPagedPaintDevice::PdfVersion_1_4);
 
     //need to calculate screen resolution
     QDesktopWidget* desktop = UBApplication::desktop();

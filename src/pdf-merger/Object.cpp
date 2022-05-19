@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2018 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
  * Copyright (C) 2013 Open Education Foundation
  *
@@ -278,7 +278,7 @@ void Object::serialize(std::ofstream & out, std::map< unsigned int, std::pair<un
 
    sizesAndGenerationNumbers.insert(std::pair<unsigned int, std::pair<unsigned long long, unsigned int > >(_number, std::make_pair(objectSizeForXref, _generationNumber)));
 
-   _serialize(out, stream);
+   serialize(out, stream);
    stream.clear();
    stream.reserve();
 
@@ -429,7 +429,7 @@ void Object::_addParent(Object * child)
 {
    _parents.insert(child);
 }
-void Object::_serialize(std::ofstream  & out, const std::string & stream)
+void Object::serialize(std::ofstream  & out, const std::string & stream)
 {
     out << _number << " " << _generationNumber << " obj\n" << _content << stream << "endobj\n";
    out.flush();
