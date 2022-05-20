@@ -674,7 +674,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgText(const QDomElement &elem
 
 
     qreal fontSize = 12;
-    QColor fontColor(qApp->palette().foreground().color());
+    QColor fontColor(qApp->palette().windowText().color());
     QString fontFamily = "Arial";
     QString fontStretch = "normal";
     bool italic = false;
@@ -685,7 +685,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgText(const QDomElement &elem
 
     QFont startFont(fontFamily, fontSize, fontWeight, italic);
     height = QFontMetrics(startFont).height();
-    width = QFontMetrics(startFont).width(element.text()) + 5;
+    width = QFontMetrics(startFont).boundingRect(element.text()).width() + 5;
 
     QSvgGenerator *generator = createSvgGenerator(width, height);
     QPainter painter;
@@ -810,7 +810,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &
     QTextCharFormat textFormat;
      // default values
     textFormat.setFontPointSize(12);
-    textFormat.setForeground(qApp->palette().foreground().color());
+    textFormat.setForeground(qApp->palette().windowText().color());
     textFormat.setFontFamily("Arial");
     textFormat.setFontItalic(false);
     textFormat.setFontWeight(QFont::Normal);
@@ -1206,7 +1206,9 @@ UBGraphicsGroupContainerItem *UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGro
 
 
 
-    foreach (QString key, strokesGroupsContainer.keys().toSet())
+    const auto keys = strokesGroupsContainer.keys();
+    const auto keySet = QSet<QString>(keys.begin(), keys.end());
+    for (const QString &key : keySet)
     {
         UBGraphicsStrokesGroup* pStrokesGroup = new UBGraphicsStrokesGroup();
         UBGraphicsStroke *currentStroke = new UBGraphicsStroke();

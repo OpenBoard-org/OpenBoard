@@ -31,6 +31,8 @@
 
 #include <QtGui>
 #include <QtXml>
+#include <QGuiApplication>
+#include <QScreen>
 
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"

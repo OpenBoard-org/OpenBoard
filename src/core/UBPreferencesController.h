@@ -53,7 +53,7 @@ class UBPreferencesDialog : public QDialog
     Q_OBJECT;
 
 public:
-    UBPreferencesDialog(UBPreferencesController* prefController, QWidget* parent = 0,Qt::WindowFlags f = 0 );
+    UBPreferencesDialog(UBPreferencesController* prefController, QWidget* parent = 0, Qt::WindowFlags f = {} );
     ~UBPreferencesDialog();
 
 protected:
@@ -112,7 +112,6 @@ class UBPreferencesController : public QObject
         static qreal sSliderRatio;
         static qreal sMinPenWidth;
         static qreal sMaxPenWidth;
-
 };
 
 class UBBrushPropertiesFrame : public Ui::brushProperties

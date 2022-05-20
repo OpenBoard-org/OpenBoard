@@ -6,6 +6,9 @@ CONFIG -= flat
 CONFIG += debug_and_release \
           no_include_pwd
 
+# Don't use deprecated APIs
+DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x050900
+DEFINES += QT_DEPRECATED_WARNINGS
 
 VERSION_MAJ = 1
 VERSION_MIN = 7

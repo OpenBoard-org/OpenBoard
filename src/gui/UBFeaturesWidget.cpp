@@ -1437,7 +1437,7 @@ QString    UBFeaturesItemDelegate::displayText ( const QVariant & value, const Q
     {
         const QFontMetrics fm = listView->fontMetrics();
         const QSize iSize = listView->gridSize();
-        return elidedText( fm, iSize.width(), Qt::ElideRight, text );
+        return fm.elidedText( text, Qt::ElideRight, iSize.width() );
     }
     return text;
 }

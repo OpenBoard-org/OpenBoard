@@ -274,8 +274,8 @@ void  UBKeyboardPalette::paintEvent( QPaintEvent* event)
 
     QRect r = this->geometry();
 
-    int lleft, ltop, lright, lbottom;
-    getContentsMargins ( &lleft, &ltop, &lright, &lbottom ) ;
+    const auto margins = contentsMargins();
+    int lleft, ltop = (margins.left(), margins.top());
 
     //------------------------------------------------
     // calculate start offset from left, and from top

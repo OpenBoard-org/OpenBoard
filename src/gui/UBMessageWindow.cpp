@@ -86,8 +86,7 @@ void UBMessageWindow::showMessage(const QString& message, bool showSpinningWheel
     show();
     // showMessage may have been called from the GUI thread, so make sure the message window is drawn right now
     repaint();
-    // I mean it, *right now*, also on Mac
-    qApp->flush();
+    qApp->sendPostedEvents();
 }
 
 void UBMessageWindow::timerEvent(QTimerEvent *event)
@@ -116,5 +115,5 @@ void UBMessageWindow::hideMessage()
 {
     mFadingStep = 0;
     hide();
-    qApp->flush();
+    QCoreApplication::processEvents();
 }

@@ -2448,7 +2448,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
         if (mimeData)
         {
             QList<UBItem*> items = mimeData->items();
-            qStableSort(items.begin(),items.end(),zLevelLessThan);
+            std::stable_sort(items.begin(),items.end(),zLevelLessThan);
             foreach(UBItem* item, items)
             {
                 QGraphicsItem* pItem = dynamic_cast<QGraphicsItem*>(item);

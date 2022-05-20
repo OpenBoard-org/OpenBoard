@@ -45,6 +45,7 @@
 
 #include <QLabel>
 #include <QHBoxLayout>
+#include <QElapsedTimer>
 
 
 #define STARTDRAGTIME   1000000
@@ -142,7 +143,7 @@ class UBThumbnailWidget : public QGraphicsView
         QSet<QGraphicsItem*> mSelectedThumbnailItems;
         QSet<QGraphicsItem*> mPreviouslyIncrementalSelectedItemsX;
         QSet<QGraphicsItem*> mPreviouslyIncrementalSelectedItemsY;
-        QTime mClickTime;
+        QElapsedTimer mClickTime;
 };
 
 class UBThumbnail

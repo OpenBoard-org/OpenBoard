@@ -103,8 +103,8 @@ class UBSvgSubsetAdaptor
 
         static const QString sFormerUniboardDocumentNamespaceUri;
 
-        static QString toSvgTransform(const QMatrix& matrix);
-        static QMatrix fromSvgTransform(const QString& transform);
+        static QString toSvgTransform(const QTransform& matrix);
+        static QTransform fromSvgTransform(const QString& transform);
 
 
         class UBSvgSubsetReader

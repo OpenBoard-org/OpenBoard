@@ -765,7 +765,7 @@ QStringList UBApplicationController::widgetInlineJavaScripts()
         }
     }
 
-    qSort(scripts);
+    std::sort(scripts.begin(), scripts.end());
 
     return scripts;
 }
