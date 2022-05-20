@@ -274,15 +274,12 @@ void  UBKeyboardPalette::paintEvent( QPaintEvent* event)
 
     QRect r = this->geometry();
 
-    const auto margins = contentsMargins();
-    int lleft, ltop = (margins.left(), margins.top());
-
     //------------------------------------------------
     // calculate start offset from left, and from top
 
     int ctrlButtonsId = 0;
-    lleft = ( r.width() - btnWidth * 15 ) / 2;
-    ltop = ( r.height() - btnHeight * 5 ) / 2;
+    int lleft = ( r.width() - btnWidth * 15 ) / 2;
+    int ltop = ( r.height() - btnHeight * 5 ) / 2;
 
     //------------------------------------------------
     // set geometry (position) for row 1
