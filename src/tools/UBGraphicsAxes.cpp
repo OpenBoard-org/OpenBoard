@@ -170,17 +170,9 @@ void UBGraphicsAxes::paint(QPainter *painter, const QStyleOptionGraphicsItem *st
     painter->drawLine(yAxis());
 
     // draw arrows at end
-    QPointF tip = xAxis().p1();
-    painter->drawLine(tip.x(), tip.y(), tip.x() + sArrowLength, tip.y() + sArrowWidth);
-    painter->drawLine(tip.x(), tip.y(), tip.x() + sArrowLength, tip.y() - sArrowWidth);
-
-    tip = xAxis().p2();
+    QPointF tip = xAxis().p2();
     painter->drawLine(tip.x(), tip.y(), tip.x() - sArrowLength, tip.y() + sArrowWidth);
     painter->drawLine(tip.x(), tip.y(), tip.x() - sArrowLength, tip.y() - sArrowWidth);
-
-    tip = yAxis().p1();
-    painter->drawLine(tip.x(), tip.y(), tip.x() + sArrowWidth, tip.y() - sArrowLength);
-    painter->drawLine(tip.x(), tip.y(), tip.x() - sArrowWidth, tip.y() - sArrowLength);
 
     tip = yAxis().p2();
     painter->drawLine(tip.x(), tip.y(), tip.x() + sArrowWidth, tip.y() + sArrowLength);
@@ -236,9 +228,13 @@ void UBGraphicsAxes::paintGraduations(QPainter *painter)
             {
                 qreal textWidth = fontMetrics.width(text);
                 qreal textHeight = fontMetrics.tightBoundingRect(text).height();
-                painter->drawText(
-                    QRectF(graduationX - textWidth / 2, textHeight - 5, textWidth, textHeight),
-                    Qt::AlignVCenter, text);
+                QRectF textRect(graduationX - textWidth / 2, textHeight - 5, textWidth, textHeight);
+
+                // draw numbers only if they are completely within the bounds
+                if (mBounds.contains(textRect))
+                {
+                    painter->drawText(textRect, Qt::AlignVCenter, text);
+                }
             }
         }
     }
@@ -261,9 +257,13 @@ void UBGraphicsAxes::paintGraduations(QPainter *painter)
 
             qreal textWidth = fontMetrics.width(text);
             qreal textHeight = fontMetrics.tightBoundingRect(text).height();
-            painter->drawText(
-                QRectF(- textWidth - 10, graduationY - textHeight / 2, textWidth, textHeight),
-                Qt::AlignVCenter, text);
+            QRectF textRect(- textWidth - 10, graduationY - textHeight / 2, textWidth, textHeight);
+
+            // draw numbers only if they are completely within the bounds
+            if (mBounds.contains(textRect))
+            {
+                painter->drawText(textRect, Qt::AlignVCenter, text);
+            }
         }
     }
 

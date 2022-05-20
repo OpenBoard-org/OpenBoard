@@ -73,8 +73,7 @@ UBToolsManager::UBToolsManager(QObject *parent)
     axes.label = tr("Axes");
     axes.version = "1.0";
     mToolsIcon.insert(axes.id, ":/images/toolPalette/axesTool.png");
-// disabled by default, added later in UBSettings:init if enabled
-//    mDescriptors << axes;
+    mDescriptors << axes;
 
 
     compass.id = "openboardtool://compass";
