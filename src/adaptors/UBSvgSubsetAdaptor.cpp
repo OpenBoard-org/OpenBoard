@@ -466,15 +466,15 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                 if (!ubCrossedBackground.isNull())
                     crossedBackground = (ubCrossedBackground.toString() == xmlTrue);
 
+                QStringRef ubGridSize = mXmlReader.attributes().value(mNamespaceUri, "grid-size");
+
+                if (!ubGridSize.isNull()) {
+                    int gridSize = ubGridSize.toInt();
+
+                    mScene->setBackgroundGridSize(gridSize);
+                }
 
                 if (crossedBackground) {
-                    QStringRef ubGridSize = mXmlReader.attributes().value(mNamespaceUri, "grid-size");
-
-                    if (!ubGridSize.isNull()) {
-                        int gridSize = ubGridSize.toInt();
-
-                        mScene->setBackgroundGridSize(gridSize);
-                    }
 
                     QStringRef ubIntermediateLines = mXmlReader.attributes().value(mNamespaceUri, "intermediate-lines");
 
@@ -491,13 +491,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                     ruledBackground = (ubRuledBackground.toString() == xmlTrue);
 
                 if (ruledBackground && !crossedBackground) { // if for some reason both are true, the background will be a grid
-                    QStringRef ubGridSize = mXmlReader.attributes().value(mNamespaceUri, "grid-size");
-
-                    if (!ubGridSize.isNull()) {
-                        int gridSize = ubGridSize.toInt();
-
-                        mScene->setBackgroundGridSize(gridSize);
-                    }
 
                     QStringRef ubIntermediateLines = mXmlReader.attributes().value(mNamespaceUri, "intermediate-lines");
 
@@ -1158,11 +1151,12 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement(UBDocumentProxy* pro
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "crossed-background", crossedBackground ? xmlTrue : xmlFalse);
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "ruled-background", ruledBackground ? xmlTrue : xmlFalse);
 
+    int gridSize = mScene->backgroundGridSize();
+    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "grid-size", QString::number(gridSize));
+
     if (crossedBackground || ruledBackground) {
-        int gridSize = mScene->backgroundGridSize();
         bool intermediateLines = mScene->intermediateLines();
 
-        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "grid-size", QString::number(gridSize));
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "intermediate-lines", QString::number(intermediateLines));
     }
 
