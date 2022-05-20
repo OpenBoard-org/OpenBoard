@@ -1,5 +1,10 @@
 /*
- * Copyright (C) 2021 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
+ *
+ * Copyright (C) 2013 Open Education Foundation
+ *
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
+ * l'Education Numérique en Afrique (GIP ENA)
  *
  * This file is part of OpenBoard.
  *
@@ -18,6 +23,7 @@
  * You should have received a copy of the GNU General Public License
  * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
  */
+
 
 
 #include "UBWebEngineView.h"
