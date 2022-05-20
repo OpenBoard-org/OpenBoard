@@ -1207,8 +1207,7 @@ UBGraphicsGroupContainerItem *UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGro
 
 
     const auto keys = strokesGroupsContainer.keys();
-    const auto keySet = QSet<QString>(keys.begin(), keys.end());
-    for (const QString &key : keySet)
+    for (const QString &key : keys)
     {
         UBGraphicsStrokesGroup* pStrokesGroup = new UBGraphicsStrokesGroup();
         UBGraphicsStroke *currentStroke = new UBGraphicsStroke();
