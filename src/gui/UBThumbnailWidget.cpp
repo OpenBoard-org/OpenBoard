@@ -310,8 +310,7 @@ void UBThumbnailWidget::mousePressEvent(QMouseEvent *event)
                 int index2 = mGraphicItems.indexOf(underlyingItem);
                 if (-1 == index2)
                 {
-                    const auto items = selectedItems();
-                    mSelectedThumbnailItems = QSet<QGraphicsItem *>(items.begin(), items.end());
+                    mSelectedThumbnailItems = selectedItems();
                     return;
                 }
                 mSelectionSpan = index2 - index1;
@@ -374,8 +373,8 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
 
         // for horizontal moving
         const auto selectedItemsX = scene()->items(incrementXSelection, Qt::IntersectsItemBoundingRect);
-        const auto incSelectedItemsX = QSet<QGraphicsItem *>(selectedItemsX.begin(), selectedItemsX.end());
-        for (QGraphicsItem *lassoSelectedItem : incSelectedItemsX)
+
+        for (QGraphicsItem *lassoSelectedItem : selectedItemsX)
         {
             if (lassoSelectedItem)
             {
@@ -401,8 +400,8 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
         // for vertical moving
 
         const auto selectedItemsY = scene()->items(incrementYSelection, Qt::IntersectsItemBoundingRect);
-        const auto incSelectedItemsY = QSet<QGraphicsItem *>(selectedItemsY.begin(), selectedItemsY.end());
-        for (QGraphicsItem *lassoSelectedItem : incSelectedItemsY)
+
+        for (QGraphicsItem *lassoSelectedItem : selectedItemsY)
         {
             if (lassoSelectedItem)
             {
@@ -437,14 +436,14 @@ void UBThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
             item->setSelected(false);
         }
 
-        mSelectedThumbnailItems += lassoSelectedThumbnailItems;
+        mSelectedThumbnailItems += lassoSelectedThumbnailItems.values();
         mPrevLassoRect = lassoRect;
 
         if (Qt::ControlModifier & event->modifiers())
         {
             for (int i = 0; i < mSelectedThumbnailItems.count()-1; i++)
             {
-                mSelectedThumbnailItems.values().at(i)->setSelected(true);
+                mSelectedThumbnailItems.at(i)->setSelected(true);
             }
         }
     }
