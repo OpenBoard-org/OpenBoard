@@ -50,18 +50,18 @@ UBCFFAdaptor::UBCFFAdaptor()
 
 bool UBCFFAdaptor::convertUBZToIWB(const QString &from, const QString &to)
 {
-    qDebug() << "starting converion from" << from << "to" << to;
+    qDebug() << "starting conversion from" << from << "to" << to;
 
     QString source = QString();
     if (QFileInfo(from).isDir() && QFile::exists(from)) {
-        qDebug() << "File specified is dir, continuing convertion";
+        qDebug() << "File specified is a directory, continuing conversion";
         source = from;
     } else {
         source = uncompressZip(from);
-        if (!source.isNull()) qDebug() << "File specified is zip file. Uncompressed to tmp dir, continuing convertion";
+        if (!source.isNull()) qDebug() << "File specified is a zip file. Uncompressed to tmp dir, continuing conversion";
     }
     if (source.isNull()) {
-        qDebug() << "File specified is not a dir or a zip file, stopping covretion";
+        qDebug() << "File specified is not a dir nor a zip file, stopping conversion";
         return false;
     }
 
@@ -73,7 +73,7 @@ bool UBCFFAdaptor::convertUBZToIWB(const QString &from, const QString &to)
 
     UBToCFFConverter tmpConvertrer(source, tmpDestination);
     if (!tmpConvertrer) {
-        qDebug() << "The convertrer class is invalid, stopping conversion. Error message" << tmpConvertrer.lastErrStr();
+        qDebug() << "The converter class is invalid, stopping conversion. Error message" << tmpConvertrer.lastErrStr();
         return false;
     }
 
@@ -192,7 +192,7 @@ bool UBCFFAdaptor::compressZip(const QString &source, const QString &destination
     QDir toDir = QFileInfo(destination).dir();
     if (!toDir.exists())
         if (!QDir().mkpath(toDir.absolutePath())) {
-            qDebug() << "can't create destination folder to uncompress file";
+            qDebug() << "Can't create destination folder to uncompress file";
             return false;
         }
 
@@ -226,7 +226,7 @@ bool UBCFFAdaptor::compressDir(const QString &dirName, const QString &parentDir,
 
         if (curFile.isDir()) {
             if (!compressDir(curFile.absoluteFilePath(), parentDir + curFile.fileName() + "/", outZip)) {
-                qDebug() << "error at compressing dir" << curFile.absoluteFilePath();
+                qDebug() << "Error at compressing dir" << curFile.absoluteFilePath();
                 return false;
             }
         } else if (curFile.isFile()) {
@@ -293,7 +293,7 @@ QString UBCFFAdaptor::createNewTmpDir()
                 tmpDirs.append(result);
                 return result;
             } else {
-                qDebug() << "Can't create temporary dir maybe due to permissions";
+                qDebug() << "Can't create temporary directory maybe due to permissions";
                 return QString();
             }
         } else if (tmpNumber == 10) {
