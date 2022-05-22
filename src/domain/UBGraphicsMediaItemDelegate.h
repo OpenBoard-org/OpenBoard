@@ -61,7 +61,11 @@ class UBGraphicsMediaItemDelegate :  public UBGraphicsItemDelegate
         virtual void showHide(bool show);
 
         void mediaStatusChanged(QMediaPlayer::MediaStatus status);
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        void mediaStateChanged(QMediaPlayer::PlaybackState state);
+#else
         void mediaStateChanged(QMediaPlayer::State state);
+#endif
 
     protected slots:
 
