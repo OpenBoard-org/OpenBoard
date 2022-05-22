@@ -98,7 +98,7 @@ void UBEmbedParser::parse(const QString& html)
     mParsedTitles.clear();
 
     // extract all <link> and <iframe> tags upto but not including the final >
-    QRegularExpression exp("(<|&lt;)(link|iframe)([^>]*)");
+    static const QRegularExpression exp("(<|&lt;)(link|iframe)([^>]*)");
     QStringList results;
     int count = 0;
     QRegularExpressionMatchIterator matches = exp.globalMatch(html);
@@ -376,7 +376,7 @@ UBEmbedContent UBEmbedParser::createIframeContent(const QString &html) const
 
     // DOM parsing is not possible, as iframes contain boolean attributes
     // eg "allowfullscreen", which are not XML conformant
-    QRegularExpression matchAttribute("(\\w+)(=\"([^\"]*)\")?");
+    static const QRegularExpression matchAttribute("(\\w+)(=\"([^\"]*)\")?");
 
     int pos = 7;    // size of initial <iframe
     QRegularExpressionMatchIterator matches = matchAttribute.globalMatch(html, pos);

@@ -54,7 +54,8 @@ uint UBVersion::toUInt() const
     */
 
     uint result = 0;
-    QStringList list = mString.split(QRegularExpression("[-\\.]"));
+    static const QRegularExpression minusOrDot("[-\\.]");
+    QStringList list = mString.split(minusOrDot);
     switch (list.count()) {
     case 2:
         //short version  1.0

@@ -1394,7 +1394,7 @@ QColor UBCFFSubsetAdaptor::UBCFFSubsetReader::colorFromString(const QString& clr
 {
     //init regexp with pattern
     //pattern corresponds to strings like 'rgb(1,2,3) or rgb(10%,20%,30%)'
-    QRegularExpression regexp(QRegularExpression::anchoredPattern("rgb\\(([0-9]+%{0,1}),([0-9]+%{0,1}),([0-9]+%{0,1})\\)"));
+    static const QRegularExpression regexp(QRegularExpression::anchoredPattern("rgb\\(([0-9]+%{0,1}),([0-9]+%{0,1}),([0-9]+%{0,1})\\)"));
     QRegularExpressionMatch match = regexp.match(clrString);
     if (match.hasMatch())
     {
@@ -1430,8 +1430,8 @@ QTransform UBCFFSubsetAdaptor::UBCFFSubsetReader::transformFromString(const QStr
     foreach(QString trStr, trString.split(" ", QString::SkipEmptyParts))
     {
         //check pattern for strings like 'rotate(10)'
-        QRegularExpression regexp(QRegularExpression::anchoredPattern("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)"));
-        QRegularExpressionMatch match = regexp.match(trStr);
+        static const QRegularExpression rotate1(QRegularExpression::anchoredPattern("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)"));
+        QRegularExpressionMatch match = rotate1.match(trStr);
         if (match.hasMatch()) {
             angle = match.capturedTexts().at(1).toDouble();
             if (item)
@@ -1443,8 +1443,8 @@ QTransform UBCFFSubsetAdaptor::UBCFFSubsetReader::transformFromString(const QStr
         };
         
         //check pattern for strings like 'rotate(10,20,20)' or 'rotate(10.1,10.2,34.2)'
-        regexp.setPattern(QRegularExpression::anchoredPattern("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)"));
-        match = regexp.match(trStr);
+        static const QRegularExpression rotate3(QRegularExpression::anchoredPattern("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)"));
+        match = rotate3.match(trStr);
         if (match.hasMatch()) {
             angle = match.capturedTexts().at(1).toDouble();
             dxr = match.capturedTexts().at(2).toDouble();
@@ -1458,8 +1458,8 @@ QTransform UBCFFSubsetAdaptor::UBCFFSubsetReader::transformFromString(const QStr
         }
 
         //check pattern for strings like 'translate(11.0, 12.34)'
-        regexp.setPattern(QRegularExpression::anchoredPattern("translate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *,*([-+]{0,1}[0-9]*\\.{0,1}[0-9]*)*\\)"));
-        match = regexp.match(trStr);
+        static const QRegularExpression translate2(QRegularExpression::anchoredPattern("translate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *,*([-+]{0,1}[0-9]*\\.{0,1}[0-9]*)*\\)"));
+        match = translate2.match(trStr);
         if (match.hasMatch()) {
             dx = match.capturedTexts().at(1).toDouble();
             dy = match.capturedTexts().at(2).toDouble();

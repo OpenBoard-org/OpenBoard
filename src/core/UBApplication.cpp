@@ -700,13 +700,13 @@ void UBApplication::cleanup()
 QString UBApplication::urlFromHtml(QString html)
 {
     QString _html;
-    QRegularExpression comments("\\<![ \r\n\t]*(--([^\\-]|[\r\n]|-[^\\-])*--[ \r\n\t]*)\\>");
+    static const QRegularExpression comments("\\<![ \r\n\t]*(--([^\\-]|[\r\n]|-[^\\-])*--[ \r\n\t]*)\\>");
     QString url;
     QDomDocument domDoc;
 
     //    We remove all the comments & CRLF of this html
     _html = html.remove(comments);
-    domDoc.setContent(_html.remove(QRegularExpression("[\\0]")));
+    domDoc.setContent(_html.remove('\0'));
     QDomElement rootElem = domDoc.documentElement();
 
     //  QUICKFIX: Here we have to check rootElem. Sometimes it can be a <meta> tag

@@ -79,9 +79,9 @@ QStringList UBPlatformUtils::availableTranslations()
 {
     QString translationsPath = applicationResourcesDirectory() + "/" + "i18n" + "/";
     QStringList translationsList = UBFileSystemUtils::allFiles(translationsPath);
-    QRegularExpression sankoreTranslationFiles(".*OpenBoard_.*.qm");
-    translationsList=translationsList.filter(sankoreTranslationFiles);
-    return translationsList.replaceInStrings(QRegularExpression("(.*)OpenBoard_(.*).qm"),"\\2");
+    static const QRegularExpression sankoreTranslationFiles("(.*)OpenBoard_(.*).qm");
+    translationsList = translationsList.filter(sankoreTranslationFiles);
+    return translationsList.replaceInStrings(sankoreTranslationFiles, "\\2");
 }
 
 QString UBPlatformUtils::translationPath(QString pFilePrefix,QString pLanguage)
