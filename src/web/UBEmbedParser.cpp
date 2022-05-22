@@ -27,7 +27,7 @@
 
 #include "UBEmbedParser.h"
 
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QStringList>
 #include <QDomAttr>
 #include <QDomDocument>
@@ -98,16 +98,16 @@ void UBEmbedParser::parse(const QString& html)
     mParsedTitles.clear();
 
     // extract all <link> and <iframe> tags upto but not including the final >
-    QRegExp exp("(<|&lt;)(link|iframe)([^>]*)");
+    QRegularExpression exp("(<|&lt;)(link|iframe)([^>]*)");
     QStringList results;
     int count = 0;
-    int pos = 0;
+    QRegularExpressionMatchIterator matches = exp.globalMatch(html);
 
-    while ((pos = exp.indexIn(html, pos)) != -1)
+    while (matches.hasNext())
     {
+        QRegularExpressionMatch match = matches.next();
         ++count;
-        pos += exp.matchedLength();
-        QStringList res = exp.capturedTexts();
+        QStringList res = match.capturedTexts();
 
         if ("" != res.at(0))
         {
@@ -376,14 +376,15 @@ UBEmbedContent UBEmbedParser::createIframeContent(const QString &html) const
 
     // DOM parsing is not possible, as iframes contain boolean attributes
     // eg "allowfullscreen", which are not XML conformant
-    QRegExp matchAttribute("(\\w+)(=\"([^\"]*)\")?");
+    QRegularExpression matchAttribute("(\\w+)(=\"([^\"]*)\")?");
 
     int pos = 7;    // size of initial <iframe
+    QRegularExpressionMatchIterator matches = matchAttribute.globalMatch(html, pos);
 
-    while ((pos = matchAttribute.indexIn(html, pos)) != -1)
+    while (matches.hasNext())
     {
-        pos += matchAttribute.matchedLength();
-        QStringList res = matchAttribute.capturedTexts();
+        QRegularExpressionMatch match = matches.next();
+        QStringList res = match.capturedTexts();
 
         if (res.size() >= 4)
         {

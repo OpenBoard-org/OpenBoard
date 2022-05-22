@@ -645,7 +645,7 @@ UBFeaturesNewFolderDialog::UBFeaturesNewFolderDialog(QWidget *parent) : QWidget(
 
     mLineEdit = new QLineEdit(this);
 
-    mValidator = new QRegExpValidator(QRegExp("[^\\/\\:\\?\\*\\|\\<\\>\\\"]{2,}"), this);
+    mValidator = new QRegularExpressionValidator(QRegularExpression("[^\\/\\:\\?\\*\\|\\<\\>\\\"]{2,}"), this);
     mLineEdit->setValidator(mValidator);
     labelLayout->addWidget(mLabel);
     labelLayout->addWidget(mLineEdit);
@@ -669,9 +669,9 @@ UBFeaturesNewFolderDialog::UBFeaturesNewFolderDialog(QWidget *parent) : QWidget(
     reactOnTextChanged(QString());
 }
 
-void UBFeaturesNewFolderDialog::setRegexp(const QRegExp pRegExp)
+void UBFeaturesNewFolderDialog::setRegexp(const QRegularExpression pRegExp)
 {
-    mValidator->setRegExp(pRegExp);
+    mValidator->setRegularExpression(pRegExp);
 }
 bool UBFeaturesNewFolderDialog::validString(const QString &pStr)
 {
@@ -1391,7 +1391,7 @@ bool UBFeaturesProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & 
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
     QString path = index.data( Qt::UserRole ).toString();
 
-    return filterRegExp().exactMatch(path);
+    return filterRegularExpression().match(path).hasMatch();
 }
 
 bool UBFeaturesSearchProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & sourceParent )const
@@ -1410,7 +1410,7 @@ bool UBFeaturesSearchProxyModel::filterAcceptsRow( int sourceRow, const QModelIn
 
     return isFile
             && feature.getFullVirtualPath().contains(mFilterPrefix)
-            && filterRegExp().exactMatch( feature.getName() );
+            && filterRegularExpression().match( feature.getName() ).hasMatch();
 }
 
 bool UBFeaturesPathProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & sourceParent )const

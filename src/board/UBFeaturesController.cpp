@@ -352,7 +352,7 @@ UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
     //featuresModel->setSupportedDragActions(Qt::CopyAction | Qt::MoveAction);
 
     featuresProxyModel = new UBFeaturesProxyModel(this);
-    featuresProxyModel->setFilterFixedString(rootPath);
+    featuresProxyModel->setFilterRegularExpression(QRegularExpression::anchoredPattern(rootPath));
     featuresProxyModel->setSourceModel(featuresModel);
     featuresProxyModel->setFilterCaseSensitivity( Qt::CaseInsensitive );
 
@@ -585,7 +585,7 @@ QString UBFeaturesController::adjustName(const QString &str)
     }
 
     QString resultStr = str;
-    QRegExp invalidSymbols("[\\/\\s\\:\\?\\*\\|\\<\\>\\\"]+");
+    QRegularExpression invalidSymbols("[\\/\\s\\:\\?\\*\\|\\<\\>\\\"]+");
 
     return resultStr.replace(invalidSymbols, "_");
 }
@@ -951,7 +951,7 @@ void UBFeaturesController::rescanModel()
 
 void UBFeaturesController::siftElements(const QString &pSiftValue)
 {
-    featuresProxyModel->setFilterFixedString(pSiftValue);
+    featuresProxyModel->setFilterRegularExpression(QRegularExpression::anchoredPattern(pSiftValue));
     featuresProxyModel->invalidate();
 
     featuresPathModel->setPath(pSiftValue);
@@ -988,7 +988,7 @@ void UBFeaturesController::searchStarted(const QString &pattern, QListView *pOnV
     } else if ( pattern.size() > 1 ) {
 
         //        featuresSearchModel->setFilterPrefix(currentElement.getFullVirtualPath());
-        featuresSearchModel->setFilterWildcard( "*" + pattern + "*" );
+        featuresSearchModel->setFilterRegularExpression(QRegularExpression::wildcardToRegularExpression("*" + pattern + "*"));
         pOnView->setModel(featuresSearchModel );
         featuresSearchModel->invalidate();
         curListModel = featuresSearchModel;

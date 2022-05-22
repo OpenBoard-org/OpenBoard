@@ -339,7 +339,7 @@ void BrowserWindow::handleReturnPressed()
     QString input = m_urlLineEdit->text().trimmed();
 
     // get first word
-    int wordEnd = input.indexOf(QRegExp("\\s"));
+    int wordEnd = input.indexOf(QRegularExpression("\\s"));
     QString firstWord = wordEnd < 0 ? input : input.left(wordEnd);
     bool search = false;
 

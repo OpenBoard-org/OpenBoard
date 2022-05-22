@@ -143,9 +143,9 @@ UBDocumentReplaceDialog::UBDocumentReplaceDialog(const QString &pIncommingName, 
     reactOnTextChanged(mIncommingName);
 }
 
-void UBDocumentReplaceDialog::setRegexp(const QRegExp pRegExp)
+void UBDocumentReplaceDialog::setRegexp(const QRegularExpression pRegExp)
 {
-    mValidator->setRegExp(pRegExp);
+    mValidator->setRegularExpression(pRegExp);
 }
 bool UBDocumentReplaceDialog::validString(const QString &pStr)
 {

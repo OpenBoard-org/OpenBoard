@@ -61,12 +61,13 @@ static QString strIdFrom(const QString &filePath)
         return QString();
     }
 
-    QRegExp rx("\\{.(?!.*\\{).*\\}");
-    if (rx.indexIn(filePath) == -1) {
+    QRegularExpression rx("\\{.(?!.*\\{).*\\}");
+    QRegularExpressionMatch match = rx.match(filePath);
+    if (!match.hasMatch()) {
         return QString();
     }
 
-    return rx.cap();
+    return match.captured();
 }
 
 static bool rm_r(const QString &rmPath)
@@ -147,7 +148,7 @@ static QString thumbFileNameFrom(const QString &filePath)
     }
 
     QString thumbPath = filePath;
-    thumbPath.replace(QRegExp("[\\{\\}]"), "").replace(wgtSuff, thumbSuff);
+    thumbPath.replace(QRegularExpression("[\\{\\}]"), "").replace(wgtSuff, thumbSuff);
 
     return thumbPath;
 }
@@ -538,7 +539,7 @@ private:
                 if (ref.isEmpty()) {
                     return;
                 }
-                ref.replace(QRegExp("^(.*pdf\\#page\\=).*$"), QString("\\1%1").arg(mToIndex));
+                ref.replace(QRegularExpression("^(.*pdf\\#page\\=).*$"), QString("\\1%1").arg(mToIndex));
                 return;
             }
 
@@ -568,7 +569,7 @@ private:
         if (createNewUuid)
         {
             QUuid newUuid = QUuid::createUuid();
-            QString newPath = relative.replace(QRegExp("\\{.*\\}"), newUuid.toString());
+            QString newPath = relative.replace(QRegularExpression("\\{.*\\}"), newUuid.toString());
 
             cp_rf(mFromDir + "/" + relativePath, mToDir + "/" + newPath);
 
