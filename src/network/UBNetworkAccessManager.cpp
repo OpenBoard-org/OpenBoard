@@ -88,8 +88,6 @@ UBNetworkAccessManager::UBNetworkAccessManager(QObject *parent)
 
 QNetworkReply *UBNetworkAccessManager::get(const QNetworkRequest &request)
 {
-    QTime loadStartTime;
-    loadStartTime.start();
     QNetworkReply *networkReply = QNetworkAccessManager::get(request);
     return networkReply;
 }
@@ -152,7 +150,7 @@ void UBNetworkAccessManager::proxyAuthenticationRequired(const QNetworkProxy &pr
 void UBNetworkAccessManager::sslErrors(QNetworkReply *reply, const QList<QSslError> &error)
 {
     // check if SSL certificate has been trusted already
-    QString replyHost = reply->url().host() + ":" + reply->url().port();
+    QString replyHost = reply->url().host() + QString(":%1").arg(reply->url().port());
     if(!sslTrustedHostList.contains(replyHost))
     {
         QWidget *mainWindow = QApplication::activeWindow();

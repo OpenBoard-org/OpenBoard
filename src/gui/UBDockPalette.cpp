@@ -669,7 +669,7 @@ UBTabDockPalette::~UBTabDockPalette()
 
 void UBTabDockPalette::mousePressEvent(QMouseEvent *event)
 {
-    dock->mClickTime = QTime::currentTime();
+    dock->mClickTime.start();
     // The goal here is to verify if the user can resize the widget.
     // It is only possible to resize it if the border is selected
     QPoint p = event->pos();

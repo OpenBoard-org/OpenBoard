@@ -1845,11 +1845,11 @@ void UBDocumentController::createNewDocument()
     QString documentName = "";
     if (docModel->isCatalog(selectedIndex))
     {
-        documentName = docModel->adjustNameForParentIndex(now.toString(Qt::SystemLocaleShortDate), selectedIndex);
+        documentName = docModel->adjustNameForParentIndex(QLocale::system().toString(now, QLocale::ShortFormat), selectedIndex);
     }
     else
     {
-        documentName = docModel->adjustNameForParentIndex(now.toString(Qt::SystemLocaleShortDate), selectedIndex.parent());
+        documentName = docModel->adjustNameForParentIndex(QLocale::system().toString(now, QLocale::ShortFormat), selectedIndex.parent());
     }
 
 

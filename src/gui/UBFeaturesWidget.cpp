@@ -485,7 +485,7 @@ UBFeaturesNavigatorWidget::UBFeaturesNavigatorWidget(QWidget *parent, const char
 
     mainLayer->addWidget(mListView, 1);
     mainLayer->addWidget(mListSlider, 0);
-    mainLayer->setMargin(0);
+    mainLayer->setContentsMargins(0, 0, 0, 0);
 
     connect(mListSlider, SIGNAL(valueChanged(int)), mListView, SLOT(thumbnailSizeChanged(int)));
 }
@@ -783,7 +783,7 @@ UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(
     UBWebController::injectScripts(mpView);
 
     mpLayout->addWidget(mpView);
-    mpLayout->setMargin(0);
+    mpLayout->setContentsMargins(0, 0, 0, 0);
 }
 
 UBFeaturesWebView::~UBFeaturesWebView()
@@ -894,7 +894,7 @@ UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : 
     mpObjInfos->setObjectName("DockPaletteWidgetBox");
     mpObjInfos->setStyleSheet("background:white;");
     mpLayout->addWidget(mpObjInfos, 1);
-    mpLayout->setMargin(0);
+    mpLayout->setContentsMargins(0, 0, 0, 0);
 
     connect( mpAddPageButton, SIGNAL(clicked()), this, SLOT(onAddToPage()) );
     connect( mpAddToLibButton, SIGNAL( clicked() ), this, SLOT(onAddToLib() ) );
@@ -1063,11 +1063,11 @@ void UBFeatureProperties::onAddToLib()
         QString str2 = mpElement->getFullPath().toString().normalized(QString::NormalizationForm_D);
         QString str3 = mpElement->getFullPath().toString().normalized(QString::NormalizationForm_KC);
         QString str4 = mpElement->getFullPath().toString().normalized(QString::NormalizationForm_KD);
-        qDebug() << desc.srcUrl << endl
-                    << "str1" << str1 << endl
-                    << "str2" << str2 << endl
-                    << "str3" << str3 << endl
-                    << "str4" << str4 << endl;
+        qDebug() << desc.srcUrl << '\n'
+                    << "str1" << str1 << '\n'
+                    << "str2" << str2 << '\n'
+                    << "str3" << str3 << '\n'
+                    << "str4" << str4 << '\n';
         UBDownloadManager::downloadManager()->addFileToDownload(desc);
     }
 }

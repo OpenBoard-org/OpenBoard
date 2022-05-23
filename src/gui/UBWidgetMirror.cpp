@@ -32,7 +32,7 @@
 #include "core/memcheck.h"
 
 UBWidgetMirror::UBWidgetMirror(QWidget* sourceWidget, QWidget* parent)
-    : QWidget(parent, 0)
+    : QWidget(parent)
     , mSourceWidget(sourceWidget)
 {
     mSourceWidget->installEventFilter(this);

@@ -183,14 +183,14 @@ static QDomDocument createDomFromSvg(const QString &svgUrl)
             if (xmlDom.setContent(domString, &errorStr, &errorLine, &errorColumn)) {
                 return xmlDom;
             } else {
-                qDebug() << "Error reading content of " << mFoldersXmlStorageName << endl
+                qDebug() << "Error reading content of " << mFoldersXmlStorageName << '\n'
                          << "Error:" << inFile.errorString()
                          << "Line:" << errorLine
                          << "Column:" << errorColumn;
             }
             inFile.close();
         } else {
-            qDebug() << "Error reading" << mFoldersXmlStorageName << endl
+            qDebug() << "Error reading" << mFoldersXmlStorageName << '\n'
                      << "Error:" << inFile.errorString();
         }
     }

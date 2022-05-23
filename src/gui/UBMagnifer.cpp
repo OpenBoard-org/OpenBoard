@@ -65,10 +65,10 @@ UBMagnifier::UBMagnifier(QWidget *parent, bool isInteractive)
     mResizeItem = new QPixmap(":/images/resize.svg");
     sChangeModePixmap = new QPixmap();
 
-    qDebug() << "sClosePixmap" << sClosePixmap->size() << endl
-             << "sIncreasePixmap" << sIncreasePixmap->size() << endl
-             << "sDecreasePixmap" << sDecreasePixmap->size() << endl
-             << "mResizeItem" << mResizeItem->size() << endl;
+    qDebug() << "sClosePixmap" << sClosePixmap->size() << '\n'
+             << "sIncreasePixmap" << sIncreasePixmap->size() << '\n'
+             << "sDecreasePixmap" << sDecreasePixmap->size() << '\n'
+             << "mResizeItem" << mResizeItem->size() << '\n';
 
 
     setDrawingMode(UBSettings::settings()->magnifierDrawingMode->get().toInt());
@@ -194,11 +194,11 @@ void UBMagnifier::calculateButtonsPositions()
     sDecreasePixmapButtonRect = QRect(sChangeModePixmapButtonRect.x() - sChangeModePixmap->width() - m_iButtonInterval, size().height() - sDecreasePixmap->height(), sDecreasePixmap->width(), sDecreasePixmap->height());
     sIncreasePixmapButtonRect = QRect(sDecreasePixmapButtonRect.x() - sChangeModePixmap->width() - m_iButtonInterval, size().height() - sIncreasePixmap->height(), sIncreasePixmap->width(), sIncreasePixmap->height());
 
-    qDebug() << "mResizeItemButtonRect" << mResizeItemButtonRect << endl
-             << "sClosePixmapButtonRect" << sClosePixmapButtonRect << endl
-             << "sChangeModePixmapButtonRect" << sChangeModePixmapButtonRect << endl
-             << "sDecreasePixmapButtonRect" << sDecreasePixmapButtonRect << endl
-             << "sIncreasePixmapButtonRect" << sIncreasePixmapButtonRect << endl;
+    qDebug() << "mResizeItemButtonRect" << mResizeItemButtonRect << '\n'
+             << "sClosePixmapButtonRect" << sClosePixmapButtonRect << '\n'
+             << "sChangeModePixmapButtonRect" << sChangeModePixmapButtonRect << '\n'
+             << "sDecreasePixmapButtonRect" << sDecreasePixmapButtonRect << '\n'
+             << "sIncreasePixmapButtonRect" << sIncreasePixmapButtonRect << '\n';
 }
 
 void UBMagnifier::paintEvent(QPaintEvent * event)

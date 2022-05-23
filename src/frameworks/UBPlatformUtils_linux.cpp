@@ -25,7 +25,7 @@
  */
 
 
-
+#define QT_IMPLICIT_QCHAR_CONSTRUCTION
 
 #include "UBPlatformUtils.h"
 

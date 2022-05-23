@@ -88,7 +88,7 @@ BrowserWindow::BrowserWindow(QWidget *parent, QWebEngineProfile *profile, bool f
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->setSpacing(0);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     if (!forDevTools) {
         m_progressBar = new QProgressBar(this);

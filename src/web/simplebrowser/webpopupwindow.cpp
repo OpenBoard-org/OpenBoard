@@ -66,7 +66,7 @@ WebPopupWindow::WebPopupWindow(QWebEngineProfile *profile)
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
     QVBoxLayout *layout = new QVBoxLayout;
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     setLayout(layout);
     layout->addWidget(m_urlLineEdit);
     layout->addWidget(m_view);
