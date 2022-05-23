@@ -51,6 +51,7 @@
 #ifndef WEBPAGE_H
 #define WEBPAGE_H
 
+#include <QWebEngineCertificateError>
 #include <QWebEnginePage>
 #include <QWebEngineRegisterProtocolHandlerRequest>
 #include <QtWebEngineWidgetsVersion>
@@ -62,8 +63,13 @@ class WebPage : public QWebEnginePage
 public:
     WebPage(QWebEngineProfile *profile, QObject *parent = nullptr);
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+private slots:
+    void handleCertificateError(QWebEngineCertificateError error);
+#else
 protected:
     bool certificateError(const QWebEngineCertificateError &error) override;
+#endif
 
 private slots:
     void handleAuthenticationRequired(const QUrl &requestUrl, QAuthenticator *auth);

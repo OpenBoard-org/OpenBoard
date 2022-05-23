@@ -85,7 +85,11 @@ void UBWebEngineView::closeInspector()
 
 void UBWebEngineView::contextMenuEvent(QContextMenuEvent *event)
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QMenu *menu = createStandardContextMenu();
+#else
     QMenu *menu = page()->createStandardContextMenu();
+#endif
 
     // suppress actions requiring a new window
     const QList<QWebEnginePage::WebAction> suppressed = {

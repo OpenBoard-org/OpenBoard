@@ -54,9 +54,14 @@
 #include "ui_downloadmanagerwidget.h"
 
 #include <QWidget>
+#include <QtWebEngineWidgetsVersion>
 
 QT_BEGIN_NAMESPACE
+#if QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+class QWebEngineDownloadRequest;
+#else
 class QWebEngineDownloadItem;
+#endif
 QT_END_NAMESPACE
 
 class DownloadWidget;
@@ -71,7 +76,13 @@ public:
     // Prompts user with a "Save As" dialog. If the user doesn't cancel it, then
     // the QWebEngineDownloadItem will be accepted and the DownloadManagerWidget
     // will be shown on the screen.
+#include <QtWebEngineWidgetsVersion>
+
+#if QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    void downloadRequested(QWebEngineDownloadRequest *webItem);
+#else
     void downloadRequested(QWebEngineDownloadItem *webItem);
+#endif
 
 private:
     void add(DownloadWidget *downloadWidget);
