@@ -169,7 +169,11 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
         return item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
     }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QMultiMapIterator<qreal, QGraphicsItem*>iCurElement(sortedItems);
+#else
     QMapIterator<qreal, QGraphicsItem*>iCurElement(sortedItems);
+#endif
 
     if (dest == up) {
         qDebug() << "item data zvalue= " << item->data(UBGraphicsItemData::ItemOwnZValue).toReal();

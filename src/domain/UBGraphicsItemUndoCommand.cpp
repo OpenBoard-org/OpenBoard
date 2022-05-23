@@ -148,7 +148,7 @@ void UBGraphicsItemUndoCommand::undo()
         }
     }
 
-    QMapIterator<UBGraphicsGroupContainerItem*, QUuid> curMapElement(mExcludedFromGroup);
+    GroupDataTableIterator curMapElement(mExcludedFromGroup);
     UBGraphicsGroupContainerItem *nextGroup = NULL;
     UBGraphicsGroupContainerItem *previousGroupItem = NULL;
     bool groupChanged = false;
@@ -194,7 +194,7 @@ void UBGraphicsItemUndoCommand::redo()
             return;
         }
 
-        QMapIterator<UBGraphicsGroupContainerItem*, QUuid> curMapElement(mExcludedFromGroup);
+        GroupDataTableIterator curMapElement(mExcludedFromGroup);
         UBGraphicsGroupContainerItem *nextGroup = NULL;
         UBGraphicsGroupContainerItem *previousGroupItem = NULL;
         bool groupChanged = false;

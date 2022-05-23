@@ -53,8 +53,10 @@
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
 typedef Qt::SplitBehaviorFlags SplitBehavior;
+typedef QMultiMapIterator<int, QDomElement> MultiMapIterator;
 #else
 typedef QString::SplitBehavior SplitBehavior;
+typedef QMapIterator<int, QDomElement> MultiMapIterator;
 #endif
 
 UBCFFAdaptor::UBCFFAdaptor()
@@ -636,7 +638,7 @@ QDomElement UBCFFAdaptor::UBToCFFConverter::parsePageset(const QStringList &page
 
     QDomElement svgPagesetElement = mDocumentToWrite->createElementNS(svgIWBNS,":"+ tIWBPageSet);
 
-    QMapIterator<int, QDomElement> nextSVGElement(pageList);
+    MultiMapIterator nextSVGElement(pageList);
     nextSVGElement.toFront();
     while (nextSVGElement.hasNext()) 
         svgPagesetElement.appendChild(nextSVGElement.next().value());
@@ -686,7 +688,7 @@ QDomElement UBCFFAdaptor::UBToCFFConverter::parseSvgPageSection(const QDomElemen
     // to do:
     // there we must to sort elements (take elements from list and assign parent ordered like in parseSVGGGroup)
     // we returns just element because we don't care about layer.
-    QMapIterator<int, QDomElement> nextSVGElement(svgElements);
+    MultiMapIterator nextSVGElement(svgElements);
     nextSVGElement.toFront();
     while (nextSVGElement.hasNext()) 
         svgElementPart.appendChild(nextSVGElement.next().value());
@@ -1611,7 +1613,7 @@ bool UBCFFAdaptor::UBToCFFConverter::parseSVGGGroup(const QDomElement &element, 
     }
 
     QList<int> layers;
-    QMapIterator<int, QDomElement> nextSVGElement(svgElements);
+    MultiMapIterator nextSVGElement(svgElements);
     while (nextSVGElement.hasNext()) 
         layers << nextSVGElement.next().key();
 
