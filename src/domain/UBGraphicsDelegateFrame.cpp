@@ -279,7 +279,7 @@ void UBGraphicsDelegateFrame::setCursorFromAngle(QString angle)
         painter.end();
 
         pixCursor.setMask(bmpMask);
-        controlViewport->setCursor(pixCursor);
+        controlViewport->setCursor(QCursor(pixCursor));
     }
 }
 
