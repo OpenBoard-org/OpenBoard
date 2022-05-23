@@ -322,7 +322,9 @@ void UBEmbedController::generateConfig(int pWidth, int pHeight, const QString& p
     }
 
     QTextStream out(&configFile);
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     out.setCodec("UTF-8");
+#endif
     out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << '\n';
     out << "<widget xmlns=\"http://www.w3.org/ns/widgets\"" << '\n';
     out << "        xmlns:ub=\"http://uniboard.mnemis.com/widgets\"" << '\n';
