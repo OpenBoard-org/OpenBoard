@@ -352,7 +352,11 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)dc->stylusTool ();
 
     if (event->type () == QEvent::TabletPress || event->type () == QEvent::TabletEnterProximity) {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        if (event->pointerType () == QPointingDevice::PointerType::Eraser) {
+#else
         if (event->pointerType () == QTabletEvent::Eraser) {
+#endif
             dc->setStylusTool (UBStylusTool::Eraser);
             mUsingTabletEraser = true;
         }
@@ -1543,12 +1547,16 @@ void UBBoardView::mouseDoubleClickEvent (QMouseEvent *event)
 void UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
 {
     // Zoom in/out when Ctrl is pressed
-    if (wheelEvent->modifiers() == Qt::ControlModifier && wheelEvent->orientation() == Qt::Vertical)
+    if (wheelEvent->modifiers() == Qt::ControlModifier && wheelEvent->angleDelta().x() == 0)
     {
         qreal angle = wheelEvent->angleDelta().y();
         qreal zoomBase = UBSettings::settings()->boardZoomBase->get().toDouble();
         qreal zoomFactor = qPow(zoomBase, angle);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+        mController->zoom(zoomFactor, mapToScene(wheelEvent->position().toPoint()));
+#else
         mController->zoom(zoomFactor, mapToScene(wheelEvent->pos()));
+#endif
         wheelEvent->accept();
         return;
     }
@@ -1561,7 +1569,11 @@ void UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
         QGraphicsItem * selItem = selItemsList[0];
 
         // get items list under mouse cursor
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+        QPointF scenePos = mapToScene(wheelEvent->position().toPoint());
+#else
         QPointF scenePos = mapToScene(wheelEvent->pos());
+#endif
         QList<QGraphicsItem *> itemsList = scene()->items(scenePos);
 
         bool isSelectedAndMouseHower = itemsList.contains(selItem);
