@@ -71,6 +71,12 @@
 
 #include "core/memcheck.h"
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+typedef Qt::SplitBehaviorFlags SplitBehavior;
+#else
+typedef QString::SplitBehavior SplitBehavior;
+#endif
+
 static bool lessThan(UBDocumentTreeNode *lValue, UBDocumentTreeNode *rValue)
 {
     if (lValue->nodeType() == UBDocumentTreeNode::Catalog) {
@@ -1091,7 +1097,7 @@ bool UBDocumentTreeModel::newNodeAllowed(const QModelIndex &pSelectedIndex)  con
 
 QModelIndex UBDocumentTreeModel::goTo(const QString &dir)
 {
-    QStringList pathList = dir.split("/", QString::SkipEmptyParts);
+    QStringList pathList = dir.split("/", SplitBehavior::SkipEmptyParts);
 
     if (pathList.isEmpty()) {
         return untitledDocumentsIndex();

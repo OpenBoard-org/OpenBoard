@@ -77,7 +77,7 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
                 TopRight
         };
 
-        static UBGraphicsTriangleOrientation orientationFromStr(QStringRef& str)
+        static UBGraphicsTriangleOrientation orientationFromStr(const QString& str)
         {
             if (str == "BottomLeft") return BottomLeft;
             if (str == "BottomRight") return BottomRight;

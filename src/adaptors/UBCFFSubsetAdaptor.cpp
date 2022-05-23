@@ -120,6 +120,12 @@ static QString aEditable        = "editable";
 static QString apRotate         = "rotate";
 static QString apTranslate      = "translate";
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+typedef Qt::SplitBehaviorFlags SplitBehavior;
+#else
+typedef QString::SplitBehavior SplitBehavior;
+#endif
+
 
 UBCFFSubsetAdaptor::UBCFFSubsetAdaptor()
 {}
@@ -350,10 +356,10 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
     QPolygonF polygon;
 
     if (!svgPoints.isNull()) {
-        QStringList ts = svgPoints.split(QLatin1Char(' '), QString::SkipEmptyParts);
+        QStringList ts = svgPoints.split(QLatin1Char(' '), SplitBehavior::SkipEmptyParts);
 
         foreach(const QString sPoint, ts) {
-            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
+            QStringList sCoord = sPoint.split(QLatin1Char(','), SplitBehavior::SkipEmptyParts);
             if (sCoord.size() == 2) {
                 QPointF point;
                 point.setX(sCoord.at(0).toFloat());
@@ -439,7 +445,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
         QTransform transform;
         QString textTransform = element.attribute(aTransform);
         
-        QUuid uuid = QUuid::createUuid().toString();
+        QUuid uuid = QUuid::createUuid();
         mRefToUuidMap.insert(element.attribute(aId), uuid.toString());
         svgItem->setUuid(uuid);
 
@@ -466,10 +472,10 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
 
     if (!svgPoints.isNull()) {
         QStringList ts = svgPoints.split(QLatin1Char(' '),
-                                                    QString::SkipEmptyParts);
+                                                    SplitBehavior::SkipEmptyParts);
 
         foreach(const QString sPoint, ts) {
-            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
+            QStringList sCoord = sPoint.split(QLatin1Char(','), SplitBehavior::SkipEmptyParts);
             if (sCoord.size() == 2) {
                 QPointF point;
                 point.setX(sCoord.at(0).toFloat());
@@ -1427,7 +1433,7 @@ QTransform UBCFFSubsetAdaptor::UBCFFSubsetReader::transformFromString(const QStr
     qreal angle = 0.0;
     QTransform tr;
 
-    foreach(QString trStr, trString.split(" ", QString::SkipEmptyParts))
+    foreach(QString trStr, trString.split(" ", SplitBehavior::SkipEmptyParts))
     {
         //check pattern for strings like 'rotate(10)'
         static const QRegularExpression rotate1(QRegularExpression::anchoredPattern("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)"));
@@ -1472,7 +1478,7 @@ QTransform UBCFFSubsetAdaptor::UBCFFSubsetReader::transformFromString(const QStr
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::getViewBoxDimenstions(const QString& viewBox)
 {
-    QStringList capturedTexts = viewBox.split(" ", QString::SkipEmptyParts);
+    QStringList capturedTexts = viewBox.split(" ", SplitBehavior::SkipEmptyParts);
     if (capturedTexts.count())
     {
         if (4 == capturedTexts.count())

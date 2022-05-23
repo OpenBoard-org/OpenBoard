@@ -55,6 +55,12 @@ const QString thumbSuff = ".png";
 const QString scanDirs = "audios,images,videos,teacherGuideObjects,widgets";
 const QStringList trashFilter = QStringList() << "*.swf";
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+typedef Qt::SplitBehaviorFlags SplitBehavior;
+#else
+typedef QString::SplitBehavior SplitBehavior;
+#endif
+
 static QString strIdFrom(const QString &filePath)
 {
     if ((filePath).isEmpty()) {
@@ -264,7 +270,7 @@ private:
     void fitIdsFromFileSystem()
     {
         QString absPrefix = mCurrentDir + "/";
-        QStringList dirsList = scanDirs.split(",", QString::SkipEmptyParts);
+        QStringList dirsList = scanDirs.split(",", SplitBehavior::SkipEmptyParts);
         foreach (QString dirName, dirsList) {
             QString absPath = absPrefix + dirName;
             if (!QFile::exists(absPath)) {

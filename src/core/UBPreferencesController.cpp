@@ -48,6 +48,12 @@
 
 #include "core/memcheck.h"
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+typedef Qt::SplitBehaviorFlags SplitBehavior;
+#else
+typedef QString::SplitBehavior SplitBehavior;
+#endif
+
 qreal UBPreferencesController::sSliderRatio = 10.0;
 qreal UBPreferencesController::sMinPenWidth = 0.5;
 qreal UBPreferencesController::sMaxPenWidth = 50.0;
@@ -776,7 +782,7 @@ void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
 
     if (mScreenLabels.empty())
     {
-        QStringList screenNames = text().split(',', QString::SkipEmptyParts);
+        QStringList screenNames = text().split(',', SplitBehavior::SkipEmptyParts);
 
         QList<QScreen*> screens = UBApplication::displayManager->availableScreens();
         QStringList availableScreenNames;
@@ -852,7 +858,7 @@ void UBScreenListLineEdit::addScreen()
 
 void UBScreenListLineEdit::onTextChanged(const QString &input)
 {
-    QStringList screenNames = input.split(',', QString::SkipEmptyParts);
+    QStringList screenNames = input.split(',', SplitBehavior::SkipEmptyParts);
 
     for (QPushButton* button : mScreenLabels)
     {
@@ -902,7 +908,7 @@ QValidator::State UBStringListValidator::validate(QString &input, int &) const
 
     bool ok = true;
     bool wasOk = false;
-    QStringList inputList = input.split(',', QString::SkipEmptyParts);
+    QStringList inputList = input.split(',', SplitBehavior::SkipEmptyParts);
 
     for (const QString& token : inputList)
     {
