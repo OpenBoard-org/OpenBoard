@@ -21,6 +21,10 @@
 
 #include "UBMicrophoneInput.h"
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+#include <QMediaDevices>
+#endif
+
 UBMicrophoneInput::UBMicrophoneInput()
     : mAudioInput(NULL)
     , mIODevice(NULL)
@@ -38,7 +42,11 @@ bool UBMicrophoneInput::init()
 {
     if (mAudioDeviceInfo.isNull()) {
         qWarning("No audio input device selected; using default");
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        mAudioDeviceInfo = QMediaDevices::defaultAudioInput();
+#else
         mAudioDeviceInfo = QAudioDeviceInfo::defaultInputDevice();
+#endif
     }
 
     mAudioFormat = mAudioDeviceInfo.preferredFormat();
@@ -51,19 +59,32 @@ bool UBMicrophoneInput::init()
 
         If a signed 24-bit sample format is natively preferred, we a set signed 16-bit sample format instead.
     */
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    if (mAudioFormat.bytesPerSample() == 3)
+        mAudioFormat.setSampleFormat(QAudioFormat::Int16);
+
+    mAudioInput = new QAudioSource(mAudioDeviceInfo, mAudioFormat);
+#else
     if (mAudioFormat.sampleSize() == 24)
         mAudioFormat.setSampleSize(16);
 
-    mAudioInput = new QAudioInput(mAudioDeviceInfo, mAudioFormat, NULL);
+    mAudioInput = new QAudioInput(mAudioDeviceInfo, mAudioFormat);
+#endif
 
     connect(mAudioInput, SIGNAL(stateChanged(QAudio::State)),
             this, SLOT(onAudioInputStateChanged(QAudio::State)));
 
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    qDebug() << "Input device name: " << mAudioDeviceInfo.description();
+    qDebug() << "Input sample format: " << (mAudioFormat.bytesPerSample() * 8) << "bit"
+             << mAudioFormat.sampleFormat() << "at" << mAudioFormat.sampleRate() << "Hz";
+#else
     qDebug() << "Input device name: " << mAudioDeviceInfo.deviceName();
     qDebug() << "Input sample format: " << mAudioFormat.sampleSize() << "bit"
              << mAudioFormat.sampleType() << "at" << mAudioFormat.sampleRate() << "Hz"
              << "; codec: " << mAudioFormat.codec();
+#endif
 
     return true;
 }
@@ -87,17 +108,48 @@ void UBMicrophoneInput::stop()
 QStringList UBMicrophoneInput::availableDevicesNames()
 {
     QStringList names;
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QList<QAudioDevice> devices = QMediaDevices::audioInputs();
+
+    for (const QAudioDevice& device : devices) {
+        names.push_back(device.description());
+    }
+#else
     QList<QAudioDeviceInfo> devices = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
 
     foreach (QAudioDeviceInfo device, devices) {
         names.push_back(device.deviceName());
     }
+#endif
 
     return names;
 }
 
 void UBMicrophoneInput::setInputDevice(QString name)
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    if (name.isEmpty()) {
+        mAudioDeviceInfo = QMediaDevices::defaultAudioInput();
+        return;
+    }
+
+    QList<QAudioDevice> devices = QMediaDevices::audioInputs();
+    bool found = false;
+
+    for (const QAudioDevice& device : devices) {
+        if (device.description() == name) {
+            mAudioDeviceInfo = device;
+            found = true;
+            break;
+        }
+    }
+
+    if (!found) {
+        qWarning() << "Audio input device not found; using default instead";
+        mAudioDeviceInfo = QMediaDevices::defaultAudioInput();
+    }
+#else
     if (name.isEmpty()) {
         mAudioDeviceInfo = QAudioDeviceInfo::defaultInputDevice();
         return;
@@ -118,7 +170,7 @@ void UBMicrophoneInput::setInputDevice(QString name)
         qWarning() << "Audio input device not found; using default instead";
         mAudioDeviceInfo = QAudioDeviceInfo::defaultInputDevice();
     }
-
+#endif
 }
 
 int UBMicrophoneInput::channelCount()
@@ -134,7 +186,11 @@ int UBMicrophoneInput::sampleRate()
 /* Return the sample size in bits */
 int UBMicrophoneInput::sampleSize()
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    return 8 * mAudioFormat.bytesPerSample();
+#else
     return mAudioFormat.sampleSize();
+#endif
 }
 
 /** Return the sample format in FFMpeg style (AVSampleFormat enum) */
@@ -155,23 +211,39 @@ int UBMicrophoneInput::sampleFormat()
         AV_SAMPLE_FMT_NB
     };
 
-    int sampleSize = mAudioFormat.sampleSize();
+    int sampleSizeBits = sampleSize();
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QAudioFormat::SampleFormat sampleType = mAudioFormat.sampleFormat();
+#else
     QAudioFormat::SampleType sampleType = mAudioFormat.sampleType();
+#endif
 
     switch (sampleType) {
         case QAudioFormat::Unknown:
             return AV_SAMPLE_FMT_NONE;
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        case QAudioFormat::Int16:
+            return AV_SAMPLE_FMT_S16;
+
+        case QAudioFormat::Int32:
+            return AV_SAMPLE_FMT_S32;
+
+        case QAudioFormat::UInt8:
+            return AV_SAMPLE_FMT_U8;
+#else
         case QAudioFormat::SignedInt:
-            if (sampleSize == 16)
+            if (sampleSizeBits == 16)
                 return AV_SAMPLE_FMT_S16;
-            if (sampleSize == 32)
+            if (sampleSizeBits == 32)
                 return AV_SAMPLE_FMT_S32;
             break;
 
         case QAudioFormat::UnSignedInt:
-            if (sampleSize == 8)
+            if (sampleSizeBits == 8)
                 return AV_SAMPLE_FMT_U8;
+#endif
             break;
 
         case QAudioFormat::Float:
@@ -184,15 +256,14 @@ int UBMicrophoneInput::sampleFormat()
     return AV_SAMPLE_FMT_NONE;
 }
 
-QString UBMicrophoneInput::codec()
-{
-    return mAudioFormat.codec();
-}
-
 static qint64 uSecsElapsed = 0;
 void UBMicrophoneInput::onDataReady()
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    int numBytes = mAudioInput->bytesAvailable();
+#else
     int numBytes = mAudioInput->bytesReady();
+#endif
 
     uSecsElapsed += mAudioFormat.durationForBytes(numBytes);
 
@@ -264,6 +335,19 @@ quint8 UBMicrophoneInput::audioLevel(const QByteArray &data)
  */
 double UBMicrophoneInput::sampleRelativeLevel(const char* sample)
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QAudioFormat::SampleFormat type =  mAudioFormat.sampleFormat();
+    int sampleSizeBits = sampleSize();
+
+    if (sampleSizeBits == 16 && type == QAudioFormat::Int16)
+        return double(*reinterpret_cast<const int16_t*>(sample))/INT16_MAX;
+
+    if (sampleSizeBits == 8 && type == QAudioFormat::UInt8)
+        return double(*reinterpret_cast<const uint8_t*>(sample))/UINT8_MAX;
+
+    if (type == QAudioFormat::Float)
+        return (*reinterpret_cast<const float*>(sample) + 1.0)/2.;
+#else
     QAudioFormat::SampleType type =  mAudioFormat.sampleType();
     int sampleSize = mAudioFormat.sampleSize();
 
@@ -281,6 +365,7 @@ double UBMicrophoneInput::sampleRelativeLevel(const char* sample)
 
     if (type == QAudioFormat::Float)
         return (*reinterpret_cast<const float*>(sample) + 1.0)/2.;
+#endif
 
     return -1;
 }
