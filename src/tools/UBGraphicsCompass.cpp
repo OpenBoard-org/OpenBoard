@@ -413,9 +413,9 @@ void UBGraphicsCompass::paintAngleDisplay(QPainter *painter)
     painter->rotate(angle);
         painter->drawText(
         QRectF(
-            - fm.width(angleText) / 2,
+            - fm.horizontalAdvance(angleText) / 2,
             - fm.height() / 2,
-            fm.width(angleText),
+            fm.horizontalAdvance(angleText),
             fm.height()),
         Qt::AlignTop,
         angleText);
@@ -438,7 +438,7 @@ void UBGraphicsCompass::paintRadiusDisplay(QPainter *painter)
     QPointF textCenter;
 
     if (onPencilArm)
-        textCenter = QPointF(rect().right() - sPencilBaseLength - sPencilLength - fm.width(radiusText) / 2 - 24 - 8, rect().center().y());
+        textCenter = QPointF(rect().right() - sPencilBaseLength - sPencilLength - fm.horizontalAdvance(radiusText) / 2 - 24 - 8, rect().center().y());
     else
         textCenter = QPointF((rect().left() + sNeedleLength + sNeedleBaseLength + hingeRect().left()) / 2, rect().center().y());
 
@@ -452,9 +452,9 @@ void UBGraphicsCompass::paintRadiusDisplay(QPainter *painter)
         painter->rotate(180);
     painter->drawText(
         QRectF(
-            - fm.width(radiusText) / 2,
+            - fm.horizontalAdvance(radiusText) / 2,
             - rect().height() / 2,
-            fm.width(radiusText),
+            fm.horizontalAdvance(radiusText),
             rect().height()),
         Qt::AlignVCenter,
         radiusText);
