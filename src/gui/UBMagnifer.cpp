@@ -374,7 +374,7 @@ void UBMagnifier::slot_refresh()
 
 void UBMagnifier::grabPoint()
 {
-    QMatrix transM = UBApplication::boardController->controlView()->matrix();
+    QTransform transM = UBApplication::boardController->controlView()->transform();
     QPointF itemPos = gView->mapFromGlobal(updPointGrab);
 
     qreal zWidth = width() / (params.zoom * transM.m11());
@@ -407,7 +407,7 @@ void UBMagnifier::grabPoint()
 
 void UBMagnifier::grabPoint(const QPoint &pGrab)
 {
-    QMatrix transM = UBApplication::boardController->controlView()->matrix();
+    QTransform transM = UBApplication::boardController->controlView()->transform();
     updPointGrab = pGrab;
     QPointF itemPos = gView->mapFromGlobal(pGrab);
 
