@@ -2050,7 +2050,7 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
     <message>
         <source>Retrieving all your documents (found : %1)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Recupero di tutti i documenti (trovati : %1)</translation>
     </message>
 </context>
 <context>
