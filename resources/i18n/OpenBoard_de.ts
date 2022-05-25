@@ -2056,6 +2056,10 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
         <source>Renaming pages (%1/%2)</source>
         <translation>Aktualisieren der aktuellen Seitennamen (%1/%2)</translation>
     </message>
+    <message>
+        <source>Retrieving all your documents (found : %1)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>

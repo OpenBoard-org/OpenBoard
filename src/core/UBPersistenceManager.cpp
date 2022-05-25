@@ -177,7 +177,7 @@ void UBPersistenceManager::createDocumentProxiesStructure(bool interactive)
     QFileInfoList contentInfoList = rootDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Time | QDir::Reversed);
 
     mProgress.setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
-    mProgress.setLabelText(QString("retrieving all your documents (found %1)").arg(contentInfoList.size()));
+    mProgress.setLabelText(tr("Retrieving all your documents (found : %1)").arg(contentInfoList.size()));
     mProgress.setCancelButton(nullptr);
 
     createDocumentProxiesStructure(contentInfoList, interactive);

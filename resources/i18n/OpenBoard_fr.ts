@@ -2069,6 +2069,14 @@ Voulez-vous ignorer les erreurs pour ce serveur ?</translation>
         <source>Renaming pages (%1/%2)</source>
         <translation>Actualisation des noms des pages en cours (%1/%2)</translation>
     </message>
+    <message>
+        <source>Retrieving all your documents (found %1)</source>
+        <translation type="vanished">Récupération de tous vos documents (trouvés : %1)</translation>
+    </message>
+    <message>
+        <source>Retrieving all your documents (found : %1)</source>
+        <translation>Récupération de tous vos documents (trouvés : %1)</translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
