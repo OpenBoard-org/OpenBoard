@@ -51,7 +51,7 @@
 #endif
 //THIRD_PARTY_WARNINGS_ENABLE
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 typedef Qt::SplitBehaviorFlags SplitBehavior;
 typedef QMultiMapIterator<int, QDomElement> MultiMapIterator;
 #else
