@@ -272,7 +272,7 @@ UBDocumentProxy* UBImportCFF::importFile(const QFile& pFile, const QString& pGro
         dir.mkdir(destDocument->persistencePath());
         if (pGroup.length() > 0)
             destDocument->setMetaData(UBSettings::documentGroupName, pGroup);
-        if (fi.baseName() > 0)
+        if (!fi.baseName().isEmpty())
             destDocument->setMetaData(UBSettings::documentName, fi.baseName());
 
         destDocument->setMetaData(UBSettings::documentVersion, UBSettings::currentFileVersion);
