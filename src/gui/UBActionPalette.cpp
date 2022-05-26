@@ -163,7 +163,8 @@ void UBActionPalette::groupActions()
         ++i;
     }
 
-    connect(mButtonGroup, SIGNAL(buttonClicked(int)), this, SIGNAL(buttonGroupClicked(int)));
+    connect(mButtonGroup, qOverload<QAbstractButton *>(&QButtonGroup::buttonClicked),
+            this, &UBActionPalette::buttonGroupClicked);
 }
 
 

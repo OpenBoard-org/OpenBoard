@@ -83,7 +83,7 @@ class UBActionPalette : public UBFloatingPalette
 
     signals:
         void closed();
-        void buttonGroupClicked(int id);
+        void buttonGroupClicked(QAbstractButton *button);
         void customMouseReleased();
 
     protected:
