@@ -51,12 +51,10 @@
 #endif
 //THIRD_PARTY_WARNINGS_ENABLE
 
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
 typedef Qt::SplitBehaviorFlags SplitBehavior;
-typedef QMultiMapIterator<int, QDomElement> MultiMapIterator;
 #else
 typedef QString::SplitBehavior SplitBehavior;
-typedef QMapIterator<int, QDomElement> MultiMapIterator;
 #endif
 
 UBCFFAdaptor::UBCFFAdaptor()
@@ -638,10 +636,9 @@ QDomElement UBCFFAdaptor::UBToCFFConverter::parsePageset(const QStringList &page
 
     QDomElement svgPagesetElement = mDocumentToWrite->createElementNS(svgIWBNS,":"+ tIWBPageSet);
 
-    MultiMapIterator nextSVGElement(pageList);
-    nextSVGElement.toFront();
-    while (nextSVGElement.hasNext()) 
-        svgPagesetElement.appendChild(nextSVGElement.next().value());
+    for (const auto &value : qAsConst(pageList)) {
+        svgPagesetElement.appendChild(value);
+    }
 
     return svgPagesetElement.hasChildNodes() ? svgPagesetElement : QDomElement();
 }
@@ -688,10 +685,9 @@ QDomElement UBCFFAdaptor::UBToCFFConverter::parseSvgPageSection(const QDomElemen
     // to do:
     // there we must to sort elements (take elements from list and assign parent ordered like in parseSVGGGroup)
     // we returns just element because we don't care about layer.
-    MultiMapIterator nextSVGElement(svgElements);
-    nextSVGElement.toFront();
-    while (nextSVGElement.hasNext()) 
-        svgElementPart.appendChild(nextSVGElement.next().value());
+    for (const auto &value : qAsConst(svgElements)) {
+        svgElementPart.appendChild(value);
+    }
  
     return svgElementPart.hasChildNodes() ? svgElementPart : QDomElement();
 }
@@ -1613,16 +1609,17 @@ bool UBCFFAdaptor::UBToCFFConverter::parseSVGGGroup(const QDomElement &element, 
     }
 
     QList<int> layers;
-    MultiMapIterator nextSVGElement(svgElements);
-    while (nextSVGElement.hasNext()) 
-        layers << nextSVGElement.next().key();
+    const auto keys = svgElements.keys();
+    for (const auto key : keys) {
+        layers << key;
+    }
 
     std::sort(layers.begin(), layers.end());
     int layer = layers.at(0);
 
-    nextSVGElement.toFront();
-    while (nextSVGElement.hasNext()) 
-        svgElementPart.appendChild(nextSVGElement.next().value());
+    for (const auto &value : qAsConst(svgElements)) {
+        svgElementPart.appendChild(value);
+    }
 
     addSVGElementToResultModel(svgElementPart, dstSvgList, layer);
  
