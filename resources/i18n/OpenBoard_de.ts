@@ -2058,7 +2058,7 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     </message>
     <message>
         <source>Retrieving all your documents (found : %1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Ihre Dokumente werden wiederhergestellt (gefunden: %1)</translation>
     </message>
 </context>
 <context>
