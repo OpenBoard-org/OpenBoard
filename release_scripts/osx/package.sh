@@ -1,4 +1,4 @@
-:#!/bin/bash
+#!/bin/bash
 # --------------------------------------------------------------------
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,74 +35,33 @@ BUILD_DIR="$PROJECT_ROOT/build/macx/release"
 PRODUCT_DIR="$BUILD_DIR/product"
 BASE_QT_TRANSLATIONS_DIRECTORY=$BASE_QT_DIR/translations
 
+
 function notify {
     GROWLNOTIFY=`which growlnotify`
     if [ -x "$GROWLNOTIFY" ]; then
         $GROWLNOTIFY --name OpenBoard-build --iconpath /Developer/Applications/Xcode.app --message "$1" "OpenBoard"
     fi
-    printf "\033[32m--->\033[0m $1\n"
-}
-
-function abort {
-    printf "\033[31merror:\033[0m $1\n"
-    exit 1
+    printf "\033[48;5;120m--->\033[0m $1\n"
 }
 
 function warn {
-    abort "$1"
+    printf "\033[48;5;178m--->\033[0m $1\n"
+}
+
+function error
+{
+    printf "\033[48;5;160;38;5;15m--->\033[0m $1\n"
+}
+
+function abort {
+    error "$1"
+    exit 1
 }
 
 function checkExecutable {
     if [ ! -x "$1" ]; then
         abort "$1 not found"
     fi
-}
-
-function addQtTranslations {
-for eachTranslation in `ls $BASE_QT_TRANSLATIONS_DIRECTORY/qt_??.qm`
-do
-    # looking fo the language code for each qt translation file
-    languageCode=`echo $eachTranslation | sed 's/.*qt_\(.*\).qm/\1/'`
-    basicDir=$PRODUCT_DIR/$APPLICATION_NAME.app/Contents/Resources/
-    for eachDirectory in `ls $basicDir`
-    do
-        # looping through the OpenBoard availables languages
-        directoryLanguageCode=`echo $eachDirectory | sed 's/\(.*\)\.lproj/\1/'`
-        if [ ! -z $directoryLanguageCode ]; then
-            if [[ $eachDirectory == *".lproj"* && $eachDirectory != "empty.lproj" && $directoryLanguageCode == *$languageCode* ]]; then
-                # OpenBoard translation found for qt translation file
-                cp $eachTranslation $basicDir/$eachDirectory
-                if [ $directoryLanguageCode != $languageCode ]; then
-                    # handling fr and fr_CH code.
-                    mv $basicDir/$eachDirectory/qt_$languageCode.qm $basicDir/$eachDirectory/qt_$directoryLanguageCode.qm
-                fi
-            fi
-        fi
-    done
-done
-
-}
-
-
-function addImporter {
-    importerDir="`pwd`/../OpenBoard-Importer"
-    importerName="OpenBoardImporter"
-
-    if [ ! -e ${importerDir} ]; then
-        abort "${importerDir} not found"
-    fi
-
-    cd ${importerDir}
-#    git reset --hard
-#    git pull
-    rm -rf ${importerName}.app
-    rm MakeFile*
-    rm -rf release
-    rm -rf debug
-    $QMAKE ${importerName}.pro -spec macx-clang
-    make -j4 release
-    $MACDEPLOYQT ${importerName}.app 
-    cd -
 }
 
 trap "defaults write org.oe-f.OpenBoard.release Running -bool NO" EXIT
@@ -128,56 +87,6 @@ checkExecutable "$PLISTBUDDY"
 checkExecutable "$ICEBERG"
 checkExecutable "$LRELEASE"
 
-addImporter
-
-# delete the build directory
-notify "Cleaning ..."
-rm -rf "$BUILD_DIR"
-
-# application translations
-notify "Generating applications translatons"
-$LRELEASE "$APPLICATION_NAME.pro"
-
-# generate Makefiles
-notify "Generating Makefile ..."
-
-
-if [ "$1" == "1010" ]; then
-   QMAKE_CMD="$QMAKE \"DEFINES+=OS_NEWER_THAN_OR_EQUAL_TO_1010\" $APPLICATION_NAME.pro -spec macx-clang"
-else
-   QMAKE_CMD="$QMAKE $APPLICATION_NAME.pro -spec macx-clang"
-fi
-$QMAKE_CMD
-
-# build
-notify "Compiling ..."
-make -j4 release
-
-notify "Qt Translations ..."
-#$LRELEASE $BASE_QT_TRANSLATIONS_DIRECTORY/translations.pro 
-addQtTranslations
-
-cp -R resources/customizations $PRODUCT_DIR/$APPLICATION_NAME.app/Contents/Resources
-cp -R $importerDir/$importerName.app $PRODUCT_DIR/$APPLICATION_NAME.app/Contents/Resources
-
-VERSION=`cat "$BUILD_DIR/version"`
-if [ ! -f "$BUILD_DIR/version" ]; then
-    echo "version not found"
-    exit 1
-#else
-#    notify "Tagging ..."
-#    LAST_COMMITED_VERSION="`git describe $(git rev-list --tags --max-count=1)`"
-#    if [ "v$VERSION" != "$LAST_COMMITED_VERSION" ]; then
-#	echo creating a tag with the version $VERSION
-#	git tag -a "v$VERSION" -m "Generated setup for v$VERSION"
-#	git push origin --tags
-#    fi
-fi
-  
-#if [ $? != 0 ]; then
-#    abort "compilation failed"
-#fi
-
 DMG="$APPLICATION_NAME.dmg"
 
 VOLUME="/Volumes/$APPLICATION_NAME"
@@ -186,23 +95,6 @@ DSYM_NAME="$APPLICATION_NAME (r$SVN_REVISION).dSYM"
 DSYM="$PRODUCT_DIR/$DSYM_NAME"
 GSYM_i386="$PRODUCT_DIR/$APPLICATION_NAME i386.sym"
 INFO_PLIST="$APP/Contents/Info.plist"
-
-rm -f "$APP/Contents/Resources/empty.lproj"
-
-# set various version infomration in Info.plist
-$PLISTBUDDY -c "Set :CFBundleVersion $VERSION" "$INFO_PLIST"
-$PLISTBUDDY -c "Set :CFBundleShortVersionString $VERSION" "$INFO_PLIST"
-$PLISTBUDDY -c "Set :CFBundleGetInfoString $VERSION" "$INFO_PLIST"
-
-# bundle Qt Frameworks into the app bundle
-notify "Bulding frameworks ..."
-cd "`pwd`/build/macx/release/product/"
-$MACDEPLOYQT "`pwd`/$APPLICATION_NAME.app"
-cd -
-
-notify "Extracting debug information ..."
-$DSYMUTIL "$APP/Contents/MacOS/$APPLICATION_NAME" -o "$DSYM"
-$STRIP -S "$APP/Contents/MacOS/$APPLICATION_NAME"
 
 if [ "$1" == "pkg" ]; then
     BASE_ICEBERG_CONFIG_FILE="$SCRIPT_PATH/$APPLICATION_NAME.packproj"
@@ -244,8 +136,6 @@ $DMGUTIL --set --x=400 --y=120 "$VOLUME/Applications"
 
 $DMGUTIL --close --volume="$APPLICATION_NAME" "$DMG"
 
-notify "$APPLICATION_NAME is built"
-
 PRODUCT_DIR="install/mac/"
 
 if [ ! -d "${PRODUCT_DIR}" ]; then
@@ -259,6 +149,7 @@ else
    mv "$DMG" "${PRODUCT_DIR}"
 fi
 
+notify "$APPLICATION_NAME is now packaged. You can submit this dmg file to notarization using notarize.sh"
 
 exit 0
 

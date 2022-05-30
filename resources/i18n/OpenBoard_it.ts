@@ -1980,6 +1980,10 @@ Vuoi ignorare gli errori per questo host?</translation>
         <source>Renaming pages (%1/%2)</source>
         <translation>Aggiornamento dei nomi delle pagine in corso (%1/%2)</translation>
     </message>
+    <message>
+        <source>Retrieving all your documents (found : %1)</source>
+        <translation type="unfinished">Recupero di tutti i documenti (trovati : %1)</translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>

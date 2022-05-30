@@ -1978,6 +1978,10 @@ Tena tsy te hiraharaha an&apos;ireo tsy mety ho an&apos;ilay milina ve ianao?</t
         <source>Renaming pages (%1/%2)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Retrieving all your documents (found : %1)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBPlatformUtils</name>
