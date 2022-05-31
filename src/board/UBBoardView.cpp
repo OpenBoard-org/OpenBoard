@@ -198,61 +198,67 @@ void UBBoardView::keyPressEvent (QKeyEvent *event)
 
     if (!event->isAccepted ())
     {
+        if (event->modifiers () == 0)
+        {
+            switch (event->key ())
+            {
+            case Qt::Key_Up:
+            case Qt::Key_PageUp:
+            case Qt::Key_Left:
+            {
+                mController->previousScene ();
+                break;
+            }
+
+            case Qt::Key_Down:
+            case Qt::Key_PageDown:
+            case Qt::Key_Right:
+            case Qt::Key_Space:
+            {
+                mController->nextScene ();
+                break;
+            }
+
+            case Qt::Key_Home:
+            {
+                mController->firstScene ();
+                break;
+            }
+            case Qt::Key_End:
+            {
+                mController->lastScene ();
+                break;
+            }
+            case Qt::Key_Insert:
+            {
+                mController->addScene ();
+                break;
+            }
+            }
+        }
+
         switch (event->key ())
         {
-        case Qt::Key_Up:
-        case Qt::Key_PageUp:
-        case Qt::Key_Left:
-        {
-            mController->previousScene ();
-            break;
-        }
-
-        case Qt::Key_Down:
-        case Qt::Key_PageDown:
-        case Qt::Key_Right:
-        case Qt::Key_Space:
-        {
-            mController->nextScene ();
-            break;
-        }
-
-        case Qt::Key_Home:
-        {
-            mController->firstScene ();
-            break;
-        }
-        case Qt::Key_End:
-        {
-            mController->lastScene ();
-            break;
-        }
-        case Qt::Key_Insert:
-        {
-            mController->addScene ();
-            break;
-        }
         case Qt::Key_Control:
         case Qt::Key_Shift:
-        {
             setMultiselection(true);
-        }break;
+            break;
         }
-
 
         if (event->modifiers () & Qt::ControlModifier) // keep only ctrl/cmd keys
         {
             switch (event->key ())
             {
             case Qt::Key_Plus:
-            case Qt::Key_I:
+// conflicts with pen selection shortcut
+//            case Qt::Key_I:
             {
                 mController->zoomIn ();
                 event->accept ();
                 break;
             }
             case Qt::Key_Minus:
-            case Qt::Key_O:
+//            case Qt::Key_O:
             {
                 mController->zoomOut ();
                 event->accept ();

@@ -535,17 +535,32 @@ void UBSettings::save()
          * We save the setting to the user settings if
          * a) it is different from the (non-null) value stored in the user settings, or
          * b) it doesn't currently exist in the user settings AND has changed from the app settings
+         * An invalid value indicates removal of the setting
         */
         if (mUserSettings->contains(it.key())
                 && it.value() != mUserSettings->value(it.key()))
         {
-            mUserSettings->setValue(it.key(), it.value());
+            if (it.value().isValid())
+            {
+                mUserSettings->setValue(it.key(), it.value());
+            }
+            else
+            {
+                mUserSettings->remove(it.key());
+            }
         }
 
         else if (!mUserSettings->contains(it.key())
                  && it.value() != mAppSettings->value(it.key()))
         {
-            mUserSettings->setValue(it.key(), it.value());
+            if (it.value().isValid())
+            {
+                mUserSettings->setValue(it.key(), it.value());
+            }
+            else
+            {
+                mUserSettings->remove(it.key());
+            }
         }
 
         ++it;

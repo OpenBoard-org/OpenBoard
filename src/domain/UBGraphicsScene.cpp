@@ -496,6 +496,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)dc->stylusTool();
 
     QPointF position = QPointF(scenePos);
+    mCurrentPoint = position;
 
     if (currentTool == UBStylusTool::Eraser)
     {
@@ -663,14 +664,9 @@ bool UBGraphicsScene::inputDeviceRelease(int tool)
     }
 
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)tool;
-
-    if (currentTool == UBStylusTool::Eraser)
-        hideEraser();
-
-
     UBDrawingController *dc = UBDrawingController::drawingController();
 
-    if (dc->isDrawingTool() || mDrawWithCompass)
+    if (dc->isDrawingTool(tool) || mDrawWithCompass)
     {
         if(mArcPolygonItem){
 
@@ -2380,12 +2376,21 @@ void UBGraphicsScene::resizedMagnifier(qreal newPercent)
 
 void UBGraphicsScene::stylusToolChanged(int tool, int previousTool)
 {
-    if (mInputDeviceIsPressed && tool != previousTool)
+    if (tool != previousTool)
     {
-        // tool was changed while input device is pressed
-        // simulate release and press to terminate pervious strokes
-        inputDeviceRelease(previousTool);
-        inputDevicePress(mPreviousPoint);
+        hideTool();
+
+        if (mInputDeviceIsPressed)
+        {
+            // tool was changed while input device is pressed
+            // simulate release and press to terminate previous strokes
+            inputDeviceRelease(previousTool);
+            inputDevicePress(mCurrentPoint);
+        }
+        else if (previousTool >= 0)
+        {
+            inputDeviceMove(mCurrentPoint);
+        }
     }
 }
 
