@@ -72,8 +72,6 @@ class UBDesktopPalette : public UBActionPalette
         void parentResized();
 
 protected:
-        void showEvent(QShowEvent *event);
-        void hideEvent(QHideEvent *event);
 
         virtual int getParentRightOffset();
 
