@@ -51,7 +51,6 @@
 #include "domain/UBGraphicsPolygonItem.h"
 
 #include "UBCustomCaptureWindow.h"
-#include "UBWindowCapture.h"
 #include "UBDesktopPalette.h"
 #include "UBDesktopPropertyPalette.h"
 
@@ -121,7 +120,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
 
     connect(mDesktopPalette, SIGNAL(uniboardClick()), this, SLOT(goToUniboard()));
     connect(mDesktopPalette, SIGNAL(customClick()), this, SLOT(customCapture()));
-    connect(mDesktopPalette, SIGNAL(windowClick()), this, SLOT(windowCapture()));
     connect(mDesktopPalette, SIGNAL(screenClick()), this, SLOT(screenCapture()));
     connect(UBApplication::mainWindow->actionPointer, SIGNAL(triggered()), this, SLOT(onToolClicked()));
     connect(UBApplication::mainWindow->actionSelector, SIGNAL(triggered()), this, SLOT(onToolClicked()));
@@ -458,37 +456,6 @@ void UBDesktopAnnotationController::customCapture()
     mIsFullyTransparent = false;
     updateBackground();
 }
-
-
-void UBDesktopAnnotationController::windowCapture()
-{
-    onToolClicked();
-    mIsFullyTransparent = true;
-    updateBackground();
-
-    mDesktopPalette->disappearForCapture();
-
-    UBWindowCapture util(this);
-
-    if (util.execute() == QDialog::Accepted)
-    {
-        QPixmap windowPixmap = util.getCapturedWindow();
-
-        // on Mac OS X we can only know that user cancel the operatiion by checking is the image is null
-        // because the screencapture utility always return code 0 event if user cancel the application
-        if (!windowPixmap.isNull())
-        {
-            emit imageCaptured(windowPixmap, false);
-        }
-    }
-
-    mDesktopPalette->appear();
-
-    mIsFullyTransparent = false;
-
-    updateBackground();
-}
-
 
 void UBDesktopAnnotationController::screenCapture()
 {
