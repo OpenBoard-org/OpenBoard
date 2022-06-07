@@ -160,7 +160,8 @@ public:
     UBStringListValidator(QStringList list, QObject* parent = nullptr);
     virtual ~UBStringListValidator() = default;
 
-    virtual QValidator::State validate(QString &input, int &pos) const;
+    virtual void fixup(QString& input) const;
+    virtual QValidator::State validate(QString& input, int& pos) const;
 
 private:
     QStringList mList;

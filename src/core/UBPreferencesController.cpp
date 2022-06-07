@@ -58,6 +58,21 @@ qreal UBPreferencesController::sSliderRatio = 10.0;
 qreal UBPreferencesController::sMinPenWidth = 0.5;
 qreal UBPreferencesController::sMaxPenWidth = 50.0;
 
+// convenience function to convert between screen list as QString and QStringList
+QStringList splitScreenList(const QString& input)
+{
+    QStringList screenNames = input.split(',');
+
+    for (QString& entry : screenNames)
+    {
+        entry = entry.trimmed();
+    }
+
+    screenNames.removeAll("");
+
+    return screenNames;
+}
+
 
 UBPreferencesDialog::UBPreferencesDialog(UBPreferencesController* prefController, QWidget* parent,Qt::WindowFlags f)
     :QDialog(parent,f)
@@ -131,7 +146,7 @@ void UBPreferencesController::wire()
     connect(mPreferencesUI->screenList, &QLineEdit::textChanged, [this,settings](const QString &text){
         if (mPreferencesUI->screenList->hasAcceptableInput())
         {
-            settings->appScreenList->set(text.split(','));
+            settings->appScreenList->set(splitScreenList(text));
         }
     });
 
@@ -784,7 +799,7 @@ void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
 
     if (mScreenLabels.empty())
     {
-        QStringList screenNames = text().split(',', SplitBehavior::SkipEmptyParts);
+        QStringList screenNames = splitScreenList(text());
 
         QList<QScreen*> screens = UBApplication::displayManager->availableScreens();
         QStringList availableScreenNames;
@@ -795,6 +810,7 @@ void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
             QPushButton* button = new QPushButton(this);
             button->setWindowFlag(Qt::FramelessWindowHint, true);
             button->setWindowFlag(Qt::WindowStaysOnTopHint, true);
+            button->setWindowFlag(Qt::X11BypassWindowManagerHint, true);
             button->setWindowFlag(Qt::Window, true);
             button->setText(screen->name());
             QFont font;
@@ -833,22 +849,25 @@ void UBScreenListLineEdit::focusOutEvent(QFocusEvent *focusEvent)
         qDeleteAll(mScreenLabels);
         mScreenLabels.clear();
     });
-    mFadeOutTimer->start(250);
+    mFadeOutTimer->start(500);
 }
 
 void UBScreenListLineEdit::addScreen()
 {
     QPushButton* button = dynamic_cast<QPushButton*>(sender());
 
-    if (button && (text().isEmpty() || hasAcceptableInput()))
+    if (button)
     {
-        if (text().isEmpty())
+        QString list = text();
+        mValidator->fixup(list);
+
+        if (list.isEmpty())
         {
             setText(button->text());
         }
         else
         {
-            setText(text() + "," + button->text());
+            setText(list + "," + button->text());
         }
 
         button->setEnabled(false);
@@ -860,7 +879,7 @@ void UBScreenListLineEdit::addScreen()
 
 void UBScreenListLineEdit::onTextChanged(const QString &input)
 {
-    QStringList screenNames = input.split(',', SplitBehavior::SkipEmptyParts);
+    QStringList screenNames = splitScreenList(input);
 
     for (QPushButton* button : mScreenLabels)
     {
@@ -880,8 +899,6 @@ void UBScreenListLineEdit::onTextChanged(const QString &input)
             }
         }
 
-        qDebug() << "Create QCompleter" << model;
-
         if (!mCompleter)
         {
             mCompleter = new QCompleter(model, this);
@@ -892,6 +909,16 @@ void UBScreenListLineEdit::onTextChanged(const QString &input)
             mCompleter->setModel(new QStringListModel(model, mCompleter));
         }
     }
+
+    // user indication of acceptable input
+    if (hasAcceptableInput())
+    {
+        setStyleSheet("");
+    }
+    else
+    {
+        setStyleSheet("QLineEdit { background-color: #FFB3C8; }");
+    }
 }
 
 UBStringListValidator::UBStringListValidator(QStringList list, QObject *parent)
@@ -901,40 +928,32 @@ UBStringListValidator::UBStringListValidator(QStringList list, QObject *parent)
 
 }
 
-QValidator::State UBStringListValidator::validate(QString &input, int &) const
+void UBStringListValidator::fixup(QString &input) const
 {
-    if (input.isEmpty())
-    {
-        return Intermediate;
-    }
-
-    bool ok = true;
-    bool wasOk = false;
-    QStringList inputList = input.split(',', SplitBehavior::SkipEmptyParts);
+    // remove invalid tokens from list
+    QStringList inputList = splitScreenList(input);
+    QStringList outputList;
 
     for (const QString& token : inputList)
     {
-        wasOk = ok;
-        ok &= mList.contains(token) && inputList.count(token) == 1;
-    }
-
-    if (ok)
-    {
-        return Acceptable;
-    }
-    else if (wasOk && !inputList.empty())
-    {
-        // check if last token is at least a prefix of any valid input
-        QString lastToken = inputList.last();
-
-        for (const QString& item : mList)
+        if (mList.contains(token))
         {
-            if (!inputList.contains(item) && item.startsWith(lastToken))
-            {
-                return Intermediate;
-            }
+            outputList << token;
         }
     }
 
-    return Invalid;
+    input = outputList.join(',');
+}
+
+QValidator::State UBStringListValidator::validate(QString &input, int &) const
+{
+    bool ok = true;
+    QStringList inputList = splitScreenList(input);
+
+    for (const QString& token : inputList)
+    {
+        ok &= mList.contains(token) && inputList.count(token) == 1;
+    }
+
+    return ok ? Acceptable : Intermediate;
 }
