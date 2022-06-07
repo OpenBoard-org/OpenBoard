@@ -93,10 +93,12 @@ void UBDisplayManager::initScreenIndexes()
         emit availableScreenCountChanged(screens.count());
     }
 
-    QStringList screenList = UBSettings::settings()->appScreenList->get().toStringList();
+    QVariant appScreenList = UBSettings::settings()->appScreenList->get();
+    QStringList screenList = appScreenList.toStringList();
 
-    if (screenList.empty())
+    if (!appScreenList.isValid())
     {
+        // no entry in configuration files
         // "old" configuration mode
         bool swapScreens = UBSettings::settings()->swapControlAndDisplayScreens->get().toBool();
 
@@ -138,8 +140,19 @@ void UBDisplayManager::initScreenIndexes()
     }
     else
     {
-        // "new" configuration mode using list of screen names
+        // converting an empty entry to a QStringList creates a list with one empty QString
+        if (appScreenList.toStringList().isEmpty() || appScreenList.toStringList().at(0).isEmpty())
+        {
+            screenList.clear();
 
+            // explicitly stored an empty list, take all available screens
+            for (QScreen* screen : mAvailableScreens)
+            {
+                screenList << screen->name();
+            }
+        }
+
+        // "new" configuration mode using list of screen names
         // first, create a map of screens by name
         QMap<QString,QScreen*> screenByName;
 
@@ -199,11 +212,10 @@ int UBDisplayManager::numScreens()
 int UBDisplayManager::numPreviousViews()
 {
     int previousViews = 0;
-    ScreenRole role(ScreenRole::Previous1);
 
-    for (int i = 0; i < 5; ++i)
+    for (ScreenRole role = ScreenRole::Previous1; role <= ScreenRole::Previous5; ++role)
     {
-        if (mScreensByRole.contains(role++))
+        if (mScreensByRole.contains(role))
         {
             ++previousViews;
         }
@@ -215,8 +227,17 @@ int UBDisplayManager::numPreviousViews()
 
 void UBDisplayManager::setControlWidget(QWidget* pControlWidget)
 {
-    if(hasControl() && pControlWidget)
+    if (hasControl() && pControlWidget)
+    {
+        // set an initial geometry for window mode
+        QScreen* controlScreen = mScreensByRole[ScreenRole::Control];
+        QRect geometry = controlScreen->geometry();
+        geometry.setSize(geometry.size() - QSize(150, 150));
+        geometry.moveTo(50, 50);
+        pControlWidget->setGeometry(geometry);
+
         mWidgetsByRole[ScreenRole::Control] = pControlWidget;
+    }
 }
 
 void UBDisplayManager::setDesktopWidget(QWidget* pDesktopWidget )
@@ -241,7 +262,7 @@ void UBDisplayManager::setDisplayWidget(QWidget* pDisplayWidget)
         if (mScreensByRole.contains(ScreenRole::Display))
         {
             mWidgetsByRole[ScreenRole::Display]->setGeometry(mScreensByRole[ScreenRole::Display]->geometry());
-            UBPlatformUtils::showFullScreen(mWidgetsByRole[ScreenRole::Display]);
+            mWidgetsByRole[ScreenRole::Display]->showFullScreen();
         }
     }
 }
@@ -270,9 +291,12 @@ QList<QScreen *> UBDisplayManager::availableScreens() const
 void UBDisplayManager::adjustScreens()
 {
     initScreenIndexes();
-    positionScreens();
 
-    emit screenLayoutChanged();
+    // delayed execution to avoid interference with window managers
+    QTimer::singleShot(200, [this](){
+        positionScreens();
+        emit screenLayoutChanged();
+    });
 }
 
 
@@ -283,10 +307,28 @@ void UBDisplayManager::positionScreens()
         mWidgetsByRole[ScreenRole::Desktop]->hide();
         mWidgetsByRole[ScreenRole::Desktop]->setGeometry(mScreensByRole[ScreenRole::Control]->geometry());
     }
+
     if (mWidgetsByRole.contains(ScreenRole::Control) && hasControl())
     {
         mWidgetsByRole[ScreenRole::Control]->showNormal();
-        mWidgetsByRole[ScreenRole::Control]->setGeometry(mScreensByRole[ScreenRole::Control]->geometry());
+
+        QRect geometry = mScreensByRole[ScreenRole::Control]->geometry();
+
+        if (UBSettings::settings()->appRunInWindow->get().toBool())
+        {
+            // reuse previous size and relative position
+            QRect previousGeometry = mWidgetsByRole[ScreenRole::Control]->geometry();
+            QRect previousScreenGeometry = QGuiApplication::screenAt(previousGeometry.topLeft())->geometry();
+            QPoint offset = previousGeometry.topLeft() - previousScreenGeometry.topLeft();
+            geometry.setSize(previousGeometry.size());
+            geometry.moveTo(geometry.topLeft() + offset);
+
+            // make sure widget fits to screen
+            geometry = mScreensByRole[ScreenRole::Control]->geometry().intersected(geometry);
+        }
+
+        mWidgetsByRole[ScreenRole::Control]->showNormal();
+        mWidgetsByRole[ScreenRole::Control]->setGeometry(geometry);
         UBPlatformUtils::showFullScreen(mWidgetsByRole[ScreenRole::Control]);
     }
 
@@ -294,31 +336,28 @@ void UBDisplayManager::positionScreens()
     {
         mWidgetsByRole[ScreenRole::Display]->showNormal();
         mWidgetsByRole[ScreenRole::Display]->setGeometry(mScreensByRole[ScreenRole::Display]->geometry());
-        UBPlatformUtils::showFullScreen(mWidgetsByRole[ScreenRole::Display]);
+        mWidgetsByRole[ScreenRole::Display]->showFullScreen();
     }
     else if(mWidgetsByRole.contains(ScreenRole::Display))
     {
         mWidgetsByRole[ScreenRole::Display]->hide();
     }
 
-    ScreenRole role(ScreenRole::Previous1);
-
-    for (int i = 0; i < 5; ++i)
+    for (ScreenRole role = ScreenRole::Previous1; role <= ScreenRole::Previous5; ++role)
     {
         if (mWidgetsByRole.contains(role))
         {
             if (mScreensByRole.contains(role)) {
                 QWidget* previous = mWidgetsByRole[role];
+                previous->showNormal();
                 previous->setGeometry(mScreensByRole[role]->geometry());
-                UBPlatformUtils::showFullScreen(previous);
+                previous->showFullScreen();
             }
             else
             {
                 mWidgetsByRole[role]->hide();
             }
         }
-
-        ++role;
     }
 
     if (mWidgetsByRole.contains(ScreenRole::Control) && hasControl())
@@ -351,7 +390,7 @@ void UBDisplayManager::blackout()
 
     foreach(UBBlackoutWidget *blackoutWidget, mBlackoutWidgets)
     {
-        UBPlatformUtils::showFullScreen(blackoutWidget);
+        blackoutWidget->showFullScreen();
     }
 }
 
