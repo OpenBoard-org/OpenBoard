@@ -37,10 +37,12 @@
 
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 #include "core/UBPreferencesController.h"
 #include "core/UBDownloadManager.h"
 
 #include "board/UBBoardController.h"
+#include "board/UBBoardView.h"
 
 #include "core/memcheck.h"
 
@@ -101,6 +103,9 @@ UBDockPalette::UBDockPalette(eUBDockPaletteType paletteType, QWidget *parent, co
 
     connect(UBApplication::boardController,SIGNAL(documentSet(UBDocumentProxy*)),this,SLOT(onDocumentSet(UBDocumentProxy*)));
     connect(this,SIGNAL(pageSelectionChangedRequired()),UBApplication::boardController,SLOT(selectionChanged()));
+
+    connect(UBApplication::displayManager, SIGNAL(screenLayoutChanged()), this, SLOT(onResizeRequest()));
+    connect(UBApplication::boardController->controlView(), SIGNAL(resized(QResizeEvent*)), this, SLOT(onResizeRequest()));
 }
 
 /**
@@ -411,12 +416,12 @@ void UBDockPalette::removeTab(UBDockPaletteWidget* widget)
 }
 
 /**
- * \brief Handle the resize request
- * @param event as the given resize request
+ * \brief Reposition the dock palette
  */
-void UBDockPalette::onResizeRequest(QResizeEvent *event)
+void UBDockPalette::onResizeRequest()
 {
-    resizeEvent(event);
+    // it is possible to pass a nullptr because the handler does not use this argument
+    UBDockPalette::resizeEvent(nullptr);
 }
 
 /**
