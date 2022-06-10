@@ -122,7 +122,37 @@ UBPreferencesController::~UBPreferencesController()
 
 void UBPreferencesController::adjustScreens()
 {
-    mPreferencesUI->multiDisplayGroupBox->setEnabled(UBApplication::displayManager->numScreens() > 1);
+    bool enabled = UBApplication::displayManager->numScreens() > 1;
+    mPreferencesUI->multiDisplayGroupBox->setEnabled(enabled);
+
+    if (enabled)
+    {
+        mPreferencesUI->screenList->setPlaceholderText(tr("Use all available displays"));
+    }
+    else
+    {
+        mPreferencesUI->screenList->setPlaceholderText("");
+    }
+
+    auto availableScreens = UBApplication::displayManager->availableScreens();
+    QStringList screenNames;
+
+    for (QScreen* screen : availableScreens)
+    {
+        screenNames << screen->name();
+    }
+
+    std::sort(screenNames.begin(), screenNames.end());
+    QString screenConfiguration = screenNames.join('_');
+
+    QString path = UBSettings::settings()->appScreenList->path() + "-" + screenConfiguration;
+
+    if (path != mScreenConfigurationPath)
+    {
+        mScreenConfigurationPath = path;
+        QStringList value = UBSettings::settings()->value(path).toStringList();
+        UBSettings::settings()->appScreenList->set(value);
+    }
 }
 
 void UBPreferencesController::show()
@@ -143,10 +173,12 @@ void UBPreferencesController::wire()
     connect(mPreferencesUI->closeButton, SIGNAL(released()), this, SLOT(close()));
     connect(mPreferencesUI->defaultSettingsButton, SIGNAL(released()), this, SLOT(defaultSettings()));
 
-    connect(mPreferencesUI->screenList, &QLineEdit::textChanged, [this,settings](const QString &text){
-        if (mPreferencesUI->screenList->hasAcceptableInput())
+    connect(mPreferencesUI->screenList, &UBScreenListLineEdit::screenListChanged, [this,settings](const QStringList screenList){
+        settings->appScreenList->set(screenList);
+
+        if (!mScreenConfigurationPath.isEmpty())
         {
-            settings->appScreenList->set(splitScreenList(text));
+            settings->setValue(mScreenConfigurationPath, screenList);
         }
     });
 
@@ -309,7 +341,7 @@ void UBPreferencesController::init()
 
     mPreferencesUI->useExternalBrowserCheckBox->setChecked(settings->webUseExternalBrowser->get().toBool());
     mPreferencesUI->displayBrowserPageCheckBox->setChecked(settings->webShowPageImmediatelyOnMirroredScreen->get().toBool());
-    mPreferencesUI->screenList->setText(settings->appScreenList->get().toStringList().join(','));
+    mPreferencesUI->screenList->loadScreenList(settings->appScreenList->get().toStringList());
     mPreferencesUI->webHomePage->setText(settings->webHomePage->get().toString());
 
     mPreferencesUI->proxyUsername->setText(settings->proxyUsername());
@@ -769,50 +801,67 @@ UBScreenListLineEdit::UBScreenListLineEdit(QWidget *parent)
     : QLineEdit(parent)
     , mValidator(nullptr)
     , mCompleter(nullptr)
-    , mFadeOutTimer(nullptr)
 {
     connect(this, &QLineEdit::textChanged, this, &UBScreenListLineEdit::onTextChanged);
 }
 
 void UBScreenListLineEdit::setDefault()
 {
-    QList<QScreen*> screens = UBApplication::displayManager->availableScreens();
-    QStringList availableScreenNames;
+    setText("");
+}
 
-    for (QScreen* screen : screens) {
-        availableScreenNames << screen->name();
+void UBScreenListLineEdit::loadScreenList(const QStringList &screenList)
+{
+    // convert screen list to index list
+    auto screens = UBApplication::displayManager->availableScreens();
+    QStringList screenNames;
+
+    for (QScreen* screen : screens)
+    {
+        screenNames << screen->name();
     }
 
-    setText(availableScreenNames.join(','));
+    QStringList screenIndexes;
+
+    for (const QString& screenName: screenList)
+    {
+        int index = screenNames.indexOf(screenName);
+
+        if (index >= 0)
+        {
+            screenIndexes << QString::number(index + 1);
+        }
+        else
+        {
+            qDebug() << "Invalid screen name" << screenName;
+        }
+    }
+
+    setText(screenIndexes.join(','));
 }
 
 void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
 {
     QLineEdit::focusInEvent(focusEvent);
 
-    if (mFadeOutTimer)
-    {
-        mFadeOutTimer->stop();
-        delete mFadeOutTimer;
-        mFadeOutTimer = nullptr;
-    }
-
     if (mScreenLabels.empty())
     {
         QStringList screenNames = splitScreenList(text());
 
         QList<QScreen*> screens = UBApplication::displayManager->availableScreens();
-        QStringList availableScreenNames;
+        QStringList availableScreenIndexes;
+        int screenIndex = 1;
 
         for (QScreen* screen : screens) {
-            availableScreenNames << screen->name();
+            availableScreenIndexes << QString::number(screenIndex);
 
             QPushButton* button = new QPushButton(this);
             button->setWindowFlag(Qt::FramelessWindowHint, true);
             button->setWindowFlag(Qt::WindowStaysOnTopHint, true);
             button->setWindowFlag(Qt::X11BypassWindowManagerHint, true);
             button->setWindowFlag(Qt::Window, true);
-            button->setText(screen->name());
+            button->setWindowFlag(Qt::WindowDoesNotAcceptFocus, true);
+            button->setText(QString::number(screenIndex++));
             QFont font;
             font.setPointSize(48);
             button->setFont(font);
@@ -832,9 +881,8 @@ void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
             delete mValidator;
         }
 
-        mValidator = new UBStringListValidator(availableScreenNames);
+        mValidator = new UBStringListValidator(availableScreenIndexes);
         setValidator(mValidator);
-        activateWindow();
     }
 }
 
@@ -842,14 +890,8 @@ void UBScreenListLineEdit::focusOutEvent(QFocusEvent *focusEvent)
 {
     QLineEdit::focusOutEvent(focusEvent);
 
-    // avoid deleting screen labels when input widget shortly looses focus,
-    // e.g. by clicking one of the scren label buttons
-    mFadeOutTimer = new QTimer(this);
-    mFadeOutTimer->callOnTimeout([this](){
-        qDeleteAll(mScreenLabels);
-        mScreenLabels.clear();
-    });
-    mFadeOutTimer->start(500);
+    qDeleteAll(mScreenLabels);
+    mScreenLabels.clear();
 }
 
 void UBScreenListLineEdit::addScreen()
@@ -872,9 +914,6 @@ void UBScreenListLineEdit::addScreen()
 
         button->setEnabled(false);
     }
-
-    // regain focus after pressing screen label button
-    activateWindow();
 }
 
 void UBScreenListLineEdit::onTextChanged(const QString &input)
@@ -914,6 +953,27 @@ void UBScreenListLineEdit::onTextChanged(const QString &input)
     if (hasAcceptableInput())
     {
         setStyleSheet("");
+
+        QStringList screenList = splitScreenList(input);
+
+        // convert from index to screen name
+        auto screens = UBApplication::displayManager->availableScreens();
+
+        for (QString& entry : screenList)
+        {
+            int screenIndex = entry.toInt() - 1;
+
+            if (screenIndex >= 0 && screenIndex < screens.size())
+            {
+                entry = screens[screenIndex]->name();
+            }
+            else
+            {
+                qDebug() << "Invalid screen index " << entry;
+            }
+        }
+
+        emit screenListChanged(screenList);
     }
     else
     {

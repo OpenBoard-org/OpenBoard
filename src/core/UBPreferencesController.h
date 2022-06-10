@@ -86,6 +86,7 @@ class UBPreferencesController : public QObject
         UBBrushPropertiesFrame* mMarkerProperties;
         UBColorPicker* mDarkBackgroundGridColorPicker;
         UBColorPicker* mLightBackgroundGridColorPicker;
+        QString mScreenConfigurationPath;
 
     protected slots:
 
@@ -136,10 +137,14 @@ public:
     virtual ~UBScreenListLineEdit() = default;
 
     void setDefault();
+    void loadScreenList(const QStringList& screenList);
 
 protected:
     virtual void focusInEvent(QFocusEvent* focusEvent) override;
     virtual void focusOutEvent(QFocusEvent* focusEvent) override;
+
+signals:
+    void screenListChanged(QStringList screenList);
 
 private slots:
     void addScreen();
@@ -149,7 +154,6 @@ private:
     QList<QPushButton*> mScreenLabels;
     QValidator* mValidator;
     QCompleter* mCompleter;
-    QTimer* mFadeOutTimer;
 };
 
 class UBStringListValidator : public QValidator
