@@ -150,6 +150,7 @@ class UBApplicationController : public QObject
 
 
     protected:
+        void initPreviousViews();
 
         UBDesktopAnnotationController *mUninoteController;
 
