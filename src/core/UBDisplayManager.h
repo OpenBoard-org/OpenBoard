@@ -73,20 +73,23 @@ class UBDisplayManager : public QObject
 
         bool hasControl()
         {
-            return mScreensByRole.contains(ScreenRole::Control);
+            return mScreensByRole.value(ScreenRole::Control);
         }
 
         bool hasDisplay()
         {
-            return mScreensByRole.contains(ScreenRole::Display);
+            return mScreensByRole.value(ScreenRole::Display);
         }
 
         bool hasPrevious()
         {
-            return mScreensByRole.contains(ScreenRole::Previous1);
+            return mScreensByRole.value(ScreenRole::Previous1);
         }
 
-        bool useMultiScreen() { return mUseMultiScreen; }
+        bool useMultiScreen()
+        {
+            return mUseMultiScreen;
+        }
 
         void setUseMultiScreen(bool pUse);
 
@@ -124,11 +127,10 @@ class UBDisplayManager : public QObject
         QList<UBBlackoutWidget*> mBlackoutWidgets;
 
         QList<QScreen*> mAvailableScreens;
-        QMap<ScreenRole, QScreen*> mScreensByRole;
-        QMap<ScreenRole, QWidget*> mWidgetsByRole;
+        QMap<ScreenRole, QPointer<QScreen>> mScreensByRole;
+        QMap<ScreenRole, QPointer<QWidget>> mWidgetsByRole;
 
         bool mUseMultiScreen;
-
 };
 
 #endif /* UBDISPLAYMANAGER_H_ */

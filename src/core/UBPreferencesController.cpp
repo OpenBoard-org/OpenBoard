@@ -61,16 +61,16 @@ qreal UBPreferencesController::sMaxPenWidth = 50.0;
 // convenience function to convert between screen list as QString and QStringList
 QStringList splitScreenList(const QString& input)
 {
-    QStringList screenNames = input.split(',');
+    QStringList screenList = input.split(',');
 
-    for (QString& entry : screenNames)
+    for (QString& entry : screenList)
     {
         entry = entry.trimmed();
     }
 
-    screenNames.removeAll("");
+    screenList.removeAll("");
 
-    return screenNames;
+    return screenList;
 }
 
 
@@ -104,7 +104,7 @@ UBPreferencesController::UBPreferencesController(QWidget *parent)
     mPreferencesUI = new Ui::preferencesDialog();  // deleted in destructor
     mPreferencesUI->setupUi(mPreferencesWindow);
     adjustScreens();
-    connect(UBApplication::displayManager, &UBDisplayManager::screenLayoutChanged, this, &UBPreferencesController::adjustScreens);
+    connect(UBApplication::displayManager, &UBDisplayManager::availableScreenCountChanged, this, &UBPreferencesController::adjustScreens);
     wire();
 }
 
@@ -139,10 +139,9 @@ void UBPreferencesController::adjustScreens()
 
     for (QScreen* screen : availableScreens)
     {
-        screenNames << screen->name();
+        screenNames << screen->name().replace("/", "");
     }
 
-    std::sort(screenNames.begin(), screenNames.end());
     QString screenConfiguration = screenNames.join('_');
 
     QString path = UBSettings::settings()->appScreenList->path() + "-" + screenConfiguration;
@@ -152,6 +151,7 @@ void UBPreferencesController::adjustScreens()
         mScreenConfigurationPath = path;
         QStringList value = UBSettings::settings()->value(path).toStringList();
         UBSettings::settings()->appScreenList->set(value);
+        mPreferencesUI->screenList->loadScreenList(value);
     }
 }
 
@@ -812,32 +812,7 @@ void UBScreenListLineEdit::setDefault()
 
 void UBScreenListLineEdit::loadScreenList(const QStringList &screenList)
 {
-    // convert screen list to index list
-    auto screens = UBApplication::displayManager->availableScreens();
-    QStringList screenNames;
-
-    for (QScreen* screen : screens)
-    {
-        screenNames << screen->name();
-    }
-
-    QStringList screenIndexes;
-
-    for (const QString& screenName: screenList)
-    {
-        int index = screenNames.indexOf(screenName);
-
-        if (index >= 0)
-        {
-            screenIndexes << QString::number(index + 1);
-        }
-        else
-        {
-            qDebug() << "Invalid screen name" << screenName;
-        }
-    }
-
-    setText(screenIndexes.join(','));
+    setText(screenList.join(','));
 }
 
 void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
@@ -955,24 +930,6 @@ void UBScreenListLineEdit::onTextChanged(const QString &input)
         setStyleSheet("");
 
         QStringList screenList = splitScreenList(input);
-
-        // convert from index to screen name
-        auto screens = UBApplication::displayManager->availableScreens();
-
-        for (QString& entry : screenList)
-        {
-            int screenIndex = entry.toInt() - 1;
-
-            if (screenIndex >= 0 && screenIndex < screens.size())
-            {
-                entry = screens[screenIndex]->name();
-            }
-            else
-            {
-                qDebug() << "Invalid screen index " << entry;
-            }
-        }
-
         emit screenListChanged(screenList);
     }
     else
