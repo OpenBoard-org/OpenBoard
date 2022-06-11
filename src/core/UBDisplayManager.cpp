@@ -262,7 +262,7 @@ void UBDisplayManager::setDisplayWidget(QWidget* pDisplayWidget)
         if (mScreensByRole.contains(ScreenRole::Display))
         {
             mWidgetsByRole[ScreenRole::Display]->setGeometry(mScreensByRole[ScreenRole::Display]->geometry());
-            mWidgetsByRole[ScreenRole::Display]->showFullScreen();
+            UBPlatformUtils::showFullScreen(mWidgetsByRole[ScreenRole::Display]);
         }
     }
 }
@@ -336,7 +336,7 @@ void UBDisplayManager::positionScreens()
     {
         mWidgetsByRole[ScreenRole::Display]->showNormal();
         mWidgetsByRole[ScreenRole::Display]->setGeometry(mScreensByRole[ScreenRole::Display]->geometry());
-        mWidgetsByRole[ScreenRole::Display]->showFullScreen();
+        UBPlatformUtils::showFullScreen(mWidgetsByRole[ScreenRole::Display]);
     }
     else if(mWidgetsByRole.contains(ScreenRole::Display))
     {
@@ -351,7 +351,7 @@ void UBDisplayManager::positionScreens()
                 QWidget* previous = mWidgetsByRole[role];
                 previous->showNormal();
                 previous->setGeometry(mScreensByRole[role]->geometry());
-                previous->showFullScreen();
+                UBPlatformUtils::showFullScreen(previous);
             }
             else
             {
@@ -388,9 +388,9 @@ void UBDisplayManager::blackout()
 
     UBPlatformUtils::fadeDisplayOut();
 
-    foreach(UBBlackoutWidget *blackoutWidget, mBlackoutWidgets)
+    for (UBBlackoutWidget* blackoutWidget : mBlackoutWidgets)
     {
-        blackoutWidget->showFullScreen();
+        UBPlatformUtils::showFullScreen(blackoutWidget);
     }
 }
 
@@ -405,7 +405,6 @@ void UBDisplayManager::unBlackout()
     UBPlatformUtils::fadeDisplayIn();
 
     UBApplication::boardController->freezeW3CWidgets(false);
-
 }
 
 
