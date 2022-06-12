@@ -886,7 +886,7 @@ void UBGraphicsTriangle::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
     } else if (UBDrawingController::drawingController()->isDrawingTool())  {
             setCursor(drawRulerLineCursor());
-            UBDrawingController::drawingController()->mActiveRuler = this;
+            UBDrawingController::drawingController()->setActiveRuler(this);
             event->accept();
     }
 
@@ -904,7 +904,7 @@ void UBGraphicsTriangle::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     mVFlipSvgItem->setVisible(false);
     mHFlipSvgItem->setVisible(false);
     mRotateSvgItem->setVisible(false);
-    UBDrawingController::drawingController()->mActiveRuler = NULL;
+    UBDrawingController::drawingController()->setActiveRuler(nullptr);
     event->accept();
     update();
 }

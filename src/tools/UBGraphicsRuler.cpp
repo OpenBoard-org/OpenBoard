@@ -450,7 +450,7 @@ void UBGraphicsRuler::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     else if (UBDrawingController::drawingController()->isDrawingTool())
     {
         setCursor(drawRulerLineCursor());
-        UBDrawingController::drawingController()->mActiveRuler = this;
+        UBDrawingController::drawingController()->setActiveRuler(this);
         event->accept();
     }
 }
@@ -462,7 +462,7 @@ void UBGraphicsRuler::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     mCloseSvgItem->setVisible(mShowButtons);
     mResizeSvgItem->setVisible(mShowButtons);
     mRotateSvgItem->setVisible(mShowButtons);
-    UBDrawingController::drawingController()->mActiveRuler = nullptr;
+    UBDrawingController::drawingController()->setActiveRuler(nullptr);
     event->accept();
     update();
 }

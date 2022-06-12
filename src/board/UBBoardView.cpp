@@ -1104,7 +1104,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
             break;
 
         default:
-            if(UBDrawingController::drawingController()->mActiveRuler==NULL) {
+            if (UBDrawingController::drawingController()->activeRuler() == nullptr) {
                 viewport()->setCursor (QCursor (Qt::BlankCursor));
             }
             if (scene () && !mTabletStylusIsPressed) {
