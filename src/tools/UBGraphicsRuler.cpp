@@ -420,9 +420,6 @@ void UBGraphicsRuler::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-    if (UBDrawingController::drawingController()->mActiveRuler == nullptr)
-        UBDrawingController::drawingController()->mActiveRuler = this;
-
     if (currentTool == UBStylusTool::Selector ||
         currentTool == UBStylusTool::Play)
     {
@@ -453,6 +450,7 @@ void UBGraphicsRuler::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     else if (UBDrawingController::drawingController()->isDrawingTool())
     {
         setCursor(drawRulerLineCursor());
+        UBDrawingController::drawingController()->mActiveRuler = this;
         event->accept();
     }
 }
