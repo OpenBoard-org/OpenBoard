@@ -451,8 +451,8 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             mAddedItems.clear();
             mRemovedItems.clear();
 
-            if (UBDrawingController::drawingController()->mActiveRuler)
-                UBDrawingController::drawingController()->mActiveRuler->StartLine(scenePos, width);
+            if (UBDrawingController::drawingController()->activeRuler())
+                UBDrawingController::drawingController()->activeRuler()->StartLine(scenePos, width);
             else {
                 moveTo(scenePos);
                 drawLineTo(scenePos, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
@@ -539,7 +539,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
             width /= UBApplication::boardController->systemScaleFactor();
             width /= UBApplication::boardController->currentZoom();
 
-            if (currentTool == UBStylusTool::Line || dc->mActiveRuler)
+            if (currentTool == UBStylusTool::Line || dc->activeRuler())
             {
                 if (UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker)
                 if(NULL != mpLastPolygon && NULL != mCurrentStroke && mAddedItems.size() > 0){
@@ -573,8 +573,8 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
             if (!mCurrentStroke)
                 mCurrentStroke = new UBGraphicsStroke(this);
 
-            if(dc->mActiveRuler){
-                dc->mActiveRuler->DrawLine(position, width);
+            if(dc->activeRuler()){
+                dc->activeRuler()->DrawLine(position, width);
             }
 
             else if (currentTool == UBStylusTool::Line) {
@@ -859,7 +859,7 @@ void UBGraphicsScene::drawPenCircle(const QPointF &pPoint)
         cursor = UBResources::resources()->penCursor;
     }
 
-    if (!UBDrawingController::drawingController()->mActiveRuler)
+    if (!UBDrawingController::drawingController()->activeRuler())
     {
         // set cursor only if no active ruler
         if (controlView() && controlView()->viewport())

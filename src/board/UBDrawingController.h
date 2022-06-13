@@ -64,7 +64,8 @@ class UBDrawingController : public QObject
         void setMarkerColor(bool onDarkBackground, const QColor& color, int pIndex);
         void setMarkerAlpha(qreal alpha);
 
-        UBAbstractDrawRuler* mActiveRuler;
+        void setActiveRuler(UBAbstractDrawRuler* ruler);
+        UBAbstractDrawRuler* activeRuler() const;
 
         void setInDesktopMode(bool mode){
             mIsDesktopMode = mode;
@@ -89,6 +90,7 @@ class UBDrawingController : public QObject
         void colorIndexChanged(int index);
 
     private:
+        QPointer<UBAbstractDrawRuler> mActiveRuler;
         UBStylusTool::Enum mStylusTool;
         UBStylusTool::Enum mLatestDrawingTool;
         bool mIsDesktopMode;

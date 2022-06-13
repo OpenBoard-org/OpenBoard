@@ -34,6 +34,7 @@
 
 #include "domain/UBGraphicsScene.h"
 #include "board/UBBoardController.h"
+#include "tools/UBAbstractDrawRuler.h"
 
 #include "gui/UBMainWindow.h"
 #include "core/memcheck.h"
@@ -58,7 +59,6 @@ void UBDrawingController::destroy()
 
 UBDrawingController::UBDrawingController(QObject * parent)
     : QObject(parent)
-    , mActiveRuler(NULL)
     , mStylusTool((UBStylusTool::Enum)-1)
     , mLatestDrawingTool((UBStylusTool::Enum)-1)
     , mIsDesktopMode(false)
@@ -320,6 +320,23 @@ void UBDrawingController::setMarkerAlpha(qreal alpha)
     UBSettings::settings()->boardMarkerAlpha->set(alpha);
 
     emit colorPaletteChanged();
+}
+
+void UBDrawingController::setActiveRuler(UBAbstractDrawRuler* ruler)
+{
+    mActiveRuler = ruler;
+}
+
+UBAbstractDrawRuler* UBDrawingController::activeRuler() const
+{
+    QGraphicsItem* item = dynamic_cast<QGraphicsItem*>(mActiveRuler.data());
+
+    if (item && item->isVisible())
+    {
+        return mActiveRuler;
+    }
+
+    return nullptr;
 }
 
 
