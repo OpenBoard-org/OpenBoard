@@ -97,7 +97,10 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
     connect(displayManager, SIGNAL(screenLayoutChanged()), this, SLOT(screenLayoutChanged()));
     connect(displayManager, SIGNAL(screenLayoutChanged()), mUninoteController, SLOT(screenLayoutChanged()));
     connect(displayManager, SIGNAL(screenLayoutChanged()), UBApplication::webController, SLOT(screenLayoutChanged()));
-    connect(displayManager, SIGNAL(adjustDisplayViewsRequired()), UBApplication::boardController, SLOT(adjustDisplayViews()));
+    connect(displayManager, &UBDisplayManager::availableScreenCountChanged, [this](){
+        initPreviousViews();
+        UBApplication::displayManager->setPreviousDisplaysWidgets(mPreviousViews);
+    });
     connect(mUninoteController, SIGNAL(imageCaptured(const QPixmap &, bool)), this, SLOT(addCapturedPixmap(const QPixmap &, bool)));
     connect(mUninoteController, SIGNAL(restoreUniboard()), this, SLOT(hideDesktop()));
 
@@ -141,6 +144,8 @@ void UBApplicationController::initViewState(int horizontalPosition, int vertical
 
 void UBApplicationController::initScreenLayout(bool useMultiscreen)
 {
+    initPreviousViews();
+
     UBDisplayManager* displayManager = UBApplication::displayManager;
 
     displayManager->setControlWidget(mMainWindow);
@@ -159,11 +164,9 @@ void UBApplicationController::screenLayoutChanged()
     initViewState(mControlView->horizontalScrollBar()->value(),
             mControlView->verticalScrollBar()->value());
 
-    initPreviousViews();
-
     adaptToolBar();
 
-    adjustDisplayView();
+    UBApplication::boardController->adjustDisplayViews();
 
     if (UBApplication::displayManager->hasDisplay())
     {
@@ -173,8 +176,6 @@ void UBApplicationController::screenLayoutChanged()
     {
        UBApplication::boardController->setBoxing(QRect());
     }
-
-    adjustPreviousViews(0, 0);
 
     // update mirror if necessary
     UBDisplayManager* displayManager = UBApplication::displayManager;

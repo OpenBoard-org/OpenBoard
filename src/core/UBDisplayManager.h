@@ -106,7 +106,6 @@ class UBDisplayManager : public QObject
 
         void screenLayoutChanged();
         void availableScreenCountChanged(int screenCount);
-        void adjustDisplayViewsRequired();
 
    public slots:
 
