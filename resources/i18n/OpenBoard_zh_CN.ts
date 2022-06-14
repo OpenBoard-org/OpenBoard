@@ -5,7 +5,7 @@
     <name>BlackoutWidget</name>
     <message>
       <source>Click to Return to Application</source>
-      <translation>点击回到应用程序</translation>
+      <translation>点击返回到应用程序</translation>
     </message>
   </context>
   <context>
