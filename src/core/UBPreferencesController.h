@@ -153,7 +153,6 @@ private slots:
 private:
     QList<QPushButton*> mScreenLabels;
     QValidator* mValidator;
-    QCompleter* mCompleter;
 };
 
 class UBStringListValidator : public QValidator

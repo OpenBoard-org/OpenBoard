@@ -152,7 +152,9 @@ void UBBoardController::init()
 
     setActiveDocumentScene(doc);
 
-    initBackgroundGridSize();
+    connect(UBApplication::displayManager, &UBDisplayManager::screenRolesAssigned, [this](){
+        initBackgroundGridSize();
+    });
 
     undoRedoStateChange(true);
 

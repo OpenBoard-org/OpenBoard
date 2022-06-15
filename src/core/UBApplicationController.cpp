@@ -539,14 +539,21 @@ void UBApplicationController::updateRequestFinished(QNetworkReply * reply)
 
 void UBApplicationController::initPreviousViews()
 {
-    qDeleteAll(mPreviousViews);
-    mPreviousViews.clear();
+    int numPreviousViews = UBApplication::displayManager->numPreviousViews();
 
-    for(int i = 0; i < UBApplication::displayManager->numPreviousViews(); i++)
+    // create the missing views
+    for (int i = mPreviousViews.count(); i < numPreviousViews; i++)
     {
         UBBoardView *previousView = new UBBoardView(UBApplication::boardController, UBItemLayerType::FixedBackground, UBItemLayerType::Tool, 0);
         previousView->setInteractive(false);
         mPreviousViews.append(previousView);
+    }
+
+    // delete the superfluous views
+    while (mPreviousViews.count() > numPreviousViews)
+    {
+        UBBoardView* view = mPreviousViews.takeLast();
+        delete view;
     }
 }
 

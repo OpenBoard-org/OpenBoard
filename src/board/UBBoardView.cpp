@@ -1546,6 +1546,13 @@ void UBBoardView::mouseDoubleClickEvent (QMouseEvent *event)
 
 void UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
 {
+    if (!isInteractive())
+    {
+        // ignore event on non-interactive views
+        wheelEvent->accept();
+        return;
+    }
+
     // Zoom in/out when Ctrl is pressed
     if (wheelEvent->modifiers() == Qt::ControlModifier && wheelEvent->angleDelta().x() == 0)
     {

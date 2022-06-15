@@ -136,10 +136,11 @@ void UBPreferencesController::adjustScreens()
 
     auto availableScreens = UBApplication::displayManager->availableScreens();
     QStringList screenNames;
+    QRegularExpression specialChars("[^a-zA-Z0-9]+");
 
     for (QScreen* screen : availableScreens)
     {
-        screenNames << screen->name().replace("/", "");
+        screenNames << screen->name().replace(specialChars, "-");
     }
 
     QString screenConfiguration = screenNames.join('_');
@@ -800,7 +801,6 @@ UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor
 UBScreenListLineEdit::UBScreenListLineEdit(QWidget *parent)
     : QLineEdit(parent)
     , mValidator(nullptr)
-    , mCompleter(nullptr)
 {
     connect(this, &QLineEdit::textChanged, this, &UBScreenListLineEdit::onTextChanged);
 }
@@ -864,7 +864,6 @@ void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
 void UBScreenListLineEdit::focusOutEvent(QFocusEvent *focusEvent)
 {
     QLineEdit::focusOutEvent(focusEvent);
-
     qDeleteAll(mScreenLabels);
     mScreenLabels.clear();
 }
@@ -912,23 +911,12 @@ void UBScreenListLineEdit::onTextChanged(const QString &input)
                 model << input + button->text();
             }
         }
-
-        if (!mCompleter)
-        {
-            mCompleter = new QCompleter(model, this);
-            setCompleter(mCompleter);
-        }
-        else
-        {
-            mCompleter->setModel(new QStringListModel(model, mCompleter));
-        }
     }
 
     // user indication of acceptable input
     if (hasAcceptableInput())
     {
         setStyleSheet("");
-
         QStringList screenList = splitScreenList(input);
         emit screenListChanged(screenList);
     }
@@ -966,6 +954,13 @@ QValidator::State UBStringListValidator::validate(QString &input, int &) const
 {
     bool ok = true;
     QStringList inputList = splitScreenList(input);
+    // number of commas must match number of list items - 1
+    int commas = input.count(',');
+
+    if (commas && commas + 1 != inputList.size())
+    {
+        ok = false;
+    }
 
     for (const QString& token : inputList)
     {

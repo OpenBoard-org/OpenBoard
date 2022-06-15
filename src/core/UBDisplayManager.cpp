@@ -94,6 +94,7 @@ void UBDisplayManager::initScreenIndexes()
 
     if (screens != mAvailableScreens)
     {
+        qDebug() << "availableScreens" << screens;
         mAvailableScreens = screens;
         emit availableScreenCountChanged(screens.count());
     }
@@ -103,9 +104,13 @@ void UBDisplayManager::initScreenIndexes()
      * in the UBPreferencesManager, so we now get the screen list valid for
      * the new monitor configuration.
      */
+}
 
+void UBDisplayManager::assignRoles()
+{
     QVariant appScreenList = UBSettings::settings()->appScreenList->get();
     QStringList screenList = appScreenList.toStringList();
+    qDebug() << "assignRoles using screen list" << screenList;
 
     if (!appScreenList.isValid())
     {
@@ -113,12 +118,12 @@ void UBDisplayManager::initScreenIndexes()
         // "old" configuration mode
         bool swapScreens = UBSettings::settings()->swapControlAndDisplayScreens->get().toBool();
 
-        mScreensByRole[ScreenRole::Control] = screens[0];
+        mScreensByRole[ScreenRole::Control] = mAvailableScreens[0];
 
-        if (screens.count() > 1)
+        if (mAvailableScreens.count() > 1)
         {
-            QScreen* controlScreen = screens[0];
-            QScreen* displayScreen = screens[1];
+            QScreen* controlScreen = mAvailableScreens[0];
+            QScreen* displayScreen = mAvailableScreens[1];
 
             if (swapScreens)
             {
@@ -133,9 +138,9 @@ void UBDisplayManager::initScreenIndexes()
 
             ScreenRole role(ScreenRole::Previous1);
 
-            for (int i = 2; i < screens.count(); ++i)
+            for (int i = 2; i < mAvailableScreens.count(); ++i)
             {
-                mScreensByRole[role++] = screens[i];
+                mScreensByRole[role++] = mAvailableScreens[i];
                 screenList << QString::number(i + 1);
             }
 
@@ -180,7 +185,7 @@ void UBDisplayManager::initScreenIndexes()
         }
 
         // configure control screen, by default use primary screen
-        QScreen* controlScreen = primaryScreen;
+        QScreen* controlScreen = mAvailableScreens[0];
 
         if (!indexList.empty() && mAvailableScreens[indexList[0]])
         {
@@ -216,6 +221,8 @@ void UBDisplayManager::initScreenIndexes()
 
     // Desktop screen is same as Control screen
     mScreensByRole[ScreenRole::Desktop] = mScreensByRole[ScreenRole::Control];
+
+    emit screenRolesAssigned();
 }
 
 int UBDisplayManager::numScreens()
@@ -230,7 +237,7 @@ int UBDisplayManager::numPreviousViews()
 
     for (ScreenRole role = ScreenRole::Previous1; role <= ScreenRole::Previous5; ++role)
     {
-        if (mScreensByRole.value(role))
+        if (screen(role))
         {
             ++previousViews;
         }
@@ -242,15 +249,8 @@ int UBDisplayManager::numPreviousViews()
 
 void UBDisplayManager::setControlWidget(QWidget* pControlWidget)
 {
-    if (hasControl() && pControlWidget)
+    if (pControlWidget)
     {
-        // set an initial geometry for window mode
-        QScreen* controlScreen = mScreensByRole[ScreenRole::Control];
-        QRect geometry = controlScreen->geometry();
-        geometry.setSize(geometry.size() - QSize(150, 150));
-        geometry.moveTo(50, 50);
-        pControlWidget->setGeometry(geometry);
-
         mWidgetsByRole[ScreenRole::Control] = pControlWidget;
     }
 }
@@ -265,20 +265,20 @@ void UBDisplayManager::setDesktopWidget(QWidget* pDesktopWidget )
 
 void UBDisplayManager::setDisplayWidget(QWidget* pDisplayWidget)
 {
-    if (pDisplayWidget)
+    if (pDisplayWidget && pDisplayWidget != widget((ScreenRole::Display)))
     {
         if (widget(ScreenRole::Display))
         {
-            mWidgetsByRole[ScreenRole::Display]->hide();
-            pDisplayWidget->setGeometry(mWidgetsByRole[ScreenRole::Display]->geometry());
-            pDisplayWidget->setWindowFlags(mWidgetsByRole[ScreenRole::Display]->windowFlags());
+            widget(ScreenRole::Display)->hide();
+            pDisplayWidget->setGeometry(widget(ScreenRole::Display)->geometry());
+            pDisplayWidget->setWindowFlags(widget(ScreenRole::Display)->windowFlags());
         }
 
         mWidgetsByRole[ScreenRole::Display] = pDisplayWidget;
 
-        if (mScreensByRole.value(ScreenRole::Display))
+        if (screen(ScreenRole::Display))
         {
-            pDisplayWidget->setGeometry(mScreensByRole[ScreenRole::Display]->geometry());
+            pDisplayWidget->setGeometry(screen(ScreenRole::Display)->geometry());
             UBPlatformUtils::showFullScreen(pDisplayWidget);
         }
     }
@@ -295,9 +295,14 @@ void UBDisplayManager::setPreviousDisplaysWidgets(QList<UBBoardView*> pPreviousV
     }
 }
 
-QWidget* UBDisplayManager::widget(ScreenRole role)
+QWidget* UBDisplayManager::widget(ScreenRole role) const
 {
-    return mWidgetsByRole.value(role, nullptr);
+    return mWidgetsByRole.value(role);
+}
+
+QScreen* UBDisplayManager::screen(ScreenRole role) const
+{
+    return mScreensByRole.value(role);
 }
 
 QList<QScreen *> UBDisplayManager::availableScreens() const
@@ -307,85 +312,95 @@ QList<QScreen *> UBDisplayManager::availableScreens() const
 
 void UBDisplayManager::adjustScreens()
 {
-    initScreenIndexes();
-
-    // delayed execution to avoid interference with window managers
-    QTimer::singleShot(200, [this](){
-        positionScreens();
-        emit screenLayoutChanged();
-    });
+    assignRoles();
+    positionScreens();
 }
-
 
 void UBDisplayManager::positionScreens()
 {
+    qDebug() << "positionScreens";
     if (widget(ScreenRole::Desktop) && hasControl())
     {
-        mWidgetsByRole[ScreenRole::Desktop]->hide();
-        mWidgetsByRole[ScreenRole::Desktop]->setGeometry(mScreensByRole[ScreenRole::Control]->geometry());
+        widget(ScreenRole::Desktop)->hide();
+        widget(ScreenRole::Desktop)->setGeometry(screen(ScreenRole::Control)->geometry());
     }
 
-    if (mWidgetsByRole.value(ScreenRole::Control) && hasControl())
+    if (widget(ScreenRole::Control) && hasControl())
     {
-        QWidget* controlWidget = mWidgetsByRole[ScreenRole::Control];
+        QWidget* controlWidget = widget(ScreenRole::Control);
+
         controlWidget->showNormal();
 
-        QRect geometry = mScreensByRole[ScreenRole::Control]->geometry();
+        QRect geometry = screenGeometry(ScreenRole::Control);
 
         if (UBSettings::settings()->appRunInWindow->get().toBool())
         {
-            // reuse previous size and relative position
-            QRect previousGeometry = controlWidget->geometry();
-            QScreen* previousScreen = QGuiApplication::screenAt(previousGeometry.topLeft());
-
-            if (previousScreen)
+            if (controlWidget->property("isInitialized").toBool())
             {
-                QRect previousScreenGeometry = QGuiApplication::screenAt(previousGeometry.topLeft())->geometry();
-                QPoint offset = previousGeometry.topLeft() - previousScreenGeometry.topLeft();
-                geometry.setSize(previousGeometry.size());
-                geometry.moveTo(geometry.topLeft() + offset);
+                // reuse previous size and relative position
+                QRect previousGeometry = controlWidget->geometry();
+                QScreen* previousScreen = QGuiApplication::screenAt(previousGeometry.topLeft());
 
-                // make sure widget fits to screen
-                geometry = mScreensByRole[ScreenRole::Control]->geometry().intersected(geometry);
+                if (previousScreen)
+                {
+                    QRect previousScreenGeometry = QGuiApplication::screenAt(previousGeometry.topLeft())->geometry();
+                    QPoint offset = previousGeometry.topLeft() - previousScreenGeometry.topLeft();
+                    geometry.setSize(previousGeometry.size());
+                    geometry.moveTo(geometry.topLeft() + offset);
+
+                    // make sure widget fits to screen
+                    geometry = screenGeometry(ScreenRole::Control).intersected(geometry);
+                }
+            }
+            else
+            {
+                // calculate an initial geometry for window mode
+                geometry.setSize(geometry.size() - QSize(150, 150));
+                geometry.translate(50, 50);
+                controlWidget->setProperty("isInitialized", true);
             }
         }
 
+        qDebug() << "control geometry" << geometry;
         controlWidget->setGeometry(geometry);
         UBPlatformUtils::showFullScreen(controlWidget);
     }
 
-    if (mWidgetsByRole.value(ScreenRole::Display) && hasDisplay())
+    if (widget(ScreenRole::Display) && hasDisplay() && mUseMultiScreen)
     {
-        mWidgetsByRole[ScreenRole::Display]->showNormal();
-        mWidgetsByRole[ScreenRole::Display]->setGeometry(mScreensByRole[ScreenRole::Display]->geometry());
-        UBPlatformUtils::showFullScreen(mWidgetsByRole[ScreenRole::Display]);
+        qDebug() << "display geometry" << screenGeometry(ScreenRole::Display);
+        widget(ScreenRole::Display)->showNormal();
+        widget(ScreenRole::Display)->setGeometry(screenGeometry(ScreenRole::Display));
+        UBPlatformUtils::showFullScreen(widget(ScreenRole::Display));
     }
-    else if (mWidgetsByRole.value(ScreenRole::Display))
+    else if (widget(ScreenRole::Display))
     {
-        mWidgetsByRole[ScreenRole::Display]->hide();
+        widget(ScreenRole::Display)->hide();
     }
 
     for (ScreenRole role = ScreenRole::Previous1; role <= ScreenRole::Previous5; ++role)
     {
-        if (mWidgetsByRole.value(role))
+        if (widget(role))
         {
-            if (mScreensByRole.value(role)) {
-                QWidget* previous = mWidgetsByRole[role];
+            if (screen(role)) {
+                QWidget* previous = widget(role);
                 previous->showNormal();
-                previous->setGeometry(mScreensByRole[role]->geometry());
+                previous->setGeometry(screenGeometry(role));
                 UBPlatformUtils::showFullScreen(previous);
             }
             else
             {
-                mWidgetsByRole[role]->hide();
+                widget(role)->hide();
             }
         }
     }
 
-    if (mWidgetsByRole.value(ScreenRole::Control) && hasControl())
+    if (widget(ScreenRole::Control) && hasControl())
     {
-        mWidgetsByRole[ScreenRole::Control]->activateWindow();
+        widget(ScreenRole::Control)->activateWindow();
     }
+
+    emit screenLayoutChanged();
 }
 
 
@@ -431,20 +446,18 @@ void UBDisplayManager::unBlackout()
     UBApplication::boardController->freezeW3CWidgets(false);
 }
 
-
 void UBDisplayManager::addOrRemoveScreen(QScreen *screen)
 {
     Q_UNUSED(screen);
 
     initScreenIndexes();
+    assignRoles();
 
     // positioning must be delayed, because OS also tries to position the widgets
     QTimer::singleShot(3000, [this](){
         positionScreens();
-        emit screenLayoutChanged();
     });
 }
-
 
 void UBDisplayManager::setUseMultiScreen(bool pUse)
 {
@@ -453,43 +466,43 @@ void UBDisplayManager::setUseMultiScreen(bool pUse)
 
 QSize UBDisplayManager::screenSize(ScreenRole role) const
 {
-    QScreen* screen = mScreensByRole.value(role);
-    return screen ? screen->size() : QSize();
+    QScreen* scr = screen(role);
+    return scr ? scr->size() : QSize();
 }
 
 QSize UBDisplayManager::availableScreenSize(ScreenRole role) const
 {
-    QScreen* screen = mScreensByRole.value(role);
-    return screen ? screen->availableSize() : QSize();
+    QScreen* scr = screen(role);
+    return scr ? scr->availableSize() : QSize();
 }
 
 QRect UBDisplayManager::screenGeometry(ScreenRole role) const
 {
-    QScreen* screen = mScreensByRole.value(role);
-    return screen ? screen->geometry() : QRect();
+    QScreen* scr = screen(role);
+    return scr ? scr->geometry() : QRect();
 }
 
 qreal UBDisplayManager::physicalDpi(ScreenRole role) const
 {
-    QScreen* screen = mScreensByRole.value(role);
-    return screen ? screen->physicalDotsPerInch() : 96.;
+    QScreen* scr = screen(role);
+    return scr ? scr->physicalDotsPerInch() : 96.;
 }
 
 qreal UBDisplayManager::logicalDpi(ScreenRole role) const
 {
-    QScreen* screen = mScreensByRole.value(role);
-    return screen ? screen->logicalDotsPerInch() : 96.;
+    QScreen* scr = screen(role);
+    return scr ? scr->logicalDotsPerInch() : 96.;
 }
 
 QPixmap UBDisplayManager::grab(ScreenRole role, QRect rect) const
 {
-    QScreen* screen = mScreensByRole.value(role);
+    QScreen* scr = screen(role);
 
-    if (screen)
+    if (scr)
     {
         // see https://doc.qt.io/qt-6.2/qtwidgets-desktop-screenshot-example.html
         // for using window id 0
-        return screen->grabWindow(0, rect.x(), rect.y(), rect.width(), rect.height());
+        return scr->grabWindow(0, rect.x(), rect.y(), rect.width(), rect.height());
     }
 
     return QPixmap();

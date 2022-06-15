@@ -67,7 +67,8 @@ class UBDisplayManager : public QObject
 
         void setPreviousDisplaysWidgets(QList<UBBoardView*> pPreviousViews);
 
-        QWidget* widget(ScreenRole role);
+        QWidget* widget(ScreenRole role) const;
+        QScreen* screen(ScreenRole role) const;
 
         QList<QScreen*> availableScreens() const;
 
@@ -103,7 +104,7 @@ class UBDisplayManager : public QObject
         QPixmap grabGlobal(QRect rect) const;
 
    signals:
-
+        void screenRolesAssigned();
         void screenLayoutChanged();
         void availableScreenCountChanged(int screenCount);
 
@@ -115,13 +116,15 @@ class UBDisplayManager : public QObject
 
         void unBlackout();
 
+    private slots:
+
         void addOrRemoveScreen(QScreen* screen);
 
     private:
 
-        void positionScreens();
-
         void initScreenIndexes();
+        void assignRoles();
+        void positionScreens();
 
         QList<UBBlackoutWidget*> mBlackoutWidgets;
 
