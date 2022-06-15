@@ -435,24 +435,28 @@ void UBDesktopAnnotationController::customCapture()
     mIsFullyTransparent = true;
     updateBackground();
 
-    mDesktopPalette->disappearForCapture();
-    UBCustomCaptureWindow customCaptureWindow(mDesktopPalette);
-    // need to show the window before execute it to avoid some glitch on windows.
+    mDesktopPalette->hide();
 
-#ifndef Q_OS_WIN // Working only without this call on win32 desktop mode
-    UBPlatformUtils::showFullScreen(&customCaptureWindow);
-#endif
+    QTimer::singleShot(1000, [this]() {
 
-    if (customCaptureWindow.execute(getScreenPixmap()) == QDialog::Accepted)
-    {
-        QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
-        emit imageCaptured(selectedPixmap, false);
-    }
+        UBCustomCaptureWindow customCaptureWindow(mDesktopPalette);
+        // need to show the window before execute it to avoid some glitch on windows.
 
-    mDesktopPalette->appear();
+    #ifndef Q_OS_WIN // Working only without this call on win32 desktop mode
+        UBPlatformUtils::showFullScreen(&customCaptureWindow);
+    #endif
 
-    mIsFullyTransparent = false;
-    updateBackground();
+        if (customCaptureWindow.execute(getScreenPixmap()) == QDialog::Accepted)
+        {
+            QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
+            emit imageCaptured(selectedPixmap, false);
+        }
+
+        mDesktopPalette->show();
+
+        mIsFullyTransparent = false;
+        updateBackground();
+    });
 }
 
 
@@ -462,17 +466,21 @@ void UBDesktopAnnotationController::screenCapture()
     mIsFullyTransparent = true;
     updateBackground();
 
-    mDesktopPalette->disappearForCapture();
+    mDesktopPalette->hide();
 
-    QPixmap originalPixmap = getScreenPixmap();
+    QTimer::singleShot(1000, [this]() {
 
-    mDesktopPalette->appear();
+        QPixmap originalPixmap = getScreenPixmap();
 
-    emit imageCaptured(originalPixmap, false);
+        mDesktopPalette->show();
 
-    mIsFullyTransparent = false;
+        emit imageCaptured(originalPixmap, false);
 
-    updateBackground();
+        mIsFullyTransparent = false;
+
+        updateBackground();
+
+    });
 }
 
 
