@@ -448,8 +448,8 @@ void UBDesktopAnnotationController::customCapture()
 
     if (customCaptureWindow.execute(getScreenPixmap()) == QDialog::Accepted)
     {
-       QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
-       emit imageCaptured(selectedPixmap, false);
+        QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
+        emit imageCaptured(selectedPixmap, false);
     }
 
     mDesktopPalette->show();
