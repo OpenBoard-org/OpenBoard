@@ -439,23 +439,23 @@ void UBDesktopAnnotationController::customCapture()
 
     QTimer::singleShot(1000, [this]() {
 
-        UBCustomCaptureWindow customCaptureWindow(mDesktopPalette);
-        // need to show the window before execute it to avoid some glitch on windows.
+    UBCustomCaptureWindow customCaptureWindow(mDesktopPalette);
+    // need to show the window before execute it to avoid some glitch on windows.
 
-    #ifndef Q_OS_WIN // Working only without this call on win32 desktop mode
-        UBPlatformUtils::showFullScreen(&customCaptureWindow);
-    #endif
+#ifndef Q_OS_WIN // Working only without this call on win32 desktop mode
+    UBPlatformUtils::showFullScreen(&customCaptureWindow);
+#endif
 
-        if (customCaptureWindow.execute(getScreenPixmap()) == QDialog::Accepted)
-        {
-            QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
-            emit imageCaptured(selectedPixmap, false);
-        }
+    if (customCaptureWindow.execute(getScreenPixmap()) == QDialog::Accepted)
+    {
+       QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
+       emit imageCaptured(selectedPixmap, false);
+    }
 
-        mDesktopPalette->show();
+    mDesktopPalette->show();
+    mIsFullyTransparent = false;
+    updateBackground();
 
-        mIsFullyTransparent = false;
-        updateBackground();
     });
 }
 
@@ -470,15 +470,15 @@ void UBDesktopAnnotationController::screenCapture()
 
     QTimer::singleShot(1000, [this]() {
 
-        QPixmap originalPixmap = getScreenPixmap();
+    QPixmap originalPixmap = getScreenPixmap();
 
-        mDesktopPalette->show();
+    mDesktopPalette->show();
 
-        emit imageCaptured(originalPixmap, false);
+    emit imageCaptured(originalPixmap, false);
 
-        mIsFullyTransparent = false;
+    mIsFullyTransparent = false;
 
-        updateBackground();
+    updateBackground();
 
     });
 }
