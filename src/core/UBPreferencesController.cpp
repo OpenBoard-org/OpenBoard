@@ -58,19 +58,19 @@ qreal UBPreferencesController::sSliderRatio = 10.0;
 qreal UBPreferencesController::sMinPenWidth = 0.5;
 qreal UBPreferencesController::sMaxPenWidth = 50.0;
 
-// convenience function to convert between screen list as QString and QStringList
-QStringList splitScreenList(const QString& input)
+// convenience function to split a comma separated list of tokens to a QStringList
+QStringList trimmedTokens(const QString& input)
 {
-    QStringList screenList = input.split(',');
+    QStringList tokens = input.split(',');
 
-    for (QString& entry : screenList)
+    for (QString& entry : tokens)
     {
         entry = entry.trimmed();
     }
 
-    screenList.removeAll("");
+    tokens.removeAll("");
 
-    return screenList;
+    return tokens;
 }
 
 
@@ -150,9 +150,9 @@ void UBPreferencesController::adjustScreens()
     if (path != mScreenConfigurationPath)
     {
         mScreenConfigurationPath = path;
-        QStringList value = UBSettings::settings()->value(path).toStringList();
+        QVariant value = UBSettings::settings()->value(path);
         UBSettings::settings()->appScreenList->set(value);
-        mPreferencesUI->screenList->loadScreenList(value);
+        mPreferencesUI->screenList->loadScreenList(value.toStringList());
     }
 }
 
@@ -821,13 +821,16 @@ void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
 
     if (mScreenLabels.empty())
     {
-        QStringList screenNames = splitScreenList(text());
+        QStringList screenList = trimmedTokens(text());
 
         QList<QScreen*> screens = UBApplication::displayManager->availableScreens();
         QStringList availableScreenIndexes;
         int screenIndex = 1;
+        QFont font;
+        font.setPointSize(48);
 
-        for (QScreen* screen : screens) {
+        for (QScreen* screen : screens)
+        {
             availableScreenIndexes << QString::number(screenIndex);
 
             QPushButton* button = new QPushButton(this);
@@ -837,12 +840,10 @@ void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
             button->setWindowFlag(Qt::Window, true);
             button->setWindowFlag(Qt::WindowDoesNotAcceptFocus, true);
             button->setText(QString::number(screenIndex++));
-            QFont font;
-            font.setPointSize(48);
             button->setFont(font);
             button->move(screen->geometry().topLeft());
             button->setMinimumSize(300, 150);
-            button->setDisabled(screenNames.contains(button->text()));
+            button->setDisabled(screenList.contains(button->text()));
             button->show();
 
             connect(button, &QPushButton::pressed, this, &UBScreenListLineEdit::addScreen);
@@ -850,14 +851,13 @@ void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
             mScreenLabels << button;
         }
 
-        if (mValidator)
+        if (!mValidator)
         {
-            setValidator(nullptr);
-            delete mValidator;
+            mValidator = new UBStringListValidator(this);
+            setValidator(mValidator);
         }
 
-        mValidator = new UBStringListValidator(availableScreenIndexes);
-        setValidator(mValidator);
+        mValidator->setValidationStringList(availableScreenIndexes);
     }
 }
 
@@ -892,11 +892,11 @@ void UBScreenListLineEdit::addScreen()
 
 void UBScreenListLineEdit::onTextChanged(const QString &input)
 {
-    QStringList screenNames = splitScreenList(input);
+    QStringList screenList = trimmedTokens(input);
 
     for (QPushButton* button : mScreenLabels)
     {
-        button->setDisabled(screenNames.contains(button->text()));
+        button->setDisabled(screenList.contains(button->text()));
     }
 
     if (input.isEmpty() || input.right(1) == ',')
@@ -917,7 +917,6 @@ void UBScreenListLineEdit::onTextChanged(const QString &input)
     if (hasAcceptableInput())
     {
         setStyleSheet("");
-        QStringList screenList = splitScreenList(input);
         emit screenListChanged(screenList);
     }
     else
@@ -926,17 +925,16 @@ void UBScreenListLineEdit::onTextChanged(const QString &input)
     }
 }
 
-UBStringListValidator::UBStringListValidator(QStringList list, QObject *parent)
+UBStringListValidator::UBStringListValidator(QObject *parent)
     : QValidator(parent)
-    , mList(list)
 {
 
 }
 
 void UBStringListValidator::fixup(QString &input) const
 {
-    // remove invalid tokens from list
-    QStringList inputList = splitScreenList(input);
+    // remove invalid tokens from list, trim tokens
+    QStringList inputList = trimmedTokens(input);
     QStringList outputList;
 
     for (const QString& token : inputList)
@@ -953,7 +951,7 @@ void UBStringListValidator::fixup(QString &input) const
 QValidator::State UBStringListValidator::validate(QString &input, int &) const
 {
     bool ok = true;
-    QStringList inputList = splitScreenList(input);
+    QStringList inputList = trimmedTokens(input);
     // number of commas must match number of list items - 1
     int commas = input.count(',');
 
@@ -968,4 +966,9 @@ QValidator::State UBStringListValidator::validate(QString &input, int &) const
     }
 
     return ok ? Acceptable : Intermediate;
+}
+
+void UBStringListValidator::setValidationStringList(const QStringList &list)
+{
+    mList = list;
 }

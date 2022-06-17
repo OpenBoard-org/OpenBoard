@@ -128,6 +128,9 @@ class UBBrushPropertiesFrame : public Ui::brushProperties
 
 };
 
+// forward
+class UBStringListValidator;
+
 class UBScreenListLineEdit : public QLineEdit
 {
     Q_OBJECT;
@@ -152,7 +155,7 @@ private slots:
 
 private:
     QList<QPushButton*> mScreenLabels;
-    QValidator* mValidator;
+    UBStringListValidator* mValidator;
 };
 
 class UBStringListValidator : public QValidator
@@ -160,11 +163,13 @@ class UBStringListValidator : public QValidator
     Q_OBJECT;
 
 public:
-    UBStringListValidator(QStringList list, QObject* parent = nullptr);
+    UBStringListValidator(QObject* parent = nullptr);
     virtual ~UBStringListValidator() = default;
 
     virtual void fixup(QString& input) const;
     virtual QValidator::State validate(QString& input, int& pos) const;
+
+    void setValidationStringList(const QStringList& list);
 
 private:
     QStringList mList;
