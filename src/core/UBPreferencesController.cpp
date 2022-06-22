@@ -38,6 +38,8 @@
 #include "core/UBApplicationController.h"
 #include "core/UBDisplayManager.h"
 
+#include "frameworks/UBStringUtils.h"
+
 #include "board/UBBoardController.h"
 #include "document/UBDocumentController.h"
 #include "domain/UBGraphicsScene.h"
@@ -57,21 +59,6 @@ typedef QString::SplitBehavior SplitBehavior;
 qreal UBPreferencesController::sSliderRatio = 10.0;
 qreal UBPreferencesController::sMinPenWidth = 0.5;
 qreal UBPreferencesController::sMaxPenWidth = 50.0;
-
-// convenience function to split a comma separated list of tokens to a QStringList
-QStringList trimmedTokens(const QString& input)
-{
-    QStringList tokens = input.split(',');
-
-    for (QString& entry : tokens)
-    {
-        entry = entry.trimmed();
-    }
-
-    tokens.removeAll("");
-
-    return tokens;
-}
 
 
 UBPreferencesDialog::UBPreferencesDialog(UBPreferencesController* prefController, QWidget* parent,Qt::WindowFlags f)
@@ -821,7 +808,7 @@ void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
 
     if (mScreenLabels.empty())
     {
-        QStringList screenList = trimmedTokens(text());
+        QStringList screenList = UBStringUtils::trimmed(text().split(','));
 
         QList<QScreen*> screens = UBApplication::displayManager->availableScreens();
         QStringList availableScreenIndexes;
@@ -892,7 +879,7 @@ void UBScreenListLineEdit::addScreen()
 
 void UBScreenListLineEdit::onTextChanged(const QString &input)
 {
-    QStringList screenList = trimmedTokens(input);
+    QStringList screenList = UBStringUtils::trimmed(input.split(','));
 
     for (QPushButton* button : mScreenLabels)
     {
@@ -934,7 +921,7 @@ UBStringListValidator::UBStringListValidator(QObject *parent)
 void UBStringListValidator::fixup(QString &input) const
 {
     // remove invalid tokens from list, trim tokens
-    QStringList inputList = trimmedTokens(input);
+    QStringList inputList = UBStringUtils::trimmed(input.split(','));
     QStringList outputList;
 
     for (const QString& token : inputList)
@@ -951,7 +938,7 @@ void UBStringListValidator::fixup(QString &input) const
 QValidator::State UBStringListValidator::validate(QString &input, int &) const
 {
     bool ok = true;
-    QStringList inputList = trimmedTokens(input);
+    QStringList inputList = UBStringUtils::trimmed(input.split(','));
     // number of commas must match number of list items - 1
     int commas = input.count(',');
 

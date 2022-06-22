@@ -51,7 +51,7 @@ class UBStringUtils
         static QString toUtcIsoDateTime(const QDateTime& dateTime);
         static QDateTime fromUtcIsoDate(const QString& dateString);
 
-
+        static QStringList trimmed(const QStringList& list);
 };
 
 #endif // UBSTRINGUTILS_H
