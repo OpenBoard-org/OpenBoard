@@ -729,7 +729,7 @@
     </message>
     <message>
         <source>Capture Embeddable Web Content</source>
-        <translation>Захватить веб-содержимого с возможностью вставки</translation>
+        <translation>Захват веб-содержимого с возможностью вставки</translation>
     </message>
     <message>
         <source>Show on Display</source>
@@ -813,35 +813,35 @@
     </message>
     <message>
         <source>Small Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>Маленький ластик</translation>
     </message>
     <message>
         <source>Color 1</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет 1</translation>
     </message>
     <message>
         <source>Color 2</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет 2</translation>
     </message>
     <message>
         <source>Color 3</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет 3</translation>
     </message>
     <message>
         <source>Color 4</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет 4</translation>
     </message>
     <message>
         <source>Color 5</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет 5</translation>
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Рисование промежуточных линий сетки</translation>
     </message>
     <message>
         <source>Capture Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Захват веб-содержимого</translation>
     </message>
 </context>
 <context>
@@ -902,11 +902,11 @@
     </message>
     <message>
         <source>Loading scene (%1/%2)</source>
-        <translation type="unfinished"></translation>
+	<translation>Загрузка сцены (%1/%2)</translation>
     </message>
     <message>
         <source>Moving cached scenes (%1/%2)</source>
-        <translation type="unfinished"></translation>
+	<translation>Перемещение кэшированных сцен (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -921,7 +921,7 @@
     </message>
     <message>
         <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно открыть ваш файл UBX напрямую. Пожалуйста, импортируйте его в режиме документов</translation>
     </message>
 </context>
 <context>
@@ -955,7 +955,7 @@
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Рисование промежуточных линий сетки</translation>
     </message>
 </context>
 <context>
@@ -994,7 +994,7 @@
     </message>
     <message>
         <source>Add file operation failed: file copying error</source>
-        <translation>Операции добавления файла завершена неудачей: ошибка копирования</translation>
+        <translation>Операция добавления файла завершена неудачей: ошибка копирования</translation>
     </message>
     <message>
         <source>Group</source>
@@ -1018,7 +1018,7 @@
     </message>
     <message>
         <source>Color</source>
-        <translation type="unfinished">Цвет</translation>
+        <translation>Цвет</translation>
     </message>
 </context>
 <context>
@@ -1153,7 +1153,7 @@
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="vanished">Вы уверены, что хотите удалить папку &apos;%1 и все ее содержимое?</translation>
+        <translation type="vanished">Вы уверены, что хотите удалить папку &apos;%1 и все её содержимое?</translation>
     </message>
     <message>
         <source>No document selected!</source>
@@ -1216,7 +1216,7 @@
     </message>
     <message>
         <source>Untitled Documents</source>
-        <translation>Документы без Названия</translation>
+        <translation>Документы без названия</translation>
     </message>
     <message numerus="yes">
         <source>duplicated %1 page</source>
@@ -1244,7 +1244,7 @@
     </message>
     <message>
         <source>Refreshing Document Thumbnails View (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Обновление окна просмотра эскизов документов</translation>
     </message>
 </context>
 <context>
@@ -1298,7 +1298,7 @@
     </message>
     <message>
         <source>Generating thumbnails for board (%1/%2)</source>
-        <translation type="unfinished"></translation>
+	<translation>Создание эскизов для доски (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1434,7 +1434,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation>Не удалось экспортировать в выбранное расположение. Нет доступа к возможности сохранения.</translation>
+        <translation>Не удалось экспортировать в выбранное расположение. Нет требуемых прав для возможности сохранения.</translation>
     </message>
     <message>
         <source>Export failed: location not writable</source>
@@ -1881,7 +1881,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Publishing to Intranet in progress %1 %</source>
-        <translation>Ход размещения в интранете %1 %</translation>
+        <translation>Выполняется публикация в Интранет %1 %</translation>
     </message>
 </context>
 <context>
@@ -1910,7 +1910,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Ok</source>
-        <translation>Ok</translation>
+        <translation>Oк</translation>
     </message>
 </context>
 <context>
@@ -1998,11 +1998,11 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Renaming pages (%1/%2)</source>
-        <translation type="unfinished"></translation>
+	<translation>Переименование страниц (%1/%2)</translation>
     </message>
     <message>
         <source>Retrieving all your documents (found : %1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Извлечение всех документов (найдено : %1)</translation>
     </message>
 </context>
 <context>
@@ -2080,7 +2080,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Publish to Intranet</source>
-        <translation>Опубликовать в интранете</translation>
+        <translation>Опубликовать в Интранете</translation>
     </message>
     <message>
         <source>Publish to Youtube</source>
@@ -2169,7 +2169,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Loading thumbnail (%1/%2)</source>
-        <translation type="unfinished"></translation>
+	<translation>Загрузка эскиза (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -2211,7 +2211,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Axes</source>
-        <translation type="unfinished"></translation>
+        <translation>Оси</translation>
     </message>
 </context>
 <context>
@@ -2576,7 +2576,7 @@ Please reboot the application to access the updated documents.</source>
     <name>XPDFRenderer</name>
     <message>
         <source>Processing...</source>
-        <translation type="unfinished"></translation>
+        <translation>Обработка...</translation>
     </message>
 </context>
 <context>
@@ -2794,7 +2794,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Positioned at the Bottom (recommended for white boards)</source>
-        <translation>Расположение внизу (рекомендуется для белых досок)</translation>
+        <translation>Расположение внизу (рекомендуется для электронных досок)</translation>
     </message>
     <message>
         <source>Display Text Under Button</source>
@@ -2846,7 +2846,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Multi display</source>
-        <translation>Несколько монитров</translation>
+        <translation>Несколько мониторов</translation>
     </message>
     <message>
         <source>Swap control display and view display</source>
@@ -2870,7 +2870,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Proxy User:</source>
-        <translation>Прокси пользователь:</translation>
+        <translation>Пользователь прокси:</translation>
     </message>
     <message>
         <source>Pass:</source>
@@ -2934,11 +2934,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>PDF Rendering</source>
-        <translation type="unfinished"></translation>
+        <translation>Рендеринг PDF</translation>
     </message>
     <message>
         <source>Improve zoom execution time (can slightly affect rendering quality)</source>
-        <translation type="unfinished"></translation>
+        <translation>Уменьшение времени выполнения масштабирования (может незначительно повлиять на качество рендеринга)</translation>
     </message>
 </context>
 <context>
@@ -2965,7 +2965,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a content to capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите содержимое для захвата</translation>
     </message>
 </context>
 </TS>
