@@ -729,7 +729,7 @@
     </message>
     <message>
         <source>Capture Embeddable Web Content</source>
-        <translation>Захватить веб-содержимого с возможностью вставки</translation>
+        <translation>Захват веб-содержимого с возможностью вставки</translation>
     </message>
     <message>
         <source>Show on Display</source>
@@ -994,7 +994,7 @@
     </message>
     <message>
         <source>Add file operation failed: file copying error</source>
-        <translation>Операции добавления файла завершена неудачей: ошибка копирования</translation>
+        <translation>Операция добавления файла завершена неудачей: ошибка копирования</translation>
     </message>
     <message>
         <source>Group</source>
@@ -1153,7 +1153,7 @@
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="vanished">Вы уверены, что хотите удалить папку &apos;%1 и все ее содержимое?</translation>
+        <translation type="vanished">Вы уверены, что хотите удалить папку &apos;%1 и все её содержимое?</translation>
     </message>
     <message>
         <source>No document selected!</source>
@@ -1216,7 +1216,7 @@
     </message>
     <message>
         <source>Untitled Documents</source>
-        <translation>Документы без Названия</translation>
+        <translation>Документы без названия</translation>
     </message>
     <message numerus="yes">
         <source>duplicated %1 page</source>
@@ -1434,7 +1434,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation>Не удалось экспортировать в выбранное расположение. Нет доступа к возможности сохранения.</translation>
+        <translation>Не удалось экспортировать в выбранное расположение. Нет требуемых прав для возможности сохранения.</translation>
     </message>
     <message>
         <source>Export failed: location not writable</source>
@@ -1881,7 +1881,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Publishing to Intranet in progress %1 %</source>
-        <translation>Ход размещения в интранете %1 %</translation>
+        <translation>Выполняется публикация в Интранет %1 %</translation>
     </message>
 </context>
 <context>
@@ -1910,7 +1910,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Ok</source>
-        <translation>Ok</translation>
+        <translation>Oк</translation>
     </message>
 </context>
 <context>
@@ -2080,7 +2080,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Publish to Intranet</source>
-        <translation>Опубликовать в интранете</translation>
+        <translation>Опубликовать в Интранете</translation>
     </message>
     <message>
         <source>Publish to Youtube</source>
@@ -2794,7 +2794,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Positioned at the Bottom (recommended for white boards)</source>
-        <translation>Расположение внизу (рекомендуется для белых досок)</translation>
+        <translation>Расположение внизу (рекомендуется для электронных досок)</translation>
     </message>
     <message>
         <source>Display Text Under Button</source>
@@ -2870,7 +2870,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Proxy User:</source>
-        <translation>Прокси пользователь:</translation>
+        <translation>Пользователь прокси:</translation>
     </message>
     <message>
         <source>Pass:</source>
