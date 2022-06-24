@@ -41,9 +41,10 @@ class UBStringUtils
         ~UBStringUtils() {}
 
     public:
+        static bool containsPrefix(const QStringList& prefixes, const QString& string, Qt::CaseSensitivity cs);
         static QStringList sortByLastDigit(const QStringList& source);
 
-        static QString netxDigitizedName(const QString& source);
+        static QString nextDigitizedName(const QString& source);
 
         static QString toCanonicalUuid(const QUuid& uuid);
 
