@@ -263,12 +263,24 @@ void UBGraphicsTextItemDelegate::customize(QFontDialog &fontDialog)
 
             QStringList customFontList =  UBResources::resources()->customFontList();
             int index = 0;
-            foreach (QString dialogFontName, dialogFontNames){
-                if (safeWebFontNames.contains(dialogFontName, Qt::CaseInsensitive) || customFontList.contains(dialogFontName, Qt::CaseSensitive))
+            int remove = 0;
+
+            for (const QString& dialogFontName : dialogFontNames)
+            {
+                if (UBStringUtils::containsPrefix(safeWebFontNames, dialogFontName, Qt::CaseInsensitive) ||
+                        UBStringUtils::containsPrefix(customFontList, dialogFontName, Qt::CaseSensitive))
+                {
+                    stringListModel->removeRows(index, remove);
+                    remove = 0;
                     index++;
+                }
                 else
-                    stringListModel->removeRow(index);
+                {
+                    ++remove;
+                }
             }
+
+            stringListModel->removeRows(index, remove);
         }
     }
     QList<QComboBox*> comboBoxes = fontDialog.findChildren<QComboBox*>();

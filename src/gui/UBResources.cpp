@@ -88,4 +88,6 @@ void UBResources::buildFontList()
         int fontId = QFontDatabase::addApplicationFont(fontFile);
         mCustomFontList << QFontDatabase::applicationFontFamilies(fontId);
     }
+
+    mCustomFontList.removeDuplicates();
 }
