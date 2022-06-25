@@ -183,22 +183,11 @@ UBDesktopAnnotationController::~UBDesktopAnnotationController()
     delete mTransparentDrawingView;
 }
 
-void setPaletteIconsWithoutArrows(){
-    QIcon penIcon;
-    QIcon markerIcon;
-    QIcon eraserIcon;
-    penIcon.addFile(":images/stylusPalette/pen.svg", QSize(), QIcon::Normal, QIcon::Off);
-    penIcon.addFile(":images/stylusPalette/penOn.svg", QSize(), QIcon::Normal, QIcon::On);
-    //UBApplication::mainWindow->actionPen->setIcon(penIcon);
-    markerIcon.addFile(":images/stylusPalette/marker.svg", QSize(), QIcon::Normal, QIcon::Off);
-    markerIcon.addFile(":images/stylusPalette/markerOn.svg", QSize(), QIcon::Normal, QIcon::On);
-    UBApplication::mainWindow->actionMarker->setIcon(markerIcon);
-    eraserIcon.addFile(":images/stylusPalette/eraser.svg", QSize(), QIcon::Normal, QIcon::Off);
-    eraserIcon.addFile(":images/stylusPalette/eraserOn.svg", QSize(), QIcon::Normal, QIcon::On);
-    UBApplication::mainWindow->actionEraser->setIcon(eraserIcon);
-}
-
-void setPaletteIconsWithArrows(){
+/**
+ * @brief setPenMarkerEraserIconsWithArrows adds small arrows onto the action icons of the pen,
+ * the marker and the eraser. These have the purpose to open sub palettes in the desktop mode.
+ */
+void setPenMarkerEraserIconsWithArrows(){
     QIcon penIcon;
     QIcon markerIcon;
     QIcon eraserIcon;
@@ -213,6 +202,24 @@ void setPaletteIconsWithArrows(){
     UBApplication::mainWindow->actionEraser->setIcon(eraserIcon);
 }
 
+/**
+ * @brief setPenMarkerEraserIconsWithoutArrows removes the small arrows of the action icons of the
+ * pen, the marker and the eraser. These arrow icons are only used in the desktop mode.
+ */
+void setPenMarkerEraserIconsWithoutArrows(){
+    QIcon penIcon;
+    QIcon markerIcon;
+    QIcon eraserIcon;
+    penIcon.addFile(":images/stylusPalette/pen.svg", QSize(), QIcon::Normal, QIcon::Off);
+    penIcon.addFile(":images/stylusPalette/penOn.svg", QSize(), QIcon::Normal, QIcon::On);
+    //UBApplication::mainWindow->actionPen->setIcon(penIcon);
+    markerIcon.addFile(":images/stylusPalette/marker.svg", QSize(), QIcon::Normal, QIcon::Off);
+    markerIcon.addFile(":images/stylusPalette/markerOn.svg", QSize(), QIcon::Normal, QIcon::On);
+    UBApplication::mainWindow->actionMarker->setIcon(markerIcon);
+    eraserIcon.addFile(":images/stylusPalette/eraser.svg", QSize(), QIcon::Normal, QIcon::Off);
+    eraserIcon.addFile(":images/stylusPalette/eraserOn.svg", QSize(), QIcon::Normal, QIcon::On);
+    UBApplication::mainWindow->actionEraser->setIcon(eraserIcon);
+}
 void UBDesktopAnnotationController::updateColors(){
     if(UBApplication::boardController->activeScene()->isDarkBackground()){
         mTransparentDrawingScene->setBackground(true, UBPageBackground::plain);
@@ -336,7 +343,7 @@ UBBoardView* UBDesktopAnnotationController::drawingView()
 void UBDesktopAnnotationController::showWindow()
 {
     mDesktopPalette->setDisplaySelectButtonVisible(true);
-    setPaletteIconsWithArrows();
+    setPenMarkerEraserIconsWithArrows();
 
     connect(UBApplication::applicationController, SIGNAL(desktopMode(bool))
             , mDesktopPalette, SLOT(setDisplaySelectButtonVisible(bool)));
@@ -455,7 +462,7 @@ void UBDesktopAnnotationController::hideWindow()
 
 void UBDesktopAnnotationController::goToUniboard()
 {
-    setPaletteIconsWithoutArrows();
+    setPenMarkerEraserIconsWithoutArrows();
     UBApplication::applicationController->showBoard();
 }
 
