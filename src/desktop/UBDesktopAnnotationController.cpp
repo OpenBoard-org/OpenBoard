@@ -212,7 +212,7 @@ void setPenMarkerEraserIconsWithoutArrows(){
     QIcon eraserIcon;
     penIcon.addFile(":images/stylusPalette/pen.svg", QSize(), QIcon::Normal, QIcon::Off);
     penIcon.addFile(":images/stylusPalette/penOn.svg", QSize(), QIcon::Normal, QIcon::On);
-    //UBApplication::mainWindow->actionPen->setIcon(penIcon);
+    UBApplication::mainWindow->actionPen->setIcon(penIcon);
     markerIcon.addFile(":images/stylusPalette/marker.svg", QSize(), QIcon::Normal, QIcon::Off);
     markerIcon.addFile(":images/stylusPalette/markerOn.svg", QSize(), QIcon::Normal, QIcon::On);
     UBApplication::mainWindow->actionMarker->setIcon(markerIcon);
