@@ -75,6 +75,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
         , mbArrowClicked(false)
         , mBoardStylusTool(UBDrawingController::drawingController()->stylusTool())
         , mDesktopStylusTool(UBDrawingController::drawingController()->stylusTool())
+        , buttonsConnected(false)
 {
 
     mTransparentDrawingView = new UBBoardView(UBApplication::boardController, static_cast<QWidget*>(0), false, true); // deleted in UBDesktopAnnotationController::destructor
@@ -721,50 +722,56 @@ void UBDesktopAnnotationController::switchCursor(const int tool)
     mTransparentDrawingView->setToolCursor(tool);
 }
 
-/**
- * \brief Reconnect the pressed & released signals of the property palettes
- */
-void UBDesktopAnnotationController::onDesktopPaletteMaximized()
-{
+void UBDesktopAnnotationController::connectButtons(){
+    if(buttonsConnected) return;
+    buttonsConnected = true;
     // Pen
     UBActionPaletteButton* pPenButton = mDesktopPalette->getButtonFromAction(UBApplication::mainWindow->actionPen);
     if(NULL != pPenButton)
     {
-        connect(pPenButton, SIGNAL(pressed()), this, SLOT(penActionPressed()));
-        connect(pPenButton, SIGNAL(released()), this, SLOT(penActionReleased()));
+        connect(pPenButton, &UBActionPaletteButton::pressed, this, &UBDesktopAnnotationController::penActionPressed);
+        connect(pPenButton, &UBActionPaletteButton::released, this, &UBDesktopAnnotationController::penActionReleased);
     }
-
     // Eraser
     UBActionPaletteButton* pEraserButton = mDesktopPalette->getButtonFromAction(UBApplication::mainWindow->actionEraser);
     if(NULL != pEraserButton)
     {
-        connect(pEraserButton, SIGNAL(pressed()), this, SLOT(eraserActionPressed()));
-        connect(pEraserButton, SIGNAL(released()), this, SLOT(eraserActionReleased()));
+        connect(pEraserButton, &UBActionPaletteButton::pressed, this, &UBDesktopAnnotationController::eraserActionPressed);
+        connect(pEraserButton, &UBActionPaletteButton::released, this, &UBDesktopAnnotationController::eraserActionReleased);
     }
 
     // Marker
     UBActionPaletteButton* pMarkerButton = mDesktopPalette->getButtonFromAction(UBApplication::mainWindow->actionMarker);
     if(NULL != pMarkerButton)
     {
-        connect(pMarkerButton, SIGNAL(pressed()), this, SLOT(markerActionPressed()));
-        connect(pMarkerButton, SIGNAL(released()), this, SLOT(markerActionReleased()));
+        connect(pMarkerButton, &UBActionPaletteButton::pressed, this, &UBDesktopAnnotationController::markerActionPressed);
+        connect(pMarkerButton, &UBActionPaletteButton::released, this, &UBDesktopAnnotationController::markerActionReleased);
     }
 
     // Pointer
     UBActionPaletteButton* pSelectorButton = mDesktopPalette->getButtonFromAction(UBApplication::mainWindow->actionSelector);
     if(NULL != pSelectorButton)
     {
-        connect(pSelectorButton, SIGNAL(pressed()), this, SLOT(selectorActionPressed()));
-        connect(pSelectorButton, SIGNAL(released()), this, SLOT(selectorActionReleased()));
+        connect(pSelectorButton, &UBActionPaletteButton::pressed, this, &UBDesktopAnnotationController::selectorActionPressed);
+        connect(pSelectorButton, &UBActionPaletteButton::released, this, &UBDesktopAnnotationController::selectorActionReleased);
     }
 
     // Pointer
     UBActionPaletteButton* pPointerButton = mDesktopPalette->getButtonFromAction(UBApplication::mainWindow->actionPointer);
     if(NULL != pPointerButton)
     {
-        connect(pPointerButton, SIGNAL(pressed()), this, SLOT(pointerActionPressed()));
-        connect(pPointerButton, SIGNAL(released()), this, SLOT(pointerActionReleased()));
+        connect(pPointerButton, &UBActionPaletteButton::pressed, this, &UBDesktopAnnotationController::pointerActionPressed);
+        connect(pPointerButton, &UBActionPaletteButton::released, this, &UBDesktopAnnotationController::pointerActionReleased);
     }
+}
+
+
+/**
+ * \brief Reconnect the pressed & released signals of the property palettes
+ */
+void UBDesktopAnnotationController::onDesktopPaletteMaximized()
+{
+    connectButtons();
 }
 
 /**
@@ -773,29 +780,6 @@ void UBDesktopAnnotationController::onDesktopPaletteMaximized()
  */
 void UBDesktopAnnotationController::onDesktopPaletteMinimize()
 {
-    // Pen
-    UBActionPaletteButton* pPenButton = mDesktopPalette->getButtonFromAction(UBApplication::mainWindow->actionPen);
-    if(NULL != pPenButton)
-    {
-        disconnect(pPenButton, SIGNAL(pressed()), this, SLOT(penActionPressed()));
-        disconnect(pPenButton, SIGNAL(released()), this, SLOT(penActionReleased()));
-    }
-
-    // Marker
-    UBActionPaletteButton* pMarkerButton = mDesktopPalette->getButtonFromAction(UBApplication::mainWindow->actionMarker);
-    if(NULL != pMarkerButton)
-    {
-        disconnect(pMarkerButton, SIGNAL(pressed()), this, SLOT(markerActionPressed()));
-        disconnect(pMarkerButton, SIGNAL(released()), this, SLOT(markerActionReleased()));
-    }
-
-    // Eraser
-    UBActionPaletteButton* pEraserButton = mDesktopPalette->getButtonFromAction(UBApplication::mainWindow->actionEraser);
-    if(NULL != pEraserButton)
-    {
-        disconnect(pEraserButton, SIGNAL(pressed()), this, SLOT(eraserActionPressed()));
-        disconnect(pEraserButton, SIGNAL(released()), this, SLOT(eraserActionReleased()));
-    }
 }
 
 void UBDesktopAnnotationController::TransparentWidgetResized()
