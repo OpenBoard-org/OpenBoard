@@ -2914,7 +2914,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation>Проверять, могут ли быть данные Open-Sankoré импортированы при запуске</translation>
+        <translation>Проверять возможность импорта при запуске</translation>
     </message>
     <message>
         <source>Documents Mode</source>
