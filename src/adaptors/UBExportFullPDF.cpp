@@ -199,6 +199,11 @@ bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
 
             MergeDescription mergeInfo;
 
+            // If the PDF was scaled when added to the scene (e.g if it was loaded from a document with a different DPI
+            // than the current one), it should also be scaled here.
+            qreal currentDpi = UBApplication::displayManager->logicalDpi(ScreenRole::Control);
+            qreal pdfScale = qreal(pDocumentProxy->pageDpi())/currentDpi;
+
             int existingPageCount = pDocumentProxy->pageCount();
 
             for(int pageIndex = 0 ; pageIndex < existingPageCount; pageIndex++)
@@ -237,10 +242,6 @@ bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
                     // Now we align the items
                     xPdfOffset += (xPdf - xAnnotation) * scaleFactor * mScaleFactor;
                     yPdfOffset -= (yPdf - yAnnotation) * scaleFactor * mScaleFactor;
-
-                    // If the PDF was scaled when added to the scene (e.g if it was loaded from a document with a different DPI
-                    // than the current one), it should also be scaled here.
-                    qreal pdfScale = pdfItem->scale();
 
                     TransformationDescription pdfTransform(xPdfOffset, yPdfOffset, scaleFactor * pdfScale, 0);
                     TransformationDescription annotationTransform(xAnnotationsOffset, yAnnotationsOffset, 1, 0);
