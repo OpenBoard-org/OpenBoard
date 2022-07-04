@@ -44,6 +44,7 @@ QT += webenginewidgets
 QT += printsupport
 QT += core
 QT += concurrent
+linux: QT += dbus
 
 INCLUDEPATH += src
 

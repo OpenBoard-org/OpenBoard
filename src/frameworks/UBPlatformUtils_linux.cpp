@@ -31,6 +31,8 @@
 
 #include <QtGui>
 #include <QApplication>
+#include <QDBusConnectionInterface>
+#include <QDBusInterface>
 
 #include <unistd.h>
 #include <X11/keysym.h>
@@ -71,6 +73,16 @@ void UBPlatformUtils::fadeDisplayOut()
 void UBPlatformUtils::fadeDisplayIn()
 {
     // NOOP
+}
+
+bool UBPlatformUtils::hasSystemOnScreenKeyboard()
+{
+    QProcess oskTestProcess;
+    oskTestProcess.start("which", QStringList() << "onboard");
+
+    return oskTestProcess.waitForFinished() &&
+                    oskTestProcess.exitStatus() == QProcess::NormalExit &&
+                    oskTestProcess.readAll() != "";
 }
 
 QStringList UBPlatformUtils::availableTranslations()
@@ -449,13 +461,31 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
 
 void UBPlatformUtils::showOSK(bool show)
 {
-    QProcess oskProcess;
-
     if (show)
-        oskProcess.startDetached("/usr/bin/env", {"onboard"});
+    {
+        QDBusInterface dbus("org.onboard.Onboard", "/org/onboard/Onboard/Keyboard");
 
+        if (dbus.isValid())
+        {
+            dbus.call("Show");
+        }
+        else
+        {
+            qDebug() << "onboard not registered/installed";
+        }
+    }
+    // avoid starting onboard just to hide it, so check first if it's running
+    else if (QDBusConnection::sessionBus().interface()->isServiceRegistered("org.onboard.Onboard"))
+    {
+        QDBusInterface dbus("org.onboard.Onboard", "/org/onboard/Onboard/Keyboard");
+
+        if (dbus.isValid())
+        {
+            dbus.call("Hide");
+        }
+    }
     else
-        /* Not exactly a great solution, but it isn't possible to just
-         * close onboard through wmctrl or xdotool */
-        oskProcess.startDetached("pkill", {"-3", "onboard"});
+    {
+        qDebug() << "onboard not registered/installed";
+    }
 }
