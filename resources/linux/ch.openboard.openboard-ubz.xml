@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
   <mime-type type="application/ubz">
+    <icon name="ch.openboard.application-ubz"/>
     <comment>OpenBoard document file</comment>
     <comment xml:lang="fr">Document OpenBoard</comment>
+    <comment xml:lang="de">OpenBoard Dokument</comment>
     <glob pattern="*.ubz"/>
   </mime-type>
 </mime-info>

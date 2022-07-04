@@ -32,6 +32,7 @@
 #include "UBSettings.h"
 
 #include "core/UBApplication.h"
+#include "frameworks/UBPlatformUtils.h"
 #include "gui/UBMainWindow.h"
 #include "gui/UBOpenSankoreImporterWidget.h"
 
@@ -53,7 +54,7 @@ void UBOpenSankoreImporter::onProceedClicked()
 {
     QProcess newProcess;
 #ifdef Q_OS_LINUX
-    newProcess.startDetached(qApp->applicationDirPath()+"/importer/OpenBoardImporter");
+    newProcess.startDetached(UBPlatformUtils::applicationResourcesDirectory()+"/importer/OpenBoardImporter");
 #elif defined Q_OS_OSX
     newProcess.startDetached(qApp->applicationDirPath()+"/../Resources/OpenBoardImporter.app/Contents/MacOS/OpenBoardImporter");
 #elif defined Q_OS_WIN

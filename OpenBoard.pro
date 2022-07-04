@@ -1,4 +1,5 @@
 TARGET = "OpenBoard"
+linux:TARGET = "openboard"
 TEMPLATE = app
 
 CONFIG += c++17
@@ -21,7 +22,6 @@ VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$$
 equals(VERSION_TYPE, r) {
     VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}"
 }
-
 
 LONG_VERSION = "$${VERSION}.$${SVN_VERSION}"
 macx:OSX_VERSION = "$${VERSION} (r$${SVN_VERSION})"
@@ -64,6 +64,7 @@ include(src/tools/tools.pri)
 include(src/desktop/desktop.pri)
 include(src/web/web.pri)
 include(src/singleapplication/singleapplication.pri)
+
 DEFINES += QAPPLICATION_CLASS=QApplication
 
 DEPENDPATH += src/pdf-merger
@@ -88,7 +89,7 @@ UB_ETC.files = resources/etc
 UB_I18N.files = resources/i18n/*.qm
 UB_LIBRARY.files = resources/library
 UB_FONTS.files = resources/fonts
-UB_THIRDPARTY_INTERACTIVE.files = thirdparty/interactive
+UB_CUSTOM_FONTS.files = resources/customizations/fonts
 
 DEFINES += NO_THIRD_PARTY_WARNINGS
 DEFINES += UBVERSION=\"\\\"$${LONG_VERSION}\"\\\" \
@@ -99,7 +100,7 @@ BUILD_DIR = build
 
 macx:BUILD_DIR = $$BUILD_DIR/macx
 win32:BUILD_DIR = $$BUILD_DIR/win32
-linux-g++*:BUILD_DIR = $$BUILD_DIR/linux
+linux:BUILD_DIR = $$BUILD_DIR/linux
 
 CONFIG(debug, debug|release):BUILD_DIR = $$BUILD_DIR/debug
 CONFIG(release, debug|release) {
@@ -142,7 +143,6 @@ win32 {
    UB_LIBRARY.path = $$DESTDIR
    UB_I18N.path = $$DESTDIR/i18n
    UB_ETC.path = $$DESTDIR
-   UB_THIRDPARTY_INTERACTIVE.path = $$DESTDIR/library
    system(md $$replace(BUILD_DIR, /, \\))
    system(echo "$$VERSION" > $$BUILD_DIR/version)
    system(echo "$$LONG_VERSION" > $$BUILD_DIR/longversion)
@@ -231,8 +231,6 @@ macx {
    UB_LIBRARY.path = "$$RESOURCES_DIR"
    UB_FONTS.files = "resources/fonts"
    UB_FONTS.path = "$$RESOURCES_DIR"
-   UB_THIRDPARTY_INTERACTIVE.files = $$files($$THIRD_PARTY_PATH/interactive/*)
-   UB_THIRDPARTY_INTERACTIVE.path = "$$RESOURCES_DIR/library/interactive"
    UB_MACX_ICNS.files = $$files(resources/macx/*.icns)
    UB_MACX_ICNS.path = "$$RESOURCES_DIR"
    UB_MACX_EXTRAS.files = "resources/macx/Save PDF to OpenBoard.workflow"
@@ -435,7 +433,6 @@ macx {
    QMAKE_BUNDLE_DATA += UB_ETC \
        UB_LIBRARY \
        UB_FONTS \
-       UB_THIRDPARTY_INTERACTIVE \
        UB_MACX_ICNS \
        UB_MACX_EXTRAS \
        SPARKLE_KEY \
@@ -451,34 +448,83 @@ macx {
   # system(printf "%02x%02x%02x%02x" `printf $$VERSION_RC | cut -d ',' -f 1` `printf $$VERSION_RC | cut -d ',' -f 2` `printf $$VERSION_RC | cut -d ',' -f 3` `printf $$VERSION_RC | cut -d ',' -f 4` | xxd -r -p > "$$VERSION_RC_PATH")
 }
 
-linux-g++* {
+linux {
+    # Installation prefixes
+    PREFIX = $$(PREFIX)
+    APP_PREFIX = $$(APP_PREFIX)
+    SYS_PREFIX = $$(SYS_PREFIX)
+
+    isEmpty(PREFIX): PREFIX = /usr
+    isEmpty(APP_PREFIX): APP_PREFIX = $$PREFIX/share/openboard
+    isEmpty(SYS_PREFIX): SYS_PREFIX = $$PREFIX
+
+    DEFINES += APP_PREFIX=\"\\\"$$APP_PREFIX\"\\\"
+
+    UB_BINARY.files     = $$DESTDIR/openboard
+    UB_ICON.files       = resources/images/ch.openboard.OpenBoard.svg
+    UB_DESKTOP.files    = resources/linux/ch.openboard.OpenBoard.desktop
+    UB_MIMETYPE.files   = resources/linux/ch.openboard.openboard-ubz.xml
+    UB_MIMEICON.files   = resources/linux/ch.openboard.application-ubz.svg
+
     CONFIG += link_prl
     LIBS += -lcrypto
     #LIBS += -lprofiler
     LIBS += -lX11
+    CONFIG += link_pkgconfig
+    PKGCONFIG += poppler
 
-    greaterThan(QT_MAJOR_VERSION, 5) {
-        LIBS += -lquazip6
-        INCLUDEPATH += "/usr/include/quazip6"
-    } else {
-        LIBS += -lquazip5
-        INCLUDEPATH += "/usr/include/quazip5"
+    # search and configure quazip
+    QUAZIP_PKG = quazip1-qt5 libquazip5-1 quazip-qt5 quazip5
+
+    for(pkg, QUAZIP_PKG):isEmpty(QUAZIP_PKG_FOUND) {
+        # using this workaround as packagesExists did not work for me when invoked from qtcreator
+        # see https://forum.qt.io/topic/136725/
+        PKG_EXISTS = $$system(pkg-config --exists $${pkg} && echo exists)
+        count(PKG_EXISTS, 1) {
+            message("using" $${pkg} "version" $$system(pkg-config --modversion $${pkg}))
+            PKGCONFIG += $${pkg}
+            QUAZIP_PKG_FOUND = true
+        }
     }
 
-    LIBS += -lpoppler
-    INCLUDEPATH += "/usr/include/poppler"
+    isEmpty(QUAZIP_PKG_FOUND) {
+        exists(/usr/include/$$last(QUAZIP_PKG/*)) {
+            message(Using quazip in /usr/include/$$last(QUAZIP_PKG))
+            LIBS += -l$$last(QUAZIP_PKG)
+            INCLUDEPATH += "/usr/include/$$last(QUAZIP_PKG)"
+        } else {
+            error(quazip not found)
+        }
+    }
 
     QMAKE_CFLAGS += -fopenmp
     QMAKE_CXXFLAGS += -fopenmp
     QMAKE_LFLAGS += -fopenmp
-    UB_LIBRARY.path = $$DESTDIR
-    UB_I18N.path = $$DESTDIR/i18n
-    UB_ETC.path = $$DESTDIR
-    UB_THIRDPARTY_INTERACTIVE.path = $$DESTDIR/library
+
+    UB_BINARY.path       = $$SYS_PREFIX/bin
+    UB_LIBRARY.path      = $$APP_PREFIX
+    UB_I18N.path         = $$APP_PREFIX/i18n/
+    UB_ETC.path          = $$APP_PREFIX
+    UB_FONTS.path        = $$APP_PREFIX
+    UB_CUSTOM_FONTS.path = $$APP_PREFIX/customizations
+    UB_ICON.path         = $$SYS_PREFIX/share/icons/hicolor/scalable/apps/
+    UB_DESKTOP.path      = $$SYS_PREFIX/share/applications/
+    UB_MIMETYPE.path     = $$SYS_PREFIX/share/mime/packages/
+    UB_MIMEICON.path     = $$SYS_PREFIX/share/icons/hicolor/scalable/mimetypes
+
     system(mkdir -p $$BUILD_DIR)
     system(echo "$$VERSION" > $$BUILD_DIR/version)
     system(echo "$$LONG_VERSION" > $$BUILD_DIR/longversion)
     system(echo "$$SVN_VERSION" > $$BUILD_DIR/svnversion)
+
+# for Linux-type installs only
+    INSTALLS = UB_BINARY \
+        UB_FONTS \
+        UB_CUSTOM_FONTS \
+        UB_ICON \
+        UB_DESKTOP \
+        UB_MIMETYPE \
+        UB_MIMEICON
 }
 
 RESOURCES += resources/OpenBoard.qrc
@@ -517,12 +563,6 @@ TRANSLATIONS = resources/i18n/OpenBoard_en.ts \
    resources/i18n/OpenBoard_hu.ts \
    resources/i18n/OpenBoard_mg.ts
 
-INSTALLS = UB_ETC \
+INSTALLS += UB_ETC \
    UB_I18N \
-   UB_LIBRARY \
-   UB_THIRDPARTY_INTERACTIVE
-
-DISTFILES += \
-    resources/images/moveDown.svg \
-    resources/images/moveDownDisabled.svg
-
+   UB_LIBRARY
