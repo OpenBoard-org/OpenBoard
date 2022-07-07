@@ -17,7 +17,9 @@
 initializeVariables()
 {
   APPLICATION_NAME="OpenBoard"
+  BINARY_NAME=openboard
   STANDARD_QT_USED=true
+  export APP_PREFIX=/opt/openboard
 
   # Root directory
   SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -167,9 +169,12 @@ else
 fi
 
 
-make -j4 release-install
+INSTALL_ROOT=$PRODUCT_PATH make -j4 release-install
 
-if [ ! -e "$PRODUCT_PATH/${APPLICATION_NAME}" ]; then
+# remove target, binary used from installed location
+rm $PRODUCT_PATH/${BINARY_NAME}
+
+if [ ! -e "$PRODUCT_PATH/usr/bin/${BINARY_NAME}" ]; then
     notifyError "${APPLICATION_NAME} build failed"
 else
     notifyProgress "Finished building OpenBoard. You may now run the packaging script."
