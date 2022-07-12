@@ -94,10 +94,7 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
     mMaximizeAction = new QAction(maximizeIcon, tr("Show the stylus palette"), this);
     connect(mMaximizeAction, SIGNAL(triggered()), this, SLOT(maximizeMe()));
     connect(this, SIGNAL(maximizeStart()), this, SLOT(maximizeMe()));
-    connect(this, SIGNAL(minimizeStart(eMinimizedLocation)), this, SLOT(minimizeMe(eMinimizedLocation)));
     setMinimizePermission(true);
-
-    connect(rightPalette, SIGNAL(resized()), this, SLOT(parentResized()));
 }
 
 
@@ -162,9 +159,8 @@ void UBDesktopPalette::setDisplaySelectButtonVisible(bool visible)
 }
 
 //  Called when the palette is near the border and must be minimized
-void UBDesktopPalette::minimizeMe(eMinimizedLocation location)
+void UBDesktopPalette::minimizeMe()
 {
-    Q_UNUSED(location);
     QList<QAction*> actions;
     clearLayout();
 

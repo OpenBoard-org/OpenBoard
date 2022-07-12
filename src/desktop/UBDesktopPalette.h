@@ -66,7 +66,6 @@ class UBDesktopPalette : public UBActionPalette
         void updateShowHideState(bool pShowEnabled);
         void setShowHideButtonVisible(bool visible);
         void setDisplaySelectButtonVisible(bool show);
-        void minimizeMe(eMinimizedLocation location);
         void maximizeMe();
         void parentResized();
 
@@ -88,6 +87,7 @@ private:
         UBRightPalette* rightPalette;
         void adjustPosition();
 
+        virtual void minimizeMe();
 
 signals:
         void stylusToolChanged(int tool);

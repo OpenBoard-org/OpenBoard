@@ -97,6 +97,8 @@ class UBFloatingPalette : public QWidget
     private:
         void removeAllAssociatedPalette();
         void minimizePalette(const QPoint& pos);
+        virtual void minimizeMe(){};
+
 
         QList<UBFloatingPalette*> mAssociatedPalette;
         QPoint mDragPosition;
@@ -106,7 +108,6 @@ class UBFloatingPalette : public QWidget
 
     signals:
         void mouseEntered();
-        void minimizeStart(eMinimizedLocation location);
         void maximizeStart();
         void maximized();
         void moving();

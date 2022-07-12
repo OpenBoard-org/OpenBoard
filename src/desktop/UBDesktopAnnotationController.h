@@ -123,7 +123,6 @@ class UBDesktopAnnotationController : public QObject
 
         void switchCursor(int tool);
         void onDesktopPaletteMaximized();
-        void onDesktopPaletteMinimize();
         void onTransparentWidgetResized();
         void refreshMask();
         void onToolClicked();

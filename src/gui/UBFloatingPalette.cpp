@@ -315,7 +315,7 @@ void UBFloatingPalette::minimizePalette(const QPoint& pos)
     //  Minimize the Palette
     if(mMinimizedLocation != eMinimizedLocation_None)
     {
-        emit minimizeStart(mMinimizedLocation);
+        minimizeMe();
     }
     }
     else
