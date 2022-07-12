@@ -75,7 +75,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
         , mbArrowClicked(false)
         , mBoardStylusTool(UBDrawingController::drawingController()->stylusTool())
         , mDesktopStylusTool(UBDrawingController::drawingController()->stylusTool())
-        , buttonsConnected(false)
 {
 
     mTransparentDrawingView = new UBBoardView(UBApplication::boardController, static_cast<QWidget*>(0), false, true); // deleted in UBDesktopAnnotationController::destructor
@@ -723,8 +722,6 @@ void UBDesktopAnnotationController::switchCursor(const int tool)
 }
 
 void UBDesktopAnnotationController::connectButtons(){
-    if(buttonsConnected) return;
-    buttonsConnected = true;
     // Pen
     UBActionPaletteButton* pPenButton = mDesktopPalette->getButtonFromAction(UBApplication::mainWindow->actionPen);
     if(NULL != pPenButton)

@@ -131,7 +131,6 @@ class UBDesktopAnnotationController : public QObject
     private:
 
         void connectButtons();
-        bool buttonsConnected;
 
         void setAssociatedPalettePosition(UBActionPalette* palette, const QString& actionName);
         void togglePropertyPalette(UBActionPalette* palette);
