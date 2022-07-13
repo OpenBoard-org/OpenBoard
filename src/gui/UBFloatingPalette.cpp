@@ -89,10 +89,6 @@ void UBFloatingPalette::setBackgroundBrush(const QBrush& brush)
 void UBFloatingPalette::setCustomPosition(bool pFlag)
 {
     mCustomPosition = pFlag;
-
-    if (pFlag)
-        removeAllAssociatedPalette();
-
 }
 
 int UBFloatingPalette::radius()
@@ -190,16 +186,6 @@ void UBFloatingPalette::moveInsideParent(const QPoint &position)
     }
 }
 
-void UBFloatingPalette::addAssociatedPalette(UBFloatingPalette* pOtherPalette)
-{
-    mAssociatedPalette.append(pOtherPalette);
-}
-
-void UBFloatingPalette::removeAssociatedPalette(UBFloatingPalette* pOtherPalette)
-{
-    mAssociatedPalette.removeOne(pOtherPalette);
-}
-
 QSize UBFloatingPalette::preferredSize()
 {
     QSize palettePreferredSize = sizeHint();
@@ -216,11 +202,6 @@ void UBFloatingPalette::adjustSizeAndPosition(bool pUp)
 {
     QSize newPreferredSize = preferredSize();
 
-    foreach (UBFloatingPalette* palette, mAssociatedPalette)
-    {
-        QSize palettePreferredSize = palette->preferredSize();
-        newPreferredSize.setWidth(newPreferredSize.expandedTo(palettePreferredSize).width());
-    }
     QSize previousSize = size();
     int biggerHeight = preferredSize().height() - previousSize.height();
     if ((pUp && (biggerHeight > 0))
@@ -233,20 +214,6 @@ void UBFloatingPalette::adjustSizeAndPosition(bool pUp)
     {
         resize(newPreferredSize);
         moveInsideParent(pos());
-        foreach(UBFloatingPalette* palette, mAssociatedPalette)
-        {
-            palette->move(pos().x(), palette->pos().y());
-            palette->resize(newPreferredSize.width(), palette->size().height());
-        }
-    }
-}
-
-void UBFloatingPalette::removeAllAssociatedPalette()
-{
-    foreach (UBFloatingPalette* palette, mAssociatedPalette)
-    {
-        palette->removeAssociatedPalette(this);
-        removeAssociatedPalette(palette);
     }
 }
 

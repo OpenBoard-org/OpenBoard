@@ -54,13 +54,6 @@ class UBFloatingPalette : public QWidget
         virtual void mousePressEvent(QMouseEvent *event);
         virtual void mouseReleaseEvent(QMouseEvent *event);
 
-        /**
-         * Add another floating palette to the associated palette. All associated palettes will have the same width
-         * that is calculated as the minimum width of all associated palettes.
-         */
-        void addAssociatedPalette(UBFloatingPalette* pOtherPalette);
-        void removeAssociatedPalette(UBFloatingPalette* pOtherPalette);
-
         virtual void adjustSizeAndPosition(bool pUp = true);
 
         void setCustomPosition(bool pFlag);
@@ -92,12 +85,9 @@ class UBFloatingPalette : public QWidget
         bool mCanBeMinimized;
 
     private:
-        void removeAllAssociatedPalette();
         virtual void minimizePalette(const QPoint& pos){Q_UNUSED(pos)};
         virtual void minimizeMe(){};
 
-
-        QList<UBFloatingPalette*> mAssociatedPalette;
         QPoint mDragPosition;
         Qt::Corner mDefaultPosition;
 
