@@ -54,7 +54,14 @@ class UBFloatingPalette : public QWidget
         virtual void mousePressEvent(QMouseEvent *event);
         virtual void mouseReleaseEvent(QMouseEvent *event);
 
-        virtual void adjustSizeAndPosition(bool pUp = true);
+        /**
+         * @brief adjustSizeAndPosition adjusts the size of the palette. In case it is within a parent
+         * widget, the size must be within the parent widget.
+         * @param alignUp This is a special function that controls what happens if the height changes.
+         * If in this case alignUp is true, the palette is moved up. If alignUp is false, the palette
+         * is moved down.
+         */
+        virtual void adjustSizeAndPosition(bool alignUp = true);
 
         void setCustomPosition(bool pFlag);
 

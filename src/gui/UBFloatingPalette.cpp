@@ -198,14 +198,14 @@ QSize UBFloatingPalette::preferredSize()
     return palettePreferredSize;
 }
 
-void UBFloatingPalette::adjustSizeAndPosition(bool pUp)
+void UBFloatingPalette::adjustSizeAndPosition(bool alignUp)
 {
     QSize newPreferredSize = preferredSize();
 
     QSize previousSize = size();
     int biggerHeight = preferredSize().height() - previousSize.height();
-    if ((pUp && (biggerHeight > 0))
-        || (!pUp && (biggerHeight < 0)))
+    if ((alignUp && (biggerHeight > 0))
+        || (!alignUp && (biggerHeight < 0)))
     {
         move(pos().x(), pos().y() - biggerHeight);
     }
