@@ -70,8 +70,6 @@ class UBFloatingPalette : public QWidget
         void setBackgroundBrush(const QBrush& brush);
         void setGrip(bool newGrip);
 
-        void setMinimizePermission(bool permission);
-
     protected:
 
         virtual void enterEvent(QEvent *event);

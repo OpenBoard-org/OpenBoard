@@ -282,8 +282,3 @@ int UBFloatingPalette::gripSize()
 {
     return 5;
 }
-
-void UBFloatingPalette::setMinimizePermission(bool permission)
-{
-    mCanBeMinimized = permission;
-}
