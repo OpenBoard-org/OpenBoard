@@ -87,6 +87,10 @@ private:
         UBRightPalette* rightPalette;
         void adjustPosition();
 
+        eMinimizedLocation minimizedLocation(){return mMinimizedLocation;}
+        eMinimizedLocation mMinimizedLocation;
+
+
         virtual void minimizePalette(const QPoint& pos);
         virtual void minimizeMe();
 

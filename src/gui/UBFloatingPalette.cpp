@@ -43,7 +43,6 @@ UBFloatingPalette::UBFloatingPalette(Qt::Corner position, QWidget *parent)
     , mCustomPosition(false)
     , mIsMoving(false)
     , mCanBeMinimized(false)
-    , mMinimizedLocation(eMinimizedLocation_None)
     , mDefaultPosition(position)
 {
     setCursor(Qt::ArrowCursor);

@@ -49,6 +49,7 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
     , mShowHideAction(NULL)
     , mDisplaySelectAction(NULL)
     , rightPalette(_rightPalette)
+    , mMinimizedLocation(eMinimizedLocation_None)
 {
     QList<QAction*> actions;
 
