@@ -93,17 +93,17 @@ class UBFloatingPalette : public QWidget
         virtual int getParentRightOffset();
 
         eMinimizedLocation minimizedLocation(){return mMinimizedLocation;}
+        bool mCanBeMinimized;
+        eMinimizedLocation mMinimizedLocation;
 
     private:
         void removeAllAssociatedPalette();
-        void minimizePalette(const QPoint& pos);
+        virtual void minimizePalette(const QPoint& pos){Q_UNUSED(pos)};
         virtual void minimizeMe(){};
 
 
         QList<UBFloatingPalette*> mAssociatedPalette;
         QPoint mDragPosition;
-        bool mCanBeMinimized;
-        eMinimizedLocation mMinimizedLocation;
         Qt::Corner mDefaultPosition;
 
     signals:
