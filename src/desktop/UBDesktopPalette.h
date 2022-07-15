@@ -85,7 +85,6 @@ private:
 
 
         UBRightPalette* rightPalette;
-        void adjustPosition();
 
         eMinimizedLocation minimizedLocation(){return mMinimizedLocation;}
         eMinimizedLocation mMinimizedLocation;
