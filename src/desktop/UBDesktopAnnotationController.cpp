@@ -121,7 +121,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     connect(mDesktopPalette, SIGNAL(screenClick()), this, SLOT(screenCapture()));
     connect(UBApplication::mainWindow->actionPointer, SIGNAL(triggered()), this, SLOT(onToolClicked()));
     connect(UBApplication::mainWindow->actionSelector, SIGNAL(triggered()), this, SLOT(onToolClicked()));
-    connect(mDesktopPalette, SIGNAL(maximized()), this, SLOT(onDesktopPaletteMaximized()));
     connect(mDesktopPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene, SLOT(hideTool()));
     connect(mRightPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene, SLOT(hideTool()));
     connect(mRightPalette, SIGNAL(pageSelectionChangedRequired()), this, SLOT(updateBackground()));
@@ -167,7 +166,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     connect(UBApplication::boardController->paletteManager()->rightPalette(), SIGNAL(resized()), this, SLOT(refreshMask()));
     connect(UBApplication::boardController->paletteManager()->addItemPalette(), SIGNAL(closed()), this, SLOT(refreshMask()));
 #endif
-    onDesktopPaletteMaximized();
 
     // FIX #633: Ensure that these palettes stay on top of the other elements
     //mDesktopEraserPalette->raise();
@@ -341,6 +339,8 @@ void UBDesktopAnnotationController::showWindow()
     UBPlatformUtils::setDesktopMode(true);
 
     mDesktopPalette->appear();
+
+    connectButtons();
 
 #ifdef UB_REQUIRES_MASK_UPDATE
     updateMask(true);
@@ -760,14 +760,6 @@ void UBDesktopAnnotationController::connectButtons(){
     }
 }
 
-
-/**
- * \brief Reconnect the pressed & released signals of the property palettes
- */
-void UBDesktopAnnotationController::onDesktopPaletteMaximized()
-{
-    connectButtons();
-}
 
 void UBDesktopAnnotationController::TransparentWidgetResized()
 {
