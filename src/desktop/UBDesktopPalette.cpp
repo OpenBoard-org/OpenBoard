@@ -94,7 +94,6 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
     maximizeIcon.addPixmap(QPixmap(":/images/toolbar/stylusTab.png"), QIcon::Normal, QIcon::On);
     mMaximizeAction = new QAction(maximizeIcon, tr("Show the stylus palette"), this);
     connect(mMaximizeAction, SIGNAL(triggered()), this, SLOT(maximizeMe()));
-    mCanBeMinimized = true;
 }
 
 
@@ -176,11 +175,6 @@ void UBDesktopPalette::minimizeMe()
 
 void UBDesktopPalette::minimizePalette(const QPoint& pos)
 {
-    if(!mCanBeMinimized)
-    {
-        //  If this floating palette cannot be minimized, we exit this method.
-    return;
-    }
 
     if(mMinimizedLocation == eMinimizedLocation_None)
     {
