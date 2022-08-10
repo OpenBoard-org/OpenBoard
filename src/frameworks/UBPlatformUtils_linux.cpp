@@ -34,6 +34,7 @@
 #include <QDBusConnectionInterface>
 #include <QDBusInterface>
 #include <QDBusMetaType>
+#include <QProcessEnvironment>
 
 #include <unistd.h>
 #include <X11/keysym.h>
@@ -53,7 +54,20 @@ void UBPlatformUtils::init()
 
 QString UBPlatformUtils::applicationResourcesDirectory()
 {
+#ifdef APP_PREFIX
+    return QProcessEnvironment::systemEnvironment().value("APP_PREFIX", APP_PREFIX);
+#else
     return QApplication::applicationDirPath();
+#endif
+}
+
+QString UBPlatformUtils::applicationEtcDirectory()
+{
+#ifdef ETC_PREFIX
+    return QProcessEnvironment::systemEnvironment().value("ETC_PREFIX", ETC_PREFIX);
+#else
+    return applicationResourcesDirectory() + "/etc";
+#endif
 }
 
 void UBPlatformUtils::hideFile(const QString &filePath)

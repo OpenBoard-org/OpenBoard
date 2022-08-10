@@ -191,6 +191,7 @@ public:
         static void init();
         static void destroy();
         static QString applicationResourcesDirectory();
+        static QString applicationEtcDirectory();
         static void hideFile(const QString &filePath);
         static void setFileType(const QString &filePath, unsigned long fileType);
         static void fadeDisplayOut();

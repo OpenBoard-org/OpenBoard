@@ -53,6 +53,10 @@ QString UBPlatformUtils::applicationResourcesDirectory()
     return QApplication::applicationDirPath();
 }
 
+QString UBPlatformUtils::applicationEtcDirectory()
+{
+    return applicationResourcesDirectory() + "/etc";
+}
 
 void UBPlatformUtils::hideFile(const QString &filePath)
 {

@@ -206,7 +206,7 @@ UBWidgetUpgradeAdaptor::Widget::Widget(const QString &dir) : m_path(dir), m_hasU
 
     if (widgetHashes.empty())
     {
-        QFile widgetsMd5sum(UBPlatformUtils::applicationResourcesDirectory() + "/etc/widgets.md5sum");
+        QFile widgetsMd5sum(UBPlatformUtils::applicationEtcDirectory() + "/widgets.md5sum");
 
         if (widgetsMd5sum.open(QIODevice::ReadOnly))
         {

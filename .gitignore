@@ -45,6 +45,7 @@ Thumbs.db
 *.vcproj*
 *.ncb
 *.pro.user
+*.txt.user
 *.idb
 .project
 .settings

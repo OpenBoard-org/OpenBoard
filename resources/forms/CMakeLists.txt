@@ -1,0 +1,13 @@
+qt_add_resources(${PROJECT_NAME}
+    blackoutWidget.ui
+    brushProperties.ui
+    capturePublishing.ui
+    CMakeLists.txt
+    documents.ui
+    intranetPodcastPublishingDialog.ui
+    mainWindow.ui
+    preferences.ui
+    preferences.ui.autosave
+    trapFlash.ui
+    youTubePublishingDialog.ui
+)
