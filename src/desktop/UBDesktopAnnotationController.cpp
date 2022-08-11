@@ -125,6 +125,12 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     connect(mRightPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene, SLOT(hideTool()));
     connect(mRightPalette, SIGNAL(pageSelectionChangedRequired()), this, SLOT(updateBackground()));
 
+    connect(mDesktopPalette, SIGNAL(mDesktopMarkerPalette_hide()), this, SLOT(mDesktopMarkerPalette_hide()));
+    connect(mDesktopPalette, SIGNAL(mDesktopEraserPalette_hide()), this, SLOT(mDesktopEraserPalette_hide()));
+    connect(mDesktopPalette, SIGNAL(togglePropertyPalette(QAction *)), this, SLOT(togglePropertyPalette(QAction *)));
+    connect(mDesktopPalette, SIGNAL(switchCursor(QAction *)), this, SLOT(switchCursor(QAction *)));
+
+
     connect(mTransparentDrawingView, SIGNAL(resized(QResizeEvent*)), this, SLOT(onTransparentWidgetResized()));
 
 
@@ -501,60 +507,6 @@ void UBDesktopAnnotationController::screenLayoutChanged()
 }
 
 /**
- * \brief Handles the pen action pressed event
- */
-void UBDesktopAnnotationController::penActionPressed()
-{
-    mbArrowClicked = false;
-    mDesktopMarkerPalette->hide();
-    mDesktopEraserPalette->hide();
-    UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Pen);
-    mPenHoldTimer = QTime::currentTime();
-    mPendingPenButtonPressed = true;
-
-    // Check if the mouse cursor is on the little arrow
-    QPoint cursorPos = QCursor::pos();
-    QPoint palettePos = mDesktopPalette->mapToGlobal(QPoint(0, 0));  // global coordinates of palette
-    QPoint buttonPos = mDesktopPalette->buttonPos(UBApplication::mainWindow->actionPen);
-
-    int iX = cursorPos.x() - (palettePos.x() + buttonPos.x());    // x position of the cursor in the palette
-    int iY = cursorPos.y() - (palettePos.y() + buttonPos.y());    // y position of the cursor in the palette
-
-    if(iX >= 30 && iX <= 44 && iY >= 30 && iY <= 44)
-    {
-        mbArrowClicked = true;
-        penActionReleased();
-    }
-    else
-    {
-        mHoldTimerPen.start(PROPERTY_PALETTE_TIMER);
-    }
-}
-
-/**
- * \brief Handles the pen action released event
- */
-void UBDesktopAnnotationController::penActionReleased()
-{
-    mHoldTimerPen.stop();
-    if(mPendingPenButtonPressed)
-    {
-        if(mbArrowClicked || mPenHoldTimer.msecsTo(QTime::currentTime()) > PROPERTY_PALETTE_TIMER - 100)
-        {
-            togglePropertyPalette(mDesktopPenPalette);
-        }
-        else
-        {
-            UBApplication::mainWindow->actionPen->trigger();
-        }
-        mPendingPenButtonPressed = false;
-    }
-    UBApplication::mainWindow->actionPen->setChecked(true);
-
-    switchCursor(UBStylusTool::Pen);
-}
-
-/**
  * \brief Handles the eraser action pressed event
  */
 void UBDesktopAnnotationController::eraserActionPressed()
@@ -720,13 +672,7 @@ void UBDesktopAnnotationController::switchCursor(const int tool)
 }
 
 void UBDesktopAnnotationController::connectButtons(){
-    // Pen
-    UBActionPaletteButton* pPenButton = mDesktopPalette->getButtonFromAction(UBApplication::mainWindow->actionPen);
-    if(NULL != pPenButton)
-    {
-        connect(pPenButton, &UBActionPaletteButton::pressed, this, &UBDesktopAnnotationController::penActionPressed);
-        connect(pPenButton, &UBActionPaletteButton::released, this, &UBDesktopAnnotationController::penActionReleased);
-    }
+    mDesktopPalette->connectButtons();
     // Eraser
     UBActionPaletteButton* pEraserButton = mDesktopPalette->getButtonFromAction(UBApplication::mainWindow->actionEraser);
     if(NULL != pEraserButton)
@@ -918,4 +864,17 @@ void UBDesktopAnnotationController::onToolClicked()
     mDesktopEraserPalette->hide();
     mDesktopMarkerPalette->hide();
     mDesktopPenPalette->hide();
+}
+
+void UBDesktopAnnotationController::mDesktopMarkerPalette_hide(){
+    mDesktopMarkerPalette->hide();
+}
+void UBDesktopAnnotationController::mDesktopEraserPalette_hide(){
+    mDesktopEraserPalette->hide();
+}
+void UBDesktopAnnotationController::togglePropertyPalette(QAction * action){
+    togglePropertyPalette(mDesktopPenPalette);
+}
+void UBDesktopAnnotationController::switchCursor(QAction * action){
+    switchCursor(UBStylusTool::Pen);
 }

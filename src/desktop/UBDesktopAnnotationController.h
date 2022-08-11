@@ -110,10 +110,8 @@ class UBDesktopAnnotationController : public QObject
         void desktopMarkerActionToggled(bool checked);
         void desktopEraserActionToggled(bool checked);
         void eraseDesktopAnnotations();
-        void penActionPressed();
         void markerActionPressed();
         void eraserActionPressed();
-        void penActionReleased();
         void markerActionReleased();
         void eraserActionReleased();
         void selectorActionPressed();
@@ -125,6 +123,12 @@ class UBDesktopAnnotationController : public QObject
         void onTransparentWidgetResized();
         void refreshMask();
         void onToolClicked();
+
+        void mDesktopMarkerPalette_hide();
+        void mDesktopEraserPalette_hide();
+        void togglePropertyPalette(QAction * action);
+        void switchCursor(QAction * action);
+
 
     private:
 

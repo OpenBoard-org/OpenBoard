@@ -36,6 +36,8 @@
 #include "gui/UBActionPalette.h"
 #include "gui/UBRightPalette.h"
 
+#define PROPERTY_PALETTE_TIMER      1000
+
 /**
  * The uninotes window. This window is controlled by UBUninotesWindowController.
  */
@@ -50,6 +52,8 @@ class UBDesktopPalette : public UBActionPalette
         void disappearForCapture();
         void appear();
         QPoint buttonPos(QAction* action);
+
+        void connectButtons();
 
     signals:
         void uniboardClick();
@@ -93,7 +97,20 @@ private:
         virtual void minimizePalette(const QPoint& pos);
         virtual void minimizeMe();
 
+        QAction *pendingButton;
+        QTime mButtonHoldTimer;
+
+private slots:
+        void penActionPressed(QAction* action, int stylusTool);
+        void penActionReleased(QAction* action);
+
 signals:
+        void mDesktopMarkerPalette_hide();
+        void mDesktopEraserPalette_hide();
+        void togglePropertyPalette(QAction *);
+        void switchCursor(QAction *);
+
+
         void stylusToolChanged(int tool);
 
 };

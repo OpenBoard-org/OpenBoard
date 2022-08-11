@@ -50,6 +50,7 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
     , mDisplaySelectAction(NULL)
     , rightPalette(_rightPalette)
     , mMinimizedLocation(eMinimizedLocation_None)
+    , pendingButton(nullptr)
 {
     QList<QAction*> actions;
 
@@ -298,4 +299,69 @@ void UBDesktopPalette::parentResized()
     }
 
     moveInsideParent(p);
+}
+
+void UBDesktopPalette::penActionPressed(QAction* action, int stylusTool)
+{
+    emit mDesktopMarkerPalette_hide();
+    emit mDesktopEraserPalette_hide();
+    UBDrawingController::drawingController()->setStylusTool(stylusTool);
+    mButtonHoldTimer = QTime::currentTime();
+    pendingButton = action;
+
+    // Check if the mouse cursor is on the little arrow
+    QPoint cursorPos = QCursor::pos();
+    QPoint palettePos = mapToGlobal(QPoint(0, 0));  // global coordinates of palette
+    QPoint clickedButtonPos = buttonPos(action);
+
+    int iX = cursorPos.x() - (palettePos.x() + clickedButtonPos.x());    // x position of the cursor in the palette
+    int iY = cursorPos.y() - (palettePos.y() + clickedButtonPos.y());    // y position of the cursor in the palette
+
+    if(iX >= 30 && iX <= 44 && iY >= 30 && iY <= 44)
+    {
+        emit togglePropertyPalette(action);
+        pendingButton = nullptr;
+        // We must switch the cursor. For some reason this works correctly even without this:
+        // emit switchCursor_Pen();
+    }
+    Todo: Funktioniert soweit. Nächste Schritte:
+        1. Andere buttons
+        2. _hide events generisch
+        3. togglePropertyPalette reagiert noch nicht generisch
+}
+
+/**
+ * \brief Handles the pen action released event
+ */
+void UBDesktopPalette::penActionReleased(QAction* action)
+{
+    if(pendingButton == action)
+    {
+        if(mButtonHoldTimer.msecsTo(QTime::currentTime()) > PROPERTY_PALETTE_TIMER - 100)
+        {
+            emit togglePropertyPalette(action);
+        }
+        else
+        {
+            action->trigger();
+        }
+        pendingButton = nullptr;
+    }
+    action->setChecked(true);
+    emit switchCursor(UBApplication::mainWindow->actionPen);
+}
+
+
+void UBDesktopPalette::connectButtons(){
+    // Pen
+    UBActionPaletteButton* pPenButton = getButtonFromAction(UBApplication::mainWindow->actionPen);
+    if(NULL != pPenButton)
+    {
+        connect(pPenButton, &UBActionPaletteButton::pressed, [=](){
+            penActionPressed(UBApplication::mainWindow->actionPen, UBStylusTool::Pen);
+        });
+        connect(pPenButton, &UBActionPaletteButton::released, [=](){
+            penActionReleased(UBApplication::mainWindow->actionPen);
+        });
+    }
 }
