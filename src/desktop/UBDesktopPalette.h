@@ -105,8 +105,7 @@ private slots:
         void penActionReleased(QAction* action);
 
 signals:
-        void mDesktopMarkerPalette_hide();
-        void mDesktopEraserPalette_hide();
+        void hideOtherPalettes(QAction *);
         void togglePropertyPalette(QAction *);
         void switchCursor(QAction *);
 

@@ -110,22 +110,13 @@ class UBDesktopAnnotationController : public QObject
         void desktopMarkerActionToggled(bool checked);
         void desktopEraserActionToggled(bool checked);
         void eraseDesktopAnnotations();
-        void markerActionPressed();
-        void eraserActionPressed();
-        void markerActionReleased();
-        void eraserActionReleased();
-        void selectorActionPressed();
-        void selectorActionReleased();
-        void pointerActionPressed();
-        void pointerActionReleased();
 
         void switchCursor(int tool);
         void onTransparentWidgetResized();
         void refreshMask();
         void onToolClicked();
 
-        void mDesktopMarkerPalette_hide();
-        void mDesktopEraserPalette_hide();
+        void hideOtherPalettes(QAction *);
         void togglePropertyPalette(QAction * action);
         void switchCursor(QAction * action);
 
@@ -146,20 +137,9 @@ class UBDesktopAnnotationController : public QObject
 
         UBRightPalette* mRightPalette;
 
-        QTime mPenHoldTimer;
-        QTime mMarkerHoldTimer;
-        QTime mEraserHoldTimer;
-        QTimer mHoldTimerPen;
-        QTimer mHoldTimerMarker;
-        QTimer mHoldTimerEraser;
-
         bool mWindowPositionInitialized;
         bool mIsFullyTransparent;
         bool mDesktopToolsPalettePositioned;
-        bool mPendingPenButtonPressed;
-        bool mPendingMarkerButtonPressed;
-        bool mPendingEraserButtonPressed;
-        bool mbArrowClicked;
 
         int mBoardStylusTool;
         int mDesktopStylusTool;

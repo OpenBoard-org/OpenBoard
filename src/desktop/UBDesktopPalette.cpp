@@ -303,8 +303,7 @@ void UBDesktopPalette::parentResized()
 
 void UBDesktopPalette::penActionPressed(QAction* action, int stylusTool)
 {
-    emit mDesktopMarkerPalette_hide();
-    emit mDesktopEraserPalette_hide();
+    emit hideOtherPalettes(action);
     UBDrawingController::drawingController()->setStylusTool(stylusTool);
     mButtonHoldTimer = QTime::currentTime();
     pendingButton = action;
@@ -324,10 +323,6 @@ void UBDesktopPalette::penActionPressed(QAction* action, int stylusTool)
         // We must switch the cursor. For some reason this works correctly even without this:
         // emit switchCursor_Pen();
     }
-    Todo: Funktioniert soweit. Nächste Schritte:
-        1. Andere buttons
-        2. _hide events generisch
-        3. togglePropertyPalette reagiert noch nicht generisch
 }
 
 /**
@@ -351,7 +346,6 @@ void UBDesktopPalette::penActionReleased(QAction* action)
     emit switchCursor(UBApplication::mainWindow->actionPen);
 }
 
-
 void UBDesktopPalette::connectButtons(){
     // Pen
     UBActionPaletteButton* pPenButton = getButtonFromAction(UBApplication::mainWindow->actionPen);
@@ -364,4 +358,46 @@ void UBDesktopPalette::connectButtons(){
             penActionReleased(UBApplication::mainWindow->actionPen);
         });
     }
+    // Eraser
+    UBActionPaletteButton* pEraserButton = getButtonFromAction(UBApplication::mainWindow->actionEraser);
+    if(NULL != pEraserButton)
+    {
+        connect(pEraserButton, &UBActionPaletteButton::pressed, [=](){
+            penActionPressed(UBApplication::mainWindow->actionEraser, UBStylusTool::Eraser);
+        });
+        connect(pEraserButton, &UBActionPaletteButton::released, [=](){
+            penActionReleased(UBApplication::mainWindow->actionEraser);
+        });
+    }
+
+    // Marker
+    UBActionPaletteButton* pMarkerButton = getButtonFromAction(UBApplication::mainWindow->actionMarker);
+    if(NULL != pMarkerButton)
+    {
+        connect(pMarkerButton, &UBActionPaletteButton::pressed, [=](){
+            penActionPressed(UBApplication::mainWindow->actionMarker, UBStylusTool::Marker);
+        });
+        connect(pMarkerButton, &UBActionPaletteButton::released, [=](){
+            penActionReleased(UBApplication::mainWindow->actionMarker);
+        });
+    }
+    // Pointer
+    UBActionPaletteButton* pSelectorButton = getButtonFromAction(UBApplication::mainWindow->actionSelector);
+    if(NULL != pSelectorButton)
+    {
+        connect(pSelectorButton, &UBActionPaletteButton::released, [=](){
+            penActionReleased(UBApplication::mainWindow->actionSelector);
+        });
+    }
+
+    // Pointer
+    UBActionPaletteButton* pPointerButton = getButtonFromAction(UBApplication::mainWindow->actionPointer);
+    if(NULL != pPointerButton)
+    {
+        connect(pPointerButton, &UBActionPaletteButton::released, [=](){
+            penActionReleased(UBApplication::mainWindow->actionPointer);
+        });
+    }
+
 }
+
