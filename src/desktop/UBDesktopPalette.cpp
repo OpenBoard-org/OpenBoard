@@ -385,6 +385,9 @@ void UBDesktopPalette::connectButtons(){
     UBActionPaletteButton* pSelectorButton = getButtonFromAction(UBApplication::mainWindow->actionSelector);
     if(NULL != pSelectorButton)
     {
+        connect(pSelectorButton, &UBActionPaletteButton::pressed, this, [=](){
+            emit hideOtherPalettes(nullptr);
+        });
         connect(pSelectorButton, &UBActionPaletteButton::released, [=](){
             penActionReleased(UBApplication::mainWindow->actionSelector);
         });
@@ -394,6 +397,9 @@ void UBDesktopPalette::connectButtons(){
     UBActionPaletteButton* pPointerButton = getButtonFromAction(UBApplication::mainWindow->actionPointer);
     if(NULL != pPointerButton)
     {
+        connect(pPointerButton, &UBActionPaletteButton::pressed, this, [=](){
+            emit hideOtherPalettes(nullptr);
+        });
         connect(pPointerButton, &UBActionPaletteButton::released, [=](){
             penActionReleased(UBApplication::mainWindow->actionPointer);
         });

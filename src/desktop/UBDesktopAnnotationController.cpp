@@ -115,8 +115,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     connect(mDesktopPalette, SIGNAL(uniboardClick()), this, SLOT(goToUniboard()));
     connect(mDesktopPalette, SIGNAL(customClick()), this, SLOT(customCapture()));
     connect(mDesktopPalette, SIGNAL(screenClick()), this, SLOT(screenCapture()));
-    connect(UBApplication::mainWindow->actionPointer, SIGNAL(triggered()), this, SLOT(onToolClicked()));
-    connect(UBApplication::mainWindow->actionSelector, SIGNAL(triggered()), this, SLOT(onToolClicked()));
     connect(mDesktopPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene, SLOT(hideTool()));
     connect(mRightPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene, SLOT(hideTool()));
     connect(mRightPalette, SIGNAL(pageSelectionChangedRequired()), this, SLOT(updateBackground()));
@@ -427,7 +425,7 @@ void UBDesktopAnnotationController::goToUniboard()
 
 void UBDesktopAnnotationController::customCapture()
 {
-    onToolClicked();
+    hideOtherPalettes(nullptr);
     mIsFullyTransparent = true;
     updateBackground();
 
@@ -454,7 +452,7 @@ void UBDesktopAnnotationController::customCapture()
 
 void UBDesktopAnnotationController::screenCapture()
 {
-    onToolClicked();
+    hideOtherPalettes(nullptr);
     mIsFullyTransparent = true;
     updateBackground();
 
@@ -684,13 +682,6 @@ void UBDesktopAnnotationController::refreshMask()
             updateMask(true);
         }
     }
-}
-
-void UBDesktopAnnotationController::onToolClicked()
-{
-    mDesktopEraserPalette->hide();
-    mDesktopMarkerPalette->hide();
-    mDesktopPenPalette->hide();
 }
 
 void UBDesktopAnnotationController::hideOtherPalettes(QAction *action){

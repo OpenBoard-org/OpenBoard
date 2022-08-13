@@ -114,7 +114,6 @@ class UBDesktopAnnotationController : public QObject
         void switchCursor(int tool);
         void onTransparentWidgetResized();
         void refreshMask();
-        void onToolClicked();
 
         void hideOtherPalettes(QAction *);
         void togglePropertyPalette(QAction * action);
