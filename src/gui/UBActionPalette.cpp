@@ -82,8 +82,6 @@ void UBActionPalette::init(Qt::Orientation orientation)
 
 void UBActionPalette::setActions(QList<QAction*> actions)
 {
-    mMapActionToButton.clear();
-
     foreach(QAction* action, actions)
     {
         addAction(action);
@@ -114,13 +112,15 @@ UBActionPaletteButton* UBActionPalette::createPaletteButton(QAction* action, QWi
     return button;
 }
 
-void UBActionPalette::addAction(QAction* action)
+UBActionPaletteButton* UBActionPalette::addAction(QAction* action)
 {
     UBActionPaletteButton* button = createPaletteButton(action, this);
 
     layout()->addWidget(button);
 
     mActions << action;
+
+    return button;
 }
 
 void UBActionPalette::buttonClicked()

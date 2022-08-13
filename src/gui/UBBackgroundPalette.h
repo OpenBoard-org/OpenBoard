@@ -15,7 +15,7 @@ class UBBackgroundPalette : public UBActionPalette
         UBBackgroundPalette(QList<QAction*> actions, QWidget* parent = 0);
         UBBackgroundPalette(QWidget* parent = 0);
 
-        void addAction(QAction *action);
+        UBActionPaletteButton* addAction(QAction *action);
         void setActions(QList<QAction *> actions);
         void clearLayout();
 

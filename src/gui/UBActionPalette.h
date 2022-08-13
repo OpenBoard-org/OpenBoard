@@ -57,7 +57,7 @@ class UBActionPalette : public UBFloatingPalette
         QList<QAction*> actions();
         virtual void setActions(QList<QAction*> actions);
         void groupActions();
-        virtual void addAction(QAction* action);
+        virtual UBActionPaletteButton* addAction(QAction* action);
 
         void setClosable(bool closable);
         void setAutoClose(bool autoClose)

@@ -56,10 +56,15 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
 
     mActionUniboard = new QAction(QIcon(":/images/toolbar/board.png"), tr("Show OpenBoard"), this);
     connect(mActionUniboard, SIGNAL(triggered()), this, SIGNAL(uniboardClick()));
-    actions << mActionUniboard;
-
-
-    actions << UBApplication::mainWindow->actionPen;
+    mMapActionToButton.clear();
+    addAction(mActionUniboard);
+    UBActionPaletteButton* button = addAction(UBApplication::mainWindow->actionPen);
+    connect(button, &UBActionPaletteButton::pressed, [=](){
+        penActionPressed(UBApplication::mainWindow->actionPen, UBStylusTool::Pen);
+    });
+    connect(button, &UBActionPaletteButton::released, [=](){
+        penActionReleased(UBApplication::mainWindow->actionPen);
+    });
     actions << UBApplication::mainWindow->actionEraser;
     actions << UBApplication::mainWindow->actionMarker;
     actions << UBApplication::mainWindow->actionSelector;
@@ -155,7 +160,9 @@ void UBDesktopPalette::minimizeMe()
     clearLayout();
 
     actions << mMaximizeAction;
-    setActions(actions);
+    mMapActionToButton.clear();
+    addAction(mMaximizeAction);
+    actionChanged();
 
     adjustSizeAndPosition();
 
@@ -213,8 +220,15 @@ void UBDesktopPalette::maximizeMe()
     QList<QAction*> actions;
     clearLayout();
 
-    actions << mActionUniboard;
-    actions << UBApplication::mainWindow->actionPen;
+    mMapActionToButton.clear();
+    addAction(mActionUniboard);
+    UBActionPaletteButton* button = addAction(UBApplication::mainWindow->actionPen);
+    connect(button, &UBActionPaletteButton::pressed, [=](){
+        penActionPressed(UBApplication::mainWindow->actionPen, UBStylusTool::Pen);
+    });
+    connect(button, &UBActionPaletteButton::released, [=](){
+        penActionReleased(UBApplication::mainWindow->actionPen);
+    });
     actions << UBApplication::mainWindow->actionEraser;
     actions << UBApplication::mainWindow->actionMarker;
     actions << UBApplication::mainWindow->actionSelector;
@@ -225,6 +239,7 @@ void UBDesktopPalette::maximizeMe()
     actions << mActionCustomSelect;
     actions << mDisplaySelectAction;
     actions << mShowHideAction;
+
 
     setActions(actions);
 
@@ -347,17 +362,6 @@ void UBDesktopPalette::penActionReleased(QAction* action)
 }
 
 void UBDesktopPalette::connectButtons(){
-    // Pen
-    UBActionPaletteButton* pPenButton = getButtonFromAction(UBApplication::mainWindow->actionPen);
-    if(NULL != pPenButton)
-    {
-        connect(pPenButton, &UBActionPaletteButton::pressed, [=](){
-            penActionPressed(UBApplication::mainWindow->actionPen, UBStylusTool::Pen);
-        });
-        connect(pPenButton, &UBActionPaletteButton::released, [=](){
-            penActionReleased(UBApplication::mainWindow->actionPen);
-        });
-    }
     // Eraser
     UBActionPaletteButton* pEraserButton = getButtonFromAction(UBApplication::mainWindow->actionEraser);
     if(NULL != pEraserButton)

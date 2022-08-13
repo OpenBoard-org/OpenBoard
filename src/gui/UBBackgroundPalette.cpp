@@ -77,12 +77,13 @@ void UBBackgroundPalette::init()
     updateLayout();
 }
 
-void UBBackgroundPalette::addAction(QAction* action)
+UBActionPaletteButton* UBBackgroundPalette::addAction(QAction* action)
 {
     UBActionPaletteButton* button = createPaletteButton(action, this);
 
     mTopLayout->addWidget(button);
     mActions << action;
+    return button;
 }
 
 void UBBackgroundPalette::setActions(QList<QAction*> actions)
