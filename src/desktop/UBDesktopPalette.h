@@ -53,8 +53,6 @@ class UBDesktopPalette : public UBActionPalette
         void appear();
         QPoint buttonPos(QAction* action);
 
-        void connectButtons();
-
     signals:
         void uniboardClick();
         void customClick();
@@ -99,6 +97,8 @@ private:
 
         QAction *pendingButton;
         QTime mButtonHoldTimer;
+
+        void createAndConnectButtons();
 
 private slots:
         void penActionPressed(QAction* action, int stylusTool);

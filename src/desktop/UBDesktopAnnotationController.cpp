@@ -336,8 +336,6 @@ void UBDesktopAnnotationController::showWindow()
 
     mDesktopPalette->appear();
 
-    connectButtons();
-
 #ifdef UB_REQUIRES_MASK_UPDATE
     updateMask(true);
 #endif // UB_REQUIRES_MASK_UPDATE
@@ -526,11 +524,6 @@ void UBDesktopAnnotationController::switchCursor(const int tool)
     mTransparentDrawingScene->setToolCursor(tool);
     mTransparentDrawingView->setToolCursor(tool);
 }
-
-void UBDesktopAnnotationController::connectButtons(){
-    mDesktopPalette->connectButtons();
-}
-
 
 void UBDesktopAnnotationController::TransparentWidgetResized()
 {
