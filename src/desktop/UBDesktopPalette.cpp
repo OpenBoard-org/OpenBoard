@@ -372,6 +372,6 @@ void UBDesktopPalette::penActionReleased(QAction* action)
         pendingButton = nullptr;
     }
     action->setChecked(true);
-    emit switchCursor(UBApplication::mainWindow->actionPen);
+    emit switchCursor(action);
 }
 
