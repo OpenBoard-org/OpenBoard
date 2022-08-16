@@ -56,15 +56,12 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
 
     mActionUniboard = new QAction(QIcon(":/images/toolbar/board.png"), tr("Show OpenBoard"), this);
     connect(mActionUniboard, SIGNAL(triggered()), this, SIGNAL(uniboardClick()));
-    createAndConnectButtons();
 
     mActionCustomSelect = new QAction(QIcon(":/images/toolbar/captureArea.png"), tr("Capture Part of the Screen"), this);
     connect(mActionCustomSelect, SIGNAL(triggered()), this, SIGNAL(customClick()));
-    actions << mActionCustomSelect;
 
     mDisplaySelectAction = new QAction(QIcon(":/images/toolbar/captureScreen.png"), tr("Capture the Screen"), this);
     connect(mDisplaySelectAction, SIGNAL(triggered()), this, SIGNAL(screenClick()));
-    actions << mDisplaySelectAction;
 
     QIcon showHideIcon;
     showHideIcon.addPixmap(QPixmap(":/images/toolbar/eyeOpened.png"), QIcon::Normal , QIcon::On);
@@ -73,8 +70,8 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
     mShowHideAction->setCheckable(true);
 
     connect(mShowHideAction, SIGNAL(triggered(bool)), this, SLOT(showHideClick(bool)));
-    actions << mShowHideAction;
 
+    createAndConnectButtons();
     setActions(actions);
     setButtonIconSize(QSize(42, 42));
 
@@ -128,7 +125,9 @@ void UBDesktopPalette::createAndConnectButtons(){
     });
     if (UBPlatformUtils::hasVirtualKeyboard())
         addAction(UBApplication::mainWindow->actionVirtualKeyboard);
-
+    addAction(mActionCustomSelect);
+    addAction(mDisplaySelectAction);
+    addAction(mShowHideAction);
 }
 
 UBDesktopPalette::~UBDesktopPalette()
@@ -249,11 +248,6 @@ void UBDesktopPalette::maximizeMe()
     clearLayout();
 
     createAndConnectButtons();
-
-    actions << mActionCustomSelect;
-    actions << mDisplaySelectAction;
-    actions << mShowHideAction;
-
 
     setActions(actions);
 
