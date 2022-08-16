@@ -51,7 +51,6 @@ class UBDesktopPalette : public UBActionPalette
 
         void disappearForCapture();
         void appear();
-        QPoint buttonPos(QAction* action);
 
     signals:
         void uniboardClick();
@@ -101,7 +100,7 @@ private:
         void createAndConnectButtons();
 
 private slots:
-        void penActionPressed(QAction* action, int stylusTool);
+        void penActionPressed(QToolButton* button, QAction* action, int stylusTool);
         void penActionReleased(QAction* action);
 
 signals:

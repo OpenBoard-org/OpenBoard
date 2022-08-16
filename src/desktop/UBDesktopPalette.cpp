@@ -84,25 +84,24 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
 
 
 void UBDesktopPalette::createAndConnectButtons(){
-    mMapActionToButton.clear();
     addAction(mActionUniboard);
     UBActionPaletteButton* button = addAction(UBApplication::mainWindow->actionPen);
     connect(button, &UBActionPaletteButton::pressed, [=](){
-        penActionPressed(UBApplication::mainWindow->actionPen, UBStylusTool::Pen);
+        penActionPressed(button, UBApplication::mainWindow->actionPen, UBStylusTool::Pen);
     });
     connect(button, &UBActionPaletteButton::released, [=](){
         penActionReleased(UBApplication::mainWindow->actionPen);
     });
     button = addAction(UBApplication::mainWindow->actionEraser);
     connect(button, &UBActionPaletteButton::pressed, [=](){
-        penActionPressed(UBApplication::mainWindow->actionEraser, UBStylusTool::Eraser);
+        penActionPressed(button, UBApplication::mainWindow->actionEraser, UBStylusTool::Eraser);
     });
     connect(button, &UBActionPaletteButton::released, [=](){
         penActionReleased(UBApplication::mainWindow->actionEraser);
     });
     button = addAction(UBApplication::mainWindow->actionMarker);
     connect(button, &UBActionPaletteButton::pressed, [=](){
-        penActionPressed(UBApplication::mainWindow->actionMarker, UBStylusTool::Marker);
+        penActionPressed(button, UBApplication::mainWindow->actionMarker, UBStylusTool::Marker);
     });
     connect(button, &UBActionPaletteButton::released, [=](){
         penActionReleased(UBApplication::mainWindow->actionMarker);
@@ -185,7 +184,6 @@ void UBDesktopPalette::minimizeMe()
 {
     clearLayout();
 
-    mMapActionToButton.clear();
     addAction(mMaximizeAction);
     actionChanged();
 
@@ -290,20 +288,6 @@ void UBDesktopPalette::hideEvent(QHideEvent *event)
     UBApplication::mainWindow->actionEraser->setIcon(eraserIcon);
 }
 
-QPoint UBDesktopPalette::buttonPos(QAction *action)
-{
-    QPoint p;
-
-    UBActionPaletteButton* pB = mMapActionToButton[action];
-    if(NULL != pB)
-    {
-        p = pB->pos();
-    }
-
-    return p;
-}
-
-
 int UBDesktopPalette::getParentRightOffset()
 {
     return rightPalette->width();
@@ -320,7 +304,7 @@ void UBDesktopPalette::parentResized()
     moveInsideParent(p);
 }
 
-void UBDesktopPalette::penActionPressed(QAction* action, int stylusTool)
+void UBDesktopPalette::penActionPressed(QToolButton* button, QAction* action, int stylusTool)
 {
     emit hideOtherPalettes(action);
     UBDrawingController::drawingController()->setStylusTool(stylusTool);
@@ -330,7 +314,7 @@ void UBDesktopPalette::penActionPressed(QAction* action, int stylusTool)
     // Check if the mouse cursor is on the little arrow
     QPoint cursorPos = QCursor::pos();
     QPoint palettePos = mapToGlobal(QPoint(0, 0));  // global coordinates of palette
-    QPoint clickedButtonPos = buttonPos(action);
+    QPoint clickedButtonPos = button->pos();
 
     int iX = cursorPos.x() - (palettePos.x() + clickedButtonPos.x());    // x position of the cursor in the palette
     int iY = cursorPos.y() - (palettePos.y() + clickedButtonPos.y());    // y position of the cursor in the palette

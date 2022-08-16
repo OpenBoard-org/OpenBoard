@@ -102,8 +102,6 @@ UBActionPaletteButton* UBActionPalette::createPaletteButton(QAction* action, QWi
 
     mButtons << button;
 
-    mMapActionToButton[action] = button;
-
     connect(button, &UBActionPaletteButton::clicked,
             this, &UBActionPalette::buttonClicked);
     connect(action, &QAction::changed,

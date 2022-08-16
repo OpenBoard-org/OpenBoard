@@ -88,8 +88,6 @@ UBActionPaletteButton* UBBackgroundPalette::addAction(QAction* action)
 
 void UBBackgroundPalette::setActions(QList<QAction*> actions)
 {
-    mMapActionToButton.clear();
-
     foreach(QAction* action, actions)
     {
         addAction(action);
