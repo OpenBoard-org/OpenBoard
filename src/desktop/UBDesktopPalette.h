@@ -82,12 +82,9 @@ private:
         QAction *mMaximizeAction;
         QAction *mActionUniboard;
         QAction *mActionCustomSelect;
-        QAction* mActionTest;
-
 
         UBRightPalette* rightPalette;
 
-        eMinimizedLocation minimizedLocation(){return mMinimizedLocation;}
         eMinimizedLocation mMinimizedLocation;
 
 
@@ -100,8 +97,8 @@ private:
         void createAndConnectButtons();
 
 private slots:
-        void penActionPressed(QToolButton* button, QAction* action, int stylusTool);
-        void penActionReleased(QAction* action);
+        void actionPressed(QToolButton* button, QAction* action, int stylusTool);
+        void actionReleased(QAction* action);
 
 signals:
         void hideOtherPalettes(QAction *);

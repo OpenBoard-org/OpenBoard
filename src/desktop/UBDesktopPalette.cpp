@@ -87,38 +87,38 @@ void UBDesktopPalette::createAndConnectButtons(){
     addAction(mActionUniboard);
     UBActionPaletteButton* button = addAction(UBApplication::mainWindow->actionPen);
     connect(button, &UBActionPaletteButton::pressed, [=](){
-        penActionPressed(button, UBApplication::mainWindow->actionPen, UBStylusTool::Pen);
+        actionPressed(button, UBApplication::mainWindow->actionPen, UBStylusTool::Pen);
     });
     connect(button, &UBActionPaletteButton::released, [=](){
-        penActionReleased(UBApplication::mainWindow->actionPen);
+        actionReleased(UBApplication::mainWindow->actionPen);
     });
     button = addAction(UBApplication::mainWindow->actionEraser);
     connect(button, &UBActionPaletteButton::pressed, [=](){
-        penActionPressed(button, UBApplication::mainWindow->actionEraser, UBStylusTool::Eraser);
+        actionPressed(button, UBApplication::mainWindow->actionEraser, UBStylusTool::Eraser);
     });
     connect(button, &UBActionPaletteButton::released, [=](){
-        penActionReleased(UBApplication::mainWindow->actionEraser);
+        actionReleased(UBApplication::mainWindow->actionEraser);
     });
     button = addAction(UBApplication::mainWindow->actionMarker);
     connect(button, &UBActionPaletteButton::pressed, [=](){
-        penActionPressed(button, UBApplication::mainWindow->actionMarker, UBStylusTool::Marker);
+        actionPressed(button, UBApplication::mainWindow->actionMarker, UBStylusTool::Marker);
     });
     connect(button, &UBActionPaletteButton::released, [=](){
-        penActionReleased(UBApplication::mainWindow->actionMarker);
+        actionReleased(UBApplication::mainWindow->actionMarker);
     });
     button = addAction(UBApplication::mainWindow->actionSelector);
     connect(button, &UBActionPaletteButton::pressed, this, [=](){
         emit hideOtherPalettes(nullptr);
     });
     connect(button, &UBActionPaletteButton::released, [=](){
-        penActionReleased(UBApplication::mainWindow->actionSelector);
+        actionReleased(UBApplication::mainWindow->actionSelector);
     });
     button = addAction(UBApplication::mainWindow->actionPointer);
     connect(button, &UBActionPaletteButton::pressed, this, [=](){
         emit hideOtherPalettes(nullptr);
     });
     connect(button, &UBActionPaletteButton::released, [=](){
-        penActionReleased(UBApplication::mainWindow->actionPointer);
+        actionReleased(UBApplication::mainWindow->actionPointer);
     });
     if (UBPlatformUtils::hasVirtualKeyboard())
         addAction(UBApplication::mainWindow->actionVirtualKeyboard);
@@ -296,7 +296,7 @@ int UBDesktopPalette::getParentRightOffset()
 void UBDesktopPalette::parentResized()
 {
     QPoint p = pos();
-    if (minimizedLocation() == eMinimizedLocation_Right)
+    if (mMinimizedLocation == eMinimizedLocation_Right)
     {
         p.setX(parentWidget()->width() - getParentRightOffset() -width());
     }
@@ -304,7 +304,7 @@ void UBDesktopPalette::parentResized()
     moveInsideParent(p);
 }
 
-void UBDesktopPalette::penActionPressed(QToolButton* button, QAction* action, int stylusTool)
+void UBDesktopPalette::actionPressed(QToolButton* button, QAction* action, int stylusTool)
 {
     emit hideOtherPalettes(action);
     UBDrawingController::drawingController()->setStylusTool(stylusTool);
@@ -331,7 +331,7 @@ void UBDesktopPalette::penActionPressed(QToolButton* button, QAction* action, in
 /**
  * \brief Handles the pen action released event
  */
-void UBDesktopPalette::penActionReleased(QAction* action)
+void UBDesktopPalette::actionReleased(QAction* action)
 {
     if(pendingButton == action)
     {
