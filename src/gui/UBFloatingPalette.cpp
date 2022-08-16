@@ -126,7 +126,8 @@ void UBFloatingPalette::mouseMoveEvent(QMouseEvent *event)
 {
     if (mIsMoving)
     {
-        moveInsideParent(event->globalPos() - mDragPosition, true);
+        moveInsideParent(event->globalPos() - mDragPosition);
+        minimizePalette(pos());
         event->accept();
         emit moving();
     }
@@ -155,7 +156,7 @@ int UBFloatingPalette::getParentRightOffset()
     return 0;
 }
 
-void UBFloatingPalette::moveInsideParent(const QPoint &position, bool shrinkIfAtBorder)
+void UBFloatingPalette::moveInsideParent(const QPoint &position)
 {
     QWidget *parent = parentWidget();
 
@@ -177,8 +178,6 @@ void UBFloatingPalette::moveInsideParent(const QPoint &position, bool shrinkIfAt
             }
         }
         move(newX, newY);
-        if(shrinkIfAtBorder)
-            minimizePalette(QPoint(newX, newY));
     }
     else
     {
