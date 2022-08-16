@@ -305,19 +305,6 @@ QSize UBActionPalette::buttonSize()
     return mButtonSize;
 }
 
-/**
- * \brief Returns the button related to the given action
- * @param action as the given action
- */
-UBActionPaletteButton* UBActionPalette::getButtonFromAction(QAction *action)
-{
-    UBActionPaletteButton* pButton = NULL;
-
-    pButton = mMapActionToButton.value(action);
-
-    return pButton;
-}
-
 bool UBActionPaletteButton::hitButton(const QPoint &pos) const
 {
     Q_UNUSED(pos);

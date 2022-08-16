@@ -52,7 +52,6 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
     , mMinimizedLocation(eMinimizedLocation_None)
     , pendingButton(nullptr)
 {
-    QList<QAction*> actions;
 
     mActionUniboard = new QAction(QIcon(":/images/toolbar/board.png"), tr("Show OpenBoard"), this);
     connect(mActionUniboard, SIGNAL(triggered()), this, SIGNAL(uniboardClick()));
@@ -72,7 +71,6 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
     connect(mShowHideAction, SIGNAL(triggered(bool)), this, SLOT(showHideClick(bool)));
 
     createAndConnectButtons();
-    setActions(actions);
     setButtonIconSize(QSize(42, 42));
 
     adjustSizeAndPosition();
@@ -128,6 +126,8 @@ void UBDesktopPalette::createAndConnectButtons(){
     addAction(mActionCustomSelect);
     addAction(mDisplaySelectAction);
     addAction(mShowHideAction);
+
+    actionChanged();
 }
 
 UBDesktopPalette::~UBDesktopPalette()
@@ -183,10 +183,8 @@ void UBDesktopPalette::setDisplaySelectButtonVisible(bool visible)
 //  Called when the palette is near the border and must be minimized
 void UBDesktopPalette::minimizeMe()
 {
-    QList<QAction*> actions;
     clearLayout();
 
-    actions << mMaximizeAction;
     mMapActionToButton.clear();
     addAction(mMaximizeAction);
     actionChanged();
@@ -244,12 +242,10 @@ void UBDesktopPalette::minimizePalette(const QPoint& pos)
 //  Called when the user wants to maximize the palette
 void UBDesktopPalette::maximizeMe()
 {
-    QList<QAction*> actions;
     clearLayout();
 
     createAndConnectButtons();
 
-    setActions(actions);
 
     adjustSizeAndPosition();
 

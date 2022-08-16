@@ -75,8 +75,6 @@ class UBActionPalette : public UBFloatingPalette
         virtual void clearLayout();
         QSize buttonSize();
 
-        virtual UBActionPaletteButton* getButtonFromAction(QAction* action);
-
     public slots:
         void close();
 
