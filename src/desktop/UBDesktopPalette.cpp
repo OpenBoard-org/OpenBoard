@@ -293,17 +293,6 @@ int UBDesktopPalette::getParentRightOffset()
     return rightPalette->width();
 }
 
-void UBDesktopPalette::parentResized()
-{
-    QPoint p = pos();
-    if (mMinimizedLocation == eMinimizedLocation_Right)
-    {
-        p.setX(parentWidget()->width() - getParentRightOffset() -width());
-    }
-
-    moveInsideParent(p);
-}
-
 void UBDesktopPalette::actionPressed(QToolButton* button, QAction* action, int stylusTool)
 {
     emit hideOtherPalettes(action);

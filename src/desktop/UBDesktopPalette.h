@@ -68,7 +68,6 @@ class UBDesktopPalette : public UBActionPalette
         void setShowHideButtonVisible(bool visible);
         void setDisplaySelectButtonVisible(bool show);
         void maximizeMe();
-        void parentResized();
 
 protected:
         void showEvent(QShowEvent *event);
