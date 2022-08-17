@@ -1650,10 +1650,10 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::strokeToSvgPolygon(UBGraphicsStroke*
         }
 
 
-        UBGraphicsPolygonItem *clone = static_cast<UBGraphicsPolygonItem*>(pis.at(0)->deepCopy());
+        QScopedPointer<UBGraphicsPolygonItem> clone(static_cast<UBGraphicsPolygonItem*>(pis.at(0)->deepCopy()));
         clone->setPolygon(united);
 
-        polygonItemToSvgPolygon(clone, groupHoldsInfo);
+        polygonItemToSvgPolygon(clone.get(), groupHoldsInfo);
     }
 }
 
@@ -2067,27 +2067,24 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::pixmapItemToLinkedImage(UBGraphicsPi
 
 UBGraphicsPixmapItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::pixmapItemFromSvg()
 {
-
-    UBGraphicsPixmapItem* pixmapItem = new UBGraphicsPixmapItem();
+    UBGraphicsPixmapItem* pixmapItem = nullptr;
 
     auto imageHref = mXmlReader.attributes().value(nsXLink, "href");
 
     if (!imageHref.isNull())
     {
+        pixmapItem = new UBGraphicsPixmapItem();
         QString href = imageHref.toString();
         QPixmap pix(mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(href));
         pixmapItem->setPixmap(pix);
+        graphicsItemFromSvg(pixmapItem);
     }
     else
     {
-        qWarning() << "cannot make sens of image href value";
-        return 0;
+        qWarning() << "cannot make sense of image href value";
     }
 
-    graphicsItemFromSvg(pixmapItem);
-
     return pixmapItem;
-
 }
 
 
