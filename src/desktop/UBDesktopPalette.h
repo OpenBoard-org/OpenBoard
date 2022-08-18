@@ -73,16 +73,12 @@ protected:
         void showEvent(QShowEvent *event);
         void hideEvent(QHideEvent *event);
 
-        virtual int getParentRightOffset();
-
 private:
         QAction *mShowHideAction;
         QAction *mDisplaySelectAction;
         QAction *mMaximizeAction;
         QAction *mActionUniboard;
         QAction *mActionCustomSelect;
-
-        UBRightPalette* rightPalette;
 
         eMinimizedLocation mMinimizedLocation;
 

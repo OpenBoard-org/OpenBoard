@@ -48,10 +48,11 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
     : UBActionPalette(Qt::TopLeftCorner, parent)
     , mShowHideAction(NULL)
     , mDisplaySelectAction(NULL)
-    , rightPalette(_rightPalette)
     , mMinimizedLocation(eMinimizedLocation_None)
     , pendingButton(nullptr)
 {
+
+    getParentRightOffset = [_rightPalette]{return _rightPalette->width();};
 
     mActionUniboard = new QAction(QIcon(":/images/toolbar/board.png"), tr("Show OpenBoard"), this);
     connect(mActionUniboard, SIGNAL(triggered()), this, SIGNAL(uniboardClick()));
@@ -286,11 +287,6 @@ void UBDesktopPalette::hideEvent(QHideEvent *event)
     eraserIcon.addFile(":images/stylusPalette/eraser.svg", QSize(), QIcon::Normal, QIcon::Off);
     eraserIcon.addFile(":images/stylusPalette/eraserOn.svg", QSize(), QIcon::Normal, QIcon::On);
     UBApplication::mainWindow->actionEraser->setIcon(eraserIcon);
-}
-
-int UBDesktopPalette::getParentRightOffset()
-{
-    return rightPalette->width();
 }
 
 void UBDesktopPalette::actionPressed(QToolButton* button, QAction* action, int stylusTool)

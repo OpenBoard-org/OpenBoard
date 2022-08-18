@@ -42,6 +42,7 @@ UBFloatingPalette::UBFloatingPalette(Qt::Corner position, QWidget *parent)
     : QWidget(parent, parent ? Qt::Widget : Qt::Tool | (Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint))
     , mCustomPosition(false)
     , mIsMoving(false)
+    , getParentRightOffset([]{return 0;})
     , mDefaultPosition(position)
 {
     setCursor(Qt::ArrowCursor);
@@ -149,11 +150,6 @@ void UBFloatingPalette::mouseReleaseEvent(QMouseEvent *event)
     {
         QWidget::mouseReleaseEvent(event);
     }
-}
-
-int UBFloatingPalette::getParentRightOffset()
-{
-    return 0;
 }
 
 void UBFloatingPalette::moveInsideParent(const QPoint &position)

@@ -39,14 +39,9 @@
 
 UBDesktopPropertyPalette::UBDesktopPropertyPalette(QWidget *parent, UBRightPalette* _rightPalette)
     :UBPropertyPalette(Qt::Horizontal, parent)
-    ,rightPalette(_rightPalette)
-{}
-
-int UBDesktopPropertyPalette::getParentRightOffset()
 {
-    return rightPalette->width();
+    getParentRightOffset = [_rightPalette]{return _rightPalette->width();};
 }
-
 
 UBDesktopPenPalette::UBDesktopPenPalette(QWidget *parent, UBRightPalette* rightPalette)
     : UBDesktopPropertyPalette(parent, rightPalette)
