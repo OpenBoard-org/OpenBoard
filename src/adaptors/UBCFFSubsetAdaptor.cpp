@@ -38,6 +38,7 @@
 
 #include "domain/UBItem.h"
 #include "domain/UBGraphicsPolygonItem.h"
+#include "domain/UBGraphicsLineItem.h"
 #include "domain/UBGraphicsStroke.h"
 #include "domain/UBGraphicsTextItem.h"
 #include "domain/UBGraphicsSvgItem.h"
@@ -74,6 +75,7 @@ static QString tG               = "g";
 static QString tSwitch          = "switch";
 static QString tPolygon         = "polygon";
 static QString tPolyline        = "polyline";
+static QString tLine            = "line";
 static QString tRect            = "rect";
 static QString tSvg             = "svg";
 static QString tText            = "text";
@@ -90,6 +92,8 @@ static QString aFill            = "fill";
 static QString aFillopacity     = "fill-opacity";
 static QString aX               = "x";
 static QString aY               = "y";
+static QString aX2              = "x2";
+static QString aY2              = "y2";
 static QString aWidth           = "width";
 static QString aHeight          = "height";
 static QString aStroke          = "stroke";
@@ -115,6 +119,7 @@ static QString aHref            = "href";
 static QString aBackground      = "background";
 static QString aLocked          = "locked";
 static QString aEditable        = "editable";
+static QString aLinestyle       = "line-style";
 
 //attributes part names
 static QString apRotate         = "rotate";
@@ -581,6 +586,108 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
 
     return true;
 }
+
+bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgLine(const QDomElement &element)
+{
+    QString svgPoints = element.attribute(aPoints);
+    QLineF line;
+
+    qreal x1 = element.attribute(aX).toDouble();
+    qreal y1 = element.attribute(aY).toDouble();
+    qreal x2 = element.attribute(aX2).toDouble();
+    qreal y2 = element.attribute(aY2).toDouble();
+    qreal width = element.attribute(aWidth).toDouble();
+    qreal height = element.attribute(aHeight).toDouble();
+    QString textStrokeColor = element.attribute(aStroke);
+    QString textStrokeWidth = element.attribute(aStrokewidth);
+    qreal style = element.attribute(aLinestyle).toDouble();
+
+    QColor strokeColor = !textStrokeColor.isNull() ? colorFromString(textStrokeColor) : QColor();
+    int strokeWidth = textStrokeWidth.toInt();
+
+    width += strokeWidth;
+    height += strokeWidth;
+
+    QPen pen;
+    if (strokeColor.isValid()) {
+        pen.setColor(strokeColor);
+    }
+    if (strokeWidth)
+        pen.setWidth(strokeWidth);
+    if (style == 2)
+    {
+        pen.setStyle(Qt::PenStyle::DotLine);
+        pen.setCapStyle(Qt::PenCapStyle::RoundCap);
+    } else if (style == 1)
+    {
+        pen.setStyle(Qt::PenStyle::DashLine);
+    } else
+    {
+        pen.setStyle(Qt::PenStyle::SolidLine);
+    }
+    QUuid itemUuid(element.attribute(aId).right(QUuid().toString().length()));
+    QUuid itemGroupUuid(element.attribute(aId).left(QUuid().toString().length()-1));
+    if (!itemUuid.isNull() && (itemGroupUuid!=itemUuid)) // reimported from UBZ
+    {
+        UBGraphicsLineItem *graphicsLine = new UBGraphicsLineItem(line);
+
+        UBGraphicsStroke *stroke = new UBGraphicsStroke();
+        //graphicsLine->setStroke(stroke);
+
+        graphicsLine->setPen(pen);
+        QTransform transform;
+        QString textTransform = element.attribute(aTransform);
+
+        graphicsLine->resetTransform();
+        if (!textTransform.isNull()) {
+            transform = transformFromString(textTransform, graphicsLine);
+        }
+        mCurrentScene->addItem(graphicsLine);
+
+        graphicsLine->setUuid(itemUuid);
+        mRefToUuidMap.insert(element.attribute(aId), itemUuid.toString());
+
+    }
+    else // simple CFF
+    {
+        QSvgGenerator *generator = createSvgGenerator(width + pen.width(), height + pen.width());
+        QPainter painter;
+
+        painter.begin(generator);
+        painter.setPen(pen);
+        painter.drawLine(x1, y1, x2, y2);
+        painter.end();
+
+
+        //add resulting svg file to scene
+        UBGraphicsSvgItem *svgItem = mCurrentScene->addSvg(QUrl::fromLocalFile(generator->fileName()));
+
+        QString uuid = QUuid::createUuid().toString();
+        mRefToUuidMap.insert(element.attribute(aId), uuid);
+        svgItem->setUuid(QUuid(uuid));
+
+        QTransform transform;
+        QString textTransform = element.attribute(aTransform);
+
+        svgItem->resetTransform();
+        if (!textTransform.isNull()) {
+            transform = transformFromString(textTransform, svgItem);
+        }
+        repositionSvgItem(svgItem, width +strokeWidth, height + strokeWidth, x1 - strokeWidth/2 + transform.m31(), y1 + strokeWidth/2 + transform.m32(), transform);
+        hashSceneItem(element, svgItem);
+
+        if (mGSectionContainer)
+        {
+            addItemToGSection(svgItem);
+        }
+
+        delete generator;
+    }
+
+
+    return true;
+}
+
 void UBCFFSubsetAdaptor::UBCFFSubsetReader::parseTextAttributes(const QDomElement &element,
                                                                 qreal &fontSize, QColor &fontColor, QString &fontFamily,
                                                                 QString &fontStretch, bool &italic, int &fontWeight,
@@ -1101,6 +1208,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgElement(const QDomElement &p
     else if (tagName == tEllipse    &&  !parseSvgEllipse(parent))           return false;
     else if (tagName == tPolygon    &&  !parseSvgPolygon(parent))           return false;
     else if (tagName == tPolyline   &&  !parseSvgPolyline(parent))          return false;
+    else if (tagName == tLine       &&  !parseSvgLine(parent))              return false;
     else if (tagName == tText       &&  !parseSvgText(parent))              return false;
     else if (tagName == tTextarea   &&  !parseSvgTextarea(parent))          return false;
     else if (tagName == tImage      &&  !parseSvgImage(parent))             return false;

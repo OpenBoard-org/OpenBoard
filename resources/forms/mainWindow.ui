@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1342</width>
-    <height>223</height>
+    <height>268</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1700,6 +1700,54 @@
    </property>
    <property name="toolTip">
     <string>Draw intermediate grid lines</string>
+   </property>
+  </action>
+  <action name="actionLineSolid">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/toolbar/solidLine.svg</normaloff>:/images/toolbar/solidLine.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Line Style</string>
+   </property>
+   <property name="toolTip">
+    <string>Solid Style</string>
+   </property>
+  </action>
+  <action name="actionLineDashed">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/toolbar/dashedLine.svg</normaloff>:/images/toolbar/dashedLine.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Line Style</string>
+   </property>
+   <property name="toolTip">
+    <string>Dashed Style</string>
+   </property>
+  </action>
+  <action name="actionLineDotted">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/toolbar/dottedLine.svg</normaloff>:/images/toolbar/dottedLine.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Line Style</string>
+   </property>
+   <property name="toolTip">
+    <string>Dotted Style</string>
    </property>
   </action>
  </widget>

@@ -85,6 +85,10 @@ class UBSettings : public QObject
         qreal eraserStrongWidth();
         qreal currentEraserWidth();
 
+        // Line related
+        int lineStyleIndex();
+        Qt::PenStyle currentLineStyle();
+
         // Background related
         bool isDarkBackground();
         UBPageBackground pageBackground();
@@ -442,6 +446,8 @@ class UBSettings : public QObject
         void setEraserFineWidth(qreal width);
         void setEraserMediumWidth(qreal width);
         void setEraserStrongWidth(qreal width);
+
+        void setLineStyleIndex(int index);
 
          void setStylusPaletteVisible(bool visible);
 

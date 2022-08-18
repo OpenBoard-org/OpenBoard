@@ -41,6 +41,7 @@ class UBGraphicsPixmapItem;
 class UBGraphicsProxyWidget;
 class UBGraphicsSvgItem;
 class UBGraphicsPolygonItem;
+class UBGraphicsLineItem;
 class UBGraphicsMediaItem;
 class UBGraphicsWidgetItem;
 class UBGraphicsW3CWidgetItem;
@@ -400,8 +401,11 @@ public slots:
         UBGraphicsPolygonItem* curveToPolygonItem(const QList<QPair<QPointF, qreal> > &points);
         UBGraphicsPolygonItem* curveToPolygonItem(const QList<QPointF> &points, qreal startWidth, qreal endWidth);
         void addPolygonItemToCurrentStroke(UBGraphicsPolygonItem* polygonItem);
+        void addLineItemToCurrentStroke(UBGraphicsLineItem* lineItem);
 
         void initPolygonItem(UBGraphicsPolygonItem*);
+        void initLineItem(UBGraphicsLineItem*);
+
 
         void drawEraser(const QPointF& pEndPoint, bool pressed = true);
         void redrawEraser(bool pressed);
@@ -493,6 +497,7 @@ public slots:
         UBZLayerController *mZLayerController;
         UBGraphicsPolygonItem* mpLastPolygon;
         UBGraphicsPolygonItem* mTempPolygon;
+        UBGraphicsLineItem* mpLastLine;
 
         bool mDrawWithCompass;
         UBGraphicsPolygonItem *mCurrentPolygon;

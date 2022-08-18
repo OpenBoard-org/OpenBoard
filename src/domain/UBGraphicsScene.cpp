@@ -70,6 +70,7 @@
 #include "UBGraphicsPixmapItem.h"
 #include "UBGraphicsSvgItem.h"
 #include "UBGraphicsPolygonItem.h"
+#include "UBGraphicsLineItem.h"
 #include "UBGraphicsMediaItem.h"
 #include "UBGraphicsWidgetItem.h"
 #include "UBGraphicsPDFItem.h"
@@ -541,23 +542,6 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
 
             if (currentTool == UBStylusTool::Line || dc->activeRuler())
             {
-                if (UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker)
-                if(NULL != mpLastPolygon && NULL != mCurrentStroke && mAddedItems.size() > 0){
-                    UBCoreGraphicsScene::removeItemFromDeletion(mpLastPolygon);
-                    mAddedItems.remove(mpLastPolygon);
-                    mCurrentStroke->remove(mpLastPolygon);
-                    if (mCurrentStroke->polygons().empty()){
-                        delete mCurrentStroke;
-                        mCurrentStroke = NULL;
-                    }
-                    removeItem(mpLastPolygon);
-                    mPreviousPolygonItems.removeAll(mpLastPolygon);
-                }
-
-                // ------------------------------------------------------------------------
-                // Here we wanna make sure that the Line will 'grip' at i*45, i*90 degrees
-                // ------------------------------------------------------------------------
-
                 QLineF radius(mPreviousPoint, position);
                 qreal angle = radius.angle();
                 angle = qRound(angle / 45) * 45;
@@ -667,7 +651,16 @@ bool UBGraphicsScene::inputDeviceRelease(int tool)
 
     if (currentTool == UBStylusTool::Eraser)
         hideEraser();
+    if(currentTool == UBStylusTool::Line)
+    {
+        if (mUndoRedoStackEnabled)
+        {   //should be deleted after scene own undo stack implemented
+            UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, NULL, mpLastLine);
+            UBApplication::undoStack->push(uc);
 
+            mAddedItems.clear();
+        }
+    } else{
 
     UBDrawingController *dc = UBDrawingController::drawingController();
 
@@ -740,6 +733,7 @@ bool UBGraphicsScene::inputDeviceRelease(int tool)
             }
             mCurrentPolygon = 0;
         }
+    }
     }
 
     if (mRemovedItems.size() > 0 || mAddedItems.size() > 0)
@@ -943,8 +937,17 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &startWid
         mAddedItems.clear();
     }
 
-    UBGraphicsPolygonItem *polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), initialWidth, endWidth);
-    addPolygonItemToCurrentStroke(polygonItem);
+    if (UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Line)
+    {
+        UBGraphicsPolygonItem *polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), initialWidth, endWidth);
+        addPolygonItemToCurrentStroke(polygonItem);
+    } else
+    {
+        UBGraphicsLineItem *lineItem = new UBGraphicsLineItem(QLineF(mPreviousPoint, pEndPoint), initialWidth, endWidth);
+        initLineItem(lineItem);
+        addLineItemToCurrentStroke(lineItem);
+    }
+
 
     if (!bLineStyle) {
         mPreviousPoint = pEndPoint;
@@ -998,6 +1001,20 @@ void UBGraphicsScene::addPolygonItemToCurrentStroke(UBGraphicsPolygonItem* polyg
 
 }
 
+void UBGraphicsScene::addLineItemToCurrentStroke(UBGraphicsLineItem* lineItem)
+{
+    lineItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+    lineItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+    lineItem->SetDelegate();
+
+    mpLastLine = lineItem;
+    mAddedItems.insert(lineItem);
+
+    // Here we add the item to the scene
+    addItem(lineItem);
+
+}
+
 void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 {
     const QLineF line(mPreviousPoint, pEndPoint);
@@ -1017,13 +1034,15 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
     typedef QList<QPolygonF> POLYGONSLIST;
     QList<POLYGONSLIST> intersectedPolygons;
 
+    QList<UBGraphicsLineItem*> intersectedLineItems;
+
     #pragma omp parallel for
     for(int i=0; i<collidItems.size(); i++)
     {
         UBGraphicsPolygonItem *pi = qgraphicsitem_cast<UBGraphicsPolygonItem*>(collidItems[i]);
-        if(pi == NULL)
-            continue;
-
+        UBGraphicsLineItem *li = qgraphicsitem_cast<UBGraphicsLineItem*>(collidItems[i]);
+        if(pi != NULL)
+        {
         QPainterPath itemPainterPath;
         itemPainterPath.addPolygon(pi->sceneTransform().map(pi->polygon()));
 
@@ -1044,6 +1063,23 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
             {
                intersectedItems << pi;
                intersectedPolygons << newPath.simplified().toFillPolygons(pi->sceneTransform().inverted());
+            }
+        }
+        } else if (li != NULL)
+        {
+            QPainterPath itemPainterPath;
+            QList<QPointF> linePoints = li->linePoints();
+            for (int i=0; i < linePoints.count(); ++i)
+            {
+                itemPainterPath.addEllipse(linePoints[i], 1, 1);
+            }
+            if (eraserPath.contains(itemPainterPath) || eraserPath.intersects(itemPainterPath))
+            {
+                #pragma omp critical
+                {
+                    // Compete remove item
+                    intersectedLineItems << li;
+                }
             }
         }
     }
@@ -1093,7 +1129,21 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
             intersectedPolygonItem->setTransform(t);
     }
 
-    if (!intersectedItems.empty())
+    for (int i=0; i<intersectedLineItems.size(); i++)
+    {
+        UBGraphicsLineItem *intersectedLineItem = intersectedLineItems[i];
+
+        mRemovedItems << intersectedLineItem;
+        QTransform t;
+        bool bApplyTransform = false;
+        removeItem(intersectedLineItem);
+        if (bApplyTransform)
+        {
+            intersectedLineItem ->setTransform(t);
+        }
+    }
+
+    if (!intersectedItems.empty() || !intersectedLineItems.empty())
         setModified(true);
 }
 
@@ -1269,6 +1319,37 @@ void UBGraphicsScene::initPolygonItem(UBGraphicsPolygonItem* polygonItem)
     polygonItem->setColorOnLightBackground(colorOnLightBG);
 
     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
+}
+
+void UBGraphicsScene::initLineItem(UBGraphicsLineItem* lineItem)
+{
+    QColor colorOnDarkBG;
+    QColor colorOnLightBG;
+
+    if (UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker)
+    {
+        colorOnDarkBG = UBApplication::boardController->penColorOnDarkBackground();
+        colorOnLightBG = UBApplication::boardController->penColorOnLightBackground();
+    }
+
+    if (mDarkBackground)
+    {
+        lineItem->setColor(colorOnDarkBG);
+    }
+    else
+    {
+        lineItem->setColor(colorOnLightBG);
+    }
+
+    lineItem->setColorOnDarkBackground(colorOnDarkBG);
+    lineItem->setColorOnLightBackground(colorOnLightBG);
+
+    lineItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
+    lineItem->setStyle(UBSettings::settings()->currentLineStyle());
+
+    QPen linePen = lineItem->pen();
+    linePen.setWidth(lineItem->originalWidth());
+    lineItem->setPen(linePen);
 }
 
 UBGraphicsPolygonItem* UBGraphicsScene::arcToPolygonItem(const QLineF& pStartRadius, qreal pSpanAngle, qreal pWidth)
@@ -1491,7 +1572,7 @@ void UBGraphicsScene::clearContent(clearCase pCase)
                                                       ? qgraphicsitem_cast<UBGraphicsGroupContainerItem*>(item->parentItem())
                                                       : 0;
             UBGraphicsItemDelegate *curDelegate = UBGraphicsItem::Delegate(item);
-            if (!curDelegate) {
+            if (!curDelegate && item->type() != UBGraphicsLineItem::Type) {
                 continue;
             }
 
@@ -1499,6 +1580,12 @@ void UBGraphicsScene::clearContent(clearCase pCase)
             bool isStrokesGroup = item->type() == UBGraphicsStrokesGroup::Type;
 
             bool shouldDelete = false;
+            if(item->type()==UBGraphicsLineItem::Type)
+            {
+                removedItems << item;
+                this->removeItem(item);
+            } else
+            {
             switch (static_cast<int>(pCase)) {
             case clearAnnotations :
                 shouldDelete = isStrokesGroup;
@@ -1509,6 +1596,7 @@ void UBGraphicsScene::clearContent(clearCase pCase)
             case clearItemsAndAnnotations:
                 shouldDelete = !isGroup && !isBackgroundObject(item);
                 break;
+            }
             }
 
             if(shouldDelete) {

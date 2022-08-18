@@ -67,6 +67,7 @@
 #include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBGraphicsPDFItem.h"
 #include "domain/UBGraphicsPolygonItem.h"
+#include "domain/UBGraphicsLineItem.h"
 #include "domain/UBItem.h"
 #include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsSvgItem.h"
@@ -1210,7 +1211,8 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
                             || item->type() == UBGraphicsSvgItem::Type
                             || item->type() == UBGraphicsTextItem::Type
                             || item->type() == UBGraphicsStrokesGroup::Type
-                            || item->type() == UBGraphicsGroupContainerItem::Type) {
+                            || item->type() == UBGraphicsGroupContainerItem::Type
+                            || item->type() == UBGraphicsLineItem::Type) {
 
 
                         if (!mJustSelectedItems.contains(item)) {

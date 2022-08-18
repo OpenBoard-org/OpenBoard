@@ -300,6 +300,7 @@ QRectF UBBoardController::controlGeometry()
 
 void UBBoardController::setupToolbar()
 {
+    QAction* newPropertyPaletteWidget;
     UBSettings *settings = UBSettings::settings();
 
     // Setup color choice widget
@@ -314,7 +315,7 @@ void UBBoardController::setupToolbar()
             new UBToolbarButtonGroup(mMainWindow->boardToolBar, colorActions);
     colorChoice->setLabel(tr("Color"));
 
-    mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, colorChoice);
+    newPropertyPaletteWidget = mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, colorChoice);
 
     connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), colorChoice, SLOT(displayText(QVariant)));
     connect(colorChoice, SIGNAL(activated(int)), this, SLOT(setColorIndex(int)));
@@ -327,6 +328,7 @@ void UBBoardController::setupToolbar()
     colorChoice->colorPaletteChanged();
     colorChoice->setCurrentIndex(settings->penColorIndex());
     colorActions.at(settings->penColorIndex())->setChecked(true);
+    mPropertyPaletteWidgets.insert(color, newPropertyPaletteWidget);
 
     // Setup line width choice widget
     QList<QAction *> lineWidthActions;
@@ -349,7 +351,8 @@ void UBBoardController::setupToolbar()
     lineWidthChoice->setCurrentIndex(settings->penWidthIndex());
     lineWidthActions.at(settings->penWidthIndex())->setChecked(true);
 
-    mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, lineWidthChoice);
+    newPropertyPaletteWidget = mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, lineWidthChoice);
+    mPropertyPaletteWidgets.insert(lineWidth, newPropertyPaletteWidget);
 
     //-----------------------------------------------------------//
     // Setup eraser width choice widget
@@ -362,7 +365,7 @@ void UBBoardController::setupToolbar()
     UBToolbarButtonGroup *eraserWidthChoice =
             new UBToolbarButtonGroup(mMainWindow->boardToolBar, eraserWidthActions);
 
-    mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, eraserWidthChoice);
+    newPropertyPaletteWidget = mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, eraserWidthChoice);
 
     connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), eraserWidthChoice, SLOT(displayText(QVariant)));
     connect(eraserWidthChoice, SIGNAL(activated(int)), UBDrawingController::drawingController(), SLOT(setEraserWidthIndex(int)));
@@ -372,11 +375,32 @@ void UBBoardController::setupToolbar()
     eraserWidthActions.at(settings->eraserWidthIndex())->setChecked(true);
 
     mMainWindow->boardToolBar->insertSeparator(mMainWindow->actionBackgrounds);
+    mPropertyPaletteWidgets.insert(eraserWidth, newPropertyPaletteWidget);
+    //-----------------------------------------------------------//
+    // Setup line style choice widget
+    QList<QAction *> lineStyleActions;
+    lineStyleActions.append(mMainWindow->actionLineSolid);
+    lineStyleActions.append(mMainWindow->actionLineDashed);
+    lineStyleActions.append(mMainWindow->actionLineDotted);
+
+    UBToolbarButtonGroup *lineStyleChoice =
+        new UBToolbarButtonGroup(mMainWindow->boardToolBar, lineStyleActions);
+
+    connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), lineStyleChoice, SLOT(displayText(QVariant)));
+
+    connect(lineStyleChoice, SIGNAL(activated(int)),
+        UBDrawingController::drawingController(), SLOT(setLineStyleIndex(int)));
+
+    lineStyleChoice->displayText(QVariant(settings->appToolBarDisplayText->get().toBool()));
+    newPropertyPaletteWidget = mMainWindow->boardToolBar->insertWidget(mMainWindow->actionBackgrounds, lineStyleChoice);
+    lineStyleChoice->setCurrentIndex(settings->lineStyleIndex());
+    lineStyleActions.at(settings->lineStyleIndex())->setChecked(true);
+    mPropertyPaletteWidgets.insert(lineStyle, newPropertyPaletteWidget);
 
     //-----------------------------------------------------------//
 
-    UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->boardToolBar, mMainWindow->actionBoard);
-
+    UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->boardToolBar, mMainWindow->actionBackgrounds);
+    UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->boardToolBar, mMainWindow->actionBoard, 40);
     UBApplication::app()->decorateActionMenu(mMainWindow->actionMenu);
 
     mMainWindow->actionBoard->setVisible(false);
@@ -2185,9 +2209,9 @@ void UBBoardController::saveViewState()
 
 void UBBoardController::stylusToolChanged(int tool)
 {
+    UBStylusTool::Enum eTool = (UBStylusTool::Enum)tool;
     if (UBPlatformUtils::hasVirtualKeyboard() && mPaletteManager->mKeyboardPalette)
     {
-        UBStylusTool::Enum eTool = (UBStylusTool::Enum)tool;
         if(eTool != UBStylusTool::Selector && eTool != UBStylusTool::Text)
         {
             if(mPaletteManager->mKeyboardPalette->m_isVisible)
@@ -2201,6 +2225,34 @@ void UBBoardController::stylusToolChanged(int tool)
             }
         }
     }
+    if (eTool == UBStylusTool::Pen || eTool == UBStylusTool::Marker)
+        {
+            mPropertyPaletteWidgets[color]->setVisible(true);
+            mPropertyPaletteWidgets[lineWidth]->setVisible(true);
+            mPropertyPaletteWidgets[eraserWidth]->setVisible(false);
+            mPropertyPaletteWidgets[lineStyle]->setVisible(false);
+        } else
+        if (eTool == UBStylusTool::Eraser)
+        {
+            mPropertyPaletteWidgets[color]->setVisible(false);
+            mPropertyPaletteWidgets[lineWidth]->setVisible(false);
+            mPropertyPaletteWidgets[eraserWidth]->setVisible(true);
+            mPropertyPaletteWidgets[lineStyle]->setVisible(false);
+        } else
+        if (eTool == UBStylusTool::Line)
+        {
+            mPropertyPaletteWidgets[color]->setVisible(true);
+            mPropertyPaletteWidgets[lineWidth]->setVisible(true);
+            mPropertyPaletteWidgets[eraserWidth]->setVisible(false);
+            mPropertyPaletteWidgets[lineStyle]->setVisible(true);
+        } else
+        {
+            mPropertyPaletteWidgets[color]->setVisible(false);
+            mPropertyPaletteWidgets[lineWidth]->setVisible(false);
+            mPropertyPaletteWidgets[eraserWidth]->setVisible(false);
+            mPropertyPaletteWidgets[lineStyle]->setVisible(false);
+        }
+
 
 }
 

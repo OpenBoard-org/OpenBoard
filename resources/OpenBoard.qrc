@@ -126,6 +126,9 @@
         <file>images/toolbar/eraserTool.png</file>
         <file>images/toolbar/lineTool.png</file>
         <file>images/toolbar/tools.png</file>
+        <file>images/toolbar/solidLine.svg</file>
+        <file>images/toolbar/dashedLine.svg</file>
+        <file>images/toolbar/dottedLine.svg</file>
         <file>images/stylusPalette/arrow.png</file>
         <file>images/stylusPalette/arrowOn.png</file>
         <file>images/stylusPalette/handPlay.png</file>

@@ -38,6 +38,7 @@
 
 class UBGraphicsSvgItem;
 class UBGraphicsPolygonItem;
+class UBGraphicsLineItem;
 class UBGraphicsPixmapItem;
 class UBGraphicsPDFItem;
 class UBGraphicsWidgetItem;
@@ -125,6 +126,8 @@ class UBSvgSubsetAdaptor
 
                 QList<UBGraphicsPolygonItem*> polygonItemsFromPolylineSvg(const QColor& pDefaultColor);
 
+                UBGraphicsLineItem* lineItemFromLineSvg(const QColor& pDefaultPenColor);
+
                 UBGraphicsPixmapItem* pixmapItemFromSvg();
 
                 UBGraphicsSvgItem* svgItemFromSvg();
@@ -195,6 +198,7 @@ class UBSvgSubsetAdaptor
                 void persistStrokeToDom(QGraphicsItem *strokeItem, QDomElement *curParent, QDomDocument *curDomDocument);
                 void polygonItemToSvgPolygon(UBGraphicsPolygonItem* polygonItem, bool groupHoldsInfo);
                 void polygonItemToSvgLine(UBGraphicsPolygonItem* polygonItem, bool groupHoldsInfo);
+                void lineItemToSvgLine(UBGraphicsLineItem* lineItem, bool groupHoldsInfo);
                 void strokeToSvgPolyline(UBGraphicsStroke* stroke, bool groupHoldsInfo);
                 void strokeToSvgPolygon(UBGraphicsStroke* stroke, bool groupHoldsInfo);
 
