@@ -52,33 +52,45 @@ class UBDesktopPalette : public UBActionPalette
         void disappearForCapture();
         void appear();
 
+ // The following actions are owned by UBDesktopPalette and therefore we have to produce signals for them.
+        QAction *mActionUniboard;
+        QAction *mActionCustomSelect;
+        QAction *mDisplaySelectAction;
+
     signals:
         void uniboardClick();
         void customClick();
         void screenClick();
 
+// The following actions are owned by UBDesktopPalette. But they are handled internally in UBDesktopPalette.
+// Therefore slots exist. UBDesktopPalette does not emit signals for them.
+
+    private:
+
+        QAction *mMaximizeAction;
+        QAction *mShowHideAction;
+
+    public slots:
+
+        void showHideClick(bool checked);
+        void maximizeMe();
+
+    signals:
 //#ifdef Q_OS_LINUX //TODO: check why this produces an error on linux if uncommented
         void refreshMask();
 //#endif
 
     public slots:
 
-        void showHideClick(bool checked);
         void updateShowHideState(bool pShowEnabled);
         void setShowHideButtonVisible(bool visible);
         void setDisplaySelectButtonVisible(bool show);
-        void maximizeMe();
 
 protected:
         void showEvent(QShowEvent *event);
         void hideEvent(QHideEvent *event);
 
 private:
-        QAction *mShowHideAction;
-        QAction *mDisplaySelectAction;
-        QAction *mMaximizeAction;
-        QAction *mActionUniboard;
-        QAction *mActionCustomSelect;
 
         eMinimizedLocation mMinimizedLocation;
 
@@ -91,7 +103,6 @@ private:
 
         void createAndConnectButtons();
 
-private slots:
         void actionPressed(QToolButton* button, QAction* action, int stylusTool);
         void actionReleased(QAction* action);
 

@@ -46,8 +46,8 @@
 
 UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalette)
     : UBActionPalette(Qt::TopLeftCorner, parent)
-    , mShowHideAction(NULL)
     , mDisplaySelectAction(NULL)
+    , mShowHideAction(NULL)
     , mMinimizedLocation(eMinimizedLocation_None)
     , pendingButton(nullptr)
 {
