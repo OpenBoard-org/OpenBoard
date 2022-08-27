@@ -106,6 +106,7 @@ private:
         void actionPressed(QToolButton* button, QAction* action, int stylusTool);
         void actionReleased(QAction* action);
 
+        void setArrowsForPenMarkerErasor(bool arrors);
 signals:
         void hideOtherPalettes(QAction *);
         void togglePropertyPalette(QAction *);

@@ -255,38 +255,32 @@ void UBDesktopPalette::maximizeMe()
 #endif
 }
 
-void UBDesktopPalette::showEvent(QShowEvent *event)
-{
-    Q_UNUSED(event);
+void UBDesktopPalette::setArrowsForPenMarkerErasor(bool arrows){
     QIcon penIcon;
     QIcon markerIcon;
     QIcon eraserIcon;
-    penIcon.addFile(":images/stylusPalette/penArrow.svg", QSize(), QIcon::Normal, QIcon::Off);
-    penIcon.addFile(":images/stylusPalette/penOnArrow.svg", QSize(), QIcon::Normal, QIcon::On);
+    penIcon.addFile(arrows ? ":images/stylusPalette/penArrow.svg" : ":images/stylusPalette/pen.svg", QSize(), QIcon::Normal, QIcon::Off);
+    penIcon.addFile(arrows ? ":images/stylusPalette/penOnArrow.svg" : ":images/stylusPalette/penOn.svg", QSize(), QIcon::Normal, QIcon::On);
     UBApplication::mainWindow->actionPen->setIcon(penIcon);
-    markerIcon.addFile(":images/stylusPalette/markerArrow.svg", QSize(), QIcon::Normal, QIcon::Off);
-    markerIcon.addFile(":images/stylusPalette/markerOnArrow.svg", QSize(), QIcon::Normal, QIcon::On);
+    markerIcon.addFile(arrows ? ":images/stylusPalette/markerArrow.svg" : ":images/stylusPalette/marker.svg", QSize(), QIcon::Normal, QIcon::Off);
+    markerIcon.addFile(arrows ? ":images/stylusPalette/markerOnArrow.svg" : ":images/stylusPalette/markerOn.svg", QSize(), QIcon::Normal, QIcon::On);
     UBApplication::mainWindow->actionMarker->setIcon(markerIcon);
-    eraserIcon.addFile(":images/stylusPalette/eraserArrow.svg", QSize(), QIcon::Normal, QIcon::Off);
-    eraserIcon.addFile(":images/stylusPalette/eraserOnArrow.svg", QSize(), QIcon::Normal, QIcon::On);
+    eraserIcon.addFile(arrows ? ":images/stylusPalette/eraserArrow.svg" : ":images/stylusPalette/eraser.svg", QSize(), QIcon::Normal, QIcon::Off);
+    eraserIcon.addFile(arrows ? ":images/stylusPalette/eraserOnArrow.svg" : ":images/stylusPalette/eraserOn.svg", QSize(), QIcon::Normal, QIcon::On);
     UBApplication::mainWindow->actionEraser->setIcon(eraserIcon);
+}
+
+
+void UBDesktopPalette::showEvent(QShowEvent *event)
+{
+    Q_UNUSED(event);
+    setArrowsForPenMarkerErasor(true);
 }
 
 void UBDesktopPalette::hideEvent(QHideEvent *event)
 {
     Q_UNUSED(event);
-    QIcon penIcon;
-    QIcon markerIcon;
-    QIcon eraserIcon;
-    penIcon.addFile(":images/stylusPalette/pen.svg", QSize(), QIcon::Normal, QIcon::Off);
-    penIcon.addFile(":images/stylusPalette/penOn.svg", QSize(), QIcon::Normal, QIcon::On);
-    UBApplication::mainWindow->actionPen->setIcon(penIcon);
-    markerIcon.addFile(":images/stylusPalette/marker.svg", QSize(), QIcon::Normal, QIcon::Off);
-    markerIcon.addFile(":images/stylusPalette/markerOn.svg", QSize(), QIcon::Normal, QIcon::On);
-    UBApplication::mainWindow->actionMarker->setIcon(markerIcon);
-    eraserIcon.addFile(":images/stylusPalette/eraser.svg", QSize(), QIcon::Normal, QIcon::Off);
-    eraserIcon.addFile(":images/stylusPalette/eraserOn.svg", QSize(), QIcon::Normal, QIcon::On);
-    UBApplication::mainWindow->actionEraser->setIcon(eraserIcon);
+    setArrowsForPenMarkerErasor(false);
 }
 
 void UBDesktopPalette::actionPressed(QToolButton* button, QAction* action, int stylusTool)
