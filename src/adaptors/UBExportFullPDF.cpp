@@ -114,6 +114,8 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
 
             bool exportDark = isDark && UBSettings::settings()->exportBackgroundColor->get().toBool();
 
+            bool sceneHasPDFBackground = false;
+
             // set high res rendering
             scene->setRenderingQuality(UBItem::RenderingQualityHigh, UBItem::CacheNotAllowed);
             scene->setRenderingContext(UBGraphicsScene::PdfExport);
@@ -124,7 +126,15 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
 
             UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(scene->backgroundObject());
 
-            if (pdfItem) mHasPDFBackgrounds = true;
+            if (pdfItem)
+            {
+                mHasPDFBackgrounds = true;
+                sceneHasPDFBackground = true;
+            }
+            else
+            {
+                sceneHasPDFBackground = false;
+            }
 
             pdfPrinter.setPaperSize(QSizeF(pageSize.width()*mScaleFactor, pageSize.height()*mScaleFactor), QPrinter::Point);
 
@@ -133,7 +143,7 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
             if (pageIndex != 0) pdfPrinter.newPage();
 
             // do not draw background color and grid if scene has PDF background
-            if (mHasPDFBackgrounds)
+            if (sceneHasPDFBackground)
             {
                 scene->setDrawingMode(true);
                 scene->setBackground(false, UBPageBackground::plain);
