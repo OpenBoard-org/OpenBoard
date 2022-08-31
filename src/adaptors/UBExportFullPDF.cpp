@@ -108,20 +108,11 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
         for(int pageIndex = 0 ; pageIndex < pDocumentProxy->pageCount(); pageIndex++)
         {
             UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
-            // set background to white, no grid for PDF output
+            // set background according to PDF export settings
             bool isDark = scene->isDarkBackground();
             UBPageBackground pageBackground = scene->pageBackground();
 
             bool exportDark = isDark && UBSettings::settings()->exportBackgroundColor->get().toBool();
-
-            if (UBSettings::settings()->exportBackgroundGrid->get().toBool())
-            {
-                scene->setBackground(exportDark, pageBackground);
-            }
-            else
-            {
-                scene->setBackground(exportDark, UBPageBackground::plain);
-            }
 
             // set high res rendering
             scene->setRenderingQuality(UBItem::RenderingQualityHigh, UBItem::CacheNotAllowed);
@@ -141,8 +132,22 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
 
             if (pageIndex != 0) pdfPrinter.newPage();
 
+            // do not draw background color and grid if scene has PDF background
+            if (mHasPDFBackgrounds)
+            {
+                scene->setDrawingMode(true);
+                scene->setBackground(false, UBPageBackground::plain);
+            }
+            else if (UBSettings::settings()->exportBackgroundGrid->get().toBool())
+            {
+                scene->setBackground(exportDark, pageBackground);
+            }
+            else
+            {
+                scene->setBackground(exportDark, UBPageBackground::plain);
+            }
+
             //render to PDF
-            scene->setDrawingMode(true);
             scene->render(pdfPainter, QRectF(), scene->normalizedSceneRect());
 
             //restore screen rendering quality
