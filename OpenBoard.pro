@@ -11,7 +11,7 @@ VERSION_MAJ = 1
 VERSION_MIN = 6
 VERSION_PATCH = 4
 VERSION_TYPE = rc # a = alpha, b = beta, rc = release candidate, r = release, other => error
-VERSION_BUILD = 0831
+VERSION_BUILD = 0913
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$${VERSION_BUILD}"
 
