@@ -455,7 +455,8 @@ bool UBFFmpegVideoEncoder::init()
         c->channel_layout = AV_CH_LAYOUT_STEREO;
         c->channels  = av_get_channel_layout_nb_channels(c->channel_layout);
 #else
-        av_channel_layout_copy(&c->ch_layout, &(AVChannelLayout)AV_CHANNEL_LAYOUT_STEREO);
+        AVChannelLayout layout = AV_CHANNEL_LAYOUT_STEREO;
+        av_channel_layout_copy(&c->ch_layout, &layout);
 #endif
 
         //deprecated on ffmpeg 4
