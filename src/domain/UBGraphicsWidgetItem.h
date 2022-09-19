@@ -84,6 +84,7 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
 
         bool canBeContent() const;
         bool canBeTool() const;
+        void setCanBeTool(bool tool);
 
         QString preference(const QString& key) const;
         void setPreference(const QString& key, QString value);
@@ -119,6 +120,7 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         bool freezable() const;
         bool resizable() const;
         bool isFrozen() const;
+        void setFreezable(bool freezable);
         bool isWebActive() const;
 
         const QPixmap& snapshot() const;

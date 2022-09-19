@@ -94,6 +94,7 @@ void UBGraphicsWidgetItemDelegate::decorateMenu(QMenu* menu)
     freezeAction->setIcon(freezeIcon);
 
     freezeAction->setCheckable(true);
+    freezeAction->setEnabled(delegated()->freezable());
 
     if (delegated()->canBeTool())
     {

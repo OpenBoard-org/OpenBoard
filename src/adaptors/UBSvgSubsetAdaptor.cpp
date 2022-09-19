@@ -892,8 +892,30 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                 else if (src.contains(".wgt"))
                 {
                     UBGraphicsW3CWidgetItem* w3cWidgetItem = graphicsW3CWidgetFromSvg();
+
                     if (w3cWidgetItem)
                     {
+                        // check compatibility
+                        QUuid uuid(mXmlReader.attributes().value(mNamespaceUri, "uuid").toString());
+
+                        if (!proxy->isWidgetCompatible(uuid))
+                        {
+                            // show a substitute image and freeze the widget
+                            QPixmap pixmap(w3cWidgetItem->size().toSize());
+                            pixmap.fill(Qt::lightGray);
+                            QPainter painter(&pixmap);
+                            QFont font = painter.font();
+                            font.setPixelSize(16);
+                            painter.setFont(font);
+                            const QRectF rectangle(QPointF(0, 0), w3cWidgetItem->size());
+                            painter.drawText(rectangle, Qt::AlignCenter, QObject::tr("Incompatible widget"));
+                            w3cWidgetItem->setSnapshot(pixmap, true);
+
+                            // disable user interactions
+                            w3cWidgetItem->setFreezable(false);
+                            w3cWidgetItem->setCanBeTool(false);
+                        }
+
                         w3cWidgetItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
                         w3cWidgetItem->resize(foreignObjectWidth, foreignObjectHeight);
