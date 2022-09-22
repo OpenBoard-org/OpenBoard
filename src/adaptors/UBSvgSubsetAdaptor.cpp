@@ -80,7 +80,6 @@
 #include "pdf/PDFRenderer.h"
 
 #include "core/memcheck.h"
-//#include "qtlogger.h"
 
 const QString UBSvgSubsetAdaptor::nsSvg = "http://www.w3.org/2000/svg";
 const QString UBSvgSubsetAdaptor::nsXHtml = "http://www.w3.org/1999/xhtml";
@@ -932,17 +931,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                 else if (type == "text")
                 {
                     UBGraphicsTextItem* textItem = textItemFromSvg();
-                    UBGraphicsTextItemDelegate *textDelegate = 0;
-
-                    if (textItem)
-                        textDelegate = dynamic_cast<UBGraphicsTextItemDelegate*>(textItem->Delegate());
-
-                    if (textDelegate)
-                    {
-                        //qreal currentDpi = UBApplication::displayManager->logicalDpi(DisplayRole::Control);
-                        //qreal textSizeMultiplier = qreal(proxy->pageDpi())/currentDpi;
-                        //textDelegate->scaleTextSize(textSizeMultiplier);
-                    }
 
                     if (textItem)
                     {
@@ -1464,7 +1452,6 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
     if (openStroke)
     {
         mXmlWriter.writeEndElement();
-        groupHoldsInfo = false;
         openStroke = 0;
     }
 
@@ -2056,8 +2043,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::pixmapItemToLinkedImage(UBGraphicsPi
 
     QString fileName = UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png";
 
-    QString path = mDocumentPath + "/" + fileName;
-
     mXmlWriter.writeAttribute(nsXLink, "href", fileName);
 
     graphicsItemToSvg(pixmapItem);
@@ -2286,8 +2271,8 @@ UBGraphicsMediaItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::videoItemFromSvg()
     //Claudio this is necessary to fix the absolute path added on Sankore 3.1 1.00.00
     //The absoult path doesn't work when you want to share Sankore documents.
     if(!videoHref.toString().startsWith("videos/")){
-        int indexOfAudioDirectory = href.lastIndexOf("videos");
-        href = mDocumentPath + "/" + href.right(href.length() - indexOfAudioDirectory);
+        int indexOfVideoDirectory = href.lastIndexOf("videos");
+        href = mDocumentPath + "/" + href.right(href.length() - indexOfVideoDirectory);
     }
 
     UBGraphicsMediaItem* videoItem = UBGraphicsMediaItem::createMediaItem(QUrl::fromLocalFile(href));
@@ -2489,7 +2474,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsW3CWidgetToSvg(UBGraphicsW3C
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidgetItem* item)
 {
     QUrl widgetRootUrl = item->widgetUrl();
-    QString uuid = UBStringUtils::toCanonicalUuid(item->uuid());
     QString widgetDirectoryPath = UBPersistenceManager::widgetDirectory;
     if (widgetRootUrl.toString().startsWith("file://"))
     {
