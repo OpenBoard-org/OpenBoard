@@ -1002,13 +1002,14 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
     }
 
     qDebug() << "Number of detected strokes: " << mStrokesList.count();
-    QHashIterator<QString, UBGraphicsStrokesGroup*> iterator(mStrokesList);
-    while (iterator.hasNext()) {
-        iterator.next();
-        mScene->addItem(iterator.value());
-    }
 
     if (mScene) {
+        QHashIterator<QString, UBGraphicsStrokesGroup*> iterator(mStrokesList);
+        while (iterator.hasNext()) {
+            iterator.next();
+            mScene->addItem(iterator.value());
+        }
+
         mScene->setModified(saveSceneAfterLoading);
         mScene->enableUndoRedoStack();
     }
@@ -2253,16 +2254,19 @@ UBGraphicsMediaItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::audioItemFromSvg()
 
     UBGraphicsMediaItem* audioItem = UBGraphicsMediaItem::createMediaItem(QUrl::fromLocalFile(href));
     if(audioItem)
+    {
         audioItem->connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), audioItem, SLOT(activeSceneChanged()));
 
-    graphicsItemFromSvg(audioItem);
-    auto ubPos = mXmlReader.attributes().value(mNamespaceUri, "position");
+        graphicsItemFromSvg(audioItem);
+        auto ubPos = mXmlReader.attributes().value(mNamespaceUri, "position");
 
-    qint64 p = 0;
-    if (!ubPos.isNull())
-        p = ubPos.toString().toLongLong();
+        qint64 p = 0;
+        if (!ubPos.isNull())
+            p = ubPos.toString().toLongLong();
 
-    audioItem->setInitialPos(p);
+        audioItem->setInitialPos(p);
+    }
+
     return audioItem;
 }
 
@@ -2289,18 +2293,19 @@ UBGraphicsMediaItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::videoItemFromSvg()
     UBGraphicsMediaItem* videoItem = UBGraphicsMediaItem::createMediaItem(QUrl::fromLocalFile(href));
     if(videoItem){
         videoItem->connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), videoItem, SLOT(activeSceneChanged()));
+
+        graphicsItemFromSvg(videoItem);
+        auto ubPos = mXmlReader.attributes().value(mNamespaceUri, "position");
+
+        qint64 p = 0;
+        if (!ubPos.isNull())
+        {
+            p = ubPos.toString().toLongLong();
+        }
+
+        videoItem->setInitialPos(p);
     }
 
-    graphicsItemFromSvg(videoItem);
-    auto ubPos = mXmlReader.attributes().value(mNamespaceUri, "position");
-
-    qint64 p = 0;
-    if (!ubPos.isNull())
-    {
-        p = ubPos.toString().toLongLong();
-    }
-
-    videoItem->setInitialPos(p);
     return videoItem;
 }
 
@@ -2837,8 +2842,6 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
         textItem->setPlainText(text);
         textItem->resize(width, height);
     }
-
-    textItem->resize(width, height);
 
     return textItem;
 }
