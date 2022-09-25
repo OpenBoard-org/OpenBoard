@@ -58,6 +58,15 @@ void UBGraphicsLineItem::initialize()
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
+
+    mStrokeGroup = new UBGraphicsStrokesGroup();
+    mStrokeGroup->setTransform(this->transform());
+    UBGraphicsItem::assignZValue(mStrokeGroup, this->zValue());
+
+    if(this->transform().isIdentity())
+        this->setTransform(mStrokeGroup->transform());
+
+    mStrokeGroup->addToGroup(this);
 }
 
 void UBGraphicsLineItem::setUuid(const QUuid &pUuid)

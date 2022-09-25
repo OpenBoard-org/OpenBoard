@@ -4,6 +4,7 @@
 #include <QtGui>
 #include "core/UB.h"
 #include "UBItem.h"
+#include "domain/UBGraphicsStrokesGroup.h"
 
 class UBItem;
 class UBGraphicsScene;
@@ -79,6 +80,11 @@ class UBGraphicsLineItem : public QGraphicsLineItem, public UBItem, public UBGra
 
         void SetDelegate();
 
+        UBGraphicsStrokesGroup* StrokeGroup()
+        {
+            return mStrokeGroup;
+        }
+
     protected:
         void paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget);
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
@@ -93,6 +99,8 @@ class UBGraphicsLineItem : public QGraphicsLineItem, public UBItem, public UBGra
 
         QColor mColorOnDarkBackground;
         QColor mColorOnLightBackground;
+
+        UBGraphicsStrokesGroup* mStrokeGroup;
 
 };
 

@@ -1004,14 +1004,14 @@ void UBGraphicsScene::addPolygonItemToCurrentStroke(UBGraphicsPolygonItem* polyg
 void UBGraphicsScene::addLineItemToCurrentStroke(UBGraphicsLineItem* lineItem)
 {
     lineItem->setFlag(QGraphicsItem::ItemIsMovable, true);
-    lineItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+    lineItem->setFlag(QGraphicsItem::ItemIsSelectable, false);
     lineItem->SetDelegate();
 
     mpLastLine = lineItem;
-    mAddedItems.insert(lineItem);
+    mAddedItems.insert(lineItem->StrokeGroup());
 
     // Here we add the item to the scene
-    addItem(lineItem);
+    addItem(lineItem->StrokeGroup());
 
 }
 
