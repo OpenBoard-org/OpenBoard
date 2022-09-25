@@ -94,10 +94,19 @@ QColor UBGraphicsLineItem::color() const
 void UBGraphicsLineItem::setStyle(const Qt::PenStyle& style)
 {
     QPen pen = QPen(color());
-    pen.setStyle(style);
-    if (style==Qt::PenStyle::DotLine)
+    if(style == Qt::PenStyle::DashLine)
     {
-        pen.setCapStyle(Qt::PenCapStyle::RoundCap);
+        QVector <qreal> dashes;
+        qreal space = 5;
+        dashes << 5 << space;
+        pen.setDashPattern(dashes);
+    } else
+    {
+        pen.setStyle(style);
+        if (style==Qt::PenStyle::DotLine)
+        {
+            pen.setCapStyle(Qt::PenCapStyle::RoundCap);
+        }
     }
     pen.setWidth(mOriginalWidth);
     QGraphicsLineItem::setPen(pen);
