@@ -655,7 +655,7 @@ bool UBGraphicsScene::inputDeviceRelease(int tool)
     {
         if (mUndoRedoStackEnabled)
         {   //should be deleted after scene own undo stack implemented
-            UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, NULL, mpLastLine);
+            UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, NULL, mpLastLine->StrokeGroup());
             UBApplication::undoStack->push(uc);
 
             mAddedItems.clear();
@@ -1133,10 +1133,10 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
     {
         UBGraphicsLineItem *intersectedLineItem = intersectedLineItems[i];
 
-        mRemovedItems << intersectedLineItem;
+        mRemovedItems << intersectedLineItem->StrokeGroup();
         QTransform t;
         bool bApplyTransform = false;
-        removeItem(intersectedLineItem);
+        removeItem(intersectedLineItem->StrokeGroup());
         if (bApplyTransform)
         {
             intersectedLineItem ->setTransform(t);
@@ -1582,8 +1582,9 @@ void UBGraphicsScene::clearContent(clearCase pCase)
             bool shouldDelete = false;
             if(item->type()==UBGraphicsLineItem::Type)
             {
-                removedItems << item;
-                this->removeItem(item);
+                UBGraphicsLineItem* lineItem = dynamic_cast<UBGraphicsLineItem*>(item);
+                removedItems << lineItem->StrokeGroup();
+                this->removeItem(lineItem->StrokeGroup());
             } else
             {
             switch (static_cast<int>(pCase)) {

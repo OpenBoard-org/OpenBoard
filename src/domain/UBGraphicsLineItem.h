@@ -85,6 +85,8 @@ class UBGraphicsLineItem : public QGraphicsLineItem, public UBItem, public UBGra
             return mStrokeGroup;
         }
 
+        void setStrokesGroup(UBGraphicsStrokesGroup *group);
+
     protected:
         void paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget);
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);

@@ -653,10 +653,12 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                     if(lineItem->transform().isIdentity())
                         lineItem->setTransform(group->transform());
 
-                    group->addToGroup(lineItem);
+                    //group->addToGroup(lineItem->StrokeGroup());
 
+                    lineItem->setFlag(QGraphicsItem::ItemIsSelectable, false);
+                    mScene->addItem(lineItem->StrokeGroup());
                     lineItem->show();
-                    group->addToGroup(lineItem);
+                    //group->addToGroup(lineItem->StrokeGroup());
                 }
             }
             else if (mXmlReader.name() == "polyline")

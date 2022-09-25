@@ -198,3 +198,8 @@ QVariant UBGraphicsLineItem::itemChange(GraphicsItemChange change, const QVarian
 
     return QGraphicsItem::itemChange(change, newValue);
 }
+
+void UBGraphicsLineItem::setStrokesGroup(UBGraphicsStrokesGroup *group)
+{
+    mStrokeGroup = group;
+}

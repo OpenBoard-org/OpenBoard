@@ -642,7 +642,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgLine(const QDomElement &elem
         if (!textTransform.isNull()) {
             transform = transformFromString(textTransform, graphicsLine);
         }
-        mCurrentScene->addItem(graphicsLine);
+        mCurrentScene->addItem(graphicsLine->StrokeGroup());
 
         graphicsLine->setUuid(itemUuid);
         mRefToUuidMap.insert(element.attribute(aId), itemUuid.toString());
