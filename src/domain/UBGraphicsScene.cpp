@@ -2763,11 +2763,32 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
 
         else if (mPageBackground == UBPageBackground::ruled)
         {
-            qreal firstY = ((int) (rect.y () / gridSize)) * gridSize;
+            qreal gridSizeSeyes = gridSize * 2;
 
-            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += gridSize)
+            QPen seyesSquare ("#a493b7");
+            seyesSquare.setWidthF (2);
+
+            QColor intermediateColor = bgCrossColor;
+            intermediateColor.setAlphaF(0.8 * bgCrossColor.alphaF());
+
+            qreal firstY = ((int) (rect.y () / gridSizeSeyes)) * gridSizeSeyes;
+
+            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += gridSizeSeyes)
             {
+                painter->setPen (seyesSquare);
                 painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
+                painter->setPen (intermediateColor);
+                painter->drawLine (rect.x (), yPos+gridSizeSeyes/4, rect.x () + rect.width (), yPos+gridSizeSeyes/4);
+                painter->drawLine (rect.x (), yPos+2*gridSizeSeyes/4, rect.x () + rect.width (), yPos+2*gridSizeSeyes/4);
+                painter->drawLine (rect.x (), yPos+3*gridSizeSeyes/4, rect.x () + rect.width (), yPos+3*gridSizeSeyes/4);
+            }
+
+            qreal firstX = ((int) (rect.x () / gridSizeSeyes)) * gridSizeSeyes;
+
+            painter->setPen (seyesSquare);
+            for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += gridSizeSeyes)
+            {
+                painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
             }
 
             if (mIntermediateLines)
@@ -2776,7 +2797,7 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
                 intermediateColor.setAlphaF(0.5 * bgCrossColor.alphaF());
                 painter->setPen(intermediateColor);
 
-                for (qreal yPos = firstY - gridSize/2; yPos < rect.y () + rect.height (); yPos += gridSize)
+                for (qreal yPos = firstY - gridSizeSeyes/2; yPos < rect.y () + rect.height (); yPos += gridSizeSeyes)
                 {
                     painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
                 }
