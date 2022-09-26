@@ -2392,7 +2392,16 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsItemToSvg(QGraphicsItem* ite
     mXmlWriter.writeAttribute("x", "0");
     mXmlWriter.writeAttribute("y", "0");
 
-    QRectF rect = item->boundingRect() - QMarginsF(0.5, 0.5, 0.5, 0.5);
+    QRectF rect = item->boundingRect();
+
+    QAbstractGraphicsShapeItem* shapeItem = dynamic_cast<QAbstractGraphicsShapeItem*>(item);
+
+    if (shapeItem && shapeItem->pen().style() != Qt::NoPen)
+    {
+        qreal margin = shapeItem->pen().widthF() / 2.f;
+        rect -= QMarginsF(margin, margin, margin, margin);
+    }
+
     mXmlWriter.writeAttribute("width", QString("%1").arg(rect.width()));
     mXmlWriter.writeAttribute("height", QString("%1").arg(rect.height()));
 
