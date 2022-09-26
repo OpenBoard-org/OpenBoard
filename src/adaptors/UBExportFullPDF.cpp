@@ -214,24 +214,6 @@ bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
 
             MergeDescription mergeInfo;
 
-            // If the PDF was scaled when added to the scene (e.g if it was loaded from a document with a different DPI
-            // than the current one), it should also be scaled here.
-#define UB_MINOR(version) EXTRACT_UB_MINOR(version)
-#define EXTRACT_UB_MINOR(major,minor,patch,type,build) minor
-#define UB_MAJOR(version) EXTRACT_UB_MAJOR(version)
-#define EXTRACT_UB_MAJOR(major,minor,patch,type,build) major
-
-#if UB_MAJOR(UBVERSION_RC) == 1 && UB_MINOR(UBVERSION_RC) == 6
-            QDesktopWidget* desktop = UBApplication::desktop();
-            qreal currentDpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2;
-#elif UB_MAJOR(UBVERSION_RC) == 1 && UB_MINOR(UBVERSION_RC) >= 7
-            qreal currentDpi = UBApplication::displayManager->logicalDpi(ScreenRole::Control);
-#else
-#error Version UBVERSION_RC not supported by this code
-#endif
-
-            qreal pdfScale = qreal(pDocumentProxy->pageDpi())/currentDpi;
-
             int existingPageCount = pDocumentProxy->pageCount();
 
             for(int pageIndex = 0 ; pageIndex < existingPageCount; pageIndex++)
@@ -270,6 +252,10 @@ bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
                     // Now we align the items
                     xPdfOffset += (xPdf - xAnnotation) * scaleFactor * mScaleFactor;
                     yPdfOffset -= (yPdf - yAnnotation) * scaleFactor * mScaleFactor;
+
+                    // If the PDF was scaled when added to the scene (e.g if it was loaded from a document with a different DPI
+                    // than the current one), it should also be scaled here.
+                    qreal pdfScale = pdfItem->sceneTransform().m11();
 
                     TransformationDescription pdfTransform(xPdfOffset, yPdfOffset, scaleFactor * pdfScale, 0);
                     TransformationDescription annotationTransform(xAnnotationsOffset, yAnnotationsOffset, 1, 0);
