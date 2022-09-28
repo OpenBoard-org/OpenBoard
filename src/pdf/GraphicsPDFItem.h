@@ -52,6 +52,7 @@ class GraphicsPDFItem : public QObject, public QGraphicsItem
         QUuid fileUuid() const { return mRenderer->fileUuid(); }
         QByteArray fileData() const { return mRenderer->fileData(); }
         void setCacheAllowed(bool const value) { mIsCacheAllowed = value; }
+        QSizeF pageSize() const { return mRenderer->pointSizeF(mPageNumber); }
         virtual void updateChild() = 0;
     protected:
         PDFRenderer *mRenderer;

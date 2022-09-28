@@ -56,6 +56,8 @@ class PDFRenderer : public QObject
 
         virtual int pageRotation(int pageNumber) const = 0;
 
+        virtual QSizeF pointSizeF(int pageNumber) const = 0;
+
         virtual QString title() const = 0;
 
         void attach();
