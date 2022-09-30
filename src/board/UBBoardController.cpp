@@ -2682,7 +2682,7 @@ void UBBoardController::freezeW3CWidget(QGraphicsItem *item, bool freeze)
             return;
 
         if (freeze) {
-            item_casted->load(QUrl(UBGraphicsW3CWidgetItem::freezedWidgetFilePath()));
+            item_casted->load(QUrl::fromLocalFile(UBGraphicsW3CWidgetItem::freezedWidgetFilePath()));
         } else
             item_casted->loadMainHtml();
     }
