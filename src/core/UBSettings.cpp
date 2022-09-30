@@ -815,6 +815,10 @@ UBPageBackground UBSettings::pageBackground()
         return UBPageBackground::plain;
 }
 
+bool UBSettings::isSeyesRuledBackround()
+{
+    return value("Board/SeyesRuledBackround", 0).toBool();
+}
 
 void UBSettings::setDarkBackground(bool isDarkBackground)
 {
@@ -837,6 +841,10 @@ void UBSettings::setPageBackground(UBPageBackground background)
     setValue("Board/PageBackground", val);
 }
 
+void UBSettings::setSeyesRuledBackground(bool isSeyesRuledBackround)
+{
+    setValue("Board/SeyesRuledBackround", isSeyesRuledBackround);
+}
 
 void UBSettings::setPenPressureSensitive(bool sensitive)
 {
