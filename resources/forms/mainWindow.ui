@@ -1051,6 +1051,25 @@
     <string>Ruled Light Background</string>
    </property>
   </action>
+  <action name="actionSeyesRuledLightBackground">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/backgroundPalette/background7.svg</normaloff>
+     <normalon>:/images/backgroundPalette/background7On.svg</normalon>:/images/backgroundPalette/background7.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Seyes ruled Light Background</string>
+   </property>
+   <property name="iconText">
+    <string>Light</string>
+   </property>
+   <property name="toolTip">
+    <string>Seyes ruled Light Background</string>
+   </property>
+  </action>
   <action name="actionPlainDarkBackground">
    <property name="checkable">
     <bool>true</bool>
@@ -1106,6 +1125,25 @@
    </property>
    <property name="toolTip">
     <string>Ruled Dark Background</string>
+   </property>
+  </action>
+  <action name="actionSeyesRuledDarkBackground">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/backgroundPalette/background8.svg</normaloff>
+     <normalon>:/images/backgroundPalette/background8On.svg</normalon>:/images/backgroundPalette/background8.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Seyes ruled Dark Background</string>
+   </property>
+   <property name="iconText">
+    <string>Dark</string>
+   </property>
+   <property name="toolTip">
+    <string>Seyes ruled Dark Background</string>
    </property>
   </action>
   <action name="actionPodcast">
