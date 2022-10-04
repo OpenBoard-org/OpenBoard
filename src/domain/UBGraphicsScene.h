@@ -138,6 +138,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         UBGraphicsScene* sceneDeepCopy() const;
 
         void clearContent(clearCase pCase = clearItemsAndAnnotations);
+        void saveWidgetSnapshots();
 
         bool inputDevicePress(const QPointF& scenePos, const qreal& pressure = 1.0);
         bool inputDeviceMove(const QPointF& scenePos, const qreal& pressure = 1.0);

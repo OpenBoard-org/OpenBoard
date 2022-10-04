@@ -991,7 +991,8 @@ void UBBoardController::previousScene()
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistViewPositionOnCurrentScene();
-        persistCurrentScene();
+// not necessary, done by setActiveDocumentScene
+//        persistCurrentScene();
         setActiveDocumentScene(mActiveSceneIndex - 1);
         centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
@@ -1007,7 +1008,8 @@ void UBBoardController::nextScene()
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistViewPositionOnCurrentScene();
-        persistCurrentScene();
+// not necessary, done by setActiveDocumentScene
+//        persistCurrentScene();
         setActiveDocumentScene(mActiveSceneIndex + 1);
         centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
@@ -2038,10 +2040,14 @@ void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool force
 {
     if(UBPersistenceManager::persistenceManager()
             && selectedDocument() && mActiveScene && mActiveSceneIndex != mDeletingSceneIndex
-            && (mActiveSceneIndex >= 0) && mActiveSceneIndex != mMovingSceneIndex
-            && (mActiveScene->isModified()))
+            && (mActiveSceneIndex >= 0) && mActiveSceneIndex != mMovingSceneIndex)
     {
-        UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, isAnAutomaticBackup, forceImmediateSave);
+        mActiveScene->saveWidgetSnapshots();
+
+        if (mActiveScene->isModified())
+        {
+            UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, isAnAutomaticBackup, forceImmediateSave);
+        }
     }
 }
 
@@ -2675,15 +2681,9 @@ void UBBoardController::freezeW3CWidgets(bool freeze)
 
 void UBBoardController::freezeW3CWidget(QGraphicsItem *item, bool freeze)
 {
-    if(item->type() == UBGraphicsW3CWidgetItem::Type)
+    if (item->type() == UBGraphicsW3CWidgetItem::Type)
     {
-        UBGraphicsW3CWidgetItem* item_casted = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
-        if (0 == item_casted)
-            return;
-
-        if (freeze) {
-            item_casted->load(QUrl(UBGraphicsW3CWidgetItem::freezedWidgetFilePath()));
-        } else
-            item_casted->loadMainHtml();
+        UBGraphicsWidgetItem* widget = qgraphicsitem_cast<UBGraphicsWidgetItem*>(item);
+        widget->setWebActive(!freeze);
     }
 }

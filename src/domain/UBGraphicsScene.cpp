@@ -1550,6 +1550,20 @@ void UBGraphicsScene::clearContent(clearCase pCase)
     setDocumentUpdated();
 }
 
+void UBGraphicsScene::saveWidgetSnapshots()
+{
+    for (QGraphicsItem* item : qAsConst(mFastAccessItems))
+    {
+        if (item->type() == UBGraphicsItemType::GraphicsWidgetItemType)
+        {
+            UBGraphicsWidgetItem* widget = qgraphicsitem_cast<UBGraphicsWidgetItem *>(item);
+            widget->takeSnapshot();
+            widget->saveSnapshot();
+        }
+    }
+
+}
+
 UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, QGraphicsItem* replaceFor, const QPointF& pPos, qreal pScaleFactor, bool pUseAnimation, bool useProxyForDocumentPath)
 {
     UBGraphicsPixmapItem* pixmapItem = new UBGraphicsPixmapItem();
@@ -2862,8 +2876,6 @@ void UBGraphicsScene::simplifyCurrentStroke()
     }
 
 }
-
-
 
 void UBGraphicsScene::setDocumentUpdated()
 {

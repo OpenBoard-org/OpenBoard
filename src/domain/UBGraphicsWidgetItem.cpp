@@ -71,11 +71,12 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     , mCanBeTool(0)
     , mWidgetUrl(pWidgetUrl)
     , mIsFrozen(false)
+    , mIsWebActive(false)
     , mShouldMoveWidget(false)
     , mUniboardAPI(nullptr)
 {
     mWebEngineView = new UBWebEngineView();
-    setWidget(mWebEngineView);
+    mWebEngineView->setVisible(false);
 
     setData(UBGraphicsItemData::ItemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 
@@ -110,7 +111,9 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
 
 UBGraphicsWidgetItem::~UBGraphicsWidgetItem()
 {
-    /* NOOP */
+    // get ownership back and delete widget
+    setWidget(nullptr);
+    delete mWebEngineView;
 }
 
 void UBGraphicsWidgetItem::initialize()
@@ -337,6 +340,11 @@ bool UBGraphicsWidgetItem::isFrozen() const
     return mIsFrozen;
 }
 
+bool UBGraphicsWidgetItem::isWebActive() const
+{
+    return mIsWebActive;
+}
+
 const QPixmap &UBGraphicsWidgetItem::snapshot() const
 {
     return mSnapshot;
@@ -355,10 +363,18 @@ const QPixmap &UBGraphicsWidgetItem::takeSnapshot()
     return mSnapshot;
 }
 
-void UBGraphicsWidgetItem::setSnapshot(const QPixmap& pix)
+void UBGraphicsWidgetItem::saveSnapshot() const
+{
+    if (mSnapshotFile.isLocalFile() && !mSnapshot.isNull())
+    {
+        mSnapshot.save(mSnapshotFile.toLocalFile());
+    }
+}
+
+void UBGraphicsWidgetItem::setSnapshot(const QPixmap& pix, bool frozen)
 {
     mSnapshot = pix;
-    mIsFrozen = true;
+    mIsFrozen = frozen;
 }
 
 UBGraphicsScene* UBGraphicsWidgetItem::scene()
@@ -482,7 +498,27 @@ void UBGraphicsWidgetItem::freeze()
 void UBGraphicsWidgetItem::unFreeze()
 {
     mIsFrozen = false;
-    mSnapshot = QPixmap();
+}
+
+void UBGraphicsWidgetItem::setWebActive(bool active)
+{
+    if (active != mIsWebActive)
+    {
+        if (active)
+        {
+            // activate the web engine view
+            setWidget(mWebEngineView);
+            setVisible(true);
+        }
+        else
+        {
+            // deactivate the web engine view
+            setWidget(nullptr);
+            mWebEngineView->setVisible(false);
+        }
+
+        mIsWebActive = active;
+    }
 }
 
 void UBGraphicsWidgetItem::inspectPage()
@@ -614,16 +650,16 @@ void UBGraphicsWidgetItem::injectInlineJavaScript()
 
 void UBGraphicsWidgetItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    if (isFrozen())
+    if (isFrozen() || !isWebActive())
     {
         painter->drawPixmap(0, 0, snapshot());
     }
-    else
+    else if (mInitialLoadDone)
     {
         QGraphicsProxyWidget::paint(painter, option, widget);
     }
-
-    if (!mInitialLoadDone) {
+    else
+    {
         QString message;
 
         message = tr("Loading ...");
@@ -1328,6 +1364,7 @@ void UBGraphicsW3CWidgetItem::copyItemParameters(UBItem *copy) const
         }
 
         cp->setZValue(this->zValue());
+        cp->setSnapshot(this->snapshot(), this->isFrozen());
     }
 }
 

@@ -73,6 +73,24 @@ WebPage::WebPage(QWebEngineProfile *profile, QObject *parent)
 #if (QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     connect(this, &QWebEnginePage::certificateError, this, &WebPage::certificateError);
 #endif
+    connect(this, &QWebEnginePage::recommendedStateChanged, [this](QWebEnginePage::LifecycleState state){
+        if (isVisible())
+        {
+            // keep active while visible
+            state = QWebEnginePage::LifecycleState::Active;
+        }
+
+        if (state ==  QWebEnginePage::LifecycleState::Discarded)
+        {
+            // minimum state is Frozen
+            state =  QWebEnginePage::LifecycleState::Frozen;
+        }
+
+        if (state != lifecycleState())
+        {
+            setLifecycleState(state);
+        }
+    });
 }
 
 #if (QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(6, 0, 0))
