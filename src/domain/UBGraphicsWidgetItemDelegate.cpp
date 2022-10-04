@@ -30,6 +30,8 @@
 #include <QtGui>
 #include <QtSvg>
 
+#include <QWebEngineView>
+
 #include "UBGraphicsWidgetItemDelegate.h"
 #include "UBGraphicsScene.h"
 
@@ -45,9 +47,9 @@
 
 UBGraphicsWidgetItemDelegate::UBGraphicsWidgetItemDelegate(UBGraphicsWidgetItem* pDelegated, int widgetType)
     : UBGraphicsItemDelegate(pDelegated, 0, GF_COMMON
-                             | GF_RESPECT_RATIO)
-    , freezeAction(0)
-    , setAsToolAction(0)
+                             | GF_RESPECT_RATIO | GF_SHOW_CONTENT_SOURCE)
+    , freezeAction(nullptr)
+    , setAsToolAction(nullptr)
 {
     mWidgetType = widgetType;
 }
@@ -125,6 +127,12 @@ UBGraphicsWidgetItem* UBGraphicsWidgetItemDelegate::delegated()
 
 void UBGraphicsWidgetItemDelegate::remove(bool canundo)
 {
+    delegated()->closeInspector();
     delegated()->removeScript();
     UBGraphicsItemDelegate::remove(canundo);
+}
+
+void UBGraphicsWidgetItemDelegate::gotoContentSource()
+{
+    delegated()->inspectPage();
 }

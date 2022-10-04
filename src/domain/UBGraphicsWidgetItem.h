@@ -32,12 +32,14 @@
 
 #include <QtGui>
 #include <QDomElement>
-#include <QGraphicsWebView>
+#include <QGraphicsProxyWidget>
 
 #include "core/UB.h"
 
 #include "UBItem.h"
 #include "UBResizableGraphicsItem.h"
+
+class QWebChannel;
 
 class UBWidgetUniboardAPI;
 class UBGraphicsScene;
@@ -45,6 +47,7 @@ class UBW3CWidgetAPI;
 class UBW3CWidgetWebStorageAPI;
 class UBGraphiscItem;
 class UBGraphiscItemDelegate;
+class UBWebEngineView;
 
 struct UBWidgetType
 {
@@ -54,7 +57,7 @@ struct UBWidgetType
     };
 };
 
-class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBResizableGraphicsItem, public UBGraphicsItem
+class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public UBResizableGraphicsItem, public UBGraphicsItem
 {
     Q_OBJECT
 
@@ -72,14 +75,15 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
         virtual void resize(const QSizeF & size);
         virtual QSizeF size() const;
 
-        QUrl mainHtml();
+        QUrl mainHtml() const;
         void loadMainHtml();
-        QUrl widgetUrl();
-        void widgetUrl(QUrl url) { mWidgetUrl = url; }
-        QString mainHtmlFileName();
+        void load(QUrl url);
+        QUrl widgetUrl() const;
+        void widgetUrl(const QUrl &url) { mWidgetUrl = url; }
+        QString mainHtmlFileName() const;
 
-        bool canBeContent();
-        bool canBeTool();
+        bool canBeContent() const;
+        bool canBeTool() const;
 
         QString preference(const QString& key) const;
         void setPreference(const QString& key, QString value);
@@ -93,15 +97,16 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
         void removeDatastoreEntry(const QString& key);
         void removeAllDatastoreEntries();
 
-        void removeScript();
+        void runScript(const QString& script);
+        virtual void removeScript();
 
-        void processDropEvent(QGraphicsSceneDragDropEvent *event);
+        bool processDropEvent(QGraphicsSceneDragDropEvent *event);
         bool isDropableData(const QMimeData *data) const;
 
         virtual QUrl getOwnFolder() const;
         virtual void setOwnFolder(const QUrl &newFolder);
         virtual void setSnapshotPath(const QUrl &newFilePath);
-        virtual QUrl getSnapshotPath();
+        virtual QUrl getSnapshotPath() const;
 
         virtual void clearSource();
 
@@ -111,13 +116,13 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
 
         bool hasLoadedSuccessfully() const;
 
-        bool freezable();
-        bool resizable();
-        bool isFrozen();
+        bool freezable() const;
+        bool resizable() const;
+        bool isFrozen() const;
 
-        QPixmap snapshot();
+        const QPixmap& snapshot() const;
         void setSnapshot(const QPixmap& pix);
-        QPixmap takeSnapshot();
+        const QPixmap& takeSnapshot();
 
         virtual UBItem* deepCopy() const = 0;
         virtual UBGraphicsScene* scene();
@@ -127,8 +132,11 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
         static QString iconFilePath(const QUrl& pUrl);
 
     public slots:
+        void activeSceneChanged();
         void freeze();
         void unFreeze();
+        void inspectPage();
+        void closeInspector();
 
     protected:
         enum OSType
@@ -148,6 +156,7 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
         bool mMouseIsPressed;
         int mCanBeContent;
         int mCanBeTool;
+        UBWebEngineView* mWebEngineView;
         QSize mNominalSize;
         QString mMainHtmlFileName;
         QUrl mMainHtmlUrl;
@@ -171,27 +180,24 @@ class UBGraphicsWidgetItem : public QGraphicsWebView, public UBItem, public UBRe
 
     protected slots:
         void geometryChangeRequested(const QRect& geom);
-        virtual void javaScriptWindowObjectCleared();
+        virtual void registerAPI();
         void mainFrameLoadFinished(bool ok);
-
-    private slots:
-        void onLinkClicked(const QUrl& url);
-        void initialLayoutCompleted();
 
     private:
         bool mIsFrozen;
-        bool mIsTakingSnapshot;
         bool mShouldMoveWidget;
+        QWebChannel* mWebChannel;
         UBWidgetUniboardAPI* mUniboardAPI;
         QPixmap mSnapshot;
         QPointF mLastMousePos;
-        QUrl ownFolder;
-        QUrl SnapshotFile;
+        QUrl mOwnFolder;
+        QUrl mSnapshotFile;
 
         static bool sInlineJavaScriptLoaded;
         static QStringList sInlineJavaScripts;
 };
 
+// NOTE @letsfindaway obsolete
 class UBGraphicsAppleWidgetItem : public UBGraphicsWidgetItem
 {
     Q_OBJECT
@@ -248,8 +254,12 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         virtual void setUuid(const QUuid &pUuid);
         virtual UBItem* deepCopy() const;
         virtual void copyItemParameters(UBItem *copy) const;
-        QMap<QString, PreferenceValue> preferences();
+        QMap<QString, PreferenceValue> preferences() const;
         Metadata metadatas() const;
+
+        virtual void removeScript();
+        virtual void sendJSEnterEvent();
+        virtual void sendJSLeaveEvent();
 
         static QString freezedWidgetFilePath();
         static QString createNPAPIWrapper(const QString& url, const QString& pMimeType = QString(), const QSize& sizeHint = QSize(300, 150), const QString& pName = QString());
@@ -261,7 +271,7 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         Metadata mMetadatas;
 
     private slots:
-        virtual void javaScriptWindowObjectCleared();
+        virtual void registerAPI();
 
     private:
         static void loadNPAPIWrappersTemplates();

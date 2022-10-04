@@ -27,8 +27,6 @@
 
 
 
-#include <QDesktopWidget>
-
 #include "UBDesktopAnnotationController.h"
 
 #include "frameworks/UBPlatformUtils.h"
@@ -51,7 +49,6 @@
 #include "domain/UBGraphicsPolygonItem.h"
 
 #include "UBCustomCaptureWindow.h"
-#include "UBWindowCapture.h"
 #include "UBDesktopPalette.h"
 #include "UBDesktopPropertyPalette.h"
 
@@ -88,7 +85,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
 
     mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window | Qt::NoDropShadowWindowHint | Qt::X11BypassWindowManagerHint);
     mTransparentDrawingView->setCacheMode(QGraphicsView::CacheNone);
-    mTransparentDrawingView->resize(UBApplication::desktop()->width(), UBApplication::desktop()->height());
+    mTransparentDrawingView->resize(UBApplication::displayManager->screenSize(ScreenRole::Desktop));
 
     mTransparentDrawingView->setMouseTracking(true);
 
@@ -121,7 +118,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
 
     connect(mDesktopPalette, SIGNAL(uniboardClick()), this, SLOT(goToUniboard()));
     connect(mDesktopPalette, SIGNAL(customClick()), this, SLOT(customCapture()));
-    connect(mDesktopPalette, SIGNAL(windowClick()), this, SLOT(windowCapture()));
     connect(mDesktopPalette, SIGNAL(screenClick()), this, SLOT(screenCapture()));
     connect(UBApplication::mainWindow->actionPointer, SIGNAL(triggered()), this, SLOT(onToolClicked()));
     connect(UBApplication::mainWindow->actionSelector, SIGNAL(triggered()), this, SLOT(onToolClicked()));
@@ -323,7 +319,7 @@ void UBDesktopAnnotationController::showWindow()
 
     if (!mWindowPositionInitialized)
     {
-        QRect desktopRect = QApplication::desktop()->screenGeometry(mDesktopPalette->pos());
+        QRect desktopRect = UBApplication::displayManager->screenGeometry(ScreenRole::Desktop);
 
         mDesktopPalette->move(5, desktopRect.top() + 150);
 
@@ -460,36 +456,6 @@ void UBDesktopAnnotationController::customCapture()
 }
 
 
-void UBDesktopAnnotationController::windowCapture()
-{
-    onToolClicked();
-    mIsFullyTransparent = true;
-    updateBackground();
-
-    mDesktopPalette->disappearForCapture();
-
-    UBWindowCapture util(this);
-
-    if (util.execute() == QDialog::Accepted)
-    {
-        QPixmap windowPixmap = util.getCapturedWindow();
-
-        // on Mac OS X we can only know that user cancel the operatiion by checking is the image is null
-        // because the screencapture utility always return code 0 event if user cancel the application
-        if (!windowPixmap.isNull())
-        {
-            emit imageCaptured(windowPixmap, false);
-        }
-    }
-
-    mDesktopPalette->appear();
-
-    mIsFullyTransparent = false;
-
-    updateBackground();
-}
-
-
 void UBDesktopAnnotationController::screenCapture()
 {
     onToolClicked();
@@ -512,14 +478,7 @@ void UBDesktopAnnotationController::screenCapture()
 
 QPixmap UBDesktopAnnotationController::getScreenPixmap()
 {
-    QDesktopWidget *desktop = QApplication::desktop();
-    QScreen * screen = UBApplication::controlScreen();
-
-    QRect rect = desktop->screenGeometry(QCursor::pos());
-    rect.moveTo(0, 0);
-
-    return screen->grabWindow(desktop->effectiveWinId(),
-                              rect.x(), rect.y(), rect.width(), rect.height());
+    return UBApplication::displayManager->grab(ScreenRole::Control);
 }
 
 
@@ -532,8 +491,8 @@ void UBDesktopAnnotationController::updateShowHideState(bool pEnabled)
 void UBDesktopAnnotationController::screenLayoutChanged()
 {
     if (UBApplication::applicationController &&
-            UBApplication::applicationController->displayManager() &&
-            UBApplication::applicationController->displayManager()->hasDisplay())
+            UBApplication::displayManager &&
+            UBApplication::displayManager->hasDisplay())
     {
         mDesktopPalette->setShowHideButtonVisible(true);
     }

@@ -6,12 +6,15 @@ CONFIG -= flat
 CONFIG += debug_and_release \
           no_include_pwd
 
+# Don't use deprecated APIs
+DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x050900
+DEFINES += QT_DEPRECATED_WARNINGS
 
 VERSION_MAJ = 1
-VERSION_MIN = 6
-VERSION_PATCH = 4
-VERSION_TYPE = r # a = alpha, b = beta, rc = release candidate, r = release, other => error
-VERSION_BUILD = 0927
+VERSION_MIN = 7
+VERSION_PATCH = 0
+VERSION_TYPE = a # a = alpha, b = beta, rc = release candidate, r = release, other => error
+VERSION_BUILD = 0225
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$${VERSION_BUILD}"
 
@@ -29,15 +32,15 @@ VERSION_RC = $$replace(VERSION_RC, "b", "176") # 0xB0
 VERSION_RC = $$replace(VERSION_RC, "rc", "192" ) # 0xC0
 VERSION_RC = $$replace(VERSION_RC, "r", "240") # 0xF0
 
-QT += webkit
 QT += svg
 QT += network
 QT += xml
 QT += xmlpatterns
 QT += uitools
 QT += multimedia
-QT += webkitwidgets
 QT += multimediawidgets
+QT += webengine
+QT += webenginewidgets
 QT += printsupport
 QT += core
 QT += concurrent

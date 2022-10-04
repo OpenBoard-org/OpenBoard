@@ -27,10 +27,12 @@
 
 
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QStyle>
 
 #include "UBCustomCaptureWindow.h"
+
+#include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 
 #include "frameworks/UBPlatformUtils.h"
 #include "gui/UBRubberBand.h"
@@ -77,11 +79,9 @@ int UBCustomCaptureWindow::execute(const QPixmap &pScreenPixmap)
 {
     mWholeScreenPixmap = pScreenPixmap;
 
-    QDesktopWidget *desktop = QApplication::desktop();
-    int currentScreen = desktop->screenNumber(QCursor::pos());
     // necessary so that changing geometry really affects the widget
     showNormal();
-    setGeometry(desktop->screenGeometry(currentScreen));
+    setGeometry(UBApplication::displayManager->screenGeometry(ScreenRole::Desktop));
     this->show();
     setWindowOpacity(1.0);
 

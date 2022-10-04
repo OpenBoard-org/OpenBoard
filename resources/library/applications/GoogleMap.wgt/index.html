@@ -16,9 +16,9 @@
     </style>
 
     <script type="text/javascript">
-      var language = window.sankore ? sankore.locale().substr(0,2) : "en";
+      var language = window.sankore ? sankore.lang.substr(0,2) : "en";
 
-      function initMap() 
+      async function initMap()
       {
         var map;
         var mapType = null;
@@ -34,10 +34,10 @@
         var position = new google.maps.LatLng(lat, lng);
 
         if (window.sankore) {
-          lat = parseFloat(window.sankore.preference('latitude', lat));
-          lng = parseFloat(window.sankore.preference('longitude', lng));
-          zoom = parseFloat(window.sankore.preference('zoom', zoom));  
-          mapType = window.sankore.preference('mapTypeId', mapType);
+          lat = parseFloat(await window.sankore.async.preference('latitude', lat));
+          lng = parseFloat(await window.sankore.async.preference('longitude', lng));
+          zoom = parseFloat(await window.sankore.async.preference('zoom', zoom));
+          mapType = await window.sankore.async.preference('mapTypeId', mapType);
 
           position = new google.maps.LatLng(lat, lng);
         };

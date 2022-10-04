@@ -9,41 +9,105 @@
     </message>
 </context>
 <context>
-    <name>DownloadDialog</name>
+    <name>BrowserWindow</name>
     <message>
-        <source>Downloads</source>
-        <translation>Downloads</translation>
+        <source>Navigation</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clean Up</source>
-        <translation>Opruimen</translation>
-    </message>
-    <message>
-        <source>0 Items</source>
-        <translation>0 items</translation>
+        <source>Show downloads</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>DownloadItem</name>
+    <name>CertificateErrorDialog</name>
     <message>
-        <source>Form</source>
-        <translation>Formulier</translation>
+        <source>Dialog</source>
+        <translation type="unfinished">Dialoog</translation>
     </message>
     <message>
-        <source>Filename</source>
-        <translation>Bestandsnaam</translation>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Try Again</source>
-        <translation>Probeer opnieuw</translation>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>Stoppen</translation>
+        <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
+
+Do you wish to override the security check and continue ?   </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadManagerWidget</name>
+    <message>
+        <source>Downloads</source>
+        <translation type="unfinished">Downloads</translation>
     </message>
     <message>
-        <source>Open</source>
-        <translation>Openen</translation>
+        <source>No downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save as</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadWidget</name>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 KiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 MiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 GiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%p% - %1 of %2 downloaded - %3/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown size - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>completed - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cancelled - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>interrupted: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop downloading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from list</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -176,20 +240,12 @@
         <translation>Wisser</translation>
     </message>
     <message>
-        <source>Smalle Eraser</source>
-        <translation type="vanished">Kleine wisser</translation>
-    </message>
-    <message>
         <source>Medium Eraser</source>
         <translation>Middelgrote wisser</translation>
     </message>
     <message>
         <source>Large Eraser</source>
         <translation>Brede wisser</translation>
-    </message>
-    <message>
-        <source>Color</source>
-        <translation type="vanished">Kleur</translation>
     </message>
     <message>
         <source>Back</source>
@@ -858,28 +914,13 @@
         <source>Password:</source>
         <translation>Wachtwoord:</translation>
     </message>
-</context>
-<context>
-    <name>ProxyDialog</name>
     <message>
-        <source>Proxy Authentication</source>
-        <translation>Proxy identificatie</translation>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Connect to Proxy</source>
-        <translation>Met proxy verbinden</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation>Gebruikersnaam:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation>Wachtwoord:</translation>
-    </message>
-    <message>
-        <source>Save username and password for future use</source>
-        <translation>Gebruikersnaam en wachtwoord onthouden</translation>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -907,6 +948,37 @@
     <message>
         <source>Moving cached scenes (%1/%2)</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TabWidget</name>
+    <message>
+        <source>New &amp;Tab</source>
+        <translation>Nieuw&amp;Tabblad</translation>
+    </message>
+    <message>
+        <source>Clone Tab</source>
+        <translation>Tabblad Klonen</translation>
+    </message>
+    <message>
+        <source>&amp;Close Tab</source>
+        <translation>&amp;Tabblad Sluiten</translation>
+    </message>
+    <message>
+        <source>Close &amp;Other Tabs</source>
+        <translation>Sluiten&amp;Andere Tabbladen</translation>
+    </message>
+    <message>
+        <source>Reload Tab</source>
+        <translation>Tabblad weer opladen</translation>
+    </message>
+    <message>
+        <source>Reload All Tabs</source>
+        <translation>Alle Tabbladen weer opladen</translation>
+    </message>
+    <message>
+        <source>(Untitled)</source>
+        <translation>(geen titel)</translation>
     </message>
 </context>
 <context>
@@ -1116,46 +1188,6 @@
         <translation>Document %1 gekopieerd</translation>
     </message>
     <message>
-        <source>Remove Page</source>
-        <translation type="vanished">Pagina verwijderen</translation>
-    </message>
-    <message>
-        <source>Remove Document</source>
-        <translation type="vanished">Document verwijderen</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation type="vanished">Weet u zeker dat u document &quot;%1&quot; wilt verwijderen?</translation>
-    </message>
-    <message>
-        <source>Empty Trash</source>
-        <translation type="vanished">Prullenbak legen</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to empty trash?</source>
-        <translation type="vanished">Weet u zeker dat u de prullenbak wilt legen?</translation>
-    </message>
-    <message>
-        <source>Emptying trash</source>
-        <translation type="vanished">Prullenbak wordt geleegd</translation>
-    </message>
-    <message>
-        <source>Emptied trash</source>
-        <translation type="vanished">Prullenbak is leeg</translation>
-    </message>
-    <message>
-        <source>Remove Folder</source>
-        <translation type="vanished">Map verwijderen</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="vanished">Weet u zeker dat u de map &quot;%1&quot; met inhoud wilt verwijderen?</translation>
-    </message>
-    <message>
-        <source>No document selected!</source>
-        <translation type="vanished">Geen document geselecteerd!</translation>
-    </message>
-    <message>
         <source>Open Supported File</source>
         <translation>Geopend ondersteund bestand</translation>
     </message>
@@ -1198,13 +1230,6 @@
     <message>
         <source>Selection does not contain any image files!</source>
         <translation>De selectie bevat geen beeldbestand!</translation>
-    </message>
-    <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="vanished">
-            <numerusform>Ben je zeker dat je %n pagina van geselecteerde document &apos;%1&apos; wilt verwijderen?</numerusform>
-            <numerusform>Ben je zeker dat je %n pagina(s) van geselecteerde document &apos;%1&apos; wilt verwijderen?</numerusform>
-        </translation>
     </message>
     <message>
         <source>Untitled Documents</source>
@@ -1298,13 +1323,6 @@
     </message>
 </context>
 <context>
-    <name>UBDocumentPublisher</name>
-    <message>
-        <source>Export failed.</source>
-        <translation type="obsolete">Export mislukt.</translation>
-    </message>
-</context>
-<context>
     <name>UBDocumentReplaceDialog</name>
     <message>
         <source>Cancel</source>
@@ -1366,24 +1384,6 @@ Providing a new name will create a new document.</source>
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
-    <message>
-        <source>%1 (copy)</source>
-        <translation type="vanished">%1 (kopie)</translation>
-    </message>
-    <message>
-        <source>Copying page %1/%2</source>
-        <translation type="vanished">Kopie van pagina %1/%2</translation>
-    </message>
-    <message numerus="yes">
-        <source>%1 pages copied</source>
-        <translation type="vanished">
-            <numerusform>%1 pagina gekopieerd</numerusform>
-            <numerusform>%1 pagina&apos;s gekopieerd</numerusform>
-        </translation>
-    </message>
-</context>
-<context>
     <name>UBDownloadWidget</name>
     <message>
         <source>Downloading files</source>
@@ -1406,6 +1406,22 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Page %0</source>
         <translation type="unfinished">Pagina %0</translation>
+    </message>
+</context>
+<context>
+    <name>UBEmbedController</name>
+    <message>
+        <source>Whole page</source>
+        <translation>Hele pagina</translation>
+    </message>
+    <message>
+        <source>Web</source>
+        <translation>Web</translation>
+    </message>
+    <message>
+        <source>Application name can`t contain any of the following characters:<byte value="xd"/>
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1469,14 +1485,6 @@ Providing a new name will create a new document.</source>
         <translation>Exporteren als UBZ bestand</translation>
     </message>
     <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Document wordt geëxporteerd...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Export gelukt.</translation>
-    </message>
-    <message>
         <source>Exporting %1 %2 of %3</source>
         <translation>%1 %2 van %3 geëxporteerd</translation>
     </message>
@@ -1519,14 +1527,6 @@ Providing a new name will create a new document.</source>
         <translation>Exporteren als PDF bestand</translation>
     </message>
     <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Document wordt geëxporteerd...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Export gelukt.</translation>
-    </message>
-    <message>
         <source>Export to PDF</source>
         <translation>Exporteren naar PDF bestand</translation>
     </message>
@@ -1536,14 +1536,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Export as PDF File</source>
         <translation>Exporteren als PDF bestand</translation>
-    </message>
-    <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Document wordt geëxporteerd...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Export gelukt.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1586,10 +1578,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Add to page</source>
         <translation>Aan pagina toevoegen</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation type="vanished">Als achtergrond gebruiken</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1652,10 +1640,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Pictures</source>
         <translation type="unfinished">Foto&apos;s</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <translation type="obsolete">Animaties</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -1726,12 +1710,12 @@ Providing a new name will create a new document.</source>
         <translation>Weergeven op Verbreed scherm</translation>
     </message>
     <message>
-        <source>Go to Content Source</source>
-        <translation>Naar inhoudsbron</translation>
-    </message>
-    <message>
         <source>Set as background</source>
         <translation type="unfinished">Als achtergrond gebruiken</translation>
+    </message>
+    <message>
+        <source>Web Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2091,51 +2075,10 @@ Do you want to ignore these errors for this host?</source>
     </message>
 </context>
 <context>
-    <name>UBProxyLoginDlg</name>
-    <message>
-        <source>Proxy Login</source>
-        <translation type="vanished">Proxy Login</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation type="vanished">Gebruikersnaam:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="vanished">Wachtwoord:</translation>
-    </message>
-</context>
-<context>
-    <name>UBPublicationDlg</name>
-    <message>
-        <source>Publish document on the web</source>
-        <translation type="vanished">Document op internet publiceren</translation>
-    </message>
-    <message>
-        <source>Title:</source>
-        <translation type="vanished">Titel:</translation>
-    </message>
-    <message>
-        <source>Description:</source>
-        <translation type="vanished">Beschrijving:</translation>
-    </message>
-    <message>
-        <source>Publish</source>
-        <translation type="vanished">Publiceren</translation>
-    </message>
-</context>
-<context>
     <name>UBSettings</name>
     <message>
         <source>My Movies</source>
         <translation>Mijn films</translation>
-    </message>
-</context>
-<context>
-    <name>UBStartupHintsPalette</name>
-    <message>
-        <source>Visible next time</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2203,17 +2146,6 @@ Do you want to ignore these errors for this host?</source>
     </message>
 </context>
 <context>
-    <name>UBTrapFlashController</name>
-    <message>
-        <source>Whole page</source>
-        <translation>Hele pagina</translation>
-    </message>
-    <message>
-        <source>Web</source>
-        <translation>Web</translation>
-    </message>
-</context>
-<context>
     <name>UBUpdateDlg</name>
     <message>
         <source>Document updater</source>
@@ -2266,17 +2198,10 @@ Please reboot the application to access the updated documents.</source>
     </message>
 </context>
 <context>
-    <name>UBWebPluginWidget</name>
+    <name>UBWebEngineView</name>
     <message>
-        <source>Loading...</source>
-        <translation>Wordt geladen...</translation>
-    </message>
-</context>
-<context>
-    <name>UBWidgetUniboardAPI</name>
-    <message>
-        <source>%0 called (method=%1, status=%2)</source>
-        <translation>%0 opgeroepen (methode=%1, status=%2)</translation>
+        <source>Open Web Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2365,85 +2290,6 @@ Please reboot the application to access the updated documents.</source>
     </message>
 </context>
 <context>
-    <name>WBClearButton</name>
-    <message>
-        <source>Clear</source>
-        <translation>Ruimen</translation>
-    </message>
-</context>
-<context>
-    <name>WBDownloadItem</name>
-    <message>
-        <source>Save File</source>
-        <translation>Bestand opslaan</translation>
-    </message>
-    <message>
-        <source>Download canceled: %1</source>
-        <translation>Download geannuleerd: %1</translation>
-    </message>
-    <message>
-        <source>Error opening saved file: %1</source>
-        <translation>Error opening geregistreerd bestand: %1</translation>
-    </message>
-    <message>
-        <source>Error saving: %1</source>
-        <translation>Error registratie:%1</translation>
-    </message>
-    <message>
-        <source>Network Error: %1</source>
-        <translation>Netwerk Error: %1</translation>
-    </message>
-    <message>
-        <source>seconds</source>
-        <translation>seconden</translation>
-    </message>
-    <message>
-        <source>minutes</source>
-        <translation>minuten</translation>
-    </message>
-    <message>
-        <source>- %4 %5 remaining</source>
-        <translation>- %4 %5 te gaan</translation>
-    </message>
-    <message>
-        <source>%1 of %2 (%3/sec) %4</source>
-        <translation>%1 van %2 (%3/sec) %4</translation>
-    </message>
-    <message>
-        <source>?</source>
-        <comment>unknown file size</comment>
-        <translation>?</translation>
-    </message>
-    <message>
-        <source>%1 of %2 - Stopped</source>
-        <translation>%1 van %2 - gestopt</translation>
-    </message>
-    <message>
-        <source>bytes</source>
-        <translation>bytes</translation>
-    </message>
-    <message>
-        <source>KB</source>
-        <translation>KB</translation>
-    </message>
-    <message>
-        <source>MB</source>
-        <translation>MB</translation>
-    </message>
-</context>
-<context>
-    <name>WBDownloadManager</name>
-    <message>
-        <source>1 Download</source>
-        <translation>1 download</translation>
-    </message>
-    <message>
-        <source>%1 Downloads</source>
-        <comment>always &gt;= 2</comment>
-        <translation>%1 Downloads</translation>
-    </message>
-</context>
-<context>
     <name>WBHistoryModel</name>
     <message>
         <source>Title</source>
@@ -2466,97 +2312,90 @@ Please reboot the application to access the updated documents.</source>
     </message>
 </context>
 <context>
-    <name>WBSearchLineEdit</name>
+    <name>WebPage</name>
     <message>
-        <source>Search</source>
-        <translation>Zoeken</translation>
-    </message>
-</context>
-<context>
-    <name>WBTabBar</name>
-    <message>
-        <source>New &amp;Tab</source>
-        <translation>Nieuw&amp;Tabblad</translation>
+        <source>Certificate Error</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clone Tab</source>
-        <translation>Tabblad Klonen</translation>
+        <source>Enter username and password for &quot;%1&quot; at %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Close Tab</source>
-        <translation>&amp;Tabblad Sluiten</translation>
+        <source>Allow %1 to access your location information?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Close &amp;Other Tabs</source>
-        <translation>Sluiten&amp;Andere Tabbladen</translation>
+        <source>Allow %1 to access your microphone?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reload Tab</source>
-        <translation>Tabblad weer opladen</translation>
+        <source>Allow %1 to access your webcam?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reload All Tabs</source>
-        <translation>Alle Tabbladen weer opladen</translation>
-    </message>
-</context>
-<context>
-    <name>WBTabWidget</name>
-    <message>
-        <source>Recently Closed Tabs</source>
-        <translation>Recent gesloten Tabbladen</translation>
+        <source>Allow %1 to access your microphone and webcam?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>(Untitled)</source>
-        <translation>(geen titel)</translation>
-    </message>
-</context>
-<context>
-    <name>WBToolbarSearch</name>
-    <message>
-        <source>Search</source>
-        <translation>Zoeken</translation>
+        <source>Allow %1 to lock your mouse cursor?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No Recent Searches</source>
-        <translation>Geen recente zoekopdrachten</translation>
+        <source>Allow %1 to capture video of your desktop?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Recent Searches</source>
-        <translation>Recente zoekopdrachten</translation>
+        <source>Allow %1 to capture audio and video of your desktop?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clear Recent Searches</source>
-        <translation>Recente zoekopdrachten wissen</translation>
-    </message>
-</context>
-<context>
-    <name>WBWebPage</name>
-    <message>
-        <source>Download</source>
-        <translation>Download</translation>
+        <source>Permission Request</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add to Current Document</source>
-        <translation>Toevoegen aan Huidig Document</translation>
+        <source>Connect to proxy &quot;%1&quot; using:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>PDF</source>
-        <translation>PDF</translation>
-    </message>
-    <message>
-        <source>Error loading page: %1</source>
-        <translation>Error pagina opladen: %1</translation>
-    </message>
-    <message>
-        <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
+        <source>Allow %1 to open all %2 links?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>WBWebView</name>
+    <name>WebView</name>
     <message>
-        <source>Open in New Tab</source>
-        <translation>In een Nieuw Tabblad openen</translation>
+        <source>Render process normal exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process abnormal exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process crashed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process killed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process exited with code: %1
+Do you want to reload the page ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Web Inspector in new window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inspect element</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to board</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2684,29 +2523,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>documentPublishingDialog</name>
-    <message>
-        <source>Dialog</source>
-        <translation type="obsolete">Dialoog</translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="obsolete">Titel</translation>
-    </message>
-    <message>
-        <source>E-mail</source>
-        <translation type="obsolete">E-mail</translation>
-    </message>
-    <message>
-        <source>Author</source>
-        <translation type="obsolete">Auteur</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="obsolete">Beschrijving</translation>
-    </message>
-</context>
-<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
@@ -2766,10 +2582,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Virtual Keyboard</source>
         <translation>Virtueel Toetsenbord</translation>
-    </message>
-    <message>
-        <source>Keyboard button size:</source>
-        <translation type="vanished">Formaat knoppen van toetsenbord:</translation>
     </message>
     <message>
         <source>Toolbar</source>

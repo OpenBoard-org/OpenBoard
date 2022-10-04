@@ -1878,7 +1878,7 @@ Ostalari onentzako errore hauek ez-ikusi nahi dituzu?</translation>
     </message>
 </context>
 <context>
-    <name>UBTrapFlashController</name>
+    <name>UBEmbedController</name>
     <message>
         <source>Whole page</source>
         <translation >Orri osoa</translation>
@@ -2048,7 +2048,7 @@ Berrabiarazi aplikazioa eguneratutako dokumentuak irekitzeko.</translation>
     </message>
 </context>
 <context>
-    <name>WBDownloadItem</name>
+    <name>DownloadItem</name>
     <message>
         <source>Save File</source>
         <translation >Gorde fitxategia</translation>
@@ -2149,7 +2149,7 @@ Berrabiarazi aplikazioa eguneratutako dokumentuak irekitzeko.</translation>
     </message>
 </context>
 <context>
-    <name>WBTabBar</name>
+    <name>TabWidget</name>
     <message>
         <source>New &amp;Tab</source>
         <translation >&amp;Fitxa berria</translation>
@@ -2176,7 +2176,7 @@ Berrabiarazi aplikazioa eguneratutako dokumentuak irekitzeko.</translation>
     </message>
 </context>
 <context>
-    <name>WBTabWidget</name>
+    <name>TabWidget</name>
     <message>
         <source>Recently Closed Tabs</source>
         <translation >DUela gutxi itxitako fitxak</translation>

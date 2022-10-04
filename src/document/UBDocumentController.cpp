@@ -45,6 +45,7 @@
 
 #include "adaptors/UBExportPDF.h"
 #include "adaptors/UBThumbnailAdaptor.h"
+#include "adaptors/UBWidgetUpgradeAdaptor.h"
 
 #include "adaptors/UBMetadataDcSubsetAdaptor.h"
 
@@ -760,7 +761,7 @@ bool UBDocumentTreeModel::removeRows(int row, int count, const QModelIndex &pare
     UBDocumentTreeNode *parentNode = nodeFromIndex(parent);
     for (int i = row; i < row + count; i++) {
         UBDocumentTreeNode *curChildNode = parentNode->children().at(i);
-        QModelIndex curChildIndex = parent.child(i, 0);
+        QModelIndex curChildIndex = parent.model()->index(i, 0, parent);
         if (curChildNode) {
             if (rowCount(curChildIndex)) {
                 while (rowCount(curChildIndex)) {
@@ -921,7 +922,7 @@ QPersistentModelIndex UBDocumentTreeModel::copyIndexToNewParent(const QModelInde
 
     if (rowCount(source)) {
         for (int i = 0; i < rowCount(source); i++) {
-            QModelIndex curNewParentIndexChild = source.child(i, 0);
+            QModelIndex curNewParentIndexChild = source.model()->index(i, 0, source);
             copyIndexToNewParent(curNewParentIndexChild, newParentIndex, pMode);
         }
     }
@@ -2342,7 +2343,7 @@ void UBDocumentController::openSelectedItem()
 
         if (thumb)
         {
-            UBDocumentProxy* proxy = thumb->proxy();
+            UBDocumentProxy* proxy = thumb->documentProxy();
 
             if (proxy && isOKToOpenDocument(proxy))
             {
@@ -2379,7 +2380,7 @@ void UBDocumentController::duplicateSelectedItem()
             UBSceneThumbnailPixmap *thumb = dynamic_cast<UBSceneThumbnailPixmap*>(item);
             if (thumb)
             {
-                UBDocumentProxy *proxy = thumb->proxy();
+                UBDocumentProxy *proxy = thumb->documentProxy();
 
                 if (proxy)
                 {
@@ -3086,12 +3087,9 @@ void UBDocumentController::moveSceneToIndex(UBDocumentProxy* proxy, int source, 
 
     proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
     UBMetadataDcSubsetAdaptor::persist(proxy);
+    //mBoardController->reloadThumbnails();
 
     UBDocumentContainer::moveThumbPage(source, target);
-    if (UBApplication::boardController->selectedDocument() == selectedDocument())
-    {
-        UBApplication::boardController->moveThumbPage(source, target);
-    }
     mDocumentUI->thumbnailWidget->hightlightItem(target);
 
     //mBoardController->setActiveDocumentScene(target);
@@ -3154,7 +3152,6 @@ void UBDocumentController::pageSelectionChanged()
 void UBDocumentController::documentSceneChanged(UBDocumentProxy* proxy, int pSceneIndex)
 {
     Q_UNUSED(pSceneIndex);
-
     QModelIndexList sel = mDocumentUI->documentTreeView->selectionModel()->selectedRows(0);
 
     QModelIndex selection;
@@ -3180,7 +3177,7 @@ void UBDocumentController::thumbnailPageDoubleClicked(QGraphicsItem* item, int i
     UBSceneThumbnailPixmap* thumb = qgraphicsitem_cast<UBSceneThumbnailPixmap*> (item);
 
     if (thumb) {
-        UBDocumentProxy* proxy = thumb->proxy();
+        UBDocumentProxy* proxy = thumb->documentProxy();
         if (proxy && isOKToOpenDocument(proxy)) {
             mBoardController->setActiveDocumentScene(proxy, index);
             UBApplication::applicationController->showBoard();
@@ -3216,9 +3213,9 @@ void UBDocumentController::addToDocument()
         {
             UBSceneThumbnailPixmap* thumb = dynamic_cast<UBSceneThumbnailPixmap*> (item);
 
-            if (thumb &&  thumb->proxy())
+            if (thumb &&  thumb->documentProxy())
             {
-                QPair<UBDocumentProxy*, int> pageInfo(thumb->proxy(), thumb->sceneIndex());
+                QPair<UBDocumentProxy*, int> pageInfo(thumb->documentProxy(), thumb->sceneIndex());
                 pageInfoList << pageInfo;
             }
         }
@@ -3233,7 +3230,7 @@ void UBDocumentController::addToDocument()
         selectDocument(mBoardController->selectedDocument());
         mBoardController->selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         UBMetadataDcSubsetAdaptor::persist(mBoardController->selectedDocument());
-        mBoardController->reloadThumbnails();
+        //mBoardController->reloadThumbnails();
 
         UBApplication::applicationController->showBoard();
 
@@ -3252,6 +3249,8 @@ void UBDocumentController::renameSelectedItem()
 
 bool UBDocumentController::isOKToOpenDocument(UBDocumentProxy* proxy)
 {
+    static UBWidgetUpgradeAdaptor widgetUpgradeAdaptor;
+
     //check version
     QString docVersion = proxy->metaData(UBSettings::documentVersion).toString();
 
@@ -3259,6 +3258,8 @@ bool UBDocumentController::isOKToOpenDocument(UBDocumentProxy* proxy)
             || docVersion.startsWith("4.3") || docVersion.startsWith("4.4") || docVersion.startsWith("4.5")
             || docVersion.startsWith("4.6") || docVersion.startsWith("4.8")) // TODO UB 4.7 update if necessary
     {
+        // Invoke widget upgrader
+        widgetUpgradeAdaptor.upgradeWidgets(proxy);
         return true;
     }
     else
@@ -3638,7 +3639,7 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
 
             if (thumb)
             {
-                proxy = thumb->proxy();
+                proxy = thumb->documentProxy();
                 if (proxy)
                 {
                     sceneIndexes.append(thumb->sceneIndex());
@@ -3651,7 +3652,7 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
         {
             std::sort(sceneIndexes.begin(), sceneIndexes.end(), std::greater<>());
             for (auto index : sceneIndexes)
-                mBoardController->deleteThumbPage(index);
+                emit mBoardController->removeThumbnailRequired(index);
         }
 
         proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
@@ -3760,7 +3761,7 @@ bool UBDocumentController::everySceneSelected() const
         UBSceneThumbnailPixmap* p = dynamic_cast<UBSceneThumbnailPixmap*>(selection.at(0));
         if (p)
         {
-            return (selection.count() == p->proxy()->pageCount());
+            return (selection.count() == p->documentProxy()->pageCount());
         }
     }
     return false;
@@ -3774,7 +3775,7 @@ bool UBDocumentController::firstAndOnlySceneSelected() const
         UBSceneThumbnailPixmap* p = dynamic_cast<UBSceneThumbnailPixmap*>(selection.at(i));
         if (p)
         {
-            int pageCount = p->proxy()->pageCount();
+            int pageCount = p->documentProxy()->pageCount();
             if (pageCount > 1) //not the only scene
             {
                 return false;
@@ -3794,6 +3795,8 @@ bool UBDocumentController::firstAndOnlySceneSelected() const
 
 void UBDocumentController:: refreshDocumentThumbnailsView(UBDocumentContainer* source)
 {
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
     UBDocumentTreeModel *docModel = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel;
     UBDocumentProxy *currentDocumentProxy = selectedDocument();
 
@@ -3814,8 +3817,6 @@ void UBDocumentController:: refreshDocumentThumbnailsView(UBDocumentContainer* s
     {
         UBThumbnailAdaptor::load(currentDocumentProxy, documentThumbs());
     }
-
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
     QList<QGraphicsItem*> items;
     QList<QUrl> itemsPath;

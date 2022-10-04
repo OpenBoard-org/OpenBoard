@@ -385,5 +385,8 @@
         <file>images/trash-delete-folder.png</file>
         <file>images/trash-document.png</file>
         <file>images/trash-document-page.png</file>
+        <file>webbrowser/go-bottom.png</file>
+        <file>webbrowser/edit-clear.png</file>
+        <file>webbrowser/process-stop.png</file>
     </qresource>
 </RCC>

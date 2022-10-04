@@ -36,7 +36,7 @@ var imageAsie2 = "<img src='images/Cartes/EuropeOuestAsie.bmp' usemap='#europe'/
 var lang = ""; //locale language
 if(window.sankore){
     try{
-        lang = sankore.locale().substr(0,2);
+        lang = sankore.lang.substr(0,2);
         sankoreLang[lang].europe;
     } catch(e){
         lang = "en";

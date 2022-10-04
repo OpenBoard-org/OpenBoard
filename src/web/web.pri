@@ -1,53 +1,38 @@
 
 QT           += uitools
 
-FORMS        += src/web/browser/downloaditem.ui \
-                src/web/browser/downloads.ui \
-                src/web/browser/passworddialog.ui \
-                src/web/browser/proxy.ui
-
-INCLUDEPATH  += src/web/browser
+FORMS        += src/web/simplebrowser/certificateerrordialog.ui \
+                src/web/simplebrowser/downloadmanagerwidget.ui \
+                src/web/simplebrowser/downloadwidget.ui \
+                src/web/simplebrowser/passworddialog.ui
 
 HEADERS      += src/web/UBWebController.h \
-                src/web/UBTrapFlashController.h \
-                src/web/UBWebKitUtils.h \
-                src/web/UBWebPage.h \
-                src/web/UBWebPluginWidget.h \
-                src/web/UBOEmbedParser.h\
-                src/web/browser/WBBrowserWindow.h \
-                src/web/browser/WBChaseWidget.h \
-                src/web/browser/WBDownloadManager.h \
-                src/web/browser/WBModelMenu.h \
-                src/web/browser/WBEditTableView.h \
-                src/web/browser/WBSearchLineEdit.h \
-                src/web/browser/WBSqueezeLabel.h \
-                src/web/browser/WBTabWidget.h \
-                src/web/browser/WBToolBarSearch.h \
-                src/web/browser/WBUrlLineEdit.h \
-                src/web/browser/WBWebView.h \
-                src/web/browser/WBHistory.h \
-                src/web/browser/WBWebTrapWebView.h
-
+                src/web/simplebrowser/WBHistory.h \
+                src/web/simplebrowser/WBModelMenu.h \
+                src/web/UBEmbedController.h \
+                src/web/UBEmbedContent.h \
+                src/web/UBEmbedParser.h \
+                src/web/simplebrowser/browserwindow.h \
+                src/web/simplebrowser/downloadmanagerwidget.h \
+                src/web/simplebrowser/downloadwidget.h \
+                src/web/simplebrowser/tabwidget.h \
+                src/web/simplebrowser/webpage.h \
+                src/web/simplebrowser/webpopupwindow.h \
+                src/web/simplebrowser/webview.h
 
 SOURCES      += src/web/UBWebController.cpp \
-                src/web/UBTrapFlashController.cpp \
-                src/web/UBWebKitUtils.cpp \
-                src/web/UBWebPage.cpp \
-                src/web/UBWebPluginWidget.cpp \
-                src/web/UBOEmbedParser.cpp\
-                src/web/browser/WBBrowserWindow.cpp \
-                src/web/browser/WBChaseWidget.cpp \
-                src/web/browser/WBDownloadManager.cpp \
-                src/web/browser/WBModelMenu.cpp \
-                src/web/browser/WBEditTableView.cpp \
-                src/web/browser/WBSearchLineEdit.cpp \
-                src/web/browser/WBSqueezeLabel.cpp \
-                src/web/browser/WBTabWidget.cpp \
-                src/web/browser/WBToolBarSearch.cpp \
-                src/web/browser/WBUrlLineEdit.cpp \
-                src/web/browser/WBWebView.cpp \
-                src/web/browser/WBHistory.cpp \
-                src/web/browser/WBWebTrapWebView.cpp\
+                src/web/simplebrowser/WBHistory.cpp \
+                src/web/simplebrowser/WBModelMenu.cpp \
+                src/web/UBEmbedController.cpp \
+                src/web/UBEmbedContent.cpp \
+                src/web/UBEmbedParser.cpp \
+                src/web/simplebrowser/browserwindow.cpp \
+                src/web/simplebrowser/downloadmanagerwidget.cpp \
+                src/web/simplebrowser/downloadwidget.cpp \
+                src/web/simplebrowser/tabwidget.cpp \
+                src/web/simplebrowser/webpage.cpp \
+                src/web/simplebrowser/webpopupwindow.cpp \
+                src/web/simplebrowser/webview.cpp
     
     
 

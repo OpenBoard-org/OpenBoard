@@ -43,7 +43,7 @@
 #include "domain/UBGraphicsItemDelegate.h"
 
 UBItem::UBItem()
-    : mUuid(QUuid())
+    : mUuid(QUuid::createUuid())
     , mRenderingQuality(UBItem::RenderingQualityNormal)
 {
     // NOOP

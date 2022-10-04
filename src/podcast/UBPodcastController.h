@@ -37,7 +37,7 @@
 #include "core/UBApplicationController.h"
 
 class UBGraphicsScene;
-class WBWebView;
+class WebView;
 class UBPodcastRecordingPalette;
 
 
@@ -93,7 +93,7 @@ class UBPodcastController : public QObject
 
     private slots:
 
-        void processWidgetPaintEvent();
+        void processScreenGrabingTimerEvent();
 
         void processScenePaintEvent();
 
@@ -106,7 +106,7 @@ class UBPodcastController : public QObject
 
         void applicationDesktopMode(bool displayed);
 
-        void webActiveWebPageChanged(WBWebView* pWebView);
+        void webActiveWebPageChanged(WebView* pWebView);
 
         void encodingStatus(const QString& pStatus);
 
@@ -120,6 +120,7 @@ class UBPodcastController : public QObject
         void updateActionState();
 
     private:
+        void widgetSizeChanged(const QSizeF size);
 
         void setRecordingState(RecordingState pRecordingState);
 
@@ -133,12 +134,10 @@ class UBPodcastController : public QObject
 
         QTime mRecordStartTime;
 
-        bool mIsGrabbing;
-
-        QQueue<QRect> mWidgetRepaintRectQueue;
         QQueue<QRectF> mSceneRepaintRectQueue;
 
         bool mInitialized;
+        bool mEmptyChapter;
 
         QImage mLatestCapture;
 
@@ -149,6 +148,7 @@ class UBPodcastController : public QObject
         static unsigned int sBackgroundColor;
 
         QWidget* mSourceWidget;
+        bool mIsDesktopMode;
 
         UBGraphicsScene* mSourceScene;
 

@@ -481,7 +481,7 @@ QString UBFileSystemUtils::mimeTypeFromFileName(const QString& fileName)
     if (ext == "wgt") return "application/widget";
     if (ext == "wgs") return "application/search";
     // Apple widget
-    if (ext == "wdgt") return "application/vnd.apple-widget"; //mime type invented by us :-(
+    if (ext == "wdgt") return "application/vnd.apple-widget"; //mime type invented by us :-( // NOTE @letsfindaway obsolete
     if (ext == "swf") return "application/x-shockwave-flash";
 
     return "";

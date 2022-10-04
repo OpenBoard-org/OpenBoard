@@ -86,23 +86,22 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
     , mDisplayView(pDisplayView)
     , mMirror(0)
     , mMainMode(Board)
-    , mDisplayManager(0)
     , mAutomaticCheckForUpdates(false)
     , mCheckingForUpdates(false)
     , mIsShowingDesktop(false)
 {
-    mDisplayManager = new UBDisplayManager(this);
-
     mUninoteController = new UBDesktopAnnotationController(this, rightPalette);
 
-    connect(mDisplayManager, SIGNAL(screenLayoutChanged()), this, SLOT(screenLayoutChanged()));
-    connect(mDisplayManager, SIGNAL(screenLayoutChanged()), mUninoteController, SLOT(screenLayoutChanged()));
-    connect(mDisplayManager, SIGNAL(screenLayoutChanged()), UBApplication::webController, SLOT(screenLayoutChanged()));
-    connect(mDisplayManager, SIGNAL(adjustDisplayViewsRequired()), UBApplication::boardController, SLOT(adjustDisplayViews()));
+    UBDisplayManager* displayManager = UBApplication::displayManager;
+
+    connect(displayManager, SIGNAL(screenLayoutChanged()), this, SLOT(screenLayoutChanged()));
+    connect(displayManager, SIGNAL(screenLayoutChanged()), mUninoteController, SLOT(screenLayoutChanged()));
+    connect(displayManager, SIGNAL(screenLayoutChanged()), UBApplication::webController, SLOT(screenLayoutChanged()));
+    connect(displayManager, SIGNAL(adjustDisplayViewsRequired()), UBApplication::boardController, SLOT(adjustDisplayViews()));
     connect(mUninoteController, SIGNAL(imageCaptured(const QPixmap &, bool)), this, SLOT(addCapturedPixmap(const QPixmap &, bool)));
     connect(mUninoteController, SIGNAL(restoreUniboard()), this, SLOT(hideDesktop()));
 
-    for(int i = 0; i < mDisplayManager->numPreviousViews(); i++)
+    for(int i = 0; i < displayManager->numPreviousViews(); i++)
     {
         UBBoardView *previousView = new UBBoardView(UBApplication::boardController, UBItemLayerType::FixedBackground, UBItemLayerType::Tool, 0);
         previousView->setInteractive(false);
@@ -112,7 +111,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
     mBlackScene = new UBGraphicsScene(0); // deleted by UBApplicationController::destructor
     mBlackScene->setBackground(true, UBPageBackground::plain);
 
-    if (mDisplayManager->numScreens() >= 2 && mDisplayManager->useMultiScreen())
+    if (displayManager->numScreens() >= 2 && displayManager->useMultiScreen())
     {
         mMirror = new UBScreenMirror();
     }
@@ -149,14 +148,16 @@ void UBApplicationController::initViewState(int horizontalPosition, int vertical
 
 void UBApplicationController::initScreenLayout(bool useMultiscreen)
 {
-    mDisplayManager->setControlWidget(mMainWindow);
-    mDisplayManager->setDisplayWidget(mDisplayView);
+    UBDisplayManager* displayManager = UBApplication::displayManager;
 
-    mDisplayManager->setPreviousDisplaysWidgets(mPreviousViews);
-    mDisplayManager->setDesktopWidget(mUninoteController->drawingView());
+    displayManager->setControlWidget(mMainWindow);
+    displayManager->setDisplayWidget(mDisplayView);
 
-    mDisplayManager->setUseMultiScreen(useMultiscreen);
-    mDisplayManager->adjustScreens(-1);
+    displayManager->setPreviousDisplaysWidgets(mPreviousViews);
+    displayManager->setDesktopWidget(mUninoteController->drawingView());
+
+    displayManager->setUseMultiScreen(useMultiscreen);
+    displayManager->adjustScreens();
 }
 
 
@@ -169,7 +170,7 @@ void UBApplicationController::screenLayoutChanged()
 
     adjustDisplayView();
 
-    if (mDisplayManager->hasDisplay())
+    if (UBApplication::displayManager->hasDisplay())
     {
         UBApplication::boardController->setBoxing(mDisplayView->geometry());
     }
@@ -179,6 +180,19 @@ void UBApplicationController::screenLayoutChanged()
     }
 
     adjustPreviousViews(0, 0);
+
+    // update mirror if necessary
+    UBDisplayManager* displayManager = UBApplication::displayManager;
+
+    if (displayManager->numScreens() > 1 && displayManager->useMultiScreen() && !mMirror)
+    {
+        mMirror = new UBScreenMirror();
+    }
+    else if ((displayManager->numScreens() == 1 || !displayManager->useMultiScreen()) && mMirror)
+    {
+        delete mMirror;
+        mMirror = nullptr;
+    }
 }
 
 
@@ -283,7 +297,7 @@ void UBApplicationController::adjustPreviousViews(int pActiveSceneIndex, UBDocum
 
 void UBApplicationController::blackout()
 {
-    mDisplayManager->blackout();
+    UBApplication::displayManager->blackout();
 }
 
 
@@ -453,8 +467,6 @@ void UBApplicationController::showDocument()
 
 void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
 {
-    int desktopWidgetIndex = qApp->desktop()->screenNumber(mMainWindow);
-
     if (UBApplication::boardController)
         UBApplication::boardController->hide();
 
@@ -463,9 +475,8 @@ void UBApplicationController::showDesktop(bool dontSwitchFrontProcess)
 
     if (mMirror)
     {
-        QRect rect = qApp->desktop()->screenGeometry(desktopWidgetIndex);
-        rect.moveTo(0, 0);
-        mMirror->setSourceRect(rect);
+        // grab from screen instead of widget
+        mMirror->setSourceWidget(nullptr);
     }
 
     mIsShowingDesktop = true;
@@ -597,7 +608,7 @@ void UBApplicationController::hideDesktop()
 
     mIsShowingDesktop = false;
 
-    mDisplayManager->adjustScreens(-1);
+    UBApplication::displayManager->adjustScreens();
 
     emit desktopMode(false);
 }
@@ -618,22 +629,22 @@ void UBApplicationController::mirroringEnabled(bool enabled)
         if (enabled)
         {
             mMirror->start();
-            mDisplayManager->setDisplayWidget(mMirror);
+            UBApplication::displayManager->setDisplayWidget(mMirror);
 
         }
         else
         {
-            mDisplayManager->setDisplayWidget(mDisplayView);
+            UBApplication::displayManager->setDisplayWidget(mDisplayView);
             mMirror->stop();
         }
 
-        mMirror->setVisible(enabled && mDisplayManager->numScreens() > 1);
+        mMirror->setVisible(enabled && UBApplication::displayManager->numScreens() > 1);
         mUninoteController->updateShowHideState(enabled);
         UBApplication::mainWindow->actionWebShowHideOnDisplay->setChecked(enabled);
     }
     else
     {
-        mDisplayManager->setDisplayWidget(mDisplayView);
+        UBApplication::displayManager->setDisplayWidget(mDisplayView);
     }
 }
 
@@ -717,12 +728,13 @@ void UBApplicationController::useMultiScreen(bool use)
     if (use && !mMirror)
         mMirror = new UBScreenMirror();
     if (!use && mMirror) {
+        mirroringEnabled(false);
         delete mMirror;
         mMirror = NULL;
     }
 
-    mDisplayManager->setUseMultiScreen(use);
-    mDisplayManager->adjustScreens(0);
+    UBApplication::displayManager->setUseMultiScreen(use);
+    UBApplication::displayManager->adjustScreens();
     UBSettings::settings()->appUseMultiscreen->set(use);
 
 }
@@ -753,7 +765,7 @@ QStringList UBApplicationController::widgetInlineJavaScripts()
         }
     }
 
-    qSort(scripts);
+    std::sort(scripts.begin(), scripts.end());
 
     return scripts;
 }

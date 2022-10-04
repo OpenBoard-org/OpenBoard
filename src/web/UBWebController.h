@@ -31,50 +31,75 @@
 #define UBWEBCONTROLLER_H_
 
 #include <QtGui>
-#include <QWebView>
+#include <QRegularExpression>
 
-#include "UBOEmbedParser.h"
+#include <QWebEnginePage>
+#include <QWebEngineUrlRequestInterceptor>
 
-class WBBrowserWindow;
+#include "UBEmbedParser.h"
+#include "simplebrowser/downloadmanagerwidget.h"
+
+class BrowserWindow;
+class WebView;
+class QMenu;
+class QWebEngineProfile;
 class UBApplication;
-class UBTrapFlashController;
+class UBEmbedController;
 class UBMainWindow;
 class UBWebToolsPalette;
-class WBWebView;
 class UBServerXMLHttpRequest;
 
+
+class UBUserAgentInterceptor : public QWebEngineUrlRequestInterceptor
+{
+public:
+    UBUserAgentInterceptor(const QByteArray &alternativeUserAgent, QObject *parent = nullptr);
+
+    virtual void interceptRequest(QWebEngineUrlRequestInfo &info);
+
+private:
+    QByteArray mAlternativeUserAgent;
+    QRegularExpression mDomainMatcher;
+};
 
 class UBWebController : public QObject
 {
     Q_OBJECT
+    Q_ENUMS(CookiePolicy)
 
     public:
+        enum CookiePolicy {
+            DenyAll,
+            DenyThirdParty,
+            AcceptAll
+        };
+
         UBWebController(UBMainWindow* mainWindow);
         virtual ~UBWebController();
+
         void closing();
         void adaptToolBar();
 
-        QPixmap captureCurrentPage();
-
+        void captureCurrentPage();
         void showTabAtTop(bool attop);
-
         void loadUrl(const QUrl& url);
-
-        QWebView* createNewTab();
-
+        WebView* createNewTab();
         QUrl currentPageUrl() const;
-
         void show();
+        QWidget* controlView() const;
+        QWebEngineProfile* webProfile() const;
+        QList<UBEmbedContent> getEmbeddedContent(const QWebEngineView* view);
+        BrowserWindow* browserWindow() const;
+        QWebEnginePage::PermissionPolicy hasFeaturePermission(const QUrl &securityOrigin, QWebEnginePage::Feature feature);
+        void setFeaturePermission(const QUrl &securityOrigin, QWebEnginePage::Feature feature, QWebEnginePage::PermissionPolicy policy);
 
-        WBBrowserWindow* GetCurrentWebBrowser(){return mCurrentWebBrowser;}
-
+        static void injectScripts(QWebEngineView* view);
 
     protected:
         void setupPalettes();
         QPixmap getScreenPixmap();
 
     public slots:
-
         void screenLayoutChanged();
 
         void setSourceWidget(QWidget* pWidget);
@@ -82,57 +107,28 @@ class UBWebController : public QObject
         void customCapture();
         void toogleMirroring(bool checked);
 
-        QWidget* controlView()
-        {
-            return mBrowserWidget;
-        }
-
-        void captureoEmbed();
-        void captureEduMedia();
-
-        bool isOEmbedable(const QUrl& pUrl);
-        bool hasEmbeddedContent();
-        void getEmbeddableContent();
-
-        bool isEduMedia(const QUrl& pUrl);
-
         void copy();
         void paste();
         void cut();
 
+        void aboutToShowBackMenu();
+        void aboutToShowForwardMenu();
+        void openActionUrl(QAction *action);
+
     private:
-        void initialiazemOEmbedProviders();
         void webBrowserInstance();
-        void lookForEmbedContent(QString* pHtml, QString tag, QString attribute, QList<QUrl>* pList);
-        void checkForOEmbed(QString* pHtml);
-
-        UBMainWindow *mMainWindow;
-
-        WBBrowserWindow* mCurrentWebBrowser;
-
-        QWidget* mBrowserWidget;
-        UBTrapFlashController* mTrapFlashController;
-        UBWebToolsPalette* mToolsCurrentPalette;
-
-        bool mToolsPalettePositionned;
-
-        bool mDownloadViewIsVisible;
-
-        QStringList mOEmbedProviders;
-
-        UBOEmbedParser mOEmbedParser;
-
+        UBEmbedParser* embedParser(const QWebEngineView* view) const;
+        static QUrl guessUrlFromString(const QString &string);
 
     private slots:
-
+        void tabCreated(WebView* webView);
         void activePageChanged();
-        void trapFlash();
+        void trap();
 
-        void toggleWebTrap(bool checked);
-
-        void onOEmbedParsed(QVector<sOEmbedContent> contents);
+        void onEmbedParsed(QWebEngineView* view, bool hasEmbeddedContent);
         void onOpenTutorial();
 
+        void captureStripe(QPointF pos, QSize size, QPixmap *pix, QPointF scrollPosition);
 
     signals:
         /**
@@ -142,8 +138,31 @@ class UBWebController : public QObject
          */
         void imageCaptured(const QPixmap& pCapturedPixmap, bool pageMode, const QUrl& source);
 
-        void activeWebPageChanged(WBWebView* pWebView);
+        void activeWebPageChanged(WebView* pWebView);
 
+private:
+        UBMainWindow *mMainWindow;
+
+        BrowserWindow* mCurrentWebBrowser;
+        DownloadManagerWidget mDownloadManagerWidget;
+
+        QWidget* mBrowserWidget;
+        UBEmbedController* mEmbedController;
+        UBWebToolsPalette* mToolsCurrentPalette;
+
+        QWebEngineProfile* mWebProfile;
+        UBUserAgentInterceptor* mInterceptor;
+
+        bool mToolsPalettePositionned;
+        bool mDownloadViewIsVisible;
+
+        QMenu* mHistoryBackMenu;
+        QMenu* mHistoryForwardMenu;
+
+        QMap<QPair<QUrl,QWebEnginePage::Feature>,QWebEnginePage::PermissionPolicy> mFeaturePermissions;
+
+        bool cookieAutoDelete;
+        QStringList cookieKeepDomains;
 };
 
 #endif /* UBWEBCONTROLLER_H_ */

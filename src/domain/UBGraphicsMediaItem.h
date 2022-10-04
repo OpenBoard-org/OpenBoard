@@ -31,7 +31,6 @@
 #define UBGRAPHICSMEDIAITEM_H
 
 #include <QtWidgets/QGraphicsView>
-#include "UBGraphicsProxyWidget.h"
 
 #include <QAudioOutput>
 #include <QMediaObject>
@@ -43,6 +42,8 @@
 
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
+#include "domain/UBItem.h"
+#include "domain/UBResizableGraphicsItem.h"
 #include "frameworks/UBFileSystemUtils.h"
 
 class QGraphicsVideoItem;

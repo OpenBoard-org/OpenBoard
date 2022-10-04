@@ -12,7 +12,7 @@ var languages = {
 	
 	navigatorLanguage: function(){
 		if(window.sankore){
-			return sankore.locale();
+			return sankore.lang;
 		}
 		return navigator.language || navigator.userLanguage;
 	},

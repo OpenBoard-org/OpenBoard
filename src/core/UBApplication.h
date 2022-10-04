@@ -51,6 +51,7 @@ class UBResources;
 class UBSettings;
 class UBPersistenceManager;
 class UBApplicationController;
+class UBDisplayManager;
 class UBDocumentController;
 class UBMainWindow;
 
@@ -69,6 +70,7 @@ class UBApplication : public SingleApplication
 
         static QPointer<QUndoStack> undoStack;
 
+        static UBDisplayManager* displayManager;
         static UBApplicationController *applicationController;
         static UBBoardController* boardController;
         static UBWebController* webController;
@@ -103,9 +105,6 @@ class UBApplication : public SingleApplication
         void setVerbose(bool verbose){mIsVerbose = verbose;}
         static QString urlFromHtml(QString html);
         static bool isFromWeb(QString url);
-
-        static QScreen* controlScreen();
-        static int controlScreenIndex();
 
     signals:
 

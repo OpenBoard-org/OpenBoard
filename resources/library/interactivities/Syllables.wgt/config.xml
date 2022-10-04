@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <widget xmlns="http://www.w3.org/ns/widgets" 
-		xmlns:ub="http://uniboard.mnemis.com/widgets"
-        id="http://www.example.net/widgets/helloworld" 
+        xmlns:ub="http://uniboard.mnemis.com/widgets"
+        id="http://www.openboard.org/widget/interactivity/syllables"
         version="1.0"
         width="770"
         height="320" 
-		ub:resizable="false">
-		
-		<name>Split a word</name>
-		<description>Split a word into syllables</description>
-		<preference name="skin"
-		            value="uniboard"/>
-		<content src="index.html"/> 
+        ub:resizable="false">
+
+        <name>Split a word</name>
+        <description>Split a word into syllables</description>
+        <preference name="skin"
+                    value="uniboard"/>
+        <content src="index.html"/>
 </widget>

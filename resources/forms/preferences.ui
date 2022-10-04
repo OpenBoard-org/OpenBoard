@@ -542,7 +542,14 @@
           <string>Multi display</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
-          <item row="1" column="3">
+          <item row="2" column="2">
+           <widget class="QLabel" name="screenList_label">
+            <property name="text">
+             <string>List of screens used for Control, Display and Previous pages</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
            <spacer name="mirroringRSpacer">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -571,13 +578,6 @@
             </property>
            </spacer>
           </item>
-          <item row="2" column="2">
-           <widget class="QCheckBox" name="swapControlAndDisplayScreensCheckBox">
-            <property name="text">
-             <string>Swap control display and view display</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="2">
            <widget class="QCheckBox" name="displayBrowserPageCheckBox">
             <property name="text">
@@ -585,10 +585,10 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="3">
-           <widget class="QCheckBox" name="swapDisplayScreensCheckBox">
-            <property name="text">
-             <string>Swap first and second view displays</string>
+          <item row="2" column="4">
+           <widget class="UBScreenListLineEdit" name="screenList">
+            <property name="clearButtonEnabled">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -3327,6 +3327,11 @@ p, li { white-space: pre-wrap; }
    <extends>QFrame</extends>
    <header>gui/UBColorPicker.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>UBScreenListLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>core/UBPreferencesController.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

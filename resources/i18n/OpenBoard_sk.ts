@@ -9,41 +9,105 @@
     </message>
 </context>
 <context>
-    <name>DownloadDialog</name>
+    <name>BrowserWindow</name>
     <message>
-        <source>0 Items</source>
-        <translation>0 položiek</translation>
+        <source>Navigation</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clean Up</source>
-        <translation>Vymazať všetko</translation>
-    </message>
-    <message>
-        <source>Downloads</source>
-        <translation>Stiahnuté súbory</translation>
+        <source>Show downloads</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>DownloadItem</name>
+    <name>CertificateErrorDialog</name>
     <message>
-        <source>Form</source>
-        <translation>Formulár</translation>
+        <source>Dialog</source>
+        <translation type="unfinished">Dialóg</translation>
     </message>
     <message>
-        <source>Open</source>
-        <translation>Otvoriť</translation>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>Zastaviť</translation>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Filename</source>
-        <translation>Názov súboru</translation>
+        <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
+
+Do you wish to override the security check and continue ?   </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadManagerWidget</name>
+    <message>
+        <source>Downloads</source>
+        <translation type="unfinished">Stiahnuté súbory</translation>
     </message>
     <message>
-        <source>Try Again</source>
-        <translation>Skúsiť znova</translation>
+        <source>No downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save as</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadWidget</name>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 KiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 MiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 GiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%p% - %1 of %2 downloaded - %3/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown size - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>completed - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cancelled - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>interrupted: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop downloading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from list</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -148,10 +212,6 @@
     <message>
         <source>Board</source>
         <translation>Tabuľa</translation>
-    </message>
-    <message>
-        <source>Color</source>
-        <translation type="vanished">Farba</translation>
     </message>
     <message>
         <source>Erase</source>
@@ -722,11 +782,6 @@
         <translation>Pozadia</translation>
     </message>
     <message>
-        <source>Smalle Eraser</source>
-        <translatorcomment>spelling mistake in source: should be small</translatorcomment>
-        <translation type="vanished">Malá guma</translation>
-    </message>
-    <message>
         <source>Add Item To Current Page</source>
         <translation>Pridať položku na aktuálnu stránku</translation>
     </message>
@@ -862,28 +917,13 @@
         <source>Username:</source>
         <translation>Používateľské meno:</translation>
     </message>
-</context>
-<context>
-    <name>ProxyDialog</name>
     <message>
-        <source>Save username and password for future use</source>
-        <translation>Používateľské meno a heslo uložiť na použitie v budúcnosti</translation>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Connect to Proxy</source>
-        <translation>Pripojiť sa k proxy</translation>
-    </message>
-    <message>
-        <source>Proxy Authentication</source>
-        <translation>Prihlásenie na proxy</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation>Heslo:</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation>Používateľské meno:</translation>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -911,6 +951,37 @@
     <message>
         <source>Moving cached scenes (%1/%2)</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TabWidget</name>
+    <message>
+        <source>Reload All Tabs</source>
+        <translation>Obnoviť všetky karty</translation>
+    </message>
+    <message>
+        <source>Reload Tab</source>
+        <translation>Obnoviť kartu</translation>
+    </message>
+    <message>
+        <source>Clone Tab</source>
+        <translation>Duplikovať kartu</translation>
+    </message>
+    <message>
+        <source>&amp;Close Tab</source>
+        <translation>&amp;Zatvoriť kartu</translation>
+    </message>
+    <message>
+        <source>Close &amp;Other Tabs</source>
+        <translation>Zatvoriť &amp;ostané karty</translation>
+    </message>
+    <message>
+        <source>New &amp;Tab</source>
+        <translation>Nová &amp;karta</translation>
+    </message>
+    <message>
+        <source>(Untitled)</source>
+        <translation>(Bez názvu)</translation>
     </message>
 </context>
 <context>
@@ -987,10 +1058,6 @@
     <message>
         <source>Download finished</source>
         <translation>Sťahovanie bolo dokončené</translation>
-    </message>
-    <message>
-        <source>Delete page %1 from document</source>
-        <translation type="vanished">Vymazať stránku %1 z dokumentu</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -1104,20 +1171,8 @@
         <translation>Kôš</translation>
     </message>
     <message>
-        <source>Are you sure you want to empty trash?</source>
-        <translation type="vanished">Určite chcete vyprázdniť kôš?</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="vanished">Určite chcete odstrániť priečinok &quot;%1&quot; a celý jeho obsah?</translation>
-    </message>
-    <message>
         <source>Open Supported File</source>
         <translation>Otvoriť podporovaný súbor</translation>
-    </message>
-    <message>
-        <source>Remove Document</source>
-        <translation type="vanished">Odstrániť dokument</translation>
     </message>
     <message>
         <source>All Images (%1)</source>
@@ -1168,44 +1223,8 @@
         <translation>Súbor sa nepodarilo nahrať...</translation>
     </message>
     <message>
-        <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation type="vanished">Určite chcete odstrániť dokument &quot;%1&quot;?</translation>
-    </message>
-    <message>
-        <source>Emptied trash</source>
-        <translation type="vanished">Kôš bol vyprázdnený</translation>
-    </message>
-    <message>
-        <source>Empty Trash</source>
-        <translation type="vanished">Vyprázdniť kôš</translation>
-    </message>
-    <message>
-        <source>Remove Folder</source>
-        <translation type="vanished">Odstrániť priečinok</translation>
-    </message>
-    <message>
-        <source>Remove Page</source>
-        <translation type="vanished">Odstrániť stránku</translation>
-    </message>
-    <message>
-        <source>No document selected!</source>
-        <translation type="vanished">Nevybrali ste žiaden dokument!</translation>
-    </message>
-    <message>
         <source>Import all Images from Folder</source>
         <translation>Nahrať všetky obrázky z priečinka</translation>
-    </message>
-    <message>
-        <source>Emptying trash</source>
-        <translation type="vanished">Vyprázdňuje sa kôš</translation>
-    </message>
-    <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="vanished">
-            <numerusform>Určite chcete odstrániť %n stránku z vybraného dokumentu %1?</numerusform>
-            <numerusform>Určite chcete odstrániť %n stránky z vybraného dokumentu %1?</numerusform>
-            <numerusform>Určite chcete odstrániť %n stránok z vybraného dokumentu %1?</numerusform>
-        </translation>
     </message>
     <message>
         <source>Add all Images to Document</source>
@@ -1226,14 +1245,6 @@
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation>Dokument &apos;%1&apos; bol vytvorený v novšej verzii OpenBoardu (%2). Ak ho otvoríte v tejto, aktuálnej verzii, môže dôjsť k strate údajov. Chcete napriek tomu pokračovať?</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="vanished">Určite chcete odstrániť všetky vybrané dokumenty?</translation>
-    </message>
-    <message>
-        <source>Remove multiple documents</source>
-        <translation type="vanished">Odstránenie viacerých dokumentov</translation>
     </message>
     <message numerus="yes">
         <source>duplicated %1 page</source>
@@ -1379,25 +1390,6 @@ Providing a new name will create a new document.</source>
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
-    <message numerus="yes">
-        <source>%1 pages copied</source>
-        <translation type="vanished">
-            <numerusform>%1 skopírovaná stránka</numerusform>
-            <numerusform>%1 skopírované stránky</numerusform>
-            <numerusform>%1 skopírovaných stránok</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>%1 (copy)</source>
-        <translation type="vanished">%1 (kópia)</translation>
-    </message>
-    <message>
-        <source>Copying page %1/%2</source>
-        <translation type="vanished">Kopíruje sa stránka %1/%2</translation>
-    </message>
-</context>
-<context>
     <name>UBDownloadWidget</name>
     <message>
         <source>Downloading files</source>
@@ -1420,6 +1412,22 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Page %0</source>
         <translation type="unfinished">Stránka %0</translation>
+    </message>
+</context>
+<context>
+    <name>UBEmbedController</name>
+    <message>
+        <source>Web</source>
+        <translation>Web</translation>
+    </message>
+    <message>
+        <source>Whole page</source>
+        <translation>Celá stránka</translation>
+    </message>
+    <message>
+        <source>Application name can`t contain any of the following characters:<byte value="xd"/>
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1487,28 +1495,8 @@ Providing a new name will create a new document.</source>
         <translation>Exportuje sa %1 %2 z(o) %3</translation>
     </message>
     <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Exportuje sa dokument...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Export bol úspešný.</translation>
-    </message>
-    <message>
         <source>Export to OpenBoard Format</source>
         <translation>Exportovať do formátu OpenBoard</translation>
-    </message>
-    <message>
-        <source>Export failed: location not writable</source>
-        <translation type="vanished">Export sa nepodaril: do umiestnenia sa nedá zapisovať</translation>
-    </message>
-    <message>
-        <source>Export failed</source>
-        <translation type="vanished">Export zlyhal</translation>
-    </message>
-    <message>
-        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="vanished">Do vybraného umiestnenia sa nedá exportovať. Na uloženie súboru nemáte dostatočné oprávnenia.</translation>
     </message>
 </context>
 <context>
@@ -1548,26 +1536,6 @@ Providing a new name will create a new document.</source>
         <source>Export to PDF</source>
         <translation>Exportovať do PDF</translation>
     </message>
-    <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Exportuje sa dokument...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Export bol úspešný.</translation>
-    </message>
-    <message>
-        <source>Export failed: location not writable</source>
-        <translation type="vanished">Export sa nepodaril: do umiestnenia sa nedá zapisovať</translation>
-    </message>
-    <message>
-        <source>Export failed</source>
-        <translation type="vanished">Export zlyhal</translation>
-    </message>
-    <message>
-        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="vanished">Do vybraného umiestnenia sa nedá exportovať. Na uloženie súboru nemáte dostatočné oprávnenia.</translation>
-    </message>
 </context>
 <context>
     <name>UBExportPDF</name>
@@ -1582,14 +1550,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Exporting page %1 of %2</source>
         <translation>Exportuje sa stránka %1 z(o) %2</translation>
-    </message>
-    <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Exportuje sa dokument...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Export bol úspešný.</translation>
     </message>
 </context>
 <context>
@@ -1624,10 +1584,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Add to page</source>
         <translation>Pridať na stránku</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation type="vanished">Nastaviť ako pozadie</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1692,10 +1648,6 @@ Providing a new name will create a new document.</source>
         <translation>Obrázky</translation>
     </message>
     <message>
-        <source>Animations</source>
-        <translation type="vanished">Animácie</translation>
-    </message>
-    <message>
         <source>Interactivities</source>
         <translation>Interaktívne aktivity</translation>
     </message>
@@ -1756,10 +1708,6 @@ Providing a new name will create a new document.</source>
 <context>
     <name>UBGraphicsItemDelegate</name>
     <message>
-        <source>Go to Content Source</source>
-        <translation>Prejsť na zdroj</translation>
-    </message>
-    <message>
         <source>Locked</source>
         <translation>Zamknuté</translation>
     </message>
@@ -1770,6 +1718,10 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Set as background</source>
         <translation type="unfinished">Nastaviť ako pozadie</translation>
+    </message>
+    <message>
+        <source>Web Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2025,10 +1977,6 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
         <translation>Strata úložiska dokumentov</translation>
     </message>
     <message>
-        <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="vanished">stratil prístup k úložisku dokumentov &apos;%1&apos;. Aplikácia sa musí zatvoriť, aby sa predišlo poškodeniu dát. Možno nebudú uložené ani najnovšie zmeny.</translation>
-    </message>
-    <message>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2141,51 +2089,10 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     </message>
 </context>
 <context>
-    <name>UBProxyLoginDlg</name>
-    <message>
-        <source>Password:</source>
-        <translation type="vanished">Heslo:</translation>
-    </message>
-    <message>
-        <source>Proxy Login</source>
-        <translation type="vanished">Prihlásenie na proxy</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation type="vanished">Používateľské meno:</translation>
-    </message>
-</context>
-<context>
-    <name>UBPublicationDlg</name>
-    <message>
-        <source>Description:</source>
-        <translation type="vanished">Popis:</translation>
-    </message>
-    <message>
-        <source>Title:</source>
-        <translation type="vanished">Názov:</translation>
-    </message>
-    <message>
-        <source>Publish</source>
-        <translation type="vanished">Publikovať</translation>
-    </message>
-    <message>
-        <source>Publish document on the web</source>
-        <translation type="vanished">Publikovať dokument na internet</translation>
-    </message>
-</context>
-<context>
     <name>UBSettings</name>
     <message>
         <source>My Movies</source>
         <translation>Moje filmy</translation>
-    </message>
-</context>
-<context>
-    <name>UBStartupHintsPalette</name>
-    <message>
-        <source>Visible next time</source>
-        <translation>Zobraziť aj nabudúce</translation>
     </message>
 </context>
 <context>
@@ -2253,17 +2160,6 @@ Chcete ignorovať tieto chyby na tomto serveri?</translation>
     </message>
 </context>
 <context>
-    <name>UBTrapFlashController</name>
-    <message>
-        <source>Web</source>
-        <translation>Web</translation>
-    </message>
-    <message>
-        <source>Whole page</source>
-        <translation>Celá stránka</translation>
-    </message>
-</context>
-<context>
     <name>UBUpdateDlg</name>
     <message>
         <source>Document updater</source>
@@ -2317,17 +2213,10 @@ Reštartujte aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi.<
     </message>
 </context>
 <context>
-    <name>UBWebPluginWidget</name>
+    <name>UBWebEngineView</name>
     <message>
-        <source>Loading...</source>
-        <translation>Nahráva sa...</translation>
-    </message>
-</context>
-<context>
-    <name>UBWidgetUniboardAPI</name>
-    <message>
-        <source>%0 called (method=%1, status=%2)</source>
-        <translation>%0 vyvolané (metóda = %1, stav = %2)</translation>
+        <source>Open Web Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2416,85 +2305,6 @@ Reštartujte aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi.<
     </message>
 </context>
 <context>
-    <name>WBClearButton</name>
-    <message>
-        <source>Clear</source>
-        <translation>Vyčistiť</translation>
-    </message>
-</context>
-<context>
-    <name>WBDownloadItem</name>
-    <message>
-        <source>KB</source>
-        <translation>kB</translation>
-    </message>
-    <message>
-        <source>MB</source>
-        <translation>MB</translation>
-    </message>
-    <message>
-        <source>bytes</source>
-        <translation>bytov</translation>
-    </message>
-    <message>
-        <source>- %4 %5 remaining</source>
-        <translation>– zostáva %4 %5 </translation>
-    </message>
-    <message>
-        <source>minutes</source>
-        <translation>minút(y)</translation>
-    </message>
-    <message>
-        <source>Error opening saved file: %1</source>
-        <translation>Chyba pri otváraní uloženého súboru: %1</translation>
-    </message>
-    <message>
-        <source>seconds</source>
-        <translation>sekúnd</translation>
-    </message>
-    <message>
-        <source>Error saving: %1</source>
-        <translation>Chyba pri ukladaní súboru: %1</translation>
-    </message>
-    <message>
-        <source>Download canceled: %1</source>
-        <translation>Sťahovanie súboru bolo zrušené: %1</translation>
-    </message>
-    <message>
-        <source>%1 of %2 - Stopped</source>
-        <translation>%1 z(o) %2 – zastavené</translation>
-    </message>
-    <message>
-        <source>Save File</source>
-        <translation>Uložiť súbor</translation>
-    </message>
-    <message>
-        <source>%1 of %2 (%3/sec) %4</source>
-        <translation>%1 z(o) %2 (%3/sek) %4</translation>
-    </message>
-    <message>
-        <source>Network Error: %1</source>
-        <translation>Chyba siete: %1</translation>
-    </message>
-    <message>
-        <source>?</source>
-        <comment>unknown file size</comment>
-        <translation>?</translation>
-    </message>
-</context>
-<context>
-    <name>WBDownloadManager</name>
-    <message>
-        <source>1 Download</source>
-        <translation>1 stiahnutý súbor</translation>
-    </message>
-    <message>
-        <source>%1 Downloads</source>
-        <comment>always &gt;= 2</comment>
-        <translation>%1 stiahnuté súbory</translation>
-    </message>
-</context>
-<context>
     <name>WBHistoryModel</name>
     <message>
         <source>Title</source>
@@ -2518,97 +2328,90 @@ Reštartujte aplikáciu, aby ste mohli pracovať s aktualizovanými dokumentmi.<
     </message>
 </context>
 <context>
-    <name>WBSearchLineEdit</name>
+    <name>WebPage</name>
     <message>
-        <source>Search</source>
-        <translation>Hľadať</translation>
+        <source>Certificate Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter username and password for &quot;%1&quot; at %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to access your location information?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to access your microphone?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to access your webcam?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to access your microphone and webcam?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to lock your mouse cursor?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to capture video of your desktop?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to capture audio and video of your desktop?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Permission Request</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect to proxy &quot;%1&quot; using:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to open all %2 links?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>WBTabBar</name>
+    <name>WebView</name>
     <message>
-        <source>Reload All Tabs</source>
-        <translation>Obnoviť všetky karty</translation>
+        <source>Render process normal exit</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reload Tab</source>
-        <translation>Obnoviť kartu</translation>
+        <source>Render process abnormal exit</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clone Tab</source>
-        <translation>Duplikovať kartu</translation>
+        <source>Render process crashed</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Close Tab</source>
-        <translation>&amp;Zatvoriť kartu</translation>
+        <source>Render process killed</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Close &amp;Other Tabs</source>
-        <translation>Zatvoriť &amp;ostané karty</translation>
+        <source>Render process exited with code: %1
+Do you want to reload the page ?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>New &amp;Tab</source>
-        <translation>Nová &amp;karta</translation>
-    </message>
-</context>
-<context>
-    <name>WBTabWidget</name>
-    <message>
-        <source>(Untitled)</source>
-        <translation>(Bez názvu)</translation>
+        <source>Open Web Inspector in new window</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Recently Closed Tabs</source>
-        <translation>Nedávno zatvorené karty</translation>
-    </message>
-</context>
-<context>
-    <name>WBToolbarSearch</name>
-    <message>
-        <source>Recent Searches</source>
-        <translation>Nedávne vyhľadávania</translation>
+        <source>Inspect element</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Search</source>
-        <translation>Vyhľadať</translation>
-    </message>
-    <message>
-        <source>No Recent Searches</source>
-        <translation>Žiadne nedávne vyhľadávania</translation>
-    </message>
-    <message>
-        <source>Clear Recent Searches</source>
-        <translation>Vymazať nedávne vyhľadávania</translation>
-    </message>
-</context>
-<context>
-    <name>WBWebPage</name>
-    <message>
-        <source>PDF</source>
-        <translation>PDF</translation>
-    </message>
-    <message>
-        <source>Add to Current Document</source>
-        <translation>Pridať do aktuálneho dokumentu</translation>
-    </message>
-    <message>
-        <source>Download</source>
-        <translation>Stiahnuť</translation>
-    </message>
-    <message>
-        <source>Error loading page: %1</source>
-        <translation>Chyba pri nahrávaní stránky: %1</translation>
-    </message>
-    <message>
-        <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
-        <translation>Sťahovanie dokumentu PDF: chcete súbor PDF radšej stiahnuť alebo pridať do aktuálneho dokumentu?</translation>
-    </message>
-</context>
-<context>
-    <name>WBWebView</name>
-    <message>
-        <source>Open in New Tab</source>
-        <translation>Otvoriť na novej karte</translation>
+        <source>Add to board</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2736,29 +2539,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>documentPublishingDialog</name>
-    <message>
-        <source>Dialog</source>
-        <translation type="obsolete">Dialóg</translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="obsolete">Názov</translation>
-    </message>
-    <message>
-        <source>E-mail</source>
-        <translation type="obsolete">E-mail</translation>
-    </message>
-    <message>
-        <source>Author</source>
-        <translation type="obsolete">Autor</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="obsolete">Popis</translation>
-    </message>
-</context>
-<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
@@ -2846,10 +2626,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Software Update</source>
         <translation>Aktualizácia programu</translation>
-    </message>
-    <message>
-        <source>Keyboard button size:</source>
-        <translation type="vanished">Veľkosť tlačidla klávesnice:</translation>
     </message>
     <message>
         <source>Stylus Palette</source>

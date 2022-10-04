@@ -72,8 +72,12 @@ initializeVariables()
   APPLICATION_PATH="opt"
 
   PACKAGE_DIRECTORY=$BASE_WORKING_DIR/$APPLICATION_PATH/$APPLICATION_CODE
-  QT_PLUGINS_DEST_PATH="$PACKAGE_DIRECTORY/plugins"
-  QT_LIBRARY_DEST_PATH="$PACKAGE_DIRECTORY/qtlib"
+  PACKAGE_QT_DIRECTORY="$PACKAGE_DIRECTORY/qt"
+  QT_LIBRARY_DEST_PATH="$PACKAGE_QT_DIRECTORY/lib"
+  QT_LIBRARY_EXECUTABLES_DEST_PATH="$PACKAGE_QT_DIRECTORY/libexec"
+  QT_PLUGINS_DEST_PATH="$PACKAGE_QT_DIRECTORY/plugins"
+  QT_RESOURCES_DEST_PATH="$PACKAGE_QT_DIRECTORY/resources"
+  QT_TRANSLATIONS_DEST_PATH="$PACKAGE_QT_DIRECTORY/translations"
 
   DESKTOP_FILE_PATH="$BASE_WORKING_DIR/usr/share/applications"
   APPLICATION_SHORTCUT="$DESKTOP_FILE_PATH/${APPLICATION_CODE}.desktop"
@@ -89,9 +93,12 @@ initializeVariables()
 
   # Qt installation path. This may vary across machines
   QT_PATH="/usr/lib/x86_64-linux-gnu/qt5"
-  QT_PLUGINS_SOURCE_PATH="$QT_PATH/plugins"
   GUI_TRANSLATIONS_DIRECTORY_PATH="/usr/share/qt5/translations"
-  QT_LIBRARY_SOURCE_PATH="$QT_PATH/.."
+  QT_LIBRARY_SOURCE_PATH="$QT_PATH/lib"
+  QT_LIBRARY_EXECUTABLES_SOURCE_PATH="$QT_PATH/libexec"
+  QT_PLUGINS_SOURCE_PATH="$QT_PATH/plugins"
+  QT_RESOURCES_SOURCE_PATH="$QT_PATH/resources"
+  QT_TRANSLATIONS_SOURCE_PATH="$QT_PATH/translations"
 
   NOTIFY_CMD=`which notify-send`
   ZIP_PATH=`which zip`
@@ -209,7 +216,6 @@ if $BUNDLE_QT; then
     copyQtPlugin platformthemes
     copyQtPlugin position
     copyQtPlugin printsupport
-    #copyQtPlugin qtwebengine
     copyQtPlugin sceneparsers
     copyQtPlugin xcbglintegrations
 
@@ -233,8 +239,9 @@ if $BUNDLE_QT; then
     copyQtLibrary libQt5Sql
     copyQtLibrary libQt5Svg
     copyQtLibrary libQt5WebChannel
-    copyQtLibrary libQt5WebKit
-    copyQtLibrary libQt5WebKitWidgets
+    copyQtLibrary libQt5WebEngineCore
+    copyQtLibrary libQt5WebEngineWidgets
+    copyQtLibrary libQt5QuickWidgets
     copyQtLibrary libQt5WebSockets
     copyQtLibrary libQt5Widgets
     copyQtLibrary libQt5XcbQpa
@@ -249,6 +256,18 @@ notifyProgress "Copying Qt translations"
 mkdir -p $PACKAGE_DIRECTORY/i18n
 cp $GUI_TRANSLATIONS_DIRECTORY_PATH/qt_??.qm $PACKAGE_DIRECTORY/i18n/
 
+# ----------------------------------------------------------------------------
+# QT WebEngine
+# ----------------------------------------------------------------------------
+notifyProgress "Copying Qt WebEngine dependencies"
+mkdir -p "$QT_LIBRARY_EXECUTABLES_DEST_PATH"
+cp $QT_LIBRARY_EXECUTABLES_SOURCE_PATH/QtWebEngineProcess $QT_LIBRARY_EXECUTABLES_DEST_PATH
+
+mkdir -p "$QT_RESOURCES_DEST_PATH"
+cp $QT_RESOURCES_SOURCE_PATH/* $QT_RESOURCES_DEST_PATH
+
+mkdir -p "$QT_TRANSLATIONS_DEST_PATH/qtwebengine_locales"
+cp $QT_TRANSLATIONS_SOURCE_PATH/qtwebengine_locales/* $QT_TRANSLATIONS_DEST_PATH/qtwebengine_locales
 
 # ----------------------------------------------------------------------------
 # DEBIAN directory of package (control, md5sums, postinst etc)

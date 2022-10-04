@@ -36,7 +36,7 @@
 class UBGraphicsWidgetItem;
 class QWidget;
 class UBGraphicsScene;
-class QWebView;
+class UBWebEngineView;
 
 class UBToolWidget : public QWidget
 {
@@ -65,10 +65,10 @@ class UBToolWidget : public QWidget
         virtual bool eventFilter(QObject *obj, QEvent *event);
 
     private slots:
-        void javaScriptWindowObjectCleared();
+        void registerAPI();
 
     protected:
-        QWebView *mWebView;
+        UBWebEngineView *mWebView;
         UBGraphicsWidgetItem *mToolWidget;
 
         static QPixmap *sClosePixmap;

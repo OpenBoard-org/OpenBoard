@@ -66,7 +66,6 @@
 #include "UBGraphicsItemUndoCommand.h"
 #include "UBGraphicsItemGroupUndoCommand.h"
 #include "UBGraphicsTextItemUndoCommand.h"
-#include "UBGraphicsProxyWidget.h"
 #include "UBGraphicsPixmapItem.h"
 #include "UBGraphicsSvgItem.h"
 #include "UBGraphicsPolygonItem.h"
@@ -1403,7 +1402,6 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
 
         if(group){
             UBGraphicsGroupContainerItem* groupCloned = group->deepCopyNoChildDuplication();
-            groupCloned->resetMatrix();
             groupCloned->resetTransform();
             groupCloned->setPos(0, 0);
             bool locked = groupCloned->Delegate()->isLocked();
@@ -1418,7 +1416,6 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
                 groupCloned->setData(UBGraphicsItemData::ItemLocked, QVariant(true));
 
             copy->addItem(groupCloned);
-            groupCloned->setMatrix(group->matrix());
             groupCloned->setTransform(QTransform::fromTranslate(group->pos().x(), group->pos().y()));
             groupCloned->setTransform(group->transform(), true);
         }
@@ -1661,7 +1658,7 @@ UBGraphicsWidgetItem* UBGraphicsScene::addWidget(const QUrl& pWidgetUrl, const Q
 {
     int widgetType = UBGraphicsWidgetItem::widgetType(pWidgetUrl);
 
-    if(widgetType == UBWidgetType::Apple)
+    if(widgetType == UBWidgetType::Apple) // NOTE @letsfindaway obsolete
     {
         return addAppleWidget(pWidgetUrl, pPos);
     }
@@ -1676,6 +1673,7 @@ UBGraphicsWidgetItem* UBGraphicsScene::addWidget(const QUrl& pWidgetUrl, const Q
     }
 }
 
+// NOTE @letsfindaway obsolete
 UBGraphicsAppleWidgetItem* UBGraphicsScene::addAppleWidget(const QUrl& pWidgetUrl, const QPointF& pPos)
 {
     UBGraphicsAppleWidgetItem *appleWidget = new UBGraphicsAppleWidgetItem(pWidgetUrl);
@@ -1699,6 +1697,7 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
     graphicsWidget->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
     addItem(graphicsWidget);
+    graphicsWidget->activeSceneChanged();
 
     qreal ssf = 1 / UBApplication::boardController->systemScaleFactor();
 
@@ -1727,31 +1726,6 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
     UBApplication::boardController->controlView()->setFocus();
 }
 
-
-
-UBGraphicsW3CWidgetItem* UBGraphicsScene::addOEmbed(const QUrl& pContentUrl, const QPointF& pPos)
-{
-    QStringList widgetPaths = UBPersistenceManager::persistenceManager()->allWidgets(UBSettings::settings()->applicationApplicationsLibraryDirectory());
-
-    UBGraphicsW3CWidgetItem *widget = 0;
-
-    foreach(QString widgetPath, widgetPaths)
-    {
-        if (widgetPath.contains("VideoPicker"))
-        {
-            widget = addW3CWidget(QUrl::fromLocalFile(widgetPath), pPos);
-
-            if (widget)
-            {
-                widget->setPreference("oembedUrl", pContentUrl.toString());
-                setDocumentUpdated();
-                break;
-            }
-        }
-    }
-
-    return widget;
-}
 
 UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *> items)
 {
@@ -1991,7 +1965,7 @@ void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
 
     mItemCount += items.size();
 
-    mFastAccessItems += items.toList();
+    mFastAccessItems += items.values();
 }
 
 void UBGraphicsScene::removeItem(QGraphicsItem* item)
@@ -2225,6 +2199,7 @@ void UBGraphicsScene::addRuler(QPointF center)
 void UBGraphicsScene::addAxes(QPointF center)
 {
     UBGraphicsAxes* axes = new UBGraphicsAxes(); // mem : owned and destroyed by the scene
+    mTools << axes;
 
     axes->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Tool));
 

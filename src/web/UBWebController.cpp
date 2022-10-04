@@ -28,26 +28,28 @@
 
 
 #include <QtGui>
-#include <QDomDocument>
-#include <QXmlQuery>
-#include <QWebFrame>
-#include <QWebElementCollection>
+#include <QMenu>
+#include <QWebEngineCookieStore>
+#include <QWebEngineHistory>
+#include <QWebEngineHistoryItem>
+#include <QWebEngineProfile>
+#include <QWebEngineScript>
+#include <QWebEngineScriptCollection>
+#include <QWebEngineSettings>
+#include <QtWebEngineWidgetsVersion>
 
 #include "frameworks/UBPlatformUtils.h"
 
 #include "UBWebController.h"
-#include "UBOEmbedParser.h"
-#include "UBTrapFlashController.h"
+#include "UBEmbedController.h"
 
-#include "web/browser/WBBrowserWindow.h"
-#include "web/browser/WBWebView.h"
-#include "web/browser/WBDownloadManager.h"
-#include "web/browser/WBTabWidget.h"
+#include "web/simplebrowser/browserwindow.h"
+#include "web/simplebrowser/webview.h"
+#include "web/simplebrowser/tabwidget.h"
 
-#include "network/UBServerXMLHttpRequest.h"
+#include "network/UBCookieJar.h"
 #include "network/UBNetworkAccessManager.h"
 
-#include "gui/UBWidgetMirror.h"
 #include "gui/UBMainWindow.h"
 #include "gui/UBWebToolsPalette.h"
 #include "gui/UBKeyboardPalette.h"
@@ -71,56 +73,159 @@
 UBWebController::UBWebController(UBMainWindow* mainWindow)
     : QObject(mainWindow->centralWidget())
     , mMainWindow(mainWindow)
-    , mCurrentWebBrowser(0)
-    , mBrowserWidget(0)
-    , mTrapFlashController(0)
-    , mToolsCurrentPalette(0)
+    , mCurrentWebBrowser(nullptr)
+    , mBrowserWidget(nullptr)
+    , mEmbedController(nullptr)
+    , mToolsCurrentPalette(nullptr)
     , mToolsPalettePositionned(false)
     , mDownloadViewIsVisible(false)
 {
-    connect(&mOEmbedParser, SIGNAL(oembedParsed(QVector<sOEmbedContent>)), this, SLOT(onOEmbedParsed(QVector<sOEmbedContent>)));
+    connect(mMainWindow->actionOpenTutorial, SIGNAL(triggered()), this, SLOT(onOpenTutorial()));
 
-    // TODO : Comment the next line to continue the Youtube button bugfix
-    initialiazemOEmbedProviders();
+    bool privateBrowsing = UBSettings::settings()->webPrivateBrowsing->get().toBool();
+    qDebug() << "Private browsing" << privateBrowsing;
 
-    connect(mMainWindow->actionOpenTutorial,SIGNAL(triggered()),this, SLOT(onOpenTutorial()));
+    if (privateBrowsing)
+    {
+        // create off-the-record profile that leaves no record on the local machine, and has no persistent data or cache
+        mWebProfile = new QWebEngineProfile();
+    }
+    else
+    {
+        mWebProfile = QWebEngineProfile::defaultProfile();
+        mWebProfile->setHttpCacheType(QWebEngineProfile::DiskHttpCache);
+    }
+
+    // compute a system specific user agent string
+    QString originalUserAgent = mWebProfile->httpUserAgent();
+    QRegularExpression exp("\\(([^;]*);([^)]*)\\)");
+
+    QString p1;
+    QString p2;
+
+    QRegularExpressionMatch match = exp.match(originalUserAgent);
+
+    if (match.hasMatch())
+    {
+        p1 = match.captured(1);
+        p2 = match.captured(2);
+    }
+
+    QString userAgent = UBSettings::settings()->alternativeUserAgent->get().toString();
+    userAgent = userAgent.arg(p1).arg(p2);
+
+    mInterceptor = new UBUserAgentInterceptor(userAgent.toUtf8(), mWebProfile);
+
+#if QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(5, 13, 0)
+    mWebProfile->setUrlRequestInterceptor(mInterceptor);
+#else
+    mWebProfile->setRequestInterceptor(mInterceptor);
+#endif
+
+    QWebEngineSettings* settings = mWebProfile->settings();
+    settings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+    settings->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, true);
+    settings->setAttribute(QWebEngineSettings::LocalContentCanAccessRemoteUrls, true);
+    settings->setAttribute(QWebEngineSettings::ScreenCaptureEnabled, true);
+
+    // install cookie filter
+    QWebEngineCookieStore* cookieStore = mWebProfile->cookieStore();
+
+    QByteArray value = UBSettings::settings()->webCookiePolicy->get().toByteArray();
+    QMetaEnum cookiePolicyEnum = staticMetaObject.enumerator(staticMetaObject.indexOfEnumerator("CookiePolicy"));
+    int enumOrdinal = cookiePolicyEnum.keyToValue(value);
+    CookiePolicy cookiePolicy = enumOrdinal == -1 ?
+                DenyThirdParty :
+                static_cast<CookiePolicy>(enumOrdinal);
+
+    qDebug() << "Using cookie policy" << value;
+    cookieStore->setCookieFilter(
+                [cookiePolicy](const QWebEngineCookieStore::FilterRequest &request)
+    {
+        switch (cookiePolicy) {
+        case DenyAll:
+            return false;
+
+        case DenyThirdParty:
+            return !request.thirdParty;
+
+        case AcceptAll:
+            return true;
+        }
+
+        return false;
+    }
+    );
+
+    // synchronize with QNetworkAccessManager
+    QNetworkCookieJar* jar = UBNetworkAccessManager::defaultAccessManager()->cookieJar();
+
+    connect(cookieStore, &QWebEngineCookieStore::cookieAdded, [jar](const QNetworkCookie &cookie){
+        jar->insertCookie(cookie);
+    });
+    connect(cookieStore, &QWebEngineCookieStore::cookieRemoved, [jar](const QNetworkCookie &cookie){
+        jar->deleteCookie(cookie);
+    });
+
+    // remember settings for cleanup
+    cookieAutoDelete = UBSettings::settings()->webCookieAutoDelete->get().toBool();
+    cookieKeepDomains = UBSettings::settings()->webCookieKeepDomains->get().toStringList();
 }
-
 
 UBWebController::~UBWebController()
 {
-    // NOOP
-}
+    if (cookieAutoDelete)
+    {
+        QWebEngineCookieStore* cookieStore = mWebProfile->cookieStore();
 
-void UBWebController::onOpenTutorial()
-{
-    loadUrl(QUrl(UBSettings::settings()->tutorialUrl->get().toString()));
-}
+        if (cookieKeepDomains.empty())
+        {
+            cookieStore->deleteAllCookies();
+        }
+        else
+        {
+            UBCookieJar* jar = dynamic_cast<UBCookieJar*>(UBNetworkAccessManager::defaultAccessManager()->cookieJar());
 
-void UBWebController::initialiazemOEmbedProviders()
-{
-    mOEmbedProviders << "5min.com";
-    mOEmbedProviders << "amazon.com";
-    mOEmbedProviders << "flickr";
-    mOEmbedProviders << "video.google.";
-    mOEmbedProviders << "hulu.com";
-    mOEmbedProviders << "imdb.com";
-    mOEmbedProviders << "metacafe.com";
-    mOEmbedProviders << "qik.com";
-    mOEmbedProviders << "slideshare";
-    mOEmbedProviders << "5min.com";
-    mOEmbedProviders << "twitpic.com";
-    mOEmbedProviders << "viddler.com";
-    mOEmbedProviders << "vimeo.com";
-    mOEmbedProviders << "wikipedia.org";
-    mOEmbedProviders << "wordpress.com";
-    mOEmbedProviders << "youtube.com";
+            if (jar)
+            {
+                for (const QNetworkCookie& cookie : jar->cookieList())
+                {
+                    QString domain = cookie.domain();
+                    bool keep = false;
+
+                    for (QString keepDomain : cookieKeepDomains)
+                    {
+                        if (keepDomain.startsWith('.'))
+                        {
+                            // check for suffix match
+                            keep = domain.endsWith(keepDomain);
+                        }
+                        else
+                        {
+                            // check for exact match
+                            keep = domain == keepDomain;
+                        }
+
+                        if (keep)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (!keep)
+                    {
+                        cookieStore->deleteCookie(cookie);
+                    }
+                }
+            }
+        }
+    }
 }
 
 void UBWebController::webBrowserInstance()
 {
     QString webHomePage = UBSettings::settings()->webHomePage->get().toString();
-    QUrl currentUrl = WBBrowserWindow::guessUrlFromString(webHomePage);
+    QUrl currentUrl = guessUrlFromString(webHomePage);
 
     if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
     {
@@ -130,32 +235,105 @@ void UBWebController::webBrowserInstance()
     {
         if (!mCurrentWebBrowser)
         {
-            mCurrentWebBrowser = new WBBrowserWindow(mMainWindow->centralWidget(), mMainWindow);
+            mCurrentWebBrowser = new BrowserWindow(nullptr, mWebProfile);
 
             mMainWindow->addWebWidget(mCurrentWebBrowser);
 
             connect(mCurrentWebBrowser, SIGNAL(activeViewChange(QWidget*)), this, SLOT(setSourceWidget(QWidget*)));
 
-            WBBrowserWindow::downloadManager()->setParent(mCurrentWebBrowser, Qt::Tool);
+            mDownloadManagerWidget.setParent(mCurrentWebBrowser, Qt::Tool);
 
             UBApplication::app()->insertSpaceToToolbarBeforeAction(mMainWindow->webToolBar, mMainWindow->actionBoard, 32);
+            QToolBar* navigationBar = mCurrentWebBrowser->createToolBar(mMainWindow->webToolBar);
+            mMainWindow->webToolBar->insertWidget(mMainWindow->actionBoard, navigationBar);
             UBApplication::app()->decorateActionMenu(mMainWindow->actionMenu);
 
             showTabAtTop(UBSettings::settings()->appToolBarPositionedAtTop->get().toBool());
 
             adaptToolBar();
 
-            mTrapFlashController = new UBTrapFlashController(mCurrentWebBrowser);
+            mEmbedController = new UBEmbedController(mCurrentWebBrowser);
 
             connect(mCurrentWebBrowser, SIGNAL(activeViewPageChanged()), this, SLOT(activePageChanged()));
+            connect(mCurrentWebBrowser->tabWidget(), &TabWidget::tabCreated, this, &UBWebController::tabCreated);
 
-            mCurrentWebBrowser->loadUrl(currentUrl);
+            // initialize the browser
+            mCurrentWebBrowser->init();
 
+            TabWidget* tabWidget = mCurrentWebBrowser->tabWidget();
+
+            // signals are not emitted for first tab, so call explicitly
+            setSourceWidget(mCurrentWebBrowser->currentTab());
+            tabCreated(mCurrentWebBrowser->currentTab());
+
+            // connect buttons
+            connect(mMainWindow->actionWebBack, &QAction::triggered, [tabWidget]() {
+                tabWidget->triggerWebPageAction(QWebEnginePage::Back);
+            });
+
+            connect(mMainWindow->actionWebForward, &QAction::triggered, [tabWidget]() {
+                tabWidget->triggerWebPageAction(QWebEnginePage::Forward);
+            });
+
+            connect(mMainWindow->actionWebReload, &QAction::triggered, [tabWidget]() {
+                tabWidget->triggerWebPageAction(QWebEnginePage::Reload);
+            });
+
+            connect(mMainWindow->actionStopLoading, &QAction::triggered, [tabWidget]() {
+                tabWidget->triggerWebPageAction(QWebEnginePage::Stop);
+            });
+
+            connect(mMainWindow->actionHome, &QAction::triggered, [this, currentUrl](){
+                mCurrentWebBrowser->currentTab()->load(currentUrl);
+            });
+
+            connect(mMainWindow->actionWebBigger, SIGNAL(triggered()), mCurrentWebBrowser, SLOT(zoomIn()));
+            connect(mMainWindow->actionWebSmaller, SIGNAL(triggered()), mCurrentWebBrowser, SLOT(zoomOut()));
+
+            mHistoryBackMenu = new QMenu(mMainWindow);
+            connect(mHistoryBackMenu, SIGNAL(aboutToShow()),this, SLOT(aboutToShowBackMenu()));
+            connect(mHistoryBackMenu, SIGNAL(triggered(QAction *)), this, SLOT(openActionUrl(QAction *)));
+
+            // setup history drop down menus
+            for (QWidget* menuWidget : mMainWindow->actionWebBack->associatedWidgets())
+            {
+                QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
+
+                if (tb && !tb->menu())
+                {
+                    tb->setMenu(mHistoryBackMenu);
+                    tb->setStyleSheet("QToolButton::menu-indicator { subcontrol-position: bottom left; }");
+                }
+            }
+
+            mHistoryForwardMenu = new QMenu(mMainWindow);
+            connect(mHistoryForwardMenu, SIGNAL(aboutToShow()), this, SLOT(aboutToShowForwardMenu()));
+            connect(mHistoryForwardMenu, SIGNAL(triggered(QAction *)), this, SLOT(openActionUrl(QAction *)));
+
+            for (QWidget* menuWidget : mMainWindow->actionWebForward->associatedWidgets())
+            {
+                QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
+
+                if (tb && !tb->menu())
+                {
+                    tb->setMenu(mHistoryForwardMenu);
+                    tb->setStyleSheet("QToolButton { padding-right: 8px; }");
+                }
+            }
+
+            mCurrentWebBrowser->currentTab()->load(currentUrl);
             mCurrentWebBrowser->tabWidget()->tabBar()->show();
-            mCurrentWebBrowser->tabWidget()->lineEdits()->show();
+
+            QObject::connect(
+                mWebProfile, &QWebEngineProfile::downloadRequested,
+                &mDownloadManagerWidget, &DownloadManagerWidget::downloadRequested);
+
+            connect(mMainWindow->actionWebTools, &QAction::triggered, [this](){
+                mToolsCurrentPalette->setVisible(mMainWindow->actionWebTools->isChecked());
+            });
         }
 
-        UBApplication::applicationController->setMirrorSourceWidget(mCurrentWebBrowser->paintWidget());
+        UBApplication::applicationController->setMirrorSourceWidget(mCurrentWebBrowser->currentTab());
         mMainWindow->switchToWebWidget();
 
         setupPalettes();
@@ -167,12 +345,90 @@ void UBWebController::webBrowserInstance()
     }
 
     if (mDownloadViewIsVisible)
-        WBBrowserWindow::downloadManager()->show();
+    {
+        mDownloadManagerWidget.show();
+    }
+}
+
+UBEmbedParser *UBWebController::embedParser(const QWebEngineView* view) const
+{
+    return view->findChild<UBEmbedParser*>("UBEmbedParser");
 }
 
 void UBWebController::show()
 {
     webBrowserInstance();
+}
+
+QWidget *UBWebController::controlView() const
+{
+    return mBrowserWidget;
+}
+
+QWebEngineProfile *UBWebController::webProfile() const
+{
+    return mWebProfile;
+}
+
+QList<UBEmbedContent> UBWebController::getEmbeddedContent(const QWebEngineView *view)
+{
+    UBEmbedParser* parser = embedParser(view);
+
+    if (parser)
+    {
+        return parser->embeddedContent();
+    }
+
+    return QList<UBEmbedContent>();
+}
+
+BrowserWindow* UBWebController::browserWindow() const
+{
+    return mCurrentWebBrowser;
+}
+
+QWebEnginePage::PermissionPolicy UBWebController::hasFeaturePermission(const QUrl &securityOrigin, QWebEnginePage::Feature feature)
+{
+    QPair<QUrl,QWebEnginePage::Feature> featurePermission(securityOrigin, feature);
+
+    if (mFeaturePermissions.contains(featurePermission))
+    {
+        return mFeaturePermissions[featurePermission];
+    }
+
+    return QWebEnginePage::PermissionUnknown;
+}
+
+void UBWebController::setFeaturePermission(const QUrl &securityOrigin, QWebEnginePage::Feature feature, QWebEnginePage::PermissionPolicy policy)
+{
+    QPair<QUrl,QWebEnginePage::Feature> featurePermission(securityOrigin, feature);
+    mFeaturePermissions[featurePermission] = policy;
+}
+
+void UBWebController::injectScripts(QWebEngineView *view)
+{
+    // inject the QWebChannel interface and initialization script
+    QFile js(":/qtwebchannel/qwebchannel.js");
+
+    if (js.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Injecting qwebchannel.js";
+        QString src = js.readAll();
+
+        QFile asyncwrapper(UBPlatformUtils::applicationResourcesDirectory() + "/etc/asyncAPI.js");
+
+        if (asyncwrapper.open(QIODevice::ReadOnly))
+        {
+            src += asyncwrapper.readAll();
+        }
+
+        QWebEngineScript script;
+        script.setName("qwebchannel");
+        script.setInjectionPoint(QWebEngineScript::DocumentCreation);
+        script.setWorldId(QWebEngineScript::MainWorld);
+        script.setSourceCode(src);
+        view->page()->scripts().insert(script);
+    }
 }
 
 void UBWebController::setSourceWidget(QWidget* pWidget)
@@ -182,115 +438,47 @@ void UBWebController::setSourceWidget(QWidget* pWidget)
 }
 
 
-void UBWebController::trapFlash()
+void UBWebController::trap()
 {
-    mTrapFlashController->showTrapFlash();
+    mEmbedController->showEmbedDialog();
     activePageChanged();
 }
 
-
 void UBWebController::activePageChanged()
 {
-    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView())
+    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTab())
     {
-        if (mTrapFlashController && mCurrentWebBrowser->currentTabWebView()->page())
-            mTrapFlashController->updateTrapFlashFromPage(mCurrentWebBrowser->currentTabWebView()->page()->currentFrame());
+        WebView* view = mCurrentWebBrowser->currentTab();
 
-        mMainWindow->actionWebTrap->setChecked(false);
+        if (mEmbedController)
+            mEmbedController->updateEmbeddableContentFromView(view);
 
-        QUrl latestUrl = mCurrentWebBrowser->currentTabWebView()->url();
-
-        // TODO : Uncomment the next line to continue the youtube button bugfix
-        //UBApplication::mainWindow->actionWebOEmbed->setEnabled(hasEmbeddedContent());
-        // And remove this line once the previous one is uncommented
-        UBApplication::mainWindow->actionWebOEmbed->setEnabled(isOEmbedable(latestUrl));
-        UBApplication::mainWindow->actionEduMedia->setEnabled(isEduMedia(latestUrl));
-
-        emit activeWebPageChanged(mCurrentWebBrowser->currentTabWebView());
+        emit activeWebPageChanged(mCurrentWebBrowser->currentTab());
     }
 }
 
-bool UBWebController::hasEmbeddedContent()
+void UBWebController::captureCurrentPage()
 {
-    bool bHasContent = false;
-    if(mCurrentWebBrowser){
-        QString html = mCurrentWebBrowser->currentTabWebView()->webPage()->mainFrame()->toHtml();
-
-        // search the presence of "+oembed"
-        QString query = "\\+oembed([^>]*)>";
-        QRegExp exp(query);
-        exp.indexIn(html);
-        QStringList results = exp.capturedTexts();
-        if(2 <= results.size() && "" != results.at(1)){
-            // An embedded content has been found, no need to check the other ones
-            bHasContent = true;
-        }else{
-            QList<QUrl> contentUrls;
-            lookForEmbedContent(&html, "embed", "src", &contentUrls);
-            lookForEmbedContent(&html, "video", "src", &contentUrls);
-            lookForEmbedContent(&html, "object", "data", &contentUrls);
-
-            // TODO: check the hidden iFrame
-
-            if(!contentUrls.empty()){
-                bHasContent = true;
-            }
-        }
-    }
-
-    return bHasContent;
-}
-
-QPixmap UBWebController::captureCurrentPage()
-{
-    QPixmap pix;
+    QPixmap* pix;
 
     if (mCurrentWebBrowser
-            && mCurrentWebBrowser->currentTabWebView()
-            && mCurrentWebBrowser->currentTabWebView()->page()
-            && mCurrentWebBrowser->currentTabWebView()->page()->mainFrame())
+            && mCurrentWebBrowser->currentTab()
+            && mCurrentWebBrowser->currentTab()->page())
     {
-        QWebFrame* frame = mCurrentWebBrowser->currentTabWebView()->page()->mainFrame();
-        QSize size = frame->contentsSize();
+        WebView* view = mCurrentWebBrowser->currentTab();
+        QWebEnginePage* page = view->page();
+        QSize size = page->contentsSize().toSize();
+        QPoint scrollPosition = page->scrollPosition().toPoint();
+        QSize viewportSize = view->size();
 
-        qDebug() << size;
+        // pix is deleted at the final run of captureStripe
+        pix = new QPixmap(size);
+        QPointF pos(0, 0);
 
-        QVariant top = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientTop");
-        QVariant left = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientLeft");
-        QVariant width = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientWidth");
-        QVariant height = frame->evaluateJavaScript("document.getElementsByTagName('body')[0].clientHeight");
-
-        QSize vieportSize = mCurrentWebBrowser->currentTabWebView()->page()->viewportSize();
-        mCurrentWebBrowser->currentTabWebView()->page()->setViewportSize(frame->contentsSize());
-        pix = QPixmap(frame->geometry().width(), frame->geometry().height());
-
-        {
-            QPainter p(&pix);
-            frame->render(&p);
-        }
-
-        if (left.isValid() && top.isValid() && width.isValid() && height.isValid())
-        {
-            bool okLeft, okTop, okWidth, okHeight;
-
-            int iLeft = left.toInt(&okLeft) * frame->zoomFactor();
-            int iTop = top.toInt(&okTop) * frame->zoomFactor();
-            int iWidth = width.toInt(&okWidth) * frame->zoomFactor();
-            int iHeight = height.toInt(&okHeight) * frame->zoomFactor();
-
-            if(okLeft && okTop && okWidth && okHeight)
-            {
-                pix = pix.copy(iLeft, iTop, iWidth, iHeight);
-            }
-        }
-
-
-        mCurrentWebBrowser->currentTabWebView()->page()->setViewportSize(vieportSize);
+        // capture complete web page in stripes, starting at top left
+        captureStripe(pos, viewportSize, pix, scrollPosition);
     }
-
-    return pix;
 }
-
 
 void UBWebController::setupPalettes()
 {
@@ -304,42 +492,30 @@ void UBWebController::setupPalettes()
                     UBApplication::boardController->paletteManager()->mKeyboardPalette, SLOT(onDeactivated()));
 #endif
 
-        connect(mMainWindow->actionCaptureWebContent, SIGNAL(triggered()), this, SLOT(trapFlash()));
+        connect(mMainWindow->actionCaptureWebContent, SIGNAL(triggered()), this, SLOT(trap()));
         connect(mMainWindow->actionWebCustomCapture, SIGNAL(triggered()), this, SLOT(customCapture()));
         connect(mMainWindow->actionWebWindowCapture, SIGNAL(triggered()), this, SLOT(captureWindow()));
-        connect(mMainWindow->actionWebOEmbed, SIGNAL(triggered()), this, SLOT(captureoEmbed()));
-        connect(mMainWindow->actionEduMedia, SIGNAL(triggered()), this, SLOT(captureEduMedia()));
-
         connect(mMainWindow->actionWebShowHideOnDisplay, SIGNAL(toggled(bool)), this, SLOT(toogleMirroring(bool)));
-        connect(mMainWindow->actionWebTrap, SIGNAL(toggled(bool)), this, SLOT(toggleWebTrap(bool)));
 
         mToolsCurrentPalette->hide();
         mToolsCurrentPalette->adjustSizeAndPosition();
 
-        if (controlView()){
+        if (controlView())
+        {
             int left = controlView()->width() - 20 - mToolsCurrentPalette->width();
             int top = (controlView()->height() - mToolsCurrentPalette->height()) / 2;
             mToolsCurrentPalette->setCustomPosition(true);
             mToolsCurrentPalette->move(left, top);
         }
+
         mMainWindow->actionWebTools->trigger();
     }
 }
 
 
-void UBWebController::toggleWebTrap(bool checked)
-{
-    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView())
-        mCurrentWebBrowser->currentTabWebView()->setIsTrapping(checked);
-}
-
-
 void UBWebController::captureWindow()
 {
-    QPixmap webPagePixmap = captureCurrentPage();
-
-    if (!webPagePixmap.isNull())
-        emit imageCaptured(webPagePixmap, true, mCurrentWebBrowser->currentTabWebView()->url());
+    captureCurrentPage();
 }
 
 
@@ -355,7 +531,7 @@ void UBWebController::customCapture()
     if (customCaptureWindow.execute(getScreenPixmap()) == QDialog::Accepted)
     {
         QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
-        emit imageCaptured(selectedPixmap, false, mCurrentWebBrowser->currentTabWebView()->url());
+        emit imageCaptured(selectedPixmap, false, mCurrentWebBrowser->currentTab()->url());
     }
 
     mToolsCurrentPalette->setVisible(true);
@@ -370,22 +546,15 @@ void UBWebController::toogleMirroring(bool checked)
 
 QPixmap UBWebController::getScreenPixmap()
 {
-    QDesktopWidget *desktop = QApplication::desktop();
-    // we capture the screen in which the mouse is.
-    const QRect primaryScreenRect = desktop->screenGeometry(QCursor::pos());
-    QCoreApplication::flush ();
-
-    return QPixmap::grabWindow(desktop->winId(),
-                               primaryScreenRect.x(), primaryScreenRect.y(),
-                               primaryScreenRect.width(), primaryScreenRect.height());
+    return UBApplication::displayManager->grab(ScreenRole::Control);
 }
 
 
 void UBWebController::screenLayoutChanged()
 {
     bool hasDisplay = (UBApplication::applicationController &&
-                       UBApplication::applicationController->displayManager() &&
-                       UBApplication::applicationController->displayManager()->hasDisplay());
+                       UBApplication::displayManager &&
+                       UBApplication::displayManager->hasDisplay());
 
     UBApplication::mainWindow->actionWebShowHideOnDisplay->setVisible(hasDisplay);
 }
@@ -403,177 +572,84 @@ void UBWebController::adaptToolBar()
 
     mMainWindow->actionWebReload->setVisible(highResolution);
     mMainWindow->actionStopLoading->setVisible(highResolution);
-
-    if(mCurrentWebBrowser )
-        mCurrentWebBrowser->adaptToolBar(highResolution);
-
 }
 
 
 void UBWebController::showTabAtTop(bool attop)
 {
     if (mCurrentWebBrowser)
-        mCurrentWebBrowser->showTabAtTop(attop);
+        mCurrentWebBrowser->tabWidget()->setTabPosition(attop ? QTabWidget::North : QTabWidget::South);
 }
 
-void UBWebController::captureoEmbed()
+
+QUrl UBWebController::guessUrlFromString(const QString &string)
 {
-    if ( mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView()){
-        // TODO : Uncomment the next lines to continue the youtube button bugfix
-        //    getEmbeddableContent();
+    QString urlStr = string.trimmed();
+    QRegExp test(QLatin1String("^[a-zA-Z]+\\:.*"));
 
-        // And comment from here
+    // Check if it looks like a qualified URL. Try parsing it and see.
+    bool hasSchema = test.exactMatch(urlStr);
+    if (hasSchema)
+    {
+        int dotCount = urlStr.count(".");
 
-        QWebView* webView = mCurrentWebBrowser->currentTabWebView();
-        QUrl currentUrl = webView->url();
-
-        if (isOEmbedable(currentUrl))
+        if (dotCount == 0 && !urlStr.contains(".com"))
         {
-            UBGraphicsW3CWidgetItem * widget = UBApplication::boardController->activeScene()->addOEmbed(currentUrl);
-
-            if(widget)
-            {
-                UBApplication::applicationController->showBoard();
-                UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-            }
+            urlStr += ".com";
         }
-        // --> Until here
-    }
-}
 
-void UBWebController::lookForEmbedContent(QString* pHtml, QString tag, QString attribute, QList<QUrl> *pList)
-{
-    if(NULL != pHtml && NULL != pList){
-        QVector<QString> urlsFound;
-        // Check for <embed> content
-        QRegExp exp(QString("<%0(.*)").arg(tag));
-        exp.indexIn(*pHtml);
-        QStringList strl = exp.capturedTexts();
-        if(2 <= strl.size() && strl.at(1) != ""){
-            // Here we call this regular expression:
-            // src\s?=\s?['"]([^'"]*)['"]
-            // It says: give me all characters that are after src=" (or src = ")
-            QRegExp src(QString("%0\\s?=\\s?['\"]([^'\"]*)['\"]").arg(attribute));
-            for(int i=1; i<strl.size(); i++){
-                src.indexIn(strl.at(i));
-                QStringList urls = src.capturedTexts();
-                if(2 <= urls.size() && urls.at(1) != "" && !urlsFound.contains(urls.at(1))){
-                    urlsFound << urls.at(1);
-                    pList->append(QUrl(urls.at(1)));
-                }
-            }
-        }
-    }
-}
-
-void UBWebController::checkForOEmbed(QString *pHtml)
-{
-    mOEmbedParser.parse(*pHtml);
-}
-
-void UBWebController::getEmbeddableContent()
-{
-    // Get the source code of the page
-    if(mCurrentWebBrowser){
-        QNetworkAccessManager* pNam = mCurrentWebBrowser->currentTabWebView()->webPage()->networkAccessManager();
-        if(NULL != pNam){
-            QString html = mCurrentWebBrowser->currentTabWebView()->webPage()->mainFrame()->toHtml();
-            mOEmbedParser.setNetworkAccessManager(pNam);
-
-            // First, we have to check if there is some oembed content
-            checkForOEmbed(&html);
-
-            // Note: The other contents will be verified once the oembed ones have been checked
-        }
-    }
-}
-
-void UBWebController::captureEduMedia()
-{
-    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView())
-    {
-        QWebView* webView = mCurrentWebBrowser->currentTabWebView();
-        QUrl currentUrl = webView->url();
-
-        if (isEduMedia(currentUrl))
+        QUrl url = QUrl::fromEncoded(urlStr.toUtf8(), QUrl::TolerantMode);
+        if (url.isValid())
         {
-            QWebElementCollection objects = webView->page()->currentFrame()->findAllElements("object");
-
-            foreach(QWebElement object, objects)
-            {
-                foreach(QWebElement param, object.findAll("param"))
-                {
-                    if(param.attribute("name") == "flashvars")
-                    {
-                        QString value = param.attribute("value");
-                        QString midValue;
-                        QString langValue;
-                        QString hostValue;
-
-                        QStringList flashVars = value.split("&");
-
-                        foreach(QString flashVar, flashVars)
-                        {
-                            QStringList var = flashVar.split("=");
-
-                            if (var.length() < 2)
-                                break;
-
-                            if (var.at(0) == "mid")
-                                midValue = var.at(1);
-                            else if (var.at(0) == "lang")
-                                langValue = var.at(1);
-                            else if (var.at(0) == "host")
-                                hostValue = var.at(1);
-
-                        }
-
-                        if (midValue.length() > 0 && langValue.length() > 0 && hostValue.length() > 0)
-                        {
-                            QString swfUrl = "http://" + hostValue + "/" + langValue + "/fl/" + midValue;
-
-                            UBApplication::boardController->downloadURL(QUrl(swfUrl));
-
-                            UBApplication::applicationController->showBoard();
-                            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-
-                            return;
-                        }
-                    }
-                }
-            }
+            return url;
         }
     }
-    else
+
+    // Might be a file.
+    if (QFile::exists(urlStr))
     {
-        UBApplication::showMessage("Cannot find any reference to eduMedia content");
+        QFileInfo info(urlStr);
+        return QUrl::fromLocalFile(info.absoluteFilePath());
     }
+
+    // Might be a shorturl - try to detect the schema.
+    if (!hasSchema)
+    {
+        QString schema = "http";
+
+        QString guessed = schema + "://" + urlStr;
+
+        int dotCount = guessed.count(".");
+
+        if (dotCount == 0 && !urlStr.contains(".com"))
+        {
+            guessed += ".com";
+        }
+
+        QUrl url = QUrl::fromEncoded(guessed.toUtf8(), QUrl::TolerantMode);
+
+        if (url.isValid())
+            return url;
+    }
+
+    // Fall back to QUrl's own tolerant parser.
+    QUrl url = QUrl::fromUserInput(string);
+
+    // finally for cases where the user just types in a hostname add http
+    if (url.scheme().isEmpty())
+        url = QUrl::fromEncoded("http://" + string.toUtf8(), QUrl::TolerantMode);
+
+    return url;
 }
 
-bool UBWebController::isOEmbedable(const QUrl& pUrl)
+void UBWebController::tabCreated(WebView *webView)
 {
-    QString urlAsString = pUrl.toString();
-
-    foreach(QString provider, mOEmbedProviders)
+    // create and attach an UBEmbedParser to the view
+    if (!embedParser(webView))
     {
-        if(urlAsString.contains(provider))
-            return true;
+        UBEmbedParser* parser = new UBEmbedParser(webView);
+        connect(parser, &UBEmbedParser::parseResult, this, &UBWebController::onEmbedParsed);
     }
-
-    return false;
-}
-
-
-bool UBWebController::isEduMedia(const QUrl& pUrl)
-{
-    QString urlAsString = pUrl.toString();
-
-    if (urlAsString.contains("edumedia-sciences.com"))
-    {
-        return true;
-    }
-
-    return false;
 }
 
 
@@ -581,30 +657,32 @@ void UBWebController::loadUrl(const QUrl& url)
 {
     UBApplication::applicationController->showInternet();
     if (UBSettings::settings()->webUseExternalBrowser->get().toBool())
-
+    {
         QDesktopServices::openUrl(url);
+    }
     else
-        mCurrentWebBrowser->loadUrlInNewTab(url);
-
-
+    {
+        WebView* view = mCurrentWebBrowser->tabWidget()->createTab();
+        view->load(url);
+    }
 }
 
 
-QWebView* UBWebController::createNewTab()
+WebView* UBWebController::createNewTab()
 {
     if (mCurrentWebBrowser)
         UBApplication::applicationController->showInternet();
 
-    return mCurrentWebBrowser->createNewTab();
+    return mCurrentWebBrowser->tabWidget()->createTab();
 }
 
 
 void UBWebController::copy()
 {
-    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView())
+    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTab())
     {
-        QWebView* webView = mCurrentWebBrowser->currentTabWebView();
-        QAction *act = webView->pageAction(QWebPage::Copy);
+        WebView* webView = mCurrentWebBrowser->currentTab();
+        QAction *act = webView->pageAction(QWebEnginePage::Copy);
         if(act)
             act->trigger();
     }
@@ -613,10 +691,10 @@ void UBWebController::copy()
 
 void UBWebController::paste()
 {
-    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView())
+    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTab())
     {
-        QWebView* webView = mCurrentWebBrowser->currentTabWebView();
-        QAction *act = webView->pageAction(QWebPage::Paste);
+        WebView* webView = mCurrentWebBrowser->currentTab();
+        QAction *act = webView->pageAction(QWebEnginePage::Paste);
         if(act)
             act->trigger();
     }
@@ -625,46 +703,186 @@ void UBWebController::paste()
 
 void UBWebController::cut()
 {
-    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTabWebView())
+    if (mCurrentWebBrowser && mCurrentWebBrowser->currentTab())
     {
-        QWebView* webView = mCurrentWebBrowser->currentTabWebView();
-        QAction *act = webView->pageAction(QWebPage::Cut);
+        WebView* webView = mCurrentWebBrowser->currentTab();
+        QAction *act = webView->pageAction(QWebEnginePage::Cut);
         if(act)
             act->trigger();
     }
 }
 
-void UBWebController::onOEmbedParsed(QVector<sOEmbedContent> contents)
+void UBWebController::aboutToShowBackMenu()
 {
-    QList<QUrl> urls;
+    mHistoryBackMenu->clear();
 
-    foreach(sOEmbedContent cnt, contents){
-        urls << QUrl(cnt.url);
+    if (!mCurrentWebBrowser->currentTab())
+        return;
+
+    QWebEngineHistory *history = mCurrentWebBrowser->currentTab()->history();
+
+    int historyCount = history->count();
+    int historyLimit = history->backItems(historyCount).count() - UBSettings::settings()->historyLimit->get().toReal();
+    if (historyLimit < 0)
+        historyLimit = 0;
+
+    for (int i = history->backItems(historyCount).count() - 1; i >= historyLimit; --i)
+    {
+        QWebEngineHistoryItem item = history->backItems(historyCount).at(i);
+
+        QAction *action = new QAction(this);
+        action->setData(-1*(historyCount-i-1));
+
+        // TODO fetch icon or keep a cache somewhere
+//        if (!item.iconUrl().isEmpty())
+//            action->setIcon(item.icon());
+        action->setText(item.title().isEmpty() ? item.url().toString() : item.title());
+        mHistoryBackMenu->addAction(action);
+    }
+}
+
+void UBWebController::aboutToShowForwardMenu()
+{
+    mHistoryForwardMenu->clear();
+
+    if (!mCurrentWebBrowser->currentTab())
+        return;
+
+    QWebEngineHistory *history = mCurrentWebBrowser->currentTab()->history();
+    int historyCount = history->count();
+
+    int historyLimit = history->forwardItems(historyCount).count();
+    if (historyLimit > UBSettings::settings()->historyLimit->get().toReal())
+        historyLimit = UBSettings::settings()->historyLimit->get().toReal();
+
+    for (int i = 0; i < historyLimit; ++i)
+    {
+        QWebEngineHistoryItem item = history->forwardItems(historyCount).at(i);
+
+        QAction *action = new QAction(this);
+        action->setData(historyCount-i);
+
+        // TODO fetch icon or keep a cache somewhere
+//        if (!item.iconUrl().isEmpty())
+//            action->setIcon(item.icon());
+        action->setText(item.title().isEmpty() ? item.url().toString() : item.title());
+        mHistoryForwardMenu->addAction(action);
+    }
+}
+
+void UBWebController::openActionUrl(QAction *action)
+{
+    QWebEngineHistory *history = mCurrentWebBrowser->currentTab()->history();
+
+    int offset = action->data().toInt();
+
+    if (offset < 0)
+        history->goToItem(history->backItems(-1*offset).first());
+    else if (offset > 0)
+        history->goToItem(history->forwardItems(history->count() - offset + 1).back());
+ }
+
+void UBWebController::onEmbedParsed(QWebEngineView *view, bool hasEmbeddedContent)
+{
+    // check: is this for current tab?
+    if (view == mBrowserWidget)
+    {
+        // enable/disable embed button
+        UBApplication::mainWindow->actionWebOEmbed->setEnabled(hasEmbeddedContent);
+
+        if (mEmbedController)
+        {
+            mEmbedController->updateEmbeddableContentFromView(view);
+        }
+    }
+}
+
+void UBWebController::onOpenTutorial()
+{
+    loadUrl(QUrl(UBSettings::settings()->tutorialUrl->get().toString()));
+}
+
+void UBWebController::captureStripe(QPointF pos, QSize size, QPixmap* pix, QPointF scrollPosition)
+{
+    WebView* view = mCurrentWebBrowser->currentTab();
+    QString scrollto = QString("window.scrollTo(%1,%2)").arg(pos.x()).arg(pos.y());
+    view->page()->runJavaScript(scrollto, [this,pos,size,pix,scrollPosition](const QVariant&){
+        // we need some time for rendering - there is no signal when finished, so just wait
+        QTimer::singleShot(100, [this,pos,size,pix,scrollPosition](){
+            WebView* view = mCurrentWebBrowser->currentTab();
+            QPixmap stripe(size);
+
+            {
+                // render stripe, local block to release QPainter
+                QPainter p(&stripe);
+                view->render(&p);
+            }
+            {
+                // copy rendered stripe to pix
+                QPointF actualPos = view->page()->scrollPosition();
+                QRectF target(actualPos, size);
+                QPainter p(pix);
+                p.drawPixmap(target.toRect(), stripe);
+            }
+
+            QPointF nextPos = pos + QPointF(0, size.height() / view->zoomFactor());
+
+            if (nextPos.y() < pix->height() / view->zoomFactor())
+            {
+                // capture next stripe
+                captureStripe(nextPos, size, pix, scrollPosition);
+            }
+            else
+            {
+                QPixmap captured = *pix;
+                // allocated at captureCurrentPage()
+                delete pix;
+                emit imageCaptured(captured, true, view->url());
+
+                // scroll back to initial position
+                QString scrollto = QString("window.scrollTo(%1,%2)").arg(scrollPosition.x()).arg(scrollPosition.y());
+                view->page()->runJavaScript(scrollto);
+            }
+        });
+    });
+}
+
+UBUserAgentInterceptor::UBUserAgentInterceptor(const QByteArray &alternativeUserAgent, QObject *parent)
+    : QWebEngineUrlRequestInterceptor(parent), mAlternativeUserAgent(alternativeUserAgent)
+{
+    QStringList userAgentDomains = UBSettings::settings()->alternativeUserAgentDomains->get().toStringList();
+
+    // convert patterns to regular expressions
+    for (QString& pattern : userAgentDomains) {
+        // escape dots
+        pattern.replace(".", "\\.");
+
+        // replace wildcards
+        pattern.replace("*", "\\w*");
     }
 
-    // TODO : Implement this
-    //lookForEmbedContent(&html, "embed", "src", &urls);
-    //lookForEmbedContent(&html, "video", "src", &contentUrls);
-    //lookForEmbedContent(&html, "object", "data", &contentUrls);
+    // set patterns in brachets, join with | and anchor at end of string with $
+    QString domains = "(" + userAgentDomains.join(")|(") + ")$";
 
-    // TODO: check the hidden iFrame
+    mDomainMatcher.setPattern(domains);
 
-    if(!urls.empty()){
-        QUrl contentUrl;    // The selected content url
+    // handle invalid pattern
+    if (!mDomainMatcher.isValid())
+    {
+        // this works!
+        qDebug() << "Wrong pattern syntax " << domains << "fallback to google.*";
+        mDomainMatcher.setPattern("google\\.\\w*$");
+    }
 
-        if(1 == urls.size()){
-            contentUrl = urls.at(0);
-        }else{
-            // TODO : Display a dialog box asking the user which content to get and set contentUrl to the selected content
+    mDomainMatcher.optimize();
+}
 
-        }
+void UBUserAgentInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info)
+{
+    QUrl url = info.requestUrl();
 
-        UBGraphicsW3CWidgetItem * widget = UBApplication::boardController->activeScene()->addOEmbed(contentUrl);
-
-        if(widget)
-        {
-            UBApplication::applicationController->showBoard();
-            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-        }
+    if (mDomainMatcher.match(url.host()).hasMatch())
+    {
+        info.setHttpHeader("User-Agent", mAlternativeUserAgent);
     }
 }

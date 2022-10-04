@@ -39,7 +39,7 @@ var sankoreLang = {
 };
 
 //main function
-function start(){
+async function start(){
     
     $("#wgt_display").text(sankoreLang.display);
     $("#wgt_edit").text(sankoreLang.edit);
@@ -54,8 +54,8 @@ function start(){
     $("div.inline label").html(sankoreLang.theme + tmpl)
     
     if(window.sankore){
-        if(sankore.preference("categoriser_text","")){
-            var data = jQuery.parseJSON(sankore.preference("categoriser_text",""));
+        if(await sankore.async.preference("categoriser_text","")){
+            var data = jQuery.parseJSON(await sankore.async.preference("categoriser_text",""));
             importData(data);
         } else {
             showExample();
@@ -65,9 +65,9 @@ function start(){
         showExample();
 
     if (window.widget) {
-        window.widget.onleave = function(){
+        window.widget.onleave.connect(() => {
             exportData();
-        }
+        });
     }
     
     $("#wgt_help").click(function(){

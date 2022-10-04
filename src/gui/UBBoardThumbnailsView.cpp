@@ -206,7 +206,6 @@ void UBBoardThumbnailsView::mousePressEvent(QMouseEvent *event)
 
     if (!event->isAccepted())
     {
-        mLongPressTimer.start();
         mLastPressedMousePos = event->pos();
 
         UBDraggableThumbnailView* item = dynamic_cast<UBDraggableThumbnailView*>(itemAt(event->pos()));
@@ -218,6 +217,8 @@ void UBBoardThumbnailsView::mousePressEvent(QMouseEvent *event)
             UBApplication::boardController->setActiveDocumentScene(item->sceneIndex());
             UBApplication::boardController->centerOn(UBApplication::boardController->activeScene()->lastCenter());
         }
+
+        mLongPressTimer.start();
     }
 }
 

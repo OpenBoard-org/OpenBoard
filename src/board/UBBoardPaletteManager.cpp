@@ -49,11 +49,7 @@
 #include "gui/UBFavoriteToolPalette.h"
 #include "gui/UBStartupHintsPalette.h"
 
-#include "web/UBWebPage.h"
 #include "web/UBWebController.h"
-#include "web/browser/WBBrowserWindow.h"
-#include "web/browser/WBTabWidget.h"
-#include "web/browser/WBWebView.h"
 
 #include "desktop/UBDesktopAnnotationController.h"
 
@@ -245,7 +241,7 @@ void UBBoardPaletteManager::setupPalettes()
 
     mStylusPalette->stackUnder(mZoomPalette);
 
-    //mTipPalette = new UBStartupHintsPalette(mContainer);
+    mTipPalette = new UBStartupHintsPalette(mContainer);
     QList<QAction*> backgroundsActions;
 
     backgroundsActions << UBApplication::mainWindow->actionPlainLightBackground;

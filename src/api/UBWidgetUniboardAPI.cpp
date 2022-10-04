@@ -29,7 +29,6 @@
 
 #include "UBWidgetUniboardAPI.h"
 
-#include <QWebView>
 #include <QDomDocument>
 #include <QtGui>
 
@@ -86,8 +85,9 @@ UBWidgetUniboardAPI::UBWidgetUniboardAPI(UBGraphicsScene *pScene, UBGraphicsWidg
     , mScene(pScene)
     , mGraphicsWidget(widget)
     , mIsVisible(false)
-    , mMessagesAPI(0)
-    , mDatastoreAPI(0)
+    , mMessagesAPI(nullptr)
+    , mDatastoreAPI(nullptr)
+    , mProcessFileDrop(false)
  {
     UBGraphicsW3CWidgetItem* w3CGraphicsWidget = dynamic_cast<UBGraphicsW3CWidgetItem*>(widget);
 
@@ -106,13 +106,13 @@ UBWidgetUniboardAPI::~UBWidgetUniboardAPI()
     // NOOP
 }
 
-QObject* UBWidgetUniboardAPI::messages()
+QObject* UBWidgetUniboardAPI::messages() const
 {
     return mMessagesAPI;
 }
 
 
-QObject* UBWidgetUniboardAPI::datastore()
+QObject* UBWidgetUniboardAPI::datastore() const
 {
     return mDatastoreAPI;
 }
@@ -329,7 +329,7 @@ void UBWidgetUniboardAPI::addText(const QString& text, const qreal x, const qrea
 }
 
 
-int UBWidgetUniboardAPI::pageCount()
+int UBWidgetUniboardAPI::pageCount() const
 {
     if (mScene && mScene->document())
         return mScene->document()->pageCount();
@@ -338,7 +338,7 @@ int UBWidgetUniboardAPI::pageCount()
 }
 
 
-int UBWidgetUniboardAPI::currentPageNumber()
+int UBWidgetUniboardAPI::currentPageNumber() const
 {
     // TODO UB 4.x widget find a better way to get the current page number
 
@@ -346,6 +346,14 @@ int UBWidgetUniboardAPI::currentPageNumber()
         return -1;
 
     return UBApplication::boardController->activeSceneIndex() + 1;
+}
+
+void UBWidgetUniboardAPI::setDropData(const QString &data)
+{
+    if (data != mDropData) {
+        mDropData = data;
+        emit dropDataChanged(mDropData);
+    }
 }
 
 QString UBWidgetUniboardAPI::getObjDir()
@@ -425,7 +433,7 @@ QStringList UBWidgetUniboardAPI::preferenceKeys()
 }
 
 
-QString UBWidgetUniboardAPI::uuid()
+QString UBWidgetUniboardAPI::uuid() const
 {
     if (mGraphicsWidget)
         return UBStringUtils::toCanonicalUuid(mGraphicsWidget->uuid());
@@ -439,7 +447,7 @@ QString UBWidgetUniboardAPI::locale()
     return QLocale().name();
 }
 
-QString UBWidgetUniboardAPI::lang()
+QString UBWidgetUniboardAPI::lang() const
 {
     QString lang = QLocale().name();
 
@@ -447,27 +455,6 @@ QString UBWidgetUniboardAPI::lang()
         lang[2] = QLatin1Char('-');
 
     return lang;
-}
-
-void UBWidgetUniboardAPI::returnStatus(const QString& method, const QString& status)
-{
-    QString msg = QString(tr("%0 called (method=%1, status=%2)")).arg("returnStatus").arg(method).arg(status);
-    UBApplication::showMessage(msg);
-}
-
-void UBWidgetUniboardAPI::usedMethods(QStringList methods)
-{
-    // TODO: Implement this method
-    foreach(QString method, methods)
-    {
-
-    }
-}
-
-void UBWidgetUniboardAPI::response(bool correct)
-{
-    Q_UNUSED(correct);
-    // TODO: Implement this method
 }
 
 void UBWidgetUniboardAPI::sendFileMetadata(QString metaData)
@@ -487,24 +474,28 @@ void UBWidgetUniboardAPI::sendFileMetadata(QString metaData)
     UBApplication::boardController->displayMetaData(qmMetaDatas);
 }
 
-void UBWidgetUniboardAPI::enableDropOnWidget(bool enable)
+void UBWidgetUniboardAPI::enableDropOnWidget(bool enable, bool processFileDrop)
 {
     if (mGraphicsWidget)
     {
         mGraphicsWidget->setAcceptDrops(enable);
     }
+
+    mProcessFileDrop = processFileDrop;
 }
 
-void UBWidgetUniboardAPI::ProcessDropEvent(QGraphicsSceneDragDropEvent *event)
+bool UBWidgetUniboardAPI::ProcessDropEvent(QGraphicsSceneDragDropEvent *event)
 {
+    if (!mProcessFileDrop) {
+        return false;
+    }
+
     const QMimeData *pMimeData = event->mimeData();
 
     QString destFileName;
     QString contentType;
     bool downloaded = false;
 
-    QGraphicsView *tmpView = mGraphicsWidget->scene()->views().at(0);
-    QPoint dropPoint(mGraphicsWidget->mapFromScene(tmpView->mapToScene(event->pos().toPoint())).toPoint());
     Qt::DropActions dropActions = event->possibleActions();
     Qt::MouseButtons dropMouseButtons = event->buttons();
     Qt::KeyboardModifiers dropModifiers = event->modifiers();
@@ -553,7 +544,7 @@ void UBWidgetUniboardAPI::ProcessDropEvent(QGraphicsSceneDragDropEvent *event)
 
                 if (!UBFileSystemUtils::copyFile(fileName, destFileName)) {
                     qDebug() << "can't copy from" << fileName << "to" << destFileName;
-                    return;
+                    return false;
                 }
                 downloaded = true;
 
@@ -565,6 +556,8 @@ void UBWidgetUniboardAPI::ProcessDropEvent(QGraphicsSceneDragDropEvent *event)
     dropMimeData->setData(tMimeText, mimeText.toLatin1());
 
     event->setMimeData(dropMimeData);
+    setDropData(mimeText);
+    return true;
 }
 
 void UBWidgetUniboardAPI::onDownloadFinished(bool pSuccess, sDownloadFileDesc desc, QByteArray pData)
@@ -733,7 +726,7 @@ QString UBDocumentDatastoreAPI::getItem(const QString& key)
 }
 
 
-int UBDocumentDatastoreAPI::length()
+int UBDocumentDatastoreAPI::length() const
 {
    return mGraphicsW3CWidget->datastoreEntries().size();
 }
@@ -767,7 +760,7 @@ UBDatastoreAPI::UBDatastoreAPI(UBGraphicsW3CWidgetItem *widget)
 }
 
 
-QObject* UBDatastoreAPI::document()
+QObject* UBDatastoreAPI::document() const
 {
     return mDocumentDatastore;
 }

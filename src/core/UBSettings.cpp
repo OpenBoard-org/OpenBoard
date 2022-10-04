@@ -260,12 +260,14 @@ void UBSettings::init()
     appLastSessionDocumentUUID = new UBSetting(this, "App", "LastSessionDocumentUUID", "");
     appLastSessionPageIndex = new UBSetting(this, "App", "LastSessionPageIndex", 0);
     appUseMultiscreen = new UBSetting(this, "App", "UseMultiscreenMode", true);
+    appScreenList = new UBSetting(this, "App", "ScreenList", QStringList());
 
-    appStartupHintsEnabled = new UBSetting(this,"App","EnableStartupHints",true);
+    appStartupHintsEnabled = new UBSetting(this,"App","EnableStartupHints",false);
 
     appLookForOpenSankoreInstall = new UBSetting(this, "App", "LookForOpenSankoreInstall", true);
 
     appStartMode = new UBSetting(this, "App", "StartMode", "");
+    appRunInWindow = new UBSetting(this, "App", "RunInWindow", false);
 
     featureSliderPosition = new UBSetting(this, "Board", "FeatureSliderPosition", 40);
 
@@ -361,6 +363,13 @@ void UBSettings::init()
     webShowPageImmediatelyOnMirroredScreen = new UBSetting(this, "Web", "ShowPageImediatelyOnMirroredScreen", defaultShowPageImmediatelyOnMirroredScreen);
 
     webHomePage = new UBSetting(this, "Web", "Homepage", softwareHomeUrl);
+    webSearchEngineUrl = new UBSetting(this, "Web", "SearchEngineUrl", "https://www.qwant.com/?q=%1");
+    alternativeUserAgent = new UBSetting(this, "Web", "AlternativeUserAgent", "Mozilla/5.0 (%1; %2; rv:91.0) Gecko/20100101 Firefox/91.0");
+    alternativeUserAgentDomains = new UBSetting(this, "Web", "AlternativeUserAgentDomains", "google.*");
+    webCookieAutoDelete = new UBSetting(this, "Web", "CookieAutoDelete", false);
+    webCookieKeepDomains = new UBSetting(this, "Web", "CookieKeepDomains", QStringList());
+    webCookiePolicy = new UBSetting(this, "Web", "CookiePolicy", "DenyThirdParty");
+    webPrivateBrowsing = new UBSetting(this, "Web", "PrivateBrowsing", false);
 
     pageCacheSize = new UBSetting(this, "App", "PageCacheSize", 20);
 
@@ -400,8 +409,6 @@ void UBSettings::init()
     lastWidgetPath = new UBSetting(this, "Library", "LastWidgetPath", QVariant(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)));
     lastVideoPath = new UBSetting(this, "Library", "LastVideoPath", QVariant(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation)));
 
-    appOnlineUserName = new UBSetting(this, "App", "OnlineUserName", "");
-
     boardShowToolsPalette = new UBSetting(this, "Board", "ShowToolsPalette", "false");
     magnifierDrawingMode = new UBSetting(this, "Board", "MagnifierDrawingMode", "0");
     autoSaveInterval = new UBSetting(this, "Board", "AutoSaveIntervalInMinutes", "3");
@@ -432,15 +439,6 @@ void UBSettings::init()
     communityUser = new UBSetting(this, "Community", "Username", "");
     communityPsw = new UBSetting(this, "Community", "Password", "");
     communityCredentialsPersistence = new UBSetting(this,"Community", "CredentialsPersistence",false);
-
-    enableToolAxes = new UBSetting(this, "Board", "EnableToolAxes", false);
-    enableIntermediateLines = new UBSetting(this, "Board", "EnableIntermediateLines", false);
-
-    if (enableToolAxes->get().toBool())
-    {
-        // add axes tool id to list
-        UBToolsManager::manager()->addTool(UBToolsManager::manager()->axes);
-    }
 
     QStringList uris = UBToolsManager::manager()->allToolIDs();
 

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <widget xmlns="http://www.w3.org/ns/widgets" 
-		xmlns:ub="http://uniboard.mnemis.com/widgets"
-        id="http://www.example.net/widgets/helloworld" 
-        version="1.0"
+        xmlns:ub="http://uniboard.mnemis.com/widgets"
+        id="http://www.openboard.org/widget/interactivity/ordersentences"
+        version="2.0"
         width="850"
         height="500" 
-		ub:resizable="false">
-		
-		<name>Phrases sortable</name>
-		<description>Sort the phrases to make the right sentence.</description>
-		<preference name="skin"
-		            value="uniboard"/>
-		<content src="index.html"/> 
+        ub:resizable="false">
+
+        <name>Phrases sortable</name>
+        <description>Sort the phrases to make the right sentence.</description>
+        <preference name="skin"
+                    value="uniboard"/>
+        <content src="index.html"/>
 </widget>

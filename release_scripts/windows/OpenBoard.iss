@@ -79,10 +79,7 @@ Source: "{#QtLibs}\Qt5Opengl.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5PrintSupport.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Qml.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Sql.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5Svg.dll"; DestDir: "{app}"   
-;Source: "Qt5V8.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5WebKit.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5WebKitWidgets.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5Svg.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Widgets.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Xml.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\libGLESv2.dll"; DestDir: "{app}"  
@@ -96,8 +93,11 @@ Source: "{#QtLibs}\libxslt.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\libxml2.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5QmlModels.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5WebChannel.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5WebEngineCore.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5WebEngineWidgets.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt5QuickWidgets.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\libEGL.dll"; DestDir: "{app}"  
-;Source: "/etc/freezedWidgetWrapper.html"; DestDir: "{app}"  
+;Source: "/etc/freezedWidgetWrapper.html"; DestDir: "{app}"  	
 ;Source: "*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\zlib\1.2.11\bin\zlib.dll"; DestDir:"{app}"; Flags: ignoreversion
@@ -132,6 +132,12 @@ Source: "{#QtDir}\plugins\mediaservice\wmfengined.dll"; DestDir: "{app}\mediaser
 Source: "{#ProjectRoot}\..\OpenBoard-Importer\release\OpenBoardImporter.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#QtLibs}\Qt5Core.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt5Gui.dll"; DestDir: "{app}"
+
+;QtWebEngine dependencies
+Source: "{#QtLibs}\QtWebEngineProcess.exe"; DestDir: "{app}"
+Source: "{#QtDir}\resources\*"; DestDir: "{app}\resources"
+Source: "{#QtDir}\translations\qtwebengine_locales\*"; DestDir: "{app}\resources\qtwebengine_locales"
+
 
 ;fonts for xpdf
 Source: "{#ProjectRoot}\resources\windows\xpdfrc"; DestDir: "{app}"; Flags: ignoreversion

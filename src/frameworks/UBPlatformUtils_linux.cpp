@@ -36,6 +36,7 @@
 #include <X11/keysym.h>
 
 #include "frameworks/UBFileSystemUtils.h"
+#include "core/UBSettings.h"
 
 
 void UBPlatformUtils::init()
@@ -439,7 +440,11 @@ void UBPlatformUtils::setFrontProcess()
 
 void UBPlatformUtils::showFullScreen(QWidget *pWidget)
 {
-    pWidget->showFullScreen();
+    if (UBSettings::settings()->appRunInWindow->get().toBool()) {
+        pWidget->show();
+    } else {
+        pWidget->showFullScreen();
+    }
 }
 
 void UBPlatformUtils::showOSK(bool show)
@@ -447,10 +452,10 @@ void UBPlatformUtils::showOSK(bool show)
     QProcess oskProcess;
 
     if (show)
-        oskProcess.startDetached("/usr/bin/env onboard");
+        oskProcess.startDetached("/usr/bin/env", {"onboard"});
 
     else
         /* Not exactly a great solution, but it isn't possible to just
          * close onboard through wmctrl or xdotool */
-        oskProcess.startDetached("pkill -3 onboard");
+        oskProcess.startDetached("pkill", {"-3", "onboard"});
 }

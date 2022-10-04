@@ -9,41 +9,105 @@
     </message>
 </context>
 <context>
-    <name>DownloadDialog</name>
+    <name>BrowserWindow</name>
     <message>
-        <source>Downloads</source>
-        <translation>Descărcări</translation>
+        <source>Navigation</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clean Up</source>
-        <translation>Curăţare</translation>
-    </message>
-    <message>
-        <source>0 Items</source>
-        <translation>0 articole</translation>
+        <source>Show downloads</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>DownloadItem</name>
+    <name>CertificateErrorDialog</name>
     <message>
-        <source>Form</source>
-        <translation>Formular</translation>
+        <source>Dialog</source>
+        <translation type="unfinished">Dialog</translation>
     </message>
     <message>
-        <source>Filename</source>
-        <translation>Denumire fişier</translation>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Try Again</source>
-        <translation>Încercaţi din nou</translation>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>Oprire</translation>
+        <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
+
+Do you wish to override the security check and continue ?   </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadManagerWidget</name>
+    <message>
+        <source>Downloads</source>
+        <translation type="unfinished">Descărcări</translation>
     </message>
     <message>
-        <source>Open</source>
-        <translation>Deschidere</translation>
+        <source>No downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save as</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadWidget</name>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 KiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 MiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 GiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%p% - %1 of %2 downloaded - %3/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown size - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>completed - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cancelled - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>interrupted: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop downloading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from list</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -176,20 +240,12 @@
         <translation>Gumă</translation>
     </message>
     <message>
-        <source>Smalle Eraser</source>
-        <translation type="vanished">Gumă mică</translation>
-    </message>
-    <message>
         <source>Medium Eraser</source>
         <translation>Gumă medie</translation>
     </message>
     <message>
         <source>Large Eraser</source>
         <translation>Gumă mare</translation>
-    </message>
-    <message>
-        <source>Color</source>
-        <translation type="vanished">Culoare</translation>
     </message>
     <message>
         <source>Back</source>
@@ -858,28 +914,13 @@
         <source>Password:</source>
         <translation>Parolă:</translation>
     </message>
-</context>
-<context>
-    <name>ProxyDialog</name>
     <message>
-        <source>Proxy Authentication</source>
-        <translation>Autentificare Proxy</translation>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Connect to Proxy</source>
-        <translation>Conectare pe Proxy</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation>Nume de utilizator:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation>Parolă:</translation>
-    </message>
-    <message>
-        <source>Save username and password for future use</source>
-        <translation>Salvare nume de utilizator şi parolă pentru utilizare ulterioară</translation>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -907,6 +948,37 @@
     <message>
         <source>Moving cached scenes (%1/%2)</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TabWidget</name>
+    <message>
+        <source>New &amp;Tab</source>
+        <translation>Nou &amp;Tab</translation>
+    </message>
+    <message>
+        <source>Clone Tab</source>
+        <translation>Clonare tab</translation>
+    </message>
+    <message>
+        <source>&amp;Close Tab</source>
+        <translation>&amp;Închidere tab</translation>
+    </message>
+    <message>
+        <source>Close &amp;Other Tabs</source>
+        <translation>Închidere &amp;Alte taburi</translation>
+    </message>
+    <message>
+        <source>Reload Tab</source>
+        <translation>Reîncărcare tab</translation>
+    </message>
+    <message>
+        <source>Reload All Tabs</source>
+        <translation>Reîncărcare toate tab-urile</translation>
+    </message>
+    <message>
+        <source>(Untitled)</source>
+        <translation>(fără titlu)</translation>
     </message>
 </context>
 <context>
@@ -983,10 +1055,6 @@
     <message>
         <source>All Supported (%1)</source>
         <translation>Tot ce se suportă (%1)</translation>
-    </message>
-    <message>
-        <source>Delete page %1 from document</source>
-        <translation type="vanished">Ștergere pagina %1 din document</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -1120,46 +1188,6 @@
         <translation>Document %1 copiat</translation>
     </message>
     <message>
-        <source>Remove Page</source>
-        <translation type="vanished">Eliminare pagină</translation>
-    </message>
-    <message>
-        <source>Remove Document</source>
-        <translation type="vanished">Eliminare document</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation type="vanished">Sunteţi siguri că doriţi să eliminaţi documentul %1?</translation>
-    </message>
-    <message>
-        <source>Empty Trash</source>
-        <translation type="vanished">Golire coş de gunoi</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to empty trash?</source>
-        <translation type="vanished">Sunteţi siguri că doriţi să goliţi coşul de gunoi?</translation>
-    </message>
-    <message>
-        <source>Emptying trash</source>
-        <translation type="vanished">Golire coş de gunoi</translation>
-    </message>
-    <message>
-        <source>Emptied trash</source>
-        <translation type="vanished">Coş de gunoi golit</translation>
-    </message>
-    <message>
-        <source>Remove Folder</source>
-        <translation type="vanished">Eliminare folder</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="vanished">Sunteţi siguri că doriţi să eliminaţi folderul &apos;%1&apos; şi toate conţinuturile sale?</translation>
-    </message>
-    <message>
-        <source>No document selected!</source>
-        <translation type="vanished">Nu s-a selectat niciun document!</translation>
-    </message>
-    <message>
         <source>Open Supported File</source>
         <translation>Deschidere fişier suportat</translation>
     </message>
@@ -1202,13 +1230,6 @@
     <message>
         <source>Selection does not contain any image files!</source>
         <translation>Selecţia nu conţine nicio imagine!</translation>
-    </message>
-    <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="vanished">
-            <numerusform>Sunteţi sigur că doriţi să eliminaţi %n pagină din documentul selectat &apos;%1&apos;?</numerusform>
-            <numerusform>Sunteţi sigur că doriţi să eliminaţi %n pagini din documentul selectat &apos;%1&apos;?</numerusform>
-        </translation>
     </message>
     <message>
         <source>Folder does not contain any image files</source>
@@ -1302,13 +1323,6 @@
     </message>
 </context>
 <context>
-    <name>UBDocumentPublisher</name>
-    <message>
-        <source>Export failed.</source>
-        <translation type="obsolete">Exportare nereuşită.</translation>
-    </message>
-</context>
-<context>
     <name>UBDocumentReplaceDialog</name>
     <message>
         <source>Accept</source>
@@ -1370,24 +1384,6 @@ Providing a new name will create a new document.</source>
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
-    <message>
-        <source>%1 (copy)</source>
-        <translation type="vanished">%1 (copie)</translation>
-    </message>
-    <message>
-        <source>Copying page %1/%2</source>
-        <translation type="vanished">Copiere pagina %1/%2</translation>
-    </message>
-    <message numerus="yes">
-        <source>%1 pages copied</source>
-        <translation type="vanished">
-            <numerusform>%1 pagini copiate</numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
-</context>
-<context>
     <name>UBDownloadWidget</name>
     <message>
         <source>Downloading files</source>
@@ -1410,6 +1406,22 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Page %0</source>
         <translation type="unfinished">Pagina %0</translation>
+    </message>
+</context>
+<context>
+    <name>UBEmbedController</name>
+    <message>
+        <source>Whole page</source>
+        <translation>Toată pagina</translation>
+    </message>
+    <message>
+        <source>Web</source>
+        <translation>Web</translation>
+    </message>
+    <message>
+        <source>Application name can`t contain any of the following characters:<byte value="xd"/>
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1473,14 +1485,6 @@ Providing a new name will create a new document.</source>
         <translation>Exportare ca fişier UBZ</translation>
     </message>
     <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Exportare document ...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Exportare reuşită.</translation>
-    </message>
-    <message>
         <source>Exporting %1 %2 of %3</source>
         <translation>Exportare %1 %2 din %3</translation>
     </message>
@@ -1523,14 +1527,6 @@ Providing a new name will create a new document.</source>
         <translation>Exportare ca fişier PDF</translation>
     </message>
     <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Exoprtare document ...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Exportare reuşită.</translation>
-    </message>
-    <message>
         <source>Export to PDF</source>
         <translation>Exportare în PDF</translation>
     </message>
@@ -1540,14 +1536,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Export as PDF File</source>
         <translation>Exportare ca fişier PDF</translation>
-    </message>
-    <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">Exportare document...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">Exportare reuşită.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1590,10 +1578,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Add to page</source>
         <translation>Adăugare la pagină</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation type="vanished">Setare ca fundal</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1656,10 +1640,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Pictures</source>
         <translation>Imagini</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <translation type="vanished">Animaţii</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -1730,12 +1710,12 @@ Providing a new name will create a new document.</source>
         <translation>Vizibil pe ecran extins</translation>
     </message>
     <message>
-        <source>Go to Content Source</source>
-        <translation>Accesare sursă conţinut</translation>
-    </message>
-    <message>
         <source>Set as background</source>
         <translation type="unfinished">Setare ca fundal</translation>
+    </message>
+    <message>
+        <source>Web Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2101,51 +2081,10 @@ Doriţi să ignoraţi aceste erori pentru acest host?</translation>
     </message>
 </context>
 <context>
-    <name>UBProxyLoginDlg</name>
-    <message>
-        <source>Proxy Login</source>
-        <translation type="vanished">Conectare Proxy</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation type="vanished">Nume de utilizator:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="vanished">Parolă:</translation>
-    </message>
-</context>
-<context>
-    <name>UBPublicationDlg</name>
-    <message>
-        <source>Publish document on the web</source>
-        <translation type="vanished">Publicare document pe web</translation>
-    </message>
-    <message>
-        <source>Title:</source>
-        <translation type="vanished">Titlu:</translation>
-    </message>
-    <message>
-        <source>Description:</source>
-        <translation type="vanished">Descriere:</translation>
-    </message>
-    <message>
-        <source>Publish</source>
-        <translation type="vanished">Publicare</translation>
-    </message>
-</context>
-<context>
     <name>UBSettings</name>
     <message>
         <source>My Movies</source>
         <translation>Filmele mele</translation>
-    </message>
-</context>
-<context>
-    <name>UBStartupHintsPalette</name>
-    <message>
-        <source>Visible next time</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2213,17 +2152,6 @@ Doriţi să ignoraţi aceste erori pentru acest host?</translation>
     </message>
 </context>
 <context>
-    <name>UBTrapFlashController</name>
-    <message>
-        <source>Whole page</source>
-        <translation>Toată pagina</translation>
-    </message>
-    <message>
-        <source>Web</source>
-        <translation>Web</translation>
-    </message>
-</context>
-<context>
     <name>UBUpdateDlg</name>
     <message>
         <source>Document updater</source>
@@ -2277,17 +2205,10 @@ Vă rugăm să reporniţi aplicaţia pentru a accesa documentele actualizate.</t
     </message>
 </context>
 <context>
-    <name>UBWebPluginWidget</name>
+    <name>UBWebEngineView</name>
     <message>
-        <source>Loading...</source>
-        <translation>Încărcare...</translation>
-    </message>
-</context>
-<context>
-    <name>UBWidgetUniboardAPI</name>
-    <message>
-        <source>%0 called (method=%1, status=%2)</source>
-        <translation>%0 apelate (metodă=%1, status=%2)</translation>
+        <source>Open Web Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2376,85 +2297,6 @@ Vă rugăm să reporniţi aplicaţia pentru a accesa documentele actualizate.</t
     </message>
 </context>
 <context>
-    <name>WBClearButton</name>
-    <message>
-        <source>Clear</source>
-        <translation>Ştergere</translation>
-    </message>
-</context>
-<context>
-    <name>WBDownloadItem</name>
-    <message>
-        <source>Save File</source>
-        <translation>Salvare fişier</translation>
-    </message>
-    <message>
-        <source>Download canceled: %1</source>
-        <translation>Descărcare anulată: %1</translation>
-    </message>
-    <message>
-        <source>Error opening saved file: %1</source>
-        <translation>Eroare deschidere fişier salvat: %1</translation>
-    </message>
-    <message>
-        <source>Error saving: %1</source>
-        <translation>Eroare salvare: %1</translation>
-    </message>
-    <message>
-        <source>Network Error: %1</source>
-        <translation>Eroare de reţea: %1</translation>
-    </message>
-    <message>
-        <source>seconds</source>
-        <translation>secunde</translation>
-    </message>
-    <message>
-        <source>minutes</source>
-        <translation>minute</translation>
-    </message>
-    <message>
-        <source>- %4 %5 remaining</source>
-        <translation>- %4 %5 rămase</translation>
-    </message>
-    <message>
-        <source>%1 of %2 (%3/sec) %4</source>
-        <translation>%1 din %2 (%3/sec) %4</translation>
-    </message>
-    <message>
-        <source>?</source>
-        <comment>unknown file size</comment>
-        <translation>?</translation>
-    </message>
-    <message>
-        <source>%1 of %2 - Stopped</source>
-        <translation>%1 din %2 - Întrerupte</translation>
-    </message>
-    <message>
-        <source>bytes</source>
-        <translation>biţi</translation>
-    </message>
-    <message>
-        <source>KB</source>
-        <translation>KB</translation>
-    </message>
-    <message>
-        <source>MB</source>
-        <translation>MB</translation>
-    </message>
-</context>
-<context>
-    <name>WBDownloadManager</name>
-    <message>
-        <source>1 Download</source>
-        <translation>1 descărcare</translation>
-    </message>
-    <message>
-        <source>%1 Downloads</source>
-        <comment>always &gt;= 2</comment>
-        <translation>%1 descărcări</translation>
-    </message>
-</context>
-<context>
     <name>WBHistoryModel</name>
     <message>
         <source>Title</source>
@@ -2477,97 +2319,90 @@ Vă rugăm să reporniţi aplicaţia pentru a accesa documentele actualizate.</t
     </message>
 </context>
 <context>
-    <name>WBSearchLineEdit</name>
+    <name>WebPage</name>
     <message>
-        <source>Search</source>
-        <translation>Căutare</translation>
-    </message>
-</context>
-<context>
-    <name>WBTabBar</name>
-    <message>
-        <source>New &amp;Tab</source>
-        <translation>Nou &amp;Tab</translation>
+        <source>Certificate Error</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clone Tab</source>
-        <translation>Clonare tab</translation>
+        <source>Enter username and password for &quot;%1&quot; at %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Close Tab</source>
-        <translation>&amp;Închidere tab</translation>
+        <source>Allow %1 to access your location information?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Close &amp;Other Tabs</source>
-        <translation>Închidere &amp;Alte taburi</translation>
+        <source>Allow %1 to access your microphone?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reload Tab</source>
-        <translation>Reîncărcare tab</translation>
+        <source>Allow %1 to access your webcam?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reload All Tabs</source>
-        <translation>Reîncărcare toate tab-urile</translation>
-    </message>
-</context>
-<context>
-    <name>WBTabWidget</name>
-    <message>
-        <source>Recently Closed Tabs</source>
-        <translation>Tab-uri recent închise</translation>
+        <source>Allow %1 to access your microphone and webcam?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>(Untitled)</source>
-        <translation>(fără titlu)</translation>
-    </message>
-</context>
-<context>
-    <name>WBToolbarSearch</name>
-    <message>
-        <source>Search</source>
-        <translation>Căutare</translation>
+        <source>Allow %1 to lock your mouse cursor?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No Recent Searches</source>
-        <translation>Nicio căutare recentă</translation>
+        <source>Allow %1 to capture video of your desktop?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Recent Searches</source>
-        <translation>Căutări recente</translation>
+        <source>Allow %1 to capture audio and video of your desktop?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clear Recent Searches</source>
-        <translation>Ştergere toate căutările recente</translation>
-    </message>
-</context>
-<context>
-    <name>WBWebPage</name>
-    <message>
-        <source>Download</source>
-        <translation>Descărcare</translation>
+        <source>Permission Request</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add to Current Document</source>
-        <translation>Adăugare la documentul curent</translation>
+        <source>Connect to proxy &quot;%1&quot; using:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>PDF</source>
-        <translation>PDF</translation>
-    </message>
-    <message>
-        <source>Error loading page: %1</source>
-        <translation>Eroare încărcare pagină: %1</translation>
-    </message>
-    <message>
-        <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
+        <source>Allow %1 to open all %2 links?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>WBWebView</name>
+    <name>WebView</name>
     <message>
-        <source>Open in New Tab</source>
-        <translation>Deschidere în tab nou</translation>
+        <source>Render process normal exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process abnormal exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process crashed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process killed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process exited with code: %1
+Do you want to reload the page ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Web Inspector in new window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inspect element</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to board</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2695,29 +2530,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>documentPublishingDialog</name>
-    <message>
-        <source>Dialog</source>
-        <translation type="obsolete">Dialog</translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="obsolete">Titlu</translation>
-    </message>
-    <message>
-        <source>E-mail</source>
-        <translation type="obsolete">E-mail</translation>
-    </message>
-    <message>
-        <source>Author</source>
-        <translation type="obsolete">Autor</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="obsolete">Descriere</translation>
-    </message>
-</context>
-<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
@@ -2777,10 +2589,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Virtual Keyboard</source>
         <translation>Tastatură virtuală</translation>
-    </message>
-    <message>
-        <source>Keyboard button size:</source>
-        <translation type="vanished">Dimensiune buton tastatură:</translation>
     </message>
     <message>
         <source>Toolbar</source>

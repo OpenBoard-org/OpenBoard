@@ -9,41 +9,105 @@
     </message>
 </context>
 <context>
-    <name>DownloadDialog</name>
+    <name>BrowserWindow</name>
     <message>
-        <source>Downloads</source>
-        <translation>הורדות</translation>
+        <source>Navigation</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clean Up</source>
-        <translation>ניקוי</translation>
-    </message>
-    <message>
-        <source>0 Items</source>
-        <translation>0 פריטים</translation>
+        <source>Show downloads</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>DownloadItem</name>
+    <name>CertificateErrorDialog</name>
     <message>
-        <source>Form</source>
-        <translation>טופס</translation>
+        <source>Dialog</source>
+        <translation type="unfinished">דיאלוג</translation>
     </message>
     <message>
-        <source>Filename</source>
-        <translation>שם קובץ</translation>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Try Again</source>
-        <translation>נסה שנית</translation>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Stop</source>
-        <translation>עצור</translation>
+        <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
+
+Do you wish to override the security check and continue ?   </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadManagerWidget</name>
+    <message>
+        <source>Downloads</source>
+        <translation type="unfinished">הורדות</translation>
     </message>
     <message>
-        <source>Open</source>
-        <translation>פתח</translation>
+        <source>No downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save as</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadWidget</name>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 KiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 MiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 GiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%p% - %1 of %2 downloaded - %3/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown size - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>completed - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cancelled - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>interrupted: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop downloading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from list</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -176,20 +240,12 @@
         <translation>מחק</translation>
     </message>
     <message>
-        <source>Smalle Eraser</source>
-        <translation type="vanished">מחק קטן</translation>
-    </message>
-    <message>
         <source>Medium Eraser</source>
         <translation>מחק בינוני</translation>
     </message>
     <message>
         <source>Large Eraser</source>
         <translation>מחק גדול</translation>
-    </message>
-    <message>
-        <source>Color</source>
-        <translation type="vanished">צבע</translation>
     </message>
     <message>
         <source>Back</source>
@@ -859,28 +915,13 @@
         <source>Password:</source>
         <translation>סיסמא</translation>
     </message>
-</context>
-<context>
-    <name>ProxyDialog</name>
     <message>
-        <source>Proxy Authentication</source>
-        <translation>זיהוי פרוקסי</translation>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Connect to Proxy</source>
-        <translation>התחבר לפרוקסי</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation>שם  משתמש</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation>סיסמא</translation>
-    </message>
-    <message>
-        <source>Save username and password for future use</source>
-        <translation>שמור את שם המשתמש והסיסמא לשימוש עתידי</translation>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -908,6 +949,37 @@
     <message>
         <source>Moving cached scenes (%1/%2)</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TabWidget</name>
+    <message>
+        <source>New &amp;Tab</source>
+        <translation>חדש &amp; לשונית</translation>
+    </message>
+    <message>
+        <source>Clone Tab</source>
+        <translation>שכפל לשונית</translation>
+    </message>
+    <message>
+        <source>&amp;Close Tab</source>
+        <translation>&amp;סגור לשונית</translation>
+    </message>
+    <message>
+        <source>Close &amp;Other Tabs</source>
+        <translation>סגור &amp;לשוניות אחרות </translation>
+    </message>
+    <message>
+        <source>Reload Tab</source>
+        <translation>טען מחדש את הלשונית</translation>
+    </message>
+    <message>
+        <source>Reload All Tabs</source>
+        <translation>טען מחדש את כל הלשוניות</translation>
+    </message>
+    <message>
+        <source>(Untitled)</source>
+        <translation>(ללא שם)</translation>
     </message>
 </context>
 <context>
@@ -984,10 +1056,6 @@
     <message>
         <source>All Supported (%1)</source>
         <translation>הכל )%1(</translation>
-    </message>
-    <message>
-        <source>Delete page %1 from document</source>
-        <translation type="vanished">מחק עמוד %1 מהמסמך</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -1121,46 +1189,6 @@
         <translation>מסמך %1 הועתק</translation>
     </message>
     <message>
-        <source>Remove Page</source>
-        <translation type="vanished">הסר את הדף</translation>
-    </message>
-    <message>
-        <source>Remove Document</source>
-        <translation type="vanished">הסר את המסמך</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation type="vanished">אתה בטוח שברצונך להסיר את  %1&apos;המסמך?</translation>
-    </message>
-    <message>
-        <source>Empty Trash</source>
-        <translation type="vanished">רוקן את הסל</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to empty trash?</source>
-        <translation type="vanished">אתה בטוח שברצונך לרוקן את הסל?</translation>
-    </message>
-    <message>
-        <source>Emptying trash</source>
-        <translation type="vanished">מרוקן סל</translation>
-    </message>
-    <message>
-        <source>Emptied trash</source>
-        <translation type="vanished">הסל הורק</translation>
-    </message>
-    <message>
-        <source>Remove Folder</source>
-        <translation type="vanished">הסר תיקיה</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="vanished">אתה בטוח שברצונך להסיר את התיקיה %1 ואת כל תכנה?</translation>
-    </message>
-    <message>
-        <source>No document selected!</source>
-        <translation type="vanished">לא נבחר כל מסמך!</translation>
-    </message>
-    <message>
         <source>Open Supported File</source>
         <translation>פתח קובץ מתאים</translation>
     </message>
@@ -1203,13 +1231,6 @@
     <message>
         <source>Selection does not contain any image files!</source>
         <translation>בקטע שנבחר אין כל קבצי תמונות!</translation>
-    </message>
-    <message numerus="yes">
-        <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="vanished">
-            <numerusform>האם אתה בטוח שברצונך להסיר %n עמוד(ים) מהמסמך שנבחר %1&apos;?</numerusform>
-            <numerusform></numerusform>
-        </translation>
     </message>
     <message>
         <source>Folder does not contain any image files</source>
@@ -1364,24 +1385,6 @@ Providing a new name will create a new document.</source>
     </message>
 </context>
 <context>
-    <name>UBDocumentTreeWidget</name>
-    <message>
-        <source>%1 (copy)</source>
-        <translation type="vanished">%1 (העתק)</translation>
-    </message>
-    <message>
-        <source>Copying page %1/%2</source>
-        <translation type="vanished">מעתיק עמוד %1/%2</translation>
-    </message>
-    <message numerus="yes">
-        <source>%1 pages copied</source>
-        <translation type="vanished">
-            <numerusform>%1 דפים הועתקו</numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
-</context>
-<context>
     <name>UBDownloadWidget</name>
     <message>
         <source>Downloading files</source>
@@ -1404,6 +1407,22 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Page %0</source>
         <translation type="unfinished">עמוד %0</translation>
+    </message>
+</context>
+<context>
+    <name>UBEmbedController</name>
+    <message>
+        <source>Whole page</source>
+        <translation>דף מלא</translation>
+    </message>
+    <message>
+        <source>Web</source>
+        <translation>אינטרנט</translation>
+    </message>
+    <message>
+        <source>Application name can`t contain any of the following characters:<byte value="xd"/>
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1467,14 +1486,6 @@ Providing a new name will create a new document.</source>
         <translation>ייצא כקובץ UBZ</translation>
     </message>
     <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">מייצא מסמך...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">הייצוא בוצע בהצלחה.</translation>
-    </message>
-    <message>
         <source>Exporting %1 %2 of %3</source>
         <translation>מייצא %1 %2 מתוך %3</translation>
     </message>
@@ -1517,14 +1528,6 @@ Providing a new name will create a new document.</source>
         <translation>ייצוא כקובץ PDF</translation>
     </message>
     <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">מייצא מסמך...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">הייצוא בוצע בהצלחה.</translation>
-    </message>
-    <message>
         <source>Export to PDF</source>
         <translation>ייצא ל- PDF</translation>
     </message>
@@ -1534,14 +1537,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Export as PDF File</source>
         <translation>ייצא בתור קובץ PDF</translation>
-    </message>
-    <message>
-        <source>Exporting document...</source>
-        <translation type="vanished">מייצא מסמך...</translation>
-    </message>
-    <message>
-        <source>Export successful.</source>
-        <translation type="vanished">הייצוא בוצע בהצלחה.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1584,10 +1579,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Add to page</source>
         <translation>הוסף לדף</translation>
-    </message>
-    <message>
-        <source>Set as background</source>
-        <translation type="vanished">קבע כרקע</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1650,10 +1641,6 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Pictures</source>
         <translation>תמונות</translation>
-    </message>
-    <message>
-        <source>Animations</source>
-        <translation type="vanished">אנימציות</translation>
     </message>
     <message>
         <source>Interactivities</source>
@@ -1724,12 +1711,12 @@ Providing a new name will create a new document.</source>
         <translation>ניתן לראותו במסך רחב</translation>
     </message>
     <message>
-        <source>Go to Content Source</source>
-        <translation>עבור למקור התוכן</translation>
-    </message>
-    <message>
         <source>Set as background</source>
         <translation type="unfinished">קבע כרקע</translation>
+    </message>
+    <message>
+        <source>Web Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2090,51 +2077,10 @@ Do you want to ignore these errors for this host?</source>
     </message>
 </context>
 <context>
-    <name>UBProxyLoginDlg</name>
-    <message>
-        <source>Proxy Login</source>
-        <translation type="vanished">כניסה לפרוקסי</translation>
-    </message>
-    <message>
-        <source>Username:</source>
-        <translation type="vanished">שם משתמש:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="vanished">סיסמא:</translation>
-    </message>
-</context>
-<context>
-    <name>UBPublicationDlg</name>
-    <message>
-        <source>Publish document on the web</source>
-        <translation type="vanished">פרסם מסמך באינטרנט</translation>
-    </message>
-    <message>
-        <source>Title:</source>
-        <translation type="vanished">שם:</translation>
-    </message>
-    <message>
-        <source>Description:</source>
-        <translation type="vanished">תיאור:</translation>
-    </message>
-    <message>
-        <source>Publish</source>
-        <translation type="vanished">פרסם</translation>
-    </message>
-</context>
-<context>
     <name>UBSettings</name>
     <message>
         <source>My Movies</source>
         <translation>הסרטים שלי</translation>
-    </message>
-</context>
-<context>
-    <name>UBStartupHintsPalette</name>
-    <message>
-        <source>Visible next time</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2202,17 +2148,6 @@ Do you want to ignore these errors for this host?</source>
     </message>
 </context>
 <context>
-    <name>UBTrapFlashController</name>
-    <message>
-        <source>Whole page</source>
-        <translation>דף מלא</translation>
-    </message>
-    <message>
-        <source>Web</source>
-        <translation>אינטרנט</translation>
-    </message>
-</context>
-<context>
     <name>UBUpdateDlg</name>
     <message>
         <source>Document updater</source>
@@ -2266,17 +2201,10 @@ Please reboot the application to access the updated documents.</source>
     </message>
 </context>
 <context>
-    <name>UBWebPluginWidget</name>
+    <name>UBWebEngineView</name>
     <message>
-        <source>Loading...</source>
-        <translation>טוען...</translation>
-    </message>
-</context>
-<context>
-    <name>UBWidgetUniboardAPI</name>
-    <message>
-        <source>%0 called (method=%1, status=%2)</source>
-        <translation>%0 נקרא )שיטה=%1, מצב = %2(</translation>
+        <source>Open Web Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2365,85 +2293,6 @@ Please reboot the application to access the updated documents.</source>
     </message>
 </context>
 <context>
-    <name>WBClearButton</name>
-    <message>
-        <source>Clear</source>
-        <translation>נקה</translation>
-    </message>
-</context>
-<context>
-    <name>WBDownloadItem</name>
-    <message>
-        <source>Save File</source>
-        <translation>שמור קובץ</translation>
-    </message>
-    <message>
-        <source>Download canceled: %1</source>
-        <translation>ההורדה בוטלה: %1</translation>
-    </message>
-    <message>
-        <source>Error opening saved file: %1</source>
-        <translation>אירעה שגיאה בפתיחת הקובץ השמור: %1</translation>
-    </message>
-    <message>
-        <source>Error saving: %1</source>
-        <translation>שגיאה בשמירה: %1</translation>
-    </message>
-    <message>
-        <source>Network Error: %1</source>
-        <translation>שגיאת רשת: %1</translation>
-    </message>
-    <message>
-        <source>seconds</source>
-        <translation>שניות</translation>
-    </message>
-    <message>
-        <source>minutes</source>
-        <translation>דקות</translation>
-    </message>
-    <message>
-        <source>- %4 %5 remaining</source>
-        <translation>- %4 %5 נשארו</translation>
-    </message>
-    <message>
-        <source>%1 of %2 (%3/sec) %4</source>
-        <translation>%1 מ %2 (%3/שניות) %4</translation>
-    </message>
-    <message>
-        <source>?</source>
-        <comment>unknown file size</comment>
-        <translation>?</translation>
-    </message>
-    <message>
-        <source>%1 of %2 - Stopped</source>
-        <translation>%1 מתוך %2 0 מופסק</translation>
-    </message>
-    <message>
-        <source>bytes</source>
-        <translation>בייטים</translation>
-    </message>
-    <message>
-        <source>KB</source>
-        <translation>KB</translation>
-    </message>
-    <message>
-        <source>MB</source>
-        <translation>MB</translation>
-    </message>
-</context>
-<context>
-    <name>WBDownloadManager</name>
-    <message>
-        <source>1 Download</source>
-        <translation>הורדה 1</translation>
-    </message>
-    <message>
-        <source>%1 Downloads</source>
-        <comment>always &gt;= 2</comment>
-        <translation>%1 הורדות</translation>
-    </message>
-</context>
-<context>
     <name>WBHistoryModel</name>
     <message>
         <source>Title</source>
@@ -2466,97 +2315,90 @@ Please reboot the application to access the updated documents.</source>
     </message>
 </context>
 <context>
-    <name>WBSearchLineEdit</name>
+    <name>WebPage</name>
     <message>
-        <source>Search</source>
-        <translation>חיפוש</translation>
-    </message>
-</context>
-<context>
-    <name>WBTabBar</name>
-    <message>
-        <source>New &amp;Tab</source>
-        <translation>חדש &amp; לשונית</translation>
+        <source>Certificate Error</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clone Tab</source>
-        <translation>שכפל לשונית</translation>
+        <source>Enter username and password for &quot;%1&quot; at %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Close Tab</source>
-        <translation>&amp;סגור לשונית</translation>
+        <source>Allow %1 to access your location information?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Close &amp;Other Tabs</source>
-        <translation>סגור &amp;לשוניות אחרות </translation>
+        <source>Allow %1 to access your microphone?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reload Tab</source>
-        <translation>טען מחדש את הלשונית</translation>
+        <source>Allow %1 to access your webcam?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reload All Tabs</source>
-        <translation>טען מחדש את כל הלשוניות</translation>
-    </message>
-</context>
-<context>
-    <name>WBTabWidget</name>
-    <message>
-        <source>Recently Closed Tabs</source>
-        <translation>לשוניות שנסגרו לאחרונה</translation>
+        <source>Allow %1 to access your microphone and webcam?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>(Untitled)</source>
-        <translation>(ללא שם)</translation>
-    </message>
-</context>
-<context>
-    <name>WBToolbarSearch</name>
-    <message>
-        <source>Search</source>
-        <translation>חיפוש</translation>
+        <source>Allow %1 to lock your mouse cursor?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No Recent Searches</source>
-        <translation>אין חיפושים שבוצעו לאחרונה</translation>
+        <source>Allow %1 to capture video of your desktop?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Recent Searches</source>
-        <translation>חיפושים שבוצעו לאחרונה</translation>
+        <source>Allow %1 to capture audio and video of your desktop?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clear Recent Searches</source>
-        <translation>נקה חיפושים שבוצעו לאחרונה</translation>
-    </message>
-</context>
-<context>
-    <name>WBWebPage</name>
-    <message>
-        <source>Download</source>
-        <translation>הורד</translation>
+        <source>Permission Request</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add to Current Document</source>
-        <translation>הוסף למסמך הקיים</translation>
+        <source>Connect to proxy &quot;%1&quot; using:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>PDF</source>
-        <translation>PDF</translation>
-    </message>
-    <message>
-        <source>Error loading page: %1</source>
-        <translation>שגיאה בטעינת עמוד: %1</translation>
-    </message>
-    <message>
-        <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
+        <source>Allow %1 to open all %2 links?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>WBWebView</name>
+    <name>WebView</name>
     <message>
-        <source>Open in New Tab</source>
-        <translation>פתח בלשונית חדשה</translation>
+        <source>Render process normal exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process abnormal exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process crashed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process killed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process exited with code: %1
+Do you want to reload the page ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Web Inspector in new window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inspect element</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to board</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2680,29 +2522,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>documentPublishingDialog</name>
-    <message>
-        <source>Dialog</source>
-        <translation type="obsolete">דיאלוג</translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="obsolete">שם</translation>
-    </message>
-    <message>
-        <source>E-mail</source>
-        <translation type="obsolete">דואל</translation>
-    </message>
-    <message>
-        <source>Author</source>
-        <translation type="obsolete">מחבר</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="obsolete">תיאור</translation>
-    </message>
-</context>
-<context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
@@ -2762,10 +2581,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Virtual Keyboard</source>
         <translation>מקלדת וירטואלית</translation>
-    </message>
-    <message>
-        <source>Keyboard button size:</source>
-        <translation type="vanished">גודל מקשי המקלדת:</translation>
     </message>
     <message>
         <source>Toolbar</source>

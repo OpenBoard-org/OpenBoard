@@ -50,7 +50,6 @@
 class QGraphicsSceneMouseEvent;
 class QGraphicsItem;
 class UBGraphicsScene;
-class UBGraphicsProxyWidget;
 class UBGraphicsDelegateFrame;
 class UBGraphicsWidgetItem;
 class UBGraphicsMediaItem;
@@ -241,7 +240,7 @@ class UBGraphicsItemDelegate : public QObject
     Q_OBJECT
 
     public:
-    UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent = 0, UBGraphicsFlags fls = 0);
+    UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObject * parent = 0, UBGraphicsFlags fls = {});
 
         virtual ~UBGraphicsItemDelegate();
 

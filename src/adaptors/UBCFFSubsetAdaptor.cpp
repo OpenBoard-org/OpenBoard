@@ -31,7 +31,10 @@
 #include <QSvgRenderer>
 #include <QPixmap>
 #include <QMap>
+#include <QFile>
 
+#include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 #include "core/UBPersistenceManager.h"
 
 #include "document/UBDocumentProxy.h"
@@ -55,9 +58,6 @@
 #include "UBMetadataDcSubsetAdaptor.h"
 #include "UBThumbnailAdaptor.h"
 #include "UBSvgSubsetAdaptor.h"
-
-#include "core/UBApplication.h"
-#include "QFile"
 
 #include "core/memcheck.h"
 //#include "qtlogger.h"
@@ -586,10 +586,11 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::parseTextAttributes(const QDomElemen
                                                                 QString &fontStretch, bool &italic, int &fontWeight,
                                                                 int &textAlign, QTransform &fontTransform)
 {
-    //consider inch has 72 liens
+    //consider inch has 72 lines
     //since svg font size is given in pixels, divide it by pixels per line
     QString fontSz = element.attribute(aFontSize);
-    if (!fontSz.isNull()) fontSize = fontSz.toDouble() * 72 / QApplication::desktop()->physicalDpiY();
+    if (!fontSz.isNull())
+        fontSize = fontSz.toDouble() * 72. / UBApplication::displayManager->logicalDpi(ScreenRole::Control);
 
     QString fontColorText = element.attribute(aFill);
     if (!fontColorText.isNull()) fontColor = colorFromString(fontColorText);
@@ -673,7 +674,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgText(const QDomElement &elem
 
 
     qreal fontSize = 12;
-    QColor fontColor(qApp->palette().foreground().color());
+    QColor fontColor(qApp->palette().windowText().color());
     QString fontFamily = "Arial";
     QString fontStretch = "normal";
     bool italic = false;
@@ -684,7 +685,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgText(const QDomElement &elem
 
     QFont startFont(fontFamily, fontSize, fontWeight, italic);
     height = QFontMetrics(startFont).height();
-    width = QFontMetrics(startFont).width(element.text()) + 5;
+    width = QFontMetrics(startFont).boundingRect(element.text()).width() + 5;
 
     QSvgGenerator *generator = createSvgGenerator(width, height);
     QPainter painter;
@@ -809,7 +810,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &
     QTextCharFormat textFormat;
      // default values
     textFormat.setFontPointSize(12);
-    textFormat.setForeground(qApp->palette().foreground().color());
+    textFormat.setForeground(qApp->palette().windowText().color());
     textFormat.setFontFamily("Arial");
     textFormat.setFontItalic(false);
     textFormat.setFontWeight(QFont::Normal);
@@ -1205,7 +1206,8 @@ UBGraphicsGroupContainerItem *UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGro
 
 
 
-    foreach (QString key, strokesGroupsContainer.keys().toSet())
+    const auto keys = strokesGroupsContainer.keys();
+    for (const QString &key : keys)
     {
         UBGraphicsStrokesGroup* pStrokesGroup = new UBGraphicsStrokesGroup();
         UBGraphicsStroke *currentStroke = new UBGraphicsStroke();
@@ -1491,7 +1493,7 @@ QSvgGenerator* UBCFFSubsetAdaptor::UBCFFSubsetReader::createSvgGenerator(qreal w
     QSvgGenerator* generator = new QSvgGenerator();
 //    qWarning() << QString("Making generator with file %1, size (%2, %3) and viewbox (%4 %5 %6 %7)").arg(mTempFilePath)
 //        .arg(width).arg(height).arg(0.0).arg(0.0).arg(width).arg(width);
-    generator->setResolution(QApplication::desktop()->physicalDpiY());
+    generator->setResolution(UBApplication::displayManager->logicalDpi(ScreenRole::Control));
     generator->setFileName(mTempFilePath);
     generator->setSize(QSize(width, height));
     generator->setViewBox(QRectF(0, 0, width, height));

@@ -31,8 +31,10 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QCheckBox>
-#include <QWebFrame>
+#include <QWebEnginePage>
+#include <QWebChannel>
 #include "UBStartupHintsPalette.h"
+#include "web/UBWebController.h"
 
 #include "globals/UBGlobals.h"
 #include "core/UBSettings.h"
@@ -51,10 +53,13 @@ UBStartupHintsPalette::UBStartupHintsPalette(QWidget *parent) :
         mLayout->setContentsMargins(10,28,10,10);
         setLayout(mLayout);
         QString url = UBSettings::settings()->applicationStartupHintsDirectory() + "/index.html";
-        mpWebView = new QWebView(this);
+        mpWebView = new QWebEngineView(this);
         mpSankoreAPI = new UBWidgetUniboardAPI(0);
-        mpWebView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
-        connect(mpWebView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
+        QWebChannel* channel = new QWebChannel(this);
+        mpWebView->page()->setWebChannel(channel);
+        mpWebView->page()->webChannel()->registerObject("sankore", mpSankoreAPI);
+        UBWebController::injectScripts(mpWebView);
+        connect(mpWebView->page(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
         mpWebView->setUrl(QUrl::fromLocalFile(url));
         mpWebView->setAcceptDrops(false);
         mLayout->addWidget(mpWebView);
@@ -123,5 +128,5 @@ int UBStartupHintsPalette::border()
 
 void UBStartupHintsPalette::javaScriptWindowObjectCleared()
 {
-    mpWebView->page()->mainFrame()->addToJavaScriptWindowObject("sankore", mpSankoreAPI);
+    mpWebView->page()->webChannel()->registerObject("sankore", mpSankoreAPI);
 }

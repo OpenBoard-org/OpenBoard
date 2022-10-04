@@ -35,6 +35,7 @@
 #include "frameworks/UBPlatformUtils.h"
 
 #include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
 #include "core/UBPersistenceManager.h"
@@ -169,17 +170,14 @@ UBBoardController::~UBBoardController()
 void UBBoardController::initBackgroundGridSize()
 {
     // Besides adjusting for DPI, we also need to scale the grid size by the ratio of the control view size
-    // to document size. However the control view isn't available as soon as the boardController is created,
-    // so we approximate this ratio as (document resolution) / (screen resolution).
+    // to document size. Here we approximate this ratio as (document resolution) / (screen resolution).
     // Later on, this is calculated by `updateSystemScaleFactor` and stored in `mSystemScaleFactor`.
 
-    QDesktopWidget* desktop = UBApplication::desktop();
-    qreal dpi = (desktop->physicalDpiX() + desktop->physicalDpiY()) / 2.;
+    qreal dpi = UBApplication::displayManager->logicalDpi(ScreenRole::Control);
 
     //qDebug() << "dpi: " << dpi;
 
-    // The display manager isn't initialized yet so we have to just assume the control view is on the main display
-    qreal screenY = desktop->screenGeometry(mControlView).height();
+    qreal screenY = UBApplication::displayManager->screenSize(ScreenRole::Control).height();
     qreal documentY = mActiveScene->nominalSize().height();
     qreal resolutionRatio = documentY / screenY;
 
@@ -280,21 +278,9 @@ void UBBoardController::setBoxing(QRect displayRect)
 }
 
 
-QSize UBBoardController::displayViewport()
-{
-    return mDisplayView->geometry().size();
-}
-
-
 QSize UBBoardController::controlViewport()
 {
-    return mControlView->geometry().size();
-}
-
-
-QRectF UBBoardController::controlGeometry()
-{
-    return mControlView->geometry();
+    return UBApplication::displayManager->screenSize(ScreenRole::Control);
 }
 
 
@@ -523,7 +509,9 @@ void UBBoardController::addScene()
     persistViewPositionOnCurrentScene();
     persistCurrentScene(false,true);
 
-    UBDocumentContainer::addPage(mActiveSceneIndex + 1);
+    UBPersistenceManager::persistenceManager()->createDocumentSceneAt(selectedDocument(), mActiveSceneIndex+1);
+    emit addThumbnailRequired(this, mActiveSceneIndex+1);
+
     if (UBApplication::documentController->selectedDocument() == selectedDocument())
     {
         UBApplication::documentController->insertThumbPage(mActiveSceneIndex+1);
@@ -592,7 +580,6 @@ void UBBoardController::duplicateScene(int nIndex)
     insertThumbPage(nIndex);
     if (UBApplication::documentController->selectedDocument() == selectedDocument())
     {
-        UBApplication::documentController->insertThumbPage(nIndex);
         UBApplication::documentController->reloadThumbnails();
     }
     emit addThumbnailRequired(this, nIndex + 1);
@@ -797,6 +784,7 @@ void UBBoardController::deleteScene(int nIndex)
         QList<int> scIndexes;
         scIndexes << nIndex;
         deletePages(scIndexes);
+        emit removeThumbnailRequired(nIndex);
         if (UBApplication::documentController->selectedDocument() == selectedDocument())
         {
             UBApplication::documentController->deleteThumbPage(nIndex);
@@ -1450,6 +1438,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
                 UBApplication::documentController->reloadThumbnails();
 
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+            updateActionStates();
         }
     }
     else if (UBMimeType::OpenboardTool == itemMimeType)
@@ -1644,7 +1633,7 @@ void UBBoardController::moveSceneToIndex(int source, int target)
         persistCurrentScene(false,true);
 
         UBPersistenceManager::persistenceManager()->moveSceneToIndex(selectedDocument(), source, target);
-        UBDocumentContainer::moveThumbPage(source, target);
+        emit moveThumbnailRequired(source, target);
         if (UBApplication::documentController->selectedDocument() == selectedDocument())
         {
             UBApplication::documentController->moveThumbPage(source, target);
@@ -1907,7 +1896,6 @@ void UBBoardController::documentSceneChanged(UBDocumentProxy* pDocumentProxy, in
     if(selectedDocument() == pDocumentProxy)
     {
         setActiveDocumentScene(mActiveSceneIndex);
-        updateThumbPage(pIndex);
     }
 }
 
@@ -2033,9 +2021,7 @@ qreal UBBoardController::currentZoom()
 
 void UBBoardController::removeTool(UBToolWidget* toolWidget)
 {
-    toolWidget->hide();
-
-    delete toolWidget;
+    toolWidget->remove();
 }
 
 void UBBoardController::hide()
@@ -2055,12 +2041,7 @@ void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool force
             && (mActiveSceneIndex >= 0) && mActiveSceneIndex != mMovingSceneIndex
             && (mActiveScene->isModified()))
     {
-        UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, isAnAutomaticBackup);
-        updateThumbPage(mActiveSceneIndex);
-        if (UBApplication::documentController->selectedDocument() == selectedDocument())
-        {
-            UBApplication::documentController->updateThumbPage(mActiveSceneIndex);
-        }
+        UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, isAnAutomaticBackup, forceImmediateSave);
     }
 }
 
@@ -2345,10 +2326,6 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
         QString struuid = UBStringUtils::toCanonicalUuid(uuid);
         QString snapshotPath = selectedDocument()->persistencePath() +  "/" + UBPersistenceManager::widgetDirectory + "/" + struuid + ".png";
         w3cWidgetItem->setSnapshotPath(QUrl::fromLocalFile(snapshotPath));
-        UBGraphicsWidgetItem *tmpItem = dynamic_cast<UBGraphicsWidgetItem*>(w3cWidgetItem);
-        if (tmpItem && tmpItem->scene())
-           tmpItem->takeSnapshot().save(snapshotPath, "PNG");
-
     }
 
     return w3cWidgetItem;
@@ -2471,7 +2448,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
         if (mimeData)
         {
             QList<UBItem*> items = mimeData->items();
-            qStableSort(items.begin(),items.end(),zLevelLessThan);
+            std::stable_sort(items.begin(),items.end(),zLevelLessThan);
             foreach(UBItem* item, items)
             {
                 QGraphicsItem* pItem = dynamic_cast<QGraphicsItem*>(item);

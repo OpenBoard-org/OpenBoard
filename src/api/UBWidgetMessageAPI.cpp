@@ -25,8 +25,6 @@
  */
 
 
-#include <QWebFrame>
-
 #include "UBWidgetMessageAPI.h"
 
 #include "core/UBApplication.h"
@@ -56,7 +54,7 @@ void UBWidgetMessageAPI::onNewMessage(const QString& pTopicName, const QString& 
 {
     if (mSubscribedTopics.contains(pTopicName))
     {
-        if (mGraphicsWidgetItem && mGraphicsWidgetItem->page() && mGraphicsWidgetItem->page()->mainFrame())
+        if (mGraphicsWidgetItem)
         {
 
             QString js;
@@ -64,8 +62,7 @@ void UBWidgetMessageAPI::onNewMessage(const QString& pTopicName, const QString& 
             js += "{widget.messages.onmessage('";
             js += pMessage + "', '" + pTopicName + "')}";
 
-            mGraphicsWidgetItem->page()->
-                mainFrame()->evaluateJavaScript(js);
+            mGraphicsWidgetItem->runScript(js);
 
         }
     }

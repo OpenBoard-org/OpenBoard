@@ -26,13 +26,12 @@
 
 
 
-#include <QDesktopWidget>
-
 #include "UBScreenMirror.h"
 
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
 #include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 #include "board/UBBoardController.h"
 
 #if defined(Q_OS_OSX)
@@ -44,7 +43,6 @@
 
 UBScreenMirror::UBScreenMirror(QWidget* parent)
     : QWidget(parent)
-    , mScreenIndex(0)
     , mSourceWidget(0)
     , mTimerID(0)
 {
@@ -89,20 +87,11 @@ void UBScreenMirror::grabPixmap()
 {
     if (mSourceWidget)
     {
-        QPoint topLeft = mSourceWidget->mapToGlobal(mSourceWidget->geometry().topLeft());
-        QPoint bottomRight = mSourceWidget->mapToGlobal(mSourceWidget->geometry().bottomRight());
-
-        mRect.setTopLeft(topLeft);
-        mRect.setBottomRight(bottomRight);
         mLastPixmap = mSourceWidget->grab();
     }
-    else{
-        // WHY HERE?
-        // this is the case we are showing the desktop but the is no widget and we use the last widget rectagle to know
-        // what we have to grab. Not very good way of doing
-        QDesktopWidget * desktop = QApplication::desktop();
-        QScreen * screen = UBApplication::controlScreen();
-        mLastPixmap = screen->grabWindow(desktop->effectiveWinId(), mRect.x(), mRect.y(), mRect.width(), mRect.height());
+    else
+    {
+        mLastPixmap = UBApplication::displayManager->grab(ScreenRole::Control);
     }
 
     if (!mLastPixmap.isNull())
@@ -113,8 +102,6 @@ void UBScreenMirror::grabPixmap()
 void UBScreenMirror::setSourceWidget(QWidget *sourceWidget)
 {
     mSourceWidget = sourceWidget;
-
-    mScreenIndex = qApp->desktop()->screenNumber(sourceWidget);
 
     grabPixmap();
 

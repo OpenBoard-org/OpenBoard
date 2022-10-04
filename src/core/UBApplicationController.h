@@ -46,7 +46,6 @@ class UBGraphicsScene;
 class UBDesktopAnnotationController;
 class UBScreenMirror;
 class UBMainWindow;
-class UBDisplayManager;
 class UBVersion;
 class UBSoftwareUpdate;
 class QNetworkAccessManager;
@@ -91,11 +90,6 @@ class UBApplicationController : public QObject
         void showMessage(const QString& message, bool showSpinningWheel);
 
         void importFile(const QString& pFilePath);
-
-        UBDisplayManager* displayManager()
-        {
-            return mDisplayManager;
-        }
 
         UBDesktopAnnotationController* uninotesController()
         {
@@ -176,8 +170,6 @@ class UBApplicationController : public QObject
     private:
 
         MainMode mMainMode;
-
-        UBDisplayManager *mDisplayManager;
 
         bool mAutomaticCheckForUpdates;
         bool mCheckingForUpdates;

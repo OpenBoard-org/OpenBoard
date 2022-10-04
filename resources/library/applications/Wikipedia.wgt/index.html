@@ -22,7 +22,7 @@
             
             if(window.sankore){
                 try{
-                    syslang = sankore.locale().substr(0,2);
+                    syslang = sankore.lang.substr(0,2);
                     sankoreLang[syslang].search;
                 } catch(e){
                     syslang = "en";
@@ -51,7 +51,7 @@
                 index:-1
             }
 
-            $(document).ready(function() {
+            $(document).ready(async function() {
 
                 var ubHistoryList = "";
                 var ubHistoryIndex = "";
@@ -67,9 +67,9 @@
                 $("#current-language").text(lang.charAt(0).toUpperCase() + lang.substr(1));
 
                 if(window.sankore){
-                    toolbar.state = loadPref("historyState", "begin");
-                    ubHistoryList = loadPref("historyList", "");
-                    ubHistoryIndex = loadPref("historyIndex", "-1");
+                    toolbar.state = await loadPref("historyState", "begin");
+                    ubHistoryList = await loadPref("historyList", "");
+                    ubHistoryIndex = await loadPref("historyIndex", "-1");
                 }
 
                 if(ubHistoryList !== "") {
@@ -264,11 +264,11 @@
                 return textout;
             }
 
-            function loadPref(name, defaultValue){
+            async function loadPref(name, defaultValue){
                 var pref = defaultValue;
 
-                if (sankore.preference(name) !== "") {
-                    pref = sankore.preference(name);
+                if (await sankore.async.preference(name) !== "") {
+                    pref = await sankore.async.preference(name);
                 };
 
                 return pref;

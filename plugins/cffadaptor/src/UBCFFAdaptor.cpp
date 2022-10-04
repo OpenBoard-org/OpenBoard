@@ -1,23 +1,29 @@
 /*
- * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour l'Education Numérique en Afrique (GIP ENA)
+ * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
  *
- * This file is part of Open-Sankoré.
+ * Copyright (C) 2013 Open Education Foundation
  *
- * Open-Sankoré is free software: you can redistribute it and/or modify
+ * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
+ * l'Education Numérique en Afrique (GIP ENA)
+ *
+ * This file is part of OpenBoard.
+ *
+ * OpenBoard is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3 of the License,
  * with a specific linking exception for the OpenSSL project's
  * "OpenSSL" library (or with modified versions of it that use the
  * same license as the "OpenSSL" library).
  *
- * Open-Sankoré is distributed in the hope that it will be useful,
+ * OpenBoard is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Open-Sankoré.  If not, see <http://www.gnu.org/licenses/>.
+ * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
  */
+
 
 
 
@@ -50,18 +56,18 @@ UBCFFAdaptor::UBCFFAdaptor()
 
 bool UBCFFAdaptor::convertUBZToIWB(const QString &from, const QString &to)
 {
-    qDebug() << "starting converion from" << from << "to" << to;
+    qDebug() << "starting conversion from" << from << "to" << to;
 
     QString source = QString();
     if (QFileInfo(from).isDir() && QFile::exists(from)) {
-        qDebug() << "File specified is dir, continuing convertion";
+        qDebug() << "File specified is a directory, continuing conversion";
         source = from;
     } else {
         source = uncompressZip(from);
-        if (!source.isNull()) qDebug() << "File specified is zip file. Uncompressed to tmp dir, continuing convertion";
+        if (!source.isNull()) qDebug() << "File specified is a zip file. Uncompressed to tmp dir, continuing conversion";
     }
     if (source.isNull()) {
-        qDebug() << "File specified is not a dir or a zip file, stopping covretion";
+        qDebug() << "File specified is not a dir nor a zip file, stopping conversion";
         return false;
     }
 
@@ -73,7 +79,7 @@ bool UBCFFAdaptor::convertUBZToIWB(const QString &from, const QString &to)
 
     UBToCFFConverter tmpConvertrer(source, tmpDestination);
     if (!tmpConvertrer) {
-        qDebug() << "The convertrer class is invalid, stopping conversion. Error message" << tmpConvertrer.lastErrStr();
+        qDebug() << "The converter class is invalid, stopping conversion. Error message" << tmpConvertrer.lastErrStr();
         return false;
     }
 
@@ -192,7 +198,7 @@ bool UBCFFAdaptor::compressZip(const QString &source, const QString &destination
     QDir toDir = QFileInfo(destination).dir();
     if (!toDir.exists())
         if (!QDir().mkpath(toDir.absolutePath())) {
-            qDebug() << "can't create destination folder to uncompress file";
+            qDebug() << "Can't create destination folder to uncompress file";
             return false;
         }
 
@@ -226,7 +232,7 @@ bool UBCFFAdaptor::compressDir(const QString &dirName, const QString &parentDir,
 
         if (curFile.isDir()) {
             if (!compressDir(curFile.absoluteFilePath(), parentDir + curFile.fileName() + "/", outZip)) {
-                qDebug() << "error at compressing dir" << curFile.absoluteFilePath();
+                qDebug() << "Error at compressing dir" << curFile.absoluteFilePath();
                 return false;
             }
         } else if (curFile.isFile()) {
@@ -293,7 +299,7 @@ QString UBCFFAdaptor::createNewTmpDir()
                 tmpDirs.append(result);
                 return result;
             } else {
-                qDebug() << "Can't create temporary dir maybe due to permissions";
+                qDebug() << "Can't create temporary directory maybe due to permissions";
                 return QString();
             }
         } else if (tmpNumber == 10) {
@@ -1088,7 +1094,7 @@ void UBCFFAdaptor::UBToCFFConverter::setCoordinatesFromUBZ(const QDomElement &ub
     item.setRect(0,0, width, height);
     item.setTransform(tr);
     item.setRotation(-alpha);
-    QMatrix sceneMatrix = item.sceneMatrix();
+    QTransform sceneMatrix = item.sceneTransform();
  
     iwbElement.setAttribute(aX, x);
     iwbElement.setAttribute(aY, y);
@@ -1603,7 +1609,7 @@ bool UBCFFAdaptor::UBToCFFConverter::parseSVGGGroup(const QDomElement &element, 
     while (nextSVGElement.hasNext()) 
         layers << nextSVGElement.next().key();
 
-    qSort(layers);
+    std::sort(layers.begin(), layers.end());
     int layer = layers.at(0);
 
     nextSVGElement.toFront();
