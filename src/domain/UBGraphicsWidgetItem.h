@@ -265,11 +265,9 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         virtual void sendJSEnterEvent();
         virtual void sendJSLeaveEvent();
 
-        static QString freezedWidgetFilePath();
         static QString createNPAPIWrapper(const QString& url, const QString& pMimeType = QString(), const QSize& sizeHint = QSize(300, 150), const QString& pName = QString());
         static QString createNPAPIWrapperInDir(const QString& url, const QDir& pDir, const QString& pMimeType = QString(), const QSize& sizeHint = QSize(300, 150), const QString& pName = QString());
         static QString createHtmlWrapperInDir(const QString& html, const QDir& pDir, const QSize& sizeHint,  const QString& pName);
-        static QString freezedWidgetPage();
         static bool hasNPAPIWrapper(const QString& pMimeType);
 
         Metadata mMetadatas;

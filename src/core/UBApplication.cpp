@@ -293,13 +293,6 @@ int UBApplication::exec(const QString& pFileToImport)
 {
     QPixmapCache::setCacheLimit(1024 * 100);
 
-    /* TODO remove, will be in the default directories
-        QString webDbPath = UBSettings::userDataDirectory() + "/web-databases";
-        QDir webDbDir(webDbPath);
-        if (!webDbDir.exists(webDbPath))
-            webDbDir.mkpath(webDbPath);
-     */
-
     displayManager = new UBDisplayManager(staticMemoryCleaner);
 
     if (UBSettings::settings()->appRunInWindow->get().toBool()) {

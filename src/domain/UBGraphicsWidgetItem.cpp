@@ -129,8 +129,8 @@ void UBGraphicsWidgetItem::initialize()
     // https://doc.qt.io/qt-5.12/qwebengineprofile.html#scripts
     UBWebController::injectScripts(mWebEngineView);
 
-    connect(mWebEngineView->page(), SIGNAL(geometryChangeRequested(const QRect&)), this, SLOT(geometryChangeRequested(const QRect&)));
-    connect(mWebEngineView, SIGNAL(loadFinished(bool)), this, SLOT(mainFrameLoadFinished (bool)));
+    connect(mWebEngineView->page(), SIGNAL(geometryChangeRequested(QRect)), this, SLOT(geometryChangeRequested(QRect)));
+    connect(mWebEngineView, SIGNAL(loadFinished(bool)), this, SLOT(mainFrameLoadFinished(bool)));
 }
 
 QUrl UBGraphicsWidgetItem::mainHtml() const
@@ -1224,37 +1224,6 @@ QString UBGraphicsW3CWidgetItem::createHtmlWrapperInDir(const QString& html, con
     widgetHtmlFile.close();
 
     return widgetPath;
-}
-
-// NOTE @letsfindaway obsolete, no references
-QString UBGraphicsW3CWidgetItem::freezedWidgetPage()
-{
-    static QString defaultcontent;
-
-    if (defaultcontent.isNull()) {
-        QString freezedWidgetDefaultContentFilePath = freezedWidgetFilePath();
-        QFile wrapperFile(freezedWidgetDefaultContentFilePath);
-        if (!wrapperFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            qDebug() << "can't open wrapper file " + freezedWidgetDefaultContentFilePath;
-            defaultcontent = "";
-        }
-        else {
-            QByteArray arr = wrapperFile.readAll();
-            if (!arr.isEmpty())
-                defaultcontent = QString(arr);
-            else {
-                qDebug() << "content of " + freezedWidgetDefaultContentFilePath + "is empty";
-                defaultcontent = QString();
-            }
-        }
-    }
-
-    return defaultcontent;
-}
-
-QString UBGraphicsW3CWidgetItem::freezedWidgetFilePath()
-{
-    return UBPlatformUtils::applicationResourcesDirectory() + "/etc/" + "freezedWidgetWrapper.html";
 }
 
 bool UBGraphicsW3CWidgetItem::hasNPAPIWrapper(const QString& pMimeType)
