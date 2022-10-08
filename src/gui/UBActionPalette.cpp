@@ -160,8 +160,6 @@ void UBActionPalette::groupActions()
         mButtonGroup->addButton(button, i);
         ++i;
     }
-
-    connect(mButtonGroup, SIGNAL(buttonClicked(int)), this, SIGNAL(buttonGroupClicked(int)));
 }
 
 

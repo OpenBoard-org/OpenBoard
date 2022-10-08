@@ -81,7 +81,6 @@ class UBActionPalette : public UBFloatingPalette
 
     signals:
         void closed();
-        void buttonGroupClicked(int id);
         void customMouseReleased();
 
     protected:
