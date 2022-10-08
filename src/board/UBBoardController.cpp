@@ -2586,6 +2586,7 @@ void UBBoardController::moveToolWidgetToScene(UBToolWidget* toolWidget)
     QPoint controlViewCenter = mControlView->mapFrom(mMainWindow, mainWindowCenter);
     QPointF scenePos = mControlView->mapToScene(controlViewCenter);
 
+    widgetToScene->setWebActive(true);
     mActiveScene->addGraphicsWidget(widgetToScene, scenePos);
 
     toolWidget->remove();

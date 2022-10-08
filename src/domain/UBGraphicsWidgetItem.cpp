@@ -71,12 +71,12 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     , mCanBeTool(0)
     , mWidgetUrl(pWidgetUrl)
     , mIsFrozen(false)
-    , mIsWebActive(false)
+    , mIsWebActive(true)
     , mShouldMoveWidget(false)
     , mUniboardAPI(nullptr)
 {
     mWebEngineView = new UBWebEngineView();
-    mWebEngineView->setVisible(false);
+    setWidget(mWebEngineView);
 
     setData(UBGraphicsItemData::ItemLayerType, QVariant(itemLayerType::ObjectItem)); //Necessary to set if we want z value to be assigned correctly
 
