@@ -99,6 +99,7 @@ class UBDesktopPalette : public UBActionPalette
         QAction *pendingButton;
         QTime mButtonHoldTimer;
 
+        void addActionAndConnectWithPressedReleasedEvent(QAction* action, int stylusTool = 0, bool connectPressedEvent = false);
         void createAndConnectButtons();
 
         void actionPressed(QToolButton* button, QAction* action, int stylusTool);
