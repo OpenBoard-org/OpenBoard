@@ -80,8 +80,6 @@ class UBDesktopAnnotationController : public QObject
         void screenCapture();
         void updateShowHideState(bool pEnabled);
 
-        void close();
-
         void stylusToolChanged(int tool);
         void updateBackground();
 

@@ -655,19 +655,6 @@ void UBApplicationController::closing()
     if (mMirror)
         mMirror->stop();
 
-    if (mUninoteController)
-    {
-        mUninoteController->hideWindow();
-        mUninoteController->close();
-    }
-
-    /*
-
-    if (UBApplication::documentController)
-        UBApplication::documentController->closing();
-
-    */
-
     UBPersistenceManager::persistenceManager()->closing(); // ALTI/AOU - 20140616 : to update the file "documents/folders.xml"
 }
 

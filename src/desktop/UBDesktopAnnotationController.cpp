@@ -341,16 +341,6 @@ void UBDesktopAnnotationController::showWindow()
 #endif // UB_REQUIRES_MASK_UPDATE
 }
 
-
-void UBDesktopAnnotationController::close()
-{
-    if (mTransparentDrawingView)
-        mTransparentDrawingView->hide();
-
-    mDesktopPalette->hide();
-}
-
-
 void UBDesktopAnnotationController::stylusToolChanged(int tool)
 {
     Q_UNUSED(tool);
