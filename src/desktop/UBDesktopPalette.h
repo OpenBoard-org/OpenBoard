@@ -86,11 +86,9 @@ class UBDesktopPalette : public UBActionPalette
         void setShowHideButtonVisible(bool visible);
         void setDisplaySelectButtonVisible(bool show);
 
-protected:
-        void showEvent(QShowEvent *event);
-        void hideEvent(QHideEvent *event);
+        void setArrowsForPenMarkerErasor(bool showAarrows);
 
-private:
+    private:
 
         eMinimizedLocation mMinimizedLocation;
 
@@ -106,7 +104,6 @@ private:
         void actionPressed(QToolButton* button, QAction* action, int stylusTool);
         void actionReleased(QAction* action);
 
-        void setArrowsForPenMarkerErasor(bool showAarrows);
 signals:
         void hideOtherPalettes(QAction *);
         void togglePropertyPalette(QAction *);

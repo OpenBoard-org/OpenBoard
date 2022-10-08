@@ -303,6 +303,7 @@ void UBDesktopAnnotationController::showWindow()
             , mDesktopPalette, SLOT(setDisplaySelectButtonVisible(bool)));
 
     mDesktopPalette->show();
+    mDesktopPalette->setArrowsForPenMarkerErasor(true);
 
     bool showDisplay = UBSettings::settings()->webShowPageImmediatelyOnMirroredScreen->get().toBool();
 
@@ -399,6 +400,8 @@ void UBDesktopAnnotationController::hideWindow()
         mTransparentDrawingView->hide();
 
     mDesktopPalette->hide();
+    mDesktopPalette->setArrowsForPenMarkerErasor(false);
+
 
     mDesktopStylusTool = UBDrawingController::drawingController()->stylusTool();
     UBDrawingController::drawingController()->setStylusTool(mBoardStylusTool);

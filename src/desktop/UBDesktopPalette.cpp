@@ -270,19 +270,6 @@ void UBDesktopPalette::setArrowsForPenMarkerErasor(bool arrows){
     UBApplication::mainWindow->actionEraser->setIcon(eraserIcon);
 }
 
-
-void UBDesktopPalette::showEvent(QShowEvent *event)
-{
-    Q_UNUSED(event);
-    setArrowsForPenMarkerErasor(true);
-}
-
-void UBDesktopPalette::hideEvent(QHideEvent *event)
-{
-    Q_UNUSED(event);
-    setArrowsForPenMarkerErasor(false);
-}
-
 void UBDesktopPalette::actionPressed(QToolButton* button, QAction* action, int stylusTool)
 {
     emit hideOtherPalettes(action);
