@@ -91,7 +91,7 @@ bool bIsMinimized = false;
 QObject* UBApplication::staticMemoryCleaner = 0;
 
 
-UBApplication::UBApplication(const QString &id, int &argc, char **argv) : SingleApplication(argc, argv)
+UBApplication::UBApplication(const QString &id, int &argc, char **argv) : SingleApplication(argc, argv, true)
   , mPreferencesController(NULL)
   , mApplicationTranslator(NULL)
   , mQtGuiTranslator(NULL)
@@ -130,6 +130,7 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : Single
 
     connect(settings->appToolBarPositionedAtTop, SIGNAL(changed(QVariant)), this, SLOT(toolBarPositionChanged(QVariant)));
     connect(settings->appToolBarDisplayText, SIGNAL(changed(QVariant)), this, SLOT(toolBarDisplayTextChanged(QVariant)));
+    connect(this, &SingleApplication::receivedMessage, this, &UBApplication::handleOpenMessage);
     updateProtoActionsState();
 
 #ifndef Q_OS_OSX
@@ -667,21 +668,24 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
 }
 
 
-bool UBApplication::handleOpenMessage(const QString& pMessage)
+void UBApplication::handleOpenMessage(quint32 instanceId, QByteArray message)
 {
-    qDebug() << "received message" << pMessage;
+    Q_UNUSED(instanceId)
 
-    if (pMessage == UBSettings::appPingMessage)
+    QString filename = QString::fromUtf8(message);
+    qDebug() << "received message" << filename;
+
+    if (filename == UBSettings::appPingMessage)
     {
         qDebug() << "received ping";
-        return true;
+        return;
     }
 
-    qDebug() << "importing file" << pMessage;
+    qDebug() << "importing file" << filename;
 
-    UBApplication::applicationController->importFile(pMessage);
+    UBApplication::applicationController->importFile(filename);
 
-    return true;
+    return;
 }
 
 void UBApplication::cleanup()

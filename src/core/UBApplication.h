@@ -125,7 +125,7 @@ class UBApplication : public SingleApplication
          * Used on Windows platform to open file in running application. On MacOS X opening file is done through the
          * FileOpen event that is handle in eventFilter method.
          */
-        bool handleOpenMessage(const QString& pMessage);
+        void handleOpenMessage(quint32 instanceId, QByteArray message);
 
     private slots:
 
