@@ -112,7 +112,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
 #endif
     }
 
-    connect(mDesktopPalette, SIGNAL(uniboardClick()), this, SLOT(goToUniboard()));
+    connect(mDesktopPalette, &UBDesktopPalette::uniboardClick, [](){ UBApplication::applicationController->showBoard(); });
     connect(mDesktopPalette, SIGNAL(customClick()), this, SLOT(customCapture()));
     connect(mDesktopPalette, SIGNAL(screenClick()), this, SLOT(screenCapture()));
     connect(mDesktopPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene, SLOT(hideTool()));
@@ -413,13 +413,6 @@ void UBDesktopAnnotationController::hideWindow()
     mDesktopStylusTool = UBDrawingController::drawingController()->stylusTool();
     UBDrawingController::drawingController()->setStylusTool(mBoardStylusTool);
 }
-
-
-void UBDesktopAnnotationController::goToUniboard()
-{
-    UBApplication::applicationController->showBoard();
-}
-
 
 void UBDesktopAnnotationController::customCapture()
 {

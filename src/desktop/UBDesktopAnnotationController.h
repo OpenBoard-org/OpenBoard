@@ -76,7 +76,6 @@ class UBDesktopAnnotationController : public QObject
     public slots:
 
         void screenLayoutChanged();
-        void goToUniboard();
         void customCapture();
         void screenCapture();
         void updateShowHideState(bool pEnabled);
