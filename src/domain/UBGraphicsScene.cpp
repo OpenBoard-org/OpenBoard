@@ -2779,6 +2779,8 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
                 QPen redLineMargin(QColor("red"));
                 redLineMargin.setWidthF(2.);
 
+                // Horizontal lines
+
                 qreal firstY = ((int) (rect.y () / gridSizeSeyes)) * gridSizeSeyes;
 
                 for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += gridSizeSeyes)
@@ -2791,7 +2793,6 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
                     painter->drawLine (rect.x (), yPos+3*gridSizeSeyes/4, rect.x () + rect.width (), yPos+3*gridSizeSeyes/4);
                 }
 
-
                 // Vertical margin
 
                 qreal firstX = ((int) nbMarginCase * gridSizeSeyes) - mNominalSize.width() / 2.;
@@ -2799,7 +2800,7 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
                 painter->setPen(redLineMargin);
                 painter->drawLine (firstX, rect.y (), firstX, rect.y () + rect.height ());
 
-                // Vertical grid
+                // Vertical lines
 
                 firstX = ((int) (nbMarginCase + 1) * gridSizeSeyes) - mNominalSize.width() / 2.;
 
