@@ -45,15 +45,13 @@ class UBStylusPalette : public UBActionPalette
 
         void initPosition();
 
-    private slots:
-
-        void stylusToolDoubleClicked();
-
     private:
         int mLastSelectedId;
 
     signals:
-        void stylusToolDoubleClicked(int tool);
+
+        void restoreScroll();
+        void restoreZoom();
 };
 
 #endif /* UBSTYLUSPALLETTE_H_ */

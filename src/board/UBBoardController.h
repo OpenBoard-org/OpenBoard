@@ -207,6 +207,7 @@ class UBBoardController : public UBDocumentContainer
         void clearSceneBackground();
         void zoomIn(QPointF scenePoint = QPointF(0,0));
         void zoomOut(QPointF scenePoint = QPointF(0,0));
+        void restoreScroll();
         void zoomRestore();
         void centerRestore();
         void centerOn(QPointF scenePoint = QPointF(0,0));
@@ -321,7 +322,6 @@ class UBBoardController : public UBDocumentContainer
         QTimer *mAutosaveTimer;
 
     private slots:
-        void stylusToolDoubleClicked(int tool);
         void boardViewResized(QResizeEvent* event);
         void documentWillBeDeleted(UBDocumentProxy* pProxy);
         void updateBackgroundActionsState(bool isDark, UBPageBackground pageBackground);

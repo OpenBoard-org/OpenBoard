@@ -487,21 +487,10 @@ QString UBBoardController::truncate(QString text, int maxWidth)
     return fontMetrics.elidedText(text, Qt::ElideRight, maxWidth);
 }
 
-
-void UBBoardController::stylusToolDoubleClicked(int tool)
-{
-    if (tool == UBStylusTool::ZoomIn || tool == UBStylusTool::ZoomOut)
-    {
-        zoomRestore();
-    }
-    else if (tool == UBStylusTool::Hand)
-    {
-        centerRestore();
-        mActiveScene->setLastCenter(QPointF(0,0));
-    }
+void UBBoardController::restoreScroll(){
+    centerRestore();
+    mActiveScene->setLastCenter(QPointF(0,0));
 }
-
-
 
 void UBBoardController::addScene()
 {

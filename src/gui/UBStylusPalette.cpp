@@ -54,43 +54,31 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
         addAction(UBApplication::mainWindow->actionSelector);
         addAction(UBApplication::mainWindow->actionPlay);
 
-        addAction(UBApplication::mainWindow->actionHand);
-        addAction(UBApplication::mainWindow->actionZoomIn);
-        addAction(UBApplication::mainWindow->actionZoomOut);
+        UBActionPaletteButton* button = addAction(UBApplication::mainWindow->actionHand);
+        connect(button, &UBActionPaletteButton::doubleClicked, this, &UBStylusPalette::restoreScroll);
+
+        button = addAction(UBApplication::mainWindow->actionZoomIn);
+        connect(button, &UBActionPaletteButton::doubleClicked, this, &UBStylusPalette::restoreZoom);
+
+        button = addAction(UBApplication::mainWindow->actionZoomOut);
+        connect(button, &UBActionPaletteButton::doubleClicked, this, &UBStylusPalette::restoreZoom);
+
 
         addAction(UBApplication::mainWindow->actionPointer);
         addAction(UBApplication::mainWindow->actionLine);
         addAction(UBApplication::mainWindow->actionText);
         addAction(UBApplication::mainWindow->actionCapture);
 
+        groupActions();
+
         if(UBPlatformUtils::hasVirtualKeyboard())
             addAction(UBApplication::mainWindow->actionVirtualKeyboard);
     });
     setButtonIconSize(QSize(42, 42));
 
-    if(!UBPlatformUtils::hasVirtualKeyboard())
-    {
-        groupActions();
-    }
-    else
-    {
-        // VirtualKeyboard action is not in group
-        // So, groupping all buttons, except last
-        mButtonGroup = new QButtonGroup(this);
-        for(int i=0; i < mButtons.size()-1; i++)
-        {
-            mButtonGroup->addButton(mButtons[i], i);
-        }
-    }
-
     adjustSizeAndPosition();
 
     initPosition();
-
-    foreach(const UBActionPaletteButton* button, mButtons)
-    {
-        connect(button, SIGNAL(doubleClicked()), this, SLOT(stylusToolDoubleClicked()));
-    }
 
 }
 
@@ -124,10 +112,3 @@ UBStylusPalette::~UBStylusPalette()
 {
 
 }
-
-void UBStylusPalette::stylusToolDoubleClicked()
-{
-    emit stylusToolDoubleClicked(mButtonGroup->checkedId());
-}
-
-
