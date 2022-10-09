@@ -86,16 +86,6 @@ UBActionPaletteButton* UBBackgroundPalette::addAction(QAction* action)
     return button;
 }
 
-void UBBackgroundPalette::setActions(QList<QAction*> actions)
-{
-    foreach(QAction* action, actions)
-    {
-        addAction(action);
-    }
-
-    actionChanged();
-}
-
 void UBBackgroundPalette::updateLayout()
 {
     if (mToolButtonStyle == Qt::ToolButtonIconOnly) {
