@@ -32,14 +32,6 @@
 
 #include "core/memcheck.h"
 
-UBActionPalette::UBActionPalette(QList<QAction*> actions, Qt::Orientation orientation, QWidget * parent)
-    : UBFloatingPalette(Qt::TopRightCorner, parent)
-{
-    init(orientation);
-    setActions(actions);
-}
-
-
 UBActionPalette::UBActionPalette(Qt::Orientation orientation, QWidget * parent)
      : UBFloatingPalette(Qt::TopRightCorner, parent)
 {
@@ -79,17 +71,6 @@ void UBActionPalette::init(Qt::Orientation orientation)
 
     updateLayout();
 }
-
-void UBActionPalette::setActions(QList<QAction*> actions)
-{
-    foreach(QAction* action, actions)
-    {
-        addAction(action);
-    }
-
-    actionChanged();
-}
-
 
 UBActionPaletteButton* UBActionPalette::createPaletteButton(QAction* action, QWidget *parent)
 {

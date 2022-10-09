@@ -2,14 +2,6 @@
 
 #include "gui/UBMainWindow.h"
 
-UBBackgroundPalette::UBBackgroundPalette(QList<QAction*> actions, QWidget * parent)
-    : UBActionPalette(parent)
-{
-    init();
-    setActions(actions);
-}
-
-
 UBBackgroundPalette::UBBackgroundPalette(QWidget * parent)
      : UBActionPalette(parent)
 {

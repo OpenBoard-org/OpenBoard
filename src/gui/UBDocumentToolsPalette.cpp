@@ -42,12 +42,10 @@
 UBDocumentToolsPalette::UBDocumentToolsPalette(QWidget *parent)
     : UBActionPalette(Qt::TopRightCorner, parent)
 {
-    QList<QAction*> actions;
-
-    if (UBPlatformUtils::hasVirtualKeyboard())
-        actions << UBApplication::mainWindow->actionVirtualKeyboard;
-
-    setActions(actions);
+    changeActions([&]{
+       if (UBPlatformUtils::hasVirtualKeyboard())
+            addAction(UBApplication::mainWindow->actionVirtualKeyboard);
+    });
     setButtonIconSize(QSize(42, 42));
 
     adjustSizeAndPosition();

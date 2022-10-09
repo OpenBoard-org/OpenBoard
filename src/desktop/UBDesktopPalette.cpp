@@ -98,18 +98,19 @@ void UBDesktopPalette::addActionAndConnectWithPressedReleasedEvent(QAction* acti
 
 
 void UBDesktopPalette::createAndConnectButtons(){  
-    addAction(mActionUniboard);
-    addActionAndConnectWithPressedReleasedEvent(UBApplication::mainWindow->actionPen, UBStylusTool::Pen, true);
-    addActionAndConnectWithPressedReleasedEvent(UBApplication::mainWindow->actionEraser, UBStylusTool::Eraser, true);
-    addActionAndConnectWithPressedReleasedEvent(UBApplication::mainWindow->actionMarker, UBStylusTool::Marker, true);
-    addActionAndConnectWithPressedReleasedEvent(UBApplication::mainWindow->actionSelector);
-    addActionAndConnectWithPressedReleasedEvent(UBApplication::mainWindow->actionPointer);
-    if (UBPlatformUtils::hasVirtualKeyboard())
-        addAction(UBApplication::mainWindow->actionVirtualKeyboard);
-    addAction(mActionCustomSelect);
-    addAction(mDisplaySelectAction);
-    addAction(mShowHideAction);
-    actionChanged();
+    changeActions([&]{
+        addAction(mActionUniboard);
+        addActionAndConnectWithPressedReleasedEvent(UBApplication::mainWindow->actionPen, UBStylusTool::Pen, true);
+        addActionAndConnectWithPressedReleasedEvent(UBApplication::mainWindow->actionEraser, UBStylusTool::Eraser, true);
+        addActionAndConnectWithPressedReleasedEvent(UBApplication::mainWindow->actionMarker, UBStylusTool::Marker, true);
+        addActionAndConnectWithPressedReleasedEvent(UBApplication::mainWindow->actionSelector);
+        addActionAndConnectWithPressedReleasedEvent(UBApplication::mainWindow->actionPointer);
+        if (UBPlatformUtils::hasVirtualKeyboard())
+            addAction(UBApplication::mainWindow->actionVirtualKeyboard);
+        addAction(mActionCustomSelect);
+        addAction(mDisplaySelectAction);
+        addAction(mShowHideAction);
+    });
 }
 
 UBDesktopPalette::~UBDesktopPalette()
@@ -167,8 +168,9 @@ void UBDesktopPalette::minimizeMe()
 {
     clearLayout();
 
-    addAction(mMaximizeAction);
-    actionChanged();
+    changeActions([&]{
+        addAction(mMaximizeAction);
+    });
 
     adjustSizeAndPosition();
 

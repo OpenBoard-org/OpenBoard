@@ -49,19 +49,20 @@ UBWebToolsPalette::UBWebToolsPalette(QWidget *parent)
 {
     QList<QAction*> actions;
 
-    actions << UBApplication::mainWindow->actionCaptureWebContent;
+    changeActions([&]{
+        addAction(UBApplication::mainWindow->actionCaptureWebContent);
 
-    actions << UBApplication::mainWindow->actionWebCustomCapture;
-    actions << UBApplication::mainWindow->actionWebWindowCapture;
+        addAction(UBApplication::mainWindow->actionWebCustomCapture);
+        addAction(UBApplication::mainWindow->actionWebWindowCapture);
 // NOTE @letsfindaway obsolete, covered by actionWebTrapFlash
-//    actions << UBApplication::mainWindow->actionWebOEmbed;
+//      addAction(UBApplication::mainWindow->actionWebOEmbed);
 
-    actions << UBApplication::mainWindow->actionWebShowHideOnDisplay;
+        addAction(UBApplication::mainWindow->actionWebShowHideOnDisplay);
 
-    if (UBPlatformUtils::hasVirtualKeyboard())
-        actions << UBApplication::mainWindow->actionVirtualKeyboard;
+        if (UBPlatformUtils::hasVirtualKeyboard())
+            addAction(UBApplication::mainWindow->actionVirtualKeyboard);
 
-    setActions(actions);
+    });
     setButtonIconSize(QSize(42, 42));
     adjustSizeAndPosition();
 }
