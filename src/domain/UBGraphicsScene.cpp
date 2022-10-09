@@ -2765,13 +2765,19 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
         {
             if(UBSettings::settings()->isSeyesRuledBackround())
             {
-                qreal gridSizeSeyes = gridSize * 2;
+                qreal gridSizeSeyes = gridSize * 2; // The grid size must be bigger
+                int nbMarginCase = 1; // a small left margin of one gridSize
 
-                QPen seyesSquare ("#a493b7");
-                seyesSquare.setWidthF (2);
+                QPen seyesSquare ("#8e7cc3");
+                seyesSquare.setWidthF (2.);
 
-                QColor intermediateColor = bgCrossColor;
-                intermediateColor.setAlphaF(0.8 * bgCrossColor.alphaF());
+                QColor interlineColor("#6fa8dc");
+                interlineColor.setAlphaF(0.6);
+                QPen interlinePen(interlineColor);
+                interlinePen.setWidthF(2.);
+
+                QPen redLineMargin(QColor("red"));
+                redLineMargin.setWidthF(2.);
 
                 qreal firstY = ((int) (rect.y () / gridSizeSeyes)) * gridSizeSeyes;
 
@@ -2779,30 +2785,28 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
                 {
                     painter->setPen (seyesSquare);
                     painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
-                    painter->setPen (intermediateColor);
+                    painter->setPen (interlinePen);
                     painter->drawLine (rect.x (), yPos+gridSizeSeyes/4, rect.x () + rect.width (), yPos+gridSizeSeyes/4);
                     painter->drawLine (rect.x (), yPos+2*gridSizeSeyes/4, rect.x () + rect.width (), yPos+2*gridSizeSeyes/4);
                     painter->drawLine (rect.x (), yPos+3*gridSizeSeyes/4, rect.x () + rect.width (), yPos+3*gridSizeSeyes/4);
                 }
 
-                qreal firstX = ((int) (rect.x () / gridSizeSeyes)) * gridSizeSeyes;
+
+                // Vertical margin
+
+                qreal firstX = ((int) nbMarginCase * gridSizeSeyes) - mNominalSize.width() / 2.;
+
+                painter->setPen(redLineMargin);
+                painter->drawLine (firstX, rect.y (), firstX, rect.y () + rect.height ());
+
+                // Vertical grid
+
+                firstX = ((int) (nbMarginCase + 1) * gridSizeSeyes) - mNominalSize.width() / 2.;
 
                 painter->setPen (seyesSquare);
                 for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += gridSizeSeyes)
                 {
                     painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
-                }
-
-                if (mIntermediateLines)
-                {
-                    QColor intermediateColor = bgCrossColor;
-                    intermediateColor.setAlphaF(0.5 * bgCrossColor.alphaF());
-                    painter->setPen(intermediateColor);
-
-                    for (qreal yPos = firstY - gridSizeSeyes/2; yPos < rect.y () + rect.height (); yPos += gridSizeSeyes)
-                    {
-                        painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
-                    }
                 }
             }
             else
