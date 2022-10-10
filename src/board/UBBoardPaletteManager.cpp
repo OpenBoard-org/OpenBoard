@@ -252,9 +252,8 @@ void UBBoardPaletteManager::setupPalettes()
         mBackgroundsPalette->addAction(UBApplication::mainWindow->actionPlainDarkBackground);
         mBackgroundsPalette->addAction(UBApplication::mainWindow->actionCrossedDarkBackground);
         mBackgroundsPalette->addAction(UBApplication::mainWindow->actionRuledDarkBackground);
-    });
+    }, true);
     mBackgroundsPalette->setButtonIconSize(QSize(128, 128));
-    mBackgroundsPalette->groupActions();
     mBackgroundsPalette->setClosable(true);
     mBackgroundsPalette->setAutoClose(false);
     mBackgroundsPalette->adjustSizeAndPosition();
@@ -266,11 +265,10 @@ void UBBoardPaletteManager::setupPalettes()
         mAddItemPalette->addAction(UBApplication::mainWindow->actionAddItemToCurrentPage);
         mAddItemPalette->addAction(UBApplication::mainWindow->actionAddItemToNewPage);
         mAddItemPalette->addAction(UBApplication::mainWindow->actionAddItemToLibrary);
-    });
+    }, true);
 
     mAddItemPalette->setButtonIconSize(QSize(128, 128));
     mAddItemPalette->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    mAddItemPalette->groupActions();
     mAddItemPalette->setClosable(true);
     mAddItemPalette->adjustSizeAndPosition();
     mAddItemPalette->hide();
@@ -281,10 +279,9 @@ void UBBoardPaletteManager::setupPalettes()
         mErasePalette->addAction(UBApplication::mainWindow->actionEraseItems);
         mErasePalette->addAction(UBApplication::mainWindow->actionClearPage);
         mErasePalette->addAction(UBApplication::mainWindow->actionEraseBackground);
-    });
+    }, true);
     mErasePalette->setButtonIconSize(QSize(128, 128));
     mErasePalette->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    mErasePalette->groupActions();
     mErasePalette->setClosable(true);
     mErasePalette->adjustSizeAndPosition();
     mErasePalette->hide();
@@ -296,11 +293,10 @@ void UBBoardPaletteManager::setupPalettes()
         mPagePalette->addAction(UBApplication::mainWindow->actionNewPage);
         mPagePalette->addAction(UBApplication::mainWindow->actionDuplicatePage);
         mPagePalette->addAction(UBApplication::mainWindow->actionImportPage);
-    });
+    }, true);
 
     mPagePalette->setButtonIconSize(QSize(128, 128));
     mPagePalette->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    mPagePalette->groupActions();
     mPagePalette->setClosable(true);
     mPagePalette->adjustSizeAndPosition();
     mPagePalette->hide();
@@ -332,11 +328,10 @@ void UBBoardPaletteManager::pagePaletteButtonReleased()
                 mPagePalette->addAction(UBApplication::mainWindow->actionNewPage);
                 mPagePalette->addAction(UBApplication::mainWindow->actionDuplicatePage);
                 mPagePalette->addAction(UBApplication::mainWindow->actionImportPage);
-            });
+            }, true);
 
             mPagePalette->setButtonIconSize(QSize(128, 128));
             mPagePalette->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-            mPagePalette->groupActions();
             mPagePalette->setClosable(true);
 
             // As we recreate the pagePalette every time, we must reconnect the slots

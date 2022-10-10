@@ -47,7 +47,7 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
     : UBActionPalette(Qt::TopLeftCorner, parent, orient)
     , mLastSelectedId(-1)
 {
-    changeActions([&]{
+    changeActions([&]{        
         addAction(UBApplication::mainWindow->actionPen);
         addAction(UBApplication::mainWindow->actionEraser);
         addAction(UBApplication::mainWindow->actionMarker);
@@ -69,11 +69,9 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
         addAction(UBApplication::mainWindow->actionText);
         addAction(UBApplication::mainWindow->actionCapture);
 
-        groupActions();
-
         if(UBPlatformUtils::hasVirtualKeyboard())
-            addAction(UBApplication::mainWindow->actionVirtualKeyboard);
-    });
+            addAction(UBApplication::mainWindow->actionVirtualKeyboard, false);
+    }, true);
     setButtonIconSize(QSize(42, 42));
 
     adjustSizeAndPosition();

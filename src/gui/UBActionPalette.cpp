@@ -78,9 +78,6 @@ UBActionPaletteButton* UBActionPalette::createPaletteButton(QAction* action, QWi
     button->setIconSize(mButtonSize);
     button->setToolButtonStyle(mToolButtonStyle);
 
-    if (mButtonGroup)
-        mButtonGroup->addButton(button, mButtons.length());
-
     mButtons << button;
 
     connect(button, &UBActionPaletteButton::clicked,
@@ -91,9 +88,12 @@ UBActionPaletteButton* UBActionPalette::createPaletteButton(QAction* action, QWi
     return button;
 }
 
-UBActionPaletteButton* UBActionPalette::addAction(QAction* action)
+UBActionPaletteButton* UBActionPalette::addAction(QAction* action, bool exclusive)
 {
     UBActionPaletteButton* button = createPaletteButton(action, this);
+
+    if (mButtonGroup && exclusive)
+        mButtonGroup->addButton(button, mButtons.length());
 
     layout()->addWidget(button);
 
@@ -130,19 +130,6 @@ void UBActionPalette::setButtonIconSize(const QSize& size)
 
     mButtonSize = size;
 }
-
-
-void UBActionPalette::groupActions()
-{
-    mButtonGroup = new QButtonGroup(this);
-    int i = 0;
-    foreach(QToolButton* button, mButtons)
-    {
-        mButtonGroup->addButton(button, i);
-        ++i;
-    }
-}
-
 
 void UBActionPalette::setToolButtonStyle(Qt::ToolButtonStyle tbs)
 {

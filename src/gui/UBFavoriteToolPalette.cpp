@@ -116,7 +116,9 @@ UBFavoriteToolPalette::UBFavoriteToolPalette(QWidget* parent)
 
     foreach(QAction* action, toolsActions)
     {
+        mButtonGroup = new QButtonGroup();
         UBActionPaletteButton* button = createPaletteButton(action, container);
+        mButtonGroup->addButton(button);
         gridLayout->addWidget(button, i / 4, i % 4);
         mActions << action;
         i++;
@@ -125,8 +127,6 @@ UBFavoriteToolPalette::UBFavoriteToolPalette(QWidget* parent)
     setClosable(true);
     setButtonIconSize(QSize(128, 128));
     setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-
-    groupActions();
 }
 
 

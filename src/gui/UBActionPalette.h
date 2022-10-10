@@ -56,14 +56,15 @@ class UBActionPalette : public UBFloatingPalette
      // todo (C++ 20):
      // void changeActions(auto& codeBlock);
         template <typename F>
-        void changeActions(F codeBlock){
+        void changeActions(F codeBlock, bool makeExclusive = false){
+            if (makeExclusive)
+                mButtonGroup = new QButtonGroup();
             codeBlock();
             actionChanged();
         }
 
         QList<QAction*> actions();
-        void groupActions();
-        virtual UBActionPaletteButton* addAction(QAction* action);
+        virtual UBActionPaletteButton* addAction(QAction* action, bool exclusive = true);
 
         void setClosable(bool closable);
         void setAutoClose(bool autoClose)
