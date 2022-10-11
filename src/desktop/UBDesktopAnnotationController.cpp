@@ -213,7 +213,7 @@ QPainterPath UBDesktopAnnotationController::desktopPalettePath() const
  */
 void UBDesktopAnnotationController::desktopPenActionToggled(bool checked)
 {
-    setAssociatedPalettePosition(mDesktopPenPalette, 1);
+    setAssociatedPalettePosition(mDesktopPenPalette, mDesktopPalette->penButtonPos());
     mDesktopPenPalette->setVisible(checked);
     mDesktopMarkerPalette->setVisible(false);
     mDesktopEraserPalette->setVisible(false);
@@ -225,7 +225,7 @@ void UBDesktopAnnotationController::desktopPenActionToggled(bool checked)
  */
 void UBDesktopAnnotationController::desktopMarkerActionToggled(bool checked)
 {
-    setAssociatedPalettePosition(mDesktopMarkerPalette, 3);
+    setAssociatedPalettePosition(mDesktopMarkerPalette, mDesktopPalette->markerButtonPos());
     mDesktopMarkerPalette->setVisible(checked);
     mDesktopPenPalette->setVisible(false);
     mDesktopEraserPalette->setVisible(false);
@@ -237,7 +237,7 @@ void UBDesktopAnnotationController::desktopMarkerActionToggled(bool checked)
  */
 void UBDesktopAnnotationController::desktopEraserActionToggled(bool checked)
 {
-    setAssociatedPalettePosition(mDesktopEraserPalette, 2);
+    setAssociatedPalettePosition(mDesktopEraserPalette, mDesktopPalette->eraserButtonPos());
     mDesktopEraserPalette->setVisible(checked);
     mDesktopPenPalette->setVisible(false);
     mDesktopMarkerPalette->setVisible(false);
@@ -248,23 +248,16 @@ void UBDesktopAnnotationController::desktopEraserActionToggled(bool checked)
  * @param palette as the palette
  * @param actionName as the name of the related action
  */
-void UBDesktopAnnotationController::setAssociatedPalettePosition(UBActionPalette *palette, int index)
+void UBDesktopAnnotationController::setAssociatedPalettePosition(UBActionPalette *palette, QPoint pos)
 {
     QPoint desktopPalettePos = mDesktopPalette->geometry().topLeft();
-    int yPen = index * (mDesktopPalette->buttonSize().height() + 2 * mDesktopPalette->border() +6); // This is the mysterious value (6)
-
-    // First determine if the palette must be shown on the left or on the right
-    if(desktopPalettePos.x() <= (mTransparentDrawingView->width() - (palette->width() + mDesktopPalette->width() + mRightPalette->width() + 20))) // we take a small margin of 20 pixels
-    {
-        // Display it on the right
-        desktopPalettePos += QPoint(mDesktopPalette->width(), yPen);
+    desktopPalettePos += pos;
+    if(desktopPalettePos.x() <= (mTransparentDrawingView->width() - (palette->width() + mDesktopPalette->width() + mRightPalette->width() + 20))){ // we take a small margin of 20 pixels
+       desktopPalettePos += QPoint(mDesktopPalette->width() - 18, 0);
     }
-    else
-    {
-        // Display it on the left
-        desktopPalettePos += QPoint(0 - palette->width(), yPen);
+    else{
+       desktopPalettePos += QPoint(0 - palette->width() - 4, 0);
     }
-
     palette->setCustomPosition(true);
     palette->move(desktopPalettePos);
 }

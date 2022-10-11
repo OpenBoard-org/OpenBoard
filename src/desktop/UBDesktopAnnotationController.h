@@ -119,7 +119,7 @@ class UBDesktopAnnotationController : public QObject
 
     private:
 
-        void setAssociatedPalettePosition(UBActionPalette* palette, int index);
+        void setAssociatedPalettePosition(UBActionPalette* palette, QPoint pos);
         void togglePropertyPalette(UBActionPalette* palette);
         void updateMask(bool bTransparent);
 

@@ -83,7 +83,7 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
     connect(mMaximizeAction, SIGNAL(triggered()), this, SLOT(maximizeMe()));
 }
 
-void UBDesktopPalette::addActionAndConnectWithPressedReleasedEvent(QAction* action, int stylusTool, bool connectPressedEvent){
+std::function<QPoint()> UBDesktopPalette::addActionAndConnectWithPressedReleasedEvent(QAction* action, int stylusTool, bool connectPressedEvent){
     UBActionPaletteButton* button = addAction(action);
     connect(button, &UBActionPaletteButton::pressed, [=](){
         emit hideOtherPalettes(action);
@@ -93,16 +93,17 @@ void UBDesktopPalette::addActionAndConnectWithPressedReleasedEvent(QAction* acti
     connect(button, &UBActionPaletteButton::released, [=](){
         actionReleased(action);
     });
+    return [=]{return button->pos();};
 }
 
 
 
 void UBDesktopPalette::createAndConnectButtons(){  
     changeActions([&]{
-        addAction(mActionUniboard);
-        addActionAndConnectWithPressedReleasedEvent(UBApplication::mainWindow->actionPen, UBStylusTool::Pen, true);
-        addActionAndConnectWithPressedReleasedEvent(UBApplication::mainWindow->actionEraser, UBStylusTool::Eraser, true);
-        addActionAndConnectWithPressedReleasedEvent(UBApplication::mainWindow->actionMarker, UBStylusTool::Marker, true);
+        addAction(mActionUniboard);       
+        penButtonPos = addActionAndConnectWithPressedReleasedEvent(UBApplication::mainWindow->actionPen, UBStylusTool::Pen, true);
+        eraserButtonPos = addActionAndConnectWithPressedReleasedEvent(UBApplication::mainWindow->actionEraser, UBStylusTool::Eraser, true);
+        markerButtonPos = addActionAndConnectWithPressedReleasedEvent(UBApplication::mainWindow->actionMarker, UBStylusTool::Marker, true);
         addActionAndConnectWithPressedReleasedEvent(UBApplication::mainWindow->actionSelector);
         addActionAndConnectWithPressedReleasedEvent(UBApplication::mainWindow->actionPointer);
         if (UBPlatformUtils::hasVirtualKeyboard())

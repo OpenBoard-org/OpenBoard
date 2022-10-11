@@ -52,6 +52,11 @@ class UBDesktopPalette : public UBActionPalette
         void disappearForCapture();
         void appear();
 
+        std::function<QPoint()> penButtonPos;
+        std::function<QPoint()> eraserButtonPos;
+        std::function<QPoint()> markerButtonPos;
+
+
  // The following actions are owned by UBDesktopPalette and therefore we have to produce signals for them.
         QAction *mActionUniboard;
         QAction *mActionCustomSelect;
@@ -99,7 +104,7 @@ class UBDesktopPalette : public UBActionPalette
         QAction *pendingButton;
         QTime mButtonHoldTimer;
 
-        void addActionAndConnectWithPressedReleasedEvent(QAction* action, int stylusTool = 0, bool connectPressedEvent = false);
+        std::function<QPoint()> addActionAndConnectWithPressedReleasedEvent(QAction* action, int stylusTool = 0, bool connectPressedEvent = false);
         void createAndConnectButtons();
 
         void actionPressed(QToolButton* button, QAction* action, int stylusTool);
