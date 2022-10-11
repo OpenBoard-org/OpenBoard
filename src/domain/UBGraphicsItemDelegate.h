@@ -42,6 +42,7 @@
 #include <QtGui>
 #include <QtSvg>
 #include <QMimeData>
+#include <QGraphicsSvgItem>
 #include <QGraphicsVideoItem>
 
 #include "core/UB.h"

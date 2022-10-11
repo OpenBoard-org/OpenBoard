@@ -26,7 +26,7 @@
 
 
 
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QSvgGenerator>
 #include <QSvgRenderer>
 #include <QPixmap>
@@ -119,6 +119,12 @@ static QString aEditable        = "editable";
 //attributes part names
 static QString apRotate         = "rotate";
 static QString apTranslate      = "translate";
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+typedef Qt::SplitBehaviorFlags SplitBehavior;
+#else
+typedef QString::SplitBehavior SplitBehavior;
+#endif
 
 
 UBCFFSubsetAdaptor::UBCFFSubsetAdaptor()
@@ -350,10 +356,10 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
     QPolygonF polygon;
 
     if (!svgPoints.isNull()) {
-        QStringList ts = svgPoints.split(QLatin1Char(' '), QString::SkipEmptyParts);
+        QStringList ts = svgPoints.split(QLatin1Char(' '), SplitBehavior::SkipEmptyParts);
 
         foreach(const QString sPoint, ts) {
-            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
+            QStringList sCoord = sPoint.split(QLatin1Char(','), SplitBehavior::SkipEmptyParts);
             if (sCoord.size() == 2) {
                 QPointF point;
                 point.setX(sCoord.at(0).toFloat());
@@ -439,7 +445,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolygon(const QDomElement &e
         QTransform transform;
         QString textTransform = element.attribute(aTransform);
         
-        QUuid uuid = QUuid::createUuid().toString();
+        QUuid uuid = QUuid::createUuid();
         mRefToUuidMap.insert(element.attribute(aId), uuid.toString());
         svgItem->setUuid(uuid);
 
@@ -466,10 +472,10 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgPolyline(const QDomElement &
 
     if (!svgPoints.isNull()) {
         QStringList ts = svgPoints.split(QLatin1Char(' '),
-                                                    QString::SkipEmptyParts);
+                                                    SplitBehavior::SkipEmptyParts);
 
         foreach(const QString sPoint, ts) {
-            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
+            QStringList sCoord = sPoint.split(QLatin1Char(','), SplitBehavior::SkipEmptyParts);
             if (sCoord.size() == 2) {
                 QPointF point;
                 point.setX(sCoord.at(0).toFloat());
@@ -1394,19 +1400,20 @@ QColor UBCFFSubsetAdaptor::UBCFFSubsetReader::colorFromString(const QString& clr
 {
     //init regexp with pattern
     //pattern corresponds to strings like 'rgb(1,2,3) or rgb(10%,20%,30%)'
-    QRegExp regexp("rgb\\(([0-9]+%{0,1}),([0-9]+%{0,1}),([0-9]+%{0,1})\\)");
-    if (regexp.exactMatch(clrString))
+    static const QRegularExpression regexp(QRegularExpression::anchoredPattern("rgb\\(([0-9]+%{0,1}),([0-9]+%{0,1}),([0-9]+%{0,1})\\)"));
+    QRegularExpressionMatch match = regexp.match(clrString);
+    if (match.hasMatch())
     {
-        if (regexp.capturedTexts().count() == 4 && regexp.capturedTexts().at(0).length() == clrString.length())
+        if (match.lastCapturedIndex() == 3 && match.capturedTexts().at(0).length() == clrString.length())
         {
-            int r = regexp.capturedTexts().at(1).toInt();
-            if (regexp.capturedTexts().at(1).indexOf("%") != -1)
+            int r = match.capturedTexts().at(1).toInt();
+            if (match.capturedTexts().at(1).indexOf("%") != -1)
                 r = r * 255 / 100;
-            int g = regexp.capturedTexts().at(2).toInt();
-            if (regexp.capturedTexts().at(2).indexOf("%") != -1)
+            int g = match.capturedTexts().at(2).toInt();
+            if (match.capturedTexts().at(2).indexOf("%") != -1)
                 g = g * 255 / 100;
-            int b = regexp.capturedTexts().at(3).toInt();
-            if (regexp.capturedTexts().at(3).indexOf("%") != -1)
+            int b = match.capturedTexts().at(3).toInt();
+            if (match.capturedTexts().at(3).indexOf("%") != -1)
                 b = b * 255 / 100;
             return QColor(r, g, b);
         }
@@ -1426,12 +1433,13 @@ QTransform UBCFFSubsetAdaptor::UBCFFSubsetReader::transformFromString(const QStr
     qreal angle = 0.0;
     QTransform tr;
 
-    foreach(QString trStr, trString.split(" ", QString::SkipEmptyParts))
+    foreach(QString trStr, trString.split(" ", SplitBehavior::SkipEmptyParts))
     {
         //check pattern for strings like 'rotate(10)'
-        QRegExp regexp("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)");
-        if (regexp.exactMatch(trStr)) {
-            angle = regexp.capturedTexts().at(1).toDouble();
+        static const QRegularExpression rotate1(QRegularExpression::anchoredPattern("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)"));
+        QRegularExpressionMatch match = rotate1.match(trStr);
+        if (match.hasMatch()) {
+            angle = match.capturedTexts().at(1).toDouble();
             if (item)
             {    
                 item->setTransformOriginPoint(QPointF(0, 0));
@@ -1441,11 +1449,12 @@ QTransform UBCFFSubsetAdaptor::UBCFFSubsetReader::transformFromString(const QStr
         };
         
         //check pattern for strings like 'rotate(10,20,20)' or 'rotate(10.1,10.2,34.2)'
-        regexp.setPattern("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)");
-        if (regexp.exactMatch(trStr)) {
-            angle = regexp.capturedTexts().at(1).toDouble();
-            dxr = regexp.capturedTexts().at(2).toDouble();
-            dyr = regexp.capturedTexts().at(3).toDouble();
+        static const QRegularExpression rotate3(QRegularExpression::anchoredPattern("rotate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *, *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *\\)"));
+        match = rotate3.match(trStr);
+        if (match.hasMatch()) {
+            angle = match.capturedTexts().at(1).toDouble();
+            dxr = match.capturedTexts().at(2).toDouble();
+            dyr = match.capturedTexts().at(3).toDouble();
             if (item)
             {                
                 item->setTransformOriginPoint(QPointF(dxr, dyr)-item->pos());
@@ -1455,10 +1464,11 @@ QTransform UBCFFSubsetAdaptor::UBCFFSubsetReader::transformFromString(const QStr
         }
 
         //check pattern for strings like 'translate(11.0, 12.34)'
-        regexp.setPattern("translate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *,*([-+]{0,1}[0-9]*\\.{0,1}[0-9]*)*\\)");
-        if (regexp.exactMatch(trStr)) {
-            dx = regexp.capturedTexts().at(1).toDouble();
-            dy = regexp.capturedTexts().at(2).toDouble();
+        static const QRegularExpression translate2(QRegularExpression::anchoredPattern("translate\\( *([-+]{0,1}[0-9]*\\.{0,1}[0-9]*) *,*([-+]{0,1}[0-9]*\\.{0,1}[0-9]*)*\\)"));
+        match = translate2.match(trStr);
+        if (match.hasMatch()) {
+            dx = match.capturedTexts().at(1).toDouble();
+            dy = match.capturedTexts().at(2).toDouble();
             tr.translate(dx,dy);
             continue;
         }
@@ -1468,7 +1478,7 @@ QTransform UBCFFSubsetAdaptor::UBCFFSubsetReader::transformFromString(const QStr
 
 bool UBCFFSubsetAdaptor::UBCFFSubsetReader::getViewBoxDimenstions(const QString& viewBox)
 {
-    QStringList capturedTexts = viewBox.split(" ", QString::SkipEmptyParts);
+    QStringList capturedTexts = viewBox.split(" ", SplitBehavior::SkipEmptyParts);
     if (capturedTexts.count())
     {
         if (4 == capturedTexts.count())

@@ -95,7 +95,7 @@ class UBAutoSaver : public QObject {
 
     private:
         QBasicTimer mTimer;
-        QTime mFirstChange;
+        QElapsedTimer mFirstChange;
 
 };
 

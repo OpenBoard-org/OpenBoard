@@ -73,7 +73,7 @@ void UBDocumentProxy::init()
     setMetaData(UBSettings::documentGroupName, "");
 
     QDateTime now = QDateTime::currentDateTime();
-    setMetaData(UBSettings::documentName, now.toString(Qt::SystemLocaleShortDate));
+    setMetaData(UBSettings::documentName, QLocale::system().toString(now, QLocale::ShortFormat));
 
     setUuid(QUuid::createUuid());
 

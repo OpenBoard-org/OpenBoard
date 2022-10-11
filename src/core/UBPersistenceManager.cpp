@@ -77,6 +77,12 @@ const QString UBPersistenceManager::fFolders = "folders.xml";
 const QString UBPersistenceManager::tFolder = "folder";
 const QString UBPersistenceManager::aName = "name";
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+typedef Qt::SplitBehaviorFlags SplitBehavior;
+#else
+typedef QString::SplitBehavior SplitBehavior;
+#endif
+
 UBPersistenceManager * UBPersistenceManager::sSingleton = 0;
 
 UBPersistenceManager::UBPersistenceManager(QObject *pParent)
@@ -180,7 +186,7 @@ void UBPersistenceManager::onSceneLoaded(QByteArray scene, UBDocumentProxy* prox
 {
     Q_UNUSED(scene);
     qDebug() << "scene loaded " << sceneIndex;
-    QTime time;
+    QElapsedTimer time;
     time.start();
     mSceneCache.insert(proxy, sceneIndex, loadDocumentScene(proxy, sceneIndex, false));
     qDebug() << "millisecond for sceneCache " << time.elapsed();
@@ -257,14 +263,14 @@ void UBPersistenceManager::createDocumentProxiesStructure(bool interactive)
             if (xmlDom.setContent(domString, &errorStr, &errorLine, &errorColumn)) {
                 loadFolderTreeFromXml("", xmlDom.firstChildElement());
             } else {
-                qDebug() << "Error reading content of " << mFoldersXmlStorageName << endl
+                qDebug() << "Error reading content of " << mFoldersXmlStorageName << '\n'
                          << "Error:" << inFile.errorString()
                          << "Line:" << errorLine
                          << "Column:" << errorColumn;
             }
             inFile.close();
         } else {
-            qDebug() << "Error reading" << mFoldersXmlStorageName << endl
+            qDebug() << "Error reading" << mFoldersXmlStorageName << '\n'
                      << "Error:" << inFile.errorString();
         }
     }
@@ -380,7 +386,7 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
 
 QString UBPersistenceManager::adjustDocumentVirtualPath(const QString &str)
 {
-    QStringList pathList = str.split("/", QString::SkipEmptyParts);
+    QStringList pathList = str.split("/", SplitBehavior::SkipEmptyParts);
 
     if (pathList.isEmpty()) {
         pathList.append(myDocumentsName);
@@ -413,7 +419,7 @@ void UBPersistenceManager::closing()
 
         outFile.close();
     } else {
-        qDebug() << "failed to open document" <<  mFoldersXmlStorageName << "for writing" << endl
+        qDebug() << "failed to open document" <<  mFoldersXmlStorageName << "for writing" << '\n'
                  << "Error string:" << outFile.errorString();
     }
 }

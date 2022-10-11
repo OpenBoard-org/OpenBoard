@@ -60,7 +60,13 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QTimer>
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+#include <QWebEngineContextMenuRequest>
+#else
 #include <QWebEngineContextMenuData>
+#endif
+
 #include <QWebEngineProfile>
 
 #include "board/UBBoardController.h"
@@ -218,7 +224,12 @@ QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType type)
 
 void WebView::contextMenuEvent(QContextMenuEvent *event)
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QMenu *menu = createStandardContextMenu();
+#else
     QMenu *menu = page()->createStandardContextMenu();
+#endif
+
     const QList<QAction *> actions = menu->actions();
     auto inspectElement = std::find(actions.cbegin(), actions.cend(), page()->action(QWebEnginePage::InspectElement));
     if (inspectElement == actions.cend()) {
@@ -240,8 +251,14 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
     QUrl contentUrl;
 
     QUrl pageUrl = page()->url();
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QUrl linkUrl = lastContextMenuRequest()->linkUrl();
+    auto mediaType = lastContextMenuRequest()->mediaType();
+#else
     QUrl linkUrl = page()->contextMenuData().linkUrl();
     auto mediaType = page()->contextMenuData().mediaType();
+#endif
 
     if (pageUrl.scheme() == "chrome-extension" && pageUrl.query().endsWith(".pdf", Qt::CaseInsensitive))
     {
@@ -253,11 +270,19 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         // on PDF link
         contentUrl = linkUrl;
     }
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    else if (mediaType == QWebEngineContextMenuRequest::MediaTypeImage)
+    {
+        // on image
+        contentUrl = lastContextMenuRequest()->mediaUrl();
+    }
+#else
     else if (mediaType == QWebEngineContextMenuData::MediaTypeImage)
     {
         // on image
         contentUrl = page()->contextMenuData().mediaUrl();
     }
+#endif
 
     if (contentUrl.isValid())
     {

@@ -54,7 +54,13 @@
 #include "downloadwidget.h"
 
 #include <QFileDialog>
+#include <QtWebEngineWidgetsVersion>
+
+#if QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <QWebEngineDownloadRequest>
+#else
 #include <QWebEngineDownloadItem>
+#endif
 
 DownloadManagerWidget::DownloadManagerWidget(QWidget *parent)
     : QWidget(parent)
@@ -63,15 +69,22 @@ DownloadManagerWidget::DownloadManagerWidget(QWidget *parent)
     setupUi(this);
 }
 
+#if QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+void DownloadManagerWidget::downloadRequested(QWebEngineDownloadRequest *download)
+{
+    Q_ASSERT(download && download->state() == QWebEngineDownloadRequest::DownloadRequested);
+#else
 void DownloadManagerWidget::downloadRequested(QWebEngineDownloadItem *download)
 {
     Q_ASSERT(download && download->state() == QWebEngineDownloadItem::DownloadRequested);
+#endif
 
-    QString path = QFileDialog::getSaveFileName(this, tr("Save as"), download->path());
+    QString path = QFileDialog::getSaveFileName(this, tr("Save as"), QDir(download->downloadDirectory()).filePath(download->downloadFileName()));
     if (path.isEmpty())
         return;
 
-    download->setPath(path);
+    download->setDownloadDirectory(QFileInfo(path).path());
+    download->setDownloadFileName(QFileInfo(path).fileName());
     download->accept();
     add(new DownloadWidget(download));
 

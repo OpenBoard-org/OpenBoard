@@ -33,13 +33,12 @@ VERSION_RC = $$replace(VERSION_RC, "rc", "192" ) # 0xC0
 VERSION_RC = $$replace(VERSION_RC, "r", "240") # 0xF0
 
 QT += svg
+greaterThan(QT_MAJOR_VERSION, 5):QT += svgwidgets
 QT += network
 QT += xml
-QT += xmlpatterns
 QT += uitools
 QT += multimedia
 QT += multimediawidgets
-QT += webengine
 QT += webenginewidgets
 QT += printsupport
 QT += core
@@ -454,8 +453,14 @@ linux-g++* {
     LIBS += -lcrypto
     #LIBS += -lprofiler
     LIBS += -lX11
-    LIBS += -lquazip5
-    INCLUDEPATH += "/usr/include/quazip5"
+
+    greaterThan(QT_MAJOR_VERSION, 5) {
+        LIBS += -lquazip6
+        INCLUDEPATH += "/usr/include/quazip6"
+    } else {
+        LIBS += -lquazip5
+        INCLUDEPATH += "/usr/include/quazip5"
+    }
 
     LIBS += -lpoppler
     INCLUDEPATH += "/usr/include/poppler"

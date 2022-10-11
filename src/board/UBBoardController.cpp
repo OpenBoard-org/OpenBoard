@@ -2402,8 +2402,8 @@ void UBBoardController::copy()
 void UBBoardController::paste()
 {
     QClipboard *clipboard = QApplication::clipboard();
-    qreal xPosition = ((qreal)qrand()/(qreal)RAND_MAX) * 400;
-    qreal yPosition = ((qreal)qrand()/(qreal)RAND_MAX) * 200;
+    qreal xPosition = ((qreal)QRandomGenerator::global()->generate()/(qreal)RAND_MAX) * 400;
+    qreal yPosition = ((qreal)QRandomGenerator::global()->generate()/(qreal)RAND_MAX) * 200;
     QPointF pos(xPosition -200 , yPosition - 100);
     processMimeData(clipboard->mimeData(), pos);
 
@@ -2512,7 +2512,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
     {
         if("" != pMimeData->text()){
             // Sometimes, it is possible to have an URL as text. we check here if it is the case
-            QString qsTmp = pMimeData->text().remove(QRegExp("[\\0]"));
+            QString qsTmp = pMimeData->text().remove('\0');
             if(qsTmp.startsWith("http"))
                 downloadURL(QUrl(qsTmp), QString(), pPos);
             else{

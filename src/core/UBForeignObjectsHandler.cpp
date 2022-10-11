@@ -55,18 +55,25 @@ const QString thumbSuff = ".png";
 const QString scanDirs = "audios,images,videos,teacherGuideObjects,widgets";
 const QStringList trashFilter = QStringList() << "*.swf";
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+typedef Qt::SplitBehaviorFlags SplitBehavior;
+#else
+typedef QString::SplitBehavior SplitBehavior;
+#endif
+
 static QString strIdFrom(const QString &filePath)
 {
     if ((filePath).isEmpty()) {
         return QString();
     }
 
-    QRegExp rx("\\{.(?!.*\\{).*\\}");
-    if (rx.indexIn(filePath) == -1) {
+    static const QRegularExpression rx("\\{.(?!.*\\{).*\\}");
+    QRegularExpressionMatch match = rx.match(filePath);
+    if (!match.hasMatch()) {
         return QString();
     }
 
-    return rx.cap();
+    return match.captured();
 }
 
 static bool rm_r(const QString &rmPath)
@@ -146,8 +153,9 @@ static QString thumbFileNameFrom(const QString &filePath)
         return QString();
     }
 
+    static const QRegularExpression braces("[\\{\\}]");
     QString thumbPath = filePath;
-    thumbPath.replace(QRegExp("[\\{\\}]"), "").replace(wgtSuff, thumbSuff);
+    thumbPath.replace(braces, "").replace(wgtSuff, thumbSuff);
 
     return thumbPath;
 }
@@ -175,14 +183,14 @@ static QDomDocument createDomFromSvg(const QString &svgUrl)
             if (xmlDom.setContent(domString, &errorStr, &errorLine, &errorColumn)) {
                 return xmlDom;
             } else {
-                qDebug() << "Error reading content of " << mFoldersXmlStorageName << endl
+                qDebug() << "Error reading content of " << mFoldersXmlStorageName << '\n'
                          << "Error:" << inFile.errorString()
                          << "Line:" << errorLine
                          << "Column:" << errorColumn;
             }
             inFile.close();
         } else {
-            qDebug() << "Error reading" << mFoldersXmlStorageName << endl
+            qDebug() << "Error reading" << mFoldersXmlStorageName << '\n'
                      << "Error:" << inFile.errorString();
         }
     }
@@ -262,7 +270,7 @@ private:
     void fitIdsFromFileSystem()
     {
         QString absPrefix = mCurrentDir + "/";
-        QStringList dirsList = scanDirs.split(",", QString::SkipEmptyParts);
+        QStringList dirsList = scanDirs.split(",", SplitBehavior::SkipEmptyParts);
         foreach (QString dirName, dirsList) {
             QString absPath = absPrefix + dirName;
             if (!QFile::exists(absPath)) {
@@ -538,7 +546,8 @@ private:
                 if (ref.isEmpty()) {
                     return;
                 }
-                ref.replace(QRegExp("^(.*pdf\\#page\\=).*$"), QString("\\1%1").arg(mToIndex));
+                static const QRegularExpression pdfReference("^(.*pdf\\#page\\=).*$");
+                ref.replace(pdfReference, QString("\\1%1").arg(mToIndex));
                 return;
             }
 
@@ -568,7 +577,8 @@ private:
         if (createNewUuid)
         {
             QUuid newUuid = QUuid::createUuid();
-            QString newPath = relative.replace(QRegExp("\\{.*\\}"), newUuid.toString());
+            static const QRegularExpression bracedUuid("\\{.*\\}");
+            QString newPath = relative.replace(bracedUuid, newUuid.toString());
 
             cp_rf(mFromDir + "/" + relativePath, mToDir + "/" + newPath);
 

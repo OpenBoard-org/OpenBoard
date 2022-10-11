@@ -167,7 +167,9 @@ QSettings* UBSettings::getAppSettings()
         }
 
         UBSettings::sAppSettings = new QSettings(appSettings, QSettings::IniFormat, 0);
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
         UBSettings::sAppSettings->setIniCodec("utf-8");
+#endif
 
         qDebug() << "sAppSettings location: " << appSettings;
     }
@@ -945,7 +947,7 @@ QString UBSettings::userDataDirectory()
                 qCritical() << "Impossible to create datadirpath " << dataDirPath;
 
         }
-        dataDirPath = UBFileSystemUtils::normalizeFilePath(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+        dataDirPath = UBFileSystemUtils::normalizeFilePath(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
         if (qApp->organizationName().size() > 0)
             dataDirPath.replace(qApp->organizationName() + "/", "");
     }

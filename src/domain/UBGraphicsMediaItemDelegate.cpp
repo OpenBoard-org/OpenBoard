@@ -268,7 +268,11 @@ void UBGraphicsMediaItemDelegate::mediaStatusChanged(QMediaPlayer::MediaStatus s
     updatePlayPauseState();
 }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+void UBGraphicsMediaItemDelegate::mediaStateChanged(QMediaPlayer::PlaybackState state)
+#else
 void UBGraphicsMediaItemDelegate::mediaStateChanged(QMediaPlayer::State state)
+#endif
 {
     Q_UNUSED(state);
     // Possible states are StoppedState, PlayingState and PausedState

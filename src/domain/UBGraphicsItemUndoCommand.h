@@ -43,6 +43,7 @@ class UBGraphicsItemUndoCommand : public UBUndoCommand
     public:
         typedef QMultiMap<UBGraphicsGroupContainerItem*, QUuid> GroupDataTable;
 
+
         UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, const QSet<QGraphicsItem*>& pRemovedItems,
                                   const QSet<QGraphicsItem*>& pAddedItems, const GroupDataTable &groupsMap = GroupDataTable());
 
@@ -61,6 +62,11 @@ class UBGraphicsItemUndoCommand : public UBUndoCommand
         virtual void redo();
 
     private:
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        typedef QMultiMapIterator<UBGraphicsGroupContainerItem*, QUuid> GroupDataTableIterator;
+#else
+        typedef QMapIterator<UBGraphicsGroupContainerItem*, QUuid> GroupDataTableIterator;
+#endif
         UBGraphicsScene* mScene;
         QSet<QGraphicsItem*> mRemovedItems;
         QSet<QGraphicsItem*> mAddedItems;

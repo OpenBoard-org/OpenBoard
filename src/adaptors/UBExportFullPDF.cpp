@@ -136,7 +136,8 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
                 sceneHasPDFBackground = false;
             }
 
-            pdfPrinter.setPaperSize(QSizeF(pageSize.width()*mScaleFactor, pageSize.height()*mScaleFactor), QPrinter::Point);
+            QPageSize size(QSizeF(pageSize.width()*mScaleFactor, pageSize.height()*mScaleFactor), QPageSize::Point);
+            pdfPrinter.setPageSize(size);
 
             if (!pdfPainter) pdfPainter = new QPainter(&pdfPrinter);
 

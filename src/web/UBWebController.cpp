@@ -98,7 +98,7 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
 
     // compute a system specific user agent string
     QString originalUserAgent = mWebProfile->httpUserAgent();
-    QRegularExpression exp("\\(([^;]*);([^)]*)\\)");
+    static const QRegularExpression exp("\\(([^;]*);([^)]*)\\)");
 
     QString p1;
     QString p2;
@@ -585,10 +585,11 @@ void UBWebController::showTabAtTop(bool attop)
 QUrl UBWebController::guessUrlFromString(const QString &string)
 {
     QString urlStr = string.trimmed();
-    QRegExp test(QLatin1String("^[a-zA-Z]+\\:.*"));
+    static const QRegularExpression test(QRegularExpression::anchoredPattern("^[a-zA-Z]+\\:.*"));
 
     // Check if it looks like a qualified URL. Try parsing it and see.
-    bool hasSchema = test.exactMatch(urlStr);
+    QRegularExpressionMatch match = test.match(urlStr);
+    bool hasSchema = match.hasMatch();
     if (hasSchema)
     {
         int dotCount = urlStr.count(".");

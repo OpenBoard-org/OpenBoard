@@ -444,7 +444,7 @@ void UBGraphicsTextItem::contentsChanged()
 
     if (toPlainText().isEmpty())
     {
-        resize(QFontMetrics(font()).width(mTypeTextHereLabel),QFontMetrics(font()).height());
+        resize(QFontMetrics(font()).horizontalAdvance(mTypeTextHereLabel),QFontMetrics(font()).height());
     }
 }
 

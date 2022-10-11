@@ -48,6 +48,12 @@
 
 #include "core/memcheck.h"
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+typedef Qt::SplitBehaviorFlags SplitBehavior;
+#else
+typedef QString::SplitBehavior SplitBehavior;
+#endif
+
 qreal UBPreferencesController::sSliderRatio = 10.0;
 qreal UBPreferencesController::sMinPenWidth = 0.5;
 qreal UBPreferencesController::sMaxPenWidth = 50.0;
@@ -149,7 +155,9 @@ void UBPreferencesController::wire()
     connect(mPreferencesUI->emptyTrashDaysValue, SIGNAL(valueChanged(int)), settings->emptyTrashDaysValue,  SLOT(setInt(int)));
 
 
-    connect(mPreferencesUI->keyboardPaletteKeyButtonSize, SIGNAL(currentIndexChanged(const QString &)), settings->boardKeyboardPaletteKeyBtnSize, SLOT(setString(const QString &)));
+    connect(mPreferencesUI->keyboardPaletteKeyButtonSize, qOverload<int>(&QComboBox::currentIndexChanged), settings->boardKeyboardPaletteKeyBtnSize, [=](int index) {
+        settings->boardKeyboardPaletteKeyBtnSize->setString(mPreferencesUI->keyboardPaletteKeyButtonSize->itemText(index));
+    });
     connect(mPreferencesUI->startModeComboBox, SIGNAL(currentIndexChanged(int)), settings->appStartMode, SLOT(setInt(int)));
 
     connect(mPreferencesUI->useExternalBrowserCheckBox, SIGNAL(clicked(bool)), settings->webUseExternalBrowser, SLOT(setBool(bool)));
@@ -698,7 +706,7 @@ UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor
     for (int i = 1 ; i < UBSettings::settings()->colorPaletteSize ; i++)
     {
         UBColorPicker *picker = new UBColorPicker(lightBackgroundFrame);
-        picker->setObjectName(QString::fromUtf8("penLightBackgroundColor") + i);
+        picker->setObjectName(QString("penLightBackgroundColor%1").arg(i));
         picker->setMinimumSize(QSize(32, 32));
         picker->setFrameShape(QFrame::StyledPanel);
         picker->setFrameShadow(QFrame::Raised);
@@ -725,7 +733,7 @@ UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor
     for (int i = 1 ; i < UBSettings::settings()->colorPaletteSize ; i++)
     {
         UBColorPicker *picker = new UBColorPicker(darkBackgroundFrame);
-        picker->setObjectName(QString::fromUtf8("penDarkBackgroundColor") + i);
+        picker->setObjectName(QString("penDarkBackgroundColor%1").arg(i));
         picker->setMinimumSize(QSize(32, 32));
         picker->setFrameShape(QFrame::StyledPanel);
         picker->setFrameShadow(QFrame::Raised);
@@ -776,7 +784,7 @@ void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
 
     if (mScreenLabels.empty())
     {
-        QStringList screenNames = text().split(',', QString::SkipEmptyParts);
+        QStringList screenNames = text().split(',', SplitBehavior::SkipEmptyParts);
 
         QList<QScreen*> screens = UBApplication::displayManager->availableScreens();
         QStringList availableScreenNames;
@@ -852,7 +860,7 @@ void UBScreenListLineEdit::addScreen()
 
 void UBScreenListLineEdit::onTextChanged(const QString &input)
 {
-    QStringList screenNames = input.split(',', QString::SkipEmptyParts);
+    QStringList screenNames = input.split(',', SplitBehavior::SkipEmptyParts);
 
     for (QPushButton* button : mScreenLabels)
     {
@@ -902,7 +910,7 @@ QValidator::State UBStringListValidator::validate(QString &input, int &) const
 
     bool ok = true;
     bool wasOk = false;
-    QStringList inputList = input.split(',', QString::SkipEmptyParts);
+    QStringList inputList = input.split(',', SplitBehavior::SkipEmptyParts);
 
     for (const QString& token : inputList)
     {

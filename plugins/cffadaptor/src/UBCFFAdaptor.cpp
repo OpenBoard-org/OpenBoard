@@ -51,6 +51,12 @@
 #endif
 //THIRD_PARTY_WARNINGS_ENABLE
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+typedef Qt::SplitBehaviorFlags SplitBehavior;
+#else
+typedef QString::SplitBehavior SplitBehavior;
+#endif
+
 UBCFFAdaptor::UBCFFAdaptor()
 {}
 
@@ -630,10 +636,9 @@ QDomElement UBCFFAdaptor::UBToCFFConverter::parsePageset(const QStringList &page
 
     QDomElement svgPagesetElement = mDocumentToWrite->createElementNS(svgIWBNS,":"+ tIWBPageSet);
 
-    QMapIterator<int, QDomElement> nextSVGElement(pageList);
-    nextSVGElement.toFront();
-    while (nextSVGElement.hasNext()) 
-        svgPagesetElement.appendChild(nextSVGElement.next().value());
+    for (const auto &value : qAsConst(pageList)) {
+        svgPagesetElement.appendChild(value);
+    }
 
     return svgPagesetElement.hasChildNodes() ? svgPagesetElement : QDomElement();
 }
@@ -680,10 +685,9 @@ QDomElement UBCFFAdaptor::UBToCFFConverter::parseSvgPageSection(const QDomElemen
     // to do:
     // there we must to sort elements (take elements from list and assign parent ordered like in parseSVGGGroup)
     // we returns just element because we don't care about layer.
-    QMapIterator<int, QDomElement> nextSVGElement(svgElements);
-    nextSVGElement.toFront();
-    while (nextSVGElement.hasNext()) 
-        svgElementPart.appendChild(nextSVGElement.next().value());
+    for (const auto &value : qAsConst(svgElements)) {
+        svgElementPart.appendChild(value);
+    }
  
     return svgElementPart.hasChildNodes() ? svgElementPart : QDomElement();
 }
@@ -808,7 +812,7 @@ QString UBCFFAdaptor::UBToCFFConverter::getSrcContentFolderName(QString href)
 QString UBCFFAdaptor::UBToCFFConverter::getFileNameFromPath(const QString sPath)
 {
     QString sRet;
-    QStringList sl = sPath.split("/",QString::SkipEmptyParts);
+    QStringList sl = sPath.split("/",SplitBehavior::SkipEmptyParts);
 
     if (0 < sl.count())
     {
@@ -831,7 +835,7 @@ QString UBCFFAdaptor::UBToCFFConverter::getFileNameFromPath(const QString sPath)
 
 QString UBCFFAdaptor::UBToCFFConverter::getExtentionFromFileName(const QString &filename)
 {
-    QStringList sl = filename.split("/",QString::SkipEmptyParts);
+    QStringList sl = filename.split("/",SplitBehavior::SkipEmptyParts);
 
     if (0 < sl.count())
     {
@@ -878,7 +882,7 @@ QString UBCFFAdaptor::UBToCFFConverter::getElementTypeFromUBZ(const QDomElement 
             if (element.hasAttribute(aUBZHref))
                 sPath = element.attribute(aUBZHref);
 
-            QStringList tsl = sPath.split(".", QString::SkipEmptyParts);
+            QStringList tsl = sPath.split(".", SplitBehavior::SkipEmptyParts);
             if (0 < tsl.count())
             {
                 QString elementType = tsl.at(tsl.count()-1);
@@ -914,7 +918,7 @@ bool UBCFFAdaptor::UBToCFFConverter::itIsSupportedFormat(const QString &format) 
 {
     bool bRet;
 
-    QStringList tsl = format.split(".", QString::SkipEmptyParts);
+    QStringList tsl = format.split(".", SplitBehavior::SkipEmptyParts);
     if (0 < tsl.count())
         bRet = cffSupportedFileFormats.contains(tsl.at(tsl.count()-1).toLower());       
     else
@@ -1021,7 +1025,7 @@ QTransform UBCFFAdaptor::UBToCFFConverter::getTransformFromUBZ(const QDomElement
     ubzTransform.remove("(");
     ubzTransform.remove(")");
 
-    transformParameters = ubzTransform.split(",", QString::SkipEmptyParts);
+    transformParameters = ubzTransform.split(",", SplitBehavior::SkipEmptyParts);
 
     if (6 <= transformParameters.count())
     {
@@ -1240,12 +1244,12 @@ void UBCFFAdaptor::UBToCFFConverter::setCFFTextFromHTMLTextNode(const QDomElemen
                         for (int i = 0; i < attrCount; i++)
                         {
                             // html attributes like: style="font-size:40pt; color:"red";".
-                            QStringList cffAttributes = spanNode.attributes().item(i).nodeValue().split(";", QString::SkipEmptyParts);
+                            QStringList cffAttributes = spanNode.attributes().item(i).nodeValue().split(";", SplitBehavior::SkipEmptyParts);
                             {
                                 for (int i = 0; i < cffAttributes.count(); i++)
                                 {                       
                                     QString attr = cffAttributes.at(i).trimmed();
-                                    QStringList AttrVal = attr.split(":", QString::SkipEmptyParts);
+                                    QStringList AttrVal = attr.split(":", SplitBehavior::SkipEmptyParts);
                                     if(1 < AttrVal.count())
                                     {    
                                         QString sAttr = ubzAttrNameToCFFAttrName(AttrVal.at(0));
@@ -1605,16 +1609,17 @@ bool UBCFFAdaptor::UBToCFFConverter::parseSVGGGroup(const QDomElement &element, 
     }
 
     QList<int> layers;
-    QMapIterator<int, QDomElement> nextSVGElement(svgElements);
-    while (nextSVGElement.hasNext()) 
-        layers << nextSVGElement.next().key();
+    const auto keys = svgElements.keys();
+    for (const auto key : keys) {
+        layers << key;
+    }
 
     std::sort(layers.begin(), layers.end());
     int layer = layers.at(0);
 
-    nextSVGElement.toFront();
-    while (nextSVGElement.hasNext()) 
-        svgElementPart.appendChild(nextSVGElement.next().value());
+    for (const auto &value : qAsConst(svgElements)) {
+        svgElementPart.appendChild(value);
+    }
 
     addSVGElementToResultModel(svgElementPart, dstSvgList, layer);
  
@@ -1827,10 +1832,10 @@ bool UBCFFAdaptor::UBToCFFConverter::parseUBZText(const QDomElement &element, QM
             commonParams.remove(" ");
             commonParams.remove("'");
 
-            QStringList commonAttributes = commonParams.split(";", QString::SkipEmptyParts);
+            QStringList commonAttributes = commonParams.split(";", SplitBehavior::SkipEmptyParts);
             for (int i = 0; i < commonAttributes.count(); i++)
             {
-                QStringList AttrVal = commonAttributes.at(i).split(":", QString::SkipEmptyParts);
+                QStringList AttrVal = commonAttributes.at(i).split(":", SplitBehavior::SkipEmptyParts);
                 if (1 < AttrVal.count())
                 {                
                     QString sAttr = ubzAttrNameToCFFAttrName(AttrVal.at(0));
@@ -2018,7 +2023,7 @@ QSize UBCFFAdaptor::UBToCFFConverter::getSVGDimentions(const QString &element)
 
     QStringList dimList;
 
-    dimList = element.split(dimensionsDelimiter1, QString::KeepEmptyParts);
+    dimList = element.split(dimensionsDelimiter1);
     if (dimList.count() != 2) // row unlike 0x0
         return QSize();
 
@@ -2040,7 +2045,7 @@ QRect UBCFFAdaptor::UBToCFFConverter::getViewboxRect(const QString &element) con
 {
     QStringList dimList;
 
-    dimList = element.split(dimensionsDelimiter2, QString::KeepEmptyParts);
+    dimList = element.split(dimensionsDelimiter2);
     if (dimList.count() != 4) // row unlike 0 0 0 0
         return QRect();
     

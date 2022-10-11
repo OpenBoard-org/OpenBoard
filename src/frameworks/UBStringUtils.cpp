@@ -47,19 +47,20 @@ bool UBStringUtils::containsPrefix(const QStringList &prefixes, const QString &s
 QStringList UBStringUtils::sortByLastDigit(const QStringList& sourceList)
 {
     // we look for a set of digit after non digits and before a .
-    QRegExp rx("\\D(\\d+)\\.");
+    static const QRegularExpression rx("\\D(\\d+)\\.");
 
     QMultiMap<int, QString> elements;
 
     foreach(QString source, sourceList)
     {
-        int pos = rx.lastIndexIn(source);
+        int pos = source.lastIndexOf(rx);
 
         int digit = -1;
 
         if (pos >= 0)
         {
-            digit = rx.cap(1).toInt();
+            QRegularExpressionMatch match = rx.match(source, pos);
+            digit = match.captured(1).toInt();
         }
 
         elements.insert(digit, source);
@@ -89,15 +90,17 @@ QString UBStringUtils::nextDigitizedName(const QString& source)
 {
 
     // we look for a set of digit after non digits and at the end
-    QRegExp rx("\\D(\\d+)");
+    static const QRegularExpression rx("\\D(\\d+)");
 
-    int pos = rx.lastIndexIn(source);
+    int pos = source.lastIndexOf(rx);
 
     int digit = -1;
+    QRegularExpressionMatch match;
 
     if (pos >= 0)
     {
-        digit = rx.cap(1).toInt();
+        match = rx.match(source, pos);
+        digit = match.captured(1).toInt();
     }
 
     QString ret(source);
@@ -110,7 +113,7 @@ QString UBStringUtils::nextDigitizedName(const QString& source)
     {
         QString s("%1");
         s = s.arg(digit + 1);
-        return ret.replace(rx.cap(1), s);
+        return ret.replace(match.captured(1), s);
     }
 }
 

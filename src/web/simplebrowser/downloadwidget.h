@@ -54,10 +54,15 @@
 #include "ui_downloadwidget.h"
 
 #include <QFrame>
-#include <QTime>
+#include <QElapsedTimer>
+#include <QtWebEngineWidgetsVersion>
 
 QT_BEGIN_NAMESPACE
+#if QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+class QWebEngineDownloadRequest;
+#else
 class QWebEngineDownloadItem;
+#endif
 QT_END_NAMESPACE
 
 // Displays one ongoing or finished download (QWebEngineDownloadItem).
@@ -66,7 +71,11 @@ class DownloadWidget final : public QFrame, public Ui::DownloadWidget
     Q_OBJECT
 public:
     // Precondition: The QWebEngineDownloadItem has been accepted.
+#if QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    explicit DownloadWidget(QWebEngineDownloadRequest *download, QWidget *parent = nullptr);
+#else
     explicit DownloadWidget(QWebEngineDownloadItem *download, QWidget *parent = nullptr);
+#endif
 
 signals:
     // This signal is emitted when the user indicates that they want to remove
@@ -79,8 +88,12 @@ private slots:
 private:
     QString withUnit(qreal bytes);
 
+#if QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QWebEngineDownloadRequest *m_download;
+#else
     QWebEngineDownloadItem *m_download;
-    QTime m_timeAdded;
+#endif
+    QElapsedTimer m_timeAdded;
 };
 
 #endif // DOWNLOADWIDGET_H

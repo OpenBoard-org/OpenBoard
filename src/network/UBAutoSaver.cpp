@@ -92,7 +92,7 @@ UBAutoSaver::~UBAutoSaver()
 
 void UBAutoSaver::changeOccurred()
 {
-    if (mFirstChange.isNull())
+    if (!mFirstChange.isValid())
         mFirstChange.start();
 
     if (mFirstChange.elapsed() > MAXWAIT)
@@ -123,7 +123,7 @@ void UBAutoSaver::saveIfNeccessary()
         return;
 
     mTimer.stop();
-    mFirstChange = QTime();
+    mFirstChange.invalidate();
 
     if (!QMetaObject::invokeMethod(parent(), "save", Qt::DirectConnection))
     {

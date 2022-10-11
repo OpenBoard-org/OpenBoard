@@ -83,7 +83,8 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
         {
             mButtonGroup->addButton(mButtons[i], i);
         }
-        connect(mButtonGroup, SIGNAL(buttonClicked(int)), this, SIGNAL(buttonGroupClicked(int)));
+        connect(mButtonGroup, qOverload<QAbstractButton *>(&QButtonGroup::buttonClicked),
+                this, &UBActionPalette::buttonGroupClicked);
     }
 
     adjustSizeAndPosition();

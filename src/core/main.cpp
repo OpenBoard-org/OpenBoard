@@ -28,7 +28,6 @@
 
 
 #include <QtGui>
-#include <QTextCodec>
 
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"

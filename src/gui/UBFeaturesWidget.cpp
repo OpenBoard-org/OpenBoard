@@ -485,7 +485,7 @@ UBFeaturesNavigatorWidget::UBFeaturesNavigatorWidget(QWidget *parent, const char
 
     mainLayer->addWidget(mListView, 1);
     mainLayer->addWidget(mListSlider, 0);
-    mainLayer->setMargin(0);
+    mainLayer->setContentsMargins(0, 0, 0, 0);
 
     connect(mListSlider, SIGNAL(valueChanged(int)), mListView, SLOT(thumbnailSizeChanged(int)));
 }
@@ -645,7 +645,7 @@ UBFeaturesNewFolderDialog::UBFeaturesNewFolderDialog(QWidget *parent) : QWidget(
 
     mLineEdit = new QLineEdit(this);
 
-    mValidator = new QRegExpValidator(QRegExp("[^\\/\\:\\?\\*\\|\\<\\>\\\"]{2,}"), this);
+    mValidator = new QRegularExpressionValidator(QRegularExpression("[^\\/\\:\\?\\*\\|\\<\\>\\\"]{2,}"), this);
     mLineEdit->setValidator(mValidator);
     labelLayout->addWidget(mLabel);
     labelLayout->addWidget(mLineEdit);
@@ -669,9 +669,9 @@ UBFeaturesNewFolderDialog::UBFeaturesNewFolderDialog(QWidget *parent) : QWidget(
     reactOnTextChanged(QString());
 }
 
-void UBFeaturesNewFolderDialog::setRegexp(const QRegExp pRegExp)
+void UBFeaturesNewFolderDialog::setRegexp(const QRegularExpression pRegExp)
 {
-    mValidator->setRegExp(pRegExp);
+    mValidator->setRegularExpression(pRegExp);
 }
 bool UBFeaturesNewFolderDialog::validString(const QString &pStr)
 {
@@ -783,7 +783,7 @@ UBFeaturesWebView::UBFeaturesWebView(QWidget* parent, const char* name):QWidget(
     UBWebController::injectScripts(mpView);
 
     mpLayout->addWidget(mpView);
-    mpLayout->setMargin(0);
+    mpLayout->setContentsMargins(0, 0, 0, 0);
 }
 
 UBFeaturesWebView::~UBFeaturesWebView()
@@ -894,7 +894,7 @@ UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : 
     mpObjInfos->setObjectName("DockPaletteWidgetBox");
     mpObjInfos->setStyleSheet("background:white;");
     mpLayout->addWidget(mpObjInfos, 1);
-    mpLayout->setMargin(0);
+    mpLayout->setContentsMargins(0, 0, 0, 0);
 
     connect( mpAddPageButton, SIGNAL(clicked()), this, SLOT(onAddToPage()) );
     connect( mpAddToLibButton, SIGNAL( clicked() ), this, SLOT(onAddToLib() ) );
@@ -1063,11 +1063,11 @@ void UBFeatureProperties::onAddToLib()
         QString str2 = mpElement->getFullPath().toString().normalized(QString::NormalizationForm_D);
         QString str3 = mpElement->getFullPath().toString().normalized(QString::NormalizationForm_KC);
         QString str4 = mpElement->getFullPath().toString().normalized(QString::NormalizationForm_KD);
-        qDebug() << desc.srcUrl << endl
-                    << "str1" << str1 << endl
-                    << "str2" << str2 << endl
-                    << "str3" << str3 << endl
-                    << "str4" << str4 << endl;
+        qDebug() << desc.srcUrl << '\n'
+                    << "str1" << str1 << '\n'
+                    << "str2" << str2 << '\n'
+                    << "str3" << str3 << '\n'
+                    << "str4" << str4 << '\n';
         UBDownloadManager::downloadManager()->addFileToDownload(desc);
     }
 }
@@ -1391,7 +1391,7 @@ bool UBFeaturesProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & 
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
     QString path = index.data( Qt::UserRole ).toString();
 
-    return filterRegExp().exactMatch(path);
+    return filterRegularExpression().match(path).hasMatch();
 }
 
 bool UBFeaturesSearchProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & sourceParent )const
@@ -1410,7 +1410,7 @@ bool UBFeaturesSearchProxyModel::filterAcceptsRow( int sourceRow, const QModelIn
 
     return isFile
             && feature.getFullVirtualPath().contains(mFilterPrefix)
-            && filterRegExp().exactMatch( feature.getName() );
+            && filterRegularExpression().match( feature.getName() ).hasMatch();
 }
 
 bool UBFeaturesPathProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex & sourceParent )const

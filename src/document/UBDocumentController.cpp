@@ -71,6 +71,12 @@
 
 #include "core/memcheck.h"
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+typedef Qt::SplitBehaviorFlags SplitBehavior;
+#else
+typedef QString::SplitBehavior SplitBehavior;
+#endif
+
 static bool lessThan(UBDocumentTreeNode *lValue, UBDocumentTreeNode *rValue)
 {
     if (lValue->nodeType() == UBDocumentTreeNode::Catalog) {
@@ -143,9 +149,9 @@ UBDocumentReplaceDialog::UBDocumentReplaceDialog(const QString &pIncommingName, 
     reactOnTextChanged(mIncommingName);
 }
 
-void UBDocumentReplaceDialog::setRegexp(const QRegExp pRegExp)
+void UBDocumentReplaceDialog::setRegexp(const QRegularExpression pRegExp)
 {
-    mValidator->setRegExp(pRegExp);
+    mValidator->setRegularExpression(pRegExp);
 }
 bool UBDocumentReplaceDialog::validString(const QString &pStr)
 {
@@ -1091,7 +1097,7 @@ bool UBDocumentTreeModel::newNodeAllowed(const QModelIndex &pSelectedIndex)  con
 
 QModelIndex UBDocumentTreeModel::goTo(const QString &dir)
 {
-    QStringList pathList = dir.split("/", QString::SkipEmptyParts);
+    QStringList pathList = dir.split("/", SplitBehavior::SkipEmptyParts);
 
     if (pathList.isEmpty()) {
         return untitledDocumentsIndex();
@@ -1839,11 +1845,11 @@ void UBDocumentController::createNewDocument()
     QString documentName = "";
     if (docModel->isCatalog(selectedIndex))
     {
-        documentName = docModel->adjustNameForParentIndex(now.toString(Qt::SystemLocaleShortDate), selectedIndex);
+        documentName = docModel->adjustNameForParentIndex(QLocale::system().toString(now, QLocale::ShortFormat), selectedIndex);
     }
     else
     {
-        documentName = docModel->adjustNameForParentIndex(now.toString(Qt::SystemLocaleShortDate), selectedIndex.parent());
+        documentName = docModel->adjustNameForParentIndex(QLocale::system().toString(now, QLocale::ShortFormat), selectedIndex.parent());
     }
 
 

@@ -88,7 +88,7 @@ BrowserWindow::BrowserWindow(QWidget *parent, QWebEngineProfile *profile, bool f
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->setSpacing(0);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     if (!forDevTools) {
         m_progressBar = new QProgressBar(this);
@@ -339,7 +339,8 @@ void BrowserWindow::handleReturnPressed()
     QString input = m_urlLineEdit->text().trimmed();
 
     // get first word
-    int wordEnd = input.indexOf(QRegExp("\\s"));
+    static const QRegularExpression whitespace("\\s");
+    int wordEnd = input.indexOf(whitespace);
     QString firstWord = wordEnd < 0 ? input : input.left(wordEnd);
     bool search = false;
 

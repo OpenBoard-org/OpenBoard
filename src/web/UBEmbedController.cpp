@@ -110,17 +110,17 @@ void UBEmbedController::textChanged(const QString &newText)
 
 #ifdef Q_OS_WIN // Defined on Windows.
     QString illegalCharList("      < > : \" / \\ | ? * ");
-    QRegExp regExp("[<>:\"/\\\\|?*]");
+    static const QRegularExpression regExp("[<>:\"/\\\\|?*]");
 #endif
 
 #ifdef Q_OS_OSX // Defined on Mac OS X.
     QString illegalCharList("      < > : \" / \\ | ? * ");
-    QRegExp regExp("[<>:\"/\\\\|?*]");
+    static const QRegularExpression regExp("[<>:\"/\\\\|?*]");
 #endif
 
 #ifdef Q_OS_LINUX // Defined on X11.
     QString illegalCharList("      < > : \" / \\ | ? * ");
-    QRegExp regExp("[<>:\"/\\\\|?*]");
+    static const QRegularExpression regExp("[<>:\"/\\\\|?*]");
 #endif
 
     if (new_text.indexOf(regExp) > -1)
@@ -322,21 +322,23 @@ void UBEmbedController::generateConfig(int pWidth, int pHeight, const QString& p
     }
 
     QTextStream out(&configFile);
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     out.setCodec("UTF-8");
-    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << endl;
-    out << "<widget xmlns=\"http://www.w3.org/ns/widgets\"" << endl;
-    out << "        xmlns:ub=\"http://uniboard.mnemis.com/widgets\"" << endl;
-    out << "        id=\"http://uniboard.mnemis.com/" << mTrapFlashUi->widgetNameLineEdit->text() << "\"" <<endl;
+#endif
+    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << '\n';
+    out << "<widget xmlns=\"http://www.w3.org/ns/widgets\"" << '\n';
+    out << "        xmlns:ub=\"http://uniboard.mnemis.com/widgets\"" << '\n';
+    out << "        id=\"http://uniboard.mnemis.com/" << mTrapFlashUi->widgetNameLineEdit->text() << "\"" <<'\n';
 
-    out << "        version=\"2.0\"" << endl;
-    out << "        width=\"" << pWidth << "\"" << endl;
-    out << "        height=\"" << pHeight << "\"" << endl;
-    out << "        ub:resizable=\"true\">" << endl;
+    out << "        version=\"2.0\"" << '\n';
+    out << "        width=\"" << pWidth << "\"" << '\n';
+    out << "        height=\"" << pHeight << "\"" << '\n';
+    out << "        ub:resizable=\"true\">" << '\n';
 
-    out << "    <name>" << mTrapFlashUi->widgetNameLineEdit->text() << "</name>" << endl;
-    out << "    <content src=\"" << mTrapFlashUi->widgetNameLineEdit->text() << ".html\"/>" << endl;
+    out << "    <name>" << mTrapFlashUi->widgetNameLineEdit->text() << "</name>" << '\n';
+    out << "    <content src=\"" << mTrapFlashUi->widgetNameLineEdit->text() << ".html\"/>" << '\n';
 
-    out << "</widget>" << endl;
+    out << "</widget>" << '\n';
 
 
     configFile.close();

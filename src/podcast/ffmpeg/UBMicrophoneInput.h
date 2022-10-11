@@ -25,6 +25,11 @@
 #include <QtCore>
 #include <QAudioInput>
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+#include <QAudioDevice>
+#include <QAudioSource>
+#endif
+
 /**
  * @brief The UBMicrophoneInput class captures uncompressed sound from a microphone.
  *
@@ -49,7 +54,6 @@ public:
     int sampleRate();
     int sampleSize();
     int sampleFormat();
-    QString codec();
 
 signals:
     /// Send the new audio level, between 0 and 255
@@ -69,9 +73,15 @@ private:
     quint8 audioLevel(const QByteArray& data);
     QString getErrorString(QAudio::Error errorCode);
 
-    QAudioInput* mAudioInput;
-    QIODevice * mIODevice;
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QAudioDevice mAudioDeviceInfo;
+    QAudioSource* mAudioInput;
+#else
     QAudioDeviceInfo mAudioDeviceInfo;
+    QAudioInput* mAudioInput;
+#endif
+
+    QIODevice* mIODevice;
     QAudioFormat mAudioFormat;
 
     qint64 mSeekPos;

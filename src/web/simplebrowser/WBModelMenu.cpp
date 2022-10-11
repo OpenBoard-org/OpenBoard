@@ -237,7 +237,7 @@ QAction *WBModelMenu::makeAction(const QIcon &icon, const QString &text, QObject
 {
     QFontMetrics fm(font());
     if (-1 == m_maxWidth)
-        m_maxWidth = fm.width(QLatin1Char('m')) * 30;
+        m_maxWidth = fm.horizontalAdvance(QLatin1Char('m')) * 30;
     QString smallText = fm.elidedText(text, Qt::ElideMiddle, m_maxWidth);
     return new QAction(icon, smallText, parent);
 }
