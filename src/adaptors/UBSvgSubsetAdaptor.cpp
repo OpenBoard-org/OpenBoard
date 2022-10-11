@@ -2483,11 +2483,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
             UBFileSystemUtils::copyDir(widgetRootDir, path);
         }
 
-        // save snapshot of frozen widget
-        if (item->isFrozen()) {
-            QString pixPath = mDocumentPath + "/" + UBPersistenceManager::widgetDirectory + "/" + uuid + ".png";
-            item->snapshot().save(pixPath);
-        }
+        // save snapshot of widget
+        item->saveSnapshot();
 
         widgetRootUrl = widgetTargetDir;
     }
@@ -2537,7 +2534,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
         mXmlWriter.writeEndElement(); //ub::preference
     }
 
-    //persists datasore state
+    //persists datastore state
     QMap<QString, QString> datastore = item->datastoreEntries();
 
     foreach(QString key, datastore.keys())
@@ -2589,7 +2586,7 @@ UBGraphicsW3CWidgetItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsW3CWidge
 
     if (widgetUrl.isNull())
     {
-        qWarning() << "cannot make sens of widget src value";
+        qWarning() << "cannot make sense of widget src value";
         return 0;
     }
 
@@ -2602,17 +2599,19 @@ UBGraphicsW3CWidgetItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsW3CWidge
     }
 
     UBGraphicsW3CWidgetItem* widgetItem = new UBGraphicsW3CWidgetItem(QUrl::fromLocalFile(href));
+    widgetItem->setWebActive(false);
 
     auto uuid = mXmlReader.attributes().value(mNamespaceUri, "uuid");
     QString pixPath = mDocumentPath + "/" + UBPersistenceManager::widgetDirectory + "/" + uuid.toString() + ".png";
+    widgetItem->setSnapshotPath(QUrl::fromLocalFile(pixPath));
 
     QPixmap snapshot(pixPath);
 
     auto frozen = mXmlReader.attributes().value(mNamespaceUri, "frozen");
 
-    if (!frozen.isNull() && frozen.toString() == xmlTrue && !snapshot.isNull())
+    if (!snapshot.isNull())
     {
-        widgetItem->setSnapshot(snapshot);
+        widgetItem->setSnapshot(snapshot, !frozen.isNull() && frozen.toString() == xmlTrue);
     }
 
     graphicsItemFromSvg(widgetItem);

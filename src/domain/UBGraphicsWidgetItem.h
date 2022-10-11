@@ -119,10 +119,12 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         bool freezable() const;
         bool resizable() const;
         bool isFrozen() const;
+        bool isWebActive() const;
 
         const QPixmap& snapshot() const;
-        void setSnapshot(const QPixmap& pix);
+        void setSnapshot(const QPixmap& pix, bool frozen);
         const QPixmap& takeSnapshot();
+        void saveSnapshot() const;
 
         virtual UBItem* deepCopy() const = 0;
         virtual UBGraphicsScene* scene();
@@ -135,6 +137,7 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         void activeSceneChanged();
         void freeze();
         void unFreeze();
+        void setWebActive(bool active);
         void inspectPage();
         void closeInspector();
 
@@ -185,6 +188,7 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
 
     private:
         bool mIsFrozen;
+        bool mIsWebActive;
         bool mShouldMoveWidget;
         QWebChannel* mWebChannel;
         UBWidgetUniboardAPI* mUniboardAPI;
@@ -261,11 +265,9 @@ class UBGraphicsW3CWidgetItem : public UBGraphicsWidgetItem
         virtual void sendJSEnterEvent();
         virtual void sendJSLeaveEvent();
 
-        static QString freezedWidgetFilePath();
         static QString createNPAPIWrapper(const QString& url, const QString& pMimeType = QString(), const QSize& sizeHint = QSize(300, 150), const QString& pName = QString());
         static QString createNPAPIWrapperInDir(const QString& url, const QDir& pDir, const QString& pMimeType = QString(), const QSize& sizeHint = QSize(300, 150), const QString& pName = QString());
         static QString createHtmlWrapperInDir(const QString& html, const QDir& pDir, const QSize& sizeHint,  const QString& pName);
-        static QString freezedWidgetPage();
         static bool hasNPAPIWrapper(const QString& pMimeType);
 
         Metadata mMetadatas;

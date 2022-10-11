@@ -71,6 +71,7 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     , mCanBeTool(0)
     , mWidgetUrl(pWidgetUrl)
     , mIsFrozen(false)
+    , mIsWebActive(true)
     , mShouldMoveWidget(false)
     , mUniboardAPI(nullptr)
 {
@@ -110,7 +111,9 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
 
 UBGraphicsWidgetItem::~UBGraphicsWidgetItem()
 {
-    /* NOOP */
+    // get ownership back and delete widget
+    setWidget(nullptr);
+    delete mWebEngineView;
 }
 
 void UBGraphicsWidgetItem::initialize()
@@ -126,8 +129,8 @@ void UBGraphicsWidgetItem::initialize()
     // https://doc.qt.io/qt-5.12/qwebengineprofile.html#scripts
     UBWebController::injectScripts(mWebEngineView);
 
-    connect(mWebEngineView->page(), SIGNAL(geometryChangeRequested(const QRect&)), this, SLOT(geometryChangeRequested(const QRect&)));
-    connect(mWebEngineView, SIGNAL(loadFinished(bool)), this, SLOT(mainFrameLoadFinished (bool)));
+    connect(mWebEngineView->page(), SIGNAL(geometryChangeRequested(QRect)), this, SLOT(geometryChangeRequested(QRect)));
+    connect(mWebEngineView, SIGNAL(loadFinished(bool)), this, SLOT(mainFrameLoadFinished(bool)));
 }
 
 QUrl UBGraphicsWidgetItem::mainHtml() const
@@ -337,6 +340,11 @@ bool UBGraphicsWidgetItem::isFrozen() const
     return mIsFrozen;
 }
 
+bool UBGraphicsWidgetItem::isWebActive() const
+{
+    return mIsWebActive;
+}
+
 const QPixmap &UBGraphicsWidgetItem::snapshot() const
 {
     return mSnapshot;
@@ -355,10 +363,18 @@ const QPixmap &UBGraphicsWidgetItem::takeSnapshot()
     return mSnapshot;
 }
 
-void UBGraphicsWidgetItem::setSnapshot(const QPixmap& pix)
+void UBGraphicsWidgetItem::saveSnapshot() const
+{
+    if (mSnapshotFile.isLocalFile() && !mSnapshot.isNull())
+    {
+        mSnapshot.save(mSnapshotFile.toLocalFile());
+    }
+}
+
+void UBGraphicsWidgetItem::setSnapshot(const QPixmap& pix, bool frozen)
 {
     mSnapshot = pix;
-    mIsFrozen = true;
+    mIsFrozen = frozen;
 }
 
 UBGraphicsScene* UBGraphicsWidgetItem::scene()
@@ -482,7 +498,27 @@ void UBGraphicsWidgetItem::freeze()
 void UBGraphicsWidgetItem::unFreeze()
 {
     mIsFrozen = false;
-    mSnapshot = QPixmap();
+}
+
+void UBGraphicsWidgetItem::setWebActive(bool active)
+{
+    if (active != mIsWebActive)
+    {
+        if (active)
+        {
+            // activate the web engine view
+            setWidget(mWebEngineView);
+            setVisible(true);
+        }
+        else
+        {
+            // deactivate the web engine view
+            setWidget(nullptr);
+            mWebEngineView->setVisible(false);
+        }
+
+        mIsWebActive = active;
+    }
 }
 
 void UBGraphicsWidgetItem::inspectPage()
@@ -614,16 +650,16 @@ void UBGraphicsWidgetItem::injectInlineJavaScript()
 
 void UBGraphicsWidgetItem::paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    if (isFrozen())
+    if (isFrozen() || !isWebActive())
     {
         painter->drawPixmap(0, 0, snapshot());
     }
-    else
+    else if (mInitialLoadDone)
     {
         QGraphicsProxyWidget::paint(painter, option, widget);
     }
-
-    if (!mInitialLoadDone) {
+    else
+    {
         QString message;
 
         message = tr("Loading ...");
@@ -1190,37 +1226,6 @@ QString UBGraphicsW3CWidgetItem::createHtmlWrapperInDir(const QString& html, con
     return widgetPath;
 }
 
-// NOTE @letsfindaway obsolete, no references
-QString UBGraphicsW3CWidgetItem::freezedWidgetPage()
-{
-    static QString defaultcontent;
-
-    if (defaultcontent.isNull()) {
-        QString freezedWidgetDefaultContentFilePath = freezedWidgetFilePath();
-        QFile wrapperFile(freezedWidgetDefaultContentFilePath);
-        if (!wrapperFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            qDebug() << "can't open wrapper file " + freezedWidgetDefaultContentFilePath;
-            defaultcontent = "";
-        }
-        else {
-            QByteArray arr = wrapperFile.readAll();
-            if (!arr.isEmpty())
-                defaultcontent = QString(arr);
-            else {
-                qDebug() << "content of " + freezedWidgetDefaultContentFilePath + "is empty";
-                defaultcontent = QString();
-            }
-        }
-    }
-
-    return defaultcontent;
-}
-
-QString UBGraphicsW3CWidgetItem::freezedWidgetFilePath()
-{
-    return UBPlatformUtils::applicationResourcesDirectory() + "/etc/" + "freezedWidgetWrapper.html";
-}
-
 bool UBGraphicsW3CWidgetItem::hasNPAPIWrapper(const QString& pMimeType)
 {
     loadNPAPIWrappersTemplates();
@@ -1328,6 +1333,7 @@ void UBGraphicsW3CWidgetItem::copyItemParameters(UBItem *copy) const
         }
 
         cp->setZValue(this->zValue());
+        cp->setSnapshot(this->snapshot(), this->isFrozen());
     }
 }
 

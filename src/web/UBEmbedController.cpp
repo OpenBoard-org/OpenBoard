@@ -44,12 +44,12 @@
 #include "network/UBNetworkAccessManager.h"
 
 #include "domain/UBGraphicsScene.h"
-#include "domain/UBGraphicsWidgetItem.h"
 
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
 
 #include "web/UBWebController.h"
+#include "web/simplebrowser/webpage.h"
 
 #include "ui_trapFlash.h"
 
@@ -89,16 +89,15 @@ void UBEmbedController::showEmbedDialog()
         mTrapDialog->resize(viewWidth, viewHeight);
 
         QWebEngineProfile* profile = UBApplication::webController->webProfile();
-        mTrapFlashUi->webView->setPage(new QWebEnginePage(profile, this));
+        mTrapFlashUi->webView->setPage(new WebPage(profile, this));
 
         connect(mTrapFlashUi->flashCombobox, SIGNAL(currentIndexChanged(int)), this, SLOT(selectFlash(int)));
-        connect(mTrapFlashUi->widgetNameLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(textChanged(const QString &)));
-        connect(mTrapFlashUi->widgetNameLineEdit, SIGNAL(textEdited(const QString &)), this, SLOT(textEdited(const QString &)));
+        connect(mTrapFlashUi->widgetNameLineEdit, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
+        connect(mTrapFlashUi->widgetNameLineEdit, SIGNAL(textEdited(QString)), this, SLOT(textEdited(QString)));
         connect(mTrapFlashUi->createWidgetButton, SIGNAL(clicked(bool)), this, SLOT(createWidget()));
-        connect(mTrapFlashUi->webView, &QWebEngineView::loadFinished, [this](){
+        connect(mTrapFlashUi->webView, &QWebEngineView::loadFinished, this, [this](){
             mTrapFlashUi->webView->update();
         });
-
     }
 
     mTrapDialog->show();
@@ -226,8 +225,6 @@ void UBEmbedController::createWidget()
     importWidgetInLibrary(widgetDir);
 
     UBFileSystemUtils::deleteDir(tempDir);
-
-    mTrapFlashUi->webView->load(QUrl(UBGraphicsW3CWidgetItem::freezedWidgetFilePath()));
 
     mTrapDialog->hide();
 }

@@ -100,6 +100,30 @@ int main(int argc, char *argv[])
 
     qInstallMessageHandler(ub_message_output);
 
+    bool hasProcessFlag = false;
+
+    for (int i = 1; i < argc; ++i)
+    {
+        QString arg = QString::fromLocal8Bit(argv[i]);
+
+        if (arg == "--single-process" || arg == "--process-per-site")
+         {
+             hasProcessFlag = true;
+             break;
+         }
+    }
+
+    char* argvx[argc + 1];
+
+    if (!hasProcessFlag)
+    {
+        // add --process-per-site flag
+        memcpy(argvx, argv, argc * sizeof(char*));
+        static char pps[] = "--process-per-site";
+        argvx[argc++] = pps;
+        argv = argvx;
+    }
+
     UBApplication app("OpenBoard", argc, argv);
 
     QStringList args = app.arguments();
@@ -111,19 +135,25 @@ int main(int argc, char *argv[])
 
     QString fileToOpen;
 
-    if (args.size() > 1) {
+    if (args.size() > 2) {
         // On Windows/Linux first argument is the file that has been double clicked.
         // On Mac OSX we use FileOpen QEvent to manage opening file in current instance. So we will never
         // have file to open as a parameter on OSX.
 
-        QFile f(args[1]);
+        // loop through arguments and skip flags (starting with '-')
+        for (int i = 1; i < args.size(); ++i)
+        {
+            QFile f(args[i]);
 
-        if (f.exists()) {
-            fileToOpen += args[1];
+            if (f.exists()) {
+                fileToOpen = args[i];
 
-            if (app.sendMessage(UBSettings::appPingMessage.toUtf8(), 20000)) {
-                app.sendMessage(fileToOpen.toUtf8(), 1000000);
-                return 0;
+                if (app.sendMessage(UBSettings::appPingMessage.toUtf8(), 20000)) {
+                    app.sendMessage(fileToOpen.toUtf8(), 1000000);
+                    return 0;
+                }
+
+                break;
             }
         }
     }
