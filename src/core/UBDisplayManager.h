@@ -36,6 +36,11 @@
 class UBBlackoutWidget;
 class UBBoardView;
 
+namespace Ui
+{
+    class BlackoutWidget;
+}
+
 enum class ScreenRole : int
 {
     None = 0, Control, Display, Desktop, Previous1, Previous2, Previous3, Previous4, Previous5
@@ -127,6 +132,7 @@ class UBDisplayManager : public QObject
         void positionScreens();
 
         QList<UBBlackoutWidget*> mBlackoutWidgets;
+        QList<Ui::BlackoutWidget*> mBlackoutUiList;
 
         QList<QScreen*> mAvailableScreens;
         QMap<ScreenRole, QPointer<QScreen>> mScreensByRole;

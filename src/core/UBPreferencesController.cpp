@@ -123,7 +123,7 @@ void UBPreferencesController::adjustScreens()
 
     auto availableScreens = UBApplication::displayManager->availableScreens();
     QStringList screenNames;
-    QRegularExpression specialChars("[^a-zA-Z0-9]+");
+    static QRegularExpression specialChars("[^a-zA-Z0-9]+");
 
     for (QScreen* screen : availableScreens)
     {
@@ -161,7 +161,7 @@ void UBPreferencesController::wire()
     connect(mPreferencesUI->closeButton, SIGNAL(released()), this, SLOT(close()));
     connect(mPreferencesUI->defaultSettingsButton, SIGNAL(released()), this, SLOT(defaultSettings()));
 
-    connect(mPreferencesUI->screenList, &UBScreenListLineEdit::screenListChanged, [this,settings](const QStringList screenList){
+    connect(mPreferencesUI->screenList, &UBScreenListLineEdit::screenListChanged, this, [this,settings](const QStringList screenList){
         settings->appScreenList->set(screenList);
 
         if (!mScreenConfigurationPath.isEmpty())
@@ -879,9 +879,9 @@ void UBScreenListLineEdit::addScreen()
 
 void UBScreenListLineEdit::onTextChanged(const QString &input)
 {
-    QStringList screenList = UBStringUtils::trimmed(input.split(','));
+    const QStringList screenList = UBStringUtils::trimmed(input.split(','));
 
-    for (QPushButton* button : mScreenLabels)
+    for (QPushButton* button : qAsConst(mScreenLabels))
     {
         button->setDisabled(screenList.contains(button->text()));
     }
@@ -891,7 +891,7 @@ void UBScreenListLineEdit::onTextChanged(const QString &input)
         // create and attach a new QCompleter
         QStringList model;
 
-        for (QPushButton* button : mScreenLabels)
+        for (QPushButton* button : qAsConst(mScreenLabels))
         {
             if (button->isEnabled())
             {

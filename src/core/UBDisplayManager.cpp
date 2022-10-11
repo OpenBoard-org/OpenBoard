@@ -406,7 +406,7 @@ void UBDisplayManager::positionScreens()
 
 void UBDisplayManager::blackout()
 {
-    for (auto screen : mScreensByRole)
+    for (auto& screen : mScreensByRole)
     {
         UBBlackoutWidget* blackoutWidget = new UBBlackoutWidget(); //deleted in UBDisplayManager::unBlackout
         Ui::BlackoutWidget* blackoutUi = new Ui::BlackoutWidget();
@@ -423,11 +423,12 @@ void UBDisplayManager::blackout()
         blackoutWidget->setGeometry(screen->geometry());
 
         mBlackoutWidgets << blackoutWidget;
+        mBlackoutUiList << blackoutUi;
     }
 
     UBPlatformUtils::fadeDisplayOut();
 
-    for (UBBlackoutWidget* blackoutWidget : mBlackoutWidgets)
+    for (UBBlackoutWidget* blackoutWidget : qAsConst(mBlackoutWidgets))
     {
         UBPlatformUtils::showFullScreen(blackoutWidget);
     }
@@ -440,6 +441,9 @@ void UBDisplayManager::unBlackout()
         // the widget is also destroyed thanks to its Qt::WA_DeleteOnClose attribute
         mBlackoutWidgets.takeFirst()->close();
     }
+
+    qDeleteAll(mBlackoutUiList);
+    mBlackoutUiList.clear();
 
     UBPlatformUtils::fadeDisplayIn();
 
@@ -454,7 +458,7 @@ void UBDisplayManager::addOrRemoveScreen(QScreen *screen)
     assignRoles();
 
     // positioning must be delayed, because OS also tries to position the widgets
-    QTimer::singleShot(3000, [this](){
+    QTimer::singleShot(3000, this, [this](){
         positionScreens();
     });
 }

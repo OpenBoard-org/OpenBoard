@@ -133,7 +133,7 @@ void UBBoardController::init()
     connect(UBApplication::undoStack, SIGNAL(canUndoChanged(bool))
             , this, SLOT(undoRedoStateChange(bool)));
 
-    connect(UBApplication::undoStack, SIGNAL(canRedoChanged (bool))
+    connect(UBApplication::undoStack, SIGNAL(canRedoChanged(bool))
             , this, SLOT(undoRedoStateChange(bool)));
 
     connect(UBDrawingController::drawingController(), SIGNAL(stylusToolChanged(int))
@@ -152,7 +152,7 @@ void UBBoardController::init()
 
     setActiveDocumentScene(doc);
 
-    connect(UBApplication::displayManager, &UBDisplayManager::screenRolesAssigned, [this](){
+    connect(UBApplication::displayManager, &UBDisplayManager::screenRolesAssigned, this, [this](){
         initBackgroundGridSize();
     });
 
