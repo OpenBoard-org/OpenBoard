@@ -63,7 +63,6 @@ class UBActionPalette : public UBFloatingPalette
             actionChanged();
         }
 
-        QList<QAction*> actions();
         virtual UBActionPaletteButton* addAction(QAction* action, bool exclusive = true);
 
         void setClosable(bool closable);

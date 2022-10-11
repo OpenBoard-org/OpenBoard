@@ -213,7 +213,7 @@ QPainterPath UBDesktopAnnotationController::desktopPalettePath() const
  */
 void UBDesktopAnnotationController::desktopPenActionToggled(bool checked)
 {
-    setAssociatedPalettePosition(mDesktopPenPalette, "actionPen");
+    setAssociatedPalettePosition(mDesktopPenPalette, 1);
     mDesktopPenPalette->setVisible(checked);
     mDesktopMarkerPalette->setVisible(false);
     mDesktopEraserPalette->setVisible(false);
@@ -225,7 +225,7 @@ void UBDesktopAnnotationController::desktopPenActionToggled(bool checked)
  */
 void UBDesktopAnnotationController::desktopMarkerActionToggled(bool checked)
 {
-    setAssociatedPalettePosition(mDesktopMarkerPalette, "actionMarker");
+    setAssociatedPalettePosition(mDesktopMarkerPalette, 3);
     mDesktopMarkerPalette->setVisible(checked);
     mDesktopPenPalette->setVisible(false);
     mDesktopEraserPalette->setVisible(false);
@@ -237,7 +237,7 @@ void UBDesktopAnnotationController::desktopMarkerActionToggled(bool checked)
  */
 void UBDesktopAnnotationController::desktopEraserActionToggled(bool checked)
 {
-    setAssociatedPalettePosition(mDesktopEraserPalette, "actionEraser");
+    setAssociatedPalettePosition(mDesktopEraserPalette, 2);
     mDesktopEraserPalette->setVisible(checked);
     mDesktopPenPalette->setVisible(false);
     mDesktopMarkerPalette->setVisible(false);
@@ -248,21 +248,10 @@ void UBDesktopAnnotationController::desktopEraserActionToggled(bool checked)
  * @param palette as the palette
  * @param actionName as the name of the related action
  */
-void UBDesktopAnnotationController::setAssociatedPalettePosition(UBActionPalette *palette, const QString &actionName)
+void UBDesktopAnnotationController::setAssociatedPalettePosition(UBActionPalette *palette, int index)
 {
     QPoint desktopPalettePos = mDesktopPalette->geometry().topLeft();
-    QList<QAction*> actions = mDesktopPalette->actions();
-    int yPen = 0;
-
-    foreach(QAction* act, actions)
-    {
-        if(act->objectName() == actionName)
-        {
-            int iAction = actions.indexOf(act);
-            yPen = iAction * (mDesktopPalette->buttonSize().height() + 2 * mDesktopPalette->border() +6); // This is the mysterious value (6)
-            break;
-        }
-    }
+    int yPen = index * (mDesktopPalette->buttonSize().height() + 2 * mDesktopPalette->border() +6); // This is the mysterious value (6)
 
     // First determine if the palette must be shown on the left or on the right
     if(desktopPalettePos.x() <= (mTransparentDrawingView->width() - (palette->width() + mDesktopPalette->width() + mRightPalette->width() + 20))) // we take a small margin of 20 pixels

@@ -110,12 +110,6 @@ void UBActionPalette::buttonClicked()
     }
 }
 
-QList<QAction*> UBActionPalette::actions()
-{
-    return mActions;
-}
-
-
 UBActionPalette::~UBActionPalette()
 {
     qDeleteAll(mButtons.begin(), mButtons.end());
