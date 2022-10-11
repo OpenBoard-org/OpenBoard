@@ -207,40 +207,11 @@ QPainterPath UBDesktopAnnotationController::desktopPalettePath() const
     return result;
 }
 
-/**
- * \brief Toggle the visibility of the pen associated palette
- * @param checked as the visibility state
- */
-void UBDesktopAnnotationController::desktopPenActionToggled(bool checked)
-{
-    setAssociatedPalettePosition(mDesktopPenPalette, mDesktopPalette->penButtonPos());
-    mDesktopPenPalette->setVisible(checked);
-    mDesktopMarkerPalette->setVisible(false);
-    mDesktopEraserPalette->setVisible(false);
-}
-
-/**
- * \brief Toggle the visibility of the marker associated palette
- * @param checked as the visibility state
- */
-void UBDesktopAnnotationController::desktopMarkerActionToggled(bool checked)
-{
-    setAssociatedPalettePosition(mDesktopMarkerPalette, mDesktopPalette->markerButtonPos());
-    mDesktopMarkerPalette->setVisible(checked);
-    mDesktopPenPalette->setVisible(false);
-    mDesktopEraserPalette->setVisible(false);
-}
-
-/**
- * \brief Toggle the visibility of the eraser associated palette
- * @param checked as the visibility state
- */
-void UBDesktopAnnotationController::desktopEraserActionToggled(bool checked)
-{
-    setAssociatedPalettePosition(mDesktopEraserPalette, mDesktopPalette->eraserButtonPos());
-    mDesktopEraserPalette->setVisible(checked);
-    mDesktopPenPalette->setVisible(false);
-    mDesktopMarkerPalette->setVisible(false);
+void UBDesktopAnnotationController::desktopPropertyActionToggled(UBDesktopPropertyPalette* palette, QPoint pos){
+    setAssociatedPalettePosition(palette, pos);
+    mDesktopEraserPalette->setVisible(palette == mDesktopEraserPalette ? !palette->isVisible() : false);
+    mDesktopPenPalette->setVisible(palette == mDesktopPenPalette ? !palette->isVisible() : false);
+    mDesktopMarkerPalette->setVisible(palette == mDesktopMarkerPalette ? !palette->isVisible() : false);
 }
 
 /**
@@ -462,31 +433,6 @@ void UBDesktopAnnotationController::screenLayoutChanged()
     }
 }
 
-/**
- * \brief Toggle the given palette visibility
- * @param palette as the given palette
- */
-void UBDesktopAnnotationController::togglePropertyPalette(UBActionPalette *palette)
-{
-    if(NULL != palette)
-    {
-        bool bShow = !palette->isVisible();
-        if(mDesktopPenPalette == palette)
-        {
-            desktopPenActionToggled(bShow);
-        }
-        else if(mDesktopMarkerPalette == palette)
-        {
-            desktopMarkerActionToggled(bShow);
-        }
-        else if(mDesktopEraserPalette == palette)
-        {
-            desktopEraserActionToggled(bShow);
-        }
-    }
-}
-
-
 void UBDesktopAnnotationController::switchCursor(const int tool)
 {
     mTransparentDrawingScene->setToolCursor(tool);
@@ -655,11 +601,11 @@ void UBDesktopAnnotationController::hideOtherPalettes(QAction *action){
 }
 void UBDesktopAnnotationController::togglePropertyPalette(QAction * action){
     if(action == UBApplication::mainWindow->actionPen)
-        togglePropertyPalette(mDesktopPenPalette);
+        desktopPropertyActionToggled(mDesktopPenPalette, mDesktopPalette->penButtonPos());
     if(action == UBApplication::mainWindow->actionEraser)
-        togglePropertyPalette(mDesktopEraserPalette);
+        desktopPropertyActionToggled(mDesktopEraserPalette, mDesktopPalette->eraserButtonPos());
     if(action == UBApplication::mainWindow->actionMarker)
-        togglePropertyPalette(mDesktopMarkerPalette);
+        desktopPropertyActionToggled(mDesktopMarkerPalette, mDesktopPalette->markerButtonPos());
 }
 void UBDesktopAnnotationController::switchCursor(QAction * action){
     if(action == UBApplication::mainWindow->actionPen)

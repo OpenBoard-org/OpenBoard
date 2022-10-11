@@ -39,6 +39,7 @@
 class UBDesktopPalette;
 class UBBoardView;
 class UBGraphicsScene;
+class UBDesktopPropertyPalette;
 class UBDesktopPenPalette;
 class UBDesktopMarkerPalette;
 class UBDesktopEraserPalette;
@@ -103,9 +104,8 @@ class UBDesktopAnnotationController : public QObject
 
     private slots:
         void updateColors();
-        void desktopPenActionToggled(bool checked);
-        void desktopMarkerActionToggled(bool checked);
-        void desktopEraserActionToggled(bool checked);
+        void desktopPropertyActionToggled(UBDesktopPropertyPalette* palette, QPoint pos);
+
         void eraseDesktopAnnotations();
 
         void switchCursor(int tool);
@@ -120,7 +120,6 @@ class UBDesktopAnnotationController : public QObject
     private:
 
         void setAssociatedPalettePosition(UBActionPalette* palette, QPoint pos);
-        void togglePropertyPalette(UBActionPalette* palette);
         void updateMask(bool bTransparent);
 
         UBDesktopPalette *mDesktopPalette;
