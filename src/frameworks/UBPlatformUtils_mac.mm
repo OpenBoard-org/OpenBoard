@@ -205,6 +205,11 @@ void UBPlatformUtils::fadeDisplayIn()
     }
 }
 
+bool UBPlatformUtils::hasSystemOnScreenKeyboard()
+{
+    return true;
+}
+
 QStringList UBPlatformUtils::availableTranslations()
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];

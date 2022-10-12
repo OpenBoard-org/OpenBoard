@@ -198,6 +198,7 @@ public:
         static QString translationPath(QString pFilePrefix, QString pLanguage);
         static QString systemLanguage();
         static bool hasVirtualKeyboard();
+        static bool hasSystemOnScreenKeyboard();
         static void bringPreviousProcessToFront();
         static QString osUserLoginName();
         static void setDesktopMode(bool desktop);
