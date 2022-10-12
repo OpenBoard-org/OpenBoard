@@ -385,7 +385,7 @@ bool UBWindowsMediaFile::appendVideoFrame(const QImage& pImage, long mstimestamp
 
     INSSBuffer *sampleBuffer = 0;
 
-    if (FAILED(mWMWriter->AllocateSample(pImage.byteCount(), &sampleBuffer)))
+    if (FAILED(mWMWriter->AllocateSample(pImage.sizeInBytes(), &sampleBuffer)))
     {
         setLastErrorMessage("Unable to allocate memory for new video frame");
         return false;
@@ -402,7 +402,7 @@ bool UBWindowsMediaFile::appendVideoFrame(const QImage& pImage, long mstimestamp
     }
 
     const uchar * imageBuffer = pImage.bits();
-    memcpy((void*) rawBuffer, imageBuffer, pImage.byteCount());
+    memcpy((void*) rawBuffer, imageBuffer, pImage.sizeInBytes());
 
     HRESULT hrWriteSample = mWMWriter->WriteSample(mVideoInputIndex, msToSampleTime(mstimestamp), 0, sampleBuffer);
 
