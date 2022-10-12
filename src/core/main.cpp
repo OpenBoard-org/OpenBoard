@@ -113,15 +113,16 @@ int main(int argc, char *argv[])
          }
     }
 
-    char* argvx[argc + 1];
-
+    /*
+    * https://stackoverflow.com/questions/43372267/how-to-append-a-value-to-the-array-of-command-line-arguments
+    */
     if (!hasProcessFlag)
     {
+        std::vector<const char*> argv_vector(argv, argv + argc);
         // add --process-per-site flag
-        memcpy(argvx, argv, argc * sizeof(char*));
-        static char pps[] = "--process-per-site";
-        argvx[argc++] = pps;
-        argv = argvx;
+        argv_vector.push_back("--process-per-site");
+        argv_vector.push_back(nullptr);
+        argv = const_cast<char**>(argv_vector.data());
     }
 
     UBApplication app("OpenBoard", argc, argv);
