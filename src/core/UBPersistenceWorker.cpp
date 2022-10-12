@@ -62,7 +62,7 @@ void UBPersistenceWorker::saveMetadata(UBDocumentProxy *proxy)
 
 void UBPersistenceWorker::applicationWillClose()
 {
-    qDebug() << "applicaiton Will close signal received";
+    qDebug() << "application Will close signal received";
     mReceivedApplicationClosing = true;
     mSemaphore.release();
 }

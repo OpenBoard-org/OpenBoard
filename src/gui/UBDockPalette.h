@@ -203,7 +203,7 @@ protected:
 
 private slots:
     void onToolbarPosUpdated();
-    void onResizeRequest(QResizeEvent* event);
+    void onResizeRequest();
 
 private:
     void tabClicked(int tabIndex);

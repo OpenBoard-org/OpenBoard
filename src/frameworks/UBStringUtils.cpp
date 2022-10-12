@@ -143,6 +143,28 @@ QDateTime UBStringUtils::fromUtcIsoDate(const QString& dateString)
     return date.toLocalTime();
 }
 
+/**
+ * @brief Create a list of trimmed, non-empty strings
+ * @param list input list of strings
+ * @return list of trimmed, nonempty strings
+ */
+QStringList UBStringUtils::trimmed(const QStringList &list)
+{
+    QStringList output;
+
+    for (const QString& entry : list)
+    {
+        QString trimmedEntry = entry.trimmed();
+
+        if (!trimmedEntry.isEmpty())
+        {
+            output << trimmedEntry;
+        }
+    }
+
+    return output;
+}
+
 
 
 

@@ -38,6 +38,8 @@
 #include "core/UBApplicationController.h"
 #include "core/UBDisplayManager.h"
 
+#include "frameworks/UBStringUtils.h"
+
 #include "board/UBBoardController.h"
 #include "document/UBDocumentController.h"
 #include "domain/UBGraphicsScene.h"
@@ -89,7 +91,7 @@ UBPreferencesController::UBPreferencesController(QWidget *parent)
     mPreferencesUI = new Ui::preferencesDialog();  // deleted in destructor
     mPreferencesUI->setupUi(mPreferencesWindow);
     adjustScreens();
-    connect(UBApplication::displayManager, &UBDisplayManager::screenLayoutChanged, this, &UBPreferencesController::adjustScreens);
+    connect(UBApplication::displayManager, &UBDisplayManager::availableScreenCountChanged, this, &UBPreferencesController::adjustScreens);
     wire();
 }
 
@@ -107,7 +109,38 @@ UBPreferencesController::~UBPreferencesController()
 
 void UBPreferencesController::adjustScreens()
 {
-    mPreferencesUI->multiDisplayGroupBox->setEnabled(UBApplication::displayManager->numScreens() > 1);
+    bool enabled = UBApplication::displayManager->numScreens() > 1;
+    mPreferencesUI->multiDisplayGroupBox->setEnabled(enabled);
+
+    if (enabled)
+    {
+        mPreferencesUI->screenList->setPlaceholderText(tr("Use all available displays"));
+    }
+    else
+    {
+        mPreferencesUI->screenList->setPlaceholderText("");
+    }
+
+    auto availableScreens = UBApplication::displayManager->availableScreens();
+    QStringList screenNames;
+    static QRegularExpression specialChars("[^a-zA-Z0-9]+");
+
+    for (QScreen* screen : availableScreens)
+    {
+        screenNames << screen->name().replace(specialChars, "-");
+    }
+
+    QString screenConfiguration = screenNames.join('_');
+
+    QString path = UBSettings::settings()->appScreenList->path() + "-" + screenConfiguration;
+
+    if (path != mScreenConfigurationPath)
+    {
+        mScreenConfigurationPath = path;
+        QVariant value = UBSettings::settings()->value(path);
+        UBSettings::settings()->appScreenList->set(value);
+        mPreferencesUI->screenList->loadScreenList(value.toStringList());
+    }
 }
 
 void UBPreferencesController::show()
@@ -128,10 +161,12 @@ void UBPreferencesController::wire()
     connect(mPreferencesUI->closeButton, SIGNAL(released()), this, SLOT(close()));
     connect(mPreferencesUI->defaultSettingsButton, SIGNAL(released()), this, SLOT(defaultSettings()));
 
-    connect(mPreferencesUI->screenList, &QLineEdit::textChanged, [this,settings](const QString &text){
-        if (mPreferencesUI->screenList->hasAcceptableInput())
+    connect(mPreferencesUI->screenList, &UBScreenListLineEdit::screenListChanged, this, [this,settings](const QStringList screenList){
+        settings->appScreenList->set(screenList);
+
+        if (!mScreenConfigurationPath.isEmpty())
         {
-            settings->appScreenList->set(text.split(','));
+            settings->setValue(mScreenConfigurationPath, screenList);
         }
     });
 
@@ -294,7 +329,7 @@ void UBPreferencesController::init()
 
     mPreferencesUI->useExternalBrowserCheckBox->setChecked(settings->webUseExternalBrowser->get().toBool());
     mPreferencesUI->displayBrowserPageCheckBox->setChecked(settings->webShowPageImmediatelyOnMirroredScreen->get().toBool());
-    mPreferencesUI->screenList->setText(settings->appScreenList->get().toStringList().join(','));
+    mPreferencesUI->screenList->loadScreenList(settings->appScreenList->get().toStringList());
     mPreferencesUI->webHomePage->setText(settings->webHomePage->get().toString());
 
     mPreferencesUI->proxyUsername->setText(settings->proxyUsername());
@@ -753,56 +788,49 @@ UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor
 UBScreenListLineEdit::UBScreenListLineEdit(QWidget *parent)
     : QLineEdit(parent)
     , mValidator(nullptr)
-    , mCompleter(nullptr)
-    , mFadeOutTimer(nullptr)
 {
     connect(this, &QLineEdit::textChanged, this, &UBScreenListLineEdit::onTextChanged);
 }
 
 void UBScreenListLineEdit::setDefault()
 {
-    QList<QScreen*> screens = UBApplication::displayManager->availableScreens();
-    QStringList availableScreenNames;
+    setText("");
+}
 
-    for (QScreen* screen : screens) {
-        availableScreenNames << screen->name();
-    }
-
-    setText(availableScreenNames.join(','));
+void UBScreenListLineEdit::loadScreenList(const QStringList &screenList)
+{
+    setText(screenList.join(','));
 }
 
 void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
 {
     QLineEdit::focusInEvent(focusEvent);
 
-    if (mFadeOutTimer)
-    {
-        mFadeOutTimer->stop();
-        delete mFadeOutTimer;
-        mFadeOutTimer = nullptr;
-    }
-
     if (mScreenLabels.empty())
     {
-        QStringList screenNames = text().split(',', SplitBehavior::SkipEmptyParts);
+        QStringList screenList = UBStringUtils::trimmed(text().split(','));
 
         QList<QScreen*> screens = UBApplication::displayManager->availableScreens();
-        QStringList availableScreenNames;
+        QStringList availableScreenIndexes;
+        int screenIndex = 1;
+        QFont font;
+        font.setPointSize(48);
 
-        for (QScreen* screen : screens) {
-            availableScreenNames << screen->name();
+        for (QScreen* screen : screens)
+        {
+            availableScreenIndexes << QString::number(screenIndex);
 
             QPushButton* button = new QPushButton(this);
             button->setWindowFlag(Qt::FramelessWindowHint, true);
             button->setWindowFlag(Qt::WindowStaysOnTopHint, true);
+            button->setWindowFlag(Qt::X11BypassWindowManagerHint, true);
             button->setWindowFlag(Qt::Window, true);
-            button->setText(screen->name());
-            QFont font;
-            font.setPointSize(48);
+            button->setWindowFlag(Qt::WindowDoesNotAcceptFocus, true);
+            button->setText(QString::number(screenIndex++));
             button->setFont(font);
             button->move(screen->geometry().topLeft());
             button->setMinimumSize(300, 150);
-            button->setDisabled(screenNames.contains(button->text()));
+            button->setDisabled(screenList.contains(button->text()));
             button->show();
 
             connect(button, &QPushButton::pressed, this, &UBScreenListLineEdit::addScreen);
@@ -810,61 +838,52 @@ void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
             mScreenLabels << button;
         }
 
-        if (mValidator)
+        if (!mValidator)
         {
-            setValidator(nullptr);
-            delete mValidator;
+            mValidator = new UBStringListValidator(this);
+            setValidator(mValidator);
         }
 
-        mValidator = new UBStringListValidator(availableScreenNames);
-        setValidator(mValidator);
-        activateWindow();
+        mValidator->setValidationStringList(availableScreenIndexes);
     }
 }
 
 void UBScreenListLineEdit::focusOutEvent(QFocusEvent *focusEvent)
 {
     QLineEdit::focusOutEvent(focusEvent);
-
-    // avoid deleting screen labels when input widget shortly looses focus,
-    // e.g. by clicking one of the scren label buttons
-    mFadeOutTimer = new QTimer(this);
-    mFadeOutTimer->callOnTimeout([this](){
-        qDeleteAll(mScreenLabels);
-        mScreenLabels.clear();
-    });
-    mFadeOutTimer->start(250);
+    qDeleteAll(mScreenLabels);
+    mScreenLabels.clear();
 }
 
 void UBScreenListLineEdit::addScreen()
 {
     QPushButton* button = dynamic_cast<QPushButton*>(sender());
 
-    if (button && (text().isEmpty() || hasAcceptableInput()))
+    if (button)
     {
-        if (text().isEmpty())
+        QString list = text();
+        mValidator->fixup(list);
+
+        if (list.isEmpty())
         {
             setText(button->text());
         }
         else
         {
-            setText(text() + "," + button->text());
+            setText(list + "," + button->text());
         }
 
         button->setEnabled(false);
     }
-
-    // regain focus after pressing screen label button
-    activateWindow();
 }
 
 void UBScreenListLineEdit::onTextChanged(const QString &input)
 {
-    QStringList screenNames = input.split(',', SplitBehavior::SkipEmptyParts);
+    const QStringList screenList = UBStringUtils::trimmed(input.split(','));
 
-    for (QPushButton* button : mScreenLabels)
+    for (QPushButton* button : qAsConst(mScreenLabels))
     {
-        button->setDisabled(screenNames.contains(button->text()));
+        button->setDisabled(screenList.contains(button->text()));
     }
 
     if (input.isEmpty() || input.right(1) == ',')
@@ -872,69 +891,71 @@ void UBScreenListLineEdit::onTextChanged(const QString &input)
         // create and attach a new QCompleter
         QStringList model;
 
-        for (QPushButton* button : mScreenLabels)
+        for (QPushButton* button : qAsConst(mScreenLabels))
         {
             if (button->isEnabled())
             {
                 model << input + button->text();
             }
         }
+    }
 
-        qDebug() << "Create QCompleter" << model;
-
-        if (!mCompleter)
-        {
-            mCompleter = new QCompleter(model, this);
-            setCompleter(mCompleter);
-        }
-        else
-        {
-            mCompleter->setModel(new QStringListModel(model, mCompleter));
-        }
+    // user indication of acceptable input
+    if (hasAcceptableInput())
+    {
+        setStyleSheet("");
+        emit screenListChanged(screenList);
+    }
+    else
+    {
+        setStyleSheet("QLineEdit { background-color: #FFB3C8; }");
     }
 }
 
-UBStringListValidator::UBStringListValidator(QStringList list, QObject *parent)
+UBStringListValidator::UBStringListValidator(QObject *parent)
     : QValidator(parent)
-    , mList(list)
 {
 
+}
+
+void UBStringListValidator::fixup(QString &input) const
+{
+    // remove invalid tokens from list, trim tokens
+    QStringList inputList = UBStringUtils::trimmed(input.split(','));
+    QStringList outputList;
+
+    for (const QString& token : inputList)
+    {
+        if (mList.contains(token))
+        {
+            outputList << token;
+        }
+    }
+
+    input = outputList.join(',');
 }
 
 QValidator::State UBStringListValidator::validate(QString &input, int &) const
 {
-    if (input.isEmpty())
-    {
-        return Intermediate;
-    }
-
     bool ok = true;
-    bool wasOk = false;
-    QStringList inputList = input.split(',', SplitBehavior::SkipEmptyParts);
+    QStringList inputList = UBStringUtils::trimmed(input.split(','));
+    // number of commas must match number of list items - 1
+    int commas = input.count(',');
+
+    if (commas && commas + 1 != inputList.size())
+    {
+        ok = false;
+    }
 
     for (const QString& token : inputList)
     {
-        wasOk = ok;
         ok &= mList.contains(token) && inputList.count(token) == 1;
     }
 
-    if (ok)
-    {
-        return Acceptable;
-    }
-    else if (wasOk && !inputList.empty())
-    {
-        // check if last token is at least a prefix of any valid input
-        QString lastToken = inputList.last();
+    return ok ? Acceptable : Intermediate;
+}
 
-        for (const QString& item : mList)
-        {
-            if (!inputList.contains(item) && item.startsWith(lastToken))
-            {
-                return Intermediate;
-            }
-        }
-    }
-
-    return Invalid;
+void UBStringListValidator::setValidationStringList(const QStringList &list)
+{
+    mList = list;
 }

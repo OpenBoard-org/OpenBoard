@@ -36,6 +36,11 @@
 class UBBlackoutWidget;
 class UBBoardView;
 
+namespace Ui
+{
+    class BlackoutWidget;
+}
+
 enum class ScreenRole : int
 {
     None = 0, Control, Display, Desktop, Previous1, Previous2, Previous3, Previous4, Previous5
@@ -67,26 +72,30 @@ class UBDisplayManager : public QObject
 
         void setPreviousDisplaysWidgets(QList<UBBoardView*> pPreviousViews);
 
-        QWidget* widget(ScreenRole role);
+        QWidget* widget(ScreenRole role) const;
+        QScreen* screen(ScreenRole role) const;
 
         QList<QScreen*> availableScreens() const;
 
         bool hasControl()
         {
-            return mScreensByRole.contains(ScreenRole::Control);
+            return mScreensByRole.value(ScreenRole::Control);
         }
 
         bool hasDisplay()
         {
-            return mScreensByRole.contains(ScreenRole::Display);
+            return mScreensByRole.value(ScreenRole::Display);
         }
 
         bool hasPrevious()
         {
-            return mScreensByRole.contains(ScreenRole::Previous1);
+            return mScreensByRole.value(ScreenRole::Previous1);
         }
 
-        bool useMultiScreen() { return mUseMultiScreen; }
+        bool useMultiScreen()
+        {
+            return mUseMultiScreen;
+        }
 
         void setUseMultiScreen(bool pUse);
 
@@ -100,10 +109,9 @@ class UBDisplayManager : public QObject
         QPixmap grabGlobal(QRect rect) const;
 
    signals:
-
+        void screenRolesAssigned();
         void screenLayoutChanged();
         void availableScreenCountChanged(int screenCount);
-        void adjustDisplayViewsRequired();
 
    public slots:
 
@@ -113,22 +121,24 @@ class UBDisplayManager : public QObject
 
         void unBlackout();
 
+    private slots:
+
         void addOrRemoveScreen(QScreen* screen);
 
     private:
 
+        void initScreenIndexes();
+        void assignRoles();
         void positionScreens();
 
-        void initScreenIndexes();
-
         QList<UBBlackoutWidget*> mBlackoutWidgets;
+        QList<Ui::BlackoutWidget*> mBlackoutUiList;
 
         QList<QScreen*> mAvailableScreens;
-        QMap<ScreenRole, QScreen*> mScreensByRole;
-        QMap<ScreenRole, QWidget*> mWidgetsByRole;
+        QMap<ScreenRole, QPointer<QScreen>> mScreensByRole;
+        QMap<ScreenRole, QPointer<QWidget>> mWidgetsByRole;
 
         bool mUseMultiScreen;
-
 };
 
 #endif /* UBDISPLAYMANAGER_H_ */

@@ -97,16 +97,12 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
     connect(displayManager, SIGNAL(screenLayoutChanged()), this, SLOT(screenLayoutChanged()));
     connect(displayManager, SIGNAL(screenLayoutChanged()), mUninoteController, SLOT(screenLayoutChanged()));
     connect(displayManager, SIGNAL(screenLayoutChanged()), UBApplication::webController, SLOT(screenLayoutChanged()));
-    connect(displayManager, SIGNAL(adjustDisplayViewsRequired()), UBApplication::boardController, SLOT(adjustDisplayViews()));
+    connect(displayManager, &UBDisplayManager::availableScreenCountChanged, [this](){
+        initPreviousViews();
+        UBApplication::displayManager->setPreviousDisplaysWidgets(mPreviousViews);
+    });
     connect(mUninoteController, SIGNAL(imageCaptured(const QPixmap &, bool)), this, SLOT(addCapturedPixmap(const QPixmap &, bool)));
     connect(mUninoteController, SIGNAL(restoreUniboard()), this, SLOT(hideDesktop()));
-
-    for(int i = 0; i < displayManager->numPreviousViews(); i++)
-    {
-        UBBoardView *previousView = new UBBoardView(UBApplication::boardController, UBItemLayerType::FixedBackground, UBItemLayerType::Tool, 0);
-        previousView->setInteractive(false);
-        mPreviousViews.append(previousView);
-    }
 
     mBlackScene = new UBGraphicsScene(0); // deleted by UBApplicationController::destructor
     mBlackScene->setBackground(true, UBPageBackground::plain);
@@ -148,6 +144,8 @@ void UBApplicationController::initViewState(int horizontalPosition, int vertical
 
 void UBApplicationController::initScreenLayout(bool useMultiscreen)
 {
+    initPreviousViews();
+
     UBDisplayManager* displayManager = UBApplication::displayManager;
 
     displayManager->setControlWidget(mMainWindow);
@@ -168,7 +166,7 @@ void UBApplicationController::screenLayoutChanged()
 
     adaptToolBar();
 
-    adjustDisplayView();
+    UBApplication::boardController->adjustDisplayViews();
 
     if (UBApplication::displayManager->hasDisplay())
     {
@@ -178,8 +176,6 @@ void UBApplicationController::screenLayoutChanged()
     {
        UBApplication::boardController->setBoxing(QRect());
     }
-
-    adjustPreviousViews(0, 0);
 
     // update mirror if necessary
     UBDisplayManager* displayManager = UBApplication::displayManager;
@@ -538,6 +534,26 @@ void UBApplicationController::updateRequestFinished(QNetworkReply * reply)
         reply->deleteLater();
 
         downloadJsonFinished(responseString);
+    }
+}
+
+void UBApplicationController::initPreviousViews()
+{
+    int numPreviousViews = UBApplication::displayManager->numPreviousViews();
+
+    // create the missing views
+    for (int i = mPreviousViews.count(); i < numPreviousViews; i++)
+    {
+        UBBoardView *previousView = new UBBoardView(UBApplication::boardController, UBItemLayerType::FixedBackground, UBItemLayerType::Tool, 0);
+        previousView->setInteractive(false);
+        mPreviousViews.append(previousView);
+    }
+
+    // delete the superfluous views
+    while (mPreviousViews.count() > numPreviousViews)
+    {
+        UBBoardView* view = mPreviousViews.takeLast();
+        delete view;
     }
 }
 

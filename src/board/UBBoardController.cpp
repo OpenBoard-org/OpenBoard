@@ -133,7 +133,7 @@ void UBBoardController::init()
     connect(UBApplication::undoStack, SIGNAL(canUndoChanged(bool))
             , this, SLOT(undoRedoStateChange(bool)));
 
-    connect(UBApplication::undoStack, SIGNAL(canRedoChanged (bool))
+    connect(UBApplication::undoStack, SIGNAL(canRedoChanged(bool))
             , this, SLOT(undoRedoStateChange(bool)));
 
     connect(UBDrawingController::drawingController(), SIGNAL(stylusToolChanged(int))
@@ -152,7 +152,9 @@ void UBBoardController::init()
 
     setActiveDocumentScene(doc);
 
-    initBackgroundGridSize();
+    connect(UBApplication::displayManager, &UBDisplayManager::screenRolesAssigned, this, [this](){
+        initBackgroundGridSize();
+    });
 
     undoRedoStateChange(true);
 
@@ -250,8 +252,12 @@ void UBBoardController::setBoxing(QRect displayRect)
         return;
     }
 
-    qreal controlWidth = (qreal)mMainWindow->centralWidget()->width();
-    qreal controlHeight = (qreal)mMainWindow->centralWidget()->height();
+    // compute boxing based on the assumed widget size for fullscreen
+    QSize centralWidgetSize = mMainWindow->centralWidget()->size();
+    QSize controlWindowSize = mMainWindow->size();
+    QSize controlScreenSize = UBApplication::displayManager->screenSize(ScreenRole::Control);
+    qreal controlWidth = controlScreenSize.width();
+    qreal controlHeight = controlScreenSize.height() - controlWindowSize.height() + centralWidgetSize.height();
     qreal displayWidth = (qreal)displayRect.width();
     qreal displayHeight = (qreal)displayRect.height();
 
@@ -261,13 +267,25 @@ void UBBoardController::setBoxing(QRect displayRect)
     if (displayRatio < controlRatio)
     {
         // Pillarboxing
-        int boxWidth = (controlWidth - (displayWidth * (controlHeight / displayHeight))) / 2;
+        int boxWidth = (centralWidgetSize.width() - (displayWidth * (controlHeight / displayHeight))) / 2;
+
+        if (boxWidth < 0)
+        {
+            boxWidth = 0;
+        }
+
         mControlLayout->setContentsMargins(boxWidth, 0, boxWidth, 0);
     }
     else if (displayRatio > controlRatio)
     {
         // Letterboxing
-        int boxHeight = (controlHeight - (displayHeight * (controlWidth / displayWidth))) / 2;
+        int boxHeight = (centralWidgetSize.height() - (displayHeight * (controlWidth / displayWidth))) / 2;
+
+        if (boxHeight < 0)
+        {
+            boxHeight = 0;
+        }
+
         mControlLayout->setContentsMargins(0, boxHeight, 0, boxHeight);
     }
     else
@@ -1807,9 +1825,10 @@ void UBBoardController::boardViewResized(QResizeEvent* event)
 
     mControlView->centerOn(0,0);
 
-    if (mDisplayView) {
+    if (mDisplayView && UBApplication::displayManager->hasDisplay()) {
         UBApplication::applicationController->adjustDisplayView();
         mDisplayView->centerOn(0,0);
+        setBoxing(mDisplayView->geometry());
     }
 
     mPaletteManager->containerResized();

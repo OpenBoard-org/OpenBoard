@@ -29,6 +29,7 @@
 #include "MacUtils.h"
 #include "UBPlatformUtils.h"
 #include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 #include "core/UBSettings.h"
 #include "frameworks/UBFileSystemUtils.h"
 #include "gui/UBMainWindow.h"
@@ -607,17 +608,22 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
      * Since it is impossible to later set different presentation options (i.e Hide dock & menu bar)
      * to NSApplication, we have to avoid calling QWidget::showFullScreen on OSX.
     */
-    
-    pWidget->showMaximized();
 
-    /* Bit of a hack. On OS X 10.10, showMaximized() resizes the widget to full screen (if the dock and
-     * menu bar are hidden); but on 10.9, it is placed in the "available" screen area (i.e the
-     * screen area minus the menu bar and dock area). So we have to manually resize it to the
-     * total screen height, and move it up to the top of the screen (y=0 position). */
+    if (UBSettings::settings()->appRunInWindow->get().toBool() &&
+            pWidget == UBApplication::displayManager->widget(ScreenRole::Control)) {
+        pWidget->show();
+    } else {
+        pWidget->showMaximized();
 
-    QRect currentScreenRect = QApplication::desktop()->screenGeometry(pWidget);
-    pWidget->resize(currentScreenRect.width(), currentScreenRect.height());
-    pWidget->move(currentScreenRect.left(), currentScreenRect.top());
+        /* Bit of a hack. On OS X 10.10, showMaximized() resizes the widget to full screen (if the dock and
+         * menu bar are hidden); but on 10.9, it is placed in the "available" screen area (i.e the
+         * screen area minus the menu bar and dock area). So we have to manually resize it to the
+         * total screen height, and move it up to the top of the screen (y=0 position). */
+
+        QRect currentScreenRect = QGuiApplication::screenAt(pWidget->geometry().topLeft())->geometry();
+        pWidget->resize(currentScreenRect.width(), currentScreenRect.height());
+        pWidget->move(currentScreenRect.left(), currentScreenRect.top());
+    }
 }
 
 

@@ -36,6 +36,8 @@
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/memcheck.h"
+#include "core/UBApplication.h"
+#include "core/UBDisplayManager.h"
 #include "core/UBSettings.h"
 
 void UBPlatformUtils::init()
@@ -437,7 +439,8 @@ void UBPlatformUtils::setFrontProcess()
 
 void UBPlatformUtils::showFullScreen(QWidget *pWidget)
 {
-    if (UBSettings::settings()->appRunInWindow->get().toBool()) {
+    if (UBSettings::settings()->appRunInWindow->get().toBool() &&
+            pWidget == UBApplication::displayManager->widget(ScreenRole::Control)) {
         pWidget->show();
     } else {
         pWidget->showFullScreen();

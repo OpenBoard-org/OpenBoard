@@ -86,6 +86,7 @@ class UBPreferencesController : public QObject
         UBBrushPropertiesFrame* mMarkerProperties;
         UBColorPicker* mDarkBackgroundGridColorPicker;
         UBColorPicker* mLightBackgroundGridColorPicker;
+        QString mScreenConfigurationPath;
 
     protected slots:
 
@@ -127,6 +128,9 @@ class UBBrushPropertiesFrame : public Ui::brushProperties
 
 };
 
+// forward
+class UBStringListValidator;
+
 class UBScreenListLineEdit : public QLineEdit
 {
     Q_OBJECT;
@@ -136,10 +140,14 @@ public:
     virtual ~UBScreenListLineEdit() = default;
 
     void setDefault();
+    void loadScreenList(const QStringList& screenList);
 
 protected:
     virtual void focusInEvent(QFocusEvent* focusEvent) override;
     virtual void focusOutEvent(QFocusEvent* focusEvent) override;
+
+signals:
+    void screenListChanged(QStringList screenList);
 
 private slots:
     void addScreen();
@@ -147,9 +155,7 @@ private slots:
 
 private:
     QList<QPushButton*> mScreenLabels;
-    QValidator* mValidator;
-    QCompleter* mCompleter;
-    QTimer* mFadeOutTimer;
+    UBStringListValidator* mValidator;
 };
 
 class UBStringListValidator : public QValidator
@@ -157,10 +163,13 @@ class UBStringListValidator : public QValidator
     Q_OBJECT;
 
 public:
-    UBStringListValidator(QStringList list, QObject* parent = nullptr);
+    UBStringListValidator(QObject* parent = nullptr);
     virtual ~UBStringListValidator() = default;
 
-    virtual QValidator::State validate(QString &input, int &pos) const;
+    virtual void fixup(QString& input) const;
+    virtual QValidator::State validate(QString& input, int& pos) const;
+
+    void setValidationStringList(const QStringList& list);
 
 private:
     QStringList mList;
