@@ -124,6 +124,7 @@ int main(int argc, char *argv[])
         argv_vector.push_back("--process-per-site");
         argv_vector.push_back(nullptr);
         argv = const_cast<char**>(argv_vector.data());
+        argc++;
     }
 
     UBApplication app("OpenBoard", argc, argv);
