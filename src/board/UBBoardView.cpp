@@ -916,6 +916,22 @@ void UBBoardView::setMultiselection(bool enable)
 bool UBBoardView::directTabletEvent(QEvent *event)
 {
     QTabletEvent *tEvent = static_cast<QTabletEvent *>(event);
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    const QPointingDevice *device = dynamic_cast<const QPointingDevice*>(tEvent->device());
+    tEvent = new QTabletEvent(tEvent->type()
+                              , device
+                              , mapFromGlobal(tEvent->pos())
+                              , tEvent->globalPos()
+                              , tEvent->pressure()
+                              , tEvent->xTilt()
+                              , tEvent->yTilt()
+                              , tEvent->tangentialPressure()
+                              , tEvent->rotation()
+                              , tEvent->z()
+                              , tEvent->modifiers()
+                              , tEvent->button()
+                              , tEvent->buttons());
+#else
     tEvent = new QTabletEvent(tEvent->type()
                               , mapFromGlobal(tEvent->pos())
                               , tEvent->globalPos()
@@ -929,6 +945,7 @@ bool UBBoardView::directTabletEvent(QEvent *event)
                               , tEvent->z()
                               , tEvent->modifiers()
                               , tEvent->uniqueId());
+#endif
 
     if (geometry().contains(tEvent->pos()))
     {

@@ -44,6 +44,7 @@ QT += printsupport
 QT += core
 QT += concurrent
 win32: QT += core5compat
+macx: QT += core5compat
 linux: QT += dbus
 
 INCLUDEPATH += src
@@ -183,7 +184,7 @@ macx {
    equals(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 14) {
       LIBS += "-L../OpenBoard-ThirdParty/quazip/lib/macx" "-lquazip"
    } else {
-       LIBS += -L/usr/local/opt/quazip/lib -lquazip1-qt5
+       LIBS += -L/usr/local/opt/quazip/lib -lquazip1-qt6
    }
    LIBS += -L/opt/local/lib
    INCLUDEPATH += /usr/local/opt/openssl/include
@@ -197,11 +198,11 @@ macx {
    LIBS        += -L/opt/local/lib -lpoppler
    INCLUDEPATH += /opt/local/include/poppler
 
-   CONFIG(release, debug|release):CONFIG += x86_64
-   CONFIG(debug, debug|release):CONFIG += x86_64
+   CONFIG += x86_64
+   CONFIG += arm64
 
    QMAKE_MAC_SDK = macosx
-   QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.13
+   QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.15
 
    QMAKE_CXXFLAGS += -Wno-overloaded-virtual
    #VERSION_RC_PATH = "$$BUILD_DIR/version_rc"

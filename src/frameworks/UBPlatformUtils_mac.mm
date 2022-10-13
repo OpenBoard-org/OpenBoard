@@ -35,6 +35,7 @@
 #include "gui/UBMainWindow.h"
 
 #include <QWidget>
+#include <QRegularExpression>
 
 #import <Foundation/NSAutoreleasePool.h>
 #import <Cocoa/Cocoa.h>
@@ -216,10 +217,10 @@ QStringList UBPlatformUtils::availableTranslations()
     NSString *lprojPath = [[NSBundle mainBundle] resourcePath];
     QString translationsPath =  QString::fromUtf8([lprojPath UTF8String], strlen([lprojPath UTF8String]));
     QStringList translationsList = UBFileSystemUtils::allFiles(translationsPath, false);
-    QRegExp sankoreTranslationFiles(".*lproj");
+    QRegularExpression sankoreTranslationFiles(".*lproj");
     translationsList=translationsList.filter(sankoreTranslationFiles);
     [pool drain];
-    return translationsList.replaceInStrings(QRegExp("(.*)/(.*).lproj"),"\\2");
+    return translationsList.replaceInStrings(QRegularExpression("(.*)/(.*).lproj"),"\\2");
 }
 
 QString UBPlatformUtils::translationPath(QString pFilePrefix, QString pLanguage)

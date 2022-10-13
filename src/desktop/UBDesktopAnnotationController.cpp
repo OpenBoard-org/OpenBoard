@@ -80,7 +80,10 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     mTransparentDrawingView = new UBBoardView(UBApplication::boardController, static_cast<QWidget*>(0), false, true); // deleted in UBDesktopAnnotationController::destructor
     mTransparentDrawingView->setAttribute(Qt::WA_TranslucentBackground, true);
 #ifdef Q_OS_OSX
-    mTransparentDrawingView->setAttribute(Qt::WA_MacNoShadow, true);
+    // didn't find the equivalent in Qt6
+    #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+        mTransparentDrawingView->setAttribute(Qt::WA_MacNoShadow, true);
+    #endif
 #endif //Q_OS_OSX
 
     mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window | Qt::NoDropShadowWindowHint | Qt::X11BypassWindowManagerHint);

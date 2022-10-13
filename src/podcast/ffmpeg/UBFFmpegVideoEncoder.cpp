@@ -590,7 +590,7 @@ AVFrame* UBFFmpegVideoEncoder::convertImageFrame(ImageFrame frame)
 
     const uchar * rgbImage = frame.image.bits();
 
-    const int in_linesize[1] = { frame.image.bytesPerLine() };
+    const int in_linesize[1] = { static_cast<int>(frame.image.bytesPerLine()) };
 
     // Allocate the output image
     if (av_image_alloc(avFrame->data, avFrame->linesize, mVideoCodecContext->width,
