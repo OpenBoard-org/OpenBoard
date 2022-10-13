@@ -113,12 +113,13 @@ int main(int argc, char *argv[])
          }
     }
 
+    std::vector<const char*> argv_vector(argv, argv + argc);
+
     /*
     * https://stackoverflow.com/questions/43372267/how-to-append-a-value-to-the-array-of-command-line-arguments
     */
     if (!hasProcessFlag)
     {
-        std::vector<const char*> argv_vector(argv, argv + argc);
         // add --process-per-site flag
         argv_vector.push_back("--process-per-site");
         argv_vector.push_back(nullptr);
