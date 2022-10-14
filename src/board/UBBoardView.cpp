@@ -1414,7 +1414,17 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 
                 textItem->setTextInteractionFlags(Qt::TextEditorInteraction);
                 textItem->setSelected (true);
-                textItem->setTextWidth(0);
+                if (rubberRect.width() > 100)
+                    textItem->setTextWidth(mapToScene(rubberRect).boundingRect().width());
+                else
+                {
+                    int adaptedWidth = scene()->nominalSize().width() / mController->currentZoom() * 0.95
+                            - (mapToScene(event->localPos().toPoint()).x() - mapToScene(0,0).x());
+                    if(adaptedWidth > 100)
+                        textItem->setTextWidth(adaptedWidth);
+                    else
+                        textItem->setTextWidth(0);
+                }
                 textItem->setFocus();
             }
         }
