@@ -1088,35 +1088,11 @@ void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, c
         QString fileName = formedUrl.toLocalFile();
         QString contentType = UBFileSystemUtils::mimeTypeFromFileName(fileName);
 
-        bool shouldLoadFileData =
-                contentType.startsWith("image")
-                || contentType.startsWith("application/widget")
-                || contentType.startsWith("application/vnd.apple-widget");
-
-       if (shouldLoadFileData)
-       {
-            QFile file(fileName);
-            file.open(QIODevice::ReadOnly);
-            downloadFinished(true, formedUrl, QUrl(), contentType, file.readAll(), pPos, pSize, isBackground, internalData);
-            file.close();
-       }
-       else
-       {
-           // media items should be copyed in separate thread
-
-           sDownloadFileDesc desc;
-           desc.modal = false;
-           desc.srcUrl = sUrl;
-           desc.originalSrcUrl = contentSourceUrl;
-           desc.currentSize = 0;
-           desc.name = QFileInfo(url.toString()).fileName();
-           desc.totalSize = 0; // The total size will be retrieved during the download
-           desc.pos = pPos;
-           desc.size = pSize;
-           desc.isBackground = isBackground;
-
-           UBDownloadManager::downloadManager()->addFileToDownload(desc);
-       }
+        // directly add local file to document without copying
+        QFile file(fileName);
+        file.open(QIODevice::ReadOnly);
+        downloadFinished(true, formedUrl, QUrl(), contentType, file.readAll(), pPos, pSize, isBackground, internalData);
+        file.close();
     }
     else
     {
