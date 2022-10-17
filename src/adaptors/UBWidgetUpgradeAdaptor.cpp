@@ -48,25 +48,111 @@ void UBWidgetUpgradeAdaptor::upgradeWidgets(UBDocumentProxy *proxy)
         fillLibraryWidgets();
     }
 
-    // prepare a list of widgets and interactivities mapping the name to the list of provided features
-    // this should be a one-time effort
     // get list of widgets in document
     QStringList widgetPaths = UBPersistenceManager::persistenceManager()->allWidgets(proxy->persistencePath() +  "/" + UBPersistenceManager::widgetDirectory);
 
-    for (QString wigetPath : widgetPaths) {
-        Widget widget = Widget(wigetPath);
+    for (const QString& widgetPath : widgetPaths) {
+        // scan widget for use of incompatible APIs
+        bool needsUpgrade = scanDir(QDir(widgetPath)) == UBWidgetUpgradeAdaptor::ApiUsage::INCOMPATIBLE;
+        Widget widget(widgetPath);
 
-        if (widget.valid() && libraryWidgets.contains(widget.id()))
+        needsUpgrade |= !widget.hasUniqueId();
+
+        if (needsUpgrade)
         {
-            Widget libraryWidget = libraryWidgets[widget.id()];
+            // try to upgrade
+            const Widget& libraryWidget = libraryWidgets.value(widget.id(), Widget());
 
-            if (widget.version() < "2.0" && libraryWidget.version() >= "2.0")
+            if (widget.valid() && libraryWidget.valid())
             {
-                // upgrade needed
+                // upgrade
+                qDebug() << "Upgrading widget" << widget.path() << "to" << libraryWidget.id();
                 copyDir(widget.path(), libraryWidget.path());
+                needsUpgrade = false;
+            }
+            else
+            {
+                qDebug() << "Cannot upgrade widget" << widget.path();
             }
         }
+
+        // set compatibility marker in proxy
+        QUuid uuid(QFileInfo(widgetPath).baseName());
+        proxy->setWidgetCompatible(uuid, !needsUpgrade);
     }
+}
+
+UBWidgetUpgradeAdaptor::ApiUsage UBWidgetUpgradeAdaptor::scanDir(const QDir &widget) const
+{
+    static QRegularExpression scanSuffix("js|htm|html");
+    static QRegularExpression ignoreFiles("jquery|modernizr|mustache");
+
+    QFileInfoList infoList = widget.entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
+
+    UBWidgetUpgradeAdaptor::ApiUsage apiUsage = UBWidgetUpgradeAdaptor::ApiUsage::NO;
+
+    for (const QFileInfo& info : infoList) {
+        UBWidgetUpgradeAdaptor::ApiUsage usage = UBWidgetUpgradeAdaptor::ApiUsage::NO;
+
+        if (info.isDir()) {
+            usage = scanDir(QDir(info.filePath()));
+        }
+        else if (scanSuffix.match(info.suffix()).hasMatch() && !ignoreFiles.match(info.fileName()).hasMatch())
+        {
+            usage = scanFile(info);
+        }
+
+        if (usage > apiUsage)
+        {
+            apiUsage = usage;
+        }
+    }
+
+    return apiUsage;
+}
+
+UBWidgetUpgradeAdaptor::ApiUsage UBWidgetUpgradeAdaptor::scanFile(const QFileInfo &info) const
+{
+    // 'widget.' or 'sankore.'
+    static QRegularExpression apis("widget\\.|sankore\\.");
+
+    // 'widget.onenter', 'onleave' or 'onremove' not followed by '.connect'
+    static QRegularExpression unconnectedSignal(
+                "widget\\."
+                "(onenter|onleave|onremove)"
+                "(?!\\.connect)");
+
+    // 'sankore.<fn>' not followed by 'function' on the same line
+    static QRegularExpression syncFunctions(
+                "sankore\\."
+                "(pageCount|currentPageNumber|pageThumbnail|locale|preference|preferenceKeys)"
+                "(?![^\\r\\n]*function)");
+
+    QFile file(info.filePath());
+
+    if (!file.open(QFile::ReadOnly))
+    {
+        return UBWidgetUpgradeAdaptor::ApiUsage::NO;
+    }
+
+    QString content = file.readAll();
+
+    if (!apis.match(content).hasMatch())
+    {
+        return UBWidgetUpgradeAdaptor::ApiUsage::NO;
+    }
+
+    if (unconnectedSignal.match(content).hasMatch())
+    {
+        return UBWidgetUpgradeAdaptor::ApiUsage::INCOMPATIBLE;
+    }
+
+    if (syncFunctions.match(content).hasMatch())
+    {
+        return UBWidgetUpgradeAdaptor::ApiUsage::INCOMPATIBLE;
+    }
+
+    return UBWidgetUpgradeAdaptor::ApiUsage::COMPATIBLE;
 }
 
 void UBWidgetUpgradeAdaptor::copyDir(QDir target, QDir source)
@@ -99,9 +185,10 @@ void UBWidgetUpgradeAdaptor::fillLibraryWidgets()
 {
     QStringList widgetPaths = UBPersistenceManager::persistenceManager()->allWidgets(UBSettings::settings()->applicationApplicationsLibraryDirectory());
     widgetPaths << UBPersistenceManager::persistenceManager()->allWidgets(UBSettings::settings()->applicationInteractivesDirectory());
+    widgetPaths << UBPersistenceManager::persistenceManager()->allWidgets(UBSettings::settings()->userInteractiveDirectory());
 
-    for (QString wigetPath : widgetPaths) {
-        Widget widget = Widget(wigetPath);
+    for (const QString& wigetPath : qAsConst(widgetPaths)) {
+        Widget widget(wigetPath);
 
         if (widget.valid())
         {
@@ -111,10 +198,10 @@ void UBWidgetUpgradeAdaptor::fillLibraryWidgets()
 }
 
 
-UBWidgetUpgradeAdaptor::Widget::Widget(const QString &dir) : m_path(dir)
+UBWidgetUpgradeAdaptor::Widget::Widget(const QString &dir) : m_path(dir), m_hasUniqueId(false)
 {
-    // widgetHashes are used to identify widgets by the MD% sum of their config.xml
-    // neccessary because many interactivities share the same id
+    // widgetHashes are used to identify widgets by the MD5 sum of their config.xml
+    // necessary because many interactivities share the same id
     static QMap<QByteArray, QString> widgetHashes;
 
     if (widgetHashes.empty())
@@ -153,6 +240,10 @@ UBWidgetUpgradeAdaptor::Widget::Widget(const QString &dir) : m_path(dir)
             // take id from hash list, not from config.xml
             m_id = widgetHashes[hash];
         }
+        else
+        {
+            m_hasUniqueId = true;
+        }
 
         QDomDocument domDoc;
         domDoc.setContent(data);
@@ -175,7 +266,7 @@ bool UBWidgetUpgradeAdaptor::Widget::operator==(const UBWidgetUpgradeAdaptor::Wi
     return same;
 }
 
-bool UBWidgetUpgradeAdaptor::Widget::valid()
+bool UBWidgetUpgradeAdaptor::Widget::valid() const
 {
     return !m_id.isEmpty() && !m_version.isEmpty();
 }
@@ -193,4 +284,9 @@ QString UBWidgetUpgradeAdaptor::Widget::id() const
 QString UBWidgetUpgradeAdaptor::Widget::version() const
 {
     return m_version;
+}
+
+bool UBWidgetUpgradeAdaptor::Widget::hasUniqueId() const
+{
+    return m_hasUniqueId;
 }

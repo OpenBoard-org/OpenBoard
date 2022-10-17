@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <widget xmlns="http://www.w3.org/ns/widgets" 
-        identifier="http://uniboard.mnemis.com/widgets/Clock" 
-        version="1.1"
+        xmlns:ub="http://uniboard.mnemis.com/widgets"
+        id="http://www.openboard.org/widget/application/icell"
+        version="2.0"
         width="500"
         height="500" >        
-  <name>iCell</name>
-  <content src="widget.html"/> 
+    <name>iCell</name>
+    <content src="widget.html"/>
 </widget>
 
 <!-- This XML is probably more complete, but it isn't working very well (the widget is resized, but its content doesn't move)

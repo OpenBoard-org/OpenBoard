@@ -84,6 +84,9 @@ class UBDocumentProxy : public QObject
         int pageDpi();
         void setPageDpi(int dpi);
 
+        bool isWidgetCompatible(const QUuid& uuid) const;
+        void setWidgetCompatible(const QUuid& uuid, bool compatible);
+
     protected:
         void setPageCount(int pPageCount);
         int incPageCount();
@@ -103,6 +106,7 @@ class UBDocumentProxy : public QObject
 
         int mPageDpi;
 
+        QMap<QUuid, bool> mWidgetCompatibility;
 };
 
 inline bool operator==(const UBDocumentProxy &proxy1, const UBDocumentProxy &proxy2)

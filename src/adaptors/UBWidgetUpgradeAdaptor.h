@@ -44,22 +44,35 @@ private:
     {
     public:
         Widget() = default;
-        Widget(const QString& dir);
+        explicit Widget(const QString& dir);
         bool operator==(const Widget& other) const;
-        bool valid();
+        bool valid() const;
         QString path() const;
         QString id() const;
         QString version() const;
+        bool hasUniqueId() const;
 
     private:
         QString m_path;
         QString m_id;
         QString m_version;
+        bool m_hasUniqueId;
+    };
+
+    enum class ApiUsage
+    {
+        NO,
+        COMPATIBLE,
+        INCOMPATIBLE
     };
 
 public:
     UBWidgetUpgradeAdaptor();
     void upgradeWidgets(UBDocumentProxy *proxy);
+
+private:
+    ApiUsage scanDir(const QDir &widget) const;
+    ApiUsage scanFile(const QFileInfo& info) const;
     void copyDir(QDir target, QDir source);
     void fillLibraryWidgets();
 

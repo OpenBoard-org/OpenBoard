@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget xmlns="http://www.w3.org/ns/widgets" 
+        xmlns:ub="http://uniboard.mnemis.com/widgets"
+        id="http://www.openboard.org/widget/application/geoinfo"
         version="2.0"
         width="680"
         height="400" 
-		ub:resizable="false">
-  <name>GeoInfo</name>
-  <content src="GeoInfo.html"/>
+        ub:resizable="false">
+    <name>GeoInfo</name>
+    <content src="GeoInfo.html"/>
 </widget>

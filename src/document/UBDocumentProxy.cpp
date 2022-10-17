@@ -124,6 +124,16 @@ void UBDocumentProxy::setPageDpi(int dpi)
     mPageDpi = dpi;
 }
 
+bool UBDocumentProxy::isWidgetCompatible(const QUuid &uuid) const
+{
+    return mWidgetCompatibility.value(uuid, true);
+}
+
+void UBDocumentProxy::setWidgetCompatible(const QUuid &uuid, bool compatible)
+{
+    mWidgetCompatibility[uuid] = compatible;
+}
+
 int UBDocumentProxy::incPageCount()
 {
     if (mPageCount <= 0)

@@ -196,6 +196,11 @@ bool UBGraphicsWidgetItem::canBeTool() const
     #endif
 }
 
+void UBGraphicsWidgetItem::setCanBeTool(bool tool)
+{
+    mCanBeTool = tool;
+}
+
 QString UBGraphicsWidgetItem::preference(const QString& key) const
 {
     return mPreferences.value(key);
@@ -338,6 +343,11 @@ bool UBGraphicsWidgetItem::resizable() const
 bool UBGraphicsWidgetItem::isFrozen() const
 {
     return mIsFrozen;
+}
+
+void UBGraphicsWidgetItem::setFreezable(bool freezable)
+{
+    mIsFreezable = freezable;
 }
 
 bool UBGraphicsWidgetItem::isWebActive() const
