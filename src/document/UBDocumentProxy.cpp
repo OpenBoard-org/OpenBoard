@@ -43,6 +43,7 @@ UBDocumentProxy::UBDocumentProxy()
     : mPageCount(0)
     , mPageDpi(0)
     , mPersistencePath("")
+    , mNeedsCleanup(true)
 {
     init();
 }
@@ -54,12 +55,14 @@ UBDocumentProxy::UBDocumentProxy(const UBDocumentProxy &rValue) :
     mMetaDatas = rValue.mMetaDatas;
     mIsModified = rValue.mIsModified;
     mPageCount = rValue.mPageCount;
+    mNeedsCleanup = rValue.mNeedsCleanup;
 }
 
 
 UBDocumentProxy::UBDocumentProxy(const QString& pPersistancePath)
     : mPageCount(0)
     , mPageDpi(0)
+    , mNeedsCleanup(true)
 {
     init();
     setPersistencePath(pPersistancePath);
@@ -134,6 +137,13 @@ void UBDocumentProxy::setWidgetCompatible(const QUuid &uuid, bool compatible)
     mWidgetCompatibility[uuid] = compatible;
 }
 
+bool UBDocumentProxy::needsCleanup()
+{
+    bool tmp = mNeedsCleanup;
+    mNeedsCleanup = false;
+    return tmp;
+}
+
 int UBDocumentProxy::incPageCount()
 {
     if (mPageCount <= 0)
@@ -158,6 +168,8 @@ int UBDocumentProxy::decPageCount()
     {
         mPageCount = 0;
     }
+
+    mNeedsCleanup = true;
 
     return mPageCount;
 }
