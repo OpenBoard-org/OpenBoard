@@ -43,8 +43,8 @@ QT += webenginewidgets
 QT += printsupport
 QT += core
 QT += concurrent
-win32: QT += core5compat
-macx: QT += core5compat
+greaterThan(QT_MAJOR_VERSION, 5): win32: QT += core5compat
+greaterThan(QT_MAJOR_VERSION, 5): macx: QT += core5compat
 linux: QT += dbus
 
 INCLUDEPATH += src
