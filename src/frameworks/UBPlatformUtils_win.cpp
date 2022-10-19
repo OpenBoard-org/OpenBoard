@@ -444,10 +444,20 @@ void UBPlatformUtils::setFrontProcess()
 
 void UBPlatformUtils::showFullScreen(QWidget *pWidget)
 {
-    if (UBSettings::settings()->appRunInWindow->get().toBool() &&
-            pWidget == UBApplication::displayManager->widget(ScreenRole::Control)) {
+    if (UBSettings::settings()->appRunInWindow->get().toBool()
+        && pWidget == UBApplication::displayManager->widget(ScreenRole::Control))
+    {
         pWidget->show();
-    } else {
+    }
+    else
+    {
+#if defined(Q_OS_WIN)
+        if (pWidget->windowHandle())
+        {
+            HWND handle = reinterpret_cast<HWND>(pWidget->windowHandle()->winId());
+            SetWindowLongPtr(handle, GWL_STYLE, GetWindowLongPtr(handle, GWL_STYLE) & ~WS_POPUP);
+        }
+#endif
         pWidget->showFullScreen();
     }
 }
