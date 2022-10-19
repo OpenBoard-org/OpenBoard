@@ -2537,7 +2537,7 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
     {
         if("" != pMimeData->text()){
             // Sometimes, it is possible to have an URL as text. we check here if it is the case
-            QString qsTmp = pMimeData->text().remove('\0');
+            QString qsTmp = pMimeData->text().remove(QChar('\0'));
             if(qsTmp.startsWith("http"))
                 downloadURL(QUrl(qsTmp), QString(), pPos);
             else{
