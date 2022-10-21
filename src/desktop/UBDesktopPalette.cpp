@@ -202,10 +202,10 @@ void UBDesktopPalette::maximizeMe()
     adjustSizeAndPosition();
 
     // Notify that the maximization has been done
-    emit maximized();
 #ifdef UB_REQUIRES_MASK_UPDATE
         emit refreshMask();
 #endif
+    emit maximized();
 }
 
 void UBDesktopPalette::showEvent(QShowEvent *event)
