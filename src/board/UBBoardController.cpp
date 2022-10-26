@@ -44,10 +44,7 @@
 #include "core/UBMimeData.h"
 #include "core/UBDownloadManager.h"
 
-#include "network/UBHttpGet.h"
-
 #include "gui/UBMessageWindow.h"
-#include "gui/UBResources.h"
 #include "gui/UBToolbarButtonGroup.h"
 #include "gui/UBMainWindow.h"
 #include "gui/UBToolWidget.h"
@@ -1356,19 +1353,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
             sUrl = sourceUrl.toLocalFile();
         }
 
-        QTemporaryFile* eduMediaFile = 0;
-
-        if (sUrl.toLower().contains("edumedia-sciences.com"))
-        {
-            eduMediaFile = new QTemporaryFile("XXXXXX.swf");
-            if (eduMediaFile->open())
-            {
-                eduMediaFile->write(pData);
-                QFileInfo fi(*eduMediaFile);
-                sUrl = fi.absoluteFilePath();
-            }
-        }
-
         QSize size;
 
         if (pSize.height() > 0 && pSize.width() > 0)
@@ -1396,10 +1380,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
             return widgetItem;
         }
-
-        if (eduMediaFile)
-            delete eduMediaFile;
-
     }
     else if (UBMimeType::PDF == itemMimeType)
     {
@@ -1490,56 +1470,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         else
         {
             showMessage(tr("Unknown tool type %1").arg(sourceUrl.toString()));
-        }
-    }
-    else if (sourceUrl.toString().contains("edumedia-sciences.com"))
-    {
-        qDebug() << "accepting url " << sourceUrl.toString() << "as eduMedia content";
-
-        QTemporaryFile eduMediaZipFile("XXXXXX.edumedia");
-        if (eduMediaZipFile.open())
-        {
-            eduMediaZipFile.write(pData);
-            eduMediaZipFile.close();
-
-            QString tempDir = UBFileSystemUtils::createTempDir("uniboard-edumedia");
-
-            UBFileSystemUtils::expandZipToDir(eduMediaZipFile, tempDir);
-
-            QDir appDir(tempDir);
-
-            foreach(QString subDirName, appDir.entryList(QDir::AllDirs))
-            {
-                QDir subDir(tempDir + "/" + subDirName + "/contents");
-
-                foreach(QString fileName, subDir.entryList(QDir::Files))
-                {
-                    if (fileName.toLower().endsWith(".swf"))
-                    {
-                        QString swfFile = tempDir + "/" + subDirName + "/contents/" + fileName;
-
-                        QSize size;
-
-                        if (pSize.height() > 0 && pSize.width() > 0)
-                            size = pSize;
-                        else
-                            size = mActiveScene->nominalSize() * .8;
-
-                        QString widgetUrl = UBGraphicsW3CWidgetItem::createNPAPIWrapper(swfFile, "application/x-shockwave-flash", size);
-
-                        if (widgetUrl.length() > 0)
-                        {
-                            UBGraphicsWidgetItem *widgetItem = mActiveScene->addW3CWidget(QUrl::fromLocalFile(widgetUrl), pPos);
-
-                            widgetItem->setSourceUrl(sourceUrl);
-
-                            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-
-                            return widgetItem;
-                        }
-                    }
-                }
-            }
         }
     }
     else
