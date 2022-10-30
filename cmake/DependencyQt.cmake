@@ -32,7 +32,7 @@ else()
     message(FATAL_ERROR "Qt Version ${QT_VERSION} not supported")
 endif()
 
-list(TRANSFORM QT_COMPONENTS PREPEND Qt::)
+list(TRANSFORM QT_COMPONENTS PREPEND Qt${QT_VERSION}::)
 
 target_link_libraries(${PROJECT_NAME}
     ${QT_COMPONENTS}

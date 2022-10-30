@@ -1,4 +1,4 @@
-qt_add_resources(${PROJECT_NAME}
+target_sources(${PROJECT_NAME} PRIVATE
     blackoutWidget.ui
     brushProperties.ui
     capturePublishing.ui
@@ -7,7 +7,6 @@ qt_add_resources(${PROJECT_NAME}
     intranetPodcastPublishingDialog.ui
     mainWindow.ui
     preferences.ui
-    preferences.ui.autosave
     trapFlash.ui
     youTubePublishingDialog.ui
 )

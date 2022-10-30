@@ -27,7 +27,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     simplebrowser/webview.h
 )
 
-qt_add_resources(${PROJECT_NAME}
+target_sources(${PROJECT_NAME} PRIVATE
     simplebrowser/certificateerrordialog.ui
     simplebrowser/downloadmanagerwidget.ui
     simplebrowser/downloadwidget.ui

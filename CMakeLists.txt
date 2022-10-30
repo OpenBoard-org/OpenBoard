@@ -20,6 +20,7 @@ cmake_minimum_required(VERSION 3.16)
 #   cmake -S <srcdir> -B <builddir> -DCMAKE_INSTALL_PREFIX:PATH=/opt
 #
 # Build and install
+#   cd <builddir>
 #   cmake --build . [-j<n>]
 #   DESTDIR=<installdir> cmake --install .
 # ==========================================================================
@@ -174,7 +175,12 @@ endif()
 # Resources
 # ==========================================================================
 
-qt_add_resources(OPENBOARD_RESOURCES ${OPENBOARD_QRC_FILE})
+if(Qt5_VERSION AND Qt5_VERSION VERSION_LESS "5.15")
+    qt5_add_resources(OPENBOARD_RESOURCES ${OPENBOARD_QRC_FILE})
+else()
+    qt_add_resources(OPENBOARD_RESOURCES ${OPENBOARD_QRC_FILE})
+endif()
+
 target_sources(${PROJECT_NAME} PRIVATE ${OPENBOARD_RESOURCES})
 
 
@@ -184,8 +190,14 @@ target_sources(${PROJECT_NAME} PRIVATE ${OPENBOARD_RESOURCES})
 
 file(GLOB OPENBOARD_TS_FILES ${OPENBOARD_TS_DIR}/*.ts)
 set_source_files_properties(${OPENBOARD_TS_FILES} PROPERTIES OUTPUT_LOCATION ${PROJECT_BINARY_DIR}/i18n)
-qt_add_translation(QM_FILES ${OPENBOARD_TS_FILES})
-target_sources(${PROJECT_NAME} PRIVATE ${QM_FILES})
+
+if(Qt5_VERSION AND Qt5_VERSION VERSION_LESS "5.15")
+    qt5_add_translation(QM_FILES ${OPENBOARD_TS_FILES})
+else()
+    qt_add_translation(QM_FILES ${OPENBOARD_TS_FILES})
+endif()
+
+target_sources(${PROJECT_NAME} PRIVATE ${QM_FILES} ${OPENBOARD_TS_FILES})
 
 
 # ==========================================================================
