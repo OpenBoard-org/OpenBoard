@@ -114,6 +114,9 @@ class UBDisplayManager : public QObject
         void availableScreenCountChanged(int screenCount);
 
    public slots:
+        void positionScreens();
+
+        void assignRoles();
 
         void adjustScreens();
 
@@ -128,8 +131,6 @@ class UBDisplayManager : public QObject
     private:
 
         void initScreenIndexes();
-        void assignRoles();
-        void positionScreens();
 
         QList<UBBlackoutWidget*> mBlackoutWidgets;
         QList<Ui::BlackoutWidget*> mBlackoutUiList;
