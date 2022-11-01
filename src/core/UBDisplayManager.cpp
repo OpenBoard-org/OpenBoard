@@ -108,6 +108,7 @@ void UBDisplayManager::initScreenIndexes()
 
 void UBDisplayManager::assignRoles()
 {
+    mScreensByRole.clear();
     QVariant appScreenList = UBSettings::settings()->appScreenList->get();
     QStringList screenList = appScreenList.toStringList();
     qDebug() << "assignRoles using screen list" << screenList;
