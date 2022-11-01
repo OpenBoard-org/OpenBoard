@@ -330,7 +330,9 @@ void UBDisplayManager::positionScreens()
     {
         QWidget* controlWidget = widget(ScreenRole::Control);
 
-        controlWidget->showNormal();
+        // Sometimes moving control screen to the left won't operate...
+        // found out that resetting the geometry solves theses cases better than "showNormal() workaround"
+        controlWidget->setGeometry(QRect());
 
         QRect geometry = screenGeometry(ScreenRole::Control);
 
@@ -385,6 +387,7 @@ void UBDisplayManager::positionScreens()
         {
             if (screen(role)) {
                 QWidget* previous = widget(role);
+                qDebug() << "previous display geometry" << screenGeometry(role);
                 previous->showNormal();
                 previous->setGeometry(screenGeometry(role));
                 UBPlatformUtils::showFullScreen(previous);
