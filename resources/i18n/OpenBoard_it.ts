@@ -1125,43 +1125,43 @@
     </message>
     <message>
         <source>Remove Page</source>
-        <translation type="vanished">Elimina pagina</translation>
+        <translation>Elimina pagina</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation type="vanished">Elimina documento</translation>
+        <translation>Elimina documento</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation type="vanished">Sei sicuro di voler eliminare il documento &apos;%1&apos;?</translation>
+        <translation>Sei sicuro di voler eliminare il documento &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Empty Trash</source>
-        <translation type="vanished">Svuota il cestino</translation>
+        <translation>Svuota il cestino</translation>
     </message>
     <message>
         <source>Are you sure you want to empty trash?</source>
-        <translation type="vanished">Sei sicuro di voler svuotare il cestino?</translation>
+        <translation>Sei sicuro di voler svuotare il cestino?</translation>
     </message>
     <message>
         <source>Emptying trash</source>
-        <translation type="vanished">Sto svuotanto il cestino</translation>
+        <translation>Sto svuotanto il cestino</translation>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation type="vanished">Cestino svuotato</translation>
+        <translation>Cestino svuotato</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation type="vanished">Elimina cartella</translation>
+        <translation>Elimina cartella</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="vanished">Sei sicuro di voler eliminare la cartella &apos;%1&apos; e tutto il suo contenuto?</translation>
+        <translation>Sei sicuro di voler eliminare la cartella &apos;%1&apos; e tutto il suo contenuto?</translation>
     </message>
     <message>
         <source>No document selected!</source>
-        <translation type="vanished">Nessun documento selezionato!</translation>
+        <translation>Nessun documento selezionato!</translation>
     </message>
     <message>
         <source>Open Supported File</source>
@@ -1228,11 +1228,11 @@
     </message>
     <message>
         <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="vanished">Sicuri di voler rimuovere tutti i documenti selezionati?</translation>
+        <translation>Sicuri di voler rimuovere tutti i documenti selezionati?</translation>
     </message>
     <message>
         <source>Remove multiple documents</source>
-        <translation type="vanished">Rimuovi documenti multipli</translation>
+        <translation>Rimuovi documenti multipli</translation>
     </message>
     <message numerus="yes">
         <source>duplicated %1 page</source>
@@ -1317,7 +1317,7 @@
     <name>UBDocumentPublisher</name>
     <message>
         <source>Export failed.</source>
-        <translation type="obsolete">Esportazione fallita.</translation>
+        <translation>Esportazione fallita.</translation>
     </message>
 </context>
 <context>
@@ -1387,15 +1387,15 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
     <name>UBDocumentTreeWidget</name>
     <message>
         <source>%1 (copy)</source>
-        <translation type="vanished">%1 (copia)</translation>
+        <translation>%1 (copia)</translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation type="vanished">Sto copiando pagina %1/%2</translation>
+        <translation>Sto copiando pagina %1/%2</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="vanished">
+        <translation>%1 pagine copiate</translation>
             <numerusform>%1 pagina copiata</numerusform>
             <numerusform>%1 pagine copiate</numerusform>
         </translation>
@@ -1488,11 +1488,11 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="vanished">Esportazione documento in corso...</translation>
+        <translation>Esportazione documento in corso...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">Esportazione completata con successo.</translation>
+        <translation>Esportazione completata con successo.</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
@@ -1504,15 +1504,15 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation type="vanished">Exportazione fallita: posizione non scrivibile</translation>
+        <translation>Exportazione fallita: posizione non scrivibile</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation type="vanished">Esportazione fallita</translation>
+        <translation>Esportazione fallita</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="vanished">Impossibile esportare nella posizione selezionata. Non possiedi i permessi necessari a salvare il file.</translation>
+        <translation>Impossibile esportare nella posizione selezionata. Non possiedi i permessi necessari a salvare il file.</translation>
     </message>
 </context>
 <context>
@@ -1550,11 +1550,11 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="vanished">Esportazione documento in corso...</translation>
+        <translation>Esportazione documento in corso...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">Esportazione completata con successo.</translation>
+        <translation>Esportazione completata con successo.</translation>
     </message>
     <message>
         <source>Export to PDF</source>
@@ -1562,15 +1562,15 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation type="vanished">Esportazione fallita: posizione non scrivibile</translation>
+        <translation>Esportazione fallita: posizione non scrivibile</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation type="vanished">Esportazione fallita</translation>
+        <translation>Esportazione fallita</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="vanished">Impossibile esportare alla posizione selezionata. Non possiedi i permessi necessari a salvare il file.</translation>
+        <translation>Impossibile esportare alla posizione selezionata. Non possiedi i permessi necessari a salvare il file.</translation>
     </message>
 </context>
 <context>
@@ -1581,11 +1581,11 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="vanished">Esportazione documento in corso...</translation>
+        <translation>Esportazione documento in corso...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="vanished">Esportazione riuscita.</translation>
+        <translation>Esportazione riuscita.</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1631,7 +1631,7 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="vanished">Imposta come sfondo</translation>
+        <translation>Imposta come sfondo</translation>
     </message>
     <message>
         <source>Add to library</source>
@@ -1964,7 +1964,7 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
     </message>
     <message>
         <source>Failed to log to Proxy</source>
-        <translation>Login al proxy fallito</translation>
+        <translation>Accesso al proxy fallito</translation>
     </message>
     <message>
         <source>SSL Errors:
@@ -2038,7 +2038,7 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
     <message>
         <source>Moving page to trash folder...</source>
-        <translation type="vanished">Spostamento della pagina nella cartella del cestino...</translation>
+        <translation>Spostamento della pagina nella cartella del cestino...</translation>
     </message>
     <message>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
@@ -2154,7 +2154,7 @@ Vuoi ignorare gli errori per questo host?</translation>
     <name>UBProxyLoginDlg</name>
     <message>
         <source>Proxy Login</source>
-        <translation type="vanished">Login Proxy</translation>
+        <translation>Accesso Proxy</translation>
     </message>
     <message>
         <source>Username:</source>
@@ -2162,26 +2162,26 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="vanished">Password:</translation>
+        <translation>Password:</translation>
     </message>
 </context>
 <context>
     <name>UBPublicationDlg</name>
     <message>
         <source>Publish document on the web</source>
-        <translation type="vanished">Pubblica documento sul web</translation>
+        <translation>Pubblica documento sul web</translation>
     </message>
     <message>
         <source>Title:</source>
-        <translation type="vanished">Titolo:</translation>
+        <translation>Titolo:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="vanished">Descrizione:</translation>
+        <translation>Descrizione:</translation>
     </message>
     <message>
         <source>Publish</source>
-        <translation type="vanished">Pubblica</translation>
+        <translation>Pubblica</translation>
     </message>
 </context>
 <context>
@@ -2217,7 +2217,7 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
     <message>
         <source>loading thumbnail of page %1</source>
-        <translation type="vanished">Caricamento miniatura della pagina %1</translation>
+        <translation>Caricamento miniatura della pagina %1</translation>
     </message>
     <message>
         <source>Loading thumbnail (%1/%2)</source>
@@ -2752,23 +2752,23 @@ p, li { white-space: pre-wrap; }
     <name>documentPublishingDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="vanished">Dialogo</translation>
+        <translation>Dialogo</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="vanished">Titolo</translation>
+        <translation>Titolo</translation>
     </message>
     <message>
         <source>E-mail</source>
-        <translation type="vanished">E-mail</translation>
+        <translation>E-mail</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="vanished">Autore</translation>
+        <translation>Autore</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="vanished">Descrizione</translation>
+        <translation>Descrizione</translation>
     </message>
 </context>
 <context>
@@ -2802,7 +2802,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>version : …</source>
-        <translation>versione : ...</translation>
+        <translation>versione : …</translation>
     </message>
     <message>
         <source>Default Settings</source>
@@ -2834,7 +2834,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Keyboard button size:</source>
-        <translation type="vanished">Dimensione pulsanti tastiera:</translation>
+        <translation>Dimensione pulsanti tastiera:</translation>
     </message>
     <message>
         <source>Toolbar</source>
@@ -3009,7 +3009,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>about:blank</source>
-        <translation>about:blank</translation>
+        <translation>su:bianco</translation>
     </message>
     <message>
         <source>Application name</source>
