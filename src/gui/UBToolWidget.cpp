@@ -114,7 +114,7 @@ void UBToolWidget::initialize()
     QWebEngineProfile* profile = UBApplication::webController->webProfile();
     mWebView->setPage(new WebPage(profile, mWebView));
 
-    mWebView->setBackgroundRole(QPalette::Window);
+    mWebView->setAttribute(Qt::WA_TranslucentBackground);
     mWebView->page()->setBackgroundColor(QColor(Qt::transparent));
 
     mWebView->installEventFilter(this);
