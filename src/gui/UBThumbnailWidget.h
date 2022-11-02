@@ -613,7 +613,7 @@ class UBDraggableThumbnailView : public UBDraggableThumbnail
             mPageNumber->setPlainText(tr("Page %0").arg(i+1));
 
             if (UBApplication::boardController->activeSceneIndex() == i)
-                mPageNumber->setHtml("<span style=\";font-weight:bold;color: red\">" + tr("Page %0").arg(i+1) + "</span>");
+                mPageNumber->setHtml("<span style=\";font-weight:bold;color: #6682b5\">" + tr("Page %0").arg(i+1) + "</span>");
             else
                 mPageNumber->setHtml("<span style=\";color: #000000\">" + tr("Page %0").arg(i+1) + "</span>");
         }

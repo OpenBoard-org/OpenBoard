@@ -182,7 +182,15 @@ void UBBoardThumbnailsView::updateThumbnailsPos()
         mThumbnails.at(i)->updatePos(mThumbnailWidth, thumbnailHeight);
     }
 
-    scene()->setSceneRect(0, 0, scene()->itemsBoundingRect().size().width() - verticalScrollBar()->width(), scene()->itemsBoundingRect().size().height());
+    // for some reason, verticalScrollBar()->width() returns 100 while isVisible() is false... not the case with Qt 5.5 (when this code has been implemented)
+    if (verticalScrollBar()->isVisible())
+    {
+        scene()->setSceneRect(0, 0, scene()->itemsBoundingRect().size().width() - verticalScrollBar()->width(), scene()->itemsBoundingRect().size().height());
+    }
+    else
+    {
+        scene()->setSceneRect(0, 0, scene()->itemsBoundingRect().size().width(), scene()->itemsBoundingRect().size().height());
+    }
 
     update();
 }
@@ -192,7 +200,7 @@ void UBBoardThumbnailsView::resizeEvent(QResizeEvent *event)
     Q_UNUSED(event);
 
     // Update the thumbnails width
-    mThumbnailWidth = (width() > mThumbnailMinWidth) ? width() - verticalScrollBar()->width() - 2*mMargin : mThumbnailMinWidth;
+    mThumbnailWidth = std::max(width() - verticalScrollBar()->width() - 2*mMargin, mThumbnailMinWidth);
 
     // Refresh the scene
     updateThumbnailsPos();
