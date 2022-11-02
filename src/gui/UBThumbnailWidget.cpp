@@ -1075,12 +1075,16 @@ void UBDraggableThumbnailView::updatePos(qreal width, qreal height)
     setTransform(transform);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-    QPointF position((width - w * scaledFactor) / 2,
-                sceneIndex() * (height + labelSpacing) + (height - h * scaledFactor) / 2);
+    QPointF position(2*sSelectionItemMargin, 2*sSelectionItemMargin + sceneIndex() * (height + labelSpacing) + (height - h * scaledFactor) / 2);
 
     setPos(position);
 
-    position.setY(position.y() + (height + h * scaledFactor) / 2);
+    mSelectionItem->setRect(sceneBoundingRect().x() - sSelectionItemMargin,
+                           sceneBoundingRect().y() - sSelectionItemMargin,
+                           sceneBoundingRect().width() + 2*sSelectionItemMargin,
+                           sceneBoundingRect().height() + 2*sSelectionItemMargin);
+
+    position.setY(sSelectionItemMargin + position.y() + (height + h * scaledFactor) / 2);
     position.setX(position.x() + (w * scaledFactor - fm.horizontalAdvance(mPageNumber->toPlainText())) / 2);
 
     mPageNumber->setPos(position);

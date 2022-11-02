@@ -588,7 +588,14 @@ class UBDraggableThumbnailView : public UBDraggableThumbnail
         {
             setFlag(QGraphicsItem::ItemIsSelectable, true);
             setWidget(mThumbnailView);
-            setAcceptDrops(true);            
+            setAcceptDrops(true);
+
+            mSelectionItem = new QGraphicsRectItem(sceneBoundingRect().x() - sSelectionItemMargin,
+                                                   sceneBoundingRect().y() - sSelectionItemMargin,
+                                                   sceneBoundingRect().width() + 2*sSelectionItemMargin,
+                                                   sceneBoundingRect().height() + 2*sSelectionItemMargin);
+            mSelectionItem->setPen(QPen(UBSettings::treeViewBackgroundColor, 8));
+            mSelectionItem->setZValue(-1);
         }
 
         ~UBDraggableThumbnailView()
@@ -618,9 +625,22 @@ class UBDraggableThumbnailView : public UBDraggableThumbnail
                 mPageNumber->setHtml("<span style=\";color: #000000\">" + tr("Page %0").arg(i+1) + "</span>");
         }
 
-    private:        
+        void setHighlihted(bool highlighted)
+        {
+            if (highlighted)
+                mSelectionItem->show();
+            else
+                mSelectionItem->hide();
+        }
+
+        QGraphicsRectItem* selectionItem(){ return mSelectionItem; }
+
+    private:
+        static const int sSelectionItemMargin = 5;
+        QGraphicsRectItem *mSelectionItem;
         UBThumbnailView* mThumbnailView;        
         UBThumbnailTextItem* mPageNumber;
+
 };
 
 namespace UBThumbnailUI

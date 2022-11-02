@@ -105,6 +105,7 @@ void UBBoardThumbnailsView::removeThumbnail(int i)
 {
     UBDraggableThumbnailView* item = mThumbnails.at(i);
 
+    scene()->removeItem(item->selectionItem());
     scene()->removeItem(item->pageNumber());
     scene()->removeItem(item);
 
@@ -130,6 +131,7 @@ void UBBoardThumbnailsView::addThumbnail(UBDocumentContainer* source, int i)
 
     scene()->addItem(item);
     scene()->addItem(item->pageNumber());
+    scene()->addItem(item->selectionItem());
 
     updateThumbnailsPos();
 }
@@ -138,6 +140,7 @@ void UBBoardThumbnailsView::clearThumbnails()
 {
     for(int i = 0; i < mThumbnails.size(); i++)
     {
+        scene()->removeItem(mThumbnails.at(i)->selectionItem());
         scene()->removeItem(mThumbnails.at(i)->pageNumber());
         scene()->removeItem(mThumbnails.at(i));
         mThumbnails.at(i)->deleteLater();
@@ -156,6 +159,7 @@ void UBBoardThumbnailsView::initThumbnails(UBDocumentContainer* source)
 
         scene()->addItem(mThumbnails.last());
         scene()->addItem(mThumbnails.last()->pageNumber());
+        scene()->addItem(mThumbnails.last()->selectionItem());
     }
 
     updateThumbnailsPos();
@@ -175,21 +179,16 @@ void UBBoardThumbnailsView::updateThumbnailsPos()
 {    
     qreal thumbnailHeight = mThumbnailWidth / UBSettings::minScreenRatio;
 
+    // for some reason, verticalScrollBar()->width() returns 100 while isVisible() is false... not the case with Qt 5.5 (when this code has been implemented)
+    int verticalScrollBarWidth = verticalScrollBar()->isVisible() ? verticalScrollBar()->width() : 0;
+    scene()->setSceneRect(0, 0, scene()->itemsBoundingRect().size().width() - verticalScrollBarWidth, scene()->itemsBoundingRect().size().height());
+
     for (int i=0; i < mThumbnails.length(); i++)
     {
         mThumbnails.at(i)->setSceneIndex(i);
         mThumbnails.at(i)->setPageNumber(i);
+        mThumbnails.at(i)->setHighlihted(i == UBApplication::boardController->activeSceneIndex());
         mThumbnails.at(i)->updatePos(mThumbnailWidth, thumbnailHeight);
-    }
-
-    // for some reason, verticalScrollBar()->width() returns 100 while isVisible() is false... not the case with Qt 5.5 (when this code has been implemented)
-    if (verticalScrollBar()->isVisible())
-    {
-        scene()->setSceneRect(0, 0, scene()->itemsBoundingRect().size().width() - verticalScrollBar()->width(), scene()->itemsBoundingRect().size().height());
-    }
-    else
-    {
-        scene()->setSceneRect(0, 0, scene()->itemsBoundingRect().size().width(), scene()->itemsBoundingRect().size().height());
     }
 
     update();
@@ -200,7 +199,10 @@ void UBBoardThumbnailsView::resizeEvent(QResizeEvent *event)
     Q_UNUSED(event);
 
     // Update the thumbnails width
-    mThumbnailWidth = std::max(width() - verticalScrollBar()->width() - 2*mMargin, mThumbnailMinWidth);
+
+    int verticalScrollBarWidth = verticalScrollBar()->isVisible() ? verticalScrollBar()->width() : 0;
+
+    mThumbnailWidth = std::max(width() - verticalScrollBarWidth - 2*mMargin, mThumbnailMinWidth);
 
     // Refresh the scene
     updateThumbnailsPos();
@@ -303,7 +305,9 @@ void UBBoardThumbnailsView::dragMoveEvent(QDragMoveEvent *event)
 
         qreal scale = item->transform().m11();
 
-        QPointF itemCenter(item->pos().x() + (item->boundingRect().width()-verticalScrollBar()->width()) * scale,
+        int verticalScrollBarWidth = verticalScrollBar()->isVisible() ? verticalScrollBar()->width() : 0;
+
+        QPointF itemCenter(item->pos().x() + (item->boundingRect().width()-verticalScrollBarWidth) * scale,
                            item->pos().y() + item->boundingRect().height() * scale / 2);
 
         bool dropAbove = mapToScene(position.toPoint()).y() < itemCenter.y();
@@ -316,7 +320,7 @@ void UBBoardThumbnailsView::dragMoveEvent(QDragMoveEvent *event)
             {
                 y = item->pos().y() - UBSettings::thumbnailSpacing / 2;
                 if (mDropBar->y() != y)
-                    mDropBar->setRect(QRectF(item->pos().x(), y, (item->boundingRect().width()-verticalScrollBar()->width())*scale, 3));
+                    mDropBar->setRect(QRectF(item->pos().x(), y, (item->boundingRect().width()-verticalScrollBarWidth)*scale, 3));
             }
         }
         else
@@ -325,7 +329,7 @@ void UBBoardThumbnailsView::dragMoveEvent(QDragMoveEvent *event)
             {
                 y = item->pos().y() + item->boundingRect().height() * scale + UBSettings::thumbnailSpacing / 2;
                 if (mDropBar->y() != y)
-                    mDropBar->setRect(QRectF(item->pos().x(), y, (item->boundingRect().width()-verticalScrollBar()->width())*scale, 3));
+                    mDropBar->setRect(QRectF(item->pos().x(), y, (item->boundingRect().width()-verticalScrollBarWidth)*scale, 3));
             }
         }
     }
