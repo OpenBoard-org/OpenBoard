@@ -1459,6 +1459,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
             updateActionStates();
+            emit initThumbnailsRequired(this);
         }
     }
     else if (UBMimeType::OpenboardTool == itemMimeType)
