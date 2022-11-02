@@ -94,13 +94,8 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     setAcceptDrops(true);
     setAutoFillBackground(false);
 
-    mWebEngineView->setBackgroundRole(QPalette::Window);
+    mWebEngineView->setAttribute(Qt::WA_TranslucentBackground);
     mWebEngineView->page()->setBackgroundColor(QColor(Qt::transparent));
-
-    QPalette viewPalette = palette();
-    viewPalette.setBrush(QPalette::Base, QBrush(Qt::transparent));
-    viewPalette.setBrush(QPalette::Window, QBrush(Qt::transparent));
-    setPalette(viewPalette);
 
     setDelegate(new UBGraphicsWidgetItemDelegate(this));
 

@@ -149,7 +149,10 @@ void UBDisplayManager::assignRoles()
             {
                 // Convert configuration to new mode
                 qDebug() << "Screen setting converted to screen list" << screenList;
+
+                disconnect(UBSettings::settings()->appScreenList, &UBSetting::changed, this, &UBDisplayManager::adjustScreens);
                 UBSettings::settings()->appScreenList->set(screenList);
+                connect(UBSettings::settings()->appScreenList, &UBSetting::changed, this, &UBDisplayManager::adjustScreens);
             }
         }
     }

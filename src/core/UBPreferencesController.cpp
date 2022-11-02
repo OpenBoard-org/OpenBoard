@@ -826,6 +826,7 @@ void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
             button->setWindowFlag(Qt::X11BypassWindowManagerHint, true);
             button->setWindowFlag(Qt::Window, true);
             button->setWindowFlag(Qt::WindowDoesNotAcceptFocus, true);
+            button->setAttribute(Qt::WA_ShowWithoutActivating, true);
             button->setText(QString::number(screenIndex++));
             button->setFont(font);
             button->move(screen->geometry().topLeft());
