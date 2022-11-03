@@ -106,6 +106,37 @@ void UBDisplayManager::initScreenIndexes()
      */
 }
 
+void UBDisplayManager::initScreensByRole()
+{
+    mScreensByRole.clear();
+    bool swapScreens = UBSettings::settings()->swapControlAndDisplayScreens->get().toBool();
+
+    mScreensByRole[ScreenRole::Control] = mAvailableScreens[0];
+
+    if (mAvailableScreens.count() > 1)
+    {
+        QScreen* controlScreen = mAvailableScreens[0];
+        QScreen* displayScreen = mAvailableScreens[1];
+
+        if (swapScreens)
+        {
+            std::swap(controlScreen, displayScreen);
+        }
+
+        mScreensByRole[ScreenRole::Control] = controlScreen;
+
+        mScreensByRole[ScreenRole::Display] = displayScreen;
+
+        ScreenRole role(ScreenRole::Previous1);
+
+        for (int i = 2; i < mAvailableScreens.count(); ++i)
+        {
+            mScreensByRole[role++] = mAvailableScreens[i];
+        }
+    }
+}
+
+
 void UBDisplayManager::assignRoles()
 {
     mScreensByRole.clear();

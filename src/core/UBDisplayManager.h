@@ -108,17 +108,17 @@ class UBDisplayManager : public QObject
         QPixmap grab(ScreenRole role, QRect rect = QRect(0, 0, -1, -1)) const;
         QPixmap grabGlobal(QRect rect) const;
 
+        void initScreensByRole();
+        void assignRoles();
+        void positionScreens();
+        void adjustScreens();
+
    signals:
         void screenRolesAssigned();
         void screenLayoutChanged();
         void availableScreenCountChanged(int screenCount);
 
    public slots:
-        void positionScreens();
-
-        void assignRoles();
-
-        void adjustScreens();
 
         void blackout();
 

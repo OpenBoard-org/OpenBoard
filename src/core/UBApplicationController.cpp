@@ -145,9 +145,9 @@ void UBApplicationController::initViewState(int horizontalPosition, int vertical
 void UBApplicationController::initScreenLayout(bool useMultiscreen)
 {
     UBDisplayManager* displayManager = UBApplication::displayManager;
-
-    displayManager->assignRoles();
+    displayManager->initScreensByRole();
     initPreviousViews();
+    displayManager->assignRoles();
     displayManager->setControlWidget(mMainWindow);
     displayManager->setDisplayWidget(mDisplayView);
 
