@@ -134,12 +134,14 @@ void UBDisplayManager::initScreensByRole()
             mScreensByRole[role++] = mAvailableScreens[i];
         }
     }
+
+    // Desktop screen is same as Control screen
+    mScreensByRole[ScreenRole::Desktop] = mScreensByRole[ScreenRole::Control];
 }
 
 
 void UBDisplayManager::assignRoles()
 {
-    mScreensByRole.clear();
     QVariant appScreenList = UBSettings::settings()->appScreenList->get();
     QStringList screenList = appScreenList.toStringList();
     qDebug() << "assignRoles using screen list" << screenList;
@@ -148,47 +150,11 @@ void UBDisplayManager::assignRoles()
     {
         // no entry in configuration files
         // "old" configuration mode
-        bool swapScreens = UBSettings::settings()->swapControlAndDisplayScreens->get().toBool();
-
-        mScreensByRole[ScreenRole::Control] = mAvailableScreens[0];
-
-        if (mAvailableScreens.count() > 1)
-        {
-            QScreen* controlScreen = mAvailableScreens[0];
-            QScreen* displayScreen = mAvailableScreens[1];
-
-            if (swapScreens)
-            {
-                std::swap(controlScreen, displayScreen);
-            }
-
-            mScreensByRole[ScreenRole::Control] = controlScreen;
-            screenList << (swapScreens ? "2" : "1");
-
-            mScreensByRole[ScreenRole::Display] = displayScreen;
-            screenList << (swapScreens ? "1" : "2");
-
-            ScreenRole role(ScreenRole::Previous1);
-
-            for (int i = 2; i < mAvailableScreens.count(); ++i)
-            {
-                mScreensByRole[role++] = mAvailableScreens[i];
-                screenList << QString::number(i + 1);
-            }
-
-            if (screenList.count() > 1)
-            {
-                // Convert configuration to new mode
-                qDebug() << "Screen setting converted to screen list" << screenList;
-
-                disconnect(UBSettings::settings()->appScreenList, &UBSetting::changed, this, &UBDisplayManager::adjustScreens);
-                UBSettings::settings()->appScreenList->set(screenList);
-                connect(UBSettings::settings()->appScreenList, &UBSetting::changed, this, &UBDisplayManager::adjustScreens);
-            }
-        }
+        initScreensByRole();
     }
     else
     {
+        mScreensByRole.clear();
         // converting an empty entry to a QStringList creates a list with one empty QString
         if (appScreenList.toStringList().isEmpty() || appScreenList.toStringList().at(0).isEmpty())
         {
@@ -252,10 +218,10 @@ void UBDisplayManager::assignRoles()
                 mScreensByRole[role++] = previousScreen;
             }
         }
-    }
 
-    // Desktop screen is same as Control screen
-    mScreensByRole[ScreenRole::Desktop] = mScreensByRole[ScreenRole::Control];
+        // Desktop screen is same as Control screen
+        mScreensByRole[ScreenRole::Desktop] = mScreensByRole[ScreenRole::Control];
+    }
 
     emit screenRolesAssigned();
 }
