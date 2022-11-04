@@ -107,14 +107,17 @@ static bool lessThan(UBDocumentTreeNode *lValue, UBDocumentTreeNode *rValue)
 
 
 
-UBDocumentReplaceDialog::UBDocumentReplaceDialog(const QString &pIncommingName, const QStringList &pFileList, QWidget *parent, Qt::WindowFlags pFlags)
+UBDocumentReplaceDialog::UBDocumentReplaceDialog(const QString &pIncommingName, const QStringList &pFileList, bool multipleFiles, QWidget *parent, Qt::WindowFlags pFlags)
     : QDialog(parent, pFlags)
     , mFileNameList(pFileList)
     , mIncommingName(pIncommingName)
-    , acceptText(tr("Accept"))
+    , acceptText(tr("Rename"))
     , replaceText(tr("Replace"))
     , cancelText(tr("Cancel"))
     , mLabelText(0)
+    , mReplaceAll(false)
+    , mCancel(false)
+    , mMultipleFiles(multipleFiles)
 {
     this->setStyleSheet("background:white;");
 
@@ -134,8 +137,26 @@ UBDocumentReplaceDialog::UBDocumentReplaceDialog(const QString &pIncommingName, 
 
     acceptButton = new QPushButton(acceptText, this);
     QPushButton *cancelButton = new QPushButton(cancelText, this);
-    buttonLayout->addWidget(acceptButton);
-    buttonLayout->addWidget(cancelButton);
+
+    if (multipleFiles)
+    {
+        QPushButton *replaceAllButton = new QPushButton(tr("Replace all"), this);
+        QPushButton *skipButton = new QPushButton(tr("Skip"), this);
+        cancelButton->setText(tr("Skip all"));
+        buttonLayout->addWidget(acceptButton);
+        buttonLayout->addWidget(replaceAllButton);
+        buttonLayout->addWidget(skipButton);
+        buttonLayout->addWidget(cancelButton);
+
+        connect(replaceAllButton, SIGNAL(clicked()), this, SLOT(replaceAll()));
+        connect(skipButton, SIGNAL(clicked()), this, SLOT(skip()));
+
+    }
+    else
+    {
+        buttonLayout->addWidget(acceptButton);
+        buttonLayout->addWidget(cancelButton);
+    }
 
     mainLayout->addLayout(labelLayout);
     mainLayout->addLayout(buttonLayout);
@@ -179,8 +200,29 @@ void UBDocumentReplaceDialog::accept()
 {
     QDialog::accept();
 }
+
+
+void UBDocumentReplaceDialog::replaceAll()
+{
+    if (mMultipleFiles)
+        mReplaceAll = true;
+
+    QDialog::accept();
+}
+
+void UBDocumentReplaceDialog::skip()
+{
+    mLineEdit->clear();
+    emit closeDialog();
+
+    QDialog::reject();
+}
+
 void UBDocumentReplaceDialog::reject()
 {
+    if (mMultipleFiles)
+        mCancel = true;
+
     mLineEdit->clear();
     emit closeDialog();
 
@@ -2946,7 +2988,10 @@ void UBDocumentController::importFile()
     QApplication::processEvents();
     QFileInfo fileInfo(filePath);
 
-    if (fileInfo.suffix().toLower() == "ubx") {
+    if (fileInfo.suffix().toLower() == "ubx")
+    {
+        UBApplication::boardController->ClearUndoStack();
+
         UBPersistenceManager::persistenceManager()->createDocumentProxiesStructure(docManager->importUbx(filePath, UBSettings::userDocumentDirectory()), true);
 
         emit documentThumbnailsUpdated(this); // some documents might have been overwritten while not having the same page count

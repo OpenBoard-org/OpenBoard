@@ -88,6 +88,8 @@ UBPersistenceManager * UBPersistenceManager::sSingleton = 0;
 UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     : QObject(pParent)
     , mHasPurgedDocuments(false)
+    , mReplaceDialogReturnedReplaceAll(false)
+    , mReplaceDialogReturnedCancel(false)
 {
 
     xmlFolderStructureFilename = "model";
@@ -226,7 +228,9 @@ void UBPersistenceManager::createDocumentProxiesStructure(const QFileInfoList &c
                 if (!interactive)
                    mDocumentTreeStructureModel->addDocument(proxy, parentIndex);
                 else
-                   processInteractiveReplacementDialog(proxy);
+                {
+                   processInteractiveReplacementDialog(proxy, true);
+                }
             }
             else
             {
@@ -234,6 +238,9 @@ void UBPersistenceManager::createDocumentProxiesStructure(const QFileInfoList &c
             }
         }
     }
+
+    mReplaceDialogReturnedReplaceAll = false;
+    mReplaceDialogReturnedCancel = false;
 }
 
 void UBPersistenceManager::createDocumentProxiesStructure(bool interactive)
@@ -307,7 +314,7 @@ UBDocumentProxy* UBPersistenceManager::createDocumentProxyStructure(QFileInfo& c
     return nullptr;
 };
 
-QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UBDocumentProxy *pProxy)
+QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UBDocumentProxy *pProxy, bool multipleFiles)
 {
     //TODO claudio remove this hack necessary on double click on ubz file
     Qt::CursorShape saveShape;
@@ -332,45 +339,92 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
         QStringList docList = mDocumentTreeStructureModel->nodeNameList(parentIndex, true);
         QString docName = pProxy->metaData(UBSettings::documentName).toString();
 
-        if (docList.contains(docName)) {
-            UBDocumentReplaceDialog *replaceDialog = new UBDocumentReplaceDialog(docName
-                                                                                 , docList
-                                                                                 , /*UBApplication::documentController->mainWidget()*/0
-                                                                                 , Qt::Widget);
-            if (replaceDialog->exec() == QDialog::Accepted)
+        if (docList.contains(docName))
+        {
+            if (!mReplaceDialogReturnedReplaceAll && !mReplaceDialogReturnedCancel)
             {
-                result = QDialog::Accepted;
-                QString resultName = replaceDialog->lineEditText();
-                int i = docList.indexOf(resultName);
-                if (i != -1) { //replace
-                    QModelIndex replaceIndex = mDocumentTreeStructureModel->index(i, 0, parentIndex);
-                    UBDocumentProxy *replaceProxy = mDocumentTreeStructureModel->proxyData(replaceIndex);
+                UBDocumentReplaceDialog *replaceDialog = new UBDocumentReplaceDialog(docName
+                                                                                     , docList
+                                                                                     , multipleFiles
+                                                                                     , /*UBApplication::documentController->mainWidget()*/0
+                                                                                     , Qt::Widget);
+                if (replaceDialog->exec() == QDialog::Accepted)
+                {
+                    result = QDialog::Accepted;
+                    QString resultName = replaceDialog->lineEditText();
+                    int i = docList.indexOf(resultName);
+                    if (i != -1) { //replace
+                        QModelIndex replaceIndex = mDocumentTreeStructureModel->index(i, 0, parentIndex);
+                        UBDocumentProxy *replaceProxy = mDocumentTreeStructureModel->proxyData(replaceIndex);
 
-                    if (mDocumentTreeStructureModel->currentIndex() == replaceIndex)
-                    {
-                        if (pProxy->pageCount() > 0)
+                        if (mDocumentTreeStructureModel->currentIndex() == replaceIndex)
                         {
-                            UBApplication::documentController->selectDocument(pProxy, true, true);
+                            if (pProxy->pageCount() > 0)
+                            {
+                                UBApplication::documentController->selectDocument(pProxy, true, true);
+                            }
+                        }
+
+                        if (replaceProxy) {
+                            deleteDocument(replaceProxy);
+                        }
+                        if (replaceIndex.isValid()) {
+                            mDocumentTreeStructureModel->removeRow(i, parentIndex);
                         }
                     }
 
-                    if (replaceProxy) {
-                        deleteDocument(replaceProxy);
+                    if (docName != resultName)
+                    {
+                        pProxy->setMetaData(UBSettings::documentName, resultName);
+                        UBMetadataDcSubsetAdaptor::persist(pProxy);
                     }
-                    if (replaceIndex.isValid()) {
-                        mDocumentTreeStructureModel->removeRow(i, parentIndex);
-                    }
-                }
+                    mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
 
-                if (docName != resultName)
-                {
-                    pProxy->setMetaData(UBSettings::documentName, resultName);
-                    UBMetadataDcSubsetAdaptor::persist(pProxy);
+                    if (replaceDialog->replaceAllClicked())
+                    {
+                        mReplaceDialogReturnedReplaceAll = true;
+                    }
                 }
-                mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
+                else
+                {
+                    if (replaceDialog->cancelClicked())
+                    {
+                        mReplaceDialogReturnedCancel = true;
+                    }
+                }
+                replaceDialog->setParent(0);
+                delete replaceDialog;
             }
-            replaceDialog->setParent(0);
-            delete replaceDialog;
+            else
+            {
+                if (mReplaceDialogReturnedReplaceAll)
+                {
+                    result = QDialog::Accepted;
+                    int i = docList.indexOf(docName);
+                    if (i > -1)
+                    {
+                        QModelIndex replacedIndex = mDocumentTreeStructureModel->index(i, 0, parentIndex);
+                        UBDocumentProxy *replacedProxy = mDocumentTreeStructureModel->proxyData(replacedIndex);
+
+                        if (mDocumentTreeStructureModel->currentIndex() == replacedIndex)
+                        {
+                            if (pProxy->pageCount() > 0)
+                            {
+                                UBApplication::documentController->selectDocument(pProxy, true, true);
+                            }
+                        }
+
+                        if (replacedProxy) {
+                            deleteDocument(replacedProxy);
+                        }
+                        if (replacedIndex.isValid()) {
+                            mDocumentTreeStructureModel->removeRow(i, parentIndex);
+                        }
+                    }
+
+                    mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
+                }
+            }
         } else {
             mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
             result = QDialog::Accepted;

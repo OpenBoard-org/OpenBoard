@@ -60,24 +60,32 @@ class UBDocumentReplaceDialog : public QDialog
     Q_OBJECT
 
 public:
-    UBDocumentReplaceDialog(const QString &pIncommingName, const QStringList &pFileList, QWidget *parent = 0, Qt::WindowFlags pFlags = {});
+    UBDocumentReplaceDialog(const QString &pIncommingName, const QStringList &pFileList, bool multipleFiles = false, QWidget *parent = 0, Qt::WindowFlags pFlags = {});
     void setRegexp(const QRegularExpression pRegExp);
     bool validString(const QString &pStr);
     void setFileNameAndList(const QString &fileName, const QStringList &pLst);
     QString  labelTextWithName(const QString &documentName) const;
     QString lineEditText() const {return mLineEdit->text();}
+    bool replaceAllClicked() const { return mReplaceAll; }
+    bool cancelClicked() const { return mCancel; }
 
 signals:
     void createNewFolder(QString str);
     void closeDialog();
 
 private slots:
+    void replaceAll();
+    void skip();
     void accept();
     void reject();
 
     void reactOnTextChanged(const QString &pStr);
 
 private:
+    bool mReplaceAll;
+    bool mCancel;
+    bool mMultipleFiles;
+
     QLineEdit *mLineEdit;
     QRegularExpressionValidator *mValidator;
     QStringList mFileNameList;

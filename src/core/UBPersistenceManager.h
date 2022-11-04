@@ -134,7 +134,7 @@ class UBPersistenceManager : public QObject
         void createDocumentProxiesStructure(bool interactive = false);
         void createDocumentProxiesStructure(const QFileInfoList &contentInfoList, bool interactive = false);
         UBDocumentProxy* createDocumentProxyStructure(QFileInfo &contentInfo);
-        QDialog::DialogCode processInteractiveReplacementDialog(UBDocumentProxy *pProxy);
+        QDialog::DialogCode processInteractiveReplacementDialog(UBDocumentProxy *pProxy, bool multipleFiles = false);
 
         QStringList documentSubDirectories()
         {
@@ -197,6 +197,9 @@ private:
         bool mIsWorkerFinished;
 
         bool mIsApplicationClosing;
+
+        bool mReplaceDialogReturnedReplaceAll;
+        bool mReplaceDialogReturnedCancel;
 
     private slots:
         void documentRepositoryChanged(const QString& path);
