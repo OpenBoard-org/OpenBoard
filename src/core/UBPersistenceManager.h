@@ -181,6 +181,8 @@ private:
         void saveFoldersTreeToXml(QXmlStreamWriter &writer, const QModelIndex &parentIndex);
         void loadFolderTreeFromXml(const QString &path, const QDomElement &element);
 
+        void cleanupDocument(UBDocumentProxy *pDocumentProxy) const;
+
         QString xmlFolderStructureFilename;
 
         UBSceneCache mSceneCache;
