@@ -87,7 +87,7 @@ class UBDocumentProxy : public QObject
         bool isWidgetCompatible(const QUuid& uuid) const;
         void setWidgetCompatible(const QUuid& uuid, bool compatible);
         
-        bool needsCleanup();
+        bool testAndResetCleanupNeeded();
 
     protected:
         void setPageCount(int pPageCount);

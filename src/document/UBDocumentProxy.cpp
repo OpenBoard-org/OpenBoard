@@ -137,7 +137,7 @@ void UBDocumentProxy::setWidgetCompatible(const QUuid &uuid, bool compatible)
     mWidgetCompatibility[uuid] = compatible;
 }
 
-bool UBDocumentProxy::needsCleanup()
+bool UBDocumentProxy::testAndResetCleanupNeeded()
 {
     bool tmp = mNeedsCleanup;
     mNeedsCleanup = false;
