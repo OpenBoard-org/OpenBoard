@@ -23,6 +23,9 @@ cmake_minimum_required(VERSION 3.16)
 #   cd <builddir>
 #   cmake --build . [-j<n>]
 #   DESTDIR=<installdir> cmake --install .
+#
+# Package
+#    cpack -G <DEB|RPM|NSIS|DMG>
 # ==========================================================================
 
 # ==========================================================================
@@ -31,7 +34,12 @@ cmake_minimum_required(VERSION 3.16)
 # The project will now be named all lowercase on all platforms
 # ==========================================================================
 
-project(openboard VERSION 1.7.0 LANGUAGES CXX)
+project(openboard
+    VERSION 1.7.0
+    DESCRIPTION "OpenBoard is an open source cross-platform interactive white board application designed primarily for use in schools. It was originally forked from Open-Sankoré, which was itself based on Uniboard."
+    HOMEPAGE_URL "https://www.openboard.org"
+    LANGUAGES CXX
+)
 
 set(VERSION_TYPE a) # a = alpha, b = beta, rc = release candidate, r = release, other => error
 set(VERSION_BUILD 1027)
@@ -244,3 +252,25 @@ if(LINUX)
     install(FILES     ${OPENBOARD_MIMETYPE_FILE}    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mime/packages)
     install(FILES     ${OPENBOARD_MIMEICON_FILE}    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/mimetypes)
 endif()
+
+
+# ==========================================================================
+# Packaging
+# ==========================================================================
+
+include(InstallRequiredSystemLibraries)
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+set(CPACK_PACKAGE_VERSION "${VERSION}")
+set(CPACK_PACKAGE_CONTACT "The OpenBoard team")
+set(CPACK_STRIP_FILES TRUE)
+
+# Debian specific settings
+set(CPACK_DEBIAN_FILE_NAME "DEB-DEFAULT")
+set(CPACK_DEBIAN_PACKAGE_SUGGESTS onboard)
+
+# RPM specific settings
+set(CPACK_RPM_FILE_NAME "RPM-DEFAULT")
+set(CPACK_RPM_PACKAGE_SUGGESTS onboard)
+
+# create packager
+include(CPack)
