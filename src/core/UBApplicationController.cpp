@@ -422,6 +422,8 @@ void UBApplicationController::showInternet()
 
         UBApplication::webController->show();
 
+        UBApplication::displayManager->adjustScreens();
+
         emit mainModeChanged(Internet);
     }
 }
