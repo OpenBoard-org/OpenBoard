@@ -595,7 +595,7 @@ void UBBoardController::duplicateScene(int nIndex)
     persistCurrentScene(false,true);
 
     duplicatePage(nIndex);
-    insertThumbPage(nIndex);
+
     if (UBApplication::documentController->selectedDocument() == selectedDocument())
     {
         UBApplication::documentController->reloadThumbnails();
