@@ -2043,6 +2043,10 @@ void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool force
         if (mActiveScene->isModified())
         {
             UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, isAnAutomaticBackup, forceImmediateSave);
+            if (UBApplication::documentController->selectedDocument() == selectedDocument())
+            {
+                UBApplication::documentController->updateThumbPage(mActiveSceneIndex);
+            }
         }
     }
 }

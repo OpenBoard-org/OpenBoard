@@ -3155,9 +3155,12 @@ void UBDocumentController::insertThumbnail(int index, const QPixmap& pix)
 
 void UBDocumentController::updateThumbnail(int index)
 {
-    auto pix = UBApplication::boardController->pageAt(index);
+    auto pix = pageAt(index);
 
-    mDocumentUI->thumbnailWidget->updateThumbnailPixmap(index, *pix);
+    if (pix)
+        mDocumentUI->thumbnailWidget->updateThumbnailPixmap(index, *pix);
+    else
+        qWarning() << "could not find a pixmap at index : " << index;
 }
 
 
