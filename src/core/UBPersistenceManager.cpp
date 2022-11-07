@@ -327,11 +327,12 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
 
     QDialog::DialogCode result = QDialog::Rejected;
 
-    if (UBApplication::documentController
-            && UBApplication::documentController->mainWidget()) {
+    if (UBApplication::documentController && UBApplication::documentController->mainWidget())
+    {
         QString docGroupName = pProxy->metaData(UBSettings::documentGroupName).toString();
         QModelIndex parentIndex = mDocumentTreeStructureModel->goTo(docGroupName);
-        if (!parentIndex.isValid()) {
+        if (!parentIndex.isValid())
+        {
             UBApplication::overrideCursor()->setShape(saveShape);
             return QDialog::Rejected;
         }
@@ -353,7 +354,11 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
                     result = QDialog::Accepted;
                     QString resultName = replaceDialog->lineEditText();
                     int i = docList.indexOf(resultName);
-                    if (i != -1) { //replace
+                    if (i != -1)
+                    { //replace
+                        if (UBApplication::boardController->selectedDocument() == pProxy)
+                            UBApplication::boardController->activeScene()->getFastAccessItems().clear();
+
                         QModelIndex replaceIndex = mDocumentTreeStructureModel->index(i, 0, parentIndex);
                         UBDocumentProxy *replaceProxy = mDocumentTreeStructureModel->proxyData(replaceIndex);
 
