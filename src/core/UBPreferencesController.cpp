@@ -827,7 +827,11 @@ void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
             button->setWindowFlag(Qt::Window, true);
             button->setWindowFlag(Qt::WindowDoesNotAcceptFocus, true);
             button->setAttribute(Qt::WA_ShowWithoutActivating, true);
+#ifdef QT_DEBUG
+            button->setText(QString::number(screenIndex++) + "(" + screen->name() + ")");
+#else
             button->setText(QString::number(screenIndex++));
+#endif
             button->setFont(font);
             button->move(screen->geometry().topLeft());
             button->setMinimumSize(300, 150);
