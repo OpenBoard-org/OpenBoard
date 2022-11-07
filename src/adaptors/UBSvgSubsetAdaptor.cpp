@@ -908,7 +908,9 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                             font.setPixelSize(16);
                             painter.setFont(font);
                             const QRectF rectangle(QPointF(0, 0), w3cWidgetItem->size());
-                            painter.drawText(rectangle, Qt::AlignCenter, QObject::tr("Incompatible widget"));
+
+                            std::string incompatibleWidgetMessage = QString("Incompatible widget (%1).").arg(w3cWidgetItem->metadatas().name).toStdString();
+                            painter.drawText(rectangle, Qt::AlignCenter, QObject::tr(incompatibleWidgetMessage.c_str()));
                             w3cWidgetItem->setSnapshot(pixmap, true);
 
                             // disable user interactions
