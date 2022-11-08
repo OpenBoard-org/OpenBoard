@@ -46,6 +46,7 @@ public slots:
 
 protected:
     void contextMenuEvent(QContextMenuEvent *event) override;
+    QWebEngineView *createWindow(QWebEnginePage::WebWindowType type) override;
 
 private:
     QMainWindow* mInspectorWindow;
