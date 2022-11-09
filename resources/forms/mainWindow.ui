@@ -1598,18 +1598,6 @@
     <string>Erase all Annotations</string>
    </property>
   </action>
-  <action name="actionEduMedia">
-   <property name="icon">
-    <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/addToolToLibrary.png</normaloff>:/images/toolbar/addToolToLibrary.png</iconset>
-   </property>
-   <property name="text">
-    <string>eduMedia</string>
-   </property>
-   <property name="toolTip">
-    <string>Import eduMedia simulation</string>
-   </property>
-  </action>
   <action name="actionCheckUpdate">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
