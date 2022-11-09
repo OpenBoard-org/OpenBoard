@@ -451,13 +451,11 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
     }
     else
     {
-#if defined(Q_OS_WIN)
         if (pWidget->windowHandle())
         {
             HWND handle = reinterpret_cast<HWND>(pWidget->windowHandle()->winId());
-            SetWindowLongPtr(handle, GWL_STYLE, GetWindowLongPtr(handle, GWL_STYLE) & ~WS_POPUP);
+            SetWindowLongPtr(handle, GWL_STYLE, (GetWindowLongPtr(handle, GWL_STYLE) | WS_BORDER) & ~WS_POPUP);
         }
-#endif
         pWidget->showFullScreen();
     }
 }
