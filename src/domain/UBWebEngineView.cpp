@@ -121,3 +121,31 @@ void UBWebEngineView::contextMenuEvent(QContextMenuEvent *event)
 
     menu->popup(event->globalPos());
 }
+
+QWebEngineView *UBWebEngineView::createWindow(QWebEnginePage::WebWindowType type)
+{
+    switch (type)
+    {
+    case QWebEnginePage::WebBrowserWindow:
+        break;
+
+    case QWebEnginePage::WebBrowserTab: {
+        // create a throwaway view to get the URL
+        QWebEngineView* view = new QWebEngineView();
+
+        connect(view, &QWebEngineView::urlChanged, this, [this,view](const QUrl& url){
+            // load URL in current view and delete temporary view
+            load(url);
+            view->deleteLater();
+        });
+
+        return view;
+    }
+
+    case QWebEnginePage::WebDialog:
+    case QWebEnginePage::WebBrowserBackgroundTab:
+        break;
+    }
+
+    return nullptr;
+}
