@@ -35,7 +35,7 @@
 #include <QGraphicsScene>
 #include <QMouseEvent>
 
-#include "document/UBDocumentContainer.h"
+#include "document/UBDocumentProxy.h"
 #include "UBThumbnailWidget.h"
 
 class UBBoardThumbnailsView : public QGraphicsView
@@ -49,8 +49,8 @@ public slots:
     void centerOnThumbnail(int index);
 
     void clearThumbnails();
-    void initThumbnails(UBDocumentContainer* source);
-    void addThumbnail(UBDocumentContainer* source, int i);
+    void initThumbnails(UBDocumentProxy* document);
+    void addThumbnail(UBDocumentProxy* document, int i);
     void moveThumbnail(int from, int to);
     void removeThumbnail(int i);
     void updateThumbnails();
@@ -74,7 +74,7 @@ signals:
     void moveThumbnailRequired(int from, int to);
 
 private:
-    UBDraggableThumbnailView* createThumbnail(UBDocumentContainer* source, int i);
+    UBDraggableThumbnailView* createThumbnail(UBDocumentProxy* document, int i);
     void updateThumbnailsPos();
 
     QList<UBDraggableThumbnailView*> mThumbnails;

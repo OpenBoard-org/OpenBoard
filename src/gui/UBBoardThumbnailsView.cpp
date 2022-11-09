@@ -74,12 +74,12 @@ UBBoardThumbnailsView::UBBoardThumbnailsView(QWidget *parent, const char *name)
     mLongPressTimer.setInterval(mLongPressInterval);
     mLongPressTimer.setSingleShot(true);
 
-    connect(UBApplication::boardController, SIGNAL(initThumbnailsRequired(UBDocumentContainer*)), this, SLOT(initThumbnails(UBDocumentContainer*)), Qt::UniqueConnection);
-    connect(UBApplication::boardController, SIGNAL(addThumbnailRequired(UBDocumentContainer*, int)), this, SLOT(addThumbnail(UBDocumentContainer*, int)), Qt::UniqueConnection);
-    connect(UBApplication::boardController, SIGNAL(moveThumbnailRequired(int, int)), this, SLOT(moveThumbnail(int, int)), Qt::UniqueConnection);
-    connect(this, SIGNAL(moveThumbnailRequired(int, int)), this, SLOT(moveThumbnail(int, int)), Qt::UniqueConnection);
-    connect(UBApplication::boardController, SIGNAL(updateThumbnailsRequired()), this, SLOT(updateThumbnails()), Qt::UniqueConnection);
-    connect(UBApplication::boardController, SIGNAL(removeThumbnailRequired(int)), this, SLOT(removeThumbnail(int)), Qt::UniqueConnection);
+    connect(UBApplication::boardController, SIGNAL(initThumbnailsRequired(UBDocumentProxy*)), this, SLOT(initThumbnails(UBDocumentProxy*)));
+    connect(UBApplication::boardController, SIGNAL(addThumbnailRequired(UBDocumentProxy*, int)), this, SLOT(addThumbnail(UBDocumentProxy*, int)));
+    connect(UBApplication::boardController, SIGNAL(moveThumbnailRequired(int, int)), this, SLOT(moveThumbnail(int, int)));
+    connect(this, SIGNAL(moveThumbnailRequired(int, int)), this, SLOT(moveThumbnail(int, int)));
+    connect(UBApplication::boardController, SIGNAL(updateThumbnailsRequired()), this, SLOT(updateThumbnails()));
+    connect(UBApplication::boardController, SIGNAL(removeThumbnailRequired(int)), this, SLOT(removeThumbnail(int)));
 
     connect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressTimeout()), Qt::UniqueConnection);
 
@@ -114,19 +114,19 @@ void UBBoardThumbnailsView::removeThumbnail(int i)
     updateThumbnailsPos();
 }
 
-UBDraggableThumbnailView* UBBoardThumbnailsView::createThumbnail(UBDocumentContainer* source, int i)
+UBDraggableThumbnailView* UBBoardThumbnailsView::createThumbnail(UBDocumentProxy* document, int i)
 {
-    UBApplication::showMessage(tr("Loading page (%1/%2)").arg(i+1).arg(source->selectedDocument()->pageCount()));
+    UBApplication::showMessage(tr("Loading page (%1/%2)").arg(i+1).arg(document->pageCount()));
 
-    UBGraphicsScene* pageScene = UBPersistenceManager::persistenceManager()->loadDocumentScene(source->selectedDocument(), i);
+    UBGraphicsScene* pageScene = UBPersistenceManager::persistenceManager()->loadDocumentScene(document, i);
     UBThumbnailView* pageView = new UBThumbnailView(pageScene);
 
-    return new UBDraggableThumbnailView(pageView, source->selectedDocument(), i);
+    return new UBDraggableThumbnailView(pageView, document, i);
 }
 
-void UBBoardThumbnailsView::addThumbnail(UBDocumentContainer* source, int i)
+void UBBoardThumbnailsView::addThumbnail(UBDocumentProxy* document, int i)
 {
-    UBDraggableThumbnailView* item = createThumbnail(source, i);
+    UBDraggableThumbnailView* item = createThumbnail(document, i);
     mThumbnails.insert(i, item);
 
     scene()->addItem(item);
@@ -149,13 +149,13 @@ void UBBoardThumbnailsView::clearThumbnails()
     mThumbnails.clear();
 }
 
-void UBBoardThumbnailsView::initThumbnails(UBDocumentContainer* source)
+void UBBoardThumbnailsView::initThumbnails(UBDocumentProxy* document)
 {
     clearThumbnails();
 
-    for(int i = 0; i < source->selectedDocument()->pageCount(); i++)
+    for(int i = 0; i < document->pageCount(); i++)
     {
-        mThumbnails.append(createThumbnail(source, i));
+        mThumbnails.append(createThumbnail(document, i));
 
         scene()->addItem(mThumbnails.last());
         scene()->addItem(mThumbnails.last()->pageNumber());

@@ -193,7 +193,7 @@ void UBMainWindow::onExportDone()
     actionDocumentAdd->setEnabled(true);
 }
 
-bool UBMainWindow::yesNoQuestion(QString windowTitle, QString text)
+bool UBMainWindow::yesNoQuestion(QString windowTitle, QString text, const QPixmap &iconPixmap, const QMessageBox::Icon icon)
 {
     QMessageBox messageBox;
     messageBox.setParent(this);
@@ -201,7 +201,11 @@ bool UBMainWindow::yesNoQuestion(QString windowTitle, QString text)
     messageBox.setText(text);
     QPushButton* yesButton = messageBox.addButton(tr("Yes"),QMessageBox::YesRole);
     messageBox.addButton(tr("No"),QMessageBox::NoRole);
-    messageBox.setIcon(QMessageBox::Question);
+    if (iconPixmap.isNull())
+        messageBox.setIcon(icon);
+    else
+        messageBox.setIconPixmap(iconPixmap);
+
 
 #ifdef Q_OS_LINUX
     // to avoid to be handled by x11. This allows us to keep to the back all the windows manager stuff like palette, toolbar ...

@@ -56,7 +56,7 @@ class UBMainWindow : public QMainWindow, public Ui::MainWindow
         void addDocumentsWidget(QWidget *pWidget);
         void switchToDocumentsWidget();
 
-        bool yesNoQuestion(QString windowTitle, QString text);
+        bool yesNoQuestion(QString windowTitle, QString text, const QPixmap &iconPixmap = QPixmap(), const QMessageBox::Icon icon = QMessageBox::Question);
         void warning(QString windowTitle, QString text);
         void information(QString windowTitle, QString text);
 

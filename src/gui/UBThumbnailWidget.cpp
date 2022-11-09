@@ -875,7 +875,10 @@ void UBSceneThumbnailNavigPixmap::mousePressEvent(QGraphicsSceneMouseEvent *even
 
 void UBSceneThumbnailNavigPixmap::deletePage()
 {
-    if(UBApplication::mainWindow->yesNoQuestion(QObject::tr("Remove Page"), QObject::tr("Are you sure you want to remove 1 page from the selected document '%0'?").arg(documentProxy()->metaData(UBSettings::documentName).toString()))){
+    if(UBApplication::mainWindow->yesNoQuestion(QObject::tr("Remove Page"),
+                                                QObject::tr("Are you sure you want to remove page %1 ?").arg(sceneIndex()),
+                                                QPixmap(":/images/trash-document-page.png")))
+    {
         UBApplication::boardController->deleteScene(sceneIndex());
     }
 }
@@ -994,7 +997,10 @@ void UBDraggableThumbnail::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void UBDraggableThumbnail::deletePage()
 {
-    if(UBApplication::mainWindow->yesNoQuestion(QObject::tr("Remove Page"), QObject::tr("Are you sure you want to remove 1 page from the selected document '%0'?").arg(UBApplication::documentController->selectedDocument()->metaData(UBSettings::documentName).toString()))){
+    if(UBApplication::mainWindow->yesNoQuestion(QObject::tr("Remove Page"),
+                                                QObject::tr("Are you sure you want to remove page %1 ?").arg(sceneIndex()+1),
+                                                QPixmap(":/images/trash-document-page.png")))
+    {
         UBApplication::boardController->deleteScene(sceneIndex());
     }
 }

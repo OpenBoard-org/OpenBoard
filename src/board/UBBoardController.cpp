@@ -528,7 +528,7 @@ void UBBoardController::addScene()
     persistCurrentScene(false,true);
 
     UBPersistenceManager::persistenceManager()->createDocumentSceneAt(selectedDocument(), mActiveSceneIndex+1);
-    emit addThumbnailRequired(this, mActiveSceneIndex+1);
+    emit addThumbnailRequired(selectedDocument(), mActiveSceneIndex+1);
 
     if (UBApplication::documentController->selectedDocument() == selectedDocument())
     {
@@ -562,7 +562,7 @@ void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmp
         if (replaceActiveIfEmpty && mActiveScene->isEmpty())
         {
             UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(selectedDocument(), clone, mActiveSceneIndex);
-            emit addThumbnailRequired(this, mActiveSceneIndex);
+            emit addThumbnailRequired(selectedDocument(), mActiveSceneIndex);
             setActiveDocumentScene(mActiveSceneIndex);
             deleteScene(mActiveSceneIndex + 1);
         }
@@ -570,7 +570,7 @@ void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmp
         {
             persistCurrentScene(false,true);
             UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(selectedDocument(), clone, mActiveSceneIndex + 1);
-            emit addThumbnailRequired(this, mActiveSceneIndex + 1);
+            emit addThumbnailRequired(selectedDocument(), mActiveSceneIndex + 1);
             setActiveDocumentScene(mActiveSceneIndex + 1);
         }
 
@@ -600,7 +600,7 @@ void UBBoardController::duplicateScene(int nIndex)
     {
         UBApplication::documentController->reloadThumbnails();
     }
-    emit addThumbnailRequired(this, nIndex + 1);
+    emit addThumbnailRequired(selectedDocument(), nIndex + 1);
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
     setActiveDocumentScene(nIndex + 1);
@@ -801,7 +801,7 @@ void UBBoardController::deleteScene(int nIndex)
 
         QList<int> scIndexes;
         scIndexes << nIndex;
-        deletePages(scIndexes);
+        UBPersistenceManager::persistenceManager()->deleteDocumentScenes(selectedDocument(), scIndexes);
         emit removeThumbnailRequired(nIndex);
         if (UBApplication::documentController->selectedDocument() == selectedDocument())
         {
@@ -1435,7 +1435,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
             updateActionStates();
-            emit initThumbnailsRequired(this);
+            emit initThumbnailsRequired(selectedDocument());
         }
     }
     else if (UBMimeType::OpenboardTool == itemMimeType)

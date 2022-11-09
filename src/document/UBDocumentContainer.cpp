@@ -48,7 +48,7 @@ void UBDocumentContainer::setDocument(UBDocumentProxy* document, bool forceReloa
     if (mCurrentDocument != document || forceReload)
     {
         mCurrentDocument = document;
-        emit initThumbnailsRequired(this); //for board mode
+        emit initThumbnailsRequired(document); //for board mode
         clearThumbPage(); //for document mode
         reloadThumbnails();
         emit documentSet(mCurrentDocument);
@@ -146,7 +146,7 @@ void UBDocumentContainer::insertThumbPage(int index)
     mDocumentThumbs.insert(index, std::make_shared<QPixmap>(newPixmap));
 
     emit documentPageInserted(index);
-    emit addThumbnailRequired(this, index);
+    emit addThumbnailRequired(selectedDocument(), index);
 }
 
 void UBDocumentContainer::insertExistingThumbPage(int index, std::shared_ptr<QPixmap> thumbnailPixmap)
@@ -154,7 +154,7 @@ void UBDocumentContainer::insertExistingThumbPage(int index, std::shared_ptr<QPi
     mDocumentThumbs.insert(index, thumbnailPixmap);
 
     emit documentPageInserted(index);
-    emit addThumbnailRequired(this, index);
+    emit addThumbnailRequired(selectedDocument(), index);
 }
 
 void UBDocumentContainer::reloadThumbnails()

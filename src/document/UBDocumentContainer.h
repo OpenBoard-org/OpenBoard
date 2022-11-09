@@ -91,8 +91,8 @@ class UBDocumentContainer : public QObject
         void documentPageMoved(int from, int to);
         void documentThumbnailsUpdated(UBDocumentContainer* source);
 
-        void initThumbnailsRequired(UBDocumentContainer* source);
-        void addThumbnailRequired(UBDocumentContainer* source, int index);
+        void initThumbnailsRequired(UBDocumentProxy* document);
+        void addThumbnailRequired(UBDocumentProxy* document, int index);
         void removeThumbnailRequired(int index);
         void moveThumbnailRequired(int from, int to);
         void updateThumbnailsRequired();
