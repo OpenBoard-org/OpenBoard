@@ -42,7 +42,7 @@
 #include "api/UBWidgetUniboardAPI.h"
 #include "api/UBW3CWidgetAPI.h"
 
- #include "board/UBBoardController.h"
+#include "board/UBBoardController.h"
 
 #include "core/memcheck.h"
 #include "core/UBApplicationController.h"
@@ -101,6 +101,14 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
 
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
     setAcceptHoverEvents(true);
+
+    // workaround for QTBUG-108284 - to be removed when bug is fixed
+    QWindow* window = mWebEngineView->windowHandle();
+
+    if (window)
+    {
+        window->installEventFilter(this);
+    }
 }
 
 
@@ -686,6 +694,23 @@ void UBGraphicsWidgetItem::paint( QPainter *painter, const QStyleOptionGraphicsI
     }
 
     Delegate()->postpaint(painter, option, widget);
+}
+
+bool UBGraphicsWidgetItem::eventFilter(QObject *obj, QEvent *ev)
+{
+    // workaround for QTBUG-108284 - to be removed when bug is fixed
+    // forward CursorChange events to QGraphicsProxyWidget
+    if (ev->type() == QEvent::CursorChange)
+    {
+        QWindow* window = dynamic_cast<QWindow*>(obj);
+
+        if (window)
+        {
+            setCursor(window->cursor());
+        }
+    }
+
+    return false;
 }
 
 void UBGraphicsWidgetItem::geometryChangeRequested(const QRect& geom)
