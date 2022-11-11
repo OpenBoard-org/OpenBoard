@@ -63,7 +63,7 @@ class WebPage : public QWebEnginePage
 public:
     WebPage(QWebEngineProfile *profile, QObject *parent = nullptr);
 
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+#if (QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 private slots:
     void handleCertificateError(QWebEngineCertificateError error);
 #else
