@@ -710,7 +710,7 @@ bool UBGraphicsWidgetItem::eventFilter(QObject *obj, QEvent *ev)
         }
     }
 
-    return false;
+    return QGraphicsProxyWidget::eventFilter(obj, ev);
 }
 
 void UBGraphicsWidgetItem::geometryChangeRequested(const QRect& geom)
