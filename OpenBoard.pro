@@ -85,6 +85,7 @@ FORMS += resources/forms/mainWindow.ui \
    resources/forms/intranetPodcastPublishingDialog.ui
 
 UB_ETC.files = resources/etc
+UB_TEMPLATE.files = resources/template
 UB_I18N.files = resources/i18n/*.qm
 UB_LIBRARY.files = resources/library
 UB_FONTS.files = resources/fonts
@@ -142,6 +143,7 @@ win32 {
    UB_LIBRARY.path = $$DESTDIR
    UB_I18N.path = $$DESTDIR/i18n
    UB_ETC.path = $$DESTDIR
+   UB_TEMPLATE.path = $$DESTDIR
    UB_THIRDPARTY_INTERACTIVE.path = $$DESTDIR/library
    system(md $$replace(BUILD_DIR, /, \\))
    system(echo "$$VERSION" > $$BUILD_DIR/version)
@@ -227,6 +229,7 @@ macx {
 
    UB_ETC.files = "resources/etc"
    UB_ETC.path = "$$RESOURCES_DIR"
+   UB_TEMPLATE.path = "$$RESOURCES_DIR"
    UB_LIBRARY.files = "resources/library"
    UB_LIBRARY.path = "$$RESOURCES_DIR"
    UB_FONTS.files = "resources/fonts"
@@ -433,6 +436,7 @@ macx {
    }
 
    QMAKE_BUNDLE_DATA += UB_ETC \
+       UB_TEMPLATE \
        UB_LIBRARY \
        UB_FONTS \
        UB_THIRDPARTY_INTERACTIVE \
@@ -474,6 +478,7 @@ linux-g++* {
     UB_LIBRARY.path = $$DESTDIR
     UB_I18N.path = $$DESTDIR/i18n
     UB_ETC.path = $$DESTDIR
+    UB_TEMPLATE.path = $$DESTDIR
     UB_THIRDPARTY_INTERACTIVE.path = $$DESTDIR/library
     system(mkdir -p $$BUILD_DIR)
     system(echo "$$VERSION" > $$BUILD_DIR/version)
@@ -518,6 +523,7 @@ TRANSLATIONS = resources/i18n/OpenBoard_en.ts \
    resources/i18n/OpenBoard_mg.ts
 
 INSTALLS = UB_ETC \
+   UB_TEMPLATE \
    UB_I18N \
    UB_LIBRARY \
    UB_THIRDPARTY_INTERACTIVE
