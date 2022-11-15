@@ -133,12 +133,20 @@ QString UBStringUtils::toCanonicalUuid(const QUuid& uuid)
 
 QString UBStringUtils::toUtcIsoDateTime(const QDateTime& dateTime)
 {
-    return dateTime.toUTC().toString(Qt::ISODate) + "Z";
+    // It seems that in some previous versions of Qt, the 'Z'
+    // was not in the string inserted in the QString returned by QDateTime::toString(Qt::DateFormat)
+    // when the date format was UTC.
+    // With Qt 5.15 and Qt6, it is, so we don't need to add it manually anymore
+    return dateTime.toUTC().toString(Qt::ISODate);
 }
 
 QDateTime UBStringUtils::fromUtcIsoDate(const QString& dateString)
 {
-    QDateTime date = QDateTime::fromString(dateString, Qt::ISODate);
+    // Because of some changes in the behavior of QDateTime to QString conversions (cf. UBStringUtils::toUtcIsoDateTime)
+    // invalid format is stored in metadatas and can produce an invalid QDateTime here with Qt > 6
+    QString nonConstDateString = dateString;
+    nonConstDateString.replace("ZZ", "Z");
+    QDateTime date = QDateTime::fromString(nonConstDateString, Qt::ISODate);
     date.setTimeSpec(Qt::UTC);
     return date.toLocalTime();
 }

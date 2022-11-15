@@ -281,7 +281,10 @@ QDateTime UBDocumentProxy::documentDate()
 QDateTime UBDocumentProxy::lastUpdate()
 {
     if(mMetaDatas.contains(UBSettings::documentUpdatedAt))
+    {
+        QDateTime date = UBStringUtils::fromUtcIsoDate(metaData(UBSettings::documentUpdatedAt).toString());
         return UBStringUtils::fromUtcIsoDate(metaData(UBSettings::documentUpdatedAt).toString());
+    }
     return QDateTime::currentDateTime();
 }
 
