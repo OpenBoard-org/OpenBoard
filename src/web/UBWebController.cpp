@@ -415,7 +415,7 @@ void UBWebController::injectScripts(QWebEngineView *view)
         qDebug() << "Injecting qwebchannel.js";
         QString src = js.readAll();
 
-        QFile asyncwrapper(UBPlatformUtils::applicationResourcesDirectory() + "/etc/asyncAPI.js");
+        QFile asyncwrapper(UBPlatformUtils::applicationResourcesDirectory() + "/template/asyncAPI.js");
 
         if (asyncwrapper.open(QIODevice::ReadOnly))
         {

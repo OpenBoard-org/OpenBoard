@@ -154,7 +154,7 @@ QString UBIntranetPodcastPublisher::metadata()
     QString computerName =  UBPlatformUtils::computerName();
     QString fileSize = QString("%1").arg(fi.size());
 
-    QString templatePath = UBPlatformUtils::applicationResourcesDirectory() + "/etc/intranet-podcast-metadata.template";
+    QString templatePath = UBPlatformUtils::applicationResourcesDirectory() + "/template/intranet-podcast-metadata.template";
     QString templateContent = UBFileSystemUtils::readTextFile(templatePath);
 
     return templateContent.replace("{title}", mTitle)
