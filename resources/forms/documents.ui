@@ -44,7 +44,7 @@
          <enum>Qt::Horizontal</enum>
         </property>
         <property name="opaqueResize">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="handleWidth">
          <number>6</number>
@@ -54,7 +54,7 @@
         </property>
         <widget class="QWidget" name="topLeftWidget" native="true">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -81,9 +81,6 @@
               </property>
               <property name="styleSheet">
                <string notr="true"/>
-              </property>
-              <property name="sizeAdjustPolicy">
-               <enum>QComboBox::AdjustToMinimumContentsLength</enum>
               </property>
               <property name="minimumContentsLength">
                <number>0</number>

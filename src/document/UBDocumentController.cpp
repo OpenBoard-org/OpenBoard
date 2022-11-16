@@ -2200,7 +2200,7 @@ void UBDocumentController::setupViews()
         mDocumentUI->documentTreeView->viewport()->setAcceptDrops(true);
         mDocumentUI->documentTreeView->setDropIndicatorShown(true);
         mDocumentUI->documentTreeView->header()->setStretchLastSection(false);
-        mDocumentUI->documentTreeView->header()->setSectionResizeMode(0, QHeaderView::Stretch);
+        mDocumentUI->documentTreeView->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
         mDocumentUI->documentTreeView->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
         mDocumentUI->documentTreeView->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
 
