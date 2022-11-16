@@ -227,7 +227,7 @@ void UBSvgSubsetAdaptor::setSceneUuid(UBDocumentProxy* proxy, const int pageInde
 
     QString newXmlContent = xmlContent.left(quoteStartIndex + 1);
     newXmlContent.append(UBStringUtils::toCanonicalUuid(pUuid));
-    newXmlContent.append(xmlContent.right(xmlContent.length() - quoteEndIndex));
+    newXmlContent.append(xmlContent.rightRef(xmlContent.length() - quoteEndIndex));
 
     if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
     {
@@ -2769,7 +2769,7 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
                     foreach (QString styleToken, fontStyle.toString().split(";")) {
                         styleToken = styleToken.trimmed();
                         if (styleToken.startsWith(sFontSizePrefix) && styleToken.endsWith(sPixelUnit)) {
-                            int fontSize = styleToken.mid(
+                            int fontSize = styleToken.midRef(
                                         sFontSizePrefix.length(),
                                         styleToken.length() - sFontSizePrefix.length() - sPixelUnit.length()).toInt();
                             font.setPixelSize(fontSize);
