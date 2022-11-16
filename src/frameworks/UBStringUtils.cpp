@@ -140,6 +140,11 @@ QString UBStringUtils::toUtcIsoDateTime(const QDateTime& dateTime)
     return dateTime.toUTC().toString(Qt::ISODate);
 }
 
+QString UBStringUtils::toLittleEndian(const QDateTime& dateTime)
+{
+    return dateTime.toUTC().toString("dd/MM/yyyy hh:mm");
+}
+
 QDateTime UBStringUtils::fromUtcIsoDate(const QString& dateString)
 {
     // Because of some changes in the behavior of QDateTime to QString conversions (cf. UBStringUtils::toUtcIsoDateTime)

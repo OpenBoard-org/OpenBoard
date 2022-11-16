@@ -67,6 +67,12 @@ class UBDocumentProxy : public QObject
         QString groupName() const;
         QDateTime documentDate();
 
+        //For display purposes
+        QString documentDateLittleEndian() const { return mDocumentDateLittleEndian; }
+        QString documentUpdatedAtLittleEndian() const { return mDocumentUpdatedAtLittleEndian; }
+        void setDocumentDateLittleEndian(const QString& documentDateLittleEndian) { mDocumentDateLittleEndian = documentDateLittleEndian; }
+        void setDocumentUpdatedAtLittleEndian(const QString& updatedAtLittleEndian) { mDocumentUpdatedAtLittleEndian = updatedAtLittleEndian; }
+
         QDateTime lastUpdate();
 
 
@@ -99,6 +105,9 @@ class UBDocumentProxy : public QObject
         void init();
 
         QString mPersistencePath;
+
+        QString mDocumentDateLittleEndian;
+        QString mDocumentUpdatedAtLittleEndian;
 
         QMap<QString, QVariant> mMetaDatas;
 

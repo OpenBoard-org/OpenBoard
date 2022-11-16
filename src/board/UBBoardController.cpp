@@ -533,7 +533,9 @@ void UBBoardController::addScene()
         UBApplication::documentController->reloadThumbnails();
     }
 
-    selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+    QDateTime now = QDateTime::currentDateTime();
+    selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
+    selectedDocument()->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
 
     setActiveDocumentScene(mActiveSceneIndex + 1);
     QApplication::restoreOverrideCursor();
@@ -571,7 +573,9 @@ void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmp
             setActiveDocumentScene(mActiveSceneIndex + 1);
         }
 
-        selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+        QDateTime now = QDateTime::currentDateTime();
+        selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
+        selectedDocument()->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
     }
 }
 
@@ -598,7 +602,9 @@ void UBBoardController::duplicateScene(int nIndex)
         UBApplication::documentController->reloadThumbnails();
     }
     emit addThumbnailRequired(selectedDocument(), nIndex + 1);
-    selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+    QDateTime now = QDateTime::currentDateTime();
+    selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
+    selectedDocument()->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
 
     setActiveDocumentScene(nIndex + 1);
     QApplication::restoreOverrideCursor();
@@ -804,7 +810,10 @@ void UBBoardController::deleteScene(int nIndex)
         {
             UBApplication::documentController->deleteThumbPage(nIndex);
         }
-        selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+
+        QDateTime now = QDateTime::currentDateTime();
+        selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
+        selectedDocument()->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
         UBMetadataDcSubsetAdaptor::persist(selectedDocument());
 
         if (nIndex >= pageCount())
@@ -1413,7 +1422,9 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
             if (UBApplication::documentController->selectedDocument() == selectedDocument())
                 UBApplication::documentController->reloadThumbnails();
 
-            selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+            QDateTime now = QDateTime::currentDateTime();
+            selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
+            selectedDocument()->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
             updateActionStates();
             emit initThumbnailsRequired(selectedDocument());
         }
@@ -1566,7 +1577,9 @@ void UBBoardController::moveSceneToIndex(int source, int target)
             UBApplication::documentController->moveThumbPage(source, target);
         }
 
-        selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+        QDateTime now = QDateTime::currentDateTime();
+        selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
+        selectedDocument()->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
         UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
         mMovingSceneIndex = source;
         mActiveSceneIndex = target;
@@ -2058,7 +2071,9 @@ void UBBoardController::setPageSize(QSize newSize)
         updateSystemScaleFactor();
         updatePageSizeState();
         adjustDisplayViews();
-        selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+        QDateTime now = QDateTime::currentDateTime();
+        selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
+        selectedDocument()->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
 
         UBSettings::settings()->pageSize->set(newSize);
     }
@@ -2168,7 +2183,9 @@ void UBBoardController::grabScene(const QRectF& pSceneRect)
 
 
         mPaletteManager->addItem(QPixmap::fromImage(image));
-        selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+        QDateTime now = QDateTime::currentDateTime();
+        selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
+        selectedDocument()->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
     }
 }
 
@@ -2196,7 +2213,9 @@ UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
 
 
     UBGraphicsMediaItem* vi = mActiveScene->addMedia(concreteUrl, startPlay, pos);
-    selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+    QDateTime now  = QDateTime::currentDateTime();
+    selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
+    selectedDocument()->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
 
     if (vi) {
         vi->setUuid(uuid);
@@ -2230,7 +2249,9 @@ UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool st
     }// else we just use source Url.
 
     UBGraphicsMediaItem* ai = mActiveScene->addMedia(concreteUrl, startPlay, pos);
-    selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+    QDateTime now = QDateTime::currentDateTime();
+    selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
+    selectedDocument()->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
 
     if (ai){
         ai->setUuid(uuid);
@@ -2303,7 +2324,9 @@ void UBBoardController::cut()
         mimeGi->setData(UBApplication::mimeTypeUniboardPageItem, QByteArray());
         clipboard->setMimeData(mimeGi);
 
-        selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+        QDateTime now = QDateTime::currentDateTime();
+        selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
+        selectedDocument()->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
     }
 
     //---------------------------------------------------------//
@@ -2343,7 +2366,9 @@ void UBBoardController::paste()
     QPointF pos(xPosition -200 , yPosition - 100);
     processMimeData(clipboard->mimeData(), pos);
 
-    selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+    QDateTime now = QDateTime::currentDateTime();
+    selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
+    selectedDocument()->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
 }
 
 

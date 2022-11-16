@@ -78,6 +78,9 @@ void UBDocumentProxy::init()
     QDateTime now = QDateTime::currentDateTime();
     setMetaData(UBSettings::documentName, QLocale::system().toString(now, QLocale::ShortFormat));
 
+    mDocumentDateLittleEndian = UBStringUtils::toLittleEndian(now);
+    mDocumentUpdatedAtLittleEndian = mDocumentDateLittleEndian;
+
     setUuid(QUuid::createUuid());
 
     setDefaultDocumentSize(UBSettings::settings()->pageSize->get().toSize());
@@ -282,7 +285,6 @@ QDateTime UBDocumentProxy::lastUpdate()
 {
     if(mMetaDatas.contains(UBSettings::documentUpdatedAt))
     {
-        QDateTime date = UBStringUtils::fromUtcIsoDate(metaData(UBSettings::documentUpdatedAt).toString());
         return UBStringUtils::fromUtcIsoDate(metaData(UBSettings::documentUpdatedAt).toString());
     }
     return QDateTime::currentDateTime();

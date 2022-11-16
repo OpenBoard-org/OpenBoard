@@ -2880,8 +2880,11 @@ void UBGraphicsScene::simplifyCurrentStroke()
 void UBGraphicsScene::setDocumentUpdated()
 {
     if (document())
-        document()->setMetaData(UBSettings::documentUpdatedAt
-                , UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
+    {
+        QDateTime now = QDateTime::currentDateTime();
+        document()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
+        document()->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
+    }
 }
 
 void UBGraphicsScene::createEraiser()

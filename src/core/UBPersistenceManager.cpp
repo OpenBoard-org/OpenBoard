@@ -300,11 +300,15 @@ UBDocumentProxy* UBPersistenceManager::createDocumentProxyStructure(QFileInfo& c
         }
 
         UBDocumentProxy* docProxy = new UBDocumentProxy(fullPath); // managed in UBDocumentTreeNode
-        foreach(QString key, metadatas.keys()) {
+        foreach(QString key, metadatas.keys())
+        {
             docProxy->setMetaData(key, metadatas.value(key));
         }
 
         docProxy->setPageCount(sceneCount(docProxy));
+
+        docProxy->setDocumentDateLittleEndian(UBStringUtils::toLittleEndian(docProxy->documentDate()));
+        docProxy->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(docProxy->lastUpdate()));
 
         docProxy->moveToThread(UBApplication::instance()->thread());
 
