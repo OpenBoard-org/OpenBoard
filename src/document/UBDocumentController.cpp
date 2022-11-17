@@ -935,7 +935,6 @@ QPersistentModelIndex UBDocumentTreeModel::copyIndexToNewParent(const QModelInde
             duplicatedProxy = UBPersistenceManager::persistenceManager()->duplicateDocument(nodeSource->proxyData());
             QDateTime now = QDateTime::currentDateTime();
             duplicatedProxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-            duplicatedProxy->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
             UBMetadataDcSubsetAdaptor::persist(duplicatedProxy);
         }
         clonedNodeSource = new UBDocumentTreeNode(nodeSource->nodeType()
@@ -1313,7 +1312,6 @@ void UBDocumentTreeModel::updateIndexNameBindings(UBDocumentTreeNode *nd)
         nd->proxyData()->setMetaData(UBSettings::documentName, nd->nodeName());
         QDateTime now = QDateTime::currentDateTime();
         nd->proxyData()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-        nd->proxyData()->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
         UBPersistenceManager::persistenceManager()->persistDocumentMetadata(nd->proxyData());
     }
 }
@@ -2439,7 +2437,6 @@ void UBDocumentController::duplicateSelectedItem()
             }
             QDateTime now = QDateTime::currentDateTime();
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-            selectedDocument()->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
             UBMetadataDcSubsetAdaptor::persist(selectedDocument());
             int selectedThumbnail = selectedSceneIndexes.last() + selectedSceneIndexes.size();
             mDocumentUI->thumbnailWidget->selectItemAt(selectedThumbnail);
@@ -3122,7 +3119,6 @@ void UBDocumentController::addFolderOfImages()
             {
                 QDateTime now = QDateTime::currentDateTime();
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-                document->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
                 UBMetadataDcSubsetAdaptor::persist(document);
                 reloadThumbnails();
                 if (selectedDocument() == UBApplication::boardController->selectedDocument())
@@ -3174,7 +3170,6 @@ bool UBDocumentController::addFileToDocument(UBDocumentProxy* document)
         {
             QDateTime now = QDateTime::currentDateTime();
             document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-            document->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
 
             UBMetadataDcSubsetAdaptor::persist(document);
             reloadThumbnails();
@@ -3347,7 +3342,6 @@ void UBDocumentController::addToDocument()
         selectDocument(mBoardController->selectedDocument());
         QDateTime now = QDateTime::currentDateTime();
         mBoardController->selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-        mBoardController->selectedDocument()->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
         UBMetadataDcSubsetAdaptor::persist(mBoardController->selectedDocument());
         //mBoardController->reloadThumbnails();
 
@@ -3460,7 +3454,6 @@ void UBDocumentController::addImages()
             {
                 QDateTime now = QDateTime::currentDateTime();
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-                document->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
                 UBMetadataDcSubsetAdaptor::persist(document);
                 reloadThumbnails();
                 if (selectedDocument() == UBApplication::boardController->selectedDocument())
@@ -3795,7 +3788,6 @@ void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
 
             QDateTime now = QDateTime::currentDateTime();
             proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-            proxy->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
 
             UBMetadataDcSubsetAdaptor::persist(proxy);
 

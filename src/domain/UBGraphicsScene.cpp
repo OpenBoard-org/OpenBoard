@@ -2883,7 +2883,6 @@ void UBGraphicsScene::setDocumentUpdated()
     {
         QDateTime now = QDateTime::currentDateTime();
         document()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-        document()->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(now));
     }
 }
 

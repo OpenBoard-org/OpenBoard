@@ -43,6 +43,8 @@ UBDocumentProxy::UBDocumentProxy()
     : mPageCount(0)
     , mPageDpi(0)
     , mPersistencePath("")
+    , mDocumentDateLittleEndian("")
+    , mDocumentUpdatedAtLittleEndian("")
     , mNeedsCleanup(true)
 {
     init();
@@ -77,9 +79,6 @@ void UBDocumentProxy::init()
 
     QDateTime now = QDateTime::currentDateTime();
     setMetaData(UBSettings::documentName, QLocale::system().toString(now, QLocale::ShortFormat));
-
-    mDocumentDateLittleEndian = UBStringUtils::toLittleEndian(now);
-    mDocumentUpdatedAtLittleEndian = mDocumentDateLittleEndian;
 
     setUuid(QUuid::createUuid());
 
@@ -201,6 +200,8 @@ void UBDocumentProxy::setMetaData(const QString& pKey, const QVariant& pValue)
         mMetaDatas.insert(pKey, pValue);
         if (pKey == UBSettings::documentUpdatedAt)
         {
+            mDocumentUpdatedAtLittleEndian = "";
+
             UBDocumentManager *documentManager = UBDocumentManager::documentManager();
             if (documentManager)
                 documentManager->emitDocumentUpdated(this);

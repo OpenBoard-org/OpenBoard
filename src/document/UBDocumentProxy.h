@@ -68,10 +68,25 @@ class UBDocumentProxy : public QObject
         QDateTime documentDate();
 
         //For display purposes
-        QString documentDateLittleEndian() const { return mDocumentDateLittleEndian; }
-        QString documentUpdatedAtLittleEndian() const { return mDocumentUpdatedAtLittleEndian; }
-        void setDocumentDateLittleEndian(const QString& documentDateLittleEndian) { mDocumentDateLittleEndian = documentDateLittleEndian; }
-        void setDocumentUpdatedAtLittleEndian(const QString& updatedAtLittleEndian) { mDocumentUpdatedAtLittleEndian = updatedAtLittleEndian; }
+        QString documentDateLittleEndian()
+        {
+            if (mDocumentDateLittleEndian.isEmpty())
+            {
+                mDocumentDateLittleEndian = UBStringUtils::toLittleEndian(documentDate());
+            }
+
+            return mDocumentDateLittleEndian;
+        }
+
+        QString documentUpdatedAtLittleEndian()
+        {
+            if (mDocumentUpdatedAtLittleEndian.isEmpty())
+            {
+                mDocumentUpdatedAtLittleEndian = UBStringUtils::toLittleEndian(lastUpdate());
+            }
+
+            return mDocumentUpdatedAtLittleEndian;
+        }
 
         QDateTime lastUpdate();
 

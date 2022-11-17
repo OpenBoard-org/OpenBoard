@@ -307,9 +307,6 @@ UBDocumentProxy* UBPersistenceManager::createDocumentProxyStructure(QFileInfo& c
 
         docProxy->setPageCount(sceneCount(docProxy));
 
-        docProxy->setDocumentDateLittleEndian(UBStringUtils::toLittleEndian(docProxy->documentDate()));
-        docProxy->setDocumentUpdatedAtLittleEndian(UBStringUtils::toLittleEndian(docProxy->lastUpdate()));
-
         docProxy->moveToThread(UBApplication::instance()->thread());
 
         return docProxy;
