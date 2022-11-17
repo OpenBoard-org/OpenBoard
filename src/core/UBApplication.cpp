@@ -392,8 +392,10 @@ int UBApplication::exec(const QString& pFileToImport)
             applicationController->showMessage(tr("Cannot open your UBX file directly. Please import it in Documents mode instead"), false);
     }
 
-    if (UBSettings::settings()->appStartMode->get().toInt())
+    if (UBSettings::settings()->appStartMode->get().toInt() == 1)
         applicationController->showDesktop();
+    else if (UBSettings::settings()->appStartMode->get().toInt() == 2)
+        applicationController->showDocument();
     else
         applicationController->showBoard();
 
