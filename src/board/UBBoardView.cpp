@@ -1699,6 +1699,19 @@ void UBBoardView::resizeEvent (QResizeEvent * event)
     emit resized (event);
 }
 
+void UBBoardView::paintEvent(QPaintEvent *event)
+{
+    QGraphicsView::paintEvent(event);
+
+    // ignore paint events under the left palette
+    int paletteWidth = UBApplication::boardController->paletteManager()->leftPalette()->width();
+
+    if (event->rect().right() >= paletteWidth)
+    {
+        emit painted(mapToScene(event->rect()).boundingRect());
+    }
+}
+
 void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
 {
     if (testAttribute (Qt::WA_TranslucentBackground))

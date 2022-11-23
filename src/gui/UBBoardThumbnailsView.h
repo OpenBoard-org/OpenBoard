@@ -36,7 +36,8 @@
 #include <QMouseEvent>
 
 #include "document/UBDocumentProxy.h"
-#include "UBThumbnailWidget.h"
+
+class UBDraggableLivePixmapItem;
 
 class UBBoardThumbnailsView : public QGraphicsView
 {
@@ -57,6 +58,7 @@ public slots:
 
     void longPressTimeout();
     void mousePressAndHoldEvent(QPoint pos);
+    void updateThumbnailPixmap(const QRectF region);
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);
@@ -69,22 +71,25 @@ protected:
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
 
+    virtual void scrollContentsBy(int dx, int dy);
+
 signals:
     void mousePressAndHoldEventRequired(QPoint pos);
     void moveThumbnailRequired(int from, int to);
 
 private:
-    UBDraggableThumbnailView* createThumbnail(UBDocumentProxy* document, int i);
+    UBDraggableLivePixmapItem* createThumbnail(UBDocumentProxy* document, int i);
     void updateThumbnailsPos();
+    void updateExposure();
 
-    QList<UBDraggableThumbnailView*> mThumbnails;
+    QList<UBDraggableLivePixmapItem*> mThumbnails;
 
     int mThumbnailWidth;
     const int mThumbnailMinWidth;
     const int mMargin;
 
-    UBDraggableThumbnailView* mDropSource;
-    UBDraggableThumbnailView* mDropTarget;
+    UBDraggableLivePixmapItem* mDropSource;
+    UBDraggableLivePixmapItem* mDropTarget;
     QGraphicsRectItem *mDropBar;
 
     int mLongPressInterval;
