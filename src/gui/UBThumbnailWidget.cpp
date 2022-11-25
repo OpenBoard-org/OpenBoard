@@ -120,7 +120,6 @@ void UBThumbnailWidget::setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsI
 
     foreach (const QString label, pLabels)
     {
-        QFontMetrics fm(font());
         UBThumbnailTextItem *labelItem =
             new UBThumbnailTextItem(label); // deleted while replace or by the scene destruction
 
