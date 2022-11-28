@@ -73,6 +73,7 @@ signals:
     void resized(QResizeEvent* event);
     void shown();
     void mouseReleased();
+    void painted(const QRectF region);
 
 protected:
 
@@ -111,6 +112,8 @@ protected:
     virtual void dragMoveEvent(QDragMoveEvent *event);
 
     virtual void resizeEvent(QResizeEvent * event);
+
+    virtual void paintEvent(QPaintEvent *event);
 
     virtual void drawBackground(QPainter *painter, const QRectF &rect);
 

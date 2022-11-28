@@ -32,7 +32,6 @@
 #include <QWidget>
 
 #include "UBFeaturesWidget.h"
-#include "gui/UBThumbnailWidget.h"
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/UBApplication.h"
 #include "core/UBDownloadManager.h"

@@ -48,6 +48,7 @@
 #include "gui/UBBackgroundPalette.h"
 #include "gui/UBFavoriteToolPalette.h"
 #include "gui/UBStartupHintsPalette.h"
+#include "gui/UBPageNavigationWidget.h"
 
 #include "web/UBWebController.h"
 

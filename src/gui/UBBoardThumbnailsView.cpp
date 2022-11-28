@@ -39,6 +39,7 @@
 #include "core/UBApplication.h"
 #include "UBBoardThumbnailsView.h"
 #include "board/UBBoardController.h"
+#include "board/UBBoardView.h"
 #include "adaptors/UBThumbnailAdaptor.h"
 #include "adaptors/UBSvgSubsetAdaptor.h"
 #include "document/UBDocumentController.h"
@@ -47,6 +48,7 @@
 #include "core/UBApplicationController.h"
 #include "core/UBPersistenceManager.h"
 #include "UBThumbnailView.h"
+#include "UBThumbnailWidget.h"
 
 UBBoardThumbnailsView::UBBoardThumbnailsView(QWidget *parent, const char *name)
     : QGraphicsView(parent)
@@ -87,6 +89,8 @@ UBBoardThumbnailsView::UBBoardThumbnailsView(QWidget *parent, const char *name)
 
     connect(UBApplication::boardController, SIGNAL(pageSelectionChanged(int)), this, SLOT(ensureVisibleThumbnail(int)), Qt::UniqueConnection);
     connect(UBApplication::boardController, SIGNAL(centerOnThumbnailRequired(int)), this, SLOT(centerOnThumbnail(int)), Qt::UniqueConnection);
+
+    connect(UBApplication::boardController->controlView(), &UBBoardView::painted, this, &UBBoardThumbnailsView::updateThumbnailPixmap);
 }
 
 void UBBoardThumbnailsView::moveThumbnail(int from, int to)
@@ -103,7 +107,7 @@ void UBBoardThumbnailsView::updateThumbnails()
 
 void UBBoardThumbnailsView::removeThumbnail(int i)
 {
-    UBDraggableThumbnailView* item = mThumbnails.at(i);
+    UBDraggableLivePixmapItem* item = mThumbnails.at(i);
 
     scene()->removeItem(item->selectionItem());
     scene()->removeItem(item->pageNumber());
@@ -114,19 +118,18 @@ void UBBoardThumbnailsView::removeThumbnail(int i)
     updateThumbnailsPos();
 }
 
-UBDraggableThumbnailView* UBBoardThumbnailsView::createThumbnail(UBDocumentProxy* document, int i)
+UBDraggableLivePixmapItem* UBBoardThumbnailsView::createThumbnail(UBDocumentProxy* document, int i)
 {
     UBApplication::showMessage(tr("Loading page (%1/%2)").arg(i+1).arg(document->pageCount()));
 
     UBGraphicsScene* pageScene = UBPersistenceManager::persistenceManager()->loadDocumentScene(document, i);
-    UBThumbnailView* pageView = new UBThumbnailView(pageScene);
 
-    return new UBDraggableThumbnailView(pageView, document, i);
+    return new UBDraggableLivePixmapItem(pageScene, document, i);
 }
 
 void UBBoardThumbnailsView::addThumbnail(UBDocumentProxy* document, int i)
 {
-    UBDraggableThumbnailView* item = createThumbnail(document, i);
+    UBDraggableLivePixmapItem* item = createThumbnail(document, i);
     mThumbnails.insert(i, item);
 
     scene()->addItem(item);
@@ -187,11 +190,23 @@ void UBBoardThumbnailsView::updateThumbnailsPos()
     {
         mThumbnails.at(i)->setSceneIndex(i);
         mThumbnails.at(i)->setPageNumber(i);
-        mThumbnails.at(i)->setHighlihted(i == UBApplication::boardController->activeSceneIndex());
+        mThumbnails.at(i)->setHighlighted(i == UBApplication::boardController->activeSceneIndex());
         mThumbnails.at(i)->updatePos(mThumbnailWidth, thumbnailHeight);
     }
 
+    updateExposure();
     update();
+}
+
+void UBBoardThumbnailsView::updateExposure()
+{
+    QRect viewportRect(QPoint(0, 0), viewport()->size());
+    QRectF visibleSceneRect = mapToScene(viewportRect).boundingRect();
+
+    for (UBDraggableLivePixmapItem* thumbnail : qAsConst(mThumbnails))
+    {
+        thumbnail->setExposed(visibleSceneRect.intersects(thumbnail->sceneBoundingRect()));
+    }
 }
 
 void UBBoardThumbnailsView::resizeEvent(QResizeEvent *event)
@@ -218,7 +233,7 @@ void UBBoardThumbnailsView::mousePressEvent(QMouseEvent *event)
     {
         mLastPressedMousePos = event->pos();
 
-        UBDraggableThumbnailView* item = dynamic_cast<UBDraggableThumbnailView*>(itemAt(event->pos()));
+        UBDraggableLivePixmapItem* item = dynamic_cast<UBDraggableLivePixmapItem*>(itemAt(event->pos()));
 
         if (item)
         {
@@ -247,13 +262,13 @@ void UBBoardThumbnailsView::longPressTimeout()
 
 void UBBoardThumbnailsView::mousePressAndHoldEvent(QPoint pos)
 {
-    UBDraggableThumbnailView* item = dynamic_cast<UBDraggableThumbnailView*>(itemAt(pos));
+    UBDraggableLivePixmapItem* item = dynamic_cast<UBDraggableLivePixmapItem*>(itemAt(pos));
     if (item)
     {
         mDropSource = item;
         mDropTarget = item;
 
-        QPixmap pixmap = item->widget()->grab().scaledToWidth(mThumbnailWidth/2);
+        QPixmap pixmap = item->pixmap().scaledToWidth(mThumbnailWidth/2);
 
         QDrag *drag = new QDrag(this);
         drag->setMimeData(new QMimeData());
@@ -261,7 +276,13 @@ void UBBoardThumbnailsView::mousePressAndHoldEvent(QPoint pos)
         drag->setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2));
 
         drag->exec();
-    }   
+    }
+}
+
+void UBBoardThumbnailsView::updateThumbnailPixmap(const QRectF region)
+{
+    int index = UBApplication::boardController->activeSceneIndex();
+    mThumbnails.at(index)->updatePixmap(region);
 }
 
 void UBBoardThumbnailsView::mouseReleaseEvent(QMouseEvent *event)
@@ -269,6 +290,12 @@ void UBBoardThumbnailsView::mouseReleaseEvent(QMouseEvent *event)
     mLongPressTimer.stop();
 
     QGraphicsView::mouseReleaseEvent(event);
+}
+
+void UBBoardThumbnailsView::scrollContentsBy(int dx, int dy)
+{
+    QGraphicsView::scrollContentsBy(dx, dy);
+    updateExposure();
 }
 
 void UBBoardThumbnailsView::dragEnterEvent(QDragEnterEvent *event)
@@ -297,7 +324,7 @@ void UBBoardThumbnailsView::dragMoveEvent(QDragMoveEvent *event)
 
     ensureVisible(thumbnailArea);
 
-    UBDraggableThumbnailView* item = dynamic_cast<UBDraggableThumbnailView*>(itemAt(position.toPoint()));
+    UBDraggableLivePixmapItem* item = dynamic_cast<UBDraggableLivePixmapItem*>(itemAt(position.toPoint()));
     if (item)
     {
         if (item != mDropTarget)

@@ -34,7 +34,6 @@
 
 #include "gui/UBLeftPalette.h"
 #include "gui/UBRightPalette.h"
-#include "gui/UBPageNavigationWidget.h"
 #include "gui/UBCachePropertiesWidget.h"
 #include "gui/UBDockDownloadWidget.h"
 #include "core/UBApplicationController.h"
@@ -54,6 +53,7 @@ class UBKeyboardPalette;
 class UBMainWindow;
 class UBApplicationController;
 class UBStartupHintsPalette;
+class UBPageNavigationWidget;
 
 class UBBoardPaletteManager : public QObject
 {
