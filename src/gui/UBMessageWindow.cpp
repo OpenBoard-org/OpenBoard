@@ -86,7 +86,14 @@ void UBMessageWindow::showMessage(const QString& message, bool showSpinningWheel
     show();
     // showMessage may have been called from the GUI thread, so make sure the message window is drawn right now
     repaint();
-    qApp->sendPostedEvents();
+    // on Linux, calling sendPostedEvents() with no filters creates an issue where "longpress events" slots are applied before it should (e.g, add a page between page 1
+    // and 2 in a 500+ pages document => the newPage dialog appears like if you did a long click).
+    //qApp->sendPostedEvents();
+
+    // Moreover, on OSX, calling sendPostedEvents() doesn't solve the initial issue, where the messages are not displayed
+    // todo : find a better solution for Mac, maybe by testing something like the following line (+ X11ExcludeTimers or #ifdef Q_OS_OSX)
+    //QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents | QEventLoop::X11ExcludeTimers);
+
 }
 
 void UBMessageWindow::timerEvent(QTimerEvent *event)
@@ -115,5 +122,9 @@ void UBMessageWindow::hideMessage()
 {
     mFadingStep = 0;
     hide();
-    QCoreApplication::processEvents();
+    // on Linux, calling sendPostedEvents() with no filters creates an issue where "longpress events" slots are applied before it should (e.g, add a page between page 1
+    // and 2 in a 500+ pages document => the newPage dialog appears like if you did a long click).
+    // Moreover, on OSX, calling sendPostedEvents() doesn't solve the initial issue, where the messages are not displayed
+    // todo : find a better solution for Mac, maybe by testing something like the following line (+ X11ExcludeTimers or #ifdef Q_OS_OSX)
+    //QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents | QEventLoop::X11ExcludeTimers);
 }
