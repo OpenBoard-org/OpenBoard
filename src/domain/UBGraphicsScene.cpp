@@ -2407,6 +2407,20 @@ void UBGraphicsScene::stylusToolChanged(int tool, int previousTool)
     }
 }
 
+void UBGraphicsScene::controlViewportChanged()
+{
+    // inform all UBGraphicsWidgetItems about viewport change
+    // partial workaround for QTBUG-109068
+    foreach (QGraphicsItem *item, items())
+    {
+        if (item->type() == UBGraphicsWidgetItem::Type)
+        {
+            UBGraphicsWidgetItem* widgetItem = qgraphicsitem_cast<UBGraphicsWidgetItem *>(item);
+            widgetItem->updatePosition();
+        }
+    }
+}
+
 void UBGraphicsScene::addCompass(QPointF center)
 {
     UBGraphicsCompass* compass = new UBGraphicsCompass(); // mem : owned and destroyed by the scene

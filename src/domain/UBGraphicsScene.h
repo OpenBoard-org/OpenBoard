@@ -389,6 +389,8 @@ public slots:
 
         void stylusToolChanged(int tool, int previousTool);
 
+        void controlViewportChanged();
+
     protected:
 
         UBGraphicsPolygonItem* lineToPolygonItem(const QLineF& pLine, const qreal& pWidth);
