@@ -164,7 +164,7 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
     }
 
     //If only one item itself - do nothing, return it's z-value
-    if (sortedItems.count() == 1 && sortedItems.values().first() == item) {
+    if (sortedItems.count() == 1 && sortedItems.first() == item) {
         qDebug() << "only one item exists in layer. Have nothing to change";
         return item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
     }
@@ -385,8 +385,8 @@ UBGraphicsScene::~UBGraphicsScene()
 void UBGraphicsScene::selectionChangedProcessing()
 {
     if (selectedItems().count()){
-        UBApplication::showMessage("ZValue is " + QString::number(selectedItems().first()->zValue(), 'f') + "own z value is "
-                                   + QString::number(selectedItems().first()->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f'));
+        UBApplication::showMessage("ZValue is " + QString::number(selectedItems().constFirst()->zValue(), 'f') + "own z value is "
+                                   + QString::number(selectedItems().constFirst()->data(UBGraphicsItemData::ItemOwnZValue).toReal(), 'f'));
 
     }
 }
@@ -749,10 +749,11 @@ bool UBGraphicsScene::inputDeviceRelease(int tool)
     {
 
         if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
-            UBGraphicsItemUndoCommand* udcmd = new UBGraphicsItemUndoCommand(this, mRemovedItems, mAddedItems); //deleted by the undoStack
-
-            if(UBApplication::undoStack)
+            if (UBApplication::undoStack)
+            {
+                UBGraphicsItemUndoCommand* udcmd = new UBGraphicsItemUndoCommand(this, mRemovedItems, mAddedItems); //deleted by the undoStack
                 UBApplication::undoStack->push(udcmd);
+            }
         }
 
         mRemovedItems.clear();
@@ -1177,7 +1178,7 @@ void UBGraphicsScene::setDrawingMode(bool bModeDesktop)
 
 void UBGraphicsScene::recolorAllItems()
 {
-    QMap<QGraphicsView*, QGraphicsView::ViewportUpdateMode> previousUpdateModes;
+    QHash<QGraphicsView*, QGraphicsView::ViewportUpdateMode> previousUpdateModes;
     foreach(QGraphicsView* view, views())
     {
         previousUpdateModes.insert(view, view->viewportUpdateMode());
@@ -1383,7 +1384,7 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
         copy->setNominalSize(this->mNominalSize);
 
     QListIterator<QGraphicsItem*> itItems(this->mFastAccessItems);
-    QMap<UBGraphicsStroke*, UBGraphicsStroke*> groupClone;
+    QHash<UBGraphicsStroke*, UBGraphicsStroke*> groupClone;
 
     while (itItems.hasNext())
     {
@@ -1507,8 +1508,8 @@ void UBGraphicsScene::clearContent(clearCase pCase)
 
                     groupsMap.insert(itemGroup, UBGraphicsItem::getOwnUuid(item));
                     if (itemGroup->childItems().count() == 1) {
-                        groupsMap.insert(itemGroup, UBGraphicsItem::getOwnUuid(itemGroup->childItems().first()));
-                        QGraphicsItem *lastItem = itemGroup->childItems().first();
+                        groupsMap.insert(itemGroup, UBGraphicsItem::getOwnUuid(itemGroup->childItems().constFirst()));
+                        QGraphicsItem *lastItem = itemGroup->childItems().constFirst();
                         bool isSelected = itemGroup->isSelected();
                         itemGroup->destroy(false);
                         lastItem->setSelected(isSelected);
@@ -1626,25 +1627,27 @@ UBGraphicsMediaItem* UBGraphicsScene::addMedia(const QUrl& pMediaFileUrl, bool s
 
     UBGraphicsMediaItem * mediaItem = UBGraphicsMediaItem::createMediaItem(pMediaFileUrl);
 
-    if(mediaItem)
+    if (mediaItem)
+    {
         connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), mediaItem, SLOT(activeSceneChanged()));
 
-    mediaItem->setPos(pPos);
+        mediaItem->setPos(pPos);
 
-    mediaItem->setFlag(QGraphicsItem::ItemIsMovable, true);
-    mediaItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+        mediaItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+        mediaItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-    addItem(mediaItem);
+        addItem(mediaItem);
 
-    mediaItem->show();
+        mediaItem->show();
 
-    if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
-        UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, mediaItem);
-        UBApplication::undoStack->push(uc);
+        if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
+            UBGraphicsItemUndoCommand* uc = new UBGraphicsItemUndoCommand(this, 0, mediaItem);
+            UBApplication::undoStack->push(uc);
+        }
+
+        if (shouldPlayAsap)
+            mediaItem->play();
     }
-
-    if (shouldPlayAsap)
-        mediaItem->play();
 
     setDocumentUpdated();
 
@@ -1904,7 +1907,7 @@ UBGraphicsTextItem* UBGraphicsScene::addTextWithFont(const QString& pString, con
         UBApplication::undoStack->push(uc);
     }
 
-    connect(textItem, SIGNAL(textUndoCommandAdded(UBGraphicsTextItem *)), this, SLOT(textUndoCommandAdded(UBGraphicsTextItem *)));
+    connect(textItem, SIGNAL(textUndoCommandAdded(UBGraphicsTextItem*)), this, SLOT(textUndoCommandAdded(UBGraphicsTextItem*)));
 
     textItem->setSelected(true);
     textItem->setFocus();
@@ -1931,7 +1934,7 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString, const Q
         UBApplication::undoStack->push(uc);
     }
 
-    connect(textItem, SIGNAL(textUndoCommandAdded(UBGraphicsTextItem *)), this, SLOT(textUndoCommandAdded(UBGraphicsTextItem *)));
+    connect(textItem, SIGNAL(textUndoCommandAdded(UBGraphicsTextItem*)), this, SLOT(textUndoCommandAdded(UBGraphicsTextItem*)));
 
     textItem->setFocus();
 
@@ -2140,10 +2143,10 @@ QRectF UBGraphicsScene::normalizedSceneRect(qreal ratio)
 QGraphicsItem *UBGraphicsScene::itemForUuid(QUuid uuid)
 {
     QGraphicsItem *result = 0;
-    QString ui = uuid.toString();
 
     //simple search before implementing container for fast access
-    foreach (QGraphicsItem *item, items()) {
+    foreach (QGraphicsItem *item, items())
+    {
         if (UBGraphicsScene::getPersonalUuid(item) == uuid && !uuid.isNull()) {
             result = item;
         }
@@ -2528,7 +2531,7 @@ QList<QUrl> UBGraphicsScene::relativeDependencies() const
         UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
         if(groupItem)
         {
-            for (auto child : groupItem->childItems())
+            foreach (QGraphicsItem* child, groupItem->childItems())
             {
                 relativePaths << relativeDependenciesOfItem(child);
             }
@@ -2946,7 +2949,7 @@ void UBGraphicsScene::createEraiser()
         mEraser->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Eraiser)); //Necessary to set if we want z value to be assigned correctly
 
         mTools << mEraser;
-        addItem(mEraser);
+        UBGraphicsScene::addItem(mEraser);
     }
 }
 
@@ -2963,7 +2966,7 @@ void UBGraphicsScene::createPointer()
     mPointer->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Pointer)); //Necessary to set if we want z value to be assigned correctly
 
     mTools << mPointer;
-    addItem(mPointer);
+    UBGraphicsScene::addItem(mPointer);
 }
 
 void UBGraphicsScene::createMarkerCircle()
@@ -2981,7 +2984,7 @@ void UBGraphicsScene::createMarkerCircle()
         mMarkerCircle->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Eraiser));
 
         mTools << mMarkerCircle;
-        addItem(mMarkerCircle);
+        UBGraphicsScene::addItem(mMarkerCircle);
     }
 }
 
@@ -3000,7 +3003,7 @@ void UBGraphicsScene::createPenCircle()
         mPenCircle->setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::Eraiser));
 
         mTools << mPenCircle;
-        addItem(mPenCircle);
+        UBGraphicsScene::addItem(mPenCircle);
     }
 }
 
