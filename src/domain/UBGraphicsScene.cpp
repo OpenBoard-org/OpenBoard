@@ -1136,22 +1136,17 @@ void UBGraphicsScene::setBackground(bool pIsDark, UBPageBackground pBackground)
         recolorAllItems();
 
         needRepaint = true;
-        setModified(true);
     }
 
     if (mPageBackground != pBackground)
     {
         mPageBackground = pBackground;
         needRepaint = true;
-        setModified(true);
     }
 
     if (needRepaint)
     {
-        foreach(QGraphicsView* view, views())
-        {
-            view->resetCachedContent();
-        }
+        updateBackground();
     }
 }
 
@@ -1165,20 +1160,14 @@ void UBGraphicsScene::setBackgroundGridSize(int pSize)
 {
     if (pSize > 0) {
         mBackgroundGridSize = pSize;
-        setModified(true);
-
-        foreach(QGraphicsView* view, views())
-            view->resetCachedContent();
+        updateBackground();
     }
 }
 
 void UBGraphicsScene::setIntermediateLines(bool checked)
 {
     mIntermediateLines = checked;
-    setModified(true);
-
-    foreach(QGraphicsView* view, views())
-        view->resetCachedContent();
+    updateBackground();
 }
 
 void UBGraphicsScene::setDrawingMode(bool bModeDesktop)
@@ -2584,13 +2573,7 @@ void UBGraphicsScene::setNominalSize(const QSize& pSize)
     if (nominalSize() != pSize)
     {
         mNominalSize = pSize;
-        setModified(true);    // modifying the size modifies the scene
-
-        // force redrawing the background
-        foreach(QGraphicsView* view, views())
-        {
-            view->resetCachedContent();
-        }
+        updateBackground();
 
         if(mDocument)
             mDocument->setDefaultDocumentSize(pSize);
@@ -2937,6 +2920,17 @@ void UBGraphicsScene::setDocumentUpdated()
         QDateTime now = QDateTime::currentDateTime();
         document()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
     }
+}
+
+void UBGraphicsScene::updateBackground()
+{
+    setModified(true);
+
+    foreach(QGraphicsView* view, views())
+    {
+        view->resetCachedContent();
+    }
+
 }
 
 void UBGraphicsScene::createEraiser()
