@@ -332,6 +332,8 @@ void UBDisplayManager::positionScreens()
 
         // Sometimes moving control screen to the left won't operate...
         // found out that resetting the geometry solves theses cases better than "showNormal() workaround"
+        // however there are cases when "showNormal()" is required to update control screen position, so doing both
+        controlWidget->showNormal();
         controlWidget->setGeometry(QRect());
 
         QRect geometry = screenGeometry(ScreenRole::Control);
