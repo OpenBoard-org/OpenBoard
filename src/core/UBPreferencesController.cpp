@@ -215,7 +215,7 @@ void UBPreferencesController::wire()
     mPreferencesUI->crossColorLightBackgroundFrame->setPalette(lightBackgroundPalette);
 
     QPalette darkBackgroundPalette = QApplication::palette();
-    darkBackgroundPalette.setColor(QPalette::Window, Qt::black);
+    darkBackgroundPalette.setColor(QPalette::Window, QColor(UBSettings::settings()->boardColorDarkBackground->get().toString()));
     darkBackgroundPalette.setColor(QPalette::ButtonText, Qt::white);
     darkBackgroundPalette.setColor(QPalette::WindowText, Qt::white);
 
@@ -729,7 +729,7 @@ UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor
     lightBackgroundFrame->setPalette(lightBackgroundPalette);
 
     QPalette darkBackgroundPalette = QApplication::palette();
-    darkBackgroundPalette.setColor(QPalette::Window, Qt::black);
+    darkBackgroundPalette.setColor(QPalette::Window, QColor(UBSettings::settings()->boardColorDarkBackground->get().toString()));
     darkBackgroundPalette.setColor(QPalette::ButtonText, Qt::white);
     darkBackgroundPalette.setColor(QPalette::WindowText, Qt::white);
 
