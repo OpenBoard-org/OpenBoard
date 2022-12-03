@@ -122,7 +122,11 @@ void UBFloatingPalette::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton)
     {
         mIsMoving = true;
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        mDragPosition = event->globalPosition().toPoint() - frameGeometry().topLeft();
+#else
         mDragPosition = event->globalPos() - frameGeometry().topLeft();
+#endif
         event->accept();
     }
     else
@@ -135,7 +139,11 @@ void UBFloatingPalette::mouseMoveEvent(QMouseEvent *event)
 {
     if (mIsMoving)
     {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        moveInsideParent(event->globalPosition().toPoint() - mDragPosition);
+#else
         moveInsideParent(event->globalPos() - mDragPosition);
+#endif
         event->accept();
         emit moving();
     }

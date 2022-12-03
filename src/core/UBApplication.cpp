@@ -235,8 +235,9 @@ void UBApplication::setupTranslators(QStringList args)
     else{
         mApplicationTranslator = new QTranslator(this);
         mQtGuiTranslator = new QTranslator(this);
-        mApplicationTranslator->load(UBPlatformUtils::translationPath(QString("OpenBoard_"),language));
-        installTranslator(mApplicationTranslator);
+
+        if (mApplicationTranslator->load(UBPlatformUtils::translationPath(QString("OpenBoard_"),language)))
+            installTranslator(mApplicationTranslator);
 
         QString qtGuiTranslationPath = UBPlatformUtils::translationPath("qt_", language);
 
@@ -248,7 +249,11 @@ void UBApplication::setupTranslators(QStringList args)
         }
 
         QLocale locale(language);
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        QString qtTranslationPath = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
+#else
         QString qtTranslationPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+#endif
         bool loaded = false;
 
         if (qtGuiTranslationPath.isEmpty())

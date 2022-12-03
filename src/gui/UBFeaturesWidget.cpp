@@ -421,7 +421,12 @@ void UBFeaturesListView::dragEnterEvent( QDragEnterEvent *event )
 void UBFeaturesListView::dragMoveEvent( QDragMoveEvent *event )
 {
     const UBFeaturesMimeData *fMimeData = qobject_cast<const UBFeaturesMimeData*>(event->mimeData());
-    QModelIndex index = indexAt(event->pos());
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QPoint eventPos = event->position().toPoint();
+#else
+    QPoint eventPos = event->pos();
+#endif
+    QModelIndex index = indexAt(eventPos);
     UBFeature onFeature = model()->data(index, Qt::UserRole + 1).value<UBFeature>();
     if (fMimeData) {
         if (!index.isValid() || !onFeature.isFolder()) {

@@ -132,7 +132,12 @@ void UBDocumentThumbnailWidget::dragMoveEvent(QDragMoveEvent *event)
     QRect boundingFrame = frameRect();
     //setting up automatic scrolling
     const int SCROLL_DISTANCE = 16;
-    int bottomDist = boundingFrame.bottom() - event->pos().y(), topDist = boundingFrame.top() - event->pos().y();
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QPoint eventPos = event->position().toPoint();
+#else
+    QPoint eventPos = event->pos();
+#endif
+    int bottomDist = boundingFrame.bottom() - eventPos.y(), topDist = boundingFrame.top() - eventPos.y();
     if(qAbs(bottomDist) <= SCROLL_DISTANCE)
     {
         mScrollMagnitude = (SCROLL_DISTANCE - bottomDist)*4;
@@ -158,7 +163,7 @@ void UBDocumentThumbnailWidget::dragMoveEvent(QDragMoveEvent *event)
     }
 
     int minDistance = 0;
-    QGraphicsItem *underlyingItem = itemAt(event->pos());
+    QGraphicsItem *underlyingItem = itemAt(eventPos);
     mClosestDropItem = dynamic_cast<UBThumbnailPixmap*>(underlyingItem);
 
     if (!mClosestDropItem)
@@ -170,7 +175,7 @@ void UBDocumentThumbnailWidget::dragMoveEvent(QDragMoveEvent *event)
                         item->pos().x() + item->boundingRect().width() * scale / 2,
                         item->pos().y() + item->boundingRect().height() * scale / 2);
 
-            int distance = (itemCenter.toPoint() - mapToScene(event->pos()).toPoint()).manhattanLength();
+            int distance = (itemCenter.toPoint() - mapToScene(eventPos).toPoint()).manhattanLength();
             if (!mClosestDropItem || distance < minDistance)
             {
                 mClosestDropItem = item;
@@ -187,7 +192,7 @@ void UBDocumentThumbnailWidget::dragMoveEvent(QDragMoveEvent *event)
                     mClosestDropItem->pos().x() + mClosestDropItem->boundingRect().width() * scale / 2,
                     mClosestDropItem->pos().y() + mClosestDropItem->boundingRect().height() * scale / 2);
 
-        mDropIsRight = mapToScene(event->pos()).x() > itemCenter.x();
+        mDropIsRight = mapToScene(eventPos).x() > itemCenter.x();
 
         if (!mDropCaretRectItem && selectedItems().count() < mGraphicItems.count())
         {
