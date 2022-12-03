@@ -86,7 +86,7 @@ TabWidget::TabWidget(QWebEngineProfile *profile, QWidget *parent)
                       arg(icon->pixmap().width()));
 #else
         setStyleSheet(QStringLiteral("QTabWidget::tab-bar { left: %1px; }").
-                      arg(icon->pixmap()->width()));
+                      arg(icon->pixmap(Qt::ReturnByValue).width()));
 #endif
     }
 }
