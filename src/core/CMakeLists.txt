@@ -15,8 +15,6 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBDownloadThread.h
     UBForeignObjectsHandler.cpp
     UBForeignObjectsHandler.h
-    UBIdleTimer.cpp
-    UBIdleTimer.h
     UBMimeData.cpp
     UBMimeData.h
     UBOpenSankoreImporter.cpp

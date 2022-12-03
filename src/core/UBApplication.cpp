@@ -43,7 +43,6 @@
 #include "UBPersistenceManager.h"
 #include "UBDocumentManager.h"
 #include "UBPreferencesController.h"
-#include "UBIdleTimer.h"
 #include "UBApplicationController.h"
 
 #include "board/UBBoardController.h"
