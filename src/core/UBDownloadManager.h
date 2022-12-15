@@ -92,7 +92,6 @@ public:
 signals:
     void downloadProgress(int id, qint64 current,qint64 total);
     void downloadFinished(int id, bool pSuccess, QUrl sourceUrl, QUrl contentUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
-    void downloadError(int id);
 
 private slots:
     void onDownloadFinished(bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
@@ -155,7 +154,6 @@ private slots:
     void onUpdateDownloadLists();
     void onDownloadProgress(int id, qint64 received, qint64 total);
     void onDownloadFinished(int id, bool pSuccess, QUrl sourceUrl, QUrl contentUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground);
-    void onDownloadError(int id);
 
 private:
     void init();

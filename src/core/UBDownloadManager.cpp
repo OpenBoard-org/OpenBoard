@@ -472,25 +472,6 @@ void UBDownloadManager::cancelDownloads()
     finishDownloads(true);
 }
 
-void UBDownloadManager::onDownloadError(int id)
-{
-    QNetworkReply *pReply = dynamic_cast<QNetworkReply *>(mDownloads.value(id));
-    
-    if(NULL != pReply)
-    {
-        // Check which error occured:
-        switch(pReply->error())
-        {
-            case QNetworkReply::OperationCanceledError:
-                // For futur developments: do something in case of download aborting (message? remove the download?)
-            break;
-
-            default:
-                // Check the documentation of QNetworkReply in Qt Assistant for the different error cases
-            break;
-        }
-    }
-}
 
 void UBDownloadManager::finishDownloads(bool cancel)
 {
@@ -610,15 +591,7 @@ void UBDownloadHttpFile::onDownloadProgress(qint64 bytesReceived, qint64 bytesTo
  */
 void UBDownloadHttpFile::onDownloadFinished(bool pSuccess, QUrl sourceUrl, QString pContentTypeHeader, QByteArray pData, QPointF pPos, QSize pSize, bool isBackground)
 {
-    if(pSuccess)
-    {
-        // Notify the end of the download
-        emit downloadFinished(mId, pSuccess, sourceUrl, sourceUrl, pContentTypeHeader, pData, pPos, pSize, isBackground);
-    }
-    else
-    {
-        // Notify the fact that and error occured during the download
-        emit downloadError(mId);
-    }
+    // Notify the end of the download
+    emit downloadFinished(mId, pSuccess, sourceUrl, sourceUrl, pContentTypeHeader, pData, pPos, pSize, isBackground);
 }
 
