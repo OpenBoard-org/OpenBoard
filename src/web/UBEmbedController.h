@@ -27,15 +27,17 @@
 
 
 
-#ifndef UBEMBEDCONTROLLER_H_
-#define UBEMBEDCONTROLLER_H_
+#pragma once
 
-#include <QtGui>
+#include <QDialog>
+#include <QDir>
+#include <QList>
+#include <QString>
+#include <QUrl>
+#include <QWidget>
 
 #include <web/UBEmbedContent.h>
 
-// forward
-class QWebEngineView;
 
 namespace Ui
 {
@@ -45,44 +47,41 @@ namespace Ui
 
 class UBEmbedController : public QObject
 {
-    Q_OBJECT;
-    public:
-        UBEmbedController(QWidget* parent = nullptr);
-        virtual ~UBEmbedController();
+    Q_OBJECT
 
-        void showEmbedDialog();
-        void hideEmbedDialog();
+public:
+    UBEmbedController(QWidget* parent = nullptr);
+    virtual ~UBEmbedController();
 
-    public slots:
-        void updateEmbeddableContentFromView(QWebEngineView* pCurrentWebFrame);
-        void textChanged(const QString &);
-        void textEdited(const QString &);
+    void updateListOfEmbeddableContent(const QList<UBEmbedContent>& pAllContent);
 
+public slots:
+    void showEmbedDialog();
+    void hideEmbedDialog() const;
 
-    private slots:
-        void selectFlash(int pFlashIndex);
-        void createWidget();
+    void pageUrlChanged(const QUrl& url);
+    void pageTitleChanged(const QString& title);
 
-    private:
-        void updateListOfEmbeddableContent(const QList<UBEmbedContent>& pAllContent);
+private slots:
+    void textChanged(const QString& text);
+    void selectFlash(int pFlashIndex);
+    void createWidget();
 
-        QString widgetNameForObject(const UBEmbedContent& pObject) const;
+private:
+    void importWidgetInLibrary(const QDir& pSourceDir) const;
 
-        QString generateFullPageHtml(const QUrl& url, const QString& pDirPath, bool pGenerateFile);
-        QString generateHtml(const UBEmbedContent& pObject, const QString& pDirPath, bool pGenerateFile);
+    QString generateFullPageHtml(const QUrl& url, const QString& pDirPath = QString(), bool pGenerateFile = false) const;
+    QString generateHtml(const UBEmbedContent& pObject, const QString& pDirPath = QString(), bool pGenerateFile = false) const;
+    QString generateIcon(const QString& pDirPath) const;
+    void generateConfig(int pWidth, int pHeight, const QString& pDestinationPath) const;
 
-        QString generateIcon(const QString& pDirPath);
+    QString widgetNameForObject(const UBEmbedContent& pObject) const;
 
-        void generateConfig(int pWidth, int pHeight, const QString& pDestinationPath);
-
-        void importWidgetInLibrary(QDir pSourceDir);
-
-        Ui::trapFlashDialog* mTrapFlashUi;
-        QDialog* mTrapDialog;
-        QWidget* mParentWidget;
-        QWebEngineView* mCurrentWebFrame;
-        QList<UBEmbedContent> mAvailableContent;
+private:
+    Ui::trapFlashDialog* mTrapFlashUi;
+    QDialog* mTrapDialog;
+    QWidget* mParentWidget;
+    QList<UBEmbedContent> mAvailableContent;
+    QUrl mUrl;
+    QString mPageTitle;
 };
-
-
-#endif /* UBTRAPFLASHCONTROLLER_H_ */

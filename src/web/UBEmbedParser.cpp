@@ -36,64 +36,54 @@
 #include <QDebug>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QWebEngineView>
 
 #include "network/UBNetworkAccessManager.h"
 
 #include "core/memcheck.h"
 
 
-UBEmbedParser::UBEmbedParser(QWebEngineView *parent, const char* name)
+UBEmbedParser::UBEmbedParser(QObject* parent, const char* name)
     : QObject(parent)
+    , mpNam(UBNetworkAccessManager::defaultAccessManager())
+    , mParsing(false)
+    , mPending(0)
 {
     setObjectName(name);
-    mView = parent;
-    mpNam = UBNetworkAccessManager::defaultAccessManager();
-    mParsing = false;
-    mPending = 0;
-
-    connect(mView, &QWebEngineView::loadProgress, [this](int progress){
-        // Note: The loadFinished signal is not always emitted, but progress = 100 is.
-        if (progress == 100)
-        {
-            onLoadFinished();
-        }
-    });
 
     qDebug() << "Created UBOEmbedParser";
 }
 
+
 UBEmbedParser::~UBEmbedParser()
 {
-
+    emit cancelled();
 }
+
 
 bool UBEmbedParser::hasEmbeddedContent() const
 {
     return !mContents.empty();
 }
 
-QList<UBEmbedContent> UBEmbedParser::embeddedContent()
+
+QList<UBEmbedContent> UBEmbedParser::embeddedContent() const
 {
     return mContents;
 }
 
-void UBEmbedParser::onLoadFinished()
-{
-    qDebug() << "loadFinished";
-
-    if (!mParsing)
-    {
-        mParsing = true;
-        mView->page()->toHtml([this](const QString &html) {
-            parse(html);
-        });
-    }
-}
 
 void UBEmbedParser::parse(const QString& html)
 {
-    qDebug() << "parse" << html.length();
+    if (mParsing)
+    {
+        // abort any pending network requests for oEmbed information
+        qDebug() << "abort oembed parsing";
+        mParsing = false;
+        emit cancelled();
+    }
+
+    qDebug() << "parse" << html.length() << "bytes";
+    mParsing = true;
     mContents.clear();
     mParsedTitles.clear();
 
@@ -117,7 +107,7 @@ void UBEmbedParser::parse(const QString& html)
 
     QList<QString> oembedUrls;
 
-    for (QString result : results)
+    for (QString result : qAsConst(results))
     {
         // replace entities
         result = result.trimmed().replace("&lt;", "<").replace("&gt;", ">").replace("\\&quot;", "\"").replace("\\", "");
@@ -168,12 +158,12 @@ void UBEmbedParser::parse(const QString& html)
         }
     }
 
-    mPending = oembedUrls.size();
-    qDebug() << "UBOEmbedParser.parse, pending =" << mPending;
+    mPending += oembedUrls.size();
+    qDebug() << "UBEmbedParser.parse, pending =" << mPending;
 
     if (0 == mPending)
     {
-        emit parseResult(mView, !mContents.empty());
+        emit parseResult(!mContents.empty());
         mParsing = false;
     }
     else
@@ -186,47 +176,50 @@ void UBEmbedParser::parse(const QString& html)
     }
 }
 
-void UBEmbedParser::fetchOEmbed(const QString &url)
+
+void UBEmbedParser::fetchOEmbed(const QString& url)
 {
     QUrl qurl = QUrl::fromEncoded(url.toLatin1());
 
     QNetworkRequest req(qurl);
     QNetworkReply* reply = mpNam->get(req);
-    connect(reply, &QNetworkReply::finished, [this,reply](){
+    connect(reply, &QNetworkReply::finished, this, [this,reply](){
         onFinished(reply);
     });
+    connect(this, &UBEmbedParser::cancelled, reply, &QNetworkReply::abort);
 }
 
-void UBEmbedParser::onFinished(QNetworkReply *reply)
+
+void UBEmbedParser::onFinished(QNetworkReply* reply)
 {
     if (QNetworkReply::NoError == reply->error())
     {
-        QString receivedDatas = reply->readAll().constData();
-        qDebug() << "Received oEmbed" << receivedDatas;
+        QString receivedData = reply->readAll().constData();
+        qDebug() << "Received oEmbed" << receivedData;
         UBEmbedContent crntContent;
-        // The received datas can be in two different formats: JSON or XML
+
+        // The received data can be in two different formats: JSON or XML
         QString contentType = reply->header(QNetworkRequest::ContentTypeHeader).toString();
 
         if (contentType.contains("xml"))
         {
             // XML !
-            crntContent = getXMLInfos(receivedDatas);
+            crntContent = getXMLInfo(receivedData);
         }
         else if (contentType.contains("json"))
         {
             // JSON !
-            crntContent = getJSONInfos(receivedDatas);
+            crntContent = getJSONInfo(receivedData);
         }
 
         //  As we don't want duplicates, we have to check if the content title has already
         //  been parsed.
-        if ("" != crntContent.mTitle && !mParsedTitles.contains(crntContent.mTitle))
+        if (!crntContent.mTitle.isEmpty() && !mParsedTitles.contains(crntContent.mTitle))
         {
             qDebug() << "Found" << crntContent.mTitle;
             mParsedTitles << crntContent.mTitle;
             mContents << crntContent;
         }
-
     }
     else
     {
@@ -239,21 +232,18 @@ void UBEmbedParser::onFinished(QNetworkReply *reply)
     mPending--;
     qDebug() << "Remaining pending" << mPending;
 
-    if (0 == mPending)
+    if (mParsing && !mPending)
     {
         //  All the oembed contents have been parsed. We notify it!
-        emit parseResult(mView, hasEmbeddedContent());
+        emit parseResult(hasEmbeddedContent());
         mParsing = false;
     }
 
     reply->deleteLater();
 }
 
-/**
-  /brief Extract the oembed infos from the JSON
-  @param jsonUrl as the url of the JSON file
-  */
-UBEmbedContent UBEmbedParser::getJSONInfos(const QString &json) const
+
+UBEmbedContent UBEmbedParser::getJSONInfo(const QString& json) const
 {
     UBEmbedContent content;
 
@@ -284,11 +274,8 @@ UBEmbedContent UBEmbedParser::getJSONInfos(const QString &json) const
     return content;
 }
 
-/**
-  /brief Extract the oembed infos from the XML
-  @param xmlUrl as the url of the XML file
-  */
-UBEmbedContent UBEmbedParser::getXMLInfos(const QString &xml) const
+
+UBEmbedContent UBEmbedParser::getXMLInfo(const QString& xml) const
 {
     UBEmbedContent content;
 
@@ -368,7 +355,8 @@ UBEmbedContent UBEmbedParser::getXMLInfos(const QString &xml) const
     return content;
 }
 
-UBEmbedContent UBEmbedParser::createIframeContent(const QString &html) const
+
+UBEmbedContent UBEmbedParser::createIframeContent(const QString& html) const
 {
     qDebug() << "Found iframe" << html;
     UBEmbedContent content;

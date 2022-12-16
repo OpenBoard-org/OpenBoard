@@ -27,8 +27,7 @@
 
 
 
-#ifndef UBOEMBEDPARSER_H
-#define UBOEMBEDPARSER_H
+#pragma once
 
 #include <QList>
 #include <QObject>
@@ -36,10 +35,10 @@
 
 #include "web/UBEmbedContent.h"
 
+
 // forward
 class QNetworkAccessManager;
 class QNetworkReply;
-class QWebEngineView;
 
 /**********************************************************************************
   ----------------------------------------------------------------
@@ -70,33 +69,32 @@ class UBEmbedParser : public QObject
     Q_OBJECT
 
 public:
-    explicit UBEmbedParser(QWebEngineView* parent, const char* name="UBEmbedParser");
-    ~UBEmbedParser();
+    explicit UBEmbedParser(QObject* parent = nullptr, const char* name="UBEmbedParser");
 
+    virtual ~UBEmbedParser();
     bool hasEmbeddedContent() const;
-    QList<UBEmbedContent> embeddedContent();
+    QList<UBEmbedContent> embeddedContent() const;
 
 signals:
-    void parseResult(QWebEngineView* view, bool hasEmbeddedContent);
+    void parseResult(bool hasEmbeddedContent);
+    void cancelled();
+
+public slots:
+    void parse(const QString& html);
 
 private slots:
-    void onLoadFinished();
-    void parse(const QString& html);
     void fetchOEmbed(const QString& url);
     void onFinished(QNetworkReply* reply);
 
 private:
-    UBEmbedContent getJSONInfos(const QString& json) const;
-    UBEmbedContent getXMLInfos(const QString& xml) const;
+    UBEmbedContent getJSONInfo(const QString& json) const;
+    UBEmbedContent getXMLInfo(const QString& xml) const;
     UBEmbedContent createIframeContent(const QString& html) const;
 
 private:
-    QWebEngineView* mView;
     QList<UBEmbedContent> mContents;
     QList<QString> mParsedTitles;
     QNetworkAccessManager* mpNam;
     bool mParsing;
     int mPending;
 };
-
-#endif // UBOEMBEDPARSER_H

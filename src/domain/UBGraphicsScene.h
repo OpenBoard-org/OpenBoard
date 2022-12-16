@@ -36,7 +36,6 @@
 
 #include "UBItem.h"
 #include "tools/UBGraphicsCurtainItem.h"
-#include "web/UBEmbedParser.h"
 
 class UBGraphicsPixmapItem;
 class UBGraphicsSvgItem;
