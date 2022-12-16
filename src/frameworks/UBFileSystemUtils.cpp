@@ -578,6 +578,10 @@ UBMimeType::Enum UBFileSystemUtils::mimeTypeFromString(const QString& typeString
     {
         type = UBMimeType::VectorImage;
     }
+    else if (typeString == "text/html")
+    {
+        type = UBMimeType::Html;
+    }
     else if (typeString == "application/vnd.apple-widget")
     {
         type = UBMimeType::AppleWidget;

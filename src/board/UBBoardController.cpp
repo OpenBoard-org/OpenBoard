@@ -84,6 +84,9 @@
 
 #include "core/UBSettings.h"
 
+#include "web/UBEmbedController.h"
+#include "web/UBEmbedParser.h"
+
 #include "core/memcheck.h"
 
 UBBoardController::UBBoardController(UBMainWindow* mainWindow)
@@ -94,6 +97,7 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     , mPaletteManager(0)
     , mSoftwareUpdateDialog(0)
     , mMessageWindow(0)
+    , mEmbedController(nullptr)
     , mControlView(0)
     , mDisplayView(0)
     , mControlContainer(0)
@@ -1477,6 +1481,31 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         {
             showMessage(tr("Unknown tool type %1").arg(sourceUrl.toString()));
         }
+    }
+    else if (UBMimeType::Html == itemMimeType)
+    {
+        if (!mEmbedController)
+        {
+            mEmbedController = new UBEmbedController(mControlView);
+        }
+
+        static const QRegularExpression matchTitle("<title>([^<]*)</title>");
+
+        QRegularExpressionMatch match = matchTitle.match(pData);
+        QString title = match.hasMatch() ? match.captured(1) : tr("Untitled");
+
+        mEmbedController->pageTitleChanged(title);
+        mEmbedController->pageUrlChanged(sourceUrl);
+        mEmbedController->showEmbedDialog();
+
+        UBEmbedParser* parser = new UBEmbedParser(this);
+        connect(parser, &UBEmbedParser::parseResult, this, [this,parser](bool hasEmbeddedContent){
+            QList<UBEmbedContent> list = parser->embeddedContent();
+            mEmbedController->updateListOfEmbeddableContent(list);
+            parser->deleteLater();
+        });
+
+        parser->parse(pData);
     }
     else
     {
