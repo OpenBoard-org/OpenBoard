@@ -45,21 +45,74 @@ namespace Ui
 }
 
 
+/**
+ * @brief The UBEmbedController class provides means to present embeddable content to the
+ * user and to create web widgets from selected content.
+ *
+ * @sa UBEmbedParser, UBEmbedContent
+ */
 class UBEmbedController : public QObject
 {
     Q_OBJECT
 
 public:
+    /**
+     * @brief Constructs a UBEmbedController object which is a child of the given parent widget.
+     * @param parent Parent widget. Used to position and size the embed dialog so that it
+     * appears on top of that widget.
+     */
     UBEmbedController(QWidget* parent = nullptr);
+
+    /**
+     * @brief Destroys the UBEmbedController object.
+     */
     virtual ~UBEmbedController();
 
+    /**
+     * @brief Update the list of embeddable content shown in the embed dialog.
+     *
+     * In addition to the entries of the list provided by this call, the dialog always
+     * contains a first entry offering to embed the complete web page.
+     *
+     * This function may be called multiple times to update the list.
+     *
+     * @param pAllContent List of embeddable content descriptions.
+     */
     void updateListOfEmbeddableContent(const QList<UBEmbedContent>& pAllContent);
 
 public slots:
+    /**
+     * @brief Show the dialog allowing to select embeddable content.
+     *
+     * Before calling this function, the URL and title of the page should be set by
+     * pageUrlChanged and pageTitleChanged.
+     */
     void showEmbedDialog();
+
+    /**
+     * @brief Hide the dialog allowing to select embeddable content.
+     */
     void hideEmbedDialog() const;
 
+    /**
+     * @brief Update the URL of the web page containing the embeddable content.
+     *
+     * This slot must be called before the UBEmbedController can create a web widget
+     * embedding the complete web page.
+     *
+     * @param url URL of web page.
+     */
     void pageUrlChanged(const QUrl& url);
+
+    /**
+     * @brief Update the title of the web page containing the embeddable content.
+     *
+     * This slot should be called before the UBEmbedController can create a web widget
+     * embedding the complete web page. This information is used to propose a name for
+     * the web widget.
+     *
+     * @param title Title of web page.
+     */
     void pageTitleChanged(const QString& title);
 
 private slots:
