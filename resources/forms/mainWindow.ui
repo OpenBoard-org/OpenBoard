@@ -157,6 +157,7 @@
    <addaction name="actionExport"/>
    <addaction name="actionRename"/>
    <addaction name="separator"/>
+   <addaction name="actionAddDocumentToFavorites"/>
    <addaction name="actionDuplicate"/>
    <addaction name="actionDelete"/>
    <addaction name="separator"/>
@@ -1688,6 +1689,22 @@
    </property>
    <property name="toolTip">
     <string>Draw intermediate grid lines</string>
+   </property>
+  </action>
+  <action name="actionAddDocumentToFavorites">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/addToFavorites.png</normaloff>
+     <normalon>:/images/removeFromFavorites.png</normalon>:/images/addToFavorites.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add to Favorites</string>
+   </property>
+   <property name="toolTip">
+    <string>Add Document to favorites</string>
    </property>
   </action>
  </widget>

@@ -112,6 +112,7 @@ enum UBFeatureElementType
     FEATURE_TRASH,
     FEATURE_FAVORITE,
     FEATURE_SEARCH,
+    FEATURE_DOCUMENT,
     FEATURE_INVALID
 };
 
@@ -196,7 +197,7 @@ public:
     void deleteItem(const UBFeature &pFeature);
     bool isTrash( const QUrl &url );
     void moveToTrash(UBFeature feature, bool deleteManualy = false);
-    void addToFavorite( const QUrl &path );
+    void addToFavorite(const QUrl &path , const QString &name = QString());
     void removeFromFavorite(const QUrl &path, bool deleteManualy = false);
     void importImage(const QImage &image, const QString &fileName = QString());
     void importImage( const QImage &image, const UBFeature &destination, const QString &fileName = QString() );
@@ -216,6 +217,8 @@ public:
 
     void assignFeaturesListView(UBFeaturesListView *pList);
     void assignPathListView(UBFeaturesListView *pList);
+
+    bool isInFavoriteList(QUrl url);
 
 public:
     static const QString rootPath;

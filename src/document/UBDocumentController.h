@@ -244,6 +244,8 @@ public:
     static bool nodeLessThan(const UBDocumentTreeNode *firstIndex, const UBDocumentTreeNode *secondIndex);
     void setHighLighted(const QModelIndex &newHighLighted) {mHighLighted = newHighLighted;}
     QModelIndex highLighted() {return mHighLighted;}
+    UBDocumentProxy *findDocumentByPath(QString path) const;
+    UBDocumentProxy *findDocumentByPath(UBDocumentTreeNode* node, QString path) const;
 
     //N/C - NNE - 20140407
     bool ascendingOrder() const{ return mAscendingOrder; }
@@ -262,6 +264,7 @@ signals:
 
 private:
     UBDocumentTreeNode *mRootNode;
+    UBDocumentTreeNode *mMyDocumentsNode;
     UBDocumentTreeNode *mCurrentNode;
 
     UBDocumentTreeNode *findProxy(UBDocumentProxy *pSearch, UBDocumentTreeNode *pParent) const;
@@ -573,6 +576,7 @@ protected:
 
         void thumbnailPageDoubleClicked(QGraphicsItem* item, int index);
         void pageClicked(QGraphicsItem* item, int index);
+        void toggleAddDocumentToFavorites();
         void addToDocument();
 
         void addFolderOfImages();

@@ -53,6 +53,7 @@ struct UBMimeType
         PDF,
         OpenboardTool,
         Group,
+        Document,
         UNKNOWN
     };
 };

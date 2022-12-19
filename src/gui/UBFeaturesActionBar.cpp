@@ -37,20 +37,20 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     , mButtonGroup(NULL)
     , mSearchBar(NULL)
     , mLayout(NULL)
-    , mpFavoriteAction(NULL)
+    , mpAddToFavoritesAction(NULL)
+    , mpRemoveFromFavoritesAction(NULL)
     , mpSocialAction(NULL)
     , mpRescanModelAction(NULL)
     , mpDeleteAction(NULL)
     , mpSearchAction(NULL)
     , mpCloseAction(NULL)
-    , mpRemoveFavorite(NULL)
     , mpNewFolderAction(NULL)
-    , mpFavoriteBtn(NULL)
+    , mpAddToFavoritesBtn(NULL)
+    , mpRemoveFromFavoritesBtn(NULL)
     , mpSocialBtn(NULL)
     , mpRescanModelBtn(NULL)
     , mpDeleteBtn(NULL)
     , mpCloseBtn(NULL)
-    , mpRemoveFavoriteBtn(NULL)
     , mpNewFolderBtn(NULL)
 {
     setObjectName(name);
@@ -68,17 +68,19 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     setMaximumHeight(ACTIONBAR_HEIGHT);
 
     // Create the actions
-    mpFavoriteAction = new QAction(QIcon(":/images/libpalette/miniFavorite.png"), tr("Add to favorites"), this);
+    mpAddToFavoritesAction = new QAction(QPixmap(":/images/addToFavorites.png"), tr("Add to favorites"), this);
+    mpRemoveFromFavoritesAction = new QAction(QPixmap(":/images/removeFromFavorites.png"), tr("Remove from favorites"), this);
     mpSocialAction = new QAction(QIcon(":/images/libpalette/social.png"), tr("Share"), this);
     mpSearchAction = new QAction(QIcon(":/images/libpalette/miniSearch.png"), tr("Search"), this);
     mpRescanModelAction = new QAction(QIcon(":/images/cursors/rotate.png"), tr("Rescan file system"), this);
     mpDeleteAction = new QAction(QIcon(":/images/libpalette/miniTrash.png"), tr("Delete"), this);
     mpCloseAction = new QAction(QIcon(":/images/close.svg"), tr("Back to folder"), this);
-    mpRemoveFavorite = new QAction(QIcon(":/images/libpalette/trash_favorite.svg"), tr("Remove from favorites"), this);
     mpNewFolderAction = new QAction(QIcon(":/images/libpalette/miniNewFolder.png"), tr("Create new folder"), this);
 
     // Create the buttons
-    mpFavoriteBtn = new UBActionButton(this, mpFavoriteAction);
+    mpAddToFavoritesBtn = new UBActionButton(this, mpAddToFavoritesAction);
+    mpRemoveFromFavoritesBtn = new UBActionButton(this, mpRemoveFromFavoritesAction);
+
     mpSocialBtn = new UBActionButton(this, mpSocialAction);
 
     //mpSearchBtn = new UBActionButton(this, mpSearchAction);
@@ -87,7 +89,6 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
 
     mpDeleteBtn = new UBActionButton(this, mpDeleteAction);
     mpCloseBtn = new UBActionButton(this, mpCloseAction);
-    mpRemoveFavoriteBtn = new UBActionButton(this, mpRemoveFavorite);
     mpNewFolderBtn = new UBActionButton(this, mpNewFolderAction);
 
     // Initialize the buttons
@@ -95,33 +96,26 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     mpNewFolderBtn->setEnabled(false);
 
     // Add the buttons to the button group
-    mButtonGroup->addButton(mpFavoriteBtn);
+    mButtonGroup->addButton(mpAddToFavoritesBtn);
+    mButtonGroup->addButton(mpRemoveFromFavoritesBtn);
     mButtonGroup->addButton(mpSocialBtn);
     //mButtonGroup->addButton(mpSearchBtn);
     mButtonGroup->addButton(mpDeleteBtn);
     mButtonGroup->addButton(mpCloseBtn);
-    mButtonGroup->addButton(mpRemoveFavoriteBtn);
     mButtonGroup->addButton(mpNewFolderBtn);
-    // Connect signals & slots
-    /*connect(mpFavoriteAction,SIGNAL(triggered()), this, SLOT(onActionFavorite()));
-    connect(mpSocialAction,SIGNAL(triggered()), this, SLOT(onActionSocial()));
-    connect(mpSearchAction,SIGNAL(triggered()), this, SLOT(onActionSearch()));
-    connect(mpDeleteAction,SIGNAL(triggered()), this, SLOT(onActionTrash()));
-    connect(mpCloseAction, SIGNAL(triggered()), this, SLOT(onActionClose()));
-    connect(mpRemoveFavorite, SIGNAL(triggered()), this, SLOT(onActionRemoveFavorite()));
-    connect(mSearchBar, SIGNAL(textChanged(QString)), this, SLOT(onSearchTextChanged(QString)));
-    connect(mpNewFolderAction, SIGNAL(triggered()), this, SLOT(onActionNewFolder()));*/
 
-    connect(mpFavoriteAction,SIGNAL(triggered()), this, SLOT(onActionFavorite()));
+    // Connect signals & slots
+    connect(mpAddToFavoritesAction,SIGNAL(triggered()), this, SLOT(onActionAddToFavorites()));
+    connect(mpRemoveFromFavoritesAction,SIGNAL(triggered()), this, SLOT(onActionRemoveFromFavorites()));
     connect(mSearchBar, SIGNAL(textChanged(QString)), this, SLOT(onSearchTextChanged(QString)));
     connect(mpNewFolderAction, SIGNAL(triggered()), this, SLOT(onActionNewFolder()));
-    connect(mpRemoveFavorite, SIGNAL(triggered()), this, SLOT(onActionRemoveFavorite()));
     connect(mpRescanModelAction, SIGNAL(triggered()), this , SLOT(onActionRescanModel()));
     connect(mpDeleteAction,SIGNAL(triggered()), this, SLOT(onActionTrash()));
 
 
     // Build the default toolbar
-    mLayout->addWidget(mpFavoriteBtn);
+    mLayout->addWidget(mpAddToFavoritesBtn);
+    mLayout->addWidget(mpRemoveFromFavoritesBtn);
     mLayout->addWidget(mpSocialBtn);
     mLayout->addWidget(mpNewFolderBtn);
     mLayout->addWidget(mSearchBar);
@@ -129,7 +123,6 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     mLayout->addWidget(mpRescanModelBtn);
     mLayout->addWidget(mpDeleteBtn);
     mLayout->addWidget(mpCloseBtn);
-    mLayout->addWidget(mpRemoveFavoriteBtn);
     setCurrentState( IN_ROOT );
     mpDeleteBtn->setAcceptDrops(true);
     setAcceptDrops( true );
@@ -141,68 +134,73 @@ void UBFeaturesActionBar::setCurrentState( UBFeaturesActionBarState state )
     setButtons();
 }
 
+void UBFeaturesActionBar::updateButtons(UBFeature feature)
+{
+    if (!feature.isFolder())
+    {
+        if (featuresController->isInFavoriteList(feature.getFullPath()))
+        {
+            mpRemoveFromFavoritesBtn->show();
+            mpAddToFavoritesBtn->hide();
+        }
+        else
+        {
+            mpAddToFavoritesBtn->show();
+            mpRemoveFromFavoritesBtn->hide();
+        }
+    }
+    else
+    {
+        mpAddToFavoritesBtn->hide();
+        mpRemoveFromFavoritesBtn->hide();
+    }
+}
+
 void UBFeaturesActionBar::setButtons()
 {
     switch( currentState )
     {
     case IN_FOLDER:
-        mpFavoriteBtn->show();
         mpSocialBtn->hide();
         mSearchBar->show();
         mpDeleteBtn->show();
         mpCloseBtn->hide();
-        mpRemoveFavoriteBtn->hide();
         mpNewFolderBtn->show();
         mpNewFolderBtn->setEnabled(true);
         mpDeleteBtn->setEnabled(true);
-//        mpRescanModelBtn->show();
         break;
     case IN_ROOT:
-        mpFavoriteBtn->show();
+        mpAddToFavoritesBtn->hide();
+        mpRemoveFromFavoritesBtn->hide();
         mpSocialBtn->hide();
         mSearchBar->show();
         mpDeleteBtn->show();
         mpCloseBtn->hide();
-        mpRemoveFavoriteBtn->hide();
         mpNewFolderBtn->show();
         mpNewFolderBtn->setEnabled(false);
         mpDeleteBtn->setEnabled(false);
-//        mpRescanModelBtn->show();
         break;
     case IN_PROPERTIES:
-        mpFavoriteBtn->show();
         mpSocialBtn->hide();
         mSearchBar->show();
-        //mpSearchBtn->show();
         mpDeleteBtn->hide();
         mpCloseBtn->hide();
-        mpRemoveFavoriteBtn->hide();
         mpNewFolderBtn->hide();
-//        mpRescanModelBtn->hide();
         break;
     case IN_FAVORITE:
-        mpFavoriteBtn->hide();
         mpSocialBtn->hide();
         mSearchBar->show();
-        //mpSearchBtn->show();
         mpDeleteBtn->hide();
         mpCloseBtn->hide();
-        mpRemoveFavoriteBtn->show();
         mpNewFolderBtn->hide();
-//        mpRescanModelBtn->hide();
         break;
     case IN_TRASH:
-        mpFavoriteBtn->hide();
         mpSocialBtn->hide();
         mSearchBar->show();
         mpDeleteBtn->show();
         mpDeleteBtn->setEnabled(true);
-        //mpSearchBtn->show();
-        //mpDeleteBtn->hide();
         mpCloseBtn->hide();
-        //mpRemoveFavoriteBtn->show();
         mpNewFolderBtn->hide();
-//        mpRescanModelBtn->hide();
         break;
     default:
         break;
@@ -220,14 +218,20 @@ void UBFeaturesActionBar::onActionNewFolder()
     emit newFolderToCreate();
 }
 
-void UBFeaturesActionBar::onActionFavorite()
+void UBFeaturesActionBar::onActionAddToFavorites()
 {
     emit addElementsToFavorite();
+
+    mpAddToFavoritesBtn->hide();
+    mpRemoveFromFavoritesBtn->show();
 }
 
-void UBFeaturesActionBar::onActionRemoveFavorite()
+void UBFeaturesActionBar::onActionRemoveFromFavorites()
 {
     emit removeElementsFromFavorite();
+
+    mpAddToFavoritesBtn->show();
+    mpRemoveFromFavoritesBtn->hide();
 }
 
 void UBFeaturesActionBar::onActionTrash()
@@ -284,17 +288,6 @@ void UBFeaturesActionBar::dropEvent(QDropEvent *event)
 
         emit deleteElements(fMimeData);
 
-    } else if (dest == mpFavoriteBtn) {
-        event->setDropAction( Qt::CopyAction);
-        event->accept();
-
-        emit addToFavorite(fMimeData);
-
-    } else if (dest == mpRemoveFavoriteBtn) {
-        event->setDropAction( Qt::MoveAction );
-        event->accept();
-
-        emit removeFromFavorite(fMimeData);
     }
 }
 

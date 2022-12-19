@@ -1345,7 +1345,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
         return audioMediaItem;
     }
-
     else if (UBMimeType::Flash == itemMimeType)
     {
 
@@ -1476,6 +1475,21 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         else
         {
             showMessage(tr("Unknown tool type %1").arg(sourceUrl.toString()));
+        }
+    }
+    else if (UBMimeType::Document == itemMimeType)
+    {
+        QString documentPath = sourceUrl.adjusted(QUrl::RemoveFilename).toString().replace("file://", "").chopped(1);
+
+        UBDocumentProxy* document = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->findDocumentByPath(documentPath);
+
+        if (document)
+        {
+            setActiveDocumentScene(document);
+        }
+        else
+        {
+            showMessage(tr("Could not find document."));
         }
     }
     else
