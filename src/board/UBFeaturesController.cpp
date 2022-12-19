@@ -33,6 +33,7 @@
 
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
+#include "document/UBDocumentController.h"
 #include "UBFeaturesController.h"
 #include "core/UBSettings.h"
 #include "tools/UBToolsManager.h"
@@ -40,6 +41,7 @@
 #include "frameworks/UBPlatformUtils.h"
 
 #include "core/UBDownloadManager.h"
+#include "core/UBPersistenceManager.h"
 #include "domain/UBGraphicsScene.h"
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
@@ -437,7 +439,33 @@ void UBFeaturesController::scanFS()
             featuresList->append(UBFeature(favoritePath + "/" + tool.label, tool.icon.toImage(), tool.label, QUrl(tool.id), FEATURE_INTERNAL));
         }
     }
+
+
+    QSet<QUrl> favoriteDocumentsToRemove;
+    for (auto&& favoriteElement : qAsConst(*favoriteSet))
+    {
+        if (favoriteElement.fileName().endsWith(".rdf"))
+        {
+            QString documentPath = favoriteElement.adjusted(QUrl::RemoveFilename).toString().replace("file://", "").chopped(1);
+            UBDocumentProxy* document = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->findDocumentByPath(documentPath);
+
+            if (document)
+            {
+                featuresList->append(UBFeature(favoritePath + "/" + document->name(), QImage(":images/openboard-document.png"), document->name(), favoriteElement, FEATURE_DOCUMENT));
+            }
+            else
+            {
+                favoriteDocumentsToRemove.insert(favoriteElement);
+            }
+        }
+    }
+
+    for (auto&& favoriteDocumentToRemove : qAsConst(favoriteDocumentsToRemove))
+    {
+        removeFromFavorite(favoriteDocumentToRemove);
+    }
 }
+
 void UBFeaturesController::fileSystemScan(const QUrl & currentPath, const QString & currVirtualPath)
 {
     QFileInfoList fileInfoList = UBFileSystemUtils::allElementsInDirectory(currentPath.toLocalFile());
@@ -490,6 +518,11 @@ int UBFeaturesController::featuresCount(const QUrl &currPath)
     }
 
     return noItems;
+}
+
+bool UBFeaturesController::isInFavoriteList(QUrl url)
+{
+    return favoriteSet->contains(url);
 }
 
 void UBFeaturesController::loadFavoriteList()
@@ -590,7 +623,7 @@ QString UBFeaturesController::adjustName(const QString &str)
     return resultStr.replace(invalidSymbols, "_");
 }
 
-void UBFeaturesController::addToFavorite( const QUrl &path )
+void UBFeaturesController::addToFavorite( const QUrl &path, const QString &name )
 {
     QString filePath = fileNameFromUrl( path );
     if ( favoriteSet->find( path ) == favoriteSet->end() )
@@ -598,12 +631,22 @@ void UBFeaturesController::addToFavorite( const QUrl &path )
         QFileInfo fileInfo( filePath );
         QString fileName = fileInfo.fileName();
         UBFeatureElementType type = fileTypeFromUrl(filePath);
-        UBFeature elem(favoritePath + "/" + fileName, getIcon(filePath, type), fileName, path, fileTypeFromUrl(filePath) );
+        UBFeature elem;
+        if (name.isEmpty())
+        {
+            elem = UBFeature(favoritePath + "/" + fileName, getIcon(filePath, type), fileName, path, fileTypeFromUrl(filePath) );
+        }
+        else
+        {
+            elem = UBFeature(favoritePath + "/" + name, getIcon(filePath, type), name, path, fileTypeFromUrl(filePath) );
+        }
         favoriteSet->insert( path );
         saveFavoriteList();
 
         if ( !elem.getVirtualPath().isEmpty() && !elem.getVirtualPath().isNull())
-        featuresModel->addItem( elem );
+        {
+            featuresModel->addItem( elem );
+        }
     }
 }
 
@@ -644,12 +687,22 @@ UBFeatureElementType UBFeaturesController::fileTypeFromUrl(const QString &path)
     QString fileName = fileInfo.fileName();
     QString mimeString = UBFileSystemUtils::mimeTypeFromFileName(fileName);
 
-    if ( mimeString.contains("application")) {
-        if (mimeString.contains("application/search")) {
+    if ( mimeString.contains("application"))
+    {
+        if (mimeString.contains("application/search"))
+        {
             fileType = FEATURE_SEARCH;
-        } else if (mimeString.contains("application/x-shockwave-flash")) {
+        }
+        else if (mimeString.contains("application/x-shockwave-flash"))
+        {
             fileType = FEATURE_FLASH;
-        } else {
+        }
+        else if (mimeString.contains("application/openboard-document"))
+        {
+            fileType = FEATURE_DOCUMENT;
+        }
+        else
+        {
             fileType = FEATURE_INTERACTIVE;
         }
     } else if (mimeString.contains("audio")) {
@@ -671,6 +724,8 @@ QImage UBFeaturesController::getIcon(const QString &path, UBFeatureElementType p
 {
     if (pFType == FEATURE_FOLDER) {
         return QImage(":images/libpalette/folder.svg");
+    } else if (pFType == FEATURE_DOCUMENT) {
+        return QImage(":images/openboard-document.png");
     } else if (pFType == FEATURE_INTERACTIVE || pFType == FEATURE_SEARCH) {
         return QImage(UBGraphicsWidgetItem::iconFilePath(QUrl::fromLocalFile(path)));
     } else if (pFType == FEATURE_INTERNAL) {

@@ -483,6 +483,7 @@ QString UBFileSystemUtils::mimeTypeFromFileName(const QString& fileName)
     // Apple widget
     if (ext == "wdgt") return "application/vnd.apple-widget"; //mime type invented by us :-( // NOTE @letsfindaway obsolete
     if (ext == "swf") return "application/x-shockwave-flash";
+    if (ext == "rdf") return "application/openboard-document";
 
     return "";
 
@@ -614,6 +615,10 @@ UBMimeType::Enum UBFileSystemUtils::mimeTypeFromString(const QString& typeString
     else if (typeString.startsWith("application/openboard-tool"))
     {
         type = UBMimeType::OpenboardTool;
+    }
+    else if (typeString == "application/openboard-document")
+    {
+        type = UBMimeType::Document;
     }
     return type;
 

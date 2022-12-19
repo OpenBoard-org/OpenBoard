@@ -64,6 +64,8 @@
 #include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPixmapItem.h"
 
+#include "board/UBFeaturesController.h"
+
 #include "document/UBDocumentProxy.h"
 
 #include "ui_documents.h"
@@ -400,8 +402,8 @@ UBDocumentTreeModel::UBDocumentTreeModel(QObject *parent) :
 
     QString trashName = UBSettings::trashedDocumentGroupNamePrefix;
 
-    UBDocumentTreeNode *myDocsNode = new UBDocumentTreeNode(UBDocumentTreeNode::Catalog, UBPersistenceManager::myDocumentsName, tr("My documents"));
-    rootNode->addChild(myDocsNode);
+    mMyDocumentsNode = new UBDocumentTreeNode(UBDocumentTreeNode::Catalog, UBPersistenceManager::myDocumentsName, tr("My documents"));
+    rootNode->addChild(mMyDocumentsNode);
     //UBDocumentTreeNode *modelsNode = new UBDocumentTreeNode(UBDocumentTreeNode::Catalog, UBPersistenceManager::modelsName, tr("Models"));
     //rootNode->addChild(modelsNode);
     UBDocumentTreeNode *trashNode = new UBDocumentTreeNode(UBDocumentTreeNode::Catalog, trashName, tr("Trash"));
@@ -858,6 +860,60 @@ QModelIndex UBDocumentTreeModel::indexForNode(UBDocumentTreeNode *pNode) const
 QPersistentModelIndex UBDocumentTreeModel::persistentIndexForNode(UBDocumentTreeNode *pNode)
 {
     return QPersistentModelIndex(indexForNode(pNode));
+}
+
+UBDocumentProxy *UBDocumentTreeModel::findDocumentByPath(QString fullPath) const
+{
+    const auto children = mMyDocumentsNode->children();
+    for(auto&& child: children)
+    {
+        if (UBDocumentTreeNode::Catalog != child->nodeType())
+        {
+            UBDocumentProxy* proxy = child->proxyData();
+            if (proxy)
+            {
+                if (proxy->persistencePath() == fullPath)
+                {
+                    return proxy;
+                }
+            }
+        }
+        else if (child->children().count())
+        {
+            UBDocumentProxy* recursiveDescendResult = findDocumentByPath(child, fullPath);
+            if (recursiveDescendResult)
+                return recursiveDescendResult;
+        }
+    }
+
+    return nullptr;
+}
+
+UBDocumentProxy *UBDocumentTreeModel::findDocumentByPath(UBDocumentTreeNode* node, QString fullPath) const
+{
+    const auto children = node->children();
+    for(auto&& child: children)
+    {
+        if (UBDocumentTreeNode::Catalog != child->nodeType())
+        {
+            UBDocumentProxy* proxy = child->proxyData();
+            if (proxy)
+            {
+                if (proxy->persistencePath() == fullPath)
+                {
+                    return child->proxyData();
+                }
+            }
+        }
+        else if (child->children().count())
+        {
+            UBDocumentProxy *recursiveDescendResult = findDocumentByPath(child, fullPath);
+            if (recursiveDescendResult)
+                return recursiveDescendResult;
+        }
+    }
+
+    return nullptr;
 }
 
 UBDocumentTreeNode *UBDocumentTreeModel::findProxy(UBDocumentProxy *pSearch, UBDocumentTreeNode *pParent) const
@@ -2182,6 +2238,7 @@ void UBDocumentController::setupViews()
 
         connect(mMainWindow->actionDelete, SIGNAL(triggered()), this, SLOT(deleteSelectedItem()));
         connect(mMainWindow->actionDuplicate, SIGNAL(triggered()), this, SLOT(duplicateSelectedItem()));
+        connect(mMainWindow->actionAddDocumentToFavorites, SIGNAL(triggered()), this, SLOT(toggleAddDocumentToFavorites()));
         connect(mMainWindow->actionRename, SIGNAL(triggered()), this, SLOT(renameSelectedItem()));
         connect(mMainWindow->actionAddToWorkingDocument, SIGNAL(triggered()), this, SLOT(addToDocument()));
 
@@ -3319,6 +3376,22 @@ void UBDocumentController::pageClicked(QGraphicsItem* item, int index)
 }
 
 
+void UBDocumentController::toggleAddDocumentToFavorites()
+{
+    UBFeaturesController* featuresController = UBApplication::boardController->paletteManager()->featuresWidget()->getFeaturesController();
+
+    QUrl url = QUrl::fromLocalFile(selectedDocument()->persistencePath() + "/metadata.rdf");
+
+    if (!featuresController->isInFavoriteList(url))
+    {
+        featuresController->addToFavorite(url, selectedDocument()->name());
+    }
+    else
+    {
+        featuresController->removeFromFavorite(url, true);
+    }
+}
+
 void UBDocumentController::addToDocument()
 {
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -3602,6 +3675,19 @@ void UBDocumentController::updateActions()
     mMainWindow->actionNewFolder->setEnabled(docModel->newNodeAllowed(selectedIndex));
     mMainWindow->actionExport->setEnabled((docSelected || pageSelected || groupSelected) && !trashSelected);
     updateExportSubActions(selectedIndex);
+
+    mMainWindow->actionAddDocumentToFavorites->setEnabled((docSelected || pageSelected) && !trashSelected);
+    if (selectedProxy)
+    {
+        UBFeaturesController* featuresController = UBApplication::boardController->paletteManager()->featuresWidget()->getFeaturesController();
+        QUrl url = QUrl::fromLocalFile(selectedProxy->persistencePath() + "/metadata.rdf");
+        mMainWindow->actionAddDocumentToFavorites->setChecked(featuresController->isInFavoriteList(url));
+    }
+    else
+    {
+        mMainWindow->actionAddDocumentToFavorites->setChecked(false);
+    }
+
 
     bool firstSceneSelected = false;
     bool everyPageSelected = false;

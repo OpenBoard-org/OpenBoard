@@ -75,13 +75,14 @@ public:
     
     void setCurrentState( UBFeaturesActionBarState state );
     void cleanText(){ mSearchBar->clear(); }
+    void updateButtons(UBFeature feature);
 
 signals:
     void searchElement(const QString &text);
     void newFolderToCreate();
     void deleteElements(const UBFeaturesMimeData *data);
-    void addToFavorite(const UBFeaturesMimeData *data);
-    void removeFromFavorite(const UBFeaturesMimeData *data);
+    void addToFavorites(const UBFeaturesMimeData *data);
+    void removeFromFavorites(const UBFeaturesMimeData *data);
     void addElementsToFavorite();
     void removeElementsFromFavorite();
     void deleteSelectedElements();
@@ -90,8 +91,8 @@ signals:
 private slots:
     void onSearchTextChanged(QString txt);
     void onActionNewFolder();
-    void onActionFavorite();
-    void onActionRemoveFavorite();
+    void onActionAddToFavorites();
+    void onActionRemoveFromFavorites();
     void onActionTrash();
     void onActionRescanModel();
     void lockIt();
@@ -112,20 +113,20 @@ private:
     QButtonGroup* mButtonGroup;
     QLineEdit* mSearchBar;
     QHBoxLayout* mLayout;
-    QAction* mpFavoriteAction;
+    QAction* mpAddToFavoritesAction;
+    QAction* mpRemoveFromFavoritesAction;
     QAction* mpSocialAction;
     QAction* mpRescanModelAction;
     QAction* mpDeleteAction;
     QAction* mpSearchAction;
     QAction* mpCloseAction;
-    QAction* mpRemoveFavorite;
     QAction* mpNewFolderAction;
-    UBActionButton* mpFavoriteBtn;
+    UBActionButton* mpAddToFavoritesBtn;
+    UBActionButton* mpRemoveFromFavoritesBtn;
     UBActionButton* mpSocialBtn;
     UBActionButton* mpRescanModelBtn;
     UBActionButton* mpDeleteBtn;
     UBActionButton* mpCloseBtn;
-    UBActionButton* mpRemoveFavoriteBtn;
     UBActionButton* mpNewFolderBtn;
 };
 

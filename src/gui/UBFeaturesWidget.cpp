@@ -89,8 +89,6 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
     connect(mActionBar, SIGNAL(newFolderToCreate()), this, SLOT(createNewFolder()));
     connect(mActionBar, SIGNAL(deleteElements(const UBFeaturesMimeData *)), this, SLOT(deleteElements(const UBFeaturesMimeData *)));
     connect(mActionBar, SIGNAL(deleteSelectedElements()), this, SLOT(deleteSelectedElements()));
-    connect(mActionBar, SIGNAL(addToFavorite(const UBFeaturesMimeData *)), this, SLOT(addToFavorite(const UBFeaturesMimeData *)));
-    connect(mActionBar, SIGNAL(removeFromFavorite(const UBFeaturesMimeData *)), this, SLOT(removeFromFavorite(const UBFeaturesMimeData *)));
     connect(mActionBar, SIGNAL(addElementsToFavorite() ), this, SLOT ( addElementsToFavorite()) );
     connect(mActionBar, SIGNAL(removeElementsFromFavorite()), this, SLOT (removeElementsFromFavorite()));
 
@@ -174,11 +172,12 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
 //        centralWidget->showElement(feature, UBFeaturesCentralWidget::FeaturesWebView);
 
     }
-
     else if (UBSettings::settings()->libraryShowDetailsForLocalItems->get().toBool() == true) {
         centralWidget->showElement(feature, UBFeaturesCentralWidget::FeaturePropertiesList);
         mActionBar->setCurrentState( IN_PROPERTIES );
     }
+
+    mActionBar->updateButtons(feature);
     mActionBar->cleanText();
 }
 
@@ -1345,9 +1344,9 @@ void UBFeaturesModel::moveData(const UBFeature &source, const UBFeature &destina
         deleteItem(source);
     }
 
-// Commented because of crashes on mac. But works fine. It is not predictable behavior. 
+// Commented because of crashes on mac. But works fine. It is not predictable behavior.
 // Please uncomment it if model will not refreshes
-//   emit dataRestructured();. 
+//   emit dataRestructured();.
 }
 
 Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
@@ -1363,7 +1362,8 @@ Qt::ItemFlags UBFeaturesModel::flags( const QModelIndex &index ) const
              || item.getType() == FEATURE_IMAGE
              || item.getType() == FEATURE_FLASH
              || item.getType() == FEATURE_INTERNAL
-             || item.getType() == FEATURE_FOLDER)
+             || item.getType() == FEATURE_FOLDER
+             || item.getType() == FEATURE_DOCUMENT)
 
             resultFlags |= Qt::ItemIsDragEnabled;
 

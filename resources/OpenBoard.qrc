@@ -388,5 +388,8 @@
         <file>webbrowser/go-bottom.png</file>
         <file>webbrowser/edit-clear.png</file>
         <file>webbrowser/process-stop.png</file>
+        <file>images/openboard-document.png</file>
+        <file>images/addToFavorites.png</file>
+        <file>images/removeFromFavorites.png</file>
     </qresource>
 </RCC>

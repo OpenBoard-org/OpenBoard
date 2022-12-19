@@ -54,6 +54,7 @@ struct UBMimeType
         OpenboardTool,
         Group,
         Html,
+        Document,
         UNKNOWN
     };
 };
