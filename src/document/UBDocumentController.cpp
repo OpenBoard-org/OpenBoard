@@ -1483,7 +1483,12 @@ void UBDocumentTreeView::dragMoveEvent(QDragMoveEvent *event)
         index = selectedIndexes().first();
     }
 
-    bool acceptIt = isAcceptable(index, indexAt(event->pos()));
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QPoint eventPos = event->position().toPoint();
+#else
+    QPoint eventPos = event->pos();
+#endif
+    bool acceptIt = isAcceptable(index, indexAt(eventPos));
 
     if (event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardPage)) {
         UBSortFilterProxyModel *proxy = dynamic_cast<UBSortFilterProxyModel*>(model());
@@ -1496,7 +1501,7 @@ void UBDocumentTreeView::dragMoveEvent(QDragMoveEvent *event)
             docModel =  dynamic_cast<UBDocumentTreeModel*>(model());
         }
 
-        QModelIndex targetIndex = mapIndexToSource(indexAt(event->pos()));
+        QModelIndex targetIndex = mapIndexToSource(indexAt(eventPos));
 
         if (!docModel || !docModel->isDocument(targetIndex) || docModel->inTrash(targetIndex)) {
             event->ignore();
@@ -1507,7 +1512,7 @@ void UBDocumentTreeView::dragMoveEvent(QDragMoveEvent *event)
             docModel->setHighLighted(targetIndex);
             acceptIt = true;
         }
-        updateIndexEnvirons(indexAt(event->pos()));
+        updateIndexEnvirons(indexAt(eventPos));
     }
     QTreeView::dragMoveEvent(event);
 
@@ -1526,7 +1531,12 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
         docModel = dynamic_cast<UBDocumentTreeModel*>(proxy->sourceModel());
     }
 
-    QModelIndex targetIndex = mapIndexToSource(indexAt(event->pos()));
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QPoint eventPos = event->position().toPoint();
+#else
+    QPoint eventPos = event->pos();
+#endif
+    QModelIndex targetIndex = mapIndexToSource(indexAt(eventPos));
     QModelIndexList dropIndex = mapIndexesToSource(selectionModel()->selectedRows(0));
 
     bool isUBPage = event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardPage);

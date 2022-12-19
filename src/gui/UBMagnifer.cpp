@@ -262,7 +262,12 @@ void UBMagnifier::mousePressEvent ( QMouseEvent * event )
         }
 
         mMousePressPos = event->pos();
-        mMousePressDelta = (qreal)updPointGrab.x() + (qreal)size().width() / 2 - (qreal)event->globalPos().x();
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QPointF globalPosition = event->globalPosition();
+#else
+    QPointF globalPosition = event->globalPos();
+#endif
+        mMousePressDelta = (qreal)updPointGrab.x() + (qreal)size().width() / 2 - globalPosition.x();
 
         event->accept();
 
@@ -289,7 +294,11 @@ void UBMagnifier::mouseMoveEvent ( QMouseEvent * event )
         if(mShouldResizeWidget && (event->buttons() & Qt::LeftButton))
         {
 
-            QPoint currGlobalPos = event->globalPos();
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+            QPointF currGlobalPos = event->globalPosition();
+#else
+            QPointF currGlobalPos = event->globalPos();
+#endif
             qreal cvW = mView->width();
 
             qreal newXSize = ( currGlobalPos.x() + mMousePressDelta - updPointGrab.x() ) * 2;

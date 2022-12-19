@@ -348,7 +348,11 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
 
     UBDrawingController *dc = UBDrawingController::drawingController ();
 
-    QPointF tabletPos = event->pos();
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QPointF tabletPos = event->position();
+#else
+    QPointF tabletPos = event->posF();
+#endif
     UBStylusTool::Enum currentTool = (UBStylusTool::Enum)dc->stylusTool ();
 
     if (event->type () == QEvent::TabletPress || event->type () == QEvent::TabletEnterProximity) {
@@ -785,7 +789,12 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
     if (itemShouldReceiveMousePressEvent(getMovingItem())){
         QGraphicsView::mousePressEvent (event);
 
-        QGraphicsItem* item = determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos().toPoint()), transform()));
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        QPointF eventPosition = event->position();
+#else
+        QPointF eventPosition = event->localPos();
+#endif
+        QGraphicsItem* item = determineItemToPress(scene()->itemAt(this->mapToScene(eventPosition.toPoint()), transform()));
         //use QGraphicsView::transform() to use not deprecated QGraphicsScene::itemAt() method
 
         // NOTE @letsfindaway obsolete, probably from UBThumbnailProxyWidget
@@ -1034,8 +1043,14 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
         return;
     }
 
-    mMouseDownPos = event->pos ();
-    setMovingItem(scene()->itemAt(this->mapToScene(event->localPos().toPoint()), QTransform()));
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QPointF eventPosition = event->position();
+#else
+    QPointF eventPosition = event->localPos();
+#endif
+    mMouseDownPos = eventPosition.toPoint();
+
+    setMovingItem(scene()->itemAt(this->mapToScene(eventPosition.toPoint()), QTransform()));
 
     if (event->button () == Qt::LeftButton && isInteractive())
     {
@@ -1056,7 +1071,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
 
         case UBStylusTool::Hand :
             viewport()->setCursor(QCursor (Qt::ClosedHandCursor));
-            mPreviousPoint = event->localPos();
+            mPreviousPoint = eventPosition;
             event->accept();
             break;
 
@@ -1190,7 +1205,11 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
         if (!mMouseButtonIsPressed && !mTabletStylusIsPressed) {
             break;
         }
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        QPointF eventPosition = event->position();
+#else
         QPointF eventPosition = event->localPos();
+#endif
         qreal dx = eventPosition.x () - mPreviousPoint.x ();
         qreal dy = eventPosition.y () - mPreviousPoint.y ();
         mController->handScroll (dx, dy);
@@ -1307,6 +1326,12 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
     if (scene())
         scene()->inputDeviceRelease();
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QPointF eventPosition = event->position();
+#else
+    QPointF eventPosition = event->localPos();
+#endif
+
     if (currentTool == UBStylusTool::Selector)
     {
         if (bIsDesktop) {
@@ -1319,7 +1344,7 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
             graphicsItem->Delegate()->commitUndoStep();
 
         bool bReleaseIsNeed = true;
-        if (getMovingItem() != determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos().toPoint()), QTransform())))
+        if (getMovingItem() != determineItemToPress(scene()->itemAt(this->mapToScene(eventPosition.toPoint()), QTransform())))
         {
             setMovingItem(nullptr);
             bReleaseIsNeed = false;
@@ -1390,7 +1415,7 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
     else if (currentTool == UBStylusTool::Text)
     {
         bool bReleaseIsNeed = true;
-        if (getMovingItem() != determineItemToPress(scene()->itemAt(this->mapToScene(event->localPos().toPoint()), QTransform())))
+        if (getMovingItem() != determineItemToPress(scene()->itemAt(this->mapToScene(eventPosition.toPoint()), QTransform())))
         {
             setMovingItem(NULL);
             bReleaseIsNeed = false;
@@ -1668,7 +1693,12 @@ void UBBoardView::dragMoveEvent(QDragMoveEvent *event)
 
 void UBBoardView::dropEvent (QDropEvent *event)
 {
-    QGraphicsItem *onItem = itemAt(event->pos().x(),event->pos().y());
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QPointF eventPosition = event->position();
+#else
+    QPointF eventPosition = event->pos();
+#endif
+    QGraphicsItem *onItem = itemAt(eventPosition.x(),eventPosition.y());
     if (onItem && onItem->type() == UBGraphicsWidgetItem::Type) {
         QGraphicsView::dropEvent(event);
     }
@@ -1677,7 +1707,7 @@ void UBBoardView::dropEvent (QDropEvent *event)
                 || qobject_cast<UBThumbnailWidget *>(event->source())
                 || qobject_cast<QWebEngineView*>(event->source())
                 || qobject_cast<QListView *>(event->source())) {
-            mController->processMimeData (event->mimeData (), mapToScene (event->pos ()));
+            mController->processMimeData (event->mimeData (), mapToScene (eventPosition.toPoint()));
             event->acceptProposedAction();
         }
     }

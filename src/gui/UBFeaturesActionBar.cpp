@@ -269,7 +269,12 @@ void UBFeaturesActionBar::dropEvent(QDropEvent *event)
         return;
     }
 
-    QWidget *dest = childAt(event->pos());
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QPoint eventPos = event->position().toPoint();
+#else
+    QPoint eventPos = event->pos();
+#endif
+    QWidget *dest = childAt(eventPos);
     if (dest == mpDeleteBtn) {
         QList<UBFeature> featuresList = fMimeData->features();
         foreach (UBFeature curFeature, featuresList) {

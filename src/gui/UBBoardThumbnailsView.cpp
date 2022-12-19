@@ -315,16 +315,20 @@ void UBBoardThumbnailsView::dragEnterEvent(QDragEnterEvent *event)
 
 void UBBoardThumbnailsView::dragMoveEvent(QDragMoveEvent *event)
 {        
-    QPointF position = event->pos();
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QPoint eventPos = event->position().toPoint();
+#else
+    QPoint eventPos = event->pos();
+#endif
 
     //autoscroll during drag'n'drop
-    QPointF scenePos = mapToScene(position.toPoint());
+    QPointF scenePos = mapToScene(eventPos);
     int thumbnailHeight = mThumbnailWidth / UBSettings::minScreenRatio;
     QRectF thumbnailArea(0, scenePos.y() - thumbnailHeight/2, mThumbnailWidth, thumbnailHeight);
 
     ensureVisible(thumbnailArea);
 
-    UBDraggableLivePixmapItem* item = dynamic_cast<UBDraggableLivePixmapItem*>(itemAt(position.toPoint()));
+    UBDraggableLivePixmapItem* item = dynamic_cast<UBDraggableLivePixmapItem*>(itemAt(eventPos));
     if (item)
     {
         if (item != mDropTarget)
@@ -337,7 +341,7 @@ void UBBoardThumbnailsView::dragMoveEvent(QDragMoveEvent *event)
         QPointF itemCenter(item->pos().x() + (item->boundingRect().width()-verticalScrollBarWidth) * scale,
                            item->pos().y() + item->boundingRect().height() * scale / 2);
 
-        bool dropAbove = mapToScene(position.toPoint()).y() < itemCenter.y();
+        bool dropAbove = mapToScene(eventPos).y() < itemCenter.y();
         bool movingUp = mDropSource->sceneIndex() > item->sceneIndex();
         qreal y = 0;
 

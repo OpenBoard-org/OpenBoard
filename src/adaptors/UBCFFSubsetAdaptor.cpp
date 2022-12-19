@@ -655,7 +655,11 @@ void UBCFFSubsetAdaptor::UBCFFSubsetReader::readTextCharAttr(const QDomElement &
     }
     QString fontFamilyText = element.attribute(aFontfamily);
     if (!fontFamilyText.isNull()) {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 13, 0))
+        format.setFontFamilies(QStringList(fontFamilyText));
+#else
         format.setFontFamily(fontFamilyText);
+#endif
     }
     if (!element.attribute(aFontstyle).isNull()) {
         bool italic = (element.attribute(aFontstyle) == "italic");
@@ -817,7 +821,11 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::parseSvgTextarea(const QDomElement &
      // default values
     textFormat.setFontPointSize(12);
     textFormat.setForeground(qApp->palette().windowText().color());
-    textFormat.setFontFamily("Arial");
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 13, 0))
+        textFormat.setFontFamilies(QStringList("Arial"));
+#else
+        textFormat.setFontFamily("Arial");
+#endif
     textFormat.setFontItalic(false);
     textFormat.setFontWeight(QFont::Normal);
 

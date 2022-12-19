@@ -62,8 +62,13 @@ bool UBMousePressFilter::eventFilter(QObject *obj, QEvent *event)
                 delete mPendingEvent;
             }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+            QPointF globalPosition = mouseEvent->globalPosition();
+#else
+            QPointF globalPosition = mouseEvent->globalPos();
+#endif
             mPendingEvent = new QMouseEvent(QEvent::MouseButtonDblClick,
-                mouseEvent->pos(), mouseEvent->globalPos(),
+                mouseEvent->pos(), globalPosition,
                 mouseEvent->button(), mouseEvent->buttons(),
                 mouseEvent->modifiers());
 
@@ -76,8 +81,12 @@ bool UBMousePressFilter::eventFilter(QObject *obj, QEvent *event)
     {
         if (mPendingEvent)
         {
-            QTabletEvent * tabletEvent = static_cast<QTabletEvent *>(event);
-            QPoint point = tabletEvent->globalPos() - mPendingEvent->globalPos();
+            QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+            QPointF point = mouseEvent->globalPosition() - mPendingEvent->globalPosition();
+#else
+            QPointF point = mouseEvent->globalPos() - mPendingEvent->globalPos();
+#endif
             if (isMouseRelease || point.manhattanLength() > QApplication::startDragDistance())
             {
                 delete mPendingEvent;
