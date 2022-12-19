@@ -36,15 +36,17 @@
 #include <QWebEnginePage>
 #include <QWebEngineUrlRequestInterceptor>
 
-#include "UBEmbedParser.h"
+#include "UBEmbedContent.h"
 #include "simplebrowser/downloadmanagerwidget.h"
 
 class BrowserWindow;
 class WebView;
 class QMenu;
 class QWebEngineProfile;
+class QWebEngineView;
 class UBApplication;
 class UBEmbedController;
+class UBEmbedParser;
 class UBMainWindow;
 class UBWebToolsPalette;
 class UBServerXMLHttpRequest;
@@ -65,7 +67,6 @@ private:
 class UBWebController : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(CookiePolicy)
 
     public:
         enum CookiePolicy {
@@ -73,6 +74,7 @@ class UBWebController : public QObject
             DenyThirdParty,
             AcceptAll
         };
+        Q_ENUM(CookiePolicy)
 
         UBWebController(UBMainWindow* mainWindow);
         virtual ~UBWebController();
@@ -88,7 +90,7 @@ class UBWebController : public QObject
         void show();
         QWidget* controlView() const;
         QWebEngineProfile* webProfile() const;
-        QList<UBEmbedContent> getEmbeddedContent(const QWebEngineView* view);
+        QList<UBEmbedContent> getEmbeddedContent(const QWebEngineView* view) const;
         BrowserWindow* browserWindow() const;
         QWebEnginePage::PermissionPolicy hasFeaturePermission(const QUrl &securityOrigin, QWebEnginePage::Feature feature);
         void setFeaturePermission(const QUrl &securityOrigin, QWebEnginePage::Feature feature, QWebEnginePage::PermissionPolicy policy);
@@ -118,6 +120,7 @@ class UBWebController : public QObject
     private:
         void webBrowserInstance();
         UBEmbedParser* embedParser(const QWebEngineView* view) const;
+        void updateEmbeddableContent(const QWebEngineView* view) const;
         static QUrl guessUrlFromString(const QString &string);
 
     private slots:

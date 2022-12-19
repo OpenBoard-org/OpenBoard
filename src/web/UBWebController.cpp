@@ -42,6 +42,7 @@
 
 #include "UBWebController.h"
 #include "UBEmbedController.h"
+#include "UBEmbedParser.h"
 
 #include "web/simplebrowser/browserwindow.h"
 #include "web/simplebrowser/webview.h"
@@ -355,6 +356,16 @@ UBEmbedParser *UBWebController::embedParser(const QWebEngineView* view) const
     return view->findChild<UBEmbedParser*>("UBEmbedParser");
 }
 
+void UBWebController::updateEmbeddableContent(const QWebEngineView *view) const
+{
+    QList<UBEmbedContent> list = getEmbeddedContent(view);
+
+    if (mEmbedController)
+    {
+        mEmbedController->updateListOfEmbeddableContent(list);
+    }
+}
+
 void UBWebController::show()
 {
     webBrowserInstance();
@@ -370,7 +381,7 @@ QWebEngineProfile *UBWebController::webProfile() const
     return mWebProfile;
 }
 
-QList<UBEmbedContent> UBWebController::getEmbeddedContent(const QWebEngineView *view)
+QList<UBEmbedContent> UBWebController::getEmbeddedContent(const QWebEngineView *view) const
 {
     UBEmbedParser* parser = embedParser(view);
 
@@ -450,8 +461,16 @@ void UBWebController::activePageChanged()
     {
         WebView* view = mCurrentWebBrowser->currentTab();
 
+        updateEmbeddableContent(view);
+
         if (mEmbedController)
-            mEmbedController->updateEmbeddableContentFromView(view);
+        {
+            mEmbedController->pageUrlChanged(view->url());
+            mEmbedController->pageTitleChanged(view->title());
+
+            connect(view, &QWebEngineView::urlChanged, mEmbedController, &UBEmbedController::pageUrlChanged);
+            connect(view, &QWebEngineView::titleChanged, mEmbedController, &UBEmbedController::pageTitleChanged);
+        }
 
         emit activeWebPageChanged(mCurrentWebBrowser->currentTab());
     }
@@ -649,7 +668,21 @@ void UBWebController::tabCreated(WebView *webView)
     if (!embedParser(webView))
     {
         UBEmbedParser* parser = new UBEmbedParser(webView);
-        connect(parser, &UBEmbedParser::parseResult, this, &UBWebController::onEmbedParsed);
+        connect(webView, &QWebEngineView::loadProgress, this, [parser,webView](int progress){
+            // Note: The loadFinished signal is not always emitted, but progress = 100 is.
+            if (progress == 100)
+            {
+                qDebug() << "loadFinished";
+
+                webView->page()->toHtml([parser](const QString &html) {
+                    parser->parse(html);
+                });
+            }
+        });
+
+        connect(parser, &UBEmbedParser::parseResult, this, [this,webView](bool hasEmbeddedContent){
+            onEmbedParsed(webView, hasEmbeddedContent);
+        });
     }
 }
 
@@ -791,10 +824,7 @@ void UBWebController::onEmbedParsed(QWebEngineView *view, bool hasEmbeddedConten
         // enable/disable embed button
         UBApplication::mainWindow->actionWebOEmbed->setEnabled(hasEmbeddedContent);
 
-        if (mEmbedController)
-        {
-            mEmbedController->updateEmbeddableContentFromView(view);
-        }
+        updateEmbeddableContent(view);
     }
 }
 

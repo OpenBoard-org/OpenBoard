@@ -29,24 +29,14 @@
 
 #include "UBEmbedController.h"
 
-#include <QtXml>
-#include <QWebEnginePage>
+#include "board/UBBoardController.h"
+#include "board/UBDrawingController.h"
 
-
-#include "frameworks/UBFileSystemUtils.h"
-#include "frameworks/UBPlatformUtils.h"
-
-#include "core/UBApplicationController.h"
 #include "core/UBApplication.h"
-#include "core/UBDisplayManager.h"
-#include "core/UBSettings.h"
-
-#include "network/UBNetworkAccessManager.h"
 
 #include "domain/UBGraphicsScene.h"
 
-#include "board/UBBoardController.h"
-#include "board/UBDrawingController.h"
+#include "frameworks/UBFileSystemUtils.h"
 
 #include "web/UBWebController.h"
 #include "web/simplebrowser/webpage.h"
@@ -60,7 +50,6 @@ UBEmbedController::UBEmbedController(QWidget* parent)
     , mTrapFlashUi(nullptr)
     , mTrapDialog(nullptr)
     , mParentWidget(parent)
-    , mCurrentWebFrame(nullptr)
 {
     // NOOP
 }
@@ -69,6 +58,26 @@ UBEmbedController::UBEmbedController(QWidget* parent)
 UBEmbedController::~UBEmbedController()
 {
     // NOOP
+}
+
+
+void UBEmbedController::updateListOfEmbeddableContent(const QList<UBEmbedContent>& pAllContent)
+{
+    if (mTrapDialog && mTrapDialog->isVisible())
+    {
+        mAvailableContent = pAllContent;
+        disconnect(mTrapFlashUi->flashCombobox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &UBEmbedController::selectFlash);
+        mTrapFlashUi->flashCombobox->clear();
+        mTrapFlashUi->flashCombobox->addItem(tr("Whole page"));
+
+        for (const UBEmbedContent& wrapper : pAllContent)
+        {
+            mTrapFlashUi->flashCombobox->addItem(widgetNameForObject(wrapper));
+        }
+
+        connect(mTrapFlashUi->flashCombobox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &UBEmbedController::selectFlash);
+        selectFlash(mTrapFlashUi->flashCombobox->currentIndex());
+    }
 }
 
 
@@ -91,10 +100,9 @@ void UBEmbedController::showEmbedDialog()
         QWebEngineProfile* profile = UBApplication::webController->webProfile();
         mTrapFlashUi->webView->setPage(new WebPage(profile, this));
 
-        connect(mTrapFlashUi->flashCombobox, SIGNAL(currentIndexChanged(int)), this, SLOT(selectFlash(int)));
-        connect(mTrapFlashUi->widgetNameLineEdit, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
-        connect(mTrapFlashUi->widgetNameLineEdit, SIGNAL(textEdited(QString)), this, SLOT(textEdited(QString)));
-        connect(mTrapFlashUi->createWidgetButton, SIGNAL(clicked(bool)), this, SLOT(createWidget()));
+        connect(mTrapFlashUi->flashCombobox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &UBEmbedController::selectFlash);
+        connect(mTrapFlashUi->widgetNameLineEdit, &QLineEdit::textChanged, this, &UBEmbedController::textChanged);
+        connect(mTrapFlashUi->createWidgetButton, &QPushButton::clicked, this, &UBEmbedController::createWidget);
         connect(mTrapFlashUi->webView, &QWebEngineView::loadFinished, this, [this](){
             mTrapFlashUi->webView->update();
         });
@@ -103,7 +111,29 @@ void UBEmbedController::showEmbedDialog()
     mTrapDialog->show();
 }
 
-void UBEmbedController::textChanged(const QString &newText)
+
+void UBEmbedController::hideEmbedDialog() const
+{
+    if (mTrapDialog)
+    {
+        mTrapDialog->hide();
+    }
+}
+
+
+void UBEmbedController::pageUrlChanged(const QUrl& url)
+{
+    mUrl = url;
+}
+
+
+void UBEmbedController::pageTitleChanged(const QString& title)
+{
+    mPageTitle = title;
+}
+
+
+void UBEmbedController::textChanged(const QString& newText)
 {
     QString new_text = newText;
 
@@ -130,53 +160,18 @@ void UBEmbedController::textChanged(const QString &newText)
     }
 }
 
-void UBEmbedController::textEdited(const QString &newText)
-{
-    Q_UNUSED(newText);
-}
-
-void UBEmbedController::hideEmbedDialog()
-{
-    if (mTrapDialog)
-    {
-        mTrapDialog->hide();
-    }
-}
-
-
-void UBEmbedController::updateListOfEmbeddableContent(const QList<UBEmbedContent>& pAllContent)
-{
-    if (mTrapDialog)
-    {
-        mAvailableContent = pAllContent;
-        disconnect(mTrapFlashUi->flashCombobox, SIGNAL(currentIndexChanged(int)), this, SLOT(selectFlash(int)));
-        mTrapFlashUi->flashCombobox->clear();
-        mTrapFlashUi->flashCombobox->addItem(tr("Whole page"));
-
-        for (const UBEmbedContent& wrapper : pAllContent)
-        {
-            mTrapFlashUi->flashCombobox->addItem(widgetNameForObject(wrapper));
-        }
-
-        connect(mTrapFlashUi->flashCombobox, SIGNAL(currentIndexChanged(int)), this, SLOT(selectFlash(int)));
-        selectFlash(mTrapFlashUi->flashCombobox->currentIndex());
-    }
-}
-
 
 void UBEmbedController::selectFlash(int pFlashIndex)
 {
     if (pFlashIndex == 0)
     {
-        mTrapFlashUi->webView->setHtml(generateFullPageHtml(mCurrentWebFrame->url(), "", false));
-        mCurrentWebFrame->page()->runJavaScript("window.document.title", [this](const QVariant& res){
-            mTrapFlashUi->widgetNameLineEdit->setText(res.toString().trimmed());
-        });
+        mTrapFlashUi->webView->setHtml(generateFullPageHtml(mUrl));
+        mTrapFlashUi->widgetNameLineEdit->setText(mPageTitle.trimmed());
     }
     else if (pFlashIndex > 0 && pFlashIndex <= mAvailableContent.size())
     {
         UBEmbedContent currentObject = mAvailableContent.at(pFlashIndex - 1);
-        mTrapFlashUi->webView->setHtml(generateHtml(currentObject, "", false));
+        mTrapFlashUi->webView->setHtml(generateHtml(currentObject));
         mTrapFlashUi->widgetNameLineEdit->setText(widgetNameForObject(currentObject));
     }
 }
@@ -200,7 +195,7 @@ void UBEmbedController::createWidget()
 
     if (selectedIndex == 0)
     {
-        generateFullPageHtml(mCurrentWebFrame->url(), widgetDir.path(), true);
+        generateFullPageHtml(mUrl, widgetDir.path(), true);
     }
     else
     {
@@ -230,7 +225,7 @@ void UBEmbedController::createWidget()
 }
 
 
-void UBEmbedController::importWidgetInLibrary(QDir pSourceDir)
+void UBEmbedController::importWidgetInLibrary(const QDir& pSourceDir) const
 {
     const QString userWidgetPath = UBSettings::settings()->userInteractiveDirectory() + "/" + tr("Web");
     QDir userWidgetDir(userWidgetPath);
@@ -256,7 +251,9 @@ void UBEmbedController::importWidgetInLibrary(QDir pSourceDir)
 
     // also add to current scene
     if (UBApplication::applicationController)
+    {
         UBApplication::applicationController->showBoard();
+    }
 
     if (UBApplication::boardController &&
         UBApplication::boardController->activeScene())
@@ -267,18 +264,7 @@ void UBEmbedController::importWidgetInLibrary(QDir pSourceDir)
 }
 
 
-void UBEmbedController::updateEmbeddableContentFromView(QWebEngineView *pCurrentWebFrame)
-{
-    if (pCurrentWebFrame && mTrapDialog && mTrapDialog->isVisible())
-    {
-        QList<UBEmbedContent> list = UBApplication::webController->getEmbeddedContent(pCurrentWebFrame);
-        mCurrentWebFrame = pCurrentWebFrame;
-        updateListOfEmbeddableContent(list);
-    }
-}
-
-
-QString UBEmbedController::generateIcon(const QString& pDirPath)
+QString UBEmbedController::generateIcon(const QString& pDirPath) const
 {
     // render web page to QPixmap
     QPixmap capture(mTrapFlashUi->webView->size());
@@ -303,13 +289,13 @@ QString UBEmbedController::generateIcon(const QString& pDirPath)
 }
 
 
-void UBEmbedController::generateConfig(int pWidth, int pHeight, const QString& pDestinationPath)
+void UBEmbedController::generateConfig(int pWidth, int pHeight, const QString& pDestinationPath) const
 {
     QFile configFile(pDestinationPath + "/" + "config.xml");
 
     if (configFile.exists())
     {
-        configFile.remove(configFile.fileName());
+        configFile.remove();
     }
 
     if (!configFile.open(QIODevice::WriteOnly))
@@ -342,25 +328,24 @@ void UBEmbedController::generateConfig(int pWidth, int pHeight, const QString& p
 }
 
 
-QString UBEmbedController::generateFullPageHtml(const QUrl &url, const QString& pDirPath, bool pGenerateFile)
+QString UBEmbedController::generateFullPageHtml(const QUrl& url, const QString& pDirPath, bool pGenerateFile) const
 {
-    if (mCurrentWebFrame->url().isEmpty())
+    if (url.isEmpty())
     {
-        return "";
+        return QString();
     }
 
     QString htmlContentString;
 
-//  htmlContentString += "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\r\n";
-    htmlContentString += "<!DOCTYPE html>\r\n";
-    htmlContentString += "<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n";
-    htmlContentString += "  <head>\r\n";
-    htmlContentString += "    <meta http-equiv=\"refresh\" content=\"0; " + url.toString() + "\">\r\n";
-    htmlContentString += "  </head>\r\n";
-    htmlContentString += "  <body>\r\n";
-    htmlContentString += "    Redirect to target...\r\n";
-    htmlContentString += "  </body>\r\n";
-    htmlContentString += "</html>\r\n";
+    htmlContentString += "<!DOCTYPE html>\n";
+    htmlContentString += "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+    htmlContentString += "  <head>\n";
+    htmlContentString += "    <meta http-equiv=\"refresh\" content=\"0; " + url.toString() + "\">\n";
+    htmlContentString += "  </head>\n";
+    htmlContentString += "  <body>\n";
+    htmlContentString += "    Redirect to target...\n";
+    htmlContentString += "  </body>\n";
+    htmlContentString += "</html>\n";
 
     if (!pGenerateFile)
     {
@@ -371,20 +356,25 @@ QString UBEmbedController::generateFullPageHtml(const QUrl &url, const QString& 
         QString fileName = mTrapFlashUi->widgetNameLineEdit->text();
         const QString fullHtmlFileName = pDirPath + "/" + fileName + ".html";
         QDir dir(pDirPath);
+
         if (!dir.exists())
         {
             dir.mkpath(dir.path());
         }
+
         QFile widgetHtmlFile(fullHtmlFileName);
+
         if (widgetHtmlFile.exists())
         {
-            widgetHtmlFile.remove(widgetHtmlFile.fileName());
+            widgetHtmlFile.remove();
         }
+
         if (!widgetHtmlFile.open(QIODevice::WriteOnly))
         {
             qWarning() << "cannot open file " << widgetHtmlFile.fileName();
-            return "";
+            return QString();
         }
+
         QTextStream out(&widgetHtmlFile);
         out << htmlContentString;
 
@@ -395,7 +385,7 @@ QString UBEmbedController::generateFullPageHtml(const QUrl &url, const QString& 
 
 
 QString UBEmbedController::generateHtml(const UBEmbedContent& pObject,
-        const QString& pDirPath, bool pGenerateFile)
+        const QString& pDirPath, bool pGenerateFile) const
 {
     if (pObject.type() == UBEmbedType::IFRAME)
     {
@@ -404,8 +394,7 @@ QString UBEmbedController::generateHtml(const UBEmbedContent& pObject,
 
     QString htmlContentString;
 
-    htmlContentString += "<!DOCTYPE html>\r\n";
-//    htmlContentString += "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
+    htmlContentString += "<!DOCTYPE html>\n";
     htmlContentString += "<html>\n";
     htmlContentString += "<head>\n";
     htmlContentString += "    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\n";
@@ -445,13 +434,13 @@ QString UBEmbedController::generateHtml(const UBEmbedContent& pObject,
 
         if (widgetHtmlFile.exists())
         {
-            widgetHtmlFile.remove(widgetHtmlFile.fileName());
+            widgetHtmlFile.remove();
         }
 
         if (!widgetHtmlFile.open(QIODevice::WriteOnly))
         {
             qWarning() << "cannot open file " << widgetHtmlFile.fileName();
-            return "";
+            return QString();
         }
 
         QTextStream out(&widgetHtmlFile);

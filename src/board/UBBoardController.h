@@ -47,6 +47,7 @@ class UBDocumentController;
 class UBMessageWindow;
 class UBGraphicsScene;
 class UBDocumentProxy;
+class UBEmbedController;
 class UBBlackoutWidget;
 class UBToolWidget;
 class UBVersion;
@@ -298,6 +299,7 @@ class UBBoardController : public UBDocumentContainer
         UBBoardPaletteManager *mPaletteManager;
         UBSoftwareUpdateDialog *mSoftwareUpdateDialog;
         UBMessageWindow *mMessageWindow;
+        UBEmbedController *mEmbedController;
         UBBoardView *mControlView;
         UBBoardView *mDisplayView;
         QWidget *mControlContainer;
