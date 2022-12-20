@@ -354,7 +354,17 @@ void UBFeaturesWidget::addElementsToFavorite()
         QModelIndexList selected = centralWidget->listView()->selectionModel()->selectedIndexes();
         for ( int i = 0; i < selected.size(); ++i ) {
             UBFeature feature = selected.at(i).data( Qt::UserRole + 1 ).value<UBFeature>();
-            controller->addToFavorite(feature.getFullPath());
+            if (feature.getType() == UBFeatureElementType::FEATURE_DOCUMENT)
+            {
+                //case where a recently open document is marked as favorite.
+                //The element is already in the favorite folder, as a recently open document,
+                // but not in the favorite list. We just need to insert it in the favoriteSet
+                controller->storeAsFavorite(feature);
+            }
+            else
+            {
+                controller->addToFavorite(feature.getFullPath());
+            }
        }
     }
 

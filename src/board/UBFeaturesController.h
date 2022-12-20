@@ -197,8 +197,9 @@ public:
     void deleteItem(const UBFeature &pFeature);
     bool isTrash( const QUrl &url );
     void moveToTrash(UBFeature feature, bool deleteManualy = false);
-    void addToFavorite(const QUrl &path , const QString &name = QString());
+    void addToFavorite(const QUrl &path , const QString &name = QString(), bool temporaryAdded = false);
     void removeFromFavorite(const QUrl &path, bool deleteManualy = false);
+    void storeAsFavorite(UBFeature feature);
     void importImage(const QImage &image, const QString &fileName = QString());
     void importImage( const QImage &image, const UBFeature &destination, const QString &fileName = QString() );
     QStringList getFileNamesInFolders();
@@ -219,6 +220,7 @@ public:
     void assignPathListView(UBFeaturesListView *pList);
 
     bool isInFavoriteList(QUrl url);
+    bool isInRecentlyOpenDocuments(QUrl url);
 
 public:
     static const QString rootPath;
@@ -305,6 +307,7 @@ private:
     UBFeature webSearchElement;
 
     QSet <QUrl> *favoriteSet;
+    QSet<QUrl> recentlyOpenDocuments;
 
 public:
     UBFeature trashElement;

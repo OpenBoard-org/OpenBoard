@@ -525,6 +525,11 @@ bool UBFeaturesController::isInFavoriteList(QUrl url)
     return favoriteSet->contains(url);
 }
 
+bool UBFeaturesController::isInRecentlyOpenDocuments(QUrl url)
+{
+    return recentlyOpenDocuments.contains(url);
+}
+
 void UBFeaturesController::loadFavoriteList()
 {
     favoriteSet = new QSet<QUrl>();
@@ -623,10 +628,10 @@ QString UBFeaturesController::adjustName(const QString &str)
     return resultStr.replace(invalidSymbols, "_");
 }
 
-void UBFeaturesController::addToFavorite( const QUrl &path, const QString &name )
+void UBFeaturesController::addToFavorite(const QUrl &path, const QString &name , bool temporaryAdded)
 {
     QString filePath = fileNameFromUrl( path );
-    if ( favoriteSet->find( path ) == favoriteSet->end() )
+    if (!isInFavoriteList(path) && !isInRecentlyOpenDocuments(path))
     {
         QFileInfo fileInfo( filePath );
         QString fileName = fileInfo.fileName();
@@ -642,8 +647,15 @@ void UBFeaturesController::addToFavorite( const QUrl &path, const QString &name 
             QString favoriteUrl = favoritePath + "/" + urlName.replace('/', '.');
             elem = UBFeature(favoriteUrl, getIcon(filePath, type), name, path, fileTypeFromUrl(filePath));
         }
-        favoriteSet->insert( path );
-        saveFavoriteList();
+        if (!temporaryAdded) //recently open documents are temporary added to the favorite list
+        {
+            favoriteSet->insert( path );
+            saveFavoriteList();
+        }
+        else
+        {
+            recentlyOpenDocuments.insert(path);
+        }
 
         if ( !elem.getVirtualPath().isEmpty() && !elem.getVirtualPath().isNull())
         {
@@ -663,6 +675,12 @@ void UBFeaturesController::removeFromFavorite( const QUrl &path, bool deleteManu
     if (deleteManualy) {
         featuresModel->deleteFavoriteItem(path.toString());
     }
+}
+
+void UBFeaturesController::storeAsFavorite(UBFeature feature)
+{
+    favoriteSet->insert( feature.getFullPath());
+    saveFavoriteList();
 }
 
 QString UBFeaturesController::fileNameFromUrl( const QUrl &url )

@@ -1599,6 +1599,15 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
     {
         emit activeSceneChanged();
     }
+
+    UBFeaturesController* featuresController = paletteManager()->featuresWidget()->getFeaturesController();
+
+    QUrl url = QUrl::fromLocalFile(pDocumentProxy->persistencePath() + "/metadata.rdf");
+
+    if (!featuresController->isInFavoriteList(url))
+    {
+        featuresController->addToFavorite(url, pDocumentProxy->name(), true);
+    }
 }
 
 
