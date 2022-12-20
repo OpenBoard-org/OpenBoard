@@ -80,7 +80,6 @@
 #include "pdf/PDFRenderer.h"
 
 #include "core/memcheck.h"
-//#include "qtlogger.h"
 
 const QString UBSvgSubsetAdaptor::nsSvg = "http://www.w3.org/2000/svg";
 const QString UBSvgSubsetAdaptor::nsXHtml = "http://www.w3.org/1999/xhtml";
@@ -228,7 +227,7 @@ void UBSvgSubsetAdaptor::setSceneUuid(UBDocumentProxy* proxy, const int pageInde
 
     QString newXmlContent = xmlContent.left(quoteStartIndex + 1);
     newXmlContent.append(UBStringUtils::toCanonicalUuid(pUuid));
-    newXmlContent.append(xmlContent.right(xmlContent.length() - quoteEndIndex));
+    newXmlContent.append(xmlContent.rightRef(xmlContent.length() - quoteEndIndex));
 
     if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
     {
@@ -932,17 +931,6 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                 else if (type == "text")
                 {
                     UBGraphicsTextItem* textItem = textItemFromSvg();
-                    UBGraphicsTextItemDelegate *textDelegate = 0;
-
-                    if (textItem)
-                        textDelegate = dynamic_cast<UBGraphicsTextItemDelegate*>(textItem->Delegate());
-
-                    if (textDelegate)
-                    {
-                        //qreal currentDpi = UBApplication::displayManager->logicalDpi(DisplayRole::Control);
-                        //qreal textSizeMultiplier = qreal(proxy->pageDpi())/currentDpi;
-                        //textDelegate->scaleTextSize(textSizeMultiplier);
-                    }
 
                     if (textItem)
                     {
@@ -1002,13 +990,14 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
     }
 
     qDebug() << "Number of detected strokes: " << mStrokesList.count();
-    QHashIterator<QString, UBGraphicsStrokesGroup*> iterator(mStrokesList);
-    while (iterator.hasNext()) {
-        iterator.next();
-        mScene->addItem(iterator.value());
-    }
 
     if (mScene) {
+        QHashIterator<QString, UBGraphicsStrokesGroup*> iterator(mStrokesList);
+        while (iterator.hasNext()) {
+            iterator.next();
+            mScene->addItem(iterator.value());
+        }
+
         mScene->setModified(saveSceneAfterLoading);
         mScene->enableUndoRedoStack();
     }
@@ -1463,7 +1452,6 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
     if (openStroke)
     {
         mXmlWriter.writeEndElement();
-        groupHoldsInfo = false;
         openStroke = 0;
     }
 
@@ -1650,10 +1638,10 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::strokeToSvgPolygon(UBGraphicsStroke*
         }
 
 
-        UBGraphicsPolygonItem *clone = static_cast<UBGraphicsPolygonItem*>(pis.at(0)->deepCopy());
+        QScopedPointer<UBGraphicsPolygonItem> clone(static_cast<UBGraphicsPolygonItem*>(pis.at(0)->deepCopy()));
         clone->setPolygon(united);
 
-        polygonItemToSvgPolygon(clone, groupHoldsInfo);
+        polygonItemToSvgPolygon(clone.get(), groupHoldsInfo);
     }
 }
 
@@ -2055,8 +2043,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::pixmapItemToLinkedImage(UBGraphicsPi
 
     QString fileName = UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png";
 
-    QString path = mDocumentPath + "/" + fileName;
-
     mXmlWriter.writeAttribute(nsXLink, "href", fileName);
 
     graphicsItemToSvg(pixmapItem);
@@ -2067,27 +2053,24 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::pixmapItemToLinkedImage(UBGraphicsPi
 
 UBGraphicsPixmapItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::pixmapItemFromSvg()
 {
-
-    UBGraphicsPixmapItem* pixmapItem = new UBGraphicsPixmapItem();
+    UBGraphicsPixmapItem* pixmapItem = nullptr;
 
     auto imageHref = mXmlReader.attributes().value(nsXLink, "href");
 
     if (!imageHref.isNull())
     {
+        pixmapItem = new UBGraphicsPixmapItem();
         QString href = imageHref.toString();
         QPixmap pix(mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(href));
         pixmapItem->setPixmap(pix);
+        graphicsItemFromSvg(pixmapItem);
     }
     else
     {
-        qWarning() << "cannot make sens of image href value";
-        return 0;
+        qWarning() << "cannot make sense of image href value";
     }
 
-    graphicsItemFromSvg(pixmapItem);
-
     return pixmapItem;
-
 }
 
 
@@ -2256,16 +2239,19 @@ UBGraphicsMediaItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::audioItemFromSvg()
 
     UBGraphicsMediaItem* audioItem = UBGraphicsMediaItem::createMediaItem(QUrl::fromLocalFile(href));
     if(audioItem)
+    {
         audioItem->connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), audioItem, SLOT(activeSceneChanged()));
 
-    graphicsItemFromSvg(audioItem);
-    auto ubPos = mXmlReader.attributes().value(mNamespaceUri, "position");
+        graphicsItemFromSvg(audioItem);
+        auto ubPos = mXmlReader.attributes().value(mNamespaceUri, "position");
 
-    qint64 p = 0;
-    if (!ubPos.isNull())
-        p = ubPos.toString().toLongLong();
+        qint64 p = 0;
+        if (!ubPos.isNull())
+            p = ubPos.toString().toLongLong();
 
-    audioItem->setInitialPos(p);
+        audioItem->setInitialPos(p);
+    }
+
     return audioItem;
 }
 
@@ -2285,25 +2271,26 @@ UBGraphicsMediaItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::videoItemFromSvg()
     //Claudio this is necessary to fix the absolute path added on Sankore 3.1 1.00.00
     //The absoult path doesn't work when you want to share Sankore documents.
     if(!videoHref.toString().startsWith("videos/")){
-        int indexOfAudioDirectory = href.lastIndexOf("videos");
-        href = mDocumentPath + "/" + href.right(href.length() - indexOfAudioDirectory);
+        int indexOfVideoDirectory = href.lastIndexOf("videos");
+        href = mDocumentPath + "/" + href.right(href.length() - indexOfVideoDirectory);
     }
 
     UBGraphicsMediaItem* videoItem = UBGraphicsMediaItem::createMediaItem(QUrl::fromLocalFile(href));
     if(videoItem){
         videoItem->connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), videoItem, SLOT(activeSceneChanged()));
+
+        graphicsItemFromSvg(videoItem);
+        auto ubPos = mXmlReader.attributes().value(mNamespaceUri, "position");
+
+        qint64 p = 0;
+        if (!ubPos.isNull())
+        {
+            p = ubPos.toString().toLongLong();
+        }
+
+        videoItem->setInitialPos(p);
     }
 
-    graphicsItemFromSvg(videoItem);
-    auto ubPos = mXmlReader.attributes().value(mNamespaceUri, "position");
-
-    qint64 p = 0;
-    if (!ubPos.isNull())
-    {
-        p = ubPos.toString().toLongLong();
-    }
-
-    videoItem->setInitialPos(p);
     return videoItem;
 }
 
@@ -2487,7 +2474,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsW3CWidgetToSvg(UBGraphicsW3C
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidgetItem* item)
 {
     QUrl widgetRootUrl = item->widgetUrl();
-    QString uuid = UBStringUtils::toCanonicalUuid(item->uuid());
     QString widgetDirectoryPath = UBPersistenceManager::widgetDirectory;
     if (widgetRootUrl.toString().startsWith("file://"))
     {
@@ -2783,7 +2769,7 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
                     foreach (QString styleToken, fontStyle.toString().split(";")) {
                         styleToken = styleToken.trimmed();
                         if (styleToken.startsWith(sFontSizePrefix) && styleToken.endsWith(sPixelUnit)) {
-                            int fontSize = styleToken.mid(
+                            int fontSize = styleToken.midRef(
                                         sFontSizePrefix.length(),
                                         styleToken.length() - sFontSizePrefix.length() - sPixelUnit.length()).toInt();
                             font.setPixelSize(fontSize);
@@ -2840,8 +2826,6 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
         textItem->setPlainText(text);
         textItem->resize(width, height);
     }
-
-    textItem->resize(width, height);
 
     return textItem;
 }
