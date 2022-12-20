@@ -451,7 +451,7 @@ void UBFeaturesController::scanFS()
 
             if (document)
             {
-                featuresList->append(UBFeature(favoritePath + "/" + document->name(), QImage(":images/openboard-document.png"), document->name(), favoriteElement, FEATURE_DOCUMENT));
+                featuresList->append(UBFeature(favoritePath + "/" + document->name().replace('/', '.'), QImage(":images/openboard-document.png"), document->name(), favoriteElement, FEATURE_DOCUMENT));
             }
             else
             {
@@ -638,7 +638,9 @@ void UBFeaturesController::addToFavorite( const QUrl &path, const QString &name 
         }
         else
         {
-            elem = UBFeature(favoritePath + "/" + name, getIcon(filePath, type), name, path, fileTypeFromUrl(filePath) );
+            QString urlName = name;
+            QString favoriteUrl = favoritePath + "/" + urlName.replace('/', '.');
+            elem = UBFeature(favoriteUrl, getIcon(filePath, type), name, path, fileTypeFromUrl(filePath));
         }
         favoriteSet->insert( path );
         saveFavoriteList();
