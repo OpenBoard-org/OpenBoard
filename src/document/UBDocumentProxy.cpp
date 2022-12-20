@@ -46,6 +46,7 @@ UBDocumentProxy::UBDocumentProxy()
     , mDocumentDateLittleEndian("")
     , mDocumentUpdatedAtLittleEndian("")
     , mNeedsCleanup(true)
+    , mLastVisitedIndex(0)
 {
     init();
 }
@@ -58,6 +59,7 @@ UBDocumentProxy::UBDocumentProxy(const UBDocumentProxy &rValue) :
     mIsModified = rValue.mIsModified;
     mPageCount = rValue.mPageCount;
     mNeedsCleanup = rValue.mNeedsCleanup;
+    mLastVisitedIndex = rValue.mLastVisitedIndex;
 }
 
 
@@ -65,6 +67,7 @@ UBDocumentProxy::UBDocumentProxy(const QString& pPersistancePath)
     : mPageCount(0)
     , mPageDpi(0)
     , mNeedsCleanup(true)
+    , mLastVisitedIndex(0)
 {
     init();
     setPersistencePath(pPersistancePath);
@@ -103,10 +106,20 @@ UBDocumentProxy* UBDocumentProxy::deepCopy() const
     copy->mMetaDatas = QMap<QString, QVariant>(mMetaDatas);
     copy->mIsModified = mIsModified;
     copy->mPageCount = mPageCount;
+    copy->mLastVisitedIndex = mLastVisitedIndex;
 
     return copy;
 }
 
+int UBDocumentProxy::lastVisitedSceneIndex() const
+{
+    return mLastVisitedIndex;
+}
+
+void UBDocumentProxy::setLastVisitedSceneIndex(int lastVisitedSceneIndex)
+{
+    mLastVisitedIndex = lastVisitedSceneIndex;
+}
 
 int UBDocumentProxy::pageCount()
 {

@@ -110,6 +110,9 @@ class UBDocumentProxy : public QObject
         
         bool testAndResetCleanupNeeded();
 
+        int lastVisitedSceneIndex() const;
+        void setLastVisitedSceneIndex(int lastVisitedSceneIndex);
+
     protected:
         void setPageCount(int pPageCount);
         int incPageCount();
@@ -135,6 +138,8 @@ class UBDocumentProxy : public QObject
         QMap<QUuid, bool> mWidgetCompatibility;
         
         bool mNeedsCleanup;
+
+       int mLastVisitedIndex;
 };
 
 inline bool operator==(const UBDocumentProxy &proxy1, const UBDocumentProxy &proxy2)

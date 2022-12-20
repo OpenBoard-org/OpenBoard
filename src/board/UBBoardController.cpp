@@ -1514,7 +1514,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
         if (document)
         {
-            setActiveDocumentScene(document);
+            setActiveDocumentScene(document, document->lastVisitedSceneIndex());
         }
         else
         {
@@ -1599,6 +1599,8 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
     {
         emit activeSceneChanged();
     }
+
+    pDocumentProxy->setLastVisitedSceneIndex(mActiveSceneIndex);
 
     UBFeaturesController* featuresController = paletteManager()->featuresWidget()->getFeaturesController();
 

@@ -120,8 +120,6 @@ void UBBoardThumbnailsView::removeThumbnail(int i)
 
 UBDraggableLivePixmapItem* UBBoardThumbnailsView::createThumbnail(UBDocumentProxy* document, int i)
 {
-    UBApplication::showMessage(tr("Loading page (%1/%2)").arg(i+1).arg(document->pageCount()));
-
     UBGraphicsScene* pageScene = UBPersistenceManager::persistenceManager()->loadDocumentScene(document, i);
 
     return new UBDraggableLivePixmapItem(pageScene, document, i);
