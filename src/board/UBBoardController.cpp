@@ -1508,7 +1508,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
     }
     else if (UBMimeType::Document == itemMimeType)
     {
-        QString documentPath = sourceUrl.adjusted(QUrl::RemoveFilename).toString().replace("file://", "").chopped(1);
+        QString documentPath = sourceUrl.adjusted(QUrl::RemoveFilename).toLocalFile().chopped(1);
 
         UBDocumentProxy* document = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->findDocumentByPath(documentPath);
 
