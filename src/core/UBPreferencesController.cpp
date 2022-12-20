@@ -824,7 +824,8 @@ void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
 
         for (QScreen* screen : screens)
         {
-            availableScreenIndexes << QString::number(screenIndex);
+            QString index = QString::number(screenIndex);
+            availableScreenIndexes << index;
 
             QPushButton* button = new QPushButton(this);
             button->setWindowFlag(Qt::FramelessWindowHint, true);
@@ -833,20 +834,23 @@ void UBScreenListLineEdit::focusInEvent(QFocusEvent *focusEvent)
             button->setWindowFlag(Qt::Window, true);
             button->setWindowFlag(Qt::WindowDoesNotAcceptFocus, true);
             button->setAttribute(Qt::WA_ShowWithoutActivating, true);
+            button->setProperty("screenIndex", index);
 #ifdef QT_DEBUG
-            button->setText(QString::number(screenIndex++) + "(" + screen->name() + ")");
+            button->setText(index + "(" + screen->name() + ")");
 #else
-            button->setText(QString::number(screenIndex++));
+            button->setText(index);
 #endif
             button->setFont(font);
             button->move(screen->geometry().topLeft());
             button->setMinimumSize(300, 150);
-            button->setDisabled(screenList.contains(button->text()));
+            button->setDisabled(screenList.contains(index));
+            button->setCursor(Qt::PointingHandCursor);
             button->show();
 
             connect(button, &QPushButton::pressed, this, &UBScreenListLineEdit::addScreen);
 
             mScreenLabels << button;
+            ++screenIndex;
         }
 
         if (!mValidator)
@@ -874,14 +878,15 @@ void UBScreenListLineEdit::addScreen()
     {
         QString list = text();
         mValidator->fixup(list);
+        QString screenIndex = button->property("screenIndex").toString();
 
         if (list.isEmpty())
         {
-            setText(button->text());
+            setText(screenIndex);
         }
         else
         {
-            setText(list + "," + button->text());
+            setText(list + "," + screenIndex);
         }
 
         button->setEnabled(false);
@@ -894,7 +899,7 @@ void UBScreenListLineEdit::onTextChanged(const QString &input)
 
     for (QPushButton* button : qAsConst(mScreenLabels))
     {
-        button->setDisabled(screenList.contains(button->text()));
+        button->setDisabled(screenList.contains(button->property("screenIndex").toString()));
     }
 
     if (input.isEmpty() || input.right(1) == ',')
@@ -906,7 +911,7 @@ void UBScreenListLineEdit::onTextChanged(const QString &input)
         {
             if (button->isEnabled())
             {
-                model << input + button->text();
+                model << input + button->property("screenIndex").toString();
             }
         }
     }
