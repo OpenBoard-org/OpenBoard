@@ -117,6 +117,8 @@ protected:
 
     virtual void drawBackground(QPainter *painter, const QRectF &rect);
 
+    virtual void scrollContentsBy(int dx, int dy);
+
 private:
 
     void init();

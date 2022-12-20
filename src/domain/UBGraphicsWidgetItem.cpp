@@ -384,6 +384,15 @@ void UBGraphicsWidgetItem::saveSnapshot() const
     }
 }
 
+void UBGraphicsWidgetItem::updatePosition()
+{
+    // partial workaround for QTBUG-109068 to forward the position of the item
+    // on the scene to the QWebEngineView
+    QSize actualSize = size().toSize();
+    mWebEngineView->resize(actualSize - QSize(1,1));
+    mWebEngineView->resize(actualSize);
+}
+
 void UBGraphicsWidgetItem::setSnapshot(const QPixmap& pix, bool frozen)
 {
     mSnapshot = pix;
@@ -740,11 +749,7 @@ void UBGraphicsWidgetItem::mainFrameLoadFinished (bool ok)
 
     // repaint when initial rendering is done
     update();
-
-    // Workaround: slightly change size to make sure QWebEngineView knows size and position
-    QSize actualSize = size().toSize();
-    mWebEngineView->resize(actualSize - QSize(1,1));
-    mWebEngineView->resize(actualSize);
+    updatePosition();
 }
 
 void UBGraphicsWidgetItem::wheelEvent(QGraphicsSceneWheelEvent *event)
@@ -764,10 +769,7 @@ QVariant UBGraphicsWidgetItem::itemChange(GraphicsItemChange change, const QVari
         else if (scene()->activeWindow() == this)
             scene()->setActiveWindow(nullptr);
     } else if (change == QGraphicsItem::ItemTransformHasChanged) {
-        // Workaround: slightly change size to make sure QWebEngineView knows size and position
-        QSize actualSize = size().toSize();
-        mWebEngineView->resize(actualSize - QSize(1,1));
-        mWebEngineView->resize(actualSize);
+        updatePosition();
     }
 
     QVariant newValue = Delegate()->itemChange(change, value);

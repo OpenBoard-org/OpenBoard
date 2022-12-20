@@ -155,6 +155,13 @@ void UBBoardView::init ()
     connect (UBSettings::settings ()->boardUseHighResTabletEvent, SIGNAL (changed (QVariant)),
              this, SLOT (settingChanged (QVariant)));
 
+    connect(mController, &UBBoardController::controlViewportChanged, this, [this](){
+        if (scene())
+        {
+            scene()->controlViewportChanged();
+        }
+    });
+
     setOptimizationFlags (QGraphicsView::IndirectPainting | QGraphicsView::DontSavePainterState); // enable UBBoardView::drawItems filter
     setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     setWindowFlags (Qt::FramelessWindowHint);
@@ -1862,6 +1869,12 @@ void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
             painter->drawRect (pageRect);
         }
     }
+}
+
+void UBBoardView::scrollContentsBy(int dx, int dy)
+{
+    QGraphicsView::scrollContentsBy(dx, dy);
+    scene()->controlViewportChanged();
 }
 
 void UBBoardView::settingChanged (QVariant newValue)

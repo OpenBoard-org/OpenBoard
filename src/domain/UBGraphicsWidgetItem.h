@@ -128,6 +128,8 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         const QPixmap& takeSnapshot();
         void saveSnapshot() const;
 
+        void updatePosition();
+
         virtual UBItem* deepCopy() const override = 0;
         virtual UBGraphicsScene* scene() override;
 
