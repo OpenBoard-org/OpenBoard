@@ -41,8 +41,8 @@ project(openboard
     LANGUAGES CXX
 )
 
-set(VERSION_TYPE a) # a = alpha, b = beta, rc = release candidate, r = release, other => error
-set(VERSION_BUILD 1027)
+set(VERSION_TYPE r CACHE STRING "a = alpha, b = beta, rc = release candidate, r = release")
+set(VERSION_BUILD 1027 CACHE STRING "Build version for non-release builds")
 
 include(cmake/Version.cmake)
 include(cmake/Platform.cmake) 
