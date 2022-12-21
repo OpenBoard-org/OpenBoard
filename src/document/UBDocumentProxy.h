@@ -113,6 +113,9 @@ class UBDocumentProxy : public QObject
         int lastVisitedSceneIndex() const;
         void setLastVisitedSceneIndex(int lastVisitedSceneIndex);
 
+        bool isInFavoriteList() const;
+        void setIsInFavoristeList(bool isInFavoristeList);
+
     protected:
         void setPageCount(int pPageCount);
         int incPageCount();
@@ -140,6 +143,8 @@ class UBDocumentProxy : public QObject
         bool mNeedsCleanup;
 
        int mLastVisitedIndex;
+
+       bool mIsInFavoriteList;
 };
 
 inline bool operator==(const UBDocumentProxy &proxy1, const UBDocumentProxy &proxy2)

@@ -557,7 +557,16 @@ QVariant UBDocumentTreeModel::data(const QModelIndex &index, int role) const
                     case UBDocumentTreeNode::Catalog :
                         return QIcon(":images/folder.png");
                     case UBDocumentTreeNode::Document :
-                        return QIcon(":images/toolbar/board.png");
+                    {
+                        if (dataNode->proxyData()->isInFavoriteList())
+                        {
+                            return QIcon(":images/libpalette/miniFavorite.png");
+                        }
+                        else
+                        {
+                            return QIcon(":images/toolbar/board.png");
+                        }
+                    }
                 }
             }
             break;
@@ -3385,11 +3394,15 @@ void UBDocumentController::toggleAddDocumentToFavorites()
     if (!featuresController->isInFavoriteList(url))
     {
         featuresController->addToFavorite(url, selectedDocument()->name());
+        selectedDocument()->setIsInFavoristeList(true);
     }
     else
     {
         featuresController->removeFromFavorite(url, true);
+        selectedDocument()->setIsInFavoristeList(false);
     }
+
+    emit UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->dataChanged(firstSelectedTreeIndex(), firstSelectedTreeIndex());
 }
 
 void UBDocumentController::addToDocument()

@@ -452,6 +452,7 @@ void UBFeaturesController::scanFS()
             if (document)
             {
                 featuresList->append(UBFeature(favoritePath + "/" + document->name().replace('/', '.'), QImage(":images/openboard-document.png"), document->name(), favoriteElement, FEATURE_DOCUMENT));
+                document->setIsInFavoristeList(true);
             }
             else
             {
