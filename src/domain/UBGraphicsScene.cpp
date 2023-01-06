@@ -2717,7 +2717,6 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
             bgCrossColor = QColor(UBSettings::settings()->boardCrossColorDarkBackground->get().toString());
         else
             bgCrossColor = QColor(UBSettings::settings()->boardCrossColorLightBackground->get().toString());
-
         if (mZoomFactor < 0.7)
         {
             int alpha = 255 * mZoomFactor / 2;
@@ -2742,28 +2741,11 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
             {
                 painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
             }
-
-            if (mIntermediateLines)
-            {
-                QColor intermediateColor = bgCrossColor;
-                intermediateColor.setAlphaF(0.5 * bgCrossColor.alphaF());
-                painter->setPen(intermediateColor);
-
-                for (qreal yPos = firstY - gridSize/2; yPos < rect.y () + rect.height (); yPos += gridSize)
-                {
-                    painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
-                }
-
-                for (qreal xPos = firstX - gridSize/2; xPos < rect.x () + rect.width (); xPos += gridSize)
-                {
-                    painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
-                }
-            }
         }
 
         else if (mPageBackground == UBPageBackground::ruled)
         {
-            if(UBSettings::settings()->isSeyesRuledBackround())
+            if(UBSettings::settings()->isSeyesRuledBackground())
             {
                 qreal gridSizeSeyes = gridSize * 2; // The grid size must be bigger
                 int nbMarginCase = 1; // a small left margin of one gridSize
@@ -2817,13 +2799,6 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
                 for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += backgroundGridSize())
                 {
                     painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
-                }
-                if (mIntermediateLines)
-                {
-                    for (qreal yPos = firstY - gridSize/2; yPos < rect.y () + rect.height (); yPos += gridSize)
-                    {
-                        painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
-                    }
                 }
             }
         }

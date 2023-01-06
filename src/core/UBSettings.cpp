@@ -815,9 +815,9 @@ UBPageBackground UBSettings::pageBackground()
         return UBPageBackground::plain;
 }
 
-bool UBSettings::isSeyesRuledBackround()
+bool UBSettings::isSeyesRuledBackground()
 {
-    return value("Board/SeyesRuledBackround", 0).toBool();
+    return value("Board/SeyesRuledBackground", false).toBool();
 }
 
 void UBSettings::setDarkBackground(bool isDarkBackground)
@@ -841,9 +841,9 @@ void UBSettings::setPageBackground(UBPageBackground background)
     setValue("Board/PageBackground", val);
 }
 
-void UBSettings::setSeyesRuledBackground(bool isSeyesRuledBackround)
+void UBSettings::setSeyesRuledBackground(bool isSeyesRuledBackground)
 {
-    setValue("Board/SeyesRuledBackround", isSeyesRuledBackround);
+    setValue("Board/SeyesRuledBackground", isSeyesRuledBackground);
 }
 
 void UBSettings::setPenPressureSensitive(bool sensitive)

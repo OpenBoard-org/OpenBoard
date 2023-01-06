@@ -2604,7 +2604,7 @@ void UBBoardController::updateBackgroundActionsState(bool isDark, UBPageBackgrou
         case UBPageBackground::ruled:
         {
             QAction* actionRuledBackground = nullptr;
-            if(UBSettings::settings()->isSeyesRuledBackround())
+            if(UBSettings::settings()->isSeyesRuledBackground())
                 if(isDark)
                     actionRuledBackground = mMainWindow->actionSeyesRuledDarkBackground;
                 else

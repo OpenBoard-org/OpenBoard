@@ -88,10 +88,10 @@ class UBSettings : public QObject
         // Background related
         bool isDarkBackground();
         UBPageBackground pageBackground();
-        bool isSeyesRuledBackround();
+        bool isSeyesRuledBackground();
         void setDarkBackground(bool isDarkBackground);
         void setPageBackground(UBPageBackground background);
-        void setSeyesRuledBackground(bool isSeyesRuledBackround);
+        void setSeyesRuledBackground(bool isSeyesRuledBackground);
 
         // Stylus palette related
         bool isStylusPaletteVisible();

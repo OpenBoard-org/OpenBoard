@@ -247,13 +247,13 @@ void UBBoardPaletteManager::setupPalettes()
 
     backgroundsActions << UBApplication::mainWindow->actionPlainLightBackground;
     backgroundsActions << UBApplication::mainWindow->actionCrossedLightBackground;
-    if(UBSettings::settings()->isSeyesRuledBackround())
+    if(UBSettings::settings()->isSeyesRuledBackground())
         backgroundsActions << UBApplication::mainWindow->actionSeyesRuledLightBackground;
     else
         backgroundsActions << UBApplication::mainWindow->actionRuledLightBackground;
     backgroundsActions << UBApplication::mainWindow->actionPlainDarkBackground;
     backgroundsActions << UBApplication::mainWindow->actionCrossedDarkBackground;
-    if(UBSettings::settings()->isSeyesRuledBackround())
+    if(UBSettings::settings()->isSeyesRuledBackground())
         backgroundsActions << UBApplication::mainWindow->actionSeyesRuledDarkBackground;
     else
         backgroundsActions << UBApplication::mainWindow->actionRuledDarkBackground;

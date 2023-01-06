@@ -29,7 +29,6 @@
 
 #include "UBBoardView.h"
 
-#include <QtGlobal>
 #include <QtGui>
 #include <QtXml>
 #include <QListView>
@@ -93,11 +92,11 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool
     , mIsCreatingTextZone (false)
     , mIsCreatingSceneGrabZone (false)
     , mOkOnWidget(false)
-    , _movingItem(nullptr)
     , suspendedMousePressEvent(NULL)
     , mLongPressInterval(1000)
     , mIsDragInProgress(false)
     , mMultipleSelectionIsEnabled(false)
+    , _movingItem(nullptr)
     , bIsControl(isControl)
     , bIsDesktop(isDesktop)
 {
@@ -118,11 +117,11 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool
 UBBoardView::UBBoardView (UBBoardController* pController, int pStartLayer, int pEndLayer, QWidget* pParent, bool isControl, bool isDesktop)
     : QGraphicsView (pParent)
     , mController (pController)
-    , _movingItem(nullptr)
     , suspendedMousePressEvent(NULL)
     , mLongPressInterval(1000)
     , mIsDragInProgress(false)
     , mMultipleSelectionIsEnabled(false)
+    , _movingItem(nullptr)
     , bIsControl(isControl)
     , bIsDesktop(isDesktop)
 {
@@ -697,7 +696,6 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
             return false;
         if(currentTool == UBStylusTool::Play)
             return false;
-        Q_FALLTHROUGH();
 
     case UBGraphicsSvgItem::Type:
     case UBGraphicsPixmapItem::Type:
@@ -705,13 +703,11 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
             return true;
         if (item->isSelected())
             return false;
-        Q_FALLTHROUGH();
 
     case UBGraphicsMediaItem::Type:
     case UBGraphicsVideoItem::Type:
     case UBGraphicsAudioItem::Type:
         return true;
-
     case UBGraphicsStrokesGroup::Type:
     case UBGraphicsTextItem::Type:
         if (currentTool == UBStylusTool::Play)
