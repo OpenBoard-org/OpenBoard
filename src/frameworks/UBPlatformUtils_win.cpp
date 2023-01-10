@@ -27,6 +27,8 @@
 
 #define QT_IMPLICIT_QCHAR_CONSTRUCTION
 
+#include <QtPlatformHeaders/QWindowsWindowFunctions>
+
 #include "UBPlatformUtils.h"
 
 #include <QtGui>
@@ -453,8 +455,12 @@ void UBPlatformUtils::showFullScreen(QWidget *pWidget)
     {
         if (pWidget->windowHandle())
         {
-            HWND handle = reinterpret_cast<HWND>(pWidget->windowHandle()->winId());
-            SetWindowLongPtr(handle, GWL_STYLE, (GetWindowLongPtr(handle, GWL_STYLE) | WS_BORDER) & ~WS_POPUP);
+            /*HWND handle = reinterpret_cast<HWND>(pWidget->windowHandle()->winId());
+            SetWindowLongPtr(handle, GWL_STYLE, (GetWindowLongPtr(handle, GWL_STYLE) | WS_BORDER) & ~WS_POPUP);*/
+
+            #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+                QWindowsWindowFunctions::setHasBorderInFullScreen(pWidget->windowHandle(), true);
+            #endif
         }
         pWidget->showFullScreen();
     }
