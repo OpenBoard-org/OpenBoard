@@ -47,6 +47,7 @@ UBDocumentProxy::UBDocumentProxy()
     , mDocumentUpdatedAtLittleEndian("")
     , mNeedsCleanup(true)
     , mLastVisitedIndex(0)
+    , mIsInFavoriteList(false)
 {
     init();
 }
@@ -60,6 +61,7 @@ UBDocumentProxy::UBDocumentProxy(const UBDocumentProxy &rValue) :
     mPageCount = rValue.mPageCount;
     mNeedsCleanup = rValue.mNeedsCleanup;
     mLastVisitedIndex = rValue.mLastVisitedIndex;
+    mIsInFavoriteList = rValue.mIsInFavoriteList;
 }
 
 
@@ -68,6 +70,7 @@ UBDocumentProxy::UBDocumentProxy(const QString& pPersistancePath)
     , mPageDpi(0)
     , mNeedsCleanup(true)
     , mLastVisitedIndex(0)
+    , mIsInFavoriteList(false)
 {
     init();
     setPersistencePath(pPersistancePath);
@@ -107,6 +110,7 @@ UBDocumentProxy* UBDocumentProxy::deepCopy() const
     copy->mIsModified = mIsModified;
     copy->mPageCount = mPageCount;
     copy->mLastVisitedIndex = mLastVisitedIndex;
+    copy->mIsInFavoriteList = mIsInFavoriteList;
 
     return copy;
 }
@@ -119,6 +123,16 @@ int UBDocumentProxy::lastVisitedSceneIndex() const
 void UBDocumentProxy::setLastVisitedSceneIndex(int lastVisitedSceneIndex)
 {
     mLastVisitedIndex = lastVisitedSceneIndex;
+}
+
+bool UBDocumentProxy::isInFavoriteList() const
+{
+    return mIsInFavoriteList;
+}
+
+void UBDocumentProxy::setIsInFavoristeList(bool isInFavoriteList)
+{
+    mIsInFavoriteList = isInFavoriteList;
 }
 
 int UBDocumentProxy::pageCount()
