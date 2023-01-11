@@ -161,6 +161,8 @@ class UBSvgSubsetAdaptor
 
                 void graphicsItemFromSvg(QGraphicsItem* gItem);
 
+                qreal normalizedZValue(bool* hasValue);
+
                 QXmlStreamReader mXmlReader;
                 int mFileVersion;
                 UBDocumentProxy *mProxy;
