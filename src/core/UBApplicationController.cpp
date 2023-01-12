@@ -145,6 +145,8 @@ void UBApplicationController::initViewState(int horizontalPosition, int vertical
 void UBApplicationController::initScreenLayout(bool useMultiscreen)
 {
     UBDisplayManager* displayManager = UBApplication::displayManager;
+    UBBoardController* boardController = UBApplication::boardController;
+
     displayManager->initScreensByRole();
     initPreviousViews();
     displayManager->assignRoles();
@@ -155,6 +157,8 @@ void UBApplicationController::initScreenLayout(bool useMultiscreen)
     displayManager->setDesktopWidget(mUninoteController->drawingView());
 
     displayManager->setUseMultiScreen(useMultiscreen);
+
+    adjustPreviousViews(boardController->activeSceneIndex(), boardController->selectedDocument());
     displayManager->positionScreens();
 }
 
