@@ -162,6 +162,11 @@ copyQtPlugin(){
     fi
 }
 
+removeQtDebugFiles()
+{
+	notifyProgress "removing Qt debug files"
+	find $PACKAGE_QT_DIRECTORY -name "*.debug" -print0 | xargs -0 rm
+}
 
 # ----------------------------------------------------------------------------
 # Copying the application, libs etc. to the temporary working directory
@@ -250,6 +255,8 @@ if $BUNDLE_QT; then
     copyQtLibrary libicuuc
     copyQtLibrary libicui18n
     copyQtLibrary libicudata
+    
+    removeQtDebugFiles
 fi
 
 notifyProgress "Copying Qt translations"
