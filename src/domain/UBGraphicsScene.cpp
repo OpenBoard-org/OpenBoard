@@ -2584,6 +2584,13 @@ void UBGraphicsScene::setNominalSize(const QSize& pSize)
     if (nominalSize() != pSize)
     {
         mNominalSize = pSize;
+        setModified(true);    // modifying the size modifies the scene
+
+        // force redrawing the background
+        foreach(QGraphicsView* view, views())
+        {
+            view->resetCachedContent();
+        }
 
         if(mDocument)
             mDocument->setDefaultDocumentSize(pSize);
