@@ -428,6 +428,7 @@ public slots:
 
     private:
         void setDocumentUpdated();
+        void updateBackground();
         void createEraiser();
         void createPointer();
         void createMarkerCircle();

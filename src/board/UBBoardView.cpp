@@ -29,6 +29,7 @@
 
 #include "UBBoardView.h"
 
+#include <QtGlobal>
 #include <QtGui>
 #include <QtXml>
 #include <QListView>
@@ -92,11 +93,11 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool
     , mIsCreatingTextZone (false)
     , mIsCreatingSceneGrabZone (false)
     , mOkOnWidget(false)
+    , _movingItem(nullptr)
     , suspendedMousePressEvent(NULL)
     , mLongPressInterval(1000)
     , mIsDragInProgress(false)
     , mMultipleSelectionIsEnabled(false)
-    , _movingItem(nullptr)
     , bIsControl(isControl)
     , bIsDesktop(isDesktop)
 {
@@ -117,11 +118,11 @@ UBBoardView::UBBoardView (UBBoardController* pController, QWidget* pParent, bool
 UBBoardView::UBBoardView (UBBoardController* pController, int pStartLayer, int pEndLayer, QWidget* pParent, bool isControl, bool isDesktop)
     : QGraphicsView (pParent)
     , mController (pController)
+    , _movingItem(nullptr)
     , suspendedMousePressEvent(NULL)
     , mLongPressInterval(1000)
     , mIsDragInProgress(false)
     , mMultipleSelectionIsEnabled(false)
-    , _movingItem(nullptr)
     , bIsControl(isControl)
     , bIsDesktop(isDesktop)
 {
@@ -696,6 +697,7 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
             return false;
         if(currentTool == UBStylusTool::Play)
             return false;
+        Q_FALLTHROUGH();
 
     case UBGraphicsSvgItem::Type:
     case UBGraphicsPixmapItem::Type:
@@ -703,10 +705,13 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
             return true;
         if (item->isSelected())
             return false;
+        Q_FALLTHROUGH();
+
     case UBGraphicsMediaItem::Type:
     case UBGraphicsVideoItem::Type:
     case UBGraphicsAudioItem::Type:
         return true;
+
     case UBGraphicsStrokesGroup::Type:
     case UBGraphicsTextItem::Type:
         if (currentTool == UBStylusTool::Play)
@@ -1751,96 +1756,12 @@ void UBBoardView::paintEvent(QPaintEvent *event)
 
 void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
 {
+    // draw the background of the QGraphicsScene
+    QGraphicsView::drawBackground(painter, rect);
+
     if (testAttribute (Qt::WA_TranslucentBackground))
     {
-        QGraphicsView::drawBackground (painter, rect);
         return;
-    }
-
-    bool darkBackground = scene () && scene ()->isDarkBackground ();
-
-    if (darkBackground)
-    {
-        painter->fillRect (rect, QBrush (QColor (Qt::black)));
-    }
-    else
-    {
-        painter->fillRect (rect, QBrush (QColor (Qt::white)));
-    }
-
-    if (transform ().m11 () > 0.5)
-    {
-        QColor bgCrossColor;
-
-        if (darkBackground)
-            bgCrossColor = QColor(UBSettings::settings()->boardCrossColorDarkBackground->get().toString());
-        else
-            bgCrossColor = QColor(UBSettings::settings()->boardCrossColorLightBackground->get().toString());
-
-        if (transform ().m11 () < 0.7)
-        {
-            int alpha = 255 * transform ().m11 () / 2;
-            bgCrossColor.setAlpha (alpha); // fade the crossing on small zooms
-        }
-
-        qreal gridSize = scene()->backgroundGridSize();
-        bool intermediateLines = scene()->intermediateLines();
-
-        painter->setPen (bgCrossColor);
-
-        if (scene () && scene ()->pageBackground() == UBPageBackground::crossed)
-        {
-            qreal firstY = ((int) (rect.y () / gridSize)) * gridSize;
-
-            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += gridSize)
-            {
-                painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
-            }
-
-            qreal firstX = ((int) (rect.x () / gridSize)) * gridSize;
-
-            for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += gridSize)
-            {
-                painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
-            }
-
-            if (intermediateLines) {
-                QColor intermediateColor = bgCrossColor;
-                intermediateColor.setAlphaF(0.5 * bgCrossColor.alphaF());
-                painter->setPen(intermediateColor);
-
-                for (qreal yPos = firstY - gridSize/2; yPos < rect.y () + rect.height (); yPos += gridSize)
-                {
-                    painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
-                }
-
-                for (qreal xPos = firstX - gridSize/2; xPos < rect.x () + rect.width (); xPos += gridSize)
-                {
-                    painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
-                }
-            }
-        }
-
-        if (scene() && scene()->pageBackground() == UBPageBackground::ruled)
-        {
-            qreal firstY = ((int) (rect.y () / gridSize)) * gridSize;
-
-            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += gridSize)
-            {
-                painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
-            }
-
-            if (intermediateLines) {
-                QColor intermediateColor = bgCrossColor;
-                intermediateColor.setAlphaF(0.5 * bgCrossColor.alphaF());
-                painter->setPen(intermediateColor);
-
-                for (qreal yPos = firstY - gridSize/2; yPos < rect.y () + rect.height (); yPos += gridSize)
-                {
-                    painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
-                }
-            }
-        }
     }
 
     if (!mFilterZIndex && scene ())
@@ -1858,7 +1779,7 @@ void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
 
             QColor docSizeColor;
 
-            if (darkBackground)
+            if (scene ()->isDarkBackground ())
                 docSizeColor = UBSettings::documentSizeMarkColorDarkBackground;
             else
                 docSizeColor = UBSettings::documentSizeMarkColorLightBackground;
