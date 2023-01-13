@@ -107,7 +107,7 @@ class UBPreferencesController : public QObject
         void setPdfZoomBehavior(bool checked);
 
     private slots:
-        void adjustScreens();
+        void adjustScreensPreferences();
 
     private:
         static qreal sSliderRatio;

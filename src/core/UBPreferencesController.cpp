@@ -90,8 +90,9 @@ UBPreferencesController::UBPreferencesController(QWidget *parent)
     mPreferencesWindow = new UBPreferencesDialog(this,parent, Qt::Dialog);
     mPreferencesUI = new Ui::preferencesDialog();  // deleted in destructor
     mPreferencesUI->setupUi(mPreferencesWindow);
+    adjustScreensPreferences();
 
-    connect(UBApplication::displayManager, &UBDisplayManager::availableScreenCountChanged, this, &UBPreferencesController::adjustScreens);
+    connect(UBApplication::displayManager, &UBDisplayManager::availableScreenCountChanged, this, &UBPreferencesController::adjustScreensPreferences);
     wire();
 }
 
@@ -107,7 +108,7 @@ UBPreferencesController::~UBPreferencesController()
     delete mMarkerProperties;
 }
 
-void UBPreferencesController::adjustScreens()
+void UBPreferencesController::adjustScreensPreferences()
 {
     bool enabled = UBApplication::displayManager->numScreens() > 1;
     mPreferencesUI->multiDisplayGroupBox->setEnabled(enabled);
