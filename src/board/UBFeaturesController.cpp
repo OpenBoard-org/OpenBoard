@@ -667,11 +667,12 @@ void UBFeaturesController::addToFavorite(const QUrl &path, const QString &name ,
 
 void UBFeaturesController::removeFromFavorite( const QUrl &path, bool deleteManualy)
 {
-    if ( favoriteSet->find( path ) != favoriteSet->end() )
+    if (favoriteSet->remove(path)) //false if the path was not found
     {
-        favoriteSet->erase( favoriteSet->find( path ) );
         saveFavoriteList();
     }
+
+    recentlyOpenDocuments.remove(path);
 
     if (deleteManualy) {
         featuresModel->deleteFavoriteItem(path.toString());
