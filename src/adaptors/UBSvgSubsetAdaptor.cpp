@@ -543,11 +543,12 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                 strokesGroup = new UBGraphicsStrokesGroup();
                 graphicsItemFromSvg(strokesGroup);
 
-                auto ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value");
+                bool hasZValue;
+                qreal zValue = normalizedZValue(&hasZValue);
 
-                if (!ubZValue.isNull())
+                if (hasZValue)
                 {
-                    mGroupZIndex = ubZValue.toString().toFloat();
+                    mGroupZIndex = zValue;
                     mGroupHasInfo = true;
                 }
 
@@ -1943,13 +1944,14 @@ QList<UBGraphicsPolygonItem*> UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItem
         brushColor.setAlphaF(opacity);
     }
 
-    auto ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value");
+    bool hasZValue;
+    qreal zValue = normalizedZValue(&hasZValue);
 
-    qreal zValue = mGroupZIndex;
-    if (!ubZValue.isNull())
+    if (!hasZValue)
     {
-        zValue = ubZValue.toString().toFloat();
+        zValue = mGroupZIndex;
     }
+
 
     QColor colorOnDarkBackground = mGroupDarkBackgroundColor;
 
@@ -2344,14 +2346,11 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
         }
     }
 
-    auto ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value");
+    bool hasZValue;
+    qreal zValue = normalizedZValue(&hasZValue);
 
-    if (!ubZValue.isNull()){
-        // FIX
-        // In the firsts zvalue implemenations values outside the boudaries have been used.
-        // No boundaries specified on documentation but to small values are not correctly handled.
-        qreal zValue = ubZValue.toString().toFloat();
-        while(zValue < -999999) zValue /= 10.;
+    if (hasZValue)
+    {
         UBGraphicsItem::assignZValue(gItem, zValue);
     }
 
@@ -2398,6 +2397,32 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
         if (ok)
             gItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(layerAsInt));
     }
+}
+
+qreal UBSvgSubsetAdaptor::UBSvgSubsetReader::normalizedZValue(bool* hasValue)
+{
+    auto ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value");
+    qreal zValue = 0;
+
+    if (!ubZValue.isNull())
+    {
+        zValue = ubZValue.toFloat(hasValue);
+
+        // FIX: In the first zvalue implemenations values outside of the boudaries have been used.
+        // No boundaries specified on documentation but too small values are not correctly handled.
+        // Note: zValue could even be -inf, so we're better off with some arbitrary value instead
+        // of doing any calculations.
+        if (zValue < -999999)
+        {
+            zValue = -999999;
+        }
+    }
+    else
+    {
+        *hasValue = false;
+    }
+
+    return zValue;
 }
 
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsItemToSvg(QGraphicsItem* item)

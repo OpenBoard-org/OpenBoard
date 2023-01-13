@@ -319,6 +319,15 @@ void UBDisplayManager::adjustScreens()
 
 void UBDisplayManager::positionScreens()
 {
+    // static event filter object
+    static class : public QObject {
+    public:
+        virtual bool eventFilter(QObject* watched, QEvent* event) override
+        {
+            return event->type() == QEvent::Resize || QObject::eventFilter(watched, event);
+        }
+    } resizeEventFilter;
+
     qDebug() << "positionScreens";
     if (widget(ScreenRole::Desktop) && hasControl())
     {
@@ -329,12 +338,6 @@ void UBDisplayManager::positionScreens()
     if (widget(ScreenRole::Control) && hasControl())
     {
         QWidget* controlWidget = widget(ScreenRole::Control);
-
-        // Sometimes moving control screen to the left won't operate...
-        // found out that resetting the geometry solves theses cases better than "showNormal() workaround"
-        // however there are cases when "showNormal()" is required to update control screen position, so doing both
-        controlWidget->showNormal();
-        controlWidget->setGeometry(QRect());
 
         QRect geometry = screenGeometry(ScreenRole::Control);
 
@@ -365,6 +368,16 @@ void UBDisplayManager::positionScreens()
                 controlWidget->setProperty("isInitialized", true);
             }
         }
+
+        // Sometimes moving control screen to the left won't operate...
+        // found out that resetting the geometry solves theses cases better than "showNormal() workaround"
+        // however there are cases when "showNormal()" is required to update control screen position, so doing both
+        controlWidget->showNormal();
+
+        // suppress resize events while resetting geometry
+        UBApplication::boardController->controlView()->installEventFilter(&resizeEventFilter);
+        controlWidget->setGeometry(QRect());
+        UBApplication::boardController->controlView()->removeEventFilter(&resizeEventFilter);
 
         qDebug() << "control geometry" << geometry;
         controlWidget->setGeometry(geometry);
