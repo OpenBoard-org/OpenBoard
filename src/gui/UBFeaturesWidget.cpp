@@ -1420,7 +1420,8 @@ bool UBFeaturesSearchProxyModel::filterAcceptsRow( int sourceRow, const QModelIn
             || feature.getType() == FEATURE_ITEM
             || feature.getType() == FEATURE_AUDIO
             || feature.getType() == FEATURE_VIDEO
-            || feature.getType() == FEATURE_IMAGE;
+            || feature.getType() == FEATURE_IMAGE
+            || feature.getType() == FEATURE_DOCUMENT;
 
     return isFile
             && feature.getFullVirtualPath().contains(mFilterPrefix)
