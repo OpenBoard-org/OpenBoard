@@ -161,15 +161,16 @@ int main(int argc, char *argv[])
         }
     }
 
-    qDebug() << "file name argument" << fileToOpen;
-    int result = app.exec(fileToOpen);
+    int result = 0;
+    if (app.isPrimary())
+    {
+        qDebug() << "file name argument" << fileToOpen;
+        result = app.exec(fileToOpen);
+    }
 
     app.cleanup();
 
     qDebug() << "application is quitting";
 
-
-
     return result;
-
 }
