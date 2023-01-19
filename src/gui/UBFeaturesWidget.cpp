@@ -83,7 +83,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
     layout->addWidget(centralWidget);
     layout->addWidget(mActionBar);
 
-    connect(centralWidget->listView(), SIGNAL(clicked(const QModelIndex &)), this, SLOT(currentSelected(const QModelIndex &)));
+    connect(centralWidget->listView(), SIGNAL(pressed(const QModelIndex &)), this, SLOT(currentSelected(const QModelIndex &)));
     connect(this, SIGNAL(sendFileNameList(QStringList)), centralWidget, SIGNAL(sendFileNameList(QStringList)));
     connect(mActionBar, SIGNAL(searchElement(const QString &)), this, SLOT( searchStarted(const QString &)));
     connect(mActionBar, SIGNAL(newFolderToCreate()), this, SLOT(createNewFolder()));
@@ -93,7 +93,7 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
     connect(mActionBar, SIGNAL(removeElementsFromFavorite()), this, SLOT (removeElementsFromFavorite()));
 
     connect(mActionBar, SIGNAL(rescanModel()), this, SLOT(rescanModel()));
-    connect(pathListView, SIGNAL(clicked(const QModelIndex &)), this, SLOT(currentSelected(const QModelIndex &)));
+    connect(pathListView, SIGNAL(pressed(const QModelIndex &)), this, SLOT(currentSelected(const QModelIndex &)));
     connect(UBApplication::boardController, SIGNAL(displayMetadata(QMap<QString,QString>)), this, SLOT(onDisplayMetadata( QMap<QString,QString>)));
     connect(UBDownloadManager::downloadManager(), SIGNAL( addDownloadedFileToLibrary( bool, QUrl, QString, QByteArray, QString))
              , this, SLOT(onAddDownloadedFileToLibrary(bool, QUrl, QString,QByteArray, QString)));
