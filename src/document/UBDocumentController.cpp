@@ -3112,51 +3112,55 @@ void UBDocumentController::importFile()
     QString defaultPath = UBSettings::settings()->lastImportFilePath->get().toString();
     if(defaultPath.isDetached())
         defaultPath = UBSettings::settings()->userDocumentDirectory();
-    QString filePath = QFileDialog::getOpenFileName(mParentWidget, tr("Open Supported File"),
+    QStringList filePaths = QFileDialog::getOpenFileNames(mParentWidget, tr("Open Supported File(s)"),
                                                     defaultPath, docManager->importFileFilter());
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     QApplication::processEvents();
-    QFileInfo fileInfo(filePath);
 
-    if (fileInfo.suffix().toLower() == "ubx")
+    for (auto& filePath : filePaths)
     {
-        UBApplication::boardController->ClearUndoStack();
+        QFileInfo fileInfo(filePath);
 
-        UBPersistenceManager::persistenceManager()->createDocumentProxiesStructure(docManager->importUbx(filePath, UBSettings::userDocumentDirectory()), true);
-
-        emit documentThumbnailsUpdated(this); // some documents might have been overwritten while not having the same page count
-
-    } else {
-        UBSettings::settings()->lastImportFilePath->set(QVariant(fileInfo.absolutePath()));
-
-        if (filePath.length() > 0)
+        if (fileInfo.suffix().toLower() == "ubx")
         {
-            UBDocumentProxy* createdDocument = 0;
-            QApplication::processEvents();
-            QFile selectedFile(filePath);
+            UBApplication::boardController->ClearUndoStack();
 
-            UBDocumentTreeModel *docModel = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel;
+            UBPersistenceManager::persistenceManager()->createDocumentProxiesStructure(docManager->importUbx(filePath, UBSettings::userDocumentDirectory()), true);
 
-            QModelIndex selectedIndex = firstSelectedTreeIndex();
-            QString groupName = "";
-            if (selectedIndex.isValid())
+            emit documentThumbnailsUpdated(this); // some documents might have been overwritten while not having the same page count
+
+        } else {
+            UBSettings::settings()->lastImportFilePath->set(QVariant(fileInfo.absolutePath()));
+
+            if (filePath.length() > 0)
             {
-                groupName = docModel->isCatalog(selectedIndex)
-                    ? docModel->virtualPathForIndex(selectedIndex)
-                    : docModel->virtualDirForIndex(selectedIndex);
-            }
+                UBDocumentProxy* createdDocument = 0;
+                QApplication::processEvents();
+                QFile selectedFile(filePath);
 
-            showMessage(tr("Importing file %1...").arg(fileInfo.baseName()), true);
+                UBDocumentTreeModel *docModel = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel;
 
-            createdDocument = docManager->importFile(selectedFile, groupName);
+                QModelIndex selectedIndex = firstSelectedTreeIndex();
+                QString groupName = "";
+                if (selectedIndex.isValid())
+                {
+                    groupName = docModel->isCatalog(selectedIndex)
+                        ? docModel->virtualPathForIndex(selectedIndex)
+                        : docModel->virtualDirForIndex(selectedIndex);
+                }
 
-            if (createdDocument) {
-                selectDocument(createdDocument, true, true, true);
-                pageSelectionChanged();
+                showMessage(tr("Importing file %1...").arg(fileInfo.baseName()), true);
 
-            } else {
-                showMessage(tr("Failed to import file ... "));
+                createdDocument = docManager->importFile(selectedFile, groupName);
+
+                if (createdDocument) {
+                    selectDocument(createdDocument, true, true, true);
+                    pageSelectionChanged();
+
+                } else {
+                    showMessage(tr("Failed to import file ... "));
+                }
             }
         }
     }
