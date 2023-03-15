@@ -632,7 +632,7 @@ QString UBFeaturesController::adjustName(const QString &str)
 void UBFeaturesController::addToFavorite(const QUrl &path, const QString &name , bool temporaryAdded)
 {
     QString filePath = fileNameFromUrl( path );
-    if (!isInFavoriteList(path) && !isInRecentlyOpenDocuments(path))
+    if (!isInFavoriteList(path))
     {
         QFileInfo fileInfo( filePath );
         QString fileName = fileInfo.fileName();
@@ -655,7 +655,8 @@ void UBFeaturesController::addToFavorite(const QUrl &path, const QString &name ,
         }
         else
         {
-            recentlyOpenDocuments.insert(path);
+            if (!isInRecentlyOpenDocuments(path))
+                recentlyOpenDocuments.insert(path);
         }
 
         if ( !elem.getVirtualPath().isEmpty() && !elem.getVirtualPath().isNull())
