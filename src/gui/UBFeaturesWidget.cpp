@@ -178,7 +178,10 @@ void UBFeaturesWidget::currentSelected(const QModelIndex &current)
     }
 
     mActionBar->updateButtons(feature);
-    mActionBar->cleanText();
+    if ( feature.isFolder() )
+    {
+        mActionBar->cleanText();
+    }
 }
 
 void UBFeaturesWidget::createNewFolder()
