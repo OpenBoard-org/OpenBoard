@@ -1465,7 +1465,7 @@
     <string>Import Page</string>
    </property>
    <property name="toolTip">
-    <string>Import an External Page</string>
+    <string>Import one or more pages (supported formats : jpg, png, svg, ubz, pdf)</string>
    </property>
   </action>
   <action name="actionPodcastPause">
