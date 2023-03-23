@@ -58,6 +58,7 @@
 
 #include "gui/UBScreenMirror.h"
 #include "gui/UBMainWindow.h"
+#include "gui/UBStartupHintsPalette.h"
 
 #include "domain/UBGraphicsPixmapItem.h"
 

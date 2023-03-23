@@ -69,6 +69,7 @@ class UBBoardPaletteManager : public QObject
         UBStylusPalette* stylusPalette(){return mStylusPalette;}
         UBActionPalette *addItemPalette() {return mAddItemPalette;}
         UBFeaturesWidget *featuresWidget() { return mpFeaturesWidget; }
+        UBStartupHintsPalette *tipsPalette() { return mTipPalette; }
         void showVirtualKeyboard(bool show = true);
         void initPalettesPosAtStartup();
         void refreshPalettes();

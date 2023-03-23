@@ -1,0 +1,82 @@
+html, body{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    overflow: hidden;
+}
+
+body{
+    background-color: #aaaaaa;
+}
+
+#main{
+    background-color: #eeeeee;
+    width: 99%;
+    margin: 0px;
+    margin-left:1px;
+    padding: 0px;
+    height: 99%;
+    border-color:#999999;
+    border-width:2px;
+    border-radius:10px;
+    border-style:solid;
+}
+
+#content{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    height: 90%;
+}
+
+iframe{
+    border: none;
+    padding: 5px;
+}
+
+#separator{
+    width: 96%;
+    margin: 0 auto;
+    border: 2px solid #ccc;
+}
+
+#controls{
+    height: 30px;
+}
+
+#navigation{
+    margin-left: 10px;
+    height: 100%;
+    float: left;
+    margin-top: 5px;
+}
+
+#left{
+    width: 30px;
+    height: 30px;
+    background-image: url(../images/left.png);
+    cursor: pointer;
+    float: left;
+}
+
+#right{
+    width: 30px;
+    height: 30px;
+    background-image: url(../images/right.png);
+    cursor: pointer;
+    float: right;
+}
+
+#title{
+    width: 250px;
+    height: 100%;
+    float: left;
+    margin: 0 5px;
+    text-align: center;
+    vertical-align: middle;
+    display: table;
+    user-select: none;
+}
+        

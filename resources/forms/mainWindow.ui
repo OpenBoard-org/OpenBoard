@@ -1707,6 +1707,19 @@
     <string>Add Document to favorites</string>
    </property>
   </action>
+  <action name="actionHintsAndTips">
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/toolbar/tip.png</normaloff>:/images/toolbar/tip.png</iconset>
+   </property>
+   <property name="text">
+    <string>Hints and tips</string>
+   </property>
+   <property name="toolTip">
+    <string>Open Hints and tips</string>
+   </property>
+  </action>
+
  </widget>
  <resources>
   <include location="../OpenBoard.qrc"/>

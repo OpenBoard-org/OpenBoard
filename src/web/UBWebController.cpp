@@ -54,6 +54,7 @@
 #include "gui/UBMainWindow.h"
 #include "gui/UBWebToolsPalette.h"
 #include "gui/UBKeyboardPalette.h"
+#include "gui/UBStartupHintsPalette.h"
 
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
@@ -82,6 +83,7 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
     , mDownloadViewIsVisible(false)
 {
     connect(mMainWindow->actionOpenTutorial, SIGNAL(triggered()), this, SLOT(onOpenTutorial()));
+    connect(mMainWindow->actionHintsAndTips, SIGNAL(triggered()), this, SLOT(onHintsAndTips()));
 
     bool privateBrowsing = UBSettings::settings()->webPrivateBrowsing->get().toBool();
     qDebug() << "Private browsing" << privateBrowsing;
@@ -831,6 +833,11 @@ void UBWebController::onEmbedParsed(QWebEngineView *view, bool hasEmbeddedConten
 void UBWebController::onOpenTutorial()
 {
     loadUrl(QUrl(UBSettings::settings()->tutorialUrl->get().toString()));
+}
+
+void UBWebController::onHintsAndTips()
+{
+    UBApplication::boardController->paletteManager()->tipsPalette()->show();
 }
 
 void UBWebController::captureStripe(QPointF pos, QSize size, QPixmap* pix, QPointF scrollPosition)

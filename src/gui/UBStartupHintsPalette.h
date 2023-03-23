@@ -37,6 +37,7 @@ class QHBoxLayout;
 
 #include "UBFloatingPalette.h"
 #include "api/UBWidgetUniboardAPI.h"
+#include "domain/UBWebEngineView.h"
 
 class UBStartupHintsPalette : public UBFloatingPalette
 {
@@ -62,7 +63,7 @@ private:
     QVBoxLayout* mLayout;
     QHBoxLayout* mButtonLayout;
     UBWidgetUniboardAPI *mpSankoreAPI;
-    QWebEngineView* mpWebView;
+    UBWebEngineView* mpWebView;
 
 private slots:
     void onShowNextTimeStateChanged(int state);

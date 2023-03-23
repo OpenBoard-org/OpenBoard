@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	<title>Applications</title>
+     <link rel="stylesheet" href="css/style.css" type="text/css">
+     <meta name="viewport" content="width=device-width" />
+</head>
+
+<body>
+	<header>
+		<h1 class="title">Applications</h1>
+	</header>
+	<main>
+		<p>OpenBoard propose différentes applications et outils. Vous pouvez y accéder en cliquant sur <span class="icon"><img src="assets/common/ApplicationsCategory.png" alt=""></span> dans la bibliothèque OpenBoard</p>
+		<h3>Applications par défaut</h3>
+		<p>Vous y trouverez des outils géométriques, une calculatrice, Google Map, un générateur de code QR codeet bien plus ! Combinez les pour créer des expériences pédagogiques stimulantes !</p>
+		<div class="image"><img src="assets/hint10/application-gif1.gif" alt=""></div>
+		<h3>Créez des applications</h3>
+		<p>Comme expliqué dans la section Mode Web, vous pouvez créer une application depuis un site, en utilisant le navigateur interne, ou en copiant-collant une URL sur le tableau.</p>
+		<p>Grâce à cela, vous pouvez agrémenter vos cours avec des outils en ligne puissants utilisable directement sur le tableau ! Voici quelques illustrations d'applications intéressantes (Glissez-déposez les sur le tableau pour les tester !) : </p>
+		<ul>
+			<li><a class="non-clickable" href="https://scratch.mit.edu/">Scratch</a></li>
+			<li><a class="non-clickable" href="https://phet.colorado.edu">Les simulations PhET</a></li>
+			<li><a class="non-clickable" href="https://earth.google.com/web">Google Earth</a></li>
+			<li><a class="non-clickable" href="https://www.cam-recorder.com/">Cam Recorder</a></li>
+			<li><a class="non-clickable" href="https://flockmod.com">Flockmod</a></li>
+			<li><a class="non-clickable" href="https://www.duolingo.com/">Duolingo</a></li>
+		</ul>
+		
+		<p>... et bien plus !</p>
+		
+		<span class="tip"><span class="icon"><img src="assets/common/tip.png" alt=""></span>Vous avez besoin d'une calculatrice plus puissante que celle fournie par défaut dans OpenBoard ? Souvenez-vous ! Vous pouvez créer vos propres applications ! Glissez-déposez le lien suivant sur votre tableau : <a class="non-clickable" href="https://ti89-simulator.com/">https://ti89-simulator.com/</a></span>
+	</main>
+	<footer>
+
+	</footer>
+	<script>
+		document.querySelectorAll('.non-clickable').forEach(e => e.addEventListener('click', e => {
+			e.stopPropagation();
+			e.preventDefault();
+		}));
+	</script>
+</body>
+</html>

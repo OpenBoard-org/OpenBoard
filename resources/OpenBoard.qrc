@@ -391,5 +391,6 @@
         <file>images/openboard-document.png</file>
         <file>images/addToFavorites.png</file>
         <file>images/removeFromFavorites.png</file>
+        <file>images/toolbar/tip.png</file>
     </qresource>
 </RCC>

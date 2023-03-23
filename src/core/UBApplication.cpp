@@ -58,6 +58,7 @@
 #include "gui/UBMainWindow.h"
 #include "gui/UBResources.h"
 #include "gui/UBThumbnailWidget.h"
+#include "gui/UBStartupHintsPalette.h"
 
 #include "ui_mainWindow.h"
 
@@ -404,6 +405,11 @@ int UBApplication::exec(const QString& pFileToImport)
     else
         applicationController->showBoard();
 
+    if(UBSettings::settings()->appStartupHintsEnabled->get().toBool())
+    {
+        UBApplication::boardController->paletteManager()->tipsPalette()->show();
+    }
+
     emit UBDrawingController::drawingController()->colorPaletteChanged();
 
     onScreenCountChanged(displayManager->numScreens());
@@ -564,6 +570,7 @@ void UBApplication::decorateActionMenu(QAction* action)
 
             menu->addSeparator();
             menu->addAction(mainWindow->actionOpenTutorial);
+            menu->addAction(mainWindow->actionHintsAndTips);
             menu->addSeparator();
             menu->addAction(mainWindow->actionPreferences);
             menu->addAction(mainWindow->actionMultiScreen);
