@@ -14,7 +14,7 @@ VERSION_MAJ = 1
 VERSION_MIN = 7
 VERSION_PATCH = 0
 VERSION_TYPE = a # a = alpha, b = beta, rc = release candidate, r = release, other => error
-VERSION_BUILD = 0225
+VERSION_BUILD = 230314
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$${VERSION_BUILD}"
 
@@ -184,7 +184,7 @@ macx {
    equals(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 14) {
       LIBS += "-L../OpenBoard-ThirdParty/quazip/lib/macx" "-lquazip"
    } else {
-       LIBS += -L/usr/local/opt/quazip/lib -lquazip1-qt6
+       LIBS += -L/usr/local/lib -lquazip5
    }
    LIBS += -L/opt/local/lib
    INCLUDEPATH += /usr/local/opt/openssl/include
@@ -192,17 +192,18 @@ macx {
    equals(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 14) {
        INCLUDEPATH += ../OpenBoard-ThirdParty/quazip/quazip-0.7.1
    } else {
-       INCLUDEPATH += /usr/local/opt/quazip/include/quazip
+       INCLUDEPATH += /opt/local/include/quazip5
    }
 
    LIBS        += -L/opt/local/lib -lpoppler
    INCLUDEPATH += /opt/local/include/poppler
 
-   CONFIG += x86_64
-   CONFIG += arm64
-
    QMAKE_MAC_SDK = macosx
    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.15
+
+   # For universal builds
+   # QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64"
+   QMAKE_APPLE_DEVICE_ARCHS = arm64
 
    QMAKE_CXXFLAGS += -Wno-overloaded-virtual
    #VERSION_RC_PATH = "$$BUILD_DIR/version_rc"
