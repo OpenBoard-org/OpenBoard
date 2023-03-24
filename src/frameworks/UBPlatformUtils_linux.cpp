@@ -55,7 +55,8 @@ void UBPlatformUtils::init()
 QString UBPlatformUtils::applicationResourcesDirectory()
 {
 #ifdef APP_PREFIX
-    return QProcessEnvironment::systemEnvironment().value("APP_PREFIX", APP_PREFIX);
+    QString prefix = QProcessEnvironment::systemEnvironment().value("APP_PREFIX", APP_PREFIX);
+    return QFileInfo(prefix).absoluteFilePath();
 #else
     return QApplication::applicationDirPath();
 #endif
@@ -64,7 +65,8 @@ QString UBPlatformUtils::applicationResourcesDirectory()
 QString UBPlatformUtils::applicationEtcDirectory()
 {
 #ifdef ETC_PREFIX
-    return QProcessEnvironment::systemEnvironment().value("ETC_PREFIX", ETC_PREFIX);
+    QString prefix = QProcessEnvironment::systemEnvironment().value("ETC_PREFIX", ETC_PREFIX);
+    return QFileInfo(prefix).absoluteFilePath();
 #else
     return applicationResourcesDirectory() + "/etc";
 #endif
