@@ -1172,9 +1172,12 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         if(pData.length() == 0){
             pix.load(sourceUrl.toLocalFile());
         }
-        else{
-            QImage img;
-            img.loadFromData(pData);
+        else
+        {
+            QBuffer buffer(&pData);
+            QImageReader rdr(&buffer);
+            rdr.setAutoTransform(true);
+            QImage img = rdr.read();
             pix = QPixmap::fromImage(img);
         }
 
