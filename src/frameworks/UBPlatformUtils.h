@@ -219,6 +219,24 @@ public:
 #endif
 };
 
+#ifdef Q_OS_LINUX
+#include <QDBusConnection>
+
+class OnboardListener : public QObject
+{
+    Q_OBJECT
+
+public:
+    OnboardListener(const QDBusConnection& connection, QObject* parent = nullptr);
+
+public slots:
+    void onboardPropertiesChanged(QString interface, QMap<QString, QVariant> properties) const;
+
+private:
+    QDBusConnection mConnection;
+};
+
+#endif
 
 
 #endif /* UBPLATFORMUTILS_H_ */
