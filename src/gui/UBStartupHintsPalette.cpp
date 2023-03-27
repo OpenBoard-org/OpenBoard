@@ -59,7 +59,6 @@ UBStartupHintsPalette::UBStartupHintsPalette(QWidget *parent) :
     mpWebView->page()->setWebChannel(channel);
     mpWebView->page()->webChannel()->registerObject("sankore", mpSankoreAPI);
     UBWebController::injectScripts(mpWebView);
-    connect(mpWebView->page(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(javaScriptWindowObjectCleared()));
     mpWebView->setUrl(QUrl::fromLocalFile(url));
     mpWebView->setAcceptDrops(false);
     mLayout->addWidget(mpWebView);
@@ -122,9 +121,4 @@ void UBStartupHintsPalette::showEvent(QShowEvent *event)
 int UBStartupHintsPalette::border()
 {
     return 40;
-}
-
-void UBStartupHintsPalette::javaScriptWindowObjectCleared()
-{
-    mpWebView->page()->webChannel()->registerObject("sankore", mpSankoreAPI);
 }

@@ -67,7 +67,6 @@ private:
 
 private slots:
     void onShowNextTimeStateChanged(int state);
-    void javaScriptWindowObjectCleared();
 };
 
 #endif // UBSTARTUPTIPSPALETTE_H
