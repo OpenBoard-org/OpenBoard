@@ -265,6 +265,11 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         // in PDF browser, browsed document URL is available in the query
         contentUrl = pageUrl.query();
     }
+    else if (pageUrl.path().endsWith(".pdf", Qt::CaseInsensitive))
+    {
+        //cases where pageUrl query is empty and pageUrl scheme not "chrome-extension" but "http" or "https"
+        contentUrl = pageUrl.toString();
+    }
     else if (linkUrl.path().endsWith(".pdf", Qt::CaseInsensitive))
     {
         // on PDF link
