@@ -734,15 +734,20 @@ void UBApplicationController::importFile(const QString& pFilePath)
         {
             if (UBApplication::boardController)
             {
-                UBApplication::boardController->setActiveDocumentScene(document, 0);
-                showBoard();
+                UBApplication::boardController->setActiveDocumentScene(document, 0, true, true);
             }
         }
         else if (mMainMode == Document)
         {
             if (UBApplication::documentController)
-                UBApplication::documentController->selectDocument(document);
+            {
+                UBApplication::documentController->selectDocument(document, true, true);
+            }
         }
+
+        // This import operation happens when double-clicking on a UBZ for example.
+        // The document is added and set as current document, so the user probably wants to see it immediately.
+        showBoard();
     }
 }
 
