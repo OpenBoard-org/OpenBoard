@@ -85,6 +85,7 @@ class XPDFRenderer : public PDFRenderer
         virtual int pageCount() const override;
         virtual QSizeF pageSizeF(int pageNumber) const override;
         virtual int pageRotation(int pageNumber) const override;
+        virtual QSizeF pointSizeF(int pageNumber) const override;
         virtual QString title() const override;
         virtual void render(QPainter *p, int pageNumber, const bool cacheAllowed, const QRectF &bounds = QRectF()) override;
 

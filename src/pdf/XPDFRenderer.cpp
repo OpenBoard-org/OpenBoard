@@ -196,25 +196,7 @@ QString XPDFRenderer::title() const
 
 QSizeF XPDFRenderer::pageSizeF(int pageNumber) const
 {
-    qreal cropWidth = 0;
-    qreal cropHeight = 0;
-
-    if (isValid())
-    {
-        int rotate = mDocument->getPageRotate(pageNumber);
-
-        cropWidth = mDocument->getPageCropWidth(pageNumber) * this->dpiForRendering / 72.0;
-        cropHeight = mDocument->getPageCropHeight(pageNumber) * this->dpiForRendering / 72.0;
-
-        if (rotate == 90 || rotate == 270)
-        {
-            //switching width and height
-            qreal tmpVar = cropWidth;
-            cropWidth = cropHeight;
-            cropHeight = tmpVar;
-        }
-    }
-    return QSizeF(cropWidth, cropHeight);
+    return pointSizeF(pageNumber) * this->dpiForRendering / 72.0;
 }
 
 
@@ -224,6 +206,28 @@ int XPDFRenderer::pageRotation(int pageNumber) const
         return  mDocument->getPageRotate(pageNumber);
     else
         return 0;
+}
+
+QSizeF XPDFRenderer::pointSizeF(int pageNumber) const
+{
+    qreal cropWidth = 0;
+    qreal cropHeight = 0;
+
+    if (isValid())
+    {
+        int rotate = mDocument->getPageRotate(pageNumber);
+
+        cropWidth = mDocument->getPageCropWidth(pageNumber);
+        cropHeight = mDocument->getPageCropHeight(pageNumber);
+
+        if (rotate == 90 || rotate == 270)
+        {
+            //switching width and height
+            std::swap(cropWidth, cropHeight);
+        }
+    }
+
+    return QSizeF(cropWidth, cropHeight);
 }
 
 

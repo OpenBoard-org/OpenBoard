@@ -2571,6 +2571,25 @@ QSize UBGraphicsScene::sceneSize()
         return nominalSize();
 }
 
+QSizeF UBGraphicsScene::sceneSizeF() const
+{
+    UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(backgroundObject());
+
+    if (pdfItem)
+    {
+        QRectF targetRect = pdfItem->sceneBoundingRect();
+        return targetRect.size();
+    }
+    else if (mDocument && !mNominalSize.isValid())
+    {
+        return mDocument->defaultDocumentSize();
+    }
+    else
+    {
+        return mNominalSize;
+    }
+}
+
 void UBGraphicsScene::setNominalSize(const QSize& pSize)
 {
     if (nominalSize() != pSize)
