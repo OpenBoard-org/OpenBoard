@@ -1520,10 +1520,10 @@
      <normalon>:/images/extraPalette/webTrapEnabled.png</normalon>:/images/extraPalette/webTrap.png</iconset>
    </property>
    <property name="text">
-    <string>Web Trap</string>
+    <string>Capture Web Content</string>
    </property>
    <property name="toolTip">
-    <string>Trap Web Content</string>
+    <string>Capture Web Content</string>
    </property>
   </action>
   <action name="actionWebCustomCapture">
