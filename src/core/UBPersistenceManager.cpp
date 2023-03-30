@@ -357,24 +357,28 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
                     int i = docList.indexOf(resultName);
                     if (i != -1)
                     { //replace
-                        if (UBApplication::boardController->selectedDocument() == pProxy)
-                            UBApplication::boardController->activeScene()->getFastAccessItems().clear();
+                        QModelIndex replacedIndex = mDocumentTreeStructureModel->index(i, 0, parentIndex);
+                        UBDocumentProxy *replacedProxy = mDocumentTreeStructureModel->proxyData(replacedIndex);
 
-                        QModelIndex replaceIndex = mDocumentTreeStructureModel->index(i, 0, parentIndex);
-                        UBDocumentProxy *replaceProxy = mDocumentTreeStructureModel->proxyData(replaceIndex);
-
-                        if (mDocumentTreeStructureModel->currentIndex() == replaceIndex)
+                        // if current scene in Board Mode is being replaced
+                        if (replacedProxy == UBApplication::boardController->selectedDocument())
                         {
-                            if (pProxy->pageCount() > 0)
-                            {
-                                UBApplication::documentController->selectDocument(pProxy, true, true);
-                            }
+                            UBApplication::boardController->setActiveDocumentScene(pProxy, UBApplication::boardController->activeSceneIndex(), true, true);
                         }
 
-                        if (replaceProxy) {
-                            deleteDocument(replaceProxy);
+                        // create new index before trying to select it (if avtive index)
+                        mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
+
+                        // if selected document in Document Mode is being replaced
+                        if (mDocumentTreeStructureModel->currentIndex() == replacedIndex)
+                        {
+                            UBApplication::documentController->selectDocument(pProxy, true, true);
                         }
-                        if (replaceIndex.isValid()) {
+
+                        if (replacedProxy) {
+                            deleteDocument(replacedProxy);
+                        }
+                        if (replacedIndex.isValid()) {
                             mDocumentTreeStructureModel->removeRow(i, parentIndex);
                         }
                     }
@@ -384,7 +388,6 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
                         pProxy->setMetaData(UBSettings::documentName, resultName);
                         UBMetadataDcSubsetAdaptor::persist(pProxy);
                     }
-                    mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
 
                     if (replaceDialog->replaceAllClicked())
                     {
@@ -412,23 +415,34 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
                         QModelIndex replacedIndex = mDocumentTreeStructureModel->index(i, 0, parentIndex);
                         UBDocumentProxy *replacedProxy = mDocumentTreeStructureModel->proxyData(replacedIndex);
 
+                        // if current scene in Board Mode is being replaced
+                        if (replacedProxy == UBApplication::boardController->selectedDocument())
+                        {
+                            UBApplication::boardController->setActiveDocumentScene(pProxy, UBApplication::boardController->activeSceneIndex(), true, true);
+                        }
+
+                        // create new index before trying to select it (if avtive index)
+                        mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
+
+                        // if selected document in Document Mode is being replaced
                         if (mDocumentTreeStructureModel->currentIndex() == replacedIndex)
                         {
-                            if (pProxy->pageCount() > 0)
-                            {
-                                UBApplication::documentController->selectDocument(pProxy, true, true);
-                            }
+                            UBApplication::documentController->selectDocument(pProxy, true, true);
                         }
 
                         if (replacedProxy) {
                             deleteDocument(replacedProxy);
                         }
-                        if (replacedIndex.isValid()) {
+                        if (replacedIndex.isValid())
+                        {
                             mDocumentTreeStructureModel->removeRow(i, parentIndex);
                         }
                     }
+                    else
+                    {
+                        mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
+                    }
 
-                    mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
                 }
             }
         } else {
