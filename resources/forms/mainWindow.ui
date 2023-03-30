@@ -156,8 +156,8 @@
    <addaction name="actionImport"/>
    <addaction name="actionExport"/>
    <addaction name="actionRename"/>
-   <addaction name="separator"/>
    <addaction name="actionAddDocumentToFavorites"/>
+   <addaction name="separator"/>
    <addaction name="actionDuplicate"/>
    <addaction name="actionDelete"/>
    <addaction name="separator"/>
@@ -1719,7 +1719,6 @@
     <string>Open Hints and tips</string>
    </property>
   </action>
-
  </widget>
  <resources>
   <include location="../OpenBoard.qrc"/>
