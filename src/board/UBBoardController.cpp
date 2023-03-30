@@ -1606,7 +1606,7 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
 
     QUrl url = QUrl::fromLocalFile(pDocumentProxy->persistencePath() + "/metadata.rdf");
 
-    if (!featuresController->isInFavoriteList(url))
+    if (!featuresController->isInFavoriteList(url) && !featuresController->isInRecentlyOpenDocuments(url))
     {
         featuresController->addToFavorite(url, pDocumentProxy->name(), true);
     }

@@ -631,9 +631,39 @@ QString UBFeaturesController::adjustName(const QString &str)
 
 void UBFeaturesController::addToFavorite(const QUrl &path, const QString &name , bool temporaryAdded)
 {
-    QString filePath = fileNameFromUrl( path );
-    if (!isInFavoriteList(path))
+    bool addElementToFavoritesLibraryFolder = false;
+    if (temporaryAdded)
     {
+        //we are adding an element to recently open documents
+        if (!isInRecentlyOpenDocuments(path))
+        {
+            recentlyOpenDocuments.insert(path);
+            addElementToFavoritesLibraryFolder = true;
+        }
+    }
+    else
+    {
+        // we are adding an element to favorites
+        if (!isInFavoriteList(path))
+        {
+            if (isInRecentlyOpenDocuments(path))
+            {
+                //we don't need to add the element again to the fav library.
+                // we simply move it from recentlyOpenDocuments to favoriteSet
+                recentlyOpenDocuments.remove(path);
+            }
+            else
+            {
+                addElementToFavoritesLibraryFolder = true;
+            }
+
+            favoriteSet->insert(path);
+        }
+    }
+
+    if (addElementToFavoritesLibraryFolder)
+    {
+        QString filePath = fileNameFromUrl( path );
         QFileInfo fileInfo( filePath );
         QString fileName = fileInfo.fileName();
         UBFeatureElementType type = fileTypeFromUrl(filePath);
@@ -647,16 +677,6 @@ void UBFeaturesController::addToFavorite(const QUrl &path, const QString &name ,
             QString urlName = name;
             QString favoriteUrl = favoritePath + "/" + urlName.replace('/', '.');
             elem = UBFeature(favoriteUrl, getIcon(filePath, type), name, path, fileTypeFromUrl(filePath));
-        }
-        if (!temporaryAdded) //recently open documents are temporary added to the favorite list
-        {
-            favoriteSet->insert( path );
-            saveFavoriteList();
-        }
-        else
-        {
-            if (!isInRecentlyOpenDocuments(path))
-                recentlyOpenDocuments.insert(path);
         }
 
         if ( !elem.getVirtualPath().isEmpty() && !elem.getVirtualPath().isNull())

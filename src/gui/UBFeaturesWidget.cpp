@@ -37,6 +37,7 @@
 #include "core/UBDownloadManager.h"
 #include "globals/UBGlobals.h"
 #include "board/UBBoardController.h"
+#include "document/UBDocumentController.h"
 #include "web/UBWebController.h"
 
 const char *UBFeaturesWidget::objNamePathList = "PathList";
@@ -363,6 +364,13 @@ void UBFeaturesWidget::addElementsToFavorite()
                 //The element is already in the favorite folder, as a recently open document,
                 // but not in the favorite list. We just need to insert it in the favoriteSet
                 controller->storeAsFavorite(feature);
+
+                QString documentPath = feature.getFullPath().adjusted(QUrl::RemoveFilename).toLocalFile().chopped(1);
+                UBDocumentProxy* document = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->findDocumentByPath(documentPath);
+                if (document)
+                {
+                    document->setIsInFavoristeList(true);
+                }
             }
             else
             {
