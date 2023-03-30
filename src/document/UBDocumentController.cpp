@@ -3130,6 +3130,8 @@ void UBDocumentController::importFile()
 
             emit documentThumbnailsUpdated(this); // some documents might have been overwritten while not having the same page count
 
+            emit UBApplication::documentController->reorderDocumentsRequested();
+
         } else {
             UBSettings::settings()->lastImportFilePath->set(QVariant(fileInfo.absolutePath()));
 
