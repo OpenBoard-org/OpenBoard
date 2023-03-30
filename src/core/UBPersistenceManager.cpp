@@ -382,6 +382,10 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
                             mDocumentTreeStructureModel->removeRow(i, parentIndex);
                         }
                     }
+                    else
+                    {
+                        mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
+                    }
 
                     if (docName != resultName)
                     {
