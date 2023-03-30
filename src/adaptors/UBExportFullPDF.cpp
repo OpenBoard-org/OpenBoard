@@ -122,7 +122,7 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
 
             // pageSize is the output PDF page size; it is set to equal the scene's boundary size; if the contents
             // of the scene overflow from the boundaries, they will be scaled down.
-            QSize pageSize = scene->sceneSize();
+            QSizeF pageSize = scene->sceneSizeF() * mScaleFactor;   // points
 
             UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(scene->backgroundObject());
 
@@ -130,13 +130,14 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
             {
                 mHasPDFBackgrounds = true;
                 sceneHasPDFBackground = true;
+                pageSize = pdfItem->pageSize();     // original PDF document page size
             }
             else
             {
                 sceneHasPDFBackground = false;
             }
 
-            QPageSize size(QSizeF(pageSize.width()*mScaleFactor, pageSize.height()*mScaleFactor), QPageSize::Point);
+            QPageSize size(pageSize, QPageSize::Point);
             pdfPrinter.setPageSize(size);
 
             if (!pdfPainter) pdfPainter = new QPainter(&pdfPrinter);
@@ -222,47 +223,46 @@ bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
                 UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
                 UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(scene->backgroundObject());
 
-                QSize pageSize = scene->nominalSize();
-                
                 if (pdfItem)
                 {
+                    QRectF pdfSceneRect = pdfItem->sceneBoundingRect();
                     QString pdfName = UBPersistenceManager::objectDirectory + "/" + pdfItem->fileUuid().toString() + ".pdf";
                     QString backgroundPath = pDocumentProxy->persistencePath() + "/" + pdfName;
                     QRectF annotationsRect = scene->annotationsBoundingRect();
 
-                    // Original datas
-                    double xAnnotation = qRound(annotationsRect.x());
-                    double yAnnotation = qRound(annotationsRect.y());
-                    double xPdf = qRound(pdfItem->sceneBoundingRect().x());
-                    double yPdf = qRound(pdfItem->sceneBoundingRect().y());
-                    double hPdf = qRound(pdfItem->sceneBoundingRect().height());
+                    // Original data
+                    double xAnnotation = annotationsRect.x();
+                    double yAnnotation = annotationsRect.y();
+                    double xPdf = pdfSceneRect.x();
+                    double yPdf = pdfSceneRect.y();
+                    double hPdf = pdfSceneRect.height();
 
-                    // Exportation-transformed datas
-                    double hScaleFactor = pageSize.width()/annotationsRect.width();
-                    double vScaleFactor = pageSize.height()/annotationsRect.height();
+                    // Exportation-transformed data
+                    double hScaleFactor = pdfSceneRect.width() / annotationsRect.width();
+                    double vScaleFactor = pdfSceneRect.height() / annotationsRect.height();
                     double scaleFactor = qMin(hScaleFactor, vScaleFactor);
 
                     double xAnnotationsOffset = 0;
                     double yAnnotationsOffset = 0;
-                    double hPdfTransformed = qRound(hPdf * scaleFactor);
+                    double hPdfTransformed = hPdf * scaleFactor;
 
                     // Here, we force the PDF page to be on the topleft corner of the page
                     double xPdfOffset = 0;
-                    double yPdfOffset = (hPdf - hPdfTransformed) * mScaleFactor;
+                    double yPdfOffset = (hPdf - hPdfTransformed);
 
                     // Now we align the items
-                    xPdfOffset += (xPdf - xAnnotation) * scaleFactor * mScaleFactor;
-                    yPdfOffset -= (yPdf - yAnnotation) * scaleFactor * mScaleFactor;
+                    xPdfOffset += (xPdf - xAnnotation) * scaleFactor;
+                    yPdfOffset -= (yPdf - yAnnotation) * scaleFactor;
 
                     // If the PDF was scaled when added to the scene (e.g if it was loaded from a document with a different DPI
                     // than the current one), it should also be scaled here.
-                    qreal pdfScale = pdfItem->sceneTransform().m11();
 
-                    TransformationDescription pdfTransform(xPdfOffset, yPdfOffset, scaleFactor * pdfScale, 0);
+                    TransformationDescription pdfTransform(xPdfOffset, yPdfOffset, scaleFactor, 0);
                     TransformationDescription annotationTransform(xAnnotationsOffset, yAnnotationsOffset, 1, 0);
 
-                    MergePageDescription pageDescription(pageSize.width() * mScaleFactor,
-                                                         pageSize.height() * mScaleFactor,
+                    QSizeF pageSize = pdfItem->pageSize();
+                    MergePageDescription pageDescription(pageSize.width(),
+                                                         pageSize.height(),
                                                          pdfItem->pageNumber(),
                                                          QFile::encodeName(backgroundPath).constData(),
                                                          pdfTransform,
@@ -276,8 +276,10 @@ bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
                 }
                 else
                 {
-                    MergePageDescription pageDescription(pageSize.width() * mScaleFactor,
-                             pageSize.height() * mScaleFactor,
+                    QSizeF pageSize = scene->nominalSize() * mScaleFactor;
+
+                    MergePageDescription pageDescription(pageSize.width(),
+                             pageSize.height(),
                              0,
                              "",
                              TransformationDescription(),
@@ -294,7 +296,7 @@ bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
             merger.saveMergedDocumentsAs(QFile::encodeName(filename).constData());
 
         }
-        catch(Exception e)
+        catch(const Exception& e)
         {
             qDebug() << "PdfMerger failed to merge documents to " << filename << " - Exception : " << e.what();
 
