@@ -216,6 +216,9 @@ bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
 
             MergeDescription mergeInfo;
 
+            // factor between scene coordinates and PDF coordinates
+            double dpiScale = 72. / pDocumentProxy->pageDpi();
+
             int existingPageCount = pDocumentProxy->pageCount();
 
             for(int pageIndex = 0 ; pageIndex < existingPageCount; pageIndex++)
@@ -225,19 +228,20 @@ bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
 
                 if (pdfItem)
                 {
-                    QRectF pdfSceneRect = pdfItem->sceneBoundingRect();
                     QString pdfName = UBPersistenceManager::objectDirectory + "/" + pdfItem->fileUuid().toString() + ".pdf";
                     QString backgroundPath = pDocumentProxy->persistencePath() + "/" + pdfName;
-                    QRectF annotationsRect = scene->annotationsBoundingRect();
 
-                    // Original data
+                    // Original data in scene coordinates, annotationsRect always contains pdfSceneRect
+                    QRectF pdfSceneRect = pdfItem->sceneBoundingRect();
+                    QRectF annotationsRect = scene->normalizedSceneRect();
+
                     double xAnnotation = annotationsRect.x();
                     double yAnnotation = annotationsRect.y();
                     double xPdf = pdfSceneRect.x();
                     double yPdf = pdfSceneRect.y();
                     double hPdf = pdfSceneRect.height();
 
-                    // Exportation-transformed data
+                    // Exportation-transformed data, scaleFactor always <= 1
                     double hScaleFactor = pdfSceneRect.width() / annotationsRect.width();
                     double vScaleFactor = pdfSceneRect.height() / annotationsRect.height();
                     double scaleFactor = qMin(hScaleFactor, vScaleFactor);
@@ -246,21 +250,25 @@ bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QS
                     double yAnnotationsOffset = 0;
                     double hPdfTransformed = hPdf * scaleFactor;
 
-                    // Here, we force the PDF page to be on the topleft corner of the page
-                    double xPdfOffset = 0;
-                    double yPdfOffset = (hPdf - hPdfTransformed);
-
-                    // Now we align the items
-                    xPdfOffset += (xPdf - xAnnotation) * scaleFactor;
-                    yPdfOffset -= (yPdf - yAnnotation) * scaleFactor;
-
+                    // Compute scaling of PDF on the scene
                     // If the PDF was scaled when added to the scene (e.g if it was loaded from a document with a different DPI
                     // than the current one), it should also be scaled here.
+                    QSizeF pageSize = pdfItem->pageSize();
+                    double pdfScale = pdfSceneRect.width() / pageSize.width() * dpiScale;
+
+                    // Offsets are calculated in the PDF coordinate system.
+                    // It has its origin at the lower left corner and is measured in points of 1/72 inch.
+                    // Here, we force the PDF page to be on the topleft corner of the page
+                    double xPdfOffset = 0;
+                    double yPdfOffset = (hPdf - hPdfTransformed) * dpiScale / pdfScale;
+
+                    // Now we align the items
+                    xPdfOffset += (xPdf - xAnnotation) * scaleFactor * dpiScale / pdfScale;
+                    yPdfOffset -= (yPdf - yAnnotation) * scaleFactor * dpiScale / pdfScale;
 
                     TransformationDescription pdfTransform(xPdfOffset, yPdfOffset, scaleFactor, 0);
                     TransformationDescription annotationTransform(xAnnotationsOffset, yAnnotationsOffset, 1, 0);
 
-                    QSizeF pageSize = pdfItem->pageSize();
                     MergePageDescription pageDescription(pageSize.width(),
                                                          pageSize.height(),
                                                          pdfItem->pageNumber(),
