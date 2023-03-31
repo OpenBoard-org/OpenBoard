@@ -1584,31 +1584,35 @@ void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, 
         UBSettings::settings()->setPageBackground(mActiveScene->pageBackground());
 
         freezeW3CWidgets(false);
+
+        selectionChanged();
+
+        updateBackgroundActionsState(mActiveScene->isDarkBackground(), mActiveScene->pageBackground());
+
+        if(documentChange)
+        {
+            UBGraphicsTextItem::lastUsedTextColor = QColor(Qt::black);
+        }
+
+        if (sceneChange)
+        {
+            emit activeSceneChanged();
+        }
+
+        pDocumentProxy->setLastVisitedSceneIndex(mActiveSceneIndex);
+
+        UBFeaturesController* featuresController = paletteManager()->featuresWidget()->getFeaturesController();
+
+        QUrl url = QUrl::fromLocalFile(pDocumentProxy->persistencePath() + "/metadata.rdf");
+
+        if (!featuresController->isInFavoriteList(url) && !featuresController->isInRecentlyOpenDocuments(url))
+        {
+            featuresController->addToFavorite(url, pDocumentProxy->name(), true);
+        }
     }
-
-    selectionChanged();
-
-    updateBackgroundActionsState(mActiveScene->isDarkBackground(), mActiveScene->pageBackground());
-
-    if(documentChange)
+    else
     {
-        UBGraphicsTextItem::lastUsedTextColor = QColor(Qt::black);
-    }
-
-    if (sceneChange)
-    {
-        emit activeSceneChanged();
-    }
-
-    pDocumentProxy->setLastVisitedSceneIndex(mActiveSceneIndex);
-
-    UBFeaturesController* featuresController = paletteManager()->featuresWidget()->getFeaturesController();
-
-    QUrl url = QUrl::fromLocalFile(pDocumentProxy->persistencePath() + "/metadata.rdf");
-
-    if (!featuresController->isInFavoriteList(url) && !featuresController->isInRecentlyOpenDocuments(url))
-    {
-        featuresController->addToFavorite(url, pDocumentProxy->name(), true);
+        qWarning() << "could not load document scene : '" << pDocumentProxy->persistencePath() << "', page index : " << pSceneIndex;
     }
 }
 
@@ -1838,8 +1842,8 @@ void UBBoardController::setDisabled(bool disable)
 void UBBoardController::selectionChanged()
 {
     updateActionStates();
-    emit pageSelectionChanged(activeSceneIndex());
     emit updateThumbnailsRequired();
+    emit pageSelectionChanged(activeSceneIndex());
 }
 
 

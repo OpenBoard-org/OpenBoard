@@ -360,27 +360,17 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
                         QModelIndex replacedIndex = mDocumentTreeStructureModel->index(i, 0, parentIndex);
                         UBDocumentProxy *replacedProxy = mDocumentTreeStructureModel->proxyData(replacedIndex);
 
-                        // if current scene in Board Mode is being replaced
-                        if (replacedProxy == UBApplication::boardController->selectedDocument())
+                        if (replacedProxy)
                         {
-                            UBApplication::boardController->setActiveDocumentScene(pProxy, UBApplication::boardController->activeSceneIndex(), true, true);
+                            deleteDocument(replacedProxy);
+                        }
+
+                        if (replacedIndex.isValid()) {
+                            mDocumentTreeStructureModel->removeRow(i, parentIndex);
                         }
 
                         // create new index before trying to select it (if avtive index)
                         mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
-
-                        // if selected document in Document Mode is being replaced
-                        if (mDocumentTreeStructureModel->currentIndex() == replacedIndex)
-                        {
-                            UBApplication::documentController->selectDocument(pProxy, true, true);
-                        }
-
-                        if (replacedProxy) {
-                            deleteDocument(replacedProxy);
-                        }
-                        if (replacedIndex.isValid()) {
-                            mDocumentTreeStructureModel->removeRow(i, parentIndex);
-                        }
                     }
                     else
                     {
@@ -419,28 +409,18 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
                         QModelIndex replacedIndex = mDocumentTreeStructureModel->index(i, 0, parentIndex);
                         UBDocumentProxy *replacedProxy = mDocumentTreeStructureModel->proxyData(replacedIndex);
 
-                        // if current scene in Board Mode is being replaced
-                        if (replacedProxy == UBApplication::boardController->selectedDocument())
+                        if (replacedProxy)
                         {
-                            UBApplication::boardController->setActiveDocumentScene(pProxy, UBApplication::boardController->activeSceneIndex(), true, true);
-                        }
-
-                        // create new index before trying to select it (if avtive index)
-                        mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
-
-                        // if selected document in Document Mode is being replaced
-                        if (mDocumentTreeStructureModel->currentIndex() == replacedIndex)
-                        {
-                            UBApplication::documentController->selectDocument(pProxy, true, true);
-                        }
-
-                        if (replacedProxy) {
                             deleteDocument(replacedProxy);
                         }
+
                         if (replacedIndex.isValid())
                         {
                             mDocumentTreeStructureModel->removeRow(i, parentIndex);
                         }
+
+                        // create new index before trying to select it (if avtive index)
+                        mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
                     }
                     else
                     {
@@ -1112,14 +1092,15 @@ UBGraphicsScene* UBPersistenceManager::loadDocumentScene(UBDocumentProxy* proxy,
     else
     {
         scene = UBSvgSubsetAdaptor::loadScene(proxy, sceneIndex);
-        if(!scene)
-        {
-            createDocumentSceneAt(proxy,0);
-            scene = UBSvgSubsetAdaptor::loadScene(proxy, 0);
-        }
-
         if (scene)
+        {
             mSceneCache.insert(proxy, sceneIndex, scene);
+        }
+        else
+        {
+            qWarning() << "could not load scene for document : " << proxy->persistencePath() << ", scene index : " << sceneIndex;
+            return nullptr;
+        }
     }
 
     if (cacheNeighboringScenes)

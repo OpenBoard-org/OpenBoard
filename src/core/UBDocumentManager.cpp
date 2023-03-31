@@ -210,6 +210,7 @@ UBDocumentProxy* UBDocumentManager::importFile(const QFile& pFile, const QString
 
                 QList<UBGraphicsItem*> pages = importAdaptor->import(uuid, filepath);
                 int nPage = 0;
+                int pageIndex = 0;
                 foreach(UBGraphicsItem* page, pages)
                 {
 
@@ -218,10 +219,10 @@ UBDocumentProxy* UBDocumentManager::importFile(const QFile& pFile, const QString
                     //Workaround for issue 912
                     QApplication::processEvents();
 #endif
-                    int pageIndex = document->pageCount();
                     UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(document, pageIndex);
                     importAdaptor->placeImportedItemToScene(scene, page);
                     UBPersistenceManager::persistenceManager()->persistDocumentScene(document, scene, pageIndex);
+                    pageIndex++;
                 }
 
                 UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
