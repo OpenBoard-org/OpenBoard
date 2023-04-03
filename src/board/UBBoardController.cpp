@@ -2427,27 +2427,6 @@ bool zLevelLessThan( UBItem* s1, UBItem* s2)
 
 void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPointF& pPos)
 {
-    if (pMimeData->hasFormat(UBApplication::mimeTypeUniboardPage))
-    {
-        const UBMimeData* mimeData = qobject_cast <const UBMimeData*>(pMimeData);
-
-        if (mimeData)
-        {
-            int previousActiveSceneIndex = activeSceneIndex();
-            int previousPageCount = selectedDocument()->pageCount();
-
-            foreach (UBMimeDataItem sourceItem, mimeData->items())
-                addScene(sourceItem.documentProxy(), sourceItem.sceneIndex(), true);
-
-            if (selectedDocument()->pageCount() < previousPageCount + mimeData->items().count())
-                setActiveDocumentScene(previousActiveSceneIndex);
-            else
-                setActiveDocumentScene(previousActiveSceneIndex + 1);
-
-            return;
-        }
-    }
-
     if (pMimeData->hasFormat(UBApplication::mimeTypeUniboardPageItem))
     {
         const UBMimeDataGraphicsItem* mimeData = qobject_cast <const UBMimeDataGraphicsItem*>(pMimeData);
