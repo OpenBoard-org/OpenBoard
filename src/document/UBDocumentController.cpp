@@ -3127,7 +3127,11 @@ void UBDocumentController::importFile()
             UBApplication::boardController->ClearUndoStack();
 
             UBPersistenceManager::persistenceManager()->createDocumentProxiesStructure(docManager->importUbx(filePath, UBSettings::userDocumentDirectory()), true);
-        } else {
+
+            UBApplication::boardController->setActiveDocumentScene(selectedDocument(), 0, true, true);
+        }
+        else
+        {
             UBSettings::settings()->lastImportFilePath->set(QVariant(fileInfo.absolutePath()));
 
             if (filePath.length() > 0)
@@ -3159,8 +3163,9 @@ void UBDocumentController::importFile()
                     showMessage(tr("Failed to import file ... "));
                 }
             }
+
+            emit documentThumbnailsUpdated(this); // some documents might have been overwritten while not having the same page count
         }
-        emit documentThumbnailsUpdated(this); // some documents might have been overwritten while not having the same page count
 
         emit UBApplication::documentController->reorderDocumentsRequested();
     }
