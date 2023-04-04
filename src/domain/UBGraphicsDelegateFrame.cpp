@@ -105,6 +105,7 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
 
     setAntiScale(1.0);
 
+    initializeTransform();
     positionHandles();
     updateResizeCursors();
 
@@ -836,7 +837,6 @@ void UBGraphicsDelegateFrame::positionHandles()
     resetTransform();
     setTransform(QTransform::fromTranslate(center.x(), center.y()), true);
     setTransform(QTransform().rotate(-angle), true);
-    mAngle = angle;
     setTransform(QTransform::fromTranslate(-center.x(), -center.y()), true);
     //TODO: combine these transforms into one
 
