@@ -988,7 +988,7 @@ QRectF UBGraphicsDelegateFrame::topResizeGripRect() const
 
 QRectF UBGraphicsDelegateFrame::rotateButtonBounds() const
 {
-    return QRectF(rect().right()- mFrameWidth, rect().top(), mFrameWidth, mFrameWidth);
+    return QRectF(rect().right()- mFrameWidth - 5, rect().top() + 5, mFrameWidth, mFrameWidth);
 }
 
 void UBGraphicsDelegateFrame::refreshGeometry()
