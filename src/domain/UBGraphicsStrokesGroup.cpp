@@ -122,8 +122,6 @@ void UBGraphicsStrokesGroup::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     QGraphicsItemGroup::mousePressEvent(event);
     event->accept();
-
-    setSelected(false);
 }
 
 void UBGraphicsStrokesGroup::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -132,7 +130,6 @@ void UBGraphicsStrokesGroup::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         QGraphicsItemGroup::mouseMoveEvent(event);
 
         event->accept();
-        setSelected(false);
     }
 }
 

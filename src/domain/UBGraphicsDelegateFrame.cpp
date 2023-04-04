@@ -739,8 +739,6 @@ void UBGraphicsDelegateFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     mCurrentTool = None;
 
-    QGraphicsRectItem::mouseReleaseEvent(event);
-
     // Show the buttons
     if(isResizing()){
         mResizing = false;
