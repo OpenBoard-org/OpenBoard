@@ -1027,6 +1027,13 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
         group->setData(UBGraphicsItemData::ItemLocked, QVariant(isLocked));
     }
 
+    QString ubHiddenOnDisplay = mXmlReader.attributes().value(mNamespaceUri, "hidden-on-display").toString();
+    if (!ubHiddenOnDisplay.isEmpty())
+    {
+        bool isHiddenOnDisplay = ubHiddenOnDisplay.contains(xmlTrue);
+        group->setData(UBGraphicsItemData::ItemIsHiddenOnDisplay, QVariant(isHiddenOnDisplay));
+    }
+
     auto ubLayer = mXmlReader.attributes().value(mNamespaceUri, "layer");
     if (!ubLayer.isNull())
     {
@@ -1277,6 +1284,12 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
                         if (!locked.isNull() && locked.toBool())
                             mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "locked", xmlTrue);
 
+                        QVariant hiddenOnDisplay = sg->data(UBGraphicsItemData::ItemIsHiddenOnDisplay);
+                        if (!hiddenOnDisplay.isNull() && hiddenOnDisplay.toBool())
+                            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "hidden-on-display", xmlTrue);
+                        else
+                            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "hidden-on-display", xmlFalse);
+
                         QVariant layer = sg->data(UBGraphicsItemData::ItemLayerType);
                         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "layer", QString("%1").arg(layer.toInt()));
 
@@ -1467,6 +1480,9 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy,
                 if(curElement.hasAttribute("locked")){
                     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri,"locked",curElement.attribute("locked"));
                 }
+                if(curElement.hasAttribute("hidden-on-display")){
+                    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri,"hidden-on-display", curElement.attribute("hidden-on-display"));
+                }
                 if(curElement.hasAttribute("layer")){
                     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri,"layer",curElement.attribute("layer"));
                 }
@@ -1515,6 +1531,11 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
                 curGroupElement.setAttribute("locked", xmlTrue);
             else
                 curGroupElement.setAttribute("locked", xmlFalse);
+
+            if (group->data(UBGraphicsItemData::ItemIsHiddenOnDisplay).toBool())
+                curGroupElement.setAttribute("hidden-on-display", xmlTrue);
+            else
+                curGroupElement.setAttribute("hidden-on-display", xmlFalse);
 
             curGroupElement.setAttribute("layer", group->data(UBGraphicsItemData::ItemLayerType).toString());
         }
@@ -2379,6 +2400,14 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
         gItem->setData(UBGraphicsItemData::ItemLocked, QVariant(isLocked));
     }
 
+    auto ubHiddenOnDisplay = mXmlReader.attributes().value(mNamespaceUri, "hidden-on-display");
+
+    if (!ubHiddenOnDisplay.isNull())
+    {
+        bool isHiddenOnDisplay = (ubHiddenOnDisplay.toString() == xmlTrue || ubHiddenOnDisplay.toString() == "1");
+        gItem->setData(UBGraphicsItemData::ItemIsHiddenOnDisplay, QVariant(isHiddenOnDisplay));
+    }
+
     auto ubEditable = mXmlReader.attributes().value(mNamespaceUri, "editable");
 
     if (!ubEditable.isNull())
@@ -2463,16 +2492,20 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsItemToSvg(QGraphicsItem* ite
 
         if (!sourceUrl.isEmpty())
             mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "source", sourceUrl.path());
-
     }
 
     QVariant layer = item->data(UBGraphicsItemData::ItemLayerType);
     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "layer", QString("%1").arg(layer.toInt()));
 
     QVariant locked = item->data(UBGraphicsItemData::ItemLocked);
-
     if (!locked.isNull() && locked.toBool())
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "locked", xmlTrue);
+
+    QVariant hiddenOnDisplay = item->data(UBGraphicsItemData::ItemIsHiddenOnDisplay);
+    if (!hiddenOnDisplay.isNull() && hiddenOnDisplay.toBool())
+        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "hidden-on-display", xmlTrue);
+    else
+        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "hidden-on-display", xmlFalse);
 
     QVariant editable = item->data(UBGraphicsItemData::ItemEditable);
     if (!editable.isNull()) {

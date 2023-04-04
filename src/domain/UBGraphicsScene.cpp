@@ -1398,7 +1398,7 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
             UBGraphicsGroupContainerItem* groupCloned = group->deepCopyNoChildDuplication();
             groupCloned->resetTransform();
             groupCloned->setPos(0, 0);
-            bool locked = groupCloned->Delegate()->isLocked();
+            bool locked = group->Delegate()->isLocked();
 
             foreach(QGraphicsItem* eachItem ,group->childItems()){
                 QGraphicsItem* copiedChild = dynamic_cast<QGraphicsItem*>(dynamic_cast<UBItem*>(eachItem)->deepCopy());
@@ -1408,6 +1408,8 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
 
             if (locked)
                 groupCloned->setData(UBGraphicsItemData::ItemLocked, QVariant(true));
+
+            groupCloned->setData(UBGraphicsItemData::ItemIsHiddenOnDisplay, QVariant(group->data(UBGraphicsItemData::ItemIsHiddenOnDisplay)));
 
             copy->addItem(groupCloned);
             groupCloned->setTransform(QTransform::fromTranslate(group->pos().x(), group->pos().y()));

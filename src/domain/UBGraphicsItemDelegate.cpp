@@ -176,6 +176,7 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
     , mAntiScaleRatio(1.0)
     , mToolBarItem(NULL)
     , mMimeData(NULL)
+    , mHideOnDisplayWhenSelectedAction(nullptr)
 {
     setUBFlags(fls);
     connect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged()));
@@ -280,9 +281,17 @@ QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange ch
         {
             if (ubScene) {
                 if (value.toBool()) { //selected(true)
+                    if (delegated()->data(UBGraphicsItemData::ItemIsHiddenOnDisplay).toBool())
+                    {
+                        showHide(false);
+                    }
                     ubScene->setSelectedZLevel(delegated());
                 } else {
                     ubScene->setOwnZlevel(delegated());
+                    if (delegated()->data(UBGraphicsItemData::ItemIsHiddenOnDisplay).toBool())
+                    {
+                        showHide(true);
+                    }
                     freeControls();
                 }
             }
@@ -600,6 +609,38 @@ void UBGraphicsItemDelegate::showHide(bool show)
     emit showOnDisplayChanged(show);
 }
 
+void UBGraphicsItemDelegate::showOnDisplay(bool show)
+{
+    if (!delegated()->data(UBGraphicsItemData::ItemIsHiddenOnDisplay).toBool())
+    {
+        showHide(show);
+    }
+
+    mHideOnDisplayWhenSelectedAction->setEnabled(show);
+}
+
+void UBGraphicsItemDelegate::hideOnDisplayWhenSelected(bool hide)
+{
+    setItemIsHiddenOnDisplayRecurs(hide, delegated());
+
+    if (mShowOnDisplayAction->isChecked()) //no effects if showOnDisplayAction is unchecked
+    {
+        showHide(!hide);
+    }
+
+    mShowOnDisplayAction->setEnabled(!hide);
+}
+
+void UBGraphicsItemDelegate::setItemIsHiddenOnDisplayRecurs(const QVariant &pHide, QGraphicsItem *pItem)
+{
+    mDelegated->setData(UBGraphicsItemData::ItemIsHiddenOnDisplay, pHide);
+
+    for (auto&& childItem : pItem->childItems())
+    {
+        setItemIsHiddenOnDisplayRecurs(pHide, childItem);
+    }
+}
+
 void UBGraphicsItemDelegate::showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem)
 {
     pItem->setData(UBGraphicsItemData::ItemLayerType, pShow);
@@ -711,13 +752,20 @@ void UBGraphicsItemDelegate::decorateMenu(QMenu* menu)
     mLockAction->setIcon(lockIcon);
     mLockAction->setCheckable(true);
 
-    mShowOnDisplayAction = mMenu->addAction(tr("Visible on Extended Screen"), this, SLOT(showHide(bool)));
+    mShowOnDisplayAction = mMenu->addAction(tr("Visible on Extended Screen"), this, SLOT(showOnDisplay(bool)));
     mShowOnDisplayAction->setCheckable(true);
 
     QIcon showIcon;
     showIcon.addPixmap(QPixmap(":/images/eyeOpened.svg"), QIcon::Normal, QIcon::On);
     showIcon.addPixmap(QPixmap(":/images/eyeClosed.svg"), QIcon::Normal, QIcon::Off);
     mShowOnDisplayAction->setIcon(showIcon);
+
+    mHideOnDisplayWhenSelectedAction = mMenu->addAction(tr("Hide on Extended Screen when selected"), this, SLOT(hideOnDisplayWhenSelected(bool)));
+    mHideOnDisplayWhenSelectedAction->setCheckable(true);
+    mHideOnDisplayWhenSelectedAction->setChecked(delegated()->data(UBGraphicsItemData::ItemIsHiddenOnDisplay).toBool());
+
+    mHideOnDisplayWhenSelectedAction->setEnabled(!mShowOnDisplayAction->isChecked());
+    mShowOnDisplayAction->setEnabled(!mHideOnDisplayWhenSelectedAction->isChecked());
 
     if (delegated()->data(UBGraphicsItemData::ItemCanBeSetAsBackground).toBool()) {
         mSetAsBackgroundAction = mMenu->addAction(tr("Set as background"), this, SLOT(setAsBackground()));
@@ -743,7 +791,7 @@ void UBGraphicsItemDelegate::updateMenuActionState()
     if (mLockAction)
         mLockAction->setChecked(isLocked());
 
-    if (mShowOnDisplayAction)
+    if (mShowOnDisplayAction && !mDelegated->data(UBGraphicsItemData::ItemIsHiddenOnDisplay).toBool())
     {
         bool isControl = mDelegated->data(UBGraphicsItemData::ItemLayerType) == UBItemLayerType::Control;
         mShowOnDisplayAction->setChecked(!isControl);

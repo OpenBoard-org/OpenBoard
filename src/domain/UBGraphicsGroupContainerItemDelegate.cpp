@@ -61,13 +61,20 @@ void UBGraphicsGroupContainerItemDelegate::decorateMenu(QMenu *menu)
     mLockAction->setIcon(lockIcon);
     mLockAction->setCheckable(true);
 
-    mShowOnDisplayAction = mMenu->addAction(tr("Visible on Extended Screen"), this, SLOT(showHide(bool)));
+    mShowOnDisplayAction = mMenu->addAction(tr("Visible on Extended Screen"), this, SLOT(showOnDisplay(bool)));
     mShowOnDisplayAction->setCheckable(true);
 
     QIcon showIcon;
     showIcon.addPixmap(QPixmap(":/images/eyeOpened.svg"), QIcon::Normal, QIcon::On);
     showIcon.addPixmap(QPixmap(":/images/eyeClosed.svg"), QIcon::Normal, QIcon::Off);
     mShowOnDisplayAction->setIcon(showIcon);
+
+    mHideOnDisplayWhenSelectedAction = mMenu->addAction(tr("Hide on Extended Screen when selected"), this, SLOT(hideOnDisplayWhenSelected(bool)));
+    mHideOnDisplayWhenSelectedAction->setCheckable(true);
+    mHideOnDisplayWhenSelectedAction->setChecked(delegated()->data(UBGraphicsItemData::ItemIsHiddenOnDisplay).toBool());
+
+    mHideOnDisplayWhenSelectedAction->setEnabled(!mShowOnDisplayAction->isChecked());
+    mShowOnDisplayAction->setEnabled(!mHideOnDisplayWhenSelectedAction->isChecked());
 }
 
 void UBGraphicsGroupContainerItemDelegate::buildButtons()

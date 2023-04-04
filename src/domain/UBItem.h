@@ -132,6 +132,7 @@ public:
     static bool isRotatable(QGraphicsItem *item);
     static bool isFlippable(QGraphicsItem *item);
     static bool isLocked(QGraphicsItem *item);
+    static bool isHiddenOnDisplay(QGraphicsItem *item);
     static QUuid getOwnUuid(QGraphicsItem *item);
 
     static UBGraphicsItemDelegate *Delegate(QGraphicsItem *pItem);

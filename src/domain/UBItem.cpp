@@ -92,6 +92,11 @@ bool UBGraphicsItem::isLocked(QGraphicsItem *item)
     return item->data(UBGraphicsItemData::ItemLocked).toBool();
 }
 
+bool UBGraphicsItem::isHiddenOnDisplay(QGraphicsItem *item)
+{
+    return item->data(UBGraphicsItemData::ItemIsHiddenOnDisplay).toBool();
+}
+
 QUuid UBGraphicsItem::getOwnUuid(QGraphicsItem *item)
 {
     QString idCandidate = item->data(UBGraphicsItemData::ItemUuid).toString();

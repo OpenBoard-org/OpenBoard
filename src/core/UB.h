@@ -144,6 +144,7 @@ struct UBGraphicsItemData
         , ItemFlippable // (bool)
         , ItemRotatable // (bool)
         , ItemCanBeSetAsBackground
+        , ItemIsHiddenOnDisplay
     };
 };
 

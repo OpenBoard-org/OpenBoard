@@ -309,6 +309,8 @@ class UBGraphicsItemDelegate : public QObject
         void showMenu();
 
         virtual void showHide(bool show);
+        virtual void showOnDisplay(bool hide);
+        virtual void hideOnDisplayWhenSelected(bool hide);
         virtual void lock(bool lock);
         virtual void duplicate();
 
@@ -327,6 +329,7 @@ class UBGraphicsItemDelegate : public QObject
 
         void showHideRecurs(const QVariant &pShow, QGraphicsItem *pItem);
         void setLockedRecurs(const QVariant &pLock, QGraphicsItem *pItem);
+        void setItemIsHiddenOnDisplayRecurs(const QVariant &pHide, QGraphicsItem *pItem);
 
         QList<DelegateButton*> buttons() {return mButtons;}
         QGraphicsItem* mDelegated;
@@ -344,6 +347,7 @@ class UBGraphicsItemDelegate : public QObject
 
         QAction* mLockAction;
         QAction* mShowOnDisplayAction;
+        QAction* mHideOnDisplayWhenSelectedAction;
         QAction* mSetAsBackgroundAction;
         QAction* mGotoContentSourceAction;
 
