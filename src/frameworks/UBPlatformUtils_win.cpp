@@ -134,7 +134,7 @@ QString UBPlatformUtils::computerName()
 
 void UBPlatformUtils::hideMenuBarAndDock()
 {
-    Q_UNUSED(desktop);
+
 }
 
 void UBPlatformUtils::setWindowNonActivableFlag(QWidget* widget, bool nonAcivable)

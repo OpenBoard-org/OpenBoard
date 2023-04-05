@@ -141,7 +141,6 @@ void UBPlatformUtils::setWindowNonActivableFlag(QWidget* widget, bool nonAcivabl
 void UBPlatformUtils::hideMenuBarAndDock()
 {
     // NOOP
-    Q_UNUSED(desktop);
 }
 
 #define KEYBTDECL(s1, s2, clSwitch, code) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(s1, code, 0), KEYCODE(s2, code, 1))
