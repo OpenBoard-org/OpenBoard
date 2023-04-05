@@ -87,7 +87,7 @@ void UBPlatformUtils::init()
 }
 
 
-void UBPlatformUtils::setDesktopMode(bool desktop)
+void UBPlatformUtils::hideMenuBarAndDock()
 {
 
     @try {

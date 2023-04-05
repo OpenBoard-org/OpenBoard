@@ -132,7 +132,7 @@ QString UBPlatformUtils::computerName()
 }
 
 
-void UBPlatformUtils::setDesktopMode(bool desktop)
+void UBPlatformUtils::hideMenuBarAndDock()
 {
     Q_UNUSED(desktop);
 }

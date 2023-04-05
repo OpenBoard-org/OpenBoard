@@ -385,7 +385,7 @@ void UBApplicationController::showBoard()
         UBApplication::boardController->show();
 
     mIsShowingDesktop = false;
-    UBPlatformUtils::setDesktopMode(false);
+    UBPlatformUtils::hideMenuBarAndDock();
     UBDrawingController::drawingController()->setInDesktopMode(false);
 
     mUninoteController->hideWindow();
@@ -438,6 +438,7 @@ void UBApplicationController::showDocument()
 {
     mMainWindow->webToolBar->hide();
     mMainWindow->boardToolBar->hide();
+    UBPlatformUtils::hideMenuBarAndDock();
     mMainWindow->documentToolBar->show();
 
     mMainMode = Document;

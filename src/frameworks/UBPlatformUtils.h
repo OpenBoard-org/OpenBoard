@@ -201,7 +201,7 @@ public:
         static bool hasSystemOnScreenKeyboard();
         static void bringPreviousProcessToFront();
         static QString osUserLoginName();
-        static void setDesktopMode(bool desktop);
+        static void hideMenuBarAndDock();
         static void setWindowNonActivableFlag(QWidget* widget, bool nonAcivable);
         static QString computerName();
         static UBKeyboardLocale** getKeyboardLayouts(int& nCount);

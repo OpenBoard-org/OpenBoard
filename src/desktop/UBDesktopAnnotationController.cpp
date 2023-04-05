@@ -343,7 +343,7 @@ void UBDesktopAnnotationController::showWindow()
     // if finer control is necessary, use qgetenv("XDG_CURRENT_DESKTOP")
     mTransparentDrawingView->show();
 #endif
-    UBPlatformUtils::setDesktopMode(true);
+    UBPlatformUtils::hideMenuBarAndDock();
 
     mDesktopPalette->appear();
 
