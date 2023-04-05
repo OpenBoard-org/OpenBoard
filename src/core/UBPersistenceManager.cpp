@@ -426,6 +426,11 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
 
                         // create new index before trying to select it (if avtive index)
                         mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
+
+                        if (UBApplication::documentController->selectedDocument() == replacedProxy)
+                        {
+                            UBApplication::documentController->pureSetDocument(pProxy);
+                        }
                     }
                     else
                     {
