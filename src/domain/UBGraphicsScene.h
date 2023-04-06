@@ -127,7 +127,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void setURStackEnable(bool enable){mUndoRedoStackEnabled = enable;}
         bool isURStackIsEnabled(){return mUndoRedoStackEnabled;}
 
-        UBGraphicsScene(UBDocumentProxy *parent, bool enableUndoRedoStack = true);
+        UBGraphicsScene(UBDocumentProxy *document, bool enableUndoRedoStack = true);
         virtual ~UBGraphicsScene();
 
         virtual UBItem* deepCopy() const;

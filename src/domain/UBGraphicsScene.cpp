@@ -316,13 +316,12 @@ bool UBZLayerController::zLevelAvailable(qreal z)
     return true;
 }
 
-UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoStack)
-    : UBCoreGraphicsScene(parent)
-    , mEraser(0)
+UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* document, bool enableUndoRedoStack)
+    : mEraser(0)
     , mPointer(0)
     , mMarkerCircle(0)
     , mPenCircle(0)
-    , mDocument(parent)
+    , mDocument(document)
     , mDarkBackground(false)
     , mPageBackground(UBPageBackground::plain)
     , mIsDesktopMode(false)
@@ -349,7 +348,7 @@ UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* parent, bool enableUndoRedoSta
     setItemIndexMethod(BspTreeIndex);
 
     setUuid(QUuid::createUuid());
-    setDocument(parent);
+    setDocument(document);
     createEraiser();
     createPointer();
     createMarkerCircle();

@@ -3163,9 +3163,11 @@ void UBDocumentController::importFile()
                     showMessage(tr("Failed to import file ... "));
                 }
             }
-
-            emit documentThumbnailsUpdated(this); // some documents might have been overwritten while not having the same page count
         }
+
+        //Replaced document might still be attached to a thumbnail
+        clearThumbPage();
+        reloadThumbnails();
 
         emit UBApplication::documentController->reorderDocumentsRequested();
     }
