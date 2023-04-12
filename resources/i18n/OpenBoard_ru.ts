@@ -1739,6 +1739,18 @@ Providing a new name will create a new document.</source>
         <source>Set as background</source>
         <translation>Сделать фоновым изображением</translation>
     </message>
+    <message>
+        <source>duplicate</source>
+        <translation>Дублировать</translation>
+    </message>
+    <message>
+        <source>layer up</source>
+        <translation>На передний план</translation>
+    </message>
+    <message>
+        <source>layer down</source>
+        <translation>На задний план</translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsMediaItem</name>

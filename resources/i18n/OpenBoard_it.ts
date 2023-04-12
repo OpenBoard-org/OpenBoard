@@ -1775,6 +1775,18 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
         <source>Set as background</source>
         <translation>Imposta come sfondo</translation>
     </message>
+    <message>
+        <source>duplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>layer up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>layer down</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsMediaItem</name>

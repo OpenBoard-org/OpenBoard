@@ -1748,6 +1748,18 @@ Zmiana nazwy na nową utworzy nowy dokument.</translation>
         <source>Set as background</source>
         <translation>Ustaw jako tło</translation>
     </message>
+    <message>
+        <source>duplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>layer up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>layer down</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsMediaItem</name>

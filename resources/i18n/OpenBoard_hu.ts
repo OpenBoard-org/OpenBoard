@@ -1703,6 +1703,18 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
         <source>Set as background</source>
         <translation>Beállítás háttérként</translation>
     </message>
+    <message>
+        <source>duplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>layer up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>layer down</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsMediaItem</name>

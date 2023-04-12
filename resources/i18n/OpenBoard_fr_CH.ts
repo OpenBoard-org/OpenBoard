@@ -1792,6 +1792,18 @@ Un nouveau nom vous permettra de conserver l&apos;ancien document.</translation>
         <source>Set as background</source>
         <translation>mettre en fond de page</translation>
     </message>
+    <message>
+        <source>duplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>layer up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>layer down</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsMediaItem</name>

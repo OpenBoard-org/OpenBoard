@@ -1100,6 +1100,7 @@
         <comment>duplicated %1 pages</comment>
         <translation type="unfinished">
             <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -1268,6 +1269,7 @@ Providing a new name will create a new document.</source>
         <source>%1 pages copied</source>
         <translation type="unfinished">
             <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
 </context>
@@ -1276,6 +1278,7 @@ Providing a new name will create a new document.</source>
     <message numerus="yes">
         <source>%1 pages copied</source>
         <translation type="unfinished">
+            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -1608,6 +1611,18 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Go to Content Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>duplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>layer up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>layer down</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
