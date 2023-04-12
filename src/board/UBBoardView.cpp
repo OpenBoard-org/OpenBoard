@@ -1363,6 +1363,14 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
         }
         if (mWidgetMoved)
         {
+            auto item = getMovingItem();
+
+            if (item && item->type() == UBGraphicsWidgetItem::Type)
+            {
+                UBGraphicsWidgetItem* widgetItem = qgraphicsitem_cast<UBGraphicsWidgetItem *>(item);
+                widgetItem->updatePosition();
+            }
+
             mWidgetMoved = false;
             setMovingItem(nullptr);
         }
