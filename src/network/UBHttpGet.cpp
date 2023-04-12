@@ -96,7 +96,7 @@ void UBHttpGet::requestFinished()
 
     if (mReply->error() != QNetworkReply::NoError)
     {
-        qWarning() << mReply->url().toString() << "get finished with error : " << mReply->error();
+        qWarning() << mReply->url().toString().leftRef(255) << "get finished with error : " << mReply->error();
 
         mDownloadedBytes.clear();
 
@@ -107,7 +107,7 @@ void UBHttpGet::requestFinished()
     else
     {
 
-        qDebug() << mReply->url().toString() << "http get finished ...";
+        qDebug() << mReply->url().toString().leftRef(255) << "http get finished ...";
 
         if (mReply->header(QNetworkRequest::LocationHeader).isValid() && mRedirectionCount < 10)
         {
