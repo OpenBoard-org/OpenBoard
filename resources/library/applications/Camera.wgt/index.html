@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Camera</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/camera.js"></script>
+  </head>
+  <body onload="init();">
+    <div class="container">
+      <div class="cell">
+        <div class="content">
+          <video autoplay id="video"></video>
+          <div class="nocamera" id="nocamera">
+            <img src="img/nocamera.svg"/>
+          </div>
+          <div class="playpause" id="playpause">
+            <img class="mediabutton" id="play" src="img/play.svg"/>
+            <img class="mediabutton" id="pause" src="img/pause.svg"/>
+          </div>
+          <div class="buttons overlay" id="buttons">
+            <select id="videoSource" title="Video source"></select>
+            <select name="size" id="size" title="Snapshot size">
+              <option value="320">S</option>
+              <option value="640" selected>M</option>
+              <option value="960">L</option>
+              <option value="1280">XL</option>
+            </select>
+            <button class="button" id="snapshot" title="Snapshot">
+              <img class="icon" src="img/photo.svg"/>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <canvas class="is-hidden" id="canvas"></canvas>
+  </body>
+</html>
