@@ -322,6 +322,14 @@ class UBBoardController : public UBDocumentContainer
 
         QTimer *mAutosaveTimer;
 
+        enum PropertyPalette
+        {
+            color,
+            lineWidth,
+            eraserWidth
+        };
+        QMap<PropertyPalette, QAction*> mPropertyPaletteWidgets;
+
     private slots:
         void stylusToolDoubleClicked(int tool);
         void boardViewResized(QResizeEvent* event);
