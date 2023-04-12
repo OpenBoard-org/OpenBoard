@@ -797,6 +797,38 @@ qreal UBSettings::currentEraserWidth()
     return width;
 }
 
+//----------------------------------------//
+// line
+int UBSettings::lineStyleIndex()
+{
+    return value("Board/LineStyleIndex", 0).toInt();
+}
+
+void UBSettings::setLineStyleIndex(int index)
+{
+    setValue("Board/LineStyleIndex", index);
+}
+
+UBLineStyle::Enum UBSettings::currentLineStyle()
+{
+    Qt::PenStyle style = Qt::SolidLine;
+
+    switch (lineStyleIndex())
+    {
+        case UBLineStyle::Solid:
+            return UBLineStyle::Solid;
+        case UBLineStyle::Dotted:
+            return UBLineStyle::Dotted;
+        case UBLineStyle::Dashed:
+            return UBLineStyle::Dashed;
+        default:
+            Q_ASSERT(false);
+            style = Qt::SolidLine;
+            break;
+    }
+
+    return UBLineStyle::Solid;
+}
 bool UBSettings::isDarkBackground()
 {
     return value("Board/DarkBackground", 0).toBool();

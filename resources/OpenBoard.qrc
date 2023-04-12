@@ -392,5 +392,8 @@
         <file>images/addToFavorites.png</file>
         <file>images/removeFromFavorites.png</file>
         <file>images/toolbar/tip.png</file>
+        <file>images/toolbar/solidLine.svg</file>
+        <file>images/toolbar/dottedLine.svg</file>
+        <file>images/toolbar/dashedLine.svg</file>
     </qresource>
 </RCC>

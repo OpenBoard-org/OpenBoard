@@ -946,7 +946,15 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &startWid
         mAddedItems.clear();
     }
 
-    UBGraphicsPolygonItem *polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), initialWidth, endWidth);
+    UBGraphicsPolygonItem *polygonItem;
+
+    if(UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line)
+    {
+        polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), endWidth, UBSettings::settings()->currentLineStyle());
+    } else
+    {
+         polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), initialWidth, endWidth);
+    }
     addPolygonItemToCurrentStroke(polygonItem);
 
     if (!bLineStyle) {
@@ -1224,6 +1232,15 @@ UBGraphicsPolygonItem* UBGraphicsScene::lineToPolygonItem(const QLineF &pLine, c
 UBGraphicsPolygonItem* UBGraphicsScene::lineToPolygonItem(const QLineF &pLine, const qreal &pStartWidth, const qreal &pEndWidth)
 {
     UBGraphicsPolygonItem *polygonItem = new UBGraphicsPolygonItem(pLine, pStartWidth, pEndWidth);
+
+    initPolygonItem(polygonItem);
+
+    return polygonItem;
+}
+
+UBGraphicsPolygonItem* UBGraphicsScene::lineToPolygonItem(const QLineF &pLine, const qreal &pWidth, UBLineStyle::Enum style)
+{
+    UBGraphicsPolygonItem *polygonItem = new UBGraphicsPolygonItem(pLine, pWidth, style);
 
     initPolygonItem(polygonItem);
 

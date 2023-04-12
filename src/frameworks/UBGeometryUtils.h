@@ -31,6 +31,7 @@
 #define UBGEOMETRYUTILS_H_
 
 #include <QtGui>
+#include "core/UB.h"
 
 class UBGeometryUtils
 {
@@ -39,9 +40,14 @@ class UBGeometryUtils
         virtual ~UBGeometryUtils();
 
     public:
+        static QPolygonF lineToPolygon(const QLineF& pLine, const qreal& pWidth, const UBLineStyle::Enum lineStyle);
         static QPolygonF lineToPolygon(const QLineF& pLine, const qreal& pWidth);
         static QPolygonF lineToPolygon(const QLineF& pLine, const qreal& pStartWidth, const qreal& pEndWidth);
         static QRectF lineToInnerRect(const QLineF& pLine, const qreal& pWidth);
+
+        static QPolygonF dashedLineToPolygon(const QLineF& pLine, const qreal& pWidth);
+        static QPolygonF dottedLineToPolygon(const QLineF& pLine, const qreal& pWidth);
+        static QPolygonF convertLineToPolygon(const QPolygonF& pLine);
 
         static QPolygonF arcToPolygon(const QLineF& startRadius, qreal spanAngle, qreal width);
 

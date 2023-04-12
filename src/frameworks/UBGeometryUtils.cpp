@@ -49,6 +49,19 @@ UBGeometryUtils::~UBGeometryUtils()
     // NOOP
 }
 
+QPolygonF UBGeometryUtils::lineToPolygon(const QLineF& pLine, const qreal& pWidth, const UBLineStyle::Enum lineStyle)
+{
+    if (lineStyle == UBLineStyle::Dashed) //Dashed LineStyle
+    {
+        return dashedLineToPolygon(pLine, pWidth);
+    }
+    if (lineStyle == UBLineStyle::Dotted) //Dotted LineStyle
+    {
+        return dottedLineToPolygon(pLine, pWidth);
+    }
+    return lineToPolygon(pLine, pWidth);
+}
+
 QPolygonF UBGeometryUtils::lineToPolygon(const QLineF& pLine, const qreal& pWidth)
 {
     qreal x1 = pLine.x1();
@@ -466,4 +479,137 @@ QList<QPointF> UBGeometryUtils::quadraticBezier(const QPointF& p0, const QPointF
     }
 
     return points;
+}
+
+QPolygonF UBGeometryUtils::dashedLineToPolygon(const QLineF& pLine, const qreal& pWidth)
+{
+
+    qreal partLength = pWidth*4;
+    QList<QPointF> linePoints;
+
+    int n = pLine.length()/partLength;
+    qreal partPrc;
+    if (n == 0)
+    {
+        partPrc = 0;
+    } else
+    {
+        partPrc = 1.0/n;
+    }
+    for (int i = 0; i < n; ++i)
+    {
+        linePoints.push_back(pLine.pointAt(i*partPrc));
+    }
+    linePoints.push_back(pLine.p2());
+
+    QPainterPath painterPath;
+
+    for(int i = 1; i < linePoints.count(); i+=2)
+    {
+        painterPath.addPolygon(lineToPolygon(QLineF(linePoints[i-1], linePoints[i]), pWidth));
+        painterPath.closeSubpath();
+    }
+
+    // Use convertLineToPolygon to fix a problem with erasing
+    return convertLineToPolygon(painterPath.toFillPolygon());
+}
+
+QPolygonF UBGeometryUtils::dottedLineToPolygon(const QLineF& pLine, const qreal& pWidth)
+{
+    qreal partLength = pWidth;
+    QList<QPointF> linePoints;
+
+    int n = pLine.length()/partLength;
+    qreal partPrc;
+    if (n == 0)
+    {
+        partPrc = 0;
+    } else
+    {
+        partPrc = 1.0/n;
+    }
+    for (int i = 0; i < n; ++i)
+    {
+        linePoints.push_back(pLine.pointAt(i*partPrc));
+    }
+    linePoints.push_back(pLine.p2());
+
+    QPainterPath painterPath;
+
+    for(int i = 1; i < linePoints.count(); i+=6)
+    {
+        painterPath.addEllipse(linePoints[i].x()-pWidth, linePoints[i].y()-pWidth, pWidth*2, pWidth*2);
+        painterPath.closeSubpath();
+    }
+    // Use convertLineToPolygon to fix a problem with erasing
+    return convertLineToPolygon(painterPath.toFillPolygon());
+}
+
+QPolygonF UBGeometryUtils::convertLineToPolygon(const QPolygonF& pLine)
+{
+    /*
+     * Use this function to fix problems with erasing dashed and dotted lines
+     * Without this will be erased extra parts, that should not
+     */
+    QPolygonF polygon = pLine;
+    int pointsCount = polygon.size();
+    QString* points = new QString();
+    if (pointsCount > 0)
+    {
+        QVector<QPointF> polygonPoints = polygon;
+        UBGeometryUtils::crashPointList(polygonPoints);
+
+        int PolygonPointsCount = polygonPoints.size();
+        QString* svgPoints = new QString();
+        int length = 0;
+        QString sBuf;
+        for(int j = 0; j < PolygonPointsCount; j++)
+        {
+            sBuf = "%1,%2 ";
+            const QPointF & point = polygonPoints.at(j);
+
+            QString temp1 =  "%1", temp2 = "%2";
+
+            temp1 = temp1.arg(point.x());
+            temp2 = temp2.arg(point.y());
+
+            QLocale loc(QLocale::C);
+            sBuf = sBuf.arg(loc.toFloat(temp1)).arg(loc.toFloat(temp2));
+
+            svgPoints->insert(length, sBuf);
+            length += sBuf.length();
+        }
+        points = svgPoints;
+    }
+    QStringRef svgPoints = QStringRef(points);
+
+    QPolygonF polygonRes;
+
+    if (!svgPoints.isNull())
+    {
+        QStringList ts = svgPoints.toString().split(QLatin1Char(' '), QString::SkipEmptyParts);
+
+        foreach(const QString sPoint, ts)
+        {
+            QStringList sCoord = sPoint.split(QLatin1Char(','), QString::SkipEmptyParts);
+
+            if (sCoord.size() == 2)
+            {
+                QPointF point;
+                point.setX(sCoord.at(0).toFloat());
+                point.setY(sCoord.at(1).toFloat());
+                polygonRes << point;
+            }
+            else if (sCoord.size() == 4){
+                //This is the case on system were the "," is used to seperate decimal
+                QPointF point;
+                QString x = sCoord.at(0) + "." + sCoord.at(1);
+                QString y = sCoord.at(2) + "." + sCoord.at(3);
+                point.setX(x.toFloat());
+                point.setY(y.toFloat());
+                polygonRes << point;
+            }
+        }
+    }
+    return polygonRes;
 }
