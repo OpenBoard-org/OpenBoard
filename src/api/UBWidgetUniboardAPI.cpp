@@ -145,6 +145,10 @@ void UBWidgetUniboardAPI::setTool(const QString& toolString)
     {
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Line);
     }
+    else if (lower == "vector")
+    {
+        UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Vector);
+    }
 }
 
 
@@ -251,7 +255,8 @@ void UBWidgetUniboardAPI::drawLineTo(const qreal x, const qreal y, const qreal p
 
     if (mScene)
     mScene->drawLineTo(QPointF(x, y), pWidth, 
-        UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
+        UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line
+                       || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Vector);
 }
 
 

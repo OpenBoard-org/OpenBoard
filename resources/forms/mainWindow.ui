@@ -1773,6 +1773,79 @@
     <string>Dotted Line</string>
    </property>
   </action>
+  <action name="actionVector">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/stylusPalette/vector.svg</normaloff>
+     <normalon>:/images/stylusPalette/vectorOn.svg</normalon>:/images/stylusPalette/vector.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Vector</string>
+   </property>
+   <property name="toolTip">
+    <string>Draw Vectors</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+J</string>
+   </property>
+  </action>
+  <action name="actionVectorTo">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/toolbar/vectorTo.svg</normaloff>:/images/toolbar/vectorTo.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Vector Style</string>
+   </property>
+   <property name="toolTip">
+    <string>Vector To</string>
+   </property>
+  </action>
+  <action name="actionVectorFrom">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/toolbar/vectorFrom.svg</normaloff>:/images/toolbar/vectorFrom.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Vector Style</string>
+   </property>
+   <property name="toolTip">
+    <string>Vector From</string>
+   </property>
+  </action>
+  <action name="actionVectorFromTo">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../OpenBoard.qrc">
+     <normaloff>:/images/toolbar/vectorFromTo.svg</normaloff>:/images/toolbar/vectorFromTo.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Vector Style</string>
+   </property>
+   <property name="toolTip">
+    <string>Vector From To</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="../OpenBoard.qrc"/>

@@ -395,5 +395,10 @@
         <file>images/toolbar/solidLine.svg</file>
         <file>images/toolbar/dottedLine.svg</file>
         <file>images/toolbar/dashedLine.svg</file>
+        <file>images/toolbar/vectorTo.svg</file>
+        <file>images/toolbar/vectorFrom.svg</file>
+        <file>images/toolbar/vectorFromTo.svg</file>
+        <file>images/stylusPalette/vector.svg</file>
+        <file>images/stylusPalette/vectorOn.svg</file>
     </qresource>
 </RCC>

@@ -85,6 +85,18 @@ UBGraphicsPolygonItem::UBGraphicsPolygonItem (const QLineF& pLine, qreal pWidth,
     initialize();
 }
 
+UBGraphicsPolygonItem::UBGraphicsPolygonItem (const QLineF& pLine, UBVectorStyle::Enum style, qreal pWidth)
+    : QGraphicsPolygonItem(UBGeometryUtils::vectorToPolygon(pLine, pWidth, style))
+    , mOriginalLine(pLine)
+    , mOriginalWidth(pWidth)
+    , mIsNominalLine(true)
+    , mStroke(0)
+    , mpGroup(NULL)
+{
+    // NOOP
+    initialize();
+}
+
 UBGraphicsPolygonItem::UBGraphicsPolygonItem (const QLineF& pLine, qreal pStartWidth, qreal pEndWidth)
     : QGraphicsPolygonItem(UBGeometryUtils::lineToPolygon(pLine, pStartWidth, pEndWidth))
     , mOriginalLine(pLine)

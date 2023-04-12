@@ -82,6 +82,7 @@ class UBDrawingController : public QObject
         void setColorIndex(int index);
         void setEraserWidthIndex(int index);
         void setLineStyleIndex(int index);
+        void setVectorStyleIndex(int index);
 
     signals:
         void stylusToolChanged(int tool, int previousTool = -1);
@@ -110,6 +111,7 @@ class UBDrawingController : public QObject
         void zoomOutToolSelected(bool checked);
         void pointerToolSelected(bool checked);
         void lineToolSelected(bool checked);
+        void vectorToolSelected(bool checked);
         void textToolSelected(bool checked);
         void captureToolSelected(bool checked);
 };

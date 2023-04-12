@@ -438,7 +438,7 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             // ---------------------------------------------------------------
             mCurrentStroke = new UBGraphicsStroke(this);
 
-            if (currentTool != UBStylusTool::Line){
+            if (currentTool != UBStylusTool::Line && currentTool != UBStylusTool::Vector){
                 // Handle the pressure
                 width = UBDrawingController::drawingController()->currentToolWidth() * pressure;
             }
@@ -457,7 +457,8 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
                 UBDrawingController::drawingController()->activeRuler()->StartLine(scenePos, width);
             else {
                 moveTo(scenePos);
-                drawLineTo(scenePos, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
+                drawLineTo(scenePos, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line
+                           || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Vector);
 
                 mCurrentStroke->addPoint(scenePos, width);
             }
@@ -530,7 +531,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
         {
             qreal width = 0;
 
-            if (currentTool != UBStylusTool::Line){
+            if (currentTool != UBStylusTool::Line && currentTool != UBStylusTool::Vector){
                 // Handle the pressure
                 width = dc->currentToolWidth() * qMax(pressure, 0.2);
             }else{
@@ -541,7 +542,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
             width /= UBApplication::boardController->systemScaleFactor();
             width /= UBApplication::boardController->currentZoom();
 
-            if (currentTool == UBStylusTool::Line || dc->activeRuler())
+            if (currentTool == UBStylusTool::Line || currentTool == UBStylusTool::Vector || dc->activeRuler())
             {
                 if (UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker)
                 if(NULL != mpLastPolygon && NULL != mCurrentStroke && mAddedItems.size() > 0){
@@ -579,7 +580,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                 dc->activeRuler()->DrawLine(position, width);
             }
 
-            else if (currentTool == UBStylusTool::Line) {
+            else if (currentTool == UBStylusTool::Line || currentTool == UBStylusTool::Vector) {
                 drawLineTo(position, width, true);
             }
 
@@ -952,6 +953,10 @@ void UBGraphicsScene::drawLineTo(const QPointF &pEndPoint, const qreal &startWid
     {
         polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), endWidth, UBSettings::settings()->currentLineStyle());
     } else
+    if(UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Vector)
+    {
+        polygonItem = vectorToPolygonItem(QLineF(mPreviousPoint, pEndPoint), endWidth, UBSettings::settings()->currentVectorStyle());
+    } else
     {
          polygonItem = lineToPolygonItem(QLineF(mPreviousPoint, pEndPoint), initialWidth, endWidth);
     }
@@ -1241,6 +1246,15 @@ UBGraphicsPolygonItem* UBGraphicsScene::lineToPolygonItem(const QLineF &pLine, c
 UBGraphicsPolygonItem* UBGraphicsScene::lineToPolygonItem(const QLineF &pLine, const qreal &pWidth, UBLineStyle::Enum style)
 {
     UBGraphicsPolygonItem *polygonItem = new UBGraphicsPolygonItem(pLine, pWidth, style);
+
+    initPolygonItem(polygonItem);
+
+    return polygonItem;
+}
+
+UBGraphicsPolygonItem* UBGraphicsScene::vectorToPolygonItem(const QLineF &pLine, const qreal &pWidth, UBVectorStyle::Enum style)
+{
+    UBGraphicsPolygonItem *polygonItem = new UBGraphicsPolygonItem(pLine, style, pWidth);
 
     initPolygonItem(polygonItem);
 

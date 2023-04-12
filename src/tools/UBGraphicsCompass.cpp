@@ -584,10 +584,12 @@ void UBGraphicsCompass::paintCenterCross()
     QPointF needleCrossCenter = mapToScene(needlePosition());
     scene()->moveTo(QPointF(needleCrossCenter.x() - 5, needleCrossCenter.y()));
     scene()->drawLineTo(QPointF(needleCrossCenter.x() + 5, needleCrossCenter.y()), 1,
-        UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
+        UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line
+                        ||UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Vector);
     scene()->moveTo(QPointF(needleCrossCenter.x(), needleCrossCenter.y() - 5));
     scene()->drawLineTo(QPointF(needleCrossCenter.x(), needleCrossCenter.y() + 5), 1,
-        UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
+        UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line
+                        ||UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Vector);
 }
 
 QPointF UBGraphicsCompass::needlePosition() const

@@ -613,3 +613,141 @@ QPolygonF UBGeometryUtils::convertLineToPolygon(const QPolygonF& pLine)
     }
     return polygonRes;
 }
+
+QPolygonF UBGeometryUtils::vectorToPolygon(const QLineF& pLine, const qreal& pWidth, const UBVectorStyle::Enum vectorStyle)
+{
+
+    if (vectorStyle == UBVectorStyle::From)
+    {
+        return vectorFromToPolygon(pLine, pWidth);
+    }
+    if (vectorStyle == UBVectorStyle::FromTo)
+    {
+        return vectorFromToToPolygon(pLine, pWidth);
+    }
+    return vectorToToPolygon(pLine, pWidth);
+}
+
+QPainterPath UBGeometryUtils::getLinePainterPath(const QLineF& pLine, const qreal& pWidth)
+{
+    qreal x1 = pLine.x1();
+    qreal y1 = pLine.y1();
+
+    qreal x2 = pLine.x2();
+    qreal y2 = pLine.y2();
+
+    qreal alpha = (90.0 - pLine.angle()) * PI / 180.0;
+    qreal hypothenuse = pWidth / 2;
+
+    // TODO UB 4.x PERF cache sin/cos table
+    qreal opposite = sin(alpha) * hypothenuse;
+    qreal adjacent = cos(alpha) * hypothenuse;
+
+    QPointF p1a(x1 - adjacent, y1 - opposite);
+    QPointF p1b(x1 + adjacent, y1 + opposite);
+
+    QPointF p2a(x2 - adjacent, y2 - opposite);
+    QPointF p2b(x2 + adjacent, y2 + opposite);
+
+    QPainterPath painterPath;
+
+    painterPath.moveTo(p1a);
+    painterPath.lineTo(p2a);
+
+    painterPath.arcTo(x2 - hypothenuse, y2 - hypothenuse, pWidth, pWidth, (90.0 + pLine.angle()), -180.0);
+
+    //painterPath.lineTo(p2b);
+    painterPath.lineTo(p1b);
+
+    painterPath.arcTo(x1 - hypothenuse, y1 - hypothenuse, pWidth, pWidth, -1 * (90.0 - pLine.angle()), -180.0);
+
+    painterPath.closeSubpath();
+    return painterPath;
+}
+
+QPolygonF UBGeometryUtils::vectorToToPolygon(const QLineF& pLine, const qreal& pWidth)
+{
+    QPainterPath painterPath;
+    painterPath.addPath(getLinePainterPath(pLine, pWidth));
+
+    // To arrow
+    QPainterPath arrowLinePath;
+    qreal subLineLength = pLine.length()/10;
+    if (subLineLength < 5)
+        subLineLength = 5;
+    if (subLineLength > 38)
+        subLineLength = 38;
+    QLineF subLine = QLineF(pLine.p2().x(), pLine.p2().y(), pLine.p2().x()+subLineLength, pLine.p2().y());
+    subLine.setAngle(pLine.angle() - 160);
+    arrowLinePath = getLinePainterPath(subLine, pWidth);
+    painterPath+=arrowLinePath;
+
+    subLine = QLineF(pLine.p2().x(), pLine.p2().y(),pLine.p2().x()+subLineLength, pLine.p2().y());
+    subLine.setAngle(pLine.angle() + 160);
+    arrowLinePath = getLinePainterPath(subLine, pWidth);
+    painterPath+=arrowLinePath;
+
+    return painterPath.toFillPolygon();
+}
+
+QPolygonF UBGeometryUtils::vectorFromToPolygon(const QLineF& pLine, const qreal& pWidth)
+{
+    QPainterPath painterPath;
+    painterPath.addPath(getLinePainterPath(pLine, pWidth));
+
+    // From arrow
+    QPainterPath arrowLinePath;
+    qreal subLineLength = pLine.length()/10;
+    if (subLineLength < 5)
+        subLineLength = 5;
+    if (subLineLength > 38)
+        subLineLength = 38;
+    QLineF subLine = QLineF(pLine.p1().x(), pLine.p1().y(), pLine.p1().x()+subLineLength, pLine.p1().y());
+    subLine.setAngle(pLine.angle() - 20);
+    arrowLinePath = getLinePainterPath(subLine, pWidth);
+    painterPath+=arrowLinePath;
+
+    subLine = QLineF(pLine.p1().x(), pLine.p1().y(),pLine.p1().x()+subLineLength, pLine.p1().y());
+    subLine.setAngle(pLine.angle() + 20);
+    arrowLinePath = getLinePainterPath(subLine, pWidth);
+    painterPath+=arrowLinePath;
+
+    return painterPath.toFillPolygon();
+}
+
+QPolygonF UBGeometryUtils::vectorFromToToPolygon(const QLineF& pLine, const qreal& pWidth)
+{
+    QPainterPath painterPath;
+    painterPath.addPath(getLinePainterPath(pLine, pWidth));
+
+    // From arrow
+    QPainterPath arrowLinePath;
+    qreal subLineLength = pLine.length()/10;
+    if (subLineLength < 5)
+        subLineLength = 5;
+    if (subLineLength > 38)
+        subLineLength = 38;
+    QLineF subLine = QLineF(pLine.p1().x(), pLine.p1().y(), pLine.p1().x()+subLineLength, pLine.p1().y());
+    subLine.setAngle(pLine.angle() - 20);
+    arrowLinePath = getLinePainterPath(subLine, pWidth);
+    painterPath+=arrowLinePath;
+
+    subLine = QLineF(pLine.p1().x(), pLine.p1().y(),pLine.p1().x()+subLineLength, pLine.p1().y());
+    subLine.setAngle(pLine.angle() + 20);
+    arrowLinePath = getLinePainterPath(subLine, pWidth);
+    painterPath+=arrowLinePath;
+
+    // To arrow
+
+    subLine = QLineF(pLine.p2().x(), pLine.p2().y(), pLine.p2().x()+subLineLength, pLine.p2().y());
+    subLine.setAngle(pLine.angle() - 160);
+    arrowLinePath = getLinePainterPath(subLine, pWidth);
+    painterPath+=arrowLinePath;
+
+    subLine = QLineF(pLine.p2().x(), pLine.p2().y(),pLine.p2().x()+subLineLength, pLine.p2().y());
+    subLine.setAngle(pLine.angle() + 160);
+    arrowLinePath = getLinePainterPath(subLine, pWidth);
+    painterPath+=arrowLinePath;
+
+    return painterPath.toFillPolygon();
+}

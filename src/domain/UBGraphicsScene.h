@@ -398,6 +398,8 @@ public slots:
         UBGraphicsPolygonItem* lineToPolygonItem(const QLineF &pLine, const qreal &pStartWidth, const qreal &pEndWidth);
         UBGraphicsPolygonItem* lineToPolygonItem(const QLineF &pLine, const qreal &pWidth, UBLineStyle::Enum style);
 
+        UBGraphicsPolygonItem* vectorToPolygonItem(const QLineF &pLine, const qreal &pWidth, UBVectorStyle::Enum style);
+
         UBGraphicsPolygonItem* arcToPolygonItem(const QLineF& pStartRadius, qreal pSpanAngle, qreal pWidth);
         UBGraphicsPolygonItem* curveToPolygonItem(const QList<QPair<QPointF, qreal> > &points);
         UBGraphicsPolygonItem* curveToPolygonItem(const QList<QPointF> &points, qreal startWidth, qreal endWidth);

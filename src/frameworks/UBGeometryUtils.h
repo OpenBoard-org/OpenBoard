@@ -65,6 +65,12 @@ class UBGeometryUtils
 
         static QList<QPointF> quadraticBezier(const QPointF& p0, const QPointF& p1, const QPointF& p2, unsigned int nPoints);
 
+        static QPolygonF vectorToPolygon(const QLineF& pLine, const qreal& pWidth, const UBVectorStyle::Enum vectorStyle);
+        static QPainterPath getLinePainterPath(const QLineF& pLine, const qreal& pWidth);
+        static QPolygonF vectorToToPolygon(const QLineF& pLine, const qreal& pWidth);
+        static QPolygonF vectorFromToPolygon(const QLineF& pLine, const qreal& pWidth);
+        static QPolygonF vectorFromToToPolygon(const QLineF& pLine, const qreal& pWidth);
+
         const static int centimeterGraduationHeight;
         const static int halfCentimeterGraduationHeight;
         const static int millimeterGraduationHeight;

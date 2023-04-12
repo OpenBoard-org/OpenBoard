@@ -73,6 +73,7 @@ struct UBStylusTool
         ZoomOut,
         Pointer,
         Line,
+        Vector,
         Text,
         Capture
     };
@@ -93,6 +94,16 @@ struct UBLineStyle
         Solid = 0,
         Dashed = 1,
         Dotted = 2
+    };
+};
+
+struct UBVectorStyle
+{
+    enum Enum
+    {
+        To = 0,
+        From = 1,
+        FromTo = 2
     };
 };
 
