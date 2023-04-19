@@ -780,7 +780,16 @@ QImage UBFeaturesController::getIcon(const QString &path, UBFeatureElementType p
     } else if (pFType == FEATURE_VIDEO) {
         return QImage(":images/libpalette/movieIcon.svg");
     } else if (pFType == FEATURE_IMAGE) {
-        QImage pix(path);
+        QFile file(path);
+        QImage pix;
+
+        if (file.open(QFile::ReadOnly))
+        {
+            QImageReader imageReader(&file);
+            imageReader.setAutoTransform(true);
+            pix = imageReader.read();
+        }
+
         if (pix.isNull()) {
             pix = QImage(":images/libpalette/notFound.png");
         } else {
@@ -835,13 +844,13 @@ QImage UBFeaturesController::createThumbnail(const QString &path)
     return QImage(thumbnailPath);
 }
 
-void UBFeaturesController::importImage(const QImage &image, const QString &fileName)
+void UBFeaturesController::importImage(const QByteArray& imageData, const QString &fileName)
 {
-    importImage(image, currentElement, fileName);
+    importImage(imageData, currentElement, fileName);
 }
 
 
-void UBFeaturesController::importImage( const QImage &image, const UBFeature &destination, const QString &fileName )
+void UBFeaturesController::importImage(const QByteArray& imageData, const UBFeature &destination, const QString &fileName)
 {
     QString mFileName = fileName;
     QString filePath;
@@ -852,13 +861,17 @@ void UBFeaturesController::importImage( const QImage &image, const UBFeature &de
         mFileName  = tr("ImportedImage") + "-" + now.toString("dd-MM-yyyy hh-mm-ss");
         
         filePath = dest.getFullPath().toLocalFile() + "/" + mFileName;
+        QByteArray data = imageData;
+        QBuffer buffer(&data);
+        QImageReader rdr(&buffer);
+        QString format = rdr.format();
 
-        if (QFile::exists(filePath+".png"))
+        if (QFile::exists(filePath + "." + format))
             mFileName += QString("-[%1]").arg(++imageCounter);
         else
             imageCounter = 0;
         
-        mFileName += ".png";
+        mFileName += "." + format;
     }
     
 
@@ -868,7 +881,13 @@ void UBFeaturesController::importImage( const QImage &image, const UBFeature &de
     }
 
     filePath = dest.getFullPath().toLocalFile() + "/" + mFileName;
-    image.save(filePath);
+    QFile file(filePath);
+
+    if (file.open(QFile::WriteOnly))
+    {
+        file.write(imageData);
+        file.close();
+    }
 
     QImage thumb = createThumbnail( filePath );
     UBFeature resultItem =  UBFeature( dest.getFullVirtualPath() + "/" + mFileName, thumb, mFileName,

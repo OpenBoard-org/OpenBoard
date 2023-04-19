@@ -421,9 +421,9 @@ QStringList UBFeaturesMimeData::formats() const
     return QMimeData::formats();
 }
 
-void UBFeaturesWidget::importImage(const QImage &image, const QString &fileName)
+void UBFeaturesWidget::importImage(const QByteArray &imageData, const QString &fileName)
 {
-    controller->importImage(image, fileName);
+    controller->importImage(imageData, fileName);
 }
 
 UBFeaturesListView::UBFeaturesListView( QWidget* parent, const char* name )
@@ -1211,9 +1211,37 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
             curController->moveExternalData(curUrl, parentFeature);
         }
     } else if (mimeData->hasImage()) {
-        QImage image = qvariant_cast<QImage>( mimeData->imageData() );
-        curController->importImage( image, parentFeature );
+        const QStringList formats = mimeData->formats();
+        QString selectedFormat;
 
+        for (const QString& format : formats)
+        {
+            if (format.startsWith("image/"))
+            {
+                selectedFormat = format;
+                break;
+            }
+        }
+
+        QBuffer buffer;
+
+        if (selectedFormat.isEmpty())
+        {
+            // create an image and fill the buffer with PNG data
+            QImage img = qvariant_cast<QImage> (mimeData->imageData());
+            img.save(&buffer, "png");
+        }
+        else
+        {
+            // get data from mime data
+            buffer.setData(mimeData->data(selectedFormat));
+        }
+
+        // validate that the image is really an image, webkit does not fill properly the image mime data
+        if (!buffer.data().isEmpty())
+        {
+            curController->importImage( buffer.data(), parentFeature );
+        }
     }
 
     return true;

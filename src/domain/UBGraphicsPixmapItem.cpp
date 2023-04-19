@@ -189,7 +189,11 @@ qreal UBGraphicsPixmapItem::opacity() const
 
 void UBGraphicsPixmapItem::clearSource()
 {
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + uuid().toString() + ".png";
-    QString diskPath =  UBApplication::boardController->selectedDocument()->persistencePath() + "/" + fileName;
-    UBFileSystemUtils::deleteFile(diskPath);
+    QDir imageDir = UBApplication::boardController->selectedDocument()->persistencePath() + "/" + UBPersistenceManager::imageDirectory;
+    const QStringList imageFiles = imageDir.entryList({uuid().toString() + ".*"});
+
+    for (const auto& imageFile : imageFiles)
+    {
+        UBFileSystemUtils::deleteFile(imageFile);
+    }
 }

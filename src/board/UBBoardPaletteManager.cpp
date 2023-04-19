@@ -881,23 +881,35 @@ void UBBoardPaletteManager::addItemToNewPage()
 
 void UBBoardPaletteManager::addItemToLibrary()
 {
+    QByteArray data;
+
     if(mPixmap.isNull())
     {
-       mPixmap = QPixmap(mItemUrl.toLocalFile());
-    }
+        QFile file(mItemUrl.toLocalFile());
 
-    if(!mPixmap.isNull())
+        if (file.open(QFile::ReadOnly))
+        {
+            data = file.readAll();
+            file.close();
+        }
+    }
+    else
     {
         if(mScaleFactor != 1.)
         {
              mPixmap = mPixmap.scaled(mScaleFactor * mPixmap.width(), mScaleFactor* mPixmap.height()
                      , Qt::KeepAspectRatio, Qt::SmoothTransformation);
         }
-        QImage image = mPixmap.toImage();
 
+        QBuffer buffer(&data);
+        mPixmap.save(&buffer, "png");
+    }
+
+    if(!data.isEmpty())
+    {
         QDateTime now = QDateTime::currentDateTime();
         QString capturedName  = tr("CapturedImage") + "-" + now.toString("dd-MM-yyyy hh-mm-ss") + ".png";
-        mpFeaturesWidget->importImage(image, capturedName);
+        mpFeaturesWidget->importImage(data, capturedName);
     }
     else
     {

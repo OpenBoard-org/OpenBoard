@@ -93,7 +93,7 @@ public:
             || mode == eUBDockPaletteWidget_DESKTOP;
     }
     UBFeaturesController * getFeaturesController() const { return controller; }
-    void importImage(const QImage &image, const QString &fileName = QString());
+    void importImage(const QByteArray& imageData, const QString &fileName = QString());
 
     static const int minThumbnailSize = 20;
     static const int maxThumbnailSize = 100;

@@ -1557,14 +1557,30 @@ void UBGraphicsScene::saveWidgetSnapshots()
 
 UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, QGraphicsItem* replaceFor, const QPointF& pPos, qreal pScaleFactor, bool pUseAnimation, bool useProxyForDocumentPath)
 {
+    // create PNG data from pixmap
+    QBuffer buffer;
+    pPixmap.save(&buffer, "png");
+
+    return addImage(buffer.data(), replaceFor, pPos, pScaleFactor, pUseAnimation, useProxyForDocumentPath);
+}
+
+UBGraphicsPixmapItem* UBGraphicsScene::addImage(QByteArray pData, QGraphicsItem* replaceFor, const QPointF& pPos, qreal pScaleFactor, bool pUseAnimation, bool useProxyForDocumentPath)
+{
+    QBuffer buffer(&pData);
+    QImageReader imageReader(&buffer);
+    imageReader.setAutoTransform(true);
+    QString format = imageReader.format();
+    QImage img = imageReader.read();
+    QPixmap pixmap = QPixmap::fromImage(img);
+
     UBGraphicsPixmapItem* pixmapItem = new UBGraphicsPixmapItem();
 
     pixmapItem->setFlag(QGraphicsItem::ItemIsMovable, true);
     pixmapItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-    pixmapItem->setPixmap(pPixmap);
+    pixmapItem->setPixmap(pixmap);
 
-    QPointF half(pPixmap.width() * pScaleFactor / 2, pPixmap.height()  * pScaleFactor / 2);
+    QPointF half(pixmap.width() * pScaleFactor / 2, pixmap.height()  * pScaleFactor / 2);
     pixmapItem->setPos(pPos - half);
 
     addItem(pixmapItem);
@@ -1597,7 +1613,13 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, QGraphi
     else
         documentPath = UBApplication::boardController->selectedDocument()->persistencePath();
 
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png";
+    if (format != "png")
+    {
+        // provide compatibility with OpenBoard < 1.7.0 which uses 'contains("png")' as image indicator
+        format = "png." + format;
+    }
+
+    QString fileName = UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + "." + format;
 
     QString path = documentPath + "/" + fileName;
 
@@ -1605,8 +1627,13 @@ UBGraphicsPixmapItem* UBGraphicsScene::addPixmap(const QPixmap& pPixmap, QGraphi
     {
         QDir dir;
         dir.mkdir(documentPath + "/" + UBPersistenceManager::imageDirectory);
+        QFile file(path);
 
-        pixmapItem->pixmap().toImage().save(path, "PNG");
+        if (file.open(QFile::WriteOnly))
+        {
+            file.write(pData);
+            file.close();
+        }
     }
 
     return pixmapItem;
@@ -2506,7 +2533,14 @@ QList<QUrl> UBGraphicsScene::relativeDependenciesOfItem(QGraphicsItem* item) con
 
     UBGraphicsPixmapItem* pixmapItem = dynamic_cast<UBGraphicsPixmapItem*>(item);
     if(pixmapItem){
-        relativePaths << QUrl(UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png");
+        QDir imageDir = mDocument->persistencePath() + "/" + UBPersistenceManager::imageDirectory;
+        QStringList imageFiles = imageDir.entryList({pixmapItem->uuid().toString() + ".*"});
+
+        if (!imageFiles.isEmpty())
+        {
+            relativePaths << QUrl(UBPersistenceManager::imageDirectory + "/" + imageFiles.last());
+        }
+
         return relativePaths;
     }
 
