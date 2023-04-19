@@ -203,7 +203,7 @@ void UBFeaturesWidget::deleteElements( const UBFeaturesMimeData * mimeData )
             controller->deleteItem(curFeature.getFullPath());
 
         } else {
-           controller->moveToTrash(curFeature);
+           controller->moveToTrash(curFeature, true);
         }
     }
 
@@ -430,6 +430,7 @@ UBFeaturesListView::UBFeaturesListView( QWidget* parent, const char* name )
     : QListView(parent)
 {
     setObjectName(name);
+    setDragDropOverwriteMode(true);
 }
 
 void UBFeaturesListView::dragEnterEvent( QDragEnterEvent *event )
@@ -1198,11 +1199,8 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
     if (dataFromSameModel) {
         QList<UBFeature> featList = fMimeData->features();
         for (int i = 0; i < featList.count(); i++) {
-            UBFeature sourceElement;
-            if (dataFromSameModel) {
-                sourceElement = featList.at(i);
-                moveData(sourceElement, parentFeature, Qt::MoveAction, true);
-            }
+            UBFeature sourceElement = featList.at(i);
+            moveData(sourceElement, parentFeature, Qt::MoveAction, true);
         }
     } else if (mimeData->hasUrls()) {
         QList<QUrl> urlList = mimeData->urls();
@@ -1335,18 +1333,29 @@ void UBFeaturesModel::moveData(const UBFeature &source, const UBFeature &destina
 
     Q_ASSERT( QFileInfo( sourcePath ).exists() );
 
-    QString name = QFileInfo( sourcePath ).fileName();
-    QString destPath = destination.getFullPath().toLocalFile();
+    UBFeature dest = destination;
 
-    QString destVirtualPath = destination.getFullVirtualPath();
+    if (destination.getType() == FEATURE_CATEGORY && destination.getName() == "root")
+    {
+        // determine default category from file name
+        dest = curController->getDestinationFeatureForUrl(destination.getUrl());
+    }
+
+    QString name = QFileInfo( sourcePath ).fileName();
+    QString destPath = dest.getFullPath().toLocalFile();
+
+    QString destVirtualPath = dest.getFullVirtualPath();
     QString destFullPath = destPath + "/" + name;
 
-    if ( sourcePath.compare(destFullPath, Qt::CaseInsensitive ) || destination.getType() != FEATURE_TRASH)
+    if (sourcePath.compare(destFullPath, Qt::CaseInsensitive) == 0)
     {
-        UBFileSystemUtils::copy(sourcePath, destFullPath);
-        if (action == Qt::MoveAction) {
-            curController->deleteItem( source.getFullPath() );
-        }
+        // source and dest are identical - do nothing
+        return;
+    }
+
+    UBFileSystemUtils::copy(sourcePath, destFullPath);
+    if (action == Qt::MoveAction) {
+        curController->deleteItem( source.getFullPath() );
     }
 
     //Passing all the source container ubdating dependancy pathes
@@ -1364,7 +1373,7 @@ void UBFeaturesModel::moveData(const UBFeature &source, const UBFeature &destina
                 QUrl newPath = QUrl::fromLocalFile(curFeatureFullPath.replace(sourcePath, destFullPath));
                 QString newVirtualPath = curFeatureVirtualPath.replace(sourceVirtualPath, destVirtualPath);
                 //when copying to trash don't change the real path
-                if (destination.getType() != FEATURE_TRASH) {
+                if (dest.getType() != FEATURE_TRASH) {
                     // processing copy or move action for real FS
                     if (action == Qt::CopyAction) {
                         copyFeature.setFullPath(newPath);

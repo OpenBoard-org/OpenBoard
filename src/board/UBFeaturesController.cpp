@@ -1161,9 +1161,9 @@ void UBFeaturesController::moveExternalData(const QUrl &url, const UBFeature &de
 
     UBFeature dest = destination;
 
-    if ( destination != trashElement && destination != UBFeature()
-       /*&& !destination.getFullVirtualPath().startsWith( possibleDest.getFullVirtualPath(), Qt::CaseInsensitive )*/ )
+    if (!destination.getFullVirtualPath().startsWith(possibleDest.getFullVirtualPath(), Qt::CaseInsensitive))
     {
+        // use proposed folder if destination is not a subfolder of that
         dest = possibleDest;
     }
 
