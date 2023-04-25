@@ -33,6 +33,7 @@
 #include <QApplication>
 #include <QDBusConnectionInterface>
 #include <QDBusInterface>
+#include <QDBusMetaType>
 
 #include <unistd.h>
 #include <X11/keysym.h>
@@ -41,7 +42,9 @@
 #include "core/UBApplication.h"
 #include "core/UBDisplayManager.h"
 #include "core/UBSettings.h"
+#include "gui/UBMainWindow.h"
 
+static OnboardListener* listener = nullptr;
 
 void UBPlatformUtils::init()
 {
@@ -470,6 +473,11 @@ void UBPlatformUtils::showOSK(bool show)
         if (dbus.isValid())
         {
             dbus.call("Show");
+
+            if (!listener)
+            {
+                listener = new OnboardListener(dbus.connection(), qApp);
+            }
         }
         else
         {
@@ -489,5 +497,34 @@ void UBPlatformUtils::showOSK(bool show)
     else
     {
         qDebug() << "onboard not registered/installed";
+    }
+}
+
+OnboardListener::OnboardListener(const QDBusConnection& connection, QObject* parent)
+        : QObject{parent}
+        , mConnection{connection}
+{
+    qDBusRegisterMetaType<QMap<QString, QVariant>>();
+    const auto ok = mConnection.connect(
+                "org.onboard.Onboard", "/org/onboard/Onboard/Keyboard",
+                "org.freedesktop.DBus.Properties", "PropertiesChanged",
+                this, SLOT(onboardPropertiesChanged(QString,QMap<QString,QVariant>)));
+    if (!ok)
+    {
+        qDebug() << "Could not connect to DBus service listening for onboard properties";
+    }
+}
+
+void OnboardListener::onboardPropertiesChanged(QString interface, QMap<QString, QVariant> properties) const
+{
+    if (interface == "org.onboard.Onboard.Keyboard" && properties.contains("Visible"))
+    {
+        const auto onboardVisible = properties.value("Visible").toBool();
+        const auto oskAction = UBApplication::mainWindow->actionVirtualKeyboard;
+
+        if (oskAction->isChecked() != onboardVisible)
+        {
+            oskAction->trigger();
+        }
     }
 }
