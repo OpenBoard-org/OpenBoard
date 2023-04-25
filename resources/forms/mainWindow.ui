@@ -421,6 +421,9 @@
    <property name="toolTip">
     <string>Color 1</string>
    </property>
+   <property name="shortcut">
+    <string>1</string>
+   </property>
   </action>
   <action name="actionColor1">
    <property name="checkable">
@@ -435,6 +438,9 @@
    </property>
    <property name="toolTip">
     <string>Color 2</string>
+   </property>
+   <property name="shortcut">
+    <string>2</string>
    </property>
   </action>
   <action name="actionColor2">
@@ -451,6 +457,9 @@
    <property name="toolTip">
     <string>Color 3</string>
    </property>
+   <property name="shortcut">
+    <string>3</string>
+   </property>
   </action>
   <action name="actionColor3">
    <property name="checkable">
@@ -466,6 +475,9 @@
    <property name="toolTip">
     <string>Color 4</string>
    </property>
+   <property name="shortcut">
+    <string>4</string>
+   </property>
   </action>
   <action name="actionColor4">
    <property name="checkable">
@@ -480,6 +492,9 @@
    </property>
    <property name="toolTip">
     <string>Color 5</string>
+   </property>
+   <property name="shortcut">
+    <string>5</string>
    </property>
   </action>
   <action name="actionWebBack">
