@@ -929,13 +929,20 @@ void UBPersistenceManager::duplicateDocumentScene(UBDocumentProxy* proxy, int in
 
         UBGraphicsPixmapItem* pixmapItem = qgraphicsitem_cast<UBGraphicsPixmapItem*>(item);
         if(pixmapItem){
-            QString source = proxy->persistencePath() + "/" +  UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png";
-            QString destination = source;
-            QUuid newUuid = QUuid::createUuid();
-            QString fileName = QFileInfo(source).completeBaseName();
-            destination = destination.replace(fileName,newUuid.toString());
-            QFile::copy(source,destination);
-            pixmapItem->setUuid(newUuid);
+            QDir imageDir = proxy->persistencePath() + "/" + UBPersistenceManager::imageDirectory;
+            QStringList imageFiles = imageDir.entryList({pixmapItem->uuid().toString() + ".*"});
+
+            if (!imageFiles.isEmpty())
+            {
+                QString source = proxy->persistencePath() + "/" +  UBPersistenceManager::imageDirectory + "/" + imageFiles.last();
+                QString destination = source;
+                QUuid newUuid = QUuid::createUuid();
+                QString fileName = QFileInfo(source).completeBaseName();
+                destination = destination.replace(fileName,newUuid.toString());
+                QFile::copy(source,destination);
+                pixmapItem->setUuid(newUuid);
+            }
+
             continue;
         }
 

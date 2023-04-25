@@ -1167,18 +1167,18 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
         qDebug() << "accepting mime type" << mimeType << "as raster image";
 
+        if (pData.length() == 0)
+        {
+            QFile file(sourceUrl.toLocalFile());
 
-        QPixmap pix;
-        if(pData.length() == 0){
-            pix.load(sourceUrl.toLocalFile());
-        }
-        else{
-            QImage img;
-            img.loadFromData(pData);
-            pix = QPixmap::fromImage(img);
+            if (file.open(QFile::ReadOnly))
+            {
+                pData = file.readAll();
+                file.close();
+            }
         }
 
-        UBGraphicsPixmapItem* pixItem = mActiveScene->addPixmap(pix, NULL, pPos, 1.);
+        UBGraphicsPixmapItem* pixItem = mActiveScene->addImage(pData, nullptr, pPos, 1.);
         pixItem->setSourceUrl(sourceUrl);
 
         if (isBackground)
@@ -2483,13 +2483,36 @@ void UBBoardController::processMimeData(const QMimeData* pMimeData, const QPoint
 
     if (pMimeData->hasImage())
     {
-        QImage img = qvariant_cast<QImage> (pMimeData->imageData());
-        QPixmap pix = QPixmap::fromImage(img);
+        const QStringList formats = pMimeData->formats();
+        QString selectedFormat;
+
+        for (const QString& format : formats)
+        {
+            if (format.startsWith("image/"))
+            {
+                selectedFormat = format;
+                break;
+            }
+        }
+
+        QBuffer buffer;
+
+        if (selectedFormat.isEmpty())
+        {
+            // create an image and fill the buffer with PNG data
+            QImage img = qvariant_cast<QImage> (pMimeData->imageData());
+            img.save(&buffer, "png");
+        }
+        else
+        {
+            // get data from mime data
+            buffer.setData(pMimeData->data(selectedFormat));
+        }
 
         // validate that the image is really an image, webkit does not fill properly the image mime data
-        if (pix.width() != 0 && pix.height() != 0)
+        if (!buffer.data().isEmpty())
         {
-            mActiveScene->addPixmap(pix, NULL, pPos, 1.);
+            mActiveScene->addImage(buffer.data(), NULL, pPos, 1.);
             return;
         }
     }

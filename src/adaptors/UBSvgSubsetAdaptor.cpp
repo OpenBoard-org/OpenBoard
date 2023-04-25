@@ -677,24 +677,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
 
                     bool isBackground = (!ubBackground.isNull() && ubBackground.toString() == xmlTrue);
 
-                    if (href.contains("png"))
-                    {
-
-                        UBGraphicsPixmapItem* pixmapItem = pixmapItemFromSvg();
-                        if (pixmapItem)
-                        {
-                            pixmapItem->setFlag(QGraphicsItem::ItemIsMovable, true);
-                            pixmapItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-
-                            mScene->addItem(pixmapItem);
-
-                            if (isBackground)
-                                mScene->setAsBackgroundObject(pixmapItem);
-
-                            pixmapItem->show();
-                        }
-                    }
-                    else if (href.contains("svg"))
+                    if (href.endsWith(".svg"))
                     {
                         UBGraphicsSvgItem* svgItem = svgItemFromSvg();
                         if (svgItem)
@@ -712,7 +695,19 @@ UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProx
                     }
                     else
                     {
-                        qWarning() << "don't know what to do with href value " << href;
+                        UBGraphicsPixmapItem* pixmapItem = pixmapItemFromSvg();
+                        if (pixmapItem)
+                        {
+                            pixmapItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+                            pixmapItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+                            mScene->addItem(pixmapItem);
+
+                            if (isBackground)
+                                mScene->setAsBackgroundObject(pixmapItem);
+
+                            pixmapItem->show();
+                        }
                     }
                 }
             }
@@ -2062,15 +2057,22 @@ QList<UBGraphicsPolygonItem*> UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItem
 
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::pixmapItemToLinkedImage(UBGraphicsPixmapItem* pixmapItem)
 {
-    mXmlWriter.writeStartElement("image");
+    // find image file
+    QDir imageDir = mDocumentPath + "/" + UBPersistenceManager::imageDirectory;
+    QStringList imageFiles = imageDir.entryList({pixmapItem->uuid().toString() + ".*"});
 
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + ".png";
+    if (imageFiles.size() >= 1)
+    {
+        mXmlWriter.writeStartElement("image");
 
-    mXmlWriter.writeAttribute(nsXLink, "href", fileName);
+        QString fileName = UBPersistenceManager::imageDirectory + "/" + imageFiles.last();
 
-    graphicsItemToSvg(pixmapItem);
+        mXmlWriter.writeAttribute(nsXLink, "href", fileName);
 
-    mXmlWriter.writeEndElement();
+        graphicsItemToSvg(pixmapItem);
+
+        mXmlWriter.writeEndElement();
+    }
 }
 
 
@@ -2084,7 +2086,10 @@ UBGraphicsPixmapItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::pixmapItemFromSvg()
     {
         pixmapItem = new UBGraphicsPixmapItem();
         QString href = imageHref.toString();
-        QPixmap pix(mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(href));
+        QImageReader rdr(mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(href));
+        rdr.setAutoTransform(true);
+        QImage img = rdr.read();
+        QPixmap pix = QPixmap::fromImage(img);
         pixmapItem->setPixmap(pix);
         graphicsItemFromSvg(pixmapItem);
     }

@@ -375,6 +375,13 @@ public slots:
             bool pUseAnimation = false,
             bool useProxyForDocumentPath = false);
 
+        UBGraphicsPixmapItem* addImage(QByteArray pData,
+            QGraphicsItem* replaceFor,
+            const QPointF& pPos = QPointF(0,0),
+            qreal scaleFactor = 1.0,
+            bool pUseAnimation = false,
+            bool useProxyForDocumentPath = false);
+
         void textUndoCommandAdded(UBGraphicsTextItem *textItem);
 
         void setToolCursor(int tool);

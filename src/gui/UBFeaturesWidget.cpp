@@ -203,7 +203,7 @@ void UBFeaturesWidget::deleteElements( const UBFeaturesMimeData * mimeData )
             controller->deleteItem(curFeature.getFullPath());
 
         } else {
-           controller->moveToTrash(curFeature);
+           controller->moveToTrash(curFeature, true);
         }
     }
 
@@ -421,15 +421,16 @@ QStringList UBFeaturesMimeData::formats() const
     return QMimeData::formats();
 }
 
-void UBFeaturesWidget::importImage(const QImage &image, const QString &fileName)
+void UBFeaturesWidget::importImage(const QByteArray &imageData, const QString &fileName)
 {
-    controller->importImage(image, fileName);
+    controller->importImage(imageData, fileName);
 }
 
 UBFeaturesListView::UBFeaturesListView( QWidget* parent, const char* name )
     : QListView(parent)
 {
     setObjectName(name);
+    setDragDropOverwriteMode(true);
 }
 
 void UBFeaturesListView::dragEnterEvent( QDragEnterEvent *event )
@@ -1198,11 +1199,8 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
     if (dataFromSameModel) {
         QList<UBFeature> featList = fMimeData->features();
         for (int i = 0; i < featList.count(); i++) {
-            UBFeature sourceElement;
-            if (dataFromSameModel) {
-                sourceElement = featList.at(i);
-                moveData(sourceElement, parentFeature, Qt::MoveAction, true);
-            }
+            UBFeature sourceElement = featList.at(i);
+            moveData(sourceElement, parentFeature, Qt::MoveAction, true);
         }
     } else if (mimeData->hasUrls()) {
         QList<QUrl> urlList = mimeData->urls();
@@ -1211,9 +1209,37 @@ bool UBFeaturesModel::dropMimeData(const QMimeData *mimeData, Qt::DropAction act
             curController->moveExternalData(curUrl, parentFeature);
         }
     } else if (mimeData->hasImage()) {
-        QImage image = qvariant_cast<QImage>( mimeData->imageData() );
-        curController->importImage( image, parentFeature );
+        const QStringList formats = mimeData->formats();
+        QString selectedFormat;
 
+        for (const QString& format : formats)
+        {
+            if (format.startsWith("image/"))
+            {
+                selectedFormat = format;
+                break;
+            }
+        }
+
+        QBuffer buffer;
+
+        if (selectedFormat.isEmpty())
+        {
+            // create an image and fill the buffer with PNG data
+            QImage img = qvariant_cast<QImage> (mimeData->imageData());
+            img.save(&buffer, "png");
+        }
+        else
+        {
+            // get data from mime data
+            buffer.setData(mimeData->data(selectedFormat));
+        }
+
+        // validate that the image is really an image, webkit does not fill properly the image mime data
+        if (!buffer.data().isEmpty())
+        {
+            curController->importImage( buffer.data(), parentFeature );
+        }
     }
 
     return true;
@@ -1307,18 +1333,29 @@ void UBFeaturesModel::moveData(const UBFeature &source, const UBFeature &destina
 
     Q_ASSERT( QFileInfo( sourcePath ).exists() );
 
-    QString name = QFileInfo( sourcePath ).fileName();
-    QString destPath = destination.getFullPath().toLocalFile();
+    UBFeature dest = destination;
 
-    QString destVirtualPath = destination.getFullVirtualPath();
+    if (destination.getType() == FEATURE_CATEGORY && destination.getName() == "root")
+    {
+        // determine default category from file name
+        dest = curController->getDestinationFeatureForUrl(destination.getUrl());
+    }
+
+    QString name = QFileInfo( sourcePath ).fileName();
+    QString destPath = dest.getFullPath().toLocalFile();
+
+    QString destVirtualPath = dest.getFullVirtualPath();
     QString destFullPath = destPath + "/" + name;
 
-    if ( sourcePath.compare(destFullPath, Qt::CaseInsensitive ) || destination.getType() != FEATURE_TRASH)
+    if (sourcePath.compare(destFullPath, Qt::CaseInsensitive) == 0)
     {
-        UBFileSystemUtils::copy(sourcePath, destFullPath);
-        if (action == Qt::MoveAction) {
-            curController->deleteItem( source.getFullPath() );
-        }
+        // source and dest are identical - do nothing
+        return;
+    }
+
+    UBFileSystemUtils::copy(sourcePath, destFullPath);
+    if (action == Qt::MoveAction) {
+        curController->deleteItem( source.getFullPath() );
     }
 
     //Passing all the source container ubdating dependancy pathes
@@ -1336,7 +1373,7 @@ void UBFeaturesModel::moveData(const UBFeature &source, const UBFeature &destina
                 QUrl newPath = QUrl::fromLocalFile(curFeatureFullPath.replace(sourcePath, destFullPath));
                 QString newVirtualPath = curFeatureVirtualPath.replace(sourceVirtualPath, destVirtualPath);
                 //when copying to trash don't change the real path
-                if (destination.getType() != FEATURE_TRASH) {
+                if (dest.getType() != FEATURE_TRASH) {
                     // processing copy or move action for real FS
                     if (action == Qt::CopyAction) {
                         copyFeature.setFullPath(newPath);

@@ -200,8 +200,8 @@ public:
     void addToFavorite(const QUrl &path , const QString &name = QString(), bool temporaryAdded = false);
     void removeFromFavorite(const QUrl &path, bool deleteManualy = false);
     void storeAsFavorite(UBFeature feature);
-    void importImage(const QImage &image, const QString &fileName = QString());
-    void importImage( const QImage &image, const UBFeature &destination, const QString &fileName = QString() );
+    void importImage(const QByteArray& imageData, const QString &fileName = QString());
+    void importImage(const QByteArray& imageData, const UBFeature &destination, const QString &fileName = QString() );
     QStringList getFileNamesInFolders();
 
     void fileSystemScan(const QUrl &currPath, const QString & currVirtualPath);
