@@ -1716,7 +1716,7 @@ void UBBoardView::dropEvent (QDropEvent *event)
         //items like images, sounds, etc.. can be passed to the board or to an application or interactivity. Both actions are acceptable.
         // We should ask the user what he wanted to achieve when object is dropped over a widget.
         if (UBApplication::mainWindow->yesNoQuestion(tr("Is it for Board or Widget ?"),
-                                                     tr("Are you trying to drop the object inside the widget ?")))
+                                                     tr("Are you trying to drop the object(s) inside the widget ?")))
         {
             QGraphicsView::dropEvent(event);
         }
