@@ -14,7 +14,7 @@ VERSION_MAJ = 1
 VERSION_MIN = 7
 VERSION_PATCH = 0
 VERSION_TYPE = a # a = alpha, b = beta, rc = release candidate, r = release, other => error
-VERSION_BUILD = 230314
+VERSION_BUILD = 230427
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$${VERSION_BUILD}"
 
@@ -201,7 +201,7 @@ macx {
    QMAKE_MAC_SDK = macosx
    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.15
 
-   # For universal builds
+   # For universal builds
    # QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64"
    QMAKE_APPLE_DEVICE_ARCHS = arm64
 
