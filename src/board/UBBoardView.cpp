@@ -1711,18 +1711,40 @@ void UBBoardView::dropEvent (QDropEvent *event)
     QPointF eventPosition = event->pos();
 #endif
     QGraphicsItem *onItem = itemAt(eventPosition.x(),eventPosition.y());
-    if (onItem && onItem->type() == UBGraphicsWidgetItem::Type) {
-        QGraphicsView::dropEvent(event);
-    }
-    else {
-        if (!event->source()
-                || qobject_cast<UBThumbnailWidget *>(event->source())
-                || qobject_cast<QWebEngineView*>(event->source())
-                || qobject_cast<QListView *>(event->source())) {
-            mController->processMimeData (event->mimeData (), mapToScene (eventPosition.toPoint()));
-            event->acceptProposedAction();
+    if (onItem && onItem->type() == UBGraphicsWidgetItem::Type)
+    {
+
+        //items like images, sounds, etc.. can be passed to the board or to an application or interactivity. Both actions are acceptable.
+        // We should ask the user what we wanted to achieve when object is dropped over a widget.
+        if (UBApplication::mainWindow->yesNoQuestion(tr("Is it for Board or Widget ?"),
+                                                     tr("Are you trying to drop the object inside the widget ?")))
+        {
+            QGraphicsView::dropEvent(event);
+        }
+        else
+        {
+            if (!event->source()
+                        || qobject_cast<UBThumbnailWidget *>(event->source())
+                        || qobject_cast<QWebEngineView*>(event->source())
+                        || qobject_cast<QListView *>(event->source()))
+            {
+                    mController->processMimeData (event->mimeData(), mapToScene (eventPosition.toPoint()));
+                    event->acceptProposedAction();
+            }
         }
     }
+    else
+    {
+        if (!event->source()
+                    || qobject_cast<UBThumbnailWidget *>(event->source())
+                    || qobject_cast<QWebEngineView*>(event->source())
+                    || qobject_cast<QListView *>(event->source()))
+        {
+                mController->processMimeData (event->mimeData(), mapToScene (eventPosition.toPoint()));
+                event->acceptProposedAction();
+        }
+    }
+
     //prevent features in UBFeaturesWidget deletion from the model when event is processing inside
     //Qt base classes
     if (event->dropAction() == Qt::MoveAction) {
