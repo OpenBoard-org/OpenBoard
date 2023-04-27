@@ -163,6 +163,7 @@ notify "Qt Translations ..."
 addQtTranslations
 
 cp -R resources/customizations $PRODUCT_DIR/$APPLICATION_NAME.app/Contents/Resources
+cp -R resources/startupHints $PRODUCT_DIR/$APPLICATION_NAME.app/Contents/Resources
 cp -R $importerDir/$importerName.app $PRODUCT_DIR/$APPLICATION_NAME.app/Contents/Resources
 
 VERSION=`cat "$BUILD_DIR/version"`
