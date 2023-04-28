@@ -1711,7 +1711,7 @@ void UBBoardView::dropEvent (QDropEvent *event)
     QPointF eventPosition = event->pos();
 #endif
     QGraphicsItem *onItem = itemAt(eventPosition.x(),eventPosition.y());
-    if (onItem && onItem->type() == UBGraphicsWidgetItem::Type)
+    if (onItem && onItem->type() == UBGraphicsWidgetItem::Type && onItem->acceptDrops())
     {
         //items like images, sounds, etc.. can be passed to the board or to an application or interactivity. Both actions are acceptable.
         // We should ask the user what he wanted to achieve when object is dropped over a widget.
