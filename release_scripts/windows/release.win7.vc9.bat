@@ -85,6 +85,10 @@ set CUSTOMIZATIONS=build\win32\release\product\customizations
 mkdir %CUSTOMIZATIONS%
 xcopy /s resources\customizations %CUSTOMIZATIONS%
 
+set STARTUP_HINTS=build\win32\release\product\startupHints
+mkdir %STARTUP_HINTS%
+xcopy /s resources\startupHints %STARTUP_HINTS%
+
 set I18n=build\win32\release\product\i18n
 xcopy /s "%BASE_QT_TRANSLATIONS_DIRECTORY%\qt_*.qm" %I18n%\
 
