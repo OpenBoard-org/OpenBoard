@@ -207,6 +207,10 @@ notifyProgress "Stripping importer and main executable"
 strip $PACKAGE_DIRECTORY/$APPLICATION_NAME
 strip $PACKAGE_DIRECTORY/importer/$IMPORTER_NAME
 
+# copying startup hints
+notifyProgress "copying startupHints"
+cp -R resources/startupHints $PACKAGE_DIRECTORY/
+
 if $BUNDLE_QT; then
     notifyProgress "Copying and stripping Qt plugins"
     mkdir -p $QT_PLUGINS_DEST_PATH
