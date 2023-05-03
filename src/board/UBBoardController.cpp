@@ -2607,11 +2607,22 @@ void UBBoardController::updateBackgroundActionsState(bool isDark, UBPageBackgrou
                 mMainWindow->actionCrossedLightBackground->setChecked(true);
         break;
 
-        case UBPageBackground::ruled :
-            if (isDark)
-                mMainWindow->actionRuledDarkBackground->setChecked(true);
+        case UBPageBackground::ruled:
+        {
+            QAction* actionRuledBackground = nullptr;
+            if(UBSettings::settings()->isSeyesRuledBackground())
+                if(isDark)
+                    actionRuledBackground = mMainWindow->actionSeyesRuledDarkBackground;
+                else
+                    actionRuledBackground = mMainWindow->actionSeyesRuledLightBackground;
             else
-                mMainWindow->actionRuledLightBackground->setChecked(true);
+                if(isDark)
+                    actionRuledBackground = mMainWindow->actionRuledDarkBackground;
+                else
+                    actionRuledBackground = mMainWindow->actionRuledLightBackground;
+            if(actionRuledBackground)
+                actionRuledBackground->setChecked(true);
+        }
         break;
 
         default:

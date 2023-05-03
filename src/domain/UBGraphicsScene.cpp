@@ -2771,7 +2771,6 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
             bgCrossColor = QColor(UBSettings::settings()->boardCrossColorDarkBackground->get().toString());
         else
             bgCrossColor = QColor(UBSettings::settings()->boardCrossColorLightBackground->get().toString());
-
         if (mZoomFactor < 0.7)
         {
             int alpha = 255 * mZoomFactor / 2;
@@ -2817,22 +2816,71 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
 
         else if (mPageBackground == UBPageBackground::ruled)
         {
-            qreal firstY = ((int) (rect.y () / gridSize)) * gridSize;
-
-            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += gridSize)
+            if(UBSettings::settings()->isSeyesRuledBackground())
             {
-                painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
+                qreal gridSizeSeyes = gridSize * 2; // The grid size must be bigger
+                int nbMarginCase = 1; // a small left margin of one gridSize
+
+                QPen seyesSquare ("#8e7cc3");
+                seyesSquare.setWidthF (2.);
+
+                QColor interlineColor("#6fa8dc");
+                interlineColor.setAlphaF(0.6);
+                QPen interlinePen(interlineColor);
+                interlinePen.setWidthF(2.);
+
+                QPen redLineMargin(QColor("red"));
+                redLineMargin.setWidthF(2.);
+
+                // Horizontal lines
+
+                qreal firstY = ((int) (rect.y () / gridSizeSeyes)) * gridSizeSeyes;
+
+                for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += gridSizeSeyes)
+                {
+                    painter->setPen (seyesSquare);
+                    painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
+                    painter->setPen (interlinePen);
+                    painter->drawLine (rect.x (), yPos+gridSizeSeyes/4, rect.x () + rect.width (), yPos+gridSizeSeyes/4);
+                    painter->drawLine (rect.x (), yPos+2*gridSizeSeyes/4, rect.x () + rect.width (), yPos+2*gridSizeSeyes/4);
+                    painter->drawLine (rect.x (), yPos+3*gridSizeSeyes/4, rect.x () + rect.width (), yPos+3*gridSizeSeyes/4);
+                }
+
+                // Vertical margin
+
+                qreal firstX = ((int) nbMarginCase * gridSizeSeyes) - mNominalSize.width() / 2.;
+
+                painter->setPen(redLineMargin);
+                painter->drawLine (firstX, rect.y (), firstX, rect.y () + rect.height ());
+
+                // Vertical lines
+
+                firstX = ((int) (nbMarginCase + 1) * gridSizeSeyes) - mNominalSize.width() / 2.;
+
+                painter->setPen (seyesSquare);
+                for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += gridSizeSeyes)
+                {
+                    painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
+                }
             }
-
-            if (mIntermediateLines)
+            else
             {
-                QColor intermediateColor = bgCrossColor;
-                intermediateColor.setAlphaF(0.5 * bgCrossColor.alphaF());
-                painter->setPen(intermediateColor);
+                qreal firstY = ((int) (rect.y () / backgroundGridSize())) * backgroundGridSize();
 
-                for (qreal yPos = firstY - gridSize/2; yPos < rect.y () + rect.height (); yPos += gridSize)
+                for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += backgroundGridSize())
                 {
                     painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
+                }
+
+                if (mIntermediateLines) {
+                    QColor intermediateColor = bgCrossColor;
+                    intermediateColor.setAlphaF(0.5 * bgCrossColor.alphaF());
+                    painter->setPen(intermediateColor);
+
+                    for (qreal yPos = firstY - gridSize/2; yPos < rect.y () + rect.height (); yPos += gridSize)
+                    {
+                        painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
+                    }
                 }
             }
         }
