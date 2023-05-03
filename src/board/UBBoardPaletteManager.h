@@ -132,8 +132,8 @@ class UBBoardPaletteManager : public QObject
         QTime mZoomButtonPressedTime;
         bool mPendingZoomButtonPressed;
 
-        QTime mPanButtonPressedTime;
-        bool mPendingPanButtonPressed;
+        QTime mHandButtonPressedTime;
+        bool mPendingHandButtonPressed;
 
         QTime mEraseButtonPressedTime;
         bool mPendingEraseButtonPressed;
@@ -182,8 +182,8 @@ class UBBoardPaletteManager : public QObject
 
         void zoomButtonPressed();
         void zoomButtonReleased();
-        void panButtonPressed();
-        void panButtonReleased();
+        void handButtonPressed();
+        void handButtonReleased();
 
         void changeStylusPaletteOrientation(QVariant var);
 };

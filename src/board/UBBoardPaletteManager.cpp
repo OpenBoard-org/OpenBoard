@@ -94,7 +94,7 @@ UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardControll
     , mPagePalette(NULL)
     , mPendingPageButtonPressed(false)
     , mPendingZoomButtonPressed(false)
-    , mPendingPanButtonPressed(false)
+    , mPendingHandButtonPressed(false)
     , mPendingEraseButtonPressed(false)
     , mpPageNavigWidget(NULL)
     , mpCachePropWidget(NULL)
@@ -424,8 +424,8 @@ void UBBoardPaletteManager::connectPalettes()
         QAbstractButton *button = qobject_cast<QAbstractButton*>(widget);
         if (button)
         {
-            connect(button, SIGNAL(pressed()), this, SLOT(panButtonPressed()));
-            connect(button, SIGNAL(released()), this, SLOT(panButtonReleased()));
+            connect(button, SIGNAL(pressed()), this, SLOT(handButtonPressed()));
+            connect(button, SIGNAL(released()), this, SLOT(handButtonReleased()));
         }
     }
 
@@ -943,25 +943,25 @@ void UBBoardPaletteManager::zoomButtonReleased()
     }
 }
 
-void UBBoardPaletteManager::panButtonPressed()
+void UBBoardPaletteManager::handButtonPressed()
 {
-    mPanButtonPressedTime = QTime::currentTime();
+    mHandButtonPressedTime = QTime::currentTime();
 
-    mPendingPanButtonPressed = true;
-    QTimer::singleShot(longpress_interval, this, SLOT(panButtonReleased()));
+    mPendingHandButtonPressed = true;
+    QTimer::singleShot(longpress_interval, this, SLOT(handButtonReleased()));
 }
 
 
-void UBBoardPaletteManager::panButtonReleased()
+void UBBoardPaletteManager::handButtonReleased()
 {
-    if (mPendingPanButtonPressed)
+    if (mPendingHandButtonPressed)
     {
-        if(mPanButtonPressedTime.msecsTo(QTime::currentTime()) > longpress_interval - 100)
+        if(mHandButtonPressedTime.msecsTo(QTime::currentTime()) > longpress_interval - 100)
         {
             mBoardControler->centerRestore();
         }
 
-        mPendingPanButtonPressed = false;
+        mPendingHandButtonPressed = false;
     }
 }
 
