@@ -115,7 +115,8 @@ QDialog QToolButton:pressed
                  fx:0.5, fy:0.5, stop: 0 #ffffff, stop: 1  #dddddd);
 }
 
-QToolButton#ubButtonGroupLeft
+QToolButton#ubButtonGroupLeft,
+QToolButton#desktop-ubButtonGroupLeft
 {
     background: qlineargradient(x1: 0, y1: 0.49, x2: 0, y2: 0.5, stop: 0 #d3d3d3, stop: 1  #c4c4c4);
     margin-top: 1px;
@@ -129,7 +130,8 @@ QToolButton#ubButtonGroupLeft
     height: 14px;
 }
 
-QToolButton#ubButtonGroupCenter
+QToolButton#ubButtonGroupCenter,
+QToolButton#desktop-ubButtonGroupCenter
 {
     background: qlineargradient(x1: 0, y1: 0.49, x2: 0, y2: 0.5, stop: 0 #d3d3d3, stop: 1  #c4c4c4);
     margin-top: 1px;
@@ -143,7 +145,8 @@ QToolButton#ubButtonGroupCenter
     height: 14px;
 }
 
-QToolButton#ubButtonGroupRight
+QToolButton#ubButtonGroupRight,
+QToolButton#desktop-ubButtonGroupRight
 {
     background: qlineargradient(x1: 0, y1: 0.49, x2: 0, y2: 0.5, stop: 0 #d3d3d3, stop: 1  #c4c4c4);
     margin-top: 1px;
@@ -157,11 +160,27 @@ QToolButton#ubButtonGroupRight
     height: 14px;
 }
 
+QToolButton#desktop-ubButtonGroupLeft
+QToolButton#desktop-ubButtonGroupCenter,
+QToolButton#desktop-ubButtonGroupRight
+{
+	background: qlineargradient(x1: 0, y1: 0.49, x2: 0, y2: 0.5, stop: 0 #c3c3c3, stop: 1  #ffffff);
+}
+
+QToolButton#desktop-ubButtonGroupLeft:checked,
+QToolButton#desktop-ubButtonGroupCenter:checked,
+QToolButton#desktop-ubButtonGroupRight:checked
+{
+	border:1px solid white;
+	background: qlineargradient(x1: 0, y1: 0.49, x2: 0, y2: 0.5, stop: 0 #c3c3c3, stop: 1  #ffffff);
+}
+
+
 QToolButton#ubButtonGroupLeft:checked,
 QToolButton#ubButtonGroupCenter:checked,
 QToolButton#ubButtonGroupRight:checked
 {
-   background: qlineargradient(x1: 0, y1: 0.49, x2: 0, y2: 0.5, stop: 0 #c3c3c3, stop: 1  #b4b4b4);
+   background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #c3c3c3, stop: 1  #b4b4b4);
 }
 
 QToolButton#ubButtonGroupLeft:checked

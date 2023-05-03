@@ -46,7 +46,7 @@ class UBActionPalette;
 class UBMainWindow;
 class UBRightPalette;
 
-#define PROPERTY_PALETTE_TIMER      1000
+#define PROPERTY_PALETTE_TIMER      350
 
 /**
  * The uninotes controller. This object allocate a uninotes window and implements all the actions corresponding to

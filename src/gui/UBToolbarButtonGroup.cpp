@@ -40,7 +40,7 @@
 
 #include "core/memcheck.h"
 
-UBToolbarButtonGroup::UBToolbarButtonGroup(QToolBar *toolBar, const QList<QAction*> &actions)
+UBToolbarButtonGroup::UBToolbarButtonGroup(QToolBar *toolBar, const QList<QAction*> &actions, QString objectNameprefix)
     : QWidget(toolBar)
     , mActions(actions)
     , mCurrentIndex(-1)
@@ -77,15 +77,22 @@ UBToolbarButtonGroup::UBToolbarButtonGroup(QToolBar *toolBar, const QList<QActio
 
         if(i == 0)
         {
-            button->setObjectName("ubButtonGroupLeft");
+            objectNameprefix.length() > 0 ?
+                button->setObjectName(objectNameprefix + "-ubButtonGroupLeft")
+                : button->setObjectName("ubButtonGroupLeft");
         }
         else if (i == actions.size() - 1)
         {
-            button->setObjectName("ubButtonGroupRight");
+            objectNameprefix.length() > 0 ?
+                button->setObjectName(objectNameprefix + "-ubButtonGroupRight")
+                : button->setObjectName("ubButtonGroupRight");
+
         }
         else
         {
-            button->setObjectName("ubButtonGroupCenter");
+            objectNameprefix.length() > 0 ?
+                button->setObjectName(objectNameprefix + "-ubButtonGroupCenter")
+                : button->setObjectName("ubButtonGroupCenter");
         }
 
         connect(button, SIGNAL(triggered(QAction*)), this, SLOT(selected(QAction*)));

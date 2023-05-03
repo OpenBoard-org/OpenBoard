@@ -74,6 +74,8 @@
 #include "core/UBPersistenceManager.h"
 #include "core/memcheck.h"
 
+inline constexpr int longpress_interval = 350;
+
 UBBoardPaletteManager::UBBoardPaletteManager(QWidget* container, UBBoardController* pBoardController)
     : QObject(container)
     , mKeyboardPalette(0)
@@ -311,7 +313,7 @@ void UBBoardPaletteManager::pagePaletteButtonPressed()
     mPageButtonPressedTime = QTime::currentTime();
 
     mPendingPageButtonPressed = true;
-    QTimer::singleShot(1000, this, SLOT(pagePaletteButtonReleased()));
+    QTimer::singleShot(longpress_interval, this, SLOT(pagePaletteButtonReleased()));
 }
 
 
@@ -319,7 +321,7 @@ void UBBoardPaletteManager::pagePaletteButtonReleased()
 {
     if (mPendingPageButtonPressed)
     {
-        if( mPageButtonPressedTime.msecsTo(QTime::currentTime()) > 900)
+        if( mPageButtonPressedTime.msecsTo(QTime::currentTime()) > longpress_interval-100)
         {
             // The palette is reinstanciated because the duplication depends on the current scene
             delete(mPagePalette);
@@ -357,7 +359,7 @@ void UBBoardPaletteManager::erasePaletteButtonPressed()
     mEraseButtonPressedTime = QTime::currentTime();
 
     mPendingEraseButtonPressed = true;
-    QTimer::singleShot(1000, this, SLOT(erasePaletteButtonReleased()));
+    QTimer::singleShot(longpress_interval, this, SLOT(erasePaletteButtonReleased()));
 }
 
 
@@ -365,7 +367,7 @@ void UBBoardPaletteManager::erasePaletteButtonReleased()
 {
     if (mPendingEraseButtonPressed)
     {
-        if( mEraseButtonPressedTime.msecsTo(QTime::currentTime()) > 900)
+        if( mEraseButtonPressedTime.msecsTo(QTime::currentTime()) > longpress_interval - 100)
         {
             toggleErasePalette(true);
         }
@@ -924,7 +926,7 @@ void UBBoardPaletteManager::zoomButtonPressed()
     mZoomButtonPressedTime = QTime::currentTime();
 
     mPendingZoomButtonPressed = true;
-    QTimer::singleShot(1000, this, SLOT(zoomButtonReleased()));
+    QTimer::singleShot(longpress_interval, this, SLOT(zoomButtonReleased()));
 }
 
 
@@ -932,7 +934,7 @@ void UBBoardPaletteManager::zoomButtonReleased()
 {
     if (mPendingZoomButtonPressed)
     {
-        if(mZoomButtonPressedTime.msecsTo(QTime::currentTime()) > 900)
+        if(mZoomButtonPressedTime.msecsTo(QTime::currentTime()) > longpress_interval - 100)
         {
             mBoardControler->zoomRestore();
         }
@@ -946,7 +948,7 @@ void UBBoardPaletteManager::panButtonPressed()
     mPanButtonPressedTime = QTime::currentTime();
 
     mPendingPanButtonPressed = true;
-    QTimer::singleShot(1000, this, SLOT(panButtonReleased()));
+    QTimer::singleShot(longpress_interval, this, SLOT(panButtonReleased()));
 }
 
 
@@ -954,7 +956,7 @@ void UBBoardPaletteManager::panButtonReleased()
 {
     if (mPendingPanButtonPressed)
     {
-        if(mPanButtonPressedTime.msecsTo(QTime::currentTime()) > 900)
+        if(mPanButtonPressedTime.msecsTo(QTime::currentTime()) > longpress_interval - 100)
         {
             mBoardControler->centerRestore();
         }

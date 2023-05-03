@@ -42,7 +42,7 @@ class UBToolbarButtonGroup : public QWidget
     Q_OBJECT;
 
     public:
-        UBToolbarButtonGroup(QToolBar *toolbar, const QList<QAction*> &actions = QList<QAction*>());
+        UBToolbarButtonGroup(QToolBar *toolbar, const QList<QAction*> &actions = QList<QAction*>(), QString objectNameprefix = "");
         virtual ~UBToolbarButtonGroup();
 
         void setIcon(const QIcon &icon, int index);
