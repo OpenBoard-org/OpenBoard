@@ -7,16 +7,24 @@
     <script src="js/camera.js"></script>
   </head>
   <body onload="init();">
+    <video autoplay id="video"></video>
     <div class="container">
       <div class="cell">
         <div class="content">
-          <video autoplay id="video"></video>
           <div class="nocamera" id="nocamera">
             <img src="img/nocamera.svg"/>
           </div>
           <div class="playpause" id="playpause">
             <img class="mediabutton" id="play" src="img/play.svg"/>
             <img class="mediabutton" id="pause" src="img/pause.svg"/>
+          </div>
+          <div class="buttons overlay-left" id="buttons-left">
+            <button class="button" id="rotleft" title="Rotate left">
+              <img class="icon" src="img/rotleft.svg"/>
+            </button>
+            <button class="button" id="rotright" title="Rotate right">
+              <img class="icon" src="img/rotright.svg"/>
+            </button>
           </div>
           <div class="buttons overlay" id="buttons">
             <select id="videoSource" title="Video source"></select>

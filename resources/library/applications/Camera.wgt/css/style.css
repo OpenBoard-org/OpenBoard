@@ -17,9 +17,9 @@ img {
 }
 
 video {
-  display: block;
-  width: 100%;
-  max-width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
 
 .container {
@@ -54,8 +54,8 @@ video {
 }
 
 .icon {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
 }
 
 .buttons {
@@ -75,7 +75,19 @@ video {
   position: absolute;
   top: 10px;
   right: 10px;
+  flex-wrap: wrap;
+  max-width: 75%;
   background-color: rgba(192, 192, 192, 0.8)
+}
+
+.overlay-left {
+  display: none;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  flex-wrap: wrap;
+  max-width: 25%;
+  background-color: transparent;
 }
 
 .playpause {
@@ -93,7 +105,7 @@ video {
   display: none;
   width: 30%;
   height: 30%;
-  opacity: 0.7;
+  opacity: 0.9;
 }
 
 .nocamera {
