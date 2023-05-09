@@ -376,6 +376,11 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
                         {
                             UBApplication::documentController->pureSetDocument(pProxy);
                         }
+
+                        if (UBApplication::boardController->selectedDocument() == replacedProxy)
+                        {
+                            UBApplication::boardController->pureSetDocument(pProxy);
+                        }
                     }
                     else
                     {
@@ -430,6 +435,11 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(UB
                         if (UBApplication::documentController->selectedDocument() == replacedProxy)
                         {
                             UBApplication::documentController->pureSetDocument(pProxy);
+                        }
+
+                        if (UBApplication::boardController->selectedDocument() == replacedProxy)
+                        {
+                            UBApplication::boardController->pureSetDocument(pProxy);
                         }
                     }
                     else

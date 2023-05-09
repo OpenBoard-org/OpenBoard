@@ -3128,7 +3128,7 @@ void UBDocumentController::importFile()
 
             UBPersistenceManager::persistenceManager()->createDocumentProxiesStructure(docManager->importUbx(filePath, UBSettings::userDocumentDirectory()), true);
 
-            UBApplication::boardController->setActiveDocumentScene(selectedDocument(), 0, true, true);
+            UBApplication::boardController->setActiveDocumentScene(UBApplication::boardController->selectedDocument(), 0, true, true);
         }
         else
         {
