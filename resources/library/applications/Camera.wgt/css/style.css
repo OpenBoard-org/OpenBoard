@@ -2,6 +2,7 @@ body {
   background-color: transparent;
   overflow: hidden;
   margin: 0;
+  font-family: sans-serif;
 }
 
 html, body, .container {
@@ -46,16 +47,17 @@ video {
   border-color: #dbdbdb;
   border-width: 1px;
   color: #363636;
-  cursor: pointer;
   justify-content: center;
   text-align: center;
   border-radius: 8px;
   display: inline-flex;
+  font-weight: bold;
 }
 
 .icon {
   width: 30px;
   height: 30px;
+  line-height: 30px;
 }
 
 .buttons {
@@ -76,8 +78,9 @@ video {
   top: 10px;
   right: 10px;
   flex-wrap: wrap;
-  max-width: 75%;
-  background-color: rgba(192, 192, 192, 0.8)
+  flex-direction: row-reverse;
+  max-width: 60%;
+  background-color: transparent;
 }
 
 .overlay-left {
@@ -86,7 +89,7 @@ video {
   top: 10px;
   left: 10px;
   flex-wrap: wrap;
-  max-width: 25%;
+  max-width: 40%;
   background-color: transparent;
 }
 
@@ -113,4 +116,88 @@ video {
   background-color: #ccc;
   justify-content: center;
   height: 100%;
+}
+
+.dropdown {
+  display: inline-block;
+  float: right;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content#videoSelect {
+  min-width: 320px;
+}
+
+.dropdown-content div {
+  color: black;
+  padding: 6px 8px;
+  text-decoration: none;
+  text-align: left;
+}
+
+.dropdown-content div:hover {background-color: #ddd;}
+.dropdown:hover .button {background-color: #ddd;}
+.button:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+/* right with left arrow */
+.tooltip .tooltipright {
+  left: 110%;
+}
+
+.tooltip .tooltipright::after {
+  right: 100%;
+  border-color: transparent black transparent transparent;
+}
+
+/* left with right arrow */
+.tooltip .tooltipleft {
+  right: 110%;
+}
+
+.tooltip .tooltipleft::after {
+  left: 100%;
+  border-color: transparent transparent transparent black;
 }

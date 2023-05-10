@@ -19,24 +19,36 @@
             <img class="mediabutton" id="pause" src="img/pause.svg"/>
           </div>
           <div class="buttons overlay-left" id="buttons-left">
-            <button class="button" id="rotleft" title="Rotate left">
+            <button class="button tooltip" id="rotleft">
               <img class="icon" src="img/rotleft.svg"/>
+              <span class="tooltiptext tooltipright">Rotate left</span>
             </button>
-            <button class="button" id="rotright" title="Rotate right">
+            <button class="button tooltip" id="rotright">
               <img class="icon" src="img/rotright.svg"/>
+              <span class="tooltiptext tooltipright">Rotate right</span>
             </button>
           </div>
           <div class="buttons overlay" id="buttons">
-            <select id="videoSource" title="Video source"></select>
-            <select name="size" id="size" title="Snapshot size">
-              <option value="320">S</option>
-              <option value="640" selected>M</option>
-              <option value="960">L</option>
-              <option value="1280">XL</option>
-            </select>
-            <button class="button" id="snapshot" title="Snapshot">
-              <img class="icon" src="img/photo.svg"/>
+            <button class="button tooltip" id="snapshot">
+              <img class="icon" src="img/snapshot.svg"/>
+              <span class="tooltiptext tooltipleft">Take snapshot</span>
             </button>
+            <div class="dropdown">
+              <button class="button tooltip" id="selected-size">
+                <div class="icon" id="sizeIcon">M</div>
+                <span class="tooltiptext tooltipleft">Snapshot size</span>
+              </button>
+              <div class="dropdown-content" id="sizeSelect">
+              </div>
+            </div>
+            <div class="dropdown">
+              <button class="button tooltip" id="selectCamera">
+                <img class="icon" src="img/select-camera.svg"/>
+                <span class="tooltiptext tooltipleft">Select camera</span>
+              </button>
+              <div class="dropdown-content" id="videoSelect">
+              </div>
+            </div>
           </div>
         </div>
       </div>
