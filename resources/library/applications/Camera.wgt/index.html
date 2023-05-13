@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <title>Camera</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="cropper/cropper.css">
     <script src="js/camera.js"></script>
+    <script src="cropper/cropper.js"></script>
   </head>
   <body onload="init();">
     <video autoplay id="video"></video>
+    <img id="glass" src="img/glass.png"/>
     <div class="container">
       <div class="cell">
         <div class="content">
@@ -15,8 +18,8 @@
             <img src="img/nocamera.svg"/>
           </div>
           <div class="playpause" id="playpause">
-            <img class="mediabutton" id="play" src="img/play.svg"/>
-            <img class="mediabutton" id="pause" src="img/pause.svg"/>
+            <img class="mediabutton" id="play" src="img/play.svg" draggable="false"/>
+            <img class="mediabutton" id="pause" src="img/pause.svg" draggable="false"/>
           </div>
           <div class="buttons overlay-left" id="buttons-left">
             <button class="button tooltip" id="rotleft">

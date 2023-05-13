@@ -6,7 +6,6 @@ const sizeOptions = [
   { 'label': "XL", 'size': 1280 }
 ];
 
-
 async function init() {
   if (!"mediaDevices" in navigator ||
       !"getUserMedia" in navigator.mediaDevices) {
@@ -29,6 +28,7 @@ async function init() {
   const sizeIcon      = document.getElementById("sizeIcon");
   const play          = document.getElementById("play");
   const pause         = document.getElementById("pause");
+  const glass         = document.getElementById("glass");
 
   // current camera;
   let camera;
@@ -43,10 +43,36 @@ async function init() {
   let videoStream;
 
   // orientation
-  let orientation = await sankore.async.preference("orientation", "0");
+  let orientation = parseInt(await sankore.async.preference("orientation", "0"));
+
+  // size of video in widget
+  let videoSize;
 
   // snapshot size
   let size;
+
+  // cropper
+  let cropper;
+
+  let cropOptions = {
+    viewMode: 0,
+    guides: false,
+    center: false,
+    background: false,
+    rotatable: false,
+    scalable: false,
+    zoomable: false,
+    autoCropArea: 0.99,
+    toggleDragModeOnDblclick: false,
+    ready() {
+      resizeCropper(videoSize);
+      showCropper(true);
+    },
+    cropend() {
+      updateSizes();
+    }
+  };
+
 
   // setup size options
   for (const sizeOption of sizeOptions) {
@@ -70,8 +96,8 @@ async function init() {
     sizeSelect.appendChild(div);
   }
 
-  size = document.getElementById("M");
-  size.checked = true;
+  let sizeId = await sankore.async.preference("size", "M")
+  setSize(sizeId);
 
   // connect hover slots
   window.widget.onenter.connect(() => {
@@ -80,6 +106,8 @@ async function init() {
     if (videoStream) {
       (playing ? pause : play).style.display = "block";
     }
+
+    showCropper(true);
   });
 
   window.widget.onleave.connect(() => {
@@ -87,6 +115,7 @@ async function init() {
     buttonsLeft.style.display = "none";
     pause.style.display = "none";
     play.style.display = "none";
+    showCropper(false);
   });
 
   // connect event handler
@@ -97,6 +126,10 @@ async function init() {
 
   // resize widget to video aspect ratio
   video.onresize = () => {
+    if (!cropper) {
+      cropper = new Cropper(glass, cropOptions);
+    }
+
     let videoSize = layoutVideo();
     sankore.resize(videoSize.width, videoSize.height);
   };
@@ -138,12 +171,55 @@ async function init() {
   snapshot.onclick = (event) => {
     event.cancelBubble = true;
 
-    if (orientation % 2) {
+    let clipBox = getClipBox();
+
+    // compute cropping factors
+    let cleft = clipBox.left / videoSize.width;
+    let cwidth = clipBox.width / videoSize.width;
+    let ctop = clipBox.top / videoSize.height;
+    let cheight = clipBox.height / videoSize.height;
+
+    let vleft;
+    let vwidth;
+    let vtop;
+    let vheight;
+
+    // cropped video coordinates depending on orientation
+    switch (orientation) {
+      case 0:
+        vleft = cleft * video.videoWidth;
+        vwidth = cwidth * video.videoWidth;
+        vtop = ctop * video.videoHeight;
+        vheight = cheight * video.videoHeight;
+        break;
+      case 1:
+        vleft = ctop * video.videoWidth;
+        vwidth = cheight * video.videoWidth;
+        vtop = (1 - cleft - cwidth) * video.videoHeight;
+        vheight = cwidth * video.videoHeight;
+        break;
+      case 2:
+        vleft = (1 - cleft - cwidth) * video.videoWidth;
+        vwidth = cwidth * video.videoWidth;
+        vtop = (1 - ctop - cheight) * video.videoHeight;
+        vheight = cheight * video.videoHeight;
+        break;
+      case 3:
+        vleft = (1 - ctop - cheight) * video.videoWidth;
+        vwidth = cheight * video.videoWidth;
+        vtop = cleft * video.videoHeight;
+        vheight = cwidth * video.videoHeight;
+        break;
+    }
+
+    const aspectRatio = clipBox.width / clipBox.height;
+
+    if (aspectRatio < 1) {
       canvas.height = size.value;
-      canvas.width = canvas.height * video.videoHeight / video.videoWidth;
+      canvas.width = canvas.height * aspectRatio;
     } else {
       canvas.width = size.value;
-      canvas.height = canvas.width * video.videoHeight / video.videoWidth;
+      canvas.height = canvas.width / aspectRatio;
     }
 
     let ctx = canvas.getContext("2d");
@@ -154,10 +230,10 @@ async function init() {
 
     if (orientation % 2) {
       ctx.translate(-canvas.height / 2, -canvas.width / 2);
-      ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, 0, 0, canvas.height, canvas.width);
+      ctx.drawImage(video, vleft, vtop, vwidth, vheight, 0, 0, canvas.height, canvas.width);
     } else {
       ctx.translate(-canvas.width / 2, -canvas.height / 2);
-      ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, 0, 0, canvas.width, canvas.height);
+      ctx.drawImage(video, vleft, vtop, vwidth, vheight, 0, 0, canvas.width, canvas.height);
     }
 
     let data = canvas.toDataURL("image/jpeg");
@@ -201,20 +277,31 @@ async function init() {
       video.style.left = -offset + "px";
     }
 
-    // update snapshot size entries
-    for (entry of sizeSelect.children) {
-      const pixels = entry.firstChild.firstChild.value;
-      const factor = pixels / longWindow;
-      const x = Math.floor(width * factor);
-      const y = Math.floor(height * factor);
-      const label = entry.firstChild.firstChild.id + " (" + x + "x" + y + ")";
-      entry.firstChild.childNodes[1].textContent = label;
+    // for (entry of sizeSelect.children) {
+    //   const pixels = entry.firstChild.firstChild.value;
+    //   const factor = pixels / longWindow;
+    //   const x = Math.floor(width * factor);
+    //   const y = Math.floor(height * factor);
+    //   const label = entry.firstChild.firstChild.id + " (" + x + "x" + y + ")";
+    //   entry.firstChild.childNodes[1].textContent = label;
+    // }
+
+    glass.style.width = width + "px";
+    glass.style.height = height + "px";
+
+    if (videoSize === undefined || Math.abs(width - videoSize.width) > 2 || Math.abs(height - videoSize.height) > 2) {
+      videoSize = {
+        'width': width,
+        'height': height
+      };
+
+      setTimeout(() => {
+        resizeCropper(videoSize);
+        updateSizes();
+      }, 100);
     }
 
-    return {
-      'width': width,
-      'height': height
-    };
+    return videoSize;
   };
 
   // stop video stream
@@ -237,7 +324,6 @@ async function init() {
     while (videoSelect.hasChildNodes()) {
       videoSelect.removeChild(videoSelect.firstChild);
     }
-
     // populate list
     for (const deviceInfo of deviceInfos) {
       if (deviceInfo.kind === 'videoinput') {
@@ -289,7 +375,6 @@ async function init() {
         height: { ideal: 1080 }
       }
     };
-
     return navigator.mediaDevices.getUserMedia(constraints).
       then(gotStream).catch(handleError);
   }
@@ -317,6 +402,7 @@ async function init() {
     pause.style.display = "none";
     play.style.display = "none";
     nocamera.style.display = "flex";
+    showCropper(false);
   }
 
   // change size
@@ -324,6 +410,7 @@ async function init() {
     size = document.getElementById(id);
     size.checked = true;
     sizeIcon.textContent = id;
+    sankore.setPreference("size", id);
   }
 
   // select camera
@@ -334,6 +421,60 @@ async function init() {
       input.checked = true;
       camera = input.id;
       getStream();
+    }
+  }
+
+  // show or hide cropper
+  function showCropper(show) {
+    const cropperContainer = document.querySelector(".cropper-container");
+
+    if (cropperContainer) {
+      if (show && videoStream) {
+        cropperContainer.style.display = "unset";
+      } else {
+        cropperContainer.style.display = "none";
+      }
+    }
+  }
+
+  // resize cropper
+  function resizeCropper(size) {
+    if (cropper) {
+      cropper.setCropBoxData({
+        left: 2,
+        top: 2,
+        width: size.width - 4,
+        height: size.height - 4
+      });
+    }
+  }
+
+  // get effective size of crop box
+  function getClipBox() {
+    let cropBox = cropper.getCropBoxData();
+    let clipBox = { ...cropBox };
+
+    // round if close to border
+    if (cropBox.left < 4) clipBox.left = 0;
+    if (cropBox.top < 4) clipBox.top = 0;
+    if (videoSize.width - cropBox.left - cropBox.width < 4) clipBox.width = videoSize.width - clipBox.left;
+    if (videoSize.height - cropBox.top - cropBox.height < 4) clipBox.height = videoSize.height - clipBox.top;
+
+    return clipBox;
+  }
+
+  // update pixel sizes in size selection menu
+  function updateSizes() {
+    const clipBox = getClipBox();
+    const longSide = Math.max(clipBox.width, clipBox.height);
+
+    for (entry of sizeSelect.children) {
+      const pixels = entry.firstChild.firstChild.value;
+      const factor = pixels / longSide;
+      const x = Math.round(clipBox.width * factor);
+      const y = Math.round(clipBox.height * factor);
+      const label = entry.firstChild.firstChild.id + " (" + x + "x" + y + ")";
+      entry.firstChild.childNodes[1].textContent = label;
     }
   }
 
