@@ -73,6 +73,8 @@ async function init() {
     }
   };
 
+  // translate tooltips
+  translate();
 
   // setup size options
   for (const sizeOption of sizeOptions) {
@@ -277,15 +279,6 @@ async function init() {
       video.style.left = -offset + "px";
     }
 
-    // for (entry of sizeSelect.children) {
-    //   const pixels = entry.firstChild.firstChild.value;
-    //   const factor = pixels / longWindow;
-    //   const x = Math.floor(width * factor);
-    //   const y = Math.floor(height * factor);
-    //   const label = entry.firstChild.firstChild.id + " (" + x + "x" + y + ")";
-    //   entry.firstChild.childNodes[1].textContent = label;
-    // }
-
     glass.style.width = width + "px";
     glass.style.height = height + "px";
 
@@ -295,6 +288,7 @@ async function init() {
         'height': height
       };
 
+      // delay until cropper is ready
       setTimeout(() => {
         resizeCropper(videoSize);
         updateSizes();
