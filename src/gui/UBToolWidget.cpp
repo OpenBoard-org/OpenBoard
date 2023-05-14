@@ -37,14 +37,12 @@
 #include "api/UBWidgetUniboardAPI.h"
 #include "api/UBW3CWidgetAPI.h"
 #include "board/UBBoardController.h"
-#include "board/UBBoardView.h"
+#include "board/UBDrawingController.h"
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 #include "domain/UBGraphicsScene.h"
 #include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBWebEngineView.h"
-#include "frameworks/UBPlatformUtils.h"
-#include "frameworks/UBFileSystemUtils.h"
 #include "web/UBWebController.h"
 #include "web/simplebrowser/webpage.h"
 
@@ -203,7 +201,10 @@ void UBToolWidget::enterEvent(QEvent* event)
 {
     Q_UNUSED(event)
 
-    if (mWidgetAPI)
+    const int tool = UBDrawingController::drawingController()->stylusTool();
+    const bool isPointing = tool == UBStylusTool::Selector || tool == UBStylusTool::Play;
+
+    if (mWidgetAPI && isPointing)
     {
         emit mWidgetAPI->onenter();
     }

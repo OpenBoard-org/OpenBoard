@@ -43,17 +43,15 @@
 #include "api/UBW3CWidgetAPI.h"
 
 #include "board/UBBoardController.h"
+#include "board/UBDrawingController.h"
 
 #include "core/memcheck.h"
 #include "core/UBApplicationController.h"
 #include "core/UBApplication.h"
-#include "core/UBDisplayManager.h"
 #include "core/UBSettings.h"
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBPlatformUtils.h"
-
-#include "network/UBNetworkAccessManager.h"
 
 #include "web/UBWebController.h"
 #include "web/simplebrowser/webpage.h"
@@ -1073,7 +1071,10 @@ void UBGraphicsW3CWidgetItem::removeScript()
 
 void UBGraphicsW3CWidgetItem::sendJSEnterEvent()
 {
-    if (mW3CWidgetAPI)
+    const int tool = UBDrawingController::drawingController()->stylusTool();
+    const bool isPointing = tool == UBStylusTool::Selector || tool == UBStylusTool::Play;
+
+    if (mW3CWidgetAPI && isPointing)
     {
         emit mW3CWidgetAPI->onenter();
     }
