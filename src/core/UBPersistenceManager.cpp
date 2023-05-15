@@ -680,6 +680,23 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocumentFromDir(con
 
     std::shared_ptr<UBDocumentProxy> doc = std::make_shared<UBDocumentProxy>(UBDocumentProxy(pDocumentDirectory)); // deleted in UBPersistenceManager::destructor
 
+    QMap<QString, QVariant> metadatas = UBMetadataDcSubsetAdaptor::load(pDocumentDirectory);
+
+    if(withEmptyPage)
+    {
+        createDocumentSceneAt(doc, 0);
+    }
+
+    if(addTitlePage)
+    {
+        persistDocumentScene(doc, mSceneCache.createScene(doc, 0, false), 0);
+    }
+
+    foreach(QString key, metadatas.keys())
+    {
+        doc->setMetaData(key, metadatas.value(key));
+    }
+
     if (pGroupName.length() > 0)
     {
         doc->setMetaData(UBSettings::documentGroupName, pGroupName);
@@ -688,16 +705,6 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocumentFromDir(con
     if (pName.length() > 0)
     {
         doc->setMetaData(UBSettings::documentName, pName);
-    }
-
-    QMap<QString, QVariant> metadatas = UBMetadataDcSubsetAdaptor::load(pDocumentDirectory);
-
-    if(withEmptyPage) createDocumentSceneAt(doc, 0);
-    if(addTitlePage) persistDocumentScene(doc, mSceneCache.createScene(doc, 0, false), 0);
-
-    foreach(QString key, metadatas.keys())
-    {
-        doc->setMetaData(key, metadatas.value(key));
     }
 
     doc->setUuid(QUuid::createUuid());
