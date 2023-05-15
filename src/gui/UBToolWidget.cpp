@@ -37,14 +37,12 @@
 #include "api/UBWidgetUniboardAPI.h"
 #include "api/UBW3CWidgetAPI.h"
 #include "board/UBBoardController.h"
-#include "board/UBBoardView.h"
+#include "board/UBDrawingController.h"
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 #include "domain/UBGraphicsScene.h"
 #include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBWebEngineView.h"
-#include "frameworks/UBPlatformUtils.h"
-#include "frameworks/UBFileSystemUtils.h"
 #include "web/UBWebController.h"
 #include "web/simplebrowser/webpage.h"
 
@@ -151,7 +149,7 @@ bool UBToolWidget::eventFilter(QObject *obj, QEvent *event)
     }
 
     // standard event processing
-    return QObject::eventFilter(obj, event);
+    return QWidget::eventFilter(obj, event);
 }
 
 void UBToolWidget::mousePressEvent(QMouseEvent *event)
@@ -176,7 +174,15 @@ void UBToolWidget::mouseMoveEvent(QMouseEvent *event)
 
 void UBToolWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-    mShouldMoveWidget = false;
+    if (mShouldMoveWidget)
+    {
+        // partial workaround for QTBUG-109068 to forward the position of the widget
+        // to the QWebEngineView
+        QSize actualSize = mWebView->size();
+        mWebView->resize(actualSize - QSize(1,1));
+        mWebView->resize(actualSize);
+        mShouldMoveWidget = false;
+    }
 
     if (event->pos().x() >= 0 && event->pos().x() < sClosePixmap->width() && event->pos().y() >= 0 && event->pos().y() < sClosePixmap->height()) {
         UBApplication::boardController->removeTool(this);
@@ -189,6 +195,32 @@ void UBToolWidget::mouseReleaseEvent(QMouseEvent *event)
     else
         QWidget::mouseReleaseEvent(event); /* don't propgate to parent, the widget is deleted in UBApplication */
 
+}
+
+void UBToolWidget::enterEvent(QEvent* event)
+{
+    Q_UNUSED(event)
+
+    const int tool = UBDrawingController::drawingController()->stylusTool();
+    const bool isPointing = tool == UBStylusTool::Selector || tool == UBStylusTool::Play;
+
+    if (mWidgetAPI && isPointing)
+    {
+        emit mWidgetAPI->onenter();
+    }
+}
+
+void UBToolWidget::leaveEvent(QEvent* event)
+{
+    Q_UNUSED(event)
+
+    auto pos = mapFromGlobal(QCursor::pos());
+
+    // only send leave event if cursor is actually outside of widget
+    if (mWidgetAPI && !rect().contains(pos))
+    {
+        emit mWidgetAPI->onleave();
+    }
 }
 
 void UBToolWidget::paintEvent(QPaintEvent *event)
@@ -222,16 +254,21 @@ void UBToolWidget::registerAPI()
 
     QWebChannel* channel = new QWebChannel(this);
     mWebView->page()->setWebChannel(channel);
-    UBWidgetUniboardAPI *uniboardAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene(), mToolWidget);
+    mUniboardAPI = new UBWidgetUniboardAPI(UBApplication::boardController->activeScene(), mToolWidget);
 
-    channel->registerObject("sankore", uniboardAPI);
+    channel->registerObject("sankore", mUniboardAPI);
 
     UBGraphicsW3CWidgetItem *graphicsW3cWidgetItem = dynamic_cast<UBGraphicsW3CWidgetItem*>(mToolWidget);
     if (graphicsW3cWidgetItem)
     {
-        UBW3CWidgetAPI* widgetAPI = new UBW3CWidgetAPI(graphicsW3cWidgetItem);
-        channel->registerObject("widget", widgetAPI);
+        mWidgetAPI = new UBW3CWidgetAPI(graphicsW3cWidgetItem);
+        channel->registerObject("widget", mWidgetAPI);
     }
+
+    // always apply API to active scene
+    connect(UBApplication::boardController, &UBBoardController::activeSceneChanged, this, [this](){
+        mUniboardAPI->setScene(UBApplication::boardController->activeScene());
+    });
 }
 
 UBGraphicsWidgetItem* UBToolWidget::toolWidget() const

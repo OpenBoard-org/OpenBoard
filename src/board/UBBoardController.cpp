@@ -1076,21 +1076,20 @@ void UBBoardController::lastScene()
 
 void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, const QPointF& pPos, const QSize& pSize, bool isBackground, bool internalData)
 {
-    qDebug() << "something has been dropped on the board! Url is: " << url.toString();
     QString sUrl = url.toString();
+    qDebug() << "something has been dropped on the board! Url is: " << sUrl.leftRef(255);
 
     QGraphicsItem *oldBackgroundObject = NULL;
     if (isBackground)
         oldBackgroundObject = mActiveScene->backgroundObject();
 
-    if(sUrl.startsWith("openboardtool://"))
-
+    if(url.scheme() == "openboardtool")
     {
         downloadFinished(true, url, QUrl(), "application/openboard-tool", QByteArray(), pPos, pSize, isBackground);
     }
-    else if (sUrl.startsWith("file://") || sUrl.startsWith("/"))
+    else if (url.scheme() == "file" || url.scheme() == "")
     {
-        QUrl formedUrl = sUrl.startsWith("file://") ? url : QUrl::fromLocalFile(sUrl);
+        QUrl formedUrl = url.scheme() == "file" ? url : QUrl::fromLocalFile(sUrl);
         QString fileName = formedUrl.toLocalFile();
         QString contentType = UBFileSystemUtils::mimeTypeFromFileName(fileName);
 
@@ -1102,17 +1101,12 @@ void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, c
     }
     else
     {
-        QString urlString = url.toString();
-        int parametersStringPosition = urlString.indexOf("?");
-        if(parametersStringPosition != -1)
-            urlString = urlString.left(parametersStringPosition);
-
         // When we fall there, it means that we are dropping something from the web to the board
         sDownloadFileDesc desc;
         desc.modal = true;
-        desc.srcUrl = urlString;
+        desc.srcUrl = sUrl;
         desc.currentSize = 0;
-        desc.name = QFileInfo(urlString).fileName();
+        desc.name = url.scheme() == "data" ? "Local data" : url.fileName();
         desc.totalSize = 0; // The total size will be retrieved during the download
         desc.pos = pPos;
         desc.size = pSize;
@@ -1158,8 +1152,9 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
 
     mActiveScene->deselectAllItems();
+    const QString scheme = sourceUrl.scheme();
 
-    if (!sourceUrl.toString().startsWith("file://") && !sourceUrl.toString().startsWith("openboardtool://"))
+    if (scheme != "file" && scheme != "openboardtool" && scheme != "data")
         showMessage(tr("Download finished"));
 
     if (UBMimeType::RasterImage == itemMimeType)
@@ -1179,7 +1174,20 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         }
 
         UBGraphicsPixmapItem* pixItem = mActiveScene->addImage(pData, nullptr, pPos, 1.);
-        pixItem->setSourceUrl(sourceUrl);
+
+        if (scheme == "data")
+        {
+            // create a shorter, but still unique URL using a hash function
+            QCryptographicHash hash(QCryptographicHash::Md5);
+            hash.addData(sourceUrl.toString().toLatin1());
+            QByteArray result = hash.result();
+            QString hashedUrl = "md5:" + result.toBase64();
+            pixItem->setSourceUrl(hashedUrl);
+        }
+        else
+        {
+            pixItem->setSourceUrl(sourceUrl);
+        }
 
         if (isBackground)
         {
@@ -1195,7 +1203,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
     }
     else if (UBMimeType::VectorImage == itemMimeType)
     {
-        qDebug() << "accepting mime type" << mimeType << "as vecto image";
+        qDebug() << "accepting mime type" << mimeType << "as vector image";
 
         UBGraphicsSvgItem* svgItem = mActiveScene->addSvg(sourceUrl, pPos, pData);
         svgItem->setSourceUrl(sourceUrl);

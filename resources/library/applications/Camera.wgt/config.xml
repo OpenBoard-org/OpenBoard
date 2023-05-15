@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" 
+        xmlns:ub="http://uniboard.mnemis.com/widgets"
+        id="http://letsfindaway.de/widgets/camera" 
+        version="1.0"
+        width="600"
+        height="400"
+        ub:resizable="true"
+        ub:transparent="false">
+    <name>Camera</name>
+    <author email="me@letsfindaway.de">Martin Winter</author>
+    <description>Live camera image with snapshot feature</description>
+    <content src="index.html"/>
+</widget>
