@@ -3125,8 +3125,6 @@ void UBDocumentController::importFile()
             UBApplication::boardController->ClearUndoStack();
 
             UBPersistenceManager::persistenceManager()->createDocumentProxiesStructure(docManager->importUbx(filePath, UBSettings::userDocumentDirectory()), true);
-
-            UBApplication::boardController->setActiveDocumentScene(UBApplication::boardController->selectedDocument(), 0, true, true);
         }
         else
         {
@@ -3162,6 +3160,8 @@ void UBDocumentController::importFile()
                 }
             }
         }
+
+        UBApplication::boardController->setActiveDocumentScene(UBApplication::boardController->selectedDocument(), 0, true, true);
 
         //Replaced document might still be attached to a thumbnail
         clearThumbPage();
