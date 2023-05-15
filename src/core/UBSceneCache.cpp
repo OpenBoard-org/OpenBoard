@@ -53,7 +53,7 @@ UBSceneCache::~UBSceneCache()
 }
 
 
-UBGraphicsScene* UBSceneCache::createScene(UBDocumentProxy* proxy, int pageIndex, bool useUndoRedoStack)
+UBGraphicsScene* UBSceneCache::createScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex, bool useUndoRedoStack)
 {
     UBGraphicsScene* newScene = new UBGraphicsScene(proxy, useUndoRedoStack);
     insert(proxy, pageIndex, newScene);
@@ -63,7 +63,7 @@ UBGraphicsScene* UBSceneCache::createScene(UBDocumentProxy* proxy, int pageIndex
 }
 
 
-void UBSceneCache::insert (UBDocumentProxy* proxy, int pageIndex, UBGraphicsScene* scene)
+void UBSceneCache::insert (std::shared_ptr<UBDocumentProxy> proxy, int pageIndex, UBGraphicsScene* scene)
 {
     QList<UBSceneCacheID> existingKeys = QHash<UBSceneCacheID, UBGraphicsScene*>::keys(scene);
 
@@ -94,14 +94,14 @@ void UBSceneCache::insert (UBDocumentProxy* proxy, int pageIndex, UBGraphicsScen
 }
 
 
-bool UBSceneCache::contains(UBDocumentProxy* proxy, int pageIndex) const
+bool UBSceneCache::contains(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex) const
 {
     UBSceneCacheID key(proxy, pageIndex);
     return QHash<UBSceneCacheID, UBGraphicsScene*>::contains(key);
 }
 
 
-UBGraphicsScene* UBSceneCache::value(UBDocumentProxy* proxy, int pageIndex)
+UBGraphicsScene* UBSceneCache::value(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex)
 {
     UBSceneCacheID key(proxy, pageIndex);
 
@@ -121,7 +121,7 @@ UBGraphicsScene* UBSceneCache::value(UBDocumentProxy* proxy, int pageIndex)
 }
 
 
-void UBSceneCache::removeScene(UBDocumentProxy* proxy, int pageIndex)
+void UBSceneCache::removeScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex)
 {
     UBGraphicsScene* scene = value(proxy, pageIndex);
     if (scene && !scene->isActive())
@@ -139,7 +139,7 @@ void UBSceneCache::removeScene(UBDocumentProxy* proxy, int pageIndex)
 }
 
 
-void UBSceneCache::removeAllScenes(UBDocumentProxy* proxy)
+void UBSceneCache::removeAllScenes(std::shared_ptr<UBDocumentProxy> proxy)
 {
     for(int i = 0 ; i < proxy->pageCount(); i++)
     {
@@ -148,7 +148,7 @@ void UBSceneCache::removeAllScenes(UBDocumentProxy* proxy)
 }
 
 
-void UBSceneCache::moveScene(UBDocumentProxy* proxy, int sourceIndex, int targetIndex)
+void UBSceneCache::moveScene(std::shared_ptr<UBDocumentProxy> proxy, int sourceIndex, int targetIndex)
 {
     UBSceneCacheID keySource(proxy, sourceIndex);
 
@@ -190,7 +190,7 @@ void UBSceneCache::moveScene(UBDocumentProxy* proxy, int sourceIndex, int target
 
 }
 
-void UBSceneCache::reassignDocProxy(UBDocumentProxy *newDocument, UBDocumentProxy *oldDocument)
+void UBSceneCache::reassignDocProxy(std::shared_ptr<UBDocumentProxy> newDocument, std::shared_ptr<UBDocumentProxy> oldDocument)
 {
     if (!newDocument || !oldDocument) {
         return;
@@ -218,7 +218,7 @@ void UBSceneCache::reassignDocProxy(UBDocumentProxy *newDocument, UBDocumentProx
 }
 
 
-void UBSceneCache::shiftUpScenes(UBDocumentProxy* proxy, int startIncIndex, int endIncIndex)
+void UBSceneCache::shiftUpScenes(std::shared_ptr<UBDocumentProxy> proxy, int startIncIndex, int endIncIndex)
 {
     for(int i = endIncIndex; i >= startIncIndex; i--)
     {
@@ -228,7 +228,7 @@ void UBSceneCache::shiftUpScenes(UBDocumentProxy* proxy, int startIncIndex, int 
 }
 
 
-void UBSceneCache::internalMoveScene(UBDocumentProxy* proxy, int sourceIndex, int targetIndex)
+void UBSceneCache::internalMoveScene(std::shared_ptr<UBDocumentProxy> proxy, int sourceIndex, int targetIndex)
 {
     UBSceneCacheID sourceKey(proxy, sourceIndex);
 

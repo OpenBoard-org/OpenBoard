@@ -81,7 +81,7 @@ UBMetadataDcSubsetAdaptor::~UBMetadataDcSubsetAdaptor()
 }
 
 
-void UBMetadataDcSubsetAdaptor::persist(UBDocumentProxy* proxy)
+void UBMetadataDcSubsetAdaptor::persist(std::shared_ptr<UBDocumentProxy> proxy)
 {
     if(!QDir(proxy->persistencePath()).exists()){
         //In this case the a document is an empty document so we do not persist it

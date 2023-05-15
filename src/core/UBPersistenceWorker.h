@@ -42,7 +42,7 @@ typedef enum{
 
 typedef struct{
     ActionType action;
-    UBDocumentProxy* proxy;
+    std::shared_ptr<UBDocumentProxy> proxy;
     UBGraphicsScene* scene;
     int sceneIndex;
 }PersistenceInformation;
@@ -53,16 +53,16 @@ class UBPersistenceWorker : public QObject
 public:
     explicit UBPersistenceWorker(QObject *parent = 0);
 
-    void saveScene(UBDocumentProxy* proxy, UBGraphicsScene* scene, const int pageIndex);
-    void readScene(UBDocumentProxy* proxy, const int pageIndex);
-    void saveMetadata(UBDocumentProxy* proxy);
+    void saveScene(std::shared_ptr<UBDocumentProxy> proxy, UBGraphicsScene* scene, const int pageIndex);
+    void readScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
+    void saveMetadata(std::shared_ptr<UBDocumentProxy> proxy);
 
 signals:
    void finished();
    void error(QString string);
-   void sceneLoaded(QByteArray text,UBDocumentProxy* proxy, const int pageIndex);
+   void sceneLoaded(QByteArray text,std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
    void scenePersisted(UBGraphicsScene* scene);
-   void metadataPersisted(UBDocumentProxy* proxy);
+   void metadataPersisted(std::shared_ptr<UBDocumentProxy> proxy);
 
 public slots:
    void process();

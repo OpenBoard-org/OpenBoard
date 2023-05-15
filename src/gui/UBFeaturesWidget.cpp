@@ -366,7 +366,7 @@ void UBFeaturesWidget::addElementsToFavorite()
                 controller->storeAsFavorite(feature);
 
                 QString documentPath = feature.getFullPath().adjusted(QUrl::RemoveFilename).toLocalFile().chopped(1);
-                UBDocumentProxy* document = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->findDocumentByPath(documentPath);
+                std::shared_ptr<UBDocumentProxy> document = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->findDocumentByPath(documentPath);
                 if (document)
                 {
                     document->setIsInFavoristeList(true);

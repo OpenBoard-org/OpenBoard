@@ -172,7 +172,7 @@ bool UBImportDocument::extractFileToDir(const QFile& pZipFile, const QString& pD
     return true;
 }
 
-UBDocumentProxy* UBImportDocument::importFile(const QFile& pFile, const QString& pGroup)
+std::shared_ptr<UBDocumentProxy> UBImportDocument::importFile(const QFile& pFile, const QString& pGroup)
 {
     Q_UNUSED(pGroup); // group is defined in the imported file
 
@@ -189,12 +189,12 @@ UBDocumentProxy* UBImportDocument::importFile(const QFile& pFile, const QString&
         return NULL;
     }
 
-    UBDocumentProxy* newDocument = UBPersistenceManager::persistenceManager()->createDocumentFromDir(documentRootFolder, pGroup, "", false, false, true);
+    std::shared_ptr<UBDocumentProxy> newDocument = UBPersistenceManager::persistenceManager()->createDocumentFromDir(documentRootFolder, pGroup, "", false, false, true);
     UBApplication::showMessage(tr("Import successful."));
     return newDocument;
 }
 
-bool UBImportDocument::addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile)
+bool UBImportDocument::addFileToDocument(std::shared_ptr<UBDocumentProxy> pDocument, const QFile& pFile)
 {
     QFileInfo fi(pFile);
     UBApplication::showMessage(tr("Importing file %1...").arg(fi.baseName()), true);

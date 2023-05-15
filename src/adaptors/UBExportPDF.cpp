@@ -62,7 +62,7 @@ UBExportPDF::~UBExportPDF()
     // NOOP
 }
 
-void UBExportPDF::persist(UBDocumentProxy* pDocumentProxy)
+void UBExportPDF::persist(std::shared_ptr<UBDocumentProxy> pDocumentProxy)
 {
     persistLocally(pDocumentProxy, tr("Export as PDF File"));
 }
@@ -78,7 +78,7 @@ bool UBExportPDF::associatedActionactionAvailableFor(const QModelIndex &selected
 }
 
 
-bool UBExportPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QString& filename)
+bool UBExportPDF::persistsDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const QString& filename)
 {
     QPdfWriter pdfWriter(filename);
 

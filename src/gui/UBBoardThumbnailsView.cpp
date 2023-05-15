@@ -76,8 +76,8 @@ UBBoardThumbnailsView::UBBoardThumbnailsView(QWidget *parent, const char *name)
     mLongPressTimer.setInterval(mLongPressInterval);
     mLongPressTimer.setSingleShot(true);
 
-    connect(UBApplication::boardController, SIGNAL(initThumbnailsRequired(UBDocumentProxy*)), this, SLOT(initThumbnails(UBDocumentProxy*)));
-    connect(UBApplication::boardController, SIGNAL(addThumbnailRequired(UBDocumentProxy*, int)), this, SLOT(addThumbnail(UBDocumentProxy*, int)));
+    connect(UBApplication::boardController, SIGNAL(initThumbnailsRequired(std::shared_ptr<UBDocumentProxy>)), this, SLOT(initThumbnails(std::shared_ptr<UBDocumentProxy>)));
+    connect(UBApplication::boardController, SIGNAL(addThumbnailRequired(std::shared_ptr<UBDocumentProxy>, int)), this, SLOT(addThumbnail(std::shared_ptr<UBDocumentProxy>, int)));
     connect(UBApplication::boardController, SIGNAL(moveThumbnailRequired(int, int)), this, SLOT(moveThumbnail(int, int)));
     connect(this, SIGNAL(moveThumbnailRequired(int, int)), this, SLOT(moveThumbnail(int, int)));
     connect(UBApplication::boardController, SIGNAL(updateThumbnailsRequired()), this, SLOT(updateThumbnails()));
@@ -118,14 +118,14 @@ void UBBoardThumbnailsView::removeThumbnail(int i)
     updateThumbnailsPos();
 }
 
-UBDraggableLivePixmapItem* UBBoardThumbnailsView::createThumbnail(UBDocumentProxy* document, int i)
+UBDraggableLivePixmapItem* UBBoardThumbnailsView::createThumbnail(std::shared_ptr<UBDocumentProxy> document, int i)
 {
     UBGraphicsScene* pageScene = UBPersistenceManager::persistenceManager()->loadDocumentScene(document, i);
 
     return new UBDraggableLivePixmapItem(pageScene, document, i);
 }
 
-void UBBoardThumbnailsView::addThumbnail(UBDocumentProxy* document, int i)
+void UBBoardThumbnailsView::addThumbnail(std::shared_ptr<UBDocumentProxy> document, int i)
 {
     UBDraggableLivePixmapItem* item = createThumbnail(document, i);
     mThumbnails.insert(i, item);
@@ -150,7 +150,7 @@ void UBBoardThumbnailsView::clearThumbnails()
     mThumbnails.clear();
 }
 
-void UBBoardThumbnailsView::initThumbnails(UBDocumentProxy* document)
+void UBBoardThumbnailsView::initThumbnails(std::shared_ptr<UBDocumentProxy> document)
 {
     clearThumbnails();
 

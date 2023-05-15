@@ -46,13 +46,13 @@ class UBExportFullPDF : public UBExportAdaptor
 
         virtual QString exportName();
         virtual QString exportExtention();
-        virtual void persist(UBDocumentProxy* pDocument);
+        virtual void persist(std::shared_ptr<UBDocumentProxy> pDocument);
         virtual bool associatedActionactionAvailableFor(const QModelIndex &selectedIndex);
 
-        virtual bool persistsDocument(UBDocumentProxy* pDocument, const QString& filename);
+        virtual bool persistsDocument(std::shared_ptr<UBDocumentProxy> pDocument, const QString& filename);
 
     protected:
-        void saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QString& filename);
+        void saveOverlayPdf(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const QString& filename);
 
     private:
         float mScaleFactor;

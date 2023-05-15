@@ -41,7 +41,7 @@ public:
     bool switchMode(eUBDockPaletteWidgetMode mode);
 
 public slots:
-    void onDocumentSet(UBDocumentProxy* documentProxy);
+    void onDocumentSet(std::shared_ptr<UBDocumentProxy> documentProxy);
 
 protected:
     void updateMaxWidth();

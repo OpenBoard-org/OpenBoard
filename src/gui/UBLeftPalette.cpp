@@ -67,7 +67,7 @@ UBLeftPalette::~UBLeftPalette()
 }
 
 
-void UBLeftPalette::onDocumentSet(UBDocumentProxy* documentProxy)
+void UBLeftPalette::onDocumentSet(std::shared_ptr<UBDocumentProxy> documentProxy)
 {
     Q_UNUSED(documentProxy)
     // the tab zero is forced

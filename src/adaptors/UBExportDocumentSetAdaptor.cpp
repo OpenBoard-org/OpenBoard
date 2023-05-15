@@ -61,7 +61,7 @@ UBExportDocumentSetAdaptor::~UBExportDocumentSetAdaptor()
     // NOOP
 }
 
-void UBExportDocumentSetAdaptor::persist(UBDocumentProxy* pDocumentProxy)
+void UBExportDocumentSetAdaptor::persist(std::shared_ptr<UBDocumentProxy> pDocumentProxy)
 {
     QModelIndex treeViewParentIndex;
     UBPersistenceManager *persistenceManager = UBPersistenceManager::persistenceManager();
@@ -86,9 +86,9 @@ void UBExportDocumentSetAdaptor::persist(UBDocumentProxy* pDocumentProxy)
         }
 
         UBDocumentTreeNode* node = treeModel->nodeFromIndex(treeViewParentIndex);
-        UBDocumentProxy proxy;
-        proxy.setMetaData(UBSettings::documentName,node->displayName());
-        filename = askForFileName(&proxy, tr("Export as UBX File"));
+        std::shared_ptr<UBDocumentProxy> proxy = std::make_shared<UBDocumentProxy>(UBDocumentProxy());
+        proxy->setMetaData(UBSettings::documentName, node->displayName());
+        filename = askForFileName(proxy, tr("Export as UBX File"));
     }
 
     if (filename.length() > 0)
@@ -163,7 +163,7 @@ bool UBExportDocumentSetAdaptor::addDocumentToZip(const QModelIndex &pIndex, UBD
         return false;
     }
 
-    UBDocumentProxy *pDocumentProxy = model->proxyForIndex(parentIndex);
+    std::shared_ptr<UBDocumentProxy>pDocumentProxy = model->proxyForIndex(parentIndex);
     if (pDocumentProxy) {
 
 //        Q_ASSERT(QFileInfo(pDocumentProxy->persistencePath()).exists());

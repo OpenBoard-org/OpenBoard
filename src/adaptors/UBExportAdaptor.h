@@ -44,8 +44,8 @@ class UBExportAdaptor : public QObject
 
         virtual QString exportName() = 0;
         virtual QString exportExtention() { return "";}
-        virtual void persist(UBDocumentProxy* pDocument) = 0;
-        virtual bool persistsDocument(UBDocumentProxy* pDocument, const QString& filename);
+        virtual void persist(std::shared_ptr<UBDocumentProxy> pDocument) = 0;
+        virtual bool persistsDocument(std::shared_ptr<UBDocumentProxy> pDocument, const QString& filename);
         virtual bool associatedActionactionAvailableFor(const QModelIndex &selectedIndex) {Q_UNUSED(selectedIndex); return false;}
         QAction *associatedAction() {return mAssociatedAction;}
         void setAssociatedAction(QAction *pAssociatedAction) {mAssociatedAction = pAssociatedAction;}
@@ -61,10 +61,10 @@ class UBExportAdaptor : public QObject
         }
 
     protected:
-        QString askForFileName(UBDocumentProxy* pDocument, const QString& pDialogTitle);
-        QString askForDirName(UBDocumentProxy* pDocument, const QString& pDialogTitle);
+        QString askForFileName(std::shared_ptr<UBDocumentProxy> pDocument, const QString& pDialogTitle);
+        QString askForDirName(std::shared_ptr<UBDocumentProxy> pDocument, const QString& pDialogTitle);
 
-        virtual void persistLocally(UBDocumentProxy* pDocumentProxy, const QString &pDialogTitle);
+        virtual void persistLocally(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const QString &pDialogTitle);
 
         void showErrorsList(QList<QString> errorsList);
 

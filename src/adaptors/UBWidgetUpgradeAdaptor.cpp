@@ -41,7 +41,7 @@ UBWidgetUpgradeAdaptor::UBWidgetUpgradeAdaptor()
 
 }
 
-void UBWidgetUpgradeAdaptor::upgradeWidgets(UBDocumentProxy *proxy)
+void UBWidgetUpgradeAdaptor::upgradeWidgets(std::shared_ptr<UBDocumentProxy> proxy)
 {
     if (libraryWidgets.empty())
     {

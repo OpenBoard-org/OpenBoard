@@ -71,50 +71,50 @@ class UBPersistenceManager : public QObject
         static UBPersistenceManager* persistenceManager();
         static void destroy();
 
-        virtual UBDocumentProxy* createDocument(const QString& pGroupName = ""
+        virtual std::shared_ptr<UBDocumentProxy> createDocument(const QString& pGroupName = ""
                 , const QString& pName = ""
                 , bool withEmptyPage = true
                 , QString directory =QString()
                 , int pageCount = 0
                 , bool promptDialogIfExists = false);
 
-        virtual UBDocumentProxy *createNewDocument(const QString& pGroupName = ""
+        virtual std::shared_ptr<UBDocumentProxy> createNewDocument(const QString& pGroupName = ""
                 , const QString& pName = ""
                 , bool withEmptyPage = true
                 , QString directory =QString()
                 , int pageCount = 0
                 , bool promptDialogIfExists = false);
 
-        virtual UBDocumentProxy* createDocumentFromDir(const QString& pDocumentDirectory
+        virtual std::shared_ptr<UBDocumentProxy> createDocumentFromDir(const QString& pDocumentDirectory
                                                        , const QString& pGroupName = ""
                 , const QString& pName = ""
                 , bool withEmptyPage = false
                 , bool addTitlePage = false
                 , bool promptDialogIfExists = false);
 
-        virtual UBDocumentProxy* persistDocumentMetadata(UBDocumentProxy* pDocumentProxy, bool forceImmediateSaving = false);
+        virtual std::shared_ptr<UBDocumentProxy> persistDocumentMetadata(std::shared_ptr<UBDocumentProxy> pDocumentProxy, bool forceImmediateSaving = false);
 
-        virtual UBDocumentProxy* duplicateDocument(UBDocumentProxy* pDocumentProxy);
+        virtual std::shared_ptr<UBDocumentProxy> duplicateDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
 
-        virtual void deleteDocument(UBDocumentProxy* pDocumentProxy);
+        virtual void deleteDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
 
-        virtual void deleteDocumentScenes(UBDocumentProxy* pDocumentProxy, const QList<int>& indexes);
+        virtual void deleteDocumentScenes(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const QList<int>& indexes);
 
-        virtual void duplicateDocumentScene(UBDocumentProxy* pDocumentProxy, int index);
+        virtual void duplicateDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int index);
 
-        virtual void copyDocumentScene(UBDocumentProxy *from, int fromIndex, UBDocumentProxy *to, int toIndex);
+        virtual void copyDocumentScene(std::shared_ptr<UBDocumentProxy>from, int fromIndex, std::shared_ptr<UBDocumentProxy>to, int toIndex);
 
-        virtual void persistDocumentScene(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex, bool isAnAutomaticBackup = false, bool forceImmediateSaving = false);
+        virtual void persistDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex, bool isAnAutomaticBackup = false, bool forceImmediateSaving = false);
 
-        virtual UBGraphicsScene* createDocumentSceneAt(UBDocumentProxy* pDocumentProxy, int index, bool useUndoRedoStack = true);
+        virtual UBGraphicsScene* createDocumentSceneAt(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int index, bool useUndoRedoStack = true);
 
-        virtual void insertDocumentSceneAt(UBDocumentProxy* pDocumentProxy, UBGraphicsScene* scene, int index, bool persist = true, bool deleting = false);
+        virtual void insertDocumentSceneAt(std::shared_ptr<UBDocumentProxy> pDocumentProxy, UBGraphicsScene* scene, int index, bool persist = true, bool deleting = false);
 
-        virtual void moveSceneToIndex(UBDocumentProxy* pDocumentProxy, int source, int target);
+        virtual void moveSceneToIndex(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int source, int target);
 
-        virtual UBGraphicsScene* loadDocumentScene(UBDocumentProxy* pDocumentProxy, int sceneIndex, bool cacheNeighboringScenes = true);
-        UBGraphicsScene *getDocumentScene(UBDocumentProxy* pDocumentProxy, int sceneIndex) {return mSceneCache.value(pDocumentProxy, sceneIndex);}
-        void reassignDocProxy(UBDocumentProxy *newDocument, UBDocumentProxy *oldDocument);
+        virtual UBGraphicsScene* loadDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int sceneIndex, bool cacheNeighboringScenes = true);
+        UBGraphicsScene *getDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int sceneIndex) {return mSceneCache.value(pDocumentProxy, sceneIndex);}
+        void reassignDocProxy(std::shared_ptr<UBDocumentProxy> newDocument, std::shared_ptr<UBDocumentProxy> oldDocument);
 
 //        QList<QPointer<UBDocumentProxy> > documentProxies;
         UBDocumentTreeNode *mDocumentTreeStructure;
@@ -129,59 +129,58 @@ class UBPersistenceManager : public QObject
         QString generateUniqueDocumentPath();
         QString generateUniqueDocumentPath(const QString& baseFolder);
 
-        bool addDirectoryContentToDocument(const QString& documentRootFolder, UBDocumentProxy* pDocument);
+        bool addDirectoryContentToDocument(const QString& documentRootFolder, std::shared_ptr<UBDocumentProxy> pDocument);
 
         void createDocumentProxiesStructure(bool interactive = false);
         void createDocumentProxiesStructure(const QFileInfoList &contentInfoList, bool interactive = false);
-        UBDocumentProxy* createDocumentProxyStructure(QFileInfo &contentInfo);
-        QDialog::DialogCode processInteractiveReplacementDialog(UBDocumentProxy *pProxy, bool multipleFiles = false);
+        std::shared_ptr<UBDocumentProxy> createDocumentProxyStructure(QFileInfo &contentInfo);
+        QDialog::DialogCode processInteractiveReplacementDialog(std::shared_ptr<UBDocumentProxy> pProxy, bool multipleFiles = false);
 
         QStringList documentSubDirectories()
         {
             return mDocumentSubDirectories;
         }
 
-        virtual bool isEmpty(UBDocumentProxy* pDocumentProxy);
+        virtual bool isEmpty(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
         virtual void purgeEmptyDocuments();
 
-        bool addGraphicsWidgetToDocument(UBDocumentProxy *mDocumentProxy, QString path, QUuid objectUuid, QString& destinationPath);
-        bool addFileToDocument(UBDocumentProxy* pDocumentProxy, QString path, const QString& subdir,  QUuid objectUuid, QString& destinationPath, QByteArray* data = NULL);
+        bool addGraphicsWidgetToDocument(std::shared_ptr<UBDocumentProxy> mDocumentProxy, QString path, QUuid objectUuid, QString& destinationPath);
+        bool addFileToDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy, QString path, const QString& subdir,  QUuid objectUuid, QString& destinationPath, QByteArray* data = NULL);
 
-        bool mayHaveVideo(UBDocumentProxy* pDocumentProxy);
-        bool mayHaveAudio(UBDocumentProxy* pDocumentProxy);
-        bool mayHavePDF(UBDocumentProxy* pDocumentProxy);
-        bool mayHaveSVGImages(UBDocumentProxy* pDocumentProxy);
-        bool mayHaveWidget(UBDocumentProxy* pDocumentProxy);
+        bool mayHaveVideo(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
+        bool mayHaveAudio(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
+        bool mayHavePDF(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
+        bool mayHaveSVGImages(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
+        bool mayHaveWidget(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
 
         QString adjustDocumentVirtualPath(const QString &str);
 
         void closing();
-        bool isSceneInCached(UBDocumentProxy *proxy, int index) const;
+        bool isSceneInCached(std::shared_ptr<UBDocumentProxy>proxy, int index) const;
 
     signals:
 
         void proxyListChanged();
 
-        void documentCreated(UBDocumentProxy* pDocumentProxy);
-        void documentMetadataChanged(UBDocumentProxy* pDocumentProxy);
-        void documentWillBeDeleted(UBDocumentProxy* pDocumentProxy);
+        void documentCreated(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
+        void documentMetadataChanged(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
 
-        void documentSceneCreated(UBDocumentProxy* pDocumentProxy, int pIndex);
+        void documentSceneCreated(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pIndex);
 
 private:
-        int sceneCount(const UBDocumentProxy* pDocumentProxy);
+        int sceneCount(const std::shared_ptr<UBDocumentProxy> pDocumentProxy);
         static QStringList getSceneFileNames(const QString& folder);
-        void renamePage(UBDocumentProxy* pDocumentProxy,
+        void renamePage(std::shared_ptr<UBDocumentProxy> pDocumentProxy,
                         const int sourceIndex, const int targetIndex);
-        void copyPage(UBDocumentProxy* pDocumentProxy,
+        void copyPage(std::shared_ptr<UBDocumentProxy> pDocumentProxy,
                       const int sourceIndex, const int targetIndex);
-        void generatePathIfNeeded(UBDocumentProxy* pDocumentProxy);
+        void generatePathIfNeeded(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
         void checkIfDocumentRepositoryExists();
 
         void saveFoldersTreeToXml(QXmlStreamWriter &writer, const QModelIndex &parentIndex);
         void loadFolderTreeFromXml(const QString &path, const QDomElement &element);
 
-        void cleanupDocument(UBDocumentProxy *pDocumentProxy) const;
+        void cleanupDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy) const;
 
         QString xmlFolderStructureFilename;
 
@@ -206,10 +205,9 @@ private:
     private slots:
         void documentRepositoryChanged(const QString& path);
         void errorString(QString error);
-        void onSceneLoaded(QByteArray,UBDocumentProxy*,int);
+        void onSceneLoaded(QByteArray,std::shared_ptr<UBDocumentProxy>,int);
         void onWorkerFinished();
         void onScenePersisted(UBGraphicsScene* scene);
-        void onMetadataPersisted(UBDocumentProxy* proxy);
 
 };
 

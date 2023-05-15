@@ -48,7 +48,7 @@
 
 #include "core/memcheck.h"
 
-void UBThumbnailAdaptor::generateMissingThumbnails(UBDocumentProxy* proxy)
+void UBThumbnailAdaptor::generateMissingThumbnails(std::shared_ptr<UBDocumentProxy> proxy)
 {
     int existingPageCount = proxy->pageCount();
 
@@ -83,7 +83,7 @@ void UBThumbnailAdaptor::generateMissingThumbnails(UBDocumentProxy* proxy)
     }
 }
 
-QPixmap UBThumbnailAdaptor::get(UBDocumentProxy* proxy, int pageIndex)
+QPixmap UBThumbnailAdaptor::get(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex)
 {
     UBApplication::showMessage(tr("Loading thumbnail (%1/%2)").arg(pageIndex+1).arg(proxy->pageCount()));
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
@@ -102,7 +102,7 @@ QPixmap UBThumbnailAdaptor::get(UBDocumentProxy* proxy, int pageIndex)
     return pix;
 }
 
-void UBThumbnailAdaptor::load(UBDocumentProxy* proxy, QList<std::shared_ptr<QPixmap>>& list)
+void UBThumbnailAdaptor::load(std::shared_ptr<UBDocumentProxy> proxy, QList<std::shared_ptr<QPixmap>>& list)
 {
     list.clear();
     for(int i=0; i<proxy->pageCount(); i++)
@@ -111,7 +111,7 @@ void UBThumbnailAdaptor::load(UBDocumentProxy* proxy, QList<std::shared_ptr<QPix
     }
 }
 
-void UBThumbnailAdaptor::persistScene(UBDocumentProxy* proxy, UBGraphicsScene* pScene, int pageIndex, bool overrideModified)
+void UBThumbnailAdaptor::persistScene(std::shared_ptr<UBDocumentProxy> proxy, UBGraphicsScene* pScene, int pageIndex, bool overrideModified)
 {
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
 
@@ -157,7 +157,7 @@ void UBThumbnailAdaptor::persistScene(UBDocumentProxy* proxy, UBGraphicsScene* p
 }
 
 
-QUrl UBThumbnailAdaptor::thumbnailUrl(UBDocumentProxy* proxy, int pageIndex)
+QUrl UBThumbnailAdaptor::thumbnailUrl(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex)
 {
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
 

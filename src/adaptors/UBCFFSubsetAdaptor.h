@@ -55,16 +55,16 @@ class UBCFFSubsetAdaptor
 {
 public:
     UBCFFSubsetAdaptor();
-    static bool ConvertCFFFileToUbz(QString &cffSourceFile, UBDocumentProxy* pDocument);
+    static bool ConvertCFFFileToUbz(QString &cffSourceFile, std::shared_ptr<UBDocumentProxy> pDocument);
 
 private:
     class UBCFFSubsetReader
     {
     public:
-        UBCFFSubsetReader(UBDocumentProxy *proxy, QFile *content);
+        UBCFFSubsetReader(std::shared_ptr<UBDocumentProxy>proxy, QFile *content);
         ~UBCFFSubsetReader();
 
-        UBDocumentProxy *mProxy;
+        std::shared_ptr<UBDocumentProxy>mProxy;
         QString pwdContent;
 
         bool parse();

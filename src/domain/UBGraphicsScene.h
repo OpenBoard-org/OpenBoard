@@ -127,7 +127,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void setURStackEnable(bool enable){mUndoRedoStackEnabled = enable;}
         bool isURStackIsEnabled(){return mUndoRedoStackEnabled;}
 
-        UBGraphicsScene(UBDocumentProxy *document, bool enableUndoRedoStack = true);
+        UBGraphicsScene(std::shared_ptr<UBDocumentProxy>document, bool enableUndoRedoStack = true);
         virtual ~UBGraphicsScene();
 
         virtual UBItem* deepCopy() const;
@@ -201,9 +201,9 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         bool isEmpty() const;
 
-        void setDocument(UBDocumentProxy* pDocument);
+        void setDocument(std::shared_ptr<UBDocumentProxy> pDocument);
 
-        UBDocumentProxy* document() const
+        std::shared_ptr<UBDocumentProxy> document() const
         {
             return mDocument;
         }
@@ -455,7 +455,7 @@ public slots:
         QSet<QGraphicsItem*> mAddedItems;
         QSet<QGraphicsItem*> mRemovedItems;
 
-        UBDocumentProxy* mDocument;
+        std::shared_ptr<UBDocumentProxy> mDocument;
 
         bool mDarkBackground;
         UBPageBackground mPageBackground;

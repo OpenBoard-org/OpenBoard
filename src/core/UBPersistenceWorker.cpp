@@ -37,7 +37,7 @@ UBPersistenceWorker::UBPersistenceWorker(QObject *parent) :
 {
 }
 
-void UBPersistenceWorker::saveScene(UBDocumentProxy* proxy, UBGraphicsScene* scene, const int pageIndex)
+void UBPersistenceWorker::saveScene(std::shared_ptr<UBDocumentProxy> proxy, UBGraphicsScene* scene, const int pageIndex)
 {
     PersistenceInformation entry = {WriteScene, proxy, scene, pageIndex};
 
@@ -45,7 +45,7 @@ void UBPersistenceWorker::saveScene(UBDocumentProxy* proxy, UBGraphicsScene* sce
     mSemaphore.release();
 }
 
-void UBPersistenceWorker::readScene(UBDocumentProxy* proxy, const int pageIndex)
+void UBPersistenceWorker::readScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex)
 {
     PersistenceInformation entry = {ReadScene, proxy, 0, pageIndex};
 
@@ -53,7 +53,7 @@ void UBPersistenceWorker::readScene(UBDocumentProxy* proxy, const int pageIndex)
     mSemaphore.release();
 }
 
-void UBPersistenceWorker::saveMetadata(UBDocumentProxy *proxy)
+void UBPersistenceWorker::saveMetadata(std::shared_ptr<UBDocumentProxy> proxy)
 {
     PersistenceInformation entry = {WriteMetadata, proxy, NULL, 0};
     saves.append(entry);

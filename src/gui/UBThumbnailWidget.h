@@ -319,7 +319,7 @@ public:
 class UBThumbnailPixmap : public QGraphicsPixmapItem, public UBThumbnail
 {
     public:
-        UBThumbnailPixmap(const QPixmap& pix, UBDocumentProxy* proxy, int pSceneIndex)
+        UBThumbnailPixmap(const QPixmap& pix, std::shared_ptr<UBDocumentProxy> proxy, int pSceneIndex)
             : QGraphicsPixmapItem(pix)
         {
 
@@ -356,7 +356,7 @@ class UBThumbnailPixmap : public QGraphicsPixmapItem, public UBThumbnail
 class UBSceneThumbnailPixmap : public UBThumbnailPixmap
 {
     public:
-        UBSceneThumbnailPixmap(const QPixmap& pix, UBDocumentProxy* proxy, int pSceneIndex)
+        UBSceneThumbnailPixmap(const QPixmap& pix, std::shared_ptr<UBDocumentProxy> proxy, int pSceneIndex)
             : UBThumbnailPixmap(pix)
             , mDocumentProxy(proxy)
             , mSceneIndex(pSceneIndex)
@@ -369,7 +369,7 @@ class UBSceneThumbnailPixmap : public UBThumbnailPixmap
             // NOOP
         }
 
-        UBDocumentProxy* documentProxy()
+        std::shared_ptr<UBDocumentProxy> documentProxy()
         {
             return mDocumentProxy;
         }
@@ -390,14 +390,14 @@ class UBSceneThumbnailPixmap : public UBThumbnailPixmap
         }
 
     private:
-        UBDocumentProxy* mDocumentProxy;
+        std::shared_ptr<UBDocumentProxy> mDocumentProxy;
         int mSceneIndex;
 };
 
 class UBSceneThumbnailNavigPixmap : public UBSceneThumbnailPixmap
 {
     public:
-        UBSceneThumbnailNavigPixmap(const QPixmap& pix, UBDocumentProxy* proxy, int pSceneIndex);
+        UBSceneThumbnailNavigPixmap(const QPixmap& pix, std::shared_ptr<UBDocumentProxy> proxy, int pSceneIndex);
         ~UBSceneThumbnailNavigPixmap();
 
         bool editable()
@@ -479,14 +479,14 @@ public:
 class UBThumbnailPixmapItem : public QGraphicsPixmapItem
 {
     public:
-        UBThumbnailPixmapItem(UBDocumentProxy* proxy, int index)
+        UBThumbnailPixmapItem(std::shared_ptr<UBDocumentProxy> proxy, int index)
             : mDocumentProxy(proxy)
             , mSceneIndex(index)
         {
 
         }
 
-        UBDocumentProxy* documentProxy()
+        std::shared_ptr<UBDocumentProxy> documentProxy()
         {
             return mDocumentProxy;
         }
@@ -502,7 +502,7 @@ class UBThumbnailPixmapItem : public QGraphicsPixmapItem
         }
 
 private:
-        UBDocumentProxy* mDocumentProxy;
+        std::shared_ptr<UBDocumentProxy> mDocumentProxy;
         int mSceneIndex;
 };
 
@@ -511,7 +511,7 @@ class UBDraggableThumbnailItem : public QObject, public UBThumbnailPixmapItem
     Q_OBJECT
 
     public:
-        UBDraggableThumbnailItem(UBDocumentProxy* documentProxy, int index)
+        UBDraggableThumbnailItem(std::shared_ptr<UBDocumentProxy> documentProxy, int index)
         : UBThumbnailPixmapItem(documentProxy, index)
         , mEditable(false)
         {
@@ -574,7 +574,7 @@ class UBDraggableLivePixmapItem : public UBDraggableThumbnailItem
 {
     Q_OBJECT
     public:
-        UBDraggableLivePixmapItem(UBGraphicsScene* pageScene, UBDocumentProxy* documentProxy, int index);
+        UBDraggableLivePixmapItem(UBGraphicsScene* pageScene, std::shared_ptr<UBDocumentProxy> documentProxy, int index);
 
         ~UBDraggableLivePixmapItem()
         {

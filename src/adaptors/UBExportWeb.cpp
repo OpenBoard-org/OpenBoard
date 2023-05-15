@@ -57,7 +57,7 @@ UBExportWeb::~UBExportWeb()
 }
 
 
-void UBExportWeb::persist(UBDocumentProxy* pDocumentProxy)
+void UBExportWeb::persist(std::shared_ptr<UBDocumentProxy> pDocumentProxy)
 {
     if (!pDocumentProxy)
         return;

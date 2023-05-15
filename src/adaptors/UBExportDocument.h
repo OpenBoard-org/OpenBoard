@@ -49,9 +49,9 @@ class UBExportDocument : public UBExportAdaptor, public UBProcessingProgressList
 
         virtual QString exportName();
         virtual QString exportExtention();
-        virtual void persist(UBDocumentProxy* pDocument);
+        virtual void persist(std::shared_ptr<UBDocumentProxy> pDocument);
 
-        virtual bool persistsDocument(UBDocumentProxy* pDocument, const QString& filename);
+        virtual bool persistsDocument(std::shared_ptr<UBDocumentProxy> pDocument, const QString& filename);
 
         virtual void processing(const QString& pObjectName, int pCurrent, int pTotal);
 

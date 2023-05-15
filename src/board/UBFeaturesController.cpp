@@ -447,7 +447,7 @@ void UBFeaturesController::scanFS()
         if (favoriteElement.fileName().endsWith(".rdf"))
         {
             QString documentPath = favoriteElement.adjusted(QUrl::RemoveFilename).toLocalFile().chopped(1);
-            UBDocumentProxy* document = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->findDocumentByPath(documentPath);
+            std::shared_ptr<UBDocumentProxy> document = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->findDocumentByPath(documentPath);
 
             if (document)
             {

@@ -46,9 +46,6 @@ class UBImportDocumentSetAdaptor : public UBImportAdaptor
 
         QFileInfoList importData(const QString &zipFile, const QString &destination);
 
-//        virtual UBDocumentProxy* importFile(const QFile& pFile, const QString& pGroup);
-//        virtual bool addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile);
-
     private:
         bool extractFileToDir(const QFile& pZipFile, const QString& pDir);
 

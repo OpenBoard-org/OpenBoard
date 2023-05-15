@@ -101,7 +101,7 @@ UBDockPalette::UBDockPalette(eUBDockPaletteType paletteType, QWidget *parent, co
     connect(UBSettings::settings()->appToolBarPositionedAtTop, SIGNAL(changed(QVariant)), this, SLOT(onToolbarPosUpdated()));
     connect(UBDownloadManager::downloadManager(), SIGNAL(allDownloadsFinished()), this, SLOT(onAllDownloadsFinished()));
 
-    connect(UBApplication::boardController,SIGNAL(documentSet(UBDocumentProxy*)),this,SLOT(onDocumentSet(UBDocumentProxy*)));
+    connect(UBApplication::boardController,SIGNAL(documentSet(std::shared_ptr<UBDocumentProxy>)),this,SLOT(onDocumentSet(std::shared_ptr<UBDocumentProxy>)));
     connect(this,SIGNAL(pageSelectionChangedRequired()),UBApplication::boardController,SLOT(selectionChanged()));
 
     connect(UBApplication::displayManager, SIGNAL(screenLayoutChanged()), this, SLOT(onResizeRequest()));
@@ -125,7 +125,7 @@ UBDockPalette::~UBDockPalette()
     }
 }
 
-void UBDockPalette::onDocumentSet(UBDocumentProxy* documentProxy)
+void UBDockPalette::onDocumentSet(std::shared_ptr<UBDocumentProxy> documentProxy)
 {
     Q_UNUSED(documentProxy);
 }

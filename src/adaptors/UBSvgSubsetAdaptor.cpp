@@ -150,7 +150,7 @@ static bool itemZIndexComp(const QGraphicsItem* item1,
 }
 
 
-void UBSvgSubsetAdaptor::upgradeScene(UBDocumentProxy* proxy, const int pageIndex)
+void UBSvgSubsetAdaptor::upgradeScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex)
 {
     //4.2
     QDomDocument doc = loadSceneDocument(proxy, pageIndex);
@@ -167,7 +167,7 @@ void UBSvgSubsetAdaptor::upgradeScene(UBDocumentProxy* proxy, const int pageInde
 }
 
 
-QDomDocument UBSvgSubsetAdaptor::loadSceneDocument(UBDocumentProxy* proxy, const int pPageIndex)
+QDomDocument UBSvgSubsetAdaptor::loadSceneDocument(std::shared_ptr<UBDocumentProxy> proxy, const int pPageIndex)
 {
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg",pPageIndex);
 
@@ -190,7 +190,7 @@ QDomDocument UBSvgSubsetAdaptor::loadSceneDocument(UBDocumentProxy* proxy, const
 }
 
 
-void UBSvgSubsetAdaptor::setSceneUuid(UBDocumentProxy* proxy, const int pageIndex, QUuid pUuid)
+void UBSvgSubsetAdaptor::setSceneUuid(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex, QUuid pUuid)
 {
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg",pageIndex);
 
@@ -247,7 +247,7 @@ QString UBSvgSubsetAdaptor::uniboardDocumentNamespaceUriFromVersion(int mFileVer
 }
 
 
-UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const int pageIndex)
+UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex)
 {
     UBApplication::showMessage(QObject::tr("Loading scene (%1/%2)").arg(pageIndex+1).arg(proxy->pageCount()));
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
@@ -273,7 +273,7 @@ UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const int
 }
 
 
-QByteArray UBSvgSubsetAdaptor::loadSceneAsText(UBDocumentProxy* proxy, const int pageIndex)
+QByteArray UBSvgSubsetAdaptor::loadSceneAsText(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex)
 {
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
     qDebug() << fileName;
@@ -296,7 +296,7 @@ QByteArray UBSvgSubsetAdaptor::loadSceneAsText(UBDocumentProxy* proxy, const int
 }
 
 
-QUuid UBSvgSubsetAdaptor::sceneUuid(UBDocumentProxy* proxy, const int pageIndex)
+QUuid UBSvgSubsetAdaptor::sceneUuid(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex)
 {
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
 
@@ -343,13 +343,13 @@ QUuid UBSvgSubsetAdaptor::sceneUuid(UBDocumentProxy* proxy, const int pageIndex)
 }
 
 
-UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(UBDocumentProxy* proxy, const QByteArray& pArray)
+UBGraphicsScene* UBSvgSubsetAdaptor::loadScene(std::shared_ptr<UBDocumentProxy> proxy, const QByteArray& pArray)
 {
     UBSvgSubsetReader reader(proxy, UBTextTools::cleanHtmlCData(QString(pArray)).toUtf8());
     return reader.loadScene(proxy);
 }
 
-UBSvgSubsetAdaptor::UBSvgSubsetReader::UBSvgSubsetReader(UBDocumentProxy* pProxy, const QByteArray& pXmlData)
+UBSvgSubsetAdaptor::UBSvgSubsetReader::UBSvgSubsetReader(std::shared_ptr<UBDocumentProxy> pProxy, const QByteArray& pXmlData)
     : mXmlReader(pXmlData)
     , mProxy(pProxy)
     , mDocumentPath(pProxy->persistencePath())
@@ -359,7 +359,7 @@ UBSvgSubsetAdaptor::UBSvgSubsetReader::UBSvgSubsetReader(UBDocumentProxy* pProxy
 }
 
 
-UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(UBDocumentProxy* proxy)
+UBGraphicsScene* UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(std::shared_ptr<UBDocumentProxy> proxy)
 {
     qDebug() << "loadScene() : starting reading...";
     QElapsedTimer time;
@@ -1129,14 +1129,14 @@ QGraphicsItem *UBSvgSubsetAdaptor::UBSvgSubsetReader::readElementFromGroup()
     return result;
 }
 
-void UBSvgSubsetAdaptor::persistScene(UBDocumentProxy* proxy, UBGraphicsScene* pScene, const int pageIndex)
+void UBSvgSubsetAdaptor::persistScene(std::shared_ptr<UBDocumentProxy> proxy, UBGraphicsScene* pScene, const int pageIndex)
 {
     UBSvgSubsetWriter writer(proxy, pScene, pageIndex);
     writer.persistScene(proxy, pageIndex);
 }
 
 
-UBSvgSubsetAdaptor::UBSvgSubsetWriter::UBSvgSubsetWriter(UBDocumentProxy* proxy, UBGraphicsScene* pScene, const int pageIndex)
+UBSvgSubsetAdaptor::UBSvgSubsetWriter::UBSvgSubsetWriter(std::shared_ptr<UBDocumentProxy> proxy, UBGraphicsScene* pScene, const int pageIndex)
     : mScene(pScene)
     , mDocumentPath(proxy->persistencePath())
     , mPageIndex(pageIndex)
@@ -1146,7 +1146,7 @@ UBSvgSubsetAdaptor::UBSvgSubsetWriter::UBSvgSubsetWriter(UBDocumentProxy* proxy,
 }
 
 
-void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement(UBDocumentProxy* proxy)
+void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement(std::shared_ptr<UBDocumentProxy> proxy)
 {
     mXmlWriter.writeStartElement("svg");
 
@@ -1200,7 +1200,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::writeSvgElement(UBDocumentProxy* pro
     mXmlWriter.writeEndElement();
 }
 
-bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(UBDocumentProxy* proxy, int pageIndex)
+bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex)
 {
     Q_UNUSED(pageIndex);
 
@@ -3334,7 +3334,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::cacheToSvg(UBGraphicsCache* item)
     mXmlWriter.writeEndElement();
 }
 
-void UBSvgSubsetAdaptor::convertPDFObjectsToImages(UBDocumentProxy* proxy)
+void UBSvgSubsetAdaptor::convertPDFObjectsToImages(std::shared_ptr<UBDocumentProxy> proxy)
 {
     for (int i = 0; i < proxy->pageCount(); i++)
     {
@@ -3370,7 +3370,7 @@ void UBSvgSubsetAdaptor::convertPDFObjectsToImages(UBDocumentProxy* proxy)
 }
 
 
-void UBSvgSubsetAdaptor::convertSvgImagesToImages(UBDocumentProxy* proxy)
+void UBSvgSubsetAdaptor::convertSvgImagesToImages(std::shared_ptr<UBDocumentProxy> proxy)
 {
     for (int i = 0; i < proxy->pageCount(); i++)
     {

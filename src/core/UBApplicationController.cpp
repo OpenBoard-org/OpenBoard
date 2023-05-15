@@ -261,7 +261,7 @@ void UBApplicationController::adjustDisplayView()
 }
 
 
-void UBApplicationController::adjustPreviousViews(int pActiveSceneIndex, UBDocumentProxy *pActiveDocument)
+void UBApplicationController::adjustPreviousViews(int pActiveSceneIndex, std::shared_ptr<UBDocumentProxy> pActiveDocument)
 {
     int viewIndex = pActiveSceneIndex;
 
@@ -721,11 +721,9 @@ void UBApplicationController::importFile(const QString& pFilePath)
     if (!fileToOpen.exists())
         return;
 
-    UBDocumentProxy* document = 0;
-
     bool success = false;
 
-    document = UBDocumentManager::documentManager()->importFile(fileToOpen, "");
+    std::shared_ptr<UBDocumentProxy> document = UBDocumentManager::documentManager()->importFile(fileToOpen, "");
 
     success = (document != 0);
 

@@ -52,8 +52,7 @@ UBDocumentProxy::UBDocumentProxy()
     init();
 }
 
-UBDocumentProxy::UBDocumentProxy(const UBDocumentProxy &rValue) :
-    QObject()
+UBDocumentProxy::UBDocumentProxy(const UBDocumentProxy &rValue)
 {
     mPersistencePath = rValue.mPersistencePath;
     mMetaDatas = rValue.mMetaDatas;
@@ -91,7 +90,7 @@ void UBDocumentProxy::init()
     setDefaultDocumentSize(UBSettings::settings()->pageSize->get().toSize());
 }
 
-bool UBDocumentProxy::theSameDocument(UBDocumentProxy *proxy)
+bool UBDocumentProxy::theSameDocument(std::shared_ptr<UBDocumentProxy> proxy)
 {
     return  proxy && mPersistencePath == proxy->mPersistencePath;
 }
@@ -101,9 +100,9 @@ UBDocumentProxy::~UBDocumentProxy()
     // NOOP
 }
 
-UBDocumentProxy* UBDocumentProxy::deepCopy() const
+std::shared_ptr<UBDocumentProxy> UBDocumentProxy::deepCopy() const
 {
-    UBDocumentProxy* copy = new UBDocumentProxy();
+    std::shared_ptr<UBDocumentProxy> copy = std::make_shared<UBDocumentProxy>(UBDocumentProxy());
 
     copy->mPersistencePath = QString(mPersistencePath);
     copy->mMetaDatas = QMap<QString, QVariant>(mMetaDatas);
@@ -228,10 +227,6 @@ void UBDocumentProxy::setMetaData(const QString& pKey, const QVariant& pValue)
         if (pKey == UBSettings::documentUpdatedAt)
         {
             mDocumentUpdatedAtLittleEndian = "";
-
-            UBDocumentManager *documentManager = UBDocumentManager::documentManager();
-            if (documentManager)
-                documentManager->emitDocumentUpdated(this);
         }
     }
 }

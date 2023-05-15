@@ -50,8 +50,8 @@ public slots:
     void centerOnThumbnail(int index);
 
     void clearThumbnails();
-    void initThumbnails(UBDocumentProxy* document);
-    void addThumbnail(UBDocumentProxy* document, int i);
+    void initThumbnails(std::shared_ptr<UBDocumentProxy> document);
+    void addThumbnail(std::shared_ptr<UBDocumentProxy> document, int i);
     void moveThumbnail(int from, int to);
     void removeThumbnail(int i);
     void updateThumbnails();
@@ -78,7 +78,7 @@ signals:
     void moveThumbnailRequired(int from, int to);
 
 private:
-    UBDraggableLivePixmapItem* createThumbnail(UBDocumentProxy* document, int i);
+    UBDraggableLivePixmapItem* createThumbnail(std::shared_ptr<UBDocumentProxy> document, int i);
     void updateThumbnailsPos();
     void updateExposure();
 

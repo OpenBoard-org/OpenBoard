@@ -58,7 +58,7 @@ QString UBExportCFF::exportExtention()
     return QString(".iwb");
 }
 
-void UBExportCFF::persist(UBDocumentProxy* pDocument)
+void UBExportCFF::persist(std::shared_ptr<UBDocumentProxy> pDocument)
 {
     QString src = pDocument->persistencePath();
 

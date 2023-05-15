@@ -50,13 +50,13 @@ class UBSceneCacheID
             // NOOP
         }
 
-        UBSceneCacheID(UBDocumentProxy* pDocumentProxy, int pPageIndex)
+        UBSceneCacheID(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pPageIndex)
         {
             documentProxy = pDocumentProxy;
             pageIndex = pPageIndex;
         }
 
-        UBDocumentProxy* documentProxy;
+        std::shared_ptr<UBDocumentProxy> documentProxy;
         int pageIndex;
 
 };
@@ -79,33 +79,33 @@ class UBSceneCache : public QHash<UBSceneCacheID, UBGraphicsScene*>
         UBSceneCache();
         virtual ~UBSceneCache();
 
-        UBGraphicsScene* createScene(UBDocumentProxy* proxy, int pageIndex, bool useUndoRedoStack);
+        UBGraphicsScene* createScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex, bool useUndoRedoStack);
 
-        void insert (UBDocumentProxy* proxy, int pageIndex, UBGraphicsScene* scene );
+        void insert (std::shared_ptr<UBDocumentProxy> proxy, int pageIndex, UBGraphicsScene* scene );
 
-        bool contains(UBDocumentProxy* proxy, int pageIndex) const;
+        bool contains(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex) const;
 
-        UBGraphicsScene* value(UBDocumentProxy* proxy, int pageIndex);
+        UBGraphicsScene* value(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
 
         UBGraphicsScene* value(const UBSceneCacheID& key) const
         {
             return QHash<UBSceneCacheID, UBGraphicsScene*>::value(key);
         }
 
-        void removeScene(UBDocumentProxy* proxy, int pageIndex);
+        void removeScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
 
-        void removeAllScenes(UBDocumentProxy* proxy);
+        void removeAllScenes(std::shared_ptr<UBDocumentProxy> proxy);
 
-        void moveScene(UBDocumentProxy* proxy, int sourceIndex, int targetIndex);
+        void moveScene(std::shared_ptr<UBDocumentProxy> proxy, int sourceIndex, int targetIndex);
 
-        void reassignDocProxy(UBDocumentProxy *newDocument, UBDocumentProxy *oldDocument);
+        void reassignDocProxy(std::shared_ptr<UBDocumentProxy> newDocument, std::shared_ptr<UBDocumentProxy> oldDocument);
 
-        void shiftUpScenes(UBDocumentProxy* proxy, int startIncIndex, int endIncIndex);
+        void shiftUpScenes(std::shared_ptr<UBDocumentProxy> proxy, int startIncIndex, int endIncIndex);
 
 
     private:
 
-        void internalMoveScene(UBDocumentProxy* proxy, int sourceIndex, int targetIndex);
+        void internalMoveScene(std::shared_ptr<UBDocumentProxy> proxy, int sourceIndex, int targetIndex);
 
         void dumpCacheContent();
 

@@ -46,7 +46,7 @@ class UBExportWeb : public UBExportAdaptor
 
         virtual QString exportName();
 
-        virtual void persist(UBDocumentProxy* pDocument);
+        virtual void persist(std::shared_ptr<UBDocumentProxy> pDocument);
 
 };
 

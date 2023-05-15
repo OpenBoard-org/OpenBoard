@@ -316,7 +316,7 @@ bool UBZLayerController::zLevelAvailable(qreal z)
     return true;
 }
 
-UBGraphicsScene::UBGraphicsScene(UBDocumentProxy* document, bool enableUndoRedoStack)
+UBGraphicsScene::UBGraphicsScene(std::shared_ptr<UBDocumentProxy> document, bool enableUndoRedoStack)
     : mEraser(0)
     , mPointer(0)
     , mMarkerCircle(0)
@@ -2183,7 +2183,7 @@ QGraphicsItem *UBGraphicsScene::itemForUuid(QUuid uuid)
     return result;
 }
 
-void UBGraphicsScene::setDocument(UBDocumentProxy* pDocument)
+void UBGraphicsScene::setDocument(std::shared_ptr<UBDocumentProxy> pDocument)
 {
     if (pDocument != mDocument)
     {
@@ -2193,7 +2193,6 @@ void UBGraphicsScene::setDocument(UBDocumentProxy* pDocument)
         }
 
         mDocument = pDocument;
-        setParent(pDocument);
     }
 }
 

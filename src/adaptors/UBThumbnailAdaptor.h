@@ -41,15 +41,15 @@ class UBThumbnailAdaptor //static class
     Q_DECLARE_TR_FUNCTIONS(UBThumbnailAdaptor)
 
 public:
-    static QUrl thumbnailUrl(UBDocumentProxy* proxy, int pageIndex);
+    static QUrl thumbnailUrl(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
 
-    static void persistScene(UBDocumentProxy* proxy, UBGraphicsScene* pScene, int pageIndex, bool overrideModified = false);
+    static void persistScene(std::shared_ptr<UBDocumentProxy> proxy, UBGraphicsScene* pScene, int pageIndex, bool overrideModified = false);
 
-    static QPixmap get(UBDocumentProxy* proxy, int index);
-    static void load(UBDocumentProxy* proxy, QList<std::shared_ptr<QPixmap>>& list);
+    static QPixmap get(std::shared_ptr<UBDocumentProxy> proxy, int index);
+    static void load(std::shared_ptr<UBDocumentProxy> proxy, QList<std::shared_ptr<QPixmap>>& list);
 
 private:
-    static void generateMissingThumbnails(UBDocumentProxy* proxy);
+    static void generateMissingThumbnails(std::shared_ptr<UBDocumentProxy> proxy);
 
     UBThumbnailAdaptor() {}
 };

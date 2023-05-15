@@ -51,18 +51,15 @@ class UBDocumentManager : public QObject
         QStringList importFileExtensions(bool notUbx = false);
 
         QFileInfoList importUbx(const QString &Incomingfile, const QString &destination);
-        UBDocumentProxy* importFile(const QFile& pFile, const QString& pGroup);
+        std::shared_ptr<UBDocumentProxy> importFile(const QFile& pFile, const QString& pGroup);
 
-        int addFilesToDocument(UBDocumentProxy* pDocument, QStringList fileNames);
+        int addFilesToDocument(std::shared_ptr<UBDocumentProxy> pDocument, QStringList fileNames);
 
-        UBDocumentProxy* importDir(const QDir& pDir, const QString& pGroup);
-        int addImageDirToDocument(const QDir& pDir, UBDocumentProxy* pDocument);
+        std::shared_ptr<UBDocumentProxy> importDir(const QDir& pDir, const QString& pGroup);
+        int addImageDirToDocument(const QDir& pDir, std::shared_ptr<UBDocumentProxy> pDocument);
 
         QList<UBExportAdaptor*> supportedExportAdaptors();
-        void emitDocumentUpdated(UBDocumentProxy* pDocument);
-
-    signals:
-        void documentUpdated(UBDocumentProxy *pDocument);
+        void emitDocumentUpdated(std::shared_ptr<UBDocumentProxy> pDocument);
 
     private:
         UBDocumentManager(QObject *parent = 0);

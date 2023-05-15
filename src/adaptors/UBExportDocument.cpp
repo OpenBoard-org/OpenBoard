@@ -60,13 +60,13 @@ UBExportDocument::~UBExportDocument()
     // NOOP
 }
 
-void UBExportDocument::persist(UBDocumentProxy* pDocumentProxy)
+void UBExportDocument::persist(std::shared_ptr<UBDocumentProxy> pDocumentProxy)
 {
     persistLocally(pDocumentProxy, tr("Export as UBZ File"));
 }
 
 
-bool UBExportDocument::persistsDocument(UBDocumentProxy* pDocumentProxy, const QString &filename)
+bool UBExportDocument::persistsDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const QString &filename)
 {
     QuaZip zip(filename);
     zip.setFileNameCodec("UTF-8");

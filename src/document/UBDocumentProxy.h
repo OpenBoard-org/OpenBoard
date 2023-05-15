@@ -34,14 +34,10 @@
 
 #include "frameworks/UBStringUtils.h"
 
-#include "core/UBSettings.h"
-
 class UBGraphicsScene;
 
-class UBDocumentProxy : public QObject
+class UBDocumentProxy
 {
-    Q_OBJECT
-
     friend class UBPersistenceManager;
 
     public:
@@ -52,8 +48,8 @@ class UBDocumentProxy : public QObject
 
         virtual ~UBDocumentProxy();
 
-        UBDocumentProxy * deepCopy() const;
-        bool theSameDocument(UBDocumentProxy *proxy);
+        std::shared_ptr<UBDocumentProxy> deepCopy() const;
+        bool theSameDocument(std::shared_ptr<UBDocumentProxy> proxy);
 
         QString persistencePath() const;
 

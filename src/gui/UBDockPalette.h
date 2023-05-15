@@ -148,7 +148,7 @@ public slots:
     void onShowTabWidget(UBDockPaletteWidget* widget);
     void onHideTabWidget(UBDockPaletteWidget* widget);
     void onAllDownloadsFinished();
-    virtual void onDocumentSet(UBDocumentProxy* documentProxy);
+    virtual void onDocumentSet(std::shared_ptr<UBDocumentProxy> documentProxy);
 
 signals:
     void mouseEntered();

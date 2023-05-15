@@ -149,7 +149,7 @@ void UBBoardController::init()
     connect(UBDownloadManager::downloadManager(), SIGNAL(downloadModalFinished()), this, SLOT(onDownloadModalFinished()));
     connect(UBDownloadManager::downloadManager(), SIGNAL(addDownloadedFileToBoard(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool)), this, SLOT(downloadFinished(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool)));
 
-    UBDocumentProxy* doc = UBPersistenceManager::persistenceManager()->createNewDocument();
+    std::shared_ptr<UBDocumentProxy> doc = UBPersistenceManager::persistenceManager()->createNewDocument();
 
     setActiveDocumentScene(doc);
 
@@ -582,7 +582,7 @@ void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmp
 }
 
 
-void UBBoardController::addScene(UBDocumentProxy* proxy, int sceneIndex, bool replaceActiveIfEmpty)
+void UBBoardController::addScene(std::shared_ptr<UBDocumentProxy> proxy, int sceneIndex, bool replaceActiveIfEmpty)
 {
     UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(proxy, sceneIndex);
 
@@ -1510,7 +1510,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
     {
         QString documentPath = sourceUrl.adjusted(QUrl::RemoveFilename).toLocalFile().chopped(1);
 
-        UBDocumentProxy* document = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->findDocumentByPath(documentPath);
+        std::shared_ptr<UBDocumentProxy> document = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->findDocumentByPath(documentPath);
 
         if (document)
         {
@@ -1535,7 +1535,7 @@ void UBBoardController::setActiveDocumentScene(int pSceneIndex)
     setActiveDocumentScene(selectedDocument(), pSceneIndex);
 }
 
-void UBBoardController::setActiveDocumentScene(UBDocumentProxy* pDocumentProxy, const int pSceneIndex, bool forceReload, bool onImport)
+void UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const int pSceneIndex, bool forceReload, bool onImport)
 {
     saveViewState();
 
@@ -1810,16 +1810,6 @@ void UBBoardController::boardViewResized(QResizeEvent* event)
 }
 
 
-void UBBoardController::documentWillBeDeleted(UBDocumentProxy* pProxy)
-{
-    if (selectedDocument() == pProxy)
-    {
-        if (!mIsClosing)
-            setActiveDocumentScene(UBPersistenceManager::persistenceManager()->createDocument());
-    }
-}
-
-
 void UBBoardController::showMessage(const QString& message, bool showSpinningWheel)
 {
     mMessageWindow->showMessage(message, showSpinningWheel);
@@ -1882,7 +1872,7 @@ void UBBoardController::setActiveSceneIndex(int i)
     mActiveSceneIndex = i;
 }
 
-void UBBoardController::documentSceneChanged(UBDocumentProxy* pDocumentProxy, int pIndex)
+void UBBoardController::documentSceneChanged(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pIndex)
 {
     Q_UNUSED(pIndex);
 

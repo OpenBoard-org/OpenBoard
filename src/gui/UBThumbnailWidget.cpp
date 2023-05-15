@@ -786,7 +786,7 @@ UBThumbnail::~UBThumbnail()
         delete mSelectionItem;
 }
 
-UBSceneThumbnailNavigPixmap::UBSceneThumbnailNavigPixmap(const QPixmap& pix, UBDocumentProxy* proxy, int pSceneIndex)
+UBSceneThumbnailNavigPixmap::UBSceneThumbnailNavigPixmap(const QPixmap& pix, std::shared_ptr<UBDocumentProxy> proxy, int pSceneIndex)
     : UBSceneThumbnailPixmap(pix, proxy, pSceneIndex)
     , mEditable(false)
 {
@@ -1061,7 +1061,7 @@ void UBDraggableThumbnailItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event
 }
 
 
-UBDraggableLivePixmapItem::UBDraggableLivePixmapItem(UBGraphicsScene *pageScene, UBDocumentProxy *documentProxy, int index)
+UBDraggableLivePixmapItem::UBDraggableLivePixmapItem(UBGraphicsScene *pageScene, std::shared_ptr<UBDocumentProxy> documentProxy, int index)
     : UBDraggableThumbnailItem(documentProxy, index)
     , mScene(pageScene)
     , mPageNumber(new UBThumbnailTextItem(index))

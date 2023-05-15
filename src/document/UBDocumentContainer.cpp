@@ -43,7 +43,7 @@ UBDocumentContainer::~UBDocumentContainer()
 
 }
 
-void UBDocumentContainer::setDocument(UBDocumentProxy* document, bool forceReload)
+void UBDocumentContainer::setDocument(std::shared_ptr<UBDocumentProxy> document, bool forceReload)
 {
     if (mCurrentDocument != document || forceReload)
     {

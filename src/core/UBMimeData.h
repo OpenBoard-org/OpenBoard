@@ -38,14 +38,14 @@ class UBItem;
 struct UBMimeDataItem
 {
     public:
-        UBMimeDataItem(UBDocumentProxy* proxy, int sceneIndex);
+        UBMimeDataItem(std::shared_ptr<UBDocumentProxy> proxy, int sceneIndex);
         virtual ~UBMimeDataItem();
 
-        UBDocumentProxy* documentProxy() const { return mProxy; }
+        std::shared_ptr<UBDocumentProxy> documentProxy() const { return mProxy; }
         int sceneIndex() const { return mSceneIndex; }
 
     private:
-        UBDocumentProxy* mProxy;
+        std::shared_ptr<UBDocumentProxy> mProxy;
         int mSceneIndex;
 };
 

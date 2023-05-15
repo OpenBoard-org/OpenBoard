@@ -30,6 +30,7 @@
 #include <QDir>
 #include <QMap>
 #include <QVector>
+#include <memory>
 
 class UBDocumentProxy;
 
@@ -68,7 +69,7 @@ private:
 
 public:
     UBWidgetUpgradeAdaptor();
-    void upgradeWidgets(UBDocumentProxy *proxy);
+    void upgradeWidgets(std::shared_ptr<UBDocumentProxy> proxy);
 
 private:
     ApiUsage scanDir(const QDir &widget) const;

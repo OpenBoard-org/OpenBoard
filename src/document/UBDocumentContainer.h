@@ -41,10 +41,10 @@ class UBDocumentContainer : public QObject
         UBDocumentContainer(QObject * parent = 0);
         virtual ~UBDocumentContainer();
 
-        void setDocument(UBDocumentProxy* document, bool forceReload = false);
-        void pureSetDocument(UBDocumentProxy *document) {mCurrentDocument = document;}
+        void setDocument(std::shared_ptr<UBDocumentProxy> document, bool forceReload = false);
+        void pureSetDocument(std::shared_ptr<UBDocumentProxy> document) {mCurrentDocument = document;}
 
-        UBDocumentProxy* selectedDocument(){return mCurrentDocument;}
+        std::shared_ptr<UBDocumentProxy> selectedDocument(){return mCurrentDocument;}
         QList<std::shared_ptr<QPixmap>>& documentThumbs() { return mDocumentThumbs; }
         int pageCount() const{return mCurrentDocument->pageCount();}
         std::shared_ptr<QPixmap> pageAt(int index)
@@ -80,19 +80,19 @@ class UBDocumentContainer : public QObject
         void moveThumbPage(int source, int target);
 
     private:
-        UBDocumentProxy* mCurrentDocument;
+        std::shared_ptr<UBDocumentProxy> mCurrentDocument;
         QList<std::shared_ptr<QPixmap>>  mDocumentThumbs;
 
     signals:
-        void documentSet(UBDocumentProxy* document);
+        void documentSet(std::shared_ptr<UBDocumentProxy> document);
         void documentPageInserted(int index);
         void documentPageUpdated(int index);
         void documentPageRemoved(int index);
         void documentPageMoved(int from, int to);
         void documentThumbnailsUpdated(UBDocumentContainer* source);
 
-        void initThumbnailsRequired(UBDocumentProxy* document);
-        void addThumbnailRequired(UBDocumentProxy* document, int index);
+        void initThumbnailsRequired(std::shared_ptr<UBDocumentProxy> document);
+        void addThumbnailRequired(std::shared_ptr<UBDocumentProxy> document, int index);
         void removeThumbnailRequired(int index);
         void moveThumbnailRequired(int from, int to);
         void updateThumbnailsRequired();

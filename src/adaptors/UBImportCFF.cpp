@@ -97,7 +97,7 @@ QString UBImportCFF::importFileFilter()
     return filter;
 }
 
-bool UBImportCFF::addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile)
+bool UBImportCFF::addFileToDocument(std::shared_ptr<UBDocumentProxy> pDocument, const QFile& pFile)
 {
     QFileInfo fi(pFile);
     UBApplication::showMessage(tr("Importing file %1...").arg(fi.baseName()), true);
@@ -121,7 +121,7 @@ bool UBImportCFF::addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFi
         //TODO convert expanded CFF file content to the destination document
         //create destination document proxy
         //fill metadata and save
-        UBDocumentProxy* destDocument = new UBDocumentProxy(UBPersistenceManager::persistenceManager()->generateUniqueDocumentPath());
+        std::shared_ptr<UBDocumentProxy> destDocument = std::make_shared<UBDocumentProxy>(UBDocumentProxy(UBPersistenceManager::persistenceManager()->generateUniqueDocumentPath()));
         QDir dir;
         dir.mkdir(destDocument->persistencePath());
 
@@ -130,14 +130,12 @@ bool UBImportCFF::addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFi
         {
             UBPersistenceManager::persistenceManager()->addDirectoryContentToDocument(destDocument->persistencePath(), pDocument);
             UBFileSystemUtils::deleteDir(destDocument->persistencePath());
-            delete destDocument;
             UBApplication::showMessage(tr("Import successful."));
             return true;
         }
         else
         {
             UBFileSystemUtils::deleteDir(destDocument->persistencePath());
-            delete destDocument;
             UBApplication::showMessage(tr("Import failed."));
             return false;
         }
@@ -240,7 +238,7 @@ QString UBImportCFF::expandFileToDir(const QFile& pZipFile, const QString& pDir)
 }
 
 
-UBDocumentProxy* UBImportCFF::importFile(const QFile& pFile, const QString& pGroup)
+std::shared_ptr<UBDocumentProxy> UBImportCFF::importFile(const QFile& pFile, const QString& pGroup)
 {
     Q_UNUSED(pGroup); // group is defined in the imported file
 
@@ -267,7 +265,7 @@ UBDocumentProxy* UBImportCFF::importFile(const QFile& pFile, const QString& pGro
     else{
         //create destination document proxy
         //fill metadata and save
-        UBDocumentProxy* destDocument = new UBDocumentProxy(UBPersistenceManager::persistenceManager()->generateUniqueDocumentPath());
+        std::shared_ptr<UBDocumentProxy> destDocument = std::make_shared<UBDocumentProxy>(UBDocumentProxy(UBPersistenceManager::persistenceManager()->generateUniqueDocumentPath()));
         QDir dir;
         dir.mkdir(destDocument->persistencePath());
         if (pGroup.length() > 0)
@@ -278,7 +276,7 @@ UBDocumentProxy* UBImportCFF::importFile(const QFile& pFile, const QString& pGro
         destDocument->setMetaData(UBSettings::documentVersion, UBSettings::currentFileVersion);
         destDocument->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
 
-        UBDocumentProxy* newDocument = NULL;
+        std::shared_ptr<UBDocumentProxy> newDocument = nullptr;
         //try to import cff to document
         if (UBCFFSubsetAdaptor::ConvertCFFFileToUbz(contentFile, destDocument))
         {
@@ -296,7 +294,6 @@ UBDocumentProxy* UBImportCFF::importFile(const QFile& pFile, const QString& pGro
             UBFileSystemUtils::deleteDir(destDocument->persistencePath());
             UBApplication::showMessage(tr("Import failed."));
         }
-        delete destDocument;
 
         if (documentRootFolder.length() != 0)
             UBFileSystemUtils::deleteDir(documentRootFolder);

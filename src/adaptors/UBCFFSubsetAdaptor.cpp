@@ -130,7 +130,7 @@ typedef QString::SplitBehavior SplitBehavior;
 UBCFFSubsetAdaptor::UBCFFSubsetAdaptor()
 {}
 
-bool UBCFFSubsetAdaptor::ConvertCFFFileToUbz(QString &cffSourceFile, UBDocumentProxy* pDocument)
+bool UBCFFSubsetAdaptor::ConvertCFFFileToUbz(QString &cffSourceFile, std::shared_ptr<UBDocumentProxy> pDocument)
 {
     //TODO
     // fill document proxy metadata
@@ -150,7 +150,7 @@ bool UBCFFSubsetAdaptor::ConvertCFFFileToUbz(QString &cffSourceFile, UBDocumentP
 
     return result;
 }
-UBCFFSubsetAdaptor::UBCFFSubsetReader::UBCFFSubsetReader(UBDocumentProxy *proxy, QFile *content)
+UBCFFSubsetAdaptor::UBCFFSubsetReader::UBCFFSubsetReader(std::shared_ptr<UBDocumentProxy>proxy, QFile *content)
     : mProxy(proxy)
     , mGSectionContainer(NULL)
 {

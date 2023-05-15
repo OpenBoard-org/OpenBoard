@@ -77,7 +77,7 @@ UBExportFullPDF::~UBExportFullPDF()
 }
 
 
-void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QString& filename)
+void UBExportFullPDF::saveOverlayPdf(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const QString& filename)
 {
     if (!pDocumentProxy || filename.length() == 0 || pDocumentProxy->pageCount() == 0)
         return;
@@ -180,13 +180,13 @@ void UBExportFullPDF::saveOverlayPdf(UBDocumentProxy* pDocumentProxy, const QStr
 }
 
 
-void UBExportFullPDF::persist(UBDocumentProxy* pDocumentProxy)
+void UBExportFullPDF::persist(std::shared_ptr<UBDocumentProxy> pDocumentProxy)
 {
     persistLocally(pDocumentProxy, tr("Export as PDF File"));
 }
 
 
-bool UBExportFullPDF::persistsDocument(UBDocumentProxy* pDocumentProxy, const QString& filename)
+bool UBExportFullPDF::persistsDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const QString& filename)
 {
     QFile file(filename);
     if (file.exists()) file.remove();

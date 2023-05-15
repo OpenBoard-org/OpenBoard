@@ -55,7 +55,7 @@ UBExportAdaptor::~UBExportAdaptor()
     // NOOP
 }
 
-QString UBExportAdaptor::askForFileName(UBDocumentProxy* pDocument, const QString& pDialogTitle)
+QString UBExportAdaptor::askForFileName(std::shared_ptr<UBDocumentProxy> pDocument, const QString& pDialogTitle)
 {
     QString defaultName;
 
@@ -84,7 +84,7 @@ QString UBExportAdaptor::askForFileName(UBDocumentProxy* pDocument, const QStrin
     return filename;
 }
 
-QString UBExportAdaptor::askForDirName(UBDocumentProxy* pDocument, const QString& pDialogTitle)
+QString UBExportAdaptor::askForDirName(std::shared_ptr<UBDocumentProxy> pDocument, const QString& pDialogTitle)
 {
     QString defaultPath = UBSettings::settings()->lastExportDirPath->get().toString();
 
@@ -114,7 +114,7 @@ QString UBExportAdaptor::askForDirName(UBDocumentProxy* pDocument, const QString
     return dirname;
 }
 
-void UBExportAdaptor::persistLocally(UBDocumentProxy* pDocumentProxy, const QString& pDialogTitle)
+void UBExportAdaptor::persistLocally(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const QString& pDialogTitle)
 {
     if (!pDocumentProxy)
         return;
@@ -155,7 +155,7 @@ void UBExportAdaptor::persistLocally(UBDocumentProxy* pDocumentProxy, const QStr
     }
 }
 
-bool UBExportAdaptor::persistsDocument(UBDocumentProxy* pDocument, const QString& filename)
+bool UBExportAdaptor::persistsDocument(std::shared_ptr<UBDocumentProxy> pDocument, const QString& filename)
 {
     // Implemented in child classes
 

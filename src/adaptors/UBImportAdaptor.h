@@ -71,8 +71,8 @@ class UBDocumentBasedImportAdaptor : public UBImportAdaptor
 protected:
         UBDocumentBasedImportAdaptor(QObject *parent = 0);
 public:
-    virtual UBDocumentProxy* importFile(const QFile& pFile, const QString& pGroup) = 0;
-    virtual bool addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile) = 0;
+    virtual std::shared_ptr<UBDocumentProxy> importFile(const QFile& pFile, const QString& pGroup) = 0;
+    virtual bool addFileToDocument(std::shared_ptr<UBDocumentProxy> pDocument, const QFile& pFile) = 0;
 };
 
 

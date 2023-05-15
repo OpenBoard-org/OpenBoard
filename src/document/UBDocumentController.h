@@ -108,7 +108,7 @@ public:
         , Document
     };
 
-    UBDocumentTreeNode(Type pType, const QString &pName, const QString &pDisplayName = QString(), UBDocumentProxy *pProxy = 0);
+    UBDocumentTreeNode(Type pType, const QString &pName, const QString &pDisplayName = QString(), std::shared_ptr<UBDocumentProxy> pProxy = nullptr);
     UBDocumentTreeNode() : mType(Catalog), mParent(0), mProxy(0) {;}
     ~UBDocumentTreeNode();
 
@@ -122,7 +122,7 @@ public:
     void insertChild(int pIndex, UBDocumentTreeNode *pChild);
     void moveChild(UBDocumentTreeNode *child, int index, UBDocumentTreeNode *newParent);
     void removeChild(int index);
-    UBDocumentProxy *proxyData() const {return mProxy;}
+    std::shared_ptr<UBDocumentProxy> proxyData() const {return mProxy;}
     bool isRoot() {return !mParent;}
     bool isTopLevel()
     {
@@ -147,7 +147,7 @@ private:
     QString mDisplayName;
     UBDocumentTreeNode *mParent;
     QList<UBDocumentTreeNode*> mChildren;
-    QPointer<UBDocumentProxy> mProxy;
+    std::shared_ptr<UBDocumentProxy> mProxy;
 };
 Q_DECLARE_METATYPE(UBDocumentTreeNode*)
 
@@ -210,11 +210,11 @@ public:
     UBDocumentTreeNode *currentNode() const {return mCurrentNode;} //work around for sorting model.
     void setCurrentNode(UBDocumentTreeNode *pNode) {mCurrentNode = pNode;}
     QModelIndex currentIndex() {return indexForNode(mCurrentNode);} //index representing a current document
-    QModelIndex indexForProxy(UBDocumentProxy *pSearch) const;
-    void setCurrentDocument(UBDocumentProxy *pDocument);
+    QModelIndex indexForProxy(std::shared_ptr<UBDocumentProxy>pSearch) const;
+    void setCurrentDocument(std::shared_ptr<UBDocumentProxy>pDocument);
     void setRootNode(UBDocumentTreeNode *pRoot);
     UBDocumentTreeNode *rootNode() const {return mRootNode;}
-    UBDocumentProxy *proxyForIndex(const QModelIndex &pIndex) const;
+    std::shared_ptr<UBDocumentProxy> proxyForIndex(const QModelIndex &pIndex) const;
     QString virtualDirForIndex(const QModelIndex &pIndex) const;
     QString virtualPathForIndex(const QModelIndex &pIndex) const;
     QStringList nodeNameList(const QModelIndex &pIndex, bool distinctNodeType = false) const;
@@ -228,12 +228,12 @@ public:
     bool isToplevel(const QModelIndex &index) const {return nodeFromIndex(index) ? nodeFromIndex(index)->isTopLevel() : false;}
     bool isConstant(const QModelIndex &index) const {return isToplevel(index) || (index == mUntitledDocuments);}
     bool isOkToRename(const QModelIndex &index) const {return flags(index) & Qt::ItemIsEditable;}
-    UBDocumentProxy *proxyData(const QModelIndex &index) const {return nodeFromIndex(index)->proxyData();}
-    void addDocument(UBDocumentProxy *pProxyData, const QModelIndex &pParent = QModelIndex());
-    void addNewDocument(UBDocumentProxy *pProxyData, const QModelIndex &pParent = QModelIndex());
+    std::shared_ptr<UBDocumentProxy> proxyData(const QModelIndex &index) const {return nodeFromIndex(index)->proxyData();}
+    void addDocument(std::shared_ptr<UBDocumentProxy> pProxyData, const QModelIndex &pParent = QModelIndex());
+    void addNewDocument(std::shared_ptr<UBDocumentProxy>pProxyData, const QModelIndex &pParent = QModelIndex());
     QModelIndex addCatalog(const QString &pName, const QModelIndex &pParent);
-    QList<UBDocumentProxy*> newDocuments() {return mNewDocuments;}
-    void markDocumentAsNew(UBDocumentProxy *pDoc) {if (indexForProxy(pDoc).isValid()) mNewDocuments << pDoc;}
+    QList<std::shared_ptr<UBDocumentProxy>> newDocuments() {return mNewDocuments;}
+    void markDocumentAsNew(std::shared_ptr<UBDocumentProxy> pDoc) {if (indexForProxy(pDoc).isValid()) mNewDocuments << pDoc;}
     void setNewName(const QModelIndex &index, const QString &newName);
     QString adjustNameForParentIndex(const QString &pName, const QModelIndex &pIndex);
 
@@ -244,8 +244,8 @@ public:
     static bool nodeLessThan(const UBDocumentTreeNode *firstIndex, const UBDocumentTreeNode *secondIndex);
     void setHighLighted(const QModelIndex &newHighLighted) {mHighLighted = newHighLighted;}
     QModelIndex highLighted() {return mHighLighted;}
-    UBDocumentProxy *findDocumentByPath(QString path) const;
-    UBDocumentProxy *findDocumentByPath(UBDocumentTreeNode* node, QString path) const;
+    std::shared_ptr<UBDocumentProxy> findDocumentByPath(QString path) const;
+    std::shared_ptr<UBDocumentProxy> findDocumentByPath(UBDocumentTreeNode* node, QString path) const;
 
     //N/C - NNE - 20140407
     bool ascendingOrder() const{ return mAscendingOrder; }
@@ -267,7 +267,7 @@ private:
     UBDocumentTreeNode *mMyDocumentsNode;
     UBDocumentTreeNode *mCurrentNode;
 
-    UBDocumentTreeNode *findProxy(UBDocumentProxy *pSearch, UBDocumentTreeNode *pParent) const;
+    UBDocumentTreeNode *findProxy(std::shared_ptr<UBDocumentProxy>pSearch, UBDocumentTreeNode *pParent) const;
     QModelIndex pIndexForNode(const QModelIndex &parent, UBDocumentTreeNode *pNode) const;
     QModelIndex addNode(UBDocumentTreeNode *pFreeNode, const QModelIndex &pParent, eAddItemMode pMode = aDetectPosition);
     int positionForParent(UBDocumentTreeNode *pFreeNode, UBDocumentTreeNode *pParentNode);
@@ -277,7 +277,7 @@ private:
     QPersistentModelIndex mMyDocuments;
     QPersistentModelIndex mTrash;
     QPersistentModelIndex mUntitledDocuments;
-    QList<UBDocumentProxy*> mNewDocuments;
+    QList<std::shared_ptr<UBDocumentProxy>> mNewDocuments;
     QModelIndex mHighLighted;
 
     //N/C - NNE - 20140407
@@ -420,8 +420,8 @@ class UBDocumentController : public UBDocumentContainer
 
         void closing();
         QWidget* controlView();
-        UBDocumentProxyTreeItem* findDocument(UBDocumentProxy* proxy);
-        bool addFileToDocument(UBDocumentProxy* document);
+        UBDocumentProxyTreeItem* findDocument(std::shared_ptr<UBDocumentProxy> proxy);
+        bool addFileToDocument(std::shared_ptr<UBDocumentProxy> document);
         void deletePages(QList<QGraphicsItem*> itemsToDelete);
         int getSelectedItemIndex();
 
@@ -433,9 +433,9 @@ class UBDocumentController : public UBDocumentContainer
         QString documentTrashGroupName(){ return mDocumentTrashGroupName;}
         QString defaultDocumentGroupName(){ return mDefaultDocumentGroupName;}
 
-        void setDocument(UBDocumentProxy *document, bool forceReload = false);
+        void setDocument(std::shared_ptr<UBDocumentProxy> document, bool forceReload = false);
         QModelIndex firstSelectedTreeIndex();
-        UBDocumentProxy *firstSelectedTreeProxy();
+        std::shared_ptr<UBDocumentProxy> firstSelectedTreeProxy();
         inline DeletionType deletionTypeForSelection(LastSelectedElementType pTypeSelection
                                                      , const QModelIndex &selectedIndex
                                                      , UBDocumentTreeModel *docModel) const;
@@ -492,8 +492,8 @@ class UBDocumentController : public UBDocumentContainer
         void openSelectedItem();
         void duplicateSelectedItem();
         void importFile();
-        void moveSceneToIndex(UBDocumentProxy* proxy, int source, int target);
-        void selectDocument(UBDocumentProxy* proxy, bool setAsCurrentDocument = true, const bool onImport = false, const bool editMode = false);
+        void moveSceneToIndex(std::shared_ptr<UBDocumentProxy> proxy, int source, int target);
+        void selectDocument(std::shared_ptr<UBDocumentProxy> proxy, bool setAsCurrentDocument = true, const bool onImport = false, const bool editMode = false);
         void show();
         void hide();
         void showMessage(const QString& message, bool showSpinningWheel = false);
@@ -522,9 +522,9 @@ protected:
         virtual void setupViews();
         virtual void setupToolbar();
         void setupPalettes();
-        bool isOKToOpenDocument(UBDocumentProxy* proxy);
-        UBDocumentProxy* selectedDocumentProxy();
-        QList<UBDocumentProxy*> selectedProxies();
+        bool isOKToOpenDocument(std::shared_ptr<UBDocumentProxy> proxy);
+        std::shared_ptr<UBDocumentProxy> selectedDocumentProxy();
+        QList<std::shared_ptr<UBDocumentProxy>> selectedProxies();
         QModelIndexList selectedTreeIndexes();
         UBDocumentProxyTreeItem* selectedDocumentProxyTreeItem();
         UBDocumentGroupTreeItem* selectedDocumentGroupTreeItem();
@@ -552,7 +552,7 @@ protected:
         QString mDocumentTrashGroupName;
         QString mDefaultDocumentGroupName;
 
-        UBDocumentProxy *mCurrentTreeDocument;
+        std::shared_ptr<UBDocumentProxy> mCurrentTreeDocument;
         bool mCurrentIndexMoved;
 
         UBSortFilterProxyModel *mSortFilterProxyModel;
@@ -572,7 +572,7 @@ protected:
         void thumbnailViewResized();
         void updateActions();
 
-        void documentSceneChanged(UBDocumentProxy* proxy, int pSceneIndex);
+        void documentSceneChanged(std::shared_ptr<UBDocumentProxy> proxy, int pSceneIndex);
 
         void thumbnailPageDoubleClicked(QGraphicsItem* item, int index);
         void pageClicked(QGraphicsItem* item, int index);

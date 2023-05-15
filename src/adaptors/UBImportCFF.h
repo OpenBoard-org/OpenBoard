@@ -45,8 +45,8 @@ class UBImportCFF : public UBDocumentBasedImportAdaptor
         virtual QStringList supportedExtentions();
         virtual QString importFileFilter();
 
-        virtual bool addFileToDocument(UBDocumentProxy* pDocument, const QFile& pFile);
-        virtual UBDocumentProxy* importFile(const QFile& pFile, const QString& pGroup);
+        virtual bool addFileToDocument(std::shared_ptr<UBDocumentProxy> pDocument, const QFile& pFile);
+        virtual std::shared_ptr<UBDocumentProxy> importFile(const QFile& pFile, const QString& pGroup);
 
     private:
         QString expandFileToDir(const QFile& pZipFile, const QString& pDir);

@@ -55,7 +55,7 @@ class UBDocumentThumbnailWidget: public UBThumbnailWidget
             virtual void setGraphicsItems(const QList<QGraphicsItem*>& pGraphicsItems, const QList<QUrl>& pItemPaths, const QStringList pLabels = QStringList(), const QString& pMimeType = QString(""));
 
     signals:
-        void sceneDropped(UBDocumentProxy* proxy, int source, int target);
+        void sceneDropped(std::shared_ptr<UBDocumentProxy> proxy, int source, int target);
 
     private slots:
         void autoScroll();

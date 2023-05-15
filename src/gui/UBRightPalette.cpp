@@ -31,6 +31,7 @@
 #include "board/UBBoardController.h"
 
 #include "UBRightPalette.h"
+#include "core/UBSettings.h"
 
 #include "core/memcheck.h"
 
