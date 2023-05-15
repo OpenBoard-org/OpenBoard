@@ -248,11 +248,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
         void addMask(const QPointF &center = QPointF());
         void addCache();
 
-        QList<QGraphicsItem*> getFastAccessItems()
-        {
-            return mFastAccessItems;
-        }
-
         class SceneViewState
         {
             public:
@@ -488,9 +483,6 @@ public slots:
         UBGraphicsStroke* mCurrentStroke;
 
         int mItemCount;
-
-        QList<QGraphicsItem*> mFastAccessItems; // a local copy as QGraphicsScene::items() is very slow in Qt 4.6
-
 
         bool mHasCache;
         //        tmp stub for divide addings scene objects from undo mechanism implementation

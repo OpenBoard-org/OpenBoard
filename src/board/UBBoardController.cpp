@@ -2665,7 +2665,7 @@ void UBBoardController::freezeW3CWidgets(bool freeze)
 {
     if (mActiveSceneIndex >= 0)
     {
-        QList<QGraphicsItem *> list = UBApplication::boardController->activeScene()->getFastAccessItems();
+        QList<QGraphicsItem *> list = UBApplication::boardController->activeScene()->items();
         foreach(QGraphicsItem *item, list)
         {
             freezeW3CWidget(item, freeze);

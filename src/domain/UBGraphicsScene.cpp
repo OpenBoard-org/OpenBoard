@@ -308,7 +308,7 @@ void UBZLayerController::shiftStoredZValue(QGraphicsItem *item, qreal zValue)
  */
 bool UBZLayerController::zLevelAvailable(qreal z)
 {
-    foreach(QGraphicsItem* it, dynamic_cast<UBGraphicsScene*>(mScene)->getFastAccessItems()) {
+    foreach(QGraphicsItem* it, mScene->items()) {
         if (it->zValue() == z)
             return false;
     }
@@ -1382,12 +1382,10 @@ UBGraphicsScene* UBGraphicsScene::sceneDeepCopy() const
     if (this->mNominalSize.isValid())
         copy->setNominalSize(this->mNominalSize);
 
-    QListIterator<QGraphicsItem*> itItems(this->mFastAccessItems);
     QHash<UBGraphicsStroke*, UBGraphicsStroke*> groupClone;
 
-    while (itItems.hasNext())
+    foreach (auto item, items())
     {
-        QGraphicsItem* item = itItems.next();
         QGraphicsItem* cloneItem = 0;
         UBItem* ubItem = dynamic_cast<UBItem*>(item);
         UBGraphicsStroke* stroke = dynamic_cast<UBGraphicsStroke*>(item);
@@ -1543,7 +1541,7 @@ void UBGraphicsScene::clearContent(clearCase pCase)
 
 void UBGraphicsScene::saveWidgetSnapshots()
 {
-    for (QGraphicsItem* item : qAsConst(mFastAccessItems))
+    foreach (auto item, items())
     {
         if (item->type() == UBGraphicsItemType::GraphicsWidgetItemType)
         {
@@ -1779,11 +1777,9 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
             }
             foreach (QGraphicsItem *chItem, childItems) {
                 groupItem->addToGroup(chItem);
-                mFastAccessItems.removeAll(chItem);
             }
         } else {
             groupItem->addToGroup(item);
-            mFastAccessItems.removeAll(item);
         }
     }
 
@@ -1803,14 +1799,6 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
 void UBGraphicsScene::addGroup(UBGraphicsGroupContainerItem *groupItem)
 {
     addItem(groupItem);
-    for (int i = 0; i < groupItem->childItems().count(); i++)
-    {
-        QGraphicsItem *it = qgraphicsitem_cast<QGraphicsItem *>(groupItem->childItems().at(i));
-        if (it)
-        {
-             mFastAccessItems.removeAll(it);
-        }
-    }
 
     groupItem->setVisible(true);
     groupItem->setFocus();
@@ -1990,8 +1978,6 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
 
     if (!mTools.contains(item))
       ++mItemCount;
-
-    mFastAccessItems << item;
 }
 
 void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
@@ -2002,8 +1988,6 @@ void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
     }
 
     mItemCount += items.size();
-
-    mFastAccessItems += items.values();
 }
 
 void UBGraphicsScene::removeItem(QGraphicsItem* item)
@@ -2014,11 +1998,6 @@ void UBGraphicsScene::removeItem(QGraphicsItem* item)
 
     if (!mTools.contains(item))
       --mItemCount;
-
-    mFastAccessItems.removeAll(item);
-    /* delete the item if it is cache to allow its reinstanciation, because Cache implements design pattern Singleton. */
-    if (dynamic_cast<UBGraphicsCache*>(item))
-        UBCoreGraphicsScene::deleteItem(item);
 }
 
 void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)
@@ -2027,14 +2006,11 @@ void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)
         UBCoreGraphicsScene::removeItem(item);
 
     mItemCount -= items.size();
-
-    foreach(QGraphicsItem* item, items)
-        mFastAccessItems.removeAll(item);
 }
 
 void UBGraphicsScene::deselectAllItems()
 {
-    foreach(QGraphicsItem *gi, selectedItems ())
+    foreach(QGraphicsItem *gi, selectedItems())
     {
         gi->clearFocus();
         gi->setSelected(false);
@@ -2135,7 +2111,7 @@ QRectF UBGraphicsScene::normalizedSceneRect(qreal ratio)
     QRectF normalizedRect(nominalSize().width() / -2, nominalSize().height() / -2,
         nominalSize().width(), nominalSize().height());
 
-    foreach(QGraphicsItem* gi, mFastAccessItems)
+    foreach(QGraphicsItem* gi, items())
     {
         if(gi && gi->isVisible() && !mTools.contains(gi))
         {
@@ -2485,13 +2461,9 @@ void UBGraphicsScene::addMask(const QPointF &center)
 
 void UBGraphicsScene::setRenderingQuality(UBItem::RenderingQuality pRenderingQuality, UBItem::CacheBehavior cacheBehavior)
 {
-    QListIterator<QGraphicsItem*> itItems(mFastAccessItems);
-
-    while (itItems.hasNext())
+    foreach (auto item, items())
     {
-        QGraphicsItem *gItem =  itItems.next();
-
-        UBItem *ubItem = dynamic_cast<UBItem*>(gItem);
+        UBItem *ubItem = dynamic_cast<UBItem*>(item);
 
         if (ubItem)
         {
@@ -2556,12 +2528,8 @@ QList<QUrl> UBGraphicsScene::relativeDependencies() const
 {
     QList<QUrl> relativePaths;
 
-    QListIterator<QGraphicsItem*> itItems(mFastAccessItems);
-
-    while (itItems.hasNext())
+    foreach(auto item, items())
     {
-        QGraphicsItem* item = itItems.next();
-
         UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
         if(groupItem)
         {
@@ -2843,11 +2811,12 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
 
     QList<QGraphicsItem*> si = selectedItems();
 
-    if(keyEvent->matches(QKeySequence::SelectAll)){
-        QListIterator<QGraphicsItem*> itItems(this->mFastAccessItems);
-
-        while (itItems.hasNext())
-            itItems.next()->setSelected(true);
+    if(keyEvent->matches(QKeySequence::SelectAll))
+    {
+        foreach(auto item, items())
+        {
+            item->setSelected(true);
+        }
 
         keyEvent->accept();
         return;
