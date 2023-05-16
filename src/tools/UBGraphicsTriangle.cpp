@@ -167,7 +167,7 @@ QRectF UBGraphicsTriangle::bounding_Rect() const
 
 std::shared_ptr<UBGraphicsScene> UBGraphicsTriangle::scene() const
 {
-    return static_cast<std::shared_ptr<UBGraphicsScene>>(QGraphicsPolygonItem::scene());
+    return std::shared_ptr<UBGraphicsScene>(dynamic_cast<UBGraphicsScene*>(QGraphicsPolygonItem::scene()));
 }
 
 void UBGraphicsTriangle::calculatePoints(const QRectF& r)

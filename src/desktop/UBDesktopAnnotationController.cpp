@@ -97,10 +97,10 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     QString backgroundStyle = "QWidget {background-color: rgba(127, 127, 127, 0)}";
     mTransparentDrawingView->setStyleSheet(backgroundStyle);
 
-    mTransparentDrawingScene = std::make_shared<UBGraphicsScene>(UBGraphicsScene(0, false));
+    mTransparentDrawingScene = std::make_shared<UBGraphicsScene>(nullptr, false);
     updateColors();
 
-    mTransparentDrawingView->setScene(mTransparentDrawingScene);
+    mTransparentDrawingView->setScene(mTransparentDrawingScene.get());
     mTransparentDrawingScene->setDrawingMode(true);
 
     mDesktopPalette = new UBDesktopPalette(mTransparentDrawingView, rightPalette); 
@@ -126,8 +126,8 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     connect(UBApplication::mainWindow->actionSelector, SIGNAL(triggered()), this, SLOT(onToolClicked()));
     connect(mDesktopPalette, SIGNAL(maximized()), this, SLOT(onDesktopPaletteMaximized()));
     connect(mDesktopPalette, SIGNAL(minimizeStart(eMinimizedLocation)), this, SLOT(onDesktopPaletteMinimize()));
-    connect(mDesktopPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene, SLOT(hideTool()));
-    connect(mRightPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene, SLOT(hideTool()));
+    connect(mDesktopPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene.get(), SLOT(hideTool()));
+    connect(mRightPalette, SIGNAL(mouseEntered()), mTransparentDrawingScene.get(), SLOT(hideTool()));
     connect(mRightPalette, SIGNAL(pageSelectionChangedRequired()), this, SLOT(updateBackground()));
 
     connect(mTransparentDrawingView, SIGNAL(resized(QResizeEvent*)), this, SLOT(onTransparentWidgetResized()));
@@ -182,7 +182,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
 
 UBDesktopAnnotationController::~UBDesktopAnnotationController()
 {
-    delete mTransparentDrawingScene;
     delete mTransparentDrawingView;
 }
 

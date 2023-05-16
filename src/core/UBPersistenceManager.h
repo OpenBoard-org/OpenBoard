@@ -207,7 +207,6 @@ private:
         void errorString(QString error);
         void onSceneLoaded(QByteArray,std::shared_ptr<UBDocumentProxy>,int);
         void onWorkerFinished();
-        void onScenePersisted(std::shared_ptr<UBGraphicsScene> scene);
 
 };
 

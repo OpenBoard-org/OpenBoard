@@ -55,7 +55,7 @@ UBSceneCache::~UBSceneCache()
 
 std::shared_ptr<UBGraphicsScene> UBSceneCache::createScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex, bool useUndoRedoStack)
 {
-    std::shared_ptr<UBGraphicsScene> newScene = std::make_shared<UBGraphicsScene>(UBGraphicsScene(proxy, useUndoRedoStack));
+    std::shared_ptr<UBGraphicsScene> newScene = std::make_shared<UBGraphicsScene>(proxy, useUndoRedoStack);
     insert(proxy, pageIndex, newScene);
 
     return newScene;
