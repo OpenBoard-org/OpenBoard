@@ -327,7 +327,8 @@ QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange ch
 
 std::shared_ptr<UBGraphicsScene> UBGraphicsItemDelegate::castUBGraphicsScene()
 {
-    return std::shared_ptr<UBGraphicsScene>(dynamic_cast<UBGraphicsScene*>(delegated()->scene()));
+    auto scene = dynamic_cast<UBGraphicsScene*>(delegated()->scene());
+    return scene ? scene->shared_from_this() : nullptr;
 }
 
 /** Used to render custom data after the main "Paint" operation is finished */
@@ -512,7 +513,7 @@ void UBGraphicsItemDelegate::setZOrderButtonsVisible(bool visible)
 
 void UBGraphicsItemDelegate::remove(bool canUndo)
 {
-    std::shared_ptr<UBGraphicsScene> scene = std::shared_ptr<UBGraphicsScene>(dynamic_cast<UBGraphicsScene*>(mDelegated->scene()));
+    std::shared_ptr<UBGraphicsScene> scene = castUBGraphicsScene();
     if (scene)
     {
         if (mFrame && !mFrame->scene() && mDelegated->scene())

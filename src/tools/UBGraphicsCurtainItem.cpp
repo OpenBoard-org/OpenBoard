@@ -175,15 +175,17 @@ void UBGraphicsCurtainItem::copyItemParameters(UBItem *copy) const
 
 QColor UBGraphicsCurtainItem::drawColor() const
 {
-    std::shared_ptr<UBGraphicsScene> pScene = std::shared_ptr<UBGraphicsScene>(dynamic_cast<UBGraphicsScene*>(QGraphicsRectItem::scene()));
-    return pScene->isDarkBackground() ? sDarkBackgroundDrawColor : sDrawColor;
+    auto scenePtr = dynamic_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    std::shared_ptr<UBGraphicsScene> pScene = scenePtr ? scenePtr->shared_from_this() : nullptr;
+    return pScene && pScene->isDarkBackground() ? sDarkBackgroundDrawColor : sDrawColor;
 }
 
 
 QColor UBGraphicsCurtainItem::opaqueControlColor() const
 {
-    std::shared_ptr<UBGraphicsScene> pScene = std::shared_ptr<UBGraphicsScene>(dynamic_cast<UBGraphicsScene*>(QGraphicsRectItem::scene()));
-    return pScene->isDarkBackground() ? sDarkBackgroundOpaqueControlColor : sOpaqueControlColor;
+    auto scenePtr = dynamic_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    std::shared_ptr<UBGraphicsScene> pScene = scenePtr ? scenePtr->shared_from_this() : nullptr;
+    return pScene && pScene->isDarkBackground() ? sDarkBackgroundOpaqueControlColor : sOpaqueControlColor;
 }
 
 

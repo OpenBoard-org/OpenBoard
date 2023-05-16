@@ -109,7 +109,7 @@ private:
     QGraphicsScene *mScene;
 };
 
-class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
+class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::enable_shared_from_this<UBGraphicsScene>
 {
     Q_OBJECT
 

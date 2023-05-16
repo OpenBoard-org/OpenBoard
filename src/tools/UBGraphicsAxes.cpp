@@ -562,7 +562,8 @@ QLineF UBGraphicsAxes::yAxis() const
 
 std::shared_ptr<UBGraphicsScene> UBGraphicsAxes::scene() const
 {
-    return std::shared_ptr<UBGraphicsScene>(dynamic_cast<UBGraphicsScene*>(QGraphicsPolygonItem::scene()));
+    auto scenePtr = dynamic_cast<UBGraphicsScene*>(QGraphicsPolygonItem::scene());
+    return scenePtr ? scenePtr->shared_from_this() : nullptr;
 }
 
 QColor UBGraphicsAxes::drawColor() const
