@@ -1160,6 +1160,7 @@ void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy>
         else
         {
            std::shared_ptr<UBGraphicsScene> copiedScene = pScene->sceneDeepCopy();
+           copiedScene->moveToThread(mThread);
            mWorker->saveScene(pDocumentProxy, copiedScene, pSceneIndex);
         }
 
