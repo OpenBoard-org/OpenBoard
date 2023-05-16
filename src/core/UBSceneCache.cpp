@@ -132,8 +132,6 @@ void UBSceneCache::removeScene(std::shared_ptr<UBDocumentProxy> proxy, int pageI
 
         mViewStates.insert(key, scene->viewState());
 
-        scene->deleteLater();
-
         mCachedSceneCount -= count;
     }
 }
