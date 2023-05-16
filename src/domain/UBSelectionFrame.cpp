@@ -433,7 +433,8 @@ void UBSelectionFrame::clearButtons()
 
 inline std::shared_ptr<UBGraphicsScene> UBSelectionFrame::ubscene()
 {
-    return std::shared_ptr<UBGraphicsScene>(dynamic_cast<UBGraphicsScene*>(scene()));
+    auto scenePtr = dynamic_cast<UBGraphicsScene*>(scene());
+    return scenePtr ? scenePtr->shared_from_this() : nullptr;
 }
 
 void UBSelectionFrame::setCursorFromAngle(QString angle)

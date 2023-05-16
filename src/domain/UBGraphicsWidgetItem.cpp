@@ -399,7 +399,8 @@ void UBGraphicsWidgetItem::setSnapshot(const QPixmap& pix, bool frozen)
 
 std::shared_ptr<UBGraphicsScene> UBGraphicsWidgetItem::scene()
 {
-    return std::shared_ptr<UBGraphicsScene>(dynamic_cast<UBGraphicsScene*>(QGraphicsItem::scene()));
+    auto scenePtr = dynamic_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    return scenePtr ? scenePtr->shared_from_this() : nullptr;
 }
 
 int UBGraphicsWidgetItem::widgetType(const QUrl& pUrl)

@@ -171,7 +171,8 @@ void UBGraphicsPixmapItem::copyItemParameters(UBItem *copy) const
 
 std::shared_ptr<UBGraphicsScene> UBGraphicsPixmapItem::scene()
 {
-    return std::shared_ptr<UBGraphicsScene>(dynamic_cast<UBGraphicsScene*>(QGraphicsItem::scene()));
+    auto scenePtr = dynamic_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    return scenePtr ? scenePtr->shared_from_this() : nullptr;
 }
 
 

@@ -587,7 +587,8 @@ UBGraphicsProtractor::Tool UBGraphicsProtractor::toolFromPos(QPointF pos)
 
 std::shared_ptr<UBGraphicsScene> UBGraphicsProtractor::scene() const
 {
-    return std::shared_ptr<UBGraphicsScene>(dynamic_cast<UBGraphicsScene*>(QGraphicsEllipseItem::scene()));
+    auto scenePtr = dynamic_cast<UBGraphicsScene*>(QGraphicsEllipseItem::scene());
+    return scenePtr ? scenePtr->shared_from_this() : nullptr;
 }
 
 QBrush UBGraphicsProtractor::fillBrush() const

@@ -471,7 +471,8 @@ void UBGraphicsRuler::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 std::shared_ptr<UBGraphicsScene> UBGraphicsRuler::scene() const
 {
-    return std::shared_ptr<UBGraphicsScene>(dynamic_cast<UBGraphicsScene*>(QGraphicsRectItem::scene()));
+    auto scenePtr = dynamic_cast<UBGraphicsScene*>(QGraphicsRectItem::scene());
+    return scenePtr ? scenePtr->shared_from_this() : nullptr;
 }
 
 void UBGraphicsRuler::StartLine(const QPointF& scenePos, qreal width)
