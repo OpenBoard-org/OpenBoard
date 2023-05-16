@@ -452,7 +452,7 @@ void UBGraphicsTextItem::contentsChanged()
 
 std::shared_ptr<UBGraphicsScene> UBGraphicsTextItem::scene()
 {
-    return static_cast<std::shared_ptr<UBGraphicsScene>>(QGraphicsItem::scene());
+    return std::shared_ptr<UBGraphicsScene>(dynamic_cast<UBGraphicsScene*>(QGraphicsItem::scene()));
 }
 
 

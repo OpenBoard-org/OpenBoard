@@ -105,7 +105,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
     connect(mUninoteController, SIGNAL(imageCaptured(const QPixmap &, bool)), this, SLOT(addCapturedPixmap(const QPixmap &, bool)));
     connect(mUninoteController, SIGNAL(restoreUniboard()), this, SLOT(hideDesktop()));
 
-    mBlackScene = std::make_shared<UBGraphicsScene>(UBGraphicsScene(0));
+    mBlackScene = std::make_shared<UBGraphicsScene>(0);
     mBlackScene->setBackground(true, UBPageBackground::plain);
 
     if (displayManager->numScreens() >= 2 && displayManager->useMultiScreen())
@@ -127,8 +127,6 @@ UBApplicationController::~UBApplicationController()
     {
         delete view;
     }
-
-    delete mBlackScene;
     delete mMirror;
 
     delete(mOpenSankoreImporter);
@@ -275,7 +273,7 @@ void UBApplicationController::adjustPreviousViews(int pActiveSceneIndex, std::sh
 
             if (scene)
             {
-                previousView->setScene(scene);
+                previousView->setScene(scene.get());
 
                 qreal ratio = ((qreal)previousView->geometry().width()) / ((qreal)previousView->geometry().height());
                 QRectF sceneRect = scene->normalizedSceneRect(ratio);
@@ -290,7 +288,7 @@ void UBApplicationController::adjustPreviousViews(int pActiveSceneIndex, std::sh
         }
         else
         {
-            previousView->setScene(mBlackScene);
+            previousView->setScene(mBlackScene.get());
         }
     }
 }

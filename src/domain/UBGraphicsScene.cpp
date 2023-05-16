@@ -1373,7 +1373,7 @@ void UBGraphicsScene::leaveEvent(QEvent * event)
 
 std::shared_ptr<UBGraphicsScene> UBGraphicsScene::sceneDeepCopy() const
 {
-    std::shared_ptr<UBGraphicsScene> copy = std::make_shared<UBGraphicsScene>(UBGraphicsScene(this->document(), this->mUndoRedoStackEnabled));
+    std::shared_ptr<UBGraphicsScene> copy = std::make_shared<UBGraphicsScene>(this->document(), this->mUndoRedoStackEnabled);
 
     copy->setBackground(this->isDarkBackground(), mPageBackground);
     copy->setBackgroundGridSize(mBackgroundGridSize);

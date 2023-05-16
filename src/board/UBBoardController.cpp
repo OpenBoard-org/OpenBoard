@@ -1730,7 +1730,7 @@ void UBBoardController::ClearUndoStack()
     while (itUniq.hasNext())
     {
         QGraphicsItem* item = itUniq.next();
-        std::shared_ptr<UBGraphicsScene>scene = nullptr;
+        UBGraphicsScene* scene = nullptr;
         if (item->scene()) {
             scene = dynamic_cast<UBGraphicsScene*>(item->scene());
         }

@@ -160,7 +160,7 @@ void UBGraphicsPDFItem::setCacheBehavior(UBItem::CacheBehavior cacheBehavior)
 
 std::shared_ptr<UBGraphicsScene> UBGraphicsPDFItem::scene()
 {
-    return qobject_cast<std::shared_ptr<UBGraphicsScene>>(QGraphicsItem::scene());
+    return std::shared_ptr<UBGraphicsScene>(dynamic_cast<UBGraphicsScene*>(QGraphicsItem::scene()));
 }
 
 

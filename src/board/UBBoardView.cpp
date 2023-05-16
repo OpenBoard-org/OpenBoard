@@ -195,7 +195,7 @@ void UBBoardView::init ()
 
 std::shared_ptr<UBGraphicsScene> UBBoardView::scene ()
 {
-    return dynamic_cast<std::ref(std::shared_ptr<UBGraphicsScene>>(QGraphicsView::scene()))>(;
+    return std::shared_ptr<UBGraphicsScene>(dynamic_cast<UBGraphicsScene*>(QGraphicsView::scene()));
 }
 
 
