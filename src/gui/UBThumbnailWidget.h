@@ -574,7 +574,7 @@ class UBDraggableLivePixmapItem : public UBDraggableThumbnailItem
 {
     Q_OBJECT
     public:
-        UBDraggableLivePixmapItem(UBGraphicsScene* pageScene, std::shared_ptr<UBDocumentProxy> documentProxy, int index);
+        UBDraggableLivePixmapItem(std::shared_ptr<UBGraphicsScene> pageScene, std::shared_ptr<UBDocumentProxy> documentProxy, int index);
 
         ~UBDraggableLivePixmapItem()
         {
@@ -615,7 +615,7 @@ class UBDraggableLivePixmapItem : public UBDraggableThumbnailItem
     private:
         static const int sSelectionItemMargin = 5;
         QGraphicsRectItem *mSelectionItem;
-        UBGraphicsScene *mScene;
+        std::shared_ptr<UBGraphicsScene> mScene;
         UBThumbnailTextItem* mPageNumber;
         bool mExposed;
         QSizeF mSize;

@@ -193,16 +193,16 @@ void UBBoardView::init ()
     mWidgetMoved = false;
 }
 
-UBGraphicsScene* UBBoardView::scene ()
+std::shared_ptr<UBGraphicsScene> UBBoardView::scene ()
 {
-    return qobject_cast<UBGraphicsScene*> (QGraphicsView::scene ());
+    return dynamic_cast<std::ref(std::shared_ptr<UBGraphicsScene>>(QGraphicsView::scene()))>(;
 }
 
 
 void UBBoardView::keyPressEvent (QKeyEvent *event)
 {
     // send to the scene anyway
-    QApplication::sendEvent (scene (), event);
+    //QApplication::sendEvent (scene(), event);
 
     if (!event->isAccepted ())
     {

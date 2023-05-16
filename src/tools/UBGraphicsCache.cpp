@@ -39,16 +39,16 @@
 
 #include "core/memcheck.h"
 
-QMap<UBGraphicsScene*, UBGraphicsCache*> UBGraphicsCache::sInstances;
+QMap<std::shared_ptr<UBGraphicsScene>, UBGraphicsCache*> UBGraphicsCache::sInstances;
 
-UBGraphicsCache* UBGraphicsCache::instance(UBGraphicsScene *scene)
+UBGraphicsCache* UBGraphicsCache::instance(std::shared_ptr<UBGraphicsScene> scene)
 {
     if (!sInstances.contains(scene))
         sInstances.insert(scene, new UBGraphicsCache(scene));
     return sInstances[scene];
 }
 
-UBGraphicsCache::UBGraphicsCache(UBGraphicsScene *scene) : QGraphicsRectItem()
+UBGraphicsCache::UBGraphicsCache(std::shared_ptr<UBGraphicsScene> scene) : QGraphicsRectItem()
   , mMaskColor(Qt::black)
   , mMaskShape(eMaskShape_Circle)
   , mShapeWidth(100)

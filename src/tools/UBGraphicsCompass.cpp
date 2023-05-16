@@ -754,9 +754,9 @@ QPainterPath UBGraphicsCompass::pencilArmShape() const
     return path;
 }
 
-UBGraphicsScene* UBGraphicsCompass::scene() const
+std::shared_ptr<UBGraphicsScene> UBGraphicsCompass::scene() const
 {
-    return static_cast<UBGraphicsScene*>(QGraphicsRectItem::scene());
+    return static_cast<std::shared_ptr<UBGraphicsScene>>(QGraphicsRectItem::scene());
 }
 
 QColor UBGraphicsCompass::drawColor() const

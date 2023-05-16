@@ -553,11 +553,11 @@ void UBBoardPaletteManager::changeBackground()
 
 void UBBoardPaletteManager::activeSceneChanged()
 {
-    UBGraphicsScene *activeScene =  UBApplication::boardController->activeScene();
+    std::shared_ptr<UBGraphicsScene> activeScene =  UBApplication::boardController->activeScene();
     int pageIndex = UBApplication::boardController->activeSceneIndex();
 
     if (mStylusPalette)
-        connect(mStylusPalette, SIGNAL(mouseEntered()), activeScene, SLOT(hideTool()));
+        connect(mStylusPalette, SIGNAL(mouseEntered()), activeScene.get(), SLOT(hideTool()));
 
     if (mpPageNavigWidget)
     {
@@ -565,10 +565,10 @@ void UBBoardPaletteManager::activeSceneChanged()
     }
 
     if (mZoomPalette)
-        connect(mZoomPalette, SIGNAL(mouseEntered()), activeScene, SLOT(hideTool()));
+        connect(mZoomPalette, SIGNAL(mouseEntered()), activeScene.get(), SLOT(hideTool()));
 
     if (mBackgroundsPalette) {
-        connect(mBackgroundsPalette, SIGNAL(mouseEntered()), activeScene, SLOT(hideTool()));
+        connect(mBackgroundsPalette, SIGNAL(mouseEntered()), activeScene.get(), SLOT(hideTool()));
         mBackgroundsPalette->refresh();
     }
 }

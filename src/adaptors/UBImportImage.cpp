@@ -107,7 +107,7 @@ QList<UBGraphicsItem*> UBImportImage::import(const QUuid& uuid, const QString& f
     return result;
 }
 
-void UBImportImage::placeImportedItemToScene(UBGraphicsScene* scene, UBGraphicsItem* item)
+void UBImportImage::placeImportedItemToScene(std::shared_ptr<UBGraphicsScene> scene, UBGraphicsItem* item)
 {
     UBGraphicsPixmapItem* pixmapItem = (UBGraphicsPixmapItem*)item;
 

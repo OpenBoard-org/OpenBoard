@@ -102,7 +102,7 @@ class UBDesktopAnnotationController : public QObject
         QPixmap getScreenPixmap();
 
         UBBoardView* mTransparentDrawingView;       
-        UBGraphicsScene* mTransparentDrawingScene;
+        std::shared_ptr<UBGraphicsScene> mTransparentDrawingScene;
 
     private slots:
         void updateColors();

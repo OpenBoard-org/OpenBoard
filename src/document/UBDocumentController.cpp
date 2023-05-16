@@ -1637,10 +1637,10 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
             UBApplication::applicationController->showMessage(tr("Copying page %1/%2").arg(count).arg(total), true);
 
             // TODO UB 4.x Move following code to some controller class
-            UBGraphicsScene *scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(sourceItem.documentProxy(), sourceItem.sceneIndex());
+            std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(sourceItem.documentProxy(), sourceItem.sceneIndex());
             if (scene)
             {
-                UBGraphicsScene* sceneClone = scene->sceneDeepCopy();
+                std::shared_ptr<UBGraphicsScene> sceneClone = scene->sceneDeepCopy();
 
                 std::shared_ptr<UBDocumentProxy> targetDocProxy = docModel->proxyForIndex(targetIndex);
 

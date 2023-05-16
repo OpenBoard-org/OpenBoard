@@ -370,7 +370,7 @@ void UBGraphicsGroupContainerItem::pRemoveFromGroup(QGraphicsItem *item)
     item->setParentItem(newParent);
     item->setPos(oldPos);
 
-    UBGraphicsScene *Scene = dynamic_cast<UBGraphicsScene *>(item->scene());
+    std::shared_ptr<UBGraphicsScene> Scene = dynamic_cast<std::shared_ptr<UBGraphicsScene>>(item->scene());
     if (Scene)
     {
         Scene->addItem(item);

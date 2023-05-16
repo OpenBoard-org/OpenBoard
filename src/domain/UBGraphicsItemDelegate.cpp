@@ -274,7 +274,7 @@ UBGraphicsItemDelegate::~UBGraphicsItemDelegate()
 
 QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
-    UBGraphicsScene *ubScene = castUBGraphicsScene();
+    std::shared_ptr<UBGraphicsScene>ubScene = castUBGraphicsScene();
     switch (static_cast<int>(change))
     {
         case QGraphicsItem::ItemSelectedHasChanged :
@@ -325,9 +325,9 @@ QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange ch
     return value;
 }
 
-UBGraphicsScene *UBGraphicsItemDelegate::castUBGraphicsScene()
+std::shared_ptr<UBGraphicsScene> UBGraphicsItemDelegate::castUBGraphicsScene()
 {
-    UBGraphicsScene *castScene = dynamic_cast<UBGraphicsScene*>(delegated()->scene());
+    std::shared_ptr<UBGraphicsScene> castScene = dynamic_cast<std::shared_ptr<UBGraphicsScene>>(delegated()->scene());
 
     return castScene;
 }
@@ -514,7 +514,7 @@ void UBGraphicsItemDelegate::setZOrderButtonsVisible(bool visible)
 
 void UBGraphicsItemDelegate::remove(bool canUndo)
 {
-    UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
+    std::shared_ptr<UBGraphicsScene> scene = dynamic_cast<std::shared_ptr<UBGraphicsScene>>(mDelegated->scene());
     if (scene)
     {
         if (mFrame && !mFrame->scene() && mDelegated->scene())
@@ -554,28 +554,28 @@ void UBGraphicsItemDelegate::duplicate()
 
 void UBGraphicsItemDelegate::increaseZLevelUp()
 {
-    UBGraphicsScene *curScene = castUBGraphicsScene();
+    std::shared_ptr<UBGraphicsScene>curScene = castUBGraphicsScene();
     if (curScene) {
         curScene->changeZLevelTo(delegated(), UBZLayerController::up, true);
     }
 }
 void UBGraphicsItemDelegate::increaseZlevelTop()
 {
-    UBGraphicsScene *curScene = castUBGraphicsScene();
+    std::shared_ptr<UBGraphicsScene>curScene = castUBGraphicsScene();
     if (curScene) {
         curScene->changeZLevelTo(delegated(), UBZLayerController::top, true);
     }
 }
 void UBGraphicsItemDelegate::increaseZLevelDown()
 {
-    UBGraphicsScene *curScene = castUBGraphicsScene();
+    std::shared_ptr<UBGraphicsScene>curScene = castUBGraphicsScene();
     if (curScene) {
         curScene->changeZLevelTo(delegated(), UBZLayerController::down, true);
     }
 }
 void UBGraphicsItemDelegate::increaseZlevelBottom()
 {
-    UBGraphicsScene *curScene = castUBGraphicsScene();
+    std::shared_ptr<UBGraphicsScene>curScene = castUBGraphicsScene();
     if (curScene) {
         curScene->changeZLevelTo(delegated(), UBZLayerController::bottom, true);
     }
@@ -654,7 +654,7 @@ void UBGraphicsItemDelegate::showHideRecurs(const QVariant &pShow, QGraphicsItem
  */
 void UBGraphicsItemDelegate::setAsBackground()
 {
-    UBGraphicsScene* scene = castUBGraphicsScene();
+    std::shared_ptr<UBGraphicsScene> scene = castUBGraphicsScene();
     QGraphicsItem* item = delegated();
 
     if (scene && item) {

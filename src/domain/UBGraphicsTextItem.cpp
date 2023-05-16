@@ -450,9 +450,9 @@ void UBGraphicsTextItem::contentsChanged()
 }
 
 
-UBGraphicsScene* UBGraphicsTextItem::scene()
+std::shared_ptr<UBGraphicsScene> UBGraphicsTextItem::scene()
 {
-    return static_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    return static_cast<std::shared_ptr<UBGraphicsScene>>(QGraphicsItem::scene());
 }
 
 

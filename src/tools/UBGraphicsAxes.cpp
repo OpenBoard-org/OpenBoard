@@ -560,9 +560,9 @@ QLineF UBGraphicsAxes::yAxis() const
     return QLineF(0, mBounds.bottom(), 0, mBounds.top());
 }
 
-UBGraphicsScene* UBGraphicsAxes::scene() const
+std::shared_ptr<UBGraphicsScene> UBGraphicsAxes::scene() const
 {
-    return static_cast<UBGraphicsScene*>(QGraphicsPolygonItem::scene());
+    return static_cast<std::shared_ptr<UBGraphicsScene>>(QGraphicsPolygonItem::scene());
 }
 
 QColor UBGraphicsAxes::drawColor() const

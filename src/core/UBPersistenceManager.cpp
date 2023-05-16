@@ -120,7 +120,6 @@ UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     connect(mWorker, SIGNAL(finished()), mWorker, SLOT(deleteLater()));
     connect(mThread, SIGNAL(finished()), mThread, SLOT(deleteLater()));
     connect(mWorker, SIGNAL(sceneLoaded(QByteArray,std::shared_ptr<UBDocumentProxy>,int)), this, SLOT(onSceneLoaded(QByteArray,std::shared_ptr<UBDocumentProxy>,int)));
-    connect(mWorker, SIGNAL(scenePersisted(UBGraphicsScene*)), this, SLOT(onScenePersisted(UBGraphicsScene*)));
 
     mThread->start();
 }
@@ -140,14 +139,6 @@ void UBPersistenceManager::destroy()
     if (sSingleton)
         delete sSingleton;
     sSingleton = NULL;
-}
-
-void UBPersistenceManager::onScenePersisted(UBGraphicsScene* scene)
-{
-    if (!mIsApplicationClosing) {
-        delete scene;
-        scene = NULL;
-    }
 }
 
 void UBPersistenceManager::onWorkerFinished()
@@ -813,7 +804,7 @@ void UBPersistenceManager::deleteDocumentScenes(std::shared_ptr<UBDocumentProxy>
 
     foreach(int index, compactedIndexes)
     {
-        UBGraphicsScene *scene = loadDocumentScene(proxy, index);
+        std::shared_ptr<UBGraphicsScene> scene = loadDocumentScene(proxy, index);
         if (scene)
         {
             //scene is about to move into new document
@@ -891,7 +882,7 @@ void UBPersistenceManager::duplicateDocumentScene(std::shared_ptr<UBDocumentProx
     copyPage(proxy, index , index + 1);
 
     //TODO: write a proper way to handle object on disk
-    UBGraphicsScene *scene = loadDocumentScene(proxy, index + 1);
+    std::shared_ptr<UBGraphicsScene> scene = loadDocumentScene(proxy, index + 1);
 
     foreach(QGraphicsItem* item, scene->items())
     {
@@ -1010,7 +1001,7 @@ void UBPersistenceManager::copyDocumentScene(std::shared_ptr<UBDocumentProxy> fr
 }
 
 
-UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(std::shared_ptr<UBDocumentProxy> proxy, int index, bool useUndoRedoStack)
+std::shared_ptr<UBGraphicsScene> UBPersistenceManager::createDocumentSceneAt(std::shared_ptr<UBDocumentProxy> proxy, int index, bool useUndoRedoStack)
 {
     int count = proxy->pageCount();
 
@@ -1021,7 +1012,7 @@ UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(std::shared_ptr<UBD
 
     mSceneCache.shiftUpScenes(proxy, index, count -1);
 
-    UBGraphicsScene *newScene = mSceneCache.createScene(proxy, index, useUndoRedoStack);
+    std::shared_ptr<UBGraphicsScene> newScene = mSceneCache.createScene(proxy, index, useUndoRedoStack);
 
     newScene->setBackground(UBSettings::settings()->isDarkBackground(),
             UBSettings::settings()->UBSettings::pageBackground());
@@ -1038,7 +1029,7 @@ UBGraphicsScene* UBPersistenceManager::createDocumentSceneAt(std::shared_ptr<UBD
 }
 
 
-void UBPersistenceManager::insertDocumentSceneAt(std::shared_ptr<UBDocumentProxy> proxy, UBGraphicsScene* scene, int index, bool persist, bool deleting)
+void UBPersistenceManager::insertDocumentSceneAt(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> scene, int index, bool persist, bool deleting)
 {
     scene->setDocument(proxy);
 
@@ -1103,9 +1094,9 @@ void UBPersistenceManager::moveSceneToIndex(std::shared_ptr<UBDocumentProxy> pro
 }
 
 
-UBGraphicsScene* UBPersistenceManager::loadDocumentScene(std::shared_ptr<UBDocumentProxy> proxy, int sceneIndex, bool cacheNeighboringScenes)
+std::shared_ptr<UBGraphicsScene> UBPersistenceManager::loadDocumentScene(std::shared_ptr<UBDocumentProxy> proxy, int sceneIndex, bool cacheNeighboringScenes)
 {
-    UBGraphicsScene* scene = nullptr;
+    std::shared_ptr<UBGraphicsScene> scene = nullptr;
 
     if (mSceneCache.contains(proxy, sceneIndex))
     {
@@ -1143,7 +1134,7 @@ void UBPersistenceManager::reassignDocProxy(std::shared_ptr<UBDocumentProxy> new
     return mSceneCache.reassignDocProxy(newDocument, oldDocument);
 }
 
-void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex, bool isAnAutomaticBackup, bool forceImmediateSaving)
+void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, std::shared_ptr<UBGraphicsScene> pScene, const int pSceneIndex, bool isAnAutomaticBackup, bool forceImmediateSaving)
 {
     checkIfDocumentRepositoryExists();
 
@@ -1168,7 +1159,7 @@ void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy>
         }
         else
         {
-           UBGraphicsScene* copiedScene = pScene->sceneDeepCopy();
+           std::shared_ptr<UBGraphicsScene> copiedScene = pScene->sceneDeepCopy();
            mWorker->saveScene(pDocumentProxy, copiedScene, pSceneIndex);
         }
 
@@ -1332,14 +1323,13 @@ bool UBPersistenceManager::isEmpty(std::shared_ptr<UBDocumentProxy> pDocumentPro
     if (pDocumentProxy->pageCount() > 1)
         return false;
 
-    UBGraphicsScene *theSoleScene = UBSvgSubsetAdaptor::loadScene(pDocumentProxy, 0);
+    std::shared_ptr<UBGraphicsScene> theSoleScene = UBSvgSubsetAdaptor::loadScene(pDocumentProxy, 0);
 
     bool empty = false;
 
     if (theSoleScene)
     {
         empty = theSoleScene->isEmpty();
-        delete theSoleScene;
     }
     else
     {

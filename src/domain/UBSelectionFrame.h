@@ -83,7 +83,7 @@ private:
     void placeExceptionButton(DelegateButton *pButton, QTransform pTransform);
     void clearButtons();
     inline int adjThickness() const {return mThickness * mAntiscaleRatio;}
-    inline UBGraphicsScene* ubscene();
+    inline std::shared_ptr<UBGraphicsScene> ubscene();
     void setCursorFromAngle(QString angle);
 
     QList<QGraphicsItem*> sortedByZ(const QList<QGraphicsItem*> &pItems);

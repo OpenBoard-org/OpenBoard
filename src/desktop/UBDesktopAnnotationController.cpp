@@ -97,7 +97,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     QString backgroundStyle = "QWidget {background-color: rgba(127, 127, 127, 0)}";
     mTransparentDrawingView->setStyleSheet(backgroundStyle);
 
-    mTransparentDrawingScene = new UBGraphicsScene(0, false);
+    mTransparentDrawingScene = std::make_shared<UBGraphicsScene>(UBGraphicsScene(0, false));
     updateColors();
 
     mTransparentDrawingView->setScene(mTransparentDrawingScene);

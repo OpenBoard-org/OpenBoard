@@ -37,7 +37,7 @@
 
 #include "core/memcheck.h"
 
-UBPageSizeUndoCommand::UBPageSizeUndoCommand(UBGraphicsScene* pScene, const QSize& previousSize, const QSize& newSize)
+UBPageSizeUndoCommand::UBPageSizeUndoCommand(std::shared_ptr<UBGraphicsScene> pScene, const QSize& previousSize, const QSize& newSize)
     : mScene(pScene)
         , mPreviousSize(previousSize)
         , mNewSize(newSize)

@@ -397,9 +397,9 @@ void UBGraphicsWidgetItem::setSnapshot(const QPixmap& pix, bool frozen)
     mIsFrozen = frozen;
 }
 
-UBGraphicsScene* UBGraphicsWidgetItem::scene()
+std::shared_ptr<UBGraphicsScene> UBGraphicsWidgetItem::scene()
 {
-    return qobject_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    return qobject_cast<std::shared_ptr<UBGraphicsScene>>(QGraphicsItem::scene());
 }
 
 int UBGraphicsWidgetItem::widgetType(const QUrl& pUrl)

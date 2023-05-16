@@ -43,7 +43,7 @@ class UBThumbnailAdaptor //static class
 public:
     static QUrl thumbnailUrl(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
 
-    static void persistScene(std::shared_ptr<UBDocumentProxy> proxy, UBGraphicsScene* pScene, int pageIndex, bool overrideModified = false);
+    static void persistScene(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> pScene, int pageIndex, bool overrideModified = false);
 
     static QPixmap get(std::shared_ptr<UBDocumentProxy> proxy, int index);
     static void load(std::shared_ptr<UBDocumentProxy> proxy, QList<std::shared_ptr<QPixmap>>& list);

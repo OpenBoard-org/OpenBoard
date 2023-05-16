@@ -544,11 +544,11 @@ void UBBoardController::addScene()
     QApplication::restoreOverrideCursor();
 }
 
-void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmpty)
+void UBBoardController::addScene(std::shared_ptr<UBGraphicsScene> scene, bool replaceActiveIfEmpty)
 {
     if (scene)
     {
-        UBGraphicsScene* clone = scene->sceneDeepCopy();
+        std::shared_ptr<UBGraphicsScene> clone = scene->sceneDeepCopy();
 
         if (scene->document() && (scene->document() != selectedDocument()))
         {
@@ -584,7 +584,7 @@ void UBBoardController::addScene(UBGraphicsScene* scene, bool replaceActiveIfEmp
 
 void UBBoardController::addScene(std::shared_ptr<UBDocumentProxy> proxy, int sceneIndex, bool replaceActiveIfEmpty)
 {
-    UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(proxy, sceneIndex);
+    std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(proxy, sceneIndex);
 
     if (scene)
     {
@@ -1554,7 +1554,7 @@ void UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> 
     if (index >= sceneCount && sceneCount > 0)
         index = sceneCount - 1;
 
-    UBGraphicsScene* targetScene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, index);
+    std::shared_ptr<UBGraphicsScene> targetScene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, index);
 
     bool sceneChange = targetScene != mActiveScene;
 
@@ -1577,11 +1577,11 @@ void UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> 
 
         updateSystemScaleFactor();
 
-        mControlView->setScene(mActiveScene);
-        disconnect(mControlView, SIGNAL(mouseReleased()), mActiveScene, SLOT(updateSelectionFrame()));
-        connect(mControlView, SIGNAL(mouseReleased()), mActiveScene, SLOT(updateSelectionFrame()));
+        mControlView->setScene(mActiveScene.get());
+        disconnect(mControlView, SIGNAL(mouseReleased()), mActiveScene.get(), SLOT(updateSelectionFrame()));
+        connect(mControlView, SIGNAL(mouseReleased()), mActiveScene.get(), SLOT(updateSelectionFrame()));
 
-        mDisplayView->setScene(mActiveScene);
+        mDisplayView->setScene(mActiveScene.get());
         mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
         pDocumentProxy->setDefaultDocumentSize(mActiveScene->nominalSize());
         updatePageSizeState();
@@ -1730,7 +1730,7 @@ void UBBoardController::ClearUndoStack()
     while (itUniq.hasNext())
     {
         QGraphicsItem* item = itUniq.next();
-        UBGraphicsScene *scene = NULL;
+        std::shared_ptr<UBGraphicsScene>scene = nullptr;
         if (item->scene()) {
             scene = dynamic_cast<UBGraphicsScene*>(item->scene());
         }
@@ -1864,7 +1864,7 @@ void UBBoardController::updateActionStates()
 }
 
 
-UBGraphicsScene* UBBoardController::activeScene() const
+std::shared_ptr<UBGraphicsScene> UBBoardController::activeScene() const
 {
     return mActiveScene;
 }

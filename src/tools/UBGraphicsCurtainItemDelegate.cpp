@@ -85,7 +85,7 @@ QVariant UBGraphicsCurtainItemDelegate::itemChange(QGraphicsItem::GraphicsItemCh
 {
     if (change == QGraphicsItem::ItemVisibleHasChanged)
     {
-        UBGraphicsScene* ubScene = qobject_cast<UBGraphicsScene*>(mDelegated->scene());
+        std::shared_ptr<UBGraphicsScene> ubScene = qobject_cast<std::shared_ptr<UBGraphicsScene>>(mDelegated->scene());
         if(ubScene)
             ubScene->setModified(true);
     }

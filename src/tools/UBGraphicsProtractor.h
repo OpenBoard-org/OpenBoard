@@ -90,7 +90,7 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
         void paintAngleMarker (QPainter *painter);
         Tool toolFromPos (QPointF pos);
         qreal antiScale () const;
-        UBGraphicsScene*            scene() const;
+        std::shared_ptr<UBGraphicsScene>            scene() const;
         QBrush                  fillBrush() const;
 
         QSizeF buttonSizeReference () const{return QSizeF(radius() / 10, mCloseSvgItem->boundingRect().height() * radius()/(10 * mCloseSvgItem->boundingRect().width()));}

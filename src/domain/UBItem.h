@@ -87,7 +87,7 @@ class UBItem
 
         virtual void copyItemParameters(UBItem *copy) const = 0;
 
-        virtual UBGraphicsScene* scene() // TODO UB 4.x should be pure virtual ...
+        virtual std::shared_ptr<UBGraphicsScene> scene() // TODO UB 4.x should be pure virtual ...
         {
             return 0;
         }

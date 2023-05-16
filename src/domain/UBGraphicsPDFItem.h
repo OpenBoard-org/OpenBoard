@@ -61,7 +61,7 @@ class UBGraphicsPDFItem: public GraphicsPDFItem, public UBItem, public UBGraphic
 
         virtual void setCacheBehavior(CacheBehavior cacheBehavior);
 
-        virtual UBGraphicsScene* scene();
+        virtual std::shared_ptr<UBGraphicsScene> scene();
 
         virtual UBGraphicsPixmapItem* toPixmapItem() const;
 

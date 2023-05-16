@@ -1395,7 +1395,7 @@ bool UBCFFSubsetAdaptor::UBCFFSubsetReader::persistScenes()
         }
 
         UBSvgSubsetAdaptor::persistScene(mProxy, mCurrentScene, i);
-        UBGraphicsScene *tmpScene = UBSvgSubsetAdaptor::loadScene(mProxy, i);
+        std::shared_ptr<UBGraphicsScene> tmpScene = UBSvgSubsetAdaptor::loadScene(mProxy, i);
         tmpScene->setModified(true);
         UBThumbnailAdaptor::persistScene(mProxy, tmpScene, i);
         mCurrentScene->setModified(false);

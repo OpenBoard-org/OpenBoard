@@ -96,7 +96,7 @@ class UBGraphicsRuler : public UBAbstractDrawRuler, public QGraphicsRectItem, pu
         virtual QRectF           resizeButtonRect() const;
         virtual QRectF            closeButtonRect() const;
         virtual QRectF           rotateButtonRect() const;
-        virtual UBGraphicsScene*            scene() const;
+        virtual std::shared_ptr<UBGraphicsScene>            scene() const;
 
         QCursor mResizeCursor;
 

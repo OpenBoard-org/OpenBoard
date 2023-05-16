@@ -86,7 +86,7 @@ QList<UBGraphicsItem*> UBImportPDF::import(const QUuid& uuid, const QString& fil
     return result;
 }
 
-void UBImportPDF::placeImportedItemToScene(UBGraphicsScene* scene, UBGraphicsItem* item)
+void UBImportPDF::placeImportedItemToScene(std::shared_ptr<UBGraphicsScene> scene, UBGraphicsItem* item)
 {
     UBGraphicsPDFItem *pdfItem = (UBGraphicsPDFItem*)item;
 

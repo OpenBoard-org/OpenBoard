@@ -1061,7 +1061,7 @@ void UBDraggableThumbnailItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event
 }
 
 
-UBDraggableLivePixmapItem::UBDraggableLivePixmapItem(UBGraphicsScene *pageScene, std::shared_ptr<UBDocumentProxy> documentProxy, int index)
+UBDraggableLivePixmapItem::UBDraggableLivePixmapItem(std::shared_ptr<UBGraphicsScene> pageScene, std::shared_ptr<UBDocumentProxy> documentProxy, int index)
     : UBDraggableThumbnailItem(documentProxy, index)
     , mScene(pageScene)
     , mPageNumber(new UBThumbnailTextItem(index))

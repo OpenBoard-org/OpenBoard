@@ -382,9 +382,9 @@ void UBGraphicsMediaItem::setMute(bool bMute)
     sIsMutedByDefault = mMuted;
 }
 
-UBGraphicsScene* UBGraphicsMediaItem::scene()
+std::shared_ptr<UBGraphicsScene> UBGraphicsMediaItem::scene()
 {
-    return qobject_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    return qobject_cast<std::shared_ptr<UBGraphicsScene>>(QGraphicsItem::scene());
 }
 
 

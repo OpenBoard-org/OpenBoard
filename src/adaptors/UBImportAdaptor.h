@@ -62,7 +62,7 @@ protected:
 
 public:
         virtual QList<UBGraphicsItem*> import(const QUuid& uuid, const QString& filePath) = 0;
-        virtual void placeImportedItemToScene(UBGraphicsScene* scene, UBGraphicsItem* item) = 0;
+        virtual void placeImportedItemToScene(std::shared_ptr<UBGraphicsScene> scene, UBGraphicsItem* item) = 0;
         virtual const QString& folderToCopy() = 0;
 };
 

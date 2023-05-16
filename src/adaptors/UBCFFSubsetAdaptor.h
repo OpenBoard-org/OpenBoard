@@ -71,7 +71,7 @@ private:
 
     private:
         QString mTempFilePath;
-        UBGraphicsScene *mCurrentScene;
+        std::shared_ptr<UBGraphicsScene> mCurrentScene;
         QRectF mCurrentSceneRect;
         QString mIndent;
         QRectF mViewBox;

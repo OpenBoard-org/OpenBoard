@@ -150,7 +150,7 @@ class UBPodcastController : public QObject
         QWidget* mSourceWidget;
         bool mIsDesktopMode;
 
-        UBGraphicsScene* mSourceScene;
+        std::shared_ptr<UBGraphicsScene> mSourceScene;
 
         QTransform mViewToVideoTransform;
 

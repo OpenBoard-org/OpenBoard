@@ -79,7 +79,7 @@ class UBBoardController : public UBDocumentContainer
         void init();
         void setupLayout();
 
-        UBGraphicsScene* activeScene() const;
+        std::shared_ptr<UBGraphicsScene> activeScene() const;
         int activeSceneIndex() const;
         void setActiveSceneIndex(int i);
         QSize controlViewport();
@@ -102,7 +102,7 @@ class UBBoardController : public UBDocumentContainer
             return mDisplayView;
         }
 
-        UBGraphicsScene* activeScene()
+        std::shared_ptr<UBGraphicsScene> activeScene()
         {
             return mActiveScene;
         }
@@ -200,7 +200,7 @@ class UBBoardController : public UBDocumentContainer
         void blackout();
         void addScene();
         void addScene(std::shared_ptr<UBDocumentProxy> proxy, int sceneIndex, bool replaceActiveIfEmpty = false);
-        void addScene(UBGraphicsScene* scene, bool replaceActiveIfEmpty = false);
+        void addScene(std::shared_ptr<UBGraphicsScene> scene, bool replaceActiveIfEmpty = false);
         void duplicateScene();
         void importPage();
         void clearScene();
@@ -295,7 +295,7 @@ class UBBoardController : public UBDocumentContainer
         int autosaveTimeoutFromSettings();
 
         UBMainWindow *mMainWindow;
-        UBGraphicsScene* mActiveScene;
+        std::shared_ptr<UBGraphicsScene> mActiveScene;
         int mActiveSceneIndex;
         UBBoardPaletteManager *mPaletteManager;
         UBSoftwareUpdateDialog *mSoftwareUpdateDialog;

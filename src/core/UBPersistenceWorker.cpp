@@ -37,7 +37,7 @@ UBPersistenceWorker::UBPersistenceWorker(QObject *parent) :
 {
 }
 
-void UBPersistenceWorker::saveScene(std::shared_ptr<UBDocumentProxy> proxy, UBGraphicsScene* scene, const int pageIndex)
+void UBPersistenceWorker::saveScene(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> scene, const int pageIndex)
 {
     PersistenceInformation entry = {WriteScene, proxy, scene, pageIndex};
 

@@ -104,16 +104,16 @@ class UBPersistenceManager : public QObject
 
         virtual void copyDocumentScene(std::shared_ptr<UBDocumentProxy>from, int fromIndex, std::shared_ptr<UBDocumentProxy>to, int toIndex);
 
-        virtual void persistDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, UBGraphicsScene* pScene, const int pSceneIndex, bool isAnAutomaticBackup = false, bool forceImmediateSaving = false);
+        virtual void persistDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, std::shared_ptr<UBGraphicsScene> pScene, const int pSceneIndex, bool isAnAutomaticBackup = false, bool forceImmediateSaving = false);
 
-        virtual UBGraphicsScene* createDocumentSceneAt(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int index, bool useUndoRedoStack = true);
+        virtual std::shared_ptr<UBGraphicsScene> createDocumentSceneAt(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int index, bool useUndoRedoStack = true);
 
-        virtual void insertDocumentSceneAt(std::shared_ptr<UBDocumentProxy> pDocumentProxy, UBGraphicsScene* scene, int index, bool persist = true, bool deleting = false);
+        virtual void insertDocumentSceneAt(std::shared_ptr<UBDocumentProxy> pDocumentProxy, std::shared_ptr<UBGraphicsScene> scene, int index, bool persist = true, bool deleting = false);
 
         virtual void moveSceneToIndex(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int source, int target);
 
-        virtual UBGraphicsScene* loadDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int sceneIndex, bool cacheNeighboringScenes = true);
-        UBGraphicsScene *getDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int sceneIndex) {return mSceneCache.value(pDocumentProxy, sceneIndex);}
+        virtual std::shared_ptr<UBGraphicsScene> loadDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int sceneIndex, bool cacheNeighboringScenes = true);
+        std::shared_ptr<UBGraphicsScene> getDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int sceneIndex) {return mSceneCache.value(pDocumentProxy, sceneIndex);}
         void reassignDocProxy(std::shared_ptr<UBDocumentProxy> newDocument, std::shared_ptr<UBDocumentProxy> oldDocument);
 
 //        QList<QPointer<UBDocumentProxy> > documentProxies;
@@ -207,7 +207,7 @@ private:
         void errorString(QString error);
         void onSceneLoaded(QByteArray,std::shared_ptr<UBDocumentProxy>,int);
         void onWorkerFinished();
-        void onScenePersisted(UBGraphicsScene* scene);
+        void onScenePersisted(std::shared_ptr<UBGraphicsScene> scene);
 
 };
 

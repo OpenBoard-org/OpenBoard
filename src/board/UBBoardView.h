@@ -53,7 +53,7 @@ public:
     UBBoardView(UBBoardController* pController, int pStartLayer, int pEndLayer, QWidget* pParent = 0, bool isControl = false, bool isDesktop = false);
     virtual ~UBBoardView();
 
-    UBGraphicsScene* scene();
+    std::shared_ptr<UBGraphicsScene> scene();
 
     void forcedTabletRelease();
 

@@ -44,7 +44,7 @@ class UBGraphicsStroke
     friend class UBGraphicsPolygonItem;
 
     public:
-        UBGraphicsStroke(UBGraphicsScene* scene = NULL);
+        UBGraphicsStroke(std::shared_ptr<UBGraphicsScene> scene = NULL);
         virtual ~UBGraphicsStroke();
 
         bool hasPressure();
@@ -70,7 +70,7 @@ class UBGraphicsStroke
 
     private:
 
-        UBGraphicsScene * mScene;
+        std::shared_ptr<UBGraphicsScene> mScene;
 
         QList<UBGraphicsPolygonItem*> mPolygons;
 

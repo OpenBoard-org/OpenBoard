@@ -57,7 +57,7 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
 
         virtual void copyItemParameters(UBItem *copy) const;
 
-        virtual UBGraphicsScene* scene();
+        virtual std::shared_ptr<UBGraphicsScene> scene();
 
         virtual QRectF boundingRect() const;
         virtual QPainterPath shape() const;

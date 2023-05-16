@@ -34,7 +34,7 @@
 
 #include "core/memcheck.h"
 
-UBThumbnailView::UBThumbnailView(UBGraphicsScene *scene, QWidget* parent)
+UBThumbnailView::UBThumbnailView(std::shared_ptr<UBGraphicsScene> scene, QWidget* parent)
     : QGraphicsView(scene, parent)
     , mHBoxLayout(new QHBoxLayout(this))
 {

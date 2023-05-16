@@ -70,11 +70,11 @@ class UBSvgSubsetAdaptor
 
     public:
 
-        static UBGraphicsScene* loadScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
+        static std::shared_ptr<UBGraphicsScene> loadScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
         static QByteArray loadSceneAsText(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
-        static UBGraphicsScene* loadScene(std::shared_ptr<UBDocumentProxy> proxy, const QByteArray& pArray);
+        static std::shared_ptr<UBGraphicsScene> loadScene(std::shared_ptr<UBDocumentProxy> proxy, const QByteArray& pArray);
 
-        static void persistScene(std::shared_ptr<UBDocumentProxy> proxy, UBGraphicsScene* pScene, const int pageIndex);
+        static void persistScene(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> pScene, const int pageIndex);
         static void upgradeScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
 
         static QUuid sceneUuid(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
@@ -115,7 +115,7 @@ class UBSvgSubsetAdaptor
 
                 virtual ~UBSvgSubsetReader(){}
 
-                UBGraphicsScene* loadScene(std::shared_ptr<UBDocumentProxy> proxy);
+                std::shared_ptr<UBGraphicsScene> loadScene(std::shared_ptr<UBDocumentProxy> proxy);
 
             private:
 
@@ -176,7 +176,7 @@ class UBSvgSubsetAdaptor
                 bool saveSceneAfterLoading;
 
                 QString mNamespaceUri;
-                UBGraphicsScene *mScene;
+                std::shared_ptr<UBGraphicsScene> mScene;
 
                 QHash<QString,UBGraphicsStrokesGroup*> mStrokesList;
         };
@@ -185,7 +185,7 @@ class UBSvgSubsetAdaptor
         {
             public:
 
-                UBSvgSubsetWriter(std::shared_ptr<UBDocumentProxy> proxy, UBGraphicsScene* pScene, const int pageIndex);
+                UBSvgSubsetWriter(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> pScene, const int pageIndex);
 
                 bool persistScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
 
@@ -261,7 +261,7 @@ class UBSvgSubsetAdaptor
 
         private:
 
-                UBGraphicsScene* mScene;
+                std::shared_ptr<UBGraphicsScene> mScene;
                 QXmlStreamWriter mXmlWriter;
                 QString mDocumentPath;
                 int mPageIndex;

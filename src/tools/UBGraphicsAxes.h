@@ -101,7 +101,7 @@ class UBGraphicsAxes : public QObject, public QGraphicsPolygonItem, public UBIte
         virtual QRectF          numbersButtonRect() const;
         virtual QLineF                      xAxis() const;
         virtual QLineF                      yAxis() const;
-        virtual UBGraphicsScene*            scene() const;
+        virtual std::shared_ptr<UBGraphicsScene>            scene() const;
 
         QColor                  drawColor() const;
         QFont                        font() const;

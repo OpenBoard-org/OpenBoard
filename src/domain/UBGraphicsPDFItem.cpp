@@ -158,9 +158,9 @@ void UBGraphicsPDFItem::setCacheBehavior(UBItem::CacheBehavior cacheBehavior)
     GraphicsPDFItem::setCacheAllowed(cacheBehavior == UBItem::CacheAllowed);
 }
 
-UBGraphicsScene* UBGraphicsPDFItem::scene()
+std::shared_ptr<UBGraphicsScene> UBGraphicsPDFItem::scene()
 {
-    return qobject_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    return qobject_cast<std::shared_ptr<UBGraphicsScene>>(QGraphicsItem::scene());
 }
 
 

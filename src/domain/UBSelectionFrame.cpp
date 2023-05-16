@@ -431,9 +431,9 @@ void UBSelectionFrame::clearButtons()
     mButtons.clear();
 }
 
-inline UBGraphicsScene *UBSelectionFrame::ubscene()
+inline std::shared_ptr<UBGraphicsScene> UBSelectionFrame::ubscene()
 {
-    return qobject_cast<UBGraphicsScene*>(scene());
+    return qobject_cast<std::shared_ptr<UBGraphicsScene>>(scene());
 }
 
 void UBSelectionFrame::setCursorFromAngle(QString angle)

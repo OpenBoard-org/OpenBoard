@@ -219,7 +219,7 @@ std::shared_ptr<UBDocumentProxy> UBDocumentManager::importFile(const QFile& pFil
                     //Workaround for issue 912
                     QApplication::processEvents();
 #endif
-                    UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(document, pageIndex);
+                    std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(document, pageIndex);
                     importAdaptor->placeImportedItemToScene(scene, page);
                     UBPersistenceManager::persistenceManager()->persistDocumentScene(document, scene, pageIndex);
                     pageIndex++;
@@ -284,7 +284,7 @@ int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> docum
                     {
                         UBApplication::showMessage(tr("Inserting page %1 of %2").arg(++nPage).arg(pages.size()), true);
                         int pageIndex = document->pageCount();
-                        UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(document, pageIndex);
+                        std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(document, pageIndex);
                         importAdaptor->placeImportedItemToScene(scene, page);
                         UBPersistenceManager::persistenceManager()->persistDocumentScene(document, scene, pageIndex);
                     }

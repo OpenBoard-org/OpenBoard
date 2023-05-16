@@ -165,9 +165,9 @@ QRectF UBGraphicsTriangle::bounding_Rect() const
     return bounds;
 }
 
-UBGraphicsScene* UBGraphicsTriangle::scene() const
+std::shared_ptr<UBGraphicsScene> UBGraphicsTriangle::scene() const
 {
-    return static_cast<UBGraphicsScene*>(QGraphicsPolygonItem::scene());
+    return static_cast<std::shared_ptr<UBGraphicsScene>>(QGraphicsPolygonItem::scene());
 }
 
 void UBGraphicsTriangle::calculatePoints(const QRectF& r)

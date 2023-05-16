@@ -120,7 +120,7 @@ void UBBoardThumbnailsView::removeThumbnail(int i)
 
 UBDraggableLivePixmapItem* UBBoardThumbnailsView::createThumbnail(std::shared_ptr<UBDocumentProxy> document, int i)
 {
-    UBGraphicsScene* pageScene = UBPersistenceManager::persistenceManager()->loadDocumentScene(document, i);
+    std::shared_ptr<UBGraphicsScene> pageScene = UBPersistenceManager::persistenceManager()->loadDocumentScene(document, i);
 
     return new UBDraggableLivePixmapItem(pageScene, document, i);
 }

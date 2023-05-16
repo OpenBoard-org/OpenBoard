@@ -162,7 +162,7 @@ class UBApplicationController : public QObject
         UBBoardView *mDisplayView;
         QList<UBBoardView*> mPreviousViews;
 
-        UBGraphicsScene *mBlackScene;
+        std::shared_ptr<UBGraphicsScene> mBlackScene;
 
         UBScreenMirror* mMirror;
 

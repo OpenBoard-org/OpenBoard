@@ -203,9 +203,9 @@ void UBGraphicsSvgItem::setRenderingQuality(RenderingQuality pRenderingQuality)
 }
 
 
-UBGraphicsScene* UBGraphicsSvgItem::scene()
+std::shared_ptr<UBGraphicsScene> UBGraphicsSvgItem::scene()
 {
-    return qobject_cast<UBGraphicsScene*>(QGraphicsItem::scene());
+    return qobject_cast<std::shared_ptr<UBGraphicsScene>>(QGraphicsItem::scene());
 }
 
 

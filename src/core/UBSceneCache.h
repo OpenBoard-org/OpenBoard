@@ -72,24 +72,24 @@ inline uint qHash(const UBSceneCacheID &id)
     return qHash(id.pageIndex);
 }
 
-class UBSceneCache : public QHash<UBSceneCacheID, UBGraphicsScene*>
+class UBSceneCache : public QHash<UBSceneCacheID, std::shared_ptr<UBGraphicsScene>>
 {
     public:
 
         UBSceneCache();
         virtual ~UBSceneCache();
 
-        UBGraphicsScene* createScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex, bool useUndoRedoStack);
+        std::shared_ptr<UBGraphicsScene> createScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex, bool useUndoRedoStack);
 
-        void insert (std::shared_ptr<UBDocumentProxy> proxy, int pageIndex, UBGraphicsScene* scene );
+        void insert (std::shared_ptr<UBDocumentProxy> proxy, int pageIndex, std::shared_ptr<UBGraphicsScene> scene );
 
         bool contains(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex) const;
 
-        UBGraphicsScene* value(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
+        std::shared_ptr<UBGraphicsScene> value(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
 
-        UBGraphicsScene* value(const UBSceneCacheID& key) const
+        std::shared_ptr<UBGraphicsScene> value(const UBSceneCacheID& key) const
         {
-            return QHash<UBSceneCacheID, UBGraphicsScene*>::value(key);
+            return QHash<UBSceneCacheID, std::shared_ptr<UBGraphicsScene>>::value(key);
         }
 
         void removeScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);

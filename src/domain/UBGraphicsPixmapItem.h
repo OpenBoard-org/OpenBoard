@@ -56,7 +56,7 @@ class UBGraphicsPixmapItem : public QObject, public QGraphicsPixmapItem, public 
 
         virtual void copyItemParameters(UBItem *copy) const;
 
-        virtual UBGraphicsScene* scene();
+        virtual std::shared_ptr<UBGraphicsScene> scene();
 
         Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 

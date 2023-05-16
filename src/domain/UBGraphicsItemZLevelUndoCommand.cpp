@@ -27,7 +27,7 @@
 
 #include "UBGraphicsItemZLevelUndoCommand.h"
 
-UBGraphicsItemZLevelUndoCommand::UBGraphicsItemZLevelUndoCommand(UBGraphicsScene *_scene, const QList<QGraphicsItem*>& _items, qreal _previousZLevel, UBZLayerController::moveDestination dest):UBUndoCommand(){
+UBGraphicsItemZLevelUndoCommand::UBGraphicsItemZLevelUndoCommand(std::shared_ptr<UBGraphicsScene> _scene, const QList<QGraphicsItem*>& _items, qreal _previousZLevel, UBZLayerController::moveDestination dest):UBUndoCommand(){
     Q_ASSERT(_scene != NULL);
     mpScene = _scene;
     mItems = _items;
@@ -36,7 +36,7 @@ UBGraphicsItemZLevelUndoCommand::UBGraphicsItemZLevelUndoCommand(UBGraphicsScene
     mHack = false;
 }
 
-UBGraphicsItemZLevelUndoCommand::UBGraphicsItemZLevelUndoCommand(UBGraphicsScene *_scene, QGraphicsItem* _item, qreal _previousZLevel, UBZLayerController::moveDestination dest):UBUndoCommand(){
+UBGraphicsItemZLevelUndoCommand::UBGraphicsItemZLevelUndoCommand(std::shared_ptr<UBGraphicsScene> _scene, QGraphicsItem* _item, qreal _previousZLevel, UBZLayerController::moveDestination dest):UBUndoCommand(){
     Q_ASSERT(_scene != NULL);
     mpScene = _scene;
     if(NULL != _item)

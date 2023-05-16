@@ -41,7 +41,7 @@
 #include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBGraphicsPolygonItem.h"
 
-UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, const QSet<QGraphicsItem*>& pRemovedItems, const QSet<QGraphicsItem*>& pAddedItems, const GroupDataTable &groupsMap): UBUndoCommand()
+UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(std::shared_ptr<UBGraphicsScene> pScene, const QSet<QGraphicsItem*>& pRemovedItems, const QSet<QGraphicsItem*>& pAddedItems, const GroupDataTable &groupsMap): UBUndoCommand()
     , mScene(pScene)
     , mRemovedItems(pRemovedItems - pAddedItems)
     , mAddedItems(pAddedItems - pRemovedItems)
@@ -62,7 +62,7 @@ UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, co
     }
 }
 
-UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(UBGraphicsScene* pScene, QGraphicsItem* pRemovedItem, QGraphicsItem* pAddedItem) : UBUndoCommand()
+UBGraphicsItemUndoCommand::UBGraphicsItemUndoCommand(std::shared_ptr<UBGraphicsScene> pScene, QGraphicsItem* pRemovedItem, QGraphicsItem* pAddedItem) : UBUndoCommand()
     , mScene(pScene)
 {
 

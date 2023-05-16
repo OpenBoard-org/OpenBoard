@@ -64,7 +64,7 @@ void UBThumbnailAdaptor::generateMissingThumbnails(std::shared_ptr<UBDocumentPro
 
             int thumbCount = 0;
 
-            UBGraphicsScene* scene = UBSvgSubsetAdaptor::loadScene(proxy, iPageNo);
+            std::shared_ptr<UBGraphicsScene> scene = UBSvgSubsetAdaptor::loadScene(proxy, iPageNo);
 
             if (scene)
             {
@@ -111,7 +111,7 @@ void UBThumbnailAdaptor::load(std::shared_ptr<UBDocumentProxy> proxy, QList<std:
     }
 }
 
-void UBThumbnailAdaptor::persistScene(std::shared_ptr<UBDocumentProxy> proxy, UBGraphicsScene* pScene, int pageIndex, bool overrideModified)
+void UBThumbnailAdaptor::persistScene(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> pScene, int pageIndex, bool overrideModified)
 {
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
 

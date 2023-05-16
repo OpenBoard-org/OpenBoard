@@ -107,7 +107,7 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
         UBGraphicsTriangleOrientation getOrientation() const {return mOrientation;}
         QRectF rect() const {return boundingRect();}
 
-        UBGraphicsScene* scene() const;
+        std::shared_ptr<UBGraphicsScene> scene() const;
 
     protected:
 

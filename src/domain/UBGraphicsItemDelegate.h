@@ -263,7 +263,7 @@ class UBGraphicsItemDelegate : public QObject
 
         virtual QVariant itemChange(QGraphicsItem::GraphicsItemChange change,
                 const QVariant &value);
-        virtual UBGraphicsScene *castUBGraphicsScene();
+        virtual std::shared_ptr<UBGraphicsScene> castUBGraphicsScene();
         virtual void postpaint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 

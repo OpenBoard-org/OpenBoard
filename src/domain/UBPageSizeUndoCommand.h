@@ -39,7 +39,7 @@ class UBGraphicsScene;
 class UBPageSizeUndoCommand : public UBUndoCommand
 {
     public:
-        UBPageSizeUndoCommand(UBGraphicsScene* pScene, const QSize& previousSize, const QSize& newSize);
+        UBPageSizeUndoCommand(std::shared_ptr<UBGraphicsScene> pScene, const QSize& previousSize, const QSize& newSize);
         virtual ~UBPageSizeUndoCommand();
 
         virtual int getType() { return UBUndoType::undotype_PAGESIZE; };
@@ -49,7 +49,7 @@ class UBPageSizeUndoCommand : public UBUndoCommand
         virtual void redo();
 
     private:
-        UBGraphicsScene* mScene;
+        std::shared_ptr<UBGraphicsScene> mScene;
         QSize mPreviousSize;
         QSize mNewSize;
 

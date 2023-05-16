@@ -101,7 +101,7 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         QPainterPath           hingeShape() const;
         QPainterPath      pencilBaseShape() const;
         QPainterPath       pencilArmShape() const;
-        UBGraphicsScene*            scene() const;
+        std::shared_ptr<UBGraphicsScene>           scene() const;
         QColor                  drawColor() const;
         QColor            middleFillColor() const;
         QColor              edgeFillColor() const;

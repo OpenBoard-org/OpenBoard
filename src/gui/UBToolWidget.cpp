@@ -99,7 +99,7 @@ void UBToolWidget::initialize()
     if(!sUnpinPixmap)
         sUnpinPixmap = new QPixmap(":/images/unpin.svg");
 
-    UBGraphicsScene *wscene = dynamic_cast<UBGraphicsScene *>(mToolWidget->scene());
+    std::shared_ptr<UBGraphicsScene> wscene = dynamic_cast<std::shared_ptr<UBGraphicsScene>>(mToolWidget->scene());
     if (wscene)
     {
         wscene->removeItemFromDeletion(mToolWidget);

@@ -131,7 +131,7 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         void updatePosition();
 
         virtual UBItem* deepCopy() const override = 0;
-        virtual UBGraphicsScene* scene() override;
+        virtual std::shared_ptr<UBGraphicsScene> scene() override;
 
         static int widgetType(const QUrl& pUrl);
         static QString widgetName(const QUrl& pUrl);

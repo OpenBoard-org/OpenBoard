@@ -107,7 +107,7 @@ void UBExportFullPDF::saveOverlayPdf(std::shared_ptr<UBDocumentProxy> pDocumentP
 
         for(int pageIndex = 0 ; pageIndex < pDocumentProxy->pageCount(); pageIndex++)
         {
-            UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
+            std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
             // set background according to PDF export settings
             bool isDark = scene->isDarkBackground();
             UBPageBackground pageBackground = scene->pageBackground();
@@ -220,7 +220,7 @@ bool UBExportFullPDF::persistsDocument(std::shared_ptr<UBDocumentProxy> pDocumen
 
             for(int pageIndex = 0 ; pageIndex < existingPageCount; pageIndex++)
             {
-                UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
+                std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
                 UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(scene->backgroundObject());
 
                 if (pdfItem)

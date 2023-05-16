@@ -105,7 +105,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
     connect(mUninoteController, SIGNAL(imageCaptured(const QPixmap &, bool)), this, SLOT(addCapturedPixmap(const QPixmap &, bool)));
     connect(mUninoteController, SIGNAL(restoreUniboard()), this, SLOT(hideDesktop()));
 
-    mBlackScene = new UBGraphicsScene(0); // deleted by UBApplicationController::destructor
+    mBlackScene = std::make_shared<UBGraphicsScene>(UBGraphicsScene(0));
     mBlackScene->setBackground(true, UBPageBackground::plain);
 
     if (displayManager->numScreens() >= 2 && displayManager->useMultiScreen())
@@ -271,7 +271,7 @@ void UBApplicationController::adjustPreviousViews(int pActiveSceneIndex, std::sh
         {
             viewIndex--;
 
-            UBGraphicsScene* scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pActiveDocument, viewIndex);
+            std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pActiveDocument, viewIndex);
 
             if (scene)
             {

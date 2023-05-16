@@ -70,7 +70,7 @@ class UBGraphicsSvgItem: public QGraphicsSvgItem, public UBItem, public UBGraphi
 
         virtual void setRenderingQuality(RenderingQuality pRenderingQuality);
 
-        virtual UBGraphicsScene* scene();
+        virtual std::shared_ptr<UBGraphicsScene> scene();
 
         virtual UBGraphicsPixmapItem* toPixmapItem() const;
 

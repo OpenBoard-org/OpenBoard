@@ -88,7 +88,7 @@ class UBWidgetUniboardAPI : public QObject
     Q_PROPERTY(QString dropData MEMBER mDropData WRITE setDropData NOTIFY dropDataChanged SCRIPTABLE true)
 
 public:
-        UBWidgetUniboardAPI(UBGraphicsScene *pScene, UBGraphicsWidgetItem *widget = 0);
+        UBWidgetUniboardAPI(std::shared_ptr<UBGraphicsScene> pScene, UBGraphicsWidgetItem *widget = 0);
         ~UBWidgetUniboardAPI();
 
         QObject* messages() const;
@@ -97,7 +97,7 @@ public:
 
     public slots:
 
-        void setScene(UBGraphicsScene* pScene)
+        void setScene(std::shared_ptr<UBGraphicsScene> pScene)
         {
             mScene = pScene;
         }
@@ -283,7 +283,7 @@ private:
         bool supportedTypeHeader(const QString &) const;
         QString boolToStr(bool value) const {return value ? "true" : "false";}
 
-        UBGraphicsScene* mScene;
+        std::shared_ptr<UBGraphicsScene> mScene;
 
         UBGraphicsWidgetItem* mGraphicsWidget;
 

@@ -134,7 +134,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem
 
         virtual void copyItemParameters(UBItem *copy) const {Q_UNUSED(copy);}
 
-        UBGraphicsScene* sceneDeepCopy() const;
+        std::shared_ptr<UBGraphicsScene> sceneDeepCopy() const;
 
         void clearContent(clearCase pCase = clearItemsAndAnnotations);
         void saveWidgetSnapshots();

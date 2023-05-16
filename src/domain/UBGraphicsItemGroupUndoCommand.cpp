@@ -34,7 +34,7 @@
 #include "core/memcheck.h"
 
 
-UBGraphicsItemGroupUndoCommand::UBGraphicsItemGroupUndoCommand(UBGraphicsScene *pScene, UBGraphicsGroupContainerItem *pGroupCreated) : UBUndoCommand()
+UBGraphicsItemGroupUndoCommand::UBGraphicsItemGroupUndoCommand(std::shared_ptr<UBGraphicsScene> pScene, UBGraphicsGroupContainerItem *pGroupCreated) : UBUndoCommand()
   , mScene (pScene)
   , mGroup(pGroupCreated)
   , mFirstRedo(true)

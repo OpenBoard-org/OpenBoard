@@ -61,7 +61,7 @@ class UBGraphicsPolygonItem : public QGraphicsPolygonItem, public UBItem
 
         QColor color() const;
 
-        virtual UBGraphicsScene* scene();
+        virtual std::shared_ptr<UBGraphicsScene> scene();
 
         inline void subtract(UBGraphicsPolygonItem *pi)
         {

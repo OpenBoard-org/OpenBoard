@@ -55,7 +55,7 @@ protected:
 
     void paint();
 
-    virtual UBGraphicsScene* scene() const = 0;
+    virtual std::shared_ptr<UBGraphicsScene> scene() const = 0;
 
     virtual void rotateAroundCenter(qreal angle) = 0;
 

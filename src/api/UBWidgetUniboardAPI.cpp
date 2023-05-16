@@ -80,8 +80,8 @@ const QString tMimeText = "text/plain";
 //Name of path inside widget to store objects
 const QString objectsPath = "objects";
 
-UBWidgetUniboardAPI::UBWidgetUniboardAPI(UBGraphicsScene *pScene, UBGraphicsWidgetItem *widget)
-    : QObject(pScene)
+UBWidgetUniboardAPI::UBWidgetUniboardAPI(std::shared_ptr<UBGraphicsScene> pScene, UBGraphicsWidgetItem *widget)
+    : QObject(pScene.get())
     , mScene(pScene)
     , mGraphicsWidget(widget)
     , mIsVisible(false)

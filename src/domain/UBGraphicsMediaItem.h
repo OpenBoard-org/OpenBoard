@@ -73,7 +73,7 @@ public:
 
     virtual mediaType getMediaType() const = 0;
 
-    virtual UBGraphicsScene* scene();
+    virtual std::shared_ptr<UBGraphicsScene> scene();
     bool hasLinkedImage() const             { return haveLinkedImage; }
     virtual QUrl mediaFileUrl() const       { return mMediaFileUrl; }
     bool isMuted() const                    { return mMuted; }

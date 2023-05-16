@@ -66,7 +66,7 @@ UBGraphicsItemTransformUndoCommand::~UBGraphicsItemTransformUndoCommand()
 void UBGraphicsItemTransformUndoCommand::undo()
 {
     if (mSetToBackground) {
-        UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mItem->scene());
+        std::shared_ptr<UBGraphicsScene> scene = dynamic_cast<std::shared_ptr<UBGraphicsScene>>(mItem->scene());
         if (scene && scene->isBackgroundObject(mItem)) {
             scene->unsetBackgroundObject();
         }
@@ -85,7 +85,7 @@ void UBGraphicsItemTransformUndoCommand::undo()
 void UBGraphicsItemTransformUndoCommand::redo()
 {
     if (mSetToBackground) {
-        UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mItem->scene());
+        std::shared_ptr<UBGraphicsScene> scene = dynamic_cast<std::shared_ptr<UBGraphicsScene>>(mItem->scene());
         if (scene)
             scene->setAsBackgroundObject(mItem);
     }

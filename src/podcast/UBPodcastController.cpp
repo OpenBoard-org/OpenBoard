@@ -591,7 +591,7 @@ void UBPodcastController::processScenePaintEvent()
 
     if (!repaintRect.isNull())
     {
-        UBGraphicsScene *scene = bv->scene();
+        std::shared_ptr<UBGraphicsScene> scene = bv->scene();
 
         QPainter p(&mLatestCapture);
 
