@@ -1095,8 +1095,14 @@ void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, c
 
         // directly add local file to document without copying
         QFile file(fileName);
-        file.open(QIODevice::ReadOnly);
-        downloadFinished(true, formedUrl, QUrl(), contentType, file.readAll(), pPos, pSize, isBackground, internalData);
+        QByteArray data;
+
+        if (file.open(QIODevice::ReadOnly))
+        {
+            data = file.readAll();
+        }
+
+        downloadFinished(true, formedUrl, QUrl(), contentType, data, pPos, pSize, isBackground, internalData);
         file.close();
     }
     else

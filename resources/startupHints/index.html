@@ -8,60 +8,79 @@
         <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
         <script type="text/javascript">
             var current = 1, files_count = 0;
-            $(document).ready(function(){
+            async function init(){
                 var lang = (window.sankore)?sankore.lang.substr(0,2):"en", tmp = false;
-               
+
                 while(1){
-                    $.ajax({
-                        type: 'POST',
-                        url:'locales/' + lang + '/' + (files_count + 1) + '.html',
-                        async: false,
-                        success: function(data){
-                            files_count ++;
-                        },
-                        error: function(){
-                            if(files_count == 0 && lang != "en")
-                                lang = "en";
-                            else
-                                tmp = true;
-                        }
-                    });                    
+                    try {
+                        const data = await makeRequest('locales/' + lang + '/' + (files_count + 1) + '.html');
+                        files_count ++;
+                    } catch (error) {
+                        if(files_count == 0 && lang != "en")
+                            lang = "en";
+                        else
+                            tmp = true;
+                    }
+
                     if(tmp)
                         break;
-                }            
-            
+                }
+
                 if(files_count > 0){
 
                     // to have random hints
                     //current = Math.floor((Math.random()*files_count)+1);
-                
-                    $("#source").attr("src", "locales/" + lang + "/1.html");                    
+
+                    $("#source").attr("src", "locales/" + lang + "/1.html");
                     $("#right").click(function(){
                         if(current < files_count){
                             current++;
                         } else
                             current = 1;
-                            
+
                         $("#source").attr("src", "locales/" + lang + "/" + current + ".html");
                     })
-                    
+
                     $("#left").click(function(){
                         if(current > 1){
-                            current--;                            
+                            current--;
                         } else
                             current = files_count;
-                            
+
                         $("#source").attr("src", "locales/" + lang + "/" + current + ".html");
                     })
-                } else 
-                    $("#source").attr("src", "locales/" + lang + "/error.html");               
-                
-            });
-            
-            function setTitle(){
-                var iframe = document.getElementById("source");                    
-                $("#title span").html(current + "/" + files_count + ": " + iframe.contentWindow.document.getElementsByTagName("title")[0].innerHTML);
+                } else
+                    $("#source").attr("src", "locales/" + lang + "/error.html");
+
             }
+
+            function makeRequest(url) {
+                return new Promise(function(resolve, reject) {
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        success: function(data) {
+                            resolve(data);
+                        },
+                        error: function(error) {
+                            reject(error);
+                        }
+                    });
+                });
+            }
+
+            function setTitle(){
+                var iframe = document.getElementById("source");
+                var title = iframe.contentWindow.document.getElementsByTagName("title");
+
+                if (title.length) {
+                    $("#title span").html(current + "/" + files_count + ": " + title[0].innerHTML);
+                }
+            }
+
+            $(document).ready(function(){
+                init();
+            });
         </script>
     </head>
     <body>
