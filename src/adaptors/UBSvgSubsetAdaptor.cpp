@@ -385,7 +385,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
             {
                 if (!mScene)
                 {
-                    mScene = std::make_shared<UBGraphicsScene>(UBGraphicsScene(mProxy, false));
+                    mScene = std::make_shared<UBGraphicsScene>(mProxy, false);
                     mScene->setModified(false);
                 }
 
