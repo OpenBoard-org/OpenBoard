@@ -733,6 +733,14 @@ void UBApplicationController::importFile(const QString& pFilePath)
             {
                 UBApplication::boardController->setActiveDocumentScene(document, 0, true, true);
             }
+
+            if (UBApplication::documentController)
+            {
+                if (UBApplication::documentController->selectedDocument() == document)
+                {
+                    UBApplication::documentController->reloadThumbnails();
+                }
+            }
         }
         else if (mMainMode == Document)
         {
