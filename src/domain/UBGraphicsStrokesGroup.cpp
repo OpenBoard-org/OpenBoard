@@ -135,7 +135,6 @@ void UBGraphicsStrokesGroup::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsStrokesGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    Delegate()->commitUndoStep();
     event->accept();
 
     Delegate()->mouseReleaseEvent(event);

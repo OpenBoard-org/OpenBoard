@@ -706,7 +706,6 @@ void UBGraphicsItemDelegate::commitUndoStep()
 
     if (mDelegated->pos() != mPreviousPosition
         || mDelegated->transform() != mPreviousTransform
-        || mDelegated->zValue() != mPreviousZValue
         || (resizableItem && resizableItem->size() != mPreviousSize))
     {
         UBGraphicsItemTransformUndoCommand *uc =
