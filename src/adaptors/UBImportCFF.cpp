@@ -121,7 +121,7 @@ bool UBImportCFF::addFileToDocument(std::shared_ptr<UBDocumentProxy> pDocument, 
         //TODO convert expanded CFF file content to the destination document
         //create destination document proxy
         //fill metadata and save
-        std::shared_ptr<UBDocumentProxy> destDocument = std::make_shared<UBDocumentProxy>(UBDocumentProxy(UBPersistenceManager::persistenceManager()->generateUniqueDocumentPath()));
+        std::shared_ptr<UBDocumentProxy> destDocument = std::make_shared<UBDocumentProxy>(UBPersistenceManager::persistenceManager()->generateUniqueDocumentPath());
         QDir dir;
         dir.mkdir(destDocument->persistencePath());
 
@@ -265,7 +265,7 @@ std::shared_ptr<UBDocumentProxy> UBImportCFF::importFile(const QFile& pFile, con
     else{
         //create destination document proxy
         //fill metadata and save
-        std::shared_ptr<UBDocumentProxy> destDocument = std::make_shared<UBDocumentProxy>(UBDocumentProxy(UBPersistenceManager::persistenceManager()->generateUniqueDocumentPath()));
+        std::shared_ptr<UBDocumentProxy> destDocument = std::make_shared<UBDocumentProxy>(UBPersistenceManager::persistenceManager()->generateUniqueDocumentPath());
         QDir dir;
         dir.mkdir(destDocument->persistencePath());
         if (pGroup.length() > 0)

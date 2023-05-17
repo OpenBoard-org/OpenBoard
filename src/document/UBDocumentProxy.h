@@ -43,10 +43,11 @@ class UBDocumentProxy
     public:
 
         UBDocumentProxy();
-        UBDocumentProxy(const UBDocumentProxy &rValue);
+        UBDocumentProxy(const UBDocumentProxy &rValue) = delete;
+        UBDocumentProxy& operator= (const UBDocumentProxy&) = delete;
         UBDocumentProxy(const QString& pPersistencePath);
 
-        virtual ~UBDocumentProxy();
+        ~UBDocumentProxy();
 
         std::shared_ptr<UBDocumentProxy> deepCopy() const;
         bool theSameDocument(std::shared_ptr<UBDocumentProxy> proxy);

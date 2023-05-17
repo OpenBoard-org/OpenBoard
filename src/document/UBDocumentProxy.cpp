@@ -52,17 +52,6 @@ UBDocumentProxy::UBDocumentProxy()
     init();
 }
 
-UBDocumentProxy::UBDocumentProxy(const UBDocumentProxy &rValue)
-{
-    mPersistencePath = rValue.mPersistencePath;
-    mMetaDatas = rValue.mMetaDatas;
-    mIsModified = rValue.mIsModified;
-    mPageCount = rValue.mPageCount;
-    mNeedsCleanup = rValue.mNeedsCleanup;
-    mLastVisitedIndex = rValue.mLastVisitedIndex;
-    mIsInFavoriteList = rValue.mIsInFavoriteList;
-}
-
 
 UBDocumentProxy::UBDocumentProxy(const QString& pPersistancePath)
     : mPageCount(0)
@@ -102,7 +91,7 @@ UBDocumentProxy::~UBDocumentProxy()
 
 std::shared_ptr<UBDocumentProxy> UBDocumentProxy::deepCopy() const
 {
-    std::shared_ptr<UBDocumentProxy> copy = std::make_shared<UBDocumentProxy>(UBDocumentProxy());
+    std::shared_ptr<UBDocumentProxy> copy = std::make_shared<UBDocumentProxy>();
 
     copy->mPersistencePath = QString(mPersistencePath);
     copy->mMetaDatas = QMap<QString, QVariant>(mMetaDatas);

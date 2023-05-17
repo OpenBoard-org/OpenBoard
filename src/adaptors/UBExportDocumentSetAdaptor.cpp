@@ -86,7 +86,7 @@ void UBExportDocumentSetAdaptor::persist(std::shared_ptr<UBDocumentProxy> pDocum
         }
 
         UBDocumentTreeNode* node = treeModel->nodeFromIndex(treeViewParentIndex);
-        std::shared_ptr<UBDocumentProxy> proxy = std::make_shared<UBDocumentProxy>(UBDocumentProxy());
+        std::shared_ptr<UBDocumentProxy> proxy = std::make_shared<UBDocumentProxy>();
         proxy->setMetaData(UBSettings::documentName, node->displayName());
         filename = askForFileName(proxy, tr("Export as UBX File"));
     }
