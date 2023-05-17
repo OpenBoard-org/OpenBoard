@@ -311,8 +311,7 @@ UBDocumentTreeNode *UBDocumentTreeNode::clone()
     return new UBDocumentTreeNode(this->mType
                                   , this->mName
                                   , this->mDisplayName
-                                  , this->mProxy ? std::make_shared<UBDocumentProxy>(UBDocumentProxy(*this->mProxy))
-                                                 : nullptr);
+                                  , this->mProxy);
 }
 
 QString UBDocumentTreeNode::dirPathInHierarchy()

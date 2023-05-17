@@ -284,7 +284,7 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocumentProxyStruct
             return nullptr;
         }
 
-        std::shared_ptr<UBDocumentProxy> docProxy = std::make_shared<UBDocumentProxy>(UBDocumentProxy(fullPath));
+        std::shared_ptr<UBDocumentProxy> docProxy = std::make_shared<UBDocumentProxy>(fullPath);
         foreach(QString key, metadatas.keys())
         {
             docProxy->setMetaData(key, metadatas.value(key));
@@ -593,12 +593,12 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocument(const QStr
 {
     std::shared_ptr<UBDocumentProxy> doc;
     if(directory.length() != 0 ){
-        doc = std::make_shared<UBDocumentProxy>(UBDocumentProxy(directory));
+        doc = std::make_shared<UBDocumentProxy>(directory);
         doc->setPageCount(pageCount);
     }
     else{
         checkIfDocumentRepositoryExists();
-        doc = std::make_shared<UBDocumentProxy>(UBDocumentProxy());
+        doc = std::make_shared<UBDocumentProxy>();
     }
 
     if (pGroupName.length() > 0)
@@ -669,7 +669,7 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocumentFromDir(con
 {
     checkIfDocumentRepositoryExists();
 
-    std::shared_ptr<UBDocumentProxy> doc = std::make_shared<UBDocumentProxy>(UBDocumentProxy(pDocumentDirectory)); // deleted in UBPersistenceManager::destructor
+    std::shared_ptr<UBDocumentProxy> doc = std::make_shared<UBDocumentProxy>(pDocumentDirectory); // deleted in UBPersistenceManager::destructor
 
     QMap<QString, QVariant> metadatas = UBMetadataDcSubsetAdaptor::load(pDocumentDirectory);
 
@@ -741,7 +741,7 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::duplicateDocument(std::sh
 {
     checkIfDocumentRepositoryExists();
 
-    std::shared_ptr<UBDocumentProxy> copy = std::make_shared<UBDocumentProxy>(UBDocumentProxy());
+    std::shared_ptr<UBDocumentProxy> copy = std::make_shared<UBDocumentProxy>();
 
     generatePathIfNeeded(copy);
 

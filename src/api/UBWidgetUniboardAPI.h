@@ -283,7 +283,7 @@ private:
         bool supportedTypeHeader(const QString &) const;
         QString boolToStr(bool value) const {return value ? "true" : "false";}
 
-        std::shared_ptr<UBGraphicsScene> mScene;
+        std::weak_ptr<UBGraphicsScene> mScene;
 
         UBGraphicsWidgetItem* mGraphicsWidget;
 
