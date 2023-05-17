@@ -249,10 +249,16 @@ void UBBoardPaletteManager::setupPalettes()
 
     backgroundsActions << UBApplication::mainWindow->actionPlainLightBackground;
     backgroundsActions << UBApplication::mainWindow->actionCrossedLightBackground;
-    backgroundsActions << UBApplication::mainWindow->actionRuledLightBackground;
+    if(UBSettings::settings()->isSeyesRuledBackground())
+        backgroundsActions << UBApplication::mainWindow->actionSeyesRuledLightBackground;
+    else
+        backgroundsActions << UBApplication::mainWindow->actionRuledLightBackground;
     backgroundsActions << UBApplication::mainWindow->actionPlainDarkBackground;
     backgroundsActions << UBApplication::mainWindow->actionCrossedDarkBackground;
-    backgroundsActions << UBApplication::mainWindow->actionRuledDarkBackground;
+    if(UBSettings::settings()->isSeyesRuledBackground())
+        backgroundsActions << UBApplication::mainWindow->actionSeyesRuledDarkBackground;
+    else
+        backgroundsActions << UBApplication::mainWindow->actionRuledDarkBackground;
 
     mBackgroundsPalette = new UBBackgroundPalette(backgroundsActions, mContainer);
     mBackgroundsPalette->setButtonIconSize(QSize(128, 128));
@@ -435,9 +441,11 @@ void UBBoardPaletteManager::connectPalettes()
     connect(UBApplication::mainWindow->actionPlainLightBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
     connect(UBApplication::mainWindow->actionCrossedLightBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
     connect(UBApplication::mainWindow->actionRuledLightBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
+    connect(UBApplication::mainWindow->actionSeyesRuledLightBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
     connect(UBApplication::mainWindow->actionPlainDarkBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
     connect(UBApplication::mainWindow->actionCrossedDarkBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
     connect(UBApplication::mainWindow->actionRuledDarkBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
+    connect(UBApplication::mainWindow->actionSeyesRuledDarkBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
     connect(UBApplication::mainWindow->actionPodcast, SIGNAL(triggered(bool)), this, SLOT(tooglePodcastPalette(bool)));
 
     connect(UBApplication::mainWindow->actionAddItemToCurrentPage, SIGNAL(triggered()), this, SLOT(addItemToCurrentPage()));
@@ -532,7 +540,8 @@ void UBBoardPaletteManager::changeBackground()
     if (UBApplication::mainWindow->actionCrossedLightBackground->isChecked())
         UBApplication::boardController->changeBackground(false, UBPageBackground::crossed);
 
-    else if (UBApplication::mainWindow->actionRuledLightBackground->isChecked())
+    else if (UBApplication::mainWindow->actionRuledLightBackground->isChecked() ||
+             UBApplication::mainWindow->actionSeyesRuledLightBackground->isChecked())
         UBApplication::boardController->changeBackground(false, UBPageBackground::ruled);
 
     else if (UBApplication::mainWindow->actionPlainDarkBackground->isChecked())
@@ -541,7 +550,8 @@ void UBBoardPaletteManager::changeBackground()
     else if (UBApplication::mainWindow->actionCrossedDarkBackground->isChecked())
         UBApplication::boardController->changeBackground(true, UBPageBackground::crossed);
 
-    else if (UBApplication::mainWindow->actionRuledDarkBackground->isChecked())
+    else if (UBApplication::mainWindow->actionRuledDarkBackground->isChecked() ||
+             UBApplication::mainWindow->actionSeyesRuledDarkBackground->isChecked())
         UBApplication::boardController->changeBackground(true, UBPageBackground::ruled);
 
     else
