@@ -70,7 +70,7 @@ class UBGraphicsStroke
 
     private:
 
-        std::shared_ptr<UBGraphicsScene> mScene;
+        std::weak_ptr<UBGraphicsScene> mScene;
 
         QList<UBGraphicsPolygonItem*> mPolygons;
 

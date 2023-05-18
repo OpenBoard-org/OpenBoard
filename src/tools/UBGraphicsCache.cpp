@@ -35,25 +35,14 @@
 
 #include "board/UBBoardController.h"
 #include "board/UBBoardView.h"
-#include "domain/UBGraphicsScene.h"
 
 #include "core/memcheck.h"
 
-QMap<std::shared_ptr<UBGraphicsScene>, UBGraphicsCache*> UBGraphicsCache::sInstances;
-
-UBGraphicsCache* UBGraphicsCache::instance(std::shared_ptr<UBGraphicsScene> scene)
-{
-    if (!sInstances.contains(scene))
-        sInstances.insert(scene, new UBGraphicsCache(scene));
-    return sInstances[scene];
-}
-
-UBGraphicsCache::UBGraphicsCache(std::shared_ptr<UBGraphicsScene> scene) : QGraphicsRectItem()
+UBGraphicsCache::UBGraphicsCache() : QGraphicsRectItem()
   , mMaskColor(Qt::black)
   , mMaskShape(eMaskShape_Circle)
   , mShapeWidth(100)
   , mDrawMask(false)
-  , mScene(scene)
 {
     // Get the board size and pass it to the shape
     QRect boardRect = UBApplication::boardController->displayView()->rect();
@@ -64,12 +53,11 @@ UBGraphicsCache::UBGraphicsCache(std::shared_ptr<UBGraphicsScene> scene) : QGrap
 
 UBGraphicsCache::~UBGraphicsCache()
 {
-    sInstances.remove(mScene);
 }
 
 UBItem* UBGraphicsCache::deepCopy() const
 {
-    UBGraphicsCache* copy = new UBGraphicsCache(mScene);
+    UBGraphicsCache* copy = new UBGraphicsCache();
 
     copyItemParameters(copy);
 

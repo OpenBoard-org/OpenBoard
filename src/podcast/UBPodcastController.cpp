@@ -456,6 +456,8 @@ void UBPodcastController::stop()
 
         mVideoEncoder->stop();
     }
+
+    mSourceScene = nullptr;
 }
 
 

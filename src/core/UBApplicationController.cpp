@@ -128,6 +128,7 @@ UBApplicationController::~UBApplicationController()
         delete view;
     }
     delete mMirror;
+    delete mUninoteController;
 
     delete(mOpenSankoreImporter);
     mOpenSankoreImporter = NULL;

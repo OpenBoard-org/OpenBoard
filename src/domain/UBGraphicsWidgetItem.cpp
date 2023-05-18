@@ -504,9 +504,8 @@ QString UBGraphicsWidgetItem::iconFilePath(const QUrl& pUrl)
     return file;
 }
 
-void UBGraphicsWidgetItem::activeSceneChanged()
+void UBGraphicsWidgetItem::initAPI()
 {
-    qDebug() << "Active scene changed, register/update API";
     registerAPI();
 }
 
@@ -1019,8 +1018,6 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
 
     if (!f.exists())
         mMainHtmlUrl = QUrl(mMainHtmlFileName);
-
-    connect(UBApplication::boardController, SIGNAL(activeSceneChanged()), this, SLOT(activeSceneChanged()));
 
     mWebEngineView->load(mMainHtmlUrl);
 

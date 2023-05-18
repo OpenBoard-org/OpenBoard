@@ -35,18 +35,14 @@
 #include <QGraphicsVideoItem>
 
 #include "frameworks/UBGeometryUtils.h"
-#include "frameworks/UBPlatformUtils.h"
 
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 #include "core/UBApplicationController.h"
-#include "core/UBDisplayManager.h"
 #include "core/UBPersistenceManager.h"
 #include "core/UBTextTools.h"
 
 #include "gui/UBMagnifer.h"
-#include "gui/UBMainWindow.h"
-#include "gui/UBToolWidget.h"
 #include "gui/UBResources.h"
 
 #include "tools/UBGraphicsRuler.h"
@@ -343,6 +339,7 @@ UBGraphicsScene::UBGraphicsScene(std::shared_ptr<UBDocumentProxy> document, bool
     , mDrawWithCompass(false)
     , mCurrentPolygon(0)
     , mSelectionFrame(0)
+    , mGraphicsCache(nullptr)
 {
     UBCoreGraphicsScene::setObjectName("BoardScene");
     setItemIndexMethod(BspTreeIndex);
@@ -379,6 +376,11 @@ UBGraphicsScene::~UBGraphicsScene()
 
     if (mZLayerController)
         delete mZLayerController;
+
+    if (mGraphicsCache)
+    {
+        delete mGraphicsCache;
+    }
 }
 
 void UBGraphicsScene::selectionChangedProcessing()
@@ -1455,7 +1457,8 @@ std::shared_ptr<UBGraphicsScene> UBGraphicsScene::sceneDeepCopy() const
 
 UBItem* UBGraphicsScene::deepCopy() const
 {
-    return sceneDeepCopy().get();
+    qWarning() << "UBGraphicsScene::deepCopy must not be called";
+    return nullptr;
 }
 
 void UBGraphicsScene::clearContent(clearCase pCase)
@@ -1733,7 +1736,6 @@ void UBGraphicsScene::addGraphicsWidget(UBGraphicsWidgetItem* graphicsWidget, co
     graphicsWidget->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
     addItem(graphicsWidget);
-    graphicsWidget->activeSceneChanged();
 
     qreal ssf = 1 / UBApplication::boardController->systemScaleFactor();
 
@@ -1978,6 +1980,13 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
 
     if (!mTools.contains(item))
       ++mItemCount;
+
+    auto widget = dynamic_cast<UBGraphicsWidgetItem*>(item);
+
+    if (widget)
+    {
+        widget->initAPI();
+    }
 }
 
 void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
@@ -2432,7 +2441,8 @@ void UBGraphicsScene::addCompass(QPointF center)
 
 void UBGraphicsScene::addCache()
 {
-    UBGraphicsCache* cache = UBGraphicsCache::instance(shared_from_this());
+    UBGraphicsCache* cache = graphicsCache();
+
     if (!items().contains(cache)) {
         addItem(cache);
 
@@ -2443,6 +2453,16 @@ void UBGraphicsScene::addCache()
         UBApplication::boardController->notifyCache(true);
         UBApplication::boardController->notifyPageChanged();
     }
+}
+
+UBGraphicsCache* UBGraphicsScene::graphicsCache()
+{
+    if (!mGraphicsCache)
+    {
+        mGraphicsCache = new UBGraphicsCache;
+    }
+
+    return mGraphicsCache;
 }
 
 void UBGraphicsScene::addMask(const QPointF &center)

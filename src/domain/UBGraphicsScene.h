@@ -35,7 +35,6 @@
 #include "core/UB.h"
 
 #include "UBItem.h"
-#include "tools/UBGraphicsCurtainItem.h"
 
 class UBGraphicsPixmapItem;
 class UBGraphicsSvgItem;
@@ -247,6 +246,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
 
         void addMask(const QPointF &center = QPointF());
         void addCache();
+        UBGraphicsCache* graphicsCache();
 
         class SceneViewState
         {
@@ -498,6 +498,8 @@ public slots:
         bool mDrawWithCompass;
         UBGraphicsPolygonItem *mCurrentPolygon;
         UBSelectionFrame *mSelectionFrame;
+
+        UBGraphicsCache* mGraphicsCache;
 };
 
 

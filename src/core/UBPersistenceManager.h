@@ -193,6 +193,7 @@ private:
         QProgressDialog mProgress;
         QFutureWatcher<void> futureWatcher;
         UBPersistenceWorker* mWorker;
+        QList<std::shared_ptr<UBGraphicsScene>> mScenesToSave;
 
         QThread* mThread;
         bool mIsWorkerFinished;
@@ -207,7 +208,7 @@ private:
         void errorString(QString error);
         void onSceneLoaded(QByteArray,std::shared_ptr<UBDocumentProxy>,int);
         void onWorkerFinished();
-
+        void onScenePersisted(UBGraphicsScene* scene);
 };
 
 
