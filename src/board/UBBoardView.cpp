@@ -203,7 +203,7 @@ std::shared_ptr<UBGraphicsScene> UBBoardView::scene ()
 void UBBoardView::keyPressEvent (QKeyEvent *event)
 {
     // send to the scene anyway
-    //QApplication::sendEvent (scene(), event);
+    QApplication::sendEvent (scene().get(), event);
 
     if (!event->isAccepted ())
     {
