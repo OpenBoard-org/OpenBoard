@@ -37,7 +37,7 @@ UBPersistenceWorker::UBPersistenceWorker(QObject *parent) :
 {
 }
 
-void UBPersistenceWorker::saveScene(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> scene, const int pageIndex)
+void UBPersistenceWorker::saveScene(std::shared_ptr<UBDocumentProxy> proxy, UBGraphicsScene *scene, const int pageIndex)
 {
     PersistenceInformation entry = {WriteScene, proxy, scene, pageIndex};
 
@@ -74,7 +74,7 @@ void UBPersistenceWorker::process()
     do{
         PersistenceInformation info = saves.takeFirst();
         if(info.action == WriteScene){
-            UBSvgSubsetAdaptor::persistScene(info.proxy, info.scene, info.sceneIndex);
+            UBSvgSubsetAdaptor::persistScene(info.proxy, info.scene->shared_from_this(), info.sceneIndex);
             emit scenePersisted(info.scene);
         }
         else if (info.action == ReadScene){

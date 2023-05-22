@@ -120,6 +120,7 @@ UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     connect(mWorker, SIGNAL(finished()), mWorker, SLOT(deleteLater()));
     connect(mThread, SIGNAL(finished()), mThread, SLOT(deleteLater()));
     connect(mWorker, SIGNAL(sceneLoaded(QByteArray,std::shared_ptr<UBDocumentProxy>,int)), this, SLOT(onSceneLoaded(QByteArray,std::shared_ptr<UBDocumentProxy>,int)));
+    connect(mWorker, &UBPersistenceWorker::scenePersisted, this, &UBPersistenceManager::onScenePersisted);
 
     mThread->start();
 }
@@ -144,6 +145,12 @@ void UBPersistenceManager::destroy()
 void UBPersistenceManager::onWorkerFinished()
 {
     mIsWorkerFinished = true;
+}
+
+void UBPersistenceManager::onScenePersisted(UBGraphicsScene *scene)
+{
+    // delete the copy
+    mScenesToSave.removeAll(scene->shared_from_this());
 }
 
 UBPersistenceManager::~UBPersistenceManager()
@@ -1160,8 +1167,10 @@ void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy>
         else
         {
            std::shared_ptr<UBGraphicsScene> copiedScene = pScene->sceneDeepCopy();
-           copiedScene->moveToThread(mThread);
-           mWorker->saveScene(pDocumentProxy, copiedScene, pSceneIndex);
+           mWorker->saveScene(pDocumentProxy, copiedScene.get(), pSceneIndex);
+
+           // keep copiedScene alive until saving is finished
+           mScenesToSave.append(copiedScene);
         }
 
         UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);

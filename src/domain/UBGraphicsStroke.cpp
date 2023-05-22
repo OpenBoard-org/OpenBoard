@@ -262,6 +262,8 @@ UBGraphicsStroke* UBGraphicsStroke::simplify()
     QList<strokePoint> newStrokePoints;
     int i(0);
 
+    auto scene = mScene.lock();
+
     while (i < points.size()) {
         bool drawCurve = false;
 
@@ -283,7 +285,7 @@ UBGraphicsStroke* UBGraphicsStroke::simplify()
             drawCurve = true;
 
         if (drawCurve) {
-            UBGraphicsPolygonItem* poly = mScene->polygonToPolygonItem(UBGeometryUtils::curveToPolygon(newStrokePoints, true, true));
+            UBGraphicsPolygonItem* poly = scene->polygonToPolygonItem(UBGeometryUtils::curveToPolygon(newStrokePoints, true, true));
             //poly->setColor(QColor(rand()%256, rand()%256, rand()%256, poly->brush().color().alpha())); // useful for debugging
 
             // Subtract overlapping polygons if the stroke is translucent
@@ -301,7 +303,7 @@ UBGraphicsStroke* UBGraphicsStroke::simplify()
     }
 
     if (newStrokePoints.size() > 0) {
-        UBGraphicsPolygonItem* poly = mScene->polygonToPolygonItem(UBGeometryUtils::curveToPolygon(newStrokePoints, true, true));
+        UBGraphicsPolygonItem* poly = scene->polygonToPolygonItem(UBGeometryUtils::curveToPolygon(newStrokePoints, true, true));
 
         if (!poly->brush().isOpaque()) {
             foreach(UBGraphicsPolygonItem* prev, newPolygons)

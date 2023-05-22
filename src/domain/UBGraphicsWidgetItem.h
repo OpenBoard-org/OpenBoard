@@ -138,7 +138,7 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         static QString iconFilePath(const QUrl& pUrl);
 
     public slots:
-        void activeSceneChanged();
+        void initAPI();
         void freeze();
         void unFreeze();
         void setWebActive(bool active);
