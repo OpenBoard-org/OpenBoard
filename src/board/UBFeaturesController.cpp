@@ -658,6 +658,7 @@ void UBFeaturesController::addToFavorite(const QUrl &path, const QString &name ,
             }
 
             favoriteSet->insert(path);
+            saveFavoriteList();
         }
     }
 
