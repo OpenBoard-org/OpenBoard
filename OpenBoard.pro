@@ -176,8 +176,6 @@ macx {
    LIBS += -framework CoreMedia
    LIBS += -lcrypto
 
-   LIBS += -L/usr/local/opt/openssl/lib
-
    # quazip depends on QT. Current is 5.14, so if you wish to build
    # OB using a previous QT version, you have to build your own quazip,
    # otherwise it won't link.
@@ -199,7 +197,7 @@ macx {
    INCLUDEPATH += /opt/local/include/poppler
 
    QMAKE_MAC_SDK = macosx
-   QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.15
+   QMAKE_MACOSX_DEPLOYMENT_TARGET = 12
 
    # For universal builds
    # QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64"
