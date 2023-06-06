@@ -646,11 +646,16 @@ void UBGraphicsVideoItem::videoSizeChanged(QSizeF newSize)
     // We don't want the video item to resize when the video is stopped or finished;
     // and in those cases, the new size is reported as (0, 0).
 
+    // In OSX, nativeSizeChanged is called when the video starts, but with the initial size of the video,
+    // not (0,0), so we lose user own resizes if we perform it.
+#ifndef Q_OS_OSX
     if (newSize != QSizeF(0,0))
         this->setSize(newSize.width(), newSize.height());
-
     else // Make sure the toolbar doesn't disappear
         Delegate()->showToolBar(false);
+#else
+    Q_UNUSED(newSize);
+#endif
 }
 
 void UBGraphicsVideoItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
