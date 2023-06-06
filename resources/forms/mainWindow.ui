@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1342</width>
+    <width>1695</width>
     <height>223</height>
    </rect>
   </property>
@@ -31,6 +31,11 @@
   </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QToolBar" name="boardToolBar">
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
    <property name="contextMenuPolicy">
     <enum>Qt::PreventContextMenu</enum>
    </property>
@@ -45,9 +50,12 @@
    </property>
    <property name="iconSize">
     <size>
-     <width>48</width>
+     <width>32</width>
      <height>32</height>
     </size>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
    </property>
    <property name="floatable">
     <bool>false</bool>
@@ -69,6 +77,7 @@
    <addaction name="actionForward"/>
    <addaction name="separator"/>
    <addaction name="actionErase"/>
+   <addaction name="separator"/>
    <addaction name="actionBoard"/>
    <addaction name="actionWeb"/>
    <addaction name="actionDocument"/>
@@ -76,6 +85,11 @@
    <addaction name="actionMenu"/>
   </widget>
   <widget class="QToolBar" name="webToolBar">
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
    <property name="contextMenuPolicy">
     <enum>Qt::PreventContextMenu</enum>
    </property>
@@ -90,7 +104,7 @@
    </property>
    <property name="iconSize">
     <size>
-     <width>48</width>
+     <width>32</width>
      <height>32</height>
     </size>
    </property>
@@ -121,6 +135,11 @@
    <addaction name="actionMenu"/>
   </widget>
   <widget class="QToolBar" name="documentToolBar">
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
    <property name="contextMenuPolicy">
     <enum>Qt::PreventContextMenu</enum>
    </property>
@@ -135,7 +154,7 @@
    </property>
    <property name="iconSize">
     <size>
-     <width>48</width>
+     <width>32</width>
      <height>32</height>
     </size>
    </property>
@@ -148,8 +167,6 @@
    <attribute name="toolBarBreak">
     <bool>true</bool>
    </attribute>
-   <addaction name="actionVirtualKeyboard"/>
-   <addaction name="separator"/>
    <addaction name="actionNewDocument"/>
    <addaction name="actionNewFolder"/>
    <addaction name="separator"/>
@@ -164,6 +181,7 @@
    <addaction name="actionOpen"/>
    <addaction name="actionAddToWorkingDocument"/>
    <addaction name="actionDocumentAdd"/>
+   <addaction name="separator"/>
    <addaction name="actionBoard"/>
    <addaction name="actionWeb"/>
    <addaction name="actionDocument"/>
@@ -187,6 +205,11 @@
    <property name="iconText">
     <string>Stylus</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
    <property name="shortcut">
     <string>Ctrl+T</string>
    </property>
@@ -205,6 +228,11 @@
    <property name="toolTip">
     <string>Change Background</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionUndo">
    <property name="icon">
@@ -213,6 +241,11 @@
    </property>
    <property name="text">
     <string>Undo</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
    <property name="shortcut">
     <string>Ctrl+Z</string>
@@ -225,6 +258,11 @@
    </property>
    <property name="text">
     <string>Redo</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
    <property name="shortcut">
     <string>Ctrl+Y</string>
@@ -241,6 +279,11 @@
    <property name="toolTip">
     <string>Previous Page</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
    <property name="shortcut">
     <string>PgUp</string>
    </property>
@@ -255,6 +298,11 @@
    </property>
    <property name="toolTip">
     <string>Next Page</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
    <property name="shortcut">
     <string>PgDown</string>
@@ -272,7 +320,12 @@
     <string>Documents</string>
    </property>
    <property name="toolTip">
-    <string>Manage Documents</string>
+    <string>Documents Mode</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
    <property name="shortcut">
     <string>Ctrl+D</string>
@@ -287,7 +340,12 @@
     <string>Web</string>
    </property>
    <property name="toolTip">
-    <string>Web Browsing</string>
+    <string>Web Mode</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
    <property name="shortcut">
     <string>Ctrl+W</string>
@@ -508,6 +566,11 @@
    <property name="toolTip">
     <string>Previous Page</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
    <property name="shortcut">
     <string>Left</string>
    </property>
@@ -523,6 +586,11 @@
    <property name="toolTip">
     <string>Next Page</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
    <property name="shortcut">
     <string>Right</string>
    </property>
@@ -537,6 +605,11 @@
    </property>
    <property name="toolTip">
     <string>Reload Current Page</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionHome">
@@ -584,7 +657,12 @@
     <string>Board</string>
    </property>
    <property name="toolTip">
-    <string>Display Board</string>
+    <string>Board Mode</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
    <property name="shortcut">
     <string>Ctrl+B</string>
@@ -603,6 +681,11 @@
    </property>
    <property name="toolTip">
     <string>Erase Content</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionPreferences">
@@ -646,6 +729,17 @@
    <property name="toolTip">
     <string>OpenBoard</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::TextHeuristicRole</enum>
+   </property>
+   <property name="priority">
+    <enum>QAction::HighPriority</enum>
+   </property>
   </action>
   <action name="actionDesktop">
    <property name="icon">
@@ -655,8 +749,16 @@
    <property name="text">
     <string>Show Desktop</string>
    </property>
+   <property name="iconText">
+    <string>Desktop</string>
+   </property>
    <property name="toolTip">
-    <string>Show Computer Desktop</string>
+    <string>Desktop Mode</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+H</string>
@@ -673,6 +775,11 @@
    <property name="toolTip">
     <string>Zoom In</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
    <property name="shortcut">
     <string>Ctrl++</string>
    </property>
@@ -687,6 +794,11 @@
    </property>
    <property name="toolTip">
     <string>Zoom Out</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
    <property name="shortcut">
     <string>Ctrl+-</string>
@@ -703,6 +815,11 @@
    <property name="toolTip">
     <string>Create a New Folder</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionNewDocument">
    <property name="icon">
@@ -714,6 +831,11 @@
    </property>
    <property name="toolTip">
     <string>Create a New Document</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionImport">
@@ -727,6 +849,11 @@
    <property name="toolTip">
     <string>Import a Document</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionExport">
    <property name="icon">
@@ -739,6 +866,11 @@
    <property name="toolTip">
     <string>Export a Document</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionOpen">
    <property name="icon">
@@ -750,6 +882,11 @@
    </property>
    <property name="toolTip">
     <string>Open Page in Board</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
@@ -766,6 +903,11 @@
    <property name="toolTip">
     <string>Duplicate Selected Content</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionDelete">
    <property name="icon">
@@ -778,6 +920,11 @@
    <property name="toolTip">
     <string>Delete Selected Content</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
    <property name="shortcut">
     <string>Del</string>
    </property>
@@ -788,10 +935,15 @@
      <normaloff>:/images/toolbar/addToWorkingDoc.png</normaloff>:/images/toolbar/addToWorkingDoc.png</iconset>
    </property>
    <property name="text">
-    <string>Add to Working Document</string>
+    <string>Add to document</string>
    </property>
    <property name="toolTip">
     <string>Add Selected Content to Open Document</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionDocumentAdd">
@@ -805,6 +957,11 @@
    <property name="toolTip">
     <string>Add Content to Document</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionRename">
    <property name="icon">
@@ -816,6 +973,11 @@
    </property>
    <property name="toolTip">
     <string>Rename Content</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
    <property name="menuRole">
     <enum>QAction::TextHeuristicRole</enum>
@@ -846,6 +1008,11 @@
    </property>
    <property name="toolTip">
     <string>Display Tools</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionMultiScreen">
@@ -940,6 +1107,11 @@
    <property name="toolTip">
     <string>Stop Loading Web Page</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionCut">
    <property name="icon">
@@ -1007,6 +1179,11 @@
    </property>
    <property name="toolTip">
     <string>Display Virtual Keyboard</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionPlainLightBackground">
@@ -1484,6 +1661,11 @@
    <property name="toolTip">
     <string>Create a New Page</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionNewPage">
    <property name="icon">
@@ -1754,10 +1936,15 @@
      <normalon>:/images/removeFromFavorites.png</normalon>:/images/addToFavorites.png</iconset>
    </property>
    <property name="text">
-    <string>Add to Favorites</string>
+    <string>Add to favorites</string>
    </property>
    <property name="toolTip">
     <string>Add Document to favorites</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionHintsAndTips">

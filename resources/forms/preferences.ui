@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>825</width>
-    <height>832</height>
+    <width>1074</width>
+    <height>566</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -89,64 +89,91 @@
        <string>Display</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_3">
-       <item row="16" column="0">
-        <widget class="QGroupBox" name="modeGroupBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+       <item row="0" column="0">
+        <widget class="QScrollArea" name="scrollArea">
+         <property name="widgetResizable">
+          <bool>true</bool>
          </property>
-         <property name="title">
-          <string>Mode</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_15">
-          <item row="0" column="0">
-           <spacer name="horizontalSpacer_5">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Preferred</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="1" rowspan="2">
-           <layout class="QGridLayout" name="gridLayout_16">
+         <widget class="QWidget" name="scrollAreaWidgetContents">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>-324</y>
+            <width>1018</width>
+            <height>765</height>
+           </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>783</width>
+            <height>765</height>
+           </size>
+          </property>
+          <widget class="QGroupBox" name="PDFGroupBox">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>416</y>
+             <width>1011</width>
+             <height>111</height>
+            </rect>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="title">
+            <string>PDF</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_13">
+            <item row="0" column="1" colspan="2">
+             <layout class="QGridLayout" name="PDFGridLayout">
+              <item row="3" column="0">
+               <widget class="QCheckBox" name="exportBackgroundGrid">
+                <property name="text">
+                 <string>Export background grid</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QCheckBox" name="enableQualityLossToIncreaseZoomPerfs">
+                <property name="text">
+                 <string>Improve zoom execution time (can slightly affect rendering quality)</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QCheckBox" name="exportBackgroundColor">
+                <property name="text">
+                 <string>Export background color</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
             <item row="0" column="0">
-             <widget class="QLabel" name="modeLabel">
-              <property name="text">
-               <string>Mode to start in:</string>
+             <spacer name="horizontalSpacer_11">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
               </property>
-             </widget>
+              <property name="sizeType">
+               <enum>QSizePolicy::Preferred</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
             </item>
-            <item row="0" column="1">
-             <widget class="QComboBox" name="startModeComboBox">
-              <item>
-               <property name="text">
-                <string>Board</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Desktop</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Documents</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <spacer name="horizontalSpacer_6">
+            <item row="0" column="3">
+             <spacer name="horizontalSpacer_12">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
@@ -159,524 +186,494 @@
              </spacer>
             </item>
            </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <spacer name="verticalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="18" column="0">
-        <spacer name="verticalSpacer_7">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="9" column="0">
-        <spacer name="keyboardSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="15" column="0">
-        <spacer name="modeSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="14" column="0">
-        <widget class="QGroupBox" name="PDFGroupBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="title">
-          <string>PDF</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_13">
-          <item row="0" column="1" colspan="2">
-           <layout class="QGridLayout" name="PDFGridLayout">
-            <item row="3" column="0">
-             <widget class="QCheckBox" name="exportBackgroundGrid">
-              <property name="text">
-               <string>Export background grid</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QCheckBox" name="enableQualityLossToIncreaseZoomPerfs">
-              <property name="text">
-               <string>Improve zoom execution time (can slightly affect rendering quality)</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="0">
-             <widget class="QCheckBox" name="exportBackgroundColor">
-              <property name="text">
-               <string>Export background color</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="0" column="0">
-           <spacer name="horizontalSpacer_11">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Preferred</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="3">
-           <spacer name="horizontalSpacer_12">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="8" column="0">
-        <widget class="QGroupBox" name="toolbarGroupBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="title">
-          <string>Toolbar</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_9">
-          <item row="0" column="3">
-           <spacer name="toolbarRSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Expanding</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="2">
-           <widget class="QCheckBox" name="toolbarDisplayTextCheckBox">
-            <property name="text">
-             <string>Display Text Under Button</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <layout class="QGridLayout" name="gridLayout_10">
-            <item row="1" column="0">
-             <widget class="QRadioButton" name="toolbarAtBottomRadioButton">
-              <property name="text">
-               <string>Positioned at the Bottom (recommended for white boards)</string>
-              </property>
-             </widget>
+          </widget>
+          <widget class="QGroupBox" name="keyboardGroupBox">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>320</y>
+             <width>1011</width>
+             <height>101</height>
+            </rect>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="title">
+            <string>Virtual Keyboard</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_21">
+            <item row="0" column="1">
+             <layout class="QGridLayout" name="oskGridLayout">
+              <item row="3" column="1">
+               <widget class="QComboBox" name="keyboardPaletteKeyButtonSize"/>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="keyboardPaletteKeyButtonSize_Label">
+                <property name="text">
+                 <string>Built-in virtual keyboard button size:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QCheckBox" name="useSystemOSKCheckBox">
+                <property name="text">
+                 <string>Use system keyboard (recommended)</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item row="0" column="0">
-             <widget class="QRadioButton" name="toolbarAtTopRadioButton">
-              <property name="text">
-               <string>Positioned at the Top (recommended for tablets)</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="0" column="0">
-           <spacer name="toolbarLSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Preferred</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <spacer name="toolbarSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="4" column="0" rowspan="2">
-        <widget class="QGroupBox" name="stylusPaletteGroupBox">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="title">
-          <string>Stylus Palette</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_14">
-          <property name="leftMargin">
-           <number>12</number>
-          </property>
-          <item row="0" column="0">
-           <spacer name="horizontalSpacer_4">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Preferred</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="2">
-           <spacer name="horizontalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Preferred</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="1">
-           <layout class="QGridLayout" name="gridLayout_5">
-            <property name="sizeConstraint">
-             <enum>QLayout::SetDefaultConstraint</enum>
-            </property>
-            <item row="0" column="0">
-             <widget class="QRadioButton" name="horizontalChoice">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                <horstretch>1</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Horizontal</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QRadioButton" name="verticalChoice">
-              <property name="text">
-               <string>Vertical</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <spacer name="verticalSpacer_5">
+             <spacer name="horizontalSpacer">
               <property name="orientation">
-               <enum>Qt::Vertical</enum>
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Preferred</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>20</width>
-                <height>40</height>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="0" column="2">
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
                </size>
               </property>
              </spacer>
             </item>
            </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="17" column="0">
-        <widget class="QGroupBox" name="documentsGroupBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="title">
-          <string>Documents Mode</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_19">
-          <item row="0" column="1">
-           <layout class="QGridLayout" name="gridLayout_18">
+          </widget>
+          <widget class="QGroupBox" name="documentsGroupBox">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>620</y>
+             <width>1011</width>
+             <height>101</height>
+            </rect>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="title">
+            <string>Documents Mode</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_19">
             <item row="0" column="1">
-             <widget class="QCheckBox" name="showDateColumnOnAlphabeticalSort">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Display date column on alphabetical sort</string>
-              </property>
-             </widget>
+             <layout class="QGridLayout" name="gridLayout_18">
+              <item row="0" column="1">
+               <widget class="QCheckBox" name="showDateColumnOnAlphabeticalSort">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Display date column on alphabetical sort</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QCheckBox" name="emptyTrashForOlderDocuments">
+                <property name="text">
+                 <string>Empty trash for documents older than</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="2">
+               <widget class="QSpinBox" name="emptyTrashDaysValue"/>
+              </item>
+              <item row="3" column="3">
+               <widget class="QLabel" name="emptyTrashDaysLabel">
+                <property name="text">
+                 <string>days</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
-            <item row="3" column="1">
-             <widget class="QCheckBox" name="emptyTrashForOlderDocuments">
-              <property name="text">
-               <string>Empty trash for documents older than</string>
+            <item row="0" column="0" rowspan="2">
+             <spacer name="horizontalSpacer_9">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
               </property>
-             </widget>
-            </item>
-            <item row="3" column="2">
-             <widget class="QSpinBox" name="emptyTrashDaysValue"/>
-            </item>
-            <item row="3" column="3">
-             <widget class="QLabel" name="emptyTrashDaysLabel">
-              <property name="text">
-               <string>days</string>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
               </property>
-             </widget>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="0" column="2">
+             <spacer name="horizontalSpacer_10">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
-          </item>
-          <item row="0" column="0" rowspan="2">
-           <spacer name="horizontalSpacer_9">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="2">
-           <spacer name="horizontalSpacer_10">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QGroupBox" name="multiDisplayGroupBox">
-         <property name="title">
-          <string>Multi display</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_2">
-          <item row="2" column="2">
-           <widget class="QLabel" name="screenList_label">
-            <property name="text">
-             <string>List of screens used for Control, Display and Previous pages</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="4">
-           <spacer name="mirroringRSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="1" column="0">
-           <spacer name="mirroringLSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Preferred</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="1" column="2">
-           <widget class="QCheckBox" name="displayBrowserPageCheckBox">
-            <property name="text">
-             <string>Show internal web page content on secondary screen or projector</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="4">
-           <widget class="UBScreenListLineEdit" name="screenList">
-            <property name="clearButtonEnabled">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="13" column="0">
-        <widget class="QGroupBox" name="keyboardGroupBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="title">
-          <string>Virtual Keyboard</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_21">
-          <item row="0" column="1">
-           <layout class="QGridLayout" name="oskGridLayout">
-            <item row="3" column="1">
-             <widget class="QComboBox" name="keyboardPaletteKeyButtonSize"/>
+          </widget>
+          <widget class="QGroupBox" name="toolbarGroupBox">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>218</y>
+             <width>1011</width>
+             <height>101</height>
+            </rect>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="title">
+            <string>Toolbar</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_9">
+            <item row="0" column="3">
+             <spacer name="toolbarRSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Expanding</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
             </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="keyboardPaletteKeyButtonSize_Label">
+            <item row="0" column="2">
+             <widget class="QCheckBox" name="toolbarDisplayTextCheckBox">
               <property name="text">
-               <string>Built-in virtual keyboard button size:</string>
+               <string>Display Text Under Button</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="0">
-             <widget class="QCheckBox" name="useSystemOSKCheckBox">
-              <property name="text">
-               <string>Use system keyboard (recommended)</string>
+            <item row="0" column="1">
+             <layout class="QGridLayout" name="gridLayout_10">
+              <item row="1" column="0">
+               <widget class="QRadioButton" name="toolbarAtBottomRadioButton">
+                <property name="text">
+                 <string>Positioned at the Bottom (recommended for white boards)</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QRadioButton" name="toolbarAtTopRadioButton">
+                <property name="text">
+                 <string>Positioned at the Top (recommended for tablets)</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="0" column="0">
+             <spacer name="toolbarLSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
               </property>
-             </widget>
+              <property name="sizeType">
+               <enum>QSizePolicy::Preferred</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
-          </item>
-          <item row="0" column="0">
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+          </widget>
+          <widget class="QGroupBox" name="stylusPaletteGroupBox">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>102</y>
+             <width>1011</width>
+             <height>104</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="title">
+            <string>Stylus Palette</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_14">
+            <property name="leftMargin">
+             <number>12</number>
             </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Preferred</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="2">
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
+            <item row="0" column="1">
+             <layout class="QGridLayout" name="gridLayout_5">
+              <property name="sizeConstraint">
+               <enum>QLayout::SetDefaultConstraint</enum>
+              </property>
+              <item row="0" column="0">
+               <widget class="QRadioButton" name="horizontalChoice">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                  <horstretch>1</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Horizontal</string>
+                </property>
+                <property name="checked">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QRadioButton" name="verticalChoice">
+                <property name="text">
+                 <string>Vertical</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <spacer name="verticalSpacer_5">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item row="0" column="0">
+             <spacer name="horizontalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Preferred</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="0" column="2">
+             <spacer name="horizontalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Preferred</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QGroupBox" name="modeGroupBox">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>540</y>
+             <width>1011</width>
+             <height>71</height>
+            </rect>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="title">
+            <string>Mode</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_15">
+            <item row="0" column="1" rowspan="2">
+             <layout class="QGridLayout" name="gridLayout_16">
+              <item row="0" column="0">
+               <widget class="QLabel" name="modeLabel">
+                <property name="text">
+                 <string>Mode to start in:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="startModeComboBox">
+                <item>
+                 <property name="text">
+                  <string>Board</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Desktop</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Documents</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <spacer name="horizontalSpacer_6">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item row="0" column="0">
+             <spacer name="horizontalSpacer_5">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Preferred</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QGroupBox" name="multiDisplayGroupBox">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>1011</width>
+             <height>90</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Multi display</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_2">
+            <item row="2" column="4">
+             <widget class="UBScreenListLineEdit" name="screenList">
+              <property name="clearButtonEnabled">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="QLabel" name="screenList_label">
+              <property name="text">
+               <string>List of screens used for Control, Display and Previous pages</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <spacer name="mirroringLSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Preferred</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="2">
+             <widget class="QCheckBox" name="displayBrowserPageCheckBox">
+              <property name="text">
+               <string>Show internal web page content on secondary screen or projector</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="4">
+             <spacer name="mirroringRSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </widget>
         </widget>
        </item>
       </layout>
@@ -3357,9 +3354,6 @@ hr { height: 1px; border-width: 0; }
  </customwidgets>
  <tabstops>
   <tabstop>useExternalBrowserCheckBox</tabstop>
-  <tabstop>displayBrowserPageCheckBox</tabstop>
-  <tabstop>toolbarAtTopRadioButton</tabstop>
-  <tabstop>toolbarAtBottomRadioButton</tabstop>
   <tabstop>defaultSettingsButton</tabstop>
   <tabstop>closeButton</tabstop>
  </tabstops>
