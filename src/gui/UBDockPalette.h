@@ -116,11 +116,15 @@ public:
     QRect getTabPaletteRect();
 
     virtual void assignParent(QWidget *widget);
-    virtual void setVisible(bool visible);
+    virtual void setVisible(bool visible) override;
 
-    virtual void paintEvent(QPaintEvent *event);
-    virtual void enterEvent(QEvent *);
-    virtual void leaveEvent(QEvent *);
+    virtual void paintEvent(QPaintEvent *event) override;
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    virtual void enterEvent(QEvent *event) override;
+#else
+    virtual void enterEvent(QEnterEvent *event) override;
+#endif
+    virtual void leaveEvent(QEvent *) override;
 
     void setBackgroundBrush(const QBrush& brush);
     void registerWidget(UBDockPaletteWidget* widget);

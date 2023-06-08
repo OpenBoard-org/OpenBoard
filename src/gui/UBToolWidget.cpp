@@ -197,7 +197,11 @@ void UBToolWidget::mouseReleaseEvent(QMouseEvent *event)
 
 }
 
-void UBToolWidget::enterEvent(QEvent* event)
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+void UBToolWidget::enterEvent(QEvent *event)
+#else
+void UBToolWidget::enterEvent(QEnterEvent *event)
+#endif
 {
     Q_UNUSED(event)
 

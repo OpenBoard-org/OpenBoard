@@ -74,9 +74,13 @@ class UBFloatingPalette : public QWidget
 
     protected:
 
-        virtual void enterEvent(QEvent *event);
-        virtual void showEvent(QShowEvent *event);
-        virtual void paintEvent(QPaintEvent *event);
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+        virtual void enterEvent(QEvent *event) override;
+#else
+        virtual void enterEvent(QEnterEvent *event) override;
+#endif
+        virtual void showEvent(QShowEvent *event) override;
+        virtual void paintEvent(QPaintEvent *event) override;
 
         virtual int radius();
         virtual int border();

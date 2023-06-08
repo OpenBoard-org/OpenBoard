@@ -64,7 +64,11 @@ class UBToolWidget : public QWidget
         virtual void mouseMoveEvent(QMouseEvent *event) override;
         virtual void mouseReleaseEvent(QMouseEvent *event) override;
 
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
         virtual void enterEvent(QEvent *event) override;
+#else
+        virtual void enterEvent(QEnterEvent *event) override;
+#endif
         virtual void leaveEvent(QEvent *event) override;
 
         virtual bool eventFilter(QObject *obj, QEvent *event) override;

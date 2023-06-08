@@ -222,7 +222,11 @@ void UBKeyboardPalette::setKeyButtonSize(const QString& _strSize)
     }
 }
 
-void UBKeyboardPalette::enterEvent ( QEvent * )
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+void UBKeyboardPalette::enterEvent(QEvent *event)
+#else
+void UBKeyboardPalette::enterEvent(QEnterEvent *event)
+#endif
 {
     if (keyboardActive)
         return;
@@ -500,7 +504,11 @@ void UBKeyboardButton::paintEvent(QPaintEvent*)
     //--------------------------
 }
 
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
 void  UBKeyboardButton::enterEvent ( QEvent*)
+#else
+void UBKeyboardButton::enterEvent(QEnterEvent *event)
+#endif
 {
     bFocused = true;
     update();

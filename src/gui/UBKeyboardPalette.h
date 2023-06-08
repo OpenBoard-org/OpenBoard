@@ -104,8 +104,8 @@ public:
     BTNImages *currBtnImages;
 
     bool isEnabled(){return locales!= NULL;}
-    virtual QSize  sizeHint () const;
-    virtual void adjustSizeAndPosition(bool pUp = true);
+    virtual QSize  sizeHint () const override;
+    virtual void adjustSizeAndPosition(bool pUp = true) override;
     QString getKeyButtonSize() const {return QStringLiteral("%1x%2").arg(btnWidth, btnHeight);}
     void setKeyButtonSize(const QString& strSize);
 
@@ -143,10 +143,14 @@ protected:
     bool languagePopupActive;
     bool keyboardActive;
 // 
-    virtual void  enterEvent ( QEvent * event );
-    virtual void  leaveEvent ( QEvent * event );
-    virtual void  paintEvent(QPaintEvent *event);
-    virtual void  moveEvent ( QMoveEvent * event );
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    virtual void enterEvent(QEvent *event) override;
+#else
+    virtual void enterEvent(QEnterEvent *event) override;
+#endif
+    virtual void  leaveEvent ( QEvent * event ) override;
+    virtual void  paintEvent(QPaintEvent *event) override;
+    virtual void  moveEvent ( QMoveEvent * event ) override;
 
     void sendKeyEvent(KEYCODE keyCode);
 
@@ -196,12 +200,16 @@ protected:
     ContentImage *imgContent;
     QString m_contentImagePath;
 
-    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *event) override;
 
-    virtual void  enterEvent ( QEvent * event );
-    virtual void  leaveEvent ( QEvent * event );
-    virtual void  mousePressEvent ( QMouseEvent * event );
-    virtual void  mouseReleaseEvent ( QMouseEvent * event );
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    virtual void enterEvent(QEvent *event) override;
+#else
+    virtual void enterEvent(QEnterEvent *event) override;
+#endif
+    virtual void  leaveEvent ( QEvent * event ) override;
+    virtual void  mousePressEvent ( QMouseEvent * event ) override;
+    virtual void  mouseReleaseEvent ( QMouseEvent * event ) override;
 
     virtual void onPress() = 0;
     virtual void onRelease() = 0;
