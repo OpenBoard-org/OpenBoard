@@ -198,11 +198,7 @@ void UBDockPalette::resizeEvent(QResizeEvent *event)
  * \brief Handle the mouse enter event
  * @param event as the mouse event
  */
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-void UBDockPalette::enterEvent(QEvent *event)
-#else
-void UBDockPalette::enterEvent(QEnterEvent *event)
-#endif
+void UBDockPalette::enterEvent(UB::EnterEvent *event)
 {
     Q_UNUSED(event);
     // We want to set the cursor as an arrow everytime it enters the palette

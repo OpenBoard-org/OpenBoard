@@ -37,6 +37,7 @@
 #include <QMenu>
 #include <QIcon>
 
+#include "core/UB.h"
 #include "frameworks/UBPlatformUtils.h"
 
 class UBKeyButton;
@@ -143,11 +144,7 @@ protected:
     bool languagePopupActive;
     bool keyboardActive;
 // 
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-    virtual void enterEvent(QEvent *event) override;
-#else
-    virtual void enterEvent(QEnterEvent *event) override;
-#endif
+    virtual void enterEvent(UB::EnterEvent *event) override;
     virtual void  leaveEvent ( QEvent * event ) override;
     virtual void  paintEvent(QPaintEvent *event) override;
     virtual void  moveEvent ( QMoveEvent * event ) override;

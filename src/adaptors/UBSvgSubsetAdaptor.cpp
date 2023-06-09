@@ -98,11 +98,6 @@ const QString tStrokeGroup = "strokeGroup";
 const QString tGroups = "groups";
 const QString aId = "id";
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
-typedef Qt::SplitBehaviorFlags SplitBehavior;
-#else
-typedef QString::SplitBehavior SplitBehavior;
-#endif
 
 QString UBSvgSubsetAdaptor::toSvgTransform(const QTransform& matrix)
 {
@@ -431,7 +426,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
 
                 if (!svgViewBox.isNull())
                 {
-                    QStringList ts = svgViewBox.toString().split(QLatin1Char(' '), SplitBehavior::SkipEmptyParts);
+                    QStringList ts = svgViewBox.toString().split(QLatin1Char(' '), UB::SplitBehavior::SkipEmptyParts);
 
                     QRectF sceneRect;
                     if (ts.size() >= 4)
@@ -521,7 +516,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
                 auto pageNominalSize = mXmlReader.attributes().value(mNamespaceUri, "nominal-size");
                 if (!pageNominalSize.isNull())
                 {
-                    QStringList ts = pageNominalSize.toString().split(QLatin1Char('x'), SplitBehavior::SkipEmptyParts);
+                    QStringList ts = pageNominalSize.toString().split(QLatin1Char('x'), UB::SplitBehavior::SkipEmptyParts);
 
                     QSize sceneSize;
                     if (ts.size() >= 2)
@@ -1731,11 +1726,11 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
 
     if (!svgPoints.isNull())
     {
-        QStringList ts = svgPoints.toString().split(QLatin1Char(' '), SplitBehavior::SkipEmptyParts);
+        QStringList ts = svgPoints.toString().split(QLatin1Char(' '), UB::SplitBehavior::SkipEmptyParts);
 
         foreach(const QString sPoint, ts)
         {
-            QStringList sCoord = sPoint.split(QLatin1Char(','), SplitBehavior::SkipEmptyParts);
+            QStringList sCoord = sPoint.split(QLatin1Char(','), UB::SplitBehavior::SkipEmptyParts);
 
             if (sCoord.size() == 2)
             {
@@ -2003,13 +1998,13 @@ QList<UBGraphicsPolygonItem*> UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItem
     if (!svgPoints.isNull())
     {
         QStringList ts = svgPoints.toString().split(QLatin1Char(' '),
-                                                    SplitBehavior::SkipEmptyParts);
+                                                    UB::SplitBehavior::SkipEmptyParts);
 
         QList<QPointF> points;
 
         foreach(const QString sPoint, ts)
         {
-            QStringList sCoord = sPoint.split(QLatin1Char(','), SplitBehavior::SkipEmptyParts);
+            QStringList sCoord = sPoint.split(QLatin1Char(','), UB::SplitBehavior::SkipEmptyParts);
 
             if (sCoord.size() == 2)
             {

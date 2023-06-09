@@ -33,6 +33,8 @@
 #include <QWidget>
 #include <QPoint>
 
+#include "core/UB.h"
+
 typedef enum
 {
     eMinimizedLocation_None,
@@ -50,9 +52,9 @@ class UBFloatingPalette : public QWidget
 
         UBFloatingPalette(Qt::Corner = Qt::TopLeftCorner, QWidget *parent = 0);
 
-        virtual void mouseMoveEvent(QMouseEvent *event);
-        virtual void mousePressEvent(QMouseEvent *event);
-        virtual void mouseReleaseEvent(QMouseEvent *event);
+        virtual void mouseMoveEvent(QMouseEvent *event) override;
+        virtual void mousePressEvent(QMouseEvent *event) override;
+        virtual void mouseReleaseEvent(QMouseEvent *event) override;
 
         /**
          * Add another floating palette to the associated palette. All associated palettes will have the same width
@@ -74,11 +76,7 @@ class UBFloatingPalette : public QWidget
 
     protected:
 
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-        virtual void enterEvent(QEvent *event) override;
-#else
-        virtual void enterEvent(QEnterEvent *event) override;
-#endif
+        virtual void enterEvent(UB::EnterEvent *event) override;
         virtual void showEvent(QShowEvent *event) override;
         virtual void paintEvent(QPaintEvent *event) override;
 

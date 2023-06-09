@@ -111,11 +111,7 @@ int UBFloatingPalette::border()
 }
 
 
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-void UBFloatingPalette::enterEvent(QEvent *event)
-#else
-void UBFloatingPalette::enterEvent(QEnterEvent *event)
-#endif
+void UBFloatingPalette::enterEvent(UB::EnterEvent *event)
 {
     Q_UNUSED(event);
     emit mouseEntered();

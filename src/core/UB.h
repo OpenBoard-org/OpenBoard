@@ -230,4 +230,23 @@ enum UBPageBackground
     ruled
 };
 
+/*
+ * Qt Version Compatibility
+ */
+
+namespace UB {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+typedef Qt::SplitBehaviorFlags SplitBehavior;
+#else
+typedef QString::SplitBehavior SplitBehavior;
+#endif
+
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+typedef QEvent EnterEvent;
+#else
+typedef QEnterEvent EnterEvent;
+#endif
+
+}
+
 #endif /* UB_H_ */

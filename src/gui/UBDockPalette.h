@@ -47,6 +47,7 @@ class UBDocumentProxy;
 #include <QVector>
 
 #include "UBDockPaletteWidget.h"
+#include "core/UB.h"
 
 #define TABSIZE        50       //Height of the tab of the palette
 #define CLICKTIME   1000000  //Clicktime to expand or collapse palette
@@ -119,11 +120,7 @@ public:
     virtual void setVisible(bool visible) override;
 
     virtual void paintEvent(QPaintEvent *event) override;
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-    virtual void enterEvent(QEvent *event) override;
-#else
-    virtual void enterEvent(QEnterEvent *event) override;
-#endif
+    virtual void enterEvent(UB::EnterEvent *event) override;
     virtual void leaveEvent(QEvent *) override;
 
     void setBackgroundBrush(const QBrush& brush);

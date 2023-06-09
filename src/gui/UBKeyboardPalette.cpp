@@ -504,11 +504,7 @@ void UBKeyboardButton::paintEvent(QPaintEvent*)
     //--------------------------
 }
 
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-void  UBKeyboardButton::enterEvent ( QEvent*)
-#else
-void UBKeyboardButton::enterEvent(QEnterEvent *event)
-#endif
+void UBKeyboardButton::enterEvent(UB::EnterEvent *event)
 {
     bFocused = true;
     update();
