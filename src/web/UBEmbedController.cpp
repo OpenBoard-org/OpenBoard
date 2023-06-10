@@ -92,6 +92,7 @@ void UBEmbedController::showEmbedDialog()
         mTrapDialog = new QDialog(mParentWidget, flag);
         mTrapFlashUi = new Ui::trapFlashDialog();
         mTrapFlashUi->setupUi(mTrapDialog);
+        mTrapFlashUi->widgetNameLineEdit->setMaxLength(240);
 
         int viewWidth = mParentWidget->width() / 2;
         int viewHeight = mParentWidget->height() * 2. / 3.;
@@ -152,9 +153,12 @@ void UBEmbedController::textChanged(const QString& newText)
     static const QRegularExpression regExp("[<>:\"/\\\\|?*]");
 #endif
 
-    if (new_text.indexOf(regExp) > -1)
+    static const QRegularExpression entityRegExp("&.*?;");
+
+    if (new_text.indexOf(regExp) > -1 || new_text.indexOf(entityRegExp) > -1)
     {
         new_text.remove(regExp);
+        new_text.replace(entityRegExp, "_");
         mTrapFlashUi->widgetNameLineEdit->setText(new_text);
         QToolTip::showText(mTrapFlashUi->widgetNameLineEdit->mapToGlobal(QPoint()), tr("Application name can`t contain any of the following characters:\r\n") + illegalCharList);
     }
