@@ -394,12 +394,4 @@ text-align \
 
 const QString ubzContentFolders("audios,videos,images,widgets");
 
-struct UBItemLayerType
-{
-    enum Enum
-    {
-        FixedBackground = -2000, Object = -1000, Graphic = 0, Tool = 1000, Control = 2000
-    };
-};
-
 #endif // UBCFFCONSTANTS_H

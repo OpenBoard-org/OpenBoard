@@ -197,7 +197,7 @@ void UBToolWidget::mouseReleaseEvent(QMouseEvent *event)
 
 }
 
-void UBToolWidget::enterEvent(QEvent* event)
+void UBToolWidget::enterEvent(UB::EnterEvent *event)
 {
     Q_UNUSED(event)
 

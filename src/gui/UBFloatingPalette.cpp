@@ -111,7 +111,7 @@ int UBFloatingPalette::border()
 }
 
 
-void UBFloatingPalette::enterEvent(QEvent *event)
+void UBFloatingPalette::enterEvent(UB::EnterEvent *event)
 {
     Q_UNUSED(event);
     emit mouseEntered();

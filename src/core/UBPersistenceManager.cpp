@@ -77,11 +77,6 @@ const QString UBPersistenceManager::fFolders = "folders.xml";
 const QString UBPersistenceManager::tFolder = "folder";
 const QString UBPersistenceManager::aName = "name";
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
-typedef Qt::SplitBehaviorFlags SplitBehavior;
-#else
-typedef QString::SplitBehavior SplitBehavior;
-#endif
 
 UBPersistenceManager * UBPersistenceManager::sSingleton = 0;
 
@@ -454,7 +449,7 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(st
 
 QString UBPersistenceManager::adjustDocumentVirtualPath(const QString &str)
 {
-    QStringList pathList = str.split("/", SplitBehavior::SkipEmptyParts);
+    QStringList pathList = str.split("/", UB::SplitBehavior::SkipEmptyParts);
 
     if (pathList.isEmpty()) {
         pathList.append(myDocumentsName);

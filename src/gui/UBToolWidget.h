@@ -33,6 +33,8 @@
 #include <QtGui>
 #include <QWidget>
 
+#include "core/UB.h"
+
 class UBGraphicsWidgetItem;
 class QWidget;
 class UBGraphicsScene;
@@ -64,7 +66,7 @@ class UBToolWidget : public QWidget
         virtual void mouseMoveEvent(QMouseEvent *event) override;
         virtual void mouseReleaseEvent(QMouseEvent *event) override;
 
-        virtual void enterEvent(QEvent *event) override;
+        virtual void enterEvent(UB::EnterEvent *event) override;
         virtual void leaveEvent(QEvent *event) override;
 
         virtual bool eventFilter(QObject *obj, QEvent *event) override;

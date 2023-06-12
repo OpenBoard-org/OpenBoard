@@ -1077,7 +1077,7 @@ void UBBoardController::lastScene()
 void UBBoardController::downloadURL(const QUrl& url, QString contentSourceUrl, const QPointF& pPos, const QSize& pSize, bool isBackground, bool internalData)
 {
     QString sUrl = url.toString();
-    qDebug() << "something has been dropped on the board! Url is: " << sUrl.leftRef(255);
+    qDebug() << "something has been dropped on the board! Url is: " << sUrl.left(255);
 
     QGraphicsItem *oldBackgroundObject = NULL;
     if (isBackground)

@@ -50,11 +50,6 @@
 
 #include "core/memcheck.h"
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
-typedef Qt::SplitBehaviorFlags SplitBehavior;
-#else
-typedef QString::SplitBehavior SplitBehavior;
-#endif
 
 qreal UBPreferencesController::sSliderRatio = 10.0;
 qreal UBPreferencesController::sMinPenWidth = 0.5;
