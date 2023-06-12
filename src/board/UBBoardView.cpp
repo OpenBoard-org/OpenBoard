@@ -241,11 +241,6 @@ void UBBoardView::keyPressEvent (QKeyEvent *event)
             mController->addScene ();
             break;
         }
-        case Qt::Key_Control:
-        case Qt::Key_Shift:
-        {
-            setMultiselection(true);
-        }break;
         }
 
 
@@ -304,21 +299,8 @@ void UBBoardView::keyPressEvent (QKeyEvent *event)
             }
         }
     }
-
-    // if ctrl of shift was pressed combined with other keys - we need to disable multiple selection.
-    if (event->isAccepted())
-        setMultiselection(false);
 }
 
-
-void UBBoardView::keyReleaseEvent(QKeyEvent *event)
-{
-
-    if (Qt::Key_Shift == event->key() ||Qt::Key_Control == event->key())
-        setMultiselection(false);
-
-    QGraphicsView::keyReleaseEvent(event);
-}
 
 bool UBBoardView::event (QEvent * e)
 {
@@ -1055,6 +1037,8 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
         event->accept ();
         return;
     }
+
+    setMultiselection(event->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier));
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     QPointF eventPosition = event->position();
