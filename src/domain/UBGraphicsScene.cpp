@@ -2117,7 +2117,7 @@ void UBGraphicsScene::unsetBackgroundObject()
 QRectF UBGraphicsScene::normalizedSceneRect(qreal ratio)
 {
 
-    QRectF normalizedRect(nominalSize().width() / -2, nominalSize().height() / -2,
+    QRectF normalizedRect(nominalSize().width() / -2., nominalSize().height() / -2.,
         nominalSize().width(), nominalSize().height());
 
     foreach(QGraphicsItem* gi, items())
