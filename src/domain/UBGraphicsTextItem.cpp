@@ -442,11 +442,6 @@ void UBGraphicsTextItem::contentsChanged()
     {
         scene()->setModified(true);
     }
-
-    if (toPlainText().isEmpty())
-    {
-        resize(QFontMetrics(font()).horizontalAdvance(mTypeTextHereLabel),QFontMetrics(font()).height());
-    }
 }
 
 
@@ -460,7 +455,7 @@ std::shared_ptr<UBGraphicsScene> UBGraphicsTextItem::scene()
 void UBGraphicsTextItem::resize(qreal w, qreal h)
 {
     setTextWidth(w);
-    setTextHeight(h);
+    setTextHeight(document()->size().height());
     if (Delegate())
         Delegate()->positionHandles();
 }

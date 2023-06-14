@@ -62,6 +62,21 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     , mTranslateY(0)
     , mTotalTranslateX(0)
     , mTotalTranslateY(0)
+    , mBottomRightResizeGripSvgItem(nullptr)
+    , mBottomResizeGripSvgItem(nullptr)
+    , mLeftResizeGripSvgItem(nullptr)
+    , mRightResizeGripSvgItem(nullptr)
+    , mTopResizeGripSvgItem(nullptr)
+    , mBottomRightResizeGrip(nullptr)
+    , mBottomResizeGrip(nullptr)
+    , mLeftResizeGrip(nullptr)
+    , mRightResizeGrip(nullptr)
+    , mTopResizeGrip(nullptr)
+    , mHasBottomRightResizeGrip(false)
+    , mHasBottomResizeGrip(false)
+    , mHasLeftResizeGrip(false)
+    , mHasRightResizeGrip(false)
+    , mHasTopResizeGrip(false)
     , mOperationMode(Scaling)
     , mFlippedX(false)
     , mFlippedY(false)
@@ -82,22 +97,45 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     setPen(Qt::NoPen);
     setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
 
-    mBottomRightResizeGripSvgItem = new QGraphicsSvgItem(":/images/resize.svg", this);
-    mBottomResizeGripSvgItem = new QGraphicsSvgItem(":/images/resizeBottom.svg", this);
-    mLeftResizeGripSvgItem = new QGraphicsSvgItem(":/images/resizeLeft.svg", this);
-    mRightResizeGripSvgItem = new QGraphicsSvgItem(":/images/resizeRight.svg", this);
-    mTopResizeGripSvgItem = new QGraphicsSvgItem(":/images/resizeTop.svg", this);
+    if (mDelegate->testUBFlags(GF_SCALABLE_X_AXIS) && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS))
+    {
+        mHasBottomRightResizeGrip = true;
+        mBottomRightResizeGripSvgItem = new QGraphicsSvgItem(":/images/resize.svg", this);
+        mBottomRightResizeGrip = new QGraphicsRectItem(this);
+        mBottomRightResizeGrip->setPen(Qt::NoPen);
+    }
 
-    mBottomRightResizeGrip = new QGraphicsRectItem(this);
-    mBottomRightResizeGrip->setPen(Qt::NoPen);
-    mBottomResizeGrip = new QGraphicsRectItem(this);
-    mBottomResizeGrip->setPen(Qt::NoPen);
-    mLeftResizeGrip = new QGraphicsRectItem(this);
-    mLeftResizeGrip->setPen(Qt::NoPen);
-    mRightResizeGrip = new QGraphicsRectItem(this);
-    mRightResizeGrip->setPen(Qt::NoPen);
-    mTopResizeGrip = new QGraphicsRectItem(this);
-    mTopResizeGrip->setPen(Qt::NoPen);
+    if (mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS))
+    {
+        mHasBottomResizeGrip = true;
+        mBottomResizeGripSvgItem = new QGraphicsSvgItem(":/images/resizeBottom.svg", this);
+        mBottomResizeGrip = new QGraphicsRectItem(this);
+        mBottomResizeGrip->setPen(Qt::NoPen);
+    }
+
+    if (mDelegate->testUBFlags(GF_SCALABLE_X_AXIS))
+    {
+        mHasLeftResizeGrip = true;
+        mLeftResizeGripSvgItem = new QGraphicsSvgItem(":/images/resizeLeft.svg", this);
+        mLeftResizeGrip = new QGraphicsRectItem(this);
+        mLeftResizeGrip->setPen(Qt::NoPen);
+    }
+
+    if (mDelegate->testUBFlags(GF_SCALABLE_X_AXIS))
+    {
+        mHasRightResizeGrip = true;
+        mRightResizeGripSvgItem = new QGraphicsSvgItem(":/images/resizeRight.svg", this);
+        mRightResizeGrip = new QGraphicsRectItem(this);
+        mRightResizeGrip->setPen(Qt::NoPen);
+    }
+
+    if (mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS))
+    {
+        mHasTopResizeGrip = true;
+        mTopResizeGripSvgItem = new QGraphicsSvgItem(":/images/resizeTop.svg", this);
+        mTopResizeGrip = new QGraphicsRectItem(this);
+        mTopResizeGrip->setPen(Qt::NoPen);
+    }
 
     mRotateButton = new QGraphicsSvgItem(":/images/rotate.svg", this);
     mRotateButton->setCursor(UBResources::resources()->rotateCursor);
@@ -126,11 +164,21 @@ void UBGraphicsDelegateFrame::setAntiScale(qreal pAntiScale)
     QTransform tr;
     tr.scale(pAntiScale, pAntiScale);
 
-    mBottomRightResizeGripSvgItem->setTransform(tr);
-    mBottomResizeGripSvgItem->setTransform(tr);
-    mLeftResizeGripSvgItem->setTransform(tr);
-    mRightResizeGripSvgItem->setTransform(tr);
-    mTopResizeGripSvgItem->setTransform(tr);
+    if (mHasBottomRightResizeGrip)
+        mBottomRightResizeGripSvgItem->setTransform(tr);
+
+    if (mHasBottomResizeGrip)
+        mBottomResizeGripSvgItem->setTransform(tr);
+
+    if (mHasLeftResizeGrip)
+        mLeftResizeGripSvgItem->setTransform(tr);
+
+    if (mHasRightResizeGrip)
+        mRightResizeGripSvgItem->setTransform(tr);
+
+    if (mHasTopResizeGrip)
+        mTopResizeGripSvgItem->setTransform(tr);
+
     mRotateButton->setTransform(tr);
 }
 
@@ -604,8 +652,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
     else // resizing/resizing horizontally
     {
-
-        if (resizingBottomRight())
+        if (resizingBottomRight() && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS) && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS))
         {
             static QSizeF incV = QSizeF();
             static QSizeF incH = QSizeF();
@@ -636,8 +683,14 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
             mCurrentTool = ResizeBottomRight;
         }
-        else
-            resizeDelegate(moveX, moveY);
+        else if ((moveY && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS)))
+        {
+            resizeDelegate(0., moveY);
+        }
+        else if (moveX && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS))
+        {
+            resizeDelegate(moveX, 0.);
+        }
     }
     event->accept();
 }
@@ -754,17 +807,27 @@ void UBGraphicsDelegateFrame::updateResizeCursors()
 
     tr.rotate(-mAngle);
     QCursor resizeCursor  = QCursor(pix.transformed(tr, Qt::SmoothTransformation), pix.width() / 2,  pix.height() / 2);
-    mLeftResizeGrip->setCursor(resizeCursor);
-    mRightResizeGrip->setCursor(resizeCursor);
+
+    if (mHasLeftResizeGrip)
+        mLeftResizeGrip->setCursor(resizeCursor);
+
+    if (mHasRightResizeGrip)
+        mRightResizeGrip->setCursor(resizeCursor);
 
     tr.rotate(-90);
     resizeCursor  = QCursor(pix.transformed(tr, Qt::SmoothTransformation), pix.width() / 2,  pix.height() / 2);
-    mBottomResizeGrip->setCursor(resizeCursor);
-    mTopResizeGrip->setCursor(resizeCursor);
+
+    if (mHasBottomResizeGrip)
+        mBottomResizeGrip->setCursor(resizeCursor);
+
+    if (mHasTopResizeGrip)
+        mTopResizeGrip->setCursor(resizeCursor);
 
     tr.rotate(-45);
     resizeCursor  = QCursor(pix.transformed(tr, Qt::SmoothTransformation), pix.width() / 2,  pix.height() / 2);
-    mBottomRightResizeGrip->setCursor(resizeCursor);
+
+    if (mHasBottomRightResizeGrip)
+        mBottomRightResizeGrip->setCursor(resizeCursor);
 }
 
 
@@ -840,58 +903,77 @@ void UBGraphicsDelegateFrame::positionHandles()
     setTransform(QTransform::fromTranslate(-center.x(), -center.y()), true);
     //TODO: combine these transforms into one
 
-    mBottomRightResizeGripSvgItem->setParentItem(this);
-    mBottomResizeGripSvgItem->setParentItem(this);
-    mLeftResizeGripSvgItem->setParentItem(this);
-    mRightResizeGripSvgItem->setParentItem(this);
-    mTopResizeGripSvgItem->setParentItem(this);
-    mRotateButton->setParentItem(this);
-
-    mBottomRightResizeGrip->setParentItem(this);
-    mBottomResizeGrip->setParentItem(this);
-    mLeftResizeGrip->setParentItem(this);
-    mRightResizeGrip->setParentItem(this);
-    mTopResizeGrip->setParentItem(this);
-
-    QRectF brRect = mBottomRightResizeGripSvgItem->mapRectToParent(mBottomRightResizeGripSvgItem->boundingRect());
-    QRectF bRect = mBottomResizeGripSvgItem->mapRectToParent(mBottomResizeGripSvgItem->boundingRect());
-    QRectF lRect = mLeftResizeGripSvgItem->mapRectToParent(mLeftResizeGripSvgItem->boundingRect());
-    QRectF rRect = mRightResizeGripSvgItem->mapRectToParent(mRightResizeGripSvgItem->boundingRect());
-    QRectF trRect = mTopResizeGripSvgItem->mapRectToParent(mTopResizeGripSvgItem->boundingRect());
-
-    mBottomRightResizeGripSvgItem->setPos(rect().right() - brRect.width(), rect().bottom() - brRect.height());
-    mBottomResizeGripSvgItem->setPos(rect().center().x() - bRect.width() / 2, rect().bottom() - bRect.height());
-
-    mLeftResizeGripSvgItem->setPos(rect().left(), rect().center().y() - lRect.height() / 2);
-    mRightResizeGripSvgItem->setPos(rect().right() - rRect.width(), rect().center().y() - rRect.height() / 2);
-
-    mTopResizeGripSvgItem->setPos(rect().center().x() - trRect.width() / 2, rect().y());
-    mRotateButton->setPos(rect().right() - mFrameWidth - 5, rect().top() + 5);
-
-    mBottomRightResizeGrip->setRect(bottomRightResizeGripRect());
-    mBottomResizeGrip->setRect(bottomResizeGripRect());
-    mLeftResizeGrip->setRect(leftResizeGripRect());
-    mRightResizeGrip->setRect(rightResizeGripRect());
-    mTopResizeGrip->setRect(topResizeGripRect());
-
     QVariant vLocked = delegated()->data(UBGraphicsItemData::ItemLocked);
     bool isLocked = (vLocked.isValid() && vLocked.toBool());
-    bool bShowHorizontalResizers = ResizingHorizontally == mOperationMode;
-    bool bShowVerticalResizers   = ResizingHorizontally != mOperationMode;
-    bool bShowAllResizers        = Resizing == mOperationMode || Scaling == mOperationMode ;
 
-    mBottomRightResizeGripSvgItem->setVisible(!isLocked && bShowAllResizers);
-    mBottomResizeGripSvgItem->setVisible(!isLocked && (bShowVerticalResizers || bShowAllResizers));
-    mLeftResizeGripSvgItem->setVisible(!isLocked && (bShowHorizontalResizers || bShowAllResizers));
-    mRightResizeGripSvgItem->setVisible(!isLocked && (bShowHorizontalResizers || bShowAllResizers));
-    mTopResizeGripSvgItem->setVisible(!isLocked && (bShowVerticalResizers || bShowAllResizers));
+    if (mHasBottomRightResizeGrip)
+    {
+        mBottomRightResizeGripSvgItem->setParentItem(this);
+        mBottomRightResizeGrip->setParentItem(this);
+
+        QRectF brRect = mBottomRightResizeGripSvgItem->mapRectToParent(mBottomRightResizeGripSvgItem->boundingRect());
+        mBottomRightResizeGripSvgItem->setPos(rect().right() - brRect.width(), rect().bottom() - brRect.height());
+        mBottomRightResizeGrip->setRect(bottomRightResizeGripRect());
+
+        mBottomRightResizeGrip->setVisible(!isLocked);
+        mBottomRightResizeGripSvgItem->setVisible(!isLocked);
+    }
+
+    if (mHasBottomResizeGrip)
+    {
+        mBottomResizeGripSvgItem->setParentItem(this);
+        mBottomResizeGrip->setParentItem(this);
+
+        QRectF bRect = mBottomResizeGripSvgItem->mapRectToParent(mBottomResizeGripSvgItem->boundingRect());
+        mBottomResizeGripSvgItem->setPos(rect().center().x() - bRect.width() / 2, rect().bottom() - bRect.height());
+        mBottomResizeGrip->setRect(bottomResizeGripRect());
+
+        mBottomResizeGrip->setVisible(!isLocked);
+        mBottomResizeGripSvgItem->setVisible(!isLocked);
+    }
+
+    if (mHasLeftResizeGrip)
+    {
+        mLeftResizeGripSvgItem->setParentItem(this);
+        mLeftResizeGrip->setParentItem(this);
+
+        QRectF lRect = mLeftResizeGripSvgItem->mapRectToParent(mLeftResizeGripSvgItem->boundingRect());
+        mLeftResizeGripSvgItem->setPos(rect().left(), rect().center().y() - lRect.height() / 2);
+        mLeftResizeGrip->setRect(leftResizeGripRect());
+
+        mLeftResizeGrip->setVisible(!isLocked);
+        mLeftResizeGripSvgItem->setVisible(!isLocked);
+    }
+
+    if (mHasRightResizeGrip)
+    {
+        mRightResizeGripSvgItem->setParentItem(this);
+        mRightResizeGrip->setParentItem(this);
+
+        QRectF rRect = mRightResizeGripSvgItem->mapRectToParent(mRightResizeGripSvgItem->boundingRect());
+        mRightResizeGripSvgItem->setPos(rect().right() - rRect.width(), rect().center().y() - rRect.height() / 2);
+        mRightResizeGrip->setRect(rightResizeGripRect());
+
+        mRightResizeGrip->setVisible(!isLocked);
+        mRightResizeGripSvgItem->setVisible(!isLocked);
+    }
+
+    if (mHasTopResizeGrip)
+    {
+        mTopResizeGripSvgItem->setParentItem(this);
+        mTopResizeGrip->setParentItem(this);
+
+        QRectF trRect = mTopResizeGripSvgItem->mapRectToParent(mTopResizeGripSvgItem->boundingRect());
+        mTopResizeGripSvgItem->setPos(rect().center().x() - trRect.width() / 2, rect().y());
+        mTopResizeGrip->setRect(topResizeGripRect());
+
+        mTopResizeGrip->setVisible(!isLocked);
+        mTopResizeGripSvgItem->setVisible(!isLocked);
+    }
+
+    mRotateButton->setParentItem(this);
+    mRotateButton->setPos(rect().right() - mFrameWidth - 5, rect().top() + 5);
     mRotateButton->setVisible(mDelegate->testUBFlags(GF_REVOLVABLE) && !isLocked);
-
-    mBottomRightResizeGrip->setVisible(!isLocked && bShowAllResizers);
-    mBottomResizeGrip->setVisible(!isLocked && (bShowVerticalResizers || bShowAllResizers));
-    mLeftResizeGrip->setVisible(!isLocked && (bShowHorizontalResizers || bShowAllResizers));
-    mRightResizeGrip->setVisible(!isLocked && (bShowHorizontalResizers || bShowAllResizers));
-    mTopResizeGrip->setVisible(!isLocked && (bShowVerticalResizers || bShowAllResizers));
 
     if (isLocked)
     {
@@ -918,16 +1000,16 @@ UBGraphicsDelegateFrame::FrameTool UBGraphicsDelegateFrame::toolFromPos(QPointF 
 {
     if(mDelegate->isLocked())
         return None;
-    else if (bottomRightResizeGripRect().contains(pos) && ResizingHorizontally != mOperationMode)
+    else if (bottomRightResizeGripRect().contains(pos) && ResizingHorizontally != mOperationMode && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS) && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS))
         return ResizeBottomRight;
-    else if (bottomResizeGripRect().contains(pos) && ResizingHorizontally != mOperationMode){
+    else if (bottomResizeGripRect().contains(pos) && ResizingHorizontally != mOperationMode && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS)){
             if(mMirrorY){
                 return ResizeTop;
             }else{
                 return ResizeBottom;
             }
         }
-    else if (leftResizeGripRect().contains(pos)){
+    else if (leftResizeGripRect().contains(pos) && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS)){
             if(mMirrorX){
                 return ResizeRight;
             }else{
@@ -935,14 +1017,14 @@ UBGraphicsDelegateFrame::FrameTool UBGraphicsDelegateFrame::toolFromPos(QPointF 
             }
             return ResizeLeft;
         }
-    else if (rightResizeGripRect().contains(pos)){
+    else if (rightResizeGripRect().contains(pos) && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS)){
             if(mMirrorX){
                 return ResizeLeft;
             }else{
                 return ResizeRight;
             }
         }
-    else if (topResizeGripRect().contains(pos) && ResizingHorizontally != mOperationMode){
+    else if (topResizeGripRect().contains(pos) && ResizingHorizontally != mOperationMode && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS)){
             if(mMirrorY){
                 return ResizeBottom;
             }else{

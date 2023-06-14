@@ -134,6 +134,12 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         QGraphicsRectItem* mRightResizeGrip;
         QGraphicsRectItem* mTopResizeGrip;
 
+        bool mHasBottomRightResizeGrip;
+        bool mHasBottomResizeGrip;
+        bool mHasLeftResizeGrip;
+        bool mHasRightResizeGrip;
+        bool mHasTopResizeGrip;
+
         OperationMode mOperationMode;
 
         QGraphicsItem* delegated();

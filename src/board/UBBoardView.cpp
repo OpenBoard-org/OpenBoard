@@ -74,6 +74,7 @@
 #include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBGraphicsStrokesGroup.h"
 #include "domain/UBGraphicsItemDelegate.h"
+#include "domain/UBGraphicsTextItemDelegate.h"
 
 #include "document/UBDocumentProxy.h"
 
@@ -1443,8 +1444,25 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
                 UBDrawingController::drawingController ()->setStylusTool (UBStylusTool::Selector);
 
                 textItem->setTextInteractionFlags(Qt::TextEditorInteraction);
-                textItem->setSelected (true);
-                textItem->setTextWidth(0);
+                textItem->setSelected(true);
+
+                UBGraphicsTextItemDelegate * textItemDelegate = dynamic_cast<UBGraphicsTextItemDelegate*>(textItem->Delegate());
+
+                if (textItemDelegate)
+                {
+                    if (rubberRect.width() > textItemDelegate->titleBarWidth())
+                    {
+                        textItem->setTextWidth(mapToScene(rubberRect).boundingRect().width());
+                    }
+                    else
+                    {
+                        textItem->setTextWidth(scene()->nominalSize().width() / mController->currentZoom() / 2.);
+                    }
+                }
+                else
+                {
+                    textItem->setTextWidth(scene()->nominalSize().width() / mController->currentZoom() / 2.);
+                }
                 textItem->setFocus();
             }
         }

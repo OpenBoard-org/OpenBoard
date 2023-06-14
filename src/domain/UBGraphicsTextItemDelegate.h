@@ -151,7 +151,7 @@ class UBGraphicsTextItemDelegate : public UBGraphicsItemDelegate
 
     private:
         void customize(QFontDialog &fontDialog);
-        void ChangeTextSize(qreal factor, textChangeMode changeMode);
+        void changeTextSize(qreal factor, textChangeMode changeMode);
         void updateAlignButtonState();
         bool oneBlockSelection();
         void saveTextCursorFormats();
