@@ -19,7 +19,7 @@ PROJECT_ROOT="$SCRIPT_PATH/../.."
 
 
 APPLICATION_NAME="OpenBoard"
-BASE_QT_DIR=/opt/local/libexec/qt5
+BASE_QT_DIR=/Users/dev/Qt/6.4.3/macos
 # Executables
 QMAKE=$BASE_QT_DIR/bin/qmake
 MACDEPLOYQT=$BASE_QT_DIR/bin/macdeployqt
@@ -133,7 +133,7 @@ checkExecutable "$PLISTBUDDY"
 checkExecutable "$ICEBERG"
 checkExecutable "$LRELEASE"
 
-addImporter
+#addImporter
 
 # delete the build directory
 notify "Cleaning ..."

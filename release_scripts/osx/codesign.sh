@@ -32,10 +32,15 @@ APPLICATION_DOT_APP="$APPLICATION_NAME.app"
 APPLICATION_DIR="$PRODUCT_DIR/$APPLICATION_DOT_APP"
 APPLICATION_CONTENTS_DIR="$APPLICATION_DIR/Contents"
 APPLICATION_RESOURCES_DIR="$APPLICATION_CONTENTS_DIR/Resources"
+APPLICATION_FRAMEWORKS_DIR="$APPLICATION_CONTENTS_DIR/Frameworks"
 
 IMPORTER_NAME="OpenBoardImporter"
 IMPORTER_DOT_APP="$IMPORTER_NAME.app"
 IMPORTER_DIR="$APPLICATION_RESOURCES_DIR/$IMPORTER_DOT_APP"
+
+WEBENGINE_NAME="QtWebEngineProcess"
+WEBENGINE_DOT_APP="$WEBENGINE_NAME"
+WEBENGINE_DIR="$APPLICATION_FRAMEWORKS_DIR/QtWebEngineCore.framework/Helpers"
 
 
 function notify {
@@ -68,6 +73,21 @@ function checkExecutable {
 
 checkExecutable $CODESIGN
 
+function signWebEngine
+{
+    notify "signing $WEBENGINE_NAME..."
+    if [ ! -e ${WEBENGINE_DIR} ]; then
+        abort "${WEBENGINE_DIR} not found"
+    fi
+
+    cd $WEBENGINE_DIR
+
+    ls `pwd`
+ 
+    $CODESIGN --force --deep -o runtime --timestamp --entitlements "$MACX_RESOURCES_DIR"/WebEngineEntitlements.plist --verbose=4 -s "$IDENTITY" --digest-algorithm=sha1,sha256 "$WEBENGINE_NAME.app/Contents/MacOS/QtWebEngineProcess"
+    cd -
+}
+
 function signImporter
 {
     notify "signing $IMPORTER_NAME..."
@@ -94,9 +114,11 @@ function signOpenBoard
     cd -
 }
 
-signImporter
+#signImporter
 
 signOpenBoard
+
+signWebEngine
 
 notify "$APPLICATION_NAME is now signed. You can now package OpenBoard using the script 'package.sh'"
 
