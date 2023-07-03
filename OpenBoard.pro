@@ -176,22 +176,13 @@ macx {
    LIBS += -framework CoreMedia
    LIBS += -lcrypto
 
-   # quazip depends on QT. Current is 5.14, so if you wish to build
-   # OB using a previous QT version, you have to build your own quazip,
-   # otherwise it won't link.
-   equals(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 14) {
-      LIBS += "-L../OpenBoard-ThirdParty/quazip/lib/macx" "-lquazip"
-   } else {
-       LIBS += -L/usr/local/lib -lquazip5
-   }
+
+   LIBS += -L/usr/local/lib -lquazip1-qt6.1.4
+   INCLUDEPATH += /opt/local/include/QuaZip-Qt6-1.4/quazip
+   
    LIBS += -L/opt/local/lib
    INCLUDEPATH += /usr/local/opt/openssl/include
    INCLUDEPATH += /opt/local/include
-   equals(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 14) {
-       INCLUDEPATH += ../OpenBoard-ThirdParty/quazip/quazip-0.7.1
-   } else {
-       INCLUDEPATH += /opt/local/include/quazip5
-   }
 
    LIBS        += -L/opt/local/lib -lpoppler
    INCLUDEPATH += /opt/local/include/poppler
@@ -200,8 +191,8 @@ macx {
    QMAKE_MACOSX_DEPLOYMENT_TARGET = 12
 
    # For universal builds
-   # QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64"
-   QMAKE_APPLE_DEVICE_ARCHS = arm64
+   QMAKE_APPLE_DEVICE_ARCHS=x86_64 arm64
+   #QMAKE_APPLE_DEVICE_ARCHS = arm64
 
    QMAKE_CXXFLAGS += -Wno-overloaded-virtual
    #VERSION_RC_PATH = "$$BUILD_DIR/version_rc"
