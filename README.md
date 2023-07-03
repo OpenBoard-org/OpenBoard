@@ -17,7 +17,7 @@ OpenBoard is an open source cross-platform interactive white board application d
 | Version   | officially maintained platforms | 
 |------------|--------------------------------------------------------|
 | 1.6.4 (latest stable)     | Windows 10+, macOS 10.13+ (and partial support via emulation on `arm64` chips), Ubuntu 20.04, Ubuntu 22.04  |
-| 1.7.0 (active)     | Windows 10+, macOS 12+ (for both `x64_64` and `arm64`), Ubuntu 20.04, Ubuntu 22.04 |
+| 1.7.0 (active development)     | Windows 10+, macOS 12+ (for both `x64_64` and `arm64`), Ubuntu 20.04, Ubuntu 22.04 |
 
 ### Communnity-driven packages
 On Linux, Ubuntu is the only officially maintained platform. For other platforms, you can thank the awesome community of OpenBoard that provides some cool stuff like a FlatHub package, or OpenSuse support. Check on [this page](https://github.com/OpenBoard-org/OpenBoard/wiki/Downloads) to see if you find what you're looking for. If you actually want to provide support and to be referenced on this page, please open an issue with the relevant information, and we'll be glad to add your contribution.
