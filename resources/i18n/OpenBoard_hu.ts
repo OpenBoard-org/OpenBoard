@@ -2139,20 +2139,12 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 előkép létrehozva…</translation>
     </message>
-    <message>
-        <source>loading thumbnail of page %1</source>
-        <translation type="vanished">%1. oldal előképének betöltése</translation>
-    </message>
-    <message>
-        <source>Loading thumbnail (%1/%2)</source>
-        <translation>Miniatűr betöltése (%1/%2)</translation>
-    </message>
 </context>
 <context>
     <name>UBThumbnailTextItem</name>
     <message>
         <source>Page %0</source>
-        <translation>oldal %0</translation>
+        <translation>%0. oldal</translation>
     </message>
 </context>
 <context>
