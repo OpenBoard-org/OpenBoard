@@ -897,7 +897,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Capture Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Webtartalom rögzítése</translation>
     </message>
 </context>
 <context>
@@ -943,11 +943,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Loading scene (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Jelenet betöltése (%1/%2)</translation>
     </message>
     <message>
         <source>Moving cached scenes (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Gyorsítótárazott jelenetek áthelyezése (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -993,7 +993,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
-        <translation type="unfinished"></translation>
+        <translation>Az UBX-fájl közvetlenül nem nyitható meg. Inkább Dokumentumok módban importálja.</translation>
     </message>
 </context>
 <context>
@@ -1298,8 +1298,8 @@ Do you wish to override the security check and continue ?   </source>
     <message numerus="yes">
         <source>duplicated %1 page</source>
         <comment>duplicated %1 pages</comment>
-        <translation type="unfinished">
-            <numerusform>%1 oldal másolata</numerusform>
+        <translation>
+            <numerusform>%1 oldal sokszorosítva</numerusform>
         </translation>
     </message>
     <message>
@@ -1316,7 +1316,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Refreshing Document Thumbnails View (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokumentum miniatűrök nézetének frissítése (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1370,7 +1370,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Generating thumbnails for board (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Miniatűrök készítése a táblához (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1408,7 +1408,7 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%1 oldal másolva</numerusform>
         </translation>
     </message>
@@ -1421,7 +1421,7 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%1 oldal másolva</numerusform>
         </translation>
     </message>
@@ -2050,11 +2050,11 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     </message>
     <message>
         <source>Renaming pages (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Oldalak átnevezése (%1/%2)</translation>
     </message>
     <message>
         <source>Retrieving all your documents (found : %1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Az összes dokumentum lekérése (találva: %1)</translation>
     </message>
 </context>
 <context>
@@ -2183,7 +2183,7 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     <name>UBThumbnailTextItem</name>
     <message>
         <source>Page %0</source>
-        <translation>oldal %0</translation>
+        <translation>%0. oldal</translation>
     </message>
 </context>
 <context>
@@ -2840,7 +2840,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a content to capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Rögzíteni kívánt tartalmat kijelölése</translation>
     </message>
 </context>
 </TS>
