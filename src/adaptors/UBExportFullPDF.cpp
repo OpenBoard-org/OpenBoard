@@ -304,9 +304,30 @@ bool UBExportFullPDF::persistsDocument(std::shared_ptr<UBDocumentProxy> pDocumen
             merger.saveMergedDocumentsAs(QFile::encodeName(filename).constData());
 
         }
-        catch(const Exception& e)
+        catch(const std::exception& e)
         {
-            qDebug() << "PdfMerger failed to merge documents to " << filename << " - Exception : " << e.what();
+            qWarning() << "An exception occured during PDF merging of document " << filename << " :" << e.what();
+
+            QMessageBox errorBox;
+            errorBox.setIcon(QMessageBox::Warning);
+            errorBox.setText(tr("The original PDF imported in OpenBoard seems not valid and could not be merged with your annotations. Please repair it and then reimport it in OpenBoard. The current export will be done with detailed (heavy) images of the pages of the original PDF instead, to avoid complete export failure."));
+            QApplication::restoreOverrideCursor();
+            errorBox.exec();
+            QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+            // default to raster export
+
+            mSimpleExporter->persistsDocument(pDocumentProxy, filename);
+        }
+        catch (...)
+        {
+            qWarning() << "An exception occured during PDF merging of document " << filename;
+
+            QMessageBox errorBox;
+            errorBox.setIcon(QMessageBox::Warning);
+            errorBox.setText(tr("The original PDF imported in OpenBoard seems not valid and could not be merged with your annotations. Please repair it and then reimport it in OpenBoard. The current export will be done with detailed (heavy) images of the pages of the original PDF instead, to avoid complete export failure."));
+            QApplication::restoreOverrideCursor();
+            errorBox.exec();
+            QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
             // default to raster export
             mSimpleExporter->persistsDocument(pDocumentProxy, filename);

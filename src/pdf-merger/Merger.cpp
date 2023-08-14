@@ -135,6 +135,13 @@ void Merger::merge(const char * overlayDocName, const MergeDescription & pagesTo
 // Method performs saving of merged documents into selected file
 void Merger::saveMergedDocumentsAs(const char * outDocumentName)
 {
-   _overlayDocument->saveAs(outDocumentName);
+    try
+    {
+        _overlayDocument->saveAs(outDocumentName);
+    }
+    catch (...)
+    {
+        throw;
+    }
 }
 
