@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
-  <context>
+<context>
     <name>BlackoutWidget</name>
     <message>
-      <source>Click to Return to Application</source>
-      <translation>点击返回到应用程序</translation>
+        <source>Click to Return to Application</source>
+        <translation>点击返回到应用程序</translation>
     </message>
 </context>
 <context>
@@ -109,810 +109,882 @@ Do you wish to override the security check and continue ?   </source>
         <source>Remove from list</source>
         <translation type="unfinished"></translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>IntranetPodcastPublishingDialog</name>
     <message>
-      <source>Publish Podcast to YouTube</source>
-      <translation type="unfinished">发布播客到 Youtube</translation>
+        <source>Publish Podcast to YouTube</source>
+        <translation type="unfinished">发布播客到 Youtube</translation>
     </message>
     <message>
-      <source>Title</source>
-      <translation>标题</translation>
+        <source>Title</source>
+        <translation>标题</translation>
     </message>
     <message>
-      <source>Description</source>
-      <translation>描述</translation>
+        <source>Description</source>
+        <translation>描述</translation>
     </message>
     <message>
-      <source>Author</source>
-      <translation>作者</translation>
+        <source>Author</source>
+        <translation>作者</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
-      <source>Board</source>
-      <translation>演示板</translation>
+        <source>Board</source>
+        <translation>演示板</translation>
     </message>
     <message>
-      <source>Web</source>
-      <translation>网页</translation>
+        <source>Web</source>
+        <translation>网页</translation>
     </message>
     <message>
-      <source>Documents</source>
-      <translation>文档</translation>
+        <source>Documents</source>
+        <translation>文档</translation>
     </message>
     <message>
-      <source>Stylus</source>
-      <translation>工具面板</translation>
+        <source>Stylus</source>
+        <translation>工具面板</translation>
     </message>
     <message>
-      <source>Ctrl+T</source>
-      <translation>Ctrl+T</translation>
+        <source>Ctrl+T</source>
+        <translation>Ctrl+T</translation>
     </message>
     <message>
-      <source>Backgrounds</source>
-      <translation>背景</translation>
+        <source>Backgrounds</source>
+        <translation>背景</translation>
     </message>
     <message>
-      <source>Change Background</source>
-      <translation>更换背景</translation>
+        <source>Change Background</source>
+        <translation>更换背景</translation>
     </message>
     <message>
-      <source>Undo</source>
-      <translation>撤销</translation>
+        <source>Undo</source>
+        <translation>撤销</translation>
     </message>
     <message>
-      <source>Ctrl+Z</source>
-      <translation>Ctrl+Z</translation>
+        <source>Ctrl+Z</source>
+        <translation>Ctrl+Z</translation>
     </message>
     <message>
-      <source>Redo</source>
-      <translation>重复</translation>
+        <source>Redo</source>
+        <translation>重复</translation>
     </message>
     <message>
-      <source>Ctrl+Y</source>
-      <translation>Ctrl+Y</translation>
+        <source>Ctrl+Y</source>
+        <translation>Ctrl+Y</translation>
     </message>
     <message>
-      <source>Previous</source>
-      <translation>上一页</translation>
+        <source>Previous</source>
+        <translation>上一页</translation>
     </message>
     <message>
-      <source>Previous Page</source>
-      <translation>上一页</translation>
+        <source>Previous Page</source>
+        <translation>上一页</translation>
     </message>
     <message>
-      <source>PgUp</source>
-      <translation>向上翻</translation>
+        <source>PgUp</source>
+        <translation>向上翻</translation>
     </message>
     <message>
-      <source>Next</source>
-      <translation>下一页</translation>
+        <source>Next</source>
+        <translation>下一页</translation>
     </message>
     <message>
-      <source>Next Page</source>
-      <translation>下一页</translation>
+        <source>Next Page</source>
+        <translation>下一页</translation>
     </message>
     <message>
-      <source>PgDown</source>
-      <translation>向下翻</translation>
+        <source>PgDown</source>
+        <translation>向下翻</translation>
     </message>
     <message>
-      <source>Manage Documents</source>
-      <translation>管理文档</translation>
+        <source>Manage Documents</source>
+        <translation type="vanished">管理文档</translation>
     </message>
     <message>
-      <source>Ctrl+D</source>
-      <translation>Ctrl+D</translation>
+        <source>Ctrl+D</source>
+        <translation>Ctrl+D</translation>
     </message>
     <message>
-      <source>Web Browsing</source>
-      <translation>浏览网页</translation>
+        <source>Web Browsing</source>
+        <translation type="vanished">浏览网页</translation>
     </message>
     <message>
-      <source>Ctrl+W</source>
-      <translation>Ctrl+W</translation>
+        <source>Ctrl+W</source>
+        <translation>Ctrl+W</translation>
     </message>
     <message>
-      <source>Line</source>
-      <translation>粗细</translation>
+        <source>Line</source>
+        <translation>粗细</translation>
     </message>
     <message>
-      <source>Small Line</source>
-      <translation>细</translation>
+        <source>Small Line</source>
+        <translation>细</translation>
     </message>
     <message>
-      <source>Medium Line</source>
-      <translation>中</translation>
+        <source>Medium Line</source>
+        <translation>中</translation>
     </message>
     <message>
-      <source>Large Line</source>
-      <translation>粗</translation>
+        <source>Large Line</source>
+        <translation>粗</translation>
     </message>
     <message>
-      <source>Quit</source>
-      <translation>退出</translation>
+        <source>Quit</source>
+        <translation>退出</translation>
     </message>
     <message>
-      <source>Eraser</source>
-      <translation>橡皮擦</translation>
+        <source>Eraser</source>
+        <translation>橡皮擦</translation>
     </message>
     <message>
         <source>Medium Eraser</source>
         <translation>中</translation>
     </message>
     <message>
-      <source>Large Eraser</source>
-      <translation>大</translation>
+        <source>Large Eraser</source>
+        <translation>大</translation>
     </message>
     <message>
         <source>Back</source>
         <translation>后退</translation>
     </message>
     <message>
-      <source>Left</source>
-      <translation>向左</translation>
+        <source>Left</source>
+        <translation>向左</translation>
     </message>
     <message>
-      <source>Forward</source>
-      <translation>前进</translation>
+        <source>Forward</source>
+        <translation>前进</translation>
     </message>
     <message>
-      <source>Right</source>
-      <translation>向右</translation>
+        <source>Right</source>
+        <translation>向右</translation>
     </message>
     <message>
-      <source>Reload</source>
-      <translation>刷新</translation>
+        <source>Reload</source>
+        <translation>刷新</translation>
     </message>
     <message>
-      <source>Reload Current Page</source>
-      <translation>重新加载当前页面</translation>
+        <source>Reload Current Page</source>
+        <translation>重新加载当前页面</translation>
     </message>
     <message>
-      <source>Home</source>
-      <translation>主页</translation>
+        <source>Home</source>
+        <translation>主页</translation>
     </message>
     <message>
-      <source>Load Home Page</source>
-      <translation>加载主页</translation>
+        <source>Load Home Page</source>
+        <translation>加载主页</translation>
     </message>
     <message>
-      <source>Bookmarks</source>
-      <translation>书签</translation>
+        <source>Bookmarks</source>
+        <translation>书签</translation>
     </message>
     <message>
-      <source>Show Bookmarks</source>
-      <translation>显示书签</translation>
+        <source>Show Bookmarks</source>
+        <translation>显示书签</translation>
     </message>
     <message>
-      <source>Bookmark</source>
-      <translation>书签</translation>
+        <source>Bookmark</source>
+        <translation>书签</translation>
     </message>
     <message>
-      <source>Add Bookmark</source>
-      <translation>添加书签</translation>
+        <source>Add Bookmark</source>
+        <translation>添加书签</translation>
     </message>
     <message>
-      <source>Display Board</source>
-      <translation>显示演示板</translation>
+        <source>Display Board</source>
+        <translation type="vanished">显示演示板</translation>
     </message>
     <message>
-      <source>Ctrl+B</source>
-      <translation>Ctrl+B</translation>
+        <source>Ctrl+B</source>
+        <translation>Ctrl+B</translation>
     </message>
     <message>
-      <source>Erase</source>
-      <translation>清除页面</translation>
+        <source>Erase</source>
+        <translation>清除页面</translation>
     </message>
     <message>
-      <source>Erase Content</source>
-      <translation>清除内容</translation>
+        <source>Erase Content</source>
+        <translation>清除内容</translation>
     </message>
     <message>
-      <source>Preferences</source>
-      <translation>自定义</translation>
+        <source>Preferences</source>
+        <translation>自定义</translation>
     </message>
     <message>
-      <source>Display Preferences</source>
-      <translation>显示自定义</translation>
+        <source>Display Preferences</source>
+        <translation>显示自定义</translation>
     </message>
     <message>
-      <source>Library</source>
-      <translation>库</translation>
+        <source>Library</source>
+        <translation>库</translation>
     </message>
     <message>
-      <source>Show Library</source>
-      <translation>显示库</translation>
+        <source>Show Library</source>
+        <translation>显示库</translation>
     </message>
     <message>
-      <source>Ctrl+L</source>
-      <translation>Ctrl+L</translation>
+        <source>Ctrl+L</source>
+        <translation>Ctrl+L</translation>
     </message>
     <message>
-      <source>Show Desktop</source>
-      <translation>显示桌面</translation>
+        <source>Show Desktop</source>
+        <translation>显示桌面</translation>
     </message>
     <message>
-      <source>Show Computer Desktop</source>
-      <translation>显示电脑桌面</translation>
+        <source>Show Computer Desktop</source>
+        <translation type="vanished">显示电脑桌面</translation>
     </message>
     <message>
-      <source>Ctrl+Shift+H</source>
-      <translation>Ctrl+Shift+H</translation>
+        <source>Ctrl+Shift+H</source>
+        <translation>Ctrl+Shift+H</translation>
     </message>
     <message>
-      <source>Bigger</source>
-      <translation>放大</translation>
+        <source>Bigger</source>
+        <translation>放大</translation>
     </message>
     <message>
-      <source>Zoom In</source>
-      <translation>放大</translation>
+        <source>Zoom In</source>
+        <translation>放大</translation>
     </message>
     <message>
-      <source>Ctrl++</source>
-      <translation>Ctrl++</translation>
+        <source>Ctrl++</source>
+        <translation>Ctrl++</translation>
     </message>
     <message>
-      <source>Smaller</source>
-      <translation>缩小</translation>
+        <source>Smaller</source>
+        <translation>缩小</translation>
     </message>
     <message>
-      <source>Zoom Out</source>
-      <translation>缩小</translation>
+        <source>Zoom Out</source>
+        <translation>缩小</translation>
     </message>
     <message>
-      <source>Ctrl+-</source>
-      <translation>Ctrl+-</translation>
+        <source>Ctrl+-</source>
+        <translation>Ctrl+-</translation>
     </message>
     <message>
-      <source>New Folder</source>
-      <translation>新建文件夹</translation>
+        <source>New Folder</source>
+        <translation>新建文件夹</translation>
     </message>
     <message>
-      <source>Create a New Folder</source>
-      <translation>创建一个新文件夹</translation>
+        <source>Create a New Folder</source>
+        <translation>创建一个新文件夹</translation>
     </message>
     <message>
-      <source>New Document</source>
-      <translation>新建文档</translation>
+        <source>New Document</source>
+        <translation>新建文档</translation>
     </message>
     <message>
-      <source>Create a New Document</source>
-      <translation>创建一个新文档</translation>
+        <source>Create a New Document</source>
+        <translation>创建一个新文档</translation>
     </message>
     <message>
-      <source>Import</source>
-      <translation>导入</translation>
+        <source>Import</source>
+        <translation>导入</translation>
     </message>
     <message>
-      <source>Import a Document</source>
-      <translation>导入文档</translation>
+        <source>Import a Document</source>
+        <translation>导入文档</translation>
     </message>
     <message>
-      <source>Export</source>
-      <translation>导出</translation>
+        <source>Export</source>
+        <translation>导出</translation>
     </message>
     <message>
-      <source>Export a Document</source>
-      <translation>导出文档</translation>
+        <source>Export a Document</source>
+        <translation>导出文档</translation>
     </message>
     <message>
-      <source>Open in Board</source>
-      <translation>在演示板上打开</translation>
+        <source>Open in Board</source>
+        <translation>在演示板上打开</translation>
     </message>
     <message>
-      <source>Open Page in Board</source>
-      <translation>在演示板上打开页面</translation>
+        <source>Open Page in Board</source>
+        <translation>在演示板上打开页面</translation>
     </message>
     <message>
-      <source>Ctrl+O</source>
-      <translation>Ctrl+O</translation>
+        <source>Ctrl+O</source>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
-      <source>Duplicate</source>
-      <translation>复制</translation>
+        <source>Duplicate</source>
+        <translation>复制</translation>
     </message>
     <message>
-      <source>Duplicate Selected Content</source>
-      <translation>复制所选内容</translation>
+        <source>Duplicate Selected Content</source>
+        <translation>复制所选内容</translation>
     </message>
     <message>
-      <source>Delete</source>
-      <translation>删除</translation>
+        <source>Delete</source>
+        <translation>删除</translation>
     </message>
     <message>
-      <source>Delete Selected Content</source>
-      <translation>删除所选内容</translation>
+        <source>Delete Selected Content</source>
+        <translation>删除所选内容</translation>
     </message>
     <message>
-      <source>Del</source>
-      <translation>Del</translation>
+        <source>Del</source>
+        <translation>Del</translation>
     </message>
     <message>
-      <source>Add to Working Document</source>
-      <translation>添加到工作文档</translation>
+        <source>Add to Working Document</source>
+        <translation type="vanished">添加到工作文档</translation>
     </message>
     <message>
-      <source>Add Selected Content to Open Document</source>
-      <translation>添加所选内容到打开文档</translation>
+        <source>Add Selected Content to Open Document</source>
+        <translation>添加所选内容到打开文档</translation>
     </message>
     <message>
-      <source>Add</source>
-      <translation>添加</translation>
+        <source>Add</source>
+        <translation>添加</translation>
     </message>
     <message>
-      <source>Add Content to Document</source>
-      <translation>添加内容到文档</translation>
+        <source>Add Content to Document</source>
+        <translation>添加内容到文档</translation>
     </message>
     <message>
-      <source>Rename</source>
-      <translation>重命名</translation>
+        <source>Rename</source>
+        <translation>重命名</translation>
     </message>
     <message>
-      <source>Rename Content</source>
-      <translation>重命名内容</translation>
+        <source>Rename Content</source>
+        <translation>重命名内容</translation>
     </message>
     <message>
-      <source>Tools</source>
-      <translation>工具</translation>
+        <source>Tools</source>
+        <translation>工具</translation>
     </message>
     <message>
-      <source>Display Tools</source>
-      <translation>显示工具</translation>
+        <source>Display Tools</source>
+        <translation>显示工具</translation>
     </message>
     <message>
-      <source>Multi Screen</source>
-      <translation>多屏显示</translation>
+        <source>Multi Screen</source>
+        <translation>多屏显示</translation>
     </message>
     <message>
-      <source>Wide Size (16/9)</source>
-      <translation>宽屏尺寸（16/9）</translation>
+        <source>Wide Size (16/9)</source>
+        <translation>宽屏尺寸（16/9）</translation>
     </message>
     <message>
-      <source>Use Document Wide Size (16/9)</source>
-      <translation>宽屏显示文档（16/9）</translation>
+        <source>Use Document Wide Size (16/9)</source>
+        <translation>宽屏显示文档（16/9）</translation>
     </message>
     <message>
-      <source>Regular Size (4/3)</source>
-      <translation>标屏尺寸（4/3）</translation>
+        <source>Regular Size (4/3)</source>
+        <translation>标屏尺寸（4/3）</translation>
     </message>
     <message>
-      <source>Use Document Regular Size (4/3)</source>
-      <translation>标屏显示文档（4/3）</translation>
+        <source>Use Document Regular Size (4/3)</source>
+        <translation>标屏显示文档（4/3）</translation>
     </message>
     <message>
-      <source>Custom Size</source>
-      <translation>自定义尺寸</translation>
+        <source>Custom Size</source>
+        <translation>自定义尺寸</translation>
     </message>
     <message>
-      <source>Use Custom Document Size</source>
-      <translation>自定义尺寸显示文档</translation>
+        <source>Use Custom Document Size</source>
+        <translation>自定义尺寸显示文档</translation>
     </message>
     <message>
-      <source>Stop Loading</source>
-      <translation>停止载入</translation>
+        <source>Stop Loading</source>
+        <translation>停止载入</translation>
     </message>
     <message>
-      <source>Stop Loading Web Page</source>
-      <translation>停止载入网页</translation>
+        <source>Stop Loading Web Page</source>
+        <translation>停止载入网页</translation>
     </message>
     <message>
-      <source>Cut</source>
-      <translation>剪切</translation>
+        <source>Cut</source>
+        <translation>剪切</translation>
     </message>
     <message>
-      <source>Copy</source>
-      <translation>复制</translation>
+        <source>Copy</source>
+        <translation>复制</translation>
     </message>
     <message>
-      <source>Paste</source>
-      <translation>粘贴</translation>
+        <source>Paste</source>
+        <translation>粘贴</translation>
     </message>
     <message>
-      <source>Sleep</source>
-      <translation>睡眠</translation>
+        <source>Sleep</source>
+        <translation>睡眠</translation>
     </message>
     <message>
-      <source>Put Presentation to Sleep</source>
-      <translation>使演示屏进入睡眠状态</translation>
+        <source>Put Presentation to Sleep</source>
+        <translation>使演示屏进入睡眠状态</translation>
     </message>
     <message>
-      <source>Virtual Keyboard</source>
-      <translation>软键盘</translation>
+        <source>Virtual Keyboard</source>
+        <translation>软键盘</translation>
     </message>
     <message>
-      <source>Display Virtual Keyboard</source>
-      <translation>打开软键盘</translation>
+        <source>Display Virtual Keyboard</source>
+        <translation>打开软键盘</translation>
     </message>
     <message>
-      <source>Plain Light Background</source>
-      <translation>白色背景</translation>
+        <source>Plain Light Background</source>
+        <translation>白色背景</translation>
     </message>
     <message>
-      <source>Light</source>
-      <translation>白色</translation>
+        <source>Light</source>
+        <translation>白色</translation>
     </message>
     <message>
-      <source>Grid Light Background</source>
-      <translation>白色网格背景</translation>
+        <source>Grid Light Background</source>
+        <translation>白色网格背景</translation>
     </message>
     <message>
-      <source>Plain Dark Background</source>
-      <translation>黑色背景</translation>
+        <source>Plain Dark Background</source>
+        <translation>黑色背景</translation>
     </message>
     <message>
-      <source>Dark</source>
-      <translation>黑色</translation>
+        <source>Dark</source>
+        <translation>黑色</translation>
     </message>
     <message>
-      <source>Grid Dark Background</source>
-      <translation>黑色网格背景</translation>
+        <source>Grid Dark Background</source>
+        <translation>黑色网格背景</translation>
     </message>
     <message>
-      <source>Podcast</source>
-      <translation>播客</translation>
+        <source>Podcast</source>
+        <translation>播客</translation>
     </message>
     <message>
-      <source>Record Presentation to Video</source>
-      <translation>为演讲录制视频</translation>
+        <source>Record Presentation to Video</source>
+        <translation>为演讲录制视频</translation>
     </message>
     <message>
-      <source>Record</source>
-      <translation>录制</translation>
+        <source>Record</source>
+        <translation>录制</translation>
     </message>
     <message>
-      <source>Start Screen Recording</source>
-      <translation>开始屏幕录制</translation>
+        <source>Start Screen Recording</source>
+        <translation>开始屏幕录制</translation>
     </message>
     <message>
-      <source>Erase Items</source>
-      <translation>清除项目</translation>
+        <source>Erase Items</source>
+        <translation>清除项目</translation>
     </message>
     <message>
-      <source>Erase All Items</source>
-      <translation>清除所有项目</translation>
+        <source>Erase All Items</source>
+        <translation>清除所有项目</translation>
     </message>
     <message>
-      <source>Erase Annotations</source>
-      <translation>清除标注</translation>
+        <source>Erase Annotations</source>
+        <translation>清除标注</translation>
     </message>
     <message>
-      <source>Erase All Annotations</source>
-      <translation>清除所有标注</translation>
+        <source>Erase All Annotations</source>
+        <translation>清除所有标注</translation>
     </message>
     <message>
-      <source>Clear Page</source>
-      <translation>清空页面</translation>
+        <source>Clear Page</source>
+        <translation>清空页面</translation>
     </message>
     <message>
-      <source>Clear All Elements</source>
-      <translation>清空所有内容</translation>
+        <source>Clear All Elements</source>
+        <translation>清空所有内容</translation>
     </message>
     <message>
-      <source>Pen</source>
-      <translation>笔</translation>
+        <source>Pen</source>
+        <translation>笔</translation>
     </message>
     <message>
-      <source>Annotate Document</source>
-      <translation>标注文档</translation>
+        <source>Annotate Document</source>
+        <translation>标注文档</translation>
     </message>
     <message>
-      <source>Ctrl+I</source>
-      <translation>Ctrl+I</translation>
+        <source>Ctrl+I</source>
+        <translation>Ctrl+I</translation>
     </message>
     <message>
-      <source>Erase Annotation</source>
-      <translation>清除批注</translation>
+        <source>Erase Annotation</source>
+        <translation>清除批注</translation>
     </message>
     <message>
-      <source>Ctrl+E</source>
-      <translation>Ctrl+E</translation>
+        <source>Ctrl+E</source>
+        <translation>Ctrl+E</translation>
     </message>
     <message>
-      <source>Marker</source>
-      <translation>记号笔</translation>
+        <source>Marker</source>
+        <translation>记号笔</translation>
     </message>
     <message>
-      <source>Highlight </source>
-      <translation>高亮</translation>
+        <source>Highlight </source>
+        <translation>高亮</translation>
     </message>
     <message>
-      <source>Ctrl+M</source>
-      <translation>Ctrl+M</translation>
+        <source>Ctrl+M</source>
+        <translation>Ctrl+M</translation>
     </message>
     <message>
-      <source>Selector</source>
-      <translation>选择工具</translation>
+        <source>Selector</source>
+        <translation>选择工具</translation>
     </message>
     <message>
-      <source>Select And Modify Objects</source>
-      <translation>选中并修改素材</translation>
+        <source>Select And Modify Objects</source>
+        <translation>选中并修改素材</translation>
     </message>
     <message>
-      <source>Ctrl+F</source>
-      <translation>Ctrl+F</translation>
+        <source>Ctrl+F</source>
+        <translation>Ctrl+F</translation>
     </message>
     <message>
-      <source>Hand</source>
-      <translation>手型工具</translation>
+        <source>Hand</source>
+        <translation>手型工具</translation>
     </message>
     <message>
-      <source>Scroll Page</source>
-      <translation>滚动页面</translation>
+        <source>Scroll Page</source>
+        <translation>滚动页面</translation>
     </message>
     <message>
-      <source>Laser Pointer</source>
-      <translation>激光笔</translation>
+        <source>Laser Pointer</source>
+        <translation>激光笔</translation>
     </message>
     <message>
-      <source>Virtual Laser Pointer</source>
-      <translation>模拟激光笔</translation>
+        <source>Virtual Laser Pointer</source>
+        <translation>模拟激光笔</translation>
     </message>
     <message>
-      <source>Ctrl+G</source>
-      <translation>Ctrl+G</translation>
+        <source>Ctrl+G</source>
+        <translation>Ctrl+G</translation>
     </message>
     <message>
-      <source>Draw Lines</source>
-      <translation>直线</translation>
+        <source>Draw Lines</source>
+        <translation>直线</translation>
     </message>
     <message>
-      <source>Ctrl+J</source>
-      <translation>Ctrl+J</translation>
+        <source>Ctrl+J</source>
+        <translation>Ctrl+J</translation>
     </message>
     <message>
-      <source>Text</source>
-      <translation>文本</translation>
+        <source>Text</source>
+        <translation>文本</translation>
     </message>
     <message>
-      <source>Write Text</source>
-      <translation>输入文本</translation>
+        <source>Write Text</source>
+        <translation>输入文本</translation>
     </message>
     <message>
-      <source>Ctrl+K</source>
-      <translation>Ctrl+K</translation>
+        <source>Ctrl+K</source>
+        <translation>Ctrl+K</translation>
     </message>
     <message>
-      <source>Capture</source>
-      <translation>截图</translation>
+        <source>Capture</source>
+        <translation>截图</translation>
     </message>
     <message>
-      <source>Capture Part of the Screen</source>
-      <translation>部分截图</translation>
+        <source>Capture Part of the Screen</source>
+        <translation>部分截图</translation>
     </message>
     <message>
-      <source>Add To Current Page</source>
-      <translation>添加到最近打开页面</translation>
+        <source>Add To Current Page</source>
+        <translation>添加到最近打开页面</translation>
     </message>
     <message>
-      <source>Add Item To Current Page</source>
-      <translation>添加项目到最近打开页面</translation>
+        <source>Add Item To Current Page</source>
+        <translation>添加项目到最近打开页面</translation>
     </message>
     <message>
-      <source>Add To New Page</source>
-      <translation>添加到新页面</translation>
+        <source>Add To New Page</source>
+        <translation>添加到新页面</translation>
     </message>
     <message>
-      <source>Add Item To New Page</source>
-      <translation>添加项目到新页面</translation>
+        <source>Add Item To New Page</source>
+        <translation>添加项目到新页面</translation>
     </message>
     <message>
-      <source>Add To Library</source>
-      <translation>添加到库</translation>
+        <source>Add To Library</source>
+        <translation>添加到库</translation>
     </message>
     <message>
-      <source>Add Item To Library</source>
-      <translation>添加项目到库</translation>
+        <source>Add Item To Library</source>
+        <translation>添加项目到库</translation>
     </message>
     <message>
-      <source>Pages</source>
-      <translation>页面</translation>
+        <source>Pages</source>
+        <translation>页面</translation>
     </message>
     <message>
-      <source>Create a New Page</source>
-      <translation>新建页面</translation>
+        <source>Create a New Page</source>
+        <translation>新建页面</translation>
     </message>
     <message>
-      <source>New Page</source>
-      <translation>新页面</translation>
+        <source>New Page</source>
+        <translation>新页面</translation>
     </message>
     <message>
-      <source>Duplicate Page</source>
-      <translation>复制页面</translation>
+        <source>Duplicate Page</source>
+        <translation>复制页面</translation>
     </message>
     <message>
-      <source>Duplicate the Current Page</source>
-      <translation>复制最近打开页面</translation>
+        <source>Duplicate the Current Page</source>
+        <translation>复制最近打开页面</translation>
     </message>
     <message>
-      <source>Import Page</source>
-      <translation>导入页面</translation>
+        <source>Import Page</source>
+        <translation>导入页面</translation>
     </message>
     <message>
-      <source>Import an External Page</source>
-      <translation>导入外部页面</translation>
+        <source>Import an External Page</source>
+        <translation type="vanished">导入外部页面</translation>
     </message>
     <message>
-      <source>Pause</source>
-      <translation>暂停</translation>
+        <source>Pause</source>
+        <translation>暂停</translation>
     </message>
     <message>
-      <source>Pause Podcast Recording</source>
-      <translation>暂停录制播客</translation>
+        <source>Pause Podcast Recording</source>
+        <translation>暂停录制播客</translation>
     </message>
     <message>
-      <source>Podcast Config</source>
-      <translation>播客设置</translation>
+        <source>Podcast Config</source>
+        <translation>播客设置</translation>
     </message>
     <message>
-      <source>Configure Podcast Recording</source>
-      <translation>播客录制设置</translation>
+        <source>Configure Podcast Recording</source>
+        <translation>播客录制设置</translation>
     </message>
     <message>
-      <source>Flash Trap</source>
-      <translation>截取动画</translation>
+        <source>Flash Trap</source>
+        <translation type="vanished">截取动画</translation>
     </message>
     <message>
-      <source>Trap Flash Content</source>
-      <translation>截取动画内容</translation>
+        <source>Trap Flash Content</source>
+        <translation type="vanished">截取动画内容</translation>
     </message>
     <message>
-      <source>Web Trap</source>
-      <translation>截取网页</translation>
+        <source>Web Trap</source>
+        <translation type="vanished">截取网页</translation>
     </message>
     <message>
-      <source>Trap Web Content</source>
-      <translation>截取网页内容</translation>
+        <source>Trap Web Content</source>
+        <translation type="vanished">截取网页内容</translation>
     </message>
     <message>
-      <source>Custom Capture</source>
-      <translation>自定义截图</translation>
+        <source>Custom Capture</source>
+        <translation>自定义截图</translation>
     </message>
     <message>
-      <source>Window Capture</source>
-      <translation>窗口截图</translation>
+        <source>Window Capture</source>
+        <translation>窗口截图</translation>
     </message>
     <message>
-      <source>Capture a Window</source>
-      <translation>捕获一个窗口</translation>
+        <source>Capture a Window</source>
+        <translation>捕获一个窗口</translation>
     </message>
     <message>
-      <source>Embed Web Content</source>
-      <translation>嵌入网页内容 </translation>
+        <source>Embed Web Content</source>
+        <translation>嵌入网页内容 </translation>
     </message>
     <message>
-      <source>Capture Embeddable Web Content</source>
-      <translation>截取可嵌入的网页内容 </translation>
+        <source>Capture Embeddable Web Content</source>
+        <translation>截取可嵌入的网页内容 </translation>
     </message>
     <message>
-      <source>Show on Display</source>
-      <translation>在屏幕上显示</translation>
+        <source>Show on Display</source>
+        <translation>在屏幕上显示</translation>
     </message>
     <message>
-      <source>Show Main Screen on Display Screen</source>
-      <translation>在显示屏上显示主屏幕</translation>
+        <source>Show Main Screen on Display Screen</source>
+        <translation>在显示屏上显示主屏幕</translation>
     </message>
     <message>
-      <source>Erase all Annotations</source>
-      <translation>清除所有标注</translation>
+        <source>Erase all Annotations</source>
+        <translation>清除所有标注</translation>
     </message>
     <message>
-      <source>eduMedia</source>
-      <translation>eduMedia</translation>
+        <source>eduMedia</source>
+        <translation type="vanished">eduMedia</translation>
     </message>
     <message>
-      <source>Import eduMedia simulation</source>
-      <translation>导入 eduMedia 模拟</translation>
+        <source>Import eduMedia simulation</source>
+        <translation type="vanished">导入 eduMedia 模拟</translation>
     </message>
     <message>
-      <source>Check Update</source>
-      <translation>检查更新</translation>
+        <source>Check Update</source>
+        <translation>检查更新</translation>
     </message>
     <message>
-      <source>Ctrl+H</source>
-      <translation>Ctrl+H</translation>
+        <source>Ctrl+H</source>
+        <translation>Ctrl+H</translation>
     </message>
     <message>
-      <source>OpenBoard</source>
-      <translation>OpenBoard</translation>
+        <source>OpenBoard</source>
+        <translation>OpenBoard</translation>
     </message>
     <message>
-      <source>Quit OpenBoard</source>
-      <translation type="unfinished">关闭 OpenBoard</translation>
+        <source>Quit OpenBoard</source>
+        <translation type="unfinished">关闭 OpenBoard</translation>
     </message>
     <message>
-      <source>Hide OpenBoard</source>
-      <translation type="unfinished">隐藏 OpenBoard</translation>
+        <source>Hide OpenBoard</source>
+        <translation type="unfinished">隐藏 OpenBoard</translation>
     </message>
     <message>
-      <source>Hide OpenBoard Application</source>
-      <translation type="unfinished">隐藏 OpenBoard 应用程序</translation>
+        <source>Hide OpenBoard Application</source>
+        <translation type="unfinished">隐藏 OpenBoard 应用程序</translation>
     </message>
     <message>
-      <source>Play</source>
-      <translation>播放</translation>
+        <source>Play</source>
+        <translation>播放</translation>
     </message>
     <message>
-      <source>Interact with items</source>
-      <translation>与项目互动</translation>
+        <source>Interact with items</source>
+        <translation>与项目互动</translation>
     </message>
     <message>
-      <source>Erase Background</source>
-      <translation>删除背景</translation>
+        <source>Erase Background</source>
+        <translation>删除背景</translation>
     </message>
     <message>
-      <source>Remove the backgound</source>
-      <translation>移除背景</translation>
+        <source>Remove the backgound</source>
+        <translation>移除背景</translation>
     </message>
     <message>
-      <source>Ruled Light Background</source>
-      <translation type="unfinished">规则浅色背景</translation>
+        <source>Ruled Light Background</source>
+        <translation type="unfinished">规则浅色背景</translation>
     </message>
     <message>
-      <source>Ruled Dark Background</source>
-      <translation type="unfinished">规则深色背景</translation>
+        <source>Ruled Dark Background</source>
+        <translation type="unfinished">规则深色背景</translation>
     </message>
     <message>
-      <source>Open Tutorial</source>
-      <translation type="unfinished">打开教程</translation>
+        <source>Open Tutorial</source>
+        <translation type="unfinished">打开教程</translation>
     </message>
     <message>
-      <source>Open the tutorial web page</source>
-      <translation type="unfinished">打开教程网页</translation>
+        <source>Open the tutorial web page</source>
+        <translation type="unfinished">打开教程网页</translation>
     </message>
     <message>
-      <source>Reset grid size</source>
-      <translation type="unfinished">重置网格大小</translation>
+        <source>Reset grid size</source>
+        <translation type="unfinished">重置网格大小</translation>
     </message>
     <message>
-      <source>Small Eraser</source>
-      <translation type="unfinished">小橡皮擦</translation>
+        <source>Small Eraser</source>
+        <translation type="unfinished">小橡皮擦</translation>
     </message>
     <message>
-      <source>Color 1</source>
-      <translation type="unfinished">颜色 1</translation>
+        <source>Color 1</source>
+        <translation type="unfinished">颜色 1</translation>
     </message>
     <message>
-      <source>Color 2</source>
-      <translation type="unfinished">颜色 2</translation>
+        <source>Color 2</source>
+        <translation type="unfinished">颜色 2</translation>
     </message>
     <message>
-      <source>Color 3</source>
-      <translation type="unfinished">颜色 3</translation>
+        <source>Color 3</source>
+        <translation type="unfinished">颜色 3</translation>
     </message>
     <message>
-      <source>Color 4</source>
-      <translation type="unfinished">颜色 4</translation>
+        <source>Color 4</source>
+        <translation type="unfinished">颜色 4</translation>
     </message>
     <message>
-      <source>Color 5</source>
-      <translation type="unfinished">颜色 5</translation>
+        <source>Color 5</source>
+        <translation type="unfinished">颜色 5</translation>
     </message>
     <message>
-      <source>Draw intermediate grid lines</source>
-      <translation type="unfinished">绘制中间网格线</translation>
+        <source>Draw intermediate grid lines</source>
+        <translation type="unfinished">绘制中间网格线</translation>
     </message>
     <message>
-      <source>Capture Web Content</source>
-      <translation type="unfinished">捕获网页内容</translation>
+        <source>Capture Web Content</source>
+        <translation type="unfinished">捕获网页内容</translation>
     </message>
-  </context>
-  <context>
+    <message>
+        <source>Documents Mode</source>
+        <translation type="unfinished">文档模式</translation>
+    </message>
+    <message>
+        <source>Web Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Board Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Desktop</source>
+        <translation type="unfinished">桌面</translation>
+    </message>
+    <message>
+        <source>Desktop Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Seyes ruled Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Seyes ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import one or more pages (supported formats : jpg, png, svg, ubz, pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to favorites</source>
+        <translation type="unfinished">添加到收藏夹</translation>
+    </message>
+    <message>
+        <source>Add Document to favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hints and tips</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Hints and tips</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PasswordDialog</name>
     <message>
-      <source>Authentication Required</source>
-      <translation>需要验证</translation>
+        <source>Authentication Required</source>
+        <translation>需要验证</translation>
     </message>
     <message>
-      <source>Username:</source>
-      <translation>用户名:</translation>
+        <source>Username:</source>
+        <translation>用户名:</translation>
     </message>
     <message>
-      <source>Password:</source>
-      <translation>密码:</translation>
+        <source>Password:</source>
+        <translation>密码:</translation>
     </message>
     <message>
         <source>Icon</source>
@@ -922,32 +994,36 @@ Do you wish to override the security check and continue ?   </source>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>QObject</name>
     <message>
-      <source>Element ID = </source>
-      <translation type="unfinished">元素 ID = </translation>
+        <source>Element ID = </source>
+        <translation type="unfinished">元素 ID = </translation>
     </message>
     <message>
-      <source>Content is not supported in destination format.</source>
-      <translation>目标格式不支持该内容。</translation>
+        <source>Content is not supported in destination format.</source>
+        <translation>目标格式不支持该内容。</translation>
     </message>
     <message>
-      <source>Remove Page</source>
-      <translation>删除页面</translation>
+        <source>Remove Page</source>
+        <translation>删除页面</translation>
     </message>
     <message>
-      <source>Are you sure you want to remove 1 page from the selected document '%0'?</source>
-      <translation>确定要删除选中文件“%0”中的1页?</translation>
+        <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
+        <translation type="vanished">确定要删除选中文件“%0”中的1页?</translation>
     </message>
     <message>
-      <source>Loading scene (%1/%2)</source>
-      <translation type="unfinished">加载场景 (%1/%2)</translation>
+        <source>Loading scene (%1/%2)</source>
+        <translation type="unfinished">加载场景 (%1/%2)</translation>
     </message>
     <message>
-      <source>Moving cached scenes (%1/%2)</source>
-      <translation type="unfinished">移动已缓存场景 (%1/%2)</translation>
+        <source>Moving cached scenes (%1/%2)</source>
+        <translation type="unfinished">移动已缓存场景 (%1/%2)</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove page %1 ?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -984,421 +1060,553 @@ Do you wish to override the security check and continue ?   </source>
 <context>
     <name>UBApplication</name>
     <message>
-      <source>Page Size</source>
-      <translation>页面大小</translation>
+        <source>Page Size</source>
+        <translation>页面大小</translation>
     </message>
     <message>
-      <source>Podcast</source>
-      <translation>播客</translation>
+        <source>Podcast</source>
+        <translation>播客</translation>
     </message>
     <message>
-      <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
-      <translation type="unfinished">无法直接打开您的 UBX 文件。 请改为以文档模式导入</translation>
+        <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
+        <translation type="unfinished">无法直接打开您的 UBX 文件。 请改为以文档模式导入</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBApplicationController</name>
     <message>
-      <source>Web</source>
-      <translation>网页</translation>
+        <source>Web</source>
+        <translation>网页</translation>
     </message>
     <message>
-      <source>New update available, would you go to the web page ?</source>
-      <translation>有可用的更新，是否登陆更新页面?</translation>
+        <source>New update available, would you go to the web page ?</source>
+        <translation>有可用的更新，是否登陆更新页面?</translation>
     </message>
     <message>
-      <source>No update available</source>
-      <translation>无可用的更新</translation>
+        <source>No update available</source>
+        <translation>无可用的更新</translation>
     </message>
     <message>
-      <source>Update available</source>
-      <translation>有可用的更新</translation>
+        <source>Update available</source>
+        <translation>有可用的更新</translation>
     </message>
     <message>
-      <source>Update</source>
-      <translation>更新</translation>
+        <source>Update</source>
+        <translation>更新</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBBackgroundPalette</name>
     <message>
-      <source>Grid size</source>
-      <translation type="unfinished">网格大小</translation>
+        <source>Grid size</source>
+        <translation type="unfinished">网格大小</translation>
     </message>
     <message>
-      <source>Draw intermediate grid lines</source>
-      <translation type="unfinished">绘制中间网格线</translation>
+        <source>Draw intermediate grid lines</source>
+        <translation type="unfinished">绘制中间网格线</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBBoardController</name>
     <message>
-      <source>Downloading content %1 failed</source>
-      <translation>下载内容%1失败</translation>
+        <source>Downloading content %1 failed</source>
+        <translation>下载内容%1失败</translation>
     </message>
     <message>
-      <source>Download finished</source>
-      <translation>下载已完成</translation>
+        <source>Download finished</source>
+        <translation>下载已完成</translation>
     </message>
     <message>
-      <source>Unknown tool type %1</source>
-      <translation>未知工具类型 %1</translation>
+        <source>Unknown tool type %1</source>
+        <translation>未知工具类型 %1</translation>
     </message>
     <message>
-      <source>Unknown content type %1</source>
-      <translation>未知内容类型 %1</translation>
+        <source>Unknown content type %1</source>
+        <translation>未知内容类型 %1</translation>
     </message>
     <message>
-      <source>Add Item</source>
-      <translation>添加项目</translation>
+        <source>Add Item</source>
+        <translation>添加项目</translation>
     </message>
     <message>
-      <source>All Supported (%1)</source>
-      <translation>所有支持的（%1）</translation>
+        <source>All Supported (%1)</source>
+        <translation>所有支持的（%1）</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
         <translation>已删除%1页</translation>
     </message>
     <message>
-      <source>Add file operation failed: file copying error</source>
-      <translation>增加操作失败文档:文件复制错误</translation>
+        <source>Add file operation failed: file copying error</source>
+        <translation>增加操作失败文档:文件复制错误</translation>
     </message>
     <message>
-      <source>Group</source>
-      <translation>组合</translation>
+        <source>Group</source>
+        <translation>组合</translation>
     </message>
     <message>
-      <source>Ungroup</source>
-      <translation>取消组合</translation>
+        <source>Ungroup</source>
+        <translation>取消组合</translation>
     </message>
     <message>
-      <source>Saving document...</source>
-      <translation type="unfinished">正在保存文档...</translation>
+        <source>Saving document...</source>
+        <translation type="unfinished">正在保存文档...</translation>
     </message>
     <message>
-      <source>Document has just been saved...</source>
-      <translation type="unfinished">文档刚刚保存...</translation>
+        <source>Document has just been saved...</source>
+        <translation type="unfinished">文档刚刚保存...</translation>
     </message>
     <message>
-      <source>Deleting page %1</source>
-      <translation type="unfinished">正在删除页面 %1</translation>
+        <source>Deleting page %1</source>
+        <translation type="unfinished">正在删除页面 %1</translation>
     </message>
     <message>
-      <source>Color</source>
-      <translation type="unfinished">颜色</translation>
+        <source>Color</source>
+        <translation type="unfinished">颜色</translation>
     </message>
-  </context>
-  <context>
+    <message>
+        <source>Untitled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not find document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBBoardPaletteManager</name>
     <message>
-      <source>Error Adding Image to Library</source>
-      <translation>添加图片到图书馆出错</translation>
+        <source>Error Adding Image to Library</source>
+        <translation>添加图片到图书馆出错</translation>
     </message>
     <message>
-      <source>CapturedImage</source>
-      <translation>图像截图</translation>
+        <source>CapturedImage</source>
+        <translation>图像截图</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBBoardThumbnailsView</name>
     <message>
-      <source>Loading page (%1/%2)</source>
-      <translation type="unfinished">下载加载页面 (%1/%2)</translation>
+        <source>Loading page (%1/%2)</source>
+        <translation type="obsolete">下载加载页面 (%1/%2)</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>UBBoardView</name>
+    <message>
+        <source>Is it for Board or Widget ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you trying to drop the object(s) inside the widget ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBCachePropertiesWidget</name>
     <message>
-      <source>Cache Properties</source>
-      <translation>高级缓存属性</translation>
+        <source>Cache Properties</source>
+        <translation>高级缓存属性</translation>
     </message>
     <message>
-      <source>Color:</source>
-      <translation>颜色:</translation>
+        <source>Color:</source>
+        <translation>颜色:</translation>
     </message>
     <message>
-      <source>Shape:</source>
-      <translation>形状：</translation>
+        <source>Shape:</source>
+        <translation>形状：</translation>
     </message>
     <message>
-      <source>Size:</source>
-      <translation>大小：</translation>
+        <source>Size:</source>
+        <translation>大小：</translation>
     </message>
     <message>
-      <source>Close</source>
-      <translation>关闭</translation>
+        <source>Close</source>
+        <translation>关闭</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBDesktopPalette</name>
     <message>
-      <source>Capture Part of the Screen</source>
-      <translation>部分截图</translation>
+        <source>Capture Part of the Screen</source>
+        <translation>部分截图</translation>
     </message>
     <message>
-      <source>Capture the Screen</source>
-      <translation>全屏截图</translation>
+        <source>Capture the Screen</source>
+        <translation>全屏截图</translation>
     </message>
     <message>
-      <source>Show the stylus palette</source>
-      <translation>显示工具面板</translation>
+        <source>Show the stylus palette</source>
+        <translation>显示工具面板</translation>
     </message>
     <message>
-      <source>Show Board on Secondary Screen</source>
-      <translation>在第二屏幕显示演示板</translation>
+        <source>Show Board on Secondary Screen</source>
+        <translation>在第二屏幕显示演示板</translation>
     </message>
     <message>
-      <source>Show Desktop on Secondary Screen</source>
-      <translation>在第二屏幕显示桌面</translation>
+        <source>Show Desktop on Secondary Screen</source>
+        <translation>在第二屏幕显示桌面</translation>
     </message>
     <message>
-      <source>Show OpenBoard</source>
-      <translation type="unfinished">显示 OpenBoard</translation>
+        <source>Show OpenBoard</source>
+        <translation type="unfinished">显示 OpenBoard</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBDocumentController</name>
     <message>
-      <source>New Folder</source>
-      <translation>新建文件夹</translation>
+        <source>New Folder</source>
+        <translation>新建文件夹</translation>
     </message>
     <message>
-      <source>Page %1</source>
-      <translation>页面 %1</translation>
+        <source>Page %1</source>
+        <translation>页面 %1</translation>
     </message>
     <message>
-      <source>Add Folder of Images</source>
-      <translation>添加图片文件夹</translation>
+        <source>Add Folder of Images</source>
+        <translation>添加图片文件夹</translation>
     </message>
     <message>
-      <source>Add Images</source>
-      <translation>添加图片</translation>
+        <source>Add Images</source>
+        <translation>添加图片</translation>
     </message>
     <message>
-      <source>Add Pages from File</source>
-      <translation>添加页面来自于文件</translation>
+        <source>Add Pages from File</source>
+        <translation>添加页面来自于文件</translation>
     </message>
     <message>
-      <source>Duplicating Document %1</source>
-      <translation>正在复制文档 %1</translation>
+        <source>Duplicating Document %1</source>
+        <translation>正在复制文档 %1</translation>
     </message>
     <message>
-      <source>Document %1 copied</source>
-      <translation>已复制文档 %1</translation>
+        <source>Document %1 copied</source>
+        <translation>已复制文档 %1</translation>
     </message>
     <message>
         <source>Open Supported File</source>
         <translation>打开支持的文件</translation>
     </message>
     <message>
-      <source>Importing file %1...</source>
-      <translation>导入文件 %1...</translation>
+        <source>Importing file %1...</source>
+        <translation>导入文件 %1...</translation>
     </message>
     <message>
-      <source>Failed to import file ... </source>
-      <translation>导入文件失败...</translation>
+        <source>Failed to import file ... </source>
+        <translation>导入文件失败...</translation>
     </message>
     <message>
-      <source>Import all Images from Folder</source>
-      <translation>将所有图片导入文件夹</translation>
+        <source>Import all Images from Folder</source>
+        <translation>将所有图片导入文件夹</translation>
     </message>
     <message>
-      <source>Delete</source>
-      <translation>删除</translation>
+        <source>Delete</source>
+        <translation>删除</translation>
     </message>
     <message>
-      <source>Empty</source>
-      <translation>清空</translation>
+        <source>Empty</source>
+        <translation>清空</translation>
     </message>
     <message>
-      <source>Trash</source>
-      <translation>回收站</translation>
+        <source>Trash</source>
+        <translation>回收站</translation>
     </message>
     <message>
-      <source>Open Document</source>
-      <translation>打开文档</translation>
+        <source>Open Document</source>
+        <translation>打开文档</translation>
     </message>
     <message>
-      <source>Add all Images to Document</source>
-      <translation>添加所有图片到文档</translation>
+        <source>Add all Images to Document</source>
+        <translation>添加所有图片到文档</translation>
     </message>
     <message>
-      <source>All Images (%1)</source>
-      <translation>所有图像 (%1)</translation>
+        <source>All Images (%1)</source>
+        <translation>所有图像 (%1)</translation>
     </message>
     <message>
-      <source>Selection does not contain any image files!</source>
-      <translation>选中对象不包含任何图片文件!</translation>
+        <source>Selection does not contain any image files!</source>
+        <translation>选中对象不包含任何图片文件!</translation>
     </message>
     <message>
-      <source>Folder does not contain any image files</source>
-      <translation>文件夹中无图像文件</translation>
+        <source>Folder does not contain any image files</source>
+        <translation>文件夹中无图像文件</translation>
     </message>
     <message>
-      <source>Untitled Documents</source>
-      <translation>未命名文档</translation>
+        <source>Untitled Documents</source>
+        <translation>未命名文档</translation>
+    </message>
+    <message numerus="yes">
+        <source>duplicated %1 page</source>
+        <comment>duplicated %1 pages</comment>
+        <translation type="unfinished">
+            <numerusform>重复 %1 页面</numerusform>
+        </translation>
     </message>
     <message>
-      <source>duplicated %1 page</source>
-      <comment>duplicated %1 pages</comment>
-      <translation type="unfinished">重复 %1 页面</translation>
+        <source>Remove Item</source>
+        <translation type="obsolete">删除项目</translation>
     </message>
     <message>
-      <source>Remove Item</source>
-      <translation type="unfinished">删除项目</translation>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="obsolete">您确定要删除所选项目吗？</translation>
     </message>
     <message>
-      <source>Are you sure you want to remove the selected item(s) ?</source>
-      <translation type="unfinished">您确定要删除所选项目吗？</translation>
+        <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
+        <translation type="unfinished">已使用较新版本的 OpenBoard (%2) 生成文档“%1”。 打开它，您可能会丢失一些信息。 你想继续吗？</translation>
     </message>
     <message>
-      <source>The document '%1' has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-      <translation type="unfinished">已使用较新版本的 OpenBoard (%2) 生成文档“%1”。 打开它，您可能会丢失一些信息。 你想继续吗？</translation>
+        <source>Title page</source>
+        <translation type="unfinished">标题页面</translation>
     </message>
     <message>
-      <source>Title page</source>
-      <translation type="unfinished">标题页面</translation>
+        <source>Refreshing Document Thumbnails View (%1/%2)</source>
+        <translation type="unfinished">刷新文档缩略图视图 (%1/%2)</translation>
     </message>
     <message>
-      <source>Refreshing Document Thumbnails View (%1/%2)</source>
-      <translation type="unfinished">刷新文档缩略图视图 (%1/%2)</translation>
+        <source>Complete deletion of %1 documents/folders</source>
+        <translation type="unfinished"></translation>
     </message>
-  </context>
-  <context>
+    <message>
+        <source>You are about to permanantly delete %1 documents and/or folders. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Complete deletion of folder &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to permanantly delete folder &quot;%1&quot;. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Complete deletion of document &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to permanantly delete document &quot;%1&quot;. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Emptying My Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to entirely empty the folder &quot;My Documents&quot;. All your documents will be moved to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Emptying Trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to entirely empty the trash. All documents and folders in it will be permanently deleted. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moving %1 elements to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move %1 documents and/or folders to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move folder &quot;%1&quot;to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move folder &quot;%1&quot; to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move document &quot;%1&quot;to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move document &quot;%1&quot; to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Supported File(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moving %1 pages of the document &quot;%2&quot; to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move %1 pages of the document &quot;%2&quot; to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove page %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to remove page %1 of the document &quot;%2&quot;. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBDocumentManager</name>
     <message>
-      <source>images</source>
-      <translation>图片</translation>
+        <source>images</source>
+        <translation>图片</translation>
     </message>
     <message>
-      <source>videos</source>
-      <translation>视频</translation>
+        <source>videos</source>
+        <translation>视频</translation>
     </message>
     <message>
-      <source>objects</source>
-      <translation>素材</translation>
+        <source>objects</source>
+        <translation>素材</translation>
     </message>
     <message>
-      <source>widgets</source>
-      <translation>小工具</translation>
+        <source>widgets</source>
+        <translation>小工具</translation>
     </message>
     <message>
-      <source>All supported files (*.%1)</source>
-      <translation>所有支持的文件(*.%1)</translation>
+        <source>All supported files (*.%1)</source>
+        <translation>所有支持的文件(*.%1)</translation>
     </message>
     <message>
-      <source>File %1 saved</source>
-      <translation>文件 %1 已保存</translation>
+        <source>File %1 saved</source>
+        <translation>文件 %1 已保存</translation>
     </message>
     <message>
-      <source>Inserting page %1 of %2</source>
-      <translation>插入第 %1 页，共 %2 页</translation>
+        <source>Inserting page %1 of %2</source>
+        <translation>插入第 %1 页，共 %2 页</translation>
     </message>
     <message>
-      <source>Import successful.</source>
-      <translation>导入成功。</translation>
+        <source>Import successful.</source>
+        <translation>导入成功。</translation>
     </message>
     <message>
-      <source>Import of file %1 successful.</source>
-      <translation>文件 %1 导入成功。</translation>
+        <source>Import of file %1 successful.</source>
+        <translation>文件 %1 导入成功。</translation>
     </message>
     <message>
-      <source>Importing file %1</source>
-      <translation>正在导入文件 %1</translation>
+        <source>Importing file %1</source>
+        <translation>正在导入文件 %1</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBDocumentNavigator</name>
     <message>
-      <source>Page %0</source>
-      <translation>页面 %0</translation>
+        <source>Page %0</source>
+        <translation type="vanished">页面 %0</translation>
     </message>
     <message>
-      <source>Generating thumbnails for board (%1/%2)</source>
-      <translation type="unfinished">为演示板生成缩略图 (%1/%2)</translation>
+        <source>Generating thumbnails for board (%1/%2)</source>
+        <translation type="obsolete">为演示板生成缩略图 (%1/%2)</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBDocumentReplaceDialog</name>
     <message>
-      <source>Accept</source>
-      <translation type="unfinished">接受</translation>
+        <source>Accept</source>
+        <translation type="obsolete">接受</translation>
     </message>
     <message>
-      <source>Cancel</source>
-      <translation type="unfinished">取消</translation>
+        <source>Cancel</source>
+        <translation type="unfinished">取消</translation>
     </message>
     <message>
-      <source>Replace</source>
-      <translation type="unfinished">替换</translation>
+        <source>Replace</source>
+        <translation type="unfinished">替换</translation>
     </message>
     <message>
-      <source>The name %1 is allready used.
+        <source>The name %1 is allready used.
 Keeping this name will replace the document.
 Providing a new name will create a new document.</source>
-      <translation type="unfinished">名称 %1 已全部使用。
+        <translation type="unfinished">名称 %1 已全部使用。
 保留此名称将替换文档。
 提供新名称将创建一个新文档。</translation>
     </message>
-  </context>
-  <context>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished">重命名</translation>
+    </message>
+    <message>
+        <source>Replace all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Skip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Skip all</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBDocumentTreeModel</name>
     <message>
-      <source>Trash</source>
-      <translation type="unfinished">回收站</translation>
+        <source>Trash</source>
+        <translation type="unfinished">回收站</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="unfinished">
+            <numerusform>已复制页面 %1</numerusform>
+        </translation>
     </message>
     <message>
-      <source>%1 pages copied</source>
-      <translation type="unfinished">已复制页面 %1</translation>
+        <source>My documents</source>
+        <translation type="unfinished">我的文档</translation>
     </message>
-    <message>
-      <source>My documents</source>
-      <translation type="unfinished">我的文档</translation>
-    </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBDocumentTreeView</name>
-    <message>
-      <source>%1 pages copied</source>
-      <translation type="unfinished">已复制页面 %1</translation>
+    <message numerus="yes">
+        <source>%1 pages copied</source>
+        <translation type="unfinished">
+            <numerusform>已复制页面 %1</numerusform>
+        </translation>
     </message>
     <message>
-      <source>Remove Item</source>
-      <translation type="unfinished">删除项目</translation>
+        <source>Remove Item</source>
+        <translation type="obsolete">删除项目</translation>
     </message>
     <message>
-      <source>Are you sure you want to remove the selected item(s) ?</source>
-      <translation type="unfinished">您确定要删除所选项目吗？</translation>
+        <source>Are you sure you want to remove the selected item(s) ?</source>
+        <translation type="obsolete">您确定要删除所选项目吗？</translation>
     </message>
     <message>
-      <source>Copying page %1/%2</source>
-      <translation type="unfinished">正在复制页面 %1/%2</translation>
+        <source>Copying page %1/%2</source>
+        <translation type="unfinished">正在复制页面 %1/%2</translation>
     </message>
 </context>
 <context>
     <name>UBDownloadWidget</name>
     <message>
-      <source>Downloading files</source>
-      <translation>下载文件</translation>
+        <source>Downloading files</source>
+        <translation>下载文件</translation>
     </message>
     <message>
-      <source>Cancel</source>
-      <translation>取消</translation>
+        <source>Cancel</source>
+        <translation>取消</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
+    <name>UBDraggableLivePixmapItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">页面 %0</translation>
+    </message>
+</context>
+<context>
     <name>UBDraggableThumbnail</name>
     <message>
-      <source>Page %0</source>
-      <translation type="unfinished">页面 %0</translation>
+        <source>Page %0</source>
+        <translation type="obsolete">页面 %0</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBDraggableThumbnailView</name>
     <message>
-      <source>Page %0</source>
-      <translation type="unfinished">页面 %0</translation>
+        <source>Page %0</source>
+        <translation type="obsolete">页面 %0</translation>
     </message>
 </context>
 <context>
@@ -1420,287 +1628,295 @@ Providing a new name will create a new document.</source>
 <context>
     <name>UBExportAdaptor</name>
     <message>
-      <source>Warnings during export was appeared</source>
-      <translation>导出过程中出现警告</translation>
+        <source>Warnings during export was appeared</source>
+        <translation>导出过程中出现警告</translation>
     </message>
     <message>
-      <source>Exporting document...</source>
-      <translation type="unfinished">文档导出中...</translation>
+        <source>Exporting document...</source>
+        <translation type="unfinished">文档导出中...</translation>
     </message>
     <message>
-      <source>Export failed</source>
-      <translation type="unfinished">导出失败</translation>
+        <source>Export failed</source>
+        <translation type="unfinished">导出失败</translation>
     </message>
     <message>
-      <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-      <translation type="unfinished">无法导出到所选位置。 您没有保存文件所需的权限。</translation>
+        <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
+        <translation type="unfinished">无法导出到所选位置。 您没有保存文件所需的权限。</translation>
     </message>
     <message>
-      <source>Export failed: location not writable</source>
-      <translation type="unfinished">导出失败：位置不可写</translation>
+        <source>Export failed: location not writable</source>
+        <translation type="unfinished">导出失败：位置不可写</translation>
     </message>
     <message>
-      <source>Export successful.</source>
-      <translation type="unfinished">导出成功。</translation>
+        <source>Export successful.</source>
+        <translation type="unfinished">导出成功。</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBExportCFF</name>
     <message>
-      <source>Export to IWB</source>
-      <translation type="unfinished">导出到 IWB</translation>
+        <source>Export to IWB</source>
+        <translation type="unfinished">导出到 IWB</translation>
     </message>
     <message>
-      <source>Export as IWB File</source>
-      <translation>导出为 IWB 文件</translation>
+        <source>Export as IWB File</source>
+        <translation>导出为 IWB 文件</translation>
     </message>
     <message>
-      <source>Exporting document...</source>
-      <translation>文档导出中...</translation>
+        <source>Exporting document...</source>
+        <translation>文档导出中...</translation>
     </message>
     <message>
-      <source>Export successful.</source>
-      <translation>导出成功。</translation>
+        <source>Export successful.</source>
+        <translation>导出成功。</translation>
     </message>
     <message>
-      <source>Export failed.</source>
-      <translation>导出失败。</translation>
+        <source>Export failed.</source>
+        <translation>导出失败。</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBExportDocument</name>
     <message>
-      <source>Page</source>
-      <translation>页面</translation>
+        <source>Page</source>
+        <translation>页面</translation>
     </message>
     <message>
-      <source>Export as UBZ File</source>
-      <translation>以UBZ文件格式导出</translation>
+        <source>Export as UBZ File</source>
+        <translation>以UBZ文件格式导出</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
         <translation>正在导出的%3的%1 %2</translation>
     </message>
     <message>
-      <source>Export to OpenBoard Format</source>
-      <translation type="unfinished">导出为 OpenBoard 格式</translation>
+        <source>Export to OpenBoard Format</source>
+        <translation type="unfinished">导出为 OpenBoard 格式</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBExportDocumentSetAdaptor</name>
     <message>
-      <source>Exporting document...</source>
-      <translation type="unfinished">文档导出中...</translation>
+        <source>Exporting document...</source>
+        <translation type="unfinished">文档导出中...</translation>
     </message>
     <message>
-      <source>Failed to export...</source>
-      <translation type="unfinished">导出失败...</translation>
+        <source>Failed to export...</source>
+        <translation type="unfinished">导出失败...</translation>
     </message>
     <message>
-      <source>Export as UBX File</source>
-      <translation type="unfinished">导出为 UBX 文件</translation>
+        <source>Export as UBX File</source>
+        <translation type="unfinished">导出为 UBX 文件</translation>
     </message>
     <message>
-      <source>Export successful.</source>
-      <translation type="unfinished">导出成功。</translation>
+        <source>Export successful.</source>
+        <translation type="unfinished">导出成功。</translation>
     </message>
     <message>
-      <source>Export failed.</source>
-      <translation type="unfinished">导出失败。</translation>
+        <source>Export failed.</source>
+        <translation type="unfinished">导出失败。</translation>
     </message>
     <message>
-      <source>Export to OpenBoard UBX Format</source>
-      <translation type="unfinished">导出为 OpenBoard UBX 格式</translation>
+        <source>Export to OpenBoard UBX Format</source>
+        <translation type="unfinished">导出为 OpenBoard UBX 格式</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBExportFullPDF</name>
     <message>
-      <source>Export as PDF File</source>
-      <translation>导出为 PDF 文件</translation>
+        <source>Export as PDF File</source>
+        <translation>导出为 PDF 文件</translation>
     </message>
     <message>
         <source>Export to PDF</source>
         <translation>以PDF文件格式导出</translation>
     </message>
-  </context>
-  <context>
+    <message>
+        <source>The original PDF imported in OpenBoard seems not valid and could not be merged with your annotations. Please repair it and then reimport it in OpenBoard. The current export will be done with detailed (heavy) images of the pages of the original PDF instead, to avoid complete export failure.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBExportPDF</name>
     <message>
-      <source>Export as PDF File</source>
-      <translation>导出为 PDF 文件</translation>
+        <source>Export as PDF File</source>
+        <translation>导出为 PDF 文件</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
         <translation>正在导出%2的页面%1</translation>
     </message>
     <message>
-      <source>Export to PDF</source>
-      <translation>导出为 PDF</translation>
+        <source>Export to PDF</source>
+        <translation>导出为 PDF</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBExportWeb</name>
     <message>
-      <source>Page</source>
-      <translation>页面</translation>
+        <source>Page</source>
+        <translation>页面</translation>
     </message>
     <message>
-      <source>Export as Web data</source>
-      <translation>以网页数据导出</translation>
+        <source>Export as Web data</source>
+        <translation>以网页数据导出</translation>
     </message>
     <message>
-      <source>Exporting document...</source>
-      <translation>文档导出中...</translation>
+        <source>Exporting document...</source>
+        <translation>文档导出中...</translation>
     </message>
     <message>
-      <source>Export successful.</source>
-      <translation>导出成功</translation>
+        <source>Export successful.</source>
+        <translation>导出成功</translation>
     </message>
     <message>
-      <source>Export failed.</source>
-      <translation>导出失败</translation>
+        <source>Export failed.</source>
+        <translation>导出失败</translation>
     </message>
     <message>
-      <source>Export to Web Browser</source>
-      <translation>导出到网页浏览器</translation>
+        <source>Export to Web Browser</source>
+        <translation>导出到网页浏览器</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBFeatureProperties</name>
     <message>
-      <source>Add to page</source>
-      <translation>添加到页面</translation>
+        <source>Add to page</source>
+        <translation>添加到页面</translation>
     </message>
     <message>
         <source>Add to library</source>
         <translation>添加至图书馆</translation>
     </message>
     <message>
-      <source>Object informations</source>
-      <translation>素材信息</translation>
+        <source>Object informations</source>
+        <translation>素材信息</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBFeaturesActionBar</name>
     <message>
-      <source>Add to favorites</source>
-      <translation>添加到收藏夹</translation>
+        <source>Add to favorites</source>
+        <translation>添加到收藏夹</translation>
     </message>
     <message>
-      <source>Share</source>
-      <translation>分享</translation>
+        <source>Share</source>
+        <translation>分享</translation>
     </message>
     <message>
-      <source>Search</source>
-      <translation>搜索</translation>
+        <source>Search</source>
+        <translation>搜索</translation>
     </message>
     <message>
-      <source>Delete</source>
-      <translation>删除</translation>
+        <source>Delete</source>
+        <translation>删除</translation>
     </message>
     <message>
-      <source>Back to folder</source>
-      <translation>返回上级文件夹</translation>
+        <source>Back to folder</source>
+        <translation>返回上级文件夹</translation>
     </message>
     <message>
-      <source>Remove from favorites</source>
-      <translation>从收藏夹中移除</translation>
+        <source>Remove from favorites</source>
+        <translation>从收藏夹中移除</translation>
     </message>
     <message>
-      <source>Create new folder</source>
-      <translation>新建文件夹</translation>
+        <source>Create new folder</source>
+        <translation>新建文件夹</translation>
     </message>
     <message>
-      <source>Rescan file system</source>
-      <translation>重新扫描文件系统</translation>
+        <source>Rescan file system</source>
+        <translation>重新扫描文件系统</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBFeaturesController</name>
     <message>
-      <source>ImportedImage</source>
-      <translation>已导入图片</translation>
+        <source>ImportedImage</source>
+        <translation>已导入图片</translation>
     </message>
     <message>
-      <source>Audios</source>
-      <translation>音频</translation>
+        <source>Audios</source>
+        <translation>音频</translation>
     </message>
     <message>
-      <source>Movies</source>
-      <translation>视频</translation>
+        <source>Movies</source>
+        <translation>视频</translation>
     </message>
     <message>
-      <source>Pictures</source>
-      <translation>图片</translation>
+        <source>Pictures</source>
+        <translation>图片</translation>
     </message>
     <message>
         <source>Interactivities</source>
         <translation>互动</translation>
     </message>
     <message>
-      <source>Applications</source>
-      <translation>应用程序</translation>
+        <source>Applications</source>
+        <translation>应用程序</translation>
     </message>
     <message>
-      <source>Shapes</source>
-      <translation>形状</translation>
+        <source>Shapes</source>
+        <translation>形状</translation>
     </message>
     <message>
-      <source>Favorites</source>
-      <translation>收藏夹</translation>
+        <source>Favorites</source>
+        <translation>收藏夹</translation>
     </message>
     <message>
-      <source>Web search</source>
-      <translation>搜索网络</translation>
+        <source>Web search</source>
+        <translation>搜索网络</translation>
     </message>
     <message>
-      <source>Trash</source>
-      <translation>回收站</translation>
+        <source>Trash</source>
+        <translation>回收站</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBFeaturesNewFolderDialog</name>
     <message>
-      <source>Accept</source>
-      <translation>接受</translation>
+        <source>Accept</source>
+        <translation>接受</translation>
     </message>
     <message>
-      <source>Cancel</source>
-      <translation>取消</translation>
+        <source>Cancel</source>
+        <translation>取消</translation>
     </message>
     <message>
-      <source>Enter a new folder name</source>
-      <translation type="unfinished">输入新的文件夹名称</translation>
+        <source>Enter a new folder name</source>
+        <translation type="unfinished">输入新的文件夹名称</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBFeaturesProgressInfo</name>
     <message>
-      <source>Loading </source>
-      <translation>载入中</translation>
+        <source>Loading </source>
+        <translation>载入中</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBGraphicsGroupContainerItemDelegate</name>
     <message>
-      <source>Locked</source>
-      <translation>位置锁定</translation>
+        <source>Locked</source>
+        <translation>位置锁定</translation>
     </message>
     <message>
-      <source>Visible on Extended Screen</source>
-      <translation>宽屏上可见</translation>
+        <source>Visible on Extended Screen</source>
+        <translation>宽屏上可见</translation>
     </message>
-  </context>
-  <context>
+    <message>
+        <source>Hide on Extended Screen when selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBGraphicsItemDelegate</name>
     <message>
-      <source>Locked</source>
-      <translation>位置锁定</translation>
+        <source>Locked</source>
+        <translation>位置锁定</translation>
     </message>
     <message>
-      <source>Visible on Extended Screen</source>
-      <translation>宽屏上可见</translation>
+        <source>Visible on Extended Screen</source>
+        <translation>宽屏上可见</translation>
     </message>
     <message>
         <source>Set as background</source>
@@ -1710,206 +1926,210 @@ Providing a new name will create a new document.</source>
         <source>Web Inspector</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Hide on Extended Screen when selected</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsMediaItem</name>
     <message>
-      <source>Media resource couldn't be resolved</source>
-      <translation type="unfinished">无法解析媒体资源</translation>
+        <source>Media resource couldn&apos;t be resolved</source>
+        <translation type="unfinished">无法解析媒体资源</translation>
     </message>
     <message>
-      <source>Unsupported media format</source>
-      <translation type="unfinished">不支持的媒体格式</translation>
+        <source>Unsupported media format</source>
+        <translation type="unfinished">不支持的媒体格式</translation>
     </message>
     <message>
-      <source>Media playback service not found</source>
-      <translation type="unfinished">未找到媒体播放服务</translation>
+        <source>Media playback service not found</source>
+        <translation type="unfinished">未找到媒体播放服务</translation>
     </message>
     <message>
-      <source>Media error: </source>
-      <translation type="unfinished">媒体错误：</translation>
+        <source>Media error: </source>
+        <translation type="unfinished">媒体错误：</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBGraphicsTextItem</name>
     <message>
-      <source>&lt;Type Text Here&gt;</source>
-      <translation>&lt;在此键入文本&gt;</translation>
+        <source>&lt;Type Text Here&gt;</source>
+        <translation>&lt;在此键入文本&gt;</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBGraphicsTextItemDelegate</name>
     <message>
-      <source>Text Color</source>
-      <translation>文本颜色</translation>
+        <source>Text Color</source>
+        <translation>文本颜色</translation>
     </message>
     <message>
-      <source>Editable</source>
-      <translation>可编辑</translation>
+        <source>Editable</source>
+        <translation>可编辑</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBGraphicsW3CWidgetItem</name>
     <message>
-      <source>Web</source>
-      <translation>网页</translation>
+        <source>Web</source>
+        <translation>网页</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBGraphicsWidgetItem</name>
     <message>
-      <source>Loading ...</source>
-      <translation>载入中...</translation>
+        <source>Loading ...</source>
+        <translation>载入中...</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBGraphicsWidgetItemDelegate</name>
     <message>
-      <source>Frozen</source>
-      <translation>锁定</translation>
+        <source>Frozen</source>
+        <translation>锁定</translation>
     </message>
     <message>
-      <source>Transform as Tool </source>
-      <translation>转换为工具</translation>
+        <source>Transform as Tool </source>
+        <translation>转换为工具</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBImportCFF</name>
     <message>
-      <source>Common File Format (</source>
-      <translation>常见文件格式 (</translation>
+        <source>Common File Format (</source>
+        <translation>常见文件格式 (</translation>
     </message>
     <message>
-      <source>Importing file %1...</source>
-      <translation>正在导入文件 %1...</translation>
+        <source>Importing file %1...</source>
+        <translation>正在导入文件 %1...</translation>
     </message>
     <message>
-      <source>Import of file %1 failed.</source>
-      <translation>文件 %1 导入失败</translation>
+        <source>Import of file %1 failed.</source>
+        <translation>文件 %1 导入失败</translation>
     </message>
     <message>
-      <source>Import successful.</source>
-      <translation>导入成功</translation>
+        <source>Import successful.</source>
+        <translation>导入成功</translation>
     </message>
     <message>
-      <source>Import failed.</source>
-      <translation>导入失败</translation>
+        <source>Import failed.</source>
+        <translation>导入失败</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBImportDocument</name>
     <message>
-      <source>Importing file %1...</source>
-      <translation>正在导入文件 %1...</translation>
+        <source>Importing file %1...</source>
+        <translation>正在导入文件 %1...</translation>
     </message>
     <message>
-      <source>Import successful.</source>
-      <translation>导入成功</translation>
+        <source>Import successful.</source>
+        <translation>导入成功</translation>
     </message>
     <message>
-      <source>Import of file %1 failed.</source>
-      <translation>文件 %1 导入失败</translation>
+        <source>Import of file %1 failed.</source>
+        <translation>文件 %1 导入失败</translation>
     </message>
     <message>
-      <source>OpenBoard (*.ubz)</source>
-      <translation type="unfinished">OpenBoard (*.ubz)</translation>
+        <source>OpenBoard (*.ubz)</source>
+        <translation type="unfinished">OpenBoard (*.ubz)</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBImportDocumentSetAdaptor</name>
     <message>
-      <source>Openboard (set of documents) (*.ubx)</source>
-      <translation type="unfinished">Openboard (文件集) (*.ubx)</translation>
+        <source>Openboard (set of documents) (*.ubx)</source>
+        <translation type="unfinished">Openboard (文件集) (*.ubx)</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBImportImage</name>
     <message>
-      <source>Image Format (</source>
-      <translation>图片格式</translation>
+        <source>Image Format (</source>
+        <translation>图片格式</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBImportPDF</name>
     <message>
-      <source>Portable Document Format (*.pdf)</source>
-      <translation>可导入文档格式（*.pdf）</translation>
+        <source>Portable Document Format (*.pdf)</source>
+        <translation>可导入文档格式（*.pdf）</translation>
     </message>
     <message>
-      <source>PDF import failed.</source>
-      <translation>PDF 导入失败。</translation>
+        <source>PDF import failed.</source>
+        <translation>PDF 导入失败。</translation>
     </message>
     <message>
-      <source>Importing page %1 of %2</source>
-      <translation>正在导入第 %1 页，共 %2 页</translation>
+        <source>Importing page %1 of %2</source>
+        <translation>正在导入第 %1 页，共 %2 页</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBIntranetPodcastPublisher</name>
     <message>
-      <source>Error while publishing video to intranet (%1)</source>
-      <translation>视频发布到内部网过程中发生错误 (%1)</translation>
+        <source>Error while publishing video to intranet (%1)</source>
+        <translation>视频发布到内部网过程中发生错误 (%1)</translation>
     </message>
     <message>
-      <source>Publishing to Intranet in progress %1 %</source>
-      <translation>正在发布到内网 %1 %</translation>
+        <source>Publishing to Intranet in progress %1 %</source>
+        <translation>正在发布到内网 %1 %</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBIntranetPodcastPublishingDialog</name>
     <message>
-      <source>Publish</source>
-      <translation>发布</translation>
+        <source>Publish</source>
+        <translation>发布</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBKeyboardPalette</name>
     <message>
-      <source>Enter</source>
-      <translation>输入</translation>
+        <source>Enter</source>
+        <translation>输入</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBMainWindow</name>
     <message>
-      <source>Yes</source>
-      <translation>是</translation>
+        <source>Yes</source>
+        <translation>是</translation>
     </message>
     <message>
-      <source>No</source>
-      <translation>否</translation>
+        <source>No</source>
+        <translation>否</translation>
     </message>
     <message>
-      <source>Ok</source>
-      <translation>确定</translation>
+        <source>Ok</source>
+        <translation>确定</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBMessagesDialog</name>
     <message>
-      <source>Close</source>
-      <translation>关闭</translation>
+        <source>Close</source>
+        <translation>关闭</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBNetworkAccessManager</name>
     <message>
-      <source>&lt;qt&gt;Enter username and password for "%1" at %2&lt;/qt&gt;</source>
-      <translation>&lt;qt&gt;在 %2 输入“%1”的用户名和密码&lt;/qt&gt;</translation>
+        <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
+        <translation>&lt;qt&gt;在 %2 输入“%1”的用户名和密码&lt;/qt&gt;</translation>
     </message>
     <message>
-      <source>Failed to log to Proxy</source>
-      <translation>连接代理服务器失败</translation>
+        <source>Failed to log to Proxy</source>
+        <translation>连接代理服务器失败</translation>
     </message>
     <message>
-      <source>SSL Errors:
+        <source>SSL Errors:
 
 %1
 
 %2
 
 Do you want to ignore these errors for this host?</source>
-      <translation>SSL 错误：
+        <translation>SSL 错误：
 
 %1
 
@@ -1918,283 +2138,294 @@ Do you want to ignore these errors for this host?</source>
 是否忽略该服务器的这些问题？</translation>
     </message>
     <message>
-      <source>Yes</source>
-      <translation>是</translation>
+        <source>Yes</source>
+        <translation>是</translation>
     </message>
     <message>
-      <source>No</source>
-      <translation>否</translation>
+        <source>No</source>
+        <translation>否</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
-      <source>Cancel</source>
-      <translation type="unfinished">取消</translation>
+        <source>Cancel</source>
+        <translation type="unfinished">取消</translation>
     </message>
     <message>
-      <source>Open-Sankore Documents Detected</source>
-      <translation type="unfinished">检测到 Open-Sankore 文档</translation>
+        <source>Open-Sankore Documents Detected</source>
+        <translation type="unfinished">检测到 Open-Sankore 文档</translation>
     </message>
     <message>
-      <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
-      <translation type="unfinished">Open-Sankoré 文档存在于您的计算机上。 可以通过按“继续”按钮启动导入器应用程序将它们导入 OpenBoard。</translation>
+        <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
+        <translation type="unfinished">Open-Sankoré 文档存在于您的计算机上。 可以通过按“继续”按钮启动导入器应用程序将它们导入 OpenBoard。</translation>
     </message>
     <message>
-      <source>Show this panel next time</source>
-      <translation type="unfinished">下次显示此面板</translation>
+        <source>Show this panel next time</source>
+        <translation type="unfinished">下次显示此面板</translation>
     </message>
     <message>
-      <source>You can always access the OpenBoard Document Importer through the Preferences panel in the About tab. Warning, if you have already imported your Open-Sankore datas, you might loose your current OpenBoard documents.</source>
-      <translation type="unfinished">您始终可以通过“关于”选项卡中的“首选项”面板访问 OpenBoard 文档导入器。 警告，如果您已经导入了 Open-Sankore 数据，您可能会丢失当前的 OpenBoard 文档。</translation>
+        <source>You can always access the OpenBoard Document Importer through the Preferences panel in the About tab. Warning, if you have already imported your Open-Sankore datas, you might loose your current OpenBoard documents.</source>
+        <translation type="unfinished">您始终可以通过“关于”选项卡中的“首选项”面板访问 OpenBoard 文档导入器。 警告，如果您已经导入了 Open-Sankore 数据，您可能会丢失当前的 OpenBoard 文档。</translation>
     </message>
     <message>
-      <source>Proceed</source>
-      <translation type="unfinished">继续</translation>
+        <source>Proceed</source>
+        <translation type="unfinished">继续</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBPersistenceManager</name>
     <message>
-      <source>(copy)</source>
-      <translation>（复制）</translation>
+        <source>(copy)</source>
+        <translation>（复制）</translation>
     </message>
     <message>
-      <source>Document Repository Loss</source>
-      <translation>文档库丢失</translation>
+        <source>Document Repository Loss</source>
+        <translation>文档库丢失</translation>
     </message>
     <message>
-      <source>OpenBoard has lost access to the document repository '%1'. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-      <translation type="unfinished">OpenBoard 已失去对文档存储库“%1”的访问权限。 不幸的是，应用程序必须关闭以避免数据损坏。 最新的更改也可能会丢失。</translation>
+        <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
+        <translation type="unfinished">OpenBoard 已失去对文档存储库“%1”的访问权限。 不幸的是，应用程序必须关闭以避免数据损坏。 最新的更改也可能会丢失。</translation>
     </message>
     <message>
-      <source>Renaming pages (%1/%2)</source>
-      <translation type="unfinished">重命名页面 (%1/%2)</translation>
+        <source>Renaming pages (%1/%2)</source>
+        <translation type="unfinished">重命名页面 (%1/%2)</translation>
     </message>
     <message>
-      <source>Retrieving all your documents (found : %1)</source>
-      <translation type="unfinished">检索您的所有文档（找到：%1）</translation>
+        <source>Retrieving all your documents (found : %1)</source>
+        <translation type="unfinished">检索您的所有文档（找到：%1）</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBPlatformUtils</name>
     <message>
-      <source>English</source>
-      <translation>英语</translation>
+        <source>English</source>
+        <translation>英语</translation>
     </message>
     <message>
-      <source>Russian</source>
-      <translation>俄语</translation>
+        <source>Russian</source>
+        <translation>俄语</translation>
     </message>
     <message>
-      <source>German</source>
-      <translation>德语</translation>
+        <source>German</source>
+        <translation>德语</translation>
     </message>
     <message>
-      <source>French</source>
-      <translation>法语</translation>
+        <source>French</source>
+        <translation>法语</translation>
     </message>
     <message>
-      <source>Swiss French</source>
-      <translation>瑞士法语</translation>
+        <source>Swiss French</source>
+        <translation>瑞士法语</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBPodcastController</name>
     <message>
-      <source>Failed to start encoder ...</source>
-      <translation>编码器启动失败...</translation>
+        <source>Failed to start encoder ...</source>
+        <translation>编码器启动失败...</translation>
     </message>
     <message>
-      <source>No Podcast encoder available ...</source>
-      <translation>没有可用的播客编码器...</translation>
+        <source>No Podcast encoder available ...</source>
+        <translation>没有可用的播客编码器...</translation>
     </message>
     <message>
-      <source>Part %1</source>
-      <translation>部分 %1</translation>
+        <source>Part %1</source>
+        <translation>部分 %1</translation>
     </message>
     <message>
-      <source>on your desktop ...</source>
-      <translation>在桌面上...</translation>
+        <source>on your desktop ...</source>
+        <translation>在桌面上...</translation>
     </message>
     <message>
-      <source>in folder %1</source>
-      <translation>在文件夹 %1 中</translation>
+        <source>in folder %1</source>
+        <translation>在文件夹 %1 中</translation>
     </message>
     <message>
-      <source>Podcast created %1</source>
-      <translation>已创建播客 %1</translation>
+        <source>Podcast created %1</source>
+        <translation>已创建播客 %1</translation>
     </message>
     <message>
-      <source>Podcast recording error (%1)</source>
-      <translation>播客录制错误（%1）</translation>
+        <source>Podcast recording error (%1)</source>
+        <translation>播客录制错误（%1）</translation>
     </message>
     <message>
-      <source>Default Audio Input</source>
-      <translation>默认音频输入</translation>
+        <source>Default Audio Input</source>
+        <translation>默认音频输入</translation>
     </message>
     <message>
-      <source>No Audio Recording</source>
-      <translation>无音频录制</translation>
+        <source>No Audio Recording</source>
+        <translation>无音频录制</translation>
     </message>
     <message>
-      <source>Small</source>
-      <translation>小</translation>
+        <source>Small</source>
+        <translation>小</translation>
     </message>
     <message>
-      <source>Medium</source>
-      <translation>中</translation>
+        <source>Medium</source>
+        <translation>中</translation>
     </message>
     <message>
-      <source>Full</source>
-      <translation>大</translation>
+        <source>Full</source>
+        <translation>大</translation>
     </message>
     <message>
-      <source>Publish to Intranet</source>
-      <translation>发布到内网</translation>
+        <source>Publish to Intranet</source>
+        <translation>发布到内网</translation>
     </message>
     <message>
-      <source>Publish to Youtube</source>
-      <translation>发布到 Youtube</translation>
+        <source>Publish to Youtube</source>
+        <translation>发布到 Youtube</translation>
     </message>
     <message>
-      <source>OpenBoard Cast</source>
-      <translation type="unfinished">OpenBoard 演示表</translation>
+        <source>OpenBoard Cast</source>
+        <translation type="unfinished">OpenBoard 演示表</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBPreferencesController</name>
     <message>
-      <source>version: </source>
-      <translation>版本：</translation>
+        <source>version: </source>
+        <translation>版本：</translation>
     </message>
     <message>
-      <source>Marker is pressure sensitive</source>
-      <translation>使用压感记号笔</translation>
+        <source>Marker is pressure sensitive</source>
+        <translation>使用压感记号笔</translation>
+    </message>
+    <message>
+        <source>Use all available displays</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>UBSettings</name>
     <message>
-      <source>My Movies</source>
-      <translation>我的视频</translation>
+        <source>My Movies</source>
+        <translation>我的视频</translation>
+    </message>
+</context>
+<context>
+    <name>UBStartupHintsPalette</name>
+    <message>
+        <source>Visible next time</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>UBTeacherBarWidget</name>
     <message>
-      <source/>
-      <translation/>
+        <source></source>
+        <translation></translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBThumbnailAdaptor</name>
     <message>
-      <source>Generating preview thumbnails ...</source>
-      <translation>正在生成缩略图预览...</translation>
+        <source>Generating preview thumbnails ...</source>
+        <translation>正在生成缩略图预览...</translation>
     </message>
     <message>
-      <source>%1 thumbnails generated ...</source>
-      <translation>已为%1生成缩略图...</translation>
+        <source>%1 thumbnails generated ...</source>
+        <translation>已为%1生成缩略图...</translation>
     </message>
     <message>
-      <source>Loading thumbnail (%1/%2)</source>
-      <translation type="unfinished">加载缩略图 (%1/%2)</translation>
+        <source>Loading thumbnail (%1/%2)</source>
+        <translation type="unfinished">加载缩略图 (%1/%2)</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBThumbnailTextItem</name>
     <message>
-      <source>Page %0</source>
-      <translation type="unfinished">页面 %0</translation>
+        <source>Page %0</source>
+        <translation type="unfinished">页面 %0</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBToolsManager</name>
     <message>
-      <source>Mask</source>
-      <translation>幕布</translation>
+        <source>Mask</source>
+        <translation>幕布</translation>
     </message>
     <message>
-      <source>Ruler</source>
-      <translation>直尺</translation>
+        <source>Ruler</source>
+        <translation>直尺</translation>
     </message>
     <message>
-      <source>Compass</source>
-      <translation>圆规</translation>
+        <source>Compass</source>
+        <translation>圆规</translation>
     </message>
     <message>
-      <source>Protractor</source>
-      <translation>量角器</translation>
+        <source>Protractor</source>
+        <translation>量角器</translation>
     </message>
     <message>
-      <source>Triangle</source>
-      <translation>三角尺</translation>
+        <source>Triangle</source>
+        <translation>三角尺</translation>
     </message>
     <message>
-      <source>Magnifier</source>
-      <translation>放大镜</translation>
+        <source>Magnifier</source>
+        <translation>放大镜</translation>
     </message>
     <message>
-      <source>Cache</source>
-      <translation>高级缓存</translation>
+        <source>Cache</source>
+        <translation>高级缓存</translation>
     </message>
     <message>
-      <source>Axes</source>
-      <translation type="unfinished">坐标轴</translation>
+        <source>Axes</source>
+        <translation type="unfinished">坐标轴</translation>
     </message>
 </context>
 <context>
     <name>UBUpdateDlg</name>
     <message>
-      <source>Document updater</source>
-      <translation>文档更新器</translation>
+        <source>Document updater</source>
+        <translation>文档更新器</translation>
     </message>
     <message>
-      <source> files require an update.</source>
-      <translation>文件需要更新</translation>
+        <source> files require an update.</source>
+        <translation>文件需要更新</translation>
     </message>
     <message>
-      <source>Backup path: </source>
-      <translation>备份路径：</translation>
+        <source>Backup path: </source>
+        <translation>备份路径：</translation>
     </message>
     <message>
-      <source>Browse</source>
-      <translation>浏览</translation>
+        <source>Browse</source>
+        <translation>浏览</translation>
     </message>
     <message>
-      <source>Update</source>
-      <translation>更新</translation>
+        <source>Update</source>
+        <translation>更新</translation>
     </message>
     <message>
-      <source>Select a backup folder</source>
-      <translation>选择备份文件夹</translation>
+        <source>Select a backup folder</source>
+        <translation>选择备份文件夹</translation>
     </message>
     <message>
-      <source>Files update successful!
+        <source>Files update successful!
 Please reboot the application to access the updated documents.</source>
-      <translation>文件更新成功！
+        <translation>文件更新成功！
 请重新启动程序以打开已更新的文件。</translation>
     </message>
     <message>
-      <source>An error occured during the update. The files have not been affected.</source>
-      <translation>更新过程中发生错误。文件未被改动。</translation>
+        <source>An error occured during the update. The files have not been affected.</source>
+        <translation>更新过程中发生错误。文件未被改动。</translation>
     </message>
     <message>
-      <source>Files update results</source>
-      <translation>文件更新结果</translation>
+        <source>Files update results</source>
+        <translation>文件更新结果</translation>
     </message>
     <message>
-      <source>Updating file </source>
-      <translation>正在更新文件</translation>
+        <source>Updating file </source>
+        <translation>正在更新文件</translation>
     </message>
     <message>
-      <source>Please wait the import process will start soon...</source>
-      <translation>请等待，导入过程即将开始...</translation>
+        <source>Please wait the import process will start soon...</source>
+        <translation>请等待，导入过程即将开始...</translation>
     </message>
     <message>
-      <source>Remind me later</source>
-      <translation>稍后再提醒我</translation>
+        <source>Remind me later</source>
+        <translation>稍后再提醒我</translation>
     </message>
 </context>
 <context>
@@ -2203,112 +2434,112 @@ Please reboot the application to access the updated documents.</source>
         <source>Open Web Inspector</source>
         <translation type="unfinished"></translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBYouTubePublisher</name>
     <message>
-      <source>YouTube authentication failed.</source>
-      <translation>Youtube 验证失败</translation>
+        <source>YouTube authentication failed.</source>
+        <translation>Youtube 验证失败</translation>
     </message>
     <message>
-      <source>Error while uploading video to YouTube (%1)</source>
-      <translation>视频上传到 Youtube 过程中发生错误（%1）</translation>
+        <source>Error while uploading video to YouTube (%1)</source>
+        <translation>视频上传到 Youtube 过程中发生错误（%1）</translation>
     </message>
     <message>
-      <source>Upload to YouTube in progress %1 %</source>
-      <translation>正在上传到 Youtube  %1 %</translation>
+        <source>Upload to YouTube in progress %1 %</source>
+        <translation>正在上传到 Youtube  %1 %</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBYouTubePublishingDialog</name>
     <message>
-      <source>Upload</source>
-      <translation>上传</translation>
+        <source>Upload</source>
+        <translation>上传</translation>
     </message>
     <message>
-      <source>Autos &amp; Vehicles</source>
-      <translation>汽车</translation>
+        <source>Autos &amp; Vehicles</source>
+        <translation>汽车</translation>
     </message>
     <message>
-      <source>Music</source>
-      <translation>音乐</translation>
+        <source>Music</source>
+        <translation>音乐</translation>
     </message>
     <message>
-      <source>Pets &amp; Animals</source>
-      <translation>宠物和动物</translation>
+        <source>Pets &amp; Animals</source>
+        <translation>宠物和动物</translation>
     </message>
     <message>
-      <source>Sports</source>
-      <translation>体育与运动</translation>
+        <source>Sports</source>
+        <translation>体育与运动</translation>
     </message>
     <message>
-      <source>Travel &amp; Events</source>
-      <translation>旅游与活动</translation>
+        <source>Travel &amp; Events</source>
+        <translation>旅游与活动</translation>
     </message>
     <message>
-      <source>Gaming</source>
-      <translation>游戏</translation>
+        <source>Gaming</source>
+        <translation>游戏</translation>
     </message>
     <message>
-      <source>Comedy</source>
-      <translation>喜剧</translation>
+        <source>Comedy</source>
+        <translation>喜剧</translation>
     </message>
     <message>
-      <source>People &amp; Blogs</source>
-      <translation>人物与博客</translation>
+        <source>People &amp; Blogs</source>
+        <translation>人物与博客</translation>
     </message>
     <message>
-      <source>News &amp; Politics</source>
-      <translation>新闻与政治</translation>
+        <source>News &amp; Politics</source>
+        <translation>新闻与政治</translation>
     </message>
     <message>
-      <source>Entertainment</source>
-      <translation>娱乐</translation>
+        <source>Entertainment</source>
+        <translation>娱乐</translation>
     </message>
     <message>
-      <source>Education</source>
-      <translation>教育</translation>
+        <source>Education</source>
+        <translation>教育</translation>
     </message>
     <message>
-      <source>Howto &amp; Style</source>
-      <translation>HowTo 与时尚</translation>
+        <source>Howto &amp; Style</source>
+        <translation>HowTo 与时尚</translation>
     </message>
     <message>
-      <source>Nonprofits &amp; Activism</source>
-      <translation>非营利与行动主义</translation>
+        <source>Nonprofits &amp; Activism</source>
+        <translation>非营利与行动主义</translation>
     </message>
     <message>
-      <source>Science &amp; Technology</source>
-      <translation>科学与技术</translation>
+        <source>Science &amp; Technology</source>
+        <translation>科学与技术</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>UBZoomPalette</name>
     <message>
-      <source>%1 x</source>
-      <translation>%1x</translation>
+        <source>%1 x</source>
+        <translation>%1x</translation>
     </message>
 </context>
 <context>
     <name>WBHistoryModel</name>
     <message>
-      <source>Title</source>
-      <translation>标题</translation>
+        <source>Title</source>
+        <translation>标题</translation>
     </message>
     <message>
-      <source>Address</source>
-      <translation>地址</translation>
+        <source>Address</source>
+        <translation>地址</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>WBHistoryTreeModel</name>
     <message>
-      <source>Earlier Today</source>
-      <translation>今日早些时候</translation>
+        <source>Earlier Today</source>
+        <translation>今日早些时候</translation>
     </message>
     <message>
-      <source>%1 items</source>
-      <translation>%1 个项目</translation>
+        <source>%1 items</source>
+        <translation>%1 个项目</translation>
     </message>
 </context>
 <context>
@@ -2397,374 +2628,402 @@ Do you want to reload the page ?</source>
         <source>Add to board</source>
         <translation type="unfinished"></translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>XPDFRenderer</name>
     <message>
-      <source>Processing...</source>
-      <translation type="unfinished">正在处理...</translation>
+        <source>Processing...</source>
+        <translation type="unfinished">正在处理...</translation>
     </message>
-  </context>
-  <context>
+    <message>
+        <source>an error occured while trying to open the PDF file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>YouTubePublishingDialog</name>
     <message>
-      <source>Publish Podcast to YouTube</source>
-      <translation>发布播客到 Youtube</translation>
+        <source>Publish Podcast to YouTube</source>
+        <translation>发布播客到 Youtube</translation>
     </message>
     <message>
-      <source>Title</source>
-      <translation>标题</translation>
+        <source>Title</source>
+        <translation>标题</translation>
     </message>
     <message>
-      <source>Description</source>
-      <translation>描述</translation>
+        <source>Description</source>
+        <translation>描述</translation>
     </message>
     <message>
-      <source>Keywords</source>
-      <translation>关键词</translation>
+        <source>Keywords</source>
+        <translation>关键词</translation>
     </message>
     <message>
-      <source>Category</source>
-      <translation>类别</translation>
+        <source>Category</source>
+        <translation>类别</translation>
     </message>
     <message>
-      <source>YouTube Username</source>
-      <translation>Youtube 用户名</translation>
+        <source>YouTube Username</source>
+        <translation>Youtube 用户名</translation>
     </message>
     <message>
-      <source>YouTube Password</source>
-      <translation>Youtube 密码</translation>
+        <source>YouTube Password</source>
+        <translation>Youtube 密码</translation>
     </message>
     <message>
-      <source>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-family:'Lucida Grande'; font-size:10pt;"&gt;By clicking 'Upload,' you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at &lt;/span&gt;&lt;a href="http://www.youtube.com/t/terms"&gt;&lt;span style=" font-family:'Lucida Grande'; font-size:10pt; text-decoration: underline; color:#0000ff;"&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;By clicking &apos;Upload,&apos; you certify that you own all rights to the content or that you are authorized by the owner to make the content publicly available on YouTube, and that it otherwise complies with the YouTube Terms of Service located at &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-family:'Lucida Grande'; font-size:10pt;"&gt;点击“上传”，即表示您证明您拥有该内容的所有权利，或者您已获得所有者的授权，可以在 YouTube 上公开发布该内容，并且该内容符合位于以下网址的 YouTube 服务条款 &lt;/span&gt;&lt;a href="http://www.youtube.com/t/terms"&gt;&lt;span style=" font-family:'Lucida Grande'; font-size:10pt; text-decoration: underline; color:#0000ff;"&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;点击“上传”，即表示您证明您拥有该内容的所有权利，或者您已获得所有者的授权，可以在 YouTube 上公开发布该内容，并且该内容符合位于以下网址的 YouTube 服务条款 &lt;/span&gt;&lt;a href=&quot;http://www.youtube.com/t/terms&quot;&gt;&lt;span style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:10pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.youtube.com/t/terms&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <source>OpenBoard</source>
-      <translation type="unfinished">OpenBoard</translation>
+        <source>OpenBoard</source>
+        <translation type="unfinished">OpenBoard</translation>
     </message>
     <message>
-      <source>Restore credentials on reboot</source>
-      <translation type="unfinished">重新启动时恢复凭据</translation>
+        <source>Restore credentials on reboot</source>
+        <translation type="unfinished">重新启动时恢复凭据</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>brushProperties</name>
     <message>
-      <source>On Light Background</source>
-      <translation>白色背景</translation>
+        <source>On Light Background</source>
+        <translation>白色背景</translation>
     </message>
     <message>
-      <source>On Dark Background</source>
-      <translation>黑色背景</translation>
+        <source>On Dark Background</source>
+        <translation>黑色背景</translation>
     </message>
     <message>
-      <source>Opacity</source>
-      <translation>透明度</translation>
+        <source>Opacity</source>
+        <translation>透明度</translation>
     </message>
     <message>
-      <source>Line Width</source>
-      <translation>线宽</translation>
+        <source>Line Width</source>
+        <translation>线宽</translation>
     </message>
     <message>
-      <source>Medium</source>
-      <translation>中</translation>
+        <source>Medium</source>
+        <translation>中</translation>
     </message>
     <message>
-      <source>Strong</source>
-      <translation>粗</translation>
+        <source>Strong</source>
+        <translation>粗</translation>
     </message>
     <message>
-      <source>Fine</source>
-      <translation>细</translation>
+        <source>Fine</source>
+        <translation>细</translation>
     </message>
     <message>
-      <source>Pen is Pressure Sensitive</source>
-      <translation>使用压感笔</translation>
+        <source>Pen is Pressure Sensitive</source>
+        <translation>使用压感笔</translation>
     </message>
     <message>
-      <source>Show preview circle from</source>
-      <translation type="unfinished">显示预览圈来自</translation>
+        <source>Show preview circle from</source>
+        <translation type="unfinished">显示预览圈来自</translation>
     </message>
     <message>
-      <source>px</source>
-      <translation type="unfinished">px</translation>
+        <source>px</source>
+        <translation type="unfinished">px</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>capturePublishingDialog</name>
     <message>
-      <source>Dialog</source>
-      <translation>对话框</translation>
+        <source>Dialog</source>
+        <translation>对话框</translation>
     </message>
     <message>
-      <source>Title</source>
-      <translation>标题</translation>
+        <source>Title</source>
+        <translation>标题</translation>
     </message>
     <message>
-      <source>E-mail</source>
-      <translation>电子邮箱</translation>
+        <source>E-mail</source>
+        <translation>电子邮箱</translation>
     </message>
     <message>
-      <source>Author</source>
-      <translation>作者</translation>
+        <source>Author</source>
+        <translation>作者</translation>
     </message>
     <message>
-      <source>Description</source>
-      <translation>描述</translation>
+        <source>Description</source>
+        <translation>描述</translation>
     </message>
 </context>
 <context>
     <name>documents</name>
     <message>
-      <source>OpenBoard Documents</source>
-      <translation type="unfinished">OpenBoard 文档</translation>
+        <source>OpenBoard Documents</source>
+        <translation type="unfinished">OpenBoard 文档</translation>
     </message>
     <message>
-      <source>Creation date</source>
-      <translation type="unfinished">创建日期</translation>
+        <source>Creation date</source>
+        <translation type="unfinished">创建日期</translation>
     </message>
     <message>
-      <source>Update date</source>
-      <translation type="unfinished">更新日期</translation>
+        <source>Update date</source>
+        <translation type="unfinished">更新日期</translation>
     </message>
     <message>
-      <source>Alphabetical order</source>
-      <translation type="unfinished">按字母顺序</translation>
+        <source>Alphabetical order</source>
+        <translation type="unfinished">按字母顺序</translation>
     </message>
     <message>
-      <source>Sort Order</source>
-      <translation type="unfinished">排序</translation>
+        <source>Sort Order</source>
+        <translation type="unfinished">排序</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>preferencesDialog</name>
     <message>
-      <source>Preferences</source>
-      <translation>自定义</translation>
+        <source>Preferences</source>
+        <translation>自定义</translation>
     </message>
     <message>
-      <source>version : …</source>
-      <translation>版本：...</translation>
+        <source>version : …</source>
+        <translation>版本：...</translation>
     </message>
     <message>
-      <source>Default Settings</source>
-      <translation>默认设置</translation>
+        <source>Default Settings</source>
+        <translation>默认设置</translation>
     </message>
     <message>
-      <source>Close</source>
-      <translation>关闭</translation>
+        <source>Close</source>
+        <translation>关闭</translation>
     </message>
     <message>
-      <source>Display</source>
-      <translation>显示</translation>
+        <source>Display</source>
+        <translation>显示</translation>
     </message>
     <message>
-      <source>Internet</source>
-      <translation>网页浏览</translation>
+        <source>Internet</source>
+        <translation>网页浏览</translation>
     </message>
     <message>
-      <source>Show Page with External Browser</source>
-      <translation>使用外部浏览器</translation>
+        <source>Show Page with External Browser</source>
+        <translation>使用外部浏览器</translation>
     </message>
     <message>
-      <source>Home Page:</source>
-      <translation>主页:</translation>
+        <source>Home Page:</source>
+        <translation>主页:</translation>
     </message>
     <message>
-      <source>Virtual Keyboard</source>
-      <translation>软键盘</translation>
+        <source>Virtual Keyboard</source>
+        <translation>软键盘</translation>
     </message>
     <message>
         <source>Toolbar</source>
         <translation>工具栏</translation>
     </message>
     <message>
-      <source>Positioned at the Top (recommended for tablets)</source>
-      <translation>总在最前（平板电脑推荐）</translation>
+        <source>Positioned at the Top (recommended for tablets)</source>
+        <translation>总在最前（平板电脑推荐）</translation>
     </message>
     <message>
-      <source>Positioned at the Bottom (recommended for white boards)</source>
-      <translation>总在底部（电子白板推荐）</translation>
+        <source>Positioned at the Bottom (recommended for white boards)</source>
+        <translation>总在底部（电子白板推荐）</translation>
     </message>
     <message>
-      <source>Display Text Under Button</source>
-      <translation>在按钮下显示文字</translation>
+        <source>Display Text Under Button</source>
+        <translation>在按钮下显示文字</translation>
     </message>
     <message>
-      <source>Stylus Palette</source>
-      <translation>工具面板</translation>
+        <source>Stylus Palette</source>
+        <translation>工具面板</translation>
     </message>
     <message>
-      <source>Horizontal</source>
-      <translation>横向</translation>
+        <source>Horizontal</source>
+        <translation>横向</translation>
     </message>
     <message>
-      <source>Vertical</source>
-      <translation>纵向</translation>
+        <source>Vertical</source>
+        <translation>纵向</translation>
     </message>
     <message>
-      <source>Pen</source>
-      <translation>笔</translation>
+        <source>Pen</source>
+        <translation>笔</translation>
     </message>
     <message>
-      <source>Marker</source>
-      <translation>记号笔</translation>
+        <source>Marker</source>
+        <translation>记号笔</translation>
     </message>
     <message>
-      <source>About</source>
-      <translation>关于</translation>
+        <source>About</source>
+        <translation>关于</translation>
     </message>
     <message>
-      <source>Software Update</source>
-      <translation>软件更新</translation>
+        <source>Software Update</source>
+        <translation>软件更新</translation>
     </message>
     <message>
-      <source>Check software update at launch</source>
-      <translation>启动时检查更新</translation>
+        <source>Check software update at launch</source>
+        <translation>启动时检查更新</translation>
     </message>
     <message>
-      <source>Licences</source>
-      <translation>许可证</translation>
+        <source>Licences</source>
+        <translation>许可证</translation>
     </message>
     <message>
-      <source>Network</source>
-      <translation>网络连接</translation>
+        <source>Network</source>
+        <translation>网络连接</translation>
     </message>
     <message>
-      <source>Show internal web page content on secondary screen or projector</source>
-      <translation>在第二屏幕或播放器上显示内部网页内容</translation>
+        <source>Show internal web page content on secondary screen or projector</source>
+        <translation>在第二屏幕或播放器上显示内部网页内容</translation>
     </message>
     <message>
-      <source>Multi display</source>
-      <translation>多重显示</translation>
+        <source>Multi display</source>
+        <translation>多重显示</translation>
     </message>
     <message>
-      <source>Swap control display and view display</source>
-      <translation>交换控制显示和查看显示</translation>
+        <source>Swap control display and view display</source>
+        <translation type="vanished">交换控制显示和查看显示</translation>
     </message>
     <message>
-      <source>Mode</source>
-      <translation>模式</translation>
+        <source>Mode</source>
+        <translation>模式</translation>
     </message>
     <message>
-      <source>Mode to start in:</source>
-      <translation>启动模式：</translation>
+        <source>Mode to start in:</source>
+        <translation>启动模式：</translation>
     </message>
     <message>
-      <source>Board</source>
-      <translation>演示板</translation>
+        <source>Board</source>
+        <translation>演示板</translation>
     </message>
     <message>
-      <source>Desktop</source>
-      <translation>桌面</translation>
+        <source>Desktop</source>
+        <translation>桌面</translation>
     </message>
     <message>
-      <source>Proxy User:</source>
-      <translation>Proxy 用户:</translation>
+        <source>Proxy User:</source>
+        <translation>Proxy 用户:</translation>
     </message>
     <message>
-      <source>Pass:</source>
-      <translation>密码：</translation>
+        <source>Pass:</source>
+        <translation>密码：</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>致谢</translation>
+        <source>Credits</source>
+        <translation>致谢</translation>
     </message>
     <message>
-      <source>On Dark Background</source>
-      <translation type="unfinished">在深色背景</translation>
+        <source>On Dark Background</source>
+        <translation type="unfinished">在深色背景</translation>
     </message>
     <message>
-      <source>Opacity</source>
-      <translation type="unfinished">透明度</translation>
+        <source>Opacity</source>
+        <translation type="unfinished">透明度</translation>
     </message>
     <message>
-      <source>On Light Background</source>
-      <translation type="unfinished">在浅色背景</translation>
+        <source>On Light Background</source>
+        <translation type="unfinished">在浅色背景</translation>
     </message>
     <message>
-      <source>Swap first and second view displays</source>
-      <translation type="unfinished">交换第一和第二视图显示</translation>
+        <source>Swap first and second view displays</source>
+        <translation type="obsolete">交换第一和第二视图显示</translation>
     </message>
     <message>
-      <source>Built-in virtual keyboard button size:</source>
-      <translation type="unfinished">内置虚拟键盘按键大小：</translation>
+        <source>Built-in virtual keyboard button size:</source>
+        <translation type="unfinished">内置虚拟键盘按键大小：</translation>
     </message>
     <message>
-      <source>Use system keyboard (recommended)</source>
-      <translation type="unfinished">使用系统键盘（推荐）</translation>
+        <source>Use system keyboard (recommended)</source>
+        <translation type="unfinished">使用系统键盘（推荐）</translation>
     </message>
     <message>
-      <source>Grid</source>
-      <translation type="unfinished">网格</translation>
+        <source>Grid</source>
+        <translation type="unfinished">网格</translation>
     </message>
     <message>
-      <source>Open-Sankoré Importer</source>
-      <translation type="unfinished">Open-Sankoré 导入</translation>
+        <source>Open-Sankoré Importer</source>
+        <translation type="unfinished">Open-Sankoré 导入</translation>
     </message>
     <message>
-      <source>Check if Open-Sankoré data could be imported at launch</source>
-      <translation type="unfinished">检查是否可以在启动时导入 Open-Sankoré 数据</translation>
+        <source>Check if Open-Sankoré data could be imported at launch</source>
+        <translation type="unfinished">检查是否可以在启动时导入 Open-Sankoré 数据</translation>
     </message>
     <message>
-      <source>Documents Mode</source>
-      <translation type="unfinished">文档模式</translation>
+        <source>Documents Mode</source>
+        <translation type="unfinished">文档模式</translation>
     </message>
     <message>
-      <source>Display date column on alphabetical sort</source>
-      <translation type="unfinished">按字母排序显示日期列</translation>
+        <source>Display date column on alphabetical sort</source>
+        <translation type="unfinished">按字母排序显示日期列</translation>
     </message>
     <message>
-      <source>Empty trash for documents older than</source>
-      <translation type="unfinished">清空回收站的旧文档</translation>
+        <source>Empty trash for documents older than</source>
+        <translation type="unfinished">清空回收站的旧文档</translation>
     </message>
     <message>
-      <source>days</source>
-      <translation type="unfinished">天</translation>
+        <source>days</source>
+        <translation type="unfinished">天</translation>
     </message>
     <message>
-      <source>PDF Rendering</source>
-      <translation type="unfinished">PDF 渲染</translation>
+        <source>PDF Rendering</source>
+        <translation type="obsolete">PDF 渲染</translation>
     </message>
     <message>
-      <source>Improve zoom execution time (can slightly affect rendering quality)</source>
-      <translation type="unfinished">提高缩放执行时间（可能会略微影响渲染质量）</translation>
+        <source>Improve zoom execution time (can slightly affect rendering quality)</source>
+        <translation type="unfinished">提高缩放执行时间（可能会略微影响渲染质量）</translation>
     </message>
-  </context>
-  <context>
+    <message>
+        <source>PDF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export background grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Documents</source>
+        <translation type="unfinished">文档</translation>
+    </message>
+    <message>
+        <source>List of screens used for Control, Display and Previous pages</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>trapFlashDialog</name>
     <message>
-      <source>Trap flash</source>
-      <translation>截取动画</translation>
+        <source>Trap flash</source>
+        <translation type="vanished">截取动画</translation>
     </message>
     <message>
-      <source>Select a flash to trap</source>
-      <translation>选择要截取的动画</translation>
+        <source>Select a flash to trap</source>
+        <translation type="vanished">选择要截取的动画</translation>
     </message>
     <message>
-      <source>about:blank</source>
-      <translation>about:blank</translation>
+        <source>about:blank</source>
+        <translation>about:blank</translation>
     </message>
     <message>
-      <source>Application name</source>
-      <translation>应用程序名</translation>
+        <source>Application name</source>
+        <translation>应用程序名</translation>
     </message>
     <message>
-      <source>Create Application</source>
-      <translation>创建应用程序</translation>
+        <source>Create Application</source>
+        <translation>创建应用程序</translation>
     </message>
     <message>
-      <source>Select a content to capture</source>
-      <translation type="unfinished">选择要捕获的内容</translation>
+        <source>Select a content to capture</source>
+        <translation type="unfinished">选择要捕获的内容</translation>
     </message>
-  </context>
+    <message>
+        <source>Capture Web Content</source>
+        <translation type="unfinished">捕获网页内容</translation>
+    </message>
+</context>
 </TS>

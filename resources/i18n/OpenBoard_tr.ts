@@ -201,7 +201,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Manage Documents</source>
-        <translation>Dökümanları Yönet</translation>
+        <translation type="vanished">Dökümanları Yönet</translation>
     </message>
     <message>
         <source>Ctrl+D</source>
@@ -209,7 +209,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Web Browsing</source>
-        <translation>Web Gezintisi</translation>
+        <translation type="vanished">Web Gezintisi</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
@@ -329,7 +329,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add to Working Document</source>
-        <translation>Aktif Dökümana Ekle</translation>
+        <translation type="vanished">Aktif Dökümana Ekle</translation>
     </message>
     <message>
         <source>Add Selected Content to Open Document</source>
@@ -513,7 +513,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Display Board</source>
-        <translation>Tahtayı Göster</translation>
+        <translation type="vanished">Tahtayı Göster</translation>
     </message>
     <message>
         <source>Erase Content</source>
@@ -529,7 +529,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Show Computer Desktop</source>
-        <translation>Bilgisayar Masaüstünü Göster</translation>
+        <translation type="vanished">Bilgisayar Masaüstünü Göster</translation>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
@@ -737,7 +737,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Import an External Page</source>
-        <translation>Harici Sayfayı İçeri Aktar</translation>
+        <translation type="vanished">Harici Sayfayı İçeri Aktar</translation>
     </message>
     <message>
         <source>Pause</source>
@@ -765,11 +765,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Web Trap</source>
-        <translation>Webi Tuzağı</translation>
+        <translation type="vanished">Webi Tuzağı</translation>
     </message>
     <message>
         <source>Trap Web Content</source>
-        <translation>Web İçeriğini Yakala</translation>
+        <translation type="vanished">Web İçeriğini Yakala</translation>
     </message>
     <message>
         <source>Capture Part of the Screen</source>
@@ -801,11 +801,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>eduMedia</source>
-        <translation>eduMedya</translation>
+        <translation type="vanished">eduMedya</translation>
     </message>
     <message>
         <source>Import eduMedia simulation</source>
-        <translation>eduMedya Simülasyon&apos;u İçeri Aktar</translation>
+        <translation type="vanished">eduMedya Simülasyon&apos;u İçeri Aktar</translation>
     </message>
     <message>
         <source>Window Capture</source>
@@ -899,6 +899,78 @@ Do you wish to override the security check and continue ?   </source>
         <source>Capture Web Content</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Documents Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Board Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Desktop</source>
+        <translation type="unfinished">Masa Üstü</translation>
+    </message>
+    <message>
+        <source>Desktop Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Seyes ruled Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Seyes ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import one or more pages (supported formats : jpg, png, svg, ubz, pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to favorites</source>
+        <translation type="unfinished">Sık kullanılanlara ekle</translation>
+    </message>
+    <message>
+        <source>Add Document to favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hints and tips</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Hints and tips</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -939,7 +1011,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation>Seçili olan &apos;%0&apos; adlı dökümandan 1 sayfayı kaldırmak üzeresiniz. Bu işlemi yapmak istediğinizden eminmisiniz?</translation>
+        <translation type="vanished">Seçili olan &apos;%0&apos; adlı dökümandan 1 sayfayı kaldırmak üzeresiniz. Bu işlemi yapmak istediğinizden eminmisiniz?</translation>
     </message>
     <message>
         <source>Loading scene (%1/%2)</source>
@@ -947,6 +1019,10 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Moving cached scenes (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove page %1 ?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1088,6 +1164,14 @@ Do you wish to override the security check and continue ?   </source>
         <source>Color</source>
         <translation type="unfinished">Renkler</translation>
     </message>
+    <message>
+        <source>Untitled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not find document.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -1101,9 +1185,13 @@ Do you wish to override the security check and continue ?   </source>
     </message>
 </context>
 <context>
-    <name>UBBoardThumbnailsView</name>
+    <name>UBBoardView</name>
     <message>
-        <source>Loading page (%1/%2)</source>
+        <source>Is it for Board or Widget ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you trying to drop the object(s) inside the widget ?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1247,14 +1335,6 @@ Do you wish to override the security check and continue ?   </source>
         </translation>
     </message>
     <message>
-        <source>Remove Item</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1264,6 +1344,90 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Refreshing Document Thumbnails View (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Complete deletion of %1 documents/folders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to permanantly delete %1 documents and/or folders. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Complete deletion of folder &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to permanantly delete folder &quot;%1&quot;. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Complete deletion of document &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to permanantly delete document &quot;%1&quot;. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Emptying My Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to entirely empty the folder &quot;My Documents&quot;. All your documents will be moved to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Emptying Trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to entirely empty the trash. All documents and folders in it will be permanently deleted. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moving %1 elements to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move %1 documents and/or folders to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move folder &quot;%1&quot;to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move folder &quot;%1&quot; to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move document &quot;%1&quot;to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move document &quot;%1&quot; to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Supported File(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moving %1 pages of the document &quot;%2&quot; to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move %1 pages of the document &quot;%2&quot; to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove page %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to remove page %1 of the document &quot;%2&quot;. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1314,18 +1478,14 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Sayfa %0</translation>
-    </message>
-    <message>
-        <source>Generating thumbnails for board (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">Sayfa %0</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentReplaceDialog</name>
     <message>
         <source>Accept</source>
-        <translation type="unfinished">Kabul Et</translation>
+        <translation type="obsolete">Kabul Et</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1339,6 +1499,22 @@ Do you wish to override the security check and continue ?   </source>
         <source>The name %1 is allready used.
 Keeping this name will replace the document.
 Providing a new name will create a new document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished">Yeniden Adlandır</translation>
+    </message>
+    <message>
+        <source>Replace all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Skip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Skip all</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1368,14 +1544,6 @@ Providing a new name will create a new document.</source>
         </translation>
     </message>
     <message>
-        <source>Remove Item</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Copying page %1/%2</source>
         <translation type="unfinished">Kopyalanan sayfa %1/%2</translation>
     </message>
@@ -1392,17 +1560,24 @@ Providing a new name will create a new document.</source>
     </message>
 </context>
 <context>
-    <name>UBDraggableThumbnail</name>
+    <name>UBDraggableLivePixmapItem</name>
     <message>
         <source>Page %0</source>
         <translation type="unfinished">Sayfa %0</translation>
     </message>
 </context>
 <context>
+    <name>UBDraggableThumbnail</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="obsolete">Sayfa %0</translation>
+    </message>
+</context>
+<context>
     <name>UBDraggableThumbnailView</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">Sayfa %0</translation>
+        <translation type="obsolete">Sayfa %0</translation>
     </message>
 </context>
 <context>
@@ -1526,6 +1701,10 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Export to PDF</source>
         <translation>PDF Olarak Aktar</translation>
+    </message>
+    <message>
+        <source>The original PDF imported in OpenBoard seems not valid and could not be merged with your annotations. Please repair it and then reimport it in OpenBoard. The current export will be done with detailed (heavy) images of the pages of the original PDF instead, to avoid complete export failure.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1695,6 +1874,10 @@ Providing a new name will create a new document.</source>
         <source>Visible on Extended Screen</source>
         <translation>Uzatılmış Ekranda Görünsün</translation>
     </message>
+    <message>
+        <source>Hide on Extended Screen when selected</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
@@ -1712,6 +1895,10 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Web Inspector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide on Extended Screen when selected</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2075,12 +2262,23 @@ Bu host için yukarıdaki hatalar yok sayılsın mı?</translation>
         <source>Marker is pressure sensitive</source>
         <translation>İşaretçi basınca duyarlıdır</translation>
     </message>
+    <message>
+        <source>Use all available displays</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBSettings</name>
     <message>
         <source>My Movies</source>
         <translation>Filimlerim</translation>
+    </message>
+</context>
+<context>
+    <name>UBStartupHintsPalette</name>
+    <message>
+        <source>Visible next time</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2407,6 +2605,10 @@ Do you want to reload the page ?</source>
         <source>Processing...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>an error occured while trying to open the PDF file</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>YouTubePublishingDialog</name>
@@ -2652,7 +2854,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap control display and view display</source>
-        <translation>Kontrol ekranını ve görütü ekranını yer değiştir</translation>
+        <translation type="vanished">Kontrol ekranını ve görütü ekranını yer değiştir</translation>
     </message>
     <message>
         <source>Mode</source>
@@ -2695,10 +2897,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">Açık Arkaplan Üzerine</translation>
     </message>
     <message>
-        <source>Swap first and second view displays</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Built-in virtual keyboard button size:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2735,11 +2933,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>PDF Rendering</source>
+        <source>Improve zoom execution time (can slightly affect rendering quality)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Improve zoom execution time (can slightly affect rendering quality)</source>
+        <source>PDF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export background grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Documents</source>
+        <translation type="unfinished">Dökümanlar</translation>
+    </message>
+    <message>
+        <source>List of screens used for Control, Display and Previous pages</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2747,7 +2961,7 @@ p, li { white-space: pre-wrap; }
     <name>trapFlashDialog</name>
     <message>
         <source>Trap flash</source>
-        <translation>Flash&apos;i tuzakla</translation>
+        <translation type="vanished">Flash&apos;i tuzakla</translation>
     </message>
     <message>
         <source>Select a flash to trap</source>
@@ -2767,6 +2981,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a content to capture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Capture Web Content</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

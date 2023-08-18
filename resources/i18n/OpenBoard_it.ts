@@ -201,7 +201,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Manage Documents</source>
-        <translation>Gestione documenti</translation>
+        <translation type="vanished">Gestione documenti</translation>
     </message>
     <message>
         <source>Ctrl+D</source>
@@ -209,7 +209,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Web Browsing</source>
-        <translation>Navigazione web</translation>
+        <translation type="vanished">Navigazione web</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
@@ -297,7 +297,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Display Board</source>
-        <translation>Visualizza lavagna</translation>
+        <translation type="vanished">Visualizza lavagna</translation>
     </message>
     <message>
         <source>Ctrl+B</source>
@@ -337,7 +337,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Show Computer Desktop</source>
-        <translation>Mostra il desktop del computer</translation>
+        <translation type="vanished">Mostra il desktop del computer</translation>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
@@ -433,7 +433,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add to Working Document</source>
-        <translation>Aggiungi al documento di lavoro</translation>
+        <translation type="vanished">Aggiungi al documento di lavoro</translation>
     </message>
     <message>
         <source>Add Selected Content to Open Document</source>
@@ -733,7 +733,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Import an External Page</source>
-        <translation>Importa una pagina esterna</translation>
+        <translation type="vanished">Importa una pagina esterna</translation>
     </message>
     <message>
         <source>Pause</source>
@@ -761,11 +761,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Web Trap</source>
-        <translation>Cattura Web</translation>
+        <translation type="vanished">Cattura Web</translation>
     </message>
     <message>
         <source>Trap Web Content</source>
-        <translation>Cattura contenuto web</translation>
+        <translation type="vanished">Cattura contenuto web</translation>
     </message>
     <message>
         <source>Custom Capture</source>
@@ -801,11 +801,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>eduMedia</source>
-        <translation>EduMedia</translation>
+        <translation type="vanished">EduMedia</translation>
     </message>
     <message>
         <source>Import eduMedia simulation</source>
-        <translation>Importa simulatore eduMedia</translation>
+        <translation type="vanished">Importa simulatore eduMedia</translation>
     </message>
     <message>
         <source>Check Update</source>
@@ -899,6 +899,78 @@ Do you wish to override the security check and continue ?   </source>
         <source>Capture Web Content</source>
         <translation>Catturare il contenuto del web</translation>
     </message>
+    <message>
+        <source>Documents Mode</source>
+        <translation type="unfinished">Modalità Documenti</translation>
+    </message>
+    <message>
+        <source>Web Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Board Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Desktop</source>
+        <translation type="unfinished">Desktop</translation>
+    </message>
+    <message>
+        <source>Desktop Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Seyes ruled Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Seyes ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import one or more pages (supported formats : jpg, png, svg, ubz, pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to favorites</source>
+        <translation type="unfinished">Aggiungi ai preferiti</translation>
+    </message>
+    <message>
+        <source>Add Document to favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hints and tips</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Hints and tips</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -939,7 +1011,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation>Sei sicuro di voler rimuovere 1 pagina dal documento selezionato &apos;%0&apos;?</translation>
+        <translation type="vanished">Sei sicuro di voler rimuovere 1 pagina dal documento selezionato &apos;%0&apos;?</translation>
     </message>
     <message>
         <source>Loading scene (%1/%2)</source>
@@ -948,6 +1020,10 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <source>Moving cached scenes (%1/%2)</source>
         <translation>Spostamento delle scene in cache (%1/%2)</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove page %1 ?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1088,6 +1164,14 @@ Do you wish to override the security check and continue ?   </source>
         <source>Color</source>
         <translation>Colore</translation>
     </message>
+    <message>
+        <source>Untitled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not find document.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -1104,7 +1188,18 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBBoardThumbnailsView</name>
     <message>
         <source>Loading page (%1/%2)</source>
-        <translation>Caricamento pagina (%1/%2)</translation>
+        <translation type="vanished">Caricamento pagina (%1/%2)</translation>
+    </message>
+</context>
+<context>
+    <name>UBBoardView</name>
+    <message>
+        <source>Is it for Board or Widget ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you trying to drop the object(s) inside the widget ?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1253,11 +1348,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Remove Item</source>
-        <translation>Cancella oggetti</translation>
+        <translation type="vanished">Cancella oggetti</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation>Sei sicuro di voler cancellare l&apos;(gli) item selezionato(i)?</translation>
+        <translation type="vanished">Sei sicuro di voler cancellare l&apos;(gli) item selezionato(i)?</translation>
     </message>
     <message>
         <source>Title page</source>
@@ -1266,6 +1361,90 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <source>Refreshing Document Thumbnails View (%1/%2)</source>
         <translation>Aggiornamento delle anteprime in modalità Documenti (%1/%2)</translation>
+    </message>
+    <message>
+        <source>Complete deletion of %1 documents/folders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to permanantly delete %1 documents and/or folders. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Complete deletion of folder &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to permanantly delete folder &quot;%1&quot;. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Complete deletion of document &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to permanantly delete document &quot;%1&quot;. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Emptying My Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to entirely empty the folder &quot;My Documents&quot;. All your documents will be moved to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Emptying Trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to entirely empty the trash. All documents and folders in it will be permanently deleted. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moving %1 elements to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move %1 documents and/or folders to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move folder &quot;%1&quot;to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move folder &quot;%1&quot; to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move document &quot;%1&quot;to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move document &quot;%1&quot; to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Supported File(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moving %1 pages of the document &quot;%2&quot; to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move %1 pages of the document &quot;%2&quot; to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove page %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to remove page %1 of the document &quot;%2&quot;. Are you sure ?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1315,18 +1494,18 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Pagina %0</translation>
+        <translation type="vanished">Pagina %0</translation>
     </message>
     <message>
         <source>Generating thumbnails for board (%1/%2)</source>
-        <translation>Creazione delle anteprime in modalità Lavagna (%1/%2)</translation>
+        <translation type="vanished">Creazione delle anteprime in modalità Lavagna (%1/%2)</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentReplaceDialog</name>
     <message>
         <source>Accept</source>
-        <translation>Accetta</translation>
+        <translation type="vanished">Accetta</translation>
     </message>
     <message>
         <source>Replace</source>
@@ -1343,6 +1522,22 @@ Providing a new name will create a new document.</source>
         <translation>Il nome %1 è già usato.
 Conservando questo nome si sostituirà il documento.
 Dando un nuovo nome si creerà un nuovo documento.</translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished">Rinomina</translation>
+    </message>
+    <message>
+        <source>Replace all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Skip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Skip all</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1374,11 +1569,11 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
     </message>
     <message>
         <source>Remove Item</source>
-        <translation>Cancella oggetti</translation>
+        <translation type="vanished">Cancella oggetti</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation>Sei sicuro di voler cancellare l&apos;(gli) item selezionato(i)?</translation>
+        <translation type="vanished">Sei sicuro di voler cancellare l&apos;(gli) item selezionato(i)?</translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
@@ -1397,17 +1592,24 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
     </message>
 </context>
 <context>
+    <name>UBDraggableLivePixmapItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished">Pagina %0</translation>
+    </message>
+</context>
+<context>
     <name>UBDraggableThumbnail</name>
     <message>
         <source>Page %0</source>
-        <translation>Pagina %0</translation>
+        <translation type="vanished">Pagina %0</translation>
     </message>
 </context>
 <context>
     <name>UBDraggableThumbnailView</name>
     <message>
         <source>Page %0</source>
-        <translation>Pagina %0</translation>
+        <translation type="vanished">Pagina %0</translation>
     </message>
 </context>
 <context>
@@ -1531,6 +1733,10 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
     <message>
         <source>Export to PDF</source>
         <translation>Esporta in PDF</translation>
+    </message>
+    <message>
+        <source>The original PDF imported in OpenBoard seems not valid and could not be merged with your annotations. Please repair it and then reimport it in OpenBoard. The current export will be done with detailed (heavy) images of the pages of the original PDF instead, to avoid complete export failure.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1700,6 +1906,10 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
         <source>Visible on Extended Screen</source>
         <translation>Visibile sullo schermo esteso</translation>
     </message>
+    <message>
+        <source>Hide on Extended Screen when selected</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
@@ -1717,6 +1927,10 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
     </message>
     <message>
         <source>Web Inspector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide on Extended Screen when selected</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2081,12 +2295,23 @@ Vuoi ignorare gli errori per questo host?</translation>
         <source>Marker is pressure sensitive</source>
         <translation>L&apos;evidenziatore è sensibile alla pressione</translation>
     </message>
+    <message>
+        <source>Use all available displays</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBSettings</name>
     <message>
         <source>My Movies</source>
         <translation>I miei film</translation>
+    </message>
+</context>
+<context>
+    <name>UBStartupHintsPalette</name>
+    <message>
+        <source>Visible next time</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2417,6 +2642,10 @@ Do you want to reload the page ?</source>
         <source>Processing...</source>
         <translation>Processo in corso…</translation>
     </message>
+    <message>
+        <source>an error occured while trying to open the PDF file</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>YouTubePublishingDialog</name>
@@ -2662,7 +2891,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap control display and view display</source>
-        <translation>Scambia lo schermo di controllo con quello di visualizzazione</translation>
+        <translation type="vanished">Scambia lo schermo di controllo con quello di visualizzazione</translation>
     </message>
     <message>
         <source>Mode</source>
@@ -2726,7 +2955,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap first and second view displays</source>
-        <translation>Scambia lo schermo di controllo con quello di visualizzazione</translation>
+        <translation type="vanished">Scambia lo schermo di controllo con quello di visualizzazione</translation>
     </message>
     <message>
         <source>Documents Mode</source>
@@ -2746,18 +2975,38 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>PDF Rendering</source>
-        <translation>rendering PDF</translation>
+        <translation type="vanished">rendering PDF</translation>
     </message>
     <message>
         <source>Improve zoom execution time (can slightly affect rendering quality)</source>
         <translation>Migliorare la velocità dello zoom (può influire leggermente sulla qualità del rendering)</translation>
+    </message>
+    <message>
+        <source>PDF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export background grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Documents</source>
+        <translation type="unfinished">Documenti</translation>
+    </message>
+    <message>
+        <source>List of screens used for Control, Display and Previous pages</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>trapFlashDialog</name>
     <message>
         <source>Trap flash</source>
-        <translation>Cattura flash</translation>
+        <translation type="vanished">Cattura flash</translation>
     </message>
     <message>
         <source>Select a flash to trap</source>
@@ -2778,6 +3027,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Select a content to capture</source>
         <translation>Selezionare il contenuto da catturare</translation>
+    </message>
+    <message>
+        <source>Capture Web Content</source>
+        <translation type="unfinished">Catturare il contenuto del web</translation>
     </message>
 </context>
 </TS>

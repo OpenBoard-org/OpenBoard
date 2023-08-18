@@ -201,7 +201,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Manage Documents</source>
-        <translation>Dokumentumok kezelése</translation>
+        <translation type="vanished">Dokumentumok kezelése</translation>
     </message>
     <message>
         <source>Ctrl+D</source>
@@ -209,7 +209,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Web Browsing</source>
-        <translation>Web böngészés</translation>
+        <translation type="vanished">Web böngészés</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
@@ -329,7 +329,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add to Working Document</source>
-        <translation>Hozzáadás a nyitott dokumentumhoz</translation>
+        <translation type="vanished">Hozzáadás a nyitott dokumentumhoz</translation>
     </message>
     <message>
         <source>Add Selected Content to Open Document</source>
@@ -513,7 +513,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Display Board</source>
-        <translation>Tábla megjelenítése</translation>
+        <translation type="vanished">Tábla megjelenítése</translation>
     </message>
     <message>
         <source>Erase Content</source>
@@ -529,7 +529,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Show Computer Desktop</source>
-        <translation>Számítógép Asztal megjelenítése</translation>
+        <translation type="vanished">Számítógép Asztal megjelenítése</translation>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
@@ -737,7 +737,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Import an External Page</source>
-        <translation>Külső oldal importálása</translation>
+        <translation type="vanished">Külső oldal importálása</translation>
     </message>
     <message>
         <source>Pause</source>
@@ -765,11 +765,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Web Trap</source>
-        <translation>Web rögzítése</translation>
+        <translation type="vanished">Web rögzítése</translation>
     </message>
     <message>
         <source>Trap Web Content</source>
-        <translation>Webes tartalom rögzítése</translation>
+        <translation type="vanished">Webes tartalom rögzítése</translation>
     </message>
     <message>
         <source>Capture Part of the Screen</source>
@@ -801,11 +801,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>eduMedia</source>
-        <translation>eduMedia</translation>
+        <translation type="vanished">eduMedia</translation>
     </message>
     <message>
         <source>Import eduMedia simulation</source>
-        <translation>eduMedia szimuláció importálása</translation>
+        <translation type="vanished">eduMedia szimuláció importálása</translation>
     </message>
     <message>
         <source>Window Capture</source>
@@ -899,6 +899,78 @@ Do you wish to override the security check and continue ?   </source>
         <source>Capture Web Content</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Documents Mode</source>
+        <translation type="unfinished">Dokumentum üzemmód</translation>
+    </message>
+    <message>
+        <source>Web Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Board Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Desktop</source>
+        <translation type="unfinished">Asztal</translation>
+    </message>
+    <message>
+        <source>Desktop Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Seyes ruled Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Seyes ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import one or more pages (supported formats : jpg, png, svg, ubz, pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to favorites</source>
+        <translation type="unfinished">Hozzáadás a kedvencekhez</translation>
+    </message>
+    <message>
+        <source>Add Document to favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hints and tips</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Hints and tips</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -931,7 +1003,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation>Biztosan szeretné eltávolítani 1 oldalt a kijelölt „%0”-dokumentumból?</translation>
+        <translation type="vanished">Biztosan szeretné eltávolítani 1 oldalt a kijelölt „%0”-dokumentumból?</translation>
     </message>
     <message>
         <source>Element ID = </source>
@@ -947,6 +1019,10 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Moving cached scenes (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove page %1 ?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1088,6 +1164,14 @@ Do you wish to override the security check and continue ?   </source>
         <source>Color</source>
         <translation>Szín</translation>
     </message>
+    <message>
+        <source>Untitled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not find document.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -1104,7 +1188,18 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBBoardThumbnailsView</name>
     <message>
         <source>Loading page (%1/%2)</source>
-        <translation>Oldalak betöltése: %1/%2</translation>
+        <translation type="vanished">Oldalak betöltése: %1/%2</translation>
+    </message>
+</context>
+<context>
+    <name>UBBoardView</name>
+    <message>
+        <source>Is it for Board or Widget ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you trying to drop the object(s) inside the widget ?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1304,11 +1399,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Remove Item</source>
-        <translation>Elem eltávolítása</translation>
+        <translation type="vanished">Elem eltávolítása</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation>Biztosan szeretné eltávolítani a kijelölt elem(ek)et?</translation>
+        <translation type="vanished">Biztosan szeretné eltávolítani a kijelölt elem(ek)et?</translation>
     </message>
     <message>
         <source>Title page</source>
@@ -1316,6 +1411,90 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Refreshing Document Thumbnails View (%1/%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Complete deletion of %1 documents/folders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to permanantly delete %1 documents and/or folders. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Complete deletion of folder &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to permanantly delete folder &quot;%1&quot;. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Complete deletion of document &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to permanantly delete document &quot;%1&quot;. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Emptying My Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to entirely empty the folder &quot;My Documents&quot;. All your documents will be moved to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Emptying Trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to entirely empty the trash. All documents and folders in it will be permanently deleted. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moving %1 elements to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move %1 documents and/or folders to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move folder &quot;%1&quot;to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move folder &quot;%1&quot; to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move document &quot;%1&quot;to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move document &quot;%1&quot; to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Supported File(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moving %1 pages of the document &quot;%2&quot; to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move %1 pages of the document &quot;%2&quot; to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove page %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to remove page %1 of the document &quot;%2&quot;. Are you sure ?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1366,18 +1545,14 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>%0. oldal</translation>
-    </message>
-    <message>
-        <source>Generating thumbnails for board (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">%0. oldal</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentReplaceDialog</name>
     <message>
         <source>Accept</source>
-        <translation>Elfogadás</translation>
+        <translation type="vanished">Elfogadás</translation>
     </message>
     <message>
         <source>Replace</source>
@@ -1394,6 +1569,22 @@ Providing a new name will create a new document.</source>
         <translation>A(z) %1 név már használatban van.
 Ennek a névnek a megtartása helyettesíti a dokumentumot.
 Új név megadása új dokumentumot hoz létre.</translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished">Átnevezés</translation>
+    </message>
+    <message>
+        <source>Replace all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Skip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Skip all</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1427,11 +1618,11 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
     </message>
     <message>
         <source>Remove Item</source>
-        <translation>Elem eltávolítása</translation>
+        <translation type="vanished">Elem eltávolítása</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation>Biztosan szeretné eltávolítani a kijelölt elem(ek)et?</translation>
+        <translation type="vanished">Biztosan szeretné eltávolítani a kijelölt elem(ek)et?</translation>
     </message>
 </context>
 <context>
@@ -1461,17 +1652,24 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
     </message>
 </context>
 <context>
+    <name>UBDraggableLivePixmapItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBDraggableThumbnail</name>
     <message>
         <source>Page %0</source>
-        <translation>%0. oldal</translation>
+        <translation type="vanished">%0. oldal</translation>
     </message>
 </context>
 <context>
     <name>UBDraggableThumbnailView</name>
     <message>
         <source>Page %0</source>
-        <translation>Oldal %0</translation>
+        <translation type="vanished">Oldal %0</translation>
     </message>
 </context>
 <context>
@@ -1595,6 +1793,10 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
     <message>
         <source>Export to PDF</source>
         <translation>Exportálás PDFbe</translation>
+    </message>
+    <message>
+        <source>The original PDF imported in OpenBoard seems not valid and could not be merged with your annotations. Please repair it and then reimport it in OpenBoard. The current export will be done with detailed (heavy) images of the pages of the original PDF instead, to avoid complete export failure.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1764,6 +1966,10 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
         <source>Visible on Extended Screen</source>
         <translation>Látható a kiterjesztett képernyőn</translation>
     </message>
+    <message>
+        <source>Hide on Extended Screen when selected</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
@@ -1781,6 +1987,10 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
     </message>
     <message>
         <source>Web Inspector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide on Extended Screen when selected</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2153,12 +2363,23 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
         <source>Marker is pressure sensitive</source>
         <translation>A jelölőtoll nyomásérzékeny</translation>
     </message>
+    <message>
+        <source>Use all available displays</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBSettings</name>
     <message>
         <source>My Movies</source>
         <translation>Videóim</translation>
+    </message>
+</context>
+<context>
+    <name>UBStartupHintsPalette</name>
+    <message>
+        <source>Visible next time</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2177,6 +2398,10 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     <message>
         <source>%1 thumbnails generated ...</source>
         <translation>%1 előkép létrehozva…</translation>
+    </message>
+    <message>
+        <source>Loading thumbnail (%1/%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2480,6 +2705,10 @@ Do you want to reload the page ?</source>
         <source>Processing...</source>
         <translation>Feldolgozás folyamatban van…</translation>
     </message>
+    <message>
+        <source>an error occured while trying to open the PDF file</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>YouTubePublishingDialog</name>
@@ -2725,7 +2954,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap control display and view display</source>
-        <translation>Vezérlő és megjelenítő kijelző megcserélése</translation>
+        <translation type="vanished">Vezérlő és megjelenítő kijelző megcserélése</translation>
     </message>
     <message>
         <source>Mode</source>
@@ -2789,7 +3018,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap first and second view displays</source>
-        <translation>Első és második kijelző megcserélése</translation>
+        <translation type="vanished">Első és második kijelző megcserélése</translation>
     </message>
     <message>
         <source>Documents Mode</source>
@@ -2809,18 +3038,38 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>PDF Rendering</source>
-        <translation>PDF-megjelenítő</translation>
+        <translation type="vanished">PDF-megjelenítő</translation>
     </message>
     <message>
         <source>Improve zoom execution time (can slightly affect rendering quality)</source>
         <translation>Nagyitás végrehajtási idő csökkentése (némileg befolyásolhatja a renderelés minőségét)</translation>
+    </message>
+    <message>
+        <source>PDF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export background grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Documents</source>
+        <translation type="unfinished">Dokumentumok</translation>
+    </message>
+    <message>
+        <source>List of screens used for Control, Display and Previous pages</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>trapFlashDialog</name>
     <message>
         <source>Trap flash</source>
-        <translation>Flash rögzítése</translation>
+        <translation type="vanished">Flash rögzítése</translation>
     </message>
     <message>
         <source>Select a flash to trap</source>
@@ -2840,6 +3089,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a content to capture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Capture Web Content</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
