@@ -1384,68 +1384,53 @@ std::shared_ptr<UBGraphicsScene> UBGraphicsScene::sceneDeepCopy() const
     if (this->mNominalSize.isValid())
         copy->setNominalSize(this->mNominalSize);
 
-    QHash<UBGraphicsStroke*, UBGraphicsStroke*> groupClone;
-
     foreach (auto item, items())
     {
-        QGraphicsItem* cloneItem = 0;
         UBItem* ubItem = dynamic_cast<UBItem*>(item);
-        UBGraphicsStroke* stroke = dynamic_cast<UBGraphicsStroke*>(item);
-        UBGraphicsGroupContainerItem* group = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
 
-        if(group){
-            UBGraphicsGroupContainerItem* groupCloned = group->deepCopyNoChildDuplication();
-            groupCloned->resetTransform();
-            groupCloned->setPos(0, 0);
-            bool locked = group->Delegate()->isLocked();
+        // copy visible top-level items
+        if (ubItem && item->isVisible() && !item->parentItem())
+        {
+            QGraphicsItem* cloneItem = nullptr;
+            UBGraphicsGroupContainerItem* group = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
 
-            foreach(QGraphicsItem* eachItem ,group->childItems()){
-                QGraphicsItem* copiedChild = dynamic_cast<QGraphicsItem*>(dynamic_cast<UBItem*>(eachItem)->deepCopy());
-                copy->addItem(copiedChild);
-                groupCloned->addToGroup(copiedChild);
+            if (group)
+            {
+                UBGraphicsGroupContainerItem* groupCloned = group->deepCopyNoChildDuplication();
+                groupCloned->resetTransform();
+                groupCloned->setPos(0, 0);
+
+                foreach (QGraphicsItem* eachItem, group->childItems())
+                {
+                    QGraphicsItem* copiedChild = dynamic_cast<QGraphicsItem*>(dynamic_cast<UBItem*>(eachItem)->deepCopy());
+                    groupCloned->addToGroup(copiedChild);
+                }
+
+                bool locked = group->Delegate()->isLocked();
+
+                if (locked)
+                    groupCloned->setData(UBGraphicsItemData::ItemLocked, QVariant(true));
+
+                groupCloned->setData(UBGraphicsItemData::ItemIsHiddenOnDisplay, QVariant(group->data(UBGraphicsItemData::ItemIsHiddenOnDisplay)));
+
+                groupCloned->setTransform(QTransform::fromTranslate(group->pos().x(), group->pos().y()));
+                groupCloned->setTransform(group->transform(), true);
+                cloneItem = groupCloned;
+            }
+            else
+            {
+                cloneItem = dynamic_cast<QGraphicsItem*>(ubItem->deepCopy());
             }
 
-            if (locked)
-                groupCloned->setData(UBGraphicsItemData::ItemLocked, QVariant(true));
-
-            groupCloned->setData(UBGraphicsItemData::ItemIsHiddenOnDisplay, QVariant(group->data(UBGraphicsItemData::ItemIsHiddenOnDisplay)));
-
-            copy->addItem(groupCloned);
-            groupCloned->setTransform(QTransform::fromTranslate(group->pos().x(), group->pos().y()));
-            groupCloned->setTransform(group->transform(), true);
-        }
-
-        if (ubItem && !stroke && !group && item->isVisible())
-            cloneItem = dynamic_cast<QGraphicsItem*>(ubItem->deepCopy());
-
-        if (cloneItem)
-        {
-            copy->addItem(cloneItem);
-
-            if (isBackgroundObject(item))
-                copy->setAsBackgroundObject(cloneItem);
-
-            if (this->mTools.contains(item))
-                copy->mTools << cloneItem;
-
-            UBGraphicsPolygonItem* polygon = dynamic_cast<UBGraphicsPolygonItem*>(item);
-
-            if(polygon)
+            if (cloneItem)
             {
-                UBGraphicsStroke* stroke = dynamic_cast<UBGraphicsStroke*>(item->parentItem());
+                copy->addItem(cloneItem);
 
-                if (stroke)
-                {
-                    UBGraphicsStroke* cloneStroke = groupClone.value(stroke);
+                if (isBackgroundObject(item))
+                    copy->setAsBackgroundObject(cloneItem);
 
-                    if (!cloneStroke)
-                    {
-                        cloneStroke = stroke->deepCopy();
-                        groupClone.insert(stroke, cloneStroke);
-                    }
-
-                    polygon->setStroke(cloneStroke);
-                }
+                if (this->mTools.contains(item))
+                    copy->mTools << cloneItem;
             }
         }
     }
