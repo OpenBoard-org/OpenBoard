@@ -12,102 +12,104 @@
     <name>BrowserWindow</name>
     <message>
         <source>Navigation</source>
-        <translation type="unfinished"></translation>
+        <translation>Navigáció</translation>
     </message>
     <message>
         <source>Show downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>Letöltések megjelenítése</translation>
     </message>
 </context>
 <context>
     <name>CertificateErrorDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished">Párbeszéd</translation>
+        <translation>Párbeszéd</translation>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikon</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Hiba</translation>
     </message>
     <message>
         <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
 
 Do you wish to override the security check and continue ?   </source>
-        <translation type="unfinished"></translation>
+        <translation>Ha kívánja, folytathatja egy ellenőrizetlen tanúsítvánnyal. Ellenőrizetlen tanúsítvány elfogadása azt jelenti, hogy előfordulhat, hogy nincs kapcsolatban azzal a gazdagéppel, amelyhez csatlakozni próbált.
+
+Felülírja a biztonsági ellenőrzést, és folytatja?</translation>
     </message>
 </context>
 <context>
     <name>DownloadManagerWidget</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished">Letöltések</translation>
+        <translation>Letöltések</translation>
     </message>
     <message>
         <source>No downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>Nincsenek letöltések</translation>
     </message>
     <message>
         <source>Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>Mentés másként</translation>
     </message>
 </context>
 <context>
     <name>DownloadWidget</name>
     <message>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation>Szövegcímke</translation>
     </message>
     <message>
         <source>Open file</source>
-        <translation type="unfinished"></translation>
+        <translation>Fájl megnyitása</translation>
     </message>
     <message>
         <source>%L1 B</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 bájt</translation>
     </message>
     <message>
         <source>%L1 KiB</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 Kibájt</translation>
     </message>
     <message>
         <source>%L1 MiB</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 Mibájt</translation>
     </message>
     <message>
         <source>%L1 GiB</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 Gibájt</translation>
     </message>
     <message>
         <source>%p% - %1 of %2 downloaded - %3/s</source>
-        <translation type="unfinished"></translation>
+        <translation>%p% – %1/%2 letöltve – %3/másodperc</translation>
     </message>
     <message>
         <source>unknown size - %1 downloaded - %2/s</source>
-        <translation type="unfinished"></translation>
+        <translation>ismeretlen méretű – %1 letöltve – %2/másodperc</translation>
     </message>
     <message>
         <source>completed - %1 downloaded - %2/s</source>
-        <translation type="unfinished"></translation>
+        <translation>befejezve – %1 letöltve – %2/másodperc</translation>
     </message>
     <message>
         <source>cancelled - %1 downloaded - %2/s</source>
-        <translation type="unfinished"></translation>
+        <translation>visszavonta – %1 letöltve – %2/másodperc</translation>
     </message>
     <message>
         <source>interrupted: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>megszakított: %1</translation>
     </message>
     <message>
         <source>Stop downloading</source>
-        <translation type="unfinished"></translation>
+        <translation>Letöltés leállítása</translation>
     </message>
     <message>
         <source>Remove from list</source>
-        <translation type="unfinished"></translation>
+        <translation>Eltávolítás a listáról</translation>
     </message>
 </context>
 <context>
@@ -897,79 +899,79 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Capture Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Webtartalom rögzítése</translation>
     </message>
     <message>
         <source>Documents Mode</source>
-        <translation type="unfinished">Dokumentum üzemmód</translation>
+        <translation>Dokumentumok üzemmód</translation>
     </message>
     <message>
         <source>Web Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Web üzemmód</translation>
     </message>
     <message>
         <source>1</source>
-        <translation type="unfinished"></translation>
+        <translation>1</translation>
     </message>
     <message>
         <source>2</source>
-        <translation type="unfinished"></translation>
+        <translation>2</translation>
     </message>
     <message>
         <source>3</source>
-        <translation type="unfinished"></translation>
+        <translation>3</translation>
     </message>
     <message>
         <source>4</source>
-        <translation type="unfinished"></translation>
+        <translation>4</translation>
     </message>
     <message>
         <source>5</source>
-        <translation type="unfinished"></translation>
+        <translation>5</translation>
     </message>
     <message>
         <source>Board Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Tábla üzemmód</translation>
     </message>
     <message>
         <source>Desktop</source>
-        <translation type="unfinished">Asztal</translation>
+        <translation>Asztali</translation>
     </message>
     <message>
         <source>Desktop Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Asztali üzemmód</translation>
     </message>
     <message>
         <source>Add to document</source>
-        <translation type="unfinished"></translation>
+        <translation>Hozzáadás a dokumentumhoz</translation>
     </message>
     <message>
         <source>Seyes ruled Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Seyes uralkodott világos háttér</translation>
     </message>
     <message>
         <source>Seyes ruled Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Seyes uralkodott sötét háttér</translation>
     </message>
     <message>
         <source>Import one or more pages (supported formats : jpg, png, svg, ubz, pdf)</source>
-        <translation type="unfinished"></translation>
+        <translation>Egy vagy több oldal importálása (támogatott formátumok: jpg, pdf, png, svg, ubz)</translation>
     </message>
     <message>
         <source>Add to favorites</source>
-        <translation type="unfinished">Hozzáadás a kedvencekhez</translation>
+        <translation>Hozzáadás a kedvencekhez</translation>
     </message>
     <message>
         <source>Add Document to favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokumentum hozzáadása a kedvencekhez</translation>
     </message>
     <message>
         <source>Hints and tips</source>
-        <translation type="unfinished"></translation>
+        <translation>Tanácsok és tippek</translation>
     </message>
     <message>
         <source>Open Hints and tips</source>
-        <translation type="unfinished"></translation>
+        <translation>Tanácsok és tippek megnyitása</translation>
     </message>
 </context>
 <context>
@@ -988,11 +990,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikon</translation>
     </message>
     <message>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Tajékoztatás</translation>
     </message>
 </context>
 <context>
@@ -1015,15 +1017,15 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Loading scene (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Jelenet betöltése (%1/%2)</translation>
     </message>
     <message>
         <source>Moving cached scenes (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Gyorsítótárazott jelenetek áthelyezése (%1/%2)</translation>
     </message>
     <message>
         <source>Are you sure you want to remove page %1 ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Biztosan eltávolítja a(z) %1. oldalt?</translation>
     </message>
 </context>
 <context>
@@ -1069,7 +1071,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
-        <translation type="unfinished"></translation>
+        <translation>Az UBX-fájl közvetlenül nem nyitható meg. Inkább dokumentumok üzemmódban importálja</translation>
     </message>
 </context>
 <context>
@@ -1166,11 +1168,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Untitled</source>
-        <translation type="unfinished"></translation>
+        <translation>Névtelen</translation>
     </message>
     <message>
         <source>Could not find document.</source>
-        <translation type="unfinished"></translation>
+        <translation>A dokumentum nem található.</translation>
     </message>
 </context>
 <context>
@@ -1195,11 +1197,11 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBBoardView</name>
     <message>
         <source>Is it for Board or Widget ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Táblára vagy vezérlőre való?</translation>
     </message>
     <message>
         <source>Are you trying to drop the object(s) inside the widget ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Megpróbálja leejteni a tárgy(oka)t a vezérlőbe?</translation>
     </message>
 </context>
 <context>
@@ -1393,8 +1395,8 @@ Do you wish to override the security check and continue ?   </source>
     <message numerus="yes">
         <source>duplicated %1 page</source>
         <comment>duplicated %1 pages</comment>
-        <translation type="unfinished">
-            <numerusform>%1 oldal másolata</numerusform>
+        <translation>
+            <numerusform>Megkettőzött %1 oldal</numerusform>
         </translation>
     </message>
     <message>
@@ -1411,91 +1413,91 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Refreshing Document Thumbnails View (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokumentum előképek nézetének frissítése (%1/%2)</translation>
     </message>
     <message>
         <source>Complete deletion of %1 documents/folders</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 dokumentum/mappa teljes törlése</translation>
     </message>
     <message>
         <source>You are about to permanantly delete %1 documents and/or folders. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 dokumentum és/vagy mappa végleges törlésére készül. Biztos benne?</translation>
     </message>
     <message>
         <source>Complete deletion of folder &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>„%1” mappa teljes törlése</translation>
     </message>
     <message>
         <source>You are about to permanantly delete folder &quot;%1&quot;. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>„%1” mappa végleges törlésére készül. Biztos benne?</translation>
     </message>
     <message>
         <source>Complete deletion of document &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>„%1” dokumentum teljes törlése</translation>
     </message>
     <message>
         <source>You are about to permanantly delete document &quot;%1&quot;. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>„%1” dokumentum végleges törlésére készül. Biztos benne?</translation>
     </message>
     <message>
         <source>Emptying My Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Saját dokumentumok kiürítése</translation>
     </message>
     <message>
         <source>You are about to entirely empty the folder &quot;My Documents&quot;. All your documents will be moved to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Arra készül, hogy teljesen kiürítse a „Saját dokumentumok” mappát. Minden dokumentuma a kukába kerül. Biztos benne?</translation>
     </message>
     <message>
         <source>Emptying Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuka ürítése</translation>
     </message>
     <message>
         <source>You are about to entirely empty the trash. All documents and folders in it will be permanently deleted. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Arra készül, hogy teljesen kiürítse a kukát. A benne lévő összes dokumentum és mappa véglegesen törlődik. Biztos benne?</translation>
     </message>
     <message>
         <source>Moving %1 elements to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 elem áthelyezése a kukába</translation>
     </message>
     <message>
         <source>You are about to move %1 documents and/or folders to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Arra készül, hogy %1 dokumentumot és/vagy mappát a kukába helyezze. Biztos benne?</translation>
     </message>
     <message>
         <source>Move folder &quot;%1&quot;to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>„%1” mappa áthelyezése a kukába</translation>
     </message>
     <message>
         <source>You are about to move folder &quot;%1&quot; to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Arra készül, hogy a(z) „%1” mappát a kukába helyezze. Biztos benne?</translation>
     </message>
     <message>
         <source>Move document &quot;%1&quot;to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>„%1” dokumentum áthelyezése a kukába</translation>
     </message>
     <message>
         <source>You are about to move document &quot;%1&quot; to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Arra készül, hogy a(z) „%1” dokumentumot a kukába helyezze. Biztos benne?</translation>
     </message>
     <message>
         <source>Open Supported File(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Támogatott fájl(ok) megnyitása</translation>
     </message>
     <message>
         <source>Moving %1 pages of the document &quot;%2&quot; to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>„%2” dokumentum %1 oldalának áthelyezése a kukába</translation>
     </message>
     <message>
         <source>You are about to move %1 pages of the document &quot;%2&quot; to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Arra készül, hogy a(z) „%2” dokumentum %1 oldalát a kukába helyezze. Biztos benne?</translation>
     </message>
     <message>
         <source>Remove page %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 oldal eltávolítása</translation>
     </message>
     <message>
         <source>You are about to remove page %1 of the document &quot;%2&quot;. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>„%2” dokumentum %1 oldalának eltávolítására készül. Biztos benne?</translation>
     </message>
 </context>
 <context>
@@ -1514,7 +1516,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>widgets</source>
-        <translation>minialkalmazások</translation>
+        <translation>vezérlők</translation>
     </message>
     <message>
         <source>All supported files (*.%1)</source>
@@ -1572,19 +1574,19 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished">Átnevezés</translation>
+        <translation>Átnevezés</translation>
     </message>
     <message>
         <source>Replace all</source>
-        <translation type="unfinished"></translation>
+        <translation>Az összes cserése</translation>
     </message>
     <message>
         <source>Skip</source>
-        <translation type="unfinished"></translation>
+        <translation>Kihagyás</translation>
     </message>
     <message>
         <source>Skip all</source>
-        <translation type="unfinished"></translation>
+        <translation>Az összes kihagyása</translation>
     </message>
 </context>
 <context>
@@ -1599,7 +1601,7 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%1 oldal másolva</numerusform>
         </translation>
     </message>
@@ -1612,7 +1614,7 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%1 oldal másolva</numerusform>
         </translation>
     </message>
@@ -1655,7 +1657,7 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
     <name>UBDraggableLivePixmapItem</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished"></translation>
+        <translation>%0. oldal</translation>
     </message>
 </context>
 <context>
@@ -1685,7 +1687,8 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
     <message>
         <source>Application name can`t contain any of the following characters:<byte value="xd"/>
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Az alkalmazás neve nem tartalmazhatja a következő karakterek egyikét sem:<byte value="xd"/>
+</translation>
     </message>
 </context>
 <context>
@@ -1796,7 +1799,7 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
     </message>
     <message>
         <source>The original PDF imported in OpenBoard seems not valid and could not be merged with your annotations. Please repair it and then reimport it in OpenBoard. The current export will be done with detailed (heavy) images of the pages of the original PDF instead, to avoid complete export failure.</source>
-        <translation type="unfinished"></translation>
+        <translation>Úgy tűnik, hogy az OpenBoardba importált eredeti PDF érvénytelen, és nem egyesíthető a megjegyzésekkel. Kérjük, javítsa meg, majd importálja újra az OpenBoardba. A teljes exportálási hiba elkerülése érdekében az aktuális exportálás az eredeti PDF oldalainak részletes (súlyos) képeivel történik.</translation>
     </message>
 </context>
 <context>
@@ -1968,7 +1971,7 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
     </message>
     <message>
         <source>Hide on Extended Screen when selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Elrejtés a kiterjesztett képernyőn, ha kijelölve van</translation>
     </message>
 </context>
 <context>
@@ -1987,11 +1990,11 @@ Ennek a névnek a megtartása helyettesíti a dokumentumot.
     </message>
     <message>
         <source>Web Inspector</source>
-        <translation type="unfinished"></translation>
+        <translation>Webvizsgáló</translation>
     </message>
     <message>
         <source>Hide on Extended Screen when selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Elrejtés a kiterjesztett képernyőn, ha kijelölve van</translation>
     </message>
 </context>
 <context>
@@ -2260,11 +2263,11 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     </message>
     <message>
         <source>Renaming pages (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Oldalak átnevezése (%1/%2)</translation>
     </message>
     <message>
         <source>Retrieving all your documents (found : %1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Az összes dokumentum lekérése (találva: %1)</translation>
     </message>
 </context>
 <context>
@@ -2365,7 +2368,7 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     </message>
     <message>
         <source>Use all available displays</source>
-        <translation type="unfinished"></translation>
+        <translation>Az összes elérhető kijelző használata</translation>
     </message>
 </context>
 <context>
@@ -2379,7 +2382,7 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     <name>UBStartupHintsPalette</name>
     <message>
         <source>Visible next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Legközelebb látható</translation>
     </message>
 </context>
 <context>
@@ -2401,7 +2404,7 @@ Figyelmen kívül hagyja ezeket a hibákat ennél a hosztnál?</translation>
     </message>
     <message>
         <source>Loading thumbnail (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Indexkép betöltése (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -2502,7 +2505,7 @@ Please reboot the application to access the updated documents.</source>
     <name>UBWebEngineView</name>
     <message>
         <source>Open Web Inspector</source>
-        <translation type="unfinished"></translation>
+        <translation>Webvizsgáló megnyítása</translation>
     </message>
 </context>
 <context>
@@ -2616,87 +2619,88 @@ Please reboot the application to access the updated documents.</source>
     <name>WebPage</name>
     <message>
         <source>Certificate Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Tanúsítványhiba</translation>
     </message>
     <message>
         <source>Enter username and password for &quot;%1&quot; at %2</source>
-        <translation type="unfinished"></translation>
+        <translation>A(z) „%1” felhasználóneve és jelszava megadása itt: %2</translation>
     </message>
     <message>
         <source>Allow %1 to access your location information?</source>
-        <translation type="unfinished"></translation>
+        <translation>Engedélyezi %1, hogy hozzáférjen a helyadataihoz?</translation>
     </message>
     <message>
         <source>Allow %1 to access your microphone?</source>
-        <translation type="unfinished"></translation>
+        <translation>Engedélyezi %1, hogy hozzáférjen a mikrofonhoz?</translation>
     </message>
     <message>
         <source>Allow %1 to access your webcam?</source>
-        <translation type="unfinished"></translation>
+        <translation>Engedélyezi %1, hogy hozzáférjen a kamerához?</translation>
     </message>
     <message>
         <source>Allow %1 to access your microphone and webcam?</source>
-        <translation type="unfinished"></translation>
+        <translation>Engedélyezi %1, hogy hozzáférjen a mikrofonhoz és a kamerához?</translation>
     </message>
     <message>
         <source>Allow %1 to lock your mouse cursor?</source>
-        <translation type="unfinished"></translation>
+        <translation>Engedélyezi %1, hogy zárolja az egérkurzort?</translation>
     </message>
     <message>
         <source>Allow %1 to capture video of your desktop?</source>
-        <translation type="unfinished"></translation>
+        <translation>Engedélyezi %1, hogy rögzítse az asztalán lévő videót?</translation>
     </message>
     <message>
         <source>Allow %1 to capture audio and video of your desktop?</source>
-        <translation type="unfinished"></translation>
+        <translation>Engedélyezi %1, hogy hangot és videót rögzítsen az asztaláról?</translation>
     </message>
     <message>
         <source>Permission Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Engedélykérelem</translation>
     </message>
     <message>
         <source>Connect to proxy &quot;%1&quot; using:</source>
-        <translation type="unfinished"></translation>
+        <translation>Csatlakozás a "%1" proxyhoz a következő használatával:</translation>
     </message>
     <message>
         <source>Allow %1 to open all %2 links?</source>
-        <translation type="unfinished"></translation>
+        <translation>Engedélyezi %1, hogy megnyissa mind a(z) %2 hivatkozást?</translation>
     </message>
 </context>
 <context>
     <name>WebView</name>
     <message>
         <source>Render process normal exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Renderelési folyamat normál kilépése</translation>
     </message>
     <message>
         <source>Render process abnormal exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Renderelési folyamat rendellenes kilépése</translation>
     </message>
     <message>
         <source>Render process crashed</source>
-        <translation type="unfinished"></translation>
+        <translation>Renderelési folyamat összeomlott</translation>
     </message>
     <message>
         <source>Render process killed</source>
-        <translation type="unfinished"></translation>
+        <translation>Renderelési folyamat megszakadt</translation>
     </message>
     <message>
         <source>Render process exited with code: %1
 Do you want to reload the page ?</source>
-        <translation type="unfinished"></translation>
+        <translation>A renderelési folyamat a következő kóddal fejeződött be: %1
+Újra szeretné tölteni az oldalt?</translation>
     </message>
     <message>
         <source>Open Web Inspector in new window</source>
-        <translation type="unfinished"></translation>
+        <translation>Webvizsgáló megnyítása új ablakban</translation>
     </message>
     <message>
         <source>Inspect element</source>
-        <translation type="unfinished"></translation>
+        <translation>Elem vizsgálata</translation>
     </message>
     <message>
         <source>Add to board</source>
-        <translation type="unfinished"></translation>
+        <translation>Hozzáadás a táblához</translation>
     </message>
 </context>
 <context>
@@ -2707,7 +2711,7 @@ Do you want to reload the page ?</source>
     </message>
     <message>
         <source>an error occured while trying to open the PDF file</source>
-        <translation type="unfinished"></translation>
+        <translation>Hiba történt a PDF-fájl megnyitásakor</translation>
     </message>
 </context>
 <context>
@@ -3046,23 +3050,23 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF</translation>
     </message>
     <message>
         <source>Export background grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Háttérrács exportálása</translation>
     </message>
     <message>
         <source>Export background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Háttérszín exportálása</translation>
     </message>
     <message>
         <source>Documents</source>
-        <translation type="unfinished">Dokumentumok</translation>
+        <translation>Dokumentumok</translation>
     </message>
     <message>
         <source>List of screens used for Control, Display and Previous pages</source>
-        <translation type="unfinished"></translation>
+        <translation>A vezérléshez, megjelenítéshez és az előző oldalakhoz használt képernyők listája</translation>
     </message>
 </context>
 <context>
@@ -3089,11 +3093,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a content to capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Rögzítendő tartalom megjelölése</translation>
     </message>
     <message>
         <source>Capture Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Webtartalom rögzítése</translation>
     </message>
 </context>
 </TS>
