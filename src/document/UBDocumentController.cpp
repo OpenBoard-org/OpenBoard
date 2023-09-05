@@ -3123,6 +3123,9 @@ void UBDocumentController::importFile()
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     QApplication::processEvents();
 
+    //same behavior as with an ubx : if multiples files are imported, we don't change the selection.
+    bool multipleFilesImported = filePaths.size() > 1;
+
     for (auto& filePath : filePaths)
     {
         QFileInfo fileInfo(filePath);
@@ -3158,7 +3161,7 @@ void UBDocumentController::importFile()
 
                 createdDocument = docManager->importFile(selectedFile, groupName);
 
-                if (createdDocument) {
+                if (createdDocument && !multipleFilesImported) {
                     selectDocument(createdDocument, true, true, true);
                     pageSelectionChanged();
 
