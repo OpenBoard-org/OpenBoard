@@ -1137,6 +1137,10 @@ QVariant UBFeaturesModel::data(const QModelIndex &index, int role) const
         UBFeature f = featuresList->at(index.row());
         return QVariant::fromValue( f );
     }
+    else if (role == Qt::ToolTipRole)
+    {
+        return featuresList->at(index.row()).getDisplayName();
+    }
 
     return QVariant();
 }
