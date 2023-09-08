@@ -85,7 +85,7 @@
     </message>
     <message>
         <source>Stylus</source>
-        <translation>Pisaljka</translation>
+        <translation>Alati</translation>
     </message>
     <message>
         <source>Ctrl+T</source>
@@ -537,11 +537,11 @@
     </message>
     <message>
         <source>Clear Page</source>
-        <translation>Isprazni stranicu</translation>
+        <translation>Obriši stranicu</translation>
     </message>
     <message>
         <source>Clear All Elements</source>
-        <translation>Ukloni sve elemente</translation>
+        <translation>Obriši sve elemente</translation>
     </message>
     <message>
         <source>Pen</source>
@@ -637,7 +637,7 @@
     </message>
     <message>
         <source>Add To Current Page</source>
-        <translation>Dodaj trenutačnoj stranici</translation>
+        <translation>Dodaj u trenutačnu stranicu</translation>
     </message>
     <message>
         <source>Add Item To Current Page</source>
@@ -645,7 +645,7 @@
     </message>
     <message>
         <source>Add To New Page</source>
-        <translation>Dodaj novoj stranici</translation>
+        <translation>Dodaj u novu stranicu</translation>
     </message>
     <message>
         <source>Add Item To New Page</source>
@@ -653,7 +653,7 @@
     </message>
     <message>
         <source>Add To Library</source>
-        <translation>Dodaj biblioteci</translation>
+        <translation>Dodaj u biblioteku</translation>
     </message>
     <message>
         <source>Add Item To Library</source>
@@ -1058,7 +1058,7 @@
     </message>
     <message>
         <source>Show the stylus palette</source>
-        <translation>Prikaži paletu pisaljke</translation>
+        <translation>Prikaži paletu alata</translation>
     </message>
     <message>
         <source>Show Board on Secondary Screen</source>
@@ -1174,7 +1174,7 @@
     </message>
     <message>
         <source>Empty</source>
-        <translation>Prazno</translation>
+        <translation>Isprazni</translation>
     </message>
     <message>
         <source>Refreshing Document Thumbnails View (%1/%2)</source>
@@ -2226,7 +2226,7 @@ Za pristup aktualiziranim dokumentima ponovo pokreni program.</translation>
     <name>WBClearButton</name>
     <message>
         <source>Clear</source>
-        <translation>Isprazni</translation>
+        <translation>Obriši</translation>
     </message>
 </context>
 <context>
@@ -2384,7 +2384,7 @@ Za pristup aktualiziranim dokumentima ponovo pokreni program.</translation>
     </message>
     <message>
         <source>Clear Recent Searches</source>
-        <translation>Isprazni popis nedavnih pretraga</translation>
+        <translation>Obriši nedavne pretrage</translation>
     </message>
 </context>
 <context>
@@ -2616,7 +2616,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Stylus Palette</source>
-        <translation>Paleta pisaljke</translation>
+        <translation>Paleta alata</translation>
     </message>
     <message>
         <source>Horizontal</source>
