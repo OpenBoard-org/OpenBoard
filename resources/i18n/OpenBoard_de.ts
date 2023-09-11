@@ -27,11 +27,11 @@
     </message>
     <message>
         <source>Icon</source>
-        <translation></translation>
+        <translation>Ikon</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation></translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
@@ -61,7 +61,7 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     <name>DownloadWidget</name>
     <message>
         <source>TextLabel</source>
-        <translation></translation>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <source>Open file</source>
@@ -69,19 +69,19 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     </message>
     <message>
         <source>%L1 B</source>
-        <translation></translation>
+        <translation>%L1 B</translation>
     </message>
     <message>
         <source>%L1 KiB</source>
-        <translation></translation>
+        <translation>%L1 KiB</translation>
     </message>
     <message>
         <source>%L1 MiB</source>
-        <translation></translation>
+        <translation>%L1 MiB</translation>
     </message>
     <message>
         <source>%L1 GiB</source>
-        <translation></translation>
+        <translation>%L1 GiB</translation>
     </message>
     <message>
         <source>%p% - %1 of %2 downloaded - %3/s</source>
@@ -903,75 +903,75 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     </message>
     <message>
         <source>Documents Mode</source>
-        <translation type="unfinished">Dokumentmodus</translation>
+        <translation>Dokumentmodus</translation>
     </message>
     <message>
         <source>Web Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Internet-Modus</translation>
     </message>
     <message>
         <source>1</source>
-        <translation type="unfinished"></translation>
+        <translation>1</translation>
     </message>
     <message>
         <source>2</source>
-        <translation type="unfinished"></translation>
+        <translation>2</translation>
     </message>
     <message>
         <source>3</source>
-        <translation type="unfinished"></translation>
+        <translation>3</translation>
     </message>
     <message>
         <source>4</source>
-        <translation type="unfinished"></translation>
+        <translation>4</translation>
     </message>
     <message>
         <source>5</source>
-        <translation type="unfinished"></translation>
+        <translation>5</translation>
     </message>
     <message>
         <source>Board Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Board-Modus</translation>
     </message>
     <message>
         <source>Desktop</source>
-        <translation type="unfinished">Schreibtisch</translation>
+        <translation>Schreibtisch</translation>
     </message>
     <message>
         <source>Desktop Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Desktop-Modus</translation>
     </message>
     <message>
         <source>Add to document</source>
-        <translation type="unfinished"></translation>
+        <translation>Dem Dokument hinzufügen</translation>
     </message>
     <message>
         <source>Seyes ruled Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Weißer Hintergrund seyes liniert</translation>
     </message>
     <message>
         <source>Seyes ruled Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Schwarzer Hintergrund seyes liniert</translation>
     </message>
     <message>
         <source>Import one or more pages (supported formats : jpg, png, svg, ubz, pdf)</source>
-        <translation type="unfinished"></translation>
+        <translation>Eine oder mehrere Seiten importieren (unterstützte Formate: jpg, png, svg, ubz, pdf)</translation>
     </message>
     <message>
         <source>Add to favorites</source>
-        <translation type="unfinished">Zu Favoriten hinzufügen</translation>
+        <translation>Zu Favoriten hinzufügen</translation>
     </message>
     <message>
         <source>Add Document to favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokument zu Favoriten hinzufügen</translation>
     </message>
     <message>
         <source>Hints and tips</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipps und Tricks</translation>
     </message>
     <message>
         <source>Open Hints and tips</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipps und Tricks öffnen</translation>
     </message>
 </context>
 <context>
@@ -990,11 +990,11 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     </message>
     <message>
         <source>Icon</source>
-        <translation></translation>
+        <translation>Icon</translation>
     </message>
     <message>
         <source>Info</source>
-        <translation></translation>
+        <translation>Info</translation>
     </message>
 </context>
 <context>
@@ -1025,7 +1025,7 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     </message>
     <message>
         <source>Are you sure you want to remove page %1 ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sind Sie sicher, dass Sie die Seite%1 löschen möchten?</translation>
     </message>
 </context>
 <context>
@@ -1168,11 +1168,11 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     </message>
     <message>
         <source>Untitled</source>
-        <translation type="unfinished"></translation>
+        <translation>Ohne Titel</translation>
     </message>
     <message>
         <source>Could not find document.</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Dokument wurde nicht gefunden.</translation>
     </message>
 </context>
 <context>
@@ -1197,11 +1197,11 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     <name>UBBoardView</name>
     <message>
         <source>Is it for Board or Widget ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ist das für die Tabelle oder das Widget?</translation>
     </message>
     <message>
         <source>Are you trying to drop the object(s) inside the widget ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Versuchen Sie, das Objekt innerhalb des Widgets abzulegen?</translation>
     </message>
 </context>
 <context>
@@ -1370,87 +1370,87 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     </message>
     <message>
         <source>Complete deletion of %1 documents/folders</source>
-        <translation type="unfinished"></translation>
+        <translation>Endgültiges Löschen von %1 Dokumenten/Ordnern</translation>
     </message>
     <message>
         <source>You are about to permanantly delete %1 documents and/or folders. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie sind dabei, %1 Dokumente und/oder Ordner endgültig zu löschen. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>Complete deletion of folder &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Endgültiges Löschen des Ordners %1</translation>
     </message>
     <message>
         <source>You are about to permanantly delete folder &quot;%1&quot;. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie sind dabei, den Ordner %1 endgültig zu löschen. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>Complete deletion of document &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Endgültiges Löschen des Dokuments %1</translation>
     </message>
     <message>
         <source>You are about to permanantly delete document &quot;%1&quot;. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie sind dabei, das Dokument %1 endgültig zu löschen. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>Emptying My Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Meine Dokumente leeren</translation>
     </message>
     <message>
         <source>You are about to entirely empty the folder &quot;My Documents&quot;. All your documents will be moved to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie sind dabei, den Ordner &quot;Eigene Dateien&quot; vollständig zu leeren. Alle Ihre Dokumente werden in den Papierkorb verschoben. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>Emptying Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Den Papierkorb leeren</translation>
     </message>
     <message>
         <source>You are about to entirely empty the trash. All documents and folders in it will be permanently deleted. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie sind dabei, den Papierkorb vollständig zu leeren. Alle Dokumente und Ordner darin werden endgültig gelöscht. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>Moving %1 elements to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Elemente in den Papierkorb verschieben</translation>
     </message>
     <message>
         <source>You are about to move %1 documents and/or folders to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie sind dabei, %1 Dokumente in den Papierkorb zu verschieben. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>Move folder &quot;%1&quot;to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordner &quot;%1&quot; in den Papierkorb verschieben</translation>
     </message>
     <message>
         <source>You are about to move folder &quot;%1&quot; to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie sind dabei, den Ordner &quot;%1&quot; in den Papierkorb zu verschieben. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>Move document &quot;%1&quot;to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Dokument &quot;%1&quot; in den Papierkorb verschieben</translation>
     </message>
     <message>
         <source>You are about to move document &quot;%1&quot; to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie sind dabei, das Dokument &quot;%1&quot; in den Papierkorb zu verschieben. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>Open Supported File(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Unterstützte Datei(en) öffnen</translation>
     </message>
     <message>
         <source>Moving %1 pages of the document &quot;%2&quot; to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschiebe %1 Seiten des Dokuments &quot;%2&quot; in den Papierkorb</translation>
     </message>
     <message>
         <source>You are about to move %1 pages of the document &quot;%2&quot; to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie sind dabei, %1 Seiten des Dokuments &quot;%2&quot; in den Papierkorb zu verschieben. Sind Sie sicher?</translation>
     </message>
     <message>
         <source>Remove page %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Seite %1 löschen</translation>
     </message>
     <message>
         <source>You are about to remove page %1 of the document &quot;%2&quot;. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sie sind dabei, die Seite %1 des Dokuments &quot;%2&quot; zu löschen. Sind Sie sicher?</translation>
     </message>
 </context>
 <context>
@@ -1531,19 +1531,19 @@ Wenn Sie einen neuen Namen wählen, wird ein neues Dokument erstellt.</translati
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished">Umbenennen</translation>
+        <translation>Umbenennen</translation>
     </message>
     <message>
         <source>Replace all</source>
-        <translation type="unfinished"></translation>
+        <translation>Alles ersetzen</translation>
     </message>
     <message>
         <source>Skip</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorieren</translation>
     </message>
     <message>
         <source>Skip all</source>
-        <translation type="unfinished"></translation>
+        <translation>Alles ignorieren</translation>
     </message>
 </context>
 <context>
@@ -1601,7 +1601,7 @@ Wenn Sie einen neuen Namen wählen, wird ein neues Dokument erstellt.</translati
     <name>UBDraggableLivePixmapItem</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">Seite %0</translation>
+        <translation>Seite %0</translation>
     </message>
 </context>
 <context>
@@ -1743,7 +1743,7 @@ Wenn Sie einen neuen Namen wählen, wird ein neues Dokument erstellt.</translati
     </message>
     <message>
         <source>The original PDF imported in OpenBoard seems not valid and could not be merged with your annotations. Please repair it and then reimport it in OpenBoard. The current export will be done with detailed (heavy) images of the pages of the original PDF instead, to avoid complete export failure.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die in OpenBoard importierte Original-PDF scheint ungültig zu sein und konnte nicht mit Ihren Annotationen zusammengeführt werden. Reparieren Sie es und importieren Sie es dann erneut in OpenBoard. Der aktuelle Export wird mit detaillierten (schweren) Bildern der Seiten des Original-PDFs durchgeführt, um ein Scheitern des Exports zu vermeiden.</translation>
     </message>
 </context>
 <context>
@@ -1915,7 +1915,7 @@ Wenn Sie einen neuen Namen wählen, wird ein neues Dokument erstellt.</translati
     </message>
     <message>
         <source>Hide on Extended Screen when selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf dem erweiterten Bildschirm ausblenden, wenn ausgewählt</translation>
     </message>
 </context>
 <context>
@@ -1938,7 +1938,7 @@ Wenn Sie einen neuen Namen wählen, wird ein neues Dokument erstellt.</translati
     </message>
     <message>
         <source>Hide on Extended Screen when selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf dem erweiterten Bildschirm ausblenden, wenn ausgewählt</translation>
     </message>
 </context>
 <context>
@@ -2304,7 +2304,7 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     </message>
     <message>
         <source>Use all available displays</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle verfügbaren Bildschirme nutzen</translation>
     </message>
 </context>
 <context>
@@ -2318,7 +2318,7 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     <name>UBStartupHintsPalette</name>
     <message>
         <source>Visible next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Beim nächsten Mal sichtbar</translation>
     </message>
 </context>
 <context>
@@ -2653,7 +2653,7 @@ Seite neu laden?</translation>
     </message>
     <message>
         <source>an error occured while trying to open the PDF file</source>
-        <translation type="unfinished"></translation>
+        <translation>Beim Versuch, die PDF-Datei zu öffnen, ist ein Fehler aufgetreten</translation>
     </message>
 </context>
 <context>
@@ -2992,23 +2992,23 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF</translation>
     </message>
     <message>
         <source>Export background grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Hintergrundgitter exportieren</translation>
     </message>
     <message>
         <source>Export background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Hintergrundfarbe exportieren</translation>
     </message>
     <message>
         <source>Documents</source>
-        <translation type="unfinished">Dokumente</translation>
+        <translation>Dokumente</translation>
     </message>
     <message>
         <source>List of screens used for Control, Display and Previous pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste der Bildschirme, die für die Hauptansicht, Erweiterte Ansicht und Vorherige Seiten verwendet werden</translation>
     </message>
 </context>
 <context>
@@ -3039,7 +3039,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Capture Web Content</source>
-        <translation type="unfinished">Webinhalte erfassen</translation>
+        <translation>Webinhalte erfassen</translation>
     </message>
 </context>
 </TS>
