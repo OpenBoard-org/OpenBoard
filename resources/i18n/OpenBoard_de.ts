@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Icon</source>
-        <translation>Ikon</translation>
+        <translation>Icon</translation>
     </message>
     <message>
         <source>Error</source>
@@ -935,7 +935,7 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     </message>
     <message>
         <source>Desktop</source>
-        <translation>Schreibtisch</translation>
+        <translation>Desktop</translation>
     </message>
     <message>
         <source>Desktop Mode</source>
@@ -947,11 +947,11 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     </message>
     <message>
         <source>Seyes ruled Light Background</source>
-        <translation>Weißer Hintergrund seyes liniert</translation>
+        <translation>Weißer Hintergrund Seyes liniert</translation>
     </message>
     <message>
         <source>Seyes ruled Dark Background</source>
-        <translation>Schwarzer Hintergrund seyes liniert</translation>
+        <translation>Schwarzer Hintergrund Seyes liniert</translation>
     </message>
     <message>
         <source>Import one or more pages (supported formats : jpg, png, svg, ubz, pdf)</source>
@@ -1025,7 +1025,7 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     </message>
     <message>
         <source>Are you sure you want to remove page %1 ?</source>
-        <translation>Sind Sie sicher, dass Sie die Seite%1 löschen möchten?</translation>
+        <translation>Sind Sie sicher, dass Sie die Seite %1 löschen möchten?</translation>
     </message>
 </context>
 <context>
@@ -1197,7 +1197,7 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     <name>UBBoardView</name>
     <message>
         <source>Is it for Board or Widget ?</source>
-        <translation>Ist das für die Tabelle oder das Widget?</translation>
+        <translation>Ist das für das Board oder das Widget?</translation>
     </message>
     <message>
         <source>Are you trying to drop the object(s) inside the widget ?</source>
@@ -1743,7 +1743,8 @@ Wenn Sie einen neuen Namen wählen, wird ein neues Dokument erstellt.</translati
     </message>
     <message>
         <source>The original PDF imported in OpenBoard seems not valid and could not be merged with your annotations. Please repair it and then reimport it in OpenBoard. The current export will be done with detailed (heavy) images of the pages of the original PDF instead, to avoid complete export failure.</source>
-        <translation>Die in OpenBoard importierte Original-PDF scheint ungültig zu sein und konnte nicht mit Ihren Annotationen zusammengeführt werden. Reparieren Sie es und importieren Sie es dann erneut in OpenBoard. Der aktuelle Export wird mit detaillierten (schweren) Bildern der Seiten des Original-PDFs durchgeführt, um ein Scheitern des Exports zu vermeiden.</translation>
+        <translatorcomment>&quot;heavy&quot; cannot be translated in a short word.</translatorcomment>
+        <translation>Die in OpenBoard importierte Original-PDF scheint ungültig zu sein und konnte nicht mit Ihren Annotationen zusammengeführt werden. Reparieren Sie es und importieren Sie es dann erneut in OpenBoard. Der aktuelle Export wird mit detaillierten Bildern der Seiten des Original-PDFs durchgeführt, um ein Scheitern des Exports zu vermeiden.</translation>
     </message>
 </context>
 <context>
@@ -2916,7 +2917,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Desktop</source>
-        <translation>Schreibtisch</translation>
+        <translation>Desktop</translation>
     </message>
     <message>
         <source>Proxy User:</source>
