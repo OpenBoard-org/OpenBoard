@@ -931,7 +931,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Board Mode</source>
-        <translation>Modalità scheda</translation>
+        <translation>Modalità lavagna</translation>
     </message>
     <message>
         <source>Desktop</source>
@@ -1197,7 +1197,7 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBBoardView</name>
     <message>
         <source>Is it for Board or Widget ?</source>
-        <translation>Per la scheda o per il widget ?</translation>
+        <translation>Per la lavagna o per il widget?</translation>
     </message>
     <message>
         <source>Are you trying to drop the object(s) inside the widget ?</source>
@@ -2637,7 +2637,7 @@ Vuoi ricaricare la pagina?</translation>
     </message>
     <message>
         <source>Add to board</source>
-        <translation>Aggiundere alla tabella</translation>
+        <translation>Aggiungi alla lavagna</translation>
     </message>
 </context>
 <context>
