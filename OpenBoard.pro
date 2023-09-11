@@ -13,8 +13,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 VERSION_MAJ = 1
 VERSION_MIN = 7
 VERSION_PATCH = 0
-VERSION_TYPE = a # a = alpha, b = beta, rc = release candidate, r = release, other => error
-VERSION_BUILD = 230829
+VERSION_TYPE = rc # a = alpha, b = beta, rc = release candidate, r = release, other => error
+VERSION_BUILD = 230911
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$${VERSION_BUILD}"
 
