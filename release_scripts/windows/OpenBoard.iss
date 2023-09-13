@@ -58,7 +58,7 @@ Type: files ; Name: "{app}\*.dll"
 [Files]
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\vcredist_2013.x64.exe"; DestDir:"{tmp}"
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\vcredist_2015_2019.x64.exe"; DestDir:"{tmp}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\LAVFilters-0.74.1-Installer.exe"; DestDir:"{tmp}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\LAVFilters-0.77.2-Installer.exe"; DestDir:"{tmp}"
 Source: "{#ProjectRoot}\build\win32\release\product\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ;OpenSSL
@@ -171,7 +171,7 @@ Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Righ
 [Run]
 Filename: "{tmp}\vcredist_2013.x64.exe";WorkingDir:"{tmp}"; Parameters: "/PASSIVE /VERYSILENT /SUPPRESSMSGBOXES /NORESTART"; StatusMsg: Installing CRT 2013...
 Filename: "{tmp}\vcredist_2015_2019.x64.exe";WorkingDir:"{tmp}"; Parameters: "/PASSIVE /VERYSILENT /SUPPRESSMSGBOXES /NORESTART"; StatusMsg: Installing CRT 2015-2019 ...
-Filename: "{tmp}\LAVFilters-0.74.1-Installer.exe";WorkingDir:"{tmp}"; Parameters: "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART"; StatusMsg: Installing LAV Filters ...
+Filename: "{tmp}\LAVFilters-0.77.2-Installer.exe";WorkingDir:"{tmp}"; Parameters: "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART"; StatusMsg: Installing LAV Filters ...
 Filename: "{app}\OpenBoard.exe"; Description: "{cm:LaunchProgram,OpenBoard}"; Flags: nowait postinstall skipifsilent 
 
 [UninstallDelete]
