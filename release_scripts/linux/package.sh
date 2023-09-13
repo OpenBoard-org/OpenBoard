@@ -204,8 +204,8 @@ fi
 #mkdir -p $PACKAGE_DIRECTORY/importer
 #cp -R "$IMPORTER_DIR/$IMPORTER_NAME" "$PACKAGE_DIRECTORY/importer"
 
-#notifyProgress "Stripping importer and main executable"
-#strip $PACKAGE_DIRECTORY/$APPLICATION_NAME
+notifyProgress "Stripping main executable"
+strip $PACKAGE_DIRECTORY/$APPLICATION_NAME
 #strip $PACKAGE_DIRECTORY/importer/$IMPORTER_NAME
 
 # copying startup hints
