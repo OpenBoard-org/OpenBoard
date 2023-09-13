@@ -1324,17 +1324,15 @@ void UBDocumentTreeModel::setNewName(const QModelIndex &index, const QString &ne
             indexNode->proxyData()->setMetaData(UBSettings::documentName, newName);
         }
 
-        if (indexNode->proxyData()->isInFavoriteList())
+        UBFeaturesController* featuresController = UBApplication::boardController->paletteManager()->featuresWidget()->getFeaturesController();
+
+        QUrl url = QUrl::fromLocalFile(indexNode->proxyData()->persistencePath() + "/metadata.rdf");
+
+        bool isInRecentlyOpenDocuments = featuresController->isInRecentlyOpenDocuments(url);
+        if (featuresController->isInFavoriteList(url) || isInRecentlyOpenDocuments)
         {
-            UBFeaturesController* featuresController = UBApplication::boardController->paletteManager()->featuresWidget()->getFeaturesController();
-
-            QUrl url = QUrl::fromLocalFile(indexNode->proxyData()->persistencePath() + "/metadata.rdf");
-
-            if (featuresController->isInFavoriteList(url))
-            {
                 featuresController->removeFromFavorite(url, true);
-                featuresController->addToFavorite(url, newName);
-            }
+                featuresController->addToFavorite(url, newName, isInRecentlyOpenDocuments);
         }
 
         UBPersistenceManager::persistenceManager()->persistDocumentMetadata(indexNode->proxyData());
