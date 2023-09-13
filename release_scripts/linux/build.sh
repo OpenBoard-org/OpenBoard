@@ -144,8 +144,8 @@ checkExecutable $LRELEASES
 checkExecutable $ZIP_PATH
 
 #build third party application
-buildImporter
-notifyProgress "OpenBoardImporter" "Built Importer"
+#buildImporter
+#notifyProgress "OpenBoardImporter" "Built Importer"
 
 
 # cleaning the build directory

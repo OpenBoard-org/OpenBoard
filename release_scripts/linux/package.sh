@@ -93,12 +93,13 @@ initializeVariables()
 
   # Qt installation path. This may vary across machines
   QT_PATH="/usr/lib/x86_64-linux-gnu/qt5"
-  GUI_TRANSLATIONS_DIRECTORY_PATH="/usr/share/qt5/translations"
+  QT_SHARE_PATH="/usr/share/qt5/"
+  GUI_TRANSLATIONS_DIRECTORY_PATH="$QT_SHARE_PATH/translations"
   QT_LIBRARY_SOURCE_PATH="$QT_PATH/lib"
   QT_LIBRARY_EXECUTABLES_SOURCE_PATH="$QT_PATH/libexec"
   QT_PLUGINS_SOURCE_PATH="$QT_PATH/plugins"
-  QT_RESOURCES_SOURCE_PATH="$QT_PATH/resources"
-  QT_TRANSLATIONS_SOURCE_PATH="$QT_PATH/translations"
+  QT_RESOURCES_SOURCE_PATH="$QT_SHARE_PATH/resources"
+  QT_TRANSLATIONS_SOURCE_PATH="$QT_SHARE_PATH/translations"
 
   NOTIFY_CMD=`which notify-send`
   ZIP_PATH=`which zip`
@@ -199,13 +200,13 @@ if $BUNDLE_QT; then
     chmod a+x $PACKAGE_DIRECTORY/run.sh
 fi
 
-notifyProgress "Copying importer"
-mkdir -p $PACKAGE_DIRECTORY/importer
-cp -R "$IMPORTER_DIR/$IMPORTER_NAME" "$PACKAGE_DIRECTORY/importer"
+#notifyProgress "Copying importer"
+#mkdir -p $PACKAGE_DIRECTORY/importer
+#cp -R "$IMPORTER_DIR/$IMPORTER_NAME" "$PACKAGE_DIRECTORY/importer"
 
-notifyProgress "Stripping importer and main executable"
-strip $PACKAGE_DIRECTORY/$APPLICATION_NAME
-strip $PACKAGE_DIRECTORY/importer/$IMPORTER_NAME
+#notifyProgress "Stripping importer and main executable"
+#strip $PACKAGE_DIRECTORY/$APPLICATION_NAME
+#strip $PACKAGE_DIRECTORY/importer/$IMPORTER_NAME
 
 # copying startup hints
 notifyProgress "copying startupHints"
