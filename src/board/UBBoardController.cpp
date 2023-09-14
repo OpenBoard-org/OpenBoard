@@ -472,13 +472,12 @@ void UBBoardController::initToolbarTexts()
 
 void UBBoardController::setToolbarTexts()
 {
-    bool highResolution = mMainWindow->width() > 1024;
     QSize iconSize;
 
-    if (highResolution)
-        iconSize = QSize(48, 32);
+    if (mMainWindow->width() <= 1280)
+        iconSize = QSize(24, 24);
     else
-        iconSize = QSize(32, 32);
+        iconSize = QSize(48, 32);
 
     mMainWindow->boardToolBar->setIconSize(iconSize);
     mMainWindow->webToolBar->setIconSize(iconSize);
@@ -488,12 +487,10 @@ void UBBoardController::setToolbarTexts()
     {
         QPair<QString, QString> texts = mActionTexts.value(action);
 
-        if (highResolution)
-            action->setText(texts.first);
-        else
-        {
+        if (mMainWindow->width() <= 1024)
             action->setText(texts.second);
-        }
+        else
+            action->setText(texts.first);
 
         action->setToolTip(texts.first);
     }
