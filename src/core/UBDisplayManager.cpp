@@ -400,7 +400,8 @@ void UBDisplayManager::positionScreens()
     {
         if (widget(role))
         {
-            if (screen(role)) {
+            if (screen(role) && mUseMultiScreen)
+            {
                 QWidget* previous = widget(role);
                 qDebug() << "previous display geometry" << screenGeometry(role);
                 previous->showNormal();
