@@ -1014,15 +1014,15 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
     QPainterPath eraserPath;
     eraserPath.addPolygon(eraserPolygon);
 
-    // Get all the items that are intersecting with the eraser path
+    // Get all the items that are intersecting with the eraser path, except the eraser itself
     QList<QGraphicsItem*> collidItems = items(eraserBoundingRect, Qt::IntersectsItemBoundingRect);
+    collidItems.removeOne(mEraser);
 
     QList<UBGraphicsPolygonItem*> intersectedItems;
 
     typedef QList<QPolygonF> POLYGONSLIST;
     QList<POLYGONSLIST> intersectedPolygons;
 
-    #pragma omp parallel for
     for(int i=0; i<collidItems.size(); i++)
     {
         UBGraphicsPolygonItem *pi = qgraphicsitem_cast<UBGraphicsPolygonItem*>(collidItems[i]);
@@ -1034,28 +1034,22 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
 
         if (eraserPath.contains(itemPainterPath))
         {
-            #pragma omp critical
-            {
-                // Compete remove item
-                intersectedItems << pi;
-                intersectedPolygons << QList<QPolygonF>();
-            }
+            // Completely remove item
+            intersectedItems << pi;
+            intersectedPolygons << QList<QPolygonF>();
         }
         else if (eraserPath.intersects(itemPainterPath))
         {
             itemPainterPath.setFillRule(Qt::WindingFill);
             QPainterPath newPath = itemPainterPath.subtracted(eraserPath);
-            #pragma omp critical
-            {
-               intersectedItems << pi;
-               intersectedPolygons << newPath.simplified().toFillPolygons(pi->sceneTransform().inverted());
-            }
+            intersectedItems << pi;
+            intersectedPolygons << newPath.simplified().toFillPolygons(pi->sceneTransform().inverted());
         }
     }
 
     for(int i=0; i<intersectedItems.size(); i++)
     {
-        // item who intersects with eraser
+        // item which intersects with eraser
         UBGraphicsPolygonItem *intersectedPolygonItem = intersectedItems[i];
 
         if (!intersectedPolygons[i].empty())
@@ -1079,7 +1073,7 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
             }
         }
 
-        //remove full polygon item for replace it by couple of polygons which creates the same stroke without a part intersects with eraser
+        //remove full polygon item and replace it by a couple of polygons which create the same stroke without the part that intersects with the eraser
          mRemovedItems << intersectedPolygonItem;
 
         QTransform t;
