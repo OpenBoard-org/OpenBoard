@@ -38,7 +38,7 @@
 #include "core/memcheck.h"
 
 UBGraphicsCurtainItemDelegate::UBGraphicsCurtainItemDelegate(UBGraphicsCurtainItem* pDelegated, QObject * parent)
-    : UBGraphicsItemDelegate(pDelegated, parent, GF_MENU_SPECIFIED | GF_DUPLICATION_ENABLED)
+    : UBGraphicsItemDelegate(pDelegated, parent, GF_MENU_SPECIFIED | GF_DUPLICATION_ENABLED | GF_SCALABLE_ALL_AXIS)
 {
     //NOOP
 }
