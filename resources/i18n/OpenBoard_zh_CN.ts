@@ -12,109 +12,111 @@
     <name>BrowserWindow</name>
     <message>
         <source>Navigation</source>
-        <translation type="unfinished"></translation>
+        <translation>导航</translation>
     </message>
     <message>
         <source>Show downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>显示下载</translation>
     </message>
 </context>
 <context>
     <name>CertificateErrorDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished">对话</translation>
+        <translation>对话</translation>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>图标</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>错误</translation>
     </message>
     <message>
         <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
 
 Do you wish to override the security check and continue ?   </source>
-        <translation type="unfinished"></translation>
+        <translation>如果愿意，您可以继续使用未经验证的证书。接受未经验证的证书意味着您可能无法连接到想要连接的主机。
+
+是否希望跳过安全检查并继续？</translation>
     </message>
 </context>
 <context>
     <name>DownloadManagerWidget</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished">下载</translation>
+        <translation>下载</translation>
     </message>
     <message>
         <source>No downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>不下载</translation>
     </message>
     <message>
         <source>Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>另存为</translation>
     </message>
 </context>
 <context>
     <name>DownloadWidget</name>
     <message>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation>文字标签</translation>
     </message>
     <message>
         <source>Open file</source>
-        <translation type="unfinished"></translation>
+        <translation>打开文件</translation>
     </message>
     <message>
         <source>%L1 B</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 B</translation>
     </message>
     <message>
         <source>%L1 KiB</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 KB</translation>
     </message>
     <message>
         <source>%L1 MiB</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 MB</translation>
     </message>
     <message>
         <source>%L1 GiB</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 GB</translation>
     </message>
     <message>
         <source>%p% - %1 of %2 downloaded - %3/s</source>
-        <translation type="unfinished"></translation>
+        <translation>%p% - 已下载 %1 , 共 %2 - %3/s</translation>
     </message>
     <message>
         <source>unknown size - %1 downloaded - %2/s</source>
-        <translation type="unfinished"></translation>
+        <translation>未知大小 - 已下载 %1 - %2/s</translation>
     </message>
     <message>
         <source>completed - %1 downloaded - %2/s</source>
-        <translation type="unfinished"></translation>
+        <translatio>已完成 - 已下载 %1 - %2/s</translation>
     </message>
     <message>
         <source>cancelled - %1 downloaded - %2/s</source>
-        <translation type="unfinished"></translation>
+        <translation>已取消 - 已下载 %1 - %2/s</translation>
     </message>
     <message>
         <source>interrupted: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>已中断：%1</translation>
     </message>
     <message>
         <source>Stop downloading</source>
-        <translation type="unfinished"></translation>
+        <translation>停止下载</translation>
     </message>
     <message>
         <source>Remove from list</source>
-        <translation type="unfinished"></translation>
+        <translation>从列表中删除</translation>
     </message>
 </context>
 <context>
     <name>IntranetPodcastPublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation type="unfinished">发布播客到 Youtube</translation>
+        <translation>发布播客到 Youtube</translation>
     </message>
     <message>
         <source>Title</source>
@@ -122,7 +124,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Description</source>
-        <translation>描述</translation>
+        <translation>详情</translation>
     </message>
     <message>
         <source>Author</source>
@@ -133,7 +135,7 @@ Do you wish to override the security check and continue ?   </source>
     <name>MainWindow</name>
     <message>
         <source>Board</source>
-        <translation>演示板</translation>
+        <translation>白板</translation>
     </message>
     <message>
         <source>Web</source>
@@ -169,7 +171,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Redo</source>
-        <translation>重复</translation>
+        <translation>重做</translation>
     </message>
     <message>
         <source>Ctrl+Y</source>
@@ -185,7 +187,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>PgUp</source>
-        <translation>向上翻</translation>
+        <translation>PgUp</translation>
     </message>
     <message>
         <source>Next</source>
@@ -197,11 +199,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>PgDown</source>
-        <translation>向下翻</translation>
+        <translation>PgDown</translation>
     </message>
     <message>
         <source>Manage Documents</source>
-        <translation type="vanished">管理文档</translation>
+        <translation>管理文档</translation>
     </message>
     <message>
         <source>Ctrl+D</source>
@@ -209,7 +211,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Web Browsing</source>
-        <translation type="vanished">浏览网页</translation>
+        <translation>浏览网页</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
@@ -217,7 +219,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Line</source>
-        <translation>粗细</translation>
+        <translation>线条</translation>
     </message>
     <message>
         <source>Small Line</source>
@@ -297,7 +299,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Display Board</source>
-        <translation type="vanished">显示演示板</translation>
+        <translation>显示白板</translation>
     </message>
     <message>
         <source>Ctrl+B</source>
@@ -313,11 +315,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Preferences</source>
-        <translation>自定义</translation>
+        <translation>设置</translation>
     </message>
     <message>
         <source>Display Preferences</source>
-        <translation>显示自定义</translation>
+        <translation>显示参数设置</translation>
     </message>
     <message>
         <source>Library</source>
@@ -337,7 +339,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Show Computer Desktop</source>
-        <translation type="vanished">显示电脑桌面</translation>
+        <translation>显示电脑桌面</translation>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
@@ -345,7 +347,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Bigger</source>
-        <translation>放大</translation>
+        <translation>更大</translation>
     </message>
     <message>
         <source>Zoom In</source>
@@ -357,7 +359,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Smaller</source>
-        <translation>缩小</translation>
+        <translation>更小</translation>
     </message>
     <message>
         <source>Zoom Out</source>
@@ -401,11 +403,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Open in Board</source>
-        <translation>在演示板上打开</translation>
+        <translation>在白板中打开</translation>
     </message>
     <message>
         <source>Open Page in Board</source>
-        <translation>在演示板上打开页面</translation>
+        <translation>在白板中打开页面</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
@@ -433,11 +435,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add to Working Document</source>
-        <translation type="vanished">添加到工作文档</translation>
+        <translation>添加到工作文档</translation>
     </message>
     <message>
         <source>Add Selected Content to Open Document</source>
-        <translation>添加所选内容到打开文档</translation>
+        <translation>添加所选内容到打开的文档</translation>
     </message>
     <message>
         <source>Add</source>
@@ -473,15 +475,15 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Use Document Wide Size (16/9)</source>
-        <translation>宽屏显示文档（16/9）</translation>
+        <translation>使用宽屏显示文档（16/9）</translation>
     </message>
     <message>
         <source>Regular Size (4/3)</source>
-        <translation>标屏尺寸（4/3）</translation>
+        <translation>标准尺寸（4/3）</translation>
     </message>
     <message>
         <source>Use Document Regular Size (4/3)</source>
-        <translation>标屏显示文档（4/3）</translation>
+        <translation>使用标准屏幕显示文档（4/3）</translation>
     </message>
     <message>
         <source>Custom Size</source>
@@ -489,7 +491,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Use Custom Document Size</source>
-        <translation>自定义尺寸显示文档</translation>
+        <translation>自定义文档显示的尺寸</translation>
     </message>
     <message>
         <source>Stop Loading</source>
@@ -521,11 +523,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Virtual Keyboard</source>
-        <translation>软键盘</translation>
+        <translation>虚拟键盘</translation>
     </message>
     <message>
         <source>Display Virtual Keyboard</source>
-        <translation>打开软键盘</translation>
+        <translation>打开虚拟键盘</translation>
     </message>
     <message>
         <source>Plain Light Background</source>
@@ -557,7 +559,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Record Presentation to Video</source>
-        <translation>为演讲录制视频</translation>
+        <translation>将演示录制为视频</translation>
     </message>
     <message>
         <source>Record</source>
@@ -569,19 +571,19 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Erase Items</source>
-        <translation>清除项目</translation>
+        <translation>擦除项目</translation>
     </message>
     <message>
         <source>Erase All Items</source>
-        <translation>清除所有项目</translation>
+        <translation>擦除所有项目</translation>
     </message>
     <message>
         <source>Erase Annotations</source>
-        <translation>清除标注</translation>
+        <translation>擦除标注</translation>
     </message>
     <message>
         <source>Erase All Annotations</source>
-        <translation>清除所有标注</translation>
+        <translation>擦除所有标注</translation>
     </message>
     <message>
         <source>Clear Page</source>
@@ -605,7 +607,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Erase Annotation</source>
-        <translation>清除批注</translation>
+        <translation>擦除批注</translation>
     </message>
     <message>
         <source>Ctrl+E</source>
@@ -629,7 +631,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Select And Modify Objects</source>
-        <translation>选中并修改素材</translation>
+        <translation>选中并修改对象</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
@@ -649,7 +651,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Virtual Laser Pointer</source>
-        <translation>模拟激光笔</translation>
+        <translation>虚拟激光笔</translation>
     </message>
     <message>
         <source>Ctrl+G</source>
@@ -657,7 +659,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Draw Lines</source>
-        <translation>直线</translation>
+        <translation>画线</translation>
     </message>
     <message>
         <source>Ctrl+J</source>
@@ -681,15 +683,15 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Capture Part of the Screen</source>
-        <translation>部分截图</translation>
+        <translation>部分屏幕截图</translation>
     </message>
     <message>
         <source>Add To Current Page</source>
-        <translation>添加到最近打开页面</translation>
+        <translation>添加到当前页面</translation>
     </message>
     <message>
         <source>Add Item To Current Page</source>
-        <translation>添加项目到最近打开页面</translation>
+        <translation>将项目添加到当前打开的页面</translation>
     </message>
     <message>
         <source>Add To New Page</source>
@@ -697,7 +699,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add Item To New Page</source>
-        <translation>添加项目到新页面</translation>
+        <translation>将项目添加到新页面</translation>
     </message>
     <message>
         <source>Add To Library</source>
@@ -705,7 +707,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add Item To Library</source>
-        <translation>添加项目到库</translation>
+        <translation>将项目添加到库</translation>
     </message>
     <message>
         <source>Pages</source>
@@ -725,7 +727,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Duplicate the Current Page</source>
-        <translation>复制最近打开页面</translation>
+        <translation>复制当前打开的页面</translation>
     </message>
     <message>
         <source>Import Page</source>
@@ -733,7 +735,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Import an External Page</source>
-        <translation type="vanished">导入外部页面</translation>
+        <translation>导入外部页面</translation>
     </message>
     <message>
         <source>Pause</source>
@@ -753,19 +755,19 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation type="vanished">截取动画</translation>
+        <translation>截取动画</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation type="vanished">截取动画内容</translation>
+        <translation>截取动画内容</translation>
     </message>
     <message>
         <source>Web Trap</source>
-        <translation type="vanished">截取网页</translation>
+        <translation>截取网页</translation>
     </message>
     <message>
         <source>Trap Web Content</source>
-        <translation type="vanished">截取网页内容</translation>
+        <translation>截取网页内容</translation>
     </message>
     <message>
         <source>Custom Capture</source>
@@ -777,15 +779,15 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Capture a Window</source>
-        <translation>捕获一个窗口</translation>
+        <translation>截取一个窗口</translation>
     </message>
     <message>
         <source>Embed Web Content</source>
-        <translation>嵌入网页内容 </translation>
+        <translation>嵌入网页内容</translation>
     </message>
     <message>
         <source>Capture Embeddable Web Content</source>
-        <translation>截取可嵌入的网页内容 </translation>
+        <translation>截取可嵌入的网页内容</translation>
     </message>
     <message>
         <source>Show on Display</source>
@@ -797,15 +799,15 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Erase all Annotations</source>
-        <translation>清除所有标注</translation>
+        <translation>擦除所有标注</translation>
     </message>
     <message>
         <source>eduMedia</source>
-        <translation type="vanished">eduMedia</translation>
+        <translation>eduMedia</translation>
     </message>
     <message>
         <source>Import eduMedia simulation</source>
-        <translation type="vanished">导入 eduMedia 模拟</translation>
+        <translation>导入 eduMedia 模拟</translation>
     </message>
     <message>
         <source>Check Update</source>
@@ -821,15 +823,15 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Quit OpenBoard</source>
-        <translation type="unfinished">关闭 OpenBoard</translation>
+        <translation>退出 OpenBoard</translation>
     </message>
     <message>
         <source>Hide OpenBoard</source>
-        <translation type="unfinished">隐藏 OpenBoard</translation>
+        <translation>隐藏 OpenBoard</translation>
     </message>
     <message>
         <source>Hide OpenBoard Application</source>
-        <translation type="unfinished">隐藏 OpenBoard 应用程序</translation>
+        <translation>隐藏 OpenBoard 应用程序</translation>
     </message>
     <message>
         <source>Play</source>
@@ -841,135 +843,135 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Erase Background</source>
-        <translation>删除背景</translation>
+        <translation>擦除背景</translation>
     </message>
     <message>
         <source>Remove the backgound</source>
-        <translation>移除背景</translation>
+        <translation>删除背景</translation>
     </message>
     <message>
         <source>Ruled Light Background</source>
-        <translation type="unfinished">规则浅色背景</translation>
+        <translation>有条纹的浅色背景</translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
-        <translation type="unfinished">规则深色背景</translation>
+        <translation>有条纹的深色背景</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
-        <translation type="unfinished">打开教程</translation>
+        <translation>打开教程</translation>
     </message>
     <message>
         <source>Open the tutorial web page</source>
-        <translation type="unfinished">打开教程网页</translation>
+        <translation>打开教程网页</translation>
     </message>
     <message>
         <source>Reset grid size</source>
-        <translation type="unfinished">重置网格大小</translation>
+        <translation>重置网格大小</translation>
     </message>
     <message>
         <source>Small Eraser</source>
-        <translation type="unfinished">小橡皮擦</translation>
+        <translation>小橡皮擦</translation>
     </message>
     <message>
         <source>Color 1</source>
-        <translation type="unfinished">颜色 1</translation>
+        <translation>颜色 1</translation>
     </message>
     <message>
         <source>Color 2</source>
-        <translation type="unfinished">颜色 2</translation>
+        <translation>颜色 2</translation>
     </message>
     <message>
         <source>Color 3</source>
-        <translation type="unfinished">颜色 3</translation>
+        <translation>颜色 3</translation>
     </message>
     <message>
         <source>Color 4</source>
-        <translation type="unfinished">颜色 4</translation>
+        <translation>颜色 4</translation>
     </message>
     <message>
         <source>Color 5</source>
-        <translation type="unfinished">颜色 5</translation>
+        <translation>颜色 5</translation>
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
-        <translation type="unfinished">绘制中间网格线</translation>
+        <translation>绘制中间网格线</translation>
     </message>
     <message>
         <source>Capture Web Content</source>
-        <translation type="unfinished">捕获网页内容</translation>
+        <translation>捕获网页内容</translation>
     </message>
     <message>
         <source>Documents Mode</source>
-        <translation type="unfinished">文档模式</translation>
+        <translation>文档模式</translation>
     </message>
     <message>
         <source>Web Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>网络模式</translation>
     </message>
     <message>
         <source>1</source>
-        <translation type="unfinished"></translation>
+        <translation>1</translation>
     </message>
     <message>
         <source>2</source>
-        <translation type="unfinished"></translation>
+        <translation>2</translation>
     </message>
     <message>
         <source>3</source>
-        <translation type="unfinished"></translation>
+        <translation>3</translation>
     </message>
     <message>
         <source>4</source>
-        <translation type="unfinished"></translation>
+        <translation>4</translation>
     </message>
     <message>
         <source>5</source>
-        <translation type="unfinished"></translation>
+        <translation>5</translation>
     </message>
     <message>
         <source>Board Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>白板模式</translation>
     </message>
     <message>
         <source>Desktop</source>
-        <translation type="unfinished">桌面</translation>
+        <translation>桌面</translation>
     </message>
     <message>
         <source>Desktop Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>桌面模式</translation>
     </message>
     <message>
         <source>Add to document</source>
-        <translation type="unfinished"></translation>
+        <translation>添加到文档</translation>
     </message>
     <message>
         <source>Seyes ruled Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>窥视有条纹的亮色背景</translation>
     </message>
     <message>
         <source>Seyes ruled Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>窥视有条纹的暗色背景</translation>
     </message>
     <message>
         <source>Import one or more pages (supported formats : jpg, png, svg, ubz, pdf)</source>
-        <translation type="unfinished"></translation>
+        <translation>导入一个或多个页面（支持的格式：jpg、png、svg、ubz、pdf）</translation>
     </message>
     <message>
         <source>Add to favorites</source>
-        <translation type="unfinished">添加到收藏夹</translation>
+        <translation>添加到收藏夹</translation>
     </message>
     <message>
         <source>Add Document to favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>将文档添加到收藏夹</translation>
     </message>
     <message>
         <source>Hints and tips</source>
-        <translation type="unfinished"></translation>
+        <translation>提示与技巧</translation>
     </message>
     <message>
         <source>Open Hints and tips</source>
-        <translation type="unfinished"></translation>
+        <translation>打开提示与技巧</translation>
     </message>
 </context>
 <context>
@@ -980,26 +982,26 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Username:</source>
-        <translation>用户名:</translation>
+        <translation>用户名：</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>密码:</translation>
+        <translation>密码：</translation>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>图标</translation>
     </message>
     <message>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation>信息</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation type="unfinished">元素 ID = </translation>
+        <translation>元素 ID = </translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
@@ -1011,26 +1013,26 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation type="vanished">确定要删除选中文件“%0”中的1页?</translation>
+        <translation>确定要从选中的文件“%0”中删除1页吗？</translation>
     </message>
     <message>
         <source>Loading scene (%1/%2)</source>
-        <translation type="unfinished">加载场景 (%1/%2)</translation>
+        <translation>加载场景 (%1/%2)</translation>
     </message>
     <message>
         <source>Moving cached scenes (%1/%2)</source>
-        <translation type="unfinished">移动已缓存场景 (%1/%2)</translation>
+        <translation>移动已缓存场景 (%1/%2)</translation>
     </message>
     <message>
         <source>Are you sure you want to remove page %1 ?</source>
-        <translation type="unfinished"></translation>
+        <translation>确定要删除页面 %1 吗？</translation>
     </message>
 </context>
 <context>
     <name>TabWidget</name>
     <message>
         <source>New &amp;Tab</source>
-        <translation>新建标签页</translation>
+        <translation>新建标签页（&amp;T）</translation>
     </message>
     <message>
         <source>Clone Tab</source>
@@ -1038,11 +1040,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>&amp;Close Tab</source>
-        <translation>关闭标签页</translation>
+        <translation>关闭标签页（&amp;C）</translation>
     </message>
     <message>
         <source>Close &amp;Other Tabs</source>
-        <translation>关闭其它标签页</translation>
+        <translation>关闭其它标签页（&amp;O）</translation>
     </message>
     <message>
         <source>Reload Tab</source>
@@ -1069,7 +1071,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
-        <translation type="unfinished">无法直接打开您的 UBX 文件。 请改为以文档模式导入</translation>
+        <translation>无法直接打开 UBX 文件。请以文档模式导入</translation>
     </message>
 </context>
 <context>
@@ -1080,7 +1082,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>New update available, would you go to the web page ?</source>
-        <translation>有可用的更新，是否登陆更新页面?</translation>
+        <translation>有可用的更新，是否登陆更新页面？</translation>
     </message>
     <message>
         <source>No update available</source>
@@ -1099,18 +1101,18 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBBackgroundPalette</name>
     <message>
         <source>Grid size</source>
-        <translation type="unfinished">网格大小</translation>
+        <translation>网格大小</translation>
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
-        <translation type="unfinished">绘制中间网格线</translation>
+        <translation>绘制中间网格线</translation>
     </message>
 </context>
 <context>
     <name>UBBoardController</name>
     <message>
         <source>Downloading content %1 failed</source>
-        <translation>下载内容%1失败</translation>
+        <translation>下载内容 %1 失败</translation>
     </message>
     <message>
         <source>Download finished</source>
@@ -1134,11 +1136,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Page %1 deleted</source>
-        <translation>已删除%1页</translation>
+        <translation>已删除 %1 页</translation>
     </message>
     <message>
         <source>Add file operation failed: file copying error</source>
-        <translation>增加操作失败文档:文件复制错误</translation>
+        <translation>增加操作失败文档：文件复制错误</translation>
     </message>
     <message>
         <source>Group</source>
@@ -1150,34 +1152,34 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Saving document...</source>
-        <translation type="unfinished">正在保存文档...</translation>
+        <translation>正在保存文档……</translation>
     </message>
     <message>
         <source>Document has just been saved...</source>
-        <translation type="unfinished">文档刚刚保存...</translation>
+        <translation>文档刚刚保存……</translation>
     </message>
     <message>
         <source>Deleting page %1</source>
-        <translation type="unfinished">正在删除页面 %1</translation>
+        <translation>正在删除页面 %1</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation type="unfinished">颜色</translation>
+        <translation>颜色</translation>
     </message>
     <message>
         <source>Untitled</source>
-        <translation type="unfinished"></translation>
+        <translation>无标题</translation>
     </message>
     <message>
         <source>Could not find document.</source>
-        <translation type="unfinished"></translation>
+        <translation>打不到文档。</translation>
     </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
     <message>
         <source>Error Adding Image to Library</source>
-        <translation>添加图片到图书馆出错</translation>
+        <translation>添加图片到库时出错</translation>
     </message>
     <message>
         <source>CapturedImage</source>
@@ -1195,22 +1197,22 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBBoardView</name>
     <message>
         <source>Is it for Board or Widget ?</source>
-        <translation type="unfinished"></translation>
+        <translation>用于白板还是小部件？</translation>
     </message>
     <message>
         <source>Are you trying to drop the object(s) inside the widget ?</source>
-        <translation type="unfinished"></translation>
+        <translation>想要拖拽小部件中的对象吗？</translation>
     </message>
 </context>
 <context>
     <name>UBCachePropertiesWidget</name>
     <message>
         <source>Cache Properties</source>
-        <translation>高级缓存属性</translation>
+        <translation>缓存属性</translation>
     </message>
     <message>
         <source>Color:</source>
-        <translation>颜色:</translation>
+        <translation>颜色：</translation>
     </message>
     <message>
         <source>Shape:</source>
@@ -1229,7 +1231,7 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBDesktopPalette</name>
     <message>
         <source>Capture Part of the Screen</source>
-        <translation>部分截图</translation>
+        <translation>局部截图</translation>
     </message>
     <message>
         <source>Capture the Screen</source>
@@ -1241,7 +1243,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Show Board on Secondary Screen</source>
-        <translation>在第二屏幕显示演示板</translation>
+        <translation>在第二屏幕显示白板</translation>
     </message>
     <message>
         <source>Show Desktop on Secondary Screen</source>
@@ -1249,7 +1251,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Show OpenBoard</source>
-        <translation type="unfinished">显示 OpenBoard</translation>
+        <translation>显示 OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -1497,7 +1499,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Generating thumbnails for board (%1/%2)</source>
-        <translation type="obsolete">为演示板生成缩略图 (%1/%2)</translation>
+        <translation type="obsolete">为白板生成缩略图 (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -2896,7 +2898,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Board</source>
-        <translation>演示板</translation>
+        <translation>白板</translation>
     </message>
     <message>
         <source>Desktop</source>
