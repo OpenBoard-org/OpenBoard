@@ -1172,7 +1172,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Could not find document.</source>
-        <translation>打不到文档。</translation>
+        <translation>找不到文档。</translation>
     </message>
 </context>
 <context>
@@ -1183,7 +1183,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>CapturedImage</source>
-        <translation>图像截图</translation>
+        <translation>抓取图像</translation>
     </message>
 </context>
 <context>
@@ -1274,7 +1274,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add Pages from File</source>
-        <translation>添加页面来自于文件</translation>
+        <translation>从文件添加页面</translation>
     </message>
     <message>
         <source>Duplicating Document %1</source>
@@ -1290,15 +1290,15 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation>导入文件 %1...</translation>
+        <translation>导入文件 %1 ……</translation>
     </message>
     <message>
         <source>Failed to import file ... </source>
-        <translation>导入文件失败...</translation>
+        <translation>导入文件失败 ……</translation>
     </message>
     <message>
         <source>Import all Images from Folder</source>
-        <translation>将所有图片导入文件夹</translation>
+        <translation>导入文件夹中的全部图片</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -1318,19 +1318,19 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add all Images to Document</source>
-        <translation>添加所有图片到文档</translation>
+        <translation>将所有图片添加到文档</translation>
     </message>
     <message>
         <source>All Images (%1)</source>
-        <translation>所有图像 (%1)</translation>
+        <translation>所有图像（%1）</translation>
     </message>
     <message>
         <source>Selection does not contain any image files!</source>
-        <translation>选中对象不包含任何图片文件!</translation>
+        <translation>选中的对象不包含任何图片文件！</translation>
     </message>
     <message>
         <source>Folder does not contain any image files</source>
-        <translation>文件夹中无图像文件</translation>
+        <translation>文件夹中没有图像文件</translation>
     </message>
     <message>
         <source>Untitled Documents</source>
@@ -1339,7 +1339,7 @@ Do you wish to override the security check and continue ?   </source>
     <message numerus="yes">
         <source>duplicated %1 page</source>
         <comment>duplicated %1 pages</comment>
-        <translation type="unfinished">
+        <translation>
             <numerusform>重复 %1 页面</numerusform>
         </translation>
     </message>
@@ -1349,103 +1349,103 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation type="obsolete">您确定要删除所选项目吗？</translation>
+        <translation type="obsolete">确定要删除所选项目吗？</translation>
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation type="unfinished">已使用较新版本的 OpenBoard (%2) 生成文档“%1”。 打开它，您可能会丢失一些信息。 你想继续吗？</translation>
+        <translation>已使用较新版本的 OpenBoard (%2) 生成文档“%1”。打开它，可能会丢失一些信息。 想要继续吗？</translation>
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished">标题页面</translation>
+        <translation>标题页面</translation>
     </message>
     <message>
         <source>Refreshing Document Thumbnails View (%1/%2)</source>
-        <translation type="unfinished">刷新文档缩略图视图 (%1/%2)</translation>
+        <translation>刷新文档缩略图视图 (%1/%2)</translation>
     </message>
     <message>
         <source>Complete deletion of %1 documents/folders</source>
-        <translation type="unfinished"></translation>
+        <translation>完全删除 %1 个文档/文件夹</translation>
     </message>
     <message>
         <source>You are about to permanantly delete %1 documents and/or folders. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>永久删除 %1 个文档或/和文件夹。确定吗？</translation>
     </message>
     <message>
         <source>Complete deletion of folder &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>完全删除文件夹&quot;%1&quot;</translation>
     </message>
     <message>
         <source>You are about to permanantly delete folder &quot;%1&quot;. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>永久删除文件夹&quot;%1&quot;。确定吗？</translation>
     </message>
     <message>
         <source>Complete deletion of document &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>完全删除文档&quot;%1&quot;</translation>
     </message>
     <message>
         <source>You are about to permanantly delete document &quot;%1&quot;. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>永久删除文档&quot;%1&quot;。确定吗？</translation>
     </message>
     <message>
         <source>Emptying My Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>清空我的文档</translation>
     </message>
     <message>
         <source>You are about to entirely empty the folder &quot;My Documents&quot;. All your documents will be moved to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>整个清空&quot;My Documents&quot;文件夹。其中所有的文档将被移到回收站。确定吗？</translation>
     </message>
     <message>
         <source>Emptying Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>清空回收站</translation>
     </message>
     <message>
         <source>You are about to entirely empty the trash. All documents and folders in it will be permanently deleted. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>清空回收站。其中的所有文件和文件夹都将被永久删除。确定吗？</translation>
     </message>
     <message>
         <source>Moving %1 elements to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>正在移动%1个项目到回收站</translation>
     </message>
     <message>
         <source>You are about to move %1 documents and/or folders to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>将%1个文档或/和文件夹移到回收站。确定吗？</translation>
     </message>
     <message>
         <source>Move folder &quot;%1&quot;to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>将文件夹&quot;%1&quot;移到回收站</translation>
     </message>
     <message>
         <source>You are about to move folder &quot;%1&quot; to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>将文件夹&quot;%1&quot;移到回收站。确定吗？</translation>
     </message>
     <message>
         <source>Move document &quot;%1&quot;to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>将文档&quot;%1&quot;移到回收站</translation>
     </message>
     <message>
         <source>You are about to move document &quot;%1&quot; to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>将文档&quot;%1&quot;移到回收站。确定吗？</translation>
     </message>
     <message>
         <source>Open Supported File(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>打开支持的文件</translation>
     </message>
     <message>
         <source>Moving %1 pages of the document &quot;%2&quot; to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>将文档&quot;%2&quot;的%1个页面移到回收站</translation>
     </message>
     <message>
         <source>You are about to move %1 pages of the document &quot;%2&quot; to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>将文档&quot;%2&quot;的%1个页面移到回收站。确定吗？</translation>
     </message>
     <message>
         <source>Remove page %1</source>
-        <translation type="unfinished"></translation>
+        <translation>删除页面%1</translation>
     </message>
     <message>
         <source>You are about to remove page %1 of the document &quot;%2&quot;. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>删除文档&quot;%2&quot;的页面 %1。确定吗？</translation>
     </message>
 </context>
 <context>
@@ -1464,11 +1464,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>widgets</source>
-        <translation>小工具</translation>
+        <translation>小部件</translation>
     </message>
     <message>
         <source>All supported files (*.%1)</source>
-        <translation>所有支持的文件(*.%1)</translation>
+        <translation>所有支持的文件（*.%1）</translation>
     </message>
     <message>
         <source>File %1 saved</source>
@@ -1510,60 +1510,60 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Replace</source>
-        <translation type="unfinished">替换</translation>
+        <translation>替换</translation>
     </message>
     <message>
         <source>The name %1 is allready used.
 Keeping this name will replace the document.
 Providing a new name will create a new document.</source>
-        <translation type="unfinished">名称 %1 已全部使用。
-保留此名称将替换文档。
+        <translation>名称 %1 已被使用。
+坚持使用此名称将以当前文档替换原文档。
 提供新名称将创建一个新文档。</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished">重命名</translation>
+        <translation>重命名</translation>
     </message>
     <message>
         <source>Replace all</source>
-        <translation type="unfinished"></translation>
+        <translation>全部替换</translation>
     </message>
     <message>
         <source>Skip</source>
-        <translation type="unfinished"></translation>
+        <translation>跳过</translation>
     </message>
     <message>
         <source>Skip all</source>
-        <translation type="unfinished"></translation>
+        <translation>全部跳过</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentTreeModel</name>
     <message>
         <source>Trash</source>
-        <translation type="unfinished">回收站</translation>
+        <translation>回收站</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
-            <numerusform>已复制页面 %1</numerusform>
+        <translation>
+            <numerusform>已复制 %1 个页面</numerusform>
         </translation>
     </message>
     <message>
         <source>My documents</source>
-        <translation type="unfinished">我的文档</translation>
+        <translation>我的文档</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentTreeView</name>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
-            <numerusform>已复制页面 %1</numerusform>
+        <translation>
+            <numerusform>已复制 %1 个页面</numerusform>
         </translation>
     </message>
     <message>
@@ -1576,7 +1576,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation type="unfinished">正在复制页面 %1/%2</translation>
+        <translation>正在复制页面 %1/%2</translation>
     </message>
 </context>
 <context>
@@ -1594,7 +1594,7 @@ Providing a new name will create a new document.</source>
     <name>UBDraggableLivePixmapItem</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">页面 %0</translation>
+        <translation>页面 %0</translation>
     </message>
 </context>
 <context>
@@ -1624,7 +1624,7 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Application name can`t contain any of the following characters:<byte value="xd"/>
 </source>
-        <translation type="unfinished"></translation>
+        <translation>应用名称不能包含以下字符：<byte value="xd"/></translation>
     </message>
 </context>
 <context>
@@ -1635,30 +1635,30 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished">文档导出中...</translation>
+        <translation>正在导出文档……</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation type="unfinished">导出失败</translation>
+        <translation>导出失败</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="unfinished">无法导出到所选位置。 您没有保存文件所需的权限。</translation>
+        <translation>无法导出到所选位置。您没有保存文件所需的权限。</translation>
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation type="unfinished">导出失败：位置不可写</translation>
+        <translation>导出失败：位置不可写入</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished">导出成功。</translation>
+        <translation>导出成功。</translation>
     </message>
 </context>
 <context>
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="unfinished">导出到 IWB</translation>
+        <translation>导出到 IWB</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
@@ -1666,7 +1666,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>文档导出中...</translation>
+        <translation>正在导出文档……</translation>
     </message>
     <message>
         <source>Export successful.</source>
@@ -1685,42 +1685,42 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export as UBZ File</source>
-        <translation>以UBZ文件格式导出</translation>
+        <translation>以 UBZ 文件格式导出</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
-        <translation>正在导出的%3的%1 %2</translation>
+        <translation>正在导出 %3 的 %1 %2</translation>
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation type="unfinished">导出为 OpenBoard 格式</translation>
+        <translation>导出为 OpenBoard 格式</translation>
     </message>
 </context>
 <context>
     <name>UBExportDocumentSetAdaptor</name>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished">文档导出中...</translation>
+        <translation>正在导出文档……</translation>
     </message>
     <message>
         <source>Failed to export...</source>
-        <translation type="unfinished">导出失败...</translation>
+        <translation>导出失败……</translation>
     </message>
     <message>
         <source>Export as UBX File</source>
-        <translation type="unfinished">导出为 UBX 文件</translation>
+        <translation>导出为 UBX 文件</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished">导出成功。</translation>
+        <translation>导出成功。</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished">导出失败。</translation>
+        <translation>导出失败。</translation>
     </message>
     <message>
         <source>Export to OpenBoard UBX Format</source>
-        <translation type="unfinished">导出为 OpenBoard UBX 格式</translation>
+        <translation>导出为 OpenBoard UBX 格式</translation>
     </message>
 </context>
 <context>
@@ -1735,7 +1735,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>The original PDF imported in OpenBoard seems not valid and could not be merged with your annotations. Please repair it and then reimport it in OpenBoard. The current export will be done with detailed (heavy) images of the pages of the original PDF instead, to avoid complete export failure.</source>
-        <translation type="unfinished"></translation>
+        <translation>导入的PDF文件似乎无效，不能与您的批注合并。请修复后将其重新导入 OpenBoard。当前的导出将以原PDF页面的详细（重）图像代替页面文本，以避免导出失败。</translation>
     </message>
 </context>
 <context>
@@ -1746,7 +1746,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
-        <translation>正在导出%2的页面%1</translation>
+        <translation>正在导出页面 %1/%2</translation>
     </message>
     <message>
         <source>Export to PDF</source>
