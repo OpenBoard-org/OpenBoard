@@ -3761,7 +3761,7 @@ void UBDocumentController::updateActions()
         if (mSelectionType == Folder)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-folder.png"));
-            mMainWindow->actionDelete->setText(tr("Delete"));
+            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else if (mSelectionType == Document)
         {
@@ -3816,17 +3816,17 @@ void UBDocumentController::updateActions()
         if (mSelectionType == Folder)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-folder.png"));
-            mMainWindow->actionDelete->setText(tr("Delete"));
+            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else if (mSelectionType == Document)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-document.png"));
-            mMainWindow->actionDelete->setText(tr("Delete"));
+            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else if (mSelectionType == Page)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document-page.png"));
-            mMainWindow->actionDelete->setText(tr("Delete"));
+            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         break;
     }
