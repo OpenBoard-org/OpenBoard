@@ -1761,23 +1761,23 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export as Web data</source>
-        <translation>以网页数据导出</translation>
+        <translation>作为网页数据导出</translation>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation>文档导出中...</translation>
+        <translation>正在导出文档……</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>导出成功</translation>
+        <translation>导出成功。</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>导出失败</translation>
+        <translation>导出失败。</translation>
     </message>
     <message>
         <source>Export to Web Browser</source>
-        <translation>导出到网页浏览器</translation>
+        <translation>导出到网络浏览器</translation>
     </message>
 </context>
 <context>
@@ -1788,11 +1788,11 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Add to library</source>
-        <translation>添加至图书馆</translation>
+        <translation>添加至库</translation>
     </message>
     <message>
         <source>Object informations</source>
-        <translation>素材信息</translation>
+        <translation>对象信息</translation>
     </message>
 </context>
 <context>
@@ -1815,7 +1815,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Back to folder</source>
-        <translation>返回上级文件夹</translation>
+        <translation>返回文件夹</translation>
     </message>
     <message>
         <source>Remove from favorites</source>
@@ -1866,7 +1866,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Web search</source>
-        <translation>搜索网络</translation>
+        <translation>网络搜索</translation>
     </message>
     <message>
         <source>Trash</source>
@@ -1885,78 +1885,78 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Enter a new folder name</source>
-        <translation type="unfinished">输入新的文件夹名称</translation>
+        <translation>输入新的文件夹名称</translation>
     </message>
 </context>
 <context>
     <name>UBFeaturesProgressInfo</name>
     <message>
         <source>Loading </source>
-        <translation>载入中</translation>
+        <translation>正在载入</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsGroupContainerItemDelegate</name>
     <message>
         <source>Locked</source>
-        <translation>位置锁定</translation>
+        <translation>已锁定</translation>
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation>宽屏上可见</translation>
+        <translation>在扩展屏幕上可见</translation>
     </message>
     <message>
         <source>Hide on Extended Screen when selected</source>
-        <translation type="unfinished"></translation>
+        <translation>选中时，在扩展屏幕上隐藏</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
     <message>
         <source>Locked</source>
-        <translation>位置锁定</translation>
+        <translation>已位置</translation>
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation>宽屏上可见</translation>
+        <translation>在扩展屏幕上可见</translation>
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="unfinished">设置为背景</translation>
+        <translation>设置为背景</translation>
     </message>
     <message>
         <source>Web Inspector</source>
-        <translation type="unfinished"></translation>
+        <translation>网页检查器</translation>
     </message>
     <message>
         <source>Hide on Extended Screen when selected</source>
-        <translation type="unfinished"></translation>
+        <translation>选中时，在扩展屏幕上隐藏</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsMediaItem</name>
     <message>
         <source>Media resource couldn&apos;t be resolved</source>
-        <translation type="unfinished">无法解析媒体资源</translation>
+        <translation>无法解析媒体资源</translation>
     </message>
     <message>
         <source>Unsupported media format</source>
-        <translation type="unfinished">不支持的媒体格式</translation>
+        <translation>不支持的媒体格式</translation>
     </message>
     <message>
         <source>Media playback service not found</source>
-        <translation type="unfinished">未找到媒体播放服务</translation>
+        <translation>未找到媒体播放服务</translation>
     </message>
     <message>
         <source>Media error: </source>
-        <translation type="unfinished">媒体错误：</translation>
+        <translation>媒体错误：</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsTextItem</name>
     <message>
         <source>&lt;Type Text Here&gt;</source>
-        <translation>&lt;在此键入文本&gt;</translation>
+        <translation>&lt;在此输入文本&gt;</translation>
     </message>
 </context>
 <context>
@@ -1981,7 +1981,7 @@ Providing a new name will create a new document.</source>
     <name>UBGraphicsWidgetItem</name>
     <message>
         <source>Loading ...</source>
-        <translation>载入中...</translation>
+        <translation>正在载入……</translation>
     </message>
 </context>
 <context>
@@ -2003,45 +2003,45 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Importing file %1...</source>
-        <translation>正在导入文件 %1...</translation>
+        <translation>正在导入文件 %1……</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>文件 %1 导入失败</translation>
+        <translation>文件 %1 导入失败。</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>导入成功</translation>
+        <translation>导入成功。</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation>导入失败</translation>
+        <translation>导入失败。</translation>
     </message>
 </context>
 <context>
     <name>UBImportDocument</name>
     <message>
         <source>Importing file %1...</source>
-        <translation>正在导入文件 %1...</translation>
+        <translation>正在导入文件 %1 ……</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>导入成功</translation>
+        <translation>导入成功。</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>文件 %1 导入失败</translation>
+        <translation>文件 %1 导入失败。</translation>
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
-        <translation type="unfinished">OpenBoard (*.ubz)</translation>
+        <translation>OpenBoard (*.ubz)</translation>
     </message>
 </context>
 <context>
     <name>UBImportDocumentSetAdaptor</name>
     <message>
         <source>Openboard (set of documents) (*.ubx)</source>
-        <translation type="unfinished">Openboard (文件集) (*.ubx)</translation>
+        <translation>Openboard (文件集) (*.ubx)</translation>
     </message>
 </context>
 <context>
@@ -2055,7 +2055,7 @@ Providing a new name will create a new document.</source>
     <name>UBImportPDF</name>
     <message>
         <source>Portable Document Format (*.pdf)</source>
-        <translation>可导入文档格式（*.pdf）</translation>
+        <translation>便携文档格式（*.pdf）</translation>
     </message>
     <message>
         <source>PDF import failed.</source>
@@ -2070,7 +2070,7 @@ Providing a new name will create a new document.</source>
     <name>UBIntranetPodcastPublisher</name>
     <message>
         <source>Error while publishing video to intranet (%1)</source>
-        <translation>视频发布到内部网过程中发生错误 (%1)</translation>
+        <translation>视频发布到内网过程中出错 (%1)</translation>
     </message>
     <message>
         <source>Publishing to Intranet in progress %1 %</source>
@@ -2137,7 +2137,7 @@ Do you want to ignore these errors for this host?</source>
 
 %2
 
-是否忽略该服务器的这些问题？</translation>
+忽略该服务器的这些问题吗？</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -2152,27 +2152,27 @@ Do you want to ignore these errors for this host?</source>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <source>Open-Sankore Documents Detected</source>
-        <translation type="unfinished">检测到 Open-Sankore 文档</translation>
+        <translation>检测到 Open-Sankore 文档</translation>
     </message>
     <message>
         <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
-        <translation type="unfinished">Open-Sankoré 文档存在于您的计算机上。 可以通过按“继续”按钮启动导入器应用程序将它们导入 OpenBoard。</translation>
+        <translation>Open-Sankoré 文档存在于您的计算机上。点击“继续“按钮可启动导入器程序，将其导入 OpenBoard。</translation>
     </message>
     <message>
         <source>Show this panel next time</source>
-        <translation type="unfinished">下次显示此面板</translation>
+        <translation>下次显示此面板</translation>
     </message>
     <message>
         <source>You can always access the OpenBoard Document Importer through the Preferences panel in the About tab. Warning, if you have already imported your Open-Sankore datas, you might loose your current OpenBoard documents.</source>
-        <translation type="unfinished">您始终可以通过“关于”选项卡中的“首选项”面板访问 OpenBoard 文档导入器。 警告，如果您已经导入了 Open-Sankore 数据，您可能会丢失当前的 OpenBoard 文档。</translation>
+        <translation>通过“关于”选项卡中的“首选项”面板，可随时访问 OpenBoard 文档导入器。 警告，如果已经导入了 Open-Sankore 数据，可能会丢失当前的 OpenBoard 文档。</translation>
     </message>
     <message>
         <source>Proceed</source>
-        <translation type="unfinished">继续</translation>
+        <translation>继续</translation>
     </message>
 </context>
 <context>
@@ -2187,15 +2187,15 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished">OpenBoard 已失去对文档存储库“%1”的访问权限。 不幸的是，应用程序必须关闭以避免数据损坏。 最新的更改也可能会丢失。</translation>
+        <translation>OpenBoard 已失去对文档库“%1”的访问权限。 不幸的是，为避免数据损坏，应用程序必须关闭。 最新的更改也可能会丢失。</translation>
     </message>
     <message>
         <source>Renaming pages (%1/%2)</source>
-        <translation type="unfinished">重命名页面 (%1/%2)</translation>
+        <translation>重命名页面 (%1/%2)</translation>
     </message>
     <message>
         <source>Retrieving all your documents (found : %1)</source>
-        <translation type="unfinished">检索您的所有文档（找到：%1）</translation>
+        <translation>检索所有文档（找到：%1）</translation>
     </message>
 </context>
 <context>
@@ -2225,11 +2225,11 @@ Do you want to ignore these errors for this host?</source>
     <name>UBPodcastController</name>
     <message>
         <source>Failed to start encoder ...</source>
-        <translation>编码器启动失败...</translation>
+        <translation>编码器启动失败……</translation>
     </message>
     <message>
         <source>No Podcast encoder available ...</source>
-        <translation>没有可用的播客编码器...</translation>
+        <translation>没有可用的播客编码器……</translation>
     </message>
     <message>
         <source>Part %1</source>
@@ -2237,7 +2237,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>on your desktop ...</source>
-        <translation>在桌面上...</translation>
+        <translation>在桌面上……</translation>
     </message>
     <message>
         <source>in folder %1</source>
@@ -2281,7 +2281,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>OpenBoard Cast</source>
-        <translation type="unfinished">OpenBoard 演示表</translation>
+        <translation>OpenBoard 演示表</translation>
     </message>
 </context>
 <context>
@@ -2296,7 +2296,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Use all available displays</source>
-        <translation type="unfinished"></translation>
+        <translation>使用所有可用的显示</translation>
     </message>
 </context>
 <context>
@@ -2310,7 +2310,7 @@ Do you want to ignore these errors for this host?</source>
     <name>UBStartupHintsPalette</name>
     <message>
         <source>Visible next time</source>
-        <translation type="unfinished"></translation>
+        <translation>下次显示</translation>
     </message>
 </context>
 <context>
@@ -2324,22 +2324,22 @@ Do you want to ignore these errors for this host?</source>
     <name>UBThumbnailAdaptor</name>
     <message>
         <source>Generating preview thumbnails ...</source>
-        <translation>正在生成缩略图预览...</translation>
+        <translation>正在生成预览缩略图……</translation>
     </message>
     <message>
         <source>%1 thumbnails generated ...</source>
-        <translation>已为%1生成缩略图...</translation>
+        <translation>%1 缩略图已生成……</translation>
     </message>
     <message>
         <source>Loading thumbnail (%1/%2)</source>
-        <translation type="unfinished">加载缩略图 (%1/%2)</translation>
+        <translation>加载缩略图 (%1/%2)</translation>
     </message>
 </context>
 <context>
     <name>UBThumbnailTextItem</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">页面 %0</translation>
+        <translation>页面 %0</translation>
     </message>
 </context>
 <context>
@@ -2370,11 +2370,11 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Cache</source>
-        <translation>高级缓存</translation>
+        <translation>缓存</translation>
     </message>
     <message>
         <source>Axes</source>
-        <translation type="unfinished">坐标轴</translation>
+        <translation>坐标轴</translation>
     </message>
 </context>
 <context>
@@ -2407,11 +2407,11 @@ Do you want to ignore these errors for this host?</source>
         <source>Files update successful!
 Please reboot the application to access the updated documents.</source>
         <translation>文件更新成功！
-请重新启动程序以打开已更新的文件。</translation>
+要打开已更新的文件，请重新启动程序。</translation>
     </message>
     <message>
         <source>An error occured during the update. The files have not been affected.</source>
-        <translation>更新过程中发生错误。文件未被改动。</translation>
+        <translation>更新过程中出错。文件未被改动。</translation>
     </message>
     <message>
         <source>Files update results</source>
@@ -2423,25 +2423,25 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Please wait the import process will start soon...</source>
-        <translation>请等待，导入过程即将开始...</translation>
+        <translation>请等待，导入过程即将开始……</translation>
     </message>
     <message>
         <source>Remind me later</source>
-        <translation>稍后再提醒我</translation>
+        <translation>稍后提醒</translation>
     </message>
 </context>
 <context>
     <name>UBWebEngineView</name>
     <message>
         <source>Open Web Inspector</source>
-        <translation type="unfinished"></translation>
+        <translation>打开网页检查器</translation>
     </message>
 </context>
 <context>
     <name>UBYouTubePublisher</name>
     <message>
         <source>YouTube authentication failed.</source>
-        <translation>Youtube 验证失败</translation>
+        <translation>Youtube 验证失败。</translation>
     </message>
     <message>
         <source>Error while uploading video to YouTube (%1)</source>
@@ -2476,7 +2476,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Travel &amp; Events</source>
-        <translation>旅游与活动</translation>
+        <translation>旅行与活动</translation>
     </message>
     <message>
         <source>Gaming</source>
@@ -2548,98 +2548,99 @@ Please reboot the application to access the updated documents.</source>
     <name>WebPage</name>
     <message>
         <source>Certificate Error</source>
-        <translation type="unfinished"></translation>
+        <translation>证书错误</translation>
     </message>
     <message>
         <source>Enter username and password for &quot;%1&quot; at %2</source>
-        <translation type="unfinished"></translation>
+        <translation>请输入%2上&quot;%1&quot;的用户名和密码</translation>
     </message>
     <message>
         <source>Allow %1 to access your location information?</source>
-        <translation type="unfinished"></translation>
+        <translation>允许 %1 访问位置信息吗？</translation>
     </message>
     <message>
         <source>Allow %1 to access your microphone?</source>
-        <translation type="unfinished"></translation>
+        <translation>允许 %1 访问麦克风吗？</translation>
     </message>
     <message>
         <source>Allow %1 to access your webcam?</source>
-        <translation type="unfinished"></translation>
+        <translation>允许 %1 访问摄像头吗？</translation>
     </message>
     <message>
         <source>Allow %1 to access your microphone and webcam?</source>
-        <translation type="unfinished"></translation>
+        <translation>允许 %1 访问麦克风和摄像头吗？</translation>
     </message>
     <message>
         <source>Allow %1 to lock your mouse cursor?</source>
-        <translation type="unfinished"></translation>
+        <translation>允许 %1 锁定光标吗？</translation>
     </message>
     <message>
         <source>Allow %1 to capture video of your desktop?</source>
-        <translation type="unfinished"></translation>
+        <translation>允许 %1 捕捉桌面视频吗？</translation>
     </message>
     <message>
         <source>Allow %1 to capture audio and video of your desktop?</source>
-        <translation type="unfinished"></translation>
+        <translation>允许 %1 捕捉桌面视频和音频吗？</translation>
     </message>
     <message>
         <source>Permission Request</source>
-        <translation type="unfinished"></translation>
+        <translation>权限请求</translation>
     </message>
     <message>
         <source>Connect to proxy &quot;%1&quot; using:</source>
-        <translation type="unfinished"></translation>
+        <translation>连接到代理服务器&quot;%1&quot;，使用：</translation>
     </message>
     <message>
         <source>Allow %1 to open all %2 links?</source>
-        <translation type="unfinished"></translation>
+        <translation>允许 %1 打开所有 %2 的链接吗？</translation>
     </message>
 </context>
 <context>
     <name>WebView</name>
     <message>
         <source>Render process normal exit</source>
-        <translation type="unfinished"></translation>
+        <translation>渲染进程正常退出</translation>
     </message>
     <message>
         <source>Render process abnormal exit</source>
-        <translation type="unfinished"></translation>
+        <translation>渲染进程异常退出</translation>
     </message>
     <message>
         <source>Render process crashed</source>
-        <translation type="unfinished"></translation>
+        <translation>渲染进程崩溃</translation>
     </message>
     <message>
         <source>Render process killed</source>
-        <translation type="unfinished"></translation>
+        <translation>渲染进程被杀死</translation>
     </message>
     <message>
         <source>Render process exited with code: %1
 Do you want to reload the page ?</source>
-        <translation type="unfinished"></translation>
+        <translation>渲染进程已退出，代码：%1
+想要重新载入页面吗？</translation>
     </message>
     <message>
         <source>Open Web Inspector in new window</source>
-        <translation type="unfinished"></translation>
+        <translation>在新窗口中打开网页检查器</translation>
     </message>
     <message>
         <source>Inspect element</source>
-        <translation type="unfinished"></translation>
+        <translation>检查元件</translation>
     </message>
     <message>
         <source>Add to board</source>
-        <translation type="unfinished"></translation>
+        <translation>添加到白板</translation>
     </message>
 </context>
 <context>
     <name>XPDFRenderer</name>
     <message>
         <source>Processing...</source>
-        <translation type="unfinished">正在处理...</translation>
+        <translation>正在处理……</translation>
     </message>
     <message>
         <source>an error occured while trying to open the PDF file</source>
-        <translation type="unfinished"></translation>
+        <translation>打开PDF文件时出错</translation>
     </message>
 </context>
 <context>
@@ -2654,7 +2655,7 @@ Do you want to reload the page ?</source>
     </message>
     <message>
         <source>Description</source>
-        <translation>描述</translation>
+        <translation>详情</translation>
     </message>
     <message>
         <source>Keywords</source>
@@ -2686,11 +2687,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>OpenBoard</source>
-        <translation type="unfinished">OpenBoard</translation>
+        <translation>OpenBoard</translation>
     </message>
     <message>
         <source>Restore credentials on reboot</source>
-        <translation type="unfinished">重新启动时恢复凭据</translation>
+        <translation>重新启动时恢复凭据</translation>
     </message>
 </context>
 <context>
@@ -2729,11 +2730,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Show preview circle from</source>
-        <translation type="unfinished">显示预览圈来自</translation>
+        <translation>显示来自此处的预览圈：</translation>
     </message>
     <message>
         <source>px</source>
-        <translation type="unfinished">px</translation>
+        <translation>px</translation>
     </message>
 </context>
 <context>
@@ -2756,30 +2757,30 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Description</source>
-        <translation>描述</translation>
+        <translation>详情</translation>
     </message>
 </context>
 <context>
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
-        <translation type="unfinished">OpenBoard 文档</translation>
+        <translation>OpenBoard 文档</translation>
     </message>
     <message>
         <source>Creation date</source>
-        <translation type="unfinished">创建日期</translation>
+        <translation>创建日期</translation>
     </message>
     <message>
         <source>Update date</source>
-        <translation type="unfinished">更新日期</translation>
+        <translation>更新日期</translation>
     </message>
     <message>
         <source>Alphabetical order</source>
-        <translation type="unfinished">按字母顺序</translation>
+        <translation>按字母顺序</translation>
     </message>
     <message>
         <source>Sort Order</source>
-        <translation type="unfinished">排序</translation>
+        <translation>排序</translation>
     </message>
 </context>
 <context>
@@ -2790,7 +2791,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>version : …</source>
-        <translation>版本：...</translation>
+        <translation>版本：……</translation>
     </message>
     <message>
         <source>Default Settings</source>
@@ -2810,15 +2811,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Show Page with External Browser</source>
-        <translation>使用外部浏览器</translation>
+        <translation>在外部浏览器中显示页面</translation>
     </message>
     <message>
         <source>Home Page:</source>
-        <translation>主页:</translation>
+        <translation>主页：</translation>
     </message>
     <message>
         <source>Virtual Keyboard</source>
-        <translation>软键盘</translation>
+        <translation>虚拟键盘</translation>
     </message>
     <message>
         <source>Toolbar</source>
@@ -2826,11 +2827,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Positioned at the Top (recommended for tablets)</source>
-        <translation>总在最前（平板电脑推荐）</translation>
+        <translation>总在顶层（平板电脑推荐）</translation>
     </message>
     <message>
         <source>Positioned at the Bottom (recommended for white boards)</source>
-        <translation>总在底部（电子白板推荐）</translation>
+        <translation>总在底层（电子白板推荐）</translation>
     </message>
     <message>
         <source>Display Text Under Button</source>
@@ -2918,15 +2919,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>On Dark Background</source>
-        <translation type="unfinished">在深色背景</translation>
+        <translation>在深色背景</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="unfinished">透明度</translation>
+        <translation>透明度</translation>
     </message>
     <message>
         <source>On Light Background</source>
-        <translation type="unfinished">在浅色背景</translation>
+        <translation>在浅色背景</translation>
     </message>
     <message>
         <source>Swap first and second view displays</source>
@@ -2934,39 +2935,39 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished">内置虚拟键盘按键大小：</translation>
+        <translation>内置虚拟键盘按键大小：</translation>
     </message>
     <message>
         <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished">使用系统键盘（推荐）</translation>
+        <translation>使用系统键盘（推荐）</translation>
     </message>
     <message>
         <source>Grid</source>
-        <translation type="unfinished">网格</translation>
+        <translation>网格</translation>
     </message>
     <message>
         <source>Open-Sankoré Importer</source>
-        <translation type="unfinished">Open-Sankoré 导入</translation>
+        <translation>Open-Sankoré 导入器</translation>
     </message>
     <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished">检查是否可以在启动时导入 Open-Sankoré 数据</translation>
+        <translation>检查是否可以在启动时导入 Open-Sankoré 数据</translation>
     </message>
     <message>
         <source>Documents Mode</source>
-        <translation type="unfinished">文档模式</translation>
+        <translation>文档模式</translation>
     </message>
     <message>
         <source>Display date column on alphabetical sort</source>
-        <translation type="unfinished">按字母排序显示日期列</translation>
+        <translation>按字母排序显示日期列</translation>
     </message>
     <message>
         <source>Empty trash for documents older than</source>
-        <translation type="unfinished">清空回收站的旧文档</translation>
+        <translation>清空回收站文档，如果超过：</translation>
     </message>
     <message>
         <source>days</source>
-        <translation type="unfinished">天</translation>
+        <translation>天</translation>
     </message>
     <message>
         <source>PDF Rendering</source>
@@ -2974,27 +2975,27 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Improve zoom execution time (can slightly affect rendering quality)</source>
-        <translation type="unfinished">提高缩放执行时间（可能会略微影响渲染质量）</translation>
+        <translation>提高缩放执行时间（可能会略微影响渲染质量）</translation>
     </message>
     <message>
         <source>PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF</translation>
     </message>
     <message>
         <source>Export background grid</source>
-        <translation type="unfinished"></translation>
+        <translation>导出背景网格</translation>
     </message>
     <message>
         <source>Export background color</source>
-        <translation type="unfinished"></translation>
+        <translation>导出背景颜色</translation>
     </message>
     <message>
         <source>Documents</source>
-        <translation type="unfinished">文档</translation>
+        <translation>文档</translation>
     </message>
     <message>
         <source>List of screens used for Control, Display and Previous pages</source>
-        <translation type="unfinished"></translation>
+        <translation>用于控制、显示和上一页的屏幕列表</translation>
     </message>
 </context>
 <context>
@@ -3009,7 +3010,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>about:blank</source>
-        <translation>about:blank</translation>
+        <translation>关于：空白页</translation>
     </message>
     <message>
         <source>Application name</source>
@@ -3021,11 +3022,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a content to capture</source>
-        <translation type="unfinished">选择要捕获的内容</translation>
+        <translation>选择要捕获的内容</translation>
     </message>
     <message>
         <source>Capture Web Content</source>
-        <translation type="unfinished">捕获网页内容</translation>
+        <translation>捕获网页内容</translation>
     </message>
 </context>
 </TS>
