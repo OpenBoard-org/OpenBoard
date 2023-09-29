@@ -354,6 +354,12 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(st
                             mDocumentTreeStructureModel->removeRow(i, parentIndex);
                         }
 
+                        if (docName != resultName)
+                        {
+                            pProxy->setMetaData(UBSettings::documentName, resultName);
+                            UBMetadataDcSubsetAdaptor::persist(pProxy);
+                        }
+
                         // create new index before trying to select it (if avtive index)
                         mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
 
@@ -369,13 +375,13 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(st
                     }
                     else
                     {
-                        mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
-                    }
+                        if (docName != resultName)
+                        {
+                            pProxy->setMetaData(UBSettings::documentName, resultName);
+                            UBMetadataDcSubsetAdaptor::persist(pProxy);
+                        }
 
-                    if (docName != resultName)
-                    {
-                        pProxy->setMetaData(UBSettings::documentName, resultName);
-                        UBMetadataDcSubsetAdaptor::persist(pProxy);
+                        mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
                     }
 
                     if (replaceDialog->replaceAllClicked())
