@@ -330,6 +330,7 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(st
         {
             if (!mReplaceDialogReturnedReplaceAll && !mReplaceDialogReturnedCancel)
             {
+                QApplication::restoreOverrideCursor();
                 UBDocumentReplaceDialog *replaceDialog = new UBDocumentReplaceDialog(docName
                                                                                      , docList
                                                                                      , multipleFiles
@@ -337,6 +338,7 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(st
                                                                                      , Qt::Widget);
                 if (replaceDialog->exec() == QDialog::Accepted)
                 {
+                    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
                     result = QDialog::Accepted;
                     QString resultName = replaceDialog->lineEditText();
                     int i = docList.indexOf(resultName);
