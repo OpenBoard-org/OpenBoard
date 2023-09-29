@@ -2517,15 +2517,15 @@ void UBDocumentController::duplicateSelectedItem()
             QDateTime now = QDateTime::currentDateTime();
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
             UBMetadataDcSubsetAdaptor::persist(selectedDocument());
-            int selectedThumbnail = selectedSceneIndexes.last() + selectedSceneIndexes.size();
-            mDocumentUI->thumbnailWidget->selectItemAt(selectedThumbnail);
+            int selectedThumbnailIndex = selectedSceneIndexes.last() + selectedSceneIndexes.size();
+            mDocumentUI->thumbnailWidget->selectItemAt(selectedThumbnailIndex);
             int sceneCount = selectedSceneIndexes.count();
             showMessage(tr("duplicated %1 page","duplicated %1 pages",sceneCount).arg(sceneCount), false);
 
             if (selectedDocument() == mBoardController->selectedDocument())
             {
-                mBoardController->setActiveDocumentScene(selectedThumbnail);
-                mBoardController->reloadThumbnails();
+                emit mBoardController->addThumbnailRequired(selectedDocument(), selectedThumbnailIndex);
+                mBoardController->setActiveDocumentScene(selectedThumbnailIndex);
             }
         }
     }
@@ -3761,7 +3761,7 @@ void UBDocumentController::updateActions()
         if (mSelectionType == Folder)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-folder.png"));
-            mMainWindow->actionDelete->setText(tr("Delete"));
+            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else if (mSelectionType == Document)
         {
@@ -3816,17 +3816,17 @@ void UBDocumentController::updateActions()
         if (mSelectionType == Folder)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-folder.png"));
-            mMainWindow->actionDelete->setText(tr("Delete"));
+            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else if (mSelectionType == Document)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-document.png"));
-            mMainWindow->actionDelete->setText(tr("Delete"));
+            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else if (mSelectionType == Page)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document-page.png"));
-            mMainWindow->actionDelete->setText(tr("Delete"));
+            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         break;
     }
