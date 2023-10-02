@@ -93,7 +93,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>completed - %1 downloaded - %2/s</source>
-        <translatio>已完成 - 已下载 %1 - %2/s</translation>
+        <translation>已完成 - 已下载 %1 - %2/s</translation>
     </message>
     <message>
         <source>cancelled - %1 downloaded - %2/s</source>
