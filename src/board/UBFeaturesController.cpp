@@ -556,7 +556,8 @@ void UBFeaturesController::saveFavoriteList()
     file.resize(0);
     file.open(QIODevice::WriteOnly);
     QDataStream out(&file);
-    out << favoriteSet->size();
+    int elementsNumber = favoriteSet->size();
+    out << elementsNumber;
     for ( QSet<QUrl>::iterator it = favoriteSet->begin(); it != favoriteSet->end(); ++it )
     {
         out << (*it);
