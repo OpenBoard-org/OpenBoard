@@ -203,7 +203,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Manage Documents</source>
-        <translation>管理文档</translation>
+        <translation type="vanished">管理文档</translation>
     </message>
     <message>
         <source>Ctrl+D</source>
@@ -211,7 +211,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Web Browsing</source>
-        <translation>浏览网页</translation>
+        <translation type="vanished">浏览网页</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
@@ -299,7 +299,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Display Board</source>
-        <translation>显示白板</translation>
+        <translation type="vanished">显示白板</translation>
     </message>
     <message>
         <source>Ctrl+B</source>
@@ -339,7 +339,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Show Computer Desktop</source>
-        <translation>显示电脑桌面</translation>
+        <translation type="vanished">显示电脑桌面</translation>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
@@ -435,7 +435,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add to Working Document</source>
-        <translation>添加到工作文档</translation>
+        <translation type="vanished">添加到工作文档</translation>
     </message>
     <message>
         <source>Add Selected Content to Open Document</source>
@@ -735,7 +735,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Import an External Page</source>
-        <translation>导入外部页面</translation>
+        <translation type="vanished">导入外部页面</translation>
     </message>
     <message>
         <source>Pause</source>
@@ -755,19 +755,19 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation>截取动画</translation>
+        <translation type="vanished">截取动画</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>截取动画内容</translation>
+        <translation type="vanished">截取动画内容</translation>
     </message>
     <message>
         <source>Web Trap</source>
-        <translation>截取网页</translation>
+        <translation type="vanished">截取网页</translation>
     </message>
     <message>
         <source>Trap Web Content</source>
-        <translation>截取网页内容</translation>
+        <translation type="vanished">截取网页内容</translation>
     </message>
     <message>
         <source>Custom Capture</source>
@@ -803,11 +803,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>eduMedia</source>
-        <translation>eduMedia</translation>
+        <translation type="vanished">eduMedia</translation>
     </message>
     <message>
         <source>Import eduMedia simulation</source>
-        <translation>导入 eduMedia 模拟</translation>
+        <translation type="vanished">导入 eduMedia 模拟</translation>
     </message>
     <message>
         <source>Check Update</source>
@@ -959,7 +959,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add to favorites</source>
-        <translation>添加到收藏夹</translation>
+        <translation type="vanished">添加到收藏夹</translation>
     </message>
     <message>
         <source>Add Document to favorites</source>
@@ -972,6 +972,10 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <source>Open Hints and tips</source>
         <translation>打开提示与技巧</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1013,7 +1017,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation>确定要从选中的文件“%0”中删除1页吗？</translation>
+        <translation type="vanished">确定要从选中的文件“%0”中删除1页吗？</translation>
     </message>
     <message>
         <source>Loading scene (%1/%2)</source>

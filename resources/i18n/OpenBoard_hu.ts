@@ -959,7 +959,7 @@ Felülírja a biztonsági ellenőrzést, és folytatja?</translation>
     </message>
     <message>
         <source>Add to favorites</source>
-        <translation>Hozzáadás a kedvencekhez</translation>
+        <translation type="vanished">Hozzáadás a kedvencekhez</translation>
     </message>
     <message>
         <source>Add Document to favorites</source>
@@ -972,6 +972,10 @@ Felülírja a biztonsági ellenőrzést, és folytatja?</translation>
     <message>
         <source>Open Hints and tips</source>
         <translation>Tanácsok és tippek megnyitása</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2659,7 +2663,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Connect to proxy &quot;%1&quot; using:</source>
-        <translation>Csatlakozás a "%1" proxyhoz a következő használatával:</translation>
+        <translation>Csatlakozás a &quot;%1&quot; proxyhoz a következő használatával:</translation>
     </message>
     <message>
         <source>Allow %1 to open all %2 links?</source>

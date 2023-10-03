@@ -959,7 +959,7 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     </message>
     <message>
         <source>Add to favorites</source>
-        <translation>Zu Favoriten hinzufügen</translation>
+        <translation type="vanished">Zu Favoriten hinzufügen</translation>
     </message>
     <message>
         <source>Add Document to favorites</source>
@@ -972,6 +972,14 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     <message>
         <source>Open Hints and tips</source>
         <translation>Tipps und Tricks öffnen</translation>
+    </message>
+    <message>
+        <source>favorite</source>
+        <translation type="vanished">Favorit</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Favorit</translation>
     </message>
 </context>
 <context>

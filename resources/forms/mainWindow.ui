@@ -1936,7 +1936,7 @@
      <normalon>:/images/removeFromFavorites.png</normalon>:/images/addToFavorites.png</iconset>
    </property>
    <property name="text">
-    <string>Add to favorites</string>
+    <string>Favorite</string>
    </property>
    <property name="toolTip">
     <string>Add Document to favorites</string>

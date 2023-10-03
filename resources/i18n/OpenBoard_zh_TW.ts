@@ -957,7 +957,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add to favorites</source>
-        <translation type="unfinished">新增至我的最愛</translation>
+        <translation type="obsolete">新增至我的最愛</translation>
     </message>
     <message>
         <source>Add Document to favorites</source>
@@ -969,6 +969,10 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Open Hints and tips</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Favorite</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

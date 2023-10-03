@@ -203,7 +203,7 @@ Güvenlik denetimini geçersiz kılmak ve devam etmek istiyor musunuz?   </trans
     </message>
     <message>
         <source>Manage Documents</source>
-        <translation>Belgeleri Yönet</translation>
+        <translation type="vanished">Belgeleri Yönet</translation>
     </message>
     <message>
         <source>Ctrl+D</source>
@@ -211,7 +211,7 @@ Güvenlik denetimini geçersiz kılmak ve devam etmek istiyor musunuz?   </trans
     </message>
     <message>
         <source>Web Browsing</source>
-        <translation>Web Tarama</translation>
+        <translation type="vanished">Web Tarama</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
@@ -331,7 +331,7 @@ Güvenlik denetimini geçersiz kılmak ve devam etmek istiyor musunuz?   </trans
     </message>
     <message>
         <source>Add to Working Document</source>
-        <translation>Çalışma Belgesine Ekle</translation>
+        <translation type="vanished">Çalışma Belgesine Ekle</translation>
     </message>
     <message>
         <source>Add Selected Content to Open Document</source>
@@ -515,7 +515,7 @@ Güvenlik denetimini geçersiz kılmak ve devam etmek istiyor musunuz?   </trans
     </message>
     <message>
         <source>Display Board</source>
-        <translation>Tahtayı Göster</translation>
+        <translation type="vanished">Tahtayı Göster</translation>
     </message>
     <message>
         <source>Erase Content</source>
@@ -531,7 +531,7 @@ Güvenlik denetimini geçersiz kılmak ve devam etmek istiyor musunuz?   </trans
     </message>
     <message>
         <source>Show Computer Desktop</source>
-        <translation>Bilgisayar Masaüstünü Göster</translation>
+        <translation type="vanished">Bilgisayar Masaüstünü Göster</translation>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
@@ -739,7 +739,7 @@ Güvenlik denetimini geçersiz kılmak ve devam etmek istiyor musunuz?   </trans
     </message>
     <message>
         <source>Import an External Page</source>
-        <translation>Harici Sayfayı İçe Aktar</translation>
+        <translation type="vanished">Harici Sayfayı İçe Aktar</translation>
     </message>
     <message>
         <source>Pause</source>
@@ -759,19 +759,19 @@ Güvenlik denetimini geçersiz kılmak ve devam etmek istiyor musunuz?   </trans
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation>Flash Tuzağı</translation>
+        <translation type="vanished">Flash Tuzağı</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation>Flash İçeriğini Yakala</translation>
+        <translation type="vanished">Flash İçeriğini Yakala</translation>
     </message>
     <message>
         <source>Web Trap</source>
-        <translation>Web Tuzağı</translation>
+        <translation type="vanished">Web Tuzağı</translation>
     </message>
     <message>
         <source>Trap Web Content</source>
-        <translation>Web İçeriğini Yakala</translation>
+        <translation type="vanished">Web İçeriğini Yakala</translation>
     </message>
     <message>
         <source>Capture Part of the Screen</source>
@@ -803,11 +803,11 @@ Güvenlik denetimini geçersiz kılmak ve devam etmek istiyor musunuz?   </trans
     </message>
     <message>
         <source>eduMedia</source>
-        <translation>eduMedya</translation>
+        <translation type="vanished">eduMedya</translation>
     </message>
     <message>
         <source>Import eduMedia simulation</source>
-        <translation>eduMedya simülasyonu içe aktar</translation>
+        <translation type="vanished">eduMedya simülasyonu içe aktar</translation>
     </message>
     <message>
         <source>Window Capture</source>
@@ -959,7 +959,7 @@ Güvenlik denetimini geçersiz kılmak ve devam etmek istiyor musunuz?   </trans
     </message>
     <message>
         <source>Add to favorites</source>
-        <translation>Sık kullanılanlara ekle</translation>
+        <translation type="vanished">Sık kullanılanlara ekle</translation>
     </message>
     <message>
         <source>Add Document to favorites</source>
@@ -972,6 +972,10 @@ Güvenlik denetimini geçersiz kılmak ve devam etmek istiyor musunuz?   </trans
     <message>
         <source>Open Hints and tips</source>
         <translation>İpuçları ve püf noktalarını aç</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1013,7 +1017,7 @@ Güvenlik denetimini geçersiz kılmak ve devam etmek istiyor musunuz?   </trans
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation>Seçili &apos;%0&apos; belgesinden 1 sayfayı kaldırmak istediğinizden emin misiniz?</translation>
+        <translation type="vanished">Seçili &apos;%0&apos; belgesinden 1 sayfayı kaldırmak istediğinizden emin misiniz?</translation>
     </message>
     <message>
         <source>Loading scene (%1/%2)</source>
@@ -1480,14 +1484,14 @@ Güvenlik denetimini geçersiz kılmak ve devam etmek istiyor musunuz?   </trans
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Sayfa %0</translation>
+        <translation type="vanished">Sayfa %0</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentReplaceDialog</name>
     <message>
         <source>Accept</source>
-        <translation>Kabul Et</translation>
+        <translation type="vanished">Kabul Et</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1575,14 +1579,14 @@ Yeni bir ad sağlamak yeni belge oluşturur.</translation>
     <name>UBDraggableThumbnail</name>
     <message>
         <source>Page %0</source>
-        <translation>Sayfa %0</translation>
+        <translation type="vanished">Sayfa %0</translation>
     </message>
 </context>
 <context>
     <name>UBDraggableThumbnailView</name>
     <message>
         <source>Page %0</source>
-        <translation>Sayfa %0</translation>
+        <translation type="vanished">Sayfa %0</translation>
     </message>
 </context>
 <context>
@@ -1597,7 +1601,12 @@ Yeni bir ad sağlamak yeni belge oluşturur.</translation>
     </message>
     <message>
         <source>Application name can`t contain any of the following characters:</source>
-        <translation>Uygulama adı aşağıdaki karakterleri içeremez:</translation>
+        <translation type="vanished">Uygulama adı aşağıdaki karakterleri içeremez:</translation>
+    </message>
+    <message>
+        <source>Application name can`t contain any of the following characters:<byte value="xd"/>
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2867,7 +2876,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap control display and view display</source>
-        <translation>Kontrol ekranı ile görünüm ekranını yer değiştir</translation>
+        <translation type="vanished">Kontrol ekranı ile görünüm ekranını yer değiştir</translation>
     </message>
     <message>
         <source>Mode</source>
@@ -2974,11 +2983,11 @@ p, li { white-space: pre-wrap; }
     <name>trapFlashDialog</name>
     <message>
         <source>Trap flash</source>
-        <translation>Flash tuzakla</translation>
+        <translation type="vanished">Flash tuzakla</translation>
     </message>
     <message>
         <source>Select a flash to trap</source>
-        <translation>Tuzağa almak için bir flash ögesi seç</translation>
+        <translation type="vanished">Tuzağa almak için bir flash ögesi seç</translation>
     </message>
     <message>
         <source>about:blank</source>

@@ -959,7 +959,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add to favorites</source>
-        <translation>Aggiungi ai preferiti</translation>
+        <translation type="vanished">Aggiungi ai preferiti</translation>
     </message>
     <message>
         <source>Add Document to favorites</source>
@@ -972,6 +972,14 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <source>Open Hints and tips</source>
         <translation>Apri i suggerimenti</translation>
+    </message>
+    <message>
+        <source>favorite</source>
+        <translation type="vanished">Preferito</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Preferito</translation>
     </message>
 </context>
 <context>

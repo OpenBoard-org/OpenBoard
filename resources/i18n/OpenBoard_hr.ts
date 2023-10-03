@@ -9,41 +9,143 @@
     </message>
 </context>
 <context>
+    <name>BrowserWindow</name>
+    <message>
+        <source>Navigation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CertificateErrorDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="unfinished">Dijalog</translation>
+    </message>
+    <message>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
+
+Do you wish to override the security check and continue ?   </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DownloadDialog</name>
     <message>
         <source>Downloads</source>
-        <translation>Preuzimanja</translation>
+        <translation type="vanished">Preuzimanja</translation>
     </message>
     <message>
         <source>Clean Up</source>
-        <translation>Izbriši</translation>
+        <translation type="vanished">Izbriši</translation>
     </message>
     <message>
         <source>0 Items</source>
-        <translation>0 elemenata</translation>
+        <translation type="vanished">0 elemenata</translation>
     </message>
 </context>
 <context>
     <name>DownloadItem</name>
     <message>
         <source>Form</source>
-        <translation>Obrazac</translation>
+        <translation type="vanished">Obrazac</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation>Ime datoteke</translation>
+        <translation type="vanished">Ime datoteke</translation>
     </message>
     <message>
         <source>Try Again</source>
-        <translation>Pokušaj ponovo</translation>
+        <translation type="vanished">Pokušaj ponovo</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Prekini</translation>
+        <translation type="vanished">Prekini</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation>Otvori</translation>
+        <translation type="vanished">Otvori</translation>
+    </message>
+</context>
+<context>
+    <name>DownloadManagerWidget</name>
+    <message>
+        <source>Downloads</source>
+        <translation type="unfinished">Preuzimanja</translation>
+    </message>
+    <message>
+        <source>No downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save as</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadWidget</name>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 KiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 MiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%L1 GiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%p% - %1 of %2 downloaded - %3/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown size - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>completed - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cancelled - %1 downloaded - %2/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>interrupted: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop downloading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from list</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -141,7 +243,7 @@
     </message>
     <message>
         <source>Manage Documents</source>
-        <translation>Upravljaj dokumentima</translation>
+        <translation type="vanished">Upravljaj dokumentima</translation>
     </message>
     <message>
         <source>Ctrl+D</source>
@@ -149,7 +251,7 @@
     </message>
     <message>
         <source>Web Browsing</source>
-        <translation>Pregledavanje weba</translation>
+        <translation type="vanished">Pregledavanje weba</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
@@ -241,7 +343,7 @@
     </message>
     <message>
         <source>Display Board</source>
-        <translation>Prikaži ploču</translation>
+        <translation type="vanished">Prikaži ploču</translation>
     </message>
     <message>
         <source>Ctrl+B</source>
@@ -281,7 +383,7 @@
     </message>
     <message>
         <source>Show Computer Desktop</source>
-        <translation>Prikaži radnu površinu računala</translation>
+        <translation type="vanished">Prikaži radnu površinu računala</translation>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
@@ -377,7 +479,7 @@
     </message>
     <message>
         <source>Add to Working Document</source>
-        <translation>Dodaj u radni dokument</translation>
+        <translation type="vanished">Dodaj u radni dokument</translation>
     </message>
     <message>
         <source>Add Selected Content to Open Document</source>
@@ -685,7 +787,7 @@
     </message>
     <message>
         <source>Import an External Page</source>
-        <translation>Uvezi eksternu stranicu</translation>
+        <translation type="vanished">Uvezi eksternu stranicu</translation>
     </message>
     <message>
         <source>Pause</source>
@@ -705,11 +807,11 @@
     </message>
     <message>
         <source>Web Trap</source>
-        <translation>Snimi web</translation>
+        <translation type="vanished">Snimi web</translation>
     </message>
     <message>
         <source>Trap Web Content</source>
-        <translation>Snimi web sadržaj</translation>
+        <translation type="vanished">Snimi web sadržaj</translation>
     </message>
     <message>
         <source>Custom Capture</source>
@@ -745,11 +847,11 @@
     </message>
     <message>
         <source>eduMedia</source>
-        <translation>eduMedia</translation>
+        <translation type="vanished">eduMedia</translation>
     </message>
     <message>
         <source>Import eduMedia simulation</source>
-        <translation>Uvezi eduMedia simulaciju</translation>
+        <translation type="vanished">Uvezi eduMedia simulaciju</translation>
     </message>
     <message>
         <source>Check Update</source>
@@ -827,6 +929,82 @@
         <source>Capture Web Content</source>
         <translation>Snimi web sadržaj</translation>
     </message>
+    <message>
+        <source>Documents Mode</source>
+        <translation type="unfinished">Modus „Dokumenti”</translation>
+    </message>
+    <message>
+        <source>Web Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Board Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Desktop</source>
+        <translation type="unfinished">Radna površina</translation>
+    </message>
+    <message>
+        <source>Desktop Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Seyes ruled Light Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Seyes ruled Dark Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import one or more pages (supported formats : jpg, png, svg, ubz, pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to favorites</source>
+        <translation type="obsolete">Dodaj u favorite</translation>
+    </message>
+    <message>
+        <source>Add Document to favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hints and tips</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Hints and tips</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -842,28 +1020,36 @@
         <source>Password:</source>
         <translation>Lozinka:</translation>
     </message>
+    <message>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProxyDialog</name>
     <message>
         <source>Proxy Authentication</source>
-        <translation>Proxy autentifikacija</translation>
+        <translation type="vanished">Proxy autentifikacija</translation>
     </message>
     <message>
         <source>Connect to Proxy</source>
-        <translation>Poveži se s proxijem</translation>
+        <translation type="vanished">Poveži se s proxijem</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Korisničko ime:</translation>
+        <translation type="vanished">Korisničko ime:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation>Lozinka:</translation>
+        <translation type="vanished">Lozinka:</translation>
     </message>
     <message>
         <source>Save username and password for future use</source>
-        <translation>Spremi korisničko ime i lozinku za korištenje u budućnosti</translation>
+        <translation type="vanished">Spremi korisničko ime i lozinku za korištenje u budućnosti</translation>
     </message>
 </context>
 <context>
@@ -882,7 +1068,7 @@
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation>Stvarno želiš ukloniti 1 stranicu iz odabranog dokumenta „%0”?</translation>
+        <translation type="vanished">Stvarno želiš ukloniti 1 stranicu iz odabranog dokumenta „%0”?</translation>
     </message>
     <message>
         <source>Loading scene (%1/%2)</source>
@@ -891,6 +1077,41 @@
     <message>
         <source>Moving cached scenes (%1/%2)</source>
         <translation>Premještanje predmemoriranih scena (%1/%2)</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove page %1 ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TabWidget</name>
+    <message>
+        <source>New &amp;Tab</source>
+        <translation type="unfinished">Nova kar&amp;tica</translation>
+    </message>
+    <message>
+        <source>Clone Tab</source>
+        <translation type="unfinished">Dupiciraj karticu</translation>
+    </message>
+    <message>
+        <source>&amp;Close Tab</source>
+        <translation type="unfinished">&amp;Zatvori karticu</translation>
+    </message>
+    <message>
+        <source>Close &amp;Other Tabs</source>
+        <translation type="unfinished">Zatvori &amp;druge kartice</translation>
+    </message>
+    <message>
+        <source>Reload Tab</source>
+        <translation type="unfinished">Ponovo učitaj karticu</translation>
+    </message>
+    <message>
+        <source>Reload All Tabs</source>
+        <translation type="unfinished">Ponovo učitaj sve kartice</translation>
+    </message>
+    <message>
+        <source>(Untitled)</source>
+        <translation type="unfinished">(Bez naslova)</translation>
     </message>
 </context>
 <context>
@@ -1000,6 +1221,14 @@
         <source>Color</source>
         <translation>Boja</translation>
     </message>
+    <message>
+        <source>Untitled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not find document.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
@@ -1016,7 +1245,18 @@
     <name>UBBoardThumbnailsView</name>
     <message>
         <source>Loading page (%1/%2)</source>
-        <translation>Učitavanje stranice (%1/%2)</translation>
+        <translation type="vanished">Učitavanje stranice (%1/%2)</translation>
+    </message>
+</context>
+<context>
+    <name>UBBoardView</name>
+    <message>
+        <source>Is it for Board or Widget ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you trying to drop the object(s) inside the widget ?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1114,11 +1354,11 @@
     </message>
     <message>
         <source>Remove Item</source>
-        <translation>Ukloni element</translation>
+        <translation type="vanished">Ukloni element</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation>Stvarno želiš ukloniti odabrane elemente?</translation>
+        <translation type="vanished">Stvarno želiš ukloniti odabrane elemente?</translation>
     </message>
     <message>
         <source>Open Supported File</source>
@@ -1180,6 +1420,90 @@
         <source>Refreshing Document Thumbnails View (%1/%2)</source>
         <translation>Aktualiziranje prikaza minijatura dokumenta (%1/%2)</translation>
     </message>
+    <message>
+        <source>Complete deletion of %1 documents/folders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to permanantly delete %1 documents and/or folders. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Complete deletion of folder &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to permanantly delete folder &quot;%1&quot;. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Complete deletion of document &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to permanantly delete document &quot;%1&quot;. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Emptying My Documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to entirely empty the folder &quot;My Documents&quot;. All your documents will be moved to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Emptying Trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to entirely empty the trash. All documents and folders in it will be permanently deleted. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moving %1 elements to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move %1 documents and/or folders to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move folder &quot;%1&quot;to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move folder &quot;%1&quot; to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move document &quot;%1&quot;to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move document &quot;%1&quot; to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Supported File(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moving %1 pages of the document &quot;%2&quot; to trash</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to move %1 pages of the document &quot;%2&quot; to trash. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove page %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to remove page %1 of the document &quot;%2&quot;. Are you sure ?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBDocumentManager</name>
@@ -1228,18 +1552,18 @@
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation>Stranica %1</translation>
+        <translation type="vanished">Stranica %1</translation>
     </message>
     <message>
         <source>Generating thumbnails for board (%1/%2)</source>
-        <translation>Generiranje minijatura za ploču (%1/%2)</translation>
+        <translation type="vanished">Generiranje minijatura za ploču (%1/%2)</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentReplaceDialog</name>
     <message>
         <source>Accept</source>
-        <translation>Prihvati</translation>
+        <translation type="vanished">Prihvati</translation>
     </message>
     <message>
         <source>Replace</source>
@@ -1256,6 +1580,22 @@ Providing a new name will create a new document.</source>
         <translation>Ime %1 se već koristi.
 Ako se ime ne promijeni dokument će se prepisati.
 Davanjem novog imena stvorit će se novi dokument.</translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished">Preimenuj</translation>
+    </message>
+    <message>
+        <source>Replace all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Skip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Skip all</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1289,11 +1629,11 @@ Davanjem novog imena stvorit će se novi dokument.</translation>
     </message>
     <message>
         <source>Remove Item</source>
-        <translation>Ukloni element</translation>
+        <translation type="vanished">Ukloni element</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation>Stvarno želiš ukloniti odabrane elemente?</translation>
+        <translation type="vanished">Stvarno želiš ukloniti odabrane elemente?</translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
@@ -1312,17 +1652,40 @@ Davanjem novog imena stvorit će se novi dokument.</translation>
     </message>
 </context>
 <context>
+    <name>UBDraggableLivePixmapItem</name>
+    <message>
+        <source>Page %0</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBDraggableThumbnail</name>
     <message>
         <source>Page %0</source>
-        <translation>Stranica %0</translation>
+        <translation type="vanished">Stranica %0</translation>
     </message>
 </context>
 <context>
     <name>UBDraggableThumbnailView</name>
     <message>
         <source>Page %0</source>
-        <translation>Stranica %0</translation>
+        <translation type="vanished">Stranica %0</translation>
+    </message>
+</context>
+<context>
+    <name>UBEmbedController</name>
+    <message>
+        <source>Whole page</source>
+        <translation type="unfinished">Cijela stranica</translation>
+    </message>
+    <message>
+        <source>Application name can`t contain any of the following characters:<byte value="xd"/>
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web</source>
+        <translation type="unfinished">Web</translation>
     </message>
 </context>
 <context>
@@ -1430,6 +1793,10 @@ Davanjem novog imena stvorit će se novi dokument.</translation>
     <message>
         <source>Export to PDF</source>
         <translation>Izvezi u PDF</translation>
+    </message>
+    <message>
+        <source>The original PDF imported in OpenBoard seems not valid and could not be merged with your annotations. Please repair it and then reimport it in OpenBoard. The current export will be done with detailed (heavy) images of the pages of the original PDF instead, to avoid complete export failure.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1599,6 +1966,10 @@ Davanjem novog imena stvorit će se novi dokument.</translation>
         <source>Visible on Extended Screen</source>
         <translation>Vidljivo na proširenom ekranu</translation>
     </message>
+    <message>
+        <source>Hide on Extended Screen when selected</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsItemDelegate</name>
@@ -1616,7 +1987,15 @@ Davanjem novog imena stvorit će se novi dokument.</translation>
     </message>
     <message>
         <source>Go to Content Source</source>
-        <translation>Idi na izvorni sadržaj</translation>
+        <translation type="vanished">Idi na izvorni sadržaj</translation>
+    </message>
+    <message>
+        <source>Hide on Extended Screen when selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web Inspector</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1980,6 +2359,10 @@ Do you want to ignore these errors for this host?</source>
         <source>Marker is pressure sensitive</source>
         <translation>Marker je osjetljiv na pritisak</translation>
     </message>
+    <message>
+        <source>Use all available displays</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBSettings</name>
@@ -2063,11 +2446,11 @@ Do you want to ignore these errors for this host?</source>
     <name>UBTrapFlashController</name>
     <message>
         <source>Whole page</source>
-        <translation>Cijela stranica</translation>
+        <translation type="vanished">Cijela stranica</translation>
     </message>
     <message>
         <source>Web</source>
-        <translation>Web</translation>
+        <translation type="vanished">Web</translation>
     </message>
 </context>
 <context>
@@ -2124,17 +2507,24 @@ Za pristup aktualiziranim dokumentima ponovo pokreni program.</translation>
     </message>
 </context>
 <context>
+    <name>UBWebEngineView</name>
+    <message>
+        <source>Open Web Inspector</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UBWebPluginWidget</name>
     <message>
         <source>Loading...</source>
-        <translation>Učitavanje …</translation>
+        <translation type="vanished">Učitavanje …</translation>
     </message>
 </context>
 <context>
     <name>UBWidgetUniboardAPI</name>
     <message>
         <source>%0 called (method=%1, status=%2)</source>
-        <translation>%0 prekinuto (metoda=%1, stanje=%2)</translation>
+        <translation type="vanished">%0 prekinuto (metoda=%1, stanje=%2)</translation>
     </message>
 </context>
 <context>
@@ -2226,79 +2616,79 @@ Za pristup aktualiziranim dokumentima ponovo pokreni program.</translation>
     <name>WBClearButton</name>
     <message>
         <source>Clear</source>
-        <translation>Obriši</translation>
+        <translation type="vanished">Obriši</translation>
     </message>
 </context>
 <context>
     <name>WBDownloadItem</name>
     <message>
         <source>Save File</source>
-        <translation>Spremi datoteku</translation>
+        <translation type="vanished">Spremi datoteku</translation>
     </message>
     <message>
         <source>Download canceled: %1</source>
-        <translation>Preuzimanje prekinuto: %1</translation>
+        <translation type="vanished">Preuzimanje prekinuto: %1</translation>
     </message>
     <message>
         <source>Error opening saved file: %1</source>
-        <translation>Greška pri otvranju spremljene datoteke: %1</translation>
+        <translation type="vanished">Greška pri otvranju spremljene datoteke: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation>Greška pri spremanju: %1</translation>
+        <translation type="vanished">Greška pri spremanju: %1</translation>
     </message>
     <message>
         <source>Network Error: %1</source>
-        <translation>Mrežna greška: %1</translation>
+        <translation type="vanished">Mrežna greška: %1</translation>
     </message>
     <message>
         <source>seconds</source>
-        <translation>s</translation>
+        <translation type="vanished">s</translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation> min</translation>
+        <translation type="vanished"> min</translation>
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation>- %4 %5 preostalo</translation>
+        <translation type="vanished">- %4 %5 preostalo</translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
-        <translation>%1 od %2 (%3/s) %4</translation>
+        <translation type="vanished">%1 od %2 (%3/s) %4</translation>
     </message>
     <message>
         <source>?</source>
         <comment>unknown file size</comment>
-        <translation>?</translation>
+        <translation type="vanished">?</translation>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation>%1 of %2 – Prekinuto</translation>
+        <translation type="vanished">%1 of %2 – Prekinuto</translation>
     </message>
     <message>
         <source>bytes</source>
-        <translation>bajta</translation>
+        <translation type="vanished">bajta</translation>
     </message>
     <message>
         <source>KB</source>
-        <translation>KB</translation>
+        <translation type="vanished">KB</translation>
     </message>
     <message>
         <source>MB</source>
-        <translation>MB</translation>
+        <translation type="vanished">MB</translation>
     </message>
 </context>
 <context>
     <name>WBDownloadManager</name>
     <message>
         <source>1 Download</source>
-        <translation>Jedno preuzimanje</translation>
+        <translation type="vanished">Jedno preuzimanje</translation>
     </message>
     <message>
         <source>%1 Downloads</source>
         <comment>always &gt;= 2</comment>
-        <translation>%1 preuzimanja</translation>
+        <translation type="vanished">%1 preuzimanja</translation>
     </message>
 </context>
 <context>
@@ -2327,94 +2717,181 @@ Za pristup aktualiziranim dokumentima ponovo pokreni program.</translation>
     <name>WBSearchLineEdit</name>
     <message>
         <source>Search</source>
-        <translation>Traži</translation>
+        <translation type="vanished">Traži</translation>
     </message>
 </context>
 <context>
     <name>WBTabBar</name>
     <message>
         <source>New &amp;Tab</source>
-        <translation>Nova kar&amp;tica</translation>
+        <translation type="vanished">Nova kar&amp;tica</translation>
     </message>
     <message>
         <source>Clone Tab</source>
-        <translation>Dupiciraj karticu</translation>
+        <translation type="vanished">Dupiciraj karticu</translation>
     </message>
     <message>
         <source>&amp;Close Tab</source>
-        <translation>&amp;Zatvori karticu</translation>
+        <translation type="vanished">&amp;Zatvori karticu</translation>
     </message>
     <message>
         <source>Close &amp;Other Tabs</source>
-        <translation>Zatvori &amp;druge kartice</translation>
+        <translation type="vanished">Zatvori &amp;druge kartice</translation>
     </message>
     <message>
         <source>Reload Tab</source>
-        <translation>Ponovo učitaj karticu</translation>
+        <translation type="vanished">Ponovo učitaj karticu</translation>
     </message>
     <message>
         <source>Reload All Tabs</source>
-        <translation>Ponovo učitaj sve kartice</translation>
+        <translation type="vanished">Ponovo učitaj sve kartice</translation>
     </message>
 </context>
 <context>
     <name>WBTabWidget</name>
     <message>
         <source>Recently Closed Tabs</source>
-        <translation>Nedavno zatvorene kartice</translation>
+        <translation type="vanished">Nedavno zatvorene kartice</translation>
     </message>
     <message>
         <source>(Untitled)</source>
-        <translation>(Bez naslova)</translation>
+        <translation type="vanished">(Bez naslova)</translation>
     </message>
 </context>
 <context>
     <name>WBToolbarSearch</name>
     <message>
         <source>Search</source>
-        <translation>Pretraga</translation>
+        <translation type="vanished">Pretraga</translation>
     </message>
     <message>
         <source>No Recent Searches</source>
-        <translation>Nema nedavnih pretraga</translation>
+        <translation type="vanished">Nema nedavnih pretraga</translation>
     </message>
     <message>
         <source>Recent Searches</source>
-        <translation>Nedavne pretrage</translation>
+        <translation type="vanished">Nedavne pretrage</translation>
     </message>
     <message>
         <source>Clear Recent Searches</source>
-        <translation>Obriši nedavne pretrage</translation>
+        <translation type="vanished">Obriši nedavne pretrage</translation>
     </message>
 </context>
 <context>
     <name>WBWebPage</name>
     <message>
         <source>Download PDF Document: would you prefer to download the PDF file or add it to the current OpenBoard document?</source>
-        <translation>Preuzmi PDF dokument: želiš li radije preuzeti PDF datoteku ili je dodati trenutačnom OpenBoard dokumentu?</translation>
+        <translation type="vanished">Preuzmi PDF dokument: želiš li radije preuzeti PDF datoteku ili je dodati trenutačnom OpenBoard dokumentu?</translation>
     </message>
     <message>
         <source>Download</source>
-        <translation>Preuzmi</translation>
+        <translation type="vanished">Preuzmi</translation>
     </message>
     <message>
         <source>Add to Current Document</source>
-        <translation>Dodaj trenutačnom dokumentu</translation>
+        <translation type="vanished">Dodaj trenutačnom dokumentu</translation>
     </message>
     <message>
         <source>PDF</source>
-        <translation>PDF</translation>
+        <translation type="vanished">PDF</translation>
     </message>
     <message>
         <source>Error loading page: %1</source>
-        <translation>Greška pri učitavanju stranice: %1</translation>
+        <translation type="vanished">Greška pri učitavanju stranice: %1</translation>
     </message>
 </context>
 <context>
     <name>WBWebView</name>
     <message>
         <source>Open in New Tab</source>
-        <translation>Otori u novoj kartici</translation>
+        <translation type="vanished">Otori u novoj kartici</translation>
+    </message>
+</context>
+<context>
+    <name>WebPage</name>
+    <message>
+        <source>Certificate Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter username and password for &quot;%1&quot; at %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to access your location information?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to access your microphone?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to access your webcam?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to access your microphone and webcam?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to lock your mouse cursor?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to capture video of your desktop?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to capture audio and video of your desktop?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Permission Request</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect to proxy &quot;%1&quot; using:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow %1 to open all %2 links?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WebView</name>
+    <message>
+        <source>Render process normal exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process abnormal exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process crashed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process killed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render process exited with code: %1
+Do you want to reload the page ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Web Inspector in new window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inspect element</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to board</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2422,6 +2899,10 @@ Za pristup aktualiziranim dokumentima ponovo pokreni program.</translation>
     <message>
         <source>Processing...</source>
         <translation>Obrada …</translation>
+    </message>
+    <message>
+        <source>an error occured while trying to open the PDF file</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2588,7 +3069,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap control display and view display</source>
-        <translation>Zamijeni ekran s kontrolama i ekran za prikaz</translation>
+        <translation type="vanished">Zamijeni ekran s kontrolama i ekran za prikaz</translation>
     </message>
     <message>
         <source>Show internal web page content on secondary screen or projector</source>
@@ -2596,7 +3077,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap first and second view displays</source>
-        <translation>Zamijeni prvi i drugi ekran za prikaz</translation>
+        <translation type="vanished">Zamijeni prvi i drugi ekran za prikaz</translation>
     </message>
     <message>
         <source>Toolbar</source>
@@ -2752,18 +3233,38 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>PDF Rendering</source>
-        <translation>Iscrtavanje PDF-a</translation>
+        <translation type="vanished">Iscrtavanje PDF-a</translation>
     </message>
     <message>
         <source>Improve zoom execution time (can slightly affect rendering quality)</source>
         <translation>Poboljšaj vrijeme izvršenja zumiranja (može pomalo utjecati na kvalitetu iscrtavanja)</translation>
+    </message>
+    <message>
+        <source>PDF</source>
+        <translation type="unfinished">PDF</translation>
+    </message>
+    <message>
+        <source>Export background grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Documents</source>
+        <translation type="unfinished">Dokumenti</translation>
+    </message>
+    <message>
+        <source>List of screens used for Control, Display and Previous pages</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>trapFlashDialog</name>
     <message>
         <source>Trap flash</source>
-        <translation>Trap flash</translation>
+        <translation type="vanished">Trap flash</translation>
     </message>
     <message>
         <source>about:blank</source>
@@ -2780,6 +3281,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Select a content to capture</source>
         <translation>Odaberi sadržaj koji želiš snimiti</translation>
+    </message>
+    <message>
+        <source>Capture Web Content</source>
+        <translation type="unfinished">Snimi web sadržaj</translation>
     </message>
 </context>
 </TS>

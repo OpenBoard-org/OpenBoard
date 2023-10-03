@@ -960,7 +960,7 @@ Voulez-vous continuer quand-même ?   </translation>
     </message>
     <message>
         <source>Add to favorites</source>
-        <translation>Ajouter aux favoris</translation>
+        <translation type="vanished">Ajouter aux favoris</translation>
     </message>
     <message>
         <source>Add Document to favorites</source>
@@ -973,6 +973,14 @@ Voulez-vous continuer quand-même ?   </translation>
     <message>
         <source>Open Hints and tips</source>
         <translation>ouvrir les trucs et astuces</translation>
+    </message>
+    <message>
+        <source>favorite</source>
+        <translation type="vanished">Favori</translation>
+    </message>
+    <message>
+        <source>Favorite</source>
+        <translation>Favori</translation>
     </message>
 </context>
 <context>
