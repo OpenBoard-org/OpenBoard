@@ -53,6 +53,7 @@ class UBDocumentProxy
         bool theSameDocument(std::shared_ptr<UBDocumentProxy> proxy);
 
         QString persistencePath() const;
+        QString documentFolderName() const; //TODO 2.0 : should become id()
 
         void setPersistencePath(const QString& pPersistencePath);
 

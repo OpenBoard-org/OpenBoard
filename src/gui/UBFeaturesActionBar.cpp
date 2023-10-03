@@ -138,15 +138,33 @@ void UBFeaturesActionBar::updateButtons(UBFeature feature)
 {
     if (!feature.isFolder())
     {
-        if (featuresController->isInFavoriteList(feature.getFullPath()))
+        QString featureFullPath = feature.getFullPath().toString();
+        if (featureFullPath.endsWith('.rdf'))
         {
-            mpRemoveFromFavoritesBtn->show();
-            mpAddToFavoritesBtn->hide();
+            QString documentFoldername = featureFullPath.section('/', -2, -2); //section before "/metadata.rdf" is documentFolderName
+            if (featuresController->isDocumentInFavoriteList(documentFoldername))
+            {
+                mpRemoveFromFavoritesBtn->show();
+                mpAddToFavoritesBtn->hide();
+            }
+            else
+            {
+                mpAddToFavoritesBtn->show();
+                mpRemoveFromFavoritesBtn->hide();
+            }
         }
         else
         {
-            mpAddToFavoritesBtn->show();
-            mpRemoveFromFavoritesBtn->hide();
+            if (featuresController->isInFavoriteList(feature.getFullPath()))
+            {
+                mpRemoveFromFavoritesBtn->show();
+                mpAddToFavoritesBtn->hide();
+            }
+            else
+            {
+                mpAddToFavoritesBtn->show();
+                mpRemoveFromFavoritesBtn->hide();
+            }
         }
     }
     else

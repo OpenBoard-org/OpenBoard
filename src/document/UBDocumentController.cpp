@@ -863,7 +863,7 @@ QPersistentModelIndex UBDocumentTreeModel::persistentIndexForNode(UBDocumentTree
     return QPersistentModelIndex(indexForNode(pNode));
 }
 
-std::shared_ptr<UBDocumentProxy> UBDocumentTreeModel::findDocumentByPath(QString fullPath) const
+std::shared_ptr<UBDocumentProxy> UBDocumentTreeModel::findDocumentByFolderName(QString folderName) const
 {
     const auto children = mMyDocumentsNode->children();
     for(auto&& child: children)
@@ -873,7 +873,7 @@ std::shared_ptr<UBDocumentProxy> UBDocumentTreeModel::findDocumentByPath(QString
             std::shared_ptr<UBDocumentProxy> proxy = child->proxyData();
             if (proxy)
             {
-                if (proxy->persistencePath() == fullPath)
+                if (proxy->documentFolderName() == folderName)
                 {
                     return proxy;
                 }
@@ -881,7 +881,7 @@ std::shared_ptr<UBDocumentProxy> UBDocumentTreeModel::findDocumentByPath(QString
         }
         else if (child->children().count())
         {
-            std::shared_ptr<UBDocumentProxy> recursiveDescendResult = findDocumentByPath(child, fullPath);
+            std::shared_ptr<UBDocumentProxy> recursiveDescendResult = findDocumentByFolderName(child, folderName);
             if (recursiveDescendResult)
                 return recursiveDescendResult;
         }
@@ -890,7 +890,7 @@ std::shared_ptr<UBDocumentProxy> UBDocumentTreeModel::findDocumentByPath(QString
     return nullptr;
 }
 
-std::shared_ptr<UBDocumentProxy> UBDocumentTreeModel::findDocumentByPath(UBDocumentTreeNode* node, QString fullPath) const
+std::shared_ptr<UBDocumentProxy> UBDocumentTreeModel::findDocumentByFolderName(UBDocumentTreeNode* node, QString folderName) const
 {
     const auto children = node->children();
     for(auto&& child: children)
@@ -900,7 +900,7 @@ std::shared_ptr<UBDocumentProxy> UBDocumentTreeModel::findDocumentByPath(UBDocum
             std::shared_ptr<UBDocumentProxy> proxy = child->proxyData();
             if (proxy)
             {
-                if (proxy->persistencePath() == fullPath)
+                if (proxy->documentFolderName() == folderName)
                 {
                     return child->proxyData();
                 }
@@ -908,7 +908,7 @@ std::shared_ptr<UBDocumentProxy> UBDocumentTreeModel::findDocumentByPath(UBDocum
         }
         else if (child->children().count())
         {
-            std::shared_ptr<UBDocumentProxy> recursiveDescendResult = findDocumentByPath(child, fullPath);
+            std::shared_ptr<UBDocumentProxy> recursiveDescendResult = findDocumentByFolderName(child, folderName);
             if (recursiveDescendResult)
                 return recursiveDescendResult;
         }
@@ -1327,9 +1327,10 @@ void UBDocumentTreeModel::setNewName(const QModelIndex &index, const QString &ne
         UBFeaturesController* featuresController = UBApplication::boardController->paletteManager()->featuresWidget()->getFeaturesController();
 
         QUrl url = QUrl::fromLocalFile(indexNode->proxyData()->persistencePath() + "/metadata.rdf");
+        QString documentFolderName = indexNode->proxyData()->documentFolderName();
 
-        bool isInRecentlyOpenDocuments = featuresController->isInRecentlyOpenDocuments(url);
-        if (featuresController->isInFavoriteList(url) || isInRecentlyOpenDocuments)
+        bool isInRecentlyOpenDocuments = featuresController->isInRecentlyOpenDocuments(documentFolderName);
+        if (featuresController->isDocumentInFavoriteList(documentFolderName) || isInRecentlyOpenDocuments)
         {
                 featuresController->removeFromFavorite(url, true);
                 featuresController->addToFavorite(url, newName, isInRecentlyOpenDocuments);
@@ -3407,8 +3408,9 @@ void UBDocumentController::toggleAddDocumentToFavorites()
     UBFeaturesController* featuresController = UBApplication::boardController->paletteManager()->featuresWidget()->getFeaturesController();
 
     QUrl url = QUrl::fromLocalFile(selectedDocument()->persistencePath() + "/metadata.rdf");
+    QString documentFolderName = selectedDocument()->documentFolderName();
 
-    if (!featuresController->isInFavoriteList(url))
+    if (!featuresController->isDocumentInFavoriteList(documentFolderName))
     {
         featuresController->addToFavorite(url, selectedDocument()->name());
         selectedDocument()->setIsInFavoristeList(true);
@@ -3710,8 +3712,7 @@ void UBDocumentController::updateActions()
     if (selectedProxy)
     {
         UBFeaturesController* featuresController = UBApplication::boardController->paletteManager()->featuresWidget()->getFeaturesController();
-        QUrl url = QUrl::fromLocalFile(selectedProxy->persistencePath() + "/metadata.rdf");
-        mMainWindow->actionAddDocumentToFavorites->setChecked(featuresController->isInFavoriteList(url));
+        mMainWindow->actionAddDocumentToFavorites->setChecked(featuresController->isDocumentInFavoriteList(selectedProxy->documentFolderName()));
     }
     else
     {

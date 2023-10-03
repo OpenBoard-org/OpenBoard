@@ -196,6 +196,11 @@ QString UBDocumentProxy::persistencePath() const
     return mPersistencePath;
 }
 
+QString UBDocumentProxy::documentFolderName() const
+{
+    return mPersistencePath.section('/', -1);
+}
+
 void UBDocumentProxy::setPersistencePath(const QString& pPersistencePath)
 {
     if (pPersistencePath != mPersistencePath)

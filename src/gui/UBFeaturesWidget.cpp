@@ -365,8 +365,9 @@ void UBFeaturesWidget::addElementsToFavorite()
                 // but not in the favorite list. We just need to insert it in the favoriteSet
                 controller->storeAsFavorite(feature);
 
-                QString documentPath = feature.getFullPath().adjusted(QUrl::RemoveFilename).toLocalFile().chopped(1);
-                std::shared_ptr<UBDocumentProxy> document = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->findDocumentByPath(documentPath);
+                QString documentFolderName = feature.getFullPath().toString().section('/', -2, -2); //section before "/metadata.rdf" is documentFolderName
+
+                std::shared_ptr<UBDocumentProxy> document = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->findDocumentByFolderName(documentFolderName);
                 if (document)
                 {
                     document->setIsInFavoristeList(true);

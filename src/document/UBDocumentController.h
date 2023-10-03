@@ -244,8 +244,8 @@ public:
     static bool nodeLessThan(const UBDocumentTreeNode *firstIndex, const UBDocumentTreeNode *secondIndex);
     void setHighLighted(const QModelIndex &newHighLighted) {mHighLighted = newHighLighted;}
     QModelIndex highLighted() {return mHighLighted;}
-    std::shared_ptr<UBDocumentProxy> findDocumentByPath(QString path) const;
-    std::shared_ptr<UBDocumentProxy> findDocumentByPath(UBDocumentTreeNode* node, QString path) const;
+    std::shared_ptr<UBDocumentProxy> findDocumentByFolderName(QString folderName) const;
+    std::shared_ptr<UBDocumentProxy> findDocumentByFolderName(UBDocumentTreeNode* node, QString folderName) const;
 
     //N/C - NNE - 20140407
     bool ascendingOrder() const{ return mAscendingOrder; }

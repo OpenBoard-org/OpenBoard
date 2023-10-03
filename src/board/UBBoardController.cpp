@@ -1519,9 +1519,9 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
     }
     else if (UBMimeType::Document == itemMimeType)
     {
-        QString documentPath = sourceUrl.adjusted(QUrl::RemoveFilename).toLocalFile().chopped(1);
+        QString documentFolderName = sourceUrl.toString().section('/', -2, -2); //section before "/metadata.rdf" is documentFolderName
 
-        std::shared_ptr<UBDocumentProxy> document = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->findDocumentByPath(documentPath);
+        std::shared_ptr<UBDocumentProxy> document = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->findDocumentByFolderName(documentFolderName);
 
         if (document)
         {
@@ -1615,8 +1615,9 @@ void UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> 
         UBFeaturesController* featuresController = paletteManager()->featuresWidget()->getFeaturesController();
 
         QUrl url = QUrl::fromLocalFile(pDocumentProxy->persistencePath() + "/metadata.rdf");
+        QString documentFolderName = pDocumentProxy->documentFolderName();
 
-        if (!featuresController->isInFavoriteList(url) && !featuresController->isInRecentlyOpenDocuments(url))
+        if (!featuresController->isDocumentInFavoriteList(documentFolderName) && !featuresController->isInRecentlyOpenDocuments(documentFolderName))
         {
             featuresController->addToFavorite(url, pDocumentProxy->name(), true);
         }

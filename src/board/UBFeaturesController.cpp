@@ -440,14 +440,15 @@ void UBFeaturesController::scanFS()
         }
     }
 
-
     QSet<QUrl> favoriteDocumentsToRemove;
     for (auto&& favoriteElement : qAsConst(*favoriteSet))
     {
         if (favoriteElement.fileName().endsWith(".rdf"))
         {
-            QString documentPath = favoriteElement.adjusted(QUrl::RemoveFilename).toLocalFile().chopped(1);
-            std::shared_ptr<UBDocumentProxy> document = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->findDocumentByPath(documentPath);
+            //documentFolderName is unique AND common on every OS
+            //(previously, we used documentPath but it's not compatible with a network-storage context as part of the url can change from one machine to another)
+            QString documentFolderName = favoriteElement.toString().section('/',-2, -2);
+            std::shared_ptr<UBDocumentProxy> document = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel->findDocumentByFolderName(documentFolderName);
 
             if (document)
             {
@@ -526,9 +527,37 @@ bool UBFeaturesController::isInFavoriteList(QUrl url)
     return favoriteSet->contains(url);
 }
 
-bool UBFeaturesController::isInRecentlyOpenDocuments(QUrl url)
+bool UBFeaturesController::isDocumentInFavoriteList(QString documentFolderName)
 {
-    return recentlyOpenDocuments.contains(url);
+    for(auto&& url : qAsConst(*favoriteSet))
+    {
+        QString localFile = url.toLocalFile();
+        if (localFile.endsWith(".rdf"))
+        {
+            if (localFile.section('/', -2, -2) == documentFolderName) //section before "/metadata.rdf" is documentFolderName
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+bool UBFeaturesController::isInRecentlyOpenDocuments(QString documentFolderName)
+{
+    for(auto&& url : qAsConst(recentlyOpenDocuments))
+    {
+        QString localFile = url.toLocalFile();
+        if (localFile.endsWith(".rdf"))
+        {
+            if (localFile.section('/', -2, -2) == documentFolderName) //section before "/metadata.rdf" is documentFolderName
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 void UBFeaturesController::loadFavoriteList()
@@ -633,10 +662,15 @@ QString UBFeaturesController::adjustName(const QString &str)
 void UBFeaturesController::addToFavorite(const QUrl &path, const QString &name , bool temporaryAdded)
 {
     bool addElementToFavoritesLibraryFolder = false;
+
+    //section before "/filename.ext" is documentFolderName in case of a document.
+    //If not a document, document-specific conditions will fail ("i.e 'applications' not in favoriteList or recentlyOpenDocuments)
+    //and standard behavior will be applied.
+    const QString documentFolderName = path.toString().section('/', -2, -2);
     if (temporaryAdded)
     {
         //we are adding an element to recently open documents
-        if (!isInRecentlyOpenDocuments(path))
+        if (!isInRecentlyOpenDocuments(documentFolderName))
         {
             recentlyOpenDocuments.insert(path);
             addElementToFavoritesLibraryFolder = true;
@@ -645,9 +679,9 @@ void UBFeaturesController::addToFavorite(const QUrl &path, const QString &name ,
     else
     {
         // we are adding an element to favorites
-        if (!isInFavoriteList(path))
+        if (!isDocumentInFavoriteList(documentFolderName))
         {
-            if (isInRecentlyOpenDocuments(path))
+            if (isInRecentlyOpenDocuments(documentFolderName))
             {
                 //we don't need to add the element again to the fav library.
                 // we simply move it from recentlyOpenDocuments to favoriteSet

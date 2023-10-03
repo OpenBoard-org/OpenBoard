@@ -220,7 +220,8 @@ public:
     void assignPathListView(UBFeaturesListView *pList);
 
     bool isInFavoriteList(QUrl url);
-    bool isInRecentlyOpenDocuments(QUrl url);
+    bool isDocumentInFavoriteList(QString documentFolderName);
+    bool isInRecentlyOpenDocuments(QString documentFolderName);
 
 public:
     static const QString rootPath;
@@ -306,7 +307,7 @@ private:
     UBFeature shapesElement;
     UBFeature webSearchElement;
 
-    QSet <QUrl> *favoriteSet;
+    QSet<QUrl> *favoriteSet;
     QSet<QUrl> recentlyOpenDocuments;
 
 public:
