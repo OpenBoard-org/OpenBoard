@@ -139,7 +139,7 @@ void UBFeaturesActionBar::updateButtons(UBFeature feature)
     if (!feature.isFolder())
     {
         QString featureFullPath = feature.getFullPath().toString();
-        if (featureFullPath.endsWith('.rdf'))
+        if (featureFullPath.endsWith(".rdf"))
         {
             QString documentFoldername = featureFullPath.section('/', -2, -2); //section before "/metadata.rdf" is documentFolderName
             if (featuresController->isDocumentInFavoriteList(documentFoldername))
