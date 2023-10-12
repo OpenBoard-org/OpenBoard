@@ -170,10 +170,19 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBItem, public 
         QUrl mWidgetUrl;
         QMap<QString, QString> mDatastore;
         QMap<QString, QString> mPreferences;
-
+#ifndef Q_OS_WIN
+        /*
+         * workaround for QTBUG-79216 - to be removed when bug is fixed
+        */
+        Qt::Key mLastDeadKey;
+        QMap<Qt::Key, QString> mDeadKeys;
+        QMap<QString, QString> mAccentedCharacters;
+        QString getAccentedLetter(Qt::Key deadKey, QString letter);
+#endif
 
         virtual bool event(QEvent *event) override;
         virtual void dropEvent(QGraphicsSceneDragDropEvent *event) override;
+        virtual void keyPressEvent(QKeyEvent *event) override;
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
         virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;

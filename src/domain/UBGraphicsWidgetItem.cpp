@@ -107,8 +107,78 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
     {
         window->installEventFilter(this);
     }
-}
 
+#ifndef Q_OS_WIN
+    /*
+     * workaround for a bug related to (at least) QTBUG-79216 - to be removed when bug is fixed
+    */
+    mLastDeadKey = Qt::Key_unknown;
+
+    // Dead Key: ^
+    mAccentedCharacters["^a"] = QString::fromUtf8(u8"â");
+    mAccentedCharacters["^A"] = QString::fromUtf8(u8"Â");
+    mAccentedCharacters["^e"] = QString::fromUtf8(u8"ê");
+    mAccentedCharacters["^E"] = QString::fromUtf8(u8"Ê");
+    mAccentedCharacters["^i"] = QString::fromUtf8(u8"î");
+    mAccentedCharacters["^I"] = QString::fromUtf8(u8"Î");
+    mAccentedCharacters["^o"] = QString::fromUtf8(u8"ô");
+    mAccentedCharacters["^O"] = QString::fromUtf8(u8"Ô");
+    mAccentedCharacters["^u"] = QString::fromUtf8(u8"û");
+    mAccentedCharacters["^U"] = QString::fromUtf8(u8"Û");
+
+    // Dead Key: ´
+    mAccentedCharacters["´a"] = QString::fromUtf8(u8"á");
+    mAccentedCharacters["´A"] = QString::fromUtf8(u8"Á");
+    mAccentedCharacters["´e"] = QString::fromUtf8(u8"é");
+    mAccentedCharacters["´E"] = QString::fromUtf8(u8"É");
+    mAccentedCharacters["´i"] = QString::fromUtf8(u8"í");
+    mAccentedCharacters["´I"] = QString::fromUtf8(u8"Í");
+    mAccentedCharacters["´o"] = QString::fromUtf8(u8"ó");
+    mAccentedCharacters["´O"] = QString::fromUtf8(u8"Ó");
+    mAccentedCharacters["´u"] = QString::fromUtf8(u8"ú");
+    mAccentedCharacters["´U"] = QString::fromUtf8(u8"Ú");
+
+    // Dead Key: `
+    mAccentedCharacters["`a"] = QString::fromUtf8(u8"à");
+    mAccentedCharacters["`A"] = QString::fromUtf8(u8"À");
+    mAccentedCharacters["`e"] = QString::fromUtf8(u8"è");
+    mAccentedCharacters["`E"] = QString::fromUtf8(u8"È");
+    mAccentedCharacters["`i"] = QString::fromUtf8(u8"ì");
+    mAccentedCharacters["`I"] = QString::fromUtf8(u8"Ì");
+    mAccentedCharacters["`o"] = QString::fromUtf8(u8"ò");
+    mAccentedCharacters["`O"] = QString::fromUtf8(u8"Ò");
+    mAccentedCharacters["`u"] = QString::fromUtf8(u8"ù");
+    mAccentedCharacters["`U"] = QString::fromUtf8(u8"Ù");
+
+    // Dead Key: ~
+    mAccentedCharacters["~n"] = QString::fromUtf8(u8"ñ");
+    mAccentedCharacters["~N"] = QString::fromUtf8(u8"Ñ");
+
+    // Dead Key: '
+    mAccentedCharacters["'c"] = QString::fromUtf8(u8"ç");
+    mAccentedCharacters["'C"] = QString::fromUtf8(u8"Ç");
+
+    // Dead Key: ¨
+    mAccentedCharacters["¨a"] = QString::fromUtf8(u8"ä");
+    mAccentedCharacters["¨A"] = QString::fromUtf8(u8"Ä");
+    mAccentedCharacters["¨e"] = QString::fromUtf8(u8"ë");
+    mAccentedCharacters["¨E"] = QString::fromUtf8(u8"Ë");
+    mAccentedCharacters["¨i"] = QString::fromUtf8(u8"ï");
+    mAccentedCharacters["¨I"] = QString::fromUtf8(u8"Ï");
+    mAccentedCharacters["¨o"] = QString::fromUtf8(u8"ö");
+    mAccentedCharacters["¨O"] = QString::fromUtf8(u8"Ö");
+    mAccentedCharacters["¨u"] = QString::fromUtf8(u8"ü");
+    mAccentedCharacters["¨U"] = QString::fromUtf8(u8"Ü");
+    mAccentedCharacters["¨y"] = QString::fromUtf8(u8"ÿ");
+    mAccentedCharacters["¨Y"] = QString::fromUtf8(u8"Ÿ");
+
+    mDeadKeys[Qt::Key_Dead_Circumflex] = "^";   // ^ (Caret)
+    mDeadKeys[Qt::Key_Dead_Grave] = "`";        // ` (Backtick)
+    mDeadKeys[Qt::Key_Dead_Tilde] = "~";        // ~ (Tilde)
+    mDeadKeys[Qt::Key_Dead_Acute] = "´";        // ´ (Acute Accent)
+    mDeadKeys[Qt::Key_Dead_Diaeresis] = "¨";    // ¨ (Diaeresis)
+#endif
+}
 
 UBGraphicsWidgetItem::~UBGraphicsWidgetItem()
 {
@@ -613,6 +683,89 @@ void UBGraphicsWidgetItem::dropEvent(QGraphicsSceneDragDropEvent *event)
     {
         QGraphicsProxyWidget::dropEvent(event);
     }
+}
+
+#ifndef Q_OS_WIN
+/*
+ * workaround for a bug related to (at least) QTBUG-79216 - to be removed when bug is fixed
+*/
+QString UBGraphicsWidgetItem::getAccentedLetter(Qt::Key deadKey, QString letter)
+{
+    QString combined = mDeadKeys.value(deadKey, "") + letter;
+
+    return mAccentedCharacters.value(combined, combined);
+}
+#endif
+
+void UBGraphicsWidgetItem::keyPressEvent(QKeyEvent *event)
+{
+#ifndef Q_OS_WIN
+    bool isDeadKey = event->key() >= Qt::Key_Dead_Grave && event->key() <= Qt::Key_Dead_Longsolidusoverlay;
+    if (isDeadKey)
+    {
+        if (mLastDeadKey != Qt::Key_unknown)
+        {
+            //two dead keys in a row
+            //not the standard behavior, but for simplicity,
+            //we choose to write both dead keys
+            QKeyEvent* prviousDeadKeyEvent = new QKeyEvent(
+                QEvent::KeyPress,
+                mLastDeadKey,
+                Qt::NoModifier,
+                mDeadKeys.value(mLastDeadKey, "")
+            );
+
+            QKeyEvent* currentDeadKeyEvent = new QKeyEvent(
+                QEvent::KeyPress,
+                event->type(),
+                Qt::NoModifier,
+                mDeadKeys.value((Qt::Key)event->key(), "")
+            );
+
+            QGraphicsProxyWidget::keyPressEvent(prviousDeadKeyEvent);
+            QGraphicsProxyWidget::keyPressEvent(currentDeadKeyEvent);
+
+            mLastDeadKey = Qt::Key_unknown;
+        }
+        else
+        {
+            mLastDeadKey = (Qt::Key)event->key();
+        }
+    }
+    else
+    {
+        if (mLastDeadKey != Qt::Key_unknown)
+        {
+            if (!event->text().isEmpty())
+            {
+                QString accentedText = getAccentedLetter(mLastDeadKey, event->text());
+                if (!accentedText.isEmpty())
+                {
+                    QKeyEvent* accentedLetterEvent = new QKeyEvent(
+                        QEvent::KeyPress,
+                        event->key(),
+                        event->modifiers(),
+                        accentedText
+                    );
+
+                    QGraphicsProxyWidget::keyPressEvent(accentedLetterEvent);
+                }
+
+                mLastDeadKey = Qt::Key_unknown;
+            }
+            else
+            {
+                QGraphicsProxyWidget::keyPressEvent(event);
+            }
+        }
+        else
+        {
+            QGraphicsProxyWidget::keyPressEvent(event);
+        }
+    }
+#else
+    QGraphicsProxyWidget::keyPressEvent(event);
+#endif
 }
 
 void UBGraphicsWidgetItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
