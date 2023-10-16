@@ -1230,6 +1230,29 @@ Do you wish to override the security check and continue ?   </source>
     </message>
 </context>
 <context>
+    <name>UBCompassAngleRotateDialog</name>
+    <message>
+        <source>Compass angle rotation</source>
+        <translation>Задать угол поворота циркуля</translation>
+    </message>
+    <message>
+        <source>Angle:</source>
+        <translation>Угол:</translation>
+    </message>
+    <message>
+        <source>With drawing</source>
+        <translation>Прочертить</translation>
+    </message>
+    <message>
+        <source>Rotate absolutely</source>
+        <translation>Повернуть абсолютно</translation>
+    </message>
+    <message>
+        <source>Rotate relative</source>
+        <translation>Повернуть относительно</translation>
+    </message>
+</context>
+<context>
     <name>UBDesktopPalette</name>
     <message>
         <source>Capture Part of the Screen</source>
@@ -1894,6 +1917,17 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Loading </source>
         <translation>Загрузка</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsCompass</name>
+    <message>
+        <source>Normalize position</source>
+        <translation>Прилипание к сетке</translation>
+     </message>
+    <message>
+        <source>Normalize size</source>
+        <translation>Размер по сетке</translation>
     </message>
 </context>
 <context>

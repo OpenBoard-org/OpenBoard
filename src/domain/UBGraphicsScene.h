@@ -394,6 +394,8 @@ public slots:
 
         void controlViewportChanged();
 
+        void setPreviousPoint(QPointF _point);
+
     protected:
 
         UBGraphicsPolygonItem* lineToPolygonItem(const QLineF& pLine, const qreal& pWidth);

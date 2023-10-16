@@ -839,6 +839,7 @@ void UBSettings::setPageBackground(UBPageBackground background)
         val = "plain";
 
     setValue("Board/PageBackground", val);
+    emit(pageBackgroundChanged());
 }
 
 void UBSettings::setSeyesRuledBackground(bool isSeyesRuledBackground)

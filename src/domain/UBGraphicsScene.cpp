@@ -2404,6 +2404,11 @@ void UBGraphicsScene::controlViewportChanged()
     }
 }
 
+void UBGraphicsScene::setPreviousPoint(QPointF _point)
+{
+    mPreviousPoint = _point;
+}
+
 void UBGraphicsScene::addCompass(QPointF center)
 {
     UBGraphicsCompass* compass = new UBGraphicsCompass(); // mem : owned and destroyed by the scene
