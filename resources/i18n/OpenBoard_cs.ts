@@ -1912,6 +1912,18 @@ Providing a new name will create a new document.</source>
         <source>Hide on Extended Screen when selected</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Duplicate</source>
+        <translation type="unfinished">Duplikovat</translation>
+    </message>
+    <message>
+        <source>Layer up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Layer down</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsMediaItem</name>

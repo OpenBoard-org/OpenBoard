@@ -1933,6 +1933,18 @@ Proporcionar un nuevo nombre creará un nuevo documento.</translation>
         <source>Hide on Extended Screen when selected</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Duplicate</source>
+        <translation type="unfinished">Duplicar</translation>
+    </message>
+    <message>
+        <source>Layer up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Layer down</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsMediaItem</name>

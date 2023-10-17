@@ -1944,6 +1944,18 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
         <source>Hide on Extended Screen when selected</source>
         <translation>Occultare sullo schermo esteso quando selezionato</translation>
     </message>
+    <message>
+        <source>Duplicate</source>
+        <translation type="unfinished">Duplica</translation>
+    </message>
+    <message>
+        <source>Layer up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Layer down</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsMediaItem</name>

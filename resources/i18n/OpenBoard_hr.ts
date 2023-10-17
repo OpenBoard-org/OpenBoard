@@ -1997,6 +1997,18 @@ Davanjem novog imena stvorit će se novi dokument.</translation>
         <source>Web Inspector</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Duplicate</source>
+        <translation type="unfinished">Dupliciraj</translation>
+    </message>
+    <message>
+        <source>Layer up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Layer down</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsMediaItem</name>
