@@ -1949,6 +1949,18 @@ Wenn Sie einen neuen Namen wählen, wird ein neues Dokument erstellt.</translati
         <source>Hide on Extended Screen when selected</source>
         <translation>Auf dem erweiterten Bildschirm ausblenden, wenn ausgewählt</translation>
     </message>
+    <message>
+        <source>Duplicate</source>
+        <translation type="unfinished">Kopieren</translation>
+    </message>
+    <message>
+        <source>Layer up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Layer down</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsMediaItem</name>

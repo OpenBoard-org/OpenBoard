@@ -44,7 +44,7 @@
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
 
-#include "board/UBBoardPaletteManager.h"
+#include "board/UBDrawingController.h"
 
 #include "core/memcheck.h"
 
@@ -1187,10 +1187,12 @@ void UBDraggableLivePixmapItem::updatePixmap(const QRectF &region)
     {
         QPixmap pixmap = this->pixmap();
         QRectF pixmapRect;
+        const auto tool = UBDrawingController::drawingController()->stylusTool();
+        const auto affectsWholeScene = tool == UBStylusTool::Play || tool == UBStylusTool::Selector;
 
-        if (region.isNull())
+        if (region.isNull() || affectsWholeScene)
         {
-            // full update
+            // full update if region unknown or play/selector tool active, which may affect whole scene
             pixmapRect = QRectF(QPoint(0, 0), mSize);
         }
         else
