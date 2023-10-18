@@ -40,7 +40,6 @@
 
 const QRect UBGraphicsRuler::sDefaultRect = QRect(0, 0, 800, 96);
 
-
 UBGraphicsRuler::UBGraphicsRuler()
     : QGraphicsRectItem()
     , mResizing(false)
@@ -61,6 +60,7 @@ UBGraphicsRuler::UBGraphicsRuler()
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::CppTool)); //Necessary to set if we want z value to be assigned correctly
 
     setFlag(QGraphicsItem::ItemIsSelectable, false);
+    setFlag(QGraphicsItem::ItemIsFocusable, true); //needed to receive key events
     updateResizeCursor();
 }
 
@@ -114,23 +114,23 @@ void UBGraphicsRuler::paint(QPainter *painter, const QStyleOptionGraphicsItem *s
 
     UBAbstractDrawRuler::paint();
 
-    QTransform antiScaleTransform2;
+    QTransform antiScaleTransform;
     qreal ratio = mAntiScaleRatio > 1.0 ? mAntiScaleRatio : 1.0;
-    antiScaleTransform2.scale(ratio, 1.0);
+    antiScaleTransform.scale(ratio, 1.0);
 
-    mResizeSvgItem->setTransform(antiScaleTransform2);
+    mResizeSvgItem->setTransform(antiScaleTransform);
     mResizeSvgItem->setPos(resizeButtonRect().topLeft());
 
-    mRotateSvgItem->setTransform(antiScaleTransform2);
+    mRotateSvgItem->setTransform(antiScaleTransform);
     mRotateSvgItem->setPos(rotateButtonRect().topLeft());
-
-
 
     painter->setPen(drawColor());
     painter->setBrush(edgeFillColor());
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->drawRoundedRect(rect(), sRoundingRadius, sRoundingRadius);
+
     fillBackground(painter);
+    paintHelp(painter);
     paintGraduations(painter);
     if (mRotating)
         paintRotationCenter(painter);
@@ -147,6 +147,37 @@ QVariant UBGraphicsRuler::itemChange(GraphicsItemChange change, const QVariant &
     }
 
     return QGraphicsRectItem::itemChange(change, value);
+}
+
+void UBGraphicsRuler::paintHelp(QPainter *painter)
+{
+    if (hasFocus())
+    {
+         //help message to aknowledge the user that the tool can be moved with the arrow keys
+         painter->setPen(drawColor());
+         painter->setFont(QFont("Arial",9));
+         QFontMetricsF fontMetrics(painter->font());
+         int textWidth = fontMetrics.horizontalAdvance(tr("use arrow keys for precise moves"));
+
+         if (rect().width()/2 > textWidth)
+         {
+             painter->drawText(rect(), Qt::AlignCenter, tr("use arrow keys for precise moves"));
+
+             mMoveToolSvgItem->setPos(
+                 rect().center().x() + (textWidth/2) + 5 /* (a 5px margin between the text and the icon) */,
+                 rect().center().y() - mMoveToolSvgItem->boundingRect().height() * mAntiScaleRatio / 2);
+
+             mMoveToolSvgItem->setVisible(true);
+         }
+         else
+         {
+             mMoveToolSvgItem->setVisible(false);
+         }
+    }
+    else
+    {
+        mMoveToolSvgItem->setVisible(false);
+    }
 }
 
 void UBGraphicsRuler::fillBackground(QPainter *painter)
@@ -166,8 +197,10 @@ void UBGraphicsRuler::fillBackground(QPainter *painter)
     QLinearGradient linearGradient3(
         rect3.topLeft(),
         rect3.bottomLeft());
+
     linearGradient3.setColorAt(0, middleFillColor());
     linearGradient3.setColorAt(1, edgeFillColor());
+
     painter->fillRect(rect3, linearGradient3);
 }
 
@@ -225,7 +258,6 @@ void UBGraphicsRuler::paintGraduations(QPainter *painter)
             }
         }
     }
-
 
     painter->restore();
 
@@ -307,6 +339,30 @@ QRectF UBGraphicsRuler::rotateButtonRect() const
         rotateRectCenter.y() - rotateRectSize.height() / 2);
 
     return QRectF(rotateRectTopLeft, rotateRectSize);
+}
+
+void UBGraphicsRuler::keyPressEvent(QKeyEvent *event)
+{
+    QGraphicsItem::keyPressEvent(event);
+    switch (event->key())
+    {
+    case Qt::Key_Up:
+        moveBy(0, -1);
+        event->accept();;
+        break;
+    case Qt::Key_Down:
+        moveBy(0, 1);
+        event->accept();
+        break;
+    case Qt::Key_Left:
+        moveBy(-1, 0);
+        event->accept();
+        break;
+    case Qt::Key_Right:
+        moveBy(1, 0);
+        event->accept();
+        break;
+    }
 }
 
 void UBGraphicsRuler::hoverMoveEvent(QGraphicsSceneHoverEvent *event)

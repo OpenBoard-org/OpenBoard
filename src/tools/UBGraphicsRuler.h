@@ -73,6 +73,7 @@ class UBGraphicsRuler : public UBAbstractDrawRuler, public QGraphicsRectItem, pu
         virtual void    hoverEnterEvent(QGraphicsSceneHoverEvent *event);
         virtual void    hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
         virtual void    hoverMoveEvent(QGraphicsSceneHoverEvent *event);
+        virtual void    keyPressEvent(QKeyEvent *event);
         void paintGraduations(QPainter *painter);
 
     private:
@@ -84,6 +85,7 @@ class UBGraphicsRuler : public UBAbstractDrawRuler, public QGraphicsRectItem, pu
         // Helpers
         void    fillBackground(QPainter *painter);
         void    paintRotationCenter(QPainter *painter);
+        void    paintHelp(QPainter *painter);
         virtual void    rotateAroundCenter(qreal angle);
 
         QGraphicsSvgItem* mRotateSvgItem;

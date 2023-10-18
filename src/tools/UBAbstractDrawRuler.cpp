@@ -73,6 +73,10 @@ void UBAbstractDrawRuler::create(QGraphicsItem& item)
     mCloseSvgItem = new QGraphicsSvgItem(":/images/closeTool.svg", &item);
     mCloseSvgItem->setVisible(false);
     mCloseSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+
+    mMoveToolSvgItem = new QGraphicsSvgItem(":/images/moveTool.svg", &item);
+    mMoveToolSvgItem->setVisible(false);
+    mMoveToolSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
 }
 
 

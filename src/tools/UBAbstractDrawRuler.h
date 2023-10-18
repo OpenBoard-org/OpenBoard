@@ -62,9 +62,11 @@ protected:
     virtual QPointF rotationCenter() const = 0;
     virtual QRectF closeButtonRect() const = 0;
     virtual void paintGraduations(QPainter *painter) = 0;
+    virtual void paintHelp(QPainter *painter) = 0;
 
     bool mShowButtons;
     QGraphicsSvgItem* mCloseSvgItem;
+    QGraphicsSvgItem* mMoveToolSvgItem;
     qreal mAntiScaleRatio;
 
     QPointF startDrawPosition;
