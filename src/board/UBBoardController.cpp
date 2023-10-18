@@ -179,14 +179,19 @@ void UBBoardController::initBackgroundGridSize()
     qreal dpi = UBApplication::displayManager->logicalDpi(ScreenRole::Control);
 
     //qDebug() << "dpi: " << dpi;
+    int gridSize;
 
+    if(UBSettings::settings()->backgroundGridSize()==-1)
+    {
     qreal screenY = UBApplication::displayManager->screenSize(ScreenRole::Control).height();
     qreal documentY = mActiveScene->nominalSize().height();
     qreal resolutionRatio = documentY / screenY;
 
     //qDebug() << "resolution ratio: " << resolutionRatio;
 
-    int gridSize = (resolutionRatio * 10. * dpi) / UBGeometryUtils::inchSize;
+    gridSize = (resolutionRatio * 10. * dpi) / UBGeometryUtils::inchSize;
+    } else
+        gridSize = UBSettings::settings()->backgroundGridSize();
 
     UBSettings::settings()->crossSize = gridSize;
     UBSettings::settings()->defaultCrossSize = gridSize;
