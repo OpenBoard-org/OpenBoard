@@ -1952,6 +1952,18 @@ Un nouveau nom vous permettra de conserver l&apos;ancien document.</translation>
         <source>Hide on Extended Screen when selected</source>
         <translation>Cacher sur l’écran étendu quand sélectionné</translation>
     </message>
+    <message>
+        <source>Duplicate</source>
+        <translation type="unfinished">Dupliquer</translation>
+    </message>
+    <message>
+        <source>Layer up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Layer down</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UBGraphicsMediaItem</name>
