@@ -70,12 +70,12 @@ UBFeaturesActionBar::UBFeaturesActionBar( UBFeaturesController *controller, QWid
     // Create the actions
     mpAddToFavoritesAction = new QAction(QPixmap(":/images/addToFavorites.png"), tr("Add to favorites"), this);
     mpRemoveFromFavoritesAction = new QAction(QPixmap(":/images/removeFromFavorites.png"), tr("Remove from favorites"), this);
-    mpSocialAction = new QAction(QIcon(":/images/libpalette/social.png"), tr("Share"), this);
-    mpSearchAction = new QAction(QIcon(":/images/libpalette/miniSearch.png"), tr("Search"), this);
-    mpRescanModelAction = new QAction(QIcon(":/images/cursors/rotate.png"), tr("Rescan file system"), this);
-    mpDeleteAction = new QAction(QIcon(":/images/libpalette/miniTrash.png"), tr("Delete"), this);
+    mpSocialAction = new QAction(QIcon(":/images/libpalette/social.svg"), tr("Share"), this);
+    mpSearchAction = new QAction(QIcon(":/images/libpalette/miniSearch.svg"), tr("Search"), this);
+    mpRescanModelAction = new QAction(QIcon(":/images/cursors/rotate.svg"), tr("Rescan file system"), this);
+    mpDeleteAction = new QAction(QIcon(":/images/libpalette/miniTrash.svg"), tr("Delete"), this);
     mpCloseAction = new QAction(QIcon(":/images/close.svg"), tr("Back to folder"), this);
-    mpNewFolderAction = new QAction(QIcon(":/images/libpalette/miniNewFolder.png"), tr("Create new folder"), this);
+    mpNewFolderAction = new QAction(QIcon(":/images/libpalette/miniNewFolder.svg"), tr("Create new folder"), this);
 
     // Create the buttons
     mpAddToFavoritesBtn = new UBActionButton(this, mpAddToFavoritesAction);

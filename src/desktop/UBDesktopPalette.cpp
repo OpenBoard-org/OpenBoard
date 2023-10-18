@@ -52,7 +52,7 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
 {
     QList<QAction*> actions;
 
-    mActionUniboard = new QAction(QIcon(":/images/toolbar/board.png"), tr("Show OpenBoard"), this);
+    mActionUniboard = new QAction(QIcon(":/images/toolbar/board.svg"), tr("Show OpenBoard"), this);
     connect(mActionUniboard, SIGNAL(triggered()), this, SIGNAL(uniboardClick()));
     actions << mActionUniboard;
 
@@ -66,17 +66,17 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
     if (UBPlatformUtils::hasVirtualKeyboard())
         actions << UBApplication::mainWindow->actionVirtualKeyboard;
 
-    mActionCustomSelect = new QAction(QIcon(":/images/toolbar/captureArea.png"), tr("Capture Part of the Screen"), this);
+    mActionCustomSelect = new QAction(QIcon(":/images/toolbar/captureArea.svg"), tr("Capture Part of the Screen"), this);
     connect(mActionCustomSelect, SIGNAL(triggered()), this, SIGNAL(customClick()));
     actions << mActionCustomSelect;
 
-    mDisplaySelectAction = new QAction(QIcon(":/images/toolbar/captureScreen.png"), tr("Capture the Screen"), this);
+    mDisplaySelectAction = new QAction(QIcon(":/images/toolbar/captureScreen.svg"), tr("Capture the Screen"), this);
     connect(mDisplaySelectAction, SIGNAL(triggered()), this, SIGNAL(screenClick()));
     actions << mDisplaySelectAction;
 
     QIcon showHideIcon;
-    showHideIcon.addPixmap(QPixmap(":/images/toolbar/eyeOpened.png"), QIcon::Normal , QIcon::On);
-    showHideIcon.addPixmap(QPixmap(":/images/toolbar/eyeClosed.png"), QIcon::Normal , QIcon::Off);
+    showHideIcon.addFile(":/images/toolbar/eyeOpened.svg", QSize(), QIcon::Normal , QIcon::On);
+    showHideIcon.addFile(":/images/toolbar/eyeClosed.svg", QSize(), QIcon::Normal , QIcon::Off);
     mShowHideAction = new QAction(showHideIcon, "", this);
     mShowHideAction->setCheckable(true);
 
@@ -90,7 +90,7 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
 
     //  This palette can be minimized
     QIcon maximizeIcon;
-    maximizeIcon.addPixmap(QPixmap(":/images/toolbar/stylusTab.png"), QIcon::Normal, QIcon::On);
+    maximizeIcon.addFile(":/images/toolbar/stylusTab.svg", QSize(), QIcon::Normal, QIcon::On);
     mMaximizeAction = new QAction(maximizeIcon, tr("Show the stylus palette"), this);
     connect(mMaximizeAction, SIGNAL(triggered()), this, SLOT(maximizeMe()));
     connect(this, SIGNAL(maximizeStart()), this, SLOT(maximizeMe()));

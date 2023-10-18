@@ -53,66 +53,66 @@ UBToolsManager::UBToolsManager(QObject *parent)
 {
 
     mask.id = "openboardtool://openboard/mask";
-    mask.icon = QPixmap(":/images/toolPalette/maskTool.png");
+    mask.icon = QPixmap(":/images/toolPalette/maskTool.svg");
     mask.label = tr("Mask");
     mask.version = "1.0";
-    mToolsIcon.insert(mask.id, ":/images/toolPalette/maskTool.png");
+    mToolsIcon.insert(mask.id, ":/images/toolPalette/maskTool.svg");
     mDescriptors << mask;
 
 
     ruler.id = "openboardtool://ruler";
-    ruler.icon = QPixmap(":/images/toolPalette/rulerTool.png");
+    ruler.icon = QPixmap(":/images/toolPalette/rulerTool.svg");
     ruler.label = tr("Ruler");
     ruler.version = "1.0";
-    mToolsIcon.insert(ruler.id, ":/images/toolPalette/rulerTool.png");
+    mToolsIcon.insert(ruler.id, ":/images/toolPalette/rulerTool.svg");
     mDescriptors << ruler;
 
 
     axes.id = "openboardtool://axes";
-    axes.icon = QPixmap(":/images/toolPalette/axesTool.png");
+    axes.icon = QPixmap(":/images/toolPalette/axesTool.svg");
     axes.label = tr("Axes");
     axes.version = "1.0";
-    mToolsIcon.insert(axes.id, ":/images/toolPalette/axesTool.png");
+    mToolsIcon.insert(axes.id, ":/images/toolPalette/axesTool.svg");
     mDescriptors << axes;
 
 
     compass.id = "openboardtool://compass";
-    compass.icon = QPixmap(":/images/toolPalette/compassTool.png");
+    compass.icon = QPixmap(":/images/toolPalette/compassTool.svg");
     compass.label = tr("Compass");
     compass.version = "1.0";
-    mToolsIcon.insert(compass.id, ":/images/toolPalette/compassTool.png");
+    mToolsIcon.insert(compass.id, ":/images/toolPalette/compassTool.svg");
     mDescriptors << compass;
 
 
     protractor.id = "openboardtool://protractor";
-    protractor.icon = QPixmap(":/images/toolPalette/protractorTool.png");
+    protractor.icon = QPixmap(":/images/toolPalette/protractorTool.svg");
     protractor.label = tr("Protractor");
     protractor.version = "1.0";
-    mToolsIcon.insert(protractor.id,":/images/toolPalette/protractorTool.png");
+    mToolsIcon.insert(protractor.id,":/images/toolPalette/protractorTool.svg");
     mDescriptors << protractor;
 
 
     triangle.id = "openboardtool://triangle";
-    triangle.icon = QPixmap(":/images/toolPalette/triangleTool.png");
+    triangle.icon = QPixmap(":/images/toolPalette/triangleTool.svg");
     triangle.label = tr("Triangle");
     triangle.version = "1.0";
-    mToolsIcon.insert(triangle.id,":/images/toolPalette/triangleTool.png");
+    mToolsIcon.insert(triangle.id,":/images/toolPalette/triangleTool.svg");
     mDescriptors << triangle;
 
 
     magnifier.id = "openboardtool://magnifier";
-    magnifier.icon = QPixmap(":/images/toolPalette/magnifierTool.png");
+    magnifier.icon = QPixmap(":/images/toolPalette/magnifierTool.svg");
     magnifier.label = tr("Magnifier");
     magnifier.version = "1.0";
-    mToolsIcon.insert(magnifier.id,":/images/toolPalette/magnifierTool.png");
+    mToolsIcon.insert(magnifier.id,":/images/toolPalette/magnifierTool.svg");
     mDescriptors << magnifier;
 
 
     cache.id = "openboardtool://cache";
-    cache.icon = QPixmap(":/images/toolPalette/cacheTool.png");
+    cache.icon = QPixmap(":/images/toolPalette/cacheTool.svg");
     cache.label = tr("Cache");
     cache.version = "1.0";
-    mToolsIcon.insert(cache.id, ":/images/toolPalette/cacheTool.png");
+    mToolsIcon.insert(cache.id, ":/images/toolPalette/cacheTool.svg");
     mDescriptors << cache;
 
 }

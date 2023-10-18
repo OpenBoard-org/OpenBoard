@@ -561,7 +561,7 @@ void UBGraphicsCompass::drawArc()
 
 void UBGraphicsCompass::updateResizeCursor()
 {
-    QPixmap pix(":/images/cursors/resize.png");
+    QPixmap pix(":/images/cursors/resize.svg");
     qreal angle = angleInDegrees();
 
     QTransform tr;
@@ -571,7 +571,7 @@ void UBGraphicsCompass::updateResizeCursor()
 
 void UBGraphicsCompass::updateDrawCursor()
 {
-    QPixmap pix(":/images/cursors/drawCompass.png");
+    QPixmap pix(":/images/cursors/drawCompass.svg");
     qreal angle = angleInDegrees();
 
     QTransform tr;

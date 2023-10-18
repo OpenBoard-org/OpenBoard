@@ -66,7 +66,7 @@ UBGraphicsRuler::UBGraphicsRuler()
 
 void UBGraphicsRuler::updateResizeCursor()
 {
-    QPixmap pix(":/images/cursors/resize.png");
+    QPixmap pix(":/images/cursors/resize.svg");
     QTransform itemTransform = sceneTransform();
     QRectF itemRect = boundingRect();
     QPointF topLeft = itemTransform.map(itemRect.topLeft());

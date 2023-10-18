@@ -58,8 +58,8 @@ UBFeaturesWidget::UBFeaturesWidget(QWidget *parent, const char *name)
 
     SET_STYLE_SHEET();
 
-    mIconToLeft = QPixmap(":images/library_open.png");
-    mIconToRight = QPixmap(":images/library_close.png");
+    mIconToLeft = QPixmap(":images/library_open.svg");
+    mIconToRight = QPixmap(":images/library_close.svg");
     setAcceptDrops(true);
 
     //Main UBFeature functionality
@@ -273,7 +273,7 @@ void UBFeaturesWidget::removeFromFavorite( const UBFeaturesMimeData * mimeData )
 
 void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
 {
-    QString previewImageUrl = ":images/libpalette/notFound.png";
+    QString previewImageUrl = ":images/libpalette/notFound.svg";
 
     QString widgetsUrl = QUrl::fromEncoded(metadata["Url"].toLatin1()).toString()/*metadata.value("Url", QString())*/;
     QString widgetsThumbsUrl = QUrl::fromEncoded(metadata["thumbnailUrl"].toLatin1()).toString();
@@ -301,7 +301,7 @@ void UBFeaturesWidget::onDisplayMetadata( QMap<QString,QString> metadata )
     }
 
     if (!widgetsThumbsUrl.isNull()) {
-        previewImageUrl = ":/images/libpalette/loading.png";
+        previewImageUrl = ":/images/libpalette/loading.svg";
         if (!imageGatherer)
             imageGatherer = new UBDownloadHttpFile(0, this);
 
@@ -886,7 +886,7 @@ UBFeatureProperties::UBFeatureProperties( QWidget *parent, const char *name ) : 
     maxThumbHeight = height() / 4;
 
     mpThumbnail = new QLabel();
-    QPixmap icon(":images/libpalette/notFound.png");
+    QPixmap icon(":images/libpalette/notFound.svg");
     icon.scaledToWidth(THUMBNAIL_WIDTH);
 
     mpThumbnail->setPixmap(icon);
@@ -1512,7 +1512,7 @@ QString    UBFeaturesItemDelegate::displayText ( const QVariant & value, const Q
 
 UBFeaturesPathItemDelegate::UBFeaturesPathItemDelegate(QObject *parent) : QStyledItemDelegate(parent)
 {
-    arrowPixmap = new QPixmap(":images/navig_arrow.png");
+    arrowPixmap = new QPixmap(":images/navig_arrow.svg");
 }
 
 QString    UBFeaturesPathItemDelegate::displayText ( const QVariant & value, const QLocale & locale ) const

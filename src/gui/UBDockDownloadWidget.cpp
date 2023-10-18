@@ -43,8 +43,8 @@ UBDockDownloadWidget::UBDockDownloadWidget(QWidget *parent, const char *name):UB
 
     SET_STYLE_SHEET();
 
-    mIconToLeft = QPixmap(":images/download_open.png");
-    mIconToRight = QPixmap(":images/download_close.png");
+    mIconToLeft = QPixmap(":images/download_open.svg");
+    mIconToRight = QPixmap(":images/download_close.svg");
 
     mpLayout = new QVBoxLayout(this);
     setLayout(mpLayout);

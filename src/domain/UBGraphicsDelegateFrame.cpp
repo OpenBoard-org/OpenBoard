@@ -802,7 +802,7 @@ void UBGraphicsDelegateFrame::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void UBGraphicsDelegateFrame::updateResizeCursors()
 {
-    QPixmap pix(":/images/cursors/resize.png");
+    QPixmap pix(":/images/cursors/resize.svg");
     QTransform tr;
 
     tr.rotate(-mAngle);

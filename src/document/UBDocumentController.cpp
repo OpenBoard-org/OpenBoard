@@ -537,26 +537,26 @@ QVariant UBDocumentTreeModel::data(const QModelIndex &index, int role) const
         switch (role) {
         case (Qt::DecorationRole) :
             if (mCurrentNode && mCurrentNode == dataNode) {
-                return QIcon(":images/currentDocument.png");
+                return QIcon(":images/currentDocument.svg");
             } else {
                 if (index == trashIndex()) {
-                    return QIcon(":images/trash.png");
+                    return QIcon(":images/trash.svg");
                 } else if (isConstant(index)) {
                     return QIcon(":images/libpalette/ApplicationsCategory.svg");
                 }
                 switch (static_cast<int>(dataNode->nodeType()))
                 {
                     case UBDocumentTreeNode::Catalog :
-                        return QIcon(":images/folder.png");
+                        return QIcon(":images/folder.svg");
                     case UBDocumentTreeNode::Document :
                     {
                         if (dataNode->proxyData()->isInFavoriteList())
                         {
-                            return QIcon(":images/libpalette/miniFavorite.png");
+                            return QIcon(":images/libpalette/miniFavorite.svg");
                         }
                         else
                         {
-                            return QIcon(":images/toolbar/board.png");
+                            return QIcon(":images/toolbar/board.svg");
                         }
                     }
                 }
@@ -3761,72 +3761,72 @@ void UBDocumentController::updateActions()
     case MoveToTrash :
         if (mSelectionType == Folder)
         {
-            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-folder.png"));
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-folder.svg"));
             mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else if (mSelectionType == Document)
         {
-            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document.png"));
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document.svg"));
             mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else if (mSelectionType == Page)
         {
-            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document-page.png"));
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document-page.svg"));
             mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else
         {//can happen ?
-            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash.png"));
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash.svg"));
             mMainWindow->actionDelete->setText(tr("Trash"));
         }
         break;
     case DeletePage :
-        mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document-page.png"));
+        mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document-page.svg"));
         mMainWindow->actionDelete->setText(tr("Trash"));
         break;
     case CompleteDelete :
         if (mSelectionType == Folder)
         {
-            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-folder.png"));
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-folder.svg"));
             mMainWindow->actionDelete->setText(tr("Delete"));
         }
         else
         {
-            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-document.png"));
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-document.svg"));
             mMainWindow->actionDelete->setText(tr("Delete"));
         }
         break;
     case EmptyFolder :
         if (firstSelectedTreeIndex() == docModel->myDocumentsIndex())
         {
-            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-my-documents.png"));
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-my-documents.svg"));
             mMainWindow->actionDelete->setText(tr("Empty"));
         }
         else
         {
-            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-folder.png"));
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-folder.svg"));
             mMainWindow->actionDelete->setText(tr("Delete"));
         }
         break;
     case EmptyTrash :
-        mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-empty.png"));
+        mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-empty.svg"));
         mMainWindow->actionDelete->setText(tr("Empty"));
         break;
     case NoDeletion :
     default:
         if (mSelectionType == Folder)
         {
-            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-folder.png"));
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-folder.svg"));
             mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else if (mSelectionType == Document)
         {
-            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-document.png"));
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-document.svg"));
             mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else if (mSelectionType == Page)
         {
-            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document-page.png"));
+            mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document-page.svg"));
             mMainWindow->actionDelete->setText(tr("Trash"));
         }
         break;

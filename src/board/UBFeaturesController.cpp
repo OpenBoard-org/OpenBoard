@@ -333,7 +333,7 @@ UBFeaturesController::UBFeaturesController(QWidget *pParentWidget) :
     mLibSearchDirectoryPath =QUrl::fromLocalFile(UBSettings::settings()->userSearchDirectory());
     trashDirectoryPath = QUrl::fromLocalFile(UBSettings::userTrashDirPath());
 
-    rootElement = UBFeature(rootPath, QImage( ":images/libpalette/home.png" ), "root", QUrl());
+    rootElement = UBFeature(rootPath, QImage( ":images/libpalette/home.svg" ), "root", QUrl());
     audiosElement = UBFeature( audiosPath, QImage(":images/libpalette/AudiosCategory.svg"), tr("Audios") , mUserAudioDirectoryPath, FEATURE_CATEGORY);
     moviesElement = UBFeature( moviesPath, QImage(":images/libpalette/MoviesCategory.svg"), tr("Movies") , mUserVideoDirectoryPath, FEATURE_CATEGORY);
     picturesElement = UBFeature( picturesPath, QImage(":images/libpalette/PicturesCategory.svg"), tr("Pictures") , mUserPicturesDirectoryPath, FEATURE_CATEGORY);
@@ -827,14 +827,14 @@ QImage UBFeaturesController::getIcon(const QString &path, UBFeatureElementType p
         }
 
         if (pix.isNull()) {
-            pix = QImage(":images/libpalette/notFound.png");
+            pix = QImage(":images/libpalette/notFound.svg");
         } else {
             pix = pix.scaledToWidth(qMin(UBSettings::maxThumbnailWidth, pix.width()));
         }
         return pix;
     }
 
-    return QImage(":images/libpalette/notFound.png");
+    return QImage(":images/libpalette/notFound.svg");
 }
 
 bool UBFeaturesController::isDeletable( const QUrl &url )
@@ -872,7 +872,7 @@ QImage UBFeaturesController::createThumbnail(const QString &path)
             return pix;
 
         } else {
-            thumbnailPath = ":images/libpalette/notFound.png";
+            thumbnailPath = ":images/libpalette/notFound.svg";
         }
 
     }

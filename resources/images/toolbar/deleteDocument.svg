@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 13.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 14948)  -->
+
+<svg
+   version="1.2"
+   x="0px"
+   y="0px"
+   width="128px"
+   height="128px"
+   viewBox="0 0 128 128"
+   xml:space="preserve"
+   id="svg31"
+   sodipodi:docname="deleteDocument.svg"
+   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+   xmlns:ns0="&amp;#38;#38;#38;ns_sfw;"><defs
+   id="defs35"><filter
+     inkscape:collect="always"
+     style="color-interpolation-filters:sRGB"
+     id="filter27024"
+     x="-0.030277188"
+     y="-0.030277188"
+     width="1.0605544"
+     height="1.0605544"><feGaussianBlur
+       inkscape:collect="always"
+       stdDeviation="0.37846485"
+       id="feGaussianBlur27026" /></filter></defs><sodipodi:namedview
+   id="namedview33"
+   pagecolor="#505050"
+   bordercolor="#eeeeee"
+   borderopacity="1"
+   inkscape:pageshadow="0"
+   inkscape:pageopacity="0"
+   inkscape:pagecheckerboard="0"
+   showgrid="false"
+   inkscape:zoom="3.5686795"
+   inkscape:cx="94.712904"
+   inkscape:cy="100.17711"
+   inkscape:window-width="1366"
+   inkscape:window-height="695"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg31"
+   inkscape:showpageshadow="2"
+   inkscape:deskcolor="#505050" />
+<metadata
+   id="metadata2">
+	<ns0:sfw>
+		<ns0:slices />
+		<ns0:sliceSourceBounds
+   x="8.255"
+   y="22.924"
+   width="110.488"
+   height="82.884"
+   bottomLeftOrigin="true" />
+	</ns0:sfw>
+<rdf:RDF><cc:License
+     rdf:about="http://creativecommons.org/publicdomain/zero/1.0/"><cc:permits
+       rdf:resource="http://creativecommons.org/ns#Reproduction" /><cc:permits
+       rdf:resource="http://creativecommons.org/ns#Distribution" /><cc:permits
+       rdf:resource="http://creativecommons.org/ns#DerivativeWorks" /></cc:License><cc:Work
+     rdf:about=""><cc:license
+       rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" /></cc:Work></rdf:RDF></metadata>
+<g
+   id="Layer_2">
+	<linearGradient
+   id="SVGID_1_"
+   gradientUnits="userSpaceOnUse"
+   x1="63.4995"
+   y1="24.5024"
+   x2="63.4995"
+   y2="101.9506">
+		<stop
+   offset="0"
+   style="stop-color:#FCFCFC"
+   id="stop4" />
+		<stop
+   offset="1"
+   style="stop-color:#E6E6E6"
+   id="stop6" />
+		<a:midPointStop
+   offset="0"
+   style="stop-color:#FCFCFC" />
+		<a:midPointStop
+   offset="0.5"
+   style="stop-color:#FCFCFC" />
+		<a:midPointStop
+   offset="1"
+   style="stop-color:#E6E6E6" />
+	</linearGradient>
+	<path
+   fill="url(#SVGID_1_)"
+   d="M104.906,102.468H22.091c-6.19,0-11.227-5.038-11.227-11.231V36.028   c0-6.191,5.036-11.227,11.227-11.227h82.815c6.19,0,11.229,5.036,11.229,11.227v55.208   C116.135,97.43,111.097,102.468,104.906,102.468L104.906,102.468z"
+   id="path9" />
+	<linearGradient
+   id="SVGID_2_"
+   gradientUnits="userSpaceOnUse"
+   x1="66.1289"
+   y1="104.8428"
+   x2="66.1289"
+   y2="77.0022">
+		<stop
+   offset="0"
+   style="stop-color:#E0E0E0"
+   id="stop11" />
+		<stop
+   offset="1"
+   style="stop-color:#999999"
+   id="stop13" />
+		<a:midPointStop
+   offset="0"
+   style="stop-color:#E0E0E0" />
+		<a:midPointStop
+   offset="0.5"
+   style="stop-color:#E0E0E0" />
+		<a:midPointStop
+   offset="1"
+   style="stop-color:#999999" />
+	</linearGradient>
+	
+	<path
+   fill="#FFFFFF"
+   d="M104.906,22.192c7.629,0,13.837,6.207,13.837,13.836v55.208c0,7.633-6.208,13.84-13.837,13.84H22.091   c-7.629,0-13.836-6.207-13.836-13.84V36.028c0-7.629,6.207-13.836,13.836-13.836H104.906 M104.906,27.412H22.091   c-4.751,0-8.616,3.865-8.616,8.616v55.208c0,4.753,3.865,8.619,8.616,8.619h82.815c4.751,0,8.617-3.866,8.617-8.619V36.028   C113.523,31.277,109.657,27.412,104.906,27.412L104.906,27.412z"
+   id="path18" />
+	<path
+   fill="#B0B9C4"
+   d="M104.906,22.192c7.629,0,13.837,6.207,13.837,13.836v55.208c0,7.633-6.208,13.84-13.837,13.84H22.091   c-7.629,0-13.836-6.207-13.836-13.84V36.028c0-7.629,6.207-13.836,13.836-13.836H104.906 M104.906,25.672H22.091   c-5.71,0-10.356,4.646-10.356,10.356v55.208c0,5.713,4.646,10.359,10.356,10.359h82.815c5.711,0,10.357-4.646,10.357-10.359V36.028   C115.264,30.318,110.617,25.672,104.906,25.672L104.906,25.672z"
+   id="path20" />
+</g>
+
+<g
+   id="g31921"
+   inkscape:label="delete"
+   transform="matrix(1.7338919,0,0,1.7338919,-2.951811,26.4844)"><circle
+     style="opacity:1;fill:#673d3a;fill-opacity:1;stroke-width:2.95108;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:0.2826;paint-order:stroke markers fill"
+     id="circle26252"
+     cx="60.163147"
+     cy="41.183575"
+     r="15" /><circle
+     style="opacity:1;fill:#000000;fill-opacity:0.276832;stroke-width:2.95108;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:0.2826;paint-order:stroke markers fill;filter:url(#filter27024)"
+     id="path6543"
+     cx="59.595619"
+     cy="42.426064"
+     r="15" /><circle
+     style="opacity:1;fill:#feefef;fill-opacity:1;stroke-width:2.75435;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:0.2826;paint-order:stroke markers fill"
+     id="circle22102"
+     cx="60"
+     cy="41.102001"
+     r="14" /><circle
+     style="opacity:1;fill:#f3291c;fill-opacity:1;stroke-width:2.55761;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:0.2826;paint-order:stroke markers fill"
+     id="circle22169"
+     cx="60"
+     cy="41.102001"
+     r="13" /><rect
+     style="opacity:1;fill:#222222;fill-opacity:0.468159;stroke-width:2.73251;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:0.2826;paint-order:stroke markers fill"
+     id="rect30369"
+     width="14"
+     height="5.999999"
+     x="52.982655"
+     y="39.263908" /><rect
+     style="opacity:1;fill:#ffffff;fill-opacity:1;stroke-width:2.73251;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:0.2826;paint-order:stroke markers fill"
+     id="rect23941"
+     width="14"
+     height="5.999999"
+     x="53"
+     y="38.102001" /></g></svg>

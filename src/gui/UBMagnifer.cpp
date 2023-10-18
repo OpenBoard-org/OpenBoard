@@ -50,7 +50,7 @@ UBMagnifier::UBMagnifier(QWidget *parent, bool isInteractive)
 
     //--------------------------------------------------//
 
-    QPixmap pix(":/images/cursors/resize.png");
+    QPixmap pix(":/images/cursors/resize.svg");
     QTransform tr;
     tr.rotate(45);
     mResizeCursor  = QCursor(pix.transformed(tr, Qt::SmoothTransformation), pix.width() / 2,  pix.height() / 2);

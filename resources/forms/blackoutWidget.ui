@@ -82,7 +82,7 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background: url(:/images/bigOpenBoard.png); border: none;</string>
+      <string notr="true">background: url(:/images/bigOpenBoard.svg); border: none;</string>
      </property>
      <property name="text">
       <string notr="true"/>
@@ -188,8 +188,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../OpenBoard.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

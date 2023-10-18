@@ -126,6 +126,88 @@
         <file>images/toolbar/eraserTool.png</file>
         <file>images/toolbar/lineTool.png</file>
         <file>images/toolbar/tools.png</file>
+        <file>images/toolbar/group.svg</file>
+        <file>images/toolbar/ungroup.svg</file>
+        <file>images/toolbar/window.svg</file>
+        <file>images/toolbar/plusBlack.svg</file>
+        <file>images/toolbar/plusBlackOn.svg</file>
+        <file>images/toolbar/quit.svg</file>
+        <file>images/toolbar/quitOn.svg</file>
+        <file>images/toolbar/background.svg</file>
+        <file>images/toolbar/documents.svg</file>
+        <file>images/toolbar/newPage.svg</file>
+        <file>images/toolbar/next.svg</file>
+        <file>images/toolbar/nextPageOn.svg</file>
+        <file>images/toolbar/previous.svg</file>
+        <file>images/toolbar/previousPageOn.svg</file>
+        <file>images/toolbar/redo.svg</file>
+        <file>images/toolbar/redoOn.svg</file>
+        <file>images/toolbar/stylus.svg</file>
+        <file>images/toolbar/undo.svg</file>
+        <file>images/toolbar/undoOn.svg</file>
+        <file>images/toolbar/smallPen.svg</file>
+        <file>images/toolbar/mediumPen.svg</file>
+        <file>images/toolbar/largePen.svg</file>
+        <file>images/toolbar/color.svg</file>
+        <file>images/toolbar/smallEraser.svg</file>
+        <file>images/toolbar/mediumEraser.svg</file>
+        <file>images/toolbar/largeEraser.svg</file>
+        <file>images/toolbar/web.svg</file>
+        <file>images/toolbar/board.svg</file>
+        <file>images/toolbar/home.svg</file>
+        <file>images/toolbar/profile.svg</file>
+        <file>images/toolbar/library.svg</file>
+        <file>images/toolbar/clearPage.svg</file>
+        <file>images/toolbar/reload.svg</file>
+        <file>images/toolbar/addBookmark.svg</file>
+        <file>images/toolbar/bookmarks.svg</file>
+        <file>images/toolbar/settings.svg</file>
+        <file>images/toolbar/eyeClosed.svg</file>
+        <file>images/toolbar/eyeOpened.svg</file>
+        <file>images/toolbar/pdf.svg</file>
+        <file>images/toolbar/deleteDocument.svg</file>
+        <file>images/toolbar/deleteFolder.svg</file>
+        <file>images/toolbar/newDocument.svg</file>
+        <file>images/toolbar/newFolder.svg</file>
+        <file>images/toolbar/addToLibrary.svg</file>
+        <file>images/toolbar/addInteractiveToLibrary.svg</file>
+        <file>images/toolbar/addToolToLibrary.svg</file>
+        <file>images/toolbar/duplicate.svg</file>
+        <file>images/toolbar/export.svg</file>
+        <file>images/toolbar/import.svg</file>
+        <file>images/toolbar/setBackground.svg</file>
+        <file>images/toolbar/removeBackground.svg</file>
+        <file>images/toolbar/open.svg</file>
+        <file>images/toolbar/addToPage.svg</file>
+        <file>images/toolbar/menu.svg</file>
+        <file>images/toolbar/addToDocument.svg</file>
+        <file>images/toolbar/print.svg</file>
+        <file>images/toolbar/addToWorkingDoc.svg</file>
+        <file>images/toolbar/rename.svg</file>
+        <file>images/toolbar/captureArea.svg</file>
+        <file>images/toolbar/captureScreen.svg</file>
+        <file>images/toolbar/captureWindow.svg</file>
+        <file>images/toolbar/extraTool.svg</file>
+        <file>images/toolbar/webUpload.svg</file>
+        <file>images/toolbar/stop.svg</file>
+        <file>images/toolbar/pause.svg</file>
+        <file>images/toolbar/cut.svg</file>
+        <file>images/toolbar/copy.svg</file>
+        <file>images/toolbar/paste.svg</file>
+        <file>images/toolbar/proto.svg</file>
+        <file>images/toolbar/mic.svg</file>
+        <file>images/toolbar/micOff.svg</file>
+        <file>images/toolbar/remove.svg</file>
+        <file>images/toolbar/pageSize.svg</file>
+        <file>images/toolbar/eraserTool.svg</file>
+        <file>images/toolbar/lineTool.svg</file>
+        <file>images/toolbar/tools.svg</file>
+        <file>images/toolbar/stylusTab.svg</file>
+        <file>images/toolbar/display.svg</file>
+        <file>images/toolbar/hide.svg</file>
+        <file>images/toolbar/record.svg</file>
+        <file>images/toolbar/updates.svg</file>
+        <file>images/toolbar/tutorial.svg</file>
         <file>images/stylusPalette/arrow.png</file>
         <file>images/stylusPalette/arrowOn.png</file>
         <file>images/stylusPalette/handPlay.png</file>
@@ -176,12 +258,28 @@
         <file>images/toolPalette/aristoTool.png</file>
         <file>images/toolPalette/maskTool.png</file>
         <file>images/toolPalette/magnifierTool.png</file>
+        <file>images/toolPalette/maskTool.svg</file>
+        <file>images/toolPalette/protractorTool.svg</file>
+        <file>images/toolPalette/axesTool.svg</file>
+        <file>images/toolPalette/rulerTool.svg</file>
+        <file>images/toolPalette/cacheTool.svg</file>
+        <file>images/toolPalette/magnifierTool.svg</file>
+        <file>images/toolPalette/triangleTool.svg</file>
+        <file>images/toolPalette/compassTool.svg</file>
         <file>images/extraPalette/blackout.png</file>
         <file>images/extraPalette/keyboard.png</file>
         <file>images/extraPalette/trapFlash.png</file>
         <file>images/extraPalette/webTrap.png</file>
         <file>images/extraPalette/webTrapEnabled.png</file>
         <file>images/extraPalette/oEmbed.png</file>
+        <file>images/extraPalette/blackout.svg</file>
+        <file>images/extraPalette/blackoutOn.svg</file>
+        <file>images/extraPalette/keyboard.svg</file>
+        <file>images/extraPalette/keyboardOn.svg</file>
+        <file>images/extraPalette/trapFlash.svg</file>
+        <file>images/extraPalette/webTrap.svg</file>
+        <file>images/extraPalette/webTrapEnabled.svg</file>
+        <file>images/extraPalette/oEmbed.svg</file>
         <file>images/erasePalette/eraseAll.svg</file>
         <file>images/erasePalette/eraseItem.svg</file>
         <file>images/erasePalette/eraseAnnotation.svg</file>
@@ -196,9 +294,24 @@
         <file>images/cursors/drawCompass.png</file>
         <file>images/cursors/drawRulerLine.png</file>
         <file>images/cursors/play.png</file>
+        <file>images/cursors/eraser.svg</file>
+        <file>images/cursors/laser.svg</file>
+        <file>images/cursors/marker.svg</file>
+        <file>images/cursors/zoomIn.svg</file>
+        <file>images/cursors/zoomOut.svg</file>
+        <file>images/cursors/rotate.svg</file>
+        <file>images/cursors/resize.svg</file>
+        <file>images/cursors/drawCompass.svg</file>
+        <file>images/cursors/drawRulerLine.svg</file>
+        <file>images/cursors/play.svg</file>
+        <file>images/cursors/scrollPage.svg</file>
+        <file>images/cursors/scrollPageOn.svg</file>
         <file>images/print/onepage.png</file>
         <file>images/print/thumbnails.png</file>
         <file>images/print/twopages.png</file>
+        <file>images/print/onepage.svg</file>
+        <file>images/print/thumbnails.svg</file>
+        <file>images/print/twopages.svg</file>
         <file>images/defaultWidgetIcon.png</file>
         <file>images/favorites.png</file>
         <file>images/myContent.png</file>
@@ -222,6 +335,7 @@
         <file>images/edit-mode.svg</file>
         <file>images/save.svg</file>
         <file>images/libpalette/social.png</file>
+        <file>images/libpalette/social.svg</file>
         <file>images/navig_arrow.png</file>
         <file>images/flags/ar.png</file>
         <file>images/flags/bg.png</file>
@@ -274,10 +388,65 @@
         <file>images/flags/vi.png</file>
         <file>images/flags/zh-hans.png</file>
         <file>images/flags/zh-hant.png</file>
+        <file>images/flags/ar.svg</file>
+        <file>images/flags/bg.svg</file>
+        <file>images/flags/ca.svg</file>
+        <file>images/flags/cs.svg</file>
+        <file>images/flags/da.svg</file>
+        <file>images/flags/de.svg</file>
+        <file>images/flags/el.svg</file>
+        <file>images/flags/en.svg</file>
+        <file>images/flags/eo.svg</file>
+        <file>images/flags/es.svg</file>
+        <file>images/flags/et.svg</file>
+        <file>images/flags/eu.svg</file>
+        <file>images/flags/fa.svg</file>
+        <file>images/flags/fi.svg</file>
+        <file>images/flags/fo.svg</file>
+        <file>images/flags/fr.svg</file>
+        <file>images/flags/ga.svg</file>
+        <file>images/flags/gl.svg</file>
+        <file>images/flags/he.svg</file>
+        <file>images/flags/hr.svg</file>
+        <file>images/flags/hu.svg</file>
+        <file>images/flags/id.svg</file>
+        <file>images/flags/is.svg</file>
+        <file>images/flags/it.svg</file>
+        <file>images/flags/ja.svg</file>
+        <file>images/flags/km.svg</file>
+        <file>images/flags/lb.svg</file>
+        <file>images/flags/lt.svg</file>
+        <file>images/flags/lv.svg</file>
+        <file>images/flags/nb.svg</file>
+        <file>images/flags/nl.svg</file>
+        <file>images/flags/nn.svg</file>
+        <file>images/flags/pl.svg</file>
+        <file>images/flags/pt-br.svg</file>
+        <file>images/flags/pt-pt.svg</file>
+        <file>images/flags/ro.svg</file>
+        <file>images/flags/ru.svg</file>
+        <file>images/flags/sco.svg</file>
+        <file>images/flags/se.svg</file>
+        <file>images/flags/sk.svg</file>
+        <file>images/flags/sl.svg</file>
+        <file>images/flags/sq.svg</file>
+        <file>images/flags/sv.svg</file>
+        <file>images/flags/tg.svg</file>
+        <file>images/flags/th.svg</file>
+        <file>images/flags/tl.svg</file>
+        <file>images/flags/tr.svg</file>
+        <file>images/flags/uk.svg</file>
+        <file>images/flags/vi.svg</file>
+        <file>images/flags/zh-hans.svg</file>
+        <file>images/flags/zh-hant.svg</file>
+
         <file>images/libpalette/notFound.png</file>
         <file>images/libpalette/trash_favorite.svg</file>
         <file>images/libpalette/back.png</file>
         <file>images/libpalette/loading.png</file>
+        <file>images/libpalette/notFound.svg</file>
+        <file>images/libpalette/back.svg</file>
+        <file>images/libpalette/loading.svg</file>
         <file>images/stylusPalette/eraserArrow.png</file>
         <file>images/stylusPalette/eraserOnArrow.png</file>
         <file>images/stylusPalette/markerArrow.png</file>
@@ -299,6 +468,11 @@
         <file>images/libpalette/miniNewFolder.png</file>
         <file>images/libpalette/miniFavorite.png</file>
         <file>images/libpalette/home.png</file>
+        <file>images/libpalette/miniSearch.svg</file>
+        <file>images/libpalette/miniTrash.svg</file>
+        <file>images/libpalette/miniNewFolder.svg</file>
+        <file>images/libpalette/miniFavorite.svg</file>
+        <file>images/libpalette/home.svg</file>
         <file>images/toolbar/updates.png</file>
         <file>images/paletteLibrary.png</file>
         <file>images/paletteNavigator.png</file>
@@ -326,6 +500,26 @@
         <file>images/virtual.keyboard/29/capslock.png</file>
         <file>images/virtual.keyboard/29/shift.png</file>
         <file>images/virtual.keyboard/29/tab.png</file>
+        <file>images/virtual.keyboard/29/backspace.svg</file>
+        <file>images/virtual.keyboard/29/capslock.svg</file>
+        <file>images/virtual.keyboard/29/shift.svg</file>
+        <file>images/virtual.keyboard/29/tab.svg</file>
+        <file>images/virtual.keyboard/29/centre-active.svg</file>
+        <file>images/virtual.keyboard/29/left-active.svg</file>
+        <file>images/virtual.keyboard/29/right-active.svg</file>
+        <file>images/virtual.keyboard/29/centre-passive.svg</file>
+        <file>images/virtual.keyboard/29/left-passive.svg</file>
+        <file>images/virtual.keyboard/29/right-passive.svg</file>
+        <file>images/virtual.keyboard/41/backspace.svg</file>
+        <file>images/virtual.keyboard/41/capslock.svg</file>
+        <file>images/virtual.keyboard/41/shift.svg</file>
+        <file>images/virtual.keyboard/41/tab.svg</file>
+        <file>images/virtual.keyboard/41/centre-active.svg</file>
+        <file>images/virtual.keyboard/41/left-active.svg</file>
+        <file>images/virtual.keyboard/41/right-active.svg</file>
+        <file>images/virtual.keyboard/41/centre-passive.svg</file>
+        <file>images/virtual.keyboard/41/left-passive.svg</file>
+        <file>images/virtual.keyboard/41/right-passive.svg</file>
         <file>images/toolPalette/cacheTool.png</file>
         <file>images/libpalette/FlashCategory.svg</file>
         <file>images/libpalette/FlashIcon.svg</file>
@@ -370,6 +564,37 @@
         <file>images/desc.png</file>
         <file>images/toolPalette/axesTool.png</file>
         <file>images/numbersTool.svg</file>
+        <file>images/navig_arrow.svg</file>
+        <file>images/asc.svg</file>
+        <file>images/pages_close.svg</file>
+        <file>images/pages_open.svg</file>
+        <file>images/tab_mask.svg</file>
+        <file>images/bigOpenBoard.svg</file>
+        <file>images/folder.svg</file>
+        <file>images/cache_circle.svg</file>
+        <file>images/cache_close.svg</file>
+        <file>images/trash-delete-document.svg</file>
+        <file>images/cache_open.svg</file>
+        <file>images/trash-delete-folder.svg</file>
+        <file>images/cache_square.svg</file>
+        <file>images/trash-document-page.svg</file>
+        <file>images/trash-document.svg</file>
+        <file>images/trash-empty.svg</file>
+        <file>images/trash-folder.svg</file>
+        <file>images/left_arrow.svg</file>
+        <file>images/trash-my-documents.svg</file>
+        <file>images/trash.svg</file>
+        <file>images/library_close.svg</file>
+        <file>images/library_open.svg</file>
+        <file>images/currentDocument.svg</file>
+        <file>images/up_arrow.svg</file>
+        <file>images/defaultWidgetIcon.svg</file>
+        <file>images/desc.svg</file>
+        <file>images/down_arrow.svg</file>
+        <file>images/right_arrow.svg</file>
+        <file>images/OpenBoard.svg</file>
+        <file>images/download_close.svg</file>
+        <file>images/download_open.svg</file>
         <file>images/stylusPalette/eraserArrow.svg</file>
         <file>images/stylusPalette/penArrow.svg</file>
         <file>images/stylusPalette/eraserOnArrow.svg</file>
@@ -382,6 +607,25 @@
         <file>images/stylusPalette/pen.svg</file>
         <file>images/stylusPalette/penOn.svg</file>
         <file>images/stylusPalette/penOnArrow.svg</file>
+        <file>images/stylusPalette/arrow.svg</file>
+        <file>images/stylusPalette/arrowOn.svg</file>
+        <file>images/stylusPalette/handPlay.svg</file>
+        <file>images/stylusPalette/handPlayOn.svg</file>
+        <file>images/stylusPalette/hand.svg</file>
+        <file>images/stylusPalette/handOn.svg</file>
+        <file>images/stylusPalette/laser.svg</file>
+        <file>images/stylusPalette/laserOn.svg</file>
+        <file>images/stylusPalette/line.svg</file>
+        <file>images/stylusPalette/lineOn.svg</file>
+        <file>images/stylusPalette/zoomOut.svg</file>
+        <file>images/stylusPalette/zoomOutOn.svg</file>
+        <file>images/stylusPalette/zoomIn.svg</file>
+        <file>images/stylusPalette/zoomInOn.svg</file>
+        <file>images/stylusPalette/restoreZoom.svg</file>
+        <file>images/stylusPalette/text.svg</file>
+        <file>images/stylusPalette/textOn.svg</file>
+        <file>images/stylusPalette/captureArea.svg</file>
+        <file>images/stylusPalette/captureAreaOn.svg</file>
         <file>images/trash-my-documents.png</file>
         <file>images/trash-empty.png</file>
         <file>images/trash-folder.png</file>

@@ -137,8 +137,8 @@
               </property>
               <property name="icon">
                <iconset resource="../OpenBoard.qrc">
-                <normaloff>:/images/asc.png</normaloff>
-                <normalon>:/images/desc.png</normalon>:/images/asc.png</iconset>
+                <normaloff>:/images/asc.svg</normaloff>
+                <normalon>:/images/desc.svg</normalon>:/images/asc.svg</iconset>
               </property>
               <property name="checkable">
                <bool>true</bool>

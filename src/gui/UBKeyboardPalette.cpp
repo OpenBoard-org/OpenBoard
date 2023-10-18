@@ -406,12 +406,12 @@ BTNImages::BTNImages(QString strHeight, int width, int height)
     m_width = width;
     m_height = height;
 
-    m_strLeftPassive    = ":/images/virtual.keyboard/" + strHeight + "/left-passive.png";
-    m_strCenterPassive  = ":/images/virtual.keyboard/" + strHeight + "/centre-passive.png";
-    m_strRightPassive   = ":/images/virtual.keyboard/" + strHeight + "/right-passive.png";
-    m_strLeftActive     = ":/images/virtual.keyboard/" + strHeight + "/left-active.png";
-    m_strCenterActive   = ":/images/virtual.keyboard/" + strHeight + "/centre-active.png";
-    m_strRightActive    = ":/images/virtual.keyboard/" + strHeight + "/right-active.png";
+    m_strLeftPassive    = ":/images/virtual.keyboard/" + strHeight + "/left-passive.svg";
+    m_strCenterPassive  = ":/images/virtual.keyboard/" + strHeight + "/centre-passive.svg";
+    m_strRightPassive   = ":/images/virtual.keyboard/" + strHeight + "/right-passive.svg";
+    m_strLeftActive     = ":/images/virtual.keyboard/" + strHeight + "/left-active.svg";
+    m_strCenterActive   = ":/images/virtual.keyboard/" + strHeight + "/centre-active.svg";
+    m_strRightActive    = ":/images/virtual.keyboard/" + strHeight + "/right-active.svg";
 
     m_btnLeftPassive    = QImage(m_strLeftPassive);
     m_btnCenterPassive  = QImage(m_strCenterPassive);
