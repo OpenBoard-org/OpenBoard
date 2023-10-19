@@ -622,6 +622,7 @@ class UBDraggableLivePixmapItem : public UBDraggableThumbnailItem
         QTransform mTransform;
         QTimer updateTimer;
         int updateCount;
+        bool ignoreNextEvent;
 };
 
 namespace UBThumbnailUI
