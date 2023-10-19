@@ -203,7 +203,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Manage Documents</source>
-        <translation type="vanished">Gestione documenti</translation>
+        <translation>Gestione documenti</translation>
     </message>
     <message>
         <source>Ctrl+D</source>
@@ -211,7 +211,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Web Browsing</source>
-        <translation type="vanished">Navigazione web</translation>
+        <translation>Navigazione web</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
@@ -299,7 +299,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Display Board</source>
-        <translation type="vanished">Visualizza lavagna</translation>
+        <translation>Visualizza lavagna</translation>
     </message>
     <message>
         <source>Ctrl+B</source>
@@ -339,7 +339,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Show Computer Desktop</source>
-        <translation type="vanished">Mostra il desktop del computer</translation>
+        <translation>Mostra il desktop del computer</translation>
     </message>
     <message>
         <source>Ctrl+Shift+H</source>
@@ -435,7 +435,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add to Working Document</source>
-        <translation type="vanished">Aggiungi al documento di lavoro</translation>
+        <translation>Aggiungi al documento di lavoro</translation>
     </message>
     <message>
         <source>Add Selected Content to Open Document</source>
@@ -735,7 +735,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Import an External Page</source>
-        <translation type="vanished">Importa una pagina esterna</translation>
+        <translation>Importa una pagina esterna</translation>
     </message>
     <message>
         <source>Pause</source>
@@ -755,19 +755,19 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Flash Trap</source>
-        <translation type="vanished">Cattura Flash</translation>
+        <translation>Cattura Flash</translation>
     </message>
     <message>
         <source>Trap Flash Content</source>
-        <translation type="vanished">Cattura contenuto flash</translation>
+        <translation>Cattura contenuto flash</translation>
     </message>
     <message>
         <source>Web Trap</source>
-        <translation type="vanished">Cattura Web</translation>
+        <translation>Cattura Web</translation>
     </message>
     <message>
         <source>Trap Web Content</source>
-        <translation type="vanished">Cattura contenuto web</translation>
+        <translation>Cattura contenuto web</translation>
     </message>
     <message>
         <source>Custom Capture</source>
@@ -803,11 +803,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>eduMedia</source>
-        <translation type="vanished">EduMedia</translation>
+        <translation>EduMedia</translation>
     </message>
     <message>
         <source>Import eduMedia simulation</source>
-        <translation type="vanished">Importa simulatore eduMedia</translation>
+        <translation>Importa simulatore eduMedia</translation>
     </message>
     <message>
         <source>Check Update</source>
@@ -959,11 +959,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add to favorites</source>
-        <translation type="vanished">Aggiungi ai preferiti</translation>
+        <translation>Aggiungi ai preferiti</translation>
     </message>
     <message>
         <source>Add Document to favorites</source>
-        <translation>aggiungi il documento ai preferiti</translation>
+        <translation>Aggiungi il documento ai preferiti</translation>
     </message>
     <message>
         <source>Hints and tips</source>
@@ -975,7 +975,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>favorite</source>
-        <translation type="vanished">Preferito</translation>
+        <translation>Preferito</translation>
     </message>
     <message>
         <source>Favorite</source>
@@ -1021,7 +1021,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation type="vanished">Sei sicuro di voler rimuovere 1 pagina dal documento selezionato &apos;%0&apos;?</translation>
+        <translation>Sei sicuro di voler rimuovere 1 pagina dal documento selezionato &apos;%0&apos;?</translation>
     </message>
     <message>
         <source>Loading scene (%1/%2)</source>
@@ -1113,7 +1113,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
-        <translation>disegna linee di griglia intermedie</translation>
+        <translation>Disegna linee di griglia intermedie</translation>
     </message>
 </context>
 <context>
@@ -1198,7 +1198,7 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBBoardThumbnailsView</name>
     <message>
         <source>Loading page (%1/%2)</source>
-        <translation type="vanished">Caricamento pagina (%1/%2)</translation>
+        <translation>Caricamento pagina (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1358,11 +1358,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Remove Item</source>
-        <translation type="vanished">Cancella oggetti</translation>
+        <translation>Cancella oggetti</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation type="vanished">Sei sicuro di voler cancellare l&apos;(gli) item selezionato(i)?</translation>
+        <translation>Sei sicuro di voler cancellare l&apos;(gli) item selezionato(i)?</translation>
     </message>
     <message>
         <source>Title page</source>
@@ -1504,18 +1504,18 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBDocumentNavigator</name>
     <message>
         <source>Page %0</source>
-        <translation type="vanished">Pagina %0</translation>
+        <translation>Pagina %0</translation>
     </message>
     <message>
         <source>Generating thumbnails for board (%1/%2)</source>
-        <translation type="vanished">Creazione delle anteprime in modalità Lavagna (%1/%2)</translation>
+        <translation>Creazione delle anteprime in modalità Lavagna (%1/%2)</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentReplaceDialog</name>
     <message>
         <source>Accept</source>
-        <translation type="vanished">Accetta</translation>
+        <translation>Accetta</translation>
     </message>
     <message>
         <source>Replace</source>
@@ -1579,11 +1579,11 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
     </message>
     <message>
         <source>Remove Item</source>
-        <translation type="vanished">Cancella oggetti</translation>
+        <translation>Cancella oggetti</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the selected item(s) ?</source>
-        <translation type="vanished">Sei sicuro di voler cancellare l&apos;(gli) item selezionato(i)?</translation>
+        <translation>Sei sicuro di voler cancellare l&apos;(gli) item selezionato(i)?</translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
@@ -1612,14 +1612,14 @@ Dando un nuovo nome si creerà un nuovo documento.</translation>
     <name>UBDraggableThumbnail</name>
     <message>
         <source>Page %0</source>
-        <translation type="vanished">Pagina %0</translation>
+        <translation>Pagina %0</translation>
     </message>
 </context>
 <context>
     <name>UBDraggableThumbnailView</name>
     <message>
         <source>Page %0</source>
-        <translation type="vanished">Pagina %0</translation>
+        <translation>Pagina %0</translation>
     </message>
 </context>
 <context>
@@ -2344,7 +2344,7 @@ Vuoi ignorare gli errori per questo host?</translation>
     </message>
     <message>
         <source>loading thumbnail of page %1</source>
-        <translation type="vanished">Caricamento miniatura della pagina %1</translation>
+        <translation>Caricamento miniatura della pagina %1</translation>
     </message>
     <message>
         <source>Loading thumbnail (%1/%2)</source>
@@ -2903,7 +2903,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap control display and view display</source>
-        <translation type="vanished">Scambia lo schermo di controllo con quello di visualizzazione</translation>
+        <translation>Scambia lo schermo di controllo con quello di visualizzazione</translation>
     </message>
     <message>
         <source>Mode</source>
@@ -2967,7 +2967,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap first and second view displays</source>
-        <translation type="vanished">Scambia lo schermo di controllo con quello di visualizzazione</translation>
+        <translation>Scambia lo schermo di controllo con quello di visualizzazione</translation>
     </message>
     <message>
         <source>Documents Mode</source>
@@ -3018,7 +3018,7 @@ p, li { white-space: pre-wrap; }
     <name>trapFlashDialog</name>
     <message>
         <source>Trap flash</source>
-        <translation type="vanished">Cattura flash</translation>
+        <translation>Cattura flash</translation>
     </message>
     <message>
         <source>Select a flash to trap</source>
