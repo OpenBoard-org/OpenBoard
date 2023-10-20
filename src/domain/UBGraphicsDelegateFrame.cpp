@@ -683,11 +683,11 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
             mCurrentTool = ResizeBottomRight;
         }
-        else if ((moveY && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS)))
+        else if ((resizingBottom() || resizingTop()) && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS))
         {
             resizeDelegate(0., moveY);
         }
-        else if (moveX && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS))
+        else if ((resizingLeft() || resizingRight()) && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS))
         {
             resizeDelegate(moveX, 0.);
         }
