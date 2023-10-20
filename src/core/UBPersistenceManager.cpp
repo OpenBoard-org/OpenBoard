@@ -1526,54 +1526,63 @@ void UBPersistenceManager::cleanupDocument(std::shared_ptr<UBDocumentProxy> pDoc
     // scan pages and collect possible UUID references
     const QString path = pDocumentProxy->persistencePath() + "/";
     const QStringList pages = getSceneFileNames(path);
-    QSet<QString> references;
 
-    for (const QString& page : pages)
+    if (pages.length() > 0)
     {
-        QFile svgFile(path + page);
+        QSet<QString> references;
 
-        if (svgFile.open(QFile::ReadOnly))
+        for (const QString& page : pages)
         {
-            const QString content = svgFile.readAll();
-            auto matches = uuidPattern.globalMatch(content);
+            QFile svgFile(path + page);
 
-            while (matches.hasNext())
+            if (svgFile.open(QFile::ReadOnly))
             {
-                QRegularExpressionMatch match = matches.next();
-                references << match.captured();
+                const QString content = svgFile.readAll();
+                auto matches = uuidPattern.globalMatch(content);
+
+                while (matches.hasNext())
+                {
+                    QRegularExpressionMatch match = matches.next();
+                    references << match.captured();
+                }
+            }
+        }
+
+        // scan folders and remove unreferenced files and directories
+        static const QStringList folders = { ".", "audios", "videos", "objects" };
+
+        for (const QString& folder : folders)
+        {
+            QFileInfoList entries = QDir(path + folder).entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
+
+            for (const QFileInfo& entry : entries)
+            {
+                QRegularExpressionMatch match = uuidPattern.match(entry.fileName());
+
+                if (match.hasMatch() && !references.contains(match.captured()))
+                {
+                    const QString filename = folder + "/" + entry.fileName();
+                    const QString absoluteFilePath = entry.absoluteFilePath();
+
+                    // unreferenced file or directory
+                    if (entry.isDir())
+                    {
+                        qDebug() << "Deleting unreferenced directory" << filename;
+                        UBFileSystemUtils::deleteDir(absoluteFilePath);
+                    }
+                    else
+                    {
+                        qDebug() << "Deleting unreferenced file" << filename;
+                        UBFileSystemUtils::deleteFile(absoluteFilePath);
+                    }
+                }
             }
         }
     }
-
-    // scan folders and remove unreferenced files and directories
-    static const QStringList folders = { ".", "audios", "videos", "objects" };
-
-    for (const QString& folder : folders)
+    else
     {
-        QFileInfoList entries = QDir(path + folder).entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
-
-        for (const QFileInfo& entry : entries)
-        {
-            QRegularExpressionMatch match = uuidPattern.match(entry.fileName());
-
-            if (match.hasMatch() && !references.contains(match.captured()))
-            {
-                const QString filename = folder + "/" + entry.fileName();
-                const QString absoluteFilePath = entry.absoluteFilePath();
-
-                // unreferenced file or directory
-                if (entry.isDir())
-                {
-                    qDebug() << "Deleting unreferenced directory" << filename;
-                    UBFileSystemUtils::deleteDir(absoluteFilePath);
-                }
-                else
-                {
-                    qDebug() << "Deleting unreferenced file" << filename;
-                    UBFileSystemUtils::deleteFile(absoluteFilePath);
-                }
-            }
-        }
+        //in a network-storage context, can happen on a newly created document, depending on the client and the cache mode you're using
+        qWarning() << "could not find any pages for the document " << pDocumentProxy->persistencePath();
     }
 }
 
