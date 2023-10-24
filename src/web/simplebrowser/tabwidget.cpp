@@ -67,7 +67,7 @@ TabWidget::TabWidget(QWebEngineProfile *profile, QWidget *parent)
     tabBar->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(tabBar, &QTabBar::customContextMenuRequested, this, &TabWidget::handleContextMenuRequested);
     connect(tabBar, &QTabBar::tabCloseRequested, this, &TabWidget::closeTab);
-    connect(tabBar, &QTabBar::tabBarDoubleClicked, [this](int index) {
+    connect(tabBar, &QTabBar::tabBarDoubleClicked, this, [this](int index) {
         if (index == -1)
             createTab();
     });
@@ -164,7 +164,7 @@ void TabWidget::setupView(WebView *webView)
 {
     QWebEnginePage *webPage = webView->page();
 
-    connect(webView, &QWebEngineView::titleChanged, [this, webView](const QString &title) {
+    connect(webView, &QWebEngineView::titleChanged, this, [this, webView](const QString &title) {
         int index = indexOf(webView);
         if (index != -1) {
             setTabText(index, title);
@@ -173,33 +173,33 @@ void TabWidget::setupView(WebView *webView)
         if (currentIndex() == index)
             emit titleChanged(title);
     });
-    connect(webView, &QWebEngineView::urlChanged, [this, webView](const QUrl &url) {
+    connect(webView, &QWebEngineView::urlChanged, this, [this, webView](const QUrl &url) {
         int index = indexOf(webView);
         if (index != -1)
             tabBar()->setTabData(index, url);
         if (currentIndex() == index)
             emit urlChanged(url);
     });
-    connect(webView, &QWebEngineView::loadProgress, [this, webView](int progress) {
+    connect(webView, &QWebEngineView::loadProgress, this, [this, webView](int progress) {
         if (currentIndex() == indexOf(webView))
             emit loadProgress(progress);
     });
-    connect(webPage, &QWebEnginePage::linkHovered, [this, webView](const QString &url) {
+    connect(webPage, &QWebEnginePage::linkHovered, this, [this, webView](const QString &url) {
         if (currentIndex() == indexOf(webView))
             emit linkHovered(url);
     });
-    connect(webView, &WebView::favIconChanged, [this, webView](const QIcon &icon) {
+    connect(webView, &WebView::favIconChanged, this, [this, webView](const QIcon &icon) {
         int index = indexOf(webView);
         if (index != -1)
             setTabIcon(index, icon);
         if (currentIndex() == index)
             emit favIconChanged(icon);
     });
-    connect(webView, &WebView::webActionEnabledChanged, [this, webView](QWebEnginePage::WebAction action, bool enabled) {
+    connect(webView, &WebView::webActionEnabledChanged, this, [this, webView](QWebEnginePage::WebAction action, bool enabled) {
         if (currentIndex() ==  indexOf(webView))
             emit webActionEnabledChanged(action,enabled);
     });
-    connect(webPage, &QWebEnginePage::windowCloseRequested, [this, webView]() {
+    connect(webPage, &QWebEnginePage::windowCloseRequested, this, [this, webView]() {
         int index = indexOf(webView);
         if (index >= 0)
             closeTab(index);
