@@ -185,22 +185,21 @@ void UBGraphicsMediaItemDelegate::positionHandles()
         mToolBarItem->show();
 
         mToolBarItem->setRect(toolBarRect);
-    }
 
-    int toolBarButtonsWidth = 0;
-    foreach (DelegateButton* button, mToolBarButtons)
-        toolBarButtonsWidth += button->boundingRect().width() + mToolBarItem->getElementsPadding();
+        int toolBarButtonsWidth = 0;
+        foreach (DelegateButton* button, mToolBarButtons)
+            toolBarButtonsWidth += button->boundingRect().width() + mToolBarItem->getElementsPadding();
 
-    QRectF mediaItemRect = mMediaControl->rect();
-    mediaItemRect.setWidth(mediaItem->boundingRect().width() - toolBarButtonsWidth);
-    mediaItemRect.setHeight(mToolBarItem->boundingRect().height());
-    mMediaControl->setRect(mediaItemRect);
+        QRectF mediaItemRect = mMediaControl->rect();
+        mediaItemRect.setWidth(mediaItem->boundingRect().width() - toolBarButtonsWidth);
+        mediaItemRect.setHeight(mToolBarItem->boundingRect().height());
+        mMediaControl->setRect(mediaItemRect);
 
-    mToolBarItem->positionHandles();
-    mMediaControl->positionHandles();
+        mToolBarItem->positionHandles();
+        mMediaControl->positionHandles();
 
-    if (mediaItem)
         mToolBarItem->show();
+    }
 }
 
 void UBGraphicsMediaItemDelegate::remove(bool canUndo)
