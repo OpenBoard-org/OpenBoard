@@ -65,7 +65,7 @@ UBStartupHintsPalette::UBStartupHintsPalette(QWidget *parent) :
     mButtonLayout = new QHBoxLayout();
     mLayout->addLayout(mButtonLayout);
     mShowNextTime = new QCheckBox(tr("Visible next time"),this);
-    mShowNextTime->setCheckState(Qt::Checked);
+    mShowNextTime->setChecked(UBSettings::settings()->appStartupHintsEnabled->get().toBool());
     connect(mShowNextTime,SIGNAL(stateChanged(int)),this,SLOT(onShowNextTimeStateChanged(int)));
     mButtonLayout->addStretch();
     mButtonLayout->addWidget(mShowNextTime);
