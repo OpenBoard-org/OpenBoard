@@ -1222,6 +1222,11 @@ QModelIndex UBDocumentTreeModel::goTo(const QString &dir)
         if (!searchingNode) {
             UBDocumentTreeNode *newChild = new UBDocumentTreeNode(UBDocumentTreeNode::Catalog, curLevelName);
             parentIndex = addNode(newChild, parentIndex);
+
+            if (!parentIndex.isValid())
+            {
+                delete newChild;
+            }
         }
     }
 
@@ -1266,7 +1271,10 @@ void UBDocumentTreeModel::addDocument(std::shared_ptr<UBDocumentProxy> pProxyDat
         lParent = goTo(docGroupName);
     }
 
-    addNode(freeNode, lParent);
+    if (!addNode(freeNode, lParent).isValid())
+    {
+        delete freeNode;
+    }
 }
 
 void UBDocumentTreeModel::addNewDocument(std::shared_ptr<UBDocumentProxy> pProxyData, const QModelIndex &pParent)
@@ -1281,7 +1289,14 @@ QModelIndex UBDocumentTreeModel::addCatalog(const QString &pName, const QModelIn
     }
 
     UBDocumentTreeNode *catalogNode = new UBDocumentTreeNode(UBDocumentTreeNode::Catalog, pName);
-    return addNode(catalogNode, pParent);
+    QModelIndex index = addNode(catalogNode, pParent);
+
+    if (!index.isValid())
+    {
+        delete catalogNode;
+    }
+
+    return index;
 }
 
 void UBDocumentTreeModel::setNewName(const QModelIndex &index, const QString &newName)
@@ -2230,6 +2245,8 @@ void UBDocumentController::setupViews()
             adaptor->setAssociatedAction(currentExportAction);
         }
 
+        bool exportMenuAttached = false;
+
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
         foreach (QObject* menuWidget,  mMainWindow->actionExport->associatedObjects())
 #else
@@ -2244,7 +2261,13 @@ void UBDocumentController::setupViews()
                 tb->setPopupMode(QToolButton::InstantPopup);
 
                 tb->setMenu(exportMenu);
+                exportMenuAttached = true;
             }
+        }
+
+        if (!exportMenuAttached)
+        {
+            delete exportMenu;
         }
 
 #ifdef Q_OS_OSX

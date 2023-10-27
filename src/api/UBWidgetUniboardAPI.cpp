@@ -565,6 +565,7 @@ bool UBWidgetUniboardAPI::ProcessDropEvent(QGraphicsSceneDragDropEvent *event)
 
                 if (!UBFileSystemUtils::copyFile(fileName, destFileName)) {
                     qDebug() << "can't copy from" << fileName << "to" << destFileName;
+                    delete dropMimeData;
                     return false;
                 }
                 downloaded = true;
