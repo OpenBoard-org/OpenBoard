@@ -853,11 +853,14 @@ void UBGraphicsItemDelegate::setLocked(bool pLocked)
 
 void UBGraphicsItemDelegate::updateFrame()
 {
-    if (mFrame && !mFrame->scene() && mDelegated->scene())
-        mDelegated->scene()->addItem(mFrame);
+    if (mFrame)
+    {
+        if (!mFrame->scene() && mDelegated->scene())
+            mDelegated->scene()->addItem(mFrame);
 
-    mFrame->setAntiScale(mAntiScaleRatio);
-    mFrame->positionHandles();
+        mFrame->setAntiScale(mAntiScaleRatio);
+        mFrame->positionHandles();
+    }
 }
 
 void UBGraphicsItemDelegate::updateButtons(bool showUpdated)

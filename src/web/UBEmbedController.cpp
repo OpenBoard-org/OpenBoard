@@ -262,15 +262,17 @@ void UBEmbedController::importWidgetInLibrary(const QDir& pSourceDir) const
     }
 
 
-    if (UBApplication::boardController &&
-        UBApplication::boardController->activeScene())
+    if (UBApplication::boardController)
     {
-        UBApplication::boardController->addW3cWidget(QUrl::fromLocalFile(widgetLibraryPath), QPointF());
-        UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
-    }
+        if (UBApplication::boardController->activeScene())
+        {
+            UBApplication::boardController->addW3cWidget(QUrl::fromLocalFile(widgetLibraryPath), QPointF());
+            UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
+        }
 
-    UBFeaturesController* featuresController = UBApplication::boardController->paletteManager()->featuresWidget()->getFeaturesController();
-    featuresController->addUserWidgetToLibrary(widgetLibraryPath, mTrapFlashUi->widgetNameLineEdit->text());
+        UBFeaturesController* featuresController = UBApplication::boardController->paletteManager()->featuresWidget()->getFeaturesController();
+        featuresController->addUserWidgetToLibrary(widgetLibraryPath, mTrapFlashUi->widgetNameLineEdit->text());
+    }
 }
 
 

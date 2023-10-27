@@ -1569,7 +1569,12 @@ void UBDocumentTreeView::dragMoveEvent(QDragMoveEvent *event)
         if (!docModel || !docModel->isDocument(targetIndex) || docModel->inTrash(targetIndex)) {
             event->ignore();
             event->setDropAction(Qt::IgnoreAction);
-            docModel->setHighLighted(QModelIndex());
+
+            if (docModel)
+            {
+                docModel->setHighLighted(QModelIndex());
+            }
+
             acceptIt = false;
         } else {
             docModel->setHighLighted(targetIndex);
@@ -1605,8 +1610,8 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
     bool isUBPage = event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardPage);
 
     //issue 1629 - NNE - 20131212
-    bool targetIsInTrash = docModel->inTrash(targetIndex) || docModel->trashIndex() == targetIndex;
-    bool targetIsInMyDocuments = docModel->inMyDocuments(targetIndex) || docModel->myDocumentsIndex() == targetIndex;
+    bool targetIsInTrash = docModel && (docModel->inTrash(targetIndex) || docModel->trashIndex() == targetIndex);
+    bool targetIsInMyDocuments = docModel && (docModel->inMyDocuments(targetIndex) || docModel->myDocumentsIndex() == targetIndex);
 
     if (!targetIsInMyDocuments && !targetIsInTrash)
         return;
@@ -1829,14 +1834,14 @@ QWidget *UBDocumentTreeItemDelegate::createEditor(QWidget *parent, const QStyleO
         const UBDocumentTreeModel *docModel = 0;
 
         const UBSortFilterProxyModel *proxy = dynamic_cast<const UBSortFilterProxyModel*>(index.model());
+        QModelIndex sourceIndex;
 
         if(proxy){
             docModel = dynamic_cast<UBDocumentTreeModel*>(proxy->sourceModel());
+            sourceIndex = proxy->mapToSource(index);
         }else{
             docModel =  dynamic_cast<const UBDocumentTreeModel*>(index.model());
         }
-
-        QModelIndex sourceIndex = proxy->mapToSource(index);
 
         if (docModel)
         {

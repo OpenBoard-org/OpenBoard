@@ -131,7 +131,7 @@ void UBCustomCaptureWindow::mouseReleaseEvent ( QMouseEvent * event )
     event->accept();
 
     // do not accept very small selection
-    if (!(mSelectionBand->geometry().width() < 6 && mSelectionBand->geometry().height() < 6))
+    if (mSelectionBand && !(mSelectionBand->geometry().width() < 6 && mSelectionBand->geometry().height() < 6))
     {
         accept();
     }
