@@ -151,7 +151,7 @@ QString UBDocumentManager::importFileFilter(bool notUbx)
 
 QFileInfoList UBDocumentManager::importUbx(const QString &Incomingfile, const QString &destination)
 {
-    UBImportDocumentSetAdaptor *docSetAdaptor;
+    UBImportDocumentSetAdaptor *docSetAdaptor = nullptr;
     foreach (UBImportAdaptor *curAdaptor, mImportAdaptors) {
         docSetAdaptor = qobject_cast<UBImportDocumentSetAdaptor*>(curAdaptor);
         if (docSetAdaptor) {
