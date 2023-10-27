@@ -49,7 +49,7 @@ bool UBGraphicsMediaItem::sIsMutedByDefault = false;
  */
 UBGraphicsMediaItem* UBGraphicsMediaItem::createMediaItem(const QUrl &pMediaFileUrl, QGraphicsItem* parent)
 {
-    UBGraphicsMediaItem * mediaItem;
+    UBGraphicsMediaItem * mediaItem = nullptr;
 
     QString mediaPath = pMediaFileUrl.toString();
     if ("" == mediaPath)
