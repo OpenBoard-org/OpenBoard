@@ -158,9 +158,6 @@ class UBPersistenceManager : public QObject
         bool isSceneInCached(std::shared_ptr<UBDocumentProxy>proxy, int index) const;
 
     signals:
-
-        void proxyListChanged();
-
         void documentCreated(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
         void documentMetadataChanged(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
 
