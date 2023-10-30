@@ -37,6 +37,7 @@
 #include <QWidget>
 
 #include "board/UBBoardController.h"
+#include "board/UBBoardView.h"
 
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"
@@ -1066,6 +1067,7 @@ UBDraggableLivePixmapItem::UBDraggableLivePixmapItem(std::shared_ptr<UBGraphicsS
     , mScene(pageScene)
     , mPageNumber(new UBThumbnailTextItem(index))
     , mExposed(false)
+    , ignoreNextEvent(false)
 {
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setAcceptDrops(true);
@@ -1212,10 +1214,21 @@ void UBDraggableLivePixmapItem::updatePixmap(const QRectF &region)
 
         if (pixmapRect.isValid())
         {
-            QPainter painter(&pixmap);
-            QRectF sceneRect = mTransform.inverted().mapRect(pixmapRect);
-            mScene->render(&painter, pixmapRect, sceneRect);
-            setPixmap(pixmap);
+            if (ignoreNextEvent)
+            {
+                ignoreNextEvent = false;
+            }
+            else
+            {
+                QPainter painter(&pixmap);
+                QRectF sceneRect = mTransform.inverted().mapRect(pixmapRect);
+                mScene->render(&painter, pixmapRect, sceneRect);
+
+                UBApplication::boardController->controlView()->setUpdatesEnabled(false);
+                ignoreNextEvent = true; // ignore paint event induced by enabling updates
+                setPixmap(pixmap);
+                UBApplication::boardController->controlView()->setUpdatesEnabled(true);
+            }
         }
     }
 }

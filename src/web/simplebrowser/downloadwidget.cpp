@@ -68,7 +68,7 @@ DownloadWidget::DownloadWidget(QWebEngineDownloadRequest *download, QWidget *par
     m_dstName->setText(m_download->downloadFileName());
     m_srcUrl->setText(m_download->url().toDisplayString());
 
-    connect(m_cancelButton, &QPushButton::clicked,
+    connect(m_cancelButton, &QPushButton::clicked, this,
             [this](bool) {
         if (m_download->state() == QWebEngineDownloadRequest::DownloadInProgress)
             m_download->cancel();
@@ -101,7 +101,7 @@ DownloadWidget::DownloadWidget(QWebEngineDownloadItem *download, QWidget *parent
     m_dstName->setText(m_download->downloadFileName());
     m_srcUrl->setText(m_download->url().toDisplayString());
 
-    connect(m_cancelButton, &QPushButton::clicked,
+    connect(m_cancelButton, &QPushButton::clicked, this,
             [this](bool) {
         if (m_download->state() == QWebEngineDownloadItem::DownloadInProgress)
             m_download->cancel();
@@ -109,7 +109,7 @@ DownloadWidget::DownloadWidget(QWebEngineDownloadItem *download, QWidget *parent
             emit removeClicked(this);
     });
 
-    connect(m_openButton, &QPushButton::clicked,
+    connect(m_openButton, &QPushButton::clicked, this,
             [this](bool) {
         QUrl url = QUrl::fromLocalFile(QDir(m_download->downloadDirectory()).filePath(m_download->downloadFileName()));
         QDesktopServices::openUrl(url);

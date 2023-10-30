@@ -98,7 +98,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
     connect(displayManager, SIGNAL(screenLayoutChanged()), this, SLOT(screenLayoutChanged()));
     connect(displayManager, SIGNAL(screenLayoutChanged()), mUninoteController, SLOT(screenLayoutChanged()));
     connect(displayManager, SIGNAL(screenLayoutChanged()), UBApplication::webController, SLOT(screenLayoutChanged()));
-    connect(displayManager, &UBDisplayManager::availableScreenCountChanged, [this](){
+    connect(displayManager, &UBDisplayManager::availableScreenCountChanged,this,  [this](){
         initPreviousViews();
         UBApplication::displayManager->setPreviousDisplaysWidgets(mPreviousViews);
     });

@@ -76,7 +76,7 @@ UBGraphicsAxes::UBGraphicsAxes()
     setFlag(QGraphicsItem::ItemIsFocusable, true); //needed to receive key events
     updateResizeCursor();
 
-    connect(UBApplication::boardController, &UBBoardController::zoomChanged, [this](qreal){
+    connect(UBApplication::boardController, &UBBoardController::zoomChanged, this, [this](qreal){
         // recalculate shape when zoom factor changes
         setRect(mBounds);
     });

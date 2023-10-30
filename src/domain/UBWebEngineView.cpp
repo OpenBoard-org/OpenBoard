@@ -65,7 +65,7 @@ void UBWebEngineView::inspectPage()
 
         page()->setDevToolsPage(inspector->page());
 
-        connect(mInspectorWindow, &QObject::destroyed, [this](){
+        connect(mInspectorWindow, &QObject::destroyed, this, [this](){
             page()->setDevToolsPage(nullptr);
             mInspectorWindow = nullptr;
         });
@@ -107,7 +107,7 @@ void UBWebEngineView::contextMenuEvent(QContextMenuEvent *event)
     // add web inspector action
     QAction *action = new QAction(menu);
     action->setText(tr("Open Web Inspector"));
-    connect(action, &QAction::triggered, [this]() { inspectPage(); });
+    connect(action, &QAction::triggered, this, [this]() { inspectPage(); });
 
     menu->addSeparator();
     menu->addAction(action);
