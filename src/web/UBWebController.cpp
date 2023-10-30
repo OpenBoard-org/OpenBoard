@@ -163,10 +163,10 @@ UBWebController::UBWebController(UBMainWindow* mainWindow)
     // synchronize with QNetworkAccessManager
     QNetworkCookieJar* jar = UBNetworkAccessManager::defaultAccessManager()->cookieJar();
 
-    connect(cookieStore, &QWebEngineCookieStore::cookieAdded, [jar](const QNetworkCookie &cookie){
+    connect(cookieStore, &QWebEngineCookieStore::cookieAdded, jar, [jar](const QNetworkCookie &cookie){
         jar->insertCookie(cookie);
     });
-    connect(cookieStore, &QWebEngineCookieStore::cookieRemoved, [jar](const QNetworkCookie &cookie){
+    connect(cookieStore, &QWebEngineCookieStore::cookieRemoved, jar, [jar](const QNetworkCookie &cookie){
         jar->deleteCookie(cookie);
     });
 
@@ -270,23 +270,23 @@ void UBWebController::webBrowserInstance()
             tabCreated(mCurrentWebBrowser->currentTab());
 
             // connect buttons
-            connect(mMainWindow->actionWebBack, &QAction::triggered, [tabWidget]() {
+            connect(mMainWindow->actionWebBack, &QAction::triggered, tabWidget, [tabWidget]() {
                 tabWidget->triggerWebPageAction(QWebEnginePage::Back);
             });
 
-            connect(mMainWindow->actionWebForward, &QAction::triggered, [tabWidget]() {
+            connect(mMainWindow->actionWebForward, &QAction::triggered, tabWidget, [tabWidget]() {
                 tabWidget->triggerWebPageAction(QWebEnginePage::Forward);
             });
 
-            connect(mMainWindow->actionWebReload, &QAction::triggered, [tabWidget]() {
+            connect(mMainWindow->actionWebReload, &QAction::triggered, tabWidget, [tabWidget]() {
                 tabWidget->triggerWebPageAction(QWebEnginePage::Reload);
             });
 
-            connect(mMainWindow->actionStopLoading, &QAction::triggered, [tabWidget]() {
+            connect(mMainWindow->actionStopLoading, &QAction::triggered, tabWidget, [tabWidget]() {
                 tabWidget->triggerWebPageAction(QWebEnginePage::Stop);
             });
 
-            connect(mMainWindow->actionHome, &QAction::triggered, [this, currentUrl](){
+            connect(mMainWindow->actionHome, &QAction::triggered, this, [this, currentUrl](){
                 mCurrentWebBrowser->currentTab()->load(currentUrl);
             });
 
@@ -331,7 +331,7 @@ void UBWebController::webBrowserInstance()
                 mWebProfile, &QWebEngineProfile::downloadRequested,
                 &mDownloadManagerWidget, &DownloadManagerWidget::downloadRequested);
 
-            connect(mMainWindow->actionWebTools, &QAction::triggered, [this](){
+            connect(mMainWindow->actionWebTools, &QAction::triggered, this, [this](){
                 mToolsCurrentPalette->setVisible(mMainWindow->actionWebTools->isChecked());
             });
         }
@@ -846,7 +846,7 @@ void UBWebController::captureStripe(QPointF pos, QSize size, QPixmap* pix, QPoin
     QString scrollto = QString("window.scrollTo(%1,%2)").arg(pos.x()).arg(pos.y());
     view->page()->runJavaScript(scrollto, [this,pos,size,pix,scrollPosition](const QVariant&){
         // we need some time for rendering - there is no signal when finished, so just wait
-        QTimer::singleShot(100, [this,pos,size,pix,scrollPosition](){
+        QTimer::singleShot(100, this, [this,pos,size,pix,scrollPosition](){
             WebView* view = mCurrentWebBrowser->currentTab();
             QPixmap stripe(size);
 

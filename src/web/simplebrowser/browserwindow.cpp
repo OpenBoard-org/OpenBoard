@@ -110,12 +110,12 @@ void BrowserWindow::init()
     m_statusBar->setVisible(true);
 
     connect(m_tabWidget, &TabWidget::titleChanged, this, &BrowserWindow::handleWebViewTitleChanged);
-    connect(m_tabWidget, &TabWidget::linkHovered, [this](const QString& url) {
+    connect(m_tabWidget, &TabWidget::linkHovered, this, [this](const QString& url) {
         m_statusBar->setVisible(!url.isEmpty());
         m_statusBar->showMessage(url);
     });
     connect(m_tabWidget, &TabWidget::loadProgress, this, &BrowserWindow::handleWebViewLoadProgress);
-    connect(m_tabWidget, &TabWidget::urlChanged, [this](const QUrl &url) {
+    connect(m_tabWidget, &TabWidget::urlChanged, this, [this](const QUrl &url) {
         m_urlLineEdit->setText(url.toDisplayString());
     });
     connect(m_tabWidget, &TabWidget::favIconChanged, m_favAction, &QAction::setIcon);
@@ -130,7 +130,7 @@ void BrowserWindow::init()
     });
 
     handleWebViewTitleChanged(QString());
-    connect(m_tabWidget, &TabWidget::currentChanged, [this](int index){
+    connect(m_tabWidget, &TabWidget::currentChanged, this, [this](int index){
         QWidget* current = m_tabWidget->widget(index);
 
         emit activeViewChange(current);
@@ -178,7 +178,7 @@ QToolBar *BrowserWindow::createToolBar(QWidget *parent)
     downloadsAction->setIcon(QIcon(QStringLiteral(":webbrowser/go-bottom.png")));
     downloadsAction->setToolTip(tr("Show downloads"));
     navigationBar->addAction(downloadsAction);
-    connect(downloadsAction, &QAction::triggered, [this]() {
+    connect(downloadsAction, &QAction::triggered, this, [this]() {
         DownloadManagerWidget* downloadManager = findChild<DownloadManagerWidget*>();
 
         if (downloadManager)
@@ -311,7 +311,7 @@ void BrowserWindow::handleDevToolsRequested(QWebEnginePage *source)
         source->setDevToolsPage(inspector->page());
         source->triggerAction(QWebEnginePage::InspectElement);
 
-        connect(m_inspectorWindow, &QObject::destroyed, [this](){
+        connect(m_inspectorWindow, &QObject::destroyed, this, [this](){
             m_inspectorWindow = nullptr;
         });
     }

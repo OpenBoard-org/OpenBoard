@@ -77,21 +77,21 @@ WebView::WebView(QWidget *parent)
     : QWebEngineView(parent)
     , m_loadProgress(100)
 {
-    connect(this, &QWebEngineView::loadStarted, [this]() {
+    connect(this, &QWebEngineView::loadStarted, this, [this]() {
         m_loadProgress = 0;
         emit favIconChanged(favIcon());
     });
-    connect(this, &QWebEngineView::loadProgress, [this](int progress) {
+    connect(this, &QWebEngineView::loadProgress, this, [this](int progress) {
         m_loadProgress = progress;
     });
-    connect(this, &QWebEngineView::loadFinished, [this](bool success) {
+    connect(this, &QWebEngineView::loadFinished, this, [this](bool success) {
         m_loadProgress = success ? 100 : -1;
         emit favIconChanged(favIcon());
     });
-    connect(this, &QWebEngineView::iconChanged, [this](const QIcon &) {
+    connect(this, &QWebEngineView::iconChanged, this, [this](const QIcon &) {
         emit favIconChanged(favIcon());
     });
-    connect(this, &QWebEngineView::urlChanged, [this](const QUrl& url){
+    connect(this, &QWebEngineView::urlChanged, this, [this](const QUrl& url){
         BrowserWindow* browser = browserWindow();
 
         if (browser && page() && !page()->profile()->isOffTheRecord()) {
@@ -99,7 +99,7 @@ WebView::WebView(QWidget *parent)
         }
     });
 
-    connect(this, &QWebEngineView::renderProcessTerminated,
+    connect(this, &QWebEngineView::renderProcessTerminated, this,
             [this](QWebEnginePage::RenderProcessTerminationStatus termStatus, int statusCode) {
         QString status;
         switch (termStatus) {
@@ -120,7 +120,7 @@ WebView::WebView(QWidget *parent)
                                                    tr("Render process exited with code: %1\n"
                                                       "Do you want to reload the page ?").arg(statusCode));
         if (btn == QMessageBox::Yes)
-            QTimer::singleShot(0, [this] { reload(); });
+            QTimer::singleShot(0, this, [this] { reload(); });
     });
 }
 
@@ -141,7 +141,7 @@ int WebView::loadProgress() const
 void WebView::createWebActionTrigger(QWebEnginePage *page, QWebEnginePage::WebAction webAction)
 {
     QAction *action = page->action(webAction);
-    connect(action, &QAction::changed, [this, action, webAction]{
+    connect(action, &QAction::changed, this, [this, action, webAction]{
         emit webActionEnabledChanged(webAction, action->isEnabled());
     });
 }
@@ -239,7 +239,7 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
 
         QAction *action = new QAction(menu);
         action->setText(tr("Open Web Inspector in new window"));
-        connect(action, &QAction::triggered, [this]() { emit devToolsRequested(page()); });
+        connect(action, &QAction::triggered, this, [this]() { emit devToolsRequested(page()); });
 
         QAction *before(inspectElement == actions.cend() ? nullptr : *inspectElement);
         menu->insertAction(before, action);
@@ -293,7 +293,7 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
     {
         QAction* actionAddToBoard = new QAction(menu);
         actionAddToBoard->setText(tr("Add to board"));
-        connect(actionAddToBoard, &QAction::triggered, [contentUrl](){
+        connect(actionAddToBoard, &QAction::triggered, this, [contentUrl](){
             UBApplication::applicationController->showBoard();
             UBApplication::boardController->downloadURL(contentUrl);
         });
