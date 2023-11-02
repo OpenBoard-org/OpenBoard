@@ -1153,18 +1153,26 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
         // forward right-click events to items
         int currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController ()->stylusTool ();
 
-        switch (currentTool) {
+        switch (currentTool)
+        {
         case UBStylusTool::Selector :
         case UBStylusTool::Play :
+        {
             if (bIsDesktop) {
                 event->ignore();
                 return;
             }
 
-            handleItemMousePress(event);
-            event->accept();
+            // Calling handleItemMousePress on a text item ends in the item being deselected, so the context menu becomes inoprent.
+            // Could not find why in handleItemMousePress, so we simply make an exception for text items here
+            UBGraphicsTextItem* textItem = dynamic_cast<UBGraphicsTextItem*>(getMovingItem());
+            if (!textItem)
+            {
+                handleItemMousePress(event);
+                event->accept();
+            }
             break;
-
+        }
         default:
             break;
         }
