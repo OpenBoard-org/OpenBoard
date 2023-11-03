@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 13.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 14948)  -->
+
+<svg
+   version="1.1"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   width="126.916px"
+   height="128.021px"
+   viewBox="0 0 126.916 128.021"
+   style="enable-background:new 0 0 126.916 128.021;"
+   xml:space="preserve"
+   sodipodi:docname="cacheTool.svg"
+   inkscape:version="1.2 (1:1.2.1+202207142221+cd75a1ee6d)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"><defs
+   id="defs33"><linearGradient
+     inkscape:collect="always"
+     id="linearGradient2115"><stop
+       style="stop-color:#171717;stop-opacity:1;"
+       offset="0"
+       id="stop2111" /><stop
+       style="stop-color:#717171;stop-opacity:1;"
+       offset="1"
+       id="stop2113" /></linearGradient><linearGradient
+     inkscape:collect="always"
+     xlink:href="#linearGradient2115"
+     id="linearGradient2117"
+     x1="123.59337"
+     y1="122.44473"
+     x2="14.949845"
+     y2="16.238876"
+     gradientUnits="userSpaceOnUse" /></defs><sodipodi:namedview
+   id="namedview31"
+   pagecolor="#ffffff"
+   bordercolor="#eeeeee"
+   borderopacity="1"
+   inkscape:showpageshadow="0"
+   inkscape:pageopacity="0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#ffffff"
+   showgrid="false"
+   inkscape:zoom="2.8445333"
+   inkscape:cx="43.592388"
+   inkscape:cy="78.044437"
+   inkscape:window-width="1366"
+   inkscape:window-height="695"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="Layer_1" />
+
+
+
+
+
+<path
+   style="fill:#ff0000;stroke:#ff0000;stroke-width:2;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+   d="M 90.425823,59.967427 71.873375,77.393076"
+   id="path8126" /><path
+   style="fill:none;stroke:#ff0000;stroke-width:2;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+   d="M 97.320833,74.147475 76.1884,74.164535 75.90284,94.95975"
+   id="path10435"
+   sodipodi:nodetypes="cc" /><path
+   style="fill:none;stroke:#ff0000;stroke-width:2;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+   d="m 94.087844,82.288031 -11.162769,0.0088 -0.150842,10.691853"
+   id="path12084"
+   sodipodi:nodetypes="cc" /><path
+   id="path2"
+   style="display:inline;fill:url(#linearGradient2117);stroke:none;stroke-opacity:1;fill-opacity:1"
+   d="M 10.941406 0 C 4.8984123 -1.1842367e-15 0 4.8984123 0 10.941406 L 0 117.08008 C -1.1842367e-15 123.12307 4.8984123 128.02148 10.941406 128.02148 L 115.97656 128.02148 C 122.01856 128.02148 126.91602 123.12307 126.91602 117.08008 L 126.91602 10.941406 C 126.91602 4.8984123 122.01856 6.7973337e-17 115.97656 0 L 10.941406 0 z M 76.369141 54.292969 A 20 20 0 0 1 96.369141 74.292969 A 20 20 0 0 1 76.369141 94.292969 A 20 20 0 0 1 56.369141 74.292969 A 20 20 0 0 1 76.369141 54.292969 z " /><path
+   style="display:none;opacity:0.45;fill:#ffffff"
+   d="m 123.372,9.953 c 0,-3.828 -3.113,-6.941 -6.938,-6.941 H 11.399 c -3.828,0 -6.941,3.114 -6.941,6.941 v 1.964 C 4.961,8.58 7.838,6.011 11.313,6.011 h 105.034 c 3.825,0 6.938,3.114 6.938,6.941"
+   id="path28" /><metadata
+   id="metadata1054"><rdf:RDF><cc:License
+       rdf:about="http://creativecommons.org/publicdomain/zero/1.0/"><cc:permits
+         rdf:resource="http://creativecommons.org/ns#Reproduction" /><cc:permits
+         rdf:resource="http://creativecommons.org/ns#Distribution" /><cc:permits
+         rdf:resource="http://creativecommons.org/ns#DerivativeWorks" /></cc:License><cc:Work
+       rdf:about=""><cc:license
+         rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" /></cc:Work></rdf:RDF></metadata></svg>

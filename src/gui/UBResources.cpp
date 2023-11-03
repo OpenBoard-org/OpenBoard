@@ -67,17 +67,18 @@ void UBResources::init()
 {
     // Cursors
     penCursor       = QCursor(Qt::CrossCursor);
-    eraserCursor    = QCursor(QPixmap(":/images/cursors/eraser.png"), 5, 25);
-    markerCursor    = QCursor(QPixmap(":/images/cursors/marker.png"), 3, 30);
-    pointerCursor   = QCursor(QPixmap(":/images/cursors/laser.png"), 2, 1);
-    handCursor      = QCursor(Qt::OpenHandCursor);
-    zoomInCursor    = QCursor(QPixmap(":/images/cursors/zoomIn.png"), 9, 9);
-    zoomOutCursor   = QCursor(QPixmap(":/images/cursors/zoomOut.png"), 9, 9);
+    eraserCursor    = QCursor(QPixmap(":/images/cursors/eraser.svg"), 5, 25);
+    markerCursor    = QCursor(QPixmap(":/images/cursors/marker.svg"), 3, 30);
+    pointerCursor   = QCursor(QPixmap(":/images/cursors/laser.svg"), 2, 1);
+    handCursor      = QCursor(QPixmap(":/images/cursors/scrollPage.svg"), 6, 1);
+    closedHandCursor= QCursor(QPixmap(":/images/cursors/scrollPageOn.svg"), 6, 1);
+    zoomInCursor    = QCursor(QPixmap(":/images/cursors/zoomIn.svg"), 9, 9);
+    zoomOutCursor   = QCursor(QPixmap(":/images/cursors/zoomOut.svg"), 9, 9);
     arrowCursor     = QCursor(Qt::ArrowCursor);
-    playCursor      = QCursor(QPixmap(":/images/cursors/play.png"), 6, 1);
+    playCursor      = QCursor(QPixmap(":/images/cursors/play.svg"), 6, 1);
     textCursor      = QCursor(Qt::ArrowCursor);
-    rotateCursor    = QCursor(QPixmap(":/images/cursors/rotate.png"), 16, 16);
-    drawLineRulerCursor = QCursor(QPixmap(":/images/cursors/drawRulerLine.png"), 3, 12);
+    rotateCursor    = QCursor(QPixmap(":/images/cursors/rotate.svg"), 16, 16);
+    drawLineRulerCursor = QCursor(QPixmap(":/images/cursors/drawRulerLine.svg"), 3, 12);
 }
 
 void UBResources::buildFontList()

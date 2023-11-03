@@ -12,7 +12,7 @@
 class UBDraggableThumbnail : public QFrame
 {
     public:
-        UBDraggableThumbnail(QWidget* parent =0, const QPixmap& pixmap = QPixmap(":images/libpalette/notFound.png"));
+        UBDraggableThumbnail(QWidget* parent =0, const QPixmap& pixmap = QPixmap(":images/libpalette/notFound.svg"));
 
         void setThumbnail(const QPixmap &pixmap);
         void setPixmap(const QPixmap & pixmap);

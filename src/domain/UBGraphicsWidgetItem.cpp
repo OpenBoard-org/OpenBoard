@@ -499,7 +499,7 @@ QString UBGraphicsWidgetItem::iconFilePath(const QUrl& pUrl)
     /* default */
     if (file.length() == 0)
     {
-        file = QString(":/images/defaultWidgetIcon.png");
+        file = QString(":/images/defaultWidgetIcon.svg");
     }
     return file;
 }

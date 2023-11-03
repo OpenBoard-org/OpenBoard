@@ -58,6 +58,7 @@ class UBResources : public QObject
          QCursor markerCursor;
          QCursor pointerCursor;
          QCursor handCursor;
+         QCursor closedHandCursor;
          QCursor zoomInCursor;
          QCursor zoomOutCursor;
          QCursor arrowCursor;

@@ -434,7 +434,7 @@ void UBGraphicsAxes::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void UBGraphicsAxes::updateResizeCursor()
 {
-    QPixmap pix(":/images/cursors/resize.png");
+    QPixmap pix(":/images/cursors/resize.svg");
     QTransform tr;
     tr.rotate(-90);
     mResizeCursorH = QCursor(pix, pix.width() / 2,  pix.height() / 2);

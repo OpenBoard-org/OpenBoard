@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In  -->
+
+<svg
+   version="1.2"
+   x="0px"
+   y="0px"
+   width="96px"
+   height="96px"
+   viewBox="0 -8.898 96 96"
+   overflow="visible"
+   xml:space="preserve"
+   id="svg66"
+   sodipodi:docname="folder.svg"
+   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"><sodipodi:namedview
+   id="namedview68"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="true"
+   inkscape:deskcolor="#d1d1d1"
+   showgrid="true"
+   inkscape:zoom="5.5831973"
+   inkscape:cx="37.971074"
+   inkscape:cy="53.463989"
+   inkscape:window-width="1366"
+   inkscape:window-height="695"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="g64"><inkscape:grid
+     type="xygrid"
+     id="grid2422" /></sodipodi:namedview>
+<defs
+   id="defs2">
+<linearGradient
+   id="SVGID_1_-3"
+   gradientUnits="userSpaceOnUse"
+   x1="63.4995"
+   y1="24.502399"
+   x2="63.4995"
+   y2="101.9506">
+		<stop
+   offset="0"
+   style="stop-color:#FCFCFC"
+   id="stop4" />
+		<stop
+   offset="1"
+   style="stop-color:#f7f7f7;stop-opacity:1;"
+   id="stop6-6" />
+		<a:midPointStop
+   offset="0"
+   style="stop-color:#FCFCFC" />
+		<a:midPointStop
+   offset="0.5"
+   style="stop-color:#FCFCFC" />
+		<a:midPointStop
+   offset="1"
+   style="stop-color:#E6E6E6" />
+	</linearGradient></defs>
+<g
+   id="g64">
+	
+	<linearGradient
+   id="SVGID_1_"
+   gradientUnits="userSpaceOnUse"
+   x1="38.2183"
+   y1="69.7495"
+   x2="38.2183"
+   y2="0.7495">
+		<stop
+   offset="0"
+   style="stop-color:#B8B6B7"
+   id="stop6" />
+		<stop
+   offset="1"
+   style="stop-color:#D9D9DE"
+   id="stop8" />
+	</linearGradient>
+	<path
+   fill="url(#SVGID_1_)"
+   d="M75.687,17.069v-5.114c0-1.247-1.021-2.268-2.268-2.268h-42.67V3.75c0-1.657-1.343-3-3-3H3.75   c-1.657,0-3,1.343-3,3v60c0,3.313,1.116,6,2.772,6c1.657,0,2.657-2.682,3.228-6l5.71-44.432c0.159-1.237,1.31-2.249,2.557-2.249   H75.687"
+   id="path11" /><path
+   fill="none"
+   stroke="#848685"
+   stroke-width="1.5"
+   stroke-miterlimit="10"
+   d="m 75.687,17.069 v -5.114 c 0,-1.247 -1.021,-2.268 -2.268,-2.268 H 30.749 V 3.75 c 0,-1.657 -1.343,-3 -3,-3 H 3.75 c -1.657,0 -3,1.343 -3,3 v 60 c 0,3.313 1.116,6 2.772,6"
+   id="path60"
+   style="display:inline" />
+	
+	<linearGradient
+   id="SVGID_2_"
+   gradientUnits="userSpaceOnUse"
+   x1="45.7817"
+   y1="69.7837"
+   x2="45.7817"
+   y2="17.0342">
+		<stop
+   offset="0"
+   style="stop-color:#EBEBED"
+   id="stop15" />
+		<stop
+   offset="1"
+   style="stop-color:#FFFFFF"
+   id="stop17" />
+	</linearGradient>
+	<path
+   fill="url(#SVGID_2_)"
+   d="m 3.493,69.703 c 1.657,10e-4 2.66,-2.679 3.235,-5.997 l 5.76,-44.425 c 0.161,-1.237 1.312,-2.248 2.559,-2.246 l 71.136,0.08 c 1.246,0.001 2.079,1.006 1.851,2.232 L 80.143,61.56 c -0.229,1.226 -0.789,3.18 -1.244,4.341 0,0 -1.522,3.886 -3.18,3.884 l -71.45,-0.08 z"
+   id="path20"
+   style="display:inline" />
+	<linearGradient
+   id="SVGID_3_"
+   gradientUnits="userSpaceOnUse"
+   x1="47.1133"
+   y1="69.7495"
+   x2="47.1133"
+   y2="19.7071">
+		<stop
+   offset="0"
+   style="stop-color:#C8C8CC"
+   id="stop22" />
+		<stop
+   offset="0.0241"
+   style="stop-color:#CBCBCF"
+   id="stop24" />
+		<stop
+   offset="0.1455"
+   style="stop-color:#D6D6DB"
+   id="stop26" />
+		<stop
+   offset="0.2577"
+   style="stop-color:#D9D9DE"
+   id="stop28" />
+		<stop
+   offset="1"
+   style="stop-color:#E5E5E9"
+   id="stop30" />
+	</linearGradient>
+	<path
+   fill="url(#SVGID_3_)"
+   d="m 6.184,69.75 c 1.605,0 2.574,-2.547 3.126,-5.699 l 5.53,-42.207 c 0.154,-1.175 1.268,-2.136 2.476,-2.136 h 68.896 c 1.208,0 2.016,0.953 1.795,2.118 l -7.596,40.108 c -0.22,1.164 -0.761,3.021 -1.2,4.124 0,0 -1.47,3.692 -3.075,3.692 H 6.935 Z"
+   id="path33"
+   style="display:inline" />
+	<g
+   id="g58">
+		<linearGradient
+   id="SVGID_4_"
+   gradientUnits="userSpaceOnUse"
+   x1="3.6626"
+   y1="43.4028"
+   x2="75.8658"
+   y2="43.4028">
+			<stop
+   offset="0"
+   style="stop-color:#848685"
+   id="stop35" />
+			<stop
+   offset="0.0053"
+   style="stop-color:#888A89"
+   id="stop37" />
+			<stop
+   offset="0.0344"
+   style="stop-color:#9A9C9B"
+   id="stop39" />
+			<stop
+   offset="0.0687"
+   style="stop-color:#A7A9A9"
+   id="stop41" />
+			<stop
+   offset="0.113"
+   style="stop-color:#AFB0B1"
+   id="stop43" />
+			<stop
+   offset="0.2025"
+   style="stop-color:#B1B3B4"
+   id="stop45" />
+			<stop
+   offset="0.4988"
+   style="stop-color:#AFB0B1"
+   id="stop47" />
+			<stop
+   offset="0.6946"
+   style="stop-color:#A6A7A7"
+   id="stop49" />
+			<stop
+   offset="0.8607"
+   style="stop-color:#979898"
+   id="stop51" />
+			<stop
+   offset="1"
+   style="stop-color:#848685"
+   id="stop53" />
+		</linearGradient>
+		<path
+   fill="url(#SVGID_4_)"
+   d="M3.663,69.047c0.725-0.279,1.739-1.881,2.349-5.424l5.705-44.401    c0.209-1.628,1.659-2.903,3.3-2.903h60.849v1.5H15.017c-0.871,0-1.701,0.73-1.813,1.594l-5.71,44.433    c-0.735,4.274-1.954,6.455-3.722,6.642L3.663,69.047z"
+   id="path56" />
+	</g>
+	
+	<path
+   fill="none"
+   stroke="#848685"
+   stroke-width="1.5"
+   stroke-miterlimit="10"
+   d="M75.819,17.069h10.333   c1.247,0,2.081,1.003,1.853,2.229l-7.842,42.223c-0.228,1.226-0.785,3.18-1.239,4.342c0,0-1.519,3.887-3.175,3.887H3.522"
+   id="path62" />
+</g>
+<metadata
+   id="metadata2424"><rdf:RDF><cc:License
+       rdf:about="http://creativecommons.org/publicdomain/zero/1.0/"><cc:permits
+         rdf:resource="http://creativecommons.org/ns#Reproduction" /><cc:permits
+         rdf:resource="http://creativecommons.org/ns#Distribution" /><cc:permits
+         rdf:resource="http://creativecommons.org/ns#DerivativeWorks" /></cc:License><cc:Work
+       rdf:about=""><cc:license
+         rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" /></cc:Work></rdf:RDF></metadata></svg>

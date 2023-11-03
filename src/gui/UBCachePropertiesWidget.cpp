@@ -69,8 +69,8 @@ UBCachePropertiesWidget::UBCachePropertiesWidget(QWidget *parent, const char *na
 
     mName = "CachePropWidget";
     mVisibleState = false;
-    mIconToLeft = QPixmap(":images/cache_open.png");
-    mIconToRight = QPixmap(":images/cache_close.png");
+    mIconToLeft = QPixmap(":images/cache_open.svg");
+    mIconToRight = QPixmap(":images/cache_close.svg");
     setContentsMargins(10, 10, 10, 10);
 
     // Build the UI
@@ -105,11 +105,11 @@ UBCachePropertiesWidget::UBCachePropertiesWidget(QWidget *parent, const char *na
     mpShapeLayout = new QHBoxLayout();
     mpShapeLabel = new QLabel(tr("Shape:"), mpProperties);
     mpSquareButton = new QPushButton(mpProperties);
-    mpSquareButton->setIcon(QIcon(":images/cache_square.png"));
+    mpSquareButton->setIcon(QIcon(":images/cache_square.svg"));
     mpSquareButton->setObjectName("DockPaletteWidgetButton");
     mpSquareButton->setCheckable(true);
     mpCircleButton = new QPushButton(mpProperties);
-    mpCircleButton->setIcon(QIcon(":images/cache_circle.png"));
+    mpCircleButton->setIcon(QIcon(":images/cache_circle.svg"));
     mpCircleButton->setObjectName("DockPaletteWidgetButton");
     mpCircleButton->setCheckable(true);
     mpShapeLayout->addWidget(mpShapeLabel, 0);

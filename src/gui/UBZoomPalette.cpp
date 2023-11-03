@@ -56,7 +56,7 @@ UBZoomPalette::UBZoomPalette(QWidget* parent)
     mHundredButton = new QPushButton(parent);
     mHundredButton->setStyleSheet(QString("QPushButton { color: white; background-color: transparent; border: none; font-family: Arial; font-weight: bold; font-size: 20px }"));
     mHundredButton->setFocusPolicy(Qt::NoFocus);
-    mHundredButton->setIcon(QIcon(":/images/stylusPalette/restoreZoom.png"));
+    mHundredButton->setIcon(QIcon(":/images/stylusPalette/restoreZoom.svg"));
     mHundredButton->setIconSize(QSize(42,42));
     connect(mHundredButton, SIGNAL(clicked(bool)), this, SLOT(goHundred()));
 

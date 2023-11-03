@@ -1068,7 +1068,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
             break;
 
         case UBStylusTool::Hand :
-            viewport()->setCursor(QCursor (Qt::ClosedHandCursor));
+            viewport()->setCursor(QCursor (UBResources::resources ()->closedHandCursor));
             mPreviousPoint = eventPosition;
             event->accept();
             break;

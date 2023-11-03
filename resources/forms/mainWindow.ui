@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../OpenBoard.qrc">
-    <normaloff>:/images/OpenBoard.png</normaloff>:/images/OpenBoard.png</iconset>
+    <normaloff>:/images/OpenBoard.svg</normaloff>:/images/OpenBoard.svg</iconset>
   </property>
   <property name="iconSize">
    <size>
@@ -197,7 +197,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/stylus.png</normaloff>:/images/toolbar/stylus.png</iconset>
+     <normaloff>:/images/toolbar/stylus.svg</normaloff>:/images/toolbar/stylus.svg</iconset>
    </property>
    <property name="text">
     <string>Stylus</string>
@@ -220,7 +220,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/background.png</normaloff>:/images/toolbar/background.png</iconset>
+     <normaloff>:/images/toolbar/background.svg</normaloff>:/images/toolbar/background.svg</iconset>
    </property>
    <property name="text">
     <string>Backgrounds</string>
@@ -237,7 +237,7 @@
   <action name="actionUndo">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/undoOn.png</normaloff>:/images/toolbar/undoOn.png</iconset>
+     <normaloff>:/images/toolbar/undoOn.svg</normaloff>:/images/toolbar/undoOn.svg</iconset>
    </property>
    <property name="text">
     <string>Undo</string>
@@ -254,7 +254,7 @@
   <action name="actionRedo">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/redoOn.png</normaloff>:/images/toolbar/redoOn.png</iconset>
+     <normaloff>:/images/toolbar/redoOn.svg</normaloff>:/images/toolbar/redoOn.svg</iconset>
    </property>
    <property name="text">
     <string>Redo</string>
@@ -271,7 +271,7 @@
   <action name="actionBack">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/previousPageOn.png</normaloff>:/images/toolbar/previousPageOn.png</iconset>
+     <normaloff>:/images/toolbar/nextPageOn.svg</normaloff>:/images/toolbar/nextPageOn.svg</iconset>
    </property>
    <property name="text">
     <string>Previous</string>
@@ -291,7 +291,7 @@
   <action name="actionForward">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/nextPageOn.png</normaloff>:/images/toolbar/nextPageOn.png</iconset>
+     <normaloff>:/images/toolbar/previousPageOn.svg</normaloff>:/images/toolbar/previousPageOn.svg</iconset>
    </property>
    <property name="text">
     <string>Next</string>
@@ -314,7 +314,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/documents.png</normaloff>:/images/toolbar/documents.png</iconset>
+     <normaloff>:/images/toolbar/documents.svg</normaloff>:/images/toolbar/documents.svg</iconset>
    </property>
    <property name="text">
     <string>Documents</string>
@@ -334,7 +334,7 @@
   <action name="actionWeb">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/web.png</normaloff>:/images/toolbar/web.png</iconset>
+     <normaloff>:/images/toolbar/web.svg</normaloff>:/images/toolbar/web.svg</iconset>
    </property>
    <property name="text">
     <string>Web</string>
@@ -360,7 +360,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/smallPen.png</normaloff>:/images/toolbar/smallPen.png</iconset>
+     <normaloff>:/images/toolbar/smallPen.svg</normaloff>:/images/toolbar/smallPen.svg</iconset>
    </property>
    <property name="text">
     <string>Line</string>
@@ -375,7 +375,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/mediumPen.png</normaloff>:/images/toolbar/mediumPen.png</iconset>
+     <normaloff>:/images/toolbar/mediumPen.svg</normaloff>:/images/toolbar/mediumPen.svg</iconset>
    </property>
    <property name="text">
     <string>Line</string>
@@ -390,7 +390,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/largePen.png</normaloff>:/images/toolbar/largePen.png</iconset>
+     <normaloff>:/images/toolbar/largePen.svg</normaloff>:/images/toolbar/largePen.svg</iconset>
    </property>
    <property name="text">
     <string>Line</string>
@@ -402,7 +402,7 @@
   <action name="actionQuit">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/quitOn.png</normaloff>:/images/toolbar/quitOn.png</iconset>
+     <normaloff>:/images/toolbar/quitOn.svg</normaloff>:/images/toolbar/quitOn.svg</iconset>
    </property>
    <property name="text">
     <string>Quit</string>
@@ -423,7 +423,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/smallEraser.png</normaloff>:/images/toolbar/smallEraser.png</iconset>
+     <normaloff>:/images/toolbar/smallEraser.svg</normaloff>:/images/toolbar/smallEraser.svg</iconset>
    </property>
    <property name="text">
     <string>Eraser</string>
@@ -441,7 +441,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/mediumEraser.png</normaloff>:/images/toolbar/mediumEraser.png</iconset>
+     <normaloff>:/images/toolbar/mediumEraser.svg</normaloff>:/images/toolbar/mediumEraser.svg</iconset>
    </property>
    <property name="text">
     <string>Eraser</string>
@@ -456,7 +456,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/largeEraser.png</normaloff>:/images/toolbar/largeEraser.png</iconset>
+     <normaloff>:/images/toolbar/largeEraser.svg</normaloff>:/images/toolbar/largeEraser.svg</iconset>
    </property>
    <property name="text">
     <string>Eraser</string>
@@ -471,7 +471,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
+     <normaloff>:/images/toolbar/color.svg</normaloff>:/images/toolbar/color.svg</iconset>
    </property>
    <property name="text">
     <string>Color 1</string>
@@ -489,7 +489,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
+     <normaloff>:/images/toolbar/color.svg</normaloff>:/images/toolbar/color.svg</iconset>
    </property>
    <property name="text">
     <string>Color 2</string>
@@ -507,7 +507,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
+     <normaloff>:/images/toolbar/color.svg</normaloff>:/images/toolbar/color.svg</iconset>
    </property>
    <property name="text">
     <string>Color 3</string>
@@ -525,7 +525,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
+     <normaloff>:/images/toolbar/color.svg</normaloff>:/images/toolbar/color.svg</iconset>
    </property>
    <property name="text">
     <string>Color 4</string>
@@ -543,7 +543,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/color.png</normaloff>:/images/toolbar/color.png</iconset>
+     <normaloff>:/images/toolbar/color.svg</normaloff>:/images/toolbar/color.svg</iconset>
    </property>
    <property name="text">
     <string>Color 5</string>
@@ -558,7 +558,7 @@
   <action name="actionWebBack">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/previous.png</normaloff>:/images/toolbar/previous.png</iconset>
+     <normaloff>:/images/toolbar/previous.svg</normaloff>:/images/toolbar/previous.svg</iconset>
    </property>
    <property name="text">
     <string>Back</string>
@@ -578,7 +578,7 @@
   <action name="actionWebForward">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/next.png</normaloff>:/images/toolbar/next.png</iconset>
+     <normaloff>:/images/toolbar/next.svg</normaloff>:/images/toolbar/next.svg</iconset>
    </property>
    <property name="text">
     <string>Forward</string>
@@ -598,7 +598,7 @@
   <action name="actionWebReload">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/reload.png</normaloff>:/images/toolbar/reload.png</iconset>
+     <normaloff>:/images/toolbar/reload.svg</normaloff>:/images/toolbar/reload.svg</iconset>
    </property>
    <property name="text">
     <string>Reload</string>
@@ -615,7 +615,7 @@
   <action name="actionHome">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/home.png</normaloff>:/images/toolbar/home.png</iconset>
+     <normaloff>:/images/toolbar/home.svg</normaloff>:/images/toolbar/home.svg</iconset>
    </property>
    <property name="text">
     <string>Home</string>
@@ -627,7 +627,7 @@
   <action name="actionBookmarks">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/bookmarks.png</normaloff>:/images/toolbar/bookmarks.png</iconset>
+     <normaloff>:/images/toolbar/bookmarks.svg</normaloff>:/images/toolbar/bookmarks.svg</iconset>
    </property>
    <property name="text">
     <string>Bookmarks</string>
@@ -639,7 +639,7 @@
   <action name="actionAddBookmark">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/addBookmark.png</normaloff>:/images/toolbar/addBookmark.png</iconset>
+     <normaloff>:/images/toolbar/addBookmark.svg</normaloff>:/images/toolbar/addBookmark.svg</iconset>
    </property>
    <property name="text">
     <string>Bookmark</string>
@@ -651,7 +651,7 @@
   <action name="actionBoard">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/board.png</normaloff>:/images/toolbar/board.png</iconset>
+     <normaloff>:/images/toolbar/board.svg</normaloff>:/images/toolbar/board.svg</iconset>
    </property>
    <property name="text">
     <string>Board</string>
@@ -674,7 +674,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/clearPage.png</normaloff>:/images/toolbar/clearPage.png</iconset>
+     <normaloff>:/images/toolbar/clearPage.svg</normaloff>:/images/toolbar/clearPage.svg</iconset>
    </property>
    <property name="text">
     <string>Erase</string>
@@ -691,7 +691,7 @@
   <action name="actionPreferences">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/settings.png</normaloff>:/images/toolbar/settings.png</iconset>
+     <normaloff>:/images/toolbar/settings.svg</normaloff>:/images/toolbar/settings.svg</iconset>
    </property>
    <property name="text">
     <string>Preferences</string>
@@ -706,7 +706,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/library.png</normaloff>:/images/toolbar/library.png</iconset>
+     <normaloff>:/images/toolbar/library.svg</normaloff>:/images/toolbar/library.svg</iconset>
    </property>
    <property name="text">
     <string>Library</string>
@@ -721,7 +721,7 @@
   <action name="actionMenu">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/menu.png</normaloff>:/images/toolbar/menu.png</iconset>
+     <normaloff>:/images/toolbar/menu.svg</normaloff>:/images/toolbar/menu.svg</iconset>
    </property>
    <property name="text">
     <string>OpenBoard</string>
@@ -744,7 +744,7 @@
   <action name="actionDesktop">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/display.png</normaloff>:/images/toolbar/display.png</iconset>
+     <normaloff>:/images/toolbar/display.svg</normaloff>:/images/toolbar/display.svg</iconset>
    </property>
    <property name="text">
     <string>Show Desktop</string>
@@ -767,7 +767,7 @@
   <action name="actionWebBigger">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/stylusPalette/zoomIn.png</normaloff>:/images/stylusPalette/zoomIn.png</iconset>
+     <normaloff>:/images/stylusPalette/zoomIn.svg</normaloff>:/images/stylusPalette/zoomIn.svg</iconset>
    </property>
    <property name="text">
     <string>Bigger</string>
@@ -787,7 +787,7 @@
   <action name="actionWebSmaller">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/stylusPalette/zoomOut.png</normaloff>:/images/stylusPalette/zoomOut.png</iconset>
+     <normaloff>:/images/stylusPalette/zoomOut.svg</normaloff>:/images/stylusPalette/zoomOut.svg</iconset>
    </property>
    <property name="text">
     <string>Smaller</string>
@@ -807,7 +807,7 @@
   <action name="actionNewFolder">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/newFolder.png</normaloff>:/images/toolbar/newFolder.png</iconset>
+     <normaloff>:/images/toolbar/newFolder.svg</normaloff>:/images/toolbar/newFolder.svg</iconset>
    </property>
    <property name="text">
     <string>New Folder</string>
@@ -824,7 +824,7 @@
   <action name="actionNewDocument">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/newDocument.png</normaloff>:/images/toolbar/newDocument.png</iconset>
+     <normaloff>:/images/toolbar/newDocument.svg</normaloff>:/images/toolbar/newDocument.svg</iconset>
    </property>
    <property name="text">
     <string>New Document</string>
@@ -841,7 +841,7 @@
   <action name="actionImport">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/import.png</normaloff>:/images/toolbar/import.png</iconset>
+     <normaloff>:/images/toolbar/import.svg</normaloff>:/images/toolbar/import.svg</iconset>
    </property>
    <property name="text">
     <string>Import</string>
@@ -858,7 +858,7 @@
   <action name="actionExport">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/export.png</normaloff>:/images/toolbar/export.png</iconset>
+     <normaloff>:/images/toolbar/export.svg</normaloff>:/images/toolbar/export.svg</iconset>
    </property>
    <property name="text">
     <string>Export</string>
@@ -875,7 +875,7 @@
   <action name="actionOpen">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/open.png</normaloff>:/images/toolbar/open.png</iconset>
+     <normaloff>:/images/toolbar/open.svg</normaloff>:/images/toolbar/open.svg</iconset>
    </property>
    <property name="text">
     <string>Open in Board</string>
@@ -895,7 +895,7 @@
   <action name="actionDuplicate">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/duplicate.png</normaloff>:/images/toolbar/duplicate.png</iconset>
+     <normaloff>:/images/toolbar/duplicate.svg</normaloff>:/images/toolbar/duplicate.svg</iconset>
    </property>
    <property name="text">
     <string>Duplicate</string>
@@ -912,7 +912,7 @@
   <action name="actionDelete">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/deleteDocument.png</normaloff>:/images/toolbar/deleteDocument.png</iconset>
+     <normaloff>:/images/toolbar/deleteDocument.svg</normaloff>:/images/toolbar/deleteDocument.svg</iconset>
    </property>
    <property name="text">
     <string>Delete</string>
@@ -932,7 +932,7 @@
   <action name="actionAddToWorkingDocument">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/addToWorkingDoc.png</normaloff>:/images/toolbar/addToWorkingDoc.png</iconset>
+     <normaloff>:/images/toolbar/addToWorkingDoc.svg</normaloff>:/images/toolbar/addToWorkingDoc.svg</iconset>
    </property>
    <property name="text">
     <string>Add to document</string>
@@ -949,7 +949,7 @@
   <action name="actionDocumentAdd">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/addToPage.png</normaloff>:/images/toolbar/addToPage.png</iconset>
+     <normaloff>:/images/toolbar/addToPage.svg</normaloff>:/images/toolbar/addToPage.svg</iconset>
    </property>
    <property name="text">
     <string>Add</string>
@@ -966,7 +966,7 @@
   <action name="actionRename">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/rename.png</normaloff>:/images/toolbar/rename.png</iconset>
+     <normaloff>:/images/toolbar/rename.svg</normaloff>:/images/toolbar/rename.svg</iconset>
    </property>
    <property name="text">
     <string>Rename</string>
@@ -986,7 +986,7 @@
   <action name="actionDocumentTools">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/tools.png</normaloff>:/images/toolbar/tools.png</iconset>
+     <normaloff>:/images/toolbar/tools.svg</normaloff>:/images/toolbar/tools.svg</iconset>
    </property>
    <property name="text">
     <string>Tools</string>
@@ -1001,7 +1001,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/tools.png</normaloff>:/images/toolbar/tools.png</iconset>
+     <normaloff>:/images/toolbar/tools.svg</normaloff>:/images/toolbar/tools.svg</iconset>
    </property>
    <property name="text">
     <string>Tools</string>
@@ -1024,7 +1024,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/display.png</normaloff>:/images/toolbar/display.png</iconset>
+     <normaloff>:/images/toolbar/display.svg</normaloff>:/images/toolbar/display.svg</iconset>
    </property>
    <property name="text">
     <string>Multi Screen</string>
@@ -1036,7 +1036,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/addToPage.png</normaloff>:/images/toolbar/addToPage.png</iconset>
+     <normaloff>:/images/toolbar/addToPage.svg</normaloff>:/images/toolbar/addToPage.svg</iconset>
    </property>
    <property name="text">
     <string>Wide Size (16/9)</string>
@@ -1057,7 +1057,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/addToPage.png</normaloff>:/images/toolbar/addToPage.png</iconset>
+     <normaloff>:/images/toolbar/addToPage.svg</normaloff>:/images/toolbar/addToPage.svg</iconset>
    </property>
    <property name="text">
     <string>Regular Size (4/3)</string>
@@ -1081,7 +1081,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/addToPage.png</normaloff>:/images/toolbar/addToPage.png</iconset>
+     <normaloff>:/images/toolbar/addToPage.svg</normaloff>:/images/toolbar/addToPage.svg</iconset>
    </property>
    <property name="text">
     <string>Custom Size</string>
@@ -1099,7 +1099,7 @@
   <action name="actionStopLoading">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/deleteDocument.png</normaloff>:/images/toolbar/deleteDocument.png</iconset>
+     <normaloff>:/images/toolbar/deleteDocument.svg</normaloff>:/images/toolbar/deleteDocument.svg</iconset>
    </property>
    <property name="text">
     <string>Stop Loading</string>
@@ -1116,7 +1116,7 @@
   <action name="actionCut">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/cut.png</normaloff>:/images/toolbar/cut.png</iconset>
+     <normaloff>:/images/toolbar/cut.svg</normaloff>:/images/toolbar/cut.svg</iconset>
    </property>
    <property name="text">
     <string>Cut</string>
@@ -1128,7 +1128,7 @@
   <action name="actionCopy">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/copy.png</normaloff>:/images/toolbar/copy.png</iconset>
+     <normaloff>:/images/toolbar/copy.svg</normaloff>:/images/toolbar/copy.svg</iconset>
    </property>
    <property name="text">
     <string>Copy</string>
@@ -1140,7 +1140,7 @@
   <action name="actionPaste">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/paste.png</normaloff>:/images/toolbar/paste.png</iconset>
+     <normaloff>:/images/toolbar/paste.svg</normaloff>:/images/toolbar/paste.svg</iconset>
    </property>
    <property name="text">
     <string>Paste</string>
@@ -1155,8 +1155,8 @@
   <action name="actionSleep">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/extraPalette/blackout.png</normaloff>
-     <normalon>:/images/extraPalette/blackoutOn.png</normalon>:/images/extraPalette/blackout.png</iconset>
+     <normaloff>:/images/extraPalette/blackout.svg</normaloff>
+     <normalon>:/images/extraPalette/blackoutOn.svg</normalon>:/images/extraPalette/blackout.svg</iconset>
    </property>
    <property name="text">
     <string>Sleep</string>
@@ -1171,8 +1171,8 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/extraPalette/keyboard.png</normaloff>
-     <normalon>:/images/extraPalette/keyboardOn.png</normalon>:/images/extraPalette/keyboard.png</iconset>
+     <normaloff>:/images/extraPalette/keyboard.svg</normaloff>
+     <normalon>:/images/extraPalette/keyboardOn.svg</normalon>:/images/extraPalette/keyboard.svg</iconset>
    </property>
    <property name="text">
     <string>Virtual Keyboard</string>
@@ -1344,7 +1344,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/record.png</normaloff>:/images/toolbar/record.png</iconset>
+     <normaloff>:/images/toolbar/record.svg</normaloff>:/images/toolbar/record.svg</iconset>
    </property>
    <property name="text">
     <string>Podcast</string>
@@ -1359,8 +1359,8 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/record.png</normaloff>
-     <normalon>:/images/toolbar/stop.png</normalon>:/images/toolbar/record.png</iconset>
+     <normaloff>:/images/toolbar/record.svg</normaloff>
+     <normalon>:/images/toolbar/stop.svg</normalon>:/images/toolbar/record.svg</iconset>
    </property>
    <property name="text">
     <string>Record</string>
@@ -1408,7 +1408,7 @@
   <action name="actionAdd">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/addToPage.png</normaloff>:/images/toolbar/addToPage.png</iconset>
+     <normaloff>:/images/toolbar/addToPage.svg</normaloff>:/images/toolbar/addToPage.svg</iconset>
    </property>
    <property name="text">
     <string>Add</string>
@@ -1480,8 +1480,8 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/stylusPalette/arrow.png</normaloff>
-     <normalon>:/images/stylusPalette/arrowOn.png</normalon>:/images/stylusPalette/arrow.png</iconset>
+     <normaloff>:/images/stylusPalette/arrow.svg</normaloff>
+     <normalon>:/images/stylusPalette/arrowOn.svg</normalon>:/images/stylusPalette/arrow.svg</iconset>
    </property>
    <property name="text">
     <string>Selector</string>
@@ -1499,8 +1499,8 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/stylusPalette/hand.png</normaloff>
-     <normalon>:/images/stylusPalette/handOn.png</normalon>:/images/stylusPalette/hand.png</iconset>
+     <normaloff>:/images/stylusPalette/hand.svg</normaloff>
+     <normalon>:/images/stylusPalette/handOn.svg</normalon>:/images/stylusPalette/hand.svg</iconset>
    </property>
    <property name="text">
     <string>Hand</string>
@@ -1515,8 +1515,8 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/stylusPalette/zoomIn.png</normaloff>
-     <normalon>:/images/stylusPalette/zoomInOn.png</normalon>:/images/stylusPalette/zoomIn.png</iconset>
+     <normaloff>:/images/stylusPalette/zoomIn.svg</normaloff>
+     <normalon>:/images/stylusPalette/zoomInOn.svg</normalon>:/images/stylusPalette/zoomIn.svg</iconset>
    </property>
    <property name="text">
     <string>Zoom In</string>
@@ -1528,8 +1528,8 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/stylusPalette/zoomOut.png</normaloff>
-     <normalon>:/images/stylusPalette/zoomOutOn.png</normalon>:/images/stylusPalette/zoomOut.png</iconset>
+     <normaloff>:/images/stylusPalette/zoomOut.svg</normaloff>
+     <normalon>:/images/stylusPalette/zoomOutOn.svg</normalon>:/images/stylusPalette/zoomOut.svg</iconset>
    </property>
    <property name="text">
     <string>Zoom Out</string>
@@ -1541,8 +1541,8 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/stylusPalette/laser.png</normaloff>
-     <normalon>:/images/stylusPalette/laserOn.png</normalon>:/images/stylusPalette/laser.png</iconset>
+     <normaloff>:/images/stylusPalette/laser.svg</normaloff>
+     <normalon>:/images/stylusPalette/laserOn.svg</normalon>:/images/stylusPalette/laser.svg</iconset>
    </property>
    <property name="text">
     <string>Laser Pointer</string>
@@ -1560,8 +1560,8 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/stylusPalette/line.png</normaloff>
-     <normalon>:/images/stylusPalette/lineOn.png</normalon>:/images/stylusPalette/line.png</iconset>
+     <normaloff>:/images/stylusPalette/line.svg</normaloff>
+     <normalon>:/images/stylusPalette/lineOn.svg</normalon>:/images/stylusPalette/line.svg</iconset>
    </property>
    <property name="text">
     <string>Line</string>
@@ -1579,8 +1579,8 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/stylusPalette/text.png</normaloff>
-     <normalon>:/images/stylusPalette/textOn.png</normalon>:/images/stylusPalette/text.png</iconset>
+     <normaloff>:/images/stylusPalette/text.svg</normaloff>
+     <normalon>:/images/stylusPalette/textOn.svg</normalon>:/images/stylusPalette/text.svg</iconset>
    </property>
    <property name="text">
     <string>Text</string>
@@ -1598,8 +1598,8 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/stylusPalette/captureArea.png</normaloff>
-     <normalon>:/images/stylusPalette/captureAreaOn.png</normalon>:/images/stylusPalette/captureArea.png</iconset>
+     <normaloff>:/images/stylusPalette/captureArea.svg</normaloff>
+     <normalon>:/images/stylusPalette/captureAreaOn.svg</normalon>:/images/stylusPalette/captureArea.svg</iconset>
    </property>
    <property name="text">
     <string>Capture</string>
@@ -1653,7 +1653,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/newDocument.png</normaloff>:/images/toolbar/newDocument.png</iconset>
+     <normaloff>:/images/toolbar/newDocument.svg</normaloff>:/images/toolbar/newDocument.svg</iconset>
    </property>
    <property name="text">
     <string>Pages</string>
@@ -1712,7 +1712,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/pause.png</normaloff>:/images/toolbar/pause.png</iconset>
+     <normaloff>:/images/toolbar/pause.svg</normaloff>:/images/toolbar/pause.svg</iconset>
    </property>
    <property name="text">
     <string>Pause</string>
@@ -1724,7 +1724,7 @@
   <action name="actionPodcastConfig">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/settings.png</normaloff>:/images/toolbar/settings.png</iconset>
+     <normaloff>:/images/toolbar/settings.svg</normaloff>:/images/toolbar/settings.svg</iconset>
    </property>
    <property name="text">
     <string>Podcast Config</string>
@@ -1736,7 +1736,7 @@
   <action name="actionCaptureWebContent">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/addToolToLibrary.png</normaloff>:/images/toolbar/addToolToLibrary.png</iconset>
+     <normaloff>:/images/toolbar/addToolToLibrary.svg</normaloff>:/images/toolbar/addToolToLibrary.svg</iconset>
    </property>
    <property name="text">
     <string>Capture Web Content</string>
@@ -1751,8 +1751,8 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/extraPalette/webTrap.png</normaloff>
-     <normalon>:/images/extraPalette/webTrapEnabled.png</normalon>:/images/extraPalette/webTrap.png</iconset>
+     <normaloff>:/images/extraPalette/webTrap.svg</normaloff>
+     <normalon>:/images/extraPalette/webTrapEnabled.svg</normalon>:/images/extraPalette/webTrap.svg</iconset>
    </property>
    <property name="text">
     <string>Capture Web Content</string>
@@ -1764,7 +1764,7 @@
   <action name="actionWebCustomCapture">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/captureArea.png</normaloff>:/images/toolbar/captureArea.png</iconset>
+     <normaloff>:/images/toolbar/captureArea.svg</normaloff>:/images/toolbar/captureArea.svg</iconset>
    </property>
    <property name="text">
     <string>Custom Capture</string>
@@ -1776,7 +1776,7 @@
   <action name="actionWebWindowCapture">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/captureWindow.png</normaloff>:/images/toolbar/captureWindow.png</iconset>
+     <normaloff>:/images/toolbar/captureWindow.svg</normaloff>:/images/toolbar/captureWindow.svg</iconset>
    </property>
    <property name="text">
     <string>Window Capture</string>
@@ -1791,7 +1791,7 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/extraPalette/oEmbed.png</normaloff>:/images/extraPalette/oEmbed.png</iconset>
+     <normaloff>:/images/extraPalette/oEmbed.svg</normaloff>:/images/extraPalette/oEmbed.svg</iconset>
    </property>
    <property name="text">
     <string>Embed Web Content</string>
@@ -1806,8 +1806,8 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/eyeClosed.png</normaloff>
-     <normalon>:/images/toolbar/eyeOpened.png</normalon>:/images/toolbar/eyeClosed.png</iconset>
+     <normaloff>:/images/toolbar/eyeClosed.svg</normaloff>
+     <normalon>:/images/toolbar/eyeOpened.svg</normalon>:/images/toolbar/eyeClosed.svg</iconset>
    </property>
    <property name="text">
     <string>Show on Display</string>
@@ -1837,7 +1837,7 @@
   <action name="actionCheckUpdate">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/updates.png</normaloff>:/images/toolbar/updates.png</iconset>
+     <normaloff>:/images/toolbar/updates.svg</normaloff>:/images/toolbar/updates.svg</iconset>
    </property>
    <property name="text">
     <string>Check Update</string>
@@ -1846,7 +1846,7 @@
   <action name="actionHideApplication">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/hide.png</normaloff>:/images/toolbar/hide.png</iconset>
+     <normaloff>:/images/toolbar/hide.svg</normaloff>:/images/toolbar/hide.svg</iconset>
    </property>
    <property name="text">
     <string>Hide OpenBoard</string>
@@ -1864,8 +1864,8 @@
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/stylusPalette/handPlay.png</normaloff>
-     <normalon>:/images/stylusPalette/handPlayOn.png</normalon>:/images/stylusPalette/handPlay.png</iconset>
+     <normaloff>:/images/stylusPalette/handPlay.svg</normaloff>
+     <normalon>:/images/stylusPalette/handPlayOn.svg</normalon>:/images/stylusPalette/handPlay.svg</iconset>
    </property>
    <property name="text">
     <string>Play</string>
@@ -1889,7 +1889,7 @@
   <action name="actionOpenTutorial">
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/toolbar/tutorial.png</normaloff>:/images/toolbar/tutorial.png</iconset>
+     <normaloff>:/images/toolbar/tutorial.svg</normaloff>:/images/toolbar/tutorial.svg</iconset>
    </property>
    <property name="text">
     <string>Open Tutorial</string>

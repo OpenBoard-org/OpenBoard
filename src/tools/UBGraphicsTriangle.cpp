@@ -78,7 +78,7 @@ UBGraphicsTriangle::UBGraphicsTriangle()
 
 void UBGraphicsTriangle::updateResizeCursor()
 {
-    QPixmap pix(":/images/cursors/resize.png");
+    QPixmap pix(":/images/cursors/resize.svg");
     QTransform itemTransform = sceneTransform();
     QRectF itemRect = boundingRect();
 

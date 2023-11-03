@@ -138,7 +138,7 @@ UBRubberBand::enm_resizingMode UBRubberBand::determineResizingMode(QPoint pos)
     
     if (None != resizingMode)
     {
-        QPixmap pix(":/images/cursors/resize.png");
+        QPixmap pix(":/images/cursors/resize.svg");
         QCursor resizeCursor  = QCursor(pix.transformed(cursorTransrofm, Qt::SmoothTransformation), pix.width() / 2,  pix.height() / 2);
         setCursor(resizeCursor);
     }

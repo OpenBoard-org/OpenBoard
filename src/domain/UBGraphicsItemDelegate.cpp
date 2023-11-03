@@ -748,8 +748,8 @@ void UBGraphicsItemDelegate::decorateMenu(QMenu* menu)
 {
     mLockAction = menu->addAction(tr("Locked"), this, SLOT(lock(bool)));
     QIcon lockIcon;
-    lockIcon.addPixmap(QPixmap(":/images/locked.svg"), QIcon::Normal, QIcon::On);
-    lockIcon.addPixmap(QPixmap(":/images/unlocked.svg"), QIcon::Normal, QIcon::Off);
+    lockIcon.addFile(":/images/locked.svg", QSize(), QIcon::Normal, QIcon::On);
+    lockIcon.addFile(":/images/unlocked.svg", QSize(), QIcon::Normal, QIcon::Off);
     mLockAction->setIcon(lockIcon);
     mLockAction->setCheckable(true);
 
@@ -757,8 +757,8 @@ void UBGraphicsItemDelegate::decorateMenu(QMenu* menu)
     mShowOnDisplayAction->setCheckable(true);
 
     QIcon showIcon;
-    showIcon.addPixmap(QPixmap(":/images/eyeOpened.svg"), QIcon::Normal, QIcon::On);
-    showIcon.addPixmap(QPixmap(":/images/eyeClosed.svg"), QIcon::Normal, QIcon::Off);
+    showIcon.addFile(":/images/eyeOpened.svg", QSize(), QIcon::Normal, QIcon::On);
+    showIcon.addFile(":/images/eyeClosed.svg", QSize(), QIcon::Normal, QIcon::Off);
     mShowOnDisplayAction->setIcon(showIcon);
 
     mHideOnDisplayWhenSelectedAction = mMenu->addAction(tr("Hide on Extended Screen when selected"), this, SLOT(hideOnDisplayWhenSelected(bool)));
@@ -773,7 +773,7 @@ void UBGraphicsItemDelegate::decorateMenu(QMenu* menu)
         mSetAsBackgroundAction->setCheckable(false);
 
         QIcon backgroundIcon;
-        backgroundIcon.addPixmap(QPixmap(":/images/setAsBackground.svg"), QIcon::Normal, QIcon::On);
+        backgroundIcon.addFile(":/images/setAsBackground.svg", QSize(), QIcon::Normal, QIcon::On);
         mSetAsBackgroundAction->setIcon(backgroundIcon);
     }
 
@@ -782,7 +782,7 @@ void UBGraphicsItemDelegate::decorateMenu(QMenu* menu)
         mGotoContentSourceAction = menu->addAction(tr("Web Inspector"), this, SLOT(gotoContentSource()));
 
         QIcon sourceIcon;
-        sourceIcon.addPixmap(QPixmap(":/images/libpalette/miniSearch.png"), QIcon::Normal, QIcon::On);
+        sourceIcon.addFile(":/images/libpalette/miniSearch.svg", QSize(), QIcon::Normal, QIcon::On);
         mGotoContentSourceAction->setIcon(sourceIcon);
     }
 }
