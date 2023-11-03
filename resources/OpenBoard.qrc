@@ -50,6 +50,9 @@
         <file>images/reload.svg</file>
         <file>images/frozen.svg</file>
         <file>images/unfrozen.svg</file>
+        <file>images/settingsCompass.svg</file>
+        <file>images/rightAngleCompass.svg</file>
+        <file>images/angleRotateCompass.svg</file>
         <file>images/toolbar/group.png</file>
         <file>images/toolbar/ungroup.png</file>
         <file>images/toolbar/window.png</file>

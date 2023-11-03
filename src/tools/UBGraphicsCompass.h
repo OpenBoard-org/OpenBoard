@@ -32,11 +32,39 @@
 
 #include <QtGui>
 #include <QtSvg>
+#include <QMenu>
+#include <QCheckBox>
+#include <QDoubleSpinBox>
 
 #include "core/UB.h"
 #include "domain/UBItem.h"
 
 class UBGraphicsScene;
+class UBGraphicsCompass;
+
+class UBCompassAngleRotateDialog: public QDialog
+{
+    Q_OBJECT;
+
+    public:
+        explicit UBCompassAngleRotateDialog(UBGraphicsCompass* compass, QWidget *parent = nullptr);
+        bool isDrawing();
+        bool isAbsolutely();
+        void clearData();
+        qreal Angle();
+        ~UBCompassAngleRotateDialog();
+    private:
+        QCheckBox* mDrawingCheckBox;
+        QDoubleSpinBox* mAngleSpinBox;
+        bool mIsAbsolutely;
+        UBGraphicsCompass* mCompass;
+    protected slots:
+        void RotateAbsolutely();
+        void RotateRelative();
+    signals:
+        void rotate();
+
+};
 
 class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
 {
@@ -57,6 +85,9 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
 
         virtual void copyItemParameters(UBItem *copy) const;
 
+
+        void angleRotateDialogResult();
+
     protected:
         virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *styleOption, QWidget *widget);
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
@@ -72,6 +103,9 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
     private slots:
         void penColorChanged();
         void lineWidthChanged();
+        void setNormalizePos(bool);
+        void setNormalizeSize(bool);
+        void setMenuActions();
 
     private:
         // Helpers
@@ -82,6 +116,11 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         void           updateResizeCursor();
         void             updateDrawCursor();
         void             paintCenterCross();
+        void                normalizePos();
+        void                normalizeSize();
+        QPointF         nearPointFromGrid(QPointF point);
+        void                 showSettings();
+        void         decorateSettingsMenu(QMenu* menu);
 
         QCursor                moveCursor() const;
         QCursor              resizeCursor() const;
@@ -93,6 +132,9 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         QPointF            pencilPosition() const;
         QRectF            closeButtonRect() const;
         QRectF           resizeButtonRect() const;
+        QRectF         settingsButtonRect() const;
+        QRectF       rightAngleButtonRect() const;
+        QRectF      angleRotateButtonRect() const;
         virtual QPainterPath        shape() const;
         QPainterPath          needleShape() const;
         QPainterPath          pencilShape() const;
@@ -121,8 +163,18 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         bool mDrewCircle;
         QGraphicsSvgItem* mCloseSvgItem;
         QGraphicsSvgItem* mResizeSvgItem;
+        QGraphicsSvgItem* mSettingsSvgItem;
+        QGraphicsSvgItem* mRihtAngleSvgItem;
+        QGraphicsSvgItem* mAngleRotateSvgItem;
         qreal mAntiScaleRatio;
         bool mDrewCenterCross;
+        bool mNormalizePos;
+        bool mNormalizeSize;
+        QMenu* mSettingsMenu;
+        QAction *mNormalizePosAction;
+        QAction *mNormalizeSizeAction;
+        UBCompassAngleRotateDialog* mAngleRotateDialog;
+        QLineF mBeforeRotatePosition;
 
         // Constants
         static const int                      sNeedleLength = 12;
