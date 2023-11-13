@@ -69,21 +69,8 @@ win32 {
    
 }
 
-linux-g++ {
+linux-g++* {
 
-   LIBS += -lz
-
-}
-linux-g++-32 {
-
-   LIBS += -lz
+   PKGCONFIG += zlib
 
 }
-linux-g++-64 {
-
-   LIBS += -lz
-
-}
-
-
-
