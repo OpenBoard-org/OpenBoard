@@ -3,6 +3,7 @@ TEMPLATE = app
 
 CONFIG += c++17
 CONFIG -= flat
+CONFIG += lrelease
 CONFIG += debug_and_release \
           no_include_pwd
 
