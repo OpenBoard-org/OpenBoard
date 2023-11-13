@@ -464,17 +464,36 @@ linux-g++* {
     LIBS += -lcrypto
     #LIBS += -lprofiler
     LIBS += -lX11
+    CONFIG += link_pkgconfig
+    PKGCONFIG += poppler
 
+    # search and configure quazip
     greaterThan(QT_MAJOR_VERSION, 5) {
-        LIBS += -lquazip6
-        INCLUDEPATH += "/usr/include/quazip6"
+        QUAZIP_PKG = quazip1-qt6 libquazip6-1 quazip-qt6 quazip6
     } else {
-        LIBS += -lquazip5
-        INCLUDEPATH += "/usr/include/quazip5"
+        QUAZIP_PKG = quazip1-qt5 libquazip5-1 quazip-qt5 quazip5
     }
 
-    LIBS += -lpoppler
-    INCLUDEPATH += "/usr/include/poppler"
+    for(pkg, QUAZIP_PKG):isEmpty(QUAZIP_PKG_FOUND) {
+        # using this workaround as packagesExists does not work when invoked from qtcreator
+        # see https://forum.qt.io/topic/136725/
+        PKG_EXISTS = $$system(pkg-config --exists $${pkg} && echo exists)
+        count(PKG_EXISTS, 1) {
+            message("using" $${pkg} "version" $$system(pkg-config --modversion $${pkg}))
+            PKGCONFIG += $${pkg}
+            QUAZIP_PKG_FOUND = true
+        }
+    }
+
+    isEmpty(QUAZIP_PKG_FOUND) {
+        exists(/usr/include/$$last(QUAZIP_PKG)/*) {
+            message(Using quazip in /usr/include/$$last(QUAZIP_PKG))
+            LIBS += -l$$last(QUAZIP_PKG)
+            INCLUDEPATH += "/usr/include/$$last(QUAZIP_PKG)"
+        } else {
+            error(quazip not found)
+        }
+    }
 
     QMAKE_CFLAGS += -fopenmp
     QMAKE_CXXFLAGS += -fopenmp
