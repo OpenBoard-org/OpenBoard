@@ -13,6 +13,13 @@ set(QT_COMPONENTS
     Xml
 )
 
+if(QT_VERSION STREQUAL "")
+    find_package(QT NAMES Qt5 Qt6 REQUIRED COMPONENTS Core)
+    set(QT_VERSION ${QT_VERSION_MAJOR})
+endif()
+
+message(STATUS "Using Qt" ${QT_VERSION})
+
 if(QT_VERSION STREQUAL "5")
     find_package(Qt5 5.12 REQUIRED COMPONENTS
         ${QT_COMPONENTS}

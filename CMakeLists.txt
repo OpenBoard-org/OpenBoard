@@ -12,7 +12,7 @@ cmake_minimum_required(VERSION 3.16)
 #       Typically set to /etc, defaults to /opt/openboard/etc if CMAKE_INSTALL_PREFIX is /opt
 #   QT_VERSION
 #       Qt Version to use
-#       Set to 5 or 6, defaults to 5
+#       Set to 5 or 6, defaults to auto-selection with preference to 5
 #
 # Typical invocation
 #   cmake -S <srcdir> -B <builddir> -DCMAKE_INSTALL_PREFIX:PATH=/usr -DSYSCONF_INSTALL_DIR:PATH=/etc
@@ -51,7 +51,7 @@ include(cmake/Platform.cmake)
 # Configuration options
 # ==========================================================================
 
-set(QT_VERSION 5 CACHE STRING "Qt major version number to use - 5 or 6")
+set(QT_VERSION "" CACHE STRING "Qt major version number to use - empty, 5 or 6")
 
 # Internal setting
 set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication - do not change")
