@@ -158,7 +158,7 @@ QSettings* UBSettings::getAppSettings()
     if (!UBSettings::sAppSettings)
     {
         QString tmpSettings = QDir::tempPath() + "/" + qApp->applicationName() + ".config";
-        QString appSettings = UBPlatformUtils::applicationResourcesDirectory() + "/etc/" + qApp->applicationName() + ".config";
+        QString appSettings = UBPlatformUtils::applicationEtcDirectory() + "/" + qApp->applicationName() + ".config";
 
         // tmpSettings exists when upgrading Uniboard on Mac (see UBPlatformUtils_mac.mm updater:willInstallUpdate:)
         if (QFile::exists(tmpSettings))

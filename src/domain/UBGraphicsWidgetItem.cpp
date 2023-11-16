@@ -1425,14 +1425,14 @@ void UBGraphicsW3CWidgetItem::loadNPAPIWrappersTemplates()
     if (!sTemplateLoaded) {
         sNPAPIWrapperTemplates.clear();
 
-        QString etcPath = UBPlatformUtils::applicationResourcesDirectory() + "/etc/";
+        QString templatePath = UBPlatformUtils::applicationTemplateDirectory();
 
-        QDir etcDir(etcPath);
+        QDir templateDir(templatePath);
 
-        foreach(QString fileName, etcDir.entryList()) {
+        foreach(QString fileName, templateDir.entryList()) {
             if (fileName.startsWith("npapi-wrapper") && (fileName.endsWith(".htm") || fileName.endsWith(".html"))) {
 
-                QString htmlContent = UBFileSystemUtils::readTextFile(etcPath + fileName);
+                QString htmlContent = UBFileSystemUtils::readTextFile(templatePath + fileName);
 
                 if (htmlContent.length() > 0) {
                     QStringList tokens = fileName.split(".");
@@ -1449,7 +1449,7 @@ void UBGraphicsW3CWidgetItem::loadNPAPIWrappersTemplates()
                 }
             }
         }
-        sNPAPIWrappperConfigTemplate = UBFileSystemUtils::readTextFile(etcPath + "npapi-wrapper.config.xml");
+        sNPAPIWrappperConfigTemplate = UBFileSystemUtils::readTextFile(templatePath + "npapi-wrapper.config.xml");
         sTemplateLoaded = true;
     }
 }
