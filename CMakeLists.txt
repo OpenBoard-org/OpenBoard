@@ -28,17 +28,17 @@ cmake_minimum_required(VERSION 3.16)
 # Basic project information
 # ==========================================================================
 
+include(cmake/Version.cmake)
+
 project(openboard
-    VERSION 1.7.0
+    VERSION ${VERSION_NUMBER}
     DESCRIPTION "OpenBoard is an open source cross-platform interactive white board application designed primarily for use in schools. It was originally forked from Open-Sankoré, which was itself based on Uniboard."
     HOMEPAGE_URL "https://www.openboard.org"
     LANGUAGES CXX
 )
 
-set(VERSION_TYPE r CACHE STRING "a = alpha, b = beta, rc = release candidate, r = release")
-set(VERSION_BUILD 231102 CACHE STRING "Build version for non-release builds")
+add_compile_definitions(UBVERSION="${VERSION}")
 
-include(cmake/Version.cmake)
 
 # ==========================================================================
 # Configuration options

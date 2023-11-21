@@ -2,18 +2,48 @@
 # Version
 #
 
-set(VERSION "${${PROJECT_NAME}_VERSION}-${VERSION_TYPE}.${VERSION_BUILD}")
+file(READ "version.txt" version)
 
-if(VERSION_TYPE STREQUAL "r")
-    set(VERSION "${${PROJECT_NAME}_VERSION}")
+if(version MATCHES "VERSION_MAJ *= *([0-9]+)")
+    set(VERSION_MAJ ${CMAKE_MATCH_1})
+else()
+    set(VERSION_ERROR "VERSION_MAJ")
 endif()
 
-set(VERSION_RC "${${PROJECT_NAME}_VERSION_MAJOR},${${PROJECT_NAME}_VERSION_MINOR},${${PROJECT_NAME}_VERSION_PATCH},${VERSION_TYPE}")
+if(version MATCHES "VERSION_MIN *= *([0-9]+)")
+    set(VERSION_MIN ${CMAKE_MATCH_1})
+else()
+    set(VERSION_ERROR "VERSION_MIN")
+endif()
 
-string(REPLACE "a" "160" VERSION_RC ${VERSION_RC}) # 0xA0
-string(REPLACE "b" "176" VERSION_RC ${VERSION_RC}) # 0xB0
-string(REPLACE "rc" "192" VERSION_RC ${VERSION_RC}) # 0xC0
-string(REPLACE "r" "240" VERSION_RC ${VERSION_RC}) # 0xF0 
+if(version MATCHES "VERSION_PATCH *= *([0-9]+)")
+    set(VERSION_PATCH ${CMAKE_MATCH_1})
+else()
+    set(VERSION_ERROR "VERSION_PATCH")
+endif()
 
-add_compile_definitions(UBVERSION="${VERSION}")
-add_compile_definitions(UBVERSION_RC=${VERSION_RC})
+if(version MATCHES "VERSION_TYPE *= *(a|b|rc|r)")
+    set(VERSION_TYPE ${CMAKE_MATCH_1})
+else()
+    set(VERSION_ERROR "VERSION_TYPE")
+endif()
+
+if(version MATCHES "VERSION_BUILD *= *([0-9]+)")
+    set(VERSION_BUILD ${CMAKE_MATCH_1})
+elseif(NOT VERSION_TYPE STREQUAL "r")
+    set(VERSION_ERROR "VERSION_BUILD")
+endif()
+
+if (VERSION_ERROR)
+    message(FATAL_ERROR "Error parsing version at " ${VERSION_ERROR})
+endif()
+
+set(VERSION_NUMBER ${VERSION_MAJ}.${VERSION_MIN}.${VERSION_PATCH})
+
+if(VERSION_TYPE STREQUAL "r")
+    set(VERSION "${VERSION_NUMBER}")
+else()
+    set(VERSION "${VERSION_NUMBER}-${VERSION_TYPE}.${VERSION_BUILD}")
+endif()
+
+message(STATUS "Version " ${VERSION})
