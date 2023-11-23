@@ -308,8 +308,8 @@ QRectF UBGraphicsRuler::closeButtonRect() const
     QPixmap closePixmap(":/images/closeTool.svg");
 
     QSizeF closeRectSize(
-        closePixmap.width() * mAntiScaleRatio,
-        closePixmap.height() * mAntiScaleRatio);
+        closePixmap.width(),
+        closePixmap.height());
 
     QPointF closeRectCenter(
         rect().left() + sLeftEdgeMargin + sPixelsPerCentimeter/2,
