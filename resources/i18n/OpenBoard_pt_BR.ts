@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="pt_BR" sourcelanguage="en_GB">
+<TS version="2.1" language="pt_BR" sourcelanguage="fr_CH">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -12,32 +12,34 @@
     <name>BrowserWindow</name>
     <message>
         <source>Navigation</source>
-        <translation type="unfinished"></translation>
+        <translation>Navegação</translation>
     </message>
     <message>
         <source>Show downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>Ver downloads</translation>
     </message>
 </context>
 <context>
     <name>CertificateErrorDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished">Caixa de Diálogo</translation>
+        <translation>Caixa de Diálogo</translation>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Ícone</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
 
 Do you wish to override the security check and continue ?   </source>
-        <translation type="unfinished"></translation>
+        <translation>Se desejar, você pode continuar com um certificado não verificado. Aceitar um certificado não verificado significa que talvez não se conecte ao host ao qual tentava se conectar.
+
+Deseja continuar mesmo assim?</translation>
     </message>
 </context>
 <context>
@@ -140,15 +142,15 @@ Do you wish to override the security check and continue ?   </source>
     <name>DownloadManagerWidget</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished">Transferências</translation>
+        <translation>Transferências</translation>
     </message>
     <message>
         <source>No downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>Sem transferências</translation>
     </message>
     <message>
         <source>Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvar como</translation>
     </message>
 </context>
 <context>
