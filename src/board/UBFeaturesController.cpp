@@ -736,6 +736,18 @@ void UBFeaturesController::removeFromFavorite( const QUrl &path, bool deleteManu
     }
 }
 
+void UBFeaturesController::addUserWidgetToLibrary(const QString &url, const QString &name)
+{
+    UBFeature userWidget(appPath + "/" + tr("Web") + "/" + name, QImage(url + "/icon.png"), name, QUrl::fromLocalFile(url), fileTypeFromUrl(url));
+
+    if (!userWidget.getVirtualPath().isEmpty() && !userWidget.getVirtualPath().isNull())
+    {
+        featuresModel->addItem(userWidget);
+    }
+
+    refreshModels();
+}
+
 void UBFeaturesController::storeAsFavorite(UBFeature feature)
 {
     favoriteSet->insert( feature.getFullPath());
