@@ -1750,6 +1750,11 @@ void UBBoardView::dropEvent (QDropEvent *event)
     if (event->dropAction() == Qt::MoveAction) {
         event->setDropAction(Qt::CopyAction);
     }
+
+    mMouseButtonIsPressed = false;
+    mPendingStylusReleaseEvent = false;
+    mTabletStylusIsPressed = false;
+    setMovingItem(nullptr);
 }
 
 void UBBoardView::resizeEvent (QResizeEvent * event)
