@@ -302,11 +302,15 @@ void UBZLayerController::shiftStoredZValue(QGraphicsItem *item, qreal zValue)
 /**
  * @brief Returns true if the zLevel is not used by any item on the scene, or false if so.
  */
-bool UBZLayerController::zLevelAvailable(qreal z)
+bool UBZLayerController::zLevelAvailable(QGraphicsItem* item)
 {
-    foreach(QGraphicsItem* it, mScene->items()) {
-        if (it->zValue() == z)
-            return false;
+    foreach(QGraphicsItem* it, mScene->items())
+    {
+        if (item != it)
+        {
+            if (it->zValue() == item->zValue())
+                return false;
+        }
     }
 
     return true;
@@ -1948,7 +1952,7 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
     // the default z value is already set. This is the case when a svg file is read
     if(item->zValue() == DEFAULT_Z_VALUE
             || item->zValue() == UBZLayerController::errorNum()
-            || !mZLayerController->zLevelAvailable(item->zValue()))
+            || !mZLayerController->zLevelAvailable(item))
     {
         qreal zvalue = mZLayerController->generateZLevel(item);
         UBGraphicsItem::assignZValue(item, zvalue);
