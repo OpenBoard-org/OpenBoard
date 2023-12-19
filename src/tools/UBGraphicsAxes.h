@@ -78,6 +78,7 @@ class UBGraphicsAxes : public QObject, public QGraphicsPolygonItem, public UBIte
         void setRect(const QRectF &rect);
 
         // Events
+        virtual void    keyPressEvent (QKeyEvent *event);
         virtual void    mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual void    mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         virtual void    mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
@@ -99,6 +100,7 @@ class UBGraphicsAxes : public QObject, public QGraphicsPolygonItem, public UBIte
         virtual QRectF              resizeTopRect() const;
         virtual QRectF            closeButtonRect() const;
         virtual QRectF          numbersButtonRect() const;
+        virtual QRectF         moveToolButtonRect() const;
         virtual QLineF                      xAxis() const;
         virtual QLineF                      yAxis() const;
         virtual std::shared_ptr<UBGraphicsScene>            scene() const;
@@ -107,6 +109,7 @@ class UBGraphicsAxes : public QObject, public QGraphicsPolygonItem, public UBIte
         QFont                        font() const;
 
         QGraphicsSvgItem* mCloseSvgItem;
+        QGraphicsSvgItem* mMoveToolSvgItem;
         QGraphicsSvgItem* mNumbersSvgItem;
 
         bool mResizing;

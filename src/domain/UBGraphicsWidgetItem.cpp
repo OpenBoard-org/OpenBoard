@@ -59,6 +59,81 @@
 bool UBGraphicsWidgetItem::sInlineJavaScriptLoaded = false;
 QStringList UBGraphicsWidgetItem::sInlineJavaScripts;
 
+#ifndef Q_OS_WIN
+/*
+ * workaround for a bug related to (at least) QTBUG-79216 - to be removed when bug is fixed
+*/
+const QMap<Qt::Key, QString> UBGraphicsWidgetItem::sDeadKeys
+{
+    {Qt::Key_Dead_Circumflex, "^"},   // ^ (Caret)
+    {Qt::Key_Dead_Grave, "`"},        // ` (Backtick)
+    {Qt::Key_Dead_Tilde, "~"},        // ~ (Tilde)
+    {Qt::Key_Dead_Acute, "´"},        // ´ (Acute Accent)
+    {Qt::Key_Dead_Diaeresis, "¨"}     // ¨ (Diaeresis)
+};
+
+const QMap<QString, QString> UBGraphicsWidgetItem::sAccentedCharacters
+{
+    // Dead Key: ^
+    {"^a", u8"â"},
+    {"^A", u8"Â"},
+    {"^e", u8"ê"},
+    {"^E", u8"Ê"},
+    {"^i", u8"î"},
+    {"^I", u8"Î"},
+    {"^o", u8"ô"},
+    {"^O", u8"Ô"},
+    {"^u", u8"û"},
+    {"^U", u8"Û"},
+
+    // Dead Key: ´
+    {"´a", u8"á"},
+    {"´A", u8"Á"},
+    {"´e", u8"é"},
+    {"´E", u8"É"},
+    {"´i", u8"í"},
+    {"´I", u8"Í"},
+    {"´o", u8"ó"},
+    {"´O", u8"Ó"},
+    {"´u", u8"ú"},
+    {"´U", u8"Ú"},
+
+    // Dead Key: `
+    {"`a", u8"à"},
+    {"`A", u8"À"},
+    {"`e", u8"è"},
+    {"`E", u8"È"},
+    {"`i", u8"ì"},
+    {"`I", u8"Ì"},
+    {"`o", u8"ò"},
+    {"`O", u8"Ò"},
+    {"`u", u8"ù"},
+    {"`U", u8"Ù"},
+
+    // Dead Key: ~
+    {"~n", u8"ñ"},
+    {"~N", u8"Ñ"},
+
+    // Dead Key: '
+    {"'c", u8"ç"},
+    {"'C", u8"Ç"},
+
+    // Dead Key: ¨
+    {"¨a", u8"ä"},
+    {"¨A", u8"Ä"},
+    {"¨e", u8"ë"},
+    {"¨E", u8"Ë"},
+    {"¨i", u8"ï"},
+    {"¨I", u8"Ï"},
+    {"¨o", u8"ö"},
+    {"¨O", u8"Ö"},
+    {"¨u", u8"ü"},
+    {"¨U", u8"Ü"},
+    {"¨y", u8"ÿ"},
+    {"¨Y", u8"Ÿ"}
+};
+#endif
+
 UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem *parent)
     : QGraphicsProxyWidget(parent)
     , mInitialLoadDone(false)
@@ -108,7 +183,6 @@ UBGraphicsWidgetItem::UBGraphicsWidgetItem(const QUrl &pWidgetUrl, QGraphicsItem
         window->installEventFilter(this);
     }
 }
-
 
 UBGraphicsWidgetItem::~UBGraphicsWidgetItem()
 {
@@ -613,6 +687,77 @@ void UBGraphicsWidgetItem::dropEvent(QGraphicsSceneDragDropEvent *event)
     {
         QGraphicsProxyWidget::dropEvent(event);
     }
+}
+
+#ifndef Q_OS_WIN
+/*
+ * workaround for a bug related to (at least) QTBUG-79216 - to be removed when bug is fixed
+*/
+QString UBGraphicsWidgetItem::getAccentedLetter(Qt::Key deadKey, const QString &letter) const
+{
+    // suppress blank after dead key
+    const QString combined = sDeadKeys.value(deadKey, "") + (letter == " " ? "" : letter);
+
+    return sAccentedCharacters.value(combined, combined);
+}
+#endif
+
+void UBGraphicsWidgetItem::keyPressEvent(QKeyEvent *event)
+{
+#ifndef Q_OS_WIN
+    const bool isDeadKey = event->key() >= Qt::Key_Dead_Grave && event->key() <= Qt::Key_Dead_Longsolidusoverlay;
+
+    if (isDeadKey)
+    {
+        if (mLastDeadKey != Qt::Key_unknown)
+        {
+            //two dead keys in a row
+            // - same dead keys: write accent
+            // - different dead keys: drop both
+            if (mLastDeadKey == event->key())
+            {
+                QKeyEvent currentDeadKeyEvent(
+                    QEvent::KeyPress,
+                    event->key(),
+                    event->modifiers(),
+                    sDeadKeys.value((Qt::Key)event->key(), "")
+                );
+
+                QGraphicsProxyWidget::keyPressEvent(&currentDeadKeyEvent);
+            }
+
+            mLastDeadKey = Qt::Key_unknown;
+        }
+        else
+        {
+            mLastDeadKey = (Qt::Key)event->key();
+        }
+    }
+    else if (mLastDeadKey != Qt::Key_unknown && !event->text().isEmpty())
+    {
+        const QString accentedText = getAccentedLetter(mLastDeadKey, event->text());
+
+        if (!accentedText.isEmpty())
+        {
+            QKeyEvent accentedLetterEvent(
+                QEvent::KeyPress,
+                event->key(),
+                event->modifiers(),
+                accentedText
+            );
+
+            QGraphicsProxyWidget::keyPressEvent(&accentedLetterEvent);
+        }
+
+        mLastDeadKey = Qt::Key_unknown;
+    }
+    else
+    {
+        QGraphicsProxyWidget::keyPressEvent(event);
+    }
+#else
+    QGraphicsProxyWidget::keyPressEvent(event);
+#endif
 }
 
 void UBGraphicsWidgetItem::mousePressEvent(QGraphicsSceneMouseEvent *event)

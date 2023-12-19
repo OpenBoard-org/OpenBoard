@@ -44,7 +44,6 @@ const QRect UBGraphicsAxes::sDefaultRect = QRect(-200, -200, 400, 400);
 const QColor UBGraphicsAxes::sLightBackgroundDrawColor = QColor(0x33, 0x33, 0x33, sDrawTransparency);
 const QColor UBGraphicsAxes::sDarkBackgroundDrawColor = QColor(0xff, 0xff, 0xff, sDrawTransparency);
 
-
 UBGraphicsAxes::UBGraphicsAxes()
     : QGraphicsPolygonItem()
     , mResizing(false)
@@ -61,6 +60,10 @@ UBGraphicsAxes::UBGraphicsAxes()
     mCloseSvgItem->setVisible(false);
     mCloseSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
 
+    mMoveToolSvgItem = new QGraphicsSvgItem(":/images/moveTool.svg", this);
+    mMoveToolSvgItem->setVisible(false);
+    mMoveToolSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+
     mNumbersSvgItem = new QGraphicsSvgItem(":/images/numbersTool.svg", this);
     mNumbersSvgItem->setVisible(false);
     mNumbersSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
@@ -70,6 +73,7 @@ UBGraphicsAxes::UBGraphicsAxes()
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::CppTool)); //Necessary to set if we want z value to be assigned correctly
 
     setFlag(QGraphicsItem::ItemIsSelectable, false);
+    setFlag(QGraphicsItem::ItemIsFocusable, true); //needed to receive key events
     updateResizeCursor();
 
     connect(UBApplication::boardController, &UBBoardController::zoomChanged, this, [this](qreal){
@@ -157,6 +161,15 @@ void UBGraphicsAxes::paint(QPainter *painter, const QStyleOptionGraphicsItem *st
 
     mNumbersSvgItem->setTransform(antiScaleTransform);
     mNumbersSvgItem->setPos(numbersButtonRect().topLeft());
+
+    if (hasFocus())
+    {
+        mMoveToolSvgItem->setVisible(true);
+        mMoveToolSvgItem->setTransform(antiScaleTransform);
+        mMoveToolSvgItem->setPos(moveToolButtonRect().topLeft());
+    }
+    else
+        mMoveToolSvgItem->setVisible(false);
 
     QTransform antiScaleTransform2;
     qreal ratio = mAntiScaleRatio > 1.0 ? mAntiScaleRatio : 1.0;
@@ -273,6 +286,30 @@ void UBGraphicsAxes::paintGraduations(QPainter *painter)
 void UBGraphicsAxes::setRect(const QRectF &rect)
 {
     setRect(rect.x(), rect.y(), rect.width(), rect.height());
+}
+
+void UBGraphicsAxes::keyPressEvent(QKeyEvent *event)
+{
+    QGraphicsItem::keyPressEvent(event);
+    switch (event->key())
+    {
+    case Qt::Key_Up:
+        moveBy(0, -1);
+        event->accept();
+        break;
+    case Qt::Key_Down:
+        moveBy(0, 1);
+        event->accept();
+        break;
+    case Qt::Key_Left:
+        moveBy(-1, 0);
+        event->accept();
+        break;
+    case Qt::Key_Right:
+        moveBy(1, 0);
+        event->accept();
+        break;
+    }
 }
 
 void UBGraphicsAxes::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -548,6 +585,21 @@ QRectF UBGraphicsAxes::numbersButtonRect() const
         sItemWidth * mAntiScaleRatio - numbersRectSize.height());
 
     return QRectF(numbersRectTopLeft, numbersRectSize);
+}
+
+QRectF UBGraphicsAxes::moveToolButtonRect() const
+{
+    QPixmap moveToolPixmap(":/images/moveTool.svg");
+
+    QSizeF moveToolRectSize(
+        moveToolPixmap.width() * mAntiScaleRatio,
+        moveToolPixmap.height() * mAntiScaleRatio);
+
+    QPointF moveToolRectTopLeft(
+                sItemWidth * mAntiScaleRatio - mMoveToolSvgItem->boundingRect().width() - 5,
+                -sItemWidth * mAntiScaleRatio + mMoveToolSvgItem->boundingRect().height()/2);
+
+    return QRectF(moveToolRectTopLeft, moveToolRectSize);
 }
 
 QLineF UBGraphicsAxes::xAxis() const

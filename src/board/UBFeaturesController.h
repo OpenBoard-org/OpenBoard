@@ -176,6 +176,7 @@ public:
 
     void addItemToPage(const UBFeature &item);
     void addItemAsBackground(const UBFeature &item);
+    void addUserWidgetToLibrary(const QString &url, const QString &name);
     const UBFeature& getCurrentElement()const {return currentElement;}
     void setCurrentElement( const UBFeature &elem ) {currentElement = elem;}
     const UBFeature & getTrashElement () const { return trashElement; }

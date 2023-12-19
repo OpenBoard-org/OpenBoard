@@ -1092,17 +1092,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
             break;
 
         case UBStylusTool::Text : {
-            int frameWidth = UBSettings::settings ()->objectFrameWidth;
-            QRectF fuzzyRect (0, 0, frameWidth * 4, frameWidth * 4);
-            fuzzyRect.moveCenter (mapToScene (mMouseDownPos));
-
-            UBGraphicsTextItem* foundTextItem = 0;
-            QListIterator<QGraphicsItem *> it (scene ()->items (fuzzyRect));
-
-            while (it.hasNext () && !foundTextItem)
-                foundTextItem = qgraphicsitem_cast<UBGraphicsTextItem*>(it.next ());
-
-            if (foundTextItem)
+            if (dynamic_cast<UBGraphicsTextItem*>(getMovingItem()))
             {
                 mIsCreatingTextZone = false;
                 QGraphicsView::mousePressEvent (event);
@@ -1768,6 +1758,11 @@ void UBBoardView::dropEvent (QDropEvent *event)
     if (event->dropAction() == Qt::MoveAction) {
         event->setDropAction(Qt::CopyAction);
     }
+
+    mMouseButtonIsPressed = false;
+    mPendingStylusReleaseEvent = false;
+    mTabletStylusIsPressed = false;
+    setMovingItem(nullptr);
 }
 
 void UBBoardView::resizeEvent (QResizeEvent * event)
