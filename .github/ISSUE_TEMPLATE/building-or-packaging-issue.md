@@ -1,5 +1,5 @@
 ---
-name: Build problem
+name: Building/Packaging issue
 about: Describe a problem building or packaging OpenBoard for a specific platform
 title: "[Building/Packaging]"
 labels: 'building / packaging'
@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 **Describe the problem**
-Describe the problems do you face when trying to build OpenBoard.
+Describe the problems do you face when trying to build or package OpenBoard.
 
 **Versions**
 Provide version information for all components and libraries.
