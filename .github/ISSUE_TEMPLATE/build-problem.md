@@ -1,8 +1,8 @@
 ---
 name: Build problem
-about: Describe a problem building OpenBoard for a specific platform
-title: "[Build]"
-labels: ''
+about: Describe a problem building or packaging OpenBoard for a specific platform
+title: "[Building/Packaging]"
+labels: 'building / packaging'
 assignees: ''
 
 ---
