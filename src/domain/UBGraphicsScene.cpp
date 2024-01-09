@@ -1045,7 +1045,9 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
         else if (eraserPath.intersects(itemPainterPath))
         {
             itemPainterPath.setFillRule(Qt::WindingFill);
-            QPainterPath newPath = itemPainterPath.subtracted(eraserPath);
+            // reverse eraserPath so that it has the opposite orientation of the stroke
+            // necessary for punching a hole with WindingFill rule
+            QPainterPath newPath = itemPainterPath.subtracted(eraserPath.toReversed());
             intersectedItems << pi;
             intersectedPolygons << newPath.simplified().toFillPolygons(pi->sceneTransform().inverted());
         }
