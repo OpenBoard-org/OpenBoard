@@ -12,11 +12,11 @@
     <name>BrowserWindow</name>
     <message>
         <source>Navigation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nabigazioa</translation>
     </message>
     <message>
         <source>Show downloads</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Erakutsi deskargak</translation>
     </message>
 </context>
 <context>
@@ -27,17 +27,19 @@
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ikonoa</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Errorea</translation>
     </message>
     <message>
         <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
 
 Do you wish to override the security check and continue ?   </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hala nahi baduzu, egiaztatu gabeko ziurtagiri batekin jarrai dezakezu. Egiaztatu gabeko ziurtagiri bat onartzeak esan nahi du ez zarela konektatu konektatzen saiatu zaren ostalariarekin.
+
+Segurtasun egiaztapena gainidatzi eta jarraitu nahi duzu?</translation>
     </message>
 </context>
 <context>
@@ -52,7 +54,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>0 Items</source>
-        <translation type="vanished">0 elementu</translation>
+        <translation type="vanished">0 elementuak</translation>
     </message>
 </context>
 <context>
@@ -63,7 +65,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Filename</source>
-        <translation type="vanished">Fitxategi izena</translation>
+        <translation type="vanished">Fitxategi-izena</translation>
     </message>
     <message>
         <source>Try Again</source>
@@ -116,7 +118,7 @@ Do you wish to override the security check and continue ?   </source>
     <message>
         <source>?</source>
         <comment>unknown file size</comment>
-        <translation type="vanished">?</translation>
+        <translation type="vanished">fitxategiaren tamaina ezezaguna</translation>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
@@ -143,30 +145,30 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>No downloads</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Deskargarik ez</translation>
     </message>
     <message>
         <source>Save as</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Gorde honela</translation>
     </message>
 </context>
 <context>
     <name>DownloadWidget</name>
     <message>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Testu-etiketa</translation>
     </message>
     <message>
         <source>Open file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ireki fitxategia</translation>
     </message>
     <message>
         <source>%L1 B</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%L1 B</translation>
     </message>
     <message>
         <source>%L1 KiB</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%L1 KB</translation>
     </message>
     <message>
         <source>%L1 MiB</source>
@@ -174,7 +176,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>%L1 GiB</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%L1 MB</translation>
     </message>
     <message>
         <source>%p% - %1 of %2 downloaded - %3/s</source>
@@ -182,27 +184,27 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>unknown size - %1 downloaded - %2/s</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%p% - %2-tik %1 dekargatuta - %3/s</translation>
     </message>
     <message>
         <source>completed - %1 downloaded - %2/s</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">burutu da - %1 deskargatuta - %2/s</translation>
     </message>
     <message>
         <source>cancelled - %1 downloaded - %2/s</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">bertan behera - %1 deskargatuta - %2/s</translation>
     </message>
     <message>
         <source>interrupted: %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">bertan behera: %1</translation>
     </message>
     <message>
         <source>Stop downloading</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Gelditu deskarga</translation>
     </message>
     <message>
         <source>Remove from list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kendu zerrendatik</translation>
     </message>
 </context>
 <context>
@@ -424,11 +426,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Preferences</source>
-        <translation>Ezarpenak</translation>
+        <translation>Hobespenak</translation>
     </message>
     <message>
         <source>Display Preferences</source>
-        <translation>Erakutsi ezarpenak</translation>
+        <translation>Erakutsi hobespenak</translation>
     </message>
     <message>
         <source>Library</source>
@@ -664,11 +666,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Grid Dark Background</source>
-        <translation>Atzeko plano saredun iluna</translation>
+        <translation>Atzeko plano ilun sareduna</translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
-        <translation>Atzeko plano marradun iluna</translation>
+        <translation>Atzeko plano ilun marraduna</translation>
     </message>
     <message>
         <source>Podcast</source>
@@ -744,11 +746,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Selector</source>
-        <translation>Aukeratzailea</translation>
+        <translation>Hautatzailea</translation>
     </message>
     <message>
         <source>Select And Modify Objects</source>
-        <translation>Aukeratu eta eraldatu objektuak</translation>
+        <translation>Hautatu eta eraldatu objektuak</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
@@ -856,19 +858,19 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Pause</source>
-        <translation>Gelditu</translation>
+        <translation>Pausatu</translation>
     </message>
     <message>
         <source>Pause Podcast Recording</source>
-        <translation>Gelditu Podcast-aren grabaketa</translation>
+        <translation>Pausatu podcastaren grabaketa</translation>
     </message>
     <message>
         <source>Podcast Config</source>
-        <translation>Podcast konfiguratu</translation>
+        <translation>Podcastaren ezarpenak</translation>
     </message>
     <message>
         <source>Configure Podcast Recording</source>
-        <translation>Konfiguratu podcast-aren grabaketa</translation>
+        <translation>Konfiguratu podcastaren grabaketa</translation>
     </message>
     <message>
         <source>Custom Capture</source>
@@ -884,11 +886,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Embed Web Content</source>
-        <translation>Kapsulatutako web edukia</translation>
+        <translation>Kapsulatu web edukia</translation>
     </message>
     <message>
         <source>Capture Embeddable Web Content</source>
-        <translation>Kapturatu txertatutako web edukia</translation>
+        <translation>Kapturatu kaptsulatutako web edukia</translation>
     </message>
     <message>
         <source>Show on Display</source>
@@ -912,7 +914,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Check Update</source>
-        <translation>Bilatu eguneraketa</translation>
+        <translation>Bilatu eguneraketak</translation>
     </message>
     <message>
         <source>Hide OpenBoard</source>
@@ -952,59 +954,59 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Documents Mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dokumentuen modua</translation>
     </message>
     <message>
         <source>Web Mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Web modua</translation>
     </message>
     <message>
         <source>Small Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Borragoma txikia</translation>
     </message>
     <message>
         <source>Color 1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">1. kolorea</translation>
     </message>
     <message>
         <source>1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">1</translation>
     </message>
     <message>
         <source>Color 2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">2. kolorea</translation>
     </message>
     <message>
         <source>2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">2</translation>
     </message>
     <message>
         <source>Color 3</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">3. kolorea</translation>
     </message>
     <message>
         <source>3</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">3</translation>
     </message>
     <message>
         <source>Color 4</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">4. kolorea</translation>
     </message>
     <message>
         <source>4</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">4</translation>
     </message>
     <message>
         <source>Color 5</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">5. kolorea</translation>
     </message>
     <message>
         <source>5</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">5</translation>
     </message>
     <message>
         <source>Board Mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Arbela modua</translation>
     </message>
     <message>
         <source>Desktop</source>
@@ -1012,11 +1014,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Desktop Mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mahaigaina modua</translation>
     </message>
     <message>
         <source>Add to document</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Gehitu dokumentuan</translation>
     </message>
     <message>
         <source>Seyes ruled Light Background</source>
@@ -1028,19 +1030,19 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Import one or more pages (supported formats : jpg, png, svg, ubz, pdf)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inportatau orri bat edo gehiago (supported formats : jpg, png, svg, ubz, pdf)</translation>
     </message>
     <message>
         <source>Capture Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kapturatu Web edukia</translation>
     </message>
     <message>
         <source>Reset grid size</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Berrezarri saretaren tamaina</translation>
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Marraztu tarteko sareta-lerroak</translation>
     </message>
     <message>
         <source>Add to favorites</source>
@@ -1048,30 +1050,30 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add Document to favorites</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Gehitu dokumentua gogokoetara</translation>
     </message>
     <message>
         <source>Hints and tips</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aholkuak eta laguntzak</translation>
     </message>
     <message>
         <source>Open Hints and tips</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ireki aholkuak eta laguntzak</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Gogokoa</translation>
     </message>
 </context>
 <context>
     <name>PasswordDialog</name>
     <message>
         <source>Authentication Required</source>
-        <translation>Autentikazioa beharrezkoa</translation>
+        <translation>Autentikazioa beharrezkoa da</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Erabiltzailea:</translation>
+        <translation>Erabiltzaile-izena:</translation>
     </message>
     <message>
         <source>Password:</source>
@@ -1079,11 +1081,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ikonoa</translation>
     </message>
     <message>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Informazioa</translation>
     </message>
 </context>
 <context>
@@ -1098,7 +1100,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="vanished">Erabiltzailea:</translation>
+        <translation type="vanished">Erabiltzaile-izena:</translation>
     </message>
     <message>
         <source>Password:</source>
@@ -1113,31 +1115,31 @@ Do you wish to override the security check and continue ?   </source>
     <name>QObject</name>
     <message>
         <source>Remove Page</source>
-        <translation>Ezabatu orrialdea</translation>
+        <translation>Kendu orrialdea</translation>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation type="vanished">Ziur zaude orri bat ezabatu nahi duzulua &apos;%0&apos; dokumentutik?</translation>
+        <translation type="vanished">Ziur zaude orri bat kendu nahi duzulua &apos;%0&apos; dokumentutik?</translation>
     </message>
     <message>
         <source>Element ID = </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Elementuaren ID</translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Edukia ez da helmuga formatuan onartzen.</translation>
     </message>
     <message>
         <source>Loading scene (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Eszena kargatzen</translation>
     </message>
     <message>
         <source>Moving cached scenes (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cacheko eszenak mugitzen</translation>
     </message>
     <message>
         <source>Are you sure you want to remove page %1 ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ziur zaude %1 orria kendu nahi duzula?</translation>
     </message>
 </context>
 <context>
@@ -1187,7 +1189,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ezin da zure UBX fitxategia zuzenean ireki. Mesedez, inporta ezazu dokumentu moduan</translation>
     </message>
 </context>
 <context>
@@ -1221,7 +1223,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Marraztu tarteko sareta-lerroak</translation>
     </message>
 </context>
 <context>
@@ -1240,7 +1242,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Document has just been saved...</source>
-        <translation>Dokumentua oraintxe izan da gordea...</translation>
+        <translation>Dokumentua gorde da...</translation>
     </message>
     <message>
         <source>Delete page %1 from document</source>
@@ -1272,11 +1274,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add Item</source>
-        <translation>Gehitu itema</translation>
+        <translation>Gehitu elementua</translation>
     </message>
     <message>
         <source>All Supported (%1)</source>
-        <translation>Denak onartuak (%1)</translation>
+        <translation>Onartutako guztiak (%1)</translation>
     </message>
     <message>
         <source>Color</source>
@@ -1284,22 +1286,22 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Deleting page %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Orria ezabatzen</translation>
     </message>
     <message>
         <source>Untitled</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Izenik gabe</translation>
     </message>
     <message>
         <source>Could not find document.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ezin izan da dokumentua aurkitu</translation>
     </message>
 </context>
 <context>
     <name>UBBoardPaletteManager</name>
     <message>
         <source>CapturedImage</source>
-        <translation>KapturatutakoIrudia</translation>
+        <translation>Kapturatutako irudia</translation>
     </message>
     <message>
         <source>Error Adding Image to Library</source>
@@ -1310,11 +1312,11 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBBoardView</name>
     <message>
         <source>Is it for Board or Widget ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Arbelerako edo trepetarako?</translation>
     </message>
     <message>
         <source>Are you trying to drop the object(s) inside the widget ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Saiatzen ari zara objektua(k) trepetetan askatzen?</translation>
     </message>
 </context>
 <context>
@@ -1375,7 +1377,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Untitled Documents</source>
-        <translation>Izengabeko dokumentuak</translation>
+        <translation>Izenik gabeko dokumentuak</translation>
     </message>
     <message>
         <source>New Folder</source>
@@ -1395,11 +1397,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Duplicating Document %1</source>
-        <translation>Bikoiztu %1 dokumentua</translation>
+        <translation>%1 dokumentua bikoizten</translation>
     </message>
     <message>
         <source>Document %1 copied</source>
-        <translation>%1 dokumentua kopiatua</translation>
+        <translation>%1 dokumentua kopiatu da</translation>
     </message>
     <message>
         <source>Empty Trash</source>
@@ -1415,31 +1417,31 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Emptied trash</source>
-        <translation type="vanished">Zakarrontzia hustuta</translation>
+        <translation type="vanished">Zakarrontzia hustu da</translation>
     </message>
     <message>
         <source>Remove Document</source>
-        <translation type="vanished">Ezabatu dokumentua</translation>
+        <translation type="vanished">Kendu dokumentua</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the document &apos;%1&apos;?</source>
-        <translation type="vanished">Ziur zaude &apos;%1&apos; dokumentua ezabatu nahi duzula?</translation>
+        <translation type="vanished">Ziur zaude &apos;%1&apos; dokumentua kendu nahi duzula?</translation>
     </message>
     <message>
         <source>Remove Folder</source>
-        <translation type="vanished">Ezabatu karpeta</translation>
+        <translation type="vanished">Kendu karpeta</translation>
     </message>
     <message>
         <source>Are you sure you want to remove the folder &apos;%1&apos; and all its content?</source>
-        <translation type="vanished">Ziur zaude &apos;%1&apos; karpeta eta bere eduki guztia ezabatu nahi dituzula?</translation>
+        <translation type="vanished">Ziur zaude &apos;%1&apos; karpeta eta bere eduki guztia kendu nahi dituzula?</translation>
     </message>
     <message>
         <source>Remove multiple documents</source>
-        <translation type="vanished">Ezabatu hainbat dokumentu</translation>
+        <translation type="vanished">Kendu hainbat dokumentu</translation>
     </message>
     <message>
         <source>Are you sure you want to remove all selected documents?</source>
-        <translation type="vanished">Ziur zaude aukeratutako dokumentuak ezabatu nahi dituzula?</translation>
+        <translation type="vanished">Ziur zaude aukeratutako dokumentuak kendu nahi dituzula?</translation>
     </message>
     <message>
         <source>No document selected!</source>
@@ -1491,18 +1493,15 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Selection does not contain any image files!</source>
-        <translation>Aukeraketak ez du inongo irudi fitxategirik!</translation>
+        <translation>Hautapenak ez du irudi fitxategirik!</translation>
     </message>
     <message>
         <source>Remove Page</source>
-        <translation type="vanished">Ezabatu orria</translation>
+        <translation type="vanished">Kendu orria</translation>
     </message>
     <message numerus="yes">
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
-        <translation type="vanished">
-            <numerusform>Ziur zaude orri %n ezabatu nahi duzula &apos;%1&apos; dokumentutik?</numerusform>
-            <numerusform>Ziur zaude %n orri ezabatu nahi dituzula &apos;%1&apos; dokumentutik?</numerusform>
-        </translation>
+        <translation type="vanished">Ziur zaude %n orri kendu nahi duzula &apos;%1&apos; dokumentutik?</translation>
     </message>
     <message>
         <source>Page %1</source>
@@ -1518,51 +1517,51 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Complete deletion of %1 documents/folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Burutu %1 dokumentu/karpeten ezabaketa</translation>
     </message>
     <message>
         <source>You are about to permanantly delete %1 documents and/or folders. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 dokumentu edota karpeta ezabatu behar dituzu betiko. Ziur zaude?</translation>
     </message>
     <message>
         <source>Complete deletion of folder &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"> &quot;%1&quot; karpetaren ezabaketa</translation>
     </message>
     <message>
         <source>You are about to permanantly delete folder &quot;%1&quot;. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&quot;%1&quot; karpeta ezabatu behar duzu betiko. Ziur zaude?</translation>
     </message>
     <message>
         <source>Complete deletion of document &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&quot;%1&quot; dokumentuaren ezabaketa</translation>
     </message>
     <message>
         <source>You are about to permanantly delete document &quot;%1&quot;. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&quot;%1&quot; dokumentua ezabatu behar duzu betiko. Ziur zaude?</translation>
     </message>
     <message>
         <source>Emptying My Documents</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nire dokumentuak husten</translation>
     </message>
     <message>
         <source>You are about to entirely empty the folder &quot;My Documents&quot;. All your documents will be moved to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&quot;Nire dokumentuak&quot; karpeta hustu behar duzu. Dokumentu guztiak zakarrontzira mugituko dira. Ziur zaude?</translation>
     </message>
     <message>
         <source>Emptying Trash</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zakarrontzia husten</translation>
     </message>
     <message>
         <source>You are about to entirely empty the trash. All documents and folders in it will be permanently deleted. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zakarrontzia hustu behar duzu. Bertako dokumnetu eta karpeta guztiak betiko ezabatuko dira. Ziur zaude?</translation>
     </message>
     <message>
         <source>Moving %1 elements to trash</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 elementu zakarrontzira mugitzen</translation>
     </message>
     <message>
         <source>You are about to move %1 documents and/or folders to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 dokumentu edota karpeta zakarrontzira mugitu behar dituzu. Ziur zaude?</translation>
     </message>
     <message>
         <source>Move folder &quot;%1&quot;to trash</source>
@@ -1570,43 +1569,43 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>You are about to move folder &quot;%1&quot; to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&quot;%1&quot; karpeta zakarrontzira mugitzen. Ziur zaude?</translation>
     </message>
     <message>
         <source>Move document &quot;%1&quot;to trash</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&quot;%1&quot; dokumentua zakarrontzira mugitu</translation>
     </message>
     <message>
         <source>You are about to move document &quot;%1&quot; to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&quot;%1&quot; dokumentua zakarrontzira mugitu behar duzu. Ziur zaude?</translation>
     </message>
     <message>
         <source>Open Supported File(s)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ireki onartutako fitxategia(k)</translation>
     </message>
     <message>
         <source>Moving %1 pages of the document &quot;%2&quot; to trash</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&quot;%2&quot; dokumentuko %1 orri zakarrontzira mugitzen</translation>
     </message>
     <message>
         <source>You are about to move %1 pages of the document &quot;%2&quot; to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&quot;%2&quot; dokumentuko %1 orri zakarrontzira mugitu behar duzu. Ziur zaude?</translation>
     </message>
     <message>
         <source>Remove page %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 orria kendu</translation>
     </message>
     <message>
         <source>You are about to remove page %1 of the document &quot;%2&quot;. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&quot;%2&quot; dokumentuko %1 orria kendu behar duzu. Ziur zaude?</translation>
     </message>
     <message>
         <source>Refreshing Document Thumbnails View (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dokumenturan miniatura freskatzen</translation>
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Izenburuko orria</translation>
     </message>
 </context>
 <context>
@@ -1625,7 +1624,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>widgets</source>
-        <translation>widgetak</translation>
+        <translation>trepetak</translation>
     </message>
     <message>
         <source>All supported files (*.%1)</source>
@@ -1641,15 +1640,15 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Importing file %1</source>
-        <translation>%1 inportatzen</translation>
+        <translation>%1 fitxategia inportatzen</translation>
     </message>
     <message>
         <source>Import of file %1 successful.</source>
-        <translation>%1 fitxategiaren inportazio arrakastatsua.</translation>
+        <translation>%1 fitxategia behar bezala inportatu da.</translation>
     </message>
     <message>
         <source>File %1 saved</source>
-        <translation>%1 fitxategia gordeta</translation>
+        <translation>%1 fitxategia gorde da</translation>
     </message>
 </context>
 <context>
@@ -1667,7 +1666,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Replace</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ordeztu</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1675,28 +1674,30 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Replace all</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ordeztu guztiak</translation>
     </message>
     <message>
         <source>Skip</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Salto egin</translation>
     </message>
     <message>
         <source>Skip all</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Salto egin guztiak</translation>
     </message>
     <message>
         <source>The name %1 is allready used.
 Keeping this name will replace the document.
 Providing a new name will create a new document.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 izena dagoeneko erabili da.
+IzIzen hori mantenduz gero, dokumentua ordezkatuko da.
+Izen berria ematean dokumentu berri bat sortuko da.</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentTreeModel</name>
     <message>
         <source>My documents</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nire dokumentuak</translation>
     </message>
     <message>
         <source>Trash</source>
@@ -1705,8 +1706,8 @@ Providing a new name will create a new document.</source>
     <message numerus="yes">
         <source>%1 pages copied</source>
         <translation type="unfinished">
-            <numerusform>orri %1 kopiatua</numerusform>
-            <numerusform>%1 orri kopiatua</numerusform>
+            <numerusform>orri %1 kopiatu da</numerusform>
+            <numerusform>%1 orri kopiatu dira</numerusform>
         </translation>
     </message>
 </context>
@@ -1719,8 +1720,8 @@ Providing a new name will create a new document.</source>
     <message numerus="yes">
         <source>%1 pages copied</source>
         <translation type="unfinished">
-            <numerusform>orri %1 kopiatua</numerusform>
-            <numerusform>%1 orri kopiatua</numerusform>
+            <numerusform>orri %1 kopiatu da</numerusform>
+            <numerusform>%1 orri kopiatu dira</numerusform>
         </translation>
     </message>
 </context>
@@ -1737,8 +1738,8 @@ Providing a new name will create a new document.</source>
     <message numerus="yes">
         <source>%1 pages copied</source>
         <translation type="vanished">
-            <numerusform>orri %1 kopiatua</numerusform>
-            <numerusform>%1 orri kopiatua</numerusform>
+            <numerusform>orri %1 kopiatu da</numerusform>
+            <numerusform>%1 orri kopiatu dira</numerusform>
         </translation>
     </message>
 </context>
@@ -1773,7 +1774,7 @@ Providing a new name will create a new document.</source>
     <message>
         <source>Application name can`t contain any of the following characters:<byte value="xd"/>
 </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aplikazioaren izenak ezin du honelako karaktereak eduki:<byte value="xd"/></translation>
     </message>
 </context>
 <context>
@@ -1807,11 +1808,11 @@ Providing a new name will create a new document.</source>
     <name>UBExportCFF</name>
     <message>
         <source>Export to IWB</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Esportatu IWB-ra</translation>
     </message>
     <message>
         <source>Export as IWB File</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Esportatu IWB fitxategi gisa</translation>
     </message>
     <message>
         <source>Exporting document...</source>
@@ -1819,7 +1820,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Esportazioa behar bezala burutu da</translation>
     </message>
     <message>
         <source>Export failed.</source>
@@ -1834,7 +1835,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export as UBZ File</source>
-        <translation>UBZ fitxategi moduan esportatu</translation>
+        <translation>Esportatu UBZ fitxategi gisa</translation>
     </message>
     <message>
         <source>Exporting %1 %2 of %3</source>
@@ -1849,11 +1850,11 @@ Providing a new name will create a new document.</source>
     <name>UBExportDocumentSetAdaptor</name>
     <message>
         <source>Failed to export...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Esportazioak huts egin du...</translation>
     </message>
     <message>
         <source>Export as UBX File</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Esportatu UBX fitxategi gisa</translation>
     </message>
     <message>
         <source>Exporting document...</source>
@@ -1861,7 +1862,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Esportazioa behar bezla burutu da.</translation>
     </message>
     <message>
         <source>Export failed.</source>
@@ -1869,29 +1870,29 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export to OpenBoard UBX Format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Esportatu Openboard UBX fOrmatura</translation>
     </message>
 </context>
 <context>
     <name>UBExportFullPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation>Esportatu PDF fitxategira</translation>
+        <translation>Esportatu PDF fitxategi gisa</translation>
     </message>
     <message>
         <source>Export to PDF</source>
-        <translation>Esportatu PDFra</translation>
+        <translation>Esportatu PDF gisa</translation>
     </message>
     <message>
         <source>The original PDF imported in OpenBoard seems not valid and could not be merged with your annotations. Please repair it and then reimport it in OpenBoard. The current export will be done with detailed (heavy) images of the pages of the original PDF instead, to avoid complete export failure.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">OpenBoard-en inportatutako jatorrizko PDFa ez da baliozkoa eta ezin izan da zure oharretara batu. Mesedez, konpondu eta gero berriro inportatu OpenBoard-en. Uneko esportazioa jatorrizko PDFaren orrien irudi zehatzekin (astunekin) egingo da horren ordez, esportazio hutsegite osoa ekiditeko.</translation>
     </message>
 </context>
 <context>
     <name>UBExportPDF</name>
     <message>
         <source>Export as PDF File</source>
-        <translation>Esportatu PDF fitxategira</translation>
+        <translation>Esportatu PDF gisa</translation>
     </message>
     <message>
         <source>Exporting page %1 of %2</source>
@@ -1899,7 +1900,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export to PDF</source>
-        <translation>Esportatu PDFra</translation>
+        <translation>Esportatu PDF gisa</translation>
     </message>
 </context>
 <context>
@@ -1910,7 +1911,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export as Web data</source>
-        <translation>Esportatu Web datu mduan</translation>
+        <translation>Esportatu Web datu gisa</translation>
     </message>
     <message>
         <source>Exporting document...</source>
@@ -1918,7 +1919,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Esportazio arraskatatsua.</translation>
+        <translation>Esportazioa behar bezala burutu da.</translation>
     </message>
     <message>
         <source>Export failed.</source>
@@ -2003,7 +2004,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Interactivities</source>
-        <translation>Interaktibitateak</translation>
+        <translation>Jarduerak</translation>
     </message>
     <message>
         <source>Applications</source>
@@ -2034,7 +2035,7 @@ Providing a new name will create a new document.</source>
     <name>UBFeaturesNewFolderDialog</name>
     <message>
         <source>Accept</source>
-        <translation>Onartu</translation>
+        <translation>Ados</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -2042,7 +2043,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Enter a new folder name</source>
-        <translation>Sartu karpeta izen berria</translation>
+        <translation>Sartu karpeta-izen berria</translation>
     </message>
 </context>
 <context>
@@ -2064,7 +2065,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Hide on Extended Screen when selected</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ezkutatu hedatutako pantailan hautatuta dagoenean</translation>
     </message>
 </context>
 <context>
@@ -2075,7 +2076,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Visible on Extended Screen</source>
-        <translation>Hedatutako pantailan ikusgarri</translation>
+        <translation>Hedatutako pantailan ikusgai</translation>
     </message>
     <message>
         <source>Go to Content Source</source>
@@ -2083,7 +2084,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Hide on Extended Screen when selected</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ezkutatu hedatutako pantailan hautatuta dagoenean</translation>
     </message>
     <message>
         <source>Set as background</source>
@@ -2091,7 +2092,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Web Inspector</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Web-arakatzailea</translation>
     </message>
     <message>
         <source>Duplicate</source>
@@ -2099,11 +2100,11 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Layer up</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Igo geruza</translation>
     </message>
     <message>
         <source>Layer down</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Jaitsi geruza</translation>
     </message>
 </context>
 <context>
@@ -2122,7 +2123,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Media error: </source>
-        <translation>Multimedia errorea:</translation>
+        <translation>Multimedia errorea: </translation>
     </message>
 </context>
 <context>
@@ -2172,7 +2173,7 @@ Providing a new name will create a new document.</source>
     <name>UBImportCFF</name>
     <message>
         <source>Common File Format (</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Common File formatua</translation>
     </message>
     <message>
         <source>Importing file %1...</source>
@@ -2184,11 +2185,11 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation type="unfinished">Inportazio arrakastatsua.</translation>
+        <translation type="unfinished">Inportazioa behar bezala burutu da.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inportazioak huts egin du.</translation>
     </message>
 </context>
 <context>
@@ -2214,7 +2215,7 @@ Providing a new name will create a new document.</source>
     <name>UBImportDocumentSetAdaptor</name>
     <message>
         <source>Openboard (set of documents) (*.ubx)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Openboard (dokumentu sorta) (*.ubx) </translation>
     </message>
 </context>
 <context>
@@ -2352,27 +2353,27 @@ Ostalari onentzako errore hauek ez-ikusi nahi dituzu?</translation>
     <name>UBPersistenceManager</name>
     <message>
         <source>(copy)</source>
-        <translation>(kopiatu)</translation>
+        <translation>(kopia)</translation>
     </message>
     <message>
         <source>Document Repository Loss</source>
-        <translation>Dokumentuen repositorioaren galera</translation>
+        <translation>Dokumentuen errepositorioaren galera</translation>
     </message>
     <message>
         <source>has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="vanished">%1 dokumentu errepositorira sarbidea galdu da. Tamalez aplikazioa itxi egingo da datuen galera sahiesteko. Azken aldaketak galdu daitezke ere.</translation>
+        <translation type="vanished">%1 dokumentu errepositoriora sarbidea galdu da. Tamalez aplikazioa itxi egingo da datuen galera sahiesteko. Azken aldaketak galdu daitezke ere.</translation>
     </message>
     <message>
         <source>Retrieving all your documents (found : %1)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zure dokumentu guztiak berreskuratzen (aurkitu dira: %1)</translation>
     </message>
     <message>
         <source>Renaming pages (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">(%1/%2) orriak berrizendatzen</translation>
     </message>
     <message>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">OpenBoard-ek '%1' dokumentu-biltegirako sarbidea galdu du. Zoritxarrez aplikazioa itxi egin behar da datuen hondamena saihesteko. Azken aldaketak ere gal daitezke.</translation>
     </message>
 </context>
 <context>
@@ -2458,14 +2459,14 @@ Ostalari onentzako errore hauek ez-ikusi nahi dituzu?</translation>
     </message>
     <message>
         <source>OpenBoard Cast</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">OpenBoard Cast</translation>
     </message>
 </context>
 <context>
     <name>UBPreferencesController</name>
     <message>
         <source>version: </source>
-        <translation>bertsioa:</translation>
+        <translation>bertsioa: </translation>
     </message>
     <message>
         <source>Marker is pressure sensitive</source>
@@ -2473,7 +2474,7 @@ Ostalari onentzako errore hauek ez-ikusi nahi dituzu?</translation>
     </message>
     <message>
         <source>Use all available displays</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Erabili pantaila eskuragarri guztiak</translation>
     </message>
 </context>
 <context>
@@ -2532,11 +2533,11 @@ Ostalari onentzako errore hauek ez-ikusi nahi dituzu?</translation>
     </message>
     <message>
         <source>%1 thumbnails generated ...</source>
-        <translation>%1 miniatura sortuak...</translation>
+        <translation>%1 miniatura sortu dira...</translation>
     </message>
     <message>
         <source>Loading thumbnail (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">(%1/%2) miniatura kargatzen</translation>
     </message>
 </context>
 <context>
@@ -2578,7 +2579,7 @@ Ostalari onentzako errore hauek ez-ikusi nahi dituzu?</translation>
     </message>
     <message>
         <source>Axes</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ardatzak</translation>
     </message>
 </context>
 <context>
@@ -2638,7 +2639,7 @@ Berrabiarazi aplikazioa eguneratutako dokumentuak irekitzeko.</translation>
     <name>UBWebEngineView</name>
     <message>
         <source>Open Web Inspector</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ireki Web arakatzailea</translation>
     </message>
 </context>
 <context>
@@ -2710,11 +2711,11 @@ Berrabiarazi aplikazioa eguneratutako dokumentuak irekitzeko.</translation>
     </message>
     <message>
         <source>News &amp; Politics</source>
-        <translation>Berriak eta Politikak</translation>
+        <translation>Albisteak eta politika</translation>
     </message>
     <message>
         <source>Entertainment</source>
-        <translation>Denbora-pasa</translation>
+        <translation>Denbora-pasak</translation>
     </message>
     <message>
         <source>Education</source>
@@ -2778,7 +2779,7 @@ Berrabiarazi aplikazioa eguneratutako dokumentuak irekitzeko.</translation>
     </message>
     <message>
         <source>%1 items</source>
-        <translation>%1 item</translation>
+        <translation>%1 elementu</translation>
     </message>
 </context>
 <context>
@@ -2841,98 +2842,99 @@ Berrabiarazi aplikazioa eguneratutako dokumentuak irekitzeko.</translation>
     <name>WebPage</name>
     <message>
         <source>Certificate Error</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zertifikazio errorea</translation>
     </message>
     <message>
         <source>Enter username and password for &quot;%1&quot; at %2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sartu %2-ko &quot;%1&quot;-ren erabiltzaile-izena eta pasahitza</translation>
     </message>
     <message>
         <source>Allow %1 to access your location information?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Baimena eman nahi diozu %1-ri zure informazioa atzitzeko?</translation>
     </message>
     <message>
         <source>Allow %1 to access your microphone?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Baimena eman nahi diozu %1-ri zure mikrofonoa erabiltzeko</translation>
     </message>
     <message>
         <source>Allow %1 to access your webcam?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Baimena eman nahi diozu %1-ri zure web-kamera erabiltzeko?</translation>
     </message>
     <message>
         <source>Allow %1 to access your microphone and webcam?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Baimena eman nahi diozu %1-ri zure mikrofonoa eta web-kamera erabiltzeko?</translation>
     </message>
     <message>
         <source>Allow %1 to lock your mouse cursor?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Baimena eman nahi diozu %1-ri blokeazeko zure saguaren kurtsorea?</translation>
     </message>
     <message>
         <source>Allow %1 to capture video of your desktop?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Baimena eman nahi diozu %1-ri zure mahaigaren bideo-kaptura egiteko?</translation>
     </message>
     <message>
         <source>Allow %1 to capture audio and video of your desktop?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Baimena eman nahi diozu %1-ri zure mahaigainaren audioa eta bideoa kapturatzeko?</translation>
     </message>
     <message>
         <source>Permission Request</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Baimen eskaera</translation>
     </message>
     <message>
         <source>Connect to proxy &quot;%1&quot; using:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Konektatu &quot;%1&quot; proxyra honen bidez:</translation>
     </message>
     <message>
         <source>Allow %1 to open all %2 links?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Baimendu %1 %2-ko esteka guztiak irekitzen?</translation>
     </message>
 </context>
 <context>
     <name>WebView</name>
     <message>
         <source>Render process normal exit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Errendatze-prozesuaren irteera normala</translation>
     </message>
     <message>
         <source>Render process abnormal exit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Errendatze-prozesuaren irteera anormala</translation>
     </message>
     <message>
         <source>Render process crashed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Errendatze-prozesua hondatu da</translation>
     </message>
     <message>
         <source>Render process killed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Errendatze-prozesua eten da</translation>
     </message>
     <message>
         <source>Render process exited with code: %1
 Do you want to reload the page ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Errendatze-prozesua kodearekin irten da: %1
+Orria berriro kargatu nahi duzu?</translation>
     </message>
     <message>
         <source>Open Web Inspector in new window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ireki Web arakatzailea lehio berri batean</translation>
     </message>
     <message>
         <source>Inspect element</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aztertu elementua</translation>
     </message>
     <message>
         <source>Add to board</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Gehitu arbelera</translation>
     </message>
 </context>
 <context>
     <name>XPDFRenderer</name>
     <message>
         <source>an error occured while trying to open the PDF file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Errore bat gertatu da PDF fitxategia irekitzean</translation>
     </message>
     <message>
         <source>Processing...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Prozesatzen...</translation>
     </message>
 </context>
 <context>
@@ -3014,7 +3016,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Fine</source>
-        <translation>FIna</translation>
+        <translation>Fina</translation>
     </message>
     <message>
         <source>Pen is Pressure Sensitive</source>
@@ -3030,11 +3032,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Show preview circle from</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Erakutsi aurrebista zirkulua</translation>
     </message>
     <message>
         <source>px</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">px</translation>
     </message>
 </context>
 <context>
@@ -3068,26 +3070,26 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Creation date</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sortze-data</translation>
     </message>
     <message>
         <source>Update date</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Eguneratze-data</translation>
     </message>
     <message>
         <source>Alphabetical order</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Orden alfabetikoa</translation>
     </message>
     <message>
         <source>Sort Order</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ordena</translation>
     </message>
 </context>
 <context>
     <name>preferencesDialog</name>
     <message>
         <source>Preferences</source>
-        <translation>Ezarpenak</translation>
+        <translation>Hobespenak</translation>
     </message>
     <message>
         <source>version : …</source>
@@ -3167,7 +3169,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Pen</source>
-        <translation>Boligrafo</translation>
+        <translation>Boligrafoa</translation>
     </message>
     <message>
         <source>Marker</source>
@@ -3187,11 +3189,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Home Page:</source>
-        <translation>Hasiera orria:</translation>
+        <translation>Hasiera-orria:</translation>
     </message>
     <message>
         <source>Proxy User:</source>
-        <translation>Proxy erabiltzailea:</translation>
+        <translation>Proxy-erabiltzailea:</translation>
     </message>
     <message>
         <source>Pass:</source>
@@ -3239,23 +3241,23 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Export background grid</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Esportatu atzeko planoaren sareta</translation>
     </message>
     <message>
         <source>Improve zoom execution time (can slightly affect rendering quality)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hobetu zoomaren exekuzio denbora (errendatze-kalitatean zertxobait eragin dezake)</translation>
     </message>
     <message>
         <source>Export background color</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Esportatu atzeko planoaren kolorea</translation>
     </message>
     <message>
         <source>Documents Mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dokumentuen modua</translation>
     </message>
     <message>
         <source>Display date column on alphabetical sort</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Erakutsi daten zutabea ordena alfabetikoan</translation>
     </message>
     <message>
         <source>Empty trash for documents older than</source>
@@ -3263,7 +3265,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>days</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">egunak</translation>
     </message>
     <message>
         <source>Documents</source>
@@ -3271,11 +3273,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>List of screens used for Control, Display and Previous pages</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kontrola, pantaila eta aurreko orrietarako erabilitako pantailen zerrenda</translation>
     </message>
     <message>
         <source>Grid</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sareta</translation>
     </message>
     <message>
         <source>On Light Background</source>
@@ -3314,11 +3316,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Capture Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kapturatu Webaren edukia</translation>
     </message>
     <message>
         <source>Select a content to capture</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hautatu kapturatu beharreko edukia</translation>
     </message>
 </context>
 </TS>
