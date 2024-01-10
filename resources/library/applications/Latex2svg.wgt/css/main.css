@@ -1,0 +1,10 @@
+.input
+{
+	height: 25vh;
+	width: 100%;
+}
+
+.output:hover
+{
+	cursor: grab;
+}
