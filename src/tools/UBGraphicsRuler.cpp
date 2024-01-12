@@ -117,14 +117,13 @@ void UBGraphicsRuler::paint(QPainter *painter, const QStyleOptionGraphicsItem *s
 
     UBAbstractDrawRuler::paint();
 
-    QTransform antiScaleTransform;
+    QTransform antiScaleTransformResize;
     qreal ratio = mAntiScaleRatio > 1.0 ? mAntiScaleRatio : 1.0;
-    antiScaleTransform.scale(ratio, 1.0);
+    antiScaleTransformResize.scale(ratio, 1.0);
 
-    mResizeSvgItem->setTransform(antiScaleTransform);
+    mResizeSvgItem->setTransform(antiScaleTransformResize);
     mResizeSvgItem->setPos(resizeButtonRect().topLeft());
 
-    mRotateSvgItem->setTransform(antiScaleTransform);
     mRotateSvgItem->setPos(rotateButtonRect().topLeft());
 
     QPainterPath outline = QPainterPath();
@@ -291,12 +290,12 @@ QPointF UBGraphicsRuler::rotationCenter() const
 QRectF UBGraphicsRuler::resizeButtonRect() const
 {
     QPixmap resizePixmap(":/images/resizeRuler.svg");
+    qreal ratio = mAntiScaleRatio > 1.0 ? mAntiScaleRatio : 1.0;
     QSizeF resizeRectSize(
-        resizePixmap.rect().width(),
+        resizePixmap.rect().width() * ratio,
         rect().height());
 
-    qreal ratio = mAntiScaleRatio > 1.0 ? mAntiScaleRatio : 1.0;
-    QPointF resizeRectTopLeft(rect().width() - resizeRectSize.width() * ratio, 0);
+    QPointF resizeRectTopLeft(rect().width() - resizeRectSize.width(), 0);
 
     QRectF resizeRect(resizeRectTopLeft, resizeRectSize);
     resizeRect.translate(rect().topLeft());
@@ -328,12 +327,12 @@ QRectF UBGraphicsRuler::rotateButtonRect() const
     QPixmap rotatePixmap(":/images/closeTool.svg");
 
     QSizeF rotateRectSize(
-        rotatePixmap.width() * mAntiScaleRatio,
-        rotatePixmap.height() * mAntiScaleRatio);
+        rotatePixmap.width(),
+        rotatePixmap.height());
 
-    int centimeters = (int)(rect().width() - sLeftEdgeMargin - resizeButtonRect().width()) / (sPixelsPerCentimeter);
+    qreal marginToResizeButton = 0.5 * sPixelsPerCentimeter;
     QPointF rotateRectCenter(
-        rect().left() + sLeftEdgeMargin + (centimeters - 0.5) * sPixelsPerCentimeter,
+        rect().right() - resizeButtonRect().width() - marginToResizeButton,
         rect().center().y());
 
     QPointF rotateRectTopLeft(
