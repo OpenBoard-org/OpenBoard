@@ -27,6 +27,9 @@
 
 
 
+#include <QLinearGradient>
+#include <QBrush>
+#include <QPainterPath>
 #include <QPixmap>
 
 #include "tools/UBGraphicsRuler.h"
@@ -124,12 +127,15 @@ void UBGraphicsRuler::paint(QPainter *painter, const QStyleOptionGraphicsItem *s
     mRotateSvgItem->setTransform(antiScaleTransform);
     mRotateSvgItem->setPos(rotateButtonRect().topLeft());
 
+    QPainterPath outline = QPainterPath();
+    outline.addRoundedRect(rect(), sRoundingRadius, sRoundingRadius);
+
     painter->setPen(drawColor());
     painter->setBrush(edgeFillColor());
     painter->setRenderHint(QPainter::Antialiasing, true);
-    painter->drawRoundedRect(rect(), sRoundingRadius, sRoundingRadius);
 
-    fillBackground(painter);
+    fillBackground(painter, outline);
+    drawBorder(painter, outline);
     paintHelp(painter);
     paintGraduations(painter);
     if (mRotating)
@@ -180,28 +186,24 @@ void UBGraphicsRuler::paintHelp(QPainter *painter)
     }
 }
 
-void UBGraphicsRuler::fillBackground(QPainter *painter)
+void UBGraphicsRuler::fillBackground(QPainter *painter, const QPainterPath &path)
 {
-    QRectF rect1(rect().topLeft(), QSizeF(rect().width(), rect().height() / 4));
-    QLinearGradient linearGradient1(
-        rect1.topLeft(),
-        rect1.bottomLeft());
-    linearGradient1.setColorAt(0, edgeFillColor());
-    linearGradient1.setColorAt(1, middleFillColor());
-    painter->fillRect(rect1, linearGradient1);
+    QLinearGradient linearGradient = QLinearGradient(
+        rect().topLeft(),
+        rect().bottomLeft());
 
-    QRectF rect2(rect1.bottomLeft(), QSizeF(rect().width(), rect().height() / 2));
-    painter->fillRect(rect2, middleFillColor());
+    linearGradient.setColorAt(0, edgeFillColor());
+    linearGradient.setColorAt(0.25, middleFillColor());
+    linearGradient.setColorAt(0.75, middleFillColor());
+    linearGradient.setColorAt(1, edgeFillColor());
 
-    QRectF rect3(rect2.bottomLeft(), rect1.size());
-    QLinearGradient linearGradient3(
-        rect3.topLeft(),
-        rect3.bottomLeft());
+    QBrush brush = QBrush(linearGradient);
+    painter->fillPath(path, brush);
+}
 
-    linearGradient3.setColorAt(0, middleFillColor());
-    linearGradient3.setColorAt(1, edgeFillColor());
-
-    painter->fillRect(rect3, linearGradient3);
+void UBGraphicsRuler::drawBorder(QPainter *painter, const QPainterPath &path)
+{
+    painter->drawPath(path);
 }
 
 void UBGraphicsRuler::paintGraduations(QPainter *painter)
