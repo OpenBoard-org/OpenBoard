@@ -4,7 +4,6 @@
 [![latest release](https://img.shields.io/github/v/release/OpenBoard-org/openboard.svg)]()
 [![Commits since last release](https://img.shields.io/github/commits-since/OpenBoard-org/openboard/v1.7.0/dev)]()
 [![Github Repo Contributors](https://img.shields.io/github/contributors/OpenBoard-org/openboard.svg)]()
-[![downloads v1.6.4](https://img.shields.io/github/downloads/OpenBoard-org/openboard/v1.6.4/total)]()
 [![downloads v1.7.0](https://img.shields.io/github/downloads/OpenBoard-org/openboard/v1.7.0/total)]()
 [![Github All Releases](https://img.shields.io/github/downloads/OpenBoard-org/OpenBoard/total.svg)]()
 
