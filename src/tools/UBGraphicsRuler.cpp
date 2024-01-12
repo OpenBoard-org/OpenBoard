@@ -170,7 +170,7 @@ void UBGraphicsRuler::paintHelp(QPainter *painter)
 
              mMoveToolSvgItem->setPos(
                  rect().center().x() + (textWidth/2) + 5 /* (a 5px margin between the text and the icon) */,
-                 rect().center().y() - mMoveToolSvgItem->boundingRect().height() * mAntiScaleRatio / 2);
+                 rect().center().y() - mMoveToolSvgItem->boundingRect().height() / 2);
 
              mMoveToolSvgItem->setVisible(true);
          }
