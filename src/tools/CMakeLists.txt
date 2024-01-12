@@ -1,0 +1,22 @@
+target_sources(${PROJECT_NAME} PRIVATE
+    UBAbstractDrawRuler.cpp
+    UBAbstractDrawRuler.h
+    UBGraphicsAxes.cpp
+    UBGraphicsAxes.h
+    UBGraphicsCache.cpp
+    UBGraphicsCache.h
+    UBGraphicsCompass.cpp
+    UBGraphicsCompass.h
+    UBGraphicsCurtainItem.cpp
+    UBGraphicsCurtainItem.h
+    UBGraphicsCurtainItemDelegate.cpp
+    UBGraphicsCurtainItemDelegate.h
+    UBGraphicsProtractor.cpp
+    UBGraphicsProtractor.h
+    UBGraphicsRuler.cpp
+    UBGraphicsRuler.h
+    UBGraphicsTriangle.cpp
+    UBGraphicsTriangle.h
+    UBToolsManager.cpp
+    UBToolsManager.h
+)

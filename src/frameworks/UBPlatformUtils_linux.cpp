@@ -34,6 +34,7 @@
 #include <QDBusConnectionInterface>
 #include <QDBusInterface>
 #include <QDBusMetaType>
+#include <QProcessEnvironment>
 
 #include <unistd.h>
 #include <X11/keysym.h>
@@ -51,9 +52,45 @@ void UBPlatformUtils::init()
     initializeKeyboardLayouts();
 }
 
+// stringification macros
+#define xstr(s) str(s)
+#define str(x) #x
+
+// base relocation for testing
+#ifdef NDEBUG
+#define OPENBOARD_BASE QString()
+#else
+#define OPENBOARD_BASE QProcessEnvironment::systemEnvironment().value("OPENBOARD_BASE", "")
+#endif
+
 QString UBPlatformUtils::applicationResourcesDirectory()
 {
+#ifdef OPENBOARD_FHS_LAYOUT
+    QString prefix = OPENBOARD_BASE + xstr(OPENBOARD_APP_PREFIX);
+    return QFileInfo(prefix).absoluteFilePath();
+#else
     return QApplication::applicationDirPath();
+#endif
+}
+
+QString UBPlatformUtils::applicationEtcDirectory()
+{
+#ifdef OPENBOARD_FHS_LAYOUT
+    QString prefix = OPENBOARD_BASE + xstr(OPENBOARD_ETC_PREFIX);
+    return QFileInfo(prefix).absoluteFilePath();
+#else
+    return applicationResourcesDirectory() + "/etc";
+#endif
+}
+
+QString UBPlatformUtils::applicationTemplateDirectory()
+{
+#ifdef OPENBOARD_FHS_LAYOUT
+    QString prefix = OPENBOARD_BASE + xstr(OPENBOARD_TPL_PREFIX);
+    return QFileInfo(prefix).absoluteFilePath();
+#else
+    return applicationResourcesDirectory() + "/etc";
+#endif
 }
 
 void UBPlatformUtils::hideFile(const QString &filePath)
