@@ -890,6 +890,11 @@ void UBGraphicsWidgetItem::mainFrameLoadFinished (bool ok)
     mInitialLoadDone = true;
     mLoadIsErronous = !ok;
 
+#ifdef Q_OS_MACOS
+    //partial workaround for https://bugreports.qt.io/browse/QTBUG-118136 on MacOS
+    runScript("el_qtbug_118136 = document.querySelector('input[type=text]'); if (el_qtbug_118136) el_qtbug_118136.focus()");
+#endif
+
     // repaint when initial rendering is done
     update();
     updatePosition();
