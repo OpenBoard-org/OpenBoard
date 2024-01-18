@@ -1435,7 +1435,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
             QDateTime now = QDateTime::currentDateTime();
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
             updateActionStates();
-            emit initThumbnailsRequired(selectedDocument());
+            reloadThumbnails();
         }
     }
     else if (UBMimeType::OpenboardTool == itemMimeType)
@@ -2703,4 +2703,9 @@ void UBBoardController::freezeW3CWidget(QGraphicsItem *item, bool freeze)
         UBGraphicsWidgetItem* widget = qgraphicsitem_cast<UBGraphicsWidgetItem*>(item);
         widget->setWebActive(!freeze);
     }
+}
+
+void UBBoardController::reloadThumbnails()
+{
+    emit initThumbnailsRequired(selectedDocument());
 }
