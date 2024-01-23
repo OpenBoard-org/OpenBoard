@@ -83,7 +83,8 @@ class UBGraphicsRuler : public UBAbstractDrawRuler, public QGraphicsRectItem, pu
 
 
         // Helpers
-        void    fillBackground(QPainter *painter);
+        void    drawBorder(QPainter *painter, const QPainterPath &path);
+        void    fillBackground(QPainter *painter, const QPainterPath &path);
         void    paintRotationCenter(QPainter *painter);
         void    paintHelp(QPainter *painter);
         virtual void    rotateAroundCenter(qreal angle);

@@ -27,6 +27,9 @@
 
 
 
+#include <QLinearGradient>
+#include <QBrush>
+#include <QPainterPath>
 #include <QPixmap>
 
 #include "tools/UBGraphicsRuler.h"
@@ -114,22 +117,24 @@ void UBGraphicsRuler::paint(QPainter *painter, const QStyleOptionGraphicsItem *s
 
     UBAbstractDrawRuler::paint();
 
-    QTransform antiScaleTransform;
+    QTransform antiScaleTransformResize;
     qreal ratio = mAntiScaleRatio > 1.0 ? mAntiScaleRatio : 1.0;
-    antiScaleTransform.scale(ratio, 1.0);
+    antiScaleTransformResize.scale(ratio, 1.0);
 
-    mResizeSvgItem->setTransform(antiScaleTransform);
+    mResizeSvgItem->setTransform(antiScaleTransformResize);
     mResizeSvgItem->setPos(resizeButtonRect().topLeft());
 
-    mRotateSvgItem->setTransform(antiScaleTransform);
     mRotateSvgItem->setPos(rotateButtonRect().topLeft());
+
+    QPainterPath outline = QPainterPath();
+    outline.addRoundedRect(rect(), sRoundingRadius, sRoundingRadius);
 
     painter->setPen(drawColor());
     painter->setBrush(edgeFillColor());
     painter->setRenderHint(QPainter::Antialiasing, true);
-    painter->drawRoundedRect(rect(), sRoundingRadius, sRoundingRadius);
 
-    fillBackground(painter);
+    fillBackground(painter, outline);
+    drawBorder(painter, outline);
     paintHelp(painter);
     paintGraduations(painter);
     if (mRotating)
@@ -165,7 +170,7 @@ void UBGraphicsRuler::paintHelp(QPainter *painter)
 
              mMoveToolSvgItem->setPos(
                  rect().center().x() + (textWidth/2) + 5 /* (a 5px margin between the text and the icon) */,
-                 rect().center().y() - mMoveToolSvgItem->boundingRect().height() * mAntiScaleRatio / 2);
+                 rect().center().y() - mMoveToolSvgItem->boundingRect().height() / 2);
 
              mMoveToolSvgItem->setVisible(true);
          }
@@ -180,28 +185,24 @@ void UBGraphicsRuler::paintHelp(QPainter *painter)
     }
 }
 
-void UBGraphicsRuler::fillBackground(QPainter *painter)
+void UBGraphicsRuler::fillBackground(QPainter *painter, const QPainterPath &path)
 {
-    QRectF rect1(rect().topLeft(), QSizeF(rect().width(), rect().height() / 4));
-    QLinearGradient linearGradient1(
-        rect1.topLeft(),
-        rect1.bottomLeft());
-    linearGradient1.setColorAt(0, edgeFillColor());
-    linearGradient1.setColorAt(1, middleFillColor());
-    painter->fillRect(rect1, linearGradient1);
+    QLinearGradient linearGradient = QLinearGradient(
+        rect().topLeft(),
+        rect().bottomLeft());
 
-    QRectF rect2(rect1.bottomLeft(), QSizeF(rect().width(), rect().height() / 2));
-    painter->fillRect(rect2, middleFillColor());
+    linearGradient.setColorAt(0, edgeFillColor());
+    linearGradient.setColorAt(0.25, middleFillColor());
+    linearGradient.setColorAt(0.75, middleFillColor());
+    linearGradient.setColorAt(1, edgeFillColor());
 
-    QRectF rect3(rect2.bottomLeft(), rect1.size());
-    QLinearGradient linearGradient3(
-        rect3.topLeft(),
-        rect3.bottomLeft());
+    QBrush brush = QBrush(linearGradient);
+    painter->fillPath(path, brush);
+}
 
-    linearGradient3.setColorAt(0, middleFillColor());
-    linearGradient3.setColorAt(1, edgeFillColor());
-
-    painter->fillRect(rect3, linearGradient3);
+void UBGraphicsRuler::drawBorder(QPainter *painter, const QPainterPath &path)
+{
+    painter->drawPath(path);
 }
 
 void UBGraphicsRuler::paintGraduations(QPainter *painter)
@@ -289,12 +290,12 @@ QPointF UBGraphicsRuler::rotationCenter() const
 QRectF UBGraphicsRuler::resizeButtonRect() const
 {
     QPixmap resizePixmap(":/images/resizeRuler.svg");
+    qreal ratio = mAntiScaleRatio > 1.0 ? mAntiScaleRatio : 1.0;
     QSizeF resizeRectSize(
-        resizePixmap.rect().width(),
+        resizePixmap.rect().width() * ratio,
         rect().height());
 
-    qreal ratio = mAntiScaleRatio > 1.0 ? mAntiScaleRatio : 1.0;
-    QPointF resizeRectTopLeft(rect().width() - resizeRectSize.width() * ratio, 0);
+    QPointF resizeRectTopLeft(rect().width() - resizeRectSize.width(), 0);
 
     QRectF resizeRect(resizeRectTopLeft, resizeRectSize);
     resizeRect.translate(rect().topLeft());
@@ -307,8 +308,8 @@ QRectF UBGraphicsRuler::closeButtonRect() const
     QPixmap closePixmap(":/images/closeTool.svg");
 
     QSizeF closeRectSize(
-        closePixmap.width() * mAntiScaleRatio,
-        closePixmap.height() * mAntiScaleRatio);
+        closePixmap.width(),
+        closePixmap.height());
 
     QPointF closeRectCenter(
         rect().left() + sLeftEdgeMargin + sPixelsPerCentimeter/2,
@@ -326,12 +327,12 @@ QRectF UBGraphicsRuler::rotateButtonRect() const
     QPixmap rotatePixmap(":/images/closeTool.svg");
 
     QSizeF rotateRectSize(
-        rotatePixmap.width() * mAntiScaleRatio,
-        rotatePixmap.height() * mAntiScaleRatio);
+        rotatePixmap.width(),
+        rotatePixmap.height());
 
-    int centimeters = (int)(rect().width() - sLeftEdgeMargin - resizeButtonRect().width()) / (sPixelsPerCentimeter);
+    qreal marginToResizeButton = 0.5 * sPixelsPerCentimeter;
     QPointF rotateRectCenter(
-        rect().left() + sLeftEdgeMargin + (centimeters - 0.5) * sPixelsPerCentimeter,
+        rect().right() - resizeButtonRect().width() - marginToResizeButton,
         rect().center().y());
 
     QPointF rotateRectTopLeft(
