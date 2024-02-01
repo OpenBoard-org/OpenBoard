@@ -95,6 +95,21 @@ Source: "{#QtLibs}\libEGL.dll"; DestDir: "{app}"
 ;Source: "/etc/freezedWidgetWrapper.html"; DestDir: "{app}"  	
 ;Source: "*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
+
+; Poppler dlls
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\poppler\bin\brotlicommon.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\poppler\bin\brotlidec.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\poppler\bin\bz2.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\poppler\bin\freetype.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\poppler\bin\jpeg62.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\poppler\bin\liblzma.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\poppler\bin\libpng16.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\poppler\bin\openjp2.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\poppler\bin\poppler.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\poppler\bin\poppler-cpp.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\poppler\bin\tiff.dll"; DestDir: "{app}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\poppler\bin\zlib1.dll"; DestDir: "{app}"
+
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\zlib\1.2.11\bin\zlib.dll"; DestDir:"{app}"; Flags: ignoreversion
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
