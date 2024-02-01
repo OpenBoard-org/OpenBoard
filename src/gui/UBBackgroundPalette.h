@@ -6,13 +6,14 @@
 #include "board/UBBoardController.h"
 #include "domain/UBGraphicsScene.h"
 
+// forward
+class UBBackgroundManager;
+
 class UBBackgroundPalette : public UBActionPalette
 {
     Q_OBJECT
 
     public:
-
-        UBBackgroundPalette(QList<QAction*> actions, QWidget* parent = 0);
         UBBackgroundPalette(QWidget* parent = 0);
 
         void addAction(QAction *action);
@@ -28,23 +29,28 @@ class UBBackgroundPalette : public UBActionPalette
     protected slots:
         void sliderValueChanged(int value);
         void defaultBackgroundGridSize();
-        void toggleIntermediateLines(bool checked);
+        void toggleBackgroundColor(bool checked);
+        void changeBackground(bool checked);
 
     protected:
         virtual void updateLayout();
         void init();
+        void createActions();
+        void updateActions();
 
-
+    private:
         QVBoxLayout* mVLayout;
         QHBoxLayout* mTopLayout;
         QHBoxLayout* mBottomLayout;
 
         QSlider* mSlider;
         QLabel* mSliderLabel;
-        QLabel* mIntermediateLinesLabel;
+        QLabel* mLightDarkModeLabel;
         UBActionPaletteButton* mResetDefaultGridSizeButton;
-        UBActionPaletteButton* mDrawIntermediateLinesCheckBox;
+        UBActionPaletteButton* mLightDarkModeSwitch;
 
+        bool mIsDark{false};
+        const UBBackgroundRuling* mBackground{nullptr};
 };
 
 #endif // UBBACKGROUNDPALETTE_H

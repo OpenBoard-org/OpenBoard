@@ -153,8 +153,6 @@ class UBBoardPaletteManager : public QObject
 
     private slots:
 
-        void changeBackground();
-
         void toggleBackgroundPalette(bool checked);
         void backgroundPaletteClosed();
 

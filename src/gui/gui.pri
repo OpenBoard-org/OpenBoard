@@ -45,6 +45,8 @@ HEADERS +=  \
     src/gui/UBFeaturesActionBar.h \
     src/gui/UBMessagesDialog.h \
     src/gui/UBBackgroundPalette.h \
+    src/gui/UBBackgroundManager.h \
+    src/gui/UBBackgroundRuling.h \
     src/gui/UBBoardThumbnailsView.h \
     src/gui/UBSnapIndicator.h
 SOURCES +=  \
@@ -94,8 +96,11 @@ SOURCES +=  \
     src/gui/UBFeaturesActionBar.cpp \
     src/gui/UBMessagesDialog.cpp \
     src/gui/UBBackgroundPalette.cpp \
+    src/gui/UBBackgroundManager.cpp \
+    src/gui/UBBackgroundRuling.cpp \
     src/gui/UBBoardThumbnailsView.cpp \
     src/gui/UBSnapIndicator.cpp
+
 win32:SOURCES += src/gui/UBKeyboardPalette_win.cpp
 macx:OBJECTIVE_SOURCES += src/gui/UBKeyboardPalette_mac.mm
 linux-g++:SOURCES += src/gui/UBKeyboardPalette_linux.cpp

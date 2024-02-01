@@ -28,6 +28,7 @@
 
 #include "UBPersistenceManager.h"
 #include "domain/UBMediaAssetItem.h"
+#include "gui/UBBackgroundManager.h"
 #include "gui/UBMainWindow.h"
 
 #include <QtXml>
@@ -818,8 +819,9 @@ std::shared_ptr<UBGraphicsScene> UBPersistenceManager::createDocumentSceneAt(std
         newScene = std::make_shared<UBGraphicsScene>(proxy, useUndoRedoStack);
     }
 
-    newScene->setBackground(UBSettings::settings()->isDarkBackground(),
-            UBSettings::settings()->UBSettings::pageBackground());
+    const auto uuid = UBSettings::settings()->UBSettings::pageBackgroundUuid();
+    const auto background = UBApplication::boardController->backgroundManager()->background(uuid);
+    newScene->setSceneBackground(UBSettings::settings()->isDarkBackground(), background);
 
     newScene->setBackgroundGridSize(UBSettings::settings()->crossSize);
 
