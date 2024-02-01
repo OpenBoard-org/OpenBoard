@@ -852,7 +852,10 @@ void UBBoardView::handleItemMouseMove(QMouseEvent *event)
         {
             posBeforeMove = getMovingItem()->pos();
             QGraphicsView::mouseMoveEvent (event);
-            posAfterMove = getMovingItem()->pos();
+            // At the end of a d'n'd, QGraphicsView::mouseMoveEvent triggers dropEvent, setting moving item to null
+            // so we must check movingItem again
+            if (getMovingItem())
+                posAfterMove = getMovingItem()->pos();
         }
         else
         {
