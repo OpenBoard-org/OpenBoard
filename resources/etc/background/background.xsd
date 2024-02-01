@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<!--
+    Schema for XML background descriptions.
+
+    Validate your documents against this schema e.g. here:
+        https://www.freeformatter.com/xml-validator-xsd.html
+-->
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:bg="http://openboard.org/template/background/"
+        targetNamespace="http://openboard.org/template/background/"
+        elementFormDefault="qualified">
+
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+            schemaLocation="https://www.w3.org/2009/01/xml.xsd" />
+
+    <xs:element name="background" type="bg:Background"/>
+
+    <!--
+        The Background type defines a ruled background. It contains:
+        - a description, which can occur multiple times for different languages
+          using the xml:lang attribute.
+        - an optional set of attributes for backwards compatibility. They map to
+          the corresponding ub:crossed-background and ub:ruled-background attributes.
+        - a default color specification for line colors on dark and light background.
+        - a set of line groups defining the ruling.
+    -->
+    <xs:complexType name="Background">
+        <xs:sequence>
+            <xs:element name="uuid" type="xs:string"/>
+            <xs:element name="description" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute ref="xml:lang" use="optional"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="attributes" minOccurs="0">
+                <xs:complexType>
+                    <xs:attribute name="crossed" type="xs:boolean" use="optional"/>
+                    <xs:attribute name="ruled" type="xs:boolean" use="optional"/>
+                    <xs:attribute name="intermediateLines" type="xs:boolean" use="optional"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="defaultColor" type="bg:Color" minOccurs="0"/>
+            <xs:element name="linegroup" type="bg:Linegroup" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--
+        The Linegroup defines a set of parallel lines. It contains:
+        - an angle in degrees, counterclockwise. Default is 0 for a horizontal line.
+        - a spacing in millimeters. The group is repeated in this distance.
+          If omitted the group is not repeated.
+        - an origin of center, topleft, topright, bottomleft or bottomright
+          defining the point relative to which the line distances are calculated;
+          useful for single lines relative to border.
+        - a set of lines in the group.
+        - an optional border, which is closing the line group to the left and/or
+          the right. If one of the elements "left" or "right" is set, lines in the group
+          do not continue endlessly, but end at the specified distance from the page border.
+          Offsets of a border line are calculated inwards from the respecive side.
+    -->
+    <xs:complexType name="Linegroup">
+        <xs:sequence>
+            <xs:element name="angle" type="xs:decimal" minOccurs="0"/>
+            <xs:element name="spacing" type="xs:decimal" minOccurs="0"/>
+            <xs:element name="origin" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="center"/>
+                        <xs:enumeration value="topleft"/>
+                        <xs:enumeration value="topright"/>
+                        <xs:enumeration value="bottomleft"/>
+                        <xs:enumeration value="bottomright"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="line" type="bg:Line" maxOccurs="unbounded"/>
+            <xs:element name="border" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="left" type="xs:decimal"/>
+                        <xs:element name="right" type="xs:decimal"/>
+                        <xs:element name="line" type="bg:Line" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--
+        A Line defines a single line in the ruling. It contains:
+        - an offset in mm to the beginning of the group.
+        - a line width in pixels.
+        - a color specification to override the default color.
+    -->
+    <xs:complexType name="Line">
+        <xs:sequence>
+            <xs:element name="offset" type="xs:decimal"/>
+            <xs:element name="width" type="xs:decimal"/>
+            <xs:element name="color" type="bg:Color" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--
+        A Color defines the line color on dark and light background. It contains:
+        - a color specification for dark background.
+        - a color specification for light background.
+        Color specifications are in the format #aarrggbb or as a float value
+        to specify an alpha value applied to the default color.
+    -->
+    <xs:complexType name="Color">
+        <xs:sequence>
+            <xs:element name="onDark" type="xs:string"/>
+            <xs:element name="onLight" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

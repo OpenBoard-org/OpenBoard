@@ -68,7 +68,7 @@ void UBActionPalette::init(Qt::Orientation orientation)
     mButtonSize = QSize(32, 32);
     mIsClosable = false;
     mAutoClose = false;
-    mActionGroup = 0;
+    mActionGroup = nullptr;
     mToolButtonStyle = Qt::ToolButtonIconOnly;
     mButtons.clear();
 
@@ -165,10 +165,15 @@ void UBActionPalette::groupActions()
             action->setProperty("id", i);
             mActionGroup->addAction(action);
             ++i;
+
+            connect(action, &QAction::triggered, this, [this,action](bool checked){
+                if (checked)
+                {
+                    emit buttonGroupClicked(action);
+                }
+            });
         }
     }
-
-    connect(mActionGroup, SIGNAL(triggered(QAction*)), this, SIGNAL(buttonGroupClicked(QAction*)));
 }
 
 

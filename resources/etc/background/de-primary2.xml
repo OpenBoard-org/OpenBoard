@@ -1,0 +1,33 @@
+<bg:background xmlns:bg="http://openboard.org/template/background/">
+    <bg:uuid>eb53b553-0e73-473c-b4c3-bcd328e27d76</bg:uuid>
+    <bg:description xml:lang="en">German elementary school, second grade</bg:description>
+    <bg:description xml:lang="de">Grundschule, zweite Klasse</bg:description>
+    <bg:linegroup>
+        <bg:angle>0</bg:angle>
+        <bg:spacing>16</bg:spacing>
+        <bg:line>
+            <bg:offset>0</bg:offset>
+            <bg:width>1</bg:width>
+        </bg:line>
+        <bg:line>
+            <bg:offset>4</bg:offset>
+            <bg:width>1</bg:width>
+        </bg:line>
+        <bg:line>
+            <bg:offset>8</bg:offset>
+            <bg:width>1</bg:width>
+        </bg:line>
+        <bg:line>
+            <bg:offset>12</bg:offset>
+            <bg:width>1</bg:width>
+        </bg:line>
+        <bg:border>
+            <bg:left>5</bg:left>
+            <bg:right>5</bg:right>
+            <bg:line>
+                <bg:offset>0</bg:offset>
+                <bg:width>1</bg:width>
+            </bg:line>
+        </bg:border>
+    </bg:linegroup>
+</bg:background>

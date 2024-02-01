@@ -153,22 +153,6 @@
         <file>images/stylusPalette/captureAreaOn.png</file>
         <file>images/stylusPalette/snap.svg</file>
         <file>images/stylusPalette/snapOn.svg</file>
-        <file>images/backgroundPalette/background1.svg</file>
-        <file>images/backgroundPalette/background1On.svg</file>
-        <file>images/backgroundPalette/background2.svg</file>
-        <file>images/backgroundPalette/background2On.svg</file>
-        <file>images/backgroundPalette/background3.svg</file>
-        <file>images/backgroundPalette/background3On.svg</file>
-        <file>images/backgroundPalette/background4.svg</file>
-        <file>images/backgroundPalette/background4On.svg</file>
-        <file>images/backgroundPalette/background5.svg</file>
-        <file>images/backgroundPalette/background5On.svg</file>
-        <file>images/backgroundPalette/background6.svg</file>
-        <file>images/backgroundPalette/background6On.svg</file>
-        <file>images/backgroundPalette/background7.svg</file>
-        <file>images/backgroundPalette/background7On.svg</file>
-        <file>images/backgroundPalette/background8.svg</file>
-        <file>images/backgroundPalette/background8On.svg</file>
         <file>images/toolPalette/podcast.svg</file>
         <file>images/toolPalette/podcastOn.svg</file>
         <file>images/toolPalette/rulerTool.png</file>
@@ -400,5 +384,7 @@
         <file>images/removeFromFavorites.png</file>
         <file>images/toolbar/tip.png</file>
         <file>images/moveTool.svg</file>
+        <file>images/lightMode.svg</file>
+        <file>images/darkMode.svg</file>
     </qresource>
 </RCC>

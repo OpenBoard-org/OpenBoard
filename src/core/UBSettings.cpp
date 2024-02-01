@@ -50,7 +50,6 @@ int UBSettings::crossSize = 24;
 int UBSettings::defaultCrossSize = 24;
 int UBSettings::minCrossSize = 12;
 int UBSettings::maxCrossSize = 96; //TODO: user-settable?
-bool UBSettings::intermediateLines = false;
 int UBSettings::colorPaletteSize = 5;
 int UBSettings::objectFrameWidth = 20;
 int UBSettings::boardMargin = 10;
@@ -814,21 +813,10 @@ bool UBSettings::isDarkBackground()
 }
 
 
-UBPageBackground UBSettings::pageBackground()
+QUuid UBSettings::pageBackgroundUuid()
 {
-    QString val = value("Board/PageBackground", 0).toString();
-
-    if (val == "crossed")
-        return UBPageBackground::crossed;
-    else if (val == "ruled")
-        return UBPageBackground::ruled;
-    else
-        return UBPageBackground::plain;
-}
-
-bool UBSettings::isSeyesRuledBackground()
-{
-    return value("Board/SeyesRuledBackground", false).toBool();
+    QUuid uuid = value("Board/PageBackground", 0).toString();
+    return uuid;
 }
 
 void UBSettings::setDarkBackground(bool isDarkBackground)
@@ -838,23 +826,9 @@ void UBSettings::setDarkBackground(bool isDarkBackground)
 }
 
 
-void UBSettings::setPageBackground(UBPageBackground background)
+void UBSettings::setPageBackgroundUuid(const QUuid& background)
 {
-    QString val;
-
-    if (background == UBPageBackground::crossed)
-        val = "crossed";
-    else if (background == UBPageBackground::ruled)
-        val = "ruled";
-    else
-        val = "plain";
-
-    setValue("Board/PageBackground", val);
-}
-
-void UBSettings::setSeyesRuledBackground(bool isSeyesRuledBackground)
-{
-    setValue("Board/SeyesRuledBackground", isSeyesRuledBackground);
+    setValue("Board/PageBackground", background.toString());
 }
 
 void UBSettings::setPenPressureSensitive(bool sensitive)

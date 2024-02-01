@@ -1,8 +1,12 @@
 target_sources(${PROJECT_NAME} PRIVATE
     UBActionPalette.cpp
     UBActionPalette.h
+    UBBackgroundManager.cpp
+    UBBackgroundManager.h
     UBBackgroundPalette.cpp
     UBBackgroundPalette.h
+    UBBackgroundRuling.cpp
+    UBBackgroundRuling.h
     UBBlackoutWidget.cpp
     UBBlackoutWidget.h
     UBBoardThumbnailsView.cpp
