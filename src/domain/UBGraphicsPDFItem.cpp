@@ -130,6 +130,7 @@ void UBGraphicsPDFItem::copyItemParameters(UBItem *copy) const
     {
         cp->setPos(this->pos());
         cp->setTransform(this->transform());
+        cp->setScale(this->scale());
         cp->setFlag(QGraphicsItem::ItemIsMovable, true);
         cp->setFlag(QGraphicsItem::ItemIsSelectable, true);
         cp->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
