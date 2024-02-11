@@ -115,6 +115,27 @@ UBActionPaletteButton* UBActionPalette::createPaletteButton(QAction* action, QWi
     return button;
 }
 
+QAction* UBActionPalette::removePaletteButton(UBActionPaletteButton* button)
+{
+    if (!button)
+    {
+        return nullptr;
+    }
+
+    QAction* action = button->defaultAction();
+
+    mButtons.removeAll(button);
+    mActions.removeAll(action);
+    mMapActionToButton.remove(action);
+
+    if (mActionGroup)
+    {
+        mActionGroup->removeAction(action);
+    }
+
+    return action;
+}
+
 void UBActionPalette::addAction(QAction* action)
 {
     UBActionPaletteButton* button = createPaletteButton(action, this);

@@ -673,6 +673,26 @@
        <string>Grid</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_17">
+       <item row="1" column="0">
+        <widget class="QScrollArea" name="bgScrollArea">
+         <property name="horizontalScrollBarPolicy">
+          <enum>Qt::ScrollBarAlwaysOff</enum>
+         </property>
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_2">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>1032</width>
+            <height>220</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+       </item>
        <item row="0" column="0">
         <widget class="QFrame" name="gridFrame">
          <property name="enabled">
@@ -917,19 +937,6 @@
           </item>
          </layout>
         </widget>
-       </item>
-       <item row="1" column="0">
-        <spacer name="verticalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>342</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </widget>

@@ -36,9 +36,32 @@ void UBBackgroundManager::addBackground(UBBackgroundRuling &background)
     }
 }
 
-const QList<UBBackgroundRuling> &UBBackgroundManager::backgrounds() const
+const QList<const UBBackgroundRuling*> UBBackgroundManager::backgrounds() const
 {
-    return mBackgrounds;
+    QList<const UBBackgroundRuling*> backgroundList;
+
+    QStringList uuidList = UBSettings::settings()->value("Board/BackgroundRulingList").toStringList();
+
+    // first add rulings from list
+    for (const auto& uuid : uuidList)
+    {
+        const auto& ruling = background(uuid);
+
+        if (ruling && ruling->isValid())
+        {
+            backgroundList << ruling;
+        }
+    }
+
+    for (const auto& ruling : mBackgrounds)
+    {
+        if (!uuidList.contains(ruling.uuid().toString()))
+        {
+            backgroundList << &ruling;
+        }
+    }
+
+    return backgroundList;
 }
 
 QAction *UBBackgroundManager::backgroundAction(const UBBackgroundRuling &background, bool dark)
@@ -90,60 +113,6 @@ const UBBackgroundRuling* UBBackgroundManager::guessBackground(bool crossed, boo
     }
 
     return nullptr;
-}
-
-void UBBackgroundManager::scan(const QString &dirname)
-{
-    const QDir dir{dirname};
-
-    if (dir.exists())
-    {
-        const auto list = dir.entryInfoList({"*.xml"}, QDir::Files, QDir::Name);
-
-        for (const auto& entry : list)
-        {
-            UBBackgroundRuling bg;
-            QFile file{entry.absoluteFilePath()};
-
-            if (!file.open(QFile::ReadOnly))
-            {
-                continue;
-            }
-
-            QXmlStreamReader reader(&file);
-
-            if (reader.readNextStartElement())
-            {
-                bg.parseXml(reader);
-            }
-
-            if (bg.isValid())
-            {
-                mBackgrounds.append(bg);
-            }
-            else
-            {
-                qWarning() << "Error reading background definitions from" << file;
-            }
-        }
-    }
-}
-
-QByteArray UBBackgroundManager::renderToSvg(const UBBackgroundRuling &background, bool dark) const
-{
-    QSvgGenerator generator;
-    QBuffer buffer;
-    generator.setOutputDevice(&buffer);
-    generator.setSize(QSize(93, 75));
-    generator.setViewBox(QRect(0, 0, 93, 75));
-
-    QPainter painter;
-
-    painter.begin(&generator);
-    background.draw(&painter, {0, 0, 93, 75}, 0., {0, 0, 193, 75}, dark);
-    painter.end();
-
-    return buffer.buffer();
 }
 
 QPixmap UBBackgroundManager::createButtonPixmap(const UBBackgroundRuling &background, bool dark, bool on) const
@@ -225,3 +194,71 @@ QIcon UBBackgroundManager::createButtonIcon(const UBBackgroundRuling &background
 
     return icon;
 }
+
+void UBBackgroundManager::savePreferredBackgrounds(QList<QUuid>& uuidList) const
+{
+    QStringList uuids;
+
+    for (const auto& uuid : uuidList)
+    {
+        uuids << uuid.toString();
+    }
+
+    UBSettings::settings()->setValue("Board/BackgroundRulingList", uuids);
+    emit preferredBackgroundChanged();
+}
+
+void UBBackgroundManager::scan(const QString &dirname)
+{
+    const QDir dir{dirname};
+
+    if (dir.exists())
+    {
+        const auto list = dir.entryInfoList({"*.xml"}, QDir::Files, QDir::Name);
+
+        for (const auto& entry : list)
+        {
+            UBBackgroundRuling bg;
+            QFile file{entry.absoluteFilePath()};
+
+            if (!file.open(QFile::ReadOnly))
+            {
+                continue;
+            }
+
+            QXmlStreamReader reader(&file);
+
+            if (reader.readNextStartElement())
+            {
+                bg.parseXml(reader);
+            }
+
+            if (bg.isValid())
+            {
+                mBackgrounds.append(bg);
+            }
+            else
+            {
+                qWarning() << "Error reading background definitions from" << file;
+            }
+        }
+    }
+}
+
+QByteArray UBBackgroundManager::renderToSvg(const UBBackgroundRuling &background, bool dark) const
+{
+    QSvgGenerator generator;
+    QBuffer buffer;
+    generator.setOutputDevice(&buffer);
+    generator.setSize(QSize(93, 75));
+    generator.setViewBox(QRect(0, 0, 93, 75));
+
+    QPainter painter;
+
+    painter.begin(&generator);
+    background.draw(&painter, {0, 0, 93, 75}, 0., {0, 0, 193, 75}, dark);
+    painter.end();
+
+    return buffer.buffer();
+}
+
