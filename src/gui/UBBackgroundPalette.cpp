@@ -8,9 +8,10 @@ UBBackgroundPalette::UBBackgroundPalette(QWidget * parent)
 {
     init();
     createActions();
+
+    connect(UBApplication::boardController->backgroundManager(), &UBBackgroundManager::preferredBackgroundChanged,
+            this, &UBBackgroundPalette::createActions);
 }
-
-
 
 void UBBackgroundPalette::init()
 {
@@ -73,33 +74,55 @@ void UBBackgroundPalette::init()
 
 void UBBackgroundPalette::createActions()
 {
-    const QList<UBBackgroundRuling>& backgrounds = UBApplication::boardController->backgroundManager()->backgrounds();
+    // first delete everything from the top layout
+    while(!mTopLayout->isEmpty())
+    {
+        QLayoutItem* pItem = mTopLayout->itemAt(0);
+        QWidget* pW = pItem->widget();
+        mTopLayout->removeItem(pItem);
+        delete pItem;
+        mTopLayout->removeWidget(pW);
+
+        QAction* action = removePaletteButton(dynamic_cast<UBActionPaletteButton*>(pW));
+
+        delete pW;
+        delete action;
+    }
+
+    // then add actions for the first 6 backgrounds from the background manager
+    const QList<const UBBackgroundRuling*> backgrounds = UBApplication::boardController->backgroundManager()->backgrounds();
     const auto dark = false; //UBApplication::boardController->activeScene()->isDarkBackground();
     const auto bgManager = UBApplication::boardController->backgroundManager();
 
     for (int i = 0; i < backgrounds.size() && i < 6; ++i)
     {
-        const auto& background = backgrounds.at(i);
-        auto action = bgManager->backgroundAction(background, dark);
+        const auto background = backgrounds.at(i);
+        auto action = bgManager->backgroundAction(*background, dark);
         UBBackgroundPalette::addAction(action);
 
         connect(action, &QAction::triggered, this, &UBBackgroundPalette::changeBackground);
     }
 
     actionChanged();
+    updateActions();
 }
 
 void UBBackgroundPalette::updateActions()
 {
     const auto scene = UBApplication::boardController->activeScene();
+
+    if (!scene)
+    {
+        return;
+    }
+
     const auto dark = scene->isDarkBackground();
     UBApplication::mainWindow->actionLightDarkMode->setChecked(dark);
     QUuid uuid;
 
-    if (scene && scene->background())
+    if (scene->background())
     {
         uuid = scene->background()->uuid();
-        qDebug() << "updateActions" << scene->background()->description("en");
     }
 
     for (auto& action : mActions)
