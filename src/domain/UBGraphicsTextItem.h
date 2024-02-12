@@ -109,6 +109,9 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
     signals:
         void textUndoCommandAdded(UBGraphicsTextItem *textItem);
 
+    protected:
+        virtual bool event(QEvent *ev) override;
+
     private slots:
         void undoCommandAdded();
         void documentSizeChanged(const QSizeF & newSize);
