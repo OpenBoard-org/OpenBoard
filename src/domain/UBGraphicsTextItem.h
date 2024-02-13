@@ -110,7 +110,7 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
         void textUndoCommandAdded(UBGraphicsTextItem *textItem);
 
     protected:
-        virtual bool event(QEvent *ev) override;
+        bool event(QEvent *ev) override;
 
     private slots:
         void undoCommandAdded();
