@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2015-2024 Département de l'Instruction Publique (DIP-SEM)
+ *
+ * This file is part of OpenBoard.
+ *
+ * OpenBoard is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3 of the License,
+ * with a specific linking exception for the OpenSSL project's
+ * "OpenSSL" library (or with modified versions of it that use the
+ * same license as the "OpenSSL" library).
+ *
+ * OpenBoard is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+
 #include "UBBackgroundRuling.h"
 
 #include "core/UBSettings.h"
@@ -11,6 +34,39 @@
 
 // namespace and element names
 static constexpr char const* namespaceURI{"http://openboard.org/template/background/"};
+static constexpr char const* namespacePrefix{"bg"};
+
+static constexpr char const* attributeCrossed{"crossed"};
+static constexpr char const* attributeIntermediateLines{"intermediateLines"};
+static constexpr char const* attributeRuled{"ruled"};
+static constexpr char const* attributeXmlLang{"xml:lang"};
+
+static constexpr char const* elementAngle{"angle"};
+static constexpr char const* elementAttributes{"attributes"};
+static constexpr char const* elementBackground{"background"};
+static constexpr char const* elementBorder{"border"};
+static constexpr char const* elementColor{"color"};
+static constexpr char const* elementDefaultColor{"defaultColor"};
+static constexpr char const* elementDescription{"description"};
+static constexpr char const* elementLeft{"left"};
+static constexpr char const* elementLinegroup{"linegroup"};
+static constexpr char const* elementLine{"line"};
+static constexpr char const* elementOffset{"offset"};
+static constexpr char const* elementOnDark{"onDark"};
+static constexpr char const* elementOnLight{"onLight"};
+static constexpr char const* elementOrigin{"origin"};
+static constexpr char const* elementRight{"right"};
+static constexpr char const* elementSpacing{"spacing"};
+static constexpr char const* elementUuid{"uuid"};
+static constexpr char const* elementWidth{"width"};
+
+static constexpr char const* originBottomleft{"bottomleft"};
+static constexpr char const* originBottomright{"bottomright"};
+static constexpr char const* originCenter{"center"};
+static constexpr char const* originTopleft{"topleft"};
+static constexpr char const* originTopright{"topright"};
+
+static constexpr char const* valueTrue{"true"};
 
 
 // helper functions
@@ -64,6 +120,12 @@ static bool getColorValue(QXmlStreamReader& reader, const QString& name, QColor&
             {
                 color.setAlphaF(color.alphaF() * alpha);
                 return true;
+            }
+            else
+            {
+                // try to interpret as color name
+                color = colorValue;
+                return color.isValid();
             }
         }
     }
@@ -152,12 +214,11 @@ bool clip(const QRectF& rect, QLineF& line)
     }
 
     // computing new points
-    qreal xn1, yn1, xn2, yn2;
-    xn1 = line.x1() - p1 * rn1;
-    yn1 = line.y1() - p3 * rn1;
+    const auto xn1 = line.x1() - p1 * rn1;
+    const auto yn1 = line.y1() - p3 * rn1;
 
-    xn2 = line.x1() - p1 * rn2;
-    yn2 = line.y1() - p3 * rn2;
+    const auto xn2 = line.x1() - p1 * rn2;
+    const auto yn2 = line.y1() - p3 * rn2;
 
     line.setLine(xn1, yn1, xn2, yn2);
 
@@ -169,13 +230,19 @@ UBBackgroundRuling::UBBackgroundRuling()
 {
 }
 
-bool UBBackgroundRuling::parseXml(QXmlStreamReader &reader)
+bool UBBackgroundRuling::operator==(const UBBackgroundRuling& other) const
+{
+    return uuid() == other.uuid();
+}
+
+bool UBBackgroundRuling::parseXml(QXmlStreamReader& reader, bool userProvided)
 {
     mRules = std::shared_ptr<Rules>(Rules::fromXml(reader));
+    mUserProvided = userProvided;
     return mRules && !mRules->hasError();
 }
 
-bool UBBackgroundRuling::toXml(QXmlStreamWriter &writer) const
+bool UBBackgroundRuling::toXml(QXmlStreamWriter& writer) const
 {
     if (mRules)
     {
@@ -241,8 +308,13 @@ bool UBBackgroundRuling::hasIntermediateLines() const
     return mRules->hasIntermediateLines();
 }
 
+bool UBBackgroundRuling::isUserProvided() const
+{
+    return mUserProvided;
+}
+
 void UBBackgroundRuling::draw(QPainter* painter, const QRectF& rect, double gridSize, const QRectF& nominalScene,
-                        bool onDark) const
+                              bool onDark) const
 {
     if (!mRules)
     {
@@ -270,8 +342,8 @@ void UBBackgroundRuling::draw(QPainter* painter, const QRectF& rect, double grid
     }
 
     painter->setRenderHint(QPainter::Antialiasing, true);
-    const auto defaultOnDark = QColor(UBSettings::settings()->boardCrossColorDarkBackground->get().toString());
-    const auto defaultOnLight = QColor(UBSettings::settings()->boardCrossColorLightBackground->get().toString());
+    const QColor defaultOnDark{UBSettings::settings()->boardCrossColorDarkBackground->get().toString()};
+    const QColor defaultOnLight{UBSettings::settings()->boardCrossColorLightBackground->get().toString()};
 
     // loop through line groups
     for (const auto& linegroup : mRules->linegroups())
@@ -371,9 +443,9 @@ void UBBackgroundRuling::draw(QPainter* painter, const QRectF& rect, double grid
                 // normal vector for translations
                 auto normal = originLine.normalVector();
                 normal.setLength(spacing);
-                auto spaceShift = normal.p1() - normal.p2();
+                const auto spaceShift = normal.p1() - normal.p2();
                 normal.setLength(offset);
-                auto offsetShift = normal.p1() - normal.p2();
+                const auto offsetShift = normal.p1() - normal.p2();
 
                 const auto lastLine = &line == &linegroup.lines().last();
 
@@ -430,7 +502,7 @@ void UBBackgroundRuling::draw(QPainter* painter, const QRectF& rect, double grid
                 // single line at offset
                 auto normal = originLine.normalVector();
                 normal.setLength(offset);
-                auto offsetShift = normal.p1() - normal.p2();
+                const auto offsetShift = normal.p1() - normal.p2();
                 auto gridLine = originLine.translated(offsetShift);
 
                 if (clip(rect, gridLine))
@@ -443,10 +515,8 @@ void UBBackgroundRuling::draw(QPainter* painter, const QRectF& rect, double grid
 }
 
 void UBBackgroundRuling::setLinePainter(QPainter* painter, const Line& line, bool onDark, QColor defaultOnDark,
-                                  QColor defaultOnLight) const
+                                        QColor defaultOnLight) const
 {
-    const auto width = line.width();
-
     const auto colorOnDark = line.color().onDark();
     const auto colorOnLight = line.color().onLight();
 
@@ -455,7 +525,7 @@ void UBBackgroundRuling::setLinePainter(QPainter* painter, const Line& line, boo
     defaultOnLight.setAlphaF(colorOnLight.alphaF());
 
     auto pen = painter->pen();
-    pen.setWidth(width);
+    pen.setWidth(line.width());
     pen.setColor(onDark ? (colorOnDark.isValid() ? colorOnDark : defaultOnDark)
                         : (colorOnLight.isValid() ? colorOnLight : defaultOnLight));
     pen.setCapStyle(Qt::FlatCap);
@@ -463,7 +533,8 @@ void UBBackgroundRuling::setLinePainter(QPainter* painter, const Line& line, boo
 }
 
 void UBBackgroundRuling::drawBorderLines(QPainter* painter, const QList<Line>& borderLines, QLineF line, Qt::Edge edge,
-                                   double gridSize, bool onDark, QColor defaultOnDark, QColor defaultOnLight) const
+                                         double gridSize, bool onDark, QColor defaultOnDark,
+                                         QColor defaultOnLight) const
 {
     painter->save();
 
@@ -509,17 +580,17 @@ const UBBackgroundRuling::Rules& UBBackgroundRuling::Data::rules() const
     return *mRules;
 }
 
-UBBackgroundRuling::LineColor::LineColor(const Rules &rules, QXmlStreamReader &reader)
+UBBackgroundRuling::LineColor::LineColor(const Rules& rules, QXmlStreamReader& reader)
     : Data{rules}
     , mOnDark{rules.defaultColor().onDark()}
     , mOnLight{rules.defaultColor().onLight()}
 {
     while (reader.readNextStartElement() && reader.namespaceUri() == namespaceURI)
     {
-        if (getColorValue(reader, "onDark", mOnDark))
+        if (getColorValue(reader, elementOnDark, mOnDark))
         {
         }
-        else if (getColorValue(reader, "onLight", mOnLight))
+        else if (getColorValue(reader, elementOnLight, mOnLight))
         {
         }
         else
@@ -530,23 +601,23 @@ UBBackgroundRuling::LineColor::LineColor(const Rules &rules, QXmlStreamReader &r
 }
 
 UBBackgroundRuling::LineColor::LineColor(const UBBackgroundRuling::Rules& rules, const QColor& colorOnDark,
-                                   const QColor& colorOnLight)
+                                         const QColor& colorOnLight)
     : Data{rules}
     , mOnDark{colorOnDark}
     , mOnLight{colorOnLight}
 {
 }
 
-void UBBackgroundRuling::LineColor::toXml(QXmlStreamWriter &writer) const
+void UBBackgroundRuling::LineColor::toXml(QXmlStreamWriter& writer) const
 {
     if (mOnDark.isValid())
     {
-        writer.writeTextElement(namespaceURI, "onDark", mOnDark.name(QColor::HexArgb));
+        writer.writeTextElement(namespaceURI, elementOnDark, mOnDark.name(QColor::HexArgb));
     }
 
     if (mOnLight.isValid())
     {
-        writer.writeTextElement(namespaceURI, "onDark", mOnLight.name(QColor::HexArgb));
+        writer.writeTextElement(namespaceURI, elementOnLight, mOnLight.name(QColor::HexArgb));
     }
 }
 
@@ -560,19 +631,19 @@ const QColor& UBBackgroundRuling::LineColor::onLight() const
     return mOnLight;
 }
 
-UBBackgroundRuling::Line::Line(const Rules &rules, QXmlStreamReader &reader)
+UBBackgroundRuling::Line::Line(const Rules& rules, QXmlStreamReader& reader)
     : Data{rules}
     , mColor{rules.defaultColor()}
 {
     while (reader.readNextStartElement() && reader.namespaceUri() == namespaceURI)
     {
-        if (getDecimalValue(reader, "offset", mOffset))
+        if (getDecimalValue(reader, elementOffset, mOffset))
         {
         }
-        else if (getDecimalValue(reader, "width", mWidth))
+        else if (getDecimalValue(reader, elementWidth, mWidth))
         {
         }
-        else if (reader.name() == "color")
+        else if (reader.name() == elementColor)
         {
             mColor = LineColor{rules, reader};
         }
@@ -583,14 +654,14 @@ UBBackgroundRuling::Line::Line(const Rules &rules, QXmlStreamReader &reader)
     }
 }
 
-void UBBackgroundRuling::Line::toXml(QXmlStreamWriter &writer) const
+void UBBackgroundRuling::Line::toXml(QXmlStreamWriter& writer) const
 {
-    writer.writeTextElement(namespaceURI, "offset", QString::number(mOffset));
-    writer.writeTextElement(namespaceURI, "width", QString::number(mWidth));
+    writer.writeTextElement(namespaceURI, elementOffset, QString::number(mOffset));
+    writer.writeTextElement(namespaceURI, elementWidth, QString::number(mWidth));
 
     if (mColor.onDark().isValid() || mColor.onLight().isValid())
     {
-        writer.writeStartElement(namespaceURI, "color");
+        writer.writeStartElement(namespaceURI, elementColor);
         mColor.toXml(writer);
         writer.writeEndElement();
     }
@@ -611,22 +682,22 @@ const UBBackgroundRuling::LineColor& UBBackgroundRuling::Line::color() const
     return mColor;
 }
 
-UBBackgroundRuling::Border::Border(const Rules &rules, QXmlStreamReader &reader)
+UBBackgroundRuling::Border::Border(const Rules& rules, QXmlStreamReader& reader)
     : Data{rules}
 {
     while (reader.readNextStartElement() && reader.namespaceUri() == namespaceURI)
     {
         double value;
 
-        if (getDecimalValue(reader, "left", value))
+        if (getDecimalValue(reader, elementLeft, value))
         {
             mLeft.emplace(value);
         }
-        else if (getDecimalValue(reader, "right", value))
+        else if (getDecimalValue(reader, elementRight, value))
         {
             mRight.emplace(value);
         }
-        else if (reader.name() == "line")
+        else if (reader.name() == elementLine)
         {
             const Line bgLine{rules, reader};
 
@@ -642,21 +713,21 @@ UBBackgroundRuling::Border::Border(const Rules &rules, QXmlStreamReader &reader)
     }
 }
 
-void UBBackgroundRuling::Border::toXml(QXmlStreamWriter &writer) const
+void UBBackgroundRuling::Border::toXml(QXmlStreamWriter& writer) const
 {
     if (mLeft)
     {
-        writer.writeTextElement(namespaceURI, "left", QString::number(mLeft.value()));
+        writer.writeTextElement(namespaceURI, elementLeft, QString::number(mLeft.value()));
     }
 
     if (mRight)
     {
-        writer.writeTextElement(namespaceURI, "right", QString::number(mRight.value()));
+        writer.writeTextElement(namespaceURI, elementRight, QString::number(mRight.value()));
     }
 
     for (const auto& line : mLines)
     {
-        writer.writeStartElement(namespaceURI, "line");
+        writer.writeStartElement(namespaceURI, elementLine);
         line.toXml(writer);
         writer.writeEndElement();
     }
@@ -677,38 +748,38 @@ const QList<UBBackgroundRuling::Line>& UBBackgroundRuling::Border::lines() const
     return mLines;
 }
 
-UBBackgroundRuling::Linegroup::Linegroup(const Rules &rules, QXmlStreamReader &reader)
+UBBackgroundRuling::Linegroup::Linegroup(const Rules& rules, QXmlStreamReader& reader)
     : Data{rules}
 {
     QString lineGroupOrigin;
 
     while (reader.readNextStartElement() && reader.namespaceUri() == namespaceURI)
     {
-        if (getDecimalValue(reader, "angle", mAngle))
+        if (getDecimalValue(reader, elementAngle, mAngle))
         {
         }
-        else if (getDecimalValue(reader, "spacing", mSpacing))
+        else if (getDecimalValue(reader, elementSpacing, mSpacing))
         {
         }
-        else if (getStringValue(reader, "origin", lineGroupOrigin))
+        else if (getStringValue(reader, elementOrigin, lineGroupOrigin))
         {
-            if (lineGroupOrigin == "topleft")
+            if (lineGroupOrigin == originTopleft)
             {
                 mOrigin = Origin::TopLeft;
             }
-            else if (lineGroupOrigin == "topright")
+            else if (lineGroupOrigin == originTopright)
             {
                 mOrigin = Origin::TopRight;
             }
-            else if (lineGroupOrigin == "bottomleft")
+            else if (lineGroupOrigin == originBottomleft)
             {
                 mOrigin = Origin::BottomLeft;
             }
-            else if (lineGroupOrigin == "bottomright")
+            else if (lineGroupOrigin == originBottomright)
             {
                 mOrigin = Origin::BottomRight;
             }
-            else if (lineGroupOrigin == "center")
+            else if (lineGroupOrigin == originCenter)
             {
                 mOrigin = Origin::Center;
             }
@@ -717,7 +788,7 @@ UBBackgroundRuling::Linegroup::Linegroup(const Rules &rules, QXmlStreamReader &r
                 setError();
             }
         }
-        else if (reader.name() == "line")
+        else if (reader.name() == elementLine)
         {
             const Line bgLine{rules, reader};
 
@@ -730,7 +801,7 @@ UBBackgroundRuling::Linegroup::Linegroup(const Rules &rules, QXmlStreamReader &r
                 mLines.append(bgLine);
             }
         }
-        else if (reader.name() == "border")
+        else if (reader.name() == elementBorder)
         {
             mBorder.emplace(rules, reader);
         }
@@ -741,38 +812,48 @@ UBBackgroundRuling::Linegroup::Linegroup(const Rules &rules, QXmlStreamReader &r
     }
 }
 
-void UBBackgroundRuling::Linegroup::toXml(QXmlStreamWriter &writer) const
+void UBBackgroundRuling::Linegroup::toXml(QXmlStreamWriter& writer) const
 {
-    writer.writeTextElement(namespaceURI, "angle", QString::number(mAngle));
+    writer.writeTextElement(namespaceURI, elementAngle, QString::number(mAngle));
 
     if (mSpacing != 0)
     {
-        writer.writeTextElement(namespaceURI, "spacing", QString::number(mSpacing));
+        writer.writeTextElement(namespaceURI, elementSpacing, QString::number(mSpacing));
     }
 
     QString origin;
 
     switch (mOrigin)
     {
-    case Origin::Center: origin = "center"; break;
-    case Origin::TopLeft: origin = "topleft"; break;
-    case Origin::TopRight: origin = "topright"; break;
-    case Origin::BottomLeft: origin = "bottomleft"; break;
-    case Origin::BottomRight: origin = "bottomright"; break;
+    case Origin::Center:
+        origin = originCenter;
+        break;
+    case Origin::TopLeft:
+        origin = originTopleft;
+        break;
+    case Origin::TopRight:
+        origin = originTopright;
+        break;
+    case Origin::BottomLeft:
+        origin = originBottomleft;
+        break;
+    case Origin::BottomRight:
+        origin = originBottomright;
+        break;
     }
 
-    writer.writeTextElement(namespaceURI, "origin", origin);
+    writer.writeTextElement(namespaceURI, elementOrigin, origin);
 
     for (const auto& line : mLines)
     {
-        writer.writeStartElement(namespaceURI, "line");
+        writer.writeStartElement(namespaceURI, elementLine);
         line.toXml(writer);
         writer.writeEndElement();
     }
 
     if (mBorder)
     {
-        writer.writeStartElement(namespaceURI, "border");
+        writer.writeStartElement(namespaceURI, elementBorder);
         mBorder.value().toXml(writer);
         writer.writeEndElement();
     }
@@ -803,7 +884,7 @@ std::optional<UBBackgroundRuling::Border> UBBackgroundRuling::Linegroup::border(
     return mBorder;
 }
 
-UBBackgroundRuling::Rules::Rules(QXmlStreamReader &reader)
+UBBackgroundRuling::Rules::Rules(QXmlStreamReader& reader)
     : Data{*this}
     , mDefaultColor{*this, {}, {}}
 {
@@ -816,30 +897,30 @@ UBBackgroundRuling::Rules::Rules(QXmlStreamReader &reader)
 
             QString text;
 
-            if (getStringValue(reader, "uuid", text))
+            if (getStringValue(reader, elementUuid, text))
             {
                 mUuid = QUuid(text);
             }
-            else if (name == "description")
+            else if (name == elementDescription)
             {
                 const auto attributes = reader.attributes();
-                const auto lang = attributes.value("xml:lang").toString();
+                const auto lang = attributes.value(attributeXmlLang).toString();
 
                 mDescriptions[lang.isEmpty() ? "en" : lang] = reader.readElementText();
             }
-            else if (name == "attributes")
+            else if (name == elementAttributes)
             {
                 const auto attributes = reader.attributes();
-                mCrossed = attributes.value("crossed") == "true";
-                mRuled = attributes.value("ruled") == "true";
-                mIntermediateLines = attributes.value("intermediateLines") == "true";
+                mCrossed = attributes.value(attributeCrossed) == valueTrue;
+                mRuled = attributes.value(attributeRuled) == valueTrue;
+                mIntermediateLines = attributes.value(attributeIntermediateLines) == valueTrue;
                 reader.skipCurrentElement();
             }
-            else if (name == "defaultColor")
+            else if (name == elementDefaultColor)
             {
                 mDefaultColor = LineColor{*this, reader};
             }
-            else if (name == "linegroup")
+            else if (name == elementLinegroup)
             {
                 const Linegroup bgLinegroup{*this, reader};
 
@@ -860,9 +941,9 @@ UBBackgroundRuling::Rules::Rules(QXmlStreamReader &reader)
     }
 }
 
-UBBackgroundRuling::Rules* UBBackgroundRuling::Rules::fromXml(QXmlStreamReader &reader)
+UBBackgroundRuling::Rules* UBBackgroundRuling::Rules::fromXml(QXmlStreamReader& reader)
 {
-    if (reader.namespaceUri() == namespaceURI && reader.name() == "background")
+    if (reader.namespaceUri() == namespaceURI && reader.name() == elementBackground)
     {
         return new Rules(reader);
     }
@@ -870,50 +951,51 @@ UBBackgroundRuling::Rules* UBBackgroundRuling::Rules::fromXml(QXmlStreamReader &
     return nullptr;
 }
 
-void UBBackgroundRuling::Rules::toXml(QXmlStreamWriter &writer) const
+void UBBackgroundRuling::Rules::toXml(QXmlStreamWriter& writer) const
 {
-    writer.writeNamespace(namespaceURI, "bg");
-    writer.writeStartElement(namespaceURI, "background");
-    writer.writeTextElement(namespaceURI, "uuid", mUuid.toString(QUuid::WithoutBraces));
+    writer.writeNamespace(namespaceURI, namespacePrefix);
+    writer.writeStartElement(namespaceURI, elementBackground);
+    writer.writeTextElement(namespaceURI, elementUuid, mUuid.toString(QUuid::WithoutBraces));
 
-    for (auto description = mDescriptions.constKeyValueBegin(); description != mDescriptions.constKeyValueEnd(); ++description)
+    for (auto description = mDescriptions.constKeyValueBegin(); description != mDescriptions.constKeyValueEnd();
+         ++description)
     {
-        writer.writeStartElement(namespaceURI, "description");
-        writer.writeAttribute("xml:lang", description->first);
+        writer.writeStartElement(namespaceURI, elementDescription);
+        writer.writeAttribute(attributeXmlLang, description->first);
         writer.writeCharacters(description->second);
         writer.writeEndElement();
     }
 
     if (mCrossed || mRuled)
     {
-        writer.writeEmptyElement(namespaceURI, "attributes");
+        writer.writeEmptyElement(namespaceURI, elementAttributes);
 
         if (mCrossed)
         {
-            writer.writeAttribute("crossed", "true");
+            writer.writeAttribute(attributeCrossed, valueTrue);
         }
 
         if (mRuled)
         {
-            writer.writeAttribute("ruled", "true");
+            writer.writeAttribute(attributeRuled, valueTrue);
         }
 
         if (mIntermediateLines)
         {
-            writer.writeAttribute("intermediateLines", "true");
+            writer.writeAttribute(attributeIntermediateLines, valueTrue);
         }
     }
 
     if (mDefaultColor.onDark().isValid() || mDefaultColor.onLight().isValid())
     {
-        writer.writeStartElement(namespaceURI, "defaultColor");
+        writer.writeStartElement(namespaceURI, elementDefaultColor);
         mDefaultColor.toXml(writer);
         writer.writeEndElement();
     }
 
     for (const auto& linegroup : mLinegroups)
     {
-        writer.writeStartElement(namespaceURI, "linegroup");
+        writer.writeStartElement(namespaceURI, elementLinegroup);
         linegroup.toXml(writer);
         writer.writeEndElement();
     }

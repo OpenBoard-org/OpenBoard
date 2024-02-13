@@ -47,6 +47,8 @@ HEADERS +=  \
     src/gui/UBBackgroundPalette.h \
     src/gui/UBBackgroundManager.h \
     src/gui/UBBackgroundRuling.h \
+    src/gui/UBFlowLayout.h \
+    src/gui/UBPreferredBackgroundWidget.h \
     src/gui/UBBoardThumbnailsView.h \
     src/gui/UBSnapIndicator.h
 SOURCES +=  \
@@ -98,6 +100,8 @@ SOURCES +=  \
     src/gui/UBBackgroundPalette.cpp \
     src/gui/UBBackgroundManager.cpp \
     src/gui/UBBackgroundRuling.cpp \
+    src/gui/UBFlowLayout.cpp \
+    src/gui/UBPreferredBackgroundWidget.cpp \
     src/gui/UBBoardThumbnailsView.cpp \
     src/gui/UBSnapIndicator.cpp
 

@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2015-2024 Département de l'Instruction Publique (DIP-SEM)
+ *
+ * This file is part of OpenBoard.
+ *
+ * OpenBoard is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3 of the License,
+ * with a specific linking exception for the OpenSSL project's
+ * "OpenSSL" library (or with modified versions of it that use the
+ * same license as the "OpenSSL" library).
+ *
+ * OpenBoard is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+
 #include "UBBackgroundManager.h"
 
 #include "core/UBSettings.h"
@@ -17,22 +40,64 @@ UBBackgroundManager::UBBackgroundManager(QObject *parent)
 void UBBackgroundManager::scan()
 {
     // scan application and user directories for background rules
-    QString appDir = UBPlatformUtils::applicationTemplateDirectory() + "/background";
-    QString usrDir = UBSettings::userDataDirectory() + "/template/background";
+    const QString appDir{UBPlatformUtils::applicationTemplateDirectory() + "/background"};
+    const QString usrDir{UBSettings::userDataDirectory() + "/template/background"};
 
-    scan(appDir);
-    scan(usrDir);
+    scan(appDir, false);
+    scan(usrDir, true);
 }
 
 void UBBackgroundManager::addBackground(UBBackgroundRuling &background)
 {
-    if (background.isValid() && !this->background(background.uuid()))
+    if (background.isValid())
     {
-        mBackgrounds.append(background);
+        if (!this->background(background.uuid()))
+        {
+            mBackgrounds.append(background);
+
+            // store in user template directory
+            const QString usrDir{UBSettings::userDataDirectory() + "/template/background/"};
+            QDir dir;
+            dir.mkpath(usrDir);
+
+            QFile file{usrDir + background.uuid().toString() + ".xml"};
+
+            if (!file.open(QFile::WriteOnly))
+            {
+                qWarning() << "Cannot open" << file;
+                return;
+            }
+
+            QXmlStreamWriter writer{&file};
+
+            writer.setAutoFormatting(true);
+            writer.setAutoFormattingIndent(2);
+            writer.writeStartDocument();
+            background.toXml(writer);
+            writer.writeEndDocument();
+
+            file.close();
+
+            emit backgroundListChanged();
+        }
     }
     else
     {
-        qWarning() << "Invalid or duplicate background ruling" << background.description("en");
+        qWarning() << "Invalid background ruling" << background.description();
+    }
+}
+
+void UBBackgroundManager::deleteBackground(const QUuid& uuid)
+{
+    const auto bg{background(uuid)};
+
+    if (bg->isValid() && bg->isUserProvided())
+    {
+        mBackgrounds.removeAll(*bg);
+        const QString usrDir{UBSettings::userDataDirectory() + "/template/background/"};
+        QFile::remove(usrDir + uuid.toString() + ".xml");
+
+        emit backgroundListChanged();
     }
 }
 
@@ -40,12 +105,12 @@ const QList<const UBBackgroundRuling*> UBBackgroundManager::backgrounds() const
 {
     QList<const UBBackgroundRuling*> backgroundList;
 
-    QStringList uuidList = UBSettings::settings()->value("Board/BackgroundRulingList").toStringList();
+    QStringList uuidList{UBSettings::settings()->value("Board/BackgroundRulingList").toStringList()};
 
     // first add rulings from list
     for (const auto& uuid : uuidList)
     {
-        const auto& ruling = background(uuid);
+        const auto ruling = background(uuid);
 
         if (ruling && ruling->isValid())
         {
@@ -66,10 +131,10 @@ const QList<const UBBackgroundRuling*> UBBackgroundManager::backgrounds() const
 
 QAction *UBBackgroundManager::backgroundAction(const UBBackgroundRuling &background, bool dark)
 {
-    QAction* action = new QAction{this};
+    auto action = new QAction{this};
     action->setIcon(createButtonIcon(background, dark));
-    QString lang = QLocale().name().left(2);
-    QString descr = background.description(lang);
+    const QString lang{QLocale().name().left(2)};
+    const QString descr{background.description(lang)};
     action->setToolTip(descr);
     action->setProperty("uuid", background.uuid());
     action->setCheckable(true);
@@ -78,8 +143,8 @@ QAction *UBBackgroundManager::backgroundAction(const UBBackgroundRuling &backgro
 
 void UBBackgroundManager::updateAction(QAction *action, bool dark) const
 {
-    const auto uuid = action->property("uuid").toUuid();
-    const auto bg = background(uuid);
+    const auto uuid{action->property("uuid").toUuid()};
+    const auto bg{background(uuid)};
 
     if (bg)
     {
@@ -115,87 +180,43 @@ const UBBackgroundRuling* UBBackgroundManager::guessBackground(bool crossed, boo
     return nullptr;
 }
 
-QPixmap UBBackgroundManager::createButtonPixmap(const UBBackgroundRuling &background, bool dark, bool on) const
+QPixmap UBBackgroundManager::createButtonPixmap(const UBBackgroundRuling& background, bool dark, bool on) const
 {
-    QString filename{"bgButtonTemplate"};
-
-    filename += dark ? "Dark" : "Light";
-    filename += on ? "On" : "Off";
-    filename += ".svg";
-
-    QFile templateFile(UBPlatformUtils::applicationTemplateDirectory() + "/background/" + filename);
-
-    if (!templateFile.open(QFile::ReadOnly))
-    {
-        qWarning() << "Cannot find template file" << templateFile;
-        return {};
-    }
-
-    QDomDocument doc;
-
-    if (!doc.setContent(&templateFile, true))
-    {
-        qWarning() << "Cannot load template file" << templateFile;
-        return {};
-    }
-
-    // find <g> element with id="placeholder"
-    auto plist = doc.documentElement().elementsByTagName("g");
-
-    QDomElement placeholder;
-
-    for (int i = 0; i < plist.size(); ++i)
-    {
-        QDomElement item = plist.at(i).toElement();
-
-        if (item.attribute("id") == "placeholder")
-        {
-            placeholder = item;
-            break;
-        }
-    }
-
-    // now render background to SVG
-    QByteArray bgSvg = renderToSvg(background, dark);
+    QByteArray bgSvg{renderToSvg(background, dark)};
     QDomDocument bgDoc;
 
     if (!bgDoc.setContent(bgSvg))
     {
-        qWarning() << "Cannot load rendered ruling" << templateFile;
+        qWarning() << "Cannot load rendered ruling" << background.description();
         return {};
     }
 
-    // find first <g> element
-    auto bgElement = bgDoc.documentElement().firstChildElement("g");
-
-    // replace element in original document
-    auto bg = doc.importNode(bgElement, true);
-    placeholder.parentNode().replaceChild(bg, placeholder);
-
-    QByteArray replaced = doc.toByteArray(2);
-
-    // render SVG to pixmap by using an QImageReader
-    QBuffer buffer{&replaced};
-    QImageReader reader(&buffer, "svg");
-    QPixmap pixmap = QPixmap::fromImageReader(&reader);
-
-    return pixmap;
+    return createButtonPixmap(bgDoc, dark, on);
 }
 
 QIcon UBBackgroundManager::createButtonIcon(const UBBackgroundRuling &background, bool dark) const
 {
+    QByteArray bgSvg{renderToSvg(background, dark)};
+    QDomDocument bgDoc;
+
+    if (!bgDoc.setContent(bgSvg))
+    {
+        qWarning() << "Cannot load rendered ruling" << background.description();
+        return {};
+    }
+
     QIcon icon;
 
-    QPixmap pix = createButtonPixmap(background, dark, false);
+    QPixmap pix{createButtonPixmap(bgDoc, dark, false)};
     icon.addPixmap(pix, QIcon::Normal, QIcon::Off);
 
-    pix = createButtonPixmap(background, dark, true);
+    pix = createButtonPixmap(bgDoc, dark, true);
     icon.addPixmap(pix, QIcon::Normal, QIcon::On);
 
     return icon;
 }
 
-void UBBackgroundManager::savePreferredBackgrounds(QList<QUuid>& uuidList) const
+void UBBackgroundManager::savePreferredBackgrounds(QList<QUuid>& uuidList)
 {
     QStringList uuids;
 
@@ -208,13 +229,13 @@ void UBBackgroundManager::savePreferredBackgrounds(QList<QUuid>& uuidList) const
     emit preferredBackgroundChanged();
 }
 
-void UBBackgroundManager::scan(const QString &dirname)
+void UBBackgroundManager::scan(const QString &dirname, bool userProvided)
 {
     const QDir dir{dirname};
 
     if (dir.exists())
     {
-        const auto list = dir.entryInfoList({"*.xml"}, QDir::Files, QDir::Name);
+        const auto list{dir.entryInfoList({"*.xml"}, QDir::Files, QDir::Name)};
 
         for (const auto& entry : list)
         {
@@ -226,11 +247,11 @@ void UBBackgroundManager::scan(const QString &dirname)
                 continue;
             }
 
-            QXmlStreamReader reader(&file);
+            QXmlStreamReader reader{&file};
 
             if (reader.readNextStartElement())
             {
-                bg.parseXml(reader);
+                bg.parseXml(reader, userProvided);
             }
 
             if (bg.isValid())
@@ -262,3 +283,59 @@ QByteArray UBBackgroundManager::renderToSvg(const UBBackgroundRuling &background
     return buffer.buffer();
 }
 
+QPixmap UBBackgroundManager::createButtonPixmap(const QDomDocument& bgDoc, bool dark, bool on) const
+{
+    QString filename{"bgButtonTemplate"};
+
+    filename += dark ? "Dark" : "Light";
+    filename += on ? "On" : "Off";
+    filename += ".svg";
+
+    QFile templateFile{":/images/backgroundPalette/" + filename};
+
+    if (!templateFile.open(QFile::ReadOnly))
+    {
+        qWarning() << "Cannot find template file" << templateFile;
+        return {};
+    }
+
+    QDomDocument doc;
+
+    if (!doc.setContent(&templateFile, true))
+    {
+        qWarning() << "Cannot load template file" << templateFile;
+        return {};
+    }
+
+    // find <g> element with id="placeholder"
+    auto plist{doc.documentElement().elementsByTagName("g")};
+
+    QDomElement placeholder;
+
+    for (int i = 0; i < plist.size(); ++i)
+    {
+        const auto item{plist.at(i).toElement()};
+
+        if (item.attribute("id") == "placeholder")
+        {
+            placeholder = item;
+            break;
+        }
+    }
+
+    // now process background SVG
+    // find first <g> element
+    const auto bgElement{bgDoc.documentElement().firstChildElement("g")};
+
+    // replace element in original document
+    const auto bg{doc.importNode(bgElement, true)};
+    placeholder.parentNode().replaceChild(bg, placeholder);
+
+    QByteArray replaced{doc.toByteArray(2)};
+
+    // render SVG to pixmap by using an QImageReader
+    QBuffer buffer{&replaced};
+    QImageReader reader{&buffer, "svg"};
+
+    return QPixmap::fromImageReader(&reader);
+}

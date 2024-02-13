@@ -1,19 +1,43 @@
+/*
+ * Copyright (C) 2015-2024 Département de l'Instruction Publique (DIP-SEM)
+ *
+ * This file is part of OpenBoard.
+ *
+ * OpenBoard is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3 of the License,
+ * with a specific linking exception for the OpenSSL project's
+ * "OpenSSL" library (or with modified versions of it that use the
+ * same license as the "OpenSSL" library).
+ *
+ * OpenBoard is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+
 #include "UBFlowLayout.h"
-#include "qwidget.h"
+
+#include <QWidget>
 
 // inspired by https://doc.qt.io/qt-5/qtwidgets-layouts-flowlayout-example.html
 
 UBFlowLayout::UBFlowLayout(QWidget* parent, int margin, int hSpacing, int vSpacing)
-    : QLayout(parent)
-    , m_hSpace(hSpacing)
-    , m_vSpace(vSpacing)
+    : QLayout{parent}
+    , mHSpace{hSpacing}
+    , mVSpace{vSpacing}
 {
     setContentsMargins(margin, margin, margin, margin);
 }
 
 UBFlowLayout::UBFlowLayout(int margin, int hSpacing, int vSpacing)
-    : m_hSpace(hSpacing)
-    , m_vSpace(vSpacing)
+    : mHSpace{hSpacing}
+    , mVSpace{vSpacing}
 {
     setContentsMargins(margin, margin, margin, margin);
 }
@@ -21,25 +45,28 @@ UBFlowLayout::UBFlowLayout(int margin, int hSpacing, int vSpacing)
 UBFlowLayout::~UBFlowLayout()
 {
     QLayoutItem* item;
+
     while ((item = UBFlowLayout::takeAt(0)))
+    {
         delete item;
+    }
 }
 
 void UBFlowLayout::addItem(QLayoutItem* item)
 {
-    itemList.append(item);
+    mItemList.append(item);
 }
 
 void UBFlowLayout::insertItem(int index, QLayoutItem* item)
 {
-    itemList.insert(index, item);
+    mItemList.insert(index, item);
 }
 
 int UBFlowLayout::horizontalSpacing() const
 {
-    if (m_hSpace >= 0)
+    if (mHSpace >= 0)
     {
-        return m_hSpace;
+        return mHSpace;
     }
     else
     {
@@ -49,9 +76,9 @@ int UBFlowLayout::horizontalSpacing() const
 
 int UBFlowLayout::verticalSpacing() const
 {
-    if (m_vSpace >= 0)
+    if (mVSpace >= 0)
     {
-        return m_vSpace;
+        return mVSpace;
     }
     else
     {
@@ -61,18 +88,20 @@ int UBFlowLayout::verticalSpacing() const
 
 int UBFlowLayout::count() const
 {
-    return itemList.size();
+    return mItemList.size();
 }
 
 QLayoutItem* UBFlowLayout::itemAt(int index) const
 {
-    return itemList.value(index);
+    return mItemList.value(index);
 }
 
 QLayoutItem* UBFlowLayout::takeAt(int index)
 {
-    if (index >= 0 && index < itemList.size())
-        return itemList.takeAt(index);
+    if (index >= 0 && index < mItemList.size())
+    {
+        return mItemList.takeAt(index);
+    }
 
     return nullptr;
 }
@@ -84,14 +113,14 @@ QLayoutItem* UBFlowLayout::replaceAt(int index, QLayoutItem* item)
         return nullptr;
     }
 
-    QLayoutItem* b = itemList.value(index);
+    auto b = mItemList.value(index);
 
     if (!b)
     {
         return nullptr;
     }
 
-    itemList.replace(index, item);
+    mItemList.replace(index, item);
     invalidate();
     return b;
 }
@@ -108,7 +137,7 @@ bool UBFlowLayout::hasHeightForWidth() const
 
 int UBFlowLayout::heightForWidth(int width) const
 {
-    int height = doLayout(QRect(0, 0, width, 0), true);
+    auto height = doLayout({0, 0, width, 0}, true);
     return height;
 }
 
@@ -127,11 +156,13 @@ QSize UBFlowLayout::minimumSize() const
 {
     QSize size;
 
-    for (const QLayoutItem* item : qAsConst(itemList))
+    for (const auto item : qAsConst(mItemList))
+    {
         size = size.expandedTo(item->minimumSize());
+    }
 
-    const QMargins margins = contentsMargins();
-    size += QSize(margins.left() + margins.right(), margins.top() + margins.bottom());
+    const auto margins = contentsMargins();
+    size += QSize{margins.left() + margins.right(), margins.top() + margins.bottom()};
     return size;
 }
 
@@ -139,21 +170,30 @@ int UBFlowLayout::doLayout(const QRect& rect, bool testOnly) const
 {
     int left, top, right, bottom;
     getContentsMargins(&left, &top, &right, &bottom);
-    QRect effectiveRect = rect.adjusted(+left, +top, -right, -bottom);
-    int x = effectiveRect.x();
-    int y = effectiveRect.y();
+    const auto effectiveRect = rect.adjusted(+left, +top, -right, -bottom);
+    auto x = effectiveRect.x();
+    auto y = effectiveRect.y();
     int lineHeight = 0;
 
-    for (QLayoutItem* item : qAsConst(itemList))
+    for (auto item : qAsConst(mItemList))
     {
-        const QWidget* wid = item->widget();
-        int spaceX = horizontalSpacing();
+        const auto wid = item->widget();
+        auto spaceX = horizontalSpacing();
+
         if (spaceX == -1)
+        {
             spaceX = wid->style()->layoutSpacing(QSizePolicy::PushButton, QSizePolicy::PushButton, Qt::Horizontal);
-        int spaceY = verticalSpacing();
+        }
+
+        auto spaceY = verticalSpacing();
+
         if (spaceY == -1)
+        {
             spaceY = wid->style()->layoutSpacing(QSizePolicy::PushButton, QSizePolicy::PushButton, Qt::Vertical);
-        int nextX = x + item->sizeHint().width() + spaceX;
+        }
+
+        auto nextX = x + item->sizeHint().width() + spaceX;
+
         if (nextX - spaceX > effectiveRect.right() && lineHeight > 0)
         {
             x = effectiveRect.x();
@@ -163,17 +203,20 @@ int UBFlowLayout::doLayout(const QRect& rect, bool testOnly) const
         }
 
         if (!testOnly)
+        {
             item->setGeometry(QRect(QPoint(x, y), item->sizeHint()));
+        }
 
         x = nextX;
         lineHeight = qMax(lineHeight, item->sizeHint().height());
     }
+
     return y + lineHeight - rect.y() + bottom;
 }
 
 int UBFlowLayout::smartSpacing(QStyle::PixelMetric pm) const
 {
-    QObject* parent = this->parent();
+    auto parent = this->parent();
 
     if (!parent)
     {
@@ -181,7 +224,7 @@ int UBFlowLayout::smartSpacing(QStyle::PixelMetric pm) const
     }
     else if (parent->isWidgetType())
     {
-        QWidget* pw = static_cast<QWidget*>(parent);
+        const auto pw = static_cast<QWidget*>(parent);
         return pw->style()->pixelMetric(pm, nullptr, pw);
     }
     else
