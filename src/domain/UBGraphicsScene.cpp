@@ -138,6 +138,8 @@ qreal UBZLayerController::generateZLevel(QGraphicsItem *item)
         result =  generateZLevel(type);
     }
 
+    mAlreadyUsedZLevels.insert(result);
+
     return result;
 }
 
@@ -291,6 +293,8 @@ void UBZLayerController::shiftStoredZValue(QGraphicsItem *item, qreal zValue)
 {
     itemLayerType::Enum type = typeForData(item);
 
+    mAlreadyUsedZLevels.insert(zValue);
+
     if (validLayerType(type)) {
         ItemLayerTypeData typeData = scopeMap.value(type);
         if (typeData.curValue < zValue) {
@@ -302,18 +306,9 @@ void UBZLayerController::shiftStoredZValue(QGraphicsItem *item, qreal zValue)
 /**
  * @brief Returns true if the zLevel is not used by any item on the scene, or false if so.
  */
-bool UBZLayerController::zLevelAvailable(QGraphicsItem* item)
+bool UBZLayerController::zLevelAvailable(const qreal zLevel) const
 {
-    foreach(QGraphicsItem* it, mScene->items())
-    {
-        if (item != it)
-        {
-            if (it->zValue() == item->zValue())
-                return false;
-        }
-    }
-
-    return true;
+    return mAlreadyUsedZLevels.contains(zLevel);
 }
 
 UBGraphicsScene::UBGraphicsScene(std::shared_ptr<UBDocumentProxy> document, bool enableUndoRedoStack)
@@ -1954,14 +1949,15 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
     // the default z value is already set. This is the case when a svg file is read
     if(item->zValue() == DEFAULT_Z_VALUE
             || item->zValue() == UBZLayerController::errorNum()
-            || !mZLayerController->zLevelAvailable(item))
+            || !mZLayerController->zLevelAvailable(item->zValue()))
     {
         qreal zvalue = mZLayerController->generateZLevel(item);
         UBGraphicsItem::assignZValue(item, zvalue);
     }
-
     else
+    {
         notifyZChanged(item, item->zValue());
+    }
 
     if (!mTools.contains(item))
       ++mItemCount;

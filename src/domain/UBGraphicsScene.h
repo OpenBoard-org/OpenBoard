@@ -100,9 +100,10 @@ public:
     void setLayerType(QGraphicsItem *pItem, itemLayerType::Enum pNewType);
     void shiftStoredZValue(QGraphicsItem *item, qreal zValue);
 
-    bool zLevelAvailable(QGraphicsItem* item);
+    bool zLevelAvailable(const qreal zvalue) const;
 
 private:
+    QSet<qreal> mAlreadyUsedZLevels;
     ScopeMap scopeMap;
     static qreal errorNumber;
     QGraphicsScene *mScene;
