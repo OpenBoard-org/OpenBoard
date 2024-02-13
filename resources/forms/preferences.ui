@@ -681,7 +681,7 @@
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
-         <widget class="QWidget" name="scrollAreaWidgetContents_2">
+         <widget class="UBPreferredBackgroundWidget" name="prefBgWidget">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -3305,6 +3305,12 @@ hr { height: 1px; border-width: 0; }
    <class>UBScreenListLineEdit</class>
    <extends>QLineEdit</extends>
    <header>core/UBPreferencesController.h</header>
+  </customwidget>
+  <customwidget>
+   <class>UBPreferredBackgroundWidget</class>
+   <extends>QWidget</extends>
+   <header>gui/UBPreferredBackgroundWidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>

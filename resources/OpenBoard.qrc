@@ -386,5 +386,9 @@
         <file>images/moveTool.svg</file>
         <file>images/lightMode.svg</file>
         <file>images/darkMode.svg</file>
+        <file>images/backgroundPalette/bgButtonTemplateDarkOff.svg</file>
+        <file>images/backgroundPalette/bgButtonTemplateDarkOn.svg</file>
+        <file>images/backgroundPalette/bgButtonTemplateLightOff.svg</file>
+        <file>images/backgroundPalette/bgButtonTemplateLightOn.svg</file>
     </qresource>
 </RCC>

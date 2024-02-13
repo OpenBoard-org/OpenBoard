@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2015-2024 Département de l'Instruction Publique (DIP-SEM)
+ *
+ * This file is part of OpenBoard.
+ *
+ * OpenBoard is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3 of the License,
+ * with a specific linking exception for the OpenSSL project's
+ * "OpenSSL" library (or with modified versions of it that use the
+ * same license as the "OpenSSL" library).
+ *
+ * OpenBoard is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+
 #pragma once
 
 #include <QColor>
@@ -17,22 +40,27 @@ class UBBackgroundRuling
 public:
     UBBackgroundRuling();
 
-    bool parseXml(QXmlStreamReader& reader);
+    bool operator==(const UBBackgroundRuling& other) const;
+
+    bool parseXml(QXmlStreamReader& reader, bool userProvided = true);
     bool toXml(QXmlStreamWriter& writer) const;
 
     bool isValid() const;
     QUuid uuid() const;
-    QString description(const QString& languagecode) const;
+    QString description(const QString& languagecode = "en") const;
     bool isCrossed() const;
     bool isRuled() const;
     bool hasIntermediateLines() const;
+    bool isUserProvided() const;
 
-    void draw(QPainter *painter, const QRectF &rect, double gridSize, const QRectF &nominalScene, bool onDark) const;
+    void draw(QPainter* painter, const QRectF& rect, double gridSize, const QRectF& nominalScene, bool onDark) const;
 
 private:
-    class Line;
-    void setLinePainter(QPainter* painter, const Line& line, bool onDark, QColor defaultOnDark, QColor defaultOnLight) const;
-    void drawBorderLines(QPainter* painter, const QList<Line>& borderLines, QLineF line, Qt::Edge edge, double gridSize, bool onDark, QColor defaultOnDark, QColor defaultOnLight) const;
+    class Line;  // forward
+    void setLinePainter(QPainter* painter, const Line& line, bool onDark, QColor defaultOnDark,
+                        QColor defaultOnLight) const;
+    void drawBorderLines(QPainter* painter, const QList<Line>& borderLines, QLineF line, Qt::Edge edge, double gridSize,
+                         bool onDark, QColor defaultOnDark, QColor defaultOnLight) const;
 
 private:
     // data classes
@@ -41,7 +69,7 @@ private:
     class Data
     {
     public:
-        explicit Data(Rules &rules);
+        explicit Data(Rules& rules);
 
         bool hasError() const;
         virtual void toXml(QXmlStreamWriter& writer) const = 0;
@@ -58,8 +86,8 @@ private:
     class LineColor : public Data
     {
     public:
-        LineColor(const Rules& rules, QXmlStreamReader &reader);
-        LineColor(const Rules& rules, const QColor &colorOnDark, const QColor &colorOnLight);
+        LineColor(const Rules& rules, QXmlStreamReader& reader);
+        LineColor(const Rules& rules, const QColor& colorOnDark, const QColor& colorOnLight);
 
         virtual void toXml(QXmlStreamWriter& writer) const override;
 
@@ -138,7 +166,7 @@ private:
     class Rules : public Data
     {
     public:
-        explicit Rules(QXmlStreamReader &reader);
+        explicit Rules(QXmlStreamReader& reader);
 
         static Rules* fromXml(QXmlStreamReader& reader);
 
@@ -164,5 +192,5 @@ private:
 
 private:
     std::shared_ptr<Rules> mRules{nullptr};
+    bool mUserProvided{false};
 };
-

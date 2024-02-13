@@ -49,7 +49,6 @@
 #include "ui_preferences.h"
 
 #include "core/memcheck.h"
-#include "gui/UBPreferredBackgroundWidget.h"
 
 qreal UBPreferencesController::sSliderRatio = 10.0;
 qreal UBPreferencesController::sMinPenWidth = 0.5;
@@ -89,8 +88,6 @@ UBPreferencesController::UBPreferencesController(QWidget *parent)
 
     connect(UBApplication::displayManager, &UBDisplayManager::availableScreenCountChanged, this, &UBPreferencesController::adjustScreensPreferences);
     wire();
-    auto* prefBgWidget = new UBPreferredBackgroundWidget();
-    mPreferencesUI->bgScrollArea->setWidget(prefBgWidget);
 }
 
 
