@@ -308,7 +308,7 @@ void UBZLayerController::shiftStoredZValue(QGraphicsItem *item, qreal zValue)
  */
 bool UBZLayerController::zLevelAvailable(const qreal zLevel) const
 {
-    return mAlreadyUsedZLevels.contains(zLevel);
+    return !mAlreadyUsedZLevels.contains(zLevel);
 }
 
 UBGraphicsScene::UBGraphicsScene(std::shared_ptr<UBDocumentProxy> document, bool enableUndoRedoStack)
