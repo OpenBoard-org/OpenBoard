@@ -1783,9 +1783,9 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
     return groupItem;
 }
 
-void UBGraphicsScene::addGroup(UBGraphicsGroupContainerItem *groupItem)
+void UBGraphicsScene::addGroup(UBGraphicsGroupContainerItem *groupItem, const bool ignoreZLevel)
 {
-    addItem(groupItem);
+    addItem(groupItem, ignoreZLevel);
 
     groupItem->setVisible(true);
     groupItem->setFocus();
@@ -1947,21 +1947,23 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString, const Q
     return textItem;
 }
 
-void UBGraphicsScene::addItem(QGraphicsItem* item)
+void UBGraphicsScene::addItem(QGraphicsItem* item, const bool ignoreZLevel)
 {
     UBCoreGraphicsScene::addItem(item);
 
-    // the default z value is already set. This is the case when a svg file is read
-    if(item->zValue() == DEFAULT_Z_VALUE
-            || item->zValue() == UBZLayerController::errorNum()
-            || !mZLayerController->zLevelAvailable(item))
+    if (!ignoreZLevel)
     {
-        qreal zvalue = mZLayerController->generateZLevel(item);
-        UBGraphicsItem::assignZValue(item, zvalue);
+        // the default z value is already set. This is the case when a svg file is read
+        if(item->zValue() == DEFAULT_Z_VALUE
+                || item->zValue() == UBZLayerController::errorNum()
+                || !mZLayerController->zLevelAvailable(item))
+        {
+            qreal zvalue = mZLayerController->generateZLevel(item);
+            UBGraphicsItem::assignZValue(item, zvalue);
+        }
+        else
+            notifyZChanged(item, item->zValue());
     }
-
-    else
-        notifyZChanged(item, item->zValue());
 
     if (!mTools.contains(item))
       ++mItemCount;
