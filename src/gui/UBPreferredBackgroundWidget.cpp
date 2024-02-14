@@ -309,7 +309,7 @@ UBPreferredBackgroundWidget::BackgroundWidget::BackgroundWidget(const QPixmap& p
 
     auto layout = new QVBoxLayout{this};
     layout->setSpacing(0);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(icon);
     layout->addWidget(label);
     setLayout(layout);

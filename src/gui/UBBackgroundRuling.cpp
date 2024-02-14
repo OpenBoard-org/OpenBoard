@@ -72,7 +72,7 @@ static constexpr char const* valueTrue{"true"};
 // helper functions
 static bool getStringValue(QXmlStreamReader& reader, const QString& name, QString& value)
 {
-    if (reader.isStartElement() && reader.namespaceUri() == namespaceURI && reader.name() == name)
+    if (reader.isStartElement() && reader.namespaceUri().toString() == namespaceURI && reader.name() == name)
     {
         const auto text = reader.readElementText();
 
@@ -585,7 +585,7 @@ UBBackgroundRuling::LineColor::LineColor(const Rules& rules, QXmlStreamReader& r
     , mOnDark{rules.defaultColor().onDark()}
     , mOnLight{rules.defaultColor().onLight()}
 {
-    while (reader.readNextStartElement() && reader.namespaceUri() == namespaceURI)
+    while (reader.readNextStartElement() && reader.namespaceUri().toString() == namespaceURI)
     {
         if (getColorValue(reader, elementOnDark, mOnDark))
         {
@@ -635,7 +635,7 @@ UBBackgroundRuling::Line::Line(const Rules& rules, QXmlStreamReader& reader)
     : Data{rules}
     , mColor{rules.defaultColor()}
 {
-    while (reader.readNextStartElement() && reader.namespaceUri() == namespaceURI)
+    while (reader.readNextStartElement() && reader.namespaceUri().toString() == namespaceURI)
     {
         if (getDecimalValue(reader, elementOffset, mOffset))
         {
@@ -643,7 +643,7 @@ UBBackgroundRuling::Line::Line(const Rules& rules, QXmlStreamReader& reader)
         else if (getDecimalValue(reader, elementWidth, mWidth))
         {
         }
-        else if (reader.name() == elementColor)
+        else if (reader.name().toString() == elementColor)
         {
             mColor = LineColor{rules, reader};
         }
@@ -685,7 +685,7 @@ const UBBackgroundRuling::LineColor& UBBackgroundRuling::Line::color() const
 UBBackgroundRuling::Border::Border(const Rules& rules, QXmlStreamReader& reader)
     : Data{rules}
 {
-    while (reader.readNextStartElement() && reader.namespaceUri() == namespaceURI)
+    while (reader.readNextStartElement() && reader.namespaceUri().toString() == namespaceURI)
     {
         double value;
 
@@ -697,7 +697,7 @@ UBBackgroundRuling::Border::Border(const Rules& rules, QXmlStreamReader& reader)
         {
             mRight.emplace(value);
         }
-        else if (reader.name() == elementLine)
+        else if (reader.name().toString() == elementLine)
         {
             const Line bgLine{rules, reader};
 
@@ -753,7 +753,7 @@ UBBackgroundRuling::Linegroup::Linegroup(const Rules& rules, QXmlStreamReader& r
 {
     QString lineGroupOrigin;
 
-    while (reader.readNextStartElement() && reader.namespaceUri() == namespaceURI)
+    while (reader.readNextStartElement() && reader.namespaceUri().toString() == namespaceURI)
     {
         if (getDecimalValue(reader, elementAngle, mAngle))
         {
@@ -788,7 +788,7 @@ UBBackgroundRuling::Linegroup::Linegroup(const Rules& rules, QXmlStreamReader& r
                 setError();
             }
         }
-        else if (reader.name() == elementLine)
+        else if (reader.name().toString() == elementLine)
         {
             const Line bgLine{rules, reader};
 
@@ -801,7 +801,7 @@ UBBackgroundRuling::Linegroup::Linegroup(const Rules& rules, QXmlStreamReader& r
                 mLines.append(bgLine);
             }
         }
-        else if (reader.name() == elementBorder)
+        else if (reader.name().toString() == elementBorder)
         {
             mBorder.emplace(rules, reader);
         }
@@ -891,7 +891,7 @@ UBBackgroundRuling::Rules::Rules(QXmlStreamReader& reader)
     // current position of reader should be at the <background> element
     while (!reader.isEndElement())
     {
-        while (reader.readNextStartElement() && reader.namespaceUri() == namespaceURI)
+        while (reader.readNextStartElement() && reader.namespaceUri().toString() == namespaceURI)
         {
             const auto name = reader.name();
 
@@ -901,26 +901,26 @@ UBBackgroundRuling::Rules::Rules(QXmlStreamReader& reader)
             {
                 mUuid = QUuid(text);
             }
-            else if (name == elementDescription)
+            else if (name.toString() == elementDescription)
             {
                 const auto attributes = reader.attributes();
                 const auto lang = attributes.value(attributeXmlLang).toString();
 
                 mDescriptions[lang.isEmpty() ? "en" : lang] = reader.readElementText();
             }
-            else if (name == elementAttributes)
+            else if (name.toString() == elementAttributes)
             {
                 const auto attributes = reader.attributes();
-                mCrossed = attributes.value(attributeCrossed) == valueTrue;
-                mRuled = attributes.value(attributeRuled) == valueTrue;
-                mIntermediateLines = attributes.value(attributeIntermediateLines) == valueTrue;
+                mCrossed = attributes.value(attributeCrossed).toString() == valueTrue;
+                mRuled = attributes.value(attributeRuled).toString() == valueTrue;
+                mIntermediateLines = attributes.value(attributeIntermediateLines).toString() == valueTrue;
                 reader.skipCurrentElement();
             }
-            else if (name == elementDefaultColor)
+            else if (name.toString() == elementDefaultColor)
             {
                 mDefaultColor = LineColor{*this, reader};
             }
-            else if (name == elementLinegroup)
+            else if (name.toString() == elementLinegroup)
             {
                 const Linegroup bgLinegroup{*this, reader};
 
@@ -943,7 +943,7 @@ UBBackgroundRuling::Rules::Rules(QXmlStreamReader& reader)
 
 UBBackgroundRuling::Rules* UBBackgroundRuling::Rules::fromXml(QXmlStreamReader& reader)
 {
-    if (reader.namespaceUri() == namespaceURI && reader.name() == elementBackground)
+    if (reader.namespaceUri().toString() == namespaceURI && reader.name().toString() == elementBackground)
     {
         return new Rules(reader);
     }
