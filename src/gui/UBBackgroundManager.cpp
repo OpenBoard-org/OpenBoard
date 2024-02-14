@@ -64,7 +64,7 @@ void UBBackgroundManager::addBackground(UBBackgroundRuling &background)
 
             if (!file.open(QFile::WriteOnly))
             {
-                qWarning() << "Cannot open" << file;
+                qWarning() << "Cannot open" << file.fileName();
                 return;
             }
 
@@ -110,8 +110,11 @@ const QList<const UBBackgroundRuling*> UBBackgroundManager::backgrounds() const
     // first add rulings from list
     for (const auto& uuid : uuidList)
     {
+#if(QT_VERSION_MAJOR ==  6)
+        const auto ruling = background(QUuid(QAnyStringView(uuid)));
+#else
         const auto ruling = background(uuid);
-
+#endif
         if (ruling && ruling->isValid())
         {
             backgroundList << ruling;
@@ -260,7 +263,7 @@ void UBBackgroundManager::scan(const QString &dirname, bool userProvided)
             }
             else
             {
-                qWarning() << "Error reading background definitions from" << file;
+                qWarning() << "Error reading background definitions from" << file.fileName();
             }
         }
     }
@@ -295,7 +298,7 @@ QPixmap UBBackgroundManager::createButtonPixmap(const QDomDocument& bgDoc, bool 
 
     if (!templateFile.open(QFile::ReadOnly))
     {
-        qWarning() << "Cannot find template file" << templateFile;
+        qWarning() << "Cannot find template file" << templateFile.fileName();
         return {};
     }
 
@@ -303,7 +306,7 @@ QPixmap UBBackgroundManager::createButtonPixmap(const QDomDocument& bgDoc, bool 
 
     if (!doc.setContent(&templateFile, true))
     {
-        qWarning() << "Cannot load template file" << templateFile;
+        qWarning() << "Cannot load template file" << templateFile.fileName();
         return {};
     }
 

@@ -815,7 +815,7 @@ bool UBSettings::isDarkBackground()
 
 QUuid UBSettings::pageBackgroundUuid()
 {
-    QUuid uuid = value("Board/PageBackground", 0).toString();
+    QUuid uuid = value("Board/PageBackground", 0).toUuid();
     return uuid;
 }
 

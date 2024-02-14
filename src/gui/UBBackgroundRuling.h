@@ -30,6 +30,7 @@
 #include <QXmlStreamWriter>
 
 #include <memory>
+#include <optional>
 
 // forward
 class QPainter;
