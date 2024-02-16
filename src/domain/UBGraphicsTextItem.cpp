@@ -168,7 +168,9 @@ bool UBGraphicsTextItem::event(QEvent *ev)
             format.setFont(ft);
             curCursor.mergeCharFormat(format);
             setTextCursor(curCursor);
+
             contentsChanged();
+            ev->accept();
             return true;
         }
     }
