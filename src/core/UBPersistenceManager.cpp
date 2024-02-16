@@ -83,6 +83,7 @@ UBPersistenceManager * UBPersistenceManager::sSingleton = 0;
 UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     : QObject(pParent)
     , mHasPurgedDocuments(false)
+    , mIsWorkerFinished(false)
     , mReplaceDialogReturnedReplaceAll(false)
     , mReplaceDialogReturnedCancel(false)
 {

@@ -1947,7 +1947,7 @@ void UBBoardController::lastWindowClosed()
         }
         else
         {
-            persistCurrentScene(false, true);
+            persistCurrentScene();
         }
 
         UBPersistenceManager::persistenceManager()->purgeEmptyDocuments();
