@@ -655,6 +655,7 @@ void UBDesktopAnnotationController::selectorActionPressed()
 
 void UBDesktopAnnotationController::selectorActionReleased()
 {
+    mDesktopPalette->minimizeMe(eMinimizedLocation_None);
     UBApplication::mainWindow->actionSelector->setChecked(true);
     switchCursor(UBStylusTool::Selector);
 }
@@ -701,6 +702,7 @@ void UBDesktopAnnotationController::switchCursor(const int tool)
 {
     mTransparentDrawingScene->setToolCursor(tool);
     mTransparentDrawingView->setToolCursor(tool);
+    UBApplication::mainWindow->actionSelector->setChecked(false);
 }
 
 /**
@@ -747,6 +749,7 @@ void UBDesktopAnnotationController::onDesktopPaletteMaximized()
         connect(pPointerButton, SIGNAL(pressed()), this, SLOT(pointerActionPressed()));
         connect(pPointerButton, SIGNAL(released()), this, SLOT(pointerActionReleased()));
     }
+    UBApplication::mainWindow->actionSelector->setChecked(false);
 }
 
 /**
