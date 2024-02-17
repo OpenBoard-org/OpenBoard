@@ -33,12 +33,8 @@
 
 #include "frameworks/UBPlatformUtils.h"
 
-#include "core/UBSettings.h"
-#include "core/UBSetting.h"
 #include "core/UBApplication.h"
 #include "core/UBApplicationController.h"
-
-#include "board/UBDrawingController.h"
 
 #include "gui/UBMainWindow.h"
 

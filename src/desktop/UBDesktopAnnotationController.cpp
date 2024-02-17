@@ -533,7 +533,6 @@ void UBDesktopAnnotationController::penActionReleased()
         }
         mPendingPenButtonPressed = false;
     }
-    UBApplication::mainWindow->actionPen->setChecked(true);
 
     switchCursor(UBStylusTool::Pen);
 }
@@ -587,7 +586,6 @@ void UBDesktopAnnotationController::eraserActionReleased()
         }
         mPendingEraserButtonPressed = false;
     }
-    UBApplication::mainWindow->actionEraser->setChecked(true);
 
     switchCursor(UBStylusTool::Eraser);
 }
@@ -643,7 +641,6 @@ void UBDesktopAnnotationController::markerActionReleased()
         }
         mPendingMarkerButtonPressed = false;
     }
-    UBApplication::mainWindow->actionMarker->setChecked(true);
 
     switchCursor(UBStylusTool::Marker);
 }
@@ -656,7 +653,6 @@ void UBDesktopAnnotationController::selectorActionPressed()
 void UBDesktopAnnotationController::selectorActionReleased()
 {
     mDesktopPalette->minimizeMe(eMinimizedLocation_None);
-    UBApplication::mainWindow->actionSelector->setChecked(true);
     switchCursor(UBStylusTool::Selector);
 }
 
@@ -668,7 +664,6 @@ void UBDesktopAnnotationController::pointerActionPressed()
 
 void UBDesktopAnnotationController::pointerActionReleased()
 {
-    UBApplication::mainWindow->actionPointer->setChecked(true);
     switchCursor(UBStylusTool::Pointer);
 }
 
@@ -702,7 +697,6 @@ void UBDesktopAnnotationController::switchCursor(const int tool)
 {
     mTransparentDrawingScene->setToolCursor(tool);
     mTransparentDrawingView->setToolCursor(tool);
-    UBApplication::mainWindow->actionSelector->setChecked(false);
 }
 
 /**
@@ -749,7 +743,6 @@ void UBDesktopAnnotationController::onDesktopPaletteMaximized()
         connect(pPointerButton, SIGNAL(pressed()), this, SLOT(pointerActionPressed()));
         connect(pPointerButton, SIGNAL(released()), this, SLOT(pointerActionReleased()));
     }
-    UBApplication::mainWindow->actionSelector->setChecked(false);
 }
 
 /**
