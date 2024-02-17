@@ -219,6 +219,7 @@ void UBPreferencesController::wire()
     mPreferencesUI->crossColorDarkBackgroundFrame->setPalette(darkBackgroundPalette);
     mPreferencesUI->crossColorDarkBackgroundLabel->setPalette(darkBackgroundPalette);
 
+
     QList<QColor> gridLightBackgroundColors = settings->boardGridLightBackgroundColors->colors();
     QColor selectedCrossColorLightBackground(settings->boardCrossColorLightBackground->get().toString());
 

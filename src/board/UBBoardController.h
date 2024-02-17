@@ -256,6 +256,9 @@ class UBBoardController : public UBDocumentContainer
 
         void saveData(SaveFlags fls = sf_none);
 
+        int determineBackgroundGridSize() const;
+
+
         //void regenerateThumbnails();
 
     signals:
@@ -291,7 +294,6 @@ class UBBoardController : public UBDocumentContainer
         void appMainModeChanged(UBApplicationController::MainMode);
 
     private:
-        void initBackgroundGridSize();
         void updatePageSizeState();
         void saveViewState();
         int autosaveTimeoutFromSettings();

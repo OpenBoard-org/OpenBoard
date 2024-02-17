@@ -1028,7 +1028,7 @@ std::shared_ptr<UBGraphicsScene> UBPersistenceManager::createDocumentSceneAt(std
     newScene->setBackground(UBSettings::settings()->isDarkBackground(),
             UBSettings::settings()->UBSettings::pageBackground());
 
-    newScene->setBackgroundGridSize(UBSettings::settings()->crossSize);
+    newScene->setBackgroundGridSize(UBSettings::settings()->crossSize->get().toInt());
 
     proxy->incPageCount();
 

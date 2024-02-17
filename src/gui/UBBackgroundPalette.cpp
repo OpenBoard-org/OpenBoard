@@ -157,14 +157,15 @@ void UBBackgroundPalette::showEvent(QShowEvent* event)
 
 void UBBackgroundPalette::sliderValueChanged(int value)
 {
+    UBSettings::settings()->crossSize->setInt(value);
     UBApplication::boardController->activeScene()->setBackgroundGridSize(value);
-    UBSettings::settings()->crossSize = value; // since this function is called (indirectly, by refresh) when we switch scenes, the settings will always have the current scene's cross size.
 }
 
 void UBBackgroundPalette::defaultBackgroundGridSize()
 {
-    mSlider->setValue(UBSettings::settings()->defaultCrossSize);
-    sliderValueChanged(UBSettings::settings()->defaultCrossSize);
+    int crossSize = UBApplication::boardController->determineBackgroundGridSize();
+    mSlider->setValue(crossSize);
+    sliderValueChanged(crossSize);
 }
 
 void UBBackgroundPalette::toggleIntermediateLines(bool checked)
