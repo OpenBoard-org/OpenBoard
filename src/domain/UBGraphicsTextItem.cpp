@@ -139,44 +139,6 @@ QFont UBGraphicsTextItem::createDefaultFont()
     return font;
 }
 
-bool UBGraphicsTextItem::event(QEvent *ev)
-{
-    if(ev->type() == QEvent::ShortcutOverride && isSelected())
-    {
-        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(ev);
-        QKeySequence::StandardKey shortcuts[] = {QKeySequence::StandardKey::Bold,
-                                                 QKeySequence::StandardKey::Italic,
-                                                 QKeySequence::StandardKey::Underline};
-        QKeySequence::StandardKey key = QKeySequence::StandardKey::UnknownKey;
-        for(int i=0; i<3; i++)
-            if(keyEvent->matches(shortcuts[i]))
-            {
-                key = shortcuts[i];
-                break;
-            }
-        if(key != QKeySequence::StandardKey::UnknownKey)
-        {
-            QTextCursor curCursor = textCursor();
-            QTextCharFormat format;
-            QFont ft(curCursor.charFormat().font());
-            if(key == QKeySequence::StandardKey::Bold)
-                ft.setBold(!ft.bold());
-            else if(key == QKeySequence::StandardKey::Italic)
-                ft.setItalic(!ft.italic());
-            else
-                ft.setUnderline(!ft.underline());
-            format.setFont(ft);
-            curCursor.mergeCharFormat(format);
-            setTextCursor(curCursor);
-
-            contentsChanged();
-            ev->accept();
-            return true;
-        }
-    }
-    return QGraphicsTextItem::event(ev);
-}
-
 void UBGraphicsTextItem::recolor()
 {
     UBGraphicsTextItemDelegate * del = dynamic_cast<UBGraphicsTextItemDelegate*>(Delegate());
@@ -324,6 +286,27 @@ void UBGraphicsTextItem::keyPressEvent(QKeyEvent *event)
 {
     if (Delegate() && !Delegate()->keyPressEvent(event)) {
         qDebug() << "UBGraphicsTextItem::keyPressEvent(QKeyEvent *event) has been rejected by delegate. Don't call base class method";
+        return;
+    }
+
+    if (event->matches (QKeySequence::StandardKey::Bold) ||
+        event->matches (QKeySequence::StandardKey::Underline) ||
+        event->matches (QKeySequence::StandardKey::Italic))
+    {
+        QTextCursor curCursor = textCursor();
+        QTextCharFormat format;
+        QFont ft(curCursor.charFormat().font());
+        if (event->matches (QKeySequence::StandardKey::Bold))
+            ft.setBold(!ft.bold());
+        else if (event->matches (QKeySequence::StandardKey::Underline))
+            ft.setUnderline(!ft.underline());
+        else if (event->matches (QKeySequence::StandardKey::Italic))
+            ft.setItalic(!ft.italic());
+        format.setFont(ft);
+        curCursor.mergeCharFormat(format);
+        setTextCursor(curCursor);
+
+        contentsChanged();
         return;
     }
 
