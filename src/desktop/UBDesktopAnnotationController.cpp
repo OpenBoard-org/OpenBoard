@@ -111,12 +111,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     {
         connect( UBApplication::boardController->paletteManager()->mKeyboardPalette, SIGNAL(keyboardActivated(bool)), 
                  mTransparentDrawingView, SLOT(virtualKeyboardActivated(bool)));
-
-#ifdef UB_REQUIRES_MASK_UPDATE
-        connect(UBApplication::boardController->paletteManager()->mKeyboardPalette, SIGNAL(moved(QPoint)), this, SLOT(refreshMask()));
-        connect(UBApplication::mainWindow->actionVirtualKeyboard, SIGNAL(triggered(bool)), this, SLOT(refreshMask()));
-        connect(mDesktopPalette,SIGNAL(refreshMask()), this, SLOT(refreshMask()));
-#endif
     }
 
     connect(mDesktopPalette, SIGNAL(uniboardClick()), this, SLOT(goToUniboard()));
@@ -167,11 +161,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     connect(&mHoldTimerMarker, SIGNAL(timeout()), this, SLOT(markerActionReleased()));
     connect(&mHoldTimerEraser, SIGNAL(timeout()), this, SLOT(eraserActionReleased()));
 
-#ifdef UB_REQUIRES_MASK_UPDATE
-    connect(mDesktopPalette, SIGNAL(moving()), this, SLOT(refreshMask()));
-    connect(UBApplication::boardController->paletteManager()->rightPalette(), SIGNAL(resized()), this, SLOT(refreshMask()));
-    connect(UBApplication::boardController->paletteManager()->addItemPalette(), SIGNAL(closed()), this, SLOT(refreshMask()));
-#endif
     onDesktopPaletteMaximized();
 
     // FIX #633: Ensure that these palettes stay on top of the other elements
@@ -346,9 +335,6 @@ void UBDesktopAnnotationController::showWindow()
 
     mDesktopPalette->appear();
 
-#ifdef UB_REQUIRES_MASK_UPDATE
-    updateMask(true);
-#endif // UB_REQUIRES_MASK_UPDATE
 }
 
 
@@ -392,9 +378,6 @@ void UBDesktopAnnotationController::updateBackground()
             || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector)
     {
         newBrush = QBrush(Qt::transparent);
-#ifdef UB_REQUIRES_MASK_UPDATE
-        updateMask(true);
-#endif //UB_REQUIRES_MASK_UPDATE
     }
     else
     {
@@ -403,9 +386,6 @@ void UBDesktopAnnotationController::updateBackground()
 #else
         newBrush = QBrush(QColor(127, 127, 127, 1));
 #endif
-#ifdef UB_REQUIRES_MASK_UPDATE
-        updateMask(false);
-#endif //UB_REQUIRES_MASK_UPDATE
     }
 
     if (mTransparentDrawingScene && mTransparentDrawingScene->backgroundBrush() != newBrush)
@@ -820,136 +800,6 @@ void UBDesktopAnnotationController::onTransparentWidgetResized()
 
     UBApplication::boardController->paletteManager()->leftPalette()->resize(lW+1, rH);
     UBApplication::boardController->paletteManager()->leftPalette()->resize(lW, rH);
-}
-
-void UBDesktopAnnotationController::updateMask(bool bTransparent)
-{
-    if(bTransparent)
-    {
-        // Here we have to generate a new mask This method is certainly resource
-        // consuming but for the moment this is the only solution that I found.
-        mMask = QPixmap(mTransparentDrawingView->width(), mTransparentDrawingView->height());
-        mMask.fill(Qt::transparent);
-
-        QPainter p;
-
-        p.begin(&mMask);
-
-        p.setPen(Qt::red);
-        p.setBrush(QBrush(Qt::red));
-
-        // Here we draw the widget mask
-        if(mDesktopPalette->isVisible())
-        {
-            p.drawRect(mDesktopPalette->geometry().x(), mDesktopPalette->geometry().y(), mDesktopPalette->width(), mDesktopPalette->height());
-        }
-        if(UBApplication::boardController->paletteManager()->mKeyboardPalette->isVisible())
-        {
-            p.drawRect(UBApplication::boardController->paletteManager()->mKeyboardPalette->geometry().x(), UBApplication::boardController->paletteManager()->mKeyboardPalette->geometry().y(),
-                       UBApplication::boardController->paletteManager()->mKeyboardPalette->width(), UBApplication::boardController->paletteManager()->mKeyboardPalette->height());
-        }
-
-        if(UBApplication::boardController->paletteManager()->leftPalette()->isVisible())
-        {
-            QRect leftPalette(UBApplication::boardController->paletteManager()->leftPalette()->geometry().x(),
-                        UBApplication::boardController->paletteManager()->leftPalette()->geometry().y(),
-                        UBApplication::boardController->paletteManager()->leftPalette()->width(),
-                        UBApplication::boardController->paletteManager()->leftPalette()->height());
-
-            QRect tabsPalette(UBApplication::boardController->paletteManager()->leftPalette()->getTabPaletteRect());
-
-            p.drawRect(leftPalette);
-            p.drawRect(tabsPalette);
-        }
-
-        if(UBApplication::boardController->paletteManager()->rightPalette()->isVisible())
-        {
-            QRect rightPalette(UBApplication::boardController->paletteManager()->rightPalette()->geometry().x(),
-                        UBApplication::boardController->paletteManager()->rightPalette()->geometry().y(),
-                        UBApplication::boardController->paletteManager()->rightPalette()->width(),
-                        UBApplication::boardController->paletteManager()->rightPalette()->height());
-
-            QRect tabsPalette(UBApplication::boardController->paletteManager()->rightPalette()->getTabPaletteRect());
-
-            p.drawRect(rightPalette);
-            p.drawRect(tabsPalette);
-        }
-
-        //Rquiered only for compiz wm
-        //TODO. Window manager detection screen
-
-        if (UBApplication::boardController->paletteManager()->addItemPalette()->isVisible()) {
-            p.drawRect(UBApplication::boardController->paletteManager()->addItemPalette()->geometry());
-        }
-
-
-        p.end();
-
-        // Then we add the annotations. We create another painter because we need to
-        // apply transformations on it for coordinates matching
-        QPainter annotationPainter;
-
-        QTransform trans;
-        trans.translate(mTransparentDrawingView->width()/2, mTransparentDrawingView->height()/2);
-
-        annotationPainter.begin(&mMask);
-        annotationPainter.setPen(Qt::red);
-        annotationPainter.setBrush(Qt::red);
-
-        annotationPainter.setTransform(trans);
-
-        QList<QGraphicsItem*> allItems = mTransparentDrawingScene->items();
-
-        for(int i = 0; i < allItems.size(); i++)
-        {
-            QGraphicsItem* pCrntItem = allItems.at(i);
-
-            if(pCrntItem->isVisible() && pCrntItem->type() == UBGraphicsPolygonItem::Type)
-            {
-                QPainterPath crntPath = pCrntItem->shape();
-                QRectF rect = crntPath.boundingRect();
-
-                annotationPainter.drawRect(rect);
-            }
-        }
-
-        annotationPainter.end();
-
-        mTransparentDrawingView->setMask(mMask.mask());
-    }
-    else
-    {
-        mMask = QPixmap(mTransparentDrawingView->width(), mTransparentDrawingView->height());
-        mMask.fill(Qt::transparent);
-
-        QPainter p;
-
-        p.begin(&mMask);
-
-        p.setPen(Qt::red);
-        p.setBrush(QBrush(Qt::red));
-
-        p.drawRect(0, 0, mTransparentDrawingView->width(), mTransparentDrawingView->height());
-        p.end();
-
-        mTransparentDrawingView->setMask(mMask.mask());
-    }
-}
-
-void UBDesktopAnnotationController::refreshMask()
-{
-    if (mTransparentDrawingScene && mTransparentDrawingView->isVisible()) {
-        if(mIsFullyTransparent
-                || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Selector
-                //Needed to work correctly when another actions on stylus are checked
-                || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Eraser
-                || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Pointer
-                || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Pen
-                || UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Marker)
-        {
-            updateMask(true);
-        }
-    }
 }
 
 void UBDesktopAnnotationController::onToolClicked()
