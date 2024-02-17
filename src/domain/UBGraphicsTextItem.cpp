@@ -139,44 +139,6 @@ QFont UBGraphicsTextItem::createDefaultFont()
     return font;
 }
 
-bool UBGraphicsTextItem::event(QEvent *ev)
-{
-    if(ev->type() == QEvent::ShortcutOverride && isSelected())
-    {
-        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(ev);
-        QKeySequence::StandardKey shortcuts[] = {QKeySequence::StandardKey::Bold,
-                                                 QKeySequence::StandardKey::Italic,
-                                                 QKeySequence::StandardKey::Underline};
-        QKeySequence::StandardKey key = QKeySequence::StandardKey::UnknownKey;
-        for(int i=0; i<3; i++)
-            if(keyEvent->matches(shortcuts[i]))
-            {
-                key = shortcuts[i];
-                break;
-            }
-        if(key != QKeySequence::StandardKey::UnknownKey)
-        {
-            QTextCursor curCursor = textCursor();
-            QTextCharFormat format;
-            QFont ft(curCursor.charFormat().font());
-            if(key == QKeySequence::StandardKey::Bold)
-                ft.setBold(!ft.bold());
-            else if(key == QKeySequence::StandardKey::Italic)
-                ft.setItalic(!ft.italic());
-            else
-                ft.setUnderline(!ft.underline());
-            format.setFont(ft);
-            curCursor.mergeCharFormat(format);
-            setTextCursor(curCursor);
-
-            contentsChanged();
-            ev->accept();
-            return true;
-        }
-    }
-    return QGraphicsTextItem::event(ev);
-}
-
 void UBGraphicsTextItem::recolor()
 {
     UBGraphicsTextItemDelegate * del = dynamic_cast<UBGraphicsTextItemDelegate*>(Delegate());
