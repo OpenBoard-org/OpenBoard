@@ -118,6 +118,7 @@ class UBDesktopAnnotationController : public QObject
         void eraserActionReleased();
         void selectorActionPressed();
         void selectorActionReleased();
+        void selectorModeLeaved();
         void pointerActionPressed();
         void pointerActionReleased();
 
