@@ -110,11 +110,7 @@ const QList<const UBBackgroundRuling*> UBBackgroundManager::backgrounds() const
     // first add rulings from list
     for (const auto& uuid : uuidList)
     {
-#if(QT_VERSION_MAJOR ==  6)
-        const auto ruling = background(QUuid(QAnyStringView(uuid)));
-#else
-        const auto ruling = background(uuid);
-#endif
+        const auto ruling = background(QUuid::fromString(uuid));
         if (ruling && ruling->isValid())
         {
             backgroundList << ruling;
