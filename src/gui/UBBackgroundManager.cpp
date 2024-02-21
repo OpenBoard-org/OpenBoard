@@ -41,7 +41,7 @@ void UBBackgroundManager::scan()
 {
     // scan application and user directories for background rules
     const QString appDir{UBPlatformUtils::applicationTemplateDirectory() + "/background"};
-    const QString usrDir{UBSettings::userDataDirectory() + "/template/background"};
+    const QString usrDir{UBSettings::userDataDirectory() + "/background"};
 
     scan(appDir, false);
     scan(usrDir, true);
@@ -55,8 +55,8 @@ void UBBackgroundManager::addBackground(UBBackgroundRuling &background)
         {
             mBackgrounds.append(background);
 
-            // store in user template directory
-            const QString usrDir{UBSettings::userDataDirectory() + "/template/background/"};
+            // store in user background template directory
+            const QString usrDir{UBSettings::userDataDirectory() + "/background/"};
             QDir dir;
             dir.mkpath(usrDir);
 
@@ -94,7 +94,7 @@ void UBBackgroundManager::deleteBackground(const QUuid& uuid)
     if (bg->isValid() && bg->isUserProvided())
     {
         mBackgrounds.removeAll(*bg);
-        const QString usrDir{UBSettings::userDataDirectory() + "/template/background/"};
+        const QString usrDir{UBSettings::userDataDirectory() + "/background/"};
         QFile::remove(usrDir + uuid.toString() + ".xml");
 
         emit backgroundListChanged();
