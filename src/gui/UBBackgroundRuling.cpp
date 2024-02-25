@@ -44,19 +44,20 @@ static constexpr char const* attributeXmlLang{"xml:lang"};
 static constexpr char const* elementAngle{"angle"};
 static constexpr char const* elementAttributes{"attributes"};
 static constexpr char const* elementBackground{"background"};
-static constexpr char const* elementBorder{"border"};
 static constexpr char const* elementColor{"color"};
 static constexpr char const* elementDefaultColor{"defaultColor"};
 static constexpr char const* elementDescription{"description"};
-static constexpr char const* elementLeft{"left"};
+static constexpr char const* elementFrom{"from"};
 static constexpr char const* elementLinegroup{"linegroup"};
 static constexpr char const* elementLine{"line"};
 static constexpr char const* elementOffset{"offset"};
 static constexpr char const* elementOnDark{"onDark"};
 static constexpr char const* elementOnLight{"onLight"};
 static constexpr char const* elementOrigin{"origin"};
-static constexpr char const* elementRight{"right"};
 static constexpr char const* elementSpacing{"spacing"};
+static constexpr char const* elementStack{"stack"};
+static constexpr char const* elementStretch{"stretch"};
+static constexpr char const* elementTo{"to"};
 static constexpr char const* elementUuid{"uuid"};
 static constexpr char const* elementWidth{"width"};
 
@@ -341,6 +342,8 @@ void UBBackgroundRuling::draw(QPainter* painter, const QRectF& rect, double grid
         }
     }
 
+    const auto dotsPerMm = gridSize / 10;
+
     painter->setRenderHint(QPainter::Antialiasing, true);
     const QColor defaultOnDark{UBSettings::settings()->boardCrossColorDarkBackground->get().toString()};
     const QColor defaultOnLight{UBSettings::settings()->boardCrossColorLightBackground->get().toString()};
@@ -349,7 +352,7 @@ void UBBackgroundRuling::draw(QPainter* painter, const QRectF& rect, double grid
     for (const auto& linegroup : mRules->linegroups())
     {
         const auto angle = linegroup.angle();
-        const auto spacing = linegroup.spacing() * gridSize / 10;
+        const auto spacing = linegroup.spacing() * dotsPerMm;
 
         auto origin{nominalScene.center()};
 
@@ -375,135 +378,190 @@ void UBBackgroundRuling::draw(QPainter* painter, const QRectF& rect, double grid
             break;
         }
 
-        // border needs different calculation of start and end of line
-        // relative to left and right border
-        double leftBorder{0};
-        double rightBorder{0};
+        // determine minimum and maximum offset of line group
+        std::vector<double> offsets;
+        offsets.reserve(linegroup.lines().count());
 
-        bool hasLeftBorder{false};
-        bool hasRightBorder{false};
+        for (const auto& line : linegroup.lines())
+        {
+            offsets.push_back(line.offset());
+        }
+
+        const auto minmax = std::minmax_element(offsets.cbegin(), offsets.cend());
+        const double minOffset = *minmax.first * dotsPerMm;
+        const double maxOffset = *minmax.second * dotsPerMm;
+
+        // stretch needs different calculation of start and end of line
+        double fromStretch{0};
+        double toStretch{0};
+
+        bool hasFromStretch{false};
+        bool hasToStretch{false};
 
         QList<Line> borderLines;
 
-        if (linegroup.border())
+        if (linegroup.stretch())
         {
-            const auto border = linegroup.border().value();
+            const auto stretch = linegroup.stretch().value();
 
-            hasLeftBorder = border.left().has_value();
-            hasRightBorder = border.right().has_value();
+            hasFromStretch = stretch.from().has_value();
+            hasToStretch = stretch.to().has_value();
 
-            leftBorder = border.left().value_or(0);
-            rightBorder = border.right().value_or(0);
+            fromStretch = stretch.from().value_or(0) * dotsPerMm;
+            toStretch = stretch.to().value_or(0) * dotsPerMm;
 
-            leftBorder *= gridSize / 10;
-            rightBorder *= gridSize / 10;
-
-            borderLines = border.lines();
+            borderLines = stretch.lines();
         }
 
-        // loop through lines
-        for (const auto& line : linegroup.lines())
+        // stack adds additional constraints to repetition of line group
+        double fromStack{0};
+        double toStack{0};
+
+        bool hasFromStack{false};
+        bool hasToStack{false};
+
+        if (linegroup.stack())
         {
-            const auto offset = line.offset() * gridSize / 10;
+            const auto stack = linegroup.stack().value();
 
-            setLinePainter(painter, line, onDark, defaultOnDark, defaultOnLight);
+            hasFromStack = stack.from().has_value();
+            hasToStack = stack.to().has_value();
 
-            // get relevant corners of rectangle according to line angle
-            const bool ascending = int(angle / 90.) % 2 == 0;
+            fromStack = stack.from().value_or(0) * dotsPerMm;
+            toStack = stack.to().value_or(0) * dotsPerMm;
+        }
 
-            QPointF p1;
-            QPointF p2;
+        // determine relevant corners
+        QPointF stackFrom = nominalScene.topLeft();
+        QPointF stackTo = nominalScene.bottomRight();
+        QPointF stretchFrom = nominalScene.bottomLeft();
+        QPointF stretchTo = nominalScene.topRight();
+        QPointF rectFrom = rect.topLeft();
+        QPointF rectTo = rect.bottomRight();
 
-            if (ascending)
+        const bool descending = int(angle / 90.) % 2 != 0;
+        const bool flipped = int(angle / 180.) % 2 != 0;
+
+        if (descending)
+        {
+            // swap circularly counter-clockwise
+            std::swap(stretchTo, stackTo);
+            std::swap(stackFrom, stretchTo);
+            std::swap(stretchFrom, stackFrom);
+
+            rectFrom = rect.topRight();
+            rectTo = rect.bottomLeft();
+        }
+
+        if (flipped)
+        {
+            // swap diagonal
+            std::swap(stretchFrom, stretchTo);
+            std::swap(stackFrom, stackTo);
+
+            std::swap(rectFrom, rectTo);
+        }
+
+        // create a line through origin
+        auto originLine = QLineF::fromPolar(5000, angle).translated(origin);
+        originLine.setP1(origin + origin - originLine.p2()); // extend in other direction
+
+        // normal vector for translations
+        auto normal = originLine.normalVector();
+        QPointF spaceShift{0, 0};
+
+        auto minIndex{0};
+        auto maxIndex{0};
+
+        if (spacing > 0)
+        {
+            normal.setLength(spacing);
+            spaceShift = normal.p1() - normal.p2();
+
+            // calculate offsets for first and last lines
+            minIndex = int(distance(originLine, rectFrom) / spacing);
+            maxIndex = int(distance(originLine, rectTo) / spacing);
+
+            if (minIndex > maxIndex)
             {
-                p1 = rect.topLeft();
-                p2 = rect.bottomRight();
+                std::swap(minIndex, maxIndex);
             }
-            else
+        }
+
+        const auto distFrom = distance(originLine, stackFrom);
+        const auto distTo = distance(originLine, stackTo);
+
+        for (int index = minIndex; index <= maxIndex; ++index)
+        {
+            if (hasFromStack && distFrom - (index * spacing + minOffset) > fromStack)
             {
-                p1 = rect.topRight();
-                p2 = rect.bottomLeft();
+                continue;
             }
 
-            // create a line through origin
-            auto originLine = QLineF::fromPolar(5000, angle).translated(origin);
-            originLine.setP1(origin + origin - originLine.p2()); // extend in other direction
-
-            if (spacing > 0)
+            if (hasToStack && (index * spacing + maxOffset) - distTo > toStack)
             {
-                // calculate offsets for first and last lines
-                auto minIndex = int(distance(originLine, p1) / spacing);
-                auto maxIndex = int(distance(originLine, p2) / spacing);
+                break;
+            }
 
-                if (minIndex > maxIndex)
+            // loop through lines
+            for (const auto& line : linegroup.lines())
+            {
+                const auto offset = line.offset() * dotsPerMm;
+                const auto offsetShift = (normal.p1() - normal.p2()) / normal.length() * offset;
+
+                setLinePainter(painter, line, onDark, defaultOnDark, defaultOnLight);
+
+                auto gridLine = originLine.translated(index * spaceShift + offsetShift);
+
+                if (hasFromStretch)
                 {
-                    std::swap(minIndex, maxIndex);
-                }
+                    // calculate base point using normal through stretchFrom
+                    const auto border = normal.translated(stretchFrom - normal.p1());
+                    QPointF basePoint;
+                    gridLine.intersects(border, &basePoint);
 
-                // normal vector for translations
-                auto normal = originLine.normalVector();
-                normal.setLength(spacing);
-                const auto spaceShift = normal.p1() - normal.p2();
-                normal.setLength(offset);
-                const auto offsetShift = normal.p1() - normal.p2();
+                    QLineF shift = gridLine.unitVector();
+                    shift.translate(basePoint - shift.p1());
+                    shift.setLength(-fromStretch);
+                    gridLine.setP1(shift.p2());
 
-                const auto lastLine = &line == &linegroup.lines().last();
-
-                for (int index = minIndex - 1; index <= maxIndex; ++index)
-                {
-                    auto gridLine = originLine.translated(index * spaceShift + offsetShift);
-
-                    if (hasLeftBorder)
+                    if (&line == &linegroup.lines().last())
                     {
-                        auto p1 = gridLine.p1();
-                        p1.setX(nominalScene.left() + leftBorder);
-                        gridLine.setP1(p1);
+                        // draw border lines on "from" side
+                        QLineF borderLine{gridLine.p1() - offsetShift, gridLine.p1()};
 
-                        if (lastLine)
+                        if (clip(rect, borderLine))
                         {
-                            // draw border lines on left side
-                            QLineF borderLine{p1 - offsetShift, p1};
-
-                            if (clip(rect, borderLine))
-                            {
-                                drawBorderLines(painter, borderLines, borderLine, Qt::LeftEdge, gridSize, onDark,
-                                                defaultOnDark, defaultOnLight);
-                            }
+                            drawBorderLines(painter, borderLines, borderLine, Qt::LeftEdge, dotsPerMm, onDark,
+                                            defaultOnDark, defaultOnLight);
                         }
                     }
+                }
 
-                    if (hasRightBorder)
+                if (hasToStretch)
+                {
+                    // calculate base point using normal through stretchTo
+                    const auto border = normal.translated(stretchTo - normal.p1());
+                    QPointF basePoint;
+                    gridLine.intersects(border, &basePoint);
+
+                    QLineF shift = gridLine.unitVector();
+                    shift.translate(basePoint - shift.p1());
+                    shift.setLength(toStretch);
+                    gridLine.setP2(shift.p2());
+
+                    if (&line == &linegroup.lines().last())
                     {
-                        auto p2 = gridLine.p2();
-                        p2.setX(nominalScene.right() - rightBorder);
-                        gridLine.setP2(p2);
+                        // draw border lines on "to" side
+                        QLineF borderLine{gridLine.p2() - offsetShift, gridLine.p2()};
 
-                        if (lastLine)
+                        if (clip(rect, borderLine))
                         {
-                            // draw border lines on right side
-                            QLineF borderLine{p2 - offsetShift, p2};
-
-                            if (clip(rect, borderLine))
-                            {
-                                drawBorderLines(painter, borderLines, borderLine, Qt::RightEdge, gridSize, onDark,
-                                                defaultOnDark, defaultOnLight);
-                            }
+                            drawBorderLines(painter, borderLines, borderLine, Qt::RightEdge, dotsPerMm, onDark,
+                                            defaultOnDark, defaultOnLight);
                         }
                     }
-
-                    if (clip(rect, gridLine))
-                    {
-                        painter->drawLine(gridLine);
-                    }
                 }
-            }
-            else if (spacing == 0)
-            {
-                // single line at offset
-                auto normal = originLine.normalVector();
-                normal.setLength(offset);
-                const auto offsetShift = normal.p1() - normal.p2();
-                auto gridLine = originLine.translated(offsetShift);
 
                 if (clip(rect, gridLine))
                 {
@@ -533,7 +591,7 @@ void UBBackgroundRuling::setLinePainter(QPainter* painter, const Line& line, boo
 }
 
 void UBBackgroundRuling::drawBorderLines(QPainter* painter, const QList<Line>& borderLines, QLineF line, Qt::Edge edge,
-                                         double gridSize, bool onDark, QColor defaultOnDark,
+                                         double dotsPerMm, bool onDark, QColor defaultOnDark,
                                          QColor defaultOnLight) const
 {
     painter->save();
@@ -543,7 +601,7 @@ void UBBackgroundRuling::drawBorderLines(QPainter* painter, const QList<Line>& b
         setLinePainter(painter, borderLine, onDark, defaultOnDark, defaultOnLight);
 
         auto offset = borderLine.offset();
-        offset *= gridSize / 10;
+        offset *= dotsPerMm;
 
         if (edge == Qt::RightEdge)
         {
@@ -682,20 +740,20 @@ const UBBackgroundRuling::LineColor& UBBackgroundRuling::Line::color() const
     return mColor;
 }
 
-UBBackgroundRuling::Border::Border(const Rules& rules, QXmlStreamReader& reader)
+UBBackgroundRuling::Limit::Limit(const Rules& rules, QXmlStreamReader& reader)
     : Data{rules}
 {
     while (reader.readNextStartElement() && reader.namespaceUri().toString() == namespaceURI)
     {
         double value;
 
-        if (getDecimalValue(reader, elementLeft, value))
+        if (getDecimalValue(reader, elementFrom, value))
         {
-            mLeft.emplace(value);
+            mFrom.emplace(value);
         }
-        else if (getDecimalValue(reader, elementRight, value))
+        else if (getDecimalValue(reader, elementTo, value))
         {
-            mRight.emplace(value);
+            mTo.emplace(value);
         }
         else if (reader.name().toString() == elementLine)
         {
@@ -713,16 +771,16 @@ UBBackgroundRuling::Border::Border(const Rules& rules, QXmlStreamReader& reader)
     }
 }
 
-void UBBackgroundRuling::Border::toXml(QXmlStreamWriter& writer) const
+void UBBackgroundRuling::Limit::toXml(QXmlStreamWriter& writer) const
 {
-    if (mLeft)
+    if (mFrom)
     {
-        writer.writeTextElement(namespaceURI, elementLeft, QString::number(mLeft.value()));
+        writer.writeTextElement(namespaceURI, elementFrom, QString::number(mFrom.value()));
     }
 
-    if (mRight)
+    if (mTo)
     {
-        writer.writeTextElement(namespaceURI, elementRight, QString::number(mRight.value()));
+        writer.writeTextElement(namespaceURI, elementTo, QString::number(mTo.value()));
     }
 
     for (const auto& line : mLines)
@@ -733,17 +791,17 @@ void UBBackgroundRuling::Border::toXml(QXmlStreamWriter& writer) const
     }
 }
 
-std::optional<double> UBBackgroundRuling::Border::left() const
+std::optional<double> UBBackgroundRuling::Limit::from() const
 {
-    return mLeft;
+    return mFrom;
 }
 
-std::optional<double> UBBackgroundRuling::Border::right() const
+std::optional<double> UBBackgroundRuling::Limit::to() const
 {
-    return mRight;
+    return mTo;
 }
 
-const QList<UBBackgroundRuling::Line>& UBBackgroundRuling::Border::lines() const
+const QList<UBBackgroundRuling::Line>& UBBackgroundRuling::Limit::lines() const
 {
     return mLines;
 }
@@ -801,9 +859,13 @@ UBBackgroundRuling::Linegroup::Linegroup(const Rules& rules, QXmlStreamReader& r
                 mLines.append(bgLine);
             }
         }
-        else if (reader.name().toString() == elementBorder)
+        else if (reader.name().toString() == elementStretch)
         {
-            mBorder.emplace(rules, reader);
+            mStretch.emplace(rules, reader);
+        }
+        else if (reader.name().toString() == elementStack)
+        {
+            mStack.emplace(rules, reader);
         }
         else
         {
@@ -851,10 +913,17 @@ void UBBackgroundRuling::Linegroup::toXml(QXmlStreamWriter& writer) const
         writer.writeEndElement();
     }
 
-    if (mBorder)
+    if (mStretch)
     {
-        writer.writeStartElement(namespaceURI, elementBorder);
-        mBorder.value().toXml(writer);
+        writer.writeStartElement(namespaceURI, elementStretch);
+        mStretch.value().toXml(writer);
+        writer.writeEndElement();
+    }
+
+    if (mStack)
+    {
+        writer.writeStartElement(namespaceURI, elementStack);
+        mStack.value().toXml(writer);
         writer.writeEndElement();
     }
 }
@@ -879,9 +948,14 @@ const QList<UBBackgroundRuling::Line>& UBBackgroundRuling::Linegroup::lines() co
     return mLines;
 }
 
-std::optional<UBBackgroundRuling::Border> UBBackgroundRuling::Linegroup::border() const
+std::optional<UBBackgroundRuling::Limit> UBBackgroundRuling::Linegroup::stretch() const
 {
-    return mBorder;
+    return mStretch;
+}
+
+std::optional<UBBackgroundRuling::Limit> UBBackgroundRuling::Linegroup::stack() const
+{
+    return mStack;
 }
 
 UBBackgroundRuling::Rules::Rules(QXmlStreamReader& reader)

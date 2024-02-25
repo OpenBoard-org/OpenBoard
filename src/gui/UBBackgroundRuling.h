@@ -60,7 +60,7 @@ private:
     class Line;  // forward
     void setLinePainter(QPainter* painter, const Line& line, bool onDark, QColor defaultOnDark,
                         QColor defaultOnLight) const;
-    void drawBorderLines(QPainter* painter, const QList<Line>& borderLines, QLineF line, Qt::Edge edge, double gridSize,
+    void drawBorderLines(QPainter* painter, const QList<Line>& borderLines, QLineF line, Qt::Edge edge, double dotsPerMm,
                          bool onDark, QColor defaultOnDark, QColor defaultOnLight) const;
 
 private:
@@ -117,20 +117,20 @@ private:
         LineColor mColor;
     };
 
-    class Border : public Data
+    class Limit : public Data
     {
     public:
-        Border(const Rules& rules, QXmlStreamReader& reader);
+        Limit(const Rules& rules, QXmlStreamReader& reader);
 
         virtual void toXml(QXmlStreamWriter& writer) const override;
 
-        std::optional<double> left() const;
-        std::optional<double> right() const;
+        std::optional<double> from() const;
+        std::optional<double> to() const;
         const QList<Line>& lines() const;
 
     private:
-        std::optional<double> mLeft{};
-        std::optional<double> mRight{};
+        std::optional<double> mFrom{};
+        std::optional<double> mTo{};
         QList<Line> mLines{};
     };
 
@@ -154,14 +154,16 @@ private:
         double spacing() const;
         Origin origin() const;
         const QList<Line>& lines() const;
-        std::optional<Border> border() const;
+        std::optional<Limit> stretch() const;
+        std::optional<Limit> stack() const;
 
     private:
         double mAngle{0.};
         double mSpacing{0.};
         Origin mOrigin{Origin::Center};
         QList<Line> mLines{};
-        std::optional<Border> mBorder{};
+        std::optional<Limit> mStretch{};
+        std::optional<Limit> mStack{};
     };
 
     class Rules : public Data
