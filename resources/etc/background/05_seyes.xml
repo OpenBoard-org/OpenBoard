@@ -37,10 +37,14 @@
                 <bg:onLight>#996fa8dc</bg:onLight>
             </bg:color>
         </bg:line>
-        <bg:border>
-            <bg:left>0</bg:left>
-            <bg:right>0</bg:right>
-        </bg:border>
+        <bg:stretch>
+            <bg:from>50</bg:from>
+            <bg:to>0</bg:to>
+        </bg:stretch>
+        <bg:stack>
+            <bg:from>0</bg:from>
+            <bg:to>0</bg:to>
+        </bg:stack>
     </bg:linegroup>
     <bg:linegroup>
         <bg:angle>90</bg:angle>
@@ -54,17 +58,29 @@
                 <bg:onLight>#8e7cc3</bg:onLight>
             </bg:color>
         </bg:line>
+        <bg:stretch>
+            <bg:from>0</bg:from>
+            <bg:to>50</bg:to>
+        </bg:stretch>
+        <bg:stack>
+            <bg:from>0</bg:from>
+            <bg:to>0</bg:to>
+        </bg:stack>
     </bg:linegroup>
     <bg:linegroup>
         <bg:angle>90</bg:angle>
         <bg:origin>topleft</bg:origin>
         <bg:line>
-            <bg:offset>20</bg:offset>
+            <bg:offset>0</bg:offset>
             <bg:width>2</bg:width>
             <bg:color>
                 <bg:onDark>#ff0000</bg:onDark>
                 <bg:onLight>#ff0000</bg:onLight>
             </bg:color>
         </bg:line>
+        <bg:stretch>
+            <bg:from>0</bg:from>
+            <bg:to>50</bg:to>
+        </bg:stretch>
     </bg:linegroup>
 </bg:background>

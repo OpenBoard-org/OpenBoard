@@ -13,13 +13,13 @@
             <bg:offset>3.5</bg:offset>
             <bg:width>1</bg:width>
         </bg:line>
-        <bg:border>
-            <bg:left>5</bg:left>
-            <bg:right>5</bg:right>
+        <bg:stretch>
+            <bg:from>-5</bg:from>
+            <bg:to>-5</bg:to>
             <bg:line>
                 <bg:offset>0</bg:offset>
                 <bg:width>1</bg:width>
             </bg:line>
-        </bg:border>
+        </bg:stretch>
     </bg:linegroup>
 </bg:background>

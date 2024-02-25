@@ -45,7 +45,7 @@
                 </xs:complexType>
             </xs:element>
             <xs:element name="defaultColor" type="bg:Color" minOccurs="0"/>
-            <xs:element name="linegroup" type="bg:Linegroup" maxOccurs="unbounded"/>
+            <xs:element name="linegroup" type="bg:Linegroup" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -58,10 +58,11 @@
           defining the point relative to which the line distances are calculated;
           useful for single lines relative to border.
         - a set of lines in the group.
-        - an optional border, which is closing the line group to the left and/or
-          the right. If one of the elements "left" or "right" is set, lines in the group
-          do not continue endlessly, but end at the specified distance from the page border.
-          Offsets of a border line are calculated inwards from the respecive side.
+        - an optional stretch, which limits the length of lines at the start or end.
+          The stretch element can contain optional line elements, which draw a closing
+          line connecting the lines of a line group. Offsets of a border line are
+          calculated inwards from the respecive side.
+        - an optional stack, which limits the stacking of line groups.
     -->
     <xs:complexType name="Linegroup">
         <xs:sequence>
@@ -78,13 +79,21 @@
                     </xs:restriction>
                 </xs:simpleType>
             </xs:element>
-            <xs:element name="line" type="bg:Line" maxOccurs="unbounded"/>
-            <xs:element name="border" minOccurs="0">
+            <xs:element name="line" type="bg:Line" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="stretch" minOccurs="0">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="left" type="xs:decimal"/>
-                        <xs:element name="right" type="xs:decimal"/>
-                        <xs:element name="line" type="bg:Line" maxOccurs="unbounded"/>
+                        <xs:element name="from" type="xs:decimal" minOccurs="0"/>
+                        <xs:element name="to" type="xs:decimal" minOccurs="0"/>
+                        <xs:element name="line" type="bg:Line" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="stack" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="from" type="xs:decimal" minOccurs="0"/>
+                        <xs:element name="to" type="xs:decimal" minOccurs="0"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -99,8 +108,8 @@
     -->
     <xs:complexType name="Line">
         <xs:sequence>
-            <xs:element name="offset" type="xs:decimal"/>
-            <xs:element name="width" type="xs:decimal"/>
+            <xs:element name="offset" type="xs:decimal" minOccurs="0"/>
+            <xs:element name="width" type="xs:decimal" minOccurs="0"/>
             <xs:element name="color" type="bg:Color" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
