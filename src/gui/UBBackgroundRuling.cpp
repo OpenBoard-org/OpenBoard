@@ -486,6 +486,8 @@ void UBBackgroundRuling::draw(QPainter* painter, const QRectF& rect, double grid
             {
                 std::swap(minIndex, maxIndex);
             }
+
+            --minIndex;
         }
 
         const auto distFrom = distance(originLine, stackFrom);
