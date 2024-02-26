@@ -235,7 +235,7 @@ void UBBackgroundPalette::defaultBackgroundGridSize()
 void UBBackgroundPalette::toggleBackgroundColor(bool checked)
 {
     mIsDark = checked;
-    UBApplication::boardController->activeScene()->setSceneBackground(mIsDark, mBackground);
+    UBApplication::boardController->setBackground(mIsDark, mBackground);
     backgroundChanged();
 }
 
@@ -249,7 +249,7 @@ void UBBackgroundPalette::changeBackground(bool checked)
         {
             const auto uuid = action->property("uuid").toUuid();
             mBackground = UBApplication::boardController->backgroundManager()->background(uuid);
-            UBApplication::boardController->activeScene()->setSceneBackground(mIsDark, mBackground);
+            UBApplication::boardController->setBackground(mIsDark, mBackground);
         }
     }
 }
