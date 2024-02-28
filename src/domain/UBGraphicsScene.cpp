@@ -2863,91 +2863,93 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
 
 void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
 {
-
-    QList<QGraphicsItem*> si = selectedItems();
-
-    if(keyEvent->matches(QKeySequence::SelectAll))
+    if (!keyEvent->isAccepted())
     {
-        foreach(auto item, items())
+        QList<QGraphicsItem*> si = selectedItems();
+
+        if(keyEvent->matches(QKeySequence::SelectAll))
         {
-            item->setSelected(true);
+            foreach(auto item, items())
+            {
+                item->setSelected(true);
+            }
+
+            keyEvent->accept();
+            return;
         }
 
-        keyEvent->accept();
-        return;
-    }
-
-    if ((si.size() > 0) && (keyEvent->isAccepted()))
-    {
-#ifdef Q_OS_MAC
-        if (keyEvent->key() == Qt::Key_Backspace)
-#else
-        if (keyEvent->matches(QKeySequence::Delete))
-#endif
+        if ((si.size() > 0) && (keyEvent->isAccepted()))
         {
-            QVector<UBGraphicsItem*> ubItemsToRemove;
-            QVector<QGraphicsItem*> itemToRemove;
-
-            bool bRemoveOk = true;
-
-            foreach(QGraphicsItem* item, si)
+    #ifdef Q_OS_MAC
+            if (keyEvent->key() == Qt::Key_Backspace)
+    #else
+            if (keyEvent->matches(QKeySequence::Delete))
+    #endif
             {
-                switch (item->type())
+                QVector<UBGraphicsItem*> ubItemsToRemove;
+                QVector<QGraphicsItem*> itemToRemove;
+
+                bool bRemoveOk = true;
+
+                foreach(QGraphicsItem* item, si)
                 {
-                case UBGraphicsWidgetItem::Type:
+                    switch (item->type())
                     {
-                        UBGraphicsW3CWidgetItem *wc3_widget = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
-                        if (0 != wc3_widget)
-                        if (!wc3_widget->hasFocus())
-                            ubItemsToRemove << wc3_widget;
-                        break;
-                    }
-                case UBGraphicsTextItem::Type:
+                    case UBGraphicsWidgetItem::Type:
+                        {
+                            UBGraphicsW3CWidgetItem *wc3_widget = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
+                            if (0 != wc3_widget)
+                            if (!wc3_widget->hasFocus())
+                                ubItemsToRemove << wc3_widget;
+                            break;
+                        }
+                    case UBGraphicsTextItem::Type:
+                        {
+                            UBGraphicsTextItem *text_item = dynamic_cast<UBGraphicsTextItem*>(item);
+                            if (0 != text_item){
+                                if (!text_item->hasFocus())
+                                    ubItemsToRemove << text_item;
+                                else
+                                    bRemoveOk = false;
+                            }
+                            break;
+                        }
+
+                    case UBGraphicsGroupContainerItem::Type:
                     {
-                        UBGraphicsTextItem *text_item = dynamic_cast<UBGraphicsTextItem*>(item);
-                        if (0 != text_item){
-                            if (!text_item->hasFocus())
-                                ubItemsToRemove << text_item;
+                        UBGraphicsGroupContainerItem* group_item = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
+                        if(NULL != group_item){
+                            if(!hasTextItemWithFocus(group_item))
+                                ubItemsToRemove << group_item;
                             else
                                 bRemoveOk = false;
                         }
                         break;
                     }
 
-                case UBGraphicsGroupContainerItem::Type:
-                {
-                    UBGraphicsGroupContainerItem* group_item = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
-                    if(NULL != group_item){
-                        if(!hasTextItemWithFocus(group_item))
-                            ubItemsToRemove << group_item;
-                        else
-                            bRemoveOk = false;
+                    default:
+                        {
+                            UBGraphicsItem *ubgi = dynamic_cast<UBGraphicsItem*>(item);
+                            if (0 != ubgi)
+                                ubItemsToRemove << ubgi;
+                            else
+                                itemToRemove << item;
+                        }
                     }
-                    break;
                 }
 
-                default:
-                    {
-                        UBGraphicsItem *ubgi = dynamic_cast<UBGraphicsItem*>(item);
-                        if (0 != ubgi)
-                            ubItemsToRemove << ubgi;
-                        else
-                            itemToRemove << item;
+                if(bRemoveOk){
+                    foreach(UBGraphicsItem* pUBItem, ubItemsToRemove){
+                        pUBItem->remove();
+                    }
+                    foreach(QGraphicsItem* pItem, itemToRemove){
+                        UBCoreGraphicsScene::removeItem(pItem);
                     }
                 }
             }
 
-            if(bRemoveOk){
-                foreach(UBGraphicsItem* pUBItem, ubItemsToRemove){
-                    pUBItem->remove();
-                }
-                foreach(QGraphicsItem* pItem, itemToRemove){
-                    UBCoreGraphicsScene::removeItem(pItem);
-                }
-            }
+            keyEvent->accept();
         }
-
-        keyEvent->accept();
     }
 
     QGraphicsScene::keyReleaseEvent(keyEvent);
