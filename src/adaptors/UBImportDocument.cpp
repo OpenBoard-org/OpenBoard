@@ -190,7 +190,7 @@ std::shared_ptr<UBDocumentProxy> UBImportDocument::importFile(const QFile& pFile
     }
 
     std::shared_ptr<UBDocumentProxy> newDocument = UBPersistenceManager::persistenceManager()->createDocumentFromDir(documentRootFolder, pGroup, "", false, false, true);
-    UBApplication::showMessage(tr("Import successful."));
+
     return newDocument;
 }
 

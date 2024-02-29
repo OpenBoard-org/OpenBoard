@@ -303,15 +303,6 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocumentProxyStruct
 
 QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(std::shared_ptr<UBDocumentProxy> pProxy, bool multipleFiles)
 {
-    //TODO claudio remove this hack necessary on double click on ubz file
-    Qt::CursorShape saveShape;
-    if(UBApplication::overrideCursor()){
-        saveShape = UBApplication::overrideCursor()->shape();
-        UBApplication::overrideCursor()->setShape(Qt::ArrowCursor);
-    }
-    else
-        saveShape = Qt::ArrowCursor;
-
     QDialog::DialogCode result = QDialog::Rejected;
 
     if (UBApplication::documentController && UBApplication::documentController->mainWidget())
@@ -320,7 +311,6 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(st
         QModelIndex parentIndex = mDocumentTreeStructureModel->goTo(docGroupName);
         if (!parentIndex.isValid())
         {
-            UBApplication::overrideCursor()->setShape(saveShape);
             return QDialog::Rejected;
         }
 
@@ -331,7 +321,6 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(st
         {
             if (!mReplaceDialogReturnedReplaceAll && !mReplaceDialogReturnedCancel)
             {
-                QApplication::restoreOverrideCursor();
                 UBDocumentReplaceDialog *replaceDialog = new UBDocumentReplaceDialog(docName
                                                                                      , docList
                                                                                      , multipleFiles
@@ -339,7 +328,7 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(st
                                                                                      , Qt::Widget);
                 if (replaceDialog->exec() == QDialog::Accepted)
                 {
-                    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+                    UBApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
                     result = QDialog::Accepted;
                     QString resultName = replaceDialog->lineEditText();
                     int i = docList.indexOf(resultName);
@@ -391,6 +380,7 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(st
                     {
                         mReplaceDialogReturnedReplaceAll = true;
                     }
+                    UBApplication::restoreOverrideCursor();
                 }
                 else
                 {
@@ -447,11 +437,7 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(st
             mDocumentTreeStructureModel->addDocument(pProxy, parentIndex);
             result = QDialog::Accepted;
         }
-
     }
-    //TODO claudio the if is an hack
-    if(UBApplication::overrideCursor())
-        UBApplication::overrideCursor()->setShape(saveShape);
 
     return result;
 }
