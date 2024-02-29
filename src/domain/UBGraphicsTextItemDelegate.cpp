@@ -627,6 +627,7 @@ void UBGraphicsTextItemDelegate::changeTextSize(qreal factor, textChangeMode cha
                      || (curFont.italic() != nextCharFont.italic())
                      || (curFont.bold() != nextCharFont.bold())
                      || (curFont.underline() != nextCharFont.underline())
+                     || (curFont.strikeOut() != nextCharFont.strikeOut())
                      || (curBrush != nextCharBrush))
                 {
                     bEndofTheSameBlock = true;
