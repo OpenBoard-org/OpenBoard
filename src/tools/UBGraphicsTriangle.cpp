@@ -464,6 +464,15 @@ void UBGraphicsTriangle::paintGraduations(QPainter *painter)
     for (int millimeters = 0; millimeters < (rect().width() - sLeftEdgeMargin - sRoundingRadius) / pixelsPerMillimeter; millimeters++)
     {
         double graduationX = rotationCenter().x() + kx * pixelsPerMillimeter * millimeters;
+        if (mOrientation == TopLeft || mOrientation == BottomLeft)
+        {
+            graduationX += sLeftEdgeMargin;
+        }
+        else
+        {
+            graduationX -= sLeftEdgeMargin;
+        }
+
         double graduationHeight = 0;
 
         if (millimeters % UBGeometryUtils::millimetersPerCentimeter == 0)
@@ -551,16 +560,7 @@ void UBGraphicsTriangle::rotateAroundCenter(QTransform& transform, QPointF cente
 
 QPointF    UBGraphicsTriangle::rotationCenter() const
 {
-    switch(mOrientation)
-    {
-        case BottomLeft:
-        case TopLeft:
-            return B1 + QPointF(sLeftEdgeMargin, 0);
-        case TopRight:
-        case BottomRight:
-            return B1 - QPointF(sLeftEdgeMargin, 0);
-    }
-    return QPointF(0, 0);
+    return B1;
 }
 
 QRectF    UBGraphicsTriangle::closeButtonRect() const
