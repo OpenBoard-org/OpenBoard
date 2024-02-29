@@ -737,9 +737,12 @@ void UBApplicationController::importFile(const QString& pFilePath)
 
             if (UBApplication::documentController)
             {
-                if (UBApplication::documentController->selectedDocument()->theSameDocument(document))
+                if (UBApplication::documentController->selectedDocument())
                 {
-                    UBApplication::documentController->reloadThumbnails();
+                    if (UBApplication::documentController->selectedDocument()->theSameDocument(document))
+                    {
+                        UBApplication::documentController->reloadThumbnails();
+                    }
                 }
             }
         }
