@@ -250,14 +250,12 @@ void UBBoardView::keyPressEvent (QKeyEvent *event)
             switch (event->key ())
             {
             case Qt::Key_Plus:
-            case Qt::Key_I:
             {
                 mController->zoomIn ();
                 event->accept ();
                 break;
             }
             case Qt::Key_Minus:
-            case Qt::Key_O:
             {
                 mController->zoomOut ();
                 event->accept ();

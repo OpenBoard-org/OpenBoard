@@ -1433,7 +1433,7 @@
     <string>Annotate Document</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+I</string>
+    <string>Ctrl+P</string>
    </property>
   </action>
   <action name="actionEraser">

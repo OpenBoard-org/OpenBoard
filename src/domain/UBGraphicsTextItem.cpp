@@ -289,6 +289,27 @@ void UBGraphicsTextItem::keyPressEvent(QKeyEvent *event)
         return;
     }
 
+    if (event->matches (QKeySequence::StandardKey::Bold) ||
+        event->matches (QKeySequence::StandardKey::Underline) ||
+        event->matches (QKeySequence::StandardKey::Italic))
+    {
+        QTextCursor curCursor = textCursor();
+        QTextCharFormat format;
+        QFont ft(curCursor.charFormat().font());
+        if (event->matches (QKeySequence::StandardKey::Bold))
+            ft.setBold(!ft.bold());
+        else if (event->matches (QKeySequence::StandardKey::Underline))
+            ft.setUnderline(!ft.underline());
+        else if (event->matches (QKeySequence::StandardKey::Italic))
+            ft.setItalic(!ft.italic());
+        format.setFont(ft);
+        curCursor.mergeCharFormat(format);
+        setTextCursor(curCursor);
+
+        contentsChanged();
+        return;
+    }
+
     QGraphicsTextItem::keyPressEvent(event);
 }
 
