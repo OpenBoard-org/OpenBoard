@@ -553,11 +553,6 @@ void UBGraphicsRuler::StartLine(const QPointF& scenePos, qreal width)
         y = rect().y() - mStrokeWidth /2;
     }
 
-    if (itemPos.x() < rect().x() + sLeftEdgeMargin)
-        itemPos.setX(rect().x() + sLeftEdgeMargin);
-    if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
-        itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
-
     itemPos.setY(y);
     itemPos = mapToScene(itemPos);
 
@@ -579,10 +574,6 @@ void UBGraphicsRuler::DrawLine(const QPointF& scenePos, qreal width)
     {
         y = rect().y() - mStrokeWidth /2;
     }
-    if (itemPos.x() < rect().x() + sLeftEdgeMargin)
-        itemPos.setX(rect().x() + sLeftEdgeMargin);
-    if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
-        itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
 
     itemPos.setY(y);
     itemPos = mapToScene(itemPos);
