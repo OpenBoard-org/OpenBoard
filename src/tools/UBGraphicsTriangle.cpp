@@ -1035,16 +1035,14 @@ void UBGraphicsTriangle::StartLine(const QPointF &scenePos, qreal width)
 
     qreal y;
 
-    if (mOrientation == 0 || mOrientation == 1) {
+    if (mOrientation == BottomLeft || mOrientation == BottomRight)
+    {
         y = rect().y() + rect().height() + mStrokeWidth / 2;
-    } else if (mOrientation == 2 || mOrientation == 3) {
+    }
+    else
+    {
         y = rect().y() - mStrokeWidth / 2;
     }
-
-    if (itemPos.x() < rect().x() + sLeftEdgeMargin)
-            itemPos.setX(rect().x() + sLeftEdgeMargin);
-    if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
-            itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
 
     itemPos.setY(y);
     itemPos = mapToScene(itemPos);
@@ -1060,16 +1058,14 @@ void UBGraphicsTriangle::DrawLine(const QPointF &scenePos, qreal width)
 
     qreal y;
 
-    if (mOrientation == 0 || mOrientation == 1) {
+    if (mOrientation == BottomLeft || mOrientation == BottomRight)
+    {
         y = rect().y() + rect().height() + mStrokeWidth / 2;
-    } else if (mOrientation == 2 || mOrientation == 3) {
+    }
+    else
+    {
         y = rect().y() - mStrokeWidth / 2;
     }
-
-    if (itemPos.x() < rect().x() + sLeftEdgeMargin)
-            itemPos.setX(rect().x() + sLeftEdgeMargin);
-    if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
-            itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
 
     itemPos.setY(y);
     itemPos = mapToScene(itemPos);
