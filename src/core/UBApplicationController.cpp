@@ -240,7 +240,7 @@ void UBApplicationController::adjustDisplayView()
         qreal hFactor = ((qreal)displaySize.width()) / ((qreal)pageSize.width());
         qreal vFactor = ((qreal)displaySize.height()) / ((qreal)pageSize.height());
 
-        systemDisplayViewScaleFactor = qMin(hFactor, vFactor);
+        systemDisplayViewScaleFactor = qMax(hFactor, vFactor);
 
         QTransform tr;
         qreal scaleFactor = systemDisplayViewScaleFactor
