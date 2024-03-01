@@ -769,5 +769,31 @@ void UBTabDockPalette::mouseReleaseEvent(QMouseEvent *event)
             dock->tabClicked(clickedTab);
         }
     }
+    else if (dock->mResized)
+    {
+        emit dock->pageSelectionChangedRequired();
+    }
     dock->mCanResize = false;
+}
+
+void UBTabDockPalette::tabletEvent(QTabletEvent *event)
+{
+    if (event->type() == QEvent::TabletPress)
+    {
+        QMouseEvent mouseEvent(QEvent::MouseButtonPress, event->posF(), event->button(), event->buttons(), event->modifiers());
+        mousePressEvent(&mouseEvent);
+        event->accept();
+    }
+    else if (event->type() == QEvent::TabletMove)
+    {
+        QMouseEvent mouseEvent(QEvent::MouseMove, event->posF(), event->button(), event->buttons(), event->modifiers());
+        mouseMoveEvent(&mouseEvent);
+        event->accept();
+    }
+    else if (event->type() == QEvent::TabletRelease)
+    {
+        QMouseEvent mouseEvent(QEvent::MouseButtonRelease, event->posF(), event->button(), event->buttons(), event->modifiers());
+        mouseReleaseEvent(&mouseEvent);
+        event->accept();
+    }
 }
