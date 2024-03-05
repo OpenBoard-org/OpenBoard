@@ -1449,18 +1449,22 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
 
                 if (textItemDelegate)
                 {
-                    if (rubberRect.width() > textItemDelegate->titleBarWidth())
+                    if (rubberRect.width() == 0)
+                    {
+                        textItem->setTextWidth(scene()->nominalSize().width() / mController->currentZoom() / 4.);
+                    }
+                    else if (rubberRect.width() <= (textItemDelegate->titleBarWidth() * mController->currentZoom()))
+                    {
+                        textItem->setTextWidth(textItemDelegate->titleBarWidth());
+                    }
+                    else // rubberRect.width() > (textItemDelegate->titleBarWidth() * mController->currentZoom())
                     {
                         textItem->setTextWidth(mapToScene(rubberRect).boundingRect().width());
-                    }
-                    else
-                    {
-                        textItem->setTextWidth(scene()->nominalSize().width() / mController->currentZoom() / 2.);
                     }
                 }
                 else
                 {
-                    textItem->setTextWidth(scene()->nominalSize().width() / mController->currentZoom() / 2.);
+                    textItem->setTextWidth(scene()->nominalSize().width() / mController->currentZoom() / 4.);
                 }
                 textItem->setFocus();
             }
