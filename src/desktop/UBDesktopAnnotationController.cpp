@@ -452,12 +452,13 @@ void UBDesktopAnnotationController::customCapture()
         if (customCaptureWindow.execute(getScreenPixmap()) == QDialog::Accepted)
         {
             QPixmap selectedPixmap = customCaptureWindow.getSelectedPixmap();
-            mCustomCaptureClicked = false;
             emit imageCaptured(selectedPixmap, false);
         }
 
+
         mDesktopPalette->appear();
 
+        mCustomCaptureClicked = false;
         mIsFullyTransparent = false;
         updateBackground();
     }
