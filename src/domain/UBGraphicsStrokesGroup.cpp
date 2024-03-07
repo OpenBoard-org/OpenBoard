@@ -155,24 +155,39 @@ UBItem* UBGraphicsStrokesGroup::deepCopy() const
     const_cast<UBGraphicsStrokesGroup*>(this)->setPos(0,0);
 
     QList<QGraphicsItem*> chl = childItems();
+    QHash<UBGraphicsStroke*, UBGraphicsStroke*> groupClone;
 
-    UBGraphicsStroke* newStroke = new UBGraphicsStroke;
-
-    foreach(QGraphicsItem *child, chl)
+    foreach (QGraphicsItem* child, chl)
     {
-        UBGraphicsPolygonItem *polygon = dynamic_cast<UBGraphicsPolygonItem*>(child);
+        UBGraphicsPolygonItem* polygon = dynamic_cast<UBGraphicsPolygonItem*>(child);
 
-        if (polygon){
-            UBGraphicsPolygonItem *polygonCopy = dynamic_cast<UBGraphicsPolygonItem*>(polygon->deepCopy());
+        if (polygon)
+        {
+            UBGraphicsPolygonItem* polygonCopy = dynamic_cast<UBGraphicsPolygonItem*>(polygon->deepCopy());
+
             if (polygonCopy)
             {
-                QGraphicsItem* pItem = dynamic_cast<QGraphicsItem*>(polygonCopy);
-                copy->addToGroup(pItem);
+                copy->addToGroup(polygonCopy);
                 polygonCopy->setStrokesGroup(copy);
-                polygonCopy->setStroke(newStroke);
+
+                UBGraphicsStroke* stroke = polygon->stroke();
+
+                if (stroke)
+                {
+                    UBGraphicsStroke* cloneStroke = groupClone.value(stroke);
+
+                    if (!cloneStroke)
+                    {
+                        cloneStroke = stroke->deepCopy();
+                        groupClone.insert(stroke, cloneStroke);
+                    }
+
+                    polygonCopy->setStroke(cloneStroke);
+                }
             }
         }
     }
+
     const_cast<UBGraphicsStrokesGroup*>(this)->setTransform(groupTransform);
     const_cast<UBGraphicsStrokesGroup*>(this)->setPos(groupPos);
     copy->setTransform(groupTransform);
