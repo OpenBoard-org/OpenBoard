@@ -144,7 +144,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
 
         void leaveEvent (QEvent* event);
 
-        void addItem(QGraphicsItem* item, const bool ignoreZLevel = false);
+        void addItem(QGraphicsItem* item);
         void removeItem(QGraphicsItem* item);
 
         void addItems(const QSet<QGraphicsItem*>& item);
@@ -169,7 +169,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
         UBGraphicsTextItem* addTextHtml(const QString &pString = QString(), const QPointF& pTopLeft = QPointF(0, 0));
 
         UBGraphicsGroupContainerItem *createGroup(QList<QGraphicsItem*> items);
-        void addGroup(UBGraphicsGroupContainerItem *groupItem, const bool ignoreZLevel = false);
+        void addGroup(UBGraphicsGroupContainerItem *groupItem);
 
         QGraphicsItem* setAsBackgroundObject(QGraphicsItem* item, bool pAdaptTransformation = false, bool expand = false);
         void unsetBackgroundObject();

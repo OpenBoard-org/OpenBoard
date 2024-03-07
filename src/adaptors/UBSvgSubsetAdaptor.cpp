@@ -680,7 +680,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
                             svgItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                             svgItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-                            mScene->addItem(svgItem, true);
+                            mScene->addItem(svgItem);
 
                             if (isBackground)
                                 mScene->setAsBackgroundObject(svgItem);
@@ -696,7 +696,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
                             pixmapItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                             pixmapItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-                            mScene->addItem(pixmapItem, true);
+                            mScene->addItem(pixmapItem);
 
                             if (isBackground)
                                 mScene->setAsBackgroundObject(pixmapItem);
@@ -714,7 +714,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
                     audioItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                     audioItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-                    mScene->addItem(audioItem, true);
+                    mScene->addItem(audioItem);
 
                     audioItem->show();
 
@@ -731,7 +731,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
                     videoItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                     videoItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-                    mScene->addItem(videoItem, true);
+                    mScene->addItem(videoItem);
 
                     videoItem->show();
                 }
@@ -744,7 +744,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
                     textItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                     textItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-                    mScene->addItem(textItem, true);
+                    mScene->addItem(textItem);
 
                     textItem->show();
                 }
@@ -754,7 +754,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
                 UBGraphicsCurtainItem* mask = curtainItemFromSvg();
                 if (mask)
                 {
-                    mScene->addItem(mask, true);
+                    mScene->addItem(mask);
                     mScene->registerTool(mask);
                 }
             }
@@ -764,7 +764,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
                 UBGraphicsRuler *ruler = rulerFromSvg();
                 if (ruler)
                 {
-                    mScene->addItem(ruler, true);
+                    mScene->addItem(ruler);
                     mScene->registerTool(ruler);
                 }
 
@@ -775,7 +775,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
                 UBGraphicsAxes *axes = axesFromSvg();
                 if (axes)
                 {
-                    mScene->addItem(axes, true);
+                    mScene->addItem(axes);
                     mScene->registerTool(axes);
                 }
 
@@ -785,7 +785,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
                 UBGraphicsCompass *compass = compassFromSvg();
                 if (compass)
                 {
-                    mScene->addItem(compass, true);
+                    mScene->addItem(compass);
                     mScene->registerTool(compass);
                 }
             }
@@ -794,7 +794,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
                 UBGraphicsProtractor *protractor = protractorFromSvg();
                 if (protractor)
                 {
-                    mScene->addItem(protractor, true);
+                    mScene->addItem(protractor);
                     mScene->registerTool(protractor);
                 }
             }
@@ -803,7 +803,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
                 UBGraphicsTriangle *triangle = triangleFromSvg();
                 if (triangle)
                 {
-                    mScene->addItem(triangle, true);
+                    mScene->addItem(triangle);
                     mScene->registerTool(triangle);
                 }
             }
@@ -812,7 +812,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
                 UBGraphicsCache* cache = cacheFromSvg();
                 if(cache)
                 {
-                    mScene->addItem(cache, true);
+                    mScene->addItem(cache);
                     mScene->registerTool(cache);
                     UBApplication::boardController->notifyCache(true);
                 }
@@ -853,7 +853,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
                         pdfItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                         pdfItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-                        mScene->addItem(pdfItem, true);
+                        mScene->addItem(pdfItem);
 
                         if (isBackground)
                             mScene->setAsBackgroundObject(pdfItem);
@@ -872,7 +872,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
 
                         appleWidgetItem->resize(foreignObjectWidth, foreignObjectHeight);
 
-                        mScene->addItem(appleWidgetItem, true);
+                        mScene->addItem(appleWidgetItem);
 
                         appleWidgetItem->show();
 
@@ -912,7 +912,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
 
                         w3cWidgetItem->resize(foreignObjectWidth, foreignObjectHeight);
 
-                        mScene->addItem(w3cWidgetItem, true);
+                        mScene->addItem(w3cWidgetItem);
 
                         w3cWidgetItem->show();
 
@@ -929,7 +929,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
                         textItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
                         textItem->activateTextEditor(false);
 
-                        mScene->addItem(textItem, true);
+                        mScene->addItem(textItem);
 
                         textItem->show();
                     }
@@ -986,7 +986,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
         QHashIterator<QString, UBGraphicsStrokesGroup*> iterator(mStrokesList);
         while (iterator.hasNext()) {
             iterator.next();
-            mScene->addItem(iterator.value(), true);
+            mScene->addItem(iterator.value());
         }
 
         mScene->setModified(saveSceneAfterLoading);
@@ -1095,7 +1095,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroupRoot()
                 UBGraphicsGroupContainerItem *curGroup = readGroup();
 
                 if (curGroup) {
-                    mScene->addGroup(curGroup, true);
+                    mScene->addGroup(curGroup);
                 }
             }
             else {
@@ -3349,7 +3349,7 @@ void UBSvgSubsetAdaptor::convertPDFObjectsToImages(std::shared_ptr<UBDocumentPro
                     UBGraphicsPixmapItem* pixmapItem = pdfItem->toPixmapItem();
 
                     scene->removeItem(pdfItem);
-                    scene->addItem(pixmapItem, true);
+                    scene->addItem(pixmapItem);
 
                 }
             }
@@ -3385,7 +3385,7 @@ void UBSvgSubsetAdaptor::convertSvgImagesToImages(std::shared_ptr<UBDocumentProx
                     UBGraphicsPixmapItem* pixmapItem = svgItem->toPixmapItem();
 
                     scene->removeItem(svgItem);
-                    scene->addItem(pixmapItem, true);
+                    scene->addItem(pixmapItem);
                 }
             }
 
