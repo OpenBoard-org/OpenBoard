@@ -575,7 +575,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
             }
             else if (name == "polygon" || name == "line")
             {
-                UBGraphicsPolygonItem* polygonItem = nullptr;
+                UBGraphicsPolygonItem* polygonItem = 0;
 
                 QString parentId = mXmlReader.attributes().value(mNamespaceUri, "parent").toString();
 
@@ -590,17 +590,12 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
                 if(parentId.isEmpty())
                     parentId = QUuid::createUuid().toString();
 
-                // strip UUID
-                parentId = parentId.replace("}","").replace("{","");
-
                 if (polygonItem)
                 {
                     polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
 
                     UBGraphicsStrokesGroup* group;
-
-                    if (!mStrokesList.contains(parentId))
-                    {
+                    if(!mStrokesList.contains(parentId)){
                         group = new UBGraphicsStrokesGroup();
                         mStrokesList.insert(parentId,group);
                         group->setTransform(polygonItem->transform());
@@ -612,12 +607,14 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
                     if (!currentStroke)
                         currentStroke = new UBGraphicsStroke();
 
-                    polygonItem->setStroke(currentStroke);
-                    polygonItem->setStrokesGroup(group);
-
-                    if (polygonItem->transform().isIdentity())
+                    if(polygonItem->transform().isIdentity())
                         polygonItem->setTransform(group->transform());
 
+                    group->addToGroup(polygonItem);
+                    polygonItem->setStrokesGroup(group);
+                    polygonItem->setStroke(currentStroke);
+
+                    polygonItem->show();
                     group->addToGroup(polygonItem);
                 }
             }
@@ -632,9 +629,6 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
 
                 if(parentId.isEmpty())
                     parentId = QUuid::createUuid().toString();
-
-                // strip UUID
-                parentId = parentId.replace("}","").replace("{","");
 
                 foreach(UBGraphicsPolygonItem* polygonItem, polygonItems)
                 {
@@ -662,7 +656,9 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
                     polygonItem->setStroke(currentStroke);
 
                     polygonItem->show();
+                    group->addToGroup(polygonItem);
                 }
+
             }
             else if (name == "image")
             {
@@ -1227,112 +1223,107 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(std::shared_ptr<UBDocum
 
     std::sort(items.begin(), items.end(), itemZIndexComp);
 
+    UBGraphicsStroke *openStroke = 0;
+
+    bool groupHoldsInfo = false;
+
     while (!items.empty())
     {
         QGraphicsItem *item = items.takeFirst();
 
-        // Is the item a polygon or a strokes group?
-        UBGraphicsPolygonItem* polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*> (item);
-        UBGraphicsStrokesGroup* strokesGroup = qgraphicsitem_cast<UBGraphicsStrokesGroup*> (item);
-
-        if (polygonItem && polygonItem->strokesGroup())
+        // Is the item a polygon?
+        UBGraphicsPolygonItem *polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*> (item);
+        if (polygonItem && polygonItem->isVisible())
         {
-            // polygon is part of a strokes group, so serialize group
-            strokesGroup = polygonItem->strokesGroup();
+            UBGraphicsStroke* currentStroke = polygonItem->stroke();
+            if (openStroke && (currentStroke != openStroke))
+            {
+                mXmlWriter.writeEndElement(); //g
+                openStroke = 0;
+                groupHoldsInfo = false;
+            }
+
+            bool firstPolygonInStroke = currentStroke  && !openStroke;
+
+            if (firstPolygonInStroke)
+            {
+                mXmlWriter.writeStartElement("g");
+                openStroke = currentStroke;
+
+                UBGraphicsStroke* stroke = dynamic_cast<UBGraphicsStroke* >(currentStroke);
+
+                if (stroke)
+                {
+                    QColor colorOnDarkBackground = polygonItem->colorOnDarkBackground();
+                    QColor colorOnLightBackground = polygonItem->colorOnLightBackground();
+                    UBGraphicsStrokesGroup * sg = polygonItem->strokesGroup();
+
+                    if (colorOnDarkBackground.isValid() && colorOnLightBackground.isValid() && sg)
+                    {
+                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "z-value"
+                                                  , QString("%1").arg(polygonItem->strokesGroup()->zValue()));
+
+                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
+                                                  , "fill-on-dark-background", colorOnDarkBackground.name());
+                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
+                                                  , "fill-on-light-background", colorOnLightBackground.name());
+
+                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(sg->uuid()));
+
+                        QVariant locked = sg->data(UBGraphicsItemData::ItemLocked);
+                        if (!locked.isNull() && locked.toBool())
+                            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "locked", xmlTrue);
+
+                        QVariant hiddenOnDisplay = sg->data(UBGraphicsItemData::ItemIsHiddenOnDisplay);
+                        if (!hiddenOnDisplay.isNull() && hiddenOnDisplay.toBool())
+                            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "hidden-on-display", xmlTrue);
+                        else
+                            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "hidden-on-display", xmlFalse);
+
+                        QVariant layer = sg->data(UBGraphicsItemData::ItemLayerType);
+                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "layer", QString("%1").arg(layer.toInt()));
+
+                        QTransform matrix = sg->sceneTransform();
+                        if (!matrix.isIdentity())
+                            mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
+
+                        qDebug() << "Attributes written";
+
+                        groupHoldsInfo = true;
+                    }
+                }
+
+                if (stroke && !stroke->hasPressure())
+                {
+
+                    strokeToSvgPolyline(stroke, groupHoldsInfo);
+
+                    //we can dequeue all polygons belonging to that stroke
+                    foreach(UBGraphicsPolygonItem* gi, stroke->polygons())
+                    {
+                        items.removeOne(gi);
+                    }
+                    continue;
+                }
+            }
+
+            UBGraphicsStroke* stroke = dynamic_cast<UBGraphicsStroke* >(currentStroke);
+
+            if (stroke && stroke->hasPressure())
+                polygonItemToSvgPolygon(polygonItem, groupHoldsInfo);
+
+            else if (polygonItem->isNominalLine())
+                polygonItemToSvgLine(polygonItem, groupHoldsInfo);
+
+
+            continue;
         }
 
-        if (strokesGroup && strokesGroup->isVisible() && !strokesGroup->childItems().empty())
+        if (openStroke)
         {
-            // serialize strokes group
-            mXmlWriter.writeStartElement("g");
-            bool groupHoldsInfo = false;
-
-            // get colors from first polygon in strokes group
-            const UBGraphicsPolygonItem* polygonItem = qgraphicsitem_cast<const UBGraphicsPolygonItem*>(strokesGroup->childItems().constFirst());
-
-            if (polygonItem)
-            {
-                QColor colorOnDarkBackground = polygonItem->colorOnDarkBackground();
-                QColor colorOnLightBackground = polygonItem->colorOnLightBackground();
-
-                if (colorOnDarkBackground.isValid() && colorOnLightBackground.isValid())
-                {
-                    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "z-value"
-                                              , QString("%1").arg(polygonItem->strokesGroup()->zValue()));
-
-                    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
-                                              , "fill-on-dark-background", colorOnDarkBackground.name());
-                    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri
-                                              , "fill-on-light-background", colorOnLightBackground.name());
-
-                    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(strokesGroup->uuid()));
-
-                    QVariant locked = strokesGroup->data(UBGraphicsItemData::ItemLocked);
-                    if (!locked.isNull() && locked.toBool())
-                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "locked", xmlTrue);
-
-                    QVariant hiddenOnDisplay = strokesGroup->data(UBGraphicsItemData::ItemIsHiddenOnDisplay);
-                    if (!hiddenOnDisplay.isNull() && hiddenOnDisplay.toBool())
-                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "hidden-on-display", xmlTrue);
-                    else
-                        mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "hidden-on-display", xmlFalse);
-
-                    QVariant layer = strokesGroup->data(UBGraphicsItemData::ItemLayerType);
-                    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "layer", QString("%1").arg(layer.toInt()));
-
-                    QTransform matrix = strokesGroup->sceneTransform();
-                    if (!matrix.isIdentity())
-                        mXmlWriter.writeAttribute("transform", toSvgTransform(matrix));
-
-                    qDebug() << "Attributes written";
-
-                    groupHoldsInfo = true;
-                }
-            }
-
-            // Now serialize strokes and items
-            QList<QGraphicsItem*> childItems = strokesGroup->childItems();
-
-            while (!childItems.empty())
-            {
-                UBGraphicsPolygonItem* polygonItem = qgraphicsitem_cast<UBGraphicsPolygonItem*> (childItems.takeFirst());
-
-                if (polygonItem && polygonItem->isVisible())
-                {
-                    // check: nominal line or polygon
-                    if (polygonItem->isNominalLine())
-                    {
-                        polygonItemToSvgLine(polygonItem, groupHoldsInfo);
-                    }
-                    else
-                    {
-                        polygonItemToSvgPolygon(polygonItem, groupHoldsInfo);
-                    }
-
-                    // dequeue polygon
-                    items.removeOne(polygonItem);
-                }
-            }
-
-            // dequeue strokesGroup
-            items.removeOne(strokesGroup);
-
             mXmlWriter.writeEndElement(); //g
-            continue;
-        }
-        else if (polygonItem && polygonItem->isVisible())
-        {
-            // independent polygon, not part of a strokes group
-            if (polygonItem->isNominalLine())
-            {
-                polygonItemToSvgLine(polygonItem, false);
-            }
-            else
-            {
-                polygonItemToSvgPolygon(polygonItem, false);
-            }
-
-            continue;
+            groupHoldsInfo = false;
+            openStroke = 0;
         }
 
         // Is the item a picture?
@@ -1460,6 +1451,12 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(std::shared_ptr<UBDocum
             persistGroupToDom(groupItem, &groupRoot, &groupDomDocument);
             continue;
         }
+    }
+
+    if (openStroke)
+    {
+        mXmlWriter.writeEndElement();
+        openStroke = 0;
     }
 
     //writing group data
@@ -2376,10 +2373,6 @@ void UBSvgSubsetAdaptor::UBSvgSubsetReader::graphicsItemFromSvg(QGraphicsItem* g
     if (hasZValue)
     {
         UBGraphicsItem::assignZValue(gItem, zValue);
-    }
-    else if (mGroupHasInfo)
-    {
-        UBGraphicsItem::assignZValue(gItem, mGroupZIndex);
     }
 
     UBItem* ubItem = dynamic_cast<UBItem*>(gItem);
