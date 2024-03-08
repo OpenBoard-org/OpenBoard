@@ -242,11 +242,14 @@ void UBApplication::setupTranslators(QStringList args)
 
         QString qtGuiTranslationPath = UBPlatformUtils::translationPath("qt_", language);
 
-
-        if(!QFile(qtGuiTranslationPath).exists()){
+        if(!QFile(qtGuiTranslationPath).exists())
+        {
             qtGuiTranslationPath = UBPlatformUtils::translationPath("qt_", language.left(2));
+
             if(!QFile(qtGuiTranslationPath).exists())
+            {
                 qtGuiTranslationPath = "";
+            }
         }
 
         QLocale locale(language);
@@ -263,17 +266,17 @@ void UBApplication::setupTranslators(QStringList args)
         }
         else
         {
-            loaded = mQtGuiTranslator->load(qtGuiTranslationPath);
+            loaded = mQtGuiTranslator->load(qtGuiTranslationPath, UBPlatformUtils::applicationResourcesDirectory() + "/" + "i18n", "_", ".qm");
         }
 
         if (loaded)
         {
-            qDebug() << "Loaded Qt translations";
+            qDebug() << "Loaded Qt Gui translations";
             installTranslator(mQtGuiTranslator);
         }
         else
         {
-            qDebug() << "Qt gui translation in " << language << " is not available";
+            qWarning() << "Qt gui translations in " << language << " are not available or could not be loaded";
         }
 
         // QtWebEngine translations
@@ -282,12 +285,12 @@ void UBApplication::setupTranslators(QStringList args)
 
         if (loaded)
         {
-            qDebug() << "Loaded QWebengine translations";
+            qDebug() << "Loaded QtWebengine translations";
             installTranslator(qtWebEngineTranslator);
         }
         else
         {
-            qDebug() << "Qt WebEngine translation in " << language << " is not available";
+            qWarning() << "QtWebEngine translations in " << language << " are not available or could not be loaded";
         }
     }
 
