@@ -359,6 +359,10 @@ class UBGraphicsItemDelegate : public QObject
         QList<DelegateButton*> mToolBarButtons;
         UBGraphicsToolBarItem* mToolBarItem;
 
+#ifdef DEBUG_Z_LEVEL
+        QGraphicsSimpleTextItem* mZLevelTextItem;
+#endif
+
 protected slots:
         virtual void setAsBackground();
         virtual void gotoContentSource();

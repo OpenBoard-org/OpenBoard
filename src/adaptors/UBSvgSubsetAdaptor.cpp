@@ -1034,6 +1034,18 @@ UBGraphicsGroupContainerItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::readGroup()
             group->setData(UBGraphicsItemData::ItemLayerType, QVariant(layerAsInt));
     }
 
+    auto ubZValue = mXmlReader.attributes().value(mNamespaceUri, "z-value");
+    if (!ubZValue.isNull())
+    {
+        bool ok;
+        qreal zValue = ubZValue.toString().toFloat(&ok);
+
+        if (ok)
+        {
+            group->setZValue(zValue);
+            group->setData(UBGraphicsItemData::ItemOwnZValue, QVariant(zValue));
+        }
+    }
 
     mXmlReader.readNext();
     while (!mXmlReader.atEnd())
@@ -1476,6 +1488,9 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(std::shared_ptr<UBDocum
                 if(curElement.hasAttribute("layer")){
                     mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri,"layer",curElement.attribute("layer"));
                 }
+                if(curElement.hasAttribute("z-value")){
+                    mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri,"z-value",curElement.attribute("z-value"));
+                }
 
                 QDomElement curSubElement = curElement.firstChildElement();
                 while (!curSubElement.isNull()) {
@@ -1528,6 +1543,10 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
                 curGroupElement.setAttribute("hidden-on-display", xmlFalse);
 
             curGroupElement.setAttribute("layer", group->data(UBGraphicsItemData::ItemLayerType).toString());
+
+            QString zs;
+            zs.setNum(group->zValue(), 'f'); // 'f' keeps precision
+            curGroupElement.setAttribute("z-value", zs);
         }
         curParent->appendChild(curGroupElement);
         foreach (QGraphicsItem *item, groupItem->childItems()) {
