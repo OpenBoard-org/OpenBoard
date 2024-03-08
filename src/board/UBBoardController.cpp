@@ -726,7 +726,9 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
         }
         duplicatedGroup = mActiveScene->createGroup(duplicatedItems);
         duplicatedGroup->setTransform(groupItem->transform());
+        groupItem->copyItemParameters(duplicatedGroup);
         groupItem->setSelected(false);
+
 
         retItem = dynamic_cast<UBGraphicsItem *>(duplicatedGroup);
 

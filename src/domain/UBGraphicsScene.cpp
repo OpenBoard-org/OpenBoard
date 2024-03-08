@@ -171,44 +171,34 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
     QMapIterator<qreal, QGraphicsItem*>iCurElement(sortedItems);
 #endif
 
-    if (dest == up) {
-        qDebug() << "item data zvalue= " << item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
-        if (iCurElement.findNext(item)) {
-            if (iCurElement.hasNext()) {
-                qreal nextZ = iCurElement.peekNext().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal();
-                UBGraphicsItem::assignZValue(iCurElement.peekNext().value(), item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
-                UBGraphicsItem::assignZValue(item, nextZ);
-
-                iCurElement.next();
-
-                while (iCurElement.hasNext() && iCurElement.peekNext().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal() == nextZ) {
-                    UBGraphicsItem::assignZValue(iCurElement.next().value(), nextZ);
-                }
-            }
-        }
-
-    } else if (dest == top) {
+    if (dest == up)
+    {
+        qreal nextZ = item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+        UBGraphicsItem::assignZValue(item, nextZ+1);
+    }
+    else if (dest == top)
+    {
         if (iCurElement.findNext(item)) {
             if (iCurElement.hasNext()) {
                 UBGraphicsItem::assignZValue(item, generateZLevel(item));
             }
         }
 
-    } else if (dest == down) {
-        iCurElement.toBack();
-        if (iCurElement.findPrevious(item)) {
-            if (iCurElement.hasPrevious()) {
-                qreal nextZ = iCurElement.peekPrevious().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal();
-                UBGraphicsItem::assignZValue(iCurElement.peekPrevious().value(), item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
-                UBGraphicsItem::assignZValue(item, nextZ);
-
-                while (iCurElement.hasNext() && iCurElement.peekNext().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal() == nextZ) {
-                        UBGraphicsItem::assignZValue(iCurElement.next().value(), nextZ);
-                }
-            }
+    }
+    else if (dest == down)
+    {
+        qreal currentZValue = item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+        if (currentZValue > -999999.0)
+        {
+            UBGraphicsItem::assignZValue(item, currentZValue-1);
         }
-
-    } else if (dest == bottom) {
+        else
+        {
+            UBApplication::showMessage(tr("Bottom layer limit reached"));
+        }
+    }
+    else if (dest == bottom)
+    {
         iCurElement.toBack();
         if (iCurElement.findPrevious(item)) {
             if (iCurElement.hasPrevious()) {
@@ -1400,10 +1390,15 @@ std::shared_ptr<UBGraphicsScene> UBGraphicsScene::sceneDeepCopy() const
                 groupCloned->resetTransform();
                 groupCloned->setPos(0, 0);
 
-                foreach (QGraphicsItem* eachItem, group->childItems())
+                foreach (QGraphicsItem* childItem, group->childItems())
                 {
-                    QGraphicsItem* copiedChild = dynamic_cast<QGraphicsItem*>(dynamic_cast<UBItem*>(eachItem)->deepCopy());
-                    groupCloned->addToGroup(copiedChild);
+                    UBItem* childUBItem = dynamic_cast<UBItem*>(childItem);
+                    if (childUBItem)
+                    {
+                        UBItem* childUBItemCopy = childUBItem->deepCopy();
+                        QGraphicsItem* copiedChild = dynamic_cast<QGraphicsItem*>(childUBItemCopy);
+                        groupCloned->addToGroup(copiedChild);
+                    }
                 }
 
                 bool locked = group->Delegate()->isLocked();
@@ -1783,9 +1778,9 @@ UBGraphicsGroupContainerItem *UBGraphicsScene::createGroup(QList<QGraphicsItem *
     return groupItem;
 }
 
-void UBGraphicsScene::addGroup(UBGraphicsGroupContainerItem *groupItem, const bool ignoreZLevel)
+void UBGraphicsScene::addGroup(UBGraphicsGroupContainerItem *groupItem)
 {
-    addItem(groupItem, ignoreZLevel);
+    addItem(groupItem);
 
     groupItem->setVisible(true);
     groupItem->setFocus();
@@ -1947,23 +1942,20 @@ UBGraphicsTextItem *UBGraphicsScene::addTextHtml(const QString &pString, const Q
     return textItem;
 }
 
-void UBGraphicsScene::addItem(QGraphicsItem* item, const bool ignoreZLevel)
+void UBGraphicsScene::addItem(QGraphicsItem* item)
 {
     UBCoreGraphicsScene::addItem(item);
 
-    if (!ignoreZLevel)
+    // the default z value is already set. This is the case when a svg file is read
+    if(item->zValue() == DEFAULT_Z_VALUE
+            || item->zValue() == UBZLayerController::errorNum())
     {
-        // the default z value is already set. This is the case when a svg file is read
-        if(item->zValue() == DEFAULT_Z_VALUE
-                || item->zValue() == UBZLayerController::errorNum()
-                || !mZLayerController->zLevelAvailable(item))
-        {
-            qreal zvalue = mZLayerController->generateZLevel(item);
-            UBGraphicsItem::assignZValue(item, zvalue);
-        }
-        else
-            notifyZChanged(item, item->zValue());
+        qreal zvalue = mZLayerController->generateZLevel(item);
+        UBGraphicsItem::assignZValue(item, zvalue);
     }
+
+    else
+        notifyZChanged(item, item->zValue());
 
     if (!mTools.contains(item))
       ++mItemCount;
