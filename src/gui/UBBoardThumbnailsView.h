@@ -55,6 +55,7 @@ public slots:
     void moveThumbnail(int from, int to);
     void removeThumbnail(int i);
     void updateThumbnails();
+    void adjustThumbnail();
 
     void longPressTimeout();
     void mousePressAndHoldEvent(QPoint pos);
@@ -95,6 +96,8 @@ private:
     int mLongPressInterval;
     QTimer mLongPressTimer;
     QPoint mLastPressedMousePos;
+
+    int mCurrentIndex{-1};
 };
 
 #endif // UBBOARDTHUMBNAILSVIEW_H
