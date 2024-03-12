@@ -1035,9 +1035,9 @@ void UBGraphicsTriangle::StartLine(const QPointF &scenePos, qreal width)
 
     qreal y;
 
-    if (mOrientation == 0 || mOrientation == 1) {
+    if (mOrientation == BottomLeft || mOrientation == BottomRight) {
         y = rect().y() + rect().height() + mStrokeWidth / 2;
-    } else if (mOrientation == 2 || mOrientation == 3) {
+    } else {
         y = rect().y() - mStrokeWidth / 2;
     }
 
@@ -1060,9 +1060,9 @@ void UBGraphicsTriangle::DrawLine(const QPointF &scenePos, qreal width)
 
     qreal y;
 
-    if (mOrientation == 0 || mOrientation == 1) {
+    if (mOrientation == BottomLeft || mOrientation == BottomRight) {
         y = rect().y() + rect().height() + mStrokeWidth / 2;
-    } else if (mOrientation == 2 || mOrientation == 3) {
+    } else {
         y = rect().y() - mStrokeWidth / 2;
     }
 

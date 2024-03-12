@@ -103,8 +103,6 @@ UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     mDocumentTreeStructureModel = new UBDocumentTreeModel(this);
     createDocumentProxiesStructure();
 
-    emit proxyListChanged();
-
     mThread = new QThread;
     mWorker = new UBPersistenceWorker();
     mWorker->moveToThread(mThread);
@@ -646,9 +644,7 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocument(const QStr
     } else if (processInteractiveReplacementDialog(doc) == QDialog::Accepted) {
         addDoc = true;
     }
-    if (addDoc) {
-        emit proxyListChanged();
-    } else {
+    if (!addDoc) {
         deleteDocument(doc);
         doc = 0;
     }
@@ -727,7 +723,6 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocumentFromDir(con
     }
     if (addDoc) {
         UBMetadataDcSubsetAdaptor::persist(doc);
-        emit proxyListChanged();
         emit documentCreated(doc);
     } else {
         deleteDocument(doc);
@@ -777,8 +772,6 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::duplicateDocument(std::sh
     persistDocumentMetadata(copy);
 
     copy->setPageCount(sceneCount(copy));
-
-    emit proxyListChanged();
 
     emit documentCreated(copy);
 
