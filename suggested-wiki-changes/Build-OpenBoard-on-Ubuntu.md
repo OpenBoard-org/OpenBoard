@@ -2,9 +2,13 @@ These instructions were written for and tested on Ubuntu 22.04 but should at lea
 
 ## Prepare your environment
 ### Install Qt
-We'll use Ubuntu's default version of Qt (Qt 5.15.3).
+We'll use the default version of Qt in Ubuntu 20.04 LTS and 2022.04 LTS (Qt 5.15.X).
 
 If you want or need to install another version of Qt, please refer to [this section](#install-another-version-of-qt)
+
+There are also 
+[experimental instructions in a separate document for building against Qt6](Build-OpenBoard-on-Ubuntu-with-Qt6.md)
+for future Ubuntu versions where Qt5 passes out of support and/or becomes deprecated in Ubuntu.
 ### Install qmake
 
 ```
