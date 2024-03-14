@@ -40,7 +40,7 @@ sudo apt install build-essential libgl1-mesa-dev libssl-dev libpoppler-dev libpo
 After this installation has completed, run the following command to verify the version number and home directory for the Ubuntu Qt build:
 
 ```
-qmake 6 -v
+qmake6 -v
 ```
 
 on the system(s) where this process has been tested to date this command reports something like:
