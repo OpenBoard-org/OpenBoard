@@ -77,8 +77,15 @@ instead
 
 ## Compile OpenBoard
 
-Once the installations and git clone operation are complete, you should be
-able to continue by following
 
-[the compile instructions in OpenBoard's original document](Build-OpenBoard-on-Ubuntu.md#compile-openboard)
+
+Once the installations and git clone operation are complete, you should be
+able to continue by running the following commands:
+```
+qmake6 OpenBoard.pro
+make
+``` 
+
+and then continuing with
+[the compile instructions in OpenBoard's original document](Build-OpenBoard-on-Ubuntu.md#compile-openboard).
 
