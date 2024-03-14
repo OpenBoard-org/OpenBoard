@@ -10,11 +10,7 @@ CONFIG += debug_and_release \
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x050900
 DEFINES += QT_DEPRECATED_WARNINGS
 
-VERSION_MAJ = 1
-VERSION_MIN = 7
-VERSION_PATCH = 0
-VERSION_TYPE = r # a = alpha, b = beta, rc = release candidate, r = release, other => error
-VERSION_BUILD = 231102
+include(version.txt)
 
 VERSION = "$${VERSION_MAJ}.$${VERSION_MIN}.$${VERSION_PATCH}-$${VERSION_TYPE}.$${VERSION_BUILD}"
 
@@ -466,8 +462,8 @@ linux-g++* {
     LIBS += -lX11
 
     greaterThan(QT_MAJOR_VERSION, 5) {
-        LIBS += -lquazip6
-        INCLUDEPATH += "/usr/include/quazip6"
+        LIBS += -lquazip1-qt6
+        INCLUDEPATH += "/usr/include/QuaZip-Qt6-1.4/quazip"
     } else {
         LIBS += -lquazip5
         INCLUDEPATH += "/usr/include/quazip5"
