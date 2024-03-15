@@ -29,6 +29,7 @@ STRIP=/usr/bin/strip
 PLISTBUDDY=/usr/libexec/PlistBuddy
 ICEBERG=/usr/local/bin/freeze
 LRELEASE=$BASE_QT_DIR/bin/lrelease
+LCONVERT=$BASE_QT_DIR/bin/lconvert
 
 # Directories
 BUILD_DIR="$PROJECT_ROOT/build/macx/release"
@@ -76,7 +77,8 @@ do
         if [ ! -z $directoryLanguageCode ]; then
             if [[ $eachDirectory == *".lproj"* && $eachDirectory != "empty.lproj" && $directoryLanguageCode == *$languageCode* ]]; then
                 # OpenBoard translation found for qt translation file
-                cp $eachTranslation $basicDir/$eachDirectory
+                # cp $eachTranslation $basicDir/$eachDirectory
+                $LCONVERT -o $basicDir/$eachDirectory/qt_$languageCode.qm $BASE_QT_TRANSLATIONS_DIRECTORY/qtbase_$languageCode.qm $BASE_QT_TRANSLATIONS_DIRECTORY/qtmultimedia_$languageCode.qm
                 if [ $directoryLanguageCode != $languageCode ]; then
                     # handling fr and fr_CH code.
                     mv $basicDir/$eachDirectory/qt_$languageCode.qm $basicDir/$eachDirectory/qt_$directoryLanguageCode.qm
