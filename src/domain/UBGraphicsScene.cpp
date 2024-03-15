@@ -173,8 +173,11 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
 
     if (dest == up)
     {
-        qreal nextZ = item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
-        UBGraphicsItem::assignZValue(item, nextZ+1);
+        qreal currentZValue = item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+        UBGraphicsItem::assignZValue(item, currentZValue + 1);
+
+        //show a human-readable zValue so the user can adapt his objects zvalues easily
+        UBApplication::showMessage(QString::number(1000000 + currentZValue + 1));
     }
     else if (dest == top)
     {
@@ -191,6 +194,9 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
         if (currentZValue > -999999.0)
         {
             UBGraphicsItem::assignZValue(item, currentZValue-1);
+
+            //show a human-readable zValue so the user can adapt his objects zvalues easily
+            UBApplication::showMessage(QString::number(1000000 + currentZValue - 1));
         }
         else
         {
