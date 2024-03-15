@@ -196,37 +196,40 @@ std::shared_ptr<UBDocumentProxy> UBDocumentManager::importFile(const QFile& pFil
                                                                                       , 0
                                                                                       , true);
 
-                QUuid uuid = QUuid::createUuid();
-                QString filepath = pFile.fileName();
-                if (importAdaptor->folderToCopy() != "")
+                if (document)
                 {
-                    bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(document, pFile.fileName(), importAdaptor->folderToCopy() , uuid, filepath);
-                    if (!b)
+                    QUuid uuid = QUuid::createUuid();
+                    QString filepath = pFile.fileName();
+                    if (importAdaptor->folderToCopy() != "")
                     {
-                        UBApplication::setDisabled(false);
-                        return NULL;
+                        bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(document, pFile.fileName(), importAdaptor->folderToCopy() , uuid, filepath);
+                        if (!b)
+                        {
+                            UBApplication::setDisabled(false);
+                            return NULL;
+                        }
                     }
+
+                    QList<UBGraphicsItem*> pages = importAdaptor->import(uuid, filepath);
+                    int nPage = 0;
+                    int pageIndex = 0;
+                    foreach(UBGraphicsItem* page, pages)
+                    {
+
+                        UBApplication::showMessage(tr("Inserting page %1 of %2").arg(++nPage).arg(pages.size()), true);
+    #ifdef Q_WS_MACX
+                        //Workaround for issue 912
+                        QApplication::processEvents();
+    #endif
+                        std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(document, pageIndex);
+                        importAdaptor->placeImportedItemToScene(scene, page);
+                        UBPersistenceManager::persistenceManager()->persistDocumentScene(document, scene, pageIndex);
+                        pageIndex++;
+                    }
+
+                    UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
+                    UBApplication::showMessage(tr("Import successful."));
                 }
-
-                QList<UBGraphicsItem*> pages = importAdaptor->import(uuid, filepath);
-                int nPage = 0;
-                int pageIndex = 0;
-                foreach(UBGraphicsItem* page, pages)
-                {
-
-                    UBApplication::showMessage(tr("Inserting page %1 of %2").arg(++nPage).arg(pages.size()), true);
-#ifdef Q_WS_MACX
-                    //Workaround for issue 912
-                    QApplication::processEvents();
-#endif
-                    std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(document, pageIndex);
-                    importAdaptor->placeImportedItemToScene(scene, page);
-                    UBPersistenceManager::persistenceManager()->persistDocumentScene(document, scene, pageIndex);
-                    pageIndex++;
-                }
-
-                UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
-                UBApplication::showMessage(tr("Import successful."));
             }
 
             UBApplication::setDisabled(false);
