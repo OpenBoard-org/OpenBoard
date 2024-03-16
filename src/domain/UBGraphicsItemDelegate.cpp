@@ -177,6 +177,9 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
     , mToolBarItem(NULL)
     , mMimeData(NULL)
     , mHideOnDisplayWhenSelectedAction(nullptr)
+#ifdef DEBUG_Z_LEVEL
+    , mZLevelTextItem(nullptr)
+#endif
 {
     setUBFlags(fls);
     connect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged()));
@@ -321,9 +324,27 @@ QVariant UBGraphicsItemDelegate::itemChange(QGraphicsItem::GraphicsItemChange ch
                 positionHandles();
                 break;
             }
+
             break;
         }
     }
+
+#ifdef DEBUG_Z_LEVEL
+    if (change == QGraphicsItem::ItemZValueHasChanged)
+    {
+        qreal newZ = qvariant_cast<double>(value);
+
+        qDebug() << newZ;
+
+        if (!mZLevelTextItem)
+            mZLevelTextItem = new QGraphicsSimpleTextItem(QString("Z: %1").arg(newZ), mDelegated);
+        else
+            mZLevelTextItem->setText(QString("Z: %1").arg(newZ));
+
+        mZLevelTextItem->setPos(mDelegated->boundingRect().bottomRight() + QPointF(10, 10));
+        mZLevelTextItem->setBrush(QColor("red"));
+    }
+#endif
 
     return value;
 }

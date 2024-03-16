@@ -396,5 +396,6 @@
         <file>images/addToFavorites.png</file>
         <file>images/removeFromFavorites.png</file>
         <file>images/toolbar/tip.png</file>
+        <file>images/moveTool.svg</file>
     </qresource>
 </RCC>

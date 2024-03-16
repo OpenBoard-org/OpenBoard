@@ -43,6 +43,7 @@
 const QRectF UBGraphicsProtractor::sDefaultRect = QRectF(-250, -250, 500, 500);
 const qreal UBGraphicsProtractor::minRadius = 70;
 
+
 UBGraphicsProtractor::UBGraphicsProtractor()
         : QGraphicsEllipseItem(sDefaultRect)
         , mCurrentTool(None)
@@ -82,6 +83,7 @@ UBGraphicsProtractor::UBGraphicsProtractor()
 
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::CppTool)); //Necessary to set if we want z value to be assigned correctly
     setFlag(QGraphicsItem::ItemIsSelectable, false);
+    setFlag(QGraphicsItem::ItemIsFocusable, true); //needed to recieve key events
 
     mCloseSvgItem->setPos(closeButtonRect().topLeft());
     mResetSvgItem->setPos(resetButtonRect().topLeft());
@@ -89,7 +91,6 @@ UBGraphicsProtractor::UBGraphicsProtractor()
     mMarkerSvgItem->setPos(markerButtonRect().topLeft());
     mRotateSvgItem->setPos(rotateButtonRect().topLeft());
 }
-
 
 void UBGraphicsProtractor::paint(QPainter *painter, const QStyleOptionGraphicsItem *styleOption, QWidget *widget)
 {
@@ -101,12 +102,14 @@ void UBGraphicsProtractor::paint(QPainter *painter, const QStyleOptionGraphicsIt
     QPen pen_(drawColor());
     pen_.setWidth(0); // Line width = 1 pixel regardless of scale / zoom
     painter->setPen(pen_);
-    
+    painter->setRenderHint(QPainter::Antialiasing, true);
+
     painter->setFont(QFont("Arial", 11));
     painter->setBrush(fillBrush());
     painter->drawPie(QRectF(rect().center().x() - radius(), rect().center().y() - radius(), 2 * radius(), 2 * radius()), mStartAngle * 16, mSpan * 16);
     paintGraduations(painter);
     paintButtons(painter);
+    paintHelp(painter);
     paintAngleMarker(painter);
 
     painter->restore();
@@ -180,6 +183,31 @@ QPainterPath UBGraphicsProtractor::shape() const
     return path;
 }
 
+void UBGraphicsProtractor::keyPressEvent(QKeyEvent *event)
+{
+    QGraphicsItem::keyPressEvent(event);
+    switch (event->key())
+    {
+    case Qt::Key_Up:
+        moveBy(0, -1);
+        event->accept();
+        break;
+    case Qt::Key_Down:
+        moveBy(0, 1);
+        event->accept();
+        break;
+    case Qt::Key_Left:
+        moveBy(-1, 0);
+        event->accept();
+        break;
+    case Qt::Key_Right:
+        moveBy(1, 0);
+        event->accept();
+        break;
+     default:
+        break;
+    }
+}
 
 void UBGraphicsProtractor::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -463,6 +491,32 @@ void UBGraphicsProtractor::paintGraduations(QPainter *painter)
     }
 
     painter->restore();
+}
+
+void UBGraphicsProtractor::paintHelp(QPainter *painter)
+{
+    if (hasFocus())
+    {
+        //help message to aknowledge the user that the tool can be moved with the arrow keys
+        QFont f("Arial", 9);
+        painter->setFont(f);
+        painter->setPen(drawColor());
+        QRectF r = rect();
+        r.setTop(r.top() +  + f.pointSize());
+        painter->setPen(drawColor());
+        painter->setFont(QFont("Arial",9));
+        QFontMetricsF fontMetrics(painter->font());
+
+        painter->drawText(r, Qt::AlignCenter, tr("use arrow keys for precise moves"));
+
+        mMoveToolSvgItem->setVisible(true);
+        mMoveToolSvgItem->setPos(r.center().x() - (mMoveToolSvgItem->boundingRect().width()/2), r.center().y() - fontMetrics.height() - mMoveToolSvgItem->boundingRect().height() - 5);
+    }
+    else
+    {
+        mMoveToolSvgItem->setVisible(false);
+    }
+
 }
 
 

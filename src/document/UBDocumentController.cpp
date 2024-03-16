@@ -3759,41 +3759,40 @@ void UBDocumentController::updateActions()
 
     switch (static_cast<int>(deletionForSelection)) {
     case MoveToTrash :
+        mMainWindow->actionDelete->setText(tr("Trash"));
+        mMainWindow->actionDelete->setToolTip(tr("Trash"));
         if (mSelectionType == Folder)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-folder.png"));
-            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else if (mSelectionType == Document)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document.png"));
-            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else if (mSelectionType == Page)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document-page.png"));
-            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else
         {//can happen ?
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash.png"));
-            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         break;
     case DeletePage :
         mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document-page.png"));
         mMainWindow->actionDelete->setText(tr("Trash"));
+        mMainWindow->actionDelete->setToolTip(tr("Trash"));
         break;
     case CompleteDelete :
+        mMainWindow->actionDelete->setText(tr("Delete"));
+        mMainWindow->actionDelete->setToolTip(tr("Delete"));
         if (mSelectionType == Folder)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-folder.png"));
-            mMainWindow->actionDelete->setText(tr("Delete"));
         }
         else
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-document.png"));
-            mMainWindow->actionDelete->setText(tr("Delete"));
         }
         break;
     case EmptyFolder :
@@ -3801,33 +3800,35 @@ void UBDocumentController::updateActions()
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-my-documents.png"));
             mMainWindow->actionDelete->setText(tr("Empty"));
+            mMainWindow->actionDelete->setToolTip(tr("Empty"));
         }
         else
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-folder.png"));
             mMainWindow->actionDelete->setText(tr("Delete"));
+            mMainWindow->actionDelete->setToolTip(tr("Delete"));
         }
         break;
     case EmptyTrash :
         mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-empty.png"));
         mMainWindow->actionDelete->setText(tr("Empty"));
+        mMainWindow->actionDelete->setToolTip(tr("Empty"));
         break;
     case NoDeletion :
     default:
+        mMainWindow->actionDelete->setText(tr("Trash"));
+        mMainWindow->actionDelete->setToolTip(tr("Trash"));
         if (mSelectionType == Folder)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-folder.png"));
-            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else if (mSelectionType == Document)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-delete-document.png"));
-            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         else if (mSelectionType == Page)
         {
             mMainWindow->actionDelete->setIcon(QIcon(":/images/trash-document-page.png"));
-            mMainWindow->actionDelete->setText(tr("Trash"));
         }
         break;
     }

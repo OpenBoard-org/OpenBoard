@@ -171,44 +171,34 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
     QMapIterator<qreal, QGraphicsItem*>iCurElement(sortedItems);
 #endif
 
-    if (dest == up) {
-        qDebug() << "item data zvalue= " << item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
-        if (iCurElement.findNext(item)) {
-            if (iCurElement.hasNext()) {
-                qreal nextZ = iCurElement.peekNext().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal();
-                UBGraphicsItem::assignZValue(iCurElement.peekNext().value(), item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
-                UBGraphicsItem::assignZValue(item, nextZ);
-
-                iCurElement.next();
-
-                while (iCurElement.hasNext() && iCurElement.peekNext().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal() == nextZ) {
-                    UBGraphicsItem::assignZValue(iCurElement.next().value(), nextZ);
-                }
-            }
-        }
-
-    } else if (dest == top) {
+    if (dest == up)
+    {
+        qreal nextZ = item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+        UBGraphicsItem::assignZValue(item, nextZ+1);
+    }
+    else if (dest == top)
+    {
         if (iCurElement.findNext(item)) {
             if (iCurElement.hasNext()) {
                 UBGraphicsItem::assignZValue(item, generateZLevel(item));
             }
         }
 
-    } else if (dest == down) {
-        iCurElement.toBack();
-        if (iCurElement.findPrevious(item)) {
-            if (iCurElement.hasPrevious()) {
-                qreal nextZ = iCurElement.peekPrevious().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal();
-                UBGraphicsItem::assignZValue(iCurElement.peekPrevious().value(), item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
-                UBGraphicsItem::assignZValue(item, nextZ);
-
-                while (iCurElement.hasNext() && iCurElement.peekNext().value()->data(UBGraphicsItemData::ItemOwnZValue).toReal() == nextZ) {
-                        UBGraphicsItem::assignZValue(iCurElement.next().value(), nextZ);
-                }
-            }
+    }
+    else if (dest == down)
+    {
+        qreal currentZValue = item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
+        if (currentZValue > -999999.0)
+        {
+            UBGraphicsItem::assignZValue(item, currentZValue-1);
         }
-
-    } else if (dest == bottom) {
+        else
+        {
+            UBApplication::showMessage(tr("Bottom layer limit reached"));
+        }
+    }
+    else if (dest == bottom)
+    {
         iCurElement.toBack();
         if (iCurElement.findPrevious(item)) {
             if (iCurElement.hasPrevious()) {
@@ -302,11 +292,15 @@ void UBZLayerController::shiftStoredZValue(QGraphicsItem *item, qreal zValue)
 /**
  * @brief Returns true if the zLevel is not used by any item on the scene, or false if so.
  */
-bool UBZLayerController::zLevelAvailable(qreal z)
+bool UBZLayerController::zLevelAvailable(QGraphicsItem* item)
 {
-    foreach(QGraphicsItem* it, mScene->items()) {
-        if (it->zValue() == z)
-            return false;
+    foreach(QGraphicsItem* it, mScene->items())
+    {
+        if (item != it)
+        {
+            if (it->zValue() == item->zValue())
+                return false;
+        }
     }
 
     return true;
@@ -1041,7 +1035,9 @@ void UBGraphicsScene::eraseLineTo(const QPointF &pEndPoint, const qreal &pWidth)
         else if (eraserPath.intersects(itemPainterPath))
         {
             itemPainterPath.setFillRule(Qt::WindingFill);
-            QPainterPath newPath = itemPainterPath.subtracted(eraserPath);
+            // reverse eraserPath so that it has the opposite orientation of the stroke
+            // necessary for punching a hole with WindingFill rule
+            QPainterPath newPath = itemPainterPath.subtracted(eraserPath.toReversed());
             intersectedItems << pi;
             intersectedPolygons << newPath.simplified().toFillPolygons(pi->sceneTransform().inverted());
         }
@@ -1394,10 +1390,15 @@ std::shared_ptr<UBGraphicsScene> UBGraphicsScene::sceneDeepCopy() const
                 groupCloned->resetTransform();
                 groupCloned->setPos(0, 0);
 
-                foreach (QGraphicsItem* eachItem, group->childItems())
+                foreach (QGraphicsItem* childItem, group->childItems())
                 {
-                    QGraphicsItem* copiedChild = dynamic_cast<QGraphicsItem*>(dynamic_cast<UBItem*>(eachItem)->deepCopy());
-                    groupCloned->addToGroup(copiedChild);
+                    UBItem* childUBItem = dynamic_cast<UBItem*>(childItem);
+                    if (childUBItem)
+                    {
+                        UBItem* childUBItemCopy = childUBItem->deepCopy();
+                        QGraphicsItem* copiedChild = dynamic_cast<QGraphicsItem*>(childUBItemCopy);
+                        groupCloned->addToGroup(copiedChild);
+                    }
                 }
 
                 bool locked = group->Delegate()->isLocked();
@@ -1947,8 +1948,7 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
 
     // the default z value is already set. This is the case when a svg file is read
     if(item->zValue() == DEFAULT_Z_VALUE
-            || item->zValue() == UBZLayerController::errorNum()
-            || !mZLayerController->zLevelAvailable(item->zValue()))
+            || item->zValue() == UBZLayerController::errorNum())
     {
         qreal zvalue = mZLayerController->generateZLevel(item);
         UBGraphicsItem::assignZValue(item, zvalue);

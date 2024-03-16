@@ -30,7 +30,9 @@
 #include "UBEmbedController.h"
 
 #include "board/UBBoardController.h"
+#include "board/UBBoardPaletteManager.h"
 #include "board/UBDrawingController.h"
+#include "board/UBFeaturesController.h"
 
 #include "core/UBApplication.h"
 
@@ -259,12 +261,16 @@ void UBEmbedController::importWidgetInLibrary(const QDir& pSourceDir) const
         UBApplication::applicationController->showBoard();
     }
 
+
     if (UBApplication::boardController &&
         UBApplication::boardController->activeScene())
     {
-        UBApplication::boardController->activeScene()->addWidget(QUrl::fromLocalFile(widgetLibraryPath));
+        UBApplication::boardController->addW3cWidget(QUrl::fromLocalFile(widgetLibraryPath), QPointF());
         UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
     }
+
+    UBFeaturesController* featuresController = UBApplication::boardController->paletteManager()->featuresWidget()->getFeaturesController();
+    featuresController->addUserWidgetToLibrary(widgetLibraryPath, mTrapFlashUi->widgetNameLineEdit->text());
 }
 
 

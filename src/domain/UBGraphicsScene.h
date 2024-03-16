@@ -100,7 +100,7 @@ public:
     void setLayerType(QGraphicsItem *pItem, itemLayerType::Enum pNewType);
     void shiftStoredZValue(QGraphicsItem *item, qreal zValue);
 
-    bool zLevelAvailable(qreal z);
+    bool zLevelAvailable(QGraphicsItem* item);
 
 private:
     ScopeMap scopeMap;

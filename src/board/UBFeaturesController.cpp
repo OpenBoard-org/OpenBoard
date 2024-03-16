@@ -736,6 +736,24 @@ void UBFeaturesController::removeFromFavorite( const QUrl &path, bool deleteManu
     }
 }
 
+void UBFeaturesController::addUserWidgetToLibrary(const QString &url, const QString &name)
+{
+    UBFeature webFolderFeature(appPath + "/" + tr("Web"), getIcon(appPath + "/" + tr("Web"), FEATURE_FOLDER), tr("Web"), QUrl::fromLocalFile(mUserInteractiveDirectoryPath.toLocalFile() + "/Web"), FEATURE_FOLDER);
+    if (!getFeatures()->contains(webFolderFeature))
+    {
+        featuresModel->addItem(webFolderFeature);
+    }
+
+    UBFeature userWidget(appPath + "/" + tr("Web") + "/" + name, QImage(url + "/icon.png"), name, QUrl::fromLocalFile(url), fileTypeFromUrl(url));
+
+    if (!userWidget.getVirtualPath().isEmpty() && !userWidget.getVirtualPath().isNull())
+    {
+        featuresModel->addItem(userWidget);
+    }
+
+    refreshModels();
+}
+
 void UBFeaturesController::storeAsFavorite(UBFeature feature)
 {
     favoriteSet->insert( feature.getFullPath());

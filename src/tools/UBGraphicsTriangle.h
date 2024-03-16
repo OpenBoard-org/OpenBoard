@@ -134,13 +134,16 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
 
         QCursor    flipCursor() const;
 
+        virtual void    keyPressEvent(QKeyEvent *event);
         virtual void    mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual void    mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         virtual void    mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
         virtual void    hoverEnterEvent(QGraphicsSceneHoverEvent *event);
         virtual void    hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
         virtual void    hoverMoveEvent(QGraphicsSceneHoverEvent *event);
+
         void paintGraduations(QPainter *painter);
+        void paintHelp(QPainter *painter);
 
     private:
 

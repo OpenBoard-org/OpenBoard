@@ -239,8 +239,7 @@ QMap<QString, QVariant> UBMetadataDcSubsetAdaptor::load(QString pPath)
 
     if (!sizeFound)
     {
-        QSize docSize = UBApplication::displayManager->screenSize(ScreenRole::Control);
-        docSize.setHeight(docSize.height() - 70); // 70 = toolbar height
+        QSize docSize = UBSettings::settings()->pageSize->get().toSize();
 
         qWarning() << "Document size not found, using default view size" << docSize;
 

@@ -83,6 +83,7 @@ UBPersistenceManager * UBPersistenceManager::sSingleton = 0;
 UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     : QObject(pParent)
     , mHasPurgedDocuments(false)
+    , mIsWorkerFinished(false)
     , mReplaceDialogReturnedReplaceAll(false)
     , mReplaceDialogReturnedCancel(false)
 {
@@ -1186,7 +1187,7 @@ void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy>
 
 std::shared_ptr<UBDocumentProxy> UBPersistenceManager::persistDocumentMetadata(std::shared_ptr<UBDocumentProxy> pDocumentProxy, bool forceImmediateSaving)
 {
-    cleanupDocument(pDocumentProxy);
+    //cleanupDocument(pDocumentProxy);
 
     if (forceImmediateSaving)
     {
@@ -1567,12 +1568,12 @@ void UBPersistenceManager::cleanupDocument(std::shared_ptr<UBDocumentProxy> pDoc
                     // unreferenced file or directory
                     if (entry.isDir())
                     {
-                        qDebug() << "Deleting unreferenced directory" << filename;
+                        qWarning() << "Deleting unreferenced directory" << filename;
                         UBFileSystemUtils::deleteDir(absoluteFilePath);
                     }
                     else
                     {
-                        qDebug() << "Deleting unreferenced file" << filename;
+                        qWarning() << "Deleting unreferenced file" << filename;
                         UBFileSystemUtils::deleteFile(absoluteFilePath);
                     }
                 }

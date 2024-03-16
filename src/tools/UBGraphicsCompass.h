@@ -62,11 +62,12 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
         // Events
-        virtual void   mousePressEvent(QGraphicsSceneMouseEvent *event);
+        virtual void    keyPressEvent(QKeyEvent *event);
+        virtual void    mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual void    mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-        virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-        virtual void   hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-        virtual void   hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+        virtual void    mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+        virtual void    hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+        virtual void    hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
         virtual void    hoverMoveEvent(QGraphicsSceneHoverEvent *event);
 
     private slots:
@@ -121,6 +122,7 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         bool mDrewCircle;
         QGraphicsSvgItem* mCloseSvgItem;
         QGraphicsSvgItem* mResizeSvgItem;
+        QGraphicsSvgItem* mMoveToolSvgItem;
         qreal mAntiScaleRatio;
         bool mDrewCenterCross;
 
@@ -156,6 +158,7 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         static const QColor    sDarkBackgroundEdgeFillColor;
         static const QColor  sDarkBackgroundMiddleFillColor;
         static const QColor        sDarkBackgroundDrawColor;
+
         static const int sDisplayRadiusOnPencilArmMinLength = 300;
         static const int        sDisplayRadiusUnitMinLength = 250;
 };

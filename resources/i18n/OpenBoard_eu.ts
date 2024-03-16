@@ -1499,7 +1499,7 @@ Segurtasun egiaztapena gainidatzi eta jarraitu nahi duzu?</translation>
         <source>Remove Page</source>
         <translation type="vanished">Kendu orria</translation>
     </message>
-    <message numerus="yes">
+    <message>
         <source>Are you sure you want to remove %n page(s) from the selected document &apos;%1&apos;?</source>
         <translation type="vanished">Ziur zaude %n orri kendu nahi duzula &apos;%1&apos; dokumentutik?</translation>
     </message>

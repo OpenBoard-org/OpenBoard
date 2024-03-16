@@ -73,6 +73,7 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
 
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
+        virtual void   keyPressEvent (QKeyEvent *event);
         virtual void   mousePressEvent (QGraphicsSceneMouseEvent *event);
         virtual void    mouseMoveEvent (QGraphicsSceneMouseEvent *event);
         virtual void mouseReleaseEvent (QGraphicsSceneMouseEvent *event);
@@ -81,8 +82,9 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
         virtual void    hoverMoveEvent (QGraphicsSceneHoverEvent *event);
         virtual QPainterPath shape() const;
         QRectF boundingRect() const;
-        void paintGraduations(QPainter *painter);        
 
+        void paintGraduations(QPainter *painter);
+        void paintHelp(QPainter *painter);
 
     private:
         // Helpers

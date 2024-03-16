@@ -39,8 +39,8 @@
 #include "core/memcheck.h"
 
 const QRect UBGraphicsTriangle::sDefaultRect =  QRect(0, 0, 800, 400);
-const UBGraphicsTriangle::UBGraphicsTriangleOrientation UBGraphicsTriangle::sDefaultOrientation =
-UBGraphicsTriangle::BottomLeft;
+const UBGraphicsTriangle::UBGraphicsTriangleOrientation UBGraphicsTriangle::sDefaultOrientation =UBGraphicsTriangle::BottomLeft;
+
 
 UBGraphicsTriangle::UBGraphicsTriangle()
     : UBAbstractDrawRuler()
@@ -69,12 +69,16 @@ UBGraphicsTriangle::UBGraphicsTriangle()
     mRotateSvgItem->setVisible(false);
     mRotateSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
 
+    mMoveToolSvgItem = new QGraphicsSvgItem(":/images/moveTool.svg", this);
+    mMoveToolSvgItem->setVisible(false);
+    mMoveToolSvgItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Control));
+
     setData(UBGraphicsItemData::itemLayerType, QVariant(itemLayerType::CppTool)); //Necessary to set if we want z value to be assigned correctly
     setFlag(QGraphicsItem::ItemIsSelectable, false);
+    setFlag(QGraphicsItem::ItemIsFocusable, true); //needed to receive key events
 
     updateResizeCursor();
 }
-
 
 void UBGraphicsTriangle::updateResizeCursor()
 {
@@ -271,7 +275,6 @@ void UBGraphicsTriangle::calculatePoints(const QRectF& r)
 
 void UBGraphicsTriangle::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-
     painter->setPen(Qt::NoPen);
 
     QPolygonF polygon;
@@ -280,6 +283,7 @@ void UBGraphicsTriangle::paint(QPainter *painter, const QStyleOptionGraphicsItem
         QLinearGradient gradient1(QPointF(A1.x(), 0), QPointF(A2.x(), 0));
         gradient1.setColorAt(0, edgeFillColor());
         gradient1.setColorAt(1, middleFillColor());
+
         painter->setBrush(gradient1);
         polygon << A1 << A2 << B2 << B1;
         painter->drawPolygon(polygon);
@@ -288,6 +292,7 @@ void UBGraphicsTriangle::paint(QPainter *painter, const QStyleOptionGraphicsItem
         QLinearGradient gradient2(QPointF(0, B1.y()), QPointF(0, B2.y()));
         gradient2.setColorAt(0, edgeFillColor());
         gradient2.setColorAt(1, middleFillColor());
+
         painter->setBrush(gradient2);
         polygon << B1 << B2 << C2 << C1;
         painter->drawPolygon(polygon);
@@ -296,6 +301,7 @@ void UBGraphicsTriangle::paint(QPainter *painter, const QStyleOptionGraphicsItem
         QLinearGradient gradient3(CC, C2);
         gradient3.setColorAt(0, edgeFillColor());
         gradient3.setColorAt(1, middleFillColor());
+
         painter->setBrush(gradient3);
         polygon << C1 << C2 << A2 << A1;
         painter->drawPolygon(polygon);
@@ -326,6 +332,7 @@ void UBGraphicsTriangle::paint(QPainter *painter, const QStyleOptionGraphicsItem
 
 
     paintGraduations(painter);
+    paintHelp(painter);
 
     mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
     QTransform antiScaleTransform;
@@ -353,8 +360,6 @@ void UBGraphicsTriangle::paint(QPainter *painter, const QStyleOptionGraphicsItem
         if (mShowButtons || mResizing2)
             painter->drawPolygon(resize2Polygon());
     }
-
-
 }
 
 QPainterPath UBGraphicsTriangle::shape() const
@@ -378,6 +383,64 @@ QPainterPath UBGraphicsTriangle::shape() const
     //qDebug() << "UBGraphicsTriangle shape()"<<"A2 ="<<A2<<"B2 ="<<B2<<"C2 ="<<C2;
 
     return tShape;
+}
+
+void UBGraphicsTriangle::paintHelp(QPainter *painter)
+{
+    if (hasFocus())
+    {
+        //help message to aknowledge the user that the tool can be moved with the arrow keys
+        painter->setFont(QFont("Arial", 9));
+        painter->setPen(drawColor());
+        QRectF textRect;
+        QPointF textRectTopLeft;
+
+        if (getOrientation() == TopLeft)
+        {
+            textRectTopLeft = rect().topLeft();
+            textRect = QRectF(rect().topLeft(), rect().size()/2);
+        }
+        else if (getOrientation() == BottomLeft)
+        {
+            textRectTopLeft.setX(rect().x());
+            textRectTopLeft.setY(rect().bottom() - (rect().bottom()-rect().top())/2);
+            textRect = QRectF(textRectTopLeft, rect().size()/2);
+        }
+        else if (getOrientation() == BottomRight)
+        {
+            textRectTopLeft.setX(rect().right() - (rect().right()- rect().left())/2);
+            textRectTopLeft.setY(rect().bottom() - (rect().bottom()-rect().top())/2);
+            textRect = QRectF(textRectTopLeft, rect().size()/2);
+        }
+        else // TopRight
+        {
+            textRectTopLeft.setX(rect().right() - (rect().right()- rect().left())/2);
+            textRectTopLeft.setY(rect().top());
+            textRect = QRectF(textRectTopLeft, rect().size()/2);
+        }
+
+        painter->setFont(QFont("Arial",9));
+        QFontMetricsF fontMetrics(painter->font());
+        int textWidth = fontMetrics.horizontalAdvance(tr("use arrow keys for precise moves"));
+
+        if (rect().width()/2 > textWidth)
+        {
+            painter->drawText(textRect, Qt::AlignCenter, tr("use arrow keys for precise moves"));
+
+            mMoveToolSvgItem->setVisible(true);
+            mMoveToolSvgItem->setPos(textRect.center().x() + (textWidth/2) + 5 /* (a 5px margin between the text and the icon) */,
+                                     textRect.center().y() - (mMoveToolSvgItem->boundingRect().height() * mAntiScaleRatio / 2));
+        }
+        else
+        {
+            mMoveToolSvgItem->setVisible(false);
+        }
+    }
+    else
+    {
+        mMoveToolSvgItem->setVisible(false);
+    }
+
 }
 
 void UBGraphicsTriangle::paintGraduations(QPainter *painter)
@@ -683,6 +746,29 @@ QCursor    UBGraphicsTriangle::flipCursor() const
     return Qt::ArrowCursor;
 }
 
+void UBGraphicsTriangle::keyPressEvent(QKeyEvent *event)
+{
+    QGraphicsItem::keyPressEvent(event);
+    switch (event->key())
+    {
+    case Qt::Key_Up:
+        moveBy(0, -1);
+        event->accept();
+        break;
+    case Qt::Key_Down:
+        moveBy(0, 1);
+        event->accept();
+        break;
+    case Qt::Key_Left:
+        moveBy(-1, 0);
+        event->accept();
+        break;
+    case Qt::Key_Right:
+        moveBy(1, 0);
+        event->accept();
+        break;
+    }
+}
 
 void UBGraphicsTriangle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {

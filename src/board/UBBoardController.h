@@ -85,6 +85,8 @@ class UBBoardController : public UBDocumentContainer
         QSize controlViewport();
         void closing();
 
+        void reloadThumbnails() override;
+
         int currentPage();
 
         QWidget* controlContainer()

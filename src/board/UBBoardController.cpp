@@ -726,7 +726,9 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
         }
         duplicatedGroup = mActiveScene->createGroup(duplicatedItems);
         duplicatedGroup->setTransform(groupItem->transform());
+        groupItem->copyItemParameters(duplicatedGroup);
         groupItem->setSelected(false);
+
 
         retItem = dynamic_cast<UBGraphicsItem *>(duplicatedGroup);
 
@@ -1435,7 +1437,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
             QDateTime now = QDateTime::currentDateTime();
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
             updateActionStates();
-            emit initThumbnailsRequired(selectedDocument());
+            reloadThumbnails();
         }
     }
     else if (UBMimeType::OpenboardTool == itemMimeType)
@@ -2410,8 +2412,8 @@ void UBBoardController::copy()
 void UBBoardController::paste()
 {
     QClipboard *clipboard = QApplication::clipboard();
-    qreal xPosition = ((qreal)QRandomGenerator::global()->generate()/(qreal)RAND_MAX) * 400;
-    qreal yPosition = ((qreal)QRandomGenerator::global()->generate()/(qreal)RAND_MAX) * 200;
+    qreal xPosition = ((qreal)QRandomGenerator::global()->bounded(RAND_MAX)/(qreal)RAND_MAX) * 400;
+    qreal yPosition = ((qreal)QRandomGenerator::global()->bounded(RAND_MAX)/(qreal)RAND_MAX) * 200;
     QPointF pos(xPosition -200 , yPosition - 100);
     processMimeData(clipboard->mimeData(), pos);
 
@@ -2703,4 +2705,9 @@ void UBBoardController::freezeW3CWidget(QGraphicsItem *item, bool freeze)
         UBGraphicsWidgetItem* widget = qgraphicsitem_cast<UBGraphicsWidgetItem*>(item);
         widget->setWebActive(!freeze);
     }
+}
+
+void UBBoardController::reloadThumbnails()
+{
+    emit initThumbnailsRequired(selectedDocument());
 }
