@@ -34,7 +34,7 @@ installation of Qt, qmake and the dependencies of the OpenBoard software itself.
 For simplicity, all installations are bundled in a single command here:
 
 ```
-sudo apt install build-essential libgl1-mesa-dev libssl-dev libpoppler-dev libpoppler-cpp-dev libpoppler-private-dev libavcodec-dev libavformat-dev libswscale-dev libpaper-dev libva-dev libxcb-shm0-dev libasound2-dev libx264-dev libvpx-dev libvorbis-dev  libtheora-dev libmp3lame-dev libsdl1.2-dev libopus-dev  libfdk-aac-dev libass-dev liblzma-dev libbz2-dev libquazip5-dev libxcb-shape0-dev libxcb-xfixes0-dev qt6-tools-dev qt6-svg-dev qt6-multimedia-dev qt6-webengine-dev libquazip1-qt6-dev
+sudo apt install build-essential libgl1-mesa-dev libssl-dev libpoppler-dev libpoppler-cpp-dev libpoppler-private-dev libavcodec-dev libavformat-dev libswscale-dev libpaper-dev libva-dev libxcb-shm0-dev libasound2-dev libx264-dev libvpx-dev libvorbis-dev  libtheora-dev libmp3lame-dev libsdl1.2-dev libopus-dev  libfdk-aac-dev libass-dev liblzma-dev libbz2-dev libxcb-shape0-dev libxcb-xfixes0-dev qt6-tools-dev qt6-svg-dev qt6-multimedia-dev qt6-webengine-dev libquazip1-qt6-dev
 ```
 
 After this installation has completed, run the following command to verify the version number and home directory for the Ubuntu Qt build:
