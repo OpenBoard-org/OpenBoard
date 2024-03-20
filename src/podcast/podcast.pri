@@ -55,7 +55,4 @@ linux-g++* {
         LIBS -= -lswresample
         LIBS += -lavresample
     }
-
-
-    QMAKE_CXXFLAGS += -std=c++11 # move this to OpenBoard.pro when we can use C++11 on all platforms
 }

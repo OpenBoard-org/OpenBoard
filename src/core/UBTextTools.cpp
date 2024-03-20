@@ -34,8 +34,10 @@ QString UBTextTools::cleanHtmlCData(const QString &_html){
 
 
     for(int i = 0; i < _html.length(); i+=1){
-        if(_html.at(i) != '\0')
-            clean.append(_html.at(i));
+        if(_html.at(i).isNull())
+            continue;
+
+        clean.append(_html.at(i));
     }
     return clean;
 }
