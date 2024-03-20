@@ -153,10 +153,6 @@ void UBBoardController::init()
 
     setActiveDocumentScene(doc);
 
-    connect(UBApplication::displayManager, &UBDisplayManager::screenRolesAssigned, this, [this](){
-        initBackgroundGridSize();
-    });
-
     undoRedoStateChange(true);
 
 }
@@ -170,7 +166,7 @@ UBBoardController::~UBBoardController()
 /**
  * @brief Set the default background grid size to appear as roughly 1cm on screen
  */
-void UBBoardController::initBackgroundGridSize()
+int UBBoardController::determineBackgroundGridSize() const
 {
     // Besides adjusting for DPI, we also need to scale the grid size by the ratio of the control view size
     // to document size. Here we approximate this ratio as (document resolution) / (screen resolution).
@@ -188,10 +184,7 @@ void UBBoardController::initBackgroundGridSize()
 
     int gridSize = (resolutionRatio * 10. * dpi) / UBGeometryUtils::inchSize;
 
-    UBSettings::settings()->crossSize = gridSize;
-    UBSettings::settings()->defaultCrossSize = gridSize;
-    mActiveScene->setBackgroundGridSize(gridSize);
-
+    return gridSize;
     //qDebug() << "grid size: " << gridSize;
 }
 
