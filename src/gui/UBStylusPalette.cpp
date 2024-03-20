@@ -36,6 +36,8 @@
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 #include "core/UBApplicationController.h"
+#include "core/UBShortcutManager.h"
+
 
 #include "board/UBDrawingController.h"
 
@@ -78,14 +80,16 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
     {
         // VirtualKeyboard action is not in group
         // So, groupping all buttons, except last
-        mButtonGroup = new QButtonGroup(this);
-        for(int i=0; i < mButtons.size()-1; i++)
+        mActionGroup = new QActionGroup(this);
+        for(int i=0; i < mActions.size()-1; i++)
         {
-            mButtonGroup->addButton(mButtons[i], i);
+            mActions[i]->setProperty("id", i);
+            mActionGroup->addAction(mActions[i]);
         }
-        connect(mButtonGroup, qOverload<QAbstractButton *>(&QButtonGroup::buttonClicked),
-                this, &UBActionPalette::buttonGroupClicked);
+        connect(mActionGroup, SIGNAL(triggered(QAction*)), this, SIGNAL(buttonGroupClicked(QAction*)));
     }
+
+    UBShortcutManager::shortcutManager()->addActionGroup(mActionGroup);
 
     adjustSizeAndPosition();
 
@@ -126,12 +130,15 @@ void UBStylusPalette::initPosition()
 
 UBStylusPalette::~UBStylusPalette()
 {
-
+    if (mActionGroup)
+    {
+        UBShortcutManager::shortcutManager()->removeActionGroup(mActionGroup);
+    }
 }
 
 void UBStylusPalette::stylusToolDoubleClicked()
 {
-    emit stylusToolDoubleClicked(mButtonGroup->checkedId());
+    emit stylusToolDoubleClicked(mActionGroup->checkedAction()->property("id").toInt());
 }
 
 

@@ -2327,12 +2327,176 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
         <source>Use all available displays</source>
         <translation>Alle verfügbaren Bildschirme nutzen</translation>
     </message>
+    <message>
+        <source>Key sequence already in use</source>
+        <translation>Tastenkombination wird bereits benutzt</translation>
+    </message>
+    <message>
+        <source>Mouse button already in use</source>
+        <translation>Maustaste wird bereits benutzt</translation>
+    </message>
+    <message>
+        <source>Stylus button already in use</source>
+        <translation>Stifttaste wird bereits benutzt</translation>
+    </message>
+    <message>
+        <source>Accept</source>
+        <comment>preferencesDialog</comment>
+        <translation>Übernehmen</translation>
+    </message>
+    <message>
+        <source>Record</source>
+        <comment>preferencesDialog</comment>
+        <translation>Aufnehmen</translation>
+    </message>
 </context>
 <context>
     <name>UBSettings</name>
     <message>
         <source>My Movies</source>
         <translation>Meine Filme</translation>
+    </message>
+</context>
+<context>
+    <name>UBShortcutManager</name>
+    <message>
+        <source>Common</source>
+        <translation>Allgemein</translation>
+    </message>
+    <message>
+        <source>Board</source>
+        <translation>Board</translation>
+    </message>
+    <message>
+        <source>Stylus Palette</source>
+        <translation>Stylus-Palette</translation>
+    </message>
+    <message>
+        <source>Lines and colours</source>
+        <translation>Linien und Farben</translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation>Hintergrund</translation>
+    </message>
+    <message>
+        <source>Podcast</source>
+        <translation>Podcast</translation>
+    </message>
+    <message>
+        <source>First scene</source>
+        <translation>Erste Seite</translation>
+    </message>
+    <message>
+        <source>Show first scene</source>
+        <translation>Erste Seite anzeigen</translation>
+    </message>
+    <message>
+        <source>Last scene</source>
+        <translation>Letzte Seite</translation>
+    </message>
+    <message>
+        <source>Show last scene</source>
+        <translation>Letzte Seite anzeigen</translation>
+    </message>
+    <message>
+        <source>Zoom reset</source>
+        <translation>Originalgröße</translation>
+    </message>
+    <message>
+        <source>Reset zoom factor</source>
+        <translation>Zoom-Faktor zurücksetzen</translation>
+    </message>
+    <message>
+        <source>Scroll left</source>
+        <translation>Links</translation>
+    </message>
+    <message>
+        <source>Scroll page left</source>
+        <translation>Seite nach links verschieben</translation>
+    </message>
+    <message>
+        <source>Scroll right</source>
+        <translation>Rechts</translation>
+    </message>
+    <message>
+        <source>Scroll page right</source>
+        <translation>Seite nach rechts verschieben</translation>
+    </message>
+    <message>
+        <source>Scroll up</source>
+        <translation>Oben</translation>
+    </message>
+    <message>
+        <source>Scroll page up</source>
+        <translation>Seite nach oben verschieben</translation>
+    </message>
+    <message>
+        <source>Scroll down</source>
+        <translation>Unten</translation>
+    </message>
+    <message>
+        <source>Scroll page down</source>
+        <translation>Seite nach unten verschieben</translation>
+    </message>
+    <message>
+        <source>Built-in (not editable)</source>
+        <translation>Eingebaut (nicht änderbar)</translation>
+    </message>
+    <message>
+        <source>Command</source>
+        <translation>Befehl</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Beschreibung</translation>
+    </message>
+    <message>
+        <source>Key Sequence</source>
+        <translation>Tasten</translation>
+    </message>
+    <message>
+        <source>Mouse Button</source>
+        <translation>Maustaste</translation>
+    </message>
+    <message>
+        <source>Tablet Button</source>
+        <translation>Stifttaste</translation>
+    </message>
+    <message>
+        <source>Left</source>
+        <comment>MouseButton</comment>
+        <translation>Links</translation>
+    </message>
+    <message>
+        <source>Right</source>
+        <comment>MouseButton</comment>
+        <translation>Rechts</translation>
+    </message>
+    <message>
+        <source>Middle</source>
+        <comment>MouseButton</comment>
+        <translation>Mitte</translation>
+    </message>
+    <message>
+        <source>Back</source>
+        <comment>MouseButton</comment>
+        <translation>Zurück</translation>
+    </message>
+    <message>
+        <source>Forward</source>
+        <comment>MouseButton</comment>
+        <translation>Weiter</translation>
+    </message>
+    <message>
+        <source>Task</source>
+        <comment>MouseButton</comment>
+        <translation>Aufgabe</translation>
+    </message>
+    <message>
+        <source>Extra</source>
+        <comment>MouseButton</comment>
+        <translation>Extra</translation>
     </message>
 </context>
 <context>
@@ -3030,6 +3194,46 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>List of screens used for Control, Display and Previous pages</source>
         <translation>Liste der Bildschirme, die für die Hauptansicht, Erweiterte Ansicht und Vorherige Seiten verwendet werden</translation>
+    </message>
+    <message>
+        <source>Shortcut</source>
+        <translation>Kurzbefehl</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation>Filter</translation>
+    </message>
+    <message>
+        <source>Active keyboard shortcuts without pressing Ctrl key</source>
+        <translation>Aktiviere Kurzbefehle auch ohne Strg Taste</translation>
+    </message>
+    <message>
+        <source>Shortcuts</source>
+        <translation>Kurzbefehle</translation>
+    </message>
+    <message>
+        <source>Abort</source>
+        <translation>Abbrechen</translation>
+    </message>
+    <message>
+        <source>Record</source>
+        <translation>Aufnehmen</translation>
+    </message>
+    <message>
+        <source>Stylus Button</source>
+        <translation>Stifttaste</translation>
+    </message>
+    <message>
+        <source>Mouse Button</source>
+        <translation>Maustaste</translation>
+    </message>
+    <message>
+        <source>Reset</source>
+        <translation>Zurücksetzen</translation>
+    </message>
+    <message>
+        <source>Key Sequence</source>
+        <translation>Tasten</translation>
     </message>
 </context>
 <context>
