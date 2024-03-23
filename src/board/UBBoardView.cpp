@@ -919,6 +919,11 @@ void UBBoardView::setMultiselection(bool enable)
     mMultipleSelectionIsEnabled = enable;
 }
 
+void UBBoardView::setBoxing(const QMargins& margins)
+{
+    mMargins = margins;
+}
+
 // work around for handling tablet events on MAC OS with Qt 4.8.0 and above
 #if defined(Q_OS_OSX)
 bool UBBoardView::directTabletEvent(QEvent *event)
@@ -1708,7 +1713,6 @@ void UBBoardView::drawItems (QPainter *painter, int numItems, QGraphicsItem* ite
     }
 }
 
-
 void UBBoardView::dragMoveEvent(QDragMoveEvent *event)
 {
     QGraphicsView::dragMoveEvent(event);
@@ -1828,6 +1832,54 @@ void UBBoardView::drawBackground (QPainter *painter, const QRectF &rect)
             painter->drawRect (pageRect);
         }
     }
+}
+
+void UBBoardView::drawForeground(QPainter* painter, const QRectF& rect)
+{
+    QTransform transform{viewportTransform()};
+    QRect viewportRect(0, 0, viewport()->width(), viewport()->height());
+    QRectF visible{mapToScene(viewportRect).boundingRect()};
+
+    painter->save();
+    QColor color{0x808080};
+    color.setAlphaF(0.3);
+    QBrush brush{color};
+    painter->setBrush(brush);
+    painter->setPen(Qt::NoPen);
+
+    if (mMargins.left())
+    {
+        QRectF cover{visible};
+        auto leftMargin = mMargins.left() / transform.m11();
+        cover.setRight(cover.left() + leftMargin);
+        painter->drawRect(cover);
+    }
+
+    if (mMargins.right())
+    {
+        QRectF cover{visible};
+        auto rightMargin = mMargins.right() / transform.m11();
+        cover.setLeft(cover.right() - rightMargin);
+        painter->drawRect(cover);
+    }
+
+    if (mMargins.top())
+    {
+        QRectF cover{visible};
+        auto topMargin = mMargins.top() / transform.m22();
+        cover.setBottom(cover.top() + topMargin);
+        painter->drawRect(cover);
+    }
+
+    if (mMargins.bottom())
+    {
+        QRectF cover{visible};
+        auto bottomMargin = mMargins.bottom() / transform.m22();
+        cover.setTop(cover.bottom() - bottomMargin);
+        painter->drawRect(cover);
+    }
+
+    painter->restore();
 }
 
 void UBBoardView::scrollContentsBy(int dx, int dy)
