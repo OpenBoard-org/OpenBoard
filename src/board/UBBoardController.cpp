@@ -299,7 +299,7 @@ void UBBoardController::setBoxing(QRect displayRect)
 
 QSize UBBoardController::controlViewport()
 {
-    return UBApplication::displayManager->screenSize(ScreenRole::Control);
+    return mControlView->size();
 }
 
 
