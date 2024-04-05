@@ -1091,37 +1091,28 @@ void UBPersistenceManager::moveSceneToIndex(std::shared_ptr<UBDocumentProxy> pro
 
 std::shared_ptr<UBGraphicsScene> UBPersistenceManager::loadDocumentScene(std::shared_ptr<UBDocumentProxy> proxy, int sceneIndex, bool cacheNeighboringScenes)
 {
-    std::shared_ptr<UBGraphicsScene> scene = nullptr;
-
-    if (mSceneCache.contains(proxy, sceneIndex))
-    {
-        return mSceneCache.value(proxy, sceneIndex);
-    }
-    else
-    {
-        scene = UBSvgSubsetAdaptor::loadScene(proxy, sceneIndex);
-        if (scene)
-        {
-            mSceneCache.insert(proxy, sceneIndex, scene);
-        }
-        else
-        {
-            qWarning() << "could not load scene for document : " << proxy->persistencePath() << ", scene index : " << sceneIndex;
-            return nullptr;
-        }
-    }
+    mSceneCache.prepareLoading(proxy, sceneIndex);
+    auto scene = mSceneCache.value(proxy, sceneIndex);
+    qDebug() << "loadDocumentScene: got result from cache";
 
     if (cacheNeighboringScenes)
     {
         if(sceneIndex + 1 < proxy->pageCount() &&  !mSceneCache.contains(proxy, sceneIndex + 1))
-            mWorker->readScene(proxy,sceneIndex+1);
+            mSceneCache.prepareLoading(proxy,sceneIndex+1);
+
+        if(sceneIndex + 2 < proxy->pageCount() &&  !mSceneCache.contains(proxy, sceneIndex + 2))
+            mSceneCache.prepareLoading(proxy,sceneIndex+2);
 
         if(sceneIndex - 1 >= 0 &&  !mSceneCache.contains(proxy, sceneIndex - 1))
-            mWorker->readScene(proxy,sceneIndex-1);
+            mSceneCache.prepareLoading(proxy,sceneIndex-1);
     }
 
-
     return scene;
+}
+
+std::shared_ptr<UBGraphicsScene> UBPersistenceManager::getDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int sceneIndex)
+{
+    return mSceneCache.value(pDocumentProxy, sceneIndex);
 }
 
 void UBPersistenceManager::reassignDocProxy(std::shared_ptr<UBDocumentProxy> newDocument, std::shared_ptr<UBDocumentProxy> oldDocument)
