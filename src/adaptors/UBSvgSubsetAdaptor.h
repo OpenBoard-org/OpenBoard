@@ -63,16 +63,30 @@ class UBGraphicsStrokesGroup;
 
 class UBSvgSubsetAdaptor
 {
+    class UBSvgSubsetReader;
     private:
 
         UBSvgSubsetAdaptor() {;}
         virtual ~UBSvgSubsetAdaptor() {;}
 
     public:
+        class UBSvgReaderContext
+        {
+        public:
+            UBSvgReaderContext(std::shared_ptr<UBDocumentProxy> proxy, const QByteArray& pXmlData);
+            ~UBSvgReaderContext();
+            bool isFinished() const;
+            void step();
+            std::shared_ptr<UBGraphicsScene> scene() const;
+
+        private:
+            UBSvgSubsetReader* reader = nullptr;
+        };
 
         static std::shared_ptr<UBGraphicsScene> loadScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
         static QByteArray loadSceneAsText(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
         static std::shared_ptr<UBGraphicsScene> loadScene(std::shared_ptr<UBDocumentProxy> proxy, const QByteArray& pArray);
+        static std::shared_ptr<UBSvgReaderContext> prepareLoadingScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
 
         static void persistScene(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> pScene, const int pageIndex);
         static void upgradeScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
@@ -116,6 +130,11 @@ class UBSvgSubsetAdaptor
                 virtual ~UBSvgSubsetReader(){}
 
                 std::shared_ptr<UBGraphicsScene> loadScene(std::shared_ptr<UBDocumentProxy> proxy);
+
+                void start();
+                bool isFinished();
+                void processElement();
+                std::shared_ptr<UBGraphicsScene> scene();
 
             private:
 
@@ -179,6 +198,11 @@ class UBSvgSubsetAdaptor
                 std::shared_ptr<UBGraphicsScene> mScene;
 
                 QHash<QString,UBGraphicsStrokesGroup*> mStrokesList;
+
+                UBGraphicsStrokesGroup* strokesGroup = nullptr;
+                UBGraphicsStroke* currentStroke = nullptr;
+                UBGraphicsWidgetItem *currentWidget = nullptr;
+                bool mMustFinalize = false;
         };
 
         class UBSvgSubsetWriter

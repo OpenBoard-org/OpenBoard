@@ -270,6 +270,7 @@ class UBGraphicsItemDelegate : public QObject
         void printMessage(const QString &mess) {qDebug() << mess;}
 
         QGraphicsItem* delegated();
+        void sceneChanged(UBGraphicsScene* scene);
 
         virtual void positionHandles();
         void setZOrderButtonsVisible(bool visible);

@@ -394,6 +394,9 @@ public slots:
 
         void controlViewportChanged();
 
+signals:
+        void zoomChanged(qreal zoomFactor);
+
     protected:
 
         UBGraphicsPolygonItem* lineToPolygonItem(const QLineF& pLine, const qreal& pWidth);

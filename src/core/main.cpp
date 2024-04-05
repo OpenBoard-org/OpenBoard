@@ -72,7 +72,7 @@ void ub_message_output(QtMsgType type, const QMessageLogContext& context, const 
 
         if (logFile.open(QIODevice::Append | QIODevice::Text)) {
             QTextStream out(&logFile);
-            out << QDateTime::currentDateTime().toString(Qt::ISODate)
+            out << QDateTime::currentDateTime().toString(Qt::ISODateWithMs)
                 << "      " << msg << "\n";
             logFile.close();
         }
