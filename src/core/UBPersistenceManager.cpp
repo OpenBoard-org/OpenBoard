@@ -115,7 +115,6 @@ UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     connect(mWorker, SIGNAL(finished()), this, SLOT(onWorkerFinished()));
     connect(mWorker, SIGNAL(finished()), mWorker, SLOT(deleteLater()));
     connect(mThread, SIGNAL(finished()), mThread, SLOT(deleteLater()));
-    connect(mWorker, SIGNAL(sceneLoaded(QByteArray,std::shared_ptr<UBDocumentProxy>,int)), this, SLOT(onSceneLoaded(QByteArray,std::shared_ptr<UBDocumentProxy>,int)));
     connect(mWorker, &UBPersistenceWorker::scenePersisted, this, &UBPersistenceManager::onScenePersisted);
 
     mThread->start();
@@ -170,16 +169,6 @@ UBPersistenceManager::~UBPersistenceManager()
 void UBPersistenceManager::errorString(QString error)
 {
     qWarning() << "An error occured in the peristence thread " << error;
-}
-
-void UBPersistenceManager::onSceneLoaded(QByteArray scene, std::shared_ptr<UBDocumentProxy> proxy, int sceneIndex)
-{
-    Q_UNUSED(scene);
-    qDebug() << "scene loaded " << sceneIndex;
-    QElapsedTimer time;
-    time.start();
-    mSceneCache.insert(proxy, sceneIndex, loadDocumentScene(proxy, sceneIndex, false));
-    qDebug() << "millisecond for sceneCache " << time.elapsed();
 }
 
 void UBPersistenceManager::createDocumentProxiesStructure(const QFileInfoList &contentInfoList, bool interactive)
