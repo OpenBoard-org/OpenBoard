@@ -205,7 +205,6 @@ private:
     private slots:
         void documentRepositoryChanged(const QString& path);
         void errorString(QString error);
-        void onSceneLoaded(QByteArray,std::shared_ptr<UBDocumentProxy>,int);
         void onWorkerFinished();
         void onScenePersisted(UBGraphicsScene* scene);
 };
