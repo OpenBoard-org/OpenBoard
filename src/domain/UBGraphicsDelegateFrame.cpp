@@ -972,7 +972,7 @@ void UBGraphicsDelegateFrame::positionHandles()
     }
 
     mRotateButton->setParentItem(this);
-    mRotateButton->setPos(rect().right() - mFrameWidth - 5, rect().top() + 5);
+    mRotateButton->setPos(rect().right() - mFrameWidth - (5 * mDelegate->antiScaleRatio()), rect().y() + (5 * mDelegate->antiScaleRatio()));
     mRotateButton->setVisible(mDelegate->testUBFlags(GF_REVOLVABLE) && !isLocked);
 
     if (isLocked)
@@ -1070,7 +1070,8 @@ QRectF UBGraphicsDelegateFrame::topResizeGripRect() const
 
 QRectF UBGraphicsDelegateFrame::rotateButtonBounds() const
 {
-    return QRectF(rect().right()- mFrameWidth - 5, rect().top() + 5, mFrameWidth, mFrameWidth);
+    //to make user's experience more pleasant, we slightly increase the rotateButton area activating the rotate action.
+    return QRectF(rect().right() - mFrameWidth - (5 * mDelegate->antiScaleRatio()), rect().top(), mFrameWidth + (5 * mDelegate->antiScaleRatio()), mFrameWidth + (5 * mDelegate->antiScaleRatio()));
 }
 
 void UBGraphicsDelegateFrame::refreshGeometry()

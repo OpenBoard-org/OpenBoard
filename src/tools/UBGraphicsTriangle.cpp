@@ -335,13 +335,6 @@ void UBGraphicsTriangle::paint(QPainter *painter, const QStyleOptionGraphicsItem
     paintHelp(painter);
 
     mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
-    QTransform antiScaleTransform;
-    antiScaleTransform.scale(mAntiScaleRatio, mAntiScaleRatio);
-
-    mCloseSvgItem->setTransform(antiScaleTransform);
-    mHFlipSvgItem->setTransform(antiScaleTransform);
-    mVFlipSvgItem->setTransform(antiScaleTransform);
-    mRotateSvgItem->setTransform(antiScaleTransform);
 
     mCloseSvgItem->setPos(closeButtonRect().topLeft());
 
