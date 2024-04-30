@@ -2862,96 +2862,54 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
 
 void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
 {
+    // let's propagate the event through the scene's children to
+    // see if it must be handled by a child before trying to handle it as
+    // a scene key event. Note that the child must accept() the event
+    // to stop the propagation.
+    keyEvent->ignore();
+    QGraphicsScene::keyReleaseEvent(keyEvent);
+
     if (!keyEvent->isAccepted())
     {
-        QList<QGraphicsItem*> si = selectedItems();
-
+        // Select All scene event
         if(keyEvent->matches(QKeySequence::SelectAll))
         {
             foreach(auto item, items())
             {
-                item->setSelected(true);
+                UBGraphicsItem* ubGraphicsItem = dynamic_cast<UBGraphicsItem*>(item);
+
+                if (ubGraphicsItem) //only select items that inherit from UBGraphicsItem
+                    item->setSelected(true);
             }
 
             keyEvent->accept();
-            return;
         }
 
-        if ((si.size() > 0) && (keyEvent->isAccepted()))
+        // Delete selection scene event
+#ifdef Q_OS_MAC
+        if (keyEvent->key() == Qt::key_Backspace)
+#else
+        if (keyEvent->matches(QKeySequence::Delete))
+#endif
         {
-    #ifdef Q_OS_MAC
-            if (keyEvent->key() == Qt::Key_Backspace)
-    #else
-            if (keyEvent->matches(QKeySequence::Delete))
-    #endif
+            foreach(QGraphicsItem* item, selectedItems())
             {
-                QVector<UBGraphicsItem*> ubItemsToRemove;
-                QVector<QGraphicsItem*> itemToRemove;
-
-                bool bRemoveOk = true;
-
-                foreach(QGraphicsItem* item, si)
+                UBGraphicsItem* ubGraphicsItem = dynamic_cast<UBGraphicsItem*>(item);
+                if (ubGraphicsItem)
                 {
-                    switch (item->type())
-                    {
-                    case UBGraphicsWidgetItem::Type:
-                        {
-                            UBGraphicsW3CWidgetItem *wc3_widget = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
-                            if (0 != wc3_widget)
-                            if (!wc3_widget->hasFocus())
-                                ubItemsToRemove << wc3_widget;
-                            break;
-                        }
-                    case UBGraphicsTextItem::Type:
-                        {
-                            UBGraphicsTextItem *text_item = dynamic_cast<UBGraphicsTextItem*>(item);
-                            if (0 != text_item){
-                                if (!text_item->hasFocus())
-                                    ubItemsToRemove << text_item;
-                                else
-                                    bRemoveOk = false;
-                            }
-                            break;
-                        }
-
-                    case UBGraphicsGroupContainerItem::Type:
-                    {
-                        UBGraphicsGroupContainerItem* group_item = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
-                        if(NULL != group_item){
-                            if(!hasTextItemWithFocus(group_item))
-                                ubItemsToRemove << group_item;
-                            else
-                                bRemoveOk = false;
-                        }
-                        break;
-                    }
-
-                    default:
-                        {
-                            UBGraphicsItem *ubgi = dynamic_cast<UBGraphicsItem*>(item);
-                            if (0 != ubgi)
-                                ubItemsToRemove << ubgi;
-                            else
-                                itemToRemove << item;
-                        }
-                    }
+                    ubGraphicsItem->remove();
                 }
-
-                if(bRemoveOk){
-                    foreach(UBGraphicsItem* pUBItem, ubItemsToRemove){
-                        pUBItem->remove();
-                    }
-                    foreach(QGraphicsItem* pItem, itemToRemove){
-                        UBCoreGraphicsScene::removeItem(pItem);
-                    }
+                else //should never happen ?
+                {
+                    UBCoreGraphicsScene::removeItem(item);
                 }
             }
 
             keyEvent->accept();
         }
-    }
 
-    QGraphicsScene::keyReleaseEvent(keyEvent);
+        updateSelectionFrame();
+    }
 }
 
 bool UBGraphicsScene::hasTextItemWithFocus(UBGraphicsGroupContainerItem *item){
