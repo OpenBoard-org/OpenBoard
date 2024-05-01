@@ -826,6 +826,16 @@ void UBSettings::setDarkBackground(bool isDarkBackground)
     emit colorContextChanged();
 }
 
+void UBSettings::setBackgroundGridSize(int value)
+{
+    crossSize = value;
+    setValue("Board/BackgroundGridSize", value);
+}
+
+int UBSettings::backgroundGridSize()
+{
+    return value("Board/BackgroundGridSize", -1).toInt();
+}
 
 void UBSettings::setPageBackground(UBPageBackground background)
 {
