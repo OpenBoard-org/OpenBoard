@@ -352,7 +352,7 @@ UBGraphicsScene::UBGraphicsScene(std::shared_ptr<UBDocumentProxy> document, bool
             UBApplication::applicationController->initialVScroll()));
     }
 
-    mBackgroundGridSize = UBSettings::settings()->crossSize;
+    mBackgroundGridSize = UBSettings::settings()->crossSize->get().toInt();
     mIntermediateLines = UBSettings::settings()->intermediateLines;
 
 //    Just for debug. Do not delete please
