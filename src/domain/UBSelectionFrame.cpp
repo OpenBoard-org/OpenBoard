@@ -264,6 +264,7 @@ void UBSelectionFrame::onZoomChanged(qreal pZoom)
 {
     mAntiscaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * pZoom);
 
+    placeButtons();
 }
 
 void UBSelectionFrame::remove()
@@ -413,8 +414,8 @@ void UBSelectionFrame::placeExceptionButton(DelegateButton *pButton, QTransform 
     QRectF frRect = boundingRect();
 
     if (pButton == mRotateButton) {
-        qreal topX = frRect.right() - (mRotateButton->renderer()->viewBox().width()) * mAntiscaleRatio - 5;
-        qreal topY = frRect.top() + 5;
+        qreal topX = frRect.right() - ((mThickness + 5) * mAntiscaleRatio);
+        qreal topY = frRect.top() + (5 * mAntiscaleRatio);
         mRotateButton->setPos(topX, topY);
         mRotateButton->setTransform(pTransform);
     }

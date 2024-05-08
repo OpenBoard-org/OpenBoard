@@ -173,8 +173,12 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
 
     if (dest == up)
     {
-        qreal nextZ = item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
-        UBGraphicsItem::assignZValue(item, nextZ+1);
+        qreal newZValue = item->data(UBGraphicsItemData::ItemOwnZValue).toReal() + 1;
+        UBGraphicsItem::assignZValue(item, newZValue);
+        shiftStoredZValue(item, newZValue);
+
+        //show a human-readable zValue so the user can adapt his objects zvalues easily
+        UBApplication::showMessage(QString::number(1000000 + newZValue));
     }
     else if (dest == top)
     {
@@ -183,14 +187,17 @@ qreal UBZLayerController::changeZLevelTo(QGraphicsItem *item, moveDestination de
                 UBGraphicsItem::assignZValue(item, generateZLevel(item));
             }
         }
-
     }
     else if (dest == down)
     {
-        qreal currentZValue = item->data(UBGraphicsItemData::ItemOwnZValue).toReal();
-        if (currentZValue > -999999.0)
+        qreal newZValue = item->data(UBGraphicsItemData::ItemOwnZValue).toReal()-1;
+        if (newZValue >= -999999.0)
         {
-            UBGraphicsItem::assignZValue(item, currentZValue-1);
+            UBGraphicsItem::assignZValue(item, newZValue);
+            shiftStoredZValue(item, newZValue);
+
+            //show a human-readable zValue so the user can adapt his objects zvalues easily
+            UBApplication::showMessage(QString::number(1000000 + newZValue));
         }
         else
         {
@@ -2855,94 +2862,54 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
 
 void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
 {
+    // let's propagate the event through the scene's children to
+    // see if it must be handled by a child before trying to handle it as
+    // a scene key event. Note that the child must accept() the event
+    // to stop the propagation.
+    keyEvent->ignore();
+    QGraphicsScene::keyReleaseEvent(keyEvent);
 
-    QList<QGraphicsItem*> si = selectedItems();
-
-    if(keyEvent->matches(QKeySequence::SelectAll))
+    if (!keyEvent->isAccepted())
     {
-        foreach(auto item, items())
+        // Select All scene event
+        if(keyEvent->matches(QKeySequence::SelectAll))
         {
-            item->setSelected(true);
+            foreach(auto item, items())
+            {
+                UBGraphicsItem* ubGraphicsItem = dynamic_cast<UBGraphicsItem*>(item);
+
+                if (ubGraphicsItem) //only select items that inherit from UBGraphicsItem
+                    item->setSelected(true);
+            }
+
+            keyEvent->accept();
         }
 
-        keyEvent->accept();
-        return;
-    }
-
-    if ((si.size() > 0) && (keyEvent->isAccepted()))
-    {
+        // Delete selection scene event
 #ifdef Q_OS_MAC
-        if (keyEvent->key() == Qt::Key_Backspace)
+        if (keyEvent->key() == Qt::key_Backspace)
 #else
         if (keyEvent->matches(QKeySequence::Delete))
 #endif
         {
-            QVector<UBGraphicsItem*> ubItemsToRemove;
-            QVector<QGraphicsItem*> itemToRemove;
-
-            bool bRemoveOk = true;
-
-            foreach(QGraphicsItem* item, si)
+            foreach(QGraphicsItem* item, selectedItems())
             {
-                switch (item->type())
+                UBGraphicsItem* ubGraphicsItem = dynamic_cast<UBGraphicsItem*>(item);
+                if (ubGraphicsItem)
                 {
-                case UBGraphicsWidgetItem::Type:
-                    {
-                        UBGraphicsW3CWidgetItem *wc3_widget = dynamic_cast<UBGraphicsW3CWidgetItem*>(item);
-                        if (0 != wc3_widget)
-                        if (!wc3_widget->hasFocus())
-                            ubItemsToRemove << wc3_widget;
-                        break;
-                    }
-                case UBGraphicsTextItem::Type:
-                    {
-                        UBGraphicsTextItem *text_item = dynamic_cast<UBGraphicsTextItem*>(item);
-                        if (0 != text_item){
-                            if (!text_item->hasFocus())
-                                ubItemsToRemove << text_item;
-                            else
-                                bRemoveOk = false;
-                        }
-                        break;
-                    }
-
-                case UBGraphicsGroupContainerItem::Type:
-                {
-                    UBGraphicsGroupContainerItem* group_item = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
-                    if(NULL != group_item){
-                        if(!hasTextItemWithFocus(group_item))
-                            ubItemsToRemove << group_item;
-                        else
-                            bRemoveOk = false;
-                    }
-                    break;
+                    ubGraphicsItem->remove();
                 }
-
-                default:
-                    {
-                        UBGraphicsItem *ubgi = dynamic_cast<UBGraphicsItem*>(item);
-                        if (0 != ubgi)
-                            ubItemsToRemove << ubgi;
-                        else
-                            itemToRemove << item;
-                    }
+                else //should never happen ?
+                {
+                    UBCoreGraphicsScene::removeItem(item);
                 }
             }
 
-            if(bRemoveOk){
-                foreach(UBGraphicsItem* pUBItem, ubItemsToRemove){
-                    pUBItem->remove();
-                }
-                foreach(QGraphicsItem* pItem, itemToRemove){
-                    UBCoreGraphicsScene::removeItem(pItem);
-                }
-            }
+            keyEvent->accept();
         }
 
-        keyEvent->accept();
+        updateSelectionFrame();
     }
-
-    QGraphicsScene::keyReleaseEvent(keyEvent);
 }
 
 bool UBGraphicsScene::hasTextItemWithFocus(UBGraphicsGroupContainerItem *item){

@@ -1550,6 +1550,7 @@ void UBBoardController::setActiveDocumentScene(int pSceneIndex)
 
 void UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const int pSceneIndex, bool forceReload, bool onImport)
 {
+    UBApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     saveViewState();
 
     bool documentChange = selectedDocument() != pDocumentProxy;
@@ -1628,6 +1629,7 @@ void UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> 
     {
         qWarning() << "could not load document scene : '" << pDocumentProxy->persistencePath() << "', page index : " << pSceneIndex;
     }
+    UBApplication::restoreOverrideCursor();
 }
 
 

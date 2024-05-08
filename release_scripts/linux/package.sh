@@ -267,6 +267,10 @@ fi
 notifyProgress "Copying Qt translations"
 mkdir -p $PACKAGE_DIRECTORY/i18n
 cp $GUI_TRANSLATIONS_DIRECTORY_PATH/qt_??.qm $PACKAGE_DIRECTORY/i18n/
+cp $GUI_TRANSLATIONS_DIRECTORY_PATH/qtbase*.qm $PACKAGE_DIRECTORY/i18n/
+cp $GUI_TRANSLATIONS_DIRECTORY_PATH/qtscript*.qm $PACKAGE_DIRECTORY/i18n/
+cp $GUI_TRANSLATIONS_DIRECTORY_PATH/qtmultimedia*.qm $PACKAGE_DIRECTORY/i18n/
+cp $GUI_TRANSLATIONS_DIRECTORY_PATH/qtxmlpatterns*.qm $PACKAGE_DIRECTORY/i18n/
 
 # ----------------------------------------------------------------------------
 # QT WebEngine

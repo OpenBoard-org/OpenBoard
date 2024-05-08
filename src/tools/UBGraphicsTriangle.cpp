@@ -335,13 +335,6 @@ void UBGraphicsTriangle::paint(QPainter *painter, const QStyleOptionGraphicsItem
     paintHelp(painter);
 
     mAntiScaleRatio = 1 / (UBApplication::boardController->systemScaleFactor() * UBApplication::boardController->currentZoom());
-    QTransform antiScaleTransform;
-    antiScaleTransform.scale(mAntiScaleRatio, mAntiScaleRatio);
-
-    mCloseSvgItem->setTransform(antiScaleTransform);
-    mHFlipSvgItem->setTransform(antiScaleTransform);
-    mVFlipSvgItem->setTransform(antiScaleTransform);
-    mRotateSvgItem->setTransform(antiScaleTransform);
 
     mCloseSvgItem->setPos(closeButtonRect().topLeft());
 
@@ -464,6 +457,15 @@ void UBGraphicsTriangle::paintGraduations(QPainter *painter)
     for (int millimeters = 0; millimeters < (rect().width() - sLeftEdgeMargin - sRoundingRadius) / pixelsPerMillimeter; millimeters++)
     {
         double graduationX = rotationCenter().x() + kx * pixelsPerMillimeter * millimeters;
+        if (mOrientation == TopLeft || mOrientation == BottomLeft)
+        {
+            graduationX += sLeftEdgeMargin;
+        }
+        else
+        {
+            graduationX -= sLeftEdgeMargin;
+        }
+
         double graduationHeight = 0;
 
         if (millimeters % UBGeometryUtils::millimetersPerCentimeter == 0)
@@ -551,16 +553,7 @@ void UBGraphicsTriangle::rotateAroundCenter(QTransform& transform, QPointF cente
 
 QPointF    UBGraphicsTriangle::rotationCenter() const
 {
-    switch(mOrientation)
-    {
-        case BottomLeft:
-        case TopLeft:
-            return B1 + QPointF(sLeftEdgeMargin, 0);
-        case TopRight:
-        case BottomRight:
-            return B1 - QPointF(sLeftEdgeMargin, 0);
-    }
-    return QPointF(0, 0);
+    return B1;
 }
 
 QRectF    UBGraphicsTriangle::closeButtonRect() const
@@ -1035,16 +1028,14 @@ void UBGraphicsTriangle::StartLine(const QPointF &scenePos, qreal width)
 
     qreal y;
 
-    if (mOrientation == 0 || mOrientation == 1) {
+    if (mOrientation == BottomLeft || mOrientation == BottomRight)
+    {
         y = rect().y() + rect().height() + mStrokeWidth / 2;
-    } else if (mOrientation == 2 || mOrientation == 3) {
+    }
+    else
+    {
         y = rect().y() - mStrokeWidth / 2;
     }
-
-    if (itemPos.x() < rect().x() + sLeftEdgeMargin)
-            itemPos.setX(rect().x() + sLeftEdgeMargin);
-    if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
-            itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
 
     itemPos.setY(y);
     itemPos = mapToScene(itemPos);
@@ -1060,16 +1051,14 @@ void UBGraphicsTriangle::DrawLine(const QPointF &scenePos, qreal width)
 
     qreal y;
 
-    if (mOrientation == 0 || mOrientation == 1) {
+    if (mOrientation == BottomLeft || mOrientation == BottomRight)
+    {
         y = rect().y() + rect().height() + mStrokeWidth / 2;
-    } else if (mOrientation == 2 || mOrientation == 3) {
+    }
+    else
+    {
         y = rect().y() - mStrokeWidth / 2;
     }
-
-    if (itemPos.x() < rect().x() + sLeftEdgeMargin)
-            itemPos.setX(rect().x() + sLeftEdgeMargin);
-    if (itemPos.x() > rect().x() + rect().width() - sLeftEdgeMargin)
-            itemPos.setX(rect().x() + rect().width() - sLeftEdgeMargin);
 
     itemPos.setY(y);
     itemPos = mapToScene(itemPos);
