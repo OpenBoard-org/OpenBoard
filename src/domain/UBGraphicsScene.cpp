@@ -366,6 +366,8 @@ UBGraphicsScene::UBGraphicsScene(std::shared_ptr<UBDocumentProxy> document, bool
 //    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
     connect(UBApplication::undoStack.data(), SIGNAL(indexChanged(int)), this, SLOT(updateSelectionFrameWrapper(int)));
     connect(UBDrawingController::drawingController(), SIGNAL(stylusToolChanged(int,int)), this, SLOT(stylusToolChanged(int,int)));
+
+    installEventFilter(this);
 }
 
 UBGraphicsScene::~UBGraphicsScene()
@@ -714,6 +716,7 @@ bool UBGraphicsScene::inputDeviceRelease(int tool)
                 addPolygonItemToCurrentStroke(poly);
             }
 
+            if(multiDrawLines.isEmpty()) // is it not polygons drawing by multiDraw
             // replace the stroke by a simplified version of it
             if ((currentTool == UBStylusTool::Pen && UBSettings::settings()->boardSimplifyPenStrokes->get().toBool())
                 || (currentTool == UBStylusTool::Marker && UBSettings::settings()->boardSimplifyMarkerStrokes->get().toBool()))
@@ -2052,6 +2055,27 @@ bool UBGraphicsScene::isEmpty() const
     return mItemCount == 0;
 }
 
+bool UBGraphicsScene::eventFilter(QObject *watched, QEvent *event)
+{
+    if( UBApplication::applicationController != NULL ) // it needs to work only on Board mode
+        if( UBApplication::applicationController->displayMode() != UBApplicationController::Board ||
+            UBApplication::applicationController->isShowingDesktop())
+            return false;
+    if (watched == this)
+    {
+        UBStylusTool::Enum currentTool = (UBStylusTool::Enum)UBDrawingController::drawingController()->stylusTool();
+        if ((event->type() == QEvent::TouchUpdate || event->type() == QEvent::TouchEnd)      //for use multiDraw
+                && (currentTool == UBStylusTool::Pen || currentTool == UBStylusTool::Marker)) // when Pen or Marker
+        {
+            MultiTouchDrawing(static_cast<QTouchEvent*>(event), currentTool);
+            if (event->type() == QEvent::TouchEnd) //end of multiDraw
+                MultiTouchEndDrawing();
+            return true;
+        }
+    }
+    return false;
+}
+
 QGraphicsItem* UBGraphicsScene::setAsBackgroundObject(QGraphicsItem* item, bool pAdaptTransformation, bool pExpand)
 {
     if (mBackgroundObject)
@@ -3121,4 +3145,50 @@ void UBGraphicsScene::setToolCursor(int tool)
 void UBGraphicsScene::initStroke()
 {
     mCurrentStroke = new UBGraphicsStroke(shared_from_this());
+}
+
+void UBGraphicsScene::MultiTouchDrawing(QTouchEvent* event, UBStylusTool::Enum currentTool)
+{
+    QList <QTouchEvent::TouchPoint> touchPoints = event->touchPoints();
+    foreach (QTouchEvent::TouchPoint point, touchPoints)
+    {
+        lastPoint_m = point.lastPos();
+        endPoint_m = point.pos();
+
+        int distance = sqrt(pow((lastPoint_m.x() - endPoint_m.x()),2) + pow((lastPoint_m.y() - endPoint_m.y()),2)) + 1;
+        distance = sqrt(distance);
+        if (distance > 6)
+            distance = 6;
+        else if(distance < 4)
+            distance = 4;
+
+        UBBoardView* boardView = controlView();
+        QLineF line;
+        line.setP1(boardView->mapToScene(UBGeometryUtils::pointConstrainedInRect(lastPoint_m.toPoint(), boardView->rect())));
+        line.setP2(boardView->mapToScene(UBGeometryUtils::pointConstrainedInRect(endPoint_m.toPoint(), boardView->rect())));
+        if (!multiDrawLines.contains(line)) // to eliminate duplicates
+        {
+            multiDrawLines.append(line);
+
+            qreal penWidth = 0;
+            if (currentTool == UBStylusTool::Pen)
+                penWidth = UBSettings::settings()->currentPenWidth();
+            else if (currentTool == UBStylusTool::Marker)
+                penWidth = UBSettings::settings()->currentMarkerWidth();
+            penWidth /= UBApplication::boardController->systemScaleFactor();
+            penWidth /= UBApplication::boardController->currentZoom();
+
+            UBGraphicsPolygonItem *polygonItem = lineToPolygonItem(line, penWidth, penWidth);
+            addPolygonItemToCurrentStroke(polygonItem);
+        }
+
+        lastPoint_m = endPoint_m;
+    }
+}
+
+void UBGraphicsScene::MultiTouchEndDrawing()
+{
+    inputDeviceRelease();
+    multiDrawLines.clear();
+    controlView()->releaseAllInputDevices();
 }

@@ -64,6 +64,8 @@ public:
 
     void setMultiselection(bool enable);
     bool isMultipleSelectionEnabled() { return mMultipleSelectionIsEnabled; }
+
+    void releaseAllInputDevices();
     // work around for handling tablet events on MAC OS with Qt 4.8.0 and above
 #if defined(Q_OS_OSX)
     bool directTabletEvent(QEvent *event);
