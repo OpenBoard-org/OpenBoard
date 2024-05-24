@@ -32,9 +32,7 @@
 #include <QtGui>
 
 #include <frameworks/UBPlatformUtils.h>
-#ifndef USE_XPDF
-    #include <poppler/cpp/poppler-version.h>
-#endif
+#include <poppler/cpp/poppler-version.h>
 
 #include "core/memcheck.h"
 #include "core/UBSettings.h"
@@ -64,9 +62,7 @@ XPDFRenderer::XPDFRenderer(const QString &filename, bool importingFile)
 #endif
         globalParams->setupBaseFonts(QFile::encodeName(UBPlatformUtils::applicationResourcesDirectory() + "/" + "fonts").data());
     }
-#ifdef USE_XPDF
-    mDocument = new PDFDoc(new GString(filename.toLocal8Bit()), 0, 0, 0); // the filename GString is deleted on PDFDoc desctruction
-#elif POPPLER_VERSION_MAJOR > 22 || (POPPLER_VERSION_MAJOR == 22 && POPPLER_VERSION_MINOR >= 3)
+#if POPPLER_VERSION_MAJOR > 22 || (POPPLER_VERSION_MAJOR == 22 && POPPLER_VERSION_MINOR >= 3)
     mDocument = new PDFDoc(std::make_unique<GooString>(filename.toLocal8Bit()));
 #else
     mDocument = new PDFDoc(new GooString(filename.toLocal8Bit()), 0, 0, 0); // the filename GString is deleted on PDFDoc desctruction
@@ -239,11 +235,8 @@ QImage* XPDFRenderer::createPDFImageHistorical(int pageNumber, qreal xscale, qre
             delete mSplashHistorical;
 
         mSplashHistorical = new SplashOutputDev(splashModeRGB8, 1, false, constants::paperColor);
-#ifdef USE_XPDF
-        mSplashHistorical->startDoc(mDocument->getXRef());
-#else
         mSplashHistorical->startDoc(mDocument);
-#endif
+
         int rotation = 0; // in degrees (get it from the worldTransform if we want to support rotation)
         bool useMediaBox = false;
         bool crop = true;
@@ -451,12 +444,7 @@ void XPDFRenderer::CacheThread::run()
              << "ratio" << jobData.cacheData->ratio; */
 
     jobData.cacheData->prepareNewSplash(jobData.pageNumber, constants::paperColor);
-
-#ifdef USE_XPDF
-    jobData.cacheData->splash->startDoc(jobData.document->getXRef());
-#else
     jobData.cacheData->splash->startDoc(jobData.document);
-#endif
 
     m_jobMutex.unlock();
 
