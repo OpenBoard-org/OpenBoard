@@ -424,8 +424,6 @@ void UBSettings::init()
     pdfUsePDFMerger = new UBSetting(this, "PDF", "UsePDFMerger", "true");
     pdfResolution = new UBSetting(this, "PDF", "Resolution", "300");
 
-    pdfZoomBehavior = new UBSetting(this, "PDF", "ZoomBehavior", "4");
-    enableQualityLossToIncreaseZoomPerfs = new UBSetting(this, "PDF", "enableQualityLossToIncreaseZoomPerfs", true);
     exportBackgroundGrid = new UBSetting(this, "PDF", "ExportBackgroundGrid", false);
     exportBackgroundColor = new UBSetting(this, "PDF", "ExportBackgroundColor", false);
 

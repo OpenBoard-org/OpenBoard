@@ -48,15 +48,9 @@ class PDFDoc;
 
 namespace XPDFRendererZoomFactor
 {
-    const double mode1_zoomFactor = 3.0;
-    const double mode2_zoomFactorStage1 = 2.5;
-    const double mode2_zoomFactorStage2 = 5.0;
-    const double mode2_zoomFactorStage3 = 10.0;
-    const double mode3_zoomFactorStage1 = 1.0;
-    const double mode3_zoomFactorStage2 = 3.0;
-    const double mode4_zoomFactorStart = .25;
-    const double mode4_zoomFactorStepSquare = .25;
-    const double mode4_zoomFactorIterations = 7;
+    const double zoomFactorStart = .25;
+    const double zoomFactorStepSquare = .25;
+    const double zoomFactorIterations = 7;
 }
 
 namespace XPDFThreadMaxTimeoutOnExit
@@ -154,20 +148,14 @@ class XPDFRenderer : public PDFRenderer
         CacheThread m_cacheThread;
 
         QImage &createPDFImageCached(int pageNumber, PdfZoomCacheData &cacheData);
-        QImage* createPDFImageHistorical(int pageNumber, qreal xscale, qreal yscale, const QRectF &bounds);
+        QImage* createPDFImageUncached(int pageNumber, qreal xscale, qreal yscale, const QRectF &bounds);
 
-        // Used when 'ZoomBehavior == 1, 2, 3 or 4'.
-        // =1 has only x3 zoom in cache (= loss if user zoom > 3.0).
-        // =2, has 2.5, 5 and 10 (= no loss, but a bit slower).
-        // =3, has 1.0, 2.5, 5 and 10, but downsampled instead of upsampled (= minor quality loss, a bit faster).
-        // =4, multithreaded, multiple level of zoom.
         QMap<int, QVector<PdfZoomCacheData>> m_perPagepdfZoomCache;
-        int const m_pdfZoomMode;
 
-        // Used when 'ZoomBehavior == 0' (no cache).
-        SplashBitmap* mpSplashBitmapHistorical;
-        // Used when 'ZoomBehavior == 0' (no cache).
-        SplashOutputDev* mSplashHistorical;
+        // Used when no cache allowed (e.g. rendering to a file).
+        SplashBitmap* mpSplashBitmapUncached;
+        // Used when no cache allowed (e.g. rendering to a file).
+        SplashOutputDev* mSplashUncached;
 
         PDFDoc *mDocument;
         static QAtomicInt sInstancesCount;
