@@ -137,16 +137,6 @@
                 </property>
                </widget>
               </item>
-              <item row="2" column="0">
-               <widget class="QCheckBox" name="enableQualityLossToIncreaseZoomPerfs">
-                <property name="text">
-                 <string>Improve zoom execution time (can slightly affect rendering quality)</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
               <item row="4" column="0">
                <widget class="QCheckBox" name="exportBackgroundColor">
                 <property name="text">

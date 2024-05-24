@@ -176,8 +176,6 @@ void UBPreferencesController::wire()
     connect(mPreferencesUI->useSystemOSKCheckBox, SIGNAL(clicked(bool)), this, SLOT(systemOSKCheckBoxToggled(bool)));
 
     // PDF preferences
-    connect(mPreferencesUI->enableQualityLossToIncreaseZoomPerfs, SIGNAL(clicked(bool)), settings->enableQualityLossToIncreaseZoomPerfs, SLOT(setBool(bool)));
-    connect(mPreferencesUI->enableQualityLossToIncreaseZoomPerfs, SIGNAL(clicked(bool)), this, SLOT(setPdfZoomBehavior(bool)));
     connect(mPreferencesUI->exportBackgroundGrid, SIGNAL(clicked(bool)), settings->exportBackgroundGrid, SLOT(setBool(bool)));
     connect(mPreferencesUI->exportBackgroundColor, SIGNAL(clicked(bool)), settings->exportBackgroundColor, SLOT(setBool(bool)));
 
@@ -317,7 +315,6 @@ void UBPreferencesController::init()
     mPreferencesUI->useSystemOSKCheckBox->setChecked(settings->useSystemOnScreenKeyboard->get().toBool());
     this->systemOSKCheckBoxToggled(mPreferencesUI->useSystemOSKCheckBox->isChecked());
 
-    mPreferencesUI->enableQualityLossToIncreaseZoomPerfs->setChecked(settings->enableQualityLossToIncreaseZoomPerfs->get().toBool());
     mPreferencesUI->exportBackgroundGrid->setChecked(settings->exportBackgroundGrid->get().toBool());
     mPreferencesUI->exportBackgroundColor->setChecked(settings->exportBackgroundColor->get().toBool());
 
@@ -395,7 +392,6 @@ void UBPreferencesController::defaultSettings()
         mPreferencesUI->showDateColumnOnAlphabeticalSort->setChecked(settings->showDateColumnOnAlphabeticalSort->reset().toBool());
         UBApplication::documentController->refreshDateColumns();
 
-        mPreferencesUI->enableQualityLossToIncreaseZoomPerfs->setChecked(settings->enableQualityLossToIncreaseZoomPerfs->reset().toBool());
         mPreferencesUI->exportBackgroundGrid->setChecked(settings->exportBackgroundGrid->reset().toBool());
         mPreferencesUI->exportBackgroundColor->setChecked(settings->exportBackgroundColor->reset().toBool());
 
@@ -698,18 +694,6 @@ void UBPreferencesController::systemOSKCheckBoxToggled(bool checked)
 {
     mPreferencesUI->keyboardPaletteKeyButtonSize->setVisible(!checked);
     mPreferencesUI->keyboardPaletteKeyButtonSize_Label->setVisible(!checked);
-}
-
-void UBPreferencesController::setPdfZoomBehavior(bool checked)
-{
-    if (checked)
-    {
-        UBSettings::settings()->pdfZoomBehavior->setInt(4);// Multithreaded, several steps, downsampled.
-    }
-    else
-    {
-        UBSettings::settings()->pdfZoomBehavior->setInt(0);//Old behavior. To remove if no issues found with the other mode
-    }
 }
 
 UBBrushPropertiesFrame::UBBrushPropertiesFrame(QFrame* owner, const QList<QColor>& lightBackgroundColors,

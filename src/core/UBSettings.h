@@ -369,8 +369,6 @@ class UBSettings : public QObject
         UBSetting* pdfUsePDFMerger;
         UBSetting* pdfResolution;
 
-        UBSetting* pdfZoomBehavior;
-        UBSetting* enableQualityLossToIncreaseZoomPerfs;
         UBSetting* exportBackgroundGrid;
         UBSetting* exportBackgroundColor;
 
