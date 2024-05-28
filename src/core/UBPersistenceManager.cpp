@@ -650,9 +650,6 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createNewDocument(const Q
                                                       , bool promptDialogIfExists)
 {
     std::shared_ptr<UBDocumentProxy> resultDoc = createDocument(pGroupName, pName, withEmptyPage, directory, pageCount, promptDialogIfExists);
-    if (resultDoc) {
-        mDocumentTreeStructureModel->markDocumentAsNew(resultDoc);
-    }
 
     return resultDoc;
 }
@@ -726,6 +723,7 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocumentFromDir(con
 
 void UBPersistenceManager::deleteDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy)
 {
+    qWarning() << "deleting dir with path: " << pDocumentProxy->persistencePath();
     checkIfDocumentRepositoryExists();
 
     if (QFileInfo(pDocumentProxy->persistencePath()).exists())
@@ -1143,29 +1141,23 @@ void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy>
     QDir dir(pDocumentProxy->persistencePath());
     dir.mkpath(pDocumentProxy->persistencePath());
 
-    if (pDocumentProxy->isModified())
+    persistDocumentMetadata(pDocumentProxy, forceImmediateSaving);
+
+    if(forceImmediateSaving)
     {
-        persistDocumentMetadata(pDocumentProxy, forceImmediateSaving);
+        UBSvgSubsetAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
+    }
+    else
+    {
+       std::shared_ptr<UBGraphicsScene> copiedScene = pScene->sceneDeepCopy();
+       mWorker->saveScene(pDocumentProxy, copiedScene.get(), pSceneIndex);
+
+       // keep copiedScene alive until saving is finished
+       mScenesToSave.append(copiedScene);
     }
 
-    if (pScene->isModified())
-    {
-        if(forceImmediateSaving)
-        {
-            UBSvgSubsetAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
-        }
-        else
-        {
-           std::shared_ptr<UBGraphicsScene> copiedScene = pScene->sceneDeepCopy();
-           mWorker->saveScene(pDocumentProxy, copiedScene.get(), pSceneIndex);
-
-           // keep copiedScene alive until saving is finished
-           mScenesToSave.append(copiedScene);
-        }
-
-        UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
-        pScene->setModified(false);
-    }
+    UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
+    pScene->setModified(false);
 
     mSceneCache.insert(pDocumentProxy, pSceneIndex, pScene);
 }
@@ -1337,25 +1329,6 @@ bool UBPersistenceManager::isEmpty(std::shared_ptr<UBDocumentProxy> pDocumentPro
     }
 
     return empty;
-}
-
-
-void UBPersistenceManager::purgeEmptyDocuments()
-{
-    QList<std::shared_ptr<UBDocumentProxy>> toBeDeleted;
-
-    foreach(std::shared_ptr<UBDocumentProxy> docProxy, mDocumentTreeStructureModel->newDocuments())
-    {
-        if (isEmpty(docProxy))
-        {
-            toBeDeleted << docProxy;
-        }
-    }
-
-    foreach(std::shared_ptr<UBDocumentProxy> docProxy, toBeDeleted)
-    {
-        deleteDocument(docProxy);
-    }
 }
 
 bool UBPersistenceManager::addFileToDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy,

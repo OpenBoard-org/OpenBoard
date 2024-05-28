@@ -142,7 +142,6 @@ class UBPersistenceManager : public QObject
         }
 
         virtual bool isEmpty(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
-        virtual void purgeEmptyDocuments();
 
         bool addGraphicsWidgetToDocument(std::shared_ptr<UBDocumentProxy> mDocumentProxy, QString path, QUuid objectUuid, QString& destinationPath);
         bool addFileToDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy, QString path, const QString& subdir,  QUuid objectUuid, QString& destinationPath, QByteArray* data = NULL);

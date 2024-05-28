@@ -749,7 +749,6 @@ bool UBGraphicsScene::inputDeviceRelease(int tool)
 
     if (mRemovedItems.size() > 0 || mAddedItems.size() > 0)
     {
-
         if (mUndoRedoStackEnabled) { //should be deleted after scene own undo stack implemented
             if (UBApplication::undoStack)
             {
@@ -1965,7 +1964,10 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
         notifyZChanged(item, item->zValue());
 
     if (!mTools.contains(item))
-      ++mItemCount;
+    {
+        ++mItemCount;
+        setModified(true);
+    }
 
     auto widget = dynamic_cast<UBGraphicsWidgetItem*>(item);
 
@@ -1983,6 +1985,7 @@ void UBGraphicsScene::addItems(const QSet<QGraphicsItem*>& items)
     }
 
     mItemCount += items.size();
+    setModified(true);
 }
 
 void UBGraphicsScene::removeItem(QGraphicsItem* item)
@@ -1992,7 +1995,10 @@ void UBGraphicsScene::removeItem(QGraphicsItem* item)
     UBApplication::boardController->freezeW3CWidget(item, true);
 
     if (!mTools.contains(item))
-      --mItemCount;
+    {
+        --mItemCount;
+        setModified(true);
+    }
 }
 
 void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)
@@ -2001,6 +2007,7 @@ void UBGraphicsScene::removeItems(const QSet<QGraphicsItem*>& items)
         UBCoreGraphicsScene::removeItem(item);
 
     mItemCount -= items.size();
+    setModified(true);
 }
 
 void UBGraphicsScene::deselectAllItems()
@@ -2963,8 +2970,6 @@ void UBGraphicsScene::setDocumentUpdated()
 
 void UBGraphicsScene::updateBackground()
 {
-    setModified(true);
-
     foreach(QGraphicsView* view, views())
     {
         view->resetCachedContent();

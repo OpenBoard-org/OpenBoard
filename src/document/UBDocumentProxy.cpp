@@ -95,7 +95,6 @@ std::shared_ptr<UBDocumentProxy> UBDocumentProxy::deepCopy() const
 
     copy->mPersistencePath = QString(mPersistencePath);
     copy->mMetaDatas = QMap<QString, QVariant>(mMetaDatas);
-    copy->mIsModified = mIsModified;
     copy->mPageCount = mPageCount;
     copy->mLastVisitedIndex = mLastVisitedIndex;
     copy->mIsInFavoriteList = mIsInFavoriteList;
@@ -205,7 +204,6 @@ void UBDocumentProxy::setPersistencePath(const QString& pPersistencePath)
 {
     if (pPersistencePath != mPersistencePath)
     {
-        mIsModified = true;
         mPersistencePath = pPersistencePath;
     }
 }
@@ -216,7 +214,6 @@ void UBDocumentProxy::setMetaData(const QString& pKey, const QVariant& pValue)
         return;
     else
     {
-        mIsModified = true;
         mMetaDatas.insert(pKey, pValue);
         if (pKey == UBSettings::documentUpdatedAt)
         {
@@ -266,7 +263,6 @@ void UBDocumentProxy::setDefaultDocumentSize(QSize pSize)
     if (defaultDocumentSize() != pSize)
     {
         setMetaData(UBSettings::documentSize, QVariant(pSize));
-        mIsModified = true;
     }
 }
 
@@ -305,11 +301,6 @@ QDateTime UBDocumentProxy::lastUpdate()
         return UBStringUtils::fromUtcIsoDate(metaData(UBSettings::documentUpdatedAt).toString());
     }
     return QDateTime::currentDateTime();
-}
-
-bool UBDocumentProxy::isModified() const
-{
-    return mIsModified;
 }
 
 

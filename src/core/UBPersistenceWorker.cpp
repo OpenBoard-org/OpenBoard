@@ -81,10 +81,8 @@ void UBPersistenceWorker::process()
             emit sceneLoaded(UBSvgSubsetAdaptor::loadSceneAsText(info.proxy,info.sceneIndex), info.proxy, info.sceneIndex);
         }
         else if (info.action == WriteMetadata) {
-            if (info.proxy->isModified()) {
-                UBMetadataDcSubsetAdaptor::persist(info.proxy);
-                emit metadataPersisted(info.proxy);
-            }
+            UBMetadataDcSubsetAdaptor::persist(info.proxy);
+            emit metadataPersisted(info.proxy);
         }
         mSemaphore.acquire();
     }while(!mReceivedApplicationClosing);

@@ -815,7 +815,6 @@ bool UBDocumentTreeModel::removeRows(int row, int count, const QModelIndex &pare
                 }
             }
         }
-        mNewDocuments.removeAll(curChildNode->proxyData());
         parentNode->removeChild(i);
 
     }
@@ -979,11 +978,6 @@ QPersistentModelIndex UBDocumentTreeModel::copyIndexToNewParent(const QModelInde
     switch (static_cast<int>(pMode)) {
     case aReference:
         clonedNodeSource = nodeSource->clone();
-        if (mNewDocuments.contains(nodeSource->proxyData())) { //update references for session documents
-            mNewDocuments << clonedNodeSource->proxyData();
-
-            UBPersistenceManager::persistenceManager()->reassignDocProxy(clonedNodeSource->proxyData(), nodeSource->proxyData());
-        }
         break;
 
     case aContentCopy:
@@ -1278,7 +1272,6 @@ void UBDocumentTreeModel::addDocument(std::shared_ptr<UBDocumentProxy> pProxyDat
 void UBDocumentTreeModel::addNewDocument(std::shared_ptr<UBDocumentProxy> pProxyData, const QModelIndex &pParent)
 {
     addDocument(pProxyData, pParent);
-    mNewDocuments << pProxyData;
 }
 
 QModelIndex UBDocumentTreeModel::addCatalog(const QString &pName, const QModelIndex &pParent)
@@ -1322,6 +1315,7 @@ void UBDocumentTreeModel::setNewName(const QModelIndex &index, const QString &ne
         } else {
             indexNode->setNodeName(newName);
             indexNode->proxyData()->setMetaData(UBSettings::documentName, newName);
+            indexNode->proxyData()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(QDateTime::currentDateTime()));
         }
 
         UBFeaturesController* featuresController = UBApplication::boardController->paletteManager()->featuresWidget()->getFeaturesController();
@@ -1968,9 +1962,6 @@ void UBDocumentController::createNewDocument()
     std::shared_ptr<UBDocumentProxy> document = pManager->createDocument(groupName, documentName);
 
     selectDocument(document, true, false, true);
-
-    if (document)
-        pManager->mDocumentTreeStructureModel->markDocumentAsNew(document);
 
     pageSelectionChanged();
 }
@@ -4133,9 +4124,6 @@ void UBDocumentController::createNewDocumentInUntitledFolder()
 
     std::shared_ptr<UBDocumentProxy> document = pManager->createDocument(groupName);
     selectDocument(document);
-
-    if (document)
-        pManager->mDocumentTreeStructureModel->markDocumentAsNew(document);
 
     pageSelectionChanged();
 }

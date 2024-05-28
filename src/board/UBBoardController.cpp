@@ -151,7 +151,10 @@ void UBBoardController::init()
 
     std::shared_ptr<UBDocumentProxy> doc = UBPersistenceManager::persistenceManager()->createNewDocument();
 
-    setActiveDocumentScene(doc);
+    if (doc)
+    {
+        mInitialDocumentScene = setActiveDocumentScene(doc);
+    }
 
     connect(UBApplication::displayManager, &UBDisplayManager::screenRolesAssigned, this, [this](){
         initBackgroundGridSize();
@@ -1543,12 +1546,12 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
     return NULL;
 }
 
-void UBBoardController::setActiveDocumentScene(int pSceneIndex)
+std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(int pSceneIndex)
 {
-    setActiveDocumentScene(selectedDocument(), pSceneIndex);
+    return setActiveDocumentScene(selectedDocument(), pSceneIndex);
 }
 
-void UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const int pSceneIndex, bool forceReload, bool onImport)
+std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const int pSceneIndex, bool forceReload, bool onImport)
 {
     UBApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     saveViewState();
@@ -1583,9 +1586,9 @@ void UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> 
 
         updateSystemScaleFactor();
 
+        disconnect(UBApplication::undoStack.data(), SIGNAL(indexChanged(int)), mControlView->scene().get(), SLOT(updateSelectionFrameWrapper(int)));
         mControlView->setScene(mActiveScene.get());
-        disconnect(mControlView, SIGNAL(mouseReleased()), mActiveScene.get(), SLOT(updateSelectionFrame()));
-        connect(mControlView, SIGNAL(mouseReleased()), mActiveScene.get(), SLOT(updateSelectionFrame()));
+        connect(UBApplication::undoStack.data(), SIGNAL(indexChanged(int)), mControlView->scene().get(), SLOT(updateSelectionFrameWrapper(int)));
 
         mDisplayView->setScene(mActiveScene.get());
         mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
@@ -1630,6 +1633,8 @@ void UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> 
         qWarning() << "could not load document scene : '" << pDocumentProxy->persistencePath() << "', page index : " << pSceneIndex;
     }
     UBApplication::restoreOverrideCursor();
+
+    return targetScene;
 }
 
 
@@ -1945,16 +1950,31 @@ void UBBoardController::lastWindowClosed()
 {
     if (!mCleanupDone)
     {
-        if (selectedDocument()->pageCount() == 1 && (!mActiveScene || mActiveScene->isEmpty()))
+        if (initialDocumentScene() && initialDocumentScene()->document())
         {
-            UBPersistenceManager::persistenceManager()->deleteDocument(selectedDocument());
+            if (initialDocumentScene()->isEmpty() && (initialDocumentScene()->document()->documentDate() == initialDocumentScene()->document()->lastUpdate()))
+            {
+                // intial scene or document have not been modified at all, so we can delete the document.
+                UBPersistenceManager::persistenceManager()->deleteDocument(initialDocumentScene()->document());
+
+                //if current scene is not the initial document scene, we still need to persist it to ensure no data can be lost this way
+                if (activeScene() != initialDocumentScene())
+                {
+                    persistCurrentScene();
+                }
+            }
+            else
+            {
+                // if intial scene or document changed, then rather the initial document scene is the current scene,
+                // or current scene changed and initial document scene has already been persisted.
+                // Now, we just persist the current scene before closing the app, to ensure no data can be lost this way.
+                persistCurrentScene();
+            }
         }
         else
-        {
+        { //should not happen ?
             persistCurrentScene();
         }
-
-        UBPersistenceManager::persistenceManager()->purgeEmptyDocuments();
 
         mCleanupDone = true;
     }

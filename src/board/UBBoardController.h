@@ -182,8 +182,8 @@ class UBBoardController : public UBDocumentContainer
         void findUniquesItems(const QUndoCommand *parent, QSet<QGraphicsItem *> &items);
         void ClearUndoStack();
 
-        void setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pSceneIndex = 0, bool forceReload = false, bool onImport = false);
-        void setActiveDocumentScene(int pSceneIndex);
+        std::shared_ptr<UBGraphicsScene> setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pSceneIndex = 0, bool forceReload = false, bool onImport = false);
+        std::shared_ptr<UBGraphicsScene> setActiveDocumentScene(int pSceneIndex);
 
         void moveSceneToIndex(int source, int target);
         void duplicateScene(int index);
@@ -194,6 +194,11 @@ class UBBoardController : public UBDocumentContainer
 
         QString actionGroupText(){ return mActionGroupText;}
         QString actionUngroupText(){ return mActionUngroupText;}
+
+        std::shared_ptr<UBGraphicsScene> initialDocumentScene()
+        {
+            return mInitialDocumentScene;
+        }
 
     public slots:
         void showDocumentsDialog();
@@ -322,6 +327,7 @@ class UBBoardController : public UBDocumentContainer
         int mMovingSceneIndex;
         QString mActionGroupText;
         QString mActionUngroupText;
+        std::shared_ptr<UBGraphicsScene> mInitialDocumentScene;
 
         QTimer *mAutosaveTimer;
 

@@ -232,8 +232,7 @@ public:
     void addDocument(std::shared_ptr<UBDocumentProxy> pProxyData, const QModelIndex &pParent = QModelIndex());
     void addNewDocument(std::shared_ptr<UBDocumentProxy>pProxyData, const QModelIndex &pParent = QModelIndex());
     QModelIndex addCatalog(const QString &pName, const QModelIndex &pParent);
-    QList<std::shared_ptr<UBDocumentProxy>> newDocuments() {return mNewDocuments;}
-    void markDocumentAsNew(std::shared_ptr<UBDocumentProxy> pDoc) {if (indexForProxy(pDoc).isValid()) mNewDocuments << pDoc;}
+
     void setNewName(const QModelIndex &index, const QString &newName);
     QString adjustNameForParentIndex(const QString &pName, const QModelIndex &pIndex);
 
@@ -277,7 +276,7 @@ private:
     QPersistentModelIndex mMyDocuments;
     QPersistentModelIndex mTrash;
     QPersistentModelIndex mUntitledDocuments;
-    QList<std::shared_ptr<UBDocumentProxy>> mNewDocuments;
+
     QModelIndex mHighLighted;
 
     //N/C - NNE - 20140407

@@ -159,6 +159,8 @@ void UBBackgroundPalette::sliderValueChanged(int value)
 {
     UBApplication::boardController->activeScene()->setBackgroundGridSize(value);
     UBSettings::settings()->crossSize = value; // since this function is called (indirectly, by refresh) when we switch scenes, the settings will always have the current scene's cross size.
+
+    UBApplication::boardController->activeScene()->setModified(true);
 }
 
 void UBBackgroundPalette::defaultBackgroundGridSize()

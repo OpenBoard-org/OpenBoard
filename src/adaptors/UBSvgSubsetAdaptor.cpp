@@ -246,7 +246,7 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::loadScene(std::shared_ptr<U
 {
     UBApplication::showMessage(QObject::tr("Loading scene (%1/%2)").arg(pageIndex+1).arg(proxy->pageCount()));
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
-    qDebug() << fileName;
+    qInfo() << "loading scene. Filename is : " << fileName;
     QFile file(fileName);
 
     if (file.exists())
@@ -1514,7 +1514,7 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(std::shared_ptr<UBDocum
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
     {
-        qCritical() << "cannot open " << fileName << " for writing ...";
+        qCritical() << "cannot open " << fileName << " for writing. Error : " << file.errorString();
         return false;
     }
     file.write(buffer.data());

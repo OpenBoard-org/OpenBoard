@@ -450,8 +450,7 @@ void UBApplicationController::showDocument()
 
     if (UBApplication::boardController)
     {
-        if (UBApplication::boardController->activeScene()->isModified())
-            UBApplication::boardController->persistCurrentScene();
+        UBApplication::boardController->persistCurrentScene();
 
         UBApplication::boardController->hide();
     }

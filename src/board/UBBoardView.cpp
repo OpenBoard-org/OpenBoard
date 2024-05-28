@@ -1585,7 +1585,7 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
     setMovingItem(NULL);
 
     mLongPressTimer.stop();
-    emit mouseReleased();
+    scene()->updateSelectionFrame();
 }
 
 void UBBoardView::forcedTabletRelease ()
