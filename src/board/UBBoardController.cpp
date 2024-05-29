@@ -2436,8 +2436,12 @@ void UBBoardController::paste()
     QClipboard *clipboard = QApplication::clipboard();
     qreal xPosition = ((qreal)QRandomGenerator::global()->bounded(RAND_MAX)/(qreal)RAND_MAX) * 400;
     qreal yPosition = ((qreal)QRandomGenerator::global()->bounded(RAND_MAX)/(qreal)RAND_MAX) * 200;
-    QPointF pos(xPosition -200 , yPosition - 100);
-    processMimeData(clipboard->mimeData(), pos);
+    QPointF randomPos(xPosition -200 , yPosition - 100);
+    QRect rect = mControlView->rect();
+    QPoint center(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
+    QPointF viewRelativeCenter = mControlView->mapToScene(center);
+
+    processMimeData(clipboard->mimeData(), viewRelativeCenter + randomPos);
 
     QDateTime now = QDateTime::currentDateTime();
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
