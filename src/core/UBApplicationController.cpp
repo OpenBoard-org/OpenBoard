@@ -727,30 +727,16 @@ void UBApplicationController::importFile(const QString& pFilePath)
 
     if (success && document)
     {
-        if (mMainMode == Board || mMainMode == Internet)
+        if (UBApplication::boardController)
         {
-            if (UBApplication::boardController)
-            {
-                UBApplication::boardController->setActiveDocumentScene(document, 0, true, true);
-            }
-
-            if (UBApplication::documentController)
-            {
-                if (UBApplication::documentController->selectedDocument())
-                {
-                    if (UBApplication::documentController->selectedDocument()->theSameDocument(document))
-                    {
-                        UBApplication::documentController->reloadThumbnails();
-                    }
-                }
-            }
+            UBApplication::boardController->setActiveDocumentScene(document, 0, true, true);
         }
-        else if (mMainMode == Document)
+
+        if (UBApplication::documentController)
         {
-            if (UBApplication::documentController)
-            {
-                UBApplication::documentController->selectDocument(document, true, true);
-            }
+            UBApplication::documentController->selectDocument(document, true, true);
+
+            UBApplication::documentController->reloadThumbnails();
         }
 
         // This import operation happens when double-clicking on a UBZ for example.
