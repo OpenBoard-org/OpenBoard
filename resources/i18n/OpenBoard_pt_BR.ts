@@ -2445,25 +2445,25 @@ Quer ignorar estes erros deste servidor?</translation>
     </message>
     <message>
         <source>Key sequence already in use</source>
-        <translation type="vanished">Combinação de teclas já em uso</translation>
+        <translation>Combinação de teclas já em uso</translation>
     </message>
     <message>
         <source>Mouse button already in use</source>
-        <translation type="vanished">Botão do mouse já em uso </translation>
+        <translation>Botão do mouse já em uso </translation>
     </message>
     <message>
         <source>Stylus button already in use</source>
-        <translation type="vanished">Botão de caneta já em uso</translation>
+        <translation>Botão de caneta já em uso</translation>
     </message>
     <message>
         <source>Accept</source>
         <comment>preferencesDialog</comment>
-        <translation type="vanished">Aceitar</translation>
+        <translation>Aceitar</translation>
     </message>
     <message>
         <source>Record</source>
         <comment>preferencesDialog</comment>
-        <translation type="vanished">Gravar</translation>
+        <translation>Gravar</translation>
     </message>
     <message>
         <source>Use all available displays</source>
@@ -2481,142 +2481,142 @@ Quer ignorar estes erros deste servidor?</translation>
     <name>UBShortcutManager</name>
     <message>
         <source>Common</source>
-        <translation type="vanished">Frequente</translation>
+        <translation>Frequente</translation>
     </message>
     <message>
         <source>Board</source>
-        <translation type="vanished">Quadro</translation>
+        <translation>Quadro</translation>
     </message>
     <message>
         <source>Stylus Palette</source>
-        <translation type="vanished">Paleta</translation>
+        <translation>Paleta</translation>
     </message>
     <message>
         <source>Lines and colours</source>
-        <translation type="vanished">Linhas e cores</translation>
+        <translation>Linhas e cores</translation>
     </message>
     <message>
         <source>Background</source>
-        <translation type="vanished">Fundo</translation>
+        <translation>Fundo</translation>
     </message>
     <message>
         <source>Podcast</source>
-        <translation type="vanished">Podcast</translation>
+        <translation>Podcast</translation>
     </message>
     <message>
         <source>First scene</source>
-        <translation type="vanished">Primeira cena</translation>
+        <translation>Primeira cena</translation>
     </message>
     <message>
         <source>Show first scene</source>
-        <translation type="vanished">Ver primeira cena</translation>
+        <translation>Ver primeira cena</translation>
     </message>
     <message>
         <source>Last scene</source>
-        <translation type="vanished">Última cena</translation>
+        <translation>Última cena</translation>
     </message>
     <message>
         <source>Show last scene</source>
-        <translation type="vanished">Ver última cena</translation>
+        <translation>Ver última cena</translation>
     </message>
     <message>
         <source>Zoom reset</source>
-        <translation type="vanished">Zoom 1:1</translation>
+        <translation>Zoom 1:1</translation>
     </message>
     <message>
         <source>Reset zoom factor</source>
-        <translation type="vanished">Redefinir fator de zoom </translation>
+        <translation>Redefinir fator de zoom </translation>
     </message>
     <message>
         <source>Scroll left</source>
-        <translation type="vanished">Rolar para a esquerda</translation>
+        <translation>Rolar para a esquerda</translation>
     </message>
     <message>
         <source>Scroll page left</source>
-        <translation type="vanished">Rolar página para a esquerda</translation>
+        <translation>Rolar página para a esquerda</translation>
     </message>
     <message>
         <source>Scroll right</source>
-        <translation type="vanished">Rolar para a direita</translation>
+        <translation>Rolar para a direita</translation>
     </message>
     <message>
         <source>Scroll page right</source>
-        <translation type="vanished">Rolar página para a direita</translation>
+        <translation>Rolar página para a direita</translation>
     </message>
     <message>
         <source>Scroll up</source>
-        <translation type="vanished">Rolar para cima</translation>
+        <translation>Rolar para cima</translation>
     </message>
     <message>
         <source>Scroll page up</source>
-        <translation type="vanished">Rolar página para cima</translation>
+        <translation>Rolar página para cima</translation>
     </message>
     <message>
         <source>Scroll down</source>
-        <translation type="vanished">Rolar para baixo</translation>
+        <translation>Rolar para baixo</translation>
     </message>
     <message>
         <source>Scroll page down</source>
-        <translation type="vanished">Rolar página para baixo</translation>
+        <translation>Rolar página para baixo</translation>
     </message>
     <message>
         <source>Built-in (not editable)</source>
-        <translation type="vanished">Integrado (não editável)</translation>
+        <translation>Integrado (não editável)</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="vanished">Comando</translation>
+        <translation>Comando</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="vanished">Descrição</translation>
+        <translation>Descrição</translation>
     </message>
     <message>
         <source>Key Sequence</source>
-        <translation type="vanished">Sequência de Teclas</translation>
+        <translation>Sequência de Teclas</translation>
     </message>
     <message>
         <source>Mouse Button</source>
-        <translation type="vanished">Botão do Mouse</translation>
+        <translation>Botão do Mouse</translation>
     </message>
     <message>
         <source>Tablet Button</source>
-        <translation type="vanished">Botão da Mesa Digitalizadora</translation>
+        <translation>Botão da Mesa Digitalizadora</translation>
     </message>
     <message>
         <source>Left</source>
         <comment>MouseButton</comment>
-        <translation type="vanished">Esquerdo</translation>
+        <translation>Esquerdo</translation>
     </message>
     <message>
         <source>Right</source>
         <comment>MouseButton</comment>
-        <translation type="vanished">Direito</translation>
+        <translation>Direito</translation>
     </message>
     <message>
         <source>Middle</source>
         <comment>MouseButton</comment>
-        <translation type="vanished">Meio</translation>
+        <translation>Meio</translation>
     </message>
     <message>
         <source>Back</source>
         <comment>MouseButton</comment>
-        <translation type="vanished">Voltar</translation>
+        <translation>Voltar</translation>
     </message>
     <message>
         <source>Forward</source>
         <comment>MouseButton</comment>
-        <translation type="vanished">Avançar</translation>
+        <translation>Avançar</translation>
     </message>
     <message>
         <source>Task</source>
         <comment>MouseButton</comment>
-        <translation type="vanished">Tarefa</translation>
+        <translation>Tarefa</translation>
     </message>
     <message>
         <source>Extra</source>
         <comment>MouseButton</comment>
-        <translation type="vanished">Extra</translation>
+        <translation>Extra</translation>
     </message>
 </context>
 <context>
@@ -3376,43 +3376,43 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Shortcut</source>
-        <translation type="vanished">Atalho</translation>
+        <translation>Atalho</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation type="vanished">Filtro</translation>
+        <translation>Filtro</translation>
     </message>
     <message>
         <source>Active keyboard shortcuts without pressing Ctrl key</source>
-        <translation type="vanished">Ativar atalhos de teclado sem pressionar a tecla Ctrl</translation>
+        <translation>Ativar atalhos de teclado sem pressionar a tecla Ctrl</translation>
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="vanished">Atalhos</translation>
+        <translation>Atalhos</translation>
     </message>
     <message>
         <source>Abort</source>
-        <translation type="vanished">Abortar</translation>
+        <translation>Abortar</translation>
     </message>
     <message>
         <source>Record</source>
-        <translation type="vanished">Gravar</translation>
+        <translation>Gravar</translation>
     </message>
     <message>
         <source>Stylus Button</source>
-        <translation type="vanished">Botão da Caneta</translation>
+        <translation>Botão da Caneta</translation>
     </message>
     <message>
         <source>Mouse Button</source>
-        <translation type="vanished">Botão do Mouse</translation>
+        <translation>Botão do Mouse</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="vanished">Reiniciar</translation>
+        <translation>Reiniciar</translation>
     </message>
     <message>
         <source>Key Sequence</source>
-        <translation type="vanished">Sequência de Teclas</translation>
+        <translation>Sequência de Teclas</translation>
     </message>
     <message>
         <source>Improve zoom execution time (can slightly affect rendering quality)</source>
