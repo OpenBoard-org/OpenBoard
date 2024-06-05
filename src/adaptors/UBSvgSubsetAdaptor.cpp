@@ -776,7 +776,6 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
                 if (axes)
                 {
                     mScene->addItem(axes);
-                    mScene->registerTool(axes);
                 }
 
             }
