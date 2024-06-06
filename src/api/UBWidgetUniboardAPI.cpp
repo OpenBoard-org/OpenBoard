@@ -165,8 +165,12 @@ void UBWidgetUniboardAPI::setPenColor(const QString& penColor)
     }
     else
     {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        QColor svgColor = QColor::fromString(penColor);
+#else
         QColor svgColor;
         svgColor.setNamedColor(penColor);
+#endif
         if (svgColor.isValid())
         {
             UBApplication::boardController->setPenColorOnDarkBackground(svgColor);
@@ -194,8 +198,12 @@ void UBWidgetUniboardAPI::setMarkerColor(const QString& penColor)
     }
     else
     {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        QColor svgColor = QColor::fromString(penColor);
+#else
         QColor svgColor;
         svgColor.setNamedColor(penColor);
+#endif
         if (svgColor.isValid())
         {
             UBApplication::boardController->setMarkerColorOnDarkBackground(svgColor);
