@@ -2189,7 +2189,11 @@ void UBDocumentController::setupViews()
         connect(mAddFileToDocumentAction, SIGNAL(triggered(bool)), this, SLOT(addFileToDocument()));
         connect(mAddImagesAction, SIGNAL(triggered(bool)), this, SLOT(addImages()));
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        foreach (QObject* menuWidget,  mMainWindow->actionDocumentAdd->associatedObjects())
+#else
         foreach (QWidget* menuWidget,  mMainWindow->actionDocumentAdd->associatedWidgets())
+#endif
         {
             QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 
@@ -2221,7 +2225,11 @@ void UBDocumentController::setupViews()
             adaptor->setAssociatedAction(currentExportAction);
         }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        foreach (QObject* menuWidget,  mMainWindow->actionExport->associatedObjects())
+#else
         foreach (QWidget* menuWidget,  mMainWindow->actionExport->associatedWidgets())
+#endif
         {
             QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 
