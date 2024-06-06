@@ -64,11 +64,13 @@ bool UBMousePressFilter::eventFilter(QObject *obj, QEvent *event)
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
             QPointF globalPosition = mouseEvent->globalPosition();
+            QPointF position = mouseEvent->position();
 #else
             QPointF globalPosition = mouseEvent->globalPos();
+            QPointF position = mouseEvent->pos();
 #endif
             mPendingEvent = new QMouseEvent(QEvent::MouseButtonDblClick,
-                mouseEvent->pos(), globalPosition,
+                position, globalPosition,
                 mouseEvent->button(), mouseEvent->buttons(),
                 mouseEvent->modifiers());
 

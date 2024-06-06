@@ -821,7 +821,13 @@ void UBBoardView::handleItemMousePress(QMouseEvent *event)
 
         if (itemShouldReceiveSuspendedMousePressEvent(getMovingItem()))
         {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+            suspendedMousePressEvent = new QMouseEvent(event->type(), event->position(), event->globalPosition(), event->button(), event->buttons(), event->modifiers());
+#elif (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+            suspendedMousePressEvent = new QMouseEvent(event->type(), event->position(), event->button(), event->buttons(), event->modifiers());
+#else
             suspendedMousePressEvent = new QMouseEvent(event->type(), event->pos(), event->button(), event->buttons(), event->modifiers());
+#endif
         }
     }
 }
