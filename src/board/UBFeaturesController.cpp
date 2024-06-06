@@ -441,7 +441,7 @@ void UBFeaturesController::scanFS()
     }
 
     QSet<QUrl> favoriteDocumentsToRemove;
-    for (auto&& favoriteElement : qAsConst(*favoriteSet))
+    for (auto&& favoriteElement : std::as_const(*favoriteSet))
     {
         if (favoriteElement.fileName().endsWith(".rdf"))
         {
@@ -462,7 +462,7 @@ void UBFeaturesController::scanFS()
         }
     }
 
-    for (auto&& favoriteDocumentToRemove : qAsConst(favoriteDocumentsToRemove))
+    for (auto&& favoriteDocumentToRemove : std::as_const(favoriteDocumentsToRemove))
     {
         removeFromFavorite(favoriteDocumentToRemove);
     }
@@ -529,7 +529,7 @@ bool UBFeaturesController::isInFavoriteList(QUrl url)
 
 bool UBFeaturesController::isDocumentInFavoriteList(QString documentFolderName)
 {
-    for(auto&& url : qAsConst(*favoriteSet))
+    for(auto&& url : std::as_const(*favoriteSet))
     {
         QString localFile = url.toLocalFile();
         if (localFile.endsWith(".rdf"))
@@ -546,7 +546,7 @@ bool UBFeaturesController::isDocumentInFavoriteList(QString documentFolderName)
 
 bool UBFeaturesController::isInRecentlyOpenDocuments(QString documentFolderName)
 {
-    for(auto&& url : qAsConst(recentlyOpenDocuments))
+    for(auto&& url : std::as_const(recentlyOpenDocuments))
     {
         QString localFile = url.toLocalFile();
         if (localFile.endsWith(".rdf"))
