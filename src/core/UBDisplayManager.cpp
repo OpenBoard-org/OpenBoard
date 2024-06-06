@@ -448,7 +448,7 @@ void UBDisplayManager::blackout()
 
     UBPlatformUtils::fadeDisplayOut();
 
-    for (UBBlackoutWidget* blackoutWidget : qAsConst(mBlackoutWidgets))
+    for (UBBlackoutWidget* blackoutWidget : std::as_const(mBlackoutWidgets))
     {
         UBPlatformUtils::showFullScreen(blackoutWidget);
     }

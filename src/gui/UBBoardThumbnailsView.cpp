@@ -201,7 +201,7 @@ void UBBoardThumbnailsView::updateExposure()
     QRect viewportRect(QPoint(0, 0), viewport()->size());
     QRectF visibleSceneRect = mapToScene(viewportRect).boundingRect();
 
-    for (UBDraggableLivePixmapItem* thumbnail : qAsConst(mThumbnails))
+    for (UBDraggableLivePixmapItem* thumbnail : std::as_const(mThumbnails))
     {
         thumbnail->setExposed(visibleSceneRect.intersects(thumbnail->sceneBoundingRect()));
     }

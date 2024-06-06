@@ -298,7 +298,11 @@ void UBWebController::webBrowserInstance()
             connect(mHistoryBackMenu, SIGNAL(triggered(QAction *)), this, SLOT(openActionUrl(QAction *)));
 
             // setup history drop down menus
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+            for (QObject* menuWidget : mMainWindow->actionWebBack->associatedObjects())
+#else
             for (QWidget* menuWidget : mMainWindow->actionWebBack->associatedWidgets())
+#endif
             {
                 QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 
@@ -313,7 +317,11 @@ void UBWebController::webBrowserInstance()
             connect(mHistoryForwardMenu, SIGNAL(aboutToShow()), this, SLOT(aboutToShowForwardMenu()));
             connect(mHistoryForwardMenu, SIGNAL(triggered(QAction *)), this, SLOT(openActionUrl(QAction *)));
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+            for (QObject* menuWidget : mMainWindow->actionWebForward->associatedObjects())
+#else
             for (QWidget* menuWidget : mMainWindow->actionWebForward->associatedWidgets())
+#endif
             {
                 QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 

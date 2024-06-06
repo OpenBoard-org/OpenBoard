@@ -546,7 +546,11 @@ void UBApplication::setDisabled(bool disable)
 
 void UBApplication::decorateActionMenu(QAction* action)
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    foreach(QObject* menuWidget,  action->associatedObjects())
+#else
     foreach(QWidget* menuWidget,  action->associatedWidgets())
+#endif
     {
         QToolButton *tb = qobject_cast<QToolButton*>(menuWidget);
 

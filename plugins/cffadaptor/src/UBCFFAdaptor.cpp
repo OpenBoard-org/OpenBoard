@@ -631,7 +631,7 @@ QDomElement UBCFFAdaptor::UBToCFFConverter::parsePageset(const QStringList &page
 
     QDomElement svgPagesetElement = mDocumentToWrite->createElementNS(svgIWBNS,":"+ tIWBPageSet);
 
-    for (const auto &value : qAsConst(pageList)) {
+    for (const auto &value : std::as_const(pageList)) {
         svgPagesetElement.appendChild(value);
     }
 
@@ -680,7 +680,7 @@ QDomElement UBCFFAdaptor::UBToCFFConverter::parseSvgPageSection(const QDomElemen
     // to do:
     // there we must to sort elements (take elements from list and assign parent ordered like in parseSVGGGroup)
     // we returns just element because we don't care about layer.
-    for (const auto &value : qAsConst(svgElements)) {
+    for (const auto &value : std::as_const(svgElements)) {
         svgElementPart.appendChild(value);
     }
  
@@ -1612,7 +1612,7 @@ bool UBCFFAdaptor::UBToCFFConverter::parseSVGGGroup(const QDomElement &element, 
     std::sort(layers.begin(), layers.end());
     int layer = layers.at(0);
 
-    for (const auto &value : qAsConst(svgElements)) {
+    for (const auto &value : std::as_const(svgElements)) {
         svgElementPart.appendChild(value);
     }
 

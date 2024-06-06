@@ -877,7 +877,7 @@ void UBScreenListLineEdit::onTextChanged(const QString &input)
 {
     const QStringList screenList = UBStringUtils::trimmed(input.split(','));
 
-    for (QPushButton* button : qAsConst(mScreenLabels))
+    for (QPushButton* button : std::as_const(mScreenLabels))
     {
         button->setDisabled(screenList.contains(button->property("screenIndex").toString()));
     }
@@ -887,7 +887,7 @@ void UBScreenListLineEdit::onTextChanged(const QString &input)
         // create and attach a new QCompleter
         QStringList model;
 
-        for (QPushButton* button : qAsConst(mScreenLabels))
+        for (QPushButton* button : std::as_const(mScreenLabels))
         {
             if (button->isEnabled())
             {
