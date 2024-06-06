@@ -320,7 +320,7 @@ QString UBDocumentTreeNode::dirPathInHierarchy()
     }
 
     if (result.endsWith("/")) {
-        result.truncate(result.count() - 1);
+        result.truncate(result.length() - 1);
     }
 
     return result;
@@ -1116,7 +1116,7 @@ QString UBDocumentTreeModel::virtualDirForIndex(const QModelIndex &pIndex) const
     }
 
     if (result.endsWith("/")) {
-        result.truncate(result.count() - 1);
+        result.truncate(result.length() - 1);
     }
 
     return result;
