@@ -252,7 +252,7 @@ void UBBoardController::setBoxing(QRect displayRect)
 {
     if (displayRect.isNull())
     {
-        mControlLayout->setContentsMargins(0, 0, 0, 0);
+        mControlView->setBoxing({});
         return;
     }
 
@@ -278,7 +278,7 @@ void UBBoardController::setBoxing(QRect displayRect)
             boxWidth = 0;
         }
 
-        mControlLayout->setContentsMargins(boxWidth, 0, boxWidth, 0);
+        mControlView->setBoxing({boxWidth, 0, boxWidth, 0});
     }
     else if (displayRatio > controlRatio)
     {
@@ -290,19 +290,19 @@ void UBBoardController::setBoxing(QRect displayRect)
             boxHeight = 0;
         }
 
-        mControlLayout->setContentsMargins(0, boxHeight, 0, boxHeight);
+        mControlView->setBoxing({0, boxHeight, 0, boxHeight});
     }
     else
     {
         // No boxing
-        mControlLayout->setContentsMargins(0, 0, 0, 0);
+        mControlView->setBoxing({});
     }
 }
 
 
 QSize UBBoardController::controlViewport()
 {
-    return UBApplication::displayManager->screenSize(ScreenRole::Control);
+    return mControlView->size();
 }
 
 
