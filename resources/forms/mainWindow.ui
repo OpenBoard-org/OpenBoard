@@ -1186,158 +1186,6 @@
     </font>
    </property>
   </action>
-  <action name="actionPlainLightBackground">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/backgroundPalette/background1.svg</normaloff>
-     <normalon>:/images/backgroundPalette/background1On.svg</normalon>:/images/backgroundPalette/background1.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Plain Light Background</string>
-   </property>
-   <property name="iconText">
-    <string>Light</string>
-   </property>
-   <property name="toolTip">
-    <string>Plain Light Background</string>
-   </property>
-  </action>
-  <action name="actionCrossedLightBackground">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/backgroundPalette/background2.svg</normaloff>
-     <normalon>:/images/backgroundPalette/background2On.svg</normalon>:/images/backgroundPalette/background2.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Grid Light Background</string>
-   </property>
-   <property name="iconText">
-    <string>Light</string>
-   </property>
-   <property name="toolTip">
-    <string>Grid Light Background</string>
-   </property>
-  </action>
-  <action name="actionRuledLightBackground">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/backgroundPalette/background5.svg</normaloff>
-     <normalon>:/images/backgroundPalette/background5On.svg</normalon>:/images/backgroundPalette/background5.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Ruled Light Background</string>
-   </property>
-   <property name="iconText">
-    <string>Light</string>
-   </property>
-   <property name="toolTip">
-    <string>Ruled Light Background</string>
-   </property>
-  </action>
-  <action name="actionSeyesRuledLightBackground">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/backgroundPalette/background7.svg</normaloff>
-     <normalon>:/images/backgroundPalette/background7On.svg</normalon>:/images/backgroundPalette/background7.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Seyes ruled Light Background</string>
-   </property>
-   <property name="iconText">
-    <string>Light</string>
-   </property>
-   <property name="toolTip">
-    <string>Seyes ruled Light Background</string>
-   </property>
-  </action>
-  <action name="actionPlainDarkBackground">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/backgroundPalette/background3.svg</normaloff>
-     <normalon>:/images/backgroundPalette/background3On.svg</normalon>:/images/backgroundPalette/background3.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Plain Dark Background</string>
-   </property>
-   <property name="iconText">
-    <string>Dark</string>
-   </property>
-   <property name="toolTip">
-    <string>Plain Dark Background</string>
-   </property>
-  </action>
-  <action name="actionCrossedDarkBackground">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/backgroundPalette/background4.svg</normaloff>
-     <normalon>:/images/backgroundPalette/background4On.svg</normalon>:/images/backgroundPalette/background4.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Grid Dark Background</string>
-   </property>
-   <property name="iconText">
-    <string>Dark</string>
-   </property>
-   <property name="toolTip">
-    <string>Grid Dark Background</string>
-   </property>
-  </action>
-  <action name="actionRuledDarkBackground">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/backgroundPalette/background6.svg</normaloff>
-     <normalon>:/images/backgroundPalette/background6On.svg</normalon>:/images/backgroundPalette/background6.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Ruled Dark Background</string>
-   </property>
-   <property name="iconText">
-    <string>Dark</string>
-   </property>
-   <property name="toolTip">
-    <string>Ruled Dark Background</string>
-   </property>
-  </action>
-  <action name="actionSeyesRuledDarkBackground">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/backgroundPalette/background8.svg</normaloff>
-     <normalon>:/images/backgroundPalette/background8On.svg</normalon>:/images/backgroundPalette/background8.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Seyes ruled Dark Background</string>
-   </property>
-   <property name="iconText">
-    <string>Dark</string>
-   </property>
-   <property name="toolTip">
-    <string>Seyes ruled Dark Background</string>
-   </property>
-  </action>
   <action name="actionPodcast">
    <property name="checkable">
     <bool>true</bool>
@@ -1910,20 +1758,20 @@
     <string>Reset grid size</string>
    </property>
   </action>
-  <action name="actionDrawIntermediateGridLines">
+  <action name="actionLightDarkMode">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="../OpenBoard.qrc">
-     <normaloff>:/images/minus.svg</normaloff>
-     <normalon>:/images/save.svg</normalon>:/images/minus.svg</iconset>
+     <normaloff>:/images/lightMode.svg</normaloff>
+     <normalon>:/images/darkMode.svg</normalon>:/images/lightMode.svg</iconset>
    </property>
    <property name="text">
-    <string>Draw intermediate grid lines</string>
+    <string>Switch between light and dark background</string>
    </property>
    <property name="toolTip">
-    <string>Draw intermediate grid lines</string>
+    <string>Switch between light and dark background</string>
    </property>
   </action>
   <action name="actionAddDocumentToFavorites">

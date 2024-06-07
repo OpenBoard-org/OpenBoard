@@ -25,8 +25,6 @@
  */
 
 
-
-
 #include "UBGraphicsScene.h"
 
 #include <QtGui>
@@ -42,6 +40,7 @@
 #include "core/UBPersistenceManager.h"
 #include "core/UBTextTools.h"
 
+#include "gui/UBBackgroundRuling.h"
 #include "gui/UBMagnifer.h"
 #include "gui/UBResources.h"
 
@@ -320,7 +319,6 @@ UBGraphicsScene::UBGraphicsScene(std::shared_ptr<UBDocumentProxy> document, bool
     , mPenCircle(0)
     , mDocument(document)
     , mDarkBackground(false)
-    , mPageBackground(UBPageBackground::plain)
     , mIsDesktopMode(false)
     , mZoomFactor(1)
     , mBackgroundObject(0)
@@ -360,7 +358,6 @@ UBGraphicsScene::UBGraphicsScene(std::shared_ptr<UBDocumentProxy> document, bool
     }
 
     mBackgroundGridSize = UBSettings::settings()->crossSize;
-    mIntermediateLines = UBSettings::settings()->intermediateLines;
 
 //    Just for debug. Do not delete please
 //    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
@@ -1120,7 +1117,7 @@ void UBGraphicsScene::drawArcTo(const QPointF& pCenterPoint, qreal pSpanAngle)
     setDocumentUpdated();
 }
 
-void UBGraphicsScene::setBackground(bool pIsDark, UBPageBackground pBackground)
+void UBGraphicsScene::setSceneBackground(bool pIsDark, const UBBackgroundRuling *background)
 {
     bool needRepaint = false;
 
@@ -1136,9 +1133,9 @@ void UBGraphicsScene::setBackground(bool pIsDark, UBPageBackground pBackground)
         needRepaint = true;
     }
 
-    if (mPageBackground != pBackground)
+    if (mBackground != background)
     {
-        mPageBackground = pBackground;
+        mBackground = background;
         needRepaint = true;
     }
 
@@ -1160,12 +1157,6 @@ void UBGraphicsScene::setBackgroundGridSize(int pSize)
         mBackgroundGridSize = pSize;
         updateBackground();
     }
-}
-
-void UBGraphicsScene::setIntermediateLines(bool checked)
-{
-    mIntermediateLines = checked;
-    updateBackground();
 }
 
 void UBGraphicsScene::setDrawingMode(bool bModeDesktop)
@@ -1373,8 +1364,9 @@ std::shared_ptr<UBGraphicsScene> UBGraphicsScene::sceneDeepCopy() const
 {
     std::shared_ptr<UBGraphicsScene> copy = std::make_shared<UBGraphicsScene>(this->document(), this->mUndoRedoStackEnabled);
 
-    copy->setBackground(this->isDarkBackground(), mPageBackground);
     copy->setBackgroundGridSize(mBackgroundGridSize);
+    copy->mDarkBackground = mDarkBackground;
+    copy->mBackground = mBackground;
     copy->setSceneRect(this->sceneRect());
 
     if (this->mNominalSize.isValid())
@@ -2174,6 +2166,11 @@ void UBGraphicsScene::setDocument(std::shared_ptr<UBDocumentProxy> pDocument)
     }
 }
 
+const UBBackgroundRuling* UBGraphicsScene::background() const
+{
+    return mBackground;
+}
+
 QGraphicsItem* UBGraphicsScene::scaleToFitDocumentSize(QGraphicsItem* item, bool center, int margin, bool expand)
 {
     int maxWidth = mNominalSize.width() - (margin * 2);
@@ -2745,124 +2742,17 @@ void UBGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
 
     if (mZoomFactor > 0.5)
     {
-        QColor bgCrossColor;
-
-        if (darkBackground)
-            bgCrossColor = QColor(UBSettings::settings()->boardCrossColorDarkBackground->get().toString());
-        else
-            bgCrossColor = QColor(UBSettings::settings()->boardCrossColorLightBackground->get().toString());
         if (mZoomFactor < 0.7)
         {
-            int alpha = 255 * mZoomFactor / 2;
-            bgCrossColor.setAlpha (alpha); // fade the crossing on small zooms
+            painter->setOpacity(mZoomFactor / 2);
         }
 
-        qreal gridSize = backgroundGridSize();
-        painter->setPen (bgCrossColor);
-
-        if (mPageBackground == UBPageBackground::crossed)
+        if (mBackground)
         {
-            qreal firstY = ((int) (rect.y () / gridSize)) * gridSize;
-
-            for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += gridSize)
-            {
-                painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
-            }
-
-            qreal firstX = ((int) (rect.x () / gridSize)) * gridSize;
-
-            for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += gridSize)
-            {
-                painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
-            }
-
-            if (mIntermediateLines)
-            {
-                QColor intermediateColor = bgCrossColor;
-                intermediateColor.setAlphaF(0.5 * bgCrossColor.alphaF());
-                painter->setPen(intermediateColor);
-
-                for (qreal yPos = firstY - gridSize/2; yPos < rect.y () + rect.height (); yPos += gridSize)
-                {
-                    painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
-                }
-
-                for (qreal xPos = firstX - gridSize/2; xPos < rect.x () + rect.width (); xPos += gridSize)
-                {
-                    painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
-                }
-            }
-        }
-
-        else if (mPageBackground == UBPageBackground::ruled)
-        {
-            if(UBSettings::settings()->isSeyesRuledBackground())
-            {
-                qreal gridSizeSeyes = gridSize * 2; // The grid size must be bigger
-                int nbMarginCase = 1; // a small left margin of one gridSize
-
-                QPen seyesSquare ("#8e7cc3");
-                seyesSquare.setWidthF (2.);
-
-                QColor interlineColor("#6fa8dc");
-                interlineColor.setAlphaF(0.6);
-                QPen interlinePen(interlineColor);
-                interlinePen.setWidthF(2.);
-
-                QPen redLineMargin(QColor("red"));
-                redLineMargin.setWidthF(2.);
-
-                // Horizontal lines
-
-                qreal firstY = ((int) (rect.y () / gridSizeSeyes)) * gridSizeSeyes;
-
-                for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += gridSizeSeyes)
-                {
-                    painter->setPen (seyesSquare);
-                    painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
-                    painter->setPen (interlinePen);
-                    painter->drawLine (rect.x (), yPos+gridSizeSeyes/4, rect.x () + rect.width (), yPos+gridSizeSeyes/4);
-                    painter->drawLine (rect.x (), yPos+2*gridSizeSeyes/4, rect.x () + rect.width (), yPos+2*gridSizeSeyes/4);
-                    painter->drawLine (rect.x (), yPos+3*gridSizeSeyes/4, rect.x () + rect.width (), yPos+3*gridSizeSeyes/4);
-                }
-
-                // Vertical margin
-
-                qreal firstX = ((int) nbMarginCase * gridSizeSeyes) - mNominalSize.width() / 2.;
-
-                painter->setPen(redLineMargin);
-                painter->drawLine (firstX, rect.y (), firstX, rect.y () + rect.height ());
-
-                // Vertical lines
-
-                firstX = ((int) (nbMarginCase + 1) * gridSizeSeyes) - mNominalSize.width() / 2.;
-
-                painter->setPen (seyesSquare);
-                for (qreal xPos = firstX; xPos < rect.x () + rect.width (); xPos += gridSizeSeyes)
-                {
-                    painter->drawLine (xPos, rect.y (), xPos, rect.y () + rect.height ());
-                }
-            }
-            else
-            {
-                qreal firstY = ((int) (rect.y () / backgroundGridSize())) * backgroundGridSize();
-
-                for (qreal yPos = firstY; yPos < rect.y () + rect.height (); yPos += backgroundGridSize())
-                {
-                    painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
-                }
-
-                if (mIntermediateLines) {
-                    QColor intermediateColor = bgCrossColor;
-                    intermediateColor.setAlphaF(0.5 * bgCrossColor.alphaF());
-                    painter->setPen(intermediateColor);
-
-                    for (qreal yPos = firstY - gridSize/2; yPos < rect.y () + rect.height (); yPos += gridSize)
-                    {
-                        painter->drawLine (rect.x (), yPos, rect.x () + rect.width (), yPos);
-                    }
-                }
-            }
+            qreal gridSize = backgroundGridSize();
+            QRectF nominalScene{{0, 0}, mNominalSize};
+            nominalScene.moveCenter({0, 0});
+            mBackground->draw(painter, rect, gridSize, nominalScene, mDarkBackground);
         }
     }
 }

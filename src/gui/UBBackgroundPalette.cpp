@@ -1,22 +1,17 @@
 #include "UBBackgroundPalette.h"
 
+#include "gui/UBBackgroundManager.h"
 #include "gui/UBMainWindow.h"
-
-UBBackgroundPalette::UBBackgroundPalette(QList<QAction*> actions, QWidget * parent)
-    : UBActionPalette(parent)
-{
-    init();
-    setActions(actions);
-}
-
 
 UBBackgroundPalette::UBBackgroundPalette(QWidget * parent)
      : UBActionPalette(parent)
 {
     init();
+    createActions();
+
+    connect(UBApplication::boardController->backgroundManager(), &UBBackgroundManager::preferredBackgroundChanged,
+            this, &UBBackgroundPalette::createActions);
 }
-
-
 
 void UBBackgroundPalette::init()
 {
@@ -29,7 +24,6 @@ void UBBackgroundPalette::init()
     mButtonSize = QSize(32, 32);
     mIsClosable = false;
     mAutoClose = false;
-    mButtonGroup = 0;
     mToolButtonStyle = Qt::ToolButtonIconOnly;
     mButtons.clear();
 
@@ -48,21 +42,22 @@ void UBBackgroundPalette::init()
     mSlider->setTracking(true); // valueChanged() is emitted during movement and not just upon releasing the slider
 
     mSliderLabel = new QLabel(tr("Grid size"));
-    mIntermediateLinesLabel = new QLabel(tr("Draw intermediate grid lines"));
+    mLightDarkModeLabel = new QLabel(tr("Switch background color"));
 
     mResetDefaultGridSizeButton = createPaletteButton(UBApplication::mainWindow->actionDefaultGridSize, this);
     mResetDefaultGridSizeButton->setFixedSize(24,24);
     mActions << UBApplication::mainWindow->actionDefaultGridSize;
+    UBApplication::mainWindow->actionDefaultGridSize->setProperty("ungrouped", true); // don't add to action group
 
-    connect(UBApplication::mainWindow->actionDefaultGridSize, SIGNAL(triggered()), this, SLOT(defaultBackgroundGridSize()));
+    connect(UBApplication::mainWindow->actionDefaultGridSize, &QAction::triggered, this, &UBBackgroundPalette::defaultBackgroundGridSize);
 
-    mDrawIntermediateLinesCheckBox = createPaletteButton(UBApplication::mainWindow->actionDrawIntermediateGridLines, this);
-    mDrawIntermediateLinesCheckBox->setFixedSize(24,24);
-    mDrawIntermediateLinesCheckBox->setCheckable(true);
-    mActions << UBApplication::mainWindow->actionDrawIntermediateGridLines;
-    mButtons.removeLast(); // don't add to button group
+    mLightDarkModeSwitch = createPaletteButton(UBApplication::mainWindow->actionLightDarkMode, this);
+    mLightDarkModeSwitch->setFixedSize(44,26);
+    mLightDarkModeSwitch->setCheckable(true);
+    mActions << UBApplication::mainWindow->actionLightDarkMode;
+    UBApplication::mainWindow->actionLightDarkMode->setProperty("ungrouped", true); // don't add to action group
 
-    connect(UBApplication::mainWindow->actionDrawIntermediateGridLines, SIGNAL(toggled(bool)), this, SLOT(toggleIntermediateLines(bool)));
+    connect(UBApplication::mainWindow->actionLightDarkMode, &QAction::triggered, this, &UBBackgroundPalette::toggleBackgroundColor);
 
     mBottomLayout->addSpacing(16);
     mBottomLayout->addWidget(mSliderLabel);
@@ -70,11 +65,76 @@ void UBBackgroundPalette::init()
     mBottomLayout->addWidget(mResetDefaultGridSizeButton);
     mBottomLayout->addSpacing(16);
 
-    mBottomLayout->addWidget(mIntermediateLinesLabel);
-    mBottomLayout->addWidget(mDrawIntermediateLinesCheckBox);
+    mBottomLayout->addWidget(mLightDarkModeLabel);
+    mBottomLayout->addWidget(mLightDarkModeSwitch);
     mBottomLayout->addSpacing(16);
 
     updateLayout();
+}
+
+void UBBackgroundPalette::createActions()
+{
+    // first delete everything from the top layout
+    while(!mTopLayout->isEmpty())
+    {
+        QLayoutItem* pItem = mTopLayout->itemAt(0);
+        QWidget* pW = pItem->widget();
+        mTopLayout->removeItem(pItem);
+        delete pItem;
+        mTopLayout->removeWidget(pW);
+
+        QAction* action = removePaletteButton(dynamic_cast<UBActionPaletteButton*>(pW));
+
+        delete pW;
+        delete action;
+    }
+
+    // then add actions for the first 6 backgrounds from the background manager
+    const QList<const UBBackgroundRuling*> backgrounds = UBApplication::boardController->backgroundManager()->backgrounds();
+    const auto dark = false; //UBApplication::boardController->activeScene()->isDarkBackground();
+    const auto bgManager = UBApplication::boardController->backgroundManager();
+
+    for (int i = 0; i < backgrounds.size() && i < 6; ++i)
+    {
+        const auto background = backgrounds.at(i);
+        auto action = bgManager->backgroundAction(*background, dark);
+        UBBackgroundPalette::addAction(action);
+
+        connect(action, &QAction::triggered, this, &UBBackgroundPalette::changeBackground);
+    }
+
+    actionChanged();
+    updateActions();
+}
+
+void UBBackgroundPalette::updateActions()
+{
+    const auto scene = UBApplication::boardController->activeScene();
+
+    if (!scene)
+    {
+        return;
+    }
+
+    const auto dark = scene->isDarkBackground();
+    UBApplication::mainWindow->actionLightDarkMode->setChecked(dark);
+    QUuid uuid;
+
+    if (scene->background())
+    {
+        uuid = scene->background()->uuid();
+    }
+
+    for (auto& action : mActions)
+    {
+        QUuid actionUuid = action->property("uuid").toUuid();
+
+        if (!actionUuid.isNull())
+        {
+            UBApplication::boardController->backgroundManager()->updateAction(action, dark);
+            action->setChecked(uuid == actionUuid);
+        }
+    }
 }
 
 void UBBackgroundPalette::addAction(QAction* action)
@@ -150,7 +210,10 @@ void UBBackgroundPalette::showEvent(QShowEvent* event)
     connect(mSlider, SIGNAL(valueChanged(int)),
             this, SLOT(sliderValueChanged(int)));
 
-    mDrawIntermediateLinesCheckBox->setChecked(UBApplication::boardController->activeScene()->intermediateLines());
+    const auto scene = UBApplication::boardController->activeScene();
+    mIsDark = scene->isDarkBackground();
+    mLightDarkModeSwitch->setChecked(mIsDark);
+    mBackground = scene->background();
 
     QWidget::showEvent(event);
 }
@@ -169,10 +232,26 @@ void UBBackgroundPalette::defaultBackgroundGridSize()
     sliderValueChanged(UBSettings::settings()->defaultCrossSize);
 }
 
-void UBBackgroundPalette::toggleIntermediateLines(bool checked)
+void UBBackgroundPalette::toggleBackgroundColor(bool checked)
 {
-    UBApplication::boardController->activeScene()->setIntermediateLines(checked);
-    UBSettings::settings()->intermediateLines = checked; // since this function is called (indirectly, by refresh) when we switch scenes, the settings will always have the current scene's value.
+    mIsDark = checked;
+    UBApplication::boardController->setBackground(mIsDark, mBackground);
+    backgroundChanged();
+}
+
+void UBBackgroundPalette::changeBackground(bool checked)
+{
+    if (checked)
+    {
+        QAction* action = dynamic_cast<QAction*>(sender());
+
+        if (action)
+        {
+            const auto uuid = action->property("uuid").toUuid();
+            mBackground = UBApplication::boardController->backgroundManager()->background(uuid);
+            UBApplication::boardController->setBackground(mIsDark, mBackground);
+        }
+    }
 }
 
 void UBBackgroundPalette::backgroundChanged()
@@ -182,13 +261,15 @@ void UBBackgroundPalette::backgroundChanged()
     if (dark)
     {
         mSliderLabel->setStyleSheet("QLabel { color : white; }");
-        mIntermediateLinesLabel->setStyleSheet("QLabel { color : white; }");
+        mLightDarkModeLabel->setStyleSheet("QLabel { color : white; }");
     }
     else
     {
         mSliderLabel->setStyleSheet("QLabel { color : black; }");
-        mIntermediateLinesLabel->setStyleSheet("QLabel { color : black; }");
+        mLightDarkModeLabel->setStyleSheet("QLabel { color : black; }");
     }
+
+    updateActions();
 }
 
 void UBBackgroundPalette::refresh()

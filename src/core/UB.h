@@ -223,13 +223,6 @@ struct UBUndoType
     };
 };
 
-enum UBPageBackground
-{
-    plain = 0,
-    crossed,
-    ruled
-};
-
 /*
  * Qt Version Compatibility
  */

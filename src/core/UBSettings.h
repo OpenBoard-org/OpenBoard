@@ -87,11 +87,9 @@ class UBSettings : public QObject
 
         // Background related
         bool isDarkBackground();
-        UBPageBackground pageBackground();
-        bool isSeyesRuledBackground();
+        QUuid pageBackgroundUuid();
         void setDarkBackground(bool isDarkBackground);
-        void setPageBackground(UBPageBackground background);
-        void setSeyesRuledBackground(bool isSeyesRuledBackground);
+        void setPageBackgroundUuid(const QUuid& background);
 
         // Stylus palette related
         bool isStylusPaletteVisible();
@@ -195,7 +193,6 @@ class UBSettings : public QObject
         static int defaultCrossSize;
         static int minCrossSize;
         static int maxCrossSize;
-        static bool intermediateLines;
 
         static int colorPaletteSize;
         static int objectFrameWidth;
