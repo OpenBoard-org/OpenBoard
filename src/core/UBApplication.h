@@ -80,7 +80,7 @@ class UBApplication : public SingleApplication
 
         static UBApplication* app()
         {
-            return static_cast<UBApplication*>qApp;
+            return dynamic_cast<UBApplication*>qApp;
         }
 
         static const QString mimeTypeUniboardDocument;
