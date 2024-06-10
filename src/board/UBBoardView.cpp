@@ -1052,7 +1052,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
         return;
     }
 
-    setMultiselection(event->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier));
+    setMultiselection(event->modifiers() & Qt::ControlModifier);
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     QPointF eventPosition = event->position();

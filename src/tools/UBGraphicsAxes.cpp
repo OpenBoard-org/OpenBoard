@@ -33,7 +33,6 @@
 #include "domain/UBGraphicsScene.h"
 #include "frameworks/UBGeometryUtils.h"
 #include "core/UBApplication.h"
-#include "gui/UBResources.h"
 #include "board/UBBoardController.h" // TODO UB 4.x clean that dependency
 #include "board/UBDrawingController.h"
 
@@ -352,6 +351,12 @@ void UBGraphicsAxes::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if (!mResizing)
     {
         QGraphicsItem::mouseMoveEvent(event);
+
+        // snap to grid
+        if (event->modifiers().testFlag(Qt::ShiftModifier)) {
+            QPointF snapVector = scene()->snap(pos());
+            setPos(pos() + snapVector);
+        }
     }
     else
     {
@@ -411,15 +416,6 @@ void UBGraphicsAxes::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     }
     else
     {
-        // snap to grid
-        if (true) {
-            QPointF delta = pos();
-            qreal gridSize = scene()->backgroundGridSize();
-            qreal deltaX = delta.x() - round(delta.x() / gridSize) * gridSize;
-            qreal deltaY = delta.y() - round(delta.y() / gridSize) * gridSize;
-            setPos(pos() - QPointF(deltaX, deltaY));
-        }
-
         QGraphicsItem::mouseReleaseEvent(event);
     }
 
