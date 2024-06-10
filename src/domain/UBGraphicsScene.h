@@ -248,6 +248,10 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
         void addCache();
         UBGraphicsCache* graphicsCache();
 
+        QPointF snap(const QPointF& point, double* force = nullptr, std::optional<QPointF> proposedPoint = {}) const;
+        QPointF snap(const std::vector<QPointF>& corners) const;
+        static QRectF itemRect(const QGraphicsItem* item);
+
         class SceneViewState
         {
             public:
