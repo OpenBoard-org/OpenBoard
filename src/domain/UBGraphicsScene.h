@@ -505,7 +505,6 @@ public slots:
 
         UBGraphicsCache* mGraphicsCache;
 
-        QPointF lastPoint_m, endPoint_m;
         QList<QLineF> multiDrawLines;
 };
 

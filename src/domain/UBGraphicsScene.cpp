@@ -716,10 +716,10 @@ bool UBGraphicsScene::inputDeviceRelease(int tool)
                 addPolygonItemToCurrentStroke(poly);
             }
 
-            if(multiDrawLines.isEmpty()) // is it not polygons drawing by multiDraw
             // replace the stroke by a simplified version of it
-            if ((currentTool == UBStylusTool::Pen && UBSettings::settings()->boardSimplifyPenStrokes->get().toBool())
-                || (currentTool == UBStylusTool::Marker && UBSettings::settings()->boardSimplifyMarkerStrokes->get().toBool()))
+            if(multiDrawLines.isEmpty() &&  // is it not polygons drawing by multiDraw
+                ((currentTool == UBStylusTool::Pen && UBSettings::settings()->boardSimplifyPenStrokes->get().toBool())
+                || (currentTool == UBStylusTool::Marker && UBSettings::settings()->boardSimplifyMarkerStrokes->get().toBool())))
             {
                 simplifyCurrentStroke();
             }
@@ -3150,17 +3150,11 @@ void UBGraphicsScene::initStroke()
 void UBGraphicsScene::MultiTouchDrawing(QTouchEvent* event, UBStylusTool::Enum currentTool)
 {
     QList <QTouchEvent::TouchPoint> touchPoints = event->touchPoints();
+    QPointF lastPoint_m, endPoint_m;
     foreach (QTouchEvent::TouchPoint point, touchPoints)
     {
         lastPoint_m = point.lastPos();
         endPoint_m = point.pos();
-
-        int distance = sqrt(pow((lastPoint_m.x() - endPoint_m.x()),2) + pow((lastPoint_m.y() - endPoint_m.y()),2)) + 1;
-        distance = sqrt(distance);
-        if (distance > 6)
-            distance = 6;
-        else if(distance < 4)
-            distance = 4;
 
         UBBoardView* boardView = controlView();
         QLineF line;
@@ -3182,7 +3176,6 @@ void UBGraphicsScene::MultiTouchDrawing(QTouchEvent* event, UBStylusTool::Enum c
             addPolygonItemToCurrentStroke(polygonItem);
         }
 
-        lastPoint_m = endPoint_m;
     }
 }
 
