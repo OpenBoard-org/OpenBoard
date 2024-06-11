@@ -403,13 +403,13 @@ QPointF UBGraphicsScene::lastCenter()
     return mViewState.lastSceneCenter();
 }
 
-bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pressure)
+bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pressure, Qt::KeyboardModifiers modifiers)
 {
     bool accepted = false;
 
     if (mInputDeviceIsPressed) {
         qWarning() << "scene received input device pressed, without input device release, muting event as input device move";
-        accepted = inputDeviceMove(scenePos, pressure);
+        accepted = inputDeviceMove(scenePos, pressure, modifiers);
     }
     else {
         mInputDeviceIsPressed = true;
@@ -459,10 +459,18 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             if (UBDrawingController::drawingController()->activeRuler())
                 UBDrawingController::drawingController()->activeRuler()->StartLine(scenePos, width);
             else {
-                moveTo(scenePos);
-                drawLineTo(scenePos, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
+                bool isLine = UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line;
+                QPointF pos = scenePos;
 
-                mCurrentStroke->addPoint(scenePos, width);
+                if (isLine && modifiers & Qt::ShiftModifier)
+                {
+                    pos += snap(scenePos);
+                }
+
+                moveTo(pos);
+                drawLineTo(pos, width, isLine);
+
+                mCurrentStroke->addPoint(pos, width);
             }
             accepted = true;
         }
@@ -494,7 +502,7 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
     return accepted;
 }
 
-bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pressure)
+bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pressure, Qt::KeyboardModifiers modifiers)
 {
     bool accepted = false;
 
@@ -544,6 +552,8 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
             width /= UBApplication::boardController->systemScaleFactor();
             width /= UBApplication::boardController->currentZoom();
 
+            std::optional<QPointF> altPosition;
+
             if (currentTool == UBStylusTool::Line || dc->activeRuler())
             {
                 if (UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker)
@@ -561,18 +571,22 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
 
                 // ------------------------------------------------------------------------
                 // Here we wanna make sure that the Line will 'grip' at i*45, i*90 degrees
+                // and propose a point as alternative snap point
                 // ------------------------------------------------------------------------
 
-                QLineF radius(mPreviousPoint, position);
-                qreal angle = radius.angle();
-                angle = qRound(angle / 45) * 45;
-                qreal radiusLength = radius.length();
-                QPointF newPosition(
-                    mPreviousPoint.x() + radiusLength * cos((angle * PI) / 180),
-                    mPreviousPoint.y() - radiusLength * sin((angle * PI) / 180));
-                QLineF chord(position, newPosition);
-                if (chord.length() < qMin((int)16, (int)(radiusLength / 20)))
-                    position = newPosition;
+                if (modifiers & Qt::ShiftModifier)
+                {
+                    QLineF radius(mPreviousPoint, position);
+                    qreal angle = radius.angle();
+                    angle = qRound(angle / 45) * 45;
+                    qreal radiusLength = radius.length();
+                    QPointF newPosition(
+                        mPreviousPoint.x() + radiusLength * cos((angle * PI) / 180),
+                        mPreviousPoint.y() - radiusLength * sin((angle * PI) / 180));
+                    QLineF chord(position, newPosition);
+                    if (chord.length() < qMin((int)16, (int)(radiusLength / 20)))
+                        altPosition = newPosition;
+                }
             }
 
             if (!mCurrentStroke)
@@ -583,6 +597,11 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
             }
 
             else if (currentTool == UBStylusTool::Line) {
+                if (modifiers & Qt::ShiftModifier)
+                {
+                    position += snap(position, nullptr, altPosition);
+                }
+
                 drawLineTo(position, width, true);
             }
 
@@ -653,7 +672,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
     return accepted;
 }
 
-bool UBGraphicsScene::inputDeviceRelease(int tool)
+bool UBGraphicsScene::inputDeviceRelease(int tool, Qt::KeyboardModifiers modifiers)
 {
     bool accepted = false;
 
