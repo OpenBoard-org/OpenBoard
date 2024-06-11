@@ -267,6 +267,15 @@ void UBGraphicsProtractor::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     case Move :
         QGraphicsEllipseItem::mouseMoveEvent(event);
+
+        // snap to grid
+        if (event->modifiers().testFlag(Qt::ShiftModifier)) {
+            // snap rotation center to grid
+            QPointF rotCenter = mapToScene(rotationCenter());
+            QPointF snapVector = scene()->snap(rotCenter);
+            setPos(pos() + snapVector);
+        }
+
         break;
 
     default :
@@ -299,6 +308,9 @@ void UBGraphicsProtractor::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     case Resize:
         update();
         break;
+
+    case Move:
+        Q_FALLTHROUGH();
 
     default :
         QGraphicsEllipseItem::mouseReleaseEvent(event);
@@ -701,6 +713,5 @@ void UBGraphicsProtractor::rotateAroundCenter(qreal angle)
 
 QPointF UBGraphicsProtractor::rotationCenter() const
 {
-    return QPointF(rect().x(), rect().y());
-
+    return QPointF{0., 0.};
 }
