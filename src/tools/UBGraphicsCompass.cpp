@@ -298,15 +298,48 @@ void UBGraphicsCompass::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     {
         QGraphicsRectItem::mouseMoveEvent(event);
         mDrewCenterCross = false;
+
+        // snap to grid
+        if (event->modifiers().testFlag(Qt::ShiftModifier)) {
+            // snap needle position to grid
+            QPointF rotCenter = mapToScene(needlePosition());
+            QPointF snapVector = scene()->snap(rotCenter);
+            setPos(pos() + snapVector);
+        }
     }
     else
     {
         if (mResizing)
         {
-            QPointF delta = event->pos() - event->lastPos();
-            if (rect().width() + delta.x() < sMinRadius)
-                delta.setX(sMinRadius - rect().width());
-            setRect(QRectF(rect().topLeft(), QSizeF(rect().width() + delta.x(), rect().height())));
+            // snap to grid
+            if (event->modifiers().testFlag(Qt::ShiftModifier))
+            {
+                // snap cursor position to grid
+                QPointF cursorPos = mapToScene(event->pos());
+                QPointF snapPos = cursorPos + scene()->snap(cursorPos);
+
+                // now resize so that the pencil goes through the snap point
+                QPointF needlePos = mapToScene(needlePosition());
+                double length = QLineF(needlePos, snapPos).length();
+
+                if (length >= sMinRadius)
+                {
+                    setRect(QRectF(rect().topLeft(), QSizeF(length, rect().height())));
+
+                    // rotate so that pencil is on snap point
+                    QLineF currentLine(needlePosition(), mapFromScene(snapPos));
+                    QLineF lastLine(needlePosition(), pencilPosition());
+                    qreal deltaAngle = currentLine.angleTo(lastLine);
+                    rotateAroundNeedle(deltaAngle);
+                }
+            }
+            else
+            {
+                QPointF delta = event->pos() - event->lastPos();
+                if (rect().width() + delta.x() < sMinRadius)
+                    delta.setX(sMinRadius - rect().width());
+                setRect(QRectF(rect().topLeft(), QSizeF(rect().width() + delta.x(), rect().height())));
+            }
         }
         else
         {
