@@ -391,13 +391,13 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
     switch (event->type ()) {
     case QEvent::TabletPress: {
         mTabletStylusIsPressed = true;
-        scene()->inputDevicePress (scenePos, pressure);
+        scene()->inputDevicePress (scenePos, pressure, event->modifiers());
 
         break;
     }
     case QEvent::TabletMove: {
         if (mTabletStylusIsPressed)
-            scene ()->inputDeviceMove (scenePos, pressure);
+            scene ()->inputDeviceMove (scenePos, pressure, event->modifiers());
 
         acceptEvent = false; // rerouted to mouse move
 
@@ -409,7 +409,7 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
         scene ()->setToolCursor (currentTool);
         setToolCursor (currentTool);
 
-        scene ()->inputDeviceRelease ();
+        scene ()->inputDeviceRelease (currentTool, event->modifiers());
 
         mPendingStylusReleaseEvent = false;
 
@@ -1146,7 +1146,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
                     connect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressEvent()));
                     mLongPressTimer.start();
                 }
-                scene()->inputDevicePress(mapToScene(UBGeometryUtils::pointConstrainedInRect(event->pos(), rect())));
+                scene()->inputDevicePress(mapToScene(UBGeometryUtils::pointConstrainedInRect(event->pos(), rect())), 1., event->modifiers());
             }
             event->accept ();
         }
@@ -1311,7 +1311,7 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
 
     default:
         if (!mTabletStylusIsPressed && scene()) {
-            scene()->inputDeviceMove(mapToScene(UBGeometryUtils::pointConstrainedInRect(event->pos(), rect())) , mMouseButtonIsPressed);
+            scene()->inputDeviceMove(mapToScene(UBGeometryUtils::pointConstrainedInRect(event->pos(), rect())) , mMouseButtonIsPressed, event->modifiers());
         }
         event->accept ();
     }
@@ -1333,7 +1333,7 @@ void UBBoardView::mouseReleaseEvent (QMouseEvent *event)
     setToolCursor (currentTool);
     // first/ propagate device release to the scene
     if (scene())
-        scene()->inputDeviceRelease();
+        scene()->inputDeviceRelease(currentTool, event->modifiers());
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     QPointF eventPosition = event->position();

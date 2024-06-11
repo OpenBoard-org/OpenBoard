@@ -138,9 +138,9 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
         void clearContent(clearCase pCase = clearItemsAndAnnotations);
         void saveWidgetSnapshots();
 
-        bool inputDevicePress(const QPointF& scenePos, const qreal& pressure = 1.0);
-        bool inputDeviceMove(const QPointF& scenePos, const qreal& pressure = 1.0);
-        bool inputDeviceRelease(int tool = -1);
+        bool inputDevicePress(const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
+        bool inputDeviceMove(const QPointF& scenePos, const qreal& pressure = 1.0, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
+        bool inputDeviceRelease(int tool = -1, Qt::KeyboardModifiers modifiers = Qt::NoModifier);
 
         void leaveEvent (QEvent* event);
 
