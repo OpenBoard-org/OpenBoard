@@ -420,6 +420,14 @@ void UBGraphicsRuler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if (!mResizing && !mRotating)
     {
         QGraphicsItem::mouseMoveEvent(event);
+
+        // snap to grid
+        if (event->modifiers().testFlag(Qt::ShiftModifier)) {
+            // snap rotation center to grid
+            QPointF rotCenter = mapToScene(rotationCenter());
+            QPointF snapVector = scene()->snap(rotCenter);
+            setPos(pos() + snapVector);
+        }
     }
     else
     {
