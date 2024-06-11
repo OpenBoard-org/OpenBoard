@@ -555,7 +555,7 @@ void UBGraphicsTriangle::rotateAroundCenter(QTransform& transform, QPointF cente
 }
 
 
-QPointF    UBGraphicsTriangle::rotationCenter() const
+QPointF UBGraphicsTriangle::rotationCenter() const
 {
     return B1;
 }
@@ -807,6 +807,14 @@ void UBGraphicsTriangle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if (!mResizing1 && !mResizing2 && !mRotating)
     {
         QGraphicsItem::mouseMoveEvent(event);
+
+        // snap to grid
+        if (event->modifiers().testFlag(Qt::ShiftModifier)) {
+            // snap rotation center to grid
+            QPointF rotCenter = mapToScene(rotationCenter());
+            QPointF snapVector = scene()->snap(rotCenter);
+            setPos(pos() + snapVector);
+        }
     }
     else
     {
