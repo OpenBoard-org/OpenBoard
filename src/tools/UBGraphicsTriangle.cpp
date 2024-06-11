@@ -457,15 +457,6 @@ void UBGraphicsTriangle::paintGraduations(QPainter *painter)
     for (int millimeters = 0; millimeters < (rect().width() - sLeftEdgeMargin - sRoundingRadius) / pixelsPerMillimeter; millimeters++)
     {
         double graduationX = rotationCenter().x() + kx * pixelsPerMillimeter * millimeters;
-        if (mOrientation == TopLeft || mOrientation == BottomLeft)
-        {
-            graduationX += sLeftEdgeMargin;
-        }
-        else
-        {
-            graduationX -= sLeftEdgeMargin;
-        }
-
         double graduationHeight = 0;
 
         if (millimeters % UBGeometryUtils::millimetersPerCentimeter == 0)
@@ -551,9 +542,21 @@ void UBGraphicsTriangle::rotateAroundCenter(QTransform& transform, QPointF cente
 }
 
 
-QPointF    UBGraphicsTriangle::rotationCenter() const
+QPointF UBGraphicsTriangle::rotationCenter() const
 {
-    return B1;
+    QPointF center{B1};
+    QPointF margin(sLeftEdgeMargin, 0.);
+
+    if (mOrientation == TopLeft || mOrientation == BottomLeft)
+    {
+        center += margin;
+    }
+    else
+    {
+        center -= margin;
+    }
+
+    return center;
 }
 
 QRectF    UBGraphicsTriangle::closeButtonRect() const
@@ -924,6 +927,14 @@ void UBGraphicsTriangle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     }
     else
     {
+        // snap to grid
+        if (event->modifiers() & Qt::ShiftModifier) {
+            // snap rotation center to grid
+            QPointF rotCenter = mapToScene(rotationCenter());
+            QPointF snapVector = scene()->snap(rotCenter);
+            setPos(pos() + snapVector);
+        }
+
         QGraphicsItem::mouseReleaseEvent(event);
     }
     mShowButtons = true;
