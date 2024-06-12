@@ -366,10 +366,14 @@ UBGraphicsScene::UBGraphicsScene(std::shared_ptr<UBDocumentProxy> document, bool
 //    connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedProcessing()));
     connect(UBApplication::undoStack.data(), SIGNAL(indexChanged(int)), this, SLOT(updateSelectionFrameWrapper(int)));
     connect(UBDrawingController::drawingController(), SIGNAL(stylusToolChanged(int,int)), this, SLOT(stylusToolChanged(int,int)));
+    connect(UBApplication::boardController, &UBBoardController::zoomChanged, this, &UBGraphicsScene::zoomChanged);
 }
 
 UBGraphicsScene::~UBGraphicsScene()
 {
+    // disconnect all consumers of this signal at once to speed-up deletion of scene
+    disconnect(this, &UBGraphicsScene::zoomChanged, nullptr, nullptr);
+
     if (mCurrentStroke && mCurrentStroke->polygons().empty()){
         delete mCurrentStroke;
         mCurrentStroke = NULL;
@@ -1974,6 +1978,13 @@ void UBGraphicsScene::addItem(QGraphicsItem* item)
     if (widget)
     {
         widget->initAPI();
+    }
+
+    UBGraphicsItem* ubitem = dynamic_cast<UBGraphicsItem*>(item);
+
+    if (ubitem)
+    {
+        ubitem->Delegate()->sceneChanged(this);
     }
 }
 

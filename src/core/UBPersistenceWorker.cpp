@@ -45,14 +45,6 @@ void UBPersistenceWorker::saveScene(std::shared_ptr<UBDocumentProxy> proxy, UBGr
     mSemaphore.release();
 }
 
-void UBPersistenceWorker::readScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex)
-{
-    PersistenceInformation entry = {ReadScene, proxy, 0, pageIndex};
-
-    saves.append(entry);
-    mSemaphore.release();
-}
-
 void UBPersistenceWorker::saveMetadata(std::shared_ptr<UBDocumentProxy> proxy)
 {
     PersistenceInformation entry = {WriteMetadata, proxy, NULL, 0};
@@ -76,9 +68,6 @@ void UBPersistenceWorker::process()
         if(info.action == WriteScene){
             UBSvgSubsetAdaptor::persistScene(info.proxy, info.scene->shared_from_this(), info.sceneIndex);
             emit scenePersisted(info.scene);
-        }
-        else if (info.action == ReadScene){
-            emit sceneLoaded(UBSvgSubsetAdaptor::loadSceneAsText(info.proxy,info.sceneIndex), info.proxy, info.sceneIndex);
         }
         else if (info.action == WriteMetadata) {
             UBMetadataDcSubsetAdaptor::persist(info.proxy);

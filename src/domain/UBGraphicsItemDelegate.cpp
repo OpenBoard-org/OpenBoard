@@ -182,7 +182,6 @@ UBGraphicsItemDelegate::UBGraphicsItemDelegate(QGraphicsItem* pDelegated, QObjec
 #endif
 {
     setUBFlags(fls);
-    connect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged()));
 }
 
 void UBGraphicsItemDelegate::createControls()
@@ -270,8 +269,15 @@ bool UBGraphicsItemDelegate::controlsExist() const
 
 UBGraphicsItemDelegate::~UBGraphicsItemDelegate()
 {
-    if (UBApplication::boardController)
-        disconnect(UBApplication::boardController, SIGNAL(zoomChanged(qreal)), this, SLOT(onZoomChanged()));
+    if (mDelegated)
+    {
+        UBGraphicsScene* scene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
+
+        if (scene)
+        {
+            disconnect(scene, &UBGraphicsScene::zoomChanged, this, &UBGraphicsItemDelegate::onZoomChanged);
+        }
+    }
     // do not release mMimeData.
     // the mMimeData is owned by QDrag since the setMimeData call as specified in the documentation
 }
@@ -473,6 +479,18 @@ QGraphicsItem *UBGraphicsItemDelegate::delegated()
     }
 
     return curDelegate;
+}
+
+void UBGraphicsItemDelegate::sceneChanged(UBGraphicsScene* scene)
+{
+    UBGraphicsScene* previousScene = dynamic_cast<UBGraphicsScene*>(mDelegated->scene());
+
+    if (previousScene)
+    {
+        disconnect(previousScene, &UBGraphicsScene::zoomChanged, this, &UBGraphicsItemDelegate::onZoomChanged);
+    }
+
+    connect(scene, &UBGraphicsScene::zoomChanged, this, &UBGraphicsItemDelegate::onZoomChanged);
 }
 
 void UBGraphicsItemDelegate::positionHandles()
