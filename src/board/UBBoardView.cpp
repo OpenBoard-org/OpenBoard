@@ -842,9 +842,25 @@ void UBBoardView::handleItemMouseMove(QMouseEvent *event)
     if (getMovingItem() && itemShouldBeMoved(getMovingItem()) && (mMouseButtonIsPressed || mTabletStylusIsPressed))
     {
         QPointF scenePos = mapToScene(event->pos());
-        QPointF newPos = getMovingItem()->pos() + scenePos - mLastPressedMousePos;
-        getMovingItem()->setPos(newPos);
-        mLastPressedMousePos = scenePos;
+        auto movingItem = getMovingItem();
+        QPointF newPos = movingItem->pos() + scenePos - mLastPressedMousePos;
+        movingItem->setPos(newPos);
+
+        // snap to grid
+        if (event->modifiers().testFlag(Qt::ShiftModifier))
+        {
+            QRectF rect = UBGraphicsScene::itemRect(movingItem);
+            auto offset = scene()->snap({rect.topLeft(), rect.topRight(), rect.bottomLeft(), rect.bottomRight()});
+            newPos += offset;
+            movingItem->setPos(newPos);
+
+            mLastPressedMousePos = scenePos + offset;
+        }
+        else
+        {
+            mLastPressedMousePos = scenePos;
+        }
+
         mWidgetMoved = true;
         event->accept();
     }
