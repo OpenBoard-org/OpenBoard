@@ -280,6 +280,7 @@ void UBGraphicsDelegateFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
     mDelegate->startUndoStep();
 
     mStartingPoint = event->scenePos();
+    mStartingBounds = UBGraphicsScene::itemRect(delegated());
 
     initializeTransform();
 
@@ -426,6 +427,14 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     {
         if(!rotating())
         {
+            if (event->modifiers().testFlag(Qt::ShiftModifier))
+            {
+                QPointF snap = snapVector(event->scenePos());
+                moveX += snap.x();
+                moveY += snap.y();
+                move.setP2(move.p2() + snap);
+            }
+
             mTranslateX = moveX;
             // Perform the resize
             if (resizingBottomRight())
@@ -655,13 +664,22 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
             mCurrentTool = ResizeBottomRight;
         }
-        else if ((resizingBottom() || resizingTop()) && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS))
-        {
-            resizeDelegate(0., moveY);
-        }
-        else if ((resizingLeft() || resizingRight()) && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS))
-        {
-            resizeDelegate(moveX, 0.);
+        else {
+            if (event->modifiers().testFlag(Qt::ShiftModifier))
+            {
+                QPointF snap = snapVector(event->scenePos());
+                moveX += snap.x();
+                moveY += snap.y();
+            }
+
+            if ((resizingBottom() || resizingTop()) && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS))
+            {
+                resizeDelegate(0., moveY);
+            }
+            else if ((resizingLeft() || resizingRight()) && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS))
+            {
+                resizeDelegate(moveX, 0.);
+            }
         }
     }
     event->accept();
@@ -1060,4 +1078,46 @@ void UBGraphicsDelegateFrame::refreshGeometry()
     QLineF leftLine(topLeft, bottomLeft);
     qreal height = leftLine.length();
     setRect(topRight.x() - mFrameWidth, topLeft.y() - mFrameWidth, width + 2*mFrameWidth, height + 2*mFrameWidth);
+}
+
+QPointF UBGraphicsDelegateFrame::snapVector(QPointF scenePos) const
+{
+    QPointF moved = scenePos - mStartingPoint;
+    QRectF movedBounds = mStartingBounds.translated(moved);
+    std::vector<QPointF> corners;
+
+    if (resizingLeft())
+    {
+        corners.push_back(movedBounds.topLeft());
+        corners.push_back(movedBounds.bottomLeft());
+    }
+    else if (resizingRight())
+    {
+        corners.push_back(movedBounds.topRight());
+        corners.push_back(movedBounds.bottomRight());
+    }
+    else if (resizingTop())
+    {
+        corners.push_back(movedBounds.topLeft());
+        corners.push_back(movedBounds.topRight());
+    }
+    else if (resizingBottom())
+    {
+        corners.push_back(movedBounds.bottomLeft());
+        corners.push_back(movedBounds.bottomRight());
+    }
+    else if (resizingBottomRight())
+    {
+        corners.push_back(movedBounds.bottomRight());
+    }
+
+    UBGraphicsScene* ubscene = dynamic_cast<UBGraphicsScene*>(scene());
+
+    if (ubscene)
+    {
+        QPointF snapVector = ubscene->snap(corners);
+        return snapVector;
+    }
+
+    return {};
 }

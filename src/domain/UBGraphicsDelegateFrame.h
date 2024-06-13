@@ -94,6 +94,7 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         enum FrameTool {None, Move, Rotate, ResizeBottomRight, ResizeTop, ResizeRight, ResizeBottom, ResizeLeft};
         FrameTool toolFromPos (QPointF pos);
         void refreshGeometry();
+        QPointF snapVector(QPointF scenePos) const;
 
         FrameTool mCurrentTool;
         UBGraphicsItemDelegate* mDelegate;
@@ -117,6 +118,7 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         QRect mAngleRect;
 
         QPointF mStartingPoint;
+        QRectF mStartingBounds;
         QTransform mInitialTransform;
         QSizeF mOriginalSize;
         QPointF mFixedPoint;
