@@ -293,6 +293,12 @@ void UBBoardView::keyPressEvent (QKeyEvent *event)
                 event->accept ();
                 break;
             }
+            case Qt::Key_H:
+            {
+                UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Hand);
+                event->accept ();
+                break;
+            }
             default:
             {
                 // NOOP
