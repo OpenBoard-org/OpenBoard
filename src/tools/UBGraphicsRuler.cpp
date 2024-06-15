@@ -466,6 +466,14 @@ void UBGraphicsRuler::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     }
     else
     {
+        // snap to grid
+        if (event->modifiers() & Qt::ShiftModifier) {
+            // snap rotation center to grid
+            QPointF rotCenter = mapToScene(rotationCenter());
+            QPointF snapVector = scene()->snap(rotCenter);
+            setPos(pos() + snapVector);
+        }
+
         QGraphicsItem::mouseReleaseEvent(event);
     }
 

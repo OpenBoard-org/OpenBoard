@@ -341,6 +341,22 @@ void UBGraphicsCompass::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     if (mResizing)
     {
+        // snap to grid
+        if (event->modifiers() & Qt::ShiftModifier) {
+            // snap pencil position to grid
+            QPointF pencilPos = mapToScene(pencilPosition());
+            QPointF snapPos = pencilPos + scene()->snap(pencilPos);
+
+            // now resizs so that the pencil goes through the snap point
+            QPointF needlePos = mapToScene(needlePosition());
+            double length = QLineF(needlePos, snapPos).length();
+
+            if (length >= sMinRadius)
+            {
+                setRect(QRectF(rect().topLeft(), QSizeF(length, rect().height())));
+            }
+        }
+
         event->accept();
     }
     else if (mRotating)
@@ -363,6 +379,14 @@ void UBGraphicsCompass::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     }
     else
     {
+        // snap to grid
+        if (event->modifiers() & Qt::ShiftModifier) {
+            // snap needle position to grid
+            QPointF rotCenter = mapToScene(needlePosition());
+            QPointF snapVector = scene()->snap(rotCenter);
+            setPos(pos() + snapVector);
+        }
+
         QGraphicsRectItem::mouseReleaseEvent(event);
     }
 
