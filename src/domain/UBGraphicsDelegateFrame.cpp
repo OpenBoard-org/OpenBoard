@@ -576,6 +576,23 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
     else if (moving())
     {
+        if (event->modifiers().testFlag(Qt::ShiftModifier))
+        {
+            // snap to grid
+            QPointF moved = event->scenePos() - mStartingPoint;
+            QRectF movedBounds = mStartingBounds.translated(moved);
+
+            UBGraphicsScene* ubscene = dynamic_cast<UBGraphicsScene*>(scene());
+
+            if (ubscene)
+            {
+                QPointF snapVector = ubscene->snap({movedBounds.topLeft(), movedBounds.topRight(), movedBounds.bottomLeft(), movedBounds.bottomRight()});
+                moveX += snapVector.x();
+                moveY += snapVector.y();
+                move.setP2(move.p2() + snapVector);
+            }
+        }
+
         mTranslateX = move.dx();
         mTranslateY = move.dy();
         moveLinkedItems(move);
