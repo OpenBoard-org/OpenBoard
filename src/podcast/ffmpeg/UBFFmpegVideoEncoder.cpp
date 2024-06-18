@@ -746,11 +746,19 @@ void UBFFmpegVideoEncoder::finishEncoding()
     av_write_trailer(mOutputFormatContext);
     avio_close(mOutputFormatContext->pb);
 
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(61, 3, 100)
     avcodec_close(mVideoCodecContext);
+#else
+    avcodec_free_context(&mVideoCodecContext);
+#endif
     sws_freeContext(mSwsContext);
 
     if (mShouldRecordAudio) {
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(61, 3, 100)
         avcodec_close(mAudioCodecContext);
+#else
+        avcodec_free_context(&mAudioCodecContext);
+#endif
         swr_free(&mSwrContext);
     }
 
