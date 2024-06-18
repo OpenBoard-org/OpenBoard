@@ -520,7 +520,12 @@ bool UBFFmpegVideoEncoder::init()
         }
 
         // Buffer for resampled/converted audio
-        mAudioOutBuffer = av_audio_fifo_alloc(c->sample_fmt, c->channels, c->frame_size);
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(61, 3, 100)
+        int nb_channels = c->channels;
+#else
+        int nb_channels = c->ch_layout.nb_channels;
+#endif
+        mAudioOutBuffer = av_audio_fifo_alloc(c->sample_fmt, nb_channels, c->frame_size);
     }
 
 
@@ -639,8 +644,13 @@ void UBFFmpegVideoEncoder::processAudio(QByteArray &data)
     uint8_t ** outSamples = nullptr;
     int outSamplesLineSize;
 
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(61, 3, 100)
+    int nb_channels = codecContext->channels;
+#else
+    int nb_channels = codecContext->ch_layout.nb_channels;
+#endif
     ret = av_samples_alloc_array_and_samples(&outSamples, &outSamplesLineSize,
-                                             codecContext->channels, outSamplesCount,
+                                             nb_channels, outSamplesCount,
                                              codecContext->sample_fmt, 0);
     if (ret < 0) {
         qWarning() << "Could not allocate audio samples" << avErrorToQString(ret);
@@ -736,11 +746,19 @@ void UBFFmpegVideoEncoder::finishEncoding()
     av_write_trailer(mOutputFormatContext);
     avio_close(mOutputFormatContext->pb);
 
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(61, 3, 100)
     avcodec_close(mVideoCodecContext);
+#else
+    avcodec_free_context(&mVideoCodecContext);
+#endif
     sws_freeContext(mSwsContext);
 
     if (mShouldRecordAudio) {
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(61, 3, 100)
         avcodec_close(mAudioCodecContext);
+#else
+        avcodec_free_context(&mAudioCodecContext);
+#endif
         swr_free(&mSwrContext);
     }
 
