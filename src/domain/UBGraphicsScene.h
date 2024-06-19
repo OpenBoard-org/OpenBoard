@@ -417,8 +417,8 @@ public slots:
         void hideMarkerCircle();
         void hidePenCircle();
         void DisposeMagnifierQWidgets();
-        void MultiTouchDrawing(QTouchEvent* event, UBStylusTool::Enum currentTool);
-        void MultiTouchEndDrawing();
+        void multiTouchDrawing(QTouchEvent* event, UBStylusTool::Enum currentTool);
+        void multiTouchEndDrawing();
 
 
         virtual void keyReleaseEvent(QKeyEvent * keyEvent);

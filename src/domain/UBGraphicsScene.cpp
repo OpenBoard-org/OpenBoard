@@ -2067,9 +2067,10 @@ bool UBGraphicsScene::eventFilter(QObject *watched, QEvent *event)
         if ((event->type() == QEvent::TouchUpdate || event->type() == QEvent::TouchEnd)      //for use multiDraw
                 && (currentTool == UBStylusTool::Pen || currentTool == UBStylusTool::Marker)) // when Pen or Marker
         {
-            MultiTouchDrawing(static_cast<QTouchEvent*>(event), currentTool);
+
+            multiTouchDrawing(static_cast<QTouchEvent*>(event), currentTool);
             if (event->type() == QEvent::TouchEnd) //end of multiDraw
-                MultiTouchEndDrawing();
+                multiTouchEndDrawing();
             return true;
         }
     }
@@ -3147,11 +3148,11 @@ void UBGraphicsScene::initStroke()
     mCurrentStroke = new UBGraphicsStroke(shared_from_this());
 }
 
-void UBGraphicsScene::MultiTouchDrawing(QTouchEvent* event, UBStylusTool::Enum currentTool)
+void UBGraphicsScene::multiTouchDrawing(QTouchEvent* event, UBStylusTool::Enum currentTool)
 {
     QList <QTouchEvent::TouchPoint> touchPoints = event->touchPoints();
     QPointF lastPoint_m, endPoint_m;
-    foreach (QTouchEvent::TouchPoint point, touchPoints)
+    foreach (const QTouchEvent::TouchPoint point, touchPoints)
     {
         lastPoint_m = point.lastPos();
         endPoint_m = point.pos();
@@ -3179,7 +3180,7 @@ void UBGraphicsScene::MultiTouchDrawing(QTouchEvent* event, UBStylusTool::Enum c
     }
 }
 
-void UBGraphicsScene::MultiTouchEndDrawing()
+void UBGraphicsScene::multiTouchEndDrawing()
 {
     inputDeviceRelease();
     multiDrawLines.clear();
