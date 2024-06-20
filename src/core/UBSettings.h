@@ -414,6 +414,9 @@ class UBSettings : public QObject
         UBSetting* communityPsw;
         UBSetting* communityCredentialsPersistence;
 
+        UBSetting* proxyUser;
+        UBSetting* proxyPsw;
+
         UBSetting* pageSize;
 
         UBSetting* KeyboardLocale;

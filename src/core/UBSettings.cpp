@@ -442,6 +442,9 @@ void UBSettings::init()
     communityPsw = new UBSetting(this, "Community", "Password", "");
     communityCredentialsPersistence = new UBSetting(this,"Community", "CredentialsPersistence",false);
 
+    proxyUser = new UBSetting(this, "Proxy", "UserName", "");
+    proxyPsw = new UBSetting(this, "Proxy", "Password", "");
+
     QStringList uris = UBToolsManager::manager()->allToolIDs();
 
     favoritesNativeToolUris = new UBSetting(this, "App", "FavoriteToolURIs", uris);
@@ -1299,8 +1302,8 @@ QNetworkProxy* UBSettings::httpProxy()
 
         proxy->setHostName(mAppSettings->value("Proxy/HostName").toString());
         proxy->setPort(mAppSettings->value("Proxy/Port", 1080).toInt());
-        proxy->setUser(mAppSettings->value("Proxy/UserName").toString());
-        proxy->setPassword(mAppSettings->value("Proxy/Password").toString());
+        proxy->setUser(proxyUser->get().toString());
+        proxy->setPassword(proxyPsw->get().toString());
     }
 
     return proxy;
@@ -1336,38 +1339,25 @@ QString UBSettings::password(const QString& id)
 
 QString UBSettings::proxyUsername()
 {
-    QString idUsername = "http.proxy.user";
-    return password(idUsername);
+    return proxyUser->get().toString();
 }
 
 
 void UBSettings::setProxyUsername(const QString& username)
 {
-    QString idUsername = "http.proxy.user";
-
-    if (username.length() > 0)
-        setPassword(idUsername, username);
-    else
-        removePassword(idUsername);
+    proxyUser->set(QVariant(username));
 }
 
 
 QString UBSettings::proxyPassword()
 {
-    QString idPassword = "http.proxy.pass";
-    return password(idPassword);
+    return proxyPsw->get().toString();
 }
 
 
 void UBSettings::setProxyPassword(const QString& password)
 {
-    QString idPassword = "http.proxy.pass";
-
-    if (password.length() > 0)
-       setPassword(idPassword, password);
-    else
-        removePassword(idPassword);
-
+    proxyPsw->set(QVariant(password));
 }
 
 QString UBSettings::communityUsername()
@@ -1449,6 +1439,8 @@ void UBSettings::cleanNonPersistentSettings()
     if(!youTubeCredentialsPersistence->get().toBool()){
         youTubeUserEMail->set(QVariant(""));
     }
+    proxyUser->set(QVariant(""));
+    proxyPsw->set(QVariant(""));
 }
 
 /**
