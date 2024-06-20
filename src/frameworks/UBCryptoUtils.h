@@ -45,10 +45,6 @@ class UBCryptoUtils : public QObject
         static UBCryptoUtils* instance();
         static void destroy();
 
-
-        QString symetricEncrypt(const QString& clear);
-        QString symetricDecrypt(const QString& encrypted);
-
     private:
 
         UBCryptoUtils(QObject * pParent = 0);
