@@ -42,9 +42,6 @@ class UBCryptoUtils : public QObject
 
     public:
 
-        static UBCryptoUtils* instance();
-        static void destroy();
-
     private:
 
         UBCryptoUtils(QObject * pParent = 0);
