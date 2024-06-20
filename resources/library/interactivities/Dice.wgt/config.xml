@@ -2,7 +2,7 @@
 <widget xmlns="http://www.w3.org/ns/widgets" 
     xmlns:ub="http://uniboard.mnemis.com/widgets"
         id="http://www.openboard.org/widget/interactivity/dice"
-        version="2.0"
+        version="2.1"
         width="760"
         height="610"
         ub:resizable="false">     
