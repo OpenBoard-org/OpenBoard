@@ -1460,7 +1460,6 @@ void UBSettings::cleanNonPersistentSettings()
     }
 
     if(!youTubeCredentialsPersistence->get().toBool()){
-        removePassword(youTubeUserEMail->get().toString());
         youTubeUserEMail->set(QVariant(""));
     }
 }

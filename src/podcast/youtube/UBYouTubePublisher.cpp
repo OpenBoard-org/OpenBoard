@@ -74,9 +74,6 @@ void UBYouTubePublisher::uploadVideo(const QString& videoFilePath)
     QString defaultEMail = UBSettings::settings()->youTubeUserEMail->get().toString();
     pub.email->setText(defaultEMail);
 
-    QString defaultPassword = UBSettings::settings()->password(defaultEMail);
-    pub.password->setText(defaultPassword);
-
     if (pub.exec() == QDialog::Accepted)
     {
         mTitle = pub.title->text();
@@ -88,8 +85,6 @@ void UBYouTubePublisher::uploadVideo(const QString& videoFilePath)
         UBSettings::settings()->youTubeUserEMail->set(email);
 
         QString password = pub.password->text();
-
-        UBSettings::settings()->setPassword(email, password);
 
         postClientLoginRequest(email, password);
     }
@@ -356,7 +351,6 @@ UBYouTubePublishingDialog::UBYouTubePublishingDialog(const QString& videoFilePat
     UBSettings* settings = UBSettings::settings();
 
     email->setText(settings->youTubeUserEMail->get().toString());
-    password->setText(settings->password(email->text()));
 
     youtubeCredentialsPersistence->setChecked(UBSettings::settings()->youTubeCredentialsPersistence->get().toBool());
     updatePersistanceEnableState();
