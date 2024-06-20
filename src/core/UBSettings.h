@@ -110,10 +110,6 @@ class UBSettings : public QObject
         bool isItalicFont();
         void setItalicFont(bool italic);
 
-        void setPassword(const QString& id, const QString& password);
-        QString password(const QString& id);
-        void removePassword(const QString& id);
-
         QString proxyUsername();
         void setProxyUsername(const QString& username);
         QString proxyPassword();
