@@ -34,7 +34,6 @@
 
 #include "frameworks/UBPlatformUtils.h"
 #include "frameworks/UBFileSystemUtils.h"
-#include "frameworks/UBCryptoUtils.h"
 
 #include "UB.h"
 #include "UBSetting.h"
@@ -1320,33 +1319,6 @@ QNetworkProxy* UBSettings::httpProxy()
     }
 
     return proxy;
-}
-
-
-void UBSettings::setPassword(const QString& id, const QString& password)
-{
-    QString encrypted = UBCryptoUtils::instance()->symetricEncrypt(password);
-
-    mUserSettings->setValue(QString("Vault/") + id, encrypted);
-}
-
-
-void UBSettings::removePassword(const QString& id)
-{
-    mUserSettings->remove(QString("Vault/") + id);
-}
-
-
-QString UBSettings::password(const QString& id)
-{
-    QString encrypted = mUserSettings->value(QString("Vault/") + id).toString();
-
-    QString result = "";
-
-    if (encrypted.length() > 0)
-        result =  UBCryptoUtils::instance()->symetricDecrypt(encrypted);
-
-    return result;
 }
 
 
