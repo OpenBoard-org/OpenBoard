@@ -350,6 +350,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
 
         QRectF annotationsBoundingRect() const;
 
+        bool eventFilter(QObject *watched, QEvent *event) override;
+
 public slots:
         void updateSelectionFrame();
         void updateSelectionFrameWrapper(int);
@@ -415,6 +417,8 @@ public slots:
         void hideMarkerCircle();
         void hidePenCircle();
         void DisposeMagnifierQWidgets();
+        void multiTouchDrawing(QTouchEvent* event, UBStylusTool::Enum currentTool);
+        void multiTouchEndDrawing();
 
 
         virtual void keyReleaseEvent(QKeyEvent * keyEvent);
@@ -500,6 +504,8 @@ public slots:
         UBSelectionFrame *mSelectionFrame;
 
         UBGraphicsCache* mGraphicsCache;
+
+        QList<QLineF> multiDrawLines;
 };
 
 

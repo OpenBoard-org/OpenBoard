@@ -1924,3 +1924,10 @@ bool UBBoardView::hasSelectedParents(QGraphicsItem * item)
         return false;
     return hasSelectedParents(item->parentItem());
 }
+
+void UBBoardView::releaseAllInputDevices()
+{
+    mMouseButtonIsPressed = false;
+    mTabletStylusIsPressed = false;
+    mPendingStylusReleaseEvent = false;
+}
