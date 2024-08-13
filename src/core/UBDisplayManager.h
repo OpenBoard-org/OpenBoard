@@ -89,7 +89,7 @@ class UBDisplayManager : public QObject
 
         bool hasPrevious()
         {
-            return mScreensByRole.value(ScreenRole::Previous1);
+            return mUseMultiScreen && mScreensByRole.value(ScreenRole::Previous1);
         }
 
         bool useMultiScreen()
