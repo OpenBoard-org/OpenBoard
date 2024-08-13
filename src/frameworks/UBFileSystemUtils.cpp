@@ -41,7 +41,6 @@ THIRD_PARTY_WARNINGS_DISABLE
 #else
     #include "quazipfile.h"
 #endif
-#include <openssl/md5.h>
 THIRD_PARTY_WARNINGS_ENABLE
 
 #include "core/memcheck.h"
@@ -838,37 +837,6 @@ bool UBFileSystemUtils::expandZipToDir(const QFile& pZipFile, const QDir& pTarge
     }
 
     return true;
-}
-
-
-QString UBFileSystemUtils::md5InHex(const QByteArray &pByteArray)
-{
-    MD5_CTX ctx;
-    MD5_Init(&ctx);
-    MD5_Update(&ctx, pByteArray.data(), pByteArray.size());
-
-    unsigned char result[16];
-    MD5_Final(result, &ctx);
-
-    return QString(QByteArray((char *)result, 16).toHex());
-}
-
-QString UBFileSystemUtils::md5(const QByteArray &pByteArray)
-{
-    MD5_CTX ctx;
-    MD5_Init(&ctx);
-    MD5_Update(&ctx, pByteArray.data(), pByteArray.size());
-
-    unsigned char result[16];
-    MD5_Final(result, &ctx);
-    QString s;
-
-    for(int i = 0; i < 16; i++)
-    {
-        s += QChar(result[i]);
-    }
-
-    return s;
 }
 
 QString UBFileSystemUtils::readTextFile(QString path)
