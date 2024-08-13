@@ -234,28 +234,28 @@ void UBApplicationController::adjustDisplayView()
     {
         qreal systemDisplayViewScaleFactor = 1.0;
 
-        QSize pageSize = UBApplication::boardController->activeScene()->nominalSize();
+        QSize pageSize = mControlView->size();
         QSize displaySize = mDisplayView->size();
 
         qreal hFactor = ((qreal)displaySize.width()) / ((qreal)pageSize.width());
         qreal vFactor = ((qreal)displaySize.height()) / ((qreal)pageSize.height());
 
-        systemDisplayViewScaleFactor = qMin(hFactor, vFactor);
+        systemDisplayViewScaleFactor = qMax(hFactor, vFactor);
 
         QTransform tr;
-        qreal scaleFactor = systemDisplayViewScaleFactor * UBApplication::boardController->currentZoom();
+        qreal scaleFactor = systemDisplayViewScaleFactor
+                * UBApplication::boardController->currentZoom()
+                * UBApplication::boardController->systemScaleFactor();
 
         tr.scale(scaleFactor, scaleFactor);
-
-        QRect rect = mControlView->rect();
-        QPoint center(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
 
         QTransform recentTransform = mDisplayView->transform();
 
         if (recentTransform != tr)
             mDisplayView->setTransform(tr);
 
-        mDisplayView->centerOn(mControlView->mapToScene(center));
+        QRect rect = mControlView->rect();
+        mDisplayView->centerOn(mControlView->mapToScene(rect.center()));
     }
 }
 

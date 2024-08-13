@@ -64,6 +64,9 @@ public:
 
     void setMultiselection(bool enable);
     bool isMultipleSelectionEnabled() { return mMultipleSelectionIsEnabled; }
+
+    void setBoxing(const QMargins& margins);
+
     // work around for handling tablet events on MAC OS with Qt 4.8.0 and above
 #if defined(Q_OS_OSX)
     bool directTabletEvent(QEvent *event);
@@ -115,6 +118,7 @@ protected:
     virtual void paintEvent(QPaintEvent *event);
 
     virtual void drawBackground(QPainter *painter, const QRectF &rect);
+    virtual void drawForeground(QPainter *painter, const QRectF &rect);
 
     virtual void scrollContentsBy(int dx, int dy);
 
@@ -202,6 +206,8 @@ private:
     bool bIsControl;
     bool bIsDesktop;
     bool mRubberBandInPlayMode;
+
+    QMargins mMargins{};
 
     static bool hasSelectedParents(QGraphicsItem * item);
 
