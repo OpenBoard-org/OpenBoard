@@ -53,7 +53,8 @@ void UBWidgetUpgradeAdaptor::upgradeWidgets(std::shared_ptr<UBDocumentProxy> pro
 
     for (const QString& widgetPath : widgetPaths) {
         // scan widget for use of incompatible APIs
-        bool needsUpgrade = scanDir(QDir(widgetPath)) == UBWidgetUpgradeAdaptor::ApiUsage::INCOMPATIBLE;
+        const auto apiUsage = scanDir(QDir(widgetPath));
+        bool needsUpgrade = apiUsage == UBWidgetUpgradeAdaptor::ApiUsage::INCOMPATIBLE;
         Widget widget(widgetPath);
 
         needsUpgrade |= !widget.hasUniqueId();
@@ -69,6 +70,7 @@ void UBWidgetUpgradeAdaptor::upgradeWidgets(std::shared_ptr<UBDocumentProxy> pro
                 qDebug() << "Upgrading widget" << widget.path() << "to" << libraryWidget.id();
                 copyDir(widget.path(), libraryWidget.path());
                 needsUpgrade = false;
+                widget = libraryWidget;
             }
             else
             {
@@ -79,6 +81,26 @@ void UBWidgetUpgradeAdaptor::upgradeWidgets(std::shared_ptr<UBDocumentProxy> pro
         // set compatibility marker in proxy
         QUuid uuid(QFileInfo(widgetPath).baseName());
         proxy->setWidgetCompatible(uuid, !needsUpgrade);
+
+        // Check valid widgets for version updates
+        if (apiUsage != UBWidgetUpgradeAdaptor::ApiUsage::INCOMPATIBLE && widget.valid())
+        {
+            // try to update
+            const Widget& libraryWidget = libraryWidgets.value(widget.id(), Widget());
+
+            if (libraryWidget.valid())
+            {
+                const QVersionNumber widgetVersion = QVersionNumber::fromString(widget.version());
+                const QVersionNumber libraryVersion = QVersionNumber::fromString(libraryWidget.version());
+
+                if (libraryVersion > widgetVersion && libraryVersion.majorVersion() == widgetVersion.majorVersion())
+                {
+                    // update widget
+                    qDebug() << "Updating widget" << widget.path() << "to" << libraryWidget.id() << libraryWidget.version();
+                    copyDir(widget.path(), libraryWidget.path());
+                }
+            }
+        }
     }
 }
 
