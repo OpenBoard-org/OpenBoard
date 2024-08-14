@@ -1222,6 +1222,11 @@ QModelIndex UBDocumentTreeModel::goTo(const QString &dir)
         if (!searchingNode) {
             UBDocumentTreeNode *newChild = new UBDocumentTreeNode(UBDocumentTreeNode::Catalog, curLevelName);
             parentIndex = addNode(newChild, parentIndex);
+
+            if (!parentIndex.isValid())
+            {
+                delete newChild;
+            }
         }
     }
 
@@ -1266,7 +1271,10 @@ void UBDocumentTreeModel::addDocument(std::shared_ptr<UBDocumentProxy> pProxyDat
         lParent = goTo(docGroupName);
     }
 
-    addNode(freeNode, lParent);
+    if (!addNode(freeNode, lParent).isValid())
+    {
+        delete freeNode;
+    }
 }
 
 void UBDocumentTreeModel::addNewDocument(std::shared_ptr<UBDocumentProxy> pProxyData, const QModelIndex &pParent)
@@ -1281,7 +1289,14 @@ QModelIndex UBDocumentTreeModel::addCatalog(const QString &pName, const QModelIn
     }
 
     UBDocumentTreeNode *catalogNode = new UBDocumentTreeNode(UBDocumentTreeNode::Catalog, pName);
-    return addNode(catalogNode, pParent);
+    QModelIndex index = addNode(catalogNode, pParent);
+
+    if (!index.isValid())
+    {
+        delete catalogNode;
+    }
+
+    return index;
 }
 
 void UBDocumentTreeModel::setNewName(const QModelIndex &index, const QString &newName)
@@ -1569,7 +1584,12 @@ void UBDocumentTreeView::dragMoveEvent(QDragMoveEvent *event)
         if (!docModel || !docModel->isDocument(targetIndex) || docModel->inTrash(targetIndex)) {
             event->ignore();
             event->setDropAction(Qt::IgnoreAction);
-            docModel->setHighLighted(QModelIndex());
+
+            if (docModel)
+            {
+                docModel->setHighLighted(QModelIndex());
+            }
+
             acceptIt = false;
         } else {
             docModel->setHighLighted(targetIndex);
@@ -1605,8 +1625,8 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
     bool isUBPage = event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardPage);
 
     //issue 1629 - NNE - 20131212
-    bool targetIsInTrash = docModel->inTrash(targetIndex) || docModel->trashIndex() == targetIndex;
-    bool targetIsInMyDocuments = docModel->inMyDocuments(targetIndex) || docModel->myDocumentsIndex() == targetIndex;
+    bool targetIsInTrash = docModel && (docModel->inTrash(targetIndex) || docModel->trashIndex() == targetIndex);
+    bool targetIsInMyDocuments = docModel && (docModel->inMyDocuments(targetIndex) || docModel->myDocumentsIndex() == targetIndex);
 
     if (!targetIsInMyDocuments && !targetIsInTrash)
         return;
@@ -1829,14 +1849,14 @@ QWidget *UBDocumentTreeItemDelegate::createEditor(QWidget *parent, const QStyleO
         const UBDocumentTreeModel *docModel = 0;
 
         const UBSortFilterProxyModel *proxy = dynamic_cast<const UBSortFilterProxyModel*>(index.model());
+        QModelIndex sourceIndex;
 
         if(proxy){
             docModel = dynamic_cast<UBDocumentTreeModel*>(proxy->sourceModel());
+            sourceIndex = proxy->mapToSource(index);
         }else{
             docModel =  dynamic_cast<const UBDocumentTreeModel*>(index.model());
         }
-
-        QModelIndex sourceIndex = proxy->mapToSource(index);
 
         if (docModel)
         {
@@ -2225,6 +2245,8 @@ void UBDocumentController::setupViews()
             adaptor->setAssociatedAction(currentExportAction);
         }
 
+        bool exportMenuAttached = false;
+
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
         foreach (QObject* menuWidget,  mMainWindow->actionExport->associatedObjects())
 #else
@@ -2239,7 +2261,13 @@ void UBDocumentController::setupViews()
                 tb->setPopupMode(QToolButton::InstantPopup);
 
                 tb->setMenu(exportMenu);
+                exportMenuAttached = true;
             }
+        }
+
+        if (!exportMenuAttached)
+        {
+            delete exportMenu;
         }
 
 #ifdef Q_OS_OSX

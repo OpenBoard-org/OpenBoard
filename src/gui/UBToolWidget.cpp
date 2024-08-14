@@ -53,26 +53,6 @@ QPixmap* UBToolWidget::sClosePixmap = 0;
 QPixmap* UBToolWidget::sUnpinPixmap = 0;
 
 
-UBToolWidget::UBToolWidget(const QUrl& pUrl, QWidget *pParent)
-    : QWidget(pParent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
-    , mWebView(0)
-    , mToolWidget(0)
-    , mShouldMoveWidget(false)
-    , mContentMargin(0)
-    , mFrameWidth(0)
-
-{
-    int widgetType = UBGraphicsWidgetItem::widgetType(pUrl);
-    if (widgetType == UBWidgetType::Apple) // NOTE @letsfindaway obsolete
-        mToolWidget = new UBGraphicsAppleWidgetItem(pUrl);
-    else if (widgetType == UBWidgetType::W3C)
-        mToolWidget = new UBGraphicsW3CWidgetItem(pUrl);
-    else
-        qDebug() << "UBToolWidget::UBToolWidget: Unknown widget Type";
-
-    initialize();
-}
-
 UBToolWidget::UBToolWidget(UBGraphicsWidgetItem *pWidget, QWidget *pParent)
     : QWidget(pParent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
     , mWebView(0)

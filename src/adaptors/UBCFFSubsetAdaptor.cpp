@@ -1235,7 +1235,10 @@ UBGraphicsGroupContainerItem *UBCFFSubsetAdaptor::UBCFFSubsetReader::parseIwbGro
         if (pStrokesGroup->childItems().count())
             mCurrentScene->addItem(pStrokesGroup);
         else
+        {
             delete pStrokesGroup;
+            pStrokesGroup = nullptr;
+        }
 
         if (pStrokesGroup)
         {

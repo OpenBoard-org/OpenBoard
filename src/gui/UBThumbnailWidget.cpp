@@ -158,6 +158,9 @@ void UBThumbnailWidget::refreshScene()
     {
         QGraphicsItem* item = mGraphicItems.at(i);
 
+        if (!item)
+            continue;
+
         UBSceneThumbnailPixmap *thumbnail = dynamic_cast<UBSceneThumbnailPixmap*>(item);
         if (thumbnail)
             thumbnail->setSceneIndex(i);

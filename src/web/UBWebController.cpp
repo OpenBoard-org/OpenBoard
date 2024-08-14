@@ -715,9 +715,12 @@ void UBWebController::loadUrl(const QUrl& url)
 WebView* UBWebController::createNewTab()
 {
     if (mCurrentWebBrowser)
+    {
         UBApplication::applicationController->showInternet();
+        return mCurrentWebBrowser->tabWidget()->createTab();
+    }
 
-    return mCurrentWebBrowser->tabWidget()->createTab();
+    return nullptr;
 }
 
 
