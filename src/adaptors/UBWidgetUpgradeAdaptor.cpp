@@ -209,7 +209,7 @@ void UBWidgetUpgradeAdaptor::fillLibraryWidgets()
     widgetPaths << UBPersistenceManager::persistenceManager()->allWidgets(UBSettings::settings()->applicationInteractivesDirectory());
     widgetPaths << UBPersistenceManager::persistenceManager()->allWidgets(UBSettings::settings()->userInteractiveDirectory());
 
-    for (const QString& wigetPath : qAsConst(widgetPaths)) {
+    for (const QString& wigetPath : std::as_const(widgetPaths)) {
         Widget widget(wigetPath);
 
         if (widget.valid())

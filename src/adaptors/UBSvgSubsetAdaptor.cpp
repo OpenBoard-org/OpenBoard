@@ -551,14 +551,22 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScen
 
                 if (!ubFillOnDarkBackground.isNull())
                 {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+                    mGroupDarkBackgroundColor = QColor::fromString(ubFillOnDarkBackground.toString());
+#else
                     mGroupDarkBackgroundColor.setNamedColor(ubFillOnDarkBackground.toString());
+#endif
                 }
 
                 auto ubFillOnLightBackground = mXmlReader.attributes().value(mNamespaceUri, "fill-on-light-background");
 
                 if (!ubFillOnLightBackground.isNull())
                 {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+                    mGroupLightBackgroundColor = QColor::fromString(ubFillOnLightBackground.toString());
+#else
                     mGroupLightBackgroundColor.setNamedColor(ubFillOnLightBackground.toString());
+#endif
                 }
 
                 auto ubUuid = mXmlReader.attributes().value(mNamespaceUri, "uuid");
@@ -1784,7 +1792,11 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
     QColor brushColor = pDefaultColor;
 
     if (!svgFill.isNull())
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        brushColor = QColor::fromString(svgFill.toString());
+#else
         brushColor.setNamedColor(svgFill.toString());
+#endif
 
     auto svgFillOpacity = mXmlReader.attributes().value("fill-opacity");
     qreal opacity = 1.0;
@@ -1801,8 +1813,12 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
 
     if (!ubFillOnDarkBackground.isNull())
     {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        QColor color = QColor::fromString(ubFillOnDarkBackground.toString());
+#else
         QColor color;
         color.setNamedColor(ubFillOnDarkBackground.toString());
+#endif
         if (!color.isValid())
             color = Qt::white;
 
@@ -1820,8 +1836,12 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromPol
 
     if (!ubFillOnLightBackground.isNull())
     {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        QColor color = QColor::fromString(ubFillOnLightBackground.toString());
+#else
         QColor color;
         color.setNamedColor(ubFillOnLightBackground.toString());
+#endif
         if (!color.isValid())
             color = Qt::black;
         color.setAlphaF(opacity);
@@ -1890,7 +1910,11 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromLin
 
     if (!svgStroke.isNull())
     {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        brushColor = QColor::fromString(svgStroke.toString());
+#else
         brushColor.setNamedColor(svgStroke.toString());
+#endif
 
     }
 
@@ -1909,8 +1933,12 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromLin
 
     if (!ubFillOnDarkBackground.isNull())
     {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        QColor color = QColor::fromString(ubFillOnDarkBackground.toString());
+#else
         QColor color;
         color.setNamedColor(ubFillOnDarkBackground.toString());
+#endif
         if (!color.isValid())
             color = Qt::white;
 
@@ -1928,8 +1956,12 @@ UBGraphicsPolygonItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItemFromLin
 
     if (!ubFillOnLightBackground.isNull())
     {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        QColor color = QColor::fromString(ubFillOnLightBackground.toString());
+#else
         QColor color;
         color.setNamedColor(ubFillOnLightBackground.toString());
+#endif
         if (!color.isValid())
             color = Qt::black;
         color.setAlphaF(opacity);
@@ -1961,7 +1993,11 @@ QList<UBGraphicsPolygonItem*> UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItem
     auto svgStroke = mXmlReader.attributes().value("stroke");
     if (!svgStroke.isNull())
     {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        brushColor = QColor::fromString(svgStroke.toString());
+#else
         brushColor.setNamedColor(svgStroke.toString());
+#endif
     }
 
     qreal opacity = 1.0;
@@ -1987,7 +2023,11 @@ QList<UBGraphicsPolygonItem*> UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItem
     auto ubFillOnDarkBackground = mXmlReader.attributes().value(mNamespaceUri, "fill-on-dark-background");
     if (!ubFillOnDarkBackground.isNull())
     {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        colorOnDarkBackground = QColor::fromString(ubFillOnDarkBackground.toString());
+#else
         colorOnDarkBackground.setNamedColor(ubFillOnDarkBackground.toString());
+#endif
     }
 
     if (!colorOnDarkBackground.isValid())
@@ -2000,8 +2040,11 @@ QList<UBGraphicsPolygonItem*> UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItem
     auto ubFillOnLightBackground = mXmlReader.attributes().value(mNamespaceUri, "fill-on-light-background");
     if (!ubFillOnLightBackground.isNull())
     {
-        QColor colorOnLightBackground;
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        colorOnLightBackground = QColor::fromString(ubFillOnLightBackground.toString());
+#else
         colorOnLightBackground.setNamedColor(ubFillOnLightBackground.toString());
+#endif
     }
 
     if (!colorOnLightBackground.isValid())
@@ -2763,16 +2806,24 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
     auto ubFillOnLightBackground = mXmlReader.attributes().value(mNamespaceUri, "fill-on-light-background");
 
     if (!ubFillOnDarkBackground.isNull()) {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        QColor color = QColor::fromString(ubFillOnDarkBackground.toString());
+#else
         QColor color;
         color.setNamedColor(ubFillOnDarkBackground.toString());
+#endif
         if (!color.isValid())
             color = Qt::white;
         textItem->setColorOnDarkBackground(color);
     }
 
     if (!ubFillOnLightBackground.isNull()) {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+        QColor color = QColor::fromString(ubFillOnLightBackground.toString());
+#else
         QColor color;
         color.setNamedColor(ubFillOnLightBackground.toString());
+#endif
         if (!color.isValid())
             color = Qt::black;
         textItem->setColorOnLightBackground(color);
@@ -2873,8 +2924,12 @@ UBGraphicsTextItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::textItemFromSvg()
 
                 auto fill = mXmlReader.attributes().value("color");
                 if (!fill.isNull()) {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+                    QColor textColor = QColor::fromString(fill.toString());
+#else
                     QColor textColor;
                     textColor.setNamedColor(fill.toString());
+#endif
                     textItem->setDefaultTextColor(textColor);
                 }
 

@@ -118,7 +118,11 @@ void UBToolbarButtonGroup::setIcon(const QIcon &icon, int index)
 {
     Q_ASSERT(index < mActions.size());
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    foreach(QObject *widget, mActions.at(index)->associatedObjects())
+#else
     foreach(QWidget *widget, mActions.at(index)->associatedWidgets())
+#endif
     {
         QToolButton *button = qobject_cast<QToolButton*>(widget);
         if (button)
@@ -138,7 +142,11 @@ void UBToolbarButtonGroup::setColor(const QColor &color, int index)
 
 void UBToolbarButtonGroup::selected(QAction *action)
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    foreach(QObject *widget, action->associatedObjects())
+#else
     foreach(QWidget *widget, action->associatedWidgets())
+#endif
     {
         QToolButton *button = qobject_cast<QToolButton*>(widget);
         if (button)
