@@ -268,8 +268,6 @@ void UBSettings::init()
 
     appStartupHintsEnabled = new UBSetting(this,"App","EnableStartupHints",false);
 
-    appLookForOpenSankoreInstall = new UBSetting(this, "App", "LookForOpenSankoreInstall", true);
-
     appStartMode = new UBSetting(this, "App", "StartMode", "");
     appRunInWindow = new UBSetting(this, "App", "RunInWindow", false);
 

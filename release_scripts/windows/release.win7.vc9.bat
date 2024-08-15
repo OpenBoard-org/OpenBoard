@@ -40,29 +40,6 @@ echo %PATH%
 
 cd %PROJECT_ROOT%
 
-REM Third party impoter application
-REM set IMPORTER_NAME=OpenBoardImporter
-REM set IMPORTER_PATH="..\OpenBoard-Importer"
-
-REM IF NOT EXIST "%IMPORTER_PATH%" GOTO EXIT_WITH_ERROR
-
-REM set HOME_DIR="%cd%"
-REM cd %IMPORTER_PATH%
-REM IF EXIST "release" (del "release\*.*" /Q)
-REM IF EXIST "debug" (del "debug\*.*" /Q)
-REM IF EXIST "MakeFile" (del "MakeFile*" /Q)
-REM IF EXIST "MakeFile" (del "MakeFile*" /Q)
-REM IF EXIST "%IMPORTER_NAME%.exe" (del "%IMPORTER_NAME%.exe" /Q)
-REM "%QT_BIN%\qmake.exe" %IMPORTER_NAME%.pro
-REM nmake release
-REM IF NOT EXIST release\"%IMPORTER_NAME%.exe" GOTO EXIT_WITH_ERROR
-REM cd %HOME_DIR%
-
-REM this checks if the custom qt directory path
-REM is correct. This is important because installer
-REM pick up dll from this directory
-REM IF NOT EXIST "%QT_DIR%\bin\Qt5Core.dll" GOTO EXIT_WITH_ERROR
-
 rmdir /S /Q %BUILD_DIR%
 rmdir /S /Q install
 

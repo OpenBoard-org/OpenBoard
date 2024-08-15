@@ -275,8 +275,6 @@ class UBSettings : public QObject
 
         UBSetting* appStartupHintsEnabled;
 
-        UBSetting* appLookForOpenSankoreInstall;
-
         UBSetting* boardPenFineWidth;
         UBSetting* boardPenMediumWidth;
         UBSetting* boardPenStrongWidth;

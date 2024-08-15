@@ -37,7 +37,6 @@
 #include "core/UBSetting.h"
 #include "core/UBDocumentManager.h"
 #include "core/UBDisplayManager.h"
-#include "core/UBOpenSankoreImporter.h"
 
 
 #include "board/UBBoardView.h"
@@ -129,9 +128,6 @@ UBApplicationController::~UBApplicationController()
     }
     delete mMirror;
     delete mUninoteController;
-
-    delete(mOpenSankoreImporter);
-    mOpenSankoreImporter = NULL;
 }
 
 
@@ -599,8 +595,6 @@ void UBApplicationController::downloadJsonFinished(QString currentJson)
 
 void UBApplicationController::checkAtLaunch()
 {
-    mOpenSankoreImporter = new UBOpenSankoreImporter(mMainWindow->centralWidget());
-
     if(UBSettings::settings()->appEnableAutomaticSoftwareUpdates->get().toBool()){
         isNoUpdateDisplayed = false;
         checkUpdate();
