@@ -19,7 +19,7 @@ set SCRIPT_PATH=%~dp0
 set PROJECT_ROOT=%SCRIPT_PATH%\..\..
 
 set APPLICATION_NAME=OpenBoard
-set QT_DIR=C:\Qt\5.15.0\msvc2019_64
+set QT_DIR=C:\Qt\6.7.2\msvc2019_64
 set QT_BIN=%QT_DIR%\bin
 
 set PROGRAMS_FILE_PATH=C:\Program Files (x86)
@@ -41,22 +41,22 @@ echo %PATH%
 cd %PROJECT_ROOT%
 
 REM Third party impoter application
-set IMPORTER_NAME=OpenBoardImporter
-set IMPORTER_PATH="..\OpenBoard-Importer"
+REM set IMPORTER_NAME=OpenBoardImporter
+REM set IMPORTER_PATH="..\OpenBoard-Importer"
 
-IF NOT EXIST "%IMPORTER_PATH%" GOTO EXIT_WITH_ERROR
+REM IF NOT EXIST "%IMPORTER_PATH%" GOTO EXIT_WITH_ERROR
 
-set HOME_DIR="%cd%"
-cd %IMPORTER_PATH%
-IF EXIST "release" (del "release\*.*" /Q)
-IF EXIST "debug" (del "debug\*.*" /Q)
-IF EXIST "MakeFile" (del "MakeFile*" /Q)
-IF EXIST "MakeFile" (del "MakeFile*" /Q)
-IF EXIST "%IMPORTER_NAME%.exe" (del "%IMPORTER_NAME%.exe" /Q)
-"%QT_BIN%\qmake.exe" %IMPORTER_NAME%.pro
-nmake release
-IF NOT EXIST release\"%IMPORTER_NAME%.exe" GOTO EXIT_WITH_ERROR
-cd %HOME_DIR%
+REM set HOME_DIR="%cd%"
+REM cd %IMPORTER_PATH%
+REM IF EXIST "release" (del "release\*.*" /Q)
+REM IF EXIST "debug" (del "debug\*.*" /Q)
+REM IF EXIST "MakeFile" (del "MakeFile*" /Q)
+REM IF EXIST "MakeFile" (del "MakeFile*" /Q)
+REM IF EXIST "%IMPORTER_NAME%.exe" (del "%IMPORTER_NAME%.exe" /Q)
+REM "%QT_BIN%\qmake.exe" %IMPORTER_NAME%.pro
+REM nmake release
+REM IF NOT EXIST release\"%IMPORTER_NAME%.exe" GOTO EXIT_WITH_ERROR
+REM cd %HOME_DIR%
 
 REM this checks if the custom qt directory path
 REM is correct. This is important because installer

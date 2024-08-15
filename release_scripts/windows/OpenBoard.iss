@@ -69,29 +69,28 @@ Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\win32\ssleay32.dll"; Des
 
 ;Qt base dll
 ;Source: "OpenBoard.exe"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5Concurrent.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5Core.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5Gui.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5Multimedia.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5MultimediaWidgets.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5Network.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5Opengl.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5PrintSupport.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5Qml.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5Sql.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5Svg.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5Widgets.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5Xml.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\libGLESv2.dll"; DestDir: "{app}"  
-Source: "{#QtLibs}\Qt5Quick.dll"; DestDir: "{app}"  
-Source: "{#QtLibs}\Qt5Positioning.dll"; DestDir: "{app}"  
-Source: "{#QtLibs}\Qt5Sensors.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5QmlModels.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5WebChannel.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5WebEngineCore.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5WebEngineWidgets.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5QuickWidgets.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\libEGL.dll"; DestDir: "{app}"  
+Source: "{#QtLibs}\Qt6Concurrent.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt6Core.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt6Gui.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt6Multimedia.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt6MultimediaWidgets.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt6Network.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt6Opengl.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt6PrintSupport.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt6Qml.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt6Sql.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt6Svg.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt6SvgWidgets.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt6Widgets.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt6Xml.dll"; DestDir: "{app}" 
+Source: "{#QtLibs}\Qt6Quick.dll"; DestDir: "{app}"  
+Source: "{#QtLibs}\Qt6Positioning.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt6QmlModels.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt6WebChannel.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt6WebEngineCore.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt6WebEngineWidgets.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt6QuickWidgets.dll"; DestDir: "{app}"
+Source: "{#QtLibs}\Qt6Core5Compat.dll"; DestDir: "{app}" 
 ;Source: "/etc/freezedWidgetWrapper.html"; DestDir: "{app}"  	
 ;Source: "*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
@@ -115,33 +114,22 @@ Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\zlib\1.2.11\bin\zlib.dll"; DestD
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 ;Qt windows plugins
-Source: "{#QtDir}\plugins\platforms\qminimal.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\platforms\qoffscreen.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\platforms\qwindows.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\platforms\qminimal.dll"; DestDir: "{app}\plugins\platforms"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\platforms\qoffscreen.dll"; DestDir: "{app}\plugins\platforms"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\platforms\qwindows.dll"; DestDir: "{app}\plugins\platforms"; Flags: ignoreversion
 
 
 ;Qt images formats plugins
-Source: "{#QtDir}\plugins\imageformats\qgif.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\imageformats\qico.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\imageformats\qjpeg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\imageformats\qsvg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\imageformats\qtiff.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion   
+Source: "{#QtDir}\plugins\imageformats\qgif.dll"; DestDir: "{app}\plugins\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\imageformats\qico.dll"; DestDir: "{app}\plugins\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\imageformats\qjpeg.dll"; DestDir: "{app}\plugins\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\plugins\imageformats\qsvg.dll"; DestDir: "{app}\plugins\imageformats"; Flags: ignoreversion
 
 ;qt icon engine plugins
 Source: "{#QtDir}\plugins\iconengines\qsvgicon.dll"; DestDir: "{app}\iconengines"; Flags: ignoreversion
 
 ;qt multimedia plugins
-Source: "{#QtDir}\plugins\mediaservice\dsengine.dll"; DestDir: "{app}\mediaservice"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\mediaservice\dsengined.dll"; DestDir: "{app}\mediaservice"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\mediaservice\qtmedia_audioengine.dll"; DestDir: "{app}\mediaservice"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\mediaservice\qtmedia_audioengined.dll"; DestDir: "{app}\mediaservice"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\mediaservice\wmfengine.dll"; DestDir: "{app}\mediaservice"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\mediaservice\wmfengined.dll"; DestDir: "{app}\mediaservice"; Flags: ignoreversion   
-
-;OpenBoardImporter
-Source: "{#ProjectRoot}\..\OpenBoard-Importer\release\OpenBoardImporter.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#QtLibs}\Qt5Core.dll"; DestDir: "{app}"
-Source: "{#QtLibs}\Qt5Gui.dll"; DestDir: "{app}"
+Source: "{#QtDir}\plugins\multimedia\windowsmediaplugin.dll"; DestDir: "{app}\plugins\multimedia"; Flags: ignoreversion
 
 ;QtWebEngine dependencies
 Source: "{#QtLibs}\QtWebEngineProcess.exe"; DestDir: "{app}"
