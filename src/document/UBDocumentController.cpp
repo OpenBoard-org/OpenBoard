@@ -1483,7 +1483,7 @@ void UBDocumentTreeView::setSelectedAndExpanded(const QModelIndex &pIndex, bool 
                                                 ? QItemSelectionModel::Select
                                                 : QItemSelectionModel::Deselect;
 
-    setCurrentIndex(indexCurrentDoc);
+    setCurrentIndex(proxy->mapFromSource(indexCurrentDoc));
 
     selectionModel()->setCurrentIndex(proxy->mapFromSource(indexCurrentDoc), QItemSelectionModel::SelectCurrent);
 
