@@ -27,14 +27,17 @@
 
 #define QT_IMPLICIT_QCHAR_CONSTRUCTION
 
-#include <QtPlatformHeaders/QWindowsWindowFunctions>
-
 #include "UBPlatformUtils.h"
 
 #include <QtGui>
 #include <QProcess>
 #include <windows.h>
 #include <shellapi.h>
+
+
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    #include <QtPlatformHeaders/QWindowsWindowFunctions>
+#endif
 
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/memcheck.h"
