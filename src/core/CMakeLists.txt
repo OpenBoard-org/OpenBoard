@@ -19,8 +19,6 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBIdleTimer.h
     UBMimeData.cpp
     UBMimeData.h
-    UBOpenSankoreImporter.cpp
-    UBOpenSankoreImporter.h
     UBPersistenceManager.cpp
     UBPersistenceManager.h
     UBPersistenceWorker.cpp
