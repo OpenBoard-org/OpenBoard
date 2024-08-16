@@ -49,8 +49,6 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBMessagesDialog.h
     UBMousePressFilter.cpp
     UBMousePressFilter.h
-    UBOpenSankoreImporterWidget.cpp
-    UBOpenSankoreImporterWidget.h
     UBPageNavigationWidget.cpp
     UBPageNavigationWidget.h
     UBPropertyPalette.cpp
