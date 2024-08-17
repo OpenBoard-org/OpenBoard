@@ -693,9 +693,9 @@ bool UBBoardView::itemShouldBeMoved(QGraphicsItem *item)
     case UBGraphicsMediaItem::Type:
     case UBGraphicsVideoItem::Type:
     case UBGraphicsAudioItem::Type:
+    case UBGraphicsStrokesGroup::Type:
         return true;
 
-    case UBGraphicsStrokesGroup::Type:
     case UBGraphicsTextItem::Type:
         if (currentTool == UBStylusTool::Play)
             return true;
