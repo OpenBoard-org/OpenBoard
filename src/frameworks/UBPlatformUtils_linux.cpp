@@ -25,8 +25,6 @@
  */
 
 
-#define QT_IMPLICIT_QCHAR_CONSTRUCTION
-
 #include "UBPlatformUtils.h"
 
 #include <QtGui>
@@ -183,14 +181,14 @@ void UBPlatformUtils::hideMenuBarAndDock()
     // NOOP
 }
 
-#define KEYBTDECL(s1, s2, clSwitch, code) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(s1, code, 0), KEYCODE(s2, code, 1))
+#define KEYBTDECL(s1, s2, clSwitch, code) KEYBT(QChar(s1), QChar(s2), clSwitch, 0, 0, KEYCODE(s1, code, 0), KEYCODE(s2, code, 1))
 
-#define KEYBTDECLEX1(s1, s2, clSwitch, code, cs1, cs2) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(cs1, code, 0), KEYCODE(cs2, code, 1))
-#define KEYBTDECLEX2(s1, s2, clSwitch, code, cs1, cs2) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(cs1, code, 2), KEYCODE(cs2, code, 3))
+#define KEYBTDECLEX1(s1, s2, clSwitch, code, cs1, cs2) KEYBT(QChar(s1), QChar(s2), clSwitch, 0, 0, KEYCODE(cs1, code, 0), KEYCODE(cs2, code, 1))
+#define KEYBTDECLEX2(s1, s2, clSwitch, code, cs1, cs2) KEYBT(QChar(s1), QChar(s2), clSwitch, 0, 0, KEYCODE(cs1, code, 2), KEYCODE(cs2, code, 3))
 
-#define KEYBTDECLEX6(s1, s2, clSwitch, code, cs1, cs2, cs3, cs4, cs5, cs6) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(cs1, code, 0), KEYCODE(cs2, code, 1), KEYCODE(cs3, code, 2), KEYCODE(cs4, code, 3), KEYCODE(cs5, code, 4), KEYCODE(cs6, code, 5))
+#define KEYBTDECLEX6(s1, s2, clSwitch, code, cs1, cs2, cs3, cs4, cs5, cs6) KEYBT(QChar(s1), QChar(s2), clSwitch, 0, 0, KEYCODE(cs1, code, 0), KEYCODE(cs2, code, 1), KEYCODE(cs3, code, 2), KEYCODE(cs4, code, 3), KEYCODE(cs5, code, 4), KEYCODE(cs6, code, 5))
 
-#define KEYBTDECLEX8(s1, s2, clSwitch, code, cs1, cs2, cs3, cs4, cs5, cs6, cs7, cs8) KEYBT(s1, s2, clSwitch, 0, 0, KEYCODE(cs1, code, 0), KEYCODE(cs2, code, 1), KEYCODE(cs3, code, 2), KEYCODE(cs4, code, 3), KEYCODE(cs5, code, 4), KEYCODE(cs6, code, 5), KEYCODE(cs7, code, 6), KEYCODE(cs8, code, 7))
+#define KEYBTDECLEX8(s1, s2, clSwitch, code, cs1, cs2, cs3, cs4, cs5, cs6, cs7, cs8) KEYBT(QChar(s1), QChar(s2), clSwitch, 0, 0, KEYCODE(cs1, code, 0), KEYCODE(cs2, code, 1), KEYCODE(cs3, code, 2), KEYCODE(cs4, code, 3), KEYCODE(cs5, code, 4), KEYCODE(cs6, code, 5), KEYCODE(cs7, code, 6), KEYCODE(cs8, code, 7))
 
 
 KEYBT ENGLISH_LOCALE[] = {
@@ -375,7 +373,7 @@ KEYBT FRENCH_LOCALE[] = {
     /* i I */ KEYBTDECLEX6(0x69, 0x49, true, 23, 0x69, 0x49, 0xee, 0xce, 0xef, 0xcf),
     /* o O */ KEYBTDECLEX6(0x6f, 0x4f, true, 24, 0x6f, 0x4f, 0xf4, 0xd4, 0xf6, 0xd6),
     /* p P */ KEYBTDECL(0x70, 0x50, true, 25),
-    /* ^ ? */ KEYBT(0x5e, 0xa8, true, 1, 2, KEYCODE(0x5e, 26, 0), KEYCODE(0xa8, 26, 1)),
+    /* ^ ? */ KEYBT(QChar(0x5e), QChar(0xa8), true, 1, 2, KEYCODE(0x5e, 26, 0), KEYCODE(0xa8, 26, 1)),
     /* $ ? } */ KEYBTDECL(0x24, 0xa3, true, 27),
 
     /* q Q */ KEYBTDECL(0x71, 0x51, true, 30),
@@ -416,7 +414,7 @@ KEYBT SWISS_FRENCH_LOCALE[] = {
     /* 9 )*/    KEYBTDECL(0x39, 0x29, false, 10),
     /* 0 =*/    KEYBTDECL(0x30, 0x3d, false, 11),
     /* ' ?*/    KEYBTDECL(0x27, 0x5f, false, 12),
-    /* ^ `*/    KEYBT(0x5e, 0x60, false, 1, 2, KEYCODE(0x5e, 13, 0), KEYCODE(0x60, 13, 1)),
+    /* ^ `*/    KEYBT(QChar(0x5e), QChar(0x60), false, 1, 2, KEYCODE(0x5e, 13, 0), KEYCODE(0x60, 13, 1)),
 
     /* q Q*/    KEYBTDECL(0x71, 0x51, true, 16),
     /* w W*/    KEYBTDECL(0x77, 0x57, true, 17),
@@ -429,7 +427,7 @@ KEYBT SWISS_FRENCH_LOCALE[] = {
     /* o O*/    KEYBTDECLEX8(0x6f, 0x4f, true, 24, 0x6f, 0x4f, 0xf4, 0xd4, 0xf2, 0xd2, 0xf6, 0xd6),
     /* p P*/    KEYBTDECL(0x70, 0x50, true, 25),
     /* è ü*/    KEYBTDECL(0xe8, 0xfa, false, 26),
-    /* ¨ !*/    KEYBT(0xa8, 0x21, false, 3, 0, KEYCODE(0xa8, 27, 0), KEYCODE(0x21, 27, 1)),
+    /* ¨ !*/    KEYBT(QChar(0xa8), QChar(0x21), false, 3, 0, KEYCODE(0xa8, 27, 0), KEYCODE(0x21, 27, 1)),
 
     /* a A*/    KEYBTDECLEX8(0x61, 0x41, true, 30, 0x61, 0x41, 0xe2, 0xc2, 0xe0, 0xc0, 0xe4, 0xc4),
     /* s S*/    KEYBTDECL(0x73, 0x53, true, 31),
