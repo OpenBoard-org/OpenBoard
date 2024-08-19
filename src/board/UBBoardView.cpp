@@ -53,6 +53,7 @@
 #include "gui/UBToolWidget.h"
 #include "gui/UBResources.h"
 #include "gui/UBMainWindow.h"
+#include "gui/UBSnapIndicator.h"
 #include "gui/UBThumbnailWidget.h"
 
 #include "board/UBBoardController.h"
@@ -850,11 +851,18 @@ void UBBoardView::handleItemMouseMove(QMouseEvent *event)
         if (event->modifiers().testFlag(Qt::ShiftModifier))
         {
             QRectF rect = UBGraphicsScene::itemRect(movingItem);
-            auto offset = scene()->snap({rect.topLeft(), rect.topRight(), rect.bottomLeft(), rect.bottomRight()});
+            Qt::Corner corner;
+            auto offset = scene()->snap(rect, &corner);
             newPos += offset;
             movingItem->setPos(newPos);
 
             mLastPressedMousePos = scenePos + offset;
+
+            // display snap indicator
+            if (!offset.isNull())
+            {
+                updateSnapIndicator(corner);
+            }
         }
         else
         {
@@ -938,6 +946,17 @@ void UBBoardView::moveRubberedItems(QPointF movingVector)
 void UBBoardView::setMultiselection(bool enable)
 {
     mMultipleSelectionIsEnabled = enable;
+}
+
+void UBBoardView::updateSnapIndicator(Qt::Corner corner)
+{
+    if (!mSnapIndicator)
+    {
+        mSnapIndicator = new UBSnapIndicator(this);
+        mSnapIndicator->resize(60, 60);
+    }
+
+    mSnapIndicator->appear(corner);
 }
 
 void UBBoardView::setBoxing(const QMargins& margins)

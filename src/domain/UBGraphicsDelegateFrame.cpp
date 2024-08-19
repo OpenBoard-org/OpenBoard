@@ -589,10 +589,17 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
             if (ubscene)
             {
-                QPointF snapVector = ubscene->snap({movedBounds.topLeft(), movedBounds.topRight(), movedBounds.bottomLeft(), movedBounds.bottomRight()});
+                Qt::Corner corner;
+                QPointF snapVector = ubscene->snap(movedBounds, &corner);
                 moveX += snapVector.x();
                 moveY += snapVector.y();
                 move.setP2(move.p2() + snapVector);
+
+                // display snap indicator
+                if (!snapVector.isNull())
+                {
+                    UBApplication::boardController->controlView()->updateSnapIndicator(corner);
+                }
             }
         }
 
