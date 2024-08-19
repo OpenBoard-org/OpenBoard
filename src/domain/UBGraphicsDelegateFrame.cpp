@@ -547,24 +547,27 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         QLineF currentLine(sceneBoundingRect().center(), event->scenePos());
         mAngle += startLine.angleTo(currentLine);
 
-        if ((int)mAngle % 45 >= 45 - mAngleTolerance || (int)mAngle % 45 <= mAngleTolerance)
+        if (event->modifiers().testFlag(Qt::ShiftModifier))
         {
-            mAngle = qRound(mAngle / 45) * 45;
-            mAngleOffset += startLine.angleTo(currentLine);
-            if ((int)mAngleOffset % 360 > mAngleTolerance && (int)mAngleOffset % 360 < 360 - mAngleTolerance)
+            if ((int)mAngle % 45 >= 45 - mAngleTolerance || (int)mAngle % 45 <= mAngleTolerance)
             {
-                mAngle += mAngleOffset;
-                mAngleOffset = 0;
+                mAngle = qRound(mAngle / 45) * 45;
+                mAngleOffset += startLine.angleTo(currentLine);
+                if ((int)mAngleOffset % 360 > mAngleTolerance && (int)mAngleOffset % 360 < 360 - mAngleTolerance)
+                {
+                    mAngle += mAngleOffset;
+                    mAngleOffset = 0;
+                }
             }
-        }
-        else if ((int)mAngle % 30 >= 30 - mAngleTolerance || (int)mAngle % 30 <= mAngleTolerance)
-        {
-            mAngle = qRound(mAngle / 30) * 30;
-            mAngleOffset += startLine.angleTo(currentLine);
-            if ((int)mAngleOffset % 360 > mAngleTolerance && (int)mAngleOffset % 360 < 360 - mAngleTolerance)
+            else if ((int)mAngle % 30 >= 30 - mAngleTolerance || (int)mAngle % 30 <= mAngleTolerance)
             {
-                mAngle += mAngleOffset;
-                mAngleOffset = 0;
+                mAngle = qRound(mAngle / 30) * 30;
+                mAngleOffset += startLine.angleTo(currentLine);
+                if ((int)mAngleOffset % 360 > mAngleTolerance && (int)mAngleOffset % 360 < 360 - mAngleTolerance)
+                {
+                    mAngle += mAngleOffset;
+                    mAngleOffset = 0;
+                }
             }
         }
 
