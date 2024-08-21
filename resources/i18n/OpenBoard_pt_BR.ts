@@ -12,32 +12,34 @@
     <name>BrowserWindow</name>
     <message>
         <source>Navigation</source>
-        <translation type="unfinished"></translation>
+        <translation>Navegação</translation>
     </message>
     <message>
         <source>Show downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>Ver downloads</translation>
     </message>
 </context>
 <context>
     <name>CertificateErrorDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished">Caixa de Diálogo</translation>
+        <translation>Caixa de Diálogo</translation>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Ícone</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
 
 Do you wish to override the security check and continue ?   </source>
-        <translation type="unfinished"></translation>
+        <translation>Se desejar, você pode continuar com um certificado não verificado. Aceitar um certificado não verificado significa que você pode não estar conectado com o host ao qual tentou se conectar.
+
+Deseja substituir a verificação de segurança e continuar?</translation>
     </message>
 </context>
 <context>
@@ -140,15 +142,15 @@ Do you wish to override the security check and continue ?   </source>
     <name>DownloadManagerWidget</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished">Transferências</translation>
+        <translation>Transferências</translation>
     </message>
     <message>
         <source>No downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>Sem downloads</translation>
     </message>
     <message>
         <source>Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvar como</translation>
     </message>
 </context>
 <context>
@@ -159,51 +161,51 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Open file</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir arquivo</translation>
     </message>
     <message>
         <source>%L1 B</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 B</translation>
     </message>
     <message>
         <source>%L1 KiB</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 KiB</translation>
     </message>
     <message>
         <source>%L1 MiB</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 MiB</translation>
     </message>
     <message>
         <source>%L1 GiB</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 GiB</translation>
     </message>
     <message>
         <source>%p% - %1 of %2 downloaded - %3/s</source>
-        <translation type="unfinished"></translation>
+        <translation>%p% - %1 de %2 transferidos - %3/s</translation>
     </message>
     <message>
         <source>unknown size - %1 downloaded - %2/s</source>
-        <translation type="unfinished"></translation>
+        <translation>tamanho desconhecido - %1 transferido - %2/s</translation>
     </message>
     <message>
         <source>completed - %1 downloaded - %2/s</source>
-        <translation type="unfinished"></translation>
+        <translation>concluído - %1 transferido - %2/s</translation>
     </message>
     <message>
         <source>cancelled - %1 downloaded - %2/s</source>
-        <translation type="unfinished"></translation>
+        <translation>cancelado - %1 transferido - %2/s</translation>
     </message>
     <message>
         <source>interrupted: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>interrompido: %1</translation>
     </message>
     <message>
         <source>Stop downloading</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancelar download</translation>
     </message>
     <message>
         <source>Remove from list</source>
-        <translation type="unfinished"></translation>
+        <translation>Remover da lista</translation>
     </message>
 </context>
 <context>
@@ -389,7 +391,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Show Bookmarks</source>
-        <translation>Mostrar os Favoritos</translation>
+        <translation>Ver os Favoritos</translation>
     </message>
     <message>
         <source>Bookmark</source>
@@ -421,7 +423,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Display Preferences</source>
-        <translation>Mostrar Preferências</translation>
+        <translation>Ver Preferências</translation>
     </message>
     <message>
         <source>Library</source>
@@ -429,7 +431,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Show Library</source>
-        <translation>Mostrar Biblioteca</translation>
+        <translation>Ver Biblioteca</translation>
     </message>
     <message>
         <source>Ctrl+L</source>
@@ -565,7 +567,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Display Tools</source>
-        <translation>Mostrar Ferramentas</translation>
+        <translation>Ver Ferramentas</translation>
     </message>
     <message>
         <source>Multi Screen</source>
@@ -629,7 +631,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Display Virtual Keyboard</source>
-        <translation>Mostrar o Teclado Virtual</translation>
+        <translation>Ver o Teclado Virtual</translation>
     </message>
     <message>
         <source>Plain Light Background</source>
@@ -901,11 +903,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Show on Display</source>
-        <translation>Mostrar no Vídeo</translation>
+        <translation>Ver na Tela</translation>
     </message>
     <message>
         <source>Show Main Screen on Display Screen</source>
-        <translation>Mostrar a Tela Principal no Vídeo</translation>
+        <translation>Ver a Tela Principal na de Exibição</translation>
     </message>
     <message>
         <source>Erase all Annotations</source>
@@ -994,63 +996,63 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Documents Mode</source>
-        <translation type="unfinished">Modo dos Documentos</translation>
+        <translation>Modo dos Documentos</translation>
     </message>
     <message>
         <source>Web Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Modo Web</translation>
     </message>
     <message>
         <source>1</source>
-        <translation type="unfinished"></translation>
+        <translation>1</translation>
     </message>
     <message>
         <source>2</source>
-        <translation type="unfinished"></translation>
+        <translation>2</translation>
     </message>
     <message>
         <source>3</source>
-        <translation type="unfinished"></translation>
+        <translation>3</translation>
     </message>
     <message>
         <source>4</source>
-        <translation type="unfinished"></translation>
+        <translation>4</translation>
     </message>
     <message>
         <source>5</source>
-        <translation type="unfinished"></translation>
+        <translation>5</translation>
     </message>
     <message>
         <source>Board Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Modo Quadro</translation>
     </message>
     <message>
         <source>Desktop</source>
-        <translation type="unfinished">Área de Trabalho</translation>
+        <translation>Área de Trabalho</translation>
     </message>
     <message>
         <source>Desktop Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Modo Desktop</translation>
     </message>
     <message>
         <source>Add to document</source>
-        <translation type="unfinished"></translation>
+        <translation>Adicionar ao documento</translation>
     </message>
     <message>
         <source>Seyes ruled Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Papel com pauta Sèyes de fundo claro</translation>
     </message>
     <message>
         <source>Seyes ruled Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Papel com pauta Sèyes de fundo escuro</translation>
     </message>
     <message>
         <source>Import one or more pages (supported formats : jpg, png, svg, ubz, pdf)</source>
-        <translation type="unfinished"></translation>
+        <translation>Importar uma ou mais páginas (formatos suportados: jpg, png, svg, ubz, pdf)</translation>
     </message>
     <message>
         <source>Capture Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturar Conteúdo Web</translation>
     </message>
     <message>
         <source>Add to favorites</source>
@@ -1058,19 +1060,19 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add Document to favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Adicionar documento aos favoritos</translation>
     </message>
     <message>
         <source>Hints and tips</source>
-        <translation type="unfinished"></translation>
+        <translation>Dicas e truques</translation>
     </message>
     <message>
         <source>Open Hints and tips</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir Dicas e truques</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Favorito</translation>
     </message>
 </context>
 <context>
@@ -1089,11 +1091,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Ícone</translation>
     </message>
     <message>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Info</translation>
     </message>
 </context>
 <context>
@@ -1143,15 +1145,15 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Loading scene (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Carregando cena (%1/%2)</translation>
     </message>
     <message>
         <source>Moving cached scenes (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Movendo cenas em cache (%1/%2)</translation>
     </message>
     <message>
         <source>Are you sure you want to remove page %1 ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Tem certeza de que deseja remover a página %1?</translation>
     </message>
 </context>
 <context>
@@ -1201,7 +1203,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
-        <translation type="unfinished"></translation>
+        <translation>Não é possível abrir seu arquivo UBX diretamente. Em vez disso, importe-o no modo Documentos</translation>
     </message>
 </context>
 <context>
@@ -1298,11 +1300,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Untitled</source>
-        <translation type="unfinished"></translation>
+        <translation>Sem título</translation>
     </message>
     <message>
         <source>Could not find document.</source>
-        <translation type="unfinished"></translation>
+        <translation>Não foi possível encontrar o documento.</translation>
     </message>
 </context>
 <context>
@@ -1327,11 +1329,11 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBBoardView</name>
     <message>
         <source>Is it for Board or Widget ?</source>
-        <translation type="unfinished"></translation>
+        <translation>É para Quadro ou Widget?</translation>
     </message>
     <message>
         <source>Are you trying to drop the object(s) inside the widget ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Você está tentando soltar o(s) objeto(s) dentro do widget?</translation>
     </message>
 </context>
 <context>
@@ -1492,91 +1494,91 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Complete deletion of %1 documents/folders</source>
-        <translation type="unfinished"></translation>
+        <translation>Exclusão completa de %1 documentos/pastas</translation>
     </message>
     <message>
         <source>You are about to permanantly delete %1 documents and/or folders. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Você está prestes a excluir permanentemente %1 documentos e/ou pastas. Tem certeza?</translation>
     </message>
     <message>
         <source>Complete deletion of folder &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Exclusão completa da pasta &quot;%1&quot;</translation>
     </message>
     <message>
         <source>You are about to permanantly delete folder &quot;%1&quot;. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Você está prestes a excluir permanentemente a pasta &quot;%1&quot;. Tem certeza?</translation>
     </message>
     <message>
         <source>Complete deletion of document &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Exclusão completa do documento &quot;%1&quot;</translation>
     </message>
     <message>
         <source>You are about to permanantly delete document &quot;%1&quot;. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Você está prestes a excluir permanentemente o documento &quot;%1&quot;. Tem certeza?</translation>
     </message>
     <message>
         <source>Emptying My Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Esvaziando Meus Documentos</translation>
     </message>
     <message>
         <source>You are about to entirely empty the folder &quot;My Documents&quot;. All your documents will be moved to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Você está prestes a esvaziar completamente a pasta &quot;Meus Documentos&quot;. Todos os seus documentos serão movidos para a lixeira. Tem certeza?</translation>
     </message>
     <message>
         <source>Emptying Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Esvaziando Lixeira</translation>
     </message>
     <message>
         <source>You are about to entirely empty the trash. All documents and folders in it will be permanently deleted. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Você está prestes a esvaziar completamente a lixeira. Todos os documentos e pastas nela serão excluídos permanentemente. Tem certeza?</translation>
     </message>
     <message>
         <source>Moving %1 elements to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Movendo %1 item(ns) para a lixeira</translation>
     </message>
     <message>
         <source>You are about to move %1 documents and/or folders to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Você está prestes a mover %1 documentos e/ou pastas para a lixeira. Tem certeza?</translation>
     </message>
     <message>
         <source>Move folder &quot;%1&quot;to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Mover a pasta &quot;%1&quot; para a lixeira</translation>
     </message>
     <message>
         <source>You are about to move folder &quot;%1&quot; to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Você está prestes a mover a pasta &quot;%1&quot; para a lixeira. Tem certeza?</translation>
     </message>
     <message>
         <source>Move document &quot;%1&quot;to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Mover o documento &quot;%1&quot; para a lixeira</translation>
     </message>
     <message>
         <source>You are about to move document &quot;%1&quot; to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Você está prestes a mover o documento &quot;%1&quot; para a lixeira. Tem certeza?</translation>
     </message>
     <message>
         <source>Open Supported File(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir Arquivo(s) Suportado(s)</translation>
     </message>
     <message>
         <source>Moving %1 pages of the document &quot;%2&quot; to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Movendo %1 páginas do documento &quot;%2&quot; para a lixeira</translation>
     </message>
     <message>
         <source>You are about to move %1 pages of the document &quot;%2&quot; to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Você está prestes a mover %1 páginas do documento &quot;%2&quot; para a lixeira. Tem certeza?</translation>
     </message>
     <message>
         <source>Remove page %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Remover página %1</translation>
     </message>
     <message>
         <source>You are about to remove page %1 of the document &quot;%2&quot;. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Você está prestes a remover a página %1 do documento &quot;%2&quot;. Tem certeza?</translation>
     </message>
     <message>
         <source>Refreshing Document Thumbnails View (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Atualizando a visualização de miniaturas de documentos (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -1653,19 +1655,19 @@ Um outro nome permitirá que você mantenha o documento antigo.</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished">Mudar o Nome</translation>
+        <translation>Renomear</translation>
     </message>
     <message>
         <source>Replace all</source>
-        <translation type="unfinished"></translation>
+        <translation>Substituir tudo</translation>
     </message>
     <message>
         <source>Skip</source>
-        <translation type="unfinished"></translation>
+        <translation>Pular</translation>
     </message>
     <message>
         <source>Skip all</source>
-        <translation type="unfinished"></translation>
+        <translation>Pular tudo</translation>
     </message>
 </context>
 <context>
@@ -1723,7 +1725,7 @@ Um outro nome permitirá que você mantenha o documento antigo.</translation>
     <name>UBDraggableLivePixmapItem</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">Página %0</translation>
+        <translation>Página %0</translation>
     </message>
 </context>
 <context>
@@ -1751,9 +1753,8 @@ Um outro nome permitirá que você mantenha o documento antigo.</translation>
         <translation>Web</translation>
     </message>
     <message>
-        <source>Application name can`t contain any of the following characters:<byte value="xd"/>
-</source>
-        <translation type="unfinished"></translation>
+        <source>Application name can`t contain any of the following characters:<byte value="xd"/></source>
+        <translation>O nome do aplicativo não pode conter nenhum dos seguintes caracteres:<byte value="xd"/></translation>
     </message>
 </context>
 <context>
@@ -1864,7 +1865,7 @@ Um outro nome permitirá que você mantenha o documento antigo.</translation>
     </message>
     <message>
         <source>The original PDF imported in OpenBoard seems not valid and could not be merged with your annotations. Please repair it and then reimport it in OpenBoard. The current export will be done with detailed (heavy) images of the pages of the original PDF instead, to avoid complete export failure.</source>
-        <translation type="unfinished"></translation>
+        <translation>O PDF original importado no OpenBoard parece não ser válido e não pôde ser mesclado com suas anotações. Repare-o e então importe-o novamente no OpenBoard. A exportação atual será feita com imagens detalhadas (pesadas) das páginas do PDF original, para evitar falha completa na exportação.</translation>
     </message>
 </context>
 <context>
@@ -2040,7 +2041,7 @@ Um outro nome permitirá que você mantenha o documento antigo.</translation>
     </message>
     <message>
         <source>Hide on Extended Screen when selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Ocultar na tela estendida quando selecionado</translation>
     </message>
 </context>
 <context>
@@ -2063,23 +2064,23 @@ Um outro nome permitirá que você mantenha o documento antigo.</translation>
     </message>
     <message>
         <source>Hide on Extended Screen when selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Ocultar na Tela Estendida quando selecionado</translation>
     </message>
     <message>
         <source>Web Inspector</source>
-        <translation type="unfinished"></translation>
+        <translation>Inspetor Web</translation>
     </message>
     <message>
         <source>Duplicate</source>
-        <translation type="unfinished">Duplicar</translation>
+        <translation>Duplicar</translation>
     </message>
     <message>
         <source>Layer up</source>
-        <translation type="unfinished"></translation>
+        <translation>Camada para cima</translation>
     </message>
     <message>
         <source>Layer down</source>
-        <translation type="unfinished"></translation>
+        <translation>Camada para baixo</translation>
     </message>
 </context>
 <context>
@@ -2340,11 +2341,11 @@ Quer ignorar estes erros deste servidor?</translation>
     </message>
     <message>
         <source>Retrieving all your documents (found : %1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Recuperando todos os seus documentos (encontrados: %1)</translation>
     </message>
     <message>
         <source>Renaming pages (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Renomeando páginas (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -2467,7 +2468,7 @@ Quer ignorar estes erros deste servidor?</translation>
     </message>
     <message>
         <source>Use all available displays</source>
-        <translation type="unfinished"></translation>
+        <translation>Use todas as telas disponíveis</translation>
     </message>
 </context>
 <context>
@@ -2645,7 +2646,7 @@ Quer ignorar estes erros deste servidor?</translation>
     </message>
     <message>
         <source>Loading thumbnail (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Carregando miniatura (%1/%2)</translation>
     </message>
 </context>
 <context>
@@ -2747,7 +2748,7 @@ Por favor, reinicie o aplicativo para ir aos documentos atualizados.</translatio
     <name>UBWebEngineView</name>
     <message>
         <source>Open Web Inspector</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir Inspetor Web</translation>
     </message>
 </context>
 <context>
@@ -2950,87 +2951,88 @@ Por favor, reinicie o aplicativo para ir aos documentos atualizados.</translatio
     <name>WebPage</name>
     <message>
         <source>Certificate Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Erro de Certificado</translation>
     </message>
     <message>
         <source>Enter username and password for &quot;%1&quot; at %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Digite o nome de usuário e a senha para &quot;%1&quot; em %2</translation>
     </message>
     <message>
         <source>Allow %1 to access your location information?</source>
-        <translation type="unfinished"></translation>
+        <translation>Permitir que %1 acesse suas informações de localização?</translation>
     </message>
     <message>
         <source>Allow %1 to access your microphone?</source>
-        <translation type="unfinished"></translation>
+        <translation>Permitir que %1 acesse seu microfone?</translation>
     </message>
     <message>
         <source>Allow %1 to access your webcam?</source>
-        <translation type="unfinished"></translation>
+        <translation>Permitir que %1 acesse sua webcam?</translation>
     </message>
     <message>
         <source>Allow %1 to access your microphone and webcam?</source>
-        <translation type="unfinished"></translation>
+        <translation>Permitir que %1 acesse seu microfone e webcam?</translation>
     </message>
     <message>
         <source>Allow %1 to lock your mouse cursor?</source>
-        <translation type="unfinished"></translation>
+        <translation>Permitir que %1 bloqueie o cursor do mouse?</translation>
     </message>
     <message>
         <source>Allow %1 to capture video of your desktop?</source>
-        <translation type="unfinished"></translation>
+        <translation>Permitir que %1 capture vídeo da sua área de trabalho?</translation>
     </message>
     <message>
         <source>Allow %1 to capture audio and video of your desktop?</source>
-        <translation type="unfinished"></translation>
+        <translation>Permitir que %1 capture áudio e vídeo da sua área de trabalho?</translation>
     </message>
     <message>
         <source>Permission Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Solicitação de Permissão</translation>
     </message>
     <message>
         <source>Connect to proxy &quot;%1&quot; using:</source>
-        <translation type="unfinished"></translation>
+        <translation>Conecte-se ao proxy &quot;%1&quot; usando:</translation>
     </message>
     <message>
         <source>Allow %1 to open all %2 links?</source>
-        <translation type="unfinished"></translation>
+        <translation>Permitir que %1 abra todos os %2 links?</translation>
     </message>
 </context>
 <context>
     <name>WebView</name>
     <message>
         <source>Render process normal exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Processo de renderização saída normal</translation>
     </message>
     <message>
         <source>Render process abnormal exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Saída anormal do processo de renderização</translation>
     </message>
     <message>
         <source>Render process crashed</source>
-        <translation type="unfinished"></translation>
+        <translation>O processo de renderização travou</translation>
     </message>
     <message>
         <source>Render process killed</source>
-        <translation type="unfinished"></translation>
+        <translation>Processo de renderização encerrado</translation>
     </message>
     <message>
         <source>Render process exited with code: %1
 Do you want to reload the page ?</source>
-        <translation type="unfinished"></translation>
+        <translation>O processo de renderização saiu com o código: %1
+Você quer recarregar a página?</translation>
     </message>
     <message>
         <source>Open Web Inspector in new window</source>
-        <translation type="unfinished"></translation>
+        <translation>Abra o Web Inspector em uma nova janela</translation>
     </message>
     <message>
         <source>Inspect element</source>
-        <translation type="unfinished"></translation>
+        <translation>Inspecionar elemento</translation>
     </message>
     <message>
         <source>Add to board</source>
-        <translation type="unfinished"></translation>
+        <translation>Adicionar ao quadro</translation>
     </message>
 </context>
 <context>
@@ -3041,7 +3043,7 @@ Do you want to reload the page ?</source>
     </message>
     <message>
         <source>an error occured while trying to open the PDF file</source>
-        <translation type="unfinished"></translation>
+        <translation>ocorreu um erro ao tentar abrir o arquivo PDF</translation>
     </message>
 </context>
 <context>
@@ -3420,23 +3422,23 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>PDF</source>
-        <translation type="unfinished">PDF</translation>
+        <translation>PDF</translation>
     </message>
     <message>
         <source>Export background grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar grade de fundo</translation>
     </message>
     <message>
         <source>Export background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportar cor de fundo</translation>
     </message>
     <message>
         <source>Documents</source>
-        <translation type="unfinished">Documentos</translation>
+        <translation>Documentos</translation>
     </message>
     <message>
         <source>List of screens used for Control, Display and Previous pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista de telas usadas para Controle, Exibição e Páginas anteriores</translation>
     </message>
 </context>
 <context>
@@ -3463,11 +3465,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Capture Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Capturar Conteúdo Web</translation>
     </message>
     <message>
         <source>Select a content to capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecione um conteúdo para capturar</translation>
     </message>
 </context>
 </TS>
