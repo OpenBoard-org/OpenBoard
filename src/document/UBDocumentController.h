@@ -423,6 +423,7 @@ class UBDocumentController : public UBDocumentContainer
         bool addFileToDocument(std::shared_ptr<UBDocumentProxy> document);
         void deletePages(QList<QGraphicsItem*> itemsToDelete);
         int getSelectedItemIndex();
+        void setActiveThumbnail(int sceneIndex);
 
 
         bool pageCanBeMovedUp(int page);

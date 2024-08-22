@@ -3320,7 +3320,7 @@ void UBDocumentController::moveSceneToIndex(std::shared_ptr<UBDocumentProxy> pro
     //mBoardController->reloadThumbnails();
 
     UBDocumentContainer::moveThumbPage(source, target);
-    mDocumentUI->thumbnailWidget->hightlightItem(target);
+    setActiveThumbnail(target);
 
     //mBoardController->setActiveDocumentScene(target);
 }
@@ -3966,6 +3966,11 @@ int UBDocumentController::getSelectedItemIndex()
     else return -1;
 }
 
+void UBDocumentController::setActiveThumbnail(int sceneIndex)
+{
+    mDocumentUI->thumbnailWidget->hightlightItem(sceneIndex);
+}
+
 bool UBDocumentController::pageCanBeMovedUp(int page)
 {
     return page >= 1;
@@ -4145,7 +4150,7 @@ void UBDocumentController:: refreshDocumentThumbnailsView(UBDocumentContainer* s
     {
         UBSceneThumbnailPixmap *currentSceneThumbnailPixmap = dynamic_cast<UBSceneThumbnailPixmap*>(selection);
         if (currentSceneThumbnailPixmap)
-            mDocumentUI->thumbnailWidget->hightlightItem(currentSceneThumbnailPixmap->sceneIndex());
+            setActiveThumbnail(currentSceneThumbnailPixmap->sceneIndex());
     }
 
     QApplication::restoreOverrideCursor();

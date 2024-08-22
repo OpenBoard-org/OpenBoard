@@ -1610,6 +1610,12 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::
 
         updateBackgroundActionsState(mActiveScene->isDarkBackground(), mActiveScene->pageBackground());
 
+        if (UBApplication::documentController
+        && (UBApplication::documentController->selectedDocument() == selectedDocument()))
+        {
+            UBApplication::documentController->setActiveThumbnail(pSceneIndex);
+        }
+
         if(documentChange)
         {
             UBGraphicsTextItem::lastUsedTextColor = QColor(Qt::black);
