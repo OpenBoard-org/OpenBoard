@@ -939,14 +939,11 @@ void UBBoardController::zoomRestore()
 
     centerRestore();
 
-    foreach(QGraphicsItem *gi, mActiveScene->selectedItems ())
-    {
-        //force item to redraw the frame (for the anti scale calculation)
-        gi->setSelected(false);
-        gi->setSelected(true);
-    }
-
     emit zoomChanged(1.0);
+    UBApplication::applicationController->adjustDisplayView();
+
+    emit controlViewportChanged();
+    mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
 }
 
 
