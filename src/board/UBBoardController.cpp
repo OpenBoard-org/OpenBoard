@@ -299,10 +299,35 @@ void UBBoardController::setBoxing(QRect displayRect)
     }
 }
 
-
-QSize UBBoardController::controlViewport()
+void UBBoardController::setCursorFromAngle(QString angle)
 {
-    return mControlView->size();
+        QWidget *controlViewport = controlView()->viewport();
+
+        QSize cursorSize(45,30);
+
+        QImage mask_img(cursorSize, QImage::Format_Mono);
+        mask_img.fill(0xff);
+        QPainter mask_ptr(&mask_img);
+        mask_ptr.setBrush( QBrush( QColor(0, 0, 0) ) );
+        mask_ptr.drawRoundedRect(0,0, cursorSize.width()-1, cursorSize.height()-1, 6, 6);
+        QBitmap bmpMask = QBitmap::fromImage(mask_img);
+
+
+        QPixmap pixCursor(cursorSize);
+        pixCursor.fill(QColor(Qt::white));
+
+        QPainter painter(&pixCursor);
+
+        painter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+        painter.setBrush(QBrush(Qt::white));
+        painter.setPen(QPen(QColor(Qt::black)));
+        painter.drawRoundedRect(1,1,cursorSize.width()-2,cursorSize.height()-2,6,6);
+        painter.setFont(QFont("Arial", 10));
+        painter.drawText(1,1,cursorSize.width(),cursorSize.height(), Qt::AlignCenter, angle.append(QChar(176)));
+        painter.end();
+
+        pixCursor.setMask(bmpMask);
+        controlViewport->setCursor(QCursor(pixCursor));
 }
 
 
@@ -2093,10 +2118,8 @@ void UBBoardController::updateSystemScaleFactor()
         QMap<DocumentSizeRatio::Enum, QSize> sizesMap = UBSettings::settings()->documentSizes;
       //  if(pageNominalSize == sizesMap.value(DocumentSizeRatio::Ratio16_9) || pageNominalSize == sizesMap.value(DocumentSizeRatio::Ratio4_3))
         {
-            QSize controlSize = controlViewport();
-
-            qreal hFactor = ((qreal)controlSize.width()) / ((qreal)pageNominalSize.width());
-            qreal vFactor = ((qreal)controlSize.height()) / ((qreal)pageNominalSize.height());
+            qreal hFactor = ((qreal)controlView()->size().width()) / ((qreal)pageNominalSize.width());
+            qreal vFactor = ((qreal)controlView()->size().height()) / ((qreal)pageNominalSize.height());
 
             newScaleFactor = qMin(hFactor, vFactor);
         }

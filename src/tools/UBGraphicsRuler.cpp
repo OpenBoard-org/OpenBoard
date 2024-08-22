@@ -439,6 +439,12 @@ void UBGraphicsRuler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             QLineF currentLine(rotationCenter(), event->pos());
             QLineF lastLine(rotationCenter(), event->lastPos());
             rotateAroundCenter(currentLine.angleTo(lastLine));
+
+            //display current angle
+            QPointF topLeft = sceneTransform().map(boundingRect().topLeft());
+            QPointF topRight = sceneTransform().map(boundingRect().topRight());
+            QLineF topLine(topLeft, topRight);
+            UBApplication::boardController->setCursorFromAngle(QString::number(topLine.angle(), 'f', 1));
         }
 
         event->accept();

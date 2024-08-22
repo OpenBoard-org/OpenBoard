@@ -82,7 +82,6 @@ class UBBoardController : public UBDocumentContainer
         std::shared_ptr<UBGraphicsScene> activeScene() const;
         int activeSceneIndex() const;
         void setActiveSceneIndex(int i);
-        QSize controlViewport();
         void closing();
 
         void reloadThumbnails() override;
@@ -166,6 +165,7 @@ class UBBoardController : public UBDocumentContainer
         void persistCurrentScene(bool isAnAutomaticBackup = false, bool forceImmediateSave = false);
         void showNewVersionAvailable(bool automatic, const UBVersion &installedVersion, const UBSoftwareUpdate &softwareUpdate);
         void setBoxing(QRect displayRect);
+        void setCursorFromAngle(QString angle);
         void setToolbarTexts();
         static QUrl expandWidgetToTempDir(const QByteArray& pZipedData, const QString& pExtension = QString("wgt"));
 

@@ -228,7 +228,7 @@ void UBGraphicsProtractor::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     QLineF currentLine(rect().center(), currentPoint);
     qreal angle = startLine.angleTo(currentLine);
     qreal scaleFactor = currentLine.length()/startLine.length();
-
+    qreal angleDecimals = 0.0;
 
     switch (mCurrentTool)
     {
@@ -237,6 +237,8 @@ void UBGraphicsProtractor::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         mStartAngle = mStartAngle + angle;
         setStartAngle(mStartAngle * 16);
         mPreviousMousePos = currentPoint;
+        angleDecimals = mStartAngle - std::floor(mStartAngle);
+        UBApplication::boardController->setCursorFromAngle(QString::number(((int)mStartAngle % 360) + angleDecimals, 'f', 1));
 
         break;
 
