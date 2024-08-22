@@ -955,7 +955,10 @@ void UBBoardController::centerRestore()
 
 void UBBoardController::centerOn(QPointF scenePoint)
 {
-    mControlView->centerOn(scenePoint);
+    // workaround: foreground not repainted after centerOn on Qt5 (fixed in Qt6)
+    QPointF offset{1, 1};
+    mControlView->centerOn(scenePoint - offset);
+    mControlView->translate(offset.x(), offset.y());
     UBApplication::applicationController->adjustDisplayView();
 }
 
