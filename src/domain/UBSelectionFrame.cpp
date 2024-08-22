@@ -32,6 +32,7 @@
 #include "domain/UBItem.h"
 #include "domain/UBGraphicsItemZLevelUndoCommand.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
+#include "domain/UBGraphicsScene.h"
 #include "board/UBBoardController.h"
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"
@@ -147,12 +148,12 @@ void UBSelectionFrame::setEnclosedItems(const QList<QGraphicsItem*> pGraphicsIte
 
 void UBSelectionFrame::updateRect()
 {
-    QRegion resultRegion;
+    QRectF result;
+
     foreach (UBGraphicsItemDelegate *curDelegateItem, mEnclosedtems) {
-        resultRegion |= curDelegateItem->delegated()->boundingRegion(curDelegateItem->delegated()->sceneTransform());
+        result |= curDelegateItem->delegated()->sceneBoundingRect();
     }
 
-    QRectF result = resultRegion.boundingRect();
     setRect(result);
 
     placeButtons();
@@ -170,6 +171,7 @@ void UBSelectionFrame::updateScale()
 void UBSelectionFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     mPressedPos = mLastMovedPos = event->pos();
+    mStartingBounds = rect();
     mLastTranslateOffset = QPointF();
     mRotationAngle = 0;
 
@@ -187,6 +189,26 @@ void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     QPointF dp = event->pos() - mPressedPos;
     QPointF rotCenter = mapToScene(rect().center());
+
+    // snap to grid
+    if (event->modifiers().testFlag(Qt::ShiftModifier))
+    {
+        const auto ubscene = dynamic_cast<UBGraphicsScene*>(scene());
+
+        if (ubscene)
+        {
+            Qt::Corner corner;
+            QRectF movedBounds = mStartingBounds.translated(dp);
+            QPointF snapVector = ubscene->snap(movedBounds, &corner);
+            dp += snapVector;
+
+            // display snap indicator
+            if (mOperationMode == om_moving && !snapVector.isNull())
+            {
+                UBApplication::boardController->controlView()->updateSnapIndicator(corner);
+            }
+        }
+    }
 
     foreach (UBGraphicsItemDelegate *curDelegate, mEnclosedtems) {
 
