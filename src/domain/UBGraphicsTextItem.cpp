@@ -339,7 +339,7 @@ void UBGraphicsTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
         {
             painter->setFont(font());
             painter->setPen(UBSettings::paletteColor);
-            painter->drawText(boundingRect(), Qt::AlignCenter, mTypeTextHereLabel);
+            painter->drawText(boundingRect(), Qt::AlignLeft, mTypeTextHereLabel);
         }
     }
 
