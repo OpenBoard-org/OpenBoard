@@ -91,27 +91,6 @@ done
 }
 
 
-function addImporter {
-    importerDir="`pwd`/../OpenBoard-Importer"
-    importerName="OpenBoardImporter"
-
-    if [ ! -e ${importerDir} ]; then
-        abort "${importerDir} not found"
-    fi
-
-    cd ${importerDir}
-#    git reset --hard
-#    git pull
-    rm -rf ${importerName}.app
-    rm MakeFile*
-    rm -rf release
-    rm -rf debug
-    $QMAKE ${importerName}.pro -spec macx-clang
-    make -j4 release
-    $MACDEPLOYQT ${importerName}.app 
-    cd -
-}
-
 trap "defaults write org.oe-f.OpenBoard.release Running -bool NO" EXIT
 
 notify "Running OpenBoard release script (`date`)"
@@ -134,8 +113,6 @@ checkExecutable "$STRIP"
 checkExecutable "$PLISTBUDDY"
 checkExecutable "$ICEBERG"
 checkExecutable "$LRELEASE"
-
-#addImporter
 
 # delete the build directory
 notify "Cleaning ..."

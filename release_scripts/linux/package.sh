@@ -34,7 +34,6 @@
 #    | | | openboard.desktop
 #    opt/
 #    | openboard/
-#    | | importer/
 #    | | library/
 #    | | etc/
 #    | | qtlib/ (*)
@@ -57,8 +56,6 @@ initializeVariables()
   # Where the application was built (see build.sh)
   BUILD_DIR="$PROJECT_ROOT/build/linux/release"
   PRODUCT_PATH="$BUILD_DIR/product"
-  IMPORTER_DIR="$PROJECT_ROOT/../OpenBoard-Importer/"
-  IMPORTER_NAME="OpenBoardImporter"
 
   # Where the package is built to
   PACKAGE_BUILD_DIR="$PROJECT_ROOT/install"
@@ -200,13 +197,8 @@ if $BUNDLE_QT; then
     chmod a+x $PACKAGE_DIRECTORY/run.sh
 fi
 
-#notifyProgress "Copying importer"
-#mkdir -p $PACKAGE_DIRECTORY/importer
-#cp -R "$IMPORTER_DIR/$IMPORTER_NAME" "$PACKAGE_DIRECTORY/importer"
-
 notifyProgress "Stripping main executable"
 strip $PACKAGE_DIRECTORY/$APPLICATION_NAME
-#strip $PACKAGE_DIRECTORY/importer/$IMPORTER_NAME
 
 # copying startup hints
 notifyProgress "copying startupHints"
