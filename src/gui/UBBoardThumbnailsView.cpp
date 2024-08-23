@@ -139,6 +139,7 @@ void UBBoardThumbnailsView::addThumbnail(std::shared_ptr<UBDocumentProxy> docume
 {
     UBDraggableLivePixmapItem* item = createThumbnail(document, i);
     mThumbnails.insert(i, item);
+    ensureVisibleThumbnail(i);
 
     scene()->addItem(item);
     scene()->addItem(item->pageNumber());
