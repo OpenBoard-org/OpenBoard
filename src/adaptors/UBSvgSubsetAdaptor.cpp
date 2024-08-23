@@ -344,6 +344,13 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::loadScene(std::shared_ptr<U
     return reader.loadScene(proxy);
 }
 
+std::shared_ptr<UBSvgSubsetAdaptor::UBSvgReaderContext> UBSvgSubsetAdaptor::prepareLoadingScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex)
+{
+    const auto fileContent = loadSceneAsText(proxy, pageIndex);
+    auto context = std::make_shared<UBSvgReaderContext>(proxy, fileContent);
+    return context;
+}
+
 UBSvgSubsetAdaptor::UBSvgSubsetReader::UBSvgSubsetReader(std::shared_ptr<UBDocumentProxy> pProxy, const QByteArray& pXmlData)
     : mXmlReader(pXmlData)
     , mProxy(pProxy)
@@ -356,652 +363,679 @@ UBSvgSubsetAdaptor::UBSvgSubsetReader::UBSvgSubsetReader(std::shared_ptr<UBDocum
 
 std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::loadScene(std::shared_ptr<UBDocumentProxy> proxy)
 {
-    qDebug() << "loadScene() : starting reading...";
     QElapsedTimer time;
     time.start();
+
+    start();
+
+    while (!mXmlReader.atEnd())
+    {
+        processElement();
+    }
+
+    qDebug() << "spent milliseconds: " << time.elapsed();
+    return scene();
+}
+
+void UBSvgSubsetAdaptor::UBSvgSubsetReader::start()
+{
+    qDebug() << "loadScene() : starting reading...";
     mScene = nullptr;
     UBGraphicsWidgetItem *currentWidget = 0;
     //bool pageDpiSpecified = true;
     saveSceneAfterLoading = false;
 
     mFileVersion = 40100; // default to 4.1.0
+}
 
-    UBGraphicsStrokesGroup* strokesGroup = 0;
-    UBGraphicsStroke* currentStroke = 0;
+bool UBSvgSubsetAdaptor::UBSvgSubsetReader::isFinished()
+{
+    return mXmlReader.atEnd();
+}
 
-    while (!mXmlReader.atEnd())
+void UBSvgSubsetAdaptor::UBSvgSubsetReader::processElement()
+{
+    mXmlReader.readNext();
+    if (mXmlReader.isStartElement())
     {
-        mXmlReader.readNext();
-        if (mXmlReader.isStartElement())
+        QString name = mXmlReader.name().toString();
+
+        if (name == "svg")
         {
-            QString name = mXmlReader.name().toString();
-
-            if (name == "svg")
+            if (!mScene)
             {
-                if (!mScene)
+                mScene = std::make_shared<UBGraphicsScene>(mProxy, false);
+                mScene->setModified(false);
+            }
+
+            // introduced in UB 4.2
+
+            auto svgUbVersion = mXmlReader.attributes().value(UBSettings::uniboardDocumentNamespaceUri, "version");
+
+            if (!svgUbVersion.isNull())
+            {
+                QString ubVersion = svgUbVersion.toString();
+
+                //may look like : 4 or 4.1 or 4.2 or 4.2.1, etc
+
+                QStringList parts = ubVersion.split(".");
+
+                if (parts.length() > 0)
                 {
-                    mScene = std::make_shared<UBGraphicsScene>(mProxy, false);
-                    mScene->setModified(false);
+                    mFileVersion = parts.at(0).toInt() * 10000;
                 }
 
-                // introduced in UB 4.2
-
-                auto svgUbVersion = mXmlReader.attributes().value(UBSettings::uniboardDocumentNamespaceUri, "version");
-
-                if (!svgUbVersion.isNull())
+                if (parts.length() > 1)
                 {
-                    QString ubVersion = svgUbVersion.toString();
-
-                    //may look like : 4 or 4.1 or 4.2 or 4.2.1, etc
-
-                    QStringList parts = ubVersion.split(".");
-
-                    if (parts.length() > 0)
-                    {
-                        mFileVersion = parts.at(0).toInt() * 10000;
-                    }
-
-                    if (parts.length() > 1)
-                    {
-                        mFileVersion += parts.at(1).toInt() * 100;
-                    }
-
-                    if (parts.length() > 2)
-                    {
-                        mFileVersion += parts.at(2).toInt();
-                    }
+                    mFileVersion += parts.at(1).toInt() * 100;
                 }
 
-                mNamespaceUri = uniboardDocumentNamespaceUriFromVersion(mFileVersion);
-
-                auto svgSceneUuid = mXmlReader.attributes().value(mNamespaceUri, "uuid");
-
-                if (!svgSceneUuid.isNull())
-                    mScene->setUuid(QUuid(svgSceneUuid.toString()));
-
-                // introduced in UB 4.0
-
-                auto svgViewBox = mXmlReader.attributes().value("viewBox");
-
-
-                if (!svgViewBox.isNull())
+                if (parts.length() > 2)
                 {
-                    QStringList ts = svgViewBox.toString().split(QLatin1Char(' '), UB::SplitBehavior::SkipEmptyParts);
-
-                    QRectF sceneRect;
-                    if (ts.size() >= 4)
-                    {
-                        sceneRect.setX(ts.at(0).toFloat());
-                        sceneRect.setY(ts.at(1).toFloat());
-                        sceneRect.setWidth(ts.at(2).toFloat());
-                        sceneRect.setHeight(ts.at(3).toFloat());
-
-                        mScene->setSceneRect(sceneRect);
-                    }
-                    else
-                    {
-                        qWarning() << "cannot make sense of 'viewBox' value " << svgViewBox.toString();
-                    }
-                }
-
-                auto pageDpi = mXmlReader.attributes().value("pageDpi");
-
-                if (!pageDpi.isNull())
-                    proxy->setPageDpi(pageDpi.toInt());
-
-                else if (proxy->pageDpi() == 0) {
-                    proxy->setPageDpi(UBApplication::displayManager->logicalDpi(ScreenRole::Control));
-                    //pageDpiSpecified = false;
-                }
-
-                bool darkBackground = false;
-                bool crossedBackground = false;
-                bool ruledBackground = false;
-
-                auto ubDarkBackground = mXmlReader.attributes().value(mNamespaceUri, "dark-background");
-
-                if (!ubDarkBackground.isNull())
-                    darkBackground = (ubDarkBackground.toString() == xmlTrue);
-
-                auto ubCrossedBackground = mXmlReader.attributes().value(mNamespaceUri, "crossed-background");
-
-                if (!ubCrossedBackground.isNull())
-                    crossedBackground = (ubCrossedBackground.toString() == xmlTrue);
-
-                auto ubGridSize = mXmlReader.attributes().value(mNamespaceUri, "grid-size");
-
-                if (!ubGridSize.isNull()) {
-                    int gridSize = ubGridSize.toInt();
-
-                    mScene->setBackgroundGridSize(gridSize);
-                }
-
-                if (crossedBackground) {
-
-                    auto ubIntermediateLines = mXmlReader.attributes().value(mNamespaceUri, "intermediate-lines");
-
-                    if (!ubIntermediateLines.isNull()) {
-                        bool intermediateLines = ubIntermediateLines.toInt();
-
-                        mScene->setIntermediateLines(intermediateLines);
-                    }
-                }
-
-                auto ubRuledBackground = mXmlReader.attributes().value(mNamespaceUri, "ruled-background");
-
-                if (!ubRuledBackground.isNull())
-                    ruledBackground = (ubRuledBackground.toString() == xmlTrue);
-
-                if (ruledBackground && !crossedBackground) { // if for some reason both are true, the background will be a grid
-
-                    auto ubIntermediateLines = mXmlReader.attributes().value(mNamespaceUri, "intermediate-lines");
-
-                    if (!ubIntermediateLines.isNull()) {
-                        bool intermediateLines = ubIntermediateLines.toInt();
-
-                        mScene->setIntermediateLines(intermediateLines);
-                    }
-                }
-
-                UBPageBackground bg;
-                if (crossedBackground)
-                    bg = UBPageBackground::crossed;
-                else if (ruledBackground)
-                    bg = UBPageBackground::ruled;
-                else
-                    bg = UBPageBackground::plain;
-
-                mScene->setBackground(darkBackground, bg);
-
-                auto pageNominalSize = mXmlReader.attributes().value(mNamespaceUri, "nominal-size");
-                if (!pageNominalSize.isNull())
-                {
-                    QStringList ts = pageNominalSize.toString().split(QLatin1Char('x'), UB::SplitBehavior::SkipEmptyParts);
-
-                    QSize sceneSize;
-                    if (ts.size() >= 2)
-                    {
-                        sceneSize.setWidth(ts.at(0).toInt());
-                        sceneSize.setHeight(ts.at(1).toInt());
-
-                        mScene->setNominalSize(sceneSize);
-                    }
-                    else
-                    {
-                        qWarning() << "cannot make sense of 'nominal-size' value " << pageNominalSize.toString();
-                    }
-
+                    mFileVersion += parts.at(2).toInt();
                 }
             }
-            else if (name == "g")
+
+            mNamespaceUri = uniboardDocumentNamespaceUriFromVersion(mFileVersion);
+
+            auto svgSceneUuid = mXmlReader.attributes().value(mNamespaceUri, "uuid");
+
+            if (!svgSceneUuid.isNull())
+                mScene->setUuid(QUuid(svgSceneUuid.toString()));
+
+            // introduced in UB 4.0
+
+            auto svgViewBox = mXmlReader.attributes().value("viewBox");
+
+
+            if (!svgViewBox.isNull())
             {
-                strokesGroup = new UBGraphicsStrokesGroup();
-                graphicsItemFromSvg(strokesGroup);
+                QStringList ts = svgViewBox.toString().split(QLatin1Char(' '), UB::SplitBehavior::SkipEmptyParts);
 
-                bool hasZValue;
-                qreal zValue = normalizedZValue(&hasZValue);
-
-                if (hasZValue)
+                QRectF sceneRect;
+                if (ts.size() >= 4)
                 {
-                    mGroupZIndex = zValue;
-                    mGroupHasInfo = true;
+                    sceneRect.setX(ts.at(0).toFloat());
+                    sceneRect.setY(ts.at(1).toFloat());
+                    sceneRect.setWidth(ts.at(2).toFloat());
+                    sceneRect.setHeight(ts.at(3).toFloat());
+
+                    mScene->setSceneRect(sceneRect);
+                }
+                else
+                {
+                    qWarning() << "cannot make sense of 'viewBox' value " << svgViewBox.toString();
+                }
+            }
+
+            auto pageDpi = mXmlReader.attributes().value("pageDpi");
+
+            if (!pageDpi.isNull())
+                mProxy->setPageDpi(pageDpi.toInt());
+
+            else if (mProxy->pageDpi() == 0) {
+                mProxy->setPageDpi(UBApplication::displayManager->logicalDpi(ScreenRole::Control));
+                //pageDpiSpecified = false;
+            }
+
+            bool darkBackground = false;
+            bool crossedBackground = false;
+            bool ruledBackground = false;
+
+            auto ubDarkBackground = mXmlReader.attributes().value(mNamespaceUri, "dark-background");
+
+            if (!ubDarkBackground.isNull())
+                darkBackground = (ubDarkBackground.toString() == xmlTrue);
+
+            auto ubCrossedBackground = mXmlReader.attributes().value(mNamespaceUri, "crossed-background");
+
+            if (!ubCrossedBackground.isNull())
+                crossedBackground = (ubCrossedBackground.toString() == xmlTrue);
+
+            auto ubGridSize = mXmlReader.attributes().value(mNamespaceUri, "grid-size");
+
+            if (!ubGridSize.isNull()) {
+                int gridSize = ubGridSize.toInt();
+
+                mScene->setBackgroundGridSize(gridSize);
+            }
+
+            if (crossedBackground) {
+
+                auto ubIntermediateLines = mXmlReader.attributes().value(mNamespaceUri, "intermediate-lines");
+
+                if (!ubIntermediateLines.isNull()) {
+                    bool intermediateLines = ubIntermediateLines.toInt();
+
+                    mScene->setIntermediateLines(intermediateLines);
+                }
+            }
+
+            auto ubRuledBackground = mXmlReader.attributes().value(mNamespaceUri, "ruled-background");
+
+            if (!ubRuledBackground.isNull())
+                ruledBackground = (ubRuledBackground.toString() == xmlTrue);
+
+            if (ruledBackground && !crossedBackground) { // if for some reason both are true, the background will be a grid
+
+                auto ubIntermediateLines = mXmlReader.attributes().value(mNamespaceUri, "intermediate-lines");
+
+                if (!ubIntermediateLines.isNull()) {
+                    bool intermediateLines = ubIntermediateLines.toInt();
+
+                    mScene->setIntermediateLines(intermediateLines);
+                }
+            }
+
+            UBPageBackground bg;
+            if (crossedBackground)
+                bg = UBPageBackground::crossed;
+            else if (ruledBackground)
+                bg = UBPageBackground::ruled;
+            else
+                bg = UBPageBackground::plain;
+
+            mScene->setBackground(darkBackground, bg);
+
+            auto pageNominalSize = mXmlReader.attributes().value(mNamespaceUri, "nominal-size");
+            if (!pageNominalSize.isNull())
+            {
+                QStringList ts = pageNominalSize.toString().split(QLatin1Char('x'), UB::SplitBehavior::SkipEmptyParts);
+
+                QSize sceneSize;
+                if (ts.size() >= 2)
+                {
+                    sceneSize.setWidth(ts.at(0).toInt());
+                    sceneSize.setHeight(ts.at(1).toInt());
+
+                    mScene->setNominalSize(sceneSize);
+                }
+                else
+                {
+                    qWarning() << "cannot make sense of 'nominal-size' value " << pageNominalSize.toString();
                 }
 
-                auto ubFillOnDarkBackground = mXmlReader.attributes().value(mNamespaceUri, "fill-on-dark-background");
+            }
+        }
+        else if (name == "g")
+        {
+            strokesGroup = new UBGraphicsStrokesGroup();
+            graphicsItemFromSvg(strokesGroup);
 
-                if (!ubFillOnDarkBackground.isNull())
-                {
+            bool hasZValue;
+            qreal zValue = normalizedZValue(&hasZValue);
+
+            if (hasZValue)
+            {
+                mGroupZIndex = zValue;
+                mGroupHasInfo = true;
+            }
+
+            auto ubFillOnDarkBackground = mXmlReader.attributes().value(mNamespaceUri, "fill-on-dark-background");
+
+            if (!ubFillOnDarkBackground.isNull())
+            {
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
                     mGroupDarkBackgroundColor = QColor::fromString(ubFillOnDarkBackground.toString());
 #else
-                    mGroupDarkBackgroundColor.setNamedColor(ubFillOnDarkBackground.toString());
+                mGroupDarkBackgroundColor.setNamedColor(ubFillOnDarkBackground.toString());
 #endif
-                }
+            }
 
-                auto ubFillOnLightBackground = mXmlReader.attributes().value(mNamespaceUri, "fill-on-light-background");
+            auto ubFillOnLightBackground = mXmlReader.attributes().value(mNamespaceUri, "fill-on-light-background");
 
-                if (!ubFillOnLightBackground.isNull())
-                {
+            if (!ubFillOnLightBackground.isNull())
+            {
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
                     mGroupLightBackgroundColor = QColor::fromString(ubFillOnLightBackground.toString());
 #else
-                    mGroupLightBackgroundColor.setNamedColor(ubFillOnLightBackground.toString());
+                mGroupLightBackgroundColor.setNamedColor(ubFillOnLightBackground.toString());
 #endif
+            }
+
+            auto ubUuid = mXmlReader.attributes().value(mNamespaceUri, "uuid");
+
+            if (!ubUuid.isNull())
+                strokesGroup->setUuid(QUuid(ubUuid.toString()));
+            else
+                strokesGroup->setUuid(QUuid::createUuid());
+
+            QString uuid_stripped = strokesGroup->uuid().toString().replace("}","").replace("{","");
+
+            if (!mStrokesList.contains(uuid_stripped))
+                mStrokesList.insert(uuid_stripped, strokesGroup);
+        }
+        else if (name == "polygon" || name == "line")
+        {
+            UBGraphicsPolygonItem* polygonItem = 0;
+
+            QString parentId = mXmlReader.attributes().value(mNamespaceUri, "parent").toString();
+
+            if (name == "polygon")
+                polygonItem = polygonItemFromPolygonSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
+            else if (name == "line")
+                polygonItem = polygonItemFromLineSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
+
+            if(parentId.isEmpty() && strokesGroup)
+                parentId = strokesGroup->uuid().toString();
+
+            if(parentId.isEmpty())
+                parentId = QUuid::createUuid().toString();
+
+            if (polygonItem)
+            {
+                polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
+
+                UBGraphicsStrokesGroup* group;
+                if(!mStrokesList.contains(parentId)){
+                    group = new UBGraphicsStrokesGroup();
+                    mStrokesList.insert(parentId,group);
+                    group->setTransform(polygonItem->transform());
+                    UBGraphicsItem::assignZValue(group, polygonItem->zValue());
                 }
-
-                auto ubUuid = mXmlReader.attributes().value(mNamespaceUri, "uuid");
-
-                if (!ubUuid.isNull())
-                    strokesGroup->setUuid(QUuid(ubUuid.toString()));
                 else
-                    strokesGroup->setUuid(QUuid::createUuid());
+                    group = mStrokesList.value(parentId);
 
-                QString uuid_stripped = strokesGroup->uuid().toString().replace("}","").replace("{","");
+                if (!currentStroke)
+                    currentStroke = new UBGraphicsStroke();
 
-                if (!mStrokesList.contains(uuid_stripped))
-                    mStrokesList.insert(uuid_stripped, strokesGroup);
+                if(polygonItem->transform().isIdentity())
+                    polygonItem->setTransform(group->transform());
+
+                group->addToGroup(polygonItem);
+                polygonItem->setStrokesGroup(group);
+                polygonItem->setStroke(currentStroke);
+
+                polygonItem->show();
+                group->addToGroup(polygonItem);
             }
-            else if (name == "polygon" || name == "line")
+        }
+        else if (name == "polyline")
+        {
+            QList<UBGraphicsPolygonItem*> polygonItems = polygonItemsFromPolylineSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
+
+            QString parentId = mXmlReader.attributes().value(mNamespaceUri, "parent").toString();
+
+            if(parentId.isEmpty() && strokesGroup)
+                parentId = strokesGroup->uuid().toString();
+
+            if(parentId.isEmpty())
+                parentId = QUuid::createUuid().toString();
+
+            foreach(UBGraphicsPolygonItem* polygonItem, polygonItems)
             {
-                UBGraphicsPolygonItem* polygonItem = 0;
+                polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
 
-                QString parentId = mXmlReader.attributes().value(mNamespaceUri, "parent").toString();
+                UBGraphicsStrokesGroup* group;
 
-                if (name == "polygon")
-                    polygonItem = polygonItemFromPolygonSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
-                else if (name == "line")
-                    polygonItem = polygonItemFromLineSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
-
-                if(parentId.isEmpty() && strokesGroup)
-                    parentId = strokesGroup->uuid().toString();
-
-                if(parentId.isEmpty())
-                    parentId = QUuid::createUuid().toString();
-
-                if (polygonItem)
-                {
-                    polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
-
-                    UBGraphicsStrokesGroup* group;
-                    if(!mStrokesList.contains(parentId)){
-                        group = new UBGraphicsStrokesGroup();
-                        mStrokesList.insert(parentId,group);
-                        group->setTransform(polygonItem->transform());
-                        UBGraphicsItem::assignZValue(group, polygonItem->zValue());
-                    }
-                    else
-                        group = mStrokesList.value(parentId);
-
-                    if (!currentStroke)
-                        currentStroke = new UBGraphicsStroke();
-
-                    if(polygonItem->transform().isIdentity())
-                        polygonItem->setTransform(group->transform());
-
-                    group->addToGroup(polygonItem);
-                    polygonItem->setStrokesGroup(group);
-                    polygonItem->setStroke(currentStroke);
-
-                    polygonItem->show();
-                    group->addToGroup(polygonItem);
+                if(!mStrokesList.contains(parentId)){
+                    group = new UBGraphicsStrokesGroup();
+                    mStrokesList.insert(parentId,group);
+                    group->setTransform(polygonItem->transform());
+                    UBGraphicsItem::assignZValue(group, polygonItem->zValue());
                 }
+                else
+                    group = mStrokesList.value(parentId);
+
+                if (!currentStroke)
+                    currentStroke = new UBGraphicsStroke();
+
+                if(polygonItem->transform().isIdentity())
+                    polygonItem->setTransform(group->transform());
+
+                group->addToGroup(polygonItem);
+                polygonItem->setStrokesGroup(group);
+                polygonItem->setStroke(currentStroke);
+
+                polygonItem->show();
+                group->addToGroup(polygonItem);
             }
-            else if (name == "polyline")
+
+        }
+        else if (name == "image")
+        {
+            auto imageHref = mXmlReader.attributes().value(nsXLink, "href");
+
+            if (!imageHref.isNull())
             {
-                QList<UBGraphicsPolygonItem*> polygonItems = polygonItemsFromPolylineSvg(mScene->isDarkBackground() ? Qt::white : Qt::black);
+                QString href = imageHref.toString();
 
-                QString parentId = mXmlReader.attributes().value(mNamespaceUri, "parent").toString();
+                auto ubBackground = mXmlReader.attributes().value(mNamespaceUri, "background");
 
-                if(parentId.isEmpty() && strokesGroup)
-                    parentId = strokesGroup->uuid().toString();
+                bool isBackground = (!ubBackground.isNull() && ubBackground.toString() == xmlTrue);
 
-                if(parentId.isEmpty())
-                    parentId = QUuid::createUuid().toString();
-
-                foreach(UBGraphicsPolygonItem* polygonItem, polygonItems)
+                if (href.endsWith(".svg"))
                 {
-                    polygonItem->setData(UBGraphicsItemData::ItemLayerType, QVariant(UBItemLayerType::Graphic));
-
-                    UBGraphicsStrokesGroup* group;
-
-                    if(!mStrokesList.contains(parentId)){
-                        group = new UBGraphicsStrokesGroup();
-                        mStrokesList.insert(parentId,group);
-                        group->setTransform(polygonItem->transform());
-                        UBGraphicsItem::assignZValue(group, polygonItem->zValue());
-                    }
-                    else
-                        group = mStrokesList.value(parentId);
-
-                    if (!currentStroke)
-                        currentStroke = new UBGraphicsStroke();
-
-                    if(polygonItem->transform().isIdentity())
-                        polygonItem->setTransform(group->transform());
-
-                    group->addToGroup(polygonItem);
-                    polygonItem->setStrokesGroup(group);
-                    polygonItem->setStroke(currentStroke);
-
-                    polygonItem->show();
-                    group->addToGroup(polygonItem);
-                }
-
-            }
-            else if (name == "image")
-            {
-                auto imageHref = mXmlReader.attributes().value(nsXLink, "href");
-
-                if (!imageHref.isNull())
-                {
-                    QString href = imageHref.toString();
-
-                    auto ubBackground = mXmlReader.attributes().value(mNamespaceUri, "background");
-
-                    bool isBackground = (!ubBackground.isNull() && ubBackground.toString() == xmlTrue);
-
-                    if (href.endsWith(".svg"))
+                    UBGraphicsSvgItem* svgItem = svgItemFromSvg();
+                    if (svgItem)
                     {
-                        UBGraphicsSvgItem* svgItem = svgItemFromSvg();
-                        if (svgItem)
-                        {
-                            svgItem->setFlag(QGraphicsItem::ItemIsMovable, true);
-                            svgItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+                        svgItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+                        svgItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-                            mScene->addItem(svgItem);
+                        mScene->addItem(svgItem);
 
-                            if (isBackground)
-                                mScene->setAsBackgroundObject(svgItem);
+                        if (isBackground)
+                            mScene->setAsBackgroundObject(svgItem);
 
-                            svgItem->show();
-                        }
+                        svgItem->show();
                     }
-                    else
+                }
+                else
+                {
+                    UBGraphicsPixmapItem* pixmapItem = pixmapItemFromSvg();
+                    if (pixmapItem)
                     {
-                        UBGraphicsPixmapItem* pixmapItem = pixmapItemFromSvg();
-                        if (pixmapItem)
-                        {
-                            pixmapItem->setFlag(QGraphicsItem::ItemIsMovable, true);
-                            pixmapItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+                        pixmapItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+                        pixmapItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-                            mScene->addItem(pixmapItem);
+                        mScene->addItem(pixmapItem);
 
-                            if (isBackground)
-                                mScene->setAsBackgroundObject(pixmapItem);
+                        if (isBackground)
+                            mScene->setAsBackgroundObject(pixmapItem);
 
-                            pixmapItem->show();
-                        }
+                        pixmapItem->show();
                     }
                 }
             }
-            else if (name == "audio")
+        }
+        else if (name == "audio")
+        {
+            UBGraphicsMediaItem* audioItem = audioItemFromSvg();
+            if (audioItem)
             {
-                UBGraphicsMediaItem* audioItem = audioItemFromSvg();
-                if (audioItem)
+                audioItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+                audioItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+                mScene->addItem(audioItem);
+
+                audioItem->show();
+
+                audioItem->play();
+                audioItem->pause();
+            }
+        }
+        else if (name == "video")
+        {
+            UBGraphicsMediaItem* videoItem = videoItemFromSvg();
+            if (videoItem)
+            {
+
+                videoItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+                videoItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+                mScene->addItem(videoItem);
+
+                videoItem->show();
+            }
+        }
+        else if (name == "text")//This is for backward compatibility with proto text field prior to version 4.3
+        {
+            UBGraphicsTextItem* textItem = textItemFromSvg();
+            if (textItem)
+            {
+                textItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+                textItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+                mScene->addItem(textItem);
+
+                textItem->show();
+            }
+        }
+        else if (name == "curtain")
+        {
+            UBGraphicsCurtainItem* mask = curtainItemFromSvg();
+            if (mask)
+            {
+                mScene->addItem(mask);
+                mScene->registerTool(mask);
+            }
+        }
+        else if (name == "ruler")
+        {
+
+            UBGraphicsRuler *ruler = rulerFromSvg();
+            if (ruler)
+            {
+                mScene->addItem(ruler);
+                mScene->registerTool(ruler);
+            }
+
+        }
+        else if (name == "axes")
+        {
+
+            UBGraphicsAxes *axes = axesFromSvg();
+            if (axes)
+            {
+                mScene->addItem(axes);
+            }
+
+        }
+        else if (name == "compass")
+        {
+            UBGraphicsCompass *compass = compassFromSvg();
+            if (compass)
+            {
+                mScene->addItem(compass);
+                mScene->registerTool(compass);
+            }
+        }
+        else if (name == "protractor")
+        {
+            UBGraphicsProtractor *protractor = protractorFromSvg();
+            if (protractor)
+            {
+                mScene->addItem(protractor);
+                mScene->registerTool(protractor);
+            }
+        }
+        else if (name == "triangle")
+        {
+            UBGraphicsTriangle *triangle = triangleFromSvg();
+            if (triangle)
+            {
+                mScene->addItem(triangle);
+                mScene->registerTool(triangle);
+            }
+        }
+        else if (name == "cache")
+        {
+            UBGraphicsCache* cache = cacheFromSvg();
+            if(cache)
+            {
+                mScene->addItem(cache);
+                mScene->registerTool(cache);
+                UBApplication::boardController->notifyCache(true);
+            }
+        }
+        else if (name == "foreignObject")
+        {
+            QString href = mXmlReader.attributes().value(nsXLink, "href").toString();
+            QString src = mXmlReader.attributes().value(mNamespaceUri, "src").toString();
+            QString type = mXmlReader.attributes().value(mNamespaceUri, "type").toString();
+            bool isBackground = mXmlReader.attributes().value(mNamespaceUri, "background").toString() == xmlTrue;
+
+            qreal foreignObjectWidth = mXmlReader.attributes().value("width").toString().toFloat();
+            qreal foreignObjectHeight = mXmlReader.attributes().value("height").toString().toFloat();
+
+            if (href.contains(".pdf"))
+            {
+                UBGraphicsPDFItem* pdfItem = pdfItemFromPDF();
+                if (pdfItem)
                 {
-                    audioItem->setFlag(QGraphicsItem::ItemIsMovable, true);
-                    audioItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+                    qreal currentDpi = UBApplication::displayManager->logicalDpi(ScreenRole::Control);
+                    // qDebug() << "currentDpi = " << currentDpi;
+                    qreal pdfScale = qreal(mProxy->pageDpi())/currentDpi;
+                    // qDebug() << "pdfScale " << pdfScale;
 
-                    mScene->addItem(audioItem);
+                    // If the PDF is in the background, it occupies the whole page; so we can simply
+                    // use that information to calculate its scale.
+                    if (isBackground) {
+                        qreal pageWidth = mScene->nominalSize().width();
+                        qreal pageHeight = mScene->nominalSize().height();
 
-                    audioItem->show();
+                        qreal scaleX = pageWidth / pdfItem->sceneBoundingRect().width();
+                        qreal scaleY = pageHeight / pdfItem->sceneBoundingRect().height();
 
-                    audioItem->play();
-                    audioItem->pause();
+                        pdfScale = (scaleX+scaleY)/2.;
+                    }
+
+                    pdfItem->setScale(pdfScale);
+                    pdfItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+                    pdfItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+                    mScene->addItem(pdfItem);
+
+                    if (isBackground)
+                        mScene->setAsBackgroundObject(pdfItem);
+
+                    pdfItem->show();
+
+                    currentWidget = 0;
                 }
             }
-            else if (name == "video")
+            else if (src.contains(".wdgt")) // NOTE @letsfindaway obsolete
             {
-                UBGraphicsMediaItem* videoItem = videoItemFromSvg();
-                if (videoItem)
+                UBGraphicsAppleWidgetItem* appleWidgetItem = graphicsAppleWidgetFromSvg();
+                if (appleWidgetItem)
                 {
+                    appleWidgetItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-                    videoItem->setFlag(QGraphicsItem::ItemIsMovable, true);
-                    videoItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+                    appleWidgetItem->resize(foreignObjectWidth, foreignObjectHeight);
 
-                    mScene->addItem(videoItem);
+                    mScene->addItem(appleWidgetItem);
 
-                    videoItem->show();
+                    appleWidgetItem->show();
+
+                    currentWidget = appleWidgetItem;
                 }
             }
-            else if (name == "text")//This is for backward compatibility with proto text field prior to version 4.3
+            else if (src.contains(".wgt"))
+            {
+                UBGraphicsW3CWidgetItem* w3cWidgetItem = graphicsW3CWidgetFromSvg();
+
+                if (w3cWidgetItem)
+                {
+                    // check compatibility
+                    QUuid uuid(mXmlReader.attributes().value(mNamespaceUri, "uuid").toString());
+
+                    if (!mProxy->isWidgetCompatible(uuid))
+                    {
+                        // show a substitute image and freeze the widget
+                        QPixmap pixmap(w3cWidgetItem->size().toSize());
+                        pixmap.fill(Qt::lightGray);
+                        QPainter painter(&pixmap);
+                        QFont font = painter.font();
+                        font.setPixelSize(16);
+                        painter.setFont(font);
+                        const QRectF rectangle(QPointF(0, 0), w3cWidgetItem->size());
+
+                        std::string incompatibleWidgetMessage = QString("Incompatible widget (%1).").arg(w3cWidgetItem->metadatas().name).toStdString();
+                        painter.drawText(rectangle, Qt::AlignCenter, QObject::tr(incompatibleWidgetMessage.c_str()));
+                        w3cWidgetItem->setSnapshot(pixmap, true);
+
+                        // disable user interactions
+                        w3cWidgetItem->setFreezable(false);
+                        w3cWidgetItem->setCanBeTool(false);
+                    }
+
+                    w3cWidgetItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+
+                    w3cWidgetItem->resize(foreignObjectWidth, foreignObjectHeight);
+
+                    mScene->addItem(w3cWidgetItem);
+
+                    w3cWidgetItem->show();
+
+                    currentWidget = w3cWidgetItem;
+                }
+            }
+            else if (type == "text")
             {
                 UBGraphicsTextItem* textItem = textItemFromSvg();
+
                 if (textItem)
                 {
                     textItem->setFlag(QGraphicsItem::ItemIsMovable, true);
                     textItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
+                    textItem->activateTextEditor(false);
 
                     mScene->addItem(textItem);
 
                     textItem->show();
                 }
             }
-            else if (name == "curtain")
-            {
-                UBGraphicsCurtainItem* mask = curtainItemFromSvg();
-                if (mask)
-                {
-                    mScene->addItem(mask);
-                    mScene->registerTool(mask);
-                }
-            }
-            else if (name == "ruler")
-            {
-
-                UBGraphicsRuler *ruler = rulerFromSvg();
-                if (ruler)
-                {
-                    mScene->addItem(ruler);
-                    mScene->registerTool(ruler);
-                }
-
-            }
-            else if (name == "axes")
-            {
-
-                UBGraphicsAxes *axes = axesFromSvg();
-                if (axes)
-                {
-                    mScene->addItem(axes);
-                }
-
-            }
-            else if (name == "compass")
-            {
-                UBGraphicsCompass *compass = compassFromSvg();
-                if (compass)
-                {
-                    mScene->addItem(compass);
-                    mScene->registerTool(compass);
-                }
-            }
-            else if (name == "protractor")
-            {
-                UBGraphicsProtractor *protractor = protractorFromSvg();
-                if (protractor)
-                {
-                    mScene->addItem(protractor);
-                    mScene->registerTool(protractor);
-                }
-            }
-            else if (name == "triangle")
-            {
-                UBGraphicsTriangle *triangle = triangleFromSvg();
-                if (triangle)
-                {
-                    mScene->addItem(triangle);
-                    mScene->registerTool(triangle);
-                }
-            }
-            else if (name == "cache")
-            {
-                UBGraphicsCache* cache = cacheFromSvg();
-                if(cache)
-                {
-                    mScene->addItem(cache);
-                    mScene->registerTool(cache);
-                    UBApplication::boardController->notifyCache(true);
-                }
-            }
-            else if (name == "foreignObject")
-            {
-                QString href = mXmlReader.attributes().value(nsXLink, "href").toString();
-                QString src = mXmlReader.attributes().value(mNamespaceUri, "src").toString();
-                QString type = mXmlReader.attributes().value(mNamespaceUri, "type").toString();
-                bool isBackground = mXmlReader.attributes().value(mNamespaceUri, "background").toString() == xmlTrue;
-
-                qreal foreignObjectWidth = mXmlReader.attributes().value("width").toString().toFloat();
-                qreal foreignObjectHeight = mXmlReader.attributes().value("height").toString().toFloat();
-
-                if (href.contains(".pdf"))
-                {
-                    UBGraphicsPDFItem* pdfItem = pdfItemFromPDF();
-                    if (pdfItem)
-                    {
-                        qreal currentDpi = UBApplication::displayManager->logicalDpi(ScreenRole::Control);
-                        // qDebug() << "currentDpi = " << currentDpi;
-                        qreal pdfScale = qreal(proxy->pageDpi())/currentDpi;
-                        // qDebug() << "pdfScale " << pdfScale;
-
-                        // If the PDF is in the background, it occupies the whole page; so we can simply
-                        // use that information to calculate its scale.
-                        if (isBackground) {
-                            qreal pageWidth = mScene->nominalSize().width();
-                            qreal pageHeight = mScene->nominalSize().height();
-
-                            qreal scaleX = pageWidth / pdfItem->sceneBoundingRect().width();
-                            qreal scaleY = pageHeight / pdfItem->sceneBoundingRect().height();
-
-                            pdfScale = (scaleX+scaleY)/2.;
-                        }
-
-                        pdfItem->setScale(pdfScale);
-                        pdfItem->setFlag(QGraphicsItem::ItemIsMovable, true);
-                        pdfItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-
-                        mScene->addItem(pdfItem);
-
-                        if (isBackground)
-                            mScene->setAsBackgroundObject(pdfItem);
-
-                        pdfItem->show();
-
-                        currentWidget = 0;
-                    }
-                }
-                else if (src.contains(".wdgt")) // NOTE @letsfindaway obsolete
-                {
-                    UBGraphicsAppleWidgetItem* appleWidgetItem = graphicsAppleWidgetFromSvg();
-                    if (appleWidgetItem)
-                    {
-                        appleWidgetItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-
-                        appleWidgetItem->resize(foreignObjectWidth, foreignObjectHeight);
-
-                        mScene->addItem(appleWidgetItem);
-
-                        appleWidgetItem->show();
-
-                        currentWidget = appleWidgetItem;
-                    }
-                }
-                else if (src.contains(".wgt"))
-                {
-                    UBGraphicsW3CWidgetItem* w3cWidgetItem = graphicsW3CWidgetFromSvg();
-
-                    if (w3cWidgetItem)
-                    {
-                        // check compatibility
-                        QUuid uuid(mXmlReader.attributes().value(mNamespaceUri, "uuid").toString());
-
-                        if (!proxy->isWidgetCompatible(uuid))
-                        {
-                            // show a substitute image and freeze the widget
-                            QPixmap pixmap(w3cWidgetItem->size().toSize());
-                            pixmap.fill(Qt::lightGray);
-                            QPainter painter(&pixmap);
-                            QFont font = painter.font();
-                            font.setPixelSize(16);
-                            painter.setFont(font);
-                            const QRectF rectangle(QPointF(0, 0), w3cWidgetItem->size());
-
-                            std::string incompatibleWidgetMessage = QString("Incompatible widget (%1).").arg(w3cWidgetItem->metadatas().name).toStdString();
-                            painter.drawText(rectangle, Qt::AlignCenter, QObject::tr(incompatibleWidgetMessage.c_str()));
-                            w3cWidgetItem->setSnapshot(pixmap, true);
-
-                            // disable user interactions
-                            w3cWidgetItem->setFreezable(false);
-                            w3cWidgetItem->setCanBeTool(false);
-                        }
-
-                        w3cWidgetItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-
-                        w3cWidgetItem->resize(foreignObjectWidth, foreignObjectHeight);
-
-                        mScene->addItem(w3cWidgetItem);
-
-                        w3cWidgetItem->show();
-
-                        currentWidget = w3cWidgetItem;
-                    }
-                }
-                else if (type == "text")
-                {
-                    UBGraphicsTextItem* textItem = textItemFromSvg();
-
-                    if (textItem)
-                    {
-                        textItem->setFlag(QGraphicsItem::ItemIsMovable, true);
-                        textItem->setFlag(QGraphicsItem::ItemIsSelectable, true);
-                        textItem->activateTextEditor(false);
-
-                        mScene->addItem(textItem);
-
-                        textItem->show();
-                    }
-                }
-                else
-                {
-                    qWarning() << "Ignoring unknown foreignObject:" << href;
-                }
-            }
-            else if (currentWidget && (name == "preference"))
-            {
-                QString key = mXmlReader.attributes().value("key").toString();
-                QString value = mXmlReader.attributes().value("value").toString();
-
-                currentWidget->setPreference(key, value);
-            }
-            else if (currentWidget && (name == "datastoreEntry"))
-            {
-                QString key = mXmlReader.attributes().value("key").toString();
-                QString value = mXmlReader.attributes().value("value").toString();
-
-                currentWidget->setDatastoreEntry(key, value);
-            } else if (name == tGroups) {
-                //considering groups section at the end of the document
-                readGroupRoot();
-            }
             else
             {
-                // NOOP
+                qWarning() << "Ignoring unknown foreignObject:" << href;
             }
         }
-        else if (mXmlReader.isEndElement())
+        else if (currentWidget && (name == "preference"))
         {
-            if (mXmlReader.name().toString() == "g")
-            {
-                mGroupHasInfo = false;
-                mGroupDarkBackgroundColor = QColor();
-                mGroupLightBackgroundColor = QColor();
-                strokesGroup = NULL;
-                currentStroke = NULL;
-            }
+            QString key = mXmlReader.attributes().value("key").toString();
+            QString value = mXmlReader.attributes().value("value").toString();
+
+            currentWidget->setPreference(key, value);
+        }
+        else if (currentWidget && (name == "datastoreEntry"))
+        {
+            QString key = mXmlReader.attributes().value("key").toString();
+            QString value = mXmlReader.attributes().value("value").toString();
+
+            currentWidget->setDatastoreEntry(key, value);
+        } else if (name == tGroups) {
+            //considering groups section at the end of the document
+            readGroupRoot();
+        }
+        else
+        {
+            // NOOP
         }
     }
-
-
-    if (mXmlReader.hasError())
+    else if (mXmlReader.isEndElement())
     {
-        qWarning() << "error parsing file " << mXmlReader.errorString();
+        if (mXmlReader.name().toString() == "g")
+        {
+            mGroupHasInfo = false;
+            mGroupDarkBackgroundColor = QColor();
+            mGroupLightBackgroundColor = QColor();
+            strokesGroup = NULL;
+            currentStroke = NULL;
+        }
     }
 
-    qDebug() << "Number of detected strokes: " << mStrokesList.count();
+    if (mXmlReader.atEnd())
+    {
+        mMustFinalize = true;
+    }
+}
 
-    if (mScene) {
-        QHashIterator<QString, UBGraphicsStrokesGroup*> iterator(mStrokesList);
-        while (iterator.hasNext()) {
-            iterator.next();
-            mScene->addItem(iterator.value());
+std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgSubsetReader::scene()
+{
+    if (mMustFinalize)
+    {
+        if (mXmlReader.hasError())
+        {
+            qWarning() << "error parsing file " << mXmlReader.errorString();
         }
 
-        mScene->setModified(saveSceneAfterLoading);
-        mScene->enableUndoRedoStack();
+        qDebug() << "Number of detected strokes: " << mStrokesList.count();
+
+        if (mScene) {
+            QHashIterator<QString, UBGraphicsStrokesGroup*> iterator(mStrokesList);
+            while (iterator.hasNext()) {
+                iterator.next();
+                mScene->addItem(iterator.value());
+            }
+
+            mScene->setModified(saveSceneAfterLoading);
+            mScene->enableUndoRedoStack();
+            qDebug() << "loadScene() : created scene and read file";
+        }
+
+        mMustFinalize = false;
     }
 
-    qDebug() << "loadScene() : created scene and read file";
-    qDebug() << "spent milliseconds: " << time.elapsed();
     return mScene;
 }
 
@@ -3469,4 +3503,30 @@ void UBSvgSubsetAdaptor::convertSvgImagesToImages(std::shared_ptr<UBDocumentProx
             }
         }
     }
+}
+
+UBSvgSubsetAdaptor::UBSvgReaderContext::UBSvgReaderContext(std::shared_ptr<UBDocumentProxy> proxy, const QByteArray& pXmlData)
+{
+    reader = new UBSvgSubsetReader(proxy, pXmlData);
+    reader->start();
+}
+
+UBSvgSubsetAdaptor::UBSvgReaderContext::~UBSvgReaderContext()
+{
+    delete reader;
+}
+
+bool UBSvgSubsetAdaptor::UBSvgReaderContext::isFinished() const
+{
+    return reader->isFinished();
+}
+
+void UBSvgSubsetAdaptor::UBSvgReaderContext::step()
+{
+    reader->processElement();
+}
+
+std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::UBSvgReaderContext::scene() const
+{
+    return reader->scene();
 }

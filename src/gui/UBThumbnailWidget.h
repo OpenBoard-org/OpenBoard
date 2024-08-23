@@ -574,7 +574,7 @@ class UBDraggableLivePixmapItem : public UBDraggableThumbnailItem
 {
     Q_OBJECT
     public:
-        UBDraggableLivePixmapItem(std::shared_ptr<UBGraphicsScene> pageScene, std::shared_ptr<UBDocumentProxy> documentProxy, int index);
+        UBDraggableLivePixmapItem(std::shared_ptr<UBGraphicsScene> pageScene, std::shared_ptr<UBDocumentProxy> documentProxy, int index, const QPixmap& thumbnail);
 
         ~UBDraggableLivePixmapItem()
         {
@@ -611,17 +611,21 @@ class UBDraggableLivePixmapItem : public UBDraggableThumbnailItem
 
     public slots:
         void updatePixmap(const QRectF &region = QRectF());
+        void setScene(std::shared_ptr<UBGraphicsScene> scene);
+        void adjustThumbnail();
+
+    private:
+        void createPixmap(const QSizeF& pixmapSize);
 
     private:
         static const int sSelectionItemMargin = 5;
         QGraphicsRectItem *mSelectionItem;
         std::shared_ptr<UBGraphicsScene> mScene;
+        QRectF mSceneRect;
         UBThumbnailTextItem* mPageNumber;
         bool mExposed;
         QSizeF mSize;
         QTransform mTransform;
-        QTimer updateTimer;
-        int updateCount;
 };
 
 namespace UBThumbnailUI

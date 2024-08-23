@@ -960,7 +960,12 @@ void UBDraggableThumbnailItem::paint(QPainter *painter, const QStyleOptionGraphi
     using namespace UBThumbnailUI;
 
     if (editable())
-    {        
+    {
+        // apply inverse scaling to keep constant size of buttons
+        painter->save();
+        auto scale = 1 / transform().m11();
+        painter->scale(scale, scale);
+
         if(deletable())
             draw(painter, *getIcon("close"));
         else
@@ -979,7 +984,7 @@ void UBDraggableThumbnailItem::paint(QPainter *painter, const QStyleOptionGraphi
         else
             draw(painter, *getIcon("moveDownDisabled"));
         */
-
+        painter->restore();
     }
 }
 
@@ -1064,7 +1069,7 @@ void UBDraggableThumbnailItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event
 }
 
 
-UBDraggableLivePixmapItem::UBDraggableLivePixmapItem(std::shared_ptr<UBGraphicsScene> pageScene, std::shared_ptr<UBDocumentProxy> documentProxy, int index)
+UBDraggableLivePixmapItem::UBDraggableLivePixmapItem(std::shared_ptr<UBGraphicsScene> pageScene, std::shared_ptr<UBDocumentProxy> documentProxy, int index, const QPixmap& thumbnail)
     : UBDraggableThumbnailItem(documentProxy, index)
     , mScene(pageScene)
     , mPageNumber(new UBThumbnailTextItem(index))
@@ -1072,6 +1077,7 @@ UBDraggableLivePixmapItem::UBDraggableLivePixmapItem(std::shared_ptr<UBGraphicsS
 {
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setAcceptDrops(true);
+    setTransformationMode(Qt::SmoothTransformation);
 
     mSelectionItem = new QGraphicsRectItem(sceneBoundingRect().x() - sSelectionItemMargin,
                                            sceneBoundingRect().y() - sSelectionItemMargin,
@@ -1080,44 +1086,24 @@ UBDraggableLivePixmapItem::UBDraggableLivePixmapItem(std::shared_ptr<UBGraphicsS
     mSelectionItem->setPen(QPen(UBSettings::treeViewBackgroundColor, 8));
     mSelectionItem->setZValue(-1);
 
-    connect(&updateTimer, &QTimer::timeout, this, [this](){
-        updatePixmap();
-
-        if (--updateCount <= 0)
-        {
-            updateTimer.stop();
-        }
-    });
+    setPixmap(thumbnail);
 }
 
 void UBDraggableLivePixmapItem::updatePos(qreal width, qreal height)
 {
     QSizeF newSize(width, height);
 
-    if (newSize != mSize)
+    if (newSize != mSize && mScene)
     {
         mSize = newSize;
-        QPixmap pixmap = QPixmap(mSize.toSize());
-        pixmap.fill(Qt::white);
-        setPixmap(pixmap);
-        updatePixmap();
-
-        QRectF sceneRect(QPointF(0, 0), mScene->sceneSize());
-        sceneRect.translate(-sceneRect.center());
-        QSizeF sceneSize = mSize.scaled(sceneRect.size(), Qt::KeepAspectRatioByExpanding);
-        QSizeF expand = (sceneSize - sceneRect.size()) / 2;
-        QMarginsF margins(expand.width(), expand.height(), expand.width(), expand.height());
-
-        mTransform = QTransform();
-        mTransform.scale(mSize.width() / sceneSize.width(), mSize.height() / sceneSize.height());
-        mTransform.translate(sceneSize.width() / 2, sceneSize.height() / 2);
+        createPixmap(newSize);
     }
 
     QFontMetrics fm(mPageNumber->font());
     int labelSpacing = UBSettings::thumbnailSpacing + fm.height();
 
-    int w = boundingRect().width();
-    int h = boundingRect().height();
+    int w = pixmap().width();
+    int h = pixmap().height();
 
     qreal scaledWidth = width / w;
     qreal scaledHeight = height / h;
@@ -1130,8 +1116,9 @@ void UBDraggableLivePixmapItem::updatePos(qreal width, qreal height)
     setTransform(transform);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-    // even spacing, all thumbnails have the same size
-    QPointF position(2*sSelectionItemMargin, 2*sSelectionItemMargin + sceneIndex() * (height + labelSpacing) + (height - h * scaledFactor) / 2);
+    // even spacing, all thumbnails have the same height
+    QPointF position(2 * sSelectionItemMargin + (width - w * scaledFactor) / 2,
+                     2 * sSelectionItemMargin + sceneIndex() * (height + labelSpacing) + (height - h * scaledFactor) / 2);
 
     setPos(position);
 
@@ -1167,14 +1154,6 @@ void UBDraggableLivePixmapItem::setExposed(bool exposed)
         if (exposed)
         {
             updatePixmap();
-
-            // start a burst of updates to follow PDF loading or similar
-            updateCount = 10;
-            updateTimer.start(300);
-        }
-        else
-        {
-            updateTimer.stop();
         }
     }
 }
@@ -1186,7 +1165,7 @@ bool UBDraggableLivePixmapItem::isExposed()
 
 void UBDraggableLivePixmapItem::updatePixmap(const QRectF &region)
 {
-    if (mSize.isValid() && mExposed)
+    if (mScene && mSize.isValid() && mExposed)
     {
         QPixmap pixmap = this->pixmap();
         QRectF pixmapRect;
@@ -1196,7 +1175,7 @@ void UBDraggableLivePixmapItem::updatePixmap(const QRectF &region)
         if (region.isNull() || affectsWholeScene)
         {
             // full update if region unknown or play/selector tool active, which may affect whole scene
-            pixmapRect = QRectF(QPoint(0, 0), mSize);
+            pixmapRect = pixmap.rect();
         }
         else
         {
@@ -1210,7 +1189,7 @@ void UBDraggableLivePixmapItem::updatePixmap(const QRectF &region)
             pixmapRect = mTransform.mapRect(region);        // translate to pixmap coordinates
             pixmapRect += QMarginsF(1, 1, 1, 1);            // add a margin
             pixmapRect = pixmapRect.toRect();               // cut to integer
-            pixmapRect &= QRectF(QPointF(0, 0), mSize);     // limit to pixmap area
+            pixmapRect &= pixmap.rect();                    // limit to pixmap area
         }
 
         if (pixmapRect.isValid())
@@ -1223,7 +1202,54 @@ void UBDraggableLivePixmapItem::updatePixmap(const QRectF &region)
     }
 }
 
+void UBDraggableLivePixmapItem::setScene(std::shared_ptr<UBGraphicsScene> scene)
+{
+    mScene = scene;
+}
 
+void UBDraggableLivePixmapItem::adjustThumbnail()
+{
+    // get the used area of the scene
+    mSceneRect = mScene->normalizedSceneRect();
+
+    // expand the scene rect so that it has the aspect ratio of the pixmap
+    QSizeF pSize = pixmap().size();
+    QPointF center = mSceneRect.center();
+    QSizeF sceneSize = pSize.scaled(mSceneRect.size(), Qt::KeepAspectRatioByExpanding);
+    mSceneRect.setSize(sceneSize);
+    mSceneRect.moveCenter(center);
+
+    // create a transformation from scene to pixmap coordinates
+    QRectF pixRect{{0,0}, pSize};
+    QPolygonF p1{mSceneRect};
+    QPolygonF p2{pixRect};
+
+    p1.removeLast();
+    p2.removeLast();
+
+    QTransform::quadToQuad(p1, p2, mTransform);
+
+    // re-paint the pixmap
+    updatePixmap();
+}
+
+void UBDraggableLivePixmapItem::createPixmap(const QSizeF& pixmapSize)
+{
+    if (mScene)
+    {
+        // always use a constant pixmap size
+        // NOTE this code keeps the document pixmap incl its AR
+        if (pixmap().width() != UBSettings::maxThumbnailWidth)
+        {
+            int height = UBSettings::maxThumbnailWidth * mSize.height() / mSize.width() + 0.5;
+            QPixmap pixmap = QPixmap(UBSettings::maxThumbnailWidth, height);
+            pixmap.fill(Qt::white);
+            setPixmap(pixmap);
+        }
+
+        adjustThumbnail();
+    }
+}
 
 
 UBThumbnailUI::UBThumbnailUIIcon* UBThumbnailUI::addIcon(const QString& thumbnailIcon, int pos)

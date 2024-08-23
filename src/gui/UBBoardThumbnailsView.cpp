@@ -90,6 +90,8 @@ UBBoardThumbnailsView::UBBoardThumbnailsView(QWidget *parent, const char *name)
     connect(UBApplication::boardController, SIGNAL(pageSelectionChanged(int)), this, SLOT(ensureVisibleThumbnail(int)), Qt::UniqueConnection);
     connect(UBApplication::boardController, SIGNAL(centerOnThumbnailRequired(int)), this, SLOT(centerOnThumbnail(int)), Qt::UniqueConnection);
 
+    connect(UBApplication::boardController->controlView(), &UBBoardView::mouseReleased, this, &UBBoardThumbnailsView::adjustThumbnail);
+
     connect(UBApplication::boardController->controlView(), &UBBoardView::painted, this, &UBBoardThumbnailsView::updateThumbnailPixmap);
 }
 
@@ -103,6 +105,14 @@ void UBBoardThumbnailsView::moveThumbnail(int from, int to)
 void UBBoardThumbnailsView::updateThumbnails()
 {
     updateThumbnailsPos();
+}
+
+void UBBoardThumbnailsView::adjustThumbnail()
+{
+    if (mCurrentIndex >= 0 && mCurrentIndex < mThumbnails.size())
+    {
+        mThumbnails.at(mCurrentIndex)->adjustThumbnail();
+    }
 }
 
 void UBBoardThumbnailsView::removeThumbnail(int i)
@@ -120,15 +130,16 @@ void UBBoardThumbnailsView::removeThumbnail(int i)
 
 UBDraggableLivePixmapItem* UBBoardThumbnailsView::createThumbnail(std::shared_ptr<UBDocumentProxy> document, int i)
 {
-    std::shared_ptr<UBGraphicsScene> pageScene = UBPersistenceManager::persistenceManager()->loadDocumentScene(document, i);
+    QPixmap thumbnail = UBThumbnailAdaptor::get(document, i);
 
-    return new UBDraggableLivePixmapItem(pageScene, document, i);
+    return new UBDraggableLivePixmapItem(nullptr, document, i, thumbnail);
 }
 
 void UBBoardThumbnailsView::addThumbnail(std::shared_ptr<UBDocumentProxy> document, int i)
 {
     UBDraggableLivePixmapItem* item = createThumbnail(document, i);
     mThumbnails.insert(i, item);
+    ensureVisibleThumbnail(i);
 
     scene()->addItem(item);
     scene()->addItem(item->pageNumber());
@@ -173,7 +184,21 @@ void UBBoardThumbnailsView::centerOnThumbnail(int index)
 
 void UBBoardThumbnailsView::ensureVisibleThumbnail(int index)
 {
-    ensureVisible(mThumbnails.at(index));
+    if (mCurrentIndex >= 0 && mCurrentIndex < mThumbnails.size())
+    {
+        // detach scene from previous thumbnail
+        mThumbnails.at(mCurrentIndex)->setScene(nullptr);
+    }
+
+    mCurrentIndex = index;
+
+    if (index >= 0 && index < mThumbnails.size())
+    {
+        auto thumbnail = mThumbnails.at(index);
+        std::shared_ptr<UBGraphicsScene> pageScene = UBPersistenceManager::persistenceManager()->getDocumentScene(thumbnail->documentProxy(), index);
+        thumbnail->setScene(pageScene);
+        ensureVisible(thumbnail);
+    }
 }
 
 void UBBoardThumbnailsView::updateThumbnailsPos()

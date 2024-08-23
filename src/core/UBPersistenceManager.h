@@ -113,7 +113,7 @@ class UBPersistenceManager : public QObject
         virtual void moveSceneToIndex(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int source, int target);
 
         virtual std::shared_ptr<UBGraphicsScene> loadDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int sceneIndex, bool cacheNeighboringScenes = true);
-        std::shared_ptr<UBGraphicsScene> getDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int sceneIndex) {return mSceneCache.value(pDocumentProxy, sceneIndex);}
+        std::shared_ptr<UBGraphicsScene> getDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int sceneIndex);
         void reassignDocProxy(std::shared_ptr<UBDocumentProxy> newDocument, std::shared_ptr<UBDocumentProxy> oldDocument);
 
 //        QList<QPointer<UBDocumentProxy> > documentProxies;
@@ -202,7 +202,6 @@ private:
     private slots:
         void documentRepositoryChanged(const QString& path);
         void errorString(QString error);
-        void onSceneLoaded(QByteArray,std::shared_ptr<UBDocumentProxy>,int);
         void onWorkerFinished();
         void onScenePersisted(UBGraphicsScene* scene);
 };
