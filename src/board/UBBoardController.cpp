@@ -299,21 +299,34 @@ void UBBoardController::setBoxing(QRect displayRect)
     }
 }
 
-void UBBoardController::setCursorFromAngle(QString angle)
+void UBBoardController::setCursorFromAngle(QString angle, const QPoint offset)
 {
         QWidget *controlViewport = controlView()->viewport();
 
         QSize cursorSize(45,30);
+        QSize bitmapSize = cursorSize;
+        int hotX = -1;
+        int hotY = -1;
 
-        QImage mask_img(cursorSize, QImage::Format_Mono);
+        if (!offset.isNull())
+        {
+            bitmapSize.setWidth(std::max(bitmapSize.width(), 2 * std::abs(offset.x())));
+            bitmapSize.setHeight(std::max(bitmapSize.height(), 2 * std::abs(offset.y())));
+            hotX = bitmapSize.width() / 2 - offset.x();
+            hotY = bitmapSize.height() / 2 - offset.y();
+        }
+
+        QSize origin = (bitmapSize - cursorSize) / 2;
+
+        QImage mask_img(bitmapSize, QImage::Format_Mono);
         mask_img.fill(0xff);
         QPainter mask_ptr(&mask_img);
         mask_ptr.setBrush( QBrush( QColor(0, 0, 0) ) );
-        mask_ptr.drawRoundedRect(0,0, cursorSize.width()-1, cursorSize.height()-1, 6, 6);
+        mask_ptr.drawRoundedRect(origin.width(), origin.height(), cursorSize.width()-1, cursorSize.height()-1, 6, 6);
         QBitmap bmpMask = QBitmap::fromImage(mask_img);
 
 
-        QPixmap pixCursor(cursorSize);
+        QPixmap pixCursor(bitmapSize);
         pixCursor.fill(QColor(Qt::white));
 
         QPainter painter(&pixCursor);
@@ -321,13 +334,13 @@ void UBBoardController::setCursorFromAngle(QString angle)
         painter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
         painter.setBrush(QBrush(Qt::white));
         painter.setPen(QPen(QColor(Qt::black)));
-        painter.drawRoundedRect(1,1,cursorSize.width()-2,cursorSize.height()-2,6,6);
+        painter.drawRoundedRect(origin.width() + 1, origin.height() + 1,cursorSize.width()-2,cursorSize.height()-2,6,6);
         painter.setFont(QFont("Arial", 10));
-        painter.drawText(1,1,cursorSize.width(),cursorSize.height(), Qt::AlignCenter, angle.append(QChar(176)));
+        painter.drawText(origin.width() + 1, origin.height() + 1,cursorSize.width(),cursorSize.height(), Qt::AlignCenter, angle.append(QChar(176)));
         painter.end();
 
         pixCursor.setMask(bmpMask);
-        controlViewport->setCursor(QCursor(pixCursor));
+        controlViewport->setCursor(QCursor(pixCursor, hotX, hotY));
 }
 
 

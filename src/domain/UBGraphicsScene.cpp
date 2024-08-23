@@ -575,15 +575,16 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                 }
 
                 // ------------------------------------------------------------------------
-                // Here we wanna make sure that the Line will 'grip' at i*45, i*90 degrees
-                // and propose a point as alternative snap point
+                // Here we wanna make sure that the Line will 'grip' at multiples of
+                // rotationAngleStep and propose a point as alternative snap point
                 // ------------------------------------------------------------------------
 
                 if (modifiers.testFlag(Qt::ShiftModifier))
                 {
+                    double step = UBSettings::settings()->rotationAngleStep->get().toDouble();
                     QLineF radius(mPreviousPoint, position);
                     qreal angle = radius.angle();
-                    angle = qRound(angle / 45) * 45;
+                    angle = qRound(angle / step) * step;
                     qreal radiusLength = radius.length();
                     QPointF newPosition(
                         mPreviousPoint.x() + radiusLength * cos((angle * PI) / 180),
@@ -606,6 +607,16 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                 {
                     position += snap(position, nullptr, altPosition);
                 }
+
+                QLineF radius(mPreviousPoint, position);
+                auto angle = radius.angle();
+                auto angleDecimals = angle - std::floor(angle);
+                QLineF viewRadius{UBApplication::boardController->controlView()->mapFromScene(radius.p1()),
+                        UBApplication::boardController->controlView()->mapFromScene(radius.p2())};
+                QPoint offset = - viewRadius.p2().toPoint();
+                viewRadius.setLength(viewRadius.length() + 30);
+                offset += viewRadius.p2().toPoint();
+                UBApplication::boardController->setCursorFromAngle(QString::number(((int)angle % 360) + angleDecimals, 'f', 1), offset);
 
                 drawLineTo(position, width, true);
             }
