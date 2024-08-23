@@ -105,6 +105,7 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         bool mRespectRatio;
 
         qreal mAngle;
+        qreal mRotatedAngle;
         qreal mAngleOffset;
         qreal mTotalScaleX;
         qreal mTotalScaleY;
@@ -114,7 +115,7 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         qreal mTranslateY;
         qreal mTotalTranslateX;
         qreal mTotalTranslateY;
-        qreal mAngleTolerance;
+        qreal mRotationAngleStep;
         QRect mAngleRect;
 
         QPointF mStartingPoint;

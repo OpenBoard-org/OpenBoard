@@ -417,7 +417,7 @@ class UBSettings : public QObject
         UBSetting* KeyboardLocale;
         UBSetting* swapControlAndDisplayScreens;
 
-        UBSetting* angleTolerance;
+        UBSetting* rotationAngleStep;
         UBSetting* historyLimit;
 
         UBSetting* libIconSize;

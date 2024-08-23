@@ -468,7 +468,7 @@ void UBSettings::init()
     KeyboardLocale = new UBSetting(this, "Board", "StartupKeyboardLocale", 0);
     swapControlAndDisplayScreens = new UBSetting(this, "App", "SwapControlAndDisplayScreens", false);
 
-    angleTolerance = new UBSetting(this, "App", "AngleTolerance", 4);
+    rotationAngleStep = new UBSetting(this, "App", "RotationAngleStep", 5.);
     historyLimit = new UBSetting(this, "Web", "HistoryLimit", 15);
 
     libIconSize = new UBSetting(this, "Library", "LibIconSize", defaultLibraryIconSize);

@@ -55,6 +55,7 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     , mNominalFrameWidth(pFrameWidth)
     , mRespectRatio(respectRatio)
     , mAngle(0)
+    , mRotatedAngle(0)
     , mAngleOffset(0)
     , mTotalScaleX(-1)
     , mTotalScaleY(-1)
@@ -86,7 +87,7 @@ UBGraphicsDelegateFrame::UBGraphicsDelegateFrame(UBGraphicsItemDelegate* pDelega
     , mTitleBarHeight(hasTitleBar ? 20 :0)
     , mNominalTitleBarHeight(hasTitleBar ? 20:0)
 {
-    mAngleTolerance = UBSettings::settings()->angleTolerance->get().toReal();
+    mRotationAngleStep = UBSettings::settings()->rotationAngleStep->get().toReal();
 
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
@@ -289,6 +290,7 @@ void UBGraphicsDelegateFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
     mTranslateX = 0;
     mTranslateY = 0;
     mAngleOffset = 0;
+    mRotatedAngle = mAngle;
 
     mInitialTransform = buildTransform();
     mOriginalSize = delegated()->boundingRect().size();
@@ -545,30 +547,15 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
         QLineF startLine(sceneBoundingRect().center(), event->lastScenePos());
         QLineF currentLine(sceneBoundingRect().center(), event->scenePos());
-        mAngle += startLine.angleTo(currentLine);
+        mRotatedAngle += startLine.angleTo(currentLine);
 
         if (event->modifiers().testFlag(Qt::ShiftModifier))
         {
-            if ((int)mAngle % 45 >= 45 - mAngleTolerance || (int)mAngle % 45 <= mAngleTolerance)
-            {
-                mAngle = qRound(mAngle / 45) * 45;
-                mAngleOffset += startLine.angleTo(currentLine);
-                if ((int)mAngleOffset % 360 > mAngleTolerance && (int)mAngleOffset % 360 < 360 - mAngleTolerance)
-                {
-                    mAngle += mAngleOffset;
-                    mAngleOffset = 0;
-                }
-            }
-            else if ((int)mAngle % 30 >= 30 - mAngleTolerance || (int)mAngle % 30 <= mAngleTolerance)
-            {
-                mAngle = qRound(mAngle / 30) * 30;
-                mAngleOffset += startLine.angleTo(currentLine);
-                if ((int)mAngleOffset % 360 > mAngleTolerance && (int)mAngleOffset % 360 < 360 - mAngleTolerance)
-                {
-                    mAngle += mAngleOffset;
-                    mAngleOffset = 0;
-                }
-            }
+            mAngle = qRound(mRotatedAngle / mRotationAngleStep) * mRotationAngleStep;
+        }
+        else
+        {
+            mAngle = mRotatedAngle;
         }
 
         if (mCurrentTool == Rotate)
