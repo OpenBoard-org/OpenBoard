@@ -77,6 +77,13 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
                 TopRight
         };
 
+        enum UBGraphicsTriangleDrawingSide
+        {
+                Adjacent= 0,
+                Opposite,
+                Hypotenuse
+        };
+
         static UBGraphicsTriangleOrientation orientationFromStr(const QString& str)
         {
             if (str == "BottomLeft") return BottomLeft;
@@ -129,6 +136,8 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
 
         QRectF bounding_Rect() const;
 
+        qreal heightAtPosition(qreal position);
+
         QCursor    resizeCursor1() const;
         QCursor    resizeCursor2() const;
 
@@ -157,6 +166,7 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
         bool mResizing1;
         bool mResizing2;
         bool mRotating;
+
         QRect lastRect;
 
         // Coordinates are transformed....
@@ -174,6 +184,7 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
         static const UBGraphicsTriangleOrientation sDefaultOrientation;
 
         UBGraphicsTriangleOrientation mOrientation;
+        UBGraphicsTriangleDrawingSide mDrawingSide;
 
         QPointF A1, B1, C1, A2, B2, C2; // coordinates of points in ext and int triangles
         qreal C;

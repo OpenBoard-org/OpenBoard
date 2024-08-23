@@ -155,6 +155,36 @@ void UBGraphicsTriangle::setOrientation(UBGraphicsTriangleOrientation orientatio
     setPolygon(polygon);
 }
 
+qreal UBGraphicsTriangle::heightAtPosition(qreal position)
+{
+    /*     B____C
+            |  /
+           D|_/E <-- triangle height at given position
+            |/
+            A
+    */
+    qreal AD;
+    switch(mOrientation)
+    {
+        case BottomLeft:
+            AD = QLineF(rect().bottomRight(), QPointF(position, rotationCenter().y())).length();
+            break;
+        case TopLeft:
+            AD = QLineF(rect().topRight(), QPointF(position, rotationCenter().y())).length();
+            break;
+        case TopRight:
+            AD = QLineF(rect().topLeft(), QPointF(position, rotationCenter().y())).length();
+            break;
+        case BottomRight:
+            AD = QLineF(rect().bottomLeft(), QPointF(position, rotationCenter().y())).length();
+            break;
+    }
+
+    qreal AB = rect().width();
+    qreal BC = rect().height();
+    return  (AD * BC / AB); //DE
+}
+
 
 QRectF UBGraphicsTriangle::bounding_Rect() const
 {
@@ -478,33 +508,7 @@ void UBGraphicsTriangle::paintGraduations(QPainter *painter)
             graduationHeight = UBGeometryUtils::millimeterGraduationHeight;
 
         qreal requiredSpace = graduationHeight + SEPARATOR ;
-        /*     B____C
-                |  /
-               D|_/E <-- availableSpace Thalès
-                |/
-                A
-        */
-
-        qreal AD;
-        switch(mOrientation)
-        {
-            case BottomLeft:
-                AD = QLineF(rect().bottomRight(), QPointF(graduationX, rotationCenter().y())).length();
-                break;
-            case TopLeft:
-                AD = QLineF(rect().topRight(), QPointF(graduationX, rotationCenter().y())).length();
-                break;
-            case TopRight:
-                AD = QLineF(rect().topLeft(), QPointF(graduationX, rotationCenter().y())).length();
-                break;
-            case BottomRight:
-                AD = QLineF(rect().bottomLeft(), QPointF(graduationX , rotationCenter().y())).length();
-                break;
-        }
-
-        qreal AB = rect().width();
-        qreal BC = rect().height();
-        qreal DE =  AD * BC / AB, availableSpace = DE;
+        qreal availableSpace = heightAtPosition(graduationX);
 
         if (availableSpace < requiredSpace)
             break;
@@ -1032,17 +1036,31 @@ void UBGraphicsTriangle::StartLine(const QPointF &scenePos, qreal width)
     QPointF itemPos = mapFromScene(scenePos);
     mStrokeWidth = UBDrawingController::drawingController()->currentToolWidth();
 
-    qreal y;
+    QPolygonF oppositeSide({B1,B2,A2,A1}), adjacentSide({B1,C1,C2,B2}); //, hypotenuseSide({A2,C2,C1,A1});
+    qreal x = itemPos.x(), y = itemPos.y();
 
-    if (mOrientation == BottomLeft || mOrientation == BottomRight)
+    if (oppositeSide.containsPoint(itemPos, Qt::WindingFill))
     {
-        y = rect().y() + rect().height() + mStrokeWidth / 2;
+        mDrawingSide = Opposite;
+        x = rect().x();
+        x += (mOrientation == BottomRight || mOrientation == TopRight) ? rect().width() + mStrokeWidth/2 : -mStrokeWidth/2;
     }
-    else
+    else if (adjacentSide.containsPoint(itemPos, Qt::WindingFill))
     {
-        y = rect().y() - mStrokeWidth / 2;
+        mDrawingSide = Adjacent;
+        y = rect().y();
+        y += (mOrientation == BottomLeft || mOrientation == BottomRight) ? rect().height() + mStrokeWidth/2 : -mStrokeWidth/2;
+    }
+    else //if (hypotenuseSide.containsPoint(itemPos, Qt::WindingFill))
+    {
+        mDrawingSide = Hypotenuse;
+        y = rect().y();
+        y += (mOrientation == BottomLeft || mOrientation == BottomRight) ?
+            rect().height() - heightAtPosition(itemPos.x()) - mStrokeWidth/2 :
+            heightAtPosition(itemPos.x()) + mStrokeWidth/2;
     }
 
+    itemPos.setX(x);
     itemPos.setY(y);
     itemPos = mapToScene(itemPos);
 
@@ -1054,18 +1072,44 @@ void UBGraphicsTriangle::DrawLine(const QPointF &scenePos, qreal width)
 {
     Q_UNUSED(width);
     QPointF itemPos = mapFromScene(scenePos);
+    qreal x = itemPos.x(), y = itemPos.y();
 
-    qreal y;
-
-    if (mOrientation == BottomLeft || mOrientation == BottomRight)
+    if (mDrawingSide == Opposite)
     {
-        y = rect().y() + rect().height() + mStrokeWidth / 2;
+        x = rect().x();
+        x += (mOrientation == BottomRight || mOrientation == TopRight) ? rect().width() + mStrokeWidth/2 : -mStrokeWidth/2;
     }
-    else
+    else if (mDrawingSide == Adjacent)
     {
-        y = rect().y() - mStrokeWidth / 2;
+        y = rect().y();
+        y += (mOrientation == BottomLeft || mOrientation == BottomRight) ? rect().height() + mStrokeWidth/2 : -mStrokeWidth/2;
+    }
+    else //if (mDrawingSide == Hypotenuse)
+    {
+        y = rect().y();
+        y += (mOrientation == BottomLeft || mOrientation == BottomRight) ? rect().height() - mStrokeWidth/2 : mStrokeWidth/2;
+
+        int sign; //should we add or substract heightAtPosition to y
+        switch (mOrientation)
+        {
+        case BottomLeft:
+            sign = itemPos.x() > rect().width() ? 1 : -1;
+            break;
+        case TopLeft:
+            sign = itemPos.x() > rect().width() ? -1 : 1;
+            break;
+        case BottomRight:
+            sign = itemPos.x() < rect().x() ? 1 : -1;
+            break;
+        case TopRight:
+            sign = itemPos.x() < rect().x() ? -1 : 1;
+            break;
+        }
+
+        y += sign * heightAtPosition(itemPos.x());
     }
 
+    itemPos.setX(x);
     itemPos.setY(y);
     itemPos = mapToScene(itemPos);
 
