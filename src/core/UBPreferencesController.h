@@ -70,6 +70,9 @@ class UBPreferencesController : public QObject
         UBPreferencesController(QWidget *parent);
         virtual ~UBPreferencesController();
 
+        bool handleKeyEvent(QKeyEvent *event);
+        bool handleMouseEvent(QMouseEvent *event);
+        bool handleTabletEvent(QTabletEvent *event);
 
     public slots:
 
@@ -79,6 +82,8 @@ class UBPreferencesController : public QObject
 
         void wire();
         void init();
+
+        virtual bool eventFilter(QObject* obj, QEvent* event) Q_DECL_OVERRIDE;
 
         UBPreferencesDialog* mPreferencesWindow;
         Ui::preferencesDialog* mPreferencesUI;
@@ -104,14 +109,21 @@ class UBPreferencesController : public QObject
         void toolbarOrientationVertical(bool checked);
         void toolbarOrientationHorizontal(bool checked);
         void systemOSKCheckBoxToggled(bool checked);
+        void actionSelected(const QModelIndex& index);
+        void recordingClicked(bool checked);
+        void abortClicked();
+        void resetClicked();
 
     private slots:
         void adjustScreensPreferences();
+        void applyShortcutFilter(const QString& filter, int filterCol = -1);
+
 
     private:
         static qreal sSliderRatio;
         static qreal sMinPenWidth;
         static qreal sMaxPenWidth;
+        QModelIndex currentIndex;
 };
 
 class UBBrushPropertiesFrame : public Ui::brushProperties
