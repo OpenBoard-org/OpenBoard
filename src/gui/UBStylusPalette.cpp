@@ -36,6 +36,8 @@
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 #include "core/UBApplicationController.h"
+#include "core/UBShortcutManager.h"
+
 
 #include "board/UBDrawingController.h"
 
@@ -87,6 +89,8 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
         connect(mActionGroup, SIGNAL(triggered(QAction*)), this, SIGNAL(buttonGroupClicked(QAction*)));
     }
 
+    UBShortcutManager::shortcutManager()->addActionGroup(mActionGroup);
+
     adjustSizeAndPosition();
 
     initPosition();
@@ -126,7 +130,10 @@ void UBStylusPalette::initPosition()
 
 UBStylusPalette::~UBStylusPalette()
 {
-
+    if (mActionGroup)
+    {
+        UBShortcutManager::shortcutManager()->removeActionGroup(mActionGroup);
+    }
 }
 
 void UBStylusPalette::stylusToolDoubleClicked()
