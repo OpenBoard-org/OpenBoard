@@ -45,6 +45,7 @@
 #include "UBPreferencesController.h"
 #include "UBIdleTimer.h"
 #include "UBApplicationController.h"
+#include "UBShortcutManager.h"
 
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
@@ -653,14 +654,14 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
         }
     }
 
-    if (event->type() == QEvent::TabletLeaveProximity)
+    else if (event->type() == QEvent::TabletLeaveProximity)
     {
         if (boardController && boardController->controlView())
             boardController->controlView()->forcedTabletRelease();
     }
 
 
-    if (event->type() == QEvent::ApplicationActivate)
+    else if (event->type() == QEvent::ApplicationActivate)
     {
         boardController->controlView()->setMultiselection(false);
 
@@ -676,6 +677,15 @@ bool UBApplication::eventFilter(QObject *obj, QEvent *event)
             UBPlatformUtils::showFullScreen(mainWindow);
         }
 #endif
+    }
+
+    else if (event->type() == QEvent::KeyRelease)
+    {
+        // intercept key release events for shortcut handler
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
+        return UBShortcutManager::shortcutManager()->handleKeyReleaseEvent(keyEvent)
+                    || result;
     }
 
     return result;
