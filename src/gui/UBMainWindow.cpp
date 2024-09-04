@@ -68,14 +68,14 @@ UBMainWindow::UBMainWindow(QWidget *parent, Qt::WindowFlags flags)
     setCentralWidget(centralWidget);
 
 #ifdef Q_OS_OSX
-    actionPreferences->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Comma));
-    actionQuit->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
+    actionPreferences->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Comma));
+    actionQuit->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q));
 #elif defined(Q_OS_WIN)
-    actionPreferences->setShortcut(QKeySequence(Qt::ALT + Qt::Key_Return));
+    actionPreferences->setShortcut(QKeySequence(Qt::ALT | Qt::Key_Return));
     // this code, because it unusable, system key combination can`t be triggered, even we add it manually
-    actionQuit->setShortcut(QKeySequence(Qt::ALT + Qt::Key_F4));
+    actionQuit->setShortcut(QKeySequence(Qt::ALT | Qt::Key_F4));
 #else
-    actionQuit->setShortcut(QKeySequence(Qt::ALT + Qt::Key_F4));
+    actionQuit->setShortcut(QKeySequence(Qt::ALT | Qt::Key_F4));
 #endif
 
     UBShortcutManager::shortcutManager()->addMainActions(this);
