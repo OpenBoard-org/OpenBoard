@@ -380,6 +380,8 @@ public slots:
         void textUndoCommandAdded(UBGraphicsTextItem *textItem);
 
         void setToolCursor(int tool);
+        void drawMarkerCircle(const QPointF& pEndPoint);
+        void drawPenCircle(const QPointF& pEndPoint);
 
         void selectionChangedProcessing();
         void moveMagnifier();
@@ -413,8 +415,6 @@ signals:
         void redrawEraser(bool pressed);
         void hideEraser();
         void drawPointer(const QPointF& pEndPoint, bool isFirstDraw = false);
-        void drawMarkerCircle(const QPointF& pEndPoint);
-        void drawPenCircle(const QPointF& pEndPoint);
         void hideMarkerCircle();
         void hidePenCircle();
         void DisposeMagnifierQWidgets();
