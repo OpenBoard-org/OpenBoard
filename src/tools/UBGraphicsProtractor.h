@@ -114,6 +114,8 @@ class UBGraphicsProtractor : public UBAbstractDrawRuler, public QGraphicsEllipse
         qreal   mSpan;
         qreal   mStartAngle;
         qreal   mScaleFactor;
+        qreal   mCursorRotationAngle;
+        qreal   mItemRotationAngle;
 
         QGraphicsSvgItem* mResetSvgItem;
         QGraphicsSvgItem* mResizeSvgItem;
