@@ -39,6 +39,21 @@ static const char* descriptionProperty("description");
 static const char* mouseButtonProperty("mouseButton");
 static const char* tabletButtonProperty("tabletButton");
 
+// helper function to flip keyboard modifier depending on Qt version
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    QKeyCombination flipModifier(const QKeyCombination& keyCombination, Qt::KeyboardModifier modifier)
+    {
+        Qt::KeyboardModifiers mod = keyCombination.keyboardModifiers();
+        mod.setFlag(modifier, !mod.testFlag(modifier));
+        return QKeyCombination(mod, keyCombination.key());
+    }
+#else
+    int flipModifier(int keyCombination, Qt::KeyboardModifier modifier)
+    {
+        return keyCombination ^ modifier;
+    }
+#endif
+
 UBShortcutManager* UBShortcutManager::sShortcutManager = nullptr;
 
 UBShortcutManager::UBShortcutManager() : mIgnoreCtrl(false)
@@ -608,7 +623,7 @@ bool UBShortcutManager::hasCtrlConflicts(const QKeySequence &additionalShortcut)
         else
         {
             shortcuts << action->shortcut();
-            ctrlShortcuts << QKeySequence(action->shortcut()[0] ^ Qt::CTRL);
+            ctrlShortcuts << QKeySequence(flipModifier(action->shortcut()[0], Qt::ControlModifier));
         }
 
     }
@@ -616,7 +631,7 @@ bool UBShortcutManager::hasCtrlConflicts(const QKeySequence &additionalShortcut)
     if (!additionalShortcut.isEmpty())
     {
         shortcuts << additionalShortcut;
-        ctrlShortcuts << QKeySequence(additionalShortcut[0] ^ Qt::CTRL);
+        ctrlShortcuts << QKeySequence(flipModifier(additionalShortcut[0], Qt::ControlModifier));
     }
 
     return shortcuts.intersects(ctrlShortcuts);
@@ -688,8 +703,14 @@ void UBShortcutManager::ignoreCtrl(bool ignore)
             {
                 QList<QKeySequence> shortcuts = action->shortcuts();
 
-                if (ignore && !shortcuts.empty() && shortcuts[0][0] & Qt::CTRL) {
-                    QKeySequence noCtrl(shortcuts[0][0] ^ Qt::CTRL);
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+                bool hasCtrl = !shortcuts.empty() && shortcuts[0][0].keyboardModifiers().testFlag(Qt::ControlModifier);
+#else
+                bool hasCtrl = !shortcuts.empty() && shortcuts[0][0] & Qt::ControlModifier;
+#endif
+
+                if (ignore && hasCtrl) {
+                    QKeySequence noCtrl(flipModifier(shortcuts[0][0], Qt::ControlModifier));
                     shortcuts << noCtrl;
                     action->setShortcuts(shortcuts);
                 }
@@ -829,7 +850,11 @@ bool UBActionGroupHistory::keyReleased(QKeyEvent *event)
 
         if (keySequence.count() > 0)
         {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+            int actionKey = action->shortcut()[0].key();
+#else
             int actionKey = action->shortcut()[0] & ~Qt::KeyboardModifierMask;
+#endif
 
             if (key == actionKey)
             {
