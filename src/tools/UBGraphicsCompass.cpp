@@ -64,6 +64,8 @@ UBGraphicsCompass::UBGraphicsCompass()
     , mMoveToolSvgItem(0)
     , mAntiScaleRatio(1.0)
     , mDrewCenterCross(false)
+    , mCursorRotationAngle(0)
+    , mItemRotationAngle(0)
 {
     setRect(sDefaultRect);
 
@@ -262,6 +264,8 @@ void UBGraphicsCompass::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
         mRotating = true;
         mResizing = false;
+        mCursorRotationAngle = 0;
+        mItemRotationAngle = angleInDegrees();
         event->accept();
         qDebug() << "hinge";
     }
@@ -345,11 +349,27 @@ void UBGraphicsCompass::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         {
             QLineF currentLine(needlePosition(), event->pos());
             QLineF lastLine(needlePosition(), event->lastPos());
-            qreal deltaAngle = currentLine.angleTo(lastLine);
+            mCursorRotationAngle = std::fmod(mCursorRotationAngle + lastLine.angleTo(currentLine), 360.);
+            qreal newAngle = mItemRotationAngle + mCursorRotationAngle;
+
+            if (event->modifiers().testFlag(Qt::ShiftModifier))
+            {
+                qreal step = UBSettings::settings()->rotationAngleStep->get().toReal();
+                newAngle = qRound(newAngle / step) * step;
+            }
+
+            newAngle = std::fmod(newAngle, 360.);
+
+            QPointF topLeft = sceneTransform().map(boundingRect().topLeft());
+            QPointF topRight = sceneTransform().map(boundingRect().topRight());
+            qreal currentAngle = QLineF(topLeft, topRight).angle();
+            qreal deltaAngle = currentAngle - newAngle;
+
             if (deltaAngle > 180)
                 deltaAngle -= 360;
             else if (deltaAngle < -180)
                 deltaAngle += 360;
+
             rotateAroundNeedle(deltaAngle);
 
             if (mDrawing)

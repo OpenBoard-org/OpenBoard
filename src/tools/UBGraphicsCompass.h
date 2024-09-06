@@ -125,6 +125,8 @@ class UBGraphicsCompass: public QObject, public QGraphicsRectItem, public UBItem
         QGraphicsSvgItem* mMoveToolSvgItem;
         qreal mAntiScaleRatio;
         bool mDrewCenterCross;
+        qreal mCursorRotationAngle;
+        qreal mItemRotationAngle;
 
         // Constants
         static const int                      sNeedleLength = 12;
