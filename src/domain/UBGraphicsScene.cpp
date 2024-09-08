@@ -2509,30 +2509,27 @@ QPointF UBGraphicsScene::snap(const QPointF& point, double* force, std::optional
     double snapForce{0};
     double gridSize = backgroundGridSize();
 
-    // determine closest grid point
-    if (mPageBackground != UBPageBackground::plain)
+    if (mIntermediateLines)
     {
-        if (mIntermediateLines)
-        {
-            gridSize /= 2.;
-        }
-
-        // y axis
-        double floorY = std::floor(point.y () / gridSize) * gridSize;
-        snapPoint.setY(point.y() - floorY < gridSize / 2. ? floorY : floorY + gridSize);
-
-        if (mPageBackground == UBPageBackground::crossed)
-        {
-            // x axis
-            double floorX = std::floor(point.x () / gridSize) * gridSize;
-            snapPoint.setX(point.x() - floorX < gridSize / 2. ? floorX : floorX + gridSize);
-        }
-
-        // force is a number between 0 and 1 based on the manhattan distance of the snap point
-        // from the original point
-        double relativeDist = (snapPoint - point).manhattanLength() / gridSize;
-        snapForce = std::max(1. - relativeDist, 0.);
+        gridSize /= 2.;
     }
+
+    // y axis
+    double floorY = std::floor(point.y () / gridSize) * gridSize;
+    snapPoint.setY(point.y() - floorY < gridSize / 2. ? floorY : floorY + gridSize);
+
+    // for blank background, use same snapping as for grid
+    if (mPageBackground == UBPageBackground::crossed || mPageBackground == UBPageBackground::plain)
+    {
+        // x axis
+        double floorX = std::floor(point.x () / gridSize) * gridSize;
+        snapPoint.setX(point.x() - floorX < gridSize / 2. ? floorX : floorX + gridSize);
+    }
+
+    // force is a number between 0 and 1 based on the manhattan distance of the snap point
+    // from the original point
+    double relativeDist = (snapPoint - point).manhattanLength() / gridSize;
+    snapForce = std::max(1. - relativeDist, 0.);
 
     if (proposedPoint)
     {
