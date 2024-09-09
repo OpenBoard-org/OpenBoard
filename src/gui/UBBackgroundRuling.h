@@ -25,6 +25,7 @@
 
 #include <QColor>
 #include <QMap>
+#include <QPointF>
 #include <QUuid>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
@@ -55,13 +56,18 @@ public:
     bool isUserProvided() const;
 
     void draw(QPainter* painter, const QRectF& rect, double gridSize, const QRectF& nominalScene, bool onDark) const;
+    QPointF snap(const QPointF& point, double gridSize, const QRectF& nominalScene, double* force = nullptr,
+                 std::optional<QPointF> proposedPoint = {}, QPointF* gridSnapPoint = nullptr) const;
 
 private:
     class Line;  // forward
-    void setLinePainter(QPainter* painter, const Line& line, bool onDark, QColor defaultOnDark,
-                        QColor defaultOnLight) const;
-    void drawBorderLines(QPainter* painter, const QList<Line>& borderLines, QLineF line, Qt::Edge edge, double dotsPerMm,
-                         bool onDark, QColor defaultOnDark, QColor defaultOnLight) const;
+    void determineGridLines(const QRectF& rect, double gridSize, const QRectF& nominalScene,
+                        std::function<void(const Line& line, QLineF gridLine)> handleGridLine = nullptr,
+                        std::function<void(const QList<Line>&, QLineF, Qt::Edge)> handleBorder = nullptr) const;
+    static void setLinePainter(QPainter* painter, const Line& line, bool onDark, QColor defaultOnDark,
+                        QColor defaultOnLight);
+    static void drawBorderLines(QPainter* painter, const QList<Line>& borderLines, QLineF line, Qt::Edge edge, double dotsPerMm,
+                        bool onDark, QColor defaultOnDark, QColor defaultOnLight);
 
 private:
     // data classes

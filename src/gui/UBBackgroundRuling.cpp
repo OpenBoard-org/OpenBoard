@@ -322,6 +322,147 @@ void UBBackgroundRuling::draw(QPainter* painter, const QRectF& rect, double grid
         return;
     }
 
+    const auto dotsPerMm = gridSize / 10;
+    const QColor defaultOnDark{UBSettings::settings()->boardCrossColorDarkBackground->get().toString()};
+    const QColor defaultOnLight{UBSettings::settings()->boardCrossColorLightBackground->get().toString()};
+    painter->setRenderHint(QPainter::Antialiasing, true);
+
+    auto paintGridLine = [this, painter, rect, onDark, defaultOnDark, defaultOnLight](Line line, QLineF gridLine){
+        if (clip(rect, gridLine))
+        {
+            setLinePainter(painter, line, onDark, defaultOnDark, defaultOnLight);
+            painter->drawLine(gridLine);
+        }
+    };
+
+    auto paintBorderLine = [this, painter, dotsPerMm, onDark, defaultOnDark, defaultOnLight](const QList<Line>& borderLines, QLineF line, Qt::Edge edge){
+        drawBorderLines(painter, borderLines, line, edge, dotsPerMm, onDark, defaultOnDark, defaultOnLight);
+    };
+
+    determineGridLines(rect, gridSize, nominalScene, paintGridLine, paintBorderLine);
+}
+
+QPointF UBBackgroundRuling::snap(const QPointF& point, double gridSize, const QRectF& nominalScene, double* force, std::optional<QPointF> proposedPoint,
+                                 QPointF* gridSnapPoint) const
+{
+    // algorithm:
+    // - determine the lines within one grid size around the point
+    // - if we have only one line group, snap orthogonally to the closest line
+    // - if we have more than one line group, compute all intersections of the lines
+    // - snap to the closest intersection
+
+    QRectF rect{0, 0, 2 * gridSize, 2 * gridSize};
+    rect.moveCenter(point);
+    QList<QLineF> lines;
+    determineGridLines(rect, gridSize, nominalScene, [&lines](const Line& line, QLineF gridLine){
+        lines << gridLine;
+    });
+
+    if (lines.empty())
+    {
+        return {};
+    }
+
+    QPointF snapPoint{point};
+    bool haveSnapPoint{false};
+
+    if (mRules->linegroups().size() == 1)
+    {
+        // snap to closest line
+        std::vector<double> distances;
+        distances.reserve(lines.size());
+
+        for (const auto& line : lines)
+        {
+            distances.push_back(std::fabs(distance(line, point)));
+        }
+
+        const auto minElement = std::min_element(distances.cbegin(), distances.cend());
+        const auto index = std::distance(distances.cbegin(), minElement);
+
+        // now compute the base point of the normal vector
+        QLineF gridLine = lines.at(index);
+        QLineF normal = gridLine.normalVector();
+        normal.translate(point - normal.p1());
+        gridLine.intersects(normal, &snapPoint);
+        haveSnapPoint = true;
+    }
+    else
+    {
+        // we have multiple line groups; calculate all intersections
+        QList<QPointF> intersections;
+
+        for (int i = 0; i < lines.size() - 1; ++i)
+        {
+            for (int j = i + 1; j < lines.size(); ++j)
+            {
+                QPointF intersection;
+
+                if (lines.at(i).intersects(lines.at(j), &intersection) == QLineF::BoundedIntersection)
+                {
+                    intersections << intersection;
+                }
+            }
+        }
+
+        if (!intersections.isEmpty())
+        {
+            // find the closest intersection
+            std::vector<double> distances;
+            distances.reserve(intersections.size());
+
+            for (const auto& intersection : intersections)
+            {
+                distances.push_back(QLineF(point, intersection).length());
+            }
+
+            const auto closestIntersection = std::min_element(distances.cbegin(), distances.cend());
+            const auto index = std::distance(distances.cbegin(), closestIntersection);
+            snapPoint = intersections.at(index);
+            haveSnapPoint = true;
+        }
+    }
+
+    if (haveSnapPoint && gridSnapPoint)
+    {
+        *gridSnapPoint = snapPoint;
+    }
+
+    // force is a number between 0 and 1 based on the manhattan distance of the snap point
+    // from the original point
+    const double relativeDist = (snapPoint - point).manhattanLength() / gridSize;
+    double snapForce = haveSnapPoint ? std::max(1. - relativeDist, 0.) : 0;
+
+    if (proposedPoint)
+    {
+        // compute force for proposed point and take that if it has higher force
+        const double relativeDist = (proposedPoint.value() - point).manhattanLength() / gridSize;
+        double proposedForce = std::max(1. - relativeDist, 0.);
+
+        if (proposedForce > snapForce)
+        {
+            snapForce = proposedForce;
+            snapPoint = proposedPoint.value();
+        }
+    }
+
+    if (force)
+    {
+        *force = snapForce;
+    }
+
+    return snapPoint - point;
+}
+
+void UBBackgroundRuling::determineGridLines(const QRectF& rect, double gridSize, const QRectF& nominalScene,
+                                            std::function<void (const Line&, QLineF)> handleGridLine,
+                                            std::function<void (const QList<Line>&, QLineF, Qt::Edge)> handleBorder) const
+{
+    if (!mRules)
+    {
+        return;
+    }
+
     if (gridSize == 0)
     {
         // guess reasonable grid size for buttons
@@ -343,10 +484,6 @@ void UBBackgroundRuling::draw(QPainter* painter, const QRectF& rect, double grid
     }
 
     const auto dotsPerMm = gridSize / 10;
-
-    painter->setRenderHint(QPainter::Antialiasing, true);
-    const QColor defaultOnDark{UBSettings::settings()->boardCrossColorDarkBackground->get().toString()};
-    const QColor defaultOnLight{UBSettings::settings()->boardCrossColorLightBackground->get().toString()};
 
     // loop through line groups
     for (const auto& linegroup : mRules->linegroups())
@@ -511,8 +648,6 @@ void UBBackgroundRuling::draw(QPainter* painter, const QRectF& rect, double grid
                 const auto offset = line.offset() * dotsPerMm;
                 const auto offsetShift = (normal.p1() - normal.p2()) / normal.length() * offset;
 
-                setLinePainter(painter, line, onDark, defaultOnDark, defaultOnLight);
-
                 auto gridLine = originLine.translated(index * spaceShift + offsetShift);
 
                 if (hasFromStretch)
@@ -527,15 +662,14 @@ void UBBackgroundRuling::draw(QPainter* painter, const QRectF& rect, double grid
                     shift.setLength(-fromStretch);
                     gridLine.setP1(shift.p2());
 
-                    if (&line == &linegroup.lines().last())
+                    if (handleBorder && &line == &linegroup.lines().last())
                     {
                         // draw border lines on "from" side
                         QLineF borderLine{gridLine.p1() - offsetShift, gridLine.p1()};
 
                         if (clip(rect, borderLine))
                         {
-                            drawBorderLines(painter, borderLines, borderLine, Qt::LeftEdge, dotsPerMm, onDark,
-                                            defaultOnDark, defaultOnLight);
+                            handleBorder(borderLines, borderLine, Qt::LeftEdge);
                         }
                     }
                 }
@@ -552,30 +686,26 @@ void UBBackgroundRuling::draw(QPainter* painter, const QRectF& rect, double grid
                     shift.setLength(toStretch);
                     gridLine.setP2(shift.p2());
 
-                    if (&line == &linegroup.lines().last())
+                    if (handleBorder && &line == &linegroup.lines().last())
                     {
                         // draw border lines on "to" side
                         QLineF borderLine{gridLine.p2() - offsetShift, gridLine.p2()};
 
                         if (clip(rect, borderLine))
                         {
-                            drawBorderLines(painter, borderLines, borderLine, Qt::RightEdge, dotsPerMm, onDark,
-                                            defaultOnDark, defaultOnLight);
+                            handleBorder(borderLines, borderLine, Qt::RightEdge);
                         }
                     }
                 }
 
-                if (clip(rect, gridLine))
-                {
-                    painter->drawLine(gridLine);
-                }
+                handleGridLine(line, gridLine);
             }
         }
     }
 }
 
 void UBBackgroundRuling::setLinePainter(QPainter* painter, const Line& line, bool onDark, QColor defaultOnDark,
-                                        QColor defaultOnLight) const
+                                        QColor defaultOnLight)
 {
     const auto colorOnDark = line.color().onDark();
     const auto colorOnLight = line.color().onLight();
@@ -594,7 +724,7 @@ void UBBackgroundRuling::setLinePainter(QPainter* painter, const Line& line, boo
 
 void UBBackgroundRuling::drawBorderLines(QPainter* painter, const QList<Line>& borderLines, QLineF line, Qt::Edge edge,
                                          double dotsPerMm, bool onDark, QColor defaultOnDark,
-                                         QColor defaultOnLight) const
+                                         QColor defaultOnLight)
 {
     painter->save();
 
