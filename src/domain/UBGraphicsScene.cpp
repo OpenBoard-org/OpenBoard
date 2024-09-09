@@ -2480,56 +2480,14 @@ bool UBGraphicsScene::isSnapping() const
 
 QPointF UBGraphicsScene::snap(const QPointF& point, double* force, std::optional<QPointF> proposedPoint, QPointF* gridSnapPoint) const
 {
-    QPointF snapPoint{point};
-    double snapForce{0};
-    double gridSize = backgroundGridSize();
-
-    if (mIntermediateLines)
+    if (!mBackground)
     {
-        gridSize /= 2.;
+        return {};
     }
 
-    // y axis
-    double floorY = std::floor(point.y () / gridSize) * gridSize;
-    snapPoint.setY(point.y() - floorY < gridSize / 2. ? floorY : floorY + gridSize);
-
-    // for blank background, use same snapping as for grid
-    if (mPageBackground == UBPageBackground::crossed || mPageBackground == UBPageBackground::plain)
-    {
-        // x axis
-        double floorX = std::floor(point.x () / gridSize) * gridSize;
-        snapPoint.setX(point.x() - floorX < gridSize / 2. ? floorX : floorX + gridSize);
-    }
-
-    // force is a number between 0 and 1 based on the manhattan distance of the snap point
-    // from the original point
-    double relativeDist = (snapPoint - point).manhattanLength() / gridSize;
-    snapForce = std::max(1. - relativeDist, 0.);
-
-    if (gridSnapPoint)
-    {
-        *gridSnapPoint = snapPoint;
-    }
-
-    if (proposedPoint)
-    {
-        // compute force for proposed point and take that if it has higher force
-        double relativeDist = (proposedPoint.value() - point).manhattanLength() / gridSize;
-        double proposedForce = std::max(1. - relativeDist, 0.);
-
-        if (proposedForce > snapForce)
-        {
-            snapForce = proposedForce;
-            snapPoint = proposedPoint.value();
-        }
-    }
-
-    if (force)
-    {
-        *force = snapForce;
-    }
-
-    return snapPoint - point;
+    QRectF nominalScene{{0, 0}, mNominalSize};
+    nominalScene.moveCenter({0, 0});
+    return mBackground->snap(point, backgroundGridSize(), nominalScene, force, proposedPoint, gridSnapPoint);
 }
 
 QPointF UBGraphicsScene::snap(const std::vector<QPointF>& corners, int* snapIndex) const
