@@ -64,6 +64,8 @@ UBGraphicsCompass::UBGraphicsCompass()
     , mMoveToolSvgItem(0)
     , mAntiScaleRatio(1.0)
     , mDrewCenterCross(false)
+    , mCursorRotationAngle(0)
+    , mItemRotationAngle(0)
 {
     setRect(sDefaultRect);
 
@@ -262,6 +264,8 @@ void UBGraphicsCompass::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
         mRotating = true;
         mResizing = false;
+        mCursorRotationAngle = 0;
+        mItemRotationAngle = angleInDegrees();
         event->accept();
         qDebug() << "hinge";
     }
@@ -298,25 +302,74 @@ void UBGraphicsCompass::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     {
         QGraphicsRectItem::mouseMoveEvent(event);
         mDrewCenterCross = false;
+
+        // snap to grid
+        if (event->modifiers().testFlag(Qt::ShiftModifier)) {
+            // snap needle position to grid
+            QPointF rotCenter = mapToScene(needlePosition());
+            QPointF snapVector = scene()->snap(rotCenter);
+            setPos(pos() + snapVector);
+        }
     }
     else
     {
         if (mResizing)
         {
-            QPointF delta = event->pos() - event->lastPos();
-            if (rect().width() + delta.x() < sMinRadius)
-                delta.setX(sMinRadius - rect().width());
-            setRect(QRectF(rect().topLeft(), QSizeF(rect().width() + delta.x(), rect().height())));
+            // snap to grid
+            if (event->modifiers().testFlag(Qt::ShiftModifier))
+            {
+                // snap cursor position to grid
+                QPointF cursorPos = mapToScene(event->pos());
+                QPointF snapPos = cursorPos + scene()->snap(cursorPos);
+
+                // now resize so that the pencil goes through the snap point
+                QPointF needlePos = mapToScene(needlePosition());
+                double length = QLineF(needlePos, snapPos).length();
+
+                if (length >= sMinRadius)
+                {
+                    setRect(QRectF(rect().topLeft(), QSizeF(length, rect().height())));
+
+                    // rotate so that pencil is on snap point
+                    QLineF currentLine(needlePosition(), mapFromScene(snapPos));
+                    QLineF lastLine(needlePosition(), pencilPosition());
+                    qreal deltaAngle = currentLine.angleTo(lastLine);
+                    rotateAroundNeedle(deltaAngle);
+                }
+            }
+            else
+            {
+                QPointF delta = event->pos() - event->lastPos();
+                if (rect().width() + delta.x() < sMinRadius)
+                    delta.setX(sMinRadius - rect().width());
+                setRect(QRectF(rect().topLeft(), QSizeF(rect().width() + delta.x(), rect().height())));
+            }
         }
         else
         {
             QLineF currentLine(needlePosition(), event->pos());
             QLineF lastLine(needlePosition(), event->lastPos());
-            qreal deltaAngle = currentLine.angleTo(lastLine);
+            mCursorRotationAngle = std::fmod(mCursorRotationAngle + lastLine.angleTo(currentLine), 360.);
+            qreal newAngle = mItemRotationAngle + mCursorRotationAngle;
+
+            if (event->modifiers().testFlag(Qt::ShiftModifier))
+            {
+                qreal step = UBSettings::settings()->rotationAngleStep->get().toReal();
+                newAngle = qRound(newAngle / step) * step;
+            }
+
+            newAngle = std::fmod(newAngle, 360.);
+
+            QPointF topLeft = sceneTransform().map(boundingRect().topLeft());
+            QPointF topRight = sceneTransform().map(boundingRect().topRight());
+            qreal currentAngle = QLineF(topLeft, topRight).angle();
+            qreal deltaAngle = currentAngle - newAngle;
+
             if (deltaAngle > 180)
                 deltaAngle -= 360;
             else if (deltaAngle < -180)
                 deltaAngle += 360;
+
             rotateAroundNeedle(deltaAngle);
 
             if (mDrawing)

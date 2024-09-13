@@ -49,6 +49,8 @@ UBGraphicsTriangle::UBGraphicsTriangle()
     , mResizing1(false)
     , mResizing2(false)
     , mRotating(false)
+    , mCursorRotationAngle(0)
+    , mItemRotationAngle(0)
     , mShouldPaintInnerTriangle(true)
 
 {
@@ -555,7 +557,7 @@ void UBGraphicsTriangle::rotateAroundCenter(QTransform& transform, QPointF cente
 }
 
 
-QPointF    UBGraphicsTriangle::rotationCenter() const
+QPointF UBGraphicsTriangle::rotationCenter() const
 {
     return B1;
 }
@@ -787,6 +789,10 @@ void UBGraphicsTriangle::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if(rotateRect().contains(event->pos()))
     {
         mRotating = true;
+        mCursorRotationAngle = 0;
+        QPointF topLeft = sceneTransform().map(boundingRect().topLeft());
+        QPointF topRight = sceneTransform().map(boundingRect().topRight());
+        mItemRotationAngle = QLineF(topLeft, topRight).angle();
         event->accept();
     }
     else
@@ -807,6 +813,14 @@ void UBGraphicsTriangle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if (!mResizing1 && !mResizing2 && !mRotating)
     {
         QGraphicsItem::mouseMoveEvent(event);
+
+        // snap to grid
+        if (event->modifiers().testFlag(Qt::ShiftModifier)) {
+            // snap rotation center to grid
+            QPointF rotCenter = mapToScene(rotationCenter());
+            QPointF snapVector = scene()->snap(rotCenter);
+            setPos(pos() + snapVector);
+        }
     }
     else
     {
@@ -865,13 +879,24 @@ void UBGraphicsTriangle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         {
             QLineF currentLine(rotationCenter(), event->pos());
             QLineF lastLine(rotationCenter(), event->lastPos());
-            rotateAroundCenter(currentLine.angleTo(lastLine));
+            mCursorRotationAngle = std::fmod(mCursorRotationAngle + lastLine.angleTo(currentLine), 360.);
+            qreal newAngle = mItemRotationAngle + mCursorRotationAngle;
 
-            //display current angle
+            if (event->modifiers().testFlag(Qt::ShiftModifier))
+            {
+                qreal step = UBSettings::settings()->rotationAngleStep->get().toReal();
+                newAngle = qRound(newAngle / step) * step;
+            }
+
+            newAngle = std::fmod(newAngle, 360.);
+
             QPointF topLeft = sceneTransform().map(boundingRect().topLeft());
             QPointF topRight = sceneTransform().map(boundingRect().topRight());
-            QLineF topLine(topLeft, topRight);
-            UBApplication::boardController->setCursorFromAngle(QString::number(topLine.angle(), 'f', 1));
+            qreal currentAngle = QLineF(topLeft, topRight).angle();
+            rotateAroundCenter(currentAngle - newAngle);
+
+            //display current angle
+            UBApplication::boardController->setCursorFromAngle(QString::number(newAngle, 'f', 1));
         }
 
         //-----------------------------------------------//

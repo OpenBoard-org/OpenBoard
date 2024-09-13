@@ -99,9 +99,11 @@ private:
     QBrush mLocalBrush;
 
     QPointF mPressedPos;
+    QRectF mStartingBounds;
     QPointF mLastMovedPos;
     QPointF mLastTranslateOffset;
-    qreal mRotationAngle;
+    qreal mCursorRotationAngle;
+    qreal mItemRotationAngle;
 
     bool mIsLocked;
 

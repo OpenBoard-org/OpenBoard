@@ -32,6 +32,7 @@
 #include "domain/UBItem.h"
 #include "domain/UBGraphicsItemZLevelUndoCommand.h"
 #include "domain/UBGraphicsGroupContainerItem.h"
+#include "domain/UBGraphicsScene.h"
 #include "board/UBBoardController.h"
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"
@@ -44,7 +45,8 @@
 UBSelectionFrame::UBSelectionFrame()
     : mThickness(UBSettings::settings()->objectFrameWidth)
     , mAntiscaleRatio(1.0)
-    , mRotationAngle(0)
+    , mCursorRotationAngle(0)
+    , mItemRotationAngle(0)
     , mDeleteButton(0)
     , mDuplicateButton(0)
     , mZOrderUpButton(0)
@@ -106,7 +108,8 @@ void UBSelectionFrame::setEnclosedItems(const QList<QGraphicsItem*> pGraphicsIte
 {
     mButtons.clear();
     mButtons.append(mDeleteButton);
-    mRotationAngle = 0;
+    mCursorRotationAngle = 0;
+    mItemRotationAngle = 0;
 
     QRegion resultRegion;
     UBGraphicsFlags resultFlags;
@@ -147,12 +150,12 @@ void UBSelectionFrame::setEnclosedItems(const QList<QGraphicsItem*> pGraphicsIte
 
 void UBSelectionFrame::updateRect()
 {
-    QRegion resultRegion;
+    QRectF result;
+
     foreach (UBGraphicsItemDelegate *curDelegateItem, mEnclosedtems) {
-        resultRegion |= curDelegateItem->delegated()->boundingRegion(curDelegateItem->delegated()->sceneTransform());
+        result |= curDelegateItem->delegated()->sceneBoundingRect();
     }
 
-    QRectF result = resultRegion.boundingRect();
     setRect(result);
 
     placeButtons();
@@ -170,8 +173,10 @@ void UBSelectionFrame::updateScale()
 void UBSelectionFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     mPressedPos = mLastMovedPos = event->pos();
+    mStartingBounds = rect();
     mLastTranslateOffset = QPointF();
-    mRotationAngle = 0;
+    mCursorRotationAngle = 0;
+    mItemRotationAngle = 0;
 
     if (scene()->itemAt(event->scenePos(), transform()) == mRotateButton) {
         mOperationMode = om_rotating;
@@ -188,8 +193,53 @@ void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     QPointF dp = event->pos() - mPressedPos;
     QPointF rotCenter = mapToScene(rect().center());
 
-    foreach (UBGraphicsItemDelegate *curDelegate, mEnclosedtems) {
+    QLineF startLine(sceneBoundingRect().center(), event->lastScenePos());
+    QLineF currentLine(sceneBoundingRect().center(), event->scenePos());
+    qreal dAngle = startLine.angleTo(currentLine);
+    mCursorRotationAngle = std::fmod(mCursorRotationAngle - dAngle + 360., 360.);
 
+    // snap to grid and angle
+    if (event->modifiers().testFlag(Qt::ShiftModifier))
+    {
+        if (mOperationMode == om_moving)
+        {
+            const auto ubscene = dynamic_cast<UBGraphicsScene*>(scene());
+
+            if (ubscene)
+            {
+                Qt::Corner corner;
+                QRectF movedBounds = mStartingBounds.translated(dp);
+                QPointF snapVector = ubscene->snap(movedBounds, &corner);
+                dp += snapVector;
+
+                // display snap indicator
+                if (mOperationMode == om_moving && !snapVector.isNull())
+                {
+                    UBApplication::boardController->controlView()->updateSnapIndicator(corner);
+                }
+            }
+        }
+        else if (mOperationMode == om_rotating)
+        {
+            qreal step = UBSettings::settings()->rotationAngleStep->get().toReal();
+            qreal snappedAngle = qRound(mCursorRotationAngle / step) * step;
+            dAngle = mItemRotationAngle - snappedAngle;
+            mItemRotationAngle = std::fmod(snappedAngle + 360., 360.);
+        }
+    }
+    else
+    {
+        mItemRotationAngle = mCursorRotationAngle;
+    }
+
+    if (mOperationMode == om_rotating)
+    {
+        auto angleDecimals = mItemRotationAngle - std::floor(mItemRotationAngle);
+        UBApplication::boardController->setCursorFromAngle(QString::number(((int)mItemRotationAngle % 360) + angleDecimals, 'f', 1));
+    }
+
+    foreach (UBGraphicsItemDelegate *curDelegate, mEnclosedtems)
+    {
         switch (static_cast<int>(mOperationMode)) {
         case om_moving : {
             QGraphicsItem *item = curDelegate->delegated();
@@ -212,13 +262,8 @@ void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         } break;
 
         case om_rotating : {
-            QLineF startLine(sceneBoundingRect().center(), event->lastScenePos());
-            QLineF currentLine(sceneBoundingRect().center(), event->scenePos());
-            qreal dAngle = startLine.angleTo(currentLine);
-
             QGraphicsItem *item = curDelegate->delegated();
             QTransform ownTransform = item->transform();
-
 
             QPointF nextRotCenter = item->mapFromScene(rotCenter);
 
@@ -226,18 +271,15 @@ void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             qreal cntrY = nextRotCenter.y();
 
             ownTransform.translate(cntrX, cntrY);
-            mRotationAngle -= dAngle;
             ownTransform.rotate(-dAngle);
             ownTransform.translate(-cntrX, -cntrY);
 
             item->update();
             item->setTransform(ownTransform, false);
 
-            qDebug() << "curAngle" << mRotationAngle;
         } break;
 
         }
-
     }
 
     updateRect();

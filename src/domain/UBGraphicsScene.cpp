@@ -407,13 +407,13 @@ QPointF UBGraphicsScene::lastCenter()
     return mViewState.lastSceneCenter();
 }
 
-bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pressure)
+bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pressure, Qt::KeyboardModifiers modifiers)
 {
     bool accepted = false;
 
     if (mInputDeviceIsPressed) {
         qWarning() << "scene received input device pressed, without input device release, muting event as input device move";
-        accepted = inputDeviceMove(scenePos, pressure);
+        accepted = inputDeviceMove(scenePos, pressure, modifiers);
     }
     else {
         mInputDeviceIsPressed = true;
@@ -463,10 +463,18 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
             if (UBDrawingController::drawingController()->activeRuler())
                 UBDrawingController::drawingController()->activeRuler()->StartLine(scenePos, width);
             else {
-                moveTo(scenePos);
-                drawLineTo(scenePos, width, UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line);
+                bool isLine = UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line;
+                QPointF pos = scenePos;
 
-                mCurrentStroke->addPoint(scenePos, width);
+                if (isLine && modifiers.testFlag(Qt::ShiftModifier))
+                {
+                    pos += snap(scenePos);
+                }
+
+                moveTo(pos);
+                drawLineTo(pos, width, isLine);
+
+                mCurrentStroke->addPoint(pos, width);
             }
             accepted = true;
         }
@@ -498,7 +506,7 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
     return accepted;
 }
 
-bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pressure)
+bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pressure, Qt::KeyboardModifiers modifiers)
 {
     bool accepted = false;
 
@@ -549,6 +557,8 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
             width /= UBApplication::boardController->systemScaleFactor();
             width /= UBApplication::boardController->currentZoom();
 
+            std::optional<QPointF> altPosition;
+
             if (currentTool == UBStylusTool::Line || dc->activeRuler())
             {
                 if (UBDrawingController::drawingController()->stylusTool() != UBStylusTool::Marker)
@@ -565,19 +575,24 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                 }
 
                 // ------------------------------------------------------------------------
-                // Here we wanna make sure that the Line will 'grip' at i*45, i*90 degrees
+                // Here we wanna make sure that the Line will 'grip' at multiples of
+                // rotationAngleStep and propose a point as alternative snap point
                 // ------------------------------------------------------------------------
 
-                QLineF radius(mPreviousPoint, position);
-                qreal angle = radius.angle();
-                angle = qRound(angle / 45) * 45;
-                qreal radiusLength = radius.length();
-                QPointF newPosition(
-                    mPreviousPoint.x() + radiusLength * cos((angle * PI) / 180),
-                    mPreviousPoint.y() - radiusLength * sin((angle * PI) / 180));
-                QLineF chord(position, newPosition);
-                if (chord.length() < qMin((int)16, (int)(radiusLength / 20)))
-                    position = newPosition;
+                if (modifiers.testFlag(Qt::ShiftModifier))
+                {
+                    double step = UBSettings::settings()->rotationAngleStep->get().toDouble();
+                    QLineF radius(mPreviousPoint, position);
+                    qreal angle = radius.angle();
+                    angle = qRound(angle / step) * step;
+                    qreal radiusLength = radius.length();
+                    QPointF newPosition(
+                        mPreviousPoint.x() + radiusLength * cos((angle * PI) / 180),
+                        mPreviousPoint.y() - radiusLength * sin((angle * PI) / 180));
+                    QLineF chord(position, newPosition);
+                    if (chord.length() < qMin((int)16, (int)(radiusLength / 20)))
+                        altPosition = newPosition;
+                }
             }
 
             if (!mCurrentStroke)
@@ -588,6 +603,21 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
             }
 
             else if (currentTool == UBStylusTool::Line) {
+                if (modifiers.testFlag(Qt::ShiftModifier))
+                {
+                    position += snap(position, nullptr, altPosition);
+                }
+
+                QLineF radius(mPreviousPoint, position);
+                auto angle = radius.angle();
+                auto angleDecimals = angle - std::floor(angle);
+                QLineF viewRadius{UBApplication::boardController->controlView()->mapFromScene(radius.p1()),
+                        UBApplication::boardController->controlView()->mapFromScene(radius.p2())};
+                QPoint offset = - viewRadius.p2().toPoint();
+                viewRadius.setLength(viewRadius.length() + 30);
+                offset += viewRadius.p2().toPoint();
+                UBApplication::boardController->setCursorFromAngle(QString::number(((int)angle % 360) + angleDecimals, 'f', 1), offset);
+
                 drawLineTo(position, width, true);
             }
 
@@ -658,7 +688,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
     return accepted;
 }
 
-bool UBGraphicsScene::inputDeviceRelease(int tool)
+bool UBGraphicsScene::inputDeviceRelease(int tool, Qt::KeyboardModifiers modifiers)
 {
     bool accepted = false;
 
@@ -2471,6 +2501,137 @@ UBGraphicsCache* UBGraphicsScene::graphicsCache()
     }
 
     return mGraphicsCache;
+}
+
+QPointF UBGraphicsScene::snap(const QPointF& point, double* force, std::optional<QPointF> proposedPoint) const
+{
+    QPointF snapPoint{point};
+    double snapForce{0};
+    double gridSize = backgroundGridSize();
+
+    if (mIntermediateLines)
+    {
+        gridSize /= 2.;
+    }
+
+    // y axis
+    double floorY = std::floor(point.y () / gridSize) * gridSize;
+    snapPoint.setY(point.y() - floorY < gridSize / 2. ? floorY : floorY + gridSize);
+
+    // for blank background, use same snapping as for grid
+    if (mPageBackground == UBPageBackground::crossed || mPageBackground == UBPageBackground::plain)
+    {
+        // x axis
+        double floorX = std::floor(point.x () / gridSize) * gridSize;
+        snapPoint.setX(point.x() - floorX < gridSize / 2. ? floorX : floorX + gridSize);
+    }
+
+    // force is a number between 0 and 1 based on the manhattan distance of the snap point
+    // from the original point
+    double relativeDist = (snapPoint - point).manhattanLength() / gridSize;
+    snapForce = std::max(1. - relativeDist, 0.);
+
+    if (proposedPoint)
+    {
+        // compute force for proposed point and take that if it has higher force
+        double relativeDist = (proposedPoint.value() - point).manhattanLength() / gridSize;
+        double proposedForce = std::max(1. - relativeDist, 0.);
+
+        if (proposedForce > snapForce)
+        {
+            snapForce = proposedForce;
+            snapPoint = proposedPoint.value();
+        }
+    }
+
+    if (force)
+    {
+        *force = snapForce;
+    }
+
+    return snapPoint - point;
+}
+
+QPointF UBGraphicsScene::snap(const std::vector<QPointF>& corners, int* snapIndex) const
+{
+    if (corners.empty())
+    {
+        if (snapIndex)
+        {
+            *snapIndex = -1;
+        }
+
+        return QPointF{};
+    }
+
+    std::vector<double> forces;
+    std::vector<QPointF> snapVectors;
+
+    for (const auto& corner : corners)
+    {
+        double force = 0.;
+        snapVectors.emplace_back(snap(corner, &force));
+        forces.emplace_back(force);
+    }
+
+    const auto maxElement = std::max_element(forces.cbegin(), forces.cend());
+    const auto index = std::distance(forces.cbegin(), maxElement);
+
+    if (snapIndex)
+    {
+        *snapIndex = index;
+    }
+
+    return snapVectors[index];
+}
+
+QPointF UBGraphicsScene::snap(const QRectF& rect, Qt::Corner* corner) const
+{
+    int snapIndex;
+    const auto offset = snap({rect.topLeft(), rect.topRight(), rect.bottomLeft(), rect.bottomRight()}, &snapIndex);
+
+    if (corner)
+    {
+        *corner = Qt::Corner(snapIndex);
+    }
+
+    return offset;
+}
+
+QRectF UBGraphicsScene::itemRect(const QGraphicsItem* item)
+{
+    // compute an item's rectangle in scene coordinates
+    // taking into account the shape of the item and
+    // the nature of nominal lines
+    QRectF bounds = item->boundingRect();
+
+    const QAbstractGraphicsShapeItem* shapeItem = dynamic_cast<const QAbstractGraphicsShapeItem*>(item);
+
+    if (shapeItem && shapeItem->pen().style() != Qt::NoPen)
+    {
+        qreal margin = shapeItem->pen().widthF() / 2.f;
+        bounds -= QMarginsF(margin, margin, margin, margin);
+    }
+
+    // Try to find out whether the item is a single line
+    // Note: this only works for lines drawn within the current session as the isNominalLine
+    // and originalLine attributes are lost when serializing the document.
+    const UBGraphicsStrokesGroup* strokesGroup = dynamic_cast<const UBGraphicsStrokesGroup*>(item);
+
+    if (strokesGroup && strokesGroup->childItems().count() == 1)
+    {
+        UBGraphicsPolygonItem* polygonItem = dynamic_cast<UBGraphicsPolygonItem*>(strokesGroup->childItems().at(0));
+
+        if (polygonItem && polygonItem->isNominalLine())
+        {
+            const auto line = polygonItem->originalLine();
+            bounds = QRectF{line.p1(), line.p2()};
+        }
+    }
+
+    QRectF rect = item->mapRectToScene(bounds);
+
+    return rect;
 }
 
 void UBGraphicsScene::addMask(const QPointF &center)

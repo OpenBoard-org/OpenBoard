@@ -166,6 +166,8 @@ class UBGraphicsTriangle : public UBAbstractDrawRuler, public QGraphicsPolygonIt
         bool mResizing1;
         bool mResizing2;
         bool mRotating;
+        qreal mCursorRotationAngle;
+        qreal mItemRotationAngle;
 
         QRect lastRect;
 

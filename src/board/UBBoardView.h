@@ -42,6 +42,7 @@ class UBBoardController;
 class UBGraphicsScene;
 class UBGraphicsWidgetItem;
 class UBRubberBand;
+class UBSnapIndicator;
 
 class UBBoardView : public QGraphicsView
 {
@@ -66,6 +67,7 @@ public:
     bool isMultipleSelectionEnabled() { return mMultipleSelectionIsEnabled; }
 
     void setBoxing(const QMargins& margins);
+    void updateSnapIndicator(Qt::Corner corner);
 
     // work around for handling tablet events on MAC OS with Qt 4.8.0 and above
 #if defined(Q_OS_OSX)
@@ -208,6 +210,7 @@ private:
     bool mRubberBandInPlayMode;
 
     QMargins mMargins{};
+    UBSnapIndicator* mSnapIndicator{nullptr};
 
     static bool hasSelectedParents(QGraphicsItem * item);
 

@@ -52,6 +52,8 @@ UBGraphicsProtractor::UBGraphicsProtractor()
         , mSpan(180)
         , mStartAngle(0)
         , mScaleFactor(1)
+        , mCursorRotationAngle(0)
+        , mItemRotationAngle(0)
         , mResetSvgItem(0)
         , mResizeSvgItem(0)
         , mMarkerSvgItem(0)
@@ -214,6 +216,8 @@ void UBGraphicsProtractor::mousePressEvent(QGraphicsSceneMouseEvent *event)
     mPreviousMousePos = event->pos();
     mCurrentTool = toolFromPos(event->pos());
     mShowButtons = mCurrentTool == Reset || mCurrentTool == Close;
+    mCursorRotationAngle = 0;
+    mItemRotationAngle = mStartAngle;
 
     if (mCurrentTool == None || mCurrentTool == Move)
         QGraphicsEllipseItem::mousePressEvent(event);
@@ -234,7 +238,16 @@ void UBGraphicsProtractor::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     {
     case Rotate :
         prepareGeometryChange();
-        mStartAngle = mStartAngle + angle;
+        mCursorRotationAngle = std::fmod(mCursorRotationAngle + angle, 360.);
+        mStartAngle = mItemRotationAngle + mCursorRotationAngle;
+
+        if (event->modifiers().testFlag(Qt::ShiftModifier))
+        {
+            qreal step = UBSettings::settings()->rotationAngleStep->get().toReal();
+            mStartAngle = qRound(mStartAngle / step) * step;
+        }
+
+        mStartAngle = std::fmod(mStartAngle, 360.);
         setStartAngle(mStartAngle * 16);
         mPreviousMousePos = currentPoint;
         angleDecimals = mStartAngle - std::floor(mStartAngle);
@@ -267,6 +280,15 @@ void UBGraphicsProtractor::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     case Move :
         QGraphicsEllipseItem::mouseMoveEvent(event);
+
+        // snap to grid
+        if (event->modifiers().testFlag(Qt::ShiftModifier)) {
+            // snap rotation center to grid
+            QPointF rotCenter = mapToScene(rotationCenter());
+            QPointF snapVector = scene()->snap(rotCenter);
+            setPos(pos() + snapVector);
+        }
+
         break;
 
     default :
@@ -299,6 +321,9 @@ void UBGraphicsProtractor::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     case Resize:
         update();
         break;
+
+    case Move:
+        Q_FALLTHROUGH();
 
     default :
         QGraphicsEllipseItem::mouseReleaseEvent(event);
@@ -701,6 +726,5 @@ void UBGraphicsProtractor::rotateAroundCenter(qreal angle)
 
 QPointF UBGraphicsProtractor::rotationCenter() const
 {
-    return QPointF(rect().x(), rect().y());
-
+    return QPointF{0., 0.};
 }

@@ -61,6 +61,8 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBRubberBand.h
     UBScreenMirror.cpp
     UBScreenMirror.h
+    UBSnapIndicator.cpp
+    UBSnapIndicator.h
     UBSpinningWheel.cpp
     UBSpinningWheel.h
     UBStartupHintsPalette.cpp

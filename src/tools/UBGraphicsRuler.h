@@ -80,6 +80,8 @@ class UBGraphicsRuler : public UBAbstractDrawRuler, public QGraphicsRectItem, pu
 
         bool mResizing;
         bool mRotating;
+        qreal mCursorRotationAngle;
+        qreal mItemRotationAngle;
 
 
         // Helpers
