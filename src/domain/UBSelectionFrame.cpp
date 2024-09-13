@@ -234,8 +234,7 @@ void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     if (mOperationMode == om_rotating)
     {
-        auto angleDecimals = mItemRotationAngle - std::floor(mItemRotationAngle);
-        UBApplication::boardController->setCursorFromAngle(QString::number(((int)mItemRotationAngle % 360) + angleDecimals, 'f', 1));
+        UBApplication::boardController->setCursorFromAngle(mItemRotationAngle);
     }
 
     foreach (UBGraphicsItemDelegate *curDelegate, mEnclosedtems)

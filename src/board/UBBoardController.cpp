@@ -299,8 +299,9 @@ void UBBoardController::setBoxing(QRect displayRect)
     }
 }
 
-void UBBoardController::setCursorFromAngle(QString angle, const QPoint offset)
+void UBBoardController::setCursorFromAngle(qreal angle, const QPoint offset)
 {
+        QString displayedAngle = QString::number(angle, 'f', 1);
         QWidget *controlViewport = controlView()->viewport();
 
         QSize cursorSize(45,30);
@@ -336,7 +337,7 @@ void UBBoardController::setCursorFromAngle(QString angle, const QPoint offset)
         painter.setPen(QPen(QColor(Qt::black)));
         painter.drawRoundedRect(origin.width() + 1, origin.height() + 1,cursorSize.width()-2,cursorSize.height()-2,6,6);
         painter.setFont(QFont("Arial", 10));
-        painter.drawText(origin.width() + 1, origin.height() + 1,cursorSize.width(),cursorSize.height(), Qt::AlignCenter, angle.append(QChar(176)));
+        painter.drawText(origin.width() + 1, origin.height() + 1,cursorSize.width(),cursorSize.height(), Qt::AlignCenter, displayedAngle.append(QChar(176)));
         painter.end();
 
         pixCursor.setMask(bmpMask);

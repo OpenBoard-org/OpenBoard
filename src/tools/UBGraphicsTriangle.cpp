@@ -896,7 +896,7 @@ void UBGraphicsTriangle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             rotateAroundCenter(currentAngle - newAngle);
 
             //display current angle
-            UBApplication::boardController->setCursorFromAngle(QString::number(newAngle, 'f', 1));
+            UBApplication::boardController->setCursorFromAngle(newAngle);
         }
 
         //-----------------------------------------------//

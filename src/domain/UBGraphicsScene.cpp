@@ -610,13 +610,12 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
 
                 QLineF radius(mPreviousPoint, position);
                 auto angle = radius.angle();
-                auto angleDecimals = angle - std::floor(angle);
                 QLineF viewRadius{UBApplication::boardController->controlView()->mapFromScene(radius.p1()),
                         UBApplication::boardController->controlView()->mapFromScene(radius.p2())};
                 QPoint offset = - viewRadius.p2().toPoint();
                 viewRadius.setLength(viewRadius.length() + 30);
                 offset += viewRadius.p2().toPoint();
-                UBApplication::boardController->setCursorFromAngle(QString::number(((int)angle % 360) + angleDecimals, 'f', 1), offset);
+                UBApplication::boardController->setCursorFromAngle(angle, offset);
 
                 drawLineTo(position, width, true);
             }

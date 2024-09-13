@@ -299,7 +299,7 @@ void UBGraphicsDelegateFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     if (mCurrentTool == Rotate)
     {
-        UBApplication::boardController->setCursorFromAngle(QString::number((int)mAngle % 360));
+        UBApplication::boardController->setCursorFromAngle(mAngle);
     }
     event->accept();
 }
@@ -560,8 +560,7 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
         if (mCurrentTool == Rotate)
         {
-            qreal angleDecimals = mAngle - std::floor(mAngle);
-            UBApplication::boardController->setCursorFromAngle(QString::number(((int)mAngle % 360) + angleDecimals, 'f', 1));
+            UBApplication::boardController->setCursorFromAngle(std::fmod(mAngle, 360.));
         }
     }
     else if (moving())
