@@ -305,7 +305,7 @@ void UBBoardThumbnailsView::mousePressAndHoldEvent(QPoint pos)
 void UBBoardThumbnailsView::updateThumbnailPixmap(const QRectF region)
 {
     int index = UBApplication::boardController->activeSceneIndex();
-    if (mThumbnails.size() > 0)
+    if (mThumbnails.size() > index)
     {
         mThumbnails.at(index)->updatePixmap(region);
     }
