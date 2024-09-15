@@ -249,7 +249,7 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
         UBGraphicsCache* graphicsCache();
 
         bool isSnapping() const;
-        QPointF snap(const QPointF& point, double* force = nullptr, std::optional<QPointF> proposedPoint = {}) const;
+        QPointF snap(const QPointF& point, double* force = nullptr, std::optional<QPointF> proposedPoint = {}, QPointF* gridSnapPoint = nullptr) const;
         QPointF snap(const std::vector<QPointF>& corners, int* snapIndex = nullptr) const;
         QPointF snap(const QRectF& rect, Qt::Corner* corner = nullptr) const;
         static QRectF itemRect(const QGraphicsItem* item);

@@ -606,7 +606,20 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
             else if (currentTool == UBStylusTool::Line) {
                 if (isSnapping())
                 {
-                    position += snap(position, nullptr, altPosition);
+                    // compute two proposals and compare the angle
+                    QPointF gridSnapPoint;
+                    position += snap(position, nullptr, altPosition, &gridSnapPoint);
+
+                    if (position != gridSnapPoint)
+                    {
+                        const auto angle1 = QLineF{mPreviousPoint, position}.angle();
+                        const auto angle2 = QLineF{mPreviousPoint, gridSnapPoint}.angle();
+
+                        if (std::fmod(std::fabs(angle1 - angle2), 360.) < 0.01)
+                        {
+                            position = gridSnapPoint;
+                        }
+                    }
                 }
 
                 QLineF radius(mPreviousPoint, position);
@@ -2508,7 +2521,7 @@ bool UBGraphicsScene::isSnapping() const
     return UBApplication::mainWindow->actionSnap->isChecked();
 }
 
-QPointF UBGraphicsScene::snap(const QPointF& point, double* force, std::optional<QPointF> proposedPoint) const
+QPointF UBGraphicsScene::snap(const QPointF& point, double* force, std::optional<QPointF> proposedPoint, QPointF* gridSnapPoint) const
 {
     QPointF snapPoint{point};
     double snapForce{0};
@@ -2535,6 +2548,11 @@ QPointF UBGraphicsScene::snap(const QPointF& point, double* force, std::optional
     // from the original point
     double relativeDist = (snapPoint - point).manhattanLength() / gridSize;
     snapForce = std::max(1. - relativeDist, 0.);
+
+    if (gridSnapPoint)
+    {
+        *gridSnapPoint = snapPoint;
+    }
 
     if (proposedPoint)
     {
