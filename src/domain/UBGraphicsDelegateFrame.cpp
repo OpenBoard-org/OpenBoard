@@ -580,12 +580,6 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 moveX += snapVector.x();
                 moveY += snapVector.y();
                 move.setP2(move.p2() + snapVector);
-
-                // display snap indicator
-                if (!snapVector.isNull())
-                {
-                    UBApplication::boardController->controlView()->updateSnapIndicator(corner);
-                }
             }
         }
 
