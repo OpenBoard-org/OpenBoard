@@ -43,6 +43,7 @@
 #include "core/UBTextTools.h"
 
 #include "gui/UBMagnifer.h"
+#include "gui/UBMainWindow.h"
 #include "gui/UBResources.h"
 
 #include "tools/UBGraphicsRuler.h"
@@ -466,7 +467,7 @@ bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pre
                 bool isLine = UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Line;
                 QPointF pos = scenePos;
 
-                if (isLine && modifiers.testFlag(Qt::ShiftModifier))
+                if (isLine && isSnapping())
                 {
                     pos += snap(scenePos);
                 }
@@ -579,7 +580,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                 // rotationAngleStep and propose a point as alternative snap point
                 // ------------------------------------------------------------------------
 
-                if (modifiers.testFlag(Qt::ShiftModifier))
+                if (isSnapping())
                 {
                     double step = UBSettings::settings()->rotationAngleStep->get().toDouble();
                     QLineF radius(mPreviousPoint, position);
@@ -603,7 +604,7 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
             }
 
             else if (currentTool == UBStylusTool::Line) {
-                if (modifiers.testFlag(Qt::ShiftModifier))
+                if (isSnapping())
                 {
                     position += snap(position, nullptr, altPosition);
                 }
@@ -2500,6 +2501,11 @@ UBGraphicsCache* UBGraphicsScene::graphicsCache()
     }
 
     return mGraphicsCache;
+}
+
+bool UBGraphicsScene::isSnapping() const
+{
+    return UBApplication::mainWindow->actionSnap->isChecked();
 }
 
 QPointF UBGraphicsScene::snap(const QPointF& point, double* force, std::optional<QPointF> proposedPoint) const

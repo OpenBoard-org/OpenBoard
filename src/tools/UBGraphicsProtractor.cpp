@@ -240,7 +240,7 @@ void UBGraphicsProtractor::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         mCursorRotationAngle = std::fmod(mCursorRotationAngle + angle, 360.);
         mStartAngle = mItemRotationAngle + mCursorRotationAngle;
 
-        if (event->modifiers().testFlag(Qt::ShiftModifier))
+        if (scene()->isSnapping())
         {
             qreal step = UBSettings::settings()->rotationAngleStep->get().toReal();
             mStartAngle = qRound(mStartAngle / step) * step;
@@ -280,7 +280,7 @@ void UBGraphicsProtractor::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         QGraphicsEllipseItem::mouseMoveEvent(event);
 
         // snap to grid
-        if (event->modifiers().testFlag(Qt::ShiftModifier)) {
+        if (scene()->isSnapping()) {
             // snap rotation center to grid
             QPointF rotCenter = mapToScene(rotationCenter());
             QPointF snapVector = scene()->snap(rotCenter);

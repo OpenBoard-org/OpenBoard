@@ -170,6 +170,8 @@ void UBShortcutManager::addMainActions(UBMainWindow *mainWindow)
         addActions(tr("Stylus Palette"),{ mainWindow->actionVirtualKeyboard }, mainWindow);
     }
 
+    addActions(tr("Stylus Palette"),{ mainWindow->actionSnap }, mainWindow);
+
     addActions(tr("Lines and colours"), {
                    mainWindow->actionLineSmall,
                    mainWindow->actionLineMedium,

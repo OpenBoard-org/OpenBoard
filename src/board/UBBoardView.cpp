@@ -848,7 +848,7 @@ void UBBoardView::handleItemMouseMove(QMouseEvent *event)
         movingItem->setPos(newPos);
 
         // snap to grid
-        if (event->modifiers().testFlag(Qt::ShiftModifier))
+        if (scene()->isSnapping())
         {
             QRectF rect = UBGraphicsScene::itemRect(movingItem);
             Qt::Corner corner;

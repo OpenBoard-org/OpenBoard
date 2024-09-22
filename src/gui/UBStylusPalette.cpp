@@ -67,27 +67,17 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
     actions << UBApplication::mainWindow->actionCapture;
 
     if(UBPlatformUtils::hasVirtualKeyboard())
+    {
         actions << UBApplication::mainWindow->actionVirtualKeyboard;
+        UBApplication::mainWindow->actionVirtualKeyboard->setProperty("ungrouped", true);
+    }
+
+    actions << UBApplication::mainWindow->actionSnap;
+    UBApplication::mainWindow->actionSnap->setProperty("ungrouped", true);
 
     setActions(actions);
     setButtonIconSize(QSize(42, 42));
-
-    if(!UBPlatformUtils::hasVirtualKeyboard())
-    {
-        groupActions();
-    }
-    else
-    {
-        // VirtualKeyboard action is not in group
-        // So, groupping all buttons, except last
-        mActionGroup = new QActionGroup(this);
-        for(int i=0; i < mActions.size()-1; i++)
-        {
-            mActions[i]->setProperty("id", i);
-            mActionGroup->addAction(mActions[i]);
-        }
-        connect(mActionGroup, SIGNAL(triggered(QAction*)), this, SIGNAL(buttonGroupClicked(QAction*)));
-    }
+    groupActions();
 
     UBShortcutManager::shortcutManager()->addActionGroup(mActionGroup);
 
