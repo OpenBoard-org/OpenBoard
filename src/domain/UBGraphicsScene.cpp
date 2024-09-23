@@ -586,13 +586,8 @@ bool UBGraphicsScene::inputDeviceMove(const QPointF& scenePos, const qreal& pres
                     QLineF radius(mPreviousPoint, position);
                     qreal angle = radius.angle();
                     angle = qRound(angle / step) * step;
-                    qreal radiusLength = radius.length();
-                    QPointF newPosition(
-                        mPreviousPoint.x() + radiusLength * cos((angle * PI) / 180),
-                        mPreviousPoint.y() - radiusLength * sin((angle * PI) / 180));
-                    QLineF chord(position, newPosition);
-                    if (chord.length() < qMin((int)16, (int)(radiusLength / 20)))
-                        altPosition = newPosition;
+                    radius.setAngle(angle);
+                    altPosition = radius.p2();
                 }
             }
 
