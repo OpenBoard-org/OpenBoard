@@ -947,7 +947,7 @@ void UBBoardView::updateSnapIndicator(Qt::Corner corner, QPointF snapPoint)
     if (!mSnapIndicator)
     {
         mSnapIndicator = new UBSnapIndicator(this);
-        mSnapIndicator->resize(60, 60);
+        mSnapIndicator->resize(120, 120);
     }
 
     mSnapIndicator->appear(corner, snapPoint);

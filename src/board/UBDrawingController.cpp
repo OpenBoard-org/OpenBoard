@@ -150,6 +150,7 @@ void UBDrawingController::setStylusTool(int tool)
         else if (mStylusTool == UBStylusTool::Capture)
             UBApplication::mainWindow->actionCapture->setChecked(true);
 
+
         // workaround for #827
         // glitches when moving objects fast
         if (mStylusTool == UBStylusTool::Selector || mStylusTool == UBStylusTool::Play)
