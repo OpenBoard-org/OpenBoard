@@ -181,6 +181,13 @@ bool UBDrawingController::isDrawingTool(int tool)
             || (tool == UBStylusTool::Line);
 }
 
+bool UBDrawingController::isSnappingTool() const
+{
+    return (mStylusTool == UBStylusTool::Selector)
+            || (mStylusTool == UBStylusTool::Play)
+            || (mStylusTool == UBStylusTool::Line);
+}
+
 
 int UBDrawingController::currentToolWidthIndex()
 {

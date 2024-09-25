@@ -304,7 +304,7 @@ void UBGraphicsCompass::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         mDrewCenterCross = false;
 
         // snap to grid
-        if (event->modifiers().testFlag(Qt::ShiftModifier)) {
+        if (scene()->isSnapping()) {
             // snap needle position to grid
             QPointF rotCenter = mapToScene(needlePosition());
             QPointF snapVector = scene()->snap(rotCenter);
@@ -316,7 +316,7 @@ void UBGraphicsCompass::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         if (mResizing)
         {
             // snap to grid
-            if (event->modifiers().testFlag(Qt::ShiftModifier))
+            if (scene()->isSnapping())
             {
                 // snap cursor position to grid
                 QPointF cursorPos = mapToScene(event->pos());
@@ -352,7 +352,7 @@ void UBGraphicsCompass::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             mCursorRotationAngle = std::fmod(mCursorRotationAngle + lastLine.angleTo(currentLine), 360.);
             qreal newAngle = mItemRotationAngle + mCursorRotationAngle;
 
-            if (event->modifiers().testFlag(Qt::ShiftModifier))
+            if (scene()->isSnapping())
             {
                 qreal step = UBSettings::settings()->rotationAngleStep->get().toReal();
                 newAngle = qRound(newAngle / step) * step;

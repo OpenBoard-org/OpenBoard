@@ -429,7 +429,9 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     {
         if(!rotating())
         {
-            if (event->modifiers().testFlag(Qt::ShiftModifier))
+            const auto* ubscene = dynamic_cast<UBGraphicsScene*>(scene());
+
+            if (ubscene && ubscene->isSnapping())
             {
                 QPointF snap = snapVector(event->scenePos());
                 moveX += snap.x();
@@ -548,8 +550,9 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         QLineF startLine(sceneBoundingRect().center(), event->lastScenePos());
         QLineF currentLine(sceneBoundingRect().center(), event->scenePos());
         mRotatedAngle += startLine.angleTo(currentLine);
+        const auto* ubscene = dynamic_cast<UBGraphicsScene*>(scene());
 
-        if (event->modifiers().testFlag(Qt::ShiftModifier))
+        if (ubscene && ubscene->isSnapping())
         {
             mAngle = qRound(mRotatedAngle / mRotationAngleStep) * mRotationAngleStep;
         }
@@ -565,22 +568,19 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     }
     else if (moving())
     {
-        if (event->modifiers().testFlag(Qt::ShiftModifier))
+        const auto* ubscene = dynamic_cast<UBGraphicsScene*>(scene());
+
+        if (ubscene && ubscene->isSnapping())
         {
             // snap to grid
             QPointF moved = event->scenePos() - mStartingPoint;
             QRectF movedBounds = mStartingBounds.translated(moved);
 
-            UBGraphicsScene* ubscene = dynamic_cast<UBGraphicsScene*>(scene());
-
-            if (ubscene)
-            {
-                Qt::Corner corner;
-                QPointF snapVector = ubscene->snap(movedBounds, &corner);
-                moveX += snapVector.x();
-                moveY += snapVector.y();
-                move.setP2(move.p2() + snapVector);
-            }
+            Qt::Corner corner;
+            QPointF snapVector = ubscene->snap(movedBounds, &corner);
+            moveX += snapVector.x();
+            moveY += snapVector.y();
+            move.setP2(move.p2() + snapVector);
         }
 
         mTranslateX = move.dx();
@@ -672,7 +672,9 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             mCurrentTool = ResizeBottomRight;
         }
         else {
-            if (event->modifiers().testFlag(Qt::ShiftModifier))
+            const auto* ubscene = dynamic_cast<UBGraphicsScene*>(scene());
+
+            if (ubscene && ubscene->isSnapping())
             {
                 QPointF snap = snapVector(event->scenePos());
                 moveX += snap.x();

@@ -815,7 +815,7 @@ void UBGraphicsTriangle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         QGraphicsItem::mouseMoveEvent(event);
 
         // snap to grid
-        if (event->modifiers().testFlag(Qt::ShiftModifier)) {
+        if (scene()->isSnapping()) {
             // snap rotation center to grid
             QPointF rotCenter = mapToScene(rotationCenter());
             QPointF snapVector = scene()->snap(rotCenter);
