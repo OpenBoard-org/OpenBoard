@@ -353,7 +353,7 @@ void UBGraphicsAxes::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         QGraphicsItem::mouseMoveEvent(event);
 
         // snap to grid
-        if (event->modifiers().testFlag(Qt::ShiftModifier)) {
+        if (scene()->isSnapping()) {
             QPointF snapVector = scene()->snap(pos());
             setPos(pos() + snapVector);
         }

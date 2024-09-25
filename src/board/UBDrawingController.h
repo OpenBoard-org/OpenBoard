@@ -53,6 +53,7 @@ class UBDrawingController : public QObject
         int latestDrawingTool();
 
         bool isDrawingTool(int tool = -1);
+        bool isSnappingTool() const;
 
         int currentToolWidthIndex();
         qreal currentToolWidth();

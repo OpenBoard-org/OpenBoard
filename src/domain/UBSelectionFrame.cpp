@@ -199,25 +199,16 @@ void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     mCursorRotationAngle = std::fmod(mCursorRotationAngle - dAngle + 360., 360.);
 
     // snap to grid and angle
-    if (event->modifiers().testFlag(Qt::ShiftModifier))
+    const auto* ubscene = dynamic_cast<UBGraphicsScene*>(scene());
+
+    if (ubscene && ubscene->isSnapping())
     {
         if (mOperationMode == om_moving)
         {
-            const auto ubscene = dynamic_cast<UBGraphicsScene*>(scene());
-
-            if (ubscene)
-            {
-                Qt::Corner corner;
-                QRectF movedBounds = mStartingBounds.translated(dp);
-                QPointF snapVector = ubscene->snap(movedBounds, &corner);
-                dp += snapVector;
-
-                // display snap indicator
-                if (mOperationMode == om_moving && !snapVector.isNull())
-                {
-                    UBApplication::boardController->controlView()->updateSnapIndicator(corner);
-                }
-            }
+            Qt::Corner corner;
+            QRectF movedBounds = mStartingBounds.translated(dp);
+            QPointF snapVector = ubscene->snap(movedBounds, &corner);
+            dp += snapVector;
         }
         else if (mOperationMode == om_rotating)
         {

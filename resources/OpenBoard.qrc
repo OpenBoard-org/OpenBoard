@@ -151,6 +151,8 @@
         <file>images/stylusPalette/textOn.png</file>
         <file>images/stylusPalette/captureArea.png</file>
         <file>images/stylusPalette/captureAreaOn.png</file>
+        <file>images/stylusPalette/snap.svg</file>
+        <file>images/stylusPalette/snapOn.svg</file>
         <file>images/backgroundPalette/background1.svg</file>
         <file>images/backgroundPalette/background1On.svg</file>
         <file>images/backgroundPalette/background2.svg</file>
@@ -178,6 +180,7 @@
         <file>images/toolPalette/magnifierTool.png</file>
         <file>images/extraPalette/blackout.png</file>
         <file>images/extraPalette/keyboard.png</file>
+        <file>images/extraPalette/keyboardOn.png</file>
         <file>images/extraPalette/trapFlash.png</file>
         <file>images/extraPalette/webTrap.png</file>
         <file>images/extraPalette/webTrapEnabled.png</file>

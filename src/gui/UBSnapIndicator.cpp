@@ -26,6 +26,11 @@
 #include <QPainterPath>
 #include <QPropertyAnimation>
 
+#include "board/UBBoardController.h"
+#include "board/UBBoardPaletteManager.h"
+#include "board/UBBoardView.h"
+#include "core/UBApplication.h"
+
 UBSnapIndicator::UBSnapIndicator(QWidget* parent)
     : QLabel(parent)
 {
@@ -37,16 +42,23 @@ UBSnapIndicator::UBSnapIndicator(QWidget* parent)
     connect(mAnimation, &QPropertyAnimation::finished, this, &QWidget::hide);
 }
 
-void UBSnapIndicator::appear(Qt::Corner corner)
+void UBSnapIndicator::appear(Qt::Corner corner, QPointF snapPoint)
 {
     if (corner != mCorner)
     {
         mAnimation->stop();
         mCorner = corner;
         show();
-        const auto cursorPos = parentWidget()->mapFromGlobal(QCursor::pos());
-        move(cursorPos - QPoint(width() / 2, height() / 2));
-        mAnimation->start();
+
+        UBBoardView* view = dynamic_cast<UBBoardView*>(parentWidget());
+
+        if (view)
+        {
+            QPoint indicationPoint{view->mapFromScene(snapPoint) - QPoint(width() / 2, height() / 2)};
+
+            move(indicationPoint);
+            mAnimation->start();
+        }
     }
 }
 
@@ -69,43 +81,38 @@ void UBSnapIndicator::setColor(const QColor& color)
 void UBSnapIndicator::paintEvent(QPaintEvent* event)
 {
     QPainter painter(this);
-    QRect area = rect() - QMargins(2, 2, 2, 2);
+    QRect area = rect();
 
     QPen pen;
     QColor penColor{mColor};
     penColor.setAlpha(mAlpha);
     pen.setColor(penColor);
-    pen.setWidth(3);
 
     painter.setPen(pen);
 
     QPoint p1;
-    QPoint p2;
+    QPoint p2(area.center());
     QPoint p3;
-    int dist = rect().width() / 3;
+    int dist = area.width() / 3;
 
     switch (mCorner)
     {
     case Qt::TopLeftCorner:
-        p2 = area.topLeft();
         p1 = p2 + QPoint{0, dist};
         p3 = p2 + QPoint(dist, 0);
         break;
 
     case Qt::TopRightCorner:
-        p2 = area.topRight();
         p1 = p2 + QPoint{0, dist};
         p3 = p2 + QPoint(-dist, 0);
         break;
 
     case Qt::BottomLeftCorner:
-        p2 = area.bottomLeft();
         p1 = p2 + QPoint{0, -dist};
         p3 = p2 + QPoint(dist, 0);
         break;
 
     case Qt::BottomRightCorner:
-        p2 = area.bottomRight();
         p1 = p2 + QPoint{0, -dist};
         p3 = p2 + QPoint(-dist, 0);
         break;
@@ -122,9 +129,4 @@ void UBSnapIndicator::paintEvent(QPaintEvent* event)
 
     painter.drawPolygon(polygon);
     painter.fillPath(path, penColor);
-
-    const int radius = rect().width() / 3;
-    const QPoint center = rect().center();
-    QRect circle = QRect(center, center) + QMargins(radius, radius, radius, radius);
-    painter.drawArc(circle, 0, 360 * 16);
 }

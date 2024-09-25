@@ -34,6 +34,7 @@
 
 #include "domain/UBGraphicsScene.h"
 #include "board/UBBoardController.h"
+#include "board/UBBoardView.h"
 #include "tools/UBAbstractDrawRuler.h"
 
 #include "gui/UBMainWindow.h"
@@ -149,6 +150,18 @@ void UBDrawingController::setStylusTool(int tool)
         else if (mStylusTool == UBStylusTool::Capture)
             UBApplication::mainWindow->actionCapture->setChecked(true);
 
+
+        // workaround for #827
+        // glitches when moving objects fast
+        if (mStylusTool == UBStylusTool::Selector || mStylusTool == UBStylusTool::Play)
+        {
+            UBApplication::boardController->controlView()->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+        }
+        else
+        {
+            UBApplication::boardController->controlView()->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+        }
+
         emit stylusToolChanged(tool, previousTool);
         if (mStylusTool != UBStylusTool::Selector)
             emit colorPaletteChanged();
@@ -166,6 +179,13 @@ bool UBDrawingController::isDrawingTool(int tool)
     return (tool == UBStylusTool::Pen)
             || (tool == UBStylusTool::Marker)
             || (tool == UBStylusTool::Line);
+}
+
+bool UBDrawingController::isSnappingTool() const
+{
+    return (mStylusTool == UBStylusTool::Selector)
+            || (mStylusTool == UBStylusTool::Play)
+            || (mStylusTool == UBStylusTool::Line);
 }
 
 

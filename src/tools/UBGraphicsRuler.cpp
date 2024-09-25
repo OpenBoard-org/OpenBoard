@@ -428,7 +428,7 @@ void UBGraphicsRuler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         QGraphicsItem::mouseMoveEvent(event);
 
         // snap to grid
-        if (event->modifiers().testFlag(Qt::ShiftModifier)) {
+        if (scene()->isSnapping()) {
             // snap rotation center to grid
             QPointF rotCenter = mapToScene(rotationCenter());
             QPointF snapVector = scene()->snap(rotCenter);
@@ -455,7 +455,7 @@ void UBGraphicsRuler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             mCursorRotationAngle = std::fmod(mCursorRotationAngle + lastLine.angleTo(currentLine), 360.);
             qreal newAngle = mItemRotationAngle + mCursorRotationAngle;
 
-            if (event->modifiers().testFlag(Qt::ShiftModifier))
+            if (scene()->isSnapping())
             {
                 qreal step = UBSettings::settings()->rotationAngleStep->get().toReal();
                 newAngle = qRound(newAngle / step) * step;
