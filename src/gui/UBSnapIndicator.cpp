@@ -26,6 +26,11 @@
 #include <QPainterPath>
 #include <QPropertyAnimation>
 
+#include "board/UBBoardController.h"
+#include "board/UBBoardPaletteManager.h"
+#include "board/UBBoardView.h"
+#include "core/UBApplication.h"
+
 UBSnapIndicator::UBSnapIndicator(QWidget* parent)
     : QLabel(parent)
 {
@@ -37,15 +42,49 @@ UBSnapIndicator::UBSnapIndicator(QWidget* parent)
     connect(mAnimation, &QPropertyAnimation::finished, this, &QWidget::hide);
 }
 
-void UBSnapIndicator::appear(Qt::Corner corner)
+void UBSnapIndicator::appear(Qt::Corner corner, QPointF snapPoint)
 {
     if (corner != mCorner)
     {
         mAnimation->stop();
         mCorner = corner;
         show();
-        const auto cursorPos = parentWidget()->mapFromGlobal(QCursor::pos());
-        move(cursorPos - QPoint(width() / 2, height() / 2));
+
+        // is the point (in scene coordinates) visible on this view?
+        UBBoardView* view = dynamic_cast<UBBoardView*>(parentWidget());
+
+        if (!view)
+        {
+            return;
+        }
+
+        QPoint indicationPoint{view->mapFromScene(snapPoint) - QPoint(width() / 2, height() / 2)};
+        QRect visibleView{view->rect()};
+        int leftPaletteWidth = UBApplication::boardController->paletteManager()->leftPalette()->width();
+        int rightPaletteWidth = UBApplication::boardController->paletteManager()->rightPalette()->width();
+        visibleView.moveLeft(leftPaletteWidth);
+        visibleView.setWidth(visibleView.width() - leftPaletteWidth - rightPaletteWidth);
+
+        // limit to visible view
+        if (indicationPoint.x() < visibleView.left())
+        {
+            indicationPoint.setX(visibleView.left());
+        }
+        else if (indicationPoint.x() > visibleView.right() - width())
+        {
+            indicationPoint.setX(visibleView.right() - width());
+        }
+
+        if (indicationPoint.y() < visibleView.top())
+        {
+            indicationPoint.setY(visibleView.top());
+        }
+        else if (indicationPoint.y() > visibleView.bottom() - height())
+        {
+            indicationPoint.setY(visibleView.bottom() - height());
+        }
+
+        move(indicationPoint);
         mAnimation->start();
     }
 }

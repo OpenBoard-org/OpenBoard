@@ -35,7 +35,7 @@ class UBSnapIndicator : public QLabel
 public:
     UBSnapIndicator(QWidget* parent);
 
-    void appear(Qt::Corner corner);
+    void appear(Qt::Corner corner, QPointF snapPoint);
 
     int alpha() const;
     void setAlpha(int opacity);

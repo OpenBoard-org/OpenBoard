@@ -857,12 +857,6 @@ void UBBoardView::handleItemMouseMove(QMouseEvent *event)
             movingItem->setPos(newPos);
 
             mLastPressedMousePos = scenePos + offset;
-
-            // display snap indicator
-            if (!offset.isNull())
-            {
-                updateSnapIndicator(corner);
-            }
         }
         else
         {
@@ -948,7 +942,7 @@ void UBBoardView::setMultiselection(bool enable)
     mMultipleSelectionIsEnabled = enable;
 }
 
-void UBBoardView::updateSnapIndicator(Qt::Corner corner)
+void UBBoardView::updateSnapIndicator(Qt::Corner corner, QPointF snapPoint)
 {
     if (!mSnapIndicator)
     {
@@ -956,7 +950,7 @@ void UBBoardView::updateSnapIndicator(Qt::Corner corner)
         mSnapIndicator->resize(60, 60);
     }
 
-    mSnapIndicator->appear(corner);
+    mSnapIndicator->appear(corner, snapPoint);
 }
 
 void UBBoardView::setBoxing(const QMargins& margins)

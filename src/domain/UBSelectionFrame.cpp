@@ -211,12 +211,6 @@ void UBSelectionFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 QRectF movedBounds = mStartingBounds.translated(dp);
                 QPointF snapVector = ubscene->snap(movedBounds, &corner);
                 dp += snapVector;
-
-                // display snap indicator
-                if (mOperationMode == om_moving && !snapVector.isNull())
-                {
-                    UBApplication::boardController->controlView()->updateSnapIndicator(corner);
-                }
             }
         }
         else if (mOperationMode == om_rotating)

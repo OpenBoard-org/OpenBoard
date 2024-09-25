@@ -2587,11 +2587,19 @@ QPointF UBGraphicsScene::snap(const std::vector<QPointF>& corners, int* snapInde
 QPointF UBGraphicsScene::snap(const QRectF& rect, Qt::Corner* corner) const
 {
     int snapIndex;
-    const auto offset = snap({rect.topLeft(), rect.topRight(), rect.bottomLeft(), rect.bottomRight()}, &snapIndex);
+    std::vector<QPointF> rectPoints{rect.topLeft(), rect.topRight(), rect.bottomLeft(), rect.bottomRight()};
+    const auto offset = snap(rectPoints, &snapIndex);
+    const auto snapCorner = Qt::Corner(snapIndex);
 
     if (corner)
     {
-        *corner = Qt::Corner(snapIndex);
+        *corner = snapCorner;
+    }
+
+    if (!offset.isNull())
+    {
+        auto* view = UBApplication::boardController->controlView();
+        view->updateSnapIndicator(snapCorner, rectPoints.at(snapIndex) + offset);
     }
 
     return offset;
