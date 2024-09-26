@@ -116,7 +116,7 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     <name>IntranetPodcastPublishingDialog</name>
     <message>
         <source>Publish Podcast to YouTube</source>
-        <translation>Podcast in YouTube veröffentlichen</translation>
+        <translation type="vanished">Podcast in YouTube veröffentlichen</translation>
     </message>
     <message>
         <source>Title</source>
@@ -129,6 +129,10 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     <message>
         <source>Author</source>
         <translation>Autor</translation>
+    </message>
+    <message>
+        <source>Publish to Intranet</source>
+        <translation>Im Intranet veröffentlichen</translation>
     </message>
 </context>
 <context>
@@ -603,7 +607,7 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     </message>
     <message>
         <source>Ctrl+I</source>
-        <translation>Strg+I</translation>
+        <translation type="vanished">Strg+I</translation>
     </message>
     <message>
         <source>Erase Annotation</source>
@@ -639,7 +643,7 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     </message>
     <message>
         <source>Hand</source>
-        <translation>Zeiger</translation>
+        <translation>Hand</translation>
     </message>
     <message>
         <source>Scroll Page</source>
@@ -981,6 +985,22 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
         <source>Favorite</source>
         <translation>Favorit</translation>
     </message>
+    <message>
+        <source>Ctrl+P</source>
+        <translation>Strg+P</translation>
+    </message>
+    <message>
+        <source>Snap to grid</source>
+        <translation>Am Gitter einrasten</translation>
+    </message>
+    <message>
+        <source>Snap to grid and angle</source>
+        <translation>Am Gitter und Winkel einrasten</translation>
+    </message>
+    <message>
+        <source>Ctrl+S</source>
+        <translation>Strg+S</translation>
+    </message>
 </context>
 <context>
     <name>PasswordDialog</name>
@@ -1034,6 +1054,10 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     <message>
         <source>Are you sure you want to remove page %1 ?</source>
         <translation>Sind Sie sicher, dass Sie die Seite %1 löschen möchten?</translation>
+    </message>
+    <message>
+        <source>Common</source>
+        <translation>Allgemein</translation>
     </message>
 </context>
 <context>
@@ -1302,7 +1326,7 @@ Möchten Sie die Sicherheitsüberprüfung außer Kraft setzen und fortfahren?   
     </message>
     <message>
         <source>Failed to import file ... </source>
-        <translation>Datei konnte nicht importiert werden...</translation>
+        <translation>Datei konnte nicht importiert werden ... </translation>
     </message>
     <message>
         <source>Import all Images from Folder</source>
@@ -1889,6 +1913,10 @@ Wenn Sie einen neuen Namen wählen, wird ein neues Dokument erstellt.</translati
         <source>Trash</source>
         <translation>Papierkorb</translation>
     </message>
+    <message>
+        <source>Web</source>
+        <translation>Internet</translation>
+    </message>
 </context>
 <context>
     <name>UBFeaturesNewFolderDialog</name>
@@ -1951,15 +1979,15 @@ Wenn Sie einen neuen Namen wählen, wird ein neues Dokument erstellt.</translati
     </message>
     <message>
         <source>Duplicate</source>
-        <translation type="unfinished">Kopieren</translation>
+        <translation>Kopieren</translation>
     </message>
     <message>
         <source>Layer up</source>
-        <translation type="unfinished"></translation>
+        <translation>Nach oben</translation>
     </message>
     <message>
         <source>Layer down</source>
-        <translation type="unfinished"></translation>
+        <translation>Nach unten</translation>
     </message>
 </context>
 <context>
@@ -1982,6 +2010,20 @@ Wenn Sie einen neuen Namen wählen, wird ein neues Dokument erstellt.</translati
     </message>
 </context>
 <context>
+    <name>UBGraphicsProtractor</name>
+    <message>
+        <source>use arrow keys for precise moves</source>
+        <translation>Pfeiltasten für feine Bewegungen</translation>
+    </message>
+</context>
+<context>
+    <name>UBGraphicsRuler</name>
+    <message>
+        <source>use arrow keys for precise moves</source>
+        <translation>Pfeiltasten für feine Bewegungen</translation>
+    </message>
+</context>
+<context>
     <name>UBGraphicsTextItem</name>
     <message>
         <source>&lt;Type Text Here&gt;</source>
@@ -2000,10 +2042,17 @@ Wenn Sie einen neuen Namen wählen, wird ein neues Dokument erstellt.</translati
     </message>
 </context>
 <context>
+    <name>UBGraphicsTriangle</name>
+    <message>
+        <source>use arrow keys for precise moves</source>
+        <translation>Pfeiltasten für feine Bewegungen</translation>
+    </message>
+</context>
+<context>
     <name>UBGraphicsW3CWidgetItem</name>
     <message>
         <source>Web</source>
-        <translation>Web</translation>
+        <translation>Internet</translation>
     </message>
 </context>
 <context>
@@ -2021,7 +2070,7 @@ Wenn Sie einen neuen Namen wählen, wird ein neues Dokument erstellt.</translati
     </message>
     <message>
         <source>Transform as Tool </source>
-        <translation>In Werkzeug umwandeln</translation>
+        <translation>In Werkzeug umwandeln </translation>
     </message>
 </context>
 <context>
@@ -2181,27 +2230,27 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
         <source>Open-Sankore Documents Detected</source>
-        <translation>Geöffnete Open-Sankore Dokumente festgestellt</translation>
+        <translation type="vanished">Geöffnete Open-Sankore Dokumente festgestellt</translation>
     </message>
     <message>
         <source>Show this panel next time</source>
-        <translation>Diesen Dialog erneut anzeigen</translation>
+        <translation type="vanished">Diesen Dialog erneut anzeigen</translation>
     </message>
     <message>
         <source>You can always access the OpenBoard Document Importer through the Preferences panel in the About tab. Warning, if you have already imported your Open-Sankore datas, you might loose your current OpenBoard documents.</source>
-        <translation>Sie können jederzeit im Einstellungsdialog im Menü &quot;Über&quot; auf den OpenBoard Document Importer zugreifen. Warnung, falls sie bereits Ihre Open-Sankore Daten importiert haben, können Sie Ihre aktuellen OpenBoard Dokumente verlieren.</translation>
+        <translation type="vanished">Sie können jederzeit im Einstellungsdialog im Menü &quot;Über&quot; auf den OpenBoard Document Importer zugreifen. Warnung, falls sie bereits Ihre Open-Sankore Daten importiert haben, können Sie Ihre aktuellen OpenBoard Dokumente verlieren.</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Abbrechen</translation>
+        <translation type="vanished">Abbrechen</translation>
     </message>
     <message>
         <source>Proceed</source>
-        <translation>Fortfahren</translation>
+        <translation type="vanished">Fortfahren</translation>
     </message>
     <message>
         <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
-        <translation>Auf Ihrem Computer befinden sich Open-Sankoré Dokumente. Um diese in OpenBoard zu importieren drücken Sie den &quot;Fortfahren&quot; Knopf um die Importanwendung zu starten.</translation>
+        <translation type="vanished">Auf Ihrem Computer befinden sich Open-Sankoré Dokumente. Um diese in OpenBoard zu importieren drücken Sie den &quot;Fortfahren&quot; Knopf um die Importanwendung zu starten.</translation>
     </message>
 </context>
 <context>
@@ -2336,6 +2385,148 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     </message>
 </context>
 <context>
+    <name>UBShortcutManager</name>
+    <message>
+        <source>Common</source>
+        <translation>Allgemein</translation>
+    </message>
+    <message>
+        <source>Board</source>
+        <translation>Board</translation>
+    </message>
+    <message>
+        <source>Stylus Palette</source>
+        <translation>Stylus-Palette</translation>
+    </message>
+    <message>
+        <source>Lines and colours</source>
+        <translation>Linien und Farben</translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation>Hintergrund</translation>
+    </message>
+    <message>
+        <source>Podcast</source>
+        <translation>Podcast</translation>
+    </message>
+    <message>
+        <source>First scene</source>
+        <translation>Erste Seite</translation>
+    </message>
+    <message>
+        <source>Show first scene</source>
+        <translation>Springe zur ersten Seite</translation>
+    </message>
+    <message>
+        <source>Last scene</source>
+        <translation>Letzte Seite</translation>
+    </message>
+    <message>
+        <source>Show last scene</source>
+        <translation>Springe zur letzten Seite</translation>
+    </message>
+    <message>
+        <source>Zoom reset</source>
+        <translation>Zoom zurücksetzen</translation>
+    </message>
+    <message>
+        <source>Reset zoom factor</source>
+        <translation>Zoom zurücksetzen</translation>
+    </message>
+    <message>
+        <source>Scroll left</source>
+        <translation>Nach links scrollen</translation>
+    </message>
+    <message>
+        <source>Scroll page left</source>
+        <translation>Nach links scrollen</translation>
+    </message>
+    <message>
+        <source>Scroll right</source>
+        <translation>Nach rechts scrollen</translation>
+    </message>
+    <message>
+        <source>Scroll page right</source>
+        <translation>Nach rechts scrollen</translation>
+    </message>
+    <message>
+        <source>Scroll up</source>
+        <translation>Nach oben scrollen</translation>
+    </message>
+    <message>
+        <source>Scroll page up</source>
+        <translation>Nach oben scrollen</translation>
+    </message>
+    <message>
+        <source>Scroll down</source>
+        <translation>Nach unten scrollen</translation>
+    </message>
+    <message>
+        <source>Scroll page down</source>
+        <translation>Nach unten scrollen</translation>
+    </message>
+    <message>
+        <source>Built-in (not editable)</source>
+        <translation>Eingebaut (nicht änderbar)</translation>
+    </message>
+    <message>
+        <source>Command</source>
+        <translation>Kommando</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>Beschreibung</translation>
+    </message>
+    <message>
+        <source>Key Sequence</source>
+        <translation>Tastenfolge</translation>
+    </message>
+    <message>
+        <source>Mouse Button</source>
+        <translation>Mausknopf</translation>
+    </message>
+    <message>
+        <source>Tablet Button</source>
+        <translation>Tablet Stiftknopf</translation>
+    </message>
+    <message>
+        <source>Left</source>
+        <comment>MouseButton</comment>
+        <translation>Links</translation>
+    </message>
+    <message>
+        <source>Right</source>
+        <comment>MouseButton</comment>
+        <translation>Rechts</translation>
+    </message>
+    <message>
+        <source>Middle</source>
+        <comment>MouseButton</comment>
+        <translation>Mitte</translation>
+    </message>
+    <message>
+        <source>Back</source>
+        <comment>MouseButton</comment>
+        <translation>Zurück</translation>
+    </message>
+    <message>
+        <source>Forward</source>
+        <comment>MouseButton</comment>
+        <translation>Weiter</translation>
+    </message>
+    <message>
+        <source>Task</source>
+        <comment>MouseButton</comment>
+        <translation>Aufgabe</translation>
+    </message>
+    <message>
+        <source>Extra</source>
+        <comment>MouseButton</comment>
+        <translation>Extra</translation>
+    </message>
+</context>
+<context>
     <name>UBStartupHintsPalette</name>
     <message>
         <source>Visible next time</source>
@@ -2419,11 +2610,11 @@ Miniaturansicht der Seite %1 wird geladen</translation>
     </message>
     <message>
         <source> files require an update.</source>
-        <translation>Dateien müssen aktualisiert werden.</translation>
+        <translation> Dateien müssen aktualisiert werden.</translation>
     </message>
     <message>
         <source>Backup path: </source>
-        <translation>Backup-Pfad:</translation>
+        <translation>Backup-Pfad: </translation>
     </message>
     <message>
         <source>Browse</source>
@@ -2453,7 +2644,7 @@ Bitte starten Sie die Anwendung erneut, um auf die aktualisierten Dokumente zugr
     </message>
     <message>
         <source>Updating file </source>
-        <translation>Dateien werden aktualisiert</translation>
+        <translation>Datei wird aktualisiert </translation>
     </message>
     <message>
         <source>Please wait the import process will start soon...</source>
@@ -2547,6 +2738,13 @@ Bitte starten Sie die Anwendung erneut, um auf die aktualisierten Dokumente zugr
     <message>
         <source>Science &amp; Technology</source>
         <translation>Wissenschaft &amp; Technologie</translation>
+    </message>
+</context>
+<context>
+    <name>UBZLayerController</name>
+    <message>
+        <source>Bottom layer limit reached</source>
+        <translation>Untere Ebenengrenze erreicht</translation>
     </message>
 </context>
 <context>
@@ -2949,11 +3147,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Open-Sankoré Importer</source>
-        <translation>Open-Sankoré Importer</translation>
+        <translation type="vanished">Open-Sankoré Importer</translation>
     </message>
     <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation>Prüfen, ob Open-Sankoré Daten beim Start importiert werden können</translation>
+        <translation type="vanished">Prüfen, ob Open-Sankoré Daten beim Start importiert werden können</translation>
     </message>
     <message>
         <source>Use system keyboard (recommended)</source>
@@ -2961,7 +3159,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Built-in virtual keyboard button size:</source>
-        <translation>Tastengröße der integrierten virtuellen Tastatur</translation>
+        <translation>Tastengröße der integrierten virtuellen Tastatur:</translation>
     </message>
     <message>
         <source>Grid</source>
@@ -3009,7 +3207,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Improve zoom execution time (can slightly affect rendering quality)</source>
-        <translation>Die Zoomgeschwindigkeit verbessern (kann die Renderqualität geringfügig beeinträchtigen)</translation>
+        <translation type="vanished">Die Zoomgeschwindigkeit verbessern (kann die Renderqualität geringfügig beeinträchtigen)</translation>
     </message>
     <message>
         <source>PDF</source>
