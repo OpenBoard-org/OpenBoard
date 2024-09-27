@@ -209,7 +209,9 @@ void UBBoardView::keyPressEvent (QKeyEvent *event)
 
     if (!event->isAccepted ())
     {
-        if (event->modifiers() == Qt::NoModifier)
+        //https://doc.qt.io/qt-6/qt.html#KeyboardModifier-enum
+        // on macOS, Qt::KeypadModifier is set for arrow keys
+        if (event->modifiers() == Qt::NoModifier || event->modifiers() == Qt::KeypadModifier)
         {
             switch (event->key ())
             {
