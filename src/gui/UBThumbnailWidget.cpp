@@ -1031,7 +1031,7 @@ void UBDraggableThumbnailItem::moveDownPage()
 
 void UBDraggableThumbnailItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    QPointF p = event->pos();
+    QPointF p = event->pos() * transform().m11();
 
     using namespace UBThumbnailUI;
 
