@@ -165,8 +165,9 @@ private:
     bool mOkOnWidget;
 
     bool mWidgetMoved;
+    QPointF mFirstPressedMousePos;
     QPointF mLastPressedMousePos;
-
+    QList<QPointF> mCornerPoints;
 
     /* when an item is moved around, the tracking must stop if the object is deleted */
     QGraphicsItem *_movingItem;
