@@ -944,7 +944,7 @@ void UBBoardView::setMultiselection(bool enable)
     mMultipleSelectionIsEnabled = enable;
 }
 
-void UBBoardView::updateSnapIndicator(Qt::Corner corner, QPointF snapPoint)
+void UBBoardView::updateSnapIndicator(Qt::Corner corner, QPointF snapPoint, double angle)
 {
     if (!mSnapIndicator)
     {
@@ -952,7 +952,7 @@ void UBBoardView::updateSnapIndicator(Qt::Corner corner, QPointF snapPoint)
         mSnapIndicator->resize(120, 120);
     }
 
-    mSnapIndicator->appear(corner, snapPoint);
+    mSnapIndicator->appear(corner, snapPoint, angle);
 }
 
 void UBBoardView::setBoxing(const QMargins& margins)

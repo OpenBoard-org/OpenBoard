@@ -67,7 +67,7 @@ public:
     bool isMultipleSelectionEnabled() { return mMultipleSelectionIsEnabled; }
 
     void setBoxing(const QMargins& margins);
-    void updateSnapIndicator(Qt::Corner corner, QPointF snapPoint);
+    void updateSnapIndicator(Qt::Corner corner, QPointF snapPoint, double angle = 0);
 
     // work around for handling tablet events on MAC OS with Qt 4.8.0 and above
 #if defined(Q_OS_OSX)

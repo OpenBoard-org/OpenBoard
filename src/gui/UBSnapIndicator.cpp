@@ -27,9 +27,7 @@
 #include <QPropertyAnimation>
 
 #include "board/UBBoardController.h"
-#include "board/UBBoardPaletteManager.h"
 #include "board/UBBoardView.h"
-#include "core/UBApplication.h"
 
 UBSnapIndicator::UBSnapIndicator(QWidget* parent)
     : QLabel(parent)
@@ -42,23 +40,42 @@ UBSnapIndicator::UBSnapIndicator(QWidget* parent)
     connect(mAnimation, &QPropertyAnimation::finished, this, &QWidget::hide);
 }
 
-void UBSnapIndicator::appear(Qt::Corner corner, QPointF snapPoint)
+void UBSnapIndicator::appear(Qt::Corner corner, QPointF snapPoint, double angle)
 {
-    if (corner != mCorner)
+    mAnimation->stop();
+    mAngle = -angle; // painter rotate is clockwise
+
+    switch (corner)
     {
-        mAnimation->stop();
-        mCorner = corner;
-        show();
+    case Qt::TopLeftCorner:
+        mAngle += 270;
+        break;
 
-        UBBoardView* view = dynamic_cast<UBBoardView*>(parentWidget());
+    case Qt::TopRightCorner:
+        break;
 
-        if (view)
-        {
-            QPoint indicationPoint{view->mapFromScene(snapPoint) - QPoint(width() / 2, height() / 2)};
+    case Qt::BottomLeftCorner:
+        mAngle += 180;
+        break;
 
-            move(indicationPoint);
-            mAnimation->start();
-        }
+    case Qt::BottomRightCorner:
+        mAngle += 90;
+        break;
+
+    default:
+        break;
+    }
+
+    show();
+
+    UBBoardView* view = dynamic_cast<UBBoardView*>(parentWidget());
+
+    if (view)
+    {
+        QPoint indicationPoint{view->mapFromScene(snapPoint) - QPoint(width() / 2, height() / 2)};
+
+        move(indicationPoint);
+        mAnimation->start();
     }
 }
 
@@ -81,7 +98,9 @@ void UBSnapIndicator::setColor(const QColor& color)
 void UBSnapIndicator::paintEvent(QPaintEvent* event)
 {
     QPainter painter(this);
-    QRect area = rect();
+
+    painter.translate(width() / 2, height() / 2);
+    painter.rotate(mAngle);
 
     QPen pen;
     QColor penColor{mColor};
@@ -91,35 +110,8 @@ void UBSnapIndicator::paintEvent(QPaintEvent* event)
     painter.setPen(pen);
 
     QPoint p1;
-    QPoint p2(area.center());
-    QPoint p3;
-    int dist = area.width() / 3;
-
-    switch (mCorner)
-    {
-    case Qt::TopLeftCorner:
-        p1 = p2 + QPoint{0, dist};
-        p3 = p2 + QPoint(dist, 0);
-        break;
-
-    case Qt::TopRightCorner:
-        p1 = p2 + QPoint{0, dist};
-        p3 = p2 + QPoint(-dist, 0);
-        break;
-
-    case Qt::BottomLeftCorner:
-        p1 = p2 + QPoint{0, -dist};
-        p3 = p2 + QPoint(dist, 0);
-        break;
-
-    case Qt::BottomRightCorner:
-        p1 = p2 + QPoint{0, -dist};
-        p3 = p2 + QPoint(-dist, 0);
-        break;
-
-    default:
-        break;
-    }
+    QPoint p2{-width() / 2, 0};
+    QPoint p3{0, height() / 2};
 
     QPolygon polygon;
     polygon << p1 << p2 << p3 << p1;
