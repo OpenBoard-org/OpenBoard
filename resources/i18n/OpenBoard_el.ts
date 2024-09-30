@@ -12,102 +12,104 @@
     <name>BrowserWindow</name>
     <message>
         <source>Navigation</source>
-        <translation type="unfinished"></translation>
+        <translation>Πλοήγηση</translation>
     </message>
     <message>
         <source>Show downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>Λήψεις</translation>
     </message>
 </context>
 <context>
     <name>CertificateErrorDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished">Διάλογος</translation>
+        <translation>Διάλογος</translation>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Εικονίδιο</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Σφάλμα</translation>
     </message>
     <message>
         <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
 
 Do you wish to override the security check and continue ?   </source>
-        <translation type="unfinished"></translation>
+        <translation>Εάν το επιθυμείτε, μπορείτε να συνεχίσετε με ένα μη επαληθευμένο πιστοποιητικό. Η αποδοχή ενός μη επαληθευμένου πιστοποιητικού σημαίνει ότι ενδέχεται να μην είστε συνδεδεμένοι στον σωστό κεντρικό υπολογιστή.
+
+Θέλετε να παρακάμψετε τον έλεγχο ασφαλείας και να συνεχίσετε ;   </translation>
     </message>
 </context>
 <context>
     <name>DownloadManagerWidget</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished">Λήψεις</translation>
+        <translation>Λήψεις</translation>
     </message>
     <message>
         <source>No downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>Καμία λήψη</translation>
     </message>
     <message>
         <source>Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>Αποθήκευση ως</translation>
     </message>
 </context>
 <context>
     <name>DownloadWidget</name>
     <message>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation>Κείμενο ετικέτας</translation>
     </message>
     <message>
         <source>Open file</source>
-        <translation type="unfinished"></translation>
+        <translation>Ανοιγμα αρχείου</translation>
     </message>
     <message>
         <source>%L1 B</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 B</translation>
     </message>
     <message>
         <source>%L1 KiB</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 KiB</translation>
     </message>
     <message>
         <source>%L1 MiB</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 MiB</translation>
     </message>
     <message>
         <source>%L1 GiB</source>
-        <translation type="unfinished"></translation>
+        <translation>%L1 GiB</translation>
     </message>
     <message>
         <source>%p% - %1 of %2 downloaded - %3/s</source>
-        <translation type="unfinished"></translation>
+        <translation>%p% - λήφθηκαν %1 από %2 - %3/s</translation>
     </message>
     <message>
         <source>unknown size - %1 downloaded - %2/s</source>
-        <translation type="unfinished"></translation>
+        <translation>άγνωστο μέγεθος - λήφθηκαν %1 - %2/s</translation>
     </message>
     <message>
         <source>completed - %1 downloaded - %2/s</source>
-        <translation type="unfinished"></translation>
+        <translation>ολοκληρώθηκε - λήφθηκαν %1 - %2/s</translation>
     </message>
     <message>
         <source>cancelled - %1 downloaded - %2/s</source>
-        <translation type="unfinished"></translation>
+        <translation>ακυρώθηκε - λήφθηκαν %1 - %2/s</translation>
     </message>
     <message>
         <source>interrupted: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>διακόπηκε: %1</translation>
     </message>
     <message>
         <source>Stop downloading</source>
-        <translation type="unfinished"></translation>
+        <translation>Διακοπή λήψεων</translation>
     </message>
     <message>
         <source>Remove from list</source>
-        <translation type="unfinished"></translation>
+        <translation>Αφαίρεση από τη λίστα</translation>
     </message>
 </context>
 <context>
@@ -133,7 +135,7 @@ Do you wish to override the security check and continue ?   </source>
     <name>MainWindow</name>
     <message>
         <source>Board</source>
-        <translation>Εφαρμογή</translation>
+        <translation>Πίνακας</translation>
     </message>
     <message>
         <source>Web</source>
@@ -141,7 +143,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Documents</source>
-        <translation>Έγγραφα</translation>
+        <translation>Εγγραφα</translation>
     </message>
     <message>
         <source>Stylus</source>
@@ -209,7 +211,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Web Browsing</source>
-        <translation type="vanished">Περιήγηση διαδικτύου</translation>
+        <translation type="vanished">Περιήγηση στο διαδίκτυο</translation>
     </message>
     <message>
         <source>Ctrl+W</source>
@@ -217,7 +219,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Quit</source>
-        <translation>Έξοδος</translation>
+        <translation>Εξοδος</translation>
     </message>
     <message>
         <source>Back</source>
@@ -309,7 +311,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Open in Board</source>
-        <translation>Άνοιγμα στην Εφαρμογή</translation>
+        <translation>Ανοιγμα στον Πίνακα</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
@@ -513,7 +515,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Display Board</source>
-        <translation type="vanished">Εμφάνιση Εφαρμογής</translation>
+        <translation type="vanished">Εμφάνιση Πίνακα</translation>
     </message>
     <message>
         <source>Erase Content</source>
@@ -553,7 +555,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Open Page in Board</source>
-        <translation>Άνοιγμα σελίδας στην Εφαρμογή</translation>
+        <translation>Ανοιγμα σελίδας στον Πίνακα</translation>
     </message>
     <message>
         <source>Duplicate Selected Content</source>
@@ -633,7 +635,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Highlight </source>
-        <translation>Επισήμανση</translation>
+        <translation>Επισήμανση </translation>
     </message>
     <message>
         <source>Ctrl+M</source>
@@ -789,7 +791,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Show Main Screen on Display Screen</source>
-        <translation>Εμφάνιση κύριας οθόνης στην Εμφάνιση Οθόνης</translation>
+        <translation>Εμφάνιση κύριας οθόνης στην Οθόνη Προβολής</translation>
     </message>
     <message>
         <source>Erase all Annotations</source>
@@ -809,7 +811,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Show on Display</source>
-        <translation>Παρουσίαση στην Εμφάνιση</translation>
+        <translation>Εμφάνιση στην Οθόνη</translation>
     </message>
     <message>
         <source>OpenBoard</source>
@@ -817,7 +819,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Quit OpenBoard</source>
-        <translation>Έξοδος από το OpenBoard</translation>
+        <translation>Εξοδος από το OpenBoard</translation>
     </message>
     <message>
         <source>Hide OpenBoard</source>
@@ -841,119 +843,119 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Ruled Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Γραμμές σε ανοιχτόχρωμο παρασκήνιο</translation>
     </message>
     <message>
         <source>Ruled Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Γραμμές σε σκουρόχρωμο παρασκήνιο</translation>
     </message>
     <message>
         <source>Select And Modify Objects</source>
-        <translation type="unfinished"></translation>
+        <translation>Επιλέξτε και τροποποιήστε αντικείμενα</translation>
     </message>
     <message>
         <source>Interact with items</source>
-        <translation type="unfinished"></translation>
+        <translation>Αλληλεπιδράστε με στοιχεία</translation>
     </message>
     <message>
         <source>Open Tutorial</source>
-        <translation type="unfinished"></translation>
+        <translation>Ανοιγμα Οδηγού</translation>
     </message>
     <message>
         <source>Open the tutorial web page</source>
-        <translation type="unfinished"></translation>
+        <translation>Ανοιγμα της σελίδας οδηγού</translation>
     </message>
     <message>
         <source>Reset grid size</source>
-        <translation type="unfinished"></translation>
+        <translation>Επαναφορά μεγέθους πλέγματος</translation>
     </message>
     <message>
         <source>Small Eraser</source>
-        <translation type="unfinished"></translation>
+        <translation>Μικρή γόμα</translation>
     </message>
     <message>
         <source>Color 1</source>
-        <translation type="unfinished"></translation>
+        <translation>Χρώμα 1</translation>
     </message>
     <message>
         <source>Color 2</source>
-        <translation type="unfinished"></translation>
+        <translation>Χρώμα 2</translation>
     </message>
     <message>
         <source>Color 3</source>
-        <translation type="unfinished"></translation>
+        <translation>Χρώμα 3</translation>
     </message>
     <message>
         <source>Color 4</source>
-        <translation type="unfinished"></translation>
+        <translation>Χρώμα 4</translation>
     </message>
     <message>
         <source>Color 5</source>
-        <translation type="unfinished"></translation>
+        <translation>Χρώμα 5</translation>
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Σχεδίαση ενδιάμεσων γραμμών πλέγματος</translation>
     </message>
     <message>
         <source>Capture Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Λήψη στιγμιότυπου διαδικτυακού περιεχομένου</translation>
     </message>
     <message>
         <source>Documents Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Λειτουργία εγγράφων</translation>
     </message>
     <message>
         <source>Web Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Λειτουργία διαδικτύου</translation>
     </message>
     <message>
         <source>1</source>
-        <translation type="unfinished"></translation>
+        <translation>1</translation>
     </message>
     <message>
         <source>2</source>
-        <translation type="unfinished"></translation>
+        <translation>2</translation>
     </message>
     <message>
         <source>3</source>
-        <translation type="unfinished"></translation>
+        <translation>3</translation>
     </message>
     <message>
         <source>4</source>
-        <translation type="unfinished"></translation>
+        <translation>4</translation>
     </message>
     <message>
         <source>5</source>
-        <translation type="unfinished"></translation>
+        <translation>5</translation>
     </message>
     <message>
         <source>Board Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Λειτουργία Πίνακα</translation>
     </message>
     <message>
         <source>Desktop</source>
-        <translation type="unfinished">Επιφάνεια εργασίας</translation>
+        <translation>Επιφάνεια εργασίας</translation>
     </message>
     <message>
         <source>Desktop Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Λειτουργία Επιφάνειας Εργασίας</translation>
     </message>
     <message>
         <source>Add to document</source>
-        <translation type="unfinished"></translation>
+        <translation>Προσθήκη στο έγγραφο</translation>
     </message>
     <message>
         <source>Seyes ruled Light Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Γραμμές Seyes σε ανοιχτόχρωμο παρασκήνιο</translation>
     </message>
     <message>
         <source>Seyes ruled Dark Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Γραμμές Seyes σε σκουρόχρωμο παρασκήνιο</translation>
     </message>
     <message>
         <source>Import one or more pages (supported formats : jpg, png, svg, ubz, pdf)</source>
-        <translation type="unfinished"></translation>
+        <translation>Εισαγωγή μιας ή περισσότερων σελίδων (υποστηριζόμενες μορφές : jpg, png, svg, ubz, pdf)</translation>
     </message>
     <message>
         <source>Add to favorites</source>
@@ -961,19 +963,19 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Add Document to favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>Προσθήκη εγγράφου στα αγαπημένα</translation>
     </message>
     <message>
         <source>Hints and tips</source>
-        <translation type="unfinished"></translation>
+        <translation>Συμβουλές και κόλπα</translation>
     </message>
     <message>
         <source>Open Hints and tips</source>
-        <translation type="unfinished"></translation>
+        <translation>Ανοιγμα συμβουλών και κόλπων</translation>
     </message>
     <message>
         <source>Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>Αγαπημένα</translation>
     </message>
 </context>
 <context>
@@ -984,7 +986,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Username:</source>
-        <translation>Όνομα χρήστη:</translation>
+        <translation>Ονομα χρήστη:</translation>
     </message>
     <message>
         <source>Password:</source>
@@ -992,22 +994,22 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Εικονίδιο</translation>
     </message>
     <message>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Πληροφορίες</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Element ID = </source>
-        <translation>Αναγνωριστικό στοιχείου=</translation>
+        <translation>Αναγνωριστικό στοιχείου = </translation>
     </message>
     <message>
         <source>Content is not supported in destination format.</source>
-        <translation>Η μορφή του περιεχομένου δεν υποστηριζεται στον προορισμό</translation>
+        <translation>Το περιεχόμενο δεν υποστηριζεται στη μορφή προορισμού.</translation>
     </message>
     <message>
         <source>Remove Page</source>
@@ -1015,26 +1017,26 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Are you sure you want to remove 1 page from the selected document &apos;%0&apos;?</source>
-        <translation type="vanished">Είστε βέβαιος ότι θέλετε να αφαιρέσετε μια σελίδα από το επιλεγμένο έγγραφο &apos;%0&apos;?</translation>
+        <translation type="vanished">Θέλετε σίγουρα να αφαιρέσετε μια σελίδα από το επιλεγμένο έγγραφο &apos;%0&apos;;</translation>
     </message>
     <message>
         <source>Loading scene (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Φόρτωση σκηνής (%1/%2)</translation>
     </message>
     <message>
         <source>Moving cached scenes (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Μετακίνηση προσωρινά αποθηκευμένων σκηνών (%1/%2)</translation>
     </message>
     <message>
         <source>Are you sure you want to remove page %1 ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Θέλετε σίγουρα να αφαιρέσετε τη σελίδα %1 ;</translation>
     </message>
 </context>
 <context>
     <name>TabWidget</name>
     <message>
         <source>New &amp;Tab</source>
-        <translation>Νέο &amp; Καρτέλα</translation>
+        <translation>Νέα &amp;Καρτέλα</translation>
     </message>
     <message>
         <source>Clone Tab</source>
@@ -1046,7 +1048,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Close &amp;Other Tabs</source>
-        <translation>Κλείσιμο &amp; Άλλες καρτέλες</translation>
+        <translation>Κλείσιμο &amp;άλλων καρτελών</translation>
     </message>
     <message>
         <source>Reload Tab</source>
@@ -1073,7 +1075,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Cannot open your UBX file directly. Please import it in Documents mode instead</source>
-        <translation type="unfinished"></translation>
+        <translation>Δεν είναι δυνατό το απευθείας άνοιγμα του αρχείου UBX σας. Παρακαλώ εισάγετέ το στη λειτουργία Εγγράφων</translation>
     </message>
 </context>
 <context>
@@ -1103,11 +1105,11 @@ Do you wish to override the security check and continue ?   </source>
     <name>UBBackgroundPalette</name>
     <message>
         <source>Grid size</source>
-        <translation type="unfinished"></translation>
+        <translation>Μέγεθος πλέγματος</translation>
     </message>
     <message>
         <source>Draw intermediate grid lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Σχεδίαση ενδιάμεσων γραμμών πλέγματος</translation>
     </message>
 </context>
 <context>
@@ -1126,7 +1128,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Unknown content type %1</source>
-        <translation>Άγνωστο είδος περιεχομενου %1</translation>
+        <translation>Αγνωστο είδος περιεχομενου %1</translation>
     </message>
     <message>
         <source>Add Item</source>
@@ -1134,7 +1136,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>All Supported (%1)</source>
-        <translation>Όλα προστατευόμενα (%1)</translation>
+        <translation>Ολα τα υποστηριζόμενα (%1)</translation>
     </message>
     <message>
         <source>Page %1 deleted</source>
@@ -1150,31 +1152,31 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Ungroup</source>
-        <translation>Αποομαδοποίηση</translation>
+        <translation>Κατάργηση ομαδοποίησης</translation>
     </message>
     <message>
         <source>Saving document...</source>
-        <translation type="unfinished"></translation>
+        <translation>Αποθήκευση εγγράφου...</translation>
     </message>
     <message>
         <source>Document has just been saved...</source>
-        <translation type="unfinished"></translation>
+        <translation>Το έγγραφό έχει αποθηκευτεί...</translation>
     </message>
     <message>
         <source>Deleting page %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Διαγραφή σελίδας %1</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation type="unfinished">Χρώμα</translation>
+        <translation>Χρώμα</translation>
     </message>
     <message>
         <source>Untitled</source>
-        <translation type="unfinished"></translation>
+        <translation>Χωρίς τίτλο</translation>
     </message>
     <message>
         <source>Could not find document.</source>
-        <translation type="unfinished"></translation>
+        <translation>Το έγγραφο δεν βρέθηκε.</translation>
     </message>
 </context>
 <context>
@@ -1185,25 +1187,25 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>CapturedImage</source>
-        <translation>Εικόνα από σύλληψη στιγμιότυπου</translation>
+        <translation>Εικόνα από λήψη στιγμιότυπου</translation>
     </message>
 </context>
 <context>
     <name>UBBoardView</name>
     <message>
         <source>Is it for Board or Widget ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Είναι για Πίνακα ή Γραφικό στοιχείο ;</translation>
     </message>
     <message>
         <source>Are you trying to drop the object(s) inside the widget ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Προσπαθείτε να ρίξετε το αντικείμενο(α) μέσα στο γραφικό στοιχείο ;</translation>
     </message>
 </context>
 <context>
     <name>UBCachePropertiesWidget</name>
     <message>
         <source>Cache Properties</source>
-        <translation>Ιδιότητες κρυφής μνήμης</translation>
+        <translation>Ιδιότητες προβολέα</translation>
     </message>
     <message>
         <source>Color:</source>
@@ -1219,7 +1221,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Close</source>
-        <translation>Κλείσιμο:</translation>
+        <translation>Κλείσιμο</translation>
     </message>
 </context>
 <context>
@@ -1238,7 +1240,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Show Board on Secondary Screen</source>
-        <translation>Εμφάνιση της Εφαρμογής στη δευτερεύουσα οθόνη</translation>
+        <translation>Εμφάνιση του Πίνακα στη δευτερεύουσα οθόνη</translation>
     </message>
     <message>
         <source>Show Desktop on Secondary Screen</source>
@@ -1246,7 +1248,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Show OpenBoard</source>
-        <translation type="unfinished"></translation>
+        <translation>Εμφάνιση OpenBoard</translation>
     </message>
 </context>
 <context>
@@ -1301,15 +1303,15 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Empty</source>
-        <translation>Κενός</translation>
+        <translation>Αδειασμα</translation>
     </message>
     <message>
         <source>Trash</source>
-        <translation>Κάδος ανακύκλωσης</translation>
+        <translation>Κάδος απορριμμάτων</translation>
     </message>
     <message>
         <source>Open Document</source>
-        <translation>Άνοιγμα εγγράφου</translation>
+        <translation>Ανοιγμα εγγράφου</translation>
     </message>
     <message>
         <source>Add all Images to Document</source>
@@ -1317,7 +1319,7 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>All Images (%1)</source>
-        <translation>Όλες οι εικονες (%1)</translation>
+        <translation>Ολες οι εικονες (%1)</translation>
     </message>
     <message>
         <source>Selection does not contain any image files!</source>
@@ -1329,111 +1331,111 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Untitled Documents</source>
-        <translation>Έγγραφα χωρίς τίτλο</translation>
+        <translation>Εγγραφα χωρίς τίτλο</translation>
     </message>
     <message numerus="yes">
         <source>duplicated %1 page</source>
         <comment>duplicated %1 pages</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>δημιουργήθηκε αντίγραφο %1 σελίδας</numerusform>
+            <numerusform>δημιουργήθηκαν αντίγραφα %1 σελίδων</numerusform>
         </translation>
     </message>
     <message>
         <source>The document &apos;%1&apos; has been generated with a newer version of OpenBoard (%2). By opening it, you may lose some information. Do you want to proceed?</source>
-        <translation type="unfinished"></translation>
+        <translation>Το έγγραφο &apos;%1&apos; έχει δημιουργηθεί με μια νεότερη έκδοση του OpenBoard (%2). Αν το ανοίξετε, μπορεί να χάσετε κάποιες πληροφορίες. Θέλετε να συνεχίσετε;</translation>
     </message>
     <message>
         <source>Title page</source>
-        <translation type="unfinished"></translation>
+        <translation>Τίτλος σελίδας</translation>
     </message>
     <message>
         <source>Refreshing Document Thumbnails View (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ανανέωση προβολής μικρογραφιών εγγράφου (%1/%2)</translation>
     </message>
     <message>
         <source>Complete deletion of %1 documents/folders</source>
-        <translation type="unfinished"></translation>
+        <translation>Οριστική διαγραφή %1 εγγράφων/φακέλων</translation>
     </message>
     <message>
         <source>You are about to permanantly delete %1 documents and/or folders. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Πρόκειται να διαγράψετε οριστικά %1 έγγραφα ή/και φακέλους. Είστε σίγουρος/η ;</translation>
     </message>
     <message>
         <source>Complete deletion of folder &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Οριστική διαγραφή του φακέλου &quot;%1&quot;</translation>
     </message>
     <message>
         <source>You are about to permanantly delete folder &quot;%1&quot;. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Πρόκειται να διαγράψετε οριστικά τον φάκελο &quot;%1&quot;. Είστε σίγουρος/η ;</translation>
     </message>
     <message>
         <source>Complete deletion of document &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Οριστική διαγραφή του εγγράφου &quot;%1&quot;</translation>
     </message>
     <message>
         <source>You are about to permanantly delete document &quot;%1&quot;. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Πρόκειται να διαγράψετε οριστικά το έγγραφο &quot;%1&quot;. Είστε σίγουρος/η ;</translation>
     </message>
     <message>
         <source>Emptying My Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Αδειασμα του φακέλου Τα Εγγραφά μου</translation>
     </message>
     <message>
         <source>You are about to entirely empty the folder &quot;My Documents&quot;. All your documents will be moved to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Πρόκειται να αδειάσετε εντελώς τον φάκελο &quot;Τα έγγραφά μου&quot;. Ολα τα έγγραφά σας θα μετακινηθούν στον κάδο απορριμμάτων. Είστε σίγουρος/η ;</translation>
     </message>
     <message>
         <source>Emptying Trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Αδειασμα κάδου απορριμμάτων</translation>
     </message>
     <message>
         <source>You are about to entirely empty the trash. All documents and folders in it will be permanently deleted. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Πρόκειται να αδειάσετε εντελώς τον κάδο απορριμμάτων. Ολα τα έγγραφα και οι φάκελοι σε αυτόν θα διαγραφούν οριστικά. Είστε σίγουρος/η ?</translation>
     </message>
     <message>
         <source>Moving %1 elements to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Μετακίνηση %1 στοιχείων στον κάδο απορριμμάτων</translation>
     </message>
     <message>
         <source>You are about to move %1 documents and/or folders to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Πρόκειται να μετακινήσετε %1 έγγραφα ή/και φακέλους στον κάδο απορριμμάτων. Είστε σίγουρος/η ;</translation>
     </message>
     <message>
         <source>Move folder &quot;%1&quot;to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Μετακίνηση φακέλου &quot;%1&quot; στον κάδο απορριμμάτων</translation>
     </message>
     <message>
         <source>You are about to move folder &quot;%1&quot; to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Πρόκειται να μετακινήσετε το φάκελο &quot;%1&quot; στον κάδο απορριμμάτων. Είστε σίγουρος/η ;</translation>
     </message>
     <message>
         <source>Move document &quot;%1&quot;to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Μετακίνηση εγγράφου &quot;%1&quot; στον κάδο απορριμμάτων</translation>
     </message>
     <message>
         <source>You are about to move document &quot;%1&quot; to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Πρόκειται να μετακινήσετε το έγγραφο &quot;%1&quot; στον κάδο απορριμμάτων. Είστε σίγουρος/η ;</translation>
     </message>
     <message>
         <source>Open Supported File(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ανοιγμα υποστηριζόμενου(ων) αρχείου(ων)</translation>
     </message>
     <message>
         <source>Moving %1 pages of the document &quot;%2&quot; to trash</source>
-        <translation type="unfinished"></translation>
+        <translation>Μετακίνηση %1 σελίδων του εγγράφου &quot;%2&quot; στον κάδο απορριμμάτων</translation>
     </message>
     <message>
         <source>You are about to move %1 pages of the document &quot;%2&quot; to trash. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Πρόκειται να μετακινήσετε %1 σελίδες του εγγράφου &quot;%2&quot; στον κάδο απορριμμάτων. Είστε σίγουρος/η ?</translation>
     </message>
     <message>
         <source>Remove page %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Διαγραφή σελίδας %1</translation>
     </message>
     <message>
         <source>You are about to remove page %1 of the document &quot;%2&quot;. Are you sure ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Πρόκειται να διαγράψετε τη σελίδα %1 του εγγράφου &quot;%2&quot;. Είστε σίγουρος/η ;</translation>
     </message>
 </context>
 <context>
@@ -1452,11 +1454,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>widgets</source>
-        <translation>γραφικά συστατικά</translation>
+        <translation>γραφικά στοιχεία</translation>
     </message>
     <message>
         <source>All supported files (*.%1)</source>
-        <translation>Όλα τα υποστηριζόμενα (%1)</translation>
+        <translation>Ολα τα υποστηριζόμενα αρχεία (%1)</translation>
     </message>
     <message>
         <source>File %1 saved</source>
@@ -1468,11 +1470,11 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Επιτυχημένη εισαγωγή</translation>
+        <translation>Η εισαγωγή έγινε με επιτυχία.</translation>
     </message>
     <message>
         <source>Import of file %1 successful.</source>
-        <translation>Επιτυχημένη εισαγωγή του αρχείου %1 </translation>
+        <translation>Η εισαγωγή του αρχείου %1 έγινε με επιτυχία.</translation>
     </message>
     <message>
         <source>Importing file %1</source>
@@ -1494,65 +1496,67 @@ Do you wish to override the security check and continue ?   </source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Άκυρο</translation>
+        <translation>Ακυρο</translation>
     </message>
     <message>
         <source>Replace</source>
-        <translation type="unfinished"></translation>
+        <translation>Αντικατάσταση</translation>
     </message>
     <message>
         <source>The name %1 is allready used.
 Keeping this name will replace the document.
 Providing a new name will create a new document.</source>
-        <translation type="unfinished"></translation>
+        <translation>Το όνομα %1 χρησιμοποιείται ήδη.
+Η διατήρηση αυτού του ονόματος θα αντικαταστήσει το έγγραφο.
+Η εισαγωγή νέου ονόματος θα δημιουργήσει ένα νέο έγγραφο.</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished">Μετονομασία</translation>
+        <translation>Μετονομασία</translation>
     </message>
     <message>
         <source>Replace all</source>
-        <translation type="unfinished"></translation>
+        <translation>Αντικατάσταση όλων</translation>
     </message>
     <message>
         <source>Skip</source>
-        <translation type="unfinished"></translation>
+        <translation>Παράλειψη</translation>
     </message>
     <message>
         <source>Skip all</source>
-        <translation type="unfinished"></translation>
+        <translation>Παράλειψη όλων</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentTreeModel</name>
     <message>
         <source>Trash</source>
-        <translation type="unfinished">Κάδος ανακύκλωσης</translation>
+        <translation>Κάδος απορριμμάτων</translation>
     </message>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%1 σελίδα αντιγράφηκε</numerusform>
             <numerusform>%1 σελίδες αντιγράφηκαν</numerusform>
         </translation>
     </message>
     <message>
         <source>My documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Τα έγγραφά μου</translation>
     </message>
 </context>
 <context>
     <name>UBDocumentTreeView</name>
     <message numerus="yes">
         <source>%1 pages copied</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%1 σελίδα αντιγράφηκε</numerusform>
             <numerusform>%1 σελίδες αντιγράφηκαν</numerusform>
         </translation>
     </message>
     <message>
         <source>Copying page %1/%2</source>
-        <translation type="unfinished">Αντιγραφή σελίδας %1/%2</translation>
+        <translation>Αντιγραφή σελίδας %1/%2</translation>
     </message>
 </context>
 <context>
@@ -1563,14 +1567,14 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Άκυρο</translation>
+        <translation>Ακυρο</translation>
     </message>
 </context>
 <context>
     <name>UBDraggableLivePixmapItem</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">Σελίδα %0</translation>
+        <translation>Σελίδα %0</translation>
     </message>
 </context>
 <context>
@@ -1595,12 +1599,13 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Web</source>
-        <translation>Web</translation>
+        <translation>Διαδίκτυο</translation>
     </message>
     <message>
-        <source>Application name can`t contain any of the following characters:<byte value="xd"/>
+        <source>Application name can`t contain any of the following characters:
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Το όνομα της εφαρμογής δεν μπορεί να περιέχει τους ακόλουθους χαρακτήρες:
+</translation>
     </message>
 </context>
 <context>
@@ -1611,23 +1616,23 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished">Εξαγωγή εγγράφου...</translation>
+        <translation>Εξαγωγή εγγράφου...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished">Επιτυχημένη εξαγωγή</translation>
+        <translation>Η εξαγωγή έγινε με επιτυχία.</translation>
     </message>
     <message>
         <source>Export failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Η εξαγωγή απέτυχε</translation>
     </message>
     <message>
         <source>Unable to export to the selected location. You do not have the permissions necessary to save the file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Δεν είναι δυνατή η εξαγωγή στην επιλεγμένη τοποθεσία. Δεν έχετε τα απαραίτητα δικαιώματα για την αποθήκευση του αρχείου.</translation>
     </message>
     <message>
         <source>Export failed: location not writable</source>
-        <translation type="unfinished"></translation>
+        <translation>Η εξαγωγή απέτυχε: δεν είναι δυνατή η εγγραφή στην τοποθεσία</translation>
     </message>
 </context>
 <context>
@@ -1646,11 +1651,11 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Επιτυχημένη εξαγωγή</translation>
+        <translation>Η εξαγωγή έγινε με επιτυχία.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>Αποτυχημένη εξαγωγή</translation>
+        <translation>Η εξαγωγή απέτυχε.</translation>
     </message>
 </context>
 <context>
@@ -1669,34 +1674,34 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export to OpenBoard Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Εξαγωγή σε μορφή OpenBoard</translation>
     </message>
 </context>
 <context>
     <name>UBExportDocumentSetAdaptor</name>
     <message>
         <source>Exporting document...</source>
-        <translation type="unfinished">Εξαγωγή εγγράφου...</translation>
+        <translation>Εξαγωγή εγγράφου...</translation>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation type="unfinished">Επιτυχημένη εξαγωγή</translation>
+        <translation>Η εξαγωγή έγινε με επιτυχία.</translation>
     </message>
     <message>
         <source>Failed to export...</source>
-        <translation type="unfinished"></translation>
+        <translation>Η εξαγωγή απέτυχε...</translation>
     </message>
     <message>
         <source>Export as UBX File</source>
-        <translation type="unfinished"></translation>
+        <translation>Εξαγωγή ως αρχείο UBX</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Η εξαγωγή απέτυχε.</translation>
     </message>
     <message>
         <source>Export to OpenBoard UBX Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Εξαγωγή σε μορφή OpenBoard UBX</translation>
     </message>
 </context>
 <context>
@@ -1711,7 +1716,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>The original PDF imported in OpenBoard seems not valid and could not be merged with your annotations. Please repair it and then reimport it in OpenBoard. The current export will be done with detailed (heavy) images of the pages of the original PDF instead, to avoid complete export failure.</source>
-        <translation type="unfinished"></translation>
+        <translation>Το αρχικό PDF που εισήχθη στο OpenBoard δεν φαίνεται έγκυρο και δεν ήταν δυνατή η συγχώνευσή του με τους σχολιασμούς σας. Παρακαλώ διορθώστε το και ύστερα εισάγετέ το ξανά στο OpenBoard. Η τρέχουσα εξαγωγή θα γίνει με (εξαιρετικά) λεπτομερείς εικόνες των σελίδων του αρχικού PDF, για να αποφευχθεί η πλήρης αποτυχία εξαγωγής.</translation>
     </message>
 </context>
 <context>
@@ -1745,15 +1750,15 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Export successful.</source>
-        <translation>Επιτυχημένη εξαγωγή</translation>
+        <translation>Η εξαγωγή έγινε με επιτυχία.</translation>
     </message>
     <message>
         <source>Export failed.</source>
-        <translation>Η εξαγωγή απέτυχε</translation>
+        <translation>Η εξαγωγή απέτυχε.</translation>
     </message>
     <message>
         <source>Export to Web Browser</source>
-        <translation>Εξαγωγή σε περιηγητή διαδικτύου</translation>
+        <translation>Εξαγωγή σε πρόγραμμα περιήγησης διαδικτύου</translation>
     </message>
 </context>
 <context>
@@ -1814,7 +1819,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Audios</source>
-        <translation>Ήχοι</translation>
+        <translation>Ηχοι</translation>
     </message>
     <message>
         <source>Movies</source>
@@ -1846,7 +1851,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Trash</source>
-        <translation>Κάδος ανακύκλωσης</translation>
+        <translation>Κάδος απορριμμάτων</translation>
     </message>
 </context>
 <context>
@@ -1857,7 +1862,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Άκυρο</translation>
+        <translation>Ακυρο</translation>
     </message>
     <message>
         <source>Enter a new folder name</source>
@@ -1883,7 +1888,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Hide on Extended Screen when selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Απόκρυψη σε Εκτεταμένη Οθόνη όταν είναι επιλεγμένο</translation>
     </message>
 </context>
 <context>
@@ -1898,46 +1903,46 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Set as background</source>
-        <translation type="unfinished">Ορισμός ως παρασκήνιο</translation>
+        <translation>Ορισμός ως παρασκήνιο</translation>
     </message>
     <message>
         <source>Web Inspector</source>
-        <translation type="unfinished"></translation>
+        <translation>Επιθεωρητής Ιστού</translation>
     </message>
     <message>
         <source>Hide on Extended Screen when selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Απόκρυψη σε Εκτεταμένη Οθόνη όταν είναι επιλεγμένο</translation>
     </message>
     <message>
         <source>Duplicate</source>
-        <translation type="unfinished">Αντίγραφο</translation>
+        <translation>Αντίγραφο</translation>
     </message>
     <message>
         <source>Layer up</source>
-        <translation type="unfinished"></translation>
+        <translation>Μετακίνηση στην στρώση από πάνω</translation>
     </message>
     <message>
         <source>Layer down</source>
-        <translation type="unfinished"></translation>
+        <translation>Μετακίνηση στην στρώση από κάτω</translation>
     </message>
 </context>
 <context>
     <name>UBGraphicsMediaItem</name>
     <message>
         <source>Media resource couldn&apos;t be resolved</source>
-        <translation type="unfinished"></translation>
+        <translation>Δεν ήταν δυνατή η ανάλυση του πόρου μέσων</translation>
     </message>
     <message>
         <source>Unsupported media format</source>
-        <translation type="unfinished"></translation>
+        <translation>Μη υποστηριζόμενη μορφή πολυμέσων</translation>
     </message>
     <message>
         <source>Media playback service not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Δεν βρέθηκε υπηρεσία αναπαραγωγής πολυμέσων</translation>
     </message>
     <message>
         <source>Media error: </source>
-        <translation type="unfinished"></translation>
+        <translation>Σφάλμα πολυμέσων: </translation>
     </message>
 </context>
 <context>
@@ -1969,7 +1974,7 @@ Providing a new name will create a new document.</source>
     <name>UBGraphicsWidgetItem</name>
     <message>
         <source>Loading ...</source>
-        <translation>Φόρτωση...</translation>
+        <translation>Φόρτωση ...</translation>
     </message>
 </context>
 <context>
@@ -1980,7 +1985,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Transform as Tool </source>
-        <translation>Αλλαγή σε εργαλείο</translation>
+        <translation>Αλλαγή σε εργαλείο </translation>
     </message>
 </context>
 <context>
@@ -1995,15 +2000,15 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>Η εισαγωγή του αρχείου %1 απέτυχε</translation>
+        <translation>Η εισαγωγή του αρχείου %1 απέτυχε.</translation>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Επιτυχημένη εισαγωγή</translation>
+        <translation>Η εισαγωγή έγινε με επιτυχία.</translation>
     </message>
     <message>
         <source>Import failed.</source>
-        <translation>Αποτυχημένη εισαγωγή</translation>
+        <translation>Η εισαγωγή απέτυχε.</translation>
     </message>
 </context>
 <context>
@@ -2014,22 +2019,22 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>Import successful.</source>
-        <translation>Επιτυχημένη εισαγωγή</translation>
+        <translation>Η εισαγωγή έγινε με επιτυχία.</translation>
     </message>
     <message>
         <source>Import of file %1 failed.</source>
-        <translation>Η εισαγωγή του αρχείου %1 απέτυχε</translation>
+        <translation>Η εισαγωγή του αρχείου %1 απέτυχε.</translation>
     </message>
     <message>
         <source>OpenBoard (*.ubz)</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard (*.ubz)</translation>
     </message>
 </context>
 <context>
     <name>UBImportDocumentSetAdaptor</name>
     <message>
         <source>Openboard (set of documents) (*.ubx)</source>
-        <translation type="unfinished"></translation>
+        <translation>Openboard (σύνολο εγγράφων) (*.ubx)</translation>
     </message>
 </context>
 <context>
@@ -2047,7 +2052,7 @@ Providing a new name will create a new document.</source>
     </message>
     <message>
         <source>PDF import failed.</source>
-        <translation>Η εισαγωγή του PDF απέτυχε</translation>
+        <translation>Η εισαγωγή του PDF απέτυχε.</translation>
     </message>
     <message>
         <source>Importing page %1 of %2</source>
@@ -2058,11 +2063,11 @@ Providing a new name will create a new document.</source>
     <name>UBIntranetPodcastPublisher</name>
     <message>
         <source>Error while publishing video to intranet (%1)</source>
-        <translation>Σφάλμα κατά τη δημοσίευση του βίντεο στο δίκτυο (%1)</translation>
+        <translation>Σφάλμα κατά τη δημοσίευση του βίντεο στο διαδίκτυο (%1)</translation>
     </message>
     <message>
         <source>Publishing to Intranet in progress %1 %</source>
-        <translation>Δημοσίευση στο δικτυο σε εξέλιξη %1 %</translation>
+        <translation>Δημοσίευση στο διαδικτυο σε εξέλιξη %1 %</translation>
     </message>
 </context>
 <context>
@@ -2140,27 +2145,27 @@ Do you want to ignore these errors for this host?</source>
     <name>UBOpenSankoreImporterWidget</name>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Άκυρο</translation>
+        <translation>Ακυρο</translation>
     </message>
     <message>
         <source>Open-Sankore Documents Detected</source>
-        <translation type="unfinished"></translation>
+        <translation>Εντοπίστηκαν έγγραφα Open-Sankore</translation>
     </message>
     <message>
         <source>Open-Sankoré documents are present on your computer. It is possible to import them to OpenBoard by pressing the “Proceed” button to launch the importer application.</source>
-        <translation type="unfinished"></translation>
+        <translation>Υπάρχουν έγγραφα Open-Sankoré στον υπολογιστή σας. Είναι δυνατή η εισαγωγή τους στο OpenBoard πατώντας το κουμπί “Συνέχεια” για να ξεκινήσει η εφαρμογή importer.</translation>
     </message>
     <message>
         <source>Show this panel next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Εμφάνιση την επόμενη φορά</translation>
     </message>
     <message>
         <source>You can always access the OpenBoard Document Importer through the Preferences panel in the About tab. Warning, if you have already imported your Open-Sankore datas, you might loose your current OpenBoard documents.</source>
-        <translation type="unfinished"></translation>
+        <translation>Μπορείτε πάντα να έχετε πρόσβαση στο OpenBoard Document Importer μέσω του πίνακα Προτιμήσεις στην καρτέλα Πληροφορίες. Προειδοποίηση, εάν έχετε ήδη εισάγει τα δεδομένα Open-Sankore σας, ενδέχεται να χάσετε τα τρέχοντα έγγραφα OpenBoard.</translation>
     </message>
     <message>
         <source>Proceed</source>
-        <translation type="unfinished"></translation>
+        <translation>Συνέχεια</translation>
     </message>
 </context>
 <context>
@@ -2175,15 +2180,15 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>OpenBoard has lost access to the document repository &apos;%1&apos;. Unfortunately the application must shut down to avoid data corruption. Latest changes may be lost as well.</source>
-        <translation type="unfinished"></translation>
+        <translation>Το OpenBoard έχασε την πρόσβαση στο αποθετήριο εγγράφων &apos;%1&apos;. Δυστυχώς, η εφαρμογή πρέπει να τερματιστεί για να αποφευχθεί η καταστροφή των δεδομένων. Οι τελευταίες αλλαγές μπορεί επίσης να χαθούν.</translation>
     </message>
     <message>
         <source>Renaming pages (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Μετονομασία σελίδων (%1/%2)</translation>
     </message>
     <message>
         <source>Retrieving all your documents (found : %1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ανάκτηση όλων των εγγράφων σας (βρέθηκαν : %1)</translation>
     </message>
 </context>
 <context>
@@ -2221,7 +2226,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Part %1</source>
-        <translation>Τμήμα %1</translation>
+        <translation>Μέρος %1</translation>
     </message>
     <message>
         <source>on your desktop ...</source>
@@ -2261,7 +2266,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Publish to Intranet</source>
-        <translation>Δημοσίευση στο δίκτυο</translation>
+        <translation>Δημοσίευση στο διαδίκτυο</translation>
     </message>
     <message>
         <source>Publish to Youtube</source>
@@ -2269,14 +2274,14 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>OpenBoard Cast</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenBoard Cast</translation>
     </message>
 </context>
 <context>
     <name>UBPreferencesController</name>
     <message>
         <source>version: </source>
-        <translation>έκδοση:</translation>
+        <translation>έκδοση: </translation>
     </message>
     <message>
         <source>Marker is pressure sensitive</source>
@@ -2284,7 +2289,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Use all available displays</source>
-        <translation type="unfinished"></translation>
+        <translation>Χρήση όλων των διαθέσιμων οθονών</translation>
     </message>
 </context>
 <context>
@@ -2298,7 +2303,7 @@ Do you want to ignore these errors for this host?</source>
     <name>UBStartupHintsPalette</name>
     <message>
         <source>Visible next time</source>
-        <translation type="unfinished"></translation>
+        <translation>Εμφάνιση την επόμενη φορά</translation>
     </message>
 </context>
 <context>
@@ -2312,22 +2317,22 @@ Do you want to ignore these errors for this host?</source>
     <name>UBThumbnailAdaptor</name>
     <message>
         <source>Generating preview thumbnails ...</source>
-        <translation>Δημιουργία μικρογραφιών προεπισκόπησης...</translation>
+        <translation>Δημιουργία μικρογραφιών προεπισκόπησης ...</translation>
     </message>
     <message>
         <source>%1 thumbnails generated ...</source>
-        <translation>%1 μικρογραφίες δημιουργήθηκαν...</translation>
+        <translation>Δημιουργήθηκαν %1 μικρογραφίες...</translation>
     </message>
     <message>
         <source>Loading thumbnail (%1/%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Φόρτωση μικρογραφίας (%1/%2)</translation>
     </message>
 </context>
 <context>
     <name>UBThumbnailTextItem</name>
     <message>
         <source>Page %0</source>
-        <translation type="unfinished">Σελίδα %0</translation>
+        <translation>Σελίδα %0</translation>
     </message>
 </context>
 <context>
@@ -2362,7 +2367,7 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source>Axes</source>
-        <translation type="unfinished"></translation>
+        <translation>Αξονες</translation>
     </message>
 </context>
 <context>
@@ -2373,11 +2378,11 @@ Do you want to ignore these errors for this host?</source>
     </message>
     <message>
         <source> files require an update.</source>
-        <translation>αρχεία που χρειάζονται ενημέρωση</translation>
+        <translation> αρχεία που χρειάζονται ενημέρωση.</translation>
     </message>
     <message>
         <source>Backup path: </source>
-        <translation>Διαδρομή αντιγράφου ασφαλείας:</translation>
+        <translation>Διαδρομή αντιγράφου ασφαλείας: </translation>
     </message>
     <message>
         <source>Browse</source>
@@ -2394,7 +2399,7 @@ Do you want to ignore these errors for this host?</source>
     <message>
         <source>Files update successful!
 Please reboot the application to access the updated documents.</source>
-        <translation>Η ενημέρωση των αρχείων ήταν επιτυχημένη!
+        <translation>Η ενημέρωση των αρχείων έγινε με επιτυχία!
 Παρακαλώ επανεκκινήστε την εφαρμογή για να έχετε πρόσβαση στα ενημερωμένα αρχεία.</translation>
     </message>
     <message>
@@ -2407,7 +2412,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>Updating file </source>
-        <translation>Ενημέρωση αρχείου</translation>
+        <translation>Ενημέρωση αρχείου </translation>
     </message>
     <message>
         <source>Please wait the import process will start soon...</source>
@@ -2422,7 +2427,7 @@ Please reboot the application to access the updated documents.</source>
     <name>UBWebEngineView</name>
     <message>
         <source>Open Web Inspector</source>
-        <translation type="unfinished"></translation>
+        <translation>Ανοιγμα επιθεωρητή ιστού</translation>
     </message>
 </context>
 <context>
@@ -2476,7 +2481,7 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>People &amp; Blogs</source>
-        <translation>Άνθρωποι &amp; Ιστολόγια</translation>
+        <translation>Ανθρωποι &amp; Ιστολόγια</translation>
     </message>
     <message>
         <source>News &amp; Politics</source>
@@ -2529,105 +2534,106 @@ Please reboot the application to access the updated documents.</source>
     </message>
     <message>
         <source>%1 items</source>
-        <translation>%1 αντικείμενα</translation>
+        <translation>%1 στοιχεία</translation>
     </message>
 </context>
 <context>
     <name>WebPage</name>
     <message>
         <source>Certificate Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Σφάλμα πιστοποιητικού</translation>
     </message>
     <message>
         <source>Enter username and password for &quot;%1&quot; at %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Εισάγετε όνομα χρήστη και κωδικό πρόσβασης για &quot;%1&quot; στο %2</translation>
     </message>
     <message>
         <source>Allow %1 to access your location information?</source>
-        <translation type="unfinished"></translation>
+        <translation>Να επιτρέπεται στο %1 να έχει πρόσβαση στις πληροφορίες τοποθεσίας;</translation>
     </message>
     <message>
         <source>Allow %1 to access your microphone?</source>
-        <translation type="unfinished"></translation>
+        <translation>Να επιτρέπεται στο %1 να έχει πρόσβαση στο μικρόφωνό σας;</translation>
     </message>
     <message>
         <source>Allow %1 to access your webcam?</source>
-        <translation type="unfinished"></translation>
+        <translation>Να επιτρέπεται στο %1 να έχει πρόσβαση στην κάμερά σας;</translation>
     </message>
     <message>
         <source>Allow %1 to access your microphone and webcam?</source>
-        <translation type="unfinished"></translation>
+        <translation>Να επιτρέπεται στο %1 να έχει πρόσβαση στην κάμερα και το μικρόφωνο σας;</translation>
     </message>
     <message>
         <source>Allow %1 to lock your mouse cursor?</source>
-        <translation type="unfinished"></translation>
+        <translation>Να επιτρέπεται στο %1 να κλειδώνει τον δείκτη του ποντικιού σας;</translation>
     </message>
     <message>
         <source>Allow %1 to capture video of your desktop?</source>
-        <translation type="unfinished"></translation>
+        <translation>Να επιτρέπεται στο %1 να καταγράφει βίντεο από την επιφάνεια εργασίας;</translation>
     </message>
     <message>
         <source>Allow %1 to capture audio and video of your desktop?</source>
-        <translation type="unfinished"></translation>
+        <translation>Να επιτρέπεται στο %1 να καταγράφει βίντεο και ήχο από την επιφάνεια εργασίας;</translation>
     </message>
     <message>
         <source>Permission Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Αίτημα άδειας</translation>
     </message>
     <message>
         <source>Connect to proxy &quot;%1&quot; using:</source>
-        <translation type="unfinished"></translation>
+        <translation>Σύνδεση σε διακομιστή μεσολάβησης (proxy) &quot;%1&quot; με χρήση:</translation>
     </message>
     <message>
         <source>Allow %1 to open all %2 links?</source>
-        <translation type="unfinished"></translation>
+        <translation>Να επιτραπεί στο %1 να ανοίξει και τους %2 συνδέσμους;</translation>
     </message>
 </context>
 <context>
     <name>WebView</name>
     <message>
         <source>Render process normal exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Κανονική έξοδος διαδικασίας απόδοσης</translation>
     </message>
     <message>
         <source>Render process abnormal exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Μη κανονική έξοδος διαδικασίας απόδοσης</translation>
     </message>
     <message>
         <source>Render process crashed</source>
-        <translation type="unfinished"></translation>
+        <translation>Η διαδικασία απόδοσης διακόπηκε απρόσμενα</translation>
     </message>
     <message>
         <source>Render process killed</source>
-        <translation type="unfinished"></translation>
+        <translation>Η διαδικασία απόδοσης τερματίστηκε</translation>
     </message>
     <message>
         <source>Render process exited with code: %1
 Do you want to reload the page ?</source>
-        <translation type="unfinished"></translation>
+        <translation>Η διαδικασία απόδοσης τερματίστηκε με κωδικό εξόδου: %1
+Θέλετε να κάνετε επαναφόρτωση της σελίδας ;</translation>
     </message>
     <message>
         <source>Open Web Inspector in new window</source>
-        <translation type="unfinished"></translation>
+        <translation>Ανοιγμα του Επιθεωρητή Ιστού σε νέο παράθυρο</translation>
     </message>
     <message>
         <source>Inspect element</source>
-        <translation type="unfinished"></translation>
+        <translation>Επιθεώρηση στοιχείου</translation>
     </message>
     <message>
         <source>Add to board</source>
-        <translation type="unfinished"></translation>
+        <translation>Προσθήκη στoν πίνακα</translation>
     </message>
 </context>
 <context>
     <name>XPDFRenderer</name>
     <message>
         <source>Processing...</source>
-        <translation type="unfinished"></translation>
+        <translation>Επεξεργασία...</translation>
     </message>
     <message>
         <source>an error occured while trying to open the PDF file</source>
-        <translation type="unfinished"></translation>
+        <translation>παρουσιάστηκε σφάλμα κατά την προσπάθεια ανοίγματος του αρχείου PDF</translation>
     </message>
 </context>
 <context>
@@ -2654,7 +2660,7 @@ Do you want to reload the page ?</source>
     </message>
     <message>
         <source>YouTube Username</source>
-        <translation>Όνομα χρήστη στο Youtube</translation>
+        <translation>Ονομα χρήστη στο Youtube</translation>
     </message>
     <message>
         <source>YouTube Password</source>
@@ -2674,11 +2680,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>OpenBoard</source>
-        <translation type="unfinished">OpenBoard</translation>
+        <translation>OpenBoard</translation>
     </message>
     <message>
         <source>Restore credentials on reboot</source>
-        <translation type="unfinished"></translation>
+        <translation>Επαναφορά διαπιστευτηρίων κατά την επανεκκίνηση</translation>
     </message>
 </context>
 <context>
@@ -2689,11 +2695,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>On Light Background</source>
-        <translation>Σε φωτεινό παρασκήνιο</translation>
+        <translation>Σε ανοιχτόχρωμο παρασκήνιο</translation>
     </message>
     <message>
         <source>On Dark Background</source>
-        <translation>Σε σκοτεινό παρασκήνιο</translation>
+        <translation>Σε σκουρόχρωμο παρασκήνιο</translation>
     </message>
     <message>
         <source>Line Width</source>
@@ -2705,7 +2711,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Strong</source>
-        <translation>Δυνατό</translation>
+        <translation>Μεγάλο</translation>
     </message>
     <message>
         <source>Fine</source>
@@ -2717,11 +2723,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Show preview circle from</source>
-        <translation type="unfinished"></translation>
+        <translation>Προεπισκόπιση κύκλου από</translation>
     </message>
     <message>
         <source>px</source>
-        <translation type="unfinished"></translation>
+        <translation>px</translation>
     </message>
 </context>
 <context>
@@ -2751,23 +2757,23 @@ p, li { white-space: pre-wrap; }
     <name>documents</name>
     <message>
         <source>OpenBoard Documents</source>
-        <translation type="unfinished"></translation>
+        <translation>Εγγραφα OpenBoard</translation>
     </message>
     <message>
         <source>Creation date</source>
-        <translation type="unfinished"></translation>
+        <translation>Ημερομηνία δημιουργίας</translation>
     </message>
     <message>
         <source>Update date</source>
-        <translation type="unfinished"></translation>
+        <translation>Ημερομηνία ενημέρωσης</translation>
     </message>
     <message>
         <source>Alphabetical order</source>
-        <translation type="unfinished"></translation>
+        <translation>Αλφαβητική σειρά</translation>
     </message>
     <message>
         <source>Sort Order</source>
-        <translation type="unfinished"></translation>
+        <translation>Σειρά ταξινόμησης</translation>
     </message>
 </context>
 <context>
@@ -2830,7 +2836,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Check software update at launch</source>
-        <translation>Έλεγχος για ενημέρωση του λογισμικού κατά το άνοιγμα της εφαρμογής</translation>
+        <translation>Ελεγχος για ενημέρωση του λογισμικού κατά το άνοιγμα της εφαρμογής</translation>
     </message>
     <message>
         <source>Internet</source>
@@ -2838,7 +2844,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Home Page:</source>
-        <translation>Αρχική σελίδα</translation>
+        <translation>Αρχική σελίδα:</translation>
     </message>
     <message>
         <source>Toolbar</source>
@@ -2854,11 +2860,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>version : …</source>
-        <translation>έκδοση: ...</translation>
+        <translation>έκδοση : …</translation>
     </message>
     <message>
         <source>Licences</source>
-        <translation>Άδειες</translation>
+        <translation>Αδειες</translation>
     </message>
     <message>
         <source>Network</source>
@@ -2874,7 +2880,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Swap control display and view display</source>
-        <translation type="vanished">Αλλαγή εμφάνισης ελέγχου και εμφάνισης προβολής</translation>
+        <translation type="vanished">Εναλλαγή οθόνης χειρισμού και οθόνης προβολής</translation>
     </message>
     <message>
         <source>Mode</source>
@@ -2886,7 +2892,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Board</source>
-        <translation>Εφαρμογή</translation>
+        <translation>Πίνακας</translation>
     </message>
     <message>
         <source>Desktop</source>
@@ -2906,75 +2912,75 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>On Dark Background</source>
-        <translation type="unfinished">Σε σκοτεινό παρασκήνιο</translation>
+        <translation>Σε σκουρόχρωμο παρασκήνιο</translation>
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="unfinished">Διαφάνεια</translation>
+        <translation>Διαφάνεια</translation>
     </message>
     <message>
         <source>On Light Background</source>
-        <translation type="unfinished">Σε φωτεινό παρασκήνιο</translation>
+        <translation>Σε ανοιχτόχρωμο παρασκήνιο</translation>
     </message>
     <message>
         <source>Built-in virtual keyboard button size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Μέγεθος κουμπιών ενσωματωμένου εικονικού πληκτρολογίου:</translation>
     </message>
     <message>
         <source>Use system keyboard (recommended)</source>
-        <translation type="unfinished"></translation>
+        <translation>Χρήση πληκτρολογίου συστήματος (προτείνεται)</translation>
     </message>
     <message>
         <source>Grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Πλέγμα</translation>
     </message>
     <message>
         <source>Open-Sankoré Importer</source>
-        <translation type="unfinished"></translation>
+        <translation>Open-Sankoré Importer</translation>
     </message>
     <message>
         <source>Check if Open-Sankoré data could be imported at launch</source>
-        <translation type="unfinished"></translation>
+        <translation>Ελεγχος εάν τα δεδομένα Open-Sankoré μπορούν να εισαχθούν κατά την εκκίνηση</translation>
     </message>
     <message>
         <source>Documents Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Λειτουργία εγγράφων</translation>
     </message>
     <message>
         <source>Display date column on alphabetical sort</source>
-        <translation type="unfinished"></translation>
+        <translation>Εμφάνιση στήλης ημερομηνίας σε ταξινόμηση με αλφαβητική σειρά</translation>
     </message>
     <message>
         <source>Empty trash for documents older than</source>
-        <translation type="unfinished"></translation>
+        <translation>Αδειασμα κάδου απορριμμάτων για έγγραφα παλαιότερα από</translation>
     </message>
     <message>
         <source>days</source>
-        <translation type="unfinished"></translation>
+        <translation>ημέρες</translation>
     </message>
     <message>
         <source>Improve zoom execution time (can slightly affect rendering quality)</source>
-        <translation type="unfinished"></translation>
+        <translation>Βελτίωση του χρόνου εκτέλεσης ζουμ (μπορεί να επηρεάσει ελαφρώς την ποιότητα)</translation>
     </message>
     <message>
         <source>PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF</translation>
     </message>
     <message>
         <source>Export background grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Εξαγωγή πλέγματος παρασκηνίου</translation>
     </message>
     <message>
         <source>Export background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Εξαγωγή χρώματος παρασκηνίου</translation>
     </message>
     <message>
         <source>Documents</source>
-        <translation type="unfinished">Έγγραφα</translation>
+        <translation>Εγγραφα</translation>
     </message>
     <message>
         <source>List of screens used for Control, Display and Previous pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Λίστα οθονών που χρησιμοποιούνται για Χειριστήρια, Προβολή και Προηγούμενες σελίδες</translation>
     </message>
 </context>
 <context>
@@ -2993,7 +2999,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Application name</source>
-        <translation>Όνομα εφαρμογής</translation>
+        <translation>Ονομα εφαρμογής</translation>
     </message>
     <message>
         <source>Create Application</source>
@@ -3001,11 +3007,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Select a content to capture</source>
-        <translation type="unfinished"></translation>
+        <translation>Επιλέξτε περιεχόμενο για λήψη στιγμιότυπου</translation>
     </message>
     <message>
         <source>Capture Web Content</source>
-        <translation type="unfinished"></translation>
+        <translation>Λήψη στιγμιότυπου διαδικτυακού περιεχομένου</translation>
     </message>
 </context>
 </TS>
