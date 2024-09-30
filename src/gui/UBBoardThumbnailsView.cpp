@@ -333,10 +333,6 @@ void UBBoardThumbnailsView::dragEnterEvent(QDragEnterEvent *event)
         event->setDropAction(Qt::MoveAction);
         event->accept();
     }
-    else
-    {
-        event->acceptProposedAction();
-    }
 }
 
 void UBBoardThumbnailsView::dragMoveEvent(QDragMoveEvent *event)
