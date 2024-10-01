@@ -27,8 +27,8 @@
 
 
 
-#ifndef UBTHUMBNAILWIDGET_H_
-#define UBTHUMBNAILWIDGET_H_
+#ifndef UBDOCUMENTTHUMBNAILSVIEW_H_
+#define UBDOCUMENTTHUMBNAILSVIEW_H_
 
 #include <QtGui>
 #include <QtSvg>
@@ -54,13 +54,13 @@ class UBDocumentProxy;
 class UBThumbnailTextItem;
 class UBThumbnail;
 
-class UBThumbnailWidget : public QGraphicsView
+class UBDocumentThumbnailsView : public QGraphicsView
 {
     Q_OBJECT
 
     public:
-        UBThumbnailWidget(QWidget* parent);
-        virtual ~UBThumbnailWidget();
+        UBDocumentThumbnailsView(QWidget* parent);
+        virtual ~UBDocumentThumbnailsView();
 
         QList<QGraphicsItem*> selectedItems();
         void selectItemAt(int pIndex, bool extend = false);
@@ -677,4 +677,4 @@ namespace UBThumbnailUI
     bool triggered(qreal y);
 }
 
-#endif /* UBTHUMBNAILWIDGET_H_ */
+#endif /* UBDOCUMENTTHUMBNAILSVIEW_H_ */

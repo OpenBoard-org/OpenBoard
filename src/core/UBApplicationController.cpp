@@ -729,8 +729,6 @@ void UBApplicationController::importFile(const QString& pFilePath)
         if (UBApplication::documentController)
         {
             UBApplication::documentController->selectDocument(document, true, true);
-
-            UBApplication::documentController->reloadThumbnails();
         }
 
         // This import operation happens when double-clicking on a UBZ for example.

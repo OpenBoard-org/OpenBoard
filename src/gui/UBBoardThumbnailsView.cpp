@@ -48,7 +48,7 @@
 #include "core/UBApplicationController.h"
 #include "core/UBPersistenceManager.h"
 #include "UBThumbnailView.h"
-#include "UBThumbnailWidget.h"
+#include "gui/UBDocumentThumbnailsView.h"
 
 UBBoardThumbnailsView::UBBoardThumbnailsView(QWidget *parent, const char *name)
     : QGraphicsView(parent)
@@ -163,23 +163,29 @@ void UBBoardThumbnailsView::clearThumbnails()
 
 void UBBoardThumbnailsView::initThumbnails(std::shared_ptr<UBDocumentProxy> document)
 {
-    clearThumbnails();
-
-    for(int i = 0; i < document->pageCount(); i++)
+    if (document)
     {
-        mThumbnails.append(createThumbnail(document, i));
+        clearThumbnails();
 
-        scene()->addItem(mThumbnails.last());
-        scene()->addItem(mThumbnails.last()->pageNumber());
-        scene()->addItem(mThumbnails.last()->selectionItem());
+        for(int i = 0; i < document->pageCount(); i++)
+        {
+            mThumbnails.append(createThumbnail(document, i));
+
+            scene()->addItem(mThumbnails.last());
+            scene()->addItem(mThumbnails.last()->pageNumber());
+            scene()->addItem(mThumbnails.last()->selectionItem());
+        }
+
+        updateThumbnailsPos();
     }
-
-    updateThumbnailsPos();
 }
 
 void UBBoardThumbnailsView::centerOnThumbnail(int index)
 {
-    centerOn(mThumbnails.at(index));
+    if (index < mThumbnails.size())
+    {
+        centerOn(mThumbnails.at(index));
+    }
 }
 
 void UBBoardThumbnailsView::ensureVisibleThumbnail(int index)

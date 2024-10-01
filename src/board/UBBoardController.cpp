@@ -569,10 +569,9 @@ void UBBoardController::addScene()
 
     UBPersistenceManager::persistenceManager()->createDocumentSceneAt(selectedDocument(), mActiveSceneIndex+1);
     emit addThumbnailRequired(selectedDocument(), mActiveSceneIndex+1);
-
     if (UBApplication::documentController->selectedDocument() == selectedDocument())
     {
-        UBApplication::documentController->insertThumbPage(mActiveSceneIndex+1);
+        UBApplication::documentController->insertThumbPage(mActiveSceneIndex +1);
         UBApplication::documentController->reloadThumbnails();
     }
 
@@ -581,6 +580,8 @@ void UBBoardController::addScene()
 
     setActiveDocumentScene(mActiveSceneIndex + 1);
     QApplication::restoreOverrideCursor();
+
+    UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
 }
 
 void UBBoardController::addScene(std::shared_ptr<UBGraphicsScene> scene, bool replaceActiveIfEmpty)
@@ -637,12 +638,13 @@ void UBBoardController::duplicateScene(int nIndex)
     persistCurrentScene(false,true);
 
     duplicatePage(nIndex);
-
+    emit addThumbnailRequired(selectedDocument(), nIndex + 1);
     if (UBApplication::documentController->selectedDocument() == selectedDocument())
     {
+        UBApplication::documentController->insertThumbPage(nIndex +1);
         UBApplication::documentController->reloadThumbnails();
     }
-    emit addThumbnailRequired(selectedDocument(), nIndex + 1);
+
     QDateTime now = QDateTime::currentDateTime();
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
 
@@ -842,7 +844,7 @@ void UBBoardController::deleteScene(int nIndex)
         mDeletingSceneIndex = nIndex;
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistCurrentScene();
-        showMessage(tr("Deleting page %1").arg(nIndex+1), true);
+        UBApplication::showMessage(tr("Deleting page %1").arg(nIndex+1), true);
 
         QList<int> scIndexes;
         scIndexes << nIndex;
@@ -860,7 +862,7 @@ void UBBoardController::deleteScene(int nIndex)
         if (nIndex >= pageCount())
             nIndex = pageCount()-1;
         setActiveDocumentScene(nIndex);
-        showMessage(tr("Page %1 deleted").arg(nIndex+1));
+        UBApplication::showMessage(tr("Page %1 deleted").arg(nIndex+1));
         QApplication::restoreOverrideCursor();
         mDeletingSceneIndex = -1;
     }
@@ -1193,7 +1195,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
     if (!pSuccess)
     {
-        showMessage(tr("Downloading content %1 failed").arg(sourceUrl.toString()));
+        UBApplication::showMessage(tr("Downloading content %1 failed").arg(sourceUrl.toString()));
         return NULL;
     }
 
@@ -1202,7 +1204,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
     const QString scheme = sourceUrl.scheme();
 
     if (scheme != "file" && scheme != "openboardtool" && scheme != "data")
-        showMessage(tr("Download finished"));
+        UBApplication::showMessage(tr("Download finished"));
 
     if (UBMimeType::RasterImage == itemMimeType)
     {
@@ -1333,7 +1335,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
                 &pData);
             if (!b)
             {
-                showMessage(tr("Add file operation failed: file copying error"));
+                UBApplication::showMessage(tr("Add file operation failed: file copying error"));
                 return NULL;
             }
 
@@ -1378,7 +1380,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
                 &pData);
             if (!b)
             {
-                showMessage(tr("Add file operation failed: file copying error"));
+                UBApplication::showMessage(tr("Add file operation failed: file copying error"));
                 return NULL;
             }
 
@@ -1473,9 +1475,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
         if (result)
         {
-            if (UBApplication::documentController->selectedDocument() == selectedDocument())
-                UBApplication::documentController->reloadThumbnails();
-
             QDateTime now = QDateTime::currentDateTime();
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
             updateActionStates();
@@ -1533,7 +1532,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         }
         else
         {
-            showMessage(tr("Unknown tool type %1").arg(sourceUrl.toString()));
+            UBApplication::showMessage(tr("Unknown tool type %1").arg(sourceUrl.toString()));
         }
     }
     else if (UBMimeType::Html == itemMimeType)
@@ -1573,12 +1572,12 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         }
         else
         {
-            showMessage(tr("Could not find document."));
+            UBApplication::showMessage(tr("Could not find document."));
         }
     }
     else
     {
-        showMessage(tr("Unknown content type %1").arg(pContentTypeHeader));
+        UBApplication::showMessage(tr("Unknown content type %1").arg(pContentTypeHeader));
         qWarning() << "ignoring mime type" << pContentTypeHeader ;
     }
 
@@ -2328,7 +2327,7 @@ UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
                     destFile);
         if (!b)
         {
-            showMessage(tr("Add file operation failed: file copying error"));
+            UBApplication::showMessage(tr("Add file operation failed: file copying error"));
             return NULL;
         }
         concreteUrl = QUrl::fromLocalFile(destFile);
@@ -2364,7 +2363,7 @@ UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool st
             destFile);
         if (!b)
         {
-            showMessage(tr("Add file operation failed: file copying error"));
+            UBApplication::showMessage(tr("Add file operation failed: file copying error"));
             return NULL;
         }
         concreteUrl = QUrl::fromLocalFile(destFile);
@@ -2782,5 +2781,7 @@ void UBBoardController::freezeW3CWidget(QGraphicsItem *item, bool freeze)
 
 void UBBoardController::reloadThumbnails()
 {
+    UBApplication::showMessage(tr("Refreshing Board Thumbnails View (%1 pages)").arg(selectedDocument()->pageCount()), true);
     emit initThumbnailsRequired(selectedDocument());
+    UBApplication::showMessage(tr("Board Thumbnails View up-to-date"));
 }

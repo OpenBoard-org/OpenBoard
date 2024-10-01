@@ -54,7 +54,7 @@
 #include "gui/UBResources.h"
 #include "gui/UBMainWindow.h"
 #include "gui/UBSnapIndicator.h"
-#include "gui/UBThumbnailWidget.h"
+#include "gui/UBDocumentThumbnailsView.h"
 
 #include "board/UBBoardController.h"
 #include "board/UBBoardPaletteManager.h"
@@ -1779,7 +1779,7 @@ void UBBoardView::dropEvent (QDropEvent *event)
         else
         {
             if (!event->source()
-                        || qobject_cast<UBThumbnailWidget *>(event->source())
+                        || qobject_cast<UBDocumentThumbnailsView *>(event->source())
                         || qobject_cast<QWebEngineView*>(event->source())
                         || qobject_cast<QListView *>(event->source()))
             {
@@ -1791,7 +1791,7 @@ void UBBoardView::dropEvent (QDropEvent *event)
     else
     {
         if (!event->source()
-                    || qobject_cast<UBThumbnailWidget *>(event->source())
+                    || qobject_cast<UBDocumentThumbnailsView *>(event->source())
                     || qobject_cast<QWebEngineView*>(event->source())
                     || qobject_cast<QListView *>(event->source()))
         {
