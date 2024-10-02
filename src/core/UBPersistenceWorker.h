@@ -68,6 +68,7 @@ public slots:
 protected:
    bool mReceivedApplicationClosing;
    QSemaphore mSemaphore;
+   QMutex mMutex;
    QList<PersistenceInformation> saves;
 };
 
