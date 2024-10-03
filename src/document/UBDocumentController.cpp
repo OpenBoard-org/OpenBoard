@@ -3357,9 +3357,10 @@ void UBDocumentController::reloadThumbnails()
 {
     std::shared_ptr<UBDocumentProxy> currentThumbnailsDocument = mDocumentUI->thumbnailWidget->currentThumbnailsDocument();
 
-    bool needsToReloadDocumentThumbs = selectedDocument() != currentThumbnailsDocument
+    bool needsToReloadDocumentThumbs = selectedDocument()
+                        && (selectedDocument() != currentThumbnailsDocument
                         || documentThumbs().size() == 0 // clear documentThumbs before calling reloadThumbnails to force reload pixmaps
-                        || documentThumbs().size() != selectedDocument()->pageCount();
+                        || documentThumbs().size() != selectedDocument()->pageCount());
 
     if (selectedDocument() && selectedDocument()->pageCount() > 0)
     {
