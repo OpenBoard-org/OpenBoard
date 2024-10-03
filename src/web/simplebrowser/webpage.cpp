@@ -64,7 +64,11 @@ WebPage::WebPage(QWebEngineProfile *profile, QObject *parent)
     : QWebEnginePage(profile, parent)
 {
     connect(this, &QWebEnginePage::authenticationRequired, this, &WebPage::handleAuthenticationRequired);
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 8, 0))
+    connect(this, &QWebEnginePage::permissionRequested, this, &WebPage::handlePermissionRequested);
+#else
     connect(this, &QWebEnginePage::featurePermissionRequested, this, &WebPage::handleFeaturePermissionRequested);
+#endif
     connect(this, &QWebEnginePage::proxyAuthenticationRequired, this, &WebPage::handleProxyAuthenticationRequired);
     connect(this, &QWebEnginePage::registerProtocolHandlerRequested, this, &WebPage::handleRegisterProtocolHandlerRequested);
 #if !defined(QT_NO_SSL) || QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(5, 12, 0)
@@ -170,6 +174,30 @@ void WebPage::handleAuthenticationRequired(const QUrl &requestUrl, QAuthenticato
     }
 }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 8, 0))
+inline QString questionForFeature(QWebEnginePermission::PermissionType permissionType)
+{
+    switch (permissionType) {
+    case QWebEnginePermission::PermissionType::MediaAudioCapture:
+        return WebPage::tr("Allow %1 to access your microphone?");
+    case QWebEnginePermission::PermissionType::MediaVideoCapture:
+        return WebPage::tr("Allow %1 to access your webcam?");
+    case QWebEnginePermission::PermissionType::MediaAudioVideoCapture:
+        return WebPage::tr("Allow %1 to access your microphone and webcam?");
+    case QWebEnginePermission::PermissionType::DesktopVideoCapture:
+        return WebPage::tr("Allow %1 to capture video of your desktop?");
+    case QWebEnginePermission::PermissionType::DesktopAudioVideoCapture:
+        return WebPage::tr("Allow %1 to capture audio and video of your desktop?");
+    case QWebEnginePermission::PermissionType::MouseLock:
+        return WebPage::tr("Allow %1 to lock your mouse cursor?");
+    case QWebEnginePermission::PermissionType::Geolocation:
+        return WebPage::tr("Allow %1 to access your location information?");
+    case QWebEnginePermission::PermissionType::Notifications:
+        return QString();
+    }
+    return QString();
+}
+#else
 inline QString questionForFeature(QWebEnginePage::Feature feature)
 {
     switch (feature) {
@@ -192,7 +220,23 @@ inline QString questionForFeature(QWebEnginePage::Feature feature)
     }
     return QString();
 }
+#endif
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 8, 0))
+void WebPage::handlePermissionRequested(QWebEnginePermission permission)
+{
+    if (permission.state() == QWebEnginePermission::State::Ask)
+    {
+        QString title = tr("Permission Request");
+        QString question = questionForFeature(permission.permissionType()).arg(permission.origin().host());
+
+        if (!question.isEmpty() && QMessageBox::question(UBApplication::mainWindow->centralWidget(), title, question) == QMessageBox::Yes)
+            permission.grant();
+        else
+            permission.deny();
+    }
+}
+#else
 void WebPage::handleFeaturePermissionRequested(const QUrl &securityOrigin, Feature feature)
 {
     PermissionPolicy policy = UBApplication::webController->hasFeaturePermission(securityOrigin, feature);
@@ -212,6 +256,7 @@ void WebPage::handleFeaturePermissionRequested(const QUrl &securityOrigin, Featu
 
     setFeaturePermission(securityOrigin, feature, policy);
 }
+#endif
 
 void WebPage::handleProxyAuthenticationRequired(const QUrl &, QAuthenticator *auth, const QString &proxyHost)
 {

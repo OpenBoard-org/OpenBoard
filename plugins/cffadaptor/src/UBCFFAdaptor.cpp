@@ -442,7 +442,6 @@ bool UBCFFAdaptor::UBToCFFConverter::parse()
 }
 bool UBCFFAdaptor::UBToCFFConverter::parseMetadata()
 {
-    int errorLine, errorColumn;
     QFile metaDataFile(sourcePath + "/" + fMetadata);
 
     if (!metaDataFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -450,10 +449,23 @@ bool UBCFFAdaptor::UBToCFFConverter::parseMetadata()
         qDebug() << errorStr;
         return false;
 
-    } else if (!mDataModel->setContent(metaDataFile.readAll(), true, &errorStr, &errorLine, &errorColumn)) {
-        qWarning() << "Error:Parseerroratline" << errorLine << ","
-                   << "column" << errorColumn << ":" << errorStr;
-        return false;
+    } else {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 5, 0))
+        QDomDocument::ParseResult result = mDataModel->setContent(metaDataFile.readAll(), QDomDocument::ParseOption::UseNamespaceProcessing);
+        if (!result) {
+            errorStr = result.errorMessage;
+            qWarning() << "Error:Parseerroratline" << result.errorLine << ","
+                       << "column" << result.errorColumn << ":" << errorStr;
+            return false;
+        }
+#else
+        int errorLine, errorColumn;
+        if (!mDataModel->setContent(metaDataFile.readAll(), true, &errorStr, &errorLine, &errorColumn)) {
+            qWarning() << "Error:Parseerroratline" << errorLine << ","
+                       << "column" << errorColumn << ":" << errorStr;
+            return false;
+        }
+#endif
     }
 
     QDomElement nextInElement = mDataModel->documentElement();
@@ -560,17 +572,29 @@ QDomElement UBCFFAdaptor::UBToCFFConverter::parsePage(const QString &pageFileNam
     qDebug() << "begin parsing page" + pageFileName;
     mSvgElements.clear(); //clean Svg elements map before parsing new page
 
-    int errorLine, errorColumn;
-
     QFile pageFile(sourcePath + "/" + pageFileName);
     if (!pageFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "can't open file" << pageFileName << "for reading";
         return QDomElement();
-    } else if (!mDataModel->setContent(pageFile.readAll(), true, &errorStr, &errorLine, &errorColumn)) {
-        qWarning() << "Error:Parseerroratline" << errorLine << ","
-                   << "column" << errorColumn << ":" << errorStr;
-        pageFile.close();
-        return QDomElement();
+    } else {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 5, 0))
+        QDomDocument::ParseResult result = mDataModel->setContent(pageFile.readAll(), QDomDocument::ParseOption::UseNamespaceProcessing);
+        if (!result) {
+            errorStr = result.errorMessage;
+            qWarning() << "Error:Parseerroratline" << result.errorLine << ","
+                       << "column" << result.errorColumn << ":" << errorStr;
+            pageFile.close();
+            return QDomElement();
+        }
+#else
+        int errorLine, errorColumn;
+        if (!mDataModel->setContent(pageFile.readAll(), true, &errorStr, &errorLine, &errorColumn)) {
+            qWarning() << "Error:Parseerroratline" << errorLine << ","
+                       << "column" << errorColumn << ":" << errorStr;
+            pageFile.close();
+            return QDomElement();
+        }
+#endif
     }
 
     QDomElement page;
