@@ -2486,7 +2486,7 @@ void UBDocumentController::openSelectedItem()
 
             if (proxy && isOKToOpenDocument(proxy))
             {
-                UBApplication::showMessage(tr("Opening document in Board..."), true);
+                UBApplication::showMessage(tr("Opening document in Board. Please wait...").arg(proxy->pageCount()), true);
                 mBoardController->setActiveDocumentScene(proxy, thumb->sceneIndex());
                 UBApplication::applicationController->showBoard();
             }
@@ -2498,7 +2498,7 @@ void UBDocumentController::openSelectedItem()
 
         if (proxy && isOKToOpenDocument(proxy))
         {
-            UBApplication::showMessage(tr("Opening document in Board..."), true);
+            UBApplication::showMessage(tr("Opening document in Board. Please wait...").arg(proxy->pageCount()), true);
             mBoardController->setActiveDocumentScene(proxy);
             UBApplication::applicationController->showBoard();
         }
@@ -3228,22 +3228,30 @@ void UBDocumentController::addFolderOfImages()
         {
             QDir dir(imagesDir);
 
-            int importedImageNumber
-                  = UBDocumentManager::documentManager()->addImageDirToDocument(dir, document);
+            int currentNumberOfThumbnails = selectedDocument()->pageCount();
+            int numberOfImportedImages = UBDocumentManager::documentManager()->addImageDirToDocument(dir, document);
 
-            if (importedImageNumber == 0)
-            {
-                UBApplication::showMessage(tr("Folder does not contain any image files"));
-                UBApplication::applicationController->showDocument();
-            }
-            else
+            if (numberOfImportedImages > 0)
             {
                 QDateTime now = QDateTime::currentDateTime();
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
                 UBMetadataDcSubsetAdaptor::persist(document);
+
+                bool updateBoardThumbnailsView = mBoardController->selectedDocument() == selectedDocument();
+                for (int i = 0; i < numberOfImportedImages; i++)
+                {
+                    insertThumbPage(currentNumberOfThumbnails+i);
+                    if (updateBoardThumbnailsView)
+                        emit mBoardController->addThumbnailRequired(selectedDocument(), currentNumberOfThumbnails+i);
+                }
                 reloadThumbnails();
 
                 pageSelectionChanged();
+            }
+            else
+            {
+                UBApplication::showMessage(tr("Folder does not contain any image files"));
+                UBApplication::applicationController->showDocument();
             }
         }
     }
@@ -3272,7 +3280,7 @@ bool UBDocumentController::addFileToDocument(std::shared_ptr<UBDocumentProxy> do
     QFileInfo fileInfo(filePath);
     UBSettings::settings()->lastImportFilePath->set(QVariant(fileInfo.absolutePath()));
 
-    bool success = false;
+    int numberOfImportedDocuments = 0;
 
     if (filePath.length() > 0)
     {
@@ -3283,15 +3291,39 @@ bool UBDocumentController::addFileToDocument(std::shared_ptr<UBDocumentProxy> do
 
         QStringList fileNames;
         fileNames << filePath;
-        success = UBDocumentManager::documentManager()->addFilesToDocument(document, fileNames);
 
-        if (success)
+        int currentNumberOfThumbnails = document->pageCount(); //document is always the selected/active one on the document thumbnails view
+
+        numberOfImportedDocuments = UBDocumentManager::documentManager()->addFilesToDocument(document, fileNames);
+
+        if (numberOfImportedDocuments > 0)
         {
             QDateTime now = QDateTime::currentDateTime();
             document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
 
             UBMetadataDcSubsetAdaptor::persist(document);
-            reloadThumbnails();
+            int numberOfThumbnailsToAdd =  document->pageCount() - currentNumberOfThumbnails;
+            bool updateBoardThumbnailsView = mBoardController->selectedDocument() ==  document;
+            bool updateDocumentThumbnailsView = selectedDocument() ==  document;
+            if (updateDocumentThumbnailsView || updateBoardThumbnailsView)
+            {
+                for (int i = 0; i < numberOfThumbnailsToAdd; i++)
+                {
+                    if (updateDocumentThumbnailsView)
+                    {
+                        insertThumbPage(currentNumberOfThumbnails+i);
+                    }
+
+                    if (updateBoardThumbnailsView)
+                    {
+                        emit mBoardController->addThumbnailRequired(document, currentNumberOfThumbnails+i);
+                    }
+                }
+                if (updateDocumentThumbnailsView)
+                {
+                    reloadThumbnails();
+                }
+            }
 
             pageSelectionChanged();
         }
@@ -3303,7 +3335,7 @@ bool UBDocumentController::addFileToDocument(std::shared_ptr<UBDocumentProxy> do
 
     QApplication::restoreOverrideCursor();
 
-    return success;
+    return numberOfImportedDocuments > 0;
 }
 
 
@@ -3357,10 +3389,15 @@ void UBDocumentController::reloadThumbnails()
 {
     std::shared_ptr<UBDocumentProxy> currentThumbnailsDocument = mDocumentUI->thumbnailWidget->currentThumbnailsDocument();
 
-    bool needsToReloadDocumentThumbs = selectedDocument()
+    bool needToReloadDocumentThumbs = selectedDocument()
                         && (selectedDocument() != currentThumbnailsDocument
                         || documentThumbs().size() == 0 // clear documentThumbs before calling reloadThumbnails to force reload pixmaps
                         || documentThumbs().size() != selectedDocument()->pageCount());
+
+    if (needToReloadDocumentThumbs)
+    {
+        UBThumbnailAdaptor::load(selectedDocument(), documentThumbs());
+    }
 
     if (selectedDocument() && selectedDocument()->pageCount() > 0)
     {
@@ -3371,14 +3408,8 @@ void UBDocumentController::reloadThumbnails()
         UBApplication::showMessage(tr("Refreshing Document Thumbnails View"), true);
     }
 
-    if (needsToReloadDocumentThumbs)
-    {
-        qDebug() << "needs to reload documentThumbs. Calling UBThumbnailAdaptor::load...";
-        UBThumbnailAdaptor::load(selectedDocument(), documentThumbs());
-    }
-
     refreshDocumentThumbnailsView();
-    UBApplication::showMessage(tr("Document Thumbnails View up-to-date."));
+    UBApplication::showMessage(tr("Document Thumbnails View up-to-date. Repainting..."));
 }
 
 void UBDocumentController::pageSelectionChanged()
@@ -3432,7 +3463,7 @@ void UBDocumentController::thumbnailPageDoubleClicked(QGraphicsItem* item, int i
     if (thumb) {
         std::shared_ptr<UBDocumentProxy> proxy = thumb->documentProxy();
         if (proxy && isOKToOpenDocument(proxy)) {
-            UBApplication::showMessage(tr("Opening document in Board..."), true);
+            UBApplication::showMessage(tr("Opening document in Board. Please wait...").arg(proxy->pageCount()), true);
             mBoardController->setActiveDocumentScene(proxy, index);
             UBApplication::applicationController->showBoard();
         }
@@ -3605,23 +3636,32 @@ void UBDocumentController::addImages()
 
             UBSettings::settings()->lastImportFolderPath->set(QVariant(firstImage.absoluteDir().absolutePath()));
 
-            int importedImageNumber
-                = UBDocumentManager::documentManager()->addFilesToDocument(document, images);
+            int currentNumberOfThumbnails = selectedDocument()->pageCount();
+            int numberOfImportedImages = UBDocumentManager::documentManager()->addFilesToDocument(document, images);
 
-            if (importedImageNumber == 0)
-            {
-                UBApplication::showMessage(tr("Selection does not contain any image files!"));
-                UBApplication::applicationController->showDocument();
-            }
-            else
+            if (numberOfImportedImages > 0)
             {
                 QDateTime now = QDateTime::currentDateTime();
                 document->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
                 UBMetadataDcSubsetAdaptor::persist(document);
+
+                bool updateBoardThumbnailsView = mBoardController->selectedDocument() == selectedDocument();
+                for (int i = 0; i < numberOfImportedImages; i++)
+                {
+                    insertThumbPage(currentNumberOfThumbnails+i);
+                    if (updateBoardThumbnailsView)
+                        emit mBoardController->addThumbnailRequired(selectedDocument(), currentNumberOfThumbnails+i);
+                }
                 reloadThumbnails();
 
                 pageSelectionChanged();
             }
+            else
+            {
+                UBApplication::showMessage(tr("Selection does not contain any image files!"));
+                UBApplication::applicationController->showDocument();
+            }
+
         }
     }
 }
