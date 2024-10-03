@@ -46,6 +46,7 @@ public:
     UBBoardThumbnailsView(QWidget* parent=0, const char* name="UBBoardThumbnailsView");
 
 public slots:
+    void updateActiveThumbnail(int newActiveIndex);
     void ensureVisibleThumbnail(int index);
     void centerOnThumbnail(int index);
 
@@ -74,13 +75,15 @@ protected:
 
     virtual void scrollContentsBy(int dx, int dy);
 
+protected slots:
+    void updateThumbnailsPos();
+
 signals:
     void mousePressAndHoldEventRequired(QPoint pos);
     void moveThumbnailRequired(int from, int to);
 
 private:
     UBDraggableLivePixmapItem* createThumbnail(std::shared_ptr<UBDocumentProxy> document, int i);
-    void updateThumbnailsPos();
     void updateExposure();
 
     QList<UBDraggableLivePixmapItem*> mThumbnails;
@@ -95,6 +98,7 @@ private:
 
     int mLongPressInterval;
     QTimer mLongPressTimer;
+    QTimer mUpdateThumbnailsTimer;
     QPoint mLastPressedMousePos;
 
     int mCurrentIndex{-1};

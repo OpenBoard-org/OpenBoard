@@ -1468,7 +1468,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
                 QStringList fileNames;
                 fileNames << pdfFile.fileName();
                 result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
-                reloadThumbnails();
                 pdfFile.close();
             }
         }
@@ -1901,7 +1900,6 @@ void UBBoardController::setDisabled(bool disable)
 void UBBoardController::selectionChanged()
 {
     updateActionStates();
-    emit updateThumbnailsRequired();
     emit pageSelectionChanged(activeSceneIndex());
 }
 
@@ -2781,7 +2779,7 @@ void UBBoardController::freezeW3CWidget(QGraphicsItem *item, bool freeze)
 
 void UBBoardController::reloadThumbnails()
 {
-    UBApplication::showMessage(tr("Refreshing Board Thumbnails View (%1 pages)").arg(selectedDocument()->pageCount()), true);
+    //UBApplication::showMessage(tr("Reloading Board Thumbnails View (%1 pages)").arg(selectedDocument()->pageCount()));
     emit initThumbnailsRequired(selectedDocument());
-    UBApplication::showMessage(tr("Board Thumbnails View up-to-date"));
+    //UBApplication::showMessage(tr("Board Thumbnails View up-to-date"));
 }
