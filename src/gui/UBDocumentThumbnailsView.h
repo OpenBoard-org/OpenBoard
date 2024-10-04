@@ -615,7 +615,7 @@ class UBDraggableLivePixmapItem : public UBDraggableThumbnailItem
         void adjustThumbnail();
 
     private:
-        void createPixmap(const QSizeF& pixmapSize);
+        void createPixmap();
 
     private:
         static const int sSelectionItemMargin = 5;

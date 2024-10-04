@@ -235,6 +235,8 @@ void UBBoardThumbnailsView::updateActiveThumbnail(int newActiveIndex)
 
     ensureVisibleThumbnail(newActiveIndex);
 
+    mThumbnails.at(newActiveIndex)->updatePos(mThumbnailWidth, mThumbnailWidth / UBSettings::minScreenRatio);
+
     update();
 }
 

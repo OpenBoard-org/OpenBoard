@@ -1096,7 +1096,7 @@ void UBDraggableLivePixmapItem::updatePos(qreal width, qreal height)
     if (newSize != mSize && mScene)
     {
         mSize = newSize;
-        createPixmap(newSize);
+        createPixmap();
     }
 
     QFontMetrics fm(mPageNumber->font());
@@ -1233,7 +1233,7 @@ void UBDraggableLivePixmapItem::adjustThumbnail()
     updatePixmap();
 }
 
-void UBDraggableLivePixmapItem::createPixmap(const QSizeF& pixmapSize)
+void UBDraggableLivePixmapItem::createPixmap()
 {
     if (mScene)
     {
