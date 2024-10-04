@@ -1075,10 +1075,10 @@ void UBBoardController::nextScene()
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistViewPositionOnCurrentScene();
-// not necessary, done by setActiveDocumentScene
-//        persistCurrentScene();
+
         setActiveDocumentScene(mActiveSceneIndex + 1);
         centerOn(mActiveScene->lastCenter());
+
         QApplication::restoreOverrideCursor();
     }
 
@@ -1092,8 +1092,9 @@ void UBBoardController::firstScene()
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistViewPositionOnCurrentScene();
-        persistCurrentScene();
+
         setActiveDocumentScene(0);
+
         centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
@@ -1108,7 +1109,6 @@ void UBBoardController::lastScene()
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistViewPositionOnCurrentScene();
-        persistCurrentScene();
         setActiveDocumentScene(selectedDocument()->pageCount() - 1);
         centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();

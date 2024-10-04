@@ -177,6 +177,11 @@ void UBBoardThumbnailsView::initThumbnails(std::shared_ptr<UBDocumentProxy> docu
     {
         clearThumbnails();
 
+        // Update the thumbnails width
+        int verticalScrollBarWidth = verticalScrollBar()->isVisible() ? verticalScrollBar()->width() : 0;
+
+        mThumbnailWidth = std::max(width() - verticalScrollBarWidth - 2*mMargin, mThumbnailMinWidth);
+
         for(int i = 0; i < document->pageCount(); i++)
         {
             mThumbnails.append(createThumbnail(document, i));
@@ -184,7 +189,11 @@ void UBBoardThumbnailsView::initThumbnails(std::shared_ptr<UBDocumentProxy> docu
             scene()->addItem(mThumbnails.last());
             scene()->addItem(mThumbnails.last()->pageNumber());
             scene()->addItem(mThumbnails.last()->selectionItem());
+
+            mThumbnails.last()->updatePos(mThumbnailWidth, mThumbnailWidth / UBSettings::minScreenRatio);
         }
+
+        updateActiveThumbnail(0);
 
         updateThumbnails();
     }
