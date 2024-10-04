@@ -153,6 +153,8 @@ void UBBoardThumbnailsView::addThumbnail(std::shared_ptr<UBDocumentProxy> docume
     scene()->addItem(item->pageNumber());
     scene()->addItem(item->selectionItem());
 
+    item->updatePos(mThumbnailWidth, mThumbnailWidth / UBSettings::minScreenRatio);
+
     updateThumbnails();
 }
 
@@ -246,9 +248,10 @@ void UBBoardThumbnailsView::updateThumbnailsPos()
         }
 
         updateExposure();
-        update();
 
-        centerOnThumbnail(UBApplication::boardController->activeSceneIndex());
+        ensureVisibleThumbnail(UBApplication::boardController->activeSceneIndex());
+
+        update();
     }
 }
 
@@ -271,7 +274,11 @@ void UBBoardThumbnailsView::resizeEvent(QResizeEvent *event)
     if (event->size().width() > 0)
     {
         updateThumbnails();
+
+        ensureVisibleThumbnail(UBApplication::boardController->activeSceneIndex());
     }
+
+    QGraphicsView::resizeEvent(event);
 }
 
 void UBBoardThumbnailsView::mousePressEvent(QMouseEvent *event)
