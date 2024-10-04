@@ -891,7 +891,7 @@ Voulez-vous continuer quand-même ?   </translation>
     <message>
         <location filename="../forms/mainWindow.ui" line="1350"/>
         <source>Podcast</source>
-        <translation>Podcast</translation>
+        <translation>Capture Vidéo</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1366"/>
@@ -1403,7 +1403,7 @@ Voulez-vous continuer quand-même ?   </translation>
     <message>
         <location filename="../../src/core/UBApplication.cpp" line="590"/>
         <source>Podcast</source>
-        <translation>Podcast</translation>
+        <translation>Capture Vidéo</translation>
     </message>
     <message>
         <location filename="../../src/core/UBApplication.cpp" line="356"/>
