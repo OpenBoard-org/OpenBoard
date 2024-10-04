@@ -114,28 +114,30 @@ Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\zlib\1.2.11\bin\zlib.dll"; DestD
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 ;Qt windows plugins
-Source: "{#QtDir}\plugins\platforms\qminimal.dll"; DestDir: "{app}\plugins\platforms"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\platforms\qoffscreen.dll"; DestDir: "{app}\plugins\platforms"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\platforms\qwindows.dll"; DestDir: "{app}\plugins\platforms"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\platforms\qminimal.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\platforms\qoffscreen.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\platforms\qwindows.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
 
 
 ;Qt images formats plugins
-Source: "{#QtDir}\plugins\imageformats\qgif.dll"; DestDir: "{app}\plugins\imageformats"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\imageformats\qico.dll"; DestDir: "{app}\plugins\imageformats"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\imageformats\qjpeg.dll"; DestDir: "{app}\plugins\imageformats"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\imageformats\qsvg.dll"; DestDir: "{app}\plugins\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\imageformats\qgif.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\imageformats\qico.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\imageformats\qjpeg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\imageformats\qsvg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 
 ;qt icon engine plugins
-Source: "{#QtDir}\plugins\iconengines\qsvgicon.dll"; DestDir: "{app}\iconengines"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\iconengines\qsvgicon.dll"; DestDir: "{app}\iconengines"; Flags: ignoreversion
 
 ;qt multimedia plugins
-Source: "{#QtDir}\plugins\multimedia\windowsmediaplugin.dll"; DestDir: "{app}\plugins\multimedia"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\multimedia\windowsmediaplugin.dll"; DestDir: "{app}\multimedia"; Flags: ignoreversion
 
 ;QtWebEngine dependencies
 Source: "{#QtLibs}\QtWebEngineProcess.exe"; DestDir: "{app}"
-Source: "{#QtDir}\resources\*"; DestDir: "{app}\resources"
-Source: "{#QtDir}\translations\qtwebengine_locales\*"; DestDir: "{app}\resources\qtwebengine_locales"
+Source: "{#QtDir}\share\Qt6\resources\*"; DestDir: "{app}\resources"
 
+;Qt translations
+Source: "{#QtDir}\translations\Qt6\*"; DestDir: "{app}\i18n"
+Source: "{#QtDir}\translations\Qt6\qtwebengine_locales\*"; DestDir: "{app}\translations\Qt6\qtwebengine_locales"
 
 ;fonts for xpdf
 Source: "{#ProjectRoot}\resources\windows\xpdfrc"; DestDir: "{app}"; Flags: ignoreversion
