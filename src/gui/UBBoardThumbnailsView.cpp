@@ -246,10 +246,6 @@ void UBBoardThumbnailsView::updateThumbnailsPos()
     {
         qreal thumbnailHeight = mThumbnailWidth / UBSettings::minScreenRatio;
 
-        // for some reason, verticalScrollBar()->width() returns 100 while isVisible() is false... not the case with Qt 5.5 (when this code has been implemented)
-        int verticalScrollBarWidth = verticalScrollBar()->isVisible() ? verticalScrollBar()->width() : 0;
-        setSceneRect(0, 0, scene()->itemsBoundingRect().size().width() - verticalScrollBarWidth, scene()->itemsBoundingRect().size().height());
-
         for (int i=0; i < mThumbnails.length(); i++)
         {
             mThumbnails.at(i)->setSceneIndex(i);
@@ -257,6 +253,10 @@ void UBBoardThumbnailsView::updateThumbnailsPos()
             mThumbnails.at(i)->setHighlighted(i == UBApplication::boardController->activeSceneIndex());
             mThumbnails.at(i)->updatePos(mThumbnailWidth, thumbnailHeight);
         }
+
+        // for some reason, verticalScrollBar()->width() returns 100 while isVisible() is false... not the case with Qt 5.5 (when this code has been implemented)
+        int verticalScrollBarWidth = verticalScrollBar()->isVisible() ? verticalScrollBar()->width() : 0;
+        setSceneRect(0, 0, scene()->itemsBoundingRect().size().width() - verticalScrollBarWidth, scene()->itemsBoundingRect().size().height());
 
         updateExposure();
 
@@ -279,10 +279,10 @@ void UBBoardThumbnailsView::updateExposure()
 
 void UBBoardThumbnailsView::resizeEvent(QResizeEvent *event)
 {
-    Q_UNUSED(event);
+    int verticalScrollBarWidth = verticalScrollBar()->isVisible() ? verticalScrollBar()->width() : 0;
 
     // Refresh the scene
-    if (event->size().width() > 0)
+    if (event->size().width() > 0 && std::abs(event->oldSize().width() - event->size().width()) != verticalScrollBarWidth)
     {
         updateThumbnails();
 
