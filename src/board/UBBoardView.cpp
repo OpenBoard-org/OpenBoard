@@ -1925,7 +1925,8 @@ void UBBoardView::drawForeground(QPainter* painter, const QRectF& rect)
 void UBBoardView::scrollContentsBy(int dx, int dy)
 {
     QGraphicsView::scrollContentsBy(dx, dy);
-    scene()->controlViewportChanged();
+    if (scene())
+        scene()->controlViewportChanged();
 }
 
 void UBBoardView::settingChanged (QVariant newValue)
