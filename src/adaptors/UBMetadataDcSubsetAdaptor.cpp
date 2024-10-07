@@ -88,7 +88,7 @@ void UBMetadataDcSubsetAdaptor::persist(std::shared_ptr<UBDocumentProxy> proxy)
         return;
     }
     QString fileName = proxy->persistencePath() + "/" + metadataFilename;
-    qWarning() << "Persisting document metadata; path is" << fileName;
+    qInfo() << "Persisting document metadata; path is" << fileName;
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
     {
