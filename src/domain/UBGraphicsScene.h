@@ -29,6 +29,7 @@
 #define UBGRAPHICSSCENE_H_
 
 #include <QtGui>
+#include <optional>
 
 #include "frameworks/UBCoreGraphicsScene.h"
 
