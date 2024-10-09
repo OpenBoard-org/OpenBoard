@@ -447,6 +447,7 @@ void UBApplicationController::showDocument()
     if (UBApplication::boardController)
     {
         UBApplication::boardController->persistCurrentScene();
+        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(UBApplication::boardController->selectedDocument());
 
         UBApplication::boardController->hide();
     }
