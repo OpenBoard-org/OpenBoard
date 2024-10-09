@@ -133,11 +133,16 @@ Source: "{#QtDir}\Qt6\plugins\imageformats\qico.dll"; DestDir: "{app}\imageforma
 Source: "{#QtDir}\Qt6\plugins\imageformats\qjpeg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "{#QtDir}\Qt6\plugins\imageformats\qsvg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 
-;qt icon engine plugins
+;qt icon engine plugin
 Source: "{#QtDir}\Qt6\plugins\iconengines\qsvgicon.dll"; DestDir: "{app}\iconengines"; Flags: ignoreversion
 
-;qt multimedia plugins
+;qt multimedia plugin
 Source: "{#QtDir}\Qt6\plugins\multimedia\windowsmediaplugin.dll"; DestDir: "{app}\multimedia"; Flags: ignoreversion
+
+;qt tls dependencies
+Source: "{#QtDir}\Qt6\plugins\tls\qcertonlybackend.dll"; DestDir: "{app}\tls"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\tls\qopensslbackend.dll"; DestDir: "{app}\tls"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\tls\qschannelbackend.dll"; DestDir: "{app}\tls"; Flags: ignoreversion
 
 ;QtWebEngine dependencies
 Source: "{#QtLibs}\QtWebEngineProcess.exe"; DestDir: "{app}"
