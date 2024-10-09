@@ -2007,6 +2007,7 @@ void UBBoardController::lastWindowClosed()
                 if (activeScene() != initialDocumentScene())
                 {
                     persistCurrentScene();
+                    UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
                 }
             }
             else
@@ -2015,11 +2016,13 @@ void UBBoardController::lastWindowClosed()
                 // or current scene changed and initial document scene has already been persisted.
                 // Now, we just persist the current scene before closing the app, to ensure no data can be lost this way.
                 persistCurrentScene();
+                UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
             }
         }
         else
         { //should not happen ?
             persistCurrentScene();
+            UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
         }
 
         mCleanupDone = true;
