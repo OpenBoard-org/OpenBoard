@@ -2486,7 +2486,7 @@ void UBDocumentController::openSelectedItem()
 
             if (proxy && isOKToOpenDocument(proxy))
             {
-                UBApplication::showMessage(tr("Opening document in Board. Please wait...").arg(proxy->pageCount()), true);
+                UBApplication::showMessage(tr("Opening document in Board. Please wait..."), true);
                 mBoardController->setActiveDocumentScene(proxy, thumb->sceneIndex());
                 UBApplication::applicationController->showBoard();
             }
@@ -2498,7 +2498,7 @@ void UBDocumentController::openSelectedItem()
 
         if (proxy && isOKToOpenDocument(proxy))
         {
-            UBApplication::showMessage(tr("Opening document in Board. Please wait...").arg(proxy->pageCount()), true);
+            UBApplication::showMessage(tr("Opening document in Board. Please wait..."), true);
             mBoardController->setActiveDocumentScene(proxy);
             UBApplication::applicationController->showBoard();
         }
@@ -3463,7 +3463,7 @@ void UBDocumentController::thumbnailPageDoubleClicked(QGraphicsItem* item, int i
     if (thumb) {
         std::shared_ptr<UBDocumentProxy> proxy = thumb->documentProxy();
         if (proxy && isOKToOpenDocument(proxy)) {
-            UBApplication::showMessage(tr("Opening document in Board. Please wait...").arg(proxy->pageCount()), true);
+            UBApplication::showMessage(tr("Opening document in Board. Please wait..."), true);
             mBoardController->setActiveDocumentScene(proxy, index);
             UBApplication::applicationController->showBoard();
         }
