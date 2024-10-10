@@ -3008,6 +3008,28 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
         <source>Use all available displays</source>
         <translation>Alle verfügbaren Bildschirme nutzen</translation>
     </message>
+    <message>
+        <source>Key sequence already in use</source>
+        <translation>Tastenkombination wird bereits benutzt</translation>
+    </message>
+    <message>
+        <source>Mouse button already in use</source>
+        <translation>Maustaste wird bereits benutzt</translation>
+    </message>
+    <message>
+        <source>Stylus button already in use</source>
+        <translation>Stifttaste wird bereits benutzt</translation>
+    </message>
+    <message>
+        <source>Accept</source>
+        <comment>preferencesDialog</comment>
+        <translation>Übernehmen</translation>
+    </message>
+    <message>
+        <source>Record</source>
+        <comment>preferencesDialog</comment>
+        <translation>Aufnehmen</translation>
+    </message>
 </context>
 <context>
     <name>UBSettings</name>
@@ -3079,7 +3101,7 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     <message>
         <location filename="../../src/core/UBShortcutManager.cpp" line="260"/>
         <source>Reset zoom factor</source>
-        <translation>Zoom zurücksetzen</translation>
+        <translation>Zoom-Faktor zurücksetzen</translation>
     </message>
     <message>
         <location filename="../../src/core/UBShortcutManager.cpp" line="266"/>
@@ -3129,7 +3151,7 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     <message>
         <location filename="../../src/core/UBShortcutManager.cpp" line="466"/>
         <source>Command</source>
-        <translation>Kommando</translation>
+        <translation>Befehl</translation>
     </message>
     <message>
         <location filename="../../src/core/UBShortcutManager.cpp" line="469"/>
@@ -3144,12 +3166,12 @@ Möchten Sie diese Fehler für diesen Computer ignorieren?</translation>
     <message>
         <location filename="../../src/core/UBShortcutManager.cpp" line="475"/>
         <source>Mouse Button</source>
-        <translation>Mausknopf</translation>
+        <translation>Maustaste</translation>
     </message>
     <message>
         <location filename="../../src/core/UBShortcutManager.cpp" line="478"/>
         <source>Tablet Button</source>
-        <translation>Tablet Stiftknopf</translation>
+        <translation>Stifttaste</translation>
     </message>
     <message>
         <location filename="../../src/core/UBShortcutManager.cpp" line="629"/>
@@ -4075,6 +4097,46 @@ p, li { white-space: pre-wrap; }
         <location filename="../forms/preferences.ui" line="624"/>
         <source>List of screens used for Control, Display and Previous pages</source>
         <translation>Liste der Bildschirme, die für die Hauptansicht, Erweiterte Ansicht und Vorherige Seiten verwendet werden</translation>
+    </message>
+    <message>
+        <source>Shortcut</source>
+        <translation>Kurzbefehl</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation>Filter</translation>
+    </message>
+    <message>
+        <source>Active keyboard shortcuts without pressing Ctrl key</source>
+        <translation>Aktiviere Kurzbefehle auch ohne Strg Taste</translation>
+    </message>
+    <message>
+        <source>Shortcuts</source>
+        <translation>Kurzbefehle</translation>
+    </message>
+    <message>
+        <source>Abort</source>
+        <translation>Abbrechen</translation>
+    </message>
+    <message>
+        <source>Record</source>
+        <translation>Aufnehmen</translation>
+    </message>
+    <message>
+        <source>Stylus Button</source>
+        <translation>Stifttaste</translation>
+    </message>
+    <message>
+        <source>Mouse Button</source>
+        <translation>Maustaste</translation>
+    </message>
+    <message>
+        <source>Reset</source>
+        <translation>Zurücksetzen</translation>
+    </message>
+    <message>
+        <source>Key Sequence</source>
+        <translation>Tasten</translation>
     </message>
 </context>
 <context>
