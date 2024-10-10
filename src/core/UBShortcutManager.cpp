@@ -188,14 +188,8 @@ void UBShortcutManager::addMainActions(UBMainWindow *mainWindow)
 
     addActions(tr("Background"), {
                    mainWindow->actionBackgrounds,
-                   mainWindow->actionPlainLightBackground,
-                   mainWindow->actionCrossedLightBackground,
-                   mainWindow->actionRuledLightBackground,
-                   mainWindow->actionPlainDarkBackground,
-                   mainWindow->actionCrossedDarkBackground,
-                   mainWindow->actionRuledDarkBackground,
                    mainWindow->actionDefaultGridSize,
-                   mainWindow->actionDrawIntermediateGridLines
+                   mainWindow->actionLightDarkMode
                }, mainWindow);
 
     addActions(tr("Podcast"), {

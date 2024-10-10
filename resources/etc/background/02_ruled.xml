@@ -1,0 +1,14 @@
+<bg:background xmlns:bg="http://openboard.org/template/background/">
+    <bg:uuid>0de33238-c30e-4396-8ec4-2bfc53304389</bg:uuid>
+    <bg:description xml:lang="en">Ruled</bg:description>
+    <bg:description xml:lang="de">Liniert</bg:description>
+    <bg:attributes ruled="true"/>
+    <bg:linegroup>
+        <bg:angle>0</bg:angle>
+        <bg:spacing>10</bg:spacing>
+        <bg:line>
+            <bg:offset>0</bg:offset>
+            <bg:width>1</bg:width>
+        </bg:line>
+    </bg:linegroup>
+</bg:background>

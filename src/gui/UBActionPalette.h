@@ -104,6 +104,7 @@ class UBActionPalette : public UBFloatingPalette
         QSize mButtonSize;
         QPoint mMousePos;
         UBActionPaletteButton *createPaletteButton(QAction* action, QWidget *parent);
+        QAction* removePaletteButton(UBActionPaletteButton* button);
 
     protected slots:
         void buttonClicked();
