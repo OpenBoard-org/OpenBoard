@@ -882,7 +882,7 @@ void UBGraphicsTriangle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             mCursorRotationAngle = std::fmod(mCursorRotationAngle + lastLine.angleTo(currentLine), 360.);
             qreal newAngle = mItemRotationAngle + mCursorRotationAngle;
 
-            if (event->modifiers().testFlag(Qt::ShiftModifier))
+            if (scene()->isSnapping())
             {
                 qreal step = UBSettings::settings()->rotationAngleStep->get().toReal();
                 newAngle = qRound(newAngle / step) * step;
