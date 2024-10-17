@@ -1453,12 +1453,13 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         qDebug() << "sourceurl : " + sourceUrl.toString();
         QString sUrl = sourceUrl.toString();
 
-        int result = 0;
+        int numberOfImportedDocuments = 0;
+        int currentNumberOfThumbnails = selectedDocument()->pageCount();
         if(!sourceUrl.isEmpty() && (sUrl.startsWith("file://") || sUrl.startsWith("/")))
         {
             QStringList fileNames;
             fileNames << sourceUrl.toLocalFile();
-            result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
+            numberOfImportedDocuments = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
         }
         else if(pData.size()){
             QTemporaryFile pdfFile("XXXXXX.pdf");
@@ -1467,17 +1468,35 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
                 pdfFile.write(pData);
                 QStringList fileNames;
                 fileNames << pdfFile.fileName();
-                result = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
+                numberOfImportedDocuments = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
+
                 pdfFile.close();
             }
         }
 
-        if (result)
+        if (numberOfImportedDocuments > 0)
         {
+
             QDateTime now = QDateTime::currentDateTime();
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
             updateActionStates();
-            reloadThumbnails();
+
+            int numberOfThumbnailsToAdd =  selectedDocument()->pageCount() - currentNumberOfThumbnails;
+
+            bool updateDocumentThumbnailsView = UBApplication::documentController->selectedDocument() ==  selectedDocument();
+            for (int i = 0; i < numberOfThumbnailsToAdd; i++)
+            {
+                emit addThumbnailRequired(selectedDocument(), currentNumberOfThumbnails+i);
+
+                if (updateDocumentThumbnailsView)
+                {
+                    UBApplication::documentController->insertThumbPage(currentNumberOfThumbnails+i);
+                }
+            }
+            if (updateDocumentThumbnailsView)
+            {
+                UBApplication::documentController->reloadThumbnails();
+            }
         }
     }
     else if (UBMimeType::OpenboardTool == itemMimeType)
