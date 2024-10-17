@@ -538,20 +538,6 @@ void UBBoardPaletteManager::containerResized()
                                userTop + (userHeight - mKeyboardPalette->height())/2);
         mKeyboardPalette->adjustSizeAndPosition();
     }
-
-// NOTE @letsfindaway Fixed, but don't see any reason for this.
-// Probably remove.
-    if(mLeftPalette && mLeftPalette->width() > 0)
-    {
-        mLeftPalette->resize(mLeftPalette->width()-1, mContainer->height());
-        mLeftPalette->resize(mLeftPalette->width()+1, mContainer->height());
-    }
-
-    if(mRightPalette && mRightPalette->width() > 0)
-    {
-        mRightPalette->resize(mRightPalette->width()-1, mContainer->height());
-        mRightPalette->resize(mRightPalette->width()+1, mContainer->height());
-    }
 }
 
 

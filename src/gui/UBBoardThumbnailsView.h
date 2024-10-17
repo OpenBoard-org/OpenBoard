@@ -34,28 +34,27 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QMouseEvent>
+#include <QTimer>
 
-#include "document/UBDocumentProxy.h"
+#include "gui/UBThumbnailArranger.h"
+#include "gui/UBThumbnailsView.h"
 
-class UBDraggableLivePixmapItem;
+class UBDocument;
+class UBThumbnail;
 
-class UBBoardThumbnailsView : public QGraphicsView
+class UBBoardThumbnailsView : public UBThumbnailsView
 {
     Q_OBJECT
 public:
     UBBoardThumbnailsView(QWidget* parent=0, const char* name="UBBoardThumbnailsView");
+
+    void setDocument(std::shared_ptr<UBDocument> document);
 
 public slots:
     void updateActiveThumbnail(int newActiveIndex);
     void ensureVisibleThumbnail(int index);
     void centerOnThumbnail(int index);
 
-    void clearThumbnails();
-    void initThumbnails(std::shared_ptr<UBDocumentProxy> document);
-    void addThumbnail(std::shared_ptr<UBDocumentProxy> document, int i);
-    void moveThumbnail(int from, int to);
-    void removeThumbnail(int i);
-    void updateThumbnails();
     void adjustThumbnail();
 
     void longPressTimeout();
@@ -63,6 +62,7 @@ public slots:
     void updateThumbnailPixmap(const QRectF region);
 
 protected:
+    virtual bool event(QEvent* event);
     virtual void resizeEvent(QResizeEvent *event);
 
     virtual void dragEnterEvent(QDragEnterEvent* event);
@@ -75,33 +75,41 @@ protected:
 
     virtual void scrollContentsBy(int dx, int dy);
 
-protected slots:
-    void updateThumbnailsPos();
-
 signals:
     void mousePressAndHoldEventRequired(QPoint pos);
     void moveThumbnailRequired(int from, int to);
 
 private:
-    UBDraggableLivePixmapItem* createThumbnail(std::shared_ptr<UBDocumentProxy> document, int i);
     void updateExposure();
 
-    QList<UBDraggableLivePixmapItem*> mThumbnails;
+    std::shared_ptr<UBDocument> mDocument;
 
     int mThumbnailWidth;
     const int mThumbnailMinWidth;
     const int mMargin;
 
-    UBDraggableLivePixmapItem* mDropSource;
-    UBDraggableLivePixmapItem* mDropTarget;
+    UBThumbnail* mDropSource;
+    UBThumbnail* mDropTarget;
     QGraphicsRectItem *mDropBar;
 
     int mLongPressInterval;
     QTimer mLongPressTimer;
-    QTimer mUpdateThumbnailsTimer;
     QPoint mLastPressedMousePos;
 
     int mCurrentIndex{-1};
+    bool mScrollbarVisible{false};
+
+    /**
+     * @brief The UBBoardThumbnailArranger class is the arranger for Board mode.
+     */
+    class UBBoardThumbnailArranger : public UBThumbnailArranger
+    {
+    public:
+        UBBoardThumbnailArranger(UBBoardThumbnailsView* thumbnailView);
+
+        virtual int columnCount() const override;
+        virtual double thumbnailWidth() const override;
+    };
 };
 
 #endif // UBBOARDTHUMBNAILSVIEW_H

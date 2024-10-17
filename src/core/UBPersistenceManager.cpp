@@ -985,7 +985,6 @@ void UBPersistenceManager::copyDocumentScene(std::shared_ptr<UBDocumentProxy> fr
     Q_ASSERT(QFileInfo(thumbTo).exists());
     auto pix = std::make_shared<QPixmap>(thumbTmp);
     UBDocumentController *ctrl = UBApplication::documentController;
-    ctrl->addPixmapAt(pix, toIndex);
     ctrl->TreeViewSelectionChanged(ctrl->firstSelectedTreeIndex(), QModelIndex());
 
 //    emit documentSceneCreated(to, toIndex + 1);
