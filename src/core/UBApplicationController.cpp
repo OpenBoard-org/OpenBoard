@@ -447,6 +447,7 @@ void UBApplicationController::showDocument()
     if (UBApplication::boardController)
     {
         UBApplication::boardController->persistCurrentScene();
+        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(UBApplication::boardController->selectedDocument());
 
         UBApplication::boardController->hide();
     }
@@ -729,8 +730,6 @@ void UBApplicationController::importFile(const QString& pFilePath)
         if (UBApplication::documentController)
         {
             UBApplication::documentController->selectDocument(document, true, true);
-
-            UBApplication::documentController->reloadThumbnails();
         }
 
         // This import operation happens when double-clicking on a UBZ for example.

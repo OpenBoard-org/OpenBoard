@@ -211,12 +211,11 @@ std::shared_ptr<UBDocumentProxy> UBDocumentManager::importFile(const QFile& pFil
                     }
 
                     QList<UBGraphicsItem*> pages = importAdaptor->import(uuid, filepath);
-                    int nPage = 0;
                     int pageIndex = 0;
+
+                    UBApplication::showMessage(tr("Creating %1 pages. Please wait...").arg(pages.size()), true);
                     foreach(UBGraphicsItem* page, pages)
                     {
-
-                        UBApplication::showMessage(tr("Inserting page %1 of %2").arg(++nPage).arg(pages.size()), true);
     #ifdef Q_WS_MACX
                         //Workaround for issue 912
                         QApplication::processEvents();

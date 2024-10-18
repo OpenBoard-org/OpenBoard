@@ -432,8 +432,7 @@ class UBDocumentController : public UBDocumentContainer
         bool pageCanBeDeleted(int page);
         QString documentTrashGroupName(){ return mDocumentTrashGroupName;}
         QString defaultDocumentGroupName(){ return mDefaultDocumentGroupName;}
-
-        void setDocument(std::shared_ptr<UBDocumentProxy> document, bool forceReload = false);
+        void reloadThumbnails() override;
         QModelIndex firstSelectedTreeIndex();
         std::shared_ptr<UBDocumentProxy> firstSelectedTreeProxy();
         inline DeletionType deletionTypeForSelection(LastSelectedElementType pTypeSelection
@@ -513,6 +512,8 @@ class UBDocumentController : public UBDocumentContainer
         void collapseAll();
         void expandAll();
 
+
+        void refreshDocumentThumbnailsView();
         void updateThumbnail(int index);
         void removeThumbnail(int index);
         void moveThumbnail(int from, int to);
@@ -582,7 +583,6 @@ protected:
         void addFolderOfImages();
         void addFileToDocument();
         void addImages();
-        void refreshDocumentThumbnailsView(UBDocumentContainer* source);
 };
 
 

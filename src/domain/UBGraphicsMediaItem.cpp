@@ -194,10 +194,6 @@ UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
 
 UBGraphicsMediaItem::~UBGraphicsMediaItem()
 {
-    if (mMediaObject) {
-        mMediaObject->stop();
-        delete mMediaObject;
-    }
 }
 
 QVariant UBGraphicsMediaItem::itemChange(GraphicsItemChange change, const QVariant &value)

@@ -47,7 +47,13 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 Type: files ; Name: "{app}\OpenBoard.pdb"
 Type: filesandordirs ; Name: "{app}\library"
 Type: filesandordirs ; Name: "{app}\Microsoft.VC90.CRT"
-Type: filesandordirs ; Name: "{app}\plugins"
+Type: filesandordirs ; Name: "{app}\imageformats"
+Type: filesandordirs ; Name: "{app}\iconengines"
+Type: filesandordirs ; Name: "{app}\multimedia"
+Type: filesandordirs ; Name: "{app}\platforms"
+Type: filesandordirs ; Name: "{app}\resources"
+Type: filesandordirs ; Name: "{app}\tls"
+Type: filesandordirs ; Name: "{app}\translations"
 Type: filesandordirs ; Name: "{app}\i18n"
 Type: files ; Name: "{app}\*.dll"
 
@@ -57,7 +63,7 @@ Type: files ; Name: "{app}\*.dll"
 
 [Files]
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\vcredist_2013.x64.exe"; DestDir:"{tmp}"
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\vcredist_2015_2019.x64.exe"; DestDir:"{tmp}"
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\vcredist_2015_2022.x64.exe"; DestDir:"{tmp}"
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\LAVFilters-0.77.2-Installer.exe"; DestDir:"{tmp}"
 Source: "{#ProjectRoot}\build\win32\release\product\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
@@ -91,6 +97,14 @@ Source: "{#QtLibs}\Qt6WebEngineCore.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt6WebEngineWidgets.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt6QuickWidgets.dll"; DestDir: "{app}"
 Source: "{#QtLibs}\Qt6Core5Compat.dll"; DestDir: "{app}" 
+Source: "{#QtLibs}\double-conversion.dll"; DestDir: "{app}" 
+Source: "{#QtLibs}\icudt74.dll"; DestDir: "{app}" 
+Source: "{#QtLibs}\icuin74.dll"; DestDir: "{app}" 
+Source: "{#QtLibs}\pcre2-16.dll"; DestDir: "{app}" 
+Source: "{#QtLibs}\harfbuzz.dll"; DestDir: "{app}" 
+Source: "{#QtLibs}\icuuc74.dll"; DestDir: "{app}" 
+Source: "{#QtLibs}\libcrypto-3-x64.dll"; DestDir: "{app}" 
+Source: "{#QtLibs}\zstd.dll"; DestDir: "{app}" 
 ;Source: "/etc/freezedWidgetWrapper.html"; DestDir: "{app}"  	
 ;Source: "*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
@@ -114,28 +128,35 @@ Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\zlib\1.2.11\bin\zlib.dll"; DestD
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 ;Qt windows plugins
-Source: "{#QtDir}\plugins\platforms\qminimal.dll"; DestDir: "{app}\plugins\platforms"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\platforms\qoffscreen.dll"; DestDir: "{app}\plugins\platforms"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\platforms\qwindows.dll"; DestDir: "{app}\plugins\platforms"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\platforms\qminimal.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\platforms\qoffscreen.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\platforms\qwindows.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
 
 
 ;Qt images formats plugins
-Source: "{#QtDir}\plugins\imageformats\qgif.dll"; DestDir: "{app}\plugins\imageformats"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\imageformats\qico.dll"; DestDir: "{app}\plugins\imageformats"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\imageformats\qjpeg.dll"; DestDir: "{app}\plugins\imageformats"; Flags: ignoreversion
-Source: "{#QtDir}\plugins\imageformats\qsvg.dll"; DestDir: "{app}\plugins\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\imageformats\qgif.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\imageformats\qico.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\imageformats\qjpeg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\imageformats\qsvg.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 
-;qt icon engine plugins
-Source: "{#QtDir}\plugins\iconengines\qsvgicon.dll"; DestDir: "{app}\iconengines"; Flags: ignoreversion
+;qt icon engine plugin
+Source: "{#QtDir}\Qt6\plugins\iconengines\qsvgicon.dll"; DestDir: "{app}\iconengines"; Flags: ignoreversion
 
-;qt multimedia plugins
-Source: "{#QtDir}\plugins\multimedia\windowsmediaplugin.dll"; DestDir: "{app}\plugins\multimedia"; Flags: ignoreversion
+;qt multimedia plugin
+Source: "{#QtDir}\Qt6\plugins\multimedia\windowsmediaplugin.dll"; DestDir: "{app}\multimedia"; Flags: ignoreversion
+
+;qt tls dependencies
+Source: "{#QtDir}\Qt6\plugins\tls\qcertonlybackend.dll"; DestDir: "{app}\tls"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\tls\qopensslbackend.dll"; DestDir: "{app}\tls"; Flags: ignoreversion
+Source: "{#QtDir}\Qt6\plugins\tls\qschannelbackend.dll"; DestDir: "{app}\tls"; Flags: ignoreversion
 
 ;QtWebEngine dependencies
 Source: "{#QtLibs}\QtWebEngineProcess.exe"; DestDir: "{app}"
-Source: "{#QtDir}\resources\*"; DestDir: "{app}\resources"
-Source: "{#QtDir}\translations\qtwebengine_locales\*"; DestDir: "{app}\resources\qtwebengine_locales"
+Source: "{#QtDir}\share\Qt6\resources\*"; DestDir: "{app}\resources"
 
+;Qt translations
+Source: "{#QtDir}\translations\Qt6\*"; DestDir: "{app}\i18n"
+Source: "{#QtDir}\translations\Qt6\qtwebengine_locales\*"; DestDir: "{app}\translations\Qt6\qtwebengine_locales"
 
 ;fonts for xpdf
 Source: "{#ProjectRoot}\resources\windows\xpdfrc"; DestDir: "{app}"; Flags: ignoreversion
@@ -173,7 +194,7 @@ Root: HKLM64; Subkey: "SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Low Righ
 
 [Run]
 Filename: "{tmp}\vcredist_2013.x64.exe";WorkingDir:"{tmp}"; Parameters: "/install /quiet /norestart"; StatusMsg: Installing CRT 2013...
-Filename: "{tmp}\vcredist_2015_2019.x64.exe";WorkingDir:"{tmp}"; Parameters: "/install /quiet /norestart"; StatusMsg: Installing CRT 2015-2019 ...
+Filename: "{tmp}\vcredist_2015_2022.x64.exe";WorkingDir:"{tmp}"; Parameters: "/install /quiet /norestart"; StatusMsg: Installing CRT 2015-2022 ...
 Filename: "{tmp}\LAVFilters-0.77.2-Installer.exe";WorkingDir:"{tmp}"; Parameters: "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART"; StatusMsg: Installing LAV Filters ...
 Filename: "{app}\OpenBoard.exe"; Description: "{cm:LaunchProgram,OpenBoard}"; Flags: nowait postinstall skipifsilent 
 

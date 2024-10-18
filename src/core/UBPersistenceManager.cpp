@@ -576,7 +576,8 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocument(const QStr
                                                       , bool promptDialogIfExists)
 {
     std::shared_ptr<UBDocumentProxy> doc;
-    if(directory.length() != 0 ){
+    if(directory.length() != 0 )
+    {
         doc = std::make_shared<UBDocumentProxy>(directory);
         doc->setPageCount(pageCount);
     }
@@ -600,28 +601,39 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocument(const QStr
     doc->setMetaData(UBSettings::documentUpdatedAt,currentDate);
     doc->setMetaData(UBSettings::documentDate,currentDate);
 
-    if (withEmptyPage) {
+    if (withEmptyPage)
+    {
         createDocumentSceneAt(doc, 0);
     }
-    else{
-        this->generatePathIfNeeded(doc);
+    else
+    {
+        generatePathIfNeeded(doc);
         QDir dir(doc->persistencePath());
         if (!dir.mkpath(doc->persistencePath()))
         {
-            return 0; // if we can't create the path, abort function.
+            return nullptr; // if we can't create the path, abort function.
         }
     }
 
-    bool addDoc = false;
-    if (!promptDialogIfExists) {
-        addDoc = true;
+    bool documentAdded = false;
+    if (!promptDialogIfExists)
+    {
+        documentAdded = true;
         mDocumentTreeStructureModel->addDocument(doc);
-    } else if (processInteractiveReplacementDialog(doc) == QDialog::Accepted) {
-        addDoc = true;
     }
-    if (!addDoc) {
+    else if (processInteractiveReplacementDialog(doc) == QDialog::Accepted)
+    {
+        documentAdded = true;
+    }
+
+    if (documentAdded)
+    {
+        persistDocumentMetadata(doc);
+    }
+    else
+    {
         deleteDocument(doc);
-        doc = 0;
+        doc = nullptr;
     }
 
     return doc;
@@ -694,7 +706,7 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocumentFromDir(con
         addDoc = true;
     }
     if (addDoc) {
-        UBMetadataDcSubsetAdaptor::persist(doc);
+        persistDocumentMetadata(doc);
         emit documentCreated(doc);
     } else {
         deleteDocument(doc);
@@ -800,7 +812,7 @@ void UBPersistenceManager::deleteDocumentScenes(std::shared_ptr<UBDocumentProxy>
         }
     }
 
-    for (int i = 1; i < pageCount; i++)
+    for (int i = 1; i < indexes.size(); i++)
     {
         renamePage(trashDocProxy, i , i - 1);
     }
@@ -937,6 +949,8 @@ void UBPersistenceManager::duplicateDocumentScene(std::shared_ptr<UBDocumentProx
     proxy->incPageCount();
 
     persistDocumentScene(proxy,scene, index + 1);
+
+    persistDocumentMetadata(proxy);
 
     emit documentSceneCreated(proxy, index + 1);
 }
@@ -1113,8 +1127,6 @@ void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy>
 
     QDir dir(pDocumentProxy->persistencePath());
     dir.mkpath(pDocumentProxy->persistencePath());
-
-    persistDocumentMetadata(pDocumentProxy, forceImmediateSaving);
 
     if(forceImmediateSaving)
     {

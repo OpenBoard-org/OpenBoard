@@ -41,7 +41,7 @@
 
 
 UBDocumentThumbnailWidget::UBDocumentThumbnailWidget(QWidget* parent)
-    : UBThumbnailWidget(parent)
+    : UBDocumentThumbnailsView(parent)
     , mDropCaretRectItem(0)
     , mClosestDropItem(0)
     , mDragEnabled(true)
@@ -95,7 +95,7 @@ void UBDocumentThumbnailWidget::mouseMoveEvent(QMouseEvent *event)
         drag->exec(Qt::MoveAction);
     }
 
-    UBThumbnailWidget::mouseMoveEvent(event);
+    UBDocumentThumbnailsView::mouseMoveEvent(event);
 }
 
 void UBDocumentThumbnailWidget::dragEnterEvent(QDragEnterEvent *event)
@@ -107,7 +107,7 @@ void UBDocumentThumbnailWidget::dragEnterEvent(QDragEnterEvent *event)
         return;
     }
 
-    UBThumbnailWidget::dragEnterEvent(event);
+    UBDocumentThumbnailsView::dragEnterEvent(event);
 }
 
 void UBDocumentThumbnailWidget::dragLeaveEvent(QDragLeaveEvent *event)
@@ -119,7 +119,7 @@ void UBDocumentThumbnailWidget::dragLeaveEvent(QDragLeaveEvent *event)
         mScrollTimer->stop();
     }
     deleteDropCaret();
-    UBThumbnailWidget::dragLeaveEvent(event);
+    UBDocumentThumbnailsView::dragLeaveEvent(event);
 }
 
 void UBDocumentThumbnailWidget::autoScroll()
@@ -269,7 +269,7 @@ void UBDocumentThumbnailWidget::dropEvent(QDropEvent *event)
             }
         }
     }
-    UBThumbnailWidget::dropEvent(event);
+    UBDocumentThumbnailsView::dropEvent(event);
 }
 
 void UBDocumentThumbnailWidget::deleteDropCaret()
@@ -288,7 +288,7 @@ void UBDocumentThumbnailWidget::setGraphicsItems(const QList<QGraphicsItem*>& pG
 {
     deleteDropCaret();
 
-    UBThumbnailWidget::setGraphicsItems(pGraphicsItems, pItemPaths, pLabels, pMimeType);
+    UBDocumentThumbnailsView::setGraphicsItems(pGraphicsItems, pItemPaths, pLabels, pMimeType);
 }
 
 void UBDocumentThumbnailWidget::setDragEnabled(bool enabled)
@@ -373,4 +373,19 @@ void UBDocumentThumbnailWidget::hightlightItem(int index)
     }
 
     selectItemAt(index);
+}
+
+std::shared_ptr<UBDocumentProxy> UBDocumentThumbnailWidget::currentThumbnailsDocument()
+{
+    if (mGraphicItems.size() > 0)
+    {
+        UBSceneThumbnailPixmap* sceneThumbnailPixmap = dynamic_cast<UBSceneThumbnailPixmap*>(mGraphicItems.first());
+
+        if (sceneThumbnailPixmap)
+        {
+            return sceneThumbnailPixmap->documentProxy();
+        }
+    }
+
+    return nullptr;
 }

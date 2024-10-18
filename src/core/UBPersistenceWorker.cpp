@@ -41,6 +41,7 @@ void UBPersistenceWorker::saveScene(std::shared_ptr<UBDocumentProxy> proxy, UBGr
 {
     PersistenceInformation entry = {WriteScene, proxy, scene, pageIndex};
 
+    QMutexLocker locker(&mMutex);
     saves.append(entry);
     mSemaphore.release();
 }
@@ -48,6 +49,7 @@ void UBPersistenceWorker::saveScene(std::shared_ptr<UBDocumentProxy> proxy, UBGr
 void UBPersistenceWorker::saveMetadata(std::shared_ptr<UBDocumentProxy> proxy)
 {
     PersistenceInformation entry = {WriteMetadata, proxy, NULL, 0};
+    QMutexLocker locker(&mMutex);
     saves.append(entry);
     mSemaphore.release();
 }
@@ -64,7 +66,11 @@ void UBPersistenceWorker::process()
     qDebug() << "process starts";
     mSemaphore.acquire();
     do{
-        PersistenceInformation info = saves.takeFirst();
+        PersistenceInformation info;
+        {
+            QMutexLocker locker(&mMutex);
+            info = saves.takeFirst();
+        }
         if(info.action == WriteScene){
             UBSvgSubsetAdaptor::persistScene(info.proxy, info.scene->shared_from_this(), info.sceneIndex);
             emit scenePersisted(info.scene);

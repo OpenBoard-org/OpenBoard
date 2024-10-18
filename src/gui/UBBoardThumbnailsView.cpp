@@ -48,7 +48,7 @@
 #include "core/UBApplicationController.h"
 #include "core/UBPersistenceManager.h"
 #include "UBThumbnailView.h"
-#include "UBThumbnailWidget.h"
+#include "gui/UBDocumentThumbnailsView.h"
 
 UBBoardThumbnailsView::UBBoardThumbnailsView(QWidget *parent, const char *name)
     : QGraphicsView(parent)
@@ -76,6 +76,8 @@ UBBoardThumbnailsView::UBBoardThumbnailsView(QWidget *parent, const char *name)
     mLongPressTimer.setInterval(mLongPressInterval);
     mLongPressTimer.setSingleShot(true);
 
+    mUpdateThumbnailsTimer.setSingleShot(true);
+
     connect(UBApplication::boardController, SIGNAL(initThumbnailsRequired(std::shared_ptr<UBDocumentProxy>)), this, SLOT(initThumbnails(std::shared_ptr<UBDocumentProxy>)));
     connect(UBApplication::boardController, SIGNAL(addThumbnailRequired(std::shared_ptr<UBDocumentProxy>, int)), this, SLOT(addThumbnail(std::shared_ptr<UBDocumentProxy>, int)));
     connect(UBApplication::boardController, SIGNAL(moveThumbnailRequired(int, int)), this, SLOT(moveThumbnail(int, int)));
@@ -83,12 +85,13 @@ UBBoardThumbnailsView::UBBoardThumbnailsView(QWidget *parent, const char *name)
     connect(UBApplication::boardController, SIGNAL(updateThumbnailsRequired()), this, SLOT(updateThumbnails()));
     connect(UBApplication::boardController, SIGNAL(removeThumbnailRequired(int)), this, SLOT(removeThumbnail(int)));
 
-    connect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressTimeout()), Qt::UniqueConnection);
+    connect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressTimeout()));
+    connect(&mUpdateThumbnailsTimer, SIGNAL(timeout()), this, SLOT(updateThumbnailsPos()));
 
-    connect(this, SIGNAL(mousePressAndHoldEventRequired(QPoint)), this, SLOT(mousePressAndHoldEvent(QPoint)), Qt::UniqueConnection);
+    connect(this, SIGNAL(mousePressAndHoldEventRequired(QPoint)), this, SLOT(mousePressAndHoldEvent(QPoint)));
 
-    connect(UBApplication::boardController, SIGNAL(pageSelectionChanged(int)), this, SLOT(ensureVisibleThumbnail(int)), Qt::UniqueConnection);
-    connect(UBApplication::boardController, SIGNAL(centerOnThumbnailRequired(int)), this, SLOT(centerOnThumbnail(int)), Qt::UniqueConnection);
+    connect(UBApplication::boardController, SIGNAL(pageSelectionChanged(int)), this, SLOT(updateActiveThumbnail(int)));
+    connect(UBApplication::boardController, SIGNAL(centerOnThumbnailRequired(int)), this, SLOT(centerOnThumbnail(int)));
 
     connect(UBApplication::boardController->controlView(), &UBBoardView::mouseReleased, this, &UBBoardThumbnailsView::adjustThumbnail);
 
@@ -99,12 +102,18 @@ void UBBoardThumbnailsView::moveThumbnail(int from, int to)
 {
     mThumbnails.move(from, to);
 
-    updateThumbnailsPos();
+    updateThumbnails();
 }
 
 void UBBoardThumbnailsView::updateThumbnails()
 {
-    updateThumbnailsPos();
+    // Update the thumbnails width
+    int verticalScrollBarWidth = verticalScrollBar()->isVisible() ? verticalScrollBar()->width() : 0;
+
+    mThumbnailWidth = std::max(width() - verticalScrollBarWidth - 2*mMargin, mThumbnailMinWidth);
+
+    mUpdateThumbnailsTimer.setInterval(std::min(std::min(100, (int)mThumbnails.size()), 1000));
+    mUpdateThumbnailsTimer.start();
 }
 
 void UBBoardThumbnailsView::adjustThumbnail()
@@ -125,7 +134,7 @@ void UBBoardThumbnailsView::removeThumbnail(int i)
 
     mThumbnails.removeAt(i);
 
-    updateThumbnailsPos();
+    updateThumbnails();
 }
 
 UBDraggableLivePixmapItem* UBBoardThumbnailsView::createThumbnail(std::shared_ptr<UBDocumentProxy> document, int i)
@@ -139,13 +148,14 @@ void UBBoardThumbnailsView::addThumbnail(std::shared_ptr<UBDocumentProxy> docume
 {
     UBDraggableLivePixmapItem* item = createThumbnail(document, i);
     mThumbnails.insert(i, item);
-    ensureVisibleThumbnail(i);
 
     scene()->addItem(item);
     scene()->addItem(item->pageNumber());
     scene()->addItem(item->selectionItem());
 
-    updateThumbnailsPos();
+    item->updatePos(mThumbnailWidth, mThumbnailWidth / UBSettings::minScreenRatio);
+
+    updateThumbnails();
 }
 
 void UBBoardThumbnailsView::clearThumbnails()
@@ -163,23 +173,38 @@ void UBBoardThumbnailsView::clearThumbnails()
 
 void UBBoardThumbnailsView::initThumbnails(std::shared_ptr<UBDocumentProxy> document)
 {
-    clearThumbnails();
-
-    for(int i = 0; i < document->pageCount(); i++)
+    if (document)
     {
-        mThumbnails.append(createThumbnail(document, i));
+        clearThumbnails();
 
-        scene()->addItem(mThumbnails.last());
-        scene()->addItem(mThumbnails.last()->pageNumber());
-        scene()->addItem(mThumbnails.last()->selectionItem());
+        // Update the thumbnails width
+        int verticalScrollBarWidth = verticalScrollBar()->isVisible() ? verticalScrollBar()->width() : 0;
+
+        mThumbnailWidth = std::max(width() - verticalScrollBarWidth - 2*mMargin, mThumbnailMinWidth);
+
+        for(int i = 0; i < document->pageCount(); i++)
+        {
+            mThumbnails.append(createThumbnail(document, i));
+
+            scene()->addItem(mThumbnails.last());
+            scene()->addItem(mThumbnails.last()->pageNumber());
+            scene()->addItem(mThumbnails.last()->selectionItem());
+
+            mThumbnails.last()->updatePos(mThumbnailWidth, mThumbnailWidth / UBSettings::minScreenRatio);
+        }
+
+        updateActiveThumbnail(0);
+
+        updateThumbnails();
     }
-
-    updateThumbnailsPos();
 }
 
 void UBBoardThumbnailsView::centerOnThumbnail(int index)
 {
-    centerOn(mThumbnails.at(index));
+    if (index < mThumbnails.size())
+    {
+        centerOn(mThumbnails.at(index));
+    }
 }
 
 void UBBoardThumbnailsView::ensureVisibleThumbnail(int index)
@@ -201,24 +226,44 @@ void UBBoardThumbnailsView::ensureVisibleThumbnail(int index)
     }
 }
 
-void UBBoardThumbnailsView::updateThumbnailsPos()
-{    
-    qreal thumbnailHeight = mThumbnailWidth / UBSettings::minScreenRatio;
-
-    // for some reason, verticalScrollBar()->width() returns 100 while isVisible() is false... not the case with Qt 5.5 (when this code has been implemented)
-    int verticalScrollBarWidth = verticalScrollBar()->isVisible() ? verticalScrollBar()->width() : 0;
-    scene()->setSceneRect(0, 0, scene()->itemsBoundingRect().size().width() - verticalScrollBarWidth, scene()->itemsBoundingRect().size().height());
-
+void UBBoardThumbnailsView::updateActiveThumbnail(int newActiveIndex)
+{
     for (int i=0; i < mThumbnails.length(); i++)
     {
-        mThumbnails.at(i)->setSceneIndex(i);
-        mThumbnails.at(i)->setPageNumber(i);
-        mThumbnails.at(i)->setHighlighted(i == UBApplication::boardController->activeSceneIndex());
-        mThumbnails.at(i)->updatePos(mThumbnailWidth, thumbnailHeight);
+        mThumbnails.at(i)->setHighlighted(i == newActiveIndex);
     }
 
-    updateExposure();
+    ensureVisibleThumbnail(newActiveIndex);
+
+    mThumbnails.at(newActiveIndex)->updatePos(mThumbnailWidth, mThumbnailWidth / UBSettings::minScreenRatio);
+
     update();
+}
+
+void UBBoardThumbnailsView::updateThumbnailsPos()
+{
+    if (isVisible())
+    {
+        qreal thumbnailHeight = mThumbnailWidth / UBSettings::minScreenRatio;
+
+        for (int i=0; i < mThumbnails.length(); i++)
+        {
+            mThumbnails.at(i)->setSceneIndex(i);
+            mThumbnails.at(i)->setPageNumber(i);
+            mThumbnails.at(i)->setHighlighted(i == UBApplication::boardController->activeSceneIndex());
+            mThumbnails.at(i)->updatePos(mThumbnailWidth, thumbnailHeight);
+        }
+
+        // for some reason, verticalScrollBar()->width() returns 100 while isVisible() is false... not the case with Qt 5.5 (when this code has been implemented)
+        int verticalScrollBarWidth = verticalScrollBar()->isVisible() ? verticalScrollBar()->width() : 0;
+        setSceneRect(0, 0, scene()->itemsBoundingRect().size().width() - verticalScrollBarWidth, scene()->itemsBoundingRect().size().height());
+
+        updateExposure();
+
+        ensureVisibleThumbnail(UBApplication::boardController->activeSceneIndex());
+
+        update();
+    }
 }
 
 void UBBoardThumbnailsView::updateExposure()
@@ -234,18 +279,17 @@ void UBBoardThumbnailsView::updateExposure()
 
 void UBBoardThumbnailsView::resizeEvent(QResizeEvent *event)
 {
-    Q_UNUSED(event);
-
-    // Update the thumbnails width
-
     int verticalScrollBarWidth = verticalScrollBar()->isVisible() ? verticalScrollBar()->width() : 0;
 
-    mThumbnailWidth = std::max(width() - verticalScrollBarWidth - 2*mMargin, mThumbnailMinWidth);
-
     // Refresh the scene
-    updateThumbnailsPos();
+    if (event->size().width() > 0 && std::abs(event->oldSize().width() - event->size().width()) != verticalScrollBarWidth)
+    {
+        updateThumbnails();
 
-    emit UBApplication::boardController->centerOnThumbnailRequired(UBApplication::boardController->activeSceneIndex());
+        ensureVisibleThumbnail(UBApplication::boardController->activeSceneIndex());
+    }
+
+    QGraphicsView::resizeEvent(event);
 }
 
 void UBBoardThumbnailsView::mousePressEvent(QMouseEvent *event)
@@ -332,10 +376,6 @@ void UBBoardThumbnailsView::dragEnterEvent(QDragEnterEvent *event)
     {
         event->setDropAction(Qt::MoveAction);
         event->accept();
-    }
-    else
-    {
-        event->acceptProposedAction();
     }
 }
 

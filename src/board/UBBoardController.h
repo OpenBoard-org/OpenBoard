@@ -181,7 +181,6 @@ class UBBoardController : public UBDocumentContainer
 
         void findUniquesItems(const QUndoCommand *parent, QSet<QGraphicsItem *> &items);
         void ClearUndoStack();
-
         std::shared_ptr<UBGraphicsScene> setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pSceneIndex = 0, bool forceReload = false, bool onImport = false);
         std::shared_ptr<UBGraphicsScene> setActiveDocumentScene(int pSceneIndex);
 

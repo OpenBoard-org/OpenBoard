@@ -40,35 +40,6 @@ echo %PATH%
 
 cd %PROJECT_ROOT%
 
-rmdir /S /Q %BUILD_DIR%
-rmdir /S /Q install
-
-"%QT_BIN%\qmake.exe" %APPLICATION_NAME%.pro
-
-call "%LRELEASE%" "%APPLICATION_NAME%.pro"
-
-set /p VERSION= < build\win32\release\version
-REM remove the last character that is a space
-set VERSION=%VERSION: =%
-
-
-nmake release-install
-IF NOT EXIST build\win32\release\product\%APPLICATION_NAME%.exe GOTO EXIT_WITH_ERROR
-
-xcopy C:\%APPLICATION_NAME%\bin\*.dll build\win32\release\product\
-xcopy "%QT_DIR%\bin\Qt6OpenGL.dll" build\win32\release\product\
-
-set CUSTOMIZATIONS=build\win32\release\product\customizations
-mkdir %CUSTOMIZATIONS%
-xcopy /s resources\customizations %CUSTOMIZATIONS%
-
-set STARTUP_HINTS=build\win32\release\product\startupHints
-mkdir %STARTUP_HINTS%
-xcopy /s resources\startupHints %STARTUP_HINTS%
-
-set I18n=build\win32\release\product\i18n
-xcopy /s "%BASE_QT_TRANSLATIONS_DIRECTORY%\qt_*.qm" %I18n%\
-
 call "%INNO_EXE%" "%SCRIPT_PATH%\%APPLICATION_NAME%.iss" /F"%APPLICATION_NAME%_Installer_%VERSION%"
 
 GOTO END
@@ -78,6 +49,6 @@ echo "Error found"
 GOTO EOF
 
 :END
-echo "%APPLICATION_NAME% build finished"
+echo "%APPLICATION_NAME% setup created"
 
 :EOF

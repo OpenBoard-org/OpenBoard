@@ -71,8 +71,8 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBStylusPalette.h
     UBThumbnailView.cpp
     UBThumbnailView.h
-    UBThumbnailWidget.cpp
-    UBThumbnailWidget.h
+    UBDocumentThumbnailsView.cpp
+    UBDocumentThumbnailsView.h
     UBToolWidget.cpp
     UBToolWidget.h
     UBToolbarButtonGroup.cpp
