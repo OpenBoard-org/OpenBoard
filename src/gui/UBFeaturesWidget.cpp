@@ -35,6 +35,7 @@
 #include "frameworks/UBFileSystemUtils.h"
 #include "core/UBApplication.h"
 #include "core/UBDownloadManager.h"
+#include "core/UBPersistenceManager.h"
 #include "globals/UBGlobals.h"
 #include "board/UBBoardController.h"
 #include "document/UBDocumentController.h"
