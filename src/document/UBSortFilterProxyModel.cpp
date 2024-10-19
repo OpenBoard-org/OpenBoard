@@ -23,3 +23,24 @@ bool UBSortFilterProxyModel::lessThan(const QModelIndex &left, const QModelIndex
 
     return QSortFilterProxyModel::lessThan(left, right);
 }
+
+bool UBSortFilterProxyModel::filterAcceptsRow(int sourceRow,
+                                              const QModelIndex &sourceParent) const
+{
+    UBDocumentTreeModel *model = dynamic_cast<UBDocumentTreeModel*>(sourceModel());
+    if(model == nullptr)
+    {
+        return false;
+    }
+
+    if(model->isCatalog(model->index(sourceRow, 0, sourceParent)))
+    {
+        // Always show the catalog folders
+        return true;
+    }
+    else
+    {
+        // Filter the documents
+        return QSortFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent);
+    }
+}
