@@ -2413,6 +2413,8 @@ void UBDocumentController::show()
 
     if(!mToolsPalette)
         setupPalettes();
+
+    mDocumentUI->filterText->clear();
 }
 
 
