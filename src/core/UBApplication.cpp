@@ -79,6 +79,8 @@ UBDocumentController* UBApplication::documentController = 0;
 
 UBMainWindow* UBApplication::mainWindow = 0;
 
+bool UBApplication::isClosing = false;
+
 const QString UBApplication::mimeTypeUniboardDocument = QString("application/vnd.mnemis-uniboard-document");
 const QString UBApplication::mimeTypeUniboardPage = QString("application/vnd.mnemis-uniboard-page");
 const QString UBApplication::mimeTypeUniboardPageItem =  QString("application/vnd.mnemis-uniboard-page-item");
@@ -507,6 +509,8 @@ void UBApplication::closeEvent(QCloseEvent *event)
 
 void UBApplication::closing()
 {
+    isClosing = true;
+
     if (UBSettings::settings()->emptyTrashForOlderDocuments->get().toBool())
     {
         UBDocumentTreeModel *docModel = UBPersistenceManager::persistenceManager()->mDocumentTreeStructureModel;
