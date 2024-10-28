@@ -147,9 +147,17 @@ UBCFFSubsetAdaptor::UBCFFSubsetReader::UBCFFSubsetReader(std::shared_ptr<UBDocum
     : mProxy(proxy)
     , mGSectionContainer(NULL)
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 5, 0))
+    QDomDocument::ParseResult result = mDOMdoc.setContent(content, QDomDocument::ParseOption::UseNamespaceProcessing);
+    int errorLine = result.errorLine;
+    int errorColumn = result.errorColumn;
+    QString errorStr = result.errorMessage;
+#else
     int errorLine, errorColumn;
     QString errorStr;
-    if(!mDOMdoc.setContent(content, true, &errorStr, &errorLine, &errorColumn)){
+    bool result = mDOMdoc.setContent(content, true, &errorStr, &errorLine, &errorColumn);
+#endif
+    if(!result){
         qWarning() << "Error:Parseerroratline" << errorLine << ","
                   << "column" << errorColumn << ":" << errorStr;
     } else {

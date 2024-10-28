@@ -172,10 +172,16 @@ static QDomDocument createDomFromSvg(const QString &svgUrl)
         if (inFile.open(QIODevice::ReadOnly)) {
             QString domString(inFile.readAll());
 
-            int errorLine = 0; int errorColumn = 0;
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 5, 0))
+            QDomDocument::ParseResult result = xmlDom.setContent(domString);
+            int errorLine = result.errorLine;
+            int errorColumn = result.errorColumn;
+#else
+            int errorLine, errorColumn;
             QString errorStr;
-
-            if (xmlDom.setContent(domString, &errorStr, &errorLine, &errorColumn)) {
+            bool result = xmlDom.setContent(domString, &errorStr, &errorLine, &errorColumn);
+#endif
+            if (result) {
                 return xmlDom;
             } else {
                 qDebug() << "Error reading content of " << mFoldersXmlStorageName << '\n'
