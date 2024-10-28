@@ -3,8 +3,6 @@ target_sources(openboard PRIVATE
     UBBase32.h
     UBCoreGraphicsScene.cpp
     UBCoreGraphicsScene.h
-    UBCryptoUtils.cpp
-    UBCryptoUtils.h
     UBFileSystemUtils.cpp
     UBFileSystemUtils.h
     UBGeometryUtils.cpp
