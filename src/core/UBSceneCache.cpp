@@ -322,6 +322,13 @@ void UBSceneCache::SceneCacheEntry::startLoading()
 {
     mTimer = new QTimer;
     QObject::connect(mTimer, &QTimer::timeout, mTimer, [this](){
+        if (UBApplication::isClosing)
+        {
+            mTimer->stop();
+            delete mTimer;
+            return;
+        }
+
         if (mContext)
         {
             mContext->step();

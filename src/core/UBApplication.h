@@ -78,6 +78,8 @@ class UBApplication : public SingleApplication
 
         static UBMainWindow* mainWindow;
 
+        static bool isClosing;
+
         static UBApplication* app()
         {
             return dynamic_cast<UBApplication*>qApp;

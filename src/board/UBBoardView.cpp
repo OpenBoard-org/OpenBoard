@@ -1139,6 +1139,7 @@ void UBBoardView::mousePressEvent (QMouseEvent *event)
             if (dynamic_cast<UBGraphicsTextItem*>(getMovingItem()))
             {
                 mIsCreatingTextZone = false;
+                UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Selector);
                 QGraphicsView::mousePressEvent (event);
             }
             else
