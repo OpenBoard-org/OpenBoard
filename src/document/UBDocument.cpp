@@ -28,14 +28,11 @@
 
 QList<std::weak_ptr<UBDocument>> UBDocument::sDocuments;
 
-// FIXME Workaround to keep documents alive
-static QList<std::shared_ptr<UBDocument>> keepDocuments;
 
 UBDocument::UBDocument(std::shared_ptr<UBDocumentProxy> proxy)
     : mProxy(proxy)
     , mThumbnailScene(new UBThumbnailScene(this))
 {
-    qDebug() << "Creating UBDocument";
     mThumbnailScene->createThumbnails();
 }
 
@@ -149,7 +146,6 @@ std::shared_ptr<UBDocument> UBDocument::getDocument(std::shared_ptr<UBDocumentPr
     {
         document = std::shared_ptr<UBDocument>(new UBDocument(proxy));
         sDocuments << document;
-        keepDocuments << document;
     }
 
     return document;

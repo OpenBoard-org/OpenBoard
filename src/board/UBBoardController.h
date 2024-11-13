@@ -44,6 +44,7 @@ class UBMainWindow;
 class UBApplication;
 class UBBoardView;
 
+class UBDocument;
 class UBDocumentController;
 class UBMessageWindow;
 class UBGraphicsScene;
@@ -323,6 +324,7 @@ class UBBoardController : public UBDocumentContainer
         QString mActionGroupText;
         QString mActionUngroupText;
         std::shared_ptr<UBGraphicsScene> mInitialDocumentScene;
+        QList<std::shared_ptr<UBDocument>> mRecentDocuments;
 
         QTimer *mAutosaveTimer;
 

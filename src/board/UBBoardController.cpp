@@ -1644,6 +1644,14 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::
         if (!featuresController->isDocumentInFavoriteList(documentFolderName) && !featuresController->isInRecentlyOpenDocuments(documentFolderName))
         {
             featuresController->addToFavorite(url, pDocumentProxy->name(), true);
+
+            // keep recent UBDocument instances alive for fast switching
+            auto document = UBDocument::getDocument(pDocumentProxy);
+
+            if (!mRecentDocuments.contains(document))
+            {
+                mRecentDocuments.append(UBDocument::getDocument(pDocumentProxy));
+            }
         }
 
         auto document = UBDocument::getDocument(pDocumentProxy);
