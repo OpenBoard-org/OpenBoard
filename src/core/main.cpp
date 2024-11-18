@@ -96,6 +96,14 @@ int main(int argc, char *argv[])
     if (qEnvironmentVariableIsSet("QT_NO_GLIB"))
         qunsetenv("QT_NO_GLIB");
 
+    // force using xwayland when running on wayland
+#ifdef Q_OS_LINUX
+    if (qgetenv("XDG_SESSION_TYPE") == "wayland")
+    {
+        qputenv("QT_QPA_PLATFORM", "xcb");
+    }
+#endif
+
     Q_INIT_RESOURCE(OpenBoard);
 
     qInstallMessageHandler(ub_message_output);
