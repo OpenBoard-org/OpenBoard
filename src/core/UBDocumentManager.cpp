@@ -250,12 +250,12 @@ int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> docum
         QFile file(fileName);
         QFileInfo fileInfo(file);
 
+        UBApplication::setDisabled(true);
+
         foreach (UBImportAdaptor *adaptor, mImportAdaptors)
         {
             if (adaptor->supportedExtentions().lastIndexOf(fileInfo.suffix().toLower()) != -1)
             {
-                UBApplication::setDisabled(true);
-
                 if (adaptor->isDocumentBased())
                 {
                     //issue 1629 - NNE - 20131212 : Resolve a segfault, but for .ubx, actually
@@ -263,7 +263,10 @@ int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> docum
                     UBDocumentBasedImportAdaptor* importAdaptor = dynamic_cast<UBDocumentBasedImportAdaptor*>(adaptor);
 
                     if (importAdaptor && importAdaptor->addFileToDocument(document, file))
+                    {
                         nImportedDocuments++;
+                        break;
+                    }
                 }
                 else
                 {
@@ -294,11 +297,12 @@ int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> docum
                     UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
                     UBApplication::showMessage(tr("Import of file %1 successful.").arg(file.fileName()));
                     nImportedDocuments++;
+                    break;
                 }
-
-                UBApplication::setDisabled(false);
             }
         }
+
+        UBApplication::setDisabled(false);
     }
     return nImportedDocuments;
 }
