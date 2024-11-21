@@ -249,8 +249,11 @@ void UBGraphicsMediaItemDelegate::mediaStatusChanged(QMediaPlayer::MediaStatus s
             && delegated()->firstLoad()
             )
     {
-        delegated()->play();
-        delegated()->pause();
+        if (delegated()->getMediaType() == UBGraphicsMediaItem::mediaType_Video)
+        {
+            delegated()->play();
+            delegated()->pause();
+        }
         delegated()->setFirstLoad(false);
     }
 #endif
