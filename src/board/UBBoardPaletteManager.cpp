@@ -245,22 +245,8 @@ void UBBoardPaletteManager::setupPalettes()
     mStylusPalette->stackUnder(mZoomPalette);
 
     mTipPalette = new UBStartupHintsPalette(mContainer);
-    QList<QAction*> backgroundsActions;
 
-    backgroundsActions << UBApplication::mainWindow->actionPlainLightBackground;
-    backgroundsActions << UBApplication::mainWindow->actionCrossedLightBackground;
-    if(UBSettings::settings()->isSeyesRuledBackground())
-        backgroundsActions << UBApplication::mainWindow->actionSeyesRuledLightBackground;
-    else
-        backgroundsActions << UBApplication::mainWindow->actionRuledLightBackground;
-    backgroundsActions << UBApplication::mainWindow->actionPlainDarkBackground;
-    backgroundsActions << UBApplication::mainWindow->actionCrossedDarkBackground;
-    if(UBSettings::settings()->isSeyesRuledBackground())
-        backgroundsActions << UBApplication::mainWindow->actionSeyesRuledDarkBackground;
-    else
-        backgroundsActions << UBApplication::mainWindow->actionRuledDarkBackground;
-
-    mBackgroundsPalette = new UBBackgroundPalette(backgroundsActions, mContainer);
+    mBackgroundsPalette = new UBBackgroundPalette(mContainer);
     mBackgroundsPalette->setButtonIconSize(QSize(128, 128));
     mBackgroundsPalette->groupActions();
     mBackgroundsPalette->setClosable(true);
@@ -450,14 +436,6 @@ void UBBoardPaletteManager::connectPalettes()
     connect(UBApplication::mainWindow->actionBackgrounds, SIGNAL(toggled(bool)), this, SLOT(toggleBackgroundPalette(bool)));
     connect(mBackgroundsPalette, SIGNAL(closed()), this, SLOT(backgroundPaletteClosed()));
 
-    connect(UBApplication::mainWindow->actionPlainLightBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
-    connect(UBApplication::mainWindow->actionCrossedLightBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
-    connect(UBApplication::mainWindow->actionRuledLightBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
-    connect(UBApplication::mainWindow->actionSeyesRuledLightBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
-    connect(UBApplication::mainWindow->actionPlainDarkBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
-    connect(UBApplication::mainWindow->actionCrossedDarkBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
-    connect(UBApplication::mainWindow->actionRuledDarkBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
-    connect(UBApplication::mainWindow->actionSeyesRuledDarkBackground, SIGNAL(triggered()), this, SLOT(changeBackground()));
     connect(UBApplication::mainWindow->actionPodcast, SIGNAL(triggered(bool)), this, SLOT(tooglePodcastPalette(bool)));
 
     connect(UBApplication::mainWindow->actionAddItemToCurrentPage, SIGNAL(triggered()), this, SLOT(addItemToCurrentPage()));
@@ -552,32 +530,6 @@ void UBBoardPaletteManager::containerResized()
         mRightPalette->resize(mRightPalette->width()-1, mContainer->height());
         mRightPalette->resize(mRightPalette->width()+1, mContainer->height());
     }
-}
-
-
-void UBBoardPaletteManager::changeBackground()
-{
-    if (UBApplication::mainWindow->actionCrossedLightBackground->isChecked())
-        UBApplication::boardController->changeBackground(false, UBPageBackground::crossed);
-
-    else if (UBApplication::mainWindow->actionRuledLightBackground->isChecked() ||
-             UBApplication::mainWindow->actionSeyesRuledLightBackground->isChecked())
-        UBApplication::boardController->changeBackground(false, UBPageBackground::ruled);
-
-    else if (UBApplication::mainWindow->actionPlainDarkBackground->isChecked())
-        UBApplication::boardController->changeBackground(true, UBPageBackground::plain);
-
-    else if (UBApplication::mainWindow->actionCrossedDarkBackground->isChecked())
-        UBApplication::boardController->changeBackground(true, UBPageBackground::crossed);
-
-    else if (UBApplication::mainWindow->actionRuledDarkBackground->isChecked() ||
-             UBApplication::mainWindow->actionSeyesRuledDarkBackground->isChecked())
-        UBApplication::boardController->changeBackground(true, UBPageBackground::ruled);
-
-    else
-        UBApplication::boardController->changeBackground(false, UBPageBackground::plain);
-
-    mBackgroundsPalette->backgroundChanged();
 }
 
 

@@ -110,7 +110,7 @@ void UBExportFullPDF::saveOverlayPdf(std::shared_ptr<UBDocumentProxy> pDocumentP
             std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
             // set background according to PDF export settings
             bool isDark = scene->isDarkBackground();
-            UBPageBackground pageBackground = scene->pageBackground();
+            const auto sceneBackground = scene->background();
 
             bool exportDark = isDark && UBSettings::settings()->exportBackgroundColor->get().toBool();
 
@@ -148,15 +148,15 @@ void UBExportFullPDF::saveOverlayPdf(std::shared_ptr<UBDocumentProxy> pDocumentP
             if (sceneHasPDFBackground)
             {
                 scene->setDrawingMode(true);
-                scene->setBackground(false, UBPageBackground::plain);
+                scene->setSceneBackground(false, nullptr);
             }
             else if (UBSettings::settings()->exportBackgroundGrid->get().toBool())
             {
-                scene->setBackground(exportDark, pageBackground);
+                scene->setSceneBackground(exportDark, sceneBackground);
             }
             else
             {
-                scene->setBackground(exportDark, UBPageBackground::plain);
+                scene->setSceneBackground(exportDark, nullptr);
             }
 
             //render to PDF
@@ -168,7 +168,7 @@ void UBExportFullPDF::saveOverlayPdf(std::shared_ptr<UBDocumentProxy> pDocumentP
 
             //restore background state
             scene->setDrawingMode(false);
-            scene->setBackground(isDark, pageBackground);
+            scene->setSceneBackground(isDark, sceneBackground);
         }
 
         if (pdfPainter) delete pdfPainter;

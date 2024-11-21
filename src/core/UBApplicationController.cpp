@@ -105,7 +105,7 @@ UBApplicationController::UBApplicationController(UBBoardView *pControlView,
     connect(mUninoteController, SIGNAL(restoreUniboard()), this, SLOT(hideDesktop()));
 
     mBlackScene = std::make_shared<UBGraphicsScene>(nullptr);
-    mBlackScene->setBackground(true, UBPageBackground::plain);
+    mBlackScene->setSceneBackground(true, nullptr);
 
     if (displayManager->numScreens() >= 2 && displayManager->useMultiScreen())
     {
