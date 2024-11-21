@@ -119,8 +119,8 @@ class UBGraphicsDelegateFrame: public QGraphicsRectItem, public QObject
         QRect mAngleRect;
 
         QPointF mStartingPoint;
-        QRectF mStartingBounds;
         QTransform mInitialTransform;
+        QList<QPointF> mCornerPoints;
         QSizeF mOriginalSize;
         QPointF mFixedPoint;
 

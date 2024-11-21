@@ -2626,7 +2626,7 @@ QPointF UBGraphicsScene::snap(const QRectF& rect, Qt::Corner* corner) const
 
 QRectF UBGraphicsScene::itemRect(const QGraphicsItem* item)
 {
-    // compute an item's rectangle in scene coordinates
+    // compute an item's rectangle in item coordinates
     // taking into account the shape of the item and
     // the nature of nominal lines
     QRectF bounds = item->boundingRect();
@@ -2655,9 +2655,7 @@ QRectF UBGraphicsScene::itemRect(const QGraphicsItem* item)
         }
     }
 
-    QRectF rect = item->mapRectToScene(bounds);
-
-    return rect;
+    return bounds;
 }
 
 void UBGraphicsScene::addMask(const QPointF &center)
