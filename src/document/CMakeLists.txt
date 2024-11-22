@@ -1,4 +1,6 @@
 target_sources(${PROJECT_NAME} PRIVATE
+    UBDocument.cpp
+    UBDocument.h
     UBDocumentContainer.cpp
     UBDocumentContainer.h
     UBDocumentController.cpp

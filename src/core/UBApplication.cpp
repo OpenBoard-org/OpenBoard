@@ -58,7 +58,7 @@
 
 #include "gui/UBMainWindow.h"
 #include "gui/UBResources.h"
-#include "gui/UBDocumentThumbnailsView.h"
+#include "gui/UBThumbnail.h"
 #include "gui/UBStartupHintsPalette.h"
 
 #include "ui_mainWindow.h"

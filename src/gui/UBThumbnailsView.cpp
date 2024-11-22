@@ -1,10 +1,5 @@
 /*
- * Copyright (C) 2015-2022 Département de l'Instruction Publique (DIP-SEM)
- *
- * Copyright (C) 2013 Open Education Foundation
- *
- * Copyright (C) 2010-2013 Groupement d'Intérêt Public pour
- * l'Education Numérique en Afrique (GIP ENA)
+ * Copyright (C) 2015-2024 Département de l'Instruction Publique (DIP-SEM)
  *
  * This file is part of OpenBoard.
  *
@@ -25,33 +20,29 @@
  */
 
 
+#include "UBThumbnailsView.h"
 
+#include "gui/UBThumbnailArranger.h"
 
-#ifndef UBTHUMBNAILVIEW_H_
-#define UBTHUMBNAILVIEW_H_
-
-#include <QGraphicsView>
-#include <QLabel>
-#include <QHBoxLayout>
-#include <QDebug>
-
-class UBGraphicsScene;
-
-class UBThumbnailView : public QGraphicsView
+UBThumbnailsView::UBThumbnailsView(QWidget* parent)
+    : QGraphicsView{parent}
 {
-    Q_OBJECT
+}
 
-    public:
+UBThumbnailsView::~UBThumbnailsView()
+{
+    if (mArranger)
+    {
+        delete mArranger;
+    }
+}
 
-        UBThumbnailView(std::shared_ptr<UBGraphicsScene> scene, QWidget* parent =0);
-        virtual ~UBThumbnailView()
-        {
+void UBThumbnailsView::setThumbnailArranger(UBThumbnailArranger* arranger)
+{
+    mArranger = arranger;
+}
 
-        }
-
-    private:
-        QHBoxLayout* mHBoxLayout;
-
-};
-
-#endif /* UBTHUMBNAILVIEW_H_ */
+UBThumbnailArranger* UBThumbnailsView::thumbnailArranger() const
+{
+    return mArranger;
+}
