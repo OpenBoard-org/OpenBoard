@@ -111,6 +111,7 @@ void UBDocument::persistPage(std::shared_ptr<UBGraphicsScene> scene, const int i
 {
     UBPersistenceManager::persistenceManager()->persistDocumentScene(mProxy, scene, index, isAutomaticBackup,
                                                                      forceImmediateSaving);
+    mThumbnailScene->reloadThumbnail(index);
 }
 
 UBThumbnailScene* UBDocument::thumbnailScene() const

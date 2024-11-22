@@ -254,6 +254,19 @@ void UBThumbnailScene::moveThumbnail(int fromIndex, int toIndex)
     }
 }
 
+void UBThumbnailScene::reloadThumbnail(int pageIndex)
+{
+    if (pageIndex < mThumbnailItems.size())
+    {
+        auto thumbnail = mThumbnailItems.at(pageIndex);
+
+        if (thumbnail && !thumbnail->isExposed())
+        {
+            thumbnail->setPixmap(UBThumbnailAdaptor::get(mDocument->proxy(), pageIndex));
+        }
+    }
+}
+
 UBThumbnailArranger* UBThumbnailScene::currentThumbnailArranger()
 {
     UBThumbnailArranger* thumbnailArranger{nullptr};

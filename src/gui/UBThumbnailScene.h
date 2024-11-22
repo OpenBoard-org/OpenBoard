@@ -64,6 +64,7 @@ protected:
     void insertThumbnail(int pageIndex, std::shared_ptr<UBGraphicsScene> pageScene = nullptr);
     void deleteThumbnail(int pageIndex, bool rearrange = true);
     void moveThumbnail(int fromIndex, int toIndex);
+    void reloadThumbnail(int pageIndex);
 
 private:
     friend class UBThumbnail;
