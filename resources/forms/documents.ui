@@ -103,22 +103,6 @@
              </widget>
             </item>
             <item>
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>10</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
              <widget class="QToolButton" name="sortOrder">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -146,17 +130,14 @@
              </widget>
             </item>
             <item>
-             <spacer name="horizontalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
+             <widget class="QLineEdit" name="filterText">
+              <property name="placeholderText">
+               <string>filter the documents</string>
               </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
+              <property name="clearButtonEnabled">
+               <bool>true</bool>
               </property>
-             </spacer>
+             </widget>
             </item>
            </layout>
           </item>
