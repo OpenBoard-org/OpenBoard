@@ -317,15 +317,15 @@ public slots:
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
-    void dragEnterEvent(QDragEnterEvent *event);
-    void dragLeaveEvent(QDragLeaveEvent *event);
-    void dragMoveEvent(QDragMoveEvent *event);
-    void dropEvent(QDropEvent *event);
-    void paintEvent(QPaintEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dragLeaveEvent(QDragLeaveEvent *event) override;
+    void dragMoveEvent(QDragMoveEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
 
 
     UBDocumentTreeModel *fullModel() {return qobject_cast<UBDocumentTreeModel*>(model());}
-    void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+    void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) override;
 
 private:
     bool isAcceptable(const QModelIndex &dragIndex, const QModelIndex &atIndex);
@@ -432,7 +432,6 @@ class UBDocumentController : public UBDocumentContainer
         bool pageCanBeDeleted(int page);
         QString documentTrashGroupName(){ return mDocumentTrashGroupName;}
         QString defaultDocumentGroupName(){ return mDefaultDocumentGroupName;}
-        void reloadThumbnails() override;
         QModelIndex firstSelectedTreeIndex();
         std::shared_ptr<UBDocumentProxy> firstSelectedTreeProxy();
         inline DeletionType deletionTypeForSelection(LastSelectedElementType pTypeSelection
@@ -491,7 +490,6 @@ class UBDocumentController : public UBDocumentContainer
         void openSelectedItem();
         void duplicateSelectedItem();
         void importFile();
-        void moveSceneToIndex(std::shared_ptr<UBDocumentProxy> proxy, int source, int target);
         void selectDocument(std::shared_ptr<UBDocumentProxy> proxy, bool setAsCurrentDocument = true, const bool onImport = false, const bool editMode = false);
         void show();
         void hide();
@@ -512,14 +510,7 @@ class UBDocumentController : public UBDocumentContainer
         void collapseAll();
         void expandAll();
 
-
-        void refreshDocumentThumbnailsView();
-        void updateThumbnail(int index);
-        void removeThumbnail(int index);
-        void moveThumbnail(int from, int to);
-        void insertThumbnail(int index, const QPixmap& pix);
-
-protected:
+    protected:
         virtual void setupViews();
         virtual void setupToolbar();
         void setupPalettes();

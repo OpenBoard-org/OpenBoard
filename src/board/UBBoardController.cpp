@@ -31,58 +31,55 @@
 
 #include <QtWidgets>
 
+#include "adaptors/UBMetadataDcSubsetAdaptor.h"
+#include "adaptors/UBSvgSubsetAdaptor.h"
+
+#include "board/UBBoardPaletteManager.h"
+#include "board/UBBoardView.h"
+#include "board/UBDrawingController.h"
+#include "board/UBFeaturesController.h"
+
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBPlatformUtils.h"
 
 #include "core/UBApplication.h"
-#include "core/UBDisplayManager.h"
-#include "core/UBSettings.h"
-#include "core/UBSetting.h"
-#include "core/UBPersistenceManager.h"
 #include "core/UBApplicationController.h"
+#include "core/UBDisplayManager.h"
 #include "core/UBDocumentManager.h"
-#include "core/UBMimeData.h"
 #include "core/UBDownloadManager.h"
+#include "core/UBMimeData.h"
+#include "core/UBPersistenceManager.h"
+#include "core/UBSetting.h"
+#include "core/UBSettings.h"
+#include "core/UBSettings.h"
 
-#include "gui/UBMessageWindow.h"
-#include "gui/UBToolbarButtonGroup.h"
-#include "gui/UBMainWindow.h"
-#include "gui/UBToolWidget.h"
-#include "gui/UBKeyboardPalette.h"
-#include "gui/UBMagnifer.h"
-#include "gui/UBDockPaletteWidget.h"
+#include "document/UBDocument.h"
+#include "document/UBDocumentController.h"
+#include "document/UBDocumentProxy.h"
 
-#include "domain/UBGraphicsPixmapItem.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBGraphicsItemUndoCommand.h"
-#include "domain/UBGraphicsSvgItem.h"
-#include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsPDFItem.h"
+#include "domain/UBGraphicsPixmapItem.h"
+#include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsTextItem.h"
-#include "domain/UBPageSizeUndoCommand.h"
-#include "domain/UBGraphicsGroupContainerItem.h"
-#include "domain/UBGraphicsStrokesGroup.h"
+#include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBItem.h"
-#include "board/UBFeaturesController.h"
+#include "domain/UBPageSizeUndoCommand.h"
 
 #include "gui/UBFeaturesWidget.h"
-
-#include "tools/UBToolsManager.h"
-
-#include "document/UBDocumentProxy.h"
-#include "document/UBDocumentController.h"
-
-#include "board/UBDrawingController.h"
-#include "board/UBBoardView.h"
+#include "gui/UBKeyboardPalette.h"
+#include "gui/UBMagnifer.h"
+#include "gui/UBMainWindow.h"
+#include "gui/UBMessageWindow.h"
+#include "gui/UBThumbnailScene.h"
+#include "gui/UBToolWidget.h"
+#include "gui/UBToolbarButtonGroup.h"
 
 #include "podcast/UBPodcastController.h"
 
-#include "adaptors/UBMetadataDcSubsetAdaptor.h"
-#include "adaptors/UBSvgSubsetAdaptor.h"
-
-#include "UBBoardPaletteManager.h"
-
-#include "core/UBSettings.h"
+#include "tools/UBToolsManager.h"
 
 #include "web/UBEmbedController.h"
 #include "web/UBEmbedParser.h"
@@ -122,7 +119,6 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     mPenColorOnLightBackground = UBSettings::settings()->penColors(false).at(penColorIndex);
     mMarkerColorOnDarkBackground = UBSettings::settings()->markerColors(true).at(markerColorIndex);
     mMarkerColorOnLightBackground = UBSettings::settings()->markerColors(false).at(markerColorIndex);
-
 }
 
 
@@ -161,7 +157,6 @@ void UBBoardController::init()
     });
 
     undoRedoStateChange(true);
-
 }
 
 
@@ -567,13 +562,8 @@ void UBBoardController::addScene()
     persistViewPositionOnCurrentScene();
     persistCurrentScene(false,true);
 
-    UBPersistenceManager::persistenceManager()->createDocumentSceneAt(selectedDocument(), mActiveSceneIndex+1);
-    emit addThumbnailRequired(selectedDocument(), mActiveSceneIndex+1);
-    if (UBApplication::documentController->selectedDocument() == selectedDocument())
-    {
-        UBApplication::documentController->insertThumbPage(mActiveSceneIndex +1);
-        UBApplication::documentController->reloadThumbnails();
-    }
+    auto document = UBDocument::getDocument(selectedDocument());
+    document->createPage(mActiveSceneIndex + 1);
 
     QDateTime now = QDateTime::currentDateTime();
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
@@ -601,18 +591,18 @@ void UBBoardController::addScene(std::shared_ptr<UBGraphicsScene> scene, bool re
             }
         }
 
+        auto document = UBDocument::getDocument(selectedDocument());
+
         if (replaceActiveIfEmpty && mActiveScene->isEmpty())
         {
-            UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(selectedDocument(), clone, mActiveSceneIndex);
-            emit addThumbnailRequired(selectedDocument(), mActiveSceneIndex);
+            document->insertPage(clone, mActiveSceneIndex);
             setActiveDocumentScene(mActiveSceneIndex);
             deleteScene(mActiveSceneIndex + 1);
         }
         else
         {
             persistCurrentScene(false,true);
-            UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(selectedDocument(), clone, mActiveSceneIndex + 1);
-            emit addThumbnailRequired(selectedDocument(), mActiveSceneIndex + 1);
+            document->insertPage(clone, mActiveSceneIndex + 1);
             setActiveDocumentScene(mActiveSceneIndex + 1);
         }
 
@@ -638,12 +628,6 @@ void UBBoardController::duplicateScene(int nIndex)
     persistCurrentScene(false,true);
 
     duplicatePage(nIndex);
-    emit addThumbnailRequired(selectedDocument(), nIndex + 1);
-    if (UBApplication::documentController->selectedDocument() == selectedDocument())
-    {
-        UBApplication::documentController->insertThumbPage(nIndex +1);
-        UBApplication::documentController->reloadThumbnails();
-    }
 
     QDateTime now = QDateTime::currentDateTime();
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
@@ -846,14 +830,8 @@ void UBBoardController::deleteScene(int nIndex)
         persistCurrentScene();
         UBApplication::showMessage(tr("Deleting page %1").arg(nIndex+1), true);
 
-        QList<int> scIndexes;
-        scIndexes << nIndex;
-        UBPersistenceManager::persistenceManager()->deleteDocumentScenes(selectedDocument(), scIndexes);
-        emit removeThumbnailRequired(nIndex);
-        if (UBApplication::documentController->selectedDocument() == selectedDocument())
-        {
-            UBApplication::documentController->deleteThumbPage(nIndex);
-        }
+        auto document = UBDocument::getDocument(selectedDocument());
+        document->deletePages({nIndex});
 
         QDateTime now = QDateTime::currentDateTime();
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
@@ -1058,8 +1036,6 @@ void UBBoardController::previousScene()
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistViewPositionOnCurrentScene();
-// not necessary, done by setActiveDocumentScene
-//        persistCurrentScene();
         setActiveDocumentScene(mActiveSceneIndex - 1);
         centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
@@ -1454,8 +1430,8 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         QString sUrl = sourceUrl.toString();
 
         int numberOfImportedDocuments = 0;
-        int currentNumberOfThumbnails = selectedDocument()->pageCount();
-        if(!sourceUrl.isEmpty() && (sUrl.startsWith("file://") || sUrl.startsWith("/")))
+
+        if (!sourceUrl.isEmpty() && (sUrl.startsWith("file://") || sUrl.startsWith("/")))
         {
             QStringList fileNames;
             fileNames << sourceUrl.toLocalFile();
@@ -1476,27 +1452,9 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
         if (numberOfImportedDocuments > 0)
         {
-
             QDateTime now = QDateTime::currentDateTime();
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
             updateActionStates();
-
-            int numberOfThumbnailsToAdd =  selectedDocument()->pageCount() - currentNumberOfThumbnails;
-
-            bool updateDocumentThumbnailsView = UBApplication::documentController->selectedDocument() ==  selectedDocument();
-            for (int i = 0; i < numberOfThumbnailsToAdd; i++)
-            {
-                emit addThumbnailRequired(selectedDocument(), currentNumberOfThumbnails+i);
-
-                if (updateDocumentThumbnailsView)
-                {
-                    UBApplication::documentController->insertThumbPage(currentNumberOfThumbnails+i);
-                }
-            }
-            if (updateDocumentThumbnailsView)
-            {
-                UBApplication::documentController->reloadThumbnails();
-            }
         }
     }
     else if (UBMimeType::OpenboardTool == itemMimeType)
@@ -1666,13 +1624,7 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::
 
         updateBackgroundActionsState(mActiveScene->isDarkBackground(), mActiveScene->pageBackground());
 
-        if (UBApplication::documentController
-        && (UBApplication::documentController->selectedDocument() == selectedDocument()))
-        {
-            UBApplication::documentController->setActiveThumbnail(pSceneIndex);
-        }
-
-        if(documentChange)
+        if (documentChange)
         {
             UBGraphicsTextItem::lastUsedTextColor = QColor(Qt::black);
         }
@@ -1692,7 +1644,18 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::
         if (!featuresController->isDocumentInFavoriteList(documentFolderName) && !featuresController->isInRecentlyOpenDocuments(documentFolderName))
         {
             featuresController->addToFavorite(url, pDocumentProxy->name(), true);
+
+            // keep recent UBDocument instances alive for fast switching
+            auto document = UBDocument::getDocument(pDocumentProxy);
+
+            if (!mRecentDocuments.contains(document))
+            {
+                mRecentDocuments.append(UBDocument::getDocument(pDocumentProxy));
+            }
         }
+
+        auto document = UBDocument::getDocument(pDocumentProxy);
+        document->thumbnailScene()->hightlightItem(mActiveSceneIndex, true);
     }
     else
     {
@@ -1701,33 +1664,6 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::
     UBApplication::restoreOverrideCursor();
 
     return targetScene;
-}
-
-
-void UBBoardController::moveSceneToIndex(int source, int target)
-{
-    if (selectedDocument())
-    {
-        persistCurrentScene(false,true);
-
-        UBPersistenceManager::persistenceManager()->moveSceneToIndex(selectedDocument(), source, target);
-        emit moveThumbnailRequired(source, target);
-        if (UBApplication::documentController->selectedDocument() == selectedDocument())
-        {
-            UBApplication::documentController->moveThumbPage(source, target);
-        }
-
-        QDateTime now = QDateTime::currentDateTime();
-        selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
-        mMovingSceneIndex = source;
-        mActiveSceneIndex = target;
-        setActiveDocumentScene(target);
-        mMovingSceneIndex = -1;
-
-        emit activeSceneChanged();
-        emit updateThumbnailsRequired();
-    }
 }
 
 void UBBoardController::findUniquesItems(const QUndoCommand *parent, QSet<QGraphicsItem*> &items)
@@ -2131,11 +2067,8 @@ void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool force
 
         if (mActiveScene->isModified())
         {
-            UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, isAnAutomaticBackup, forceImmediateSave);
-            if (UBApplication::documentController->selectedDocument() == selectedDocument())
-            {
-                UBApplication::documentController->updateThumbPage(mActiveSceneIndex);
-            }
+            auto document = UBDocument::getDocument(selectedDocument());
+            document->persistPage(mActiveScene, mActiveSceneIndex, isAnAutomaticBackup, forceImmediateSave);
         }
     }
 }
@@ -2797,11 +2730,4 @@ void UBBoardController::freezeW3CWidget(QGraphicsItem *item, bool freeze)
         UBGraphicsWidgetItem* widget = qgraphicsitem_cast<UBGraphicsWidgetItem*>(item);
         widget->setWebActive(!freeze);
     }
-}
-
-void UBBoardController::reloadThumbnails()
-{
-    //UBApplication::showMessage(tr("Reloading Board Thumbnails View (%1 pages)").arg(selectedDocument()->pageCount()));
-    emit initThumbnailsRequired(selectedDocument());
-    //UBApplication::showMessage(tr("Board Thumbnails View up-to-date"));
 }
