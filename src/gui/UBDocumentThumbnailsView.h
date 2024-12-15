@@ -37,7 +37,7 @@
 
 #include "core/UBApplication.h"
 #include "board/UBBoardController.h"
-#include "frameworks/UBCoreGraphicsScene.h"
+#include "domain/UBGraphicsScene.h"
 #include "core/UBSettings.h"
 #include "domain/UBItem.h"
 #include "gui/UBThumbnailView.h"

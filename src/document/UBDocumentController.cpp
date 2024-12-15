@@ -2316,6 +2316,7 @@ void UBDocumentController::setupViews()
 
         connect(mDocumentUI->sortKind, SIGNAL(activated(int)), this, SLOT(onSortKindChanged(int)));
         connect(mDocumentUI->sortOrder, SIGNAL(toggled(bool)), this, SLOT(onSortOrderChanged(bool)));
+        connect(mDocumentUI->filterText, &QLineEdit::textChanged, this, &UBDocumentController::onFilterTextChanged);
 
         connect(mDocumentUI->splitter, SIGNAL(splitterMoved(int,int)), this, SLOT(onSplitterMoved(int, int)));
 
@@ -2416,6 +2417,12 @@ void UBDocumentController::onSortKindChanged(int index)
     UBSettings::settings()->documentSortKind->setInt(index);
 }
 
+void UBDocumentController::onFilterTextChanged(const QString& filter)
+{
+    mSortFilterProxyModel->setFilterCaseSensitivity(Qt::CaseSensitivity::CaseInsensitive);
+    mSortFilterProxyModel->setFilterRegularExpression(filter);
+}
+
 void UBDocumentController::onSplitterMoved(int size, int index)
 {
     Q_UNUSED(index);
@@ -2461,6 +2468,8 @@ void UBDocumentController::show()
 
     if(!mToolsPalette)
         setupPalettes();
+
+    mDocumentUI->filterText->clear();
 }
 
 
