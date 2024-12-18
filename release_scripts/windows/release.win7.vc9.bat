@@ -29,7 +29,7 @@ set VS_BIN=%PROGRAMS_FILE_PATH%\Microsoft Visual Studio 14.0\VC\bin
 set WIN_SDK_BIN=%PROGRAMS_FILE_PATH%\Microsoft SDKs\Windows\v6.0A\Bin
 set INNO_EXE=%PROGRAMS_FILE_PATH%\Inno Setup 6\iscc.exe
 set BUILD_DIR=%PROJECT_ROOT%\build\win32\release
-set LRELEASE=%QT_BIN%\lrelease.exe
+set LRELEASE=C:\Qt\6.7.2\msvc2019_64\bin\lrelease.exe
 set BASE_QT_TRANSLATIONS_DIRECTORY=%QT_DIR%\translations\Qt6
 
 set PATH=%QT_BIN%;%PATH%;%WIN_SDK_BIN%;%GIT_BIN%
