@@ -291,12 +291,13 @@ class UBDocumentTreeMimeData : public QMimeData
 {
     Q_OBJECT
 
-    public:
-        QList<QModelIndex> indexes() const {return mIndexes;}
-        void setIndexes (const QList<QModelIndex> &pIndexes) {mIndexes = pIndexes;}
+public:
+    UBDocumentTreeMimeData() { setData(UBApplication::mimeTypeUniboardDocument, {}); }
+    QList<QModelIndex> indexes() const {return mIndexes;}
+    void setIndexes (const QList<QModelIndex> &pIndexes) {mIndexes = pIndexes;}
 
-    private:
-        QList<QModelIndex> mIndexes;
+private:
+    QList<QModelIndex> mIndexes;
 };
 
 class UBDocumentTreeView : public QTreeView

@@ -684,32 +684,23 @@ QDateTime UBDocumentTreeModel::findCatalogCreationDate(UBDocumentTreeNode *node)
 
 QStringList UBDocumentTreeModel::mimeTypes() const
 {
-    QStringList types;
-    types << "text/uri-list" << "image/png" << "image/tiff" << "image/gif" << "image/jpeg";
+    static const QStringList types{UBApplication::mimeTypeUniboardDocument};
     return types;
 }
 
 QMimeData *UBDocumentTreeModel::mimeData (const QModelIndexList &indexes) const
 {
-    UBDocumentTreeMimeData *mimeData = new UBDocumentTreeMimeData();
     QList <QModelIndex> indexList;
-    QList<QUrl> urlList;
 
-    foreach (QModelIndex index, indexes) {
-        if (index.isValid()) {
+    for (const auto& index : indexes)
+    {
+        if (index.isValid())
+        {
             indexList.append(index);
-            urlList.append(QUrl());
         }
     }
 
-#if defined(Q_OS_OSX)
-    #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
-        if (QOperatingSystemVersion::current().majorVersion() == 10 && QOperatingSystemVersion::current().minorVersion() < 15) /* <= Mojave */
-            mimeData->setUrls(urlList);
-    #endif
-#else
-    mimeData->setUrls(urlList);
-#endif
+    UBDocumentTreeMimeData* mimeData = new UBDocumentTreeMimeData();
     mimeData->setIndexes(indexList);
 
     return mimeData;
