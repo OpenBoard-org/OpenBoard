@@ -241,7 +241,7 @@ public:
     QPersistentModelIndex untitledDocumentsIndex() const {return mMyDocuments;}
     UBDocumentTreeNode *nodeFromIndex(const QModelIndex &pIndex) const;
     static bool nodeLessThan(const UBDocumentTreeNode *firstIndex, const UBDocumentTreeNode *secondIndex);
-    void setHighLighted(const QModelIndex &newHighLighted) {mHighLighted = newHighLighted;}
+    void setHighLighted(const QModelIndex &newHighLighted);
     QModelIndex highLighted() {return mHighLighted;}
     std::shared_ptr<UBDocumentProxy> findDocumentByFolderName(QString folderName) const;
     std::shared_ptr<UBDocumentProxy> findDocumentByFolderName(UBDocumentTreeNode* node, QString folderName) const;
@@ -330,8 +330,8 @@ protected:
 
 private:
     bool isAcceptable(const QModelIndex &dragIndex, const QModelIndex &atIndex);
+    UBDocumentTreeModel* baseModel() const;
     Qt::DropAction acceptableAction(const QModelIndex &dragIndex, const QModelIndex &atIndex);
-    void updateIndexEnvirons(const QModelIndex &index);
 };
 
 class UBValidator : public QValidator
