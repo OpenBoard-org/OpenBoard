@@ -517,7 +517,7 @@ QVariant UBDocumentTreeModel::data(const QModelIndex &index, int role) const
             return QBrush(0xD9DFEB);
         }
 
-        if (mHighLighted.isValid() && index == mHighLighted) {
+        if (mHighLighted.isValid() && index.row() == mHighLighted.row()) {
             return QBrush(0x6682B5);
         }
     }
@@ -1441,6 +1441,37 @@ bool UBDocumentTreeModel::nodeLessThan(const UBDocumentTreeNode *firstIndex, con
     return firstIndex->nodeName() < secondIndex->nodeName();
 }
 
+void UBDocumentTreeModel::setHighLighted(const QModelIndex& newHighLighted)
+{
+    QModelIndex from;
+    QModelIndex to;
+
+    if (mHighLighted.isValid())
+    {
+        from = mHighLighted.siblingAtColumn(0);
+        to = mHighLighted.siblingAtColumn(1);
+    };
+
+    if (newHighLighted.isValid())
+    {
+        if (!from.isValid())
+        {
+            from = newHighLighted.siblingAtColumn(0);
+        }
+
+        to = newHighLighted.siblingAtColumn(1);
+    }
+
+    mHighLighted = newHighLighted;
+
+    if (from.row() > to.row())
+    {
+        std::swap(from, to);
+    }
+
+    emit dataChanged(from, to, {Qt::BackgroundRole});
+}
+
 UBDocumentTreeModel::~UBDocumentTreeModel()
 {
     delete mRootNode;
@@ -1515,89 +1546,72 @@ void UBDocumentTreeView::mousePressEvent(QMouseEvent *event)
 
 void UBDocumentTreeView::dragEnterEvent(QDragEnterEvent *event)
 {
-    QTreeView::dragEnterEvent(event);
-    event->accept();
-    event->acceptProposedAction();
+    if (event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardPage))
+    {
+        // accept copying a page
+        event->setDropAction(Qt::CopyAction);
+        event->accept();
+    }
+    else if (event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardDocument))
+    {
+        // accept moving a document
+        event->setDropAction(Qt::MoveAction);
+        event->accept();
+    }
 }
 
 void UBDocumentTreeView::dragLeaveEvent(QDragLeaveEvent *event)
 {
     Q_UNUSED(event);
 
-    UBDocumentTreeModel *docModel = 0;
-
-    UBSortFilterProxyModel *proxy = dynamic_cast<UBSortFilterProxyModel*>(model());
-
-    if(proxy){
-        docModel = dynamic_cast<UBDocumentTreeModel*>(proxy->sourceModel());
-    }else{
-        docModel =  dynamic_cast<UBDocumentTreeModel*>(model());
-    }
-
-    docModel->setHighLighted(QModelIndex());
+    baseModel()->setHighLighted(QModelIndex());
     update();
 }
 
 void UBDocumentTreeView::dragMoveEvent(QDragMoveEvent *event)
 {
-    QModelIndex index;
-    if (selectedIndexes().count() > 0)
+    if (event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardPage))
     {
-        index = selectedIndexes().first();
-    }
-
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-    QPoint eventPos = event->position().toPoint();
+        QPoint eventPos = event->position().toPoint();
 #else
-    QPoint eventPos = event->pos();
+        QPoint eventPos = event->pos();
 #endif
-    bool acceptIt = isAcceptable(index, indexAt(eventPos));
 
-    if (event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardPage)) {
-        UBSortFilterProxyModel *proxy = dynamic_cast<UBSortFilterProxyModel*>(model());
-
-        UBDocumentTreeModel *docModel = 0;
-
-        if(proxy){
-            docModel = dynamic_cast<UBDocumentTreeModel*>(proxy->sourceModel());
-        }else{
-            docModel =  dynamic_cast<UBDocumentTreeModel*>(model());
-        }
-
+        UBDocumentTreeModel* docModel{baseModel()};
         QModelIndex targetIndex = mapIndexToSource(indexAt(eventPos));
 
-        if (!docModel || !docModel->isDocument(targetIndex) || docModel->inTrash(targetIndex)) {
-            event->ignore();
-            event->setDropAction(Qt::IgnoreAction);
+        if (!targetIndex.isValid() || !docModel || !docModel->isDocument(targetIndex) || docModel->inTrash(targetIndex))
+        {
+            event->ignore(visualRect(targetIndex));
 
             if (docModel)
             {
                 docModel->setHighLighted(QModelIndex());
             }
-
-            acceptIt = false;
-        } else {
-            docModel->setHighLighted(targetIndex);
-            acceptIt = true;
         }
-        updateIndexEnvirons(indexAt(eventPos));
+        else
+        {
+            event->setDropAction(Qt::CopyAction);
+            event->accept(visualRect(targetIndex));
+            docModel->setHighLighted(targetIndex);
+        }
     }
-    QTreeView::dragMoveEvent(event);
-
-    event->setAccepted(acceptIt);
+    else if (event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardDocument))
+    {
+        event->accept();
+        QTreeView::dragMoveEvent(event);
+    }
 }
 
 void UBDocumentTreeView::dropEvent(QDropEvent *event)
 {
     event->ignore();
     event->setDropAction(Qt::IgnoreAction);
-    UBDocumentTreeModel *docModel = 0;
+    UBDocumentTreeModel* docModel{baseModel()};
 
     //N/C - NNE - 20140408
     UBSortFilterProxyModel *proxy = dynamic_cast<UBSortFilterProxyModel*>(model());
-    if(proxy){
-        docModel = dynamic_cast<UBDocumentTreeModel*>(proxy->sourceModel());
-    }
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     QPoint eventPos = event->position().toPoint();
@@ -1676,6 +1690,12 @@ void UBDocumentTreeView::rowsAboutToBeRemoved(const QModelIndex &parent, int sta
     QTreeView::rowsAboutToBeRemoved(parent, start, end);
 }
 
+UBDocumentTreeModel* UBDocumentTreeView::baseModel() const
+{
+    UBSortFilterProxyModel *proxy = dynamic_cast<UBSortFilterProxyModel*>(model());
+    return dynamic_cast<UBDocumentTreeModel*>(proxy ? proxy->sourceModel() : model());
+}
+
 bool UBDocumentTreeView::isAcceptable(const QModelIndex &dragIndex, const QModelIndex &atIndex)
 {
     QModelIndex dragIndexSource = mapIndexToSource(dragIndex);
@@ -1690,14 +1710,6 @@ bool UBDocumentTreeView::isAcceptable(const QModelIndex &dragIndex, const QModel
 Qt::DropAction UBDocumentTreeView::acceptableAction(const QModelIndex &dragIndex, const QModelIndex &atIndex)
 {    
     return Qt::MoveAction;
-}
-
-void UBDocumentTreeView::updateIndexEnvirons(const QModelIndex &index)
-{
-    QRect updateRect = visualRect(index);
-    const int multipler = 3;
-    updateRect.adjust(0, -updateRect.height() * multipler, 0, updateRect.height() * multipler);
-    update(updateRect);
 }
 
 //N/C - NNE - 20140404
@@ -2227,6 +2239,7 @@ void UBDocumentController::setupViews()
         mDocumentUI->documentTreeView->setItemDelegate(new UBDocumentTreeItemDelegate(this));
         mDocumentUI->documentTreeView->setDragEnabled(true);
         mDocumentUI->documentTreeView->setAcceptDrops(true);
+        mDocumentUI->documentTreeView->setDefaultDropAction(Qt::MoveAction);
         mDocumentUI->documentTreeView->viewport()->setAcceptDrops(true);
         mDocumentUI->documentTreeView->setDropIndicatorShown(true);
         mDocumentUI->documentTreeView->header()->setStretchLastSection(false);
