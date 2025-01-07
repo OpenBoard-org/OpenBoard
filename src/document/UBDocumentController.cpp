@@ -690,96 +690,18 @@ QStringList UBDocumentTreeModel::mimeTypes() const
 
 QMimeData *UBDocumentTreeModel::mimeData (const QModelIndexList &indexes) const
 {
-    QList <QModelIndex> indexList;
+    QModelIndexList indexList;
 
     for (const auto& index : indexes)
     {
-        if (index.isValid())
+        // only add indexes for first column
+        if (index.isValid() && index.column() == 0)
         {
             indexList.append(index);
         }
     }
 
-    UBDocumentTreeMimeData* mimeData = new UBDocumentTreeMimeData();
-    mimeData->setIndexes(indexList);
-
-    return mimeData;
-}
-
-bool UBDocumentTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
-{
-    if (action == Qt::IgnoreAction) {
-        return false;
-    }
-
-    if (data->hasFormat(UBApplication::mimeTypeUniboardPage)) {
-        UBDocumentTreeNode *curNode = nodeFromIndex(index(row - 1, column, parent));
-        std::shared_ptr<UBDocumentProxy> targetDocProxy = curNode->proxyData();
-        const UBMimeData *ubMime = qobject_cast <const UBMimeData*>(data);
-        if (!targetDocProxy || !ubMime || !ubMime->items().count()) {
-            qDebug() << "an error ocured while parsing " << UBApplication::mimeTypeUniboardPage;
-            return false;
-        }
-
-        int total = ubMime->items().size();
-
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-        foreach (UBMimeDataItem sourceItem, ubMime->items())
-        {
-            std::shared_ptr<UBDocumentProxy> fromProxy = sourceItem.documentProxy();
-            auto fromDocument = UBDocument::getDocument(fromProxy);
-            auto targetDocument = UBDocument::getDocument(targetDocProxy);
-
-            int fromIndex = sourceItem.sceneIndex();
-            int toIndex = targetDocument->pageCount();
-
-            fromDocument->copyPage(fromIndex, targetDocument, toIndex);
-        }
-
-        QApplication::restoreOverrideCursor();
-
-        UBApplication::showMessage(tr("%1 pages copied", "", total).arg(total), false);
-
-        return true;
-    }
-
-    const UBDocumentTreeMimeData *mimeData = qobject_cast<const UBDocumentTreeMimeData*>(data);
-    if (!mimeData) {
-        qDebug() << "Incorrect mimeData, only internal one supported";
-        return false;
-    }
-
-    if (!parent.isValid()) {
-        return false;
-    }
-
-    UBDocumentTreeNode *newParentNode = nodeFromIndex(parent);
-
-    if (!newParentNode) {
-        qDebug() << "incorrect incoming parent node;";
-        return false;
-    }
-
-    QList<QModelIndex> incomingIndexes = mimeData->indexes();
-
-    foreach (QModelIndex curIndex, incomingIndexes)
-    {
-        //Issue N/C - NNE - 20140528 : use just the index on the first column
-        if(curIndex.column() == 0){
-            QModelIndex clonedTopLevel = copyIndexToNewParent(curIndex, parent, action == Qt::MoveAction ? aReference : aContentCopy);
-            if (nodeFromIndex(curIndex) == mCurrentNode && action == Qt::MoveAction) {
-                emit currentIndexMoved(clonedTopLevel, curIndex);
-            }
-        }
-    }
-
-    Q_UNUSED(action)
-    Q_UNUSED(row)
-    Q_UNUSED(column)
-    Q_UNUSED(parent)
-
-    return true;
+    return new UBDocumentTreeMimeData(indexList);
 }
 
 bool UBDocumentTreeModel::removeRows(int row, int count, const QModelIndex &parent)
@@ -1610,18 +1532,12 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
     event->setDropAction(Qt::IgnoreAction);
     UBDocumentTreeModel* docModel{baseModel()};
 
-    //N/C - NNE - 20140408
-    UBSortFilterProxyModel *proxy = dynamic_cast<UBSortFilterProxyModel*>(model());
-
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
     QPoint eventPos = event->position().toPoint();
 #else
     QPoint eventPos = event->pos();
 #endif
     QModelIndex targetIndex = mapIndexToSource(indexAt(eventPos));
-    QModelIndexList dropIndex = mapIndexesToSource(selectionModel()->selectedRows(0));
-
-    bool isUBPage = event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardPage);
 
     //issue 1629 - NNE - 20131212
     bool targetIsInTrash = docModel && (docModel->inTrash(targetIndex) || docModel->trashIndex() == targetIndex);
@@ -1630,7 +1546,7 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
     if (!targetIsInMyDocuments && !targetIsInTrash)
         return;
 
-    if (isUBPage)
+    if (event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardPage))
     {
         std::shared_ptr<UBDocumentProxy> targetDocProxy = docModel->proxyData(targetIndex);
         auto targetDocument = UBDocument::getDocument(targetDocProxy);
@@ -1663,19 +1579,23 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
 
         UBApplication::showMessage(tr("%1 pages copied", "", total).arg(total), false);
     }
-    else
+    else if (event->mimeData()->hasFormat(UBApplication::mimeTypeUniboardDocument))
     {
-        if(targetIsInTrash)
+        const auto* documentMimeData = dynamic_cast<const UBDocumentTreeMimeData*>(event->mimeData());
+        QModelIndexList dropIndex = documentMimeData->indexes();
+
+        if (targetIsInTrash)
         {
             UBApplication::documentController->moveIndexesToTrash(dropIndex, docModel);
-        }else{
+        }
+        else
+        {
             docModel->moveIndexes(dropIndex, targetIndex);
         }
     }
 
+    UBSortFilterProxyModel *proxy = dynamic_cast<UBSortFilterProxyModel*>(model());
     expand(proxy->mapFromSource(targetIndex));
-
-    QTreeView::dropEvent(event);
 
     UBApplication::documentController->pageSelectionChanged();
 }
@@ -1722,23 +1642,6 @@ QModelIndex UBDocumentTreeView::mapIndexToSource(const QModelIndex &index)
     }
 
     return index;
-}
-
-QModelIndexList UBDocumentTreeView::mapIndexesToSource(const QModelIndexList &indexes)
-{
-    UBSortFilterProxyModel *proxy = dynamic_cast<UBSortFilterProxyModel*>(model());
-
-    if(proxy){
-        QModelIndexList list;
-
-        for(int i = 0; i < indexes.size(); i++){
-            list.push_back(proxy->mapToSource(indexes.at(i)));
-        }
-
-        return list;
-    }
-
-    return indexes;
 }
 //N/C - NNE - 20140404 : END
 
@@ -3964,4 +3867,15 @@ void UBDocumentController::clearThumbnailsSelection()
 {
     mDocumentUI->thumbnailWidget->clearSelection();
     pageSelectionChanged();
+}
+
+UBDocumentTreeMimeData::UBDocumentTreeMimeData(const QModelIndexList& pIndexes)
+    : mIndexes{pIndexes}
+{
+    setData(UBApplication::mimeTypeUniboardDocument, {});
+}
+
+QModelIndexList UBDocumentTreeMimeData::indexes() const
+{
+    return mIndexes;
 }

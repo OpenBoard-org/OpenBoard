@@ -192,14 +192,12 @@ public:
     Qt::DropActions supportedDropActions() const {return Qt::MoveAction | Qt::CopyAction;}
     QStringList mimeTypes() const;
     QMimeData *mimeData (const QModelIndexList &indexes) const;
-    bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
     bool removeRows(int row, int count, const QModelIndex &parent);
 
     bool containsDocuments(const QModelIndex& index);
 
     QModelIndex indexForNode(UBDocumentTreeNode *pNode) const;
     QPersistentModelIndex persistentIndexForNode(UBDocumentTreeNode *pNode);
-//    bool insertRow(int row, const QModelIndex &parent);
 
     QPersistentModelIndex copyIndexToNewParent(const QModelIndex &source, const QModelIndex &newParent, eCopyMode pMode = aReference);
 
@@ -292,12 +290,11 @@ class UBDocumentTreeMimeData : public QMimeData
     Q_OBJECT
 
 public:
-    UBDocumentTreeMimeData() { setData(UBApplication::mimeTypeUniboardDocument, {}); }
-    QList<QModelIndex> indexes() const {return mIndexes;}
-    void setIndexes (const QList<QModelIndex> &pIndexes) {mIndexes = pIndexes;}
+    UBDocumentTreeMimeData(const QModelIndexList& pIndexes);
+    QModelIndexList indexes() const;
 
 private:
-    QList<QModelIndex> mIndexes;
+    QModelIndexList mIndexes;
 };
 
 class UBDocumentTreeView : public QTreeView
@@ -309,7 +306,6 @@ public:
 
     //N/C - NNE - 20140404
     QModelIndex mapIndexToSource(const QModelIndex &index);
-    QModelIndexList mapIndexesToSource(const QModelIndexList &indexes);
 
 public slots:
     void setSelectedAndExpanded(const QModelIndex &pIndex, bool pExpand = true, bool pEdit = false);
