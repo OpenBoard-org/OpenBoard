@@ -102,8 +102,6 @@ class UBPersistenceManager : public QObject
 
         virtual void duplicateDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int index);
 
-        virtual void copyDocumentScene(std::shared_ptr<UBDocumentProxy>from, int fromIndex, std::shared_ptr<UBDocumentProxy>to, int toIndex);
-
         virtual void persistDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, std::shared_ptr<UBGraphicsScene> pScene, const int pSceneIndex, bool isAnAutomaticBackup = false, bool forceImmediateSaving = false);
 
         virtual std::shared_ptr<UBGraphicsScene> createDocumentSceneAt(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int index, bool useUndoRedoStack = true);
