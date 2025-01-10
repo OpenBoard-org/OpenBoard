@@ -247,7 +247,7 @@ QStringList UBFileSystemUtils::allFiles(const QString& pDirPath, bool isRecursiv
 QFileInfoList UBFileSystemUtils::allElementsInDirectory(const QString& pDirPath)
 {
     QDir dir = QDir(pDirPath);
-    dir.setFilter(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+    dir.setFilter(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
     dir.setSorting(QDir::DirsFirst);
 
     return QFileInfoList(dir.entryInfoList());
