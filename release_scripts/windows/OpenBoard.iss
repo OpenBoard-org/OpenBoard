@@ -68,8 +68,8 @@ Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\microsoft\LAVFilters-0.77.2-Inst
 Source: "{#ProjectRoot}\build\win32\release\product\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ;OpenSSL
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.1.1j-win64\bin\libssl-1_1-x64.dll"; DestDir:"{app}"; Flags: ignoreversion
-Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-1.1.1j-win64\bin\libcrypto-1_1-x64.dll"; DestDir:"{app}"; Flags: ignoreversion
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-3.0.15-win64\bin\libssl-3-x64.dll"; DestDir:"{app}"; Flags: ignoreversion
+Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\openssl-3.0.15-win64\bin\libcrypto-3-x64.dll"; DestDir:"{app}"; Flags: ignoreversion
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\win32\libeay32.dll"; DestDir:"{app}"; Flags: ignoreversion
 Source: "{#ProjectRoot}\..\OpenBoard-ThirdParty\openssl\win32\ssleay32.dll"; DestDir:"{app}"; Flags: ignoreversion
 
