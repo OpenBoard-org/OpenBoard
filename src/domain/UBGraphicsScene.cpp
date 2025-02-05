@@ -398,16 +398,6 @@ void UBGraphicsScene::selectionChangedProcessing()
     }
 }
 
-void UBGraphicsScene::setLastCenter(QPointF center)
-{
-    mViewState.setLastSceneCenter(center);
-}
-
-QPointF UBGraphicsScene::lastCenter()
-{
-    return mViewState.lastSceneCenter();
-}
-
 bool UBGraphicsScene::inputDevicePress(const QPointF& scenePos, const qreal& pressure, Qt::KeyboardModifiers modifiers)
 {
     bool accepted = false;

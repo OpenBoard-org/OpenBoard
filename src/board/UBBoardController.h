@@ -160,7 +160,8 @@ class UBBoardController : public UBDocumentContainer
             return mSystemScaleFactor;
         }
         qreal currentZoom();
-        void persistViewPositionOnCurrentScene();
+        void persistViewPositionOnCurrentScene() const;
+        void restoreViewPositionOnCurrentScene() const;
         void persistCurrentScene(bool isAnAutomaticBackup = false, bool forceImmediateSave = false);
         void showNewVersionAvailable(bool automatic, const UBVersion &installedVersion, const UBSoftwareUpdate &softwareUpdate);
         void setBoxing(QRect displayRect);
@@ -215,7 +216,7 @@ class UBBoardController : public UBDocumentContainer
         void zoomOut(QPointF scenePoint = QPointF(0,0));
         void zoomRestore();
         void centerRestore();
-        void centerOn(QPointF scenePoint = QPointF(0,0));
+        void centerOn(QPointF scenePoint = QPointF(0,0)) const;
         void zoom(const qreal ratio, QPointF scenePoint);
         void handScroll(qreal dx, qreal dy);
         void previousScene();
@@ -294,7 +295,6 @@ class UBBoardController : public UBDocumentContainer
     private:
         void initBackgroundGridSize();
         void updatePageSizeState();
-        void saveViewState();
         int autosaveTimeoutFromSettings();
 
         UBMainWindow *mMainWindow;

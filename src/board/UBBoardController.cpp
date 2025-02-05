@@ -550,7 +550,6 @@ void UBBoardController::stylusToolDoubleClicked(int tool)
     else if (tool == UBStylusTool::Hand)
     {
         centerRestore();
-        mActiveScene->setLastCenter(QPointF(0,0));
     }
 }
 
@@ -853,8 +852,7 @@ void UBBoardController::clearScene()
     {
         freezeW3CWidgets(true);
         mActiveScene->clearContent(UBGraphicsScene::clearItemsAndAnnotations);
-        mActiveScene->setLastCenter(QPointF(0,0));
-        mControlView->centerOn(mActiveScene->lastCenter());
+        centerRestore();
         updateActionStates();
     }
 }
@@ -959,7 +957,6 @@ void UBBoardController::zoomRestore()
     centerRestore();
 
     emit zoomChanged(1.0);
-    UBApplication::applicationController->adjustDisplayView();
 
     emit controlViewportChanged();
     mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
@@ -968,41 +965,45 @@ void UBBoardController::zoomRestore()
 
 void UBBoardController::centerRestore()
 {
-    centerOn(QPointF(0,0));
+    centerOn({0, 0});
+    mControlView->centerOn({0, 0});
+    persistViewPositionOnCurrentScene();
+    UBApplication::applicationController->adjustDisplayView();
 }
 
 
-void UBBoardController::centerOn(QPointF scenePoint)
+void UBBoardController::centerOn(QPointF scenePoint) const
 {
-    // workaround: foreground not repainted after centerOn on Qt5 (fixed in Qt6)
-    QPointF offset{1, 1};
-    mControlView->centerOn(scenePoint - offset);
-    mControlView->translate(offset.x(), offset.y());
-    UBApplication::applicationController->adjustDisplayView();
+    // centerOn without using scroll bars
+    const auto before = mControlView->transform();
+
+    // create a transformation with the same scaling where the scenePoint is in the center
+    QTransform after;
+    after.scale(before.m11(), before.m22());
+    after.translate(-scenePoint.x(), -scenePoint.y());
+    mControlView->setTransform(after);
+
+    if (UBApplication::applicationController)
+    {
+        UBApplication::applicationController->adjustDisplayView();
+    }
 }
 
 
 void UBBoardController::zoom(const qreal ratio, QPointF scenePoint)
 {
-
-    QPointF viewCenter = mControlView->mapToScene(QRect(0, 0, mControlView->width(), mControlView->height()).center());
-    QPointF offset = scenePoint - viewCenter;
-    QPointF scalledOffset = offset / ratio;
-
     qreal currentZoom = ratio * mControlView->viewportTransform().m11() / mSystemScaleFactor;
-
     qreal usedRatio = ratio;
+
     if (currentZoom > UB_MAX_ZOOM)
     {
         currentZoom = UB_MAX_ZOOM;
         usedRatio = currentZoom * mSystemScaleFactor / mControlView->viewportTransform().m11();
     }
 
+    const auto shiftFactor = (1 - usedRatio) / usedRatio;
     mControlView->scale(usedRatio, usedRatio);
-
-    QPointF newCenter = scenePoint - scalledOffset;
-
-    mControlView->centerOn(newCenter);
+    mControlView->translate(scenePoint.x() * shiftFactor, scenePoint.y() * shiftFactor);
 
     emit zoomChanged(currentZoom);
     UBApplication::applicationController->adjustDisplayView();
@@ -1022,12 +1023,37 @@ void UBBoardController::handScroll(qreal dx, qreal dy)
     emit controlViewportChanged();
 }
 
-void UBBoardController::persistViewPositionOnCurrentScene()
+void UBBoardController::persistViewPositionOnCurrentScene() const
 {
-    QRect rect = mControlView->rect();
-    QPoint center(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
-    QPointF viewRelativeCenter = mControlView->mapToScene(center);
-    mActiveScene->setLastCenter(viewRelativeCenter);
+    if (mActiveScene)
+    {
+        // calculate center from transformation
+        const QPointF viewRelativeCenter = mControlView->transform().inverted().map(QPointF{0, 0});
+        UBGraphicsScene::SceneViewState viewState
+        {
+            mControlView->transform().m11() / mSystemScaleFactor,
+            mControlView->horizontalScrollBar()->value(),
+            mControlView->verticalScrollBar()->value(),
+            viewRelativeCenter
+        };
+
+        mActiveScene->setViewState(viewState);
+    }
+}
+
+void UBBoardController::restoreViewPositionOnCurrentScene() const
+{
+    if (mActiveScene)
+    {
+        const auto viewState = mActiveScene->viewState();
+        mControlView->horizontalScrollBar()->setValue(viewState.horizontalPosition);
+        mControlView->verticalScrollBar()->setValue(viewState.verticalPostition);
+        QTransform transform;
+        double scale = viewState.zoomFactor * mSystemScaleFactor;
+        transform.scale(scale, scale);
+        mControlView->setTransform(transform);
+        centerOn(viewState.mLastSceneCenter);
+    }
 }
 
 void UBBoardController::previousScene()
@@ -1035,9 +1061,7 @@ void UBBoardController::previousScene()
     if (mActiveSceneIndex > 0)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        persistViewPositionOnCurrentScene();
         setActiveDocumentScene(mActiveSceneIndex - 1);
-        centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -1050,11 +1074,7 @@ void UBBoardController::nextScene()
     if (mActiveSceneIndex < selectedDocument()->pageCount() - 1)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        persistViewPositionOnCurrentScene();
-
         setActiveDocumentScene(mActiveSceneIndex + 1);
-        centerOn(mActiveScene->lastCenter());
-
         QApplication::restoreOverrideCursor();
     }
 
@@ -1067,11 +1087,7 @@ void UBBoardController::firstScene()
     if (mActiveSceneIndex > 0)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        persistViewPositionOnCurrentScene();
-
         setActiveDocumentScene(0);
-
-        centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -1084,9 +1100,7 @@ void UBBoardController::lastScene()
     if (mActiveSceneIndex < selectedDocument()->pageCount() - 1)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        persistViewPositionOnCurrentScene();
         setActiveDocumentScene(selectedDocument()->pageCount() - 1);
-        centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -1567,7 +1581,7 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(int p
 std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const int pSceneIndex, bool forceReload, bool onImport)
 {
     UBApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    saveViewState();
+    persistViewPositionOnCurrentScene();
 
     bool documentChange = selectedDocument() != pDocumentProxy;
 
@@ -2093,17 +2107,9 @@ void UBBoardController::updateSystemScaleFactor()
     if (mSystemScaleFactor != newScaleFactor)
         mSystemScaleFactor = newScaleFactor;
 
-    UBGraphicsScene::SceneViewState viewState = mActiveScene->viewState();
-
-    QTransform scalingTransform;
-
-    qreal scaleFactor = viewState.zoomFactor * mSystemScaleFactor;
-    scalingTransform.scale(scaleFactor, scaleFactor);
-
-    mControlView->setTransform(scalingTransform);
-    mControlView->horizontalScrollBar()->setValue(viewState.horizontalPosition);
-    mControlView->verticalScrollBar()->setValue(viewState.verticalPostition);
-    mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());}
+    restoreViewPositionOnCurrentScene();
+    mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
+}
 
 
 void UBBoardController::setWidePageSize(bool checked)
@@ -2142,7 +2148,7 @@ void UBBoardController::setPageSize(QSize newSize)
     {
         mActiveScene->setNominalSize(newSize);
 
-        saveViewState();
+        persistViewPositionOnCurrentScene();
 
         updateSystemScaleFactor();
         updatePageSizeState();
@@ -2178,17 +2184,6 @@ void UBBoardController::updatePageSizeState()
     }
 }
 
-
-void UBBoardController::saveViewState()
-{
-    if (mActiveScene)
-    {
-        mActiveScene->setViewState(UBGraphicsScene::SceneViewState(currentZoom(),
-                                                                   mControlView->horizontalScrollBar()->value(),
-                                                                   mControlView->verticalScrollBar()->value(),
-                                                                   mActiveScene->lastCenter()));
-    }
-}
 
 void UBBoardController::stylusToolChanged(int tool)
 {
