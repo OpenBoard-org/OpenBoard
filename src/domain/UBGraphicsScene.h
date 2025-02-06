@@ -257,25 +257,20 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
             public:
                 SceneViewState()
                 {
-                    zoomFactor = 1;
-                    horizontalPosition = 0;
-                    verticalPostition = 0;
-                    mLastSceneCenter = QPointF();
                 }
 
                 SceneViewState(qreal pZoomFactor, int pHorizontalPosition, int pVerticalPostition, QPointF sceneCenter = QPointF())// 1595/1605
+                    : zoomFactor{pZoomFactor}
+                    , horizontalPosition{pHorizontalPosition}
+                    , verticalPostition{pVerticalPostition}
+                    , mLastSceneCenter{sceneCenter}
                 {
-                    zoomFactor = pZoomFactor;
-                    horizontalPosition = pHorizontalPosition;
-                    verticalPostition = pVerticalPostition;
-                    mLastSceneCenter = sceneCenter;
                 }
 
-                QPointF mLastSceneCenter;
-
-                qreal zoomFactor;
-                int horizontalPosition;
-                int verticalPostition;
+                qreal zoomFactor{1};
+                int horizontalPosition{0};
+                int verticalPostition{0};
+                QPointF mLastSceneCenter{};
         };
 
         SceneViewState viewState() const

@@ -85,26 +85,21 @@ class UBBoardController : public UBDocumentContainer
         void setActiveSceneIndex(int i);
         void closing();
 
-        int currentPage();
+        int currentPage() const;
 
-        QWidget* controlContainer()
+        QWidget* controlContainer() const
         {
             return mControlContainer;
         }
 
-        UBBoardView* controlView()
+        UBBoardView* controlView() const
         {
             return mControlView;
         }
 
-        UBBoardView* displayView()
+        UBBoardView* displayView() const
         {
             return mDisplayView;
-        }
-
-        std::shared_ptr<UBGraphicsScene> activeScene()
-        {
-            return mActiveScene;
         }
 
         void setPenColorOnDarkBackground(const QColor& pColor)
@@ -135,31 +130,31 @@ class UBBoardController : public UBDocumentContainer
             mMarkerColorOnLightBackground = pColor;
         }
 
-        QColor penColorOnDarkBackground()
+        QColor penColorOnDarkBackground() const
         {
             return mPenColorOnDarkBackground;
         }
 
-        QColor penColorOnLightBackground()
+        QColor penColorOnLightBackground() const
         {
             return mPenColorOnLightBackground;
         }
 
-        QColor markerColorOnDarkBackground()
+        QColor markerColorOnDarkBackground() const
         {
             return mMarkerColorOnDarkBackground;
         }
 
-        QColor markerColorOnLightBackground()
+        QColor markerColorOnLightBackground() const
         {
             return mMarkerColorOnLightBackground;
         }
 
-        qreal systemScaleFactor()
+        qreal systemScaleFactor() const
         {
             return mSystemScaleFactor;
         }
-        qreal currentZoom();
+        qreal currentZoom() const;
         void persistViewPositionOnCurrentScene() const;
         void restoreViewPositionOnCurrentScene() const;
         void persistCurrentScene(bool isAnAutomaticBackup = false, bool forceImmediateSave = false);
@@ -170,7 +165,7 @@ class UBBoardController : public UBDocumentContainer
         static QUrl expandWidgetToTempDir(const QByteArray& pZipedData, const QString& pExtension = QString("wgt"));
 
         void setPageSize(QSize newSize);
-        UBBoardPaletteManager *paletteManager()
+        UBBoardPaletteManager *paletteManager() const
         {
             return mPaletteManager;
         }
@@ -188,12 +183,12 @@ class UBBoardController : public UBDocumentContainer
         UBGraphicsItem *duplicateItem(UBItem *item);
         void deleteScene(int index);
 
-        bool cacheIsVisible() {return mCacheWidgetIsEnabled;}
+        bool cacheIsVisible() const {return mCacheWidgetIsEnabled;}
 
-        QString actionGroupText(){ return mActionGroupText;}
-        QString actionUngroupText(){ return mActionUngroupText;}
+        QString actionGroupText() const { return mActionGroupText;}
+        QString actionUngroupText() const { return mActionUngroupText;}
 
-        std::shared_ptr<UBGraphicsScene> initialDocumentScene()
+        std::shared_ptr<UBGraphicsScene> initialDocumentScene() const
         {
             return mInitialDocumentScene;
         }
@@ -281,7 +276,7 @@ class UBBoardController : public UBDocumentContainer
         void initToolbarTexts();
         void updateActionStates();
         void updateSystemScaleFactor();
-        QString truncate(QString text, int maxWidth);
+        QString truncate(QString text, int maxWidth) const;
 
     protected slots:
         void selectionChanged();
@@ -295,7 +290,7 @@ class UBBoardController : public UBDocumentContainer
     private:
         void initBackgroundGridSize();
         void updatePageSizeState();
-        int autosaveTimeoutFromSettings();
+        int autosaveTimeoutFromSettings() const;
 
         UBMainWindow *mMainWindow;
         std::shared_ptr<UBGraphicsScene> mActiveScene;

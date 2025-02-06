@@ -193,7 +193,7 @@ void UBBoardController::initBackgroundGridSize()
     //qDebug() << "grid size: " << gridSize;
 }
 
-int UBBoardController::currentPage()
+int UBBoardController::currentPage() const
 {
     return mActiveSceneIndex + 1;
 }
@@ -534,7 +534,7 @@ void UBBoardController::setToolbarTexts()
 }
 
 
-QString UBBoardController::truncate(QString text, int maxWidth)
+QString UBBoardController::truncate(QString text, int maxWidth) const
 {
     QFontMetricsF fontMetrics(mMainWindow->font());
     return fontMetrics.elidedText(text, Qt::ElideRight, maxWidth);
@@ -965,8 +965,16 @@ void UBBoardController::zoomRestore()
 
 void UBBoardController::centerRestore()
 {
+    // reset transformation and scrollbar values
     centerOn({0, 0});
     mControlView->centerOn({0, 0});
+
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    // workaround: foreground not repainted after scrolling on Qt5 (fixed in Qt6)
+    // setForegroundBrush internally invokes the private function uopdateAll() unconditionally
+    mControlView->setForegroundBrush(mControlView->foregroundBrush());
+#endif
+
     persistViewPositionOnCurrentScene();
     UBApplication::applicationController->adjustDisplayView();
 }
@@ -992,15 +1000,28 @@ void UBBoardController::centerOn(QPointF scenePoint) const
 
 void UBBoardController::zoom(const qreal ratio, QPointF scenePoint)
 {
-    qreal currentZoom = ratio * mControlView->viewportTransform().m11() / mSystemScaleFactor;
+    qreal currentZoom = ratio * mControlView->transform().m11() / mSystemScaleFactor;
     qreal usedRatio = ratio;
 
     if (currentZoom > UB_MAX_ZOOM)
     {
         currentZoom = UB_MAX_ZOOM;
-        usedRatio = currentZoom * mSystemScaleFactor / mControlView->viewportTransform().m11();
+        usedRatio = currentZoom * mSystemScaleFactor / mControlView->transform().m11();
     }
 
+    /*
+     * The shiftFactor is calculated from the condition that the scenePoint should have the
+     * same coordinates on the view after zooming. Let m11, m31 be the transformation parameters
+     * before zoom and m11', m31' the parameters after zoom. The equations for scenePoint.x:
+     *   m11' = m11 * ratio
+     *   x * m11 + m31 = x * m11' + m31'
+     * We now solve this equation to get the additional translation m31' - m31:
+     *   m31' - m31 = x * (m11 - m11')
+     *              = x * m11 * (1 - ratio)
+     *              = x * m11' * (1 - ratio) / ratio
+     * The translate function works in scene coordinates and multiplies its parameter internally
+     * by the scale factor m11', so we omit this factor in the function call below.
+     */
     const auto shiftFactor = (1 - usedRatio) / usedRatio;
     mControlView->scale(usedRatio, usedRatio);
     mControlView->translate(scenePoint.x() * shiftFactor, scenePoint.y() * shiftFactor);
@@ -1791,7 +1812,7 @@ void UBBoardController::adjustDisplayViews()
 }
 
 
-int UBBoardController::autosaveTimeoutFromSettings()
+int UBBoardController::autosaveTimeoutFromSettings() const
 {
     int value = UBSettings::settings()->autoSaveInterval->get().toInt();
     int minute = 60 * 1000;
@@ -2047,10 +2068,10 @@ void UBBoardController::colorPaletteChanged()
 }
 
 
-qreal UBBoardController::currentZoom()
+qreal UBBoardController::currentZoom() const
 {
     if (mControlView)
-        return mControlView->viewportTransform().m11() / mSystemScaleFactor;
+        return mControlView->transform().m11() / mSystemScaleFactor;
     else
         return 1.0;
 }
@@ -2088,12 +2109,11 @@ void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool force
 
 void UBBoardController::updateSystemScaleFactor()
 {
-    qreal newScaleFactor = 1.0;
-
     if (mActiveScene)
     {
+        qreal newScaleFactor = 1.0;
         QSize pageNominalSize = mActiveScene->nominalSize();
-        //we're going to keep scale factor untouched if the size is custom
+        // disabled: we're going to keep scale factor untouched if the size is custom
         QMap<DocumentSizeRatio::Enum, QSize> sizesMap = UBSettings::settings()->documentSizes;
       //  if(pageNominalSize == sizesMap.value(DocumentSizeRatio::Ratio16_9) || pageNominalSize == sizesMap.value(DocumentSizeRatio::Ratio4_3))
         {
@@ -2102,13 +2122,17 @@ void UBBoardController::updateSystemScaleFactor()
 
             newScaleFactor = qMin(hFactor, vFactor);
         }
+
+        if (mSystemScaleFactor != newScaleFactor)
+            mSystemScaleFactor = newScaleFactor;
+
+        restoreViewPositionOnCurrentScene();
+        mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
     }
-
-    if (mSystemScaleFactor != newScaleFactor)
-        mSystemScaleFactor = newScaleFactor;
-
-    restoreViewPositionOnCurrentScene();
-    mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
+    else
+    {
+        mSystemScaleFactor = 1.0;
+    }
 }
 
 

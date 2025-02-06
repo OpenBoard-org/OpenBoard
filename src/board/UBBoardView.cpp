@@ -1740,6 +1740,13 @@ void UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
 
     // event not handled, send it to QAbstractScrollArea to scroll with wheel event
     QAbstractScrollArea::wheelEvent(wheelEvent);
+
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    // workaround: foreground not repainted after scrolling on Qt5 (fixed in Qt6)
+    // setForegroundBrush internally invokes the private function uopdateAll() unconditionally
+    setForegroundBrush(foregroundBrush());
+#endif
+
     UBApplication::applicationController->adjustDisplayView();
 }
 
