@@ -35,7 +35,7 @@ class UBSnapIndicator : public QLabel
 public:
     UBSnapIndicator(QWidget* parent);
 
-    void appear(Qt::Corner corner, QPointF snapPoint);
+    void appear(Qt::Corner corner, QPointF snapPoint, double angle = 0);
 
     int alpha() const;
     void setAlpha(int opacity);
@@ -46,7 +46,7 @@ protected:
     virtual void paintEvent(QPaintEvent* event) override;
 
 private:
-    Qt::Corner mCorner{Qt::TopLeftCorner};
+    double mAngle{0};
     int mAlpha;
     QColor mColor{0x62a7e0};
     QPropertyAnimation* mAnimation;

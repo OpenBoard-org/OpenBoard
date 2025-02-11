@@ -521,6 +521,14 @@ void UBBoardView::handleItemsSelection(QGraphicsItem *item)
             {
                 scene()->deselectAllItemsExcept(item);
                 scene()->updateSelectionFrame();
+
+                // calculate initial corner points
+                mCornerPoints.clear();
+                const auto bounds = UBGraphicsScene::itemRect(item);
+                mCornerPoints << item->mapToScene(bounds.topLeft());
+                mCornerPoints << item->mapToScene(bounds.topRight());
+                mCornerPoints << item->mapToScene(bounds.bottomLeft());
+                mCornerPoints << item->mapToScene(bounds.bottomRight());
             }
         }
     }
@@ -776,6 +784,7 @@ QGraphicsItem* UBBoardView::determineItemToMove(QGraphicsItem *item)
 void UBBoardView::handleItemMousePress(QMouseEvent *event)
 {
     mLastPressedMousePos = mapToScene(event->pos());
+    mFirstPressedMousePos = mLastPressedMousePos;
 
     // Determining item who will take mouse press event
     //all other items will be deselected and if all item will be deselected, then
@@ -854,13 +863,29 @@ void UBBoardView::handleItemMouseMove(QMouseEvent *event)
         // snap to grid
         if (scene()->isSnapping())
         {
-            QRectF rect = UBGraphicsScene::itemRect(movingItem);
-            Qt::Corner corner;
-            auto offset = scene()->snap(rect, &corner);
-            newPos += offset;
+            QPointF moved = scenePos - mFirstPressedMousePos;
+            std::vector<QPointF> corners;
+
+            for (const auto& cornerPoint : mCornerPoints)
+            {
+                corners.push_back(cornerPoint + moved);
+            }
+
+            int snapIndex;
+            QPointF snapVector = scene()->snap(corners, &snapIndex);
+            Qt::Corner corner = Qt::Corner(snapIndex);
+
+            if (!snapVector.isNull())
+            {
+                auto* view = UBApplication::boardController->controlView();
+                const auto angle = QLineF{corners.at(0), corners.at(1)}.angle();
+                view->updateSnapIndicator(corner, corners.at(snapIndex) + snapVector, angle);
+            }
+
+            newPos += snapVector;
             movingItem->setPos(newPos);
 
-            mLastPressedMousePos = scenePos + offset;
+            mLastPressedMousePos = scenePos + snapVector;
         }
         else
         {
@@ -946,7 +971,7 @@ void UBBoardView::setMultiselection(bool enable)
     mMultipleSelectionIsEnabled = enable;
 }
 
-void UBBoardView::updateSnapIndicator(Qt::Corner corner, QPointF snapPoint)
+void UBBoardView::updateSnapIndicator(Qt::Corner corner, QPointF snapPoint, double angle)
 {
     if (!mSnapIndicator)
     {
@@ -954,7 +979,7 @@ void UBBoardView::updateSnapIndicator(Qt::Corner corner, QPointF snapPoint)
         mSnapIndicator->resize(120, 120);
     }
 
-    mSnapIndicator->appear(corner, snapPoint);
+    mSnapIndicator->appear(corner, snapPoint, angle);
 }
 
 void UBBoardView::setBoxing(const QMargins& margins)
