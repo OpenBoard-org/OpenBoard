@@ -369,6 +369,8 @@ void UBBoardView::tabletEvent (QTabletEvent * event)
     QPointF scenePos = viewportTransform ().inverted ().map (tabletPos);
 
     qreal pressure = 1.0;
+    currentTool = (UBStylusTool::Enum)dc->stylusTool();
+
     if (((currentTool == UBStylusTool::Pen || currentTool == UBStylusTool::Line) && mPenPressureSensitive) ||
             (currentTool == UBStylusTool::Marker && mMarkerPressureSensitive))
         pressure = event->pressure ();
