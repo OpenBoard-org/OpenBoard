@@ -1442,11 +1442,10 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
             if (pdfFile.open())
             {
                 pdfFile.write(pData);
+                pdfFile.close();
                 QStringList fileNames;
                 fileNames << pdfFile.fileName();
                 numberOfImportedDocuments = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
-
-                pdfFile.close();
             }
         }
 
