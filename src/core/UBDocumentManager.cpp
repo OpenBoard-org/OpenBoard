@@ -27,6 +27,7 @@
 
 #include "UBDocumentManager.h"
 
+#include "document/UBDocument.h"
 #include "frameworks/UBStringUtils.h"
 
 #include "adaptors/UBExportFullPDF.h"
@@ -40,13 +41,14 @@
 #include "adaptors/UBImportCFF.h"
 #include "adaptors/UBImportDocumentSetAdaptor.h"
 
+#include "board/UBBoardController.h"
+
 #include "domain/UBGraphicsScene.h"
-#include "domain/UBGraphicsSvgItem.h"
-#include "domain/UBGraphicsPixmapItem.h"
 
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
-#include "board/UBBoardController.h"
+
+#include "gui/UBThumbnailScene.h"
 
 #include "UBApplication.h"
 #include "UBSettings.h"
@@ -198,6 +200,7 @@ std::shared_ptr<UBDocumentProxy> UBDocumentManager::importFile(const QFile& pFil
 
                 if (document)
                 {
+                    auto doc = UBDocument::getDocument(document);
                     QUuid uuid = QUuid::createUuid();
                     QString filepath = pFile.fileName();
                     if (importAdaptor->folderToCopy() != "")
@@ -220,13 +223,14 @@ std::shared_ptr<UBDocumentProxy> UBDocumentManager::importFile(const QFile& pFil
                         //Workaround for issue 912
                         QApplication::processEvents();
     #endif
-                        std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(document, pageIndex);
+                        std::shared_ptr<UBGraphicsScene> scene = doc->createPage(pageIndex);
                         importAdaptor->placeImportedItemToScene(scene, page);
-                        UBPersistenceManager::persistenceManager()->persistDocumentScene(document, scene, pageIndex);
+                        doc->persistPage(scene, pageIndex);
                         pageIndex++;
                     }
 
                     UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
+                    doc->thumbnailScene()->createThumbnails();
                     UBApplication::showMessage(tr("Import successful."));
                 }
             }
@@ -243,6 +247,9 @@ std::shared_ptr<UBDocumentProxy> UBDocumentManager::importFile(const QFile& pFil
 int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> document, QStringList fileNames)
 {
     int nImportedDocuments = 0;
+    auto doc = UBDocument::getDocument(document);
+    const auto currentNumberOfPages = document->pageCount();
+
     foreach(const QString& fileName, fileNames)
     {
         UBApplication::showMessage(tr("Importing file %1").arg(fileName));
@@ -286,9 +293,9 @@ int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> docum
                     {
                         UBApplication::showMessage(tr("Inserting page %1 of %2").arg(++nPage).arg(pages.size()), true);
                         int pageIndex = document->pageCount();
-                        std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->createDocumentSceneAt(document, pageIndex);
+                        std::shared_ptr<UBGraphicsScene> scene = doc->createPage(pageIndex);
                         importAdaptor->placeImportedItemToScene(scene, page);
-                        UBPersistenceManager::persistenceManager()->persistDocumentScene(document, scene, pageIndex);
+                        doc->persistPage(scene, pageIndex);
                     }
 
                     UBPersistenceManager::persistenceManager()->persistDocumentMetadata(document);
@@ -299,6 +306,8 @@ int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> docum
                 UBApplication::setDisabled(false);
             }
         }
+
+        doc->thumbnailScene()->createThumbnails(currentNumberOfPages);
     }
     return nImportedDocuments;
 }

@@ -37,13 +37,14 @@
 #include <QUndoCommand>
 
 #include "core/UB.h"
-#include "document/UBDocumentContainer.h"
 #include "core/UBApplicationController.h"
+#include "document/UBDocumentContainer.h"
 
 class UBMainWindow;
 class UBApplication;
 class UBBoardView;
 
+class UBDocument;
 class UBDocumentController;
 class UBMessageWindow;
 class UBGraphicsScene;
@@ -83,8 +84,6 @@ class UBBoardController : public UBDocumentContainer
         int activeSceneIndex() const;
         void setActiveSceneIndex(int i);
         void closing();
-
-        void reloadThumbnails() override;
 
         int currentPage();
 
@@ -184,7 +183,6 @@ class UBBoardController : public UBDocumentContainer
         std::shared_ptr<UBGraphicsScene> setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pSceneIndex = 0, bool forceReload = false, bool onImport = false);
         std::shared_ptr<UBGraphicsScene> setActiveDocumentScene(int pSceneIndex);
 
-        void moveSceneToIndex(int source, int target);
         void duplicateScene(int index);
         UBGraphicsItem *duplicateItem(UBItem *item);
         void deleteScene(int index);
@@ -273,7 +271,6 @@ class UBBoardController : public UBDocumentContainer
         void documentReorganized(int index);
         void displayMetadata(QMap<QString, QString> metadata);
         void pageSelectionChanged(int index);
-        void centerOnThumbnailRequired(int index);
         void npapiWidgetCreated(const QString &Url);
 
     protected:
@@ -327,6 +324,7 @@ class UBBoardController : public UBDocumentContainer
         QString mActionGroupText;
         QString mActionUngroupText;
         std::shared_ptr<UBGraphicsScene> mInitialDocumentScene;
+        QList<std::shared_ptr<UBDocument>> mRecentDocuments;
 
         QTimer *mAutosaveTimer;
 
