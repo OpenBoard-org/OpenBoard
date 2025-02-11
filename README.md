@@ -34,4 +34,4 @@ Even with not a single bit of knowledge in C++, you can contribute to OpenBoard.
 
 Download and install OpenBoard, and develop your web app in it. You'll even find a web inspector to help you debug your site.
 
-You'll find documentation on how to create a Web Widget from scratch or tunring your already developped web site into an OpenBoard Web Widget [here](https://github.com/OpenBoard-org/OpenBoard/wiki/Creating-Web-Widgets).
+You'll find documentation on how to create a Web Widget from scratch or turning your already developped web site into an OpenBoard Web Widget [here](https://github.com/OpenBoard-org/OpenBoard/wiki/Creating-Web-Widgets).
