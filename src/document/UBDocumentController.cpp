@@ -1571,11 +1571,7 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
             count++;
 
             UBApplication::showMessage(tr("Copying page %1/%2").arg(count).arg(total), true);
-            // FIXME code is similar to UBPersistenceManager::copyDocumentScene()
-            // PersistenceManaget works with UBForeignObjectHandler, while we here ask the scene for relative dependencies
-            // one is at file level, the other at scene level. I prefer scene level, as it avoids another SVG parser.
-            // Implement one single UBDocument::copyPage
-
+            // FIXME Implement one single UBDocument::copyPage
             // TODO UB 4.x Move following code to some controller class
             std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(sourceItem.documentProxy(), fromIndex);
             if (scene)
