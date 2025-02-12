@@ -36,22 +36,23 @@
 #include <QGraphicsItem>
 #include <QGraphicsPixmapItem>
 
-#include "core/UBApplication.h"
 #include "UBBoardThumbnailsView.h"
+
 #include "board/UBBoardController.h"
 #include "board/UBBoardView.h"
-#include "adaptors/UBThumbnailAdaptor.h"
-#include "adaptors/UBSvgSubsetAdaptor.h"
-#include "document/UBDocumentController.h"
-#include "domain/UBGraphicsScene.h"
-#include "board/UBBoardPaletteManager.h"
+
+#include "core/UBApplication.h"
 #include "core/UBApplicationController.h"
 #include "core/UBPersistenceManager.h"
-#include "UBThumbnailView.h"
-#include "gui/UBDocumentThumbnailsView.h"
+
+#include "document/UBDocument.h"
+
+#include "gui/UBThumbnail.h"
+#include "gui/UBThumbnailArranger.h"
+#include "gui/UBThumbnailScene.h"
 
 UBBoardThumbnailsView::UBBoardThumbnailsView(QWidget *parent, const char *name)
-    : QGraphicsView(parent)
+    : UBThumbnailsView(parent)
     , mThumbnailWidth(0)
     , mThumbnailMinWidth(100)
     , mMargin(20)
@@ -60,15 +61,14 @@ UBBoardThumbnailsView::UBBoardThumbnailsView(QWidget *parent, const char *name)
     , mDropBar(new QGraphicsRectItem(0))
     , mLongPressInterval(350)
 {
-    setScene(new QGraphicsScene(this));    
+    setThumbnailArranger(new UBBoardThumbnailArranger(this));
 
     mDropBar->setPen(QPen(Qt::darkGray));
     mDropBar->setBrush(QBrush(Qt::lightGray));
-    scene()->addItem(mDropBar);
-    mDropBar->hide();
 
     setObjectName(name);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     setFrameShadow(QFrame::Plain);
 
     mThumbnailWidth = width() - 2*mMargin;
@@ -76,194 +76,93 @@ UBBoardThumbnailsView::UBBoardThumbnailsView(QWidget *parent, const char *name)
     mLongPressTimer.setInterval(mLongPressInterval);
     mLongPressTimer.setSingleShot(true);
 
-    mUpdateThumbnailsTimer.setSingleShot(true);
-
-    connect(UBApplication::boardController, SIGNAL(initThumbnailsRequired(std::shared_ptr<UBDocumentProxy>)), this, SLOT(initThumbnails(std::shared_ptr<UBDocumentProxy>)));
-    connect(UBApplication::boardController, SIGNAL(addThumbnailRequired(std::shared_ptr<UBDocumentProxy>, int)), this, SLOT(addThumbnail(std::shared_ptr<UBDocumentProxy>, int)));
-    connect(UBApplication::boardController, SIGNAL(moveThumbnailRequired(int, int)), this, SLOT(moveThumbnail(int, int)));
-    connect(this, SIGNAL(moveThumbnailRequired(int, int)), this, SLOT(moveThumbnail(int, int)));
-    connect(UBApplication::boardController, SIGNAL(updateThumbnailsRequired()), this, SLOT(updateThumbnails()));
-    connect(UBApplication::boardController, SIGNAL(removeThumbnailRequired(int)), this, SLOT(removeThumbnail(int)));
-
     connect(&mLongPressTimer, SIGNAL(timeout()), this, SLOT(longPressTimeout()));
-    connect(&mUpdateThumbnailsTimer, SIGNAL(timeout()), this, SLOT(updateThumbnailsPos()));
 
     connect(this, SIGNAL(mousePressAndHoldEventRequired(QPoint)), this, SLOT(mousePressAndHoldEvent(QPoint)));
 
     connect(UBApplication::boardController, SIGNAL(pageSelectionChanged(int)), this, SLOT(updateActiveThumbnail(int)));
-    connect(UBApplication::boardController, SIGNAL(centerOnThumbnailRequired(int)), this, SLOT(centerOnThumbnail(int)));
 
     connect(UBApplication::boardController->controlView(), &UBBoardView::mouseReleased, this, &UBBoardThumbnailsView::adjustThumbnail);
 
     connect(UBApplication::boardController->controlView(), &UBBoardView::painted, this, &UBBoardThumbnailsView::updateThumbnailPixmap);
+
+    connect(UBApplication::boardController, &UBDocumentContainer::documentSet, this, [this](std::shared_ptr<UBDocumentProxy> proxy){
+        setDocument(UBDocument::getDocument(proxy));
+    });
 }
 
-void UBBoardThumbnailsView::moveThumbnail(int from, int to)
+void UBBoardThumbnailsView::setDocument(std::shared_ptr<UBDocument> document)
 {
-    mThumbnails.move(from, to);
+    mDocument = document;
 
-    updateThumbnails();
+    if (document)
+    {
+        auto thumbnailScene = document->thumbnailScene();
+        setScene(thumbnailScene);
+        thumbnailScene->arrangeThumbnails();
+        thumbnailScene->addItem(mDropBar);
+    }
+    else
+    {
+        if (mDropBar->scene())
+        {
+            mDropBar->scene()->removeItem(mDropBar);
+        }
+
+        setScene(nullptr);
+    }
 }
 
-void UBBoardThumbnailsView::updateThumbnails()
-{
-    // Update the thumbnails width
-    int verticalScrollBarWidth = verticalScrollBar()->isVisible() ? verticalScrollBar()->width() : 0;
-
-    mThumbnailWidth = std::max(width() - verticalScrollBarWidth - 2*mMargin, mThumbnailMinWidth);
-
-    mUpdateThumbnailsTimer.setInterval(std::min(std::min(100, (int)mThumbnails.size()), 1000));
-    mUpdateThumbnailsTimer.start();
-}
 
 void UBBoardThumbnailsView::adjustThumbnail()
 {
-    if (mCurrentIndex >= 0 && mCurrentIndex < mThumbnails.size())
+    auto thumbnail = mDocument->thumbnailScene()->thumbnailAt(mCurrentIndex);
+
+    if (thumbnail)
     {
-        mThumbnails.at(mCurrentIndex)->adjustThumbnail();
+        thumbnail->adjustThumbnail();
     }
 }
 
-void UBBoardThumbnailsView::removeThumbnail(int i)
-{
-    UBDraggableLivePixmapItem* item = mThumbnails.at(i);
-
-    scene()->removeItem(item->selectionItem());
-    scene()->removeItem(item->pageNumber());
-    scene()->removeItem(item);
-
-    mThumbnails.removeAt(i);
-
-    updateThumbnails();
-}
-
-UBDraggableLivePixmapItem* UBBoardThumbnailsView::createThumbnail(std::shared_ptr<UBDocumentProxy> document, int i)
-{
-    QPixmap thumbnail = UBThumbnailAdaptor::get(document, i);
-
-    return new UBDraggableLivePixmapItem(nullptr, document, i, thumbnail);
-}
-
-void UBBoardThumbnailsView::addThumbnail(std::shared_ptr<UBDocumentProxy> document, int i)
-{
-    UBDraggableLivePixmapItem* item = createThumbnail(document, i);
-    mThumbnails.insert(i, item);
-
-    scene()->addItem(item);
-    scene()->addItem(item->pageNumber());
-    scene()->addItem(item->selectionItem());
-
-    item->updatePos(mThumbnailWidth, mThumbnailWidth / UBSettings::minScreenRatio);
-
-    updateThumbnails();
-}
-
-void UBBoardThumbnailsView::clearThumbnails()
-{
-    for(int i = 0; i < mThumbnails.size(); i++)
-    {
-        scene()->removeItem(mThumbnails.at(i)->selectionItem());
-        scene()->removeItem(mThumbnails.at(i)->pageNumber());
-        scene()->removeItem(mThumbnails.at(i));
-        mThumbnails.at(i)->deleteLater();
-    }
-
-    mThumbnails.clear();
-}
-
-void UBBoardThumbnailsView::initThumbnails(std::shared_ptr<UBDocumentProxy> document)
-{
-    if (document)
-    {
-        clearThumbnails();
-
-        // Update the thumbnails width
-        int verticalScrollBarWidth = verticalScrollBar()->isVisible() ? verticalScrollBar()->width() : 0;
-
-        mThumbnailWidth = std::max(width() - verticalScrollBarWidth - 2*mMargin, mThumbnailMinWidth);
-
-        for(int i = 0; i < document->pageCount(); i++)
-        {
-            mThumbnails.append(createThumbnail(document, i));
-
-            scene()->addItem(mThumbnails.last());
-            scene()->addItem(mThumbnails.last()->pageNumber());
-            scene()->addItem(mThumbnails.last()->selectionItem());
-
-            mThumbnails.last()->updatePos(mThumbnailWidth, mThumbnailWidth / UBSettings::minScreenRatio);
-        }
-
-        updateActiveThumbnail(0);
-
-        updateThumbnails();
-    }
-}
 
 void UBBoardThumbnailsView::centerOnThumbnail(int index)
 {
-    if (index < mThumbnails.size())
+    auto thumbnail = mDocument->thumbnailScene()->thumbnailAt(index);
+
+    if (thumbnail)
     {
-        centerOn(mThumbnails.at(index));
+        centerOn(thumbnail);
     }
 }
 
 void UBBoardThumbnailsView::ensureVisibleThumbnail(int index)
 {
-    if (mCurrentIndex >= 0 && mCurrentIndex < mThumbnails.size())
+    auto previousThumbnail = mDocument->thumbnailScene()->thumbnailAt(mCurrentIndex);
+
+    if (previousThumbnail && index != mCurrentIndex)
     {
-        // detach scene from previous thumbnail
-        mThumbnails.at(mCurrentIndex)->setScene(nullptr);
+        previousThumbnail->setPageScene(nullptr);
     }
 
     mCurrentIndex = index;
 
-    if (index >= 0 && index < mThumbnails.size())
+    auto currentThumbnail = mDocument->thumbnailScene()->thumbnailAt(mCurrentIndex);
+
+    if (currentThumbnail)
     {
-        auto thumbnail = mThumbnails.at(index);
-        std::shared_ptr<UBGraphicsScene> pageScene = UBPersistenceManager::persistenceManager()->getDocumentScene(thumbnail->documentProxy(), index);
-        thumbnail->setScene(pageScene);
-        ensureVisible(thumbnail);
+        std::shared_ptr<UBGraphicsScene> pageScene = UBPersistenceManager::persistenceManager()->getDocumentScene(mDocument->proxy(), index);
+        currentThumbnail->setPageScene(pageScene);
+        ensureVisible(currentThumbnail);
     }
 }
 
 void UBBoardThumbnailsView::updateActiveThumbnail(int newActiveIndex)
 {
-    for (int i=0; i < mThumbnails.length(); i++)
-    {
-        mThumbnails.at(i)->setHighlighted(i == newActiveIndex);
-    }
+    mDocument->thumbnailScene()->hightlightItem(newActiveIndex, true);
 
     ensureVisibleThumbnail(newActiveIndex);
 
-    mThumbnails.at(newActiveIndex)->updatePos(mThumbnailWidth, mThumbnailWidth / UBSettings::minScreenRatio);
-
     update();
-}
-
-void UBBoardThumbnailsView::updateThumbnailsPos()
-{
-    if (isVisible())
-    {
-        qreal thumbnailHeight = mThumbnailWidth / UBSettings::minScreenRatio;
-
-        for (int i=0; i < mThumbnails.length(); i++)
-        {
-            mThumbnails.at(i)->setSceneIndex(i);
-            mThumbnails.at(i)->setPageNumber(i);
-            mThumbnails.at(i)->setHighlighted(i == UBApplication::boardController->activeSceneIndex());
-            mThumbnails.at(i)->updatePos(mThumbnailWidth, thumbnailHeight);
-        }
-
-        // for some reason, verticalScrollBar()->width() returns 100 while isVisible() is false... not the case with Qt 5.5 (when this code has been implemented)
-        int verticalScrollBarWidth = verticalScrollBar()->isVisible() ? verticalScrollBar()->width() : 0;
-        setSceneRect(0, 0, scene()->itemsBoundingRect().size().width() - verticalScrollBarWidth, scene()->itemsBoundingRect().size().height());
-
-        updateExposure();
-
-        ensureVisibleThumbnail(UBApplication::boardController->activeSceneIndex());
-
-        update();
-    }
 }
 
 void UBBoardThumbnailsView::updateExposure()
@@ -271,7 +170,9 @@ void UBBoardThumbnailsView::updateExposure()
     QRect viewportRect(QPoint(0, 0), viewport()->size());
     QRectF visibleSceneRect = mapToScene(viewportRect).boundingRect();
 
-    for (UBDraggableLivePixmapItem* thumbnail : std::as_const(mThumbnails))
+    int index = 0;
+
+    while (auto thumbnail = mDocument->thumbnailScene()->thumbnailAt(index++))
     {
         thumbnail->setExposed(visibleSceneRect.intersects(thumbnail->sceneBoundingRect()));
     }
@@ -279,15 +180,16 @@ void UBBoardThumbnailsView::updateExposure()
 
 void UBBoardThumbnailsView::resizeEvent(QResizeEvent *event)
 {
-    int verticalScrollBarWidth = verticalScrollBar()->isVisible() ? verticalScrollBar()->width() : 0;
+    bool scrollbarWasHidden = mScrollbarVisible && !verticalScrollBar()->isVisible();
 
-    // Refresh the scene
-    if (event->size().width() > 0 && std::abs(event->oldSize().width() - event->size().width()) != verticalScrollBarWidth)
+    // Refresh the scene, except if resizing because scrollbar was hidden
+    if (event->size().width() > 0 && !scrollbarWasHidden && mDocument)
     {
-        updateThumbnails();
-
+        mDocument->thumbnailScene()->arrangeThumbnails();
         ensureVisibleThumbnail(UBApplication::boardController->activeSceneIndex());
     }
+
+    mScrollbarVisible = verticalScrollBar()->isVisible();
 
     QGraphicsView::resizeEvent(event);
 }
@@ -296,22 +198,18 @@ void UBBoardThumbnailsView::mousePressEvent(QMouseEvent *event)
 {
     QGraphicsView::mousePressEvent(event);
 
-    if (!event->isAccepted())
+    mLastPressedMousePos = event->pos();
+
+    UBThumbnail* item = dynamic_cast<UBThumbnail*>(itemAt(event->pos()));
+
+    if (item && item->sceneIndex() != UBApplication::boardController->activeSceneIndex())
     {
-        mLastPressedMousePos = event->pos();
-
-        UBDraggableLivePixmapItem* item = dynamic_cast<UBDraggableLivePixmapItem*>(itemAt(event->pos()));
-
-        if (item)
-        {
-            UBApplication::boardController->persistViewPositionOnCurrentScene();
-            UBApplication::boardController->persistCurrentScene();
-            UBApplication::boardController->setActiveDocumentScene(item->sceneIndex());
-            UBApplication::boardController->centerOn(UBApplication::boardController->activeScene()->lastCenter());
-        }
-
-        mLongPressTimer.start();
+        UBApplication::boardController->persistViewPositionOnCurrentScene();
+        UBApplication::boardController->persistCurrentScene();
+        UBApplication::boardController->setActiveDocumentScene(item->sceneIndex());
     }
+
+    mLongPressTimer.start();
 }
 
 void UBBoardThumbnailsView::mouseMoveEvent(QMouseEvent *event)
@@ -329,7 +227,7 @@ void UBBoardThumbnailsView::longPressTimeout()
 
 void UBBoardThumbnailsView::mousePressAndHoldEvent(QPoint pos)
 {
-    UBDraggableLivePixmapItem* item = dynamic_cast<UBDraggableLivePixmapItem*>(itemAt(pos));
+    UBThumbnail* item = dynamic_cast<UBThumbnail*>(itemAt(pos));
     if (item)
     {
         mDropSource = item;
@@ -348,11 +246,23 @@ void UBBoardThumbnailsView::mousePressAndHoldEvent(QPoint pos)
 
 void UBBoardThumbnailsView::updateThumbnailPixmap(const QRectF region)
 {
-    int index = UBApplication::boardController->activeSceneIndex();
-    if (mThumbnails.size() > index)
+    const int index = UBApplication::boardController->activeSceneIndex();
+    auto thumbnail = mDocument->thumbnailScene()->thumbnailAt(index);
+
+    if (thumbnail)
     {
-        mThumbnails.at(index)->updatePixmap(region);
+        thumbnail->updatePixmap(region);
     }
+}
+
+bool UBBoardThumbnailsView::event(QEvent* event)
+{
+    if (event->type() == QEvent::Show && mDocument)
+    {
+        mDocument->thumbnailScene()->arrangeThumbnails();
+    }
+
+    return UBThumbnailsView::event(event);
 }
 
 void UBBoardThumbnailsView::mouseReleaseEvent(QMouseEvent *event)
@@ -394,39 +304,26 @@ void UBBoardThumbnailsView::dragMoveEvent(QDragMoveEvent *event)
 
     ensureVisible(thumbnailArea);
 
-    UBDraggableLivePixmapItem* item = dynamic_cast<UBDraggableLivePixmapItem*>(itemAt(eventPos));
+    UBThumbnail* item = dynamic_cast<UBThumbnail*>(itemAt(eventPos));
+
     if (item)
     {
-        if (item != mDropTarget)
-            mDropTarget = item;
+        mDropTarget = item;
 
-        qreal scale = item->transform().m11();
-
-        int verticalScrollBarWidth = verticalScrollBar()->isVisible() ? verticalScrollBar()->width() : 0;
-
-        QPointF itemCenter(item->pos().x() + (item->boundingRect().width()-verticalScrollBarWidth) * scale,
-                           item->pos().y() + item->boundingRect().height() * scale / 2);
+        QPointF itemCenter{item->sceneBoundingRect().center()};
 
         bool dropAbove = mapToScene(eventPos).y() < itemCenter.y();
         bool movingUp = mDropSource->sceneIndex() > item->sceneIndex();
-        qreal y = 0;
 
-        if (movingUp)
+        if (movingUp == dropAbove)
         {
-            if (dropAbove)
+            const auto halfSpacingHeight = thumbnailArranger()->spacing().height() / 2;
+            const auto offset = dropAbove ? -halfSpacingHeight : UBThumbnail::heightForWidth(thumbnailArranger()->thumbnailWidth()) + halfSpacingHeight;
+            const auto y = item->pos().y() + offset - 1;
+
+            if (mDropBar->y() != y)
             {
-                y = item->pos().y() - UBSettings::thumbnailSpacing / 2;
-                if (mDropBar->y() != y)
-                    mDropBar->setRect(QRectF(item->pos().x(), y, (item->boundingRect().width()-verticalScrollBarWidth)*scale, 3));
-            }
-        }
-        else
-        {
-            if (!dropAbove)
-            {
-                y = item->pos().y() + item->boundingRect().height() * scale + UBSettings::thumbnailSpacing / 2;
-                if (mDropBar->y() != y)
-                    mDropBar->setRect(QRectF(item->pos().x(), y, (item->boundingRect().width()-verticalScrollBarWidth)*scale, 3));
+                mDropBar->setRect(QRectF{item->pos().x(), y, thumbnailArranger()->thumbnailWidth(), 3});
             }
         }
     }
@@ -439,11 +336,28 @@ void UBBoardThumbnailsView::dropEvent(QDropEvent *event)
     Q_UNUSED(event);
 
     if (mDropSource->sceneIndex() != mDropTarget->sceneIndex())
-        UBApplication::boardController->moveSceneToIndex(mDropSource->sceneIndex(), mDropTarget->sceneIndex());
+        UBApplication::boardController->moveSceneToIndex(mDocument->proxy(), mDropSource->sceneIndex(), mDropTarget->sceneIndex());
 
     mDropSource = NULL;
     mDropTarget = NULL;
 
     mDropBar->setRect(QRectF());
     mDropBar->hide();
+}
+
+/* ---- UBBoardThumbnailArranger ---- */
+
+UBBoardThumbnailsView::UBBoardThumbnailArranger::UBBoardThumbnailArranger(UBBoardThumbnailsView* thumbnailView)
+    : UBThumbnailArranger(thumbnailView)
+{
+}
+
+int UBBoardThumbnailsView::UBBoardThumbnailArranger::columnCount() const
+{
+    return 1;
+}
+
+double UBBoardThumbnailsView::UBBoardThumbnailArranger::thumbnailWidth() const
+{
+    return availableViewWidth();
 }

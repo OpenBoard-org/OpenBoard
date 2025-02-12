@@ -45,55 +45,23 @@ class UBDocumentContainer : public QObject
         void pureSetDocument(std::shared_ptr<UBDocumentProxy> document) {mCurrentDocument = document;}
 
         std::shared_ptr<UBDocumentProxy> selectedDocument(){return mCurrentDocument;}
-        QList<std::shared_ptr<QPixmap>>& documentThumbs() { return mDocumentThumbs; }
         int pageCount() const{return mCurrentDocument->pageCount();}
-        std::shared_ptr<QPixmap> pageAt(int index)
-        {
-            if (index < mDocumentThumbs.size())
-                return mDocumentThumbs[index];
-            else
-            {
-                return NULL;
-            }
-        }
 
         static int pageFromSceneIndex(int sceneIndex);
         static int sceneIndexFromPage(int sceneIndex);
 
         void duplicatePage(int index);
         void deletePages(QList<int>& pageIndexes);
-
-
         void addPage(int index);
-        void addPixmapAt(std::shared_ptr<QPixmap> pix, int index);
 
-        virtual void reloadThumbnails() =0;
-
-        void clearThumbPage();
-        void initThumbPage();
-        void insertExistingThumbPage(int index, std::shared_ptr<QPixmap> thumbnailPixmap);
-        void insertThumbPage(int index);
-        void addEmptyThumbPage();
-        void deleteThumbPage(int index);
-        void updateThumbPage(int index);
-        void moveThumbPage(int source, int target);
+    public slots:
+        void moveSceneToIndex(std::shared_ptr<UBDocumentProxy> proxy, int source, int target);
 
     private:
         std::shared_ptr<UBDocumentProxy> mCurrentDocument;
-        QList<std::shared_ptr<QPixmap>>  mDocumentThumbs;
 
     signals:
         void documentSet(std::shared_ptr<UBDocumentProxy> document);
-        void documentPageInserted(int index);
-        void documentPageUpdated(int index);
-        void documentPageRemoved(int index);
-        void documentPageMoved(int from, int to);
-
-        void initThumbnailsRequired(std::shared_ptr<UBDocumentProxy> document);
-        void addThumbnailRequired(std::shared_ptr<UBDocumentProxy> document, int index);
-        void removeThumbnailRequired(int index);
-        void moveThumbnailRequired(int from, int to);
-        void updateThumbnailsRequired();
 };
 
 

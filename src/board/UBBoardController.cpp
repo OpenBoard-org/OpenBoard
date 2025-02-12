@@ -31,58 +31,55 @@
 
 #include <QtWidgets>
 
+#include "adaptors/UBMetadataDcSubsetAdaptor.h"
+#include "adaptors/UBSvgSubsetAdaptor.h"
+
+#include "board/UBBoardPaletteManager.h"
+#include "board/UBBoardView.h"
+#include "board/UBDrawingController.h"
+#include "board/UBFeaturesController.h"
+
 #include "frameworks/UBFileSystemUtils.h"
 #include "frameworks/UBPlatformUtils.h"
 
 #include "core/UBApplication.h"
-#include "core/UBDisplayManager.h"
-#include "core/UBSettings.h"
-#include "core/UBSetting.h"
-#include "core/UBPersistenceManager.h"
 #include "core/UBApplicationController.h"
+#include "core/UBDisplayManager.h"
 #include "core/UBDocumentManager.h"
-#include "core/UBMimeData.h"
 #include "core/UBDownloadManager.h"
+#include "core/UBMimeData.h"
+#include "core/UBPersistenceManager.h"
+#include "core/UBSetting.h"
+#include "core/UBSettings.h"
+#include "core/UBSettings.h"
 
-#include "gui/UBMessageWindow.h"
-#include "gui/UBToolbarButtonGroup.h"
-#include "gui/UBMainWindow.h"
-#include "gui/UBToolWidget.h"
-#include "gui/UBKeyboardPalette.h"
-#include "gui/UBMagnifer.h"
-#include "gui/UBDockPaletteWidget.h"
+#include "document/UBDocument.h"
+#include "document/UBDocumentController.h"
+#include "document/UBDocumentProxy.h"
 
-#include "domain/UBGraphicsPixmapItem.h"
+#include "domain/UBGraphicsGroupContainerItem.h"
 #include "domain/UBGraphicsItemUndoCommand.h"
-#include "domain/UBGraphicsSvgItem.h"
-#include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBGraphicsMediaItem.h"
 #include "domain/UBGraphicsPDFItem.h"
+#include "domain/UBGraphicsPixmapItem.h"
+#include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsTextItem.h"
-#include "domain/UBPageSizeUndoCommand.h"
-#include "domain/UBGraphicsGroupContainerItem.h"
-#include "domain/UBGraphicsStrokesGroup.h"
+#include "domain/UBGraphicsWidgetItem.h"
 #include "domain/UBItem.h"
-#include "board/UBFeaturesController.h"
+#include "domain/UBPageSizeUndoCommand.h"
 
 #include "gui/UBFeaturesWidget.h"
-
-#include "tools/UBToolsManager.h"
-
-#include "document/UBDocumentProxy.h"
-#include "document/UBDocumentController.h"
-
-#include "board/UBDrawingController.h"
-#include "board/UBBoardView.h"
+#include "gui/UBKeyboardPalette.h"
+#include "gui/UBMagnifer.h"
+#include "gui/UBMainWindow.h"
+#include "gui/UBMessageWindow.h"
+#include "gui/UBThumbnailScene.h"
+#include "gui/UBToolWidget.h"
+#include "gui/UBToolbarButtonGroup.h"
 
 #include "podcast/UBPodcastController.h"
 
-#include "adaptors/UBMetadataDcSubsetAdaptor.h"
-#include "adaptors/UBSvgSubsetAdaptor.h"
-
-#include "UBBoardPaletteManager.h"
-
-#include "core/UBSettings.h"
+#include "tools/UBToolsManager.h"
 
 #include "web/UBEmbedController.h"
 #include "web/UBEmbedParser.h"
@@ -122,7 +119,6 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     mPenColorOnLightBackground = UBSettings::settings()->penColors(false).at(penColorIndex);
     mMarkerColorOnDarkBackground = UBSettings::settings()->markerColors(true).at(markerColorIndex);
     mMarkerColorOnLightBackground = UBSettings::settings()->markerColors(false).at(markerColorIndex);
-
 }
 
 
@@ -161,7 +157,6 @@ void UBBoardController::init()
     });
 
     undoRedoStateChange(true);
-
 }
 
 
@@ -198,7 +193,7 @@ void UBBoardController::initBackgroundGridSize()
     //qDebug() << "grid size: " << gridSize;
 }
 
-int UBBoardController::currentPage()
+int UBBoardController::currentPage() const
 {
     return mActiveSceneIndex + 1;
 }
@@ -539,7 +534,7 @@ void UBBoardController::setToolbarTexts()
 }
 
 
-QString UBBoardController::truncate(QString text, int maxWidth)
+QString UBBoardController::truncate(QString text, int maxWidth) const
 {
     QFontMetricsF fontMetrics(mMainWindow->font());
     return fontMetrics.elidedText(text, Qt::ElideRight, maxWidth);
@@ -555,7 +550,6 @@ void UBBoardController::stylusToolDoubleClicked(int tool)
     else if (tool == UBStylusTool::Hand)
     {
         centerRestore();
-        mActiveScene->setLastCenter(QPointF(0,0));
     }
 }
 
@@ -567,13 +561,8 @@ void UBBoardController::addScene()
     persistViewPositionOnCurrentScene();
     persistCurrentScene(false,true);
 
-    UBPersistenceManager::persistenceManager()->createDocumentSceneAt(selectedDocument(), mActiveSceneIndex+1);
-    emit addThumbnailRequired(selectedDocument(), mActiveSceneIndex+1);
-    if (UBApplication::documentController->selectedDocument() == selectedDocument())
-    {
-        UBApplication::documentController->insertThumbPage(mActiveSceneIndex +1);
-        UBApplication::documentController->reloadThumbnails();
-    }
+    auto document = UBDocument::getDocument(selectedDocument());
+    document->createPage(mActiveSceneIndex + 1);
 
     QDateTime now = QDateTime::currentDateTime();
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
@@ -601,18 +590,18 @@ void UBBoardController::addScene(std::shared_ptr<UBGraphicsScene> scene, bool re
             }
         }
 
+        auto document = UBDocument::getDocument(selectedDocument());
+
         if (replaceActiveIfEmpty && mActiveScene->isEmpty())
         {
-            UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(selectedDocument(), clone, mActiveSceneIndex);
-            emit addThumbnailRequired(selectedDocument(), mActiveSceneIndex);
+            document->insertPage(clone, mActiveSceneIndex);
             setActiveDocumentScene(mActiveSceneIndex);
             deleteScene(mActiveSceneIndex + 1);
         }
         else
         {
             persistCurrentScene(false,true);
-            UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(selectedDocument(), clone, mActiveSceneIndex + 1);
-            emit addThumbnailRequired(selectedDocument(), mActiveSceneIndex + 1);
+            document->insertPage(clone, mActiveSceneIndex + 1);
             setActiveDocumentScene(mActiveSceneIndex + 1);
         }
 
@@ -638,12 +627,6 @@ void UBBoardController::duplicateScene(int nIndex)
     persistCurrentScene(false,true);
 
     duplicatePage(nIndex);
-    emit addThumbnailRequired(selectedDocument(), nIndex + 1);
-    if (UBApplication::documentController->selectedDocument() == selectedDocument())
-    {
-        UBApplication::documentController->insertThumbPage(nIndex +1);
-        UBApplication::documentController->reloadThumbnails();
-    }
 
     QDateTime now = QDateTime::currentDateTime();
     selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
@@ -846,14 +829,8 @@ void UBBoardController::deleteScene(int nIndex)
         persistCurrentScene();
         UBApplication::showMessage(tr("Deleting page %1").arg(nIndex+1), true);
 
-        QList<int> scIndexes;
-        scIndexes << nIndex;
-        UBPersistenceManager::persistenceManager()->deleteDocumentScenes(selectedDocument(), scIndexes);
-        emit removeThumbnailRequired(nIndex);
-        if (UBApplication::documentController->selectedDocument() == selectedDocument())
-        {
-            UBApplication::documentController->deleteThumbPage(nIndex);
-        }
+        auto document = UBDocument::getDocument(selectedDocument());
+        document->deletePages({nIndex});
 
         QDateTime now = QDateTime::currentDateTime();
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
@@ -875,8 +852,7 @@ void UBBoardController::clearScene()
     {
         freezeW3CWidgets(true);
         mActiveScene->clearContent(UBGraphicsScene::clearItemsAndAnnotations);
-        mActiveScene->setLastCenter(QPointF(0,0));
-        mControlView->centerOn(mActiveScene->lastCenter());
+        centerRestore();
         updateActionStates();
     }
 }
@@ -981,7 +957,6 @@ void UBBoardController::zoomRestore()
     centerRestore();
 
     emit zoomChanged(1.0);
-    UBApplication::applicationController->adjustDisplayView();
 
     emit controlViewportChanged();
     mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
@@ -990,41 +965,66 @@ void UBBoardController::zoomRestore()
 
 void UBBoardController::centerRestore()
 {
-    centerOn(QPointF(0,0));
+    // reset transformation and scrollbar values
+    centerOn({0, 0});
+    mControlView->centerOn({0, 0});
+
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    // workaround: foreground not repainted after scrolling on Qt5 (fixed in Qt6)
+    // setForegroundBrush internally invokes the private function uopdateAll() unconditionally
+    mControlView->setForegroundBrush(mControlView->foregroundBrush());
+#endif
+
+    persistViewPositionOnCurrentScene();
+    UBApplication::applicationController->adjustDisplayView();
 }
 
 
-void UBBoardController::centerOn(QPointF scenePoint)
+void UBBoardController::centerOn(QPointF scenePoint) const
 {
-    // workaround: foreground not repainted after centerOn on Qt5 (fixed in Qt6)
-    QPointF offset{1, 1};
-    mControlView->centerOn(scenePoint - offset);
-    mControlView->translate(offset.x(), offset.y());
-    UBApplication::applicationController->adjustDisplayView();
+    // centerOn without using scroll bars
+    const auto before = mControlView->transform();
+
+    // create a transformation with the same scaling where the scenePoint is in the center
+    QTransform after;
+    after.scale(before.m11(), before.m22());
+    after.translate(-scenePoint.x(), -scenePoint.y());
+    mControlView->setTransform(after);
+
+    if (UBApplication::applicationController)
+    {
+        UBApplication::applicationController->adjustDisplayView();
+    }
 }
 
 
 void UBBoardController::zoom(const qreal ratio, QPointF scenePoint)
 {
-
-    QPointF viewCenter = mControlView->mapToScene(QRect(0, 0, mControlView->width(), mControlView->height()).center());
-    QPointF offset = scenePoint - viewCenter;
-    QPointF scalledOffset = offset / ratio;
-
-    qreal currentZoom = ratio * mControlView->viewportTransform().m11() / mSystemScaleFactor;
-
+    qreal currentZoom = ratio * mControlView->transform().m11() / mSystemScaleFactor;
     qreal usedRatio = ratio;
+
     if (currentZoom > UB_MAX_ZOOM)
     {
         currentZoom = UB_MAX_ZOOM;
-        usedRatio = currentZoom * mSystemScaleFactor / mControlView->viewportTransform().m11();
+        usedRatio = currentZoom * mSystemScaleFactor / mControlView->transform().m11();
     }
 
+    /*
+     * The shiftFactor is calculated from the condition that the scenePoint should have the
+     * same coordinates on the view after zooming. Let m11, m31 be the transformation parameters
+     * before zoom and m11', m31' the parameters after zoom. The equations for scenePoint.x:
+     *   m11' = m11 * ratio
+     *   x * m11 + m31 = x * m11' + m31'
+     * We now solve this equation to get the additional translation m31' - m31:
+     *   m31' - m31 = x * (m11 - m11')
+     *              = x * m11 * (1 - ratio)
+     *              = x * m11' * (1 - ratio) / ratio
+     * The translate function works in scene coordinates and multiplies its parameter internally
+     * by the scale factor m11', so we omit this factor in the function call below.
+     */
+    const auto shiftFactor = (1 - usedRatio) / usedRatio;
     mControlView->scale(usedRatio, usedRatio);
-
-    QPointF newCenter = scenePoint - scalledOffset;
-
-    mControlView->centerOn(newCenter);
+    mControlView->translate(scenePoint.x() * shiftFactor, scenePoint.y() * shiftFactor);
 
     emit zoomChanged(currentZoom);
     UBApplication::applicationController->adjustDisplayView();
@@ -1044,12 +1044,37 @@ void UBBoardController::handScroll(qreal dx, qreal dy)
     emit controlViewportChanged();
 }
 
-void UBBoardController::persistViewPositionOnCurrentScene()
+void UBBoardController::persistViewPositionOnCurrentScene() const
 {
-    QRect rect = mControlView->rect();
-    QPoint center(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
-    QPointF viewRelativeCenter = mControlView->mapToScene(center);
-    mActiveScene->setLastCenter(viewRelativeCenter);
+    if (mActiveScene)
+    {
+        // calculate center from transformation
+        const QPointF viewRelativeCenter = mControlView->transform().inverted().map(QPointF{0, 0});
+        UBGraphicsScene::SceneViewState viewState
+        {
+            mControlView->transform().m11() / mSystemScaleFactor,
+            mControlView->horizontalScrollBar()->value(),
+            mControlView->verticalScrollBar()->value(),
+            viewRelativeCenter
+        };
+
+        mActiveScene->setViewState(viewState);
+    }
+}
+
+void UBBoardController::restoreViewPositionOnCurrentScene() const
+{
+    if (mActiveScene)
+    {
+        const auto viewState = mActiveScene->viewState();
+        mControlView->horizontalScrollBar()->setValue(viewState.horizontalPosition);
+        mControlView->verticalScrollBar()->setValue(viewState.verticalPostition);
+        QTransform transform;
+        double scale = viewState.zoomFactor * mSystemScaleFactor;
+        transform.scale(scale, scale);
+        mControlView->setTransform(transform);
+        centerOn(viewState.mLastSceneCenter);
+    }
 }
 
 void UBBoardController::previousScene()
@@ -1057,11 +1082,7 @@ void UBBoardController::previousScene()
     if (mActiveSceneIndex > 0)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        persistViewPositionOnCurrentScene();
-// not necessary, done by setActiveDocumentScene
-//        persistCurrentScene();
         setActiveDocumentScene(mActiveSceneIndex - 1);
-        centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -1074,11 +1095,7 @@ void UBBoardController::nextScene()
     if (mActiveSceneIndex < selectedDocument()->pageCount() - 1)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        persistViewPositionOnCurrentScene();
-
         setActiveDocumentScene(mActiveSceneIndex + 1);
-        centerOn(mActiveScene->lastCenter());
-
         QApplication::restoreOverrideCursor();
     }
 
@@ -1091,11 +1108,7 @@ void UBBoardController::firstScene()
     if (mActiveSceneIndex > 0)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        persistViewPositionOnCurrentScene();
-
         setActiveDocumentScene(0);
-
-        centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -1108,9 +1121,7 @@ void UBBoardController::lastScene()
     if (mActiveSceneIndex < selectedDocument()->pageCount() - 1)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        persistViewPositionOnCurrentScene();
         setActiveDocumentScene(selectedDocument()->pageCount() - 1);
-        centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -1454,8 +1465,8 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         QString sUrl = sourceUrl.toString();
 
         int numberOfImportedDocuments = 0;
-        int currentNumberOfThumbnails = selectedDocument()->pageCount();
-        if(!sourceUrl.isEmpty() && (sUrl.startsWith("file://") || sUrl.startsWith("/")))
+
+        if (!sourceUrl.isEmpty() && (sUrl.startsWith("file://") || sUrl.startsWith("/")))
         {
             QStringList fileNames;
             fileNames << sourceUrl.toLocalFile();
@@ -1466,37 +1477,18 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
             if (pdfFile.open())
             {
                 pdfFile.write(pData);
+                pdfFile.close();
                 QStringList fileNames;
                 fileNames << pdfFile.fileName();
                 numberOfImportedDocuments = UBDocumentManager::documentManager()->addFilesToDocument(selectedDocument(), fileNames);
-
-                pdfFile.close();
             }
         }
 
         if (numberOfImportedDocuments > 0)
         {
-
             QDateTime now = QDateTime::currentDateTime();
             selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
             updateActionStates();
-
-            int numberOfThumbnailsToAdd =  selectedDocument()->pageCount() - currentNumberOfThumbnails;
-
-            bool updateDocumentThumbnailsView = UBApplication::documentController->selectedDocument() ==  selectedDocument();
-            for (int i = 0; i < numberOfThumbnailsToAdd; i++)
-            {
-                emit addThumbnailRequired(selectedDocument(), currentNumberOfThumbnails+i);
-
-                if (updateDocumentThumbnailsView)
-                {
-                    UBApplication::documentController->insertThumbPage(currentNumberOfThumbnails+i);
-                }
-            }
-            if (updateDocumentThumbnailsView)
-            {
-                UBApplication::documentController->reloadThumbnails();
-            }
         }
     }
     else if (UBMimeType::OpenboardTool == itemMimeType)
@@ -1610,7 +1602,7 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(int p
 std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const int pSceneIndex, bool forceReload, bool onImport)
 {
     UBApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    saveViewState();
+    persistViewPositionOnCurrentScene();
 
     bool documentChange = selectedDocument() != pDocumentProxy;
 
@@ -1666,13 +1658,7 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::
 
         updateBackgroundActionsState(mActiveScene->isDarkBackground(), mActiveScene->pageBackground());
 
-        if (UBApplication::documentController
-        && (UBApplication::documentController->selectedDocument() == selectedDocument()))
-        {
-            UBApplication::documentController->setActiveThumbnail(pSceneIndex);
-        }
-
-        if(documentChange)
+        if (documentChange)
         {
             UBGraphicsTextItem::lastUsedTextColor = QColor(Qt::black);
         }
@@ -1692,7 +1678,18 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::
         if (!featuresController->isDocumentInFavoriteList(documentFolderName) && !featuresController->isInRecentlyOpenDocuments(documentFolderName))
         {
             featuresController->addToFavorite(url, pDocumentProxy->name(), true);
+
+            // keep recent UBDocument instances alive for fast switching
+            auto document = UBDocument::getDocument(pDocumentProxy);
+
+            if (!mRecentDocuments.contains(document))
+            {
+                mRecentDocuments.append(UBDocument::getDocument(pDocumentProxy));
+            }
         }
+
+        auto document = UBDocument::getDocument(pDocumentProxy);
+        document->thumbnailScene()->hightlightItem(mActiveSceneIndex, true);
     }
     else
     {
@@ -1701,33 +1698,6 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::
     UBApplication::restoreOverrideCursor();
 
     return targetScene;
-}
-
-
-void UBBoardController::moveSceneToIndex(int source, int target)
-{
-    if (selectedDocument())
-    {
-        persistCurrentScene(false,true);
-
-        UBPersistenceManager::persistenceManager()->moveSceneToIndex(selectedDocument(), source, target);
-        emit moveThumbnailRequired(source, target);
-        if (UBApplication::documentController->selectedDocument() == selectedDocument())
-        {
-            UBApplication::documentController->moveThumbPage(source, target);
-        }
-
-        QDateTime now = QDateTime::currentDateTime();
-        selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-        UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
-        mMovingSceneIndex = source;
-        mActiveSceneIndex = target;
-        setActiveDocumentScene(target);
-        mMovingSceneIndex = -1;
-
-        emit activeSceneChanged();
-        emit updateThumbnailsRequired();
-    }
 }
 
 void UBBoardController::findUniquesItems(const QUndoCommand *parent, QSet<QGraphicsItem*> &items)
@@ -1842,7 +1812,7 @@ void UBBoardController::adjustDisplayViews()
 }
 
 
-int UBBoardController::autosaveTimeoutFromSettings()
+int UBBoardController::autosaveTimeoutFromSettings() const
 {
     int value = UBSettings::settings()->autoSaveInterval->get().toInt();
     int minute = 60 * 1000;
@@ -2098,10 +2068,10 @@ void UBBoardController::colorPaletteChanged()
 }
 
 
-qreal UBBoardController::currentZoom()
+qreal UBBoardController::currentZoom() const
 {
     if (mControlView)
-        return mControlView->viewportTransform().m11() / mSystemScaleFactor;
+        return mControlView->transform().m11() / mSystemScaleFactor;
     else
         return 1.0;
 }
@@ -2131,23 +2101,19 @@ void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool force
 
         if (mActiveScene->isModified())
         {
-            UBPersistenceManager::persistenceManager()->persistDocumentScene(selectedDocument(), mActiveScene, mActiveSceneIndex, isAnAutomaticBackup, forceImmediateSave);
-            if (UBApplication::documentController->selectedDocument() == selectedDocument())
-            {
-                UBApplication::documentController->updateThumbPage(mActiveSceneIndex);
-            }
+            auto document = UBDocument::getDocument(selectedDocument());
+            document->persistPage(mActiveScene, mActiveSceneIndex, isAnAutomaticBackup, forceImmediateSave);
         }
     }
 }
 
 void UBBoardController::updateSystemScaleFactor()
 {
-    qreal newScaleFactor = 1.0;
-
     if (mActiveScene)
     {
+        qreal newScaleFactor = 1.0;
         QSize pageNominalSize = mActiveScene->nominalSize();
-        //we're going to keep scale factor untouched if the size is custom
+        // disabled: we're going to keep scale factor untouched if the size is custom
         QMap<DocumentSizeRatio::Enum, QSize> sizesMap = UBSettings::settings()->documentSizes;
       //  if(pageNominalSize == sizesMap.value(DocumentSizeRatio::Ratio16_9) || pageNominalSize == sizesMap.value(DocumentSizeRatio::Ratio4_3))
         {
@@ -2156,22 +2122,18 @@ void UBBoardController::updateSystemScaleFactor()
 
             newScaleFactor = qMin(hFactor, vFactor);
         }
+
+        if (mSystemScaleFactor != newScaleFactor)
+            mSystemScaleFactor = newScaleFactor;
+
+        restoreViewPositionOnCurrentScene();
+        mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
     }
-
-    if (mSystemScaleFactor != newScaleFactor)
-        mSystemScaleFactor = newScaleFactor;
-
-    UBGraphicsScene::SceneViewState viewState = mActiveScene->viewState();
-
-    QTransform scalingTransform;
-
-    qreal scaleFactor = viewState.zoomFactor * mSystemScaleFactor;
-    scalingTransform.scale(scaleFactor, scaleFactor);
-
-    mControlView->setTransform(scalingTransform);
-    mControlView->horizontalScrollBar()->setValue(viewState.horizontalPosition);
-    mControlView->verticalScrollBar()->setValue(viewState.verticalPostition);
-    mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());}
+    else
+    {
+        mSystemScaleFactor = 1.0;
+    }
+}
 
 
 void UBBoardController::setWidePageSize(bool checked)
@@ -2210,7 +2172,7 @@ void UBBoardController::setPageSize(QSize newSize)
     {
         mActiveScene->setNominalSize(newSize);
 
-        saveViewState();
+        persistViewPositionOnCurrentScene();
 
         updateSystemScaleFactor();
         updatePageSizeState();
@@ -2246,17 +2208,6 @@ void UBBoardController::updatePageSizeState()
     }
 }
 
-
-void UBBoardController::saveViewState()
-{
-    if (mActiveScene)
-    {
-        mActiveScene->setViewState(UBGraphicsScene::SceneViewState(currentZoom(),
-                                                                   mControlView->horizontalScrollBar()->value(),
-                                                                   mControlView->verticalScrollBar()->value(),
-                                                                   mActiveScene->lastCenter()));
-    }
-}
 
 void UBBoardController::stylusToolChanged(int tool)
 {
@@ -2797,11 +2748,4 @@ void UBBoardController::freezeW3CWidget(QGraphicsItem *item, bool freeze)
         UBGraphicsWidgetItem* widget = qgraphicsitem_cast<UBGraphicsWidgetItem*>(item);
         widget->setWebActive(!freeze);
     }
-}
-
-void UBBoardController::reloadThumbnails()
-{
-    //UBApplication::showMessage(tr("Reloading Board Thumbnails View (%1 pages)").arg(selectedDocument()->pageCount()));
-    emit initThumbnailsRequired(selectedDocument());
-    //UBApplication::showMessage(tr("Board Thumbnails View up-to-date"));
 }

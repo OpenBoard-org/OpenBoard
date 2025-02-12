@@ -22,33 +22,26 @@
 
 #pragma once
 
-#include <QLabel>
+#include <QGraphicsView>
 
 // forward
-class QPropertyAnimation;
+class UBThumbnailArranger;
 
-class UBSnapIndicator : public QLabel
+/**
+ * @brief The UBThumbnailsView class is the base class for Board and Document
+ * thumbnail views. It provides a reference to a thumbnail arranger.
+ */
+class UBThumbnailsView : public QGraphicsView
 {
     Q_OBJECT
-    Q_PROPERTY(int alpha READ alpha WRITE setAlpha)
 
 public:
-    UBSnapIndicator(QWidget* parent);
+    UBThumbnailsView(QWidget* parent = nullptr);
+    virtual ~UBThumbnailsView();
 
-    void appear(Qt::Corner corner, QPointF snapPoint, double angle = 0);
-
-    int alpha() const;
-    void setAlpha(int opacity);
-
-    void setColor(const QColor& color);
-
-protected:
-    virtual void paintEvent(QPaintEvent* event) override;
+    void setThumbnailArranger(UBThumbnailArranger* arranger);
+    UBThumbnailArranger* thumbnailArranger() const;
 
 private:
-    double mAngle{0};
-    int mAlpha;
-    QColor mColor{0x62a7e0};
-    QPropertyAnimation* mAnimation;
+    UBThumbnailArranger* mArranger{nullptr};
 };
-

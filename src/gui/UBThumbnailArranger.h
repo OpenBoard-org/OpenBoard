@@ -22,33 +22,32 @@
 
 #pragma once
 
-#include <QLabel>
+#include <QMargins>
+#include <QObject>
 
 // forward
-class QPropertyAnimation;
+class UBThumbnailsView;
+class UBBoardThumbnailsView;
+class UBDocumentThumbnailsView;
 
-class UBSnapIndicator : public QLabel
+/**
+ * @brief The UBThumbnailArranger class contains the specific properties of thumbnails
+ * for different views (Board mode and Document mode).
+ */
+class UBThumbnailArranger
 {
-    Q_OBJECT
-    Q_PROPERTY(int alpha READ alpha WRITE setAlpha)
-
 public:
-    UBSnapIndicator(QWidget* parent);
+    UBThumbnailArranger(UBThumbnailsView* thumbnailView);
+    virtual ~UBThumbnailArranger() = default;
 
-    void appear(Qt::Corner corner, QPointF snapPoint, double angle = 0);
+    UBThumbnailsView* thumbnailView() const;
 
-    int alpha() const;
-    void setAlpha(int opacity);
-
-    void setColor(const QColor& color);
-
-protected:
-    virtual void paintEvent(QPaintEvent* event) override;
+    virtual int columnCount() const = 0;
+    virtual double thumbnailWidth() const = 0;
+    virtual double availableViewWidth() const;
+    virtual QMarginsF margins() const;
+    virtual QSizeF spacing() const;
 
 private:
-    double mAngle{0};
-    int mAlpha;
-    QColor mColor{0x62a7e0};
-    QPropertyAnimation* mAnimation;
+    UBThumbnailsView* mThumbnailView{nullptr};
 };
-

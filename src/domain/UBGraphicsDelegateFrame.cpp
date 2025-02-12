@@ -281,7 +281,6 @@ void UBGraphicsDelegateFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
     mDelegate->startUndoStep();
 
     mStartingPoint = event->scenePos();
-    mStartingBounds = UBGraphicsScene::itemRect(delegated());
 
     initializeTransform();
 
@@ -293,6 +292,27 @@ void UBGraphicsDelegateFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
     mRotatedAngle = mAngle;
 
     mInitialTransform = buildTransform();
+
+    // calculate initial corner points and respect mirroring
+    mCornerPoints.clear();
+    const auto bounds = UBGraphicsScene::itemRect(delegated());
+    mCornerPoints << delegated()->mapToScene(bounds.topLeft());
+    mCornerPoints << delegated()->mapToScene(bounds.topRight());
+    mCornerPoints << delegated()->mapToScene(bounds.bottomLeft());
+    mCornerPoints << delegated()->mapToScene(bounds.bottomRight());
+
+    if (mMirrorX)
+    {
+        std::swap(mCornerPoints[0], mCornerPoints[1]);
+        std::swap(mCornerPoints[2], mCornerPoints[3]);
+    }
+
+    if (mMirrorY)
+    {
+        std::swap(mCornerPoints[0], mCornerPoints[2]);
+        std::swap(mCornerPoints[1], mCornerPoints[3]);
+    }
+
     mOriginalSize = delegated()->boundingRect().size();
 
     mCurrentTool = toolFromPos(event->pos());
@@ -420,8 +440,9 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         return;
 
     QLineF move = QLineF(mStartingPoint, event->scenePos());
-    qreal moveX = (event->pos() - mStartingPoint).x();
-    qreal moveY = (event->pos() - mStartingPoint).y();
+    QPointF itemStartingPoint = mapFromScene(mStartingPoint);
+    qreal moveX = (event->pos() - itemStartingPoint).x();
+    qreal moveY = (event->pos() - itemStartingPoint).y();
     qreal width = delegated()->boundingRect().width() * mTotalScaleX;
     qreal height = delegated()->boundingRect().height() * mTotalScaleY;
 
@@ -430,13 +451,20 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         if(!rotating())
         {
             const auto* ubscene = dynamic_cast<UBGraphicsScene*>(scene());
+            constexpr double epsilon = 0.0001;
 
-            if (ubscene && ubscene->isSnapping())
+            if (ubscene && ubscene->isSnapping() && !resizingBottomRight() && std::fmod(mAngle + epsilon, 90.) <= 2. * epsilon)
             {
                 QPointF snap = snapVector(event->scenePos());
+                move.setP2(move.p2() + snap);
+
+                // rotate the snap according to item angle
+                QLineF snapLine{{}, snap};
+                snapLine.setAngle(snapLine.angle() - mAngle);
+                snap = snapLine.p2();
+
                 moveX += snap.x();
                 moveY += snap.y();
-                move.setP2(move.p2() + snap);
             }
 
             mTranslateX = moveX;
@@ -574,10 +602,23 @@ void UBGraphicsDelegateFrame::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         {
             // snap to grid
             QPointF moved = event->scenePos() - mStartingPoint;
-            QRectF movedBounds = mStartingBounds.translated(moved);
+            std::vector<QPointF> corners;
 
-            Qt::Corner corner;
-            QPointF snapVector = ubscene->snap(movedBounds, &corner);
+            for (const auto& cornerPoint : mCornerPoints)
+            {
+                corners.push_back(cornerPoint + moved);
+            }
+
+            int snapIndex;
+            QPointF snapVector = ubscene->snap(corners, &snapIndex);
+            Qt::Corner corner = Qt::Corner(snapIndex);
+
+            if (!snapVector.isNull())
+            {
+                auto* view = UBApplication::boardController->controlView();
+                view->updateSnapIndicator(corner, corners.at(snapIndex) + snapVector, mAngle);
+            }
+
             moveX += snapVector.x();
             moveY += snapVector.y();
             move.setP2(move.p2() + snapVector);
@@ -999,39 +1040,39 @@ UBGraphicsDelegateFrame::FrameTool UBGraphicsDelegateFrame::toolFromPos(QPointF 
 {
     if(mDelegate->isLocked())
         return None;
-    else if (bottomRightResizeGripRect().contains(pos) && ResizingHorizontally != mOperationMode && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS) && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS))
-        return ResizeBottomRight;
-    else if (bottomResizeGripRect().contains(pos) && ResizingHorizontally != mOperationMode && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS)){
-            if(mMirrorY){
-                return ResizeTop;
-            }else{
-                return ResizeBottom;
-            }
-        }
-    else if (leftResizeGripRect().contains(pos) && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS)){
-            if(mMirrorX){
-                return ResizeRight;
-            }else{
-                return ResizeLeft;
-            }
-            return ResizeLeft;
-        }
-    else if (rightResizeGripRect().contains(pos) && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS)){
-            if(mMirrorX){
-                return ResizeLeft;
-            }else{
-                return ResizeRight;
-            }
-        }
-    else if (topResizeGripRect().contains(pos) && ResizingHorizontally != mOperationMode && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS)){
-            if(mMirrorY){
-                return ResizeBottom;
-            }else{
-                return ResizeTop;
-            }
-        }
-    else if (rotateButtonBounds().contains(pos) && mDelegate && mDelegate->testUBFlags(GF_REVOLVABLE))
+    // check handles in reverse order of creation to account for z order
+    else if (mRotateButton && mRotateButton->isUnderMouse() && mDelegate && mDelegate->testUBFlags(GF_REVOLVABLE))
         return Rotate;
+    else if (mTopResizeGrip && mTopResizeGrip->isUnderMouse() && ResizingHorizontally != mOperationMode && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS)){
+            if(mMirrorY){
+                return ResizeBottom;
+            }else{
+                return ResizeTop;
+            }
+        }
+    else if (mRightResizeGrip && mRightResizeGrip->isUnderMouse() && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS)){
+            if(mMirrorX){
+                return ResizeLeft;
+            }else{
+                return ResizeRight;
+            }
+        }
+    else if (mLeftResizeGrip && mLeftResizeGrip->isUnderMouse() && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS)){
+            if(mMirrorX){
+                return ResizeRight;
+            }else{
+                return ResizeLeft;
+            }
+        }
+    else if (mBottomResizeGrip && mBottomResizeGrip->isUnderMouse() && ResizingHorizontally != mOperationMode && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS)){
+            if(mMirrorY){
+                return ResizeTop;
+            }else{
+                return ResizeBottom;
+            }
+        }
+    else if (mBottomRightResizeGrip && mBottomRightResizeGrip->isUnderMouse() && ResizingHorizontally != mOperationMode && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS) && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS))
+        return ResizeBottomRight;
     else
         return Move;
 }
@@ -1091,33 +1132,32 @@ void UBGraphicsDelegateFrame::refreshGeometry()
 
 QPointF UBGraphicsDelegateFrame::snapVector(QPointF scenePos) const
 {
-    QPointF moved = scenePos - mStartingPoint;
-    QRectF movedBounds = mStartingBounds.translated(moved);
+    const auto moved = scenePos - mStartingPoint;
     std::vector<QPointF> corners;
 
-    if (resizingLeft())
+    if (resizingLeft() && !mMirrorX || resizingRight() && mMirrorX)
     {
-        corners.push_back(movedBounds.topLeft());
-        corners.push_back(movedBounds.bottomLeft());
+        corners.push_back(mCornerPoints[0] + moved);
+        corners.push_back(mCornerPoints[2] + moved);
     }
-    else if (resizingRight())
+    else if (resizingRight() && !mMirrorX || resizingLeft() && mMirrorX)
     {
-        corners.push_back(movedBounds.topRight());
-        corners.push_back(movedBounds.bottomRight());
+        corners.push_back(mCornerPoints[1] + moved);
+        corners.push_back(mCornerPoints[3] + moved);
     }
-    else if (resizingTop())
+    else if (resizingTop() && !mMirrorY || resizingBottom() && mMirrorY)
     {
-        corners.push_back(movedBounds.topLeft());
-        corners.push_back(movedBounds.topRight());
+        corners.push_back(mCornerPoints[0] + moved);
+        corners.push_back(mCornerPoints[1] + moved);
     }
-    else if (resizingBottom())
+    else if (resizingBottom() && !mMirrorY || resizingTop() && mMirrorY)
     {
-        corners.push_back(movedBounds.bottomLeft());
-        corners.push_back(movedBounds.bottomRight());
+        corners.push_back(mCornerPoints[2] + moved);
+        corners.push_back(mCornerPoints[3] + moved);
     }
     else if (resizingBottomRight())
     {
-        corners.push_back(movedBounds.bottomRight());
+        corners.push_back(mCornerPoints[3] + moved);
     }
 
     UBGraphicsScene* ubscene = dynamic_cast<UBGraphicsScene*>(scene());
