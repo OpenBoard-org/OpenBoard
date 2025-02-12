@@ -193,7 +193,7 @@ void UBBoardController::initBackgroundGridSize()
     //qDebug() << "grid size: " << gridSize;
 }
 
-int UBBoardController::currentPage()
+int UBBoardController::currentPage() const
 {
     return mActiveSceneIndex + 1;
 }
@@ -534,7 +534,7 @@ void UBBoardController::setToolbarTexts()
 }
 
 
-QString UBBoardController::truncate(QString text, int maxWidth)
+QString UBBoardController::truncate(QString text, int maxWidth) const
 {
     QFontMetricsF fontMetrics(mMainWindow->font());
     return fontMetrics.elidedText(text, Qt::ElideRight, maxWidth);
@@ -550,7 +550,6 @@ void UBBoardController::stylusToolDoubleClicked(int tool)
     else if (tool == UBStylusTool::Hand)
     {
         centerRestore();
-        mActiveScene->setLastCenter(QPointF(0,0));
     }
 }
 
@@ -853,8 +852,7 @@ void UBBoardController::clearScene()
     {
         freezeW3CWidgets(true);
         mActiveScene->clearContent(UBGraphicsScene::clearItemsAndAnnotations);
-        mActiveScene->setLastCenter(QPointF(0,0));
-        mControlView->centerOn(mActiveScene->lastCenter());
+        centerRestore();
         updateActionStates();
     }
 }
@@ -959,7 +957,6 @@ void UBBoardController::zoomRestore()
     centerRestore();
 
     emit zoomChanged(1.0);
-    UBApplication::applicationController->adjustDisplayView();
 
     emit controlViewportChanged();
     mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
@@ -968,41 +965,66 @@ void UBBoardController::zoomRestore()
 
 void UBBoardController::centerRestore()
 {
-    centerOn(QPointF(0,0));
+    // reset transformation and scrollbar values
+    centerOn({0, 0});
+    mControlView->centerOn({0, 0});
+
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    // workaround: foreground not repainted after scrolling on Qt5 (fixed in Qt6)
+    // setForegroundBrush internally invokes the private function uopdateAll() unconditionally
+    mControlView->setForegroundBrush(mControlView->foregroundBrush());
+#endif
+
+    persistViewPositionOnCurrentScene();
+    UBApplication::applicationController->adjustDisplayView();
 }
 
 
-void UBBoardController::centerOn(QPointF scenePoint)
+void UBBoardController::centerOn(QPointF scenePoint) const
 {
-    // workaround: foreground not repainted after centerOn on Qt5 (fixed in Qt6)
-    QPointF offset{1, 1};
-    mControlView->centerOn(scenePoint - offset);
-    mControlView->translate(offset.x(), offset.y());
-    UBApplication::applicationController->adjustDisplayView();
+    // centerOn without using scroll bars
+    const auto before = mControlView->transform();
+
+    // create a transformation with the same scaling where the scenePoint is in the center
+    QTransform after;
+    after.scale(before.m11(), before.m22());
+    after.translate(-scenePoint.x(), -scenePoint.y());
+    mControlView->setTransform(after);
+
+    if (UBApplication::applicationController)
+    {
+        UBApplication::applicationController->adjustDisplayView();
+    }
 }
 
 
 void UBBoardController::zoom(const qreal ratio, QPointF scenePoint)
 {
-
-    QPointF viewCenter = mControlView->mapToScene(QRect(0, 0, mControlView->width(), mControlView->height()).center());
-    QPointF offset = scenePoint - viewCenter;
-    QPointF scalledOffset = offset / ratio;
-
-    qreal currentZoom = ratio * mControlView->viewportTransform().m11() / mSystemScaleFactor;
-
+    qreal currentZoom = ratio * mControlView->transform().m11() / mSystemScaleFactor;
     qreal usedRatio = ratio;
+
     if (currentZoom > UB_MAX_ZOOM)
     {
         currentZoom = UB_MAX_ZOOM;
-        usedRatio = currentZoom * mSystemScaleFactor / mControlView->viewportTransform().m11();
+        usedRatio = currentZoom * mSystemScaleFactor / mControlView->transform().m11();
     }
 
+    /*
+     * The shiftFactor is calculated from the condition that the scenePoint should have the
+     * same coordinates on the view after zooming. Let m11, m31 be the transformation parameters
+     * before zoom and m11', m31' the parameters after zoom. The equations for scenePoint.x:
+     *   m11' = m11 * ratio
+     *   x * m11 + m31 = x * m11' + m31'
+     * We now solve this equation to get the additional translation m31' - m31:
+     *   m31' - m31 = x * (m11 - m11')
+     *              = x * m11 * (1 - ratio)
+     *              = x * m11' * (1 - ratio) / ratio
+     * The translate function works in scene coordinates and multiplies its parameter internally
+     * by the scale factor m11', so we omit this factor in the function call below.
+     */
+    const auto shiftFactor = (1 - usedRatio) / usedRatio;
     mControlView->scale(usedRatio, usedRatio);
-
-    QPointF newCenter = scenePoint - scalledOffset;
-
-    mControlView->centerOn(newCenter);
+    mControlView->translate(scenePoint.x() * shiftFactor, scenePoint.y() * shiftFactor);
 
     emit zoomChanged(currentZoom);
     UBApplication::applicationController->adjustDisplayView();
@@ -1022,12 +1044,37 @@ void UBBoardController::handScroll(qreal dx, qreal dy)
     emit controlViewportChanged();
 }
 
-void UBBoardController::persistViewPositionOnCurrentScene()
+void UBBoardController::persistViewPositionOnCurrentScene() const
 {
-    QRect rect = mControlView->rect();
-    QPoint center(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
-    QPointF viewRelativeCenter = mControlView->mapToScene(center);
-    mActiveScene->setLastCenter(viewRelativeCenter);
+    if (mActiveScene)
+    {
+        // calculate center from transformation
+        const QPointF viewRelativeCenter = mControlView->transform().inverted().map(QPointF{0, 0});
+        UBGraphicsScene::SceneViewState viewState
+        {
+            mControlView->transform().m11() / mSystemScaleFactor,
+            mControlView->horizontalScrollBar()->value(),
+            mControlView->verticalScrollBar()->value(),
+            viewRelativeCenter
+        };
+
+        mActiveScene->setViewState(viewState);
+    }
+}
+
+void UBBoardController::restoreViewPositionOnCurrentScene() const
+{
+    if (mActiveScene)
+    {
+        const auto viewState = mActiveScene->viewState();
+        mControlView->horizontalScrollBar()->setValue(viewState.horizontalPosition);
+        mControlView->verticalScrollBar()->setValue(viewState.verticalPostition);
+        QTransform transform;
+        double scale = viewState.zoomFactor * mSystemScaleFactor;
+        transform.scale(scale, scale);
+        mControlView->setTransform(transform);
+        centerOn(viewState.mLastSceneCenter);
+    }
 }
 
 void UBBoardController::previousScene()
@@ -1035,9 +1082,7 @@ void UBBoardController::previousScene()
     if (mActiveSceneIndex > 0)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        persistViewPositionOnCurrentScene();
         setActiveDocumentScene(mActiveSceneIndex - 1);
-        centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -1050,11 +1095,7 @@ void UBBoardController::nextScene()
     if (mActiveSceneIndex < selectedDocument()->pageCount() - 1)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        persistViewPositionOnCurrentScene();
-
         setActiveDocumentScene(mActiveSceneIndex + 1);
-        centerOn(mActiveScene->lastCenter());
-
         QApplication::restoreOverrideCursor();
     }
 
@@ -1067,11 +1108,7 @@ void UBBoardController::firstScene()
     if (mActiveSceneIndex > 0)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        persistViewPositionOnCurrentScene();
-
         setActiveDocumentScene(0);
-
-        centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -1084,9 +1121,7 @@ void UBBoardController::lastScene()
     if (mActiveSceneIndex < selectedDocument()->pageCount() - 1)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        persistViewPositionOnCurrentScene();
         setActiveDocumentScene(selectedDocument()->pageCount() - 1);
-        centerOn(mActiveScene->lastCenter());
         QApplication::restoreOverrideCursor();
     }
 
@@ -1567,7 +1602,7 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(int p
 std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const int pSceneIndex, bool forceReload, bool onImport)
 {
     UBApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    saveViewState();
+    persistViewPositionOnCurrentScene();
 
     bool documentChange = selectedDocument() != pDocumentProxy;
 
@@ -1777,7 +1812,7 @@ void UBBoardController::adjustDisplayViews()
 }
 
 
-int UBBoardController::autosaveTimeoutFromSettings()
+int UBBoardController::autosaveTimeoutFromSettings() const
 {
     int value = UBSettings::settings()->autoSaveInterval->get().toInt();
     int minute = 60 * 1000;
@@ -2033,10 +2068,10 @@ void UBBoardController::colorPaletteChanged()
 }
 
 
-qreal UBBoardController::currentZoom()
+qreal UBBoardController::currentZoom() const
 {
     if (mControlView)
-        return mControlView->viewportTransform().m11() / mSystemScaleFactor;
+        return mControlView->transform().m11() / mSystemScaleFactor;
     else
         return 1.0;
 }
@@ -2074,12 +2109,11 @@ void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool force
 
 void UBBoardController::updateSystemScaleFactor()
 {
-    qreal newScaleFactor = 1.0;
-
     if (mActiveScene)
     {
+        qreal newScaleFactor = 1.0;
         QSize pageNominalSize = mActiveScene->nominalSize();
-        //we're going to keep scale factor untouched if the size is custom
+        // disabled: we're going to keep scale factor untouched if the size is custom
         QMap<DocumentSizeRatio::Enum, QSize> sizesMap = UBSettings::settings()->documentSizes;
       //  if(pageNominalSize == sizesMap.value(DocumentSizeRatio::Ratio16_9) || pageNominalSize == sizesMap.value(DocumentSizeRatio::Ratio4_3))
         {
@@ -2088,22 +2122,18 @@ void UBBoardController::updateSystemScaleFactor()
 
             newScaleFactor = qMin(hFactor, vFactor);
         }
+
+        if (mSystemScaleFactor != newScaleFactor)
+            mSystemScaleFactor = newScaleFactor;
+
+        restoreViewPositionOnCurrentScene();
+        mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());
     }
-
-    if (mSystemScaleFactor != newScaleFactor)
-        mSystemScaleFactor = newScaleFactor;
-
-    UBGraphicsScene::SceneViewState viewState = mActiveScene->viewState();
-
-    QTransform scalingTransform;
-
-    qreal scaleFactor = viewState.zoomFactor * mSystemScaleFactor;
-    scalingTransform.scale(scaleFactor, scaleFactor);
-
-    mControlView->setTransform(scalingTransform);
-    mControlView->horizontalScrollBar()->setValue(viewState.horizontalPosition);
-    mControlView->verticalScrollBar()->setValue(viewState.verticalPostition);
-    mActiveScene->setBackgroundZoomFactor(mControlView->transform().m11());}
+    else
+    {
+        mSystemScaleFactor = 1.0;
+    }
+}
 
 
 void UBBoardController::setWidePageSize(bool checked)
@@ -2142,7 +2172,7 @@ void UBBoardController::setPageSize(QSize newSize)
     {
         mActiveScene->setNominalSize(newSize);
 
-        saveViewState();
+        persistViewPositionOnCurrentScene();
 
         updateSystemScaleFactor();
         updatePageSizeState();
@@ -2178,17 +2208,6 @@ void UBBoardController::updatePageSizeState()
     }
 }
 
-
-void UBBoardController::saveViewState()
-{
-    if (mActiveScene)
-    {
-        mActiveScene->setViewState(UBGraphicsScene::SceneViewState(currentZoom(),
-                                                                   mControlView->horizontalScrollBar()->value(),
-                                                                   mControlView->verticalScrollBar()->value(),
-                                                                   mActiveScene->lastCenter()));
-    }
-}
 
 void UBBoardController::stylusToolChanged(int tool)
 {

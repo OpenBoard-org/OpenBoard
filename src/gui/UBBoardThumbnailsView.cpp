@@ -207,7 +207,6 @@ void UBBoardThumbnailsView::mousePressEvent(QMouseEvent *event)
         UBApplication::boardController->persistViewPositionOnCurrentScene();
         UBApplication::boardController->persistCurrentScene();
         UBApplication::boardController->setActiveDocumentScene(item->sceneIndex());
-        UBApplication::boardController->centerOn(UBApplication::boardController->activeScene()->lastCenter());
     }
 
     mLongPressTimer.start();
