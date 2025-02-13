@@ -1,4 +1,6 @@
 target_sources(openboard PRIVATE
+    UBBackgroundLoader.cpp
+    UBBackgroundLoader.h
     UBBase32.cpp
     UBBase32.h
     UBCoreGraphicsScene.cpp
