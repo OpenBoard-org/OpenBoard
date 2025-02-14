@@ -47,6 +47,7 @@ public:
 
     static QPixmap get(std::shared_ptr<UBDocumentProxy> proxy, int index);
     static void load(std::shared_ptr<UBDocumentProxy> proxy, QList<std::shared_ptr<QPixmap>>& list);
+    static QPixmap generateMissingThumbnail(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
 
 private:
     static void generateMissingThumbnails(std::shared_ptr<UBDocumentProxy> proxy);

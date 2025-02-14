@@ -6,6 +6,7 @@ HEADERS      += src/frameworks/UBGeometryUtils.h \
                 src/frameworks/UBVersion.h \
                 src/frameworks/UBCoreGraphicsScene.h \
                 src/frameworks/UBCryptoUtils.h \
+                src/frameworks/UBBackgroundLoader.h \
                 src/frameworks/UBBase32.h
 
 SOURCES      += src/frameworks/UBGeometryUtils.cpp \
@@ -15,6 +16,7 @@ SOURCES      += src/frameworks/UBGeometryUtils.cpp \
                 src/frameworks/UBVersion.cpp \
                 src/frameworks/UBCoreGraphicsScene.cpp \
                 src/frameworks/UBCryptoUtils.cpp \
+                src/frameworks/UBBackgroundLoader.cpp \
                 src/frameworks/UBBase32.cpp
 
 

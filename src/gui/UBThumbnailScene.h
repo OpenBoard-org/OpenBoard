@@ -28,6 +28,7 @@
 #include "core/UBSettings.h"
 
 // forward
+class UBBackgroundLoader;
 class UBDocument;
 class UBGraphicsScene;
 class UBThumbnail;
@@ -76,4 +77,5 @@ private:
     UBDocument* mDocument{nullptr};
     QList<UBThumbnail*> mThumbnailItems{};
     int mThumbnailWidth{UBSettings::defaultThumbnailWidth};
+    UBBackgroundLoader* mLoader{nullptr};
 };

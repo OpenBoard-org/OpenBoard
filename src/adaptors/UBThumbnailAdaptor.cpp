@@ -83,6 +83,27 @@ void UBThumbnailAdaptor::generateMissingThumbnails(std::shared_ptr<UBDocumentPro
     }
 }
 
+QPixmap UBThumbnailAdaptor::generateMissingThumbnail(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex)
+{
+    QString thumbFileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
+
+    QFile thumbFile(thumbFileName);
+
+    if (!thumbFile.exists())
+    {
+        std::shared_ptr<UBGraphicsScene> scene = UBSvgSubsetAdaptor::loadScene(proxy, pageIndex);
+
+        if (scene)
+        {
+            persistScene(proxy, scene, pageIndex);
+        }
+    }
+
+    QPixmap pix;
+    pix.load(thumbFileName);
+    return pix;
+}
+
 QPixmap UBThumbnailAdaptor::get(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex)
 {
     QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", pageIndex);
