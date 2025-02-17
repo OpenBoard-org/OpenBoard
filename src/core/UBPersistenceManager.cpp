@@ -756,7 +756,7 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::duplicateDocument(std::sh
 
     persistDocumentMetadata(copy);
 
-    copy->setPageCount(sceneCount(copy));
+    copy->setPageCount(copy->pageCount());
 
     emit documentCreated(copy);
 
@@ -769,7 +769,7 @@ void UBPersistenceManager::deleteDocumentScenes(std::shared_ptr<UBDocumentProxy>
 {
     checkIfDocumentRepositoryExists();
 
-    int pageCount = UBPersistenceManager::persistenceManager()->sceneCount(proxy);
+    int pageCount = proxy->pageCount();
 
     QList<int> compactedIndexes;
 
@@ -858,9 +858,7 @@ void UBPersistenceManager::duplicateDocumentScene(std::shared_ptr<UBDocumentProx
 {
     checkIfDocumentRepositoryExists();
 
-    int pageCount = UBPersistenceManager::persistenceManager()->sceneCount(proxy);
-
-    for (int i = pageCount; i > index + 1; i--)
+    for (int i = proxy->pageCount(); i > index + 1; i--)
     {
         renamePage(proxy, i - 1 , i);
 
@@ -1023,7 +1021,7 @@ void UBPersistenceManager::insertDocumentSceneAt(std::shared_ptr<UBDocumentProxy
 {
     scene->setDocument(proxy);
 
-    int count = sceneCount(proxy);
+    int count = proxy->pageCount();
 
     for(int i = count - 1; i >= index; i--)
     {
@@ -1284,7 +1282,7 @@ bool UBPersistenceManager::addDirectoryContentToDocument(const QString& document
                 return false;
     }
 
-    pDocument->setPageCount(sceneCount(pDocument));
+    pDocument->setPageCount(pDocument->pageCount());
 
     //issue NC - NNE - 20131213 : At this point, all is well done.
     return true;
