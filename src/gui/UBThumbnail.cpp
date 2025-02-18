@@ -45,6 +45,9 @@ UBThumbnail::UBThumbnail()
     // accept hover to show/hide UI buttons
     setAcceptHoverEvents(true);
 
+    // make it selectable
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+
     // arrange child items behind the transparent parent
     mPixmapItem->setFlag(QGraphicsItem::ItemStacksBehindParent);
     mTextItem->setFlag(QGraphicsItem::ItemStacksBehindParent);

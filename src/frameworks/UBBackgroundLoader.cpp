@@ -44,6 +44,12 @@ UBBackgroundLoader::~UBBackgroundLoader()
     wait();
 }
 
+bool UBBackgroundLoader::isIdle()
+{
+    QMutexLocker lock{&mMutex};
+    return mPaths.empty() && mResults.empty();
+}
+
 bool UBBackgroundLoader::isResultAvailable()
 {
     QMutexLocker lock{&mMutex};

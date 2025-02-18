@@ -858,6 +858,13 @@ void UBPersistenceManager::duplicateDocumentScene(std::shared_ptr<UBDocumentProx
 {
     checkIfDocumentRepositoryExists();
 
+    auto scene = mSceneCache.value(proxy, index);
+
+    if (scene && scene->isModified())
+    {
+        persistDocumentScene(proxy, scene, index, false, true);
+    }
+
     for (int i = proxy->pageCount(); i > index + 1; i--)
     {
         renamePage(proxy, i - 1 , i);
@@ -869,7 +876,7 @@ void UBPersistenceManager::duplicateDocumentScene(std::shared_ptr<UBDocumentProx
     copyPage(proxy, index , index + 1);
 
     //TODO: write a proper way to handle object on disk
-    std::shared_ptr<UBGraphicsScene> scene = loadDocumentScene(proxy, index + 1);
+    scene = loadDocumentScene(proxy, index + 1);
 
     foreach(QGraphicsItem* item, scene->items())
     {
