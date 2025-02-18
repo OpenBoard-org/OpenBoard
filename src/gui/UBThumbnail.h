@@ -55,8 +55,6 @@ public:
     int row() const;
 
     void setPageScene(std::shared_ptr<UBGraphicsScene> pageScene);
-    void setExposed(bool exposed);
-    bool isExposed() const;
     void setDeletable(bool deletable);
 
     void updatePixmap(const QRectF& region = QRectF());
@@ -81,7 +79,6 @@ private:
     int mColumn{0};
     int mRow{0};
     std::weak_ptr<UBGraphicsScene> mPageScene{}; // weak, don't keep the scene from being deleted
-    bool mExposed{false};
     QTransform mTransform{};
     bool mEditable{false};
     bool mDeletable{true};

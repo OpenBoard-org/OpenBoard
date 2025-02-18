@@ -80,8 +80,6 @@ signals:
     void moveThumbnailRequired(int from, int to);
 
 private:
-    void updateExposure();
-
     std::shared_ptr<UBDocument> mDocument;
 
     int mThumbnailWidth;

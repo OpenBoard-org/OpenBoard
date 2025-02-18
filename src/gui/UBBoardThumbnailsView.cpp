@@ -165,19 +165,6 @@ void UBBoardThumbnailsView::updateActiveThumbnail(int newActiveIndex)
     update();
 }
 
-void UBBoardThumbnailsView::updateExposure()
-{
-    QRect viewportRect(QPoint(0, 0), viewport()->size());
-    QRectF visibleSceneRect = mapToScene(viewportRect).boundingRect();
-
-    int index = 0;
-
-    while (auto thumbnail = mDocument->thumbnailScene()->thumbnailAt(index++))
-    {
-        thumbnail->setExposed(visibleSceneRect.intersects(thumbnail->sceneBoundingRect()));
-    }
-}
-
 void UBBoardThumbnailsView::resizeEvent(QResizeEvent *event)
 {
     bool scrollbarWasHidden = mScrollbarVisible && !verticalScrollBar()->isVisible();
@@ -275,7 +262,6 @@ void UBBoardThumbnailsView::mouseReleaseEvent(QMouseEvent *event)
 void UBBoardThumbnailsView::scrollContentsBy(int dx, int dy)
 {
     QGraphicsView::scrollContentsBy(dx, dy);
-    updateExposure();
 }
 
 void UBBoardThumbnailsView::dragEnterEvent(QDragEnterEvent *event)

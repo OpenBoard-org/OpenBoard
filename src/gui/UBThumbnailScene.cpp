@@ -317,7 +317,7 @@ void UBThumbnailScene::reloadThumbnail(int pageIndex)
     {
         auto thumbnail = mThumbnailItems.at(pageIndex);
 
-        if (thumbnail && !thumbnail->isExposed())
+        if (thumbnail)
         {
             thumbnail->setPixmap(UBThumbnailAdaptor::get(mDocument->proxy(), pageIndex));
         }
