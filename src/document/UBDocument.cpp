@@ -59,10 +59,14 @@ void UBDocument::deletePages(QList<int> indexes)
     for (int i = indexes.size() - 1; i >= 0; --i)
     {
         mThumbnailScene->deleteThumbnail(indexes.at(i), false);
+        emit UBPersistenceManager::persistenceManager()->documentSceneDeleted(mProxy, i);
     }
 
     mThumbnailScene->renumberThumbnails(indexes.first());
     mThumbnailScene->arrangeThumbnails(indexes.first());
+
+    QDateTime now = QDateTime::currentDateTime();
+    mProxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
 }
 
 void UBDocument::duplicatePage(int index)
@@ -70,12 +74,18 @@ void UBDocument::duplicatePage(int index)
     UBPersistenceManager::persistenceManager()->duplicateDocumentScene(mProxy, index);
 
     mThumbnailScene->insertThumbnail(index + 1);
+
+    QDateTime now = QDateTime::currentDateTime();
+    mProxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
+
+    emit UBPersistenceManager::persistenceManager()->documentSceneSelected(mProxy, index + 1);
 }
 
 void UBDocument::movePage(int fromIndex, int toIndex)
 {
     UBPersistenceManager::persistenceManager()->moveSceneToIndex(mProxy, fromIndex, toIndex);
     mThumbnailScene->moveThumbnail(fromIndex, toIndex);
+    emit UBPersistenceManager::persistenceManager()->documentSceneSelected(mProxy, toIndex);
 }
 
 void UBDocument::copyPage(int fromIndex, std::shared_ptr<UBDocumentProxy> to, int toIndex)

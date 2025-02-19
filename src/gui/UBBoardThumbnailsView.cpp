@@ -183,10 +183,18 @@ void UBBoardThumbnailsView::resizeEvent(QResizeEvent *event)
 
 void UBBoardThumbnailsView::mousePressEvent(QMouseEvent *event)
 {
+    // first ask the thumbnails to process the event for the UI buttons
     QGraphicsView::mousePressEvent(event);
 
     mLastPressedMousePos = event->pos();
 
+    // do not process event if it was no one of the UI buttons
+    if (event->isAccepted())
+    {
+        return;
+    }
+
+    // select page at event position
     UBThumbnail* item = dynamic_cast<UBThumbnail*>(itemAt(event->pos()));
 
     if (item && item->sceneIndex() != UBApplication::boardController->activeSceneIndex())

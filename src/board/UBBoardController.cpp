@@ -145,6 +145,10 @@ void UBBoardController::init()
     connect(UBDownloadManager::downloadManager(), SIGNAL(downloadModalFinished()), this, SLOT(onDownloadModalFinished()));
     connect(UBDownloadManager::downloadManager(), SIGNAL(addDownloadedFileToBoard(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool)), this, SLOT(downloadFinished(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool)));
 
+    auto persistenceManager{UBPersistenceManager::persistenceManager()};
+    connect(persistenceManager, &UBPersistenceManager::documentSceneSelected, this, &UBBoardController::documentSceneSelected);
+    connect(persistenceManager, &UBPersistenceManager::documentSceneDeleted, this, &UBBoardController::documentSceneDeleted);
+
     std::shared_ptr<UBDocumentProxy> doc = UBPersistenceManager::persistenceManager()->createNewDocument();
 
     if (doc)
@@ -485,6 +489,29 @@ void UBBoardController::saveData(SaveFlags fls)
     }
     if (verbose) {
         UBApplication::showMessage(tr("Document has just been saved..."));
+    }
+}
+
+void UBBoardController::documentSceneSelected(std::shared_ptr<UBDocumentProxy> proxy, int index)
+{
+    if (selectedDocument() == proxy)
+    {
+        setActiveDocumentScene(index);
+    }
+}
+
+void UBBoardController::documentSceneDeleted(std::shared_ptr<UBDocumentProxy> proxy, int index)
+{
+    if (selectedDocument() == proxy)
+    {
+        if (index <= currentPage())
+        {
+            setActiveDocumentScene(currentPage() - 1);
+        }
+        else
+        {
+            setActiveDocumentScene(currentPage());
+        }
     }
 }
 

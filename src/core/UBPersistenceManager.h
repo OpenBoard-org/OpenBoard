@@ -163,6 +163,10 @@ class UBPersistenceManager : public QObject
 
         void documentSceneCreated(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pIndex);
 
+        // The following signals are emitted in UBDocument
+        void documentSceneSelected(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pIndex);
+        void documentSceneDeleted(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pIndex);
+
 private:
         int sceneCount(const std::shared_ptr<UBDocumentProxy> pDocumentProxy);
         static QStringList getSceneFileNames(const QString& folder);

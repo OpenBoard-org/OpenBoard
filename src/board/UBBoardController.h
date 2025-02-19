@@ -254,7 +254,8 @@ class UBBoardController : public UBDocumentContainer
 
         void saveData(SaveFlags fls = sf_none);
 
-        //void regenerateThumbnails();
+        void documentSceneSelected(std::shared_ptr<UBDocumentProxy> proxy, int index);
+        void documentSceneDeleted(std::shared_ptr<UBDocumentProxy> proxy, int index);
 
     signals:
         void newPageAdded();

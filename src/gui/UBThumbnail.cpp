@@ -273,11 +273,17 @@ void UBThumbnail::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
             // deleting must be performed later, don't kill yourself
             QTimer::singleShot(0, [this, thumbnailScene]() { thumbnailScene->document()->deletePages({mIndex}); });
+            return;
         }
         else if (getIcon("duplicate")->triggered(p))
         {
             event->accept();
             thumbnailScene->document()->duplicatePage(mIndex);
+            return;
+        }
+        else
+        {
+            event->ignore();
         }
     }
 

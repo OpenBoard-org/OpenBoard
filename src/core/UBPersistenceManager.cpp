@@ -858,11 +858,13 @@ void UBPersistenceManager::duplicateDocumentScene(std::shared_ptr<UBDocumentProx
 {
     checkIfDocumentRepositoryExists();
 
-    auto scene = mSceneCache.value(proxy, index);
+    auto scene = UBApplication::boardController->activeScene();
 
-    if (scene && scene->isModified())
+    // save modified scene of the same document
+    if (scene && scene->document() == proxy && scene->isModified())
     {
-        persistDocumentScene(proxy, scene, index, false, true);
+        auto page = UBApplication::boardController->activeSceneIndex();
+        persistDocumentScene(proxy, scene, page, false, true);
     }
 
     for (int i = proxy->pageCount(); i > index + 1; i--)
@@ -870,7 +872,6 @@ void UBPersistenceManager::duplicateDocumentScene(std::shared_ptr<UBDocumentProx
         renamePage(proxy, i - 1 , i);
 
         mSceneCache.moveScene(proxy, i - 1, i);
-
     }
 
     copyPage(proxy, index , index + 1);
@@ -953,7 +954,7 @@ void UBPersistenceManager::duplicateDocumentScene(std::shared_ptr<UBDocumentProx
 
     proxy->incPageCount();
 
-    persistDocumentScene(proxy,scene, index + 1);
+    persistDocumentScene(proxy,scene, index + 1, false, true);
 
     persistDocumentMetadata(proxy);
 
