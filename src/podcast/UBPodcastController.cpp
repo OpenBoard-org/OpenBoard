@@ -276,21 +276,25 @@ void UBPodcastController::start()
         QSize recommendedSize(1024, 768);
 
         int fullBitRate = UBSettings::settings()->podcastWindowsMediaBitsPerSecond->get().toInt();
+        int maxFramesPerSecond = UBSettings::settings()->podcastFramesPerSecond->get().toInt();
 
         if (mSmallVideoSizeAction && mSmallVideoSizeAction->isChecked())
         {
             recommendedSize = QSize(640, 480);
             mVideoBitsPerSecondAtStart = fullBitRate / 4;
+            mVideoFramesPerSecondAtStart = maxFramesPerSecond / 4;
         }
         else if (mMediumVideoSizeAction && mMediumVideoSizeAction->isChecked())
         {
             recommendedSize = QSize(1024, 768);
             mVideoBitsPerSecondAtStart = fullBitRate / 2;
+            mVideoFramesPerSecondAtStart = maxFramesPerSecond / 2;
         }
         else if (mFullVideoSizeAction && mFullVideoSizeAction->isChecked())
         {
             recommendedSize = UBApplication::boardController->controlView()->size();
             mVideoBitsPerSecondAtStart = fullBitRate;
+            mVideoFramesPerSecondAtStart = maxFramesPerSecond;
         }
 
         QSize scaledboardSize = UBApplication::boardController->controlView()->size();
