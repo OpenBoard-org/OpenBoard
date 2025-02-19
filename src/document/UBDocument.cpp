@@ -78,18 +78,6 @@ void UBDocument::movePage(int fromIndex, int toIndex)
     mThumbnailScene->moveThumbnail(fromIndex, toIndex);
 }
 
-void UBDocument::copyPage(int fromIndex, std::shared_ptr<UBDocumentProxy> to, int toIndex)
-{
-    UBPersistenceManager::persistenceManager()->copyDocumentScene(mProxy, fromIndex, to, toIndex);
-
-    const auto toDocument = findDocument(to);
-
-    if (toDocument)
-    {
-        toDocument->mThumbnailScene->insertThumbnail(toIndex);
-    }
-}
-
 void UBDocument::insertPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool persist, bool deleting)
 {
     UBPersistenceManager::persistenceManager()->insertDocumentSceneAt(mProxy, scene, index, persist, deleting);
