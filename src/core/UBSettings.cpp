@@ -425,7 +425,7 @@ void UBSettings::init()
     exportBackgroundGrid = new UBSetting(this, "PDF", "ExportBackgroundGrid", false);
     exportBackgroundColor = new UBSetting(this, "PDF", "ExportBackgroundColor", false);
 
-    podcastFramesPerSecond = new UBSetting(this, "Podcast", "FramesPerSecond", 10);
+    podcastFramesPerSecond = new UBSetting(this, "Podcast", "FramesPerSecond", 100);
     podcastVideoSize = new UBSetting(this, "Podcast", "VideoSize", "Medium");
     podcastAudioRecordingDevice = new UBSetting(this, "Podcast", "AudioRecordingDevice", "Default");
 
