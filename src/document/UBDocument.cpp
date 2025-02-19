@@ -69,7 +69,7 @@ void UBDocument::duplicatePage(int index)
 {
     UBPersistenceManager::persistenceManager()->duplicateDocumentScene(mProxy, index);
 
-    mThumbnailScene->insertThumbnail(index);
+    mThumbnailScene->insertThumbnail(index + 1);
 }
 
 void UBDocument::movePage(int fromIndex, int toIndex)

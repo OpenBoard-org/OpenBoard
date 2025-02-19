@@ -33,6 +33,7 @@
 
 UBThumbnailScene::UBThumbnailScene(UBDocument* document)
     : mDocument{document}
+    , mThumbnailItems{document->proxy()->pageCount()}
 {
 }
 
@@ -82,20 +83,22 @@ void UBThumbnailScene::arrangeThumbnails(int fromIndex, int toIndex)
     for (int i = fromIndex; i < toIndex; ++i)
     {
         auto thumbnail = mThumbnailItems.at(i);
-        thumbnail->setThumbnailSize(thumbnailSize);
-        thumbnail->setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-        thumbnail->setColumn(columnIndex);
-        thumbnail->setRow(rowIndex);
+        if (thumbnail)
+        {
+            thumbnail->setThumbnailSize(thumbnailSize);
+            thumbnail->setColumn(columnIndex);
+            thumbnail->setRow(rowIndex);
 
-        // start with a margin left
-        // step by width + spacing
-        // start with margin top
-        // step by height including label + spacing
-        const auto posX = margins.left() + columnIndex * gridSize.width() + horizontalCenterOffset;
-        const auto posY = margins.top() + rowIndex * gridSize.height();
+            // start with a margin left
+            // step by width + spacing
+            // start with margin top
+            // step by height including label + spacing
+            const auto posX = margins.left() + columnIndex * gridSize.width() + horizontalCenterOffset;
+            const auto posY = margins.top() + rowIndex * gridSize.height();
 
-        thumbnail->setPos(posX, posY);
+            thumbnail->setPos(posX, posY);
+        }
 
         if (++columnIndex >= nbColumns)
         {
@@ -130,7 +133,7 @@ void UBThumbnailScene::hightlightItem(int index, bool only)
 
     if (index >= 0 && index < mThumbnailItems.size())
     {
-        mThumbnailItems.at(index)->setSelected(true);
+        thumbnailAt(index)->setSelected(true);
     }
 }
 
@@ -139,10 +142,24 @@ int UBThumbnailScene::thumbnailCount() const
     return mThumbnailItems.size();
 }
 
-UBThumbnail* UBThumbnailScene::thumbnailAt(int index) const
+UBThumbnail* UBThumbnailScene::thumbnailAt(int index)
 {
     if (index >= 0 && index < mThumbnailItems.size())
     {
+        if (!mThumbnailItems.at(index))
+        {
+            // create the missing thumbnail
+            auto thumbnailItem = new UBThumbnail;
+
+            thumbnailItem->setPixmap(UBThumbnailAdaptor::get(mDocument->proxy(), index));
+            thumbnailItem->setSceneIndex(index);
+
+            mThumbnailItems[index] = thumbnailItem;
+            addItem(thumbnailItem);
+
+            arrangeThumbnails(index, index + 1);
+        }
+
         return mThumbnailItems.at(index);
     }
 
@@ -150,12 +167,11 @@ UBThumbnail* UBThumbnailScene::thumbnailAt(int index) const
 }
 
 /**
- * @brief (Re-)create all thumbnails for this scene.
+ * @brief Create thumbnails for this scene.
  *
- * Already existing thumbnails are first removed from the scene and deleted.
- * Then all thumbnails for the document pages are asynchronously loaded and
- * positioned on the scene. The application remains responsive even while
- * loading thumbnails.
+ * Thumbnails for the document pages above startIndex are asynchronously
+ * loaded and positioned on the scene. The application remains responsive
+ * even while loading thumbnails.
  *
  * It is even possible to interact with the already loaded thumbnails during
  * the loading process. So the already loaded pages can be moved, copied,
@@ -164,13 +180,10 @@ UBThumbnail* UBThumbnailScene::thumbnailAt(int index) const
  */
 void UBThumbnailScene::createThumbnails(int startIndex)
 {
-    // delete current thumbnails above startIndex
-    for (int index = mThumbnailItems.size() - 1; index >= startIndex; --index)
+    // skip already loaded thumbnails
+    while (startIndex < mThumbnailItems.count() && mThumbnailItems.at(startIndex))
     {
-        auto item = mThumbnailItems.at(index);
-        removeItem(item);
-        mThumbnailItems.removeAt(index);
-        delete item;
+        ++startIndex;
     }
 
     // create the list of all thumbnail paths
@@ -187,6 +200,12 @@ void UBThumbnailScene::createThumbnails(int startIndex)
         // abort a running loader
         mLoader->abort();
         delete mLoader;
+        mLoader = nullptr;
+    }
+
+    if (paths.empty())
+    {
+        return;
     }
 
     mLoader = new UBBackgroundLoader{paths, this};
@@ -236,7 +255,7 @@ void UBThumbnailScene::insertThumbnail(int pageIndex, std::shared_ptr<UBGraphics
     if (mLoader)
     {
         // restart loading remaining thumbnails
-        createThumbnails(mThumbnailItems.size());
+        createThumbnails(pageIndex);
     }
 }
 
@@ -259,7 +278,7 @@ void UBThumbnailScene::deleteThumbnail(int pageIndex, bool rearrange)
     if (mLoader)
     {
         // restart loading remaining thumbnails
-        createThumbnails(mThumbnailItems.size());
+        createThumbnails(pageIndex);
     }
 
     if (mThumbnailItems.size() == 1)
@@ -288,7 +307,7 @@ void UBThumbnailScene::moveThumbnail(int fromIndex, int toIndex)
     if (mLoader)
     {
         // restart loading remaining thumbnails
-        createThumbnails(mThumbnailItems.size());
+        createThumbnails(fromIndex);
     }
 }
 
@@ -298,7 +317,7 @@ void UBThumbnailScene::reloadThumbnail(int pageIndex)
     {
         auto thumbnail = mThumbnailItems.at(pageIndex);
 
-        if (thumbnail && !thumbnail->isExposed())
+        if (thumbnail)
         {
             thumbnail->setPixmap(UBThumbnailAdaptor::get(mDocument->proxy(), pageIndex));
         }
@@ -334,7 +353,7 @@ void UBThumbnailScene::loadNextThumbnail()
     // max number of thumbnails to load in one pass
     constexpr int bulkSize{10};
 
-    if (mThumbnailItems.size() < mDocument->proxy()->pageCount())
+    if (!mLoader->isIdle())
     {
         if (UBApplication::isClosing)
         {
@@ -348,7 +367,7 @@ void UBThumbnailScene::loadNextThumbnail()
             return;
         }
 
-        const auto firstIndex = mThumbnailItems.size();
+        int firstIndex = -1;
 
         for (int i = 0; i < bulkSize; ++i)
         {
@@ -357,31 +376,43 @@ void UBThumbnailScene::loadNextThumbnail()
                 break;
             }
 
-            // take next result and determine index from current number of thumbnails and
-            // not from result, because pages may have been added or removed in the meantime
+            // take and process next result
             const auto result = mLoader->takeResult();
-            const auto nextIndex = mThumbnailItems.size();
-            QPixmap pixmap;
+            const auto index = result.first;
+            auto thumbnailItem = mThumbnailItems.at(index);
 
-            if (result.second.isEmpty())
+            if (!thumbnailItem)
             {
-                pixmap = UBThumbnailAdaptor::generateMissingThumbnail(mDocument->proxy(), nextIndex);
+                QPixmap pixmap;
+
+                if (result.second.isEmpty())
+                {
+                    pixmap = UBThumbnailAdaptor::generateMissingThumbnail(mDocument->proxy(), index);
+                }
+                else
+                {
+                    pixmap.loadFromData(result.second);
+                }
+
+                thumbnailItem = new UBThumbnail;
+
+                thumbnailItem->setPixmap(pixmap);
+                thumbnailItem->setSceneIndex(index);
+
+                mThumbnailItems[index] = thumbnailItem;
+                addItem(thumbnailItem);
+
+                if (firstIndex < 0)
+                {
+                    firstIndex = index;
+                }
             }
-            else
-            {
-                pixmap.loadFromData(result.second);
-            }
-
-            auto thumbnailItem = new UBThumbnail;
-
-            thumbnailItem->setPixmap(pixmap);
-            thumbnailItem->setSceneIndex(nextIndex);
-
-            mThumbnailItems << thumbnailItem;
-            addItem(thumbnailItem);
         }
 
-        arrangeThumbnails(firstIndex);
+        if (firstIndex >= 0)
+        {
+            arrangeThumbnails(firstIndex);
+        }
 
         // load next thumbnails in a deferred task executed on the main thread when it is idle.
         QTimer::singleShot(1, mLoader, [this]() { loadNextThumbnail(); });

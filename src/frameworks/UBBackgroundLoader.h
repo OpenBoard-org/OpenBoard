@@ -37,6 +37,7 @@ public:
     UBBackgroundLoader(QList<std::pair<int, QString>> paths, QObject* parent = nullptr);
     virtual ~UBBackgroundLoader();
 
+    bool isIdle();
     bool isResultAvailable();
     std::pair<int, QByteArray> takeResult();
 

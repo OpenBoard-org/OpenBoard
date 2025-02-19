@@ -57,7 +57,7 @@ public:
     void arrangeThumbnails(int fromIndex = 0, int toIndex = -1);
     void hightlightItem(int index, bool only = false);
     int thumbnailCount() const;
-    UBThumbnail* thumbnailAt(int index) const;
+    UBThumbnail* thumbnailAt(int index);
 
 protected:
     // only to be called from UBDocument

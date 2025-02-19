@@ -45,6 +45,9 @@ UBThumbnail::UBThumbnail()
     // accept hover to show/hide UI buttons
     setAcceptHoverEvents(true);
 
+    // make it selectable
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+
     // arrange child items behind the transparent parent
     mPixmapItem->setFlag(QGraphicsItem::ItemStacksBehindParent);
     mTextItem->setFlag(QGraphicsItem::ItemStacksBehindParent);
@@ -137,16 +140,6 @@ void UBThumbnail::setPageScene(std::shared_ptr<UBGraphicsScene> pageScene)
     adjustThumbnail();
 }
 
-void UBThumbnail::setExposed(bool exposed)
-{
-    mExposed = exposed;
-}
-
-bool UBThumbnail::isExposed() const
-{
-    return mExposed;
-}
-
 void UBThumbnail::setDeletable(bool deletable)
 {
     mDeletable = deletable;
@@ -156,7 +149,7 @@ void UBThumbnail::updatePixmap(const QRectF& region)
 {
     auto pageScene = mPageScene.lock();
 
-    if (pageScene && !mPixmapItem->pixmap().isNull() && mExposed)
+    if (pageScene && !mPixmapItem->pixmap().isNull())
     {
         QPixmap pixmap = this->pixmap();
         QRectF pixmapRect;
