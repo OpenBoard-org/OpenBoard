@@ -494,7 +494,8 @@ void UBBoardController::saveData(SaveFlags fls)
 
 void UBBoardController::documentSceneSelected(std::shared_ptr<UBDocumentProxy> proxy, int index)
 {
-    if (selectedDocument() == proxy)
+    if (UBApplication::applicationController->displayMode() == UBApplicationController::Board
+            && selectedDocument() == proxy)
     {
         setActiveDocumentScene(index);
     }
@@ -502,7 +503,8 @@ void UBBoardController::documentSceneSelected(std::shared_ptr<UBDocumentProxy> p
 
 void UBBoardController::documentSceneDeleted(std::shared_ptr<UBDocumentProxy> proxy, int index)
 {
-    if (selectedDocument() == proxy)
+    if (UBApplication::applicationController->displayMode() == UBApplicationController::Board
+            && selectedDocument() == proxy)
     {
         if (index <= currentPage())
         {
