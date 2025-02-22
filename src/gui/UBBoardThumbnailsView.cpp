@@ -183,6 +183,8 @@ void UBBoardThumbnailsView::resizeEvent(QResizeEvent *event)
 
 void UBBoardThumbnailsView::mousePressEvent(QMouseEvent *event)
 {
+    // remember currently selected item
+    auto selection = scene()->selectedItems();
     // first ask the thumbnails to process the event for the UI buttons
     QGraphicsView::mousePressEvent(event);
 
@@ -202,6 +204,16 @@ void UBBoardThumbnailsView::mousePressEvent(QMouseEvent *event)
         UBApplication::boardController->persistViewPositionOnCurrentScene();
         UBApplication::boardController->persistCurrentScene();
         UBApplication::boardController->setActiveDocumentScene(item->sceneIndex());
+    }
+    else if (item)
+    {
+        // just make sure it is selected
+        item->setSelected(true);
+    }
+    else if (!selection.isEmpty())
+    {
+        // keep previously selected item (may have been deselected during event forwarding)
+        selection.first()->setSelected(true);
     }
 
     mLongPressTimer.start();
@@ -265,6 +277,11 @@ void UBBoardThumbnailsView::mouseReleaseEvent(QMouseEvent *event)
     mLongPressTimer.stop();
 
     QGraphicsView::mouseReleaseEvent(event);
+}
+
+void UBBoardThumbnailsView::mouseDoubleClickEvent(QMouseEvent* event)
+{
+    // do not forward event to QGraphicsView to avoid change of selection
 }
 
 void UBBoardThumbnailsView::scrollContentsBy(int dx, int dy)

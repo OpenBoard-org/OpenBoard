@@ -503,16 +503,24 @@ void UBBoardController::documentSceneSelected(std::shared_ptr<UBDocumentProxy> p
 
 void UBBoardController::documentSceneDeleted(std::shared_ptr<UBDocumentProxy> proxy, int index)
 {
-    if (UBApplication::applicationController->displayMode() == UBApplicationController::Board
-            && selectedDocument() == proxy)
+    if (selectedDocument() == proxy)
     {
-        if (index <= currentPage())
+        int nextSceneIndex = mActiveSceneIndex;
+
+        if (index < mActiveSceneIndex || (index == mActiveSceneIndex && index == proxy->pageCount() && index > 0))
         {
-            setActiveDocumentScene(currentPage() - 1);
+            --nextSceneIndex;
+        }
+
+        if (UBApplication::applicationController->displayMode() == UBApplicationController::Board)
+        {
+            // directly change scene
+            setActiveDocumentScene(nextSceneIndex);
         }
         else
         {
-            setActiveDocumentScene(currentPage());
+            // just remember for the next time we switch to Board mode
+            setActiveSceneIndex(nextSceneIndex);
         }
     }
 }
@@ -2118,6 +2126,7 @@ void UBBoardController::hide()
 void UBBoardController::show()
 {
     UBApplication::mainWindow->actionLibrary->setChecked(false);
+    setActiveDocumentScene(mActiveSceneIndex);
 }
 
 void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool forceImmediateSave)

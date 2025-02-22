@@ -23,7 +23,10 @@
 #include "UBDocument.h"
 
 #include "adaptors/UBThumbnailAdaptor.h"
+#include "core/UBApplication.h"
 #include "core/UBPersistenceManager.h"
+#include "document/UBDocumentController.h"
+#include "gui/UBMainWindow.h"
 #include "gui/UBThumbnailScene.h"
 
 QList<std::weak_ptr<UBDocument>> UBDocument::sDocuments;
@@ -53,13 +56,39 @@ void UBDocument::deletePages(QList<int> indexes)
         return;
     }
 
+    bool accepted{false};
+
+    if (indexes.size() > 1)
+    {
+        accepted = UBApplication::mainWindow->yesNoQuestion(
+            UBDocumentController::tr("Moving %1 pages of the document \"%2\" to trash")
+                .arg(QString::number(indexes.size()), mProxy->name()),
+            UBDocumentController::tr("You are about to move %1 pages of the document \"%2\" to trash. Are you sure ?")
+                .arg(QString::number(indexes.size()), mProxy->name()),
+            QPixmap(":/images/trash-document-page.png"));
+    }
+    else
+    {
+        accepted = UBApplication::mainWindow->yesNoQuestion(
+            UBDocumentController::tr("Remove page %1").arg(indexes.at(0) + 1),
+            UBDocumentController::tr("You are about to remove page %1 of the document \"%2\". Are you sure ?")
+                .arg(indexes.at(0) + 1)
+                .arg(mProxy->name()),
+            QPixmap(":/images/trash-document-page.png"));
+    }
+
+    if (!accepted)
+    {
+        return;
+    }
+
     std::sort(indexes.begin(), indexes.end());
     UBPersistenceManager::persistenceManager()->deleteDocumentScenes(mProxy, indexes);
 
     for (int i = indexes.size() - 1; i >= 0; --i)
     {
         mThumbnailScene->deleteThumbnail(indexes.at(i), false);
-        emit UBPersistenceManager::persistenceManager()->documentSceneDeleted(mProxy, i);
+        emit UBPersistenceManager::persistenceManager()->documentSceneDeleted(mProxy, indexes.at(i));
     }
 
     mThumbnailScene->renumberThumbnails(indexes.first());

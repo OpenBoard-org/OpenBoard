@@ -1059,6 +1059,15 @@ void UBPersistenceManager::moveSceneToIndex(std::shared_ptr<UBDocumentProxy> pro
     if (source == target)
         return;
 
+    auto scene = UBApplication::boardController->activeScene();
+
+    // save modified scene of the same document
+    if (scene && scene->document() == proxy && scene->isModified())
+    {
+        auto page = UBApplication::boardController->activeSceneIndex();
+        persistDocumentScene(proxy, scene, page, false, true);
+    }
+
     QFile svgTmp(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", source));
     svgTmp.rename(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.tmp", target));
 
