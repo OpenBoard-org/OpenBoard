@@ -1,0 +1,22 @@
+<bg:background xmlns:bg="http://openboard.org/template/background/">
+    <bg:uuid>7493c8bb-6d98-4be6-966c-fbddf9eff529</bg:uuid>
+    <bg:description xml:lang="en">Crossed</bg:description>
+    <bg:description xml:lang="de">Kariert</bg:description>
+    <bg:attributes crossed="true"/>
+    <bg:linegroup>
+        <bg:angle>0</bg:angle>
+        <bg:spacing>10</bg:spacing>
+        <bg:line>
+            <bg:offset>0</bg:offset>
+            <bg:width>1</bg:width>
+        </bg:line>
+    </bg:linegroup>
+    <bg:linegroup>
+        <bg:angle>90</bg:angle>
+        <bg:spacing>10</bg:spacing>
+        <bg:line>
+            <bg:offset>0</bg:offset>
+            <bg:width>1</bg:width>
+        </bg:line>
+    </bg:linegroup>
+</bg:background>

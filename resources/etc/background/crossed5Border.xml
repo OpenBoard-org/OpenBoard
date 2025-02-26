@@ -1,0 +1,52 @@
+<bg:background xmlns:bg="http://openboard.org/template/background/">
+    <bg:uuid>9057d897-bbfe-4764-9867-1c75ad4da2e3</bg:uuid>
+    <bg:description xml:lang="en">Crossed 5mm with border</bg:description>
+    <bg:description xml:lang="de">Kariert 5mm mit Rand</bg:description>
+    <bg:attributes crossed="true" intermediateLines="true"/>
+    <bg:linegroup>
+        <bg:angle>0</bg:angle>
+        <bg:spacing>10</bg:spacing>
+        <bg:line>
+            <bg:offset>0</bg:offset>
+            <bg:width>1</bg:width>
+        </bg:line>
+        <bg:line>
+            <bg:offset>5</bg:offset>
+            <bg:width>1</bg:width>
+            <bg:color>
+                <bg:onDark>0.5</bg:onDark>
+                <bg:onLight>0.5</bg:onLight>
+            </bg:color>
+        </bg:line>
+        <bg:stretch>
+            <bg:from>-30</bg:from>
+        </bg:stretch>
+    </bg:linegroup>
+    <bg:linegroup>
+        <bg:angle>90</bg:angle>
+        <bg:spacing>10</bg:spacing>
+        <bg:line>
+            <bg:offset>0</bg:offset>
+            <bg:width>1</bg:width>
+        </bg:line>
+        <bg:line>
+            <bg:offset>5</bg:offset>
+            <bg:width>1</bg:width>
+            <bg:color>
+                <bg:onDark>0.5</bg:onDark>
+                <bg:onLight>0.5</bg:onLight>
+            </bg:color>
+        </bg:line>
+        <bg:stack>
+            <bg:from>-30</bg:from>
+        </bg:stack>
+    </bg:linegroup>
+    <bg:linegroup>
+        <bg:angle>90</bg:angle>
+        <bg:origin>topleft</bg:origin>
+        <bg:line>
+            <bg:offset>30</bg:offset>
+            <bg:width>1</bg:width>
+        </bg:line>
+    </bg:linegroup>
+</bg:background>
