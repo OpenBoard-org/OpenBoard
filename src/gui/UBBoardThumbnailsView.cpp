@@ -190,7 +190,7 @@ void UBBoardThumbnailsView::mousePressEvent(QMouseEvent *event)
 
     mLastPressedMousePos = event->pos();
 
-    // do not process event if it was no one of the UI buttons
+    // do not further process event if it was one of the UI buttons
     if (event->isAccepted())
     {
         return;
@@ -266,7 +266,15 @@ bool UBBoardThumbnailsView::event(QEvent* event)
 {
     if (event->type() == QEvent::Show && mDocument)
     {
-        mDocument->thumbnailScene()->arrangeThumbnails();
+        auto scene = mDocument->thumbnailScene();
+        scene->arrangeThumbnails();
+
+        auto currentThumbnail = scene->thumbnailAt(mCurrentIndex);
+
+        if (currentThumbnail)
+        {
+            ensureVisible(currentThumbnail);
+        }
     }
 
     return UBThumbnailsView::event(event);
@@ -276,7 +284,7 @@ void UBBoardThumbnailsView::mouseReleaseEvent(QMouseEvent *event)
 {
     mLongPressTimer.stop();
 
-    QGraphicsView::mouseReleaseEvent(event);
+    // do not forward event to QGraphicsView to avoid change of selection
 }
 
 void UBBoardThumbnailsView::mouseDoubleClickEvent(QMouseEvent* event)

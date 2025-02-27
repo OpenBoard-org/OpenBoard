@@ -148,8 +148,10 @@ void UBDocumentThumbnailsView::mousePressEvent(QMouseEvent *event)
     mClickTime.restart();
     mMousePressPos = event->pos();
 
+    // first ask the thumbnails to process the event for the UI buttons
     QGraphicsView::mousePressEvent(event);
 
+    // do not further process event if it was one of the UI buttons
     if (event->isAccepted())
     {
         return;
@@ -160,7 +162,6 @@ void UBDocumentThumbnailsView::mousePressEvent(QMouseEvent *event)
     if (!sceneItem)
     {
         event->ignore();
-        QGraphicsView::mousePressEvent(event);
         return;
     }
 

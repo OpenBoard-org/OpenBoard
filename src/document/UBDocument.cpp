@@ -107,14 +107,14 @@ void UBDocument::duplicatePage(int index)
     QDateTime now = QDateTime::currentDateTime();
     mProxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
 
-    emit UBPersistenceManager::persistenceManager()->documentSceneSelected(mProxy, index + 1);
+    emit UBPersistenceManager::persistenceManager()->documentSceneDuplicated(mProxy, index + 1);
 }
 
 void UBDocument::movePage(int fromIndex, int toIndex)
 {
     UBPersistenceManager::persistenceManager()->moveSceneToIndex(mProxy, fromIndex, toIndex);
     mThumbnailScene->moveThumbnail(fromIndex, toIndex);
-    emit UBPersistenceManager::persistenceManager()->documentSceneSelected(mProxy, toIndex);
+    emit UBPersistenceManager::persistenceManager()->documentSceneMoved(mProxy, fromIndex, toIndex);
 }
 
 void UBDocument::copyPage(int fromIndex, std::shared_ptr<UBDocumentProxy> to, int toIndex)

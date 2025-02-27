@@ -164,7 +164,8 @@ class UBPersistenceManager : public QObject
         void documentSceneCreated(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pIndex);
 
         // The following signals are emitted in UBDocument
-        void documentSceneSelected(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pIndex);
+        void documentSceneDuplicated(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pIndex);
+        void documentSceneMoved(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int fromIndex, int toIndex);
         void documentSceneDeleted(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pIndex);
 
 private:

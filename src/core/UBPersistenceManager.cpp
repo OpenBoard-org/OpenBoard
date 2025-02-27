@@ -954,7 +954,7 @@ void UBPersistenceManager::duplicateDocumentScene(std::shared_ptr<UBDocumentProx
 
     proxy->incPageCount();
 
-    persistDocumentScene(proxy,scene, index + 1, false, true);
+    persistDocumentScene(proxy, scene, index + 1, false, true);
 
     persistDocumentMetadata(proxy);
 
