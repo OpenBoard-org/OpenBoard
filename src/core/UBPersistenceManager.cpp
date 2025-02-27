@@ -957,8 +957,6 @@ void UBPersistenceManager::duplicateDocumentScene(std::shared_ptr<UBDocumentProx
     persistDocumentScene(proxy, scene, index + 1, false, true);
 
     persistDocumentMetadata(proxy);
-
-    emit documentSceneCreated(proxy, index + 1);
 }
 
 void UBPersistenceManager::copyDocumentScene(std::shared_ptr<UBDocumentProxy> from, int fromIndex, std::shared_ptr<UBDocumentProxy> to, int toIndex)
@@ -992,8 +990,6 @@ void UBPersistenceManager::copyDocumentScene(std::shared_ptr<UBDocumentProxy> fr
     auto pix = std::make_shared<QPixmap>(thumbTmp);
     UBDocumentController *ctrl = UBApplication::documentController;
     ctrl->TreeViewSelectionChanged(ctrl->firstSelectedTreeIndex(), QModelIndex());
-
-//    emit documentSceneCreated(to, toIndex + 1);
 }
 
 
@@ -1019,8 +1015,6 @@ std::shared_ptr<UBGraphicsScene> UBPersistenceManager::createDocumentSceneAt(std
 
     persistDocumentScene(proxy, newScene, index);
 
-    emit documentSceneCreated(proxy, index);
-
     return newScene;
 }
 
@@ -1042,13 +1036,10 @@ void UBPersistenceManager::insertDocumentSceneAt(std::shared_ptr<UBDocumentProxy
 
     proxy->incPageCount();
 
-    if (persist) {
+    if (persist)
+    {
         persistDocumentScene(proxy, scene, index);
     }
-
-    if (!deleting)
-        emit documentSceneCreated(proxy, index);
-
 }
 
 

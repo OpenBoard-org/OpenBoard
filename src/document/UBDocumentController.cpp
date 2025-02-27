@@ -3802,64 +3802,23 @@ void UBDocumentController::currentIndexMoved(const QModelIndex &newIndex, const 
 
 void UBDocumentController::deletePages(QList<QGraphicsItem *> itemsToDelete)
 {
-    if (itemsToDelete.count() > 0)
+    std::shared_ptr<UBDocumentProxy> proxy = selectedDocumentProxy();
+
+    if (proxy && itemsToDelete.count() > 0)
     {
         QList<int> sceneIndexes;
-        std::shared_ptr<UBDocumentProxy> proxy = nullptr;
 
-        foreach (QGraphicsItem* item, itemsToDelete)
+        foreach (const QGraphicsItem* item, itemsToDelete)
         {
-            UBThumbnail* thumb = dynamic_cast<UBThumbnail*> (item);
+            const UBThumbnail* thumb = dynamic_cast<const UBThumbnail*> (item);
 
             if (thumb)
             {
-                proxy = mDocumentUI->thumbnailWidget->document()->proxy();
-                if (proxy)
-                {
-                    sceneIndexes.append(thumb->sceneIndex());
-                }
-
+                sceneIndexes.append(thumb->sceneIndex());
             }
         }
 
-        bool accepted = false;
-        if (sceneIndexes.size() > 1)
-        {
-            accepted = UBApplication::mainWindow->yesNoQuestion(tr("Moving %1 pages of the document \"%2\" to trash").arg(QString::number(sceneIndexes.size()), selectedDocument()->name()),
-                                                                tr("You are about to move %1 pages of the document \"%2\" to trash. Are you sure ?").arg(QString::number(sceneIndexes.size()), selectedDocument()->name()),
-                                                                QPixmap(":/images/trash-document-page.png")
-                                                                );
-        }
-        else
-        {
-            accepted = UBApplication::mainWindow->yesNoQuestion(tr("Remove page %1").arg(sceneIndexes.at(0)+1),
-                                                                tr("You are about to remove page %1 of the document \"%2\". Are you sure ?").arg(sceneIndexes.at(0)+1).arg(selectedDocument()->name()),
-                                                                QPixmap(":/images/trash-document-page.png")
-                                                                );
-        }
-
-        if (accepted)
-        {
-            UBDocumentContainer::deletePages(sceneIndexes);
-
-            QDateTime now = QDateTime::currentDateTime();
-            proxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-
-            UBMetadataDcSubsetAdaptor::persist(proxy);
-
-            int minIndex = proxy->pageCount() - 1;
-            foreach (int i, sceneIndexes)
-                 minIndex = qMin(i, minIndex);
-
-            if (mBoardController->activeSceneIndex() > minIndex)
-            {
-                mBoardController->setActiveSceneIndex(minIndex);
-            }
-
-            mDocumentUI->thumbnailWidget->selectItemAt(minIndex);
-
-            mBoardController->setActiveDocumentScene(minIndex);
-        }
+        UBDocumentContainer::deletePages(sceneIndexes);
     }
 }
 
