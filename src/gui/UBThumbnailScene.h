@@ -75,7 +75,7 @@ private:
 
 private:
     UBDocument* mDocument{nullptr};
-    QList<UBThumbnail*> mThumbnailItems{};
+    QVector<UBThumbnail*> mThumbnailItems{};
     int mThumbnailWidth{UBSettings::defaultThumbnailWidth};
     UBBackgroundLoader* mLoader{nullptr};
 };

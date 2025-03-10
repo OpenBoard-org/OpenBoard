@@ -148,12 +148,20 @@ void UBDocumentThumbnailsView::mousePressEvent(QMouseEvent *event)
     mClickTime.restart();
     mMousePressPos = event->pos();
 
+    // first ask the thumbnails to process the event for the UI buttons
+    QGraphicsView::mousePressEvent(event);
+
+    // do not further process event if it was one of the UI buttons
+    if (event->isAccepted())
+    {
+        return;
+    }
+
     UBThumbnail* sceneItem = dynamic_cast<UBThumbnail*>(itemAt(mMousePressPos));
 
     if (!sceneItem)
     {
         event->ignore();
-        QGraphicsView::mousePressEvent(event);
         return;
     }
 
@@ -186,7 +194,6 @@ void UBDocumentThumbnailsView::mousePressEvent(QMouseEvent *event)
     }
 
     UBApplication::documentController->pageSelectionChanged();
-    QGraphicsView::mousePressEvent(event);
 }
 
 
@@ -461,9 +468,11 @@ void UBDocumentThumbnailsView::selectItems(int startIndex, int count)
 {
     auto thumbnailScene = document()->thumbnailScene();
 
-    for (int i = 0; i < thumbnailScene->thumbnailCount(); i++)
+    thumbnailScene->hightlightItem(startIndex, true);
+
+    for (int i = 1; i < count; ++i)
     {
-        thumbnailScene->thumbnailAt(i)->setSelected(i >= startIndex && i < startIndex + count);
+        thumbnailScene->hightlightItem(startIndex + i);
     }
 }
 

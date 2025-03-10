@@ -858,11 +858,13 @@ void UBPersistenceManager::duplicateDocumentScene(std::shared_ptr<UBDocumentProx
 {
     checkIfDocumentRepositoryExists();
 
-    auto scene = mSceneCache.value(proxy, index);
+    auto scene = UBApplication::boardController->activeScene();
 
-    if (scene && scene->isModified())
+    // save modified scene of the same document
+    if (scene && scene->document() == proxy && scene->isModified())
     {
-        persistDocumentScene(proxy, scene, index, false, true);
+        auto page = UBApplication::boardController->activeSceneIndex();
+        persistDocumentScene(proxy, scene, page, false, true);
     }
 
     for (int i = proxy->pageCount(); i > index + 1; i--)
@@ -870,7 +872,6 @@ void UBPersistenceManager::duplicateDocumentScene(std::shared_ptr<UBDocumentProx
         renamePage(proxy, i - 1 , i);
 
         mSceneCache.moveScene(proxy, i - 1, i);
-
     }
 
     copyPage(proxy, index , index + 1);
@@ -953,11 +954,9 @@ void UBPersistenceManager::duplicateDocumentScene(std::shared_ptr<UBDocumentProx
 
     proxy->incPageCount();
 
-    persistDocumentScene(proxy,scene, index + 1);
+    persistDocumentScene(proxy, scene, index + 1, false, true);
 
     persistDocumentMetadata(proxy);
-
-    emit documentSceneCreated(proxy, index + 1);
 }
 
 void UBPersistenceManager::copyDocumentScene(std::shared_ptr<UBDocumentProxy> from, int fromIndex, std::shared_ptr<UBDocumentProxy> to, int toIndex)
@@ -991,8 +990,6 @@ void UBPersistenceManager::copyDocumentScene(std::shared_ptr<UBDocumentProxy> fr
     auto pix = std::make_shared<QPixmap>(thumbTmp);
     UBDocumentController *ctrl = UBApplication::documentController;
     ctrl->TreeViewSelectionChanged(ctrl->firstSelectedTreeIndex(), QModelIndex());
-
-//    emit documentSceneCreated(to, toIndex + 1);
 }
 
 
@@ -1018,8 +1015,6 @@ std::shared_ptr<UBGraphicsScene> UBPersistenceManager::createDocumentSceneAt(std
 
     persistDocumentScene(proxy, newScene, index);
 
-    emit documentSceneCreated(proxy, index);
-
     return newScene;
 }
 
@@ -1041,13 +1036,10 @@ void UBPersistenceManager::insertDocumentSceneAt(std::shared_ptr<UBDocumentProxy
 
     proxy->incPageCount();
 
-    if (persist) {
+    if (persist)
+    {
         persistDocumentScene(proxy, scene, index);
     }
-
-    if (!deleting)
-        emit documentSceneCreated(proxy, index);
-
 }
 
 
@@ -1057,6 +1049,15 @@ void UBPersistenceManager::moveSceneToIndex(std::shared_ptr<UBDocumentProxy> pro
 
     if (source == target)
         return;
+
+    auto scene = UBApplication::boardController->activeScene();
+
+    // save modified scene of the same document
+    if (scene && scene->document() == proxy && scene->isModified())
+    {
+        auto page = UBApplication::boardController->activeSceneIndex();
+        persistDocumentScene(proxy, scene, page, false, true);
+    }
 
     QFile svgTmp(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", source));
     svgTmp.rename(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.tmp", target));

@@ -183,10 +183,20 @@ void UBBoardThumbnailsView::resizeEvent(QResizeEvent *event)
 
 void UBBoardThumbnailsView::mousePressEvent(QMouseEvent *event)
 {
+    // remember currently selected item
+    auto selection = scene()->selectedItems();
+    // first ask the thumbnails to process the event for the UI buttons
     QGraphicsView::mousePressEvent(event);
 
     mLastPressedMousePos = event->pos();
 
+    // do not further process event if it was one of the UI buttons
+    if (event->isAccepted())
+    {
+        return;
+    }
+
+    // select page at event position
     UBThumbnail* item = dynamic_cast<UBThumbnail*>(itemAt(event->pos()));
 
     if (item && item->sceneIndex() != UBApplication::boardController->activeSceneIndex())
@@ -194,6 +204,16 @@ void UBBoardThumbnailsView::mousePressEvent(QMouseEvent *event)
         UBApplication::boardController->persistViewPositionOnCurrentScene();
         UBApplication::boardController->persistCurrentScene();
         UBApplication::boardController->setActiveDocumentScene(item->sceneIndex());
+    }
+    else if (item)
+    {
+        // just make sure it is selected
+        item->setSelected(true);
+    }
+    else if (!selection.isEmpty())
+    {
+        // keep previously selected item (may have been deselected during event forwarding)
+        selection.first()->setSelected(true);
     }
 
     mLongPressTimer.start();
@@ -246,7 +266,15 @@ bool UBBoardThumbnailsView::event(QEvent* event)
 {
     if (event->type() == QEvent::Show && mDocument)
     {
-        mDocument->thumbnailScene()->arrangeThumbnails();
+        auto scene = mDocument->thumbnailScene();
+        scene->arrangeThumbnails();
+
+        auto currentThumbnail = scene->thumbnailAt(mCurrentIndex);
+
+        if (currentThumbnail)
+        {
+            ensureVisible(currentThumbnail);
+        }
     }
 
     return UBThumbnailsView::event(event);
@@ -256,7 +284,12 @@ void UBBoardThumbnailsView::mouseReleaseEvent(QMouseEvent *event)
 {
     mLongPressTimer.stop();
 
-    QGraphicsView::mouseReleaseEvent(event);
+    // do not forward event to QGraphicsView to avoid change of selection
+}
+
+void UBBoardThumbnailsView::mouseDoubleClickEvent(QMouseEvent* event)
+{
+    // do not forward event to QGraphicsView to avoid change of selection
 }
 
 void UBBoardThumbnailsView::scrollContentsBy(int dx, int dy)
