@@ -55,9 +55,10 @@ public:
     // thumbnail management
     void createThumbnails(int startIndex = 0);
     void arrangeThumbnails(int fromIndex = 0, int toIndex = -1);
-    void hightlightItem(int index, bool only = false);
+    void hightlightItem(int index, bool only = false, bool selected = true);
     int thumbnailCount() const;
     UBThumbnail* thumbnailAt(int index);
+    UBThumbnail* lastSelectedThumbnail() const;
 
 protected:
     // only to be called from UBDocument
@@ -78,4 +79,5 @@ private:
     QVector<UBThumbnail*> mThumbnailItems{};
     int mThumbnailWidth{UBSettings::defaultThumbnailWidth};
     UBBackgroundLoader* mLoader{nullptr};
+    UBThumbnail* mLastSelectedThumbnail{nullptr};
 };

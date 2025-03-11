@@ -58,7 +58,6 @@ class UBDocumentThumbnailsView : public UBThumbnailsView
         std::shared_ptr<UBDocument> document() const;
         QList<QGraphicsItem*> selectedItems();
         void selectItemAt(int pIndex, bool extend = false);
-        void unselectItemAt(int pIndex);
         void clearSelection();
 
         qreal thumbnailWidth()
@@ -114,7 +113,6 @@ class UBDocumentThumbnailsView : public UBThumbnailsView
 
         qreal mThumbnailWidth;
 
-        UBThumbnail* mLastSelectedThumbnail;
         int mSelectionSpan;
         QElapsedTimer mClickTime;
 

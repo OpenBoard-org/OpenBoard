@@ -116,7 +116,7 @@ void UBThumbnailScene::arrangeThumbnails(int fromIndex, int toIndex)
     view->setSceneRect(sceneRect);
 }
 
-void UBThumbnailScene::hightlightItem(int index, bool only)
+void UBThumbnailScene::hightlightItem(int index, bool only, bool selected)
 {
     if (only)
     {
@@ -129,11 +129,16 @@ void UBThumbnailScene::hightlightItem(int index, bool only)
                 thumbnail->setSelected(false);
             }
         }
+
+        mLastSelectedThumbnail = nullptr;
     }
 
     if (index >= 0 && index < mThumbnailItems.size())
     {
-        thumbnailAt(index)->setSelected(true);
+        auto thumbnail = thumbnailAt(index);
+        thumbnail->setSelected(selected);
+
+        mLastSelectedThumbnail = selected ? thumbnail : nullptr;
     }
 }
 
@@ -164,6 +169,11 @@ UBThumbnail* UBThumbnailScene::thumbnailAt(int index)
     }
 
     return nullptr;
+}
+
+UBThumbnail* UBThumbnailScene::lastSelectedThumbnail() const
+{
+    return mLastSelectedThumbnail;
 }
 
 /**
@@ -237,7 +247,7 @@ void UBThumbnailScene::insertThumbnail(int pageIndex, std::shared_ptr<UBGraphics
     {
         if (mThumbnailItems.size() == 1)
         {
-            mThumbnailItems.first()->setDeletable(true);
+            thumbnailAt(0)->setDeletable(true);
         }
 
         auto thumbnailItem = new UBThumbnail;
@@ -264,8 +274,18 @@ void UBThumbnailScene::deleteThumbnail(int pageIndex, bool rearrange)
     if (pageIndex < mThumbnailItems.size())
     {
         auto thumbnail = mThumbnailItems.at(pageIndex);
-        removeItem(thumbnail);
-        delete thumbnail;
+
+        if (thumbnail)
+        {
+            if (thumbnail == mLastSelectedThumbnail)
+            {
+                mLastSelectedThumbnail = nullptr;
+            }
+
+            removeItem(thumbnail);
+            delete thumbnail;
+        }
+
         mThumbnailItems.removeAt(pageIndex);
 
         if (rearrange)
@@ -283,7 +303,7 @@ void UBThumbnailScene::deleteThumbnail(int pageIndex, bool rearrange)
 
     if (mThumbnailItems.size() == 1)
     {
-        mThumbnailItems.first()->setDeletable(false);
+        thumbnailAt(0)->setDeletable(false);
     }
 }
 
@@ -422,7 +442,7 @@ void UBThumbnailScene::loadNextThumbnail()
         // finished. set undeletable if only one page
         if (mThumbnailItems.size() == 1)
         {
-            mThumbnailItems.first()->setDeletable(false);
+            thumbnailAt(0)->setDeletable(false);
         }
 
         // delete background loader
@@ -448,6 +468,10 @@ void UBThumbnailScene::renumberThumbnails(int fromIndex, int toIndex) const
     for (int index = fromIndex; index < toIndex; ++index)
     {
         auto item = mThumbnailItems.at(index);
-        item->setSceneIndex(index);
+
+        if (item)
+        {
+            item->setSceneIndex(index);
+        }
     }
 }
