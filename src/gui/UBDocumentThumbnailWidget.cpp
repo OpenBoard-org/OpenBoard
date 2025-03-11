@@ -207,13 +207,14 @@ void UBDocumentThumbnailWidget::dragMoveEvent(QDragMoveEvent *event)
             mDropCaretRectItem->setBrush(QBrush(Qt::lightGray));
         }
 
+        const auto thumbnailWidth = thumbnailArranger()->thumbnailWidth();
         const auto halfSpacingWidth = thumbnailArranger()->spacing().width() / 2;
-        const auto offset = mDropIsRight ? thumbnailArranger()->thumbnailWidth() + halfSpacingWidth : -halfSpacingWidth;
+        const auto offset = mDropIsRight ? thumbnailWidth + halfSpacingWidth : -halfSpacingWidth;
         QRectF dropCaretRect(
                     mClosestDropItem->pos().x() + offset - 1,
                     mClosestDropItem->pos().y(),
                     3,
-                    mClosestDropItem->boundingRect().height());
+                    std::ceil(thumbnailWidth / UBSettings::minScreenRatio));
 
         if (mDropCaretRectItem)
             mDropCaretRectItem->setRect(dropCaretRect);
