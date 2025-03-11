@@ -116,7 +116,7 @@ void UBThumbnailScene::arrangeThumbnails(int fromIndex, int toIndex)
     view->setSceneRect(sceneRect);
 }
 
-void UBThumbnailScene::hightlightItem(int index, bool only)
+void UBThumbnailScene::hightlightItem(int index, bool only, bool selected)
 {
     if (only)
     {
@@ -129,11 +129,16 @@ void UBThumbnailScene::hightlightItem(int index, bool only)
                 thumbnail->setSelected(false);
             }
         }
+
+        mLastSelectedThumbnail = nullptr;
     }
 
     if (index >= 0 && index < mThumbnailItems.size())
     {
-        thumbnailAt(index)->setSelected(true);
+        auto thumbnail = thumbnailAt(index);
+        thumbnail->setSelected(selected);
+
+        mLastSelectedThumbnail = selected ? thumbnail : nullptr;
     }
 }
 
@@ -164,6 +169,11 @@ UBThumbnail* UBThumbnailScene::thumbnailAt(int index)
     }
 
     return nullptr;
+}
+
+UBThumbnail* UBThumbnailScene::lastSelectedThumbnail() const
+{
+    return mLastSelectedThumbnail;
 }
 
 /**
@@ -267,6 +277,11 @@ void UBThumbnailScene::deleteThumbnail(int pageIndex, bool rearrange)
 
         if (thumbnail)
         {
+            if (thumbnail == mLastSelectedThumbnail)
+            {
+                mLastSelectedThumbnail = nullptr;
+            }
+
             removeItem(thumbnail);
             delete thumbnail;
         }
