@@ -28,6 +28,7 @@
 #include "board/UBDrawingController.h"
 #include "document/UBDocument.h"
 #include "domain/UBGraphicsScene.h"
+#include "gui/UBBoardThumbnailsView.h"
 #include "gui/UBDocumentThumbnailsView.h"
 #include "gui/UBThumbnailScene.h"
 
@@ -247,7 +248,24 @@ QVariant UBThumbnail::itemChange(GraphicsItemChange change, const QVariant& valu
 
 void UBThumbnail::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
 {
-    mEditable = true;
+    auto thumbnailScene = dynamic_cast<UBThumbnailScene*>(scene());
+
+    if (thumbnailScene)
+    {
+        for (const auto view : thumbnailScene->views())
+        {
+            if (view->isVisible())
+            {
+                bool isBoardThumbnailsView = dynamic_cast<UBBoardThumbnailsView*>(view) != nullptr;
+
+                if (isBoardThumbnailsView)
+                {
+                    mEditable = true;
+                    break;
+                }
+            }
+        }
+    }
     QGraphicsRectItem::hoverEnterEvent(event);
 }
 
@@ -296,8 +314,11 @@ void UBThumbnail::paint(QPainter* painter, const QStyleOptionGraphicsItem* optio
     // paint the buttons
     if (mEditable)
     {
-        UBThumbnailUI::draw(painter, *UBThumbnailUI::getIcon(mDeletable ? "close" : "closeDisabled"));
-        UBThumbnailUI::draw(painter, *UBThumbnailUI::getIcon("duplicate"));
+        using namespace UBThumbnailUI; //should be reworked so icons' scale adapts to what's needed
+        const UBThumbnailUIIcon& closeThumbnailIcon = *UBThumbnailUI::getIcon(mDeletable ? "close" : "closeDisabled");
+        const UBThumbnailUIIcon& duplicateThumbnailIcon = *UBThumbnailUI::getIcon("duplicate");
+        painter->drawPixmap(mPixmapItem->x() + (closeThumbnailIcon.pos() * (ICONSIZE + ICONSPACING)), 0, ICONSIZE, ICONSIZE, closeThumbnailIcon);
+        painter->drawPixmap(mPixmapItem->x() + (duplicateThumbnailIcon.pos() * (ICONSIZE + ICONSPACING)), 0, ICONSIZE, ICONSIZE, duplicateThumbnailIcon);
     }
 
     // do not call superclass - do not paint the rectangle itself or the default dashed selection rectangle
