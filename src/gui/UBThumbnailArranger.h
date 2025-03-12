@@ -47,6 +47,7 @@ public:
     virtual double availableViewWidth() const;
     virtual QMarginsF margins() const;
     virtual QSizeF spacing() const;
+    virtual bool isUIEnabled() const;
 
 private:
     UBThumbnailsView* mThumbnailView{nullptr};

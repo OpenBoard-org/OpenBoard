@@ -126,6 +126,7 @@ class UBDocumentThumbnailsView : public UBThumbnailsView
 
             virtual int columnCount() const override;
             virtual double thumbnailWidth() const override;
+            virtual bool isUIEnabled() const override;
 
         private:
             void setThumbnailWidth(int width);
