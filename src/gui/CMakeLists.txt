@@ -75,6 +75,8 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBThumbnailArranger.h
     UBThumbnailScene.cpp
     UBThumbnailScene.h
+    UBThumbnailTextItem.cpp
+    UBThumbnailTextItem.h
     UBThumbnailsView.cpp
     UBThumbnailsView.h
     UBDocumentThumbnailsView.cpp

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2024 Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2025 Département de l'Instruction Publique (DIP-SEM)
  *
  * This file is part of OpenBoard.
  *
@@ -22,33 +22,27 @@
 
 #pragma once
 
-#include <QMargins>
-#include <QObject>
+#include <QGraphicsTextItem>
 
-// forward
-class UBThumbnailsView;
-class UBBoardThumbnailsView;
-class UBDocumentThumbnailsView;
-
-/**
- * @brief The UBThumbnailArranger class contains the specific properties of thumbnails
- * for different views (Board mode and Document mode).
- */
-class UBThumbnailArranger
+class UBThumbnailTextItem : public QGraphicsTextItem
 {
+    Q_OBJECT
+
 public:
-    UBThumbnailArranger(UBThumbnailsView* thumbnailView);
-    virtual ~UBThumbnailArranger() = default;
+    UBThumbnailTextItem();
+    UBThumbnailTextItem(int index);
+    UBThumbnailTextItem(const QString& text);
 
-    UBThumbnailsView* thumbnailView() const;
+    QRectF boundingRect() const;
 
-    virtual int columnCount() const = 0;
-    virtual double thumbnailWidth() const = 0;
-    virtual double availableViewWidth() const;
-    virtual QMarginsF margins() const;
-    virtual QSizeF spacing() const;
-    virtual bool isUIEnabled() const;
+    void setWidth(qreal pWidth);
+    qreal width();
+
+    void setPageNumber(int i);
+    void setText(const QString& text);
+    void computeText();
 
 private:
-    UBThumbnailsView* mThumbnailView{nullptr};
+    qreal mWidth{0};
+    QString mUnelidedText{};
 };

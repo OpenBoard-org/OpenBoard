@@ -62,3 +62,8 @@ QSizeF UBThumbnailArranger::spacing() const
     const double spacing = UBSettings::thumbnailSpacing;
     return {spacing, spacing};
 }
+
+bool UBThumbnailArranger::isUIEnabled() const
+{
+    return true;
+}

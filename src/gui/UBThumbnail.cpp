@@ -28,9 +28,9 @@
 #include "board/UBDrawingController.h"
 #include "document/UBDocument.h"
 #include "domain/UBGraphicsScene.h"
-#include "gui/UBBoardThumbnailsView.h"
-#include "gui/UBDocumentThumbnailsView.h"
+#include "gui/UBThumbnailArranger.h"
 #include "gui/UBThumbnailScene.h"
+#include "gui/UBThumbnailTextItem.h"
 
 
 constexpr int cSelectionWidth{8};
@@ -252,20 +252,9 @@ void UBThumbnail::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
 
     if (thumbnailScene)
     {
-        for (const auto view : thumbnailScene->views())
-        {
-            if (view->isVisible())
-            {
-                bool isBoardThumbnailsView = dynamic_cast<UBBoardThumbnailsView*>(view) != nullptr;
-
-                if (isBoardThumbnailsView)
-                {
-                    mEditable = true;
-                    break;
-                }
-            }
-        }
+        mEditable = thumbnailScene->currentThumbnailArranger()->isUIEnabled();
     }
+
     QGraphicsRectItem::hoverEnterEvent(event);
 }
 

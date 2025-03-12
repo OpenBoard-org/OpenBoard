@@ -550,6 +550,11 @@ double UBDocumentThumbnailsView::UBDocumentThumbnailArranger::thumbnailWidth() c
     return mThumbnailWidth;
 }
 
+bool UBDocumentThumbnailsView::UBDocumentThumbnailArranger::isUIEnabled() const
+{
+    return false;
+}
+
 void UBDocumentThumbnailsView::UBDocumentThumbnailArranger::setThumbnailWidth(int width)
 {
     mThumbnailWidth = width;

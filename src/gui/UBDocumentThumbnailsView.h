@@ -126,6 +126,7 @@ class UBDocumentThumbnailsView : public UBThumbnailsView
 
             virtual int columnCount() const override;
             virtual double thumbnailWidth() const override;
+            virtual bool isUIEnabled() const override;
 
         private:
             void setThumbnailWidth(int width);
@@ -133,73 +134,6 @@ class UBDocumentThumbnailsView : public UBThumbnailsView
         private:
             double mThumbnailWidth{double(UBSettings::defaultThumbnailWidth)};
         };
-};
-
-
-class UBThumbnailTextItem : public QGraphicsTextItem
-{
-    Q_OBJECT
-
-    public:
-        UBThumbnailTextItem()
-            : QGraphicsTextItem()
-        {
-        }
-
-        UBThumbnailTextItem(int index)
-            : QGraphicsTextItem()
-            , mUnelidedText(toPlainText())
-        {
-            setPageNumber(index + 1);
-        }
-
-        UBThumbnailTextItem(const QString& text)
-            : QGraphicsTextItem(text)
-            , mUnelidedText(text)
-        {
-            setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
-        }
-
-        QRectF boundingRect() const { return QRectF(QPointF(0.0, 0.0), QSize(mWidth, QFontMetricsF(font()).height() + 5));}
-
-        void setWidth(qreal pWidth)
-        {
-            if (mWidth != pWidth)
-            {
-                prepareGeometryChange();
-                mWidth = pWidth;
-                computeText();
-
-                // center text
-                setTextWidth(mWidth);
-                document()->setDefaultTextOption(QTextOption(Qt::AlignCenter));
-            }
-        }
-
-        qreal width() {return mWidth;}
-
-        void setPageNumber(int i)
-        {
-            mUnelidedText = tr("Page %0").arg(i);
-            computeText();
-        }
-
-        void setText(const QString& text)
-        {
-            mUnelidedText = text;
-            computeText();
-        }
-
-        void computeText()
-        {
-            QFontMetricsF fm(font());
-            QString elidedText = fm.elidedText(mUnelidedText, Qt::ElideLeft, mWidth - 2 * document()->documentMargin() - 1);
-            setPlainText(elidedText);
-        }
-
-    private:
-        qreal mWidth{0};
-        QString mUnelidedText{};
 };
 
 
