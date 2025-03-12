@@ -28,9 +28,9 @@
 #include "board/UBDrawingController.h"
 #include "document/UBDocument.h"
 #include "domain/UBGraphicsScene.h"
-#include "gui/UBDocumentThumbnailsView.h"
 #include "gui/UBThumbnailArranger.h"
 #include "gui/UBThumbnailScene.h"
+#include "gui/UBThumbnailTextItem.h"
 
 
 constexpr int cSelectionWidth{8};
