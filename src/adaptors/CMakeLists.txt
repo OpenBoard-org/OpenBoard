@@ -1,10 +1,6 @@
 target_sources(${PROJECT_NAME} PRIVATE
-    UBCFFSubsetAdaptor.cpp
-    UBCFFSubsetAdaptor.h
     UBExportAdaptor.cpp
     UBExportAdaptor.h
-    UBExportCFF.cpp
-    UBExportCFF.h
     UBExportDocument.cpp
     UBExportDocument.h
     UBExportDocumentSetAdaptor.cpp
@@ -17,8 +13,6 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBExportWeb.h
     UBImportAdaptor.cpp
     UBImportAdaptor.h
-    UBImportCFF.cpp
-    UBImportCFF.h
     UBImportDocument.cpp
     UBImportDocument.h
     UBImportDocumentSetAdaptor.cpp

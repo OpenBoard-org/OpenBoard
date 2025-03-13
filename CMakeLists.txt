@@ -139,7 +139,6 @@ add_subdirectory(src/podcast)
 add_subdirectory(src/singleapplication)
 add_subdirectory(src/tools)
 add_subdirectory(src/web)
-add_subdirectory(plugins/cffadaptor/src)
 add_subdirectory(resources/forms)
 
 # statically link singleapplication

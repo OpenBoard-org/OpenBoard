@@ -13,10 +13,7 @@ HEADERS      += src/adaptors/UBExportAdaptor.h\
                 src/adaptors/UBImportImage.h \
                 src/adaptors/UBExportWeb.h \
     $$PWD/UBExportDocumentSetAdaptor.h \
-    $$PWD/UBImportDocumentSetAdaptor.h \
-    $$PWD/UBExportCFF.h \
-    $$PWD/UBImportCFF.h \
-    $$PWD/UBCFFSubsetAdaptor.h
+    $$PWD/UBImportDocumentSetAdaptor.h
 
 
 SOURCES      += src/adaptors/UBExportAdaptor.cpp\
@@ -33,7 +30,4 @@ SOURCES      += src/adaptors/UBExportAdaptor.cpp\
                 src/adaptors/UBImportImage.cpp \
                 src/adaptors/UBExportWeb.cpp \
     $$PWD/UBExportDocumentSetAdaptor.cpp \
-    $$PWD/UBImportDocumentSetAdaptor.cpp \
-    $$PWD/UBExportCFF.cpp \
-    $$PWD/UBImportCFF.cpp \
-    $$PWD/UBCFFSubsetAdaptor.cpp
+    $$PWD/UBImportDocumentSetAdaptor.cpp
