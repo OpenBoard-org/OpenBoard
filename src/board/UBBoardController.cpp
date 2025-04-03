@@ -145,6 +145,11 @@ void UBBoardController::init()
     connect(UBDownloadManager::downloadManager(), SIGNAL(downloadModalFinished()), this, SLOT(onDownloadModalFinished()));
     connect(UBDownloadManager::downloadManager(), SIGNAL(addDownloadedFileToBoard(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool)), this, SLOT(downloadFinished(bool,QUrl,QUrl,QString,QByteArray,QPointF,QSize,bool)));
 
+    auto persistenceManager{UBPersistenceManager::persistenceManager()};
+    connect(persistenceManager, &UBPersistenceManager::documentSceneDuplicated, this, &UBBoardController::documentSceneDuplicated);
+    connect(persistenceManager, &UBPersistenceManager::documentSceneMoved, this, &UBBoardController::documentSceneMoved);
+    connect(persistenceManager, &UBPersistenceManager::documentSceneDeleted, this, &UBBoardController::documentSceneDeleted);
+
     std::shared_ptr<UBDocumentProxy> doc = UBPersistenceManager::persistenceManager()->createNewDocument();
 
     if (doc)
@@ -485,6 +490,86 @@ void UBBoardController::saveData(SaveFlags fls)
     }
     if (verbose) {
         UBApplication::showMessage(tr("Document has just been saved..."));
+    }
+}
+
+void UBBoardController::documentSceneDuplicated(std::shared_ptr<UBDocumentProxy> proxy, int index)
+{
+    // index is duplicated page
+    if (selectedDocument() == proxy)
+    {
+        if (UBApplication::applicationController->displayMode() == UBApplicationController::Board)
+        {
+            // directly change scene to new duplicate
+            setActiveDocumentScene(index);
+        }
+        else if (index <= mActiveSceneIndex)
+        {
+            // just shift selection and remember for the next time we switch to Board mode
+            mSwitchToSceneIndex = mActiveSceneIndex + 1;
+        }
+    }
+}
+
+void UBBoardController::documentSceneMoved(std::shared_ptr<UBDocumentProxy> proxy, int fromIndex, int toIndex)
+{
+    if (selectedDocument() == proxy)
+    {
+        int nextSceneIndex = mActiveSceneIndex;
+
+        if (fromIndex < mActiveSceneIndex && toIndex >= mActiveSceneIndex)
+        {
+            --nextSceneIndex;
+        }
+        else if (fromIndex > mActiveSceneIndex && toIndex <= mActiveSceneIndex)
+        {
+            ++nextSceneIndex;
+        }
+        else if (fromIndex == mActiveSceneIndex)
+        {
+            nextSceneIndex = toIndex;
+        }
+
+        if (nextSceneIndex == mActiveSceneIndex)
+        {
+            // no change
+            return;
+        }
+
+        if (UBApplication::applicationController->displayMode() == UBApplicationController::Board)
+        {
+            // directly change scene
+            setActiveDocumentScene(nextSceneIndex);
+        }
+        else
+        {
+            // just remember for the next time we switch to Board mode
+            mSwitchToSceneIndex = nextSceneIndex;
+        }
+    }
+}
+
+void UBBoardController::documentSceneDeleted(std::shared_ptr<UBDocumentProxy> proxy, int index)
+{
+    if (selectedDocument() == proxy)
+    {
+        int nextSceneIndex = mActiveSceneIndex;
+
+        if (index < mActiveSceneIndex || (index == mActiveSceneIndex && index == proxy->pageCount() && index > 0))
+        {
+            --nextSceneIndex;
+        }
+
+        if (UBApplication::applicationController->displayMode() == UBApplicationController::Board)
+        {
+            // directly change scene
+            setActiveDocumentScene(nextSceneIndex);
+        }
+        else
+        {
+            // just remember for the next time we switch to Board mode
+            mSwitchToSceneIndex = nextSceneIndex;
+        }
     }
 }
 
@@ -2089,6 +2174,16 @@ void UBBoardController::hide()
 void UBBoardController::show()
 {
     UBApplication::mainWindow->actionLibrary->setChecked(false);
+
+    if (mSwitchToSceneIndex >= 0)
+    {
+        setActiveDocumentScene(mSwitchToSceneIndex);
+        mSwitchToSceneIndex = -1;
+    }
+    else
+    {
+        setActiveDocumentScene(mActiveSceneIndex);
+    }
 }
 
 void UBBoardController::persistCurrentScene(bool isAnAutomaticBackup, bool forceImmediateSave)

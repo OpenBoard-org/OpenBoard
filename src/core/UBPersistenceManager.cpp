@@ -756,7 +756,7 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::duplicateDocument(std::sh
 
     persistDocumentMetadata(copy);
 
-    copy->setPageCount(sceneCount(copy));
+    copy->setPageCount(copy->pageCount());
 
     emit documentCreated(copy);
 
@@ -769,7 +769,7 @@ void UBPersistenceManager::deleteDocumentScenes(std::shared_ptr<UBDocumentProxy>
 {
     checkIfDocumentRepositoryExists();
 
-    int pageCount = UBPersistenceManager::persistenceManager()->sceneCount(proxy);
+    int pageCount = proxy->pageCount();
 
     QList<int> compactedIndexes;
 
@@ -858,20 +858,26 @@ void UBPersistenceManager::duplicateDocumentScene(std::shared_ptr<UBDocumentProx
 {
     checkIfDocumentRepositoryExists();
 
-    int pageCount = UBPersistenceManager::persistenceManager()->sceneCount(proxy);
+    auto scene = UBApplication::boardController->activeScene();
 
-    for (int i = pageCount; i > index + 1; i--)
+    // save modified scene of the same document
+    if (scene && scene->document() == proxy && scene->isModified())
+    {
+        auto page = UBApplication::boardController->activeSceneIndex();
+        persistDocumentScene(proxy, scene, page, false, true);
+    }
+
+    for (int i = proxy->pageCount(); i > index + 1; i--)
     {
         renamePage(proxy, i - 1 , i);
 
         mSceneCache.moveScene(proxy, i - 1, i);
-
     }
 
     copyPage(proxy, index , index + 1);
 
     //TODO: write a proper way to handle object on disk
-    std::shared_ptr<UBGraphicsScene> scene = loadDocumentScene(proxy, index + 1);
+    scene = loadDocumentScene(proxy, index + 1);
 
     foreach(QGraphicsItem* item, scene->items())
     {
@@ -948,11 +954,9 @@ void UBPersistenceManager::duplicateDocumentScene(std::shared_ptr<UBDocumentProx
 
     proxy->incPageCount();
 
-    persistDocumentScene(proxy,scene, index + 1);
+    persistDocumentScene(proxy, scene, index + 1, false, true);
 
     persistDocumentMetadata(proxy);
-
-    emit documentSceneCreated(proxy, index + 1);
 }
 
 void UBPersistenceManager::copyDocumentScene(std::shared_ptr<UBDocumentProxy> from, int fromIndex, std::shared_ptr<UBDocumentProxy> to, int toIndex)
@@ -986,8 +990,6 @@ void UBPersistenceManager::copyDocumentScene(std::shared_ptr<UBDocumentProxy> fr
     auto pix = std::make_shared<QPixmap>(thumbTmp);
     UBDocumentController *ctrl = UBApplication::documentController;
     ctrl->TreeViewSelectionChanged(ctrl->firstSelectedTreeIndex(), QModelIndex());
-
-//    emit documentSceneCreated(to, toIndex + 1);
 }
 
 
@@ -1013,8 +1015,6 @@ std::shared_ptr<UBGraphicsScene> UBPersistenceManager::createDocumentSceneAt(std
 
     persistDocumentScene(proxy, newScene, index);
 
-    emit documentSceneCreated(proxy, index);
-
     return newScene;
 }
 
@@ -1023,7 +1023,7 @@ void UBPersistenceManager::insertDocumentSceneAt(std::shared_ptr<UBDocumentProxy
 {
     scene->setDocument(proxy);
 
-    int count = sceneCount(proxy);
+    int count = proxy->pageCount();
 
     for(int i = count - 1; i >= index; i--)
     {
@@ -1036,13 +1036,10 @@ void UBPersistenceManager::insertDocumentSceneAt(std::shared_ptr<UBDocumentProxy
 
     proxy->incPageCount();
 
-    if (persist) {
+    if (persist)
+    {
         persistDocumentScene(proxy, scene, index);
     }
-
-    if (!deleting)
-        emit documentSceneCreated(proxy, index);
-
 }
 
 
@@ -1052,6 +1049,15 @@ void UBPersistenceManager::moveSceneToIndex(std::shared_ptr<UBDocumentProxy> pro
 
     if (source == target)
         return;
+
+    auto scene = UBApplication::boardController->activeScene();
+
+    // save modified scene of the same document
+    if (scene && scene->document() == proxy && scene->isModified())
+    {
+        auto page = UBApplication::boardController->activeSceneIndex();
+        persistDocumentScene(proxy, scene, page, false, true);
+    }
 
     QFile svgTmp(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", source));
     svgTmp.rename(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.tmp", target));
@@ -1284,7 +1290,7 @@ bool UBPersistenceManager::addDirectoryContentToDocument(const QString& document
                 return false;
     }
 
-    pDocument->setPageCount(sceneCount(pDocument));
+    pDocument->setPageCount(pDocument->pageCount());
 
     //issue NC - NNE - 20131213 : At this point, all is well done.
     return true;

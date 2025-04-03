@@ -254,7 +254,9 @@ class UBBoardController : public UBDocumentContainer
 
         void saveData(SaveFlags fls = sf_none);
 
-        //void regenerateThumbnails();
+        void documentSceneDuplicated(std::shared_ptr<UBDocumentProxy> proxy, int index);
+        void documentSceneMoved(std::shared_ptr<UBDocumentProxy> proxy, int fromIndex, int toIndex);
+        void documentSceneDeleted(std::shared_ptr<UBDocumentProxy> proxy, int index);
 
     signals:
         void newPageAdded();
@@ -295,6 +297,7 @@ class UBBoardController : public UBDocumentContainer
         UBMainWindow *mMainWindow;
         std::shared_ptr<UBGraphicsScene> mActiveScene;
         int mActiveSceneIndex;
+        int mSwitchToSceneIndex{-1};
         UBBoardPaletteManager *mPaletteManager;
         UBSoftwareUpdateDialog *mSoftwareUpdateDialog;
         UBMessageWindow *mMessageWindow;

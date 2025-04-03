@@ -50,7 +50,6 @@
 UBDocumentThumbnailsView::UBDocumentThumbnailsView(QWidget* parent)
     : UBThumbnailsView(parent)
     , mThumbnailWidth(UBSettings::defaultThumbnailWidth)
-    , mLastSelectedThumbnail(0)
     , mSelectionSpan(0)
 
 {
@@ -103,11 +102,12 @@ void UBDocumentThumbnailsView::setThumbnailWidth(qreal pThumbnailWidth)
 
         if (mDocument)
         {
-            mDocument->thumbnailScene()->arrangeThumbnails();
+            auto thumbnailScene = mDocument->thumbnailScene();
+            thumbnailScene->arrangeThumbnails();
 
-            if (mLastSelectedThumbnail)
+            if (thumbnailScene->lastSelectedThumbnail())
             {
-                ensureVisible(mLastSelectedThumbnail);
+                ensureVisible(thumbnailScene->lastSelectedThumbnail());
             }
         }
     }
@@ -148,20 +148,30 @@ void UBDocumentThumbnailsView::mousePressEvent(QMouseEvent *event)
     mClickTime.restart();
     mMousePressPos = event->pos();
 
+    // first ask the thumbnails to process the event for the UI buttons
+    QGraphicsView::mousePressEvent(event);
+
+    // do not further process event if it was one of the UI buttons
+    if (event->isAccepted())
+    {
+        return;
+    }
+
     UBThumbnail* sceneItem = dynamic_cast<UBThumbnail*>(itemAt(mMousePressPos));
 
     if (!sceneItem)
     {
         event->ignore();
-        QGraphicsView::mousePressEvent(event);
         return;
     }
 
+    auto thumbnailScene = document()->thumbnailScene();
+
     if (Qt::ShiftModifier & event->modifiers())
     {
-        if (mLastSelectedThumbnail)
+        if (thumbnailScene->lastSelectedThumbnail())
         {
-            int index1 = mLastSelectedThumbnail->sceneIndex();
+            int index1 = thumbnailScene->lastSelectedThumbnail()->sceneIndex();
             int index2 = sceneItem->sceneIndex();
 
             mSelectionSpan = index2 - index1;
@@ -172,21 +182,18 @@ void UBDocumentThumbnailsView::mousePressEvent(QMouseEvent *event)
     {
         if (!sceneItem->isSelected())
         {
-            mLastSelectedThumbnail = sceneItem;
-            int index = mLastSelectedThumbnail->sceneIndex();
+            int index = sceneItem->sceneIndex();
             selectItemAt(index, Qt::ControlModifier & event->modifiers());
         }
         else
         {
-            mLastSelectedThumbnail = nullptr;
-            sceneItem->setSelected(false);
+            thumbnailScene->hightlightItem(sceneItem->sceneIndex(), false, false);
         }
 
         mSelectionSpan = 0;
     }
 
     UBApplication::documentController->pageSelectionChanged();
-    QGraphicsView::mousePressEvent(event);
 }
 
 
@@ -257,9 +264,11 @@ void UBDocumentThumbnailsView::mouseReleaseEvent(QMouseEvent *event)
 
 void UBDocumentThumbnailsView::keyPressEvent(QKeyEvent *event)
 {
-    if (mLastSelectedThumbnail)
+    auto thumbnailScene = document()->thumbnailScene();
+
+    if (thumbnailScene->lastSelectedThumbnail())
     {
-        const int startSelectionIndex = mLastSelectedThumbnail->sceneIndex();
+        const int startSelectionIndex = thumbnailScene->lastSelectedThumbnail()->sceneIndex();
         const int previousSelectedThumbnailIndex = startSelectionIndex + mSelectionSpan;
 
         switch (event->key())
@@ -301,7 +310,6 @@ void UBDocumentThumbnailsView::keyPressEvent(QKeyEvent *event)
                         if (toSelectIndex < 0) break;
                     }
 
-                    mLastSelectedThumbnail = document()->thumbnailScene()->thumbnailAt(toSelectIndex);
                     selectItemAt(toSelectIndex, Qt::ControlModifier & event->modifiers());
                     mSelectionSpan = 0;
                 }
@@ -353,7 +361,6 @@ void UBDocumentThumbnailsView::keyPressEvent(QKeyEvent *event)
                     const auto selectedItem = document()->thumbnailScene()->thumbnailAt(selectedIndex);
 
                     selectItemAt(selectedIndex, Qt::ControlModifier & event->modifiers());
-                    mLastSelectedThumbnail = selectedItem;
                     mSelectionSpan = 0;
                 }
             }
@@ -369,7 +376,6 @@ void UBDocumentThumbnailsView::keyPressEvent(QKeyEvent *event)
                 else
                 {
                     selectItemAt(0, Qt::ControlModifier & event->modifiers());
-                    mLastSelectedThumbnail = document()->thumbnailScene()->thumbnailAt(0);
                     mSelectionSpan = 0;
                 }
             }
@@ -386,7 +392,6 @@ void UBDocumentThumbnailsView::keyPressEvent(QKeyEvent *event)
                 {
                     const auto selectIndex = document()->thumbnailScene()->thumbnailCount() - 1;
                     selectItemAt(selectIndex, Qt::ControlModifier & event->modifiers());
-                    mLastSelectedThumbnail = document()->thumbnailScene()->thumbnailAt(selectIndex);
                     mSelectionSpan = 0;
                 }
             }
@@ -421,11 +426,13 @@ void UBDocumentThumbnailsView::resizeEvent(QResizeEvent *event)
 
     if (document())
     {
-        document()->thumbnailScene()->arrangeThumbnails();
+        auto thumbnailScene = document()->thumbnailScene();
 
-        if (mLastSelectedThumbnail)
+        thumbnailScene->arrangeThumbnails();
+
+        if (thumbnailScene->lastSelectedThumbnail())
         {
-            ensureVisible(mLastSelectedThumbnail);
+            ensureVisible(thumbnailScene->lastSelectedThumbnail());
         }
     }
 
@@ -446,24 +453,16 @@ void UBDocumentThumbnailsView::selectItemAt(int pIndex, bool extend)
     ensureVisible(thumbnailScene->thumbnailAt(pIndex));
 }
 
-void UBDocumentThumbnailsView::unselectItemAt(int pIndex)
-{
-    UBThumbnail* itemToUnselect = document()->thumbnailScene()->thumbnailAt(pIndex);
-
-    if (itemToUnselect)
-    {
-        itemToUnselect->setSelected(false);
-    }
-}
-
 
 void UBDocumentThumbnailsView::selectItems(int startIndex, int count)
 {
     auto thumbnailScene = document()->thumbnailScene();
 
-    for (int i = 0; i < thumbnailScene->thumbnailCount(); i++)
+    thumbnailScene->hightlightItem(startIndex, true);
+
+    for (int i = 1; i < count; ++i)
     {
-        thumbnailScene->thumbnailAt(i)->setSelected(i >= startIndex && i < startIndex + count);
+        thumbnailScene->hightlightItem(startIndex + i);
     }
 }
 
@@ -474,7 +473,7 @@ void UBDocumentThumbnailsView::selectAll()
 
     for (int i = 0; i < thumbnailScene->thumbnailCount(); i++)
     {
-        thumbnailScene->thumbnailAt(i)->setSelected(true);
+        thumbnailScene->hightlightItem(i);
     }
 }
 
@@ -549,6 +548,11 @@ int UBDocumentThumbnailsView::UBDocumentThumbnailArranger::columnCount() const
 double UBDocumentThumbnailsView::UBDocumentThumbnailArranger::thumbnailWidth() const
 {
     return mThumbnailWidth;
+}
+
+bool UBDocumentThumbnailsView::UBDocumentThumbnailArranger::isUIEnabled() const
+{
+    return false;
 }
 
 void UBDocumentThumbnailsView::UBDocumentThumbnailArranger::setThumbnailWidth(int width)
