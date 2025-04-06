@@ -35,6 +35,7 @@
 #include "UBGraphicsPixmapItem.h"
 #include "UBGraphicsItemDelegate.h"
 
+#include "core/UBPersistenceManager.h"
 #include "core/memcheck.h"
 
 UBGraphicsPDFItem::UBGraphicsPDFItem(PDFRenderer *renderer, int pageNumber, QGraphicsItem* parent)
@@ -51,6 +52,10 @@ UBGraphicsPDFItem::~UBGraphicsPDFItem()
 {
 }
 
+QList<QString> UBGraphicsPDFItem::mediaAssets() const
+{
+    return {UBPersistenceManager::objectDirectory + "/" + fileUuid().toString() + ".pdf"};
+}
 
 QVariant UBGraphicsPDFItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
@@ -66,12 +71,6 @@ void UBGraphicsPDFItem::updateChild()
 
     // Workaround: Necessary, otherwise only the control scene is updated, the display scene refresh is ignored for an unknown reason.
     setCacheMode(prevCacheMode);
-}
-
-void UBGraphicsPDFItem::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid));
 }
 
 void UBGraphicsPDFItem::mousePressEvent(QGraphicsSceneMouseEvent *event)

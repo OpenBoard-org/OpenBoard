@@ -89,11 +89,16 @@ void UBGraphicsSvgItem::init()
 
     setData(UBGraphicsItemData::ItemCanBeSetAsBackground, true);
 
-    setUuid(QUuid::createUuid());
+    UBGraphicsSvgItem::setUuid(QUuid::createUuid());
 }
 
 UBGraphicsSvgItem::~UBGraphicsSvgItem()
 {
+}
+
+QList<QString> UBGraphicsSvgItem::mediaAssets() const
+{
+    return {UBPersistenceManager::imageDirectory + "/" + uuid().toString() + ".svg"};
 }
 
 
@@ -228,18 +233,4 @@ UBGraphicsPixmapItem* UBGraphicsSvgItem::toPixmapItem() const
     pixmapItem->setData(UBGraphicsItemData::ItemLayerType, this->data(UBGraphicsItemData::ItemLayerType));
 
     return pixmapItem;
-}
-
-void UBGraphicsSvgItem::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
-}
-
-
-void UBGraphicsSvgItem::clearSource()
-{
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + uuid().toString() + ".svg";
-    QString diskPath =  UBApplication::boardController->selectedDocument()->persistencePath() + "/" + fileName;
-    UBFileSystemUtils::deleteFile(diskPath);
 }

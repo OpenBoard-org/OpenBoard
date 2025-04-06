@@ -57,6 +57,7 @@ class UBMagnifierParams;
 class UBMagnifier;
 class UBGraphicsCache;
 class UBGraphicsGroupContainerItem;
+class UBMediaAssetItem;
 class UBSelectionFrame;
 class UBBoardView;
 
@@ -285,8 +286,8 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
 
         virtual void setRenderingQuality(UBItem::RenderingQuality pRenderingQuality, UBItem::CacheBehavior cacheBehavior);
 
-        QList<QUrl> relativeDependenciesOfItem(QGraphicsItem* item) const;
-        QList<QUrl> relativeDependencies() const;
+        QList<QString> relativeDependencies() const;
+        QList<UBMediaAssetItem*> mediaAssetItems() const;
 
         QSize nominalSize();
 

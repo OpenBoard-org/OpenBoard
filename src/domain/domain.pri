@@ -8,6 +8,7 @@ HEADERS += src/domain/UBGraphicsScene.h \
     src/domain/UBGraphicsSvgItem.h \
     src/domain/UBGraphicsPolygonItem.h \
     src/domain/UBItem.h \
+    src/domain/UBMediaAssetItem.h \
     src/domain/UBGraphicsWidgetItem.h \
     src/domain/UBGraphicsPDFItem.h \
     src/domain/UBGraphicsTextItem.h \

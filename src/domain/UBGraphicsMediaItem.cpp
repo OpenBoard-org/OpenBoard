@@ -34,8 +34,10 @@
 #include "UBGraphicsDelegateFrame.h"
 #include "document/UBDocumentProxy.h"
 #include "core/UBApplication.h"
+#include "core/UBPersistenceManager.h"
 #include "board/UBBoardController.h"
 #include "core/memcheck.h"
+#include "frameworks/UBFileSystemUtils.h"
 
 #include <QGraphicsVideoItem>
 
@@ -137,6 +139,13 @@ UBGraphicsAudioItem::UBGraphicsAudioItem(const QUrl &pMediaFileUrl, QGraphicsIte
 #endif
 }
 
+QList<QString> UBGraphicsAudioItem::mediaAssets() const
+{
+    const QString completeFileName = QFileInfo(mediaFileUrl().toLocalFile()).fileName();
+    const QString path = UBPersistenceManager::audioDirectory + "/";
+    return {path + completeFileName};
+}
+
 UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsItem *parent)
     :UBGraphicsMediaItem(pMediaFileUrl, parent)
 {
@@ -190,6 +199,13 @@ UBGraphicsVideoItem::UBGraphicsVideoItem(const QUrl &pMediaFileUrl, QGraphicsIte
     setAcceptHoverEvents(true);
 
     update();
+}
+
+QList<QString> UBGraphicsVideoItem::mediaAssets() const
+{
+    const QString completeFileName = QFileInfo(mediaFileUrl().toLocalFile()).fileName();
+    const QString path = UBPersistenceManager::videoDirectory + "/";
+    return {path + completeFileName};
 }
 
 UBGraphicsMediaItem::~UBGraphicsMediaItem()
@@ -347,17 +363,6 @@ void UBGraphicsMediaItem::setSelected(bool selected)
 void UBGraphicsMediaItem::setSourceUrl(const QUrl &pSourceUrl)
 {
     UBItem::setSourceUrl(pSourceUrl);
-}
-
-void UBGraphicsMediaItem::clearSource()
-{
-    QString path = mediaFileUrl().toLocalFile();
-    //if path is absolute clean duplicated path string
-    if (!path.contains(UBApplication::boardController->selectedDocument()->persistencePath()))
-        path = UBApplication::boardController->selectedDocument()->persistencePath() + "/" + path;
-
-    if (!UBFileSystemUtils::deleteFile(path))
-        qDebug() << "cannot delete file: " << path;
 }
 
 void UBGraphicsMediaItem::toggleMute()
@@ -570,6 +575,11 @@ void UBGraphicsMediaItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 QRectF UBGraphicsMediaItem::boundingRect() const
 {
     return rect();
+}
+
+void UBGraphicsMediaItem::setMediaAsset(const QString& documentPath, const QString& mediaAsset)
+{
+    setMediaFileUrl(QUrl::fromLocalFile(documentPath + "/" + mediaAsset));
 }
 
 void UBGraphicsMediaItem::setSize(int width, int height)

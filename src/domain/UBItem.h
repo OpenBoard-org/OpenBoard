@@ -139,8 +139,6 @@ public:
 
     void remove(bool canUndo = true);
 
-    virtual void clearSource(){}
-
 private:
     UBGraphicsItemDelegate* mDelegate;
 };

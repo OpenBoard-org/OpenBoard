@@ -60,7 +60,6 @@ class UBGraphicsCurtainItem : public QObject, public QGraphicsRectItem, public U
 
         //TODO UB 4.x not nice ...
         void triggerRemovedSignal();
-        virtual void clearSource(){;}
 
         virtual void setUuid(const QUuid &pUuid);
 

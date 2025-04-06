@@ -1635,6 +1635,7 @@ UBGraphicsPixmapItem* UBGraphicsScene::addImage(QByteArray pData, QGraphicsItem*
     }
 
     QString fileName = UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + "." + format;
+    pixmapItem->setMediaAsset(documentPath, fileName);
 
     QString path = documentPath + "/" + fileName;
 
@@ -2676,76 +2677,38 @@ void UBGraphicsScene::setRenderingQuality(UBItem::RenderingQuality pRenderingQua
     }
 }
 
-QList<QUrl> UBGraphicsScene::relativeDependenciesOfItem(QGraphicsItem* item) const
+QList<QString> UBGraphicsScene::relativeDependencies() const
 {
-    QList<QUrl> relativePaths;
+    QList<QString> relativePaths;
 
-    UBGraphicsVideoItem *videoItem = dynamic_cast<UBGraphicsVideoItem*> (item);
-    if (videoItem){
-        QString completeFileName = QFileInfo(videoItem->mediaFileUrl().toLocalFile()).fileName();
-        QString path = UBPersistenceManager::videoDirectory + "/";
-        relativePaths << QUrl(path + completeFileName);
-        return relativePaths;
+    for (const auto item : mediaAssetItems())
+    {
+        relativePaths << item->mediaAssets();
     }
 
-    UBGraphicsAudioItem *audioItem =  dynamic_cast<UBGraphicsAudioItem*> (item);
-    if (audioItem){
-        QString completeFileName = QFileInfo(audioItem->mediaFileUrl().toLocalFile()).fileName();
-        QString path = UBPersistenceManager::audioDirectory + "/";
-        relativePaths << QUrl(path + completeFileName);
-        return relativePaths;
-    }
-
-    UBGraphicsWidgetItem* widget = dynamic_cast<UBGraphicsWidgetItem*>(item);
-    if(widget){
-        QString widgetPath = UBPersistenceManager::widgetDirectory + "/" + widget->uuid().toString() + ".wgt";
-        QString screenshotPath = UBPersistenceManager::widgetDirectory + "/" + widget->uuid().toString().remove("{").remove("}") + ".png";
-        relativePaths << QUrl(widgetPath);
-        relativePaths << QUrl(screenshotPath);
-        return relativePaths;
-    }
-
-    UBGraphicsPixmapItem* pixmapItem = dynamic_cast<UBGraphicsPixmapItem*>(item);
-    if(pixmapItem){
-        QDir imageDir = mDocument->persistencePath() + "/" + UBPersistenceManager::imageDirectory;
-        QStringList imageFiles = imageDir.entryList({pixmapItem->uuid().toString() + ".*"});
-
-        if (!imageFiles.isEmpty())
-        {
-            relativePaths << QUrl(UBPersistenceManager::imageDirectory + "/" + imageFiles.last());
-        }
-
-        return relativePaths;
-    }
-
-    UBGraphicsSvgItem* svgItem = dynamic_cast<UBGraphicsSvgItem*>(item);
-    if(svgItem){
-        relativePaths << QUrl(UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg");
-        return relativePaths;
-    }
+    // remove duplicates
+    std::sort(relativePaths.begin(), relativePaths.end());
+    relativePaths.erase(std::unique(relativePaths.begin(), relativePaths.end()), relativePaths.end());
 
     return relativePaths;
 }
 
-QList<QUrl> UBGraphicsScene::relativeDependencies() const
+QList<UBMediaAssetItem*> UBGraphicsScene::mediaAssetItems() const
 {
-    QList<QUrl> relativePaths;
+    QList<UBMediaAssetItem*> mediaAssetItemList;
 
-    foreach(auto item, items())
+    for (const auto item : items())
     {
-        UBGraphicsGroupContainerItem* groupItem = dynamic_cast<UBGraphicsGroupContainerItem*>(item);
-        if(groupItem)
+        // items() returns a list of all items, including child items
+        const auto mediaAssetItem = dynamic_cast<UBMediaAssetItem*>(item);
+
+        if (mediaAssetItem)
         {
-            foreach (QGraphicsItem* child, groupItem->childItems())
-            {
-                relativePaths << relativeDependenciesOfItem(child);
-            }
+            mediaAssetItemList << mediaAssetItem;
         }
-        else
-            relativePaths << relativeDependenciesOfItem(item);
     }
 
-    return relativePaths;
+    return mediaAssetItemList;
 }
 
 QSize UBGraphicsScene::nominalSize()

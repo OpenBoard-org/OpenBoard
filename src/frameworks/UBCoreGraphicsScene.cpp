@@ -88,10 +88,6 @@ bool UBCoreGraphicsScene::deleteItem(QGraphicsItem* item)
 {
     if(mItemsToDelete.contains(item))
     {
-        UBGraphicsItem *item_casted = dynamic_cast<UBGraphicsItem *>(item);
-        if (item_casted != NULL)
-            item_casted->clearSource();
-
         mItemsToDelete.remove(item);
         delete item;
         item = NULL;

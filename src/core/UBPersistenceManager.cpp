@@ -792,10 +792,10 @@ void UBPersistenceManager::deleteDocumentScenes(std::shared_ptr<UBDocumentProxy>
         if (scene)
         {
             //scene is about to move into new document
-            foreach (QUrl relativeFile, scene->relativeDependencies())
+            foreach (QString relativeFile, scene->relativeDependencies())
             {
-                QString source = scene->document()->persistencePath() + "/" + relativeFile.toString();
-                QString target = trashDocProxy->persistencePath() + "/" + relativeFile.toString();
+                QString source = scene->document()->persistencePath() + "/" + relativeFile;
+                QString target = trashDocProxy->persistencePath() + "/" + relativeFile;
 
                 QFileInfo fi(target);
                 QDir d = fi.dir();

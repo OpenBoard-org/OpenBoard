@@ -666,10 +666,10 @@ void UBBoardController::addScene(std::shared_ptr<UBGraphicsScene> scene, bool re
 
         if (scene->document() && (scene->document() != selectedDocument()))
         {
-            foreach(QUrl relativeFile, scene->relativeDependencies())
+            foreach(QString relativeFile, scene->relativeDependencies())
             {
-                QString source = scene->document()->persistencePath() + "/" + relativeFile.path();
-                QString destination = selectedDocument()->persistencePath() + "/" + relativeFile.path();
+                QString source = scene->document()->persistencePath() + "/" + relativeFile;
+                QString destination = selectedDocument()->persistencePath() + "/" + relativeFile;
 
                 UBFileSystemUtils::copy(source, destination, true);
             }

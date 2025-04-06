@@ -32,21 +32,19 @@
 
 #include <QtWidgets/QGraphicsView>
 
-#include <QAudioOutput>
+// #include <QAudioOutput>
 #include <QMediaPlayer>
 
-#include <QtMultimediaWidgets/QVideoWidget>
-#include <QtMultimedia/QVideoFrame>
+// #include <QtMultimediaWidgets/QVideoWidget>
+// #include <QtMultimedia/QVideoFrame>
 
-#include "core/UBApplication.h"
 #include "board/UBBoardController.h"
-#include "domain/UBItem.h"
+#include "domain/UBMediaAssetItem.h"
 #include "domain/UBResizableGraphicsItem.h"
-#include "frameworks/UBFileSystemUtils.h"
 
 class QGraphicsVideoItem;
 
-class UBGraphicsMediaItem : public QObject, public UBItem, public UBGraphicsItem, public QGraphicsRectItem, public UBResizableGraphicsItem
+class UBGraphicsMediaItem : public QObject, public UBMediaAssetItem, public UBGraphicsItem, public QGraphicsRectItem, public UBResizableGraphicsItem
 {
     Q_OBJECT
 
@@ -73,7 +71,7 @@ public:
 
     virtual mediaType getMediaType() const = 0;
 
-    virtual std::shared_ptr<UBGraphicsScene> scene();
+    virtual std::shared_ptr<UBGraphicsScene> scene() override;
     bool hasLinkedImage() const             { return haveLinkedImage; }
     virtual QUrl mediaFileUrl() const       { return mMediaFileUrl; }
     bool isMuted() const                    { return mMuted; }
@@ -97,25 +95,26 @@ public:
     bool firstLoad() const;
     void setFirstLoad(bool firstLoad);
 
-    QRectF boundingRect() const;
+    QRectF boundingRect() const override;
 
-    QSizeF size() const { return rect().size(); } 
+    QSizeF size() const override { return rect().size(); }
 
     // Setters
+    virtual void setMediaAsset(const QString& documentPath, const QString& mediaAsset) override;
     virtual void setMediaFileUrl(QUrl url);
     void setInitialPos(qint64 p);
     void setMediaPos(qint64 p);
-    virtual void setSourceUrl(const QUrl &pSourceUrl);
+    virtual void setSourceUrl(const QUrl &pSourceUrl) override;
     void setSelected(bool selected);
     void setMinimumSize(const QSize& size);
-    void setUuid(const QUuid &pUuid);
+    void setUuid(const QUuid &pUuid) override;
 
-    virtual void copyItemParameters(UBItem *copy) const;
+    virtual void copyItemParameters(UBItem *copy) const override;
 
     virtual void setSize(int width, int height);
-    void resize(qreal w, qreal h) { setSize(w, h); }
+    void resize(qreal w, qreal h) override { setSize(w, h); }
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 
 public slots:
@@ -135,10 +134,8 @@ protected slots:
 
 protected:
 
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-
-    virtual void clearSource();
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
     QMediaPlayer *mMediaObject;
 
@@ -171,15 +168,18 @@ class UBGraphicsAudioItem: public UBGraphicsMediaItem
 
 public:
     enum { Type = UBGraphicsItemType::AudioItemType};
-    virtual int type() const
+    virtual int type() const override
     {
         return Type;
     }
 
     UBGraphicsAudioItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent = 0);
-    mediaType getMediaType() const { return mediaType_Audio; }
 
-    virtual UBItem* deepCopy() const;
+    virtual QList<QString> mediaAssets() const override;
+
+    mediaType getMediaType() const override { return mediaType_Audio; }
+
+    virtual UBItem* deepCopy() const override;
 };
 
 class UBGraphicsVideoItem: public UBGraphicsMediaItem
@@ -188,20 +188,22 @@ class UBGraphicsVideoItem: public UBGraphicsMediaItem
 
 public:
     enum { Type = UBGraphicsItemType::VideoItemType};
-    virtual int type() const
+    virtual int type() const override
     {
         return Type;
     }
 
     UBGraphicsVideoItem(const QUrl& pMediaFileUrl, QGraphicsItem *parent = 0);
 
-    mediaType getMediaType() const { return mediaType_Video; }
+    virtual QList<QString> mediaAssets() const override;
 
-    void setSize(int width, int height);
+    mediaType getMediaType() const override { return mediaType_Video; }
 
-    virtual UBItem* deepCopy() const;
+    void setSize(int width, int height) override;
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    virtual UBItem* deepCopy() const override;
+
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 public slots:
     void videoSizeChanged(QSizeF newSize);
@@ -222,10 +224,10 @@ protected:
 
     QGraphicsVideoItem *mVideoItem;
 
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
     void setPlaceholderVisible(bool visible);
 

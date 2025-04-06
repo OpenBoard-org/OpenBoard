@@ -66,8 +66,6 @@ public:
     virtual void setUuid(const QUuid &pUuid);
     void destroy(bool canUndo = true);
 
-    virtual void clearSource();
-
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);

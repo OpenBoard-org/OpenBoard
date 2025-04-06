@@ -2176,11 +2176,13 @@ UBGraphicsPixmapItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::pixmapItemFromSvg()
     {
         pixmapItem = new UBGraphicsPixmapItem();
         QString href = imageHref.toString();
-        QImageReader rdr(mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(href));
+        const auto asset = UBFileSystemUtils::normalizeFilePath(href);
+        QImageReader rdr(mDocumentPath + "/" + asset);
         rdr.setAutoTransform(true);
         QImage img = rdr.read();
         QPixmap pix = QPixmap::fromImage(img);
         pixmapItem->setPixmap(pix);
+        pixmapItem->setMediaAsset(mDocumentPath, asset);
         graphicsItemFromSvg(pixmapItem);
     }
     else

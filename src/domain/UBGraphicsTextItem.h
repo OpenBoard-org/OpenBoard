@@ -95,7 +95,6 @@ class UBGraphicsTextItem : public QGraphicsTextItem, public UBItem, public UBRes
             mColorOnLightBackground = pColorOnLightBackground;
         }
 
-        virtual void clearSource(){;}
         virtual void setUuid(const QUuid &pUuid);
         void activateTextEditor(bool activate);
         void setSelected(bool selected);

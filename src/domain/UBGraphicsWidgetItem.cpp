@@ -48,6 +48,7 @@
 #include "core/memcheck.h"
 #include "core/UBApplicationController.h"
 #include "core/UBApplication.h"
+#include "core/UBPersistenceManager.h"
 #include "core/UBSettings.h"
 
 #include "frameworks/UBFileSystemUtils.h"
@@ -196,6 +197,13 @@ UBGraphicsWidgetItem::~UBGraphicsWidgetItem()
     // get ownership back and delete widget
     setWidget(nullptr);
     delete mWebEngineView;
+}
+
+QList<QString> UBGraphicsWidgetItem::mediaAssets() const
+{
+    const QString widgetPath = UBPersistenceManager::widgetDirectory + "/" + uuid().toString() + ".wgt";
+    const QString screenshotPath = UBPersistenceManager::widgetDirectory + "/" + uuid().toString(QUuid::WithoutBraces) + ".png";
+    return {widgetPath, screenshotPath};
 }
 
 void UBGraphicsWidgetItem::initialize()
@@ -388,12 +396,6 @@ void UBGraphicsWidgetItem::setSnapshotPath(const QUrl &newFilePath)
 QUrl UBGraphicsWidgetItem::getSnapshotPath() const
 {
     return mSnapshotFile;
-}
-
-void UBGraphicsWidgetItem::clearSource()
-{
-    UBFileSystemUtils::deleteDir(getOwnFolder().toLocalFile());
-    UBFileSystemUtils::deleteFile(getSnapshotPath().toLocalFile());
 }
 
 void UBGraphicsWidgetItem::setUuid(const QUuid &pUuid)
@@ -1016,6 +1018,10 @@ UBItem* UBGraphicsAppleWidgetItem::deepCopy() const
 
 }
 
+void UBGraphicsAppleWidgetItem::setMediaAsset(const QString& documentPath, const QString& mediaAsset)
+{
+}
+
 void UBGraphicsAppleWidgetItem::copyItemParameters(UBItem *copy) const
 {
     UBGraphicsAppleWidgetItem *cp = dynamic_cast<UBGraphicsAppleWidgetItem*>(copy);
@@ -1524,6 +1530,16 @@ void UBGraphicsW3CWidgetItem::copyItemParameters(UBItem *copy) const
 
         cp->setZValue(this->zValue());
         cp->setSnapshot(this->snapshot(), this->isFrozen());
+    }
+}
+
+void UBGraphicsW3CWidgetItem::setMediaAsset(const QString& documentPath, const QString& mediaAsset)
+{
+    if (mediaAsset.endsWith(".wgt"))
+    {
+        widgetUrl(QUrl::fromLocalFile(documentPath + "/" + mediaAsset));
+        setOwnFolder(widgetUrl());
+        mMainHtmlUrl.setPath(widgetUrl().path() + "/" + mMainHtmlFileName);
     }
 }
 

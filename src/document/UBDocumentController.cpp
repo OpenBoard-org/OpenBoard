@@ -1661,21 +1661,18 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
 
                 std::shared_ptr<UBDocumentProxy> targetDocProxy = docModel->proxyForIndex(targetIndex);
 
-                foreach (QUrl relativeFile, scene->relativeDependencies())
+                foreach (QString relativeFile, scene->relativeDependencies())
                 {
-                    QString source = scene->document()->persistencePath() + "/" + relativeFile.toString();
-                    QString target = targetDocProxy->persistencePath() + "/" + relativeFile.toString();
-
-                    QString sourceDecoded = scene->document()->persistencePath() + "/" + relativeFile.toString(QUrl::DecodeReserved);
-                    QString targetDecoded = targetDocProxy->persistencePath() + "/" + relativeFile.toString(QUrl::DecodeReserved);
+                    QString source = scene->document()->persistencePath() + "/" + relativeFile;
+                    QString target = targetDocProxy->persistencePath() + "/" + relativeFile;
 
                     if(QFileInfo(source).isDir())
                         UBFileSystemUtils::copyDir(source,target);
                     else{
-                        QFileInfo fi(targetDecoded);
+                        QFileInfo fi(target);
                         QDir d = fi.dir();
                         d.mkpath(d.absolutePath());
-                        QFile::copy(sourceDecoded, targetDecoded);
+                        QFile::copy(source, target);
                     }
                 }
 

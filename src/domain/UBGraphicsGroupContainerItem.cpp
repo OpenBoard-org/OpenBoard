@@ -262,18 +262,6 @@ void UBGraphicsGroupContainerItem::destroy(bool canUndo) {
     remove(canUndo);
 }
 
-void UBGraphicsGroupContainerItem::clearSource()
-{
-    foreach(QGraphicsItem *child, childItems())
-    {
-        UBGraphicsItem *item = dynamic_cast<UBGraphicsItem *>(child);
-        if (item)
-        {
-            item->clearSource();
-        }
-    }
-}
-
 void UBGraphicsGroupContainerItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (Delegate()->mousePressEvent(event)) {
