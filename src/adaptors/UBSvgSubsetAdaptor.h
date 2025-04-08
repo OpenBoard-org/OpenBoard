@@ -93,6 +93,7 @@ class UBSvgSubsetAdaptor
 
         static QUuid sceneUuid(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex);
         static void setSceneUuid(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex, QUuid pUuid);
+        static void replicateScene(const QString& sourcePath, const QString& targetPath, QUuid uuid);
 
         static void convertPDFObjectsToImages(std::shared_ptr<UBDocumentProxy> proxy);
         static void convertSvgImagesToImages(std::shared_ptr<UBDocumentProxy> proxy);

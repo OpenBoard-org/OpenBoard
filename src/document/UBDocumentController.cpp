@@ -741,7 +741,8 @@ bool UBDocumentTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction act
             int toIndex = targetDocProxy->pageCount();
 
             auto fromDocument = UBDocument::getDocument(fromProxy);
-            fromDocument->copyPage(fromIndex, targetDocProxy, toIndex);
+            auto targetDocument = UBDocument::getDocument(targetDocProxy);
+            fromDocument->copyPage(fromIndex, targetDocument, toIndex);
         }
 
         QApplication::restoreOverrideCursor();
@@ -1629,7 +1630,7 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
         auto targetDocument = UBDocument::getDocument(targetDocProxy);
 
         const UBMimeData *ubMime = qobject_cast <const UBMimeData*>(event->mimeData());
-        if (!targetDocProxy || !ubMime || !ubMime->items().count()) {
+        if (!targetDocument || !ubMime || !ubMime->items().count()) {
             qDebug() << "an error ocured while parsing " << UBApplication::mimeTypeUniboardPage;
             QTreeView::dropEvent(event);
             return;
@@ -1645,44 +1646,14 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
             int fromIndex = sourceItem.sceneIndex();
             int toIndex = targetDocProxy->pageCount();            
 
-            count++;
+            UBApplication::showMessage(tr("Copying page %1/%2").arg(++count).arg(total), true);
 
-            UBApplication::showMessage(tr("Copying page %1/%2").arg(count).arg(total), true);
-            // FIXME code is similar to UBPersistenceManager::copyDocumentScene()
-            // PersistenceManaget works with UBForeignObjectHandler, while we here ask the scene for relative dependencies
-            // one is at file level, the other at scene level. I prefer scene level, as it avoids another SVG parser.
-            // Implement one single UBDocument::copyPage
-
-            // TODO UB 4.x Move following code to some controller class
-            std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(sourceItem.documentProxy(), fromIndex);
-            if (scene)
-            {
-                std::shared_ptr<UBGraphicsScene> sceneClone = scene->sceneDeepCopy();
-
-                std::shared_ptr<UBDocumentProxy> targetDocProxy = docModel->proxyForIndex(targetIndex);
-
-                foreach (QString relativeFile, scene->relativeDependencies())
-                {
-                    QString source = scene->document()->persistencePath() + "/" + relativeFile;
-                    QString target = targetDocProxy->persistencePath() + "/" + relativeFile;
-
-                    if(QFileInfo(source).isDir())
-                        UBFileSystemUtils::copyDir(source,target);
-                    else{
-                        QFileInfo fi(target);
-                        QDir d = fi.dir();
-                        d.mkpath(d.absolutePath());
-                        QFile::copy(source, target);
-                    }
-                }
-
-                targetDocument->insertPage(sceneClone, toIndex);
-            }
-
-            QApplication::restoreOverrideCursor();
-
-            docModel->setHighLighted(QModelIndex());
+            auto sourceDocument = UBDocument::getDocument(fromProxy);
+            sourceDocument->copyPage(fromIndex, targetDocument, toIndex);
         }
+
+        QApplication::restoreOverrideCursor();
+        docModel->setHighLighted(QModelIndex());
 
         UBApplication::showMessage(tr("%1 pages copied", "", total).arg(total), false);
     }

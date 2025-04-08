@@ -658,52 +658,14 @@ void UBBoardController::addScene()
     UBPersistenceManager::persistenceManager()->persistDocumentMetadata(selectedDocument());
 }
 
-void UBBoardController::addScene(std::shared_ptr<UBGraphicsScene> scene, bool replaceActiveIfEmpty)
-{
-    if (scene)
-    {
-        std::shared_ptr<UBGraphicsScene> clone = scene->sceneDeepCopy();
-
-        if (scene->document() && (scene->document() != selectedDocument()))
-        {
-            foreach(QString relativeFile, scene->relativeDependencies())
-            {
-                QString source = scene->document()->persistencePath() + "/" + relativeFile;
-                QString destination = selectedDocument()->persistencePath() + "/" + relativeFile;
-
-                UBFileSystemUtils::copy(source, destination, true);
-            }
-        }
-
-        auto document = UBDocument::getDocument(selectedDocument());
-
-        if (replaceActiveIfEmpty && mActiveScene->isEmpty())
-        {
-            document->insertPage(clone, mActiveSceneIndex);
-            setActiveDocumentScene(mActiveSceneIndex);
-            deleteScene(mActiveSceneIndex + 1);
-        }
-        else
-        {
-            persistCurrentScene(false,true);
-            document->insertPage(clone, mActiveSceneIndex + 1);
-            setActiveDocumentScene(mActiveSceneIndex + 1);
-        }
-
-        QDateTime now = QDateTime::currentDateTime();
-        selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-    }
-}
-
 
 void UBBoardController::addScene(std::shared_ptr<UBDocumentProxy> proxy, int sceneIndex, bool replaceActiveIfEmpty)
 {
-    std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(proxy, sceneIndex);
-
-    if (scene)
-    {
-        addScene(scene, replaceActiveIfEmpty);
-    }
+    // copy scene after active scene index
+    auto sourceDocument = UBDocument::getDocument(proxy);
+    auto targetDocument = UBDocument::getDocument(selectedDocument());
+    sourceDocument->copyPage(sceneIndex, targetDocument, mActiveSceneIndex + 1);
+    setActiveDocumentScene(mActiveSceneIndex + 1);
 }
 
 void UBBoardController::duplicateScene(int nIndex)

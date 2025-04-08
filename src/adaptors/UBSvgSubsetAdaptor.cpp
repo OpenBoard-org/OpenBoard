@@ -187,52 +187,61 @@ QDomDocument UBSvgSubsetAdaptor::loadSceneDocument(std::shared_ptr<UBDocumentPro
 
 void UBSvgSubsetAdaptor::setSceneUuid(std::shared_ptr<UBDocumentProxy> proxy, const int pageIndex, QUuid pUuid)
 {
-    QString fileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg",pageIndex);
+    const QString path = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
+    replicateScene(path, path, pUuid);
+}
 
-    QFile file(fileName);
+void UBSvgSubsetAdaptor::replicateScene(const QString& sourcePath, const QString& targetPath, QUuid uuid)
+{
+    QFile fromFile(sourcePath);
 
-    if (!file.exists() || !file.open(QIODevice::ReadOnly))
+    if (!fromFile.exists() || !fromFile.open(QIODevice::ReadOnly))
+    {
         return;
+    }
 
-    QTextStream textReadStream(&file);
+    QTextStream textReadStream(&fromFile);
     QString xmlContent = textReadStream.readAll();
-    int uuidIndex = xmlContent.indexOf("uuid");
+    fromFile.close();
+    const int uuidIndex = xmlContent.indexOf("uuid");
+
     if (-1 == uuidIndex)
     {
-        qWarning() << "Cannot read UUID from file" << fileName << "to set new UUID";
-        file.close();
+        qWarning() << "Cannot read UUID from file" << sourcePath << "to set new UUID";
         return;
     }
+
     int quoteStartIndex = xmlContent.indexOf('"', uuidIndex);
+
     if (-1 == quoteStartIndex)
     {
-        qWarning() << "Cannot read UUID from file" << fileName << "to set new UUID";
-        file.close();
+        qWarning() << "Cannot read UUID from file" << sourcePath << "to set new UUID";
         return;
     }
+
     int quoteEndIndex = xmlContent.indexOf('"', quoteStartIndex + 1);
+
     if (-1 == quoteEndIndex)
     {
-        qWarning() << "Cannot read UUID from file" << fileName << "to set new UUID";
-        file.close();
+        qWarning() << "Cannot read UUID from file" << sourcePath << "to set new UUID";
         return;
     }
 
-    file.close();
-
     QString newXmlContent = xmlContent.left(quoteStartIndex + 1);
-    newXmlContent.append(UBStringUtils::toCanonicalUuid(pUuid));
+    newXmlContent.append(uuid.toString(QUuid::WithoutBraces));
     newXmlContent.append(xmlContent.right(xmlContent.length() - quoteEndIndex));
 
-    if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+    QFile toFile(targetPath);
+
+    if (toFile.open(QIODevice::WriteOnly | QIODevice::Truncate))
     {
-        QTextStream textWriteStream(&file);
+        QTextStream textWriteStream(&toFile);
         textWriteStream << newXmlContent;
-        file.close();
+        toFile.close();
     }
     else
     {
-        qWarning() << "Cannot open file" << fileName  << "to write UUID";
+        qWarning() << "Cannot open file" << targetPath  << "to write UUID";
     }
 }
 

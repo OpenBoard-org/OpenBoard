@@ -83,6 +83,20 @@ void UBDocument::deletePages(QList<int> indexes)
     }
 
     std::sort(indexes.begin(), indexes.end());
+    indexes.erase(std::unique(indexes.begin(), indexes.end()), indexes.end());
+
+    // copy to-be-deleted pages to trash document
+    QString sourceName = mProxy->metaData(UBSettings::documentName).toString();
+    auto trashDocProxy = UBPersistenceManager::persistenceManager()->createDocument(UBSettings::trashedDocumentGroupNamePrefix, sourceName, false);
+    auto trashDocument = UBDocument::getDocument(trashDocProxy);
+    int trashIndex = 0;
+
+    for (auto index : indexes)
+    {
+        copyPage(index, trashDocument, trashIndex++);
+    }
+
+    // delete the scenes
     UBPersistenceManager::persistenceManager()->deleteDocumentScenes(mProxy, indexes);
 
     for (int i = indexes.size() - 1; i >= 0; --i)
@@ -93,20 +107,13 @@ void UBDocument::deletePages(QList<int> indexes)
 
     mThumbnailScene->renumberThumbnails(indexes.first());
     mThumbnailScene->arrangeThumbnails(indexes.first());
-
-    QDateTime now = QDateTime::currentDateTime();
-    mProxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
 }
 
 void UBDocument::duplicatePage(int index)
 {
-    UBPersistenceManager::persistenceManager()->duplicateDocumentScene(mProxy, index);
-
+    const auto dependencies = pageRelativeDependencies(index);
+    UBPersistenceManager::persistenceManager()->copyDocumentScene(mProxy, index, mProxy, index + 1, dependencies);
     mThumbnailScene->insertThumbnail(index + 1);
-
-    QDateTime now = QDateTime::currentDateTime();
-    mProxy->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
-
     emit UBPersistenceManager::persistenceManager()->documentSceneDuplicated(mProxy, index + 1);
 }
 
@@ -117,16 +124,11 @@ void UBDocument::movePage(int fromIndex, int toIndex)
     emit UBPersistenceManager::persistenceManager()->documentSceneMoved(mProxy, fromIndex, toIndex);
 }
 
-void UBDocument::copyPage(int fromIndex, std::shared_ptr<UBDocumentProxy> to, int toIndex)
+void UBDocument::copyPage(int fromIndex, std::shared_ptr<UBDocument> to, int toIndex)
 {
-    UBPersistenceManager::persistenceManager()->copyDocumentScene(mProxy, fromIndex, to, toIndex);
-
-    const auto toDocument = findDocument(to);
-
-    if (toDocument)
-    {
-        toDocument->mThumbnailScene->insertThumbnail(toIndex);
-    }
+    const auto dependencies = pageRelativeDependencies(fromIndex);
+    UBPersistenceManager::persistenceManager()->copyDocumentScene(mProxy, fromIndex, to->proxy(), toIndex, dependencies);
+    to->mThumbnailScene->insertThumbnail(toIndex);
 }
 
 void UBDocument::insertPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool persist, bool deleting)
@@ -145,12 +147,25 @@ std::shared_ptr<UBGraphicsScene> UBDocument::createPage(int index, bool useUndoR
     return scene;
 }
 
-void UBDocument::persistPage(std::shared_ptr<UBGraphicsScene> scene, const int index, bool isAutomaticBackup,
+void UBDocument::persistPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool isAutomaticBackup,
                              bool forceImmediateSaving)
 {
     UBPersistenceManager::persistenceManager()->persistDocumentScene(mProxy, scene, index, isAutomaticBackup,
                                                                      forceImmediateSaving);
     mThumbnailScene->reloadThumbnail(index);
+}
+
+QList<QString> UBDocument::pageRelativeDependencies(int index) const
+{
+    // TODO use TOC when available
+    auto scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(mProxy, index, false);
+
+    if (scene)
+    {
+        return scene->relativeDependencies();
+    }
+
+    return {};
 }
 
 UBThumbnailScene* UBDocument::thumbnailScene() const

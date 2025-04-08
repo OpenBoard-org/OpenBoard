@@ -200,7 +200,6 @@ class UBBoardController : public UBDocumentContainer
         void blackout();
         void addScene();
         void addScene(std::shared_ptr<UBDocumentProxy> proxy, int sceneIndex, bool replaceActiveIfEmpty = false);
-        void addScene(std::shared_ptr<UBGraphicsScene> scene, bool replaceActiveIfEmpty = false);
         void duplicateScene();
         void importPage();
         void clearScene();

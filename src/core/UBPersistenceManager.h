@@ -100,9 +100,7 @@ class UBPersistenceManager : public QObject
 
         virtual void deleteDocumentScenes(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const QList<int>& indexes);
 
-        virtual void duplicateDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int index);
-
-        virtual void copyDocumentScene(std::shared_ptr<UBDocumentProxy>from, int fromIndex, std::shared_ptr<UBDocumentProxy>to, int toIndex);
+        virtual void copyDocumentScene(std::shared_ptr<UBDocumentProxy>from, int fromIndex, std::shared_ptr<UBDocumentProxy>to, int toIndex, QList<QString> dependencies);
 
         virtual void persistDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, std::shared_ptr<UBGraphicsScene> pScene, const int pSceneIndex, bool isAnAutomaticBackup = false, bool forceImmediateSaving = false);
 
@@ -171,8 +169,8 @@ private:
         static QStringList getSceneFileNames(const QString& folder);
         void renamePage(std::shared_ptr<UBDocumentProxy> pDocumentProxy,
                         const int sourceIndex, const int targetIndex);
-        void copyPage(std::shared_ptr<UBDocumentProxy> pDocumentProxy,
-                      const int sourceIndex, const int targetIndex);
+        void copyPage(std::shared_ptr<UBDocumentProxy> source, const int sourceIndex,
+                      std::shared_ptr<UBDocumentProxy> target, const int targetIndex);
         void generatePathIfNeeded(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
         void checkIfDocumentRepositoryExists();
 

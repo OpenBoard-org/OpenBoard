@@ -57,11 +57,13 @@ public:
     void deletePages(QList<int> indexes);
     void duplicatePage(int index);
     void movePage(int fromIndex, int toIndex);
-    void copyPage(int fromIndex, std::shared_ptr<UBDocumentProxy> to, int toIndex);
+    void copyPage(int fromIndex, std::shared_ptr<UBDocument> to, int toIndex);
+    // FIXME invocations of insertPage are finally also just a copy
     void insertPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool persist = true, bool deleting = false);
     std::shared_ptr<UBGraphicsScene> createPage(int index, bool useUndoRedoStack = true);
-    void persistPage(std::shared_ptr<UBGraphicsScene> scene, const int index, bool isAutomaticBackup = false,
+    void persistPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool isAutomaticBackup = false,
                      bool forceImmediateSaving = false);
+    QList<QString> pageRelativeDependencies(int index) const;
     UBThumbnailScene* thumbnailScene() const;
 
     static std::shared_ptr<UBDocument> getDocument(std::shared_ptr<UBDocumentProxy> proxy);
