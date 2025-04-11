@@ -54,11 +54,6 @@ class UBGraphicsSvgItem: public QGraphicsSvgItem, public UBMediaAssetItem, publi
 
         QByteArray fileData() const;
 
-        void setFileData(const QByteArray& pFileData)
-        {
-            mFileData = pFileData;
-        }
-
         enum { Type = UBGraphicsItemType::SvgItemType };
 
         virtual int type() const override
@@ -87,6 +82,7 @@ class UBGraphicsSvgItem: public QGraphicsSvgItem, public UBMediaAssetItem, publi
         virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
         QByteArray mFileData;
+        QUuid mMediaAssetUuid;
 };
 
 #endif /* UBGRAPHICSSVGITEM_H_ */

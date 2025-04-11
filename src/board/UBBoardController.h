@@ -234,8 +234,8 @@ class UBBoardController : public UBDocumentContainer
         void setRegularPageSize(bool checked);
         void stylusToolChanged(int tool);
         void grabScene(const QRectF& pSceneRect);
-        UBGraphicsMediaItem* addVideo(const QUrl& pUrl, bool startPlay, const QPointF& pos, bool bUseSource = false);
-        UBGraphicsMediaItem* addAudio(const QUrl& pUrl, bool startPlay, const QPointF& pos, bool bUseSource = false);
+        UBGraphicsMediaItem* addVideo(const QUrl& pUrl, bool startPlay, const QPointF& pos);
+        UBGraphicsMediaItem* addAudio(const QUrl& pUrl, bool startPlay, const QPointF& pos);
         UBGraphicsWidgetItem *addW3cWidget(const QUrl& pUrl, const QPointF& pos);
         void adjustDisplayViews();
         void cut();

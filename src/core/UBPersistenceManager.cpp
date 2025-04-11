@@ -1238,7 +1238,7 @@ bool UBPersistenceManager::addFileToDocument(std::shared_ptr<UBDocumentProxy> pD
     }
     else
     {
-        return false;
+        return true;
     }
 }
 
@@ -1264,7 +1264,7 @@ bool UBPersistenceManager::addGraphicsWidgetToDocument(std::shared_ptr<UBDocumen
         return UBFileSystemUtils::copyDir(widgetRootDir, destinationPath);
     }
     else
-        return false;
+        return true;
 }
 
 

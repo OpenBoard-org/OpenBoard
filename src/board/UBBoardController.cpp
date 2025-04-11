@@ -1381,9 +1381,10 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         qDebug() << "accepting mime type" << mimeType << "as video";
 
         UBGraphicsMediaItem *mediaVideoItem = 0;
-        QUuid uuid = QUuid::createUuid();
+
         if (pData.length() > 0)
         {
+            QUuid uuid = UBMediaAssetItem::mediaAssetUuid(pData);
             QString destFile;
             bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
                 sourceUrl.toString(),
@@ -1404,7 +1405,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         else
         {
             qDebug() << sourceUrl.toString();
-            mediaVideoItem = addVideo(sourceUrl, false, pPos, true);
+            mediaVideoItem = addVideo(sourceUrl, false, pPos);
         }
 
         if(mediaVideoItem){
@@ -1412,7 +1413,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
                 mediaVideoItem->setSourceUrl(sourceUrl);
             else
                 mediaVideoItem->setSourceUrl(contentUrl);
-            mediaVideoItem->setUuid(uuid);
             connect(this, SIGNAL(activeSceneChanged()), mediaVideoItem, SLOT(activeSceneChanged()));
         }
 
@@ -1426,9 +1426,9 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
         UBGraphicsMediaItem *audioMediaItem = 0;
 
-        QUuid uuid = QUuid::createUuid();
         if (pData.length() > 0)
         {
+            QUuid uuid = UBMediaAssetItem::mediaAssetUuid(pData);
             QString destFile;
             bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
                 sourceUrl.toString(),
@@ -1448,7 +1448,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
         }
         else
         {
-            audioMediaItem = addAudio(sourceUrl, false, pPos, true);
+            audioMediaItem = addAudio(sourceUrl, false, pPos);
         }
 
         if(audioMediaItem){
@@ -1456,7 +1456,6 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
                 audioMediaItem->setSourceUrl(sourceUrl);
             else
                 audioMediaItem->setSourceUrl(contentUrl);
-            audioMediaItem->setUuid(uuid);
             connect(this, SIGNAL(activeSceneChanged()), audioMediaItem, SLOT(activeSceneChanged()));
         }
 
@@ -2339,28 +2338,10 @@ void UBBoardController::grabScene(const QRectF& pSceneRect)
     }
 }
 
-UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos, bool bUseSource)
+UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos)
 {
     QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
-
-    // media file is not in document folder yet
-    if (!bUseSource)
-    {
-        QString destFile;
-        bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
-                    pSourceUrl.toLocalFile(),
-                    UBPersistenceManager::videoDirectory,
-                    uuid,
-                    destFile);
-        if (!b)
-        {
-            UBApplication::showMessage(tr("Add file operation failed: file copying error"));
-            return NULL;
-        }
-        concreteUrl = QUrl::fromLocalFile(destFile);
-    }// else we just use source Url.
-
 
     UBGraphicsMediaItem* vi = mActiveScene->addMedia(concreteUrl, startPlay, pos);
     QDateTime now  = QDateTime::currentDateTime();
@@ -2375,27 +2356,10 @@ UBGraphicsMediaItem* UBBoardController::addVideo(const QUrl& pSourceUrl, bool st
 
 }
 
-UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos, bool bUseSource)
+UBGraphicsMediaItem* UBBoardController::addAudio(const QUrl& pSourceUrl, bool startPlay, const QPointF& pos)
 {
     QUuid uuid = QUuid::createUuid();
     QUrl concreteUrl = pSourceUrl;
-
-    // media file is not in document folder yet
-    if (!bUseSource)
-    {
-        QString destFile;
-        bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
-            pSourceUrl.toLocalFile(),
-            UBPersistenceManager::audioDirectory,
-            uuid,
-            destFile);
-        if (!b)
-        {
-            UBApplication::showMessage(tr("Add file operation failed: file copying error"));
-            return NULL;
-        }
-        concreteUrl = QUrl::fromLocalFile(destFile);
-    }// else we just use source Url.
 
     UBGraphicsMediaItem* ai = mActiveScene->addMedia(concreteUrl, startPlay, pos);
     QDateTime now = QDateTime::currentDateTime();
@@ -2414,21 +2378,40 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
 {
     UBGraphicsWidgetItem* w3cWidgetItem = 0;
 
-    QUuid uuid = QUuid::createUuid();
+    QDir widgetDir{pUrl.toLocalFile()};
+
+    if (!widgetDir.exists())
+    {
+        return nullptr;
+    }
+
+    const auto widgetFiles = widgetDir.entryInfoList({"*.xml", "*.html"}, QDir::Files, QDir::Name);
+    QByteArray data;
+
+    for (const auto fileInfo : widgetFiles)
+    {
+        QFile file(fileInfo.absoluteFilePath());
+
+        if (file.open(QFile::ReadOnly))
+        {
+            data.append(file.readAll());
+        }
+    }
+
+    QUuid assetUuid = UBMediaAssetItem::mediaAssetUuid(data);
 
     QString destPath;
-    if (!UBPersistenceManager::persistenceManager()->addGraphicsWidgetToDocument(selectedDocument(), pUrl.toLocalFile(), uuid, destPath))
+    if (!UBPersistenceManager::persistenceManager()->addGraphicsWidgetToDocument(selectedDocument(), pUrl.toLocalFile(), assetUuid, destPath))
         return NULL;
     QUrl newUrl = QUrl::fromLocalFile(destPath);
 
     w3cWidgetItem = mActiveScene->addW3CWidget(newUrl, pos);
 
     if (w3cWidgetItem) {
-        w3cWidgetItem->setUuid(uuid);
         w3cWidgetItem->setOwnFolder(newUrl);
         w3cWidgetItem->setSourceUrl(pUrl);
 
-        QString struuid = UBStringUtils::toCanonicalUuid(uuid);
+        QString struuid = w3cWidgetItem->uuid().toString(QUuid::WithoutBraces);
         QString snapshotPath = selectedDocument()->persistencePath() +  "/" + UBPersistenceManager::widgetDirectory + "/" + struuid + ".png";
         w3cWidgetItem->setSnapshotPath(QUrl::fromLocalFile(snapshotPath));
     }

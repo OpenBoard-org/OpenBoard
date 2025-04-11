@@ -44,6 +44,7 @@
 #include "board/UBBoardController.h"
 
 #include "domain/UBGraphicsScene.h"
+#include "domain/UBMediaAssetItem.h"
 
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
@@ -279,7 +280,16 @@ int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> docum
                 {
                     UBPageBasedImportAdaptor* importAdaptor = (UBPageBasedImportAdaptor*)adaptor;
 
+                    QByteArray data;
                     QUuid uuid = QUuid::createUuid();
+
+                    if (file.open(QFile::ReadOnly))
+                    {
+                        data = file.readAll();
+                        file.close();
+                        uuid = UBMediaAssetItem::mediaAssetUuid(data);
+                    }
+
                     QString filepath = file.fileName();
                     if (importAdaptor->folderToCopy() != "")
                     {

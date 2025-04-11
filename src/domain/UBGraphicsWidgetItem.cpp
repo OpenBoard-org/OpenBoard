@@ -201,7 +201,7 @@ UBGraphicsWidgetItem::~UBGraphicsWidgetItem()
 
 QList<QString> UBGraphicsWidgetItem::mediaAssets() const
 {
-    const QString widgetPath = UBPersistenceManager::widgetDirectory + "/" + uuid().toString() + ".wgt";
+    const QString widgetPath = UBPersistenceManager::widgetDirectory + "/" + mWidgetUrl.fileName();
     const QString screenshotPath = UBPersistenceManager::widgetDirectory + "/" + uuid().toString(QUuid::WithoutBraces) + ".png";
     return {widgetPath, screenshotPath};
 }

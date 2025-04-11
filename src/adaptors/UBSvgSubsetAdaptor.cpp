@@ -2158,15 +2158,11 @@ QList<UBGraphicsPolygonItem*> UBSvgSubsetAdaptor::UBSvgSubsetReader::polygonItem
 
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::pixmapItemToLinkedImage(UBGraphicsPixmapItem* pixmapItem)
 {
-    // find image file
-    QDir imageDir = mDocumentPath + "/" + UBPersistenceManager::imageDirectory;
-    QStringList imageFiles = imageDir.entryList({pixmapItem->uuid().toString() + ".*"});
-
-    if (imageFiles.size() >= 1)
+    if (!pixmapItem->mediaAssets().isEmpty())
     {
         mXmlWriter.writeStartElement("image");
 
-        QString fileName = UBPersistenceManager::imageDirectory + "/" + imageFiles.last();
+        QString fileName = pixmapItem->mediaAssets().at(0);
 
         mXmlWriter.writeAttribute(nsXLink, "href", fileName);
 
@@ -2210,7 +2206,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::svgItemToLinkedSvg(UBGraphicsSvgItem
 
     mXmlWriter.writeStartElement("image");
 
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg";
+    QString fileName = svgItem->mediaAssets().at(0);
 
 
     mXmlWriter.writeAttribute(nsXLink, "href", fileName);
@@ -2647,7 +2643,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::graphicsWidgetToSvg(UBGraphicsWidget
         QFileInfo fi(widgetRootDir);
         QString extension = fi.suffix();
 
-        QString widgetTargetDir = widgetDirectoryPath + "/" + item->uuid().toString() + "." + extension;
+        QString widgetTargetDir = item->mediaAssets().at(0);
 
         QString path = mDocumentPath + "/" + widgetTargetDir;
         QDir dir(path);

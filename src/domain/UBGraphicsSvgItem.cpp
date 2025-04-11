@@ -55,6 +55,7 @@ UBGraphicsSvgItem::UBGraphicsSvgItem(const QString& pFilePath, QGraphicsItem* pa
     {
         mFileData = f.readAll();
         f.close();
+        mMediaAssetUuid = mediaAssetUuid(mFileData);
     }
 }
 
@@ -67,6 +68,7 @@ UBGraphicsSvgItem::UBGraphicsSvgItem(const QByteArray& pFileData, QGraphicsItem*
 
     setSharedRenderer(renderer);
     mFileData = pFileData;
+    mMediaAssetUuid = mediaAssetUuid(mFileData);
 }
 
 
@@ -98,7 +100,7 @@ UBGraphicsSvgItem::~UBGraphicsSvgItem()
 
 QList<QString> UBGraphicsSvgItem::mediaAssets() const
 {
-    return {UBPersistenceManager::imageDirectory + "/" + uuid().toString() + ".svg"};
+    return {UBPersistenceManager::imageDirectory + "/" + mMediaAssetUuid.toString() + ".svg"};
 }
 
 
@@ -191,6 +193,7 @@ void UBGraphicsSvgItem::copyItemParameters(UBItem *copy) const
         cp->setData(UBGraphicsItemData::ItemOwnZValue, this->data(UBGraphicsItemData::ItemOwnZValue));
         cp->setSourceUrl(this->sourceUrl());
         cp->setZValue(this->zValue());
+        cp->mMediaAssetUuid = mMediaAssetUuid;
     }
 }
 

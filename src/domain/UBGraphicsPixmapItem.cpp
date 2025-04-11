@@ -176,6 +176,7 @@ void UBGraphicsPixmapItem::copyItemParameters(UBItem *copy) const
         cp->setSourceUrl(this->sourceUrl());
 
         cp->setZValue(this->zValue());
+        cp->mMediaAsset = mMediaAsset;
     }
 }
 

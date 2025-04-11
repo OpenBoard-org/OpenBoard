@@ -1401,6 +1401,7 @@ std::shared_ptr<UBGraphicsScene> UBGraphicsScene::sceneDeepCopy() const
 {
     std::shared_ptr<UBGraphicsScene> copy = std::make_shared<UBGraphicsScene>(this->document(), this->mUndoRedoStackEnabled);
 
+    copy->setUuid(this->uuid());
     copy->setBackground(this->isDarkBackground(), mPageBackground);
     copy->setBackgroundGridSize(mBackgroundGridSize);
     copy->setSceneRect(this->sceneRect());
@@ -1636,7 +1637,7 @@ UBGraphicsPixmapItem* UBGraphicsScene::addImage(QByteArray pData, QGraphicsItem*
         format = "png." + format;
     }
 
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + pixmapItem->uuid().toString() + "." + format;
+    QString fileName = UBPersistenceManager::imageDirectory + "/" + UBMediaAssetItem::mediaAssetUuid(pData).toString() + "." + format;
     pixmapItem->setMediaAsset(documentPath, fileName);
 
     QString path = documentPath + "/" + fileName;
@@ -1865,7 +1866,7 @@ UBGraphicsSvgItem* UBGraphicsScene::addSvg(const QUrl& pSvgFileUrl, const QPoint
 
     QString documentPath = UBApplication::boardController->selectedDocument()->persistencePath();
 
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + svgItem->uuid().toString() + ".svg";
+    QString fileName = svgItem->mediaAssets().at(0);
 
     QString completePath = documentPath + "/" + fileName;
 

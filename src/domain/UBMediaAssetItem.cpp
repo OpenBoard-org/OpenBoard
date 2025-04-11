@@ -19,24 +19,11 @@
  * along with OpenBoard. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "UBMediaAssetItem.h"
 
-#pragma once
-
-#include <QList>
-#include <QUrl>
-
-#include "domain/UBItem.h"
-
-class UBMediaAssetItem : public UBItem
+QUuid UBMediaAssetItem::mediaAssetUuid(const QByteArray& data)
 {
-protected:
-    UBMediaAssetItem() = default;
+    static QUuid namespaceUuid{QUuid::createUuidV5(QUuid(), QString("OpenBoard"))};
 
-public:
-    virtual ~UBMediaAssetItem() = default;
-
-    virtual QList<QString> mediaAssets() const = 0;
-    virtual void setMediaAsset(const QString& documentPath, const QString& mediaAsset) {}
-
-    static QUuid mediaAssetUuid(const QByteArray& data);
-};
+    return QUuid::createUuidV5(namespaceUuid, data);
+}
