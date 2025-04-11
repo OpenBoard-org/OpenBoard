@@ -1522,9 +1522,11 @@ void UBGraphicsScene::clearContent(clearCase pCase)
                 if (itemGroup) {
                     itemGroup->removeFromGroup(item);
 
-                    groupsMap.insert(itemGroup, UBGraphicsItem::getOwnUuid(item));
+                    UBItem* ubitem = dynamic_cast<UBItem*>(item);
+                    groupsMap.insert(itemGroup, ubitem ? ubitem->uuid() : QUuid{});
                     if (itemGroup->childItems().count() == 1) {
-                        groupsMap.insert(itemGroup, UBGraphicsItem::getOwnUuid(itemGroup->childItems().constFirst()));
+                        UBItem* ubitem = dynamic_cast<UBItem*>(itemGroup->childItems().constFirst());
+                        groupsMap.insert(itemGroup, ubitem ? ubitem->uuid() : QUuid{});
                         QGraphicsItem *lastItem = itemGroup->childItems().constFirst();
                         bool isSelected = itemGroup->isSelected();
                         itemGroup->destroy(false);
@@ -2182,21 +2184,6 @@ QRectF UBGraphicsScene::normalizedSceneRect(qreal ratio)
     return normalizedRect;
 }
 
-QGraphicsItem *UBGraphicsScene::itemForUuid(QUuid uuid)
-{
-    QGraphicsItem *result = 0;
-
-    //simple search before implementing container for fast access
-    foreach (QGraphicsItem *item, items())
-    {
-        if (UBGraphicsScene::getPersonalUuid(item) == uuid && !uuid.isNull()) {
-            result = item;
-        }
-    }
-
-    return result;
-}
-
 void UBGraphicsScene::setDocument(std::shared_ptr<UBDocumentProxy> pDocument)
 {
     if (pDocument != mDocument)
@@ -2783,12 +2770,6 @@ void UBGraphicsScene::setSelectedZLevel(QGraphicsItem * item)
 void UBGraphicsScene::setOwnZlevel(QGraphicsItem *item)
 {
     item->setZValue(item->data(UBGraphicsItemData::ItemOwnZValue).toReal());
-}
-
-QUuid UBGraphicsScene::getPersonalUuid(QGraphicsItem *item)
-{
-    QString idCandidate = item->data(UBGraphicsItemData::ItemUuid).toString();
-    return idCandidate == QUuid().toString() ? QUuid() : QUuid(idCandidate);
 }
 
 qreal UBGraphicsScene::changeZLevelTo(QGraphicsItem *item, UBZLayerController::moveDestination dest, bool addUndo)

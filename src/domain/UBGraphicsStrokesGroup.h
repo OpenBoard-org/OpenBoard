@@ -54,7 +54,6 @@ public:
     {
         return Type;
     }
-    virtual void setUuid(const QUuid &pUuid);
     void setColor(const QColor &color, colorType pColorType = currentColor);
     QColor color(colorType pColorType = currentColor) const;
 

@@ -107,7 +107,6 @@ public:
     virtual void setSourceUrl(const QUrl &pSourceUrl) override;
     void setSelected(bool selected);
     void setMinimumSize(const QSize& size);
-    void setUuid(const QUuid &pUuid) override;
 
     virtual void copyItemParameters(UBItem *copy) const override;
 

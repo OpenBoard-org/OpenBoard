@@ -33,6 +33,7 @@
 #include <QtGui>
 #include <QGraphicsScene>
 #include <QGraphicsItem>
+#include <QHash>
 
 class UBCoreGraphicsScene : public QGraphicsScene
 {
@@ -59,9 +60,11 @@ class UBCoreGraphicsScene : public QGraphicsScene
             mIsModified = pModified;
         }
 
+        QGraphicsItem* itemForUuid(const QUuid& uuid) const;
 
     private:
         QSet<QGraphicsItem*> mItemsToDelete;
+        QHash<QUuid, QGraphicsItem*> mItemsByUuid;
 
         bool mIsModified;
 };

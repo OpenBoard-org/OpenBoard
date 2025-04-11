@@ -187,8 +187,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
 
         QRectF normalizedSceneRect(qreal ratio = -1.0);
 
-        QGraphicsItem *itemForUuid(QUuid uuid);
-
         void moveTo(const QPointF& pPoint);
         void drawLineTo(const QPointF& pEndPoint, const qreal& pWidth, bool bLineStyle);
         void drawLineTo(const QPointF& pEndPoint, const qreal& pStartWidth, const qreal& endWidth, bool bLineStyle);
@@ -329,8 +327,6 @@ class UBGraphicsScene: public UBCoreGraphicsScene, public UBItem, public std::en
 
         void setSelectedZLevel(QGraphicsItem *item);
         void setOwnZlevel(QGraphicsItem *item);
-
-        static QUuid getPersonalUuid(QGraphicsItem *item);
 
         UBGraphicsPolygonItem* polygonToPolygonItem(const QPolygonF pPolygon);
         void clearSelectionFrame();

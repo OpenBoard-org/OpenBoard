@@ -1576,7 +1576,8 @@ bool UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistScene(std::shared_ptr<UBDocum
 
 void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *groupItem, QDomElement *curParent, QDomDocument *groupDomDocument)
 {
-    QUuid uuid = UBGraphicsScene::getPersonalUuid(groupItem);
+    UBItem* ubitem = dynamic_cast<UBItem*>(groupItem);
+    QUuid uuid = ubitem ? ubitem->uuid() : QUuid{};
     if (!uuid.isNull()) {
         QDomElement curGroupElement = groupDomDocument->createElement(tGroup);
         curGroupElement.setAttribute(aId, uuid.toString());
@@ -1600,7 +1601,8 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::persistGroupToDom(QGraphicsItem *gro
         }
         curParent->appendChild(curGroupElement);
         foreach (QGraphicsItem *item, groupItem->childItems()) {
-            QUuid tmpUuid = UBGraphicsScene::getPersonalUuid(item);
+            UBItem* ubitem = dynamic_cast<UBItem*>(item);
+            QUuid tmpUuid = ubitem ? ubitem->uuid() : QUuid{};
             if (!tmpUuid.isNull()) {
                 if (item->type() == UBGraphicsGroupContainerItem::Type && item->childItems().count())
                     persistGroupToDom(item, curParent, groupDomDocument);
@@ -1697,7 +1699,7 @@ void UBSvgSubsetAdaptor::UBSvgSubsetWriter::strokeToSvgPolyline(UBGraphicsStroke
 
         mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "uuid", UBStringUtils::toCanonicalUuid(firstPolygonItem->uuid()));
         if (firstPolygonItem->parentItem()) {
-            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "parent", UBStringUtils::toCanonicalUuid(UBGraphicsItem::getOwnUuid(firstPolygonItem->strokesGroup())));
+            mXmlWriter.writeAttribute(UBSettings::uniboardDocumentNamespaceUri, "parent", firstPolygonItem->strokesGroup()->uuid().toString(QUuid::WithoutBraces));
         }
 
         mXmlWriter.writeEndElement();

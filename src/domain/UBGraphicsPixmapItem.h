@@ -66,8 +66,6 @@ class UBGraphicsPixmapItem : public QObject, public QGraphicsPixmapItem, public 
         void setOpacity(qreal op);
         qreal opacity() const;
 
-        virtual void setUuid(const QUuid &pUuid) override;
-
         virtual void setMediaAsset(const QString& documentPath, const QString& mediaAsset) override;
 
 protected:

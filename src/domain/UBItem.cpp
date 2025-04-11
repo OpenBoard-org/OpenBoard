@@ -97,12 +97,6 @@ bool UBGraphicsItem::isHiddenOnDisplay(QGraphicsItem *item)
     return item->data(UBGraphicsItemData::ItemIsHiddenOnDisplay).toBool();
 }
 
-QUuid UBGraphicsItem::getOwnUuid(QGraphicsItem *item)
-{
-    QString idCandidate = item->data(UBGraphicsItemData::ItemUuid).toString();
-    return idCandidate == QUuid().toString() ? QUuid() : QUuid(idCandidate);
-}
-
 void UBGraphicsItem::remove(bool canUndo)
 {
     if (Delegate())

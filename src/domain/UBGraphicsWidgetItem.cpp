@@ -398,12 +398,6 @@ QUrl UBGraphicsWidgetItem::getSnapshotPath() const
     return mSnapshotFile;
 }
 
-void UBGraphicsWidgetItem::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
-}
-
 QSize UBGraphicsWidgetItem::nominalSize() const
 {
     return mNominalSize;
@@ -1002,12 +996,6 @@ UBGraphicsAppleWidgetItem::~UBGraphicsAppleWidgetItem()
     /* NOOP */
 }
 
-void UBGraphicsAppleWidgetItem::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
-}
-
 UBItem* UBGraphicsAppleWidgetItem::deepCopy() const
 {
     UBGraphicsAppleWidgetItem *appleWidget = new UBGraphicsAppleWidgetItem(mWebEngineView->url(), parentItem());
@@ -1195,12 +1183,6 @@ UBGraphicsW3CWidgetItem::UBGraphicsW3CWidgetItem(const QUrl& pWidgetUrl, QGraphi
 UBGraphicsW3CWidgetItem::~UBGraphicsW3CWidgetItem()
 {
     /* NOOP */
-}
-
-void UBGraphicsW3CWidgetItem::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
 }
 
 UBItem* UBGraphicsW3CWidgetItem::deepCopy() const

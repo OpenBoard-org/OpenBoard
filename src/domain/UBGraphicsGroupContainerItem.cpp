@@ -245,12 +245,6 @@ void UBGraphicsGroupContainerItem::copyItemParameters(UBItem *copy) const
     }
 }
 
-void UBGraphicsGroupContainerItem::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid)); //store item uuid inside the QGraphicsItem to fast operations with Items on the scene
-}
-
 void UBGraphicsGroupContainerItem::destroy(bool canUndo) {
 
     foreach (QGraphicsItem *item, childItems()) {

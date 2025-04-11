@@ -109,8 +109,6 @@ class UBGraphicsWidgetItem : public QGraphicsProxyWidget, public UBMediaAssetIte
         virtual void setSnapshotPath(const QUrl &newFilePath);
         virtual QUrl getSnapshotPath() const;
 
-        virtual void setUuid(const QUuid &pUuid) override;
-
         QSize nominalSize() const;
 
         bool hasLoadedSuccessfully() const;

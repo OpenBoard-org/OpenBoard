@@ -86,12 +86,6 @@ QVariant UBGraphicsPixmapItem::itemChange(GraphicsItemChange change, const QVari
     return QGraphicsPixmapItem::itemChange(change, newValue);
 }
 
-void UBGraphicsPixmapItem::setUuid(const QUuid &pUuid)
-{
-    UBItem::setUuid(pUuid);
-    setData(UBGraphicsItemData::ItemUuid, QVariant(pUuid));
-}
-
 void UBGraphicsPixmapItem::setMediaAsset(const QString& documentPath, const QString& mediaAsset)
 {
     mMediaAsset = mediaAsset;
