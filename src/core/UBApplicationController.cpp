@@ -44,29 +44,20 @@
 #include "board/UBBoardPaletteManager.h"
 #include "board/UBDrawingController.h"
 
-
+#include "document/UBDocument.h"
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
 
 #include "domain/UBGraphicsWidgetItem.h"
 
-#include "desktop/UBDesktopPalette.h"
 #include "desktop/UBDesktopAnnotationController.h"
 
 #include "web/UBWebController.h"
 
 #include "gui/UBScreenMirror.h"
 #include "gui/UBMainWindow.h"
-#include "gui/UBStartupHintsPalette.h"
-
-#include "domain/UBGraphicsPixmapItem.h"
 
 #include "podcast/UBPodcastController.h"
-
-#include "network/UBNetworkAccessManager.h"
-
-#include "ui_mainWindow.h"
-
 
 
 #ifdef Q_OS_MAC
@@ -259,6 +250,7 @@ void UBApplicationController::adjustDisplayView()
 void UBApplicationController::adjustPreviousViews(int pActiveSceneIndex, std::shared_ptr<UBDocumentProxy> pActiveDocument)
 {
     int viewIndex = pActiveSceneIndex;
+    auto document = UBDocument::getDocument(pActiveDocument);
 
     foreach(UBBoardView* previousView, mPreviousViews)
     {
@@ -266,7 +258,7 @@ void UBApplicationController::adjustPreviousViews(int pActiveSceneIndex, std::sh
         {
             viewIndex--;
 
-            std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pActiveDocument, viewIndex);
+            std::shared_ptr<UBGraphicsScene> scene = document->loadScene(viewIndex);
 
             if (scene)
             {

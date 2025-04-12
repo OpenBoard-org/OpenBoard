@@ -31,6 +31,7 @@
 class UBDocumentProxy;
 class UBGraphicsScene;
 class UBThumbnailScene;
+class UBToc;
 
 
 /**
@@ -58,22 +59,32 @@ public:
     void duplicatePage(int index);
     void movePage(int fromIndex, int toIndex);
     void copyPage(int fromIndex, std::shared_ptr<UBDocument> to, int toIndex);
-    // FIXME invocations of insertPage are finally also just a copy
-    void insertPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool persist = true, bool deleting = false);
     std::shared_ptr<UBGraphicsScene> createPage(int index, bool useUndoRedoStack = true);
     void persistPage(std::shared_ptr<UBGraphicsScene> scene, int index, bool isAutomaticBackup = false,
                      bool forceImmediateSaving = false);
-    QList<QString> pageRelativeDependencies(int index) const;
+    std::shared_ptr<UBGraphicsScene> loadScene(int index, bool cacheNeighboringScenes = true);
+    std::shared_ptr<UBGraphicsScene> getScene(int index);
+    QList<QString> pageRelativeDependencies(int index);
     UBThumbnailScene* thumbnailScene() const;
+    UBToc* toc();
+
+    int pageCount();
+
+    QString sceneFile(int index);
+    QString thumbnailFile(int index);
 
     static std::shared_ptr<UBDocument> getDocument(std::shared_ptr<UBDocumentProxy> proxy);
 
 private:
+    void scan();
+    void copyPage(int fromIndex, UBDocument* to, int toIndex);
+
     static std::shared_ptr<UBDocument> findDocument(std::shared_ptr<UBDocumentProxy> proxy);
 
 private:
     std::shared_ptr<UBDocumentProxy> mProxy{nullptr};
     UBThumbnailScene* mThumbnailScene{nullptr};
+    UBToc* mToc{nullptr};
 
     static QList<std::weak_ptr<UBDocument>> sDocuments;
 };

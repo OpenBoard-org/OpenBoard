@@ -33,7 +33,6 @@
 #include <QtCore>
 
 class UBDocument;
-class UBDocumentProxy;
 class UBGraphicsScene;
 
 class UBThumbnailAdaptor //static class
@@ -41,16 +40,15 @@ class UBThumbnailAdaptor //static class
     Q_DECLARE_TR_FUNCTIONS(UBThumbnailAdaptor)
 
 public:
-    static QUrl thumbnailUrl(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
+    static QUrl thumbnailUrl(UBDocument* document, int pageIndex);
 
-    static void persistScene(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> pScene, int pageIndex, bool overrideModified = false);
+    static void persistScene(UBDocument* document, std::shared_ptr<UBGraphicsScene> pScene, int pageIndex, bool overrideModified = false);
 
-    static QPixmap get(std::shared_ptr<UBDocumentProxy> proxy, int index);
-    static void load(std::shared_ptr<UBDocumentProxy> proxy, QList<std::shared_ptr<QPixmap>>& list);
-    static QPixmap generateMissingThumbnail(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
+    static QPixmap get(UBDocument* document, int index);
+    static QPixmap generateMissingThumbnail(UBDocument* document, int pageIndex);
 
 private:
-    static void generateMissingThumbnails(std::shared_ptr<UBDocumentProxy> proxy);
+    static void generateMissingThumbnails(UBDocument* document);
 
     UBThumbnailAdaptor() {}
 };

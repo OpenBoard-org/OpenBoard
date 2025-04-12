@@ -74,7 +74,7 @@ const int UBSettings::sDefaultFontPixelSize = 36;
 const char *UBSettings::sDefaultFontFamily = "Arial";
 const char *UBSettings::sDefaultFontStyleName = "Regular";
 
-QString UBSettings::currentFileVersion = "4.8.0";
+QString UBSettings::currentFileVersion = "4.9.0";
 
 QBrush UBSettings::eraserBrushDarkBackground = QBrush(QColor(127, 127, 127, 80));
 QBrush UBSettings::eraserBrushLightBackground = QBrush(QColor(127, 127, 127, 80));

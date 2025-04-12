@@ -40,13 +40,11 @@
 #include "core/UBPersistenceManager.h"
 
 #include "domain/UBGraphicsScene.h"
-#include "domain/UBGraphicsSvgItem.h"
 #include "domain/UBGraphicsPDFItem.h"
 
+#include "document/UBDocument.h"
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
-
-#include "pdf/GraphicsPDFItem.h"
 
 #include "UBExportPDF.h"
 
@@ -104,10 +102,11 @@ void UBExportFullPDF::saveOverlayPdf(std::shared_ptr<UBDocumentProxy> pDocumentP
         pdfPrinter.setFullPage(true);
 
         QPainter* pdfPainter = 0;
+        auto document = UBDocument::getDocument(pDocumentProxy);
 
-        for(int pageIndex = 0 ; pageIndex < pDocumentProxy->pageCount(); pageIndex++)
+        for(int pageIndex = 0 ; pageIndex < document->pageCount(); pageIndex++)
         {
-            std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
+            std::shared_ptr<UBGraphicsScene> scene = document->loadScene(pageIndex);
             // set background according to PDF export settings
             bool isDark = scene->isDarkBackground();
             UBPageBackground pageBackground = scene->pageBackground();
@@ -219,11 +218,12 @@ bool UBExportFullPDF::persistsDocument(std::shared_ptr<UBDocumentProxy> pDocumen
             // factor between scene coordinates and PDF coordinates
             double dpiScale = 72. / pDocumentProxy->pageDpi();
 
-            int existingPageCount = pDocumentProxy->pageCount();
+            auto document = UBDocument::getDocument(pDocumentProxy);
+            int existingPageCount = document->pageCount();
 
             for(int pageIndex = 0 ; pageIndex < existingPageCount; pageIndex++)
             {
-                std::shared_ptr<UBGraphicsScene> scene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, pageIndex);
+                std::shared_ptr<UBGraphicsScene> scene = document->loadScene(pageIndex);
                 UBGraphicsPDFItem *pdfItem = qgraphicsitem_cast<UBGraphicsPDFItem*>(scene->backgroundObject());
 
                 if (pdfItem)

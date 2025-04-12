@@ -32,8 +32,6 @@
 
 #include <QtCore>
 
-#include <variant>
-
 #include "adaptors/UBSvgSubsetAdaptor.h"
 #include "domain/UBGraphicsScene.h"
 
@@ -46,31 +44,31 @@ class UBSceneCacheID
 public:
 
     UBSceneCacheID()
-        : documentProxy(0)
-        , pageIndex(-1)
+        : mDocumentProxy(0)
+        , mPageId(-1)
     {
         // NOOP
     }
 
-    UBSceneCacheID(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pPageIndex)
+    UBSceneCacheID(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pageId)
     {
-        documentProxy = pDocumentProxy;
-        pageIndex = pPageIndex;
+        mDocumentProxy = pDocumentProxy;
+        mPageId = pageId;
     }
 
-    std::shared_ptr<UBDocumentProxy> documentProxy;
-    int pageIndex;
+    std::shared_ptr<UBDocumentProxy> mDocumentProxy;
+    int mPageId;
 };
 
 inline bool operator==(const UBSceneCacheID &id1, const UBSceneCacheID &id2)
 {
-    return id1.documentProxy == id2.documentProxy
-        && id1.pageIndex == id2.pageIndex;
+    return id1.mDocumentProxy == id2.mDocumentProxy
+            && id1.mPageId == id2.mPageId;
 }
 
 inline uint qHash(const UBSceneCacheID &id)
 {
-    return qHash(id.pageIndex);
+    return qHash(id.mPageId);
 }
 
 
@@ -80,17 +78,17 @@ public:
     UBSceneCache();
     virtual ~UBSceneCache();
 
-    std::shared_ptr<UBGraphicsScene> createScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex, bool useUndoRedoStack);
+    std::shared_ptr<UBGraphicsScene> createScene(std::shared_ptr<UBDocumentProxy> proxy, int pageId, bool useUndoRedoStack);
 
-    std::shared_ptr<UBGraphicsScene> prepareLoading(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
+    std::shared_ptr<UBGraphicsScene> prepareLoading(std::shared_ptr<UBDocumentProxy> proxy, int pageId);
 
-    void insert (std::shared_ptr<UBDocumentProxy> proxy, int pageIndex, std::shared_ptr<UBGraphicsScene> scene);
+    void insert (std::shared_ptr<UBDocumentProxy> proxy, int pageId, std::shared_ptr<UBGraphicsScene> scene);
 
-    bool contains(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex) const;
+    bool contains(std::shared_ptr<UBDocumentProxy> proxy, int pageId) const;
 
-    std::shared_ptr<UBGraphicsScene> value(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
+    std::shared_ptr<UBGraphicsScene> value(std::shared_ptr<UBDocumentProxy> proxy, int pageId);
 
-    void removeScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
+    void removeScene(std::shared_ptr<UBDocumentProxy> proxy, int pageId);
 
     void removeAllScenes(std::shared_ptr<UBDocumentProxy> proxy);
 
@@ -105,7 +103,7 @@ private:
     class SceneCacheEntry
     {
     public:
-        SceneCacheEntry(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex);
+        SceneCacheEntry(std::shared_ptr<UBDocumentProxy> proxy, int pageId);
         SceneCacheEntry(std::shared_ptr<UBGraphicsScene> scene);
         ~SceneCacheEntry();
         void startLoading();

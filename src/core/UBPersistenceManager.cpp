@@ -36,29 +36,22 @@
 #include <QModelIndex>
 #include <QtConcurrent>
 
-#include "frameworks/UBPlatformUtils.h"
-#include "frameworks/UBFileSystemUtils.h"
+#include "adaptors/UBSvgSubsetAdaptor.h"
+#include "adaptors/UBThumbnailAdaptor.h"
+#include "adaptors/UBMetadataDcSubsetAdaptor.h"
+
+#include "board/UBBoardController.h"
 
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
 
-#include "document/UBDocumentProxy.h"
-
-#include "adaptors/UBExportPDF.h"
-#include "adaptors/UBSvgSubsetAdaptor.h"
-#include "adaptors/UBThumbnailAdaptor.h"
-#include "adaptors/UBMetadataDcSubsetAdaptor.h"
-
-#include "domain/UBGraphicsMediaItem.h"
-#include "domain/UBGraphicsWidgetItem.h"
-#include "domain/UBGraphicsPixmapItem.h"
-#include "domain/UBGraphicsSvgItem.h"
-
-#include "board/UBBoardController.h"
-#include "board/UBBoardPaletteManager.h"
-
+#include "document/UBDocument.h"
 #include "document/UBDocumentController.h"
+#include "document/UBDocumentProxy.h"
+#include "document/UBToc.h"
+
+#include "frameworks/UBFileSystemUtils.h"
 
 #include "core/memcheck.h"
 
@@ -423,6 +416,25 @@ QDialog::DialogCode UBPersistenceManager::processInteractiveReplacementDialog(st
     return result;
 }
 
+/**
+ * @brief Create a list of all SVG page files ordered by number
+ * @param documentFolder Document folder
+ * @return Ordered list of page files
+ */
+QStringList UBPersistenceManager::pageFiles(const QString& documentFolder)
+{
+    // create list of SVG files
+    QDir dir{documentFolder};
+    auto svgFiles = dir.entryList({ "page*.svg"}, QDir::Files);
+
+    // sort list by page number
+    std::sort(svgFiles.begin(), svgFiles.end(), [](QString& left, QString& right){
+        return left.mid(4, left.length() - 8).toInt() < right.mid(4, right.length() - 8).toInt();
+    });
+
+    return svgFiles;
+}
+
 QString UBPersistenceManager::adjustDocumentVirtualPath(const QString &str)
 {
     QStringList pathList = str.split("/", UB::SplitBehavior::SkipEmptyParts);
@@ -461,11 +473,6 @@ void UBPersistenceManager::closing()
         qDebug() << "failed to open document" <<  mFoldersXmlStorageName << "for writing" << '\n'
                  << "Error string:" << outFile.errorString();
     }
-}
-
-bool UBPersistenceManager::isSceneInCached(std::shared_ptr<UBDocumentProxy> proxy, int index) const
-{
-    return mSceneCache.contains(proxy, index);
 }
 
 QStringList UBPersistenceManager::allShapes()
@@ -595,18 +602,20 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocument(const QStr
     doc->setMetaData(UBSettings::documentUpdatedAt,currentDate);
     doc->setMetaData(UBSettings::documentDate,currentDate);
 
+    generatePathIfNeeded(doc);
+    QDir dir(doc->persistencePath());
+    if (!dir.mkpath(doc->persistencePath()))
+    {
+        return nullptr; // if we can't create the path, abort function.
+    }
+
+    UBToc toc{doc->persistencePath()};
+
     if (withEmptyPage)
     {
-        createDocumentSceneAt(doc, 0);
-    }
-    else
-    {
-        generatePathIfNeeded(doc);
-        QDir dir(doc->persistencePath());
-        if (!dir.mkpath(doc->persistencePath()))
-        {
-            return nullptr; // if we can't create the path, abort function.
-        }
+        const auto pageId = toc.insert(0);
+        const auto scene = createDocumentSceneAt(doc, pageId);
+        toc.setUuid(0, scene->uuid());
     }
 
     bool documentAdded = false;
@@ -623,6 +632,7 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocument(const QStr
     if (documentAdded)
     {
         persistDocumentMetadata(doc);
+        toc.save();
     }
     else
     {
@@ -685,11 +695,14 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocumentFromDir(con
 
     doc->setUuid(QUuid::createUuid());
     doc->setPageCount(sceneCount(doc));
+    auto document = UBDocument::getDocument(doc);
 
     for(int i = 0; i < doc->pageCount(); i++)
     {
         UBSvgSubsetAdaptor::setSceneUuid(doc, i, QUuid::createUuid());
+        UBThumbnailAdaptor::generateMissingThumbnail(document.get(), i);
     }
+
 
     //work around the
     bool addDoc = false;
@@ -759,49 +772,34 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::duplicateDocument(std::sh
 }
 
 
-void UBPersistenceManager::deleteDocumentScenes(std::shared_ptr<UBDocumentProxy> proxy, const QList<int>& indexes)
+void UBPersistenceManager::deleteDocumentScenes(std::shared_ptr<UBDocumentProxy> proxy, const QList<int>& pageIds)
 {
     checkIfDocumentRepositoryExists();
 
     int pageCount = proxy->pageCount();
 
-    if (indexes.size() == pageCount)
+    if (pageIds.size() == pageCount)
     {
         deleteDocument(proxy);
         return;
     }
 
-    if (indexes.size() == 0)
+    if (pageIds.size() == 0)
     {
         return;
     }
 
-    for (auto index : indexes)
+    for (auto pageId : pageIds)
     {
-        QString svgFileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", index);
+        QString svgFileName = proxy->persistencePath() + sceneFilenameForId(pageId);
         QFile::remove(svgFileName);
 
-        QString thumbFileName = proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", index);
+        QString thumbFileName = proxy->persistencePath() + thumbnailFilenameForId(pageId);
         QFile::remove(thumbFileName);
 
-        mSceneCache.removeScene(proxy, index);
+        mSceneCache.removeScene(proxy, pageId);
 
         proxy->decPageCount();
-    }
-
-    int offset = 1;
-
-    for (int i = indexes.at(0) + 1; i < pageCount; i++)
-    {
-        if (indexes.contains(i))
-        {
-            offset++;
-        }
-        else
-        {
-            renamePage(proxy, i , i - offset);
-            mSceneCache.moveScene(proxy, i, i - offset);
-        }
     }
 
     // update metadata
@@ -811,8 +809,8 @@ void UBPersistenceManager::deleteDocumentScenes(std::shared_ptr<UBDocumentProxy>
 }
 
 
-void UBPersistenceManager::copyDocumentScene(std::shared_ptr<UBDocumentProxy> from, int fromIndex,
-                                             std::shared_ptr<UBDocumentProxy> to, int toIndex, QList<QString> dependencies)
+QUuid UBPersistenceManager::copyDocumentScene(std::shared_ptr<UBDocumentProxy> from, int fromPageId,
+                                             std::shared_ptr<UBDocumentProxy> to, int toPageId, QList<QString> dependencies)
 {
     checkIfDocumentRepositoryExists();
 
@@ -825,21 +823,8 @@ void UBPersistenceManager::copyDocumentScene(std::shared_ptr<UBDocumentProxy> fr
         persistDocumentScene(from, scene, page, false, true);
     }
 
-    // make room
-    for (int i = to->pageCount(); i > toIndex; i--)
-    {
-        renamePage(to, i - 1, i);
-        mSceneCache.moveScene(to, i - 1, i);
-    }
-
-    // adjust from index if necessary
-    if (from == to && toIndex <= fromIndex)
-    {
-        ++fromIndex;
-    }
-
     // copy SVG and thumbnail
-    copyPage(from, fromIndex, to, toIndex);
+    const QUuid uuid = copyPage(from, fromPageId, to, toPageId);
 
     // copy dependencies, don't overwrite
     for (const auto relativeFile : dependencies)
@@ -855,21 +840,14 @@ void UBPersistenceManager::copyDocumentScene(std::shared_ptr<UBDocumentProxy> fr
     QDateTime now = QDateTime::currentDateTime();
     to->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
     persistDocumentMetadata(to);
+
+    return uuid;
 }
 
 
-std::shared_ptr<UBGraphicsScene> UBPersistenceManager::createDocumentSceneAt(std::shared_ptr<UBDocumentProxy> proxy, int index, bool useUndoRedoStack)
+std::shared_ptr<UBGraphicsScene> UBPersistenceManager::createDocumentSceneAt(std::shared_ptr<UBDocumentProxy> proxy, int pageId, bool useUndoRedoStack)
 {
-    int count = proxy->pageCount();
-
-    for(int i = count - 1; i >= index; i--)
-    {
-        renamePage(proxy, i , i + 1);
-    }
-
-    mSceneCache.shiftUpScenes(proxy, index, count -1);
-
-    std::shared_ptr<UBGraphicsScene> newScene = mSceneCache.createScene(proxy, index, useUndoRedoStack);
+    std::shared_ptr<UBGraphicsScene> newScene = mSceneCache.createScene(proxy, pageId, useUndoRedoStack);
 
     newScene->setBackground(UBSettings::settings()->isDarkBackground(),
             UBSettings::settings()->UBSettings::pageBackground());
@@ -878,107 +856,28 @@ std::shared_ptr<UBGraphicsScene> UBPersistenceManager::createDocumentSceneAt(std
 
     proxy->incPageCount();
 
-    persistDocumentScene(proxy, newScene, index);
+    persistDocumentScene(proxy, newScene, pageId);
 
     return newScene;
 }
 
-
-void UBPersistenceManager::insertDocumentSceneAt(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> scene, int index, bool persist, bool deleting)
+std::shared_ptr<UBGraphicsScene> UBPersistenceManager::loadDocumentScene(std::shared_ptr<UBDocumentProxy> proxy, int pageId)
 {
-    scene->setDocument(proxy);
+    mSceneCache.prepareLoading(proxy, pageId);
+    return mSceneCache.value(proxy, pageId);
+}
 
-    int count = proxy->pageCount();
-
-    for(int i = count - 1; i >= index; i--)
+void UBPersistenceManager::prepareSceneLoading(std::shared_ptr<UBDocumentProxy> proxy, int pageId)
+{
+    if (!mSceneCache.contains(proxy, pageId))
     {
-        renamePage(proxy, i , i + 1);
-    }
-
-    mSceneCache.shiftUpScenes(proxy, index, count -1);
-
-    mSceneCache.insert(proxy, index, scene);
-
-    proxy->incPageCount();
-
-    if (persist)
-    {
-        persistDocumentScene(proxy, scene, index);
+        mSceneCache.prepareLoading(proxy, pageId);
     }
 }
 
-
-void UBPersistenceManager::moveSceneToIndex(std::shared_ptr<UBDocumentProxy> proxy, int source, int target)
+std::shared_ptr<UBGraphicsScene> UBPersistenceManager::getDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pageId)
 {
-    checkIfDocumentRepositoryExists();
-
-    if (source == target)
-        return;
-
-    auto scene = UBApplication::boardController->activeScene();
-
-    // save modified scene of the same document
-    if (scene && scene->document() == proxy && scene->isModified())
-    {
-        auto page = UBApplication::boardController->activeSceneIndex();
-        persistDocumentScene(proxy, scene, page, false, true);
-    }
-
-    QFile svgTmp(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", source));
-    svgTmp.rename(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.tmp", target));
-
-    QFile thumbTmp(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", source));
-    thumbTmp.rename(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.tmp", target));
-
-    if (source < target)
-    {
-        for (int i = source + 1; i <= target; i++)
-        {
-            renamePage(proxy, i , i - 1);
-        }
-    }
-    else
-    {
-        for (int i = source - 1; i >= target; i--)
-        {
-            renamePage(proxy, i , i + 1);
-        }
-    }
-
-    QFile svg(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.tmp", target));
-    svg.rename(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", target));
-
-    QFile thumb(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.tmp", target));
-    thumb.rename(proxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", target));
-
-    mSceneCache.moveScene(proxy, source, target);
-}
-
-
-std::shared_ptr<UBGraphicsScene> UBPersistenceManager::loadDocumentScene(std::shared_ptr<UBDocumentProxy> proxy, int sceneIndex, bool cacheNeighboringScenes)
-{
-    mSceneCache.prepareLoading(proxy, sceneIndex);
-    auto scene = mSceneCache.value(proxy, sceneIndex);
-    qDebug() << "loadDocumentScene: got result from cache";
-
-    if (cacheNeighboringScenes)
-    {
-        if(sceneIndex + 1 < proxy->pageCount() &&  !mSceneCache.contains(proxy, sceneIndex + 1))
-            mSceneCache.prepareLoading(proxy,sceneIndex+1);
-
-        if(sceneIndex + 2 < proxy->pageCount() &&  !mSceneCache.contains(proxy, sceneIndex + 2))
-            mSceneCache.prepareLoading(proxy,sceneIndex+2);
-
-        if(sceneIndex - 1 >= 0 &&  !mSceneCache.contains(proxy, sceneIndex - 1))
-            mSceneCache.prepareLoading(proxy,sceneIndex-1);
-    }
-
-    return scene;
-}
-
-std::shared_ptr<UBGraphicsScene> UBPersistenceManager::getDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int sceneIndex)
-{
-    return mSceneCache.value(pDocumentProxy, sceneIndex);
+    return mSceneCache.value(pDocumentProxy, pageId);
 }
 
 void UBPersistenceManager::reassignDocProxy(std::shared_ptr<UBDocumentProxy> newDocument, std::shared_ptr<UBDocumentProxy> oldDocument)
@@ -986,7 +885,7 @@ void UBPersistenceManager::reassignDocProxy(std::shared_ptr<UBDocumentProxy> new
     return mSceneCache.reassignDocProxy(newDocument, oldDocument);
 }
 
-void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, std::shared_ptr<UBGraphicsScene> pScene, const int pSceneIndex, bool isAnAutomaticBackup, bool forceImmediateSaving)
+void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, std::shared_ptr<UBGraphicsScene> pScene, int pageId, bool isAnAutomaticBackup, bool forceImmediateSaving)
 {
     checkIfDocumentRepositoryExists();
 
@@ -1000,21 +899,20 @@ void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy>
 
     if(forceImmediateSaving)
     {
-        UBSvgSubsetAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
+        UBSvgSubsetAdaptor::persistScene(pDocumentProxy, pScene, pageId);
     }
     else
     {
        std::shared_ptr<UBGraphicsScene> copiedScene = pScene->sceneDeepCopy();
-       mWorker->saveScene(pDocumentProxy, copiedScene.get(), pSceneIndex);
+       mWorker->saveScene(pDocumentProxy, copiedScene.get(), pageId);
 
        // keep copiedScene alive until saving is finished
        mScenesToSave.append(copiedScene);
     }
 
-    UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
     pScene->setModified(false);
 
-    mSceneCache.insert(pDocumentProxy, pSceneIndex, pScene);
+    mSceneCache.insert(pDocumentProxy, pageId, pScene);
 }
 
 
@@ -1040,22 +938,25 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::persistDocumentMetadata(s
 void UBPersistenceManager::renamePage(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const int sourceIndex, const int targetIndex)
 {
     UBApplication::showMessage(tr("Renaming pages (%1/%2)").arg(sourceIndex).arg(pDocumentProxy->pageCount()));
-    QFile svg(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", sourceIndex));
-    svg.rename(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg",  targetIndex));
+    QFile svg(pDocumentProxy->persistencePath() + sceneFilenameForId(sourceIndex));
+    svg.rename(pDocumentProxy->persistencePath() + sceneFilenameForId(targetIndex));
 
-    QFile thumb(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", sourceIndex));
-    thumb.rename(pDocumentProxy->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", targetIndex));
+    QFile thumb(pDocumentProxy->persistencePath() + thumbnailFilenameForId(sourceIndex));
+    thumb.rename(pDocumentProxy->persistencePath() + thumbnailFilenameForId(targetIndex));
 }
 
 
-void UBPersistenceManager::copyPage(std::shared_ptr<UBDocumentProxy> source, const int sourceIndex, std::shared_ptr<UBDocumentProxy> target, const int targetIndex)
+QUuid UBPersistenceManager::copyPage(std::shared_ptr<UBDocumentProxy> source, const int sourceIndex, std::shared_ptr<UBDocumentProxy> target, const int targetIndex)
 {
-    const QString sourcePath = source->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", sourceIndex);
-    const QString targetPath = target->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", targetIndex);
-    UBSvgSubsetAdaptor::replicateScene(sourcePath, targetPath, QUuid::createUuid());
+    QFile thumb(source->persistencePath() + thumbnailFilenameForId(sourceIndex));
+    thumb.copy(target->persistencePath() + thumbnailFilenameForId(targetIndex));
 
-    QFile thumb(source->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", sourceIndex));
-    thumb.copy(target->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", targetIndex));
+    const QString sourcePath = source->persistencePath() + sceneFilenameForId(sourceIndex);
+    const QString targetPath = target->persistencePath() + sceneFilenameForId(targetIndex);
+
+    const QUuid uuid{QUuid::createUuid()};
+    UBSvgSubsetAdaptor::replicateScene(sourcePath, targetPath, uuid);
+    return uuid;
 }
 
 
@@ -1069,7 +970,7 @@ int UBPersistenceManager::sceneCount(const std::shared_ptr<UBDocumentProxy> prox
 
     while (moreToProcess)
     {
-        QString fileName = pPath + UBFileSystemUtils::digitFileFormat("/page%1.svg", pageIndex);
+        QString fileName = pPath + sceneFilenameForId(pageIndex);
 
         QFile file(fileName);
 
@@ -1092,12 +993,6 @@ int UBPersistenceManager::sceneCount(const std::shared_ptr<UBDocumentProxy> prox
     return pageIndex;
 }
 
-QStringList UBPersistenceManager::getSceneFileNames(const QString& folder)
-{
-    QDir dir(folder, "page???.svg", QDir::Name, QDir::Files);
-    return dir.entryList();
-}
-
 QString UBPersistenceManager::generateUniqueDocumentPath(const QString& baseFolder)
 {
     QDateTime now = QDateTime::currentDateTime();
@@ -1111,6 +1006,15 @@ QString UBPersistenceManager::generateUniqueDocumentPath()
     return generateUniqueDocumentPath(UBSettings::userDocumentDirectory());
 }
 
+QString UBPersistenceManager::sceneFilenameForId(int id)
+{
+    return UBFileSystemUtils::digitFileFormat("/page%1.svg", id);
+}
+
+QString UBPersistenceManager::thumbnailFilenameForId(int id)
+{
+    return UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", id);
+}
 
 void UBPersistenceManager::generatePathIfNeeded(std::shared_ptr<UBDocumentProxy> pDocumentProxy)
 {
@@ -1123,7 +1027,7 @@ void UBPersistenceManager::generatePathIfNeeded(std::shared_ptr<UBDocumentProxy>
 
 bool UBPersistenceManager::addDirectoryContentToDocument(const QString& documentRootFolder, std::shared_ptr<UBDocumentProxy> pDocument)
 {
-    QStringList sourceScenes = getSceneFileNames(documentRootFolder);
+    QStringList sourceScenes = pageFiles(documentRootFolder);
     if (sourceScenes.empty())
         return false;
 
@@ -1134,14 +1038,14 @@ bool UBPersistenceManager::addDirectoryContentToDocument(const QString& document
         int targetIndex = targetPageCount + sourceIndex;
 
         QFile svg(documentRootFolder + "/" + sourceScenes[sourceIndex]);
-        if (!svg.copy(pDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.svg", targetIndex)))
+        if (!svg.copy(pDocument->persistencePath() + sceneFilenameForId(targetIndex)))
             return false;
 
         UBSvgSubsetAdaptor::setSceneUuid(pDocument, targetIndex, QUuid::createUuid());
 
-        QFile thumb(documentRootFolder + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", sourceIndex));
+        QFile thumb(documentRootFolder + thumbnailFilenameForId(sourceIndex));
         // We can ignore error in this case, thumbnail will be genarated
-        thumb.copy(pDocument->persistencePath() + UBFileSystemUtils::digitFileFormat("/page%1.thumbnail.jpg", targetIndex));
+        thumb.copy(pDocument->persistencePath() + thumbnailFilenameForId(targetIndex));
     }
 
     foreach(QString dir, mDocumentSubDirectories)
@@ -1160,30 +1064,6 @@ bool UBPersistenceManager::addDirectoryContentToDocument(const QString& document
     return true;
 }
 
-
-bool UBPersistenceManager::isEmpty(std::shared_ptr<UBDocumentProxy> pDocumentProxy)
-{
-    if(!pDocumentProxy)
-        return true;
-
-    if (pDocumentProxy->pageCount() > 1)
-        return false;
-
-    std::shared_ptr<UBGraphicsScene> theSoleScene = UBSvgSubsetAdaptor::loadScene(pDocumentProxy, 0);
-
-    bool empty = false;
-
-    if (theSoleScene)
-    {
-        empty = theSoleScene->isEmpty();
-    }
-    else
-    {
-        empty = true;
-    }
-
-    return empty;
-}
 
 bool UBPersistenceManager::addFileToDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy,
                                                      QString path,
@@ -1325,78 +1205,6 @@ void UBPersistenceManager::loadFolderTreeFromXml(const QString &path, const QDom
             }
         }
         iterElement = iterElement.nextSiblingElement();
-    }
-}
-
-void UBPersistenceManager::cleanupDocument(std::shared_ptr<UBDocumentProxy> pDocumentProxy) const
-{
-    static QRegularExpression uuidPattern("{[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}}");
-
-    if (!pDocumentProxy->testAndResetCleanupNeeded())
-    {
-        return;
-    }
-
-    // scan pages and collect possible UUID references
-    const QString path = pDocumentProxy->persistencePath() + "/";
-    const QStringList pages = getSceneFileNames(path);
-
-    if (pages.length() > 0)
-    {
-        QSet<QString> references;
-
-        for (const QString& page : pages)
-        {
-            QFile svgFile(path + page);
-
-            if (svgFile.open(QFile::ReadOnly))
-            {
-                const QString content = svgFile.readAll();
-                auto matches = uuidPattern.globalMatch(content);
-
-                while (matches.hasNext())
-                {
-                    QRegularExpressionMatch match = matches.next();
-                    references << match.captured();
-                }
-            }
-        }
-
-        // scan folders and remove unreferenced files and directories
-        static const QStringList folders = { ".", "audios", "videos", "objects" };
-
-        for (const QString& folder : folders)
-        {
-            QFileInfoList entries = QDir(path + folder).entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
-
-            for (const QFileInfo& entry : entries)
-            {
-                QRegularExpressionMatch match = uuidPattern.match(entry.fileName());
-
-                if (match.hasMatch() && !references.contains(match.captured()))
-                {
-                    const QString filename = folder + "/" + entry.fileName();
-                    const QString absoluteFilePath = entry.absoluteFilePath();
-
-                    // unreferenced file or directory
-                    if (entry.isDir())
-                    {
-                        qWarning() << "Deleting unreferenced directory" << filename;
-                        UBFileSystemUtils::deleteDir(absoluteFilePath);
-                    }
-                    else
-                    {
-                        qWarning() << "Deleting unreferenced file" << filename;
-                        UBFileSystemUtils::deleteFile(absoluteFilePath);
-                    }
-                }
-            }
-        }
-    }
-    else
-    {
-        //in a network-storage context, can happen on a newly created document, depending on the client and the cache mode you're using
-        qWarning() << "could not find any pages for the document " << pDocumentProxy->persistencePath();
     }
 }
 

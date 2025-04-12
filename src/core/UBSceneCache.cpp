@@ -52,33 +52,33 @@ UBSceneCache::~UBSceneCache()
 }
 
 
-std::shared_ptr<UBGraphicsScene> UBSceneCache::createScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex, bool useUndoRedoStack)
+std::shared_ptr<UBGraphicsScene> UBSceneCache::createScene(std::shared_ptr<UBDocumentProxy> proxy, int pageId, bool useUndoRedoStack)
 {
     auto newScene = std::make_shared<UBGraphicsScene>(proxy, useUndoRedoStack);
 
-    insert(proxy, pageIndex, newScene);
+    insert(proxy, pageId, newScene);
 
     return newScene;
 }
 
-std::shared_ptr<UBGraphicsScene> UBSceneCache::prepareLoading(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex)
+std::shared_ptr<UBGraphicsScene> UBSceneCache::prepareLoading(std::shared_ptr<UBDocumentProxy> proxy, int pageId)
 {
-    if (mSceneCache.contains({proxy, pageIndex}))
+    if (mSceneCache.contains({proxy, pageId}))
     {
-        return value(proxy, pageIndex);
+        return value(proxy, pageId);
     }
 
     // no entry in cache; create a cache entry to load scene
-    qDebug() << "Preparing to load scene" << pageIndex;
-    auto cacheEntry = std::make_shared<SceneCacheEntry>(proxy, pageIndex);
+    qDebug() << "Preparing to load scene" << pageId;
+    auto cacheEntry = std::make_shared<SceneCacheEntry>(proxy, pageId);
 
-    insertEntry({proxy, pageIndex}, cacheEntry);
+    insertEntry({proxy, pageId}, cacheEntry);
     cacheEntry->startLoading();
     return nullptr;
 }
 
 
-void UBSceneCache::insert (std::shared_ptr<UBDocumentProxy> proxy, int pageIndex, std::shared_ptr<UBGraphicsScene> scene)
+void UBSceneCache::insert (std::shared_ptr<UBDocumentProxy> proxy, int pageId, std::shared_ptr<UBGraphicsScene> scene)
 {
     // remove all entries pointing to this scene
     const auto keylist = mSceneCache.keys();
@@ -94,7 +94,7 @@ void UBSceneCache::insert (std::shared_ptr<UBDocumentProxy> proxy, int pageIndex
         }
     }
 
-    UBSceneCacheID key{proxy, pageIndex};
+    UBSceneCacheID key{proxy, pageId};
     insertEntry(key, std::make_shared<SceneCacheEntry>(scene));
 
     // restore view state
@@ -105,15 +105,15 @@ void UBSceneCache::insert (std::shared_ptr<UBDocumentProxy> proxy, int pageIndex
 }
 
 
-bool UBSceneCache::contains(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex) const
+bool UBSceneCache::contains(std::shared_ptr<UBDocumentProxy> proxy, int pageId) const
 {
-    return mSceneCache.contains({proxy, pageIndex});
+    return mSceneCache.contains({proxy, pageId});
 }
 
 
-std::shared_ptr<UBGraphicsScene> UBSceneCache::value(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex)
+std::shared_ptr<UBGraphicsScene> UBSceneCache::value(std::shared_ptr<UBDocumentProxy> proxy, int pageId)
 {
-    UBSceneCacheID key{proxy, pageIndex};
+    UBSceneCacheID key{proxy, pageId};
 
     if (mSceneCache.contains(key))
     {
@@ -131,9 +131,9 @@ std::shared_ptr<UBGraphicsScene> UBSceneCache::value(std::shared_ptr<UBDocumentP
 }
 
 
-void UBSceneCache::removeScene(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex)
+void UBSceneCache::removeScene(std::shared_ptr<UBDocumentProxy> proxy, int pageId)
 {
-    UBSceneCacheID key{proxy, pageIndex};
+    UBSceneCacheID key{proxy, pageId};
 
     if (!mSceneCache.contains(key))
     {
@@ -291,18 +291,18 @@ void UBSceneCache::insertEntry(UBSceneCacheID key, std::shared_ptr<SceneCacheEnt
         if ((entry->isSceneAvailable() && !entry->scene()->isActive())
                 || !entry->isSceneAvailable())
         {
-            qDebug() << "removing page" << key.pageIndex << "of" << key.documentProxy->documentFolderName();
-            removeScene(key.documentProxy, key.pageIndex);
+            qDebug() << "removing page" << key.mPageId << "of" << key.mDocumentProxy->documentFolderName();
+            removeScene(key.mDocumentProxy, key.mPageId);
             entry = nullptr;
-            qDebug() << "removed page" << key.pageIndex << "of" << key.documentProxy->documentFolderName();
+            qDebug() << "removed page" << key.mPageId << "of" << key.mDocumentProxy->documentFolderName();
             break;
         }
     }
 }
 
-UBSceneCache::SceneCacheEntry::SceneCacheEntry(std::shared_ptr<UBDocumentProxy> proxy, int pageIndex)
+UBSceneCache::SceneCacheEntry::SceneCacheEntry(std::shared_ptr<UBDocumentProxy> proxy, int pageId)
 {
-    mContext = UBSvgSubsetAdaptor::prepareLoadingScene(proxy, pageIndex);
+    mContext = UBSvgSubsetAdaptor::prepareLoadingScene(proxy, pageId);
 }
 
 UBSceneCache::SceneCacheEntry::SceneCacheEntry(std::shared_ptr<UBGraphicsScene> scene)

@@ -36,6 +36,7 @@
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 
+#include "document/UBDocument.h"
 #include "document/UBDocumentProxy.h"
 
 #include "board/UBBoardController.h"
@@ -394,14 +395,15 @@ QString UBWidgetUniboardAPI::pageThumbnail(const int pageNumber)
         return "";
 
     std::shared_ptr<UBDocumentProxy> doc = UBApplication::boardController->selectedDocument();
+    auto document = UBDocument::getDocument(doc);
 
-    if (!doc)
+    if (!document)
         return "";
 
-    if (pageNumber > doc->pageCount())
+    if (pageNumber > document->pageCount())
         return "";
 
-    QUrl url = UBThumbnailAdaptor::thumbnailUrl(doc, pageNumber - 1);
+    QUrl url = UBThumbnailAdaptor::thumbnailUrl(document.get(), pageNumber - 1);
 
     return url.toString();
 

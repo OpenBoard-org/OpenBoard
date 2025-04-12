@@ -1652,12 +1652,13 @@ std::shared_ptr<UBGraphicsScene> UBBoardController::setActiveDocumentScene(std::
 
     bool documentChange = selectedDocument() != pDocumentProxy;
 
+    auto document = UBDocument::getDocument(pDocumentProxy);
     int index = pSceneIndex;
-    int sceneCount = pDocumentProxy->pageCount();
+    int sceneCount = document->pageCount();
     if (index >= sceneCount && sceneCount > 0)
         index = sceneCount - 1;
 
-    std::shared_ptr<UBGraphicsScene> targetScene = UBPersistenceManager::persistenceManager()->loadDocumentScene(pDocumentProxy, index);
+    std::shared_ptr<UBGraphicsScene> targetScene = document->loadScene(index);
 
     bool sceneChange = targetScene != mActiveScene;
 
