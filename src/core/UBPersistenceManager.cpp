@@ -42,7 +42,6 @@
 #include "core/UBApplication.h"
 #include "core/UBSettings.h"
 #include "core/UBSetting.h"
-#include "core/UBForeignObjectsHandler.h"
 
 #include "document/UBDocumentProxy.h"
 
