@@ -165,7 +165,7 @@ void UBDocumentThumbnailsView::mousePressEvent(QMouseEvent *event)
         return;
     }
 
-    auto thumbnailScene = document()->thumbnailScene();
+    auto thumbnailScene = mDocument->thumbnailScene();
 
     if (Qt::ShiftModifier & event->modifiers())
     {
@@ -233,7 +233,7 @@ void UBDocumentThumbnailsView::mouseMoveEvent(QMouseEvent *event)
             if (thumbnail)
             {
                 const auto pageNumber = UBDocumentContainer::pageFromSceneIndex(thumbnail->sceneIndex());
-                const auto itemPath = QUrl::fromLocalFile(document()->proxy()->persistencePath() + QString("/pages/%1").arg(pageNumber));
+                const auto itemPath = QUrl::fromLocalFile(mDocument->proxy()->persistencePath() + QString("/pages/%1").arg(pageNumber));
                 qlElements << itemPath;
             }
         }
@@ -264,9 +264,9 @@ void UBDocumentThumbnailsView::mouseReleaseEvent(QMouseEvent *event)
 
 void UBDocumentThumbnailsView::keyPressEvent(QKeyEvent *event)
 {
-    auto thumbnailScene = document()->thumbnailScene();
+    auto thumbnailScene = mDocument ? mDocument->thumbnailScene() : nullptr;
 
-    if (thumbnailScene->lastSelectedThumbnail())
+    if (thumbnailScene && thumbnailScene->lastSelectedThumbnail())
     {
         const int startSelectionIndex = thumbnailScene->lastSelectedThumbnail()->sceneIndex();
         const int previousSelectedThumbnailIndex = startSelectionIndex + mSelectionSpan;
@@ -283,7 +283,7 @@ void UBDocumentThumbnailsView::keyPressEvent(QKeyEvent *event)
                     if (Qt::Key_Down == event->key())
                     {
                         endSelectionIndex = previousSelectedThumbnailIndex + columnCount();
-                        if (endSelectionIndex >= document()->thumbnailScene()->thumbnailCount()) break;
+                        if (endSelectionIndex >= thumbnailScene->thumbnailCount()) break;
                     }
                     else
                     {
@@ -302,7 +302,7 @@ void UBDocumentThumbnailsView::keyPressEvent(QKeyEvent *event)
                     if (Qt::Key_Down == event->key())
                     {
                         toSelectIndex = previousSelectedThumbnailIndex + columnCount();
-                        if (toSelectIndex >= document()->thumbnailScene()->thumbnailCount()) break;
+                        if (toSelectIndex >= thumbnailScene->thumbnailCount()) break;
                     }
                     else
                     {
@@ -319,7 +319,7 @@ void UBDocumentThumbnailsView::keyPressEvent(QKeyEvent *event)
         case Qt::Key_Left:
         case Qt::Key_Right:
             {
-            UBThumbnail *previousSelectedThumbnail = document()->thumbnailScene()->thumbnailAt(previousSelectedThumbnailIndex);
+            UBThumbnail *previousSelectedThumbnail = thumbnailScene->thumbnailAt(previousSelectedThumbnailIndex);
 
                 if (!previousSelectedThumbnail)
                 {
@@ -333,7 +333,7 @@ void UBDocumentThumbnailsView::keyPressEvent(QKeyEvent *event)
                 else
                 {
                     if (previousSelectedThumbnail->column() == columnCount() - 1 ||
-                        previousSelectedThumbnailIndex == document()->thumbnailScene()->thumbnailCount() - 1) break;
+                        previousSelectedThumbnailIndex == thumbnailScene->thumbnailCount() - 1) break;
                 }
 
                 if (Qt::ShiftModifier & event->modifiers())
@@ -347,7 +347,7 @@ void UBDocumentThumbnailsView::keyPressEvent(QKeyEvent *event)
                     else
                     {
                         endSelectionIndex = previousSelectedThumbnailIndex + 1;
-                        if (endSelectionIndex >= document()->thumbnailScene()->thumbnailCount()) break;
+                        if (endSelectionIndex >= thumbnailScene->thumbnailCount()) break;
                     }
 
                     const int startIndex = startSelectionIndex < endSelectionIndex ? startSelectionIndex : endSelectionIndex;
@@ -358,8 +358,6 @@ void UBDocumentThumbnailsView::keyPressEvent(QKeyEvent *event)
                 else
                 {
                     const auto selectedIndex = previousSelectedThumbnailIndex + (Qt::Key_Left == event->key() ? -1 : 1);
-                    const auto selectedItem = document()->thumbnailScene()->thumbnailAt(selectedIndex);
-
                     selectItemAt(selectedIndex, Qt::ControlModifier & event->modifiers());
                     mSelectionSpan = 0;
                 }
@@ -385,12 +383,12 @@ void UBDocumentThumbnailsView::keyPressEvent(QKeyEvent *event)
             {
                 if (Qt::ShiftModifier & event->modifiers())
                 {
-                    mSelectionSpan = document()->thumbnailScene()->thumbnailCount() - startSelectionIndex - 1;
+                    mSelectionSpan = thumbnailScene->thumbnailCount() - startSelectionIndex - 1;
                     selectItems(startSelectionIndex, mSelectionSpan + 1);
                 }
                 else
                 {
-                    const auto selectIndex = document()->thumbnailScene()->thumbnailCount() - 1;
+                    const auto selectIndex = thumbnailScene->thumbnailCount() - 1;
                     selectItemAt(selectIndex, Qt::ControlModifier & event->modifiers());
                     mSelectionSpan = 0;
                 }
@@ -412,7 +410,7 @@ void UBDocumentThumbnailsView::focusInEvent(QFocusEvent *event)
 {
     Q_UNUSED(event);
 
-    if (0 == selectedItems().count() && document()->thumbnailScene()->thumbnailCount() > 0 && Qt::TabFocusReason == event->reason())
+    if (0 == selectedItems().count() && mDocument && mDocument->thumbnailScene()->thumbnailCount() > 0 && Qt::TabFocusReason == event->reason())
     {
         selectItemAt(0);
         mSelectionSpan = 0;
@@ -424,9 +422,9 @@ void UBDocumentThumbnailsView::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event);
 
-    if (document())
+    if (mDocument)
     {
-        auto thumbnailScene = document()->thumbnailScene();
+        auto thumbnailScene = mDocument->thumbnailScene();
 
         thumbnailScene->arrangeThumbnails();
 
@@ -448,54 +446,73 @@ void UBDocumentThumbnailsView::sceneSelectionChanged()
 
 void UBDocumentThumbnailsView::selectItemAt(int pIndex, bool extend)
 {
-    const auto thumbnailScene = document()->thumbnailScene();
-    thumbnailScene->hightlightItem(pIndex, !extend);
-    ensureVisible(thumbnailScene->thumbnailAt(pIndex));
+    if (mDocument)
+    {
+        const auto thumbnailScene = mDocument->thumbnailScene();
+        thumbnailScene->hightlightItem(pIndex, !extend);
+        ensureVisible(thumbnailScene->thumbnailAt(pIndex));
+    }
 }
 
 
 void UBDocumentThumbnailsView::selectItems(int startIndex, int count)
 {
-    auto thumbnailScene = document()->thumbnailScene();
-
-    thumbnailScene->hightlightItem(startIndex, true);
-
-    for (int i = 1; i < count; ++i)
+    if (mDocument)
     {
-        thumbnailScene->hightlightItem(startIndex + i);
+        auto thumbnailScene = mDocument->thumbnailScene();
+
+        thumbnailScene->hightlightItem(startIndex, true);
+
+        for (int i = 1; i < count; ++i)
+        {
+            thumbnailScene->hightlightItem(startIndex + i);
+        }
     }
 }
 
 
 void UBDocumentThumbnailsView::selectAll()
 {
-    auto thumbnailScene = document()->thumbnailScene();
-
-    for (int i = 0; i < thumbnailScene->thumbnailCount(); i++)
+    if (mDocument)
     {
-        thumbnailScene->hightlightItem(i);
+        auto thumbnailScene = mDocument->thumbnailScene();
+
+        for (int i = 0; i < thumbnailScene->thumbnailCount(); i++)
+        {
+            thumbnailScene->hightlightItem(i);
+        }
     }
 }
 
 int UBDocumentThumbnailsView::rowCount() const
 {
-    const auto thumbnailScene = document()->thumbnailScene();
+    if (mDocument)
+    {
+        const auto thumbnailScene = mDocument->thumbnailScene();
 
-    UBThumbnail *lastThumbnail = thumbnailScene->thumbnailAt(thumbnailScene->thumbnailCount() - 1);
+        UBThumbnail *lastThumbnail = thumbnailScene->thumbnailAt(thumbnailScene->thumbnailCount() - 1);
 
-    return lastThumbnail ? lastThumbnail->row() + 1 : 0;
+        return lastThumbnail ? lastThumbnail->row() + 1 : 0;
+    }
+
+    return 0;
 }
 
 int UBDocumentThumbnailsView::columnCount() const
 {
-    const auto thumbnailScene = document()->thumbnailScene();
+    if (mDocument)
+    {
+        const auto thumbnailScene = mDocument->thumbnailScene();
 
-    UBThumbnail *lastThumbnail = thumbnailScene->thumbnailAt(thumbnailScene->thumbnailCount() - 1);
+        UBThumbnail *lastThumbnail = thumbnailScene->thumbnailAt(thumbnailScene->thumbnailCount() - 1);
 
-    if (!lastThumbnail) return 0;
-    int lastRow = lastThumbnail->row();
-    int lastColumn = lastThumbnail->column();
-    return lastRow > 0 ? (thumbnailScene->thumbnailCount() - lastColumn - 1) / lastRow : lastColumn + 1;
+        if (!lastThumbnail) return 0;
+        int lastRow = lastThumbnail->row();
+        int lastColumn = lastThumbnail->column();
+        return lastRow > 0 ? (thumbnailScene->thumbnailCount() - lastColumn - 1) / lastRow : lastColumn + 1;
+    }
+
+    return 0;
 }
 
 
