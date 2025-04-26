@@ -253,9 +253,9 @@ class UBBoardController : public UBDocumentContainer
 
         void saveData(SaveFlags fls = sf_none);
 
-        void documentSceneDuplicated(std::shared_ptr<UBDocumentProxy> proxy, int index);
-        void documentSceneMoved(std::shared_ptr<UBDocumentProxy> proxy, int fromIndex, int toIndex);
-        void documentSceneDeleted(std::shared_ptr<UBDocumentProxy> proxy, int index);
+        void documentSceneDuplicated(UBDocument* document, int index);
+        void documentSceneMoved(UBDocument* document, int fromIndex, int toIndex);
+        void documentSceneDeleted(UBDocument* document, int index);
 
     signals:
         void newPageAdded();

@@ -60,15 +60,17 @@ public:
     int mPageId;
 };
 
+inline bool operator<(const UBSceneCacheID &id1, const UBSceneCacheID &id2)
+{
+    return id1.mDocumentProxy < id2.mDocumentProxy ||
+           (id1.mDocumentProxy == id2.mDocumentProxy
+            && id1.mPageId < id2.mPageId);
+}
+
 inline bool operator==(const UBSceneCacheID &id1, const UBSceneCacheID &id2)
 {
     return id1.mDocumentProxy == id2.mDocumentProxy
             && id1.mPageId == id2.mPageId;
-}
-
-inline uint qHash(const UBSceneCacheID &id)
-{
-    return qHash(id.mPageId);
 }
 
 
@@ -94,8 +96,6 @@ public:
 
     void moveScene(std::shared_ptr<UBDocumentProxy> proxy, int sourceIndex, int targetIndex);
 
-    void reassignDocProxy(std::shared_ptr<UBDocumentProxy> newDocument, std::shared_ptr<UBDocumentProxy> oldDocument);
-
     void shiftUpScenes(std::shared_ptr<UBDocumentProxy> proxy, int startIncIndex, int endIncIndex);
 
 
@@ -116,18 +116,15 @@ private:
         QTimer* mTimer = nullptr;
     };
 
-//    typedef QFuture<std::shared_ptr<UBGraphicsScene>> FutureScene;
-//    typedef std::variant<std::shared_ptr<UBGraphicsScene>, FutureScene> CacheEntry;
-
     void internalMoveScene(std::shared_ptr<UBDocumentProxy> proxy, int sourceIndex, int targetIndex);
 
     void insertEntry(UBSceneCacheID key, std::shared_ptr<SceneCacheEntry> entry);
 
-    QHash<UBSceneCacheID, std::shared_ptr<SceneCacheEntry>> mSceneCache;
+    QMap<UBSceneCacheID, std::shared_ptr<SceneCacheEntry>> mSceneCache;
 
     QQueue<UBSceneCacheID> mCachedKeyFIFO;
 
-    QHash<UBSceneCacheID, UBGraphicsScene::SceneViewState> mViewStates;
+    QMap<UBSceneCacheID, UBGraphicsScene::SceneViewState> mViewStates;
 };
 
 

@@ -243,7 +243,7 @@ int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> docum
 {
     int nImportedDocuments = 0;
     auto doc = UBDocument::getDocument(document);
-    const auto currentNumberOfPages = document->pageCount();
+    const auto currentNumberOfPages = doc->pageCount();
 
     foreach(const QString& fileName, fileNames)
     {
@@ -299,7 +299,7 @@ int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> docum
                     foreach(UBGraphicsItem* page, pages)
                     {
                         UBApplication::showMessage(tr("Inserting page %1 of %2").arg(++nPage).arg(pages.size()), true);
-                        int pageIndex = document->pageCount();
+                        int pageIndex = doc->pageCount();
                         std::shared_ptr<UBGraphicsScene> scene = doc->createPage(pageIndex);
                         importAdaptor->placeImportedItemToScene(scene, page);
                         doc->persistPage(scene, pageIndex);

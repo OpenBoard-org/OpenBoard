@@ -737,11 +737,12 @@ bool UBDocumentTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction act
         foreach (UBMimeDataItem sourceItem, ubMime->items())
         {
             std::shared_ptr<UBDocumentProxy> fromProxy = sourceItem.documentProxy();
-            int fromIndex = sourceItem.sceneIndex();
-            int toIndex = targetDocProxy->pageCount();
-
             auto fromDocument = UBDocument::getDocument(fromProxy);
             auto targetDocument = UBDocument::getDocument(targetDocProxy);
+
+            int fromIndex = sourceItem.sceneIndex();
+            int toIndex = targetDocument->pageCount();
+
             fromDocument->copyPage(fromIndex, targetDocument, toIndex);
         }
 
@@ -1644,7 +1645,7 @@ void UBDocumentTreeView::dropEvent(QDropEvent *event)
         {
             std::shared_ptr<UBDocumentProxy> fromProxy = sourceItem.documentProxy();
             int fromIndex = sourceItem.sceneIndex();
-            int toIndex = targetDocProxy->pageCount();            
+            int toIndex = targetDocument->pageCount();
 
             UBApplication::showMessage(tr("Copying page %1/%2").arg(++count).arg(total), true);
 
@@ -3365,7 +3366,7 @@ void UBDocumentController::addToDocument()
             mBoardController->addScene(pageInfoList.at(i).first, pageInfoList.at(i).second, false);
         }
 
-        int newActiveSceneIndex = selectedItems.count() == mBoardController->selectedDocument()->pageCount() ? 0 : oldActiveSceneIndex + 1;
+        int newActiveSceneIndex = selectedItems.count() == mBoardController->activeDocument()->pageCount() ? 0 : oldActiveSceneIndex + 1;
         mDocumentUI->thumbnailWidget->selectItemAt(newActiveSceneIndex, false);
         selectDocument(mBoardController->selectedDocument());
         QDateTime now = QDateTime::currentDateTime();
@@ -3592,10 +3593,6 @@ void UBDocumentController::updateActions()
 
     QModelIndex selectedIndex = firstSelectedTreeIndex();
     std::shared_ptr<UBDocumentProxy> selectedProxy = docModel->proxyData(selectedIndex);
-    int pageCount = -1;
-    if (selectedProxy) {
-        pageCount = selectedProxy->pageCount();
-    }
 
     bool pageSelected = false;
     bool groupSelected = false;
@@ -3638,7 +3635,7 @@ void UBDocumentController::updateActions()
 
     } else if (pageSelected) {
         QList<QGraphicsItem*> selection = mDocumentUI->thumbnailWidget->selectedItems();
-        if(pageCount == 1) {
+        if(mDocumentUI->thumbnailWidget->document()->pageCount() == 1) {
             mMainWindow->actionDuplicate->setEnabled(!trashSelected && pageCanBeDuplicated(UBDocumentContainer::pageFromSceneIndex(0)));
 
         } else {
@@ -3814,7 +3811,7 @@ bool UBDocumentController::pageCanBeMovedUp(int page)
 
 bool UBDocumentController::pageCanBeMovedDown(int page)
 {
-    return page < selectedDocument()->pageCount() - 1;
+    return page < activeDocument()->pageCount() - 1;
 }
 
 bool UBDocumentController::pageCanBeDuplicated(int page)
@@ -3878,7 +3875,7 @@ bool UBDocumentController::everySceneSelected() const
         UBThumbnail* p = dynamic_cast<UBThumbnail*>(selection.at(0));
         if (p)
         {
-            return (selection.count() == mDocumentUI->thumbnailWidget->document()->proxy()->pageCount());
+            return (selection.count() == mDocumentUI->thumbnailWidget->document()->pageCount());
         }
     }
     return false;
@@ -3892,7 +3889,7 @@ bool UBDocumentController::firstAndOnlySceneSelected() const
         UBThumbnail* p = dynamic_cast<UBThumbnail*>(selection.at(i));
         if (p)
         {
-            int pageCount = mDocumentUI->thumbnailWidget->document()->proxy()->pageCount();
+            int pageCount = mDocumentUI->thumbnailWidget->document()->pageCount();
             if (pageCount > 1) //not the only scene
             {
                 return false;

@@ -109,7 +109,6 @@ class UBPersistenceManager : public QObject
         virtual std::shared_ptr<UBGraphicsScene> loadDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pageId);
         void prepareSceneLoading(std::shared_ptr<UBDocumentProxy> proxy, int pageId);
         std::shared_ptr<UBGraphicsScene> getDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pageId);
-        void reassignDocProxy(std::shared_ptr<UBDocumentProxy> newDocument, std::shared_ptr<UBDocumentProxy> oldDocument);
 
 //        QList<QPointer<UBDocumentProxy> > documentProxies;
         UBDocumentTreeNode *mDocumentTreeStructure;
@@ -158,14 +157,11 @@ class UBPersistenceManager : public QObject
         void documentMetadataChanged(std::shared_ptr<UBDocumentProxy> pDocumentProxy);
 
         // The following signals are emitted in UBDocument
-        void documentSceneDuplicated(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pIndex);
-        void documentSceneMoved(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int fromIndex, int toIndex);
-        void documentSceneDeleted(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pIndex);
+        void documentSceneDuplicated(UBDocument* document, int pIndex);
+        void documentSceneMoved(UBDocument* document, int fromIndex, int toIndex);
+        void documentSceneDeleted(UBDocument* document, int pIndex);
 
 private:
-        static int sceneCount(const std::shared_ptr<UBDocumentProxy> pDocumentProxy);
-        void renamePage(std::shared_ptr<UBDocumentProxy> pDocumentProxy,
-                        const int sourceIndex, const int targetIndex);
         QUuid copyPage(std::shared_ptr<UBDocumentProxy> source, const int sourceIndex,
                       std::shared_ptr<UBDocumentProxy> target, const int targetIndex);
         void generatePathIfNeeded(std::shared_ptr<UBDocumentProxy> pDocumentProxy);

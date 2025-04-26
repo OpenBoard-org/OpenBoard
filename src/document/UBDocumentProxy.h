@@ -96,8 +96,6 @@ class UBDocumentProxy
         QUuid uuid() const;
         void setUuid(const QUuid& uuid);
 
-        int pageCount();
-
         int pageDpi();
         void setPageDpi(int dpi);
 
@@ -112,11 +110,6 @@ class UBDocumentProxy
         bool isInFavoriteList() const;
         void setIsInFavoristeList(bool isInFavoristeList);
 
-    protected:
-        void setPageCount(int pPageCount);
-        int incPageCount();
-        int decPageCount();
-
     private:
 
         void init();
@@ -127,8 +120,6 @@ class UBDocumentProxy
         QString mDocumentUpdatedAtLittleEndian;
 
         QMap<QString, QVariant> mMetaDatas;
-
-        int mPageCount;
 
         int mPageDpi;
 

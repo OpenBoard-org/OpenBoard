@@ -38,6 +38,8 @@
 #include "core/UBSetting.h"
 #include "core/UBDisplayManager.h"
 
+#include "document/UBDocument.h"
+
 #include "gui/UBMainWindow.h"
 #include "gui/UBStylusPalette.h"
 #include "gui/UBKeyboardPalette.h"
@@ -577,7 +579,7 @@ void UBBoardPaletteManager::activeSceneChanged()
 
     if (mpPageNavigWidget)
     {
-        mpPageNavigWidget->setPageNumber(UBDocumentContainer::pageFromSceneIndex(pageIndex), activeScene->document()->pageCount());
+        mpPageNavigWidget->setPageNumber(UBDocumentContainer::pageFromSceneIndex(pageIndex), UBApplication::boardController->activeDocument()->pageCount());
     }
 
     if (mZoomPalette)

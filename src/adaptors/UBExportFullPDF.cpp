@@ -77,7 +77,9 @@ UBExportFullPDF::~UBExportFullPDF()
 
 void UBExportFullPDF::saveOverlayPdf(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const QString& filename)
 {
-    if (!pDocumentProxy || filename.length() == 0 || pDocumentProxy->pageCount() == 0)
+    auto document = UBDocument::getDocument(pDocumentProxy);
+
+    if (!document || filename.length() == 0 || document->pageCount() == 0)
         return;
 
     /*
@@ -102,7 +104,6 @@ void UBExportFullPDF::saveOverlayPdf(std::shared_ptr<UBDocumentProxy> pDocumentP
         pdfPrinter.setFullPage(true);
 
         QPainter* pdfPainter = 0;
-        auto document = UBDocument::getDocument(pDocumentProxy);
 
         for(int pageIndex = 0 ; pageIndex < document->pageCount(); pageIndex++)
         {

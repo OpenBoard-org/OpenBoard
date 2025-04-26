@@ -264,14 +264,6 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocumentProxyStruct
         docProxy->setMetaData(key, metadatas.value(key));
     }
 
-    docProxy->setPageCount(sceneCount(docProxy));
-
-    if (docProxy->pageCount() == 0)
-    {
-        qWarning() << "No pages found - " << fullPath;
-        docProxy->setMetaData(UBSettings::documentName, tr("Broken - %1").arg(contentInfo.baseName()));
-    }
-
     return docProxy;
 };
 
@@ -580,7 +572,6 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocument(const QStr
     if(directory.length() != 0 )
     {
         doc = std::make_shared<UBDocumentProxy>(directory);
-        doc->setPageCount(pageCount);
     }
     else{
         checkIfDocumentRepositoryExists();
@@ -694,10 +685,9 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocumentFromDir(con
     }
 
     doc->setUuid(QUuid::createUuid());
-    doc->setPageCount(sceneCount(doc));
     auto document = UBDocument::getDocument(doc);
 
-    for(int i = 0; i < doc->pageCount(); i++)
+    for(int i = 0; i < document->pageCount(); i++)
     {
         UBSvgSubsetAdaptor::setSceneUuid(doc, i, QUuid::createUuid());
         UBThumbnailAdaptor::generateMissingThumbnail(document.get(), i);
@@ -745,12 +735,6 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::duplicateDocument(std::sh
 
     UBFileSystemUtils::copyDir(pDocumentProxy->persistencePath(), copy->persistencePath());
 
-    // regenerate scenes UUIDs
-    for(int i = 0; i < pDocumentProxy->pageCount(); i++)
-    {
-        UBSvgSubsetAdaptor::setSceneUuid(pDocumentProxy, i, QUuid::createUuid());
-    }
-
     foreach(QString key, pDocumentProxy->metaDatas().keys())
     {
         copy->setMetaData(key, pDocumentProxy->metaDatas().value(key));
@@ -763,8 +747,6 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::duplicateDocument(std::sh
 
     persistDocumentMetadata(copy);
 
-    copy->setPageCount(copy->pageCount());
-
     emit documentCreated(copy);
 
     return copy;
@@ -775,14 +757,6 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::duplicateDocument(std::sh
 void UBPersistenceManager::deleteDocumentScenes(std::shared_ptr<UBDocumentProxy> proxy, const QList<int>& pageIds)
 {
     checkIfDocumentRepositoryExists();
-
-    int pageCount = proxy->pageCount();
-
-    if (pageIds.size() == pageCount)
-    {
-        deleteDocument(proxy);
-        return;
-    }
 
     if (pageIds.size() == 0)
     {
@@ -798,8 +772,6 @@ void UBPersistenceManager::deleteDocumentScenes(std::shared_ptr<UBDocumentProxy>
         QFile::remove(thumbFileName);
 
         mSceneCache.removeScene(proxy, pageId);
-
-        proxy->decPageCount();
     }
 
     // update metadata
@@ -834,8 +806,6 @@ QUuid UBPersistenceManager::copyDocumentScene(std::shared_ptr<UBDocumentProxy> f
         UBFileSystemUtils::copy(source, target, false);
     }
 
-    to->incPageCount();
-
     // update metadata
     QDateTime now = QDateTime::currentDateTime();
     to->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
@@ -853,8 +823,6 @@ std::shared_ptr<UBGraphicsScene> UBPersistenceManager::createDocumentSceneAt(std
             UBSettings::settings()->UBSettings::pageBackground());
 
     newScene->setBackgroundGridSize(UBSettings::settings()->crossSize);
-
-    proxy->incPageCount();
 
     persistDocumentScene(proxy, newScene, pageId);
 
@@ -878,11 +846,6 @@ void UBPersistenceManager::prepareSceneLoading(std::shared_ptr<UBDocumentProxy> 
 std::shared_ptr<UBGraphicsScene> UBPersistenceManager::getDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pageId)
 {
     return mSceneCache.value(pDocumentProxy, pageId);
-}
-
-void UBPersistenceManager::reassignDocProxy(std::shared_ptr<UBDocumentProxy> newDocument, std::shared_ptr<UBDocumentProxy> oldDocument)
-{
-    return mSceneCache.reassignDocProxy(newDocument, oldDocument);
 }
 
 void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, std::shared_ptr<UBGraphicsScene> pScene, int pageId, bool isAnAutomaticBackup, bool forceImmediateSaving)
@@ -935,17 +898,6 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::persistDocumentMetadata(s
 }
 
 
-void UBPersistenceManager::renamePage(std::shared_ptr<UBDocumentProxy> pDocumentProxy, const int sourceIndex, const int targetIndex)
-{
-    UBApplication::showMessage(tr("Renaming pages (%1/%2)").arg(sourceIndex).arg(pDocumentProxy->pageCount()));
-    QFile svg(pDocumentProxy->persistencePath() + sceneFilenameForId(sourceIndex));
-    svg.rename(pDocumentProxy->persistencePath() + sceneFilenameForId(targetIndex));
-
-    QFile thumb(pDocumentProxy->persistencePath() + thumbnailFilenameForId(sourceIndex));
-    thumb.rename(pDocumentProxy->persistencePath() + thumbnailFilenameForId(targetIndex));
-}
-
-
 QUuid UBPersistenceManager::copyPage(std::shared_ptr<UBDocumentProxy> source, const int sourceIndex, std::shared_ptr<UBDocumentProxy> target, const int targetIndex)
 {
     QFile thumb(source->persistencePath() + thumbnailFilenameForId(sourceIndex));
@@ -959,39 +911,6 @@ QUuid UBPersistenceManager::copyPage(std::shared_ptr<UBDocumentProxy> source, co
     return uuid;
 }
 
-
-int UBPersistenceManager::sceneCount(const std::shared_ptr<UBDocumentProxy> proxy)
-{
-    const QString pPath = proxy->persistencePath();
-
-    int pageIndex = 0;
-    bool moreToProcess = true;
-    bool addedMissingZeroPage = false;
-
-    while (moreToProcess)
-    {
-        QString fileName = pPath + sceneFilenameForId(pageIndex);
-
-        QFile file(fileName);
-
-        if (file.exists())
-        {
-            pageIndex++;
-        }
-        else
-        {
-            moreToProcess = false;
-        }
-    }
-
-    if(pageIndex == 1 && addedMissingZeroPage){
-        // increment is done only to check if there are other pages than the missing zero page
-        // This situation means -> no pages on the document
-        return 0;
-    }
-
-    return pageIndex;
-}
 
 QString UBPersistenceManager::generateUniqueDocumentPath(const QString& baseFolder)
 {
@@ -1027,38 +946,22 @@ void UBPersistenceManager::generatePathIfNeeded(std::shared_ptr<UBDocumentProxy>
 
 bool UBPersistenceManager::addDirectoryContentToDocument(const QString& documentRootFolder, std::shared_ptr<UBDocumentProxy> pDocument)
 {
-    QStringList sourceScenes = pageFiles(documentRootFolder);
-    if (sourceScenes.empty())
+    auto proxy = std::make_shared<UBDocumentProxy>(documentRootFolder);
+    auto sourceDocument = UBDocument::getDocument(proxy);
+
+    if (sourceDocument->pageCount() == 0)
+    {
         return false;
+    }
 
-    int targetPageCount = pDocument->pageCount();
+    auto targetDocument = UBDocument::getDocument(pDocument);
+    int targetPageCount = targetDocument->pageCount();
 
-    for(int sourceIndex = 0 ; sourceIndex < sourceScenes.size(); sourceIndex++)
+    for (int sourceIndex = 0; sourceIndex < sourceDocument->pageCount(); sourceIndex++)
     {
         int targetIndex = targetPageCount + sourceIndex;
-
-        QFile svg(documentRootFolder + "/" + sourceScenes[sourceIndex]);
-        if (!svg.copy(pDocument->persistencePath() + sceneFilenameForId(targetIndex)))
-            return false;
-
-        UBSvgSubsetAdaptor::setSceneUuid(pDocument, targetIndex, QUuid::createUuid());
-
-        QFile thumb(documentRootFolder + thumbnailFilenameForId(sourceIndex));
-        // We can ignore error in this case, thumbnail will be genarated
-        thumb.copy(pDocument->persistencePath() + thumbnailFilenameForId(targetIndex));
+        sourceDocument->copyPage(sourceIndex, targetDocument, targetIndex);
     }
-
-    foreach(QString dir, mDocumentSubDirectories)
-    {
-        qDebug() << "copying " << documentRootFolder << "/" << dir << " to " << pDocument->persistencePath() << "/" + dir;
-
-        QDir srcDir(documentRootFolder + "/" + dir);
-        if (srcDir.exists())
-            if (!UBFileSystemUtils::copyDir(documentRootFolder + "/" + dir, pDocument->persistencePath() + "/" + dir))
-                return false;
-    }
-
-    pDocument->setPageCount(pDocument->pageCount());
 
     //issue NC - NNE - 20131213 : At this point, all is well done.
     return true;

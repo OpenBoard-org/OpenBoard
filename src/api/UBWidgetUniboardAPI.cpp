@@ -354,7 +354,7 @@ int UBWidgetUniboardAPI::pageCount() const
     auto scene = mScene.lock();
 
     if (scene && scene->document())
-        return scene->document()->pageCount();
+        return UBDocument::getDocument(scene->document())->pageCount();
     else
         return -1;
 }

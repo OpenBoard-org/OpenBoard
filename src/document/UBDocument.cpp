@@ -102,13 +102,20 @@ void UBDocument::deletePages(QList<int> indexes)
     }
 
     // delete the scenes
+    if (pageIds.count() == pageCount())
+    {
+        // deleting all pages is blocked in the UI. Just log if it happens anyway
+        qWarning() << "UBDocument::deletePages: declined attempt to remove all pages of a document";
+        return;
+    }
+
     UBPersistenceManager::persistenceManager()->deleteDocumentScenes(mProxy, pageIds);
 
     for (int i = indexes.size() - 1; i >= 0; --i)
     {
         mThumbnailScene->deleteThumbnail(indexes.at(i), false);
         mToc->remove(indexes.at(i));
-        emit UBPersistenceManager::persistenceManager()->documentSceneDeleted(mProxy, indexes.at(i));
+        emit UBPersistenceManager::persistenceManager()->documentSceneDeleted(this, indexes.at(i));
     }
 
     mThumbnailScene->renumberThumbnails(indexes.first());
@@ -119,7 +126,7 @@ void UBDocument::deletePages(QList<int> indexes)
 void UBDocument::duplicatePage(int index)
 {
     copyPage(index, this, index + 1);
-    emit UBPersistenceManager::persistenceManager()->documentSceneDuplicated(mProxy, index + 1);
+    emit UBPersistenceManager::persistenceManager()->documentSceneDuplicated(this, index + 1);
 }
 
 void UBDocument::movePage(int fromIndex, int toIndex)
@@ -127,7 +134,7 @@ void UBDocument::movePage(int fromIndex, int toIndex)
     mThumbnailScene->moveThumbnail(fromIndex, toIndex);
     mToc->move(fromIndex, toIndex);
     mToc->save();
-    emit UBPersistenceManager::persistenceManager()->documentSceneMoved(mProxy, fromIndex, toIndex);
+    emit UBPersistenceManager::persistenceManager()->documentSceneMoved(this, fromIndex, toIndex);
 }
 
 void UBDocument::copyPage(int fromIndex, std::shared_ptr<UBDocument> to, int toIndex)
@@ -304,6 +311,12 @@ void UBDocument::scan()
 
     // Scan through the pages starting from the smallest number and counting up.
     QStringList pages = UBPersistenceManager::persistenceManager()->pageFiles(mProxy->persistencePath());
+
+    if (pages.isEmpty())
+    {
+        qWarning() << "No pages found - " << mProxy->persistencePath();
+        mProxy->setMetaData(UBSettings::documentName, UBPersistenceManager::tr("Broken - %1").arg(mProxy->documentFolderName()));
+    }
 
     // Load the scenes and check the media assets.
     int pageProcessed = -1;

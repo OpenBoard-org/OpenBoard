@@ -157,9 +157,21 @@ void UBSceneCache::removeScene(std::shared_ptr<UBDocumentProxy> proxy, int pageI
 
 void UBSceneCache::removeAllScenes(std::shared_ptr<UBDocumentProxy> proxy)
 {
-    for(int i = 0 ; i < proxy->pageCount(); i++)
+    // get list of all page ids for proxy, avoid modifying the map here
+    auto lowerBound = mSceneCache.lowerBound({proxy, 0});
+    auto upperBound = mSceneCache.upperBound({proxy, INT_MAX});
+
+    QList<int> pageIds;
+
+    for (auto iter = lowerBound; iter != upperBound; ++iter)
     {
-        removeScene(proxy, i);
+        pageIds << iter.key().mPageId;
+    }
+
+    // delete scenes by id
+    for(auto pageId : pageIds)
+    {
+        removeScene(proxy, pageId);
     }
 }
 
@@ -205,34 +217,6 @@ void UBSceneCache::moveScene(std::shared_ptr<UBDocumentProxy> proxy, int sourceI
         mCachedKeyFIFO.removeAll(keyTarget);
     }
 
-}
-
-void UBSceneCache::reassignDocProxy(std::shared_ptr<UBDocumentProxy> newDocument, std::shared_ptr<UBDocumentProxy> oldDocument)
-{
-    if (!newDocument || !oldDocument) {
-        return;
-    }
-    if (newDocument->pageCount() != oldDocument->pageCount()) {
-        return;
-    }
-    if (!QFileInfo(oldDocument->persistencePath()).exists()) {
-        return;
-    }
-    for (int i = 0; i < oldDocument->pageCount(); i++) {
-
-        UBSceneCacheID sourceKey(oldDocument, i);
-        auto entry = mSceneCache.value(sourceKey);
-
-        if (entry->isSceneAvailable())
-        {
-            entry->scene()->setDocument(newDocument);
-        }
-
-        mCachedKeyFIFO.removeAll(sourceKey);
-        int count = mSceneCache.remove(sourceKey);
-
-        insertEntry({newDocument, i}, entry);
-    }
 }
 
 

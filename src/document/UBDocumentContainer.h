@@ -33,6 +33,9 @@
 #include <QtGui>
 #include "UBDocumentProxy.h"
 
+// forward
+class UBDocument;
+
 class UBDocumentContainer : public QObject
 {
     Q_OBJECT
@@ -42,10 +45,10 @@ class UBDocumentContainer : public QObject
         virtual ~UBDocumentContainer();
 
         void setDocument(std::shared_ptr<UBDocumentProxy> document, bool forceReload = false);
-        void pureSetDocument(std::shared_ptr<UBDocumentProxy> document) {mCurrentDocument = document;}
+        void pureSetDocument(std::shared_ptr<UBDocumentProxy> document);
 
         std::shared_ptr<UBDocumentProxy> selectedDocument(){return mCurrentDocument;}
-        int pageCount() const{return mCurrentDocument->pageCount();}
+        std::shared_ptr<UBDocument> activeDocument();
 
         static int pageFromSceneIndex(int sceneIndex);
         static int sceneIndexFromPage(int sceneIndex);
@@ -59,6 +62,7 @@ class UBDocumentContainer : public QObject
 
     private:
         std::shared_ptr<UBDocumentProxy> mCurrentDocument;
+        std::shared_ptr<UBDocument> mActiveDocument;
 
     signals:
         void documentSet(std::shared_ptr<UBDocumentProxy> document);

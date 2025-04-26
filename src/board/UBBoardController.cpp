@@ -493,10 +493,10 @@ void UBBoardController::saveData(SaveFlags fls)
     }
 }
 
-void UBBoardController::documentSceneDuplicated(std::shared_ptr<UBDocumentProxy> proxy, int index)
+void UBBoardController::documentSceneDuplicated(UBDocument* document, int index)
 {
     // index is duplicated page
-    if (selectedDocument() == proxy)
+    if (selectedDocument() == document->proxy())
     {
         if (UBApplication::applicationController->displayMode() == UBApplicationController::Board)
         {
@@ -511,9 +511,9 @@ void UBBoardController::documentSceneDuplicated(std::shared_ptr<UBDocumentProxy>
     }
 }
 
-void UBBoardController::documentSceneMoved(std::shared_ptr<UBDocumentProxy> proxy, int fromIndex, int toIndex)
+void UBBoardController::documentSceneMoved(UBDocument* document, int fromIndex, int toIndex)
 {
-    if (selectedDocument() == proxy)
+    if (selectedDocument() == document->proxy())
     {
         int nextSceneIndex = mActiveSceneIndex;
 
@@ -549,13 +549,13 @@ void UBBoardController::documentSceneMoved(std::shared_ptr<UBDocumentProxy> prox
     }
 }
 
-void UBBoardController::documentSceneDeleted(std::shared_ptr<UBDocumentProxy> proxy, int index)
+void UBBoardController::documentSceneDeleted(UBDocument* document, int index)
 {
-    if (selectedDocument() == proxy)
+    if (selectedDocument() == document->proxy())
     {
         int nextSceneIndex = mActiveSceneIndex;
 
-        if (index < mActiveSceneIndex || (index == mActiveSceneIndex && index == proxy->pageCount() && index > 0))
+        if (index < mActiveSceneIndex || (index == mActiveSceneIndex && index == document->pageCount() && index > 0))
         {
             --nextSceneIndex;
         }
@@ -869,22 +869,23 @@ UBGraphicsItem *UBBoardController::duplicateItem(UBItem *item)
 
 void UBBoardController::deleteScene(int nIndex)
 {
-    if (selectedDocument()->pageCount()>=2)
+    auto document = UBDocument::getDocument(selectedDocument());
+
+    if (document->pageCount() >= 2)
     {
         mDeletingSceneIndex = nIndex;
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         persistCurrentScene();
         UBApplication::showMessage(tr("Deleting page %1").arg(nIndex+1), true);
 
-        auto document = UBDocument::getDocument(selectedDocument());
         document->deletePages({nIndex});
 
         QDateTime now = QDateTime::currentDateTime();
         selectedDocument()->setMetaData(UBSettings::documentUpdatedAt, UBStringUtils::toUtcIsoDateTime(now));
         UBMetadataDcSubsetAdaptor::persist(selectedDocument());
 
-        if (nIndex >= pageCount())
-            nIndex = pageCount()-1;
+        if (nIndex >= document->pageCount())
+            nIndex = document->pageCount()-1;
         setActiveDocumentScene(nIndex);
         UBApplication::showMessage(tr("Page %1 deleted").arg(nIndex+1));
         QApplication::restoreOverrideCursor();
@@ -1139,7 +1140,7 @@ void UBBoardController::previousScene()
 
 void UBBoardController::nextScene()
 {
-    if (mActiveSceneIndex < selectedDocument()->pageCount() - 1)
+    if (mActiveSceneIndex < activeDocument()->pageCount() - 1)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         setActiveDocumentScene(mActiveSceneIndex + 1);
@@ -1165,10 +1166,10 @@ void UBBoardController::firstScene()
 
 void UBBoardController::lastScene()
 {
-    if (mActiveSceneIndex < selectedDocument()->pageCount() - 1)
+    if (mActiveSceneIndex < activeDocument()->pageCount() - 1)
     {
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        setActiveDocumentScene(selectedDocument()->pageCount() - 1);
+        setActiveDocumentScene(activeDocument()->pageCount() - 1);
         QApplication::restoreOverrideCursor();
     }
 
@@ -1954,7 +1955,7 @@ void UBBoardController::undoRedoStateChange(bool canUndo)
 void UBBoardController::updateActionStates()
 {
     mMainWindow->actionBack->setEnabled(selectedDocument() && (mActiveSceneIndex > 0));
-    mMainWindow->actionForward->setEnabled(selectedDocument() && (mActiveSceneIndex < selectedDocument()->pageCount() - 1));
+    mMainWindow->actionForward->setEnabled(selectedDocument() && (mActiveSceneIndex < activeDocument()->pageCount() - 1));
     mMainWindow->actionErase->setEnabled(mActiveScene && !mActiveScene->isEmpty());
 }
 
@@ -2748,7 +2749,7 @@ void UBBoardController::addItem()
 
 void UBBoardController::importPage()
 {
-    int pageCount = selectedDocument()->pageCount();
+    int pageCount = activeDocument()->pageCount();
     if (UBApplication::documentController->addFileToDocument(selectedDocument()))
     {
         setActiveDocumentScene(selectedDocument(), pageCount, true);
