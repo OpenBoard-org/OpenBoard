@@ -54,6 +54,7 @@ class UBGraphicsPDFItem: public GraphicsPDFItem, public UBMediaAssetItem, public
         }
 
         virtual QList<QString> mediaAssets() const override;
+        virtual void setMediaAsset(const QString& documentPath, const QString& mediaAsset) override;
 
         virtual UBItem* deepCopy() const override;
 

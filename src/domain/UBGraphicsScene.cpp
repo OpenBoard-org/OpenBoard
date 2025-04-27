@@ -1637,7 +1637,7 @@ UBGraphicsPixmapItem* UBGraphicsScene::addImage(QByteArray pData, QGraphicsItem*
         format = "png." + format;
     }
 
-    QString fileName = UBPersistenceManager::imageDirectory + "/" + UBMediaAssetItem::mediaAssetUuid(pData).toString() + "." + format;
+    QString fileName = UBPersistenceManager::imageDirectory + "/" + UBMediaAssetItem::createMediaAssetUuid(pData).toString() + "." + format;
     pixmapItem->setMediaAsset(documentPath, fileName);
 
     QString path = documentPath + "/" + fileName;

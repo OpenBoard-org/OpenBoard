@@ -21,9 +21,31 @@
 
 #include "UBMediaAssetItem.h"
 
-QUuid UBMediaAssetItem::mediaAssetUuid(const QByteArray& data)
+#include <QRegularExpression>
+
+QUuid UBMediaAssetItem::mediaAssetUuid() const
+{
+    return uuidFromPath(mediaAssets().value(0, ""));
+}
+
+QUuid UBMediaAssetItem::createMediaAssetUuid(const QByteArray& data)
 {
     static QUuid namespaceUuid{QUuid::createUuidV5(QUuid(), QString("OpenBoard"))};
 
     return QUuid::createUuidV5(namespaceUuid, data);
+}
+
+QUuid UBMediaAssetItem::uuidFromPath(const QString& path) const
+{
+    static QRegularExpression uuidPattern("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");
+
+    // scan asset file name for UUID
+    QRegularExpressionMatch match = uuidPattern.match(path);
+
+    if (match.hasMatch())
+    {
+        return QUuid{match.captured()};
+    }
+
+    return {};
 }

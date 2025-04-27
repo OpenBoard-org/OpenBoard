@@ -51,6 +51,7 @@ class UBGraphicsSvgItem: public QGraphicsSvgItem, public UBMediaAssetItem, publi
         virtual ~UBGraphicsSvgItem();
 
         virtual QList<QString> mediaAssets() const override;
+        virtual void setMediaAsset(const QString& documentPath, const QString& mediaAsset) override;
 
         QByteArray fileData() const;
 

@@ -36,7 +36,12 @@ public:
     virtual ~UBMediaAssetItem() = default;
 
     virtual QList<QString> mediaAssets() const = 0;
-    virtual void setMediaAsset(const QString& documentPath, const QString& mediaAsset) {}
+    virtual void setMediaAsset(const QString& documentPath, const QString& mediaAsset) = 0;
 
-    static QUuid mediaAssetUuid(const QByteArray& data);
+    QUuid mediaAssetUuid() const;
+
+    static QUuid createMediaAssetUuid(const QByteArray& data);
+
+protected:
+    QUuid uuidFromPath(const QString& path) const;
 };

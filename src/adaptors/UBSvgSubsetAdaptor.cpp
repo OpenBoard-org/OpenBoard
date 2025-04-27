@@ -2185,6 +2185,7 @@ UBGraphicsSvgItem* UBSvgSubsetAdaptor::UBSvgSubsetReader::svgItemFromSvg()
         QString href = imageHref.toString();
 
         svgItem = new UBGraphicsSvgItem(mDocumentPath + "/" + UBFileSystemUtils::normalizeFilePath(href));
+        svgItem->setMediaAsset(mDocumentPath, href);
     }
     else
     {

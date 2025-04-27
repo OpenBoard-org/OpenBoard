@@ -1385,7 +1385,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
         if (pData.length() > 0)
         {
-            QUuid uuid = UBMediaAssetItem::mediaAssetUuid(pData);
+            QUuid uuid = UBMediaAssetItem::createMediaAssetUuid(pData);
             QString destFile;
             bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
                 sourceUrl.toString(),
@@ -1429,7 +1429,7 @@ UBItem *UBBoardController::downloadFinished(bool pSuccess, QUrl sourceUrl, QUrl 
 
         if (pData.length() > 0)
         {
-            QUuid uuid = UBMediaAssetItem::mediaAssetUuid(pData);
+            QUuid uuid = UBMediaAssetItem::createMediaAssetUuid(pData);
             QString destFile;
             bool b = UBPersistenceManager::persistenceManager()->addFileToDocument(selectedDocument(),
                 sourceUrl.toString(),
@@ -2400,7 +2400,7 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
         }
     }
 
-    QUuid assetUuid = UBMediaAssetItem::mediaAssetUuid(data);
+    QUuid assetUuid = UBMediaAssetItem::createMediaAssetUuid(data);
 
     QString destPath;
     if (!UBPersistenceManager::persistenceManager()->addGraphicsWidgetToDocument(selectedDocument(), pUrl.toLocalFile(), assetUuid, destPath))

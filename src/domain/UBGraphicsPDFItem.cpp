@@ -57,6 +57,17 @@ QList<QString> UBGraphicsPDFItem::mediaAssets() const
     return {UBPersistenceManager::objectDirectory + "/" + fileUuid().toString() + ".pdf"};
 }
 
+void UBGraphicsPDFItem::setMediaAsset(const QString& documentPath, const QString& mediaAsset)
+{
+    if (mediaAsset.at(0) != mediaAsset)
+    {
+        // exchange renderer for new asset
+        const auto uuid = uuidFromPath(mediaAsset);
+        auto newRenderer = PDFRenderer::rendererForUuid(uuid, documentPath + "/" + mediaAsset);
+        switchRenderer(newRenderer);
+    }
+}
+
 QVariant UBGraphicsPDFItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     QVariant newValue = Delegate()->itemChange(change, value);

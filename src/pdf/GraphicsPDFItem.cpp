@@ -80,6 +80,17 @@ void GraphicsPDFItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 
 }
 
+void GraphicsPDFItem::switchRenderer(PDFRenderer* newRenderer)
+{
+    disconnect(mRenderer, SIGNAL(signalUpdateParent()), this, SLOT(OnRequireUpdate()));
+    mRenderer->detach();
+
+    mRenderer = newRenderer;
+
+    mRenderer->attach();
+    connect(mRenderer, SIGNAL(signalUpdateParent()), this, SLOT(OnRequireUpdate()));
+}
+
 void GraphicsPDFItem::OnRequireUpdate()
 {
     updateChild();

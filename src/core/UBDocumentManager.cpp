@@ -281,7 +281,7 @@ int UBDocumentManager::addFilesToDocument(std::shared_ptr<UBDocumentProxy> docum
                     {
                         data = file.readAll();
                         file.close();
-                        uuid = UBMediaAssetItem::mediaAssetUuid(data);
+                        uuid = UBMediaAssetItem::createMediaAssetUuid(data);
                     }
 
                     QString filepath = file.fileName();
