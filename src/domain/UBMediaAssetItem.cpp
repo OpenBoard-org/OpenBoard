@@ -35,6 +35,48 @@ QUuid UBMediaAssetItem::createMediaAssetUuid(const QByteArray& data)
     return QUuid::createUuidV5(namespaceUuid, data);
 }
 
+QUuid UBMediaAssetItem::createMediaAssetUuid(const QString& path)
+{
+    QFileInfo fileInfo{path};
+
+    if (!fileInfo.exists())
+    {
+        return {};
+    }
+
+    if (fileInfo.isFile() && fileInfo.isReadable())
+    {
+        QFile file{path};
+
+        if (file.open(QFile::ReadOnly))
+        {
+            return createMediaAssetUuid(file.readAll());
+        }
+
+        return {};
+    }
+
+    if (fileInfo.isDir())
+    {
+        const auto widgetFiles = fileInfo.dir().entryInfoList({"*.xml", "*.html"}, QDir::Files, QDir::Name);
+        QByteArray data;
+
+        for (const auto fileInfo : widgetFiles)
+        {
+            QFile file(fileInfo.absoluteFilePath());
+
+            if (file.open(QFile::ReadOnly))
+            {
+                data.append(file.readAll());
+            }
+        }
+
+        return createMediaAssetUuid(data);
+    }
+
+    return {};
+}
+
 QUuid UBMediaAssetItem::uuidFromPath(const QString& path) const
 {
     static QRegularExpression uuidPattern("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");

@@ -94,10 +94,6 @@ public:
 
     void removeAllScenes(std::shared_ptr<UBDocumentProxy> proxy);
 
-    void moveScene(std::shared_ptr<UBDocumentProxy> proxy, int sourceIndex, int targetIndex);
-
-    void shiftUpScenes(std::shared_ptr<UBDocumentProxy> proxy, int startIncIndex, int endIncIndex);
-
 
 private:
     class SceneCacheEntry
@@ -115,8 +111,6 @@ private:
         std::shared_ptr<UBGraphicsScene> mScene = nullptr;
         QTimer* mTimer = nullptr;
     };
-
-    void internalMoveScene(std::shared_ptr<UBDocumentProxy> proxy, int sourceIndex, int targetIndex);
 
     void insertEntry(UBSceneCacheID key, std::shared_ptr<SceneCacheEntry> entry);
 

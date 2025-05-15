@@ -41,6 +41,7 @@ public:
     QUuid mediaAssetUuid() const;
 
     static QUuid createMediaAssetUuid(const QByteArray& data);
+    static QUuid createMediaAssetUuid(const QString& path);
 
 protected:
     QUuid uuidFromPath(const QString& path) const;

@@ -59,7 +59,6 @@ class UBPersistenceManager : public QObject
         static const QString videoDirectory;
         static const QString audioDirectory;
         static const QString widgetDirectory;
-        static const QString fileDirectory; // Issue 1683 (Evolution) - AOU - 20131206
 
         static const QString myDocumentsName;
         static const QString modelsName;
@@ -109,6 +108,9 @@ class UBPersistenceManager : public QObject
         virtual std::shared_ptr<UBGraphicsScene> loadDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pageId);
         void prepareSceneLoading(std::shared_ptr<UBDocumentProxy> proxy, int pageId);
         std::shared_ptr<UBGraphicsScene> getDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pageId);
+
+        bool copyAsset(std::shared_ptr<UBDocumentProxy> proxy, const QString& fromRelativePath, const QString& toRelativePath);
+        void cleanupMediaAssets(std::shared_ptr<UBDocumentProxy> proxy, QSet<QString> referencedMediaAssets);
 
 //        QList<QPointer<UBDocumentProxy> > documentProxies;
         UBDocumentTreeNode *mDocumentTreeStructure;

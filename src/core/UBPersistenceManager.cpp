@@ -60,7 +60,6 @@ const QString UBPersistenceManager::objectDirectory = "objects"; // added to UBP
 const QString UBPersistenceManager::widgetDirectory = "widgets"; // added to UBPersistenceManager::mAllDirectories
 const QString UBPersistenceManager::videoDirectory = "videos"; // added to UBPersistenceManager::mAllDirectories
 const QString UBPersistenceManager::audioDirectory = "audios"; // added to
-const QString UBPersistenceManager::fileDirectory = "files"; // Issue 1683 (Evolution) - AOU - 20131206
 
 const QString UBPersistenceManager::myDocumentsName = "MyDocuments";
 const QString UBPersistenceManager::modelsName = "Models";
@@ -87,7 +86,6 @@ UBPersistenceManager::UBPersistenceManager(QObject *pParent)
     mDocumentSubDirectories << widgetDirectory;
     mDocumentSubDirectories << videoDirectory;
     mDocumentSubDirectories << audioDirectory;
-    mDocumentSubDirectories << fileDirectory; // Issue 1683 (Evolution) - AOU - 20131206
 
     mDocumentRepositoryPath = UBSettings::userDocumentDirectory();
     mFoldersXmlStorageName =  mDocumentRepositoryPath + "/" + fFolders;
@@ -846,6 +844,40 @@ void UBPersistenceManager::prepareSceneLoading(std::shared_ptr<UBDocumentProxy> 
 std::shared_ptr<UBGraphicsScene> UBPersistenceManager::getDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pageId)
 {
     return mSceneCache.value(pDocumentProxy, pageId);
+}
+
+bool UBPersistenceManager::copyAsset(std::shared_ptr<UBDocumentProxy> proxy, const QString& fromRelativePath, const QString& toRelativePath)
+{
+    const auto source = proxy->persistencePath() + "/" + fromRelativePath;
+    const auto target = proxy->persistencePath() + "/" + toRelativePath;
+    return UBFileSystemUtils::copy(source, target);
+}
+
+void UBPersistenceManager::cleanupMediaAssets(std::shared_ptr<UBDocumentProxy> proxy, QSet<QString> referencedMediaAssets)
+{
+    const auto documentPath = proxy->persistencePath() + "/";
+
+    for (const auto subfolder : mDocumentSubDirectories)
+    {
+        const auto assets = QDir(documentPath + subfolder).entryInfoList(QDir::NoDotAndDotDot | QDir::Files | QDir::Dirs);
+
+        for (const auto asset : assets)
+        {
+            const auto mediaAsset = subfolder + "/" + asset.fileName();
+
+            if (!referencedMediaAssets.contains(mediaAsset))
+            {
+                if (asset.isDir())
+                {
+                    UBFileSystemUtils::deleteDir(asset.absoluteFilePath());
+                }
+                else
+                {
+                    UBFileSystemUtils::deleteFile(asset.absoluteFilePath());
+                }
+            }
+        }
+    }
 }
 
 void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, std::shared_ptr<UBGraphicsScene> pScene, int pageId, bool isAnAutomaticBackup, bool forceImmediateSaving)

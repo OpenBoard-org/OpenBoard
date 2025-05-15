@@ -2387,20 +2387,7 @@ UBGraphicsWidgetItem *UBBoardController::addW3cWidget(const QUrl &pUrl, const QP
         return nullptr;
     }
 
-    const auto widgetFiles = widgetDir.entryInfoList({"*.xml", "*.html"}, QDir::Files, QDir::Name);
-    QByteArray data;
-
-    for (const auto fileInfo : widgetFiles)
-    {
-        QFile file(fileInfo.absoluteFilePath());
-
-        if (file.open(QFile::ReadOnly))
-        {
-            data.append(file.readAll());
-        }
-    }
-
-    QUuid assetUuid = UBMediaAssetItem::createMediaAssetUuid(data);
+    QUuid assetUuid = UBMediaAssetItem::createMediaAssetUuid(pUrl.toLocalFile());
 
     QString destPath;
     if (!UBPersistenceManager::persistenceManager()->addGraphicsWidgetToDocument(selectedDocument(), pUrl.toLocalFile(), assetUuid, destPath))

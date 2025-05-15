@@ -65,7 +65,7 @@ public:
     std::shared_ptr<UBGraphicsScene> loadScene(int index, bool cacheNeighboringScenes = true);
     std::shared_ptr<UBGraphicsScene> getScene(int index);
     QList<QString> pageRelativeDependencies(int index);
-    UBThumbnailScene* thumbnailScene() const;
+    UBThumbnailScene* thumbnailScene();
     UBToc* toc();
 
     int pageCount();
@@ -78,12 +78,13 @@ public:
 private:
     void scan();
     void copyPage(int fromIndex, UBDocument* to, int toIndex);
+    void deleteUnreferencedAssets();
 
     static std::shared_ptr<UBDocument> findDocument(std::shared_ptr<UBDocumentProxy> proxy);
 
 private:
     std::shared_ptr<UBDocumentProxy> mProxy{nullptr};
-    UBThumbnailScene* mThumbnailScene{nullptr};
+    std::unique_ptr<UBThumbnailScene> mThumbnailScene;
     UBToc* mToc{nullptr};
 
     static QList<std::weak_ptr<UBDocument>> sDocuments;
