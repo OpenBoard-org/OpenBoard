@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2025API of  Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2025 Département de l'Instruction Publique (DIP-SEM)
  *
  * This file is part of OpenBoard.
  *
@@ -33,7 +33,8 @@ static const QVersionNumber TOC_VERSION{1, 0};
 class UBToc
 {
 public:
-    UBToc(QString documentPath);
+    UBToc(const QString& documentPath);
+    UBToc(const UBToc& other, const QString& documentPath);
 
     QVersionNumber version() const;
 
@@ -67,7 +68,7 @@ private:
     void assureSize(int index);
 
 private:
-    QString mDocumentPath;
+    const QString mDocumentPath;
     QVersionNumber mVersion{TOC_VERSION};
     QVector<QVariantMap> mToc;
     int mNextAvailablePageId{0};

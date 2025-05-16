@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2025API of  Département de l'Instruction Publique (DIP-SEM)
+ * Copyright (C) 2015-2025 Département de l'Instruction Publique (DIP-SEM)
  *
  * This file is part of OpenBoard.
  *

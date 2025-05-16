@@ -23,6 +23,8 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBImportPDF.h
     UBMetadataDcSubsetAdaptor.cpp
     UBMetadataDcSubsetAdaptor.h
+    UBPageMapper.cpp
+    UBPageMapper.h
     UBSvgSubsetAdaptor.cpp
     UBSvgSubsetAdaptor.h
     UBThumbnailAdaptor.cpp

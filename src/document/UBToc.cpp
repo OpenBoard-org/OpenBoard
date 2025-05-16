@@ -30,8 +30,15 @@ static const QString UUID{"uuid"};
 static const QString PAGE_ID{"id"};
 static const QString ASSETS("assets");
 
-UBToc::UBToc(QString documentPath)
+UBToc::UBToc(const QString& documentPath)
     : mDocumentPath{documentPath}
+{
+}
+
+UBToc::UBToc(const UBToc& other, const QString& documentPath)
+    : mDocumentPath{documentPath}
+    , mVersion{other.mVersion}
+    , mToc{other.mToc}
 {
 }
 

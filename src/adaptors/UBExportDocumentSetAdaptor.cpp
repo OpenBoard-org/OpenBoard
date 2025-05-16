@@ -28,6 +28,8 @@
 #include "UBExportDocumentSetAdaptor.h"
 #include "UBExportDocument.h"
 
+#include "adaptors/UBPageMapper.h"
+
 #include "frameworks/UBPlatformUtils.h"
 
 #include "core/UBDocumentManager.h"
@@ -35,8 +37,8 @@
 
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
+#include "document/UBToc.h"
 
-#include "globals/UBGlobals.h"
 #include "core/UBPersistenceManager.h"
 
 #ifdef Q_OS_OSX
@@ -167,8 +169,19 @@ bool UBExportDocumentSetAdaptor::addDocumentToZip(const QModelIndex &pIndex, UBD
         QString documentPath(pDocumentProxy->persistencePath());
 
         QDir documentDir = QDir(pDocumentProxy->persistencePath());
+
+        // try to load a TOC for mapping and check version number
+        UBToc toc{pDocumentProxy->persistencePath()};
+        std::unique_ptr<UBPageMapper> mapper{nullptr};
+        const auto version = QVersionNumber::fromString(pDocumentProxy->metaData(UBSettings::documentVersion).toString());
+
+        if (toc.load() && version >= QVersionNumber::fromString(UBSettings::currentFileVersion))
+        {
+            mapper = std::unique_ptr<UBPageMapper>{new UBPageMapper{pDocumentProxy->persistencePath(), &toc}};
+        }
+
         QuaZipFile zipFile(&zip);
-        UBFileSystemUtils::compressDirInZip(documentDir, QFileInfo(documentPath).fileName() + "/", &zipFile, false);
+        UBFileSystemUtils::compressDirInZip(documentDir, QFileInfo(documentPath).fileName() + "/", &zipFile, false, mapper.get());
 
         if(zip.getZipError() != 0)
         {

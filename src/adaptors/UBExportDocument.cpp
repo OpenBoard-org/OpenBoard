@@ -31,13 +31,15 @@
 
 #include "frameworks/UBPlatformUtils.h"
 
+#include "adaptors/UBPageMapper.h"
+
 #include "core/UBDocumentManager.h"
 #include "core/UBApplication.h"
+#include "core/UBSettings.h"
 
 #include "document/UBDocumentProxy.h"
 #include "document/UBDocumentController.h"
-
-#include "globals/UBGlobals.h"
+#include "document/UBToc.h"
 
 #ifdef Q_OS_OSX
     #include <quazip.h>
@@ -78,8 +80,18 @@ bool UBExportDocument::persistsDocument(std::shared_ptr<UBDocumentProxy> pDocume
 
     QDir documentDir = QDir(pDocumentProxy->persistencePath());
 
+    // try to load a TOC for mapping and check version number
+    UBToc toc{pDocumentProxy->persistencePath()};
+    std::unique_ptr<UBPageMapper> mapper{nullptr};
+    const auto version = QVersionNumber::fromString(pDocumentProxy->metaData(UBSettings::documentVersion).toString());
+
+    if (toc.load() && version >= QVersionNumber::fromString(UBSettings::currentFileVersion))
+    {
+        mapper = std::unique_ptr<UBPageMapper>{new UBPageMapper{pDocumentProxy->persistencePath(), &toc}};
+    }
+
     QuaZipFile outFile(&zip);
-    UBFileSystemUtils::compressDirInZip(documentDir, "", &outFile, true, this);
+    UBFileSystemUtils::compressDirInZip(documentDir, "", &outFile, true, mapper.get(), this);
 
     zip.close();
 
