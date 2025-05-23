@@ -229,7 +229,6 @@ void UBThumbnailScene::createThumbnails(int startIndex)
     }
 
     mLoader = new UBBackgroundLoader{paths, this};
-    mLoader->start();
 
     // now create all missing thumbnails for document as they arrive from the loader
     loadNextThumbnail();

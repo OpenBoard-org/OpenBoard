@@ -22,40 +22,38 @@
 
 #pragma once
 
-#include <QMutex>
+#include <QFuture>
 #include <QObject>
-#include <QSemaphore>
-#include <QThread>
-#include <deque>
 
-class UBBackgroundLoader : public QThread
+
+class UBBackgroundLoader : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit UBBackgroundLoader(QObject* parent = nullptr);
-    UBBackgroundLoader(QList<std::pair<int, QString>> paths, QObject* parent = nullptr);
+    UBBackgroundLoader(const QList<std::pair<int, QString>>& paths, int maxBytes, QObject* parent = nullptr);
+    UBBackgroundLoader(const QList<std::pair<int, QString>>& paths, QObject* parent = nullptr);
     virtual ~UBBackgroundLoader();
 
     bool isIdle();
     bool isResultAvailable();
     std::pair<int, QByteArray> takeResult();
-
-public slots:
-    void start();
-    void addPaths(QList<std::pair<int, QString>> paths);
     void abort();
 
-signals:
-    void resultAvailable(int index, QByteArray data);
+private:
+    struct ReadData
+    {
+        typedef std::pair<int, QByteArray> result_type;
 
-protected:
-    void run() override;
+        ReadData(int maxBytes);
+        result_type operator()(const std::pair<int, QString>& path);
+
+    private:
+        const int mMaxBytes{-1};
+    };
 
 private:
-    std::deque<std::pair<int, QString>> mPaths{};
-    std::deque<std::pair<int, QByteArray>> mResults{};
-    QMutex mMutex{};
-    QSemaphore mPathCounter{};
-    bool mRunning{false};
+    QFuture<std::pair<int, QByteArray>> mFuture;
+    const qsizetype mCount{0};
+    int mIndex{0};
 };

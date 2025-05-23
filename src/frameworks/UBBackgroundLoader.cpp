@@ -23,105 +23,69 @@
 #include "UBBackgroundLoader.h"
 
 #include <QFile>
+#include <QtConcurrentMap>
 
-#include "core/UBApplication.h"
 
-UBBackgroundLoader::UBBackgroundLoader(QObject* parent)
-    : QThread{parent}
+UBBackgroundLoader::UBBackgroundLoader(const QList<std::pair<int, QString>>& paths, int maxBytes, QObject* parent)
+    : QObject{parent}
+    , mCount{paths.count()}
 {
+    mFuture = QtConcurrent::mapped(paths, ReadData{maxBytes});
 }
 
-UBBackgroundLoader::UBBackgroundLoader(QList<std::pair<int, QString>> paths, QObject* parent)
-    : QThread{parent}
+UBBackgroundLoader::UBBackgroundLoader(const QList<std::pair<int, QString>>& paths, QObject* parent)
+    : UBBackgroundLoader{paths, -1, parent}
 {
-    mPaths.insert(mPaths.cend(), paths.constBegin(), paths.constEnd());
-    mPathCounter.release(paths.size());
 }
 
 UBBackgroundLoader::~UBBackgroundLoader()
 {
     abort();
-    wait();
 }
 
 bool UBBackgroundLoader::isIdle()
 {
-    QMutexLocker lock{&mMutex};
-    return mPaths.empty() && mResults.empty();
+    return mFuture.isFinished() && mIndex == mFuture.resultCount();
 }
 
 bool UBBackgroundLoader::isResultAvailable()
 {
-    QMutexLocker lock{&mMutex};
-    return !mResults.empty();
+    return mFuture.isResultReadyAt(mIndex);
 }
 
 std::pair<int, QByteArray> UBBackgroundLoader::takeResult()
 {
-    QMutexLocker lock{&mMutex};
-
-    if (mResults.empty())
-    {
-        return {};
-    }
-
-    const auto result = mResults.front();
-    mResults.pop_front();
-    return result;
-}
-
-void UBBackgroundLoader::start()
-{
-    mRunning = true;
-    QThread::start();
-}
-
-void UBBackgroundLoader::addPaths(QList<std::pair<int, QString>> paths)
-{
-    QMutexLocker lock{&mMutex};
-    mPaths.insert(mPaths.cend(), paths.constBegin(), paths.constEnd());
-    mPathCounter.release(paths.size());
+    return mFuture.resultAt(mIndex++);
 }
 
 void UBBackgroundLoader::abort()
 {
-    mRunning = false;
-    mPathCounter.release();
+    mFuture.cancel();
 }
 
-void UBBackgroundLoader::run()
+UBBackgroundLoader::ReadData::ReadData(int maxBytes)
+    : mMaxBytes{maxBytes}
 {
-    while (mRunning && !UBApplication::isClosing)
+}
+
+UBBackgroundLoader::ReadData::result_type UBBackgroundLoader::ReadData::operator()(const std::pair<int, QString>& path)
+{
+    QFile file{path.second};
+    QByteArray result;
+
+    if (file.open(QFile::ReadOnly))
     {
-        mPathCounter.acquire();
-
-        if (mRunning && !UBApplication::isClosing)
+        if (mMaxBytes < 0)
         {
-            std::pair<int, QString> path;
-
-            {
-                QMutexLocker lock{&mMutex};
-                path = mPaths.front();
-                mPaths.pop_front();
-            }
-
-            QFile file{path.second};
-            QByteArray result;
-
-            if (file.open(QFile::ReadOnly))
-            {
-                result = file.readAll();
-                file.close();
-            }
-
-            {
-                QMutexLocker lock{&mMutex};
-                mResults.push_back({path.first, result});
-            }
-
-            emit resultAvailable(path.first, result);
+            result = file.readAll();
         }
+        else
+        {
+            result = file.read(mMaxBytes);
+        }
+
+        file.close();
     }
 
-    quit();
+    return {path.first, result};
 }
