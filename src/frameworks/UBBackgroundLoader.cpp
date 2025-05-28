@@ -23,44 +23,78 @@
 #include "UBBackgroundLoader.h"
 
 #include <QFile>
+#include <QFutureWatcher>
 #include <QtConcurrentMap>
 
+#include "frameworks/UBBlockingBuffer.h"
 
-UBBackgroundLoader::UBBackgroundLoader(const QList<std::pair<int, QString>>& paths, int maxBytes, QObject* parent)
+UBBackgroundLoader::UBBackgroundLoader(QObject* parent)
     : QObject{parent}
-    , mCount{paths.count()}
 {
-    mFuture = QtConcurrent::mapped(paths, ReadData{maxBytes});
-}
+    mWatcher = new QFutureWatcher<std::pair<int, QByteArray>>;
+    mWatcher->setPendingResultsLimit(2);
+    mWatcherThread = new QThread{this};
+    mWatcher->moveToThread(mWatcherThread);
 
-UBBackgroundLoader::UBBackgroundLoader(const QList<std::pair<int, QString>>& paths, QObject* parent)
-    : UBBackgroundLoader{paths, -1, parent}
-{
+    mBlockingBuffer = new UBBlockingBuffer{this};
+    mBlockingBuffer->setWatcher(mWatcher);
+
+    connect(mBlockingBuffer, &UBBlockingBuffer::resultAvailable, this, &UBBackgroundLoader::resultAvailable);
+    connect(mBlockingBuffer, &UBBlockingBuffer::finished, this, &UBBackgroundLoader::finished);
+
+    connect(mWatcher, &QFutureWatcher<std::pair<int, QByteArray>>::finished, mWatcherThread, &QThread::quit);
+
+    mBlockingBuffer->start();
+    mWatcherThread->start();
 }
 
 UBBackgroundLoader::~UBBackgroundLoader()
 {
+    qDebug() << "Destruct UBBackgroundLoader";
+    mWatcher->cancel();
+    mWatcherThread->quit();
+    mBlockingBuffer->halt();
+    mWatcherThread->wait();
+    mBlockingBuffer->wait();
     abort();
+
+    delete mWatcher;
 }
 
-bool UBBackgroundLoader::isIdle()
+void UBBackgroundLoader::load(const QList<std::pair<int, QString>>& paths, int maxBytes)
 {
-    return mFuture.isFinished() && mIndex == mFuture.resultCount();
-}
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    mFuture = QtConcurrent::mapped(paths, ReadData{maxBytes});
+#else
+    // use a separate thread pool for each loader so that tasks are interwoven between loaders
+    auto threadPool = new QThreadPool{this};
+    threadPool->setMaxThreadCount(4);
+    mFuture = QtConcurrent::mapped(threadPool, paths, ReadData{maxBytes});
+#endif
 
-bool UBBackgroundLoader::isResultAvailable()
-{
-    return mFuture.isResultReadyAt(mIndex);
-}
+    mWatcher->setFuture(mFuture);
 
-std::pair<int, QByteArray> UBBackgroundLoader::takeResult()
-{
-    return mFuture.resultAt(mIndex++);
+    qDebug() << "UBBackgroundLoader: Start loading" << paths.at(0).second;
 }
 
 void UBBackgroundLoader::abort()
 {
     mFuture.cancel();
+}
+
+void UBBackgroundLoader::waitForFinished()
+{
+    mFuture.waitForFinished();
+}
+
+void UBBackgroundLoader::setKeepAlive(std::shared_ptr<void> keepAlive)
+{
+    mKeepAlive = keepAlive;
+}
+
+void UBBackgroundLoader::resultProcessed(int index)
+{
+    mBlockingBuffer->resultProcessed(index);
 }
 
 UBBackgroundLoader::ReadData::ReadData(int maxBytes)

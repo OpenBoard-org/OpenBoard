@@ -54,6 +54,7 @@
 #include "tools/UBGraphicsCurtainItem.h"
 #include "tools/UBGraphicsCache.h"
 
+#include "document/UBDocument.h"
 #include "document/UBDocumentProxy.h"
 
 #include "board/UBBoardController.h"
@@ -2448,6 +2449,11 @@ void UBGraphicsScene::controlViewportChanged()
             widgetItem->updatePosition();
         }
     }
+}
+
+void UBGraphicsScene::loadingCompleted(std::shared_ptr<void> handle)
+{
+    UBDocument::getDocument(mDocument)->sceneLoaded(this, handle);
 }
 
 void UBGraphicsScene::addCompass(QPointF center)

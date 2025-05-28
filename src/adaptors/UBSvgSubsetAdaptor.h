@@ -85,11 +85,13 @@ class UBSvgSubsetAdaptor
 
         static QByteArray loadSceneAsText(std::shared_ptr<UBDocumentProxy> proxy, const int pageId);
         static std::shared_ptr<UBGraphicsScene> loadScene(std::shared_ptr<UBDocumentProxy> proxy, const QByteArray& pArray);
-        static std::shared_ptr<UBSvgReaderContext> prepareLoadingScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageId);
+        static std::shared_ptr<UBSvgReaderContext> prepareLoadingScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageId, std::optional<QByteArray> xmlContent = {});
 
         static void persistScene(std::shared_ptr<UBDocumentProxy> proxy, std::shared_ptr<UBGraphicsScene> pScene, const int pageId);
 
         static QUuid sceneUuid(std::shared_ptr<UBDocumentProxy> proxy, const int pageId);
+        static QUuid sceneUuid(const QString& xmlContent);
+        static QVersionNumber sceneVersion(const QString& xmlContent);
         static void setSceneUuid(std::shared_ptr<UBDocumentProxy> proxy, const int pageId, QUuid pUuid);
         static void replicateScene(const QString& sourcePath, const QString& targetPath, QUuid uuid);
 

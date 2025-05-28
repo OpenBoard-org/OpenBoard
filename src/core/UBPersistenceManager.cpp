@@ -682,16 +682,6 @@ std::shared_ptr<UBDocumentProxy> UBPersistenceManager::createDocumentFromDir(con
         doc->setMetaData(UBSettings::documentName, pName);
     }
 
-    doc->setUuid(QUuid::createUuid());
-    auto document = UBDocument::getDocument(doc);
-
-    for(int i = 0; i < document->pageCount(); i++)
-    {
-        UBSvgSubsetAdaptor::setSceneUuid(doc, i, QUuid::createUuid());
-        UBThumbnailAdaptor::generateMissingThumbnail(document.get(), i);
-    }
-
-
     //work around the
     bool addDoc = false;
     if (!promptDialogIfExists) {
@@ -833,12 +823,9 @@ std::shared_ptr<UBGraphicsScene> UBPersistenceManager::loadDocumentScene(std::sh
     return mSceneCache.value(proxy, pageId);
 }
 
-void UBPersistenceManager::prepareSceneLoading(std::shared_ptr<UBDocumentProxy> proxy, int pageId)
+std::shared_ptr<void> UBPersistenceManager::prepareSceneLoading(std::shared_ptr<UBDocumentProxy> proxy, int pageId, std::optional<QByteArray> xmlContent, bool cached)
 {
-    if (!mSceneCache.contains(proxy, pageId))
-    {
-        mSceneCache.prepareLoading(proxy, pageId);
-    }
+    return mSceneCache.prepareLoading(proxy, pageId, xmlContent, cached);
 }
 
 std::shared_ptr<UBGraphicsScene> UBPersistenceManager::getDocumentScene(std::shared_ptr<UBDocumentProxy> pDocumentProxy, int pageId)
@@ -913,8 +900,6 @@ void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy>
 
 std::shared_ptr<UBDocumentProxy> UBPersistenceManager::persistDocumentMetadata(std::shared_ptr<UBDocumentProxy> pDocumentProxy, bool forceImmediateSaving)
 {
-    //cleanupDocument(pDocumentProxy);
-
     if (forceImmediateSaving)
     {
         UBMetadataDcSubsetAdaptor::persist(pDocumentProxy);

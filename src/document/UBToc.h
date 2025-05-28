@@ -49,17 +49,19 @@ public:
     // access values
     QUuid uuid(int index) const;
     void setUuid(int index, const QUuid& uuid);
-    int findUuid(const QUuid& sceneUuid);
+    int findUuid(const QUuid& sceneUuid) const;
 
     int pageId(int index) const;
     void setPageId(int index, int pageId);
 
     QStringList assets(int index) const;
     void setAssets(int index, const QStringList& assets);
+    void unsetAssets(int index);
+    bool hasAssets(int index) const;
 
     // load and save
     bool load();
-    void save() const;
+    void save();
 
     // next available pageId
     int nextAvailablePageId();
@@ -72,4 +74,5 @@ private:
     QVersionNumber mVersion{TOC_VERSION};
     QVector<QVariantMap> mToc;
     int mNextAvailablePageId{0};
+    bool mModified{false};
 };

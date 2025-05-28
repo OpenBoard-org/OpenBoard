@@ -22,51 +22,37 @@
 
 #pragma once
 
-#include <QFuture>
-#include <QObject>
+#include <QFutureWatcher>
+#include <QSemaphore>
+#include <QThread>
 
-// forward
-class UBBlockingBuffer;
+#include <deque>
 
-
-class UBBackgroundLoader : public QObject
+class UBBlockingBuffer : public QThread
 {
     Q_OBJECT
 
 public:
-    UBBackgroundLoader(QObject* parent = nullptr);
-    virtual ~UBBackgroundLoader();
-
-    void load(const QList<std::pair<int, QString>>& paths, int maxBytes = -1);
-    void abort();
-    void waitForFinished();
-    void setKeepAlive(std::shared_ptr<void> keepAlive);
+    UBBlockingBuffer(QObject* parent = nullptr);
+    void setWatcher(QFutureWatcher<std::pair<int, QByteArray>>* watcher);
 
 public slots:
+    void addResult(int index);
     void resultProcessed(int index);
+    void watcherFinished();
+    void halt();
 
 signals:
     void resultAvailable(int index, const QByteArray& data);
     void finished();
 
-private:
-    class ReadData
-    {
-    public:
-        typedef std::pair<int, QByteArray> result_type;
-
-        ReadData(int maxBytes);
-        result_type operator()(const std::pair<int, QString>& path);
-
-    private:
-        const int mMaxBytes{-1};
-    };
+protected:
+    void run() override;
 
 private:
-    QFuture<std::pair<int, QByteArray>> mFuture;
-    int mIndex{0};
-    QFutureWatcher<std::pair<int, QByteArray>>* mWatcher{nullptr};
-    std::shared_ptr<void> mKeepAlive;
-    UBBlockingBuffer* mBlockingBuffer{nullptr};
-    QThread* mWatcherThread{nullptr};
+    QFutureWatcher<std::pair<int, QByteArray>>* mWatcher;
+    QSemaphore mAvailableResults;
+    QSemaphore mAvailableSpace{1};
+    QMutex mMutex;
+    std::deque<std::pair<int,QByteArray>> mBuffer;
 };

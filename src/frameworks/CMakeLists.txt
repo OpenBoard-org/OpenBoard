@@ -3,6 +3,8 @@ target_sources(openboard PRIVATE
     UBBackgroundLoader.h
     UBBase32.cpp
     UBBase32.h
+    UBBlockingBuffer.cpp
+    UBBlockingBuffer.h
     UBCoreGraphicsScene.cpp
     UBCoreGraphicsScene.h
     UBCryptoUtils.cpp

@@ -61,38 +61,32 @@ std::shared_ptr<UBGraphicsScene> UBSceneCache::createScene(std::shared_ptr<UBDoc
     return newScene;
 }
 
-std::shared_ptr<UBGraphicsScene> UBSceneCache::prepareLoading(std::shared_ptr<UBDocumentProxy> proxy, int pageId)
+std::shared_ptr<void> UBSceneCache::prepareLoading(std::shared_ptr<UBDocumentProxy> proxy, int pageId, std::optional<QByteArray> xmlContent, bool cached)
 {
     if (mSceneCache.contains({proxy, pageId}))
     {
-        return value(proxy, pageId);
+        return nullptr;
     }
 
     // no entry in cache; create a cache entry to load scene
     qDebug() << "Preparing to load scene" << pageId;
-    auto cacheEntry = std::make_shared<SceneCacheEntry>(proxy, pageId);
+    auto cacheEntry = std::make_shared<SceneCacheEntry>(proxy, pageId, xmlContent);
 
-    insertEntry({proxy, pageId}, cacheEntry);
+    if (cached)
+    {
+        insertEntry({proxy, pageId}, cacheEntry);
+    }
+
     cacheEntry->startLoading();
-    return nullptr;
+
+    // return the cache entry as opaque handle to keep the entry alive for uncached loading
+    return cacheEntry;
 }
 
 
 void UBSceneCache::insert (std::shared_ptr<UBDocumentProxy> proxy, int pageId, std::shared_ptr<UBGraphicsScene> scene)
 {
-    // remove all entries pointing to this scene
-    const auto keylist = mSceneCache.keys();
-
-    for (const auto& key : keylist)
-    {
-        auto entry = mSceneCache.value(key);
-
-        if (entry->isSceneAvailable() && entry->scene() == scene)
-        {
-            mSceneCache.remove(key);
-            mCachedKeyFIFO.removeAll(key);
-        }
-    }
+    removeSceneFromCache(scene);
 
     UBSceneCacheID key{proxy, pageId};
     insertEntry(key, std::make_shared<SceneCacheEntry>(scene));
@@ -144,7 +138,7 @@ void UBSceneCache::removeScene(std::shared_ptr<UBDocumentProxy> proxy, int pageI
 
     if (!entry->isSceneAvailable() || !entry->scene()->isActive())
     {
-        int count = mSceneCache.remove(key);
+        mSceneCache.remove(key);
         mCachedKeyFIFO.removeAll(key);
 
         if (entry->isSceneAvailable())
@@ -172,6 +166,28 @@ void UBSceneCache::removeAllScenes(std::shared_ptr<UBDocumentProxy> proxy)
     for(auto pageId : pageIds)
     {
         removeScene(proxy, pageId);
+    }
+}
+
+void UBSceneCache::removeSceneFromCache(std::shared_ptr<UBGraphicsScene> scene)
+{
+    if (scene->isActive())
+    {
+        return;
+    }
+
+    // remove all entries pointing to this scene
+    const auto keylist = mSceneCache.keys();
+
+    for (const auto& key : keylist)
+    {
+        auto entry = mSceneCache.value(key);
+
+        if (entry->isSceneAvailable() && entry->scene() == scene)
+        {
+            mSceneCache.remove(key);
+            mCachedKeyFIFO.removeAll(key);
+        }
     }
 }
 
@@ -204,9 +220,9 @@ void UBSceneCache::insertEntry(UBSceneCacheID key, std::shared_ptr<SceneCacheEnt
     }
 }
 
-UBSceneCache::SceneCacheEntry::SceneCacheEntry(std::shared_ptr<UBDocumentProxy> proxy, int pageId)
+UBSceneCache::SceneCacheEntry::SceneCacheEntry(std::shared_ptr<UBDocumentProxy> proxy, int pageId, std::optional<QByteArray> xmlContent)
 {
-    mContext = UBSvgSubsetAdaptor::prepareLoadingScene(proxy, pageId);
+    mContext = UBSvgSubsetAdaptor::prepareLoadingScene(proxy, pageId, xmlContent);
 }
 
 UBSceneCache::SceneCacheEntry::SceneCacheEntry(std::shared_ptr<UBGraphicsScene> scene)
@@ -230,6 +246,7 @@ void UBSceneCache::SceneCacheEntry::startLoading()
         {
             mTimer->stop();
             delete mTimer;
+            mTimer = nullptr;
             return;
         }
 
@@ -244,6 +261,7 @@ void UBSceneCache::SceneCacheEntry::startLoading()
                 mTimer->stop();
                 delete mTimer;
                 mTimer = nullptr;
+                mScene->loadingCompleted(shared_from_this());
             }
         }
     });
@@ -274,6 +292,7 @@ std::shared_ptr<UBGraphicsScene> UBSceneCache::SceneCacheEntry::scene()
         }
 
         mScene = mContext->scene();
+        mScene->loadingCompleted(shared_from_this());
         mContext = nullptr;
     }
 

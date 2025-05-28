@@ -379,6 +379,7 @@ public slots:
         void stylusToolChanged(int tool, int previousTool);
 
         void controlViewportChanged();
+        void loadingCompleted(std::shared_ptr<void> handle);
 
 signals:
         void zoomChanged(qreal zoomFactor);

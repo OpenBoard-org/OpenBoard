@@ -58,6 +58,7 @@ int UBToc::insert(int index)
     {
         int pageId = nextAvailablePageId();
         mToc.insert(index, {{PAGE_ID, pageId}});
+        mModified = true;
         return pageId;
     }
 
@@ -74,6 +75,7 @@ void UBToc::move(int fromIndex, int toIndex)
     auto entry = mToc.at(fromIndex);
     mToc.removeAt(fromIndex);
     mToc.insert(toIndex, entry);
+    mModified = true;
 }
 
 void UBToc::remove(int index)
@@ -81,6 +83,7 @@ void UBToc::remove(int index)
     if (index >= 0 && index < mToc.count())
     {
         mToc.remove(index);
+        mModified = true;
     }
 }
 
@@ -103,9 +106,10 @@ void UBToc::setUuid(int index, const QUuid& uuid)
 
     assureSize(index);
     mToc[index][UUID] = uuid;
+    mModified = true;
 }
 
-int UBToc::findUuid(const QUuid& sceneUuid)
+int UBToc::findUuid(const QUuid& sceneUuid) const
 {
     for (int i = 0; i < mToc.size(); ++i)
     {
@@ -137,6 +141,7 @@ void UBToc::setPageId(int index, int pageId)
 
     assureSize(index);
     mToc[index][PAGE_ID] = pageId;
+    mModified = true;
 }
 
 QStringList UBToc::assets(int index) const
@@ -158,6 +163,22 @@ void UBToc::setAssets(int index, const QStringList& assets)
 
     assureSize(index);
     mToc[index][ASSETS] = assets;
+    mModified = true;
+}
+
+void UBToc::unsetAssets(int index)
+{
+    mToc[index].remove(ASSETS);
+}
+
+bool UBToc::hasAssets(int index) const
+{
+    if (index < 0 || index >= mToc.count())
+    {
+        return false;
+    }
+
+    return mToc.at(index).contains(ASSETS);
 }
 
 bool UBToc::load()
@@ -170,13 +191,18 @@ bool UBToc::load()
         mNextAvailablePageId = std::max(mNextAvailablePageId, entry[PAGE_ID].toInt() + 1);
     }
 
+    mModified = false;
     return ok;
 }
 
-void UBToc::save() const
+void UBToc::save()
 {
-    UBTocJsonSerializer serializer(mDocumentPath);
-    serializer.save(mVersion, mToc);
+    if (mModified)
+    {
+        UBTocJsonSerializer serializer(mDocumentPath);
+        serializer.save(mVersion, mToc);
+        mModified = false;
+    }
 }
 
 int UBToc::nextAvailablePageId()

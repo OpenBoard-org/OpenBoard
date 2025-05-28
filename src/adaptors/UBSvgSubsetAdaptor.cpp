@@ -303,6 +303,64 @@ QUuid UBSvgSubsetAdaptor::sceneUuid(std::shared_ptr<UBDocumentProxy> proxy, cons
     return uuid;
 }
 
+QUuid UBSvgSubsetAdaptor::sceneUuid(const QString& xmlContent)
+{
+    const int uuidIndex = xmlContent.indexOf("uuid");
+
+    if (-1 == uuidIndex)
+    {
+        qWarning() << "Cannot find uuid attribute";
+        return {};
+    }
+
+    int quoteStartIndex = xmlContent.indexOf('"', uuidIndex);
+
+    if (-1 == quoteStartIndex)
+    {
+        qWarning() << "Cannot find start of uuid attribute value";
+        return {};
+    }
+
+    int quoteEndIndex = xmlContent.indexOf('"', quoteStartIndex + 1);
+
+    if (-1 == quoteEndIndex)
+    {
+        qWarning() << "Cannot find end of uuid attribute value";
+        return {};
+    }
+
+    return QUuid{xmlContent.mid(quoteStartIndex + 1, quoteEndIndex - quoteStartIndex - 1)};
+}
+
+QVersionNumber UBSvgSubsetAdaptor::sceneVersion(const QString& xmlContent)
+{
+    const int versionIndex = xmlContent.indexOf("ub:version");
+
+    if (-1 == versionIndex)
+    {
+        qWarning() << "Cannot find ub:version attribute";
+        return {};
+    }
+
+    int quoteStartIndex = xmlContent.indexOf('"', versionIndex);
+
+    if (-1 == quoteStartIndex)
+    {
+        qWarning() << "Cannot find start of ub:version attribute value";
+        return {};
+    }
+
+    int quoteEndIndex = xmlContent.indexOf('"', quoteStartIndex + 1);
+
+    if (-1 == quoteEndIndex)
+    {
+        qWarning() << "Cannot find end of ub:version attribute value";
+        return {};
+    }
+
+    return QVersionNumber::fromString(xmlContent.mid(quoteStartIndex + 1, quoteEndIndex - quoteStartIndex - 1));
+}
+
 
 std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::loadScene(std::shared_ptr<UBDocumentProxy> proxy, const QByteArray& pArray)
 {
@@ -310,9 +368,10 @@ std::shared_ptr<UBGraphicsScene> UBSvgSubsetAdaptor::loadScene(std::shared_ptr<U
     return reader.loadScene(proxy);
 }
 
-std::shared_ptr<UBSvgSubsetAdaptor::UBSvgReaderContext> UBSvgSubsetAdaptor::prepareLoadingScene(std::shared_ptr<UBDocumentProxy> proxy, const int pageId)
+std::shared_ptr<UBSvgSubsetAdaptor::UBSvgReaderContext> UBSvgSubsetAdaptor::prepareLoadingScene(std::shared_ptr<UBDocumentProxy> proxy,
+                                                                                                const int pageId, std::optional<QByteArray> xmlContent)
 {
-    const auto fileContent = loadSceneAsText(proxy, pageId);
+    const auto fileContent = xmlContent.value_or(loadSceneAsText(proxy, pageId));
     auto context = std::make_shared<UBSvgReaderContext>(proxy, fileContent);
     return context;
 }

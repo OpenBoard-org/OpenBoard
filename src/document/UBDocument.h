@@ -22,12 +22,16 @@
 
 #pragma once
 
+#include <QHash>
 #include <QList>
+#include <QSet>
+#include <QUuid>
 
 #include <memory>
 
 
 // forward
+class UBBackgroundLoader;
 class UBDocumentProxy;
 class UBGraphicsScene;
 class UBThumbnailScene;
@@ -45,7 +49,7 @@ class UBToc;
  * getDocument() function. They are always referenced by a shared pointer and live as long
  * as anybody wants to work with the doument.
  */
-class UBDocument
+class UBDocument : public std::enable_shared_from_this<UBDocument>
 {
 private:
     UBDocument(std::shared_ptr<UBDocumentProxy> proxy);
@@ -73,12 +77,16 @@ public:
     QString sceneFile(int index);
     QString thumbnailFile(int index);
 
+    void sceneLoaded(UBGraphicsScene* scene, std::shared_ptr<void> handle);
+    void scanAssets();
+
     static std::shared_ptr<UBDocument> getDocument(std::shared_ptr<UBDocumentProxy> proxy);
 
 private:
-    void scan();
+    void scan(bool tocPresent);
     void copyPage(int fromIndex, UBDocument* to, int toIndex);
     void deleteUnreferencedAssets();
+    void assureLoaderFinished();
 
     static std::shared_ptr<UBDocument> findDocument(std::shared_ptr<UBDocumentProxy> proxy);
 
@@ -86,6 +94,10 @@ private:
     std::shared_ptr<UBDocumentProxy> mProxy{nullptr};
     std::unique_ptr<UBThumbnailScene> mThumbnailScene;
     UBToc* mToc{nullptr};
+    UBBackgroundLoader* mSceneHeaderLoader{nullptr};
+    UBBackgroundLoader* mSceneAssetLoader{nullptr};
+    QHash<QUuid, QUuid> mUuidV5Map{};
+    QSet<std::shared_ptr<void>> mLoaderHandles;
 
     static QList<std::weak_ptr<UBDocument>> sDocuments;
 };

@@ -82,7 +82,7 @@ public:
 
     std::shared_ptr<UBGraphicsScene> createScene(std::shared_ptr<UBDocumentProxy> proxy, int pageId, bool useUndoRedoStack);
 
-    std::shared_ptr<UBGraphicsScene> prepareLoading(std::shared_ptr<UBDocumentProxy> proxy, int pageId);
+    std::shared_ptr<void> prepareLoading(std::shared_ptr<UBDocumentProxy> proxy, int pageId, std::optional<QByteArray> xmlContent = {}, bool cached = true);
 
     void insert (std::shared_ptr<UBDocumentProxy> proxy, int pageId, std::shared_ptr<UBGraphicsScene> scene);
 
@@ -94,12 +94,14 @@ public:
 
     void removeAllScenes(std::shared_ptr<UBDocumentProxy> proxy);
 
+    void removeSceneFromCache(std::shared_ptr<UBGraphicsScene> scene);
+
 
 private:
-    class SceneCacheEntry
+    class SceneCacheEntry : public std::enable_shared_from_this<SceneCacheEntry>
     {
     public:
-        SceneCacheEntry(std::shared_ptr<UBDocumentProxy> proxy, int pageId);
+        SceneCacheEntry(std::shared_ptr<UBDocumentProxy> proxy, int pageId, std::optional<QByteArray> xmlContent = {});
         SceneCacheEntry(std::shared_ptr<UBGraphicsScene> scene);
         ~SceneCacheEntry();
         void startLoading();
