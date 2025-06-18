@@ -272,7 +272,7 @@ void UBThumbnail::mousePressEvent(QGraphicsSceneMouseEvent* event)
     {
         using namespace UBThumbnailUI;
 
-        const auto p = event->pos();
+        const auto p = event->pos() - mPixmapItem->pos();
 
         if (mDeletable && getIcon("close")->triggered(p))
         {
