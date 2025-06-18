@@ -462,6 +462,7 @@ QString UBFileSystemUtils::mimeTypeFromFileName(const QString& fileName)
     if (ext == "bmp") return "image/bmp";
     if (ext == "tiff" || ext == "tif") return "image/tiff";
     if (ext == "gif") return "image/gif";
+    if (ext == "webp") return "image/webp";
     if (ext == "svg" || ext == "svgz") return "image/svg+xml";
     if (ext == "pdf") return "application/pdf";
     if (ext == "mov" || ext == "qt") return "video/quicktime";
@@ -568,6 +569,7 @@ UBMimeType::Enum UBFileSystemUtils::mimeTypeFromString(const QString& typeString
 
     if (typeString == "image/jpeg"
         || typeString == "image/png"
+        || typeString == "image/webp"
         || typeString == "image/gif"
         || typeString == "image/tiff"
         || typeString == "image/bmp")
