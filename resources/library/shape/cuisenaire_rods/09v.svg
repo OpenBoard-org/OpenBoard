@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="50px"
+    height="450px">
+    <g>
+	<rect fill="#0000FF" stroke="#808080" width="50" height="450"/>
+    <line x1="0" y1="50" x2="50" y2="50" stroke="#808080"/>
+    <line x1="0" y1="100" x2="50" y2="100" stroke="#808080"/>
+    <line x1="0" y1="150" x2="50" y2="150" stroke="#808080"/>
+    <line x1="0" y1="200" x2="50" y2="200" stroke="#808080"/>
+    <line x1="0" y1="250" x2="50" y2="250" stroke="#808080"/>
+    <line x1="0" y1="300" x2="50" y2="300" stroke="#808080"/>
+    <line x1="0" y1="350" x2="50" y2="350" stroke="#808080"/>
+    <line x1="0" y1="400" x2="50" y2="400" stroke="#808080"/>
+    </g>
+</svg>
