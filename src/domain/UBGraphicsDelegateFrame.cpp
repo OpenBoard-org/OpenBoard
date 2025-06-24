@@ -315,7 +315,7 @@ void UBGraphicsDelegateFrame::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     mOriginalSize = delegated()->boundingRect().size();
 
-    mCurrentTool = toolFromPos(event->pos());
+    mCurrentTool = toolFromPos(event->scenePos());
 
     if (mCurrentTool == Rotate)
     {
@@ -1041,37 +1041,37 @@ UBGraphicsDelegateFrame::FrameTool UBGraphicsDelegateFrame::toolFromPos(QPointF 
     if(mDelegate->isLocked())
         return None;
     // check handles in reverse order of creation to account for z order
-    else if (mRotateButton && mRotateButton->isUnderMouse() && mDelegate && mDelegate->testUBFlags(GF_REVOLVABLE))
+    else if (mRotateButton && mRotateButton->contains(mRotateButton->mapFromScene(pos)) && mDelegate && mDelegate->testUBFlags(GF_REVOLVABLE))
         return Rotate;
-    else if (mTopResizeGrip && mTopResizeGrip->isUnderMouse() && ResizingHorizontally != mOperationMode && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS)){
+    else if (mTopResizeGrip && mTopResizeGrip->contains(mTopResizeGrip->mapFromScene(pos)) && ResizingHorizontally != mOperationMode && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS)){
             if(mMirrorY){
                 return ResizeBottom;
             }else{
                 return ResizeTop;
             }
         }
-    else if (mRightResizeGrip && mRightResizeGrip->isUnderMouse() && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS)){
+    else if (mRightResizeGrip && mRightResizeGrip->contains(mRightResizeGrip->mapFromScene(pos)) && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS)){
             if(mMirrorX){
                 return ResizeLeft;
             }else{
                 return ResizeRight;
             }
         }
-    else if (mLeftResizeGrip && mLeftResizeGrip->isUnderMouse() && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS)){
+    else if (mLeftResizeGrip && mLeftResizeGrip->contains(mLeftResizeGrip->mapFromScene(pos)) && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS)){
             if(mMirrorX){
                 return ResizeRight;
             }else{
                 return ResizeLeft;
             }
         }
-    else if (mBottomResizeGrip && mBottomResizeGrip->isUnderMouse() && ResizingHorizontally != mOperationMode && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS)){
+    else if (mBottomResizeGrip && mBottomResizeGrip->contains(mBottomResizeGrip->mapFromScene(pos)) && ResizingHorizontally != mOperationMode && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS)){
             if(mMirrorY){
                 return ResizeTop;
             }else{
                 return ResizeBottom;
             }
         }
-    else if (mBottomRightResizeGrip && mBottomRightResizeGrip->isUnderMouse() && ResizingHorizontally != mOperationMode && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS) && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS))
+    else if (mBottomRightResizeGrip && mBottomRightResizeGrip->contains(mBottomRightResizeGrip->mapFromScene(pos)) && ResizingHorizontally != mOperationMode && mDelegate->testUBFlags(GF_SCALABLE_X_AXIS) && mDelegate->testUBFlags(GF_SCALABLE_Y_AXIS))
         return ResizeBottomRight;
     else
         return Move;
