@@ -41,7 +41,13 @@ GraphicsPDFItem::GraphicsPDFItem(PDFRenderer *renderer, int pageNumber, QGraphic
     , mPageNumber(pageNumber)
     , mIsCacheAllowed(true)
 {
+    // Disable caching for PDF items on Windows with tablets to avoid rendering issues
+    // Cache can become stale when coordinate transforms change, especially with high-res tablet events
+#ifdef Q_OS_WIN
+    setCacheMode(QGraphicsItem::NoCache);
+#else
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+#endif
     mRenderer->attach();
     connect(mRenderer, SIGNAL(signalUpdateParent()), this, SLOT(OnRequireUpdate()));
 }

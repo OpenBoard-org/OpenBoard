@@ -150,7 +150,13 @@ void UBGraphicsPDFItem::setRenderingQuality(RenderingQuality pRenderingQuality)
     }
     else
     {
+        // Disable caching for PDF items on Windows with tablets to avoid rendering issues
+        // Cache can become stale when coordinate transforms change, especially with high-res tablet events
+#ifdef Q_OS_WIN
+        setCacheMode(QGraphicsItem::NoCache);
+#else
         setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+#endif
     }
 }
 
