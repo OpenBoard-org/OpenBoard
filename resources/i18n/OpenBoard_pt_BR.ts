@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="pt_BR" sourcelanguage="en_GB">
+<TS version="2.1" language="pt_BR" sourcelanguage="fr_CH">
 <context>
     <name>BlackoutWidget</name>
     <message>
@@ -31,7 +31,7 @@
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/certificateerrordialog.ui" line="26"/>
-        <source>Icon</source>
+        <source>Icon</source><translation>Documento aberto com sucesso</translation>
         <translation>Ícone</translation>
     </message>
     <message>
@@ -44,7 +44,7 @@
         <source>If you wish so, you may continue with an unverified certificate. Accepting an unverified certificate mean you may not be connected with the host you tried to connect to.
 
 Do you wish to override the security check and continue ?   </source>
-        <translation>Se desejar, você pode continuar com um certificado não verificado. Aceitar um certificado não verificado significa que você pode não estar conectado com o host ao qual tentou se conectar.
+  <translation>Se desejar, você pode continuar com um certificado não verificado. Aceitar um certificado não verificado significa que você pode não estar conectado com o host ao qual tentou se conectar.
 
 Deseja substituir a verificação de segurança e continuar?</translation>
     </message>
@@ -100,7 +100,10 @@ Deseja substituir a verificação de segurança e continuar?</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation type="vanished">Erro ao gravar: %1</translation>
+        <translation type="vanished">Erro ao gravar: %1</translation>  <translation>Se desejar, você pode continuar com um certificado não verificado. Aceitar um certificado não verificado significa que você pode não estar conectado com o host ao qual tentou se conectar.
+
+Deseja substituir a verificação de segurança e continuar?</translation>
+    </message>
     </message>
     <message>
         <source>Network Error: %1</source>
@@ -169,7 +172,7 @@ Deseja substituir a verificação de segurança e continuar?</translation>
         <location filename="../../src/web/simplebrowser/downloadwidget.ui" line="31"/>
         <location filename="../../src/web/simplebrowser/downloadwidget.ui" line="71"/>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../../src/web/simplebrowser/downloadwidget.cpp" line="87"/>
@@ -328,7 +331,10 @@ Deseja substituir a verificação de segurança e continuar?</translation>
         <source>Ctrl+Y</source>
         <translation>Ctrl+Y</translation>
     </message>
-    <message>
+    <message>  <translation>Se desejar, você pode continuar com um certificado não verificado. Aceitar um certificado não verificado significa que você pode não estar conectado com o host ao qual tentou se conectar.
+
+Deseja substituir a verificação de segurança e continuar?</translation>
+    </message>
         <location filename="../forms/mainWindow.ui" line="277"/>
         <source>Previous</source>
         <translation>Anterior</translation>
@@ -435,7 +441,10 @@ Deseja substituir a verificação de segurança e continuar?</translation>
         <translation>Voltar</translation>
     </message>
     <message>
-        <location filename="../forms/mainWindow.ui" line="575"/>
+        <location f  <translation>Se desejar, você pode continuar com um certificado não verificado. Aceitar um certificado não verificado significa que você pode não estar conectado com o host ao qual tentou se conectar.
+
+Deseja substituir a verificação de segurança e continuar?</translation>
+    </message>ilename="../forms/mainWindow.ui" line="575"/>
         <source>Left</source>
         <translation>Esquerda</translation>
     </message>
@@ -1268,7 +1277,7 @@ Deseja substituir a verificação de segurança e continuar?</translation>
     <message>
         <location filename="../forms/mainWindow.ui" line="323"/>
         <source>Documents Mode</source>
-        <translation>Modo dos Documentos</translation>
+        <translation>Modo Documentos</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="343"/>
@@ -1335,7 +1344,7 @@ Deseja substituir a verificação de segurança e continuar?</translation>
     <message>
         <location filename="../forms/mainWindow.ui" line="1436"/>
         <source>Ctrl+P</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+P</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1703"/>
@@ -1362,12 +1371,12 @@ Deseja substituir a verificação de segurança e continuar?</translation>
     <message>
         <location filename="../forms/mainWindow.ui" line="1956"/>
         <source>Hints and tips</source>
-        <translation>Dicas e truques</translation>
+        <translation>Dicas e Truques</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1959"/>
         <source>Open Hints and tips</source>
-        <translation>Abrir Dicas e truques</translation>
+        <translation>Abrir Dicas e Truques</translation>
     </message>
     <message>
         <location filename="../forms/mainWindow.ui" line="1939"/>
@@ -1431,7 +1440,7 @@ Deseja substituir a verificação de segurança e continuar?</translation>
     <message>
         <location filename="../../plugins/cffadaptor/src/UBCFFAdaptor.cpp" line="1181"/>
         <source>Element ID = </source>
-        <translation>ID do Elemento</translation>
+        <translation>ID do Item = </translation>
     </message>
     <message>
         <location filename="../../plugins/cffadaptor/src/UBCFFAdaptor.cpp" line="1183"/>
@@ -1896,18 +1905,18 @@ Deseja substituir a verificação de segurança e continuar?</translation>
         <source>Empty</source>
         <translation>Vazio</translation>
     </message>
-    <message>
+     <message>
         <location filename="../../src/document/UBDocumentController.cpp" line="2489"/>
         <location filename="../../src/document/UBDocumentController.cpp" line="2501"/>
         <location filename="../../src/document/UBDocumentController.cpp" line="3466"/>
         <source>Opening document in Board. Please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrindo documento no Quadro. Aguarde...</translation>
     </message>
     <message>
         <location filename="../../src/document/UBDocumentController.cpp" line="2507"/>
         <location filename="../../src/document/UBDocumentController.cpp" line="3472"/>
         <source>Document opened successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Documento aberto com sucesso</translation>
     </message>
     <message>
         <location filename="../../src/document/UBDocumentController.cpp" line="2613"/>
@@ -1997,17 +2006,17 @@ Deseja substituir a verificação de segurança e continuar?</translation>
     <message>
         <location filename="../../src/document/UBDocumentController.cpp" line="3404"/>
         <source>Refreshing Document Thumbnails View (%1 pages)</source>
-        <translation type="unfinished"></translation>
+        <translation>Miniaturas sendo atualizadas (%1 páginas)</translation>
     </message>
     <message>
         <location filename="../../src/document/UBDocumentController.cpp" line="3408"/>
         <source>Refreshing Document Thumbnails View</source>
-        <translation type="unfinished"></translation>
+        <translation>Recarregando visualização</translation>
     </message>
     <message>
         <location filename="../../src/document/UBDocumentController.cpp" line="3412"/>
         <source>Document Thumbnails View up-to-date. Repainting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Recarregando visualização (%1 páginas). Completando...</translation>
     </message>
     <message>
         <location filename="../../src/document/UBDocumentController.cpp" line="3972"/>
@@ -2243,7 +2252,7 @@ Um outro nome permitirá que você mantenha o documento antigo.</translation>
     <message>
         <location filename="../../src/web/UBEmbedController.cpp" line="236"/>
         <source>Web</source>
-        <translation>Web</translation>
+       <translation>Web</translation>
     </message>
     <message>
         <source>Application name can`t contain any of the following characters:<byte value="xd"/></source>
@@ -2339,7 +2348,15 @@ Um outro nome permitirá que você mantenha o documento antigo.</translation>
     <message>
         <location filename="../../src/adaptors/UBExportDocumentSetAdaptor.cpp" line="75"/>
         <location filename="../../src/adaptors/UBExportDocumentSetAdaptor.cpp" line="84"/>
-        <source>Failed to export...</source>
+        <source>Failed to export...<<translation>Web</translation>
+    </message>
+    <message>
+        <source>Application name can`t contain any of the following characters:<byte value="xd"/></source>
+        <translation type="vanished">O nome do aplicativo não pode conter nenhum dos seguintes caracteres:<byte value="xd"/></translation>
+    </message>
+</context>
+<context>
+    <name>UBExportAdaptor</name>/source>
         <translation>Falha ao exportar...</translation>
     </message>
     <message>
@@ -2384,7 +2401,7 @@ Um outro nome permitirá que você mantenha o documento antigo.</translation>
     <message>
         <location filename="../../src/adaptors/UBExportFullPDF.cpp" line="313"/>
         <location filename="../../src/adaptors/UBExportFullPDF.cpp" line="327"/>
-        <source>The original PDF imported in OpenBoard seems not valid and could not be merged with your annotations. Please repair it and then reimport it in OpenBoard. The current export will be done with detailed (heavy) images of the pages of the original PDF instead, to avoid complete export failure.</source>
+       <source>The original PDF imported in OpenBoard seems not valid and could not be merged with your annotations. Please repair it and then reimport it in OpenBoard. The current export will be done with detailed (heavy) images of the pages of the original PDF instead, to avoid complete export failure.</source>
         <translation>O PDF original importado no OpenBoard parece não ser válido e não pôde ser mesclado com suas anotações. Repare-o e então importe-o novamente no OpenBoard. A exportação atual será feita com imagens detalhadas (pesadas) das páginas do PDF original, para evitar falha completa na exportação.</translation>
     </message>
 </context>
@@ -2587,7 +2604,7 @@ Um outro nome permitirá que você mantenha o documento antigo.</translation>
     <message>
         <location filename="../../src/gui/UBFeaturesWidget.cpp" line="762"/>
         <source>Loading </source>
-        <translation>A carregar</translation>
+        <translation>A carregar </translation>
     </message>
 </context>
 <context>
@@ -3363,7 +3380,7 @@ Quer ignorar estes erros deste servidor?</translation>
     <message>
         <location filename="../../src/gui/UBStartupHintsPalette.cpp" line="67"/>
         <source>Visible next time</source>
-        <translation>Visível na próxima vez </translation>
+        <translation>Mostrar na próxima vez</translation>
     </message>
 </context>
 <context>
@@ -3388,7 +3405,7 @@ Quer ignorar estes erros deste servidor?</translation>
     <message>
         <location filename="../../src/adaptors/UBThumbnailAdaptor.cpp" line="107"/>
         <source>Loading thumbnails (%1 pages)</source>
-        <translation type="unfinished"></translation>
+        <translation>Carregando miniaturas (%1 pág.)</translation>
     </message>
     <message>
         <source>Loading thumbnail (%1/%2)</source>
@@ -4254,7 +4271,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../forms/preferences.ui" line="267"/>
         <source>Documents Mode</source>
-        <translation>Modo dos Documentos</translation>
+        <translation>Modo Documentos</translation>
     </message>
     <message>
         <location filename="../forms/preferences.ui" line="281"/>
@@ -4331,7 +4348,6 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../forms/preferences.ui" line="143"/>
-        <source>Export background color</source>
         <translation>Exportar cor de fundo</translation>
     </message>
     <message>
@@ -4342,7 +4358,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../forms/preferences.ui" line="624"/>
         <source>List of screens used for Control, Display and Previous pages</source>
-        <translation>Lista de telas usadas para Controle, Exibição e Páginas anteriores</translation>
+        <translation>Lista de telas usadas para exibir as páginas Principal, Estendida e Anterior</translation>
     </message>
 </context>
 <context>
@@ -4350,7 +4366,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Trap flash</source>
         <translation type="vanished">Capturar flash</translation>
-    </message>
+    </message><translation>Selecione um conteúdo para capturar</translation>
     <message>
         <source>Select a flash to trap</source>
         <translation type="vanished">Selecionar o flash a capturar</translation>
@@ -4378,7 +4394,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../forms/trapFlash.ui" line="22"/>
         <source>Select a content to capture</source>
-        <translation>Selecione um conteúdo para capturar</translation>
+        <translation>Selecionar um conteúdo a capturar</translation>
     </message>
 </context>
 </TS>
