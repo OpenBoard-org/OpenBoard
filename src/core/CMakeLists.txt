@@ -17,6 +17,8 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBForeignObjectsHandler.h
     UBIdleTimer.cpp
     UBIdleTimer.h
+    UBLogging.cpp
+    UBLogging.h
     UBMimeData.cpp
     UBMimeData.h
     UBPersistenceManager.cpp

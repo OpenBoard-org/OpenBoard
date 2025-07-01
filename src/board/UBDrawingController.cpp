@@ -31,6 +31,8 @@
 
 #include "core/UBSettings.h"
 #include "core/UBApplication.h"
+#include "core/UBLogging.h"
+#include "core/UBLogging.h"  // New logging system
 
 #include "domain/UBGraphicsScene.h"
 #include "board/UBBoardController.h"
@@ -369,80 +371,117 @@ void UBDrawingController::penToolSelected(bool checked)
 {
     if (checked)
     {
+        // NEW API - Type-safe enum, no singletons
+        QVariantMap context;
+        context["previous_tool"] = UBLogActions::toolToString(static_cast<UBLogActions::Tool>(mStylusTool));
+        UBLogManager::userSelectedTool(UBLogActions::Tool::Pen, context);
         setStylusTool(UBStylusTool::Pen);
-
     }
 }
 
 void UBDrawingController::eraserToolSelected(bool checked)
 {
     if (checked)
+    {
+        // NEW API - Type-safe enum
+        UBLogManager::userSelectedTool(UBLogActions::Tool::Eraser);
         setStylusTool(UBStylusTool::Eraser);
+    }
 }
 
 void UBDrawingController::markerToolSelected(bool checked)
 {
     if (checked)
+    {
+        UBLogManager::userSelectedTool(UBLogActions::Tool::Marker);
         setStylusTool(UBStylusTool::Marker);
+    }
 }
 
 void UBDrawingController::selectorToolSelected(bool checked)
 {
     if (checked)
+    {
+        UBLogManager::userSelectedTool(UBLogActions::Tool::Selector);
         setStylusTool(UBStylusTool::Selector);
+    }
 }
 
 void UBDrawingController::playToolSelected(bool checked)
 {
     if (checked)
+    {
+        UBLogManager::userSelectedTool(UBLogActions::Tool::Play);
         setStylusTool(UBStylusTool::Play);
+    }
 }
 
 void UBDrawingController::handToolSelected(bool checked)
 {
     if (checked)
+    {
+        UBLogManager::userSelectedTool(UBLogActions::Tool::Hand);
         setStylusTool(UBStylusTool::Hand);
+    }
 }
 
 
 void UBDrawingController::zoomInToolSelected(bool checked)
 {
     if (checked)
+    {
+        UBLogManager::userSelectedTool(UBLogActions::Tool::ZoomIn);
         setStylusTool(UBStylusTool::ZoomIn);
+    }
 }
 
 
 void UBDrawingController::zoomOutToolSelected(bool checked)
 {
     if (checked)
+    {
+        UBLogManager::userSelectedTool(UBLogActions::Tool::ZoomOut);
         setStylusTool(UBStylusTool::ZoomOut);
+    }
 }
 
 
 void UBDrawingController::pointerToolSelected(bool checked)
 {
     if (checked)
+    {
+        UBLogManager::userSelectedTool(UBLogActions::Tool::Pointer);
         setStylusTool(UBStylusTool::Pointer);
+    }
 }
 
 
 void UBDrawingController::lineToolSelected(bool checked)
 {
     if (checked)
+    {
+        UBLogManager::userSelectedTool(UBLogActions::Tool::Line);
         setStylusTool(UBStylusTool::Line);
+    }
 }
 
 
 void UBDrawingController::textToolSelected(bool checked)
 {
     if (checked)
+    {
+        UBLogManager::userSelectedTool(UBLogActions::Tool::Text);
         setStylusTool(UBStylusTool::Text);
+    }
 }
 
 
 void UBDrawingController::captureToolSelected(bool checked)
 {
     if (checked)
+    {
+        UBLogManager::userSelectedTool(UBLogActions::Tool::Capture);
         setStylusTool(UBStylusTool::Capture);
+    }
 }
 

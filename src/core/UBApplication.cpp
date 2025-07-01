@@ -46,6 +46,7 @@
 #include "UBIdleTimer.h"
 #include "UBApplicationController.h"
 #include "UBShortcutManager.h"
+#include "UBLogging.h"
 
 #include "board/UBBoardController.h"
 #include "board/UBDrawingController.h"
@@ -149,6 +150,9 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : Single
 
     QApplication::setStartDragDistance(8); // default is 4, and is a bit small for tablets
 
+    UBLogManager::initialize();
+    qInfo() << "UBLogManager::initialize() completed successfully";
+
     installEventFilter(this);
 
 }
@@ -156,6 +160,10 @@ UBApplication::UBApplication(const QString &id, int &argc, char **argv) : Single
 
 UBApplication::~UBApplication()
 {
+    // Shutdown logging systems
+    UBLogManager::applicationShutdown();
+    UBLogManager::shutdown();
+
     UBPlatformUtils::destroy();
 
     UBFileSystemUtils::deleteAllTempDirCreatedDuringSession();
@@ -324,6 +332,10 @@ int UBApplication::exec(const QString& pFileToImport)
     mainWindow->actionCopy->setShortcuts(QKeySequence::Copy);
     mainWindow->actionPaste->setShortcuts(QKeySequence::Paste);
     mainWindow->actionCut->setShortcuts(QKeySequence::Cut);
+
+    // Note: Logging system already initialized earlier in constructor
+    // UBLogManager::initialize(); // REMOVED - already called in constructor
+    UBLogManager::applicationStarted(applicationVersion());
 
     UBThumbnailUI::_private::initCatalog();
 

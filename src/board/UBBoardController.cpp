@@ -30,6 +30,7 @@
 #include "UBBoardController.h"
 
 #include <QtWidgets>
+#include <QPointF>
 
 #include "adaptors/UBMetadataDcSubsetAdaptor.h"
 #include "adaptors/UBSvgSubsetAdaptor.h"
@@ -47,6 +48,7 @@
 #include "core/UBDisplayManager.h"
 #include "core/UBDocumentManager.h"
 #include "core/UBDownloadManager.h"
+#include "core/UBLogging.h"
 #include "core/UBMimeData.h"
 #include "core/UBPersistenceManager.h"
 #include "core/UBSetting.h"
@@ -1013,6 +1015,9 @@ void UBBoardController::zoomIn(QPointF scenePoint)
         qApp->beep();
         return;
     }
+
+    qreal currentZoom = mZoomFactor * mControlView->transform().m11() / mSystemScaleFactor;
+    UBLogManager::userPerformedZoom(currentZoom, scenePoint);
     zoom(mZoomFactor, scenePoint);
 }
 
@@ -1027,6 +1032,8 @@ void UBBoardController::zoomOut(QPointF scenePoint)
     }
 
     qreal newZoomFactor = 1 / mZoomFactor;
+    qreal newZoom = newZoomFactor * mControlView->transform().m11() / mSystemScaleFactor;
+    UBLogManager::userPerformedZoom(newZoom, scenePoint);
 
     zoom(newZoomFactor, scenePoint);
 }
@@ -1034,6 +1041,7 @@ void UBBoardController::zoomOut(QPointF scenePoint)
 
 void UBBoardController::zoomRestore()
 {
+    UBLogManager::userPerformedZoom(1.0);
     QTransform tr;
 
     tr.scale(mSystemScaleFactor, mSystemScaleFactor);
@@ -1166,6 +1174,7 @@ void UBBoardController::previousScene()
 {
     if (mActiveSceneIndex > 0)
     {
+        UBLogManager::userNavigatedToPage(mActiveSceneIndex - 1, selectedDocument()->pageCount());
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         setActiveDocumentScene(mActiveSceneIndex - 1);
         QApplication::restoreOverrideCursor();
@@ -1179,6 +1188,7 @@ void UBBoardController::nextScene()
 {
     if (mActiveSceneIndex < selectedDocument()->pageCount() - 1)
     {
+        UBLogManager::userNavigatedToPage(mActiveSceneIndex + 1, selectedDocument()->pageCount());
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         setActiveDocumentScene(mActiveSceneIndex + 1);
         QApplication::restoreOverrideCursor();
@@ -1192,6 +1202,7 @@ void UBBoardController::firstScene()
 {
     if (mActiveSceneIndex > 0)
     {
+        UBLogManager::userNavigatedToPage(0, selectedDocument()->pageCount());
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         setActiveDocumentScene(0);
         QApplication::restoreOverrideCursor();
@@ -1205,8 +1216,10 @@ void UBBoardController::lastScene()
 {
     if (mActiveSceneIndex < selectedDocument()->pageCount() - 1)
     {
+        int lastPageIndex = selectedDocument()->pageCount() - 1;
+        UBLogManager::userNavigatedToPage(lastPageIndex, selectedDocument()->pageCount());
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        setActiveDocumentScene(selectedDocument()->pageCount() - 1);
+        setActiveDocumentScene(lastPageIndex);
         QApplication::restoreOverrideCursor();
     }
 
